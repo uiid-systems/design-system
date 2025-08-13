@@ -1,0 +1,23 @@
+{
+  "name": "@uiid/tokens",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/tokens.css",
+    "./tokens.css": "./src/tokens.css",
+    "./colors/*": "./src/colors/*.css"
+  },
+  "files": ["src"],
+  "scripts": {
+    "lint": "echo 'No linting for CSS tokens'",
+    "format": "prettier --write \"src/**/*.css\""
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "^9.0.15",
+    "@types/react": "^19.1.8",
+    "prettier": "3.6.2",
+    "react": "^19.1.1",
+    "storybook": "^9.0.15",
+    "typescript": "~5.8.3"
+  }
+}
