@@ -1,20 +1,38 @@
 {
-  "name": "design-system",
+  "name": "@uiid/design-system",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "test": "turbo test",
+    "test:run": "turbo test:run",
+    "preview": "vite preview",
+    "storybook": "turbo storybook",
+    "build-storybook": "turbo build-storybook",
+    "changeset": "changeset",
+    "changeset:version": "changeset version && pnpm run build-changelog",
+    "changeset:release": "changeset && pnpm run changeset:version",
+    "auto-changeset": "node scripts/auto-changeset.cjs",
+    "version-packages": "changeset version && pnpm run build-changelog",
+    "auto-release": "pnpm run auto-changeset && pnpm run version-packages && git add packages/changelog.json apps/docs/changelog.mdx && git commit --amend --no-edit",
+    "release": "changeset publish",
+    "build-changelog": "node scripts/build-changelog.cjs",
+    "sync-changelog": "pnpm run build-changelog",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "prettier": "^3.6.2",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.5",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "prettier": "3.6.2",
     "turbo": "^2.5.5",
-    "typescript": "5.8.3"
+    "typescript": "~5.8.3"
   },
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=18"
-  }
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }

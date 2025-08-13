@@ -1,0 +1,14 @@
+{
+  "printWidth": 80,
+  "semi": true,
+  "tabWidth": 2,
+  "htmlWhitespaceSensitivity": "css",
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "printWidth": 150
+      }
+    }
+  ]
+}
