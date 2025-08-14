@@ -2,5 +2,6 @@
 @import "./colors/green.css" layer(uiid.tokens.colors);
 @import "./colors/neutral.css" layer(uiid.tokens.colors);
 @import "./colors/orange.css" layer(uiid.tokens.colors);
+@import "./colors/purple.css" layer(uiid.tokens.colors);
 @import "./colors/red.css" layer(uiid.tokens.colors);
 @import "./colors/yellow.css" layer(uiid.tokens.colors);
