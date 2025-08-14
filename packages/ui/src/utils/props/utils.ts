@@ -22,9 +22,9 @@ export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
  *   styleProps: ["ax", "ay"]
  * });
  * // Result: {
- * //   "data-toretto": "box",
- * //   "data-evenly": "true",
- * //   "data-ax": "center",
+ * //   "uiid": "box",
+ * //   "evenly": "true",
+ * //   "ax": "center",
  * //   style: { justifyContent: "center" },
  * //   className: "my-class"
  * // }
@@ -37,7 +37,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
   styleProps: stylePropKeys = [],
 }: PrepareComponentPropsOptions<T>) {
   const dataAttrs: Record<string, string> = {
-    "data-toretto": componentName,
+    uiid: componentName,
   };
 
   const restProps: Record<string, unknown> = {};

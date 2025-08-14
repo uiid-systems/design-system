@@ -1,0 +1,6 @@
+[uiid="layer"] {
+  display: grid;
+}
+[uiid="layer"] > * {
+  grid-area: 1 / 1;
+}

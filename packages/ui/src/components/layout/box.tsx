@@ -14,6 +14,7 @@ export type BoxProps = React.PropsWithChildren<{
   style?: React.CSSProperties;
   className?: string;
   ref?: React.Ref<HTMLDivElement>;
+  uiid?: string;
 }> &
   ToggleProps &
   LayoutProps;
@@ -22,7 +23,7 @@ export const Box = ({ render, children, ...props }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
     toggleProps: ["evenly", "fullwidth"],
-    styleProps: ["ax", "ay"],
+    styleProps: ["ax", "ay", "direction"],
     props,
   });
 
