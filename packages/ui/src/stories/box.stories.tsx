@@ -1,0 +1,30 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Box } from "../components/layout";
+
+const meta = {
+  title: "Layout/Box",
+  component: Box,
+  args: {},
+  render: (args) => (
+    <Box
+      {...args}
+      render={<aside style={{ opacity: 0.5 }} className="foo" />}
+      className="bar"
+      fullwidth
+      ax="center"
+      ay="center"
+      style={{
+        display: "inline-block",
+        background: "tomato",
+        minWidth: 64,
+        height: 64,
+      }}
+    />
+  ),
+} satisfies Meta<typeof Box>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = { name: "Box" };

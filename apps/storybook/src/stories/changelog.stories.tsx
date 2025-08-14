@@ -26,3 +26,14 @@
 //     changelogs: changelogData,
 //   },
 // };
+
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+const meta = {
+  title: "Changelog",
+} satisfies Meta;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = { name: "Changelog" };
