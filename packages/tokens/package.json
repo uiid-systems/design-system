@@ -4,10 +4,11 @@
   "type": "module",
   "exports": {
     ".": "./src/tokens.css",
-    "./tokens.css": "./src/tokens.css",
     "./colors/*": "./src/colors/*.css"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "lint": "echo 'No linting for CSS tokens'",
     "format": "prettier --write \"src/**/*.css\""

@@ -1,0 +1,191 @@
+@import "./button.tokens.css" layer(uiid.tokens.buttons);
+
+[data-uiid="button"] {
+  all: unset;
+  border-radius: var(--button-border-radius);
+  cursor: pointer;
+  text-underline-offset: 0.125rem;
+  display: grid;
+  transition: all var(--button-transition) ease-in-out;
+
+  & > * {
+    grid-area: 1 / 1;
+    place-content: center;
+    text-align: center;
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+    outline-color: var(--button-color-outline, var(--button-bg));
+  }
+
+  &:not([aria-disabled="true"]):hover,
+  &:not([aria-disabled="true"]):focus {
+    scale: var(--button-scale-hover);
+  }
+
+  &:not([aria-disabled="true"]):hover {
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-hover-mix), var(--button-mix-color));
+  }
+
+  &:not([aria-disabled="true"]):active {
+    scale: var(--button-scale-active);
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-active-mix), var(--button-mix-color));
+  }
+
+  /** sizes */
+  font-size: var(--button-font-size);
+  height: var(--button-height);
+  padding-inline: var(--button-padding-x);
+
+  &:where([data-size="sm"]) {
+    --button-font-size: var(--button-size-sm-font-size);
+    --button-height: var(--button-size-sm-height);
+    --button-padding-x: var(--button-size-sm-padding-x);
+  }
+
+  &:where([data-size="md"]) {
+    --button-font-size: var(--button-size-md-font-size);
+    --button-height: var(--button-size-md-height);
+    --button-padding-x: var(--button-size-md-padding-x);
+  }
+
+  &:where([data-size="lg"]) {
+    --button-font-size: var(--button-size-lg-font-size);
+    --button-height: var(--button-size-lg-height);
+    --button-padding-x: var(--button-size-lg-padding-x);
+  }
+
+  /** variants */
+  background-color: var(--button-bg);
+  border-color: var(--button-color-border, var(--button-bg));
+  color: var(--button-fg);
+
+  &:where([data-variant="inverted"]) {
+    --button-bg: var(--button-inverted-bg);
+    --button-color-outline: var(--button-inverted-fg);
+    --button-fg: var(--button-inverted-fg);
+    --button-mix-color: var(--shade_foreground);
+    color: var(--button-inverted-fg) !important;
+
+    [data-uiid="spinner-foreground"] {
+      stroke: var(--button-fg) !important;
+    }
+  }
+
+  &:where([data-variant="primary"]) {
+    --button-bg: var(--button-primary-bg);
+    --button-fg: var(--button-primary-fg);
+  }
+
+  &:where([data-variant="secondary"]) {
+    --button-bg: var(--button-secondary-bg);
+    --button-fg: var(--button-secondary-fg);
+  }
+
+  &:where([data-variant="tertiary"]) {
+    --button-bg: var(--button-tertiary-bg);
+    --button-fg: var(--button-tertiary-fg);
+  }
+
+  /** fills */
+  &:where([data-fill="ghost"]:not(:hover)) {
+    text-decoration: underline;
+  }
+
+  &:where([data-fill="outline"]) {
+    border-color: var(--button-bg);
+    border-width: var(--button-border-width);
+    border-style: solid;
+
+    &:where([data-variant="inverted"]) {
+      border-color: var(--button-fg);
+    }
+  }
+
+  &:where([data-fill="ghost"]:not(:hover)),
+  &:where([data-fill="outline"]:not(:hover)) {
+    background: transparent;
+    color: var(--button-bg);
+  }
+
+  /** shapes */
+  &:where([data-shape="rounded"]) {
+    border-radius: var(--button-border-radius);
+  }
+  &:where([data-shape="pill"]) {
+    border-radius: 99999px;
+  }
+
+  /** disabled */
+  &:where([aria-disabled="true"]) {
+    opacity: var(--button-disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  /** icon */
+  &:where([data-icon="standalone"]) {
+    padding: 0;
+    aspect-ratio: 1;
+  }
+}
+
+[data-uiid="button-loading"] {
+  margin-inline: auto;
+  visibility: visible;
+  &[aria-hidden="true"] {
+    visibility: hidden;
+  }
+
+  [data-uiid="button-loading-dots"] {
+    width: 1.5rem;
+    aspect-ratio: 2;
+    --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg) 90%, #0000);
+    background:
+      var(--_g) 0% 50%,
+      var(--_g) 50% 50%,
+      var(--_g) 100% 50%;
+    background-size: calc(100% / 3) 50%;
+    animation: l3 1s infinite linear;
+  }
+}
+
+[data-uiid="button-content"] {
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  gap: 0.5rem;
+  visibility: visible;
+  &[aria-hidden="true"] {
+    visibility: hidden;
+  }
+}
+
+@keyframes l3 {
+  20% {
+    background-position:
+      0% 0%,
+      50% 50%,
+      100% 50%;
+  }
+  40% {
+    background-position:
+      0% 100%,
+      50% 0%,
+      100% 50%;
+  }
+  60% {
+    background-position:
+      0% 50%,
+      50% 100%,
+      100% 0%;
+  }
+  80% {
+    background-position:
+      0% 50%,
+      50% 50%,
+      100% 100%;
+  }
+}

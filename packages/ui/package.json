@@ -9,10 +9,12 @@
     ".": {
       "import": "./dist/uiid.js",
       "require": "./dist/uiid.umd.cjs"
-    }
+    },
+    "./globals": "./src/core/globals.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/globals.css"
   ],
   "scripts": {
     "dev": "vite",
@@ -46,6 +48,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
     "happy-dom": "^15.11.6",
+    "lucide-react": "^0.539.0",
     "prettier": "3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

@@ -1,0 +1,42 @@
+:root {
+  --button-border-radius: 0.5rem;
+  --button-border-width: 2px;
+  --button-disabled-opacity: 0.5;
+  --button-scale-active: 0.98;
+  --button-scale-hover: 1.02;
+  --button-transition: 50ms;
+
+  /** color mixing tokens */
+  --button-hover-mix: 85%;
+  --button-active-mix: 80%;
+  --button-mix-color: var(--shade-background);
+
+  /** sizes */
+  --button-size-sm-height: 2rem;
+  --button-size-sm-padding-x: 1rem;
+  --button-size-sm-font-size: 0.875rem;
+
+  --button-size-md-height: 3rem;
+  --button-size-md-padding-x: 1.5rem;
+  --button-size-md-font-size: 1rem;
+
+  --button-size-lg-height: 4rem;
+  --button-size-lg-padding-x: 2rem;
+  --button-size-lg-font-size: 1.125rem;
+
+  /** variants */
+  --button-bg: var(--shade-foreground);
+  --button-fg: var(--shade-background);
+
+  --button-primary-bg: var(--blue-500);
+  --button-primary-fg: var(--black);
+
+  --button-secondary-bg: var(--blue-300);
+  --button-secondary-fg: var(--black);
+
+  --button-tertiary-bg: var(--blue-100);
+  --button-tertiary-fg: var(--black);
+
+  --button-inverted-bg: var(--shade-background);
+  --button-inverted-fg: var(--shade-foreground);
+}

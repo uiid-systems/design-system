@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react-vite";
 
 import "@uiid/tokens";
+import "@uiid/ui/globals";
 
 const preview: Preview = {
   // tags: ["autodocs"],
