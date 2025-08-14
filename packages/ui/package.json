@@ -10,18 +10,15 @@
       "import": "./dist/uiid.js",
       "require": "./dist/uiid.umd.cjs"
     },
-    "./globals": "./src/core/globals.css"
+    "./globals": "./src/globals.css"
   },
   "files": [
-    "dist",
-    "src/globals.css"
+    "dist"
   ],
   "scripts": {
-    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run"
   },

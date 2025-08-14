@@ -1,5 +1,6 @@
 import type { ButtonProps } from "../types";
 
+import "@uiid/tokens/buttons/button.css";
 import "./button.styles.css";
 
 export const Button = ({

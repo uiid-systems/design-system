@@ -1,5 +1,3 @@
-@import "./button.tokens.css" layer(uiid.tokens.buttons);
-
 [data-uiid="button"] {
   all: unset;
   border-radius: var(--button-border-radius);

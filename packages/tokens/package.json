@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     ".": "./src/tokens.css",
+    "./buttons/*": "./src/buttons/button.css",
     "./colors/*": "./src/colors/*.css"
   },
   "files": [

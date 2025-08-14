@@ -25,7 +25,7 @@
     /* Path mapping for future packages */
     "baseUrl": ".",
     "paths": {
-      // "@ui/*": ["packages/ui/src/*"],
+      "@ui/*": ["packages/ui/src/*"],
       "@tokens/*": ["packages/tokens/src/*"]
     }
   },

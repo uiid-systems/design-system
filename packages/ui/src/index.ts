@@ -1,5 +1,5 @@
 // Core utilities
-export * from "./core";
+export * from "./utils";
 
 // Layout components
 export * from "./components/layout";
