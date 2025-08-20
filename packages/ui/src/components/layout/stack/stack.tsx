@@ -1,4 +1,4 @@
-import { Box, type BoxProps } from "./box";
+import { Box, type BoxProps } from "../box/box";
 
 import "./stack.styles.css";
 

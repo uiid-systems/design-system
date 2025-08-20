@@ -4,10 +4,10 @@ import {
   type LayoutProps,
   renderWithProps,
   prepareComponentProps,
-} from "../../utils";
+} from "../../../utils";
 
-import "../../utils/props/toggles/evenly.css";
-import "../../utils/props/toggles/fullwidth.css";
+import "../../../utils/props/toggles/evenly.css";
+import "../../../utils/props/toggles/fullwidth.css";
 
 export type BoxProps = React.PropsWithChildren<{
   render?: RenderProp;

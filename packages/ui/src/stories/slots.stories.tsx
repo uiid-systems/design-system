@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box, Stack, Slots } from "../components/layout";
 
 const meta = {
-  title: "Wrappers/Slots",
+  title: "Layout/Slots",
   component: Slots,
   args: {
     before: <Box style={{ background: "tomato", height: 64, width: 64 }} />,
@@ -35,6 +35,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Slots",
-};
+export const Default: Story = { name: "Slots" };

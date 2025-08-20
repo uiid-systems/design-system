@@ -1,5 +1,5 @@
 import { Children, isValidElement, cloneElement } from "react";
-import { Box, type BoxProps } from "./box";
+import { Box, type BoxProps } from "../box/box";
 
 import "./layer.styles.css";
 

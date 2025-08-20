@@ -1,10 +1,13 @@
 import { cloneElement } from "react";
-import { Box, type BoxProps } from "./box";
-import { ConditionalRender } from "./conditional-render";
+import { Box, type BoxProps } from "../box/box";
+import { ConditionalRender } from "../conditional-render/conditional-render";
 
 import "./slots.styles.css";
 
-type Slot = React.ReactElement<any> | string | number;
+type Slot =
+  | React.ReactElement<React.HTMLAttributes<HTMLElement>>
+  | string
+  | number;
 
 export type SlotsProps = {
   before?: Slot;
