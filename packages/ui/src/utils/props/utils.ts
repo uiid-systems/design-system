@@ -59,8 +59,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
       // Convert style props to CSS properties
       const styleProp = styleProps[key as keyof typeof styleProps];
       if (styleProp && value != null) {
-        styleObj[styleProp.property] =
-          value as React.CSSProperties[typeof styleProp.property];
+        (styleObj as Record<string, unknown>)[styleProp.property] = value;
         // Also add data attribute for dev tools visibility
         dataAttrs[`${key}`] = String(value);
       }
