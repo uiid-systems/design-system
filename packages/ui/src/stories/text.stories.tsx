@@ -19,7 +19,7 @@ const meta = {
     <Stack>
       {levels.map((level) => (
         <Text {...args} key={level} level={level}>
-          Lorem ipsum dolor
+          Level {level} ipsum dolor
         </Text>
       ))}
     </Stack>
