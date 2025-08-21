@@ -6,7 +6,8 @@
     ".": "./src/tokens.css",
     "./buttons/*": "./src/buttons/*",
     "./colors/*": "./src/colors/*",
-    "./typography/*": "./src/typography/*"
+    "./typography/*": "./src/typography/*",
+    "./forms/*": "./src/forms/*"
   },
   "files": [
     "src"

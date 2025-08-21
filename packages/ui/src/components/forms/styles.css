@@ -1,0 +1,170 @@
+/** Input */
+[data-uiid="input"],
+[data-uiid="select"] {
+  width: -webkit-fill-available;
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus {
+    transition:
+      background-color 600000s 0s,
+      color 600000s 0s;
+  }
+
+  &[data-autocompleted] {
+    background-color: var(--input_autofill_background) !important;
+    color: var(--input_autofill_foreground) !important;
+  }
+
+  /** sizes */
+  font-size: var(--formfield-font-size);
+  height: var(--formfield-height);
+  padding-inline: var(--formfield-padding-x);
+
+  &:where([data-size="sm"]) {
+    --formfield-font-size: var(--formfield-size-sm-font-size);
+    --formfield-height: var(--formfield-size-sm-height);
+    --formfield-padding-x: var(--formfield-size-sm-padding-x);
+  }
+
+  &:where([data-size="md"]) {
+    --formfield-font-size: var(--formfield-size-md-font-size);
+    --formfield-height: var(--formfield-size-md-height);
+    --formfield-padding-x: var(--formfield-size-md-padding-x);
+  }
+
+  &:where([data-size="lg"]) {
+    --formfield-font-size: var(--formfield-size-lg-font-size);
+    --formfield-height: var(--formfield-size-lg-height);
+    --formfield-padding-x: var(--formfield-size-lg-padding-x);
+  }
+}
+
+/** Slots container */
+[uiid="formfield"] {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: -webkit-fill-available;
+}
+
+/* Input, Slots container */
+[data-uiid="input"],
+[data-uiid="select"],
+[data-uiid="formfield-slots"] {
+  background-color: var(--input-background);
+  color: var(--input-foreground);
+
+  border-style: solid;
+  border-color: var(--input-border-color);
+  border-width: var(--input-border-width);
+  border-radius: var(--input-border-radius);
+
+  outline-offset: var(--input-outline-offset);
+  outline-color: var(--input-outline-color);
+  outline-width: var(--input-outline-width);
+
+  /** Validation */
+  &:not(:placeholder-shown)[data-validate="true"],
+  &:has(:not(:placeholder-shown)[data-validate="true"]) {
+    /** Valid */
+    &:valid,
+    &:has(:valid) {
+      border-color: var(--input-border-valid);
+      outline-color: var(--input-outline-valid);
+    }
+    /** Invalid */
+    &:invalid,
+    &:has(:invalid) {
+      border-color: var(--input-border-invalid);
+      outline-color: var(--input-outline-invalid);
+    }
+  }
+
+  /** Focus */
+  &:focus,
+  &:focus-within {
+    background-color: var(--input-background-focus);
+    outline-style: var(--input-outline-style);
+  }
+
+  /** Disabled */
+  &:disabled,
+  &[data-disabled="true"] {
+    border-style: dashed;
+    pointer-events: none;
+    opacity: var(--input-disabled-opacity);
+  }
+
+  /** Slotted Input */
+  [data-slotted="true"] {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    align-self: stretch;
+    color: var(--shade-foreground);
+    padding-inline: var(--formfield-padding-x);
+  }
+}
+
+[data-uiid="formfield-slots"] {
+  width: -webkit-fill-available;
+}
+
+/** Placeholder */
+[data-uiid="input"]::placeholder {
+  color: var(--input-placeholder-font-color);
+  font-size: var(--formfield-font-size);
+  line-height: var(--formfield-line-height);
+}
+
+/** Label Wrapper */
+[uiid="formfield"] {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--input-label-wrapper-gap);
+}
+
+/** Label */
+[data-uiid="formfield-label"] {
+  font-size: var(--input-label-font-size);
+  font-weight: var(--input-label-font-weight);
+
+  &[data-required="true"] {
+    display: inline-block;
+
+    &::after {
+      content: attr(data-required-content);
+      color: var(--required-color);
+    }
+  }
+}
+
+/** Description */
+[data-uiid="formfield-description"] {
+  font-size: var(--input-description-font-size);
+  font-weight: var(--input-description-font-weight);
+  color: var(--input-description-font-color);
+}
+
+/** Bookend */
+[data-uiid="bookend"] {
+  width: fit-content;
+  text-wrap: nowrap;
+  font-size: var(--input-bookend-font-size);
+  font-weight: var(--input-bookend-font-weight);
+  color: var(--input-bookend-font-color);
+  align-content: center;
+}
+
+[data-uiid="select"] {
+  appearance: none;
+
+  &:has(option:disabled:checked) {
+    color: var(--shade-accent);
+  }
+}
+
+[data-uiid="input"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

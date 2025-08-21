@@ -60,10 +60,10 @@ export const Typography: Story = {
             return (
               <React.Fragment key={level}>
                 <div>{level}:</div>
-                <Value value={values.size || "Loading..."} />
-                <Value value={values.weight || "Loading..."} />
-                <Value value={values.leading || "Loading..."} />
-                <Value value={values.line_height || "Loading..."} />
+                <Value value={values.size || " "} />
+                <Value value={values.weight || " "} />
+                <Value value={values.leading || " "} />
+                <Value value={values.line_height || " "} />
               </React.Fragment>
             );
           })}
