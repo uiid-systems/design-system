@@ -1,11 +1,9 @@
-import { ConditionalRender, Slots } from "../../../components/layout";
+import { ConditionalRender, Slots } from "../../layout";
+
+import type { SelectProps } from "../types";
 import { Bookend, FormField } from "../subcomponents";
-import type { InputProps } from "../types";
 
-import "@uiid/tokens/forms/inputs.css";
-import "../styles.css";
-
-export const Input = ({
+export const Select = ({
   size = "md",
   validate = false,
   name,
@@ -15,10 +13,10 @@ export const Input = ({
   after,
   // invalid,
   disabled,
+  options,
   placeholder,
   ...props
-}: InputProps) => {
-  const hasBookend = Boolean(before || after);
+}: SelectProps) => {
   const hasLabel = Boolean(label || description);
 
   return (
@@ -35,26 +33,36 @@ export const Input = ({
       }
     >
       <Slots
-        data-uiid="formfield-slots"
-        data-size={size}
+        data-uiid="form-field-slots"
         data-disabled={disabled}
         before={before && <Bookend>{before}</Bookend>}
         after={after && <Bookend>{after}</Bookend>}
       >
-        <input
+        <select
           {...props}
-          data-uiid="input"
+          data-uiid="select"
           data-size={size}
           data-validate={validate ? true : undefined}
-          data-slotted={hasBookend ? true : undefined}
+          data-slotted={true}
           name={name}
           id={name}
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
-          placeholder={placeholder}
-        />
+          defaultValue={placeholder ? "" : undefined}
+        >
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
+            </option>
+          )}
+          {options.map(({ value, label, disabled }) => (
+            <option key={value} value={value} disabled={disabled}>
+              {label}
+            </option>
+          ))}
+        </select>
       </Slots>
     </ConditionalRender>
   );
 };
-Input.displayName = "Input";
+Select.displayName = "Select";

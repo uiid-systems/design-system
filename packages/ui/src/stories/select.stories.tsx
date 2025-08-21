@@ -1,0 +1,58 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Stack, Group } from "../components/layout";
+
+import { Input, Select } from "../components/forms";
+
+const MOCK_ITEMS = [
+  { value: "1", label: "Option 1" },
+  { value: "2", label: "Option 2" },
+  { value: "3", label: "Option 3" },
+];
+
+const meta = {
+  title: "Forms/Select",
+  component: Select,
+  args: {
+    disabled: false,
+    required: false,
+    options: MOCK_ITEMS,
+  },
+  argTypes: {
+    validate: { control: "boolean" },
+    onClick: { action: "onClick" },
+    onChange: { action: "onChange" },
+    onBlur: { action: "onBlur" },
+  },
+  render: (args) => (
+    <Stack ax="stretch" style={{ gap: 16 }}>
+      <Select {...args} />
+
+      <Select
+        {...args}
+        label="Select with label"
+        description="This is a basic description"
+        name="label"
+        required
+      />
+
+      <Select
+        {...args}
+        label="With placeholder"
+        description="Set a disabled placeholder"
+        placeholder="Select an option"
+      />
+
+      <Group fullwidth evenly style={{ gap: 8 }}>
+        <Input type="datetime-local" />
+        <Select {...args} />
+      </Group>
+    </Stack>
+  ),
+} satisfies Meta<typeof Select>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  name: "Select",
+};
