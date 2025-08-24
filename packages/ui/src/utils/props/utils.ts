@@ -59,7 +59,16 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
       // Convert style props to CSS properties
       const styleProp = styleProps[key as keyof typeof styleProps];
       if (styleProp && value != null) {
-        (styleObj as Record<string, unknown>)[styleProp.property] = value;
+        // Check if the style prop has a scale configuration
+        if ("scale" in styleProp && styleProp.scale && typeof value === "number") {
+          // Compose value with scale variable using calc()
+          const unit = "unit" in styleProp.scale ? (styleProp.scale.unit || "") : "";
+          (styleObj as Record<string, unknown>)[styleProp.property] = 
+            `calc(${value} * var(${styleProp.scale.variable}))${unit}`;
+        } else {
+          // Apply value directly for non-scaled props
+          (styleObj as Record<string, unknown>)[styleProp.property] = value;
+        }
         // Also add data attribute for dev tools visibility
         dataAttrs[`${key}`] = String(value);
       }

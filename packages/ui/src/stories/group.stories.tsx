@@ -5,6 +5,7 @@ import { Box, Group } from "../components/layout";
 const meta = {
   title: "Layout/Group",
   component: Group,
+  args: { gap: 2 },
   render: (args) => (
     <Group {...args}>
       <Boxes />

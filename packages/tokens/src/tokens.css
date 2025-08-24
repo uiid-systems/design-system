@@ -7,7 +7,7 @@
 @import "./colors/yellow.css" layer(uiid.tokens.colors);
 
 :root {
-  --spacing_scale: 0.25rem;
-  --spacing_scale_inline: var(--spacing_scale);
-  --spacing_scale_block: var(--spacing_scale);
+  --spacing-scale: 0.25rem;
+  --spacing-scale-inline: var(--spacing-scale);
+  --spacing-scale-block: var(--spacing-scale);
 }

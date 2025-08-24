@@ -2,6 +2,7 @@ import {
   type RenderProp,
   type ToggleProps,
   type LayoutProps,
+  type SpacingProps,
   renderWithProps,
   prepareComponentProps,
 } from "../../../utils";
@@ -17,13 +18,33 @@ export type BoxProps = React.PropsWithChildren<{
   uiid?: string;
 }> &
   ToggleProps &
-  LayoutProps;
+  LayoutProps &
+  SpacingProps;
 
 export const Box = ({ render, children, ...props }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
     toggleProps: ["evenly", "fullwidth"],
-    styleProps: ["ax", "ay", "direction"],
+    styleProps: [
+      "ax",
+      "ay",
+      "direction",
+      "gap",
+      "m",
+      "mx",
+      "my",
+      "ml",
+      "mr",
+      "mt",
+      "mb",
+      "p",
+      "px",
+      "py",
+      "pl",
+      "pr",
+      "pt",
+      "pb",
+    ],
     props,
   });
 

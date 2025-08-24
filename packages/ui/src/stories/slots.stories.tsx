@@ -12,7 +12,7 @@ const meta = {
     ),
   },
   render: (args) => (
-    <Stack>
+    <Stack gap={2}>
       <Slots {...args}>
         <Box style={{ background: "gold", height: 64, width: 64 }} />
       </Slots>

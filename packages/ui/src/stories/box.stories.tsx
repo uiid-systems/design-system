@@ -12,6 +12,7 @@ const meta = {
       render={<aside style={{ opacity: 0.5 }} className="foo" />}
       className="bar"
       fullwidth
+      ml={2}
       ax="center"
       ay="center"
       style={{

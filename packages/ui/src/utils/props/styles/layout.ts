@@ -22,9 +22,7 @@ export const ay = {
   values: ["baseline", "center", "end", "start", "stretch"] as const,
 } satisfies StyleProp<"alignItems">;
 
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction
- * */
+/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction */
 export const direction = {
   property: "flexDirection",
   values: ["column", "row"],

@@ -5,6 +5,7 @@ import { Box, Stack } from "../components/layout";
 const meta = {
   title: "Layout/Stack",
   component: Stack,
+  args: { gap: 2 },
   render: (args) => (
     <Stack {...args}>
       <Boxes />
