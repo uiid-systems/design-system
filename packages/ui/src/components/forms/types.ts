@@ -25,3 +25,8 @@ export type SelectProps = {
   placeholder?: string;
 } & BaseFormElementProps &
   Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children" | "size">;
+
+export type CheckboxProps = {
+  ref?: React.Ref<HTMLInputElement>;
+} & BaseFormElementProps &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "size">;

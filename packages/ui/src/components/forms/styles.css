@@ -1,6 +1,7 @@
 /** Input */
 [data-uiid="input"],
-[data-uiid="select"] {
+[data-uiid="select"],
+[data-uiid="checkbox-label"] {
   width: -webkit-fill-available;
   &:-webkit-autofill,
   &:-webkit-autofill:focus {

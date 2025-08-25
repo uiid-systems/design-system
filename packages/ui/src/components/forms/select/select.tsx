@@ -33,7 +33,7 @@ export const Select = ({
       }
     >
       <Slots
-        data-uiid="form-field-slots"
+        data-uiid="formfield-slots"
         data-disabled={disabled}
         before={before && <Bookend>{before}</Bookend>}
         after={after && <Bookend>{after}</Bookend>}
@@ -46,6 +46,7 @@ export const Select = ({
           data-slotted={true}
           name={name}
           id={name}
+          /** @todo enable focus when disabled */
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
           defaultValue={placeholder ? "" : undefined}
