@@ -11,10 +11,28 @@ export const Checkbox = ({
   disabled,
   validate,
   size,
+  indeterminate,
+  ref,
   ...props
 }: CheckboxProps) => {
   const hasLabel = Boolean(label);
   const hasDescription = Boolean(description);
+
+  // Ref callback to handle indeterminate state without hooks
+  const handleRef = (element: HTMLInputElement | null) => {
+    if (element) {
+      element.indeterminate = Boolean(indeterminate);
+    }
+    
+    // Forward the ref if provided
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(element);
+      } else {
+        (ref as React.MutableRefObject<HTMLInputElement | null>).current = element;
+      }
+    }
+  };
 
   return (
     <FormFieldLabel
@@ -28,9 +46,11 @@ export const Checkbox = ({
       >
         <input
           {...props}
+          ref={handleRef}
           data-uiid="checkbox"
           type="checkbox"
           data-validate={validate ? true : undefined}
+          data-indeterminate={indeterminate ? true : undefined}
           name={name}
           id={name}
           /** @todo enable focus when disabled */

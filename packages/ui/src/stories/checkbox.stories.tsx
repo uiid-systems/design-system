@@ -20,19 +20,35 @@ const meta = {
     <Stack ax="stretch" style={{ gap: 16 }}>
       <Checkbox {...args} />
 
-      <Checkbox
-        {...args}
-        label="Checkbox with label"
-        name="with-label"
-        size="sm"
-      />
+      <Checkbox {...args} label="Checkbox with label" name="with-label" />
 
       <Checkbox
         {...args}
         label="Checkbox with label and description"
-        name="with-label-and-description"
-        size="sm"
         description="This is a basic description"
+        name="with-label-and-description"
+      />
+
+      <Checkbox
+        {...args}
+        label="Checkbox is checked by default"
+        name="checked-by-default"
+        checked
+      />
+
+      <Checkbox
+        {...args}
+        label="Checkbox with indeterminate state"
+        description="Indeterminate state is visual only."
+        name="indeterminate"
+        indeterminate
+      />
+
+      <Checkbox
+        {...args}
+        label="Checkbox with disabled state"
+        name="disabled"
+        disabled
       />
     </Stack>
   ),
