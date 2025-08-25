@@ -37,7 +37,7 @@ const meta = {
         validate
       />
 
-      <Stack ax="stretch">
+      <Stack ax="stretch" gap={2}>
         <Input
           {...args}
           label="Input with a bookend"
@@ -49,7 +49,7 @@ const meta = {
         />
       </Stack>
 
-      <Group fullwidth evenly ay="end">
+      <Group fullwidth evenly ay="end" gap={2}>
         <Input {...args} label="Input in a group" />
         <Input {...args} />
       </Group>

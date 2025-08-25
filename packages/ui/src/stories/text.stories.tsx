@@ -16,7 +16,7 @@ const meta = {
     },
   },
   render: (args) => (
-    <Stack>
+    <Stack gap={8}>
       {levels.map((level) => (
         <Text {...args} key={level} level={level}>
           Level {level} ipsum dolor

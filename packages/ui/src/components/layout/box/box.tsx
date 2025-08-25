@@ -1,5 +1,5 @@
+import type { UiProps } from "../../../types";
 import {
-  type RenderProp,
   type ToggleProps,
   type LayoutProps,
   type SpacingProps,
@@ -11,12 +11,9 @@ import "../../../utils/props/toggles/evenly.css";
 import "../../../utils/props/toggles/fullwidth.css";
 
 export type BoxProps = React.PropsWithChildren<{
-  render?: RenderProp;
-  style?: React.CSSProperties;
-  className?: string;
   ref?: React.Ref<HTMLDivElement>;
-  uiid?: string;
 }> &
+  UiProps &
   ToggleProps &
   LayoutProps &
   SpacingProps;
