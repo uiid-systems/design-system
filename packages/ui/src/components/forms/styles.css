@@ -40,7 +40,7 @@
 }
 
 /** Slots container */
-[uiid="formfield"] {
+[data-slot="formfield"] {
   position: relative;
   display: flex;
   align-items: stretch;
@@ -50,7 +50,7 @@
 /* Input, Slots container */
 [data-uiid="input"],
 [data-uiid="select"],
-[data-uiid="formfield-slots"] {
+[data-slot="formfield-slots"] {
   background-color: var(--input-background);
   color: var(--input-foreground);
 
@@ -107,7 +107,7 @@
   }
 }
 
-[data-uiid="formfield-slots"] {
+[data-slot="formfield-slots"] {
   width: -webkit-fill-available;
 }
 
@@ -119,7 +119,7 @@
 }
 
 /** Label Wrapper */
-[uiid="formfield"] {
+[data-slot="formfield"] {
   display: inline-flex;
   flex-direction: column;
   align-items: start;
@@ -127,7 +127,7 @@
 }
 
 /** Label */
-[data-uiid="formfield-label"] {
+[data-slot="formfield-label"] {
   font-size: var(--input-label-font-size);
   font-weight: var(--input-label-font-weight);
 
@@ -142,14 +142,14 @@
 }
 
 /** Description */
-[data-uiid="formfield-description"] {
+[data-slot="formfield-description"] {
   font-size: var(--input-description-font-size);
   font-weight: var(--input-description-font-weight);
   color: var(--input-description-font-color);
 }
 
 /** Bookend */
-[data-uiid="bookend"] {
+[data-slot="bookend"] {
   width: fit-content;
   text-wrap: nowrap;
   font-size: var(--input-bookend-font-size);

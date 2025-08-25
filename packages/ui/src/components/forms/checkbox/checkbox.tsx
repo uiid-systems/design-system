@@ -10,7 +10,7 @@ export const Checkbox = ({
   // required,
   disabled,
   validate,
-  size,
+  // size,
   indeterminate,
   ref,
   ...props
@@ -23,22 +23,27 @@ export const Checkbox = ({
     if (element) {
       element.indeterminate = Boolean(indeterminate);
     }
-    
+
     // Forward the ref if provided
     if (ref) {
-      if (typeof ref === 'function') {
+      if (typeof ref === "function") {
         ref(element);
       } else {
-        (ref as React.MutableRefObject<HTMLInputElement | null>).current = element;
+        (ref as React.MutableRefObject<HTMLInputElement | null>).current =
+          element;
       }
     }
   };
 
   return (
-    <FormFieldLabel
-      data-size={size}
-      data-validate={validate ? true : undefined}
-      htmlFor={name}
+    <ConditionalRender
+      condition={hasLabel}
+      wrapper={
+        <FormFieldLabel
+          data-validate={validate ? true : undefined}
+          htmlFor={name}
+        />
+      }
     >
       <ConditionalRender
         condition={hasLabel}
@@ -53,6 +58,7 @@ export const Checkbox = ({
           data-indeterminate={indeterminate ? true : undefined}
           name={name}
           id={name}
+          aria-label={!label && !description ? name : undefined}
           /** @todo enable focus when disabled */
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
@@ -67,7 +73,7 @@ export const Checkbox = ({
           )}
         </ConditionalRender>
       </ConditionalRender>
-    </FormFieldLabel>
+    </ConditionalRender>
   );
 };
 Checkbox.displayName = "Checkbox";

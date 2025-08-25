@@ -17,8 +17,8 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" style={{ gap: 16 }}>
-      <Checkbox {...args} />
+    <Stack gap={4}>
+      <Checkbox {...args} name="checkbox" />
 
       <Checkbox {...args} label="Checkbox with label" name="with-label" />
 

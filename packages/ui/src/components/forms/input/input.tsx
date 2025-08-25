@@ -35,7 +35,7 @@ export const Input = ({
       }
     >
       <Slots
-        data-uiid="formfield-slots"
+        data-slot="formfield-slots"
         data-size={size}
         data-disabled={disabled}
         before={before && <Bookend>{before}</Bookend>}

@@ -39,7 +39,7 @@ export const FormField = ({
 
   return (
     <Slots
-      uiid="formfield"
+      data-slot="formfield"
       before={<Label />}
       after={<Description />}
       {...props}

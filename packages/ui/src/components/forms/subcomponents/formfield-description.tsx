@@ -3,7 +3,7 @@ export const FormFieldDescription = ({
   ...props
 }: React.PropsWithChildren & React.ComponentProps<"span">) => {
   return (
-    <span data-uiid="formfield-description" {...props}>
+    <span data-slot="formfield-description" {...props}>
       {children}
     </span>
   );

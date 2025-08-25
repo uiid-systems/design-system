@@ -33,7 +33,7 @@ export const Select = ({
       }
     >
       <Slots
-        data-uiid="formfield-slots"
+        data-slot="formfield-slots"
         data-disabled={disabled}
         before={before && <Bookend>{before}</Bookend>}
         after={after && <Bookend>{after}</Bookend>}

@@ -16,7 +16,6 @@ const meta = {
       ax="center"
       ay="center"
       style={{
-        display: "inline-block",
         background: "tomato",
         minWidth: 64,
         height: 64,

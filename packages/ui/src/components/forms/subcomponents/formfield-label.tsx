@@ -3,7 +3,7 @@ export const FormFieldLabel = ({
   ...props
 }: React.ComponentProps<"label">) => {
   return (
-    <label data-uiid="formfield-label" data-required-content="*" {...props}>
+    <label data-slot="formfield-label" data-required-content="*" {...props}>
       {children}
     </label>
   );
