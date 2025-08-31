@@ -1,4 +1,4 @@
-[data-uiid="button"] {
+[uiid="button"] {
   all: unset;
   border-radius: var(--button-border-radius);
   cursor: pointer;
@@ -130,14 +130,14 @@
   }
 }
 
-[data-uiid="button-loading"] {
+[data-slot="button-loading"] {
   margin-inline: auto;
   visibility: visible;
   &[aria-hidden="true"] {
     visibility: hidden;
   }
 
-  [data-uiid="button-loading-dots"] {
+  [data-slot="button-loading-dots"] {
     width: 1.5rem;
     aspect-ratio: 2;
     --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg) 90%, #0000);
@@ -150,7 +150,7 @@
   }
 }
 
-[data-uiid="button-content"] {
+[data-slot="button-content"] {
   align-items: center;
   display: flex;
   font-weight: 500;

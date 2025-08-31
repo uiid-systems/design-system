@@ -19,6 +19,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const ariaLabel = props["aria-label"];
+  const propsWithId = { uiid: "button", ...props };
 
   if (icon && !iconPosition && !ariaLabel) {
     throw new Error(
@@ -49,7 +50,7 @@ export const Button = ({
 
   return (
     <button
-      data-uiid="button"
+      {...propsWithId}
       /** properties */
       data-variant={variant}
       data-size={size}
@@ -63,14 +64,13 @@ export const Button = ({
       /** events */
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      {...props}
     >
       {loading !== undefined && (
-        <span data-uiid="button-loading" aria-hidden={!loading}>
-          {loadingText ?? <aside data-uiid="button-loading-dots" />}
+        <span data-slot="button-loading" aria-hidden={!loading}>
+          {loadingText ?? <aside data-slot="button-loading-dots" />}
         </span>
       )}
-      <span data-uiid="button-content" aria-hidden={loading}>
+      <span data-slot="button-content" aria-hidden={loading}>
         {icon && iconPosition === "before" && icon}
         {icon && iconPosition !== "before" && iconPosition !== "after"
           ? icon

@@ -8,8 +8,7 @@ import {
   MessageCircleMore,
 } from "lucide-react";
 import { fn } from "storybook/test";
-
-import { Button } from "../components/buttons/button/button";
+import { Button } from "./button";
 
 const meta = {
   title: "Buttons/Button",
