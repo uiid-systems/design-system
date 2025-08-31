@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group } from "../components/layout";
-
-import { Input, Select } from "../components/forms";
+import { Stack, Group } from "../../layout";
+import { Input } from "../input/input";
+import { Select } from "./select";
 
 const MOCK_ITEMS = [
   { value: "1", label: "Option 1" },
@@ -53,6 +53,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Select",
-};
+export const Default: Story = { name: "Select" };
