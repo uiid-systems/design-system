@@ -1,7 +1,6 @@
 import { ConditionalRender, Slots } from "../../layout";
-
-import type { SelectProps } from "../types";
-import { Bookend, FormField } from "../subcomponents";
+import { FormFieldBookend, FormField } from "../subcomponents";
+import type { SelectProps } from "./select.types";
 
 export const Select = ({
   size = "md",
@@ -35,8 +34,8 @@ export const Select = ({
       <Slots
         data-slot="formfield-slots"
         data-disabled={disabled}
-        before={before && <Bookend>{before}</Bookend>}
-        after={after && <Bookend>{after}</Bookend>}
+        before={before && <FormFieldBookend>{before}</FormFieldBookend>}
+        after={after && <FormFieldBookend>{after}</FormFieldBookend>}
       >
         <select
           {...props}

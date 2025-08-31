@@ -1,6 +1,6 @@
 import { ConditionalRender, Slots } from "../../../components/layout";
-import { Bookend, FormField } from "../subcomponents";
-import type { InputProps } from "../types";
+import { FormFieldBookend, FormField } from "../subcomponents";
+import type { InputProps } from "./input.types";
 
 import "@uiid/tokens/forms/inputs.css";
 import "../styles.css";
@@ -38,8 +38,8 @@ export const Input = ({
         data-slot="formfield-slots"
         data-size={size}
         data-disabled={disabled}
-        before={before && <Bookend>{before}</Bookend>}
-        after={after && <Bookend>{after}</Bookend>}
+        before={before && <FormFieldBookend>{before}</FormFieldBookend>}
+        after={after && <FormFieldBookend>{after}</FormFieldBookend>}
       >
         <input
           {...props}

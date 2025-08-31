@@ -1,17 +1,10 @@
 import { Slots } from "../../layout";
-
+import type { FormProps } from "../types";
 import { FormFieldLabel } from "./formfield-label";
 import { FormFieldDescription } from "./formfield-description";
 
-export type FormFieldProps = React.PropsWithChildren<{
-  name?: string;
-  /** Label text above the input field */
-  label?: string;
-  /** Description text below the input field */
-  description?: React.ReactNode;
-  /** While true, displays an asterisk after the label */
-  required?: boolean;
-}>;
+type FormFieldProps = React.PropsWithChildren &
+  Pick<FormProps, "name" | "label" | "description" | "required">;
 
 export const FormField = ({
   name,
