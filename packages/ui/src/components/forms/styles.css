@@ -1,19 +1,8 @@
 /** Input */
-[data-uiid="input"],
+[uiid="input"],
 [data-uiid="select"],
 [data-uiid="checkbox-label"] {
   width: -webkit-fill-available;
-  &:-webkit-autofill,
-  &:-webkit-autofill:focus {
-    transition:
-      background-color 600000s 0s,
-      color 600000s 0s;
-  }
-
-  &[data-autocompleted] {
-    background-color: var(--input_autofill_background) !important;
-    color: var(--input_autofill_foreground) !important;
-  }
 
   /** sizes */
   font-size: var(--formfield-font-size);
@@ -37,6 +26,13 @@
     --formfield-height: var(--formfield-size-lg-height);
     --formfield-padding-x: var(--formfield-size-lg-padding-x);
   }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus {
+    transition:
+      background-color 600000s 0s,
+      color 600000s 0s;
+  }
 }
 
 /** Slots container */
@@ -48,7 +44,7 @@
 }
 
 /* Input, Slots container */
-[data-uiid="input"],
+[uiid="input"],
 [data-uiid="select"],
 [data-slot="formfield-slots"] {
   background-color: var(--input-background);
@@ -112,7 +108,7 @@
 }
 
 /** Placeholder */
-[data-uiid="input"]::placeholder {
+[uiid="input"]::placeholder {
   color: var(--input-placeholder-font-color);
   font-size: var(--formfield-font-size);
   line-height: var(--formfield-line-height);
@@ -166,6 +162,6 @@
   }
 }
 
-[data-uiid="input"]::-webkit-calendar-picker-indicator {
+[uiid="input"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

@@ -10,7 +10,7 @@
       "import": "./dist/uiid.js",
       "require": "./dist/uiid.umd.cjs"
     },
-    "./globals": "./src/globals.css"
+    "./globals.css": "./src/globals.css"
   },
   "files": [
     "dist"

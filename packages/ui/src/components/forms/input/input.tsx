@@ -20,6 +20,7 @@ export const Input = ({
 }: InputProps) => {
   const hasBookend = Boolean(before || after);
   const hasLabel = Boolean(label || description);
+  const propsWithId = { uiid: "input", ...props };
 
   return (
     <ConditionalRender
@@ -42,8 +43,7 @@ export const Input = ({
         after={after && <FormFieldBookend>{after}</FormFieldBookend>}
       >
         <input
-          {...props}
-          data-uiid="input"
+          {...propsWithId}
           data-size={size}
           data-validate={validate ? true : undefined}
           data-slotted={hasBookend ? true : undefined}

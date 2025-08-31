@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": "./src/tokens.css",
+    "./globals.css": "./src/globals.css",
     "./buttons/*": "./src/buttons/*",
     "./colors/*": "./src/colors/*",
     "./typography/*": "./src/typography/*",
