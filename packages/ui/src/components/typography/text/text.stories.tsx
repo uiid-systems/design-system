@@ -8,17 +8,14 @@ const meta = {
   title: "Typography/Text",
   component: Text,
   args: {},
-  argTypes: {
-    level: {
-      control: "select",
-      options: levels,
-    },
-  },
+  // argTypes: {
+  //   level: { control: "select", options: levels },
+  // },
   render: (args) => (
     <Stack gap={8}>
       {levels.map((level) => (
         <Text {...args} key={level} level={level}>
-          Level {level} ipsum dolor
+          {level}: Lorem ipsum dolor
         </Text>
       ))}
     </Stack>

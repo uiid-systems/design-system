@@ -145,13 +145,27 @@
 }
 
 /** Bookend */
-[data-slot="bookend"] {
+[data-slot="formfield-bookend"] {
+  --formfield-height: var(--formfield-size-md-height);
   width: fit-content;
   text-wrap: nowrap;
   font-size: var(--input-bookend-font-size);
   font-weight: var(--input-bookend-font-weight);
   color: var(--input-bookend-font-color);
   align-content: center;
+  height: var(--formfield-height);
+
+  &:where([data-size="sm"]) {
+    --formfield-height: var(--formfield-size-sm-height);
+  }
+
+  &:where([data-size="md"]) {
+    --formfield-height: var(--formfield-size-md-height);
+  }
+
+  &:where([data-size="lg"]) {
+    --formfield-height: var(--formfield-size-lg-height);
+  }
 }
 
 [data-uiid="select"] {
