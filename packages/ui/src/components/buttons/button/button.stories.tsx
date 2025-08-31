@@ -87,6 +87,7 @@ export const Variants: Story = {
     );
   },
 };
+
 export const Sizes: Story = {
   render: (args) => (
     <Grid>
@@ -117,6 +118,16 @@ export const Icons: Story = {
         Go to next step
       </Button>
       <Button {...args} icon={<Copy size={18} />} aria-label="Copy" />
+    </Grid>
+  ),
+};
+
+export const AsLink: Story = {
+  render: (args) => (
+    <Grid>
+      <Button {...args} href="https://google.com" target="_blank">
+        as link
+      </Button>
     </Grid>
   ),
 };

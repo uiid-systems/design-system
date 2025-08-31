@@ -1,5 +1,5 @@
-import type { ButtonProps } from "../types";
-
+import type { ButtonProps } from "./button.types";
+import { renderWithProps } from "../../../utils/render";
 import "@uiid/tokens/buttons/button.css";
 import "./button.styles.css";
 
@@ -12,14 +12,12 @@ export const Button = ({
   loadingText,
   icon,
   iconPosition,
-  disabled,
-  onClick,
-  onKeyDown,
+  render,
   children,
   ...props
 }: ButtonProps) => {
   const ariaLabel = props["aria-label"];
-  const propsWithId = { uiid: "button", ...props };
+  const isLink = "href" in props;
 
   if (icon && !iconPosition && !ariaLabel) {
     throw new Error(
@@ -36,35 +34,71 @@ export const Button = ({
     iconSlot = "standalone";
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled || loading) return;
-    onClick?.(e);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if ((disabled || loading) && (e.key === "Enter" || e.key === " ")) {
-      e.preventDefault();
+  // Handle events appropriately for button vs anchor
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+  ) => {
+    if (isLink) {
+      // For links, let the browser handle navigation
+      // Only prevent default if loading
+      if (loading) {
+        e.preventDefault();
+      }
+      (props as any).onClick?.(e);
+    } else {
+      // For buttons, handle disabled/loading states
+      const buttonProps = props as any;
+      if (buttonProps.disabled || loading) return;
+      buttonProps.onClick?.(e);
     }
-    onKeyDown?.(e);
   };
 
-  return (
-    <button
-      {...propsWithId}
-      /** properties */
-      data-variant={variant}
-      data-size={size}
-      data-fill={fill}
-      data-shape={shape}
-      data-loading={loading ? "true" : undefined}
-      data-icon={iconSlot}
-      /** accessibility */
-      aria-label={loading ? (loadingText ?? "Loading") : ariaLabel}
-      aria-disabled={disabled || loading ? "true" : undefined}
-      /** events */
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-    >
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement | HTMLAnchorElement>,
+  ) => {
+    if (isLink) {
+      // For links, prevent navigation if loading
+      if (loading && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+      }
+      (props as any).onKeyDown?.(e);
+    } else {
+      // For buttons, handle disabled/loading states
+      const buttonProps = props as any;
+      if (
+        (buttonProps.disabled || loading) &&
+        (e.key === "Enter" || e.key === " ")
+      ) {
+        e.preventDefault();
+      }
+      buttonProps.onKeyDown?.(e);
+    }
+  };
+
+  const componentProps = {
+    uiid: "button",
+    ...props,
+    /** properties */
+    "data-variant": variant,
+    "data-size": size,
+    "data-fill": fill,
+    "data-shape": shape,
+    "data-loading": loading ? "true" : undefined,
+    "data-icon": iconSlot,
+    /** accessibility */
+    "aria-label": loading ? (loadingText ?? "Loading") : ariaLabel,
+    "aria-disabled": isLink
+      ? undefined
+      : (props as any).disabled || loading
+        ? "true"
+        : undefined,
+    /** events */
+    onClick: handleClick,
+    onKeyDown: handleKeyDown,
+  };
+
+  const content = (
+    <>
       {loading !== undefined && (
         <span data-slot="button-loading" aria-hidden={!loading}>
           {loadingText ?? <aside data-slot="button-loading-dots" />}
@@ -77,8 +111,15 @@ export const Button = ({
           : children}
         {icon && iconPosition === "after" && icon}
       </span>
-    </button>
+    </>
   );
+
+  return renderWithProps({
+    fallbackElement: isLink ? "a" : "button",
+    props: componentProps,
+    render,
+    children: content,
+  });
 };
 
 Button.displayName = "Button";
