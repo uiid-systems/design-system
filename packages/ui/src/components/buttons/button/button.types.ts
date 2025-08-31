@@ -17,7 +17,7 @@ type ButtonCoreProps = {
 // Merge button and anchor attributes, making conflicting ones optional
 type ButtonOrAnchorAttributes =
   // All button attributes
-  Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> &
+  Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type" | "size"> &
     // All anchor attributes
     Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "type"> & {
       // Handle conflicting 'type' attribute

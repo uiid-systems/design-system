@@ -44,12 +44,11 @@ export const Button = ({
       if (loading) {
         e.preventDefault();
       }
-      (props as any).onClick?.(e);
+      props.onClick?.(e as React.MouseEvent<HTMLAnchorElement>);
     } else {
       // For buttons, handle disabled/loading states
-      const buttonProps = props as any;
-      if (buttonProps.disabled || loading) return;
-      buttonProps.onClick?.(e);
+      if (props.disabled || loading) return;
+      props.onClick?.(e as React.MouseEvent<HTMLButtonElement>);
     }
   };
 
@@ -61,35 +60,37 @@ export const Button = ({
       if (loading && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault();
       }
-      (props as any).onKeyDown?.(e);
+      props.onKeyDown?.(e as React.KeyboardEvent<HTMLAnchorElement>);
     } else {
       // For buttons, handle disabled/loading states
-      const buttonProps = props as any;
-      if (
-        (buttonProps.disabled || loading) &&
-        (e.key === "Enter" || e.key === " ")
-      ) {
+      if ((props.disabled || loading) && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault();
       }
-      buttonProps.onKeyDown?.(e);
+      props.onKeyDown?.(e as React.KeyboardEvent<HTMLButtonElement>);
+    }
+  };
+
+  // Ref callback to set custom attributes that React might filter out
+  const setCustomAttributes = (element: HTMLElement | null) => {
+    if (element) {
+      if (variant) element.setAttribute("variant", variant);
+      if (size) element.setAttribute("size", size);
+      if (fill) element.setAttribute("fill", fill);
+      if (shape) element.setAttribute("shape", shape);
     }
   };
 
   const componentProps = {
     uiid: "button",
     ...props,
-    /** properties */
-    "data-variant": variant,
-    "data-size": size,
-    "data-fill": fill,
-    "data-shape": shape,
+    ref: setCustomAttributes,
     "data-loading": loading ? "true" : undefined,
     "data-icon": iconSlot,
     /** accessibility */
     "aria-label": loading ? (loadingText ?? "Loading") : ariaLabel,
     "aria-disabled": isLink
       ? undefined
-      : (props as any).disabled || loading
+      : props.disabled || loading
         ? "true"
         : undefined,
     /** events */
