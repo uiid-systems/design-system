@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ConditionalRender } from "../components/layout";
+import { ConditionalRender } from "./conditional-render";
 
 const meta = {
   title: "Layout/ConditionalRender",

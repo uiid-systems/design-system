@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Layer, Stack } from "../components/layout";
+import { Stack, Layer } from "../";
 
 /**
  * @todo handle fragments as layer children

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { SwitchRender } from "../components/layout";
+import { SwitchRender } from "../";
 
 const meta = {
   title: "Layout/SwitchRender",
