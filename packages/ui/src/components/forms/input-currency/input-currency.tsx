@@ -12,19 +12,23 @@ export const InputCurrency = ({
   locale,
   maximumFractionDigits,
   currency,
+  placeholder = "Input a currency",
   ...props
 }: InputCurrencyProps) => {
-  const { parseToCleanString, format, sanitizeInput } = useCurrencyHelpers({
-    locale,
-    maximumFractionDigits,
-    currency,
-  });
+  const { parseToCleanString, format, sanitizeInput, currencySymbol } =
+    useCurrencyHelpers({
+      locale,
+      maximumFractionDigits,
+      currency,
+    });
   const [value, setValue] = useState(format(0));
 
   return (
     <Input
       {...props}
+      placeholder={placeholder}
       value={value}
+      before={currencySymbol}
       onFocus={() => setValue(parseToCleanString(value))}
       onBlur={() => setValue(format(value))}
       onChange={(e) => setValue(sanitizeInput(e.currentTarget.value))}

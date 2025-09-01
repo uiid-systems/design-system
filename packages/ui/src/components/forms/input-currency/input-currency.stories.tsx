@@ -8,7 +8,6 @@ const meta = {
   args: {
     disabled: false,
     required: false,
-    placeholder: "Placeholder",
   },
   argTypes: {
     validate: { control: "boolean" },
@@ -18,17 +17,16 @@ const meta = {
   },
   render: (args) => (
     <Stack ax="stretch" style={{ gap: 16 }}>
-      <InputCurrency
-        {...args}
-        placeholder="Regular ol' input"
-        name="regular-input"
-      />
+      <InputCurrency {...args} name="regular-input" />
 
       <InputCurrency
         {...args}
         label="Input with a label"
         description="This is a basic description"
         name="input-with-label"
+        locale="en-GB"
+        currency="EUR"
+        after=".00"
       />
     </Stack>
   ),
