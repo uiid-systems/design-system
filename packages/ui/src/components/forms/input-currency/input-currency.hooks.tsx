@@ -94,7 +94,10 @@ export const useCurrencyHelpers = ({
   };
 
   const parseToCleanString = (value: string | number | undefined): string => {
-    const formattedZero = formatter.format(0).replace(currencySymbol, "").trim();
+    const formattedZero = formatter
+      .format(0)
+      .replace(currencySymbol, "")
+      .trim();
     if (value === formattedZero) {
       return "";
     }
@@ -124,7 +127,8 @@ export const useCurrencyHelpers = ({
     }
 
     const normalizedToMaxLength = normalizeToMaxLength(String(value));
-    return formatter.format(parseToNumberBeforeSubmit(normalizedToMaxLength))
+    return formatter
+      .format(parseToNumberBeforeSubmit(normalizedToMaxLength))
       .replace(currencySymbol, "")
       .trim();
   };

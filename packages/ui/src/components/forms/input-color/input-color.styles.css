@@ -1,0 +1,11 @@
+[uiid="input"] {
+  &:where([type="color"]) {
+    width: auto;
+    min-width: 4rem;
+    padding-inline: calc(var(--formfield-padding-x) / 2);
+
+    &:where([data-slotted="true"]) {
+      width: 100%;
+    }
+  }
+}
