@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputCurrency } from "./input-currency";
 
 const meta = {
-  title: "Forms/InputCurrency",
+  title: "Forms/Inputs/Currency",
   component: InputCurrency,
   args: {
     disabled: false,
@@ -35,4 +35,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "InputCurrency" };
+export const Default: Story = { name: "Currency" };

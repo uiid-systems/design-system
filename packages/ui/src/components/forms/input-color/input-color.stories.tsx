@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputColor } from "./input-color";
 
 const meta = {
-  title: "Forms/InputColor",
+  title: "Forms/Inputs/Color",
   component: InputColor,
   args: {
     disabled: false,
@@ -38,4 +38,4 @@ const meta = {
 
 export default meta;
 
-export const Default = { name: "InputColor" };
+export const Default = { name: "Color" };

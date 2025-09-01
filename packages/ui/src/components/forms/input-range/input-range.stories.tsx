@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputRange } from "./input-range";
 
 const meta = {
-  title: "Forms/InputRange",
+  title: "Forms/Inputs/Range",
   component: InputRange,
   args: {
     disabled: false,
@@ -55,4 +55,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "InputRange" };
+export const Default: Story = { name: "Range" };
