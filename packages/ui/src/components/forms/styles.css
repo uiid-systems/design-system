@@ -105,6 +105,19 @@
 
 [data-slot="formfield-slots"] {
   width: -webkit-fill-available;
+  height: var(--formfield-height);
+
+  &:where([data-size="sm"]) {
+    --formfield-height: var(--formfield-size-sm-height);
+  }
+
+  &:where([data-size="md"]) {
+    --formfield-height: var(--formfield-size-md-height);
+  }
+
+  &:where([data-size="lg"]) {
+    --formfield-height: var(--formfield-size-lg-height);
+  }
 }
 
 /** Placeholder */
@@ -146,26 +159,14 @@
 
 /** Bookend */
 [data-slot="formfield-bookend"] {
-  --formfield-height: var(--formfield-size-md-height);
-  width: fit-content;
-  text-wrap: nowrap;
+  --formfield-bookend-height: var(--formfield-size-md-height);
+
+  align-content: center;
+  color: var(--input-bookend-font-color);
   font-size: var(--input-bookend-font-size);
   font-weight: var(--input-bookend-font-weight);
-  color: var(--input-bookend-font-color);
-  align-content: center;
-  height: var(--formfield-height);
-
-  &:where([data-size="sm"]) {
-    --formfield-height: var(--formfield-size-sm-height);
-  }
-
-  &:where([data-size="md"]) {
-    --formfield-height: var(--formfield-size-md-height);
-  }
-
-  &:where([data-size="lg"]) {
-    --formfield-height: var(--formfield-size-lg-height);
-  }
+  text-wrap: nowrap;
+  width: fit-content;
 }
 
 [data-uiid="select"] {
