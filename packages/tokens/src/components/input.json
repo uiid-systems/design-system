@@ -1,0 +1,81 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Input Component Tokens",
+  "input": {
+    "background": { "$value": "{shade.background}", "$type": "color" },
+    "backgroundFocus": { "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)", "$type": "color" },
+    "foreground": { "$value": "{shade.foreground}", "$type": "color" },
+    "border": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "radius": { "$value": "4px", "$type": "dimension" },
+      "width": { "$value": "1px", "$type": "dimension" }
+    },
+    "outline": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "offset": { "$value": "0.125rem", "$type": "dimension" },
+      "style": { "$value": "solid", "$type": "strokeStyle" },
+      "width": { "$value": "0.125rem", "$type": "dimension" }
+    },
+    "state": {
+      "valid": {
+        "borderColor": { "$value": "{colors.green.500}", "$type": "color" },
+        "outlineColor": { "$value": "{colors.green.500}", "$type": "color" }
+      },
+      "invalid": {
+        "borderColor": { "$value": "{colors.red.500}", "$type": "color" },
+        "outlineColor": { "$value": "{colors.red.500}", "$type": "color" }
+      },
+      "disabled": {
+        "opacity": { "$value": "0.5", "$type": "number" }
+      }
+    },
+    "required": {
+      "content": { "$value": "attr(data-required-content)", "$type": "string" },
+      "color": { "$value": "{colors.red.500}", "$type": "color" }
+    },
+    "autofill": {
+      "background": { "$value": "{shade.background}", "$type": "color" },
+      "foreground": { "$value": "{shade.foreground}", "$type": "color" }
+    },
+    "label": {
+      "wrapperGap": { "$value": "0.5rem", "$type": "dimension" },
+      "fontSize": { "$value": "0.875rem", "$type": "dimension" },
+      "fontWeight": { "$value": "600", "$type": "fontWeight" }
+    },
+    "description": {
+      "fontSize": { "$value": "0.875rem", "$type": "dimension" },
+      "fontWeight": { "$value": "400", "$type": "fontWeight" },
+      "color": { "$value": "{shade.accent}", "$type": "color" }
+    },
+    "placeholder": {
+      "color": { "$value": "{shade.accent}", "$type": "color" }
+    },
+    "bookend": {
+      "fontSize": { "$value": "0.75rem", "$type": "dimension" },
+      "fontWeight": { "$value": "600", "$type": "fontWeight" },
+      "color": { "$value": "{shade.foreground}", "$type": "color" }
+    }
+  },
+  "formfield": {
+    "fontSize": { "$value": "0.875rem", "$type": "dimension" },
+    "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
+    "paddingX": { "$value": "1rem", "$type": "dimension" },
+    "size": {
+      "sm": {
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "paddingX": { "$value": "1rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
+        "fontSize": { "$value": "1rem", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "4rem", "$type": "dimension" },
+        "paddingX": { "$value": "2rem", "$type": "dimension" },
+        "fontSize": { "$value": "1.125rem", "$type": "dimension" }
+      }
+    }
+  }
+}

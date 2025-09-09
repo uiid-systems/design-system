@@ -1,0 +1,11 @@
+/*
+ * This file is auto-generated from design tokens.
+ * Do not edit directly - changes will be overwritten.
+ * Generated from: src/primitives/spacing.json
+ */
+
+:root {
+  --scale: 0.25rem;
+  --scaleInline: var(--scale);
+  --scaleBlock: var(--scale);
+}

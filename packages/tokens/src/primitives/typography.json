@@ -1,0 +1,62 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Primitive Typography Tokens",
+  "typography": {
+    "text": {
+      "0": {
+        "size": { "$value": "0.875rem", "$type": "dimension" },
+        "leading": { "$value": "2%", "$type": "dimension" },
+        "lineHeight": { "$value": "150%", "$type": "dimension" },
+        "weight": { "$value": "400", "$type": "fontWeight" }
+      },
+      "1": {
+        "size": { "$value": "1rem", "$type": "dimension" },
+        "leading": { "$value": "2%", "$type": "dimension" },
+        "lineHeight": { "$value": "150%", "$type": "dimension" },
+        "weight": { "$value": "400", "$type": "fontWeight" }
+      },
+      "2": {
+        "size": { "$value": "1.25rem", "$type": "dimension" },
+        "leading": { "$value": "2%", "$type": "dimension" },
+        "lineHeight": { "$value": "140%", "$type": "dimension" },
+        "weight": { "$value": "400", "$type": "fontWeight" }
+      },
+      "3": {
+        "size": { "$value": "1.5rem", "$type": "dimension" },
+        "leading": { "$value": "1%", "$type": "dimension" },
+        "lineHeight": { "$value": "140%", "$type": "dimension" },
+        "weight": { "$value": "400", "$type": "fontWeight" }
+      },
+      "4": {
+        "size": { "$value": "1.875rem", "$type": "dimension" },
+        "leading": { "$value": "1%", "$type": "dimension" },
+        "lineHeight": { "$value": "140%", "$type": "dimension" },
+        "weight": { "$value": "500", "$type": "fontWeight" }
+      },
+      "5": {
+        "size": { "$value": "2.25rem", "$type": "dimension" },
+        "leading": { "$value": "0.25%", "$type": "dimension" },
+        "lineHeight": { "$value": "130%", "$type": "dimension" },
+        "weight": { "$value": "500", "$type": "fontWeight" }
+      },
+      "6": {
+        "size": { "$value": "3rem", "$type": "dimension" },
+        "leading": { "$value": "0%", "$type": "dimension" },
+        "lineHeight": { "$value": "120%", "$type": "dimension" },
+        "weight": { "$value": "600", "$type": "fontWeight" }
+      },
+      "7": {
+        "size": { "$value": "4rem", "$type": "dimension" },
+        "leading": { "$value": "-1%", "$type": "dimension" },
+        "lineHeight": { "$value": "110%", "$type": "dimension" },
+        "weight": { "$value": "600", "$type": "fontWeight" }
+      },
+      "8": {
+        "size": { "$value": "5.5rem", "$type": "dimension" },
+        "leading": { "$value": "-2%", "$type": "dimension" },
+        "lineHeight": { "$value": "110%", "$type": "dimension" },
+        "weight": { "$value": "700", "$type": "fontWeight" }
+      }
+    }
+  }
+}

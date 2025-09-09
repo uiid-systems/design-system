@@ -1,4 +1,3 @@
-import React from "react";
 import { type ToggleProps } from "./types";
 import { styleProps } from "./styles";
 

@@ -1,6 +1,6 @@
 [uiid="button"] {
   all: unset;
-  border-radius: var(--button-border-radius);
+  border-radius: var(--button-borderRadius);
   cursor: pointer;
   text-underline-offset: 0.125rem;
   display: grid;
@@ -21,39 +21,39 @@
 
   &:not([aria-disabled="true"]):hover,
   &:not([aria-disabled="true"]):focus {
-    scale: var(--button-scale-hover);
+    scale: var(--button-scaleHover);
   }
 
   &:not([aria-disabled="true"]):hover {
-    background-color: color-mix(in srgb, var(--button-bg) var(--button-hover-mix), var(--button-mix-color));
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-hoverMix), var(--button-mixColor));
   }
 
   &:not([aria-disabled="true"]):active {
-    scale: var(--button-scale-active);
-    background-color: color-mix(in srgb, var(--button-bg) var(--button-active-mix), var(--button-mix-color));
+    scale: var(--button-scaleActive);
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-activeMix), var(--button-mixColor));
   }
 
   /** sizes */
-  font-size: var(--button-font-size);
-  height: var(--button-height);
-  padding-inline: var(--button-padding-x);
+  font-size: var(--button-size-md-fontSize);
+  height: var(--button-size-md-height);
+  padding-inline: var(--button-size-md-paddingX);
 
   &:where([size="sm"]) {
-    --button-font-size: var(--button-size-sm-font-size);
-    --button-height: var(--button-size-sm-height);
-    --button-padding-x: var(--button-size-sm-padding-x);
+    font-size: var(--button-size-sm-fontSize);
+    height: var(--button-size-sm-height);
+    padding-inline: var(--button-size-sm-paddingX);
   }
 
   &:where([size="md"]) {
-    --button-font-size: var(--button-size-md-font-size);
-    --button-height: var(--button-size-md-height);
-    --button-padding-x: var(--button-size-md-padding-x);
+    font-size: var(--button-size-md-fontSize);
+    height: var(--button-size-md-height);
+    padding-inline: var(--button-size-md-paddingX);
   }
 
   &:where([size="lg"]) {
-    --button-font-size: var(--button-size-lg-font-size);
-    --button-height: var(--button-size-lg-height);
-    --button-padding-x: var(--button-size-lg-padding-x);
+    font-size: var(--button-size-lg-fontSize);
+    height: var(--button-size-lg-height);
+    padding-inline: var(--button-size-lg-paddingX);
   }
 
   /** variants */
@@ -62,11 +62,10 @@
   color: var(--button-fg);
 
   &:where([variant="inverted"]) {
-    --button-bg: var(--button-inverted-bg);
-    --button-color-outline: var(--button-inverted-fg);
-    --button-fg: var(--button-inverted-fg);
-    --button-mix-color: var(--shade_foreground);
-    color: var(--button-inverted-fg) !important;
+    --button-bg: var(--button-variant-inverted-bg);
+    --button-color-outline: var(--button-variant-inverted-fg);
+    --button-fg: var(--button-variant-inverted-fg);
+    --button-mix-color: var(--shade-foreground);
 
     [data-slot="spinner-foreground"] {
       stroke: var(--button-fg) !important;
@@ -74,18 +73,18 @@
   }
 
   &:where([variant="primary"]) {
-    --button-bg: var(--button-primary-bg);
-    --button-fg: var(--button-primary-fg);
+    --button-bg: var(--button-variant-primary-bg);
+    --button-fg: var(--button-variant-primary-fg);
   }
 
   &:where([variant="secondary"]) {
-    --button-bg: var(--button-secondary-bg);
-    --button-fg: var(--button-secondary-fg);
+    --button-bg: var(--button-variant-secondary-bg);
+    --button-fg: var(--button-variant-secondary-fg);
   }
 
   &:where([variant="tertiary"]) {
-    --button-bg: var(--button-tertiary-bg);
-    --button-fg: var(--button-tertiary-fg);
+    --button-bg: var(--button-variant-tertiary-bg);
+    --button-fg: var(--button-variant-tertiary-fg);
   }
 
   /** fills */
@@ -95,7 +94,7 @@
 
   &:where([fill="outline"]) {
     border-color: var(--button-bg);
-    border-width: var(--button-border-width);
+    border-width: var(--button-borderWidth);
     border-style: solid;
 
     &:where([variant="inverted"]) {
@@ -111,7 +110,7 @@
 
   /** shapes */
   &:where([shape="rounded"]) {
-    border-radius: var(--button-border-radius);
+    border-radius: var(--button-borderRadius);
   }
   &:where([shape="pill"]) {
     border-radius: 99999px;
@@ -119,7 +118,7 @@
 
   /** disabled */
   &:where([aria-disabled="true"]) {
-    opacity: var(--button-disabled-opacity);
+    opacity: var(--button-disabledOpacity);
     cursor: not-allowed;
   }
 

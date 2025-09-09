@@ -1,0 +1,10 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Primitive Spacing Tokens",
+  "spacing": {
+    "$type": "dimension",
+    "scale": { "$value": "0.25rem" },
+    "scaleInline": { "$value": "{scale}" },
+    "scaleBlock": { "$value": "{scale}" }
+  }
+}

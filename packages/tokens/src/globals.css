@@ -1,13 +1,2 @@
-@import "./colors/blue.css" layer(uiid.tokens.colors);
-@import "./colors/green.css" layer(uiid.tokens.colors);
-@import "./colors/neutral.css" layer(uiid.tokens.colors);
-@import "./colors/orange.css" layer(uiid.tokens.colors);
-@import "./colors/purple.css" layer(uiid.tokens.colors);
-@import "./colors/red.css" layer(uiid.tokens.colors);
-@import "./colors/yellow.css" layer(uiid.tokens.colors);
-
-:root {
-  --spacing-scale: 0.25rem;
-  --spacing-scale-inline: var(--spacing-scale);
-  --spacing-scale-block: var(--spacing-scale);
-}
+@import "./styles/primitives/colors.css" layer(uiid.tokens.colors);
+@import "./styles/primitives/spacing.css" layer(uiid.tokens.spacing);

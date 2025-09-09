@@ -1,0 +1,54 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Button Component Tokens",
+  "button": {
+    "borderRadius": { "$value": "0.5rem", "$type": "dimension" },
+    "borderWidth": { "$value": "2px", "$type": "dimension" },
+    "disabledOpacity": { "$value": "0.5", "$type": "number" },
+    "scaleActive": { "$value": "0.98", "$type": "number" },
+    "scaleHover": { "$value": "1.02", "$type": "number" },
+    "transition": { "$value": "50ms", "$type": "duration" },
+    "hoverMix": { "$value": "85%", "$type": "dimension" },
+    "activeMix": { "$value": "80%", "$type": "dimension" },
+    "mixColor": { "$value": "{shade.background}", "$type": "color" },
+    "size": {
+      "sm": {
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "paddingX": { "$value": "1rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
+        "fontSize": { "$value": "1rem", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "4rem", "$type": "dimension" },
+        "paddingX": { "$value": "2rem", "$type": "dimension" },
+        "fontSize": { "$value": "1.125rem", "$type": "dimension" }
+      }
+    },
+    "variant": {
+      "default": {
+        "bg": { "$value": "{shade.foreground}", "$type": "color" },
+        "fg": { "$value": "{shade.background}", "$type": "color" }
+      },
+      "primary": {
+        "bg": { "$value": "{blue.500}", "$type": "color" },
+        "fg": { "$value": "{black}", "$type": "color" }
+      },
+      "secondary": {
+        "bg": { "$value": "{blue.300}", "$type": "color" },
+        "fg": { "$value": "{black}", "$type": "color" }
+      },
+      "tertiary": {
+        "bg": { "$value": "{blue.100}", "$type": "color" },
+        "fg": { "$value": "{black}", "$type": "color" }
+      },
+      "inverted": {
+        "bg": { "$value": "{shade.foreground}", "$type": "color" },
+        "fg": { "$value": "{shade.background}", "$type": "color" }
+      }
+    }
+  }
+}

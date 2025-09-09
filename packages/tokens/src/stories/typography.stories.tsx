@@ -2,7 +2,7 @@ import type { StoryObj } from "@storybook/react-vite";
 import React from "react";
 
 const TEXT_LEVELS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-const TEXT_PROPERTIES = ["size", "weight", "leading", "line_height"];
+const TEXT_PROPERTIES = ["size","weight","leading","lineHeight"];
 
 const meta = {
   title: "Tokens/Typography",
@@ -34,7 +34,7 @@ export const Typography: Story = {
             leading: getComputedStyle(root)
               .getPropertyValue(`--text_${level}_leading`)
               .trim(),
-            line_height: getComputedStyle(root)
+            lineHeight: getComputedStyle(root)
               .getPropertyValue(`--text_${level}_line_height`)
               .trim(),
           };
@@ -45,7 +45,7 @@ export const Typography: Story = {
 
       // Try immediately, then with a small delay as fallback
       computeValues();
-      const timeout = setTimeout(computeValues, 50);
+      const timeout = setTimeout(computeValues, 200);
 
       return () => clearTimeout(timeout);
     }, []);
@@ -63,7 +63,7 @@ export const Typography: Story = {
                 <Value value={values.size || " "} />
                 <Value value={values.weight || " "} />
                 <Value value={values.leading || " "} />
-                <Value value={values.line_height || " "} />
+                <Value value={values.lineHeight || " "} />
               </React.Fragment>
             );
           })}

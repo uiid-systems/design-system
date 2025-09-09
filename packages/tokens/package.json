@@ -3,18 +3,23 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "./globals.css": "./src/globals.css",
-    "./buttons/*": "./src/buttons/*",
-    "./colors/*": "./src/colors/*",
-    "./typography/*": "./src/typography/*",
-    "./forms/*": "./src/forms/*"
+    "./primitives": "./src/styles/primitives/index.css",
+    "./components": "./src/styles/components/index.css",
+    "./primitives/*": "./src/styles/primitives/*",
+    "./components/*": "./src/styles/components/*",
+    ".": "./src/styles/index.css",
+    "./globals.css": "./src/globals.css"
   },
   "files": [
     "src"
   ],
   "scripts": {
+    "build": "node ../../scripts/build-tokens.mjs",
+    "build:stories": "node ../../scripts/generate-stories.mjs",
+    "build:all": "node ../../scripts/build-all-tokens.mjs",
+    "dev": "node ../../scripts/build-all-tokens.mjs --watch",
     "lint": "echo 'No linting for CSS tokens'",
-    "format": "prettier --write \"src/**/*.css\""
+    "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\""
   },
   "devDependencies": {
     "@storybook/react-vite": "^9.1.2",

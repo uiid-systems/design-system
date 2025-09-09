@@ -5,26 +5,26 @@
   width: -webkit-fill-available;
 
   /** sizes */
-  font-size: var(--formfield-font-size);
-  height: var(--formfield-height);
-  padding-inline: var(--formfield-padding-x);
+  font-size: var(--formfield-fontSize);
+  height: var(--formfield-size-md-height);
+  padding-inline: var(--formfield-paddingX);
 
   &:where([data-size="sm"]) {
-    --formfield-font-size: var(--formfield-size-sm-font-size);
-    --formfield-height: var(--formfield-size-sm-height);
-    --formfield-padding-x: var(--formfield-size-sm-padding-x);
+    --formfield-fontSize: var(--formfield-size-sm-fontSize);
+    height: var(--formfield-size-sm-height);
+    --formfield-paddingX: var(--formfield-size-sm-paddingX);
   }
 
   &:where([data-size="md"]) {
-    --formfield-font-size: var(--formfield-size-md-font-size);
-    --formfield-height: var(--formfield-size-md-height);
-    --formfield-padding-x: var(--formfield-size-md-padding-x);
+    --formfield-fontSize: var(--formfield-size-md-fontSize);
+    height: var(--formfield-size-md-height);
+    --formfield-paddingX: var(--formfield-size-md-paddingX);
   }
 
   &:where([data-size="lg"]) {
-    --formfield-font-size: var(--formfield-size-lg-font-size);
-    --formfield-height: var(--formfield-size-lg-height);
-    --formfield-padding-x: var(--formfield-size-lg-padding-x);
+    --formfield-fontSize: var(--formfield-size-lg-fontSize);
+    height: var(--formfield-size-lg-height);
+    --formfield-paddingX: var(--formfield-size-lg-paddingX);
   }
 
   &:-webkit-autofill,
@@ -65,21 +65,21 @@
     /** Valid */
     &:valid,
     &:has(:valid) {
-      border-color: var(--input-border-valid);
-      outline-color: var(--input-outline-valid);
+      border-color: var(--input-state-valid-borderColor);
+      outline-color: var(--input-state-valid-outlineColor);
     }
     /** Invalid */
     &:invalid,
     &:has(:invalid) {
-      border-color: var(--input-border-invalid);
-      outline-color: var(--input-outline-invalid);
+      border-color: var(--input-state-invalid-borderColor);
+      outline-color: var(--input-state-invalid-outlineColor);
     }
   }
 
   /** Focus */
   &:focus,
   &:focus-within {
-    background-color: var(--input-background-focus);
+    background-color: var(--input-backgroundFocus);
     outline-style: var(--input-outline-style);
   }
 
@@ -88,7 +88,7 @@
   &[data-disabled="true"] {
     border-style: dashed;
     pointer-events: none;
-    opacity: var(--input-disabled-opacity);
+    opacity: var(--input-state-disabled-opacity);
   }
 
   /** Slotted Input */
@@ -99,32 +99,32 @@
     border-radius: 0;
     align-self: stretch;
     color: var(--shade-foreground);
-    padding-inline: var(--formfield-padding-x);
+    padding-inline: var(--formfield-paddingX);
   }
 }
 
 [data-slot="formfield-slots"] {
   width: -webkit-fill-available;
-  height: var(--formfield-height);
+  height: var(--formfield-size-md-height);
 
   &:where([data-size="sm"]) {
-    --formfield-height: var(--formfield-size-sm-height);
+    height: var(--formfield-size-sm-height);
   }
 
   &:where([data-size="md"]) {
-    --formfield-height: var(--formfield-size-md-height);
+    height: var(--formfield-size-md-height);
   }
 
   &:where([data-size="lg"]) {
-    --formfield-height: var(--formfield-size-lg-height);
+    height: var(--formfield-size-lg-height);
   }
 }
 
 /** Placeholder */
 [uiid="input"]::placeholder {
-  color: var(--input-placeholder-font-color);
-  font-size: var(--formfield-font-size);
-  line-height: var(--formfield-line-height);
+  color: var(--input-placeholder-color);
+  font-size: var(--formfield-fontSize);
+  line-height: var(--formfield-lineHeight);
 }
 
 /** Label Wrapper */
@@ -132,29 +132,29 @@
   display: inline-flex;
   flex-direction: column;
   align-items: start;
-  gap: var(--input-label-wrapper-gap);
+  gap: var(--input-label-wrapperGap);
 }
 
 /** Label */
 [data-slot="formfield-label"] {
-  font-size: var(--input-label-font-size);
-  font-weight: var(--input-label-font-weight);
+  font-size: var(--input-label-fontSize);
+  font-weight: var(--input-label-fontWeight);
 
   &[data-required="true"] {
     display: inline-block;
 
     &::after {
       content: attr(data-required-content);
-      color: var(--required-color);
+      color: var(--input-required-color);
     }
   }
 }
 
 /** Description */
 [data-slot="formfield-description"] {
-  font-size: var(--input-description-font-size);
-  font-weight: var(--input-description-font-weight);
-  color: var(--input-description-font-color);
+  font-size: var(--input-description-fontSize);
+  font-weight: var(--input-description-fontWeight);
+  color: var(--input-description-color);
 }
 
 /** Bookend */
@@ -162,18 +162,18 @@
   --formfield-bookend-height: var(--formfield-size-md-height);
 
   align-content: center;
-  color: var(--input-bookend-font-color);
-  font-size: var(--input-bookend-font-size);
-  font-weight: var(--input-bookend-font-weight);
+  color: var(--input-bookend-color);
+  font-size: var(--input-bookend-fontSize);
+  font-weight: var(--input-bookend-fontWeight);
   height: 100%;
   text-wrap: nowrap;
   width: fit-content;
 
   &[data-is-string="true"]:first-child {
-    padding-inline-start: var(--formfield-padding-x);
+    padding-inline-start: var(--formfield-paddingX);
   }
   &[data-is-string="true"]:last-child {
-    padding-inline-end: var(--formfield-padding-x);
+    padding-inline-end: var(--formfield-paddingX);
   }
 }
 

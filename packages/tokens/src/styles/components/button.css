@@ -1,0 +1,36 @@
+/*
+ * This file is auto-generated from design tokens.
+ * Do not edit directly - changes will be overwritten.
+ * Generated from: src/components/button.json
+ */
+
+:root {
+  --button-borderRadius: 0.5rem;
+  --button-borderWidth: 2px;
+  --button-disabledOpacity: 0.5;
+  --button-scaleActive: 0.98;
+  --button-scaleHover: 1.02;
+  --button-transition: 50ms;
+  --button-hoverMix: 85%;
+  --button-activeMix: 80%;
+  --button-mixColor: var(--shade-background);
+  --button-size-sm-height: 2rem;
+  --button-size-sm-paddingX: 1rem;
+  --button-size-sm-fontSize: 0.875rem;
+  --button-size-md-height: 3rem;
+  --button-size-md-paddingX: 1.5rem;
+  --button-size-md-fontSize: 1rem;
+  --button-size-lg-height: 4rem;
+  --button-size-lg-paddingX: 2rem;
+  --button-size-lg-fontSize: 1.125rem;
+  --button-variant-default-bg: var(--shade-foreground);
+  --button-variant-default-fg: var(--shade-background);
+  --button-variant-primary-bg: var(--blue-500);
+  --button-variant-primary-fg: var(--black);
+  --button-variant-secondary-bg: var(--blue-300);
+  --button-variant-secondary-fg: var(--black);
+  --button-variant-tertiary-bg: var(--blue-100);
+  --button-variant-tertiary-fg: var(--black);
+  --button-variant-inverted-bg: var(--shade-foreground);
+  --button-variant-inverted-fg: var(--shade-background);
+}

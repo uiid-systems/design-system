@@ -1,6 +1,7 @@
 import type { ButtonProps } from "./button.types";
 import { renderWithProps } from "../../../utils/render";
-import "@uiid/tokens/buttons/button.css";
+
+import "@uiid/tokens/components/button.css";
 import "./button.styles.css";
 
 export const Button = ({

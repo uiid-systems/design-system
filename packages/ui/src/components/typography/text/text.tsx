@@ -1,7 +1,7 @@
 import type { UiProps } from "../../../types";
 import { prepareComponentProps, renderWithProps } from "../../../utils";
 
-import "@uiid/tokens/typography/text.css";
+import "@uiid/tokens/primitives/typography.css";
 import "./text.styles.css";
 
 export type TextProps = React.PropsWithChildren<{
