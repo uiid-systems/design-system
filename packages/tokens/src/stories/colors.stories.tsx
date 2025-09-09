@@ -2,7 +2,7 @@ import type { StoryObj } from "@storybook/react-vite";
 import React from "react";
 
 const COLOR_DATA = {
-  "blue": {
+  blue: {
     "50": "#e3f2fd",
     "100": "#bbdefb",
     "200": "#90caf9",
@@ -12,9 +12,9 @@ const COLOR_DATA = {
     "600": "#1e88e5",
     "700": "#1976d2",
     "800": "#1565c0",
-    "900": "#0d47a1"
+    "900": "#0d47a1",
   },
-  "neutral": {
+  neutral: {
     "50": "#fafafa",
     "100": "#f5f5f5",
     "200": "#eeeeee",
@@ -24,9 +24,9 @@ const COLOR_DATA = {
     "600": "#757575",
     "700": "#616161",
     "800": "#424242",
-    "900": "#212121"
+    "900": "#212121",
   },
-  "green": {
+  green: {
     "50": "#e8f5e8",
     "100": "#c8e6c9",
     "200": "#a5d6a7",
@@ -36,9 +36,9 @@ const COLOR_DATA = {
     "600": "#43a047",
     "700": "#388e3c",
     "800": "#2e7d32",
-    "900": "#1b5e20"
+    "900": "#1b5e20",
   },
-  "red": {
+  red: {
     "50": "#ffebee",
     "100": "#ffcdd2",
     "200": "#ef9a9a",
@@ -48,9 +48,9 @@ const COLOR_DATA = {
     "600": "#e53935",
     "700": "#d32f2f",
     "800": "#c62828",
-    "900": "#b71c1c"
+    "900": "#b71c1c",
   },
-  "orange": {
+  orange: {
     "50": "#fff3e0",
     "100": "#ffe0b2",
     "200": "#ffcc80",
@@ -60,9 +60,9 @@ const COLOR_DATA = {
     "600": "#fb8c00",
     "700": "#f57c00",
     "800": "#ef6c00",
-    "900": "#e65100"
+    "900": "#e65100",
   },
-  "yellow": {
+  yellow: {
     "50": "#fffde7",
     "100": "#fff9c4",
     "200": "#fff59d",
@@ -72,9 +72,9 @@ const COLOR_DATA = {
     "600": "#fdd835",
     "700": "#fbc02d",
     "800": "#f9a825",
-    "900": "#f57f17"
+    "900": "#f57f17",
   },
-  "purple": {
+  purple: {
     "50": "#f3e5f5",
     "100": "#e1bee7",
     "200": "#ce93d8",
@@ -84,8 +84,8 @@ const COLOR_DATA = {
     "600": "#8e24aa",
     "700": "#7b1fa2",
     "800": "#6a1b9a",
-    "900": "#4a148c"
-  }
+    "900": "#4a148c",
+  },
 };
 
 const meta = {
@@ -98,25 +98,31 @@ type Story = StoryObj<typeof meta>;
 export const Colors: Story = {
   render: ({}) => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {Object.entries(COLOR_DATA).map(([group, shades]) => {
-          const sortedShades = Object.entries(shades).sort(([a], [b]) => Number(a) - Number(b));
+          const sortedShades = Object.entries(shades).sort(
+            ([a], [b]) => Number(a) - Number(b),
+          );
 
           return (
             <div key={group}>
-              <h3 style={{ 
-                fontSize: "1.5rem", 
-                fontWeight: 600, 
-                marginBottom: "1rem",
-                textTransform: "capitalize"
-              }}>
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: 600,
+                  marginBottom: "1rem",
+                  textTransform: "capitalize",
+                }}
+              >
                 {group}
               </h3>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
-                gap: "0.5rem"
-              }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+                  gap: "0.5rem",
+                }}
+              >
                 {sortedShades.map(([shade, value]) => (
                   <ColorSwatch
                     key={shade}
@@ -134,42 +140,40 @@ export const Colors: Story = {
   },
 };
 
-const ColorSwatch = ({ 
-  name, 
-  value, 
-  shade 
-}: { 
-  name: string; 
-  value: string; 
+const ColorSwatch = ({
+  name,
+  value,
+  shade,
+}: {
+  name: string;
+  value: string;
   shade: string;
 }) => {
   return (
-    <div style={{
-      border: "1px solid #e0e0e0",
-      borderRadius: "8px",
-      overflow: "hidden",
-      backgroundColor: "white"
-    }}>
+    <div
+      style={{
+        border: "1px solid #e0e0e0",
+        borderRadius: "8px",
+        overflow: "hidden",
+        backgroundColor: "white",
+      }}
+    >
       <div
         style={{
           backgroundColor: value,
           height: "80px",
-          width: "100%"
+          width: "100%",
         }}
       />
-      <div style={{
-        padding: "0.5rem",
-        fontSize: "0.875rem"
-      }}>
-        <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>
-          {shade}
-        </div>
-        <div style={{ color: "#666", fontSize: "0.75rem" }}>
-          {value}
-        </div>
-        <div style={{ color: "#999", fontSize: "0.75rem" }}>
-          --{name}
-        </div>
+      <div
+        style={{
+          padding: "0.5rem",
+          fontSize: "0.875rem",
+        }}
+      >
+        <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>{shade}</div>
+        <div style={{ color: "#000", fontSize: "0.75rem" }}>{value}</div>
+        <div style={{ color: "#000", fontSize: "0.75rem" }}>--{name}</div>
       </div>
     </div>
   );
