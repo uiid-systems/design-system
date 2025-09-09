@@ -46,8 +46,8 @@
         "fg": { "$value": "{black}", "$type": "color" }
       },
       "inverted": {
-        "bg": { "$value": "{shade.foreground}", "$type": "color" },
-        "fg": { "$value": "{shade.background}", "$type": "color" }
+        "bg": { "$value": "{shade.background}", "$type": "color" },
+        "fg": { "$value": "{shade.foreground}", "$type": "color" }
       }
     }
   }

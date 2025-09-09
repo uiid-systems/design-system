@@ -31,6 +31,6 @@
   --button-variant-secondary-fg: var(--black);
   --button-variant-tertiary-bg: var(--blue-100);
   --button-variant-tertiary-fg: var(--black);
-  --button-variant-inverted-bg: var(--shade-foreground);
-  --button-variant-inverted-fg: var(--shade-background);
+  --button-variant-inverted-bg: var(--shade-background);
+  --button-variant-inverted-fg: var(--shade-foreground);
 }

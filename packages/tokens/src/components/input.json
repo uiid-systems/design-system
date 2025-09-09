@@ -3,7 +3,10 @@
   "$description": "UIID Design System - Input Component Tokens",
   "input": {
     "background": { "$value": "{shade.background}", "$type": "color" },
-    "backgroundFocus": { "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)", "$type": "color" },
+    "backgroundFocus": {
+      "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
+      "$type": "color"
+    },
     "foreground": { "$value": "{shade.foreground}", "$type": "color" },
     "border": {
       "color": { "$value": "{shade.foreground}", "$type": "color" },

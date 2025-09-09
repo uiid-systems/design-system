@@ -1,43 +1,24 @@
 [uiid="button"] {
+  --button-bg: var(--shade-foreground);
+  --button-fg: var(--shade-background);
+
   all: unset;
+  background-color: var(--button-bg);
+  border-color: var(--button-color-border);
   border-radius: var(--button-borderRadius);
+  color: var(--button-fg);
   cursor: pointer;
-  text-underline-offset: 0.125rem;
   display: grid;
-  transition: all var(--button-transition) ease-in-out;
-
-  & > * {
-    grid-area: 1 / 1;
-    place-content: center;
-    text-align: center;
-  }
-
-  &:focus {
-    outline-style: solid;
-    outline-width: 2px;
-    outline-offset: 2px;
-    outline-color: var(--button-color-outline, var(--button-bg));
-  }
-
-  &:not([aria-disabled="true"]):hover,
-  &:not([aria-disabled="true"]):focus {
-    scale: var(--button-scaleHover);
-  }
-
-  &:not([aria-disabled="true"]):hover {
-    background-color: color-mix(in srgb, var(--button-bg) var(--button-hoverMix), var(--button-mixColor));
-  }
-
-  &:not([aria-disabled="true"]):active {
-    scale: var(--button-scaleActive);
-    background-color: color-mix(in srgb, var(--button-bg) var(--button-activeMix), var(--button-mixColor));
-  }
-
-  /** sizes */
   font-size: var(--button-size-md-fontSize);
   height: var(--button-size-md-height);
   padding-inline: var(--button-size-md-paddingX);
+  text-underline-offset: 0.125rem;
+  transition: all var(--button-transition) ease-in-out;
 
+  /**
+   * SIZES
+   * sm, md, lg
+   */
   &:where([size="sm"]) {
     font-size: var(--button-size-sm-fontSize);
     height: var(--button-size-sm-height);
@@ -56,20 +37,16 @@
     padding-inline: var(--button-size-lg-paddingX);
   }
 
-  /** variants */
-  background-color: var(--button-bg);
-  border-color: var(--button-color-border, var(--button-bg));
-  color: var(--button-fg);
-
+  /**
+   * VARIANTS
+   * default, primary, secondary, tertiary, inverted
+   */
   &:where([variant="inverted"]) {
     --button-bg: var(--button-variant-inverted-bg);
     --button-color-outline: var(--button-variant-inverted-fg);
     --button-fg: var(--button-variant-inverted-fg);
     --button-mix-color: var(--shade-foreground);
-
-    [data-slot="spinner-foreground"] {
-      stroke: var(--button-fg) !important;
-    }
+    color: var(--button-fg) !important;
   }
 
   &:where([variant="primary"]) {
@@ -87,7 +64,10 @@
     --button-fg: var(--button-variant-tertiary-fg);
   }
 
-  /** fills */
+  /**
+   * FILLS
+   * ghost, outline
+   */
   &:where([fill="ghost"]:not(:hover)) {
     text-decoration: underline;
   }
@@ -108,7 +88,10 @@
     color: var(--button-bg);
   }
 
-  /** shapes */
+  /**
+   * SHAPES
+   * rounded, pill
+   */
   &:where([shape="rounded"]) {
     border-radius: var(--button-borderRadius);
   }
@@ -116,16 +99,54 @@
     border-radius: 99999px;
   }
 
-  /** disabled */
+  /**
+   * DISABLED
+   */
   &:where([aria-disabled="true"]) {
     opacity: var(--button-disabledOpacity);
     cursor: not-allowed;
   }
 
-  /** icon */
+  /**
+   * ICON
+   * standalone
+   */
   &:where([icon="standalone"]) {
     padding: 0;
     aspect-ratio: 1;
+  }
+
+  & > * {
+    grid-area: 1 / 1;
+    place-content: center;
+    text-align: center;
+  }
+
+  /**
+   * FOCUS
+   */
+  &:focus {
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 2px;
+    outline-color: var(--button-color-outline, var(--button-bg));
+  }
+
+  /**
+   * HOVER, FOCUS, ACTIVE
+   */
+  &:not([aria-disabled="true"]):hover,
+  &:not([aria-disabled="true"]):focus {
+    scale: var(--button-scaleHover);
+  }
+
+  &:not([aria-disabled="true"]):hover {
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-hoverMix), var(--button-mixColor));
+  }
+
+  &:not([aria-disabled="true"]):active {
+    scale: var(--button-scaleActive);
+    background-color: color-mix(in srgb, var(--button-bg) var(--button-activeMix), var(--button-mixColor));
   }
 }
 
@@ -139,7 +160,7 @@
   [data-slot="button-loading-dots"] {
     width: 1.5rem;
     aspect-ratio: 2;
-    --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg) 90%, #0000);
+    --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg, var(--shade-background)) 90%, #0000);
     background:
       var(--_g) 0% 50%,
       var(--_g) 50% 50%,
