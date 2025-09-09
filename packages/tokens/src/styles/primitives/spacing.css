@@ -4,8 +4,10 @@
  * Generated from: src/primitives/spacing.json
  */
 
+@layer uiid.tokens.spacing {
 :root {
   --scale: 0.25rem;
   --scaleInline: var(--scale);
   --scaleBlock: var(--scale);
+}
 }

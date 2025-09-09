@@ -85,8 +85,6 @@ export const Button = ({
     uiid: "button",
     ...props,
     ref: setCustomAttributes,
-    "data-loading": loading ? "true" : undefined,
-    "data-icon": iconSlot,
     /** accessibility */
     "aria-label": loading ? (loadingText ?? "Loading") : ariaLabel,
     "aria-disabled": isLink
@@ -94,6 +92,9 @@ export const Button = ({
       : props.disabled || loading
         ? "true"
         : undefined,
+    /** attributes */
+    "data-loading": loading ? "true" : undefined,
+    "data-icon": iconSlot,
     /** events */
     onClick: handleClick,
     onKeyDown: handleKeyDown,

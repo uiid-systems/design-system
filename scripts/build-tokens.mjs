@@ -65,19 +65,26 @@ function generateHeader(sourceFile) {
 }
 
 /**
- * Generate CSS content from flattened tokens
+ * Generate CSS content from flattened tokens with CSS layers
  * @param {Object} tokens - Flattened tokens object
  * @param {string} category - Token category (colors, typography, etc.)
  * @param {string} sourceFile - Source JSON file path
+ * @param {string} layer - CSS layer name (optional)
  * @returns {string} - CSS content
  */
-function generateCSS(tokens, category, sourceFile) {
+function generateCSS(tokens, category, sourceFile, layer = null) {
   const header = generateHeader(sourceFile);
   const cssVars = Object.entries(tokens)
     .map(([key, value]) => `  --${key}: ${value};`)
     .join("\n");
 
-  return `${header}:root {\n${cssVars}\n}\n`;
+  const rootRule = `:root {\n${cssVars}\n}`;
+  
+  if (layer) {
+    return `${header}@layer ${layer} {\n${rootRule}\n}\n`;
+  }
+  
+  return `${header}${rootRule}\n`;
 }
 
 /**
@@ -103,6 +110,7 @@ async function buildTokens() {
       flattened,
       "colors",
       "src/primitives/colors.json",
+      "uiid.tokens.colors",
     );
     await writeFile(join(OUTPUT_DIR, "primitives", "colors.css"), colorsCSS);
     console.log("   ✅ Generated primitives/colors.css");
@@ -121,6 +129,7 @@ async function buildTokens() {
       typographyFlattened,
       "typography",
       "src/primitives/typography.json",
+      "uiid.tokens.typography",
     );
     await writeFile(
       join(OUTPUT_DIR, "primitives", "typography.css"),
@@ -140,6 +149,7 @@ async function buildTokens() {
       spacingFlattened,
       "spacing",
       "src/primitives/spacing.json",
+      "uiid.tokens.spacing",
     );
     await writeFile(join(OUTPUT_DIR, "primitives", "spacing.css"), spacingCSS);
     console.log("   ✅ Generated primitives/spacing.css");
@@ -160,6 +170,7 @@ async function buildTokens() {
           componentFlattened,
           file.replace(".json", ""),
           `src/components/${file}`,
+          "uiid.tokens.components",
         );
         const outputFile = file.replace(".json", ".css");
         await writeFile(

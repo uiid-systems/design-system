@@ -4,6 +4,7 @@
  * Generated from: src/components/input.json
  */
 
+@layer uiid.tokens.components {
 :root {
   --input-background: var(--shade-background);
   --input-backgroundFocus: color_mix(in srgb, {shade.background}, {shade.foreground} 10%);
@@ -46,4 +47,5 @@
   --formfield-size-lg-height: 4rem;
   --formfield-size-lg-paddingX: 2rem;
   --formfield-size-lg-fontSize: 1.125rem;
+}
 }

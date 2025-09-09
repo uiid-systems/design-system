@@ -4,6 +4,7 @@
  * Generated from: src/components/button.json
  */
 
+@layer uiid.tokens.components {
 :root {
   --button-borderRadius: 0.5rem;
   --button-borderWidth: 2px;
@@ -33,4 +34,5 @@
   --button-variant-tertiary-fg: var(--black);
   --button-variant-inverted-bg: var(--shade-background);
   --button-variant-inverted-fg: var(--shade-foreground);
+}
 }

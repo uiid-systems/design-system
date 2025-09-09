@@ -22,10 +22,10 @@ export const Spacing: Story = {
         const values: Record<string, string> = {};
 
         SPACING_TOKENS.forEach((token) => {
-          const cssVar = token === 'scaleInline' ? 'scale-inline' : 
-                        token === 'scaleBlock' ? 'scale-block' : token;
+          const cssVar = token === 'scaleInline' ? 'scaleInline' : 
+                        token === 'scaleBlock' ? 'scaleBlock' : token;
           values[token] = getComputedStyle(root)
-            .getPropertyValue(`--spacing-${cssVar}`)
+            .getPropertyValue(`--${cssVar}`)
             .trim();
         });
 
@@ -45,8 +45,8 @@ export const Spacing: Story = {
         </h2>
         {SPACING_TOKENS.map((token) => {
           const value = computedValues[token] || '';
-          const cssVar = token === 'scaleInline' ? 'scale-inline' : 
-                        token === 'scaleBlock' ? 'scale-block' : token;
+          const cssVar = token === 'scaleInline' ? 'scaleInline' : 
+                        token === 'scaleBlock' ? 'scaleBlock' : token;
 
           return (
             <div key={token} style={{
@@ -60,7 +60,7 @@ export const Spacing: Story = {
               <div style={{ minWidth: "120px" }}>
                 <div style={{ fontWeight: 600 }}>{token}</div>
                 <div style={{ fontSize: "0.875rem", color: "#666" }}>
-                  --spacing-{cssVar}
+                  --{cssVar}
                 </div>
               </div>
               <div style={{ fontSize: "0.875rem", color: "#999" }}>

@@ -17,7 +17,7 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" style={{ gap: 16 }}>
+    <Stack ax="stretch" gap={4}>
       <Input {...args} placeholder="Regular ol' input" name="regular-input" />
 
       <Input

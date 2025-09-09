@@ -4,6 +4,7 @@
  * Generated from: src/primitives/typography.json
  */
 
+@layer uiid.tokens.typography {
 :root {
   --text-0-size: 0.875rem;
   --text-0-leading: 2%;
@@ -41,4 +42,5 @@
   --text-8-leading: -2%;
   --text-8-lineHeight: 110%;
   --text-8-weight: 700;
+}
 }

@@ -9,8 +9,7 @@
     ".": {
       "import": "./dist/uiid.js",
       "require": "./dist/uiid.umd.cjs"
-    },
-    "./globals.css": "./src/globals.css"
+    }
   },
   "files": [
     "dist"
