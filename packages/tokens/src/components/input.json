@@ -21,12 +21,12 @@
     },
     "state": {
       "valid": {
-        "borderColor": { "$value": "{colors.green.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.green.500}", "$type": "color" }
+        "borderColor": { "$value": "{green.500}", "$type": "color" },
+        "outlineColor": { "$value": "{green.500}", "$type": "color" }
       },
       "invalid": {
-        "borderColor": { "$value": "{colors.red.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.red.500}", "$type": "color" }
+        "borderColor": { "$value": "{red.500}", "$type": "color" },
+        "outlineColor": { "$value": "{red.500}", "$type": "color" }
       },
       "disabled": {
         "opacity": { "$value": "0.5", "$type": "number" }
@@ -34,7 +34,7 @@
     },
     "required": {
       "content": { "$value": "attr(data-required-content)", "$type": "string" },
-      "color": { "$value": "{colors.red.500}", "$type": "color" }
+      "color": { "$value": "{red.500}", "$type": "color" }
     },
     "autofill": {
       "background": { "$value": "{shade.background}", "$type": "color" },

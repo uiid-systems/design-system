@@ -1,3 +1,5 @@
+import "./formfield-label.css";
+
 export const FormFieldLabel = ({
   children,
   ...props

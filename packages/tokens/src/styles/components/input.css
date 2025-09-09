@@ -15,13 +15,13 @@
   --input-outline-offset: 0.125rem;
   --input-outline-style: solid;
   --input-outline-width: 0.125rem;
-  --input-state-valid-borderColor: var(--colors-green-500);
-  --input-state-valid-outlineColor: var(--colors-green-500);
-  --input-state-invalid-borderColor: var(--colors-red-500);
-  --input-state-invalid-outlineColor: var(--colors-red-500);
+  --input-state-valid-borderColor: var(--green-500);
+  --input-state-valid-outlineColor: var(--green-500);
+  --input-state-invalid-borderColor: var(--red-500);
+  --input-state-invalid-outlineColor: var(--red-500);
   --input-state-disabled-opacity: 0.5;
   --input-required-content: attr(data-required-content);
-  --input-required-color: var(--colors-red-500);
+  --input-required-color: var(--red-500);
   --input-autofill-background: var(--shade-background);
   --input-autofill-foreground: var(--shade-foreground);
   --input-label-wrapperGap: 0.5rem;

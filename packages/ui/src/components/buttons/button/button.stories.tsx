@@ -6,6 +6,7 @@ import {
   Send,
   Bell,
   MessageCircleMore,
+  ExternalLink,
 } from "lucide-react";
 import { fn } from "storybook/test";
 import { Button } from "./button";
@@ -125,8 +126,14 @@ export const Icons: Story = {
 export const AsLink: Story = {
   render: (args) => (
     <Grid>
-      <Button {...args} href="https://google.com" target="_blank">
-        as link
+      <Button
+        {...args}
+        href="https://google.com"
+        target="_blank"
+        icon={<ExternalLink size={18} />}
+        iconPosition="after"
+      >
+        go to google.com
       </Button>
     </Grid>
   ),

@@ -3,6 +3,8 @@ import type { FormProps } from "../types";
 import { FormFieldLabel } from "./formfield-label";
 import { FormFieldDescription } from "./formfield-description";
 
+import "./formfield.css";
+
 type FormFieldProps = React.PropsWithChildren &
   Pick<FormProps, "name" | "label" | "description" | "required">;
 

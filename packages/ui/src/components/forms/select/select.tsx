@@ -2,6 +2,8 @@ import { ConditionalRender, Slots } from "../../layout";
 import { FormFieldBookend, FormField } from "../subcomponents";
 import type { SelectProps } from "./select.types";
 
+import "./select.styles.css";
+
 export const Select = ({
   size = "md",
   validate = false,
