@@ -1,5 +1,4 @@
-import { ConditionalRender, Slots } from "../../layout";
-import { FormFieldBookend, FormField } from "../subcomponents";
+import { FormField, FormFieldSlots } from "../formfield";
 import type { SelectProps } from "./select.types";
 
 import "./select.styles.css";
@@ -18,30 +17,19 @@ export const Select = ({
   placeholder,
   ...props
 }: SelectProps) => {
-  const hasLabel = Boolean(label || description);
+  const propsWithId = { uiid: "select", ...props };
 
   return (
-    <ConditionalRender
-      condition={hasLabel}
-      wrapper={
-        <FormField
-          data-validate={validate ? true : undefined}
-          name={name}
-          label={label}
-          description={description}
-          required={props.required}
-        />
-      }
+    <FormField
+      data-validate={validate ? true : undefined}
+      name={name}
+      label={label}
+      description={description}
+      required={props.required}
     >
-      <Slots
-        data-slot="formfield-slots"
-        data-disabled={disabled}
-        before={before && <FormFieldBookend>{before}</FormFieldBookend>}
-        after={after && <FormFieldBookend>{after}</FormFieldBookend>}
-      >
+      <FormFieldSlots data-disabled={disabled} before={before} after={after}>
         <select
-          {...props}
-          data-uiid="select"
+          {...propsWithId}
           data-size={size}
           data-validate={validate ? true : undefined}
           data-slotted={true}
@@ -63,8 +51,8 @@ export const Select = ({
             </option>
           ))}
         </select>
-      </Slots>
-    </ConditionalRender>
+      </FormFieldSlots>
+    </FormField>
   );
 };
 Select.displayName = "Select";

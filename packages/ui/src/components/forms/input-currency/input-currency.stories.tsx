@@ -3,11 +3,11 @@ import { Stack } from "../../layout";
 import { InputCurrency } from "./input-currency";
 
 const meta = {
-  title: "Forms/Inputs/Currency",
+  title: "Forms/Inputs/Input Currency",
   component: InputCurrency,
   args: {
     disabled: false,
-    required: false,
+    required: true,
   },
   argTypes: {
     validate: { control: "boolean" },
@@ -35,4 +35,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Currency" };
+export const Default: Story = { name: "Input Currency" };

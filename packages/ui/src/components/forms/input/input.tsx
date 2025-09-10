@@ -1,5 +1,4 @@
-import { ConditionalRender, Slots } from "../../../components/layout";
-import { FormFieldBookend, FormField } from "../subcomponents";
+import { FormField, FormFieldSlots } from "../formfield";
 import type { InputProps } from "./input.types";
 
 import "../styles.css";
@@ -18,29 +17,17 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const hasBookend = Boolean(before || after);
-  const hasLabel = Boolean(label || description);
   const propsWithId = { uiid: "input", ...props };
 
   return (
-    <ConditionalRender
-      condition={hasLabel}
-      wrapper={
-        <FormField
-          data-validate={validate ? true : undefined}
-          name={name}
-          label={label}
-          description={description}
-          required={props.required}
-        />
-      }
+    <FormField
+      data-validate={validate ? true : undefined}
+      name={name}
+      label={label}
+      description={description}
+      required={props.required}
     >
-      <Slots
-        data-slot="formfield-slots"
-        data-size={size}
-        data-disabled={disabled}
-        before={before && <FormFieldBookend>{before}</FormFieldBookend>}
-        after={after && <FormFieldBookend>{after}</FormFieldBookend>}
-      >
+      <FormFieldSlots data-disabled={disabled} before={before} after={after}>
         <input
           {...propsWithId}
           data-size={size}
@@ -52,8 +39,8 @@ export const Input = ({
           disabled={disabled}
           placeholder={placeholder}
         />
-      </Slots>
-    </ConditionalRender>
+      </FormFieldSlots>
+    </FormField>
   );
 };
 Input.displayName = "Input";

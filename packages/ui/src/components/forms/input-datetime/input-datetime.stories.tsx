@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputDatetime } from "./input-datetime";
 
 const meta = {
-  title: "Forms/Inputs/Datetime",
+  title: "Forms/Inputs/Input Datetime",
   component: InputDatetime,
   args: {
     disabled: false,
@@ -56,4 +56,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Datetime" };
+export const Default: Story = { name: "Input Datetime" };

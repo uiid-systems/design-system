@@ -1,4 +1,4 @@
-[data-uiid="select"] {
+[uiid="select"] {
   appearance: none;
 
   &:has(option:disabled:checked) {

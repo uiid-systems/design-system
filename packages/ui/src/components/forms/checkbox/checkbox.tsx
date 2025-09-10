@@ -1,5 +1,5 @@
 import { ConditionalRender, Group, Stack } from "../../layout";
-import { FormFieldLabel, FormFieldDescription } from "../subcomponents";
+import { FormFieldLabel, FormFieldDescription } from "../formfield";
 import type { CheckboxProps } from "./checkbox.types";
 
 export const Checkbox = ({

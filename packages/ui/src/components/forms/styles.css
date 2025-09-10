@@ -2,14 +2,12 @@
 
 /** Input */
 [uiid="input"],
-[data-uiid="select"],
+[uiid="select"],
 [data-uiid="checkbox-label"] {
-  width: -webkit-fill-available;
-
-  /** sizes */
   font-size: var(--formfield-fontSize);
   height: var(--formfield-size-md-height);
   padding-inline: var(--formfield-paddingX);
+  width: -webkit-fill-available;
 
   &:where([data-size="sm"]) {
     --formfield-fontSize: var(--formfield-size-sm-fontSize);
@@ -37,26 +35,16 @@
   }
 }
 
-/** Slots container */
-[data-slot="formfield"] {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  width: -webkit-fill-available;
-}
-
 /* Input, Slots container */
 [uiid="input"],
-[data-uiid="select"],
+[uiid="select"],
 [data-slot="formfield-slots"] {
   background-color: var(--input-background);
-  color: var(--input-foreground);
-
   border-style: solid;
   border-color: var(--input-border-color);
   border-width: var(--input-border-width);
   border-radius: var(--input-border-radius);
-
+  color: var(--input-foreground);
   outline-offset: var(--input-outline-offset);
   outline-color: var(--input-outline-color);
   outline-width: var(--input-outline-width);
@@ -102,23 +90,6 @@
     align-self: stretch;
     color: var(--shade-foreground);
     padding-inline: var(--formfield-paddingX);
-  }
-}
-
-[data-slot="formfield-slots"] {
-  width: -webkit-fill-available;
-  height: var(--formfield-size-md-height);
-
-  &:where([data-size="sm"]) {
-    height: var(--formfield-size-sm-height);
-  }
-
-  &:where([data-size="md"]) {
-    height: var(--formfield-size-md-height);
-  }
-
-  &:where([data-size="lg"]) {
-    height: var(--formfield-size-lg-height);
   }
 }
 
