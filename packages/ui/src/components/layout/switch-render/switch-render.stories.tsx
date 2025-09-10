@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwitchRender } from "../";
 
 const meta = {
-  title: "Layout/Utility/SwitchRender",
+  title: "Layout/Utility/Switch Render",
   component: SwitchRender,
   args: {
     condition: true,
@@ -24,4 +24,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "SwitchRender" };
+export const Default: Story = { name: "Switch Render" };

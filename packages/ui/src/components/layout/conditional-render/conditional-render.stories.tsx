@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ConditionalRender } from "./conditional-render";
 
 const meta = {
-  title: "Layout/Utility/ConditionalRender",
+  title: "Layout/Utility/Conditional Render",
   component: ConditionalRender,
   args: {
     condition: true,
@@ -19,4 +19,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "ConditionalRender" };
+export const Default: Story = { name: "Conditional Render" };
