@@ -97,7 +97,9 @@ const ColorSwatch = ({
       >
         <div style={{ fontWeight: 600, marginBottom: "0.25rem" }}>{shade}</div>
         <div style={{ color: "#666", fontSize: "0.75rem" }}>{value}</div>
-        <div style={{ color: "#999", fontSize: "0.75rem" }}>--{name}</div>
+        <div style={{ color: "#999", fontSize: "0.75rem" }}>
+          --colors-{name}
+        </div>
       </div>
     </div>
   );

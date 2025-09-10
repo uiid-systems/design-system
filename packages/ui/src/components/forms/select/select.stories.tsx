@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "../../layout";
-import { Input } from "../input/input";
+import { Button } from "../../buttons";
+import { Input } from "../";
+
 import { Select } from "./select";
 
 const MOCK_ITEMS = [
@@ -24,7 +26,7 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" style={{ gap: 16 }}>
+    <Stack ax="stretch" gap={4}>
       <Select {...args} />
 
       <Select
@@ -42,9 +44,10 @@ const meta = {
         placeholder="Select an option"
       />
 
-      <Group fullwidth evenly style={{ gap: 8 }}>
-        <Input type="datetime-local" />
+      <Group fullwidth evenly gap={2}>
+        <Input type="datetime-local" size={args.size} />
         <Select {...args} />
+        <Button size={args.size}>Button</Button>
       </Group>
     </Stack>
   ),
