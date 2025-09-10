@@ -1,3 +1,5 @@
+@import "@uiid/tokens/components/input.tokens.css";
+
 /** Input */
 [uiid="input"],
 [data-uiid="select"],

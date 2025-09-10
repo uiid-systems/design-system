@@ -1,3 +1,5 @@
+@import "@uiid/tokens/components/button.tokens.css";
+
 [uiid="button"] {
   --button-bg: var(--shade-foreground);
   --button-fg: var(--shade-background);

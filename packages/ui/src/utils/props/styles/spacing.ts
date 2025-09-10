@@ -6,56 +6,56 @@ const SPACING_VALUES = [0, 1, 2, 3, 4, 6, 8, 12, 16] as const;
 export const gap = {
   property: "gap",
   values: [...SPACING_VALUES],
-  scale: { variable: "--scale" },
+  scale: { variable: "--spacing-scale" },
 } satisfies StyleProp<"gap">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
 export const m = {
   property: "margin",
   values: [...SPACING_VALUES],
-  scale: { variable: "--scale" },
+  scale: { variable: "--spacing-scale" },
 } satisfies StyleProp<"margin">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline */
 export const mx = {
   property: "marginInline",
   values: m.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"marginInline">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start */
 export const ml = {
   property: "marginInlineStart",
   values: m.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"marginInlineStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end */
 export const mr = {
   property: "marginInlineEnd",
   values: m.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"marginInlineEnd">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block */
 export const my = {
   property: "marginBlock",
   values: m.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"marginBlock">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start */
 export const mt = {
   property: "marginBlockStart",
   values: m.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"marginBlockStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end */
 export const mb = {
   property: "marginBlockEnd",
   values: m.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"marginBlockEnd">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding */
@@ -69,42 +69,42 @@ export const p = {
 export const px = {
   property: "paddingInline",
   values: p.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"paddingInline">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-start */
 export const pl = {
   property: "paddingInlineStart",
   values: p.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"paddingInlineStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-end */
 export const pr = {
   property: "paddingInlineEnd",
   values: p.values,
-  scale: { variable: "--scaleInline" },
+  scale: { variable: "--spacing-scaleInline" },
 } satisfies StyleProp<"paddingInlineEnd">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block */
 export const py = {
   property: "paddingBlock",
   values: p.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"paddingBlock">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-start */
 export const pt = {
   property: "paddingBlockStart",
   values: p.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"paddingBlockStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-end */
 export const pb = {
   property: "paddingBlockEnd",
   values: p.values,
-  scale: { variable: "--scaleBlock" },
+  scale: { variable: "--spacing-scaleBlock" },
 } satisfies StyleProp<"paddingBlockEnd">;
 
 export type SpacingProps = {

@@ -2,7 +2,6 @@ import { ConditionalRender, Slots } from "../../../components/layout";
 import { FormFieldBookend, FormField } from "../subcomponents";
 import type { InputProps } from "./input.types";
 
-import "@uiid/tokens/components/input.css";
 import "../styles.css";
 
 export const Input = ({

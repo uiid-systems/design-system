@@ -1,5 +1,5 @@
-@import "./styles/primitives/colors.css";
-@import "./styles/primitives/spacing.css";
+@import "./css/primitives/colors.tokens.css";
+@import "./css/primitives/spacing.tokens.css";
 
 :root {
   --white: white;

@@ -3,21 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "./primitives": "./src/styles/primitives/index.css",
-    "./components": "./src/styles/components/index.css",
-    "./primitives/*": "./src/styles/primitives/*",
-    "./components/*": "./src/styles/components/*",
-    ".": "./src/styles/index.css",
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./src/globals.css",
+    "./components/*": "./src/css/components/*",
+    "./primitives/*": "./src/css/primitives/*"
   },
   "files": [
     "src"
   ],
   "scripts": {
-    "build": "node ../../scripts/build-tokens.mjs",
-    "build:stories": "node ../../scripts/generate-stories.mjs",
-    "build:all": "node ../../scripts/build-all-tokens.mjs",
-    "dev": "node ../../scripts/build-all-tokens.mjs --watch",
+    "build": "node ../../scripts/generate-tokens.cjs",
+    "dev": "node ../../scripts/generate-tokens.cjs",
     "lint": "echo 'No linting for CSS tokens'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\""
   },

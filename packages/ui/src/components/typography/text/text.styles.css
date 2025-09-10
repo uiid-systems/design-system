@@ -1,3 +1,5 @@
+@import "@uiid/tokens/primitives/typography.tokens.css";
+
 [uiid="text"] {
   /* shared styles */
   text-box-trim: trim-both;
