@@ -5,7 +5,6 @@
   color: var(--input-bookend-color);
   font-size: var(--input-bookend-fontSize);
   font-weight: var(--input-bookend-fontWeight);
-  height: 100%;
   text-wrap: nowrap;
   width: fit-content;
 
