@@ -76,10 +76,10 @@ const ColorSwatch = ({
   return (
     <div
       style={{
-        border: "1px solid #e0e0e0",
+        border: "1px solid var(--shade-muted)",
         borderRadius: "8px",
         overflow: "hidden",
-        backgroundColor: "white",
+        backgroundColor: "var(--shade-surface)",
       }}
     >
       <div
