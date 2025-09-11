@@ -44,10 +44,14 @@ const meta = {
         placeholder="Select an option"
       />
 
-      <Group fullwidth evenly gap={2}>
-        <Input type="datetime-local" size={args.size} />
-        <Select {...args} />
-        <Button size={args.size}>Button</Button>
+      <Group fullwidth evenly gap={2} ay="end">
+        <Input
+          label="Input, select, button"
+          placeholder="Write something"
+          size={args.size}
+        />
+        <Select placeholder="Select something" {...args} />
+        <Button size={args.size}>Click</Button>
       </Group>
     </Stack>
   ),
