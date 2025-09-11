@@ -24,6 +24,7 @@
   "dependencies": {
     "@uiid/tokens": "workspace:*",
     "cva": "^1.0.0-beta.4",
+    "lucide-react": "^0.539.0",
     "tailwind-merge": "^3.3.1"
   },
   "peerDependencies": {
@@ -44,7 +45,6 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
     "happy-dom": "^15.11.6",
-    "lucide-react": "^0.539.0",
     "prettier": "3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

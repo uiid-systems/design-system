@@ -11,11 +11,18 @@ export const FormFieldSlots = ({
   children,
   ...props
 }: FormFieldSlotsProps) => {
+  const BeforeBookend = () => (
+    <FormFieldBookend position="before">{before}</FormFieldBookend>
+  );
+  const AfterBookend = () => (
+    <FormFieldBookend position="after">{after}</FormFieldBookend>
+  );
+
   return (
     <Slots
       data-slot="formfield-slots"
-      before={before && <FormFieldBookend>{before}</FormFieldBookend>}
-      after={after && <FormFieldBookend>{after}</FormFieldBookend>}
+      before={before && <BeforeBookend />}
+      after={after && <AfterBookend />}
       {...props}
     >
       {children}

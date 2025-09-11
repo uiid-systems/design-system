@@ -8,10 +8,21 @@
   text-wrap: nowrap;
   width: fit-content;
 
-  &[data-is-string="true"]:first-child {
-    padding-inline-start: var(--formfield-paddingX);
+  &[data-position="before"] {
+    border-top-left-radius: var(--input-border-radius);
+    border-bottom-left-radius: var(--input-border-radius);
+
+    &[data-is-string="true"] {
+      padding-inline-start: var(--formfield-paddingX);
+    }
   }
-  &[data-is-string="true"]:last-child {
-    padding-inline-end: var(--formfield-paddingX);
+
+  &[data-position="after"] {
+    border-top-right-radius: var(--input-border-radius);
+    border-bottom-right-radius: var(--input-border-radius);
+
+    &[data-is-string="true"] {
+      padding-inline-end: var(--formfield-paddingX);
+    }
   }
 }

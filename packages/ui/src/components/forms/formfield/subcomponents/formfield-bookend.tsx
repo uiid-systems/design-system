@@ -2,11 +2,22 @@ import { Box } from "../../../layout";
 
 import "./formfield-bookend.css";
 
-export const FormFieldBookend = ({ children }: React.PropsWithChildren) => {
+type FormFieldBookendProps = React.PropsWithChildren<{
+  position?: "before" | "after";
+}>;
+
+export const FormFieldBookend = ({
+  position,
+  children,
+}: FormFieldBookendProps) => {
   const isString = typeof children === "string";
 
   return (
-    <Box data-slot="formfield-bookend" data-is-string={isString}>
+    <Box
+      data-slot="formfield-bookend"
+      data-position={position}
+      data-is-string={isString}
+    >
       {children}
     </Box>
   );

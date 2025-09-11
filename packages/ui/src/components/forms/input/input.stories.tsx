@@ -48,6 +48,13 @@ const meta = {
         />
       </Stack>
 
+      <Input
+        {...args}
+        label="Input with string bookends"
+        before="B"
+        after="A"
+      />
+
       <Group fullwidth evenly ay="end" gap={2}>
         <Input {...args} label="Input in a group" />
         <Input {...args} />
