@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "../../layout";
-import { Text, type TextProps } from "./text";
+import { Text } from "./text";
+import type { TextProps } from "./text.types";
 
 const levels: TextProps["level"][] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 

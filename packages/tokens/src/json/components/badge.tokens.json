@@ -1,0 +1,26 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Badge Component Tokens",
+  "badge": {
+    "borderRadius": { "$value": "0.25rem", "$type": "dimension" },
+    "borderWidth": { "$value": "2px", "$type": "dimension" },
+    "disabledOpacity": { "$value": "0.5", "$type": "number" },
+    "size": {
+      "sm": {
+        "height": { "$value": "1.5rem", "$type": "dimension" },
+        "paddingX": { "$value": "0.5rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.75rem", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "paddingX": { "$value": "1rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "2.5rem", "$type": "dimension" },
+        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
+        "fontSize": { "$value": "1rem", "$type": "dimension" }
+      }
+    }
+  }
+}

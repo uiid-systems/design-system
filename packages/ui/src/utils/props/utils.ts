@@ -67,18 +67,18 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
           const unit =
             "unit" in styleProp.scale ? styleProp.scale.unit || "" : "";
           const calcValue = `calc(${value} * var(${styleProp.scale.variable}))${unit}`;
-          console.log(` Scale prop ${key}:`, {
-            value,
-            variable: styleProp.scale.variable,
-            calcValue,
-          });
+          // console.log(` Scale prop ${key}:`, {
+          //   value,
+          //   variable: styleProp.scale.variable,
+          //   calcValue,
+          // });
           (styleObj as Record<string, unknown>)[styleProp.property] = calcValue;
         } else {
           // Apply value directly for non-scaled props
-          console.log(` Non-scale prop ${key}:`, {
-            value,
-            property: styleProp.property,
-          });
+          // console.log(` Non-scale prop ${key}:`, {
+          //   value,
+          //   property: styleProp.property,
+          // });
           (styleObj as Record<string, unknown>)[styleProp.property] = value;
         }
         // Also add data attribute for dev tools visibility

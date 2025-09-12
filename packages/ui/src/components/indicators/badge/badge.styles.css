@@ -1,0 +1,11 @@
+[uiid="badge"] {
+  background-color: var(--shade-foreground);
+  color: var(--shade-background);
+  padding-inline: 1rem;
+  padding-block: 0.125rem;
+  border-radius: 0.325rem;
+}
+
+[data-slot="badge-text"] {
+  font-weight: 600;
+}

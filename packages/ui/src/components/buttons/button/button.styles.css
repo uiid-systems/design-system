@@ -11,38 +11,32 @@
   color: var(--button-fg);
   cursor: pointer;
   display: grid;
-  font-size: var(--button-size-md-fontSize);
-  height: var(--button-size-md-height);
-  padding-inline: var(--button-size-md-paddingX);
+  font-size: var(--button-fontSize);
+  height: var(--button-height);
+  padding-inline: var(--button-paddingX);
   text-underline-offset: 0.125rem;
   transition: all var(--button-transition) ease-in-out;
 
-  /**
-   * SIZES
-   * sm, md, lg
-   */
+  /** Sizes */
   &:where([size="sm"]) {
-    font-size: var(--button-size-sm-fontSize);
-    height: var(--button-size-sm-height);
-    padding-inline: var(--button-size-sm-paddingX);
+    --button-fontSize: var(--button-size-sm-fontSize);
+    --button-height: var(--button-size-sm-height);
+    --button-paddingX: var(--button-size-sm-paddingX);
   }
 
   &:where([size="md"]) {
-    font-size: var(--button-size-md-fontSize);
-    height: var(--button-size-md-height);
-    padding-inline: var(--button-size-md-paddingX);
+    --button-fontSize: var(--button-size-md-fontSize);
+    --button-height: var(--button-size-md-height);
+    --button-paddingX: var(--button-size-md-paddingX);
   }
 
   &:where([size="lg"]) {
-    font-size: var(--button-size-lg-fontSize);
-    height: var(--button-size-lg-height);
-    padding-inline: var(--button-size-lg-paddingX);
+    --button-fontSize: var(--button-size-lg-fontSize);
+    --button-height: var(--button-size-lg-height);
+    --button-paddingX: var(--button-size-lg-paddingX);
   }
 
-  /**
-   * VARIANTS
-   * default, primary, secondary, tertiary, inverted
-   */
+  /** Variants */
   &:where([variant="inverted"]) {
     --button-bg: var(--button-variant-inverted-bg);
     --button-color-outline: var(--button-variant-inverted-fg);
