@@ -1,1 +1,1 @@
-export type BadgeProps = React.PropsWithChildren<{}>;
+export type BadgeProps = React.PropsWithChildren;

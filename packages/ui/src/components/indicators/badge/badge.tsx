@@ -8,7 +8,7 @@ export const Badge = ({ children, ...props }: BadgeProps) => {
   return (
     <Box uiid="badge" {...props}>
       <Text data-slot="badge-text" level={0}>
-        badge
+        {children}
       </Text>
     </Box>
   );
