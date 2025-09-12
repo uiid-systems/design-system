@@ -12,7 +12,7 @@ const MOCK_ITEMS = [
 ];
 
 const meta = {
-  title: "Components/Forms/Select",
+  title: "Components/Forms/Selects/Select",
   component: Select,
   args: {
     disabled: false,
@@ -26,7 +26,7 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" gap={4}>
+    <Stack ax="start" gap={4}>
       <Select {...args} />
 
       <Select
@@ -39,9 +39,10 @@ const meta = {
 
       <Select
         {...args}
-        label="With placeholder"
+        label="With placeholder and bookends"
         description="Set a disabled placeholder"
         placeholder="Select an option"
+        before="B"
       />
 
       <Group fullwidth evenly gap={2} ay="end">

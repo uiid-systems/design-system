@@ -3,7 +3,7 @@
   "$description": "UIID Design System - Button Component Tokens",
   "button": {
     "borderRadius": { "$value": "0.5rem", "$type": "dimension" },
-    "borderWidth": { "$value": "2px", "$type": "dimension" },
+    "borderWidth": { "$value": "1px", "$type": "dimension" },
     "disabledOpacity": { "$value": "0.5", "$type": "number" },
     "scaleActive": { "$value": "0.98", "$type": "number" },
     "scaleHover": { "$value": "1.02", "$type": "number" },
@@ -18,13 +18,13 @@
         "fontSize": { "$value": "0.875rem", "$type": "dimension" }
       },
       "md": {
-        "height": { "$value": "3rem", "$type": "dimension" },
-        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
+        "height": { "$value": "2.5rem", "$type": "dimension" },
+        "paddingX": { "$value": "1.25rem", "$type": "dimension" },
         "fontSize": { "$value": "1rem", "$type": "dimension" }
       },
       "lg": {
-        "height": { "$value": "4rem", "$type": "dimension" },
-        "paddingX": { "$value": "2rem", "$type": "dimension" },
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
         "fontSize": { "$value": "1.125rem", "$type": "dimension" }
       }
     },

@@ -10,8 +10,8 @@
     "foreground": { "$value": "{shade.foreground}", "$type": "color" },
     "border": {
       "color": { "$value": "{shade.foreground}", "$type": "color" },
-      "radius": { "$value": "4px", "$type": "dimension" },
-      "width": { "$value": "1px", "$type": "dimension" }
+      "radius": { "$value": "{button.borderRadius}", "$type": "dimension" },
+      "width": { "$value": "{button.borderWidth}", "$type": "dimension" }
     },
     "outline": {
       "color": { "$value": "{shade.foreground}", "$type": "color" },
@@ -65,19 +65,37 @@
     "paddingX": { "$value": "1rem", "$type": "dimension" },
     "size": {
       "sm": {
-        "height": { "$value": "2rem", "$type": "dimension" },
-        "paddingX": { "$value": "1rem", "$type": "dimension" },
-        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+        "height": { "$value": "{button.size.sm.height}", "$type": "dimension" },
+        "paddingX": {
+          "$value": "{button.size.sm.paddingX}",
+          "$type": "dimension"
+        },
+        "fontSize": {
+          "$value": "{button.size.sm.fontSize}",
+          "$type": "dimension"
+        }
       },
       "md": {
-        "height": { "$value": "3rem", "$type": "dimension" },
-        "paddingX": { "$value": "1.5rem", "$type": "dimension" },
-        "fontSize": { "$value": "1rem", "$type": "dimension" }
+        "height": { "$value": "{button.size.md.height}", "$type": "dimension" },
+        "paddingX": {
+          "$value": "{button.size.md.paddingX}",
+          "$type": "dimension"
+        },
+        "fontSize": {
+          "$value": "{button.size.md.fontSize}",
+          "$type": "dimension"
+        }
       },
       "lg": {
-        "height": { "$value": "4rem", "$type": "dimension" },
-        "paddingX": { "$value": "2rem", "$type": "dimension" },
-        "fontSize": { "$value": "1.125rem", "$type": "dimension" }
+        "height": { "$value": "{button.size.lg.height}", "$type": "dimension" },
+        "paddingX": {
+          "$value": "{button.size.lg.paddingX}",
+          "$type": "dimension"
+        },
+        "fontSize": {
+          "$value": "{button.size.lg.fontSize}",
+          "$type": "dimension"
+        }
       }
     }
   }
