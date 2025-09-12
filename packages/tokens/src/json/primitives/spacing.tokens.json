@@ -4,7 +4,7 @@
   "spacing": {
     "$type": "dimension",
     "scale": { "$value": "0.25rem" },
-    "scaleInline": { "$value": "{scale}" },
-    "scaleBlock": { "$value": "{scale}" }
+    "scaleInline": { "$value": "{spacing.scale}" },
+    "scaleBlock": { "$value": "{spacing.scale}" }
   }
 }

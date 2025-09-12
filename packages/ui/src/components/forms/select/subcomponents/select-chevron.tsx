@@ -1,5 +1,4 @@
 import { ChevronsUpDown, ChevronsDownUp } from "lucide-react";
-import { Box } from "../../../layout";
 
 import "./select-chevron.css";
 
@@ -9,9 +8,9 @@ export type SelectChevronProps = {
 
 export const SelectChevron = ({ open }: SelectChevronProps) => {
   return (
-    <Box data-slot="select-chevron" pr={2}>
-      {open ? <ChevronsDownUp size={12} /> : <ChevronsUpDown size={12} />}
-    </Box>
+    <aside data-slot="select-chevron" aria-hidden="true">
+      {open ? <ChevronsDownUp size={14} /> : <ChevronsUpDown size={12} />}
+    </aside>
   );
 };
 SelectChevron.displayName = "SelectChevron";

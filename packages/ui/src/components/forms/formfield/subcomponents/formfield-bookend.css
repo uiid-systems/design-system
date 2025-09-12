@@ -1,5 +1,5 @@
 [data-slot="formfield-bookend"] {
-  --formfield-bookend-height: var(--formfield-size-md-height);
+  /* --formfield-bookend-height: var(--formfield-size-md-height); */
 
   align-content: center;
   color: var(--input-bookend-color);
@@ -8,21 +8,11 @@
   text-wrap: nowrap;
   width: fit-content;
 
-  &[data-position="before"] {
-    border-top-left-radius: var(--input-border-radius);
-    border-bottom-left-radius: var(--input-border-radius);
-
-    &[data-is-string="true"] {
-      padding-inline-start: var(--formfield-paddingX);
-    }
+  &[data-position="before"][data-is-string="true"] {
+    padding-inline-start: var(--formfield-paddingX);
   }
 
-  &[data-position="after"] {
-    border-top-right-radius: var(--input-border-radius);
-    border-bottom-right-radius: var(--input-border-radius);
-
-    &[data-is-string="true"] {
-      padding-inline-end: var(--formfield-paddingX);
-    }
+  &[data-position="after"][data-is-string="true"] {
+    padding-inline-end: var(--formfield-paddingX);
   }
 }

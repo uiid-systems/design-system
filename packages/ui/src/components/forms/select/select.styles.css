@@ -1,5 +1,6 @@
 [uiid="select"] {
   appearance: none;
+  padding-inline-end: calc(var(--formfield-paddingX) + 12px) !important;
 
   &:has(option:disabled:checked) {
     color: var(--shade-accent);

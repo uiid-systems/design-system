@@ -34,9 +34,12 @@
     --percentage-accent: var(--percentage-accent-dark);
     --percentage-muted: var(--percentage-muted-dark);
     --percentage-surface: var(--percentage-surface-dark);
-
     --shade-background: var(--black);
     --shade-foreground: var(--white);
+  }
+
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 }
 
@@ -55,6 +58,10 @@
   --percentage-surface: var(--percentage-surface-dark);
   --shade-background: var(--black);
   --shade-foreground: var(--white);
+}
+
+[data-theme="dark"] ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 body {

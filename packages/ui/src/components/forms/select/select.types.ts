@@ -11,4 +11,7 @@ export type SelectProps = {
   options: SelectOptionProps[];
   placeholder?: string;
 } & FormProps &
-  Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children" | "size">;
+  Omit<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    "children" | "size" | "after"
+  >;

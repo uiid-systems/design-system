@@ -5,26 +5,31 @@
 [uiid="select"],
 [data-uiid="checkbox-label"] {
   font-size: var(--formfield-fontSize);
-  height: var(--formfield-size-md-height);
+  height: var(--formfield-height);
   padding-inline: var(--formfield-paddingX);
   width: -webkit-fill-available;
 
+  /** TODO: be less hacky */
+  &[uiid="select"] {
+    height: calc(var(--formfield-height) - 2px);
+  }
+
   &:where([data-size="sm"]) {
     --formfield-fontSize: var(--formfield-size-sm-fontSize);
-    height: var(--formfield-size-sm-height);
     --formfield-paddingX: var(--formfield-size-sm-paddingX);
+    --formfield-height: var(--formfield-size-sm-height);
   }
 
   &:where([data-size="md"]) {
     --formfield-fontSize: var(--formfield-size-md-fontSize);
-    height: var(--formfield-size-md-height);
     --formfield-paddingX: var(--formfield-size-md-paddingX);
+    --formfield-height: var(--formfield-size-md-height);
   }
 
   &:where([data-size="lg"]) {
     --formfield-fontSize: var(--formfield-size-lg-fontSize);
-    height: var(--formfield-size-lg-height);
     --formfield-paddingX: var(--formfield-size-lg-paddingX);
+    --formfield-height: var(--formfield-size-lg-height);
   }
 
   &:-webkit-autofill,
@@ -37,12 +42,9 @@
 
 /* Input, Slots container */
 [uiid="input"],
-[uiid="select"],
 [data-slot="formfield-slots"] {
   background-color: var(--input-background);
-  border-style: solid;
-  border-color: var(--input-border-color);
-  border-width: var(--input-border-width);
+  border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--input-border-radius);
   color: var(--input-foreground);
   outline-offset: var(--input-outline-offset);
@@ -80,17 +82,17 @@
     pointer-events: none;
     opacity: var(--input-state-disabled-opacity);
   }
+}
 
-  /** Slotted Input */
-  [data-slotted="true"] {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    border-radius: 0;
-    align-self: stretch;
-    color: var(--shade-foreground);
-    padding-inline: var(--formfield-paddingX);
-  }
+/** Slotted Input */
+[data-slotted="true"] {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  align-self: stretch;
+  color: var(--shade-foreground);
+  padding-inline: var(--formfield-paddingX);
 }
 
 /** Placeholder */
@@ -98,8 +100,4 @@
   color: var(--input-placeholder-color);
   font-size: var(--formfield-fontSize);
   line-height: var(--formfield-lineHeight);
-}
-
-[uiid="input"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
 }

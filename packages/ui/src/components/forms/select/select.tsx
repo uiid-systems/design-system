@@ -1,5 +1,6 @@
 import { FormField, FormFieldSlots } from "../formfield";
 import type { SelectProps } from "./select.types";
+import { SelectChevron } from "./subcomponents";
 
 import "./select.styles.css";
 
@@ -10,7 +11,6 @@ export const Select = ({
   label,
   description,
   before,
-  after,
   // invalid,
   disabled,
   options,
@@ -18,6 +18,8 @@ export const Select = ({
   ...props
 }: SelectProps) => {
   const propsWithId = { uiid: "select", ...props };
+
+  const Chevron = () => <SelectChevron open={false} />;
 
   return (
     <FormField
@@ -27,7 +29,11 @@ export const Select = ({
       description={description}
       required={props.required}
     >
-      <FormFieldSlots data-disabled={disabled} before={before} after={after}>
+      <FormFieldSlots
+        data-disabled={disabled}
+        before={before}
+        after={<Chevron />}
+      >
         <select
           {...propsWithId}
           data-size={size}
