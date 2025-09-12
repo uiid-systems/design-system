@@ -12,6 +12,7 @@
   /** TODO: be less hacky */
   &[uiid="select"] {
     height: calc(var(--formfield-height) - 2px);
+    padding-inline-end: calc(var(--formfield-paddingX) * 2 + 12px) !important;
   }
 
   &:where([data-size="sm"]) {
