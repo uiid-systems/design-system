@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { Badge } from "./badge";
 
 const meta = {
-  title: "Indicators/Badge",
+  title: "Components/Indicators/Badge",
   component: Badge,
   args: {},
   render: (args) => (

@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { Status } from "./status";
 
 const meta = {
-  title: "Indicators/Status",
+  title: "Components/Indicators/Status",
   component: Status,
   args: {},
   render: (args) => (

@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { Checkbox } from "./checkbox";
 
 const meta = {
-  title: "Forms/Checkbox",
+  title: "Components/Forms/Checkbox",
   component: Checkbox,
   args: {
     disabled: false,

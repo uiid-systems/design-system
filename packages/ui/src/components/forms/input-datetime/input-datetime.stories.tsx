@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputDatetime } from "./input-datetime";
 
 const meta = {
-  title: "Forms/Inputs/Input Datetime",
+  title: "Components/Forms/Inputs/Input Datetime",
   component: InputDatetime,
   args: {
     disabled: false,

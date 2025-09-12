@@ -12,7 +12,7 @@ import { fn } from "storybook/test";
 import { Button } from "./button";
 
 const meta = {
-  title: "Buttons/Button",
+  title: "Components/Buttons/Button",
   component: Button,
   args: {
     onClick: fn(),

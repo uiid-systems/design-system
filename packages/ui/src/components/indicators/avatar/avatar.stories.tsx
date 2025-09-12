@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { Avatar } from "./avatar";
 
 const meta = {
-  title: "Indicators/Avatar",
+  title: "Components/Indicators/Avatar",
   component: Avatar,
   args: {},
   render: (args) => (

@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputColor } from "./input-color";
 
 const meta = {
-  title: "Forms/Inputs/Input Color",
+  title: "Components/Forms/Inputs/Input Color",
   component: InputColor,
   args: {
     disabled: false,

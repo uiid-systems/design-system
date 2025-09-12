@@ -3,7 +3,7 @@ import { Stack, Group } from "../../layout";
 import { Input } from "./input";
 
 const meta = {
-  title: "Forms/Inputs/Input",
+  title: "Components/Forms/Inputs/Input",
   component: Input,
   args: {
     disabled: false,

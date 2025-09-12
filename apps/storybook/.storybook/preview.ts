@@ -13,7 +13,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Tokens", "Typography", "Layout", "Buttons"],
+        order: ["Tokens", "Primitives"],
         locales: "en-US",
       },
     },

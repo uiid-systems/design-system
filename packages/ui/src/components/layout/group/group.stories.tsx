@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box, Group } from "../";
 
 const meta = {
-  title: "Layout/Group",
+  title: "Primitives/Layout/Group",
   component: Group,
   args: { gap: 2, pb: 2 },
   render: (args) => (

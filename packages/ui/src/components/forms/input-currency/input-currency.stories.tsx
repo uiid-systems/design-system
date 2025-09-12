@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputCurrency } from "./input-currency";
 
 const meta = {
-  title: "Forms/Inputs/Input Currency",
+  title: "Components/Forms/Inputs/Input Currency",
   component: InputCurrency,
   args: {
     disabled: false,

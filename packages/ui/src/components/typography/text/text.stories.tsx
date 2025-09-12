@@ -6,7 +6,7 @@ import type { TextProps } from "./text.types";
 const levels: TextProps["level"][] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 const meta = {
-  title: "Typography/Text",
+  title: "Primitives/Typography/Text",
   component: Text,
   args: {},
   // argTypes: {

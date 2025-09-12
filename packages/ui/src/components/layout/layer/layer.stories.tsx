@@ -5,7 +5,7 @@ import { Stack, Layer } from "../";
  * @todo handle fragments as layer children
  */
 const meta = {
-  title: "Layout/Layer",
+  title: "Primitives/Layout/Layer",
   component: Layer,
   args: {},
   render: (args) => (

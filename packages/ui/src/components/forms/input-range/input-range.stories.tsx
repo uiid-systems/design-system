@@ -3,7 +3,7 @@ import { Stack } from "../../layout";
 import { InputRange } from "./input-range";
 
 const meta = {
-  title: "Forms/Inputs/Input Range",
+  title: "Components/Forms/Inputs/Input Range",
   component: InputRange,
   args: {
     disabled: false,
