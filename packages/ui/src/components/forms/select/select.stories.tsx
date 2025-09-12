@@ -26,7 +26,7 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="start" gap={4}>
+    <Stack ax="stretch" gap={4}>
       <Select {...args} />
 
       <Select
