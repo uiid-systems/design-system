@@ -1,0 +1,33 @@
+[uiid="avatar"] {
+  display: inline-flex;
+}
+
+[data-slot="avatar-layers"] {
+  text-align: center;
+  background-color: var(--shade-foreground);
+  border-radius: 0.5rem;
+  padding-inline: 0.25rem;
+  height: 2rem;
+  min-width: 2rem;
+}
+
+[data-slot="avatar-initials"] {
+  mix-blend-mode: difference;
+  font-weight: 700;
+  user-select: none;
+}
+
+[data-slot="avatar-image"] {
+  /* aspect-ratio: 1; */
+  display: inline-block;
+}
+
+[data-slot="avatar-name"] {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+[data-slot="avatar-description"] {
+  color: var(--shade-accent);
+  white-space: nowrap;
+}
