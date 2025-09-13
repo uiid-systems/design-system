@@ -1,5 +1,9 @@
 @import "@uiid/tokens/components/input.tokens.css";
 
+[data-slot="formfield"] > [uiid="input"] {
+  width: -webkit-fill-available;
+}
+
 /** Input */
 [uiid="input"],
 [uiid="select"],

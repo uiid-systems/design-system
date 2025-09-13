@@ -6,6 +6,9 @@ const meta = {
   title: "Components/Indicators/Badge",
   component: Badge,
   args: {},
+  argTypes: {
+    size: { control: "select", options: ["sm", "md", "lg"] },
+  },
   render: (args) => (
     <Stack gap={8}>
       <Badge {...args}>Badge</Badge>

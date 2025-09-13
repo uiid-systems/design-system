@@ -9,10 +9,10 @@ const meta = {
   render: (args) => (
     <Stack gap={8}>
       <Avatar
-        {...args}
         initials="AF"
         name="Adam Fratino"
         description="Software Engineer"
+        {...args}
       />
     </Stack>
   ),

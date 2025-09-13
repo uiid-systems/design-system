@@ -4,12 +4,10 @@ import { Text } from "../../typography";
 import type { BadgeProps } from "./badge.types";
 import "./badge.styles.css";
 
-export const Badge = ({ children, ...props }: BadgeProps) => {
+export const Badge = ({ size = "sm", children, ...props }: BadgeProps) => {
   return (
-    <Box uiid="badge" {...props}>
-      <Text data-slot="badge-text" level={0}>
-        {children}
-      </Text>
+    <Box uiid="badge" data-size={size} {...props}>
+      <Text data-slot="badge-text">{children}</Text>
     </Box>
   );
 };

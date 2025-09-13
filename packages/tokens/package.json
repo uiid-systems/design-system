@@ -13,6 +13,7 @@
   "scripts": {
     "build": "node ../../scripts/generate-tokens.cjs",
     "dev": "node ../../scripts/generate-tokens.cjs",
+    "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.cjs\"",
     "lint": "echo 'No linting for CSS tokens'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\""
   },

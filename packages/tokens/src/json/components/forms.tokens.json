@@ -2,7 +2,7 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Form Component Tokens",
   "forms": {
-    "background": { "$value": "{shade.background}", "$type": "color" },
+    "background": { "$value": "{shade.surface}", "$type": "color" },
     "backgroundFocus": {
       "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
       "$type": "color"
@@ -11,7 +11,7 @@
     "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
     "paddingX": { "$value": "0.75rem", "$type": "dimension" },
     "border": {
-      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "color": { "$value": "{shade.muted}", "$type": "color" },
       "radius": { "$value": "0.5rem", "$type": "dimension" },
       "width": { "$value": "1px", "$type": "dimension" }
     },
@@ -34,7 +34,7 @@
         "fontSize": { "$value": "0.875rem", "$type": "dimension" }
       },
       "lg": {
-        "height": { "$value": "3rem", "$type": "dimension" },
+        "height": { "$value": "3.5rem", "$type": "dimension" },
         "fontSize": { "$value": "1rem", "$type": "dimension" }
       }
     },
