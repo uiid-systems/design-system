@@ -1,13 +1,9 @@
 @import "@uiid/tokens/components/button.tokens.css";
 
 [uiid="button"] {
-  --button-bg: var(--shade-foreground);
-  --button-fg: var(--shade-background);
-
   all: unset;
   background-color: var(--button-bg);
-  border-color: var(--button-color-border);
-  border-radius: var(--button-borderRadius);
+  border: var(--button-border-width) solid var(--button-border-color);
   color: var(--button-fg);
   cursor: pointer;
   display: grid;
@@ -23,13 +19,11 @@
     --button-height: var(--forms-size-sm-height);
     --button-paddingX: var(--forms-size-sm-paddingX);
   }
-
   &:where([size="md"]) {
     --button-fontSize: var(--forms-size-md-fontSize);
     --button-height: var(--forms-size-md-height);
     --button-paddingX: var(--forms-size-md-paddingX);
   }
-
   &:where([size="lg"]) {
     --button-fontSize: var(--forms-size-lg-fontSize);
     --button-height: var(--forms-size-lg-height);
@@ -44,33 +38,35 @@
     --button-mix-color: var(--shade-foreground);
     color: var(--button-fg) !important;
   }
-
+  &:where([variant="subtle"]) {
+    --button-bg: var(--button-variant-subtle-bg);
+    --button-fg: var(--button-variant-subtle-fg);
+    border-color: var(--button-variant-subtle-border-color);
+  }
   &:where([variant="primary"]) {
     --button-bg: var(--button-variant-primary-bg);
     --button-fg: var(--button-variant-primary-fg);
+    --button-border-color: var(--button-variant-primary-bg);
   }
-
   &:where([variant="secondary"]) {
     --button-bg: var(--button-variant-secondary-bg);
     --button-fg: var(--button-variant-secondary-fg);
+    --button-border-color: var(--button-variant-secondary-bg);
   }
-
   &:where([variant="tertiary"]) {
     --button-bg: var(--button-variant-tertiary-bg);
     --button-fg: var(--button-variant-tertiary-fg);
+    --button-border-color: var(--button-variant-tertiary-bg);
   }
 
-  /**
-   * FILLS
-   * ghost, outline
-   */
+  /** Fills */
   &:where([fill="ghost"]:not(:hover)) {
     text-decoration: underline;
   }
 
   &:where([fill="outline"]) {
     border-color: var(--button-bg);
-    border-width: var(--button-borderWidth);
+    border-width: var(--button-border-width);
     border-style: solid;
 
     &:where([variant="inverted"]) {
@@ -86,10 +82,9 @@
 
   /**
    * SHAPES
-   * rounded, pill
    */
   &:where([shape="rounded"]) {
-    border-radius: var(--button-borderRadius);
+    border-radius: var(--button-border-radius);
   }
   &:where([shape="pill"]) {
     border-radius: 99999px;
@@ -133,7 +128,7 @@
    */
   &:not([aria-disabled="true"]):hover,
   &:not([aria-disabled="true"]):focus {
-    scale: var(--button-scaleHover);
+    scale: var(--button-scale-hover);
   }
 
   &:not([aria-disabled="true"]):hover {
@@ -141,7 +136,7 @@
   }
 
   &:not([aria-disabled="true"]):active {
-    scale: var(--button-scaleActive);
+    scale: var(--button-scale-active);
     background-color: color-mix(in srgb, var(--button-bg) var(--button-activeMix), var(--button-mixColor));
   }
 }

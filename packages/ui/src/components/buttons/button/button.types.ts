@@ -2,7 +2,7 @@ import type { RenderProp } from "../../../utils/render";
 
 // Base button styling and behavior props
 type ButtonCoreProps = {
-  variant?: "primary" | "secondary" | "tertiary" | "inverted";
+  variant?: "primary" | "secondary" | "tertiary" | "inverted" | "subtle";
   size?: "sm" | "md" | "lg";
   fill?: "solid" | "outline" | "ghost";
   shape?: "rounded" | "pill";
