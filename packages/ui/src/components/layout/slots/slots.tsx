@@ -1,18 +1,9 @@
 import { cloneElement } from "react";
-import { Box, type BoxProps } from "../box/box";
+import { Box } from "../box/box";
 import { ConditionalRender } from "../conditional-render/conditional-render";
 
+import type { Slot, SlotsProps } from "./slots.types";
 import "./slots.styles.css";
-
-type Slot =
-  | React.ReactElement<React.HTMLAttributes<HTMLElement>>
-  | string
-  | number;
-
-export type SlotsProps = {
-  before?: Slot;
-  after?: Slot;
-} & BoxProps;
 
 export const Slots = ({ before, after, children, ...props }: SlotsProps) => {
   const hasSlot = Boolean(before || after);

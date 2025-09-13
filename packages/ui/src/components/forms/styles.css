@@ -1,6 +1,13 @@
 @import "@uiid/tokens/components/input.tokens.css";
 
-[data-slot="formfield"] > [uiid="input"] {
+/** TODO: be less hacky */
+[uiid="input"][data-wrapped="true"] {
+  width: -webkit-fill-available;
+  width: 100%;
+}
+
+[uiid="input"][data-fullwidth="true"] {
+  width: 100%;
   width: -webkit-fill-available;
 }
 
@@ -11,10 +18,10 @@
   flex: 1;
   font-size: var(--forms-fontSize);
   padding-inline: var(--forms-paddingX);
+
   /** TODO figure out why `height` doesn't work */
   min-height: var(--forms-height);
   max-height: var(--forms-height);
-
   /** TODO: be less hacky */
   &[uiid="select"] {
     min-height: calc(var(--forms-height) - 2px);
@@ -25,12 +32,10 @@
     --forms-fontSize: var(--forms-size-sm-fontSize);
     --forms-height: var(--forms-size-sm-height);
   }
-
   &:where([data-size="md"]) {
     --forms-fontSize: var(--forms-size-md-fontSize);
     --forms-height: var(--forms-size-md-height);
   }
-
   &:where([data-size="lg"]) {
     --forms-fontSize: var(--forms-size-lg-fontSize);
     --forms-height: var(--forms-size-lg-height);

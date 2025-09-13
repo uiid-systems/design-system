@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useRef, useState } from "react";
+import type { StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "../layout";
 import { Button } from "../buttons";
-import { Input, Select, Checkbox } from "./";
+import { Input, Select, InputZip } from "./";
+import { SelectState } from "./select-state/select-state";
 
 const surnames = [
   { value: "mr", label: "Mr." },
@@ -13,21 +15,73 @@ const surnames = [
 const GAP = 2;
 
 const meta = {
-  title: "Components/Forms/Playground",
-  render: () => (
-    <Stack ax="stretch" gap={4} style={{ width: 600 }}>
-      <Group ay="end" gap={GAP}>
-        <Select label="Surname" options={surnames} />
-        <Input required label="First name" />
-        <Input required label="Last name" />
-      </Group>
-      <Button>Submit</Button>
-      <Button variant="subtle">Cancel</Button>
-    </Stack>
-  ),
+  title: "Playground",
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Playground" };
+export const AdressForm: Story = {
+  render: () => {
+    const [isValid, setIsValid] = useState(false);
+
+    const formRef = useRef<HTMLFormElement>(null);
+    const firstNameRef = useRef<HTMLInputElement>(null);
+    const lastNameRef = useRef<HTMLInputElement>(null);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setIsValid(
+        Boolean(firstNameRef.current?.value && lastNameRef.current?.value),
+      );
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      alert("Submitted");
+      formRef.current?.reset();
+    };
+
+    return (
+      <Stack
+        render={<form ref={formRef} onSubmit={handleSubmit} />}
+        ax="stretch"
+        gap={4}
+        style={{ width: 520 }}
+      >
+        <Group ay="end" gap={GAP}>
+          <Select label="Surname" options={surnames} />
+          <Input
+            label="First name"
+            ref={firstNameRef}
+            onChange={handleInputChange}
+            required
+            fullwidth
+          />
+          <Input
+            label="Last name"
+            ref={lastNameRef}
+            onChange={handleInputChange}
+            required
+            fullwidth
+          />
+        </Group>
+
+        <Group gap={GAP}>
+          <Input label="Address" required fullwidth />
+          <Input label="Apt." />
+        </Group>
+
+        <Group gap={GAP}>
+          <Input label="City" required fullwidth />
+          <SelectState label="State" required />
+          <InputZip label="Zip" required />
+        </Group>
+
+        <Stack gap={GAP} ax="stretch">
+          <Button disabled={!isValid}>Submit</Button>
+          <Button variant="subtle">Cancel</Button>
+        </Stack>
+      </Stack>
+    );
+  },
+};

@@ -30,6 +30,7 @@ const Wrapper = ({
     data-slot="formfield"
     before={<Label label={label} name={name} required={required} />}
     after={<Description description={description} />}
+    fullwidth={props.fullwidth}
     {...props}
   />
 );

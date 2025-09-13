@@ -10,5 +10,8 @@ export * from "./input-currency/input-currency.types";
 export * from "./input-range/input-range";
 export * from "./input-range/input-range.types";
 
+export * from "./input-zip/input-zip";
+export * from "./input-zip/input-zip.types";
+
 export * from "./select/select";
 export * from "./select/select.types";

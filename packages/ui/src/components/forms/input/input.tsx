@@ -14,9 +14,11 @@ export const Input = ({
   // invalid,
   disabled,
   placeholder,
+  fullwidth,
   ...props
 }: InputProps) => {
   const hasBookend = Boolean(before || after);
+  const isWrapped = Boolean(label || description);
   const propsWithId = { uiid: "input", ...props };
 
   return (
@@ -25,6 +27,7 @@ export const Input = ({
       name={name}
       label={label}
       description={description}
+      fullwidth={fullwidth}
       required={props.required}
     >
       <FormFieldSlots data-disabled={disabled} before={before} after={after}>
@@ -33,6 +36,8 @@ export const Input = ({
           data-size={size}
           data-validate={validate ? true : undefined}
           data-slotted={hasBookend ? true : undefined}
+          data-wrapped={isWrapped ? true : undefined}
+          data-fullwidth={fullwidth && !isWrapped ? true : undefined}
           name={name}
           id={name}
           tabIndex={disabled ? -1 : undefined}
