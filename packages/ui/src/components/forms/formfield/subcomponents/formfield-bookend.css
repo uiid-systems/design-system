@@ -1,18 +1,43 @@
 [data-slot="formfield-bookend"] {
-  /* --formfield-bookend-height: var(--formfield-size-md-height); */
-
   align-content: center;
+  background-color: var(--forms-background);
   color: var(--input-bookend-color);
   font-size: var(--input-bookend-fontSize);
   font-weight: var(--input-bookend-fontWeight);
+  overflow: hidden;
   text-wrap: nowrap;
-  width: fit-content;
 
-  &[data-position="before"][data-is-string="true"] {
-    padding-inline-start: var(--formfield-paddingX);
+  &[data-position="before"] {
+    border-top-left-radius: var(--forms-border-radius);
+    border-bottom-left-radius: var(--forms-border-radius);
+
+    &[data-is-string="true"] {
+      padding-inline-start: var(--forms-paddingX);
+
+      &[data-bordered="true"] {
+        padding-inline-end: var(--forms-paddingX);
+      }
+    }
+
+    &[data-bordered="true"] {
+      border-right: var(--forms-border-width) solid var(--forms-border-color);
+    }
   }
 
-  &[data-position="after"][data-is-string="true"] {
-    padding-inline-end: var(--formfield-paddingX);
+  &[data-position="after"] {
+    border-top-right-radius: var(--forms-border-radius);
+    border-bottom-right-radius: var(--forms-border-radius);
+
+    &[data-is-string="true"] {
+      padding-inline-end: var(--forms-paddingX);
+
+      &[data-bordered="true"] {
+        padding-inline-start: var(--forms-paddingX);
+      }
+    }
+
+    &[data-bordered="true"] {
+      border-left: var(--forms-border-width) solid var(--forms-border-color);
+    }
   }
 }

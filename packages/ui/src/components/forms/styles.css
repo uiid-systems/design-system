@@ -4,33 +4,32 @@
 [uiid="input"],
 [uiid="select"],
 [data-uiid="checkbox-label"] {
-  font-size: var(--formfield-fontSize);
-  height: var(--formfield-height);
-  padding-inline: var(--formfield-paddingX);
-  width: -webkit-fill-available;
+  flex: 1;
+  font-size: var(--forms-fontSize);
+  padding-inline: var(--forms-paddingX);
+  /** TODO figure out why `height` doesn't work */
+  min-height: var(--forms-height);
+  max-height: var(--forms-height);
 
   /** TODO: be less hacky */
   &[uiid="select"] {
-    height: calc(var(--formfield-height) - 2px);
-    padding-inline-end: calc(var(--formfield-paddingX) * 2 + 12px) !important;
+    min-height: calc(var(--forms-height) - 2px);
+    max-height: calc(var(--forms-height) - 2px);
   }
 
   &:where([data-size="sm"]) {
-    --formfield-fontSize: var(--formfield-size-sm-fontSize);
-    --formfield-paddingX: var(--formfield-size-sm-paddingX);
-    --formfield-height: var(--formfield-size-sm-height);
+    --forms-fontSize: var(--forms-size-sm-fontSize);
+    --forms-height: var(--forms-size-sm-height);
   }
 
   &:where([data-size="md"]) {
-    --formfield-fontSize: var(--formfield-size-md-fontSize);
-    --formfield-paddingX: var(--formfield-size-md-paddingX);
-    --formfield-height: var(--formfield-size-md-height);
+    --forms-fontSize: var(--forms-size-md-fontSize);
+    --forms-height: var(--forms-size-md-height);
   }
 
   &:where([data-size="lg"]) {
-    --formfield-fontSize: var(--formfield-size-lg-fontSize);
-    --formfield-paddingX: var(--formfield-size-lg-paddingX);
-    --formfield-height: var(--formfield-size-lg-height);
+    --forms-fontSize: var(--forms-size-lg-fontSize);
+    --forms-height: var(--forms-size-lg-height);
   }
 
   &:-webkit-autofill,
@@ -44,13 +43,13 @@
 /* Input, Slots container */
 [uiid="input"],
 [data-slot="formfield-slots"] {
-  background-color: var(--input-background);
-  border: var(--input-border-width) solid var(--input-border-color);
-  border-radius: var(--input-border-radius);
-  color: var(--input-foreground);
-  outline-offset: var(--input-outline-offset);
-  outline-color: var(--input-outline-color);
-  outline-width: var(--input-outline-width);
+  background-color: var(--forms-background);
+  border: var(--forms-border-width) solid var(--forms-border-color);
+  border-radius: var(--forms-border-radius);
+  color: var(--forms-foreground);
+  outline-offset: var(--forms-outline-offset);
+  outline-color: var(--forms-outline-color);
+  outline-width: var(--forms-outline-width);
 
   /** Validation */
   &:not(:placeholder-shown)[data-validate="true"],
@@ -58,22 +57,22 @@
     /** Valid */
     &:valid,
     &:has(:valid) {
-      border-color: var(--input-state-valid-borderColor);
-      outline-color: var(--input-state-valid-outlineColor);
+      border-color: var(--forms-state-valid-borderColor);
+      outline-color: var(--forms-state-valid-outlineColor);
     }
     /** Invalid */
     &:invalid,
     &:has(:invalid) {
-      border-color: var(--input-state-invalid-borderColor);
-      outline-color: var(--input-state-invalid-outlineColor);
+      border-color: var(--forms-state-invalid-borderColor);
+      outline-color: var(--forms-state-invalid-outlineColor);
     }
   }
 
   /** Focus */
   &:focus,
   &:focus-within {
-    background-color: var(--input-backgroundFocus);
-    outline-style: var(--input-outline-style);
+    background-color: var(--forms-backgroundFocus);
+    outline-style: var(--forms-outline-style);
   }
 
   /** Disabled */
@@ -81,7 +80,7 @@
   &[data-disabled="true"] {
     border-style: dashed;
     pointer-events: none;
-    opacity: var(--input-state-disabled-opacity);
+    opacity: var(--forms-state-disabled-opacity);
   }
 }
 
@@ -93,12 +92,12 @@
   border-radius: 0;
   align-self: stretch;
   color: var(--shade-foreground);
-  padding-inline: var(--formfield-paddingX);
+  padding-inline: var(--forms-paddingX);
 }
 
 /** Placeholder */
 [uiid="input"]::placeholder {
-  color: var(--input-placeholder-color);
-  font-size: var(--formfield-fontSize);
-  line-height: var(--formfield-lineHeight);
+  color: var(--forms-placeholder-color);
+  font-size: var(--forms-fontSize);
+  line-height: var(--forms-lineHeight);
 }

@@ -17,6 +17,7 @@ export const FormFieldBookend = ({
       data-slot="formfield-bookend"
       data-position={position}
       data-is-string={isString}
+      data-bordered="true"
     >
       {children}
     </Box>

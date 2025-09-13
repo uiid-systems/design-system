@@ -1,5 +1,6 @@
 @import "./css/primitives/colors.tokens.css";
 @import "./css/primitives/spacing.tokens.css";
+@import "./css/components/forms.tokens.css";
 
 :root {
   --white: white;

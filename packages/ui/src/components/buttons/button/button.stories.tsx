@@ -1,18 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  Home,
-  CircleArrowRight,
-  Copy,
-  Send,
-  Bell,
-  MessageCircleMore,
-  ExternalLink,
-} from "lucide-react";
+import { Send, Bell, MessageCircleMore, ExternalLink } from "lucide-react";
 import { fn } from "storybook/test";
+import { Stack, Group } from "../../layout";
 import { Button } from "./button";
 
 const meta = {
-  title: "Components/Buttons/Button",
+  title: "Components/Buttons",
   component: Button,
   args: {
     onClick: fn(),
@@ -30,7 +23,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Variants: Story = {
+export const Default: Story = {
+  name: "Button",
   render: (args) => {
     const variants = [
       { variant: undefined, label: "default" },
@@ -41,9 +35,9 @@ export const Variants: Story = {
     ];
 
     return (
-      <div style={{ display: "flex", gap: "1rem", flexDirection: "column" }}>
+      <Stack gap={4}>
         {variants.map((variant) => (
-          <Grid key={variant.label}>
+          <Group gap={2} ay="center" key={variant.label}>
             <Button {...args} variant={variant.variant}>
               default
             </Button>
@@ -82,73 +76,18 @@ export const Variants: Story = {
               variant={variant.variant}
               fill="ghost"
             />
-          </Grid>
+          </Group>
         ))}
-      </div>
+        <Button
+          {...args}
+          href="https://google.com"
+          target="_blank"
+          icon={<ExternalLink size={18} />}
+          iconPosition="after"
+        >
+          go to google.com
+        </Button>
+      </Stack>
     );
   },
-};
-
-export const Sizes: Story = {
-  render: (args) => (
-    <Grid>
-      <Button {...args} size="sm">
-        sm
-      </Button>
-      <Button {...args} size="md">
-        md
-      </Button>
-      <Button {...args} size="lg">
-        lg
-      </Button>
-    </Grid>
-  ),
-};
-
-export const Icons: Story = {
-  render: (args) => (
-    <Grid>
-      <Button {...args} icon={<Home size={18} />} iconPosition="before">
-        Go home
-      </Button>
-      <Button
-        {...args}
-        icon={<CircleArrowRight size={18} />}
-        iconPosition="after"
-      >
-        Go to next step
-      </Button>
-      <Button {...args} icon={<Copy size={18} />} aria-label="Copy" />
-    </Grid>
-  ),
-};
-
-export const AsLink: Story = {
-  render: (args) => (
-    <Grid>
-      <Button
-        {...args}
-        href="https://google.com"
-        target="_blank"
-        icon={<ExternalLink size={18} />}
-        iconPosition="after"
-      >
-        go to google.com
-      </Button>
-    </Grid>
-  ),
-};
-
-const Grid = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "0.5rem",
-      }}
-    >
-      {children}
-    </div>
-  );
 };

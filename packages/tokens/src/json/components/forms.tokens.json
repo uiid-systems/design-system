@@ -1,0 +1,55 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Form Component Tokens",
+  "forms": {
+    "background": { "$value": "{shade.background}", "$type": "color" },
+    "backgroundFocus": {
+      "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
+      "$type": "color"
+    },
+    "foreground": { "$value": "{shade.foreground}", "$type": "color" },
+    "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
+    "paddingX": { "$value": "0.75rem", "$type": "dimension" },
+    "border": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "radius": { "$value": "0.5rem", "$type": "dimension" },
+      "width": { "$value": "1px", "$type": "dimension" }
+    },
+    "outline": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "offset": { "$value": "0.125rem", "$type": "dimension" },
+      "style": { "$value": "solid", "$type": "strokeStyle" },
+      "width": { "$value": "0.125rem", "$type": "dimension" }
+    },
+    "placeholder": {
+      "color": { "$value": "{shade.accent}", "$type": "color" }
+    },
+    "size": {
+      "sm": {
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "2.5rem", "$type": "dimension" },
+        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "fontSize": { "$value": "1rem", "$type": "dimension" }
+      }
+    },
+    "state": {
+      "valid": {
+        "borderColor": { "$value": "{colors.green.500}", "$type": "color" },
+        "outlineColor": { "$value": "{colors.green.500}", "$type": "color" }
+      },
+      "invalid": {
+        "borderColor": { "$value": "{colors.red.500}", "$type": "color" },
+        "outlineColor": { "$value": "{colors.red.500}", "$type": "color" }
+      },
+      "disabled": {
+        "opacity": { "$value": "0.5", "$type": "number" }
+      }
+    }
+  }
+}

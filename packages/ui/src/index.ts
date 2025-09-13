@@ -1,7 +1,5 @@
-// Layout components
+/** @todo move to primitives package */
 export * from "./components/layout";
-
-// Typography components
 export * from "./components/typography";
 
 // Form components

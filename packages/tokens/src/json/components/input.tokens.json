@@ -2,43 +2,9 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Input Component Tokens",
   "input": {
-    "background": { "$value": "{shade.background}", "$type": "color" },
-    "backgroundFocus": {
-      "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
-      "$type": "color"
-    },
-    "foreground": { "$value": "{shade.foreground}", "$type": "color" },
-    "border": {
-      "color": { "$value": "{shade.foreground}", "$type": "color" },
-      "radius": { "$value": "{button.borderRadius}", "$type": "dimension" },
-      "width": { "$value": "{button.borderWidth}", "$type": "dimension" }
-    },
-    "outline": {
-      "color": { "$value": "{shade.foreground}", "$type": "color" },
-      "offset": { "$value": "0.125rem", "$type": "dimension" },
-      "style": { "$value": "solid", "$type": "strokeStyle" },
-      "width": { "$value": "0.125rem", "$type": "dimension" }
-    },
-    "state": {
-      "valid": {
-        "borderColor": { "$value": "{colors.green.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.green.500}", "$type": "color" }
-      },
-      "invalid": {
-        "borderColor": { "$value": "{colors.red.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.red.500}", "$type": "color" }
-      },
-      "disabled": {
-        "opacity": { "$value": "0.5", "$type": "number" }
-      }
-    },
     "required": {
       "content": { "$value": "attr(data-required-content)", "$type": "string" },
       "color": { "$value": "{colors.red.500}", "$type": "color" }
-    },
-    "autofill": {
-      "background": { "$value": "{shade.background}", "$type": "color" },
-      "foreground": { "$value": "{shade.foreground}", "$type": "color" }
     },
     "label": {
       "wrapperGap": { "$value": "0.5rem", "$type": "dimension" },
@@ -57,46 +23,6 @@
       "fontSize": { "$value": "0.75rem", "$type": "dimension" },
       "fontWeight": { "$value": "600", "$type": "fontWeight" },
       "color": { "$value": "{shade.foreground}", "$type": "color" }
-    }
-  },
-  "formfield": {
-    "fontSize": { "$value": "0.875rem", "$type": "dimension" },
-    "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
-    "paddingX": { "$value": "1rem", "$type": "dimension" },
-    "size": {
-      "sm": {
-        "height": { "$value": "{button.size.sm.height}", "$type": "dimension" },
-        "paddingX": {
-          "$value": "{button.size.sm.paddingX}",
-          "$type": "dimension"
-        },
-        "fontSize": {
-          "$value": "{button.size.sm.fontSize}",
-          "$type": "dimension"
-        }
-      },
-      "md": {
-        "height": { "$value": "{button.size.md.height}", "$type": "dimension" },
-        "paddingX": {
-          "$value": "{button.size.md.paddingX}",
-          "$type": "dimension"
-        },
-        "fontSize": {
-          "$value": "{button.size.md.fontSize}",
-          "$type": "dimension"
-        }
-      },
-      "lg": {
-        "height": { "$value": "{button.size.lg.height}", "$type": "dimension" },
-        "paddingX": {
-          "$value": "{button.size.lg.paddingX}",
-          "$type": "dimension"
-        },
-        "fontSize": {
-          "$value": "{button.size.lg.fontSize}",
-          "$type": "dimension"
-        }
-      }
     }
   }
 }

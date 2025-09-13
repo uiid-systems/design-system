@@ -42,7 +42,7 @@ const meta = {
         label="With placeholder and bookends"
         description="Set a disabled placeholder"
         placeholder="Select an option"
-        before="B"
+        before="PREFIX:"
       />
 
       <Group fullwidth evenly gap={2} ay="end">

@@ -40,11 +40,15 @@ const meta = {
         <Input
           {...args}
           label="Input with a bookend"
-          before={<button style={{ height: "100%" }}>before</button>}
+          before={
+            <button style={{ height: "100%", border: "none" }}>before</button>
+          }
         />
         <Input
           {...args}
-          after={<button style={{ height: "100%" }}>after</button>}
+          after={
+            <button style={{ height: "100%", border: "none" }}>after</button>
+          }
         />
       </Stack>
 
