@@ -91,17 +91,17 @@
     pointer-events: none;
     opacity: var(--forms-state-disabled-opacity);
   }
-}
 
-/** Slotted Input */
-[data-slotted="true"] {
-  background-color: transparent;
-  outline: none;
-  border: none;
-  border-radius: 0;
-  align-self: stretch;
-  color: var(--shade-foreground);
-  padding-inline: var(--forms-paddingX);
+  /** Slotted Input */
+  [data-slotted="true"] {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    align-self: stretch;
+    color: var(--shade-foreground);
+    padding-inline: var(--forms-paddingX);
+  }
 }
 
 /** Placeholder */
