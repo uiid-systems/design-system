@@ -23,16 +23,17 @@ type Story = StoryObj<typeof meta>;
 
 export const AdressForm: Story = {
   render: () => {
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState(true);
 
     const formRef = useRef<HTMLFormElement>(null);
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef = useRef<HTMLInputElement>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIsValid(
-        Boolean(firstNameRef.current?.value && lastNameRef.current?.value),
-      );
+      console.log("handleInputChange currently deactivated");
+      // setIsValid(
+      //   Boolean(firstNameRef.current?.value && lastNameRef.current?.value),
+      // );
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

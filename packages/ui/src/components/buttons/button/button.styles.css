@@ -149,7 +149,7 @@
   }
 
   [data-slot="button-loading-dots"] {
-    width: 1.5rem;
+    width: 1rem;
     aspect-ratio: 2;
     --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg, var(--shade-background)) 90%, #0000);
     background:

@@ -2,8 +2,8 @@
   align-content: center;
   background-color: var(--forms-background);
   color: var(--input-bookend-color);
-  font-size: var(--input-bookend-fontSize);
-  font-weight: var(--input-bookend-fontWeight);
+  font-size: var(--input-bookend-font-size);
+  font-weight: var(--input-bookend-font-weight);
   overflow: hidden;
   text-wrap: nowrap;
 

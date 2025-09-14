@@ -1,0 +1,8 @@
+[data-slot="formfield-hint"] {
+  color: var(--input-hint-color);
+  font-size: var(--input-hint-font-size);
+  font-style: var(--input-hint-font-style);
+  font-weight: var(--input-hint-font-weight);
+  margin-inline-start: auto;
+  margin-inline-end: 0.25rem;
+}

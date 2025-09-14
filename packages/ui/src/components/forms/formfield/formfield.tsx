@@ -1,5 +1,9 @@
-import { ConditionalRender, Slots } from "../../layout";
-import { FormFieldLabel, FormFieldDescription } from "./subcomponents";
+import { ConditionalRender, Slots, Group } from "../../layout";
+import {
+  FormFieldLabel,
+  FormFieldDescription,
+  FormFieldHint,
+} from "./subcomponents";
 import type { FormFieldProps } from "./formfield.types";
 
 import "./formfield.styles.css";
@@ -22,6 +26,7 @@ FormField.displayName = "FormField";
 const Wrapper = ({
   label,
   description,
+  hint,
   name,
   required,
   hasError,
@@ -29,13 +34,22 @@ const Wrapper = ({
 }: FormFieldProps) => (
   <Slots
     data-slot="formfield"
-    before={<Label label={label} name={name} required={required} />}
+    before={<Headline label={label} hint={hint} required={required} />}
     after={<Description description={description} hasError={hasError} />}
     fullwidth={props.fullwidth}
     {...props}
   />
 );
 
+const Headline = ({ name, required, label, hint }: LabelProps & HintProps) =>
+  (label || hint) && (
+    <Group fullwidth ax="space-between" ay="center" gap={8}>
+      {label && <Label label={label} name={name} required={required} />}
+      {hint && <Hint hint={hint} />}
+    </Group>
+  );
+
+type LabelProps = Pick<FormFieldProps, "label" | "name" | "required">;
 const Label = ({
   label,
   name,
@@ -47,10 +61,12 @@ const Label = ({
     </FormFieldLabel>
   );
 
-const Description = ({
-  description,
-  hasError,
-}: Pick<FormFieldProps, "description" | "hasError">) =>
+type HintProps = Pick<FormFieldProps, "hint">;
+const Hint = ({ hint }: HintProps) =>
+  hint && <FormFieldHint>{hint}</FormFieldHint>;
+
+type DescriptionProps = Pick<FormFieldProps, "description" | "hasError">;
+const Description = ({ description, hasError }: DescriptionProps) =>
   description && (
     <FormFieldDescription hasError={hasError}>
       {description}

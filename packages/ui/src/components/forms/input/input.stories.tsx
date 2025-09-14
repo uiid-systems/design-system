@@ -22,14 +22,15 @@ const meta = {
 
       <Input
         {...args}
-        label="Input with a label"
+        label="Input with label, description, hint"
         description="This is a basic description"
+        hint="Optional"
         name="input-with-label"
       />
 
       <Input
         {...args}
-        label="Input with a required asterisk"
+        label="Required input"
         description="Type at least 5 characters"
         minLength={5}
         required
@@ -38,44 +39,22 @@ const meta = {
 
       <Input
         {...args}
-        label="Input with an error message"
+        label="Input with an error"
         description="Type at least 5 characters"
-        minLength={5}
         errorMessage="You haven't typed enough characters!"
+        hasError
+        minLength={5}
         validate
       />
 
-      <Stack ax="stretch" gap={2}>
-        <Input
-          {...args}
-          label="Input with a bookend"
-          before={
-            <button style={{ height: "100%", border: "none" }}>before</button>
-          }
-        />
-        <Input
-          {...args}
-          after={
-            <button style={{ height: "100%", border: "none" }}>after</button>
-          }
-        />
-      </Stack>
-
-      <Input
-        {...args}
-        label="Input with string bookends"
-        before="B"
-        after="A"
-      />
+      <Input {...args} label="Input with bookends" before="B" after="A" />
 
       <Group fullwidth evenly ay="end" gap={2}>
         <Input {...args} label="Input in a group" />
-        <Input {...args} />
+        <div>
+          <Input {...args} />
+        </div>
       </Group>
-
-      <Input {...args} type="date" label="Date input" />
-      <Input {...args} type="datetime-local" label="Datetime input" />
-      <Input {...args} type="time" label="Time input" />
     </Stack>
   ),
 } satisfies Meta<typeof Input>;

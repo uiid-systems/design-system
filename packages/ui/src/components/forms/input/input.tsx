@@ -9,18 +9,18 @@ export const Input = ({
   name,
   label,
   description,
+  hint,
   before,
   after,
-  // invalid,
   disabled,
   placeholder,
   fullwidth,
   errorMessage,
+  hasError,
   ...props
 }: InputProps) => {
   const hasBookend = Boolean(before || after);
-  const isWrapped = Boolean(label || description);
-  const hasError = Boolean(errorMessage);
+  const isWrapped = Boolean(label || description || hint);
 
   const propsWithId = { uiid: "input", ...props };
 
@@ -30,6 +30,7 @@ export const Input = ({
       name={name}
       label={label}
       description={hasError ? errorMessage : description}
+      hint={hint}
       hasError={hasError}
       fullwidth={fullwidth}
       required={props.required}
@@ -42,6 +43,7 @@ export const Input = ({
           data-slotted={hasBookend ? true : undefined}
           data-wrapped={isWrapped ? true : undefined}
           data-fullwidth={fullwidth && !isWrapped ? true : undefined}
+          data-invalid={hasError ? true : undefined}
           name={name}
           id={name}
           tabIndex={disabled ? -1 : undefined}

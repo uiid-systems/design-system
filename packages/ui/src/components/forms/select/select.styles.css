@@ -2,7 +2,7 @@
   appearance: none;
   max-height: calc(var(--forms-height) - 2px);
   margin-inline-end: var(--forms-paddingX);
-  padding-inline-end: calc(var(--forms-paddingX) * 2 + 12px);
+  padding-inline-end: calc(var(--forms-paddingX) * 2 + 12px) !important;
 
   &:has(option:disabled:checked) {
     color: var(--shade-accent);

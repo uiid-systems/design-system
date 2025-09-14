@@ -65,15 +65,21 @@
     /** Valid */
     &:valid,
     &:has(:valid) {
-      border-color: var(--forms-state-valid-color);
-      outline-color: var(--forms-state-valid-color);
+      border-color: var(--forms-state-valid-fg);
+      outline-color: var(--forms-state-valid-fg);
     }
     /** Invalid */
     &:invalid,
     &:has(:invalid) {
-      border-color: var(--forms-state-invalid-color);
-      outline-color: var(--forms-state-invalid-color);
+      border-color: var(--forms-state-invalid-fg);
+      outline-color: var(--forms-state-invalid-fg);
     }
+  }
+
+  &:where([data-invalid="true"]) {
+    background-color: color-mix(in srgb, var(--forms-background), var(--forms-state-invalid-fg) 2%);
+    border-color: var(--forms-state-invalid-fg);
+    outline-color: var(--forms-state-invalid-fg);
   }
 
   /** Focus */

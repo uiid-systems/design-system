@@ -1,6 +1,6 @@
 [data-slot="formfield-label"] {
-  font-size: var(--input-label-fontSize);
-  font-weight: var(--input-label-fontWeight);
+  font-size: var(--input-label-font-size);
+  font-weight: var(--input-label-font-weight);
 
   &[data-required="true"] {
     display: inline-block;
