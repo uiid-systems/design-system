@@ -6,9 +6,13 @@
   border: var(--button-border-width) solid var(--button-border-color);
   color: var(--button-fg);
   cursor: pointer;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   font-size: var(--button-fontSize);
   height: var(--button-height);
+  overflow: hidden;
   padding-inline: calc(var(--forms-paddingX) * 2);
   text-underline-offset: 0.125rem;
   transition: all var(--button-transition) ease-in-out;
@@ -108,9 +112,12 @@
   }
 
   & > * {
-    grid-area: 1 / 1;
-    place-content: center;
-    text-align: center;
+    min-height: var(--button-height);
+    transition: all var(--button-transition) ease-in-out;
+  }
+
+  &:where([data-loading="true"]) > * {
+    transform: translate3d(0, -100%, 0);
   }
 
   /**
@@ -142,6 +149,7 @@
 }
 
 [data-slot="button-loading"] {
+  align-content: center;
   margin-inline: auto;
   visibility: visible;
   &[aria-hidden="true"] {
@@ -149,7 +157,8 @@
   }
 
   [data-slot="button-loading-dots"] {
-    width: 1rem;
+    align-self: center;
+    width: 1.25rem;
     aspect-ratio: 2;
     --_g: no-repeat radial-gradient(circle closest-side, var(--button-fg, var(--shade-background)) 90%, #0000);
     background:

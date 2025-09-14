@@ -34,7 +34,9 @@ const Wrapper = ({
 }: FormFieldProps) => (
   <Slots
     data-slot="formfield"
-    before={<Headline label={label} hint={hint} required={required} />}
+    before={
+      <Headline label={label} hint={hint} required={required} name={name} />
+    }
     after={<Description description={description} hasError={hasError} />}
     fullwidth={props.fullwidth}
     {...props}

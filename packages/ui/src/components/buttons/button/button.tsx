@@ -1,6 +1,6 @@
-import type { ButtonProps } from "./button.types";
 import { renderWithProps } from "../../../utils/render";
 
+import type { ButtonProps } from "./button.types";
 import "./button.styles.css";
 
 export const Button = ({
@@ -99,19 +99,17 @@ export const Button = ({
     onKeyDown: handleKeyDown,
   };
 
-  const content = (
+  const Content = () => (
     <>
-      {loading !== undefined && (
-        <span data-slot="button-loading" aria-hidden={!loading}>
-          {loadingText ?? <aside data-slot="button-loading-dots" />}
-        </span>
-      )}
       <span data-slot="button-content" aria-hidden={loading}>
         {icon && iconPosition === "before" && icon}
         {icon && iconPosition !== "before" && iconPosition !== "after"
           ? icon
           : children}
         {icon && iconPosition === "after" && icon}
+      </span>
+      <span data-slot="button-loading" aria-hidden={!loading}>
+        {loadingText ?? <aside data-slot="button-loading-dots" />}
       </span>
     </>
   );
@@ -120,7 +118,7 @@ export const Button = ({
     fallbackElement: isLink ? "a" : "button",
     props: componentProps,
     render,
-    children: content,
+    children: <Content />,
   });
 };
 
