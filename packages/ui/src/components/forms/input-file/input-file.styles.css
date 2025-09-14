@@ -1,0 +1,17 @@
+[data-slot="input-file"] {
+  line-height: var(--forms-height);
+  margin-inline-start: var(--forms-paddingX);
+  padding-inline-start: calc(var(--forms-paddingX) * 2 + 12px) !important;
+
+  &::file-selector-button {
+    display: none;
+  }
+}
+
+[data-slot="formfield-bookend"]:has([data-slot="file-icon"]) {
+  height: 100%;
+  padding-inline-start: var(--forms-paddingX);
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+}
