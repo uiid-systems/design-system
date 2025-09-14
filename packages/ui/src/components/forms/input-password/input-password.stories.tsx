@@ -19,7 +19,7 @@ const meta = {
     <Stack ax="stretch" style={{ gap: 16 }}>
       <InputPassword
         {...args}
-        label="Date input"
+        label="Password input"
         name="input-password"
         required
       />

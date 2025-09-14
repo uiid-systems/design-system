@@ -5,7 +5,7 @@ import { Stack, Group } from "../../layout";
 import { Button } from "./button";
 
 const meta = {
-  title: "Components/Buttons",
+  title: "Components/Buttons/Button",
   component: Button,
   args: {
     onClick: fn(),

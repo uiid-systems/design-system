@@ -40,12 +40,10 @@
     },
     "state": {
       "valid": {
-        "borderColor": { "$value": "{colors.green.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.green.500}", "$type": "color" }
+        "color": { "$value": "{colors.green.500}", "$type": "color" }
       },
       "invalid": {
-        "borderColor": { "$value": "{colors.red.500}", "$type": "color" },
-        "outlineColor": { "$value": "{colors.red.500}", "$type": "color" }
+        "color": { "$value": "{colors.red.500}", "$type": "color" }
       },
       "disabled": {
         "opacity": { "$value": "0.5", "$type": "number" }

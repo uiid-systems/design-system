@@ -15,10 +15,13 @@ export const Input = ({
   disabled,
   placeholder,
   fullwidth,
+  errorMessage,
   ...props
 }: InputProps) => {
   const hasBookend = Boolean(before || after);
   const isWrapped = Boolean(label || description);
+  const hasError = Boolean(errorMessage);
+
   const propsWithId = { uiid: "input", ...props };
 
   return (
@@ -26,7 +29,8 @@ export const Input = ({
       data-validate={validate ? true : undefined}
       name={name}
       label={label}
-      description={description}
+      description={hasError ? errorMessage : description}
+      hasError={hasError}
       fullwidth={fullwidth}
       required={props.required}
     >

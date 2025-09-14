@@ -13,8 +13,7 @@
 
 /** Input */
 [uiid="input"],
-[uiid="select"],
-[data-uiid="checkbox-label"] {
+[uiid="select"] {
   flex: 1;
   font-size: var(--forms-fontSize);
   padding-inline: var(--forms-paddingX);
@@ -66,14 +65,14 @@
     /** Valid */
     &:valid,
     &:has(:valid) {
-      border-color: var(--forms-state-valid-borderColor);
-      outline-color: var(--forms-state-valid-outlineColor);
+      border-color: var(--forms-state-valid-color);
+      outline-color: var(--forms-state-valid-color);
     }
     /** Invalid */
     &:invalid,
     &:has(:invalid) {
-      border-color: var(--forms-state-invalid-borderColor);
-      outline-color: var(--forms-state-invalid-outlineColor);
+      border-color: var(--forms-state-invalid-color);
+      outline-color: var(--forms-state-invalid-color);
     }
   }
 

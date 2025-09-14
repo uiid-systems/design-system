@@ -36,6 +36,15 @@ const meta = {
         validate
       />
 
+      <Input
+        {...args}
+        label="Input with an error message"
+        description="Type at least 5 characters"
+        minLength={5}
+        errorMessage="You haven't typed enough characters!"
+        validate
+      />
+
       <Stack ax="stretch" gap={2}>
         <Input
           {...args}

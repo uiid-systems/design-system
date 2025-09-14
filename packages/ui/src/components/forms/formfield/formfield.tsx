@@ -24,12 +24,13 @@ const Wrapper = ({
   description,
   name,
   required,
+  hasError,
   ...props
 }: FormFieldProps) => (
   <Slots
     data-slot="formfield"
     before={<Label label={label} name={name} required={required} />}
-    after={<Description description={description} />}
+    after={<Description description={description} hasError={hasError} />}
     fullwidth={props.fullwidth}
     {...props}
   />
@@ -46,5 +47,12 @@ const Label = ({
     </FormFieldLabel>
   );
 
-const Description = ({ description }: Pick<FormFieldProps, "description">) =>
-  description && <FormFieldDescription>{description}</FormFieldDescription>;
+const Description = ({
+  description,
+  hasError,
+}: Pick<FormFieldProps, "description" | "hasError">) =>
+  description && (
+    <FormFieldDescription hasError={hasError}>
+      {description}
+    </FormFieldDescription>
+  );
