@@ -23,7 +23,6 @@ const meta = {
         label="Date input"
         type="date"
         name="input-date"
-        required
       />
 
       <InputDatetime
@@ -31,7 +30,6 @@ const meta = {
         label="Date/time input"
         type="datetime-local"
         name="input-with-label"
-        required
       />
 
       <InputDatetime
@@ -39,7 +37,6 @@ const meta = {
         label="Time input"
         type="time"
         name="input-time"
-        required
       />
 
       <InputDatetime

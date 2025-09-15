@@ -10,14 +10,7 @@
   &[data-position="before"] {
     border-top-left-radius: var(--forms-border-radius);
     border-bottom-left-radius: var(--forms-border-radius);
-
-    &[data-is-string="true"] {
-      padding-inline-start: var(--forms-paddingX);
-
-      &[data-bordered="true"] {
-        padding-inline-end: var(--forms-paddingX);
-      }
-    }
+    padding-inline: var(--forms-paddingX);
 
     &[data-bordered="true"] {
       border-right: var(--forms-border-width) solid var(--forms-border-color);
@@ -27,13 +20,10 @@
   &[data-position="after"] {
     border-top-right-radius: var(--forms-border-radius);
     border-bottom-right-radius: var(--forms-border-radius);
+    padding-inline: var(--forms-paddingX);
 
-    &[data-is-string="true"] {
-      padding-inline-end: var(--forms-paddingX);
-
-      &[data-bordered="true"] {
-        padding-inline-start: var(--forms-paddingX);
-      }
+    &[data-bordered="true"] {
+      border-left: var(--forms-border-width) solid var(--forms-border-color);
     }
 
     &[data-bordered="true"] {

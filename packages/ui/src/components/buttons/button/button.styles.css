@@ -45,7 +45,7 @@
   &:where([variant="subtle"]) {
     --button-bg: var(--button-variant-subtle-bg);
     --button-fg: var(--button-variant-subtle-fg);
-    border-color: var(--button-variant-subtle-border-color);
+    --button-border-color: var(--button-variant-subtle-border-color);
   }
   &:where([variant="primary"]) {
     --button-bg: var(--button-variant-primary-bg);
