@@ -15,13 +15,16 @@ const path = require("path");
  * - Generates CSS with layer scoping
  * - Handles nested token structures
  * - Supports all W3C Design Token types
+ * - Incremental builds (only processes changed files)
+ * - Force mode with --force or -f flag
  */
 
 class TokenGenerator {
-  constructor() {
+  constructor(options = {}) {
     this.tokensRoot = path.resolve(__dirname, "../packages/tokens/src");
     this.jsonDir = path.join(this.tokensRoot, "json");
     this.cssDir = path.join(this.tokensRoot, "css");
+    this.force = options.force || false;
   }
 
   /**
@@ -42,13 +45,19 @@ class TokenGenerator {
         return;
       }
 
-      // Process each JSON file
+      // Process each JSON file and track results
+      const results = [];
       for (const jsonFile of jsonFiles) {
-        await this.processTokenFile(jsonFile);
+        const result = await this.processTokenFile(jsonFile);
+        results.push(result);
       }
 
+      // Summary logging
+      const processed = results.filter((r) => r?.processed).length;
+      const skipped = results.filter((r) => r?.skipped).length;
+
       console.log(
-        `\n✅ Successfully generated ${jsonFiles.length} CSS token file(s)`,
+        `\n✅ Token generation complete: ${processed} processed, ${skipped} skipped (${jsonFiles.length} total)`,
       );
     } catch (error) {
       console.error("❌ Error generating tokens:", error.message);
@@ -88,9 +97,36 @@ class TokenGenerator {
   }
 
   /**
+   * Check if JSON file is newer than corresponding CSS file
+   */
+  isJsonNewer(jsonFile, cssFullPath) {
+    if (!fs.existsSync(cssFullPath)) {
+      return true; // CSS file doesn't exist, need to generate
+    }
+
+    const jsonStats = fs.statSync(jsonFile.fullPath);
+    const cssStats = fs.statSync(cssFullPath);
+
+    return jsonStats.mtime > cssStats.mtime;
+  }
+
+  /**
    * Process a single JSON token file
    */
   async processTokenFile(jsonFile) {
+    // Determine output path first
+    const cssRelativePath = jsonFile.relativePath.replace(
+      /\.tokens\.json$/,
+      ".tokens.css",
+    );
+    const cssFullPath = path.join(this.cssDir, cssRelativePath);
+
+    // Check if JSON is newer than CSS (unless force flag is set)
+    if (!this.force && !this.isJsonNewer(jsonFile, cssFullPath)) {
+      console.log(`⏭️  Skipping: ${jsonFile.relativePath} (unchanged)`);
+      return { skipped: true };
+    }
+
     console.log(`📄 Processing: ${jsonFile.relativePath}`);
 
     try {
@@ -101,13 +137,6 @@ class TokenGenerator {
       // Generate CSS content
       const cssContent = this.generateCssFromTokens(tokens, jsonFile);
 
-      // Determine output path
-      const cssRelativePath = jsonFile.relativePath.replace(
-        /\.tokens\.json$/,
-        ".tokens.css",
-      );
-      const cssFullPath = path.join(this.cssDir, cssRelativePath);
-
       // Ensure output directory exists
       this.ensureDirectoryExists(path.dirname(cssFullPath));
 
@@ -117,6 +146,8 @@ class TokenGenerator {
       console.log(
         `   \x1b[32m✓\x1b[0m Generated: \x1b[32mcss/${cssRelativePath}\x1b[0m`,
       );
+
+      return { processed: true };
     } catch (error) {
       console.error(
         `   \x1b[31m❌\x1b[0m Failed to process \x1b[31m${jsonFile.relativePath}\x1b[0m:`,
@@ -267,7 +298,14 @@ ${cssProperties.trimEnd()}
 
 // Execute if run directly
 if (require.main === module) {
-  const generator = new TokenGenerator();
+  const args = process.argv.slice(2);
+  const force = args.includes("--force") || args.includes("-f");
+
+  if (force) {
+    console.log("🔄 Force mode enabled - regenerating all files\n");
+  }
+
+  const generator = new TokenGenerator({ force });
   generator.generate().catch(console.error);
 }
 
