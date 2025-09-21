@@ -1,7 +1,6 @@
 [data-slot="select-chevron"] {
   pointer-events: none;
   background: var(--input-background);
-  padding-inline-end: var(--forms-paddingX);
   height: 100%;
   align-content: center;
 }

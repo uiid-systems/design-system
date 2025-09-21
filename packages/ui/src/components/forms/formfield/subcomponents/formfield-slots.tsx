@@ -1,6 +1,6 @@
-import { Slots, type SlotsProps } from "../../../layout";
-import { FormFieldBookend } from "./formfield-bookend";
+import { Slots, type SlotsProps } from "@uiid/primitives";
 
+import { FormFieldBookend } from "./formfield-bookend";
 import "./formfield-slots.css";
 
 type FormFieldSlotsProps = React.PropsWithChildren & SlotsProps;

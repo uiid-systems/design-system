@@ -1,4 +1,4 @@
-import type { SlotsProps } from "../../components/layout";
+import type { SlotsProps } from "@uiid/primitives";
 
 export type FormProps = {
   label?: string;

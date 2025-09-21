@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group } from "../../layout";
+
+import { Stack, Group } from "@uiid/primitives";
+
 import { Button } from "../../buttons";
 import { Input } from "../";
 

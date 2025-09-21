@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack } from "../../layout";
+
+import { Stack } from "@uiid/primitives";
 
 import { SelectState } from "./select-state";
 

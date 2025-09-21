@@ -1,4 +1,5 @@
-import { ConditionalRender, Group, Stack } from "../../layout";
+import { ConditionalRender, Group, Stack } from "@uiid/primitives";
+
 import { FormFieldLabel, FormFieldDescription } from "../formfield";
 import type { CheckboxProps } from "./checkbox.types";
 

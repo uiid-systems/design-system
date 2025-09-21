@@ -1,5 +1,6 @@
+import type { SlotsProps } from "@uiid/primitives";
+
 import type { FormProps } from "../types";
-import type { SlotsProps } from "../../layout";
 import type { FormFieldDescriptionProps } from "./subcomponents";
 
 export type FormFieldProps = React.PropsWithChildren &

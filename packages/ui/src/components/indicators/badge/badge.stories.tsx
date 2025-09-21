@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack } from "../../layout";
+
+import { Stack } from "@uiid/primitives";
+
 import { Badge } from "./badge";
 
 const meta = {

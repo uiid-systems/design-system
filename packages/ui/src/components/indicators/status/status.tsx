@@ -1,5 +1,4 @@
-import { Group } from "../../layout";
-import { Text } from "../../typography";
+import { Group, Text } from "@uiid/primitives";
 
 import type { StatusProps } from "./status.types";
 import "./status.styles.css";

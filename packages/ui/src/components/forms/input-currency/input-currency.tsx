@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+
 import { Input } from "../input/input";
+
 import { useCurrencyHelpers } from "./input-currency.hooks";
 import type { InputCurrencyProps } from "./input-currency.types";
 

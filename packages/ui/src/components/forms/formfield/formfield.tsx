@@ -1,11 +1,11 @@
-import { ConditionalRender, Slots, Group } from "../../layout";
+import { ConditionalRender, Slots, Group } from "@uiid/primitives";
+
 import {
   FormFieldLabel,
   FormFieldDescription,
   FormFieldHint,
 } from "./subcomponents";
 import type { FormFieldProps } from "./formfield.types";
-
 import "./formfield.styles.css";
 
 export const FormField = ({ children, ...props }: FormFieldProps) => {
@@ -38,7 +38,6 @@ const Wrapper = ({
       <Headline label={label} hint={hint} required={required} name={name} />
     }
     after={<Description description={description} hasError={hasError} />}
-    fullwidth={props.fullwidth}
     {...props}
   />
 );

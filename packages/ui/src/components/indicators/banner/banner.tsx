@@ -1,4 +1,4 @@
-import { Group } from "../../layout";
+import { Group } from "@uiid/primitives";
 
 export const Banner = () => {
   return (

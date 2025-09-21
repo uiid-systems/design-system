@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Send, Bell, MessageCircleMore, ExternalLink } from "lucide-react";
 import { fn } from "storybook/test";
-import { Stack, Group } from "../../layout";
+
+import { Stack, Group } from "@uiid/primitives";
+
 import { Button } from "./button";
 
 const meta = {

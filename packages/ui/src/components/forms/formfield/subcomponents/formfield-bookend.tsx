@@ -1,4 +1,4 @@
-import { Box } from "../../../layout";
+import { Box } from "@uiid/primitives";
 
 import "./formfield-bookend.css";
 

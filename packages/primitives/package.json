@@ -1,14 +1,15 @@
 {
-  "name": "@uiid/ui",
+  "name": "@uiid/primitives",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/uiid.umd.cjs",
-  "module": "dist/uiid.js",
+  "main": "dist/primitives.umd.cjs",
+  "module": "dist/primitives.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/uiid.js",
-      "require": "./dist/uiid.umd.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/primitives.js",
+      "require": "./dist/primitives.umd.cjs"
     }
   },
   "files": [
@@ -22,10 +23,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@uiid/primitives": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "cva": "^1.0.0-beta.4",
-    "lucide-react": "^0.539.0",
     "tailwind-merge": "^3.3.1"
   },
   "peerDependencies": {
@@ -53,6 +52,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   }
