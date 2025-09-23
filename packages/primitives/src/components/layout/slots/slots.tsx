@@ -1,11 +1,19 @@
 import { cloneElement } from "react";
+
+import { cx } from "../../../utils";
 import { Box } from "../box/box";
 import { ConditionalRender } from "../conditional-render/conditional-render";
 
 import type { Slot, SlotsProps } from "./slots.types";
-import "./slots.styles.css";
+import styles from "./slots.module.css";
 
-export const Slots = ({ before, after, children, ...props }: SlotsProps) => {
+export const Slots = ({
+  before,
+  after,
+  className,
+  children,
+  ...props
+}: SlotsProps) => {
   const hasSlot = Boolean(before || after);
 
   const renderSlot = (slot: Slot | undefined) => {
@@ -20,7 +28,9 @@ export const Slots = ({ before, after, children, ...props }: SlotsProps) => {
   return (
     <ConditionalRender
       condition={hasSlot}
-      wrapper={<Box uiid="slots" {...props} />}
+      wrapper={
+        <Box uiid="slots" className={cx(styles.slots, className)} {...props} />
+      }
     >
       {beforeElement}
       {children}

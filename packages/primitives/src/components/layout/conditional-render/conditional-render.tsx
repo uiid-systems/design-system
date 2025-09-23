@@ -1,10 +1,6 @@
 import { cloneElement } from "react";
 
-export type ConditionalRenderProps = {
-  condition: boolean;
-  wrapper: React.ReactElement<unknown>;
-  children?: React.ReactNode;
-};
+import type { ConditionalRenderProps } from "./conditional-render.types";
 
 export function ConditionalRender({
   condition,

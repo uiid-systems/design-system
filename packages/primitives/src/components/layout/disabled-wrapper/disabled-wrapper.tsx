@@ -1,22 +1,27 @@
+import { cx } from "../../../utils/";
 import { Box } from "../box/box";
-import {
-  ConditionalRender,
-  type ConditionalRenderProps,
-} from "../conditional-render/conditional-render";
+import { ConditionalRender } from "../conditional-render/conditional-render";
 
-import "./disabled-wrapper.styles.css";
+import type { DisabledProps } from "./disabled-wrapper.types";
 
-export type DisabledProps = React.PropsWithChildren<{
-  disabled: ConditionalRenderProps["condition"];
-}>;
+import styles from "./disabled-wrapper.module.css";
 
-export const DisabledWrapper = ({ children, disabled }: DisabledProps) => {
+export const DisabledWrapper = ({
+  disabled,
+  className,
+  children,
+}: DisabledProps) => {
   return (
     <ConditionalRender
       aria-disabled={disabled}
       data-disabled={disabled}
       condition={disabled}
-      wrapper={<Box uiid="disabled-wrapper" />}
+      wrapper={
+        <Box
+          uiid="disabled-wrapper"
+          className={cx(styles["disabled-wrapper"], className)}
+        />
+      }
     >
       {children}
     </ConditionalRender>

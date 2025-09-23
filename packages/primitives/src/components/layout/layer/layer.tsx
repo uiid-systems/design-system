@@ -1,9 +1,10 @@
 import { Children, isValidElement, cloneElement } from "react";
+
+import { cx } from "../../../utils";
 import { Box } from "../box/box";
 
 import type { LayerProps } from "./layer.types";
-
-import "./layer.styles.css";
+import styles from "./layer.module.css";
 
 export const Layer = ({
   offset,
@@ -58,7 +59,12 @@ export const Layer = ({
     : children;
 
   return (
-    <Box uiid="layer" className={className} style={parentStyle} {...props}>
+    <Box
+      uiid="layer"
+      className={cx(styles.layer, className)}
+      style={parentStyle}
+      {...props}
+    >
       {layeredChildren}
     </Box>
   );

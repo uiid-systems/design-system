@@ -1,4 +1,4 @@
-[uiid="disabled-wrapper"] {
+.disabled-wrapper {
   display: contents;
   cursor: not-allowed;
 }
