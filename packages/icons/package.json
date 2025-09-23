@@ -1,6 +1,6 @@
 {
   "name": "@uiid/icons",
-  "version": "0.0.25",
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/uiid-icons.umd.cjs",
   "module": "dist/uiid-icons.js",

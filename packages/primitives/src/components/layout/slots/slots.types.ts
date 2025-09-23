@@ -1,4 +1,4 @@
-import type { BoxProps } from "../box/box";
+import type { BoxProps } from "../box/box.types";
 
 export type Slot =
   | React.ReactElement<React.HTMLAttributes<HTMLElement>>

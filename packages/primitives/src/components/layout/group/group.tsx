@@ -1,10 +1,12 @@
-import { Box, type BoxProps } from "../box/box";
+import { Box } from "../box/box";
+import { cx } from "../../../utils";
 
-import "./group.styles.css";
+import type { GroupProps } from "./group.types";
+import styles from "./group.module.css";
 
-export type GroupProps = BoxProps;
-
-export const Group = ({ ...props }: GroupProps) => {
-  return <Box uiid="group" {...props} />;
+export const Group = ({ className, ...props }: GroupProps) => {
+  return (
+    <Box uiid="group" className={cx(styles.group, className)} {...props} />
+  );
 };
 Group.displayName = "Group";

@@ -1,14 +1,9 @@
 import { Children, isValidElement, cloneElement } from "react";
-import { Box, type BoxProps } from "../box/box";
+import { Box } from "../box/box";
+
+import type { LayerProps } from "./layer.types";
 
 import "./layer.styles.css";
-
-export type LayerProps = {
-  offset?: {
-    x?: number;
-    y?: number;
-  };
-} & BoxProps;
 
 export const Layer = ({
   offset,
