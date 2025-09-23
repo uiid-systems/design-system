@@ -1,4 +1,4 @@
-import { File, CloudUpload, Paperclip, Upload, Image } from "lucide-react";
+import { File, CloudUpload, Paperclip, Upload, Image } from "@uiid/icons";
 import "./file-icon.css";
 
 export type FileIconProps = {

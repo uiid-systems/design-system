@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Send, Bell, MessageCircleMore, ExternalLink } from "lucide-react";
+import { Send, Bell, MessageCircleMore, ExternalLink } from "@uiid/icons";
 import { fn } from "storybook/test";
 
 import { Stack, Group } from "@uiid/primitives";

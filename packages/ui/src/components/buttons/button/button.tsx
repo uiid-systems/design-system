@@ -1,4 +1,4 @@
-import { renderWithProps } from "../../../utils/render";
+import { renderWithProps } from "@uiid/primitives";
 
 import type { ButtonProps } from "./button.types";
 import "./button.styles.css";

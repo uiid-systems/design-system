@@ -26,6 +26,8 @@
     "baseUrl": ".",
     "paths": {
       "@ui/*": ["packages/ui/src/*"],
+      "@icons/*": ["packages/icons/src/*"],
+      "@primitives/*": ["packages/primitives/src/*"],
       "@tokens/*": ["packages/tokens/src/*"]
     }
   },

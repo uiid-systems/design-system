@@ -1,4 +1,4 @@
-import { ChevronsUpDown, ChevronsDownUp } from "lucide-react";
+import { ChevronsUpDown, ChevronsDownUp } from "@uiid/icons";
 
 import "./select-chevron.css";
 
