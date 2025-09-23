@@ -1,6 +1,6 @@
 @import "@uiid/tokens/primitives/typography.tokens.css";
 
-[uiid="text"] {
+.text {
   /* shared styles */
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;

@@ -1,7 +1,7 @@
-import { prepareComponentProps, renderWithProps } from "../../../utils";
+import { prepareComponentProps, renderWithProps, cx } from "../../../utils";
 import type { TextProps } from "./text.types";
 
-import "./text.styles.css";
+import styles from "./text.module.css";
 
 export const Text = ({ level, render, children, ...props }: TextProps) => {
   const preparedProps = prepareComponentProps({
@@ -11,7 +11,11 @@ export const Text = ({ level, render, children, ...props }: TextProps) => {
 
   return renderWithProps({
     fallbackElement: "span",
-    props: { ...preparedProps, level },
+    props: {
+      ...preparedProps,
+      level,
+      className: cx(styles.text, props.className),
+    },
     render,
     children,
   });
