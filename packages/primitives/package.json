@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/primitives.js",
       "require": "./dist/primitives.umd.cjs"
-    }
+    },
+    "./globals.css": "./dist/primitives.css"
   },
   "files": [
     "dist"

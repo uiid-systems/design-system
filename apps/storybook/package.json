@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@uiid/tokens": "workspace:*",
+    "@uiid/primitives": "workspace:*",
     "@uiid/ui": "workspace:*"
   },
   "devDependencies": {

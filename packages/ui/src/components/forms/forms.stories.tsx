@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+// import { useRef, useState } from "react";
+import { useRef } from "react";
 import type { StoryObj } from "@storybook/react-vite";
 
 import { Stack, Group } from "@uiid/primitives";
@@ -31,7 +32,8 @@ export const AdressForm: Story = {
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef = useRef<HTMLInputElement>(null);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = () => {
       console.log("handleInputChange currently deactivated");
       // setIsValid(
       //   Boolean(firstNameRef.current?.value && lastNameRef.current?.value),

@@ -53,6 +53,9 @@ importers:
 
   apps/storybook:
     dependencies:
+      '@uiid/primitives':
+        specifier: workspace:*
+        version: link:../../packages/primitives
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

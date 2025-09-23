@@ -6,7 +6,7 @@ import dts from "vite-plugin-dts";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tsconfigPaths(),
     dts({
       insertTypesEntry: true,
@@ -33,6 +33,11 @@ export default defineConfig({
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+        },
+        // Ensure CSS is inlined into JS
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === "style.css") return "primitives.css";
+          return assetInfo.name;
         },
       },
     },
