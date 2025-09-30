@@ -1,12 +1,14 @@
 @import "@uiid/tokens/components/input.tokens.css";
 
 /** TODO: be less hacky */
-[uiid="input"][data-wrapped="true"] {
+[uiid="input"][data-wrapped="true"],
+[uiid="textarea"][data-wrapped="true"] {
   width: -webkit-fill-available;
   width: 100%;
 }
 
-[uiid="input"][data-fullwidth="true"] {
+[uiid="input"][data-fullwidth="true"],
+[uiid="textarea"][data-fullwidth="true"] {
   width: 100%;
   width: -webkit-fill-available;
 }
@@ -50,6 +52,7 @@
 
 /* Input, Slots container */
 [uiid="input"],
+[uiid="textarea"],
 [data-slot="formfield-slots"] {
   background-color: var(--forms-background);
   border: var(--forms-border-width) solid var(--forms-border-color);

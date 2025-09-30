@@ -36,3 +36,6 @@ export * from "./select/select.types";
 
 export * from "./select-state/select-state";
 export * from "./select-state/select-state.types";
+
+export * from "./textarea/textarea";
+export * from "./textarea/textarea.types";
