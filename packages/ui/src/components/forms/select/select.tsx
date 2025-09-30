@@ -1,7 +1,7 @@
 import { FormField, FormFieldSlots } from "../formfield";
+
 import type { SelectProps } from "./select.types";
 import { SelectChevron } from "./subcomponents";
-
 import "./select.styles.css";
 
 export const Select = ({

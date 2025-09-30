@@ -28,6 +28,9 @@ export * from "./input-range/input-range.types";
 export * from "./input-zip/input-zip";
 export * from "./input-zip/input-zip.types";
 
+export * from "./progress/progress";
+export * from "./progress/progress.types";
+
 export * from "./radio-group/radio-group";
 export * from "./radio-group/radio-group.types";
 
