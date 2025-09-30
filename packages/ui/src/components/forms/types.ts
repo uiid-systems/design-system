@@ -1,5 +1,11 @@
 import type { SlotsProps } from "@uiid/primitives";
 
+export type FormOptionProps = {
+  value: string;
+  label: string;
+  disabled?: boolean;
+};
+
 export type FormProps = {
   label?: string;
   description?: React.ReactNode;

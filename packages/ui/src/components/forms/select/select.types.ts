@@ -1,10 +1,6 @@
-import type { FormProps } from "../types";
+import type { FormProps, FormOptionProps } from "../types";
 
-export type SelectOptionProps = {
-  value: string;
-  label: string;
-  disabled?: boolean;
-};
+export type SelectOptionProps = FormOptionProps;
 
 export type SelectProps = {
   ref?: React.Ref<HTMLSelectElement>;
