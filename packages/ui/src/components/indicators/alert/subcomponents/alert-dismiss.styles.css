@@ -1,0 +1,18 @@
+[data-slot="alert-dismiss"] {
+  margin-left: auto;
+  background-color: transparent;
+  border: none;
+
+  align-content: center;
+
+  svg {
+    cursor: pointer;
+    stroke: var(--alert-color-fg);
+    transition: all 50ms ease-in-out;
+    width: var(--alert-icon-size);
+
+    &:hover {
+      scale: var(--alert-icon-scale);
+    }
+  }
+}
