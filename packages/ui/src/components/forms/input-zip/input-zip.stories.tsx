@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputZip } from "./input-zip";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input Zip",
+  title: "Forms/Inputs/Input Zip",
   component: InputZip,
   args: {
     disabled: false,

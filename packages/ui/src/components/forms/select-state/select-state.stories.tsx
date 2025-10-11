@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { SelectState } from "./select-state";
 
 const meta = {
-  title: "Components/Forms/Selects/Select State",
+  title: "Forms/Selects/Select State",
   component: SelectState,
   args: {
     disabled: false,

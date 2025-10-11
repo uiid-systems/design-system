@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Textarea } from "./textarea";
 
 const meta = {
-  title: "Components/Forms/Textarea",
+  title: "Forms/Textarea",
   component: Textarea,
   args: {
     required: true,

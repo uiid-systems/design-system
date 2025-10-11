@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputDatetime } from "./input-datetime";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input Datetime",
+  title: "Forms/Inputs/Input Datetime",
   component: InputDatetime,
   args: {
     disabled: false,

@@ -5,7 +5,7 @@ import { Stack, Group } from "@uiid/primitives";
 import { Input } from "./input";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input",
+  title: "Forms/Inputs/Input",
   component: Input,
   args: {
     disabled: false,

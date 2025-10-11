@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { Progress } from "./progress";
 
 const meta = {
-  title: "Components/Forms/Progress",
+  title: "Forms/Progress",
   component: Progress,
   args: {
     value: 50,

@@ -9,7 +9,7 @@ const MOCK_OPTIONS = [
 ];
 
 const meta = {
-  title: "Components/Forms/RadioGroup",
+  title: "Forms/RadioGroup",
   component: RadioGroup,
   args: {
     required: true,

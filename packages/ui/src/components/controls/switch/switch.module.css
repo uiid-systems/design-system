@@ -1,0 +1,60 @@
+@import "@uiid/tokens/components/switch.tokens.css";
+
+.switch-root {
+  position: relative;
+  display: flex;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 1px;
+  border-radius: 1.5rem;
+  outline: 1px solid var(--shade-halftone);
+  outline-offset: -1px;
+  background-color: var(--shade-surface);
+  background-size: 6.5rem 100%;
+  background-position-x: 100%;
+  background-repeat: no-repeat;
+  transition-property: background-position, box-shadow, background-color;
+  transition-timing-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
+  transition-duration: var(--switch-transition-timing);
+  width: 2.5rem;
+  height: 1.5rem;
+
+  &[data-checked] {
+    background-position-x: 0%;
+    background-color: var(--shade-halftone);
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    &::before {
+      content: "";
+      inset: 0;
+      position: absolute;
+      border-radius: inherit;
+      outline: 2px solid var(--shade-foreground);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.switch-thumb {
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 100%;
+  background-color: var(--shade-foreground);
+  transition: translate var(--switch-transition-timing);
+
+  &[data-checked] {
+    translate: 1rem 0;
+  }
+}
+
+[data-slot="switch-label"][data-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}

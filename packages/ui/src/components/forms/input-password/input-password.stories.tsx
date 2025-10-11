@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputPassword } from "./input-password";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input Password",
+  title: "Forms/Inputs/Input Password",
   component: InputPassword,
   args: {
     disabled: false,

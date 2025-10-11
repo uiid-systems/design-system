@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputFile } from "./input-file";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input File",
+  title: "Forms/Inputs/Input File",
   component: InputFile,
   args: {
     disabled: false,

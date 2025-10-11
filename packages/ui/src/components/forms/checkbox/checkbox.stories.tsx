@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { Checkbox } from "./checkbox";
 
 const meta = {
-  title: "Components/Forms/Checkbox",
+  title: "Forms/Checkbox",
   component: Checkbox,
   args: {
     disabled: false,

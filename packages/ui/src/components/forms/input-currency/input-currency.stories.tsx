@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputCurrency } from "./input-currency";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input Currency",
+  title: "Forms/Inputs/Input Currency",
   component: InputCurrency,
   args: {
     disabled: false,

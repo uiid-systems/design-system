@@ -15,4 +15,6 @@ export type FormProps = {
   required?: boolean;
   validate?: boolean;
   hasError?: boolean;
+  /** @todo sniff out dead disabled states per component */
+  disabled?: boolean;
 } & Partial<Pick<SlotsProps, "before" | "after">>;

@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { InputRange } from "./input-range";
 
 const meta = {
-  title: "Components/Forms/Inputs/Input Range",
+  title: "Forms/Inputs/Input Range",
   component: InputRange,
   args: {
     disabled: false,
