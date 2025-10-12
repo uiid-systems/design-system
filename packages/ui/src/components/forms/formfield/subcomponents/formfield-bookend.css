@@ -7,6 +7,12 @@
   overflow: hidden;
   text-wrap: nowrap;
 
+  /** Safari fix */
+  height: -webkit-fill-available;
+  @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
+    height: auto;
+  }
+
   &[data-position="before"] {
     border-top-left-radius: var(--forms-border-radius);
     border-bottom-left-radius: var(--forms-border-radius);
