@@ -12,7 +12,7 @@
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
     "transition": {
-      "timing": { "$value": "150ms", "$type": "duration" }
+      "timing": { "$value": "{globals.transition.timing}", "$type": "duration" }
     }
   }
 }

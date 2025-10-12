@@ -1,9 +1,8 @@
 import type { Dialog } from "@base-ui-components/react/dialog";
 
-export type ModalProps = {
+export type ModalProps = React.PropsWithChildren<{
   title: string;
   description: string;
-  children: React.ReactNode;
   RootProps?: Dialog.Root.Props;
   PortalProps?: Dialog.Portal.Props;
   BackdropProps?: Dialog.Backdrop.Props;
@@ -11,4 +10,4 @@ export type ModalProps = {
   TitleProps?: Omit<Dialog.Title.Props, "children">;
   DescriptionProps?: Omit<Dialog.Description.Props, "children">;
   CloseProps?: Dialog.Close.Props;
-};
+}>;

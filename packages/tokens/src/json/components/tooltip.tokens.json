@@ -21,7 +21,7 @@
       "y": { "$value": "0.25rem", "$type": "dimension" }
     },
     "transition": {
-      "timing": { "$value": "150ms", "$type": "duration" }
+      "timing": { "$value": "{globals.transition.timing}", "$type": "duration" }
     },
     "transform": {
       "origin": { "$value": "center", "$type": "string" },

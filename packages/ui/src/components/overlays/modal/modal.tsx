@@ -17,9 +17,7 @@ export const Modal = ({
 }: ModalProps) => {
   return (
     <Dialog.Root {...RootProps}>
-      <Dialog.Trigger className={styles.Button}>
-        View notifications
-      </Dialog.Trigger>
+      <Dialog.Trigger>View notifications</Dialog.Trigger>
 
       <Dialog.Portal {...PortalProps}>
         <Dialog.Backdrop
