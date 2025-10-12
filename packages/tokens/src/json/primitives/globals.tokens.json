@@ -4,6 +4,19 @@
   "globals": {
     "transition": {
       "timing": { "$value": "150ms", "$type": "duration" }
+    },
+    "transform": {
+      "origin": { "$value": "center", "$type": "string" },
+      "scale": { "$value": "0.9", "$type": "number" }
+    },
+    "border": {
+      "color": { "$value": "{shade.muted}", "$type": "color" },
+      "radius": { "$value": "0.5rem", "$type": "dimension" },
+      "width": { "$value": "1px", "$type": "dimension" }
+    },
+    "padding": {
+      "x": { "$value": "1rem", "$type": "dimension" },
+      "y": { "$value": "1rem", "$type": "dimension" }
     }
   }
 }

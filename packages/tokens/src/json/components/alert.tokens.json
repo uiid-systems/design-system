@@ -37,7 +37,7 @@
         "border": { "$value": "{colors.red.900}", "$type": "color" }
       },
       "success": {
-        "bg": { "$value": "{colors.green.600}", "$type": "color" },
+        "bg": { "$value": "{colors.green.500}", "$type": "color" },
         "border": { "$value": "{colors.green.900}", "$type": "color" }
       },
       "inverted": {

@@ -1,0 +1,22 @@
+.popover-popup {
+  padding-inline: var(--globals-padding-x);
+  padding-block: var(--globals-padding-y);
+  border-radius: var(--globals-border-radius);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  background-color: var(--shade-surface);
+  color: var(--shade-foreground);
+  transform-origin: var(--transform-origin);
+  transition:
+    transform var(--globals-transition-timing),
+    opacity var(--globals-transition-timing);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(var(--globals-transition-scale));
+  }
+}
+
+.popover-description {
+  color: var(--shade-accent);
+}

@@ -1,5 +1,7 @@
 import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
 
+import { Stack } from "@uiid/primitives";
+
 import type { TooltipProps } from "./tooltip.types";
 import { TooltipTrigger } from "./subcomponents/tooltip-trigger";
 import styles from "./tooltip.module.css";
@@ -27,6 +29,7 @@ export const Tooltip = ({
         <BaseTooltip.Portal {...PortalProps}>
           <BaseTooltip.Positioner {...PositionerProps}>
             <BaseTooltip.Popup
+              render={<Stack />}
               className={styles["tooltip-popup"]}
               {...PopupProps}
             >

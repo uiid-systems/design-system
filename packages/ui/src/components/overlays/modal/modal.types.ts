@@ -1,6 +1,7 @@
 import type { Dialog } from "@base-ui-components/react/dialog";
 
 export type ModalProps = React.PropsWithChildren<{
+  trigger: React.ReactNode;
   title: string;
   description: string;
   RootProps?: Dialog.Root.Props;
