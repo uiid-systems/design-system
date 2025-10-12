@@ -14,7 +14,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Tokens", "Primitives"],
+        order: ["Tokens", "Primitives", "Forms"],
         locales: "en-US",
       },
     },
