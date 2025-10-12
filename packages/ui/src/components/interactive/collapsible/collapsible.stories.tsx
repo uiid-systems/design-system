@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Collapsible } from "./collapsible";
 
 const meta: Meta<typeof Collapsible> = {
-  title: "Components/Interactive/Collapsible",
+  title: "Interactive/Collapsible",
   component: Collapsible,
   args: {
     trigger: "This is a collapsible trigger",

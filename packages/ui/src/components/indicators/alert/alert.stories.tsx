@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Alert } from "./alert";
 
 const meta = {
-  title: "Components/Indicators/Alert",
+  title: "Indicators/Alert",
   component: Alert,
   args: {},
   render: (args) => (

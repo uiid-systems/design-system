@@ -7,7 +7,7 @@ import { Stack, Group } from "@uiid/primitives";
 import { Button } from "./button";
 
 const meta = {
-  title: "Components/Buttons/Button",
+  title: "Buttons/Button",
   component: Button,
   args: {
     onClick: fn(),

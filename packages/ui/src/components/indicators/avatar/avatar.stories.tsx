@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { Avatar } from "./avatar";
 
 const meta = {
-  title: "Components/Indicators/Avatar",
+  title: "Indicators/Avatar",
   component: Avatar,
   args: {},
   render: (args) => (

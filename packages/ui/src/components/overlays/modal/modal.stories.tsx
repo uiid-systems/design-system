@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Modal } from "./modal";
 
 const meta: Meta<typeof Modal> = {
-  title: "Components/Overlays/Modal",
+  title: "Overlays/Modal",
   component: Modal,
   args: {
     trigger: "This is a modal trigger",

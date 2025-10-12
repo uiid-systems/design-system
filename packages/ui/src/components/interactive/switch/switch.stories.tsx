@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Switch } from "./switch";
 
 const meta: Meta<typeof Switch> = {
-  title: "Components/Interactive/Switch",
+  title: "Interactive/Switch",
   component: Switch,
   args: {},
   argTypes: {},

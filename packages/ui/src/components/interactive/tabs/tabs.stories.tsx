@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Tabs } from "./tabs";
 
 const meta: Meta<typeof Tabs> = {
-  title: "Components/Interactive/Tabs",
+  title: "Interactive/Tabs",
   component: Tabs,
   args: {
     children: "This is a modal",

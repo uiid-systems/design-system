@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { Badge } from "./badge";
 
 const meta = {
-  title: "Components/Indicators/Badge",
+  title: "Indicators/Badge",
   component: Badge,
   args: {},
   argTypes: {

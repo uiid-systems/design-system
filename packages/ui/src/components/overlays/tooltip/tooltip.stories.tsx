@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Tooltip } from "./tooltip";
 
 const meta: Meta<typeof Tooltip> = {
-  title: "Components/Overlays/Tooltip",
+  title: "Overlays/Tooltip",
   component: Tooltip,
   args: {
     children: "This is a tooltip",

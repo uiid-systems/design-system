@@ -5,7 +5,7 @@ import { Stack } from "@uiid/primitives";
 import { Status } from "./status";
 
 const meta = {
-  title: "Components/Indicators/Status",
+  title: "Indicators/Status",
   component: Status,
   args: {},
   render: (args) => (

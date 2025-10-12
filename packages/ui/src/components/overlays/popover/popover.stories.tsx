@@ -3,7 +3,7 @@ import { Stack } from "@uiid/primitives";
 import { Popover } from "./popover";
 
 const meta: Meta<typeof Popover> = {
-  title: "Components/Overlays/Popover",
+  title: "Overlays/Popover",
   component: Popover,
   args: {
     title: "Popover",
