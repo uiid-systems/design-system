@@ -5,8 +5,11 @@
     "bg": { "$value": "{shade.surface}", "$type": "color" },
     "fg": { "$value": "{shade.foreground}", "$type": "color" },
     "font": {
-      "size": { "$value": "0.875rem", "$type": "dimension" },
-      "lineHeight": { "$value": "1.25rem", "$type": "dimension" }
+      "size": { "$value": "{typography.text.0.size}", "$type": "dimension" },
+      "lineHeight": {
+        "$value": "{typography.text.0.lineHeight}",
+        "$type": "dimension"
+      }
     },
     "border": {
       "radius": { "$value": "0.5rem", "$type": "dimension" },
@@ -14,8 +17,8 @@
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
     "padding": {
-      "x": { "$value": "0.25rem", "$type": "dimension" },
-      "y": { "$value": "0.5rem", "$type": "dimension" }
+      "x": { "$value": "0.75rem", "$type": "dimension" },
+      "y": { "$value": "0.25rem", "$type": "dimension" }
     },
     "transition": {
       "timing": { "$value": "150ms", "$type": "duration" }
