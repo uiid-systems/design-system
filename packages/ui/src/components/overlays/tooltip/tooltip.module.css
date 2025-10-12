@@ -1,0 +1,29 @@
+@import "@uiid/tokens/components/tooltip.tokens.css";
+
+.tooltip-popup {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--tooltip-font-size);
+  line-height: var(--tooltip-font-lineHeight);
+  padding-inline: var(--tooltip-padding-x);
+  padding-block: var(--tooltip-padding-y);
+  border-radius: var(--tooltip-border-radius);
+  background-color: var(--tooltip-bg);
+  color: var(--tooltip-fg);
+  border: var(--tooltip-border-width) solid var(--tooltip-border-color);
+  transform-origin: var(--tooltip-transform-origin);
+  transition:
+    transform var(--tooltip-transition-timing),
+    opacity var(--tooltip-transition-timing);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(var(--tooltip-transform-scale));
+  }
+
+  &[data-instant] {
+    transition-duration: 0ms;
+  }
+}
