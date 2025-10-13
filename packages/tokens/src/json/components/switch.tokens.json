@@ -1,6 +1,6 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
-  "$description": "Switch component tokens for the Toretto design system",
+  "$description": "Switch component tokens for the UIID design system",
   "switch": {
     "color": {
       "bg": { "$value": "{shade.surface}", "$type": "color" },

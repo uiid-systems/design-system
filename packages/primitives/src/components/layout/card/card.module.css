@@ -1,10 +1,14 @@
+@import "@uiid/tokens/components/card.tokens.css";
+
 .card {
+  background-color: var(--card-color-bg);
+  color: var(--card-color-fg);
+
   border-radius: var(--globals-border-radius);
-  border: var(--globals-border-width) solid var(--globals-border-color);
+  border: var(--globals-border-width) solid var(--card-border-color);
+
   padding-block: var(--globals-padding-y);
   padding-inline: var(--globals-padding-x);
-
-  background-color: var(--shade-surface);
 
   &:where([data-size="sm"]) {
     padding-block: calc(var(--globals-padding-y) * 0.5);
@@ -17,5 +21,35 @@
   &:where([data-size="lg"]) {
     padding-block: calc(var(--globals-padding-y) * 1.5);
     padding-inline: calc(var(--globals-padding-x) * 1.5);
+  }
+
+  &:where([data-variant="info"]) {
+    --card-color-bg: var(--card-variant-info-bg);
+    --card-border-color: var(--card-variant-info-border);
+    --card-color-fg: var(--black);
+  }
+
+  &:where([data-variant="warning"]) {
+    --card-color-bg: var(--card-variant-warning-bg);
+    --card-border-color: var(--card-variant-warning-border);
+    --card-color-fg: var(--black);
+  }
+
+  &:where([data-variant="error"]) {
+    --card-color-bg: var(--card-variant-error-bg);
+    --card-border-color: var(--card-variant-error-border);
+    --card-color-fg: var(--black);
+  }
+
+  &:where([data-variant="success"]) {
+    --card-color-bg: var(--card-variant-success-bg);
+    --card-border-color: var(--card-variant-success-border);
+    --card-color-fg: var(--black);
+  }
+
+  &:where([data-variant="inverted"]) {
+    --card-color-bg: var(--card-variant-inverted-bg);
+    --card-border-color: var(--card-variant-inverted-border);
+    --card-color-fg: var(--card-variant-inverted-fg);
   }
 }

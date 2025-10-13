@@ -22,9 +22,6 @@ export * from "./input-file/input-file.types";
 export * from "./input-password/input-password";
 export * from "./input-password/input-password.types";
 
-export * from "./input-range/input-range";
-export * from "./input-range/input-range.types";
-
 export * from "./input-zip/input-zip";
 export * from "./input-zip/input-zip.types";
 

@@ -18,6 +18,21 @@ const meta = {
       <Card {...args} size="lg">
         lorem ipsum dolor sit amet
       </Card>
+      <Card {...args} variant="info">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} variant="warning">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} variant="error">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} variant="success">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} variant="inverted">
+        lorem ipsum dolor sit amet
+      </Card>
     </Stack>
   ),
 } satisfies Meta<typeof Card>;
