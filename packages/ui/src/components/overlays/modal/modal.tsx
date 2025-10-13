@@ -4,12 +4,14 @@ import type { ModalProps } from "./modal.types";
 import styles from "./modal.module.css";
 
 export const Modal = ({
+  trigger,
   title,
   description,
   children,
   RootProps,
   PortalProps,
   BackdropProps,
+  TriggerProps,
   PopupProps,
   TitleProps,
   DescriptionProps,
@@ -17,7 +19,7 @@ export const Modal = ({
 }: ModalProps) => {
   return (
     <Dialog.Root {...RootProps}>
-      <Dialog.Trigger>View notifications</Dialog.Trigger>
+      <Dialog.Trigger {...TriggerProps}>{trigger}</Dialog.Trigger>
 
       <Dialog.Portal {...PortalProps}>
         <Dialog.Backdrop

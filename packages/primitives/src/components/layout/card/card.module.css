@@ -1,0 +1,7 @@
+.card {
+  border-radius: var(--globals-border-radius);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  padding: var(--globals-padding-y) var(--globals-padding-x);
+
+  background-color: var(--shade-surface);
+}

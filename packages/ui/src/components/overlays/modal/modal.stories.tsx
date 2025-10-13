@@ -1,12 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/primitives";
+
+import { Button } from "../../buttons";
+
 import { Modal } from "./modal";
 
 const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
   component: Modal,
   args: {
-    trigger: "This is a modal trigger",
+    trigger: "activate modal",
     title: "Modal",
     description: "This is a modal",
     children:

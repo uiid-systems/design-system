@@ -5,6 +5,7 @@ export type ModalProps = React.PropsWithChildren<{
   title: string;
   description: string;
   RootProps?: Dialog.Root.Props;
+  TriggerProps?: Omit<Dialog.Trigger.Props, "children">;
   PortalProps?: Dialog.Portal.Props;
   BackdropProps?: Dialog.Backdrop.Props;
   PopupProps?: Omit<Dialog.Popup.Props, "children">;

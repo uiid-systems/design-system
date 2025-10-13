@@ -1,6 +1,9 @@
 export * from "./box/box";
 export * from "./box/box.types";
 
+export * from "./card/card";
+export * from "./card/card.types";
+
 export * from "./conditional-render/conditional-render";
 export * from "./conditional-render/conditional-render.types";
 
