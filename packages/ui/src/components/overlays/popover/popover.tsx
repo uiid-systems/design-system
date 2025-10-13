@@ -1,9 +1,8 @@
 import { Popover as BasePopover } from "@base-ui-components/react/popover";
 
-import { Stack, Text } from "@uiid/primitives";
+import { Card, Text } from "@uiid/primitives";
 
 import type { PopoverProps } from "./popover.types";
-import styles from "./popover.module.css";
 
 export const Popover = ({
   trigger,
@@ -30,8 +29,8 @@ export const Popover = ({
         <BasePopover.Backdrop {...BackdropProps} />
         <BasePopover.Positioner {...PositionerProps}>
           <BasePopover.Popup
-            render={<Stack gap={4} />}
-            className={styles["popover-popup"]}
+            render={<Card gap={2} />}
+            data-is-popup="true"
             {...PopupProps}
           >
             <BasePopover.Title

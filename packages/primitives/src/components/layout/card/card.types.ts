@@ -1,3 +1,5 @@
 import type { StackProps } from "../stack/stack.types";
 
-export type CardProps = StackProps;
+export type CardProps = StackProps & {
+  size?: "sm" | "md" | "lg";
+};

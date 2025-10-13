@@ -1,5 +1,7 @@
 import { Dialog } from "@base-ui-components/react/dialog";
 
+import { Card, Text } from "@uiid/primitives";
+
 import type { ModalProps } from "./modal.types";
 import styles from "./modal.module.css";
 
@@ -26,13 +28,20 @@ export const Modal = ({
           className={styles["modal-backdrop"]}
           {...BackdropProps}
         />
-        <Dialog.Popup className={styles["modal-popup"]} {...PopupProps}>
-          <Dialog.Title className={styles["modal-title"]} {...TitleProps}>
+        <Dialog.Popup
+          render={<Card gap={2} />}
+          className={styles["modal-popup"]}
+          {...PopupProps}
+        >
+          <Dialog.Title
+            render={<Text render={<h3 />} level={1} />}
+            {...TitleProps}
+          >
             {title}
           </Dialog.Title>
 
           <Dialog.Description
-            className={styles["modal-description"]}
+            render={<Text render={<h4 />} level={0} />}
             {...DescriptionProps}
           >
             {description}

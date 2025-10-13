@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Stack } from "../stack/stack";
+
 import { Card } from "./card";
 
 const meta = {
@@ -6,9 +8,17 @@ const meta = {
   component: Card,
   args: {},
   render: (args) => (
-    <Card {...args} render={<aside className="foo" />} className="bar">
-      lorem ipsum dolor sit amet
-    </Card>
+    <Stack gap={4}>
+      <Card {...args} size="sm">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} size="md">
+        lorem ipsum dolor sit amet
+      </Card>
+      <Card {...args} size="lg">
+        lorem ipsum dolor sit amet
+      </Card>
+    </Stack>
   ),
 } satisfies Meta<typeof Card>;
 

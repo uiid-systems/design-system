@@ -1,7 +1,21 @@
 .card {
   border-radius: var(--globals-border-radius);
   border: var(--globals-border-width) solid var(--globals-border-color);
-  padding: var(--globals-padding-y) var(--globals-padding-x);
+  padding-block: var(--globals-padding-y);
+  padding-inline: var(--globals-padding-x);
 
   background-color: var(--shade-surface);
+
+  &:where([data-size="sm"]) {
+    padding-block: calc(var(--globals-padding-y) * 0.5);
+    padding-inline: calc(var(--globals-padding-x) * 0.5);
+  }
+  &:where([data-size="md"]) {
+    padding-block: var(--globals-padding-y);
+    padding-inline: var(--globals-padding-x);
+  }
+  &:where([data-size="lg"]) {
+    padding-block: calc(var(--globals-padding-y) * 1.5);
+    padding-inline: calc(var(--globals-padding-x) * 1.5);
+  }
 }

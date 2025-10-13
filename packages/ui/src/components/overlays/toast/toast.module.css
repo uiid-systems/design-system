@@ -28,12 +28,6 @@
       var(--toast-swipe-movement-y)
   );
 
-  background: var(--shade-surface);
-  color: var(--shade-foreground);
-  border: var(--globals-border-width) solid var(--globals-border-color);
-  border-radius: var(--globals-border-radius);
-  padding: var(--globals-padding-x) var(--globals-padding-y);
-
   position: absolute;
   margin: 0 auto;
   bottom: 0;
@@ -127,19 +121,6 @@
   &[data-expanded] {
     opacity: 1;
   }
-}
-
-.Title {
-  font-weight: 500;
-  font-size: 0.975rem;
-  line-height: 1.25rem;
-  margin: 0;
-}
-
-.Description {
-  font-size: 0.925rem;
-  line-height: 1.25rem;
-  margin: 0;
 }
 
 .Close {
