@@ -6,9 +6,6 @@ import { Card, Text } from "@uiid/primitives";
 import type { ToastProps } from "./toast.types";
 import styles from "./toast.module.css";
 
-export const ToastProvider = BaseToast.Provider;
-export const useToastManager = BaseToast.useToastManager;
-
 const ToastList = () => {
   const { toasts } = useToastManager();
 
@@ -41,3 +38,6 @@ export const Toaster = ({ position = "bottom" }: ToastProps) => {
   );
 };
 Toaster.displayName = "Toaster";
+
+export const ToastProvider = BaseToast.Provider;
+export const useToastManager = BaseToast.useToastManager;
