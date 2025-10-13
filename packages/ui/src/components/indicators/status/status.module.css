@@ -1,0 +1,28 @@
+.status {
+  display: inline-flex;
+}
+
+[data-slot="status-dot"] {
+  aspect-ratio: 1;
+  background-color: var(--shade-foreground);
+  border-radius: 99999px;
+  display: inline-block;
+  width: 0.5rem;
+
+  &:where([data-pulse="true"]) {
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    scale: var(--globals-transform-scale);
+  }
+  100% {
+    opacity: 1;
+  }
+}

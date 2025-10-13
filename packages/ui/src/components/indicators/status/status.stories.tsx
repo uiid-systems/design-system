@@ -9,8 +9,11 @@ const meta = {
   component: Status,
   args: {},
   render: (args) => (
-    <Stack gap={8}>
+    <Stack gap={4}>
       <Status {...args}>Status</Status>
+      <Status {...args} pulse>
+        Pulsing status
+      </Status>
     </Stack>
   ),
 } satisfies Meta<typeof Status>;
