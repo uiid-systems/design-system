@@ -1,9 +1,6 @@
-import type { BoxProps } from "@uiid/primitives";
+import type { CardProps } from "@uiid/primitives";
 
-import type { AlertIconProps } from "./subcomponents/alert-icon";
-
-export type AlertProps = BoxProps & {
+export type AlertProps = CardProps & {
   dismissible?: boolean;
   onDismiss?: () => void;
-  variant?: AlertIconProps["type"] | "inverted";
 };

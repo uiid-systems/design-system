@@ -2,18 +2,15 @@
 
 import { useRef, useState } from "react";
 
-import { Box, Group, cx } from "@uiid/primitives";
-
-import type { AlertProps } from "./alert.types";
-import styles from "./alert.module.css";
+import { Card, Group } from "@uiid/primitives";
 
 import { AlertDismiss, AlertIcon } from "./subcomponents";
+import type { AlertProps } from "./alert.types";
 
 export const Alert = ({
   dismissible = true,
   variant,
   onDismiss,
-  className,
   children,
   ...props
 }: AlertProps) => {
@@ -36,21 +33,20 @@ export const Alert = ({
   if (!isVisible) return null;
 
   return (
-    <Box
+    <Card
       uiid="alert"
-      className={cx(styles.alert, className)}
       ref={alertRef}
       role="alert"
       data-variant={variant}
       fullwidth
       {...props}
     >
-      <Group ay="center" gap={4} fullwidth>
+      <Group ay="center" gap={2} fullwidth>
         {variant && variant !== "inverted" && <AlertIcon type={variant} />}
         {children}
         {dismissible && <AlertDismiss onClick={handleDismiss} />}
       </Group>
-    </Box>
+    </Card>
   );
 };
 Alert.displayName = "Alert";
