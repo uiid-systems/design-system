@@ -1,4 +1,7 @@
 .Viewport {
+  /* Direction multiplier: -1 for bottom (stack up), 1 for top (stack down) */
+  --direction-multiplier: -1;
+
   position: fixed;
   z-index: 1;
   width: 100%;
@@ -6,6 +9,12 @@
   margin: 0 auto;
   bottom: var(--globals-padding-y);
   right: var(--globals-padding-x);
+
+  &[data-position="top"] {
+    --direction-multiplier: 1;
+    top: var(--globals-padding-y);
+    bottom: auto;
+  }
 }
 
 .Toast {
@@ -14,7 +23,10 @@
   --scale: calc(max(0, 1 - (var(--toast-index) * 0.1)));
   --shrink: calc(1 - var(--scale));
   --height: var(--toast-frontmost-height, var(--toast-height));
-  --offset-y: calc(-1 * var(--toast-offset-y) - (var(--toast-index) * var(--gap)) + var(--toast-swipe-movement-y));
+  --offset-y: calc(
+    var(--direction-multiplier) * var(--toast-offset-y) + var(--direction-multiplier) * (var(--toast-index) * var(--gap)) +
+      var(--toast-swipe-movement-y)
+  );
 
   background: var(--shade-surface);
   color: var(--shade-foreground);
@@ -34,10 +46,22 @@
   margin-inline: auto;
   user-select: none;
 
+  .Viewport[data-position="top"] & {
+    top: 0;
+    bottom: auto;
+    transform-origin: top center;
+  }
+
   z-index: calc(1000 - var(--toast-index));
   height: var(--height);
   transform: translateX(var(--toast-swipe-movement-x))
-    translateY(calc(var(--toast-swipe-movement-y) - (var(--toast-index) * var(--peek)) - (var(--shrink) * var(--height)))) scale(var(--scale));
+    translateY(
+      calc(
+        var(--toast-swipe-movement-y) + var(--direction-multiplier) * (var(--toast-index) * var(--peek)) + var(--direction-multiplier) *
+          (var(--shrink) * var(--height))
+      )
+    )
+    scale(var(--scale));
 
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
@@ -50,7 +74,7 @@
   }
 
   &[data-starting-style] {
-    transform: translateY(150%);
+    transform: translateY(calc(var(--direction-multiplier) * -150%));
   }
 
   &[data-limited] {
@@ -59,7 +83,7 @@
 
   &[data-ending-style] {
     opacity: 0;
-    transform: translateY(150%);
+    transform: translateY(calc(var(--direction-multiplier) * -150%));
 
     &[data-swipe-direction="up"] {
       transform: translateY(calc(var(--toast-swipe-movement-y) - 150%));
@@ -79,9 +103,16 @@
     content: "";
     position: absolute;
     width: 100%;
-    top: 100%;
     left: 0;
     height: calc(var(--gap) + 1px);
+  }
+
+  .Viewport[data-position="bottom"] &::after {
+    top: 100%;
+  }
+
+  .Viewport[data-position="top"] &::after {
+    bottom: 100%;
   }
 }
 

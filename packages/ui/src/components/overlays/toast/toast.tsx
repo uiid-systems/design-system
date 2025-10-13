@@ -2,6 +2,7 @@ import { Toast as BaseToast } from "@base-ui-components/react/toast";
 
 import { X } from "@uiid/icons";
 
+import type { ToastProps } from "./toast.types";
 import styles from "./toast.module.css";
 
 export const ToastProvider = BaseToast.Provider;
@@ -24,10 +25,10 @@ const ToastList = () => {
 };
 ToastList.displayName = "ToastList";
 
-export const Toaster = () => {
+export const Toaster = ({ position = "bottom" }: ToastProps) => {
   return (
     <BaseToast.Portal>
-      <BaseToast.Viewport className={styles.Viewport}>
+      <BaseToast.Viewport className={styles.Viewport} data-position={position}>
         <ToastList />
       </BaseToast.Viewport>
     </BaseToast.Portal>
