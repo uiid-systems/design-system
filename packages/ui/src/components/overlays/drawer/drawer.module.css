@@ -1,0 +1,22 @@
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--shade-background), transparent 40%);
+}
+
+.drawer-content {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  outline: none;
+  height: fit-content;
+  color: var(--shade-foreground);
+  background-color: var(--shade-surface);
+  padding: var(--globals-padding-y) var(--globals-padding-x);
+  box-shadow: 0 0 0 1px var(--globals-border-color);
+
+  border-top-left-radius: var(--globals-border-radius);
+  border-top-right-radius: var(--globals-border-radius);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+}
