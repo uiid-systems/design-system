@@ -11,7 +11,9 @@ export const Input = ({
   description,
   hint,
   before,
+  beforeOnClick,
   after,
+  afterOnClick,
   disabled,
   placeholder,
   fullwidth,
@@ -35,7 +37,13 @@ export const Input = ({
       fullwidth={fullwidth}
       required={props.required}
     >
-      <FormFieldSlots data-disabled={disabled} before={before} after={after}>
+      <FormFieldSlots
+        data-disabled={disabled}
+        before={before}
+        beforeOnClick={beforeOnClick}
+        after={after}
+        afterOnClick={afterOnClick}
+      >
         <input
           {...propsWithId}
           data-size={size}

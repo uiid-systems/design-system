@@ -8,21 +8,24 @@ type FormFieldSlotsProps = React.PropsWithChildren & SlotsProps;
 export const FormFieldSlots = ({
   before,
   after,
+  beforeOnClick,
+  afterOnClick,
   children,
   ...props
 }: FormFieldSlotsProps) => {
-  const BeforeBookend = () => (
-    <FormFieldBookend position="before">{before}</FormFieldBookend>
-  );
-  const AfterBookend = () => (
-    <FormFieldBookend position="after">{after}</FormFieldBookend>
-  );
-
   return (
     <Slots
       data-slot="formfield-slots"
-      before={before && <BeforeBookend />}
-      after={after && <AfterBookend />}
+      before={
+        before && (
+          <FormFieldBookend position="before">{before}</FormFieldBookend>
+        )
+      }
+      beforeOnClick={beforeOnClick}
+      after={
+        after && <FormFieldBookend position="after">{after}</FormFieldBookend>
+      }
+      afterOnClick={afterOnClick}
       {...props}
     >
       {children}

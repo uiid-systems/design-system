@@ -7,5 +7,7 @@ export type Slot =
 
 export type SlotsProps = {
   before?: Slot;
+  beforeOnClick?: () => void;
   after?: Slot;
+  afterOnClick?: () => void;
 } & BoxProps;

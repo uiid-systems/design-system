@@ -36,4 +36,21 @@
       border-left: var(--forms-border-width) solid var(--forms-border-color);
     }
   }
+
+  &[role="button"] {
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid var(--shade-foreground);
+      outline-offset: -1px;
+    }
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--forms-background), var(--shade-foreground) 2%);
+    }
+
+    &:active {
+      background-color: color-mix(in srgb, var(--forms-background), var(--shade-foreground) 5%);
+    }
+  }
 }
