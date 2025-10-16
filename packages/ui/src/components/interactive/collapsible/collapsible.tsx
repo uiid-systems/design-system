@@ -1,5 +1,5 @@
 import { Collapsible as BaseCollapsible } from "@base-ui-components/react/collapsible";
-import { Stack } from "@uiid/primitives";
+import { Stack } from "@uiid/layout";
 
 import type { CollapsibleProps } from "./collapsible.types";
 import styles from "./collapsible.module.css";

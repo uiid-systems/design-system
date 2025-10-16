@@ -1,6 +1,7 @@
 import { Switch as BaseSwitch } from "@base-ui-components/react/switch";
 
-import { ConditionalRender, Group, cx } from "@uiid/primitives";
+import { ConditionalRender, Group } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import { FormFieldLabel } from "../../forms/formfield/subcomponents";
 

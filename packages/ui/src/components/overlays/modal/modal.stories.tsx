@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack } from "@uiid/primitives";
+import { Stack } from "@uiid/layout";
 
 import { Modal } from "./modal";
 

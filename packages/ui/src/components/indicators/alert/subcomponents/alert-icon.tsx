@@ -1,5 +1,5 @@
 import { Info, Ban, TriangleAlert, CircleCheck } from "@uiid/icons";
-import { Stack } from "@uiid/primitives";
+import { Stack } from "@uiid/layout";
 
 import "./alert-icon.styles.css";
 import { ICON_SIZE } from "../alert.constants";

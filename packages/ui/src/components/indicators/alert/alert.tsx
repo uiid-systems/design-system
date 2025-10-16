@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 
-import { Card, Group } from "@uiid/primitives";
+import { Card, Group } from "@uiid/layout";
 
 import { AlertDismiss, AlertIcon } from "./subcomponents";
 import type { AlertProps } from "./alert.types";

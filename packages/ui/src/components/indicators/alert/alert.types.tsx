@@ -1,4 +1,4 @@
-import type { CardProps } from "@uiid/primitives";
+import type { CardProps } from "@uiid/layout";
 
 export type AlertProps = CardProps & {
   dismissible?: boolean;

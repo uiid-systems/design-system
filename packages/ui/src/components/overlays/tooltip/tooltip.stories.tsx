@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Text } from "@uiid/primitives";
+
+import { Stack } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import { Button } from "../../buttons";
 

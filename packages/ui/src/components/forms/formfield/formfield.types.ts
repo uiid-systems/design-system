@@ -1,4 +1,4 @@
-import type { SlotsProps } from "@uiid/primitives";
+import type { SlotsProps } from "@uiid/layout";
 
 import type { FormProps } from "../types";
 import type { FormFieldDescriptionProps } from "./subcomponents";

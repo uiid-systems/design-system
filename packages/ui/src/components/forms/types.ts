@@ -1,4 +1,4 @@
-import type { SlotsProps } from "@uiid/primitives";
+import type { SlotsProps } from "@uiid/layout";
 
 export type FormOptionProps = {
   value: string;

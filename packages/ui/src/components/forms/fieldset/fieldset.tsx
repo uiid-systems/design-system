@@ -1,4 +1,4 @@
-import { Box } from "@uiid/primitives";
+import { Box } from "@uiid/layout";
 
 import type { FieldsetProps } from "./fieldset.types";
 import styles from "./fieldset.module.css";

@@ -1,4 +1,5 @@
-import { Group, Layer, Stack, ConditionalRender, Text } from "@uiid/primitives";
+import { Group, Layer, Stack, ConditionalRender } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import type { AvatarProps } from "./avatar.types";
 import "./avatar.styles.css";

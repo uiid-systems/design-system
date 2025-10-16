@@ -1,4 +1,4 @@
-import { Group, Stack, SwitchRender } from "@uiid/primitives";
+import { Group, Stack, SwitchRender } from "@uiid/layout";
 
 import { FormField } from "../formfield";
 import { Fieldset } from "../fieldset/fieldset";

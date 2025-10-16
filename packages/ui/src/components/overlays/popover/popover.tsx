@@ -1,6 +1,7 @@
 import { Popover as BasePopover } from "@base-ui-components/react/popover";
 
-import { Card, Text } from "@uiid/primitives";
+import { Card } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import type { PopoverProps } from "./popover.types";
 

@@ -1,4 +1,5 @@
-import { Box, Text } from "@uiid/primitives";
+import { Box } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import type { BadgeProps } from "./badge.types";
 import "./badge.styles.css";

@@ -1,4 +1,4 @@
-import { Slots, type SlotsProps } from "@uiid/primitives";
+import { Slots, type SlotsProps } from "@uiid/layout";
 
 import { FormFieldBookend } from "./formfield-bookend";
 import "./formfield-slots.css";

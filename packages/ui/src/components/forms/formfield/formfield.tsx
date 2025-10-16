@@ -1,4 +1,4 @@
-import { ConditionalRender, Slots, Group } from "@uiid/primitives";
+import { ConditionalRender, Slots, Group } from "@uiid/layout";
 
 import {
   FormFieldLabel,

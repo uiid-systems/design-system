@@ -1,6 +1,7 @@
 import { Dialog } from "@base-ui-components/react/dialog";
 
-import { Card, Text } from "@uiid/primitives";
+import { Card } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import type { ModalProps } from "./modal.types";
 import styles from "./modal.module.css";

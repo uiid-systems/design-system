@@ -1,6 +1,6 @@
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 
-import { Group } from "@uiid/primitives";
+import { Group } from "@uiid/layout";
 
 import type { SliderProps } from "./slider.types";
 import styles from "./slider.module.css";

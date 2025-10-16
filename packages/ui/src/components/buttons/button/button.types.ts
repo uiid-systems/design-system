@@ -1,4 +1,4 @@
-import type { RenderProp } from "@uiid/primitives";
+import type { RenderProp } from "@uiid/utils";
 
 // Base button styling and behavior props
 type ButtonCoreProps = {

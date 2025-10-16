@@ -1,5 +1,5 @@
 import { CircleX } from "@uiid/icons";
-import { Stack } from "@uiid/primitives";
+import { Stack } from "@uiid/layout";
 
 import "./alert-dismiss.styles.css";
 

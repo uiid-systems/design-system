@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Plus, Minus } from "@uiid/icons";
-import { cx } from "@uiid/primitives";
+import { cx } from "@uiid/utils";
 
 import { Input } from "../input/input";
 

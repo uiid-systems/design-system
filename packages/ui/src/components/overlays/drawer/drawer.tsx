@@ -1,6 +1,6 @@
 import { Drawer as BaseDrawer } from "vaul";
 
-import { Text } from "@uiid/primitives";
+import { Text } from "@uiid/typography";
 
 import type { DrawerProps } from "./drawer.types";
 import styles from "./drawer.module.css";

@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import type { StoryObj } from "@storybook/react-vite";
 
-import { Stack, Group } from "@uiid/primitives";
+import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "../buttons";
 import { Input, Select, InputZip } from "./";
