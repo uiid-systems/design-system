@@ -1,17 +1,17 @@
 {
-  "name": "@uiid/primitives",
+  "name": "@uiid/typography",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/primitives.umd.cjs",
-  "module": "dist/primitives.js",
+  "main": "dist/typography.umd.cjs",
+  "module": "dist/typography.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/primitives.js",
-      "require": "./dist/primitives.umd.cjs"
+      "import": "./dist/typography.js",
+      "require": "./dist/typography.umd.cjs"
     },
-    "./globals.css": "./dist/primitives.css"
+    "./typography.css": "./dist/typography.css"
   },
   "files": [
     "dist"
@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
