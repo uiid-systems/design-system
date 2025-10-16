@@ -28,7 +28,9 @@
       "@ui/*": ["packages/ui/src/*"],
       "@icons/*": ["packages/icons/src/*"],
       "@primitives/*": ["packages/primitives/src/*"],
-      "@tokens/*": ["packages/tokens/src/*"]
+      "@tokens/*": ["packages/tokens/src/*"],
+      "@utils": ["packages/utils/src"],
+      "@utils/*": ["packages/utils/src/*"]
     }
   },
   "include": ["packages/*/src/**/*", "apps/*/src/**/*"],
