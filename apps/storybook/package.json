@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@uiid/tokens": "workspace:*",
-    "@uiid/primitives": "workspace:*",
+    "@uiid/typography": "workspace:*",
+    "@uiid/layout": "workspace:*",
     "@uiid/ui": "workspace:*"
   },
   "devDependencies": {

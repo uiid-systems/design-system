@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ConditionalRender } from "./conditional-render";
 
 const meta = {
-  title: "Primitives/Layout/Conditional Render",
+  title: "Layout/Conditional Render",
   component: ConditionalRender,
   args: {
     condition: true,

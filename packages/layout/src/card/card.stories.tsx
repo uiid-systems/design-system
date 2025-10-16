@@ -4,7 +4,7 @@ import { Stack } from "../stack/stack";
 import { Card } from "./card";
 
 const meta = {
-  title: "Primitives/Layout/Card",
+  title: "Layout/Card",
   component: Card,
   args: {},
   render: (args) => (

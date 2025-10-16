@@ -1,17 +1,17 @@
 {
-  "name": "@uiid/primitives",
+  "name": "@uiid/layout",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/primitives.umd.cjs",
-  "module": "dist/primitives.js",
+  "main": "dist/layout.umd.cjs",
+  "module": "dist/layout.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/primitives.js",
-      "require": "./dist/primitives.umd.cjs"
+      "import": "./dist/layout.js",
+      "require": "./dist/layout.umd.cjs"
     },
-    "./globals.css": "./dist/primitives.css"
+    "./globals.css": "./dist/layout.css"
   },
   "files": [
     "dist"
@@ -24,9 +24,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {

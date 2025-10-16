@@ -1,2 +1,1 @@
-// Export layout components
-export * from "./layout";
+// Layout components are now in @uiid/layout package

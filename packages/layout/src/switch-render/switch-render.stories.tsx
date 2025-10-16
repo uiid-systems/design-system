@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwitchRender } from "../";
 
 const meta = {
-  title: "Primitives/Layout/Switch Render",
+  title: "Layout/Switch Render",
   component: SwitchRender,
   args: {
     condition: true,

@@ -11,7 +11,7 @@
       "import": "./dist/typography.js",
       "require": "./dist/typography.umd.cjs"
     },
-    "./typography.css": "./dist/typography.css"
+    "./globals.css": "./dist/typography.css"
   },
   "files": [
     "dist"

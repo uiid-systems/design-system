@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box, Stack } from "../";
 
 const meta = {
-  title: "Primitives/Layout/Stack",
+  title: "Layout/Stack",
   component: Stack,
   args: { gap: 2 },
   render: (args) => (
