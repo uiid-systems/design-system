@@ -25,10 +25,12 @@
     /* Path mapping for future packages */
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["packages/ui/src/*"],
       "@icons/*": ["packages/icons/src/*"],
-      "@primitives/*": ["packages/primitives/src/*"],
-      "@tokens/*": ["packages/tokens/src/*"]
+      "@layout/*": ["packages/layout/src/*"],
+      "@tokens/*": ["packages/tokens/src/*"],
+      "@typography/*": ["packages/typography/src/*"],
+      "@utils/*": ["packages/utils/src/*"],
+      "@ui/*": ["packages/ui/src/*"]
     }
   },
   "include": ["packages/*/src/**/*", "apps/*/src/**/*"],
