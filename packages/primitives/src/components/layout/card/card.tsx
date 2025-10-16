@@ -1,4 +1,5 @@
-import { cx } from "../../../utils";
+import { cx } from "@uiid/utils";
+
 import { Stack } from "../stack/stack";
 
 import type { CardProps } from "./card.types";

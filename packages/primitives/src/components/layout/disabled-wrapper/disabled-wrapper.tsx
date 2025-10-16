@@ -1,9 +1,9 @@
-import { cx } from "../../../utils/";
+import { cx } from "@uiid/utils";
+
 import { Box } from "../box/box";
 import { ConditionalRender } from "../conditional-render/conditional-render";
 
 import type { DisabledProps } from "./disabled-wrapper.types";
-
 import styles from "./disabled-wrapper.module.css";
 
 export const DisabledWrapper = ({

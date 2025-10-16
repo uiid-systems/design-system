@@ -2,5 +2,5 @@
 export * from "./components";
 
 // Export utilities and types
-export * from "./utils";
+export * from "@uiid/utils";
 export * from "./types";

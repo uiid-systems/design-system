@@ -11,7 +11,7 @@
       "import": "./dist/primitives.js",
       "require": "./dist/primitives.umd.cjs"
     },
-    "./globals.css": "./dist/primitives.css"
+    "./primitives.css": "./dist/primitives.css"
   },
   "files": [
     "dist"

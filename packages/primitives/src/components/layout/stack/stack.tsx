@@ -1,4 +1,5 @@
-import { cx } from "../../../utils";
+import { cx } from "@uiid/utils";
+
 import { Box } from "../box/box";
 
 import type { StackProps } from "./stack.types";

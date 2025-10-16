@@ -1,4 +1,4 @@
-import type { RenderProp } from "./utils/render";
+import type { RenderProp } from "@uiid/utils";
 
 export type UiProps = {
   render?: RenderProp;

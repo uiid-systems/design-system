@@ -1,4 +1,4 @@
-import { prepareComponentProps, renderWithProps, cx } from "../../../utils";
+import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
 import type { TextProps } from "./text.types";
 
 import styles from "./text.module.css";

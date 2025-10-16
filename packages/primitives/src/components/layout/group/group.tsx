@@ -1,5 +1,6 @@
+import { cx } from "@uiid/utils";
+
 import { Box } from "../box/box";
-import { cx } from "../../../utils";
 
 import type { GroupProps } from "./group.types";
 import styles from "./group.module.css";
