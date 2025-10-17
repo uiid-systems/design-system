@@ -12,7 +12,10 @@
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/layout": "workspace:*",
-    "@uiid/ui": "workspace:*"
+    "@uiid/ui": "workspace:*",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
+    "@uiid/interactive": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

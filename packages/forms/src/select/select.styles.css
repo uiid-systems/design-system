@@ -1,0 +1,18 @@
+[uiid="select"] {
+  appearance: none;
+  max-height: calc(var(--forms-height) - 2px);
+  margin-inline-end: var(--forms-paddingX);
+  padding-inline-end: calc(var(--forms-paddingX) * 2 + 12px) !important;
+
+  &:has(option:disabled:checked) {
+    color: var(--shade-accent);
+  }
+
+  & + [data-slot="formfield-bookend"]:has([data-slot="select-chevron"]) {
+    height: 100%;
+    padding-inline-start: var(--forms-paddingX);
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
+}

@@ -1,17 +1,16 @@
 {
-  "name": "@uiid/buttons",
+  "name": "@uiid/forms",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/buttons.umd.cjs",
-  "module": "dist/buttons.js",
+  "main": "dist/forms.umd.cjs",
+  "module": "dist/forms.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/buttons.js",
-      "require": "./dist/buttons.umd.cjs"
-    },
-    "./globals.css": "./dist/buttons.css"
+      "import": "./dist/forms.js",
+      "require": "./dist/forms.umd.cjs"
+    }
   },
   "files": [
     "dist"
@@ -24,7 +23,11 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@uiid/icons": "workspace:*",
+    "@uiid/buttons": "workspace:*",
     "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*",
+    "@uiid/layout": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {

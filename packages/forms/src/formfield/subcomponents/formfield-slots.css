@@ -1,0 +1,10 @@
+[data-slot="formfield-slots"] {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: -webkit-fill-available;
+
+  &:has([uiid="select"]) {
+    width: auto;
+  }
+}

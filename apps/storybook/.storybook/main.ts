@@ -4,11 +4,13 @@ const config: StorybookConfig = {
   stories: [
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/buttons/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../../../packages/forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/indicators/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../../../packages/interactive/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/layout/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/tokens/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/typography/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/ui/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    // "../../../packages/ui/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   addons: [
     "@storybook/addon-docs",

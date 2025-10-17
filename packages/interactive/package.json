@@ -1,17 +1,16 @@
 {
-  "name": "@uiid/buttons",
+  "name": "@uiid/interactive",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/buttons.umd.cjs",
-  "module": "dist/buttons.js",
+  "main": "dist/interactive.umd.cjs",
+  "module": "dist/interactive.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/buttons.js",
-      "require": "./dist/buttons.umd.cjs"
-    },
-    "./globals.css": "./dist/buttons.css"
+      "import": "./dist/interactive.js",
+      "require": "./dist/interactive.umd.cjs"
+    }
   },
   "files": [
     "dist"
@@ -24,6 +23,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-beta.4",
+    "@uiid/forms": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/utils": "workspace:*"
   },

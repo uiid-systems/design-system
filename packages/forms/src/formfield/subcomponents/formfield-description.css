@@ -1,0 +1,9 @@
+[data-slot="formfield-description"] {
+  font-size: var(--input-description-font-size);
+  font-weight: var(--input-description-font-weight);
+  color: var(--input-description-color);
+
+  &[data-error="true"] {
+    color: var(--forms-state-invalid-fg);
+  }
+}
