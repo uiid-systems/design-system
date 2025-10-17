@@ -1,10 +1,9 @@
-// import { useRef, useState } from "react";
 import { useRef } from "react";
 import type { StoryObj } from "@storybook/react-vite";
 
 import { Stack, Group } from "@uiid/layout";
+import { Button } from "@uiid/buttons";
 
-import { Button } from "../buttons";
 import { Input, Select, InputZip } from "./";
 import { SelectState } from "./select-state/select-state";
 
@@ -51,7 +50,6 @@ export const AdressForm: Story = {
         render={<form ref={formRef} onSubmit={handleSubmit} />}
         ax="stretch"
         gap={4}
-        style={{ width: 520 }}
       >
         <Group ay="end" gap={GAP}>
           <Select label="Surname" options={surnames} />

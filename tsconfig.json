@@ -33,7 +33,11 @@
       "@ui/*": ["packages/ui/src/*"]
     }
   },
-  "include": ["packages/*/src/**/*", "apps/*/src/**/*"],
+  "include": [
+    "packages/*/src/**/*",
+    "apps/*/src/**/*",
+    "packages/buttons/vite.config.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist",

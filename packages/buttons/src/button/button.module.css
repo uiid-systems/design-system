@@ -1,6 +1,6 @@
 @import "@uiid/tokens/components/button.tokens.css";
 
-[uiid="button"] {
+.button {
   all: unset;
   background-color: var(--button-bg);
   border: var(--button-border-width) solid var(--button-border-color);

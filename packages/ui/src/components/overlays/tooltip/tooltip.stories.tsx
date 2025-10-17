@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-import { Button } from "../../buttons";
+import { Button } from "@uiid/buttons";
 
 import { Tooltip } from "./tooltip";
 

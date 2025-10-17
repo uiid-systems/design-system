@@ -1,13 +1,13 @@
-import { states } from "../../../data/states";
 import { Select } from "../select/select";
 
 import type { SelectStateProps } from "./select-state.types";
+import { STATES } from "./select-state.constants";
 
 export const SelectState = ({
   type = "fullname",
   ...props
 }: SelectStateProps) => {
-  const options = Object.entries(states).map(([label, value]) => ({
+  const options = Object.entries(STATES).map(([label, value]) => ({
     label: type === "postal" ? value : label,
     value: type === "postal" ? label : value,
   }));

@@ -1,14 +1,15 @@
 {
-  "name": "@uiid/ui",
+  "name": "@uiid/buttons",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/uiid.umd.cjs",
-  "module": "dist/uiid.js",
+  "main": "dist/buttons.umd.cjs",
+  "module": "dist/buttons.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/uiid.js",
-      "require": "./dist/uiid.umd.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/buttons.js",
+      "require": "./dist/buttons.umd.cjs"
     }
   },
   "files": [
@@ -22,15 +23,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@base-ui-components/react": "1.0.0-beta.4",
-    "@uiid/icons": "workspace:*",
-    "@uiid/layout": "workspace:*",
-    "@uiid/typography": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/utils": "workspace:*",
-    "cva": "^1.0.0-beta.4",
-    "tailwind-merge": "^3.3.1",
-    "vaul": "^1.1.2"
+    "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.1.1",
@@ -44,7 +38,8 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@uiid/buttons": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "@uiid/layout": "workspace:*",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -58,6 +53,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   }

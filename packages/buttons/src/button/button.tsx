@@ -1,7 +1,7 @@
-import { renderWithProps } from "@uiid/utils";
+import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
-import "./button.styles.css";
+import styles from "./button.module.css";
 
 export const Button = ({
   variant,
@@ -13,6 +13,7 @@ export const Button = ({
   icon,
   iconPosition,
   render,
+  className,
   children,
   ...props
 }: ButtonProps) => {
@@ -83,6 +84,7 @@ export const Button = ({
   const componentProps = {
     uiid: "button",
     ...props,
+    className: cx(styles["button"], className),
     ref: setCustomAttributes,
     /** accessibility */
     "aria-label": loading ? (loadingText ?? "Loading") : ariaLabel,

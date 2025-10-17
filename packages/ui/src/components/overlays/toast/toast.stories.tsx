@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 
-import { Button } from "../../buttons";
+import { Button } from "@uiid/buttons";
 
 import { ToastProvider, useToastManager, Toaster } from "./toast";
 

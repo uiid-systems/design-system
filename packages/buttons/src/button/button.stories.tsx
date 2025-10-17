@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Send, Bell, MessageCircleMore, ExternalLink } from "@uiid/icons";
 import { fn } from "storybook/test";
 
+import { Send, Bell, MessageCircleMore, ExternalLink } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
