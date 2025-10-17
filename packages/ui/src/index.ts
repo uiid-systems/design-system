@@ -1,9 +1,6 @@
 // Form components
 export * from "./components/forms";
 
-// Indicator components
-export * from "./components/indicators";
-
 // Overlay components
 export * from "./components/overlays";
 
