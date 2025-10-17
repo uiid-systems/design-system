@@ -10,6 +10,6 @@
     "rootDir": "src",
     "allowImportingTsExtensions": false
   },
-  "include": ["src/**/*", "src/vite-env.d.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.*", "**/*.spec.*"]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
 }

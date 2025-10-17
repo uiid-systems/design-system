@@ -1,6 +1,0 @@
-[data-slot="select-chevron"] {
-  pointer-events: none;
-  background: var(--input-background);
-  height: 100%;
-  align-content: center;
-}

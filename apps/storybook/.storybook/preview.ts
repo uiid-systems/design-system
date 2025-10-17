@@ -24,6 +24,7 @@ const preview: Preview = {
           "Forms",
           "Indicators",
           "Interactive",
+          "Overlays",
         ],
         locales: "en-US",
       },
