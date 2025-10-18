@@ -1,13 +1,14 @@
-import type { Drawer, DialogProps } from "vaul";
+import type { Drawer, DialogProps, ContentProps } from "vaul";
 
 export type DrawerProps = React.PropsWithChildren<{
   trigger: React.ReactNode;
   title: string;
   description: string;
   direction: DialogProps["direction"];
-  RootProps?: typeof Drawer.Root;
-  TriggerProps?: Omit<typeof Drawer.Trigger, "children">;
-  PortalProps?: typeof Drawer.Portal;
-  OverlayProps?: typeof Drawer.Overlay;
-  ContentProps?: typeof Drawer.Content;
+  RootProps?: Omit<DialogProps, "children">;
+  TriggerProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof Drawer.Trigger>,
+    "children"
+  >;
+  ContentProps?: ContentProps;
 }>;

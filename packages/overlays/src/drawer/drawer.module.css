@@ -1,3 +1,5 @@
+@import "@uiid/tokens/components/drawer.tokens.css";
+
 .drawer-overlay {
   position: fixed;
   inset: 0;
@@ -15,9 +17,14 @@
   background-color: var(--shade-surface);
   padding: var(--globals-padding-y) var(--globals-padding-x);
 
+  &[data-vaul-drawer-direction="top"],
+  &[data-vaul-drawer-direction="bottom"] {
+    min-height: var(--drawer-extends-vertical);
+  }
+
   &[data-vaul-drawer-direction="right"],
   &[data-vaul-drawer-direction="left"] {
-    max-width: 50%;
+    max-width: var(--drawer-extends-horizontal);
     height: 100dvh;
   }
 

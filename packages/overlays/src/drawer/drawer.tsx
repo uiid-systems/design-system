@@ -1,6 +1,5 @@
 import { Drawer as BaseDrawer } from "vaul";
-
-import { Text } from "@uiid/typography";
+import type { DialogProps } from "vaul";
 
 import type { DrawerProps } from "./drawer.types";
 import styles from "./drawer.module.css";
@@ -8,31 +7,24 @@ import styles from "./drawer.module.css";
 export const Drawer = ({
   trigger,
   direction,
+  title,
+  description,
   children,
   RootProps,
   TriggerProps,
-  PortalProps,
-  OverlayProps,
   ContentProps,
 }: DrawerProps) => {
   return (
-    <BaseDrawer.Root direction={direction} {...RootProps}>
+    <BaseDrawer.Root direction={direction} {...(RootProps as DialogProps)}>
       <BaseDrawer.Trigger {...TriggerProps}>{trigger}</BaseDrawer.Trigger>
-      <BaseDrawer.Portal {...PortalProps}>
-        <BaseDrawer.Overlay
-          className={styles["drawer-overlay"]}
-          {...OverlayProps}
-        />
+      <BaseDrawer.Portal>
+        <BaseDrawer.Overlay className={styles["drawer-overlay"]} />
         <BaseDrawer.Content
           className={styles["drawer-content"]}
           {...ContentProps}
         >
-          <BaseDrawer.Title asChild>
-            <Text render={<h3 />} level={1} />
-          </BaseDrawer.Title>
-          <BaseDrawer.Description asChild>
-            <Text render={<h4 />} level={0} />
-          </BaseDrawer.Description>
+          <BaseDrawer.Title>{title}</BaseDrawer.Title>
+          <BaseDrawer.Description>{description}</BaseDrawer.Description>
           {children}
         </BaseDrawer.Content>
       </BaseDrawer.Portal>
