@@ -7,6 +7,7 @@ import styles from "./drawer.module.css";
 
 export const Drawer = ({
   trigger,
+  direction,
   children,
   RootProps,
   TriggerProps,
@@ -15,7 +16,7 @@ export const Drawer = ({
   ContentProps,
 }: DrawerProps) => {
   return (
-    <BaseDrawer.Root {...RootProps}>
+    <BaseDrawer.Root direction={direction} {...RootProps}>
       <BaseDrawer.Trigger {...TriggerProps}>{trigger}</BaseDrawer.Trigger>
       <BaseDrawer.Portal {...PortalProps}>
         <BaseDrawer.Overlay

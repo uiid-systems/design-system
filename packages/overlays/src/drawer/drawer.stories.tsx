@@ -7,14 +7,18 @@ const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",
   component: Drawer,
   args: {
-    trigger: "activate drawer",
+    title: "Drawer",
+    description: "This is a drawer",
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa hic, accusamus dolor cum minima pariatur provident vero blanditiis vel! Assumenda ipsum officia autem!",
   },
   argTypes: {},
   render: (args) => (
     <Stack gap={4}>
-      <Drawer {...args} />
+      <Drawer {...args} trigger="open drawer from top" direction="top" />
+      <Drawer {...args} trigger="open drawer from right" direction="right" />
+      <Drawer {...args} trigger="open drawer from left" direction="left" />
+      <Drawer {...args} trigger="open drawer from bottom" direction="bottom" />
     </Stack>
   ),
 };

@@ -14,9 +14,20 @@
   color: var(--shade-foreground);
   background-color: var(--shade-surface);
   padding: var(--globals-padding-y) var(--globals-padding-x);
-  box-shadow: 0 0 0 1px var(--globals-border-color);
 
-  border-top-left-radius: var(--globals-border-radius);
-  border-top-right-radius: var(--globals-border-radius);
-  border: var(--globals-border-width) solid var(--globals-border-color);
+  &[data-vaul-drawer-direction="right"],
+  &[data-vaul-drawer-direction="left"] {
+    max-width: 50%;
+    height: 100dvh;
+  }
+
+  &[data-vaul-drawer-direction="top"] {
+    top: 0;
+    bottom: auto;
+  }
+
+  &[data-vaul-drawer-direction="right"] {
+    left: auto;
+    right: 0;
+  }
 }
