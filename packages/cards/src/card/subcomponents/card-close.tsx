@@ -9,6 +9,7 @@ export type CardCloseProps = Pick<CardProps, "onDismiss">;
 export const CardClose = ({ onDismiss }: CardCloseProps) => {
   return (
     <CloseButton
+      data-slot="card-close"
       variant="inverted"
       fill="outline"
       onClick={onDismiss}

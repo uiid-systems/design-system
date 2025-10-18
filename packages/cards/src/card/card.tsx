@@ -23,11 +23,17 @@ export const Card = ({
   const hasIcon = variant && variant !== "inverted";
   const hasHeader = Boolean(hasIcon || title);
   const hasActions = Boolean(onSubmit || onCancel);
+  const hasContent = Boolean(children);
+  const sections = [hasHeader, hasActions, hasContent];
+
+  const needsStack = sections.filter(Boolean).length > 1;
+  console.log(sections, needsStack);
 
   return (
     <Stack
       uiid="card"
       ax="stretch"
+      gap={needsStack ? 4 : 0}
       data-size={size}
       data-variant={variant}
       className={cx(styles.card, className)}
@@ -37,7 +43,7 @@ export const Card = ({
 
       <ConditionalRender
         condition={hasHeader}
-        wrapper={<Group ay="center" gap={2} mb={6} />}
+        wrapper={<Group ay="center" gap={2} />}
       >
         {hasIcon && <CardIcon variant={variant} />}
         {title && <CardTitle title={title} size={size} />}

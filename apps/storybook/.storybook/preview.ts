@@ -4,6 +4,7 @@ import "@uiid/tokens/globals.css";
 import "@uiid/typography/globals.css";
 import "@uiid/layout/globals.css";
 import "@uiid/buttons/globals.css";
+import "@uiid/cards/globals.css";
 
 const preview: Preview = {
   // tags: ["autodocs"],
