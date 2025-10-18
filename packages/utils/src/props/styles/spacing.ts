@@ -1,6 +1,8 @@
 import type { StyleProp } from "../types";
 
-const SPACING_VALUES = [0, 1, 2, 3, 4, 6, 8, 12, 16] as const;
+const SPACING_VALUES = [
+  0, 1, 2, 3, 4, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 56, 64,
+] as const;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/gap */
 export const gap = {

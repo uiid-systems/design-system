@@ -21,12 +21,12 @@
     "size": {
       "icon": {
         "fontSize": { "$value": "0.75rem", "$type": "dimension" },
-        "padding": { "$value": "0.25rem", "$type": "dimension" },
-        "size": { "$value": "0.875rem", "$type": "dimension" }
+        "padding": { "$value": "0.125rem", "$type": "dimension" },
+        "size": { "$value": "0.75rem", "$type": "dimension" }
       },
       "sm": {
         "height": { "$value": "{forms.size.sm.height}", "$type": "dimension" },
-        "paddingX": { "$value": "1rem", "$type": "dimension" },
+        "paddingX": { "$value": "0.5rem", "$type": "dimension" },
         "fontSize": {
           "$value": "{forms.size.sm.fontSize}",
           "$type": "dimension"

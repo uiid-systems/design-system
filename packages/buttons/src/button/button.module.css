@@ -13,7 +13,7 @@
   font-size: var(--button-fontSize);
   height: var(--button-height);
   overflow: hidden;
-  padding-inline: calc(var(--forms-paddingX) * 2);
+  padding-inline: calc(var(--button-paddingX) * 2);
   text-underline-offset: 0.125rem;
   transition: all var(--button-transition) ease-in-out;
 
@@ -45,17 +45,17 @@
   &:where([size="sm"]) {
     --button-fontSize: var(--forms-size-sm-fontSize);
     --button-height: var(--forms-size-sm-height);
-    --button-paddingX: var(--forms-size-sm-paddingX);
+    --button-paddingX: var(--button-size-sm-paddingX);
   }
   &:where([size="md"]) {
     --button-fontSize: var(--forms-size-md-fontSize);
     --button-height: var(--forms-size-md-height);
-    --button-paddingX: var(--forms-size-md-paddingX);
+    --button-paddingX: var(--button-size-md-paddingX);
   }
   &:where([size="lg"]) {
     --button-fontSize: var(--forms-size-lg-fontSize);
     --button-height: var(--forms-size-lg-height);
-    --button-paddingX: var(--forms-size-lg-paddingX);
+    --button-paddingX: var(--button-size-lg-paddingX);
   }
 
   /** Variants */

@@ -21,6 +21,7 @@ const preview: Preview = {
           "Typography",
           "Layout",
           "Buttons",
+          "Cards",
           "Forms",
           "Indicators",
           "Interactive",

@@ -1,7 +1,7 @@
 import { Toast as BaseToast } from "@base-ui-components/react/toast";
 
 import { X } from "@uiid/icons";
-import { Card } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 import { Text } from "@uiid/typography";
 
 import type { ToastProps } from "./toast.types";

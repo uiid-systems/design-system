@@ -1,9 +1,6 @@
 export * from "./box/box";
 export * from "./box/box.types";
 
-export * from "./card/card";
-export * from "./card/card.types";
-
 export * from "./conditional-render/conditional-render";
 export * from "./conditional-render/conditional-render.types";
 
@@ -20,4 +17,7 @@ export * from "./slots/slots";
 export * from "./slots/slots.types";
 
 export * from "./stack/stack";
+export * from "./stack/stack.types";
+
 export * from "./switch-render/switch-render";
+export * from "./switch-render/switch-render.types";

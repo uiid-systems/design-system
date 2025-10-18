@@ -1,18 +1,17 @@
 @import "@uiid/tokens/components/card.tokens.css";
 
 .card {
+  position: relative;
   background-color: var(--card-color-bg);
   color: var(--card-color-fg);
-
   border-radius: var(--globals-border-radius);
   border: var(--globals-border-width) solid var(--card-border-color);
-
   padding-block: var(--globals-padding-y);
   padding-inline: var(--globals-padding-x);
 
   &:where([data-size="sm"]) {
-    padding-block: calc(var(--globals-padding-y) * 0.5);
-    padding-inline: calc(var(--globals-padding-x) * 0.5);
+    padding-block: calc(var(--globals-padding-y) * 0.75);
+    padding-inline: calc(var(--globals-padding-x) * 0.75);
   }
   &:where([data-size="md"]) {
     padding-block: var(--globals-padding-y);

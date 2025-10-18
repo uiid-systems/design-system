@@ -1,4 +1,4 @@
-import type { RenderProp } from "@uiid/utils";
+import type { ToggleProps, RenderProp } from "@uiid/utils";
 
 export type TextProps = React.PropsWithChildren<{
   level?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -7,4 +7,5 @@ export type TextProps = React.PropsWithChildren<{
   style?: React.CSSProperties;
   className?: string;
   uiid?: string;
-}>;
+}> &
+  Pick<ToggleProps, "bold">;

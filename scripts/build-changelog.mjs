@@ -187,8 +187,17 @@ function loadExistingChangelogData() {
 // Main function to build changelog data
 function buildChangelogData() {
   const packages = [
-    { name: "@uiid/ui", path: "packages/ui/CHANGELOG.md" },
+    { name: "@uiid/buttons", path: "packages/buttons/CHANGELOG.md" },
+    { name: "@uiid/cards", path: "packages/cards/CHANGELOG.md" },
+    { name: "@uiid/forms", path: "packages/forms/CHANGELOG.md" },
+    { name: "@uiid/icons", path: "packages/icons/CHANGELOG.md" },
+    { name: "@uiid/indicators", path: "packages/indicators/CHANGELOG.md" },
+    { name: "@uiid/interactive", path: "packages/interactive/CHANGELOG.md" },
+    { name: "@uiid/layout", path: "packages/layout/CHANGELOG.md" },
+    { name: "@uiid/overlays", path: "packages/overlays/CHANGELOG.md" },
     { name: "@uiid/tokens", path: "packages/tokens/CHANGELOG.md" },
+    { name: "@uiid/typography", path: "packages/typography/CHANGELOG.md" },
+    { name: "@uiid/utils", path: "packages/utils/CHANGELOG.md" },
   ];
 
   const existingDates = loadExistingChangelogData();

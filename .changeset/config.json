@@ -2,7 +2,22 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@uiid/tokens", "@uiid/ui"]],
+  "fixed": [
+    [
+      "@uiid/tokens",
+      "@uiid/buttons",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/overlays",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ]
+  ],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",

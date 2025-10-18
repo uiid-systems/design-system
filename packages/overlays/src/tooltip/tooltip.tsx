@@ -1,6 +1,6 @@
 import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
 
-import { Card } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 
 import type { TooltipProps } from "./tooltip.types";
 import { TooltipTrigger } from "./subcomponents/tooltip-trigger";

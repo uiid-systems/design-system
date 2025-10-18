@@ -68,8 +68,17 @@ function generateChangesetContent(commits) {
       : `- ${cleanedCommits[0] || "Latest updates"}`;
 
   return `---
-"@uiid/ui": patch
-"@uiid/tokens": patch
+  "@uiid/buttons": patch
+  "@uiid/cards": patch
+  "@uiid/forms": patch
+  "@uiid/icons": patch
+  "@uiid/indicators": patch
+  "@uiid/interactive": patch
+  "@uiid/layout": patch
+  "@uiid/overlays": patch
+  "@uiid/tokens": patch
+  "@uiid/typography": patch
+  "@uiid/utils": patch
 ---
 
 ${summary}
