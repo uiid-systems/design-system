@@ -8,12 +8,16 @@ const meta = {
   component: Card,
   args: {
     title: "Card Title",
-    onClose: () => {},
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
     style: {
       maxWidth: "640px",
     },
+  },
+  argTypes: {
+    onDismiss: { action: "dismissed" },
+    onSubmit: { action: "submitted" },
+    onCancel: { action: "canceled" },
   },
   render: (args) => (
     <Stack gap={4}>

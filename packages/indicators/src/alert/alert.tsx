@@ -2,13 +2,11 @@
 
 import { useRef, useState } from "react";
 
-import { Card, Group } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 
-import { AlertDismiss, AlertIcon } from "./subcomponents";
 import type { AlertProps } from "./alert.types";
 
 export const Alert = ({
-  dismissible = true,
   variant,
   onDismiss,
   children,
@@ -35,17 +33,14 @@ export const Alert = ({
   return (
     <Card
       uiid="alert"
-      ref={alertRef}
       role="alert"
-      data-variant={variant}
+      variant={variant}
       fullwidth
+      onDismiss={handleDismiss}
+      ref={alertRef}
       {...props}
     >
-      <Group ay="center" gap={2} fullwidth>
-        {variant && variant !== "inverted" && <AlertIcon type={variant} />}
-        {children}
-        {dismissible && <AlertDismiss onClick={handleDismiss} />}
-      </Group>
+      {children}
     </Card>
   );
 };

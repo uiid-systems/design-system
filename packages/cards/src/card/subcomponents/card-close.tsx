@@ -4,14 +4,14 @@ import type { CardProps } from "../card.types";
 
 import styles from "./card-close.module.css";
 
-export type CardCloseProps = Pick<CardProps, "onClose">;
+export type CardCloseProps = Pick<CardProps, "onDismiss">;
 
-export const CardClose = ({ onClose }: CardCloseProps) => {
+export const CardClose = ({ onDismiss }: CardCloseProps) => {
   return (
     <CloseButton
       variant="inverted"
       fill="outline"
-      onClick={onClose}
+      onClick={onDismiss}
       className={styles["card-close"]}
     />
   );

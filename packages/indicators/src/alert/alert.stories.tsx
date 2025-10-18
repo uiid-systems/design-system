@@ -5,25 +5,21 @@ import { Alert } from "./alert";
 const meta = {
   title: "Indicators/Alert",
   component: Alert,
-  args: {},
+  args: {
+    title:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+  },
+  argTypes: {
+    onDismiss: { action: "dismissed" },
+  },
   render: (args) => (
     <Stack gap={4} fullwidth>
-      <Alert {...args}>Alert</Alert>
-      <Alert {...args} variant="inverted">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-      </Alert>
-      <Alert {...args} variant="info">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-      </Alert>
-      <Alert {...args} variant="warning">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-      </Alert>
-      <Alert {...args} variant="error">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-      </Alert>
-      <Alert {...args} variant="success">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-      </Alert>
+      <Alert {...args} />
+      <Alert {...args} variant="inverted" />
+      <Alert {...args} variant="info" />
+      <Alert {...args} variant="warning" />
+      <Alert {...args} variant="error" />
+      <Alert {...args} variant="success" />
     </Stack>
   ),
 } satisfies Meta<typeof Alert>;

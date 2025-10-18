@@ -18,7 +18,6 @@ const meta = {
           {level}: Lorem ipsum dolor
         </Text>
       ))}
-      <Text bold>lorem ipsum dolor sit amet</Text>
     </div>
   ),
 } satisfies Meta<typeof Text>;

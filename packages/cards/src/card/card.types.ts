@@ -4,5 +4,7 @@ export type CardProps = StackProps & {
   size?: "sm" | "md" | "lg";
   variant?: "info" | "warning" | "error" | "success" | "inverted";
   title?: string;
-  onClose?: () => void;
+  onDismiss?: () => void;
+  onSubmit?: () => void;
+  onCancel?: () => void;
 };

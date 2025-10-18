@@ -1,6 +1,3 @@
-import type { CardProps } from "@uiid/layout";
+import type { CardProps } from "@uiid/cards";
 
-export type AlertProps = CardProps & {
-  dismissible?: boolean;
-  onDismiss?: () => void;
-};
+export type AlertProps = Omit<CardProps, "onSubmit" | "onCancel">;
