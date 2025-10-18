@@ -18,6 +18,30 @@
   transition: all var(--button-transition) ease-in-out;
 
   /** Sizes */
+  &:where([size="icon"]) {
+    --button-height: auto;
+    padding-inline: var(--button-size-icon-padding);
+    padding-block: var(--button-size-icon-padding);
+
+    &:where([data-icon="standalone"]) {
+      aspect-ratio: 1;
+    }
+
+    &:where([data-icon="before"]),
+    &:where([data-icon="after"]) {
+      font-size: var(--button-size-icon-fontSize);
+      padding-inline: calc(var(--button-size-icon-padding) * 2);
+    }
+
+    svg {
+      width: var(--button-size-icon-size);
+      height: var(--button-size-icon-size);
+    }
+
+    [data-slot="button-loading"] {
+      display: none;
+    }
+  }
   &:where([size="sm"]) {
     --button-fontSize: var(--forms-size-sm-fontSize);
     --button-height: var(--forms-size-sm-height);
@@ -65,6 +89,7 @@
 
   /** Fills */
   &:where([fill="ghost"]:not(:hover)) {
+    border-color: transparent;
     text-decoration: underline;
   }
 

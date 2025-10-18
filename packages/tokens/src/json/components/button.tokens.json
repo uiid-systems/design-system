@@ -19,6 +19,11 @@
     "activeMix": { "$value": "80%", "$type": "dimension" },
     "mixColor": { "$value": "{shade.background}", "$type": "color" },
     "size": {
+      "icon": {
+        "fontSize": { "$value": "0.75rem", "$type": "dimension" },
+        "padding": { "$value": "0.25rem", "$type": "dimension" },
+        "size": { "$value": "0.875rem", "$type": "dimension" }
+      },
       "sm": {
         "height": { "$value": "{forms.size.sm.height}", "$type": "dimension" },
         "paddingX": { "$value": "1rem", "$type": "dimension" },

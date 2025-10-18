@@ -3,7 +3,7 @@ import type { RenderProp } from "@uiid/utils";
 // Base button styling and behavior props
 type ButtonCoreProps = {
   variant?: "primary" | "secondary" | "tertiary" | "inverted" | "subtle";
-  size?: "sm" | "md" | "lg";
+  size?: "icon" | "sm" | "md" | "lg";
   fill?: "solid" | "outline" | "ghost";
   shape?: "rounded" | "pill";
   loading?: boolean;
