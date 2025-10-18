@@ -1,4 +1,4 @@
-import { Button } from "@uiid/buttons";
+import { Button, type ButtonProps } from "@uiid/buttons";
 import { Stack, Group, ConditionalRender } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
@@ -13,21 +13,25 @@ export const Card = ({
   size = "md",
   variant,
   title,
+  primaryAction,
+  secondaryAction,
+  tertiaryAction,
   onDismiss,
-  onSubmit,
-  onCancel,
   className,
   children,
   ...props
 }: CardProps) => {
   const hasIcon = variant && variant !== "inverted";
   const hasHeader = Boolean(hasIcon || title);
-  const hasActions = Boolean(onSubmit || onCancel);
+  const hasActions = Boolean(
+    primaryAction || secondaryAction || tertiaryAction,
+  );
   const hasContent = Boolean(children);
+
   const sections = [hasHeader, hasActions, hasContent];
+  const actions = [tertiaryAction, secondaryAction, primaryAction];
 
   const needsStack = sections.filter(Boolean).length > 1;
-  console.log(sections, needsStack);
 
   return (
     <Stack
@@ -39,14 +43,13 @@ export const Card = ({
       className={cx(styles.card, className)}
       {...props}
     >
-      {onDismiss && <CardClose onDismiss={onDismiss} />}
-
       <ConditionalRender
         condition={hasHeader}
         wrapper={<Group ay="center" gap={2} />}
       >
         {hasIcon && <CardIcon variant={variant} />}
         {title && <CardTitle title={title} size={size} />}
+        {onDismiss && <CardClose onDismiss={onDismiss} />}
       </ConditionalRender>
 
       <Stack pr={onDismiss ? CLOSE_BUTTON_GUTTER : 0}>
@@ -59,16 +62,19 @@ export const Card = ({
         condition={hasActions}
         wrapper={<Group ax="end" ay="center" gap={2} mt={8} />}
       >
-        {onCancel && (
-          <Button size="sm" fill="outline" onClick={onCancel}>
-            Cancel
-          </Button>
-        )}
-        {onSubmit && (
-          <Button size="sm" onClick={onSubmit}>
-            Submit
-          </Button>
-        )}
+        {actions.map((action) => {
+          if (!action) return null;
+
+          let variant: ButtonProps["variant"] | undefined;
+          if (action === secondaryAction) variant = "subtle";
+          if (action === tertiaryAction) variant = "tertiary";
+
+          return (
+            <Button size="sm" onClick={action.onClick} variant={variant}>
+              {action.text}
+            </Button>
+          );
+        })}
       </ConditionalRender>
     </Stack>
   );

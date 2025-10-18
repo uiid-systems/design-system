@@ -30,10 +30,8 @@ export const Default: Story = {
   render: (args) => {
     const variants = [
       { variant: undefined, label: "default" },
+      { variant: "subtle" as const, label: "subtle" },
       { variant: "inverted" as const, label: "inverted" },
-      { variant: "primary" as const, label: "primary" },
-      { variant: "secondary" as const, label: "secondary" },
-      { variant: "tertiary" as const, label: "tertiary" },
     ];
 
     return (

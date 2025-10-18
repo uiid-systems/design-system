@@ -1,9 +1,0 @@
-.card-close {
-  position: absolute !important;
-  top: 0.5rem !important;
-  right: 0.5rem !important;
-
-  &:hover {
-    scale: 1.1;
-  }
-}

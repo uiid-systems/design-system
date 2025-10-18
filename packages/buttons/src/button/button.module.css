@@ -61,6 +61,7 @@
   /** Variants */
   &:where([variant="inverted"]) {
     --button-bg: var(--button-variant-inverted-bg);
+    --button-border-color: var(--button-variant-inverted-fg);
     --button-color-outline: var(--button-variant-inverted-fg);
     --button-fg: var(--button-variant-inverted-fg);
     --button-mix-color: var(--shade-foreground);
@@ -87,7 +88,6 @@
     --button-border-color: var(--button-variant-tertiary-bg);
   }
 
-  /** Fills */
   &:where([fill="ghost"]:not(:hover)) {
     border-color: transparent;
     text-decoration: underline;
@@ -97,10 +97,6 @@
     border-color: var(--button-bg);
     border-width: var(--button-border-width);
     border-style: solid;
-
-    &:where([variant="inverted"]) {
-      border-color: var(--button-fg);
-    }
   }
 
   &:where([fill="ghost"]:not(:hover)),
@@ -109,9 +105,6 @@
     color: var(--button-bg);
   }
 
-  /**
-   * SHAPES
-   */
   &:where([shape="rounded"]) {
     border-radius: var(--button-border-radius);
   }
@@ -119,18 +112,11 @@
     border-radius: 99999px;
   }
 
-  /**
-   * DISABLED
-   */
   &:where([aria-disabled="true"]) {
     opacity: var(--button-disabledOpacity);
     cursor: not-allowed;
   }
 
-  /**
-   * ICON
-   * standalone
-   */
   &:where([icon="standalone"]) {
     padding: 0;
     aspect-ratio: 1;
@@ -145,9 +131,6 @@
     transform: translate3d(0, -100%, 0);
   }
 
-  /**
-   * FOCUS
-   */
   &:focus {
     outline-style: solid;
     outline-width: 2px;
@@ -155,9 +138,6 @@
     outline-color: var(--button-color-outline, var(--button-bg));
   }
 
-  /**
-   * HOVER, FOCUS, ACTIVE
-   */
   &:not([aria-disabled="true"]):hover,
   &:not([aria-disabled="true"]):focus {
     scale: var(--button-scale-hover);

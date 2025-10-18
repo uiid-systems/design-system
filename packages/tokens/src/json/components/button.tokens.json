@@ -59,18 +59,6 @@
         "fg": { "$value": "{shade.foreground}", "$type": "color" },
         "border-color": { "$value": "{shade.muted}", "$type": "color" }
       },
-      "primary": {
-        "bg": { "$value": "{colors.blue.500}", "$type": "color" },
-        "fg": { "$value": "{black}", "$type": "color" }
-      },
-      "secondary": {
-        "bg": { "$value": "{colors.blue.300}", "$type": "color" },
-        "fg": { "$value": "{black}", "$type": "color" }
-      },
-      "tertiary": {
-        "bg": { "$value": "{colors.blue.100}", "$type": "color" },
-        "fg": { "$value": "{black}", "$type": "color" }
-      },
       "inverted": {
         "bg": { "$value": "{colors.shade.background}", "$type": "color" },
         "fg": { "$value": "{colors.shade.foreground}", "$type": "color" }

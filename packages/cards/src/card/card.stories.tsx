@@ -8,6 +8,18 @@ const meta = {
   component: Card,
   args: {
     title: "Card Title",
+    primaryAction: {
+      onClick: () => {},
+      text: "Primary Action",
+    },
+    secondaryAction: {
+      onClick: () => {},
+      text: "Secondary Action",
+    },
+    tertiaryAction: {
+      onClick: () => {},
+      text: "Tertiary Action",
+    },
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
     style: {
@@ -16,8 +28,9 @@ const meta = {
   },
   argTypes: {
     onDismiss: { action: "dismissed" },
-    onSubmit: { action: "submitted" },
-    onCancel: { action: "canceled" },
+    primaryAction: { action: "primary action" },
+    secondaryAction: { action: "secondary action" },
+    tertiaryAction: { action: "tertiary action" },
   },
   render: (args) => (
     <Stack gap={4}>
