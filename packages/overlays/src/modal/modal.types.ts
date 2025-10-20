@@ -1,15 +1,21 @@
 import type { Dialog } from "@base-ui-components/react/dialog";
 
+import type { CardProps } from "@uiid/cards";
+
 export type ModalProps = React.PropsWithChildren<{
   trigger: React.ReactNode;
-  title: string;
-  description: string;
   RootProps?: Dialog.Root.Props;
   TriggerProps?: Omit<Dialog.Trigger.Props, "children">;
   PortalProps?: Dialog.Portal.Props;
   BackdropProps?: Dialog.Backdrop.Props;
   PopupProps?: Omit<Dialog.Popup.Props, "children">;
-  TitleProps?: Omit<Dialog.Title.Props, "children">;
-  DescriptionProps?: Omit<Dialog.Description.Props, "children">;
-  CloseProps?: Dialog.Close.Props;
-}>;
+}> &
+  Partial<Pick<Dialog.Root.Props, "open" | "onOpenChange">> &
+  Pick<
+    CardProps,
+    | "title"
+    | "onDismiss"
+    | "primaryAction"
+    | "secondaryAction"
+    | "tertiaryAction"
+  >;

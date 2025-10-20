@@ -1,5 +1,6 @@
 import type { ButtonProps } from "@uiid/buttons";
 import type { StackProps } from "@uiid/layout";
+import type { RenderProp } from "@uiid/utils";
 
 export type CardActionProps = {
   text: string;
@@ -26,5 +27,6 @@ export type CardProps = StackProps & {
   primaryAction?: CardActionProps;
   secondaryAction?: CardActionProps;
   tertiaryAction?: CardActionProps;
+  renderDismissButton?: RenderProp;
 } & CardWithButtonProps &
   CardAsLinkProps;

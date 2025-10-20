@@ -8,10 +8,10 @@ const meta: Meta<typeof Modal> = {
   component: Modal,
   args: {
     trigger: "activate modal",
-    title: "Modal",
-    description: "This is a modal",
+    title: "This is a modal",
     children:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa hic, accusamus dolor cum minima pariatur provident vero blanditiis vel! Assumenda ipsum officia autem!",
+      "A modal is a temporary window that appears on top of the current page. It is used to display content that is not part of the main page, such as a login form or a popup.",
+    primaryAction: { text: "Primary", onClick: () => {} },
   },
   argTypes: {},
   render: (args) => (

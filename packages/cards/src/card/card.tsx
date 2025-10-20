@@ -25,6 +25,7 @@ export const Card = ({
   secondaryAction,
   tertiaryAction,
   onDismiss,
+  renderDismissButton,
   render,
   className,
   children,
@@ -89,14 +90,16 @@ export const Card = ({
         {hasIcon && <CardIcon variant={variant} />}
         {title && <CardTitle title={title} size={size} />}
         <Box style={{ marginLeft: "auto" }}>
-          {!isLink && onDismiss && <CardClose onDismiss={onDismiss} />}
+          {!isLink && onDismiss && (
+            <CardClose onDismiss={onDismiss} render={renderDismissButton} />
+          )}
           {isExternalLink && <CardExternalLink />}
           {isLink && !isExternalLink && <ArrowRight size={16} />}
         </Box>
       </ConditionalRender>
 
-      <Stack pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0}>
-        <Text render={<p />} level={0}>
+      <Stack pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0} pb={2}>
+        <Text render={<article />} level={0}>
           {children}
         </Text>
       </Stack>

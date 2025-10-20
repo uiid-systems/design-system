@@ -1,7 +1,6 @@
 import { Dialog } from "@base-ui-components/react/dialog";
 
 import { Card } from "@uiid/cards";
-import { Text } from "@uiid/typography";
 
 import type { ModalProps } from "./modal.types";
 import styles from "./modal.module.css";
@@ -9,19 +8,25 @@ import styles from "./modal.module.css";
 export const Modal = ({
   trigger,
   title,
-  description,
+  open,
+  onOpenChange,
+  onDismiss,
+  primaryAction,
+  secondaryAction,
+  tertiaryAction,
   children,
   RootProps,
   PortalProps,
   BackdropProps,
   TriggerProps,
   PopupProps,
-  TitleProps,
-  DescriptionProps,
-  CloseProps,
 }: ModalProps) => {
+  const handleDismiss = () => {
+    onDismiss?.();
+  };
+
   return (
-    <Dialog.Root {...RootProps}>
+    <Dialog.Root {...RootProps} open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger {...TriggerProps}>{trigger}</Dialog.Trigger>
 
       <Dialog.Portal {...PortalProps}>
@@ -29,30 +34,17 @@ export const Modal = ({
           className={styles["modal-backdrop"]}
           {...BackdropProps}
         />
-        <Dialog.Popup
-          render={<Card gap={2} />}
-          className={styles["modal-popup"]}
-          {...PopupProps}
-        >
-          <Dialog.Title
-            render={<Text render={<h3 />} level={1} />}
-            {...TitleProps}
+        <Dialog.Popup className={styles["modal-popup"]} {...PopupProps}>
+          <Card
+            title={title}
+            onDismiss={handleDismiss}
+            renderDismissButton={<Dialog.Close />}
+            primaryAction={primaryAction}
+            secondaryAction={secondaryAction}
+            tertiaryAction={tertiaryAction}
           >
-            {title}
-          </Dialog.Title>
-
-          <Dialog.Description
-            render={<Text render={<h4 />} level={0} />}
-            {...DescriptionProps}
-          >
-            {description}
-          </Dialog.Description>
-
-          {children}
-
-          <Dialog.Close className={styles["modal-close"]} {...CloseProps}>
-            Close
-          </Dialog.Close>
+            {children}
+          </Card>
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>
