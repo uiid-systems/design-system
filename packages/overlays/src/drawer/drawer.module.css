@@ -1,9 +1,10 @@
+@import "@uiid/tokens/components/overlays.tokens.css";
 @import "@uiid/tokens/components/drawer.tokens.css";
 
 .drawer-overlay {
   position: fixed;
   inset: 0;
-  background-color: color-mix(in srgb, var(--shade-background), transparent 40%);
+  background-color: color-mix(in srgb, transparent, var(--shade-background) calc(var(--overlays-backdrop-opacity) * 100%));
 }
 
 .drawer-content {

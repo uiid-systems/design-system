@@ -14,10 +14,9 @@ export const Modal = ({
   primaryAction,
   secondaryAction,
   tertiaryAction,
+  keepMounted,
   children,
   RootProps,
-  PortalProps,
-  BackdropProps,
   TriggerProps,
   PopupProps,
 }: ModalProps) => {
@@ -29,11 +28,8 @@ export const Modal = ({
     <Dialog.Root {...RootProps} open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger {...TriggerProps}>{trigger}</Dialog.Trigger>
 
-      <Dialog.Portal {...PortalProps}>
-        <Dialog.Backdrop
-          className={styles["modal-backdrop"]}
-          {...BackdropProps}
-        />
+      <Dialog.Portal keepMounted={keepMounted}>
+        <Dialog.Backdrop className={styles["modal-backdrop"]} />
         <Dialog.Popup className={styles["modal-popup"]} {...PopupProps}>
           <Card
             title={title}

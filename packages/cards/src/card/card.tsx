@@ -90,7 +90,7 @@ export const Card = ({
         {hasIcon && <CardIcon variant={variant} />}
         {title && <CardTitle title={title} size={size} />}
         <Box style={{ marginLeft: "auto" }}>
-          {!isLink && onDismiss && (
+          {!isLink && (onDismiss || renderDismissButton) && (
             <CardClose onDismiss={onDismiss} render={renderDismissButton} />
           )}
           {isExternalLink && <CardExternalLink />}
@@ -107,7 +107,7 @@ export const Card = ({
       {!isLink && (
         <ConditionalRender
           condition={hasActions}
-          wrapper={<Group ax="end" ay="center" gap={2} mt={4} />}
+          wrapper={<Group ax="end" ay="center" gap={2} />}
         >
           {actions.map((action) => {
             if (!action) return null;

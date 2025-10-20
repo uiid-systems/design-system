@@ -1,9 +1,11 @@
+@import "@uiid/tokens/components/overlays.tokens.css";
+
 .modal-backdrop {
   position: fixed;
   min-height: 100dvh;
   inset: 0;
   background-color: var(--shade-background);
-  opacity: 0.2;
+  opacity: var(--overlays-backdrop-opacity);
   transition: opacity var(--globals-transition-timing) cubic-bezier(0.45, 1.005, 0, 1.005);
 
   /* iOS 26+: Ensure the backdrop covers the entire visible viewport. */
@@ -24,8 +26,8 @@
   transform: translate(-50%, -50%);
   transition: all var(--globals-transition-timing);
 
-  width: 24rem;
-  max-width: calc(100vw - 3rem);
+  max-width: 40rem;
+  width: calc(100vw - 3rem);
   margin-top: -2rem;
 
   &[data-starting-style],

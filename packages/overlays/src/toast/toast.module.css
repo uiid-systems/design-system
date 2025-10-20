@@ -1,4 +1,4 @@
-.Viewport {
+.toast-viewport {
   /* Direction multiplier: -1 for bottom (stack up), 1 for top (stack down) */
   --direction-multiplier: -1;
 
@@ -17,7 +17,7 @@
   }
 }
 
-.Toast {
+.toast {
   --gap: 0.75rem;
   --peek: 0.75rem;
   --scale: calc(max(0, 1 - (var(--toast-index) * 0.1)));
@@ -40,7 +40,7 @@
   margin-inline: auto;
   user-select: none;
 
-  .Viewport[data-position="top"] & {
+  .toast-viewport[data-position="top"] & {
     top: 0;
     bottom: auto;
     transform-origin: top center;
@@ -101,44 +101,11 @@
     height: calc(var(--gap) + 1px);
   }
 
-  .Viewport[data-position="bottom"] &::after {
+  .toast-viewport[data-position="bottom"] &::after {
     top: 100%;
   }
 
-  .Viewport[data-position="top"] &::after {
+  .toast-viewport[data-position="top"] &::after {
     bottom: 100%;
-  }
-}
-
-.Content {
-  overflow: hidden;
-  transition: opacity 0.25s;
-
-  &[data-behind] {
-    opacity: 0;
-  }
-
-  &[data-expanded] {
-    opacity: 1;
-  }
-}
-
-.Close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0;
-  border: var(--globals-border-width) solid var(--globals-border-color);
-  background: var(--shade-background);
-  width: 1.25rem;
-  height: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.25rem;
-  color: var(--shade-foreground);
-
-  &:hover {
-    background-color: var(--color-gray-100);
   }
 }
