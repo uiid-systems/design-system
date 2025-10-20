@@ -9,6 +9,25 @@
   padding-block: var(--globals-padding-y);
   padding-inline: var(--globals-padding-x);
 
+  &:where([href]) {
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: var(--globals-outline-width) solid var(--globals-outline-color);
+      outline-offset: var(--globals-outline-offset);
+      outline-style: var(--globals-outline-style);
+    }
+
+    &:focus-visible,
+    &:hover {
+      scale: var(--card-scale-up);
+    }
+
+    &:active {
+      scale: var(--card-scale-down);
+    }
+  }
+
   &:where([data-size="sm"]) {
     padding-block: calc(var(--globals-padding-y) * 0.75);
     padding-inline: calc(var(--globals-padding-x) * 0.75);

@@ -31,7 +31,7 @@
   &[data-starting-style],
   &[data-ending-style] {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(var(--globals-transform-scale));
+    transform: translate(-50%, -50%) scale(var(--globals-transform-scale-down));
   }
 }
 

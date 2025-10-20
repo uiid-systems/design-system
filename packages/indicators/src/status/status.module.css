@@ -20,7 +20,7 @@
   }
   50% {
     opacity: 0.5;
-    scale: var(--globals-transform-scale);
+    scale: var(--globals-transform-scale-down);
   }
   100% {
     opacity: 1;

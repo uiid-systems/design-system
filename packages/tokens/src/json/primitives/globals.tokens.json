@@ -7,7 +7,10 @@
     },
     "transform": {
       "origin": { "$value": "center", "$type": "string" },
-      "scale": { "$value": "0.9", "$type": "number" }
+      "scale": {
+        "down": { "$value": "0.9", "$type": "number" },
+        "up": { "$value": "1.1", "$type": "number" }
+      }
     },
     "border": {
       "color": { "$value": "{shade.muted}", "$type": "color" },
@@ -17,6 +20,12 @@
     "padding": {
       "x": { "$value": "1rem", "$type": "dimension" },
       "y": { "$value": "1rem", "$type": "dimension" }
+    },
+    "outline": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "offset": { "$value": "0.125rem", "$type": "dimension" },
+      "style": { "$value": "solid", "$type": "strokeStyle" },
+      "width": { "$value": "0.125rem", "$type": "dimension" }
     }
   }
 }

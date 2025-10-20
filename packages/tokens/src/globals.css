@@ -12,7 +12,7 @@
 
   /* Percentages for light/dark variants */
   --percentage-accent-light: 35%;
-  --percentage-accent-dark: 20%;
+  --percentage-accent-dark: 30%;
   --percentage-muted-light: 85%;
   --percentage-muted-dark: 65%;
   --percentage-surface-light: 98%;
@@ -100,7 +100,7 @@ body {
   &[data-starting-style],
   &[data-ending-style] {
     opacity: 0;
-    transform: scale(var(--globals-transform-scale));
+    transform: scale(var(--globals-transform-scale-down));
   }
 
   &[data-instant] {

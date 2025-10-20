@@ -19,6 +19,10 @@
       "size": { "$value": "1rem", "$type": "dimension" },
       "scale": { "$value": "1.1", "$type": "number" }
     },
+    "scale": {
+      "up": { "$value": "1.02", "$type": "number" },
+      "down": { "$value": "0.98", "$type": "number" }
+    },
     "variant": {
       "info": {
         "bg": { "$value": "{colors.blue.500}", "$type": "color" },

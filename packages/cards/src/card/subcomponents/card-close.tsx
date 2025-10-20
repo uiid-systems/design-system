@@ -11,7 +11,6 @@ export const CardClose = ({ onDismiss }: CardCloseProps) => {
       variant="inverted"
       fill="outline"
       onClick={onDismiss}
-      style={{ marginLeft: "auto" }}
     />
   );
 };

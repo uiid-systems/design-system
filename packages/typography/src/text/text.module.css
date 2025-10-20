@@ -7,6 +7,12 @@
   text-wrap: pretty;
   text-underline-offset: 5%;
 
+  code {
+    margin-inline: 0.25em;
+    font-weight: 600;
+    color: var(--shade-accent);
+  }
+
   /* level styles */
   &:where([level="0"]) {
     font-size: var(--typography-text-0-size);

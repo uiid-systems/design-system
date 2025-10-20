@@ -11,6 +11,7 @@ type CardWithButtonProps = {
   primaryAction?: CardActionProps;
   secondaryAction?: CardActionProps;
   tertiaryAction?: CardActionProps;
+  onDismiss?: () => void;
 };
 
 type CardAsLinkProps = Pick<
@@ -22,8 +23,8 @@ export type CardProps = StackProps & {
   size?: "sm" | "md" | "lg";
   variant?: "info" | "warning" | "error" | "success" | "inverted";
   title?: string;
-  onDismiss?: () => void;
   primaryAction?: CardActionProps;
   secondaryAction?: CardActionProps;
   tertiaryAction?: CardActionProps;
-} & (CardWithButtonProps | CardAsLinkProps);
+} & CardWithButtonProps &
+  CardAsLinkProps;
