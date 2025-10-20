@@ -98,11 +98,13 @@ export const Card = ({
         </Box>
       </ConditionalRender>
 
-      <Stack pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0} pb={2}>
-        <Text render={<article />} level={0}>
-          {children}
-        </Text>
-      </Stack>
+      {children && (
+        <Stack pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0} pb={2}>
+          <Text render={<article />} level={0}>
+            {children}
+          </Text>
+        </Stack>
+      )}
 
       {!isLink && (
         <ConditionalRender

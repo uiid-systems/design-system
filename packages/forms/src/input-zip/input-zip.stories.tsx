@@ -19,7 +19,7 @@ const meta = {
   },
   render: (args) => (
     <Stack ax="stretch" style={{ gap: 16 }}>
-      <InputZip {...args} name="regular-input" />
+      <InputZip {...args} label="Enter your zipcode" name="regular-input" />
     </Stack>
   ),
 } satisfies Meta<typeof InputZip>;
