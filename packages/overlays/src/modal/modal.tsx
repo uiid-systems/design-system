@@ -1,5 +1,6 @@
 import { Dialog } from "@base-ui-components/react/dialog";
 
+import { cx } from "@uiid/utils";
 import { Card } from "@uiid/cards";
 
 import type { ModalProps } from "./modal.types";
@@ -20,28 +21,28 @@ export const Modal = ({
   TriggerProps,
   PopupProps,
 }: ModalProps) => {
-  const handleDismiss = () => {
-    onDismiss?.();
-  };
-
   return (
     <Dialog.Root {...RootProps} open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger {...TriggerProps}>{trigger}</Dialog.Trigger>
 
       <Dialog.Portal keepMounted={keepMounted}>
         <Dialog.Backdrop className={styles["modal-backdrop"]} />
-        <Dialog.Popup className={styles["modal-popup"]} {...PopupProps}>
-          <Card
-            title={title}
-            onDismiss={handleDismiss}
-            renderDismissButton={<Dialog.Close />}
-            primaryAction={primaryAction}
-            secondaryAction={secondaryAction}
-            tertiaryAction={tertiaryAction}
-          >
-            {children}
-          </Card>
-        </Dialog.Popup>
+        <Dialog.Popup
+          className={cx(styles["modal-popup"], PopupProps?.className)}
+          {...PopupProps}
+          render={
+            <Card
+              title={title}
+              onDismiss={onDismiss}
+              renderDismissButton={<Dialog.Close />}
+              primaryAction={primaryAction}
+              secondaryAction={secondaryAction}
+              tertiaryAction={tertiaryAction}
+            >
+              {children}
+            </Card>
+          }
+        />
       </Dialog.Portal>
     </Dialog.Root>
   );
