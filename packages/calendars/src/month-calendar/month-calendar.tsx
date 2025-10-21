@@ -68,7 +68,9 @@ export const MonthCalendar = ({
           mode="range"
           month={month}
           onMonthChange={setMonth}
+          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
           selected={date as any}
+          // eslint-disable-next-line  @typescript-eslint/no-explicit-any
           onSelect={setDate as any}
           className={styles["rdp-root"]}
           numberOfMonths={1}

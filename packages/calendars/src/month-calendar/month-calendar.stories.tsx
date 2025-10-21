@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
 
-import { Send, Bell, MessageCircleMore, ExternalLink } from "@uiid/icons";
-import { Stack, Group } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 
 import { MonthCalendar } from "./month-calendar";
 
@@ -20,7 +18,7 @@ export const Default: Story = {
     return (
       <Stack gap={4}>
         <MonthCalendar {...args} />
-        <MonthCalendar {...args} numberOfMonths={2} />
+        <MonthCalendar {...args} numberOfMonths={2} pagedNavigation />
       </Stack>
     );
   },
