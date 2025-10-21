@@ -1,7 +1,7 @@
 import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
 import type { TextProps } from "./text.types";
 
-import "./bold.css";
+import "@uiid/utils/bold.css";
 import styles from "./text.module.css";
 
 export const Text = ({ level, render, children, ...props }: TextProps) => {

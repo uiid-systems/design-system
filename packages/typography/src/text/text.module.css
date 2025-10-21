@@ -14,6 +14,12 @@
   }
 
   /* level styles */
+  &:where([level="-1"]) {
+    font-size: calc(var(--typography-text-1-size) * 0.75);
+    font-weight: calc(var(--typography-text-1-weight) * 0.75);
+    letter-spacing: calc(var(--typography-text-1-leading) * 0.75);
+    line-height: calc(var(--typography-text-1-lineHeight) * 0.75);
+  }
   &:where([level="0"]) {
     font-size: var(--typography-text-0-size);
     font-weight: var(--typography-text-0-weight);

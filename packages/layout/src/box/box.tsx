@@ -1,7 +1,7 @@
 import { prepareComponentProps, renderWithProps } from "@uiid/utils";
 
-import "./evenly.css";
-import "./fullwidth.css";
+import "@uiid/utils/evenly.css";
+import "@uiid/utils/fullwidth.css";
 import type { BoxProps } from "./box.types";
 
 export const Box = ({ render, children, ...props }: BoxProps) => {

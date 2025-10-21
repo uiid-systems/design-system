@@ -10,7 +10,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/utils.js",
       "require": "./dist/utils.umd.cjs"
-    }
+    },
+    "./bold.css": "./dist/bold.css",
+    "./evenly.css": "./dist/evenly.css",
+    "./fullwidth.css": "./dist/fullwidth.css"
   },
   "files": [
     "dist"
