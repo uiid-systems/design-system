@@ -27,6 +27,7 @@ const preview: Preview = {
           "Indicators",
           "Interactive",
           "Overlays",
+          "Calendars",
         ],
         locales: "en-US",
       },
