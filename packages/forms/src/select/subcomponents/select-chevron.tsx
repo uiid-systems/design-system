@@ -6,10 +6,16 @@ export type SelectChevronProps = {
   open?: boolean;
 };
 
+const ICON_SIZE = 12;
+
 export const SelectChevron = ({ open }: SelectChevronProps) => {
   return (
     <aside data-slot="select-chevron" aria-hidden="true">
-      {open ? <ChevronsDownUp size={14} /> : <ChevronsUpDown size={12} />}
+      {open ? (
+        <ChevronsDownUp size={ICON_SIZE} />
+      ) : (
+        <ChevronsUpDown size={ICON_SIZE} />
+      )}
     </aside>
   );
 };
