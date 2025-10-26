@@ -1,10 +1,11 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
-  "$description": "Drawer component tokens for the UIID design system",
+  "$description": "UIID Design System - Drawer Component Tokens",
   "drawer": {
     "extends": {
-      "horizontal": { "$value": "40%", "$type": "dimension" },
-      "vertical": { "$value": "33%", "$type": "dimension" }
-    }
+      "horizontal": { "$value": "40rem", "$type": "dimension" },
+      "vertical": { "$value": "16rem", "$type": "dimension" }
+    },
+    "offset": { "$value": "0.5rem", "$type": "dimension" }
   }
 }

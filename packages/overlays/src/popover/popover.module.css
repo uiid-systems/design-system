@@ -1,5 +1,5 @@
 .popover-popup {
-  max-width: 360px;
+  max-width: var(--popover-maxWidth);
   transform-origin: var(--transform-origin);
   transition:
     transform var(--globals-transition-timing),

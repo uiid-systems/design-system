@@ -1,18 +1,15 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
-  "$description": "Switch component tokens for the UIID design system",
+  "$description": "UIID Design System - Switch Component Tokens",
   "switch": {
+    "height": { "$value": "1.5rem", "$type": "dimension" },
+    "width": { "$value": "2.5rem", "$type": "dimension" },
     "color": {
-      "bg": { "$value": "{shade.surface}", "$type": "color" },
+      "bg": { "$value": "{shade.accent}", "$type": "color" },
       "fg": { "$value": "{shade.foreground}", "$type": "color" }
     },
-    "border": {
-      "radius": { "$value": "0.5rem", "$type": "dimension" },
-      "width": { "$value": "1px", "$type": "dimension" },
-      "color": { "$value": "{shade.halftone}", "$type": "color" }
-    },
-    "transition": {
-      "timing": { "$value": "{globals.transition.timing}", "$type": "duration" }
+    "disabled": {
+      "opacity": { "$value": "0.5", "$type": "number" }
     }
   }
 }

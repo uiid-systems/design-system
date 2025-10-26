@@ -15,6 +15,12 @@
       "radius": { "$value": "0.5rem", "$type": "dimension" },
       "width": { "$value": "1px", "$type": "dimension" }
     },
+    "outline": {
+      "color": { "$value": "{shade.foreground}", "$type": "color" },
+      "offset": { "$value": "0.125rem", "$type": "dimension" },
+      "style": { "$value": "solid", "$type": "strokeStyle" },
+      "width": { "$value": "0.125rem", "$type": "dimension" }
+    },
     "placeholder": {
       "color": { "$value": "{shade.accent}", "$type": "color" }
     },

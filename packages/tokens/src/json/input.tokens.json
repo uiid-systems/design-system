@@ -1,6 +1,6 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
-  "$description": "UIID Design System - Input Component Tokens",
+  "$description": "UIID Design System - Input Tokens",
   "input": {
     "required": {
       "content": { "$value": "attr(data-required-content)", "$type": "string" },
