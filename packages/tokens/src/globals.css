@@ -1,7 +1,7 @@
-@import "./css/primitives/globals.tokens.css";
-@import "./css/primitives/colors.tokens.css";
-@import "./css/primitives/spacing.tokens.css";
-@import "./css/components/forms.tokens.css";
+@import "./css/globals.tokens.css";
+@import "./css/colors.tokens.css";
+@import "./css/spacing.tokens.css";
+@import "./css/forms.tokens.css";
 
 :root {
   --white: white;

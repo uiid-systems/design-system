@@ -4,8 +4,7 @@
   "type": "module",
   "exports": {
     "./globals.css": "./src/globals.css",
-    "./components/*": "./src/css/components/*",
-    "./primitives/*": "./src/css/primitives/*"
+    "./*": "./src/css/*"
   },
   "files": [
     "src"

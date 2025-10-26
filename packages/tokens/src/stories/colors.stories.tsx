@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 import React from "react";
-import colorTokens from "../json/primitives/colors.tokens.json";
+import colorTokens from "../json/colors.tokens.json";
 
 // Transform token structure to flat color data
 const COLOR_DATA = Object.entries(colorTokens.colors).reduce(

@@ -1,4 +1,4 @@
-@import "@uiid/tokens/components/badge.tokens.css";
+@import "@uiid/tokens/badge.tokens.css";
 
 [uiid="badge"] {
   background-color: var(--shade-foreground);

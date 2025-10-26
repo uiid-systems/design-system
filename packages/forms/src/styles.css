@@ -1,4 +1,4 @@
-@import "@uiid/tokens/components/input.tokens.css";
+@import "@uiid/tokens/input.tokens.css";
 
 /** TODO: be less hacky */
 [uiid="input"][data-wrapped="true"],

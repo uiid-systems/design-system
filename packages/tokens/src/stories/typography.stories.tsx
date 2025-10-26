@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 import React from "react";
-import typographyTokens from "../json/primitives/typography.tokens.json";
+import typographyTokens from "../json/typography.tokens.json";
 
 // Extract text levels and properties from tokens
 const TEXT_LEVELS = Object.keys(typographyTokens.typography.text)

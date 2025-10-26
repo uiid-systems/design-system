@@ -1,4 +1,4 @@
-@import "@uiid/tokens/components/overlays.tokens.css";
+@import "@uiid/tokens/overlays.tokens.css";
 
 .modal-backdrop {
   position: fixed;

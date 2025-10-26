@@ -1,5 +1,5 @@
-@import "@uiid/tokens/components/overlays.tokens.css";
-@import "@uiid/tokens/components/drawer.tokens.css";
+@import "@uiid/tokens/overlays.tokens.css";
+@import "@uiid/tokens/drawer.tokens.css";
 
 .drawer-overlay {
   position: fixed;
