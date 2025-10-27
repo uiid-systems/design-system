@@ -78,7 +78,7 @@ export const Input = ({
         beforeOnClick={beforeOnClick}
         after={
           (enableClear ? (
-            <X size={12} style={{ display: hasClear ? "block" : "none" }} />
+            <X size={12} data-render={hasClear} aria-hidden={!hasClear} />
           ) : undefined) || after
         }
         afterOnClick={afterOnClick || (hasClear ? handleClearInput : undefined)}

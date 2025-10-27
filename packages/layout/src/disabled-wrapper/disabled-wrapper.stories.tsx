@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DisabledWrapper } from "./disabled-wrapper";
 
 const meta = {
-  title: "Layout/Disabled Wrapper",
+  title: "Layout/Utilities/Disabled Wrapper",
   component: DisabledWrapper,
   args: {
     disabled: true,

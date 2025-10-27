@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box, Stack, Slots } from "../";
 
 const meta = {
-  title: "Layout/Slots",
+  title: "Layout/Utilities/Slots",
   component: Slots,
   args: {
     before: <Box style={{ background: "tomato", height: 64, width: 64 }} />,

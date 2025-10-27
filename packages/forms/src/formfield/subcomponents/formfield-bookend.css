@@ -35,6 +35,10 @@
     &[data-bordered="true"] {
       border-left: var(--forms-border-width) solid var(--forms-border-color);
     }
+
+    &:has([data-render="false"]) {
+      display: none;
+    }
   }
 
   &[role="button"] {
