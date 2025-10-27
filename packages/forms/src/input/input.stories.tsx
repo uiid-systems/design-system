@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, Group } from "@uiid/layout";
-
 import { Input } from "./input";
 
 const meta = {
@@ -50,6 +48,8 @@ const meta = {
       />
 
       <Input {...args} label="Input with bookends" before="B" after="A" />
+
+      <Input {...args} label="Input with clear" enableClear />
 
       <Group fullwidth evenly ay="end" gap={2}>
         <Input {...args} label="Input in a group" />

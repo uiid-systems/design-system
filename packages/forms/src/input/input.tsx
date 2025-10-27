@@ -1,7 +1,13 @@
-import { FormField, FormFieldSlots } from "../formfield";
-import type { InputProps } from "./input.types";
+"use client";
 
+import { useRef, useState } from "react";
+
+import { X } from "@uiid/icons";
+
+import { FormField, FormFieldSlots } from "../formfield";
 import "../styles.css";
+
+import type { InputProps } from "./input.types";
 
 export const Input = ({
   size = "md",
@@ -11,18 +17,47 @@ export const Input = ({
   description,
   hint,
   before,
-  beforeOnClick,
   after,
+  beforeOnClick,
   afterOnClick,
   disabled,
   placeholder,
   fullwidth,
   errorMessage,
   hasError,
+  onChange,
+  enableClear = false,
   ...props
 }: InputProps) => {
-  const hasBookend = Boolean(before || after);
-  const isWrapped = Boolean(label || description || hint);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [hasValue, setHasValue] = useState(false);
+
+  const hasBookend = Boolean(before || after || enableClear);
+  const isWrapped = Boolean(label || description || hint || enableClear);
+  const hasClear = Boolean(enableClear && hasValue);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasValue(e.target.value.length > 0);
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
+  const handleClearInput = () => {
+    const input = inputRef.current;
+    if (input) {
+      input.value = "";
+      setHasValue(false);
+
+      const event = new Event("input", { bubbles: true });
+      Object.defineProperty(event, "target", {
+        writable: false,
+        value: input,
+      });
+
+      onChange?.(event as unknown as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
 
   const propsWithId = { uiid: "input", ...props };
 
@@ -41,10 +76,15 @@ export const Input = ({
         data-disabled={disabled}
         before={before}
         beforeOnClick={beforeOnClick}
-        after={after}
-        afterOnClick={afterOnClick}
+        after={
+          (enableClear ? (
+            <X size={12} style={{ display: hasClear ? "block" : "none" }} />
+          ) : undefined) || after
+        }
+        afterOnClick={afterOnClick || (hasClear ? handleClearInput : undefined)}
       >
         <input
+          ref={inputRef}
           {...propsWithId}
           data-size={size}
           data-validate={validate ? true : undefined}
@@ -57,6 +97,7 @@ export const Input = ({
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
           placeholder={placeholder}
+          onChange={handleInputChange}
         />
       </FormFieldSlots>
     </FormField>

@@ -8,18 +8,25 @@ export type AutocompleteDefaultItem = {
 };
 
 export type AutocompleteProps<T = AutocompleteDefaultItem> = {
+  /**
+   * Items to display in the autocomplete.
+   * @see https://base-ui.com/react/components/autocomplete#AutocompleteRoot-items
+   */
   items: T[];
+  /**
+   * Callback fired when a value is selected.
+   * Receives the selected item value and the item object.
+   * @see https://base-ui.com/react/components/autocomplete#AutocompleteRoot-onValueChange
+   */
+  onValueChange?: (value: string | null, item: T | null) => void;
   /**
    * Props for the root element of the autocomplete.
    * @see https://base-ui.com/react/components/autocomplete#root
    */
-  RootProps?: Omit<Autocomplete.Root.Props<T>, "items">;
+  RootProps?: Omit<Autocomplete.Root.Props<T>, "items" | "onValueChange">;
+  /**
+   * Props for the input element of the autocomplete.
+   * @see InputProps
+   */
   InputProps?: InputProps;
-  ValueProps?: Autocomplete.Value.Props;
-  PortalProps?: Autocomplete.Portal.Props;
-  PositionerProps?: Autocomplete.Positioner.Props;
-  PopupProps?: Autocomplete.Popup.Props;
-} & Pick<
-  InputProps,
-  "label" | "description" | "hint" | "required" | "onChange"
->;
+} & Omit<InputProps, "onValueChange">;

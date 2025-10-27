@@ -58,9 +58,9 @@
   border: var(--forms-border-width) solid var(--forms-border-color);
   border-radius: var(--forms-border-radius);
   color: var(--forms-foreground);
-  outline-offset: var(--globals-outline-offset);
-  outline-color: var(--globals-outline-color);
-  outline-width: var(--globals-outline-width);
+  outline-offset: var(--forms-outline-offset);
+  outline-color: var(--forms-outline-color);
+  outline-width: var(--forms-outline-width);
 
   /** Validation */
   &:not(:placeholder-shown)[data-validate="true"],
@@ -89,7 +89,7 @@
   &:focus,
   &:focus-within {
     background-color: var(--forms-backgroundFocus);
-    outline-style: var(--globals-outline-style);
+    outline-style: var(--forms-outline-style);
   }
 
   /** Disabled */

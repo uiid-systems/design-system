@@ -7,7 +7,6 @@ const meta: Meta<typeof Popover> = {
   component: Popover,
   args: {
     title: "Popover",
-    description: "This is a popover",
     trigger: "This is a popover trigger",
   },
   argTypes: {},

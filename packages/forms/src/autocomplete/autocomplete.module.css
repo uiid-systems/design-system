@@ -5,4 +5,9 @@
   overflow-y: auto;
   scroll-padding-block: 0.5rem;
   overscroll-behavior: contain;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-top: none;
+
+  padding-inline: 0.25rem;
 }

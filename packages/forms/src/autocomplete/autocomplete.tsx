@@ -4,6 +4,8 @@ import { Autocomplete as BaseAutocomplete } from "@base-ui-components/react/auto
 import { useState, useRef } from "react";
 
 import { Card } from "@uiid/cards";
+import { X } from "@uiid/icons";
+import { List, ListItem } from "@uiid/layout";
 
 import { Input } from "../input/input";
 import { SelectChevron } from "../select/subcomponents";
@@ -16,49 +18,60 @@ import styles from "./autocomplete.module.css";
 
 export const Autocomplete = ({
   items,
-  label,
-  description,
-  hint,
-  required,
-  onChange,
+  onValueChange,
+  enableClear,
   RootProps,
   InputProps,
-  // ValueProps,
-  // PortalProps,
-  // PositionerProps,
-  // PopupProps,
+  ...props
 }: AutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e);
-  };
+  const [hasValue, setHasValue] = useState(false);
+  const [value, setValue] = useState("");
 
   const handleOpenDropdown = () => {
     setOpen((open) => !open);
     inputRef.current?.focus();
   };
 
+  const handleValueChange = (newValue: string) => {
+    setValue(newValue);
+    setHasValue(newValue.length > 0);
+    const selectedItem = newValue
+      ? items.find((item) => item.value === newValue)
+      : null;
+    onValueChange?.(newValue, selectedItem ?? null);
+  };
+
+  const handleClear = () => {
+    setValue("");
+    setHasValue(false);
+    handleValueChange("");
+    inputRef.current?.focus();
+  };
+
+  const showClearButton = enableClear && hasValue;
+
   return (
     <BaseAutocomplete.Root
       {...RootProps}
       open={open}
       onOpenChange={setOpen}
+      onValueChange={handleValueChange}
+      value={value}
       items={items}
     >
       <BaseAutocomplete.Input
         render={
           <Input
             ref={inputRef}
-            label={label}
-            description={description}
-            hint={hint}
-            required={required}
+            name="autocomplete"
+            {...props}
             {...InputProps}
-            after={<SelectChevron open={false} />}
-            afterOnClick={handleOpenDropdown}
-            onChange={handleInputChange}
+            afterOnClick={showClearButton ? handleClear : handleOpenDropdown}
+            after={
+              showClearButton ? <X size={12} /> : <SelectChevron open={false} />
+            }
           />
         }
       />
@@ -66,16 +79,22 @@ export const Autocomplete = ({
       <BaseAutocomplete.Portal>
         <BaseAutocomplete.Positioner
           className={styles.Positioner}
-          sideOffset={4}
+          sideOffset={1}
         >
           <BaseAutocomplete.Popup
             render={<Card size="sm" />}
             className={styles["autocomplete-popup"]}
           >
+            {/** @todo create a custom empty state */}
             <BaseAutocomplete.Empty>No tags found.</BaseAutocomplete.Empty>
-            <BaseAutocomplete.List>
+
+            <BaseAutocomplete.List render={<List fullwidth />}>
               {(tag: AutocompleteDefaultItem) => (
-                <BaseAutocomplete.Item key={tag.value} value={tag.value}>
+                <BaseAutocomplete.Item
+                  render={<ListItem />}
+                  key={tag.value}
+                  value={tag.value}
+                >
                   {tag.label}
                 </BaseAutocomplete.Item>
               )}

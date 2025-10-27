@@ -92,7 +92,7 @@ export const Card = ({
           {title && (
             <CardTitle title={title} size={size} render={renderTitle} />
           )}
-          <Box style={{ marginLeft: "auto" }}>
+          <Box style={{ marginInlineStart: "auto" }}>
             {!isLink && (onDismiss || renderDismissButton) && (
               <CardClose onDismiss={onDismiss} render={renderDismissButton} />
             )}
