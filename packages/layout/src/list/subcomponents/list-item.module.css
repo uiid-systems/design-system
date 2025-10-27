@@ -1,0 +1,71 @@
+@import "@uiid/tokens/list.tokens.css";
+
+.list-item {
+  --overlay-color: color-mix(in oklab, var(--shade-foreground), transparent 95%);
+
+  padding: var(--list-padding-x) var(--list-padding-y);
+  border-radius: var(--globals-border-radius);
+
+  :is(ol) &::marker {
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  &:hover,
+  &[data-highlighted] {
+    background-color: var(--overlay-color);
+  }
+
+  /* &[data-highlighted] {
+    z-index: 0;
+    position: relative;
+    color: var(--shade-halftone);
+  }
+
+  &[data-highlighted]::before {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: var(--overlay-color);
+  } */
+
+  &:where([data-disabled="true"]) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Item not selected with selected item after it */
+  &:not(:where([data-selected="true"])):has(+ [data-selected="true"]) {
+    margin-block-end: 0.25rem;
+  }
+
+  /* Selected item */
+  &:where([data-selected="true"]) {
+    background-color: var(--overlay-color);
+    border: var(--globals-border-width) solid var(--globals-border-color);
+    color: var(--shade-foreground);
+    font-weight: 700;
+
+    /* Selected item with another selected item before it */
+    & + :where([data-selected="true"]) {
+      border-top: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    /* Selected item with another selected item after it */
+    &:has(+ [data-selected="true"]) {
+      border-bottom: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    /* First item after a selected item */
+    & + :not([data-selected="true"]) {
+      margin-block-start: 0.25rem;
+    }
+  }
+}

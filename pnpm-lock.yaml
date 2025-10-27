@@ -742,9 +742,15 @@ importers:
 
   packages/layout:
     dependencies:
+      '@uiid/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
+      '@uiid/typography':
+        specifier: workspace:*
+        version: link:../typography
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
@@ -945,9 +951,6 @@ importers:
 
   packages/typography:
     dependencies:
-      '@uiid/layout':
-        specifier: workspace:*
-        version: link:../layout
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens

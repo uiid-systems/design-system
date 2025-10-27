@@ -25,8 +25,7 @@
   },
   "dependencies": {
     "@uiid/tokens": "workspace:*",
-    "@uiid/utils": "workspace:*",
-    "@uiid/layout": "workspace:*"
+    "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.1.1",

@@ -1,0 +1,8 @@
+.list {
+  margin-inline-start: 1rem;
+
+  &:where([data-type="none"]) {
+    list-style: none;
+    margin-inline-start: 0;
+  }
+}

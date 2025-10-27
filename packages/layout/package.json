@@ -24,7 +24,9 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@uiid/icons": "workspace:*",
     "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
