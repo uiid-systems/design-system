@@ -1,24 +1,24 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import spacingTokens from "../json/spacing.tokens.json";
+import drawerTokens from "../json/drawer.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 
 const meta = {
-  title: "Tokens/Primitives/Spacing",
+  title: "Tokens/Components/Drawer",
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Spacing: Story = {
+export const Drawer: Story = {
   render: () => {
-    const spacing = spacingTokens.spacing;
-    const allTokens = flattenTokens(spacing, ["spacing"]);
+    const drawer = drawerTokens.drawer;
+    const allTokens = flattenTokens(drawer, ["drawer"]);
 
     return (
       <div style={{ fontFamily: "system-ui, sans-serif", padding: "2rem" }}>
-        <SectionHeader>Spacing Properties</SectionHeader>
+        <SectionHeader>Drawer Properties</SectionHeader>
         <TokenTable tokens={allTokens} />
       </div>
     );

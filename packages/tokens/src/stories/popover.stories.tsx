@@ -1,24 +1,24 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import spacingTokens from "../json/spacing.tokens.json";
+import popoverTokens from "../json/popover.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 
 const meta = {
-  title: "Tokens/Primitives/Spacing",
+  title: "Tokens/Components/Popover",
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Spacing: Story = {
+export const Popover: Story = {
   render: () => {
-    const spacing = spacingTokens.spacing;
-    const allTokens = flattenTokens(spacing, ["spacing"]);
+    const popover = popoverTokens.popover;
+    const allTokens = flattenTokens(popover, ["popover"]);
 
     return (
       <div style={{ fontFamily: "system-ui, sans-serif", padding: "2rem" }}>
-        <SectionHeader>Spacing Properties</SectionHeader>
+        <SectionHeader>Popover Properties</SectionHeader>
         <TokenTable tokens={allTokens} />
       </div>
     );

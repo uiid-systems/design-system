@@ -1,24 +1,24 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import spacingTokens from "../json/spacing.tokens.json";
+import overlaysTokens from "../json/overlays.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 
 const meta = {
-  title: "Tokens/Primitives/Spacing",
+  title: "Tokens/Components/Overlays",
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Spacing: Story = {
+export const Overlays: Story = {
   render: () => {
-    const spacing = spacingTokens.spacing;
-    const allTokens = flattenTokens(spacing, ["spacing"]);
+    const overlays = overlaysTokens.overlays;
+    const allTokens = flattenTokens(overlays, ["overlays"]);
 
     return (
       <div style={{ fontFamily: "system-ui, sans-serif", padding: "2rem" }}>
-        <SectionHeader>Spacing Properties</SectionHeader>
+        <SectionHeader>Overlay Properties</SectionHeader>
         <TokenTable tokens={allTokens} />
       </div>
     );

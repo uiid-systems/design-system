@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import React from "react";
+
 import colorTokens from "../json/colors.tokens.json";
 
 // Transform token structure to flat color data
@@ -24,7 +24,7 @@ const COLOR_DATA = Object.entries(colorTokens.colors).reduce(
 );
 
 const meta = {
-  title: "Tokens/Colors",
+  title: "Tokens/Primitives/Colors",
 };
 
 export default meta;
@@ -84,7 +84,7 @@ const ColorSwatch = ({
     >
       <div
         style={{
-          backgroundColor: value,
+          backgroundColor: `var(--colors-${name})`,
           height: "80px",
           width: "100%",
         }}

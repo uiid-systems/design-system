@@ -1,3 +1,5 @@
+@import "@uiid/tokens/popover.tokens.css";
+
 .popover-popup {
   max-width: var(--popover-maxWidth);
   transform-origin: var(--transform-origin);
