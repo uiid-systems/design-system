@@ -9,11 +9,17 @@
   padding-block: var(--globals-padding-y);
   padding-inline: var(--globals-padding-x);
 
+  font-size: var(--typography-text-0-size);
+  line-height: var(--typography-text-0-lineHeight);
+  font-weight: var(--typography-text-0-weight);
+  letter-spacing: var(--typography-text-0-letterSpacing);
+
   &:where([href]) {
     text-decoration: none;
 
     &:focus-visible {
-      outline: var(--globals-outline-width) solid var(--globals-outline-color);
+      outline-width: var(--globals-outline-width);
+      outline-color: var(--globals-outline-color);
       outline-offset: var(--globals-outline-offset);
       outline-style: var(--globals-outline-style);
     }

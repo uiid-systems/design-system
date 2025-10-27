@@ -3,7 +3,6 @@ import { isValidElement } from "react";
 import { Button, type ButtonProps } from "@uiid/buttons";
 import { ArrowRight } from "@uiid/icons";
 import { Stack, Group, ConditionalRender, Box } from "@uiid/layout";
-import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
@@ -25,8 +24,9 @@ export const Card = ({
   secondaryAction,
   tertiaryAction,
   onDismiss,
-  renderDismissButton,
   render,
+  renderDismissButton,
+  renderTitle,
   className,
   children,
   ...props
@@ -83,27 +83,29 @@ export const Card = ({
       render={renderElement}
       {...props}
     >
-      <ConditionalRender
-        condition={hasHeader}
-        wrapper={<Group ay="center" gap={2} />}
-      >
-        {hasIcon && <CardIcon variant={variant} />}
-        {title && <CardTitle title={title} size={size} />}
-        <Box style={{ marginLeft: "auto" }}>
-          {!isLink && (onDismiss || renderDismissButton) && (
-            <CardClose onDismiss={onDismiss} render={renderDismissButton} />
+      {hasHeader && (
+        <ConditionalRender
+          condition={hasHeader}
+          wrapper={<Group ay="center" gap={2} />}
+        >
+          {hasIcon && <CardIcon variant={variant} />}
+          {title && (
+            <CardTitle title={title} size={size} render={renderTitle} />
           )}
-          {isExternalLink && <CardExternalLink />}
-          {isLink && !isExternalLink && <ArrowRight size={16} />}
-        </Box>
-      </ConditionalRender>
+          <Box style={{ marginLeft: "auto" }}>
+            {!isLink && (onDismiss || renderDismissButton) && (
+              <CardClose onDismiss={onDismiss} render={renderDismissButton} />
+            )}
+            {isExternalLink && <CardExternalLink />}
+            {isLink && !isExternalLink && <ArrowRight size={16} />}
+          </Box>
+        </ConditionalRender>
+      )}
 
       {children && (
-        <Stack pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0} pb={2}>
-          <Text render={<article />} level={0}>
-            {children}
-          </Text>
-        </Stack>
+        <Box pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0}>
+          {children}
+        </Box>
       )}
 
       {!isLink && (

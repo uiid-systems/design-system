@@ -28,5 +28,6 @@ export type CardProps = StackProps & {
   secondaryAction?: CardActionProps;
   tertiaryAction?: CardActionProps;
   renderDismissButton?: RenderProp;
+  renderTitle?: RenderProp;
 } & CardWithButtonProps &
   CardAsLinkProps;
