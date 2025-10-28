@@ -2,10 +2,11 @@ import type { RenderProp } from "@uiid/utils";
 
 // Base button styling and behavior props
 type ButtonCoreProps = {
-  variant?: "primary" | "secondary" | "tertiary" | "inverted" | "subtle";
+  variant?: "inverted" | "subtle";
   size?: "icon" | "sm" | "md" | "lg";
   fill?: "solid" | "outline" | "ghost";
   shape?: "rounded" | "pill";
+  grows?: boolean;
   loading?: boolean;
   loadingText?: string;
   icon?: React.ReactNode;

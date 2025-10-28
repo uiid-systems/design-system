@@ -12,6 +12,9 @@
         "up": { "$value": "1.1", "$type": "number" }
       }
     },
+    "disabled": {
+      "opacity": { "$value": "0.5", "$type": "number" }
+    },
     "border": {
       "color": { "$value": "{shade.muted}", "$type": "color" },
       "radius": { "$value": "0.5rem", "$type": "dimension" },

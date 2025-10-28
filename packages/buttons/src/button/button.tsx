@@ -1,3 +1,4 @@
+import { LoadingSpinner } from "@uiid/icons";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
@@ -8,6 +9,7 @@ export const Button = ({
   size = "md",
   fill = "solid",
   shape = "rounded",
+  grows = true,
   loading,
   loadingText,
   icon,
@@ -22,17 +24,8 @@ export const Button = ({
 
   if (icon && !iconPosition && !ariaLabel) {
     throw new Error(
-      "Please provide an aria-label for an icon button with no iconPosition.",
+      "Please provide an aria-label for your button when it includes an icon with no text.",
     );
-  }
-
-  let iconSlot;
-  if (icon && iconPosition === "before") {
-    iconSlot = "before";
-  } else if (icon && iconPosition === "after") {
-    iconSlot = "after";
-  } else if (icon && !iconPosition) {
-    iconSlot = "standalone";
   }
 
   // Handle events appropriately for button vs anchor
@@ -40,14 +33,9 @@ export const Button = ({
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
   ) => {
     if (isLink) {
-      // For links, let the browser handle navigation
-      // Only prevent default if loading
-      if (loading) {
-        e.preventDefault();
-      }
+      if (loading) e.preventDefault();
       props.onClick?.(e as React.MouseEvent<HTMLAnchorElement>);
     } else {
-      // For buttons, handle disabled/loading states
       if (props.disabled || loading) return;
       props.onClick?.(e as React.MouseEvent<HTMLButtonElement>);
     }
@@ -95,7 +83,8 @@ export const Button = ({
         : undefined,
     /** attributes */
     "data-loading": loading ? "true" : undefined,
-    "data-icon": iconSlot,
+    "data-icon": icon && !iconPosition,
+    "data-grows": grows ? "true" : undefined,
     /** events */
     onClick: handleClick,
     onKeyDown: handleKeyDown,
@@ -111,7 +100,7 @@ export const Button = ({
         {icon && iconPosition === "after" && icon}
       </span>
       <span data-slot="button-loading" aria-hidden={!loading}>
-        {loadingText ?? <aside data-slot="button-loading-dots" />}
+        {loadingText ?? <LoadingSpinner />}
       </span>
     </>
   );

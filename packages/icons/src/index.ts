@@ -6,3 +6,9 @@ export type {
   LucideProps as IconProps,
   LucideIcon as Icon,
 } from "lucide-react";
+
+// Custom components
+export {
+  LoadingSpinner,
+  type LoadingSpinnerProps,
+} from "./components/loading-spinner";
