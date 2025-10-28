@@ -27,7 +27,7 @@ const preview: Preview = {
           "Cards",
           "Calendars",
           "Forms",
-          ["Inputs", "Selects"],
+          ["Inputs", ["Input"], "Selects", ["Select"]],
           "Indicators",
           "Interactive",
           "Overlays",

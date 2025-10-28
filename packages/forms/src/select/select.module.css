@@ -1,0 +1,7 @@
+.select {
+  appearance: none;
+
+  &:has(option:disabled:checked) {
+    color: var(--shade-accent);
+  }
+}

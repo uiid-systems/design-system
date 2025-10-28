@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import { applyPostCSSLayers } from "../src/utils/postcss-config";
 
 const config: StorybookConfig = {
   stories: [
@@ -18,10 +19,14 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
     "storybook-addon-test-codegen",
+    "storybook-addon-pseudo-states",
   ],
   framework: {
     name: "@storybook/react-vite",
     options: {},
+  },
+  async viteFinal(config) {
+    return applyPostCSSLayers(config);
   },
 };
 

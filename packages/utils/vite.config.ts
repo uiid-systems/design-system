@@ -9,20 +9,25 @@ const copyToggleCss = () => {
   return {
     name: "copy-toggle-css",
     generateBundle() {
-      const toggleCssFiles = [
-        path.resolve(__dirname, "src/props/toggles/bold.css"),
-        path.resolve(__dirname, "src/props/toggles/evenly.css"),
-        path.resolve(__dirname, "src/props/toggles/fullwidth.css"),
-      ];
+      const togglesDir = path.resolve(__dirname, "src/props/toggles");
 
-      for (const filePath of toggleCssFiles) {
-        if (!fs.existsSync(filePath)) continue;
+      // Auto-discover all .css files in the toggles directory
+      const cssFiles = fs
+        .readdirSync(togglesDir)
+        .filter((file) => file.endsWith(".css"))
+        .map((file) => path.join(togglesDir, file));
+
+      for (const filePath of cssFiles) {
         const source = fs.readFileSync(filePath, "utf-8");
 
+        // Wrap in @layer utilities for proper cascade ordering
+        const layeredSource = `@layer uiid.utilities {\n${source}}\n`;
+
+        // Emit at the dist root so consumers can import `@uiid/utils/evenly.css`.
         this.emitFile({
           type: "asset",
           fileName: path.basename(filePath),
-          source,
+          source: layeredSource,
         });
       }
     },
@@ -42,7 +47,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "UiidUtils",
+      name: "TorettoUtils",
       fileName: "utils",
       formats: ["es", "umd"],
     },
