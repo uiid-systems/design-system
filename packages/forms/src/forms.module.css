@@ -1,0 +1,119 @@
+@import "@uiid/tokens/input.tokens.css";
+
+:where(.input, .textarea)[data-wrapped="true"] {
+  width: -webkit-fill-available;
+  width: 100%;
+}
+
+:where(.input, .textarea)[data-fullwidth="true"] {
+  width: 100%;
+  width: -webkit-fill-available;
+}
+
+/** Input */
+.input,
+.select {
+  flex: 1;
+  font-size: var(--forms-fontSize);
+  padding-inline: var(--forms-paddingX);
+
+  /** TODO figure out why `height` doesn't work */
+  min-height: var(--forms-height);
+  max-height: var(--forms-height);
+
+  /** TODO: be less hacky */
+  &.select {
+    min-height: calc(var(--forms-height) - 2px);
+    max-height: calc(var(--forms-height) - 2px);
+  }
+
+  &:where([data-size="sm"]) {
+    --forms-fontSize: var(--forms-size-sm-fontSize);
+    --forms-height: var(--forms-size-sm-height);
+  }
+  &:where([data-size="md"]) {
+    --forms-fontSize: var(--forms-size-md-fontSize);
+    --forms-height: var(--forms-size-md-height);
+  }
+  &:where([data-size="lg"]) {
+    --forms-fontSize: var(--forms-size-lg-fontSize);
+    --forms-height: var(--forms-size-lg-height);
+  }
+
+  /** hack to prevent browser-assigned autofill color */
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus {
+    transition:
+      background-color 600000s 0s,
+      color 600000s 0s;
+  }
+}
+
+/* Input, Slots container */
+.input,
+.textarea,
+.formfield-slots {
+  background-color: var(--forms-background);
+  border: var(--forms-border-width) solid var(--forms-border-color);
+  border-radius: var(--forms-border-radius);
+  color: var(--forms-foreground);
+  outline-offset: var(--forms-outline-offset);
+  outline-color: var(--forms-outline-color);
+  outline-width: var(--forms-outline-width);
+
+  /** Validation */
+  &:not(:placeholder-shown)[data-validate="true"],
+  &:has(:not(:placeholder-shown)[data-validate="true"]) {
+    /** Valid */
+    &:valid,
+    &:has(:valid) {
+      border-color: var(--forms-state-valid-fg);
+      outline-color: var(--forms-state-valid-fg);
+    }
+    /** Invalid */
+    &:invalid,
+    &:has(:invalid) {
+      border-color: var(--forms-state-invalid-fg);
+      outline-color: var(--forms-state-invalid-fg);
+    }
+  }
+
+  &:where([data-invalid="true"]) {
+    background-color: color-mix(in srgb, var(--forms-background), var(--forms-state-invalid-fg) 2%);
+    border-color: var(--forms-state-invalid-fg);
+    outline-color: var(--forms-state-invalid-fg);
+  }
+
+  /** Focus */
+  &:focus,
+  &:focus-within {
+    background-color: var(--forms-backgroundFocus);
+    outline-style: var(--forms-outline-style);
+  }
+
+  /** Disabled */
+  &:disabled,
+  &[data-disabled="true"] {
+    border-style: dashed;
+    pointer-events: none;
+    opacity: var(--forms-state-disabled-opacity);
+  }
+
+  /** Slotted Input */
+  [data-slotted="true"] {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    align-self: stretch;
+    color: var(--shade-foreground);
+    padding-inline: var(--forms-paddingX);
+  }
+}
+
+/** Placeholder */
+.input::placeholder {
+  color: var(--forms-placeholder-color);
+  font-size: var(--forms-fontSize);
+  line-height: var(--forms-lineHeight);
+}

@@ -1,7 +1,9 @@
-import { FormField, FormFieldSlots } from "../formfield";
-import type { TextareaProps } from "./textarea.types";
+import { cx } from "@uiid/utils";
 
-import "../styles.css";
+import { FormField, FormFieldSlots } from "../formfield";
+import formStyles from "../forms.module.css";
+
+import type { TextareaProps } from "./textarea.types";
 import styles from "./textarea.module.css";
 
 export const Textarea = ({
@@ -20,6 +22,7 @@ export const Textarea = ({
   fullwidth,
   errorMessage,
   hasError,
+  className,
   ...props
 }: TextareaProps) => {
   const hasBookend = Boolean(before || after);
@@ -41,6 +44,7 @@ export const Textarea = ({
       <FormFieldSlots data-disabled={disabled} before={before} after={after}>
         <textarea
           {...propsWithId}
+          className={cx(styles["textarea"], formStyles["textarea"], className)}
           data-size={size}
           data-validate={validate ? true : undefined}
           data-slotted={hasBookend ? true : undefined}
@@ -54,7 +58,6 @@ export const Textarea = ({
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
           placeholder={placeholder}
-          className={styles.textarea}
         />
       </FormFieldSlots>
     </FormField>

@@ -1,4 +1,7 @@
 import { Slots, type SlotsProps } from "@uiid/layout";
+import { cx } from "@uiid/utils";
+
+import styles from "../../forms.module.css";
 
 import { FormFieldBookend } from "./formfield-bookend";
 import "./formfield-slots.css";
@@ -7,25 +10,28 @@ type FormFieldSlotsProps = React.PropsWithChildren & SlotsProps;
 
 export const FormFieldSlots = ({
   before,
-  after,
   beforeOnClick,
+  after,
   afterOnClick,
+  className,
   children,
   ...props
 }: FormFieldSlotsProps) => {
   return (
     <Slots
       data-slot="formfield-slots"
+      ay="stretch"
+      className={cx(styles["formfield-slots"], className)}
+      beforeOnClick={beforeOnClick}
       before={
         before && (
           <FormFieldBookend position="before">{before}</FormFieldBookend>
         )
       }
-      beforeOnClick={beforeOnClick}
+      afterOnClick={afterOnClick}
       after={
         after && <FormFieldBookend position="after">{after}</FormFieldBookend>
       }
-      afterOnClick={afterOnClick}
       {...props}
     >
       {children}

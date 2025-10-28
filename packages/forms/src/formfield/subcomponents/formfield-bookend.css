@@ -4,19 +4,13 @@
   color: var(--input-bookend-color);
   font-size: var(--input-bookend-font-size);
   font-weight: var(--input-bookend-font-weight);
+  padding-inline: var(--forms-paddingX);
   overflow: hidden;
   text-wrap: nowrap;
-
-  /** Safari fix */
-  height: -webkit-fill-available;
-  @supports (hanging-punctuation: first) and (font: -apple-system-body) and (-webkit-appearance: none) {
-    height: auto;
-  }
 
   &[data-position="before"] {
     border-top-left-radius: var(--forms-border-radius);
     border-bottom-left-radius: var(--forms-border-radius);
-    padding-inline: var(--forms-paddingX);
 
     &[data-bordered="true"] {
       border-right: var(--forms-border-width) solid var(--forms-border-color);
@@ -26,16 +20,14 @@
   &[data-position="after"] {
     border-top-right-radius: var(--forms-border-radius);
     border-bottom-right-radius: var(--forms-border-radius);
-    padding-inline: var(--forms-paddingX);
 
     &[data-bordered="true"] {
       border-left: var(--forms-border-width) solid var(--forms-border-color);
     }
+  }
 
-    &[data-bordered="true"] {
-      border-left: var(--forms-border-width) solid var(--forms-border-color);
-    }
-
+  &[data-position="before"],
+  &[data-position="after"] {
     &:has([data-render="false"]) {
       display: none;
     }
@@ -45,7 +37,7 @@
     cursor: pointer;
 
     &:focus {
-      outline: 2px solid var(--shade-foreground);
+      outline: var(--globals-outline-width) solid var(--shade-foreground);
       outline-offset: -1px;
     }
 

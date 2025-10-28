@@ -1,8 +1,11 @@
-import { FormField, FormFieldSlots } from "../formfield";
+import { cx } from "@uiid/utils";
 
-import type { SelectProps } from "./select.types";
+import { FormField, FormFieldSlots } from "../formfield";
+import formStyles from "../forms.module.css";
+
 import { SelectChevron } from "./subcomponents";
-import "./select.styles.css";
+import type { SelectProps } from "./select.types";
+import styles from "./select.module.css";
 
 export const Select = ({
   size = "md",
@@ -15,6 +18,7 @@ export const Select = ({
   disabled,
   options,
   placeholder,
+  className,
   ...props
 }: SelectProps) => {
   const propsWithId = { uiid: "select", ...props };
@@ -45,6 +49,7 @@ export const Select = ({
           tabIndex={disabled ? -1 : undefined}
           disabled={disabled}
           defaultValue={placeholder ? "" : undefined}
+          className={cx(styles["select"], formStyles["select"], className)}
         >
           {placeholder && (
             <option value="" disabled>

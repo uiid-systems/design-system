@@ -3,9 +3,10 @@
 import { useRef, useState } from "react";
 
 import { X } from "@uiid/icons";
+import { cx } from "@uiid/utils";
 
 import { FormField, FormFieldSlots } from "../formfield";
-import "../styles.css";
+import styles from "../forms.module.css";
 
 import type { InputProps } from "./input.types";
 
@@ -27,6 +28,7 @@ export const Input = ({
   hasError,
   onChange,
   enableClear = false,
+  className,
   ...props
 }: InputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -77,15 +79,15 @@ export const Input = ({
         before={before}
         beforeOnClick={beforeOnClick}
         after={
-          (enableClear ? (
-            <X size={12} data-render={hasClear} aria-hidden={!hasClear} />
-          ) : undefined) || after
+          (enableClear ? <X size={12} data-render={hasClear} /> : undefined) ||
+          after
         }
         afterOnClick={afterOnClick || (hasClear ? handleClearInput : undefined)}
       >
         <input
           ref={inputRef}
           {...propsWithId}
+          className={cx(styles["input"], className)}
           data-size={size}
           data-validate={validate ? true : undefined}
           data-slotted={hasBookend ? true : undefined}

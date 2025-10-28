@@ -53,9 +53,7 @@ const meta = {
 
       <Group fullwidth evenly ay="end" gap={2}>
         <Input {...args} label="Input in a group" />
-        <div>
-          <Input {...args} />
-        </div>
+        <Input {...args} />
       </Group>
     </Stack>
   ),
