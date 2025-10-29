@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import { Send, Bell, MessageCircleMore, ExternalLink } from "@uiid/icons";
+import { Send, Bell, MessageCircleMore, ArrowLeft, Globe } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
@@ -78,15 +78,30 @@ export const Default: Story = {
             />
           </Group>
         ))}
-        <Button
-          {...args}
-          href="https://google.com"
-          target="_blank"
-          icon={<ExternalLink size={18} />}
-          iconPosition="after"
-        >
-          go to google.com
-        </Button>
+
+        <Group gap={4}>
+          <Button
+            {...args}
+            href="https://google.com"
+            target="_blank"
+            icon={<Globe />}
+            iconPosition="before"
+            variant="subtle"
+          >
+            google.com
+          </Button>
+
+          <Button
+            {...args}
+            href="https://yahoo.com"
+            target="_blank"
+            icon={<ArrowLeft />}
+            iconPosition="before"
+            shape="pill"
+          >
+            Go back
+          </Button>
+        </Group>
       </Stack>
     );
   },

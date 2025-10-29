@@ -24,7 +24,9 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
@@ -40,7 +42,6 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@uiid/icons": "workspace:*",
-    "@uiid/layout": "workspace:*",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",

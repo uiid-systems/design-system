@@ -5,7 +5,7 @@
     "bg": { "$value": "{shade.foreground}", "$type": "color" },
     "fg": { "$value": "{shade.background}", "$type": "color" },
     "border": {
-      "width": { "$value": "{forms.border.width}", "$type": "dimension" },
+      "width": { "$value": "2px", "$type": "dimension" },
       "color": { "$value": "{button.bg}", "$type": "color" },
       "radius": { "$value": "{forms.border.radius}", "$type": "dimension" }
     },
@@ -18,10 +18,13 @@
       "hover": { "$value": "85%", "$type": "dimension" },
       "active": { "$value": "80%", "$type": "dimension" }
     },
+    "icon": {
+      "size": { "$value": "0.875rem", "$type": "dimension" }
+    },
     "size": {
-      "sm": { "padding-x": { "$value": "1rem", "$type": "dimension" } },
-      "md": { "padding-x": { "$value": "1.25rem", "$type": "dimension" } },
-      "lg": { "padding-x": { "$value": "1.5rem", "$type": "dimension" } }
+      "sm": { "padding-x": { "$value": "0.75rem", "$type": "dimension" } },
+      "md": { "padding-x": { "$value": "1rem", "$type": "dimension" } },
+      "lg": { "padding-x": { "$value": "1.25rem", "$type": "dimension" } }
     },
     "variant": {
       "default": {
