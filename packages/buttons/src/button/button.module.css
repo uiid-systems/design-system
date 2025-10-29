@@ -30,10 +30,12 @@
 
   &:where([data-icon="before"]) {
     padding-inline-start: calc(var(--button-height) + var(--button-padding-x));
+    padding-inline-end: var(--button-padding-x);
   }
 
   &:where([data-icon="after"]) {
     padding-inline-end: calc(var(--button-height) + var(--button-padding-x));
+    padding-inline-start: var(--button-padding-x);
   }
 
   &:where([size="sm"]) {

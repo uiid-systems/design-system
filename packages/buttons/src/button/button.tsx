@@ -1,9 +1,9 @@
 import { LoadingSpinner } from "@uiid/icons";
-import { Group } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
+import { ButtonIconSlot } from "./subcomponents";
 
 export const Button = ({
   variant,
@@ -93,24 +93,17 @@ export const Button = ({
 
   const Content = () => (
     <>
-      <Group
-        data-slot="button-content"
-        fullwidth
-        ay="center"
-        ax="center"
-        gap={2}
-        aria-hidden={loading}
-      >
+      <div data-slot="button-content" aria-hidden={loading}>
         {icon && iconPosition === "before" && (
-          <IconSlot icon={icon} position="before" />
+          <ButtonIconSlot icon={icon} position="before" />
         )}
         {icon && iconPosition !== "before" && iconPosition !== "after"
           ? icon
           : children}
         {icon && iconPosition === "after" && (
-          <IconSlot icon={icon} position="after" />
+          <ButtonIconSlot icon={icon} position="after" />
         )}
-      </Group>
+      </div>
       <span data-slot="button-loading" aria-hidden={!loading}>
         {loadingText ?? <LoadingSpinner />}
       </span>
@@ -124,24 +117,4 @@ export const Button = ({
     children: <Content />,
   });
 };
-
 Button.displayName = "Button";
-
-const IconSlot = ({
-  icon,
-  position,
-}: {
-  icon: React.ReactNode;
-  position: "before" | "after";
-}) => {
-  return (
-    <span
-      data-slot="button-icon"
-      aria-hidden
-      className={styles["icon-slot"]}
-      data-position={position}
-    >
-      {icon}
-    </span>
-  );
-};

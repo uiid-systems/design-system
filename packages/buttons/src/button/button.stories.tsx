@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import { Send, Bell, MessageCircleMore, ArrowLeft, Globe } from "@uiid/icons";
+import {
+  Send,
+  Bell,
+  MessageCircleMore,
+  Globe,
+  ChevronsUpDown,
+} from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
@@ -82,24 +88,23 @@ export const Default: Story = {
         <Group gap={4}>
           <Button
             {...args}
-            href="https://google.com"
-            target="_blank"
-            icon={<Globe />}
-            iconPosition="before"
+            icon={<ChevronsUpDown />}
+            iconPosition="after"
             variant="subtle"
+            grows={false}
           >
-            google.com
+            Select a customer
           </Button>
 
           <Button
             {...args}
             href="https://yahoo.com"
             target="_blank"
-            icon={<ArrowLeft />}
+            icon={<Globe />}
             iconPosition="before"
             shape="pill"
           >
-            Go back
+            yahoo.com
           </Button>
         </Group>
       </Stack>
