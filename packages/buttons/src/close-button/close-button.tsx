@@ -6,20 +6,15 @@ import { Button } from "../button/button";
 import type { CloseButtonProps } from "./close-button.types";
 import styles from "./close-button.module.css";
 
-export const CloseButton = ({ children, ...props }: CloseButtonProps) => {
+export const CloseButton = ({ className, ...props }: CloseButtonProps) => {
   return (
     <Button
-      size="icon"
-      shape="pill"
-      fill="outline"
-      icon={<X strokeWidth={3} />}
-      iconPosition={children ? "before" : undefined}
-      aria-label="Close"
-      className={cx(styles["close-button"], props.className)}
       {...props}
-    >
-      {children}
-    </Button>
+      size="sm"
+      icon={<X strokeWidth={2} size={24} />}
+      aria-label="Close"
+      className={cx(styles["close-button"], className)}
+    />
   );
 };
 CloseButton.displayName = "CloseButton";

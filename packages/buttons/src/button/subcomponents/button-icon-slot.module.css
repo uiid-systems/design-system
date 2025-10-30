@@ -1,0 +1,18 @@
+.button-icon-slot {
+  position: absolute;
+  padding-inline: 0.5rem;
+  background-color: color-mix(in srgb, var(--button-bg) var(--button-mix-hover), var(--button-mix-color));
+  height: calc(var(--button-height) - var(--globals-border-width));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &[data-position="before"] {
+    left: 0;
+    border-inline-end: var(--globals-border-width) solid var(--button-border-color);
+  }
+  &[data-position="after"] {
+    right: 0;
+    border-inline-start: var(--globals-border-width) solid var(--button-border-color);
+  }
+}

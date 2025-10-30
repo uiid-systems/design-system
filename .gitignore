@@ -28,3 +28,6 @@ storybook-static
 
 # Turborepo
 .turbo
+
+# CSS tokens
+packages/tokens/src/css/

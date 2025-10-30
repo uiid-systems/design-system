@@ -5,14 +5,6 @@ import type { CardProps } from "../card.types";
 export type CardCloseProps = Pick<CardProps, "onDismiss"> & CloseButtonProps;
 
 export const CardClose = ({ onDismiss, ...props }: CardCloseProps) => {
-  return (
-    <CloseButton
-      data-slot="card-close"
-      variant="inverted"
-      fill="outline"
-      onClick={onDismiss}
-      {...props}
-    />
-  );
+  return <CloseButton data-slot="card-close" onClick={onDismiss} {...props} />;
 };
 CardClose.displayName = "CardClose";

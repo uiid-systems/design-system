@@ -14,10 +14,6 @@ const meta = {
   argTypes: {
     loading: { control: "boolean" },
     disabled: { control: "boolean" },
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    fill: { control: "select", options: ["solid", "outline", "ghost"] },
-    shape: { control: "select", options: ["rounded", "pill"] },
-    loadingText: { control: "text" },
   },
 } satisfies Meta<typeof ResetButton>;
 

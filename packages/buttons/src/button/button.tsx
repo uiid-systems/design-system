@@ -1,4 +1,5 @@
 import { LoadingSpinner } from "@uiid/icons";
+import { Stack } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
@@ -12,7 +13,6 @@ export const Button = ({
   shape = "rounded",
   grows = true,
   loading,
-  loadingText,
   icon,
   iconPosition,
   render,
@@ -22,8 +22,10 @@ export const Button = ({
 }: ButtonProps) => {
   const ariaLabel = props["aria-label"];
   const isLink = "href" in props;
+  const isDisabled = props.disabled || loading;
+  const onlyIcon = icon && !iconPosition;
 
-  if (icon && !iconPosition && !ariaLabel) {
+  if (onlyIcon && !ariaLabel) {
     throw new Error(
       "Please provide an aria-label for your button when it includes an icon with no text.",
     );
@@ -76,14 +78,9 @@ export const Button = ({
     className: cx(styles["button"], className),
     ref: setCustomAttributes,
     /** accessibility */
-    "aria-label": loading ? (loadingText ?? "Loading") : ariaLabel,
-    "aria-disabled": isLink
-      ? undefined
-      : props.disabled || loading
-        ? "true"
-        : undefined,
+    "aria-label": loading ? "Loading" : ariaLabel,
+    "aria-disabled": isDisabled ? "true" : undefined,
     /** attributes */
-    "data-loading": loading ? "true" : undefined,
     "data-icon": icon && (iconPosition ? iconPosition : "standalone"),
     "data-grows": grows ? "true" : undefined,
     /** events */
@@ -91,30 +88,40 @@ export const Button = ({
     onKeyDown: handleKeyDown,
   };
 
-  const Content = () => (
-    <>
-      <div data-slot="button-content" aria-hidden={loading}>
-        {icon && iconPosition === "before" && (
-          <ButtonIconSlot icon={icon} position="before" />
-        )}
-        {icon && iconPosition !== "before" && iconPosition !== "after"
-          ? icon
-          : children}
-        {icon && iconPosition === "after" && (
-          <ButtonIconSlot icon={icon} position="after" />
-        )}
-      </div>
-      <span data-slot="button-loading" aria-hidden={!loading}>
-        {loadingText ?? <LoadingSpinner />}
-      </span>
-    </>
-  );
-
   return renderWithProps({
     fallbackElement: isLink ? "a" : "button",
     props: componentProps,
     render,
-    children: <Content />,
+    children: (
+      <>
+        <Stack
+          className={styles["button-content-container"]}
+          data-shift={loading ? "true" : undefined}
+        >
+          <Stack
+            className={styles["button-content-slot"]}
+            data-active={!loading ? "true" : undefined}
+            ay="center"
+            ax="center"
+            fullwidth
+          >
+            {onlyIcon ? icon : children}
+          </Stack>
+          <Stack
+            className={styles["button-content-slot"]}
+            data-active={loading ? "true" : undefined}
+            ay="center"
+            ax="center"
+            fullwidth
+          >
+            <LoadingSpinner />
+          </Stack>
+        </Stack>
+        {icon && !onlyIcon && (
+          <ButtonIconSlot icon={icon} position={iconPosition} />
+        )}
+      </>
+    ),
   });
 };
 Button.displayName = "Button";

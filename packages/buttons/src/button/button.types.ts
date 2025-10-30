@@ -1,16 +1,18 @@
 import type { RenderProp } from "@uiid/utils";
 
+import type { ButtonIconSlotProps } from "./subcomponents";
+
 // Base button styling and behavior props
 type ButtonCoreProps = {
-  variant?: "inverted" | "subtle";
-  size?: "icon" | "sm" | "md" | "lg";
-  fill?: "solid" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "tertiary" | "inverted" | "subtle";
+  size?: "sm" | "md" | "lg";
+  // fill?: "solid" | "outline" | "ghost";
+  fill?: "solid";
   shape?: "rounded" | "pill";
   grows?: boolean;
   loading?: boolean;
-  loadingText?: string;
-  icon?: React.ReactNode;
-  iconPosition?: "before" | "after";
+  icon?: ButtonIconSlotProps["icon"];
+  iconPosition?: ButtonIconSlotProps["position"];
   render?: RenderProp;
   children?: React.ReactNode;
 };

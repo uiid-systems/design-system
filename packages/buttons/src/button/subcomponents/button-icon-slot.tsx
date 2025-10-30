@@ -1,21 +1,20 @@
-import styles from "../button.module.css";
+import styles from "./button-icon-slot.module.css";
 
-export const ButtonIconSlot = ({
-  icon,
-  position,
-}: {
+export type ButtonIconSlotProps = {
   icon: React.ReactNode;
-  position: "before" | "after";
-}) => {
+  position?: "before" | "after";
+};
+
+export const ButtonIconSlot = ({ icon, position }: ButtonIconSlotProps) => {
   return (
     <span
-      data-slot="button-icon"
+      data-slot="button-icon-slot"
       aria-hidden
-      className={styles["icon-slot"]}
+      className={styles["button-icon-slot"]}
       data-position={position}
     >
       {icon}
     </span>
   );
 };
-ButtonIconSlot.displayName = "IconSlot";
+ButtonIconSlot.displayName = "ButtonIconSlot";
