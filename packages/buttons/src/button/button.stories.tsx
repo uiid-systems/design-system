@@ -1,13 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import {
-  Send,
-  Bell,
-  MessageCircleMore,
-  Globe,
-  ChevronsUpDown,
-} from "@uiid/icons";
+import { Send, Globe, ChevronsUpDown } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
@@ -52,12 +46,6 @@ export const Default: Story = {
             <Button loading {...args} variant={variant.variant}>
               lorem
             </Button>
-            <Button {...args} variant={variant.variant} fill="outline">
-              outline
-            </Button>
-            <Button {...args} variant={variant.variant} fill="ghost">
-              ghost
-            </Button>
             <Button {...args} variant={variant.variant} shape="pill">
               pill
             </Button>
@@ -66,20 +54,6 @@ export const Default: Story = {
               icon={<Send size={18} />}
               aria-label="Send email"
               variant={variant.variant}
-            />
-            <Button
-              {...args}
-              icon={<MessageCircleMore size={18} />}
-              aria-label="View more messages"
-              variant={variant.variant}
-              fill="outline"
-            />
-            <Button
-              {...args}
-              icon={<Bell size={18} />}
-              aria-label="Set alarm"
-              variant={variant.variant}
-              fill="ghost"
             />
           </Group>
         ))}
