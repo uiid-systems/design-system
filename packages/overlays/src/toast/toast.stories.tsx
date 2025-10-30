@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 
-import { Button } from "@uiid/buttons";
-
-import { ToastProvider, useToastManager, Toaster } from "./toast";
+import { ToastProvider, useToast, Toaster } from "./toast";
 
 const meta: Meta<unknown> = {
   title: "Overlays/Toast",
@@ -18,7 +16,7 @@ const meta: Meta<unknown> = {
     ),
   ],
   render: () => {
-    const toastManager = useToastManager();
+    const toastManager = useToast();
 
     const handleClick = () => {
       toastManager.add({
@@ -29,7 +27,7 @@ const meta: Meta<unknown> = {
 
     return (
       <Stack gap={4}>
-        <Button onClick={handleClick}>activate toast</Button>
+        <button onClick={handleClick}>activate toast</button>
       </Stack>
     );
   },

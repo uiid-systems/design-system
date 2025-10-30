@@ -6,7 +6,7 @@ import type { ToastProps } from "./toast.types";
 import styles from "./toast.module.css";
 
 const ToastList = () => {
-  const { toasts } = useToastManager();
+  const { toasts } = useToast();
 
   return toasts.map((toast) => (
     <BaseToast.Root
@@ -38,4 +38,4 @@ export const Toaster = ({ position = "bottom" }: ToastProps) => {
 Toaster.displayName = "Toaster";
 
 export const ToastProvider = BaseToast.Provider;
-export const useToastManager = BaseToast.useToastManager;
+export const useToast = BaseToast.useToastManager;

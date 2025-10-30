@@ -3,8 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-import { Button } from "@uiid/buttons";
-
 import { Tooltip } from "./tooltip";
 
 const meta: Meta<typeof Tooltip> = {
@@ -19,10 +17,6 @@ const meta: Meta<typeof Tooltip> = {
       <Tooltip {...args} trigger="tooltip as string" />
       <Tooltip {...args} trigger={<span>tooltip as span</span>} />
       <Tooltip {...args} trigger={<Text>tooltip as text component</Text>} />
-      <Tooltip
-        {...args}
-        trigger={<Button>tooltip as button component (FIX!!!)</Button>}
-      />
     </Stack>
   ),
 };

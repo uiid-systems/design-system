@@ -34,6 +34,11 @@
     }
   }
 
+  &:focus {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+  }
+
   /** Icon properties */
   svg {
     height: var(--button-icon-size);

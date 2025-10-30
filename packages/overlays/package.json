@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-beta.4",
-    "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
