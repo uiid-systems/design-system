@@ -24,6 +24,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-beta.4",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",

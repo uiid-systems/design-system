@@ -13,7 +13,7 @@ const meta = {
   argTypes: {
     loading: { control: "boolean" },
     disabled: { control: "boolean" },
-    onClick: { action: "clicked" },
+    onClick: { action: "onClick" },
   },
 } satisfies Meta<typeof CopyButton>;
 
@@ -26,7 +26,7 @@ export const Default: Story = {
     return (
       <Stack gap={4}>
         <CopyButton {...args} />
-        <CopyButton {...args} variant="subtle" />
+        <CopyButton {...args} variant="subtle" shape="pill" />
       </Stack>
     );
   },
