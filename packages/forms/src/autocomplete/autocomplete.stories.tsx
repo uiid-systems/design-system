@@ -57,9 +57,10 @@ const meta: Meta<typeof Autocomplete> = {
     description: "Provide an array of items to populate a filterable dropdown",
   },
   argTypes: {
-    onFocus: { action: "onFocus" },
-    onBlur: { action: "onBlur" },
-    onValueChange: { action: "onValueChange" },
+    items: { table: { disable: true } },
+    onFocus: { action: "onFocus", table: { disable: true } },
+    onBlur: { action: "onBlur", table: { disable: true } },
+    onValueChange: { action: "onValueChange", table: { disable: true } },
   },
   render: (args) => (
     <Stack gap={4}>

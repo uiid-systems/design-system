@@ -16,7 +16,7 @@ const meta: Meta<typeof Tabs> = {
   },
   argTypes: {},
   render: (args) => (
-    <Stack gap={4}>
+    <Stack fullwidth ax="stretch" gap={4}>
       <Tabs {...args}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa
         hic, accusamus dolor cum minima pariatur provident vero blanditiis vel!

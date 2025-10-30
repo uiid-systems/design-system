@@ -8,6 +8,7 @@
   position: relative;
   z-index: 0;
   padding-inline: 0.25rem;
+  justify-content: center;
   gap: 0.25rem;
   box-shadow: inset 0 -1px var(--shade-muted);
 }
@@ -29,7 +30,7 @@
   user-select: none;
   white-space: nowrap;
   word-break: keep-all;
-  padding-inline: 0.5rem;
+  padding-inline: 1.5rem;
   padding-block: 0;
   height: 2rem;
 
