@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { DayPicker, type DateRange } from "react-day-picker";
-import "react-day-picker/style.css";
+import { DayPicker } from "react-day-picker";
 
 import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Group, Stack } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 
-import styles from "../calendars.module.css";
+import "../calendars.styles.css";
 
 import type {
   DateRangeCalendarProps,
@@ -28,36 +27,36 @@ const DEFAULT_FILTERS: DateRangeFilterKey[] = [
 ];
 
 export const DateRangeCalendar = ({
-  defaultMonth,
+  headless = false,
   filters = DEFAULT_FILTERS,
+  onSelect,
+  defaultMonth,
+  selected,
   ...props
 }: DateRangeCalendarProps) => {
   const [month, setMonth] = useState(defaultMonth);
-  const [date, setDate] = useState<DateRange | undefined>(undefined);
 
   const handleFilterClick = (filterKey: DateRangeFilterKey) => {
     const filter = DATE_RANGE_FILTERS[filterKey];
-    setDate(filter.range);
+    onSelect?.(filter.range);
     setMonth(filter.range.from);
   };
 
   return (
-    <Card>
+    <ConditionalRender condition={!headless} render={<Card />}>
       <Group gap={4}>
         <DayPicker
+          {...props}
           mode="range"
+          animate
           month={month}
           onMonthChange={setMonth}
-          selected={date}
-          onSelect={setDate}
-          className={styles["rdp-root"]}
-          numberOfMonths={1}
-          showOutsideDays
-          {...props}
+          selected={selected}
+          onSelect={onSelect}
         />
 
         <Stack gap={2} ax="stretch">
-          {filters.map((filterKey) => (
+          {filters.map((filterKey: DateRangeFilterKey) => (
             <Button
               key={filterKey}
               size="sm"
@@ -68,7 +67,7 @@ export const DateRangeCalendar = ({
           ))}
         </Stack>
       </Group>
-    </Card>
+    </ConditionalRender>
   );
 };
 DateRangeCalendar.displayName = "DateRangeCalendar";

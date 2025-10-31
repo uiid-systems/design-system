@@ -1,8 +1,16 @@
-import type { DayPickerProps } from "react-day-picker";
+import type { DateRange, DayPickerProps } from "react-day-picker";
 import type { DATE_RANGE_FILTERS } from "./date-range-calendar.constants";
 
 export type DateRangeFilterKey = keyof typeof DATE_RANGE_FILTERS;
 
-export type DateRangeCalendarProps = Omit<DayPickerProps, "mode"> & {
+export type DateRangeCalendarProps = Omit<
+  Extract<DayPickerProps, { mode?: "range" }>,
+  "mode" | "onSelect"
+> & {
   filters?: DateRangeFilterKey[];
+  headless?: boolean;
+  selected?: DateRange;
+  onSelect?: (range: DateRange | undefined) => void;
 };
+
+export type { DateRange };

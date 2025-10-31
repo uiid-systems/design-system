@@ -24,6 +24,7 @@ export const Default: Story = {
           pagedNavigation
           filters={["firstDayOfMonth"]}
         />
+        <DateCalendar {...args} headless />
       </Stack>
     );
   },

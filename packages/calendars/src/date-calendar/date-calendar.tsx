@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
 
 import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Group, Stack } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 
-import styles from "../calendars.module.css";
+import "../calendars.styles.css";
 
 import type { DateCalendarProps, DateFilterKey } from "./date-calendar.types";
 import { DATE_FILTERS } from "./date-calendar.constants";
@@ -23,36 +22,36 @@ const DEFAULT_FILTERS: DateFilterKey[] = [
 ];
 
 export const DateCalendar = ({
-  defaultMonth,
+  headless = false,
   filters = DEFAULT_FILTERS,
+  onSelect,
+  defaultMonth,
+  selected,
   ...props
 }: DateCalendarProps) => {
   const [month, setMonth] = useState(defaultMonth);
-  const [date, setDate] = useState<Date | undefined>(undefined);
 
   const handleFilterClick = (filterKey: DateFilterKey) => {
     const filter = DATE_FILTERS[filterKey];
-    setDate(filter.date);
+    onSelect?.(filter.date);
     setMonth(filter.date);
   };
 
   return (
-    <Card>
+    <ConditionalRender condition={!headless} render={<Card />}>
       <Group gap={4}>
         <DayPicker
+          {...props}
           mode="single"
+          animate
           month={month}
           onMonthChange={setMonth}
-          selected={date}
-          onSelect={setDate}
-          className={styles["rdp-root"]}
-          numberOfMonths={1}
-          showOutsideDays
-          {...props}
+          selected={selected}
+          onSelect={onSelect}
         />
 
         <Stack gap={2} ax="stretch">
-          {filters.map((filterKey) => (
+          {filters.map((filterKey: DateFilterKey) => (
             <Button
               key={filterKey}
               size="sm"
@@ -63,7 +62,7 @@ export const DateCalendar = ({
           ))}
         </Stack>
       </Group>
-    </Card>
+    </ConditionalRender>
   );
 };
 DateCalendar.displayName = "DateCalendar";
