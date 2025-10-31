@@ -1,11 +1,11 @@
-@layer toretto.globals, toretto.tokens, toretto.components, toretto.utilities;
+@layer uiid.globals, uiid.tokens, uiid.components, uiid.utilities;
 
 @import "./css/globals.tokens.css";
 @import "./css/colors.tokens.css";
 @import "./css/spacing.tokens.css";
 @import "./css/forms.tokens.css";
 
-@layer toretto.globals {
+@layer uiid.globals {
   /* Base tokens: colors and mixing percentages */
   :root {
     --white: white;
