@@ -3,7 +3,7 @@
   "$description": "UIID Design System - Drawer Component Tokens",
   "drawer": {
     "extends": {
-      "horizontal": { "$value": "40rem", "$type": "dimension" },
+      "horizontal": { "$value": "32rem", "$type": "dimension" },
       "vertical": { "$value": "16rem", "$type": "dimension" }
     },
     "offset": { "$value": "0.5rem", "$type": "dimension" }

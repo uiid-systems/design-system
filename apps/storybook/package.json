@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@uiid/cards": "workspace:*",
+    "@uiid/calendars": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/layout": "workspace:*",

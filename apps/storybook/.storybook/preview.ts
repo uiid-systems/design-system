@@ -5,6 +5,7 @@ import "@uiid/typography/globals.css";
 import "@uiid/layout/globals.css";
 import "@uiid/buttons/globals.css";
 import "@uiid/cards/globals.css";
+import "@uiid/calendars/globals.css";
 
 const preview: Preview = {
   // tags: ["autodocs"],
@@ -28,6 +29,8 @@ const preview: Preview = {
           "Calendars",
           "Forms",
           ["Inputs", ["Input"], "Selects", ["Select"]],
+          "Dropdowns",
+          ["Dropdown"],
           "Indicators",
           "Interactive",
           "Overlays",

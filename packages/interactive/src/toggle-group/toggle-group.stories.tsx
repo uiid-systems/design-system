@@ -47,11 +47,19 @@ export const Default: Story = {
           <MonitorSmartphone />
         </Toggle>
       </ToggleGroup>
+
       <ToggleGroup {...args} defaultValue={["monthly"]}>
         <Toggle value="monthly">Monthly</Toggle>
         <Toggle value="yearly">Yearly</Toggle>
       </ToggleGroup>
+
       <ToggleGroup {...args} defaultValue={["left"]}>
+        <Toggle value="left">Left</Toggle>
+        <Toggle value="center">Center</Toggle>
+        <Toggle value="right">Right</Toggle>
+      </ToggleGroup>
+
+      <ToggleGroup {...args} defaultValue={["left"]} orientation="vertical">
         <Toggle value="left">Left</Toggle>
         <Toggle value="center">Center</Toggle>
         <Toggle value="right">Right</Toggle>
