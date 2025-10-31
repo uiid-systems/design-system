@@ -1,0 +1,105 @@
+.toggle-group-panel {
+  --toggle-gap: 1px;
+  --toggle-size: calc(var(--toggleGroup-height) - var(--toggle-gap) * 2);
+
+  position: relative;
+  gap: var(--globals-border-width);
+  border: 1px solid var(--globals-border-color);
+  background-color: var(--shade-surface);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  height: var(--toggleGroup-height);
+  overflow: hidden;
+
+  &[data-orientation="vertical"] {
+    height: auto;
+  }
+
+  &:where([data-size="sm"]) {
+    --toggleGroup-height: var(--forms-size-sm-height);
+  }
+  &:where([data-size="md"]) {
+    --toggleGroup-height: var(--forms-size-md-height);
+  }
+  &:where([data-size="lg"]) {
+    --toggleGroup-height: var(--forms-size-lg-height);
+  }
+}
+
+.Indicator {
+  position: absolute;
+  z-index: 0;
+  border-radius: var(--globals-border-radius);
+  background-color: var(--shade-muted);
+  scale: 0.9;
+  transition-property: translate, width, height;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  .toggle-group-panel:not([data-orientation="vertical"]) & {
+    left: 0;
+    top: 50%;
+    translate: var(--active-toggle-left, 0) -50%;
+    width: var(--active-toggle-width, 0);
+    height: var(--toggle-size);
+  }
+
+  .toggle-group-panel[data-orientation="vertical"] & {
+    top: 0;
+    left: 50%;
+    translate: -50% var(--active-toggle-top, 0);
+    height: var(--active-toggle-height, 0);
+    width: var(--toggle-size);
+  }
+}
+
+.Button {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  color: var(--shade-accent);
+  user-select: none;
+  cursor: pointer;
+  border-radius: var(--globals-border-radius);
+  padding-inline: var(--globals-padding-x);
+  min-height: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
+  transition: color 150ms ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  /* For icon-only buttons, maintain square shape */
+  &:has(svg:only-child) {
+    width: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
+    padding-inline: 0;
+  }
+
+  [data-orientation="vertical"] & {
+    width: 100%;
+
+    &:has(svg:only-child) {
+      aspect-ratio: 1;
+    }
+  }
+
+  &:focus {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: calc(var(--globals-outline-offset) * -1);
+  }
+
+  &:hover {
+    color: var(--shade-foreground);
+  }
+
+  &[data-pressed] {
+    color: var(--shade-foreground);
+  }
+
+  svg {
+    height: var(--globals-icon-size);
+    flex-shrink: 0;
+  }
+}

@@ -9,3 +9,6 @@ export * from "./switch/switch.types";
 
 export * from "./tabs/tabs";
 export * from "./tabs/tabs.types";
+
+export * from "./toggle-group/toggle-group";
+export * from "./toggle-group/toggle-group.types";
