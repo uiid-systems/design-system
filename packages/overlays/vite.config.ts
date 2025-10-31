@@ -20,11 +20,25 @@ export default defineConfig({
       formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: [
+        "react",
+        "react-dom",
+        /^@uiid\//,
+        "@base-ui-components/react",
+        "vaul",
+      ],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "@uiid/cards": "UIIDCards",
+          "@uiid/icons": "UIIDIcons",
+          "@uiid/layout": "UIIDLayout",
+          "@uiid/tokens": "UIIDTokens",
+          "@uiid/typography": "UIIDTypography",
+          "@uiid/utils": "UIIDUtils",
+          "@base-ui-components/react": "BaseUI",
+          vaul: "Vaul",
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "overlays.css";

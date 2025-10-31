@@ -1,0 +1,62 @@
+{
+  "name": "@uiid/dropdowns",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/dropdowns.umd.cjs",
+  "module": "dist/dropdowns.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/dropdowns.js",
+      "require": "./dist/dropdowns.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ignore-pattern 'dist/**'",
+    "format": "prettier --write .",
+    "test": "vitest",
+    "test:run": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@uiid/calendars": "workspace:*",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "@uiid/overlays": "workspace:*",
+    "@uiid/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@storybook/react-vite": "^9.0.15",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@uiid/layout": "workspace:*",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^3.10.2",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "happy-dom": "^15.11.6",
+    "prettier": "3.6.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "storybook": "^9.0.15",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
+  }
+}

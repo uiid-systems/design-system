@@ -20,11 +20,26 @@ export default defineConfig({
       formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: [
+        "react",
+        "react-dom",
+        /^@uiid\//,
+        "date-fns",
+        "react-day-picker",
+      ],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "@uiid/buttons": "UIIDButtons",
+          "@uiid/cards": "UIIDCards",
+          "@uiid/icons": "UIIDIcons",
+          "@uiid/layout": "UIIDLayout",
+          "@uiid/tokens": "UIIDTokens",
+          "@uiid/typography": "UIIDTypography",
+          "@uiid/utils": "UIIDUtils",
+          "date-fns": "dateFns",
+          "react-day-picker": "ReactDayPicker",
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "calendars.css";

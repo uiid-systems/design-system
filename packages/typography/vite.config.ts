@@ -20,11 +20,13 @@ export default defineConfig({
       formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", /^@uiid\//],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "@uiid/tokens": "UIIDTokens",
+          "@uiid/utils": "UIIDUtils",
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "typography.css";

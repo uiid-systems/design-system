@@ -20,11 +20,16 @@ export default defineConfig({
       formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", /^@uiid\//, "@base-ui-components/react"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "@uiid/layout": "UIIDLayout",
+          "@uiid/tokens": "UIIDTokens",
+          "@uiid/typography": "UIIDTypography",
+          "@uiid/utils": "UIIDUtils",
+          "@base-ui-components/react": "BaseUI",
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "buttons.css";

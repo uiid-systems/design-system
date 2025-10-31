@@ -1,0 +1,29 @@
+import { Button } from "@uiid/buttons";
+import { Popover } from "@uiid/overlays";
+
+import type { DropdownProps } from "./dropdown.types";
+
+export const Dropdown = ({
+  placeholder,
+  TriggerProps,
+  children,
+  ...props
+}: DropdownProps) => {
+  if (!placeholder) {
+    throw new Error("Add a placeholder to your dropdown!");
+  }
+
+  return (
+    <Popover
+      {...props}
+      trigger={
+        <Button {...TriggerProps} variant="subtle" grows={false}>
+          {placeholder}
+        </Button>
+      }
+    >
+      {children}
+    </Popover>
+  );
+};
+Dropdown.displayName = "Dropdown";
