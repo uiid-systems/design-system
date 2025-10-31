@@ -5,8 +5,6 @@ export type DrawerProps = React.PropsWithChildren<{
   trigger: React.ReactNode;
   /** The title of the drawer. */
   title: string;
-  /** The description of the drawer. */
-  description: string;
   /**
    * The props for the root element.
    * @see https://vaul.emilkowal.ski/api#root
@@ -26,4 +24,4 @@ export type DrawerProps = React.PropsWithChildren<{
    * */
   ContentProps?: Omit<ContentProps, "children">;
 }> &
-  Pick<DialogProps, "direction" | "open" | "onOpenChange">;
+  Pick<DialogProps, "direction" | "open" | "onOpenChange" | "defaultOpen">;

@@ -1,4 +1,5 @@
 import { Dialog } from "@base-ui-components/react/dialog";
+import { isValidElement } from "react";
 
 import { cx } from "@uiid/utils";
 import { Card } from "@uiid/cards";
@@ -21,9 +22,17 @@ export const Modal = ({
   TriggerProps,
   PopupProps,
 }: ModalProps) => {
+  const triggerIsEl = isValidElement(trigger);
+
   return (
     <Dialog.Root {...RootProps} open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger {...TriggerProps}>{trigger}</Dialog.Trigger>
+      <Dialog.Trigger
+        {...TriggerProps}
+        render={<div tabIndex={triggerIsEl ? -1 : 0} />}
+        nativeButton={false}
+      >
+        {trigger}
+      </Dialog.Trigger>
 
       <Dialog.Portal keepMounted={keepMounted}>
         <Dialog.Backdrop className={styles["modal-backdrop"]} />
@@ -32,6 +41,7 @@ export const Modal = ({
           {...PopupProps}
           render={
             <Card
+              uiid="modal"
               title={title}
               onDismiss={onDismiss}
               renderDismissButton={<Dialog.Close />}

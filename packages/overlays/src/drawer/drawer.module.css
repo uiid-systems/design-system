@@ -9,14 +9,10 @@
 
 .drawer-content {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  outline: none;
-  height: fit-content;
-  color: var(--shade-foreground);
-  background-color: var(--shade-surface);
-  padding: var(--globals-padding-y) var(--globals-padding-x);
+  display: flex;
+  bottom: var(--drawer-offset);
+  left: var(--drawer-offset);
+  right: var(--drawer-offset);
 
   &[data-vaul-drawer-direction="top"],
   &[data-vaul-drawer-direction="bottom"] {
@@ -26,16 +22,20 @@
   &[data-vaul-drawer-direction="right"],
   &[data-vaul-drawer-direction="left"] {
     max-width: var(--drawer-extends-horizontal);
-    height: 100dvh;
+    height: calc(100dvh - var(--drawer-offset) * 2);
+  }
+
+  &[data-vaul-drawer-direction]::after {
+    background-color: transparent;
   }
 
   &[data-vaul-drawer-direction="top"] {
-    top: 0;
+    top: var(--drawer-offset);
     bottom: auto;
   }
 
   &[data-vaul-drawer-direction="right"] {
     left: auto;
-    right: 0;
+    right: var(--drawer-offset);
   }
 }

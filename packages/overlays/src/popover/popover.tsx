@@ -1,10 +1,11 @@
 import { Popover as BasePopover } from "@base-ui-components/react/popover";
+import { isValidElement } from "react";
 
 import { cx } from "@uiid/utils";
 import { Card } from "@uiid/cards";
 
-import type { PopoverProps } from "./popover.types";
 import styles from "./popover.module.css";
+import type { PopoverProps } from "./popover.types";
 
 export const Popover = ({
   trigger,
@@ -22,9 +23,17 @@ export const Popover = ({
   },
   PopupProps,
 }: PopoverProps) => {
+  const triggerIsEl = isValidElement(trigger);
+
   return (
     <BasePopover.Root {...RootProps}>
-      <BasePopover.Trigger {...TriggerProps}>{trigger}</BasePopover.Trigger>
+      <BasePopover.Trigger
+        {...TriggerProps}
+        render={<div tabIndex={triggerIsEl ? -1 : 0} />}
+        nativeButton={false}
+      >
+        {trigger}
+      </BasePopover.Trigger>
       <BasePopover.Portal>
         <BasePopover.Backdrop />
         <BasePopover.Positioner {...PositionerProps}>
@@ -34,6 +43,7 @@ export const Popover = ({
             {...PopupProps}
             render={
               <Card
+                uiid="popover"
                 title={title}
                 onDismiss={onDismiss}
                 renderDismissButton={<BasePopover.Close />}

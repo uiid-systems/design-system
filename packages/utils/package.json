@@ -13,6 +13,7 @@
     },
     "./bold.css": "./dist/bold.css",
     "./evenly.css": "./dist/evenly.css",
+    "./fullheight.css": "./dist/fullheight.css",
     "./fullwidth.css": "./dist/fullwidth.css"
   },
   "files": [

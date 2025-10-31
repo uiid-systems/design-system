@@ -2,11 +2,11 @@ import { Toast as BaseToast } from "@base-ui-components/react/toast";
 
 import { Card } from "@uiid/cards";
 
-import type { ToastProps } from "./toast.types";
+import type { ToasterProps } from "./toast.types";
 import styles from "./toast.module.css";
 
 const ToastList = () => {
-  const { toasts } = useToast();
+  const { toasts } = useToastManager();
 
   return toasts.map((toast) => (
     <BaseToast.Root
@@ -14,7 +14,11 @@ const ToastList = () => {
       toast={toast}
       className={styles["toast"]}
       render={
-        <Card title={toast.title} renderDismissButton={<BaseToast.Close />}>
+        <Card
+          uiid="toast"
+          title={toast.title}
+          renderDismissButton={<BaseToast.Close />}
+        >
           <BaseToast.Description />
         </Card>
       }
@@ -23,7 +27,7 @@ const ToastList = () => {
 };
 ToastList.displayName = "ToastList";
 
-export const Toaster = ({ position = "bottom" }: ToastProps) => {
+export const Toaster = ({ position = "bottom" }: ToasterProps) => {
   return (
     <BaseToast.Portal>
       <BaseToast.Viewport
@@ -38,4 +42,4 @@ export const Toaster = ({ position = "bottom" }: ToastProps) => {
 Toaster.displayName = "Toaster";
 
 export const ToastProvider = BaseToast.Provider;
-export const useToast = BaseToast.useToastManager;
+export const useToastManager = BaseToast.useToastManager;

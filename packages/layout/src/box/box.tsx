@@ -1,13 +1,14 @@
 import { prepareComponentProps, renderWithProps } from "@uiid/utils";
 
 import "@uiid/utils/evenly.css";
+import "@uiid/utils/fullheight.css";
 import "@uiid/utils/fullwidth.css";
 import type { BoxProps } from "./box.types";
 
 export const Box = ({ render, children, ...props }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
-    toggleProps: ["evenly", "fullwidth"],
+    toggleProps: ["evenly", "fullwidth", "fullheight"],
     styleProps: [
       "ax",
       "ay",

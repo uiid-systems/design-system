@@ -5,10 +5,6 @@ import type { CardProps } from "@uiid/cards";
 export type PopoverProps = React.PropsWithChildren<{
   /** A render prop for the trigger element. */
   trigger: React.ReactNode;
-  /** The title of the popover. */
-  title: string;
-  /** The content of the popover. */
-  children: React.ReactNode;
   /**
    * The props for the root element.
    * @see https://base-ui-components.github.io/react/popover/#root

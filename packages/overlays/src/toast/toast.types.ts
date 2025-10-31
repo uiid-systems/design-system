@@ -1,3 +1,3 @@
-export type ToastProps = {
+export type ToasterProps = {
   position?: "top" | "bottom";
 };

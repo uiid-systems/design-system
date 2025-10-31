@@ -3,34 +3,30 @@ import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
 import { Card } from "@uiid/cards";
 
 import type { TooltipProps } from "./tooltip.types";
-import { TooltipTrigger } from "./subcomponents/tooltip-trigger";
 
 export const Tooltip = ({
   trigger,
   RootProps,
   TriggerProps,
-  PortalProps,
   PositionerProps = {
-    sideOffset: 4,
+    sideOffset: 8,
     collisionPadding: 16,
   },
   PopupProps,
   children,
 }: TooltipProps) => {
-  if (!trigger) {
-    throw new Error("A trigger is required");
-  }
-
   return (
     <BaseTooltip.Provider>
       <BaseTooltip.Root {...RootProps}>
-        <TooltipTrigger trigger={trigger} TriggerProps={TriggerProps} />
-        <BaseTooltip.Portal {...PortalProps}>
+        <BaseTooltip.Trigger {...TriggerProps} render={<div />}>
+          {trigger}
+        </BaseTooltip.Trigger>
+        <BaseTooltip.Portal>
           <BaseTooltip.Positioner {...PositionerProps}>
             <BaseTooltip.Popup
-              render={<Card size="sm" gap={2} />}
               data-is-popup="true"
               {...PopupProps}
+              render={<Card size="sm">{children}</Card>}
             >
               {children}
             </BaseTooltip.Popup>
