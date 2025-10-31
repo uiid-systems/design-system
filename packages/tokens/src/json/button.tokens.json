@@ -19,9 +19,6 @@
       "hover": { "$value": "85%", "$type": "dimension" },
       "active": { "$value": "80%", "$type": "dimension" }
     },
-    "icon": {
-      "size": { "$value": "0.875rem", "$type": "dimension" }
-    },
     "size": {
       "sm": { "padding-x": { "$value": "0.75rem", "$type": "dimension" } },
       "md": { "padding-x": { "$value": "1rem", "$type": "dimension" } },

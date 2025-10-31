@@ -42,7 +42,7 @@
 
   /** Icon properties */
   svg {
-    height: var(--button-icon-size);
+    height: var(--globals-icon-size);
   }
   &:where([data-icon="standalone"]) {
     --button-height: auto;

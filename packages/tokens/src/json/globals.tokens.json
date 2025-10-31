@@ -15,6 +15,9 @@
     "disabled": {
       "opacity": { "$value": "0.5", "$type": "number" }
     },
+    "icon": {
+      "size": { "$value": "0.875rem", "$type": "dimension" }
+    },
     "border": {
       "color": { "$value": "{shade.muted}", "$type": "color" },
       "radius": { "$value": "0.5rem", "$type": "dimension" },
