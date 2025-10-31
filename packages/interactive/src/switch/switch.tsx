@@ -34,7 +34,7 @@ export const Switch = ({
   return (
     <ConditionalRender
       condition={hasLabel}
-      wrapper={<Group gap={2} ay="center" />}
+      render={<Group gap={2} ay="center" />}
     >
       {hasLabelBefore && <SwitchLabel />}
       <BaseSwitch.Root

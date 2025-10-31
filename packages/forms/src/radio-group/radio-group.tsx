@@ -17,7 +17,7 @@ export const RadioGroup = ({
     <FormField name={name} label={label} description={description} {...props}>
       <SwitchRender
         condition={direction === "vertical"}
-        wrappers={{
+        render={{
           true: <Fieldset render={<Stack gap={2} />} />,
           false: <Fieldset render={<Group ay="center" gap={4} />} />,
         }}

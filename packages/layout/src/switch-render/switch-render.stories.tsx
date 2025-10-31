@@ -6,7 +6,7 @@ const meta = {
   component: SwitchRender,
   args: {
     condition: true,
-    wrappers: {
+    render: {
       true: (
         <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
       ),
@@ -16,7 +16,7 @@ const meta = {
   argTypes: {
     condition: { type: "boolean" },
     children: { table: { disable: true } },
-    wrappers: { table: { disable: true } },
+    render: { table: { disable: true } },
   },
   render: (args) => <SwitchRender {...args} />,
 } satisfies Meta<typeof SwitchRender>;

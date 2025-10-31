@@ -6,12 +6,12 @@ const meta = {
   component: ConditionalRender,
   args: {
     condition: true,
-    wrapper: <div style={{ background: "gold", height: 64, width: 64 }} />,
+    render: <div style={{ background: "gold", height: 64, width: 64 }} />,
   },
   argTypes: {
     condition: { type: "boolean" },
     children: { table: { disable: true } },
-    wrapper: { table: { disable: true } },
+    render: { table: { disable: true } },
   },
   render: (args) => <ConditionalRender {...args} />,
 } satisfies Meta<typeof ConditionalRender>;

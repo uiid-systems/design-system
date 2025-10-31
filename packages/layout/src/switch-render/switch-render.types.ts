@@ -1,6 +1,6 @@
 export type SwitchRenderProps = React.PropsWithChildren<{
   condition: boolean;
-  wrappers: {
+  render: {
     true: React.ReactElement<unknown>;
     false: React.ReactElement<unknown>;
   };

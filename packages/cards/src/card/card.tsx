@@ -86,7 +86,7 @@ export const Card = ({
       {hasHeader && (
         <ConditionalRender
           condition={hasHeader}
-          wrapper={<Group ay="center" gap={2} />}
+          render={<Group ay="center" gap={2} />}
         >
           {hasIcon && <CardIcon variant={variant} />}
           {title && (
@@ -111,7 +111,7 @@ export const Card = ({
       {!isLink && (
         <ConditionalRender
           condition={hasActions}
-          wrapper={<Group ax="end" ay="center" gap={2} />}
+          render={<Group ax="end" ay="center" gap={2} />}
         >
           {actions.map((action) => {
             if (!action) return null;

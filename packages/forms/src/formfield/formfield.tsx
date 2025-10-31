@@ -15,7 +15,7 @@ export const FormField = ({ children, ...props }: FormFieldProps) => {
   return (
     <ConditionalRender
       condition={hasLabel || hasDescription}
-      wrapper={<Wrapper {...props} />}
+      render={<Wrapper {...props} />}
     >
       {children}
     </ConditionalRender>

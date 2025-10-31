@@ -28,7 +28,7 @@ export const List = ({
   return (
     <SwitchRender
       condition={direction === "row"}
-      wrappers={{
+      render={{
         true: <Group ay="start" {...(sharedProps as HorizontalListProps)} />,
         false: <Stack ax="stretch" {...(sharedProps as VerticalListProps)} />,
       }}

@@ -38,7 +38,7 @@ export const Checkbox = ({
   return (
     <ConditionalRender
       condition={hasLabel}
-      wrapper={
+      render={
         <FormFieldLabel
           data-validate={validate ? true : undefined}
           htmlFor={name}
@@ -47,7 +47,7 @@ export const Checkbox = ({
     >
       <ConditionalRender
         condition={hasLabel}
-        wrapper={<Group ay={hasDescription ? "start" : "center"} gap={2} />}
+        render={<Group ay={hasDescription ? "start" : "center"} gap={2} />}
       >
         <input
           {...props}
@@ -65,7 +65,7 @@ export const Checkbox = ({
         />
         <ConditionalRender
           condition={hasDescription}
-          wrapper={<Stack gap={1} />}
+          render={<Stack gap={1} />}
         >
           {label && <span>{label}</span>}
           {label && description && (

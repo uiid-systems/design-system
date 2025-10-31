@@ -46,7 +46,7 @@ export const Slots = ({
   return (
     <ConditionalRender
       condition={hasSlot}
-      wrapper={
+      render={
         <Box uiid="slots" className={cx(styles.slots, className)} {...props} />
       }
     >

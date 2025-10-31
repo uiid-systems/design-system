@@ -4,10 +4,10 @@ import type { SwitchRenderProps } from "./switch-render.types";
 
 export const SwitchRender = ({
   condition,
-  wrappers,
+  render,
   children,
 }: SwitchRenderProps) => {
-  const selectedWrapper = condition ? wrappers.true : wrappers.false;
+  const selectedWrapper = condition ? render.true : render.false;
 
   if (!selectedWrapper) return <>{children}</>;
 

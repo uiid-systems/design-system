@@ -4,14 +4,14 @@ import type { ConditionalRenderProps } from "./conditional-render.types";
 
 export function ConditionalRender({
   condition,
-  wrapper,
+  render,
   children,
 }: ConditionalRenderProps) {
-  if (!condition || !wrapper) return <>{children}</>;
+  if (!condition || !render) return <>{children}</>;
 
   const contentToRender =
-    children ?? (wrapper.props as React.PropsWithChildren).children;
+    children ?? (render.props as React.PropsWithChildren).children;
 
-  return cloneElement(wrapper, undefined, contentToRender);
+  return cloneElement(render, undefined, contentToRender);
 }
 ConditionalRender.displayName = "ConditionalRender";

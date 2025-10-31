@@ -1,5 +1,5 @@
 export type ConditionalRenderProps = {
   condition: boolean;
-  wrapper: React.ReactElement<unknown>;
+  render: React.ReactElement<unknown>;
   children?: React.ReactNode;
 };

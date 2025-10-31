@@ -19,7 +19,7 @@ export const Avatar = ({
         </Text>
       </Layer>
 
-      <ConditionalRender condition={!!name} wrapper={<Stack gap={2} />}>
+      <ConditionalRender condition={!!name} render={<Stack gap={2} />}>
         <Text data-slot="avatar-name" level={0}>
           {name}
         </Text>
