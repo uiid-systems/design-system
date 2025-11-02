@@ -5,6 +5,7 @@ import type { DropdownProps } from "./dropdown.types";
 
 export const Dropdown = ({
   placeholder,
+  size = "md",
   TriggerProps,
   children,
   ...props
@@ -18,7 +19,7 @@ export const Dropdown = ({
       {...props}
       PopupProps={{ style: { maxWidth: "fit-content" } }}
       trigger={
-        <Button {...TriggerProps} variant="subtle" grows={false}>
+        <Button variant="subtle" grows={false} size={size} {...TriggerProps}>
           {placeholder}
         </Button>
       }

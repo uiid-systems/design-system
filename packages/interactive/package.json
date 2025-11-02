@@ -27,7 +27,8 @@
     "@base-ui-components/react": "1.0.0-beta.4",
     "@uiid/forms": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/utils": "workspace:*"
+    "@uiid/utils": "workspace:*",
+    "embla-carousel-react": "^8.6.0"
   },
   "peerDependencies": {
     "react": "^19.1.1",
