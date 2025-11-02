@@ -20,7 +20,6 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
     "storybook-addon-test-codegen",
-    "storybook-addon-pseudo-states",
   ],
   framework: {
     name: "@storybook/react-vite",

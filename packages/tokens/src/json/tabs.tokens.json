@@ -12,17 +12,14 @@
       "border": { "$value": "{shade.muted}", "$type": "color" }
     },
     "tab": {
-      "height": { "$value": "2rem", "$type": "dimension" },
+      "height": { "$value": "3rem", "$type": "dimension" },
       "color": {
         "default": { "$value": "{shade.halftone}", "$type": "color" },
         "active": { "$value": "{shade.accent}", "$type": "color" }
       }
     },
     "panel": {
-      "minHeight": { "$value": "8rem", "$type": "dimension" },
-      "transition": {
-        "timing": { "$value": "300ms", "$type": "duration" }
-      }
+      "minHeight": { "$value": "8rem", "$type": "dimension" }
     }
   }
 }
