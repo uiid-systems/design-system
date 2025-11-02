@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@uiid/icons";
-import { Stack, ConditionalRender } from "@uiid/layout";
+import { ConditionalRender } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";

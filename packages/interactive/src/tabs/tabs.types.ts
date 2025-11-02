@@ -3,9 +3,10 @@ import type { Tabs } from "@base-ui-components/react/tabs";
 export type TabProps = {
   label: string;
   value: string;
+  render: React.ReactNode;
 };
 
-export type TabsProps = React.PropsWithChildren<{
+export type TabsProps = {
   items: TabProps[];
   defaultValue?: Tabs.Root.Props["defaultValue"];
   RootProps?: Omit<Tabs.Root.Props, "defaultValue">;
@@ -13,4 +14,4 @@ export type TabsProps = React.PropsWithChildren<{
   TabProps?: Tabs.Tab.Props;
   IndicatorProps?: Tabs.Indicator.Props;
   PanelProps?: Tabs.Panel.Props;
-}>;
+};

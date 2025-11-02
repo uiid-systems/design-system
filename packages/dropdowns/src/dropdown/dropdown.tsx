@@ -6,7 +6,6 @@ import type { DropdownProps } from "./dropdown.types";
 export const Dropdown = ({
   placeholder,
   TriggerProps,
-  className,
   children,
   ...props
 }: DropdownProps) => {

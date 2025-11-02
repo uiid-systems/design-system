@@ -1,0 +1,28 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Tabs Component Tokens",
+  "tabs": {
+    "indicator": {
+      "height": { "$value": "2px", "$type": "dimension" },
+      "color": {
+        "bg": { "$value": "{shade.foreground}", "$type": "color" }
+      }
+    },
+    "list": {
+      "border": { "$value": "{shade.muted}", "$type": "color" }
+    },
+    "tab": {
+      "height": { "$value": "2rem", "$type": "dimension" },
+      "color": {
+        "default": { "$value": "{shade.halftone}", "$type": "color" },
+        "active": { "$value": "{shade.accent}", "$type": "color" }
+      }
+    },
+    "panel": {
+      "minHeight": { "$value": "8rem", "$type": "dimension" },
+      "transition": {
+        "timing": { "$value": "300ms", "$type": "duration" }
+      }
+    }
+  }
+}
