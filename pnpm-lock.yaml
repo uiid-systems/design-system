@@ -62,6 +62,9 @@ importers:
       '@uiid/cards':
         specifier: workspace:*
         version: link:../../packages/cards
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@uiid/indicators':
         specifier: workspace:*
         version: link:../../packages/indicators
@@ -71,6 +74,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../../packages/layout
+      '@uiid/overlays':
+        specifier: workspace:*
+        version: link:../../packages/overlays
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
@@ -235,6 +241,9 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
@@ -432,6 +441,9 @@ importers:
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
+      '@uiid/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@eslint/js':
         specifier: ^9.29.0

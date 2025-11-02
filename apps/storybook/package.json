@@ -9,14 +9,16 @@
     "preview": "serve storybook-static"
   },
   "dependencies": {
+    "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/calendars": "workspace:*",
-    "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
-    "@uiid/layout": "workspace:*",
-    "@uiid/buttons": "workspace:*",
+    "@uiid/forms": "workspace:*",
     "@uiid/indicators": "workspace:*",
-    "@uiid/interactive": "workspace:*"
+    "@uiid/interactive": "workspace:*",
+    "@uiid/layout": "workspace:*",
+    "@uiid/overlays": "workspace:*",
+    "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

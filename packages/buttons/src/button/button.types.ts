@@ -9,6 +9,7 @@ type ButtonCoreProps = {
   // fill?: "solid" | "outline" | "ghost";
   fill?: "solid";
   shape?: "rounded" | "pill";
+  tooltip?: string;
   grows?: boolean;
   loading?: boolean;
   icon?: ButtonIconSlotProps["icon"];

@@ -1,10 +1,14 @@
 import { LoadingSpinner } from "@uiid/icons";
-import { Stack } from "@uiid/layout";
+import { Stack, ConditionalRender } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
-import { ButtonIconSlot } from "./subcomponents";
+import {
+  ButtonIconSlot,
+  ButtonTooltipWrapper,
+  ButtonContentSlot,
+} from "./subcomponents";
 
 export const Button = ({
   variant,
@@ -15,6 +19,7 @@ export const Button = ({
   loading,
   icon,
   iconPosition,
+  tooltip = "lorem ipsum dolor sit amet",
   render,
   className,
   children,
@@ -93,34 +98,20 @@ export const Button = ({
     props: componentProps,
     render,
     children: (
-      <>
-        <Stack
-          className={styles["button-content-container"]}
-          data-shift={loading ? "true" : undefined}
-        >
-          <Stack
-            className={styles["button-content-slot"]}
-            data-active={!loading ? "true" : undefined}
-            ay="center"
-            ax="center"
-            fullwidth
-          >
-            {onlyIcon ? icon : children}
-          </Stack>
-          <Stack
-            className={styles["button-content-slot"]}
-            data-active={loading ? "true" : undefined}
-            ay="center"
-            ax="center"
-            fullwidth
-          >
-            <LoadingSpinner />
-          </Stack>
-        </Stack>
+      <ConditionalRender
+        condition={Boolean(tooltip)}
+        render={<ButtonTooltipWrapper loading={loading} tooltip={tooltip} />}
+      >
+        <ButtonContentSlot active={!loading}>
+          {onlyIcon ? icon : children}
+        </ButtonContentSlot>
+        <ButtonContentSlot active={loading}>
+          <LoadingSpinner />
+        </ButtonContentSlot>
         {icon && !onlyIcon && (
           <ButtonIconSlot icon={icon} position={iconPosition} />
         )}
-      </>
+      </ConditionalRender>
     ),
   });
 };

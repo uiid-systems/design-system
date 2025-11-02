@@ -21,7 +21,7 @@ type CardAsLinkProps = Pick<
 >;
 
 export type CardProps = StackProps & {
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   variant?: "info" | "warning" | "error" | "success" | "inverted";
   title?: string;
   primaryAction?: CardActionProps;

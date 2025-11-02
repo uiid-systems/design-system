@@ -7,7 +7,7 @@ import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
 import styles from "./card.module.css";
-import { CLOSE_BUTTON_GUTTER } from "./card.constants";
+import { CLOSE_BUTTON_GUTTER, GAP_LEVEL } from "./card.constants";
 
 import {
   CardIcon,
@@ -76,7 +76,7 @@ export const Card = ({
     <Stack
       uiid="card"
       ax="stretch"
-      gap={needsStack ? 4 : 0}
+      gap={needsStack ? GAP_LEVEL[size] : 0}
       data-size={size}
       data-variant={variant}
       className={cx(styles.card, className)}

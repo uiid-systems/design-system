@@ -6,6 +6,10 @@ import "@uiid/layout/globals.css";
 import "@uiid/buttons/globals.css";
 import "@uiid/cards/globals.css";
 import "@uiid/calendars/globals.css";
+import "@uiid/forms/globals.css";
+import "@uiid/indicators/globals.css";
+import "@uiid/interactive/globals.css";
+import "@uiid/overlays/globals.css";
 
 const preview: Preview = {
   // tags: ["autodocs"],

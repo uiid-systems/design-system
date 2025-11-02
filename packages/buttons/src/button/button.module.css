@@ -125,28 +125,3 @@
     pointer-events: none;
   }
 }
-
-.button-content-container {
-  height: var(--button-height);
-  overflow: hidden;
-
-  &[data-shift="true"] > * {
-    transform: translate3d(0, calc(var(--adjusted-button-height) * -1), 0);
-  }
-}
-
-.button-content-slot {
-  min-height: var(--adjusted-button-height);
-  transition:
-    transform var(--globals-transition-timing) ease,
-    opacity calc(var(--globals-transition-timing) * 0.75) ease;
-  transform: translate3d(0, 0, 0);
-  align-content: center;
-  text-align: center;
-
-  opacity: 0;
-
-  &[data-active="true"] {
-    opacity: 1;
-  }
-}

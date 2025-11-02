@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/interactive.js",
       "require": "./dist/interactive.umd.cjs"
-    }
+    },
+    "./globals.css": "./dist/interactive.css"
   },
   "files": [
     "dist"

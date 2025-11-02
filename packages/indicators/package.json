@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/indicators.js",
       "require": "./dist/indicators.umd.cjs"
-    }
+    },
+    "./globals.css": "./dist/indicators.css"
   },
   "files": [
     "dist"

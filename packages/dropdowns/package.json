@@ -27,7 +27,8 @@
     "@uiid/buttons": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/overlays": "workspace:*",
-    "@uiid/tokens": "workspace:*"
+    "@uiid/tokens": "workspace:*",
+    "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.1.1",

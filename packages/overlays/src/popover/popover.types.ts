@@ -7,22 +7,22 @@ export type PopoverProps = React.PropsWithChildren<{
   trigger: React.ReactNode;
   /**
    * The props for the root element.
-   * @see https://base-ui-components.github.io/react/popover/#root
+   * @see https://base-ui.com/react/components/popover#root
    */
   RootProps?: Popover.Root.Props;
   /**
    * The props for the trigger element.
-   * @see https://base-ui-components.github.io/react/popover/#trigger
+   * @see https://base-ui.com/react/components/popover#trigger
    */
   TriggerProps?: Omit<Popover.Trigger.Props, "children">;
   /**
    * The props for the positioner element.
-   * @see https://base-ui-components.github.io/react/popover/#positioner
+   * @see https://base-ui.com/react/components/popover#positioner
    */
   PositionerProps?: Popover.Positioner.Props;
   /**
    * The props for the popup element.
-   * @see https://base-ui-components.github.io/react/popover/#popup
+   * @see https://base-ui.com/react/components/popover#popup
    */
   PopupProps?: Omit<Popover.Popup.Props, "children">;
 }> &

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 
-import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { ConditionalRender, Group } from "@uiid/layout";
+import { ToggleGroup, Toggle } from "@uiid/interactive";
 
 import "../calendars.styles.css";
 
@@ -26,20 +26,33 @@ export const DateCalendar = ({
   filters = DEFAULT_FILTERS,
   onSelect,
   defaultMonth,
-  selected,
+  selected: selectedProp,
   ...props
 }: DateCalendarProps) => {
   const [month, setMonth] = useState(defaultMonth);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    selectedProp,
+  );
+
+  // Support both controlled and uncontrolled usage
+  const selected = selectedProp !== undefined ? selectedProp : selectedDate;
+
+  const handleSelect = (date: Date | undefined) => {
+    if (selectedProp === undefined) {
+      setSelectedDate(date);
+    }
+    onSelect?.(date);
+  };
 
   const handleFilterClick = (filterKey: DateFilterKey) => {
     const filter = DATE_FILTERS[filterKey];
-    onSelect?.(filter.date);
+    handleSelect(filter.date);
     setMonth(filter.date);
   };
 
   return (
     <ConditionalRender condition={!headless} render={<Card />}>
-      <Group gap={4}>
+      <Group gap={4} ay="start">
         <DayPicker
           {...props}
           mode="single"
@@ -47,20 +60,22 @@ export const DateCalendar = ({
           month={month}
           onMonthChange={setMonth}
           selected={selected}
-          onSelect={onSelect}
+          onSelect={handleSelect}
         />
 
-        <Stack gap={2} ax="stretch">
-          {filters.map((filterKey: DateFilterKey) => (
-            <Button
-              key={filterKey}
-              size="sm"
-              onClick={() => handleFilterClick(filterKey)}
-            >
-              {DATE_FILTERS[filterKey].label}
-            </Button>
-          ))}
-        </Stack>
+        {filters.length > 0 && (
+          <ToggleGroup defaultValue={["yesterday"]} orientation="vertical">
+            {filters.map((filterKey: DateFilterKey) => (
+              <Toggle
+                key={filterKey}
+                onClick={() => handleFilterClick(filterKey)}
+                value={filterKey}
+              >
+                {DATE_FILTERS[filterKey].label}
+              </Toggle>
+            ))}
+          </ToggleGroup>
+        )}
       </Group>
     </ConditionalRender>
   );

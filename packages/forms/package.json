@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/forms.js",
       "require": "./dist/forms.umd.cjs"
-    }
+    },
+    "./globals.css": "./dist/forms.css"
   },
   "files": [
     "dist"

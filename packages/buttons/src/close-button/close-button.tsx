@@ -12,6 +12,7 @@ export const CloseButton = ({ className, ...props }: CloseButtonProps) => {
       {...props}
       size="sm"
       shape="pill"
+      tooltip="Close"
       icon={<X strokeWidth={2} size={24} />}
       aria-label="Close"
       className={cx(styles["close-button"], className)}

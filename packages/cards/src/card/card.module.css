@@ -34,6 +34,13 @@
     }
   }
 
+  &:where([data-size="xs"]) {
+    padding-block: calc(var(--globals-padding-y) * 0.25);
+    padding-inline: calc(var(--globals-padding-x) * 0.75);
+    font-size: 0.625rem;
+    font-weight: 600;
+  }
+
   &:where([data-size="sm"]) {
     padding-block: calc(var(--globals-padding-y) * 0.75);
     padding-inline: calc(var(--globals-padding-x) * 0.75);
