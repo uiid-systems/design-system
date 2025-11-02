@@ -9,7 +9,8 @@ const meta: Meta<typeof Carousel> = {
   argTypes: {},
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>
-      <Carousel />
+      <Carousel {...args} />
+      <Carousel {...args} orientation="vertical" />
     </Stack>
   ),
 };

@@ -3,20 +3,21 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 
-import { Group, Stack } from "@uiid/layout";
+import { Group, Stack, SwitchRender } from "@uiid/layout";
 
 import { CarouselContext } from "./carousel.context";
 import type { CarouselApi, CarouselComponentProps } from "./carousel.types";
-import styles from "./carousel.module.css";
-import { CarouselContainer } from "./subcomponents";
+import {
+  CarouselContainer,
+  CarouselContent,
+  CarouselSlide,
+} from "./subcomponents";
 
 export const Carousel = ({
   orientation = "horizontal",
   opts,
   setApi,
   plugins,
-  className,
-  children,
   ...props
 }: CarouselComponentProps) => {
   /** @see https://www.embla-carousel.com/api/methods/#reference */
@@ -85,18 +86,18 @@ export const Carousel = ({
         <button onClick={scrollPrev} disabled={!canScrollPrev}>
           Previous
         </button>
-        <Stack
-          ref={carouselRef}
-          gap={4}
-          ay="center"
-          className={styles["carousel"]}
-        >
-          <Group fullwidth>
-            <div className={styles["carousel-slide"]}>Slide 1</div>
-            <div className={styles["carousel-slide"]}>Slide 2</div>
-            <div className={styles["carousel-slide"]}>Slide 3</div>
-          </Group>
-        </Stack>
+
+        <CarouselContent ref={carouselRef}>
+          <SwitchRender
+            condition={orientation === "horizontal"}
+            render={{ true: <Group />, false: <Stack /> }}
+          >
+            <CarouselSlide>Slide 1</CarouselSlide>
+            <CarouselSlide>Slide 2</CarouselSlide>
+            <CarouselSlide>Slide 3</CarouselSlide>
+          </SwitchRender>
+        </CarouselContent>
+
         <button onClick={scrollNext} disabled={!canScrollNext}>
           Next
         </button>
