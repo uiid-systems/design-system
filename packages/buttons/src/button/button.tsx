@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@uiid/icons";
-import { ConditionalRender } from "@uiid/layout";
+import { SwitchRender } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
@@ -8,6 +8,7 @@ import {
   ButtonIconSlot,
   ButtonTooltipWrapper,
   ButtonContentSlot,
+  ButtonContentContainer,
 } from "./subcomponents";
 
 export const Button = ({
@@ -98,9 +99,12 @@ export const Button = ({
     props: componentProps,
     render,
     children: (
-      <ConditionalRender
+      <SwitchRender
         condition={Boolean(tooltip)}
-        render={<ButtonTooltipWrapper loading={loading} tooltip={tooltip} />}
+        render={{
+          true: <ButtonTooltipWrapper loading={loading} tooltip={tooltip} />,
+          false: <ButtonContentContainer loading={loading} />,
+        }}
       >
         <ButtonContentSlot active={!loading}>
           {onlyIcon ? icon : children}
@@ -111,7 +115,7 @@ export const Button = ({
         {icon && !onlyIcon && (
           <ButtonIconSlot icon={icon} position={iconPosition} />
         )}
-      </ConditionalRender>
+      </SwitchRender>
     ),
   });
 };

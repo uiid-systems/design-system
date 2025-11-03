@@ -1,0 +1,8 @@
+.button-content-container {
+  height: var(--button-height);
+  overflow: hidden;
+
+  &[data-shift="true"] > * {
+    transform: translate3d(0, calc(var(--adjusted-button-height) * -1), 0);
+  }
+}

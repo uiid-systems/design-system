@@ -1,11 +1,3 @@
-.button-content-container {
-  height: var(--button-height);
-  overflow: hidden;
-
-  &[data-shift="true"] > * {
-    transform: translate3d(0, calc(var(--adjusted-button-height) * -1), 0);
-  }
-}
 .button-tooltip {
   padding-block: calc(var(--globals-padding-y) * 0.25);
   padding-inline: calc(var(--globals-padding-x) * 0.5);
