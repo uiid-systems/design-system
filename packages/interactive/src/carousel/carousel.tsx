@@ -16,8 +16,10 @@ import {
 
 export const Carousel = ({
   orientation = "horizontal",
+  loop = true,
+  align = "start",
   slides,
-  opts,
+  options,
   setApi,
   plugins,
   previousButton,
@@ -33,7 +35,10 @@ export const Carousel = ({
   const axis = orientation === "horizontal" ? "x" : "y";
 
   /** @see https://www.embla-carousel.com/api/methods/#reference */
-  const [carouselRef, api] = useEmblaCarousel({ ...opts, axis }, plugins);
+  const [carouselRef, api] = useEmblaCarousel(
+    { ...options, axis, loop, align },
+    plugins,
+  );
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -86,9 +91,9 @@ export const Carousel = ({
       value={{
         carouselRef,
         api,
-        opts,
+        options,
         orientation:
-          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+          orientation || (options?.axis === "y" ? "vertical" : "horizontal"),
         scrollPrev,
         scrollNext,
         canScrollPrev,
@@ -96,13 +101,15 @@ export const Carousel = ({
       }}
     >
       <CarouselContainer onKeyDown={handleKeyDown} {...props}>
-        <CarouselControl
-          aria-label="Previous"
-          onClick={scrollPrev}
-          disabled={!canScrollPrev}
-        >
-          {previousButton?.render || "Previous"}
-        </CarouselControl>
+        {previousButton && (
+          <CarouselControl
+            aria-label="Previous"
+            onClick={scrollPrev}
+            disabled={!canScrollPrev}
+          >
+            {previousButton?.render || "Previous"}
+          </CarouselControl>
+        )}
 
         <CarouselContent ref={carouselRef}>
           <SwitchRender
@@ -110,20 +117,22 @@ export const Carousel = ({
             render={{ true: <Group />, false: <Stack /> }}
           >
             {slides.map((slide) => (
-              <CarouselSlide key={slide.id} id={slide.id}>
+              <CarouselSlide key={slide.id} id={slide.id} size={slide.size}>
                 {slide.render}
               </CarouselSlide>
             ))}
           </SwitchRender>
         </CarouselContent>
 
-        <CarouselControl
-          aria-label="Next"
-          onClick={scrollNext}
-          disabled={!canScrollNext}
-        >
-          {nextButton?.render || "Next"}
-        </CarouselControl>
+        {nextButton && (
+          <CarouselControl
+            aria-label="Next"
+            onClick={scrollNext}
+            disabled={!canScrollNext}
+          >
+            {nextButton?.render || "Next"}
+          </CarouselControl>
+        )}
       </CarouselContainer>
     </CarouselContext.Provider>
   );

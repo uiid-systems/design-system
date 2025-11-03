@@ -8,7 +8,7 @@
 }
 .button-tooltip {
   padding-block: calc(var(--globals-padding-y) * 0.25);
-  padding-inline: calc(var(--globals-padding-x) * 0.75);
+  padding-inline: calc(var(--globals-padding-x) * 0.5);
   font-size: 0.75rem;
   font-weight: 500;
   border: var(--globals-border-width) solid var(--globals-border-color);

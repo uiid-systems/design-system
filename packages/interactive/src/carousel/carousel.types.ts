@@ -12,17 +12,21 @@ export type CarouselPlugin = UseCarouselParameters[1];
 export type CarouselSlide = {
   id: string;
   render: React.ReactNode;
+  size?: React.CSSProperties["width"];
 };
 
 export type CarouselButtonProps = {
   render: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export type CarouselProps = {
-  opts?: CarouselOptions;
+  options?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
+  // Extract common properties from CarouselOptions to be available at top level
+  loop?: NonNullable<CarouselOptions>["loop"];
+  align?: NonNullable<CarouselOptions>["align"];
   setApi?: (api: CarouselApi) => void;
 };
 
@@ -37,7 +41,7 @@ export type CarouselContextProps = {
 
 export type CarouselComponentProps = {
   slides: CarouselSlide[];
-  previousButton: CarouselButtonProps;
-  nextButton: CarouselButtonProps;
+  previousButton?: CarouselButtonProps;
+  nextButton?: CarouselButtonProps;
 } & CarouselProps &
   GroupProps;
