@@ -18,12 +18,16 @@ export const Carousel = ({
   orientation = "horizontal",
   loop = true,
   align = "start",
+  size = "100%",
+  gap = 2,
+  slidesInView = 2,
   slides,
   options,
   setApi,
   plugins,
   previousButton,
   nextButton,
+  style,
   ...props
 }: CarouselComponentProps) => {
   if (!slides || slides.length === 0) {
@@ -100,7 +104,21 @@ export const Carousel = ({
         canScrollNext,
       }}
     >
-      <CarouselContainer onKeyDown={handleKeyDown} {...props}>
+      <CarouselContainer
+        gap={gap}
+        onKeyDown={handleKeyDown}
+        orientation={orientation}
+        data-orientation={orientation}
+        style={
+          {
+            ...style,
+            "--carousel-size": size,
+            "--carousel-slide-gap": gap,
+            "--carousel-slides-in-view": slidesInView,
+          } as React.CSSProperties
+        }
+        {...props}
+      >
         {previousButton && (
           <CarouselControl
             aria-label="Previous"
@@ -111,13 +129,13 @@ export const Carousel = ({
           </CarouselControl>
         )}
 
-        <CarouselContent ref={carouselRef}>
+        <CarouselContent ref={carouselRef} data-orientation={orientation}>
           <SwitchRender
             condition={orientation === "horizontal"}
-            render={{ true: <Group />, false: <Stack /> }}
+            render={{ true: <Group fullwidth />, false: <Stack /> }}
           >
             {slides.map((slide) => (
-              <CarouselSlide key={slide.id} id={slide.id} size={slide.size}>
+              <CarouselSlide key={slide.id} id={slide.id} size={size}>
                 {slide.render}
               </CarouselSlide>
             ))}

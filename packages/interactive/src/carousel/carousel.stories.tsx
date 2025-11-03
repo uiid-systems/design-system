@@ -1,18 +1,37 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { ChevronLeft, ChevronRight } from "@uiid/icons";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "@uiid/icons";
 import { Stack } from "@uiid/layout";
 
 import { Carousel } from "./carousel";
+import type { CarouselComponentProps } from "./carousel.types";
 
-const slides = [
-  { id: "1", render: <div>Slide 1</div>, size: "50%" },
-  {
-    id: "2",
-    render: <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>,
-    size: "50%",
-  },
-  { id: "3", render: <div>Slide 3</div>, size: "50%" },
+const Slide = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div
+      style={{
+        height: "5rem",
+        aspectRatio: 1,
+        backgroundColor: "var(--shade-foreground)",
+        color: "var(--shade-background)",
+        borderRadius: "var(--globals-border-radius)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const slides: CarouselComponentProps["slides"] = [
+  { id: "1", render: <Slide>Slide 1</Slide> },
+  { id: "2", render: <Slide>Slide 2</Slide> },
+  { id: "3", render: <Slide>Slide 3</Slide> },
+  { id: "4", render: <Slide>Slide 4</Slide> },
+  { id: "5", render: <Slide>Slide 5</Slide> },
+  { id: "6", render: <Slide>Slide 6</Slide> },
 ];
 
 const meta: Meta<typeof Carousel> = {
@@ -33,12 +52,16 @@ const meta: Meta<typeof Carousel> = {
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>
       <Carousel {...args} />
-      <Carousel {...args} loop />
+      <Carousel {...args} size="5rem" />
       <Carousel {...args} orientation="vertical" />
       <Carousel
         {...args}
         orientation="vertical"
-        options={{ loop: true, align: "start" }}
+        size="5rem"
+        align="center"
+        gap={1}
+        nextButton={{ render: <ChevronDown size={24} /> }}
+        previousButton={{ render: <ChevronUp size={24} /> }}
       />
     </Stack>
   ),

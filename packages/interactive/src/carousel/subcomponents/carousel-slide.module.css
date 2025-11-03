@@ -1,6 +1,13 @@
 .carousel-slide {
-  /* fullwidth */
-  flex: 0 0 var(--carousel-slide-size); /* Adapt slide size to its content */
+  --gap: calc(var(--carousel-slide-gap) * var(--spacing-scale));
+
+  flex: 0 0 var(--carousel-slide-size);
   min-width: 0;
-  max-width: 100%; /* Prevent from growing larger than viewport */
+  max-width: 100%;
+  margin-inline: var(--gap);
+
+  [data-orientation="vertical"] & {
+    margin-block: var(--gap);
+    margin-inline: auto;
+  }
 }

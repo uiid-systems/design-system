@@ -3,7 +3,6 @@
 import { enUS } from "date-fns/locale";
 import { useMemo } from "react";
 
-import { Button } from "@uiid/buttons";
 import { ChevronLeft, ChevronRight } from "@uiid/icons";
 import { Carousel } from "@uiid/interactive";
 
@@ -20,36 +19,24 @@ export const MonthCarousel = ({
     return getMonthNames({ locale, width: monthFormat });
   }, [monthFormat]);
 
+  const slides = MONTH_NAMES.map((month) => ({
+    id: month,
+    render: <MonthCarouselSlide month={month} />,
+  }));
+
   return (
     <Carousel
-      slides={MONTH_NAMES.map((month) => ({
-        id: month,
-        render: <MonthCarouselSlide month={month} />,
-      }))}
+      ay="center"
+      gap={1}
+      slidesInView={3}
+      size="3rem"
       previousButton={{
-        render: (
-          <Button
-            aria-label="Previous month"
-            tooltip="Previous month"
-            icon={<ChevronLeft />}
-            variant="subtle"
-            size="sm"
-          />
-        ),
-        onClick: () => console.log("previous"),
+        render: <ChevronLeft size={16} strokeWidth={4} />,
       }}
       nextButton={{
-        render: (
-          <Button
-            aria-label="Next month"
-            tooltip="Next month"
-            icon={<ChevronRight />}
-            variant="subtle"
-            size="sm"
-          />
-        ),
-        onClick: () => console.log("next"),
+        render: <ChevronRight size={16} strokeWidth={4} />,
       }}
+      slides={slides}
     />
   );
 };

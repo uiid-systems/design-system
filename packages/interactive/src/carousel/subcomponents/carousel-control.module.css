@@ -1,6 +1,10 @@
 .carousel-control {
   all: unset;
 
+  [data-orientation="vertical"] & {
+    margin-inline: auto;
+  }
+
   &:disabled {
     opacity: var(--globals-disabled-opacity);
     cursor: not-allowed;

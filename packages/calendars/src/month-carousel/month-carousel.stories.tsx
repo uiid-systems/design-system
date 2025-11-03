@@ -14,10 +14,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Month Carousel",
-  render: (args) => {
+  render: () => {
     return (
       <Stack gap={4}>
-        <MonthCarousel {...args} />
+        <MonthCarousel />
       </Stack>
     );
   },
