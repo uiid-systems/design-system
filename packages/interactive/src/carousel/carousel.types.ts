@@ -9,6 +9,16 @@ export type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 export type CarouselOptions = UseCarouselParameters[0];
 export type CarouselPlugin = UseCarouselParameters[1];
 
+export type CarouselSlide = {
+  id: string;
+  render: React.ReactNode;
+};
+
+export type CarouselButtonProps = {
+  render: React.ReactNode;
+  onClick: () => void;
+};
+
 export type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
@@ -25,4 +35,9 @@ export type CarouselContextProps = {
   canScrollNext: boolean;
 } & CarouselProps;
 
-export type CarouselComponentProps = CarouselProps & GroupProps;
+export type CarouselComponentProps = {
+  slides: CarouselSlide[];
+  previousButton: CarouselButtonProps;
+  nextButton: CarouselButtonProps;
+} & CarouselProps &
+  GroupProps;

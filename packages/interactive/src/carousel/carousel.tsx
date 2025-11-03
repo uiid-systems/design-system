@@ -10,18 +10,29 @@ import type { CarouselApi, CarouselComponentProps } from "./carousel.types";
 import {
   CarouselContainer,
   CarouselContent,
+  CarouselControl,
   CarouselSlide,
 } from "./subcomponents";
 
 export const Carousel = ({
   orientation = "horizontal",
+  slides,
   opts,
   setApi,
   plugins,
+  previousButton,
+  nextButton,
   ...props
 }: CarouselComponentProps) => {
-  /** @see https://www.embla-carousel.com/api/methods/#reference */
+  if (!slides || slides.length === 0) {
+    throw new Error(
+      "Carousel requires at least one slide using the `slides` prop",
+    );
+  }
+
   const axis = orientation === "horizontal" ? "x" : "y";
+
+  /** @see https://www.embla-carousel.com/api/methods/#reference */
   const [carouselRef, api] = useEmblaCarousel({ ...opts, axis }, plugins);
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -35,11 +46,13 @@ export const Carousel = ({
 
   const scrollPrev = useCallback(() => {
     api?.scrollPrev();
+    previousButton?.onClick?.();
   }, [api]);
 
   const scrollNext = useCallback(() => {
     api?.scrollNext();
-  }, [api]);
+    nextButton?.onClick?.();
+  }, [api, nextButton]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -72,7 +85,7 @@ export const Carousel = ({
     <CarouselContext.Provider
       value={{
         carouselRef,
-        api: api,
+        api,
         opts,
         orientation:
           orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
@@ -83,24 +96,34 @@ export const Carousel = ({
       }}
     >
       <CarouselContainer onKeyDown={handleKeyDown} {...props}>
-        <button onClick={scrollPrev} disabled={!canScrollPrev}>
-          Previous
-        </button>
+        <CarouselControl
+          aria-label="Previous"
+          onClick={scrollPrev}
+          disabled={!canScrollPrev}
+        >
+          {previousButton?.render || "Previous"}
+        </CarouselControl>
 
         <CarouselContent ref={carouselRef}>
           <SwitchRender
             condition={orientation === "horizontal"}
             render={{ true: <Group />, false: <Stack /> }}
           >
-            <CarouselSlide>Slide 1</CarouselSlide>
-            <CarouselSlide>Slide 2</CarouselSlide>
-            <CarouselSlide>Slide 3</CarouselSlide>
+            {slides.map((slide) => (
+              <CarouselSlide key={slide.id} id={slide.id}>
+                {slide.render}
+              </CarouselSlide>
+            ))}
           </SwitchRender>
         </CarouselContent>
 
-        <button onClick={scrollNext} disabled={!canScrollNext}>
-          Next
-        </button>
+        <CarouselControl
+          aria-label="Next"
+          onClick={scrollNext}
+          disabled={!canScrollNext}
+        >
+          {nextButton?.render || "Next"}
+        </CarouselControl>
       </CarouselContainer>
     </CarouselContext.Provider>
   );

@@ -1,0 +1,8 @@
+.carousel-control {
+  all: unset;
+
+  &:disabled {
+    opacity: var(--globals-disabled-opacity);
+    cursor: not-allowed;
+  }
+}
