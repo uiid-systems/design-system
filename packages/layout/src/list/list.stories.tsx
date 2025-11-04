@@ -1,56 +1,51 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Info, TriangleAlert, Ban } from "@uiid/icons";
-import { Group, Stack } from "../";
+import { Star, Hammer, Bug, File, Ghost, Smartphone } from "@uiid/icons";
 
+import { Group, Stack } from "../";
 import { List } from "./list";
-import { ListItem } from "./subcomponents";
 
 const MOCK_ITEMS = [
-  { value: "1", label: "Item 1" },
-  { value: "2", label: "Item 2" },
-  { value: "3", label: "Item 3" },
+  { value: "1", label: "Item 1", description: "Description 1" },
+  { value: "2", label: "Item 2", description: "Description 2" },
+  { value: "3", label: "Item 3", description: "Description 3" },
 ];
 
 const MOCK_LINKS = [
-  { value: "feature", label: "feature" },
-  { value: "fix", label: "fix" },
-  { value: "bug", label: "bug" },
-  { value: "docs", label: "docs" },
-  { value: "internal", label: "internal", selected: true, icon: Info },
-  { value: "mobile", label: "mobile", selected: true, icon: TriangleAlert },
   {
-    value: "component: accordion",
-    label: "component: accordion",
-    selected: true,
-    icon: Ban,
-  },
-  { value: "component: alert dialog", label: "component: alert dialog" },
-  { value: "component: autocomplete", label: "component: autocomplete" },
-  { value: "component: avatar", label: "component: avatar", selected: true },
-  { value: "component: checkbox", label: "component: checkbox" },
-  { value: "component: checkbox group", label: "component: checkbox group" },
-  { value: "component: collapsible", label: "component: collapsible" },
-  {
-    value: "component: combobox",
-    label: "component: combobox",
-    disabled: true,
+    category: "Features",
+    collapsible: true,
+    items: [
+      { value: "feature", label: "feature", icon: Star },
+      { value: "fix", label: "fix", icon: Hammer },
+      { value: "bug", label: "bug", icon: Bug },
+      { value: "docs", label: "docs", icon: File },
+      { value: "internal", label: "internal", icon: Ghost },
+      { value: "mobile", label: "mobile", icon: Smartphone },
+    ],
   },
   {
-    value: "component: context menu",
-    label: "component: context menu",
-    disabled: true,
+    category: "Selected items",
+    collapsible: true,
+    items: [
+      { value: "accordion", label: "accordion", selected: true },
+      { value: "alert dialog", label: "alert dialog", selected: true },
+      { value: "autocomplete", label: "autocomplete", selected: true },
+      { value: "avatar", label: "avatar", selected: true },
+      { value: "checkbox", label: "checkbox", selected: true },
+      { value: "checkbox group", label: "checkbox group", selected: true },
+      { value: "collapsible", label: "collapsible", selected: true },
+    ],
   },
-  { value: "component: dialog", label: "component: dialog", disabled: true },
-  { value: "component: field", label: "component: field", disabled: true },
   {
-    value: "component: fieldset",
-    label: "component: fieldset",
-    disabled: true,
-  },
-  {
-    value: "component: filterable menu",
-    label: "component: filterable menu",
-    disabled: true,
+    category: "Disabled items",
+    items: [
+      { value: "combobox", label: "combobox", disabled: true },
+      { value: "context menu", label: "context menu", disabled: true },
+      { value: "dialog", label: "dialog", disabled: true },
+      { value: "field", label: "field", disabled: true },
+      { value: "fieldset", label: "fieldset", disabled: true },
+      { value: "filterable menu", label: "filterable menu", disabled: true },
+    ],
   },
 ];
 
@@ -58,29 +53,24 @@ const meta = {
   title: "Layout/List",
   component: List,
   args: {
-    children: MOCK_ITEMS.map((item) => (
-      <ListItem key={item.value} {...item}>
-        {item.label}
-      </ListItem>
-    )),
+    items: MOCK_ITEMS,
   },
   render: (args) => (
-    <Stack gap={2}>
+    <Stack gap={16} ax="stretch">
       <Group gap={2}>
         <List {...args} type="ordered" />
         <List {...args} type="unordered" />
         <List {...args} />
-        <List direction="row" />
       </Group>
 
+      <Stack gap={2} ax="end">
+        <List items={args.items} direction="row" type="ordered" />
+        <List items={args.items} direction="row" type="unordered" />
+        <List items={args.items} direction="row" />
+      </Stack>
+
       <Stack ax="stretch">
-        <List>
-          {MOCK_LINKS.map((item) => (
-            <ListItem key={item.value} {...item}>
-              {item.label}
-            </ListItem>
-          ))}
-        </List>
+        <List items={MOCK_LINKS} fullwidth />
       </Stack>
     </Stack>
   ),

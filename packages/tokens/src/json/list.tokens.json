@@ -3,8 +3,13 @@
   "$description": "UIID Design System - List Component Tokens",
   "list": {
     "padding": {
-      "x": { "$value": "0.5rem", "$type": "dimension" },
-      "y": { "$value": "0.5rem", "$type": "dimension" }
+      "x": { "$value": "0.75rem", "$type": "dimension" },
+      "y": { "$value": "0.75rem", "$type": "dimension" }
+    },
+    "group": {
+      "category": {
+        "minHeight": { "$value": "1.5rem", "$type": "dimension" }
+      }
     }
   }
 }

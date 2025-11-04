@@ -1,0 +1,28 @@
+@import "@uiid/tokens/list.tokens.css";
+
+.list-item-group {
+  padding: var(--list-padding-y) var(--list-padding-x);
+}
+
+.list-item-group-collapsible-trigger {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:focus {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    border-radius: var(--globals-border-radius);
+  }
+}
+
+.list-item-group-category {
+  min-height: var(--list-group-category-minHeight);
+  align-content: center;
+}
+
+.list-item-panel {
+  padding-block-start: calc(var(--list-padding-y) / 2);
+  list-style: none;
+}

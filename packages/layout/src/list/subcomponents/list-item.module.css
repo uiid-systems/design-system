@@ -1,36 +1,15 @@
 @import "@uiid/tokens/list.tokens.css";
 
 .list-item {
-  --overlay-color: color-mix(in oklab, var(--shade-foreground), transparent 95%);
+  --overlay-color: color-mix(in oklab, var(--shade-foreground), transparent 90%);
 
   padding: var(--list-padding-x) var(--list-padding-y);
   border-radius: var(--globals-border-radius);
-
-  :is(ol) &::marker {
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
 
   &:hover,
   &[data-highlighted] {
     background-color: var(--overlay-color);
   }
-
-  /* &[data-highlighted] {
-    z-index: 0;
-    position: relative;
-    color: var(--shade-halftone);
-  }
-
-  &[data-highlighted]::before {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    inset-block: 0;
-    inset-inline: 0.5rem;
-    border-radius: 0.25rem;
-    background-color: var(--overlay-color);
-  } */
 
   &:where([data-disabled="true"]) {
     opacity: 0.5;
@@ -48,6 +27,10 @@
     border: var(--globals-border-width) solid var(--globals-border-color);
     color: var(--shade-foreground);
     font-weight: 700;
+
+    &:hover {
+      background-color: var(--shade-background);
+    }
 
     /* Selected item with another selected item before it */
     & + :where([data-selected="true"]) {

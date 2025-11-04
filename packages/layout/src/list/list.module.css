@@ -5,4 +5,8 @@
     list-style: none;
     margin-inline-start: 0;
   }
+
+  &:is([data-direction="row"]) li {
+    width: auto;
+  }
 }

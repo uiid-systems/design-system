@@ -1,26 +1,27 @@
-import { Text } from "@uiid/typography";
-import { Check, Ban } from "@uiid/icons";
-
 import { Group } from "../../group/group";
 
 import type { ListItemProps } from "../list.types";
+import { ICON_SIZE } from "../list.constants";
+
 import styles from "./list-item.module.css";
 
-const ICON_SIZE = 12;
+import { ListTextBlock } from "./list-text-block";
+import { ListSelectedIcon } from "./list-selected-icon";
+import { ListDisabledIcon } from "./list-disabled-icon";
 
 export const ListItem = ({
   disabled,
   selected,
   render,
   icon: Icon,
-  children,
+  label,
+  description,
   ...props
 }: ListItemProps) => {
   return (
     <Group
       render={render ?? <li />}
-      ay="center"
-      fullwidth
+      ay="start"
       gap={2}
       className={styles["list-item"]}
       data-disabled={disabled}
@@ -28,23 +29,9 @@ export const ListItem = ({
       {...props}
     >
       {Icon && <Icon size={ICON_SIZE} />}
-      <Text level={0}>{children}</Text>
-      {selected && (
-        <Check
-          size={ICON_SIZE}
-          strokeWidth={4}
-          stroke="var(--colors-success-bg)"
-          style={{ marginInlineStart: "auto" }}
-        />
-      )}
-      {disabled && (
-        <Ban
-          size={ICON_SIZE}
-          strokeWidth={4}
-          stroke="var(--colors-error-bg)"
-          style={{ marginInlineStart: "auto" }}
-        />
-      )}
+      <ListTextBlock label={label} description={description} />
+      {selected && <ListSelectedIcon />}
+      {disabled && <ListDisabledIcon />}
     </Group>
   );
 };

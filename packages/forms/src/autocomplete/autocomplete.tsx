@@ -91,12 +91,9 @@ export const Autocomplete = ({
             <BaseAutocomplete.List render={<List fullwidth />}>
               {(tag: AutocompleteDefaultItem) => (
                 <BaseAutocomplete.Item
-                  render={<ListItem />}
+                  render={<ListItem value={tag.value} label={tag.label} />}
                   key={tag.value}
-                  value={tag.value}
-                >
-                  {tag.label}
-                </BaseAutocomplete.Item>
+                />
               )}
             </BaseAutocomplete.List>
           </BaseAutocomplete.Popup>

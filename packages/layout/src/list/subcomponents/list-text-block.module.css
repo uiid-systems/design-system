@@ -1,0 +1,12 @@
+.list-text-label {
+  display: list-item;
+
+  :is(ol) &::marker {
+    font-size: 0.625rem;
+    font-weight: 700;
+  }
+}
+
+.list-text-description {
+  color: var(--shade-accent);
+}
