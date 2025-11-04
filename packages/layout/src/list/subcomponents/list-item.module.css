@@ -1,14 +1,12 @@
 @import "@uiid/tokens/list.tokens.css";
 
 .list-item {
-  --overlay-color: color-mix(in oklab, var(--shade-foreground), transparent 90%);
-
-  padding: var(--list-padding-x) var(--list-padding-y);
+  padding: var(--list-item-padding-y) var(--list-item-padding-x);
   border-radius: var(--globals-border-radius);
 
   &:hover,
   &[data-highlighted] {
-    background-color: var(--overlay-color);
+    background-color: var(--shade-surface);
   }
 
   &:where([data-disabled="true"]) {
@@ -23,7 +21,7 @@
 
   /* Selected item */
   &:where([data-selected="true"]) {
-    background-color: var(--overlay-color);
+    background-color: var(--shade-surface);
     border: var(--globals-border-width) solid var(--globals-border-color);
     color: var(--shade-foreground);
     font-weight: 700;

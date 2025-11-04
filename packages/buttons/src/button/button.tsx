@@ -99,23 +99,25 @@ export const Button = ({
     props: componentProps,
     render,
     children: (
-      <SwitchRender
-        condition={Boolean(tooltip)}
-        render={{
-          true: <ButtonTooltipWrapper loading={loading} tooltip={tooltip} />,
-          false: <ButtonContentContainer loading={loading} />,
-        }}
-      >
-        <ButtonContentSlot active={!loading}>
-          {onlyIcon ? icon : children}
-        </ButtonContentSlot>
-        <ButtonContentSlot active={loading}>
-          <LoadingSpinner />
-        </ButtonContentSlot>
+      <>
+        <SwitchRender
+          condition={Boolean(tooltip)}
+          render={{
+            true: <ButtonTooltipWrapper shift={loading} tooltip={tooltip} />,
+            false: <ButtonContentContainer shift={loading} />,
+          }}
+        >
+          <ButtonContentSlot active={!loading}>
+            {onlyIcon ? icon : children}
+          </ButtonContentSlot>
+          <ButtonContentSlot active={loading}>
+            <LoadingSpinner />
+          </ButtonContentSlot>
+        </SwitchRender>
         {icon && !onlyIcon && (
           <ButtonIconSlot icon={icon} position={iconPosition} />
         )}
-      </SwitchRender>
+      </>
     ),
   });
 };

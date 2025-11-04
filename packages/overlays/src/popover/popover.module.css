@@ -16,4 +16,8 @@
   &[data-instant] {
     transition-duration: 0ms;
   }
+
+  &:focus {
+    outline-color: transparent;
+  }
 }

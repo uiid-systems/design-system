@@ -1,29 +1,21 @@
 import { Tooltip } from "@base-ui-components/react/tooltip";
 
-import { Stack } from "@uiid/layout";
-
 import styles from "./button-tooltip-wrapper.module.css";
+import { ButtonContentContainer } from "./button-content-container";
 
 export const ButtonTooltipWrapper = ({
   children,
-  loading,
+  shift,
   tooltip,
 }: {
   children?: React.ReactNode;
-  loading?: boolean;
+  shift?: boolean;
   tooltip: string;
 }) => {
   return (
     <Tooltip.Provider delay={1000}>
       <Tooltip.Root>
-        <Tooltip.Trigger
-          render={
-            <Stack
-              className={styles["button-content-container"]}
-              data-shift={loading ? "true" : undefined}
-            />
-          }
-        >
+        <Tooltip.Trigger render={<ButtonContentContainer shift={shift} />}>
           {children}
         </Tooltip.Trigger>
         <Tooltip.Portal>

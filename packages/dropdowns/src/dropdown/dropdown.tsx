@@ -7,6 +7,7 @@ export const Dropdown = ({
   placeholder,
   size = "md",
   TriggerProps,
+  PopupProps,
   children,
   ...props
 }: DropdownProps) => {
@@ -17,12 +18,19 @@ export const Dropdown = ({
   return (
     <Popover
       {...props}
-      PopupProps={{ style: { maxWidth: "fit-content" } }}
       trigger={
         <Button variant="subtle" grows={false} size={size} {...TriggerProps}>
           {placeholder}
         </Button>
       }
+      PopupProps={{
+        style: {
+          ...PopupProps?.style,
+          padding: 4,
+          maxHeight: "28rem",
+          overflowY: "auto",
+        },
+      }}
     >
       {children}
     </Popover>

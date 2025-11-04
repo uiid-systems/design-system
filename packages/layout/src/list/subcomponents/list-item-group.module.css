@@ -11,7 +11,8 @@
   justify-content: space-between;
 
   &:focus {
-    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    text-decoration: underline;
+    /* outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color); */
     outline-offset: var(--globals-outline-offset);
     border-radius: var(--globals-border-radius);
   }
@@ -20,6 +21,7 @@
 .list-item-group-category {
   min-height: var(--list-group-category-minHeight);
   align-content: center;
+  padding-inline: 0.25rem;
 }
 
 .list-item-panel {

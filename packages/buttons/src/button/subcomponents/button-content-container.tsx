@@ -3,17 +3,17 @@ import { Stack } from "@uiid/layout";
 import styles from "./button-content-container.module.css";
 
 type ButtonContentContainerProps = React.PropsWithChildren<{
-  loading?: boolean;
+  shift?: boolean;
 }>;
 
 export const ButtonContentContainer = ({
-  loading,
+  shift,
   children,
 }: ButtonContentContainerProps) => {
   return (
     <Stack
       className={styles["button-content-container"]}
-      data-shift={loading ? "true" : undefined}
+      data-shift={shift ? "true" : undefined}
     >
       {children}
     </Stack>

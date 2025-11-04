@@ -16,10 +16,11 @@
 
     /* Percentages for light/dark variants */
     --percentage-accent-light: 35%;
-    --percentage-accent-dark: 20%;
     --percentage-muted-light: 85%;
-    --percentage-muted-dark: 65%;
     --percentage-surface-light: 98%;
+
+    --percentage-accent-dark: 30%;
+    --percentage-muted-dark: 65%;
     --percentage-surface-dark: 80%;
 
     /* Active percentages default to light */

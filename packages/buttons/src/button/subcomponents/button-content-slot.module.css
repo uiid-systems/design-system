@@ -4,7 +4,6 @@
     transform var(--globals-transition-timing) ease,
     opacity calc(var(--globals-transition-timing) * 0.75) ease;
   transform: translate3d(0, 0, 0);
-  align-content: center;
   text-align: center;
 
   opacity: 0;

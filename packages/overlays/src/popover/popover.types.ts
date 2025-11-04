@@ -24,7 +24,9 @@ export type PopoverProps = React.PropsWithChildren<{
    * The props for the popup element.
    * @see https://base-ui.com/react/components/popover#popup
    */
-  PopupProps?: Omit<Popover.Popup.Props, "children">;
+  PopupProps?: Omit<Popover.Popup.Props, "children" | "size"> & {
+    size?: CardProps["size"];
+  };
 }> &
   Pick<
     CardProps,

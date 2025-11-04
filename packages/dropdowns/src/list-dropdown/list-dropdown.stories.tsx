@@ -1,14 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Star, Hammer, Bug, File, Ghost, Smartphone } from "@uiid/icons";
 
-import { Group, Stack } from "../";
-import { List } from "./list";
+import { Stack } from "@uiid/layout";
 
-const MOCK_ITEMS = [
-  { value: "1", label: "Item 1", description: "Description 1" },
-  { value: "2", label: "Item 2", description: "Description 2" },
-  { value: "3", label: "Item 3", description: "Description 3" },
-];
+import { ListDropdown } from "./list-dropdown";
 
 const MOCK_LINKS = [
   {
@@ -50,32 +45,24 @@ const MOCK_LINKS = [
 ];
 
 const meta = {
-  title: "Layout/List",
-  component: List,
+  title: "Dropdowns/List Dropdown",
+  component: ListDropdown,
   args: {
-    items: MOCK_ITEMS,
+    items: MOCK_LINKS,
+    placeholder: "Select an item",
   },
-  render: (args) => (
-    <Group gap={16}>
-      <List items={MOCK_LINKS} />
-      <Stack gap={16}>
-        <Group gap={2}>
-          <List {...args} type="ordered" />
-          <List {...args} type="unordered" />
-          <List {...args} />
-        </Group>
-
-        <Stack gap={2} ax="end">
-          <List items={args.items} direction="row" type="ordered" />
-          <List items={args.items} direction="row" type="unordered" />
-          <List items={args.items} direction="row" />
-        </Stack>
-      </Stack>
-    </Group>
-  ),
-} satisfies Meta<typeof List>;
+} satisfies Meta<typeof ListDropdown>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "List" };
+export const Default: Story = {
+  name: "List Dropdown",
+  render: (args) => {
+    return (
+      <Stack gap={4}>
+        <ListDropdown {...args} />
+      </Stack>
+    );
+  },
+};

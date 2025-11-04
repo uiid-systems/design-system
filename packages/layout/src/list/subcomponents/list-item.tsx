@@ -22,14 +22,17 @@ export const ListItem = ({
     <Group
       render={render ?? <li />}
       ay="start"
-      gap={2}
+      ax="space-between"
+      gap={8}
       className={styles["list-item"]}
       data-disabled={disabled}
       data-selected={selected}
       {...props}
     >
-      {Icon && <Icon size={ICON_SIZE} />}
-      <ListTextBlock label={label} description={description} />
+      <Group gap={2}>
+        {Icon && <Icon size={ICON_SIZE} />}
+        <ListTextBlock label={label} description={description} />
+      </Group>
       {selected && <ListSelectedIcon />}
       {disabled && <ListDisabledIcon />}
     </Group>

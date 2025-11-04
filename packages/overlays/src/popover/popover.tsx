@@ -45,6 +45,7 @@ export const Popover = ({
               <Card
                 uiid="popover"
                 title={title}
+                size={PopupProps?.size}
                 onDismiss={onDismiss}
                 renderDismissButton={<BasePopover.Close />}
                 primaryAction={primaryAction}
