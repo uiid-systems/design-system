@@ -2,14 +2,13 @@
   "name": "@uiid/utils",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/utils.umd.cjs",
-  "module": "dist/utils.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/utils.js",
-      "require": "./dist/utils.umd.cjs"
+      "import": "./dist/index.js"
     },
     "./bold.css": "./dist/bold.css",
     "./evenly.css": "./dist/evenly.css",

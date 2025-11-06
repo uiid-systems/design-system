@@ -2,14 +2,13 @@
   "name": "@uiid/typography",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/typography.umd.cjs",
-  "module": "dist/typography.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/typography.js",
-      "require": "./dist/typography.umd.cjs"
+      "import": "./dist/index.js"
     },
     "./globals.css": "./dist/typography.css"
   },

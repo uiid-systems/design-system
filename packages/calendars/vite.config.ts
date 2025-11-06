@@ -15,36 +15,23 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "UiidCalendars",
-      fileName: "calendars",
-      formats: ["es", "umd"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: [
         "react",
         "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
         /^@uiid\//,
         "date-fns",
         "react-day-picker",
       ],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "@uiid/buttons": "UIIDButtons",
-          "@uiid/cards": "UIIDCards",
-          "@uiid/icons": "UIIDIcons",
-          "@uiid/layout": "UIIDLayout",
-          "@uiid/tokens": "UIIDTokens",
-          "@uiid/typography": "UIIDTypography",
-          "@uiid/utils": "UIIDUtils",
-          "date-fns": "dateFns",
-          "react-day-picker": "ReactDayPicker",
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "calendars.css";
-          return assetInfo.name || "";
-        },
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
       },
     },
     cssCodeSplit: false,

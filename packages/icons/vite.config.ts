@@ -6,30 +6,25 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      // Entry point for your library
       entry: "src/index.ts",
-      // Name of the library (used for UMD builds)
-      name: "UiidIcons",
-      // Output file name pattern
-      fileName: "uiid-icons",
+      formats: ["es"],
     },
     rollupOptions: {
-      // Make sure to externalize deps that shouldn't be bundled
-      // into your library (React and ReactDOM in this case)
-      external: ["react", "react-dom", "lucide-react"],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        /^@uiid\//,
+        "lucide-react",
+      ],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "lucide-react": "LucideReact",
-        },
-        // Preserve existing files in dist
-        preserveModules: false,
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
       },
     },
-    // Don't clean the dist directory to preserve TypeScript declaration files
     emptyOutDir: false,
   },
 });

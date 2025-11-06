@@ -2,14 +2,13 @@
   "name": "@uiid/dropdowns",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/dropdowns.umd.cjs",
-  "module": "dist/dropdowns.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/dropdowns.js",
-      "require": "./dist/dropdowns.umd.cjs"
+      "import": "./dist/index.js"
     }
   },
   "files": [

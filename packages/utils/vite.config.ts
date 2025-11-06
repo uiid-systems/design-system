@@ -47,17 +47,21 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "TorettoUtils",
-      fileName: "utils",
-      formats: ["es", "umd"],
+      formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        "cva",
+        "tailwind-merge",
+      ],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
       },
     },
     cssCodeSplit: false,

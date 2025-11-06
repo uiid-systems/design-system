@@ -2,14 +2,13 @@
   "name": "@uiid/buttons",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/buttons.umd.cjs",
-  "module": "dist/buttons.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/buttons.js",
-      "require": "./dist/buttons.umd.cjs"
+      "import": "./dist/index.js"
     },
     "./globals.css": "./dist/buttons.css"
   },

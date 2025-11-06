@@ -2,14 +2,13 @@
   "name": "@uiid/indicators",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/indicators.umd.cjs",
-  "module": "dist/indicators.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/indicators.js",
-      "require": "./dist/indicators.umd.cjs"
+      "import": "./dist/index.js"
     },
     "./globals.css": "./dist/indicators.css"
   },

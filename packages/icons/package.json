@@ -2,14 +2,13 @@
   "name": "@uiid/icons",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/uiid-icons.umd.cjs",
-  "module": "dist/uiid-icons.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/uiid-icons.js",
-      "require": "./dist/uiid-icons.umd.cjs"
+      "import": "./dist/index.js"
     }
   },
   "files": [

@@ -15,25 +15,22 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "UiidLayout",
-      fileName: "layout",
-      formats: ["es", "umd"],
+      formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", /^@uiid\//],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        /^@uiid\//,
+        "@base-ui-components/react",
+      ],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "@uiid/icons": "UIIDIcons",
-          "@uiid/tokens": "UIIDTokens",
-          "@uiid/typography": "UIIDTypography",
-          "@uiid/utils": "UIIDUtils",
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "layout.css";
-          return assetInfo.name || "";
-        },
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
       },
     },
     cssCodeSplit: false,

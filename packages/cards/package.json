@@ -2,14 +2,13 @@
   "name": "@uiid/cards",
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/cards.umd.cjs",
-  "module": "dist/cards.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/cards.js",
-      "require": "./dist/cards.umd.cjs"
+      "import": "./dist/index.js"
     },
     "./globals.css": "./dist/cards.css"
   },

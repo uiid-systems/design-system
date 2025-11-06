@@ -15,35 +15,24 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
-      name: "TorettoDropdowns",
-      fileName: "dropdowns",
-      formats: ["es", "umd"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: [
         "react",
         "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
         /^@uiid\//,
         "date-fns",
         "react-day-picker",
         "lucide-react",
       ],
       output: {
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "@uiid/buttons": "UIIDButtons",
-          "@uiid/calendars": "UIIDCalendars",
-          "@uiid/icons": "UIIDIcons",
-          "@uiid/overlays": "UIIDOverlays",
-          "date-fns": "dateFns",
-          "react-day-picker": "ReactDayPicker",
-          "lucide-react": "LucideReact",
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "dropdowns.css";
-          return assetInfo.name || "";
-        },
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
       },
     },
     cssCodeSplit: false,
