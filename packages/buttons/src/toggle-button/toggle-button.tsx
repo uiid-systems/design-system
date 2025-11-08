@@ -1,3 +1,5 @@
+"use client";
+
 import { Toggle } from "@base-ui-components/react/toggle";
 
 import { Button } from "../button/button";
@@ -5,10 +7,9 @@ import { Button } from "../button/button";
 import type { ToggleButtonProps } from "./toggle-button.types";
 
 export const ToggleButton = ({
+  text,
   icon,
   iconPosition,
-  pressedIcon,
-  pressedText,
   children,
   ...props
 }: ToggleButtonProps) => {
@@ -16,35 +17,36 @@ export const ToggleButton = ({
     <Toggle
       {...props}
       render={(toggleProps, state) => {
-        const content = state.pressed ? (pressedText ?? children) : children;
-        const activeIcon = state.pressed && pressedIcon ? pressedIcon : icon;
-        const finalIconPosition =
-          iconPosition ?? (children ? "before" : undefined);
+        const content = state.pressed
+          ? (text?.pressed ?? children)
+          : (text?.unpressed ?? children);
+        const activeIcon =
+          state.pressed && icon ? icon.pressed : icon?.unpressed;
 
-        // Icon with children (positioned icon)
-        if (activeIcon && finalIconPosition) {
+        // Determine if we have any content (text or children)
+        const hasContent = Boolean(content);
+
+        // Icon with content (positioned icon)
+        if (activeIcon && hasContent) {
           return (
             <Button
               {...toggleProps}
               icon={activeIcon}
-              iconPosition={finalIconPosition}
-              aria-label="Favorite"
+              iconPosition={iconPosition ?? "before"}
             >
               {content}
             </Button>
           );
         }
 
-        // Icon only (no children)
-        if (activeIcon && !finalIconPosition) {
+        // Icon only (no content)
+        if (activeIcon && !hasContent) {
           return (
-            <Button {...toggleProps} icon={activeIcon} aria-label="Favorite">
-              {content}
-            </Button>
+            <Button {...toggleProps} icon={activeIcon} aria-label="Toggle" />
           );
         }
 
-        // No icon
+        // Content only (no icon)
         return <Button {...toggleProps}>{content}</Button>;
       }}
     />

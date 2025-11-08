@@ -1,3 +1,5 @@
+"use client";
+
 import { Tooltip } from "@base-ui-components/react/tooltip";
 
 import styles from "./button-tooltip-wrapper.module.css";

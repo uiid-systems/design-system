@@ -26,48 +26,49 @@ export const Default: Story = {
         <Group gap={2} ay="center">
           <ToggleButton
             {...args}
-            icon={<Heart />}
-            pressedIcon={<Heart fill="red" />}
+            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
           />
           <ToggleButton
             {...args}
-            icon={<Heart />}
-            pressedIcon={<Heart fill="red" />}
+            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
           >
             Favorite
           </ToggleButton>
           <ToggleButton
             {...args}
-            pressedText="Favorited"
-            iconPosition="after"
-            icon={<Heart />}
-            pressedIcon={<Heart fill="red" />}
-          >
-            Favorite
-          </ToggleButton>
+            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+            text={{ pressed: "Favorited", unpressed: "Favorite" }}
+          />
         </Group>
 
         <Group gap={2} ay="center">
           <ToggleButton
             {...args}
             variant="subtle"
-            icon={<Sun />}
-            pressedIcon={<Moon />}
+            icon={{
+              pressed: <Sun stroke="gold" />,
+              unpressed: <Moon stroke="aqua" />,
+            }}
           />
           <ToggleButton
             {...args}
             variant="subtle"
-            icon={<Sun />}
-            pressedIcon={<Moon />}
+            icon={{
+              pressed: <Sun stroke="gold" />,
+              unpressed: <Moon stroke="aqua" />,
+            }}
+            iconPosition="after"
           >
             Toggle theme
           </ToggleButton>
           <ToggleButton
             {...args}
             variant="subtle"
-            icon={<Sun />}
-            pressedIcon={<Moon />}
-            pressedText="Dark Mode"
+            text={{ pressed: "Dark Mode", unpressed: "Light Mode" }}
+            icon={{
+              pressed: <Sun stroke="gold" />,
+              unpressed: <Moon stroke="aqua" />,
+            }}
             iconPosition="after"
           >
             Light Mode

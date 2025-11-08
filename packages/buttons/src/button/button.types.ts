@@ -4,7 +4,7 @@ import type { ButtonIconSlotProps } from "./subcomponents";
 
 // Base button styling and behavior props
 type ButtonCoreProps = {
-  variant?: "primary" | "secondary" | "tertiary" | "inverted" | "subtle";
+  variant?: "inverted" | "subtle";
   size?: "sm" | "md" | "lg";
   // fill?: "solid" | "outline" | "ghost";
   fill?: "solid";

@@ -56,7 +56,7 @@ export const Carousel = ({
   const scrollPrev = useCallback(() => {
     api?.scrollPrev();
     previousButton?.onClick?.();
-  }, [api]);
+  }, [api, previousButton]);
 
   const scrollNext = useCallback(() => {
     api?.scrollNext();

@@ -12,10 +12,11 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "next": "16.0.1",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
-    "@uiid/icons": "workspace:*"
+    "@uiid/typography": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5",

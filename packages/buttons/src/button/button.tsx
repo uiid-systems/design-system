@@ -1,3 +1,5 @@
+"use client";
+
 import { LoadingSpinner } from "@uiid/icons";
 import { SwitchRender } from "@uiid/layout";
 import { cx, renderWithProps } from "@uiid/utils";
@@ -68,36 +70,27 @@ export const Button = ({
     }
   };
 
-  // Ref callback to set custom attributes that React might filter out
-  const setCustomAttributes = (element: HTMLElement | null) => {
-    if (element) {
-      if (variant) element.setAttribute("variant", variant);
-      if (size) element.setAttribute("size", size);
-      if (fill) element.setAttribute("fill", fill);
-      if (shape) element.setAttribute("shape", shape);
-    }
-  };
-
-  const componentProps = {
-    uiid: "button",
-    ...props,
-    className: cx(styles["button"], className),
-    ref: setCustomAttributes,
-    /** accessibility */
-    "aria-label": loading ? "Loading" : ariaLabel,
-    "aria-disabled": isDisabled ? "true" : undefined,
-    /** attributes */
-    "data-icon": icon && (iconPosition ? iconPosition : "standalone"),
-    "data-grows": grows ? "true" : undefined,
-    /** events */
-    onClick: handleClick,
-    onKeyDown: handleKeyDown,
-  };
-
   return renderWithProps({
-    fallbackElement: isLink ? "a" : "button",
-    props: componentProps,
     render,
+    fallbackElement: isLink ? "a" : "button",
+    props: {
+      uiid: "button",
+      ...props,
+      className: cx(styles["button"], className),
+      /** accessibility */
+      "aria-label": loading ? "Loading" : ariaLabel,
+      "aria-disabled": isDisabled ? "true" : undefined,
+      /** attributes */
+      "data-icon": icon && (iconPosition ? iconPosition : "standalone"),
+      "data-grows": grows ? "true" : undefined,
+      "data-variant": variant,
+      "data-size": size,
+      "data-fill": fill,
+      "data-shape": shape,
+      /** events */
+      onClick: handleClick,
+      onKeyDown: handleKeyDown,
+    },
     children: (
       <>
         <SwitchRender

@@ -17,7 +17,7 @@ export const MonthCarousel = ({
 }: MonthCarouselProps) => {
   const MONTH_NAMES = useMemo(() => {
     return getMonthNames({ locale, width: monthFormat });
-  }, [monthFormat]);
+  }, [locale, monthFormat]);
 
   const slides = MONTH_NAMES.map((month) => ({
     id: month,
