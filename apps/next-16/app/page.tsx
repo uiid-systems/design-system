@@ -2,6 +2,7 @@ import { Stack } from "@uiid/layout";
 
 import { Text } from "../components/typography";
 import { Buttons, ToggleButtons } from "../components/buttons";
+import { CardWithHeaderAction, BasicCard } from "../components/cards";
 
 export default function Home() {
   return (
@@ -13,6 +14,11 @@ export default function Home() {
           <Stack gap={2}>
             <Buttons />
             <ToggleButtons />
+          </Stack>
+
+          <Stack gap={2}>
+            <BasicCard />
+            <CardWithHeaderAction />
           </Stack>
         </Stack>
       </main>

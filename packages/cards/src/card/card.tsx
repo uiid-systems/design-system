@@ -1,135 +1,42 @@
-import { isValidElement } from "react";
-
-import { Button, type ButtonProps } from "@uiid/buttons";
-import { ArrowRight } from "@uiid/icons";
-import { Stack, Group, ConditionalRender, Box } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
 import styles from "./card.module.css";
-import { CLOSE_BUTTON_GUTTER, GAP_LEVEL } from "./card.constants";
+import { GAP_LEVEL } from "./card.constants";
 
-import {
-  CardIcon,
-  CardTitle,
-  CardClose,
-  CardExternalLink,
-} from "./subcomponents";
+import { CardHeader } from "./subcomponents";
 
 export const Card = ({
+  title,
+  action,
   size = "md",
   variant,
-  title,
-  primaryAction,
-  secondaryAction,
-  tertiaryAction,
-  onDismiss,
-  render,
-  renderDismissButton,
-  renderTitle,
   className,
   children,
   ...props
 }: CardProps) => {
-  const isLink =
-    "href" in props || (isValidElement(render) && "href" in render.props);
-  const hasButtonProps = Boolean(
-    primaryAction || secondaryAction || tertiaryAction || onDismiss,
-  );
-
-  const isExternalLink =
-    (isLink && "target" in props && props.target === "_blank") ||
-    (isValidElement(render) &&
-      "target" in render.props &&
-      render.props.target === "_blank");
-
-  if (isLink && hasButtonProps) {
-    throw new Error(
-      "Card: Cannot use both link props (href) and button props (primaryAction, secondaryAction, tertiaryAction, onDismiss) together",
-    );
-  }
-
-  const hasIcon = variant && variant !== "inverted";
-  const hasHeader = Boolean(hasIcon || title);
-  const hasActions = Boolean(
-    primaryAction || secondaryAction || tertiaryAction,
-  );
-  const hasContent = Boolean(children);
-
-  const sections = [hasHeader, hasContent, hasActions];
-  const actions = [tertiaryAction, secondaryAction, primaryAction];
-
-  const needsStack = sections.filter(Boolean).length > 1;
-
-  // Determine the render element for link functionality
-  let renderElement = render;
-  if (!renderElement && "href" in props) {
-    const { href, target, rel } = props as {
-      href?: string;
-      target?: string;
-      rel?: string;
-    };
-    renderElement = <a href={href} target={target} rel={rel} />;
-  }
-
+  const hasHeaderProps = Boolean(title || action);
   return (
     <Stack
       uiid="card"
       ax="stretch"
-      gap={needsStack ? GAP_LEVEL[size] : 0}
+      gap={GAP_LEVEL[size]}
       data-size={size}
       data-variant={variant}
       className={cx(styles.card, className)}
-      render={renderElement}
       {...props}
     >
-      {hasHeader && (
-        <ConditionalRender
-          condition={hasHeader}
-          render={<Group ay="center" gap={2} />}
-        >
-          {hasIcon && <CardIcon variant={variant} />}
-          {title && (
-            <CardTitle title={title} size={size} render={renderTitle} />
-          )}
-          <Box style={{ marginInlineStart: "auto" }}>
-            {!isLink && (onDismiss || renderDismissButton) && (
-              <CardClose onDismiss={onDismiss} render={renderDismissButton} />
-            )}
-            {isExternalLink && <CardExternalLink />}
-            {isLink && !isExternalLink && <ArrowRight size={16} />}
-          </Box>
-        </ConditionalRender>
+      {hasHeaderProps && (
+        <CardHeader
+          title={title}
+          action={action}
+          size={size}
+          variant={variant}
+        />
       )}
 
-      {children && (
-        <Box pr={!isLink && onDismiss ? CLOSE_BUTTON_GUTTER : 0}>
-          {children}
-        </Box>
-      )}
-
-      {!isLink && (
-        <ConditionalRender
-          condition={hasActions}
-          render={<Group ax="end" ay="center" gap={2} />}
-        >
-          {actions.map((action) => {
-            if (!action) return null;
-
-            let variant: ButtonProps["variant"] | undefined;
-            if (action === secondaryAction) variant = "subtle";
-            if (action === tertiaryAction) variant = "tertiary";
-
-            return (
-              <Button size="sm" onClick={action.onClick} variant={variant}>
-                {action.text}
-              </Button>
-            );
-          })}
-        </ConditionalRender>
-      )}
-
-      {isLink}
+      {children}
     </Stack>
   );
 };

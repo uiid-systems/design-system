@@ -3,13 +3,13 @@ import { Info, Ban, TriangleAlert, CircleCheck } from "@uiid/icons";
 import { ICON_SIZE, ICON_STROKE } from "../card.constants";
 import type { CardProps } from "../card.types";
 
-export type CardIconProps = Pick<CardProps, "variant">;
+export type CardIconProps = Pick<CardProps, "variant" | "className">;
 
-export const CardIcon = ({ variant }: CardIconProps) => {
+export const CardIcon = ({ variant, className }: CardIconProps) => {
   const iconProps = {
     size: ICON_SIZE,
     strokeWidth: ICON_STROKE,
-    fill: "rgba(0,0,0,0.1)",
+    className,
   };
 
   const Icon = () => {

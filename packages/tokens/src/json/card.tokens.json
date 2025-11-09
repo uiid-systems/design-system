@@ -16,8 +16,7 @@
       "y": { "$value": "{globals.padding.y}", "$type": "dimension" }
     },
     "icon": {
-      "size": { "$value": "1rem", "$type": "dimension" },
-      "scale": { "$value": "1.1", "$type": "number" }
+      "size": { "$value": "1rem", "$type": "dimension" }
     },
     "scale": {
       "up": { "$value": "1.02", "$type": "number" },
