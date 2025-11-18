@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "../input/input";
 import type { InputZipProps } from "./input-zip.types";
 

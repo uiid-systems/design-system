@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "../input/input";
 import type { InputDatetimeProps } from "./input-datetime.types";
 

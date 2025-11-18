@@ -82,7 +82,7 @@ export const Autocomplete = ({
           sideOffset={1}
         >
           <BaseAutocomplete.Popup
-            render={<Card size="sm" />}
+            render={<Card size="sm" title="" />}
             className={styles["autocomplete-popup"]}
           >
             {/** @todo create a custom empty state */}

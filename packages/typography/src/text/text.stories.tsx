@@ -3,6 +3,14 @@ import { Text } from "./text";
 import type { TextProps } from "./text.types";
 
 const levels: TextProps["level"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+const shades: TextProps["shade"][] = [
+  "background",
+  "surface",
+  "muted",
+  "halftone",
+  "accent",
+  "foreground",
+];
 
 const meta = {
   title: "Typography/Text",
@@ -15,9 +23,11 @@ const meta = {
           {level}: Lorem ipsum dolor
         </Text>
       ))}
-      <Text {...args} level={-1} bold>
-        Lorem ipsum dolor sit amet
-      </Text>
+      {shades.map((shade) => (
+        <Text {...args} key={shade} level={2} shade={shade} bold>
+          {shade}: Lorem ipsum dolor
+        </Text>
+      ))}
     </div>
   ),
 } satisfies Meta<typeof Text>;

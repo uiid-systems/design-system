@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "../input/input";
 
 import type { InputFileProps } from "./input-file.types";

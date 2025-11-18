@@ -1,3 +1,5 @@
+"use client";
+
 import { Group, Stack, SwitchRender } from "@uiid/layout";
 
 import { FormField } from "../formfield";

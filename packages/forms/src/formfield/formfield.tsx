@@ -44,10 +44,13 @@ const Wrapper = ({
 
 const Headline = ({ name, required, label, hint }: LabelProps & HintProps) =>
   (label || hint) && (
-    <Group fullwidth ax="space-between" ay="center" gap={8}>
+    <ConditionalRender
+      condition={Boolean(label && hint)}
+      render={<Group fullwidth ax="space-between" ay="center" gap={8} />}
+    >
       {label && <Label label={label} name={name} required={required} />}
       {hint && <Hint hint={hint} />}
-    </Group>
+    </ConditionalRender>
   );
 
 type LabelProps = Pick<FormFieldProps, "label" | "name" | "required">;

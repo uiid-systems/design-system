@@ -32,14 +32,13 @@ const meta = {
       <Stack gap={4} ax="stretch">
         <Card
           {...args}
+          title="Card with action"
           action={{
             icon: <X />,
             "aria-label": "Card action",
             onClick: () => alert("Card action clicked"),
           }}
-        >
-          Card with action
-        </Card>
+        />
       </Stack>
     </Group>
   ),

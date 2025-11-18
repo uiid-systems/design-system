@@ -64,7 +64,7 @@ export const mb = {
 export const p = {
   property: "padding",
   values: [...SPACING_VALUES],
-  scale: { variable: "--scale" },
+  scale: { variable: "--spacing-scale" },
 } satisfies StyleProp<"padding">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline */

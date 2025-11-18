@@ -4,7 +4,13 @@ import type { TextProps } from "./text.types";
 import "@uiid/utils/bold.css";
 import styles from "./text.module.css";
 
-export const Text = ({ level, render, children, ...props }: TextProps) => {
+export const Text = ({
+  level,
+  shade,
+  render,
+  children,
+  ...props
+}: TextProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "text",
     toggleProps: ["bold"],
@@ -16,6 +22,7 @@ export const Text = ({ level, render, children, ...props }: TextProps) => {
     props: {
       ...preparedProps,
       level,
+      shade,
       className: cx(styles.text, props.className),
     },
     render,

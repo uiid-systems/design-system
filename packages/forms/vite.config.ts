@@ -4,6 +4,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import postcssLayerWrapper from "../../scripts/postcss-layer-wrapper.cjs";
 
+import { preserveDirectives } from "../../scripts/vite-plugin-preserve-directives.mjs";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -12,6 +14,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
     }),
+    preserveDirectives(),
   ],
   css: {
     postcss: {
@@ -30,7 +33,7 @@ export default defineConfig({
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
         /^@uiid\//,
-        "@base-ui-components/react",
+        /^@base-ui-components\//,
       ],
       output: {
         preserveModules: true,

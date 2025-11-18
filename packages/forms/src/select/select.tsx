@@ -1,3 +1,5 @@
+"use client";
+
 import { cx } from "@uiid/utils";
 
 import { FormField, FormFieldSlots } from "../formfield";

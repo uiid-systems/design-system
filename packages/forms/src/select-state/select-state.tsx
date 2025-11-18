@@ -1,3 +1,5 @@
+"use client";
+
 import { Select } from "../select/select";
 
 import type { SelectStateProps } from "./select-state.types";

@@ -59,6 +59,9 @@ importers:
       '@uiid/cards':
         specifier: workspace:*
         version: link:../../packages/cards
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@uiid/icons':
         specifier: workspace:*
         version: link:../../packages/icons

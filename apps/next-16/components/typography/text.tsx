@@ -3,12 +3,14 @@ import { Text as TextComponent, type TextProps } from "@uiid/typography";
 
 export function Text() {
   return (
-    <Stack gap={4}>
-      {Array.from({ length: 8 }).map((_, i) => (
-        <TextComponent key={i} level={i as TextProps["level"]}>
-          TKTKTKTK
-        </TextComponent>
-      ))}
+    <Stack gap={8}>
+      {Array.from({ length: 9 })
+        .reverse()
+        .map((_, i) => (
+          <TextComponent key={i} level={i as TextProps["level"]}>
+            Text level {i}
+          </TextComponent>
+        ))}
     </Stack>
   );
 }

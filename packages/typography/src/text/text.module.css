@@ -74,4 +74,23 @@
     letter-spacing: var(--typography-text-8-leading);
     line-height: var(--typography-text-8-lineHeight);
   }
+
+  &:where([shade="background"]) {
+    color: var(--shade-background);
+  }
+  &:where([shade="surface"]) {
+    color: var(--shade-surface);
+  }
+  &:where([shade="muted"]) {
+    color: var(--shade-muted);
+  }
+  &:where([shade="halftone"]) {
+    color: var(--shade-halftone);
+  }
+  &:where([shade="accent"]) {
+    color: var(--shade-accent);
+  }
+  &:where([shade="foreground"]) {
+    color: var(--shade-foreground);
+  }
 }

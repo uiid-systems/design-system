@@ -1,3 +1,5 @@
+"use client";
+
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
 
 import { FormFieldLabel, FormFieldDescription } from "../formfield";

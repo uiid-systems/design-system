@@ -15,6 +15,7 @@
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/forms": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*"
