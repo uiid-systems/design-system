@@ -88,7 +88,7 @@ export const Autocomplete = ({
             {/** @todo create a custom empty state */}
             <BaseAutocomplete.Empty>No tags found.</BaseAutocomplete.Empty>
 
-            <BaseAutocomplete.List render={<List fullwidth />}>
+            <BaseAutocomplete.List render={<List fullwidth p={0} m={0} />}>
               {(tag: AutocompleteDefaultItem) => (
                 <BaseAutocomplete.Item
                   render={<ListItem value={tag.value} label={tag.label} />}

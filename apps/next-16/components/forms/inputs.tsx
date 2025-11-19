@@ -4,16 +4,20 @@ import { Input } from "@uiid/forms";
 export function Inputs() {
   return (
     <Stack gap={4} ax="stretch" fullwidth>
-      <Input label="Input" />
       <Input
-        label="Input with description"
+        label="Input with label, description, hint"
         description="This is a description"
+        hint="Optional"
       />
-      <Input label="Input with hint" hint="This is a hint" />
-      <Input label="Input with clear" enableClear />
       <Input
-        label="Input with error"
+        label="Input with clear"
+        description="When the input has a value, a clear button will be shown"
+        enableClear
+      />
+      <Input
+        label="Input with validation and clear"
         errorMessage="This is an error"
+        description="This is a typical input description"
         after="Min. 5 chars"
         minLength={5}
         required

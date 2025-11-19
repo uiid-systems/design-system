@@ -4,6 +4,9 @@ export * from "./carousel/carousel.types";
 export * from "./collapsible/collapsible";
 export * from "./collapsible/collapsible.types";
 
+export * from "./menu/menu";
+export * from "./menu/menu.types";
+
 export * from "./slider/slider";
 export * from "./slider/slider.types";
 

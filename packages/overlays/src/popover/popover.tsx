@@ -10,10 +10,6 @@ import type { PopoverProps } from "./popover.types";
 export const Popover = ({
   trigger,
   title,
-  onDismiss,
-  primaryAction,
-  secondaryAction,
-  tertiaryAction,
   children,
   RootProps,
   TriggerProps,
@@ -42,16 +38,7 @@ export const Popover = ({
             className={cx(styles["popover-popup"], PopupProps?.className)}
             {...PopupProps}
             render={
-              <Card
-                uiid="popover"
-                title={title}
-                size={PopupProps?.size}
-                onDismiss={onDismiss}
-                renderDismissButton={<BasePopover.Close />}
-                primaryAction={primaryAction}
-                secondaryAction={secondaryAction}
-                tertiaryAction={tertiaryAction}
-              >
+              <Card uiid="popover" title={title} size={PopupProps?.size}>
                 {children}
               </Card>
             }

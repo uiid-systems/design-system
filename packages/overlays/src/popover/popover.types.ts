@@ -28,11 +28,4 @@ export type PopoverProps = React.PropsWithChildren<{
     size?: CardProps["size"];
   };
 }> &
-  Pick<
-    CardProps,
-    | "title"
-    | "onDismiss"
-    | "primaryAction"
-    | "secondaryAction"
-    | "tertiaryAction"
-  >;
+  Pick<CardProps, "title">;
