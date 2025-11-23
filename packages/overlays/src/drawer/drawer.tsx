@@ -34,8 +34,8 @@ export const Drawer = ({
           <Card
             uiid="drawer"
             title={title}
-            renderTitle={<BaseDrawer.Title />}
-            renderDismissButton={<BaseDrawer.Close />}
+            // renderTitle={<BaseDrawer.Title />}
+            // renderDismissButton={<BaseDrawer.Close />}
             fullwidth
             fullheight
           >

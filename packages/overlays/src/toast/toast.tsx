@@ -16,8 +16,9 @@ const ToastList = () => {
       render={
         <Card
           uiid="toast"
-          title={toast.title}
-          renderDismissButton={<BaseToast.Close />}
+          title={toast.title!}
+          // renderTitle={<BaseToast.Title />}
+          // renderDismissButton={<BaseToast.Close />}
         >
           <BaseToast.Description />
         </Card>
