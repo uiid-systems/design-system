@@ -1,37 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { ToggleButton } from "@uiid/buttons";
 import { Sun, Moon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
+function getSnapshot() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function subscribe(callback: () => void) {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  mediaQuery.addEventListener("change", callback);
+  return () => mediaQuery.removeEventListener("change", callback);
+}
+
 export function ToggleButtons() {
-  // Initialize to false on both server and client for consistent hydration
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Use useSyncExternalStore to sync with system color scheme preference
+  const systemPrefersDark = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
-  useEffect(() => {
-    // Mark component as mounted
-    setMounted(true);
-  }, []);
+  // Track user's manual override
+  const [userPreference, setUserPreference] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    // After hydration, sync with user's system preference
-    if (!mounted) return;
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    // Update to match system preference after mount
-    setIsDarkMode(mediaQuery.matches);
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setIsDarkMode(event.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [mounted]);
+  // Use user preference if set, otherwise follow system preference
+  const isDarkMode = userPreference ?? systemPrefersDark;
 
   useEffect(() => {
     if (isDarkMode) {
@@ -42,7 +43,7 @@ export function ToggleButtons() {
   }, [isDarkMode]);
 
   const handleToggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    setUserPreference(!isDarkMode);
   };
 
   return (
