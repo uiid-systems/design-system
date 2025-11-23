@@ -35,44 +35,27 @@ const Wrapper = ({
   <Slots
     data-slot="formfield"
     before={
-      <Headline label={label} hint={hint} required={required} name={name} />
+      (label || hint) && (
+        <ConditionalRender
+          condition={Boolean(label && hint)}
+          render={<Group fullwidth ax="space-between" ay="center" gap={8} />}
+        >
+          {label && (
+            <FormFieldLabel htmlFor={name} data-required={required}>
+              {label}
+            </FormFieldLabel>
+          )}
+          {hint && <FormFieldHint>{hint}</FormFieldHint>}
+        </ConditionalRender>
+      )
     }
-    after={<Description description={description} hasError={hasError} />}
+    after={
+      description ? (
+        <FormFieldDescription hasError={hasError}>
+          {description}
+        </FormFieldDescription>
+      ) : undefined
+    }
     {...props}
   />
 );
-
-const Headline = ({ name, required, label, hint }: LabelProps & HintProps) =>
-  (label || hint) && (
-    <ConditionalRender
-      condition={Boolean(label && hint)}
-      render={<Group fullwidth ax="space-between" ay="center" gap={8} />}
-    >
-      {label && <Label label={label} name={name} required={required} />}
-      {hint && <Hint hint={hint} />}
-    </ConditionalRender>
-  );
-
-type LabelProps = Pick<FormFieldProps, "label" | "name" | "required">;
-const Label = ({
-  label,
-  name,
-  required,
-}: Pick<FormFieldProps, "label" | "name" | "required">) =>
-  label && (
-    <FormFieldLabel htmlFor={name} data-required={required}>
-      {label}
-    </FormFieldLabel>
-  );
-
-type HintProps = Pick<FormFieldProps, "hint">;
-const Hint = ({ hint }: HintProps) =>
-  hint && <FormFieldHint>{hint}</FormFieldHint>;
-
-type DescriptionProps = Pick<FormFieldProps, "description" | "hasError">;
-const Description = ({ description, hasError }: DescriptionProps) =>
-  description && (
-    <FormFieldDescription hasError={hasError}>
-      {description}
-    </FormFieldDescription>
-  );

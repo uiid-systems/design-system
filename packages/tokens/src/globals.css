@@ -112,6 +112,14 @@
     }
   }
 
+  a {
+    text-decoration: underline;
+    &:hover {
+      color: var(--shade-accent);
+      text-decoration: none;
+    }
+  }
+
   code {
     font-size: 80% !important;
     color: var(--shade-accent);

@@ -5,14 +5,14 @@
     "text": {
       "0": {
         "size": { "$value": "0.875rem", "$type": "dimension" },
-        "leading": { "$value": "2%", "$type": "dimension" },
+        "leading": { "$value": "0", "$type": "dimension" },
         "lineHeight": { "$value": "150%", "$type": "dimension" },
         "weight": { "$value": "400", "$type": "fontWeight" }
       },
       "1": {
         "size": { "$value": "1rem", "$type": "dimension" },
-        "leading": { "$value": "2%", "$type": "dimension" },
-        "lineHeight": { "$value": "150%", "$type": "dimension" },
+        "leading": { "$value": "-0.01rem", "$type": "dimension" },
+        "lineHeight": { "$value": "140%", "$type": "dimension" },
         "weight": { "$value": "400", "$type": "fontWeight" }
       },
       "2": {

@@ -10,6 +10,7 @@ export const ToggleButton = ({
   text,
   icon,
   iconPosition,
+  size,
   children,
   ...props
 }: ToggleButtonProps) => {
@@ -33,6 +34,7 @@ export const ToggleButton = ({
               {...toggleProps}
               icon={activeIcon}
               iconPosition={iconPosition ?? "before"}
+              size={size}
             >
               {content}
             </Button>

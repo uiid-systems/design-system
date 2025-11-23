@@ -1,8 +1,12 @@
 import type { Dialog } from "@base-ui-components/react/dialog";
 
-import type { CardProps } from "@uiid/cards";
+export type SheetSide = "top" | "right" | "bottom" | "left";
 
-export type ModalProps = React.PropsWithChildren<{
+export type SheetProps = React.PropsWithChildren<{
+  /** The title of the sheet. */
+  title?: string;
+  /** The side of the screen where the sheet will appear. */
+  side?: SheetSide;
   /** A render prop for the trigger element. */
   trigger: React.ReactNode;
   /**
@@ -22,5 +26,4 @@ export type ModalProps = React.PropsWithChildren<{
   PopupProps?: Omit<Dialog.Popup.Props, "children">;
 }> &
   Pick<Dialog.Portal.Props, "keepMounted"> &
-  Partial<Pick<Dialog.Root.Props, "open" | "onOpenChange">> &
-  Pick<CardProps, "title">;
+  Partial<Pick<Dialog.Root.Props, "open" | "onOpenChange">>;

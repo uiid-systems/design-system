@@ -11,7 +11,6 @@ const meta: Meta<typeof Modal> = {
     title: "This is a modal",
     children:
       "A modal is a temporary window that appears on top of the current page. It is used to display content that is not part of the main page, such as a login form or a popup.",
-    primaryAction: { text: "Primary", onClick: () => {} },
   },
   argTypes: {},
   render: (args) => (

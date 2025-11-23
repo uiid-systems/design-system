@@ -12,10 +12,6 @@ export const Modal = ({
   title,
   open,
   onOpenChange,
-  onDismiss,
-  primaryAction,
-  secondaryAction,
-  tertiaryAction,
   keepMounted,
   children,
   RootProps,
@@ -40,15 +36,7 @@ export const Modal = ({
           className={cx(styles["modal-popup"], PopupProps?.className)}
           {...PopupProps}
           render={
-            <Card
-              uiid="modal"
-              title={title}
-              onDismiss={onDismiss}
-              renderDismissButton={<Dialog.Close />}
-              primaryAction={primaryAction}
-              secondaryAction={secondaryAction}
-              tertiaryAction={tertiaryAction}
-            >
+            <Card uiid="modal" title={title}>
               {children}
             </Card>
           }
