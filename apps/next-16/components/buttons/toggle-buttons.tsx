@@ -7,13 +7,18 @@ import { Sun, Moon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
 export function ToggleButtons() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Lazy initialization: only runs once on mount
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    // Check if window is defined (for client-side execution)
+    // Only set up the event listener, don't call setState synchronously
     if (typeof window !== "undefined") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      setIsDarkMode(mediaQuery.matches);
 
       const handleChange = (event: MediaQueryListEvent) => {
         setIsDarkMode(event.matches);
