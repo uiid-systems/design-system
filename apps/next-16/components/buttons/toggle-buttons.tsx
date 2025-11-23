@@ -9,23 +9,29 @@ import { Group } from "@uiid/layout";
 export function ToggleButtons() {
   // Initialize to false on both server and client for consistent hydration
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Mark component as mounted
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // After hydration, sync with user's system preference
-    if (typeof window !== "undefined") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    if (!mounted) return;
 
-      // Set initial value based on system preference
-      setIsDarkMode(mediaQuery.matches);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-      const handleChange = (event: MediaQueryListEvent) => {
-        setIsDarkMode(event.matches);
-      };
+    // Update to match system preference after mount
+    setIsDarkMode(mediaQuery.matches);
 
-      mediaQuery.addEventListener("change", handleChange);
-      return () => mediaQuery.removeEventListener("change", handleChange);
-    }
-  }, []);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsDarkMode(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [mounted]);
 
   useEffect(() => {
     if (isDarkMode) {

@@ -1,6 +1,6 @@
 import { Stack } from "@uiid/layout";
 
-import { Text, Headline } from "../components/typography";
+import { Headline } from "../components/typography";
 import { Buttons, ToggleButtons } from "../components/buttons";
 import { CardWithHeaderAction, BasicCard } from "../components/cards";
 import { Inputs } from "../components/forms";
