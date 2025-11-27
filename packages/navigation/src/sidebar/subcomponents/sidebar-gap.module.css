@@ -1,0 +1,19 @@
+.sidebar-gap {
+  position: relative;
+  width: var(--sidebar-width);
+  background-color: transparent;
+  transition: width var(--globals-transition-timing) ease-linear;
+  width: var(--globals-icon-size);
+
+  [data-slot="sidebar"][data-collapsible="offcanvas"] & {
+    width: 0;
+  }
+
+  [data-slot="sidebar"][data-side="right"] & {
+    transform: rotate(180deg);
+  }
+
+  [data-slot="sidebar"]:is([data-variant="floating"], [data-variant="inset"]) & {
+    width: calc(var(--globals-icon-size) + var(--spacing-scale) * 4);
+  }
+}

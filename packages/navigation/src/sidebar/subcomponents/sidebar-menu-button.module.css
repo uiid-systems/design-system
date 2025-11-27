@@ -1,0 +1,31 @@
+.sidebar-menu-button {
+  align-items: center;
+  border-radius: var(--globals-border-radius);
+  display: flex;
+  gap: 0.5rem;
+  height: 2rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  width: 100%;
+  text-align: left;
+  transition: all var(--globals-transition-timing) ease-in-out;
+
+  &:hover {
+    background-color: var(--shade-surface);
+    color: var(--shade-accent);
+  }
+
+  &:active {
+    background-color: var(--shade-muted);
+    color: var(--shade-foreground);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: var(--globals-disabled-opacity);
+  }
+
+  [data-slot="sidebar-menu"]:has([data-slot="sidebar-menu-action"]) & {
+    padding-right: 0.5rem;
+  }
+}

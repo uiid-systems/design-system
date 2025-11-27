@@ -8,7 +8,7 @@ export type SheetProps = React.PropsWithChildren<{
   /** The side of the screen where the sheet will appear. */
   side?: SheetSide;
   /** A render prop for the trigger element. */
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   /**
    * The props for the root element.
    * @see https://base-ui-components.github.io/react/dialog/#root

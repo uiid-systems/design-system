@@ -1,0 +1,8 @@
+.sidebar-inner {
+  background-color: var(--shade-surface);
+
+  [data-slot="sidebar"][data-variant="floating"] & {
+    border-radius: var(--globals-border-radius);
+    border: var(--globals-border-width) solid var(--shade-muted);
+  }
+}

@@ -1,0 +1,40 @@
+.sidebar-menu-sub-button {
+  color: var(--shade-foreground);
+  display: flex;
+  min-width: 0;
+  translate: -1px;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding-inline: 0.5rem;
+  border-radius: var(--globals-border-radius);
+
+  &:hover {
+    background-color: var(--shade-surface);
+    color: var(--shade-accent);
+  }
+
+  &:active {
+    background-color: var(--shade-muted);
+    color: var(--shade-foreground);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: var(--globals-disabled-opacity);
+  }
+
+  & > svg {
+    size: var(--globals-icon-size);
+    flex-shrink: 0;
+  }
+
+  [data-active="true"] {
+    background-color: var(--shade-surface);
+    color: var(--shade-accent);
+  }
+
+  [data-slot="sidebar"][data-collapsible="icon"] & {
+    display: none;
+  }
+}

@@ -1,0 +1,13 @@
+.sidebar-container {
+  display: fixed;
+  inset-block: 0;
+  z-index: 10;
+  display: hidden;
+  height: 100svh;
+  width: var(--sidebar-width);
+  transition: all var(--globals-transition-timing) ease-linear;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+}

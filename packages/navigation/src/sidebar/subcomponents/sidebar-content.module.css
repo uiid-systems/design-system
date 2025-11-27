@@ -1,0 +1,9 @@
+.sidebar-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  /* group-data-[collapsible=icon]:overflow-hidden; */
+  [data-slot="sidebar"][data-collapsible="icon"] & {
+    overflow: hidden;
+  }
+}
