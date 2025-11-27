@@ -1,9 +1,9 @@
 .sidebar-gap {
   position: relative;
-  width: var(--sidebar-width);
   background-color: transparent;
   transition: width var(--globals-transition-timing) ease-linear;
-  width: var(--globals-icon-size);
+  width: var(--sidebar-width);
+  height: 100svh;
 
   [data-slot="sidebar"][data-collapsible="offcanvas"] & {
     width: 0;
@@ -14,6 +14,6 @@
   }
 
   [data-slot="sidebar"]:is([data-variant="floating"], [data-variant="inset"]) & {
-    width: calc(var(--globals-icon-size) + var(--spacing-scale) * 4);
+    width: calc(var(--sidebar-width-icon) + var(--spacing-scale) * 4);
   }
 }

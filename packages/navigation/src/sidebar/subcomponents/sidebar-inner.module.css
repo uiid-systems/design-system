@@ -1,5 +1,6 @@
 .sidebar-inner {
   background-color: var(--shade-surface);
+  overflow: hidden;
 
   [data-slot="sidebar"][data-variant="floating"] & {
     border-radius: var(--globals-border-radius);

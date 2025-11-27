@@ -28,8 +28,8 @@
     "@uiid/buttons": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/layout": "workspace:*",
-    "@uiid/tokens": "workspace:*",
     "@uiid/overlays": "workspace:*",
+    "@uiid/tokens": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {

@@ -1,6 +1,15 @@
 .sidebar-outer {
   color: var(--shade-foreground);
   display: none;
+  width: var(--sidebar-width);
+
+  &[data-state="collapsed"] {
+    width: 0;
+
+    &[data-collapsible="icon"] {
+      width: var(--sidebar-width-icon);
+    }
+  }
 
   @media (min-width: 768px) {
     display: block;

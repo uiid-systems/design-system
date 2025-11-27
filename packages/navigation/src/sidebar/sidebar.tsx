@@ -3,6 +3,7 @@
 import React from "react";
 
 import { cx } from "@uiid/utils";
+import "@uiid/tokens/sidebar.tokens.css";
 
 import {
   SIDEBAR_DEFAULT_COLLAPSIBLE,

@@ -6,12 +6,11 @@ import { cx } from "@uiid/utils";
 import {
   SIDEBAR_COOKIE_NAME,
   SIDEBAR_COOKIE_MAX_AGE,
-  SIDEBAR_WIDTH,
-  SIDEBAR_WIDTH_ICON,
   SIDEBAR_KEYBOARD_SHORTCUT,
 } from "./sidebar.constants";
 import { useIsMobile } from "./sidebar.hooks";
 import type { SidebarContextProps } from "./sidebar.types";
+import styles from "./sidebar.module.css";
 
 export const SidebarContext = React.createContext<SidebarContextProps | null>(
   null,
@@ -31,7 +30,6 @@ export function SidebarProvider({
   open: openProp,
   onOpenChange: setOpenProp,
   className,
-  style,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
@@ -104,17 +102,7 @@ export function SidebarProvider({
       <Tooltip.Provider delay={0}>
         <div
           data-slot="sidebar-wrapper"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH,
-              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-              ...style,
-            } as React.CSSProperties
-          }
-          className={cx(
-            "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
-            className,
-          )}
+          className={cx(styles["sidebar-wrapper"], className)}
           {...props}
         >
           {children}

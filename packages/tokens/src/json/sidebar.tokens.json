@@ -1,0 +1,8 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Sidebar Tokens",
+  "sidebar": {
+    "width": { "$value": "16rem", "$type": "dimension" },
+    "width-icon": { "$value": "3rem", "$type": "dimension" }
+  }
+}
