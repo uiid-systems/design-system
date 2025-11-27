@@ -63,7 +63,7 @@ function Sidebar({
   }
 
   return (
-    <SidebarOuter variant={variant} side={side}>
+    <SidebarOuter variant={variant} side={side} collapsible={collapsible}>
       {/* This is what handles the sidebar gap on desktop */}
       <SidebarGap variant={variant} />
       <SidebarContainer

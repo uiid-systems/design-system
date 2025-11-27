@@ -3,11 +3,7 @@ import { PanelLeft } from "@uiid/icons";
 
 import { useSidebar } from "../sidebar.context";
 
-export const SidebarTrigger = ({
-  className,
-  onClick,
-  ...props
-}: ButtonProps) => {
+export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
   const { toggleSidebar } = useSidebar();
 
   const handleClick = (

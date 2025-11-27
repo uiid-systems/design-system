@@ -1,6 +1,5 @@
 export const SidebarMenuItem = ({
   style,
-  className,
   ...props
 }: React.ComponentProps<"li">) => {
   return (

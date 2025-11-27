@@ -16,6 +16,7 @@
     "@uiid/indicators": "workspace:*",
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/navigation": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*"

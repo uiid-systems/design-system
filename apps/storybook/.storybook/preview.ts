@@ -9,6 +9,7 @@ import "@uiid/calendars/globals.css";
 import "@uiid/forms/globals.css";
 import "@uiid/indicators/globals.css";
 import "@uiid/interactive/globals.css";
+import "@uiid/navigation/globals.css";
 import "@uiid/overlays/globals.css";
 
 const preview: Preview = {
