@@ -1,14 +1,23 @@
 .sidebar-container {
-  position: fixed;
-  inset-block: 0;
-  z-index: 10;
-  display: hidden;
+  color: var(--shade-foreground);
+  display: none;
   height: 100svh;
+  inset-block: 0;
+  position: fixed;
+  transition: all var(--globals-transition-timing) linear;
   width: var(--sidebar-width);
-  transition: all var(--globals-transition-timing) ease-linear;
+  z-index: 10;
 
   @media (min-width: 768px) {
     display: flex;
+  }
+
+  &[data-state="collapsed"] {
+    width: 0;
+
+    &[data-collapsible="icon"] {
+      width: var(--sidebar-width-icon);
+    }
   }
 
   &[data-side="left"] {

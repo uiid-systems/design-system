@@ -2,6 +2,7 @@
   color: var(--shade-foreground);
   display: none;
   width: var(--sidebar-width);
+  transition: all var(--globals-transition-timing) linear;
 
   &[data-state="collapsed"] {
     width: 0;

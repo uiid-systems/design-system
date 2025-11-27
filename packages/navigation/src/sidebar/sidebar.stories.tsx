@@ -7,6 +7,7 @@ import {
   SidebarMenuItem,
   SidebarMenu,
   SidebarTrigger,
+  SidebarAppContainer,
 } from "./sidebar";
 import { SidebarProvider } from "./sidebar.context";
 
@@ -25,27 +26,24 @@ export const Default: Story = {
   name: "Sidebar",
   render: () => (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
-        <SidebarHeader>
-          <h1>Sidebar</h1>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>Home</SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <main
-        style={{
-          padding: 16,
-          display: "flex",
-          flexDirection: "column",
-          gap: 16,
-        }}
-      >
+      <AppSidebar />
+      <SidebarAppContainer>
         <SidebarTrigger />
         <p>Content</p>
-      </main>
+      </SidebarAppContainer>
     </SidebarProvider>
   ),
 };
+
+const AppSidebar = () => (
+  <Sidebar collapsible="icon">
+    <SidebarHeader>
+      <h1>Sidebar</h1>
+    </SidebarHeader>
+    <SidebarContent>
+      <SidebarMenu>
+        <SidebarMenuItem>Home</SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarContent>
+  </Sidebar>
+);

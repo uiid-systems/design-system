@@ -29,9 +29,9 @@ import {
   SidebarMenuSubButton,
   SidebarMobileSheet,
   SidebarOuter,
-  SidebarGap,
   SidebarInner,
   SidebarContainer,
+  SidebarAppContainer,
 } from "./subcomponents";
 
 function Sidebar({
@@ -65,8 +65,6 @@ function Sidebar({
 
   return (
     <SidebarOuter variant={variant} side={side} collapsible={collapsible}>
-      {/* This is what handles the sidebar gap on desktop */}
-      <SidebarGap variant={variant} />
       <SidebarContainer
         variant={variant}
         side={side}
@@ -154,4 +152,5 @@ export {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarTrigger,
+  SidebarAppContainer,
 };
