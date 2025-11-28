@@ -3,6 +3,10 @@
   "$description": "UIID Design System - Sidebar Tokens",
   "sidebar": {
     "width": { "$value": "16rem", "$type": "dimension" },
-    "width-icon": { "$value": "3rem", "$type": "dimension" }
+    "width-icon": { "$value": "3rem", "$type": "dimension" },
+    "transition": {
+      "timing": { "$value": "350ms", "$type": "duration" },
+      "easing": { "$value": "cubic-bezier(0.85,0,0.15,1)", "$type": "string" }
+    }
   }
 }

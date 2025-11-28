@@ -1,7 +1,7 @@
 import { Group } from "../../group/group";
 
 import type { ListItemProps } from "../list.types";
-import { ICON_SIZE } from "../list.constants";
+import { ICON_SIZE_SMALL } from "../list.constants";
 
 import styles from "./list-item.module.css";
 
@@ -30,7 +30,7 @@ export const ListItem = ({
       {...props}
     >
       <Group gap={2}>
-        {Icon && <Icon size={ICON_SIZE} />}
+        {Icon && <Icon size={ICON_SIZE_SMALL} />}
         <ListTextBlock label={label} description={description} />
       </Group>
       {selected && <ListSelectedIcon />}

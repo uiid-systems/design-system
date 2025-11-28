@@ -4,6 +4,7 @@ import { ChevronsUpDown } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 
 import { ConditionalRender } from "../../conditional-render/conditional-render";
+import { Group } from "../../group/group";
 import { Stack } from "../../stack/stack";
 import { SwitchRender } from "../../switch-render/switch-render";
 
@@ -11,10 +12,12 @@ import type { ListItemGroupProps } from "../list.types";
 
 import styles from "./list-item-group.module.css";
 import { ListItem } from "./list-item";
+import { ICON_SIZE_LARGE } from "../list.constants";
 
 export const ListItemGroup = ({
   category,
   collapsible,
+  icon: Icon,
   items,
 }: ListItemGroupProps) => {
   return (
@@ -31,10 +34,12 @@ export const ListItemGroup = ({
           condition={Boolean(collapsible)}
           render={
             <Collapsible.Trigger
+              render={<Group gap={2} ay="center" fullwidth />}
               className={styles["list-item-group-collapsible-trigger"]}
             />
           }
         >
+          {Icon && <Icon size={ICON_SIZE_LARGE} />}
           <Text
             render={<h3 />}
             level={0}
@@ -44,7 +49,13 @@ export const ListItemGroup = ({
           >
             {category}
           </Text>
-          {collapsible && <ChevronsUpDown size={14} strokeWidth={3} />}
+          {collapsible && (
+            <ChevronsUpDown
+              size={14}
+              strokeWidth={3}
+              style={{ marginInlineStart: "auto" }}
+            />
+          )}
         </ConditionalRender>
       )}
 

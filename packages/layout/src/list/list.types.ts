@@ -19,6 +19,7 @@ export type ListItemProps = {
 export type ListItemGroupProps = {
   category?: string;
   collapsible?: boolean;
+  icon?: Icon;
   items: ListItemProps[];
 };
 

@@ -44,21 +44,6 @@ function Sidebar({
 }: SidebarProps) {
   const { isMobile } = useSidebar();
 
-  // if (collapsible === "none") {
-  //   return (
-  //     <div
-  //       data-slot="sidebar-static"
-  //       className={cx(
-  //         "bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
-  //         className,
-  //       )}
-  //       {...props}
-  //     >
-  //       {children}
-  //     </div>
-  //   );
-  // }
-
   if (isMobile) {
     return <SidebarMobileSheet {...props}>{children}</SidebarMobileSheet>;
   }

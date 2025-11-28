@@ -10,6 +10,16 @@ import type {
 import styles from "./list.module.css";
 import { ListItem, ListItemGroup } from "./subcomponents";
 
+/**
+ * @name List
+ * @description The List component is a versatile component that can be used to render a list of items or a list of item groups.
+ * @param type - The type of list to render.
+ * @param direction - The direction of the list.
+ * @param items - The items to render in the list. Can be a list of items or a list of item groups.
+ * @param children - The children to render in the list.
+ * @param props - The props to pass to the list.
+ * @returns A list component.
+ */
 export const List = ({
   type = "none",
   direction = "column",
@@ -35,9 +45,22 @@ export const List = ({
       condition={direction === "row"}
       render={{
         true: (
-          <Group ay="start" gap={4} {...(sharedProps as HorizontalListProps)} />
+          <Group
+            ay="start"
+            gap={4}
+            p={0}
+            m={0}
+            {...(sharedProps as HorizontalListProps)}
+          />
         ),
-        false: <Stack ax="stretch" {...(sharedProps as VerticalListProps)} />,
+        false: (
+          <Stack
+            ax="stretch"
+            p={0}
+            m={0}
+            {...(sharedProps as VerticalListProps)}
+          />
+        ),
       }}
     >
       {items

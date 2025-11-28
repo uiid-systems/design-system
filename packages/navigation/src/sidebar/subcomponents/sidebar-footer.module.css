@@ -1,0 +1,3 @@
+.sidebar-footer {
+  border-top: var(--globals-border-width) solid var(--globals-border-color);
+}

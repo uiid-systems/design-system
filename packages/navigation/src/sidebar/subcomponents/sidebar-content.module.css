@@ -1,9 +1,4 @@
 .sidebar-content {
   flex: 1;
-  min-height: 0;
-  overflow: auto;
-  /* group-data-[collapsible=icon]:overflow-hidden; */
-  [data-slot="sidebar"][data-collapsible="icon"] & {
-    overflow: hidden;
-  }
+  background-color: color-mix(in oklab, var(--shade-background), transparent 75%);
 }

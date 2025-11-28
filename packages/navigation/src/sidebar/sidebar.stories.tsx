@@ -1,15 +1,46 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { Star } from "@uiid/icons";
+import { List } from "@uiid/layout";
+import { Text } from "@uiid/typography";
+
 import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarMenuItem,
-  SidebarMenu,
   SidebarTrigger,
   SidebarAppContainer,
+  SidebarFooter,
 } from "./sidebar";
 import { SidebarProvider } from "./sidebar.context";
+
+const MOCK_LINKS = [
+  {
+    category: "Selected items",
+    collapsible: true,
+    icon: Star,
+    items: [
+      { value: "accordion", label: "accordion" },
+      {
+        value: "alert dialog",
+        label: "alert dialog",
+      },
+      {
+        value: "autocomplete",
+        label: "autocomplete",
+      },
+      { value: "avatar", label: "avatar" },
+      {
+        value: "checkbox group",
+        label: "checkbox group",
+      },
+      {
+        value: "collapsible",
+        label: "collapsible",
+      },
+    ],
+  },
+];
 
 const meta: Meta<typeof Sidebar> = {
   title: "Navigation/Sidebar",
@@ -27,9 +58,9 @@ export const Default: Story = {
   render: () => (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarAppContainer>
+      <SidebarAppContainer style={{ height: "200dvh" }}>
         <SidebarTrigger />
-        <p>Content</p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </SidebarAppContainer>
     </SidebarProvider>
   ),
@@ -38,12 +69,17 @@ export const Default: Story = {
 const AppSidebar = () => (
   <Sidebar collapsible="icon">
     <SidebarHeader>
-      <h1>Sidebar</h1>
+      <Text level={0} bold>
+        Sidebar header
+      </Text>
     </SidebarHeader>
     <SidebarContent>
-      <SidebarMenu>
-        <SidebarMenuItem>Home</SidebarMenuItem>
-      </SidebarMenu>
+      <List items={MOCK_LINKS} fullwidth />
     </SidebarContent>
+    <SidebarFooter>
+      <Text level={0} bold>
+        Sidebar footer
+      </Text>
+    </SidebarFooter>
   </Sidebar>
 );

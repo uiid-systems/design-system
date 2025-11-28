@@ -61,7 +61,9 @@
   /** Size properties */
   &:where([data-size="icon"]) {
     --button-fontSize: 0.875rem;
-    --button-height: 1.25rem;
+    --button-height: var(--forms-size-sm-height);
+    --button-padding-x: 0;
+    aspect-ratio: 1;
   }
   &:where([data-size="sm"]) {
     --button-fontSize: var(--forms-size-sm-fontSize);

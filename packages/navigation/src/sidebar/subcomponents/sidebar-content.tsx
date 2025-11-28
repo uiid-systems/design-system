@@ -8,6 +8,7 @@ export const SidebarContent = ({ className, ...props }: StackProps) => {
     <Stack
       data-slot="sidebar-content"
       gap={2}
+      fullwidth
       className={cx(styles["sidebar-content"], className)}
       {...props}
     />

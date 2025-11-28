@@ -5,10 +5,7 @@
 }
 
 .list-item-group-collapsible-trigger {
-  all: unset;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  cursor: pointer;
 
   &:focus {
     text-decoration: underline;

@@ -2,7 +2,9 @@
   color: var(--shade-foreground);
   display: none;
   width: var(--sidebar-width);
-  transition: all var(--globals-transition-timing) linear;
+  transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
 
   &[data-state="collapsed"] {
     width: 0;
@@ -10,6 +12,14 @@
     &[data-collapsible="icon"] {
       width: var(--sidebar-width-icon);
     }
+  }
+
+  &[data-side="left"] + * {
+    border-left: var(--globals-border-width) solid var(--globals-border-color);
+  }
+
+  &[data-side="right"] + * {
+    border-right: var(--globals-border-width) solid var(--globals-border-color);
   }
 
   @media (min-width: 768px) {

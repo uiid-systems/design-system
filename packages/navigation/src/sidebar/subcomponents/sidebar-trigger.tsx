@@ -18,6 +18,7 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="subtle"
+      size="icon"
       aria-label="Toggle Sidebar"
       onClick={handleClick as ButtonProps["onClick"]}
       {...props}
