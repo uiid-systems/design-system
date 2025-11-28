@@ -6,12 +6,22 @@
 
 .list-item-group-collapsible-trigger {
   cursor: pointer;
+  padding-inline: 0.5rem;
+  border-radius: var(--globals-border-radius);
 
-  &:focus {
-    text-decoration: underline;
-    /* outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color); */
-    outline-offset: var(--globals-outline-offset);
+  &:hover {
+    background-color: var(--shade-muted);
+  }
+
+  &:active {
+    background-color: var(--shade-halftone);
+  }
+
+  &:focus-visible {
+    background-color: var(--shade-surface);
     border-radius: var(--globals-border-radius);
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
   }
 }
 
@@ -22,7 +32,11 @@
 }
 
 .list-item-panel {
-  padding-block-start: calc(var(--list-padding-y) / 2);
-  padding-inline-start: 0;
+  position: relative;
+  border-inline-start: var(--globals-border-width) solid var(--shade-muted);
+  margin-inline-start: 0.875rem;
+  /* padding-block-start: calc(var(--list-padding-y) / 2); */
+  gap: 0.5rem;
+  padding-inline-start: 0.875rem;
   list-style: none;
 }

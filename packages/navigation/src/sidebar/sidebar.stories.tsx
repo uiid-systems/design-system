@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Star } from "@uiid/icons";
+import { Home } from "@uiid/icons";
 import { List } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -16,28 +16,12 @@ import { SidebarProvider } from "./sidebar.context";
 
 const MOCK_LINKS = [
   {
-    category: "Selected items",
+    category: "Community",
     collapsible: true,
-    icon: Star,
+    icon: Home,
     items: [
-      { value: "accordion", label: "accordion" },
-      {
-        value: "alert dialog",
-        label: "alert dialog",
-      },
-      {
-        value: "autocomplete",
-        label: "autocomplete",
-      },
-      { value: "avatar", label: "avatar" },
-      {
-        value: "checkbox group",
-        label: "checkbox group",
-      },
-      {
-        value: "collapsible",
-        label: "collapsible",
-      },
+      { label: "Leaderboards", value: "leaderboards" },
+      { label: "Find a match", value: "find-a-match" },
     ],
   },
 ];
@@ -74,7 +58,7 @@ const AppSidebar = () => (
       </Text>
     </SidebarHeader>
     <SidebarContent>
-      <List items={MOCK_LINKS} fullwidth />
+      <List items={MOCK_LINKS} variant="line" fullwidth />
     </SidebarContent>
     <SidebarFooter>
       <Text level={0} bold>

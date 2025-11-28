@@ -25,6 +25,7 @@ export type ListItemGroupProps = {
 
 type BaseListProps = Omit<BoxProps, "ax" | "ay" | "direction"> & {
   type?: "ordered" | "unordered" | "none";
+  variant?: "line";
   items?: (ListItemProps | ListItemGroupProps)[];
 };
 

@@ -23,6 +23,7 @@ import { ListItem, ListItemGroup } from "./subcomponents";
 export const List = ({
   type = "none",
   direction = "column",
+  variant,
   items,
   children,
   ...props
@@ -37,6 +38,7 @@ export const List = ({
     className: styles["list"],
     "data-type": type,
     "data-direction": direction,
+    "data-variant": variant,
     ...props,
   };
 

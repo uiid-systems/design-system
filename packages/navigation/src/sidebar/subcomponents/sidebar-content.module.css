@@ -1,4 +1,4 @@
 .sidebar-content {
   flex: 1;
-  background-color: color-mix(in oklab, var(--shade-background), transparent 75%);
+  background-color: color-mix(in oklab, var(--shade-background), transparent 65%);
 }

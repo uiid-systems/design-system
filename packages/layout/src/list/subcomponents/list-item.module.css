@@ -6,7 +6,7 @@
 
   &:hover,
   &[data-highlighted] {
-    background-color: var(--shade-surface);
+    background-color: var(--shade-muted);
   }
 
   &:where([data-disabled="true"]) {
@@ -15,38 +15,38 @@
   }
 
   /* Item not selected with selected item after it */
-  &:not(:where([data-selected="true"])):has(+ [data-selected="true"]) {
+  /* &:not(:where([data-selected="true"])):has(+ [data-selected="true"]) {
     margin-block-end: 0.25rem;
-  }
+  } */
 
   /* Selected item */
   &:where([data-selected="true"]) {
-    background-color: var(--shade-surface);
+    /* background-color: var(--shade-surface);
     border: var(--globals-border-width) solid var(--globals-border-color);
     color: var(--shade-foreground);
     font-weight: 700;
 
     &:hover {
       background-color: var(--shade-background);
-    }
+    } */
 
     /* Selected item with another selected item before it */
-    & + :where([data-selected="true"]) {
+    /* & + :where([data-selected="true"]) {
       border-top: none;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-    }
+    } */
 
     /* Selected item with another selected item after it */
-    &:has(+ [data-selected="true"]) {
+    /* &:has(+ [data-selected="true"]) {
       border-bottom: none;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-    }
+    } */
 
     /* First item after a selected item */
-    & + :not([data-selected="true"]) {
+    /* & + :not([data-selected="true"]) {
       margin-block-start: 0.25rem;
-    }
+    } */
   }
 }

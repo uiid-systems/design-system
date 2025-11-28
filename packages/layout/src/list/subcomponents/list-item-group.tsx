@@ -34,7 +34,7 @@ export const ListItemGroup = ({
           condition={Boolean(collapsible)}
           render={
             <Collapsible.Trigger
-              render={<Group gap={2} ay="center" fullwidth />}
+              render={<Group gap={2} py={2} ay="center" fullwidth />}
               className={styles["list-item-group-collapsible-trigger"]}
             />
           }
@@ -64,10 +64,20 @@ export const ListItemGroup = ({
         render={{
           true: (
             <Collapsible.Panel
-              render={<ul className={styles["list-item-panel"]} />}
+              render={
+                <ul
+                  data-slot="list-item-panel"
+                  className={styles["list-item-panel"]}
+                />
+              }
             />
           ),
-          false: <ul className={styles["list-item-panel"]} />,
+          false: (
+            <ul
+              data-slot="list-item-panel"
+              className={styles["list-item-panel"]}
+            />
+          ),
         }}
       >
         {items.map((item) => (
