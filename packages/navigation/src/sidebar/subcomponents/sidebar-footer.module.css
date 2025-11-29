@@ -1,3 +1,4 @@
 .sidebar-footer {
   border-top: var(--globals-border-width) solid var(--globals-border-color);
+  background-color: color-mix(in oklab, var(--shade-background), transparent 65%);
 }

@@ -23,8 +23,9 @@ const MOCK_LINKS: ListProps["items"] = [
     collapsible: true,
     icon: Home,
     items: [
-      { label: "Recent matches", value: "recent-matches" },
       { label: "Leaderboards", value: "leaderboards" },
+      { label: "Recent matches", value: "recent-matches" },
+      { label: "Find a match", value: "find-a-match" },
     ],
   },
   {
@@ -34,6 +35,9 @@ const MOCK_LINKS: ListProps["items"] = [
     items: [
       { label: "Allie Hyde", value: "allie-hyde" },
       { label: "Sammy Shuffle", value: "sammy-shuffle" },
+      { label: "Jimmy Biscuits", value: "jimmy-biscuits" },
+      { label: "Bobby Tables", value: "bobby-tables" },
+      { label: "Sally Sunshine", value: "sally-sunshine" },
     ],
   },
 ];
@@ -66,13 +70,20 @@ const AppSidebar = () => {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Group gap={1} ay="center" fullwidth>
+        <Group gap={open ? 1 : 0} ay="center" fullwidth>
           {/* <Logo /> */}
           <Text
+            data-hide-collapsed
             level={0}
             shade="accent"
             bold
-            style={{ flex: 1, display: open ? "block" : "none" }}
+            pl={open ? 2 : 0}
+            style={{
+              overflow: "hidden",
+              alignContent: "center",
+              textWrap: "nowrap",
+              flex: open ? 1 : undefined,
+            }}
           >
             UIID Design System
           </Text>

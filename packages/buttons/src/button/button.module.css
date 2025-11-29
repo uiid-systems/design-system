@@ -43,6 +43,7 @@
   /** Icon properties */
   svg {
     height: var(--globals-icon-size);
+    flex-shrink: 0;
   }
   &:where([data-icon="standalone"]) {
     --button-height: auto;
