@@ -9,14 +9,29 @@ import styles from "./list-text-block.module.css";
 
 type ListTextBlockProps = Pick<ListItemProps, "label" | "description">;
 
-export const ListTextBlock = ({ label, description }: ListTextBlockProps) => {
+export const ListTextBlock = ({
+  label,
+  description,
+  ...props
+}: ListTextBlockProps) => {
   return (
-    <ConditionalRender condition={!!description} render={<Stack gap={2} />}>
-      <Text level={0} className={styles["list-text-label"]}>
+    <ConditionalRender
+      condition={!!description}
+      render={<Stack data-slot="list-text-block" gap={2} {...props} />}
+    >
+      <Text
+        data-slot="list-text-label"
+        level={0}
+        className={styles["list-text-label"]}
+      >
         {label}
       </Text>
       {description && (
-        <Text level={0} className={styles["list-text-description"]}>
+        <Text
+          data-slot="list-text-description"
+          level={0}
+          className={styles["list-text-description"]}
+        >
           {description}
         </Text>
       )}

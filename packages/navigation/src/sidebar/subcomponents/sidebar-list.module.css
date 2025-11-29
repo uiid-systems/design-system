@@ -1,0 +1,23 @@
+.sidebar-list {
+  user-select: none;
+
+  [data-slot="list-item-group"] {
+    padding: 0;
+  }
+
+  [data-slot="list-item-panel"] {
+    padding-block: 0.25rem;
+  }
+
+  [data-collapsible="icon"][data-state="collapsed"] & [data-slot="list-item-panel"] {
+    display: none;
+  }
+
+  [data-slot="list-item"] {
+    color: var(--shade-accent);
+
+    &:hover {
+      color: var(--shade-foreground);
+    }
+  }
+}

@@ -6,6 +6,7 @@ export const SwitchRender = ({
   condition,
   render,
   children,
+  ...additionalProps
 }: SwitchRenderProps) => {
   const selectedWrapper = condition ? render.true : render.false;
 
@@ -14,6 +15,6 @@ export const SwitchRender = ({
   const contentToRender =
     children ?? (selectedWrapper.props as React.PropsWithChildren).children;
 
-  return cloneElement(selectedWrapper, undefined, contentToRender);
+  return cloneElement(selectedWrapper, additionalProps, contentToRender);
 };
 SwitchRender.displayName = "SwitchRender";

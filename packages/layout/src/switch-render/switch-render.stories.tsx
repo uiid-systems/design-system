@@ -18,7 +18,7 @@ const meta = {
     children: { table: { disable: true } },
     render: { table: { disable: true } },
   },
-  render: (args) => <SwitchRender {...args} />,
+  render: (args) => <SwitchRender {...args} data-test="test" />,
 } satisfies Meta<typeof SwitchRender>;
 
 export default meta;

@@ -1,4 +1,12 @@
 .sidebar-group {
   position: relative;
   min-width: 0;
+
+  [data-slot="list-item-group"] {
+    padding: 0;
+  }
+
+  [data-collapsible="icon"][data-state="collapsed"] & [data-slot="sidebar-group-category"] {
+    display: none;
+  }
 }

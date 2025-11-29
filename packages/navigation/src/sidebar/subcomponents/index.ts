@@ -16,3 +16,4 @@ export * from "./sidebar-outer";
 export * from "./sidebar-inner";
 export * from "./sidebar-container";
 export * from "./sidebar-app-container";
+export * from "./sidebar-list";

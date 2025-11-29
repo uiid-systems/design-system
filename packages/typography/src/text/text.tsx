@@ -14,6 +14,22 @@ export const Text = ({
   const preparedProps = prepareComponentProps({
     componentName: "text",
     toggleProps: ["bold"],
+    styleProps: [
+      "p",
+      "px",
+      "py",
+      "pl",
+      "pr",
+      "pt",
+      "pb",
+      "m",
+      "mx",
+      "my",
+      "ml",
+      "mr",
+      "mt",
+      "mb",
+    ],
     props,
   });
 

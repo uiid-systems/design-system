@@ -22,6 +22,7 @@ export const ListItemGroup = ({
 }: ListItemGroupProps) => {
   return (
     <Stack
+      data-slot="list-item-group"
       ax="stretch"
       fullwidth
       className={styles["list-item-group"]}
@@ -34,13 +35,24 @@ export const ListItemGroup = ({
           condition={Boolean(collapsible)}
           render={
             <Collapsible.Trigger
-              render={<Group gap={2} py={2} ay="center" fullwidth />}
+              render={
+                <Group
+                  data-slot="list-item-group-collapsible-trigger"
+                  gap={2}
+                  py={1}
+                  ay="center"
+                  fullwidth
+                />
+              }
               className={styles["list-item-group-collapsible-trigger"]}
             />
           }
         >
-          {Icon && <Icon size={ICON_SIZE_LARGE} />}
+          {Icon && (
+            <Icon data-slot="list-item-group-icon" size={ICON_SIZE_LARGE} />
+          )}
           <Text
+            data-slot="list-item-group-category-text"
             render={<h3 />}
             level={0}
             bold

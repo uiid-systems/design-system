@@ -20,6 +20,7 @@ export const ListItem = ({
 }: ListItemProps) => {
   return (
     <Group
+      data-slot="list-item"
       render={render ?? <li />}
       ay="start"
       ax="space-between"
@@ -30,8 +31,12 @@ export const ListItem = ({
       {...props}
     >
       <Group gap={2}>
-        {Icon && <Icon size={ICON_SIZE_SMALL} />}
-        <ListTextBlock label={label} description={description} />
+        {Icon && <Icon data-slot="list-item-icon" size={ICON_SIZE_SMALL} />}
+        <ListTextBlock
+          data-slot="list-item-text"
+          label={label}
+          description={description}
+        />
       </Group>
       {selected && <ListSelectedIcon />}
       {disabled && <ListDisabledIcon />}

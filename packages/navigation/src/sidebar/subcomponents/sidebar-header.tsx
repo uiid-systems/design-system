@@ -7,8 +7,8 @@ export const SidebarHeader = ({ ...props }: StackProps) => {
     <Stack
       data-slot="sidebar-header"
       fullwidth
-      px={3}
-      py={6}
+      px={2}
+      py={2}
       className={styles["sidebar-header"]}
       {...props}
     />

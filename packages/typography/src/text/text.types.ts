@@ -1,4 +1,4 @@
-import type { ToggleProps, RenderProp } from "@uiid/utils";
+import type { ToggleProps, SpacingProps, RenderProp } from "@uiid/utils";
 
 export type TextVariantProps = {
   level?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -19,4 +19,5 @@ export type TextProps = React.PropsWithChildren<{
   uiid?: string;
 }> &
   TextVariantProps &
-  Pick<ToggleProps, "bold">;
+  Pick<ToggleProps, "bold"> &
+  SpacingProps;

@@ -1,17 +1,46 @@
 import { Stack, type StackProps } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import styles from "./sidebar-group.module.css";
 
-export const SidebarGroup = ({ className, ...props }: StackProps) => {
+type SidebarGroupProps = StackProps & {
+  category?: string;
+};
+
+export const SidebarGroup = ({
+  category,
+  className,
+  children,
+  ...props
+}: SidebarGroupProps) => {
   return (
     <Stack
       data-slot="sidebar-group"
       fullwidth
-      p={2}
       className={cx(styles["sidebar-group"], className)}
       {...props}
-    />
+    >
+      {category && <SidebarGroupCategory>{category}</SidebarGroupCategory>}
+      {children}
+    </Stack>
   );
 };
 SidebarGroup.displayName = "SidebarGroup";
+
+const SidebarGroupCategory = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Text
+      data-slot="sidebar-group-category"
+      render={<h4 />}
+      level={-1}
+      pl={2}
+      my={4}
+      shade="accent"
+      bold
+    >
+      {children}
+    </Text>
+  );
+};
+SidebarGroupCategory.displayName = "SidebarGroupCategory";

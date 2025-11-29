@@ -32,6 +32,7 @@ import {
   SidebarInner,
   SidebarContainer,
   SidebarAppContainer,
+  SidebarList,
 } from "./subcomponents";
 
 function Sidebar({
@@ -138,4 +139,5 @@ export {
   SidebarMenuSubItem,
   SidebarTrigger,
   SidebarAppContainer,
+  SidebarList,
 };
