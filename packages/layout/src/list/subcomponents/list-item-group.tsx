@@ -3,7 +3,6 @@ import { Collapsible } from "@base-ui-components/react";
 import { ChevronsUpDown } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 
-import { ConditionalRender } from "../../conditional-render/conditional-render";
 import { Group } from "../../group/group";
 import { Stack } from "../../stack/stack";
 import { SwitchRender } from "../../switch-render/switch-render";
@@ -31,22 +30,14 @@ export const ListItemGroup = ({
       }
     >
       {category && (
-        <ConditionalRender
-          condition={Boolean(collapsible)}
-          render={
-            <Collapsible.Trigger
-              render={
-                <Group
-                  data-slot="list-item-group-collapsible-trigger"
-                  gap={2}
-                  py={1}
-                  ay="center"
-                  fullwidth
-                />
-              }
-              className={styles["list-item-group-collapsible-trigger"]}
-            />
-          }
+        <Group
+          data-slot="list-item-group-collapsible-trigger"
+          gap={2}
+          py={1}
+          ay="center"
+          fullwidth
+          className={styles["list-item-group-collapsible-trigger"]}
+          render={collapsible ? <Collapsible.Trigger /> : <div />}
         >
           {Icon && (
             <Icon data-slot="list-item-group-icon" size={ICON_SIZE_LARGE} />
@@ -68,7 +59,7 @@ export const ListItemGroup = ({
               style={{ marginInlineStart: "auto" }}
             />
           )}
-        </ConditionalRender>
+        </Group>
       )}
 
       <SwitchRender

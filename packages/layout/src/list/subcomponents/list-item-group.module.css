@@ -5,23 +5,29 @@
 }
 
 .list-item-group-collapsible-trigger {
-  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: var(--shade-foreground);
   padding-inline: 0.5rem;
   border-radius: var(--globals-border-radius);
 
-  &:hover {
-    background-color: var(--shade-muted);
-  }
+  &:is(button) {
+    cursor: pointer;
 
-  &:active {
-    background-color: var(--shade-halftone);
-  }
+    &:hover {
+      background-color: var(--shade-muted);
+    }
 
-  &:focus-visible {
-    background-color: var(--shade-surface);
-    border-radius: var(--globals-border-radius);
-    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-    outline-offset: var(--globals-outline-offset);
+    &:active {
+      background-color: var(--shade-halftone);
+    }
+
+    &:focus-visible {
+      background-color: var(--shade-surface);
+      border-radius: var(--globals-border-radius);
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: var(--globals-outline-offset);
+    }
   }
 }
 
