@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ListProps } from "@uiid/layout";
 
-import { Home, Heart } from "@uiid/icons";
+import { Home, Heart, UserCircle } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -13,11 +13,24 @@ import {
   SidebarTrigger,
   SidebarAppContainer,
   SidebarFooter,
-  SidebarGroup,
 } from "./sidebar";
 import { SidebarProvider, useSidebar } from "./sidebar.context";
 
 const MOCK_LINKS: ListProps["items"] = [
+  {
+    label: "TODO: Fix top-level item",
+    value: "top-level-item",
+    icon: UserCircle,
+  },
+  {
+    category: "TODO: Fix non-collapsible",
+    icon: Home,
+    items: [
+      { label: "Subitem 1", value: "subitem-1" },
+      { label: "Subitem 2", value: "subitem-2" },
+      { label: "Subitem 3", value: "subitem-3" },
+    ],
+  },
   {
     category: "Community",
     collapsible: true,
@@ -26,6 +39,7 @@ const MOCK_LINKS: ListProps["items"] = [
       { label: "Leaderboards", value: "leaderboards" },
       { label: "Recent matches", value: "recent-matches" },
       { label: "Find a match", value: "find-a-match" },
+      { label: "Join the Discord", value: "join-the-discord" },
     ],
   },
   {
@@ -36,8 +50,7 @@ const MOCK_LINKS: ListProps["items"] = [
       { label: "Allie Hyde", value: "allie-hyde" },
       { label: "Sammy Shuffle", value: "sammy-shuffle" },
       { label: "Jimmy Biscuits", value: "jimmy-biscuits" },
-      { label: "Bobby Tables", value: "bobby-tables" },
-      { label: "Sally Sunshine", value: "sally-sunshine" },
+      { label: "More...", value: "more" },
     ],
   },
 ];
@@ -74,9 +87,7 @@ const AppSidebar = () => {
         </Group>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup category="Community">
-          <SidebarList items={MOCK_LINKS} />
-        </SidebarGroup>
+        <SidebarList items={MOCK_LINKS} />
       </SidebarContent>
       <SidebarFooter>
         <Text level={0} bold>
