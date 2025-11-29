@@ -31,6 +31,7 @@
     { "path": "./packages/indicators" },
     { "path": "./packages/interactive" },
     { "path": "./packages/layout" },
+    { "path": "./packages/navigation" },
     { "path": "./packages/overlays" },
     { "path": "./packages/tokens" },
     { "path": "./packages/typography" },

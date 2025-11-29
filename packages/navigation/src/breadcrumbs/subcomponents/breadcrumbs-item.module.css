@@ -1,0 +1,8 @@
+.breadcrumbs-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  a {
+    color: var(--shade-foreground);
+  }
+}
