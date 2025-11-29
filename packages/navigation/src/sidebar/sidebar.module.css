@@ -6,4 +6,14 @@
   &:has([data-variant="inset"]) {
     background-color: var(--shade-surface);
   }
+
+  [data-hide-collapsed] {
+    height: 100%;
+    transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+
+    [data-collapsible="icon"][data-state="collapsed"] & {
+      margin-block: 0 !important;
+      height: 0;
+    }
+  }
 }

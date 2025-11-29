@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ListProps } from "@uiid/layout";
 
-import { Home } from "@uiid/icons";
+import { Home, Heart } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -23,17 +23,17 @@ const MOCK_LINKS: ListProps["items"] = [
     collapsible: true,
     icon: Home,
     items: [
-      { label: "Find a match", value: "find-a-match" },
+      { label: "Recent matches", value: "recent-matches" },
       { label: "Leaderboards", value: "leaderboards" },
     ],
   },
   {
-    category: "Community",
+    category: "Favorites",
     collapsible: true,
-    icon: Home,
+    icon: Heart,
     items: [
-      { label: "Find a match", value: "find-a-match" },
-      { label: "Leaderboards", value: "leaderboards" },
+      { label: "Allie Hyde", value: "allie-hyde" },
+      { label: "Sammy Shuffle", value: "sammy-shuffle" },
     ],
   },
 ];
