@@ -33,6 +33,7 @@
     { "path": "./packages/layout" },
     { "path": "./packages/navigation" },
     { "path": "./packages/overlays" },
+    { "path": "./packages/tables" },
     { "path": "./packages/tokens" },
     { "path": "./packages/typography" },
     { "path": "./packages/utils" }

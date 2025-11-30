@@ -1,0 +1,13 @@
+.table-row {
+  &:where([data-bordered="true"] tbody &) {
+    border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+  }
+
+  &:where([data-striped="true"] tbody &:nth-child(even)) {
+    background-color: color-mix(in oklab, var(--shade-surface), transparent 25%);
+  }
+
+  tbody &:hover {
+    background-color: var(--shade-surface);
+  }
+}

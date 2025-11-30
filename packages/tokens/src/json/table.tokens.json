@@ -1,0 +1,12 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Table Component Tokens",
+  "table": {
+    "cell": {
+      "padding": {
+        "x": { "$value": "0.75rem", "$type": "dimension" },
+        "y": { "$value": "0.75rem", "$type": "dimension" }
+      }
+    }
+  }
+}

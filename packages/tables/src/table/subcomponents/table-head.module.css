@@ -1,0 +1,9 @@
+@import "@uiid/tokens/table.tokens.css";
+
+.table-head {
+  font-weight: 700;
+  text-align: left;
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+  padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+  color: var(--shade-accent);
+}

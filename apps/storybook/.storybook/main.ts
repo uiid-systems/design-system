@@ -14,6 +14,7 @@ const config: StorybookConfig = {
     "../../../packages/layout/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/navigation/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/overlays/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../../../packages/tables/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/tokens/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/typography/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
