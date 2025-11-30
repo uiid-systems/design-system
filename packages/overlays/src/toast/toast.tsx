@@ -1,3 +1,5 @@
+"use client";
+
 import { Toast as BaseToast } from "@base-ui-components/react/toast";
 
 import { Card } from "@uiid/cards";

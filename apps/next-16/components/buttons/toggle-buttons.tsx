@@ -53,6 +53,7 @@ export function ToggleButtons() {
         onClick={handleToggleDarkMode}
         icon={{ pressed: <Sun />, unpressed: <Moon /> }}
         variant="subtle"
+        tooltip="Toggle dark mode"
       />
       <ToggleButton
         pressed={isDarkMode}

@@ -16,6 +16,7 @@ export const TableCellDropdown = () => {
           <Button
             variant="subtle"
             size="icon"
+            tooltip="More options"
             icon={<Ellipsis size={14} />}
             aria-label="More options"
           />

@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog } from "@base-ui-components/react/dialog";
 import { isValidElement } from "react";
 

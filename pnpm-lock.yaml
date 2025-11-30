@@ -68,6 +68,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../../packages/layout
+      '@uiid/overlays':
+        specifier: workspace:*
+        version: link:../../packages/overlays
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

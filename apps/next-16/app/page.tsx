@@ -4,6 +4,7 @@ import { Headline } from "../components/typography";
 import { Buttons, ToggleButtons } from "../components/buttons";
 import { CardWithHeaderAction, BasicCard } from "../components/cards";
 import { Inputs } from "../components/forms";
+import { Modals } from "../components/overlays";
 
 export default function Home() {
   return (
@@ -21,6 +22,10 @@ export default function Home() {
       </Stack>
 
       <Inputs />
+
+      <Stack gap={2}>
+        <Modals />
+      </Stack>
     </Stack>
   );
 }

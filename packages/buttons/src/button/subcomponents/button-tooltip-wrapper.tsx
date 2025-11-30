@@ -21,8 +21,10 @@ export const ButtonTooltipWrapper = ({
   return (
     <Tooltip.Provider delay={delay}>
       <Tooltip.Root>
-        <Tooltip.Trigger style={{ all: "unset", marginInline: "auto" }}>
-          <ButtonContentContainer shift={shift}>
+        <Tooltip.Trigger 
+          render={<div style={{ all: "unset", marginInline: "auto" }} />}
+        >
+          <ButtonContentContainer shift={shift} asButton={false}>
             {children}
           </ButtonContentContainer>
         </Tooltip.Trigger>

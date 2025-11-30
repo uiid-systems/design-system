@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 import { Card } from "@uiid/cards";
 
@@ -8,27 +8,27 @@ import type { AlertProps } from "./alert.types";
 
 export const Alert = ({
   variant,
-  onDismiss,
+  // onDismiss,
   children,
   ...props
 }: AlertProps) => {
   const alertRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(true);
+  // const [isVisible, setIsVisible] = useState(true);
 
-  const handleDismiss = () => {
-    setIsVisible(false);
+  // const handleDismiss = () => {
+  //   setIsVisible(false);
 
-    if (
-      document.activeElement === alertRef.current ||
-      alertRef.current?.contains(document.activeElement)
-    ) {
-      (document.activeElement as HTMLElement)?.blur();
-    }
+  //   if (
+  //     document.activeElement === alertRef.current ||
+  //     alertRef.current?.contains(document.activeElement)
+  //   ) {
+  //     (document.activeElement as HTMLElement)?.blur();
+  //   }
 
-    onDismiss?.();
-  };
+  //   // onDismiss?.();
+  // };
 
-  if (!isVisible) return null;
+  // if (!isVisible) return null;
 
   return (
     <Card
@@ -36,7 +36,7 @@ export const Alert = ({
       role="alert"
       variant={variant}
       fullwidth
-      onDismiss={handleDismiss}
+      // onDismiss={handleDismiss}
       ref={alertRef}
       {...props}
     >

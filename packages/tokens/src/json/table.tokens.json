@@ -6,7 +6,7 @@
     "cell": {
       "padding": {
         "x": { "$value": "0.75rem", "$type": "dimension" },
-        "y": { "$value": "0.75rem", "$type": "dimension" }
+        "y": { "$value": "0.5rem", "$type": "dimension" }
       }
     }
   }

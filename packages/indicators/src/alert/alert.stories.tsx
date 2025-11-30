@@ -10,7 +10,7 @@ const meta = {
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
   },
   argTypes: {
-    onDismiss: { action: "onDismiss" },
+    // onDismiss: { action: "onDismiss" },
   },
   render: (args) => (
     <Stack gap={4} fullwidth>

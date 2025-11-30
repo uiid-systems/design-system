@@ -1,3 +1,5 @@
+"use client";
+
 import { Popover as BasePopover } from "@base-ui-components/react/popover";
 import { isValidElement } from "react";
 
