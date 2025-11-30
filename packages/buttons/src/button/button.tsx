@@ -22,7 +22,7 @@ export const Button = ({
   loading,
   icon,
   iconPosition,
-  tooltip = "lorem ipsum dolor sit amet",
+  tooltip,
   render,
   className,
   children,
@@ -96,7 +96,7 @@ export const Button = ({
         <SwitchRender
           condition={Boolean(tooltip)}
           render={{
-            true: <ButtonTooltipWrapper shift={loading} tooltip={tooltip} />,
+            true: <ButtonTooltipWrapper shift={loading} tooltip={tooltip!} />,
             false: <ButtonContentContainer shift={loading} />,
           }}
         >

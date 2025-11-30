@@ -15,10 +15,12 @@ export const ButtonTooltipWrapper = ({
   tooltip: string;
 }) => {
   return (
-    <Tooltip.Provider delay={1000}>
+    <Tooltip.Provider delay={0}>
       <Tooltip.Root>
-        <Tooltip.Trigger render={<ButtonContentContainer shift={shift} />}>
-          {children}
+        <Tooltip.Trigger style={{ all: "unset", marginInline: "auto" }}>
+          <ButtonContentContainer shift={shift}>
+            {children}
+          </ButtonContentContainer>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner sideOffset={4} collisionPadding={16}>

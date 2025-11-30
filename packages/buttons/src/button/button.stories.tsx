@@ -11,6 +11,7 @@ const meta = {
   component: Button,
   args: {
     onClick: fn(),
+    tooltip: "Tooltip",
   },
   argTypes: {
     loading: { control: "boolean" },
