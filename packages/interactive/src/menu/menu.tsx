@@ -39,7 +39,7 @@ export const Menu = ({
           align={align}
           {...PositionerProps}
         >
-          <BaseMenu.Popup className={styles.Popup} {...PopupProps}>
+          <BaseMenu.Popup className={styles["popup"]} {...PopupProps}>
             {items.map((item) => {
               const submenu = item.items;
 
@@ -61,7 +61,7 @@ export const Menu = ({
                         )}
                       >
                         <BaseMenu.Popup
-                          className={cx(styles.Popup, PopupProps?.className)}
+                          className={cx(styles["popup"], PopupProps?.className)}
                         >
                           {submenu.map((subitem) => (
                             <BaseMenu.Item

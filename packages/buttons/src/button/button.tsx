@@ -6,6 +6,8 @@ import { cx, renderWithProps } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
+import { BUTTON_TOOLTIP_DELAY } from "./button.constants";
+
 import {
   ButtonIconSlot,
   ButtonTooltipWrapper,

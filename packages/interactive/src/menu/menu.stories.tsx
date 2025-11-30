@@ -4,21 +4,7 @@ import { Button } from "@uiid/buttons";
 import { MenuIcon } from "@uiid/icons";
 
 import { Menu } from "./menu";
-import type { MenuProps } from "./menu.types";
-
-const MOCK_ITEMS: MenuProps["items"] = [
-  { label: "Lorem", value: "item-1" },
-  { label: "Lorem ipsum dolor sit amet", value: "item-2" },
-  {
-    label: "Lorem ipsum",
-    value: "item-3",
-    items: [
-      { label: "Item 3.1", value: "item-3.1" },
-      { label: "Item 3.2", value: "item-3.2" },
-      { label: "Item 3.3", value: "item-3.3" },
-    ],
-  },
-];
+import { MOCK_ITEMS } from "./menu.mocks";
 
 const meta: Meta<typeof Menu> = {
   title: "Interactive/Menu",

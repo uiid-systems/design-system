@@ -1,0 +1,1 @@
+export const BUTTON_TOOLTIP_DELAY = 1000;
