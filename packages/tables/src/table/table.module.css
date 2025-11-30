@@ -9,4 +9,5 @@
   caption-side: bottom;
   font-size: 0.875rem;
   border-collapse: collapse;
+  table-layout: auto;
 }

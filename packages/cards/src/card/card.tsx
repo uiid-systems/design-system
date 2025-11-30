@@ -11,6 +11,7 @@ export const Card = ({
   title,
   action,
   size = "md",
+  trim,
   variant,
   className,
   children,
@@ -24,6 +25,7 @@ export const Card = ({
       gap={GAP_LEVEL[size]}
       data-size={size}
       data-variant={variant}
+      data-trim={trim}
       className={cx(styles.card, className)}
       {...props}
     >

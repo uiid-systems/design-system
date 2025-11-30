@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { Card } from "@uiid/cards";
+import { Stack } from "@uiid/layout";
+
 import {
   Table,
   TableHeader,
@@ -7,7 +10,9 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  TableCellDropdown,
 } from "./table";
+import type { TableProps } from "./table.types";
 
 const meta: Meta<typeof Table> = {
   title: "Tables/Table",
@@ -63,27 +68,42 @@ const MOCK_DATA = [
 export const Default: Story = {
   name: "Table",
   render: () => (
-    <Table data-striped="true">
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>ID</TableHead>
-          <TableHead>Location</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {MOCK_DATA.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.email}</TableCell>
-            <TableCell>{item.id}</TableCell>
-            <TableCell>{item.location}</TableCell>
-            <TableCell>{item.status}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <Stack gap={4} fullwidth>
+      <DemoTable striped />
+      <Card
+        trim
+        fullwidth
+        style={{ backgroundColor: "var(--shade-background)" }}
+      >
+        <DemoTable bordered />
+      </Card>
+    </Stack>
   ),
 };
+
+const DemoTable = ({ striped, bordered }: TableProps) => (
+  <Table striped={striped} bordered={bordered}>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Email</TableHead>
+        <TableHead>ID</TableHead>
+        <TableHead>Location</TableHead>
+        <TableHead>Status</TableHead>
+        <TableHead> </TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {MOCK_DATA.map((item) => (
+        <TableRow key={item.id}>
+          <TableCell>{item.name}</TableCell>
+          <TableCell>{item.email}</TableCell>
+          <TableCell>{item.id}</TableCell>
+          <TableCell>{item.location}</TableCell>
+          <TableCell>{item.status}</TableCell>
+          <TableCellDropdown />
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+);

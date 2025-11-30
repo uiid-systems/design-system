@@ -83,4 +83,10 @@
     --card-border-color: var(--card-variant-inverted-border);
     --card-color-fg: var(--card-variant-inverted-fg);
   }
+
+  &:where([data-trim="true"]) {
+    padding-block: 0;
+    padding-inline: 0;
+    overflow: hidden;
+  }
 }
