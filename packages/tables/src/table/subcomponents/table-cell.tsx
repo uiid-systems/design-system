@@ -2,10 +2,9 @@ import { cx } from "@uiid/utils";
 
 import styles from "./table-cell.module.css";
 
-export const TableCell = ({
-  className,
-  ...props
-}: React.ComponentProps<"td">) => {
+export type TableCellProps = React.ComponentProps<"td">;
+
+export const TableCell = ({ className, ...props }: TableCellProps) => {
   return (
     <td
       data-slot="table-cell"

@@ -13,6 +13,7 @@ import {
   TableHead,
   TableCell,
   TableCellDropdown,
+  TableCellCheckbox,
 } from "./subcomponents";
 
 const Table = ({ striped, bordered, className, ...props }: TableProps) => {
@@ -39,4 +40,5 @@ export {
   TableRow,
   TableCell,
   TableCellDropdown,
+  TableCellCheckbox,
 };

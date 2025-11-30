@@ -65,6 +65,7 @@
     --button-height: var(--forms-size-sm-height);
     --button-padding-x: 0;
     aspect-ratio: 1;
+    border-color: transparent;
   }
   &:where([data-size="sm"]) {
     --button-fontSize: var(--forms-size-sm-fontSize);

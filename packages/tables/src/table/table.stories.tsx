@@ -10,6 +10,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  TableCellCheckbox,
   TableCellDropdown,
 } from "./table";
 import type { TableProps } from "./table.types";
@@ -85,6 +86,7 @@ const DemoTable = ({ striped, bordered }: TableProps) => (
   <Table striped={striped} bordered={bordered}>
     <TableHeader>
       <TableRow>
+        <TableCellCheckbox head />
         <TableHead>Name</TableHead>
         <TableHead>Email</TableHead>
         <TableHead>ID</TableHead>
@@ -96,6 +98,7 @@ const DemoTable = ({ striped, bordered }: TableProps) => (
     <TableBody>
       {MOCK_DATA.map((item) => (
         <TableRow key={item.id}>
+          <TableCellCheckbox />
           <TableCell>{item.name}</TableCell>
           <TableCell>{item.email}</TableCell>
           <TableCell>{item.id}</TableCell>
