@@ -1,8 +1,9 @@
+import { Alert } from "@uiid/indicators";
 import { Group, Stack } from "@uiid/layout";
 
 import { Headline } from "../components/typography";
 import { CardWithHeaderAction, BasicCard } from "../components/cards";
-import { Alert } from "@uiid/indicators";
+import { DemoTable } from "../components/tables";
 
 export default function Home() {
   return (
@@ -20,6 +21,8 @@ export default function Home() {
           <BasicCard />
           <CardWithHeaderAction />
         </Group>
+
+        <DemoTable />
       </Stack>
     </>
   );
