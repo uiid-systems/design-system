@@ -2,7 +2,7 @@ import { Alert } from "@uiid/indicators";
 import { Group, Stack } from "@uiid/layout";
 
 import { Headline } from "../components/typography";
-import { CardWithHeaderAction, BasicCard } from "../components/cards";
+import { BasicCard } from "../components/cards";
 import { DemoTable } from "../components/tables";
 
 export default function Home() {
@@ -19,9 +19,8 @@ export default function Home() {
 
         <Group gap={4} evenly>
           <BasicCard />
-          <CardWithHeaderAction />
+          <BasicCard />
         </Group>
-
         <DemoTable />
       </Stack>
     </>

@@ -1,6 +1,6 @@
 import { cx } from "@uiid/utils";
 
-import type { TableProps } from "../table.types";
+import type { TableRootProps } from "../table.types";
 
 import styles from "./table-root.module.css";
 
@@ -10,7 +10,7 @@ export const TableRoot = ({
   className,
   children,
   ...props
-}: TableProps) => {
+}: TableRootProps) => {
   return (
     <table
       data-slot="table-root"

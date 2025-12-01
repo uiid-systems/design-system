@@ -1,11 +1,17 @@
+import type { Icon } from "@uiid/icons";
 import styles from "./button-icon-slot.module.css";
 
 export type ButtonIconSlotProps = {
-  icon: React.ReactNode;
+  icon: Icon | React.ReactNode;
   position?: "before" | "after";
 };
 
-export const ButtonIconSlot = ({ icon, position }: ButtonIconSlotProps) => {
+export const ButtonIconSlot = ({
+  icon: Icon,
+  position,
+}: ButtonIconSlotProps) => {
+  const IconComponent = typeof Icon === "function" ? Icon : () => Icon;
+
   return (
     <span
       data-slot="button-icon-slot"
@@ -13,7 +19,7 @@ export const ButtonIconSlot = ({ icon, position }: ButtonIconSlotProps) => {
       className={styles["button-icon-slot"]}
       data-position={position}
     >
-      {icon}
+      <IconComponent size={18} />
     </span>
   );
 };

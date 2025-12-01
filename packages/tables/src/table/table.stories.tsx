@@ -17,7 +17,11 @@ import {
   type TableProps,
 } from "../";
 
-import { TABLE_MOCK_DATA, type TableMockData } from "./table.mocks";
+import {
+  TABLE_MOCK_DATA,
+  type TableMockData,
+  TABLE_MOCK_ACTIONS,
+} from "./table.mocks";
 
 const meta: Meta<typeof Table> = {
   title: "Tables/Table",
@@ -31,6 +35,7 @@ export const Default = {
   render: () => (
     <Stack gap={4} fullwidth>
       <DemoTable striped />
+
       <Card
         trim
         fullwidth
@@ -38,12 +43,21 @@ export const Default = {
       >
         <DemoTable bordered />
       </Card>
-      <Table<TableMockData> items={TABLE_MOCK_DATA} striped bordered />
+
+      <Table<TableMockData>
+        items={TABLE_MOCK_DATA}
+        actions={TABLE_MOCK_ACTIONS}
+        striped
+        bordered
+      />
     </Stack>
   ),
 };
 
-const DemoTable = ({ striped, bordered }: TableProps) => (
+const DemoTable = ({
+  striped,
+  bordered,
+}: Pick<TableProps, "striped" | "bordered">) => (
   <TableContainer>
     <TableRoot striped={striped} bordered={bordered}>
       <TableHeader>
@@ -66,7 +80,12 @@ const DemoTable = ({ striped, bordered }: TableProps) => (
             <TableCell>{item.id}</TableCell>
             <TableCell>{item.location}</TableCell>
             <TableCell>{item.status}</TableCell>
-            <TableCellDropdown />
+            <TableCellDropdown
+              items={[
+                { label: "Edit", value: "edit" },
+                { label: "Delete", value: "delete" },
+              ]}
+            />
           </TableRow>
         ))}
       </TableBody>

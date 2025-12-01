@@ -1,5 +1,6 @@
 "use client";
 
+import { Card } from "@uiid/cards";
 import { Table } from "@uiid/tables";
 
 const TABLE_MOCK_DATA = [
@@ -25,13 +26,24 @@ const TABLE_MOCK_DATA = [
   },
 ];
 
+export const TABLE_MOCK_ACTIONS = {
+  tooltip: "Settings",
+  items: [
+    { label: "Edit", value: "edit" },
+    { label: "Delete", value: "delete" },
+  ],
+};
+
 export const DemoTable = () => {
   return (
-    <Table
-      formatHeader={(key) => key.toUpperCase()}
-      items={TABLE_MOCK_DATA}
-      striped
-      bordered
-    />
+    <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
+      <Table
+        items={TABLE_MOCK_DATA}
+        actions={TABLE_MOCK_ACTIONS}
+        formatHeader={(key) => key.toUpperCase()}
+        striped
+        bordered
+      />
+    </Card>
   );
 };

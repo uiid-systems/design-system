@@ -1,3 +1,7 @@
+import { Cog } from "@uiid/icons";
+
+import type { TableProps } from "./table.types";
+
 export type TableMockData = {
   balance: string;
   email: string;
@@ -49,3 +53,12 @@ export const TABLE_MOCK_DATA: TableMockData[] = [
     status: "Active",
   },
 ];
+
+export const TABLE_MOCK_ACTIONS: TableProps["actions"] = {
+  icon: <Cog />,
+  tooltip: "Settings",
+  items: [
+    { label: "Edit", value: "edit" },
+    { label: "Delete", value: "delete" },
+  ],
+};

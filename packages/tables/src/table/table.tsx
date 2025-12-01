@@ -1,9 +1,10 @@
-import type { DataTableProps } from "./table.types";
+import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
 
 import {
   TableBody,
   TableCell,
+  TableCellDropdown,
   TableContainer,
   TableHead,
   TableHeader,
@@ -13,12 +14,13 @@ import {
 
 export const Table = <T extends Record<string, unknown>>({
   items,
+  actions,
   columns,
   formatHeader,
   striped,
   bordered,
   ...props
-}: DataTableProps<T>) => {
+}: TableProps<T>) => {
   const displayColumns =
     columns ||
     (items.length > 0 ? (Object.keys(items[0]) as Array<keyof T>) : []);
@@ -35,6 +37,11 @@ export const Table = <T extends Record<string, unknown>>({
                 {headerFormatter(column)}
               </TableHead>
             ))}
+            {actions && (
+              <TableHead>
+                <span className="sr-only">{actions.tooltip}</span>
+              </TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -45,6 +52,7 @@ export const Table = <T extends Record<string, unknown>>({
                   {String(item[column])}
                 </TableCell>
               ))}
+              {actions && <TableCellDropdown {...actions} />}
             </TableRow>
           ))}
         </TableBody>
