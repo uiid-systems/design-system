@@ -20,6 +20,7 @@ export const Button = ({
   fill = "solid",
   shape = "rounded",
   grows = true,
+  square,
   loading,
   icon,
   iconPosition,
@@ -83,11 +84,12 @@ export const Button = ({
       "aria-disabled": isDisabled ? "true" : undefined,
       /** attributes */
       "data-icon": icon && (iconPosition ? iconPosition : "standalone"),
-      "data-grows": grows ? "true" : undefined,
       "data-variant": variant,
       "data-size": size,
       "data-fill": fill,
       "data-shape": shape,
+      "data-grows": grows ? "true" : undefined,
+      "data-square": square ? "true" : undefined,
       /** events */
       onClick: handleClick,
       onKeyDown: handleKeyDown,

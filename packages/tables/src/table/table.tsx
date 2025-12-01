@@ -5,18 +5,12 @@ import { cx } from "@uiid/utils";
 import type { TableProps } from "./table.types";
 import styles from "./table.module.css";
 
-import {
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableCellDropdown,
-  TableCellCheckbox,
-} from "./subcomponents";
-
-const Table = ({ striped, bordered, className, ...props }: TableProps) => {
+export const Table = ({
+  striped,
+  bordered,
+  className,
+  ...props
+}: TableProps) => {
   return (
     <div data-slot="table-container" className={styles["table-container"]}>
       <table
@@ -30,15 +24,3 @@ const Table = ({ striped, bordered, className, ...props }: TableProps) => {
   );
 };
 Table.displayName = "Table";
-
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCellDropdown,
-  TableCellCheckbox,
-};

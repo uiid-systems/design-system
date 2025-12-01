@@ -2,6 +2,9 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Primitive Globals Tokens",
   "globals": {
+    "header": {
+      "height": { "$value": "3.5rem", "$type": "dimension" }
+    },
     "transition": {
       "timing": { "$value": "150ms", "$type": "duration" }
     },

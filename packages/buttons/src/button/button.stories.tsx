@@ -80,6 +80,10 @@ export const Default: Story = {
           >
             yahoo.com
           </Button>
+
+          <Button size="sm" square icon={<Globe />} aria-label="Globe">
+            Globe
+          </Button>
         </Group>
       </Stack>
     );

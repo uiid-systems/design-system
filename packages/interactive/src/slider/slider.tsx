@@ -1,3 +1,5 @@
+"use client";
+
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 
 import { Group } from "@uiid/layout";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 import { SIDEBAR_MOBILE_BREAKPOINT } from "./sidebar.constants";

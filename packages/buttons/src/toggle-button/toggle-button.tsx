@@ -11,6 +11,7 @@ export const ToggleButton = ({
   icon,
   iconPosition,
   size,
+  square,
   children,
   ...props
 }: ToggleButtonProps) => {
@@ -35,6 +36,7 @@ export const ToggleButton = ({
               icon={activeIcon}
               iconPosition={iconPosition ?? "before"}
               size={size}
+              square={square}
             >
               {content}
             </Button>

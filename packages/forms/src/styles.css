@@ -4,6 +4,7 @@
 [uiid="input"][data-wrapped="true"],
 [uiid="textarea"][data-wrapped="true"] {
   width: -webkit-fill-available;
+  width: -moz-available;
   width: 100%;
 }
 

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   SIDEBAR_DEFAULT_SIDE,
   SIDEBAR_DEFAULT_VARIANT,

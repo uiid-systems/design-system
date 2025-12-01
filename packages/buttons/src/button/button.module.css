@@ -59,14 +59,6 @@
     padding-inline-start: var(--button-padding-x);
   }
 
-  /** Size properties */
-  &:where([data-size="icon"]) {
-    --button-fontSize: 0.875rem;
-    --button-height: var(--forms-size-sm-height);
-    --button-padding-x: 0;
-    aspect-ratio: 1;
-    border-color: transparent;
-  }
   &:where([data-size="sm"]) {
     --button-fontSize: var(--forms-size-sm-fontSize);
     --button-height: var(--forms-size-sm-height);
@@ -109,5 +101,9 @@
   &:where([aria-disabled="true"]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
+  }
+
+  &:where([data-square="true"]) {
+    aspect-ratio: 1;
   }
 }

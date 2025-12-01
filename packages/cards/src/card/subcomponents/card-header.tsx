@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, type ButtonProps } from "@uiid/buttons";
+import { CloseButton, type CloseButtonProps } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
 
 import type { CardVariantProps } from "../card.types";
@@ -9,7 +9,7 @@ import { CardTitle, type CardTitleProps } from "./card-title";
 import { CardIcon } from "./card-icon";
 
 export type CardHeaderProps = {
-  action?: Required<Pick<ButtonProps, "icon" | "aria-label" | "onClick">>;
+  action?: Required<Pick<CloseButtonProps, "aria-label" | "onClick">>;
 } & Pick<CardVariantProps, "variant"> &
   CardTitleProps;
 
@@ -24,12 +24,7 @@ export const CardHeader = ({
       {variant && <CardIcon variant={variant} />}
       <CardTitle title={title} size={size} />
       {action && (
-        <Button
-          shape="pill"
-          size="icon"
-          {...action}
-          style={{ marginInlineStart: "auto" }}
-        />
+        <CloseButton {...action} style={{ marginInlineStart: "auto" }} />
       )}
     </Group>
   );

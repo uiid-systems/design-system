@@ -1,3 +1,5 @@
+"use client";
+
 import { isValidElement } from "react";
 import { Menu as BaseMenu } from "@base-ui-components/react/menu";
 

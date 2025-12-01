@@ -41,7 +41,7 @@
       },
       "6": {
         "size": { "$value": "3rem", "$type": "dimension" },
-        "leading": { "$value": "0%", "$type": "dimension" },
+        "leading": { "$value": "-0.5%", "$type": "dimension" },
         "lineHeight": { "$value": "120%", "$type": "dimension" },
         "weight": { "$value": "600", "$type": "fontWeight" }
       },

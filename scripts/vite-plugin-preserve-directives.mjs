@@ -18,7 +18,7 @@ export function preserveDirectives() {
             if (
               moduleId &&
               !moduleId.includes("node_modules") &&
-              moduleId.includes(".tsx")
+              (moduleId.includes(".tsx") || moduleId.includes(".ts"))
             ) {
               try {
                 const source = readFileSync(moduleId, "utf-8");

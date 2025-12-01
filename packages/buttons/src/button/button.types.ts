@@ -5,13 +5,15 @@ import type { ButtonIconSlotProps } from "./subcomponents";
 // Base button styling and behavior props
 type ButtonCoreProps = {
   variant?: "inverted" | "subtle";
-  size?: "icon" | "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   // fill?: "solid" | "outline" | "ghost";
   fill?: "solid";
   shape?: "rounded" | "pill";
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   delay?: number;
   grows?: boolean;
+  /** @todo replace with toggle prop */
+  square?: boolean;
   loading?: boolean;
   icon?: ButtonIconSlotProps["icon"];
   iconPosition?: ButtonIconSlotProps["position"];

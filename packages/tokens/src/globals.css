@@ -66,6 +66,13 @@
     --shade-foreground: var(--white);
   }
 
+  html,
+  body {
+    @media (pointer: fine) {
+      overscroll-behavior: none;
+    }
+  }
+
   body {
     background-color: var(--shade-background);
     color: var(--shade-foreground);

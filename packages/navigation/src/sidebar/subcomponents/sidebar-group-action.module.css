@@ -20,8 +20,10 @@
   &::after {
     position: absolute;
     inset: -0.5rem;
+  }
 
-    @media (min-width: 768px) {
+  @media (min-width: 768px) {
+    &::after {
       display: none;
     }
   }

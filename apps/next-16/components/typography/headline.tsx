@@ -9,8 +9,7 @@ export const Headline = () => {
       </Text>
 
       <Text render={<p />} level={1}>
-        The <strong>UIID Design System</strong> is a modern, modular React
-        component library built with{" "}
+        A modern, modular component library built with{" "}
         <strong>
           <a href="https://www.typescriptlang.org/" target="_blank">
             TypeScript
@@ -20,11 +19,11 @@ export const Headline = () => {
             Vite
           </a>
           , and{" "}
-          <a href="https://base-ui.com/" target="_blank">
-            Base UI
+          <a href="https://nextjs.org/" target="_blank">
+            Next.js
           </a>
         </strong>
-        . Designed for performance, accessibility, and developer experience.
+        .
       </Text>
     </Stack>
   );

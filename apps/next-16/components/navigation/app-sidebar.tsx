@@ -1,20 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ListProps } from "@uiid/layout";
+"use client";
 
-import { Home, Heart, UserCircle } from "@uiid/icons";
-import { Group } from "@uiid/layout";
-import { Text } from "@uiid/typography";
-
+import { UserCircle, Home, Heart } from "@uiid/icons";
+import { Group, type ListProps } from "@uiid/layout";
 import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
   SidebarList,
   SidebarTrigger,
-  SidebarAppContainer,
   SidebarFooter,
-} from "./sidebar";
-import { SidebarProvider, useSidebar } from "./sidebar.context";
+  useSidebar,
+} from "@uiid/navigation";
+import { Text } from "@uiid/typography";
 
 const MOCK_LINKS: ListProps["items"] = [
   {
@@ -55,28 +52,7 @@ const MOCK_LINKS: ListProps["items"] = [
   },
 ];
 
-const meta: Meta<typeof Sidebar> = {
-  title: "Navigation/Sidebar",
-  component: Sidebar,
-  parameters: {
-    layout: "fullscreen",
-  },
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  name: "Sidebar",
-  render: () => (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarAppContainer />
-    </SidebarProvider>
-  ),
-};
-
-const AppSidebar = () => {
+export const AppSidebar = () => {
   const { open } = useSidebar();
   return (
     <Sidebar collapsible="icon">

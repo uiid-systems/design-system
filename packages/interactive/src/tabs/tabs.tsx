@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs as BaseTabs } from "@base-ui-components/react/tabs";
 import type { TabsProps } from "./tabs.types";
 

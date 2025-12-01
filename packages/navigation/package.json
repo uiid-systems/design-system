@@ -27,6 +27,7 @@
     "@uiid/icons": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/forms": "workspace:*",
+    "@uiid/indicators": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",

@@ -12,8 +12,8 @@ import {
   TableCell,
   TableCellCheckbox,
   TableCellDropdown,
-} from "./table";
-import type { TableProps } from "./table.types";
+  type TableProps,
+} from "../";
 
 const meta: Meta<typeof Table> = {
   title: "Tables/Table",

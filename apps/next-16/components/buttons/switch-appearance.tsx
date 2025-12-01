@@ -4,7 +4,6 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { ToggleButton } from "@uiid/buttons";
 import { Sun, Moon } from "@uiid/icons";
-import { Group } from "@uiid/layout";
 
 function getSnapshot() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -20,7 +19,7 @@ function subscribe(callback: () => void) {
   return () => mediaQuery.removeEventListener("change", callback);
 }
 
-export function ToggleButtons() {
+export function SwitchAppearance() {
   // Use useSyncExternalStore to sync with system color scheme preference
   const systemPrefersDark = useSyncExternalStore(
     subscribe,
@@ -47,32 +46,19 @@ export function ToggleButtons() {
   };
 
   return (
-    <Group gap={2}>
-      <ToggleButton
-        pressed={isDarkMode}
-        onClick={handleToggleDarkMode}
-        icon={{ pressed: <Sun />, unpressed: <Moon /> }}
-        variant="subtle"
-        tooltip="Toggle dark mode"
-      />
-      <ToggleButton
-        pressed={isDarkMode}
-        onClick={handleToggleDarkMode}
-        icon={{ pressed: <Sun />, unpressed: <Moon /> }}
-        iconPosition="after"
-        variant="subtle"
-      >
-        Toggle theme
-      </ToggleButton>
-      <ToggleButton
-        onClick={handleToggleDarkMode}
-        text={{ pressed: "Dark Mode", unpressed: "Light Mode" }}
-        icon={{ pressed: <Sun />, unpressed: <Moon /> }}
-        iconPosition="after"
-        variant="subtle"
-      >
-        Light Mode
-      </ToggleButton>
-    </Group>
+    <ToggleButton
+      pressed={isDarkMode}
+      onClick={handleToggleDarkMode}
+      icon={{ pressed: <Sun />, unpressed: <Moon /> }}
+      variant="subtle"
+      tooltip="Toggle appearance"
+      size="sm"
+      square
+      style={
+        {
+          "--button-height": "var(--forms-size-sm-height)",
+        } as React.CSSProperties
+      }
+    />
   );
 }

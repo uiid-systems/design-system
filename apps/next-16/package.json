@@ -15,11 +15,16 @@
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
+    "@uiid/interactive": "workspace:*",
+    "@uiid/tables": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/navigation": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*"
+    "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5",

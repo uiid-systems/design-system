@@ -7,6 +7,8 @@ import { TableCell } from "./table-cell";
 
 import styles from "./table-cell-dropdown.module.css";
 
+const LABEL = "More options";
+
 export const TableCellDropdown = () => {
   return (
     <TableCell className={styles["table-cell-dropdown"]}>
@@ -14,11 +16,12 @@ export const TableCellDropdown = () => {
         align="start"
         trigger={
           <Button
-            variant="subtle"
-            size="icon"
-            tooltip="More options"
+            tooltip={LABEL}
+            aria-label={LABEL}
             icon={<Ellipsis size={14} />}
-            aria-label="More options"
+            variant="subtle"
+            size="sm"
+            square
           />
         }
         items={[

@@ -1,3 +1,5 @@
+"use client";
+
 import { Collapsible as BaseCollapsible } from "@base-ui-components/react/collapsible";
 import { Stack } from "@uiid/layout";
 
