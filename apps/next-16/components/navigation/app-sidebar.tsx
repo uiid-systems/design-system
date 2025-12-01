@@ -20,15 +20,6 @@ const MOCK_LINKS: ListProps["items"] = [
     icon: UserCircle,
   },
   {
-    category: "TODO: Fix non-collapsible",
-    icon: Home,
-    items: [
-      { label: "Subitem 1", value: "subitem-1" },
-      { label: "Subitem 2", value: "subitem-2" },
-      { label: "Subitem 3", value: "subitem-3" },
-    ],
-  },
-  {
     category: "Community",
     collapsible: true,
     icon: Home,
@@ -62,9 +53,11 @@ export const AppSidebar = () => {
           <SidebarTrigger />
         </Group>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarList items={MOCK_LINKS} />
       </SidebarContent>
+
       <SidebarFooter>
         <Text level={0} bold>
           Sidebar footer

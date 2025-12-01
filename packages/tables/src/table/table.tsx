@@ -1,26 +1,19 @@
-"use client";
-
-import { cx } from "@uiid/utils";
-
 import type { TableProps } from "./table.types";
-import styles from "./table.module.css";
+
+import { TableContainer, TableRoot } from "./subcomponents";
 
 export const Table = ({
   striped,
   bordered,
-  className,
+  children,
   ...props
 }: TableProps) => {
   return (
-    <div data-slot="table-container" className={styles["table-container"]}>
-      <table
-        data-slot="table"
-        data-striped={striped}
-        data-bordered={bordered}
-        className={cx(styles["table"], className)}
-        {...props}
-      />
-    </div>
+    <TableContainer>
+      <TableRoot striped={striped} bordered={bordered} {...props}>
+        {children}
+      </TableRoot>
+    </TableContainer>
   );
 };
 Table.displayName = "Table";

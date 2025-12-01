@@ -1,5 +1,3 @@
-"use client";
-
 import { CloseButton, type CloseButtonProps } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
 

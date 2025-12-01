@@ -1,10 +1,4 @@
-.table-container {
-  position: relative;
-  width: 100%;
-  overflow-x: auto;
-}
-
-.table {
+.table-root {
   width: 100%;
   caption-side: bottom;
   font-size: 0.875rem;

@@ -87,6 +87,5 @@
   &:where([data-trim="true"]) {
     padding-block: 0;
     padding-inline: 0;
-    overflow: hidden;
   }
 }

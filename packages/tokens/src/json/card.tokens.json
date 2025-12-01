@@ -48,7 +48,7 @@
       "inverted": {
         "bg": { "$value": "{shade.foreground}", "$type": "color" },
         "border": { "$value": "{shade.halftone}", "$type": "color" },
-        "fg": { "$value": "{colors.neutral.900}", "$type": "color" }
+        "fg": { "$value": "{shade.background}", "$type": "color" }
       }
     }
   }

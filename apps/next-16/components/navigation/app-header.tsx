@@ -28,9 +28,14 @@ export const AppHeader = () => {
           { label: "Dashboard", value: "/dashboard" },
         ]}
       />
-      <Group gap={2}>
+      <Group gap={2} ay="center">
         <Button size="sm">Sign up</Button>
         <Login />
+        <div
+          role="separator"
+          aria-hidden="true"
+          className="h-4 w-px bg-(--globals-border-color) mx-2"
+        />
         <SwitchAppearance />
       </Group>
     </Group>

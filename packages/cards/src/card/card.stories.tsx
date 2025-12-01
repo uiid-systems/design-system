@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { X } from "@uiid/icons";
+
 import { Stack, Group } from "@uiid/layout";
 
 import { Card } from "./card";
@@ -27,18 +27,6 @@ const meta = {
         <Card {...args} variant="error" title="Error card" />
         <Card {...args} variant="success" title="Success card" />
         <Card {...args} variant="inverted" title="Inverted card" />
-      </Stack>
-
-      <Stack gap={4} ax="stretch">
-        <Card
-          {...args}
-          title="Card with action"
-          action={{
-            icon: <X />,
-            "aria-label": "Card action",
-            onClick: () => alert("Card action clicked"),
-          }}
-        />
       </Stack>
     </Group>
   ),
