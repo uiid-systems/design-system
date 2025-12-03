@@ -11,10 +11,13 @@ import {
   TableRoot,
   TableRow,
 } from "./subcomponents";
+import { Button } from "@uiid/buttons";
+import { Group } from "@uiid/layout";
 
 export const Table = <T extends Record<string, unknown>>({
   items,
   actions,
+  moreActions,
   columns,
   formatHeader,
   striped,
@@ -37,9 +40,9 @@ export const Table = <T extends Record<string, unknown>>({
                 {headerFormatter(column)}
               </TableHead>
             ))}
-            {actions && (
+            {(actions || moreActions) && (
               <TableHead>
-                <span className="sr-only">{actions.tooltip}</span>
+                <span className="sr-only">Row actions</span>
               </TableHead>
             )}
           </TableRow>
@@ -52,7 +55,24 @@ export const Table = <T extends Record<string, unknown>>({
                   {String(item[column])}
                 </TableCell>
               ))}
-              {actions && <TableCellDropdown {...actions} />}
+              {(actions || moreActions) && (
+                <TableCell style={{ width: 0 }}>
+                  <Group gap={2} ax="end">
+                    {actions &&
+                      actions.map((action) => (
+                        <Button
+                          key={action.tooltip}
+                          aria-label={action.tooltip}
+                          variant="subtle"
+                          size="sm"
+                          square
+                          {...action}
+                        />
+                      ))}
+                    {moreActions && <TableCellDropdown {...moreActions} />}
+                  </Group>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

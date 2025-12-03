@@ -2,7 +2,7 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Button Component Tokens",
   "forms": {
-    "background": { "$value": "{shade.surface}", "$type": "color" },
+    "background": { "$value": "{shade.muted}", "$type": "color" },
     "backgroundFocus": {
       "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
       "$type": "color"
@@ -11,7 +11,7 @@
     "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
     "paddingX": { "$value": "0.75rem", "$type": "dimension" },
     "border": {
-      "color": { "$value": "{shade.muted}", "$type": "color" },
+      "color": { "$value": "{shade.halftone}", "$type": "color" },
       "radius": { "$value": "{globals.border.radius}", "$type": "dimension" },
       "width": { "$value": "{globals.border.width}", "$type": "dimension" }
     },

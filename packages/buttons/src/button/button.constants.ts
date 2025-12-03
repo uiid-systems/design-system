@@ -1,1 +1,1 @@
-export const BUTTON_TOOLTIP_DELAY = 1000;
+export const BUTTON_TOOLTIP_DELAY = 400;

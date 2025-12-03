@@ -1,4 +1,4 @@
-import { Cog } from "@uiid/icons";
+import { Swords, Star } from "@uiid/icons";
 
 import type { TableProps } from "./table.types";
 
@@ -54,8 +54,20 @@ export const TABLE_MOCK_DATA: TableMockData[] = [
   },
 ];
 
-export const TABLE_MOCK_ACTIONS: TableProps["actions"] = {
-  icon: <Cog />,
+export const TABLE_MOCK_ACTIONS: TableProps["actions"] = [
+  {
+    icon: <Swords />,
+    tooltip: "Challenge",
+    onClick: () => console.log("Delete"),
+  },
+  {
+    icon: <Star />,
+    tooltip: "Favorite",
+    onClick: () => console.log("Favorite"),
+  },
+];
+
+export const TABLE_MOCK_MORE_ACTIONS: TableProps["moreActions"] = {
   tooltip: "Settings",
   items: [
     { label: "Edit", value: "edit" },

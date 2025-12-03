@@ -16,8 +16,7 @@ export type TextProps = React.PropsWithChildren<{
   render?: RenderProp;
   style?: React.CSSProperties;
   className?: string;
-  uiid?: string;
 }> &
   TextVariantProps &
-  Pick<ToggleProps, "bold"> &
+  Pick<ToggleProps, "bold" | "center"> &
   SpacingProps;

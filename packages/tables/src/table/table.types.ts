@@ -1,6 +1,12 @@
 import type { ButtonProps } from "@uiid/buttons";
 import type { MenuItem } from "@uiid/interactive";
 
+export type TableActionsProps = {
+  icon: ButtonProps["icon"];
+  tooltip: string;
+  onClick: () => void;
+};
+
 export type TableCellDropdownProps = {
   icon?: ButtonProps["icon"];
   tooltip?: string;
@@ -17,6 +23,7 @@ export type TableProps<
 > = Omit<TableRootProps, "children"> & {
   items: T[];
   columns?: Array<keyof T>;
-  actions?: TableCellDropdownProps;
+  actions?: TableActionsProps[];
+  moreActions?: TableCellDropdownProps;
   formatHeader?: (key: keyof T) => React.ReactNode;
 };

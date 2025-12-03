@@ -13,7 +13,8 @@
     "./bold.css": "./dist/bold.css",
     "./evenly.css": "./dist/evenly.css",
     "./fullheight.css": "./dist/fullheight.css",
-    "./fullwidth.css": "./dist/fullwidth.css"
+    "./fullwidth.css": "./dist/fullwidth.css",
+    "./center.css": "./dist/center.css"
   },
   "files": [
     "dist"

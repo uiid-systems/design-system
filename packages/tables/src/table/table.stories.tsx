@@ -20,6 +20,7 @@ import {
 import {
   TABLE_MOCK_DATA,
   type TableMockData,
+  TABLE_MOCK_MORE_ACTIONS,
   TABLE_MOCK_ACTIONS,
 } from "./table.mocks";
 
@@ -47,6 +48,7 @@ export const Default = {
       <Table<TableMockData>
         items={TABLE_MOCK_DATA}
         actions={TABLE_MOCK_ACTIONS}
+        moreActions={TABLE_MOCK_MORE_ACTIONS}
         striped
         bordered
       />
@@ -80,12 +82,14 @@ const DemoTable = ({
             <TableCell>{item.id}</TableCell>
             <TableCell>{item.location}</TableCell>
             <TableCell>{item.status}</TableCell>
-            <TableCellDropdown
-              items={[
-                { label: "Edit", value: "edit" },
-                { label: "Delete", value: "delete" },
-              ]}
-            />
+            <TableCell>
+              <TableCellDropdown
+                items={[
+                  { label: "Edit", value: "edit" },
+                  { label: "Delete", value: "delete" },
+                ]}
+              />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

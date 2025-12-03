@@ -11,6 +11,7 @@ import styles from "./modal.module.css";
 
 export const Modal = ({
   trigger,
+  size = "md",
   title,
   open,
   onOpenChange,
@@ -35,6 +36,7 @@ export const Modal = ({
       <Dialog.Portal keepMounted={keepMounted}>
         <Dialog.Backdrop className={styles["modal-backdrop"]} />
         <Dialog.Popup
+          data-size={size}
           className={cx(styles["modal-popup"], PopupProps?.className)}
           {...PopupProps}
           render={

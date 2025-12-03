@@ -2,9 +2,13 @@ import type { Dialog } from "@base-ui-components/react/dialog";
 
 import type { CardProps } from "@uiid/cards";
 
+type ModalSize = "sm" | "md" | "lg" | "xl";
+
 export type ModalProps = React.PropsWithChildren<{
   /** A render prop for the trigger element. */
   trigger: React.ReactNode;
+  /** The size of the modal. */
+  size?: ModalSize;
   /**
    * The props for the root element.
    * @see https://base-ui-components.github.io/react/dialog/#root

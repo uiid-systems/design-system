@@ -1,0 +1,12 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Modal Component Tokens",
+  "modal": {
+    "size": {
+      "sm": { "$value": "24rem", "$type": "dimension" },
+      "md": { "$value": "40rem", "$type": "dimension" },
+      "lg": { "$value": "48rem", "$type": "dimension" },
+      "xl": { "$value": "56rem", "$type": "dimension" }
+    }
+  }
+}

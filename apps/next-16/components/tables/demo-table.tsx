@@ -1,9 +1,10 @@
 "use client";
 
 import { Card } from "@uiid/cards";
-import { Table } from "@uiid/tables";
+import { Swords, Star, Heart } from "@uiid/icons";
+import { Table, type TableProps } from "@uiid/tables";
 
-const TABLE_MOCK_DATA = [
+const TABLE_MOCK_DATA: TableProps["items"] = [
   {
     id: 1,
     name: "John Doe",
@@ -26,10 +27,28 @@ const TABLE_MOCK_DATA = [
   },
 ];
 
-export const TABLE_MOCK_ACTIONS = {
-  tooltip: "Settings",
+const TABLE_MOCK_ACTIONS: TableProps["actions"] = [
+  {
+    icon: <Swords />,
+    tooltip: "Challenge",
+    onClick: () => console.log("Delete"),
+  },
+  {
+    icon: <Star />,
+    tooltip: "Favorite",
+    onClick: () => console.log("Favorite"),
+  },
+  {
+    icon: <Heart />,
+    tooltip: "Like",
+    onClick: () => console.log("Like"),
+  },
+];
+
+const MOCK_TABLE_MORE_ACTIONS: TableProps["moreActions"] = {
+  tooltip: "More actions",
   items: [
-    { label: "Edit", value: "edit" },
+    { label: "View profile", value: "view-profile" },
     { label: "Delete", value: "delete" },
   ],
 };
@@ -40,6 +59,7 @@ export const DemoTable = () => {
       <Table
         items={TABLE_MOCK_DATA}
         actions={TABLE_MOCK_ACTIONS}
+        moreActions={MOCK_TABLE_MORE_ACTIONS}
         formatHeader={(key) => key.toUpperCase()}
         striped
         bordered

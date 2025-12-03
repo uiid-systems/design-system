@@ -1,7 +1,10 @@
 import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
+
 import type { TextProps } from "./text.types";
 
 import "@uiid/utils/bold.css";
+import "@uiid/utils/center.css";
+
 import styles from "./text.module.css";
 
 export const Text = ({
@@ -13,7 +16,7 @@ export const Text = ({
 }: TextProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    toggleProps: ["bold"],
+    toggleProps: ["bold", "center"],
     styleProps: [
       "p",
       "px",

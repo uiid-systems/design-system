@@ -79,7 +79,7 @@
   &:where([data-variant="subtle"]) {
     --button-bg: var(--button-variant-subtle-bg);
     --button-fg: var(--button-variant-subtle-fg);
-    --button-border-color: var(--globals-border-color);
+    --button-border-color: var(--button-variant-subtle-border-color);
   }
   &:where([data-variant="inverted"]) {
     --button-bg: var(--button-variant-inverted-bg);
