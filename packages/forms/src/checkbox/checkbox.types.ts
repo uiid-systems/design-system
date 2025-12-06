@@ -1,7 +1,8 @@
-import type { FormProps } from "../types";
+import type { Checkbox } from "@base-ui-components/react/checkbox";
 
-export type CheckboxProps = {
-  ref?: React.Ref<HTMLInputElement>;
-  indeterminate?: boolean;
-} & Omit<FormProps, "size" | "before" | "after"> &
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children">;
+export type CheckboxProps = Checkbox.Root.Props & {
+  label?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  IndicatorProps?: Checkbox.Indicator.Props;
+};

@@ -1,0 +1,68 @@
+@import "@uiid/tokens/checkbox.tokens.css";
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--shade-accent);
+}
+
+.checkbox {
+  box-sizing: border-box;
+  display: flex;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  outline: 0;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  &[data-unchecked] {
+    border: 1px solid var(--forms-border-color);
+    background-color: var(--forms-background);
+  }
+
+  &[data-checked] {
+    background-color: var(--forms-foreground);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--shade-foreground);
+    outline-offset: 2px;
+  }
+
+  &:where([data-size="sm"]) {
+    --checkbox-size: var(--checkbox-size-sm);
+  }
+  &:where([data-size="md"]) {
+    --checkbox-size: var(--checkbox-size-md);
+  }
+  &:where([data-size="lg"]) {
+    --checkbox-size: var(--checkbox-size-lg);
+  }
+
+  &::after {
+    position: absolute;
+    inset: -0.25rem;
+  }
+}
+
+.indicator {
+  display: flex;
+  color: var(--shade-background);
+
+  &[data-unchecked] {
+    display: none;
+  }
+}
+
+.icon {
+  width: 0.75rem;
+  height: 0.75rem;
+}

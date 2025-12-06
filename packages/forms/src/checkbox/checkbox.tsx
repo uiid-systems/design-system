@@ -1,81 +1,43 @@
-"use client";
+import { Checkbox as BaseCheckbox } from "@base-ui-components/react/checkbox";
 
-import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { CheckIcon, MinusIcon } from "@uiid/icons";
+import { SwitchRender } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
-import { FormFieldLabel, FormFieldDescription } from "../formfield";
 import type { CheckboxProps } from "./checkbox.types";
+import styles from "./checkbox.module.css";
 
 export const Checkbox = ({
-  name,
   label,
-  description,
-  // required,
-  disabled,
-  validate,
-  // size,
+  size = "md",
   indeterminate,
-  ref,
+  IndicatorProps,
   ...props
 }: CheckboxProps) => {
-  const hasLabel = Boolean(label);
-  const hasDescription = Boolean(description);
-
-  // Ref callback to handle indeterminate state without hooks
-  const handleRef = (element: HTMLInputElement | null) => {
-    if (element) {
-      element.indeterminate = Boolean(indeterminate);
-    }
-
-    // Forward the ref if provided
-    if (ref) {
-      if (typeof ref === "function") {
-        ref(element);
-      } else {
-        (ref as React.MutableRefObject<HTMLInputElement | null>).current =
-          element;
-      }
-    }
-  };
-
   return (
-    <ConditionalRender
-      condition={hasLabel}
-      render={
-        <FormFieldLabel
-          data-validate={validate ? true : undefined}
-          htmlFor={name}
-        />
-      }
-    >
-      <ConditionalRender
-        condition={hasLabel}
-        render={<Group ay={hasDescription ? "start" : "center"} gap={2} />}
+    <label data-slot="checkbox-label" className={styles["label"]}>
+      <BaseCheckbox.Root
+        aria-label="Enable notifications"
+        className={cx(styles["checkbox"], props.className)}
+        data-size={size}
+        {...props}
       >
-        <input
-          {...props}
-          ref={handleRef}
-          data-uiid="checkbox"
-          type="checkbox"
-          data-validate={validate ? true : undefined}
-          data-indeterminate={indeterminate ? true : undefined}
-          name={name}
-          id={name}
-          aria-label={!label && !description ? name : undefined}
-          /** @todo enable focus when disabled */
-          tabIndex={disabled ? -1 : undefined}
-          disabled={disabled}
-        />
-        <ConditionalRender
-          condition={hasDescription}
-          render={<Stack gap={1} />}
+        <BaseCheckbox.Indicator
+          className={cx(styles["indicator"], IndicatorProps?.className)}
+          {...IndicatorProps}
         >
-          {label && <span>{label}</span>}
-          {label && description && (
-            <FormFieldDescription>{description}</FormFieldDescription>
-          )}
-        </ConditionalRender>
-      </ConditionalRender>
-    </ConditionalRender>
+          <SwitchRender
+            condition={Boolean(indeterminate)}
+            className={styles["icon"]}
+            render={{
+              true: <MinusIcon strokeWidth={3} />,
+              false: <CheckIcon strokeWidth={3} />,
+            }}
+          />
+        </BaseCheckbox.Indicator>
+      </BaseCheckbox.Root>
+      {label}
+    </label>
   );
 };
 Checkbox.displayName = "Checkbox";

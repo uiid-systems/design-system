@@ -25,7 +25,7 @@ export const TableCellCheckbox = ({
       className={cx(styles["table-cell-checkbox"], className)}
       {...props}
     >
-      <Checkbox />
+      <Checkbox size="sm" />
     </SwitchRender>
   );
 };
