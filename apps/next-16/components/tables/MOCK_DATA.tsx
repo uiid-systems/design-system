@@ -1,4 +1,5 @@
-import { Calendar, Swords, Star, Heart } from "@uiid/icons";
+import { Swords, Star, Heart, Calendar } from "@uiid/icons";
+import { formatDate } from "@uiid/calendars";
 import type { TableProps } from "@uiid/tables";
 import type { MenuProps } from "@uiid/interactive";
 
@@ -32,28 +33,28 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
     rank: 1,
     played: 12,
     won: 6,
-    lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
+    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
   },
   {
     name: "Jane Doe",
     rank: 2,
     played: 5,
     won: 3,
-    lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
+    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
   },
   {
     name: "John Smith",
     rank: 3,
     played: 8,
     won: 8,
-    lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
+    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
   },
   {
     name: "Jane Smith",
     rank: 4,
     played: 10,
     won: 9,
-    lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
+    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
   },
 ];
 

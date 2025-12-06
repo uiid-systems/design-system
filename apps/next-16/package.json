@@ -11,6 +11,7 @@
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",
     "@uiid/buttons": "workspace:*",
+    "@uiid/calendars": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/icons": "workspace:*",
