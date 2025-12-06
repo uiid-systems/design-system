@@ -14,6 +14,7 @@ import {
   TABLE_MOCK_ACTIONS,
   TABLE_MOCK_MORE_ACTIONS,
   TABLE_MOCK_FILTERS,
+  TABLE_MOCK_COLUMNS,
 } from "./MOCK_DATA";
 
 export const DemoTable = () => {
@@ -52,12 +53,12 @@ export const DemoTable = () => {
       </Group>
       <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
         <Table
+          columns={TABLE_MOCK_COLUMNS}
           items={TABLE_MOCK_DATA}
           actions={{
             primary: TABLE_MOCK_ACTIONS,
             secondary: TABLE_MOCK_MORE_ACTIONS,
           }}
-          formatHeader={(key) => key.toUpperCase()}
           selectable
           bordered
         />

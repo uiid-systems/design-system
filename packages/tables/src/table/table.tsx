@@ -2,34 +2,30 @@ import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
 
 import {
+  TableContainer,
+  TableRoot,
+  TableHeader,
+  TableHead,
+  TableRow,
   TableBody,
   TableCell,
-  TableCellDropdown,
+  TableCellActions,
   TableCellCheckbox,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRoot,
-  TableRow,
 } from "./subcomponents";
-import { Button } from "@uiid/buttons";
-import { Group } from "@uiid/layout";
 
 export const Table = <T extends Record<string, unknown>>({
   items,
   actions,
   columns,
-  formatHeader,
+  formatHeader = defaultFormatHeader,
   selectable,
   striped,
   bordered,
   ...props
 }: TableProps<T>) => {
+  const columnKeys = items.length > 0 ? Object.keys(items[0]) : [];
   const displayColumns =
-    columns ||
-    (items.length > 0 ? (Object.keys(items[0]) as Array<keyof T>) : []);
-
-  const headerFormatter = formatHeader || defaultFormatHeader;
+    columns || (items.length > 0 ? Object.keys(items[0]) : []);
 
   return (
     <TableContainer>
@@ -38,9 +34,7 @@ export const Table = <T extends Record<string, unknown>>({
           <TableRow>
             {selectable && <TableCellCheckbox head />}
             {displayColumns.map((column) => (
-              <TableHead key={String(column)}>
-                {headerFormatter(column)}
-              </TableHead>
+              <TableHead key={String(column)}>{formatHeader(column)}</TableHead>
             ))}
             {actions && (
               <TableHead>
@@ -54,31 +48,12 @@ export const Table = <T extends Record<string, unknown>>({
           {items.map((item, index) => (
             <TableRow key={index}>
               {selectable && <TableCellCheckbox />}
-              {displayColumns.map((column) => (
+              {columnKeys.map((column) => (
                 <TableCell key={String(column)}>
                   {String(item[column])}
                 </TableCell>
               ))}
-              {actions && (
-                <TableCell style={{ width: 0 }}>
-                  <Group gap={2} ax="end">
-                    {actions.primary &&
-                      actions.primary.map((action) => (
-                        <Button
-                          key={action.tooltip}
-                          aria-label={action.tooltip}
-                          variant="subtle"
-                          size="sm"
-                          square
-                          {...action}
-                        />
-                      ))}
-                    {actions.secondary && (
-                      <TableCellDropdown {...actions.secondary} />
-                    )}
-                  </Group>
-                </TableCell>
-              )}
+              {actions && <TableCellActions actions={actions} />}
             </TableRow>
           ))}
         </TableBody>

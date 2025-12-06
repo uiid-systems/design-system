@@ -10,3 +10,4 @@ export * from "./table-head";
 export * from "./table-cell";
 export * from "./table-cell-dropdown";
 export * from "./table-cell-checkbox";
+export * from "./table-cell-actions";

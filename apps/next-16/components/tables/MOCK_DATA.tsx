@@ -18,6 +18,14 @@ export const TABLE_MOCK_FILTERS: MenuProps["items"] = [
   { label: "Inactive", value: "inactive" },
 ];
 
+export const TABLE_MOCK_COLUMNS: TableProps["columns"] = [
+  "Name",
+  "Rank",
+  "Played",
+  "Won",
+  "Last Played",
+];
+
 export const TABLE_MOCK_DATA: TableProps["items"] = [
   {
     name: "John Doe",

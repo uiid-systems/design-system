@@ -4,10 +4,8 @@ import type { ButtonIconSlotProps } from "./subcomponents";
 
 // Base button styling and behavior props
 type ButtonCoreProps = {
-  variant?: "inverted" | "subtle";
+  variant?: "inverted" | "subtle" | "ghost";
   size?: "sm" | "md" | "lg";
-  // fill?: "solid" | "outline" | "ghost";
-  fill?: "solid";
   shape?: "rounded" | "pill";
   tooltip?: React.ReactNode;
   delay?: number;

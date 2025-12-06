@@ -17,7 +17,6 @@ import {
 export const Button = ({
   variant,
   size = "md",
-  fill = "solid",
   shape = "rounded",
   grows = true,
   square,
@@ -86,7 +85,6 @@ export const Button = ({
       "data-icon": icon && (iconPosition ? iconPosition : "standalone"),
       "data-variant": variant,
       "data-size": size,
-      "data-fill": fill,
       "data-shape": shape,
       "data-grows": grows ? "true" : undefined,
       "data-square": square ? "true" : undefined,

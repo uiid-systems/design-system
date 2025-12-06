@@ -19,7 +19,7 @@
   overflow: hidden;
   padding-inline: calc(var(--button-padding-x) * 2);
   position: relative;
-  transition: opacity var(--globals-transition-timing) ease-in-out;
+  transition: background-color var(--globals-transition-timing) ease-in-out;
 
   &:where(:hover, :active) {
     background-color: color-mix(in oklab, var(--button-bg) var(--button-mix-hover), var(--button-mix-color));
@@ -85,7 +85,16 @@
     --button-bg: var(--button-variant-inverted-bg);
     --button-fg: var(--button-variant-inverted-fg);
     --button-border-color: var(--button-variant-inverted-bg);
+    --button-mix-color: var(--shade-foreground);
     --globals-outline-color: var(--button-variant-inverted-bg);
+    color: var(--button-fg);
+  }
+
+  &:where([data-variant="ghost"]) {
+    --button-bg: transparent;
+    --button-fg: var(--button-variant-inverted-fg);
+    --button-border-color: transparent;
+    --button-mix-color: var(--shade-foreground);
     color: var(--button-fg);
   }
 

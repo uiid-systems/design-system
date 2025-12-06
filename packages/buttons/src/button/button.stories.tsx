@@ -17,7 +17,6 @@ const meta = {
     loading: { control: "boolean" },
     disabled: { control: "boolean" },
     size: { control: "select", options: ["sm", "md", "lg"] },
-    fill: { control: "select", options: ["solid", "outline", "ghost"] },
     shape: { control: "select", options: ["rounded", "pill"] },
   },
 } satisfies Meta<typeof Button>;
@@ -32,6 +31,7 @@ export const Default: Story = {
       { variant: undefined, label: "default" },
       { variant: "subtle" as const, label: "subtle" },
       { variant: "inverted" as const, label: "inverted" },
+      { variant: "ghost" as const, label: "ghost" },
     ];
 
     return (

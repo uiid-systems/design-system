@@ -23,7 +23,7 @@ export type TableProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = Omit<TableRootProps, "children"> & {
   items: T[];
-  columns?: Array<keyof T>;
+  columns?: string[];
   actions?: {
     primary?: TableActionsProps[];
     secondary?: TableCellDropdownProps;
