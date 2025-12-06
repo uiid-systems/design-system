@@ -4,7 +4,8 @@ import type { MenuItem } from "@uiid/interactive";
 export type TableActionsProps = {
   icon: ButtonProps["icon"];
   tooltip: string;
-  onClick: () => void;
+  onClick?: () => void;
+  wrapper?: (button: React.ReactElement) => React.ReactElement;
 };
 
 export type TableCellDropdownProps = {

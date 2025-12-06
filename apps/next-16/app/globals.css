@@ -2,6 +2,7 @@
 
 @layer components {
   @import "@uiid/buttons/globals.css";
+  @import "@uiid/calendars/globals.css";
   @import "@uiid/cards/globals.css";
   @import "@uiid/forms/globals.css";
   @import "@uiid/indicators/globals.css";

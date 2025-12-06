@@ -1,3 +1,5 @@
+import { isValidElement } from "react";
+
 import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
 
@@ -50,7 +52,9 @@ export const Table = <T extends Record<string, unknown>>({
               {selectable && <TableCellCheckbox />}
               {columnKeys.map((column) => (
                 <TableCell key={String(column)}>
-                  {String(item[column])}
+                  {isValidElement(item[column])
+                    ? item[column]
+                    : String(item[column])}
                 </TableCell>
               ))}
               {actions && <TableCellActions actions={actions} />}
