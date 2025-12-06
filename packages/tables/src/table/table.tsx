@@ -5,6 +5,7 @@ import {
   TableBody,
   TableCell,
   TableCellDropdown,
+  TableCellCheckbox,
   TableContainer,
   TableHead,
   TableHeader,
@@ -19,6 +20,7 @@ export const Table = <T extends Record<string, unknown>>({
   actions,
   columns,
   formatHeader,
+  selectable,
   striped,
   bordered,
   ...props
@@ -34,6 +36,7 @@ export const Table = <T extends Record<string, unknown>>({
       <TableRoot striped={striped} bordered={bordered} {...props}>
         <TableHeader>
           <TableRow>
+            {selectable && <TableCellCheckbox head />}
             {displayColumns.map((column) => (
               <TableHead key={String(column)}>
                 {headerFormatter(column)}
@@ -50,6 +53,7 @@ export const Table = <T extends Record<string, unknown>>({
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
+              {selectable && <TableCellCheckbox />}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {String(item[column])}

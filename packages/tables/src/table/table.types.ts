@@ -14,6 +14,7 @@ export type TableCellDropdownProps = {
 };
 
 export type TableRootProps = React.ComponentProps<"table"> & {
+  selectable?: boolean;
   striped?: boolean;
   bordered?: boolean;
 };

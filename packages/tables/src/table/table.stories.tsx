@@ -12,7 +12,6 @@ import {
   TableRow,
   TableBody,
   TableCell,
-  TableCellCheckbox,
   TableCellDropdown,
   type TableProps,
 } from "../";
@@ -46,6 +45,7 @@ export const Default = {
       </Card>
 
       <Table<TableMockData>
+        selectable
         items={TABLE_MOCK_DATA}
         actions={{
           primary: TABLE_MOCK_ACTIONS,
@@ -66,7 +66,6 @@ const DemoTable = ({
     <TableRoot striped={striped} bordered={bordered}>
       <TableHeader>
         <TableRow>
-          <TableCellCheckbox head />
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>ID</TableHead>
@@ -78,7 +77,6 @@ const DemoTable = ({
       <TableBody>
         {TABLE_MOCK_DATA.map((item) => (
           <TableRow key={item.id}>
-            <TableCellCheckbox />
             <TableCell>{item.name}</TableCell>
             <TableCell>{item.email}</TableCell>
             <TableCell>{item.id}</TableCell>

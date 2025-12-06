@@ -10,7 +10,7 @@ export const TableRoot = ({
   className,
   children,
   ...props
-}: TableRootProps) => {
+}: Omit<TableRootProps, "selectable">) => {
   return (
     <table
       data-slot="table-root"

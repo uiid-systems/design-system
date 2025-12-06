@@ -53,12 +53,12 @@ export const DemoTable = () => {
       <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
         <Table
           items={TABLE_MOCK_DATA}
-          formatHeader={(key) => key.toUpperCase()}
           actions={{
             primary: TABLE_MOCK_ACTIONS,
             secondary: TABLE_MOCK_MORE_ACTIONS,
           }}
-          striped
+          formatHeader={(key) => key.toUpperCase()}
+          selectable
           bordered
         />
       </Card>
