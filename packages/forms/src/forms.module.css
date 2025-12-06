@@ -61,6 +61,10 @@
   outline-color: var(--forms-outline-color);
   outline-width: var(--forms-outline-width);
 
+  &:hover {
+    background-color: var(--forms-backgroundHover);
+  }
+
   /** Validation */
   &:not(:placeholder-shown)[data-validate="true"],
   &:has(:not(:placeholder-shown)[data-validate="true"]) {

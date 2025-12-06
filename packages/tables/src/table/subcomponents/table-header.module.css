@@ -1,3 +1,4 @@
 .table-header {
-  background-color: var(--shade-surface);
+  background-color: var(--table-head-background-color);
+  color: var(--table-head-color);
 }
