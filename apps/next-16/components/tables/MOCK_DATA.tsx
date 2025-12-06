@@ -20,29 +20,29 @@ export const TABLE_MOCK_FILTERS: MenuProps["items"] = [
 
 export const TABLE_MOCK_DATA: TableProps["items"] = [
   {
-    id: 1,
     name: "John Doe",
+    rank: 1,
     played: 12,
     won: 6,
     lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
   },
   {
-    id: 2,
     name: "Jane Doe",
+    rank: 2,
     played: 5,
     won: 3,
     lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
   },
   {
-    id: 3,
     name: "John Smith",
+    rank: 3,
     played: 8,
     won: 8,
     lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],
   },
   {
-    id: 4,
     name: "Jane Smith",
+    rank: 4,
     played: 10,
     won: 9,
     lastPlayed: new Date("2025-01-01").toISOString().split("T")[0],

@@ -2,6 +2,9 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Checkbox Component Tokens",
   "checkbox": {
+    "border": {
+      "radius": { "$value": "0.25rem", "$type": "dimension" }
+    },
     "size": {
       "sm": { "$value": "1rem", "$type": "dimension" },
       "md": { "$value": "1.25rem", "$type": "dimension" },
