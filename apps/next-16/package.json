@@ -9,31 +9,32 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "next": "16.0.1",
+    "@icons-pack/react-simple-icons": "^13.8.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
+    "@uiid/forms": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/indicators": "workspace:*",
     "@uiid/interactive": "workspace:*",
-    "@uiid/tables": "workspace:*",
-    "@uiid/forms": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/navigation": "workspace:*",
     "@uiid/overlays": "workspace:*",
+    "@uiid/tables": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
-    "@uiid/utils": "workspace:*"
+    "@uiid/utils": "workspace:*",
+    "next": "16.0.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "16.0.1"
+    "eslint-config-next": "16.0.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

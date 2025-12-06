@@ -34,7 +34,7 @@ export const AppHeader = () => {
         <div
           role="separator"
           aria-hidden="true"
-          className="h-4 w-px bg-(--globals-border-color) mx-2"
+          className="h-4 w-px bg-(--shade-halftone) mx-2"
         />
         <SwitchAppearance />
       </Group>

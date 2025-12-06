@@ -17,7 +17,6 @@ import { Group } from "@uiid/layout";
 export const Table = <T extends Record<string, unknown>>({
   items,
   actions,
-  moreActions,
   columns,
   formatHeader,
   striped,
@@ -40,13 +39,14 @@ export const Table = <T extends Record<string, unknown>>({
                 {headerFormatter(column)}
               </TableHead>
             ))}
-            {(actions || moreActions) && (
+            {actions && (
               <TableHead>
                 <span className="sr-only">Row actions</span>
               </TableHead>
             )}
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
@@ -55,11 +55,11 @@ export const Table = <T extends Record<string, unknown>>({
                   {String(item[column])}
                 </TableCell>
               ))}
-              {(actions || moreActions) && (
+              {actions && (
                 <TableCell style={{ width: 0 }}>
                   <Group gap={2} ax="end">
-                    {actions &&
-                      actions.map((action) => (
+                    {actions.primary &&
+                      actions.primary.map((action) => (
                         <Button
                           key={action.tooltip}
                           aria-label={action.tooltip}
@@ -69,13 +69,17 @@ export const Table = <T extends Record<string, unknown>>({
                           {...action}
                         />
                       ))}
-                    {moreActions && <TableCellDropdown {...moreActions} />}
+                    {actions.secondary && (
+                      <TableCellDropdown {...actions.secondary} />
+                    )}
                   </Group>
                 </TableCell>
               )}
             </TableRow>
           ))}
         </TableBody>
+
+        {/** @todo: Add table footer */}
       </TableRoot>
     </TableContainer>
   );

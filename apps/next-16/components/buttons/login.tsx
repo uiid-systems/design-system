@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SiDiscord, SiGoogle, SiApple } from "@icons-pack/react-simple-icons";
 
 import { Button } from "@uiid/buttons";
 import { Input, InputPassword } from "@uiid/forms";
@@ -66,7 +67,7 @@ const LoginFormHeader = () => {
         Welcome back
       </Text>
       <Text render={<p />} level={0} shade="accent" center>
-        Login with your Discord or Google account.
+        Login with one of your social accounts.
       </Text>
     </Stack>
   );
@@ -76,8 +77,13 @@ LoginFormHeader.displayName = "LoginFormHeader";
 const LoginFormSocials = () => {
   return (
     <Stack gap={4} ax="stretch">
-      <Button variant="subtle">Login with Discord</Button>
-      <Button variant="subtle">Login with Google</Button>
+      <SocialButton icon={<SiDiscord size={14} />}>
+        Login with Discord
+      </SocialButton>
+      <SocialButton icon={<SiApple size={12} />}>Login with Apple</SocialButton>
+      <SocialButton icon={<SiGoogle size={12} />}>
+        Login with Google
+      </SocialButton>
     </Stack>
   );
 };
@@ -110,3 +116,18 @@ const Divider = () => {
   );
 };
 Divider.displayName = "Divider";
+
+const SocialButton = ({
+  children,
+  icon,
+}: {
+  children: React.ReactNode;
+  icon: React.ReactNode;
+}) => {
+  return (
+    <Button variant="subtle" icon={icon} iconPosition="before">
+      {children}
+    </Button>
+  );
+};
+SocialButton.displayName = "SocialButton";

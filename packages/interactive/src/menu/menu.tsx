@@ -35,7 +35,7 @@ export const Menu = ({
       </BaseMenu.Trigger>
       <BaseMenu.Portal>
         <BaseMenu.Positioner
-          className={styles.Positioner}
+          className={styles["positioner"]}
           collisionPadding={16}
           side={side}
           align={align}
@@ -49,7 +49,7 @@ export const Menu = ({
                 return (
                   <BaseMenu.SubmenuRoot key={item.value}>
                     <BaseMenu.SubmenuTrigger
-                      className={styles.SubmenuTrigger}
+                      className={styles["submenu-trigger"]}
                       render={<Group gap={4} ay="center" ax="space-between" />}
                     >
                       {item.label}
@@ -68,7 +68,10 @@ export const Menu = ({
                           {submenu.map((subitem) => (
                             <BaseMenu.Item
                               key={subitem.value}
-                              className={cx(styles.Item, ItemProps?.className)}
+                              className={cx(
+                                styles["item"],
+                                ItemProps?.className,
+                              )}
                               {...ItemProps}
                             >
                               {subitem.label}
@@ -84,7 +87,7 @@ export const Menu = ({
               return (
                 <BaseMenu.Item
                   key={item.value}
-                  className={cx(styles.Item, ItemProps?.className)}
+                  className={cx(styles["item"], ItemProps?.className)}
                   {...ItemProps}
                 >
                   {item.label}

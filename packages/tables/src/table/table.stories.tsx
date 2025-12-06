@@ -47,8 +47,10 @@ export const Default = {
 
       <Table<TableMockData>
         items={TABLE_MOCK_DATA}
-        actions={TABLE_MOCK_ACTIONS}
-        moreActions={TABLE_MOCK_MORE_ACTIONS}
+        actions={{
+          primary: TABLE_MOCK_ACTIONS,
+          secondary: TABLE_MOCK_MORE_ACTIONS,
+        }}
         striped
         bordered
       />

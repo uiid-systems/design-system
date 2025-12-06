@@ -23,7 +23,9 @@ export type TableProps<
 > = Omit<TableRootProps, "children"> & {
   items: T[];
   columns?: Array<keyof T>;
-  actions?: TableActionsProps[];
-  moreActions?: TableCellDropdownProps;
+  actions?: {
+    primary?: TableActionsProps[];
+    secondary?: TableCellDropdownProps;
+  };
   formatHeader?: (key: keyof T) => React.ReactNode;
 };

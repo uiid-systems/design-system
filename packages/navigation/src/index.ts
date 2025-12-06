@@ -4,3 +4,6 @@ export * from "./sidebar/sidebar.types";
 export * from "./sidebar/sidebar.hooks";
 
 export * from "./breadcrumbs/breadcrumbs";
+
+export * from "./pagination/pagination";
+export * from "./pagination/pagination.types";

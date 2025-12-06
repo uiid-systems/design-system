@@ -1,69 +1,81 @@
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Swords, Star, Heart } from "@uiid/icons";
-import { Table, type TableProps } from "@uiid/tables";
+import { Select, Autocomplete } from "@uiid/forms";
+import { Filter, Search } from "@uiid/icons";
+import { Menu } from "@uiid/interactive";
+import { Stack, Group } from "@uiid/layout";
+import { Table } from "@uiid/tables";
+import { Pagination } from "@uiid/navigation";
 
-const TABLE_MOCK_DATA: TableProps["items"] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-  },
-  {
-    id: 3,
-    name: "John Smith",
-    email: "john.smith@example.com",
-  },
-  {
-    id: 4,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-  },
-];
-
-const TABLE_MOCK_ACTIONS: TableProps["actions"] = [
-  {
-    icon: <Swords />,
-    tooltip: "Challenge",
-    onClick: () => console.log("Delete"),
-  },
-  {
-    icon: <Star />,
-    tooltip: "Favorite",
-    onClick: () => console.log("Favorite"),
-  },
-  {
-    icon: <Heart />,
-    tooltip: "Like",
-    onClick: () => console.log("Like"),
-  },
-];
-
-const MOCK_TABLE_MORE_ACTIONS: TableProps["moreActions"] = {
-  tooltip: "More actions",
-  items: [
-    { label: "View profile", value: "view-profile" },
-    { label: "Delete", value: "delete" },
-  ],
-};
+import {
+  TABLE_MOCK_DATA,
+  TABLE_MOCK_ACTIONS,
+  TABLE_MOCK_MORE_ACTIONS,
+  TABLE_MOCK_FILTERS,
+} from "./MOCK_DATA";
 
 export const DemoTable = () => {
   return (
-    <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
-      <Table
-        items={TABLE_MOCK_DATA}
-        actions={TABLE_MOCK_ACTIONS}
-        moreActions={MOCK_TABLE_MORE_ACTIONS}
-        formatHeader={(key) => key.toUpperCase()}
-        striped
-        bordered
-      />
-    </Card>
+    <Stack gap={4} fullwidth>
+      <Group gap={2} ay="center" ax="space-between" fullwidth>
+        {/**
+         * @todo remove css targeting autocomplete after fix
+         * @see https://github.com/uiid-systems/design-system/issues/3
+         * */}
+        <div className="[&~*]:w-auto">
+          <Menu
+            items={TABLE_MOCK_FILTERS}
+            trigger={
+              <Button
+                variant="subtle"
+                size="sm"
+                icon={<Filter size={14} />}
+                iconPosition="before"
+              >
+                Filters
+              </Button>
+            }
+          />
+        </div>
+        <Autocomplete
+          aria-label="Search players"
+          placeholder="Search players"
+          size="sm"
+          before={<Search size={14} />}
+          items={TABLE_MOCK_DATA.map((item) => ({
+            value: item.id as string,
+            label: item.name as string,
+          }))}
+        />
+      </Group>
+      <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
+        <Table
+          items={TABLE_MOCK_DATA}
+          formatHeader={(key) => key.toUpperCase()}
+          actions={{
+            primary: TABLE_MOCK_ACTIONS,
+            secondary: TABLE_MOCK_MORE_ACTIONS,
+          }}
+          striped
+          bordered
+        />
+      </Card>
+      <Group gap={2} ax="space-between" fullwidth>
+        <Select
+          aria-label="Select a page size"
+          size="sm"
+          options={[
+            { label: "20 rows per page", value: "20" },
+            { label: "50 rows per page", value: "50" },
+            { label: "100 rows per page", value: "100" },
+          ]}
+        />
+
+        <Pagination />
+      </Group>
+    </Stack>
   );
 };
+DemoTable.displayName = "DemoTable";
