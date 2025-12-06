@@ -1,19 +1,15 @@
-import { CloseButton, type CloseButtonProps } from "@uiid/buttons";
+import { CloseButton } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
 
-import type { CardVariantProps } from "../card.types";
+import type { CardHeaderProps } from "../card.types";
 
-import { CardTitle, type CardTitleProps } from "./card-title";
+import { CardTitle } from "./card-title";
 import { CardIcon } from "./card-icon";
-
-export type CardHeaderProps = {
-  action?: Required<Pick<CloseButtonProps, "aria-label" | "onClick">>;
-} & Pick<CardVariantProps, "variant"> &
-  CardTitleProps;
 
 export const CardHeader = ({
   variant,
-  action,
+  showCloseButton,
+  onClose,
   title,
   size,
 }: CardHeaderProps) => {
@@ -21,8 +17,8 @@ export const CardHeader = ({
     <Group data-slot="card-header" ay="center" gap={2}>
       {variant && <CardIcon variant={variant} />}
       <CardTitle title={title} size={size} />
-      {action && (
-        <CloseButton {...action} style={{ marginInlineStart: "auto" }} />
+      {showCloseButton && (
+        <CloseButton onClick={onClose} style={{ marginInlineStart: "auto" }} />
       )}
     </Group>
   );

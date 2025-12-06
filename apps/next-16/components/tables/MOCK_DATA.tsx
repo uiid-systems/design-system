@@ -75,7 +75,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     tooltip: "See schedule",
     wrapper: (button) => (
       <Modal trigger={button} title="Schedule">
-        <DateCalendar />
+        <DateCalendar headless />
       </Modal>
     ),
   },

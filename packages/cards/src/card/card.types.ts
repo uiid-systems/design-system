@@ -1,6 +1,15 @@
 import type { StackProps } from "@uiid/layout";
+import type { CloseButtonProps } from "@uiid/buttons";
 
-import type { CardHeaderProps } from "./subcomponents";
+export type CardHeaderProps = {
+  showCloseButton?: boolean;
+  onClose?: CloseButtonProps["onClick"];
+} & Pick<CardVariantProps, "variant"> &
+  CardTitleProps;
+
+export type CardTitleProps = {
+  title?: string;
+} & Pick<CardVariantProps, "size">;
 
 export type CardVariantProps = {
   size?: "xs" | "sm" | "md" | "lg";

@@ -9,7 +9,8 @@ import { CardHeader } from "./subcomponents";
 
 export const Card = ({
   title,
-  action,
+  onClose,
+  showCloseButton,
   size = "md",
   trim,
   variant,
@@ -17,7 +18,7 @@ export const Card = ({
   children,
   ...props
 }: CardProps) => {
-  const hasHeaderProps = Boolean(title || action);
+  const hasHeaderProps = Boolean(title || onClose);
   return (
     <Stack
       uiid="card"
@@ -32,7 +33,8 @@ export const Card = ({
       {hasHeaderProps && (
         <CardHeader
           title={title}
-          action={action}
+          showCloseButton={showCloseButton}
+          onClose={onClose}
           size={size}
           variant={variant}
         />

@@ -27,4 +27,4 @@ export type ModalProps = React.PropsWithChildren<{
 }> &
   Pick<Dialog.Portal.Props, "keepMounted"> &
   Partial<Pick<Dialog.Root.Props, "open" | "onOpenChange">> &
-  Pick<CardProps, "title">;
+  Pick<CardProps, "title" | "onClose" | "showCloseButton">;

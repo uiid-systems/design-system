@@ -4,6 +4,7 @@
   position: fixed;
   inset: 0;
   background-color: color-mix(in srgb, transparent, var(--shade-background) calc(var(--overlays-backdrop-opacity) * 100%));
+  z-index: var(--overlays-backdrop-zIndex);
 
   &[data-state="open"] {
     animation: fade-in 150ms ease-out;
@@ -18,6 +19,7 @@
   position: fixed;
   background-color: var(--shade-surface);
   color: var(--shade-foreground);
+  z-index: var(--overlays-backdrop-zIndex);
   transition:
     transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
