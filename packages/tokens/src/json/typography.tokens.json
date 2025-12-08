@@ -3,6 +3,12 @@
   "$description": "UIID Design System - Primitive Typography Tokens",
   "typography": {
     "text": {
+      "-1": {
+        "size": { "$value": "0.75rem", "$type": "dimension" },
+        "leading": { "$value": "0.01rem", "$type": "dimension" },
+        "lineHeight": { "$value": "150%", "$type": "dimension" },
+        "weight": { "$value": "400", "$type": "fontWeight" }
+      },
       "0": {
         "size": { "$value": "0.875rem", "$type": "dimension" },
         "leading": { "$value": "0", "$type": "dimension" },

@@ -11,6 +11,7 @@
     "foreground": { "$value": "{shade.foreground}", "$type": "color" },
     "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
     "paddingX": { "$value": "0.75rem", "$type": "dimension" },
+    "paddingY": { "$value": "0.75rem", "$type": "dimension" },
     "border": {
       "color": { "$value": "{shade.halftone}", "$type": "color" },
       "radius": { "$value": "{globals.border.radius}", "$type": "dimension" },

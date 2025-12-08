@@ -1,15 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack } from "@uiid/layout";
-import { RadioGroup } from "./radio-group";
 
-const MOCK_OPTIONS = [
+import { Stack } from "@uiid/layout";
+
+import { RadioGroup } from "./radio-group";
+import type { RadioGroupProps } from "./radio-group.types";
+
+const MOCK_OPTIONS: RadioGroupProps["options"] = [
   { value: "1", label: "Option 1" },
   { value: "2", label: "Option 2" },
   { value: "3", label: "Option 3", disabled: true },
 ];
 
 const meta = {
-  title: "Forms/RadioGroup",
+  title: "Forms/Radio Group",
   component: RadioGroup,
   args: {
     required: true,
@@ -18,33 +21,15 @@ const meta = {
   },
   render: (args) => (
     <Stack gap={8}>
-      <RadioGroup {...args} name="radio-group" />
-
-      <RadioGroup
-        {...args}
-        name="radio-group-horizontal"
-        direction="horizontal"
-      />
-
-      <RadioGroup
-        {...args}
-        label="RadioGroup with label and description"
-        description="This is a basic description"
-        name="with-label-and-description"
-      />
-
-      <RadioGroup
-        {...args}
-        label="Horizontal RadioGroup"
-        description="Optionally render radio buttons horizontally"
-        name="with-label-and-description-horizontal"
-        direction="horizontal"
-      />
+      <RadioGroup {...args} />
+      <RadioGroup {...args} bordered />
+      <RadioGroup {...args} bordered axis="x" />
+      <RadioGroup {...args} bordered axis="x" hideIndicator />
     </Stack>
   ),
-} satisfies Meta<typeof RadioGroup>;
+} satisfies Meta<RadioGroupProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "RadioGroup" };
+export const Default: Story = { name: "Radio Group" };

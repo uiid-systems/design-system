@@ -1,9 +1,15 @@
-import type { FormProps, FormOptionProps } from "../types";
+import type { RadioGroup } from "@base-ui-components/react/radio-group";
+import type { Radio } from "@base-ui-components/react/radio";
 
-export type RadioGroupOptionProps = FormOptionProps;
+import type { StackProps } from "@uiid/layout";
 
-export type RadioGroupProps = {
-  options: RadioGroupOptionProps[];
-  name: string;
-  direction?: "horizontal" | "vertical";
-} & FormProps;
+import type { FormOptionProps } from "../types";
+import type { RadioProps } from "../radio/radio.types";
+
+export type RadioGroupProps = RadioGroup.Props &
+  StackProps & {
+    options: FormOptionProps[];
+    axis?: "x" | "y";
+    RadioProps?: Partial<RadioProps>;
+    IndicatorProps?: Radio.Indicator.Props;
+  } & Pick<RadioProps, "bordered" | "reversed" | "hideIndicator">;

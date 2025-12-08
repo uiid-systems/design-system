@@ -1,42 +1,43 @@
 "use client";
 
-import { Group, Stack, SwitchRender } from "@uiid/layout";
+import { RadioGroup as BaseRadioGroup } from "@base-ui-components/react/radio-group";
 
-import { FormField } from "../formfield";
-import { Fieldset } from "../fieldset/fieldset";
+import { Stack, Group } from "@uiid/layout";
+
+import { Radio } from "../radio/radio";
 
 import type { RadioGroupProps } from "./radio-group.types";
 
 export const RadioGroup = ({
-  name,
-  label,
-  description,
   options,
-  direction = "vertical",
+  axis = "y",
+  bordered,
+  reversed,
+  hideIndicator,
+  RadioProps,
+  IndicatorProps,
   ...props
 }: RadioGroupProps) => {
+  const isHorizontal = axis === "x";
+
   return (
-    <FormField name={name} label={label} description={description} {...props}>
-      <SwitchRender
-        condition={direction === "vertical"}
-        render={{
-          true: <Fieldset render={<Stack gap={2} />} />,
-          false: <Fieldset render={<Group ay="center" gap={4} />} />,
-        }}
-      >
-        {options.map((option) => (
-          <Group key={option.value} gap={2} ay="start">
-            <input
-              type="radio"
-              id={option.value}
-              name={name}
-              value={option.value}
-            />
-            <label htmlFor={option.value}>{option.label}</label>
-          </Group>
-        ))}
-      </SwitchRender>
-    </FormField>
+    <BaseRadioGroup
+      {...props}
+      render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
+    >
+      {options.map((option) => (
+        <Radio
+          key={option.value}
+          {...RadioProps}
+          hideIndicator={hideIndicator}
+          bordered={bordered}
+          reversed={reversed}
+          value={option.value}
+          label={option.label}
+          IndicatorProps={IndicatorProps}
+        />
+      ))}
+    </BaseRadioGroup>
   );
 };
 RadioGroup.displayName = "RadioGroup";
