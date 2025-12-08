@@ -24,21 +24,19 @@ const MOCK_LINKS: ListProps["items"] = [
     collapsible: true,
     icon: Home,
     items: [
-      { label: "Leaderboards", value: "leaderboards" },
-      { label: "Recent matches", value: "recent-matches" },
-      { label: "Find a match", value: "find-a-match" },
+      { label: "Player directory", value: "players" },
       { label: "Join the Discord", value: "join-the-discord" },
     ],
   },
   {
-    category: "Favorites",
+    category: "Competition",
     collapsible: true,
     icon: Heart,
     items: [
-      { label: "Allie Hyde", value: "allie-hyde" },
-      { label: "Sammy Shuffle", value: "sammy-shuffle" },
-      { label: "Jimmy Biscuits", value: "jimmy-biscuits" },
-      { label: "More...", value: "more" },
+      { label: "Leaderboards", value: "leaderboards" },
+      { label: "Find a match", value: "find-a-match" },
+      { label: "Create a match", value: "create-a-match" },
+      { label: "Recent matches", value: "recent-matches" },
     ],
   },
 ];
