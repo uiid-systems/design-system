@@ -4,7 +4,7 @@ import { Label } from "./label";
 import type { LabelProps } from "./label.types";
 
 const meta = {
-  title: "Forms/Label",
+  title: "Forms/Typography/Label",
   component: Label,
   args: {},
   render: (args) => <Label {...args}>Label</Label>,

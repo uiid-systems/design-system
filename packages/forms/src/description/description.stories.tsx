@@ -4,7 +4,7 @@ import { Description } from "./description";
 import type { DescriptionProps } from "./description.types";
 
 const meta = {
-  title: "Forms/Description",
+  title: "Forms/Typography/Description",
   component: Description,
   args: {},
   render: (args) => <Description {...args}>Description</Description>,

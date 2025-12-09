@@ -33,7 +33,7 @@ const preview: Preview = {
           "Cards",
           "Calendars",
           "Forms",
-          ["Inputs", ["Input"], "Selects", ["Select"]],
+          ["Inputs", ["Input"], "Selects", ["Select"], "Typography"],
           "Dropdowns",
           ["Dropdown"],
           "Indicators",

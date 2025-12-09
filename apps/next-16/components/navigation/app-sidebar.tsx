@@ -1,6 +1,6 @@
 "use client";
 
-import { UserCircle, Home, Heart } from "@uiid/icons";
+import { Users, Home, Swords } from "@uiid/icons";
 import { Group, type ListProps } from "@uiid/layout";
 import {
   Sidebar,
@@ -13,33 +13,7 @@ import {
 } from "@uiid/navigation";
 import { Text } from "@uiid/typography";
 
-const MOCK_LINKS: ListProps["items"] = [
-  {
-    label: "TODO: Fix top-level item",
-    value: "top-level-item",
-    icon: UserCircle,
-  },
-  {
-    category: "Community",
-    collapsible: true,
-    icon: Home,
-    items: [
-      { label: "Player directory", value: "players" },
-      { label: "Join the Discord", value: "join-the-discord" },
-    ],
-  },
-  {
-    category: "Competition",
-    collapsible: true,
-    icon: Heart,
-    items: [
-      { label: "Leaderboards", value: "leaderboards" },
-      { label: "Find a match", value: "find-a-match" },
-      { label: "Create a match", value: "create-a-match" },
-      { label: "Recent matches", value: "recent-matches" },
-    ],
-  },
-];
+import { APP_LINKS } from "./app-links";
 
 export const AppSidebar = () => {
   const { open } = useSidebar();
@@ -53,7 +27,7 @@ export const AppSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarList items={MOCK_LINKS} />
+        <SidebarList items={APP_LINKS} />
       </SidebarContent>
 
       <SidebarFooter>

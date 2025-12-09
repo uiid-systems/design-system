@@ -2,110 +2,12 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Badge Component Tokens",
   "badge": {
-    "borderRadius": { "$value": "0.25rem", "$type": "dimension" },
-    "fontSize": { "$value": "0.75rem", "$type": "dimension" },
-    "fontWeight": { "$value": "500", "$type": "fontWeight" },
-    "paddingX": { "$value": "0.5rem", "$type": "dimension" },
-    "paddingY": { "$value": "0.25rem", "$type": "dimension" },
-    "color": {
-      "neutral": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.neutral.50}", "$type": "color" },
-            "fg": { "$value": "{colors.neutral.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.neutral.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.neutral.800}", "$type": "color" }
-          }
-        }
-      },
-      "red": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.red.50}", "$type": "color" },
-            "fg": { "$value": "{colors.red.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.red.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.red.800}", "$type": "color" }
-          }
-        }
-      },
-      "orange": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.orange.50}", "$type": "color" },
-            "fg": { "$value": "{colors.orange.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.orange.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.orange.900}", "$type": "color" }
-          }
-        }
-      },
-      "yellow": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.yellow.50}", "$type": "color" },
-            "fg": { "$value": "{colors.yellow.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.yellow.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.yellow.900}", "$type": "color" }
-          }
-        }
-      },
-      "green": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.green.50}", "$type": "color" },
-            "fg": { "$value": "{colors.green.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.green.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.green.900}", "$type": "color" }
-          }
-        }
-      },
-      "blue": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.blue.50}", "$type": "color" },
-            "fg": { "$value": "{colors.blue.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.blue.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.blue.900}", "$type": "color" }
-          }
-        }
-      },
-      "purple": {
-        "shade": {
-          "light": {
-            "bg": { "$value": "{colors.purple.50}", "$type": "color" },
-            "fg": { "$value": "{colors.purple.900}", "$type": "color" }
-          },
-          "medium": {
-            "bg": { "$value": "{colors.purple.600}", "$type": "color" }
-          },
-          "dark": {
-            "bg": { "$value": "{colors.purple.900}", "$type": "color" }
-          }
-        }
-      }
+    "padding": {
+      "x": { "$value": "0.5rem", "$type": "dimension" },
+      "y": { "$value": "0.25rem", "$type": "dimension" }
+    },
+    "border": {
+      "radius": { "$value": "999999px", "$type": "dimension" }
     }
   }
 }

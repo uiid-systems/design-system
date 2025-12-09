@@ -1,14 +1,29 @@
-import { Box } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import type { BadgeProps } from "./badge.types";
-import "./badge.styles.css";
+import styles from "./badge.module.css";
 
-export const Badge = ({ size = "sm", children, ...props }: BadgeProps) => {
+export const Badge = ({
+  size = "sm",
+  variant,
+  children,
+  ...props
+}: BadgeProps) => {
   return (
-    <Box uiid="badge" data-size={size} {...props}>
-      <Text data-slot="badge-text">{children}</Text>
-    </Box>
+    <Group
+      data-slot="badge"
+      ay="center"
+      gap={1}
+      data-variant={variant}
+      className={styles["badge"]}
+      {...props}
+    >
+      <span data-slot="badge-indicator" className={styles["badge-indicator"]} />
+      <Text data-slot="badge-text" level={-1} className={styles["badge-text"]}>
+        {children}
+      </Text>
+    </Group>
   );
 };
 Badge.displayName = "Badge";

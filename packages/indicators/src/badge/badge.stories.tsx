@@ -12,8 +12,23 @@ const meta = {
     size: { control: "select", options: ["sm", "md", "lg"] },
   },
   render: (args) => (
-    <Stack gap={8}>
+    <Stack gap={4}>
       <Badge {...args}>Badge</Badge>
+      <Badge {...args} variant="positive">
+        Positive
+      </Badge>
+      <Badge {...args} variant="negative">
+        Negative
+      </Badge>
+      <Badge {...args} variant="info">
+        Info
+      </Badge>
+      <Badge {...args} variant="warning">
+        Warning
+      </Badge>
+      <Badge {...args} variant="inverted">
+        Inverted
+      </Badge>
     </Stack>
   ),
 } satisfies Meta<typeof Badge>;

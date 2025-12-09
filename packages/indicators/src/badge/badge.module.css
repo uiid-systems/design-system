@@ -1,0 +1,46 @@
+@import "@uiid/tokens/badge.tokens.css";
+
+.badge {
+  --badge-bg: var(--shade-foreground);
+  --badge-border: var(--globals-border-color);
+  --badge-fg: var(--shade-background);
+
+  background-color: var(--badge-bg);
+  color: var(--badge-fg);
+  padding: var(--badge-padding-y) var(--badge-padding-x);
+  border: var(--globals-border-width) solid var(--badge-border);
+  border-radius: var(--badge-border-radius);
+
+  &:where([data-variant="positive"]) {
+    --badge-bg: var(--colors-positive-bg);
+    --badge-border: var(--colors-positive-border);
+    --badge-fg: var(--colors-positive-fg);
+  }
+  &:where([data-variant="negative"]) {
+    --badge-bg: var(--colors-negative-bg);
+    --badge-border: var(--colors-negative-border);
+    --badge-fg: var(--colors-negative-fg);
+  }
+  &:where([data-variant="info"]) {
+    --badge-bg: var(--colors-info-bg);
+    --badge-border: var(--colors-info-border);
+    --badge-fg: var(--colors-info-fg);
+  }
+  &:where([data-variant="warning"]) {
+    --badge-bg: var(--colors-warning-bg);
+    --badge-border: var(--colors-warning-border);
+    --badge-fg: var(--colors-warning-fg);
+  }
+  &:where([data-variant="inverted"]) {
+    --badge-bg: var(--shade-background);
+    --badge-border: var(--shade-muted);
+    --badge-fg: var(--shade-foreground);
+  }
+}
+
+.badge-indicator {
+  background-color: var(--badge-border);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
