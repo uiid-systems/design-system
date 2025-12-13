@@ -34,14 +34,14 @@
           "$type": "color"
         }
       },
-      "error": {
-        "bg": { "$value": "{colors.error.bg}", "$type": "color" },
-        "border": { "$value": "{colors.error.border}", "$type": "color" }
+      "negative": {
+        "bg": { "$value": "{colors.negative.bg}", "$type": "color" },
+        "border": { "$value": "{colors.negative.border}", "$type": "color" }
       },
-      "success": {
-        "bg": { "$value": "{colors.success.bg}", "$type": "color" },
+      "positive": {
+        "bg": { "$value": "{colors.positive.bg}", "$type": "color" },
         "border": {
-          "$value": "{colors.success.border}",
+          "$value": "{colors.positive.border}",
           "$type": "color"
         }
       },

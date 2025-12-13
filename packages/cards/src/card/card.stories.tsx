@@ -24,8 +24,8 @@ const meta = {
       <Stack gap={4}>
         <Card {...args} variant="info" title="Info card" />
         <Card {...args} variant="warning" title="Warning card" />
-        <Card {...args} variant="error" title="Error card" />
-        <Card {...args} variant="success" title="Success card" />
+        <Card {...args} variant="negative" title="Negative card" />
+        <Card {...args} variant="positive" title="Positive card" />
         <Card {...args} variant="inverted" title="Inverted card" />
       </Stack>
     </Group>

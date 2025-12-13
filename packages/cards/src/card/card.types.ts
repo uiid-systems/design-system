@@ -13,7 +13,7 @@ export type CardTitleProps = {
 
 export type CardVariantProps = {
   size?: "xs" | "sm" | "md" | "lg";
-  variant?: "info" | "warning" | "error" | "success" | "inverted";
+  variant?: "info" | "warning" | "negative" | "positive" | "inverted";
   trim?: boolean;
 };
 

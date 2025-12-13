@@ -66,15 +66,15 @@
     --card-color-fg: var(--black);
   }
 
-  &:where([data-variant="error"]) {
-    --card-color-bg: var(--card-variant-error-bg);
-    --card-border-color: var(--card-variant-error-border);
+  &:where([data-variant="negative"]) {
+    --card-color-bg: var(--card-variant-negative-bg);
+    --card-border-color: var(--card-variant-negative-border);
     --card-color-fg: var(--black);
   }
 
-  &:where([data-variant="success"]) {
-    --card-color-bg: var(--card-variant-success-bg);
-    --card-border-color: var(--card-variant-success-border);
+  &:where([data-variant="positive"]) {
+    --card-color-bg: var(--card-variant-positive-bg);
+    --card-border-color: var(--card-variant-positive-border);
     --card-color-fg: var(--black);
   }
 
