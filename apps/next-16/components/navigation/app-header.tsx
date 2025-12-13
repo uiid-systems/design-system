@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Button } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
@@ -23,6 +25,7 @@ export const AppHeader = () => {
       )}
     >
       <Breadcrumbs
+        linkAs={Link}
         items={[
           { label: "Home", value: "/" },
           { label: "Dashboard", value: "/dashboard" },

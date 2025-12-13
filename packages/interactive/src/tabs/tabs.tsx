@@ -24,7 +24,11 @@ export const Tabs = ({
         {...ListProps}
       >
         {items.map((item) => (
-          <BaseTabs.Tab className={styles.Tab} value={item.value} {...TabProps}>
+          <BaseTabs.Tab
+            className={styles["tab"]}
+            value={item.value}
+            {...TabProps}
+          >
             {item.label}
           </BaseTabs.Tab>
         ))}

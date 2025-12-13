@@ -3,7 +3,7 @@
   "$description": "UIID Design System - Tabs Component Tokens",
   "tabs": {
     "indicator": {
-      "height": { "$value": "2px", "$type": "dimension" },
+      "height": { "$value": "50%", "$type": "dimension" },
       "color": {
         "bg": { "$value": "{shade.foreground}", "$type": "color" }
       }

@@ -1,3 +1,4 @@
+import { Badge } from "@uiid/indicators";
 import { formatDate, DateCalendar } from "@uiid/calendars";
 import { Swords, Star, Heart, Calendar } from "@uiid/icons";
 import type { MenuProps } from "@uiid/interactive";
@@ -21,15 +22,60 @@ export const TABLE_MOCK_FILTERS: MenuProps["items"] = [
 ];
 
 export const TABLE_MOCK_COLUMNS: TableProps["columns"] = [
-  "Name",
   "Rank",
+  "Name",
   "Played",
   "Won",
   "Last Played",
 ];
 
+export const FIND_A_MATCH_MOCK_COLUMNS: TableProps["columns"] = [
+  "Date",
+  "Player",
+  "Duration",
+  "Stakes",
+  "Accepting",
+  "Stipulations",
+];
+
+export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
+  {
+    date: "2025-01-01",
+    player: "John Doe",
+    duration: (
+      <Badge variant="negative" hideIndicator>
+        16 frames
+      </Badge>
+    ),
+    stakes: <Badge variant="positive">Low</Badge>,
+    accepting: (
+      <Badge variant="positive" hideIndicator>
+        All
+      </Badge>
+    ),
+    stipulations: ["Switch at half", "Adam's rules"],
+  },
+  {
+    date: "2025-01-01",
+    player: "Jane Doe",
+    duration: (
+      <Badge variant="warning" hideIndicator>
+        8 frames
+      </Badge>
+    ),
+    stakes: <Badge variant="warning">Medium</Badge>,
+    accepting: (
+      <Badge variant="negative" hideIndicator>
+        1700 & up
+      </Badge>
+    ),
+    stipulations: ["Switch at half", "Adam's rules"],
+  },
+];
+
 export const TABLE_MOCK_DATA: TableProps["items"] = [
   {
+    rank: <Badge variant="positive">1</Badge>,
     name: (
       <Sheet
         trigger="John Doe"
@@ -41,31 +87,30 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
         <p>John Doe</p>
       </Sheet>
     ),
-    rank: 1,
     played: 12,
     won: 6,
-    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
+    lastPlayed: formatDate(new Date("2025-03-01"), "EEE',' MMM d"),
   },
   {
+    rank: <Badge variant="warning">2</Badge>,
     name: "Jane Doe",
-    rank: 2,
     played: 5,
     won: 3,
-    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
+    lastPlayed: formatDate(new Date("2025-04-01"), "EEE',' MMM d"),
   },
   {
+    rank: <Badge variant="warning">3</Badge>,
     name: "John Smith",
-    rank: 3,
     played: 8,
     won: 8,
-    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
+    lastPlayed: formatDate(new Date("2025-01-03"), "EEE',' MMM d"),
   },
   {
+    rank: <Badge variant="negative">4</Badge>,
     name: "Jane Smith",
-    rank: 4,
     played: 10,
     won: 9,
-    lastPlayed: formatDate(new Date("2025-01-01"), "PPPP"),
+    lastPlayed: formatDate(new Date("2025-09-07"), "EEE',' MMM d"),
   },
 ];
 

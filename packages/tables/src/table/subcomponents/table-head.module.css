@@ -5,4 +5,8 @@
   text-align: left;
   border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+
+  &:where([data-collapse]) {
+    width: 0;
+  }
 }

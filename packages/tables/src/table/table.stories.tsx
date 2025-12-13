@@ -34,14 +34,14 @@ export const Default = {
   name: "Table",
   render: () => (
     <Stack gap={4} fullwidth>
-      <DemoTable striped />
+      <PlayerTable striped />
 
       <Card
         trim
         fullwidth
         style={{ backgroundColor: "var(--shade-background)" }}
       >
-        <DemoTable bordered />
+        <PlayerTable bordered />
       </Card>
 
       <Table<TableMockData>
@@ -58,7 +58,7 @@ export const Default = {
   ),
 };
 
-const DemoTable = ({
+const PlayerTable = ({
   striped,
   bordered,
 }: Pick<TableProps, "striped" | "bordered">) => (

@@ -24,7 +24,7 @@ const ActionButton = ({ wrapper, ...action }: TableActionsProps) => {
 
 export const TableCellActions = ({ actions }: TableCellActionsProps) => {
   return (
-    <TableCell style={{ width: 0 }}>
+    <TableCell collapse>
       <Group ax="end">
         {actions.primary?.map((action) => (
           <ActionButton key={action.tooltip} {...action} />

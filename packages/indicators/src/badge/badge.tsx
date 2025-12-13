@@ -1,12 +1,14 @@
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 
 import type { BadgeProps } from "./badge.types";
 import styles from "./badge.module.css";
 
 export const Badge = ({
-  size = "sm",
   variant,
+  hideIndicator,
+  className,
   children,
   ...props
 }: BadgeProps) => {
@@ -16,11 +18,22 @@ export const Badge = ({
       ay="center"
       gap={1}
       data-variant={variant}
-      className={styles["badge"]}
+      className={cx(styles["badge"], className)}
+      style={{ display: "inline-flex" }}
       {...props}
     >
-      <span data-slot="badge-indicator" className={styles["badge-indicator"]} />
-      <Text data-slot="badge-text" level={-1} className={styles["badge-text"]}>
+      {!hideIndicator && (
+        <span
+          data-slot="badge-indicator"
+          className={styles["badge-indicator"]}
+        />
+      )}
+      <Text
+        data-slot="badge-text"
+        level={-1}
+        bold
+        className={styles["badge-text"]}
+      >
         {children}
       </Text>
     </Group>

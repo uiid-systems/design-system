@@ -6,8 +6,9 @@ import { Select, Autocomplete } from "@uiid/forms";
 import { Filter, Search } from "@uiid/icons";
 import { Menu } from "@uiid/interactive";
 import { Stack, Group } from "@uiid/layout";
-import { Table } from "@uiid/tables";
 import { Pagination } from "@uiid/navigation";
+import { Table } from "@uiid/tables";
+import { Text } from "@uiid/typography";
 
 import {
   TABLE_MOCK_DATA,
@@ -17,9 +18,12 @@ import {
   TABLE_MOCK_COLUMNS,
 } from "./MOCK_DATA";
 
-export const DemoTable = () => {
+export const PlayerTable = () => {
   return (
     <Stack gap={4} fullwidth>
+      <Text level={4} bold>
+        Player directory
+      </Text>
       <Group gap={2} ay="center" ax="space-between" fullwidth>
         {/**
          * @todo remove css targeting autocomplete after fix
@@ -79,4 +83,4 @@ export const DemoTable = () => {
     </Stack>
   );
 };
-DemoTable.displayName = "DemoTable";
+PlayerTable.displayName = "PlayerTable";

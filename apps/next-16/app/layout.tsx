@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SidebarProvider, SidebarAppContainer } from "@uiid/navigation";
 
 import { AppSidebar, AppHeader } from "../components/navigation";
+import { PageContainer, AppAlert } from "../components/global";
 
 import "./globals.css";
 
@@ -37,7 +38,9 @@ export default function RootLayout({
           <AppSidebar />
           <SidebarAppContainer>
             <AppHeader />
-            {children}
+            <AppAlert />
+
+            <PageContainer>{children}</PageContainer>
           </SidebarAppContainer>
         </body>
       </html>

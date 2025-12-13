@@ -7,6 +7,12 @@ export type BreadcrumbsItem = {
   icon?: Icon;
 };
 
-export type BreadcrumbsProps = Omit<BoxProps, "render"> & {
+type LinkComponent =
+  | React.ComponentType<{ href: string; children: React.ReactNode }>
+  | "a";
+
+export type BreadcrumbsProps = BoxProps & {
   items: BreadcrumbsItem[];
+  /** Custom link component (e.g. Next.js Link) */
+  linkAs?: LinkComponent;
 };

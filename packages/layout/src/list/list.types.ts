@@ -14,7 +14,10 @@ export type ListItemProps = {
   disabled?: boolean;
   selected?: boolean;
   icon?: Icon;
-} & Pick<GroupProps, "render" | "fullwidth">;
+  href?: string;
+  target?: string;
+  rel?: string;
+} & GroupProps;
 
 export type ListItemGroupProps = {
   category?: string;

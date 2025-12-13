@@ -1,7 +1,6 @@
 "use client";
 
-import { Users, Home, Swords } from "@uiid/icons";
-import { Group, type ListProps } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import {
   Sidebar,
   SidebarHeader,

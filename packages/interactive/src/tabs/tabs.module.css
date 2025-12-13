@@ -3,10 +3,10 @@
 .tabs-list {
   position: relative;
   z-index: 0;
-  box-shadow: inset 0 -1px var(--tabs-list-border);
+  /* box-shadow: inset 0 -1px var(--tabs-list-border); */
 }
 
-.Tab {
+.tab {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +22,9 @@
   padding-inline: var(--globals-padding-x);
   height: var(--tabs-tab-height);
 
-  &[data-selected] {
+  /* &[data-selected] {
     color: var(--tabs-tab-color-active);
-  }
+  } */
 
   @media (hover: hover) {
     &:hover {
@@ -55,6 +55,7 @@
   width: var(--active-tab-width);
   height: var(--tabs-indicator-height);
   background-color: var(--tabs-indicator-color-bg);
+  border-radius: var(--globals-border-radius);
   transition-property: translate, width;
   transition-duration: var(--globals-transition-timing);
 }
@@ -62,9 +63,9 @@
 .tabs-panel {
   --timing: var(--globals-transition-timing);
   position: relative;
-  height: var(--tabs-panel-minHeight);
   outline: 0;
   opacity: 1;
+  overflow: hidden;
   transition: all var(--timing) ease-in-out;
   transform: translate3d(0, 0, 0);
   transition-delay: calc(var(--timing) / 2);
@@ -76,8 +77,12 @@
   }
 
   &[hidden] {
+    pointer-events: none;
+    max-height: 0;
+    user-select: none;
     opacity: 0;
     transform: translate3d(0, 5%, 0);
+    transition: max-height var(--timing) ease-in-out;
     transition-delay: 0s;
   }
 }

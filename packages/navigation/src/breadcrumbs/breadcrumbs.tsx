@@ -10,28 +10,30 @@ import {
   BreadcrumbsSeparator,
 } from "./subcomponents";
 
-const Breadcrumbs = ({ items, ...props }: BreadcrumbsProps) => {
+const Breadcrumbs = ({
+  items,
+  linkAs: Link = "a",
+  ...props
+}: BreadcrumbsProps) => {
   return (
     <BreadcrumbsContainer uiid="breadcrumbs" {...props}>
       <BreadcrumbsList>
         {items.map((item, i) => {
           const isLast = i === items.length - 1;
           const Icon = item.icon;
+          const content = (
+            <ConditionalRender
+              condition={Boolean(Icon)}
+              render={<Group gap={2} ay="center" />}
+            >
+              {Icon && <Icon size={14} />}
+              {item.label}
+            </ConditionalRender>
+          );
           return (
             <Fragment key={item.value}>
               <BreadcrumbsItem>
-                <ConditionalRender
-                  condition={!isLast}
-                  render={<a href={item.value}>{item.label}</a>}
-                >
-                  <ConditionalRender
-                    condition={Boolean(Icon)}
-                    render={<Group gap={2} ay="center" />}
-                  >
-                    {Icon && <Icon size={14} />}
-                    {item.label}
-                  </ConditionalRender>
-                </ConditionalRender>
+                {isLast ? content : <Link href={item.value}>{content}</Link>}
               </BreadcrumbsItem>
               {!isLast && <BreadcrumbsSeparator />}
             </Fragment>

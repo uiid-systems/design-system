@@ -1,3 +1,5 @@
+import { PlayerTable } from "@/components/tables";
+
 export default function PlayersPage() {
-  return <div>PlayersPage</div>;
+  return <PlayerTable />;
 }

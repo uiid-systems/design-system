@@ -1,5 +1,13 @@
+import Link from "next/link";
+
 import { Users, Swords } from "@uiid/icons";
 import type { ListProps } from "@uiid/layout";
+
+import {
+  PLAYERS_PATH,
+  DISCORD_INVITE_URL,
+  FIND_MATCH_PATH,
+} from "@/constants/urls";
 
 export const APP_LINKS: ListProps["items"] = [
   {
@@ -12,8 +20,20 @@ export const APP_LINKS: ListProps["items"] = [
     collapsible: true,
     icon: Users,
     items: [
-      { label: "Player directory", value: "players" },
-      { label: "Join the Discord", value: "join-the-discord" },
+      {
+        label: "Player directory",
+        value: "players",
+        render: <Link href={PLAYERS_PATH}>Player directory</Link>,
+      },
+      {
+        label: "Join the Discord",
+        value: "join-the-discord",
+        render: (
+          <Link href={DISCORD_INVITE_URL} target="_blank">
+            Player directory
+          </Link>
+        ),
+      },
     ],
   },
   {
@@ -22,7 +42,11 @@ export const APP_LINKS: ListProps["items"] = [
     icon: Swords,
     items: [
       { label: "Leaderboards", value: "leaderboards" },
-      { label: "Find a match", value: "find-a-match" },
+      {
+        label: "Find a match",
+        value: "find-a-match",
+        render: <Link href={FIND_MATCH_PATH}>Find a match</Link>,
+      },
       { label: "Create a match", value: "create-a-match" },
       { label: "Recent matches", value: "recent-matches" },
     ],
