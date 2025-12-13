@@ -1,4 +1,5 @@
 export * from "./agenda-event";
+export * from "./draggable-event";
 export * from "./event-drag-overlay";
 export * from "./event-item";
 export * from "./event-wrapper";

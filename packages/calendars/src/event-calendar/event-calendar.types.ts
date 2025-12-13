@@ -69,3 +69,13 @@ export type EventCalendarDndContextType = {
   multiDayWidth: NonNullable<DragStartData["multiDayWidth"]> | null;
   dragHandlePosition: NonNullable<DragStartData["dragHandlePosition"]> | null;
 };
+
+export type DraggableEventProps = Pick<
+  DragStartData,
+  "event" | "view" | "height" | "isMultiDay" | "multiDayWidth"
+> &
+  DragHandlePosition["data"] & {
+    showTime?: boolean;
+    onClick?: (e: React.MouseEvent) => void;
+    "aria-hidden"?: boolean | "true" | "false";
+  };
