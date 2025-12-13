@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Stack } from "@uiid/layout";
 
-import { DateCalendar } from "./date-calendar";
+import { DatePicker } from "./date-picker";
 
 const meta = {
   title: "Calendars/Date Calendar",
-  component: DateCalendar,
-} satisfies Meta<typeof DateCalendar>;
+  component: DatePicker,
+} satisfies Meta<typeof DatePicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -17,14 +17,14 @@ export const Default: Story = {
   render: (args) => {
     return (
       <Stack gap={4}>
-        <DateCalendar {...args} />
-        <DateCalendar
+        <DatePicker {...args} />
+        <DatePicker
           {...args}
           numberOfMonths={2}
           pagedNavigation
           filters={["firstDayOfMonth"]}
         />
-        <DateCalendar {...args} headless />
+        <DatePicker {...args} headless />
       </Stack>
     );
   },

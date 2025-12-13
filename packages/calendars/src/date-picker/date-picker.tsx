@@ -9,8 +9,8 @@ import { ToggleGroup, Toggle } from "@uiid/interactive";
 
 import "../calendars.styles.css";
 
-import type { DateCalendarProps, DateFilterKey } from "./date-calendar.types";
-import { DATE_FILTERS } from "./date-calendar.constants";
+import type { DatePickerProps, DateFilterKey } from "./date-picker.types";
+import { DATE_FILTERS } from "./date-picker.constants";
 
 const DEFAULT_FILTERS: DateFilterKey[] = [
   "yesterday",
@@ -21,14 +21,14 @@ const DEFAULT_FILTERS: DateFilterKey[] = [
   "lastDayOfMonth",
 ];
 
-export const DateCalendar = ({
+export const DatePicker = ({
   headless = false,
   filters = DEFAULT_FILTERS,
   onSelect,
   defaultMonth,
   selected: selectedProp,
   ...props
-}: DateCalendarProps) => {
+}: DatePickerProps) => {
   const [month, setMonth] = useState(defaultMonth);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     selectedProp,
@@ -80,4 +80,4 @@ export const DateCalendar = ({
     </ConditionalRender>
   );
 };
-DateCalendar.displayName = "DateCalendar";
+DatePicker.displayName = "DatePicker";

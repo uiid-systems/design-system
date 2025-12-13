@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { DateCalendar, formatDate } from "@uiid/calendars";
+import { DatePicker, formatDate } from "@uiid/calendars";
 import { Calendar } from "@uiid/icons";
 
 import { Dropdown } from "../dropdown/dropdown";
@@ -39,7 +39,7 @@ export const DateDropdown = ({
         iconPosition: "after",
       }}
     >
-      <DateCalendar
+      <DatePicker
         headless
         selected={selectedDate}
         onSelect={handleDateSelect}
