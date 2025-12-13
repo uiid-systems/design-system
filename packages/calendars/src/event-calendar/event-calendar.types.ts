@@ -1,7 +1,16 @@
-import type { DraggableAttributes } from "@dnd-kit/core";
+import type { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
 export type CalendarView = "month" | "week" | "day" | "agenda";
+
+export type DragHandlePosition = {
+  x?: number;
+  y?: number;
+  data?: {
+    isFirstDay?: boolean;
+    isLastDay?: boolean;
+  };
+};
 
 export type CalendarEvent = {
   id: string;
@@ -32,4 +41,15 @@ export type EventWrapperProps = EventInteractiveProps;
 export type EventItemProps = EventInteractiveProps & {
   view: CalendarView;
   showTime?: boolean;
+};
+
+export type EventCalendarDndContextType = {
+  activeEvent: CalendarEvent | null;
+  activeId: UniqueIdentifier | null;
+  activeView: EventItemProps["view"] | null;
+  currentTime: Date | null;
+  eventHeight: number | null;
+  isMultiDay: boolean;
+  multiDayWidth: number | null;
+  dragHandlePosition: DragHandlePosition | null;
 };
