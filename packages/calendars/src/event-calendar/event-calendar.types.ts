@@ -43,13 +43,29 @@ export type EventItemProps = EventInteractiveProps & {
   showTime?: boolean;
 };
 
+/** Data attached to a draggable event */
+export type DragStartData = {
+  event: CalendarEvent;
+  view: Exclude<CalendarView, "agenda">;
+  height?: number;
+  isMultiDay?: boolean;
+  multiDayWidth?: number;
+  dragHandlePosition?: DragHandlePosition;
+};
+
+/** Data attached to a drop target (calendar cell) */
+export type DropTargetData = {
+  date: Date;
+  time?: number;
+};
+
 export type EventCalendarDndContextType = {
-  activeEvent: CalendarEvent | null;
+  activeEvent: DragStartData["event"] | null;
   activeId: UniqueIdentifier | null;
-  activeView: EventItemProps["view"] | null;
+  activeView: DragStartData["view"] | null;
   currentTime: Date | null;
-  eventHeight: number | null;
-  isMultiDay: boolean;
-  multiDayWidth: number | null;
-  dragHandlePosition: DragHandlePosition | null;
+  eventHeight: NonNullable<DragStartData["height"]> | null;
+  isMultiDay: NonNullable<DragStartData["isMultiDay"]>;
+  multiDayWidth: NonNullable<DragStartData["multiDayWidth"]> | null;
+  dragHandlePosition: NonNullable<DragStartData["dragHandlePosition"]> | null;
 };

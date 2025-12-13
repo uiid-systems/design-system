@@ -4,8 +4,8 @@ import {
   createContext,
   useContext,
   useId,
+  useReducer,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
 import {
@@ -20,17 +20,23 @@ import {
   type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
-import { addMinutes, differenceInMinutes } from "date-fns";
-
 import type {
   CalendarEvent,
+  DragStartData,
+  DropTargetData,
   EventCalendarDndContextType,
 } from "./event-calendar.types";
+import {
+  calculateDropTime,
+  calculateUpdatedEventTimes,
+  hasDateChanged,
+  hasDateTimeChanged,
+} from "./event-calendar.utils";
 
-import { EventItem } from "./subcomponents";
+import { EventDragOverlay } from "./subcomponents";
 
-// Create the context
-const EventCalendarDndContext = createContext<EventCalendarDndContextType>({
+// Initial state for drag reducer
+const initialDragState: EventCalendarDndContextType = {
   activeEvent: null,
   activeId: null,
   activeView: null,
@@ -39,7 +45,11 @@ const EventCalendarDndContext = createContext<EventCalendarDndContextType>({
   isMultiDay: false,
   multiDayWidth: null,
   dragHandlePosition: null,
-});
+};
+
+// Create the context
+const EventCalendarDndContext =
+  createContext<EventCalendarDndContextType>(initialDragState);
 
 // Hook to use the context
 export const useEventCalendarDnd = () => useContext(EventCalendarDndContext);
@@ -50,26 +60,31 @@ interface CalendarDndProviderProps {
   onEventUpdate: (event: CalendarEvent) => void;
 }
 
+// Reducer types
+type DragAction =
+  | { type: "START_DRAG"; payload: EventCalendarDndContextType }
+  | { type: "UPDATE_TIME"; payload: Date }
+  | { type: "RESET" };
+
+const dragReducer = (
+  state: EventCalendarDndContextType,
+  action: DragAction,
+): EventCalendarDndContextType => {
+  switch (action.type) {
+    case "START_DRAG":
+      return action.payload;
+    case "UPDATE_TIME":
+      return { ...state, currentTime: action.payload };
+    case "RESET":
+      return initialDragState;
+  }
+};
+
 export const EventCalendarDndProvider = ({
   children,
   onEventUpdate,
 }: CalendarDndProviderProps) => {
-  const [activeEvent, setActiveEvent] =
-    useState<EventCalendarDndContextType["activeEvent"]>(null);
-  const [activeId, setActiveId] =
-    useState<EventCalendarDndContextType["activeId"]>(null);
-  const [activeView, setActiveView] =
-    useState<EventCalendarDndContextType["activeView"]>(null);
-
-  const [currentTime, setCurrentTime] =
-    useState<EventCalendarDndContextType["currentTime"]>(null);
-  const [eventHeight, setEventHeight] =
-    useState<EventCalendarDndContextType["eventHeight"]>(null);
-  const [isMultiDay, setIsMultiDay] = useState(false);
-  const [multiDayWidth, setMultiDayWidth] =
-    useState<EventCalendarDndContextType["multiDayWidth"]>(null);
-  const [dragHandlePosition, setDragHandlePosition] =
-    useState<EventCalendarDndContextType["dragHandlePosition"]>(null);
+  const [dragState, dispatch] = useReducer(dragReducer, initialDragState);
 
   // Store original event dimensions
   const eventDimensions = useRef<{ height: number }>({ height: 0 });
@@ -100,6 +115,8 @@ export const EventCalendarDndProvider = ({
   // Generate a stable ID for the DndContext
   const dndContextId = useId();
 
+  const resetDragState = () => dispatch({ type: "RESET" });
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
 
@@ -116,194 +133,90 @@ export const EventCalendarDndProvider = ({
       isMultiDay: eventIsMultiDay,
       multiDayWidth: eventMultiDayWidth,
       dragHandlePosition: eventDragHandlePosition,
-    } = active.data.current as {
-      event: CalendarEvent;
-      view: "month" | "week" | "day";
-      height?: number;
-      isMultiDay?: boolean;
-      multiDayWidth?: number;
-      dragHandlePosition?: {
-        x?: number;
-        y?: number;
-        data?: {
-          isFirstDay?: boolean;
-          isLastDay?: boolean;
-        };
-      };
-    };
+    } = active.data.current as DragStartData;
 
-    setActiveEvent(calendarEvent);
-    setActiveId(active.id);
-    setActiveView(view);
-    setCurrentTime(new Date(calendarEvent.start));
-    setIsMultiDay(eventIsMultiDay || false);
-    setMultiDayWidth(eventMultiDayWidth || null);
-    setDragHandlePosition(eventDragHandlePosition || null);
-
-    // Store event height if provided
+    // Store event height in ref
     if (height) {
       eventDimensions.current.height = height;
-      setEventHeight(height);
     }
+
+    dispatch({
+      type: "START_DRAG",
+      payload: {
+        activeEvent: calendarEvent,
+        activeId: active.id,
+        activeView: view,
+        currentTime: new Date(calendarEvent.start),
+        eventHeight: height || null,
+        isMultiDay: eventIsMultiDay || false,
+        multiDayWidth: eventMultiDayWidth || null,
+        dragHandlePosition: eventDragHandlePosition || null,
+      },
+    });
   };
 
   const handleDragOver = (event: DragOverEvent) => {
     const { over } = event;
+    const { activeEvent, activeView, currentTime } = dragState;
 
-    if (over && activeEvent && over.data.current) {
-      const { date, time } = over.data.current as { date: Date; time?: number };
+    if (!over || !activeEvent || !over.data.current) return;
 
-      // Update time for week/day views
-      if (time !== undefined && activeView !== "month") {
-        const newTime = new Date(date);
+    const dropData = over.data.current as DropTargetData;
+    const isMonthView = activeView === "month";
+    const newTime = calculateDropTime(dropData, currentTime, isMonthView);
 
-        // Calculate hours and minutes with 15-minute precision
-        const hours = Math.floor(time);
-        const fractionalHour = time - hours;
+    // Only dispatch if time has actually changed
+    const hasChanged = isMonthView
+      ? !currentTime || hasDateChanged(newTime, currentTime)
+      : !currentTime || hasDateTimeChanged(newTime, currentTime);
 
-        // Map to nearest 15 minute interval (0, 0.25, 0.5, 0.75)
-        let minutes = 0;
-        if (fractionalHour < 0.125) minutes = 0;
-        else if (fractionalHour < 0.375) minutes = 15;
-        else if (fractionalHour < 0.625) minutes = 30;
-        else minutes = 45;
-
-        newTime.setHours(hours, minutes, 0, 0);
-
-        // Only update if time has changed
-        if (
-          !currentTime ||
-          newTime.getHours() !== currentTime.getHours() ||
-          newTime.getMinutes() !== currentTime.getMinutes() ||
-          newTime.getDate() !== currentTime.getDate() ||
-          newTime.getMonth() !== currentTime.getMonth() ||
-          newTime.getFullYear() !== currentTime.getFullYear()
-        ) {
-          setCurrentTime(newTime);
-        }
-      } else if (activeView === "month") {
-        // For month view, just update the date but preserve time
-        const newTime = new Date(date);
-        if (currentTime) {
-          newTime.setHours(
-            currentTime.getHours(),
-            currentTime.getMinutes(),
-            currentTime.getSeconds(),
-            currentTime.getMilliseconds(),
-          );
-        }
-
-        // Only update if date has changed
-        if (
-          !currentTime ||
-          newTime.getDate() !== currentTime.getDate() ||
-          newTime.getMonth() !== currentTime.getMonth() ||
-          newTime.getFullYear() !== currentTime.getFullYear()
-        ) {
-          setCurrentTime(newTime);
-        }
-      }
+    if (hasChanged) {
+      dispatch({ type: "UPDATE_TIME", payload: newTime });
     }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    const { activeEvent, activeView, currentTime } = dragState;
 
-    // Add robust error checking
+    // Early exit if missing required data
     if (!over || !activeEvent || !currentTime) {
-      // Reset state and exit early
-      setActiveEvent(null);
-      setActiveId(null);
-      setActiveView(null);
-      setCurrentTime(null);
-      setEventHeight(null);
-      setIsMultiDay(false);
-      setMultiDayWidth(null);
-      setDragHandlePosition(null);
+      resetDragState();
       return;
     }
 
     try {
-      // Safely access data with checks
       if (!active.data.current || !over.data.current) {
         throw new Error("Missing data in drag event");
       }
 
-      const activeData = active.data.current as {
-        event?: CalendarEvent;
-        view?: string;
-      };
-      const overData = over.data.current as { date?: Date; time?: number };
+      const activeData = active.data.current as Partial<DragStartData>;
+      const overData = over.data.current as Partial<DropTargetData>;
 
-      // Verify we have all required data
       if (!activeData.event || !overData.date) {
         throw new Error("Missing required event data");
       }
 
       const calendarEvent = activeData.event;
-      const date = overData.date;
-      const time = overData.time;
+      const isMonthView = activeView === "month";
+      const newStart = calculateDropTime(
+        overData as DropTargetData,
+        currentTime,
+        isMonthView,
+      );
 
-      // Calculate new start time
-      const newStart = new Date(date);
-
-      // If time is provided (for week/day views), set the hours and minutes
-      if (time !== undefined) {
-        const hours = Math.floor(time);
-        const fractionalHour = time - hours;
-
-        // Map to nearest 15 minute interval (0, 0.25, 0.5, 0.75)
-        let minutes = 0;
-        if (fractionalHour < 0.125) minutes = 0;
-        else if (fractionalHour < 0.375) minutes = 15;
-        else if (fractionalHour < 0.625) minutes = 30;
-        else minutes = 45;
-
-        newStart.setHours(hours, minutes, 0, 0);
-      } else {
-        // For month view, preserve the original time from currentTime
-        newStart.setHours(
-          currentTime.getHours(),
-          currentTime.getMinutes(),
-          currentTime.getSeconds(),
-          currentTime.getMilliseconds(),
+      // Only update if time has changed
+      if (hasDateTimeChanged(new Date(calendarEvent.start), newStart)) {
+        const { start, end } = calculateUpdatedEventTimes(
+          calendarEvent,
+          newStart,
         );
-      }
-
-      // Calculate new end time based on the original duration
-      const originalStart = new Date(calendarEvent.start);
-      const originalEnd = new Date(calendarEvent.end);
-      const durationMinutes = differenceInMinutes(originalEnd, originalStart);
-      const newEnd = addMinutes(newStart, durationMinutes);
-
-      // Only update if the start time has actually changed
-      const hasStartTimeChanged =
-        originalStart.getFullYear() !== newStart.getFullYear() ||
-        originalStart.getMonth() !== newStart.getMonth() ||
-        originalStart.getDate() !== newStart.getDate() ||
-        originalStart.getHours() !== newStart.getHours() ||
-        originalStart.getMinutes() !== newStart.getMinutes();
-
-      if (hasStartTimeChanged) {
-        // Update the event only if the time has changed
-        onEventUpdate({
-          ...calendarEvent,
-          start: newStart,
-          end: newEnd,
-        });
+        onEventUpdate({ ...calendarEvent, start, end });
       }
     } catch (error) {
       console.error("Error in drag end handler:", error);
     } finally {
-      // Always reset state
-      setActiveEvent(null);
-      setActiveId(null);
-      setActiveView(null);
-      setCurrentTime(null);
-      setEventHeight(null);
-      setIsMultiDay(false);
-      setMultiDayWidth(null);
-      setDragHandlePosition(null);
+      resetDragState();
     }
   };
 
@@ -315,41 +228,11 @@ export const EventCalendarDndProvider = ({
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <EventCalendarDndContext.Provider
-        value={{
-          activeEvent,
-          activeId,
-          activeView,
-          currentTime,
-          eventHeight,
-          isMultiDay,
-          multiDayWidth,
-          dragHandlePosition,
-        }}
-      >
+      <EventCalendarDndContext.Provider value={dragState}>
         {children}
 
         <DragOverlay adjustScale={false} dropAnimation={null}>
-          {activeEvent && activeView && (
-            <div
-              style={{
-                height: eventHeight ? `${eventHeight}px` : "auto",
-                width:
-                  isMultiDay && multiDayWidth ? `${multiDayWidth}%` : "100%",
-                // Remove the transform that was causing the shift
-              }}
-            >
-              <EventItem
-                event={activeEvent}
-                view={activeView}
-                isDragging={true}
-                showTime={activeView !== "month"}
-                currentTime={currentTime || undefined}
-                isFirstDay={dragHandlePosition?.data?.isFirstDay !== false}
-                isLastDay={dragHandlePosition?.data?.isLastDay !== false}
-              />
-            </div>
-          )}
+          <EventDragOverlay {...dragState} />
         </DragOverlay>
       </EventCalendarDndContext.Provider>
     </DndContext>
