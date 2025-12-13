@@ -11,10 +11,10 @@ import "../calendars.styles.css";
 
 import type {
   DateRange,
-  DateRangeCalendarProps,
+  DateRangePickerProps,
   DateRangeFilterKey,
-} from "./date-range-calendar.types";
-import { DATE_RANGE_FILTERS } from "./date-range-calendar.constants";
+} from "./date-range-picker.types";
+import { DATE_RANGE_FILTERS } from "./date-range-picker.constants";
 
 const DEFAULT_FILTERS: DateRangeFilterKey[] = [
   "last7Days",
@@ -27,14 +27,14 @@ const DEFAULT_FILTERS: DateRangeFilterKey[] = [
   "yearToDate",
 ];
 
-export const DateRangeCalendar = ({
+export const DateRangePicker = ({
   headless = false,
   filters = DEFAULT_FILTERS,
   onSelect,
   defaultMonth,
   selected: selectedProp,
   ...props
-}: DateRangeCalendarProps) => {
+}: DateRangePickerProps) => {
   const [month, setMonth] = useState(defaultMonth);
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(
     selectedProp,
@@ -86,4 +86,4 @@ export const DateRangeCalendar = ({
     </ConditionalRender>
   );
 };
-DateRangeCalendar.displayName = "DateRangeCalendar";
+DateRangePicker.displayName = "DateRangePicker";

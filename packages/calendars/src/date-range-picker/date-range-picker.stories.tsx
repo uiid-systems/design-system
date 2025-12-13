@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Stack } from "@uiid/layout";
 
-import { DateRangeCalendar } from "./date-range-calendar";
+import { DateRangePicker } from "./date-range-picker";
 
 const meta = {
   title: "Calendars/Date Range Calendar",
-  component: DateRangeCalendar,
-} satisfies Meta<typeof DateRangeCalendar>;
+  component: DateRangePicker,
+} satisfies Meta<typeof DateRangePicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -17,8 +17,8 @@ export const Default: Story = {
   render: (args) => {
     return (
       <Stack gap={4}>
-        <DateRangeCalendar {...args} />
-        <DateRangeCalendar
+        <DateRangePicker {...args} />
+        <DateRangePicker
           {...args}
           numberOfMonths={2}
           pagedNavigation
