@@ -1,0 +1,35 @@
+import type { DraggableAttributes } from "@dnd-kit/core";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+
+export type CalendarView = "month" | "week" | "day" | "agenda";
+
+export type CalendarEvent = {
+  id: string;
+  title: string;
+  description?: string;
+  start: Date;
+  end: Date;
+  allDay?: boolean;
+  location?: string;
+};
+
+type EventInteractiveProps = React.PropsWithChildren<{
+  event: CalendarEvent;
+  isFirstDay?: boolean;
+  isLastDay?: boolean;
+  isDragging?: boolean;
+  currentTime?: Date;
+  dndListeners?: SyntheticListenerMap;
+  dndAttributes?: DraggableAttributes;
+  onClick?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
+  onTouchStart?: (e: React.TouchEvent) => void;
+  className?: string;
+}>;
+
+export type EventWrapperProps = EventInteractiveProps;
+
+export type EventItemProps = EventInteractiveProps & {
+  view: CalendarView;
+  showTime?: boolean;
+};

@@ -5,7 +5,7 @@ import { Stack } from "@uiid/layout";
 import { DateRangePicker } from "./date-range-picker";
 
 const meta = {
-  title: "Calendars/Date Range Calendar",
+  title: "Calendars/Date Range Picker",
   component: DateRangePicker,
 } satisfies Meta<typeof DateRangePicker>;
 
@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "Date Range Calendar",
+  name: "Date Range Picker",
   render: (args) => {
     return (
       <Stack gap={4}>
