@@ -2,9 +2,6 @@
 
 import { useMemo } from "react";
 
-import { Group } from "@uiid/layout";
-import { Text } from "@uiid/typography";
-
 import type { EventItemProps } from "../event-calendar.types";
 import {
   formatTimeWithOptionalMinutes,
