@@ -1,4 +1,5 @@
 export type ToggleProps = {
+  /** `text-align: center` */
   center?: boolean;
   bold?: boolean;
   evenly?: boolean;

@@ -79,3 +79,14 @@ export type DraggableEventProps = Pick<
     onClick?: (e: React.MouseEvent) => void;
     "aria-hidden"?: boolean | "true" | "false";
   };
+
+export type EventVisibilityOptions = {
+  eventHeight: number;
+  eventGap: number;
+};
+
+export type EventVisibilityResult = {
+  contentRef: React.RefObject<HTMLDivElement>;
+  contentHeight: number | null;
+  getVisibleEventCount: (totalEvents: number) => number;
+};

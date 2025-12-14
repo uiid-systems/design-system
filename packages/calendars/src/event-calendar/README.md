@@ -36,6 +36,8 @@ event-calendar/
 ├── event-calendar.types.ts      # Shared types
 ├── event-calendar.utils.ts      # Date helpers
 ├── event-calendar.constants.ts  # Config values
+├── hooks/
+│   └── use-event-visibility.ts  # Calculate visible events in a cell
 └── subcomponents/
     ├── draggable-event.tsx      # Wrapper that makes events draggable
     ├── droppable-cell.tsx       # Drop target (calendar cell)
@@ -121,6 +123,28 @@ const {
   // ...etc
 } = useEventCalendarDnd();
 ```
+
+### `useEventVisibility(options)`
+
+Calculates how many events can fit in a calendar cell. Uses `ResizeObserver` for efficient updates.
+
+```ts
+const { contentRef, contentHeight, getVisibleEventCount } = useEventVisibility({
+  eventHeight: 20,  // Height of each event in px
+  eventGap: 4,      // Gap between events in px
+});
+
+// Attach ref to your content container
+<div ref={contentRef}>
+  {events.slice(0, getVisibleEventCount(events.length)).map(...)}
+  {events.length > getVisibleEventCount(events.length) && <MoreButton />}
+</div>
+```
+
+Returns:
+- `contentRef` — attach to the container you want to measure
+- `contentHeight` — current height in pixels (or `null` before mount)
+- `getVisibleEventCount(total)` — returns how many events to show (reserves space for "more" button)
 
 ## Utils
 
