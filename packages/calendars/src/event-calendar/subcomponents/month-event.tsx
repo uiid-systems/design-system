@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 
-import { cx } from "@uiid/utils";
+import { Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import type { EventItemProps } from "../event-calendar.types";
 import {
@@ -19,8 +20,6 @@ export const MonthEvent = ({
   isDragging,
   onClick,
   currentTime,
-  isFirstDay = true,
-  isLastDay = true,
   children,
   className,
   dndListeners,
@@ -36,29 +35,20 @@ export const MonthEvent = ({
   return (
     <EventWrapper
       event={event}
-      isFirstDay={isFirstDay}
-      isLastDay={isLastDay}
       isDragging={isDragging}
-      onClick={onClick}
       currentTime={currentTime}
       dndListeners={dndListeners}
       dndAttributes={dndAttributes}
+      className={className}
+      onClick={onClick}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
-      className={cx(
-        "mt-[var(--event-gap)] h-[var(--event-height)] items-center text-[10px] sm:text-xs",
-        className,
-      )}
     >
       {children || (
-        <span className="truncate">
-          {!event.allDay && (
-            <span className="truncate font-normal opacity-70 sm:text-[11px]">
-              {formatTimeWithOptionalMinutes(displayStart)}{" "}
-            </span>
-          )}
+        <>
+          {!event.allDay && formatTimeWithOptionalMinutes(displayStart)}{" "}
           {event.title}
-        </span>
+        </>
       )}
     </EventWrapper>
   );

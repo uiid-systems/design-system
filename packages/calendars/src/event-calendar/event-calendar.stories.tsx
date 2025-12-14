@@ -23,13 +23,6 @@ const SAMPLE_EVENTS: CalendarEvent[] = [
     end: addHours(today, 15),
   },
   {
-    id: "3",
-    title: "Conference",
-    start: addDays(today, 2),
-    end: addDays(today, 4),
-    allDay: true,
-  },
-  {
     id: "4",
     title: "Lunch with Client",
     start: addHours(addDays(today, 1), 12),
@@ -38,6 +31,12 @@ const SAMPLE_EVENTS: CalendarEvent[] = [
   },
   {
     id: "5",
+    title: "Sprint Planning",
+    start: addHours(addDays(today, 3), 10),
+    end: addHours(addDays(today, 3), 12),
+  },
+  {
+    id: "7",
     title: "Sprint Planning",
     start: addHours(addDays(today, 3), 10),
     end: addHours(addDays(today, 3), 12),
@@ -69,18 +68,7 @@ const MonthViewDemo = () => {
   };
 
   return (
-    <div
-      style={
-        {
-          height: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          // CSS custom properties for event sizing
-          "--event-height": "24px",
-          "--event-gap": "4px",
-        } as React.CSSProperties
-      }
-    >
+    <div style={{ height: "80vh", display: "flex", flexDirection: "column" }}>
       <EventCalendarDndProvider onEventUpdate={handleEventUpdate}>
         <MonthView
           currentDate={currentDate}
@@ -94,7 +82,7 @@ const MonthViewDemo = () => {
 };
 
 const meta = {
-  title: "Calendars/EventCalendar/MonthView",
+  title: "Calendars/Event Calendar/Month View",
   component: MonthViewDemo,
   parameters: {
     layout: "fullscreen",
@@ -104,4 +92,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  name: "Month View",
+};

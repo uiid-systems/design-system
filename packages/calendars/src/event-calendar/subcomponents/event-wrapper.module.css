@@ -1,34 +1,27 @@
 .event-wrapper {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  padding-inline: 0.25rem;
-  text-align: left;
-  font-weight: 500;
   user-select: none;
+  transition: scale calc(var(--globals-transition-timing) / 2) ease-in-out;
+
+  * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+    text-box-trim: none;
+  }
+
+  &:not(:active):hover {
+    scale: 1.025;
+  }
 
   &[data-dragging] {
     cursor: grabbing;
+    opacity: var(--globals-disabled-opacity);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 
   &[data-past-event] {
     text-decoration: line-through;
-    opacity: 0.5;
-  }
-
-  &[data-first-day] {
-    border-top-left-radius: var(--globals-border-radius);
-    border-bottom-left-radius: var(--globals-border-radius);
-  }
-
-  &[data-last-day] {
-    border-top-right-radius: var(--globals-border-radius);
-    border-bottom-right-radius: var(--globals-border-radius);
-  }
-
-  &[data-first-day][data-last-day] {
-    border-radius: var(--globals-border-radius);
+    opacity: var(--globals-disabled-opacity);
   }
 }

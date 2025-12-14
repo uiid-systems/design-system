@@ -5,6 +5,7 @@ import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { isPast } from "date-fns";
 
+import { Badge } from "@uiid/indicators";
 import { cx } from "@uiid/utils";
 
 import type { CalendarEvent } from "../event-calendar.types";
@@ -13,8 +14,6 @@ import styles from "./event-wrapper.module.css";
 
 export type EventWrapperProps = React.PropsWithChildren<{
   event: CalendarEvent;
-  isFirstDay?: boolean;
-  isLastDay?: boolean;
   isDragging?: boolean;
   currentTime?: Date;
   dndListeners?: SyntheticListenerMap;
@@ -23,15 +22,15 @@ export type EventWrapperProps = React.PropsWithChildren<{
   onMouseDown?: (e: React.MouseEvent) => void;
   onTouchStart?: (e: React.TouchEvent) => void;
   className?: string;
+  style?: React.CSSProperties;
 }>;
 
 export const EventWrapper = ({
   event,
-  isFirstDay = true,
-  isLastDay = true,
   isDragging,
   onClick,
   className,
+  style,
   children,
   currentTime,
   dndListeners,
@@ -50,20 +49,23 @@ export const EventWrapper = ({
   }, [currentTime, event.end, event.start]);
 
   return (
-    <button
+    <Badge
+      hideIndicator
+      fullwidth
+      size="lg"
+      render={<button />}
       className={cx(styles["event-wrapper"], className)}
-      data-first-day={isFirstDay || undefined}
-      data-last-day={isLastDay || undefined}
       data-dragging={isDragging || undefined}
       data-past-event={isEventInPast || undefined}
       onClick={onClick}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
+      style={style}
       {...dndListeners}
       {...dndAttributes}
     >
       {children}
-    </button>
+    </Badge>
   );
 };
 EventWrapper.displayName = "EventWrapper";

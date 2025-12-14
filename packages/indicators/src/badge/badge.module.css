@@ -7,6 +7,7 @@
 
   background-color: var(--badge-bg);
   color: var(--badge-fg);
+  display: inline-flex !important;
   padding: var(--badge-padding-y) var(--badge-padding-x);
   border: var(--globals-border-width) solid var(--badge-border);
   border-radius: var(--badge-border-radius);
@@ -35,6 +36,19 @@
     --badge-bg: var(--shade-background);
     --badge-border: var(--shade-muted);
     --badge-fg: var(--shade-foreground);
+  }
+
+  &:where([data-size="sm"]) {
+    --badge-padding-y: var(--badge-size-sm-padding-y);
+    --badge-padding-x: var(--badge-size-sm-padding-x);
+  }
+  &:where([data-size="md"]) {
+    --badge-padding-y: var(--badge-size-md-padding-y);
+    --badge-padding-x: var(--badge-size-md-padding-x);
+  }
+  &:where([data-size="lg"]) {
+    --badge-padding-y: var(--badge-size-lg-padding-y);
+    --badge-padding-x: var(--badge-size-lg-padding-x);
   }
 }
 

@@ -39,7 +39,6 @@ export const DroppableCell = ({
       data-dragging={isOver && activeEvent ? true : undefined}
       className={cx(styles["droppable-cell"], className)}
       fullheight
-      py={1}
       {...props}
     >
       {children}

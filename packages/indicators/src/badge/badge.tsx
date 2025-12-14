@@ -6,6 +6,7 @@ import type { BadgeProps } from "./badge.types";
 import styles from "./badge.module.css";
 
 export const Badge = ({
+  size,
   variant,
   hideIndicator,
   className,
@@ -18,8 +19,8 @@ export const Badge = ({
       ay="center"
       gap={1}
       data-variant={variant}
+      data-size={size}
       className={cx(styles["badge"], className)}
-      style={{ display: "inline-flex" }}
       {...props}
     >
       {!hideIndicator && (

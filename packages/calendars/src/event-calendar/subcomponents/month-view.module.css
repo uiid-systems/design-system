@@ -26,9 +26,10 @@
 .month-view-day {
   border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   border-right: var(--globals-border-width) solid var(--globals-border-color);
+  transition: background-color var(--globals-transition-timing) ease-in-out;
 
   &[data-outside-cell] {
-    background-color: var(--shade-muted);
+    background-color: color-mix(in oklab, var(--shade-surface), transparent 50%);
     color: var(--shade-halftone);
   }
 
@@ -38,29 +39,19 @@
 }
 
 .month-view-day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  width: 1.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+
   [data-today] & {
-    background-color: var(--shade-halftone);
-    color: var(--shade-foreground);
-    margin-block-start: 0.25rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    aspect-ratio: 1;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-}
-
-.month-view-day-content {
-  min-height: calc((var(--event-height) + var(--event-gap)) * 2);
-
-  @media (min-width: 640px) {
-    min-height: calc((var(--event-height) + var(--event-gap)) * 3);
-  }
-
-  @media (min-width: 1024px) {
-    min-height: calc((var(--event-height) + var(--event-gap)) * 4);
+    background-color: var(--shade-foreground);
+    color: var(--shade-background);
   }
 }
