@@ -55,7 +55,11 @@ export const PlayerTable = () => {
           }))}
         />
       </Group>
-      <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
+      <Card
+        trimmed
+        fullwidth
+        className="overflow-hidden bg-(--shade-background)"
+      >
         <Table
           columns={TABLE_MOCK_COLUMNS}
           items={TABLE_MOCK_DATA}

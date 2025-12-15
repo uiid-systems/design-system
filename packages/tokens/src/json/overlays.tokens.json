@@ -4,7 +4,7 @@
   "overlays": {
     "backdrop": {
       "opacity": { "$value": "0.9", "$type": "number" },
-      "zIndex": { "$value": "40", "$type": "number" }
+      "zIndex": { "$value": "50", "$type": "number" }
     }
   }
 }

@@ -3,6 +3,7 @@ export * from "./draggable-event";
 export * from "./droppable-cell";
 export * from "./event-drag-overlay";
 export * from "./month-event";
+export * from "./month-view";
 export * from "./event-item";
 export * from "./event-wrapper";
 export * from "./week-day-event";

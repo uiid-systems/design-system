@@ -6,8 +6,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1;
-    text-box-trim: none;
+    line-height: 1 !important;
+    text-box-trim: none !important;
   }
 
   &:not(:active):hover {

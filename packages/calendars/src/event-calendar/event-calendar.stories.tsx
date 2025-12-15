@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { addDays, addHours, startOfToday } from "date-fns";
+import { Drawer } from "@uiid/overlays";
 
 import { MonthView } from "./subcomponents/month-view";
 import { EventCalendarDndProvider } from "./event-calendar.context";
@@ -52,6 +53,10 @@ const SAMPLE_EVENTS: CalendarEvent[] = [
 const MonthViewDemo = () => {
   const [events, setEvents] = useState<CalendarEvent[]>(SAMPLE_EVENTS);
   const [currentDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+    null,
+  );
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleEventUpdate = (updatedEvent: CalendarEvent) => {
     setEvents((prev) =>
@@ -60,7 +65,8 @@ const MonthViewDemo = () => {
   };
 
   const handleEventSelect = (event: CalendarEvent) => {
-    console.log("Selected event:", event);
+    setSelectedEvent(event);
+    setIsDrawerOpen(true);
   };
 
   const handleEventCreate = (startTime: Date) => {
@@ -68,7 +74,7 @@ const MonthViewDemo = () => {
   };
 
   return (
-    <div style={{ height: "80vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <EventCalendarDndProvider onEventUpdate={handleEventUpdate}>
         <MonthView
           currentDate={currentDate}
@@ -77,12 +83,19 @@ const MonthViewDemo = () => {
           onEventCreate={handleEventCreate}
         />
       </EventCalendarDndProvider>
+      <Drawer
+        title={selectedEvent?.title || ""}
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+      >
+        stuff goes here
+      </Drawer>
     </div>
   );
 };
 
 const meta = {
-  title: "Calendars/Event Calendar/Month View",
+  title: "Calendars/Event Calendar",
   component: MonthViewDemo,
   parameters: {
     layout: "fullscreen",
@@ -92,6 +105,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Month View",
-};
+export const Default: Story = { name: "Month View" };

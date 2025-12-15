@@ -84,8 +84,12 @@
     --card-color-fg: var(--card-variant-inverted-fg);
   }
 
-  &:where([data-trim="true"]) {
+  &:where([data-trimmed="true"]) {
     padding-block: 0;
     padding-inline: 0;
+  }
+
+  &:where([data-transparent="true"]) {
+    background-color: transparent;
   }
 }

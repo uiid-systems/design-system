@@ -2,7 +2,7 @@ import type { Drawer, DialogProps, ContentProps } from "vaul";
 
 export type DrawerProps = React.PropsWithChildren<{
   /** The trigger element to open the drawer. */
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   /** The title of the drawer. */
   title: string;
   /**

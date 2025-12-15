@@ -24,8 +24,6 @@ export type CalendarEvent = {
 
 type EventInteractiveProps = React.PropsWithChildren<{
   event: CalendarEvent;
-  isFirstDay?: boolean;
-  isLastDay?: boolean;
   isDragging?: boolean;
   currentTime?: Date;
   dndListeners?: SyntheticListenerMap;

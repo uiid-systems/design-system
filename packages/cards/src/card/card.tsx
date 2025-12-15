@@ -12,7 +12,8 @@ export const Card = ({
   onClose,
   showCloseButton,
   size = "md",
-  trim,
+  trimmed,
+  transparent,
   variant,
   className,
   children,
@@ -26,7 +27,8 @@ export const Card = ({
       gap={GAP_LEVEL[size]}
       data-size={size}
       data-variant={variant}
-      data-trim={trim}
+      data-trimmed={trimmed}
+      data-transparent={transparent}
       className={cx(styles.card, className)}
       {...props}
     >

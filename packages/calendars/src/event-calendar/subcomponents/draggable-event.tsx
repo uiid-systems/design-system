@@ -3,9 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { differenceInDays } from "date-fns";
 
-import { useEventCalendarDnd } from "../event-calendar.context";
 import type {
   DragHandlePosition,
   DraggableEventProps,
@@ -19,24 +17,15 @@ export const DraggableEvent = ({
   showTime,
   onClick,
   height,
-  isMultiDay,
-  multiDayWidth,
   isFirstDay = true,
   isLastDay = true,
   "aria-hidden": ariaHidden,
 }: DraggableEventProps) => {
-  const { activeId } = useEventCalendarDnd();
   const elementRef = useRef<HTMLDivElement>(null);
   const [dragHandlePosition, setDragHandlePosition] = useState<Omit<
     DragHandlePosition,
     "data"
   > | null>(null);
-
-  // Check if this is a multi-day event
-  const eventStart = new Date(event.start);
-  const eventEnd = new Date(event.end);
-  const isMultiDayEvent =
-    isMultiDay || event.allDay || differenceInDays(eventEnd, eventStart) >= 1;
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -45,8 +34,6 @@ export const DraggableEvent = ({
         event,
         view,
         height: height || elementRef.current?.offsetHeight || null,
-        isMultiDay: isMultiDayEvent,
-        multiDayWidth: multiDayWidth,
         dragHandlePosition,
         isFirstDay,
         isLastDay,
@@ -80,17 +67,9 @@ export const DraggableEvent = ({
     if (touch) updateDragHandlePosition(touch.clientX, touch.clientY);
   };
 
-  // Don't render if this event is being dragged
-  if (isDragging || activeId === `${event.id}-${view}`) {
-    return (
-      <div ref={setNodeRef} style={{ opacity: 0, height: height || "auto" }} />
-    );
-  }
-
   const style = {
     transform: transform ? CSS.Translate.toString(transform) : undefined,
     height: height || "auto",
-    width: isMultiDayEvent && multiDayWidth ? `${multiDayWidth}%` : undefined,
   };
 
   return (
@@ -99,8 +78,6 @@ export const DraggableEvent = ({
         event={event}
         view={view}
         showTime={showTime}
-        isFirstDay={isFirstDay}
-        isLastDay={isLastDay}
         isDragging={isDragging}
         onClick={onClick}
         onMouseDown={handleMouseDown}

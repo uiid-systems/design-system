@@ -5,6 +5,7 @@ import type { ListProps } from "@uiid/layout";
 
 import {
   PLAYERS_PATH,
+  EVENT_CALENDAR_PATH,
   DISCORD_INVITE_URL,
   FIND_MATCH_PATH,
 } from "@/constants/urls";
@@ -24,6 +25,11 @@ export const APP_LINKS: ListProps["items"] = [
         label: "Player directory",
         value: "players",
         render: <Link href={PLAYERS_PATH}>Player directory</Link>,
+      },
+      {
+        label: "Event calendar",
+        value: "event-calendar",
+        render: <Link href={EVENT_CALENDAR_PATH}>Event calendar</Link>,
       },
       {
         label: "Join the Discord",

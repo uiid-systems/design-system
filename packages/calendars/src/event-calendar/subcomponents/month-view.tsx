@@ -12,7 +12,7 @@ import {
   startOfWeek,
 } from "date-fns";
 
-import { Stack } from "@uiid/layout";
+import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { DEFAULT_START_HOUR, WEEKDAYS } from "../event-calendar.constants";
@@ -29,7 +29,7 @@ import { DroppableCell } from "./droppable-cell";
 
 import styles from "./month-view.module.css";
 
-interface MonthViewProps {
+export interface MonthViewProps {
   currentDate: Date;
   events: CalendarEvent[];
   onEventSelect: (event: CalendarEvent) => void;
@@ -60,22 +60,25 @@ export const MonthView = ({
 
   return (
     <div data-slot="month-view" className={styles["month-view"]}>
-      <div
+      <Group
         data-slot="month-view-weekdays"
         className={styles["month-view-weekdays"]}
+        fullwidth
+        evenly
       >
         {WEEKDAYS.map((day) => (
           <Text
+            key={day}
             data-slot="month-view-weekday"
             shade="accent"
-            key={day}
-            py={2}
+            level={0}
+            py={4}
             center
           >
             {day}
           </Text>
         ))}
-      </div>
+      </Group>
       <div data-slot="month-view-weeks" className={styles["month-view-weeks"]}>
         {weeks.map((week, weekIndex) => (
           <div

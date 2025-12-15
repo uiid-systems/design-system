@@ -13,7 +13,11 @@ export const FindAMatch = () => {
       <Text level={4} bold>
         Find a match
       </Text>
-      <Card trim fullwidth className="overflow-hidden bg-(--shade-background)">
+      <Card
+        trimmed
+        fullwidth
+        className="overflow-hidden bg-(--shade-background)"
+      >
         <Table
           columns={FIND_A_MATCH_MOCK_COLUMNS}
           items={FIND_A_MATCH_MOCK_DATA}

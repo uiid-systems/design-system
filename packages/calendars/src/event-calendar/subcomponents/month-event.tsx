@@ -2,6 +2,8 @@
 
 import { useMemo } from "react";
 
+import { Text } from "@uiid/typography";
+
 import type { EventItemProps } from "../event-calendar.types";
 import {
   formatTimeWithOptionalMinutes,
@@ -42,10 +44,12 @@ export const MonthEvent = ({
       onTouchStart={onTouchStart}
     >
       {children || (
-        <>
-          {!event.allDay && formatTimeWithOptionalMinutes(displayStart)}{" "}
+        <Text level={-1}>
+          <strong>
+            {!event.allDay && formatTimeWithOptionalMinutes(displayStart)}
+          </strong>{" "}
           {event.title}
-        </>
+        </Text>
       )}
     </EventWrapper>
   );

@@ -5,6 +5,7 @@
   position: fixed;
   inset: 0;
   background-color: color-mix(in srgb, transparent, var(--shade-background) calc(var(--overlays-backdrop-opacity) * 100%));
+  z-index: calc(var(--overlays-backdrop-zIndex) - 1);
 }
 
 .drawer-content {
@@ -13,6 +14,7 @@
   bottom: var(--drawer-offset);
   left: var(--drawer-offset);
   right: var(--drawer-offset);
+  z-index: var(--overlays-backdrop-zIndex);
 
   &[data-vaul-drawer-direction="top"],
   &[data-vaul-drawer-direction="bottom"] {
@@ -21,7 +23,7 @@
 
   &[data-vaul-drawer-direction="right"],
   &[data-vaul-drawer-direction="left"] {
-    max-width: var(--drawer-extends-horizontal);
+    min-width: var(--drawer-extends-horizontal);
     height: calc(100dvh - var(--drawer-offset) * 2);
   }
 

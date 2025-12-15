@@ -24,8 +24,6 @@ export const WeekDayEvent = ({
   onClick,
   showTime,
   currentTime,
-  isFirstDay = true,
-  isLastDay = true,
   className,
   dndListeners,
   dndAttributes,
@@ -48,8 +46,6 @@ export const WeekDayEvent = ({
   return (
     <EventWrapper
       event={event}
-      isFirstDay={isFirstDay}
-      isLastDay={isLastDay}
       isDragging={isDragging}
       onClick={onClick}
       currentTime={currentTime}

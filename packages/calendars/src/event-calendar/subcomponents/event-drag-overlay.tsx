@@ -11,7 +11,6 @@ export const EventDragOverlay = ({
   eventHeight,
   isMultiDay,
   multiDayWidth,
-  dragHandlePosition,
 }: EventDragOverlayProps) => {
   if (!activeEvent || !activeView) return null;
 
@@ -28,8 +27,6 @@ export const EventDragOverlay = ({
         isDragging={true}
         showTime={activeView !== "month"}
         currentTime={currentTime || undefined}
-        isFirstDay={dragHandlePosition?.data?.isFirstDay !== false}
-        isLastDay={dragHandlePosition?.data?.isLastDay !== false}
       />
     </div>
   );

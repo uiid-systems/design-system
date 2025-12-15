@@ -1,5 +1,5 @@
 import { Badge } from "@uiid/indicators";
-import { formatDate, DateCalendar } from "@uiid/calendars";
+import { formatDate, DatePicker } from "@uiid/calendars";
 import { Swords, Star, Heart, Calendar } from "@uiid/icons";
 import type { MenuProps } from "@uiid/interactive";
 import { Modal, Sheet } from "@uiid/overlays";
@@ -120,7 +120,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     tooltip: "See schedule",
     wrapper: (button) => (
       <Modal trigger={button} title="Schedule">
-        <DateCalendar headless />
+        <DatePicker headless />
       </Modal>
     ),
   },

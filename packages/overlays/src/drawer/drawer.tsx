@@ -3,7 +3,7 @@
 import { isValidElement } from "react";
 import { Drawer as BaseDrawer, type DialogProps } from "vaul";
 
-import { Card } from "@uiid/cards";
+import { Card, CardTitle } from "@uiid/cards";
 
 import type { DrawerProps } from "./drawer.types";
 import styles from "./drawer.module.css";
@@ -13,6 +13,9 @@ export const Drawer = ({
   direction = "right",
   title,
   children,
+  open,
+  onOpenChange,
+  defaultOpen,
   RootProps,
   TriggerProps,
   ContentProps,
@@ -20,7 +23,13 @@ export const Drawer = ({
   const triggerIsEl = isValidElement(trigger);
 
   return (
-    <BaseDrawer.Root direction={direction} {...(RootProps as DialogProps)}>
+    <BaseDrawer.Root
+      direction={direction}
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultOpen={defaultOpen}
+      {...(RootProps as DialogProps)}
+    >
       <BaseDrawer.Trigger {...TriggerProps} asChild>
         <div tabIndex={triggerIsEl ? -1 : 0}>{trigger}</div>
       </BaseDrawer.Trigger>
@@ -31,14 +40,8 @@ export const Drawer = ({
           className={styles["drawer-content"]}
           {...ContentProps}
         >
-          <Card
-            uiid="drawer"
-            title={title}
-            // renderTitle={<BaseDrawer.Title />}
-            // renderDismissButton={<BaseDrawer.Close />}
-            fullwidth
-            fullheight
-          >
+          <Card uiid="drawer" fullwidth fullheight>
+            <CardTitle render={<BaseDrawer.Title />} title={title} />
             {children}
           </Card>
         </BaseDrawer.Content>

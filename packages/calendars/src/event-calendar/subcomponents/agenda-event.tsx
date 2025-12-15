@@ -19,8 +19,6 @@ export const AgendaEvent = ({
   isDragging,
   onClick,
   currentTime,
-  isFirstDay = true,
-  isLastDay = true,
   className,
   dndListeners,
   dndAttributes,
@@ -29,14 +27,12 @@ export const AgendaEvent = ({
 }: AgendaEventProps) => {
   const { displayStart, displayEnd } = useMemo(
     () => getDisplayTimes(event, currentTime),
-    [event, currentTime]
+    [event, currentTime],
   );
 
   return (
     <EventWrapper
       event={event}
-      isFirstDay={isFirstDay}
-      isLastDay={isLastDay}
       isDragging={isDragging}
       onClick={onClick}
       currentTime={currentTime}
@@ -70,4 +66,3 @@ export const AgendaEvent = ({
   );
 };
 AgendaEvent.displayName = "AgendaEvent";
-
