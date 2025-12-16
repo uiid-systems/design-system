@@ -8,8 +8,8 @@
 
 .month-view-weeks {
   display: grid;
-  flex: 1;
   grid-auto-rows: minmax(0, 1fr);
+  width: 100%;
 }
 
 .month-view-week {

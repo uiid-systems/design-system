@@ -1,13 +1,5 @@
 import { format, addDays, startOfWeek } from "date-fns";
 
-export const EVENT_HEIGHT = 24;
-
-// Vertical gap between events in pixels - controls spacing in month view
-export const EVENT_GAP = 2;
-
-// Height of hour cells in week and day views - controls the scale of time display
-export const WEEK_CELLS_HEIGHT = 72;
-
 // Number of days to show in the agenda view
 export const AGENDA_DAYS_TO_SHOW = 30;
 

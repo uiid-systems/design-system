@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { SidebarProvider, SidebarAppContainer } from "@uiid/navigation";
+import { ToastProvider, Toaster } from "@uiid/overlays";
 
 import { AppSidebar, AppHeader } from "../components/navigation";
 import { PageContainer, AppAlert } from "../components/global";
@@ -31,19 +32,22 @@ export default function RootLayout({
 }>) {
   return (
     <SidebarProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
-        >
-          <AppSidebar />
-          <SidebarAppContainer>
-            <AppHeader />
-            <AppAlert />
+      <ToastProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+          >
+            <AppSidebar />
+            <SidebarAppContainer>
+              <AppHeader />
+              <AppAlert />
 
-            <PageContainer>{children}</PageContainer>
-          </SidebarAppContainer>
-        </body>
-      </html>
+              <PageContainer>{children}</PageContainer>
+              <Toaster />
+            </SidebarAppContainer>
+          </body>
+        </html>
+      </ToastProvider>
     </SidebarProvider>
   );
 }

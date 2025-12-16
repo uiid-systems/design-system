@@ -148,7 +148,7 @@ const MonthDay = ({ value }: { value: string }) => {
       className={styles["month-view-day-number"]}
       data-slot="month-view-day-number"
       shade="accent"
-      level={0}
+      level={-1}
       bold
     >
       {value}

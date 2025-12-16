@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { ToastProvider, Toaster } from "@uiid/overlays";
 import { useState } from "react";
 import { addDays, addHours, startOfToday } from "date-fns";
-import { Drawer } from "@uiid/overlays";
 
-import { MonthView } from "./subcomponents/month-view";
-import { EventCalendarDndProvider } from "./event-calendar.context";
+import { EventCalendar } from "./event-calendar";
 import type { CalendarEvent } from "./event-calendar.types";
 
 // Sample events for demo
@@ -50,13 +50,12 @@ const SAMPLE_EVENTS: CalendarEvent[] = [
   },
 ];
 
-const MonthViewDemo = () => {
+const EventCalendarDemo = () => {
   const [events, setEvents] = useState<CalendarEvent[]>(SAMPLE_EVENTS);
-  const [currentDate] = useState(new Date());
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
-    null,
-  );
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleEventAdd = (event: CalendarEvent) => {
+    setEvents((prev) => [...prev, event]);
+  };
 
   const handleEventUpdate = (updatedEvent: CalendarEvent) => {
     setEvents((prev) =>
@@ -64,43 +63,35 @@ const MonthViewDemo = () => {
     );
   };
 
-  const handleEventSelect = (event: CalendarEvent) => {
-    setSelectedEvent(event);
-    setIsDrawerOpen(true);
-  };
-
-  const handleEventCreate = (startTime: Date) => {
-    console.log("Create event at:", startTime);
+  const handleEventDelete = (eventId: string) => {
+    setEvents((prev) => prev.filter((e) => e.id !== eventId));
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <EventCalendarDndProvider onEventUpdate={handleEventUpdate}>
-        <MonthView
-          currentDate={currentDate}
-          events={events}
-          onEventSelect={handleEventSelect}
-          onEventCreate={handleEventCreate}
-        />
-      </EventCalendarDndProvider>
-      <Drawer
-        title={selectedEvent?.title || ""}
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-      >
-        stuff goes here
-      </Drawer>
-    </div>
+    <EventCalendar
+      events={events}
+      onEventAdd={handleEventAdd}
+      onEventUpdate={handleEventUpdate}
+      onEventDelete={handleEventDelete}
+    />
   );
 };
 
-const meta = {
+const meta: Meta<typeof EventCalendarDemo> = {
   title: "Calendars/Event Calendar",
-  component: MonthViewDemo,
+  component: EventCalendarDemo,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof MonthViewDemo>;
+  decorators: [
+    (Story) => (
+      <ToastProvider>
+        <Story />
+        <Toaster />
+      </ToastProvider>
+    ),
+  ],
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

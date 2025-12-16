@@ -7,3 +7,4 @@ export * from "./month-view";
 export * from "./event-item";
 export * from "./event-wrapper";
 export * from "./week-day-event";
+export * from "./event-calendar-header";
