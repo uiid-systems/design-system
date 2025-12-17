@@ -3,6 +3,8 @@ import { Group } from "@uiid/layout";
 import { ChevronLeftIcon, ChevronRightIcon } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 
+import styles from "./event-calendar-header.module.css";
+
 type EventCalendarHeaderProps = {
   handleToday: () => void;
   handlePrevious: () => void;
@@ -17,8 +19,15 @@ export const EventCalendarHeader = ({
   viewTitle,
 }: EventCalendarHeaderProps) => {
   return (
-    <Group ay="center" gap={4}>
-      <HeaderButton label="Jump to today" onClick={handleToday}>
+    <Group
+      ay="center"
+      gap={4}
+      py={4}
+      px={2}
+      fullwidth
+      className={styles["event-calendar-header"]}
+    >
+      <HeaderButton label="Jump to today" onClick={handleToday} square={false}>
         Today
       </HeaderButton>
 
@@ -46,12 +55,14 @@ const HeaderButton = ({
   onClick,
   icon,
   label,
+  square = true,
   children,
 }: {
   onClick: () => void;
   label: string;
   icon?: React.ReactNode;
   children?: React.ReactNode;
+  square?: boolean;
 }) => {
   return (
     <Button
@@ -60,7 +71,7 @@ const HeaderButton = ({
       variant="ghost"
       size="sm"
       icon={icon}
-      square
+      square={square}
     >
       {children}
     </Button>

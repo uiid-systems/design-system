@@ -11,6 +11,8 @@ import type { PopoverProps } from "./popover.types";
 
 export const Popover = ({
   trigger,
+  open,
+  onOpenChange,
   title,
   children,
   RootProps,
@@ -24,7 +26,7 @@ export const Popover = ({
   const triggerIsEl = isValidElement(trigger);
 
   return (
-    <BasePopover.Root {...RootProps}>
+    <BasePopover.Root open={open} onOpenChange={onOpenChange} {...RootProps}>
       <BasePopover.Trigger
         {...TriggerProps}
         render={<div tabIndex={triggerIsEl ? -1 : 0} />}

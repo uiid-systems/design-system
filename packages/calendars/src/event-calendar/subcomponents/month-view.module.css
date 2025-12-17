@@ -27,7 +27,7 @@
   transition: background-color var(--globals-transition-timing) ease-in-out;
 
   &[data-outside-cell] {
-    background-color: color-mix(in oklab, var(--shade-surface), transparent 50%);
+    background-color: var(--shade-surface);
     color: var(--shade-halftone);
   }
 

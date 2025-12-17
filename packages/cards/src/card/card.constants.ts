@@ -9,8 +9,8 @@ export const TITLE_LEVEL = {
 } as const;
 
 export const GAP_LEVEL = {
-  xs: 2,
-  sm: 2,
-  md: 3,
+  xs: 3,
+  sm: 4,
+  md: 4,
   lg: 4,
 } as const;

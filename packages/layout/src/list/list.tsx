@@ -2,11 +2,7 @@ import { SwitchRender } from "../switch-render/switch-render";
 import { Stack } from "../stack/stack";
 import { Group } from "../group/group";
 
-import type {
-  ListProps,
-  HorizontalListProps,
-  VerticalListProps,
-} from "./list.types";
+import type { ListProps } from "./list.types";
 import styles from "./list.module.css";
 import { ListItem, ListItemGroup } from "./subcomponents";
 
@@ -31,7 +27,7 @@ export const List = ({
   const ListElement = type === "ordered" ? <ol /> : <ul />;
 
   const sharedProps = {
-    toretto: "list",
+    uiid: "list",
     direction,
     items,
     render: ListElement,
@@ -45,24 +41,12 @@ export const List = ({
   return (
     <SwitchRender
       condition={direction === "row"}
+      p={0}
+      m={0}
+      {...sharedProps}
       render={{
-        true: (
-          <Group
-            ay="start"
-            gap={4}
-            p={0}
-            m={0}
-            {...(sharedProps as HorizontalListProps)}
-          />
-        ),
-        false: (
-          <Stack
-            ax="stretch"
-            p={0}
-            m={0}
-            {...(sharedProps as VerticalListProps)}
-          />
-        ),
+        true: <Group ay="start" gap={4} />,
+        false: <Stack ax="stretch" />,
       }}
     >
       {items

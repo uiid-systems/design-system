@@ -6,7 +6,7 @@ type ModalSize = "sm" | "md" | "lg" | "xl";
 
 export type ModalProps = React.PropsWithChildren<{
   /** A render prop for the trigger element. */
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   /** The size of the modal. */
   size?: ModalSize;
   /**

@@ -29,7 +29,7 @@ export const Card = ({
       data-variant={variant}
       data-trimmed={trimmed}
       data-transparent={transparent}
-      className={cx(styles.card, className)}
+      className={cx(styles["card"], className)}
       {...props}
     >
       {hasHeaderProps && (

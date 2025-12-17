@@ -4,7 +4,7 @@ import { ConditionalRender } from "../../conditional-render/conditional-render";
 import { Group } from "../../group/group";
 
 import type { ListItemProps } from "../list.types";
-import { ICON_SIZE_SMALL } from "../list.constants";
+import { ICON_SIZE_LARGE } from "../list.constants";
 
 import styles from "./list-item.module.css";
 
@@ -50,8 +50,14 @@ export const ListItem = ({
         data-selected={selected}
         {...props}
       >
-        <Group gap={2}>
-          {Icon && <Icon data-slot="list-item-icon" size={ICON_SIZE_SMALL} />}
+        <Group gap={3} ay="center" style={{ listStyleType: "none" }}>
+          {Icon && (
+            <Icon
+              data-slot="list-item-icon"
+              size={ICON_SIZE_LARGE}
+              style={{ color: "var(--shade-foreground)" }}
+            />
+          )}
           <ListTextBlock
             data-slot="list-item-text"
             label={label}

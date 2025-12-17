@@ -12,7 +12,7 @@ import {
 } from "@uiid/navigation";
 import { Text } from "@uiid/typography";
 
-import { APP_LINKS } from "./app-links";
+import { SIDEBAR_LINKS } from "@/constants/sidebar";
 
 export const AppSidebar = () => {
   const { open } = useSidebar();
@@ -26,7 +26,7 @@ export const AppSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarList items={APP_LINKS} />
+        <SidebarList items={SIDEBAR_LINKS} />
       </SidebarContent>
 
       <SidebarFooter>

@@ -40,7 +40,7 @@ export default function RootLayout({
             <AppSidebar />
             <SidebarAppContainer>
               <AppHeader />
-              <AppAlert />
+              {/* <AppAlert /> */}
 
               <PageContainer>{children}</PageContainer>
               <Toaster />

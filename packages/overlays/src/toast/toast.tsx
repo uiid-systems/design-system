@@ -3,6 +3,7 @@
 import { Toast as BaseToast } from "@base-ui-components/react/toast";
 
 import { Card } from "@uiid/cards";
+import { Text } from "@uiid/typography";
 
 import type { ToasterProps } from "./toast.types";
 import styles from "./toast.module.css";
@@ -16,13 +17,8 @@ const ToastList = () => {
       toast={toast}
       className={styles["toast"]}
       render={
-        <Card
-          uiid="toast"
-          title={toast.title!}
-          // renderTitle={<BaseToast.Title />}
-          // renderDismissButton={<BaseToast.Close />}
-        >
-          <BaseToast.Description />
+        <Card uiid="toast" title={toast.title!} size="sm">
+          <Text level={0} shade="accent" render={<BaseToast.Description />} />
         </Card>
       }
     />
