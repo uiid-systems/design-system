@@ -17,22 +17,13 @@
   height: var(--adjusted-button-height);
   justify-content: flex-start;
   overflow: hidden;
-  padding-inline: calc(var(--button-padding-x) * 2);
+  padding-inline: var(--button-padding-x);
   position: relative;
   transition: background-color var(--globals-transition-timing) ease-in-out;
 
   &:where(:hover, :active) {
     background-color: color-mix(in oklab, var(--button-bg) var(--button-mix-hover), var(--button-mix-color));
     border-color: color-mix(in oklab, var(--button-border-color) var(--button-mix-hover), var(--button-mix-color));
-  }
-
-  &:where([data-grows="true"]) {
-    &:hover {
-      scale: var(--button-scale-hover);
-    }
-    &:active {
-      scale: var(--button-scale-active);
-    }
   }
 
   &:focus {
@@ -44,19 +35,6 @@
   svg {
     height: var(--globals-icon-size);
     flex-shrink: 0;
-  }
-  &:where([data-icon="standalone"]) {
-    --button-height: auto;
-    aspect-ratio: 1;
-    padding: 0;
-  }
-  &:where([data-icon="before"]) {
-    padding-inline-start: calc(var(--button-height) + var(--button-padding-x));
-    padding-inline-end: var(--button-padding-x);
-  }
-  &:where([data-icon="after"]) {
-    padding-inline-end: calc(var(--button-height) + var(--button-padding-x));
-    padding-inline-start: var(--button-padding-x);
   }
 
   &:where([data-size="sm"]) {
@@ -112,8 +90,17 @@
     pointer-events: none;
   }
 
-  &:where([data-square="true"]) {
+  &:where([data-square]) {
     aspect-ratio: 1;
     padding: 0;
+  }
+
+  &:where([data-grows]) {
+    &:hover {
+      scale: var(--button-scale-hover);
+    }
+    &:active {
+      scale: var(--button-scale-active);
+    }
   }
 }

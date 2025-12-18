@@ -11,7 +11,6 @@ This monorepo contains the following packages:
 - **`@uiid/buttons`** - Button components (Button, CloseButton, CopyButton, ToggleButton)
 - **`@uiid/calendars`** - Date and date range pickers with filtering
 - **`@uiid/cards`** - Card components for content containers
-- **`@uiid/dropdowns`** - Dropdown menus and date dropdowns
 - **`@uiid/forms`** - Form controls (Input, Select, Checkbox, Radio, etc.)
 - **`@uiid/indicators`** - Status indicators (Alert, Avatar, Badge, Progress)
 - **`@uiid/interactive`** - Interactive components (Tabs, ToggleGroup)

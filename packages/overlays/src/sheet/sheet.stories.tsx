@@ -29,12 +29,9 @@ export const Default: Story = {
       <Sheet
         title="Open menu from right"
         trigger={
-          <Button
-            aria-label="Open menu from right"
-            icon={<SquareChevronLeft />}
-            tooltip="Open menu from right"
-            variant="subtle"
-          />
+          <Button tooltip="Open menu from right" variant="subtle">
+            <SquareChevronLeft />
+          </Button>
         }
       >
         <p>
@@ -48,12 +45,9 @@ export const Default: Story = {
         title="Open menu from left"
         side="left"
         trigger={
-          <Button
-            aria-label="Open menu"
-            icon={<SquareChevronRight />}
-            tooltip="Open menu from left"
-            variant="subtle"
-          />
+          <Button tooltip="Open menu from left" variant="subtle">
+            <SquareChevronRight />
+          </Button>
         }
       >
         <p>
@@ -67,12 +61,9 @@ export const Default: Story = {
         title="Notifications"
         side="top"
         trigger={
-          <Button
-            variant="subtle"
-            icon={<SquareChevronDown />}
-            tooltip="Open menu from top"
-            aria-label="Open menu from top"
-          />
+          <Button tooltip="Open menu from top" variant="subtle">
+            <SquareChevronDown />
+          </Button>
         }
       >
         <p>
@@ -86,12 +77,9 @@ export const Default: Story = {
         title="Settings"
         side="bottom"
         trigger={
-          <Button
-            variant="subtle"
-            icon={<SquareChevronUp />}
-            tooltip="Open menu from bottom"
-            aria-label="Open menu from bottom"
-          />
+          <Button tooltip="Open menu from bottom" variant="subtle">
+            <SquareChevronUp />
+          </Button>
         }
       >
         <p>

@@ -30,10 +30,11 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
       }
       variant="subtle"
       size="sm"
-      icon={<PanelLeft />}
       square
       {...props}
-    />
+    >
+      <PanelLeft />
+    </Button>
   );
 };
 SidebarTrigger.displayName = "SidebarTrigger";

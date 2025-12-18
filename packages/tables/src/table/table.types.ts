@@ -1,15 +1,15 @@
-import type { ButtonProps } from "@uiid/buttons";
 import type { MenuItem } from "@uiid/interactive";
+import type { Icon } from "@uiid/icons";
 
 export type TableActionsProps = {
-  icon: ButtonProps["icon"];
+  icon: Icon;
   tooltip: string;
   onClick?: () => void;
   wrapper?: (button: React.ReactElement) => React.ReactElement;
 };
 
 export type TableCellDropdownProps = {
-  icon?: ButtonProps["icon"];
+  icon?: Icon;
   tooltip?: string;
   items: MenuItem[];
 };

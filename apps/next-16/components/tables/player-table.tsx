@@ -33,12 +33,8 @@ export const PlayerTable = () => {
           <Menu
             items={TABLE_MOCK_FILTERS}
             trigger={
-              <Button
-                variant="subtle"
-                size="sm"
-                icon={<Filter size={14} />}
-                iconPosition="before"
-              >
+              <Button variant="subtle" size="sm">
+                <Filter />
                 Filters
               </Button>
             }

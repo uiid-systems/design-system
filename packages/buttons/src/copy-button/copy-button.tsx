@@ -39,9 +39,8 @@ export const CopyButton = ({
       className={cx(styles["copy-button"], className)}
       onClick={handleCopy}
       disabled={copied}
-      icon={copied ? <Check /> : <Copy />}
-      iconPosition="before"
     >
+      {copied ? <Check /> : <Copy />}
       {copied ? copiedText : copyText}
     </Button>
   );

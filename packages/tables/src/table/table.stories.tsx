@@ -37,7 +37,7 @@ export const Default = {
       <PlayerTable striped />
 
       <Card
-        trim
+        trimmed
         fullwidth
         style={{ backgroundColor: "var(--shade-background)" }}
       >

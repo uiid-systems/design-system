@@ -1,23 +1,31 @@
-import { Stack } from "@uiid/layout";
+import { Group, type GroupProps } from "@uiid/layout";
+import { cx } from "@uiid/utils";
+
 import styles from "./button-content-slot.module.css";
 
-export const ButtonContentSlot = ({
-  children,
-  active,
-}: {
-  children: React.ReactNode;
+export type ButtonContentSlotProps = GroupProps & {
   active?: boolean;
-}) => {
+};
+
+export const ButtonContentSlot = ({
+  active,
+  className,
+  children,
+  ...props
+}: ButtonContentSlotProps) => {
   return (
-    <Stack
-      className={styles["button-content-slot"]}
+    <Group
+      data-slot="button-content-slot"
       data-active={active ? "true" : undefined}
       ay="center"
       ax="center"
       fullwidth
+      gap={2}
+      className={cx(styles["button-content-slot"], className)}
+      {...props}
     >
       {children}
-    </Stack>
+    </Group>
   );
 };
 ButtonContentSlot.displayName = "ButtonContentSlot";

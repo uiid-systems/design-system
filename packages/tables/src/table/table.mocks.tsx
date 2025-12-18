@@ -56,12 +56,12 @@ export const TABLE_MOCK_DATA: TableMockData[] = [
 
 export const TABLE_MOCK_ACTIONS: TableActionsProps[] = [
   {
-    icon: <Swords />,
+    icon: Swords,
     tooltip: "Challenge",
     onClick: () => console.log("Delete"),
   },
   {
-    icon: <Star />,
+    icon: Star,
     tooltip: "Favorite",
     onClick: () => console.log("Favorite"),
   },

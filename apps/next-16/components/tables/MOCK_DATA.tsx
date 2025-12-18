@@ -116,7 +116,7 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
 
 export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
   {
-    icon: <Calendar />,
+    icon: Calendar,
     tooltip: "See schedule",
     wrapper: (button) => (
       <Modal trigger={button} title="Schedule">
@@ -125,7 +125,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     ),
   },
   {
-    icon: <Swords />,
+    icon: Swords,
     tooltip: "Challenge",
     wrapper: (button) => (
       <Modal trigger={button} title="Challenge">
@@ -134,12 +134,12 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     ),
   },
   {
-    icon: <Star />,
+    icon: Star,
     tooltip: "Favorite",
     onClick: () => console.log("Favorite"),
   },
   {
-    icon: <Heart />,
+    icon: Heart,
     tooltip: "Friend",
     onClick: () => console.log("Friend"),
     wrapper: (button) => (

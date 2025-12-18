@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import { Send, Globe, ChevronsUpDown } from "@uiid/icons";
+import { Home } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
@@ -39,6 +39,7 @@ export const Default: Story = {
         {variants.map((variant) => (
           <Group gap={2} ay="center" key={variant.label}>
             <Button {...args} variant={variant.variant}>
+              <Home />
               default
             </Button>
             <Button {...args} variant={variant.variant} disabled>
@@ -50,41 +51,12 @@ export const Default: Story = {
             <Button {...args} variant={variant.variant} shape="pill">
               pill
             </Button>
-            <Button
-              {...args}
-              icon={<Send size={18} />}
-              aria-label="Send email"
-              variant={variant.variant}
-            />
+
+            <Button {...args} variant={variant.variant} square>
+              <Home />
+            </Button>
           </Group>
         ))}
-
-        <Group gap={4}>
-          <Button
-            {...args}
-            icon={<ChevronsUpDown />}
-            iconPosition="after"
-            variant="subtle"
-            grows={false}
-          >
-            Select a customer
-          </Button>
-
-          <Button
-            {...args}
-            href="https://yahoo.com"
-            target="_blank"
-            icon={<Globe />}
-            iconPosition="before"
-            shape="pill"
-          >
-            yahoo.com
-          </Button>
-
-          <Button size="sm" square icon={<Globe />} aria-label="Globe">
-            Globe
-          </Button>
-        </Group>
       </Stack>
     );
   },

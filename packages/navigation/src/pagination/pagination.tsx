@@ -16,23 +16,21 @@ export const Pagination = () => {
         Page 1 of 10
       </Text>
 
-      <PaginationButton
-        disabled
-        aria-label="First page"
-        icon={<ChevronsLeft />}
-      />
-      <PaginationButton
-        disabled
-        aria-label="Previous page"
-        icon={<ChevronLeft />}
-      />
+      <PaginationButton disabled aria-label="First page">
+        <ChevronsLeft />
+      </PaginationButton>
 
-      {/* <PaginationButton active>1</PaginationButton>
-      <PaginationButton>2</PaginationButton>
-      <PaginationButton>3</PaginationButton> */}
+      <PaginationButton disabled aria-label="Previous page">
+        <ChevronLeft />
+      </PaginationButton>
 
-      <PaginationButton aria-label="Next page" icon={<ChevronRight />} />
-      <PaginationButton aria-label="Last page" icon={<ChevronsRight />} />
+      <PaginationButton aria-label="Next page">
+        <ChevronRight />
+      </PaginationButton>
+
+      <PaginationButton aria-label="Last page">
+        <ChevronsRight />
+      </PaginationButton>
     </Group>
   );
 };

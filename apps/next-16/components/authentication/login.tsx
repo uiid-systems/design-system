@@ -78,11 +78,18 @@ LoginFormHeader.displayName = "LoginFormHeader";
 const LoginFormSocials = () => {
   return (
     <Stack gap={4} ax="stretch">
-      <SocialButton icon={<SiDiscord size={14} />}>
+      <SocialButton>
+        <SiDiscord size={14} />
         Login with Discord
       </SocialButton>
-      <SocialButton icon={<SiApple size={12} />}>Login with Apple</SocialButton>
-      <SocialButton icon={<SiGoogle size={12} />}>
+
+      <SocialButton>
+        <SiApple size={12} />
+        Login with Apple
+      </SocialButton>
+
+      <SocialButton>
+        <SiGoogle size={12} />
         Login with Google
       </SocialButton>
     </Stack>
@@ -118,17 +125,7 @@ const Divider = () => {
 };
 Divider.displayName = "Divider";
 
-const SocialButton = ({
-  children,
-  icon,
-}: {
-  children: React.ReactNode;
-  icon: React.ReactNode;
-}) => {
-  return (
-    <Button variant="subtle" icon={icon} iconPosition="before">
-      {children}
-    </Button>
-  );
+const SocialButton = ({ children }: React.PropsWithChildren) => {
+  return <Button variant="subtle">{children}</Button>;
 };
 SocialButton.displayName = "SocialButton";

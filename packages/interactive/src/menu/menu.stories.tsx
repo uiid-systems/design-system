@@ -11,13 +11,8 @@ const meta: Meta<typeof Menu> = {
   component: Menu,
   args: {
     trigger: (
-      <Button
-        size="md"
-        icon={<MenuIcon size={14} />}
-        iconPosition="before"
-        variant="subtle"
-        grows={false}
-      >
+      <Button size="md" variant="subtle" grows={false}>
+        <MenuIcon size={14} />
         Menu
       </Button>
     ),

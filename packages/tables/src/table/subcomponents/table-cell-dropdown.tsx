@@ -6,7 +6,7 @@ import { EllipsisVertical } from "@uiid/icons";
 import type { TableCellDropdownProps } from "../table.types";
 
 export const TableCellDropdown = ({
-  icon,
+  icon: Icon,
   tooltip = "More options",
   items,
 }: TableCellDropdownProps) => {
@@ -17,11 +17,12 @@ export const TableCellDropdown = ({
         <Button
           tooltip={tooltip}
           aria-label={tooltip}
-          icon={icon || <EllipsisVertical size={14} />}
           variant="ghost"
           size="sm"
           square
-        />
+        >
+          {Icon ? <Icon /> : <EllipsisVertical size={14} />}
+        </Button>
       }
       items={items}
     />

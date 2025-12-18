@@ -1,6 +1,6 @@
 import { Button } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
-import { ChevronLeftIcon, ChevronRightIcon } from "@uiid/icons";
+import { ChevronLeftIcon, ChevronRightIcon, type Icon } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 
 import styles from "./event-calendar-header.module.css";
@@ -35,12 +35,12 @@ export const EventCalendarHeader = ({
         <HeaderButton
           label="Previous"
           onClick={handlePrevious}
-          icon={<ChevronLeftIcon />}
+          icon={ChevronLeftIcon}
         />
         <HeaderButton
           label="Next"
           onClick={handleNext}
-          icon={<ChevronRightIcon />}
+          icon={ChevronRightIcon}
         />
       </Group>
       <Text level={2} bold>
@@ -53,14 +53,14 @@ EventCalendarHeader.displayName = "EventCalendarHeader";
 
 const HeaderButton = ({
   onClick,
-  icon,
+  icon: Icon,
   label,
   square = true,
   children,
 }: {
   onClick: () => void;
   label: string;
-  icon?: React.ReactNode;
+  icon?: Icon;
   children?: React.ReactNode;
   square?: boolean;
 }) => {
@@ -70,9 +70,9 @@ const HeaderButton = ({
       onClick={onClick}
       variant="ghost"
       size="sm"
-      icon={icon}
       square={square}
     >
+      {Icon ? <Icon /> : children}
       {children}
     </Button>
   );

@@ -18,8 +18,8 @@ const meta = {
       <Alert {...args} variant="inverted" />
       <Alert {...args} variant="info" />
       <Alert {...args} variant="warning" />
-      <Alert {...args} variant="error" />
-      <Alert {...args} variant="success" />
+      <Alert {...args} variant="negative" />
+      <Alert {...args} variant="positive" />
     </Stack>
   ),
 } satisfies Meta<typeof Alert>;
