@@ -96,4 +96,4 @@ const meta: Meta<typeof EventCalendarDemo> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Month View" };
+export const Default: Story = { name: "Event Calendar" };
