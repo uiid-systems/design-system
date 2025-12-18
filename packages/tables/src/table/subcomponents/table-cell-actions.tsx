@@ -4,6 +4,7 @@ import { Button } from "@uiid/buttons";
 import { TableCellDropdown } from "./table-cell-dropdown";
 
 import type { TableProps, TableActionsProps } from "../table.types";
+import { EllipsisVertical } from "@uiid/icons";
 
 type TableCellActionsProps = Required<Pick<TableProps, "actions">>;
 
@@ -16,7 +17,9 @@ const ActionButton = ({ wrapper, ...action }: TableActionsProps) => {
       size="sm"
       square
       {...action}
-    />
+    >
+      {action.icon ? <action.icon /> : <EllipsisVertical size={14} />}
+    </Button>
   );
 
   return wrapper ? wrapper(button) : button;

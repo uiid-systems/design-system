@@ -85,7 +85,7 @@
   }
 
   /** Disabled */
-  &:where([aria-disabled="true"]) {
+  &:where([aria-disabled="true"], [disabled]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }

@@ -2,8 +2,6 @@
 
 import { Tooltip } from "@base-ui-components/react/tooltip";
 
-import { BUTTON_TOOLTIP_DELAY } from "../button.constants";
-
 import styles from "./button-tooltip-wrapper.module.css";
 import { ButtonContentContainer } from "./button-content-container";
 
@@ -11,7 +9,7 @@ export const ButtonTooltipWrapper = ({
   children,
   shift,
   tooltip,
-  delay = BUTTON_TOOLTIP_DELAY,
+  delay,
 }: {
   tooltip: React.ReactNode;
   children?: React.ReactNode;
@@ -21,7 +19,7 @@ export const ButtonTooltipWrapper = ({
   return (
     <Tooltip.Provider delay={delay}>
       <Tooltip.Root>
-        <Tooltip.Trigger 
+        <Tooltip.Trigger
           render={<div style={{ all: "unset", marginInline: "auto" }} />}
         >
           <ButtonContentContainer shift={shift} asButton={false}>

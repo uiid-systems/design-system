@@ -9,7 +9,6 @@ import type { ToggleButtonProps } from "./toggle-button.types";
 export const ToggleButton = ({
   text,
   icon,
-  size,
   children,
   ...props
 }: ToggleButtonProps) => {

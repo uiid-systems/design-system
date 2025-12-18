@@ -15,6 +15,5 @@ export type ButtonProps = React.ComponentProps<"button"> & {
   // iconPosition?: ButtonIconSlotProps["position"];
   render?: RenderProp;
   children?: React.ReactNode;
-  ContentProps?: GroupProps;
   align?: GroupProps["ax"];
 };
