@@ -3,8 +3,7 @@ import { Radio as BaseRadio } from "@base-ui-components/react/radio";
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { Label } from "../label/label";
-import { Description } from "../description/description";
+import { FieldLabel, FieldDescription } from "../field/subcomponents";
 
 import type { RadioProps } from "./radio.types";
 import styles from "./radio.module.css";
@@ -62,12 +61,14 @@ export const Radio = ({
         render={<Stack gap={3} />}
       >
         {label && (
-          <Label render={<span />} {...LabelProps}>
+          <FieldLabel render={<span />} {...LabelProps}>
             {label}
-          </Label>
+          </FieldLabel>
         )}
         {description && (
-          <Description {...DescriptionProps}>{description}</Description>
+          <FieldDescription {...DescriptionProps}>
+            {description}
+          </FieldDescription>
         )}
       </ConditionalRender>
     </ConditionalRender>

@@ -1,9 +1,5 @@
-import type { FormProps } from "../types";
+import type { Input } from "@base-ui-components/react/input";
 
-export type InputProps = {
-  ref?: React.Ref<HTMLInputElement>;
-  fullwidth?: boolean;
-  errorMessage?: string;
-  enableClear?: boolean;
-} & FormProps &
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "size">;
+export type InputProps = Omit<Input.Props, "size"> & {
+  size?: "sm" | "md" | "lg";
+};

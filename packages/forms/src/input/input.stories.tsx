@@ -8,51 +8,22 @@ const meta = {
   args: {
     disabled: false,
     required: false,
-    placeholder: "Placeholder",
   },
   argTypes: {
-    validate: { control: "boolean" },
-    onClick: { action: "onClick" },
-    onChange: { action: "onChange" },
+    onFocus: { action: "onFocus" },
+    onValueChange: { action: "onValueChange" },
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
     <Stack ax="stretch" gap={4}>
-      <Input {...args} placeholder="Regular ol' input" name="regular-input" />
-
       <Input
         {...args}
-        label="Input with label, description, hint"
-        description="This is a basic description"
-        hint="Optional"
-        name="input-with-label"
+        placeholder="Regular ol' input"
+        defaultValue="Default value"
       />
 
-      <Input
-        {...args}
-        label="Required input"
-        description="Type at least 5 characters"
-        minLength={5}
-        required
-        validate
-      />
-
-      <Input
-        {...args}
-        label="Input with an error"
-        description="Type at least 5 characters"
-        errorMessage="You haven't typed enough characters!"
-        hasError
-        minLength={5}
-        validate
-      />
-
-      <Input {...args} label="Input with bookends" before="B" after="A" />
-
-      <Input {...args} label="Input with clear" enableClear />
-
-      <Group fullwidth evenly ay="end" gap={2}>
-        <Input {...args} label="Input in a group" />
+      <Group fullwidth evenly gap={4}>
+        <Input {...args} placeholder="Placeholder" />
         <Input {...args} />
       </Group>
     </Stack>

@@ -1,0 +1,59 @@
+.input {
+  background-color: var(--forms-background);
+  border: var(--forms-border-width) solid var(--forms-border-color);
+  border-radius: var(--forms-border-radius);
+  color: var(--forms-foreground);
+  font-size: var(--forms-fontSize);
+  height: var(--forms-height);
+  outline-color: var(--forms-outline-color);
+  outline-offset: var(--forms-outline-offset);
+  outline-width: var(--forms-outline-width);
+  padding-inline: var(--forms-paddingX);
+
+  /** Hover */
+  &:hover {
+    background-color: var(--forms-backgroundHover);
+  }
+
+  /** Focus */
+  &:focus {
+    background-color: var(--forms-backgroundFocus);
+    outline-style: var(--forms-outline-style);
+  }
+
+  /** Disabled */
+  &:disabled {
+    border-style: dashed;
+    pointer-events: none;
+    opacity: var(--forms-state-disabled-opacity);
+  }
+
+  /** Size */
+  &:where([data-size="sm"]) {
+    --forms-fontSize: var(--forms-size-sm-fontSize);
+    --forms-height: var(--forms-size-sm-height);
+  }
+  &:where([data-size="md"]) {
+    --forms-fontSize: var(--forms-size-md-fontSize);
+    --forms-height: var(--forms-size-md-height);
+  }
+  &:where([data-size="lg"]) {
+    --forms-fontSize: var(--forms-size-lg-fontSize);
+    --forms-height: var(--forms-size-lg-height);
+  }
+
+  /** hack to prevent browser-assigned autofill color */
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus {
+    transition:
+      background-color 600000s 0s,
+      color 600000s 0s;
+  }
+
+  /** Placeholder */
+  &::placeholder {
+    color: var(--forms-placeholder-color);
+    font-size: var(--forms-fontSize);
+    line-height: var(--forms-lineHeight);
+  }
+}
