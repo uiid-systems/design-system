@@ -3,7 +3,7 @@ import { Stack, Group } from "@uiid/layout";
 import { Input } from "./input";
 
 const meta = {
-  title: "Forms/Inputs/Input",
+  title: "Forms/Input",
   component: Input,
   args: {
     disabled: false,

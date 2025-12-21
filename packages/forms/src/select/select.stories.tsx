@@ -14,7 +14,7 @@ const MOCK_ITEMS = [
 ];
 
 const meta = {
-  title: "Forms/Selects/Select",
+  title: "Forms/Select",
   component: Select,
   args: {
     disabled: false,

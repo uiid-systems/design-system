@@ -66,13 +66,6 @@ const meta: Meta<typeof Autocomplete> = {
     <Stack gap={4}>
       <Autocomplete items={MOCK_ITEMS} />
       <Autocomplete {...args} />
-      <Autocomplete
-        {...args}
-        before={<Search size={12} />}
-        label="Autocomplete with clear enabled"
-        items={MOCK_ITEMS}
-        enableClear
-      />
     </Stack>
   ),
 };

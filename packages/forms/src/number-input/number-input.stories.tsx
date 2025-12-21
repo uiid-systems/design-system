@@ -5,7 +5,7 @@ import { Stack } from "@uiid/layout";
 import { NumberInput } from "./number-input";
 
 const meta = {
-  title: "Forms/Inputs/Number Input",
+  title: "Forms/Number Input",
   component: NumberInput,
   args: {
     disabled: false,
