@@ -14,7 +14,6 @@ import radioStyles from "../radio/radio.module.css";
 export const Checkbox = ({
   label,
   description,
-  error,
   size = CHECKBOX_DEFAULT_SIZE,
   reversed,
   bordered,

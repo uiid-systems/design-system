@@ -15,7 +15,7 @@ export const SelectTrigger = ({ size, ...props }: SelectTriggerProps) => {
   return (
     <BaseSelect.Trigger
       data-slot="select-trigger"
-      render={<Group ay="center" ax="space-between" gap={4} fullwidth />}
+      render={<Group ay="center" ax="space-between" gap={4} />}
       className={inputStyles["input"]}
       data-size={size}
       {...props}

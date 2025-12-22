@@ -11,4 +11,4 @@ export type CheckboxProps = Checkbox.Root.Props & {
   bordered?: boolean;
   ContainerProps?: GroupProps;
   IndicatorProps?: Checkbox.Indicator.Props;
-} & Pick<FieldProps, "label" | "description" | "error">;
+} & Pick<FieldProps, "label" | "description">;

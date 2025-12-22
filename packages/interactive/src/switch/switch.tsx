@@ -2,7 +2,7 @@
 
 import { Switch as BaseSwitch } from "@base-ui-components/react/switch";
 
-import { FormFieldLabel } from "@uiid/forms";
+import { FieldLabel } from "@uiid/forms";
 import { ConditionalRender, Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
@@ -24,13 +24,13 @@ export const Switch = ({
   const hasLabelAfter = hasLabel && labelPosition === "after";
 
   const SwitchLabel = () => (
-    <FormFieldLabel
+    <FieldLabel
       data-slot="switch-label"
       data-disabled={disabled}
       htmlFor={name}
     >
       {label}
-    </FormFieldLabel>
+    </FieldLabel>
   );
 
   return (

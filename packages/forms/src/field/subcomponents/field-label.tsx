@@ -1,6 +1,7 @@
 import { Text, type TextProps } from "@uiid/typography";
 
-export type FieldLabelProps = TextProps;
+export type FieldLabelProps = TextProps &
+  React.LabelHTMLAttributes<HTMLLabelElement>;
 
 export const FieldLabel = ({ children, ...props }: FieldLabelProps) => {
   return (

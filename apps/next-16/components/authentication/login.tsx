@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SiDiscord, SiGoogle, SiApple } from "@icons-pack/react-simple-icons";
 
 import { Button } from "@uiid/buttons";
-import { Input, InputPassword } from "@uiid/forms";
+import { Input } from "@uiid/forms";
 import { Stack, Group, Layer } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -101,7 +101,7 @@ const LoginFormEmail = () => {
   return (
     <Stack gap={4} ax="stretch">
       <Input label="Email" required />
-      <InputPassword label="Password" required />
+      <Input label="Password" required />
     </Stack>
   );
 };
