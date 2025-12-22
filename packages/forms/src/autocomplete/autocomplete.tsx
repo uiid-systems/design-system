@@ -1,7 +1,7 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui-components/react/autocomplete";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 import { Card } from "@uiid/cards";
 import { List, ListItem } from "@uiid/layout";
@@ -21,7 +21,6 @@ export const Autocomplete = ({
   InputProps,
   ...props
 }: AutocompleteProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -43,14 +42,7 @@ export const Autocomplete = ({
       items={items}
     >
       <BaseAutocomplete.Input
-        render={
-          <Input
-            ref={inputRef}
-            name="autocomplete"
-            {...props}
-            {...InputProps}
-          />
-        }
+        render={<Input name="autocomplete" {...props} {...InputProps} />}
       />
 
       <BaseAutocomplete.Portal>
@@ -59,7 +51,7 @@ export const Autocomplete = ({
           sideOffset={1}
         >
           <BaseAutocomplete.Popup
-            render={<Card size="sm" title="" />}
+            render={<Card size="sm" data-is-popup />}
             className={styles["autocomplete-popup"]}
           >
             {/** @todo create a custom empty state */}

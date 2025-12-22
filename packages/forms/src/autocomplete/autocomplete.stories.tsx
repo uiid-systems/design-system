@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
-import { Search } from "@uiid/icons";
 
 import { Autocomplete } from "./autocomplete";
 
@@ -53,8 +52,6 @@ const meta: Meta<typeof Autocomplete> = {
   component: Autocomplete,
   args: {
     items: MOCK_ITEMS,
-    label: "Input with autocomplete",
-    description: "Provide an array of items to populate a filterable dropdown",
   },
   argTypes: {
     items: { table: { disable: true } },

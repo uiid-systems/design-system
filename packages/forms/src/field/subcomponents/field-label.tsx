@@ -1,6 +1,6 @@
-import { Text } from "@uiid/typography";
+import { Text, type TextProps } from "@uiid/typography";
 
-type FieldLabelProps = React.ComponentProps<"label">;
+export type FieldLabelProps = TextProps;
 
 export const FieldLabel = ({ children, ...props }: FieldLabelProps) => {
   return (

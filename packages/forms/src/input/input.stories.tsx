@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "@uiid/layout";
+
+import { Field } from "../field/field";
+
 import { Input } from "./input";
 
 const meta = {
@@ -8,6 +11,7 @@ const meta = {
   args: {
     disabled: false,
     required: false,
+    placeholder: "Placeholder",
   },
   argTypes: {
     onFocus: { action: "onFocus" },
@@ -15,17 +19,24 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" gap={4}>
+    <Stack ax="stretch" gap={16}>
+      <Input {...args} />
+      <Input {...args} defaultValue="Default value" />
       <Input
         {...args}
-        placeholder="Regular ol' input"
-        defaultValue="Default value"
+        label="Input with label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
 
-      <Group fullwidth evenly gap={4}>
-        <Input {...args} placeholder="Placeholder" />
-        <Input {...args} />
-      </Group>
+      <Field
+        label="Group of inputs with field"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      >
+        <Group fullwidth evenly gap={2}>
+          <Input {...args} placeholder="First name" />
+          <Input {...args} placeholder="Last name" />
+        </Group>
+      </Field>
     </Stack>
   ),
 } satisfies Meta<typeof Input>;

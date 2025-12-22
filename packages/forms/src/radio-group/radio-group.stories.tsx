@@ -4,19 +4,14 @@ import { Stack } from "@uiid/layout";
 
 import { RadioGroup } from "./radio-group";
 import type { RadioGroupProps } from "./radio-group.types";
-
-const MOCK_OPTIONS: RadioGroupProps["options"] = [
-  { value: "1", label: "Option 1" },
-  { value: "2", label: "Option 2" },
-  { value: "3", label: "Option 3", disabled: true },
-];
+import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
 
 const meta = {
   title: "Forms/Radio Group",
   component: RadioGroup,
   args: {
     required: true,
-    options: MOCK_OPTIONS,
+    options: MOCK_RADIOGROUP_OPTIONS,
     name: "radio-group",
   },
   render: (args) => (

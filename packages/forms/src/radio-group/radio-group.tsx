@@ -14,6 +14,7 @@ export const RadioGroup = ({
   bordered,
   reversed,
   hideIndicator,
+  defaultValue,
   RadioProps,
   IndicatorProps,
   ...props
@@ -23,6 +24,7 @@ export const RadioGroup = ({
   return (
     <BaseRadioGroup
       {...props}
+      defaultValue={defaultValue ?? options[0]?.value}
       render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
     >
       {options.map((option) => (

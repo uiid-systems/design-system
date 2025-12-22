@@ -61,7 +61,7 @@ export const Radio = ({
         render={<Stack gap={3} />}
       >
         {label && (
-          <FieldLabel render={<span />} {...LabelProps}>
+          <FieldLabel render={<span />} bold={false} level={0} {...LabelProps}>
             {label}
           </FieldLabel>
         )}

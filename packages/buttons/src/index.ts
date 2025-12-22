@@ -1,5 +1,6 @@
 export * from "./button/button";
 export * from "./button/button.types";
+export * from "./button/button.constants";
 
 export * from "./close-button/close-button";
 export * from "./close-button/close-button.types";

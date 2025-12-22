@@ -2,7 +2,7 @@ import type { Field } from "@base-ui-components/react/field";
 
 export type FieldProps = React.PropsWithChildren &
   Field.Root.Props & {
-    label: string;
+    label?: string;
     description?: string;
     error?: string;
     className?: string;

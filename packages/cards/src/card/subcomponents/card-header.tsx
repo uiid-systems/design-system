@@ -16,7 +16,7 @@ export const CardHeader = ({
   return (
     <Group data-slot="card-header" ay="center" gap={2}>
       {variant && <CardIcon variant={variant} />}
-      <CardTitle title={title} size={size} />
+      {title && <CardTitle title={title} size={size} />}
       {showCloseButton && (
         <CloseButton onClick={onClose} style={{ marginInlineStart: "auto" }} />
       )}

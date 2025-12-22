@@ -1,9 +1,11 @@
 import type { Radio } from "@base-ui-components/react/radio";
 
-import type { GroupProps } from "@uiid/layout";
+import type {
+  FieldLabelProps,
+  FieldDescriptionProps,
+} from "../field/subcomponents";
 
-import type { LabelProps } from "../label/label.types";
-import type { DescriptionProps } from "../description/description.types";
+import type { GroupProps } from "@uiid/layout";
 
 export type RadioIndicatorProps = Radio.Indicator.Props;
 
@@ -15,6 +17,6 @@ export type RadioProps = Radio.Root.Props & {
   hideIndicator?: boolean;
   ContainerProps?: GroupProps;
   IndicatorProps?: RadioIndicatorProps;
-  LabelProps?: LabelProps;
-  DescriptionProps?: DescriptionProps;
+  LabelProps?: FieldLabelProps;
+  DescriptionProps?: FieldDescriptionProps;
 };

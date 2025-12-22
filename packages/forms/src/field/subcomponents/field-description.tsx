@@ -1,6 +1,6 @@
 import { Text } from "@uiid/typography";
 
-type FieldDescriptionProps = React.ComponentProps<"span">;
+export type FieldDescriptionProps = React.ComponentProps<"span">;
 
 export const FieldDescription = ({
   children,
