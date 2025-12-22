@@ -2,9 +2,9 @@ import { Radio as BaseRadio } from "@base-ui-components/react/radio";
 
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
-import styles from "../radio.module.css";
 
-export type RadioIndicatorProps = BaseRadio.Indicator.Props;
+import type { RadioIndicatorProps } from "../radio.types";
+import styles from "../radio.module.css";
 
 export const RadioIndicator = ({
   className,

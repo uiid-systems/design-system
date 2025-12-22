@@ -1,14 +1,10 @@
-import { ConditionalRender, Group, Stack, type GroupProps } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { FieldLabel, FieldDescription } from "../../field/subcomponents";
 
-import type { CheckboxProps } from "../checkbox.types";
+import type { CheckboxFieldProps } from "../checkbox.types";
 import styles from "../checkbox.module.css";
-
-export type CheckboxFieldProps = React.PropsWithChildren &
-  Pick<CheckboxProps, "label" | "description" | "reversed" | "bordered"> &
-  GroupProps;
 
 export const CheckboxField = ({
   label,

@@ -1,22 +1,17 @@
-import type { Radio } from "@base-ui-components/react/radio";
-
-import type {
-  FieldLabelProps,
-  FieldDescriptionProps,
-} from "../field/subcomponents";
-
+import type { Radio as BaseRadio } from "@base-ui-components/react/radio";
 import type { GroupProps } from "@uiid/layout";
+import type { CheckboxFieldProps } from "../checkbox/checkbox.types";
 
-export type RadioIndicatorProps = Radio.Indicator.Props;
-
-export type RadioProps = Radio.Root.Props & {
-  label?: string;
-  description?: string;
-  reversed?: boolean;
-  bordered?: boolean;
+export type RadioRootProps = BaseRadio.Root.Props & {
   hideIndicator?: boolean;
-  ContainerProps?: GroupProps;
-  IndicatorProps?: RadioIndicatorProps;
-  LabelProps?: FieldLabelProps;
-  DescriptionProps?: FieldDescriptionProps;
 };
+export type RadioIndicatorProps = BaseRadio.Indicator.Props;
+
+export type RadioProps = RadioRootProps &
+  Pick<
+    CheckboxFieldProps,
+    "label" | "description" | "reversed" | "bordered"
+  > & {
+    ContainerProps?: GroupProps;
+    IndicatorProps?: RadioIndicatorProps;
+  };

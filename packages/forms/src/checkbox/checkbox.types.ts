@@ -1,14 +1,25 @@
-import type { Checkbox } from "@base-ui-components/react/checkbox";
-
+import type { Checkbox as BaseCheckbox } from "@base-ui-components/react/checkbox";
 import type { GroupProps } from "@uiid/layout";
-
 import type { FieldProps } from "../field/field.types";
 
-export type CheckboxProps = Checkbox.Root.Props & {
+export type CheckboxFieldProps = GroupProps &
+  Pick<FieldProps, "label" | "description"> &
+  React.PropsWithChildren<{
+    reversed?: boolean;
+    bordered?: boolean;
+  }>;
+
+export type CheckboxRootProps = BaseCheckbox.Root.Props & {
   size?: "sm" | "md" | "lg";
-  className?: string;
-  reversed?: boolean;
-  bordered?: boolean;
-  ContainerProps?: GroupProps;
-  IndicatorProps?: Checkbox.Indicator.Props;
-} & Pick<FieldProps, "label" | "description">;
+};
+
+export type CheckboxIndicatorProps = BaseCheckbox.Indicator.Props & {
+  indeterminate?: boolean;
+};
+
+export type CheckboxProps = CheckboxRootProps &
+  Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &
+  Pick<CheckboxIndicatorProps, "indeterminate"> & {
+    ContainerProps?: GroupProps;
+    IndicatorProps?: CheckboxIndicatorProps;
+  };

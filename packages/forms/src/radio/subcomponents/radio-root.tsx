@@ -4,10 +4,7 @@ import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 import styles from "../radio.module.css";
 
-import type { RadioProps } from "../radio.types";
-
-export type RadioRootProps = BaseRadio.Root.Props &
-  Pick<RadioProps, "value" | "className" | "hideIndicator">;
+import type { RadioRootProps } from "../radio.types";
 
 export const RadioRoot = ({
   value,
