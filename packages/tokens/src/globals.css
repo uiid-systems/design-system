@@ -102,7 +102,7 @@
     }
   }
 
-  [data-is-popup="true"] {
+  [data-is-popup] {
     transform-origin: var(--globals-transform-origin);
     transition:
       transform var(--globals-transition-timing),

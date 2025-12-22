@@ -1,0 +1,12 @@
+.select-popup {
+  min-width: var(--anchor-width);
+}
+
+.select-item:not([data-disabled]) {
+  cursor: pointer;
+}
+
+.select-icon {
+  flex-shrink: 0;
+  width: var(--globals-icon-size);
+}

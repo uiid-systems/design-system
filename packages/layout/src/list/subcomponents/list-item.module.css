@@ -4,44 +4,12 @@
   padding: var(--list-item-padding-y) var(--list-item-padding-x);
   border-radius: var(--globals-border-radius);
 
-  &:hover,
-  &[data-highlighted] {
+  &:not([data-disabled]):where(:hover, [data-highlighted]) {
     background-color: var(--shade-muted);
   }
 
-  &:where([data-disabled="true"]) {
+  &:where([data-disabled]) {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  /* Selected item */
-  &:where([data-selected="true"]) {
-    /* background-color: var(--shade-surface);
-    border: var(--globals-border-width) solid var(--globals-border-color);
-    color: var(--shade-foreground);
-    font-weight: 700;
-
-    &:hover {
-      background-color: var(--shade-background);
-    } */
-
-    /* Selected item with another selected item before it */
-    /* & + :where([data-selected="true"]) {
-      border-top: none;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    } */
-
-    /* Selected item with another selected item after it */
-    /* &:has(+ [data-selected="true"]) {
-      border-bottom: none;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    } */
-
-    /* First item after a selected item */
-    /* & + :not([data-selected="true"]) {
-      margin-block-start: 0.25rem;
-    } */
   }
 }

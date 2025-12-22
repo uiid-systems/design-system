@@ -27,11 +27,8 @@ export const List = ({
   const ListElement = type === "ordered" ? <ol /> : <ul />;
 
   const sharedProps = {
-    uiid: "list",
-    direction,
-    items,
-    render: ListElement,
     className: styles["list"],
+    "data-slot": "list",
     "data-type": type,
     "data-direction": direction,
     "data-variant": variant,
@@ -45,8 +42,8 @@ export const List = ({
       m={0}
       {...sharedProps}
       render={{
-        true: <Group ay="start" gap={4} />,
-        false: <Stack ax="stretch" />,
+        true: <Group render={ListElement} ay="start" gap={4} />,
+        false: <Stack render={ListElement} ax="stretch" />,
       }}
     >
       {items

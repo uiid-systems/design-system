@@ -10,7 +10,6 @@ import styles from "./list-item.module.css";
 
 import { ListTextBlock } from "./list-text-block";
 import { ListSelectedIcon } from "./list-selected-icon";
-import { ListDisabledIcon } from "./list-disabled-icon";
 
 export const ListItem = ({
   disabled,
@@ -46,11 +45,11 @@ export const ListItem = ({
         ax="space-between"
         gap={8}
         className={cx(styles["list-item"], className)}
-        data-disabled={disabled}
+        data-disabled={disabled ?? undefined}
         data-selected={selected}
         {...props}
       >
-        <Group gap={3} ay="center" style={{ listStyleType: "none" }}>
+        <Group gap={3} ay="start" style={{ listStyleType: "none" }}>
           {Icon && (
             <Icon
               data-slot="list-item-icon"
@@ -64,8 +63,7 @@ export const ListItem = ({
             description={description}
           />
         </Group>
-        {selected && <ListSelectedIcon />}
-        {disabled && <ListDisabledIcon />}
+        {selected && !disabled && <ListSelectedIcon />}
       </Group>
     </ConditionalRender>
   );
