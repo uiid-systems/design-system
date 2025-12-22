@@ -1,20 +1,3 @@
-.label {
-  &[data-bordered="true"] {
-    border: var(--forms-border-width) solid var(--forms-border-color);
-    border-radius: var(--forms-border-radius);
-    padding: var(--forms-paddingY) var(--forms-paddingX);
-    color: var(--forms-foreground);
-
-    &:has([data-checked]) {
-      background-color: var(--forms-background);
-    }
-  }
-
-  &[data-reversed="true"] {
-    flex-direction: row-reverse;
-  }
-}
-
 .radio {
   aspect-ratio: 1;
   width: 1rem;

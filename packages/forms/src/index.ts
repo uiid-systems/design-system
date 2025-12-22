@@ -3,14 +3,19 @@ export * from "./autocomplete/autocomplete.types";
 
 export * from "./checkbox/checkbox";
 export * from "./checkbox/checkbox.types";
+export * from "./checkbox/checkbox.constants";
+export * from "./checkbox/subcomponents";
+
+export * from "./field/field";
+export * from "./field/field.types";
+export * from "./field/subcomponents";
 
 export * from "./input/input";
 export * from "./input/input.types";
 export * from "./input/input.constants";
 
-export * from "./field/field";
-export * from "./field/field.types";
-export * from "./field/subcomponents";
+export * from "./radio/radio";
+export * from "./radio/radio.types";
 
 export * from "./radio-group/radio-group";
 export * from "./radio-group/radio-group.types";

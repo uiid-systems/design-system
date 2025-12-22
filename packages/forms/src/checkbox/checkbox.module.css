@@ -1,12 +1,20 @@
 @import "@uiid/tokens/checkbox.tokens.css";
 
 .label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: var(--shade-accent);
+  &[data-bordered="true"] {
+    border: var(--forms-border-width) solid var(--forms-border-color);
+    border-radius: var(--forms-border-radius);
+    padding: var(--forms-paddingY) var(--forms-paddingX);
+    color: var(--forms-foreground);
+
+    &:has([data-checked]) {
+      background-color: var(--forms-background);
+    }
+  }
+
+  &[data-reversed="true"] {
+    flex-direction: row-reverse;
+  }
 }
 
 .checkbox {
@@ -54,7 +62,7 @@
   }
 }
 
-.indicator {
+.checkbox-indicator {
   display: flex;
   color: var(--shade-background);
 
@@ -63,7 +71,7 @@
   }
 }
 
-.icon {
+.checkbox-icon {
   width: 0.75rem;
   height: 0.75rem;
 }

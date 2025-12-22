@@ -15,8 +15,8 @@ export const CardIcon = ({ variant, className }: CardIconProps) => {
   const Icon = () => {
     if (variant === "info") return <Info {...iconProps} />;
     if (variant === "warning") return <TriangleAlert {...iconProps} />;
-    if (variant === "positive") return <Ban {...iconProps} />;
-    if (variant === "negative") return <CircleCheck {...iconProps} />;
+    if (variant === "negative") return <Ban {...iconProps} />;
+    if (variant === "positive") return <CircleCheck {...iconProps} />;
     return <Info {...iconProps} />;
   };
 
