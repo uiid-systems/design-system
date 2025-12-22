@@ -15,6 +15,7 @@ export const Select = ({
   description,
   error,
   defaultValue,
+  placeholder,
   items,
   TriggerProps,
   PopupProps,
@@ -25,7 +26,7 @@ export const Select = ({
     <Field label={label} description={description} error={error}>
       <BaseSelect.Root
         data-slot="select"
-        defaultValue={defaultValue ?? items?.[0]?.value}
+        defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
         items={items}
         {...props}
       >

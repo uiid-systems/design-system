@@ -19,7 +19,7 @@ const meta = {
     onBlur: { action: "onBlur" },
   },
   render: (args) => (
-    <Stack ax="stretch" gap={16}>
+    <Stack ax="stretch" gap={8}>
       <Input {...args} />
       <Input {...args} defaultValue="Default value" />
       <Input

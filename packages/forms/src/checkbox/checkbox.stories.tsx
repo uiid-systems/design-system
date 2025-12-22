@@ -17,6 +17,13 @@ const meta: Meta<typeof Checkbox> = {
       <Checkbox {...args} label="Checkbox" />
       <Checkbox {...args} label="Default checked" defaultChecked />
       <Checkbox {...args} label="Indeterminate" indeterminate defaultChecked />
+      <Checkbox {...args} bordered label="Bordered" />
+      <Checkbox
+        {...args}
+        bordered
+        label="Bordered with label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      />
     </Stack>
   ),
 };

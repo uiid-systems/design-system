@@ -1,21 +1,47 @@
 import { Checkbox as BaseCheckbox } from "@base-ui-components/react/checkbox";
 
 import { CheckIcon, MinusIcon } from "@uiid/icons";
-import { SwitchRender } from "@uiid/layout";
+import { ConditionalRender, Group, Stack, SwitchRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import { FieldLabel, FieldDescription } from "../field/subcomponents";
+
+import { CHECKBOX_DEFAULT_SIZE } from "./checkbox.constants";
 import type { CheckboxProps } from "./checkbox.types";
 import styles from "./checkbox.module.css";
+import radioStyles from "../radio/radio.module.css";
 
 export const Checkbox = ({
   label,
-  size = "md",
+  description,
+  error,
+  size = CHECKBOX_DEFAULT_SIZE,
+  reversed,
+  bordered,
   indeterminate,
+  ContainerProps,
   IndicatorProps,
   ...props
 }: CheckboxProps) => {
+  const hasLabel = Boolean(label);
+  const hasDescription = Boolean(description);
+  const needsTextContainer = hasLabel && hasDescription;
+
   return (
-    <label data-slot="checkbox-label" className={styles["label"]}>
+    <ConditionalRender
+      condition={hasLabel}
+      render={
+        <Group
+          render={<label />}
+          ay={needsTextContainer ? "start" : "center"}
+          gap={3}
+          data-reversed={reversed}
+          data-bordered={bordered}
+          className={radioStyles["label"]}
+          {...ContainerProps}
+        />
+      }
+    >
       <BaseCheckbox.Root
         aria-label="Enable notifications"
         className={cx(styles["checkbox"], props.className)}
@@ -36,8 +62,19 @@ export const Checkbox = ({
           />
         </BaseCheckbox.Indicator>
       </BaseCheckbox.Root>
-      {label}
-    </label>
+
+      <ConditionalRender
+        condition={Boolean(description)}
+        render={<Stack gap={3} />}
+      >
+        {label && (
+          <FieldLabel level={0} bold={false}>
+            {label}
+          </FieldLabel>
+        )}
+        {description && <FieldDescription>{description}</FieldDescription>}
+      </ConditionalRender>
+    </ConditionalRender>
   );
 };
 Checkbox.displayName = "Checkbox";

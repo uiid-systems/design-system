@@ -19,9 +19,9 @@ const meta = {
     onValueChange: { action: "onValueChange" },
   },
   render: (args) => (
-    <Stack ax="stretch" gap={16}>
+    <Stack ax="stretch" gap={8}>
       <Select {...args} />
-      <Select {...args} defaultValue="Default value" />
+      <Select {...args} placeholder="Placeholder" />
       <Select
         {...args}
         label="Select with label and description"

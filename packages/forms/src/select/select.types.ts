@@ -12,6 +12,7 @@ export type SelectItemProps = FormOptionProps & {
 
 export type SelectProps = Omit<Select.Root.Props<string>, "size"> &
   React.PropsWithChildren<{
+    placeholder?: string;
     size?: "sm" | "md" | "lg";
     items?: SelectItemProps[];
     TriggerProps?: Select.Trigger.Props;
