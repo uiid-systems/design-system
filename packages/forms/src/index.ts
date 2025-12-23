@@ -1,10 +1,10 @@
-export * from "./autocomplete/autocomplete";
-export * from "./autocomplete/autocomplete.types";
-
 export * from "./checkbox/checkbox";
 export * from "./checkbox/checkbox.types";
 export * from "./checkbox/checkbox.constants";
 export * from "./checkbox/subcomponents";
+
+export * from "./checkbox-group/checkbox-group";
+export * from "./checkbox-group/checkbox-group.types";
 
 export * from "./field/field";
 export * from "./field/field.types";

@@ -1,37 +1,35 @@
 "use client";
 
-import { RadioGroup as BaseRadioGroup } from "@base-ui-components/react/radio-group";
+import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui-components/react/checkbox-group";
 
 import { Stack, Group } from "@uiid/layout";
 
-import { Radio } from "../radio/radio";
+import { Checkbox } from "../checkbox/checkbox";
 
-import type { RadioGroupProps } from "./radio-group.types";
+import type { CheckboxGroupProps } from "./checkbox-group.types";
 
-export const RadioGroup = ({
+export const CheckboxGroup = ({
   items,
   direction = "vertical",
   bordered,
   reversed,
-  hideIndicator,
   defaultValue,
-  RadioProps,
+  CheckboxProps,
   IndicatorProps,
   ...props
-}: RadioGroupProps) => {
+}: CheckboxGroupProps) => {
   const isHorizontal = direction === "horizontal";
 
   return (
-    <BaseRadioGroup
+    <BaseCheckboxGroup
       {...props}
-      defaultValue={defaultValue ?? items[0]?.value}
+      defaultValue={defaultValue ? [...defaultValue] : undefined}
       render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
     >
       {items.map(({ value, label }) => (
-        <Radio
+        <Checkbox
           key={value}
-          {...RadioProps}
-          hideIndicator={hideIndicator}
+          {...CheckboxProps}
           bordered={bordered}
           reversed={reversed}
           value={value}
@@ -39,7 +37,7 @@ export const RadioGroup = ({
           IndicatorProps={IndicatorProps}
         />
       ))}
-    </BaseRadioGroup>
+    </BaseCheckboxGroup>
   );
 };
-RadioGroup.displayName = "RadioGroup";
+CheckboxGroup.displayName = "CheckboxGroup";

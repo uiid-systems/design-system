@@ -3,9 +3,9 @@ import type { Icon } from "@uiid/icons";
 
 import type { FieldProps } from "../field/field.types";
 
-import type { FormOptionProps } from "../types";
+import type { FormItemProps } from "../types";
 
-export type SelectItemProps = FormOptionProps & {
+export type SelectItemProps = FormItemProps & {
   description?: string;
   icon?: Icon;
 };

@@ -11,15 +11,15 @@ const meta = {
   component: RadioGroup,
   args: {
     required: true,
-    options: MOCK_RADIOGROUP_OPTIONS,
+    items: MOCK_RADIOGROUP_OPTIONS,
     name: "radio-group",
   },
   render: (args) => (
     <Stack gap={8}>
       <RadioGroup {...args} />
       <RadioGroup {...args} bordered />
-      <RadioGroup {...args} bordered axis="x" />
-      <RadioGroup {...args} bordered axis="x" hideIndicator />
+      <RadioGroup {...args} bordered direction="horizontal" />
+      <RadioGroup {...args} bordered direction="horizontal" hideIndicator />
     </Stack>
   ),
 } satisfies Meta<RadioGroupProps>;

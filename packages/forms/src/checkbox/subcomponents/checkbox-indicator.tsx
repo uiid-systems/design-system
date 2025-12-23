@@ -4,11 +4,8 @@ import { CheckIcon, MinusIcon } from "@uiid/icons";
 import { SwitchRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import type { CheckboxProps } from "../checkbox.types";
+import type { CheckboxIndicatorProps } from "../checkbox.types";
 import styles from "../checkbox.module.css";
-
-export type CheckboxIndicatorProps = BaseCheckbox.Indicator.Props &
-  Pick<CheckboxProps, "indeterminate">;
 
 export const CheckboxIndicator = ({
   indeterminate,
@@ -32,3 +29,4 @@ export const CheckboxIndicator = ({
     </BaseCheckbox.Indicator>
   );
 };
+CheckboxIndicator.displayName = "CheckboxIndicator";
