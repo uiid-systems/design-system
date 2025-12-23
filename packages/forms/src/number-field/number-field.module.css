@@ -1,0 +1,67 @@
+.ScrubArea {
+  cursor: ew-resize;
+  font-weight: bold;
+  user-select: none;
+}
+
+.ScrubAreaCursor {
+  filter: drop-shadow(0 1px 1px #0008);
+}
+
+.number-field {
+  border-radius: var(--globals-border-radius);
+  &:focus-within {
+    outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+  }
+}
+
+.number-input {
+  border-inline: none;
+  border-radius: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.decrement,
+.increment {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: auto;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  border: var(--globals-border-width) solid var(--forms-border-color);
+  border-radius: var(--globals-border-radius);
+  background-color: var(--forms-background);
+  background-clip: padding-box;
+  color: var(--shade-accent);
+  user-select: none;
+
+  svg {
+    height: var(--globals-icon-size);
+  }
+
+  &:hover {
+    background-color: var(--forms-backgroundHover);
+  }
+
+  &:active {
+    background-color: var(--forms-backgroundActive);
+  }
+}
+
+.decrement {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.increment {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
