@@ -11,8 +11,6 @@ const meta = {
   title: "Forms/Select",
   component: Select,
   args: {
-    disabled: false,
-    required: false,
     items: MOCK_SELECT_ITEMS,
   },
   argTypes: {
@@ -20,8 +18,8 @@ const meta = {
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>
-      <Select {...args} />
       <Select {...args} placeholder="Placeholder" />
+
       <Select
         {...args}
         label="Select with label and description"

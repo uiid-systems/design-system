@@ -1,3 +1,4 @@
+import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "@uiid/layout";
 
@@ -20,7 +21,6 @@ const meta = {
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>
-      <Input {...args} />
       <Input {...args} defaultValue="Default value" />
       <Input
         {...args}
@@ -29,7 +29,7 @@ const meta = {
       />
 
       <Field
-        label="Group of inputs with field"
+        label="Group of inputs with field wrapper"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       >
         <Group fullwidth evenly gap={2}>
@@ -37,6 +37,13 @@ const meta = {
           <Input {...args} placeholder="Last name" />
         </Group>
       </Field>
+
+      <Input
+        {...args}
+        data-testid="input"
+        label="Interaction test"
+        description="Check the Interactions panel for a report!"
+      />
     </Stack>
   ),
 } satisfies Meta<typeof Input>;
@@ -44,4 +51,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Input" };
+export const Default: Story = {
+  name: "Input",
+
+  play: async ({ canvasElement }) => {
+    const message = "Welcome to UIID's Storybook!";
+    const canvas = within(canvasElement.ownerDocument.body);
+    const input = await canvas.findByTestId("input");
+    await userEvent.type(input, message);
+    await expect(input).toHaveValue(message);
+  },
+};

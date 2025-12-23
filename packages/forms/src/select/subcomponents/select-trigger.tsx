@@ -5,11 +5,8 @@ import { ChevronsUpDownIcon } from "@uiid/icons";
 
 import inputStyles from "../../input/input.module.css";
 
-import type { SelectProps } from "../select.types";
+import type { SelectTriggerProps } from "../select.types";
 import styles from "../select.module.css";
-
-export type SelectTriggerProps = BaseSelect.Trigger.Props &
-  Pick<SelectProps, "size">;
 
 export const SelectTrigger = ({ size, ...props }: SelectTriggerProps) => {
   return (

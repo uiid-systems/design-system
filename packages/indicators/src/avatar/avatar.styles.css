@@ -5,7 +5,7 @@
 [data-slot="avatar-layers"] {
   text-align: center;
   background-color: var(--shade-foreground);
-  border-radius: var(--forms-border-radius);
+  border-radius: var(--globals-border-radius);
   padding-inline: 0.5rem;
   height: 2rem;
   min-width: 2rem;

@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.select-item:focus {
+  outline: none;
+}
+
 .select-icon {
   flex-shrink: 0;
   height: 1rem;
