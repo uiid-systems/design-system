@@ -16,16 +16,18 @@
   }
 }
 
-.number-input {
+.number-field-input {
   border-inline: none;
   border-radius: 0;
+  width: -webkit-fill-available;
 
   &:focus {
     outline: none;
   }
 }
 
-.decrement,
+.number-field-decrement,
+.number-field-increment,
 .increment {
   box-sizing: border-box;
   display: flex;
@@ -56,12 +58,12 @@
   }
 }
 
-.decrement {
+.number-field-decrement {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.increment {
+.number-field-increment {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }

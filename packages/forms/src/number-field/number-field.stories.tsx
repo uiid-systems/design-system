@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 
 import { NumberField } from "./number-field";
-import type { NumberFieldProps } from "./number-field.types";
 
 const meta: Meta<typeof NumberField> = {
   title: "Forms/Number Field",

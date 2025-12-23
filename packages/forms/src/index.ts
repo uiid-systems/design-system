@@ -14,6 +14,10 @@ export * from "./input/input";
 export * from "./input/input.types";
 export * from "./input/input.constants";
 
+export * from "./number-field/number-field";
+export * from "./number-field/number-field.types";
+export * from "./number-field/subcomponents";
+
 export * from "./radio/radio";
 export * from "./radio/radio.types";
 

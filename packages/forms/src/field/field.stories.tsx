@@ -6,6 +6,7 @@ import { Input } from "../input/input";
 import { Select } from "../select/select";
 import { RadioGroup } from "../radio-group/radio-group";
 import { CheckboxGroup } from "../checkbox-group/checkbox-group";
+import { NumberField } from "../number-field/number-field";
 
 import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { MOCK_RADIOGROUP_OPTIONS } from "../radio-group/radio-group.mocks";
@@ -29,6 +30,10 @@ const meta = {
 
       <Field {...args} label="Field with select">
         <Select items={MOCK_SELECT_ITEMS} />
+      </Field>
+
+      <Field {...args} label="Field with number field">
+        <NumberField />
       </Field>
 
       <Field {...args} label="Field with radio group">
