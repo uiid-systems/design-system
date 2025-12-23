@@ -8,15 +8,14 @@ import type { SelectItemProps } from "../select.types";
 export const SelectItem = ({
   value,
   label,
-  disabled,
-  description = "lorem ipsum dolor sit amet",
+  description,
   icon,
   ...props
 }: SelectItemProps) => {
   return (
     <BaseSelect.Item
+      data-slot="select-item"
       value={value}
-      disabled={disabled}
       className={styles["select-item"]}
       {...props}
       render={(props, state) => (

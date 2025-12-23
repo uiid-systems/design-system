@@ -14,6 +14,7 @@ export const SelectPopup = ({
 }: SelectPopupProps) => {
   return (
     <BaseSelect.Popup
+      data-slot="select-popup"
       render={<Card size="sm" p={2} fullwidth data-is-popup />}
       className={cx(styles["select-popup"], className)}
       {...props}

@@ -7,7 +7,7 @@ export const SelectRoot = <Value, Multiple extends SelectMultiple = false>({
   ...props
 }: SelectRootProps<Value, Multiple>) => {
   return (
-    <BaseSelect.Root data-slot="select" {...props}>
+    <BaseSelect.Root data-slot="select-root" {...props}>
       {children}
     </BaseSelect.Root>
   );
