@@ -34,26 +34,22 @@ export const Default = {
   name: "Table",
   render: () => (
     <Stack gap={4} fullwidth>
-      <PlayerTable striped />
-
       <Card
         trimmed
         fullwidth
         style={{ backgroundColor: "var(--shade-background)" }}
       >
-        <PlayerTable bordered />
+        <Table<TableMockData>
+          selectable
+          items={TABLE_MOCK_DATA}
+          actions={{
+            primary: TABLE_MOCK_ACTIONS,
+            secondary: TABLE_MOCK_MORE_ACTIONS,
+          }}
+          striped
+          bordered
+        />
       </Card>
-
-      <Table<TableMockData>
-        selectable
-        items={TABLE_MOCK_DATA}
-        actions={{
-          primary: TABLE_MOCK_ACTIONS,
-          secondary: TABLE_MOCK_MORE_ACTIONS,
-        }}
-        striped
-        bordered
-      />
     </Stack>
   ),
 };
