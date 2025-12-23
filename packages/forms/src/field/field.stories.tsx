@@ -4,9 +4,12 @@ import { Stack } from "@uiid/layout";
 
 import { Input } from "../input/input";
 import { Select } from "../select/select";
-import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { RadioGroup } from "../radio-group/radio-group";
+import { CheckboxGroup } from "../checkbox-group/checkbox-group";
+
+import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { MOCK_RADIOGROUP_OPTIONS } from "../radio-group/radio-group.mocks";
+import { MOCK_CHECKBOXGROUP_OPTIONS } from "../checkbox-group/checkbox-group.mocks";
 
 import { Field } from "./field";
 import type { FieldProps } from "./field.types";
@@ -21,7 +24,7 @@ const meta = {
   render: (args) => (
     <Stack ax="stretch" gap={8}>
       <Field {...args} label="Field with input">
-        <Input />
+        <Input placeholder="Type something..." />
       </Field>
 
       <Field {...args} label="Field with select">
@@ -29,7 +32,19 @@ const meta = {
       </Field>
 
       <Field {...args} label="Field with radio group">
-        <RadioGroup bordered axis="x" options={MOCK_RADIOGROUP_OPTIONS} />
+        <RadioGroup
+          bordered
+          direction="horizontal"
+          items={MOCK_RADIOGROUP_OPTIONS}
+        />
+      </Field>
+
+      <Field {...args} label="Field with checkbox group">
+        <CheckboxGroup
+          bordered
+          direction="horizontal"
+          items={MOCK_CHECKBOXGROUP_OPTIONS}
+        />
       </Field>
     </Stack>
   ),

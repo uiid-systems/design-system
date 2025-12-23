@@ -8,5 +8,5 @@
 
 .select-icon {
   flex-shrink: 0;
-  width: var(--globals-icon-size);
+  height: 1rem;
 }

@@ -1,11 +1,16 @@
 @import "@uiid/tokens/checkbox.tokens.css";
 
 .label {
-  &[data-bordered="true"] {
-    border: var(--forms-border-width) solid var(--forms-border-color);
-    border-radius: var(--forms-border-radius);
-    padding: var(--forms-paddingY) var(--forms-paddingX);
-    color: var(--forms-foreground);
+  &[data-bordered] {
+    border: var(--globals-border-width) solid var(--forms-border-color);
+    border-radius: var(--globals-border-radius);
+    padding: var(--forms-padding-y) var(--forms-padding-x);
+    color: var(--shade-foreground);
+
+    &:focus-within {
+      outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+      outline-offset: var(--globals-outline-offset);
+    }
 
     &:has([data-checked]) {
       background-color: var(--forms-background);

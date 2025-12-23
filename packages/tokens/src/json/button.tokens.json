@@ -7,7 +7,7 @@
     "border": {
       "width": { "$value": "2px", "$type": "dimension" },
       "color": { "$value": "{button.bg}", "$type": "color" },
-      "radius": { "$value": "{forms.border.radius}", "$type": "dimension" }
+      "radius": { "$value": "{globals.border.radius}", "$type": "dimension" }
     },
     "font-weight": { "$value": "600", "$type": "number" },
     "scale": {
@@ -31,7 +31,7 @@
       },
       "subtle": {
         "bg": { "$value": "{forms.background}", "$type": "color" },
-        "fg": { "$value": "{forms.foreground}", "$type": "color" },
+        "fg": { "$value": "{shade.foreground}", "$type": "color" },
         "border-color": { "$value": "{forms.border.color}", "$type": "color" }
       },
       "inverted": {

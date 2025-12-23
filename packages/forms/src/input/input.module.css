@@ -1,14 +1,12 @@
 .input {
   background-color: var(--forms-background);
-  border: var(--forms-border-width) solid var(--forms-border-color);
-  border-radius: var(--forms-border-radius);
-  color: var(--forms-foreground);
+  border: var(--globals-border-width) solid var(--forms-border-color);
+  border-radius: var(--globals-border-radius);
+  color: var(--shade-foreground);
   font-size: var(--forms-fontSize);
-  height: var(--forms-height);
-  outline-color: var(--forms-outline-color);
-  outline-offset: var(--forms-outline-offset);
-  outline-width: var(--forms-outline-width);
-  padding-inline: var(--forms-paddingX);
+  outline: var(--globals-outline-width) var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
+  padding: var(--forms-padding-y) var(--forms-padding-x);
 
   /** Hover */
   &:hover {
@@ -18,7 +16,7 @@
   /** Focus */
   &:focus {
     background-color: var(--forms-backgroundFocus);
-    outline-style: var(--forms-outline-style);
+    outline-style: var(--globals-outline-style);
   }
 
   /** Disabled */
@@ -28,21 +26,7 @@
     opacity: var(--forms-state-disabled-opacity);
   }
 
-  /** Size */
-  &:where([data-size="sm"]) {
-    --forms-fontSize: var(--forms-size-sm-fontSize);
-    --forms-height: var(--forms-size-sm-height);
-  }
-  &:where([data-size="md"]) {
-    --forms-fontSize: var(--forms-size-md-fontSize);
-    --forms-height: var(--forms-size-md-height);
-  }
-  &:where([data-size="lg"]) {
-    --forms-fontSize: var(--forms-size-lg-fontSize);
-    --forms-height: var(--forms-size-lg-height);
-  }
-
-  /** hack to prevent browser-assigned autofill color */
+  /** Hack to prevent browser-assigned autofill color */
   &:-webkit-autofill,
   &:-webkit-autofill:focus {
     transition:
@@ -50,10 +34,14 @@
       color 600000s 0s;
   }
 
-  /** Placeholder */
-  &::placeholder {
-    color: var(--forms-placeholder-color);
-    font-size: var(--forms-fontSize);
-    line-height: var(--forms-lineHeight);
+  /** Size */
+  &:where([data-size="sm"]) {
+    --forms-fontSize: var(--forms-size-sm-fontSize);
+  }
+  &:where([data-size="md"]) {
+    --forms-fontSize: var(--forms-size-md-fontSize);
+  }
+  &:where([data-size="lg"]) {
+    --forms-fontSize: var(--forms-size-lg-fontSize);
   }
 }

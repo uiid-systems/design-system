@@ -8,47 +8,22 @@
       "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
       "$type": "color"
     },
-    "foreground": { "$value": "{shade.foreground}", "$type": "color" },
-    "lineHeight": { "$value": "1.25rem", "$type": "dimension" },
-    "paddingX": { "$value": "0.75rem", "$type": "dimension" },
-    "paddingY": { "$value": "0.75rem", "$type": "dimension" },
+    "padding": {
+      "x": { "$value": "0.75rem", "$type": "dimension" },
+      "y": { "$value": "0.75rem", "$type": "dimension" }
+    },
     "border": {
-      "color": { "$value": "{shade.halftone}", "$type": "color" },
-      "radius": { "$value": "{globals.border.radius}", "$type": "dimension" },
-      "width": { "$value": "{globals.border.width}", "$type": "dimension" }
-    },
-    "outline": {
-      "color": { "$value": "{shade.foreground}", "$type": "color" },
-      "offset": { "$value": "0.125rem", "$type": "dimension" },
-      "style": { "$value": "solid", "$type": "strokeStyle" },
-      "width": { "$value": "0.125rem", "$type": "dimension" }
-    },
-    "placeholder": {
-      "color": { "$value": "{shade.accent}", "$type": "color" }
+      "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
     "size": {
       "sm": {
-        "height": { "$value": "2rem", "$type": "dimension" },
         "fontSize": { "$value": "0.875rem", "$type": "dimension" }
       },
       "md": {
-        "height": { "$value": "2.5rem", "$type": "dimension" },
         "fontSize": { "$value": "0.875rem", "$type": "dimension" }
       },
       "lg": {
-        "height": { "$value": "3.5rem", "$type": "dimension" },
         "fontSize": { "$value": "1rem", "$type": "dimension" }
-      }
-    },
-    "state": {
-      "valid": {
-        "fg": { "$value": "{colors.green.500}", "$type": "color" }
-      },
-      "invalid": {
-        "fg": { "$value": "{colors.red.500}", "$type": "color" }
-      },
-      "disabled": {
-        "opacity": { "$value": "0.5", "$type": "number" }
       }
     }
   }
