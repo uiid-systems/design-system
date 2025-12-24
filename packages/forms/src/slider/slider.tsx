@@ -22,13 +22,13 @@ export const Slider = ({
 }: SliderProps) => {
   return (
     <SliderRoot {...props} {...RootProps}>
-      <SliderValue {...ValueProps} />
       <SliderControl {...ControlProps}>
         <SliderTrack {...TrackProps}>
           <SliderIndicator {...IndicatorProps} />
           <SliderThumb {...ThumbProps} />
         </SliderTrack>
       </SliderControl>
+      <SliderValue {...ValueProps} />
     </SliderRoot>
   );
 };
