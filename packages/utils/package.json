@@ -23,8 +23,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ignore-pattern 'dist/**'",
     "format": "prettier --write .",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "cva": "^1.0.0-beta.4",

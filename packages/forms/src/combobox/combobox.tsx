@@ -36,11 +36,11 @@ export const Combobox = ({
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>
           <ComboboxPopup {...PopupProps}>
-            <ComboboxEmpty>No results found.</ComboboxEmpty>
             <ComboboxList {...ListProps}>
               {children ??
                 ((item: string) => <ComboboxItem key={item} value={item} />)}
             </ComboboxList>
+            <ComboboxEmpty>No results found.</ComboboxEmpty>
           </ComboboxPopup>
         </ComboboxPositioner>
       </ComboboxPortal>

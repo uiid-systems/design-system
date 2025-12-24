@@ -37,48 +37,8 @@
   outline: 0;
 }
 
-.Item {
-  box-sizing: border-box;
-  outline: 0;
-  cursor: default;
-  user-select: none;
-  padding-block: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 2rem;
-  display: grid;
-  gap: 0.5rem;
-  align-items: center;
-  grid-template-columns: 0.75rem 1fr;
-  font-size: 1rem;
-  line-height: 1rem;
-
-  &[data-highlighted] {
-    z-index: 0;
-    position: relative;
-    color: var(--color-gray-50);
+.combobox-item {
+  &:focus-visible {
+    background-color: var(--shade-muted);
   }
-
-  &[data-highlighted]::before {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    inset-block: 0;
-    inset-inline: 0.5rem;
-    border-radius: 0.25rem;
-    background-color: var(--color-gray-900);
-  }
-}
-
-.ItemText {
-  grid-column-start: 2;
-}
-
-.ItemIndicator {
-  grid-column-start: 1;
-}
-
-.ItemIndicatorIcon {
-  display: block;
-  width: 0.75rem;
-  height: 0.75rem;
 }

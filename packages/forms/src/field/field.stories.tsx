@@ -7,10 +7,12 @@ import { Select } from "../select/select";
 import { RadioGroup } from "../radio-group/radio-group";
 import { CheckboxGroup } from "../checkbox-group/checkbox-group";
 import { NumberField } from "../number-field/number-field";
+import { Combobox } from "../combobox/combobox";
 
 import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { MOCK_RADIOGROUP_OPTIONS } from "../radio-group/radio-group.mocks";
 import { MOCK_CHECKBOXGROUP_OPTIONS } from "../checkbox-group/checkbox-group.mocks";
+import { MOCK_COMBOBOX_ITEMS } from "../combobox/combobox.mocks";
 
 import { Field } from "./field";
 import type { FieldProps } from "./field.types";
@@ -34,6 +36,10 @@ const meta = {
 
       <Field {...args} label="Field with number field">
         <NumberField />
+      </Field>
+
+      <Field {...args} label="Field with combobox">
+        <Combobox items={MOCK_COMBOBOX_ITEMS} />
       </Field>
 
       <Field {...args} label="Field with radio group">

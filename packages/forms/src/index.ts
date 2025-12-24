@@ -6,6 +6,10 @@ export * from "./checkbox/subcomponents";
 export * from "./checkbox-group/checkbox-group";
 export * from "./checkbox-group/checkbox-group.types";
 
+export * from "./combobox/combobox";
+export * from "./combobox/combobox.types";
+export * from "./combobox/subcomponents";
+
 export * from "./field/field";
 export * from "./field/field.types";
 export * from "./field/subcomponents";

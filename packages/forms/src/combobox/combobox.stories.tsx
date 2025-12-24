@@ -5,12 +5,14 @@ import { Field } from "../field/field";
 
 import { Combobox } from "./combobox";
 import type { ComboboxProps } from "./combobox.types";
+import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
 
-const meta = {
+const meta: Meta<ComboboxProps> = {
   title: "Forms/Combobox",
   component: Combobox,
   args: {
     placeholder: "Placeholder",
+    items: MOCK_COMBOBOX_ITEMS,
   },
   argTypes: {
     onFocus: { action: "onFocus" },
@@ -37,7 +39,7 @@ const meta = {
       </Field>
     </Stack>
   ),
-} satisfies Meta<ComboboxProps>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

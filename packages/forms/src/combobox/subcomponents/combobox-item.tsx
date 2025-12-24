@@ -1,14 +1,12 @@
 import { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
 
 import { ListItem } from "@uiid/layout";
-import { cx } from "@uiid/utils";
 
 import type { ComboboxItemProps } from "../combobox.types";
 import styles from "../combobox.module.css";
 
 export const ComboboxItem = ({
   value,
-  className,
   children,
   ...props
 }: ComboboxItemProps) => {
@@ -16,17 +14,19 @@ export const ComboboxItem = ({
     <BaseCombobox.Item
       data-slot="combobox-item"
       value={value}
-      className={cx(styles["combobox-item"], className)}
-      render={(_, state) => (
+      className={styles["combobox-item"]}
+      {...props}
+      render={(renderProps, state) => (
         <ListItem
           render={<div />}
           fullwidth
           label={value}
           value={value}
+          data-selected={state.highlighted}
           selected={state.selected}
+          {...renderProps}
         />
       )}
-      {...props}
     >
       {children}
     </BaseCombobox.Item>

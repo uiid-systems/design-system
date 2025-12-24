@@ -18,7 +18,7 @@ export const SelectItem = ({
       value={value}
       className={styles["select-item"]}
       {...props}
-      render={(_, state) => (
+      render={(renderProps, state) => (
         <ListItem
           render={<div />}
           fullwidth
@@ -27,6 +27,7 @@ export const SelectItem = ({
           description={description}
           icon={icon}
           selected={state.selected}
+          {...renderProps}
         />
       )}
     />
