@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect } from "vitest";
+
 import { Input } from "./input";
+import { INPUT_DEFAULT_SIZE } from "./input.constants";
 
 describe("Input", () => {
   it("renders an input element", () => {
@@ -38,9 +40,12 @@ describe("Input", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("data-size", "lg");
   });
 
-  it("defaults to md size", () => {
+  it("defaults to size defined in constants", () => {
     render(<Input />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("data-size", "md");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "data-size",
+      INPUT_DEFAULT_SIZE,
+    );
   });
 
   it("applies custom className", () => {
@@ -68,8 +73,13 @@ describe("Input", () => {
     expect(input).toHaveValue("Hello, World!");
   });
 
-  it("renders with input slot data attribute", () => {
+  it("is able to be focused", async () => {
+    const user = userEvent.setup();
     render(<Input />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("data-slot", "input");
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+
+    expect(input).toHaveFocus();
   });
 });

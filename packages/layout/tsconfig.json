@@ -8,8 +8,9 @@
     "noEmit": false,
     "composite": true,
     "rootDir": "src",
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": false,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "vitest.setup.ts"],
   "exclude": ["dist", "node_modules"]
 }
