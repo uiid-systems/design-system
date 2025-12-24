@@ -13,6 +13,7 @@ export const Switch = ({
   labelPosition = "after",
   name,
   disabled,
+  ...props
 }: SwitchProps) => {
   const hasLabel = Boolean(label);
   const hasLabelBefore = hasLabel && labelPosition === "before";
@@ -26,7 +27,13 @@ export const Switch = ({
       {hasLabelBefore && (
         <SwitchLabel disabled={disabled} name={name} label={label} />
       )}
-      <SwitchRoot id={name} name={name} disabled={disabled} {...RootProps}>
+      <SwitchRoot
+        id={name}
+        name={name}
+        disabled={disabled}
+        {...props}
+        {...RootProps}
+      >
         <SwitchThumb {...ThumbProps} />
       </SwitchRoot>
       {hasLabelAfter && (

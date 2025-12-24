@@ -11,7 +11,7 @@ export type SwitchLabelProps = {
   label?: string;
 };
 
-export type SwitchProps = {
+export type SwitchProps = SwitchRootProps & {
   RootProps?: SwitchRootProps;
   ThumbProps?: Switch.Thumb.Props;
   labelPosition?: "before" | "after";

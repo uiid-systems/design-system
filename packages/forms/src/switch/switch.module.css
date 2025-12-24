@@ -16,7 +16,7 @@
   background-repeat: no-repeat;
   transition-property: background-position, box-shadow, background-color;
   transition-timing-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
-  transition-duration: var(--switch-transition-timing);
+  transition-duration: var(--globals-transition-timing);
   width: 2.5rem;
   height: 1.5rem;
 
@@ -26,7 +26,7 @@
   }
 
   &[data-disabled] {
-    opacity: 0.5;
+    opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
 

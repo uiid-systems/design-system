@@ -7,9 +7,6 @@
     "color": {
       "bg": { "$value": "{shade.accent}", "$type": "color" },
       "fg": { "$value": "{shade.foreground}", "$type": "color" }
-    },
-    "disabled": {
-      "opacity": { "$value": "0.5", "$type": "number" }
     }
   }
 }

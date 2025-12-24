@@ -116,6 +116,60 @@ Component.displayName = "Component";
 4. **displayName** for debugging
 5. **Spread remaining props** to the root element
 
+### Monolithic Components with Exposed Subcomponents
+
+Components should be designed as simple, monolithic components for common use cases, while also exporting subcomponents for advanced composition.
+
+**Design principles:**
+
+1. **Expose common props directly** - Don't require users to pass frequently-used props through nested prop objects (e.g., `RootProps`). Instead, extend the underlying component's props type and spread them to the root element.
+
+2. **Keep nested prop objects for overrides** - Maintain `RootProps`, `ThumbProps`, etc. for cases where users need to pass additional or overriding props to specific subcomponents.
+
+3. **Export all subcomponents** - Allow consumers to compose the component themselves if they need full control.
+
+**Example type pattern:**
+
+```ts
+// Extend the base props directly for common usage
+export type SwitchProps = SwitchRootProps & {
+  RootProps?: SwitchRootProps; // For additional/override props
+  ThumbProps?: SwitchThumbProps; // For subcomponent props
+  label?: string; // Component-specific props
+  labelPosition?: "before" | "after";
+};
+```
+
+**Example implementation:**
+
+```tsx
+export const Switch = ({
+  RootProps,
+  ThumbProps,
+  label,
+  ...props // Common props like checked, onCheckedChange
+}: SwitchProps) => {
+  return (
+    <SwitchRoot {...props} {...RootProps}>
+      <SwitchThumb {...ThumbProps} />
+    </SwitchRoot>
+  );
+};
+```
+
+**Usage for consumers:**
+
+```tsx
+// Simple usage - common props at top level
+<Switch checked={checked} onCheckedChange={setChecked} label="Dark mode" />
+
+// Advanced usage - compose with subcomponents
+<SwitchRoot checked={checked} onCheckedChange={setChecked}>
+  <CustomLabel>Dark mode</CustomLabel>
+  <SwitchThumb className="custom-thumb" />
+</SwitchRoot>
+```
+
 ## Testing
 
 ### Test Setup
