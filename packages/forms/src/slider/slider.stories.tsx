@@ -4,7 +4,7 @@ import { Stack } from "@uiid/layout";
 import { Slider } from "./slider";
 
 const meta: Meta<typeof Slider> = {
-  title: "Interactive/Slider",
+  title: "Forms/Slider",
   component: Slider,
   args: {},
   argTypes: {},
