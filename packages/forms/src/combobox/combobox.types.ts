@@ -1,6 +1,6 @@
 import type { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
 
-import type { SelectMultiple, SelectItemProps } from "../select/select.types";
+import type { SelectMultiple } from "../select/select.types";
 import type { FieldProps } from "../field/field.types";
 
 export type ComboboxRootProps<
@@ -9,6 +9,12 @@ export type ComboboxRootProps<
 > = BaseCombobox.Root.Props<Value, Multiple>;
 
 export type ComboboxInputProps = BaseCombobox.Input.Props;
+export type ComboboxPortalProps = BaseCombobox.Portal.Props;
+export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
+export type ComboboxPopupProps = BaseCombobox.Popup.Props;
+export type ComboboxListProps = BaseCombobox.List.Props;
+export type ComboboxItemProps = BaseCombobox.Item.Props;
+export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 
 export type ComboboxProps<
   Value = string,
@@ -16,14 +22,15 @@ export type ComboboxProps<
 > = BaseCombobox.Trigger.Props &
   React.PropsWithChildren<{
     placeholder?: string;
-    size?: "sm" | "md" | "lg";
-    items?: SelectItemProps[];
-    // RootProps?: BaseSelect.Root.Props<Value, Multiple>;
-    // TriggerProps?: BaseSelect.Trigger.Props;
-    // PortalProps?: BaseSelect.Portal.Props;
-    // PositionerProps?: BaseSelect.Positioner.Props;
-    // PopupProps?: BaseSelect.Popup.Props;
-    // ListProps?: BaseSelect.List.Props;
+    RootProps?: ComboboxRootProps<Value, Multiple>;
+    InputProps?: ComboboxInputProps;
+    PortalProps?: ComboboxPortalProps;
+    PositionerProps?: ComboboxPositionerProps;
+    PopupProps?: ComboboxPopupProps;
+    ListProps?: ComboboxListProps;
   }> &
-  Pick<ComboboxRootProps<Value, Multiple>, "defaultValue" | "onValueChange"> &
+  Pick<
+    ComboboxRootProps<Value, Multiple>,
+    "items" | "defaultValue" | "onValueChange"
+  > &
   Pick<FieldProps, "label" | "description" | "error">;

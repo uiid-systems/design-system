@@ -14,6 +14,7 @@ export const CheckboxRoot = ({
   return (
     <BaseCheckbox.Root
       data-slot="checkbox"
+      aria-label="checkbox"
       className={cx(styles["checkbox"], className)}
       data-size={size}
       {...props}

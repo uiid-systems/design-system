@@ -8,7 +8,6 @@ import type { GroupProps } from "@uiid/layout";
 import styles from "../combobox.module.css";
 
 export const ComboboxActionButtons = ({
-  className,
   ...props
 }: Omit<GroupProps, "children">) => {
   return (
@@ -27,7 +26,10 @@ export const ComboboxActionButtons = ({
       >
         <XIcon size={14} />
       </BaseCombobox.Clear>
-      <BaseCombobox.Trigger className={styles["combobox-action"]}>
+      <BaseCombobox.Trigger
+        className={styles["combobox-action"]}
+        aria-label="Toggle dropdown"
+      >
         <ChevronDownIcon size={14} />
       </BaseCombobox.Trigger>
     </Group>

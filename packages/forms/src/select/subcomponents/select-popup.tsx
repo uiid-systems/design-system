@@ -3,9 +3,8 @@ import { Select as BaseSelect } from "@base-ui-components/react/select";
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
+import type { SelectPopupProps } from "../select.types";
 import styles from "../select.module.css";
-
-type SelectPopupProps = BaseSelect.Popup.Props;
 
 export const SelectPopup = ({
   children,
