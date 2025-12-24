@@ -13,7 +13,8 @@
     "./globals.css": "./dist/forms.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/README.md"
   ],
   "scripts": {
     "build": "tsc -b && vite build",
