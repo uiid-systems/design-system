@@ -4,26 +4,20 @@ import { Stack } from "@uiid/layout";
 import { Switch } from "./switch";
 
 const meta: Meta<typeof Switch> = {
-  title: "Interactive/Switch",
+  title: "Forms/Switch",
   component: Switch,
   args: {},
   argTypes: {},
   render: (args) => (
     <Stack gap={4}>
       <Switch {...args} />
-      <Switch {...args} label="Switch with label" name="switch-with-label" />
+      <Switch {...args} label="Switch with label" />
       <Switch
         {...args}
         label="Switch with label before"
-        name="switch-with-label-before"
         labelPosition="before"
       />
-      <Switch
-        {...args}
-        label="Switch with label disabled"
-        name="switch-with-label-disabled"
-        disabled
-      />
+      <Switch {...args} label="Disabled switch" disabled />
     </Stack>
   ),
 };
