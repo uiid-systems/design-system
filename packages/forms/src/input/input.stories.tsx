@@ -18,6 +18,7 @@ const meta = {
     onFocus: { action: "onFocus" },
     onValueChange: { action: "onValueChange" },
     onBlur: { action: "onBlur" },
+    size: { control: "select", options: ["sm", "md", "lg"] },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>
