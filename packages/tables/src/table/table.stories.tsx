@@ -3,18 +3,7 @@ import type { Meta } from "@storybook/react-vite";
 import { Card } from "@uiid/cards";
 import { Stack } from "@uiid/layout";
 
-import {
-  TableRoot,
-  TableContainer,
-  Table,
-  TableHeader,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableCellDropdown,
-  type TableProps,
-} from "../";
+import { Table } from "../";
 
 import {
   TABLE_MOCK_DATA,

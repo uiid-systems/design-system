@@ -2,7 +2,7 @@
 
 import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Select, Autocomplete } from "@uiid/forms";
+import { Select, Input } from "@uiid/forms";
 import { Filter } from "@uiid/icons";
 import { Menu } from "@uiid/interactive";
 import { Stack, Group } from "@uiid/layout";
@@ -34,14 +34,10 @@ export const PlayerTable = () => {
             </Button>
           }
         />
-        <Autocomplete
+        <Input
           aria-label="Search players"
           placeholder="Search players"
           size="sm"
-          items={TABLE_MOCK_DATA.map((item) => ({
-            value: item.id as string,
-            label: item.name as string,
-          }))}
         />
       </Group>
       <Card
