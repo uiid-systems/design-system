@@ -21,12 +21,12 @@ const meta: Meta<AutocompleteProps> = {
       <Autocomplete {...args} />
       <Autocomplete
         {...args}
-        label="Combobox with label and description"
+        label="Autocomplete with label and description"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
 
       <Field
-        label="Group of comboboxes with field wrapper"
+        label="Group of autocompletes with field wrapper"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       >
         <Group fullwidth evenly gap={2}>

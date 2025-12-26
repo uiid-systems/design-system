@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete as BaseAutocomplete } from "@base-ui-components/react/autocomplete";
+import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import type { AutocompletePortalProps } from "../autocomplete.types";
 
@@ -15,4 +15,3 @@ export const AutocompletePortal = ({
   );
 };
 AutocompletePortal.displayName = "AutocompletePortal";
-

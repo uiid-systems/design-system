@@ -1,6 +1,6 @@
 "use client";
 
-import { RadioGroup as BaseRadioGroup } from "@base-ui-components/react/radio-group";
+import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 
 import { Stack, Group } from "@uiid/layout";
 

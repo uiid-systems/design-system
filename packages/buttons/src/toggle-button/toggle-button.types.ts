@@ -1,4 +1,4 @@
-import type { Toggle } from "@base-ui-components/react/toggle";
+import type { Toggle } from "@base-ui/react/toggle";
 
 import type { ButtonProps } from "../button/button.types";
 

@@ -1,4 +1,4 @@
-import { Radio as BaseRadio } from "@base-ui-components/react/radio";
+import { Radio as BaseRadio } from "@base-ui/react/radio";
 
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";

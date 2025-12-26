@@ -1,5 +1,7 @@
-import type { ToggleGroup } from "@base-ui-components/react/toggle-group";
+import type { ToggleGroup } from "@base-ui/react/toggle-group";
 
-export type ToggleGroupProps = ToggleGroup.Props & {
+export type ToggleGroupProps = Omit<ToggleGroup.Props, "onValueChange"> & {
   size?: "sm" | "md" | "lg";
+  /** Callback when the selected values change. */
+  onValueChange?: (value: string[]) => void;
 };

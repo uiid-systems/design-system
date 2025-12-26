@@ -1,4 +1,4 @@
-import type { Collapsible } from "@base-ui-components/react/collapsible";
+import type { Collapsible } from "@base-ui/react/collapsible";
 
 export type CollapsibleProps = React.PropsWithChildren<{
   trigger: React.ReactNode;

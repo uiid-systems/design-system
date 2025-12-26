@@ -1,4 +1,4 @@
-import { NumberField as BaseNumberField } from "@base-ui-components/react/number-field";
+import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 
 import { PlusIcon } from "@uiid/icons";
 import { cx } from "@uiid/utils";

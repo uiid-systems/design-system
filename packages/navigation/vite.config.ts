@@ -27,7 +27,7 @@ export default defineConfig({
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
         /^@uiid\//,
-        "@base-ui-components/react",
+        "@base-ui/react",
       ],
       output: {
         preserveModules: true,

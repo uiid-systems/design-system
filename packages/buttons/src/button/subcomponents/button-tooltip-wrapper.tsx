@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip } from "@base-ui-components/react/tooltip";
+import { Tooltip } from "@base-ui/react/tooltip";
 
 import styles from "./button-tooltip-wrapper.module.css";
 import { ButtonContentContainer } from "./button-content-container";

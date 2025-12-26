@@ -1,4 +1,4 @@
-import type { Menu } from "@base-ui-components/react/menu";
+import type { Menu } from "@base-ui/react/menu";
 
 import type { Icon } from "@uiid/icons";
 

@@ -17,6 +17,9 @@ import {
 
 export const Combobox = ({
   items,
+  label,
+  description,
+  error,
   placeholder,
   RootProps,
   InputProps,
@@ -29,7 +32,13 @@ export const Combobox = ({
   return (
     <ComboboxRoot items={items} {...RootProps}>
       <div className={styles["combobox-input-wrapper"]}>
-        <ComboboxInput placeholder={placeholder} {...InputProps} />
+        <ComboboxInput
+          placeholder={placeholder}
+          label={label}
+          description={description}
+          error={error}
+          {...InputProps}
+        />
         <ComboboxActionButtons />
       </div>
 

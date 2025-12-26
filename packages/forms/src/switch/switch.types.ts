@@ -1,4 +1,4 @@
-import type { Switch } from "@base-ui-components/react/switch";
+import type { Switch } from "@base-ui/react/switch";
 
 import type { FieldProps } from "@uiid/forms";
 

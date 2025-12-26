@@ -1,6 +1,6 @@
 "use client";
 
-import { Input as BaseInput } from "@base-ui-components/react/input";
+import { Input as BaseInput } from "@base-ui/react/input";
 
 import { Field } from "../field/field";
 

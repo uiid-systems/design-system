@@ -1,4 +1,4 @@
-import type { NumberField as BaseNumberField } from "@base-ui-components/react/number-field";
+import type { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 
 export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
 export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;

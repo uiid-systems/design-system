@@ -1,4 +1,4 @@
-import type { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
+import type { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import type { SelectMultiple } from "../select/select.types";
 import type { FieldProps } from "../field/field.types";
@@ -8,7 +8,8 @@ export type ComboboxRootProps<
   Multiple extends SelectMultiple = false,
 > = BaseCombobox.Root.Props<Value, Multiple>;
 
-export type ComboboxInputProps = BaseCombobox.Input.Props;
+export type ComboboxInputProps = BaseCombobox.Input.Props &
+  Pick<FieldProps, "label" | "description" | "error">;
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
 export type ComboboxPopupProps = BaseCombobox.Popup.Props;

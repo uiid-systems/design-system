@@ -1,8 +1,8 @@
 "use client";
 
 import { Children, cloneElement, isValidElement, useState } from "react";
-import { ToggleGroup as BaseToggleGroup } from "@base-ui-components/react/toggle-group";
-import type { Toggle as BaseToggle } from "@base-ui-components/react/toggle";
+import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
+import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
 
 import { Group, Stack } from "@uiid/layout";
 
@@ -28,19 +28,9 @@ export const ToggleGroup = ({
     orientation,
   );
 
-  const handleValueChange = (
-    newValue: string[],
-    eventDetails: {
-      reason: "none";
-      event: Event;
-      cancel: () => void;
-      allowPropagation: () => void;
-      isCanceled: boolean;
-      isPropagationAllowed: boolean;
-    },
-  ) => {
+  const handleValueChange = (newValue: string[]) => {
     setActiveValue(newValue);
-    onValueChange?.(newValue, eventDetails);
+    onValueChange?.(newValue);
   };
 
   // Clone children and inject ref and className
@@ -80,4 +70,4 @@ export const ToggleGroup = ({
 };
 ToggleGroup.displayName = "ToggleGroup";
 
-export { Toggle } from "@base-ui-components/react/toggle";
+export { Toggle } from "@base-ui/react/toggle";

@@ -9,7 +9,6 @@ const meta = {
   title: "Forms/Radio",
   component: Radio,
   args: {
-    name: "radio",
     value: "default",
   },
   render: (args) => (

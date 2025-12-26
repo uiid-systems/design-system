@@ -1,4 +1,4 @@
-import { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
+import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";

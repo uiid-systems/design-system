@@ -1,4 +1,4 @@
-import type { Slider } from "@base-ui-components/react/slider";
+import type { Slider } from "@base-ui/react/slider";
 
 export type SliderRootProps = Slider.Root.Props;
 export type SliderValueProps = Slider.Value.Props;

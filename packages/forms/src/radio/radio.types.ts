@@ -1,4 +1,4 @@
-import type { Radio as BaseRadio } from "@base-ui-components/react/radio";
+import type { Radio as BaseRadio } from "@base-ui/react/radio";
 import type { GroupProps } from "@uiid/layout";
 import type { CheckboxFieldProps } from "../checkbox/checkbox.types";
 

@@ -1,4 +1,4 @@
-import { Autocomplete as BaseAutocomplete } from "@base-ui-components/react/autocomplete";
+import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import { ListItem } from "@uiid/layout";
 
@@ -16,8 +16,14 @@ export const AutocompleteItem = ({
       value={value}
       className={styles["autocomplete-item"]}
       {...props}
-      render={() => (
-        <ListItem render={<div />} fullwidth label={value} value={value} />
+      render={(renderProps) => (
+        <ListItem
+          render={<div />}
+          fullwidth
+          label={value as string}
+          value={value}
+          {...renderProps}
+        />
       )}
     >
       {children}

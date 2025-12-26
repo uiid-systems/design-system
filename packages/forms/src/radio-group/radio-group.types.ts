@@ -1,4 +1,4 @@
-import type { RadioGroup } from "@base-ui-components/react/radio-group";
+import type { RadioGroup } from "@base-ui/react/radio-group";
 
 import type { StackProps } from "@uiid/layout";
 

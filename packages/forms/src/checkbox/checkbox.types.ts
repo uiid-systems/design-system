@@ -1,4 +1,4 @@
-import type { Checkbox as BaseCheckbox } from "@base-ui-components/react/checkbox";
+import type { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import type { GroupProps } from "@uiid/layout";
 import type { FieldProps } from "../field/field.types";
 

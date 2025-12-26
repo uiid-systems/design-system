@@ -1,4 +1,4 @@
-import type { Progress } from "@base-ui-components/react/progress";
+import type { Progress } from "@base-ui/react/progress";
 
 export type ProgressProps = {
   value: Progress.Root.Props["value"];

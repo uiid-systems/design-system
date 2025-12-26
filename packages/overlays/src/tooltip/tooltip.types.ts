@@ -1,4 +1,4 @@
-import type { Tooltip } from "@base-ui-components/react/tooltip";
+import type { Tooltip } from "@base-ui/react/tooltip";
 
 export type TooltipProps = React.PropsWithChildren<{
   /** A render prop for the trigger element. */

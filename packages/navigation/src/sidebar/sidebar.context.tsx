@@ -1,6 +1,6 @@
 "use client";
 
-import { Tooltip } from "@base-ui-components/react";
+import { Tooltip } from "@base-ui/react";
 import React from "react";
 
 import { cx } from "@uiid/utils";

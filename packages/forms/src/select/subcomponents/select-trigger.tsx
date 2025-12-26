@@ -1,4 +1,4 @@
-import { Select as BaseSelect } from "@base-ui-components/react/select";
+import { Select as BaseSelect } from "@base-ui/react/select";
 
 import { Group } from "@uiid/layout";
 import { ChevronsUpDownIcon } from "@uiid/icons";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog } from "@base-ui-components/react/dialog";
+import { Dialog } from "@base-ui/react/dialog";
 import { isValidElement, useState } from "react";
 
 import { Card } from "@uiid/cards";
@@ -33,15 +33,7 @@ export const Modal = ({
     if (!isControlled) {
       setInternalOpen(nextOpen);
     }
-    /** @todo simplify this */
-    onOpenChange?.(nextOpen, {
-      reason: "close-press",
-      event: new MouseEvent("click"),
-      cancel: () => {},
-      allowPropagation: () => {},
-      isCanceled: false,
-      isPropagationAllowed: true,
-    });
+    onOpenChange?.(nextOpen);
   };
 
   const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {

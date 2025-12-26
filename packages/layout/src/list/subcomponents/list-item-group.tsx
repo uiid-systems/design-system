@@ -1,4 +1,4 @@
-import { Collapsible } from "@base-ui-components/react";
+import { Collapsible } from "@base-ui/react";
 
 import { ChevronsUpDown } from "@uiid/icons";
 import { Text } from "@uiid/typography";

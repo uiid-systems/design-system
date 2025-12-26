@@ -1,4 +1,4 @@
-import type { Select as BaseSelect } from "@base-ui-components/react/select";
+import type { Select as BaseSelect } from "@base-ui/react/select";
 
 import type { Icon } from "@uiid/icons";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Toast as BaseToast } from "@base-ui-components/react/toast";
+import { Toast as BaseToast } from "@base-ui/react/toast";
 
 import { Card } from "@uiid/cards";
 import { Text } from "@uiid/typography";
@@ -17,7 +17,7 @@ const ToastList = () => {
       toast={toast}
       className={styles["toast"]}
       render={
-        <Card uiid="toast" title={toast.title!} size="sm">
+        <Card uiid="toast" size="sm">
           <Text level={0} shade="accent" render={<BaseToast.Description />} />
         </Card>
       }

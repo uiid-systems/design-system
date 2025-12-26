@@ -1,4 +1,4 @@
-import type { Field } from "@base-ui-components/react/field";
+import type { Field } from "@base-ui/react/field";
 
 export type FieldProps = React.PropsWithChildren &
   Field.Root.Props & {

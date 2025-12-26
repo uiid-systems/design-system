@@ -6,8 +6,8 @@
   min-width: var(--anchor-width);
 }
 
-/* .autocomplete-item {
+.autocomplete-item {
   &:focus-visible {
     background-color: var(--shade-muted);
   }
-} */
+}

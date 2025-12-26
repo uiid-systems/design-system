@@ -1,4 +1,4 @@
-import { Combobox as BaseCombobox } from "@base-ui-components/react/combobox";
+import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import { cx } from "@uiid/utils";
 
@@ -8,6 +8,9 @@ import type { ComboboxInputProps } from "../combobox.types";
 import styles from "../combobox.module.css";
 
 export const ComboboxInput = ({
+  label,
+  description,
+  error,
   placeholder,
   className,
   ...props
@@ -15,7 +18,7 @@ export const ComboboxInput = ({
   return (
     <BaseCombobox.Input
       data-slot="combobox-input"
-      render={<Input />}
+      render={<Input label={label} description={description} error={error} />}
       className={cx(styles["combobox-input"], className)}
       placeholder={placeholder}
       {...props}

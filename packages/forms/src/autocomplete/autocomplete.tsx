@@ -15,6 +15,9 @@ import {
 
 export const Autocomplete = ({
   items,
+  label,
+  description,
+  error,
   placeholder,
   RootProps,
   InputProps,
@@ -26,7 +29,13 @@ export const Autocomplete = ({
 }: AutocompleteProps) => {
   return (
     <AutocompleteRoot items={items} {...RootProps}>
-      <AutocompleteInput placeholder={placeholder} {...InputProps} />
+      <AutocompleteInput
+        placeholder={placeholder}
+        label={label}
+        description={description}
+        error={error}
+        {...InputProps}
+      />
 
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
