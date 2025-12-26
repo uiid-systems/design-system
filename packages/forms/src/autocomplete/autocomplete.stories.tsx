@@ -5,13 +5,14 @@ import { Field } from "../field/field";
 
 import { Autocomplete } from "./autocomplete";
 import type { AutocompleteProps } from "./autocomplete.types";
+import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
 
 const meta: Meta<AutocompleteProps> = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
   args: {
     placeholder: "Placeholder",
-    items: ["apple", "banana", "cherry", "date", "elderberry"],
+    items: MOCK_AUTOCOMPLETE_ITEMS,
   },
   argTypes: {
     onValueChange: { action: "onValueChange" },
