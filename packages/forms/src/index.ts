@@ -1,3 +1,7 @@
+export * from "./autocomplete/autocomplete";
+export * from "./autocomplete/autocomplete.types";
+export * from "./autocomplete/subcomponents";
+
 export * from "./checkbox/checkbox";
 export * from "./checkbox/checkbox.types";
 export * from "./checkbox/checkbox.constants";

@@ -1,0 +1,13 @@
+.autocomplete-positioner {
+  outline: 0;
+}
+
+.autocomplete-popup {
+  min-width: var(--anchor-width);
+}
+
+/* .autocomplete-item {
+  &:focus-visible {
+    background-color: var(--shade-muted);
+  }
+} */
