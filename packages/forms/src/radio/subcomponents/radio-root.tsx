@@ -17,6 +17,7 @@ export const RadioRoot = ({
     <BaseRadio.Root
       data-slot="radio"
       value={value}
+      nativeButton
       render={
         <Group
           render={<button />}
