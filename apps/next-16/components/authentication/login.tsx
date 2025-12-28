@@ -21,7 +21,6 @@ export const Login = () => {
       onOpenChange={handleOpenChange}
       trigger={<LoginButton />}
       size="sm"
-      showCloseButton={false}
     >
       <LoginForm onOpenChange={handleOpenChange} />
     </Modal>
@@ -31,7 +30,7 @@ Login.displayName = "Login";
 
 const LoginButton = () => {
   return (
-    <Button variant="subtle" size="sm">
+    <Button variant="subtle" size="small">
       Login
     </Button>
   );

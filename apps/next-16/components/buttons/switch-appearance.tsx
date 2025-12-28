@@ -52,7 +52,7 @@ export function SwitchAppearance() {
       icon={{ pressed: <Sun />, unpressed: <Moon /> }}
       variant="subtle"
       tooltip="Toggle appearance"
-      size="sm"
+      size="small"
       square
       style={
         {

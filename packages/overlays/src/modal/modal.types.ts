@@ -1,7 +1,5 @@
 import type { Dialog } from "@base-ui/react/dialog";
 
-import type { CardProps } from "@uiid/cards";
-
 type ModalSize = "sm" | "md" | "lg" | "xl";
 
 export type ModalProps = React.PropsWithChildren<{
@@ -29,5 +27,4 @@ export type ModalProps = React.PropsWithChildren<{
    * */
   PopupProps?: Omit<Dialog.Popup.Props, "children">;
 }> &
-  Pick<Dialog.Portal.Props, "keepMounted"> &
-  Pick<CardProps, "title" | "onClose" | "showCloseButton">;
+  Pick<Dialog.Portal.Props, "keepMounted">;

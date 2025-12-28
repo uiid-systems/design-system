@@ -12,11 +12,8 @@ import styles from "./modal.module.css";
 export const Modal = ({
   trigger,
   size = "md",
-  title,
   open,
   onOpenChange,
-  onClose,
-  showCloseButton = true,
   keepMounted,
   children,
   RootProps,
@@ -36,13 +33,6 @@ export const Modal = ({
     onOpenChange?.(nextOpen);
   };
 
-  const handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isControlled) {
-      setInternalOpen(false);
-    }
-    onClose?.(event);
-  };
-
   return (
     <Dialog.Root {...RootProps} open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger
@@ -59,20 +49,7 @@ export const Modal = ({
           data-size={size}
           className={cx(styles["modal-popup"], PopupProps?.className)}
           {...PopupProps}
-          render={
-            <Card
-              uiid="modal"
-              title={title}
-              showCloseButton={showCloseButton}
-              /** @todo fix button type (remove anchor props) */
-              onClose={
-                handleClose as React.MouseEventHandler<HTMLButtonElement> &
-                  React.MouseEventHandler<HTMLAnchorElement>
-              }
-            >
-              {children}
-            </Card>
-          }
+          render={<Card uiid="modal">{children}</Card>}
         />
       </Dialog.Portal>
     </Dialog.Root>

@@ -13,8 +13,8 @@ const ActionButton = ({ wrapper, ...action }: TableActionsProps) => {
     <Button
       key={action.tooltip}
       aria-label={action.tooltip}
-      variant="ghost"
-      size="sm"
+      size="small"
+      ghost
       square
       {...action}
     >

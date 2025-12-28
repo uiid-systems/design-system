@@ -814,6 +814,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.14.0
         version: 3.14.0
+      '@uiid/buttons':
+        specifier: workspace:*
+        version: link:../buttons
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards

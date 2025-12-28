@@ -119,7 +119,8 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     icon: Calendar,
     tooltip: "See schedule",
     wrapper: (button) => (
-      <Modal trigger={button} title="Schedule">
+      <Modal trigger={button}>
+        <p>Schedule content goes here</p>
         <DatePicker headless />
       </Modal>
     ),
@@ -128,7 +129,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     icon: Swords,
     tooltip: "Challenge",
     wrapper: (button) => (
-      <Modal trigger={button} title="Challenge">
+      <Modal trigger={button}>
         <p>Challenge content goes here</p>
       </Modal>
     ),
@@ -143,7 +144,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     tooltip: "Friend",
     onClick: () => console.log("Friend"),
     wrapper: (button) => (
-      <Modal trigger={button} title="Friend">
+      <Modal trigger={button}>
         <p>Friend content goes here</p>
       </Modal>
     ),

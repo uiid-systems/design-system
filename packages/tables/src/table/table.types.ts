@@ -1,4 +1,4 @@
-import type { MenuItem } from "@uiid/interactive";
+import type { MenuItemType } from "@uiid/interactive";
 import type { Icon } from "@uiid/icons";
 
 export type TableActionsProps = {
@@ -11,7 +11,7 @@ export type TableActionsProps = {
 export type TableCellDropdownProps = {
   icon?: Icon;
   tooltip?: string;
-  items: MenuItem[];
+  items: MenuItemType[];
 };
 
 export type TableRootProps = React.ComponentProps<"table"> & {

@@ -10,9 +10,7 @@ import { useSidebar } from "../sidebar.context";
 export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
   const { toggleSidebar } = useSidebar();
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
     toggleSidebar();
   };
@@ -21,15 +19,15 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
     <Button
       data-slot="sidebar-trigger"
       aria-label="Toggle Sidebar"
-      onClick={handleClick as ButtonProps["onClick"]}
+      onClick={handleClick}
       tooltip={
         <Group gap={1} ay="center">
           <span>Toggle Sidebar</span>
-          <Kbd>⌘ + B</Kbd>
+          <Kbd>⌘B</Kbd>
         </Group>
       }
       variant="subtle"
-      size="sm"
+      size="small"
       square
       {...props}
     >

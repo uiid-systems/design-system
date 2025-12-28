@@ -5,7 +5,7 @@ import type { Content } from "@tiptap/react";
 import { RichTextEditor } from "./rich-text-editor";
 
 const meta = {
-  title: "Interactive/RichTextEditor",
+  title: "Interactive/Rich Text Editor",
   component: RichTextEditor,
   parameters: {
     layout: "padded",

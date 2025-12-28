@@ -33,7 +33,7 @@ export const AppHeader = () => {
         ]}
       />
       <Group gap={2} ay="center">
-        <Button size="sm">Sign up</Button>
+        <Button size="small">Sign up</Button>
         <Login />
         <div
           role="separator"

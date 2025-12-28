@@ -19,7 +19,6 @@ const ImageEditDialog = ({ editor }: ImageEditDialogProps) => {
     <Modal
       open={open}
       onOpenChange={setOpen}
-      title="Select image"
       trigger={
         <ToolbarButton
           isActive={editor.isActive("image")}
@@ -30,6 +29,7 @@ const ImageEditDialog = ({ editor }: ImageEditDialogProps) => {
         </ToolbarButton>
       }
     >
+      <p>Select image</p>
       <ImageEditBlock editor={editor} close={() => setOpen(false)} />
     </Modal>
   );
