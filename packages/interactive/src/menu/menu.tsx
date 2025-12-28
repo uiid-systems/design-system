@@ -1,15 +1,19 @@
 "use client";
 
-import { isValidElement } from "react";
-import { Menu as BaseMenu } from "@base-ui/react/menu";
-
-import { Group } from "@uiid/layout";
 import { ChevronRightIcon } from "@uiid/icons";
 
-import { cx } from "@uiid/utils";
-
 import type { MenuProps } from "./menu.types";
-import styles from "./menu.module.css";
+
+import {
+  MenuRoot,
+  MenuTrigger,
+  MenuPortal,
+  MenuPositioner,
+  MenuPopup,
+  MenuItem,
+  SubmenuRoot,
+  SubmenuTrigger,
+} from "./subcomponents";
 
 export const Menu = ({
   trigger,
@@ -21,83 +25,50 @@ export const Menu = ({
   PopupProps,
   PositionerProps,
   ItemProps,
+  SubmenuRootProps,
+  SubmenuTriggerProps,
 }: MenuProps) => {
-  const triggerIsEl = isValidElement(trigger);
-
   return (
-    <BaseMenu.Root {...RootProps}>
-      <BaseMenu.Trigger
-        {...TriggerProps}
-        render={<div tabIndex={triggerIsEl ? -1 : 0} />}
-        nativeButton={false}
-      >
-        {trigger}
-      </BaseMenu.Trigger>
-      <BaseMenu.Portal>
-        <BaseMenu.Positioner
-          className={styles["positioner"]}
-          collisionPadding={16}
-          side={side}
-          align={align}
-          {...PositionerProps}
-        >
-          <BaseMenu.Popup className={styles["popup"]} {...PopupProps}>
+    <MenuRoot {...RootProps}>
+      <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
+      <MenuPortal>
+        <MenuPositioner side={side} align={align} {...PositionerProps}>
+          <MenuPopup {...PopupProps}>
             {items.map((item) => {
               const submenu = item.items;
 
               if (submenu) {
                 return (
-                  <BaseMenu.SubmenuRoot key={item.value}>
-                    <BaseMenu.SubmenuTrigger
-                      className={styles["submenu-trigger"]}
-                      render={<Group gap={4} ay="center" ax="space-between" />}
-                    >
+                  <SubmenuRoot key={item.value} {...SubmenuRootProps}>
+                    <SubmenuTrigger {...SubmenuTriggerProps}>
                       {item.label}
                       <ChevronRightIcon size={12} />
-                    </BaseMenu.SubmenuTrigger>
-                    <BaseMenu.Portal>
-                      <BaseMenu.Positioner
-                        className={cx(
-                          styles.Positioner,
-                          PositionerProps?.className,
-                        )}
-                      >
-                        <BaseMenu.Popup
-                          className={cx(styles["popup"], PopupProps?.className)}
-                        >
+                    </SubmenuTrigger>
+                    <MenuPortal>
+                      <MenuPositioner>
+                        <MenuPopup>
                           {submenu.map((subitem) => (
-                            <BaseMenu.Item
-                              key={subitem.value}
-                              className={cx(
-                                styles["item"],
-                                ItemProps?.className,
-                              )}
-                              {...ItemProps}
-                            >
+                            <MenuItem key={subitem.value}>
                               {subitem.label}
-                            </BaseMenu.Item>
+                            </MenuItem>
                           ))}
-                        </BaseMenu.Popup>
-                      </BaseMenu.Positioner>
-                    </BaseMenu.Portal>
-                  </BaseMenu.SubmenuRoot>
+                        </MenuPopup>
+                      </MenuPositioner>
+                    </MenuPortal>
+                  </SubmenuRoot>
                 );
               }
 
               return (
-                <BaseMenu.Item
-                  key={item.value}
-                  className={cx(styles["item"], ItemProps?.className)}
-                  {...ItemProps}
-                >
+                <MenuItem key={item.value} {...ItemProps}>
                   {item.label}
-                </BaseMenu.Item>
+                </MenuItem>
               );
             })}
-          </BaseMenu.Popup>
-        </BaseMenu.Positioner>
-      </BaseMenu.Portal>
-    </BaseMenu.Root>
+          </MenuPopup>
+        </MenuPositioner>
+      </MenuPortal>
+    </MenuRoot>
   );
 };
 Menu.displayName = "Menu";
