@@ -1,0 +1,14 @@
+.separator {
+  background-color: var(--shade-halftone);
+
+  &[data-orientation="vertical"] {
+    width: 1px;
+    height: 100%;
+    height: -webkit-fill-available;
+  }
+
+  &[data-orientation="horizontal"] {
+    width: 100%;
+    height: 1px;
+  }
+}

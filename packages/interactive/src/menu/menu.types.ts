@@ -2,14 +2,14 @@ import type { Menu as BaseMenu } from "@base-ui/react/menu";
 
 import type { Icon } from "@uiid/icons";
 
-export type MenuItem = {
+export type MenuItemType = {
   icon?: Icon;
   label: string;
   value: string;
   description?: string;
   disabled?: boolean;
   selected?: boolean;
-  items?: MenuItem[];
+  items?: MenuItemType[];
 };
 
 export type MenuRootProps = BaseMenu.Root.Props;
@@ -25,7 +25,7 @@ export type MenuProps = {
   trigger: React.ReactNode;
   align?: MenuPositionerProps["align"];
   side?: MenuPositionerProps["side"];
-  items: MenuItem[];
+  items: MenuItemType[];
   RootProps?: MenuRootProps;
   TriggerProps?: MenuTriggerProps;
   PopupProps?: MenuPopupProps;

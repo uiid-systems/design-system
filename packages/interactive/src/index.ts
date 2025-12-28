@@ -6,6 +6,7 @@ export * from "./collapsible/collapsible.types";
 
 export * from "./menu/menu";
 export * from "./menu/menu.types";
+export * from "./menu/subcomponents";
 
 export * from "./tabs/tabs";
 export * from "./tabs/tabs.types";

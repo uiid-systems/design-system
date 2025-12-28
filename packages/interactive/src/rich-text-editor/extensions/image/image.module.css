@@ -1,0 +1,28 @@
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  background-color: color-mix(in oklab, transparent, var(--shade-background) var(--overlays-backdrop-opacity));
+  transition: opacity var(--globals-transition-timing) ease-out;
+}
+
+.resize-handle {
+  position: absolute;
+  top: 50%;
+  height: 4rem;
+  max-height: 100%;
+  width: 1.5rem;
+  transform: translateY(-50%);
+  cursor: col-resize;
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  background-color: var(--shade-surface);
+  padding: 1px;
+  transition: all var(--globals-transition-timing) ease-out;
+  opacity: 0;
+  backdrop-filter: saturate(1.8) blur(20px);
+
+  &[data-resizing] {
+    opacity: 0.8;
+  }
+}

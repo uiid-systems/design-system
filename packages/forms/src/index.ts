@@ -36,4 +36,8 @@ export * from "./select/select";
 export * from "./select/select.types";
 export * from "./select/select.constants";
 
+export * from "./switch/switch";
+export * from "./switch/switch.types";
+export * from "./switch/subcomponents";
+
 export * from "./types";

@@ -17,6 +17,9 @@ export * from "./list/list";
 export * from "./list/list.types";
 export { ListItem } from "./list/subcomponents";
 
+export * from "./separator/separator";
+export * from "./separator/separator.types";
+
 export * from "./slots/slots";
 export * from "./slots/slots.types";
 
