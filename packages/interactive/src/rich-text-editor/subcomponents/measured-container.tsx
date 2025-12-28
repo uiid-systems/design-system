@@ -1,32 +1,36 @@
-import * as React from "react";
-import { useContainerSize } from "../hooks/use-container-size";
+import { useRef } from "react";
 
-interface MeasuredContainerProps<T extends React.ElementType> {
-  as: T;
-  name: string;
-  children?: React.ReactNode;
-}
+import { Box, type BoxProps } from "@uiid/layout";
 
-export const MeasuredContainer = <T extends React.ElementType>({
-  as: Component,
+import { useContainerSize } from "../hooks";
+
+type MeasuredContainerProps = BoxProps & {
+  name?: string;
+};
+
+export const MeasuredContainer = ({
   name,
   children,
   style = {},
   ...props
-}: MeasuredContainerProps<T> & React.ComponentProps<T>) => {
-  const innerRef = React.useRef<HTMLElement>(null);
+}: MeasuredContainerProps) => {
+  const innerRef = useRef<HTMLDivElement>(null);
   const rect = useContainerSize(innerRef.current);
 
-  const customStyle = {
+  const customStyle: React.CSSProperties = {
     [`--${name}-width`]: `${rect.width}px`,
     [`--${name}-height`]: `${rect.height}px`,
   };
 
   return (
-    <Component {...props} ref={innerRef} style={{ ...customStyle, ...style }}>
+    <Box
+      data-slot="measured-container"
+      {...props}
+      ref={innerRef}
+      style={{ ...customStyle, ...style }}
+    >
       {children}
-    </Component>
+    </Box>
   );
 };
-
 MeasuredContainer.displayName = "MeasuredContainer";

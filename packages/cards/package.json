@@ -23,7 +23,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@uiid/buttons": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",

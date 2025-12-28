@@ -3,6 +3,10 @@
   "$description": "UIID Design System - Button Component Tokens",
   "button": {
     "bg": { "$value": "{shade.foreground}", "$type": "color" },
+    "bg-hover": {
+      "$value": "color-mix(in oklab, {shade.foreground}, {shade.background} 15%)",
+      "$type": "color"
+    },
     "fg": { "$value": "{shade.background}", "$type": "color" },
     "border": {
       "width": { "$value": "2px", "$type": "dimension" },
@@ -10,19 +14,27 @@
       "radius": { "$value": "{globals.border.radius}", "$type": "dimension" }
     },
     "font-weight": { "$value": "600", "$type": "number" },
+    "padding": {
+      "x": { "$value": "{forms.padding.x}", "$type": "dimension" },
+      "y": { "$value": "{forms.padding.y}", "$type": "dimension" }
+    },
     "scale": {
       "active": { "$value": "0.98", "$type": "number" },
       "hover": { "$value": "1.02", "$type": "number" }
     },
-    "mix": {
-      "color": { "$value": "{shade.background}", "$type": "color" },
-      "hover": { "$value": "85%", "$type": "dimension" },
-      "active": { "$value": "80%", "$type": "dimension" }
-    },
     "size": {
-      "sm": { "padding-x": { "$value": "0.75rem", "$type": "dimension" } },
-      "md": { "padding-x": { "$value": "1rem", "$type": "dimension" } },
-      "lg": { "padding-x": { "$value": "1.25rem", "$type": "dimension" } }
+      "sm": {
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "padding-x": { "$value": "0.75rem", "$type": "dimension" }
+      },
+      "md": {
+        "height": { "$value": "2.625rem", "$type": "dimension" },
+        "padding-x": { "$value": "1rem", "$type": "dimension" }
+      },
+      "lg": {
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "padding-x": { "$value": "1.25rem", "$type": "dimension" }
+      }
     },
     "variant": {
       "default": {
@@ -31,13 +43,14 @@
       },
       "subtle": {
         "bg": { "$value": "{forms.background}", "$type": "color" },
+        "bg-hover": { "$value": "{forms.backgroundHover}", "$type": "color" },
         "fg": { "$value": "{shade.foreground}", "$type": "color" },
         "border-color": { "$value": "{forms.border.color}", "$type": "color" }
       },
       "inverted": {
         "bg": { "$value": "{shade.background}", "$type": "color" },
-        "fg": { "$value": "{shade.foreground}", "$type": "color" },
-        "border-color": { "$value": "{shade.background}", "$type": "color" }
+        "bg-hover": { "$value": "{shade.muted}", "$type": "color" },
+        "fg": { "$value": "{shade.foreground}", "$type": "color" }
       }
     }
   }

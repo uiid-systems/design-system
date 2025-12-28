@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
 
-import { Home } from "@uiid/icons";
+import { Globe } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Button } from "./button";
@@ -10,14 +9,30 @@ const meta = {
   title: "Buttons/Button",
   component: Button,
   args: {
-    onClick: fn(),
     tooltip: "Tooltip",
+    disabled: false,
+    ghost: false,
+    grows: true,
+    pill: false,
+    square: false,
   },
   argTypes: {
-    loading: { control: "boolean" },
-    disabled: { control: "boolean" },
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    shape: { control: "select", options: ["rounded", "pill"] },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    ghost: { control: "boolean", table: { category: "Toggles" } },
+    grows: { control: "boolean", table: { category: "Toggles" } },
+    pill: { control: "boolean", table: { category: "Toggles" } },
+    square: { control: "boolean", table: { category: "Toggles" } },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+    variant: {
+      control: "select",
+      options: ["subtle", "inverted"],
+      table: { category: "Variants" },
+    },
+    onClick: { action: "onClick", table: { disable: true } },
   },
 } satisfies Meta<typeof Button>;
 
@@ -27,36 +42,22 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: "Button",
   render: (args) => {
-    const variants = [
-      { variant: undefined, label: "default" },
-      { variant: "subtle" as const, label: "subtle" },
-      { variant: "inverted" as const, label: "inverted" },
-      { variant: "ghost" as const, label: "ghost" },
-    ];
-
     return (
       <Stack gap={4}>
-        {variants.map((variant) => (
-          <Group gap={2} ay="center" key={variant.label}>
-            <Button {...args} variant={variant.variant}>
-              <Home />
-              default
-            </Button>
-            <Button {...args} variant={variant.variant} disabled>
-              disabled
-            </Button>
-            <Button loading {...args} variant={variant.variant}>
-              lorem
-            </Button>
-            <Button {...args} variant={variant.variant} shape="pill">
-              pill
-            </Button>
+        <Button {...args} tooltip="Tooltip">
+          <Globe />
+          default
+        </Button>
 
-            <Button {...args} variant={variant.variant} square>
-              <Home />
-            </Button>
-          </Group>
-        ))}
+        <Group gap={2}>
+          <Button {...args} tooltip="Tooltip" pill square grows>
+            <Globe />
+          </Button>
+          <Button {...args} tooltip="Tooltip" pill grows>
+            <Globe />
+            travel the world
+          </Button>
+        </Group>
       </Stack>
     );
   },

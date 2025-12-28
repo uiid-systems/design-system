@@ -8,6 +8,7 @@ import {
 } from "@tiptap/react";
 
 import { Separator } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import {
@@ -105,7 +106,6 @@ RichTextEditor.displayName = "RichTextEditor";
 
 export const MainRichTextEditor = ({
   editor: providedEditor,
-  className,
   editorContentClassName,
 }: RichTextEditorProps & { editor: Editor }) => {
   const { editor } = useEditorInstance(providedEditor);
@@ -115,15 +115,7 @@ export const MainRichTextEditor = ({
   }
 
   return (
-    <MeasuredContainer
-      as="div"
-      name="editor"
-      className={cx(
-        "border-input min-data-[orientation=vertical]:h-72 flex h-auto w-full flex-col rounded-md border shadow-xs",
-        "focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
-        className,
-      )}
-    >
+    <MeasuredContainer render={<Card trimmed />} name="editor">
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}

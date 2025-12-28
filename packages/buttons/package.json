@@ -26,6 +26,7 @@
     "@base-ui/react": "1.0.0",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"

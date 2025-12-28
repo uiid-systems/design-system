@@ -1,28 +1,15 @@
-import { Stack, type StackProps } from "@uiid/layout";
+import { Group, type GroupProps } from "@uiid/layout";
 
-import styles from "./button-content-container.module.css";
-
-type ButtonContentContainerProps = React.PropsWithChildren<{
-  shift?: boolean;
-  render?: StackProps["render"];
-  asButton?: boolean;
-}>;
+export type ButtonContentContainerProps = GroupProps;
 
 export const ButtonContentContainer = ({
-  shift,
-  render,
-  asButton = true,
   children,
+  ...props
 }: ButtonContentContainerProps) => {
   return (
-    <Stack
-      role={asButton ? "button" : undefined}
-      className={styles["button-content-container"]}
-      data-shift={shift ? "true" : undefined}
-      render={render}
-    >
+    <Group data-slot="button-content-container" ay="center" gap={2} {...props}>
       {children}
-    </Stack>
+    </Group>
   );
 };
 ButtonContentContainer.displayName = "ButtonContentContainer";

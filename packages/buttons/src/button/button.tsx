@@ -1,69 +1,46 @@
-"use client";
+import { Button as BaseButton } from "@base-ui/react/button";
 
-import { LoadingSpinner } from "@uiid/icons";
-import { SwitchRender } from "@uiid/layout";
-import { cx, renderWithProps } from "@uiid/utils";
+import { ConditionalRender } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
-import {
-  BUTTON_DEFAULT_SIZE,
-  BUTTON_DEFAULT_SHAPE,
-  BUTTON_DEFAULT_GROWS,
-  BUTTON_DEFAULT_ALIGN,
-  BUTTON_TOOLTIP_DELAY,
-} from "./button.constants";
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
-
-import {
-  ButtonTooltipWrapper,
-  ButtonContentSlot,
-  ButtonContentContainer,
-} from "./subcomponents";
+import { ButtonTooltipWrapper } from "./subcomponents";
+import { buttonVariants } from "./button.variants";
+import { ButtonContentContainer } from "./subcomponents/button-content-container";
 
 export const Button = ({
-  size = BUTTON_DEFAULT_SIZE,
-  shape = BUTTON_DEFAULT_SHAPE,
-  grows = BUTTON_DEFAULT_GROWS,
-  align = BUTTON_DEFAULT_ALIGN,
-  delay = BUTTON_TOOLTIP_DELAY,
-  variant,
-  square,
-  loading,
+  /** tooltip */
   tooltip,
+  /** variants */
+  ghost,
+  pill,
+  grows,
+  size,
+  square,
+  variant,
+  /** misc */
   className,
   children,
   ...props
-}: ButtonProps) =>
-  renderWithProps({
-    fallbackElement: "button",
-    props: {
-      uiid: "button",
-      delay,
-      disabled: props.disabled || loading,
-      className: cx(styles["button"], className),
-      /** attributes */
-      "data-variant": variant,
-      "data-size": size,
-      "data-shape": shape,
-      "data-grows": grows,
-      "data-square": square,
-      ...props,
-    },
-    children: (
-      <SwitchRender
-        condition={Boolean(tooltip)}
-        render={{
-          true: <ButtonTooltipWrapper shift={loading} tooltip={tooltip!} />,
-          false: <ButtonContentContainer shift={loading} />,
-        }}
+}: ButtonProps) => {
+  return (
+    <ConditionalRender
+      condition={!!tooltip}
+      render={<ButtonTooltipWrapper tooltip={tooltip} />}
+    >
+      <BaseButton
+        data-slot="button"
+        className={cx(
+          styles["button"],
+          buttonVariants({ ghost, grows, pill, size, square, variant }),
+          className,
+        )}
+        {...props}
       >
-        <ButtonContentSlot active={!loading} ax={align}>
-          {children}
-        </ButtonContentSlot>
-        <ButtonContentSlot active={loading} ax={align}>
-          <LoadingSpinner />
-        </ButtonContentSlot>
-      </SwitchRender>
-    ),
-  });
+        <ButtonContentContainer>{children}</ButtonContentContainer>
+      </BaseButton>
+    </ConditionalRender>
+  );
+};
 Button.displayName = "Button";

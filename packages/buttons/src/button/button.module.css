@@ -1,106 +1,104 @@
 @import "@uiid/tokens/button.tokens.css";
 
 .button {
-  --adjusted-button-height: calc(var(--button-height) - var(--globals-border-width) * 2);
-  --button-border-color: var(--button-bg);
+  --button-bg: var(--shade-foreground);
+  --button-fg: var(--shade-background);
 
-  align-items: center;
-  all: unset;
-  background-color: var(--button-bg);
+  /** Globals properties */
   border: var(--globals-border-width) solid var(--button-border-color);
-  color: var(--button-fg);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  font-size: var(--button-fontSize);
-  font-weight: var(--button-font-weight);
-  height: var(--adjusted-button-height);
-  justify-content: flex-start;
-  overflow: hidden;
+  border-radius: var(--globals-border-radius);
+  transition: all var(--globals-transition-timing) ease-in-out;
+  /** Forms properties */
   padding-inline: var(--button-padding-x);
-  position: relative;
-  transition: background-color var(--globals-transition-timing) ease-in-out;
+  /** Button properties */
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  font-weight: var(--button-font-weight);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:where(:hover, :active) {
-    background-color: color-mix(in oklab, var(--button-bg) var(--button-mix-hover), var(--button-mix-color));
-    border-color: color-mix(in oklab, var(--button-border-color) var(--button-mix-hover), var(--button-mix-color));
+    background-color: var(--button-bg-hover);
+    border-color: var(--button-bg-hover);
   }
 
-  &:focus {
+  &:where(:focus) {
+    transition: none;
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
 
-  /** Icon properties */
-  svg {
-    height: var(--globals-icon-size);
-    flex-shrink: 0;
-  }
-
-  &:where([data-size="sm"]) {
-    --button-fontSize: var(--forms-size-sm-fontSize);
-    --button-height: var(--forms-size-sm-height);
-    --button-padding-x: var(--button-size-sm-padding-x);
-  }
-  &:where([data-size="md"]) {
-    --button-fontSize: var(--forms-size-md-fontSize);
-    --button-height: var(--forms-size-md-height);
-    --button-padding-x: var(--button-size-md-padding-x);
-  }
-  &:where([data-size="lg"]) {
-    --button-fontSize: var(--forms-size-lg-fontSize);
-    --button-height: var(--forms-size-lg-height);
-    --button-padding-x: var(--button-size-lg-padding-x);
-  }
-
-  /** Variant properties */
-  &:where([data-variant="subtle"]) {
-    --button-bg: var(--button-variant-subtle-bg);
-    --button-fg: var(--button-variant-subtle-fg);
-    --button-border-color: var(--button-variant-subtle-border-color);
-  }
-  &:where([data-variant="inverted"]) {
-    --button-bg: var(--button-variant-inverted-bg);
-    --button-fg: var(--button-variant-inverted-fg);
-    --button-border-color: var(--button-variant-inverted-bg);
-    --button-mix-color: var(--shade-foreground);
-    --globals-outline-color: var(--button-variant-inverted-bg);
-    color: var(--button-fg);
-  }
-
-  &:where([data-variant="ghost"]) {
-    --button-bg: transparent;
-    --button-fg: var(--button-variant-inverted-fg);
-    --button-border-color: transparent;
-    --button-mix-color: var(--shade-foreground);
-    color: var(--button-fg);
-  }
-
-  /** Shapes */
-  &:where([data-shape="rounded"]) {
-    border-radius: var(--globals-border-radius);
-  }
-  &:where([data-shape="pill"]) {
-    border-radius: 99999px;
-  }
-
-  /** Disabled */
   &:where([aria-disabled="true"], [disabled]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
 
-  &:where([data-square]) {
-    aspect-ratio: 1;
-    padding: 0;
+  svg {
+    flex-shrink: 0;
+    height: var(--globals-icon-size);
+    width: auto;
+    vertical-align: middle;
   }
+}
 
-  &:where([data-grows]) {
-    &:hover {
-      scale: var(--button-scale-hover);
-    }
-    &:active {
-      scale: var(--button-scale-active);
-    }
+.variant-subtle {
+  background-color: var(--button-variant-subtle-bg);
+  border-color: var(--button-variant-subtle-border-color);
+  color: var(--button-variant-subtle-fg);
+  &:where(:hover, :active) {
+    background-color: var(--button-variant-subtle-bg-hover);
+  }
+}
+
+.variant-inverted {
+  background-color: var(--button-variant-inverted-bg);
+  color: var(--button-variant-inverted-fg);
+  border-color: var(--button-variant-inverted-bg);
+  outline-color: var(--button-variant-inverted-bg);
+  &:where(:hover, :active) {
+    background-color: var(--button-variant-inverted-bg-hover);
+  }
+}
+
+.size-small {
+  height: var(--button-size-sm-height);
+  padding-inline: var(--button-size-sm-padding-x);
+}
+.size-medium {
+  height: var(--button-size-md-height);
+  padding-inline: var(--button-size-md-padding-x);
+}
+.size-large {
+  height: var(--button-size-lg-height);
+  padding-inline: var(--button-size-lg-padding-x);
+}
+
+.toggle-grows {
+  &:hover {
+    scale: var(--button-scale-hover);
+  }
+  &:active {
+    scale: var(--button-scale-active);
+  }
+}
+
+.toggle-pill {
+  border-radius: 99999px;
+}
+
+.toggle-square {
+  aspect-ratio: 1;
+  padding-inline: 0;
+}
+
+.toggle-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-bg);
+  &:where(:hover, :active) {
+    background-color: transparent;
+    border-color: transparent;
   }
 }
