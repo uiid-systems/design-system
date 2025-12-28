@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
-import { Button } from "@uiid/buttons";
 
 import { ToastProvider, useToastManager, Toaster } from "./toast";
 
@@ -28,7 +27,6 @@ const meta: Meta<unknown> = {
 
     return (
       <Stack gap={4}>
-        <Button onClick={handleClick}>custom button</Button>
         <button onClick={handleClick}>native button</button>
         <span onClick={handleClick}>string</span>
       </Stack>

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Button } from "@uiid/buttons";
 import {
   SquareChevronLeft,
   SquareChevronRight,
@@ -29,9 +28,9 @@ export const Default: Story = {
       <Sheet
         title="Open menu from right"
         trigger={
-          <Button tooltip="Open menu from right" variant="subtle">
+          <button>
             <SquareChevronLeft />
-          </Button>
+          </button>
         }
       >
         <p>
@@ -45,9 +44,9 @@ export const Default: Story = {
         title="Open menu from left"
         side="left"
         trigger={
-          <Button tooltip="Open menu from left" variant="subtle">
+          <button>
             <SquareChevronRight />
-          </Button>
+          </button>
         }
       >
         <p>
@@ -61,9 +60,9 @@ export const Default: Story = {
         title="Notifications"
         side="top"
         trigger={
-          <Button tooltip="Open menu from top" variant="subtle">
+          <button>
             <SquareChevronDown />
-          </Button>
+          </button>
         }
       >
         <p>
@@ -77,9 +76,9 @@ export const Default: Story = {
         title="Settings"
         side="bottom"
         trigger={
-          <Button tooltip="Open menu from bottom" variant="subtle">
+          <button>
             <SquareChevronUp />
-          </Button>
+          </button>
         }
       >
         <p>

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "@uiid/buttons";
 import { Stack, Group } from "@uiid/layout";
 
 import { Drawer } from "./drawer";
@@ -27,8 +26,7 @@ const meta: Meta<typeof Drawer> = {
       </Stack>
 
       <Stack gap={4}>
-        <Drawer {...args} trigger={<CustomTrigger />} />
-        <Drawer {...args} trigger={<NativeTrigger />} />
+        <Drawer {...args} trigger={<button>button</button>} />
         <Drawer {...args} trigger="string" />
       </Stack>
     </Group>
@@ -39,10 +37,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Drawer" };
-
-const CustomTrigger = () => (
-  <Button variant="subtle" grows={false}>
-    custom button component
-  </Button>
-);
-const NativeTrigger = () => <button>native button</button>;

@@ -1160,9 +1160,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../buttons
       '@vitejs/plugin-react-swc':
         specifier: ^3.10.2
         version: 3.11.0(vite@7.1.2(@types/node@24.6.0)(jiti@2.6.1)(lightningcss@1.30.2))
