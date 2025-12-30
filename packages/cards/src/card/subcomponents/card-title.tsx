@@ -5,7 +5,7 @@ import { TITLE_LEVEL } from "../card.constants";
 
 export const CardTitle = ({ title, size, ...props }: CardTitleProps) => {
   return (
-    <Text render={<h3 />} level={TITLE_LEVEL[size!]} bold {...props}>
+    <Text render={<h3 />} size={TITLE_LEVEL[size!]} bold {...props}>
       {title}
     </Text>
   );

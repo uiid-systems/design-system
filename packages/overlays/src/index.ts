@@ -15,3 +15,4 @@ export * from "./toast/toast.types";
 
 export * from "./tooltip/tooltip";
 export * from "./tooltip/tooltip.types";
+export * from "./tooltip/subcomponents";

@@ -71,7 +71,7 @@ export const MonthView = ({
             key={day}
             data-slot="month-view-weekday"
             shade="accent"
-            level={0}
+            size={0}
             py={4}
             center
           >
@@ -148,7 +148,7 @@ const MonthDay = ({ value }: { value: string }) => {
       className={styles["month-view-day-number"]}
       data-slot="month-view-day-number"
       shade="accent"
-      level={-1}
+      size={-1}
       bold
     >
       {value}

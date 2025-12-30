@@ -2,21 +2,22 @@ import * as React from "react";
 
 import { ToggleButton } from "@uiid/buttons";
 
-type ToolbarButtonProps = React.ComponentProps<typeof ToggleButton> & {
-  isActive?: boolean;
+export type ToolbarButtonProps = React.ComponentProps<typeof ToggleButton> & {
   tooltip?: string;
 };
 
 export const ToolbarButton = ({
-  isActive,
   children,
   tooltip,
   ...props
 }: ToolbarButtonProps) => {
   return (
     <ToggleButton
+      data-slot="toolbar-button"
       tooltip={tooltip}
-      style={{ backgroundColor: isActive ? "var(--shade-muted)" : undefined }}
+      size="small"
+      variant="subtle"
+      square
       {...props}
     >
       {children}

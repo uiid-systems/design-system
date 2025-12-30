@@ -1,5 +1,5 @@
 .separator {
-  background-color: var(--shade-halftone);
+  background-color: var(--globals-border-color);
 
   &[data-orientation="vertical"] {
     width: 1px;

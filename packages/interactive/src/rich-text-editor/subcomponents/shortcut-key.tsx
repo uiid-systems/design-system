@@ -21,12 +21,10 @@ export const ShortcutKey = ({ ref, keys, ...props }: ShortcutKeyProps) => {
       ay="center"
       gap={1}
       {...props}
-      render={<span ref={ref} />}
+      render={<Kbd ref={ref} />}
     >
       {modifiedKeys.map((shortcut) => (
-        <Kbd key={shortcut.symbol} {...props} ref={ref}>
-          {shortcut.symbol}
-        </Kbd>
+        <span key={shortcut.symbol}>{shortcut.symbol}</span>
       ))}
     </Group>
   );

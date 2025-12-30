@@ -14,7 +14,7 @@ export const Status = ({ variant, pulse, children }: StatusProps) => {
       className={styles.status}
     >
       <span data-slot="status-dot" data-pulse={pulse} />
-      <Text data-slot="status-text" level={0}>
+      <Text data-slot="status-text" size={0}>
         {children}
       </Text>
     </Group>

@@ -1,0 +1,11 @@
+import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
+
+import type { TooltipProviderProps } from "../tooltip.types";
+
+export const TooltipProvider = ({
+  children,
+  ...props
+}: TooltipProviderProps) => {
+  return <BaseTooltip.Provider {...props}>{children}</BaseTooltip.Provider>;
+};
+TooltipProvider.displayName = "TooltipProvider";

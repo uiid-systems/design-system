@@ -44,16 +44,45 @@ export const Default: Story = {
   render: (args) => {
     return (
       <Stack gap={4}>
-        <Button {...args} tooltip="Tooltip">
-          <Globe />
-          default
-        </Button>
-
         <Group gap={2}>
-          <Button {...args} tooltip="Tooltip" pill square grows>
+          <Button {...args} tooltip="Tooltip" square>
             <Globe />
           </Button>
-          <Button {...args} tooltip="Tooltip" pill grows>
+          <Button {...args} tooltip="Tooltip">
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" disabled>
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" variant="subtle">
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" variant="inverted">
+            <Globe />
+            travel the world
+          </Button>
+        </Group>
+
+        <Group gap={2}>
+          <Button {...args} tooltip="Tooltip" pill square>
+            <Globe />
+          </Button>
+          <Button {...args} tooltip="Tooltip" pill>
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" disabled pill>
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" variant="subtle" pill>
+            <Globe />
+            travel the world
+          </Button>
+          <Button {...args} tooltip="Tooltip" variant="inverted" pill>
             <Globe />
             travel the world
           </Button>

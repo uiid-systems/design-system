@@ -14,17 +14,17 @@ export const Avatar = ({
     <Group uiid="avatar" gap={2} ay="center" {...props}>
       <Layer data-slot="avatar-layers" ax="center" ay="center" fullwidth>
         <span data-slot="avatar-image" />
-        <Text data-slot="avatar-initials" level={0}>
+        <Text data-slot="avatar-initials" size={0}>
           {initials}
         </Text>
       </Layer>
 
       <ConditionalRender condition={!!name} render={<Stack gap={2} />}>
-        <Text data-slot="avatar-name" level={0}>
+        <Text data-slot="avatar-name" size={0}>
           {name}
         </Text>
         {description && (
-          <Text data-slot="avatar-description" level={0}>
+          <Text data-slot="avatar-description" size={0}>
             {description}
           </Text>
         )}

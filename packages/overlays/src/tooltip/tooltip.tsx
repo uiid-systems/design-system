@@ -1,15 +1,21 @@
 "use client";
 
-import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-
-import { Card } from "@uiid/cards";
-
 import type { TooltipProps } from "./tooltip.types";
+import {
+  TooltipProvider,
+  TooltipRoot,
+  TooltipTrigger,
+  TooltipPortal,
+  TooltipPositioner,
+  TooltipPopup,
+} from "./subcomponents";
 
 export const Tooltip = ({
   trigger,
+  ProviderProps,
   RootProps,
   TriggerProps,
+  PortalProps,
   PositionerProps = {
     sideOffset: 8,
     collisionPadding: 16,
@@ -18,24 +24,16 @@ export const Tooltip = ({
   children,
 }: TooltipProps) => {
   return (
-    <BaseTooltip.Provider>
-      <BaseTooltip.Root {...RootProps}>
-        <BaseTooltip.Trigger {...TriggerProps} render={<div />}>
-          {trigger}
-        </BaseTooltip.Trigger>
-        <BaseTooltip.Portal>
-          <BaseTooltip.Positioner {...PositionerProps}>
-            <BaseTooltip.Popup
-              data-is-popup="true"
-              {...PopupProps}
-              render={<Card size="sm">{children}</Card>}
-            >
-              {children}
-            </BaseTooltip.Popup>
-          </BaseTooltip.Positioner>
-        </BaseTooltip.Portal>
-      </BaseTooltip.Root>
-    </BaseTooltip.Provider>
+    <TooltipProvider {...ProviderProps}>
+      <TooltipRoot {...RootProps}>
+        <TooltipTrigger {...TriggerProps}>{trigger}</TooltipTrigger>
+        <TooltipPortal {...PortalProps}>
+          <TooltipPositioner {...PositionerProps}>
+            <TooltipPopup {...PopupProps}>{children}</TooltipPopup>
+          </TooltipPositioner>
+        </TooltipPortal>
+      </TooltipRoot>
+    </TooltipProvider>
   );
 };
 Tooltip.displayName = "Tooltip";

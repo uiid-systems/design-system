@@ -18,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   &:where(:hover, :active) {
     background-color: var(--button-bg-hover);
@@ -98,7 +99,7 @@
   border-color: transparent;
   color: var(--button-bg);
   &:where(:hover, :active) {
-    background-color: transparent;
+    background-color: color-mix(in oklab, var(--button-bg-hover), transparent 80%);
     border-color: transparent;
   }
 }

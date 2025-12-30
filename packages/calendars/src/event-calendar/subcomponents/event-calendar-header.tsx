@@ -50,7 +50,7 @@ export const EventCalendarHeader = ({
           icon={ChevronRightIcon}
         />
       </Group>
-      <Text level={2} bold>
+      <Text size={2} bold>
         {viewTitle}
       </Text>
     </Group>

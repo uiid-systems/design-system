@@ -17,8 +17,8 @@ const ToastList = () => {
       toast={toast}
       className={styles["toast"]}
       render={
-        <Card uiid="toast" size="sm">
-          <Text level={0} shade="accent" render={<BaseToast.Description />} />
+        <Card uiid="toast">
+          <Text size={0} shade="accent" render={<BaseToast.Description />} />
         </Card>
       }
     />

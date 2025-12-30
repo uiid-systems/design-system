@@ -21,7 +21,7 @@ export const ListTextBlock = ({
     >
       <Text
         data-slot="list-text-label"
-        level={0}
+        size={0}
         className={styles["list-text-label"]}
       >
         {label}
@@ -29,7 +29,7 @@ export const ListTextBlock = ({
       {description && (
         <Text
           data-slot="list-text-description"
-          level={0}
+          size={0}
           className={styles["list-text-description"]}
         >
           {description}

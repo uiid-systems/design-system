@@ -31,19 +31,19 @@
         "size": { "$value": "1.5rem", "$type": "dimension" },
         "leading": { "$value": "1%", "$type": "dimension" },
         "lineHeight": { "$value": "140%", "$type": "dimension" },
-        "weight": { "$value": "400", "$type": "fontWeight" }
+        "weight": { "$value": "500", "$type": "fontWeight" }
       },
       "4": {
         "size": { "$value": "1.875rem", "$type": "dimension" },
         "leading": { "$value": "1%", "$type": "dimension" },
         "lineHeight": { "$value": "140%", "$type": "dimension" },
-        "weight": { "$value": "500", "$type": "fontWeight" }
+        "weight": { "$value": "600", "$type": "fontWeight" }
       },
       "5": {
         "size": { "$value": "2.25rem", "$type": "dimension" },
         "leading": { "$value": "0.25%", "$type": "dimension" },
         "lineHeight": { "$value": "130%", "$type": "dimension" },
-        "weight": { "$value": "500", "$type": "fontWeight" }
+        "weight": { "$value": "600", "$type": "fontWeight" }
       },
       "6": {
         "size": { "$value": "3rem", "$type": "dimension" },

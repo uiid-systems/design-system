@@ -34,7 +34,7 @@ const SidebarGroupCategory = ({ children }: { children: React.ReactNode }) => {
       data-slot="sidebar-group-category"
       data-hide-collapsed
       render={<h4 />}
-      level={-1}
+      size={-1}
       pl={2}
       my={4}
       shade="accent"

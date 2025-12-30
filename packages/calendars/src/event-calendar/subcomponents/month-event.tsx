@@ -44,7 +44,7 @@ export const MonthEvent = ({
       onTouchStart={onTouchStart}
     >
       {children || (
-        <Text level={-1}>
+        <Text size={-1}>
           <strong>
             {!event.allDay && formatTimeWithOptionalMinutes(displayStart)}
           </strong>{" "}

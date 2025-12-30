@@ -11,7 +11,11 @@ export const ButtonTooltipWrapper = ({
   children,
 }: ButtonTooltipWrapperProps) => {
   return (
-    <Tooltip data-slot="button-tooltip-wrapper" trigger={children}>
+    <Tooltip
+      data-slot="button-tooltip-wrapper"
+      trigger={children}
+      TriggerProps={{ render: <div /> }}
+    >
       {tooltip}
     </Tooltip>
   );

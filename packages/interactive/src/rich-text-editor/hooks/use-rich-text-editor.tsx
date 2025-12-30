@@ -62,7 +62,7 @@ const createExtensions = ({
     dropcursor: { width: 2, class: "ProseMirror-dropcursor border" },
     // gapcursor
     // hardBreak
-    heading: { HTMLAttributes: { class: "heading-node" } },
+    // heading: {},
     // undoRedo
     horizontalRule: false,
     // italic

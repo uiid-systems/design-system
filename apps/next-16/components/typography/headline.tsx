@@ -5,16 +5,11 @@ export const Headline = () => {
   return (
     <Stack gap={8}>
       <Stack gap={4}>
-        <Text
-          render={<h1 />}
-          level={6}
-          bold
-          className="flex items-center gap-4"
-        >
+        <Text render={<h1 />} size={6} bold className="flex items-center gap-4">
           The <Logo /> Design System
         </Text>
 
-        <Text render={<p />} level={1}>
+        <Text render={<p />} size={1}>
           A modern, modular component library built with{" "}
           <strong>
             <a href="https://www.typescriptlang.org/" target="_blank">

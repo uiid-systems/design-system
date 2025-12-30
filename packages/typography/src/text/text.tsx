@@ -5,12 +5,16 @@ import type { TextProps } from "./text.types";
 import "@uiid/utils/bold.css";
 import "@uiid/utils/center.css";
 
+import { textVariants } from "./text.variants";
 import styles from "./text.module.css";
 
 export const Text = ({
-  level,
+  /** variants */
   shade,
+  size,
+  /** misc */
   render,
+  className,
   children,
   ...props
 }: TextProps) => {
@@ -40,9 +44,9 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
-      level,
-      shade,
-      className: cx(styles.text, props.className),
+      // level,
+      // shade,
+      className: cx(styles["text"], textVariants({ shade, size }), className),
     },
     render,
     children,

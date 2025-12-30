@@ -45,7 +45,7 @@ export const ListItemGroup = ({
           <Text
             data-slot="list-item-group-category-text"
             render={<h3 />}
-            level={0}
+            size={0}
             bold
             data-is-collapsible={collapsible}
             className={styles["list-item-group-category"]}

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "./text";
 import type { TextProps } from "./text.types";
 
-const levels: TextProps["level"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
 const shades: TextProps["shade"][] = [
   "background",
   "surface",
@@ -19,12 +19,12 @@ const meta = {
   render: (args) => (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       {levels.map((level) => (
-        <Text {...args} key={level} level={level}>
+        <Text {...args} key={level} size={level}>
           {level}: Lorem ipsum dolor
         </Text>
       ))}
       {shades.map((shade) => (
-        <Text {...args} key={shade} level={2} shade={shade} bold>
+        <Text {...args} key={shade} size={2} shade={shade} bold>
           {shade}: Lorem ipsum dolor
         </Text>
       ))}

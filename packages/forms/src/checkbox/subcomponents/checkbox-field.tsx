@@ -41,7 +41,7 @@ export const CheckboxField = ({
         render={<Stack gap={3} />}
       >
         {label && (
-          <FieldLabel render={<span />} level={0} bold={false}>
+          <FieldLabel render={<span />} size={0} bold={false}>
             {label}
           </FieldLabel>
         )}

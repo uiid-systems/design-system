@@ -1,0 +1,4 @@
+.toolbar-container {
+  padding: 0.5rem;
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+}

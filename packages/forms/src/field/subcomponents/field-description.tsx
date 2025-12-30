@@ -7,7 +7,7 @@ export const FieldDescription = ({
   ...props
 }: FieldDescriptionProps) => {
   return (
-    <Text render={<span />} level={0} shade="accent" {...props}>
+    <Text render={<span />} size={0} shade="accent" {...props}>
       {children}
     </Text>
   );

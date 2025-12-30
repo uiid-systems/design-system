@@ -1,26 +1,18 @@
-import type { Tooltip } from "@base-ui/react/tooltip";
+import type { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
+
+export type TooltipProviderProps = BaseTooltip.Provider.Props;
+export type TooltipRootProps = BaseTooltip.Root.Props;
+export type TooltipTriggerProps = BaseTooltip.Trigger.Props;
+export type TooltipPortalProps = BaseTooltip.Portal.Props;
+export type TooltipPositionerProps = BaseTooltip.Positioner.Props;
+export type TooltipPopupProps = BaseTooltip.Popup.Props;
 
 export type TooltipProps = React.PropsWithChildren<{
-  /** A render prop for the trigger element. */
   trigger: React.ReactNode;
-  /**
-   * The props for the root element.
-   * @see https://base-ui-components.github.io/react/tooltip/#root
-   */
-  RootProps?: Tooltip.Root.Props;
-  /**
-   * The props for the trigger element.
-   * @see https://base-ui-components.github.io/react/tooltip/#trigger
-   */
-  TriggerProps?: Tooltip.Trigger.Props;
-  /**
-   * The props for the positioner element.
-   * @see https://base-ui-components.github.io/react/tooltip/#positioner
-   */
-  PositionerProps?: Tooltip.Positioner.Props;
-  /**
-   * The props for the popup element.
-   * @see https://base-ui-components.github.io/react/tooltip/#popup
-   */
-  PopupProps?: Omit<Tooltip.Popup.Props, "children">;
+  ProviderProps?: TooltipProviderProps;
+  RootProps?: TooltipRootProps;
+  TriggerProps?: TooltipTriggerProps;
+  PortalProps?: TooltipPortalProps;
+  PositionerProps?: TooltipPositionerProps;
+  PopupProps?: TooltipPopupProps;
 }>;

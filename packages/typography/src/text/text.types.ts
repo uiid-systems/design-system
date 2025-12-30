@@ -1,15 +1,13 @@
-import type { ToggleProps, SpacingProps, RenderProp } from "@uiid/utils";
+import type {
+  ToggleProps,
+  SpacingProps,
+  RenderProp,
+  VariantProps,
+} from "@uiid/utils";
 
-export type TextVariantProps = {
-  level?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-  shade?:
-    | "foreground"
-    | "accent"
-    | "halftone"
-    | "muted"
-    | "surface"
-    | "background";
-};
+import { textVariants } from "./text.variants";
+
+export type TextVariantProps = VariantProps<typeof textVariants>;
 
 export type TextProps = React.PropsWithChildren<{
   ref?: React.Ref<HTMLSpanElement>;

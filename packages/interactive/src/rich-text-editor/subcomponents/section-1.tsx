@@ -1,8 +1,9 @@
 import type { Editor } from "@tiptap/react";
-import * as React from "react";
-import type { FormatAction } from "../rich-text-editor.types";
+import { useMemo, useCallback } from "react";
 
-import { ChevronDownIcon, AArrowUpIcon } from "@uiid/icons";
+import { ChevronDownIcon, ALargeSmallIcon, type Icon } from "@uiid/icons";
+import { Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import {
   MenuRoot,
@@ -12,6 +13,8 @@ import {
   MenuTrigger,
   MenuPositioner,
 } from "../../menu/subcomponents";
+
+import type { FormatAction } from "../rich-text-editor.types";
 
 import { ToolbarButton } from "./toolbar-button";
 import { ShortcutKey } from "./shortcut-key";
@@ -24,56 +27,49 @@ interface TextStyle
   > {
   element: keyof React.JSX.IntrinsicElements;
   level?: Level;
-  className: string;
+  icon?: Icon;
 }
 
 const formatActions: TextStyle[] = [
   {
-    label: "Normal Text",
-    element: "span",
-    className: "grow",
+    label: "Paragraph",
+    element: "p",
     shortcuts: ["mod", "alt", "0"],
   },
   {
     label: "Heading 1",
     element: "h1",
     level: 1,
-    className: "m-0 grow text-3xl font-extrabold",
     shortcuts: ["mod", "alt", "1"],
   },
   {
     label: "Heading 2",
     element: "h2",
     level: 2,
-    className: "m-0 grow text-xl font-bold",
     shortcuts: ["mod", "alt", "2"],
   },
   {
     label: "Heading 3",
     element: "h3",
     level: 3,
-    className: "m-0 grow text-lg font-semibold",
     shortcuts: ["mod", "alt", "3"],
   },
   {
     label: "Heading 4",
     element: "h4",
     level: 4,
-    className: "m-0 grow text-base font-semibold",
     shortcuts: ["mod", "alt", "4"],
   },
   {
     label: "Heading 5",
     element: "h5",
     level: 5,
-    className: "m-0 grow text-sm font-normal",
     shortcuts: ["mod", "alt", "5"],
   },
   {
     label: "Heading 6",
     element: "h6",
     level: 6,
-    className: "m-0 grow text-sm font-normal",
     shortcuts: ["mod", "alt", "6"],
   },
 ];
@@ -87,7 +83,7 @@ export const Section1 = ({
   editor,
   activeLevels = [1, 2, 3, 4, 5, 6],
 }: Section1Props) => {
-  const filteredActions = React.useMemo(
+  const filteredActions = useMemo(
     () =>
       formatActions.filter(
         (action) => !action.level || activeLevels.includes(action.level),
@@ -95,7 +91,7 @@ export const Section1 = ({
     [activeLevels],
   );
 
-  const handleStyleChange = React.useCallback(
+  const handleStyleChange = useCallback(
     (level?: Level) => {
       if (level) {
         editor.chain().focus().toggleHeading({ level }).run();
@@ -106,10 +102,13 @@ export const Section1 = ({
     [editor],
   );
 
-  const renderMenuItem = React.useCallback(
-    ({ label, element: Element, level, className, shortcuts }: TextStyle) => (
+  const renderMenuItem = useCallback(
+    ({ label, element: Element, level, shortcuts }: TextStyle) => (
       <MenuItem
         key={label}
+        render={
+          <Group ax="space-between" ay="center" gap={8} px={2} fullwidth />
+        }
         onClick={() => handleStyleChange(level)}
         aria-label={label}
         style={{
@@ -120,7 +119,7 @@ export const Section1 = ({
               : undefined,
         }}
       >
-        <Element className={className}>{label}</Element>
+        <Text render={<Element />}>{label}</Text>
         <ShortcutKey keys={shortcuts} />
       </MenuItem>
     ),
@@ -132,13 +131,13 @@ export const Section1 = ({
       <MenuTrigger
         render={
           <ToolbarButton
-            isActive={editor.isActive("heading")}
             tooltip="Text styles"
             aria-label="Text styles"
-            pressed={editor.isActive("heading")}
             disabled={editor.isActive("codeBlock")}
+            square={false}
+            ghost
           >
-            <AArrowUpIcon size={20} />
+            <ALargeSmallIcon size={20} />
             <ChevronDownIcon size={20} />
           </ToolbarButton>
         }

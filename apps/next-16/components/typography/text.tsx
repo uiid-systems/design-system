@@ -7,7 +7,7 @@ export function Text() {
       {Array.from({ length: 9 })
         .reverse()
         .map((_, i) => (
-          <TextComponent key={i} level={i as TextProps["level"]}>
+          <TextComponent key={i} size={i as TextProps["level"]}>
             Text level {i}
           </TextComponent>
         ))}

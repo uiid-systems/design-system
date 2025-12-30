@@ -31,7 +31,7 @@ export const Badge = ({
       )}
       <Text
         data-slot="badge-text"
-        level={-1}
+        size={-1}
         bold
         className={styles["badge-text"]}
       >

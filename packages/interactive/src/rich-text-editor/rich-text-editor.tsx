@@ -7,8 +7,8 @@ import {
   type Editor,
 } from "@tiptap/react";
 
-import { Separator } from "@uiid/layout";
 import { Card } from "@uiid/cards";
+import { Group, Separator } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import {
@@ -17,12 +17,15 @@ import {
   type UseRichTextEditorProps,
 } from "./hooks";
 
-import { Section1 } from "./subcomponents/section-1";
-// import { SectionTwo } from "./components/section/two";
-// import { SectionThree } from "./components/section/three";
-// import { SectionFour } from "./components/section/four";
-// import { SectionFive } from "./components/section/five";
-import { LinkBubbleMenu, MeasuredContainer } from "./subcomponents";
+import {
+  LinkBubbleMenu,
+  MeasuredContainer,
+  Section1,
+  Section2,
+  Section3,
+} from "./subcomponents";
+
+import styles from "./rich-text-editor.module.css";
 
 export interface RichTextEditorProps
   extends Omit<UseRichTextEditorProps, "onUpdate"> {
@@ -33,13 +36,13 @@ export interface RichTextEditorProps
 }
 
 const Toolbar = ({ editor }: { editor: Editor }) => (
-  <div className="border-border flex h-12 shrink-0 overflow-x-auto border-b p-2">
-    <div className="flex w-max items-center gap-px">
+  <div data-slot="toolbar-container" className={styles["toolbar-container"]}>
+    <Group ay="center" gap={1} fullwidth>
       <Section1 editor={editor} activeLevels={[1, 2, 3, 4, 5, 6]} />
 
-      <Separator orientation="vertical" className="mx-2" />
+      <Separator orientation="vertical" style={{ marginInline: "0.5rem" }} />
 
-      {/* <SectionTwo
+      <Section2
         editor={editor}
         activeActions={[
           "bold",
@@ -52,9 +55,14 @@ const Toolbar = ({ editor }: { editor: Editor }) => (
         mainActionCount={3}
       />
 
+      <Separator orientation="vertical" style={{ marginInline: "0.5rem" }} />
+
+      <Section3 editor={editor} />
+
+      {/* 
+
       <Separator orientation="vertical" className="mx-2" />
 
-      <SectionThree editor={editor} />
 
       <Separator orientation="vertical" className="mx-2" />
 
@@ -71,9 +79,10 @@ const Toolbar = ({ editor }: { editor: Editor }) => (
         activeActions={["codeBlock", "blockquote", "horizontalRule"]}
         mainActionCount={0}
       /> */}
-    </div>
+    </Group>
   </div>
 );
+Toolbar.displayName = "Toolbar";
 
 export const RichTextEditor = ({
   value,
@@ -115,7 +124,10 @@ export const MainRichTextEditor = ({
   }
 
   return (
-    <MeasuredContainer render={<Card trimmed />} name="editor">
+    <MeasuredContainer
+      render={<Card gap={0} trimmed fullwidth />}
+      name="editor"
+    >
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}
