@@ -2,22 +2,4 @@
 
 .popover-popup {
   max-width: var(--popover-maxWidth);
-  transform-origin: var(--transform-origin);
-  transition:
-    transform var(--globals-transition-timing),
-    opacity var(--globals-transition-timing);
-
-  &[data-starting-style],
-  &[data-ending-style] {
-    opacity: 0;
-    transform: scale(var(--globals-transition-scale));
-  }
-
-  &[data-instant] {
-    transition-duration: 0ms;
-  }
-
-  &:focus {
-    outline-color: transparent;
-  }
 }

@@ -1,55 +1,40 @@
 "use client";
 
-import { Popover as BasePopover } from "@base-ui/react/popover";
-import { isValidElement } from "react";
-
-import { cx } from "@uiid/utils";
-import { Card } from "@uiid/cards";
-
-import styles from "./popover.module.css";
 import type { PopoverProps } from "./popover.types";
+
+import {
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverPortal,
+  PopoverBackdrop,
+  PopoverPositioner,
+  PopoverPopup,
+} from "./subcomponents";
 
 export const Popover = ({
   trigger,
   open,
   onOpenChange,
-  title,
-  children,
   RootProps,
   TriggerProps,
+  PortalProps,
+  BackdropProps,
   PositionerProps = {
     sideOffset: 4,
     collisionPadding: 16,
   },
   PopupProps,
 }: PopoverProps) => {
-  const triggerIsEl = isValidElement(trigger);
-
   return (
-    <BasePopover.Root open={open} onOpenChange={onOpenChange} {...RootProps}>
-      <BasePopover.Trigger
-        {...TriggerProps}
-        render={<div tabIndex={triggerIsEl ? -1 : 0} />}
-        nativeButton={false}
-      >
-        {trigger}
-      </BasePopover.Trigger>
-      <BasePopover.Portal>
-        <BasePopover.Backdrop />
-        <BasePopover.Positioner {...PositionerProps}>
-          <BasePopover.Popup
-            data-is-popup="true"
-            className={cx(styles["popover-popup"], PopupProps?.className)}
-            {...PopupProps}
-            render={
-              <Card uiid="popover" title={title} size={PopupProps?.size}>
-                {children}
-              </Card>
-            }
-          />
-        </BasePopover.Positioner>
-      </BasePopover.Portal>
-    </BasePopover.Root>
+    <PopoverRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
+      <PopoverTrigger {...TriggerProps}>{trigger}</PopoverTrigger>
+      <PopoverPortal {...PortalProps}>
+        <PopoverBackdrop {...BackdropProps} />
+        <PopoverPositioner {...PositionerProps}>
+          <PopoverPopup {...PopupProps} />
+        </PopoverPositioner>
+      </PopoverPortal>
+    </PopoverRoot>
   );
 };
 Popover.displayName = "Popover";

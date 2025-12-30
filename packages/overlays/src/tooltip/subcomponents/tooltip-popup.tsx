@@ -8,7 +8,7 @@ export const TooltipPopup = ({ children, ...props }: TooltipPopupProps) => {
   return (
     <BaseTooltip.Popup
       data-slot="tooltip-popup"
-      render={<Card>{children}</Card>}
+      render={<Card />}
       data-is-popup
       {...props}
     >

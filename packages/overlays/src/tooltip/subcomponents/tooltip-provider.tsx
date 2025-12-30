@@ -6,6 +6,10 @@ export const TooltipProvider = ({
   children,
   ...props
 }: TooltipProviderProps) => {
-  return <BaseTooltip.Provider {...props}>{children}</BaseTooltip.Provider>;
+  return (
+    <BaseTooltip.Provider data-slot="tooltip-provider" {...props}>
+      {children}
+    </BaseTooltip.Provider>
+  );
 };
 TooltipProvider.displayName = "TooltipProvider";
