@@ -6,8 +6,8 @@ import { Popover } from "./popover";
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",
   component: Popover,
+  tags: ["beta"],
   args: {
-    title: "This is a popover",
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa hic, accusamus dolor cum minima pariatur provident vero blanditiis vel! Assumenda ipsum officia autem!",
   },

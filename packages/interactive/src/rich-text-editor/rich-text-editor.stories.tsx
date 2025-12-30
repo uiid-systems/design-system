@@ -7,6 +7,7 @@ import { RichTextEditor } from "./rich-text-editor";
 const meta = {
   title: "Interactive/Rich Text Editor",
   component: RichTextEditor,
+  tags: ["new"],
   parameters: {
     layout: "padded",
   },

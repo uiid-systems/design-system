@@ -18,7 +18,9 @@ export const PopoverPopup = ({
       className={cx(styles["popover-popup"], className)}
       data-is-popup
       {...props}
-    />
+    >
+      {children}
+    </BasePopover.Popup>
   );
 };
 PopoverPopup.displayName = "PopoverPopup";

@@ -6,6 +6,7 @@ import { Tooltip } from "./tooltip";
 const meta: Meta<typeof Tooltip> = {
   title: "Overlays/Tooltip",
   component: Tooltip,
+  tags: ["beta"],
   args: {
     children: "This is a tooltip",
   },

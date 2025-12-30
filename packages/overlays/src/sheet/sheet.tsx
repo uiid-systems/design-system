@@ -1,55 +1,41 @@
 "use client";
 
-import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
-import { isValidElement } from "react";
-
-import { Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
-
 import type { SheetProps } from "./sheet.types";
-import styles from "./sheet.module.css";
+
+import {
+  SheetRoot,
+  SheetTrigger,
+  SheetPortal,
+  SheetBackdrop,
+  SheetPopup,
+} from "./subcomponents";
 
 export const Sheet = ({
-  trigger,
-  title,
+  /** variants */
   side = "right",
-  open,
-  onOpenChange,
-  keepMounted,
-  children,
+  /** subcomponents */
   RootProps,
   TriggerProps,
+  PortalProps,
+  BackdropProps,
   PopupProps,
+  /** misc */
+  trigger,
+  open,
+  onOpenChange,
+  children,
 }: SheetProps) => {
-  const triggerIsEl = isValidElement(trigger);
-
   return (
-    <SheetPrimitive.Root {...RootProps} open={open} onOpenChange={onOpenChange}>
-      <SheetPrimitive.Trigger
-        {...TriggerProps}
-        render={<div tabIndex={triggerIsEl ? -1 : 0} />}
-        nativeButton={false}
-      >
-        {trigger}
-      </SheetPrimitive.Trigger>
+    <SheetRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
+      <SheetTrigger {...TriggerProps}>{trigger}</SheetTrigger>
 
-      <SheetPrimitive.Portal keepMounted={keepMounted}>
-        <SheetPrimitive.Backdrop className={styles["sheet-backdrop"]} />
-        <SheetPrimitive.Popup
-          render={<Stack gap={4} />}
-          className={cx(styles["sheet-popup"], PopupProps?.className)}
-          data-side={side}
-          {...PopupProps}
-        >
-          {title && <SheetPrimitive.Title>{title}</SheetPrimitive.Title>}
-          {/* <SheetPrimitive.Description /> */}
+      <SheetPortal {...PortalProps}>
+        <SheetBackdrop {...BackdropProps} />
+        <SheetPopup side={side} {...PopupProps}>
           {children}
-          <SheetPrimitive.Close className={styles["sheet-close"]}>
-            close
-          </SheetPrimitive.Close>
-        </SheetPrimitive.Popup>
-      </SheetPrimitive.Portal>
-    </SheetPrimitive.Root>
+        </SheetPopup>
+      </SheetPortal>
+    </SheetRoot>
   );
 };
 Sheet.displayName = "Sheet";

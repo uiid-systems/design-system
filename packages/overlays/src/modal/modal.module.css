@@ -38,17 +38,17 @@
     opacity: 0;
     transform: translate(-50%, -50%) scale(var(--globals-transform-scale-down));
   }
+}
 
-  &[data-size="sm"] {
-    --modal-width: var(--modal-size-sm);
-  }
-  &[data-size="md"] {
-    --modal-width: var(--modal-size-md);
-  }
-  &[data-size="lg"] {
-    --modal-width: var(--modal-size-lg);
-  }
-  &[data-size="xl"] {
-    --modal-width: var(--modal-size-xl);
-  }
+.size-small {
+  max-width: var(--modal-size-sm);
+}
+.size-medium {
+  max-width: var(--modal-size-md);
+}
+.size-large {
+  max-width: var(--modal-size-lg);
+}
+.size-xlarge {
+  max-width: var(--modal-size-xl);
 }

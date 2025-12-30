@@ -37,6 +37,7 @@ const slides: CarouselComponentProps["slides"] = [
 const meta: Meta<typeof Carousel> = {
   title: "Interactive/Carousel",
   component: Carousel,
+  tags: ["danger"],
   args: {
     slides,
     previousButton: {

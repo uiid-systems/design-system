@@ -13,16 +13,8 @@ import { Sheet } from "./sheet";
 const meta: Meta<typeof Sheet> = {
   title: "Overlays/Sheet",
   component: Sheet,
-  parameters: {
-    layout: "centered",
-  },
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  name: "Sheet",
+  tags: ["beta"],
+  parameters: { layout: "centered" },
   render: () => (
     <Group gap={2}>
       <Sheet
@@ -90,3 +82,8 @@ export const Default: Story = {
     </Group>
   ),
 };
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = { name: "Sheet" };

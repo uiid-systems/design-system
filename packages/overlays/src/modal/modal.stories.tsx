@@ -6,11 +6,18 @@ import { Modal } from "./modal";
 const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
   component: Modal,
+  tags: ["beta"],
   args: {
     children:
       "A modal is a temporary window that appears on top of the current page. It is used to display content that is not part of the main page, such as a login form or a popup.",
   },
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: "select",
+      options: ["small", "medium", "large", "xlarge"],
+      table: { category: "Variants" },
+    },
+  },
   render: (args) => (
     <Stack gap={4}>
       <Modal {...args} trigger={<button>button</button>} />

@@ -24,6 +24,7 @@ export const Popover = ({
     collisionPadding: 16,
   },
   PopupProps,
+  children,
 }: PopoverProps) => {
   return (
     <PopoverRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
@@ -31,7 +32,7 @@ export const Popover = ({
       <PopoverPortal {...PortalProps}>
         <PopoverBackdrop {...BackdropProps} />
         <PopoverPositioner {...PositionerProps}>
-          <PopoverPopup {...PopupProps} />
+          <PopoverPopup {...PopupProps}>{children}</PopoverPopup>
         </PopoverPositioner>
       </PopoverPortal>
     </PopoverRoot>

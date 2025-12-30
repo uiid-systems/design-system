@@ -22,8 +22,9 @@ const config: StorybookConfig = {
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-a11y"),
-    // getAbsolutePath("storybook-addon-test-codegen"),
     getAbsolutePath("@storybook/addon-vitest"),
+    // getAbsolutePath("storybook-addon-test-codegen"),
+    getAbsolutePath("storybook-addon-tag-badges"),
   ],
   framework: {
     name: getAbsolutePath("@storybook/react-vite"),

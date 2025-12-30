@@ -21,6 +21,7 @@ export default meta;
 
 export const Default = {
   name: "Table",
+  tags: ["new"],
   render: () => (
     <Stack gap={4} fullwidth>
       <Card
