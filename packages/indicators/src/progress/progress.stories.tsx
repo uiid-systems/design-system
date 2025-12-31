@@ -7,6 +7,7 @@ import { Progress } from "./progress";
 const meta = {
   title: "Indicators/Progress",
   component: Progress,
+  tags: ["danger"],
   args: {
     value: 15,
   },

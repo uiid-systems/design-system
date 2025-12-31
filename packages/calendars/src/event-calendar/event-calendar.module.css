@@ -1,3 +1,15 @@
+.droppable-cell {
+  padding-inline: 0.125rem;
+
+  &[data-dragging] {
+    background-color: var(--shade-muted);
+  }
+}
+
+.event-calendar-header {
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+}
+
 .event-wrapper {
   user-select: none;
   transition: scale calc(var(--globals-transition-timing) / 2) ease-in-out;

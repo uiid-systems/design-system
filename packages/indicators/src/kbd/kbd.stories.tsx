@@ -7,6 +7,7 @@ import { Kbd, KbdGroup } from "./kbd";
 const meta = {
   title: "Indicators/Kbd",
   component: Kbd,
+  tags: ["danger"],
   args: {},
   render: () => (
     <Stack gap={8}>

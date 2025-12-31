@@ -8,6 +8,7 @@ import { ToggleButton } from "./toggle-button";
 const meta = {
   title: "Buttons/Toggle Button",
   component: ToggleButton,
+  tags: ["beta"],
   args: {},
   argTypes: {
     disabled: { control: "boolean" },

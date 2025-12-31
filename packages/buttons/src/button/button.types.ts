@@ -10,4 +10,5 @@ export type ButtonProps = React.ComponentProps<"button"> &
   Omit<BaseButton.Props, "onClick"> &
   ButtonVariants & {
     tooltip?: React.ReactNode;
+    circle?: boolean;
   };

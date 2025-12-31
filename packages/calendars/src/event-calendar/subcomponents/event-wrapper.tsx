@@ -10,7 +10,7 @@ import { cx } from "@uiid/utils";
 
 import type { CalendarEvent } from "../event-calendar.types";
 
-import styles from "./event-wrapper.module.css";
+import styles from "../event-calendar.module.css";
 
 export type EventWrapperProps = React.PropsWithChildren<{
   event: CalendarEvent;

@@ -1,23 +1,41 @@
-import { Group } from "@uiid/layout";
+import { ConditionalRender, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 
 import type { StatusProps } from "./status.types";
+import { statusVariants } from "./status.variants";
 import styles from "./status.module.css";
 
-export const Status = ({ variant, pulse, children }: StatusProps) => {
+export const Status = ({
+  variant,
+  pulse,
+  className,
+  children,
+  ...props
+}: StatusProps) => {
   return (
-    <Group
-      uiid="status"
-      ay="center"
-      gap={2}
-      data-variant={variant}
-      className={styles.status}
+    <ConditionalRender
+      condition={!!children}
+      render={
+        <Group
+          data-slot="status"
+          className={cx(styles["status"], className)}
+          ay="center"
+          gap={2}
+          {...props}
+        />
+      }
     >
-      <span data-slot="status-dot" data-pulse={pulse} />
-      <Text data-slot="status-text" size={0}>
-        {children}
-      </Text>
-    </Group>
+      <span
+        data-slot="status-dot"
+        className={cx(styles["status-dot"], statusVariants({ pulse, variant }))}
+      />
+      {children && (
+        <Text data-slot="status-text" size={0}>
+          {children}
+        </Text>
+      )}
+    </ConditionalRender>
   );
 };
 Status.displayName = "Status";

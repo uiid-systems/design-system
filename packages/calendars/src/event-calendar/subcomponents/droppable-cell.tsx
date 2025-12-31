@@ -8,7 +8,7 @@ import { cx } from "@uiid/utils";
 import { useEventCalendarDnd } from "../event-calendar.context";
 import type { DropTargetData } from "../event-calendar.types";
 
-import styles from "./droppable-cell.module.css";
+import styles from "../event-calendar.module.css";
 
 type DroppableCellProps = DropTargetData &
   Omit<StackProps, "id"> & {

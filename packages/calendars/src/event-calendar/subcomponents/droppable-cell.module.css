@@ -1,7 +1,0 @@
-.droppable-cell {
-  padding-inline: 0.125rem;
-
-  &[data-dragging] {
-    background-color: var(--shade-muted);
-  }
-}

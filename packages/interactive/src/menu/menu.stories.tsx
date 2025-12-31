@@ -1,26 +1,63 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
-import { Button } from "@uiid/buttons";
-import { MenuIcon } from "@uiid/icons";
+import { ChevronRightIcon } from "@uiid/icons";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
 
+import {
+  MenuRoot,
+  MenuPopup,
+  MenuTrigger,
+  MenuPortal,
+  MenuItem,
+  SubmenuRoot,
+  SubmenuTrigger,
+  MenuPositioner,
+} from "./subcomponents";
+
 const meta: Meta<typeof Menu> = {
   title: "Interactive/Menu",
   component: Menu,
-  args: {
-    trigger: (
-      <Button variant="subtle" grows={false}>
-        <MenuIcon size={14} />
-        Menu
-      </Button>
-    ),
-  },
+  tags: ["beta"],
+  args: {},
   argTypes: {},
   render: (args) => (
     <Stack gap={4}>
-      <Menu {...args} items={MOCK_ITEMS} />
+      <Menu
+        {...args}
+        trigger={<button>This is a simple menu</button>}
+        items={MOCK_ITEMS}
+      />
+
+      <MenuRoot>
+        <MenuTrigger>
+          <button>This is a composed menu</button>
+        </MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuItem>Lorem</MenuItem>
+              <MenuItem>Lorem ipsum dolor sit amet</MenuItem>
+              <SubmenuRoot>
+                <SubmenuTrigger>
+                  Lorem ipsum
+                  <ChevronRightIcon size={12} />
+                </SubmenuTrigger>
+                <MenuPortal>
+                  <MenuPositioner>
+                    <MenuPopup>
+                      <MenuItem>Item 3.1</MenuItem>
+                      <MenuItem>Item 3.2</MenuItem>
+                      <MenuItem>Item 3.3</MenuItem>
+                    </MenuPopup>
+                  </MenuPositioner>
+                </MenuPortal>
+              </SubmenuRoot>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
     </Stack>
   ),
 };

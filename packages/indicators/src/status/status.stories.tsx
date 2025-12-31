@@ -7,6 +7,7 @@ import { Status } from "./status";
 const meta = {
   title: "Indicators/Status",
   component: Status,
+  tags: ["beta"],
   args: {},
   render: (args) => (
     <Stack gap={4}>
@@ -14,6 +15,19 @@ const meta = {
       <Status {...args} pulse>
         Pulsing status
       </Status>
+      <Status {...args} variant="positive">
+        Success
+      </Status>
+      <Status {...args} variant="warning">
+        Warning
+      </Status>
+      <Status {...args} variant="negative">
+        Error
+      </Status>
+      <Status {...args} variant="info">
+        Info
+      </Status>
+      <Status variant="positive" pulse />
     </Stack>
   ),
 } satisfies Meta<typeof Status>;

@@ -8,7 +8,7 @@ import {
 } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 
-import styles from "./event-calendar-header.module.css";
+import styles from "../event-calendar.module.css";
 
 type EventCalendarHeaderProps = {
   handleToday: () => void;
@@ -76,9 +76,9 @@ const HeaderButton = ({
       aria-label={label}
       tooltip={label}
       onClick={onClick}
-      variant="ghost"
-      size="sm"
       square={square}
+      size="small"
+      ghost
     >
       <>
         {Icon && <Icon />}

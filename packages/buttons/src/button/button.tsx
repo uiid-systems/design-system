@@ -20,12 +20,18 @@ export const Button = ({
   grows,
   size,
   square,
+  circle,
   variant,
   /** misc */
   className,
   children,
   ...props
 }: ButtonProps) => {
+  if (circle) {
+    pill = true;
+    square = true;
+  }
+
   return (
     <ConditionalRender
       condition={!!tooltip}

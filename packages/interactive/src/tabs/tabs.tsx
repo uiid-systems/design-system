@@ -1,15 +1,26 @@
 "use client";
 
-import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import type { TabsProps } from "./tabs.types";
 
-import { Group, Stack, Layer } from "@uiid/layout";
+import { Layer } from "@uiid/layout";
 
-import styles from "./tabs.module.css";
+import {
+  TabsRoot,
+  TabsList,
+  TabsTab,
+  TabsIndicator,
+  TabsPanel,
+} from "./subcomponents";
 
 export const Tabs = ({
+  /** data */
   items,
+  /** shortcuts */
   defaultValue,
+  value,
+  onValueChange,
+  keepMounted,
+  /** component props */
   RootProps,
   ListProps,
   TabProps,
@@ -17,43 +28,34 @@ export const Tabs = ({
   PanelProps,
 }: TabsProps) => {
   return (
-    <BaseTabs.Root defaultValue={defaultValue || items[0].value} {...RootProps}>
-      <BaseTabs.List
-        render={<Group gap={2} ay="end" ax="center" />}
-        className={styles["tabs-list"]}
-        {...ListProps}
-      >
+    <TabsRoot
+      defaultValue={defaultValue || items[0].value}
+      value={value}
+      onValueChange={onValueChange}
+      {...RootProps}
+    >
+      <TabsList {...ListProps}>
         {items.map((item) => (
-          <BaseTabs.Tab
-            className={styles["tab"]}
-            value={item.value}
-            {...TabProps}
-          >
+          <TabsTab value={item.value} {...TabProps}>
             {item.label}
-          </BaseTabs.Tab>
+          </TabsTab>
         ))}
-
-        <BaseTabs.Indicator
-          className={styles["tabs-indicator"]}
-          {...IndicatorProps}
-        />
-      </BaseTabs.List>
+        <TabsIndicator {...IndicatorProps} />
+      </TabsList>
 
       <Layer>
         {items.map((item) => (
-          <BaseTabs.Panel
-            render={<Stack ay="center" ax="center" fullwidth />}
-            className={styles["tabs-panel"]}
+          <TabsPanel
             value={item.value}
             aria-hidden={item.value !== defaultValue}
-            keepMounted
+            keepMounted={keepMounted}
             {...PanelProps}
           >
             {item.label}
-          </BaseTabs.Panel>
+          </TabsPanel>
         ))}
       </Layer>
-    </BaseTabs.Root>
+    </TabsRoot>
   );
 };
 Tabs.displayName = "Tabs";

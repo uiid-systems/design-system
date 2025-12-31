@@ -6,12 +6,18 @@ export type TabProps = {
   render: React.ReactNode;
 };
 
+export type TabsRootProps = Tabs.Root.Props;
+export type TabsListProps = Tabs.List.Props;
+export type TabsTabProps = Tabs.Tab.Props;
+export type TabsIndicatorProps = Tabs.Indicator.Props;
+export type TabsPanelProps = Tabs.Panel.Props;
+
 export type TabsProps = {
   items: TabProps[];
-  defaultValue?: Tabs.Root.Props["defaultValue"];
-  RootProps?: Omit<Tabs.Root.Props, "defaultValue">;
-  ListProps?: Tabs.List.Props;
-  TabProps?: Tabs.Tab.Props;
-  IndicatorProps?: Tabs.Indicator.Props;
-  PanelProps?: Tabs.Panel.Props;
-};
+  RootProps?: TabsRootProps;
+  ListProps?: TabsListProps;
+  TabProps?: TabsTabProps;
+  IndicatorProps?: TabsIndicatorProps;
+  PanelProps?: TabsPanelProps;
+} & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
+  Pick<TabsPanelProps, "keepMounted">;

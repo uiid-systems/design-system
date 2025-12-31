@@ -1,13 +1,17 @@
 "use client";
 
-import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
-import { Stack } from "@uiid/layout";
-
 import type { CollapsibleProps } from "./collapsible.types";
-import styles from "./collapsible.module.css";
+
+import {
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  CollapsiblePanel,
+} from "./subcomponents";
 
 export const Collapsible = ({
+  /** shortcuts */
   trigger,
+  /** component props */
   RootProps,
   TriggerProps,
   PanelProps,
@@ -15,20 +19,13 @@ export const Collapsible = ({
   children,
 }: CollapsibleProps) => {
   return (
-    <BaseCollapsible.Root render={<Stack />} {...RootProps}>
-      <BaseCollapsible.Trigger {...TriggerProps}>
-        {trigger}
-      </BaseCollapsible.Trigger>
+    <CollapsibleRoot {...RootProps}>
+      <CollapsibleTrigger {...TriggerProps}>{trigger}</CollapsibleTrigger>
 
-      <BaseCollapsible.Panel
-        render={<Stack ay="end" />}
-        className={styles["collapsible-panel"]}
-        data-instant={instant}
-        {...PanelProps}
-      >
+      <CollapsiblePanel instant={instant} {...PanelProps}>
         {children}
-      </BaseCollapsible.Panel>
-    </BaseCollapsible.Root>
+      </CollapsiblePanel>
+    </CollapsibleRoot>
   );
 };
 Collapsible.displayName = "Collapsible";

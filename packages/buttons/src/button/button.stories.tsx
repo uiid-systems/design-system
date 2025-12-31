@@ -8,6 +8,7 @@ import { Button } from "./button";
 const meta = {
   title: "Buttons/Button",
   component: Button,
+  tags: ["beta"],
   args: {
     tooltip: "Tooltip",
     disabled: false,
@@ -67,7 +68,7 @@ export const Default: Story = {
         </Group>
 
         <Group gap={2}>
-          <Button {...args} tooltip="Tooltip" pill square>
+          <Button {...args} tooltip="Tooltip" circle>
             <Globe />
           </Button>
           <Button {...args} tooltip="Tooltip" pill>

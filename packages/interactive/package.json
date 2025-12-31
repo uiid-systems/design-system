@@ -44,7 +44,6 @@
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
-    "embla-carousel-react": "^8.6.0",
     "lowlight": "^3.3.0",
     "react-medium-image-zoom": "^5.4.0"
   },

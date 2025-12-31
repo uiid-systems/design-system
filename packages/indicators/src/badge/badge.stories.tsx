@@ -7,6 +7,7 @@ import { Badge } from "./badge";
 const meta = {
   title: "Indicators/Badge",
   component: Badge,
+  tags: ["beta"],
   args: {},
   argTypes: {
     size: { control: "select", options: ["sm", "md", "lg"] },

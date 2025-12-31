@@ -23,8 +23,6 @@ export type SubmenuTriggerProps = BaseMenu.SubmenuTrigger.Props;
 
 export type MenuProps = {
   trigger: React.ReactNode;
-  align?: MenuPositionerProps["align"];
-  side?: MenuPositionerProps["side"];
   items: MenuItemType[];
   RootProps?: MenuRootProps;
   TriggerProps?: MenuTriggerProps;
@@ -33,4 +31,4 @@ export type MenuProps = {
   ItemProps?: MenuItemProps;
   SubmenuRootProps?: SubmenuRootProps;
   SubmenuTriggerProps?: SubmenuTriggerProps;
-};
+} & Pick<MenuPositionerProps, "side" | "align">;

@@ -16,10 +16,13 @@ import {
 } from "./subcomponents";
 
 export const Menu = ({
+  /** data */
+  items,
+  /** shortcuts */
   trigger,
   align,
   side,
-  items,
+  /** component props */
   RootProps,
   TriggerProps,
   PopupProps,

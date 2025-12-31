@@ -7,6 +7,7 @@ import { ToggleGroup, Toggle } from "./toggle-group";
 const meta: Meta<typeof ToggleGroup> = {
   title: "Interactive/Toggle Group",
   component: ToggleGroup,
+  tags: ["danger"],
   args: {
     size: "md",
   },
