@@ -33,15 +33,6 @@
       scale: var(--card-scale-down);
     }
   }
-
-  &:where([data-trimmed="true"]) {
-    padding-block: 0;
-    padding-inline: 0;
-  }
-
-  &:where([data-transparent="true"]) {
-    background-color: transparent;
-  }
 }
 
 .size-xsmall {
@@ -92,4 +83,13 @@
   background-color: var(--card-variant-inverted-bg);
   border-color: var(--card-variant-inverted-border);
   color: var(--card-variant-inverted-fg);
+}
+
+.toggle-trimmed {
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+.toggle-transparent {
+  background-color: transparent;
 }

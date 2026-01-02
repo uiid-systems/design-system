@@ -18,10 +18,10 @@ export const cardVariants = cva({
       inverted: styles["variant-inverted"],
     },
     trimmed: {
-      true: styles["trimmed"],
+      true: styles["toggle-trimmed"],
     },
     transparent: {
-      true: styles["transparent"],
+      true: styles["toggle-transparent"],
     },
   },
   defaultVariants: {

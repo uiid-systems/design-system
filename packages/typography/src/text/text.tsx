@@ -12,6 +12,7 @@ export const Text = ({
   /** variants */
   shade,
   size,
+  tone,
   /** misc */
   render,
   className,
@@ -46,7 +47,11 @@ export const Text = ({
       ...preparedProps,
       // level,
       // shade,
-      className: cx(styles["text"], textVariants({ shade, size }), className),
+      className: cx(
+        styles["text"],
+        textVariants({ shade, size, tone }),
+        className,
+      ),
     },
     render,
     children,

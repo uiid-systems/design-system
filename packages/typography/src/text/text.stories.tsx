@@ -10,28 +10,34 @@ const shades: TextProps["shade"][] = [
   "halftone",
   "accent",
   "foreground",
-  "positive",
-  "negative",
-  "warning",
-  "info",
 ];
+const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
 
 const meta = {
   title: "Typography/Text",
   component: Text,
   args: {},
   render: (args) => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      {levels.map((level) => (
-        <Text {...args} key={level} size={level}>
-          {level}: Lorem ipsum dolor
-        </Text>
-      ))}
-      {shades.map((shade) => (
-        <Text {...args} key={shade} size={2} shade={shade} bold>
-          {shade}: Lorem ipsum dolor
-        </Text>
-      ))}
+    <div style={{ display: "flex", gap: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+        {shades.map((shade) => (
+          <Text {...args} key={shade} size={2} shade={shade} bold>
+            [shade] {shade}
+          </Text>
+        ))}
+        {tones.map((tone) => (
+          <Text {...args} key={tone} size={2} tone={tone} bold>
+            [tone] {tone}
+          </Text>
+        ))}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+        {levels.map((level) => (
+          <Text {...args} key={level} size={level}>
+            [level] {level}
+          </Text>
+        ))}
+      </div>
     </div>
   ),
 } satisfies Meta<typeof Text>;

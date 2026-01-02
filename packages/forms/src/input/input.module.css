@@ -26,6 +26,12 @@
     opacity: var(--forms-state-disabled-opacity);
   }
 
+  /** Invalid */
+  &[data-invalid] {
+    border-color: var(--tone-negative);
+    outline-color: var(--tone-negative);
+  }
+
   /** Hack to prevent browser-assigned autofill color */
   &:-webkit-autofill,
   &:-webkit-autofill:focus {

@@ -126,5 +126,11 @@
       "border": { "$value": "{colors.blue.800}", "$type": "color" },
       "fg": { "$value": "{colors.neutral.950}", "$type": "color" }
     }
+  },
+  "tone": {
+    "positive": { "$value": "{colors.green.500}", "$type": "color" },
+    "warning": { "$value": "{colors.yellow.500}", "$type": "color" },
+    "negative": { "$value": "{colors.red.500}", "$type": "color" },
+    "info": { "$value": "{colors.blue.500}", "$type": "color" }
   }
 }

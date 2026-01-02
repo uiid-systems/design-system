@@ -1,7 +1,11 @@
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { FieldLabel, FieldDescription } from "../../field/subcomponents";
+import {
+  FieldRoot,
+  FieldLabel,
+  FieldDescription,
+} from "../../field/subcomponents";
 
 import type { CheckboxFieldProps } from "../checkbox.types";
 import styles from "../checkbox.module.css";
@@ -35,18 +39,21 @@ export const CheckboxField = ({
       }
     >
       {children}
-
-      <ConditionalRender
-        condition={Boolean(description)}
-        render={<Stack gap={3} />}
-      >
-        {label && (
-          <FieldLabel render={<span />} size={0} bold={false}>
-            {label}
-          </FieldLabel>
-        )}
-        {description && <FieldDescription>{description}</FieldDescription>}
-      </ConditionalRender>
+      {Boolean(label || description) && (
+        <FieldRoot>
+          <ConditionalRender
+            condition={Boolean(label && description)}
+            render={<Stack gap={3} />}
+          >
+            {label && (
+              <FieldLabel render={<span />} size={0} bold={false}>
+                {label}
+              </FieldLabel>
+            )}
+            {description && <FieldDescription>{description}</FieldDescription>}
+          </ConditionalRender>
+        </FieldRoot>
+      )}
     </ConditionalRender>
   );
 };

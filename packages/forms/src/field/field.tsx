@@ -27,7 +27,7 @@ export const Field = ({
 
       {children}
 
-      <FieldError match {...ErrorProps} />
+      <FieldError {...ErrorProps} />
 
       {description && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
