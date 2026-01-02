@@ -15,18 +15,30 @@ export const Input = ({
   name,
   label,
   description,
+  required,
   /** variants */
   size,
+  /** toggles */
+  fullwidth,
   /** misc */
   className,
   ...props
 }: InputProps) => {
   return (
-    <Field label={label} description={description} name={name}>
+    <Field
+      label={label}
+      description={description}
+      name={name}
+      required={required}
+    >
       <BaseInput
         data-slot="input"
         name={name}
-        className={cx(styles["input"], inputVariants({ size }), className)}
+        className={cx(
+          styles["input"],
+          inputVariants({ size, fullwidth }),
+          className,
+        )}
         data-size={size}
         {...props}
       />

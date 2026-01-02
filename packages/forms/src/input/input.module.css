@@ -50,3 +50,8 @@
 .size-large {
   font-size: var(--forms-size-large-fontSize);
 }
+
+.toggle-fullwidth {
+  width: 100%;
+  width: -webkit-fill-available;
+}

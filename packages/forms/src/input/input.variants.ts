@@ -10,6 +10,9 @@ export const inputVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
     },
+    fullwidth: {
+      true: styles["toggle-fullwidth"],
+    },
   },
   defaultVariants: {
     size: INPUT_DEFAULT_SIZE,

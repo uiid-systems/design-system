@@ -6,7 +6,7 @@ import { RadioGroup } from "./radio-group";
 import type { RadioGroupProps } from "./radio-group.types";
 import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
 
-const meta = {
+const meta: Meta<RadioGroupProps> = {
   title: "Forms/Radio Group",
   component: RadioGroup,
   args: {
@@ -17,12 +17,26 @@ const meta = {
   render: (args) => (
     <Stack gap={8}>
       <RadioGroup {...args} />
+      <RadioGroup {...args} direction="horizontal" />
       <RadioGroup {...args} bordered />
       <RadioGroup {...args} bordered direction="horizontal" />
-      <RadioGroup {...args} bordered direction="horizontal" hideIndicator />
+      <RadioGroup
+        {...args}
+        bordered
+        direction="horizontal"
+        label="With label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      />
+      <RadioGroup
+        {...args}
+        bordered
+        direction="horizontal"
+        hideIndicator
+        label="Without indicators"
+      />
     </Stack>
   ),
-} satisfies Meta<RadioGroupProps>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

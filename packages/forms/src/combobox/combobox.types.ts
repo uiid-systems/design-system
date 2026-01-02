@@ -9,7 +9,7 @@ export type ComboboxRootProps<
 > = BaseCombobox.Root.Props<Value, Multiple>;
 
 export type ComboboxInputProps = BaseCombobox.Input.Props &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
 export type ComboboxPopupProps = BaseCombobox.Popup.Props;
@@ -34,4 +34,4 @@ export type ComboboxProps<
     ComboboxRootProps<Value, Multiple>,
     "items" | "defaultValue" | "onValueChange" | "required"
   > &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

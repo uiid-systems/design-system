@@ -11,4 +11,4 @@ export type NumberFieldProps = NumberFieldRootProps & {
   DecrementProps?: NumberFieldDecrementProps;
   IncrementProps?: NumberFieldIncrementProps;
   InputProps?: NumberFieldInputProps;
-} & Pick<FieldProps, "label" | "description" | "error">;
+} & Pick<FieldProps, "label" | "description">;

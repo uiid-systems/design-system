@@ -16,4 +16,4 @@ export type CheckboxGroupProps = BaseCheckboxGroup.Props &
     CheckboxProps?: Partial<CheckboxProps>;
     IndicatorProps?: CheckboxIndicatorProps;
   } & Pick<CheckboxProps, "bordered" | "reversed" | "required"> &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

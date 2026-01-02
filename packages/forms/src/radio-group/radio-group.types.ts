@@ -13,4 +13,4 @@ export type RadioGroupProps = RadioGroup.Props &
     RadioProps?: Partial<RadioProps>;
     IndicatorProps?: RadioIndicatorProps;
   } & Pick<RadioProps, "bordered" | "reversed" | "hideIndicator"> &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

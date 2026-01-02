@@ -1,7 +1,5 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 
-import { ConditionalRender } from "@uiid/layout";
-
 import { Field } from "../field/field";
 import { Input } from "../input/input";
 
@@ -22,7 +20,6 @@ export const NumberField = ({
   /** data */
   label,
   description,
-  error,
   /** subcomponents */
   DecrementProps,
   IncrementProps,
@@ -31,10 +28,7 @@ export const NumberField = ({
   ...props
 }: NumberFieldProps) => {
   return (
-    <ConditionalRender
-      condition={Boolean(label || description || error)}
-      render={<Field label={label} description={description} error={error} />}
-    >
+    <Field label={label} description={description}>
       <NumberFieldRoot {...props}>
         <NumberFieldDecrement {...DecrementProps} />
 
@@ -46,7 +40,7 @@ export const NumberField = ({
 
         <NumberFieldIncrement {...IncrementProps} />
       </NumberFieldRoot>
-    </ConditionalRender>
+    </Field>
   );
 };
 NumberField.displayName = "NumberField";

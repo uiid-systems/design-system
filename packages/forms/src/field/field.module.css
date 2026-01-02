@@ -1,0 +1,7 @@
+.field-label[data-required] {
+  &::after {
+    content: "*";
+    color: var(--tone-negative);
+    margin-left: 0.25rem;
+  }
+}

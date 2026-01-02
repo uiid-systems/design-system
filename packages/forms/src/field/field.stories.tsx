@@ -24,7 +24,6 @@ const meta = {
   component: Field,
   args: {
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    error: "This field is required.",
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

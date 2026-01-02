@@ -10,4 +10,4 @@ export type InputVariants = VariantProps<typeof inputVariants>;
 
 export type InputProps = Omit<Input.Props, "size"> &
   InputVariants &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

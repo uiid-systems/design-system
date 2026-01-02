@@ -1,7 +1,3 @@
-.combobox-input {
-  width: 100%;
-}
-
 .combobox-popup {
   min-width: var(--anchor-width);
 }

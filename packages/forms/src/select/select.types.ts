@@ -46,4 +46,4 @@ export type SelectProps<
     SelectRootProps<Value, Multiple>,
     "defaultValue" | "onValueChange" | "required"
   > &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

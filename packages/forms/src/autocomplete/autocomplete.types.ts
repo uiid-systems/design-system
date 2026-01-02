@@ -5,7 +5,7 @@ import type { FieldProps } from "../field/field.types";
 export type AutocompleteRootProps<Value = string> =
   BaseAutocomplete.Root.Props<Value>;
 export type AutocompleteInputProps = BaseAutocomplete.Input.Props &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;
 export type AutocompletePopupProps = BaseAutocomplete.Popup.Props;
@@ -26,4 +26,4 @@ export type AutocompleteProps<Value = string> = React.PropsWithChildren<{
     AutocompleteRootProps<Value>,
     "items" | "defaultValue" | "onValueChange" | "required"
   > &
-  Pick<FieldProps, "label" | "description" | "error">;
+  Pick<FieldProps, "label" | "description">;

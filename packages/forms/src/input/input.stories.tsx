@@ -6,7 +6,7 @@ import { Field } from "../field/field";
 
 import { Input } from "./input";
 
-const meta = {
+const meta: Meta<typeof Input> = {
   title: "Forms/Input",
   component: Input,
   tags: ["beta"],
@@ -35,15 +35,17 @@ const meta = {
         {...args}
         label="Input with label and description"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        required
       />
 
       <Field
         label="Group of inputs with field wrapper"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        required
       >
         <Group fullwidth evenly gap={2}>
-          <Input {...args} placeholder="First name" />
-          <Input {...args} placeholder="Last name" />
+          <Input {...args} placeholder="First name" required />
+          <Input {...args} placeholder="Last name" required />
         </Group>
       </Field>
 
@@ -55,7 +57,7 @@ const meta = {
       />
     </Stack>
   ),
-} satisfies Meta<typeof Input>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
