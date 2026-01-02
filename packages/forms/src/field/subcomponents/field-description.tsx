@@ -1,15 +1,20 @@
+import { Field as BaseField } from "@base-ui/react/field";
 import { Text } from "@uiid/typography";
 
-export type FieldDescriptionProps = React.ComponentProps<"span">;
+import type { FieldDescriptionProps } from "../field.types";
 
 export const FieldDescription = ({
   children,
   ...props
 }: FieldDescriptionProps) => {
   return (
-    <Text render={<span />} size={0} shade="accent" {...props}>
+    <BaseField.Description
+      data-slot="field-description"
+      render={<Text size={0} shade="accent" />}
+      {...props}
+    >
       {children}
-    </Text>
+    </BaseField.Description>
   );
 };
 FieldDescription.displayName = "FieldDescription";

@@ -47,7 +47,11 @@ export const Slots = ({
     <ConditionalRender
       condition={hasSlot}
       render={
-        <Box uiid="slots" className={cx(styles.slots, className)} {...props} />
+        <Box
+          data-slot="slots"
+          className={cx(styles["slots"], className)}
+          {...props}
+        />
       }
     >
       {beforeElement}

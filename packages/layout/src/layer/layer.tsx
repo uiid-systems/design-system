@@ -61,8 +61,8 @@ export const Layer = ({
 
   return (
     <Box
-      uiid="layer"
-      className={cx(styles.layer, className)}
+      data-slot="layer"
+      className={cx(styles["layer"], className)}
       style={parentStyle}
       {...props}
     >

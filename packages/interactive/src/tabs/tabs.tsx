@@ -20,7 +20,7 @@ export const Tabs = ({
   value,
   onValueChange,
   keepMounted,
-  /** component props */
+  /** subcomponents */
   RootProps,
   ListProps,
   TabProps,

@@ -1,21 +1,17 @@
 import type { StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
+import type { VariantProps } from "@uiid/utils";
 
-export type CardHeaderProps = {} & Pick<CardVariantProps, "variant"> &
-  CardTitleProps;
+import type { cardVariants } from "./card.variants";
 
-export type CardTitleProps = {
-  title?: string;
-} & Pick<CardVariantProps, "size"> &
-  TextProps;
+export type CardVariantProps = VariantProps<typeof cardVariants>;
 
-export type CardVariantProps = {
-  size?: "xs" | "sm" | "md" | "lg";
-  variant?: "info" | "warning" | "negative" | "positive" | "inverted";
-  trimmed?: boolean;
-  transparent?: boolean;
-};
+export type CardTitleProps = TextProps;
+export type CardIconProps = Pick<CardProps, "variant" | "className">;
 
-export type CardProps = Omit<StackProps, "title"> &
-  CardVariantProps &
-  CardHeaderProps;
+export type CardProps = Omit<StackProps, "size" | "title"> &
+  CardVariantProps & {
+    title?: string;
+    TitleProps?: CardTitleProps;
+    IconProps?: CardIconProps;
+  };

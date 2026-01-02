@@ -11,7 +11,7 @@ import {
 export const Collapsible = ({
   /** shortcuts */
   trigger,
-  /** component props */
+  /** subcomponents */
   RootProps,
   TriggerProps,
   PanelProps,

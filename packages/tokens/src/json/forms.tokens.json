@@ -16,13 +16,13 @@
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
     "size": {
-      "sm": {
+      "small": {
+        "fontSize": { "$value": "0.75rem", "$type": "dimension" }
+      },
+      "medium": {
         "fontSize": { "$value": "0.875rem", "$type": "dimension" }
       },
-      "md": {
-        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
-      },
-      "lg": {
+      "large": {
         "fontSize": { "$value": "1rem", "$type": "dimension" }
       }
     }

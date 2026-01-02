@@ -14,7 +14,7 @@ export const ComboboxPopup = ({
   return (
     <BaseCombobox.Popup
       data-slot="combobox-popup"
-      render={<Card size="sm" p={2} gap={0} fullwidth data-is-popup />}
+      render={<Card size="small" p={2} gap={0} fullwidth data-is-popup />}
       className={cx(styles["combobox-popup"], className)}
       {...props}
     >

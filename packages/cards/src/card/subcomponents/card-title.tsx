@@ -1,12 +1,11 @@
 import { Text } from "@uiid/typography";
 
 import type { CardTitleProps } from "../card.types";
-import { TITLE_LEVEL } from "../card.constants";
 
-export const CardTitle = ({ title, size, ...props }: CardTitleProps) => {
+export const CardTitle = ({ children, ...props }: CardTitleProps) => {
   return (
-    <Text render={<h3 />} size={TITLE_LEVEL[size!]} bold {...props}>
-      {title}
+    <Text render={<h3 />} size={2} bold {...props}>
+      {children}
     </Text>
   );
 };

@@ -18,16 +18,7 @@ export const RadioRoot = ({
       data-slot="radio"
       value={value}
       nativeButton
-      render={
-        <Group
-          render={<button />}
-          uiid="radio"
-          ax="center"
-          ay="center"
-          p={0}
-          m={0}
-        />
-      }
+      render={<Group render={<button />} ax="center" ay="center" p={0} m={0} />}
       className={cx(styles["radio"], className, {
         "sr-only": hideIndicator,
       })}

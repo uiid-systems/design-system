@@ -11,6 +11,10 @@ export const textVariants = cva({
       halftone: styles["shade-halftone"],
       accent: styles["shade-accent"],
       foreground: styles["shade-foreground"],
+      positive: styles["shade-positive"],
+      negative: styles["shade-negative"],
+      warning: styles["shade-warning"],
+      info: styles["shade-info"],
     },
     size: {
       [-1]: styles["text-size--1"],

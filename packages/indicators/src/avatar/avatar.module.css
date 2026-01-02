@@ -1,8 +1,8 @@
-[uiid="avatar"] {
+.avatar {
   display: inline-flex;
 }
 
-[data-slot="avatar-layers"] {
+.avatar-layers {
   text-align: center;
   background-color: var(--shade-foreground);
   border-radius: var(--globals-border-radius);
@@ -11,22 +11,22 @@
   min-width: 2rem;
 }
 
-[data-slot="avatar-initials"] {
+.avatar-initials {
   color: var(--shade-background);
   font-weight: 700;
   user-select: none;
 }
 
-[data-slot="avatar-image"] {
+.avatar-image {
   display: inline-block;
 }
 
-[data-slot="avatar-name"] {
+.avatar-name {
   white-space: nowrap;
   font-weight: 600;
 }
 
-[data-slot="avatar-description"] {
+.avatar-description {
   color: var(--shade-accent);
   white-space: nowrap;
 }

@@ -92,3 +92,15 @@
 .shade-foreground {
   color: var(--shade-foreground);
 }
+.shade-positive {
+  color: var(--colors-positive-bg);
+}
+.shade-negative {
+  color: var(--colors-negative-bg);
+}
+.shade-warning {
+  color: var(--colors-warning-bg);
+}
+.shade-info {
+  color: var(--colors-info-bg);
+}

@@ -18,9 +18,10 @@ export * from "./field/field";
 export * from "./field/field.types";
 export * from "./field/subcomponents";
 
+export * from "./form/form";
+
 export * from "./input/input";
 export * from "./input/input.types";
-export * from "./input/input.constants";
 
 export * from "./number-field/number-field";
 export * from "./number-field/number-field.types";

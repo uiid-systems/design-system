@@ -37,7 +37,7 @@ export const PlayerTable = () => {
         <Input
           aria-label="Search players"
           placeholder="Search players"
-          size="sm"
+          size="small"
         />
       </Group>
       <Card

@@ -24,6 +24,6 @@ export type AutocompleteProps<Value = string> = React.PropsWithChildren<{
 }> &
   Pick<
     AutocompleteRootProps<Value>,
-    "items" | "defaultValue" | "onValueChange"
+    "items" | "defaultValue" | "onValueChange" | "required"
   > &
   Pick<FieldProps, "label" | "description" | "error">;

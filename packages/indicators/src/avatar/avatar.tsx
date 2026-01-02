@@ -1,32 +1,38 @@
-import { Group, Layer, Stack, ConditionalRender } from "@uiid/layout";
-import { Text } from "@uiid/typography";
+import { Group, Stack, ConditionalRender } from "@uiid/layout";
 
 import type { AvatarProps } from "./avatar.types";
-import "./avatar.styles.css";
+
+import {
+  AvatarLayers,
+  AvatarImage,
+  AvatarInitials,
+  AvatarName,
+  AvatarDescription,
+} from "./subcomponents";
 
 export const Avatar = ({
+  /** data */
   initials,
   name,
   description,
+  /** subcomponents */
+  ImageProps,
+  InitialsProps,
+  NameProps,
+  DescriptionProps,
   ...props
 }: AvatarProps) => {
   return (
-    <Group uiid="avatar" gap={2} ay="center" {...props}>
-      <Layer data-slot="avatar-layers" ax="center" ay="center" fullwidth>
-        <span data-slot="avatar-image" />
-        <Text data-slot="avatar-initials" size={0}>
-          {initials}
-        </Text>
-      </Layer>
+    <Group data-slot="avatar" gap={2} ay="center" {...props}>
+      <AvatarLayers>
+        <AvatarImage {...ImageProps} />
+        <AvatarInitials initials={initials} {...InitialsProps} />
+      </AvatarLayers>
 
       <ConditionalRender condition={!!name} render={<Stack gap={2} />}>
-        <Text data-slot="avatar-name" size={0}>
-          {name}
-        </Text>
+        {name && <AvatarName name={name} {...NameProps} />}
         {description && (
-          <Text data-slot="avatar-description" size={0}>
-            {description}
-          </Text>
+          <AvatarDescription description={description} {...DescriptionProps} />
         )}
       </ConditionalRender>
     </Group>

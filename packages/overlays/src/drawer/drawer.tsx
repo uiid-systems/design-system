@@ -40,8 +40,8 @@ export const Drawer = ({
           className={styles["drawer-content"]}
           {...ContentProps}
         >
-          <Card uiid="drawer" fullwidth fullheight>
-            <CardTitle render={<BaseDrawer.Title />} title={title} />
+          <Card data-slot="drawer" fullwidth fullheight>
+            <CardTitle render={<BaseDrawer.Title />}>{title}</CardTitle>
             {children}
           </Card>
         </BaseDrawer.Content>

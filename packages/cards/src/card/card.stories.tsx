@@ -15,10 +15,10 @@ const meta = {
   render: (args) => (
     <Group gap={2} evenly>
       <Stack gap={4}>
-        <Card {...args} size="xs" title="Extra small card" />
-        <Card {...args} size="sm" title="Small card" />
-        <Card {...args} size="md" title="Medium card" />
-        <Card {...args} size="lg" title="Large card" />
+        <Card {...args} size="xsmall" title="Extra small card" />
+        <Card {...args} size="small" title="Small card" />
+        <Card {...args} size="medium" title="Medium card" />
+        <Card {...args} size="large" title="Large card" />
       </Stack>
 
       <Stack gap={4}>

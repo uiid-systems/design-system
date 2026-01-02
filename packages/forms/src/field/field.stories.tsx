@@ -32,20 +32,20 @@ const meta = {
         <Input placeholder="Type something..." />
       </Field>
 
-      <Field {...args} label="Field with select">
-        <Select items={MOCK_SELECT_ITEMS} />
-      </Field>
-
-      <Field {...args} label="Field with number field">
-        <NumberField />
-      </Field>
-
       <Field {...args} label="Field with combobox">
         <Combobox items={MOCK_COMBOBOX_ITEMS} />
       </Field>
 
       <Field {...args} label="Field with autocomplete">
         <Autocomplete items={MOCK_AUTOCOMPLETE_ITEMS} />
+      </Field>
+
+      <Field {...args} label="Field with number field">
+        <NumberField />
+      </Field>
+
+      <Field {...args} label="Field with select">
+        <Select items={MOCK_SELECT_ITEMS} />
       </Field>
 
       <Field {...args} label="Field with radio group">

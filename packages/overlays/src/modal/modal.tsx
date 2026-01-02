@@ -11,6 +11,9 @@ import {
 } from "./subcomponents";
 
 export const Modal = ({
+  /** shortcuts */
+  open,
+  onOpenChange,
   /** variants */
   size,
   /** subcomponents */
@@ -24,7 +27,7 @@ export const Modal = ({
   children,
 }: ModalProps) => {
   return (
-    <ModalRoot {...RootProps}>
+    <ModalRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
       <ModalTrigger {...TriggerProps}>{trigger}</ModalTrigger>
       <ModalPortal {...PortalProps}>
         <ModalBackdrop {...BackdropProps} />

@@ -32,6 +32,6 @@ export type ComboboxProps<
   }> &
   Pick<
     ComboboxRootProps<Value, Multiple>,
-    "items" | "defaultValue" | "onValueChange"
+    "items" | "defaultValue" | "onValueChange" | "required"
   > &
   Pick<FieldProps, "label" | "description" | "error">;

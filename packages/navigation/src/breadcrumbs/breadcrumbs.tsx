@@ -16,7 +16,7 @@ const Breadcrumbs = ({
   ...props
 }: BreadcrumbsProps) => {
   return (
-    <BreadcrumbsContainer uiid="breadcrumbs" {...props}>
+    <BreadcrumbsContainer data-slot="breadcrumbs" {...props}>
       <BreadcrumbsList>
         {items.map((item, i) => {
           const isLast = i === items.length - 1;

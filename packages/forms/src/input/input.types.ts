@@ -1,6 +1,13 @@
 import type { Input } from "@base-ui/react/input";
+
+import type { VariantProps } from "@uiid/utils";
+
 import type { FieldProps } from "../field/field.types";
 
-export type InputProps = Omit<Input.Props, "size"> & {
-  size?: "sm" | "md" | "lg";
-} & Pick<FieldProps, "label" | "description" | "error">;
+import { inputVariants } from "./input.variants";
+
+export type InputVariants = VariantProps<typeof inputVariants>;
+
+export type InputProps = Omit<Input.Props, "size"> &
+  InputVariants &
+  Pick<FieldProps, "label" | "description" | "error">;

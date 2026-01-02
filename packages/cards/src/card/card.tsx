@@ -1,39 +1,47 @@
-import { Stack } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
+import { cardVariants } from "./card.variants";
 import styles from "./card.module.css";
-import { GAP_LEVEL } from "./card.constants";
 
-import { CardHeader } from "./subcomponents";
+import { CardIcon, CardTitle } from "./subcomponents";
 
 export const Card = ({
+  /** data */
   title,
-  size = "md",
+  /** variants */
+  size,
+  variant,
   trimmed,
   transparent,
-  variant,
+  /** subcomponents */
+  TitleProps,
+  IconProps,
+  /** misc */
   className,
   children,
   ...props
 }: CardProps) => {
-  const hasHeaderProps = Boolean(title);
   return (
     <Stack
-      uiid="card"
+      data-slot="card"
       ax="stretch"
-      gap={GAP_LEVEL[size]}
-      data-size={size}
-      data-variant={variant}
-      data-trimmed={trimmed}
-      data-transparent={transparent}
-      className={cx(styles["card"], className)}
+      gap={3}
+      className={cx(
+        styles["card"],
+        cardVariants({ size, variant, trimmed, transparent }),
+        className,
+      )}
       {...props}
     >
-      {hasHeaderProps && (
-        <CardHeader title={title} size={size} variant={variant} />
-      )}
-
+      <ConditionalRender
+        condition={Boolean(variant && title)}
+        render={<Group ay="center" gap={2} />}
+      >
+        {title && variant && <CardIcon variant={variant} {...IconProps} />}
+        {title && <CardTitle {...TitleProps}>{title}</CardTitle>}
+      </ConditionalRender>
       {children}
     </Stack>
   );

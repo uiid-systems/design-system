@@ -6,23 +6,27 @@ import { Field } from "../field/field";
 
 import { cx } from "@uiid/utils";
 
-import { INPUT_DEFAULT_SIZE } from "./input.constants";
 import type { InputProps } from "./input.types";
+import { inputVariants } from "./input.variants";
 import styles from "./input.module.css";
 
 export const Input = ({
-  size = INPUT_DEFAULT_SIZE,
+  /** data */
+  name,
   label,
   description,
   error,
+  /** variants */
+  size,
+  /** misc */
   className,
   ...props
 }: InputProps) => {
   return (
-    <Field label={label} description={description} error={error}>
+    <Field label={label} description={description} error={error} name={name}>
       <BaseInput
         data-slot="input"
-        className={cx(styles["input"], className)}
+        className={cx(styles["input"], inputVariants({ size }), className)}
         data-size={size}
         {...props}
       />

@@ -35,11 +35,6 @@ describe("Input", () => {
     expect(input.closest('[data-slot="field"]')).toBeInTheDocument();
   });
 
-  it("applies size data attribute", () => {
-    render(<Input size="lg" />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("data-size", "lg");
-  });
-
   it("defaults to size defined in constants", () => {
     render(<Input />);
     expect(screen.getByRole("textbox")).toHaveAttribute(

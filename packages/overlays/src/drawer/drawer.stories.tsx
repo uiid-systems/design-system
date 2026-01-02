@@ -6,6 +6,7 @@ import { Drawer } from "./drawer";
 const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",
   component: Drawer,
+  tags: ["danger"],
   args: {
     title: "Drawer",
     children:

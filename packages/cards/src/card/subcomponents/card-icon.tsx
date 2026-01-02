@@ -1,9 +1,7 @@
 import { Info, Ban, TriangleAlert, CircleCheck } from "@uiid/icons";
 
 import { ICON_SIZE, ICON_STROKE } from "../card.constants";
-import type { CardProps } from "../card.types";
-
-export type CardIconProps = Pick<CardProps, "variant" | "className">;
+import type { CardIconProps } from "../card.types";
 
 export const CardIcon = ({ variant, className }: CardIconProps) => {
   const iconProps = {
@@ -13,6 +11,7 @@ export const CardIcon = ({ variant, className }: CardIconProps) => {
   };
 
   const Icon = () => {
+    if (variant === "inverted") return undefined;
     if (variant === "info") return <Info {...iconProps} />;
     if (variant === "warning") return <TriangleAlert {...iconProps} />;
     if (variant === "negative") return <Ban {...iconProps} />;

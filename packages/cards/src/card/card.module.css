@@ -34,56 +34,6 @@
     }
   }
 
-  &:where([data-size="xs"]) {
-    padding-block: calc(var(--globals-padding-y) * 0.75);
-    padding-inline: calc(var(--globals-padding-x) * 0.75);
-    font-size: 0.625rem;
-    font-weight: 600;
-  }
-
-  &:where([data-size="sm"]) {
-    padding-block: var(--globals-padding-y);
-    padding-inline: var(--globals-padding-x);
-  }
-  &:where([data-size="md"]) {
-    padding-block: var(--globals-padding-y);
-    padding-inline: var(--globals-padding-x);
-  }
-  &:where([data-size="lg"]) {
-    padding-block: calc(var(--globals-padding-y) * 1.25);
-    padding-inline: calc(var(--globals-padding-x) * 1.25);
-  }
-
-  &:where([data-variant="info"]) {
-    --card-color-bg: var(--card-variant-info-bg);
-    --card-border-color: var(--card-variant-info-border);
-    --card-color-fg: var(--black);
-  }
-
-  &:where([data-variant="warning"]) {
-    --card-color-bg: var(--card-variant-warning-bg);
-    --card-border-color: var(--card-variant-warning-border);
-    --card-color-fg: var(--black);
-  }
-
-  &:where([data-variant="negative"]) {
-    --card-color-bg: var(--card-variant-negative-bg);
-    --card-border-color: var(--card-variant-negative-border);
-    --card-color-fg: var(--black);
-  }
-
-  &:where([data-variant="positive"]) {
-    --card-color-bg: var(--card-variant-positive-bg);
-    --card-border-color: var(--card-variant-positive-border);
-    --card-color-fg: var(--black);
-  }
-
-  &:where([data-variant="inverted"]) {
-    --card-color-bg: var(--card-variant-inverted-bg);
-    --card-border-color: var(--card-variant-inverted-border);
-    --card-color-fg: var(--card-variant-inverted-fg);
-  }
-
   &:where([data-trimmed="true"]) {
     padding-block: 0;
     padding-inline: 0;
@@ -92,4 +42,54 @@
   &:where([data-transparent="true"]) {
     background-color: transparent;
   }
+}
+
+.size-xsmall {
+  padding-block: calc(var(--globals-padding-y) * 0.75);
+  padding-inline: calc(var(--globals-padding-x) * 0.75);
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.size-small {
+  padding-block: var(--globals-padding-y);
+  padding-inline: var(--globals-padding-x);
+}
+.size-medium {
+  padding-block: var(--globals-padding-y);
+  padding-inline: var(--globals-padding-x);
+}
+.size-large {
+  padding-block: calc(var(--globals-padding-y) * 1.25);
+  padding-inline: calc(var(--globals-padding-x) * 1.25);
+}
+
+.variant-info {
+  background-color: var(--card-variant-info-bg);
+  border-color: var(--card-variant-info-border);
+  color: var(--black);
+}
+
+.variant-warning {
+  background-color: var(--card-variant-warning-bg);
+  border-color: var(--card-variant-warning-border);
+  color: var(--black);
+}
+
+.variant-negative {
+  background-color: var(--card-variant-negative-bg);
+  border-color: var(--card-variant-negative-border);
+  color: var(--black);
+}
+
+.variant-positive {
+  background-color: var(--card-variant-positive-bg);
+  border-color: var(--card-variant-positive-border);
+  color: var(--black);
+}
+
+.variant-inverted {
+  background-color: var(--card-variant-inverted-bg);
+  border-color: var(--card-variant-inverted-border);
+  color: var(--card-variant-inverted-fg);
 }

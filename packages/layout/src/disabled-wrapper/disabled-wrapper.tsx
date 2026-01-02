@@ -18,7 +18,7 @@ export const DisabledWrapper = ({
       condition={disabled}
       render={
         <Box
-          uiid="disabled-wrapper"
+          data-slot="disabled-wrapper"
           className={cx(styles["disabled-wrapper"], className)}
         />
       }

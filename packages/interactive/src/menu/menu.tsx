@@ -22,7 +22,7 @@ export const Menu = ({
   trigger,
   align,
   side,
-  /** component props */
+  /** subcomponents */
   RootProps,
   TriggerProps,
   PopupProps,

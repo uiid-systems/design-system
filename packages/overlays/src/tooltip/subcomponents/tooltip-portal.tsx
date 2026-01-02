@@ -1,3 +1,5 @@
+"use client";
+
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 
 import type { TooltipPortalProps } from "../tooltip.types";

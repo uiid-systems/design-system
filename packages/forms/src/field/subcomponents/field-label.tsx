@@ -1,13 +1,17 @@
-import { Text, type TextProps } from "@uiid/typography";
+import { Field as BaseField } from "@base-ui/react/field";
+import { Text } from "@uiid/typography";
 
-export type FieldLabelProps = TextProps &
-  React.LabelHTMLAttributes<HTMLLabelElement>;
+import type { FieldLabelProps } from "../field.types";
 
 export const FieldLabel = ({ children, ...props }: FieldLabelProps) => {
   return (
-    <Text render={<label />} size={1} bold {...props}>
+    <BaseField.Label
+      data-slot="field-label"
+      render={<Text size={1} bold />}
+      {...props}
+    >
       {children}
-    </Text>
+    </BaseField.Label>
   );
 };
 FieldLabel.displayName = "FieldLabel";

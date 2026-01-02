@@ -7,7 +7,7 @@ import styles from "./stack.module.css";
 
 export const Stack = ({ ax, ay, className, ...props }: StackProps) => (
   <Box
-    uiid="stack"
+    data-slot="stack"
     ax={ay}
     ay={ax}
     className={cx(styles.stack, className)}

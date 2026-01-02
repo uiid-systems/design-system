@@ -28,9 +28,9 @@ import { Checkbox } from "@uiid/forms";
 ### Sizes
 
 ```tsx
-<Checkbox size="sm" label="Small" />
-<Checkbox size="md" label="Medium" />
-<Checkbox size="lg" label="Large" />
+<Checkbox size="small" label="Small" />
+<Checkbox size="medium" label="Medium" />
+<Checkbox size="large" label="Large" />
 ```
 
 ### Bordered Variant

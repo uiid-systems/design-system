@@ -33,15 +33,14 @@
       background-color 600000s 0s,
       color 600000s 0s;
   }
+}
 
-  /** Size */
-  &:where([data-size="sm"]) {
-    --forms-fontSize: var(--forms-size-sm-fontSize);
-  }
-  &:where([data-size="md"]) {
-    --forms-fontSize: var(--forms-size-md-fontSize);
-  }
-  &:where([data-size="lg"]) {
-    --forms-fontSize: var(--forms-size-lg-fontSize);
-  }
+.size-small {
+  font-size: var(--forms-size-small-fontSize);
+}
+.size-medium {
+  font-size: var(--forms-size-medium-fontSize);
+}
+.size-large {
+  font-size: var(--forms-size-large-fontSize);
 }

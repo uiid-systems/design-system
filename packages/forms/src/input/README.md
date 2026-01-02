@@ -22,12 +22,12 @@ import { Input } from "@uiid/forms";
 
 ### Sizes
 
-The `size` prop controls the font size of the input. Defaults to `"md"`.
+The `size` prop controls the font size of the input. Defaults to `"medium"`.
 
 ```tsx
-<Input size="sm" placeholder="Small" />
-<Input size="md" placeholder="Medium" />
-<Input size="lg" placeholder="Large" />
+<Input size="small" placeholder="Small" />
+<Input size="medium" placeholder="Medium" />
+<Input size="large" placeholder="Large" />
 ```
 
 ### Disabled State
@@ -60,42 +60,42 @@ import { Group } from "@uiid/layout";
 
 ## Props
 
-| Prop          | Type                   | Default | Description                                 |
-| ------------- | ---------------------- | ------- | ------------------------------------------- |
-| `size`        | `"sm" \| "md" \| "lg"` | `"md"`  | Controls the font size of the input         |
-| `label`       | `ReactNode`            | —       | Label text displayed above the input        |
-| `description` | `ReactNode`            | —       | Helper text displayed below the input       |
-| `error`       | `ReactNode`            | —       | Error message (shown when validation fails) |
-| `className`   | `string`               | —       | Additional CSS class names                  |
-| `disabled`    | `boolean`              | `false` | Disables the input                          |
-| `required`    | `boolean`              | `false` | Marks the input as required                 |
-| `placeholder` | `string`               | —       | Placeholder text                            |
+| Prop          | Type                             | Default    | Description                                 |
+| ------------- | -------------------------------- | ---------- | ------------------------------------------- |
+| `size`        | `"small" \| "medium" \| "large"` | `"medium"` | Controls the font size of the input         |
+| `label`       | `ReactNode`                      | —          | Label text displayed above the input        |
+| `description` | `ReactNode`                      | —          | Helper text displayed below the input       |
+| `error`       | `ReactNode`                      | —          | Error message (shown when validation fails) |
+| `className`   | `string`                         | —          | Additional CSS class names                  |
+| `disabled`    | `boolean`                        | `false`    | Disables the input                          |
+| `required`    | `boolean`                        | `false`    | Marks the input as required                 |
+| `placeholder` | `string`                         | —          | Placeholder text                            |
 
 All other props are forwarded to the underlying Base UI `Input` component.
 
 ## Data Attributes
 
-| Attribute   | Values                 | Description                  |
-| ----------- | ---------------------- | ---------------------------- |
-| `data-slot` | `"input"`              | Identifies the input element |
-| `data-size` | `"sm" \| "md" \| "lg"` | Current size variant         |
+| Attribute   | Values                           | Description                  |
+| ----------- | -------------------------------- | ---------------------------- |
+| `data-slot` | `"input"`                        | Identifies the input element |
+| `data-size` | `"small" \| "medium" \| "large"` | Current size variant         |
 
 ## CSS Variables
 
 The input uses design tokens from the forms and globals layers:
 
-| Variable                   | Description                  |
-| -------------------------- | ---------------------------- |
-| `--forms-background`       | Default background color     |
-| `--forms-backgroundHover`  | Background color on hover    |
-| `--forms-backgroundFocus`  | Background color on focus    |
-| `--forms-border-color`     | Border color                 |
-| `--forms-padding-x`        | Horizontal padding           |
-| `--forms-padding-y`        | Vertical padding             |
-| `--forms-fontSize`         | Base font size               |
-| `--forms-size-sm-fontSize` | Font size for small variant  |
-| `--forms-size-md-fontSize` | Font size for medium variant |
-| `--forms-size-lg-fontSize` | Font size for large variant  |
+| Variable                       | Description                  |
+| ------------------------------ | ---------------------------- |
+| `--forms-background`           | Default background color     |
+| `--forms-backgroundHover`      | Background color on hover    |
+| `--forms-backgroundFocus`      | Background color on focus    |
+| `--forms-border-color`         | Border color                 |
+| `--forms-padding-x`            | Horizontal padding           |
+| `--forms-padding-y`            | Vertical padding             |
+| `--forms-fontSize`             | Base font size               |
+| `--forms-size-small-fontSize`  | Font size for small variant  |
+| `--forms-size-medium-fontSize` | Font size for medium variant |
+| `--forms-size-large-fontSize`  | Font size for large variant  |
 
 ## File Structure
 
@@ -103,9 +103,9 @@ The input uses design tokens from the forms and globals layers:
 input/
 ├── input.tsx           # Component implementation
 ├── input.types.ts      # TypeScript types
-├── input.constants.ts  # Default values
 ├── input.module.css    # Styles
 ├── input.stories.tsx   # Storybook stories
 ├── input.test.tsx      # Unit tests
+├── input.variants.ts   # Style variants
 └── README.md           # This file
 ```

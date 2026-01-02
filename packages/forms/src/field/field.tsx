@@ -1,64 +1,39 @@
-import { Field as BaseField } from "@base-ui/react/field";
-
-import { ConditionalRender, Stack } from "@uiid/layout";
-
 import type { FieldProps } from "./field.types";
 
-import { FieldLabel, FieldDescription } from "./subcomponents";
+import {
+  FieldRoot,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+} from "./subcomponents";
 
 export const Field = ({
-  children,
+  /** data */
+  name,
   label,
   description,
   error,
+  /** subcomponents */
+  RootProps,
   LabelProps,
   ErrorProps,
   DescriptionProps,
+  /** misc */
+  children,
   ...props
 }: FieldProps) => {
   return (
-    <ConditionalRender
-      condition={Boolean(label || description || error)}
-      render={
-        <BaseField.Root
-          data-slot="field"
-          render={<Stack gap={3} ax="stretch" fullwidth />}
-          {...props}
-        />
-      }
-    >
-      {label && (
-        <BaseField.Label
-          data-slot="field-label"
-          render={<FieldLabel />}
-          {...LabelProps}
-        >
-          {label}
-        </BaseField.Label>
-      )}
+    <FieldRoot name={name} {...props} {...RootProps}>
+      {label && <FieldLabel {...LabelProps}>{label}</FieldLabel>}
 
       {children}
 
-      {error && (
-        <BaseField.Error
-          data-slot="field-error"
-          match="valueMissing"
-          {...ErrorProps}
-        >
-          {error}
-        </BaseField.Error>
-      )}
+      <FieldError {...ErrorProps}>{error}</FieldError>
 
       {description && (
-        <BaseField.Description
-          data-slot="field-description"
-          render={<FieldDescription />}
-          {...DescriptionProps}
-        >
-          {description}
-        </BaseField.Description>
+        <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
       )}
-    </ConditionalRender>
+    </FieldRoot>
   );
 };
 Field.displayName = "Field";

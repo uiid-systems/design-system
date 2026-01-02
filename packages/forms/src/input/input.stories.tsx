@@ -9,16 +9,24 @@ import { Input } from "./input";
 const meta = {
   title: "Forms/Input",
   component: Input,
+  tags: ["beta"],
   args: {
     disabled: false,
     required: false,
     placeholder: "Placeholder",
   },
   argTypes: {
-    onFocus: { action: "onFocus" },
-    onValueChange: { action: "onValueChange" },
-    onBlur: { action: "onBlur" },
-    size: { control: "select", options: ["sm", "md", "lg"] },
+    onFocus: { action: "onFocus", table: { category: "Events" } },
+    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    onBlur: { action: "onBlur", table: { category: "Events" } },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    placeholder: { control: "text", table: { category: "Text" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

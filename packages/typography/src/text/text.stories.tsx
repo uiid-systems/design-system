@@ -10,6 +10,10 @@ const shades: TextProps["shade"][] = [
   "halftone",
   "accent",
   "foreground",
+  "positive",
+  "negative",
+  "warning",
+  "info",
 ];
 
 const meta = {

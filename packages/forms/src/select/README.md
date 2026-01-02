@@ -49,7 +49,7 @@ const items = [
   { value: "tools", label: "Tools", icon: Hammer },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ### With Descriptions
@@ -58,10 +58,14 @@ const items = [
 const items = [
   { value: "basic", label: "Basic", description: "For individuals" },
   { value: "pro", label: "Pro", description: "For teams" },
-  { value: "enterprise", label: "Enterprise", description: "For organizations" },
+  {
+    value: "enterprise",
+    label: "Enterprise",
+    description: "For organizations",
+  },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ### Disabled Items
@@ -73,15 +77,15 @@ const items = [
   { value: "c", label: "Option C" },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ### Sizes
 
 ```tsx
-<Select items={items} size="sm" />
-<Select items={items} size="md" />
-<Select items={items} size="lg" />
+<Select items={items} size="small" />
+<Select items={items} size="medium" />
+<Select items={items} size="large" />
 ```
 
 ### Controlled
@@ -106,23 +110,23 @@ import { SelectItem } from "@uiid/forms";
 
 ## Props
 
-| Prop              | Type                       | Default     | Description                           |
-| ----------------- | -------------------------- | ----------- | ------------------------------------- |
-| `items`           | `SelectItemProps[]`        | —           | Array of select options               |
-| `defaultValue`    | `string`                   | First item  | Initial selected value                |
-| `onValueChange`   | `(value: string) => void`  | —           | Callback when selection changes       |
-| `placeholder`     | `string`                   | —           | Placeholder text when nothing selected|
-| `size`            | `"sm" \| "md" \| "lg"`     | `"md"`      | Size of the trigger                   |
-| `label`           | `ReactNode`                | —           | Label text                            |
-| `description`     | `ReactNode`                | —           | Helper text below the select          |
-| `error`           | `ReactNode`                | —           | Error message                         |
-| `disabled`        | `boolean`                  | `false`     | Disables the select                   |
-| `RootProps`       | `SelectRootProps`          | —           | Props for the root element            |
-| `TriggerProps`    | `SelectTriggerProps`       | —           | Props for the trigger button          |
-| `PortalProps`     | `SelectPortalProps`        | —           | Props for the portal                  |
-| `PositionerProps` | `SelectPositionerProps`    | —           | Props for the positioner              |
-| `PopupProps`      | `SelectPopupProps`         | —           | Props for the popup                   |
-| `ListProps`       | `SelectListProps`          | —           | Props for the list container          |
+| Prop              | Type                      | Default    | Description                            |
+| ----------------- | ------------------------- | ---------- | -------------------------------------- |
+| `items`           | `SelectItemProps[]`       | —          | Array of select options                |
+| `defaultValue`    | `string`                  | First item | Initial selected value                 |
+| `onValueChange`   | `(value: string) => void` | —          | Callback when selection changes        |
+| `placeholder`     | `string`                  | —          | Placeholder text when nothing selected |
+| `size`            | `"sm" \| "md" \| "lg"`    | `"md"`     | Size of the trigger                    |
+| `label`           | `ReactNode`               | —          | Label text                             |
+| `description`     | `ReactNode`               | —          | Helper text below the select           |
+| `error`           | `ReactNode`               | —          | Error message                          |
+| `disabled`        | `boolean`                 | `false`    | Disables the select                    |
+| `RootProps`       | `SelectRootProps`         | —          | Props for the root element             |
+| `TriggerProps`    | `SelectTriggerProps`      | —          | Props for the trigger button           |
+| `PortalProps`     | `SelectPortalProps`       | —          | Props for the portal                   |
+| `PositionerProps` | `SelectPositionerProps`   | —          | Props for the positioner               |
+| `PopupProps`      | `SelectPopupProps`        | —          | Props for the popup                    |
+| `ListProps`       | `SelectListProps`         | —          | Props for the list container           |
 
 ### SelectItemProps
 
@@ -138,25 +142,25 @@ type SelectItemProps = {
 
 ## Data Attributes
 
-| Attribute    | Element | Values             | Description                  |
-| ------------ | ------- | ------------------ | ---------------------------- |
-| `data-slot`  | trigger | `"select-trigger"` | Identifies the trigger       |
-| `data-slot`  | value   | `"select-value"`   | Identifies the value display |
-| `data-slot`  | icon    | `"select-icon"`    | Identifies the chevron icon  |
-| `data-slot`  | item    | `"select-item"`    | Identifies each item         |
-| `data-size`  | trigger | `"sm" \| "md" \| "lg"` | Current size variant     |
+| Attribute   | Element | Values                 | Description                  |
+| ----------- | ------- | ---------------------- | ---------------------------- |
+| `data-slot` | trigger | `"select-trigger"`     | Identifies the trigger       |
+| `data-slot` | value   | `"select-value"`       | Identifies the value display |
+| `data-slot` | icon    | `"select-icon"`        | Identifies the chevron icon  |
+| `data-slot` | item    | `"select-item"`        | Identifies each item         |
+| `data-size` | trigger | `"sm" \| "md" \| "lg"` | Current size variant         |
 
 ## CSS Variables
 
 Uses input styling from the forms package:
 
-| Variable                 | Description               |
-| ------------------------ | ------------------------- |
-| `--forms-background`     | Trigger background        |
-| `--forms-border-color`   | Border color              |
-| `--forms-padding-x`      | Horizontal padding        |
-| `--forms-padding-y`      | Vertical padding          |
-| `--anchor-width`         | Popup min-width (auto)    |
+| Variable               | Description            |
+| ---------------------- | ---------------------- |
+| `--forms-background`   | Trigger background     |
+| `--forms-border-color` | Border color           |
+| `--forms-padding-x`    | Horizontal padding     |
+| `--forms-padding-y`    | Vertical padding       |
+| `--anchor-width`       | Popup min-width (auto) |
 
 ## File Structure
 
@@ -180,4 +184,3 @@ select/
 │   └── index.ts            # Subcomponent exports
 └── README.md               # This file
 ```
-

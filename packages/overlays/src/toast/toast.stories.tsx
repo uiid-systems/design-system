@@ -3,8 +3,10 @@ import { Stack } from "@uiid/layout";
 
 import { ToastProvider, useToastManager, Toaster } from "./toast";
 
-const meta: Meta<unknown> = {
+const meta: Meta<typeof ToastProvider> = {
   title: "Overlays/Toast",
+  component: ToastProvider,
+  tags: ["danger"],
   args: {},
   argTypes: {},
   decorators: [

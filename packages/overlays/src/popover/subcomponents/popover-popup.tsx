@@ -14,7 +14,7 @@ export const PopoverPopup = ({
   return (
     <BasePopover.Popup
       data-slot="popover-popup"
-      render={<Card uiid="popover">{children}</Card>}
+      render={<Card>{children}</Card>}
       className={cx(styles["popover-popup"], className)}
       data-is-popup
       {...props}

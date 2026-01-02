@@ -42,5 +42,8 @@ export type SelectProps<
     PopupProps?: SelectPopupProps;
     ListProps?: SelectListProps;
   }> &
-  Pick<SelectRootProps<Value, Multiple>, "defaultValue" | "onValueChange"> &
+  Pick<
+    SelectRootProps<Value, Multiple>,
+    "defaultValue" | "onValueChange" | "required"
+  > &
   Pick<FieldProps, "label" | "description" | "error">;
