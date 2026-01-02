@@ -4,15 +4,13 @@ import { Text } from "@uiid/typography";
 
 import type { FieldErrorProps } from "../field.types";
 
-export const FieldError = ({ children, ...props }: FieldErrorProps) => {
+export const FieldError = (props: FieldErrorProps) => {
   return (
     <BaseField.Error
       data-slot="field-error"
       render={<Text size={0} shade="negative" />}
       {...props}
-    >
-      {children}
-    </BaseField.Error>
+    />
   );
 };
 FieldError.displayName = "FieldError";

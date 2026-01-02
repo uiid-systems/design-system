@@ -12,7 +12,6 @@ export const Field = ({
   name,
   label,
   description,
-  error,
   /** subcomponents */
   RootProps,
   LabelProps,
@@ -28,7 +27,7 @@ export const Field = ({
 
       {children}
 
-      <FieldError {...ErrorProps}>{error}</FieldError>
+      <FieldError match {...ErrorProps} />
 
       {description && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>

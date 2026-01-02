@@ -15,7 +15,6 @@ export const Input = ({
   name,
   label,
   description,
-  error,
   /** variants */
   size,
   /** misc */
@@ -23,9 +22,10 @@ export const Input = ({
   ...props
 }: InputProps) => {
   return (
-    <Field label={label} description={description} error={error} name={name}>
+    <Field label={label} description={description} name={name}>
       <BaseInput
         data-slot="input"
+        name={name}
         className={cx(styles["input"], inputVariants({ size }), className)}
         data-size={size}
         {...props}

@@ -8,7 +8,7 @@ export const FieldRoot = ({ children, ...props }: FieldRootProps) => {
   return (
     <BaseField.Root
       data-slot="field-root"
-      render={<Stack gap={3} />}
+      render={<Stack gap={3} ax="stretch" />}
       {...props}
     >
       {children}

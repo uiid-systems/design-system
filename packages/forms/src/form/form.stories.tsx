@@ -5,12 +5,6 @@ import { Stack, Group } from "@uiid/layout";
 import { Button } from "@uiid/buttons";
 
 import { Input } from "../input/input";
-import { Select } from "../select/select";
-import { NumberField } from "../number-field/number-field";
-
-import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
-
-import { Field } from "../field/field";
 
 import { Form, type FormProps } from "./form";
 
@@ -25,6 +19,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Form",
+  tags: ["new"],
   render: (args) => {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
@@ -32,17 +27,21 @@ export const Default: Story = {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
       setSuccess(false);
 
       const formData = new FormData(event.currentTarget);
       const url = formData.get("url") as string;
+      console.log("URL value:", url);
 
       setLoading(true);
       const response = await submitForm(url);
+      console.log("Response:", response);
       setLoading(false);
 
       if (response.error) {
         setErrors({ url: response.error });
+        console.log("Setting errors:", { url: response.error });
       } else {
         setErrors({});
         setSuccess(true);
@@ -54,28 +53,18 @@ export const Default: Story = {
         {...args}
         errors={errors}
         onSubmit={handleSubmit}
-        render={<Stack ax="stretch" gap={8} style={{ maxWidth: 400 }} />}
+        render={<Stack render={<form />} ax="stretch" gap={4} />}
       >
-        <Field name="url" label="Homepage URL">
-          <Input
-            name="url"
-            type="url"
-            required
-            defaultValue="https://example.com"
-            placeholder="https://example.com"
-            pattern="https?://.*"
-          />
-        </Field>
+        <Input
+          label="URL"
+          name="url"
+          type="url"
+          required
+          placeholder="https://example.com"
+          pattern="https?://.*"
+        />
 
-        <Field name="category" label="Category">
-          <Select name="category" items={MOCK_SELECT_ITEMS} required />
-        </Field>
-
-        <Field name="quantity" label="Quantity">
-          <NumberField name="quantity" required defaultValue={1} />
-        </Field>
-
-        <Group gap={4}>
+        <Group gap={2} fullwidth evenly>
           <Button type="submit" disabled={loading}>
             {loading ? "Submitting..." : "Submit"}
           </Button>
@@ -96,6 +85,7 @@ export const Default: Story = {
 
 export const WithOnFormSubmit: Story = {
   name: "With onFormSubmit",
+  tags: ["new"],
   render: (args) => {
     const [errors, setErrors] = useState<Record<string, string | string[]>>({});
     const [loading, setLoading] = useState(false);
@@ -104,8 +94,10 @@ export const WithOnFormSubmit: Story = {
     return (
       <Form
         {...args}
+        render={<Stack render={<form />} ax="stretch" gap={4} />}
         errors={errors}
         onFormSubmit={async (formValues) => {
+          console.log("onFormSubmit called with:", formValues);
           setLoading(true);
           setResult(null);
 
@@ -130,24 +122,28 @@ export const WithOnFormSubmit: Story = {
           setLoading(false);
 
           if (Object.keys(validationErrors).length > 0) {
+            setErrors({
+              email: validationErrors.email,
+              password: validationErrors.password,
+            });
             setErrors(validationErrors);
+            console.log("Setting errors:", validationErrors);
           } else {
             setErrors({});
             setResult(formValues);
           }
         }}
-        render={<Stack ax="stretch" gap={8} style={{ maxWidth: 400 }} />}
       >
         <Input
-          name="email"
           label="Email"
+          name="email"
           type="email"
           placeholder="you@example.com"
         />
 
         <Input
-          name="password"
           label="Password"
+          name="password"
           type="password"
           placeholder="••••••••"
         />
@@ -159,7 +155,7 @@ export const WithOnFormSubmit: Story = {
         {result && (
           <pre
             style={{
-              background: "var(--color-surface-secondary)",
+              background: "var(--shade-muted)",
               padding: "1rem",
               borderRadius: "0.5rem",
               fontSize: "0.875rem",
