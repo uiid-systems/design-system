@@ -11,11 +11,36 @@ const meta: Meta<AutocompleteProps> = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
   args: {
-    placeholder: "Placeholder",
     items: MOCK_AUTOCOMPLETE_ITEMS,
   },
   argTypes: {
-    onValueChange: { action: "onValueChange" },
+    items: { control: "object", table: { category: "Data" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+    value: { control: "text", table: { category: "Text" } },
+    defaultValue: { control: "text", table: { category: "Text" } },
+    onFocus: { action: "onFocus", table: { category: "Events" } },
+    onBlur: { action: "onBlur", table: { category: "Events" } },
+    placeholder: { control: "text", table: { category: "Text" } },
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
+    onItemHighlighted: {
+      action: "onItemHighlighted",
+      table: { category: "Events" },
+    },
+    onOpenChange: { action: "onOpenChange", table: { category: "Events" } },
+    onOpenChangeComplete: {
+      action: "onOpenChangeComplete",
+      table: { category: "Events" },
+    },
+    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    RootProps: { control: "object", table: { category: "Props" } },
+    InputProps: { control: "object", table: { category: "Props" } },
+    PortalProps: { control: "object", table: { category: "Props" } },
+    PositionerProps: { control: "object", table: { category: "Props" } },
+    PopupProps: { control: "object", table: { category: "Props" } },
+    ListProps: { control: "object", table: { category: "Props" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

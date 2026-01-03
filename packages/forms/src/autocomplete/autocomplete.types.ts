@@ -13,17 +13,13 @@ export type AutocompleteListProps = BaseAutocomplete.List.Props;
 export type AutocompleteItemProps = BaseAutocomplete.Item.Props;
 export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
 
-export type AutocompleteProps<Value = string> = React.PropsWithChildren<{
-  placeholder?: string;
+export type AutocompleteProps<Value = string> = {
   RootProps?: AutocompleteRootProps<Value>;
   InputProps?: AutocompleteInputProps;
   PortalProps?: AutocompletePortalProps;
   PositionerProps?: AutocompletePositionerProps;
   PopupProps?: AutocompletePopupProps;
   ListProps?: AutocompleteListProps;
-}> &
-  Pick<
-    AutocompleteRootProps<Value>,
-    "items" | "defaultValue" | "onValueChange" | "required"
-  > &
-  Pick<FieldProps, "label" | "description">;
+} & AutocompleteRootProps<Value> &
+  Pick<FieldProps, "label" | "description"> &
+  Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur">;

@@ -33,6 +33,7 @@ const preview: Preview = {
           "Cards",
           "Buttons",
           "Forms",
+          ["Form"],
           "Overlays",
           "Interactive",
           "Indicators",

@@ -17,8 +17,9 @@ export const Autocomplete = ({
   items,
   label,
   description,
-  error,
   placeholder,
+  onFocus,
+  onBlur,
   RootProps,
   InputProps,
   PortalProps,
@@ -26,14 +27,16 @@ export const Autocomplete = ({
   PopupProps,
   ListProps,
   children,
+  ...props
 }: AutocompleteProps) => {
   return (
-    <AutocompleteRoot items={items} {...RootProps}>
+    <AutocompleteRoot items={items} {...RootProps} {...props}>
       <AutocompleteInput
         placeholder={placeholder}
         label={label}
         description={description}
-        error={error}
+        onFocus={onFocus}
+        onBlur={onBlur}
         {...InputProps}
       />
 
