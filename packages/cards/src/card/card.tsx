@@ -22,7 +22,6 @@ export const Card = ({
   return (
     <Stack
       data-slot="card"
-      ax="stretch"
       gap={3}
       className={cx(
         styles["card"],

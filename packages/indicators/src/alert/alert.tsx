@@ -9,7 +9,7 @@ export const Alert = ({
   ...props
 }: AlertProps) => {
   return (
-    <Card uiid="alert" role="alert" variant={variant} fullwidth {...props}>
+    <Card data-slot="alert" role="alert" variant={variant} fullwidth {...props}>
       {children}
     </Card>
   );
