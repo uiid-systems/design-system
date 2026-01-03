@@ -10,6 +10,7 @@ import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
 const meta: Meta<AutocompleteProps> = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
+  tags: ["beta"],
   args: {
     items: MOCK_AUTOCOMPLETE_ITEMS,
   },
