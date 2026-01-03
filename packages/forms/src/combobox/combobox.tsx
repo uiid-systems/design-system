@@ -19,7 +19,6 @@ export const Combobox = ({
   items,
   label,
   description,
-  error,
   placeholder,
   RootProps,
   InputProps,
@@ -36,7 +35,6 @@ export const Combobox = ({
           placeholder={placeholder}
           label={label}
           description={description}
-          error={error}
           {...InputProps}
         />
         <ComboboxActionButtons />

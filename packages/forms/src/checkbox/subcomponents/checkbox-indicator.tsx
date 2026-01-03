@@ -21,6 +21,7 @@ export const CheckboxIndicator = ({
       <SwitchRender
         condition={Boolean(indeterminate)}
         className={styles["checkbox-icon"]}
+        data-slot="checkbox-icon"
         render={{
           true: <MinusIcon strokeWidth={3} />,
           false: <CheckIcon strokeWidth={3} />,

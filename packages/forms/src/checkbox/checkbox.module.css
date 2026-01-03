@@ -24,7 +24,7 @@
 
 .checkbox {
   width: var(--checkbox-size);
-  height: var(--checkbox-size);
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,16 +51,6 @@
     outline-offset: 2px;
   }
 
-  &:where([data-size="sm"]) {
-    --checkbox-size: var(--checkbox-size-sm);
-  }
-  &:where([data-size="md"]) {
-    --checkbox-size: var(--checkbox-size-md);
-  }
-  &:where([data-size="lg"]) {
-    --checkbox-size: var(--checkbox-size-lg);
-  }
-
   &::after {
     position: absolute;
     inset: -0.25rem;
@@ -79,4 +69,14 @@
 .checkbox-icon {
   width: 0.75rem;
   height: 0.75rem;
+}
+
+.size-small {
+  width: var(--checkbox-size-sm);
+}
+.size-medium {
+  width: var(--checkbox-size-md);
+}
+.size-large {
+  width: var(--checkbox-size-lg);
 }

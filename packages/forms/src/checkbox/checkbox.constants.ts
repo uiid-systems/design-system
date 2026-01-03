@@ -1,3 +1,1 @@
-import type { CheckboxProps } from "./checkbox.types";
-
-export const CHECKBOX_DEFAULT_SIZE: CheckboxProps["size"] = "sm";
+export const CHECKBOX_DEFAULT_SIZE = "small";

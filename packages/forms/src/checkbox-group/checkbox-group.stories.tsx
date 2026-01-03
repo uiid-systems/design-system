@@ -12,11 +12,45 @@ const meta = {
   args: {
     items: MOCK_CHECKBOXGROUP_OPTIONS,
   },
+  argTypes: {
+    /** Data */
+    defaultValue: { control: "object", table: { category: "Data" } },
+    value: { control: "object", table: { category: "Data" } },
+    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    /** Variants */
+    direction: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      table: { category: "Variants" },
+    },
+    /** Toggles */
+    bordered: { control: "boolean", table: { category: "Toggles" } },
+    reversed: { control: "boolean", table: { category: "Toggles" } },
+    hideIndicators: { control: "boolean", table: { category: "Toggles" } },
+    /** Subcomponents */
+    CheckboxProps: { control: "object", table: { category: "Subcomponents" } },
+    IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
+  },
   render: (args) => (
     <Stack gap={8}>
       <CheckboxGroup {...args} />
+      <CheckboxGroup {...args} direction="horizontal" />
       <CheckboxGroup {...args} bordered />
       <CheckboxGroup {...args} bordered direction="horizontal" />
+      <CheckboxGroup
+        {...args}
+        bordered
+        direction="horizontal"
+        label="With label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      />
+      <CheckboxGroup
+        {...args}
+        bordered
+        direction="horizontal"
+        label="Without indicators"
+        hideIndicators
+      />
     </Stack>
   ),
 } satisfies Meta<CheckboxGroupProps>;

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button as BaseButton } from "@base-ui/react/button";
+import { Children } from "react";
 
 import { ConditionalRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
@@ -29,6 +30,8 @@ export const Button = ({
     square = true;
   }
 
+  const childrenCount = Children.toArray(children).length;
+
   return (
     <ConditionalRender
       condition={!!tooltip}
@@ -43,7 +46,12 @@ export const Button = ({
         )}
         {...props}
       >
-        <ButtonContentContainer>{children}</ButtonContentContainer>
+        <ConditionalRender
+          condition={childrenCount > 1}
+          render={<ButtonContentContainer />}
+        >
+          {children}
+        </ConditionalRender>
       </BaseButton>
     </ConditionalRender>
   );

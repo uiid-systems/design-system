@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Globe } from "@uiid/icons";
+import { GlobeIcon, ExternalLinkIcon } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import { Button } from "./button";
 
@@ -47,47 +48,63 @@ export const Default: Story = {
       <Stack gap={4}>
         <Group gap={2}>
           <Button {...args} tooltip="Tooltip" square>
-            <Globe />
+            <GlobeIcon />
           </Button>
           <Button {...args} tooltip="Tooltip">
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" disabled>
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" variant="subtle">
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" variant="inverted">
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
         </Group>
 
         <Group gap={2}>
           <Button {...args} tooltip="Tooltip" circle>
-            <Globe />
+            <GlobeIcon />
           </Button>
           <Button {...args} tooltip="Tooltip" pill>
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" disabled pill>
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" variant="subtle" pill>
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
           <Button {...args} tooltip="Tooltip" variant="inverted" pill>
-            <Globe />
+            <GlobeIcon />
             travel the world
           </Button>
         </Group>
+        <Button
+          nativeButton={false}
+          render={<a href="https://www.google.com" target="_blank" />}
+          tooltip={
+            <Text size={-1}>
+              use{" "}
+              <Text bold tone="info">
+                nativeButton
+              </Text>{" "}
+              when rendering a link
+            </Text>
+          }
+        >
+          google.com
+          <ExternalLinkIcon />
+        </Button>
       </Stack>
     );
   },

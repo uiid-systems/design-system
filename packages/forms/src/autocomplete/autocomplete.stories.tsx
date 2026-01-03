@@ -15,17 +15,21 @@ const meta: Meta<AutocompleteProps> = {
     items: MOCK_AUTOCOMPLETE_ITEMS,
   },
   argTypes: {
-    items: { control: "object", table: { category: "Data" } },
-    required: { control: "boolean", table: { category: "Toggles" } },
-    disabled: { control: "boolean", table: { category: "Toggles" } },
-    readOnly: { control: "boolean", table: { category: "Toggles" } },
-    value: { control: "text", table: { category: "Text" } },
-    defaultValue: { control: "text", table: { category: "Text" } },
-    onFocus: { action: "onFocus", table: { category: "Events" } },
-    onBlur: { action: "onBlur", table: { category: "Events" } },
+    /** Text */
     placeholder: { control: "text", table: { category: "Text" } },
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
+    /** Data */
+    items: { control: "object", table: { category: "Data" } },
+    defaultValue: { control: "text", table: { category: "Data" } },
+    value: { control: "text", table: { category: "Data" } },
+    /** Toggles */
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+    /** Events */
+    onFocus: { action: "onFocus", table: { category: "Events" } },
+    onBlur: { action: "onBlur", table: { category: "Events" } },
     onItemHighlighted: {
       action: "onItemHighlighted",
       table: { category: "Events" },
@@ -36,12 +40,16 @@ const meta: Meta<AutocompleteProps> = {
       table: { category: "Events" },
     },
     onValueChange: { action: "onValueChange", table: { category: "Events" } },
-    RootProps: { control: "object", table: { category: "Props" } },
-    InputProps: { control: "object", table: { category: "Props" } },
-    PortalProps: { control: "object", table: { category: "Props" } },
-    PositionerProps: { control: "object", table: { category: "Props" } },
-    PopupProps: { control: "object", table: { category: "Props" } },
-    ListProps: { control: "object", table: { category: "Props" } },
+    /** Subcomponents */
+    RootProps: { control: "object", table: { category: "Subcomponents" } },
+    InputProps: { control: "object", table: { category: "Subcomponents" } },
+    PortalProps: { control: "object", table: { category: "Subcomponents" } },
+    PositionerProps: {
+      control: "object",
+      table: { category: "Subcomponents" },
+    },
+    PopupProps: { control: "object", table: { category: "Subcomponents" } },
+    ListProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

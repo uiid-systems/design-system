@@ -1,6 +1,13 @@
 import type { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
+
 import type { GroupProps } from "@uiid/layout";
+import type { VariantProps } from "@uiid/utils";
+
 import type { FieldProps } from "../field/field.types";
+
+import type { checkboxVariants } from "./checkbox.variants";
+
+export type CheckboxVariants = VariantProps<typeof checkboxVariants>;
 
 export type CheckboxFieldProps = GroupProps &
   Pick<FieldProps, "label" | "description"> &
@@ -9,9 +16,10 @@ export type CheckboxFieldProps = GroupProps &
     bordered?: boolean;
   }>;
 
-export type CheckboxRootProps = BaseCheckbox.Root.Props & {
-  size?: "sm" | "md" | "lg";
-};
+export type CheckboxRootProps = BaseCheckbox.Root.Props &
+  CheckboxVariants & {
+    hideIndicator?: boolean;
+  };
 
 export type CheckboxIndicatorProps = BaseCheckbox.Indicator.Props & {
   indeterminate?: boolean;

@@ -13,6 +13,7 @@ export type CheckboxGroupProps = BaseCheckboxGroup.Props &
   Omit<StackProps, "ax" | "ay" | "direction"> & {
     items: FormItemProps[];
     direction?: "horizontal" | "vertical";
+    hideIndicators?: CheckboxProps["hideIndicator"];
     CheckboxProps?: Partial<CheckboxProps>;
     IndicatorProps?: CheckboxIndicatorProps;
   } & Pick<CheckboxProps, "bordered" | "reversed" | "required"> &

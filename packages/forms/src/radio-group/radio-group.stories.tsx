@@ -31,8 +31,8 @@ const meta: Meta<RadioGroupProps> = {
         {...args}
         bordered
         direction="horizontal"
-        hideIndicator
         label="Without indicators"
+        hideIndicators
       />
     </Stack>
   ),

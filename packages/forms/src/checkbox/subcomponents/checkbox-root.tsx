@@ -4,10 +4,12 @@ import { cx } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../checkbox.constants";
 import type { CheckboxRootProps } from "../checkbox.types";
+import { checkboxVariants } from "../checkbox.variants";
 import styles from "../checkbox.module.css";
 
 export const CheckboxRoot = ({
   size = CHECKBOX_DEFAULT_SIZE,
+  hideIndicator,
   className,
   ...props
 }: CheckboxRootProps) => {
@@ -15,8 +17,9 @@ export const CheckboxRoot = ({
     <BaseCheckbox.Root
       data-slot="checkbox"
       aria-label="checkbox"
-      className={cx(styles["checkbox"], className)}
-      data-size={size}
+      className={cx(styles["checkbox"], checkboxVariants({ size }), className, {
+        "sr-only": hideIndicator,
+      })}
       {...props}
     />
   );

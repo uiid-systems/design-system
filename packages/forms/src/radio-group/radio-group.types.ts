@@ -10,7 +10,8 @@ export type RadioGroupProps = RadioGroup.Props &
   Omit<StackProps, "ax" | "ay" | "direction"> & {
     items: FormItemProps[];
     direction?: "horizontal" | "vertical";
+    hideIndicators?: RadioProps["hideIndicator"];
     RadioProps?: Partial<RadioProps>;
     IndicatorProps?: RadioIndicatorProps;
-  } & Pick<RadioProps, "bordered" | "reversed" | "hideIndicator"> &
+  } & Pick<RadioProps, "bordered" | "reversed"> &
   Pick<FieldProps, "label" | "description">;

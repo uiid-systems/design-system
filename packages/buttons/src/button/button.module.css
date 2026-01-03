@@ -15,6 +15,7 @@
   border: var(--globals-border-width) solid var(--button-border-color);
   border-radius: var(--globals-border-radius);
   transition: all var(--globals-transition-timing) ease-in-out;
+  text-decoration: none;
 
   &:where(:hover, :active) {
     background-color: var(--button-bg-hover);
@@ -60,14 +61,17 @@
 }
 
 .size-small {
+  font-size: var(--button-size-sm-font-size);
   height: var(--button-size-sm-height);
   padding-inline: var(--button-size-sm-padding-x);
 }
 .size-medium {
+  font-size: var(--button-size-md-font-size);
   height: var(--button-size-md-height);
   padding-inline: var(--button-size-md-padding-x);
 }
 .size-large {
+  font-size: var(--button-size-lg-font-size);
   height: var(--button-size-lg-height);
   padding-inline: var(--button-size-lg-padding-x);
 }

@@ -15,6 +15,7 @@ export const CheckboxGroup = ({
   description,
   defaultValue,
   direction = "vertical",
+  hideIndicators,
   bordered,
   reversed,
   CheckboxProps,
@@ -33,12 +34,13 @@ export const CheckboxGroup = ({
         {items.map(({ value, label }) => (
           <Checkbox
             key={value}
-            {...CheckboxProps}
+            hideIndicator={hideIndicators}
             bordered={bordered}
             reversed={reversed}
             value={value}
             label={label}
             IndicatorProps={IndicatorProps}
+            {...CheckboxProps}
           />
         ))}
       </BaseCheckboxGroup>

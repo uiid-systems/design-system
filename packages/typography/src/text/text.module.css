@@ -94,14 +94,14 @@
 }
 
 .tone-positive {
-  color: var(--colors-positive-bg);
+  color: color-mix(in oklab, var(--shade-foreground), var(--tone-positive) 80%);
 }
 .tone-negative {
-  color: var(--colors-negative-bg);
+  color: color-mix(in oklab, var(--shade-foreground), var(--tone-negative) 80%);
 }
 .tone-warning {
-  color: var(--colors-warning-bg);
+  color: color-mix(in oklab, var(--shade-foreground), var(--tone-warning) 80%);
 }
 .tone-info {
-  color: var(--colors-info-bg);
+  color: color-mix(in oklab, var(--shade-foreground), var(--tone-info) 80%);
 }
