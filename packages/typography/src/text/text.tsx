@@ -9,11 +9,9 @@ import { textVariants } from "./text.variants";
 import styles from "./text.module.css";
 
 export const Text = ({
-  /** variants */
   shade,
   size,
   tone,
-  /** misc */
   render,
   className,
   children,
@@ -45,8 +43,6 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
-      // level,
-      // shade,
       className: cx(
         styles["text"],
         textVariants({ shade, size, tone }),

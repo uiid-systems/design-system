@@ -11,15 +11,12 @@ import {
 } from "./subcomponents";
 
 export const Sheet = ({
-  /** variants */
   side = "right",
-  /** subcomponents */
   RootProps,
   TriggerProps,
   PortalProps,
   BackdropProps,
   PopupProps,
-  /** misc */
   trigger,
   open,
   onOpenChange,

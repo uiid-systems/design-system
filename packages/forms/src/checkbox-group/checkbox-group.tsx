@@ -2,7 +2,7 @@
 
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
 
-import { Stack, Group, ConditionalRender } from "@uiid/layout";
+import { Stack, Group } from "@uiid/layout";
 
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
@@ -10,18 +10,13 @@ import { Field } from "../field/field";
 import type { CheckboxGroupProps } from "./checkbox-group.types";
 
 export const CheckboxGroup = ({
-  /** data */
   items,
   label,
   description,
-  error,
-  /** shortcuts */
   defaultValue,
   direction = "vertical",
-  /** toggles */
   bordered,
   reversed,
-  /** subcomponents */
   CheckboxProps,
   IndicatorProps,
   ...props
@@ -29,10 +24,7 @@ export const CheckboxGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description || error)}
-      render={<Field label={label} description={description} error={error} />}
-    >
+    <Field label={label} description={description}>
       <BaseCheckboxGroup
         {...props}
         defaultValue={defaultValue ? [...defaultValue] : undefined}
@@ -50,7 +42,7 @@ export const CheckboxGroup = ({
           />
         ))}
       </BaseCheckboxGroup>
-    </ConditionalRender>
+    </Field>
   );
 };
 CheckboxGroup.displayName = "CheckboxGroup";

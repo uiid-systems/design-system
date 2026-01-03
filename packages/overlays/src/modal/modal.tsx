@@ -11,18 +11,14 @@ import {
 } from "./subcomponents";
 
 export const Modal = ({
-  /** shortcuts */
   open,
   onOpenChange,
-  /** variants */
   size,
-  /** subcomponents */
   RootProps,
   TriggerProps,
   PortalProps,
   BackdropProps,
   PopupProps,
-  /** misc */
   trigger,
   children,
 }: ModalProps) => {

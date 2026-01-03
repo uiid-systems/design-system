@@ -4,21 +4,17 @@
   --button-bg: var(--shade-foreground);
   --button-fg: var(--shade-background);
 
-  /** Globals properties */
-  border: var(--globals-border-width) solid var(--button-border-color);
-  border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-timing) ease-in-out;
-  /** Forms properties */
-  padding-inline: var(--button-padding-x);
-  /** Button properties */
-  background-color: var(--button-bg);
-  color: var(--button-fg);
-  font-weight: var(--button-font-weight);
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding-inline: var(--button-padding-x);
+  background-color: var(--button-bg);
+  color: var(--button-fg);
+  font-weight: var(--button-font-weight);
+  border: var(--globals-border-width) solid var(--button-border-color);
+  border-radius: var(--globals-border-radius);
+  transition: all var(--globals-transition-timing) ease-in-out;
 
   &:where(:hover, :active) {
     background-color: var(--button-bg-hover);

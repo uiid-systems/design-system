@@ -8,17 +8,13 @@ import styles from "./card.module.css";
 import { CardIcon, CardTitle } from "./subcomponents";
 
 export const Card = ({
-  /** data */
   title,
-  /** variants */
   size,
   variant,
   trimmed,
   transparent,
-  /** subcomponents */
   TitleProps,
   IconProps,
-  /** misc */
   className,
   children,
   ...props

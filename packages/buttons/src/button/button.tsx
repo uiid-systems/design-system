@@ -12,9 +12,7 @@ import { buttonVariants } from "./button.variants";
 import { ButtonContentContainer } from "./subcomponents/button-content-container";
 
 export const Button = ({
-  /** tooltip */
   tooltip,
-  /** variants */
   ghost,
   pill,
   grows,
@@ -22,7 +20,6 @@ export const Button = ({
   square,
   circle,
   variant,
-  /** misc */
   className,
   children,
   ...props

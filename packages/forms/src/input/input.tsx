@@ -11,16 +11,12 @@ import { inputVariants } from "./input.variants";
 import styles from "./input.module.css";
 
 export const Input = ({
-  /** data */
   name,
   label,
   description,
   required,
-  /** variants */
   size,
-  /** toggles */
   fullwidth,
-  /** misc */
   className,
   ...props
 }: InputProps) => {
