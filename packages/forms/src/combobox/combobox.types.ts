@@ -22,18 +22,14 @@ export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 export type ComboboxProps<
   Value = string,
   Multiple extends SelectMultiple = false,
-> = BaseCombobox.Trigger.Props &
-  React.PropsWithChildren<{
-    placeholder?: string;
-    RootProps?: ComboboxRootProps<Value, Multiple>;
-    InputProps?: ComboboxInputProps;
-    PortalProps?: ComboboxPortalProps;
-    PositionerProps?: ComboboxPositionerProps;
-    PopupProps?: ComboboxPopupProps;
-    ListProps?: ComboboxListProps;
-  }> &
-  Pick<
-    ComboboxRootProps<Value, Multiple>,
-    "items" | "defaultValue" | "onValueChange" | "required"
-  > &
+> = React.PropsWithChildren<{
+  RootProps?: ComboboxRootProps<Value, Multiple>;
+  InputProps?: ComboboxInputProps;
+  PortalProps?: ComboboxPortalProps;
+  PositionerProps?: ComboboxPositionerProps;
+  PopupProps?: ComboboxPopupProps;
+  ListProps?: ComboboxListProps;
+}> &
+  ComboboxRootProps<Value, Multiple> &
+  Pick<ComboboxInputProps, "placeholder" | "onFocus" | "onBlur"> &
   Pick<FieldProps, "label" | "description">;

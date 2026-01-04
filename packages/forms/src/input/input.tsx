@@ -17,6 +17,7 @@ export const Input = ({
   required,
   size,
   fullwidth,
+  ghost,
   FieldProps,
   className,
   ...props
@@ -34,7 +35,7 @@ export const Input = ({
         name={name}
         className={cx(
           styles["input"],
-          inputVariants({ size, fullwidth }),
+          inputVariants({ size, fullwidth, ghost }),
           className,
         )}
         data-size={size}

@@ -33,6 +33,7 @@ const meta: Meta<typeof Input> = {
     /** Toggles */
     disabled: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
+    ghost: { control: "boolean", table: { category: "Toggles" } },
     /** Text */
     placeholder: { control: "text", table: { category: "Text" } },
     /** Subcomponents */

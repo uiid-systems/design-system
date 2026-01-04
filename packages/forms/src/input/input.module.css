@@ -56,3 +56,13 @@
   width: 100%;
   width: -webkit-fill-available;
 }
+
+.toggle-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--shade-foreground);
+
+  &:hover {
+    background-color: var(--forms-backgroundHover);
+  }
+}

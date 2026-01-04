@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 import { Stack, Group } from "@uiid/layout";
 
 import { Field } from "../field/field";
@@ -13,19 +14,40 @@ const meta: Meta<ComboboxProps> = {
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  // tags: ["beta"],
+  tags: ["beta"],
   args: {
     placeholder: "Placeholder",
     items: MOCK_COMBOBOX_ITEMS,
+    onFocus: fn(),
+    onBlur: fn(),
   },
-  argTypes: {},
+  argTypes: {
+    /** Text */
+    placeholder: { control: "text", table: { category: "Text" } },
+    /** Data */
+    items: { table: { category: "Data" } },
+    value: { control: "text", table: { category: "Data" } },
+    defaultValue: { control: "text", table: { category: "Data" } },
+    /** Toggles */
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    /** Events */
+    onValueChange: { table: { category: "Events" } },
+    /** Subcomponents */
+    RootProps: { table: { category: "Subcomponents" } },
+    InputProps: { table: { category: "Subcomponents" } },
+    PortalProps: { table: { category: "Subcomponents" } },
+    PositionerProps: { table: { category: "Subcomponents" } },
+    PopupProps: { table: { category: "Subcomponents" } },
+    ListProps: { table: { category: "Subcomponents" } },
+  },
   render: (args) => (
     <Stack ax="stretch" gap={8}>
       <Combobox {...args} />
       <Combobox
         {...args}
         label="Combobox with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        description="TODO: Fix icon positioning"
       />
 
       <Field

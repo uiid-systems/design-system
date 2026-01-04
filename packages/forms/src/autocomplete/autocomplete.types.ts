@@ -21,5 +21,5 @@ export type AutocompleteProps<Value = string> = {
   PopupProps?: AutocompletePopupProps;
   ListProps?: AutocompleteListProps;
 } & AutocompleteRootProps<Value> &
-  Pick<FieldProps, "label" | "description"> &
-  Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur">;
+  Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur"> &
+  Pick<FieldProps, "label" | "description">;

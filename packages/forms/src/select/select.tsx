@@ -17,7 +17,6 @@ export const Select = ({
   size = SELECT_DEFAULT_SIZE,
   label,
   description,
-  error,
   defaultValue,
   placeholder,
   items,
@@ -31,7 +30,7 @@ export const Select = ({
   ...props
 }: SelectProps) => {
   return (
-    <Field label={label} description={description} error={error}>
+    <Field label={label} description={description}>
       <SelectRoot
         defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
         {...RootProps}

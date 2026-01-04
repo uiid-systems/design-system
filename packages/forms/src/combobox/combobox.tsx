@@ -20,6 +20,8 @@ export const Combobox = ({
   label,
   description,
   placeholder,
+  onFocus,
+  onBlur,
   RootProps,
   InputProps,
   PortalProps,
@@ -27,14 +29,17 @@ export const Combobox = ({
   PopupProps,
   ListProps,
   children,
+  ...props
 }: ComboboxProps) => {
   return (
-    <ComboboxRoot items={items} {...RootProps}>
+    <ComboboxRoot items={items} {...RootProps} {...props}>
       <div className={styles["combobox-input-wrapper"]}>
         <ComboboxInput
           placeholder={placeholder}
           label={label}
           description={description}
+          onFocus={onFocus}
+          onBlur={onBlur}
           FieldProps={{ style: { width: "100%" } }}
           {...InputProps}
         />
