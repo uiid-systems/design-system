@@ -18,6 +18,8 @@ export const CheckboxGroup = ({
   hideIndicators,
   bordered,
   reversed,
+  disabled,
+  required,
   CheckboxProps,
   IndicatorProps,
   ...props
@@ -25,7 +27,12 @@ export const CheckboxGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <Field label={label} description={description}>
+    <Field
+      label={label}
+      description={description}
+      required={required}
+      disabled={disabled}
+    >
       <BaseCheckboxGroup
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
         defaultValue={defaultValue ? [...defaultValue] : undefined}

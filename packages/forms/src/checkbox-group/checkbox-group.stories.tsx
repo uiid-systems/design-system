@@ -17,22 +17,23 @@ const meta = {
     items: MOCK_CHECKBOXGROUP_OPTIONS,
   },
   argTypes: {
-    /** Data */
     defaultValue: { control: "object", table: { category: "Data" } },
     value: { control: "object", table: { category: "Data" } },
-    /** Events */
+
     onValueChange: { table: { category: "Events" } },
-    /** Variants */
+
     direction: {
       control: "select",
       options: ["horizontal", "vertical"],
-      table: { category: "Variants" },
+      table: { category: "Options" },
     },
-    /** Toggles */
+
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
     hideIndicators: { control: "boolean", table: { category: "Toggles" } },
-    /** Subcomponents */
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+
     CheckboxProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },

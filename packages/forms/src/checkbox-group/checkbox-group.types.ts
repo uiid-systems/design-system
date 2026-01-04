@@ -9,12 +9,13 @@ import type {
 } from "../checkbox/checkbox.types";
 import type { FormItemProps } from "../types";
 
-export type CheckboxGroupProps = BaseCheckboxGroup.Props &
-  Omit<StackProps, "ax" | "ay" | "direction"> & {
-    items: FormItemProps[];
-    direction?: "horizontal" | "vertical";
-    hideIndicators?: CheckboxProps["hideIndicator"];
-    CheckboxProps?: Partial<CheckboxProps>;
-    IndicatorProps?: CheckboxIndicatorProps;
-  } & Pick<CheckboxProps, "bordered" | "reversed" | "required"> &
-  Pick<FieldProps, "label" | "description">;
+export type CheckboxGroupProps = {
+  items: FormItemProps[];
+  direction?: "horizontal" | "vertical";
+  hideIndicators?: CheckboxProps["hideIndicator"];
+  CheckboxProps?: Partial<CheckboxProps>;
+  IndicatorProps?: CheckboxIndicatorProps;
+} & BaseCheckboxGroup.Props &
+  Pick<CheckboxProps, "bordered" | "reversed" | "required" | "disabled"> &
+  Pick<FieldProps, "label" | "description"> &
+  Omit<StackProps, "ax" | "ay" | "direction">;
