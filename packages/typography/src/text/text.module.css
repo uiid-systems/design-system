@@ -94,14 +94,47 @@
 }
 
 .tone-positive {
-  color: color-mix(in oklab, var(--shade-foreground), var(--tone-positive) 80%);
+  color: var(--tone-positive);
 }
 .tone-negative {
-  color: color-mix(in oklab, var(--shade-foreground), var(--tone-negative) 80%);
+  color: var(--tone-negative);
 }
 .tone-warning {
-  color: color-mix(in oklab, var(--shade-foreground), var(--tone-warning) 80%);
+  color: var(--tone-warning);
 }
 .tone-info {
-  color: color-mix(in oklab, var(--shade-foreground), var(--tone-info) 80%);
+  color: var(--tone-info);
+}
+
+.toggle-bold {
+  font-weight: 700;
+}
+
+.toggle-center {
+  text-align: center;
+}
+
+.toggle-underline {
+  text-decoration-line: underline;
+}
+
+.toggle-no-underline {
+  text-decoration-line: none;
+}
+
+.toggle-strikethrough {
+  text-decoration-line: line-through;
+}
+
+.weight-bold {
+  font-weight: 700;
+}
+.weight-normal {
+  font-weight: 400;
+}
+.weight-light {
+  font-weight: 300;
+}
+.weight-thin {
+  font-weight: 100;
 }

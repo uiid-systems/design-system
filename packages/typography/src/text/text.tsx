@@ -2,9 +2,6 @@ import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
 
 import type { TextProps } from "./text.types";
 
-import "@uiid/utils/bold.css";
-import "@uiid/utils/center.css";
-
 import { textVariants } from "./text.variants";
 import styles from "./text.module.css";
 
@@ -12,6 +9,9 @@ export const Text = ({
   shade,
   size,
   tone,
+  underline,
+  weight,
+  strikethrough,
   render,
   className,
   children,
@@ -19,7 +19,6 @@ export const Text = ({
 }: TextProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    toggleProps: ["bold", "center"],
     styleProps: [
       "p",
       "px",
@@ -45,7 +44,14 @@ export const Text = ({
       ...preparedProps,
       className: cx(
         styles["text"],
-        textVariants({ shade, size, tone }),
+        textVariants({
+          shade,
+          size,
+          tone,
+          weight,
+          underline,
+          strikethrough,
+        }),
         className,
       ),
     },

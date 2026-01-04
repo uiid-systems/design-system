@@ -19,7 +19,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
   styleProps: stylePropKeys = [],
 }: PrepareComponentPropsOptions<T>) {
   const dataAttrs: Record<string, string> = {
-    uiid: componentName,
+    "data-slot": componentName,
   };
 
   const restProps: Record<string, unknown> = {};

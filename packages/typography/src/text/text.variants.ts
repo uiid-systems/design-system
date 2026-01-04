@@ -4,6 +4,17 @@ import styles from "./text.module.css";
 
 export const textVariants = cva({
   variants: {
+    strikethrough: { true: styles["toggle-strikethrough"] },
+    underline: {
+      true: styles["toggle-underline"],
+      false: styles["toggle-no-underline"],
+    },
+    weight: {
+      bold: styles["weight-bold"],
+      normal: styles["weight-normal"],
+      light: styles["weight-light"],
+      thin: styles["weight-thin"],
+    },
     shade: {
       background: styles["shade-background"],
       surface: styles["shade-surface"],

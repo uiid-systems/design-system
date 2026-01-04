@@ -12,35 +12,55 @@ const shades: TextProps["shade"][] = [
   "foreground",
 ];
 const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
+const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
 
-const meta = {
+const meta: Meta<typeof Text> = {
   title: "Typography/Text",
   component: Text,
-  args: {},
+  args: {
+    children:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+  },
+  argTypes: {
+    children: {
+      control: "text",
+      table: { category: "Content" },
+    },
+    size: {
+      control: "select",
+      options: levels,
+      table: { category: "Variants" },
+    },
+    tone: {
+      control: "select",
+      options: tones,
+      table: { category: "Variants" },
+    },
+    shade: {
+      control: "select",
+      options: shades,
+      table: { category: "Variants" },
+    },
+    weight: {
+      control: "select",
+      options: weights,
+      table: { category: "Variants" },
+    },
+    underline: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
+    strikethrough: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
+  },
   render: (args) => (
-    <div style={{ display: "flex", gap: "2rem" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-        {shades.map((shade) => (
-          <Text {...args} key={shade} size={2} shade={shade} bold>
-            [shade] {shade}
-          </Text>
-        ))}
-        {tones.map((tone) => (
-          <Text {...args} key={tone} size={2} tone={tone} bold>
-            [tone] {tone}
-          </Text>
-        ))}
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-        {levels.map((level) => (
-          <Text {...args} key={level} size={level}>
-            [level] {level}
-          </Text>
-        ))}
-      </div>
+    <div style={{ width: "100%" }}>
+      <Text {...args} />
     </div>
   ),
-} satisfies Meta<typeof Text>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
