@@ -7,6 +7,10 @@ import { Checkbox } from "./checkbox";
 const meta: Meta<typeof Checkbox> = {
   title: "Forms/Checkbox",
   component: Checkbox,
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  tags: ["beta"],
   args: {},
   argTypes: {
     /** Text */
@@ -22,12 +26,9 @@ const meta: Meta<typeof Checkbox> = {
     defaultChecked: { control: "boolean", table: { category: "Data" } },
     uncheckedValue: { control: "boolean", table: { category: "Data" } },
     /** Events */
-    onCheckedChange: {
-      action: "onCheckedChange",
-      table: { category: "Events" },
-    },
-    onFocus: { action: "onFocus", table: { category: "Events" } },
-    onBlur: { action: "onBlur", table: { category: "Events" } },
+    onCheckedChange: { table: { category: "Events" } },
+    onFocus: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
     /** Toggles */
     indeterminate: { control: "boolean", table: { category: "Toggles" } },
     bordered: { control: "boolean", table: { category: "Toggles" } },

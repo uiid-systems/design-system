@@ -27,9 +27,9 @@ export const CheckboxGroup = ({
   return (
     <Field label={label} description={description}>
       <BaseCheckboxGroup
-        {...props}
-        defaultValue={defaultValue ? [...defaultValue] : undefined}
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
+        defaultValue={defaultValue ? [...defaultValue] : undefined}
+        {...props}
       >
         {items.map(({ value, label }) => (
           <Checkbox

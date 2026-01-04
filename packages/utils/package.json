@@ -10,11 +10,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./bold.css": "./dist/bold.css",
     "./evenly.css": "./dist/evenly.css",
     "./fullheight.css": "./dist/fullheight.css",
-    "./fullwidth.css": "./dist/fullwidth.css",
-    "./center.css": "./dist/center.css"
+    "./fullwidth.css": "./dist/fullwidth.css"
   },
   "files": [
     "dist"

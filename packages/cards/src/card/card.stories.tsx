@@ -7,7 +7,7 @@ import { Card } from "./card";
 const meta = {
   title: "Cards/Card",
   component: Card,
-  tags: ["beta"],
+  tags: ["danger"],
   args: {
     title: "Card Title",
     children:

@@ -17,6 +17,7 @@ const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
 const meta: Meta<typeof Text> = {
   title: "Typography/Text",
   component: Text,
+  tags: ["beta"],
   args: {
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",

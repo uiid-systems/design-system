@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Stack, Group } from "@uiid/layout";
 
 import { Field } from "../field/field";
@@ -11,6 +12,9 @@ const meta: Meta<AutocompleteProps> = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
   tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
   args: {
     items: MOCK_AUTOCOMPLETE_ITEMS,
   },
@@ -20,7 +24,7 @@ const meta: Meta<AutocompleteProps> = {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
     /** Data */
-    items: { control: "object", table: { category: "Data" } },
+    items: { table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
     /** Toggles */
@@ -28,28 +32,19 @@ const meta: Meta<AutocompleteProps> = {
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
     /** Events */
-    onFocus: { action: "onFocus", table: { category: "Events" } },
-    onBlur: { action: "onBlur", table: { category: "Events" } },
-    onItemHighlighted: {
-      action: "onItemHighlighted",
-      table: { category: "Events" },
-    },
-    onOpenChange: { action: "onOpenChange", table: { category: "Events" } },
-    onOpenChangeComplete: {
-      action: "onOpenChangeComplete",
-      table: { category: "Events" },
-    },
-    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    onFocus: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
+    onItemHighlighted: { table: { category: "Events" } },
+    onOpenChange: { table: { category: "Events" } },
+    onOpenChangeComplete: { table: { category: "Events" } },
+    onValueChange: { table: { category: "Events" } },
     /** Subcomponents */
-    RootProps: { control: "object", table: { category: "Subcomponents" } },
-    InputProps: { control: "object", table: { category: "Subcomponents" } },
-    PortalProps: { control: "object", table: { category: "Subcomponents" } },
-    PositionerProps: {
-      control: "object",
-      table: { category: "Subcomponents" },
-    },
-    PopupProps: { control: "object", table: { category: "Subcomponents" } },
-    ListProps: { control: "object", table: { category: "Subcomponents" } },
+    RootProps: { table: { category: "Subcomponents" } },
+    InputProps: { table: { category: "Subcomponents" } },
+    PortalProps: { table: { category: "Subcomponents" } },
+    PositionerProps: { table: { category: "Subcomponents" } },
+    PopupProps: { table: { category: "Subcomponents" } },
+    ListProps: { table: { category: "Subcomponents" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

@@ -9,6 +9,10 @@ import { MOCK_CHECKBOXGROUP_OPTIONS } from "./checkbox-group.mocks";
 const meta = {
   title: "Forms/Checkbox Group",
   component: CheckboxGroup,
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  tags: ["beta"],
   args: {
     items: MOCK_CHECKBOXGROUP_OPTIONS,
   },
@@ -16,7 +20,8 @@ const meta = {
     /** Data */
     defaultValue: { control: "object", table: { category: "Data" } },
     value: { control: "object", table: { category: "Data" } },
-    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    /** Events */
+    onValueChange: { table: { category: "Events" } },
     /** Variants */
     direction: {
       control: "select",

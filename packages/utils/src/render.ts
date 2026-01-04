@@ -2,7 +2,10 @@ import { cloneElement, isValidElement, createElement } from "react";
 import { cx } from "./cva";
 
 export type RenderProp = React.ReactElement<
-  React.PropsWithChildren<{ className?: string; style?: React.CSSProperties }>
+  React.PropsWithChildren<{
+    className?: string;
+    style?: React.CSSProperties;
+  }>
 >;
 
 export type RenderWithPropsOptions = {
