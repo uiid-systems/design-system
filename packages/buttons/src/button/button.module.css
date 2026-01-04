@@ -23,7 +23,6 @@
   }
 
   &:where(:focus) {
-    transition: none;
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
@@ -107,6 +106,7 @@
 .tone-positive {
   background-color: var(--tone-positive);
   border-color: var(--tone-positive);
+  outline-color: var(--tone-positive);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-positive), var(--shade-background) 10%);
@@ -127,6 +127,7 @@
 .tone-negative {
   background-color: var(--tone-negative);
   border-color: var(--tone-negative);
+  outline-color: var(--tone-negative);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-negative), var(--shade-background) 10%);
@@ -147,6 +148,7 @@
 .tone-warning {
   background-color: var(--tone-warning);
   border-color: var(--tone-warning);
+  outline-color: var(--tone-warning);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-warning), var(--shade-background) 10%);
@@ -167,6 +169,7 @@
 .tone-info {
   background-color: var(--tone-info);
   border-color: var(--tone-info);
+  outline-color: var(--tone-info);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-info), var(--shade-background) 10%);

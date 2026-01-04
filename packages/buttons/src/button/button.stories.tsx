@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { GlobeIcon, ExternalLinkIcon } from "@uiid/icons";
+import {
+  GlobeIcon,
+  ExternalLinkIcon,
+  CircleCheckIcon,
+  BanIcon,
+  TriangleAlertIcon,
+  InfoIcon,
+} from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -93,15 +100,19 @@ export const Default: Story = {
         <Group gap={2}>
           <Button {...args} tooltip="Tooltip" tone="positive">
             Positive tone
+            <CircleCheckIcon />
           </Button>
           <Button {...args} tooltip="Tooltip" tone="negative">
             Negative tone
+            <BanIcon />
           </Button>
           <Button {...args} tooltip="Tooltip" tone="warning">
             Warning tone
+            <TriangleAlertIcon />
           </Button>
           <Button {...args} tooltip="Tooltip" tone="info">
             Info tone
+            <InfoIcon />
           </Button>
         </Group>
         <Button

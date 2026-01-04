@@ -7,7 +7,6 @@ export const SwitchLabel = ({ disabled, name, label }: SwitchLabelProps) => (
     data-slot="switch-label"
     data-disabled={disabled}
     htmlFor={name}
-    size={0}
     weight="normal"
   >
     {label}

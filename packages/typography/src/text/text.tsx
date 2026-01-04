@@ -4,10 +4,11 @@ import type { TextProps } from "./text.types";
 
 import { textVariants } from "./text.variants";
 import styles from "./text.module.css";
+import { TEXT_DEFAULT_SIZE } from "./text.constants";
 
 export const Text = ({
   shade,
-  size,
+  size = TEXT_DEFAULT_SIZE,
   tone,
   underline,
   weight,

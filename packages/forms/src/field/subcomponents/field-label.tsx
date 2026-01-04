@@ -7,6 +7,7 @@ import styles from "../field.module.css";
 
 export const FieldLabel = ({
   required,
+  weight = "bold",
   className,
   children,
   ...props
@@ -14,7 +15,7 @@ export const FieldLabel = ({
   return (
     <BaseField.Label
       data-slot="field-label"
-      render={<Text size={1} weight="bold" />}
+      render={<Text weight={weight} />}
       className={cx(styles["field-label"], className)}
       data-required={required}
       {...props}

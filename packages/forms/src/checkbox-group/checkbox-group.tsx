@@ -11,7 +11,7 @@ import type { CheckboxGroupProps } from "./checkbox-group.types";
 
 export const CheckboxGroup = ({
   items,
-  label,
+  label: fieldLabel,
   description,
   defaultValue,
   direction = "vertical",
@@ -28,7 +28,7 @@ export const CheckboxGroup = ({
 
   return (
     <Field
-      label={label}
+      label={fieldLabel}
       description={description}
       required={required}
       disabled={disabled}
@@ -38,14 +38,14 @@ export const CheckboxGroup = ({
         defaultValue={defaultValue ? [...defaultValue] : undefined}
         {...props}
       >
-        {items.map(({ value, label }) => (
+        {items.map(({ value, label: checkboxLabel }) => (
           <Checkbox
             key={value}
             hideIndicator={hideIndicators}
             bordered={bordered}
             reversed={reversed}
             value={value}
-            label={label}
+            label={checkboxLabel}
             IndicatorProps={IndicatorProps}
             {...CheckboxProps}
           />

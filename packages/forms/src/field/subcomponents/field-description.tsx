@@ -10,7 +10,7 @@ export const FieldDescription = ({
   return (
     <BaseField.Description
       data-slot="field-description"
-      render={<Text size={0} shade="accent" />}
+      render={<Text shade="accent" />}
       {...props}
     >
       {children}

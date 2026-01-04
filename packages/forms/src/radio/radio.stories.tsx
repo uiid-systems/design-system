@@ -10,7 +10,7 @@ const meta: Meta<typeof Radio> = {
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  tags: ["danger"],
+  tags: ["beta"],
   args: {},
   argTypes: {
     label: { control: "text", table: { category: "Text" } },
@@ -27,6 +27,7 @@ const meta: Meta<typeof Radio> = {
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
+    hideIndicator: { control: "boolean", table: { category: "Toggles" } },
     nativeButton: { control: "boolean", table: { category: "Toggles" } },
 
     ContainerProps: { control: "object", table: { category: "Subcomponents" } },

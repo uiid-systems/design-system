@@ -16,6 +16,8 @@ export const CheckboxField = ({
   description,
   reversed,
   bordered,
+  LabelProps,
+  DescriptionProps,
   className,
   children,
   ...props
@@ -49,11 +51,15 @@ export const CheckboxField = ({
             render={<Stack gap={3} />}
           >
             {label && (
-              <FieldLabel render={<span />} size={0} weight="normal">
+              <FieldLabel weight="normal" {...LabelProps}>
                 {label}
               </FieldLabel>
             )}
-            {description && <FieldDescription>{description}</FieldDescription>}
+            {description && (
+              <FieldDescription {...DescriptionProps}>
+                {description}
+              </FieldDescription>
+            )}
           </ConditionalRender>
         </FieldRoot>
       )}

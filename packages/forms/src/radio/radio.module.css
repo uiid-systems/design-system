@@ -1,11 +1,9 @@
 .radio {
   aspect-ratio: 1;
-  width: 1rem;
-  height: 1rem;
   border-radius: 100%;
   outline: 0;
   background-color: var(--forms-background);
-  border: 1px solid var(--forms-border-color);
+  border: var(--globals-border-width) solid var(--forms-border-color);
 
   &[data-unchecked] {
     background-color: transparent;
@@ -16,8 +14,8 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--shade-foreground);
-    outline-offset: 2px;
+    outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
   }
 }
 

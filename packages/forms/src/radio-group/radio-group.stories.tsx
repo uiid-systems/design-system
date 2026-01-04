@@ -9,10 +9,34 @@ import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
 const meta: Meta<RadioGroupProps> = {
   title: "Forms/Radio Group",
   component: RadioGroup,
+  tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
   args: {
-    required: true,
     items: MOCK_RADIOGROUP_OPTIONS,
-    name: "radio-group",
+  },
+  argTypes: {
+    items: { control: "object", table: { category: "Data" } },
+    defaultValue: { control: "object", table: { category: "Data" } },
+    value: { control: "object", table: { category: "Data" } },
+
+    onValueChange: { table: { category: "Events" } },
+
+    direction: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      table: { category: "Options" },
+    },
+
+    bordered: { control: "boolean", table: { category: "Toggles" } },
+    reversed: { control: "boolean", table: { category: "Toggles" } },
+    hideIndicators: { control: "boolean", table: { category: "Toggles" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+
+    RadioProps: { control: "object", table: { category: "Subcomponents" } },
+    IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
     <Stack gap={8}>
