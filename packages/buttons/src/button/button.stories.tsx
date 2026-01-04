@@ -89,7 +89,23 @@ export const Default: Story = {
             travel the world
           </Button>
         </Group>
+
+        <Group gap={2}>
+          <Button {...args} tooltip="Tooltip" tone="positive">
+            Positive tone
+          </Button>
+          <Button {...args} tooltip="Tooltip" tone="negative">
+            Negative tone
+          </Button>
+          <Button {...args} tooltip="Tooltip" tone="warning">
+            Warning tone
+          </Button>
+          <Button {...args} tooltip="Tooltip" tone="info">
+            Info tone
+          </Button>
+        </Group>
         <Button
+          {...args}
           nativeButton={false}
           render={<a href="https://www.google.com" target="_blank" />}
           tooltip={

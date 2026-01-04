@@ -10,15 +10,15 @@ import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
 const meta: Meta<ComboboxProps> = {
   title: "Forms/Combobox",
   component: Combobox,
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  // tags: ["beta"],
   args: {
     placeholder: "Placeholder",
     items: MOCK_COMBOBOX_ITEMS,
   },
-  argTypes: {
-    onFocus: { action: "onFocus" },
-    onValueChange: { action: "onValueChange" },
-    onBlur: { action: "onBlur" },
-  },
+  argTypes: {},
   render: (args) => (
     <Stack ax="stretch" gap={8}>
       <Combobox {...args} />

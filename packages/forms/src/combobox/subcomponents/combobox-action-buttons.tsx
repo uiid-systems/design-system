@@ -27,6 +27,7 @@ export const ComboboxActionButtons = ({
         <XIcon size={14} />
       </BaseCombobox.Clear>
       <BaseCombobox.Trigger
+        data-slot="combobox-trigger"
         className={styles["combobox-action"]}
         aria-label="Toggle dropdown"
       >

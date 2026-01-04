@@ -1,4 +1,5 @@
 import { expect, userEvent, within } from "storybook/test";
+import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "@uiid/layout";
 
@@ -14,19 +15,28 @@ const meta: Meta<typeof Input> = {
     disabled: false,
     required: false,
     placeholder: "Placeholder",
+    onFocus: fn(),
+    onValueChange: fn(),
+    onBlur: fn(),
   },
   argTypes: {
-    onFocus: { action: "onFocus", table: { category: "Events" } },
-    onValueChange: { action: "onValueChange", table: { category: "Events" } },
-    onBlur: { action: "onBlur", table: { category: "Events" } },
+    /** Events */
+    onFocus: { table: { category: "Events" } },
+    onValueChange: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
+    /** Variants */
     size: {
       control: "select",
       options: ["small", "medium", "large"],
       table: { category: "Variants" },
     },
+    /** Toggles */
     disabled: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
+    /** Text */
     placeholder: { control: "text", table: { category: "Text" } },
+    /** Subcomponents */
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

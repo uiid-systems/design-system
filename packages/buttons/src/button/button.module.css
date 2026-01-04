@@ -103,3 +103,84 @@
     border-color: transparent;
   }
 }
+
+.tone-positive {
+  background-color: var(--tone-positive);
+  border-color: var(--tone-positive);
+
+  &:where(:hover, :active) {
+    --active-color: color-mix(in oklab, var(--tone-positive), var(--shade-background) 10%);
+    background-color: var(--active-color);
+  }
+
+  &:where([data-ghost="true"]) {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--tone-positive);
+
+    &:where(:hover, :active) {
+      --active-color: color-mix(in oklab, var(--tone-positive), transparent 80%);
+      background-color: var(--active-color);
+    }
+  }
+}
+.tone-negative {
+  background-color: var(--tone-negative);
+  border-color: var(--tone-negative);
+
+  &:where(:hover, :active) {
+    --active-color: color-mix(in oklab, var(--tone-negative), var(--shade-background) 10%);
+    background-color: var(--active-color);
+  }
+
+  &:where([data-ghost="true"]) {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--tone-negative);
+
+    &:where(:hover, :active) {
+      --active-color: color-mix(in oklab, var(--tone-negative), transparent 80%);
+      background-color: var(--active-color);
+    }
+  }
+}
+.tone-warning {
+  background-color: var(--tone-warning);
+  border-color: var(--tone-warning);
+
+  &:where(:hover, :active) {
+    --active-color: color-mix(in oklab, var(--tone-warning), var(--shade-background) 10%);
+    background-color: var(--active-color);
+  }
+
+  &:where([data-ghost="true"]) {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--tone-warning);
+
+    &:where(:hover, :active) {
+      --active-color: color-mix(in oklab, var(--tone-warning), transparent 80%);
+      background-color: var(--active-color);
+    }
+  }
+}
+.tone-info {
+  background-color: var(--tone-info);
+  border-color: var(--tone-info);
+
+  &:where(:hover, :active) {
+    --active-color: color-mix(in oklab, var(--tone-info), var(--shade-background) 10%);
+    background-color: var(--active-color);
+  }
+
+  &:where([data-ghost="true"]) {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--tone-info);
+
+    &:where(:hover, :active) {
+      --active-color: color-mix(in oklab, var(--tone-info), transparent 80%);
+      background-color: var(--active-color);
+    }
+  }
+}

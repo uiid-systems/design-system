@@ -4,12 +4,10 @@ import styles from "./button.module.css";
 
 export const buttonVariants = cva({
   variants: {
-    /** Boolean */
     grows: { true: styles["toggle-grows"] },
     square: { true: styles["toggle-square"] },
     pill: { true: styles["toggle-pill"] },
     ghost: { true: styles["toggle-ghost"] },
-    /** Multivariant */
     variant: {
       subtle: styles["variant-subtle"],
       inverted: styles["variant-inverted"],
@@ -18,6 +16,12 @@ export const buttonVariants = cva({
       small: styles["size-small"],
       medium: styles["size-medium"],
       large: styles["size-large"],
+    },
+    tone: {
+      positive: styles["tone-positive"],
+      negative: styles["tone-negative"],
+      warning: styles["tone-warning"],
+      info: styles["tone-info"],
     },
   },
   defaultVariants: {

@@ -35,6 +35,7 @@ export const Combobox = ({
           placeholder={placeholder}
           label={label}
           description={description}
+          FieldProps={{ style: { width: "100%" } }}
           {...InputProps}
         />
         <ComboboxActionButtons />

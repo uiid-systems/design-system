@@ -17,6 +17,7 @@ export const Input = ({
   required,
   size,
   fullwidth,
+  FieldProps,
   className,
   ...props
 }: InputProps) => {
@@ -26,6 +27,7 @@ export const Input = ({
       description={description}
       name={name}
       required={required}
+      {...FieldProps}
     >
       <BaseInput
         data-slot="input"

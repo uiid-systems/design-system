@@ -8,6 +8,8 @@ import { inputVariants } from "./input.variants";
 
 export type InputVariants = VariantProps<typeof inputVariants>;
 
-export type InputProps = Omit<Input.Props, "size"> &
+export type InputProps = Omit<Input.Props, "size"> & {
+  FieldProps?: FieldProps;
+} & Pick<FieldProps, "label" | "description"> &
   InputVariants &
   Pick<FieldProps, "label" | "description">;

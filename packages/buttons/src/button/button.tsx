@@ -18,6 +18,7 @@ export const Button = ({
   pill,
   grows,
   size,
+  tone,
   square,
   circle,
   variant,
@@ -41,9 +42,10 @@ export const Button = ({
         data-slot="button"
         className={cx(
           styles["button"],
-          buttonVariants({ ghost, grows, pill, size, square, variant }),
+          buttonVariants({ ghost, grows, pill, size, square, variant, tone }),
           className,
         )}
+        data-ghost={ghost}
         {...props}
       >
         <ConditionalRender
