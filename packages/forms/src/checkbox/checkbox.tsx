@@ -11,8 +11,8 @@ export const Checkbox = ({
   description,
   reversed,
   bordered,
-  hideIndicator,
   indeterminate,
+  hideIndicator,
   ContainerProps,
   IndicatorProps,
   ...props

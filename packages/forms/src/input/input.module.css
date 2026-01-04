@@ -21,7 +21,7 @@
   }
 
   /** Disabled */
-  &:where(:disabled, [disabled]) {
+  &:where(:disabled, [disabled], [data-disabled]) {
     pointer-events: none;
     opacity: var(--globals-disabled-opacity);
   }

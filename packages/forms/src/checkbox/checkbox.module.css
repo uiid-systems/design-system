@@ -1,27 +1,5 @@
 @import "@uiid/tokens/checkbox.tokens.css";
 
-.label {
-  &[data-bordered] {
-    border: var(--globals-border-width) solid var(--forms-border-color);
-    border-radius: var(--globals-border-radius);
-    padding: var(--forms-padding-y) var(--forms-padding-x);
-    color: var(--shade-foreground);
-
-    &:focus-within {
-      outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
-      outline-offset: var(--globals-outline-offset);
-    }
-
-    &:has([data-checked]) {
-      background-color: var(--forms-background);
-    }
-  }
-
-  &[data-reversed="true"] {
-    flex-direction: row-reverse;
-  }
-}
-
 .checkbox {
   width: var(--checkbox-size);
   aspect-ratio: 1;
@@ -51,10 +29,20 @@
     outline-offset: 2px;
   }
 
+  &:where(:disabled, [disabled], [data-disabled]) {
+    opacity: var(--globals-disabled-opacity);
+    pointer-events: none;
+  }
+
   &::after {
     position: absolute;
     inset: -0.25rem;
   }
+}
+
+.checkbox-label:has(:disabled, [disabled], [data-disabled]) {
+  opacity: var(--globals-disabled-opacity);
+  pointer-events: none;
 }
 
 .checkbox-indicator {
@@ -79,4 +67,24 @@
 }
 .size-large {
   width: var(--checkbox-size-lg);
+}
+
+.toggle-bordered {
+  border: var(--globals-border-width) solid var(--forms-border-color);
+  border-radius: var(--globals-border-radius);
+  padding: var(--forms-padding-y) var(--forms-padding-x);
+  color: var(--shade-foreground);
+
+  &:focus-within {
+    outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+  }
+
+  &:has([data-checked]) {
+    background-color: var(--forms-background);
+  }
+}
+
+.toggle-reversed {
+  flex-direction: row-reverse;
 }

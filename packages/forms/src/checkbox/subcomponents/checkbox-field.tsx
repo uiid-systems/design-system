@@ -8,6 +8,7 @@ import {
 } from "../../field/subcomponents";
 
 import type { CheckboxFieldProps } from "../checkbox.types";
+import { checkboxVariants } from "../checkbox.variants";
 import styles from "../checkbox.module.css";
 
 export const CheckboxField = ({
@@ -29,11 +30,13 @@ export const CheckboxField = ({
       render={
         <Group
           render={<label />}
+          className={cx(
+            styles["checkbox-label"],
+            checkboxVariants({ reversed, bordered }),
+            className,
+          )}
           ay={needsTextContainer ? "start" : "center"}
           gap={3}
-          data-reversed={reversed}
-          data-bordered={bordered}
-          className={cx(styles["label"], className)}
           {...props}
         />
       }
