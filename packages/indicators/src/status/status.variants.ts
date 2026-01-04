@@ -4,14 +4,12 @@ import styles from "./status.module.css";
 
 export const statusVariants = cva({
   variants: {
-    variant: {
-      positive: styles["variant-positive"],
-      warning: styles["variant-warning"],
-      negative: styles["variant-negative"],
-      info: styles["variant-info"],
-    },
-    pulse: {
-      true: styles["toggle-pulse"],
+    pulse: { true: styles["toggle-pulse"] },
+    tone: {
+      positive: styles["tone-positive"],
+      warning: styles["tone-warning"],
+      negative: styles["tone-negative"],
+      info: styles["tone-info"],
     },
   },
 });

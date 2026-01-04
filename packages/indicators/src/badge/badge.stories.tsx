@@ -10,25 +10,30 @@ const meta = {
   tags: ["beta"],
   args: {},
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg"] },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+    hideIndicator: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
   },
   render: (args) => (
     <Stack gap={4}>
       <Badge {...args}>Badge</Badge>
-      <Badge {...args} variant="positive">
+      <Badge {...args} tone="positive">
         Positive
       </Badge>
-      <Badge {...args} variant="negative">
+      <Badge {...args} tone="negative">
         Negative
       </Badge>
-      <Badge {...args} variant="info">
+      <Badge {...args} tone="info">
         Info
       </Badge>
-      <Badge {...args} variant="warning">
+      <Badge {...args} tone="warning">
         Warning
-      </Badge>
-      <Badge {...args} variant="inverted">
-        Inverted
       </Badge>
     </Stack>
   ),

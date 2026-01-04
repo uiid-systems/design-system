@@ -11,45 +11,6 @@
   padding: var(--badge-padding-y) var(--badge-padding-x);
   border: var(--globals-border-width) solid var(--badge-border);
   border-radius: var(--badge-border-radius);
-
-  &:where([data-variant="positive"]) {
-    --badge-bg: var(--colors-positive-bg);
-    --badge-border: var(--colors-positive-border);
-    --badge-fg: var(--colors-positive-fg);
-  }
-  &:where([data-variant="negative"]) {
-    --badge-bg: var(--colors-negative-bg);
-    --badge-border: var(--colors-negative-border);
-    --badge-fg: var(--colors-negative-fg);
-  }
-  &:where([data-variant="info"]) {
-    --badge-bg: var(--colors-info-bg);
-    --badge-border: var(--colors-info-border);
-    --badge-fg: var(--colors-info-fg);
-  }
-  &:where([data-variant="warning"]) {
-    --badge-bg: var(--colors-warning-bg);
-    --badge-border: var(--colors-warning-border);
-    --badge-fg: var(--colors-warning-fg);
-  }
-  &:where([data-variant="inverted"]) {
-    --badge-bg: var(--shade-background);
-    --badge-border: var(--shade-muted);
-    --badge-fg: var(--shade-foreground);
-  }
-
-  &:where([data-size="sm"]) {
-    --badge-padding-y: var(--badge-size-sm-padding-y);
-    --badge-padding-x: var(--badge-size-sm-padding-x);
-  }
-  &:where([data-size="md"]) {
-    --badge-padding-y: var(--badge-size-md-padding-y);
-    --badge-padding-x: var(--badge-size-md-padding-x);
-  }
-  &:where([data-size="lg"]) {
-    --badge-padding-y: var(--badge-size-lg-padding-y);
-    --badge-padding-x: var(--badge-size-lg-padding-x);
-  }
 }
 
 .badge-indicator {
@@ -57,4 +18,27 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
+}
+
+.size-small {
+  padding: var(--badge-size-sm-padding-y) var(--badge-size-sm-padding-x);
+}
+.size-medium {
+  padding: var(--badge-size-md-padding-y) var(--badge-size-md-padding-x);
+}
+.size-large {
+  padding: var(--badge-size-lg-padding-y) var(--badge-size-lg-padding-x);
+}
+
+.tone-positive {
+  background-color: var(--tones-positive);
+}
+.tone-negative {
+  background-color: var(--tones-negative);
+}
+.tone-warning {
+  background-color: var(--tones-warning);
+}
+.tone-info {
+  background-color: var(--tones-info);
 }

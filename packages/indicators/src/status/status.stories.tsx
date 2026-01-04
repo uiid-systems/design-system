@@ -9,25 +9,33 @@ const meta = {
   component: Status,
   tags: ["beta"],
   args: {},
+  argTypes: {
+    tone: {
+      control: "select",
+      options: ["positive", "warning", "negative", "info"],
+      table: { category: "Variants" },
+    },
+    pulse: { control: "boolean", table: { category: "Toggles" } },
+  },
   render: (args) => (
     <Stack gap={4}>
-      <Status {...args}>Status</Status>
+      <Status {...args} />
+      <Status {...args}>with label</Status>
       <Status {...args} pulse>
-        Pulsing status
+        pulsing
       </Status>
-      <Status {...args} variant="positive">
-        Success
+      <Status {...args} tone="positive">
+        positive
       </Status>
-      <Status {...args} variant="warning">
-        Warning
+      <Status {...args} tone="warning">
+        warning
       </Status>
-      <Status {...args} variant="negative">
-        Error
+      <Status {...args} tone="negative">
+        negative
       </Status>
-      <Status {...args} variant="info">
-        Info
+      <Status {...args} tone="info">
+        info
       </Status>
-      <Status variant="positive" pulse />
     </Stack>
   ),
 } satisfies Meta<typeof Status>;

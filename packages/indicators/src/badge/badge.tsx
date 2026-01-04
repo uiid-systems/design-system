@@ -3,11 +3,12 @@ import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { BadgeProps } from "./badge.types";
+import { badgeVariants } from "./badge.variants";
 import styles from "./badge.module.css";
 
 export const Badge = ({
   size,
-  variant,
+  tone,
   hideIndicator,
   className,
   children,
@@ -16,11 +17,9 @@ export const Badge = ({
   return (
     <Group
       data-slot="badge"
+      className={cx(styles["badge"], badgeVariants({ size, tone }), className)}
       ay="center"
       gap={1}
-      data-variant={variant}
-      data-size={size}
-      className={cx(styles["badge"], className)}
       {...props}
     >
       {!hideIndicator && (

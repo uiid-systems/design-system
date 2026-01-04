@@ -27,18 +27,18 @@
   animation: pulse 1.5s infinite;
 }
 
-.variant-positive {
-  background-color: var(--colors-positive-bg);
+.tone-positive {
+  background-color: var(--tones-positive);
 }
 
-.variant-warning {
-  background-color: var(--colors-warning-bg);
+.tone-warning {
+  background-color: var(--tones-warning);
 }
 
-.variant-negative {
-  background-color: var(--colors-negative-bg);
+.tone-negative {
+  background-color: var(--tones-negative);
 }
 
-.variant-info {
-  background-color: var(--colors-info-bg);
+.tone-info {
+  background-color: var(--tones-info);
 }

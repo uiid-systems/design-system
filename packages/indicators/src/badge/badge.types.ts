@@ -1,7 +1,11 @@
 import type { GroupProps } from "@uiid/layout";
+import type { VariantProps } from "@uiid/utils";
 
-export type BadgeProps = GroupProps & {
-  size?: "sm" | "md" | "lg";
-  variant?: "info" | "warning" | "negative" | "positive" | "inverted";
+import type { badgeVariants } from "./badge.variants";
+
+export type BadgeVariants = VariantProps<typeof badgeVariants>;
+
+export type BadgeProps = {
   hideIndicator?: boolean;
-};
+} & BadgeVariants &
+  GroupProps;

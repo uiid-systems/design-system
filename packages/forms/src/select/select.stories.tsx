@@ -10,7 +10,7 @@ import { MOCK_SELECT_ITEMS } from "./select.mocks";
 const meta = {
   title: "Forms/Select",
   component: Select,
-  tags: ["danger"],
+  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },

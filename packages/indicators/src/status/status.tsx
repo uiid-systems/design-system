@@ -7,7 +7,7 @@ import { statusVariants } from "./status.variants";
 import styles from "./status.module.css";
 
 export const Status = ({
-  variant,
+  tone,
   pulse,
   className,
   children,
@@ -28,7 +28,7 @@ export const Status = ({
     >
       <span
         data-slot="status-dot"
-        className={cx(styles["status-dot"], statusVariants({ pulse, variant }))}
+        className={cx(styles["status-dot"], statusVariants({ pulse, tone }))}
       />
       {children && (
         <Text data-slot="status-text" size={0}>

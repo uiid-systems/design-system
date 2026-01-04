@@ -20,6 +20,7 @@ export const Select = ({
   fullwidth,
   ghost,
   disabled,
+  required,
   label,
   description,
   placeholder,
@@ -38,7 +39,12 @@ export const Select = ({
   ...props
 }: SelectProps) => {
   return (
-    <Field label={label} description={description} {...FieldProps}>
+    <Field
+      label={label}
+      description={description}
+      required={required}
+      {...FieldProps}
+    >
       <SelectRoot
         defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
         items={items}
