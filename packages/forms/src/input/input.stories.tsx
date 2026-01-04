@@ -46,17 +46,16 @@ const meta: Meta<typeof Input> = {
         {...args}
         label="Input with label and description"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        required
       />
 
       <Field
         label="Group of inputs with field wrapper"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        required
+        required={args.required}
       >
         <Group fullwidth evenly gap={2}>
-          <Input {...args} placeholder="First name" required />
-          <Input {...args} placeholder="Last name" required />
+          <Input {...args} placeholder="First name" />
+          <Input {...args} placeholder="Last name" />
         </Group>
       </Field>
 

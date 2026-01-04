@@ -20,6 +20,7 @@ export const Combobox = ({
   label,
   description,
   placeholder,
+  disabled,
   onFocus,
   onBlur,
   RootProps,
@@ -38,6 +39,7 @@ export const Combobox = ({
           placeholder={placeholder}
           label={label}
           description={description}
+          disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
           FieldProps={{ style: { width: "100%" } }}
@@ -51,7 +53,9 @@ export const Combobox = ({
           <ComboboxPopup {...PopupProps}>
             <ComboboxList {...ListProps}>
               {children ??
-                ((item: string) => <ComboboxItem key={item} value={item} />)}
+                ((item: string) => (
+                  <ComboboxItem key={item} value={item} disabled={disabled} />
+                ))}
             </ComboboxList>
             <ComboboxEmpty>No results found.</ComboboxEmpty>
           </ComboboxPopup>

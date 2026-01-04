@@ -38,7 +38,6 @@ export const Input = ({
           inputVariants({ size, fullwidth, ghost }),
           className,
         )}
-        data-size={size}
         {...props}
       />
     </Field>

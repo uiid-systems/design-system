@@ -31,9 +31,9 @@ export const Badge = ({
       )}
       <Text
         data-slot="badge-text"
-        size={-1}
-        bold
         className={styles["badge-text"]}
+        size={-1}
+        weight="bold"
       >
         {children}
       </Text>

@@ -5,7 +5,7 @@ import { Text } from "@uiid/typography";
 export default function LeaderboardPage() {
   return (
     <Stack gap={4} fullwidth>
-      <Text size={4} bold>
+      <Text size={4} weight="bold">
         Leaderboard
       </Text>
       <Group gap={4} evenly>

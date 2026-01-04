@@ -111,7 +111,7 @@ export const Default: Story = {
           tooltip={
             <Text size={-1}>
               use{" "}
-              <Text bold tone="info">
+              <Text weight="bold" tone="info">
                 nativeButton
               </Text>{" "}
               when rendering a link

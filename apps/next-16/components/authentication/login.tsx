@@ -63,10 +63,10 @@ LoginForm.displayName = "LoginForm";
 const LoginFormHeader = () => {
   return (
     <Stack gap={4} p={2} ax="stretch">
-      <Text render={<h2 />} size={2} bold center>
+      <Text render={<h2 />} size={2} weight="bold">
         Welcome back
       </Text>
-      <Text render={<p />} size={0} shade="accent" center>
+      <Text render={<p />} size={0} shade="accent">
         Login with one of your social accounts.
       </Text>
     </Stack>
@@ -113,7 +113,6 @@ const Divider = () => {
       <Text
         size={0}
         shade="accent"
-        center
         px={2}
         className="bg-(--shade-surface) justify-self-center"
       >

@@ -74,7 +74,7 @@ describe("Checkbox", () => {
   });
 
   it("applies size data attribute", () => {
-    render(<Checkbox size="lg" />);
+    render(<Checkbox size="large" />);
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-size", "lg");
   });
 

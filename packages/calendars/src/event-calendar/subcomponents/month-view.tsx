@@ -73,7 +73,7 @@ export const MonthView = ({
             shade="accent"
             size={0}
             py={4}
-            center
+            align="center"
           >
             {day}
           </Text>
@@ -149,7 +149,7 @@ const MonthDay = ({ value }: { value: string }) => {
       data-slot="month-view-day-number"
       shade="accent"
       size={-1}
-      bold
+      weight="bold"
     >
       {value}
     </Text>

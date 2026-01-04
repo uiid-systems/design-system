@@ -1,4 +1,4 @@
-.field-label[data-required] {
+.field-label[data-required="true"] {
   &::after {
     content: "*";
     color: var(--tone-negative);

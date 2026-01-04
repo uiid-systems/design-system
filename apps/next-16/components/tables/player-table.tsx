@@ -21,7 +21,7 @@ import {
 export const PlayerTable = () => {
   return (
     <Stack gap={4} fullwidth>
-      <Text size={4} bold>
+      <Text size={4} weight="bold">
         Player directory
       </Text>
       <Group gap={2} ay="center" ax="space-between" fullwidth>

@@ -12,7 +12,7 @@ export const NumberFieldRoot = ({
 }: NumberFieldRootProps) => {
   return (
     <BaseNumberField.Root
-      defaultValue={100}
+      data-slot="number-field-root"
       render={<Group />}
       className={cx(styles["number-field"], className)}
       {...props}

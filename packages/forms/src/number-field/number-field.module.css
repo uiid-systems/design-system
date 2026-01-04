@@ -27,8 +27,7 @@
 }
 
 .number-field-decrement,
-.number-field-increment,
-.increment {
+.number-field-increment {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -44,6 +43,7 @@
   background-clip: padding-box;
   color: var(--shade-accent);
   user-select: none;
+  transition: all var(--globals-transition-timing) ease-in-out;
 
   svg {
     height: var(--globals-icon-size);
@@ -55,6 +55,11 @@
 
   &:active {
     background-color: var(--forms-backgroundActive);
+  }
+
+  &:disabled {
+    opacity: var(--globals-disabled-opacity);
+    pointer-events: none;
   }
 }
 

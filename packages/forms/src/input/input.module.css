@@ -21,10 +21,9 @@
   }
 
   /** Disabled */
-  &:disabled {
-    border-style: dashed;
+  &:where(:disabled, [disabled]) {
     pointer-events: none;
-    opacity: var(--forms-state-disabled-opacity);
+    opacity: var(--globals-disabled-opacity);
   }
 
   /** Invalid */

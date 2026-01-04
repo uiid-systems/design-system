@@ -1,5 +1,7 @@
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 
+import { cx } from "@uiid/utils";
+
 import { Field } from "../field/field";
 import { Input } from "../input/input";
 
@@ -17,28 +19,38 @@ import styles from "./number-field.module.css";
  * @see https://base-ui.com/react/components/number-field#scrub-area
  * */
 export const NumberField = ({
-  /** data */
   label,
   description,
-  /** subcomponents */
+  placeholder,
+  disabled,
+  required,
+  RootProps,
   DecrementProps,
   IncrementProps,
+  FieldProps,
   InputProps,
-  /** misc */
   ...props
 }: NumberFieldProps) => {
   return (
-    <Field label={label} description={description}>
-      <NumberFieldRoot {...props}>
-        <NumberFieldDecrement {...DecrementProps} />
+    <Field
+      {...FieldProps}
+      label={label}
+      description={description}
+      disabled={disabled}
+      required={required}
+    >
+      <NumberFieldRoot {...RootProps} {...props}>
+        <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
         <BaseNumberField.Input
-          render={<Input />}
-          className={styles["number-field-input"]}
+          render={<Input FieldProps={{ style: { flex: 1 } }} />}
+          className={cx(styles["number-field-input"], InputProps?.className)}
+          placeholder={placeholder}
+          required={required}
           {...InputProps}
         />
 
-        <NumberFieldIncrement {...IncrementProps} />
+        <NumberFieldIncrement disabled={disabled} {...IncrementProps} />
       </NumberFieldRoot>
     </Field>
   );

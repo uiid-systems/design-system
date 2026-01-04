@@ -90,7 +90,7 @@ const AppSidebar = () => {
         <SidebarList items={MOCK_LINKS} />
       </SidebarContent>
       <SidebarFooter>
-        <Text size={0} bold>
+        <Text size={0} weight="bold">
           Sidebar footer
         </Text>
       </SidebarFooter>
@@ -106,7 +106,7 @@ const AppTitle = ({ children }: React.PropsWithChildren) => {
       data-hide-collapsed
       size={0}
       shade="accent"
-      bold
+      weight="bold"
       pl={open ? 2 : 0}
       style={{
         overflow: "hidden",

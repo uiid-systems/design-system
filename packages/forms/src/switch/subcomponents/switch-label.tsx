@@ -8,7 +8,7 @@ export const SwitchLabel = ({ disabled, name, label }: SwitchLabelProps) => (
     data-disabled={disabled}
     htmlFor={name}
     size={0}
-    bold={false}
+    weight="normal"
   >
     {label}
   </FieldLabel>

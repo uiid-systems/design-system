@@ -30,7 +30,7 @@ export const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter>
-        <Text size={0} bold>
+        <Text size={0} weight="bold">
           Sidebar footer
         </Text>
       </SidebarFooter>
@@ -43,10 +43,11 @@ const AppTitle = ({ children }: React.PropsWithChildren) => {
   const { open } = useSidebar();
   return (
     <Text
+      data-slot="app-title"
       data-hide-collapsed
       size={0}
       shade="accent"
-      bold
+      weight="bold"
       pl={open ? 2 : 0}
       style={{
         overflow: "hidden",

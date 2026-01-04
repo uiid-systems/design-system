@@ -10,7 +10,7 @@ import { FIND_A_MATCH_MOCK_COLUMNS, FIND_A_MATCH_MOCK_DATA } from "./MOCK_DATA";
 export const FindAMatch = () => {
   return (
     <Stack gap={4} fullwidth>
-      <Text size={4} bold>
+      <Text size={4} weight="bold">
         Find a match
       </Text>
       <Card

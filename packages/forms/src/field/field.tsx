@@ -23,7 +23,7 @@ export const Field = ({
   ...props
 }: FieldProps) => {
   return (
-    <FieldRoot name={name} {...props} {...RootProps}>
+    <FieldRoot name={name} {...RootProps} {...props}>
       {label && (
         <FieldLabel required={required} {...LabelProps}>
           {label}

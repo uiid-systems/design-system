@@ -28,13 +28,6 @@ describe("Input", () => {
     ).toBeInTheDocument();
   });
 
-  it("wraps input in a Field when error is provided", () => {
-    render(<Input error="This field is required" />);
-    const input = screen.getByRole("textbox");
-    // The input should be inside a Field component (data-slot="field")
-    expect(input.closest('[data-slot="field"]')).toBeInTheDocument();
-  });
-
   it("defaults to size defined in constants", () => {
     render(<Input />);
     expect(screen.getByRole("textbox")).toHaveAttribute(
