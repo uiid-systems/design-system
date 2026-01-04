@@ -13,7 +13,7 @@ import { Sheet } from "./sheet";
 const meta: Meta<typeof Sheet> = {
   title: "Overlays/Sheet",
   component: Sheet,
-  tags: ["beta"],
+  tags: ["danger"],
   parameters: { layout: "centered" },
   render: () => (
     <Group gap={2}>

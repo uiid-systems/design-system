@@ -3,41 +3,51 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 
 import { Radio } from "./radio";
-import type { RadioProps } from "./radio.types";
 
-const meta = {
+const meta: Meta<typeof Radio> = {
   title: "Forms/Radio",
   component: Radio,
-  args: {
-    value: "default",
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  tags: ["danger"],
+  args: {},
+  argTypes: {
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
+
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+
+    bordered: { control: "boolean", table: { category: "Toggles" } },
+    reversed: { control: "boolean", table: { category: "Toggles" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+    nativeButton: { control: "boolean", table: { category: "Toggles" } },
+
+    ContainerProps: { control: "object", table: { category: "Subcomponents" } },
+    IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
-    <Stack gap={8}>
+    <Stack gap={4}>
       <Radio {...args} />
-      <Radio
-        {...args}
-        label="With label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        ContainerProps={{ style: { maxWidth: "24rem" } }}
-      />
-      <Radio
-        {...args}
-        bordered
-        label="With border"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        ContainerProps={{ style: { maxWidth: "24rem" } }}
-      />
+      <Radio {...args} label="With label" />
+      <Radio {...args} label="Bordered" bordered />
+      <Radio {...args} label="Reversed" bordered reversed />
+      <Radio {...args} label="Hidden indicator" bordered hideIndicator />
       <Radio
         {...args}
         bordered
-        reversed
-        label="Reversed"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        ContainerProps={{ style: { maxWidth: "24rem" } }}
+        label="Bordered with label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </Stack>
   ),
-} satisfies Meta<RadioProps>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

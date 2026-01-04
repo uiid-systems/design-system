@@ -22,19 +22,19 @@ import type { FieldProps } from "./field.types";
 const meta = {
   title: "Forms/Field",
   component: Field,
+  tags: ["danger"],
   args: {
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     required: false,
     disabled: false,
   },
   argTypes: {
-    /** Toggles */
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    /** Text */
+
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
-    /** Subcomponents */
+
     RootProps: { control: "object", table: { category: "Subcomponents" } },
     LabelProps: { control: "object", table: { category: "Subcomponents" } },
     ErrorProps: { control: "object", table: { category: "Subcomponents" } },

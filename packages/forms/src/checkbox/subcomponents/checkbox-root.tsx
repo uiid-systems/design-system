@@ -9,8 +9,6 @@ import styles from "../checkbox.module.css";
 
 export const CheckboxRoot = ({
   size = CHECKBOX_DEFAULT_SIZE,
-  bordered,
-  reversed,
   hideIndicator,
   className,
   ...props
@@ -19,14 +17,9 @@ export const CheckboxRoot = ({
     <BaseCheckbox.Root
       data-slot="checkbox"
       aria-label="checkbox"
-      className={cx(
-        styles["checkbox"],
-        checkboxVariants({ size, bordered, reversed }),
-        className,
-        {
-          "sr-only": hideIndicator,
-        },
-      )}
+      className={cx(styles["checkbox"], checkboxVariants({ size }), className, {
+        "sr-only": hideIndicator,
+      })}
       {...props}
     />
   );
