@@ -11,32 +11,49 @@ import {
   SelectPopup,
   SelectList,
   SelectItem,
+  SelectValue,
+  SelectIndicator,
 } from "./subcomponents";
 
 export const Select = ({
   size = SELECT_DEFAULT_SIZE,
+  fullwidth,
+  ghost,
+  disabled,
   label,
   description,
-  defaultValue,
   placeholder,
   items,
+  defaultValue,
   RootProps,
   TriggerProps,
   PortalProps,
   PositionerProps,
   PopupProps,
   ListProps,
+  ValueProps,
+  IndicatorProps,
+  FieldProps,
   children,
   ...props
 }: SelectProps) => {
   return (
-    <Field label={label} description={description}>
+    <Field label={label} description={description} {...FieldProps}>
       <SelectRoot
         defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
+        items={items}
+        {...props}
         {...RootProps}
       >
-        <SelectTrigger size={size} {...props} {...TriggerProps} />
-
+        <SelectTrigger
+          fullwidth={fullwidth}
+          ghost={ghost}
+          disabled={disabled}
+          {...TriggerProps}
+        >
+          <SelectValue size={size} {...ValueProps} />
+          <SelectIndicator {...IndicatorProps} />
+        </SelectTrigger>
         <SelectPortal {...PortalProps}>
           {/* <BaseSelect.Backdrop data-slot="select-backdrop" /> */}
 
@@ -46,12 +63,18 @@ export const Select = ({
                 {!items
                   ? children
                   : items.map(
-                      ({ label, value, disabled, description, icon }) => (
+                      ({
+                        label,
+                        value,
+                        disabled: itemDisabled,
+                        description,
+                        icon,
+                      }) => (
                         <SelectItem
                           key={value}
                           label={label}
                           value={value}
-                          disabled={disabled}
+                          disabled={itemDisabled || disabled}
                           description={description}
                           icon={icon}
                         />

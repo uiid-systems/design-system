@@ -20,23 +20,22 @@ const meta: Meta<typeof Input> = {
     onBlur: fn(),
   },
   argTypes: {
-    /** Events */
     onFocus: { table: { category: "Events" } },
     onValueChange: { table: { category: "Events" } },
     onBlur: { table: { category: "Events" } },
-    /** Variants */
+
     size: {
       control: "select",
       options: ["small", "medium", "large"],
-      table: { category: "Variants" },
+      table: { category: "Options" },
     },
-    /** Toggles */
+
     disabled: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     ghost: { control: "boolean", table: { category: "Toggles" } },
-    /** Text */
+
     placeholder: { control: "text", table: { category: "Text" } },
-    /** Subcomponents */
+
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (

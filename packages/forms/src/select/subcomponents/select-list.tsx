@@ -6,7 +6,11 @@ import type { SelectListProps } from "../select.types";
 
 export const SelectList = ({ children, ...props }: SelectListProps) => {
   return (
-    <BaseSelect.List data-slot="select-list" render={<List />} {...props}>
+    <BaseSelect.List
+      data-slot="select-list"
+      render={<List fullwidth />}
+      {...props}
+    >
       {children}
     </BaseSelect.List>
   );

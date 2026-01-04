@@ -21,7 +21,7 @@ const meta = {
     defaultValue: { control: "object", table: { category: "Data" } },
     value: { control: "object", table: { category: "Data" } },
 
-    onValueChange: { action: "onValueChange", table: { category: "Events" } },
+    onValueChange: { table: { category: "Events" } },
 
     direction: {
       control: "select",

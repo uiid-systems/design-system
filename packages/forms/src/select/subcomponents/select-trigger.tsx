@@ -1,29 +1,34 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 
 import { Group } from "@uiid/layout";
-import { ChevronsUpDownIcon } from "@uiid/icons";
+import { cx } from "@uiid/utils";
 
+import { inputVariants } from "../../input/input.variants";
 import inputStyles from "../../input/input.module.css";
 
 import type { SelectTriggerProps } from "../select.types";
-import styles from "../select.module.css";
 
-export const SelectTrigger = ({ size, ...props }: SelectTriggerProps) => {
+export const SelectTrigger = ({
+  ghost,
+  fullwidth,
+  className,
+  children,
+  ...props
+}: SelectTriggerProps) => {
   return (
     <BaseSelect.Trigger
       data-slot="select-trigger"
-      nativeButton={false}
-      render={<Group ay="center" ax="space-between" gap={4} />}
-      className={inputStyles["input"]}
-      data-size={size}
+      render={
+        <Group render={<button />} ay="center" ax="space-between" gap={4} />
+      }
+      className={cx(
+        inputStyles["input"],
+        inputVariants({ ghost, fullwidth }),
+        className,
+      )}
       {...props}
     >
-      <BaseSelect.Value data-slot="select-value" />
-      <BaseSelect.Icon
-        data-slot="select-icon"
-        render={<ChevronsUpDownIcon />}
-        className={styles["select-icon"]}
-      />
+      {children}
     </BaseSelect.Trigger>
   );
 };

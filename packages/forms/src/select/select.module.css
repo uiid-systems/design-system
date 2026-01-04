@@ -13,4 +13,5 @@
 .select-icon {
   flex-shrink: 0;
   height: 1rem;
+  width: var(--globals-icon-size);
 }
