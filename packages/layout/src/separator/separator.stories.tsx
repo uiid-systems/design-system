@@ -10,15 +10,43 @@ const meta = {
   render: (args) => (
     <Stack gap={2}>
       <Stack gap={2}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: "8px",
+          }}
+        />
         <Separator {...args} />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: "8px",
+          }}
+        />
       </Stack>
 
       <Group gap={2}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: "8px",
+          }}
+        />
         <Separator {...args} orientation="vertical" />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: "8px",
+          }}
+        />
       </Group>
     </Stack>
   ),

@@ -47,6 +47,10 @@ const meta: Meta<typeof Input> = {
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
 
+      <Input {...args} label="Disabled" disabled />
+      <Input {...args} label="Required" required />
+      <Input {...args} placeholder="Ghost input" ghost />
+
       <Field
         label="Group of inputs with field wrapper"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."

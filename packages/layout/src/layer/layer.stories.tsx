@@ -11,27 +11,123 @@ const meta = {
   render: (args) => (
     <Stack gap={2}>
       <Layer {...args}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
-        <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "mediumseagreen",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
       </Layer>
 
       <Layer {...args} offset={{ x: 20 }}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
-        <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "mediumseagreen",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
       </Layer>
 
       <Layer {...args} offset={{ y: 20 }}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
-        <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "mediumseagreen",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
       </Layer>
 
       <Layer {...args} offset={{ x: 20, y: 20 }}>
-        <div style={{ background: "tomato", height: 64, width: 64 }} />
-        <div style={{ background: "gold", height: 64, width: 64 }} />
-        <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
+        <div
+          style={{
+            background: "tomato",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "gold",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
+        <div
+          style={{
+            background: "mediumseagreen",
+            height: 64,
+            width: 64,
+            borderRadius: 8,
+            border: "2px solid var(--shade-background)",
+          }}
+        />
       </Layer>
     </Stack>
   ),

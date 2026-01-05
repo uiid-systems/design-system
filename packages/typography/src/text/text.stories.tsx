@@ -55,6 +55,10 @@ const meta: Meta<typeof Text> = {
       control: "boolean",
       table: { category: "Toggles" },
     },
+    balance: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
   },
   render: (args) => (
     <div style={{ width: "100%" }}>

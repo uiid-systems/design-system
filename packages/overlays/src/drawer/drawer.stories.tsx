@@ -6,7 +6,11 @@ import { Drawer } from "./drawer";
 const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",
   component: Drawer,
-  tags: ["danger"],
+  /**
+   * Vaul is currently abandoned. Also uses Radix instead of Base UI.
+   * @see https://github.com/emilkowalski/vaul/blob/main/README.md
+   */
+  tags: ["deprecated"],
   args: {
     title: "Drawer",
     children:

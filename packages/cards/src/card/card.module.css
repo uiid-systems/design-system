@@ -38,7 +38,7 @@
   margin-inline-start: auto;
 
   svg {
-    width: var(--globals-icon-size);
+    width: var(--card-icon-size);
     height: auto;
     flex-shrink: 0;
     vertical-align: middle;

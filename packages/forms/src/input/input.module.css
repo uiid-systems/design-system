@@ -62,6 +62,14 @@
   color: var(--shade-foreground);
   outline-color: transparent;
 
+  &::placeholder {
+    transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  }
+
+  &:not(:focus)::placeholder {
+    color: var(--shade-foreground);
+  }
+
   &:hover {
     background-color: var(--forms-backgroundHover);
   }
