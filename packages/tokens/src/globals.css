@@ -123,6 +123,7 @@
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 2px;
+
     &:hover {
       text-decoration: none;
     }

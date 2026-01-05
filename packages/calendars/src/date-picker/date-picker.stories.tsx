@@ -14,17 +14,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Date Picker",
+  tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  argTypes: {
+    selected: { control: "object", table: { category: "Data" } },
+    onSelect: { table: { category: "Events" } },
+  },
   render: (args) => {
     return (
       <Stack gap={4}>
         <DatePicker {...args} />
-        <DatePicker
-          {...args}
-          numberOfMonths={2}
-          pagedNavigation
-          filters={["firstDayOfMonth"]}
-        />
-        <DatePicker {...args} headless />
+        <DatePicker {...args} numberOfMonths={2} pagedNavigation />
       </Stack>
     );
   },

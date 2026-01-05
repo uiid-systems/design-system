@@ -3,27 +3,11 @@
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 
-import { Card } from "@uiid/cards";
-import { ConditionalRender, Group } from "@uiid/layout";
-import { ToggleGroup, Toggle } from "@uiid/interactive";
-
 import "../calendars.styles.css";
 
-import type { DatePickerProps, DateFilterKey } from "./date-picker.types";
-import { DATE_FILTERS } from "./date-picker.constants";
-
-const DEFAULT_FILTERS: DateFilterKey[] = [
-  "yesterday",
-  "tomorrow",
-  "oneWeekAgo",
-  "oneWeekFromNow",
-  "firstDayOfMonth",
-  "lastDayOfMonth",
-];
+import type { DatePickerProps } from "./date-picker.types";
 
 export const DatePicker = ({
-  headless = false,
-  filters = DEFAULT_FILTERS,
   onSelect,
   defaultMonth,
   selected: selectedProp,
@@ -44,40 +28,16 @@ export const DatePicker = ({
     onSelect?.(date);
   };
 
-  const handleFilterClick = (filterKey: DateFilterKey) => {
-    const filter = DATE_FILTERS[filterKey];
-    handleSelect(filter.date);
-    setMonth(filter.date);
-  };
-
   return (
-    <ConditionalRender condition={!headless} render={<Card />}>
-      <Group gap={4} ay="start">
-        <DayPicker
-          {...props}
-          mode="single"
-          animate
-          month={month}
-          onMonthChange={setMonth}
-          selected={selected}
-          onSelect={handleSelect}
-        />
-
-        {filters.length > 0 && (
-          <ToggleGroup defaultValue={["yesterday"]} orientation="vertical">
-            {filters.map((filterKey: DateFilterKey) => (
-              <Toggle
-                key={filterKey}
-                onClick={() => handleFilterClick(filterKey)}
-                value={filterKey}
-              >
-                {DATE_FILTERS[filterKey].label}
-              </Toggle>
-            ))}
-          </ToggleGroup>
-        )}
-      </Group>
-    </ConditionalRender>
+    <DayPicker
+      {...props}
+      mode="single"
+      animate
+      month={month}
+      onMonthChange={setMonth}
+      selected={selected}
+      onSelect={handleSelect}
+    />
   );
 };
 DatePicker.displayName = "DatePicker";

@@ -7,7 +7,7 @@ import { MOCK_TABS } from "./tabs.mocks";
 const meta: Meta<typeof Tabs> = {
   title: "Interactive/Tabs",
   component: Tabs,
-  tags: ["beta"],
+  tags: ["danger"],
   args: {
     items: MOCK_TABS,
   },

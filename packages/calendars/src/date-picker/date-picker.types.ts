@@ -7,8 +7,6 @@ export type DatePickerProps = Omit<
   Extract<DayPickerProps, { mode?: "single" }>,
   "mode" | "onSelect"
 > & {
-  filters?: DateFilterKey[];
-  headless?: boolean;
   selected?: Date;
   onSelect?: (date: Date | undefined) => void;
 };

@@ -14,16 +14,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Date Range Picker",
+  tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  argTypes: {
+    selected: { control: "object", table: { category: "Data" } },
+    onSelect: { table: { category: "Events" } },
+  },
   render: (args) => {
     return (
       <Stack gap={4}>
         <DateRangePicker {...args} />
-        <DateRangePicker
-          {...args}
-          numberOfMonths={2}
-          pagedNavigation
-          filters={["last7Days", "next7Days"]}
-        />
+        <DateRangePicker {...args} numberOfMonths={2} pagedNavigation />
       </Stack>
     );
   },
