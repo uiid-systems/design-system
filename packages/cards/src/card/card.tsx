@@ -1,20 +1,35 @@
-import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { ConditionalRender, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
 import { cardVariants } from "./card.variants";
 import styles from "./card.module.css";
 
-import { CardIcon, CardTitle } from "./subcomponents";
+import {
+  CardHeader,
+  CardIcon,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardFooter,
+} from "./subcomponents";
 
 export const Card = ({
   title,
-  size,
-  variant,
+  description,
+  icon,
+  action,
+  footer,
+  tone,
   trimmed,
   transparent,
+  inverted,
+  HeaderProps,
   TitleProps,
+  DescriptionProps,
   IconProps,
+  ActionProps,
+  FooterProps,
   className,
   children,
   ...props
@@ -25,19 +40,27 @@ export const Card = ({
       gap={3}
       className={cx(
         styles["card"],
-        cardVariants({ size, variant, trimmed, transparent }),
+        cardVariants({ tone, trimmed, transparent, inverted }),
         className,
       )}
       {...props}
     >
       <ConditionalRender
-        condition={Boolean(variant && title)}
-        render={<Group ay="center" gap={2} />}
+        condition={Boolean((tone || icon || action) && title)}
+        render={<CardHeader {...HeaderProps} />}
       >
-        {title && variant && <CardIcon variant={variant} {...IconProps} />}
+        {title && <CardIcon tone={tone} icon={icon} {...IconProps} />}
         {title && <CardTitle {...TitleProps}>{title}</CardTitle>}
+        {action && <CardAction {...ActionProps}>{action}</CardAction>}
       </ConditionalRender>
+
+      {description && (
+        <CardDescription {...DescriptionProps}>{description}</CardDescription>
+      )}
+
       {children}
+
+      {footer && <CardFooter {...FooterProps}>{footer}</CardFooter>}
     </Stack>
   );
 };

@@ -17,13 +17,11 @@ const meta = {
   title: "Buttons/Button",
   component: Button,
   tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
   args: {
-    tooltip: "Tooltip",
-    disabled: false,
-    ghost: false,
-    grows: true,
-    pill: false,
-    square: false,
+    tooltip: "tooltip",
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
@@ -31,6 +29,10 @@ const meta = {
     grows: { control: "boolean", table: { category: "Toggles" } },
     pill: { control: "boolean", table: { category: "Toggles" } },
     square: { control: "boolean", table: { category: "Toggles" } },
+    circle: { control: "boolean", table: { category: "Toggles" } },
+
+    tooltip: { control: "text", table: { category: "Text" } },
+
     size: {
       control: "select",
       options: ["small", "medium", "large"],
@@ -41,7 +43,8 @@ const meta = {
       options: ["subtle", "inverted"],
       table: { category: "Variants" },
     },
-    onClick: { action: "onClick", table: { disable: true } },
+
+    onClick: { table: { category: "Events" } },
   },
 } satisfies Meta<typeof Button>;
 
@@ -54,63 +57,63 @@ export const Default: Story = {
     return (
       <Stack gap={4}>
         <Group gap={2}>
-          <Button {...args} tooltip="Tooltip" square>
+          <Button {...args} square>
             <GlobeIcon />
           </Button>
-          <Button {...args} tooltip="Tooltip">
-            <GlobeIcon />
-            travel the world
-          </Button>
-          <Button {...args} tooltip="Tooltip" disabled>
+          <Button {...args}>
             <GlobeIcon />
             travel the world
           </Button>
-          <Button {...args} tooltip="Tooltip" variant="subtle">
+          <Button {...args} disabled>
             <GlobeIcon />
             travel the world
           </Button>
-          <Button {...args} tooltip="Tooltip" variant="inverted">
+          <Button {...args} variant="subtle">
             <GlobeIcon />
             travel the world
           </Button>
-        </Group>
-
-        <Group gap={2}>
-          <Button {...args} tooltip="Tooltip" circle>
-            <GlobeIcon />
-          </Button>
-          <Button {...args} tooltip="Tooltip" pill>
-            <GlobeIcon />
-            travel the world
-          </Button>
-          <Button {...args} tooltip="Tooltip" disabled pill>
-            <GlobeIcon />
-            travel the world
-          </Button>
-          <Button {...args} tooltip="Tooltip" variant="subtle" pill>
-            <GlobeIcon />
-            travel the world
-          </Button>
-          <Button {...args} tooltip="Tooltip" variant="inverted" pill>
+          <Button {...args} variant="inverted">
             <GlobeIcon />
             travel the world
           </Button>
         </Group>
 
         <Group gap={2}>
-          <Button {...args} tooltip="Tooltip" tone="positive">
+          <Button {...args} circle>
+            <GlobeIcon />
+          </Button>
+          <Button {...args} pill>
+            <GlobeIcon />
+            travel the world
+          </Button>
+          <Button {...args} disabled pill>
+            <GlobeIcon />
+            travel the world
+          </Button>
+          <Button {...args} variant="subtle" pill>
+            <GlobeIcon />
+            travel the world
+          </Button>
+          <Button {...args} variant="inverted" pill>
+            <GlobeIcon />
+            travel the world
+          </Button>
+        </Group>
+
+        <Group gap={2}>
+          <Button {...args} tone="positive">
             Positive tone
             <CircleCheckIcon />
           </Button>
-          <Button {...args} tooltip="Tooltip" tone="negative">
+          <Button {...args} tone="negative">
             Negative tone
             <BanIcon />
           </Button>
-          <Button {...args} tooltip="Tooltip" tone="warning">
+          <Button {...args} tone="warning">
             Warning tone
             <TriangleAlertIcon />
           </Button>
-          <Button {...args} tooltip="Tooltip" tone="info">
+          <Button {...args} tone="info">
             Info tone
             <InfoIcon />
           </Button>

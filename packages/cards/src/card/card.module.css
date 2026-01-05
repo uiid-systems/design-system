@@ -2,12 +2,11 @@
 
 .card {
   position: relative;
-  background-color: var(--card-color-bg);
-  color: var(--card-color-fg);
+  background-color: var(--shade-surface);
+  color: var(--shade-foreground);
   border-radius: var(--globals-border-radius);
-  border: var(--globals-border-width) solid var(--card-border-color);
-  padding-block: var(--globals-padding-y);
-  padding-inline: var(--globals-padding-x);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  padding: var(--globals-padding-y) var(--globals-padding-x);
 
   font-size: var(--typography-text-0-size);
   line-height: var(--typography-text-0-lineHeight);
@@ -35,52 +34,40 @@
   }
 }
 
-.size-xsmall {
-  padding-block: calc(var(--globals-padding-y) * 0.75);
-  padding-inline: calc(var(--globals-padding-x) * 0.75);
+.card-action {
+  margin-inline-start: auto;
+
+  svg {
+    width: var(--globals-icon-size);
+    height: auto;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
 }
 
-.size-small {
-  padding-block: var(--globals-padding-y);
-  padding-inline: var(--globals-padding-x);
-}
-.size-medium {
-  padding-block: var(--globals-padding-y);
-  padding-inline: var(--globals-padding-x);
-}
-.size-large {
-  padding-block: calc(var(--globals-padding-y) * 1.25);
-  padding-inline: calc(var(--globals-padding-x) * 1.25);
-}
-
-.variant-info {
-  background-color: var(--card-variant-info-bg);
-  border-color: var(--card-variant-info-border);
+.tone-info {
+  background-color: var(--tones-info);
   color: var(--black);
 }
 
-.variant-warning {
-  background-color: var(--card-variant-warning-bg);
-  border-color: var(--card-variant-warning-border);
+.tone-warning {
+  background-color: var(--tones-warning);
   color: var(--black);
 }
 
-.variant-negative {
-  background-color: var(--card-variant-negative-bg);
-  border-color: var(--card-variant-negative-border);
+.tone-negative {
+  background-color: var(--tones-negative);
   color: var(--black);
 }
 
-.variant-positive {
-  background-color: var(--card-variant-positive-bg);
-  border-color: var(--card-variant-positive-border);
+.tone-positive {
+  background-color: var(--tones-positive);
   color: var(--black);
 }
 
-.variant-inverted {
-  background-color: var(--card-variant-inverted-bg);
-  border-color: var(--card-variant-inverted-border);
-  color: var(--card-variant-inverted-fg);
+.toggle-inverted {
+  background-color: var(--shade-foreground);
+  color: var(--shade-background);
 }
 
 .toggle-trimmed {

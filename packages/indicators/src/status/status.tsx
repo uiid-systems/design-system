@@ -9,6 +9,7 @@ import styles from "./status.module.css";
 export const Status = ({
   tone,
   pulse,
+  inverted,
   className,
   children,
   ...props
@@ -28,7 +29,10 @@ export const Status = ({
     >
       <span
         data-slot="status-dot"
-        className={cx(styles["status-dot"], statusVariants({ pulse, tone }))}
+        className={cx(
+          styles["status-dot"],
+          statusVariants({ pulse, tone, inverted }),
+        )}
       />
       {children && (
         <Text data-slot="status-text" size={0}>

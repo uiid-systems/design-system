@@ -6,7 +6,7 @@
       "-1": {
         "size": { "$value": "0.75rem", "$type": "dimension" },
         "leading": { "$value": "0.01rem", "$type": "dimension" },
-        "lineHeight": { "$value": "150%", "$type": "dimension" },
+        "lineHeight": { "$value": "140%", "$type": "dimension" },
         "weight": { "$value": "400", "$type": "fontWeight" }
       },
       "0": {

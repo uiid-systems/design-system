@@ -94,16 +94,16 @@
 }
 
 .tone-positive {
-  color: var(--tone-positive);
+  color: var(--tones-positive);
 }
 .tone-negative {
-  color: var(--tone-negative);
+  color: var(--tones-negative);
 }
 .tone-warning {
-  color: var(--tone-warning);
+  color: var(--tones-warning);
 }
 .tone-info {
-  color: var(--tone-info);
+  color: var(--tones-info);
 }
 
 .toggle-bold {
@@ -124,6 +124,10 @@
 
 .toggle-strikethrough {
   text-decoration-line: line-through;
+}
+
+.toggle-balance {
+  text-wrap: balance;
 }
 
 .weight-bold {

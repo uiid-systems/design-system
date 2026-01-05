@@ -4,6 +4,7 @@ import styles from "./badge.module.css";
 
 export const badgeVariants = cva({
   variants: {
+    inverted: { true: styles["toggle-inverted"] },
     size: {
       small: styles["size-small"],
       medium: styles["size-medium"],

@@ -9,6 +9,7 @@ import styles from "./badge.module.css";
 export const Badge = ({
   size,
   tone,
+  inverted,
   hideIndicator,
   className,
   children,
@@ -17,7 +18,11 @@ export const Badge = ({
   return (
     <Group
       data-slot="badge"
-      className={cx(styles["badge"], badgeVariants({ size, tone }), className)}
+      className={cx(
+        styles["badge"],
+        badgeVariants({ size, tone, inverted }),
+        className,
+      )}
       ay="center"
       gap={1}
       {...props}

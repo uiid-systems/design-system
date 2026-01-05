@@ -2,54 +2,12 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Card Component Tokens",
   "card": {
-    "color": {
-      "bg": { "$value": "{shade.surface}", "$type": "color" },
-      "fg": { "$value": "{shade.foreground}", "$type": "color" }
-    },
-    "border": {
-      "radius": { "$value": "{globals.border.radius}", "$type": "dimension" },
-      "width": { "$value": "{globals.border.width}", "$type": "dimension" },
-      "color": { "$value": "{globals.border.color}", "$type": "color" }
-    },
-    "padding": {
-      "x": { "$value": "{globals.padding.x}", "$type": "dimension" },
-      "y": { "$value": "{globals.padding.y}", "$type": "dimension" }
-    },
     "icon": {
       "size": { "$value": "1rem", "$type": "dimension" }
     },
     "scale": {
       "up": { "$value": "1.02", "$type": "number" },
-      "down": { "$value": "0.98", "$type": "number" }
-    },
-    "variant": {
-      "info": {
-        "bg": { "$value": "{colors.info.bg}", "$type": "color" },
-        "border": { "$value": "{colors.info.border}", "$type": "color" }
-      },
-      "warning": {
-        "bg": { "$value": "{colors.warning.bg}", "$type": "color" },
-        "border": {
-          "$value": "{colors.warning.border}",
-          "$type": "color"
-        }
-      },
-      "negative": {
-        "bg": { "$value": "{colors.negative.bg}", "$type": "color" },
-        "border": { "$value": "{colors.negative.border}", "$type": "color" }
-      },
-      "positive": {
-        "bg": { "$value": "{colors.positive.bg}", "$type": "color" },
-        "border": {
-          "$value": "{colors.positive.border}",
-          "$type": "color"
-        }
-      },
-      "inverted": {
-        "bg": { "$value": "{shade.foreground}", "$type": "color" },
-        "border": { "$value": "{shade.halftone}", "$type": "color" },
-        "fg": { "$value": "{shade.background}", "$type": "color" }
-      }
+      "down": { "$value": "0.99", "$type": "number" }
     }
   }
 }

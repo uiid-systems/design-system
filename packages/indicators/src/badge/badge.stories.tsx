@@ -35,6 +35,9 @@ const meta = {
       <Badge {...args} tone="warning">
         Warning
       </Badge>
+      <Badge {...args} inverted>
+        Inverted
+      </Badge>
     </Stack>
   ),
 } satisfies Meta<typeof Badge>;

@@ -9,7 +9,6 @@
   color: var(--badge-fg);
   display: inline-flex !important;
   padding: var(--badge-padding-y) var(--badge-padding-x);
-  border: var(--globals-border-width) solid var(--badge-border);
   border-radius: var(--badge-border-radius);
 }
 
@@ -41,4 +40,9 @@
 }
 .tone-info {
   background-color: var(--tones-info);
+}
+
+.toggle-inverted {
+  background-color: var(--shade-background);
+  color: var(--shade-foreground);
 }

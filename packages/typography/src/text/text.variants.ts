@@ -5,6 +5,7 @@ import styles from "./text.module.css";
 export const textVariants = cva({
   variants: {
     strikethrough: { true: styles["toggle-strikethrough"] },
+    balance: { true: styles["toggle-balance"] },
     align: {
       center: styles["toggle-center"],
       left: styles["toggle-left"],

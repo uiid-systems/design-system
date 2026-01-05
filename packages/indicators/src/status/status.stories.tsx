@@ -36,6 +36,9 @@ const meta = {
       <Status {...args} tone="info">
         info
       </Status>
+      <Status {...args} inverted>
+        inverted
+      </Status>
     </Stack>
   ),
 } satisfies Meta<typeof Status>;

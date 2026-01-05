@@ -23,10 +23,6 @@
   }
 }
 
-.toggle-pulse {
-  animation: pulse 1.5s infinite;
-}
-
 .tone-positive {
   background-color: var(--tones-positive);
 }
@@ -41,4 +37,13 @@
 
 .tone-info {
   background-color: var(--tones-info);
+}
+
+.toggle-inverted {
+  background-color: var(--shade-background);
+  color: var(--shade-foreground);
+}
+
+.toggle-pulse {
+  animation: pulse 1.5s infinite;
 }

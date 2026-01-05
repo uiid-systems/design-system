@@ -104,85 +104,89 @@
 }
 
 .tone-positive {
-  background-color: var(--tone-positive);
-  border-color: var(--tone-positive);
-  outline-color: var(--tone-positive);
+  background-color: var(--tones-positive);
+  border-color: var(--tones-positive);
+  outline-color: var(--tones-positive);
+  color: var(--black);
 
   &:where(:hover, :active) {
-    --active-color: color-mix(in oklab, var(--tone-positive), var(--shade-background) 10%);
+    --active-color: color-mix(in oklab, var(--tones-positive), var(--shade-background) 10%);
     background-color: var(--active-color);
   }
 
   &:where([data-ghost="true"]) {
     background-color: transparent;
     border-color: transparent;
-    color: var(--tone-positive);
+    color: var(--tones-positive);
 
     &:where(:hover, :active) {
-      --active-color: color-mix(in oklab, var(--tone-positive), transparent 80%);
+      --active-color: color-mix(in oklab, var(--tones-positive), transparent 80%);
       background-color: var(--active-color);
     }
   }
 }
 .tone-negative {
-  background-color: var(--tone-negative);
-  border-color: var(--tone-negative);
-  outline-color: var(--tone-negative);
+  background-color: var(--tones-negative);
+  border-color: var(--tones-negative);
+  outline-color: var(--tones-negative);
+  color: var(--black);
 
   &:where(:hover, :active) {
-    --active-color: color-mix(in oklab, var(--tone-negative), var(--shade-background) 10%);
+    --active-color: color-mix(in oklab, var(--tones-negative), var(--shade-background) 10%);
     background-color: var(--active-color);
   }
 
   &:where([data-ghost="true"]) {
     background-color: transparent;
     border-color: transparent;
-    color: var(--tone-negative);
+    color: var(--tones-negative);
 
     &:where(:hover, :active) {
-      --active-color: color-mix(in oklab, var(--tone-negative), transparent 80%);
+      --active-color: color-mix(in oklab, var(--tones-negative), transparent 80%);
       background-color: var(--active-color);
     }
   }
 }
 .tone-warning {
-  background-color: var(--tone-warning);
-  border-color: var(--tone-warning);
-  outline-color: var(--tone-warning);
+  background-color: var(--tones-warning);
+  border-color: var(--tones-warning);
+  outline-color: var(--tones-warning);
+  color: var(--black);
 
   &:where(:hover, :active) {
-    --active-color: color-mix(in oklab, var(--tone-warning), var(--shade-background) 10%);
+    --active-color: color-mix(in oklab, var(--tones-warning), var(--shade-background) 10%);
     background-color: var(--active-color);
   }
 
   &:where([data-ghost="true"]) {
     background-color: transparent;
     border-color: transparent;
-    color: var(--tone-warning);
+    color: var(--tones-warning);
 
     &:where(:hover, :active) {
-      --active-color: color-mix(in oklab, var(--tone-warning), transparent 80%);
+      --active-color: color-mix(in oklab, var(--tones-warning), transparent 80%);
       background-color: var(--active-color);
     }
   }
 }
 .tone-info {
-  background-color: var(--tone-info);
-  border-color: var(--tone-info);
-  outline-color: var(--tone-info);
+  background-color: var(--tones-info);
+  border-color: var(--tones-info);
+  outline-color: var(--tones-info);
+  color: var(--black);
 
   &:where(:hover, :active) {
-    --active-color: color-mix(in oklab, var(--tone-info), var(--shade-background) 10%);
+    --active-color: color-mix(in oklab, var(--tones-info), var(--shade-background) 10%);
     background-color: var(--active-color);
   }
 
   &:where([data-ghost="true"]) {
     background-color: transparent;
     border-color: transparent;
-    color: var(--tone-info);
+    color: var(--tones-info);
 
     &:where(:hover, :active) {
-      --active-color: color-mix(in oklab, var(--tone-info), transparent 80%);
+      --active-color: color-mix(in oklab, var(--tones-info), transparent 80%);
       background-color: var(--active-color);
     }
   }
