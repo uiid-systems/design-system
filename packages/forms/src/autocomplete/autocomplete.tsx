@@ -18,6 +18,7 @@ export const Autocomplete = ({
   label,
   description,
   placeholder,
+  disabled,
   onFocus,
   onBlur,
   RootProps,
@@ -30,7 +31,12 @@ export const Autocomplete = ({
   ...props
 }: AutocompleteProps) => {
   return (
-    <AutocompleteRoot items={items} {...RootProps} {...props}>
+    <AutocompleteRoot
+      items={items}
+      disabled={disabled}
+      {...RootProps}
+      {...props}
+    >
       <AutocompleteInput
         placeholder={placeholder}
         label={label}
@@ -46,7 +52,11 @@ export const Autocomplete = ({
             <AutocompleteList {...ListProps}>
               {children ??
                 ((item: string) => (
-                  <AutocompleteItem key={item} value={item} />
+                  <AutocompleteItem
+                    key={item}
+                    value={item}
+                    disabled={disabled}
+                  />
                 ))}
             </AutocompleteList>
             <AutocompleteEmpty>No results found.</AutocompleteEmpty>

@@ -11,11 +11,7 @@ import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
 const meta: Meta<AutocompleteProps> = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
-  /**
-   * @todo: list items fullwidth
-   * @todo: disable list
-   */
-  tags: ["danger"],
+  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },

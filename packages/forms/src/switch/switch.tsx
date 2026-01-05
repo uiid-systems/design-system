@@ -1,32 +1,29 @@
 "use client";
 
-import { ConditionalRender, Group } from "@uiid/layout";
-
 import type { SwitchProps } from "./switch.types";
 
-import { SwitchRoot, SwitchThumb, SwitchLabel } from "./subcomponents";
+import { SwitchRoot, SwitchThumb, SwitchField } from "./subcomponents";
 
 export const Switch = ({
-  RootProps,
-  ThumbProps,
   label,
-  labelPosition = "after",
+  description,
   name,
   disabled,
+  bordered,
+  reversed,
+  RootProps,
+  ThumbProps,
+  FieldProps,
   ...props
 }: SwitchProps) => {
-  const hasLabel = Boolean(label);
-  const hasLabelBefore = hasLabel && labelPosition === "before";
-  const hasLabelAfter = hasLabel && labelPosition === "after";
-
   return (
-    <ConditionalRender
-      condition={hasLabel}
-      render={<Group gap={2} ay="center" />}
+    <SwitchField
+      label={label}
+      description={description}
+      reversed={reversed}
+      bordered={bordered}
+      {...FieldProps}
     >
-      {hasLabelBefore && (
-        <SwitchLabel disabled={disabled} name={name} label={label} />
-      )}
       <SwitchRoot
         id={name}
         name={name}
@@ -36,10 +33,7 @@ export const Switch = ({
       >
         <SwitchThumb {...ThumbProps} />
       </SwitchRoot>
-      {hasLabelAfter && (
-        <SwitchLabel disabled={disabled} name={name} label={label} />
-      )}
-    </ConditionalRender>
+    </SwitchField>
   );
 };
 Switch.displayName = "Switch";

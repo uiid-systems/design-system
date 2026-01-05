@@ -60,6 +60,7 @@
   background-color: transparent;
   border-color: transparent;
   color: var(--shade-foreground);
+  outline-color: transparent;
 
   &:hover {
     background-color: var(--forms-backgroundHover);

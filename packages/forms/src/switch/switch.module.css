@@ -17,15 +17,15 @@
   transition-property: background-position, box-shadow, background-color;
   transition-timing-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
   transition-duration: var(--globals-transition-timing);
-  width: 2.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 1rem;
 
   &[data-checked] {
     background-position-x: 0%;
     background-color: var(--shade-halftone);
   }
 
-  &[data-disabled] {
+  &:where(:disabled, [disabled], [data-disabled]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
@@ -52,9 +52,4 @@
   &[data-checked] {
     translate: 1rem 0;
   }
-}
-
-[data-slot="switch-label"][data-disabled="true"] {
-  opacity: 0.5;
-  pointer-events: none;
 }

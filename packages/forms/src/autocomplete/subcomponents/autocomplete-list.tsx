@@ -1,6 +1,7 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
+import { List } from "@uiid/layout";
 
 import { cx } from "@uiid/utils";
 
@@ -15,6 +16,7 @@ export const AutocompleteList = ({
   return (
     <BaseAutocomplete.List
       data-slot="autocomplete-list"
+      render={<List fullwidth />}
       className={cx(styles["autocomplete-list"], className)}
       {...props}
     >

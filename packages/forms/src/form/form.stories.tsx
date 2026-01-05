@@ -19,7 +19,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Form",
-  tags: ["new"],
+  /**
+   * @todo: fix validation
+   */
+  tags: ["danger"],
   render: (args) => {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
@@ -85,7 +88,10 @@ export const Default: Story = {
 
 export const WithOnFormSubmit: Story = {
   name: "With onFormSubmit",
-  tags: ["new"],
+  /**
+   * @todo: fix validation
+   */
+  tags: ["danger"],
   render: (args) => {
     const [errors, setErrors] = useState<Record<string, string | string[]>>({});
     const [loading, setLoading] = useState(false);
