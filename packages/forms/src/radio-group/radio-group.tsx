@@ -2,7 +2,7 @@
 
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 
-import { Stack, Group } from "@uiid/layout";
+import { ConditionalRender, Stack, Group } from "@uiid/layout";
 
 import { Field } from "../field/field";
 import { Radio } from "../radio/radio";
@@ -25,7 +25,10 @@ export const RadioGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <Field label={label} description={description}>
+    <ConditionalRender
+      condition={Boolean(label || description)}
+      render={<Field label={label} description={description} />}
+    >
       <BaseRadioGroup
         {...props}
         defaultValue={defaultValue ?? items[0]?.value}
@@ -44,7 +47,7 @@ export const RadioGroup = ({
           />
         ))}
       </BaseRadioGroup>
-    </Field>
+    </ConditionalRender>
   );
 };
 RadioGroup.displayName = "RadioGroup";

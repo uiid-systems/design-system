@@ -14,7 +14,11 @@ const meta: Meta<ComboboxProps> = {
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  tags: ["beta"],
+  /**
+   * @todo: list items fullwidth
+   * @todo: disable list
+   */
+  tags: ["danger"],
   args: {
     placeholder: "Placeholder",
     items: MOCK_COMBOBOX_ITEMS,

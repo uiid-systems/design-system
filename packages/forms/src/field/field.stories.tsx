@@ -23,7 +23,7 @@ import type { FieldProps } from "./field.types";
 const meta = {
   title: "Forms/Field",
   component: Field,
-  tags: ["danger"],
+  tags: ["beta"],
   args: {
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     required: false,

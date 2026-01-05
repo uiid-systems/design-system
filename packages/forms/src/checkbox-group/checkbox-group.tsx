@@ -2,7 +2,7 @@
 
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
 
-import { Stack, Group } from "@uiid/layout";
+import { ConditionalRender, Stack, Group } from "@uiid/layout";
 
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
@@ -27,11 +27,16 @@ export const CheckboxGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <Field
-      label={fieldLabel}
-      description={description}
-      required={required}
-      disabled={disabled}
+    <ConditionalRender
+      condition={Boolean(fieldLabel || description)}
+      render={
+        <Field
+          label={fieldLabel}
+          description={description}
+          required={required}
+          disabled={disabled}
+        />
+      }
     >
       <BaseCheckboxGroup
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
@@ -51,7 +56,7 @@ export const CheckboxGroup = ({
           />
         ))}
       </BaseCheckboxGroup>
-    </Field>
+    </ConditionalRender>
   );
 };
 CheckboxGroup.displayName = "CheckboxGroup";

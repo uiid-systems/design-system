@@ -2,9 +2,10 @@
 
 import { Input as BaseInput } from "@base-ui/react/input";
 
-import { Field } from "../field/field";
-
+import { ConditionalRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
+
+import { Field } from "../field/field";
 
 import type { InputProps } from "./input.types";
 import { inputVariants } from "./input.variants";
@@ -22,11 +23,16 @@ export const Input = ({
   ...props
 }: InputProps) => {
   return (
-    <Field
-      label={label}
-      description={description}
-      required={required}
-      {...FieldProps}
+    <ConditionalRender
+      condition={Boolean(label || description)}
+      render={
+        <Field
+          label={label}
+          description={description}
+          required={required}
+          {...FieldProps}
+        />
+      }
     >
       <BaseInput
         data-slot="input"
@@ -37,7 +43,7 @@ export const Input = ({
         )}
         {...props}
       />
-    </Field>
+    </ConditionalRender>
   );
 };
 Input.displayName = "Input";

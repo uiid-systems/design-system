@@ -1,5 +1,7 @@
 "use client";
 
+import { ConditionalRender } from "@uiid/layout";
+
 import { Field } from "../field/field";
 
 import type { SliderProps } from "./slider.types";
@@ -26,7 +28,10 @@ export const Slider = ({
   ...props
 }: SliderProps) => {
   return (
-    <Field label={label} description={description} {...FieldProps}>
+    <ConditionalRender
+      condition={Boolean(label || description)}
+      render={<Field label={label} description={description} {...FieldProps} />}
+    >
       <SliderRoot {...props} {...RootProps}>
         <SliderControl {...ControlProps}>
           <SliderTrack {...TrackProps}>
@@ -36,7 +41,7 @@ export const Slider = ({
         </SliderControl>
         <SliderValue {...ValueProps} />
       </SliderRoot>
-    </Field>
+    </ConditionalRender>
   );
 };
 Slider.displayName = "Slider";

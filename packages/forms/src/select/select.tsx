@@ -1,3 +1,5 @@
+import { ConditionalRender } from "@uiid/layout";
+
 import { Field } from "../field/field";
 
 import { SELECT_DEFAULT_SIZE } from "./select.constants";
@@ -39,11 +41,16 @@ export const Select = ({
   ...props
 }: SelectProps) => {
   return (
-    <Field
-      label={label}
-      description={description}
-      required={required}
-      {...FieldProps}
+    <ConditionalRender
+      condition={Boolean(label || description)}
+      render={
+        <Field
+          label={label}
+          description={description}
+          required={required}
+          {...FieldProps}
+        />
+      }
     >
       <SelectRoot
         defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
@@ -91,7 +98,7 @@ export const Select = ({
           </SelectPositioner>
         </SelectPortal>
       </SelectRoot>
-    </Field>
+    </ConditionalRender>
   );
 };
 Select.displayName = "Select";

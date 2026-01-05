@@ -8,17 +8,14 @@ import {
 } from "./subcomponents";
 
 export const Field = ({
-  /** data */
   name,
   label,
   description,
   required,
-  /** subcomponents */
   RootProps,
   LabelProps,
   ErrorProps,
   DescriptionProps,
-  /** misc */
   children,
   ...props
 }: FieldProps) => {
