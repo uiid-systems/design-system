@@ -4,6 +4,7 @@ import { DisabledWrapper } from "./disabled-wrapper";
 const meta = {
   title: "Layout/Utilities/Disabled Wrapper",
   component: DisabledWrapper,
+  tags: ["deprecated"],
   args: {
     disabled: true,
     children: <div style={{ background: "gold", height: 64, width: 64 }} />,

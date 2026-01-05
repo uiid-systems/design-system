@@ -4,6 +4,7 @@ import { Box, Stack, Slots } from "../";
 const meta = {
   title: "Layout/Utilities/Slots",
   component: Slots,
+  tags: ["deprecated"],
   args: {
     before: <Box style={{ background: "tomato", height: 64, width: 64 }} />,
     after: (
