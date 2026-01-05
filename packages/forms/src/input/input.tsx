@@ -11,7 +11,6 @@ import { inputVariants } from "./input.variants";
 import styles from "./input.module.css";
 
 export const Input = ({
-  name,
   label,
   description,
   required,
@@ -26,13 +25,11 @@ export const Input = ({
     <Field
       label={label}
       description={description}
-      name={name}
       required={required}
       {...FieldProps}
     >
       <BaseInput
         data-slot="input"
-        name={name}
         className={cx(
           styles["input"],
           inputVariants({ size, fullwidth, ghost }),

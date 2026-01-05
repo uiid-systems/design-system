@@ -6,15 +6,15 @@ export const textVariants = cva({
   variants: {
     strikethrough: { true: styles["toggle-strikethrough"] },
     balance: { true: styles["toggle-balance"] },
+    underline: {
+      true: styles["toggle-underline"],
+      false: styles["toggle-no-underline"],
+    },
     align: {
       center: styles["toggle-center"],
       left: styles["toggle-left"],
       right: styles["toggle-right"],
       justify: styles["toggle-justify"],
-    },
-    underline: {
-      true: styles["toggle-underline"],
-      false: styles["toggle-no-underline"],
     },
     weight: {
       bold: styles["weight-bold"],

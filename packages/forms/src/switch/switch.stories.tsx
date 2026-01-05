@@ -6,6 +6,7 @@ import { Switch } from "./switch";
 const meta: Meta<typeof Switch> = {
   title: "Forms/Switch",
   component: Switch,
+  tags: ["danger"],
   args: {},
   argTypes: {},
   render: (args) => (

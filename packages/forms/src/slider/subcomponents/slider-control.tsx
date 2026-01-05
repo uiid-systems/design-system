@@ -10,7 +10,7 @@ export const SliderControl = ({ children, ...props }: SliderControlProps) => {
   return (
     <BaseSlider.Control
       data-slot="slider-control"
-      render={<Group ay="center" px={3} />}
+      render={<Group ay="center" px={3} fullwidth />}
       className={styles["slider-control"]}
       {...props}
     >

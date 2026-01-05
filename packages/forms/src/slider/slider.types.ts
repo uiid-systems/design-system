@@ -1,6 +1,12 @@
 import type { Slider } from "@base-ui/react/slider";
 
-export type SliderRootProps = Slider.Root.Props;
+import type { FieldProps } from "../field/field.types";
+import type { InputVariants } from "../input/input.types";
+
+export type SliderVariants = InputVariants;
+
+export type SliderRootProps = Slider.Root.Props &
+  Pick<SliderVariants, "ghost" | "fullwidth">;
 export type SliderValueProps = Slider.Value.Props;
 export type SliderControlProps = Slider.Control.Props;
 export type SliderTrackProps = Slider.Track.Props;
@@ -14,4 +20,5 @@ export type SliderProps = SliderRootProps & {
   TrackProps?: SliderTrackProps;
   IndicatorProps?: SliderIndicatorProps;
   ThumbProps?: SliderThumbProps;
-};
+  FieldProps?: FieldProps;
+} & Pick<FieldProps, "label" | "description">;
