@@ -8,6 +8,10 @@ import { Card, CardTitle } from "@uiid/cards";
 import type { DrawerProps } from "./drawer.types";
 import styles from "./drawer.module.css";
 
+/**
+ * @deprecated Vaul is currently abandoned. Also uses Radix instead of Base UI.
+ * @see https://github.com/emilkowalski/vaul/blob/main/README.md
+ */
 export const Drawer = ({
   trigger,
   direction = "right",

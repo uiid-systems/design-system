@@ -23,7 +23,8 @@
 
   &[data-vaul-drawer-direction="right"],
   &[data-vaul-drawer-direction="left"] {
-    min-width: var(--drawer-extends-horizontal);
+    width: 100%;
+    max-width: var(--drawer-extends-horizontal);
     height: calc(100dvh - var(--drawer-offset) * 2);
   }
 
