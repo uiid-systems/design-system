@@ -9,15 +9,15 @@ export default function LeaderboardPage() {
         Leaderboard
       </Text>
       <Group gap={4} evenly>
-        <Card title="Player of the month" size="large">
+        <Card title="Player of the month">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
           quos.
         </Card>
-        <Card title="Player of the year" size="large">
+        <Card title="Player of the year">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
           quos.
         </Card>
-        <Card title="Overall" size="large">
+        <Card title="Overall">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
           quos.
         </Card>

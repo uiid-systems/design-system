@@ -17,5 +17,5 @@ export type CheckboxGroupProps = {
   IndicatorProps?: CheckboxIndicatorProps;
 } & BaseCheckboxGroup.Props &
   Pick<CheckboxProps, "bordered" | "reversed" | "required" | "disabled"> &
-  Pick<FieldProps, "label" | "description"> &
+  Pick<FieldProps, "label" | "description" | "name"> &
   Omit<StackProps, "ax" | "ay" | "direction">;

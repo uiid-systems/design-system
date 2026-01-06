@@ -59,7 +59,6 @@ export const PlayerTable = () => {
       <Group gap={2} ax="space-between" fullwidth>
         <Select
           aria-label="Select a page size"
-          size="sm"
           items={[
             { label: "20 rows per page", value: "20" },
             { label: "50 rows per page", value: "50" },

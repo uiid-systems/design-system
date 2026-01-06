@@ -41,13 +41,13 @@ export const CheckboxGroup = ({
       }
     >
       <BaseCheckboxGroup
-        name={name}
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
         defaultValue={defaultValue ? [...defaultValue] : undefined}
         {...props}
       >
         {items.map(({ value, label: checkboxLabel }) => (
           <Checkbox
+            name={name}
             key={value}
             hideIndicator={hideIndicators}
             bordered={bordered}

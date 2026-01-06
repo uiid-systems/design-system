@@ -31,7 +31,7 @@ describe("Switch", () => {
   });
 
   it("renders with a label before the switch when labelPosition is 'before'", () => {
-    render(<Switch label="Dark mode" labelPosition="before" />);
+    render(<Switch label="Dark mode" reversed />);
     const switchEl = screen.getByRole("switch");
     const label = screen.getByText("Dark mode");
 

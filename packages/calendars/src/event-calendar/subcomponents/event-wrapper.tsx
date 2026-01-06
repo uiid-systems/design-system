@@ -52,7 +52,7 @@ export const EventWrapper = ({
     <Badge
       hideIndicator
       fullwidth
-      size="lg"
+      size="large"
       render={<button />}
       className={cx(styles["event-wrapper"], className)}
       data-dragging={isDragging || undefined}

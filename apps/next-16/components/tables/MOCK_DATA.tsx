@@ -43,13 +43,13 @@ export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
     date: "2025-01-01",
     player: "John Doe",
     duration: (
-      <Badge variant="negative" hideIndicator>
+      <Badge tone="negative" hideIndicator>
         16 frames
       </Badge>
     ),
-    stakes: <Badge variant="positive">Low</Badge>,
+    stakes: <Badge tone="positive">Low</Badge>,
     accepting: (
-      <Badge variant="positive" hideIndicator>
+      <Badge tone="positive" hideIndicator>
         All
       </Badge>
     ),
@@ -59,13 +59,13 @@ export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
     date: "2025-01-01",
     player: "Jane Doe",
     duration: (
-      <Badge variant="warning" hideIndicator>
+      <Badge tone="warning" hideIndicator>
         8 frames
       </Badge>
     ),
-    stakes: <Badge variant="warning">Medium</Badge>,
+    stakes: <Badge tone="warning">Medium</Badge>,
     accepting: (
-      <Badge variant="negative" hideIndicator>
+      <Badge tone="negative" hideIndicator>
         1700 & up
       </Badge>
     ),
@@ -75,7 +75,7 @@ export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
 
 export const TABLE_MOCK_DATA: TableProps["items"] = [
   {
-    rank: <Badge variant="positive">1</Badge>,
+    rank: <Badge tone="positive">1</Badge>,
     name: (
       <Sheet
         trigger="John Doe"
@@ -92,21 +92,21 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
     lastPlayed: formatDate(new Date("2025-03-01"), "EEE',' MMM d"),
   },
   {
-    rank: <Badge variant="warning">2</Badge>,
+    rank: <Badge tone="warning">2</Badge>,
     name: "Jane Doe",
     played: 5,
     won: 3,
     lastPlayed: formatDate(new Date("2025-04-01"), "EEE',' MMM d"),
   },
   {
-    rank: <Badge variant="warning">3</Badge>,
+    rank: <Badge tone="warning">3</Badge>,
     name: "John Smith",
     played: 8,
     won: 8,
     lastPlayed: formatDate(new Date("2025-01-03"), "EEE',' MMM d"),
   },
   {
-    rank: <Badge variant="negative">4</Badge>,
+    rank: <Badge tone="negative">4</Badge>,
     name: "Jane Smith",
     played: 10,
     won: 9,
@@ -121,7 +121,7 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     wrapper: (button) => (
       <Modal trigger={button}>
         <p>Schedule content goes here</p>
-        <DatePicker headless />
+        <DatePicker />
       </Modal>
     ),
   },

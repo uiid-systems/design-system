@@ -21,7 +21,7 @@ export const TableCellCheckbox = ({
       }}
       {...props}
     >
-      <Checkbox size="sm" />
+      <Checkbox />
     </SwitchRender>
   );
 };

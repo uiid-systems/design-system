@@ -56,9 +56,15 @@ describe("Select", () => {
 
     await user.click(screen.getByRole("combobox"));
 
-    expect(screen.getByRole("option", { name: /option a/i })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /option b/i })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: /option c/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: /option a/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: /option b/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: /option c/i }),
+    ).toBeInTheDocument();
   });
 
   it("selects item when clicked", async () => {
@@ -111,7 +117,7 @@ describe("Select", () => {
   });
 
   it("applies size data attribute", () => {
-    render(<Select items={defaultItems} size="lg" />);
+    render(<Select items={defaultItems} size="large" />);
     expect(screen.getByRole("combobox")).toHaveAttribute("data-size", "lg");
   });
 
