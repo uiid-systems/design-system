@@ -7,7 +7,21 @@ import { Stack, Layer } from "../";
 const meta = {
   title: "Layout/Layer",
   component: Layer,
-  args: {},
+  tags: ["beta"],
+  args: {
+    offset: { x: 0, y: 0 },
+  },
+  argTypes: {
+    offset: {
+      control: "object",
+      table: { category: "Spacing" },
+    },
+    render: { table: { disable: true } },
+    children: { table: { disable: true } },
+    ref: { table: { disable: true } },
+    style: { table: { disable: true } },
+    className: { table: { disable: true } },
+  },
   render: (args) => (
     <Stack gap={2}>
       <Layer {...args}>

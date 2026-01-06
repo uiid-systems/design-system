@@ -10,6 +10,7 @@ import styles from "../autocomplete.module.css";
 export const AutocompleteInput = ({
   label,
   description,
+  name,
   onFocus,
   onBlur,
   placeholder,
@@ -19,8 +20,10 @@ export const AutocompleteInput = ({
   return (
     <BaseAutocomplete.Input
       data-slot="autocomplete-input"
+      name={name}
       render={
         <Input
+          name={name}
           label={label}
           description={description}
           onFocus={onFocus}

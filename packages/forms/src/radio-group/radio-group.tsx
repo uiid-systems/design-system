@@ -13,6 +13,7 @@ export const RadioGroup = ({
   items,
   label,
   description,
+  name,
   defaultValue,
   direction = "vertical",
   bordered,
@@ -27,9 +28,10 @@ export const RadioGroup = ({
   return (
     <ConditionalRender
       condition={Boolean(label || description)}
-      render={<Field label={label} description={description} />}
+      render={<Field name={name} label={label} description={description} />}
     >
       <BaseRadioGroup
+        name={name}
         {...props}
         defaultValue={defaultValue ?? items[0]?.value}
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}

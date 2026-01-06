@@ -18,6 +18,7 @@ import {
 export const Slider = ({
   label,
   description,
+  name,
   RootProps,
   ValueProps,
   ControlProps,
@@ -30,9 +31,16 @@ export const Slider = ({
   return (
     <ConditionalRender
       condition={Boolean(label || description)}
-      render={<Field label={label} description={description} {...FieldProps} />}
+      render={
+        <Field
+          name={name}
+          label={label}
+          description={description}
+          {...FieldProps}
+        />
+      }
     >
-      <SliderRoot {...props} {...RootProps}>
+      <SliderRoot name={name} {...props} {...RootProps}>
         <SliderControl {...ControlProps}>
           <SliderTrack {...TrackProps}>
             <SliderIndicator {...IndicatorProps} />

@@ -10,6 +10,7 @@ import styles from "../combobox.module.css";
 export const ComboboxInput = ({
   label,
   description,
+  name,
   placeholder,
   className,
   ...props
@@ -17,7 +18,10 @@ export const ComboboxInput = ({
   return (
     <BaseCombobox.Input
       data-slot="combobox-input"
-      render={<Input label={label} description={description} fullwidth />}
+      name={name}
+      render={
+        <Input name={name} label={label} description={description} fullwidth />
+      }
       className={cx(styles["combobox-input"], className)}
       placeholder={placeholder}
       {...props}

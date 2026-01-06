@@ -22,6 +22,7 @@ import styles from "./number-field.module.css";
 export const NumberField = ({
   label,
   description,
+  name,
   placeholder,
   disabled,
   required,
@@ -38,6 +39,7 @@ export const NumberField = ({
       render={
         <Field
           {...FieldProps}
+          name={name}
           label={label}
           description={description}
           disabled={disabled}
@@ -45,7 +47,7 @@ export const NumberField = ({
         />
       }
     >
-      <NumberFieldRoot {...RootProps} {...props}>
+      <NumberFieldRoot name={name} {...RootProps} {...props}>
         <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
         <BaseNumberField.Input

@@ -23,6 +23,7 @@ export const Select = ({
   ghost,
   disabled,
   required,
+  name,
   label,
   description,
   placeholder,
@@ -45,6 +46,7 @@ export const Select = ({
       condition={Boolean(label || description)}
       render={
         <Field
+          name={name}
           label={label}
           description={description}
           required={required}
@@ -53,6 +55,7 @@ export const Select = ({
       }
     >
       <SelectRoot
+        name={name}
         defaultValue={defaultValue ?? placeholder ?? items?.[0]?.value}
         items={items}
         {...props}

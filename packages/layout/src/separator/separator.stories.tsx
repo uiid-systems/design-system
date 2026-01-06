@@ -6,6 +6,7 @@ import { Separator } from "./separator";
 const meta = {
   title: "Layout/Separator",
   component: Separator,
+  tags: ["beta"],
   args: {},
   argTypes: {
     shade: {

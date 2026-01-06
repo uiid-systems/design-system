@@ -15,6 +15,7 @@ export const Input = ({
   label,
   description,
   required,
+  name,
   size,
   fullwidth,
   ghost,
@@ -27,6 +28,7 @@ export const Input = ({
       condition={Boolean(label || description)}
       render={
         <Field
+          name={name}
           label={label}
           description={description}
           required={required}
@@ -36,6 +38,7 @@ export const Input = ({
     >
       <BaseInput
         data-slot="input"
+        name={name}
         className={cx(
           styles["input"],
           inputVariants({ size, fullwidth, ghost }),

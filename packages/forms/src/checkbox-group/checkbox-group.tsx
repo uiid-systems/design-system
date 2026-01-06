@@ -13,6 +13,7 @@ export const CheckboxGroup = ({
   items,
   label: fieldLabel,
   description,
+  name,
   defaultValue,
   direction = "vertical",
   hideIndicators,
@@ -31,6 +32,7 @@ export const CheckboxGroup = ({
       condition={Boolean(fieldLabel || description)}
       render={
         <Field
+          name={name}
           label={fieldLabel}
           description={description}
           required={required}
@@ -39,6 +41,7 @@ export const CheckboxGroup = ({
       }
     >
       <BaseCheckboxGroup
+        name={name}
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
         defaultValue={defaultValue ? [...defaultValue] : undefined}
         {...props}
