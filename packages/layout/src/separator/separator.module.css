@@ -1,14 +1,32 @@
 .separator {
   background-color: var(--globals-border-color);
+}
 
-  &[data-orientation="vertical"] {
-    width: 1px;
-    height: 100%;
-    height: -webkit-fill-available;
-  }
+.shade-background {
+  background-color: var(--shade-background);
+}
+.shade-surface {
+  background-color: var(--shade-surface);
+}
+.shade-muted {
+  background-color: var(--shade-muted);
+}
+.shade-halftone {
+  background-color: var(--shade-halftone);
+}
+.shade-accent {
+  background-color: var(--shade-accent);
+}
+.shade-foreground {
+  background-color: var(--shade-foreground);
+}
 
-  &[data-orientation="horizontal"] {
-    width: 100%;
-    height: 1px;
-  }
+.orientation-horizontal {
+  width: 100%;
+  height: 1px;
+}
+.orientation-vertical {
+  width: 1px;
+  height: 100%;
+  height: -webkit-fill-available;
 }
