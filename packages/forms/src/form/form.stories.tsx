@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
-import { Stack, Group } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 import { Button } from "@uiid/buttons";
 
 import { Input } from "../input/input";
