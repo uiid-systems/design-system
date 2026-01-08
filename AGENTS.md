@@ -173,11 +173,13 @@ Components should be designed as simple, monolithic components for common use ca
 
 **Design principles:**
 
-1. **Expose common props directly** - Don't require users to pass frequently-used props through nested prop objects (e.g., `RootProps`). Instead, extend the underlying component's props type and spread them to the root element.
+1. **Prefer simple components** - Always use the simple component API over composed subcomponents. If a feature is commonly needed and isn't available, add it to the simple component first. Only use composed subcomponents for genuinely complex builds that can't be reasonably supported by the simple API.
 
-2. **Keep nested prop objects for overrides** - Maintain `RootProps`, `ThumbProps`, etc. for cases where users need to pass additional or overriding props to specific subcomponents.
+2. **Expose common props directly** - Don't require users to pass frequently-used props through nested prop objects (e.g., `RootProps`). Instead, extend the underlying component's props type and spread them to the root element.
 
-3. **Export all subcomponents** - Allow consumers to compose the component themselves if they need full control.
+3. **Keep nested prop objects for overrides** - Maintain `RootProps`, `ThumbProps`, etc. for cases where users need to pass additional or overriding props to specific subcomponents.
+
+4. **Export all subcomponents** - Allow consumers to compose the component themselves if they need full control, but document this as the advanced usage pattern.
 
 **Example type pattern:**
 
@@ -285,8 +287,27 @@ This template includes:
 
 ### Storybook Stories
 
+When creating stories, use the template at:
+
+**`templates/COMPONENT_STORY.md`**
+
+**Story writing guidelines:**
+
+1. **Group variations in a single story** - Keep all component variations (sizes, states, variants) together in one story using the render function. This helps visualize the component's full API at a glance.
+
+2. **Use Stack for layout** - Wrap multiple component examples in `<Stack>` for consistent vertical spacing.
+
+3. **One story per component** - Each component should have a single "Default" story that showcases all its variations. Only create additional stories for genuinely complex experiences (e.g., multi-step flows, interactive demos with state).
+
+4. **Prefer simple components** - Stories should demonstrate the simple component API. Only show composed subcomponent usage if it's the only way to achieve a specific pattern.
+
+5. **Use argTypes for controls** - Expose key props as Storybook controls, grouped by category (Toggles, Options, Text, Subcomponents).
+
+**Example:**
+
 ```tsx
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Stack } from "@uiid/layout";
 import { Component } from "./component";
 
 const meta = {
@@ -295,6 +316,19 @@ const meta = {
   args: {
     // Default args
   },
+  argTypes: {
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    size: { control: "select", options: ["small", "medium", "large"], table: { category: "Options" } },
+    label: { control: "text", table: { category: "Text" } },
+  },
+  render: (args) => (
+    <Stack gap={4}>
+      <Component {...args} />
+      <Component {...args} variant="secondary" />
+      <Component {...args} size="small" />
+      <Component {...args} disabled />
+    </Stack>
+  ),
 } satisfies Meta<typeof Component>;
 
 export default meta;
