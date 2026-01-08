@@ -1,9 +1,5 @@
 import type { Icon } from "@uiid/icons";
-
-import type { BoxProps } from "../box/box.types";
-
-import type { GroupProps } from "../group/group.types";
-import type { StackProps } from "../stack/stack.types";
+import type { BoxProps, GroupProps, StackProps } from "@uiid/layout";
 
 export type ListDirection = "row" | "column";
 

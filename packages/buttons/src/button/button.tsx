@@ -1,14 +1,13 @@
 "use client";
 
 import { Button as BaseButton } from "@base-ui/react/button";
-import { Children } from "react";
 
-import { ConditionalRender } from "@uiid/layout";
+import { ConditionalRender, Layer } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
-import { ButtonTooltipWrapper } from "./subcomponents";
+import { ButtonSpinner, ButtonTooltipWrapper } from "./subcomponents";
 import { buttonVariants } from "./button.variants";
 import { ButtonContentContainer } from "./subcomponents/button-content-container";
 
@@ -22,6 +21,7 @@ export const Button = ({
   square,
   circle,
   variant,
+  loading,
   className,
   children,
   ...props
@@ -30,8 +30,6 @@ export const Button = ({
     pill = true;
     square = true;
   }
-
-  const childrenCount = Children.toArray(children).length;
 
   return (
     <ConditionalRender
@@ -48,12 +46,12 @@ export const Button = ({
         data-ghost={ghost}
         {...props}
       >
-        <ConditionalRender
-          condition={childrenCount > 1}
-          render={<ButtonContentContainer />}
-        >
-          {children}
-        </ConditionalRender>
+        <Layer ay="center" ax="center">
+          <ButtonContentContainer loading={loading}>
+            {children}
+          </ButtonContentContainer>
+          <ButtonSpinner loading={loading} />
+        </Layer>
       </BaseButton>
     </ConditionalRender>
   );

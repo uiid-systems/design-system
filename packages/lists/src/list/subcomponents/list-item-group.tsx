@@ -2,10 +2,7 @@ import { Collapsible } from "@base-ui/react";
 
 import { ChevronsUpDown } from "@uiid/icons";
 import { Text } from "@uiid/typography";
-
-import { Group } from "../../group/group";
-import { Stack } from "../../stack/stack";
-import { SwitchRender } from "../../switch-render/switch-render";
+import { Group, Stack, SwitchRender } from "@uiid/layout";
 
 import type { ListItemGroupProps } from "../list.types";
 

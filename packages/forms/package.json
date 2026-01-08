@@ -28,6 +28,7 @@
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/lists": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"

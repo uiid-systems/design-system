@@ -1,7 +1,7 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-import { List } from "@uiid/layout";
+import { List } from "@uiid/lists";
 
 import { cx } from "@uiid/utils";
 

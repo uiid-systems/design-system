@@ -1,13 +1,23 @@
-import { Group, type GroupProps } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 
-export type ButtonContentContainerProps = GroupProps;
+import type { ButtonContentContainerProps } from "../button.types";
+import styles from "../button.module.css";
 
 export const ButtonContentContainer = ({
+  loading,
   children,
   ...props
 }: ButtonContentContainerProps) => {
   return (
-    <Group data-slot="button-content-container" ay="center" gap={2} {...props}>
+    <Group
+      data-slot="button-content-container"
+      className={styles["button-content-container"]}
+      data-loading={loading}
+      aria-hidden={loading}
+      ay="center"
+      gap={2}
+      {...props}
+    >
       {children}
     </Group>
   );

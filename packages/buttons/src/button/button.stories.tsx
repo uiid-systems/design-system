@@ -22,6 +22,7 @@ const meta = {
   },
   args: {
     tooltip: "tooltip",
+    loading: false,
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
@@ -30,8 +31,7 @@ const meta = {
     pill: { control: "boolean", table: { category: "Toggles" } },
     square: { control: "boolean", table: { category: "Toggles" } },
     circle: { control: "boolean", table: { category: "Toggles" } },
-
-    tooltip: { control: "text", table: { category: "Text" } },
+    loading: { control: "boolean", table: { category: "Toggles" } },
 
     size: {
       control: "select",

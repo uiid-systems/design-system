@@ -32,14 +32,14 @@ const meta: Meta<typeof Text> = {
       options: levels,
       table: { category: "Variants" },
     },
-    tone: {
-      control: "select",
-      options: tones,
-      table: { category: "Variants" },
-    },
     shade: {
       control: "select",
       options: shades,
+      table: { category: "Variants" },
+    },
+    tone: {
+      control: "select",
+      options: tones,
       table: { category: "Variants" },
     },
     weight: {

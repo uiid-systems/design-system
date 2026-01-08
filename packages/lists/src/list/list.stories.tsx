@@ -1,18 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Group, Stack } from "../";
+import { Group, Stack } from "@uiid/layout";
 
 import { List } from "./list";
 import { MOCK_ITEMS, MOCK_LINKS } from "./list.mocks";
 
 const meta = {
-  title: "Layout/List",
+  title: "Lists/List",
   component: List,
-  /**
-   * @todo move to standalone package
-   * @todo clean up
-   */
-  tags: ["danger"],
   args: {
     items: MOCK_ITEMS,
   },

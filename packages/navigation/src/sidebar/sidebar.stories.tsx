@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ListProps } from "@uiid/layout";
+import type { ListProps } from "@uiid/lists";
 
 import { Home, Heart, UserCircle } from "@uiid/icons";
 import { Group } from "@uiid/layout";

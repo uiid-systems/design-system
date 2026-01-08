@@ -13,10 +13,6 @@ export * from "./group/group.types";
 export * from "./layer/layer";
 export * from "./layer/layer.types";
 
-export * from "./list/list";
-export * from "./list/list.types";
-export { ListItem } from "./list/subcomponents";
-
 export * from "./separator/separator";
 export * from "./separator/separator.types";
 

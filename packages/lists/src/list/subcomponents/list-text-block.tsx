@@ -1,7 +1,5 @@
 import { Text } from "@uiid/typography";
-
-import { ConditionalRender } from "../../conditional-render/conditional-render";
-import { Stack } from "../../stack/stack";
+import { ConditionalRender, Stack } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
 

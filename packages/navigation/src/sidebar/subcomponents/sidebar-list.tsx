@@ -1,4 +1,4 @@
-import { List, type ListProps } from "@uiid/layout";
+import { List, type ListProps } from "@uiid/lists";
 import { cx } from "@uiid/utils";
 
 import styles from "./sidebar-list.module.css";

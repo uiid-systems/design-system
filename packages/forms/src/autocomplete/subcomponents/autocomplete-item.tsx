@@ -1,6 +1,6 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
-import { ListItem } from "@uiid/layout";
+import { ListItem } from "@uiid/lists";
 
 import type { AutocompleteItemProps } from "../autocomplete.types";
 import styles from "../autocomplete.module.css";

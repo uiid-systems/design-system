@@ -53,7 +53,8 @@ export const Default: Story = {
         {...args}
         errors={errors}
         onSubmit={handleSubmit}
-        render={<Stack render={<form />} ax="stretch" gap={4} />}
+        render={<Stack render={<form />} ax="stretch" gap={4} fullwidth />}
+        style={{ maxWidth: "400px" }}
       >
         <Input
           label="URL"
@@ -64,17 +65,15 @@ export const Default: Story = {
           pattern="https?://.*"
         />
 
-        <Group gap={2} fullwidth evenly>
-          <Button type="submit" disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
-          </Button>
-          <Button type="reset" variant="subtle">
-            Reset
-          </Button>
-        </Group>
+        <Button type="submit" disabled={loading} loading={loading}>
+          Submit
+        </Button>
+        <Button type="reset" ghost>
+          Reset
+        </Button>
 
         {success && (
-          <p style={{ color: "var(--color-positive)", margin: 0 }}>
+          <p style={{ color: "var(--tones-positive)", margin: 0 }}>
             Form submitted successfully!
           </p>
         )}
@@ -94,7 +93,8 @@ export const WithOnFormSubmit: Story = {
     return (
       <Form
         {...args}
-        render={<Stack render={<form />} ax="stretch" gap={4} />}
+        render={<Stack render={<form />} ax="stretch" gap={4} fullwidth />}
+        style={{ maxWidth: "400px" }}
         errors={errors}
         onFormSubmit={async (formValues) => {
           console.log("onFormSubmit called with:", formValues);
@@ -148,8 +148,8 @@ export const WithOnFormSubmit: Story = {
           placeholder="••••••••"
         />
 
-        <Button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
+        <Button type="submit" disabled={loading} loading={loading}>
+          Sign In
         </Button>
 
         {result && (

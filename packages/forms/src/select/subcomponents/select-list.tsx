@@ -1,6 +1,6 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 
-import { List } from "@uiid/layout";
+import { List } from "@uiid/lists";
 
 import type { SelectListProps } from "../select.types";
 

@@ -1,7 +1,5 @@
 import { cx } from "@uiid/utils";
-
-import { ConditionalRender } from "../../conditional-render/conditional-render";
-import { Group } from "../../group/group";
+import { ConditionalRender, Group } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
 import { ICON_SIZE_LARGE } from "../list.constants";

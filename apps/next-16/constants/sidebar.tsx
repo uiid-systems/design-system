@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Home, Users, Swords } from "@uiid/icons";
-import type { ListProps } from "@uiid/layout";
+import type { ListProps } from "@uiid/lists";
 
 import {
   PLAYERS_PATH,

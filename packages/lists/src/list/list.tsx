@@ -1,6 +1,4 @@
-import { SwitchRender } from "../switch-render/switch-render";
-import { Stack } from "../stack/stack";
-import { Group } from "../group/group";
+import { SwitchRender, Stack, Group } from "@uiid/layout";
 
 import type { ListProps } from "./list.types";
 import styles from "./list.module.css";

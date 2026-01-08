@@ -1,5 +1,5 @@
 {
-  "name": "@uiid/navigation",
+  "name": "@uiid/lists",
   "version": "0.0.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,7 +10,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./globals.css": "./dist/navigation.css"
+    "./globals.css": "./dist/lists.css"
   },
   "files": [
     "dist"
@@ -23,12 +23,7 @@
   "dependencies": {
     "@base-ui/react": "1.0.0",
     "@uiid/icons": "workspace:*",
-    "@uiid/buttons": "workspace:*",
-    "@uiid/forms": "workspace:*",
-    "@uiid/indicators": "workspace:*",
     "@uiid/layout": "workspace:*",
-    "@uiid/lists": "workspace:*",
-    "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
