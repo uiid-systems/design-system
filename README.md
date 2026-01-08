@@ -29,7 +29,7 @@ This monorepo contains the following packages:
 ### Installation
 
 ```bash
-# Install dependencies
+# Install dependencies (automatically installs Playwright browsers)
 pnpm install
 
 # Build all packages
@@ -38,6 +38,8 @@ pnpm run build
 # Start Storybook
 pnpm run storybook
 ```
+
+> **Note:** The `postinstall` script automatically installs Chromium for Storybook testing. If you need other browsers, run `pnpm exec playwright install`.
 
 ### Using Components
 
