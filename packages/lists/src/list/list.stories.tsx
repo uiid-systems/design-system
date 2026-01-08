@@ -8,6 +8,7 @@ import { MOCK_ITEMS, MOCK_LINKS } from "./list.mocks";
 const meta = {
   title: "Lists/List",
   component: List,
+  tags: ["danger"],
   args: {
     items: MOCK_ITEMS,
   },

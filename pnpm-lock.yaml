@@ -183,6 +183,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../../packages/layout
+      '@uiid/lists':
+        specifier: workspace:*
+        version: link:../../packages/lists
       '@uiid/navigation':
         specifier: workspace:*
         version: link:../../packages/navigation

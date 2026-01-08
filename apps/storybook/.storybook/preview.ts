@@ -5,6 +5,7 @@ import "@uiid/typography/globals.css";
 import "@uiid/layout/globals.css";
 import "@uiid/buttons/globals.css";
 import "@uiid/cards/globals.css";
+import "@uiid/lists/globals.css";
 import "@uiid/calendars/globals.css";
 import "@uiid/forms/globals.css";
 import "@uiid/indicators/globals.css";
@@ -32,6 +33,7 @@ const preview: Preview = {
           ["Utilities"],
           "Cards",
           "Buttons",
+          "Lists",
           "Forms",
           ["Form"],
           "Overlays",
