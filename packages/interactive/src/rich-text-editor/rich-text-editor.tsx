@@ -36,30 +36,35 @@ export interface RichTextEditorProps
 }
 
 const Toolbar = ({ editor }: { editor: Editor }) => (
-  <div data-slot="toolbar-container" className={styles["toolbar-container"]}>
-    <Group ay="center" gap={1} fullwidth>
-      <Section1 editor={editor} activeLevels={[1, 2, 3, 4, 5, 6]} />
+  <Group
+    data-slot="toolbar-container"
+    className={styles["toolbar-container"]}
+    ay="center"
+    gap={1}
+    p={1}
+  >
+    <Section1 editor={editor} activeLevels={[1, 2, 3, 4, 5, 6]} />
 
-      <Separator orientation="vertical" style={{ marginInline: "0.5rem" }} />
+    <Separator orientation="vertical" />
 
-      <Section2
-        editor={editor}
-        activeActions={[
-          "bold",
-          "italic",
-          "underline",
-          "strikethrough",
-          "code",
-          "clearFormatting",
-        ]}
-        mainActionCount={3}
-      />
+    <Section2
+      editor={editor}
+      activeActions={[
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "code",
+        "clearFormatting",
+      ]}
+      mainActionCount={3}
+    />
 
-      <Separator orientation="vertical" style={{ marginInline: "0.5rem" }} />
+    <Separator orientation="vertical" />
 
-      <Section3 editor={editor} />
+    <Section3 editor={editor} />
 
-      {/* 
+    {/* 
 
       <Separator orientation="vertical" className="mx-2" />
 
@@ -79,8 +84,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => (
         activeActions={["codeBlock", "blockquote", "horizontalRule"]}
         mainActionCount={0}
       /> */}
-    </Group>
-  </div>
+  </Group>
 );
 Toolbar.displayName = "Toolbar";
 
@@ -125,7 +129,7 @@ export const MainRichTextEditor = ({
 
   return (
     <MeasuredContainer
-      render={<Card gap={0} trimmed fullwidth />}
+      render={<Card gap={0} trimmed fullwidth ax="stretch" />}
       name="editor"
     >
       <Toolbar editor={editor} />
