@@ -1,13 +1,30 @@
 # Input
 
-A text input component built on [Base UI's Input](https://base-ui.com/react/components/input), wrapped with optional `Field` support for labels, descriptions, and error messages.
+> Text input field with optional label and description. Built on [Base UI Input](https://base-ui.com/react/components/input).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { Input } from "@uiid/forms";
 
-<Input placeholder="Enter your email" />;
+// Basic
+<Input placeholder="Enter text..." />
+
+// With label and description
+<Input label="Email" description="We'll never share your email" />
+
+// Variants
+<Input size="small" />
+<Input fullwidth />
+<Input ghost />
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<Input placeholder="Enter your name" />
 ```
 
 ### With Label and Description
@@ -20,9 +37,13 @@ import { Input } from "@uiid/forms";
 />
 ```
 
-### Sizes
+### Required Field
 
-The `size` prop controls the font size of the input. Defaults to `"medium"`.
+```tsx
+<Input label="Username" required />
+```
+
+### Sizes
 
 ```tsx
 <Input size="small" placeholder="Small" />
@@ -30,82 +51,60 @@ The `size` prop controls the font size of the input. Defaults to `"medium"`.
 <Input size="large" placeholder="Large" />
 ```
 
-### Disabled State
+### Full Width
 
 ```tsx
-<Input disabled placeholder="Disabled input" />
+<Input fullwidth placeholder="Takes full container width" />
 ```
 
-### With Error
+### Ghost Variant
 
 ```tsx
-<Input label="Email" error="This field is required" required />
+<Input ghost placeholder="No border until focused" />
 ```
 
-### Grouping Inputs
-
-Use the `Field` component to wrap multiple inputs with a shared label:
+### Disabled
 
 ```tsx
-import { Input, Field } from "@uiid/forms";
-import { Group } from "@uiid/layout";
-
-<Field label="Full name" description="Enter your first and last name">
-  <Group fullwidth evenly gap={2}>
-    <Input placeholder="First name" />
-    <Input placeholder="Last name" />
-  </Group>
-</Field>;
+<Input disabled placeholder="Cannot edit" />
 ```
 
 ## Props
 
-| Prop          | Type                             | Default    | Description                                 |
-| ------------- | -------------------------------- | ---------- | ------------------------------------------- |
-| `size`        | `"small" \| "medium" \| "large"` | `"medium"` | Controls the font size of the input         |
-| `label`       | `ReactNode`                      | —          | Label text displayed above the input        |
-| `description` | `ReactNode`                      | —          | Helper text displayed below the input       |
-| `error`       | `ReactNode`                      | —          | Error message (shown when validation fails) |
-| `className`   | `string`                         | —          | Additional CSS class names                  |
-| `disabled`    | `boolean`                        | `false`    | Disables the input                          |
-| `required`    | `boolean`                        | `false`    | Marks the input as required                 |
-| `placeholder` | `string`                         | —          | Placeholder text                            |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | — | Label text displayed above input |
+| `description` | `ReactNode` | — | Helper text displayed below input |
+| `required` | `boolean` | `false` | Shows required indicator on label |
+| `name` | `string` | — | Input name for form submission |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Controls input height and font size |
+| `fullwidth` | `boolean` | `false` | Input takes full container width |
+| `ghost` | `boolean` | `false` | Removes border until focused |
+| `disabled` | `boolean` | `false` | Disables the input |
+| `placeholder` | `string` | — | Placeholder text |
+| `FieldProps` | `FieldProps` | — | Props forwarded to Field wrapper |
+| `className` | `string` | — | Additional CSS classes |
 
-All other props are forwarded to the underlying Base UI `Input` component.
+> All other props are forwarded to the Base UI Input component.
 
-## Data Attributes
+## Data Slots
 
-| Attribute   | Values                           | Description                  |
-| ----------- | -------------------------------- | ---------------------------- |
-| `data-slot` | `"input"`                        | Identifies the input element |
-| `data-size` | `"small" \| "medium" \| "large"` | Current size variant         |
+| Slot | Element |
+|------|---------|
+| `input` | The input element |
+| `field-root` | Field wrapper (when label/description present) |
+| `field-label` | Label element |
+| `field-description` | Description element |
 
-## CSS Variables
+## Accessibility
 
-The input uses design tokens from the forms and globals layers:
+- Built on Base UI Input which handles ARIA attributes
+- Labels are automatically associated with inputs via Field
+- Required fields display visual indicator and set `data-required`
 
-| Variable                       | Description                  |
-| ------------------------------ | ---------------------------- |
-| `--forms-background`           | Default background color     |
-| `--forms-backgroundHover`      | Background color on hover    |
-| `--forms-backgroundFocus`      | Background color on focus    |
-| `--forms-border-color`         | Border color                 |
-| `--forms-padding-x`            | Horizontal padding           |
-| `--forms-padding-y`            | Vertical padding             |
-| `--forms-fontSize`             | Base font size               |
-| `--forms-size-small-fontSize`  | Font size for small variant  |
-| `--forms-size-medium-fontSize` | Font size for medium variant |
-| `--forms-size-large-fontSize`  | Font size for large variant  |
+## See Also
 
-## File Structure
-
-```
-input/
-├── input.tsx           # Component implementation
-├── input.types.ts      # TypeScript types
-├── input.module.css    # Styles
-├── input.stories.tsx   # Storybook stories
-├── input.test.tsx      # Unit tests
-├── input.variants.ts   # Style variants
-└── README.md           # This file
-```
+- [Field](../field/README.md) - Wrapper for form field labels and descriptions
+- [NumberField](../number-field/README.md) - Numeric input with increment/decrement
+- [Select](../select/README.md) - Dropdown selection
+- [Base UI Input](https://base-ui.com/react/components/input) - Underlying primitive

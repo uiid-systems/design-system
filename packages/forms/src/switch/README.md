@@ -1,16 +1,25 @@
 # Switch
 
-A toggle switch component built on [Base UI's Switch](https://base-ui.com/react/components/switch), with optional label support and configurable label positioning.
+> A toggle switch for on/off states. Built on [Base UI Switch](https://base-ui.com/react/components/switch).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { Switch } from "@uiid/forms";
 
-<Switch />;
+// Basic
+<Switch />
+
+// With label
+<Switch label="Enable notifications" />
+
+// Variants
+<Switch label="Dark mode" labelPosition="before" />
 ```
 
-### With Label
+## Examples
+
+### Basic
 
 ```tsx
 <Switch label="Enable notifications" />
@@ -18,22 +27,12 @@ import { Switch } from "@uiid/forms";
 
 ### Label Position
 
-The label can be placed before or after the switch. Defaults to `"after"`.
-
 ```tsx
 <Switch label="Dark mode" labelPosition="before" />
 <Switch label="Dark mode" labelPosition="after" />
 ```
 
-### Disabled State
-
-```tsx
-<Switch label="Disabled switch" disabled />
-```
-
 ### Controlled
-
-Common props like `checked` and `onCheckedChange` are exposed directly for convenience:
 
 ```tsx
 const [checked, setChecked] = useState(false);
@@ -42,73 +41,70 @@ const [checked, setChecked] = useState(false);
   label="Controlled switch"
   checked={checked}
   onCheckedChange={setChecked}
-/>;
+/>
 ```
 
-### Composing with Subcomponents
-
-For advanced use cases, all subcomponents are exported for custom composition:
+### Default Checked
 
 ```tsx
-import { SwitchRoot, SwitchThumb, SwitchLabel } from "@uiid/forms";
+<Switch label="Enabled by default" defaultChecked />
+```
 
-<SwitchRoot checked={checked} onCheckedChange={setChecked}>
-  <SwitchThumb />
-</SwitchRoot>;
+### Disabled
+
+```tsx
+<Switch label="Cannot change" disabled />
 ```
 
 ## Props
 
-Common props from Base UI's `Switch.Root` are exposed directly for convenience:
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Label text displayed next to the switch |
+| `labelPosition` | `"before" \| "after"` | `"after"` | Position of the label relative to switch |
+| `checked` | `boolean` | — | Controlled checked state |
+| `defaultChecked` | `boolean` | — | Initial checked state (uncontrolled) |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Called when state changes |
+| `name` | `string` | — | Form field name and label `htmlFor` |
+| `disabled` | `boolean` | `false` | Disables the switch |
+| `RootProps` | `SwitchRootProps` | — | Props for the root element |
+| `ThumbProps` | `SwitchThumbProps` | — | Props for the thumb element |
 
-| Prop              | Type                         | Default   | Description                              |
-| ----------------- | ---------------------------- | --------- | ---------------------------------------- |
-| `checked`         | `boolean`                    | —         | Controlled checked state                 |
-| `defaultChecked`  | `boolean`                    | —         | Initial checked state (uncontrolled)     |
-| `onCheckedChange` | `(checked: boolean) => void` | —         | Callback when state changes              |
-| `label`           | `string`                     | —         | Label text displayed next to the switch  |
-| `labelPosition`   | `"before" \| "after"`        | `"after"` | Position of the label relative to switch |
-| `name`            | `string`                     | —         | Form field name and label `htmlFor`      |
-| `disabled`        | `boolean`                    | `false`   | Disables the switch                      |
-| `RootProps`       | `SwitchRootProps`            | —         | Additional props for the root element    |
-| `ThumbProps`      | `SwitchThumbProps`           | —         | Props passed to the thumb element        |
+> All other props are forwarded to the Base UI Switch.Root component.
 
-All other `Switch.Root` props are also supported at the top level.
+## Anatomy
 
-## Data Attributes
-
-| Attribute       | Element     | Values              | Description                  |
-| --------------- | ----------- | ------------------- | ---------------------------- |
-| `data-slot`     | root        | `"switch-root"`     | Identifies the root element  |
-| `data-slot`     | thumb       | `"switch-thumb"`    | Identifies the thumb element |
-| `data-slot`     | label       | `"switch-label"`    | Identifies the label element |
-| `data-checked`  | root, thumb | Present when on     | Indicates checked state      |
-| `data-disabled` | root, label | `"true" \| "false"` | Indicates disabled state     |
-
-## CSS Variables
-
-The switch uses design tokens from the globals and shade layers:
-
-| Variable                      | Description                  |
-| ----------------------------- | ---------------------------- |
-| `--shade-surface`             | Background color (unchecked) |
-| `--shade-halftone`            | Background color (checked)   |
-| `--shade-foreground`          | Thumb color                  |
-| `--globals-transition-timing` | Animation duration           |
-| `--globals-disabled-opacity`  | Opacity when disabled        |
-
-## File Structure
-
+```tsx
+<SwitchLabel>         {/* Container with label */}
+  <SwitchRoot>        {/* The switch track */}
+    <SwitchThumb />   {/* The sliding thumb */}
+  </SwitchRoot>
+</SwitchLabel>
 ```
-switch/
-├── switch.tsx              # Component implementation
-├── switch.types.ts         # TypeScript types
-├── switch.module.css       # Styles
-├── switch.stories.tsx      # Storybook stories
-├── subcomponents/
-│   ├── switch-root.tsx     # Root switch element
-│   ├── switch-thumb.tsx    # Thumb/toggle element
-│   ├── switch-label.tsx    # Label element
-│   └── index.ts            # Subcomponent exports
-└── README.md               # This file
-```
+
+## Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `SwitchRoot` | The switch track element |
+| `SwitchThumb` | The sliding thumb element |
+| `SwitchLabel` | Label wrapper element |
+
+## Data Slots
+
+| Slot | Element |
+|------|---------|
+| `switch-root` | The switch track |
+| `switch-thumb` | The thumb element |
+| `switch-label` | The label element |
+
+## Accessibility
+
+- Built on Base UI Switch which handles ARIA attributes
+- Keyboard: Space to toggle when focused
+- Label is automatically associated via `htmlFor`
+
+## See Also
+
+- [Checkbox](../checkbox/README.md) - For independent toggles with checkmark
+- [Base UI Switch](https://base-ui.com/react/components/switch) - Underlying primitive

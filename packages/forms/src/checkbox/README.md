@@ -1,60 +1,39 @@
 # Checkbox
 
-A checkbox component built on [Base UI's Checkbox](https://base-ui.com/react/components/checkbox), with support for labels, descriptions, and visual variants.
+> A checkbox input with optional label and description. Built on [Base UI Checkbox](https://base-ui.com/react/components/checkbox).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { Checkbox } from "@uiid/forms";
 
-<Checkbox />;
+// Basic
+<Checkbox />
+
+// With label
+<Checkbox label="Accept terms" />
+
+// Variants
+<Checkbox bordered label="Bordered style" />
+<Checkbox reversed label="Label on left" />
+<Checkbox indeterminate label="Partial selection" />
 ```
 
-### With Label
+## Examples
+
+### Basic
 
 ```tsx
-<Checkbox label="Accept terms and conditions" />
+<Checkbox label="Subscribe to newsletter" />
 ```
 
-### With Label and Description
+### With Description
 
 ```tsx
 <Checkbox
   label="Marketing emails"
-  description="Receive updates about new features and promotions."
+  description="Receive updates about new features and promotions"
 />
-```
-
-### Sizes
-
-```tsx
-<Checkbox size="small" label="Small" />
-<Checkbox size="medium" label="Medium" />
-<Checkbox size="large" label="Large" />
-```
-
-### Bordered Variant
-
-Wraps the checkbox in a bordered container, useful for card-style selections:
-
-```tsx
-<Checkbox bordered label="Option A" description="Description for option A" />
-```
-
-### Reversed Layout
-
-Places the checkbox after the label:
-
-```tsx
-<Checkbox reversed label="Checkbox on the right" />
-```
-
-### Indeterminate State
-
-For "select all" patterns where some children are checked:
-
-```tsx
-<Checkbox indeterminate label="Select all" />
 ```
 
 ### Controlled
@@ -62,74 +41,101 @@ For "select all" patterns where some children are checked:
 ```tsx
 const [checked, setChecked] = useState(false);
 
-<Checkbox checked={checked} onCheckedChange={setChecked} label="Controlled" />;
+<Checkbox
+  label="I agree"
+  checked={checked}
+  onCheckedChange={setChecked}
+/>
+```
+
+### Default Checked
+
+```tsx
+<Checkbox label="Enabled by default" defaultChecked />
+```
+
+### Indeterminate
+
+Used for "select all" patterns when some items are selected:
+
+```tsx
+<Checkbox label="Select all" indeterminate />
+```
+
+### Bordered
+
+Adds a border around the checkbox and label:
+
+```tsx
+<Checkbox bordered label="Bordered checkbox" />
+```
+
+### Reversed
+
+Places the label before the checkbox:
+
+```tsx
+<Checkbox reversed label="Label on left" />
+```
+
+### Disabled
+
+```tsx
+<Checkbox disabled label="Cannot change" />
 ```
 
 ## Props
 
-| Prop              | Type                         | Default | Description                          |
-| ----------------- | ---------------------------- | ------- | ------------------------------------ |
-| `checked`         | `boolean`                    | —       | Controlled checked state             |
-| `defaultChecked`  | `boolean`                    | —       | Initial checked state (uncontrolled) |
-| `onCheckedChange` | `(checked: boolean) => void` | —       | Callback when state changes          |
-| `label`           | `ReactNode`                  | —       | Label text                           |
-| `description`     | `ReactNode`                  | —       | Helper text below the label          |
-| `size`            | `"sm" \| "md" \| "lg"`       | `"sm"`  | Size of the checkbox                 |
-| `indeterminate`   | `boolean`                    | `false` | Shows indeterminate (minus) icon     |
-| `bordered`        | `boolean`                    | `false` | Wraps in bordered container          |
-| `reversed`        | `boolean`                    | `false` | Places checkbox after label          |
-| `disabled`        | `boolean`                    | `false` | Disables the checkbox                |
-| `ContainerProps`  | `GroupProps`                 | —       | Props for the container element      |
-| `IndicatorProps`  | `CheckboxIndicatorProps`     | —       | Props for the indicator element      |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | — | Label text |
+| `description` | `ReactNode` | — | Helper text below label |
+| `checked` | `boolean` | — | Controlled checked state |
+| `defaultChecked` | `boolean` | `false` | Initial checked state (uncontrolled) |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Called when checked state changes |
+| `indeterminate` | `boolean` | `false` | Shows indeterminate state |
+| `bordered` | `boolean` | `false` | Adds border around checkbox and label |
+| `reversed` | `boolean` | `false` | Places label before checkbox |
+| `hideIndicator` | `boolean` | `false` | Hides the checkbox visually |
+| `disabled` | `boolean` | `false` | Disables the checkbox |
+| `ContainerProps` | `CheckboxFieldProps` | — | Props for the container element |
+| `IndicatorProps` | `CheckboxIndicatorProps` | — | Props for the indicator element |
 
-## Relationship to Radio
+> All other props are forwarded to the Base UI Checkbox.Root component.
 
-The Checkbox and Radio components share the same field layout system via `CheckboxField`. Both support:
+## Anatomy
 
-- `label` and `description`
-- `bordered` and `reversed` variants
-- Similar visual styling
-
-Use Checkbox for independent toggles. Use Radio within a RadioGroup for mutually exclusive options.
-
-## Data Attributes
-
-| Attribute        | Element   | Values                 | Description                 |
-| ---------------- | --------- | ---------------------- | --------------------------- |
-| `data-slot`      | root      | `"checkbox"`           | Identifies the root element |
-| `data-slot`      | indicator | `"checkbox-indicator"` | Identifies the indicator    |
-| `data-size`      | root      | `"sm" \| "md" \| "lg"` | Current size variant        |
-| `data-checked`   | root      | Present when on        | Indicates checked state     |
-| `data-unchecked` | root      | Present when off       | Indicates unchecked state   |
-| `data-bordered`  | container | `true`                 | Bordered variant active     |
-| `data-reversed`  | container | `"true"`               | Reversed layout active      |
-
-## CSS Variables
-
-| Variable                   | Description               |
-| -------------------------- | ------------------------- |
-| `--checkbox-size`          | Size of the checkbox      |
-| `--checkbox-size-sm`       | Small size value          |
-| `--checkbox-size-md`       | Medium size value         |
-| `--checkbox-size-lg`       | Large size value          |
-| `--checkbox-border-radius` | Border radius of checkbox |
-| `--forms-background`       | Background color          |
-| `--forms-backgroundHover`  | Background on hover       |
-| `--forms-border-color`     | Border color              |
-
-## File Structure
-
+```tsx
+<CheckboxField>           {/* Container with label */}
+  <CheckboxRoot>          {/* The checkbox control */}
+    <CheckboxIndicator /> {/* Check mark icon */}
+  </CheckboxRoot>
+</CheckboxField>
 ```
-checkbox/
-├── checkbox.tsx              # Component implementation
-├── checkbox.types.ts         # TypeScript types
-├── checkbox.constants.ts     # Default values
-├── checkbox.module.css       # Styles
-├── checkbox.test.tsx         # Unit tests
-├── subcomponents/
-│   ├── checkbox-root.tsx     # Root checkbox element
-│   ├── checkbox-indicator.tsx# Check/minus icon
-│   ├── checkbox-field.tsx    # Label/description wrapper
-│   └── index.ts              # Subcomponent exports
-└── README.md                 # This file
-```
+
+## Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `CheckboxRoot` | The checkbox control element |
+| `CheckboxField` | Container with label and description |
+| `CheckboxIndicator` | The check mark icon |
+
+## Data Slots
+
+| Slot | Element |
+|------|---------|
+| `checkbox` | The checkbox root element |
+
+## Accessibility
+
+- Built on Base UI Checkbox which handles ARIA attributes
+- Clicking label toggles checkbox
+- Keyboard: Space to toggle when focused
+
+## See Also
+
+- [CheckboxGroup](../checkbox-group/README.md) - Multiple checkboxes with shared state
+- [Radio](../radio/README.md) - Single selection from options
+- [Switch](../switch/README.md) - Toggle for on/off states
+- [Base UI Checkbox](https://base-ui.com/react/components/checkbox) - Underlying primitive

@@ -1,13 +1,28 @@
 # NumberField
 
-A numeric input component built on [Base UI's NumberField](https://base-ui.com/react/components/number-field), with increment/decrement buttons.
+> A numeric input with increment/decrement buttons. Built on [Base UI NumberField](https://base-ui.com/react/components/number-field).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { NumberField } from "@uiid/forms";
 
-<NumberField />;
+// Basic
+<NumberField />
+
+// With constraints
+<NumberField min={0} max={100} defaultValue={50} />
+
+// With step
+<NumberField step={5} defaultValue={0} />
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<NumberField />
 ```
 
 ### Default Value
@@ -33,13 +48,7 @@ import { NumberField } from "@uiid/forms";
 ```tsx
 const [value, setValue] = useState<number | null>(100);
 
-<NumberField value={value} onValueChange={setValue} />;
-```
-
-### Disabled
-
-```tsx
-<NumberField disabled defaultValue={50} />
+<NumberField value={value} onValueChange={setValue} />
 ```
 
 ### With Format Options
@@ -56,72 +65,77 @@ Format the displayed value using `Intl.NumberFormat` options:
 />
 ```
 
+### Disabled
+
+```tsx
+<NumberField disabled defaultValue={50} />
+```
+
 ## Props
 
-| Prop             | Type                              | Default | Description                 |
-| ---------------- | --------------------------------- | ------- | --------------------------- |
-| `value`          | `number \| null`                  | —       | Controlled value            |
-| `defaultValue`   | `number`                          | `100`   | Initial value               |
-| `onValueChange`  | `(value: number \| null) => void` | —       | Callback when value changes |
-| `min`            | `number`                          | —       | Minimum allowed value       |
-| `max`            | `number`                          | —       | Maximum allowed value       |
-| `step`           | `number`                          | `1`     | Increment/decrement step    |
-| `smallStep`      | `number`                          | —       | Step when holding Shift     |
-| `largeStep`      | `number`                          | —       | Step when holding Ctrl/Cmd  |
-| `disabled`       | `boolean`                         | `false` | Disables the field          |
-| `readOnly`       | `boolean`                         | `false` | Makes the input read-only   |
-| `formatOptions`  | `Intl.NumberFormatOptions`        | —       | Number formatting options   |
-| `DecrementProps` | `NumberFieldDecrementProps`       | —       | Props for decrement button  |
-| `IncrementProps` | `NumberFieldIncrementProps`       | —       | Props for increment button  |
-| `InputProps`     | `NumberFieldInputProps`           | —       | Props for the input element |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number \| null` | — | Controlled value |
+| `defaultValue` | `number` | `100` | Initial value |
+| `onValueChange` | `(value: number \| null) => void` | — | Called when value changes |
+| `min` | `number` | — | Minimum allowed value |
+| `max` | `number` | — | Maximum allowed value |
+| `step` | `number` | `1` | Increment/decrement step |
+| `smallStep` | `number` | — | Step when holding Shift |
+| `largeStep` | `number` | — | Step when holding Ctrl/Cmd |
+| `disabled` | `boolean` | `false` | Disables the field |
+| `readOnly` | `boolean` | `false` | Makes the input read-only |
+| `formatOptions` | `Intl.NumberFormatOptions` | — | Number formatting options |
+| `DecrementProps` | `NumberFieldDecrementProps` | — | Props for decrement button |
+| `IncrementProps` | `NumberFieldIncrementProps` | — | Props for increment button |
+| `InputProps` | `NumberFieldInputProps` | — | Props for the input element |
 
-## Keyboard Interactions
+## Anatomy
 
-| Key       | Action                  |
-| --------- | ----------------------- |
-| `↑`       | Increment by step       |
-| `↓`       | Decrement by step       |
-| `Shift+↑` | Increment by smallStep  |
-| `Shift+↓` | Decrement by smallStep  |
-| `Ctrl+↑`  | Increment by largeStep  |
-| `Ctrl+↓`  | Decrement by largeStep  |
-| `Home`    | Set to min (if defined) |
-| `End`     | Set to max (if defined) |
-
-## Data Attributes
-
-| Attribute   | Element   | Values                     | Description                 |
-| ----------- | --------- | -------------------------- | --------------------------- |
-| `data-slot` | decrement | `"number-field-decrement"` | Identifies decrement button |
-| `data-slot` | increment | `"number-field-increment"` | Identifies increment button |
-
-## CSS Variables
-
-| Variable                   | Description                 |
-| -------------------------- | --------------------------- |
-| `--forms-background`       | Button background color     |
-| `--forms-backgroundHover`  | Button background on hover  |
-| `--forms-backgroundActive` | Button background on active |
-| `--forms-border-color`     | Border color                |
-| `--globals-border-radius`  | Border radius               |
-| `--globals-icon-size`      | Icon size in buttons        |
-
-## File Structure
-
-```
-number-field/
-├── number-field.tsx              # Component implementation
-├── number-field.types.ts         # TypeScript types
-├── number-field.module.css       # Styles
-├── number-field.stories.tsx      # Storybook stories
-├── subcomponents/
-│   ├── number-field-root.tsx     # Root container
-│   ├── number-field-increment.tsx# Increment button
-│   ├── number-field-decrement.tsx# Decrement button
-│   └── index.ts                  # Subcomponent exports
-└── README.md                     # This file
+```tsx
+<NumberFieldRoot>              {/* Provider */}
+  <NumberFieldDecrement />     {/* Minus button */}
+  <NumberFieldInput />         {/* Numeric input */}
+  <NumberFieldIncrement />     {/* Plus button */}
+</NumberFieldRoot>
 ```
 
-## TODO
+## Subcomponents
 
-- [ ] Implement scrub area for drag-to-change value ([Base UI docs](https://base-ui.com/react/components/number-field#scrub-area))
+| Component | Description |
+|-----------|-------------|
+| `NumberFieldRoot` | Root container component |
+| `NumberFieldDecrement` | Decrement button |
+| `NumberFieldInput` | The numeric input |
+| `NumberFieldIncrement` | Increment button |
+
+## Data Slots
+
+| Slot | Element |
+|------|---------|
+| `number-field-decrement` | The decrement button |
+| `number-field-increment` | The increment button |
+
+## Keyboard
+
+| Key | Action |
+|-----|--------|
+| `↑` | Increment by step |
+| `↓` | Decrement by step |
+| `Shift+↑` | Increment by smallStep |
+| `Shift+↓` | Decrement by smallStep |
+| `Ctrl+↑` | Increment by largeStep |
+| `Ctrl+↓` | Decrement by largeStep |
+| `Home` | Set to min (if defined) |
+| `End` | Set to max (if defined) |
+
+## Accessibility
+
+- Built on Base UI NumberField which handles ARIA attributes
+- Keyboard navigation for increment/decrement
+- Input accepts only numeric values
+
+## See Also
+
+- [Input](../input/README.md) - Basic text input
+- [Base UI NumberField](https://base-ui.com/react/components/number-field) - Underlying primitive

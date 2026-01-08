@@ -1,8 +1,8 @@
 # CheckboxGroup
 
-A group of checkboxes built on [Base UI's CheckboxGroup](https://base-ui.com/react/components/checkbox-group), for managing multiple checkbox selections.
+> A group of checkboxes for multi-select scenarios. Built on [Base UI CheckboxGroup](https://base-ui.com/react/components/checkbox-group).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { CheckboxGroup } from "@uiid/forms";
@@ -13,7 +13,45 @@ const items = [
   { value: "angular", label: "Angular" },
 ];
 
-<CheckboxGroup items={items} />;
+// Basic
+<CheckboxGroup items={items} />
+
+// With defaults
+<CheckboxGroup items={items} defaultValue={["react"]} />
+
+// Variants
+<CheckboxGroup items={items} direction="horizontal" />
+<CheckboxGroup items={items} bordered />
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<CheckboxGroup items={items} />
+```
+
+### With Field Label
+
+```tsx
+<CheckboxGroup
+  items={items}
+  label="Select frameworks"
+  description="Choose all that apply"
+/>
+```
+
+### Controlled
+
+```tsx
+const [value, setValue] = useState<string[]>([]);
+
+<CheckboxGroup
+  items={items}
+  value={value}
+  onValueChange={setValue}
+/>
 ```
 
 ### Default Values
@@ -22,21 +60,13 @@ const items = [
 <CheckboxGroup items={items} defaultValue={["react", "vue"]} />
 ```
 
-### Controlled
-
-```tsx
-const [value, setValue] = useState<string[]>(["react"]);
-
-<CheckboxGroup items={items} value={value} onValueChange={setValue} />;
-```
-
 ### Horizontal Layout
 
 ```tsx
 <CheckboxGroup items={items} direction="horizontal" />
 ```
 
-### Bordered Variant
+### Bordered
 
 Card-style selection pattern:
 
@@ -44,7 +74,7 @@ Card-style selection pattern:
 <CheckboxGroup items={items} bordered />
 ```
 
-### Reversed Layout
+### Reversed
 
 Places checkboxes after labels:
 
@@ -52,32 +82,29 @@ Places checkboxes after labels:
 <CheckboxGroup items={items} reversed />
 ```
 
-### Disabled Items
+### Disabled
 
 ```tsx
-const items = [
-  { value: "a", label: "Option A" },
-  { value: "b", label: "Option B", disabled: true },
-  { value: "c", label: "Option C" },
-];
-
-<CheckboxGroup items={items} />;
+<CheckboxGroup items={items} disabled />
 ```
 
 ## Props
 
-| Prop             | Type                         | Default      | Description                           |
-| ---------------- | ---------------------------- | ------------ | ------------------------------------- |
-| `items`          | `FormItemProps[]`            | —            | **Required.** Array of checkbox items |
-| `value`          | `string[]`                   | —            | Controlled selected values            |
-| `defaultValue`   | `string[]`                   | —            | Initial selected values               |
-| `onValueChange`  | `(value: string[]) => void`  | —            | Callback when selection changes       |
-| `direction`      | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                      |
-| `bordered`       | `boolean`                    | `false`      | Bordered variant for all checkboxes   |
-| `reversed`       | `boolean`                    | `false`      | Reversed layout for all checkboxes    |
-| `disabled`       | `boolean`                    | `false`      | Disables entire group                 |
-| `CheckboxProps`  | `Partial<CheckboxProps>`     | —            | Props passed to each Checkbox         |
-| `IndicatorProps` | `CheckboxIndicatorProps`     | —            | Props passed to each indicator        |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `FormItemProps[]` | — | **Required.** Array of checkbox items |
+| `label` | `ReactNode` | — | Field label for the group |
+| `description` | `ReactNode` | — | Helper text below the group |
+| `value` | `string[]` | — | Controlled selected values |
+| `defaultValue` | `string[]` | — | Initial selected values |
+| `onValueChange` | `(value: string[]) => void` | — | Called when selection changes |
+| `direction` | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction |
+| `bordered` | `boolean` | `false` | Bordered variant for all checkboxes |
+| `reversed` | `boolean` | `false` | Reversed layout for all checkboxes |
+| `disabled` | `boolean` | `false` | Disables entire group |
+| `hideIndicators` | `boolean` | `false` | Hides all checkbox indicators |
+| `CheckboxProps` | `Partial<CheckboxProps>` | — | Props forwarded to each Checkbox |
+| `IndicatorProps` | `CheckboxIndicatorProps` | — | Props forwarded to each indicator |
 
 ### FormItemProps
 
@@ -89,22 +116,19 @@ type FormItemProps = {
 };
 ```
 
-## Relationship to RadioGroup
+## Data Slots
 
-CheckboxGroup and RadioGroup share a similar API design:
+| Slot | Element |
+|------|---------|
+| `checkbox` | Each checkbox element |
 
-- Both accept an `items` array
-- Both support `direction`, `bordered`, and `reversed`
-- Both have props to customize child components
+## Accessibility
 
-Use CheckboxGroup for multiple selections. Use RadioGroup for single selection.
+- Built on Base UI CheckboxGroup which manages ARIA attributes
+- Keyboard: Tab to navigate between checkboxes, Space to toggle
 
-## File Structure
+## See Also
 
-```
-checkbox-group/
-├── checkbox-group.tsx       # Component implementation
-├── checkbox-group.types.ts  # TypeScript types
-├── checkbox-group.test.tsx  # Unit tests
-└── README.md                # This file
-```
+- [Checkbox](../checkbox/README.md) - Individual checkbox component
+- [RadioGroup](../radio-group/README.md) - Single selection from options
+- [Base UI CheckboxGroup](https://base-ui.com/react/components/checkbox-group) - Underlying primitive

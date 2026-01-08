@@ -1,8 +1,8 @@
 # RadioGroup
 
-A group of radio buttons built on [Base UI's RadioGroup](https://base-ui.com/react/components/radio-group), for single-selection from multiple options.
+> A group of radio buttons for single-selection scenarios. Built on [Base UI RadioGroup](https://base-ui.com/react/components/radio-group).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { RadioGroup } from "@uiid/forms";
@@ -13,15 +13,33 @@ const items = [
   { value: "large", label: "Large" },
 ];
 
-<RadioGroup items={items} />;
+// Basic (first item selected by default)
+<RadioGroup items={items} />
+
+// With specific default
+<RadioGroup items={items} defaultValue="medium" />
+
+// Variants
+<RadioGroup items={items} direction="horizontal" />
+<RadioGroup items={items} bordered />
 ```
 
-### Default Value
+## Examples
 
-By default, the first item is selected. Override with `defaultValue`:
+### Basic
 
 ```tsx
-<RadioGroup items={items} defaultValue="medium" />
+<RadioGroup items={items} />
+```
+
+### With Field Label
+
+```tsx
+<RadioGroup
+  items={items}
+  label="Select size"
+  description="Choose the size that fits your needs"
+/>
 ```
 
 ### Controlled
@@ -29,7 +47,19 @@ By default, the first item is selected. Override with `defaultValue`:
 ```tsx
 const [value, setValue] = useState("small");
 
-<RadioGroup items={items} value={value} onValueChange={setValue} />;
+<RadioGroup
+  items={items}
+  value={value}
+  onValueChange={setValue}
+/>
+```
+
+### Default Value
+
+First item is selected by default. Override with `defaultValue`:
+
+```tsx
+<RadioGroup items={items} defaultValue="medium" />
 ```
 
 ### Horizontal Layout
@@ -38,7 +68,7 @@ const [value, setValue] = useState("small");
 <RadioGroup items={items} direction="horizontal" />
 ```
 
-### Bordered Variant
+### Bordered
 
 Card-style selection pattern:
 
@@ -46,7 +76,7 @@ Card-style selection pattern:
 <RadioGroup items={items} bordered />
 ```
 
-### Reversed Layout
+### Reversed
 
 Places radios after labels:
 
@@ -54,41 +84,37 @@ Places radios after labels:
 <RadioGroup items={items} reversed />
 ```
 
-### Hidden Indicator
+### Hidden Indicators
 
-For card selections where the border indicates selection:
+For card selections where border indicates selection:
 
 ```tsx
-<RadioGroup items={items} bordered hideIndicator />
+<RadioGroup items={items} bordered hideIndicators />
 ```
 
-### Disabled Items
+### Disabled
 
 ```tsx
-const items = [
-  { value: "a", label: "Option A" },
-  { value: "b", label: "Option B", disabled: true },
-  { value: "c", label: "Option C" },
-];
-
-<RadioGroup items={items} />
+<RadioGroup items={items} disabled />
 ```
 
 ## Props
 
-| Prop            | Type                         | Default      | Description                          |
-| --------------- | ---------------------------- | ------------ | ------------------------------------ |
-| `items`         | `FormItemProps[]`            | —            | **Required.** Array of radio items   |
-| `value`         | `string`                     | —            | Controlled selected value            |
-| `defaultValue`  | `string`                     | First item   | Initial selected value               |
-| `onValueChange` | `(value: string) => void`    | —            | Callback when selection changes      |
-| `direction`     | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                     |
-| `bordered`      | `boolean`                    | `false`      | Bordered variant for all radios      |
-| `reversed`      | `boolean`                    | `false`      | Reversed layout for all radios       |
-| `hideIndicator` | `boolean`                    | `false`      | Hides radio circles                  |
-| `disabled`      | `boolean`                    | `false`      | Disables entire group                |
-| `RadioProps`    | `Partial<RadioProps>`        | —            | Props passed to each Radio           |
-| `IndicatorProps`| `RadioIndicatorProps`        | —            | Props passed to each indicator       |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `FormItemProps[]` | — | **Required.** Array of radio items |
+| `label` | `ReactNode` | — | Field label for the group |
+| `description` | `ReactNode` | — | Helper text below the group |
+| `value` | `string` | — | Controlled selected value |
+| `defaultValue` | `string` | First item | Initial selected value |
+| `onValueChange` | `(value: string) => void` | — | Called when selection changes |
+| `direction` | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction |
+| `bordered` | `boolean` | `false` | Bordered variant for all radios |
+| `reversed` | `boolean` | `false` | Reversed layout for all radios |
+| `hideIndicators` | `boolean` | `false` | Hides all radio indicators |
+| `disabled` | `boolean` | `false` | Disables entire group |
+| `RadioProps` | `Partial<RadioProps>` | — | Props forwarded to each Radio |
+| `IndicatorProps` | `RadioIndicatorProps` | — | Props forwarded to each indicator |
 
 ### FormItemProps
 
@@ -100,23 +126,19 @@ type FormItemProps = {
 };
 ```
 
-## Relationship to CheckboxGroup
+## Data Slots
 
-RadioGroup and CheckboxGroup share a similar API design:
+| Slot | Element |
+|------|---------|
+| `radio` | Each radio element |
 
-- Both accept an `items` array
-- Both support `direction`, `bordered`, and `reversed`
-- Both have props to customize child components
+## Accessibility
 
-Use RadioGroup for single selection. Use CheckboxGroup for multiple selections.
+- Built on Base UI RadioGroup which manages ARIA attributes
+- Keyboard: Arrow keys to navigate options, Space to select
 
-## File Structure
+## See Also
 
-```
-radio-group/
-├── radio-group.tsx       # Component implementation
-├── radio-group.types.ts  # TypeScript types
-├── radio-group.test.tsx  # Unit tests
-└── README.md             # This file
-```
-
+- [Radio](../radio/README.md) - Individual radio component
+- [CheckboxGroup](../checkbox-group/README.md) - Multiple selection from options
+- [Base UI RadioGroup](https://base-ui.com/react/components/radio-group) - Underlying primitive

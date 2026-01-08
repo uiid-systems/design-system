@@ -1,20 +1,28 @@
 # Radio
 
-A radio button component built on [Base UI's Radio](https://base-ui.com/react/components/radio), designed to be used within a RadioGroup for mutually exclusive selections.
+> A radio button for single-selection within a group. Built on [Base UI Radio](https://base-ui.com/react/components/radio). Must be used within a RadioGroup.
 
-## Usage
-
-Radio must be used within a RadioGroup:
+## Quick Reference
 
 ```tsx
-import { Radio, RadioGroup } from "@uiid/forms";
+import { RadioGroup } from "@uiid/forms";
 
+const items = [
+  { value: "a", label: "Option A" },
+  { value: "b", label: "Option B" },
+];
+
+// Use via RadioGroup (recommended)
+<RadioGroup items={items} />
+
+// Or compose manually
 <RadioGroup defaultValue="a">
   <Radio value="a" label="Option A" />
   <Radio value="b" label="Option B" />
-  <Radio value="c" label="Option C" />
-</RadioGroup>;
+</RadioGroup>
 ```
+
+## Examples
 
 ### With Description
 
@@ -25,24 +33,28 @@ import { Radio, RadioGroup } from "@uiid/forms";
     label="Monthly"
     description="$10/month, billed monthly"
   />
-  <Radio value="yearly" label="Yearly" description="$100/year, save 17%" />
+  <Radio
+    value="yearly"
+    label="Yearly"
+    description="$100/year, save 17%"
+  />
 </RadioGroup>
 ```
 
-### Bordered Variant
+### Bordered
 
 Card-style selection pattern:
 
 ```tsx
-<RadioGroup defaultValue="a">
-  <Radio bordered value="a" label="Basic" description="For individuals" />
-  <Radio bordered value="b" label="Pro" description="For teams" />
+<RadioGroup defaultValue="basic">
+  <Radio bordered value="basic" label="Basic" description="For individuals" />
+  <Radio bordered value="pro" label="Pro" description="For teams" />
 </RadioGroup>
 ```
 
-### Reversed Layout
+### Reversed
 
-Places the radio after the label:
+Places radio after label:
 
 ```tsx
 <RadioGroup defaultValue="a">
@@ -53,7 +65,7 @@ Places the radio after the label:
 
 ### Hidden Indicator
 
-For card-style selections where the border indicates selection:
+For card selections where border indicates selection:
 
 ```tsx
 <RadioGroup defaultValue="a">
@@ -64,59 +76,49 @@ For card-style selections where the border indicates selection:
 
 ## Props
 
-| Prop             | Type                  | Default | Description                              |
-| ---------------- | --------------------- | ------- | ---------------------------------------- |
-| `value`          | `string`              | —       | **Required.** Value for the radio option |
-| `label`          | `ReactNode`           | —       | Label text                               |
-| `description`    | `ReactNode`           | —       | Helper text below the label              |
-| `bordered`       | `boolean`             | `false` | Wraps in bordered container              |
-| `reversed`       | `boolean`             | `false` | Places radio after label                 |
-| `hideIndicator`  | `boolean`             | `false` | Visually hides the radio circle          |
-| `disabled`       | `boolean`             | `false` | Disables the radio option                |
-| `ContainerProps` | `GroupProps`          | —       | Props for the container element          |
-| `IndicatorProps` | `RadioIndicatorProps` | —       | Props for the indicator element          |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | **Required.** Value for the radio option |
+| `label` | `ReactNode` | — | Label text |
+| `description` | `ReactNode` | — | Helper text below label |
+| `bordered` | `boolean` | `false` | Adds border around radio and label |
+| `reversed` | `boolean` | `false` | Places radio after label |
+| `hideIndicator` | `boolean` | `false` | Hides the radio circle |
+| `disabled` | `boolean` | `false` | Disables the radio option |
+| `ContainerProps` | `GroupProps` | — | Props for container element |
+| `IndicatorProps` | `RadioIndicatorProps` | — | Props for indicator element |
 
-## Relationship to Checkbox
+## Anatomy
 
-Radio shares the same field layout system as Checkbox via `CheckboxField`. Both support:
-
-- `label` and `description`
-- `bordered` and `reversed` variants
-- Similar visual styling
-
-Use Radio within a RadioGroup for mutually exclusive options. Use Checkbox for independent toggles.
-
-## Data Attributes
-
-| Attribute        | Element   | Values              | Description                 |
-| ---------------- | --------- | ------------------- | --------------------------- |
-| `data-slot`      | root      | `"radio"`           | Identifies the root element |
-| `data-slot`      | indicator | `"radio-indicator"` | Identifies the indicator    |
-| `data-checked`   | root      | Present when on     | Indicates selected state    |
-| `data-unchecked` | root      | Present when off    | Indicates unselected state  |
-| `data-bordered`  | container | `true`              | Bordered variant active     |
-| `data-reversed`  | container | `"true"`            | Reversed layout active      |
-
-## CSS Variables
-
-| Variable               | Description               |
-| ---------------------- | ------------------------- |
-| `--forms-background`   | Background color          |
-| `--forms-border-color` | Border color              |
-| `--shade-foreground`   | Selected background color |
-| `--shade-halftone`     | Indicator dot color       |
-
-## File Structure
-
+```tsx
+<CheckboxField>        {/* Shared with Checkbox */}
+  <RadioRoot>          {/* The radio control */}
+    <RadioIndicator /> {/* Selection dot */}
+  </RadioRoot>
+</CheckboxField>
 ```
-radio/
-├── radio.tsx              # Component implementation
-├── radio.types.ts         # TypeScript types
-├── radio.module.css       # Styles
-├── radio.test.tsx         # Unit tests
-├── subcomponents/
-│   ├── radio-root.tsx     # Root radio element
-│   ├── radio-indicator.tsx# Selection indicator
-│   └── index.ts           # Subcomponent exports
-└── README.md              # This file
-```
+
+## Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `RadioRoot` | The radio control element |
+| `RadioIndicator` | The selection dot |
+
+## Data Slots
+
+| Slot | Element |
+|------|---------|
+| `radio` | The radio root element |
+
+## Accessibility
+
+- Built on Base UI Radio which handles ARIA attributes
+- Must be used within RadioGroup for proper grouping
+- Keyboard: Arrow keys to navigate, Space to select
+
+## See Also
+
+- [RadioGroup](../radio-group/README.md) - Container for radio buttons
+- [Checkbox](../checkbox/README.md) - For independent toggles
+- [Base UI Radio](https://base-ui.com/react/components/radio) - Underlying primitive

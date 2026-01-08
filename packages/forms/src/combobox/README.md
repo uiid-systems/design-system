@@ -1,15 +1,30 @@
 # Combobox
 
-An autocomplete/combobox component built on [Base UI's Combobox](https://base-ui.com/react/components/combobox), with support for filtering, keyboard navigation, and custom items.
+> A searchable select that requires selection from filtered options. Built on [Base UI Combobox](https://base-ui.com/react/components/combobox).
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { Combobox } from "@uiid/forms";
 
 const items = ["apple", "banana", "cherry", "date", "elderberry"];
 
-<Combobox items={items} />;
+// Basic
+<Combobox items={items} />
+
+// With placeholder
+<Combobox items={items} placeholder="Search fruits..." />
+
+// With default value
+<Combobox items={items} defaultValue="banana" />
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<Combobox items={items} />
 ```
 
 ### With Placeholder
@@ -35,12 +50,10 @@ const [value, setValue] = useState<string | null>(null);
     value,
     onValueChange: setValue,
   }}
-/>;
+/>
 ```
 
 ### Custom Item Rendering
-
-For custom item content, pass a render function as children:
 
 ```tsx
 <Combobox items={items}>
@@ -54,77 +67,78 @@ For custom item content, pass a render function as children:
 
 ## Props
 
-| Prop              | Type                      | Default | Description                       |
-| ----------------- | ------------------------- | ------- | --------------------------------- |
-| `items`           | `string[]`                | —       | **Required.** Array of options    |
-| `placeholder`     | `string`                  | —       | Placeholder text for input        |
-| `defaultValue`    | `string`                  | —       | Initial selected value            |
-| `onValueChange`   | `(value: string) => void` | —       | Callback when selection changes   |
-| `RootProps`       | `ComboboxRootProps`       | —       | Props for the root element        |
-| `InputProps`      | `ComboboxInputProps`      | —       | Props for the input element       |
-| `PortalProps`     | `ComboboxPortalProps`     | —       | Props for the portal              |
-| `PositionerProps` | `ComboboxPositionerProps` | —       | Props for the positioner          |
-| `PopupProps`      | `ComboboxPopupProps`      | —       | Props for the popup               |
-| `ListProps`       | `ComboboxListProps`       | —       | Props for the list container      |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `string[]` | — | **Required.** Array of options |
+| `placeholder` | `string` | — | Placeholder text for input |
+| `defaultValue` | `string` | — | Initial selected value |
+| `onValueChange` | `(value: string) => void` | — | Called when selection changes |
+| `RootProps` | `ComboboxRootProps` | — | Props for the root element |
+| `InputProps` | `ComboboxInputProps` | — | Props for the input element |
+| `PopupProps` | `ComboboxPopupProps` | — | Props for the popup |
+| `ListProps` | `ComboboxListProps` | — | Props for the list container |
 
-## Keyboard Interactions
+## Anatomy
 
-| Key          | Action                         |
-| ------------ | ------------------------------ |
-| `↓`          | Open popup / highlight next    |
-| `↑`          | Highlight previous             |
-| `Enter`      | Select highlighted item        |
-| `Escape`     | Close popup                    |
-| `Type`       | Filter items                   |
-
-## Relationship to Select
-
-Combobox shares some types with Select:
-
-- `SelectMultiple` type is reused for multi-select support
-- Similar popup/positioner architecture
-- Both use `ListItem` for consistent item rendering
-
-Use **Select** when users choose from a fixed list.
-Use **Combobox** when users need to search/filter options or enter custom values.
-
-## Data Attributes
-
-| Attribute   | Element | Values             | Description                |
-| ----------- | ------- | ------------------ | -------------------------- |
-| `data-slot` | root    | `"combobox-root"`  | Identifies root element    |
-| `data-slot` | input   | `"combobox-input"` | Identifies input element   |
-| `data-slot` | item    | `"combobox-item"`  | Identifies each item       |
-
-## CSS Variables
-
-| Variable           | Description                   |
-| ------------------ | ----------------------------- |
-| `--anchor-width`   | Popup min-width (auto)        |
-| `--shade-accent`   | Action button color           |
-| `--shade-muted`    | Item focus background         |
-
-## File Structure
-
-```
-combobox/
-├── combobox.tsx              # Component implementation
-├── combobox.types.ts         # TypeScript types
-├── combobox.module.css       # Styles
-├── combobox.stories.tsx      # Storybook stories
-├── combobox.mocks.ts         # Mock data for stories/tests
-├── combobox.test.tsx         # Unit tests
-├── subcomponents/
-│   ├── combobox-root.tsx     # Root provider
-│   ├── combobox-input.tsx    # Input element
-│   ├── combobox-action-buttons.tsx # Clear/chevron buttons
-│   ├── combobox-portal.tsx   # Portal wrapper
-│   ├── combobox-positioner.tsx # Positioning logic
-│   ├── combobox-popup.tsx    # Popup container
-│   ├── combobox-list.tsx     # List container
-│   ├── combobox-item.tsx     # Individual item
-│   ├── combobox-empty.tsx    # Empty state message
-│   └── index.ts              # Subcomponent exports
-└── README.md                 # This file
+```tsx
+<ComboboxRoot>              {/* Provider */}
+  <ComboboxInput />         {/* Search input */}
+  <ComboboxActionButtons /> {/* Clear/chevron buttons */}
+  <ComboboxPortal>          {/* Portal wrapper */}
+    <ComboboxPositioner>    {/* Positioning */}
+      <ComboboxPopup>       {/* Popup container */}
+        <ComboboxList>      {/* List wrapper */}
+          <ComboboxItem />  {/* Individual items */}
+        </ComboboxList>
+        <ComboboxEmpty />   {/* Empty state */}
+      </ComboboxPopup>
+    </ComboboxPositioner>
+  </ComboboxPortal>
+</ComboboxRoot>
 ```
 
+## Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `ComboboxRoot` | Root provider component |
+| `ComboboxInput` | The search input |
+| `ComboboxActionButtons` | Clear and chevron buttons |
+| `ComboboxPopup` | Popup container |
+| `ComboboxList` | List container |
+| `ComboboxItem` | Individual option item |
+| `ComboboxEmpty` | Empty state message |
+
+## Data Slots
+
+| Slot | Element |
+|------|---------|
+| `combobox-root` | The root element |
+| `combobox-input` | The input element |
+| `combobox-item` | Each option item |
+
+## Combobox vs Autocomplete vs Select
+
+| Feature | Combobox | Autocomplete | Select |
+|---------|----------|--------------|--------|
+| Text input | Yes (filter) | Yes (free-form) | No |
+| Selection required | Yes | No | Yes |
+| Custom values | No | Yes | No |
+
+Use **Combobox** when users must select from a searchable list.
+
+Use **Autocomplete** when users can enter custom values.
+
+Use **Select** when options are few and don't need filtering.
+
+## Accessibility
+
+- Built on Base UI Combobox which handles ARIA attributes
+- Keyboard: Arrow keys to navigate, Enter to select, Escape to close
+- Typing filters the options
+
+## See Also
+
+- [Autocomplete](../autocomplete/README.md) - Free-form text with optional suggestions
+- [Select](../select/README.md) - Dropdown without text input
+- [Base UI Combobox](https://base-ui.com/react/components/combobox) - Underlying primitive

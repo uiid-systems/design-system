@@ -1,96 +1,109 @@
-# Component README Template
-
-Use this template when creating README files for components in the design system.
-
----
-
 # {ComponentName}
 
-A brief description of what this component does and its primary use case. If built on a Base UI primitive, mention it here with a link.
+> Brief description of what this component does. Mention the [Base UI primitive](https://base-ui.com/react/components/{base-component}) if applicable.
 
-## Usage
+## Quick Reference
 
 ```tsx
 import { {ComponentName} } from "@uiid/{package}";
 
-<{ComponentName} />;
+// Basic usage
+<{ComponentName} />
+
+// With common props
+<{ComponentName} label="Label" disabled />
 ```
 
-### Common Variants
+## Examples
 
-Show the most common usage patterns with short code examples:
+### Basic
 
 ```tsx
-// Example with common props
-<{ComponentName} variant="primary" size="md" />
+<{ComponentName} />
 ```
 
-### With Children or Composition
-
-If the component accepts children or composes with other components:
+### With Label
 
 ```tsx
-<{ComponentName}>
-  <ChildComponent />
-</{ComponentName}>
+<{ComponentName} label="Field label" description="Helper text" />
+```
+
+### Controlled
+
+```tsx
+const [value, setValue] = useState("");
+
+<{ComponentName} value={value} onValueChange={setValue} />
 ```
 
 ## Props
 
-| Prop        | Type                | Default | Description                |
-| ----------- | ------------------- | ------- | -------------------------- |
-| `prop1`     | `string`            | —       | Description of prop1       |
-| `prop2`     | `"a" \| "b" \| "c"` | `"a"`   | Description of prop2       |
-| `disabled`  | `boolean`           | `false` | Disables the component     |
-| `className` | `string`            | —       | Additional CSS class names |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | — | Label text |
+| `description` | `ReactNode` | — | Helper text below the component |
+| `disabled` | `boolean` | `false` | Disables the component |
+| `className` | `string` | — | Additional CSS classes |
 
-All other props are forwarded to the underlying element/component.
+> Props are forwarded to the underlying Base UI component.
 
-## Data Attributes
+## Anatomy
 
-| Attribute    | Values               | Description                   |
-| ------------ | -------------------- | ----------------------------- |
-| `data-slot`  | `"{slot-name}"`      | Identifies the element        |
-| `data-state` | `"open" \| "closed"` | Current state (if applicable) |
+For compound components, show the structure:
 
-## CSS Variables
+```tsx
+<{ComponentName}Root>
+  <{ComponentName}Label />
+  <{ComponentName}Control />
+</{ComponentName}Root>
+```
 
-The component uses design tokens from the design system:
+## Subcomponents
 
-| Variable             | Description              |
-| -------------------- | ------------------------ |
-| `--{layer}-property` | Description of the token |
+If the component exposes subcomponents for advanced usage:
+
+| Component | Description |
+|-----------|-------------|
+| `{ComponentName}Root` | Container and context provider |
+| `{ComponentName}Label` | Label element |
+
+## Data Slots
+
+Components use `data-slot` attributes for styling hooks:
+
+| Slot | Element |
+|------|---------|
+| `{component-name}` | Root element |
 
 ## Accessibility
 
-Include any relevant accessibility notes:
+- Built on Base UI which handles ARIA attributes
+- Keyboard navigation: [describe if relevant]
 
-- Keyboard interactions
-- ARIA attributes
-- Screen reader considerations
+## See Also
 
-## File Structure
-
-```
-{component-name}/
-├── {component-name}.tsx           # Component implementation
-├── {component-name}.types.ts      # TypeScript types
-├── {component-name}.constants.ts  # Default values
-├── {component-name}.module.css    # Styles
-├── {component-name}.stories.tsx   # Storybook stories
-├── {component-name}.test.tsx      # Unit tests
-└── README.md                      # Documentation
-```
+- [{RelatedComponent}](../{related-component}/README.md) - Brief description
+- [Base UI {Component}](https://base-ui.com/react/components/{base-component}) - Underlying primitive
 
 ---
 
-## Template Usage Notes
+<!--
+TEMPLATE INSTRUCTIONS (delete this section when using)
 
-When using this template:
+Placeholders:
+- {ComponentName} → PascalCase (e.g., "Checkbox")
+- {component-name} → kebab-case (e.g., "checkbox")
+- {package} → package name (e.g., "forms", "buttons")
+- {base-component} → Base UI component name if applicable
 
-1. Replace `{ComponentName}` with the actual component name (PascalCase)
-2. Replace `{component-name}` with the kebab-case version
-3. Replace `{package}` with the package name (e.g., `forms`, `buttons`, `layout`)
-4. Replace `{layer}` with the CSS layer (e.g., `forms`, `buttons`, `globals`)
-5. Remove sections that don't apply (e.g., Accessibility if no special considerations)
-6. Remove this "Template Usage Notes" section from the final README
+Sections to include/exclude:
+- Anatomy: Only for compound components with exposed parts
+- Subcomponents: Only if subcomponents are exported
+- Controlled example: Only for components with value state
+- See Also: Always include, link to related components
+
+Keep it concise:
+- 2-3 examples max
+- Props table should only include component-specific props
+- Skip CSS variables (use Storybook for token reference)
+-->
