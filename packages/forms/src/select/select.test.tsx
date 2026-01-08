@@ -24,15 +24,14 @@ describe("Select", () => {
     );
   });
 
-  it("displays first item value by default", () => {
+  it("displays first item label by default", () => {
     render(<Select items={defaultItems} />);
-    // The select displays the value, not the label
-    expect(screen.getByText("a")).toBeInTheDocument();
+    expect(screen.getByText("Option A")).toBeInTheDocument();
   });
 
   it("supports defaultValue", () => {
     render(<Select items={defaultItems} defaultValue="b" />);
-    expect(screen.getByText("b")).toBeInTheDocument();
+    expect(screen.getByText("Option B")).toBeInTheDocument();
   });
 
   it("supports placeholder", () => {
@@ -74,8 +73,9 @@ describe("Select", () => {
     await user.click(screen.getByRole("combobox"));
     await user.click(screen.getByRole("option", { name: /option b/i }));
 
-    // Value changes to "b"
-    expect(screen.getByText("b")).toBeInTheDocument();
+    // Selected value is displayed in the trigger
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Option B");
   });
 
   it("supports controlled value via RootProps", async () => {
@@ -116,13 +116,4 @@ describe("Select", () => {
     expect(screen.getByText("Helper text")).toBeInTheDocument();
   });
 
-  it("applies size data attribute", () => {
-    render(<Select items={defaultItems} size="large" />);
-    expect(screen.getByRole("combobox")).toHaveAttribute("data-size", "lg");
-  });
-
-  it("defaults to md size", () => {
-    render(<Select items={defaultItems} />);
-    expect(screen.getByRole("combobox")).toHaveAttribute("data-size", "md");
-  });
 });

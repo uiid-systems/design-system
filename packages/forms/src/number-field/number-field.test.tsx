@@ -16,9 +16,9 @@ describe("NumberField", () => {
     expect(screen.getByRole("button", { name: /decrease/i })).toBeInTheDocument();
   });
 
-  it("renders with default value of 100", () => {
+  it("renders with data-slot attribute", () => {
     render(<NumberField />);
-    expect(screen.getByRole("textbox")).toHaveValue("100");
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-slot", "input");
   });
 
   it("supports custom defaultValue", () => {

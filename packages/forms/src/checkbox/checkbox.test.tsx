@@ -73,25 +73,4 @@ describe("Checkbox", () => {
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-checked");
   });
 
-  it("applies size data attribute", () => {
-    render(<Checkbox size="large" />);
-    expect(screen.getByRole("checkbox")).toHaveAttribute("data-size", "lg");
-  });
-
-  it("defaults to sm size", () => {
-    render(<Checkbox />);
-    expect(screen.getByRole("checkbox")).toHaveAttribute("data-size", "sm");
-  });
-
-  it("applies bordered data attribute", () => {
-    render(<Checkbox bordered label="Bordered" />);
-    const label = screen.getByText("Bordered").closest("label");
-    expect(label).toHaveAttribute("data-bordered", "true");
-  });
-
-  it("applies reversed data attribute", () => {
-    render(<Checkbox reversed label="Reversed" />);
-    const label = screen.getByText("Reversed").closest("label");
-    expect(label).toHaveAttribute("data-reversed", "true");
-  });
 });

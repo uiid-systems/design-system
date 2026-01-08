@@ -24,12 +24,6 @@
       "outputs": ["storybook-static/**"]
     },
     "lint": {},
-    "format": {},
-    "test": {
-      "dependsOn": ["^build"]
-    },
-    "test:run": {
-      "dependsOn": ["^build"]
-    }
+    "format": {}
   }
 }

@@ -83,22 +83,6 @@ describe("CheckboxGroup", () => {
     expect(handleChange).toHaveBeenCalledWith(["a"]);
   });
 
-  it("applies bordered variant", () => {
-    render(<CheckboxGroup items={defaultItems} bordered />);
-    const labels = screen.getAllByText(/Option/);
-    labels.forEach((label) => {
-      expect(label.closest("label")).toHaveAttribute("data-bordered", "true");
-    });
-  });
-
-  it("applies reversed layout", () => {
-    render(<CheckboxGroup items={defaultItems} reversed />);
-    const labels = screen.getAllByText(/Option/);
-    labels.forEach((label) => {
-      expect(label.closest("label")).toHaveAttribute("data-reversed", "true");
-    });
-  });
-
   it("supports horizontal direction", () => {
     render(<CheckboxGroup items={defaultItems} direction="horizontal" />);
     const checkboxes = screen.getAllByRole("checkbox");

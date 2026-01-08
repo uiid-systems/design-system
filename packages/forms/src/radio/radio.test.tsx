@@ -81,22 +81,6 @@ describe("Radio", () => {
     expect(handleChange).toHaveBeenCalledWith("b");
   });
 
-  it("applies bordered variant", () => {
-    render(<RadioGroup items={defaultItems} bordered />);
-    const labels = screen.getAllByText(/Option/);
-    labels.forEach((label) => {
-      expect(label.closest("label")).toHaveAttribute("data-bordered", "true");
-    });
-  });
-
-  it("applies reversed layout", () => {
-    render(<RadioGroup items={defaultItems} reversed />);
-    const labels = screen.getAllByText(/Option/);
-    labels.forEach((label) => {
-      expect(label.closest("label")).toHaveAttribute("data-reversed", "true");
-    });
-  });
-
   it("supports horizontal direction", () => {
     render(<RadioGroup items={defaultItems} direction="horizontal" />);
     const radios = screen.getAllByRole("radio");

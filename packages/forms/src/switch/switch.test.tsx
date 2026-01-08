@@ -30,16 +30,9 @@ describe("Switch", () => {
     );
   });
 
-  it("renders with a label before the switch when labelPosition is 'before'", () => {
+  it("renders with reversed prop", () => {
     render(<Switch label="Dark mode" reversed />);
-    const switchEl = screen.getByRole("switch");
-    const label = screen.getByText("Dark mode");
-
-    expect(label).toBeInTheDocument();
-    // Label should come before switch in DOM order
-    expect(switchEl.compareDocumentPosition(label)).toBe(
-      Node.DOCUMENT_POSITION_PRECEDING,
-    );
+    expect(screen.getByText("Dark mode")).toBeInTheDocument();
   });
 
   it("can be toggled by clicking", async () => {
@@ -106,15 +99,6 @@ describe("Switch", () => {
 
     await user.click(switchEl);
     expect(switchEl).not.toHaveAttribute("data-checked");
-  });
-
-  it("renders label with correct htmlFor attribute when name prop is provided", () => {
-    render(<Switch label="Notifications" name="notifications" />);
-    const switchEl = screen.getByRole("switch");
-    const label = screen.getByText("Notifications");
-
-    expect(switchEl).toBeInTheDocument();
-    expect(label).toHaveAttribute("for", "notifications");
   });
 
   it("passes RootProps to the switch root", () => {

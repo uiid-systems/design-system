@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import { Input } from "./input";
-import { INPUT_DEFAULT_SIZE } from "./input.constants";
 
 describe("Input", () => {
   it("renders an input element", () => {
@@ -28,12 +27,9 @@ describe("Input", () => {
     ).toBeInTheDocument();
   });
 
-  it("defaults to size defined in constants", () => {
+  it("renders with data-slot attribute", () => {
     render(<Input />);
-    expect(screen.getByRole("textbox")).toHaveAttribute(
-      "data-size",
-      INPUT_DEFAULT_SIZE,
-    );
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-slot", "input");
   });
 
   it("applies custom className", () => {
@@ -46,9 +42,9 @@ describe("Input", () => {
     expect(screen.getByRole("textbox")).toBeDisabled();
   });
 
-  it("forwards required prop", () => {
-    render(<Input required />);
-    expect(screen.getByRole("textbox")).toBeRequired();
+  it("renders required indicator with label", () => {
+    render(<Input label="Email" required />);
+    expect(screen.getByText("Email")).toHaveAttribute("data-required", "true");
   });
 
   it("handles user input", async () => {

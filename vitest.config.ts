@@ -8,6 +8,6 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
+    include: ["packages/**/*.test.{ts,tsx}"],
   },
 });
-

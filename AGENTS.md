@@ -34,10 +34,61 @@ design-system/
 │   ├── tokens/
 │   ├── typography/
 │   └── utils/
-├── scripts/                 # Build and utility scripts
+├── scripts/                 # Custom build scripts (token generation, etc.)
 ├── templates/               # Templates for documentation and code
+├── vite.config.ts           # Shared Vite build config factory
+├── vitest.config.ts         # Shared test configuration (runs all package tests)
+├── vitest.setup.ts          # Test setup with jest-dom matchers
 └── AGENTS.md                # This file
 ```
+
+## Root Configuration Files
+
+Shared tooling configs live at the repository root:
+
+| File               | Purpose                                      |
+| ------------------ | -------------------------------------------- |
+| `vite.config.ts`   | Shared Vite build config factory             |
+| `vitest.config.ts` | Test configuration for all packages          |
+| `vitest.setup.ts`  | Test setup (jest-dom matchers)               |
+| `tsconfig.json`    | Base TypeScript config (packages extend it)  |
+| `turbo.json`       | Turbo task orchestration                     |
+| `eslint.config.js` | Shared ESLint configuration                  |
+
+### Vite Configuration
+
+The root `vite.config.ts` exports a `createViteConfig()` factory function. Packages import and use it:
+
+```ts
+import { createViteConfig } from "../../vite.config";
+
+export default createViteConfig({
+  external: ["@base-ui/react"],  // Additional externals
+  cssLayer: "uiid.components",   // Optional CSS layer wrapping
+  preserveDirectives: false,     // Default: true
+});
+```
+
+**Options:**
+- `external` - Additional dependencies to exclude from bundle (React and @uiid/* are always external)
+- `cssLayer` - CSS layer name for postcss wrapper (e.g., "uiid.components")
+- `preserveDirectives` - Whether to preserve "use client" directives (default: true)
+
+**Special cases:** `icons` and `utils` packages have custom configs due to unique requirements.
+
+## Scripts Directory
+
+The `scripts/` directory contains **custom build scripts** specific to this project:
+
+| Script                              | Purpose                                    |
+| ----------------------------------- | ------------------------------------------ |
+| `generate-tokens.cjs`               | Converts JSON design tokens to CSS         |
+| `postcss-layer-wrapper.cjs`         | PostCSS plugin for CSS layer scoping       |
+| `vite-plugin-preserve-directives.mjs` | Vite plugin to preserve "use client"     |
+| `build-changelog.mjs`               | Generates changelog from changesets        |
+| `auto-changeset.mjs`                | Automates changeset creation               |
+
+**Note:** Standard config files (vitest, tsconfig, eslint) belong at the root, not in scripts.
 
 ## Component File Structure
 
@@ -174,10 +225,12 @@ export const Switch = ({
 
 ### Test Setup
 
-Each package has Vitest configured with:
+Tests are configured at the **root level** and run across all packages:
 
-- `vitest.config.ts` - Vitest configuration
-- `vitest.setup.ts` - Test setup with jest-dom matchers
+- `vitest.config.ts` (root) - Shared Vitest configuration
+- `vitest.setup.ts` (root) - Test setup with jest-dom matchers
+
+Test files live alongside components in each package as `{component}.test.tsx`.
 
 ### Test File Template
 
@@ -204,12 +257,14 @@ describe("Component", () => {
 ### Running Tests
 
 ```bash
-# Run tests for a specific package
-cd packages/{package-name}
+# Run all tests (from root)
+pnpm test:run
+
+# Watch mode (from root)
 pnpm test
 
-# Watch mode
-pnpm test:watch
+# Run tests for specific file pattern
+pnpm test:run packages/buttons
 ```
 
 ## Documentation
@@ -320,10 +375,8 @@ Use workspace protocol for internal packages:
 
 ### Adding Tests to an Existing Package
 
-1. Ensure `vitest.config.ts` and `vitest.setup.ts` exist
-2. Verify `tsconfig.json` includes vitest types
-3. Create `{component}.test.tsx` file
-4. Run `pnpm test` to verify
+1. Create `{component}.test.tsx` file alongside the component
+2. Run `pnpm test:run` from root to verify
 
 ## Quick Reference
 
@@ -332,7 +385,8 @@ Use workspace protocol for internal packages:
 | Install dependencies | `pnpm install`                            |
 | Build all packages   | `pnpm run build`                          |
 | Build single package | `pnpm run build --filter=@uiid/{package}` |
-| Run tests            | `pnpm run test`                           |
+| Run tests            | `pnpm test:run`                           |
+| Run tests (watch)    | `pnpm test`                               |
 | Start Storybook      | `pnpm run storybook`                      |
 | Lint                 | `pnpm run lint`                           |
 | Format               | `pnpm run format`                         |
