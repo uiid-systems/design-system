@@ -1,6 +1,7 @@
 {
   "name": "@uiid/tokens",
   "version": "0.0.0",
+  "license": "MIT",
   "type": "module",
   "exports": {
     "./globals.css": "./src/globals.css",
