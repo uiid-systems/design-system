@@ -26,29 +26,52 @@ import { Stack } from "@uiid/layout";
 
 ## Props
 
-| Prop         | Type                                        | Default   | Description                                 |
-| ------------ | ------------------------------------------- | --------- | ------------------------------------------- |
-| `gap`        | `number`                                    | —         | Space between children (uses spacing scale) |
-| `ax`         | `"start" \| "center" \| "end" \| "stretch"` | —         | Horizontal alignment                        |
-| `ay`         | `"start" \| "center" \| "end" \| "stretch"` | —         | Vertical distribution                       |
-| `p`          | `number`                                    | —         | Padding on all sides                        |
-| `px`         | `number`                                    | —         | Horizontal padding                          |
-| `py`         | `number`                                    | —         | Vertical padding                            |
-| `pt`         | `number`                                    | —         | Padding top                                 |
-| `pr`         | `number`                                    | —         | Padding right                               |
-| `pb`         | `number`                                    | —         | Padding bottom                              |
-| `pl`         | `number`                                    | —         | Padding left                                |
-| `m`          | `number`                                    | —         | Margin on all sides                         |
-| `mx`         | `number`                                    | —         | Horizontal margin                           |
-| `my`         | `number`                                    | —         | Vertical margin                             |
-| `mt`         | `number`                                    | —         | Margin top                                  |
-| `mr`         | `number`                                    | —         | Margin right                                |
-| `mb`         | `number`                                    | —         | Margin bottom                               |
-| `ml`         | `number`                                    | —         | Margin left                                 |
-| `fullwidth`  | `boolean`                                   | `false`   | Stretch to fill container width             |
-| `fullheight` | `boolean`                                   | `false`   | Stretch to fill container height            |
-| `render`     | `ReactElement`                              | `<div />` | Custom element to render as                 |
-| `className`  | `string`                                    | —         | Additional CSS classes                      |
+Stack swaps `ax` and `ay` to be intuitive in a vertical context.
+
+| Prop         | Type                                                                                                                   | Default   | Description                      |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------- |
+| `ax`         | `"baseline" \| "center" \| "end" \| "start" \| "stretch"`                                                              | —         | Horizontal alignment             |
+| `ay`         | `"space-around" \| "baseline" \| "space-between" \| "center" \| "end" \| "evenly" \| "normal" \| "start" \| "stretch"` | —         | Vertical distribution            |
+| `gap`        | `SpacingValue`                                                                                                         | —         | Space between children           |
+| `p`          | `SpacingValue`                                                                                                         | —         | Padding on all sides             |
+| `px`         | `SpacingValue`                                                                                                         | —         | Horizontal padding               |
+| `py`         | `SpacingValue`                                                                                                         | —         | Vertical padding                 |
+| `pt`         | `SpacingValue`                                                                                                         | —         | Padding top                      |
+| `pr`         | `SpacingValue`                                                                                                         | —         | Padding right                    |
+| `pb`         | `SpacingValue`                                                                                                         | —         | Padding bottom                   |
+| `pl`         | `SpacingValue`                                                                                                         | —         | Padding left                     |
+| `m`          | `SpacingValue`                                                                                                         | —         | Margin on all sides              |
+| `mx`         | `SpacingValue`                                                                                                         | —         | Horizontal margin                |
+| `my`         | `SpacingValue`                                                                                                         | —         | Vertical margin                  |
+| `mt`         | `SpacingValue`                                                                                                         | —         | Margin top                       |
+| `mr`         | `SpacingValue`                                                                                                         | —         | Margin right                     |
+| `mb`         | `SpacingValue`                                                                                                         | —         | Margin bottom                    |
+| `ml`         | `SpacingValue`                                                                                                         | —         | Margin left                      |
+| `fullwidth`  | `boolean`                                                                                                              | `false`   | Stretch to fill container width  |
+| `fullheight` | `boolean`                                                                                                              | `false`   | Stretch to fill container height |
+| `render`     | `ReactElement`                                                                                                         | `<div />` | Custom element to render as      |
+| `className`  | `string`                                                                                                               | —         | Additional CSS classes           |
+
+```tsx
+type SpacingValue =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 6
+  | 8
+  | 10
+  | 12
+  | 16
+  | 20
+  | 24
+  | 32
+  | 40
+  | 48
+  | 56
+  | 64;
+```
 
 ## Data Slots
 

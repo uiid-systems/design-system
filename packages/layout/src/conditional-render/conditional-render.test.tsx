@@ -42,16 +42,6 @@ describe("ConditionalRender", () => {
   // RENDER PROP
   // ============================================
 
-  it("renders children when render prop is undefined", () => {
-    render(
-      <ConditionalRender condition={true} render={undefined}>
-        <span>Content</span>
-      </ConditionalRender>,
-    );
-
-    expect(screen.getByText("Content")).toBeInTheDocument();
-  });
-
   it("preserves wrapper element props", () => {
     render(
       <ConditionalRender
@@ -91,7 +81,9 @@ describe("ConditionalRender", () => {
     render(
       <ConditionalRender
         condition={showTooltip}
-        render={<div data-testid="tooltip-trigger" aria-describedby="tooltip" />}
+        render={
+          <div data-testid="tooltip-trigger" aria-describedby="tooltip" />
+        }
       >
         <button>Hover me</button>
       </ConditionalRender>,

@@ -19,18 +19,20 @@ import { Separator } from "@uiid/layout";
 
 ## Props
 
-| Prop          | Type                           | Default        | Description          |
-| ------------- | ------------------------------ | -------------- | -------------------- |
-| `orientation` | `"horizontal" \| "vertical"`   | `"horizontal"` | Separator direction  |
-| `shade`       | `string`                       | —              | Color shade variant  |
-| `className`   | `string`                       | —              | Additional CSS classes |
+| Prop          | Type                                                                      | Default        | Description            |
+| ------------- | ------------------------------------------------------------------------- | -------------- | ---------------------- |
+| `orientation` | `"horizontal" \| "vertical"`                                              | `"horizontal"` | Separator direction    |
+| `shade`       | `"background" \| "surface" \| "muted" \| "halftone" \| "accent" \| "foreground"` | —              | Color shade variant    |
+| `className`   | `string`                                                                  | —              | Additional CSS classes |
+
+> Inherits all [Box](../box/README.md) props (spacing, sizing, render).
 
 ## Data Attributes
 
-| Attribute          | Values                         |
-| ------------------ | ------------------------------ |
-| `data-slot`        | `"separator"`                  |
-| `data-orientation` | `"horizontal" \| "vertical"`   |
+| Attribute          | Values                       |
+| ------------------ | ---------------------------- |
+| `data-slot`        | `"separator"`                |
+| `data-orientation` | `"horizontal" \| "vertical"` |
 
 ## Accessibility
 

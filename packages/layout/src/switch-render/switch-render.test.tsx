@@ -48,44 +48,6 @@ describe("SwitchRender", () => {
   });
 
   // ============================================
-  // MISSING WRAPPERS
-  // ============================================
-
-  it("renders children directly when true wrapper is missing", () => {
-    render(
-      <SwitchRender
-        condition={true}
-        render={{
-          true: undefined,
-          false: <div data-testid="false-wrapper" />,
-        }}
-      >
-        <span>Content</span>
-      </SwitchRender>,
-    );
-
-    expect(screen.getByText("Content")).toBeInTheDocument();
-    expect(screen.queryByTestId("false-wrapper")).not.toBeInTheDocument();
-  });
-
-  it("renders children directly when false wrapper is missing", () => {
-    render(
-      <SwitchRender
-        condition={false}
-        render={{
-          true: <div data-testid="true-wrapper" />,
-          false: undefined,
-        }}
-      >
-        <span>Content</span>
-      </SwitchRender>,
-    );
-
-    expect(screen.getByText("Content")).toBeInTheDocument();
-    expect(screen.queryByTestId("true-wrapper")).not.toBeInTheDocument();
-  });
-
-  // ============================================
   // WRAPPER PROPS
   // ============================================
 

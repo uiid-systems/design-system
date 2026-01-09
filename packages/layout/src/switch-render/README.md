@@ -43,12 +43,11 @@ import { SwitchRender } from "@uiid/layout";
 
 ## Props
 
-| Prop           | Type           | Default | Description                      |
-| -------------- | -------------- | ------- | -------------------------------- |
-| `condition`    | `boolean`      | —       | Which render element to use      |
-| `render.true`  | `ReactElement` | —       | Element when condition is true   |
-| `render.false` | `ReactElement` | —       | Element when condition is false  |
-| `children`     | `ReactNode`    | —       | Content to wrap                  |
+| Prop           | Type                                                        | Default | Description                     |
+| -------------- | ----------------------------------------------------------- | ------- | ------------------------------- |
+| `condition`    | `boolean`                                                   | —       | Which render element to use     |
+| `render`       | `{ true: ReactElement<unknown>; false: ReactElement<unknown> }` | —       | Elements for true/false states  |
+| `children`     | `ReactNode`                                                 | —       | Content to wrap                 |
 
 ## See Also
 

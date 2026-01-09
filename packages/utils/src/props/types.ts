@@ -1,3 +1,7 @@
+import { SPACING_VALUES } from "./styles/spacing";
+
+export type SpacingValues = (typeof SPACING_VALUES)[number];
+
 export type StyleProp<K extends keyof React.CSSProperties> = {
   property: K;
   values: Array<React.CSSProperties[K] | number>;

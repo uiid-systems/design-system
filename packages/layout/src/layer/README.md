@@ -24,15 +24,15 @@ import { Layer } from "@uiid/layout";
 
 ## Props
 
-| Prop        | Type                                        | Default   | Description                   |
-| ----------- | ------------------------------------------- | --------- | ----------------------------- |
-| `offset`    | `{ x?: number; y?: number }`                | —         | Pixel offset per child        |
-| `ax`        | `"start" \| "center" \| "end" \| "stretch"` | —         | Horizontal alignment          |
-| `ay`        | `"start" \| "center" \| "end" \| "stretch"` | —         | Vertical alignment            |
-| `className` | `string`                                    | —         | Additional CSS classes        |
-| `style`     | `CSSProperties`                             | —         | Inline styles                 |
+| Prop         | Type                                                                                                    | Default   | Description                      |
+| ------------ | ------------------------------------------------------------------------------------------------------- | --------- | -------------------------------- |
+| `offset`     | `{ x?: number; y?: number }`                                                                            | —         | Pixel offset per child           |
+| `ax`         | `"space-around" \| "baseline" \| "space-between" \| "center" \| "end" \| "evenly" \| "normal" \| "start" \| "stretch"` | —         | Horizontal alignment             |
+| `ay`         | `"baseline" \| "center" \| "end" \| "start" \| "stretch"`                                               | —         | Vertical alignment               |
+| `className`  | `string`                                                                                                | —         | Additional CSS classes           |
+| `style`      | `CSSProperties`                                                                                         | —         | Inline styles                    |
 
-> Inherits all Box props (padding, margin, fullwidth, fullheight, etc.)
+> Inherits all [Box](../box/README.md) props (spacing, sizing, render).
 
 ## Data Slots
 

@@ -7,45 +7,29 @@
 ```tsx
 import { {ComponentName} } from "@uiid/{package}";
 
-// Basic usage
-<{ComponentName} />
+// Core props
+<{ComponentName} value="value" onValueChange={setValue} />
 
-// With common props
-<{ComponentName} label="Label" disabled />
-```
+// Common variants
+<{ComponentName} size="small" variant="secondary" />
 
-## Examples
+// State props
+<{ComponentName} disabled loading />
 
-### Basic
-
-```tsx
-<{ComponentName} />
-```
-
-### With Label
-
-```tsx
-<{ComponentName} label="Field label" description="Helper text" />
-```
-
-### Controlled
-
-```tsx
-const [value, setValue] = useState("");
-
-<{ComponentName} value={value} onValueChange={setValue} />
+// Render a custom element (if applicable)
+<{ComponentName} render={<button />} />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `ReactNode` | — | Label text |
-| `description` | `ReactNode` | — | Helper text below the component |
-| `disabled` | `boolean` | `false` | Disables the component |
-| `className` | `string` | — | Additional CSS classes |
-
-> Props are forwarded to the underlying Base UI component.
+| Prop            | Type                                      | Default   | Description                    |
+| --------------- | ----------------------------------------- | --------- | ------------------------------ |
+| `value`         | `string`                                  | —         | Controlled value               |
+| `onValueChange` | `(value: string) => void`                 | —         | Callback when value changes    |
+| `size`          | `"small" \| "medium" \| "large"`          | `"medium"`| Component size                 |
+| `variant`       | `"primary" \| "secondary"`                | `"primary"`| Visual variant                |
+| `disabled`      | `boolean`                                 | `false`   | Disables the component         |
+| `className`     | `string`                                  | —         | Additional CSS classes         |
 
 ## Anatomy
 
@@ -62,17 +46,15 @@ For compound components, show the structure:
 
 If the component exposes subcomponents for advanced usage:
 
-| Component | Description |
-|-----------|-------------|
-| `{ComponentName}Root` | Container and context provider |
-| `{ComponentName}Label` | Label element |
+| Component              | Description                  |
+| ---------------------- | ---------------------------- |
+| `{ComponentName}Root`  | Container and context provider |
+| `{ComponentName}Label` | Label element                |
 
 ## Data Slots
 
-Components use `data-slot` attributes for styling hooks:
-
-| Slot | Element |
-|------|---------|
+| Slot               | Element      |
+| ------------------ | ------------ |
 | `{component-name}` | Root element |
 
 ## Accessibility
@@ -96,14 +78,27 @@ Placeholders:
 - {package} → package name (e.g., "forms", "buttons")
 - {base-component} → Base UI component name if applicable
 
+Quick Reference guidelines:
+- Group props by category (core, variants, state, render)
+- Show the API, not usage in context
+- No children content in examples
+- Keep it scannable
+
+Props table guidelines:
+- Types MUST come from the component's .types.ts file
+- Use exact union types, not simplified versions (e.g., `"small" | "medium" | "large"` not `string`)
+- For shared types (SpacingValue, LayoutProps), reference the type name and add a note below the table
+- Example note: `> `SpacingValue` = `0 | 1 | 2 | 3 | 4 | 6 | 8 | 10 | 12 | 16 | 20 | 24 | 32 | 40 | 48 | 56 | 64``
+- Never use Storybook as the source of truth for types
+
 Sections to include/exclude:
 - Anatomy: Only for compound components with exposed parts
 - Subcomponents: Only if subcomponents are exported
-- Controlled example: Only for components with value state
+- Accessibility: Only if component has specific a11y features
 - See Also: Always include, link to related components
 
 Keep it concise:
-- 2-3 examples max
 - Props table should only include component-specific props
 - Skip CSS variables (use Storybook for token reference)
+- No usage examples - Quick Reference teaches the API
 -->

@@ -25,11 +25,11 @@ import { ConditionalRender } from "@uiid/layout";
 
 ## Props
 
-| Prop        | Type           | Default | Description                    |
-| ----------- | -------------- | ------- | ------------------------------ |
-| `condition` | `boolean`      | —       | Whether to wrap children       |
-| `render`    | `ReactElement` | —       | Element to wrap children with  |
-| `children`  | `ReactNode`    | —       | Content to conditionally wrap  |
+| Prop        | Type                     | Default | Description                   |
+| ----------- | ------------------------ | ------- | ----------------------------- |
+| `condition` | `boolean`                | —       | Whether to wrap children      |
+| `render`    | `ReactElement<unknown>`  | —       | Element to wrap children with |
+| `children`  | `ReactNode`              | —       | Content to conditionally wrap |
 
 ## See Also
 
