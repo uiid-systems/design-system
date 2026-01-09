@@ -236,8 +236,24 @@ Test files live alongside components in each package as `{component}.test.tsx`.
 
 ### Test File Template
 
+When creating tests, use the comprehensive template at:
+
+**`templates/COMPONENT_TEST.md`**
+
+This template includes patterns for:
+
+- Rendering and data-slot verification
+- Variant props (size, variant, tone)
+- User interactions (click, keyboard)
+- Controlled/uncontrolled state
+- Disabled and loading states
+- Accessibility checks
+- Subcomponent props
+
+**Quick reference:**
+
 ```tsx
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Component } from "./component";
@@ -245,13 +261,13 @@ import { Component } from "./component";
 describe("Component", () => {
   it("renders correctly", () => {
     render(<Component />);
-    expect(screen.getByRole("...")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
   it("handles user interaction", async () => {
     const user = userEvent.setup();
-    render(<Component />);
-    // Test interactions
+    render(<Component onClick={vi.fn()} />);
+    await user.click(screen.getByRole("button"));
   });
 });
 ```
@@ -424,3 +440,58 @@ Use workspace protocol for internal packages:
 | Start Storybook      | `pnpm run storybook`                      |
 | Lint                 | `pnpm run lint`                           |
 | Format               | `pnpm run format`                         |
+
+## Public Release Roadmap
+
+This section tracks the system-level improvements needed to prepare UIID for public release. These are long-term goals that should be addressed incrementally.
+
+### 1. Package Publishing Setup
+
+- [ ] Configure npm registry settings
+- [ ] Audit `package.json` fields across all packages (`main`, `module`, `exports`, `types`, `sideEffects`)
+- [ ] Establish versioning strategy (independent vs. fixed)
+- [ ] Set up changesets for version management
+- [ ] Configure `publishConfig` for public access
+
+### 2. Documentation
+
+- [ ] Create comprehensive root README with installation, quick start, and package overview
+- [ ] Write CONTRIBUTING.md guide
+- [ ] Set up automated changelog generation
+- [ ] Document design token system
+- [ ] Add architecture decision records (ADRs) for major decisions
+
+### 3. CI/CD Pipeline
+
+- [ ] GitHub Actions workflow for running tests on PRs
+- [ ] GitHub Actions workflow for building all packages
+- [ ] Automated publishing workflow (on release tags or changesets)
+- [ ] Storybook deployment (GitHub Pages or similar)
+- [ ] Bundle size tracking
+
+### 4. Quality Gates
+
+- [ ] Establish test coverage thresholds per package
+- [ ] Configure stricter lint rules for production
+- [ ] Set up pre-commit hooks (husky + lint-staged)
+- [ ] Add TypeScript strict mode compliance checks
+- [ ] Bundle analysis and size limits
+
+### 5. Licensing & Legal
+
+- [x] Add MIT license (completed)
+- [ ] Add license headers to source files (if required)
+- [ ] Audit dependencies for license compatibility
+- [ ] Add NOTICE file if needed for attribution
+
+### 6. Bundle & Export Validation
+
+- [ ] Verify ESM/CJS compatibility
+- [ ] Test package exports in consumer applications
+- [ ] Validate TypeScript declarations
+- [ ] Ensure CSS is properly externalized
+- [ ] Test tree-shaking effectiveness
+
+### Progress Tracking
+
+When working on these items, update the checkboxes above and note any decisions or blockers encountered. Each area can be tackled independently, but some have dependencies (e.g., CI/CD should come after tests are comprehensive).

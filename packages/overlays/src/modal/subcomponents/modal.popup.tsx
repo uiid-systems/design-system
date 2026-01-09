@@ -18,7 +18,7 @@ export const ModalPopup = ({
       data-slot="modal-popup"
       className={cx(styles["modal-popup"], modalVariants({ size }), className)}
       render={<Card>{children}</Card>}
-      dat-is-popup
+      data-is-popup
       {...props}
     >
       {children}
