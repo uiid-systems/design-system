@@ -307,12 +307,14 @@ describe("Popover", () => {
     render(
       <Popover
         trigger={<button>Open popover</button>}
-        TriggerProps={{ "data-testid": "trigger-wrapper" }}
+        TriggerProps={{ className: "trigger-wrapper" }}
       >
         Popover content
       </Popover>,
     );
 
-    expect(screen.getByTestId("trigger-wrapper")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open popover" })).toHaveClass(
+      "trigger-wrapper",
+    );
   });
 });

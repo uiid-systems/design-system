@@ -1,4 +1,4 @@
-import { SPACING_VALUES } from "./styles/spacing";
+import { SPACING_VALUES } from "./constants";
 
 export type SpacingValues = (typeof SPACING_VALUES)[number];
 

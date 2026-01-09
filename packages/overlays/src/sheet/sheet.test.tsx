@@ -342,12 +342,14 @@ describe("Sheet", () => {
     render(
       <Sheet
         trigger={<button>Open sheet</button>}
-        TriggerProps={{ "data-testid": "trigger-wrapper" }}
+        TriggerProps={{ className: "trigger-wrapper" }}
       >
         Sheet content
       </Sheet>,
     );
 
-    expect(screen.getByTestId("trigger-wrapper")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open sheet" })).toHaveClass(
+      "trigger-wrapper",
+    );
   });
 });

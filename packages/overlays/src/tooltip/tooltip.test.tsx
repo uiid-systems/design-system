@@ -233,12 +233,14 @@ describe("Tooltip", () => {
     render(
       <Tooltip
         trigger={<button>Hover me</button>}
-        TriggerProps={{ "data-testid": "trigger-wrapper" }}
+        TriggerProps={{ className: "trigger-wrapper" }}
       >
         Tooltip content
       </Tooltip>,
     );
 
-    expect(screen.getByTestId("trigger-wrapper")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Hover me" })).toHaveClass(
+      "trigger-wrapper",
+    );
   });
 });
