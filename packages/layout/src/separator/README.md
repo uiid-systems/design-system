@@ -7,75 +7,30 @@
 ```tsx
 import { Separator } from "@uiid/layout";
 
-// Horizontal separator
+// Horizontal separator (default)
 <Separator />
 
 // Vertical separator
 <Separator orientation="vertical" />
-```
 
-## Examples
-
-### Between Stack Items
-
-```tsx
-<Stack gap={2}>
-  <p>Section 1</p>
-  <Separator />
-  <p>Section 2</p>
-</Stack>
-```
-
-### Between Group Items
-
-```tsx
-<Group gap={2} ay="center">
-  <button>Bold</button>
-  <button>Italic</button>
-  <Separator orientation="vertical" />
-  <button>Align Left</button>
-  <button>Align Right</button>
-</Group>
-```
-
-### Menu Divider
-
-```tsx
-<Stack gap={0}>
-  <MenuItem>Profile</MenuItem>
-  <MenuItem>Settings</MenuItem>
-  <Separator />
-  <MenuItem>Logout</MenuItem>
-</Stack>
-```
-
-### Toolbar Sections
-
-```tsx
-<Group gap={2}>
-  <ToolbarButton>Cut</ToolbarButton>
-  <ToolbarButton>Copy</ToolbarButton>
-  <ToolbarButton>Paste</ToolbarButton>
-  <Separator orientation="vertical" />
-  <ToolbarButton>Undo</ToolbarButton>
-  <ToolbarButton>Redo</ToolbarButton>
-</Group>
+// With shade variant
+<Separator shade="muted" />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Separator direction |
-| `shade` | `string` | — | Color shade variant |
-| `className` | `string` | — | Additional CSS classes |
+| Prop          | Type                           | Default        | Description          |
+| ------------- | ------------------------------ | -------------- | -------------------- |
+| `orientation` | `"horizontal" \| "vertical"`   | `"horizontal"` | Separator direction  |
+| `shade`       | `string`                       | —              | Color shade variant  |
+| `className`   | `string`                       | —              | Additional CSS classes |
 
 ## Data Attributes
 
-| Attribute | Values |
-|-----------|--------|
-| `data-slot` | `"separator"` |
-| `data-orientation` | `"horizontal" \| "vertical"` |
+| Attribute          | Values                         |
+| ------------------ | ------------------------------ |
+| `data-slot`        | `"separator"`                  |
+| `data-orientation` | `"horizontal" \| "vertical"`   |
 
 ## Accessibility
 
