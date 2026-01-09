@@ -6,84 +6,151 @@
 
 ```tsx
 import { Form, Input } from "@uiid/forms";
+import { useFormState } from "@uiid/forms";
 
-// Basic form
-<Form onSubmit={handleSubmit}>
-  <Input name="email" label="Email" />
-  <button type="submit">Submit</button>
-</Form>
+// Recommended pattern: native form + Form for error context
+const { errors, setErrors } = useFormState();
 
-// With error handling
-<Form errors={{ email: "Invalid email" }} onSubmit={handleSubmit}>
-  <Input name="email" label="Email" />
-  <button type="submit">Submit</button>
-</Form>
+<form onSubmit={handleSubmit} noValidate>
+  <Form errors={errors}>
+    <Input name="email" label="Email" />
+    <button type="submit">Submit</button>
+  </Form>
+</form>
 ```
+
+## Form Submission Pattern
+
+For reliable form submission with custom validation, use a native `<form>` element for submission handling and the `Form` component for error context:
+
+```tsx
+import { Form, Input } from "@uiid/forms";
+import { useFormState } from "@uiid/forms";
+import { Stack } from "@uiid/layout";
+
+const MyForm = () => {
+  const { errors, loading, setErrors, setLoading, reset } = useFormState();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    reset();
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+
+    // Custom validation
+    if (!email.includes("@")) {
+      setErrors({ email: "Please enter a valid email" });
+      setLoading(false);
+      return;
+    }
+
+    // Submit to server...
+    setLoading(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <Form errors={errors} render={<Stack gap={4} />}>
+        <Input name="email" label="Email" required />
+        <button type="submit" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+      </Form>
+    </form>
+  );
+};
+```
+
+**Why this pattern?**
+
+- `noValidate` on the native form disables browser validation, allowing custom validation
+- The `Form` component provides error context that `FieldError` components use to display errors
+- The `useFormState` hook manages errors, loading, and success states
+
+## useFormState Hook
+
+The `useFormState` hook provides common form state management:
+
+```tsx
+import { useFormState } from "@uiid/forms";
+
+const { errors, loading, success, result, setErrors, setLoading, reset } =
+  useFormState();
+```
+
+| Return Value | Type | Description |
+|--------------|------|-------------|
+| `errors` | `Record<string, string \| string[]>` | Current error state |
+| `loading` | `boolean` | Loading state |
+| `success` | `boolean` | Success state |
+| `result` | `T \| null` | Result data (generic) |
+| `setErrors` | `(errors) => void` | Set error state |
+| `setLoading` | `(loading) => void` | Set loading state |
+| `reset` | `() => void` | Reset all state |
 
 ## Examples
 
-### Basic Form
+### Basic Form with Validation
 
 ```tsx
-const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  console.log(Object.fromEntries(formData));
-};
-
-<Form onSubmit={handleSubmit}>
-  <Input name="email" label="Email" type="email" required />
-  <Input name="password" label="Password" type="password" required />
-  <button type="submit">Sign In</button>
-</Form>
-```
-
-### With Error Handling
-
-```tsx
-const [errors, setErrors] = useState<Record<string, string>>({});
-
 const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
   const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  const errors: Record<string, string> = {};
 
   if (!email.includes("@")) {
-    setErrors({ email: "Please enter a valid email" });
+    errors.email = "Invalid email address";
+  }
+  if (password.length < 8) {
+    errors.password = "Password must be at least 8 characters";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    setErrors(errors);
     return;
   }
 
-  setErrors({});
   // Submit form...
 };
 
-<Form errors={errors} onSubmit={handleSubmit}>
-  <Input name="email" label="Email" />
-  <button type="submit">Submit</button>
-</Form>
+<form onSubmit={handleSubmit} noValidate>
+  <Form errors={errors}>
+    <Input name="email" label="Email" type="email" required />
+    <Input name="password" label="Password" type="password" required />
+    <button type="submit">Sign In</button>
+  </Form>
+</form>
 ```
 
-### With onFormSubmit Helper
-
-The `onFormSubmit` prop provides parsed form values directly:
+### With Select and Checkbox
 
 ```tsx
-<Form
-  onFormSubmit={async (formValues) => {
-    console.log(formValues); // { email: "...", password: "..." }
+import { Form, Select, Checkbox, Input } from "@uiid/forms";
+import { useFormState } from "@uiid/forms";
 
-    if (!formValues.email) {
-      setErrors({ email: "Email is required" });
-      return;
-    }
+const { errors, loading, setErrors, setLoading, reset } = useFormState();
 
-    // Submit form...
-  }}
->
-  <Input name="email" label="Email" />
-  <Input name="password" label="Password" type="password" />
-  <button type="submit">Submit</button>
-</Form>
+<form onSubmit={handleSubmit} noValidate>
+  <Form errors={errors} render={<Stack gap={4} />}>
+    <Select
+      label="Country"
+      name="country"
+      items={countries}
+      required
+    />
+    <Checkbox
+      label="I agree to the terms"
+      name="terms"
+      required
+    />
+    <button type="submit">Submit</button>
+  </Form>
+</form>
 ```
 
 ### With Custom Layout
@@ -91,13 +158,15 @@ The `onFormSubmit` prop provides parsed form values directly:
 ```tsx
 import { Stack, Group } from "@uiid/layout";
 
-<Form render={<Stack render={<form />} gap={4} />}>
-  <Input name="email" label="Email" />
-  <Group gap={2}>
-    <button type="submit">Submit</button>
-    <button type="reset">Reset</button>
-  </Group>
-</Form>
+<form onSubmit={handleSubmit} noValidate>
+  <Form errors={errors} render={<Stack gap={4} />}>
+    <Input name="email" label="Email" />
+    <Group gap={2}>
+      <button type="submit">Submit</button>
+      <button type="reset">Reset</button>
+    </Group>
+  </Form>
+</form>
 ```
 
 ## Props
@@ -105,9 +174,7 @@ import { Stack, Group } from "@uiid/layout";
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `errors` | `Record<string, string \| string[]>` | — | Field errors to display |
-| `onSubmit` | `(event: FormEvent) => void` | — | Native form submit handler |
-| `onFormSubmit` | `(values: Record<string, unknown>) => void` | — | Handler with parsed form values |
-| `render` | `ReactElement` | — | Custom render element |
+| `render` | `ReactElement` | — | Custom render element for layout |
 | `children` | `ReactNode` | — | Form contents |
 
 > All other props are forwarded to the Base UI Form component.
@@ -128,7 +195,7 @@ const errors = {
 </Form>
 ```
 
-Errors are automatically displayed by Field components that match the error keys.
+Errors are automatically displayed by `FieldError` components inside `Field` wrappers that match the error keys.
 
 ## Data Slots
 

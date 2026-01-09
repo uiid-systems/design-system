@@ -7,6 +7,7 @@ import type {
   FieldProps,
   FieldLabelProps,
   FieldDescriptionProps,
+  FieldErrorProps,
 } from "../field/field.types";
 
 import type { checkboxVariants } from "./checkbox.variants";
@@ -14,12 +15,13 @@ import type { checkboxVariants } from "./checkbox.variants";
 export type CheckboxVariants = VariantProps<typeof checkboxVariants>;
 
 export type CheckboxFieldProps = GroupProps &
-  Pick<FieldProps, "label" | "description"> &
+  Pick<FieldProps, "name" | "label" | "description"> &
   React.PropsWithChildren<{
     reversed?: boolean;
     bordered?: boolean;
     LabelProps?: FieldLabelProps;
     DescriptionProps?: FieldDescriptionProps;
+    ErrorProps?: FieldErrorProps;
   }>;
 
 export type CheckboxRootProps = BaseCheckbox.Root.Props &

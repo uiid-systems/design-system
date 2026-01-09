@@ -263,7 +263,7 @@ describe("Group", () => {
   it("creates a centered row with vertical alignment", () => {
     render(
       <Group ay="center" gap={2} data-testid="group">
-        <img alt="Avatar" src="" style={{ width: 32, height: 32 }} />
+        <img alt="Avatar" src="#" style={{ width: 32, height: 32 }} />
         <span>Username</span>
       </Group>,
     );

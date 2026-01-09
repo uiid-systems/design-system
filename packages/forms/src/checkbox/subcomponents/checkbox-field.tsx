@@ -5,6 +5,7 @@ import {
   FieldRoot,
   FieldLabel,
   FieldDescription,
+  FieldError,
 } from "../../field/subcomponents";
 
 import type { CheckboxFieldProps } from "../checkbox.types";
@@ -12,12 +13,14 @@ import { checkboxVariants } from "../checkbox.variants";
 import styles from "../checkbox.module.css";
 
 export const CheckboxField = ({
+  name,
   label,
   description,
   reversed,
   bordered,
   LabelProps,
   DescriptionProps,
+  ErrorProps,
   className,
   children,
   ...props
@@ -45,9 +48,9 @@ export const CheckboxField = ({
     >
       {children}
       {Boolean(label || description) && (
-        <FieldRoot>
+        <FieldRoot name={name}>
           <ConditionalRender
-            condition={Boolean(label && description)}
+            condition={needsTextContainer}
             render={<Stack gap={3} />}
           >
             {label && (
@@ -60,6 +63,7 @@ export const CheckboxField = ({
                 {description}
               </FieldDescription>
             )}
+            <FieldError {...ErrorProps} />
           </ConditionalRender>
         </FieldRoot>
       )}

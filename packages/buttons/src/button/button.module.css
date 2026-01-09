@@ -14,7 +14,7 @@
   font-weight: var(--button-font-weight);
   border: var(--globals-border-width) solid var(--button-border-color);
   border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-timing) ease-in-out;
+  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
   text-decoration: none;
 
   &:where(:hover, :active) {

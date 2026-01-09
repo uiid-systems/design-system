@@ -4,12 +4,14 @@ import { useState } from "react";
 import { Stack } from "@uiid/layout";
 import { Button } from "@uiid/buttons";
 
-import { Input } from "../input/input";
+import { Select } from "../select/select";
+import { Checkbox } from "../checkbox/checkbox";
+import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { Form, type FormProps } from "./form";
 import { useFormState, type FormErrors } from "./hooks/use-form-state";
 
 const meta = {
-  title: "Forms/Form/Username & Password",
+  title: "Forms/Form/Select & Confirm",
   component: Form,
   parameters: {
     layout: "centered",
@@ -21,10 +23,11 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Form submission using `onSubmit` with native FormData.
- * This approach gives you full control over form data extraction.
+ * Validates that a font is selected and the terms are confirmed.
  *
  * Note: We use a native `<form>` wrapper with `noValidate` for submission handling,
- * and Base UI Form inside for error context.
+ * and Base UI Form inside for error context. This pattern works around Base UI Form's
+ * submission handling limitations.
  */
 export const WithOnSubmit: Story = {
   name: "With onSubmit",
@@ -40,10 +43,10 @@ export const WithOnSubmit: Story = {
       setLoading(true);
 
       const formData = new FormData(event.currentTarget);
-      const username = formData.get("username") as string;
-      const password = formData.get("password") as string;
+      const font = formData.get("font") as string;
+      const confirmed = formData.get("confirmed") === "on";
 
-      const response = await validateCredentials(username, password);
+      const response = await validateSelection(font, confirmed);
 
       setLoading(false);
 
@@ -57,7 +60,7 @@ export const WithOnSubmit: Story = {
     const handleReset = () => {
       reset();
       setSuccessMessage(false);
-      setFormKey((k) => k + 1);
+      setFormKey((k) => k + 1); // Force re-mount to reset uncontrolled components
     };
 
     return (
@@ -68,26 +71,18 @@ export const WithOnSubmit: Story = {
         style={{ width: "320px" }}
       >
         <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
+          <Select
+            label="Font Family"
+            name="font"
+            items={MOCK_SELECT_ITEMS}
             required
-            autoComplete="username"
           />
 
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-          />
+          <Checkbox label="I confirm my selection" name="confirmed" required />
 
           <Stack gap={2} ax="stretch">
             <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
+              Save Preferences
             </Button>
             <Button type="button" ghost onClick={handleReset}>
               Reset
@@ -102,7 +97,7 @@ export const WithOnSubmit: Story = {
                 textAlign: "center",
               }}
             >
-              Account created successfully!
+              Preferences saved!
             </p>
           )}
         </Form>
@@ -130,9 +125,9 @@ export const WithFormData: Story = {
       const formData = new FormData(event.currentTarget);
       const formValues = Object.fromEntries(formData);
 
-      const response = await validateCredentials(
-        formValues.username as string,
-        formValues.password as string,
+      const response = await validateSelection(
+        formValues.font as string,
+        formValues.confirmed === "on",
       );
 
       setLoading(false);
@@ -158,26 +153,18 @@ export const WithFormData: Story = {
         style={{ width: "320px" }}
       >
         <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
+          <Select
+            label="Font Family"
+            name="font"
+            items={MOCK_SELECT_ITEMS}
             required
-            autoComplete="username"
           />
 
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-          />
+          <Checkbox label="I confirm my selection" name="confirmed" required />
 
           <Stack gap={2} ax="stretch">
             <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
+              Save Preferences
             </Button>
             <Button type="button" ghost onClick={handleReset}>
               Reset
@@ -192,7 +179,7 @@ export const WithFormData: Story = {
                 textAlign: "center",
               }}
             >
-              Account created successfully!
+              Preferences saved!
             </p>
           )}
         </Form>
@@ -202,28 +189,23 @@ export const WithFormData: Story = {
 };
 
 /**
- * Simulates server-side validation for username/password
+ * Simulates server-side validation for font selection and confirmation
  */
-async function validateCredentials(
-  username: string,
-  password: string,
+async function validateSelection(
+  font: string,
+  confirmed: boolean,
 ): Promise<{ errors?: FormErrors; success?: boolean }> {
   // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 800));
+  await new Promise((resolve) => setTimeout(resolve, 600));
 
   const errors: FormErrors = {};
 
-  if (!username || username.length < 3) {
-    errors.username = "Username must be at least 3 characters";
+  if (!font || font === "") {
+    errors.font = "Please select a font";
   }
 
-  if (!password || password.length < 8) {
-    errors.password = "Password must be at least 8 characters";
-  }
-
-  // Simulate "user exists" check
-  if (username.toLowerCase() === "admin") {
-    errors.username = "This username is already taken";
+  if (!confirmed) {
+    errors.confirmed = "You must confirm your selection";
   }
 
   if (Object.keys(errors).length > 0) {

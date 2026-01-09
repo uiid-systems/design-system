@@ -7,6 +7,7 @@ import {
 } from "./subcomponents";
 
 export const Checkbox = ({
+  name,
   label,
   description,
   reversed,
@@ -19,13 +20,14 @@ export const Checkbox = ({
 }: CheckboxProps) => {
   return (
     <CheckboxField
+      name={name}
       label={label}
       description={description}
       reversed={reversed}
       bordered={bordered}
       {...ContainerProps}
     >
-      <CheckboxRoot hideIndicator={hideIndicator} {...props}>
+      <CheckboxRoot name={name} hideIndicator={hideIndicator} {...props}>
         <CheckboxIndicator indeterminate={indeterminate} {...IndicatorProps} />
       </CheckboxRoot>
     </CheckboxField>
