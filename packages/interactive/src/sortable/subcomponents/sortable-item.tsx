@@ -12,7 +12,11 @@ import {
   SortableOverlayContext,
 } from "../sortable.context";
 import { CONTENT_NAME, ITEM_NAME, OVERLAY_NAME } from "../sortable.constants";
-import type { SortableItemProps, SortableItemContextValue } from "../sortable.types";
+import type {
+  SortableItemProps,
+  SortableItemContextValue,
+} from "../sortable.types";
+import styles from "../sortable.module.css";
 
 export const SortableItem = (props: SortableItemProps) => {
   const {
@@ -79,14 +83,12 @@ export const SortableItem = (props: SortableItemProps) => {
   );
 
   const computedClassName = cx(
-    "focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
     {
-      "touch-none select-none": asHandle,
-      "cursor-default": context.flatCursor,
+      // "touch-none select-none": asHandle,
+      // "cursor-default": context.flatCursor,
       "data-dragging:cursor-grabbing": !context.flatCursor,
       "cursor-grab": !isDragging && asHandle && !context.flatCursor,
       "opacity-50": isDragging,
-      "pointer-events-none opacity-50": disabled,
     },
     className,
   );
@@ -99,15 +101,15 @@ export const SortableItem = (props: SortableItemProps) => {
         fallbackElement: "div",
         props: {
           id,
+          "data-slot": "sortable-item",
           "data-disabled": disabled ? "" : undefined,
           "data-dragging": isDragging ? "" : undefined,
-          "data-slot": "sortable-item",
           ...itemProps,
           ...(asHandle && !disabled ? attributes : {}),
           ...(asHandle && !disabled ? listeners : {}),
           ref: composedRef,
           style: composedStyle,
-          className: computedClassName,
+          className: cx(styles["sortable-item"], computedClassName),
         },
       })}
     </SortableItemContext.Provider>

@@ -1,4 +1,4 @@
-import { ConditionalRender, Stack } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
@@ -45,14 +45,11 @@ export const Card = ({
       )}
       {...props}
     >
-      <ConditionalRender
-        condition={Boolean((tone || icon || action) && title)}
-        render={<CardHeader {...HeaderProps} />}
-      >
+      <CardHeader {...HeaderProps}>
         {title && <CardIcon tone={tone} icon={icon} {...IconProps} />}
         {title && <CardTitle {...TitleProps}>{title}</CardTitle>}
         {action && <CardAction {...ActionProps}>{action}</CardAction>}
-      </ConditionalRender>
+      </CardHeader>
 
       {description && (
         <CardDescription {...DescriptionProps}>{description}</CardDescription>

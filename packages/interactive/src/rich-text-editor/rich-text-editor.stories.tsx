@@ -8,9 +8,6 @@ const meta = {
   title: "Interactive/Rich Text Editor",
   component: RichTextEditor,
   tags: ["new"],
-  parameters: {
-    layout: "padded",
-  },
   args: {
     placeholder: "Start typing...",
     output: "html",
@@ -24,13 +21,12 @@ const RichTextEditorDemo = () => {
   const [value, setValue] = useState<Content>("");
 
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div style={{ width: "100%", maxWidth: 720 }}>
       <RichTextEditor
         value={value}
         onChange={setValue}
         placeholder="Write something amazing..."
-        output="html"
-        editorContentClassName="p-4 min-h-48"
+        output="json"
       />
       <details style={{ marginTop: 16 }}>
         <summary style={{ cursor: "pointer", opacity: 0.7 }}>

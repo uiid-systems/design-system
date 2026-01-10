@@ -1,0 +1,27 @@
+.sortable-item {
+  &:where([data-dragging], :disabled) {
+    opacity: var(--globals-disabled-opacity);
+  }
+}
+
+.sortable-item-handle {
+  all: unset;
+  cursor: grab;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &[data-dragging] {
+    cursor: grabbing;
+  }
+
+  svg {
+    vertical-align: middle;
+  }
+}
+
+.sortable-dragging {
+  cursor: grabbing;
+}

@@ -9,9 +9,13 @@ import {
 } from "@dnd-kit/core";
 import { cx } from "@uiid/utils";
 
-import { useSortableContext, SortableOverlayContext } from "../sortable.context";
+import {
+  useSortableContext,
+  SortableOverlayContext,
+} from "../sortable.context";
 import { OVERLAY_NAME } from "../sortable.constants";
 import type { SortableOverlayProps } from "../sortable.types";
+import styles from "../sortable.module.css";
 
 const dropAnimation: DropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -41,7 +45,7 @@ export const SortableOverlay = (props: SortableOverlayProps) => {
     <DragOverlay
       dropAnimation={dropAnimation}
       modifiers={context.modifiers}
-      className={cx(!context.flatCursor && "cursor-grabbing")}
+      className={cx(!context.flatCursor && styles["sortable-dragging"])}
       {...overlayProps}
     >
       <SortableOverlayContext.Provider value={true}>

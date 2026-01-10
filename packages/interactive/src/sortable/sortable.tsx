@@ -3,19 +3,10 @@
 import * as React from "react";
 
 import {
-  type Announcements,
   closestCenter,
   closestCorners,
   DndContext,
-  type DragEndEvent,
-  type DragStartEvent,
-  KeyboardSensor,
-  MouseSensor,
-  type ScreenReaderInstructions,
-  TouchSensor,
   type UniqueIdentifier,
-  useSensor,
-  useSensors,
 } from "@dnd-kit/core";
 
 import {
@@ -25,13 +16,16 @@ import {
 } from "@dnd-kit/modifiers";
 
 import {
-  arrayMove,
   horizontalListSortingStrategy,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
 import { SortableRootContext } from "./sortable.context";
+import {
+  useSortableSensors,
+  useSortableAnnouncements,
+  useSortableHandlers,
+} from "./hooks";
 import type {
   SortableRootProps,
   SortableRootContextValue,
@@ -71,15 +65,7 @@ export function Sortable<T>(props: SortableRootProps<T>) {
   } = props;
 
   const id = React.useId();
-  const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null);
-
-  const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
+  const sensors = useSortableSensors();
 
   const config = React.useMemo(
     () => orientationConfig[orientation],
@@ -104,107 +90,26 @@ export function Sortable<T>(props: SortableRootProps<T>) {
     return value.map((item) => getItemValue(item));
   }, [value, getItemValue]);
 
-  const onDragStart = React.useCallback(
-    (event: DragStartEvent) => {
-      sortableProps.onDragStart?.(event);
+  const {
+    activeId,
+    setActiveId,
+    handleDragStart,
+    handleDragEnd,
+    handleDragCancel,
+  } = useSortableHandlers({
+    value,
+    onValueChange,
+    onMove,
+    getItemValue,
+    onDragStart: sortableProps.onDragStart,
+    onDragEnd: sortableProps.onDragEnd,
+    onDragCancel: sortableProps.onDragCancel,
+  });
 
-      if (event.activatorEvent.defaultPrevented) return;
-
-      setActiveId(event.active.id);
-    },
-    [sortableProps.onDragStart],
-  );
-
-  const onDragEnd = React.useCallback(
-    (event: DragEndEvent) => {
-      sortableProps.onDragEnd?.(event);
-
-      if (event.activatorEvent.defaultPrevented) return;
-
-      const { active, over } = event;
-      if (over && active.id !== over?.id) {
-        const activeIndex = value.findIndex(
-          (item) => getItemValue(item) === active.id,
-        );
-        const overIndex = value.findIndex(
-          (item) => getItemValue(item) === over.id,
-        );
-
-        if (onMove) {
-          onMove({ ...event, activeIndex, overIndex });
-        } else {
-          onValueChange?.(arrayMove(value, activeIndex, overIndex));
-        }
-      }
-      setActiveId(null);
-    },
-    [value, onValueChange, onMove, getItemValue, sortableProps.onDragEnd],
-  );
-
-  const onDragCancel = React.useCallback(
-    (event: DragEndEvent) => {
-      sortableProps.onDragCancel?.(event);
-
-      if (event.activatorEvent.defaultPrevented) return;
-
-      setActiveId(null);
-    },
-    [sortableProps.onDragCancel],
-  );
-
-  const announcements: Announcements = React.useMemo(
-    () => ({
-      onDragStart({ active }) {
-        const activeValue = active.id.toString();
-        return `Grabbed sortable item "${activeValue}". Current position is ${active.data.current?.sortable.index + 1} of ${value.length}. Use arrow keys to move, space to drop.`;
-      },
-      onDragOver({ active, over }) {
-        if (over) {
-          const overIndex = over.data.current?.sortable.index ?? 0;
-          const activeIndex = active.data.current?.sortable.index ?? 0;
-          const moveDirection = overIndex > activeIndex ? "down" : "up";
-          const activeValue = active.id.toString();
-          return `Sortable item "${activeValue}" moved ${moveDirection} to position ${overIndex + 1} of ${value.length}.`;
-        }
-        return "Sortable item is no longer over a droppable area. Press escape to cancel.";
-      },
-      onDragEnd({ active, over }) {
-        const activeValue = active.id.toString();
-        if (over) {
-          const overIndex = over.data.current?.sortable.index ?? 0;
-          return `Sortable item "${activeValue}" dropped at position ${overIndex + 1} of ${value.length}.`;
-        }
-        return `Sortable item "${activeValue}" dropped. No changes were made.`;
-      },
-      onDragCancel({ active }) {
-        const activeIndex = active.data.current?.sortable.index ?? 0;
-        const activeValue = active.id.toString();
-        return `Sorting cancelled. Sortable item "${activeValue}" returned to position ${activeIndex + 1} of ${value.length}.`;
-      },
-      onDragMove({ active, over }) {
-        if (over) {
-          const overIndex = over.data.current?.sortable.index ?? 0;
-          const activeIndex = active.data.current?.sortable.index ?? 0;
-          const moveDirection = overIndex > activeIndex ? "down" : "up";
-          const activeValue = active.id.toString();
-          return `Sortable item "${activeValue}" is moving ${moveDirection} to position ${overIndex + 1} of ${value.length}.`;
-        }
-        return "Sortable item is no longer over a droppable area. Press escape to cancel.";
-      },
-    }),
-    [value],
-  );
-
-  const screenReaderInstructions: ScreenReaderInstructions = React.useMemo(
-    () => ({
-      draggable: `
-        To pick up a sortable item, press space or enter.
-        While dragging, use the ${orientation === "vertical" ? "up and down" : orientation === "horizontal" ? "left and right" : "arrow"} keys to move the item.
-        Press space or enter again to drop the item in its new position, or press escape to cancel.
-      `,
-    }),
-    [orientation],
-  );
+  const { announcements, screenReaderInstructions } = useSortableAnnouncements({
+    itemCount: value.length,
+    orientation,
+  });
 
   const contextValue = React.useMemo(
     () => ({
@@ -240,9 +145,9 @@ export function Sortable<T>(props: SortableRootProps<T>) {
         sensors={sensors}
         {...sortableProps}
         id={id}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragCancel={onDragCancel}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
         accessibility={{
           announcements,
           screenReaderInstructions,

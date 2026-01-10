@@ -1,4 +1,5 @@
 import { Info, Ban, TriangleAlert, CircleCheck } from "@uiid/icons";
+import { ConditionalRender } from "@uiid/layout";
 
 import { ICON_SIZE, ICON_STROKE } from "../card.constants";
 import type { CardIconProps } from "../card.types";
@@ -6,6 +7,7 @@ import type { CardIconProps } from "../card.types";
 export const CardIcon = ({
   tone,
   icon: IconProp,
+  render,
   className,
 }: CardIconProps) => {
   const iconProps = {
@@ -23,6 +25,10 @@ export const CardIcon = ({
     return null;
   };
 
-  return <Icon />;
+  return (
+    <ConditionalRender condition={!!render} render={render!}>
+      <Icon />
+    </ConditionalRender>
+  );
 };
 CardIcon.displayName = "CardIcon";

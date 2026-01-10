@@ -1,7 +1,7 @@
 import type { Icon } from "@uiid/icons";
 import type { GroupProps, StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
-import type { VariantProps } from "@uiid/utils";
+import type { RenderProp, VariantProps } from "@uiid/utils";
 
 import type { cardVariants } from "./card.variants";
 
@@ -13,6 +13,7 @@ export type CardDescriptionProps = TextProps;
 export type CardIconProps = Pick<CardVariantProps, "tone"> & {
   icon?: Icon;
   className?: string;
+  render?: RenderProp;
 };
 export type CardActionProps = GroupProps;
 export type CardFooterProps = GroupProps;
