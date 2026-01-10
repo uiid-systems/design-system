@@ -6,11 +6,12 @@ import { Stack } from "@uiid/layout";
 import { MaskInput } from "./mask-input";
 
 const meta = {
-  title: "Forms/MaskInput",
+  title: "Forms/Mask Input",
   component: MaskInput,
   tags: ["beta"],
   args: {
     placeholder: "Enter value",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
@@ -61,12 +62,42 @@ const meta = {
   },
   render: (args) => (
     <Stack gap={4}>
-      <MaskInput {...args} mask="phone" placeholder="Phone number" />
-      <MaskInput {...args} mask="date" placeholder="Date (MM/DD/YYYY)" />
-      <MaskInput {...args} mask="creditCard" placeholder="Credit card" />
-      <MaskInput {...args} mask="currency" placeholder="Currency" />
-      <MaskInput {...args} mask="percentage" placeholder="Percentage" />
-      <MaskInput {...args} mask="zipCode" placeholder="ZIP code" />
+      <MaskInput
+        {...args}
+        mask="phone"
+        label="Phone number"
+        placeholder="Phone number"
+      />
+      <MaskInput
+        {...args}
+        mask="date"
+        label="Date (MM/DD/YYYY)"
+        placeholder="Date (MM/DD/YYYY)"
+      />
+      <MaskInput
+        {...args}
+        mask="creditCard"
+        label="Credit card"
+        placeholder="Credit card"
+      />
+      <MaskInput
+        {...args}
+        mask="currency"
+        label="Currency"
+        placeholder="Currency"
+      />
+      <MaskInput
+        {...args}
+        mask="percentage"
+        label="Percentage"
+        placeholder="Percentage"
+      />
+      <MaskInput
+        {...args}
+        mask="zipCode"
+        label="ZIP code"
+        placeholder="ZIP code"
+      />
     </Stack>
   ),
 } satisfies Meta<typeof MaskInput>;
@@ -75,5 +106,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  name: "MaskInput",
+  name: "Mask Input",
 };

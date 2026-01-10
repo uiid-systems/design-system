@@ -1,6 +1,7 @@
-import type { MaskPatternKey, MaskPattern } from "../mask-input.types";
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "../mask-input.constants";
-import { applyCurrencyMask } from "../mask-input";
+import type { MaskPatternKey, MaskPattern } from "../mask-input.types";
+
+import { applyCurrencyMask } from "./apply-currency-mask";
 import { applyPercentageMask } from "./apply-percentage-mask";
 
 export function applyMask(opts: {
