@@ -8,7 +8,7 @@ import { MaskInput } from "./mask-input";
 const meta = {
   title: "Forms/Mask Input",
   component: MaskInput,
-  tags: ["beta"],
+  tags: ["new"],
   args: {
     placeholder: "Enter value",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
