@@ -20,19 +20,10 @@ export const Login = () => {
     <Modal
       open={isOpen}
       onOpenChange={handleOpenChange}
-      trigger={<LoginButton />}
       title="Welcome back"
       description="Login with one of your social accounts."
-      action={
-        <Button
-          onClick={() => handleOpenChange(false)}
-          size="xsmall"
-          ghost
-          square
-        >
-          <XIcon size={14} />
-        </Button>
-      }
+      trigger={<LoginButton />}
+      action={<LoginAction onOpenChange={handleOpenChange} />}
       size="small"
     >
       <LoginForm onOpenChange={handleOpenChange} />
@@ -40,6 +31,32 @@ export const Login = () => {
   );
 };
 Login.displayName = "Login";
+
+const LoginAction = ({
+  onOpenChange,
+}: {
+  onOpenChange: (open: boolean) => void;
+}) => {
+  return (
+    <Button size="xsmall" ghost square onClick={() => onOpenChange(false)}>
+      <XIcon />
+    </Button>
+  );
+};
+LoginAction.displayName = "LoginAction";
+
+const LoginFooter = ({
+  onOpenChange,
+}: {
+  onOpenChange: (open: boolean) => void;
+}) => {
+  return (
+    <Button variant="subtle" onClick={() => onOpenChange(false)}>
+      Cancel
+    </Button>
+  );
+};
+LoginFooter.displayName = "LoginFooter";
 
 const LoginButton = ({ ...props }: ButtonProps) => {
   return (

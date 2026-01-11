@@ -1,4 +1,4 @@
-import { Stack } from "@uiid/layout";
+import { Stack, ConditionalRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
@@ -37,19 +37,22 @@ export const Card = ({
   return (
     <Stack
       data-slot="card"
-      gap={3}
       className={cx(
         styles["card"],
         cardVariants({ tone, trimmed, transparent, inverted }),
         className,
       )}
+      gap={3}
       {...props}
     >
-      <CardHeader {...HeaderProps}>
+      <ConditionalRender
+        condition={Boolean(title || icon || action)}
+        render={<CardHeader {...HeaderProps} />}
+      >
         {title && <CardIcon tone={tone} icon={icon} {...IconProps} />}
         {title && <CardTitle {...TitleProps}>{title}</CardTitle>}
         {action && <CardAction {...ActionProps}>{action}</CardAction>}
-      </CardHeader>
+      </ConditionalRender>
 
       {description && (
         <CardDescription {...DescriptionProps}>{description}</CardDescription>

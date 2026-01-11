@@ -15,6 +15,11 @@ export const Popover = ({
   trigger,
   open,
   onOpenChange,
+  title,
+  description,
+  icon,
+  action,
+  footer,
   RootProps,
   TriggerProps,
   PortalProps,
@@ -32,7 +37,16 @@ export const Popover = ({
       <PopoverPortal {...PortalProps}>
         <PopoverBackdrop {...BackdropProps} />
         <PopoverPositioner {...PositionerProps}>
-          <PopoverPopup {...PopupProps}>{children}</PopoverPopup>
+          <PopoverPopup
+            title={title}
+            description={description}
+            icon={icon}
+            action={action}
+            footer={footer}
+            {...PopupProps}
+          >
+            {children}
+          </PopoverPopup>
         </PopoverPositioner>
       </PopoverPortal>
     </PopoverRoot>
