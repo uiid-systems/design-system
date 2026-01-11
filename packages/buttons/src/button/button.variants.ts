@@ -7,6 +7,7 @@ export const buttonVariants = cva({
     grows: { true: styles["toggle-grows"] },
     square: { true: styles["toggle-square"] },
     pill: { true: styles["toggle-pill"] },
+    fullwidth: { true: styles["toggle-fullwidth"] },
     ghost: { true: styles["toggle-ghost"] },
     variant: {
       subtle: styles["variant-subtle"],

@@ -2,11 +2,11 @@ import type { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputProps } from "../input/input.types";
-import type { SelectMultiple } from "../select/select.types";
+import type { SelectMultipleMode } from "../select/select.types";
 
 export type ComboboxRootProps<
   Value,
-  Multiple extends SelectMultiple = false,
+  Multiple extends SelectMultipleMode = false,
 > = BaseCombobox.Root.Props<Value, Multiple>;
 
 export type ComboboxInputProps = BaseCombobox.Input.Props &
@@ -21,7 +21,7 @@ export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 
 export type ComboboxProps<
   Value = string,
-  Multiple extends SelectMultiple = false,
+  Multiple extends SelectMultipleMode = false,
 > = React.PropsWithChildren<{
   RootProps?: ComboboxRootProps<Value, Multiple>;
   InputProps?: ComboboxInputProps;

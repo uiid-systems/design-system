@@ -11,7 +11,7 @@ export const CardDescription = ({
       data-slot="card-description"
       render={<p />}
       shade="accent"
-      mb={1}
+      my={1}
       balance
       {...props}
     >

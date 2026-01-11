@@ -12,6 +12,11 @@ import {
 
 export const Sheet = ({
   side = "right",
+  title,
+  description,
+  icon,
+  action,
+  footer,
   RootProps,
   TriggerProps,
   PortalProps,
@@ -28,7 +33,15 @@ export const Sheet = ({
 
       <SheetPortal {...PortalProps}>
         <SheetBackdrop {...BackdropProps} />
-        <SheetPopup side={side} {...PopupProps}>
+        <SheetPopup
+          side={side}
+          title={title}
+          description={description}
+          icon={icon}
+          action={action}
+          footer={footer}
+          {...PopupProps}
+        >
           {children}
         </SheetPopup>
       </SheetPortal>

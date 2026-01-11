@@ -103,6 +103,7 @@
   }
 
   [data-is-popup] {
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     transform-origin: var(--globals-transform-origin);
     transition:
       transform var(--globals-transition-timing),

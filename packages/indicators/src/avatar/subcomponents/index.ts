@@ -1,3 +1,4 @@
+export * from "./avatar-container";
 export * from "./avatar-layers";
 export * from "./avatar-image";
 export * from "./avatar-initials";

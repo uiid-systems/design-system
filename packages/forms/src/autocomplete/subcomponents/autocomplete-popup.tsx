@@ -1,3 +1,5 @@
+"use client";
+
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import { Card } from "@uiid/cards";

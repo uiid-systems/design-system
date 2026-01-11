@@ -1,3 +1,5 @@
+"use client";
+
 import { FieldLabel } from "@uiid/forms";
 
 import type { SwitchLabelProps } from "../switch.types";

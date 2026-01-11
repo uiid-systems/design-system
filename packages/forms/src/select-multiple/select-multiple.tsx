@@ -1,14 +1,11 @@
 "use client";
 
+import { Select as BaseSelect } from "@base-ui/react/select";
 import { ConditionalRender } from "@uiid/layout";
 
 import { Field } from "../field/field";
-
-import { SELECT_DEFAULT_SIZE } from "./select.constants";
-import type { SelectProps } from "./select.types";
-
+import { SELECT_DEFAULT_SIZE } from "../select/select.constants";
 import {
-  SelectRoot,
   SelectTrigger,
   SelectPortal,
   SelectPositioner,
@@ -17,9 +14,11 @@ import {
   SelectItem,
   SelectValue,
   SelectIndicator,
-} from "./subcomponents";
+} from "../select/subcomponents";
 
-export const Select = <Value = string,>({
+import type { SelectMultipleProps } from "./select-multiple.types";
+
+export const SelectMultiple = ({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
   ghost,
@@ -28,9 +27,8 @@ export const Select = <Value = string,>({
   name,
   label,
   description,
-  placeholder,
   items,
-  defaultValue,
+  defaultValue = [],
   RootProps,
   TriggerProps,
   PortalProps,
@@ -42,9 +40,7 @@ export const Select = <Value = string,>({
   FieldProps,
   children,
   ...props
-}: SelectProps<Value>) => {
-  const resolvedDefaultValue = defaultValue ?? placeholder ?? items?.[0]?.value;
-
+}: SelectMultipleProps) => {
   return (
     <ConditionalRender
       condition={Boolean(label || description)}
@@ -58,9 +54,11 @@ export const Select = <Value = string,>({
         />
       }
     >
-      <SelectRoot<Value>
+      <BaseSelect.Root
+        data-slot="select-multiple-root"
         name={name}
-        defaultValue={resolvedDefaultValue}
+        multiple
+        defaultValue={defaultValue}
         {...props}
         {...RootProps}
       >
@@ -101,8 +99,8 @@ export const Select = <Value = string,>({
             </SelectPopup>
           </SelectPositioner>
         </SelectPortal>
-      </SelectRoot>
+      </BaseSelect.Root>
     </ConditionalRender>
   );
 };
-Select.displayName = "Select";
+SelectMultiple.displayName = "SelectMultiple";

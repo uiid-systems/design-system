@@ -1,3 +1,5 @@
+"use client";
+
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
 
 import { cx } from "@uiid/utils";

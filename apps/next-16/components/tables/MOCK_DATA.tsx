@@ -1,6 +1,6 @@
 import { Badge } from "@uiid/indicators";
-import { formatDate, DatePicker } from "@uiid/calendars";
-import { Swords, Star, Heart, Calendar } from "@uiid/icons";
+import { formatDate } from "@uiid/calendars";
+import { Swords, Star, Heart } from "@uiid/icons";
 import type { MenuProps } from "@uiid/interactive";
 import { Modal, Sheet } from "@uiid/overlays";
 import type { TableProps } from "@uiid/tables";
@@ -115,16 +115,6 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
 ];
 
 export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
-  {
-    icon: Calendar,
-    tooltip: "See schedule",
-    wrapper: (button) => (
-      <Modal trigger={button}>
-        <p>Schedule content goes here</p>
-        <DatePicker />
-      </Modal>
-    ),
-  },
   {
     icon: Swords,
     tooltip: "Challenge",

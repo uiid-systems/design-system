@@ -1,3 +1,5 @@
+"use client";
+
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import { ListItem } from "@uiid/lists";

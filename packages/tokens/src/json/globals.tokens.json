@@ -21,6 +21,9 @@
     "icon": {
       "size": { "$value": "0.875rem", "$type": "dimension" }
     },
+    "z-index": {
+      "modal": { "$value": "3", "$type": "number" }
+    },
     "border": {
       "color": { "$value": "{shade.muted}", "$type": "color" },
       "radius": { "$value": "0.5rem", "$type": "dimension" },

@@ -116,6 +116,11 @@
   border-radius: 99999px;
 }
 
+.toggle-fullwidth {
+  width: 100%;
+  width: -webkit-fill-available;
+}
+
 .toggle-square {
   aspect-ratio: 1;
   padding-inline: 0;

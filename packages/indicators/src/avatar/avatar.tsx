@@ -1,8 +1,9 @@
-import { Group, Stack, ConditionalRender } from "@uiid/layout";
+import { Stack, ConditionalRender } from "@uiid/layout";
 
 import type { AvatarProps } from "./avatar.types";
 
 import {
+  AvatarContainer,
   AvatarLayers,
   AvatarImage,
   AvatarInitials,
@@ -11,11 +12,12 @@ import {
 } from "./subcomponents";
 
 export const Avatar = ({
-  /** data */
   initials,
   name,
   description,
-  /** subcomponents */
+  orientation = "horizontal",
+  size = "medium",
+  ContainerProps,
   ImageProps,
   InitialsProps,
   NameProps,
@@ -23,19 +25,31 @@ export const Avatar = ({
   ...props
 }: AvatarProps) => {
   return (
-    <Group data-slot="avatar" gap={2} ay="center" {...props}>
-      <AvatarLayers>
+    <AvatarContainer orientation={orientation} {...props} {...ContainerProps}>
+      <AvatarLayers size={size}>
         <AvatarImage {...ImageProps} />
-        <AvatarInitials initials={initials} {...InitialsProps} />
+        <AvatarInitials initials={initials} size={size} {...InitialsProps} />
       </AvatarLayers>
 
-      <ConditionalRender condition={!!name} render={<Stack gap={2} />}>
-        {name && <AvatarName name={name} {...NameProps} />}
+      <ConditionalRender
+        condition={!!name}
+        render={
+          <Stack
+            gap={3}
+            ax={orientation === "vertical" ? "center" : undefined}
+          />
+        }
+      >
+        {name && <AvatarName name={name} size={size} {...NameProps} />}
         {description && (
-          <AvatarDescription description={description} {...DescriptionProps} />
+          <AvatarDescription
+            description={description}
+            size={size}
+            {...DescriptionProps}
+          />
         )}
       </ConditionalRender>
-    </Group>
+    </AvatarContainer>
   );
 };
 Avatar.displayName = "Avatar";

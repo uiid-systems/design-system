@@ -1,0 +1,11 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Avatar Component Tokens",
+  "avatar": {
+    "size": {
+      "small": { "$value": "2rem", "$type": "dimension" },
+      "medium": { "$value": "2.5rem", "$type": "dimension" },
+      "large": { "$value": "3rem", "$type": "dimension" }
+    }
+  }
+}

@@ -23,6 +23,7 @@ export const CheckboxGroup = ({
   required,
   CheckboxProps,
   IndicatorProps,
+  FieldProps,
   ...props
 }: CheckboxGroupProps) => {
   const isHorizontal = direction === "horizontal";
@@ -37,6 +38,7 @@ export const CheckboxGroup = ({
           description={description}
           required={required}
           disabled={disabled}
+          {...FieldProps}
         />
       }
     >

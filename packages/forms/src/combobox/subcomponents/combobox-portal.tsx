@@ -1,3 +1,5 @@
+"use client";
+
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import type { ComboboxPortalProps } from "../combobox.types";

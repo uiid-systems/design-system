@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar } from "@uiid/indicators";
 import { Group } from "@uiid/layout";
 import {
   Sidebar,
@@ -30,9 +31,11 @@ export const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter>
-        <Text size={0} weight="bold">
-          Sidebar footer
-        </Text>
+        <Avatar
+          initials="AF"
+          name="Adam Fratino"
+          description="Software Engineer"
+        />
       </SidebarFooter>
     </Sidebar>
   );

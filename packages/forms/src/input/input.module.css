@@ -8,6 +8,7 @@
   outline-offset: var(--globals-outline-offset);
   padding: var(--forms-padding-y) var(--forms-padding-x);
   transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  line-height: 1;
 
   /** Hover */
   &:hover {

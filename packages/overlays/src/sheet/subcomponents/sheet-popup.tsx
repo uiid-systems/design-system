@@ -1,6 +1,6 @@
 import { Dialog as BaseSheet } from "@base-ui/react/dialog";
 
-import { Stack } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import { sheetVariants } from "../sheet.variants";
@@ -10,19 +10,33 @@ import styles from "../sheet.module.css";
 
 export const SheetPopup = ({
   side,
+  title,
+  description,
+  icon,
+  action,
+  footer,
   className,
   children,
   ...props
 }: SheetPopupProps) => {
   return (
     <BaseSheet.Popup
-      render={<Stack gap={4} />}
+      render={
+        <Card
+          gap={4}
+          title={title}
+          description={description}
+          icon={icon}
+          action={action}
+          footer={footer}
+          FooterProps={{
+            style: { marginTop: "auto" },
+          }}
+        />
+      }
       className={cx(styles["sheet-popup"], sheetVariants({ side }), className)}
       {...props}
     >
-      {/* <BaseSheet.Title /> */}
-      {/* <BaseSheet.Description /> */}
-      {/* <SheetClose /> */}
       {children}
     </BaseSheet.Popup>
   );

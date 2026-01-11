@@ -1,11 +1,11 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 
-import type { SelectMultiple, SelectRootProps } from "../select.types";
+import type { SelectRootProps } from "../select.types";
 
-export const SelectRoot = <Value, Multiple extends SelectMultiple = false>({
+export const SelectRoot = <Value = string,>({
   children,
   ...props
-}: SelectRootProps<Value, Multiple>) => {
+}: SelectRootProps<Value>) => {
   return (
     <BaseSelect.Root data-slot="select-root" {...props}>
       {children}

@@ -9,18 +9,42 @@ const meta: Meta<typeof Avatar> = {
   component: Avatar,
   tags: ["beta"],
   args: {},
+  argTypes: {
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+  },
   render: (args) => (
-    <Stack gap={4}>
-      <Avatar
-        {...args}
-        initials="AF"
-        name="Adam Fratino"
-        description="Software Engineer"
-      />
+    <Stack gap={8}>
+      <Stack gap={4}>
+        <Avatar
+          {...args}
+          initials="AF"
+          name="Adam Fratino"
+          description="Software Engineer"
+        />
+        <Avatar {...args} initials="AF" name="Adam Fratino" />
+        <Avatar {...args} initials="AF" />
+      </Stack>
 
-      <Avatar {...args} initials="AF" name="Adam Fratino" />
-
-      <Avatar {...args} initials="AF" />
+      <Stack gap={4}>
+        <Avatar
+          {...args}
+          initials="AF"
+          name="Adam Fratino"
+          description="Software Engineer"
+          orientation="vertical"
+        />
+        <Avatar
+          {...args}
+          initials="AF"
+          name="Adam Fratino"
+          orientation="vertical"
+        />
+        <Avatar {...args} initials="AF" orientation="vertical" />
+      </Stack>
     </Stack>
   ),
 };

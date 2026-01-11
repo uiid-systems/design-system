@@ -12,6 +12,7 @@ export const Field = ({
   label,
   description,
   required,
+  fullwidth,
   RootProps,
   LabelProps,
   ErrorProps,
@@ -20,7 +21,7 @@ export const Field = ({
   ...props
 }: FieldProps) => {
   return (
-    <FieldRoot name={name} {...RootProps} {...props}>
+    <FieldRoot name={name} fullwidth={fullwidth} {...RootProps} {...props}>
       {label && (
         <FieldLabel required={required} {...LabelProps}>
           {label}

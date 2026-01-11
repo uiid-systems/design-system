@@ -16,6 +16,7 @@ export const Button = ({
   ghost,
   pill,
   grows,
+  fullwidth,
   size,
   tone,
   square,
@@ -40,7 +41,16 @@ export const Button = ({
         data-slot="button"
         className={cx(
           styles["button"],
-          buttonVariants({ ghost, grows, pill, size, square, variant, tone }),
+          buttonVariants({
+            ghost,
+            grows,
+            pill,
+            size,
+            square,
+            variant,
+            tone,
+            fullwidth,
+          }),
           className,
         )}
         data-ghost={ghost}

@@ -37,12 +37,12 @@ export const Card = ({
   return (
     <Stack
       data-slot="card"
+      gap={3}
       className={cx(
         styles["card"],
         cardVariants({ tone, trimmed, transparent, inverted }),
         className,
       )}
-      gap={3}
       {...props}
     >
       <ConditionalRender

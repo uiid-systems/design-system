@@ -1,14 +1,15 @@
+@import "@uiid/tokens/avatar.tokens.css";
+
 .avatar {
   display: inline-flex;
 }
 
 .avatar-layers {
+  aspect-ratio: 1;
   text-align: center;
   background-color: var(--shade-foreground);
   border-radius: var(--globals-border-radius);
   padding-inline: 0.5rem;
-  height: 2rem;
-  min-width: 2rem;
 }
 
 .avatar-initials {
@@ -29,4 +30,17 @@
 .avatar-description {
   color: var(--shade-accent);
   white-space: nowrap;
+}
+
+.size-small {
+  height: var(--avatar-size-small);
+  min-width: var(--avatar-size-small);
+}
+.size-medium {
+  height: var(--avatar-size-medium);
+  min-width: var(--avatar-size-medium);
+}
+.size-large {
+  height: var(--avatar-size-large);
+  min-width: var(--avatar-size-large);
 }

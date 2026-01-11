@@ -51,7 +51,7 @@ const LoginFooter = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   return (
-    <Button variant="subtle" onClick={() => onOpenChange(false)}>
+    <Button ghost onClick={() => onOpenChange(false)}>
       Cancel
     </Button>
   );
@@ -92,20 +92,20 @@ LoginForm.displayName = "LoginForm";
 const LoginFormSocials = () => {
   return (
     <Stack gap={4} ax="stretch">
-      <SocialButton>
+      <Button>
         <SiDiscord size={14} />
         Login with Discord
-      </SocialButton>
+      </Button>
 
-      <SocialButton>
+      <Button>
         <SiApple size={12} />
         Login with Apple
-      </SocialButton>
+      </Button>
 
-      <SocialButton>
+      <Button>
         <SiGoogle size={12} />
         Login with Google
-      </SocialButton>
+      </Button>
     </Stack>
   );
 };
@@ -131,14 +131,9 @@ const Divider = () => {
         px={2}
         className="bg-(--shade-surface) justify-self-center"
       >
-        Or continue with
+        Or continue with your email
       </Text>
     </Layer>
   );
 };
 Divider.displayName = "Divider";
-
-const SocialButton = ({ children }: React.PropsWithChildren) => {
-  return <Button variant="subtle">{children}</Button>;
-};
-SocialButton.displayName = "SocialButton";

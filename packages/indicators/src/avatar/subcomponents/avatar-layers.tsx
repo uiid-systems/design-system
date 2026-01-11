@@ -1,10 +1,12 @@
 import { Layer } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import type { AvatarLayersProps } from "../avatar.types";
 import styles from "../avatar.module.css";
+import type { AvatarLayersProps } from "../avatar.types";
+import { avatarVariants } from "../avatar.variants";
 
 export const AvatarLayers = ({
+  size,
   className,
   children,
   ...props
@@ -12,10 +14,13 @@ export const AvatarLayers = ({
   return (
     <Layer
       data-slot="avatar-layers"
-      className={cx(styles["avatar-layers"], className)}
+      className={cx(
+        styles["avatar-layers"],
+        avatarVariants({ size }),
+        className,
+      )}
       ax="center"
       ay="center"
-      fullwidth
       {...props}
     >
       {children}

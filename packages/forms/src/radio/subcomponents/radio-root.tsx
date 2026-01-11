@@ -1,3 +1,5 @@
+"use client";
+
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 
 import { Group } from "@uiid/layout";

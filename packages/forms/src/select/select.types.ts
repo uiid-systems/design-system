@@ -7,18 +7,18 @@ import type { InputVariants } from "../input/input.types";
 
 import type { FormItemProps } from "../types";
 
-/** Whether multi-select is enabled. `false` = single value, `true` = array of values. */
-export type SelectMultiple = boolean | undefined;
+/** Shared type for single/multiple select mode. Used by Combobox. */
+export type SelectMultipleMode = true | false | undefined;
 
 export type SelectItemProps = FormItemProps & {
   description?: string;
   icon?: Icon;
 };
 
-export type SelectRootProps<
+export type SelectRootProps<Value = string> = BaseSelect.Root.Props<
   Value,
-  Multiple extends SelectMultiple = false,
-> = BaseSelect.Root.Props<Value, Multiple>;
+  false
+>;
 export type SelectTriggerProps = BaseSelect.Trigger.Props &
   Pick<InputVariants, "ghost" | "fullwidth">;
 export type SelectPortalProps = BaseSelect.Portal.Props;
@@ -29,13 +29,10 @@ export type SelectValueProps = BaseSelect.Value.Props &
   Pick<InputVariants, "size">;
 export type SelectIndicatorProps = BaseSelect.Icon.Props;
 
-export type SelectProps<
-  Value = string,
-  Multiple extends SelectMultiple = false,
-> = React.PropsWithChildren<{
+export type SelectProps<Value = string> = React.PropsWithChildren<{
   placeholder?: string;
   items?: SelectItemProps[];
-  RootProps?: SelectRootProps<Value, Multiple>;
+  RootProps?: SelectRootProps<Value>;
   TriggerProps?: SelectTriggerProps;
   PortalProps?: SelectPortalProps;
   PositionerProps?: SelectPositionerProps;
@@ -45,6 +42,6 @@ export type SelectProps<
   FieldProps?: FieldProps;
   IndicatorProps?: SelectIndicatorProps;
 }> &
-  SelectRootProps<Value, Multiple> &
+  SelectRootProps<Value> &
   Pick<FieldProps, "label" | "description"> &
   InputVariants;

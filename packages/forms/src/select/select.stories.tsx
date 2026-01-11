@@ -40,7 +40,6 @@ const meta = {
     ghost: { control: "boolean", table: { category: "Toggles" } },
     defaultOpen: { control: "boolean", table: { category: "Toggles" } },
     open: { control: "boolean", table: { category: "Toggles" } },
-    multiple: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
@@ -60,6 +59,12 @@ const meta = {
   render: (args) => (
     <Stack ax="stretch" gap={8}>
       <Select {...args} placeholder="Placeholder" />
+
+      <Select
+        {...args}
+        label="Select with label and description"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      />
 
       <Select
         {...args}

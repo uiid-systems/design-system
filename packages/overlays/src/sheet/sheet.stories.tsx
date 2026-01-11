@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { GlobeIcon } from "@uiid/icons";
 import { Stack } from "@uiid/layout";
 
 import { Sheet } from "./sheet";
@@ -9,6 +10,11 @@ const meta: Meta<typeof Sheet> = {
   component: Sheet,
   tags: ["beta"],
   args: {
+    title: "Sheet Title",
+    description: "Sheet Description",
+    icon: GlobeIcon,
+    action: <button>Action</button>,
+    footer: "Sheet Footer",
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa hic, accusamus dolor cum minima pariatur provident vero blanditiis vel! Assumenda ipsum officia autem!",
   },

@@ -1,16 +1,24 @@
 import type { Dialog as BaseSheet } from "@base-ui/react/dialog";
 
+import type { CardProps } from "@uiid/cards";
 import type { VariantProps } from "@uiid/utils";
 
 import { sheetVariants } from "./sheet.variants";
 
 export type SheetVariants = VariantProps<typeof sheetVariants>;
 
+type SheetCardProps = Pick<
+  CardProps,
+  "title" | "description" | "action" | "icon" | "footer"
+>;
+
 export type SheetRootProps = BaseSheet.Root.Props;
 export type SheetTriggerProps = BaseSheet.Trigger.Props;
 export type SheetPortalProps = BaseSheet.Portal.Props;
 export type SheetBackdropProps = BaseSheet.Backdrop.Props;
-export type SheetPopupProps = BaseSheet.Popup.Props & SheetVariants;
+export type SheetPopupProps = BaseSheet.Popup.Props &
+  SheetVariants &
+  SheetCardProps;
 export type SheetCloseProps = BaseSheet.Close.Props;
 
 export type SheetProps = SheetVariants &
@@ -23,4 +31,5 @@ export type SheetProps = SheetVariants &
     BackdropProps?: SheetBackdropProps;
     PopupProps?: SheetPopupProps;
   }> &
-  Partial<Pick<SheetRootProps, "open" | "onOpenChange">>;
+  Partial<Pick<SheetRootProps, "open" | "onOpenChange">> &
+  SheetCardProps;

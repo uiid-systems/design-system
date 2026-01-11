@@ -3,19 +3,19 @@
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background-color: color-mix(in srgb, transparent, var(--shade-background) calc(var(--overlays-backdrop-opacity) * 100%));
+  background-color: var(--shade-background);
+  opacity: var(--overlays-backdrop-opacity);
+  transition: opacity 150ms ease-out;
   z-index: var(--overlays-backdrop-zIndex);
 
-  &[data-state="open"] {
-    animation: fade-in 150ms ease-out;
-  }
-
-  &[data-state="closed"] {
-    animation: fade-out 150ms ease-in;
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
   }
 }
 
 .sheet-popup {
+  --inset: 1rem;
   position: fixed;
   background-color: var(--shade-surface);
   color: var(--shade-foreground);
@@ -39,7 +39,7 @@
 }
 
 .side-right {
-  right: 0;
+  right: var(--inset);
   border-left: 1px solid var(--shade-muted);
   &[data-starting-style],
   &[data-ending-style] {
@@ -48,7 +48,7 @@
 }
 
 .side-left {
-  left: 0;
+  left: var(--inset);
   border-right: 1px solid var(--shade-muted);
   &[data-starting-style],
   &[data-ending-style] {
@@ -57,7 +57,7 @@
 }
 
 .side-top {
-  top: 0;
+  top: var(--inset);
   border-bottom: 1px solid var(--shade-muted);
   &[data-starting-style],
   &[data-ending-style] {
@@ -66,7 +66,7 @@
 }
 
 .side-bottom {
-  bottom: 0;
+  bottom: var(--inset);
   border-top: 1px solid var(--shade-muted);
   &[data-starting-style],
   &[data-ending-style] {
@@ -76,15 +76,15 @@
 
 .side-right,
 .side-left {
-  inset-block: 0;
-  height: 100%;
+  inset-block: var(--inset);
+  height: calc(100% - var(--inset) * 2);
   width: 75%;
   max-width: 24rem;
 }
 
 .side-top,
 .side-bottom {
-  inset-inline: 0;
+  inset-inline: var(--inset);
   height: auto;
-  width: 100%;
+  width: calc(100% - var(--inset) * 2);
 }
