@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { SiDiscord, SiGoogle, SiApple } from "@icons-pack/react-simple-icons";
 
-import { Button } from "@uiid/buttons";
+import { Button, type ButtonProps } from "@uiid/buttons";
 import { Input } from "@uiid/forms";
+import { XIcon } from "@uiid/icons";
 import { Stack, Group, Layer } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -20,6 +21,18 @@ export const Login = () => {
       open={isOpen}
       onOpenChange={handleOpenChange}
       trigger={<LoginButton />}
+      title="Welcome back"
+      description="Login with one of your social accounts."
+      action={
+        <Button
+          onClick={() => handleOpenChange(false)}
+          size="xsmall"
+          ghost
+          square
+        >
+          <XIcon size={14} />
+        </Button>
+      }
       size="small"
     >
       <LoginForm onOpenChange={handleOpenChange} />
@@ -28,9 +41,9 @@ export const Login = () => {
 };
 Login.displayName = "Login";
 
-const LoginButton = () => {
+const LoginButton = ({ ...props }: ButtonProps) => {
   return (
-    <Button variant="subtle" size="small">
+    <Button variant="subtle" size="small" {...props}>
       Login
     </Button>
   );
@@ -43,8 +56,7 @@ const LoginForm = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   return (
-    <Stack gap={8} p={4} ax="stretch">
-      <LoginFormHeader />
+    <Stack gap={8} p={4} ax="stretch" fullwidth>
       <LoginFormSocials />
       <Divider />
       <LoginFormEmail />
@@ -59,20 +71,6 @@ const LoginForm = ({
   );
 };
 LoginForm.displayName = "LoginForm";
-
-const LoginFormHeader = () => {
-  return (
-    <Stack gap={4} p={2} ax="stretch">
-      <Text render={<h2 />} size={2} weight="bold">
-        Welcome back
-      </Text>
-      <Text render={<p />} size={0} shade="accent">
-        Login with one of your social accounts.
-      </Text>
-    </Stack>
-  );
-};
-LoginFormHeader.displayName = "LoginFormHeader";
 
 const LoginFormSocials = () => {
   return (

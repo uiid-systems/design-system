@@ -9,6 +9,11 @@ import styles from "../modal.module.css";
 
 export const ModalPopup = ({
   size,
+  title,
+  description,
+  icon,
+  action,
+  footer,
   className,
   children,
   ...props
@@ -17,7 +22,17 @@ export const ModalPopup = ({
     <BaseDialog.Popup
       data-slot="modal-popup"
       className={cx(styles["modal-popup"], modalVariants({ size }), className)}
-      render={<Card>{children}</Card>}
+      render={
+        <Card
+          title={title}
+          description={description}
+          icon={icon}
+          action={action}
+          footer={footer}
+        >
+          {children}
+        </Card>
+      }
       data-is-popup
       {...props}
     >

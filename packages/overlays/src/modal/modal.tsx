@@ -14,6 +14,11 @@ export const Modal = ({
   open,
   onOpenChange,
   size,
+  title,
+  description,
+  icon,
+  action,
+  footer,
   RootProps,
   TriggerProps,
   PortalProps,
@@ -27,7 +32,15 @@ export const Modal = ({
       <ModalTrigger {...TriggerProps}>{trigger}</ModalTrigger>
       <ModalPortal {...PortalProps}>
         <ModalBackdrop {...BackdropProps} />
-        <ModalPopup size={size} {...PopupProps}>
+        <ModalPopup
+          size={size}
+          title={title}
+          description={description}
+          icon={icon}
+          action={action}
+          footer={footer}
+          {...PopupProps}
+        >
           {children}
         </ModalPopup>
       </ModalPortal>

@@ -11,4 +11,7 @@ export const modalVariants = cva({
       xlarge: styles["size-xlarge"],
     },
   },
+  defaultVariants: {
+    size: "medium",
+  },
 });

@@ -13,6 +13,7 @@ export const buttonVariants = cva({
       inverted: styles["variant-inverted"],
     },
     size: {
+      xsmall: styles["size-xsmall"],
       small: styles["size-small"],
       medium: styles["size-medium"],
       large: styles["size-large"],

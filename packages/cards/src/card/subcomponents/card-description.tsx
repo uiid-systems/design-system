@@ -10,11 +10,9 @@ export const CardDescription = ({
     <Text
       data-slot="card-description"
       render={<p />}
-      // shade="accent"
-      size={-1}
+      shade="accent"
       mb={1}
       balance
-      weight="bold"
       {...props}
     >
       {children}

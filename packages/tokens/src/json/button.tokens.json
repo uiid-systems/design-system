@@ -23,6 +23,11 @@
       "hover": { "$value": "1.02", "$type": "number" }
     },
     "size": {
+      "xs": {
+        "font-size": { "$value": "0.625rem", "$type": "dimension" },
+        "height": { "$value": "1.75rem", "$type": "dimension" },
+        "padding-x": { "$value": "0.5rem", "$type": "dimension" }
+      },
       "sm": {
         "font-size": { "$value": "0.75rem", "$type": "dimension" },
         "height": { "$value": "2rem", "$type": "dimension" },

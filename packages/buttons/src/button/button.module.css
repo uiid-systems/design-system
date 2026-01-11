@@ -81,6 +81,12 @@
   }
 }
 
+.size-xsmall {
+  font-size: var(--button-size-xs-font-size);
+  height: var(--button-size-xs-height);
+  padding-inline: var(--button-size-xs-padding-x);
+}
+
 .size-small {
   font-size: var(--button-size-sm-font-size);
   height: var(--button-size-sm-height);
