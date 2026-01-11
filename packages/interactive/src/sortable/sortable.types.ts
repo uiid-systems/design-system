@@ -7,7 +7,6 @@ import type {
   DragEndEvent,
 } from "@dnd-kit/core";
 import type { SortableContextProps } from "@dnd-kit/sortable";
-import type { RenderProp } from "@uiid/utils";
 
 export interface SortableRootContextValue<T> {
   id: string;
@@ -59,12 +58,6 @@ export type SortableRootProps<T> = DndContextProps &
 export interface SortableContentProps extends React.ComponentProps<"div"> {
   /** Sorting strategy override */
   strategy?: SortableContextProps["strategy"];
-  /** Content children */
-  children: React.ReactNode;
-  /** Render as a different element */
-  render?: RenderProp;
-  /** Render without wrapper element */
-  withoutSlot?: boolean;
 }
 
 export interface SortableItemProps extends React.ComponentProps<"div"> {
@@ -72,17 +65,11 @@ export interface SortableItemProps extends React.ComponentProps<"div"> {
   value: UniqueIdentifier;
   /** Use the item itself as the drag handle */
   asHandle?: boolean;
-  /** Render as a different element */
-  render?: RenderProp;
   /** Disable dragging for this item */
   disabled?: boolean;
 }
 
-export interface SortableItemHandleProps
-  extends React.ComponentProps<"button"> {
-  /** Render as a different element */
-  render?: RenderProp;
-}
+export type SortableItemHandleProps = React.ComponentProps<"button">;
 
 export interface SortableOverlayProps
   extends Omit<React.ComponentProps<typeof DragOverlay>, "children"> {

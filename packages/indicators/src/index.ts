@@ -11,3 +11,7 @@ export * from "./status/status";
 export * from "./status/status.types";
 
 export * from "./kbd/kbd";
+
+export * from "./timeline/timeline";
+export * from "./timeline/timeline.types";
+export * from "./timeline/subcomponents";

@@ -35,19 +35,21 @@ function VerticalDemo() {
       getItemValue={(item) => item.id}
       orientation="vertical"
     >
-      <SortableContent render={<Stack gap={2} ax="stretch" />}>
-        {items.map((item) => (
-          <SortableItem key={item.id} value={item.id}>
-            <Card
-              title={item.title}
-              fullwidth
-              IconProps={{
-                icon: GripVertical,
-                render: <SortableItemHandle />,
-              }}
-            />
-          </SortableItem>
-        ))}
+      <SortableContent>
+        <Stack gap={2} ax="stretch">
+          {items.map((item) => (
+            <SortableItem key={item.id} value={item.id}>
+              <Card
+                title={item.title}
+                fullwidth
+                IconProps={{
+                  icon: GripVertical,
+                  render: <SortableItemHandle />,
+                }}
+              />
+            </SortableItem>
+          ))}
+        </Stack>
       </SortableContent>
       <SortableOverlay>
         {({ value }) => {

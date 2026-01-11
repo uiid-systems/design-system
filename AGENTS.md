@@ -357,11 +357,129 @@ export const Default: Story = {
 
 ## Styling
 
-### CSS Modules
+### Prefer Component Props Over CSS
 
-- Use CSS Modules (`.module.css`) for component styles
-- Reference design tokens via CSS custom properties
-- Use `data-*` attributes for state-based styling
+**Always use layout and typography components with style props instead of writing CSS or using Tailwind classes.** This ensures consistency and leverages our design token system.
+
+#### Layout Components (`@uiid/layout`)
+
+Use `Stack`, `Group`, and `Box` for layout instead of CSS flexbox:
+
+| Component | Purpose |
+|-----------|---------|
+| `Stack` | Vertical flex layout (column) |
+| `Group` | Horizontal flex layout (row) |
+| `Box` | Generic flex container |
+
+**Spacing Props** (available on all layout components):
+
+| Prop | CSS Property | Example |
+|------|-------------|---------|
+| `gap` | gap | `<Stack gap={2}>` |
+| `p` | padding | `<Box p={4}>` |
+| `px` | padding-inline | `<Box px={2}>` |
+| `py` | padding-block | `<Box py={3}>` |
+| `pt`, `pb`, `pl`, `pr` | padding-block-start, etc. | `<Group pb={4}>` |
+| `m` | margin | `<Stack m={2}>` |
+| `mx`, `my`, `mt`, `mb`, `ml`, `mr` | margin variants | `<Text mb={4}>` |
+
+**Layout Props** (available on layout components):
+
+| Prop | CSS Property | Values |
+|------|-------------|--------|
+| `ax` | justify-content | `start`, `center`, `end`, `space-between`, `stretch` |
+| `ay` | align-items | `start`, `center`, `end`, `baseline`, `stretch` |
+| `direction` | flex-direction | `row`, `column` |
+
+**Toggle Props**:
+
+| Prop | Effect |
+|------|--------|
+| `fullwidth` | width: 100% |
+| `fullheight` | height: 100% |
+| `evenly` | flex: 1 on children |
+
+#### Typography Component (`@uiid/typography`)
+
+Use `Text` for all text content instead of raw HTML elements:
+
+```tsx
+// Instead of CSS for text styling:
+<span className={styles["label"]}>Label</span>
+
+// Use Text with props:
+<Text size={0} shade="accent" weight="bold">Label</Text>
+```
+
+**Text Props**:
+
+| Prop | Values | Purpose |
+|------|--------|---------|
+| `size` | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 | Font size scale |
+| `weight` | `thin`, `light`, `normal`, `bold` | Font weight |
+| `shade` | `background`, `surface`, `muted`, `halftone`, `accent`, `foreground` | Text color |
+| `tone` | `positive`, `negative`, `warning`, `info` | Semantic color |
+| `align` | `left`, `center`, `right`, `justify` | Text alignment |
+| `underline` | `true`, `false` | Text decoration |
+| `strikethrough` | `true` | Strikethrough text |
+| `balance` | `true` | CSS text-wrap: balance |
+
+Text also supports all spacing props (`m`, `mb`, `p`, etc.).
+
+#### Examples
+
+**Before (CSS/Tailwind approach):**
+```tsx
+// Don't do this
+<div className="flex flex-col gap-4 p-2">
+  <span className="text-sm text-gray-500 font-bold mb-2">Title</span>
+  <div className="flex gap-2 items-center">...</div>
+</div>
+```
+
+**After (Component props approach):**
+```tsx
+// Do this instead
+<Stack gap={4} p={2}>
+  <Text size={0} shade="accent" weight="bold" mb={2}>Title</Text>
+  <Group gap={2} ay="center">...</Group>
+</Stack>
+```
+
+**Timeline item example:**
+```tsx
+// Layout controlled by component props, not CSS
+<Group gap={3} pb={4}>
+  <TimelineDot />
+  <TimelineConnector />
+  <TimelineContent>
+    <Text size={1} weight="bold">Event Title</Text>
+    <Text size={0} shade="accent">2 hours ago</Text>
+  </TimelineContent>
+</Group>
+```
+
+#### When to Use CSS Modules
+
+Only use CSS Modules for:
+- **Visual styling** that can't be expressed as props (colors, borders, shadows, animations)
+- **State-based styling** using `data-*` attributes
+- **Pseudo-elements** (::before, ::after)
+- **Complex positioning** (absolute, transforms)
+
+```css
+/* Good use of CSS - visual styling */
+.timeline-dot {
+  border-radius: 9999px;
+  border: 2px solid var(--shade-foreground);
+  background-color: var(--shade-background);
+}
+
+/* Good use of CSS - state styling */
+.timeline-dot[data-status="pending"] {
+  border-color: var(--globals-border-color);
+}
+```
 
 ### CSS Variable Naming
 
@@ -427,6 +545,191 @@ Use workspace protocol for internal packages:
 
 1. Create `{component}.test.tsx` file alongside the component
 2. Run `pnpm test:run` from root to verify
+
+### Converting External Components
+
+When adapting components from external sources (shadcn, Radix patterns, etc.) to UIID conventions, follow this process:
+
+#### 1. File Structure Setup
+
+Create the standard file structure for the component:
+
+```
+{component}/
+├── {component}.tsx           # Main component
+├── {component}.types.ts      # All TypeScript types/interfaces
+├── {component}.constants.ts  # Component name constants
+├── {component}.context.ts    # React contexts and context hooks
+├── {component}.hooks.ts      # Custom hooks
+├── {component}.utils.ts      # Utility functions
+├── {component}.variants.ts   # CVA variant definitions
+├── {component}.module.css    # CSS styles
+├── {component}.stories.tsx   # Storybook stories
+└── subcomponents/            # If compound component
+    ├── index.ts
+    └── {subcomponent}.tsx
+```
+
+#### 2. Use Regular Components (Not Render Props)
+
+Most components should use standard React elements, not the `renderWithProps` pattern:
+
+**Before (Radix pattern):**
+```tsx
+import { Slot } from "@radix-ui/react-slot";
+
+interface Props extends React.ComponentProps<"div"> {
+  asChild?: boolean;
+}
+
+function Component({ asChild, ...props }: Props) {
+  const Comp = asChild ? Slot : "div";
+  return <Comp {...props} />;
+}
+```
+
+**After (UIID pattern):**
+```tsx
+import { cx } from "@uiid/utils";
+
+interface Props extends React.ComponentProps<"div"> {}
+
+function Component({ className, children, ...props }: Props) {
+  return (
+    <div
+      data-slot="component"
+      className={cx(styles["component"], className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+**When to use `renderWithProps`:**
+
+Only use `renderWithProps` for **low-level primitives** where polymorphism is essential:
+- `Box` - needs to render as any element
+- `Text` - needs to render as p, span, h1-h6, etc.
+- Layout primitives that wrap other components
+
+For compound components like Timeline, Sortable, or domain-specific components, use regular elements.
+
+#### 3. Convert Tailwind/CVA to CSS Modules
+
+**Step 1:** Extract Tailwind classes from inline CVA definitions
+
+**Step 2:** Create `{component}.module.css` with equivalent CSS:
+
+```css
+/* Use design tokens instead of arbitrary values */
+.component {
+  display: flex;
+  gap: 0.75rem;  /* or var(--spacing-3) if token exists */
+}
+
+/* Use data attributes for state */
+.component[data-disabled] {
+  opacity: var(--globals-disabled-opacity);
+}
+
+/* Use nested selectors for variants */
+.component.orientation-vertical {
+  flex-direction: column;
+}
+```
+
+**Step 3:** Create `{component}.variants.ts` using CSS module classes:
+
+```ts
+import { cva } from "@uiid/utils";
+import styles from "./component.module.css";
+
+export const componentVariants = cva({
+  base: styles["component"],
+  variants: {
+    orientation: {
+      vertical: styles["orientation-vertical"],
+      horizontal: styles["orientation-horizontal"],
+    },
+    size: {
+      small: styles["size-small"],
+      medium: styles["size-medium"],
+    },
+  },
+  defaultVariants: {
+    orientation: "vertical",
+    size: "medium",
+  },
+});
+```
+
+#### 4. Separate Concerns
+
+| Content | File |
+|---------|------|
+| Component name constants (`ROOT_NAME`, `ITEM_NAME`) | `{component}.constants.ts` |
+| All TypeScript types and interfaces | `{component}.types.ts` |
+| React contexts and `use{X}Context` hooks | `{component}.context.ts` |
+| Custom hooks (`useStore`, `useLazyRef`, etc.) | `{component}.hooks.ts` |
+| Pure utility functions | `{component}.utils.ts` |
+| CVA variant definitions | `{component}.variants.ts` |
+
+#### 5. Handle Name Conflicts
+
+When exporting types, ensure names don't conflict with existing exports in the package:
+
+```ts
+// Instead of generic names that may conflict:
+export type Status = "active" | "pending";
+
+// Use component-prefixed names:
+export type TimelineStatus = "active" | "pending";
+```
+
+#### 6. Remove Unnecessary Dependencies
+
+Check if external dependencies can be replaced:
+
+| External | UIID Alternative |
+|----------|------------------|
+| `@radix-ui/react-slot` | `renderWithProps` from `@uiid/utils` |
+| `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider` |
+| `class-variance-authority` | `cva` from `@uiid/utils` (pre-configured) |
+| `clsx` / `tailwind-merge` | `cx` from `@uiid/utils` |
+
+**Direction handling example:**
+
+```tsx
+import { useDirection } from "@base-ui/react/direction-provider";
+
+function Component({ dir: dirProp, ...props }) {
+  const direction = useDirection();
+  const dir = dirProp ?? direction ?? "ltr";
+  // ...
+}
+```
+
+#### 7. Update Package Exports
+
+Add to `src/index.ts`:
+
+```ts
+export * from "./{component}/{component}";
+export * from "./{component}/{component}.types";
+export * from "./{component}/subcomponents";  // if applicable
+```
+
+#### 8. Verification Checklist
+
+- [ ] `pnpm tsc --noEmit` passes
+- [ ] `pnpm build --filter=@uiid/{package}` succeeds
+- [ ] No name conflicts with existing exports
+- [ ] All subcomponents use `renderWithProps` pattern
+- [ ] CSS uses design tokens where available
+- [ ] Stories demonstrate all variants
+- [ ] `data-slot` attributes on all elements
 
 ## Quick Reference
 

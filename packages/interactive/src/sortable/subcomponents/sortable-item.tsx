@@ -3,34 +3,27 @@
 import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cx, useComposedRefs, renderWithProps } from "@uiid/utils";
+import { cx, useComposedRefs } from "@uiid/utils";
 
 import {
-  useSortableContext,
   SortableContentContext,
   SortableItemContext,
   SortableOverlayContext,
 } from "../sortable.context";
 import { CONTENT_NAME, ITEM_NAME, OVERLAY_NAME } from "../sortable.constants";
-import type {
-  SortableItemProps,
-  SortableItemContextValue,
-} from "../sortable.types";
+import type { SortableItemProps, SortableItemContextValue } from "../sortable.types";
 import styles from "../sortable.module.css";
 
-export const SortableItem = (props: SortableItemProps) => {
-  const {
-    value,
-    style,
-    asHandle,
-    render,
-    disabled,
-    className,
-    ref,
-    children,
-    ...itemProps
-  } = props;
-
+export const SortableItem = ({
+  value,
+  style,
+  asHandle,
+  disabled,
+  className,
+  ref,
+  children,
+  ...props
+}: SortableItemProps) => {
   const inSortableContent = React.useContext(SortableContentContext);
   const inSortableOverlay = React.useContext(SortableOverlayContext);
 
@@ -44,7 +37,6 @@ export const SortableItem = (props: SortableItemProps) => {
     throw new Error(`\`${ITEM_NAME}\` value cannot be an empty string`);
   }
 
-  const context = useSortableContext(ITEM_NAME);
   const id = React.useId();
   const {
     attributes,
@@ -82,36 +74,22 @@ export const SortableItem = (props: SortableItemProps) => {
     [id, attributes, listeners, setActivatorNodeRef, isDragging, disabled],
   );
 
-  const computedClassName = cx(
-    {
-      // "touch-none select-none": asHandle,
-      // "cursor-default": context.flatCursor,
-      "data-dragging:cursor-grabbing": !context.flatCursor,
-      "cursor-grab": !isDragging && asHandle && !context.flatCursor,
-      "opacity-50": isDragging,
-    },
-    className,
-  );
-
   return (
     <SortableItemContext.Provider value={itemContext}>
-      {renderWithProps({
-        render,
-        children,
-        fallbackElement: "div",
-        props: {
-          id,
-          "data-slot": "sortable-item",
-          "data-disabled": disabled ? "" : undefined,
-          "data-dragging": isDragging ? "" : undefined,
-          ...itemProps,
-          ...(asHandle && !disabled ? attributes : {}),
-          ...(asHandle && !disabled ? listeners : {}),
-          ref: composedRef,
-          style: composedStyle,
-          className: cx(styles["sortable-item"], computedClassName),
-        },
-      })}
+      <div
+        id={id}
+        data-slot="sortable-item"
+        data-disabled={disabled ? "" : undefined}
+        data-dragging={isDragging ? "" : undefined}
+        ref={composedRef}
+        style={composedStyle}
+        className={cx(styles["sortable-item"], className)}
+        {...(asHandle && !disabled ? attributes : {})}
+        {...(asHandle && !disabled ? listeners : {})}
+        {...props}
+      >
+        {children}
+      </div>
     </SortableItemContext.Provider>
   );
 };
