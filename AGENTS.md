@@ -399,6 +399,81 @@ Use `Stack`, `Group`, and `Box` for layout instead of CSS flexbox:
 | `fullheight` | height: 100% |
 | `evenly` | flex: 1 on children |
 
+#### Conditional Rendering Utilities (`@uiid/layout`)
+
+Use `ConditionalRender` and `SwitchRender` to conditionally wrap content without duplicating props or creating messy ternaries.
+
+**ConditionalRender** - Wrap content in a component only when condition is true:
+
+```tsx
+// Instead of:
+{showWrapper ? <Card>{children}</Card> : children}
+
+// Use:
+<ConditionalRender condition={showWrapper} render={<Card />}>
+  {children}
+</ConditionalRender>
+```
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `condition` | `boolean` | Whether to wrap content |
+| `render` | `ReactElement` | Wrapper element (used when condition is true) |
+| `children` | `ReactNode` | Content to render |
+
+**SwitchRender** - Switch between two wrapper components based on condition:
+
+```tsx
+// Instead of duplicating shared props:
+{isVertical ? (
+  <Stack gap={2} p={4} data-slot="container" className={styles.container}>
+    {children}
+  </Stack>
+) : (
+  <Group gap={2} p={4} data-slot="container" className={styles.container}>
+    {children}
+  </Group>
+)}
+
+// Use SwitchRender with shared props:
+<SwitchRender
+  condition={isVertical}
+  render={{ true: <Stack />, false: <Group /> }}
+  gap={2}
+  p={4}
+  data-slot="container"
+  className={styles.container}
+>
+  {children}
+</SwitchRender>
+```
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `condition` | `boolean` | Which wrapper to use |
+| `render` | `{ true: ReactElement, false: ReactElement }` | Wrapper options |
+| `children` | `ReactNode` | Content to render |
+| `...props` | `HTMLAttributes` | **Shared props passed to selected wrapper** |
+
+**Key benefit**: Any additional props on `SwitchRender` are automatically passed to whichever wrapper is selected. This eliminates prop duplication and keeps code DRY.
+
+**Real-world example** (Timeline component):
+
+```tsx
+// Timeline switches between Stack (vertical) and Group (horizontal)
+<SwitchRender
+  condition={orientation === "vertical"}
+  render={{ true: <Stack gap={2} />, false: <Group gap={2} /> }}
+  role="list"
+  aria-orientation={orientation}
+  data-slot="timeline"
+  className={cx(styles["timeline"], className)}
+  {...props}
+>
+  {children}
+</SwitchRender>
+```
+
 #### Typography Component (`@uiid/typography`)
 
 Use `Text` for all text content instead of raw HTML elements:

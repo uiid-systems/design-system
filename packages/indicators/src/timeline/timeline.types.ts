@@ -37,7 +37,7 @@ export interface TimelineItemContextValue {
   status: TimelineStatus;
 }
 
-export type TimelineItem = {
+export type TimelineItemType = {
   title: string;
   description?: string;
   time?: string;
@@ -57,7 +57,7 @@ export type TimelineTimeProps = TextProps & React.ComponentProps<"time">;
 
 export type TimelineProps = React.ComponentProps<"div"> &
   Partial<TimelineContextValue> & {
-    items?: TimelineItem[];
+    items?: TimelineItemType[];
     ItemProps?: TimelineItemProps;
     DotProps?: TimelineDotProps;
     ConnectorProps?: TimelineConnectorProps;

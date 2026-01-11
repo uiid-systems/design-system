@@ -49,21 +49,22 @@ const orientationConfig = {
   },
 };
 
-export function Sortable<T>(props: SortableRootProps<T>) {
-  const {
-    value,
-    onValueChange,
-    collisionDetection,
-    modifiers,
-    strategy,
-    onMove,
-    orientation = "vertical",
-    flatCursor = false,
-    getItemValue: getItemValueProp,
-    accessibility,
-    ...sortableProps
-  } = props;
-
+export function Sortable<T>({
+  value,
+  onValueChange,
+  onDragStart,
+  onDragEnd,
+  onDragCancel,
+  collisionDetection,
+  modifiers,
+  strategy,
+  onMove,
+  orientation = "vertical",
+  flatCursor = false,
+  getItemValue: getItemValueProp,
+  accessibility,
+  ...props
+}: SortableRootProps<T>) {
   const id = React.useId();
   const sensors = useSortableSensors();
 
@@ -101,9 +102,9 @@ export function Sortable<T>(props: SortableRootProps<T>) {
     onValueChange,
     onMove,
     getItemValue,
-    onDragStart: sortableProps.onDragStart,
-    onDragEnd: sortableProps.onDragEnd,
-    onDragCancel: sortableProps.onDragCancel,
+    onDragStart,
+    onDragEnd,
+    onDragCancel,
   });
 
   const { announcements, screenReaderInstructions } = useSortableAnnouncements({
@@ -143,7 +144,7 @@ export function Sortable<T>(props: SortableRootProps<T>) {
         collisionDetection={collisionDetection ?? config.collisionDetection}
         modifiers={modifiers ?? config.modifiers}
         sensors={sensors}
-        {...sortableProps}
+        {...props}
         id={id}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}

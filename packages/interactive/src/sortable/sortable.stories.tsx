@@ -54,7 +54,9 @@ function VerticalDemo() {
       <SortableOverlay>
         {({ value }) => {
           const item = items.find((i) => i.id === value);
-          return item ? <Card title={item.title} icon={GripVertical} /> : null;
+          return item ? (
+            <Card title={item.title} icon={GripVertical} fullwidth />
+          ) : null;
         }}
       </SortableOverlay>
     </Sortable>
