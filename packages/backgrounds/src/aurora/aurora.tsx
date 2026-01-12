@@ -42,7 +42,7 @@ export const BackgroundAurora = ({
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = "transparent";
 
-    // eslint-disable-next-line @typescript-eslint/prefer-const
+    // eslint-disable-next-line
     let program: Program | undefined;
 
     function resize() {

@@ -32,7 +32,7 @@ export const BackgroundIridescence = ({
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
 
-    // eslint-disable-next-line @typescript-eslint/prefer-const
+    // eslint-disable-next-line
     let program: Program;
 
     function resize() {
