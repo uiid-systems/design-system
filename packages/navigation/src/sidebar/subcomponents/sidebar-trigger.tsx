@@ -26,8 +26,8 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
           <Kbd>⌘B</Kbd>
         </Group>
       }
-      variant="subtle"
       size="small"
+      ghost
       square
       {...props}
     >

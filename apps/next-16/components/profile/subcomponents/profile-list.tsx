@@ -1,15 +1,15 @@
 import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-export type ProfileListProps = {
-  items: ProfileListItemProps[];
-};
-export const ProfileList = ({ items }: ProfileListProps) => {
+export type ProfileListProps = React.PropsWithChildren<{
+  items?: ProfileListItemProps[];
+}>;
+export const ProfileList = ({ items, children }: ProfileListProps) => {
   return (
     <Stack render={<ul />} gap={4} fullwidth ax="stretch">
-      {items.map((item) => (
-        <ProfileListItem key={item.label} {...item} />
-      ))}
+      {items
+        ? items.map((item) => <ProfileListItem key={item.label} {...item} />)
+        : children}
     </Stack>
   );
 };
