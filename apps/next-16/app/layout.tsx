@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarAppContainer } from "@uiid/navigation";
 import { ToastProvider, Toaster } from "@uiid/overlays";
 
 import { AppSidebar, AppHeader } from "../components/navigation";
-import { PageContainer, AppAlert } from "../components/global";
+import { PageContainer } from "../components/global";
 
 import "./globals.css";
 

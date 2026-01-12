@@ -42,6 +42,7 @@ const preview: Preview = {
           "Calendars",
           "Tables",
           "Navigation",
+          "Backgrounds",
         ],
         locales: "en-US",
       },
