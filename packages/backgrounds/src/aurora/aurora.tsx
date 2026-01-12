@@ -113,7 +113,11 @@ export const BackgroundAurora = ({
   }, [colorStops, amplitude, blend, speed]);
 
   return (
-    <div ref={ctnDom} style={{ width: "100%", height: "100%" }} {...props} />
+    <div
+      ref={ctnDom}
+      style={{ width: "100%", height: "100%", backgroundColor: "#000" }}
+      {...props}
+    />
   );
 };
 

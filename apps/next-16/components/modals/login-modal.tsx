@@ -10,7 +10,7 @@ import { Stack, Group, Layer } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
-export const Login = () => {
+export const LoginModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -30,7 +30,7 @@ export const Login = () => {
     </Modal>
   );
 };
-Login.displayName = "Login";
+LoginModal.displayName = "LoginModal";
 
 const LoginAction = ({
   onOpenChange,

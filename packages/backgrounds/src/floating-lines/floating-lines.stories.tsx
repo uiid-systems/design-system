@@ -30,6 +30,7 @@ import { BackgroundFloatingLines } from "./floating-lines";
 
 const meta: Meta<typeof BackgroundFloatingLines> = {
   title: "Backgrounds/Floating Lines",
+  tags: ["new"],
   args: {
     enabledWaves: DEFAULT_ENABLED_WAVES,
     lineCount: DEFAULT_LINE_COUNT,

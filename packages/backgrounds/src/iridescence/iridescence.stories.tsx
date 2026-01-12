@@ -14,6 +14,7 @@ import { BackgroundIridescence } from "./iridescence";
 
 const meta: Meta<typeof BackgroundIridescence> = {
   title: "Backgrounds/Iridescence",
+  tags: ["new"],
   args: {},
   argTypes: {
     color: { control: "color" },

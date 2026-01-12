@@ -4,16 +4,18 @@ import { SwordsIcon, StarIcon, HeartIcon } from "@uiid/icons";
 
 export const ProfileInfoActions = () => {
   return (
-    <Stack gap={2} fullwidth>
-      <Button size="small" fullwidth>
+    <Stack gap={2} fullwidth ax="stretch">
+      <Button>
         <SwordsIcon />
         Challenge
       </Button>
-      <Button size="small" fullwidth>
+
+      <Button>
         <StarIcon className="fill-yellow-400" />
         Follow
       </Button>
-      <Button size="small" fullwidth>
+
+      <Button>
         <HeartIcon className="fill-red-400" />
         Favorite
       </Button>

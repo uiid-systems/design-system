@@ -17,7 +17,7 @@ export type ModalTriggerProps = BaseDialog.Trigger.Props;
 export type ModalPortalProps = BaseDialog.Portal.Props;
 export type ModalBackdropProps = BaseDialog.Backdrop.Props;
 export type ModalPopupProps = VariantProps<typeof modalVariants> &
-  BaseDialog.Popup.Props &
+  Omit<BaseDialog.Popup.Props, "title"> &
   ModalCardProps;
 
 export type ModalProps = React.PropsWithChildren<{

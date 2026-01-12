@@ -14,6 +14,7 @@ import { BackgroundLiquidChrome } from "./liquid-chrome";
 
 const meta: Meta<typeof BackgroundLiquidChrome> = {
   title: "backgrounds/Liquid Chrome",
+  tags: ["new"],
   args: {},
   argTypes: {},
   parameters: {

@@ -1,5 +1,6 @@
 import { cva } from "@uiid/utils";
 
+import { BUTTON_DEFAULT_SIZE } from "./button.constants";
 import styles from "./button.module.css";
 
 export const buttonVariants = cva({
@@ -27,7 +28,7 @@ export const buttonVariants = cva({
     },
   },
   defaultVariants: {
-    size: "medium",
+    size: BUTTON_DEFAULT_SIZE,
     grows: true,
   },
 });

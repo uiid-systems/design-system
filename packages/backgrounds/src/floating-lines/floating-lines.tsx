@@ -10,7 +10,7 @@ import {
   ShaderMaterial,
   Vector3,
   Vector2,
-  Clock
+  Clock,
 } from "three";
 
 import { hexToVec3 } from "../backgrounds.utils";
@@ -31,7 +31,7 @@ import {
   MAX_GRADIENT_STOPS,
 } from "./floating-lines.constants";
 import { vertexShader, fragmentShader } from "./floating-lines.shaders";
-import type { BackgroundFloatingLinesProps } from "./floating-lines.types"
+import type { BackgroundFloatingLinesProps } from "./floating-lines.types";
 import { getWaveConfig } from "./floating-lines.utils";
 
 export const BackgroundFloatingLines = ({
@@ -100,21 +100,25 @@ export const BackgroundFloatingLines = ({
       bottomLineDistance: { value: bottomLineDistance },
 
       topWavePosition: {
-        value: new Vector3(topWavePosition?.x ?? 10.0, topWavePosition?.y ?? 0.5, topWavePosition?.rotate ?? -0.4)
+        value: new Vector3(
+          topWavePosition?.x ?? 10.0,
+          topWavePosition?.y ?? 0.5,
+          topWavePosition?.rotate ?? -0.4,
+        ),
       },
       middleWavePosition: {
         value: new Vector3(
           middleWavePosition?.x ?? 5.0,
           middleWavePosition?.y ?? 0.0,
-          middleWavePosition?.rotate ?? 0.2
-        )
+          middleWavePosition?.rotate ?? 0.2,
+        ),
       },
       bottomWavePosition: {
         value: new Vector3(
           bottomWavePosition?.x ?? 2.0,
           bottomWavePosition?.y ?? -0.7,
-          bottomWavePosition?.rotate ?? 0.4
-        )
+          bottomWavePosition?.rotate ?? 0.4,
+        ),
       },
 
       iMouse: { value: new Vector2(-1000, -1000) },
@@ -128,9 +132,12 @@ export const BackgroundFloatingLines = ({
       parallaxOffset: { value: new Vector2(0, 0) },
 
       lineGradient: {
-        value: Array.from({ length: MAX_GRADIENT_STOPS }, () => new Vector3(1, 1, 1))
+        value: Array.from(
+          { length: MAX_GRADIENT_STOPS },
+          () => new Vector3(1, 1, 1),
+        ),
       },
-      lineGradientCount: { value: 0 }
+      lineGradientCount: { value: 0 },
     };
 
     if (linesGradient && linesGradient.length > 0) {
@@ -146,7 +153,7 @@ export const BackgroundFloatingLines = ({
     const material = new ShaderMaterial({
       uniforms,
       vertexShader,
-      fragmentShader
+      fragmentShader,
     });
 
     const geometry = new PlaneGeometry(2, 2);
@@ -169,7 +176,10 @@ export const BackgroundFloatingLines = ({
 
     setSize();
 
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(setSize) : null;
+    const ro =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(setSize)
+        : null;
 
     if (ro && containerRef.current) {
       ro.observe(containerRef.current);
@@ -189,7 +199,10 @@ export const BackgroundFloatingLines = ({
         const centerY = rect.height / 2;
         const offsetX = (x - centerX) / rect.width;
         const offsetY = -(y - centerY) / rect.height;
-        targetParallaxRef.current.set(offsetX * parallaxStrength, offsetY * parallaxStrength);
+        targetParallaxRef.current.set(
+          offsetX * parallaxStrength,
+          offsetY * parallaxStrength,
+        );
       }
     };
 
@@ -210,12 +223,17 @@ export const BackgroundFloatingLines = ({
         currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
         uniforms.iMouse.value.copy(currentMouseRef.current);
 
-        currentInfluenceRef.current += (targetInfluenceRef.current - currentInfluenceRef.current) * mouseDamping;
+        currentInfluenceRef.current +=
+          (targetInfluenceRef.current - currentInfluenceRef.current) *
+          mouseDamping;
         uniforms.bendInfluence.value = currentInfluenceRef.current;
       }
 
       if (parallax) {
-        currentParallaxRef.current.lerp(targetParallaxRef.current, mouseDamping);
+        currentParallaxRef.current.lerp(
+          targetParallaxRef.current,
+          mouseDamping,
+        );
         uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
       }
 
@@ -231,8 +249,14 @@ export const BackgroundFloatingLines = ({
       }
 
       if (interactive) {
-        renderer.domElement.removeEventListener("pointermove", handlePointerMove);
-        renderer.domElement.removeEventListener("pointerleave", handlePointerLeave);
+        renderer.domElement.removeEventListener(
+          "pointermove",
+          handlePointerMove,
+        );
+        renderer.domElement.removeEventListener(
+          "pointerleave",
+          handlePointerLeave,
+        );
       }
 
       geometry.dispose();
@@ -256,7 +280,7 @@ export const BackgroundFloatingLines = ({
     bendStrength,
     mouseDamping,
     parallax,
-    parallaxStrength
+    parallaxStrength,
   ]);
 
   return (
@@ -268,8 +292,9 @@ export const BackgroundFloatingLines = ({
         height: "100%",
         position: "relative",
         overflow: "hidden",
-        mixBlendMode: mixBlendMode
+        backgroundColor: "#000",
+        mixBlendMode: mixBlendMode,
       }}
     />
   );
-}
+};

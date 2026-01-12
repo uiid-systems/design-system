@@ -22,6 +22,7 @@ const meta: Meta<typeof BackgroundAurora> = {
     blend: { control: { type: "range", min: 0, max: 1, step: 0.05 } },
     speed: { control: { type: "range", min: 0.1, max: 5, step: 0.1 } },
   },
+  tags: ["new"],
   parameters: {
     layout: "fullscreen",
   },

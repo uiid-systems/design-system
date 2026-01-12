@@ -10,6 +10,20 @@ import {
 export const Field = ({
   name,
   label,
+  my,
+  mx,
+  mt,
+  mb,
+  ml,
+  mr,
+  p,
+  py,
+  px,
+  pt,
+  pb,
+  pl,
+  pr,
+  gap,
   description,
   required,
   fullwidth,
@@ -21,7 +35,26 @@ export const Field = ({
   ...props
 }: FieldProps) => {
   return (
-    <FieldRoot name={name} fullwidth={fullwidth} {...RootProps} {...props}>
+    <FieldRoot
+      name={name}
+      fullwidth={fullwidth}
+      my={my}
+      mx={mx}
+      mt={mt}
+      mb={mb}
+      ml={ml}
+      mr={mr}
+      p={p}
+      py={py}
+      px={px}
+      pt={pt}
+      pb={pb}
+      pl={pl}
+      pr={pr}
+      gap={gap}
+      {...RootProps}
+      {...props}
+    >
       {label && (
         <FieldLabel required={required} {...LabelProps}>
           {label}

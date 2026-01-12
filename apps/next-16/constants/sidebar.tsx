@@ -4,11 +4,11 @@ import { Home, Users, Swords } from "@uiid/icons";
 import type { ListProps } from "@uiid/lists";
 
 import {
+  DASHBOARD_PATH,
   PLAYERS_PATH,
   EVENT_CALENDAR_PATH,
   DISCORD_INVITE_URL,
   FIND_MATCH_PATH,
-  ROOT_PATH,
   LEADERBOARD_PATH,
 } from "@/constants/urls";
 
@@ -17,7 +17,7 @@ export const SIDEBAR_LINKS: ListProps["items"] = [
     label: "Dashboard",
     value: "dashboard",
     icon: Home,
-    render: <Link href={ROOT_PATH} />,
+    render: <Link href={DASHBOARD_PATH} />,
   },
   {
     category: "Community",

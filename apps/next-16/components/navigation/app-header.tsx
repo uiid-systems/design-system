@@ -8,7 +8,7 @@ import { Breadcrumbs } from "@uiid/navigation";
 import { cx } from "@uiid/utils";
 
 import { SwitchAppearance } from "../buttons";
-import { Login } from "../authentication";
+import { LoginModal } from "../modals";
 
 export const AppHeader = () => {
   return (
@@ -34,7 +34,7 @@ export const AppHeader = () => {
       />
       <Group gap={2} ay="center">
         <Button size="small">Sign up</Button>
-        <Login />
+        <LoginModal />
         <div
           role="separator"
           aria-hidden="true"

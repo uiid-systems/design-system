@@ -276,6 +276,7 @@ export const BackgroundGradientBlinds = ({
       style={{
         width: "100%",
         height: "100%",
+        backgroundColor: "#000",
         position: "relative",
         overflow: "hidden",
         ...(mixBlendMode && { mixBlendMode }),

@@ -9,7 +9,11 @@ export const TooltipPositioner = ({
   ...props
 }: TooltipPositionerProps) => {
   return (
-    <BaseTooltip.Positioner data-slot="tooltip-positioner" {...props}>
+    <BaseTooltip.Positioner
+      data-slot="tooltip-positioner"
+      style={{ zIndex: 1000 }}
+      {...props}
+    >
       {children}
     </BaseTooltip.Positioner>
   );

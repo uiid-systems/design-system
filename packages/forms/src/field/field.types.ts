@@ -1,9 +1,12 @@
 import type { Field } from "@base-ui/react/field";
 
-import type { StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
+import type { SpacingProps } from "@uiid/utils";
 
-export type FieldRootProps = Field.Root.Props & Pick<StackProps, "fullwidth">;
+export type FieldRootProps = Field.Root.Props &
+  SpacingProps & {
+    fullwidth?: boolean;
+  };
 
 export type FieldLabelProps = Field.Label.Props &
   TextProps & {
@@ -23,4 +26,5 @@ export type FieldProps = React.PropsWithChildren &
     ErrorProps?: Field.Error.Props;
     DescriptionProps?: FieldDescriptionProps;
   } & Pick<FieldLabelProps, "required"> &
-  Pick<FieldRootProps, "fullwidth">;
+  Pick<FieldRootProps, "fullwidth"> &
+  SpacingProps;

@@ -16,6 +16,7 @@ import { BackgroundGradientBlinds } from "./gradient-blinds";
 const meta: Meta<typeof BackgroundGradientBlinds> = {
   title: "Backgrounds/Gradient Blinds",
   component: BackgroundGradientBlinds,
+  tags: ["new"],
   args: {},
   argTypes: {
     gradientColors: { control: "object" },
