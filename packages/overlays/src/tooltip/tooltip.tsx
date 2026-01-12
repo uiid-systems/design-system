@@ -12,6 +12,9 @@ import {
 
 export const Tooltip = ({
   trigger,
+  delay,
+  open,
+  onOpenChange,
   ProviderProps,
   RootProps,
   TriggerProps,
@@ -24,8 +27,8 @@ export const Tooltip = ({
   children,
 }: TooltipProps) => {
   return (
-    <TooltipProvider {...ProviderProps}>
-      <TooltipRoot {...RootProps}>
+    <TooltipProvider delay={delay} {...ProviderProps}>
+      <TooltipRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
         <TooltipTrigger {...TriggerProps}>{trigger}</TooltipTrigger>
         <TooltipPortal {...PortalProps}>
           <TooltipPositioner {...PositionerProps}>

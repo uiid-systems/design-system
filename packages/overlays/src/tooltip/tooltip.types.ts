@@ -15,4 +15,6 @@ export type TooltipProps = React.PropsWithChildren<{
   PortalProps?: TooltipPortalProps;
   PositionerProps?: TooltipPositionerProps;
   PopupProps?: TooltipPopupProps;
-}>;
+}> &
+  Pick<TooltipRootProps, "open" | "onOpenChange"> &
+  Pick<TooltipProviderProps, "delay">;

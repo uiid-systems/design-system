@@ -130,6 +130,10 @@
   text-wrap: balance;
 }
 
+.toggle-mono {
+  font-family: var(--font-mono);
+}
+
 .weight-bold {
   font-weight: 700;
 }

@@ -7,6 +7,7 @@ import type { cardVariants } from "./card.variants";
 
 export type CardVariantProps = VariantProps<typeof cardVariants>;
 
+export type CardContainerProps = StackProps & CardVariantProps;
 export type CardHeaderProps = GroupProps;
 export type CardTitleProps = TextProps;
 export type CardDescriptionProps = TextProps;
@@ -20,10 +21,11 @@ export type CardFooterProps = GroupProps;
 
 export type CardProps = Omit<StackProps, "size" | "title"> &
   CardVariantProps & {
-    title?: string;
+    title?: React.ReactNode;
     description?: React.ReactNode;
     action?: React.ReactNode;
     footer?: React.ReactNode;
+    ContainerProps?: CardContainerProps;
     HeaderProps?: CardHeaderProps;
     TitleProps?: CardTitleProps;
     DescriptionProps?: CardDescriptionProps;

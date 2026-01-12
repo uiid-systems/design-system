@@ -1,6 +1,6 @@
 import { Badge } from "@uiid/indicators";
 import { formatDate } from "@uiid/calendars";
-import { Swords, Star, Heart } from "@uiid/icons";
+import { SwordsIcon, StarIcon, HeartIcon, CircleUserIcon } from "@uiid/icons";
 import type { MenuProps } from "@uiid/interactive";
 import { Modal, Sheet } from "@uiid/overlays";
 import type { TableProps } from "@uiid/tables";
@@ -78,14 +78,14 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
     rank: <Badge tone="positive">1</Badge>,
     name: (
       <Sheet
-        trigger="John Doe"
         side="right"
+        icon={CircleUserIcon}
+        title="John Doe"
         TriggerProps={{
-          className: "cursor-pointer hover:underline",
+          children: "John Doe",
+          className: "font-bold cursor-pointer hover:underline",
         }}
-      >
-        <p>John Doe</p>
-      </Sheet>
+      />
     ),
     played: 12,
     won: 6,
@@ -116,7 +116,7 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
 
 export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
   {
-    icon: Swords,
+    icon: SwordsIcon,
     tooltip: "Challenge",
     wrapper: (button) => (
       <Modal trigger={button}>
@@ -125,12 +125,12 @@ export const TABLE_MOCK_ACTIONS: TableActions["primary"] = [
     ),
   },
   {
-    icon: Star,
+    icon: StarIcon,
     tooltip: "Favorite",
     onClick: () => console.log("Favorite"),
   },
   {
-    icon: Heart,
+    icon: HeartIcon,
     tooltip: "Friend",
     onClick: () => console.log("Friend"),
     wrapper: (button) => (

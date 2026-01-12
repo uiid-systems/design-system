@@ -6,6 +6,7 @@ export const textVariants = cva({
   variants: {
     strikethrough: { true: styles["toggle-strikethrough"] },
     balance: { true: styles["toggle-balance"] },
+    mono: { true: styles["toggle-mono"] },
     underline: {
       true: styles["toggle-underline"],
       false: styles["toggle-no-underline"],

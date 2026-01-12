@@ -15,6 +15,7 @@ export const ButtonTooltipWrapper = ({
       data-slot="button-tooltip-wrapper"
       trigger={children}
       TriggerProps={{ render: <div /> }}
+      delay={300}
     >
       {tooltip}
     </Tooltip>

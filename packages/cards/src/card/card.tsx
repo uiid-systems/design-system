@@ -1,11 +1,9 @@
-import { Stack, ConditionalRender } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { ConditionalRender } from "@uiid/layout";
 
 import type { CardProps } from "./card.types";
-import { cardVariants } from "./card.variants";
-import styles from "./card.module.css";
 
 import {
+  CardContainer,
   CardHeader,
   CardIcon,
   CardTitle,
@@ -21,47 +19,40 @@ export const Card = ({
   action,
   footer,
   tone,
-  trimmed,
-  transparent,
-  inverted,
+  ContainerProps,
   HeaderProps,
   TitleProps,
   DescriptionProps,
   IconProps,
   ActionProps,
   FooterProps,
-  className,
   children,
   ...props
 }: CardProps) => {
+  const Description = DescriptionProps?.children || description;
+  const Title = TitleProps?.children || title;
+  const Action = ActionProps?.children || action;
+  const Icon = IconProps?.icon || icon;
+
   return (
-    <Stack
-      data-slot="card"
-      gap={3}
-      className={cx(
-        styles["card"],
-        cardVariants({ tone, trimmed, transparent, inverted }),
-        className,
-      )}
-      {...props}
-    >
+    <CardContainer tone={tone} {...props} {...ContainerProps}>
       <ConditionalRender
         condition={Boolean(title || icon || action)}
         render={<CardHeader {...HeaderProps} />}
       >
-        {title && <CardIcon tone={tone} icon={icon} {...IconProps} />}
-        {title && <CardTitle {...TitleProps}>{title}</CardTitle>}
-        {action && <CardAction {...ActionProps}>{action}</CardAction>}
+        {Icon && <CardIcon tone={tone} icon={Icon} {...IconProps} />}
+        {Title && <CardTitle {...TitleProps}>{Title}</CardTitle>}
+        {Action && <CardAction {...ActionProps}>{Action}</CardAction>}
       </ConditionalRender>
 
-      {description && (
-        <CardDescription {...DescriptionProps}>{description}</CardDescription>
+      {Description && (
+        <CardDescription {...DescriptionProps}>{Description}</CardDescription>
       )}
 
       {children}
 
       {footer && <CardFooter {...FooterProps}>{footer}</CardFooter>}
-    </Stack>
+    </CardContainer>
   );
 };
 Card.displayName = "Card";

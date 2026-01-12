@@ -29,7 +29,9 @@ export const Sheet = ({
 }: SheetProps) => {
   return (
     <SheetRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
-      <SheetTrigger {...TriggerProps}>{trigger}</SheetTrigger>
+      <SheetTrigger {...TriggerProps}>
+        {trigger ?? TriggerProps?.children}
+      </SheetTrigger>
 
       <SheetPortal {...PortalProps}>
         <SheetBackdrop {...BackdropProps} />
@@ -42,7 +44,7 @@ export const Sheet = ({
           footer={footer}
           {...PopupProps}
         >
-          {children}
+          {children ?? PopupProps?.children}
         </SheetPopup>
       </SheetPortal>
     </SheetRoot>

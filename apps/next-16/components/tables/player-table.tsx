@@ -1,9 +1,7 @@
 "use client";
 
 import { Card } from "@uiid/cards";
-import { Stack } from "@uiid/layout";
 import { Table } from "@uiid/tables";
-import { Text } from "@uiid/typography";
 
 import {
   TABLE_MOCK_DATA,
@@ -22,6 +20,7 @@ export const PlayerTable = () => {
           primary: TABLE_MOCK_ACTIONS,
           secondary: TABLE_MOCK_MORE_ACTIONS,
         }}
+        striped
         bordered
       />
     </Card>

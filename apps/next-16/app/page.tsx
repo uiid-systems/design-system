@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@uiid/buttons";
 import { DateRangePicker } from "@uiid/calendars";
 import { Card } from "@uiid/cards";
-import { Select, type SelectProps } from "@uiid/forms";
+import { SelectMultiple, type SelectMultipleProps } from "@uiid/forms";
 import { ChevronRight } from "@uiid/icons";
 import { Alert } from "@uiid/indicators";
 import { Group, Stack } from "@uiid/layout";
@@ -14,7 +14,7 @@ import { Text } from "@uiid/typography";
 import { PlayerTable } from "@/components/tables";
 import { PLAYERS_PATH } from "@/constants/urls";
 
-const MATCH_TYPES: SelectProps["items"] = [
+const MATCH_TYPES: SelectMultipleProps["items"] = [
   { label: "Friendly", value: "friendly" },
   { label: "Competitive", value: "competitive" },
   { label: "Ranked", value: "ranked" },
@@ -47,8 +47,8 @@ export default function Home() {
         </Stack>
 
         <Card
-          title="Set availability"
-          description="Pick a date or range of dates you're available, choose the type of match you're looking for, and someone from the community will let you know if they want to play."
+          title="Ready to play a match?"
+          description="Pick a date or range of dates you're available, choose the type of match(es) you're looking to play, and someone from the community will respond."
           ax="center"
           style={{ maxWidth: "22rem" }}
         >
@@ -61,9 +61,10 @@ export default function Home() {
             className="border-t border-t-(--globals-border-color)"
           >
             <DateRangePicker showOutsideDays className="mx-auto" />
-            <Select
+            <SelectMultiple
               label="What type of match?"
               description="Choose all that apply."
+              placeholder="Select match type(s)"
               items={MATCH_TYPES}
             />
 

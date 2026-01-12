@@ -1,9 +1,5 @@
 @import "@uiid/tokens/avatar.tokens.css";
 
-.avatar {
-  display: inline-flex;
-}
-
 .avatar-layers {
   aspect-ratio: 1;
   text-align: center;

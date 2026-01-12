@@ -7,6 +7,7 @@ export const cardVariants = cva({
     inverted: { true: styles["toggle-inverted"] },
     trimmed: { true: styles["toggle-trimmed"] },
     transparent: { true: styles["toggle-transparent"] },
+    ghost: { true: styles["toggle-ghost"] },
     tone: {
       info: styles["tone-info"],
       warning: styles["tone-warning"],

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Avatar } from "@uiid/indicators";
 import { Group } from "@uiid/layout";
 import {
@@ -14,6 +16,7 @@ import {
 import { Text } from "@uiid/typography";
 
 import { SIDEBAR_LINKS } from "@/constants/sidebar";
+import { PROFILE_PATH } from "@/constants/urls";
 
 export const AppSidebar = () => {
   const { open } = useSidebar();
@@ -32,6 +35,7 @@ export const AppSidebar = () => {
 
       <SidebarFooter>
         <Avatar
+          render={<Link href={PROFILE_PATH} />}
           initials="AF"
           name="Adam Fratino"
           description="Software Engineer"
