@@ -21,6 +21,7 @@ export const Input = ({
   ghost,
   FieldProps,
   className,
+  ref,
   ...props
 }: InputProps) => {
   return (
@@ -38,6 +39,7 @@ export const Input = ({
     >
       <BaseInput
         data-slot="input"
+        ref={ref}
         name={name}
         className={cx(
           styles["input"],

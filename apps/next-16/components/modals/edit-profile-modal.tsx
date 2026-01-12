@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { Button } from "@uiid/buttons";
-import { Input } from "@uiid/forms";
+import { Input, Switch } from "@uiid/forms";
 import { XIcon } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 import { Modal, type ModalProps } from "@uiid/overlays";
@@ -12,13 +12,15 @@ type EditProfileModalProps = ModalProps;
 
 export const EditProfileModal = ({ ...props }: EditProfileModalProps) => {
   const [open, setOpen] = React.useState(false);
+  const initialFocusRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <Modal
       open={open}
       onOpenChange={setOpen}
+      PopupProps={{ initialFocus: initialFocusRef }}
       title="Edit your profile"
-      description="Your profile information will be displayed publicly, it's used to help others in your community identify you."
+      description="Your profile information will be public to the community. It won't be scraped or indexed by search engines or accessible to non-members."
       size="small"
       action={
         <Button
@@ -33,7 +35,9 @@ export const EditProfileModal = ({ ...props }: EditProfileModalProps) => {
       }
       footer={
         <Group ax="end" fullwidth gap={4}>
-          <Button ghost>Cancel</Button>
+          <Button ghost onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button>Save changes</Button>
         </Group>
       }
@@ -43,16 +47,25 @@ export const EditProfileModal = ({ ...props }: EditProfileModalProps) => {
         <Input
           required
           label="Name"
+          size="medium"
           placeholder="Real name preferred, but a nickname is fine."
+          ref={initialFocusRef as React.RefObject<HTMLInputElement>}
         />
         <Input
           label="Description"
+          size="medium"
           placeholder="Think of it like a yearbook quote."
         />
         <Input
           label="Location"
+          size="medium"
           placeholder="Where can people usually find you?"
         />
+      </Stack>
+
+      <Stack gap={4} fullwidth ax="stretch" mb={4}>
+        <Switch label="Show my profile on the leaderboard" defaultChecked />
+        <Switch label="Allow people to friend me" defaultChecked />
       </Stack>
     </Modal>
   );
