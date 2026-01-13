@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "./changelog-generator.js",
+  "changelog": "./changelog-generator.cjs",
   "commit": false,
   "fixed": [
     [
@@ -26,5 +26,5 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["storybook", "next-16"]
+  "ignore": ["@uiid/storybook", "next-16"]
 }
