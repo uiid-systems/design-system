@@ -1,1 +1,1 @@
-export const BUTTON_DEFAULT_SIZE = "small";
+export const BUTTON_DEFAULT_SIZE = "medium";
