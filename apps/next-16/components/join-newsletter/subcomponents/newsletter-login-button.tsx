@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "@uiid/buttons";
+import { Button } from "@uiid/buttons";
 
 export const NewsletterLoginButton = () => {
   return (

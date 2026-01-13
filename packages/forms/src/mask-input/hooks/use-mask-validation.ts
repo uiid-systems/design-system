@@ -89,7 +89,7 @@ export function useMaskValidation(
         onValidate(isValid, unmaskedValue);
       }
     },
-    [onValidate, maskPattern?.validate, validationOpts],
+    [onValidate, maskPattern, validationOpts],
   );
 
   return {
