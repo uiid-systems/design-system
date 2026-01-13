@@ -46,6 +46,7 @@ const meta = {
         {...args}
         label="Multi-select with label"
         description="Select multiple options from the list."
+        placeholder="Select options"
       />
 
       <SelectMultiple

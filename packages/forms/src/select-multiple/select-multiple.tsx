@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ConditionalRender } from "@uiid/layout";
 
@@ -27,6 +28,7 @@ export const SelectMultiple = ({
   name,
   label,
   description,
+  placeholder,
   items,
   defaultValue = [],
   RootProps,
@@ -41,6 +43,13 @@ export const SelectMultiple = ({
   children,
   ...props
 }: SelectMultipleProps) => {
+  // Create a lookup function to resolve labels from values for multi-select display
+  const itemToStringLabel = useMemo(() => {
+    if (!items) return undefined;
+    const labelMap = new Map(items.map((item) => [item.value, item.label]));
+    return (value: string) => labelMap.get(value) ?? value;
+  }, [items]);
+
   return (
     <ConditionalRender
       condition={Boolean(label || description)}
@@ -60,6 +69,7 @@ export const SelectMultiple = ({
         multiple
         defaultValue={defaultValue}
         items={items}
+        itemToStringLabel={itemToStringLabel}
         {...props}
         {...RootProps}
       >
@@ -69,7 +79,13 @@ export const SelectMultiple = ({
           disabled={disabled}
           {...TriggerProps}
         >
-          <SelectValue size={size} {...ValueProps} />
+          <SelectValue size={size} {...ValueProps}>
+            {(value: string[]) =>
+              value && value.length > 0
+                ? value.map((v) => itemToStringLabel?.(v) ?? v).join(", ")
+                : placeholder
+            }
+          </SelectValue>
           <SelectIndicator {...IndicatorProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>

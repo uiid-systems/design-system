@@ -1,1 +1,1 @@
-export const INPUT_DEFAULT_SIZE = "small";
+export const INPUT_DEFAULT_SIZE = "medium";
