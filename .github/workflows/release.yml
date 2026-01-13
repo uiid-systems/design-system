@@ -46,10 +46,12 @@ jobs:
       - name: Setup Turbo cache
         uses: actions/cache@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          path: |
+            node_modules/.cache/turbo
+            packages/*/dist
+          key: ${{ runner.os }}-turbo-build-${{ hashFiles('packages/*/src/**', 'packages/*/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
+            ${{ runner.os }}-turbo-build-
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -129,6 +131,23 @@ jobs:
             exit 1
           fi
           echo "✅ PAT_TOKEN is configured - release PRs will be created by user account"
+
+      - name: Clean up stale release branch
+        if: steps.changeset_check.outputs.has_changesets == 'true'
+        run: |
+          # Delete local branch if it exists (prevents "branch already exists" error)
+          git branch -D changeset-release/main 2>/dev/null || true
+
+          # If no open PR exists, also delete the remote branch
+          OPEN_PR=$(gh pr list --state open --head changeset-release/main --json number --jq '.[0].number // empty')
+          if [ -z "$OPEN_PR" ]; then
+            echo "No open release PR found, cleaning up remote branch if it exists..."
+            git push origin --delete changeset-release/main 2>/dev/null || true
+          else
+            echo "Open release PR #$OPEN_PR exists, keeping remote branch"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create or Update Release Pull Request
         if: steps.changeset_check.outputs.has_changesets == 'true'
