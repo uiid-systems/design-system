@@ -8,7 +8,7 @@
     "build-changelog": {
       "cache": false,
       "inputs": ["packages/*/CHANGELOG.md"],
-      "outputs": ["packages/changelog.json", "apps/docs/changelog.mdx"]
+      "outputs": ["packages/changelog.json"]
     },
     "dev": {
       "cache": false,

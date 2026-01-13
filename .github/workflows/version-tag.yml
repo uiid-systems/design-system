@@ -1,0 +1,113 @@
+name: Version Tag
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/*/package.json"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  tag:
+    name: Create Version Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get package version
+        id: package-version
+        run: |
+          # Use tokens package as the version source (all packages are versioned together)
+          VERSION=$(node -p "require('./packages/tokens/package.json').version")
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists
+        id: check-tag
+        run: |
+          if git rev-parse --verify refs/tags/${{ steps.package-version.outputs.version }} >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create and push tag
+        if: steps.check-tag.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a ${{ steps.package-version.outputs.version }} -m "Release ${{ steps.package-version.outputs.version }}"
+          git push origin ${{ steps.package-version.outputs.version }}
+
+      - name: Extract changelog content for release
+        if: steps.check-tag.outputs.exists == 'false'
+        id: changelog
+        run: |
+          # Extract changelog content for current version from JSON
+          VERSION=$(echo "${{ steps.package-version.outputs.version }}" | sed 's/^v//')
+
+          # Generate changelog if it doesn't exist
+          if [ ! -f "packages/changelog.json" ]; then
+            echo "⚠️  packages/changelog.json not found, generating it..."
+            pnpm run build-changelog
+          fi
+
+          # Use node to extract changelog content from JSON
+          CHANGELOG=$(node -e "
+            const fs = require('fs');
+            try {
+              const data = JSON.parse(fs.readFileSync('packages/changelog.json', 'utf8'));
+              // Get all packages' changes for this version
+              const allChanges = [];
+              data.forEach(pkg => {
+                const entry = pkg.entries.find(e => e.version === '$VERSION');
+                if (entry && entry.changes.length > 0) {
+                  entry.changes.forEach(c => allChanges.push('- ' + c.description));
+                }
+              });
+              if (allChanges.length > 0) {
+                console.log(allChanges.join('\n'));
+              } else {
+                console.log('- Release $VERSION with latest updates');
+              }
+            } catch (error) {
+              console.log('- Release $VERSION with latest updates');
+            }
+          ")
+
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: steps.check-tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.package-version.outputs.version }}
+          name: Release ${{ steps.package-version.outputs.version }}
+          body: |
+            ## Changes
+
+            ${{ steps.changelog.outputs.content }}
+
+            ### Packages
+
+            All UIID packages have been updated to `${{ steps.package-version.outputs.version }}`
+          draft: false
+          prerelease: false

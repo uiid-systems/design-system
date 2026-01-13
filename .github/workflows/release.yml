@@ -1,0 +1,312 @@
+name: Release
+
+# This workflow creates release PRs using a Personal Access Token (PAT_TOKEN)
+# to ensure release PRs are created with proper permissions
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: read
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for changesets
+        id: changeset_check
+        run: |
+          # Check if there are any changeset files (excluding README and config)
+          CHANGESET_COUNT=$(find .changeset -name "*.md" -not -name "README.md" | wc -l)
+          echo "changeset_count=$CHANGESET_COUNT" >> $GITHUB_OUTPUT
+
+          if [ $CHANGESET_COUNT -gt 0 ]; then
+            echo "has_changesets=true" >> $GITHUB_OUTPUT
+            echo "Found $CHANGESET_COUNT changeset(s) to apply"
+          else
+            echo "has_changesets=false" >> $GITHUB_OUTPUT
+            echo "No changesets found - no release needed"
+          fi
+
+      - name: Comprehensive release PR state detection and cleanup
+        if: steps.changeset_check.outputs.has_changesets == 'true'
+        id: pr_state
+        run: |
+          echo "🔍 Analyzing current release PR state..."
+
+          # Check for open PRs with changeset-release/main head
+          OPEN_PR=$(gh pr list --state open --head changeset-release/main --json number,title --jq '.[0] | select(.number)' || echo "null")
+
+          # Check for ANY PRs (including closed) with this head branch
+          ALL_PRS=$(gh pr list --state all --head changeset-release/main --json number,state,title --jq '. | length' || echo "0")
+
+          # Check if branch exists remotely
+          BRANCH_EXISTS="false"
+          if git ls-remote --heads origin changeset-release/main | grep -q changeset-release/main; then
+            BRANCH_EXISTS="true"
+          fi
+
+          echo "📊 State Analysis:"
+          echo "  - Open PRs: $(echo "$OPEN_PR" | jq -r '.number // "none"')"
+          echo "  - Total PRs (all states): $ALL_PRS"
+          echo "  - Branch exists: $BRANCH_EXISTS"
+
+          # Decision logic
+          if [ "$OPEN_PR" != "null" ]; then
+            PR_NUMBER=$(echo "$OPEN_PR" | jq -r '.number')
+            PR_TITLE=$(echo "$OPEN_PR" | jq -r '.title')
+            echo "✅ Found active release PR #$PR_NUMBER: $PR_TITLE"
+            echo "The changesets action will update this existing PR."
+            echo "action=update_existing" >> $GITHUB_OUTPUT
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          elif [ "$ALL_PRS" -gt 0 ] && [ "$BRANCH_EXISTS" = "true" ]; then
+            echo "🧹 Found stale branch with closed PR history - cleaning up"
+            git push origin --delete changeset-release/main || echo "Failed to delete branch, continuing..."
+            echo "action=cleanup_and_create" >> $GITHUB_OUTPUT
+          elif [ "$ALL_PRS" -gt 0 ] && [ "$BRANCH_EXISTS" = "false" ]; then
+            echo "⚠️  Found closed PR history but no branch - GitHub may have stale associations"
+            echo "Will attempt fresh creation and handle conflicts if they occur"
+            echo "action=create_with_conflict_handling" >> $GITHUB_OUTPUT
+          elif [ "$BRANCH_EXISTS" = "true" ]; then
+            echo "🧹 Found orphaned branch with no PR history - cleaning up"
+            git push origin --delete changeset-release/main || echo "Failed to delete branch, continuing..."
+            echo "action=cleanup_and_create" >> $GITHUB_OUTPUT
+          else
+            echo "✨ Clean state - no existing PRs or branches"
+            echo "action=create_fresh" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate Personal Access Token
+        if: steps.changeset_check.outputs.has_changesets == 'true'
+        run: |
+          if [ -z "${{ secrets.PAT_TOKEN }}" ]; then
+            echo "❌ ERROR: PAT_TOKEN secret is required to create release PRs as user account"
+            echo "Please add a Personal Access Token as a repository secret named 'PAT_TOKEN'"
+            echo "This ensures release PRs are created by Adam Fratino instead of GitHub Actions"
+            exit 1
+          fi
+          echo "✅ PAT_TOKEN is configured - release PRs will be created by user account"
+
+      - name: Create or Update Release Pull Request
+        if: steps.changeset_check.outputs.has_changesets == 'true'
+        id: changesets
+        uses: changesets/action@v1.4.7
+        with:
+          version: pnpm run changeset:version
+          commit: "chore(release): version packages and update changelogs"
+          title: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        continue-on-error: true
+
+      - name: Handle changesets failure with recovery
+        if: steps.changeset_check.outputs.has_changesets == 'true' && steps.changesets.outcome == 'failure'
+        id: recovery
+        run: |
+          echo "⚠️  Changesets action failed. Attempting recovery..."
+
+          # Force cleanup any remaining stale state
+          echo "🧹 Force cleaning up any stale release branch state..."
+
+          # Delete branch if it exists
+          if git ls-remote --heads origin changeset-release/main | grep -q changeset-release/main; then
+            echo "Deleting stale branch..."
+            git push origin --delete changeset-release/main || echo "Branch deletion failed"
+          fi
+
+          # Clean up local references
+          git branch -D changeset-release/main 2>/dev/null || echo "No local branch to clean"
+
+          echo "Waiting 5 seconds for GitHub to process cleanup..."
+          sleep 5
+
+          echo "🔄 Retrying changesets action..."
+          echo "retry_needed=true" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Retry Create Release Pull Request
+        if: steps.changeset_check.outputs.has_changesets == 'true' && steps.recovery.outputs.retry_needed == 'true'
+        id: changesets_retry
+        uses: changesets/action@v1.4.7
+        with:
+          version: pnpm run changeset:version
+          commit: "chore(release): version packages and update changelogs"
+          title: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Final verification
+        if: steps.changeset_check.outputs.has_changesets == 'true'
+        id: final_verification
+        run: |
+          echo "🔍 Verifying release PR was created or updated..."
+
+          # Check if we now have an open release PR
+          FINAL_PR=$(gh pr list --state open --head changeset-release/main --json number,title --jq '.[0] | select(.number)' || echo "null")
+
+          if [ "$FINAL_PR" != "null" ]; then
+            PR_NUMBER=$(echo "$FINAL_PR" | jq -r '.number')
+            PR_TITLE=$(echo "$FINAL_PR" | jq -r '.title')
+            echo "✅ SUCCESS: Release PR #$PR_NUMBER exists: $PR_TITLE"
+            echo "🔗 View at: https://github.com/${{ github.repository }}/pull/$PR_NUMBER"
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          else
+            echo "❌ FAILURE: No release PR found after all attempts"
+            echo "This requires manual investigation"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Clean up release PR description
+        if: steps.changeset_check.outputs.has_changesets == 'true' && steps.final_verification.outputs.pr_number
+        run: |
+          echo "🧹 Cleaning up release PR description..."
+
+          PR_NUMBER="${{ steps.final_verification.outputs.pr_number }}"
+
+          # Get current PR body
+          CURRENT_BODY=$(gh pr view $PR_NUMBER --json body --jq '.body')
+
+          # Create a Node.js script to clean the PR body more reliably
+          cat > /tmp/clean-pr-body.js << 'EOF'
+          const fs = require('fs');
+          const input = fs.readFileSync('/tmp/pr-body.txt', 'utf8');
+
+          const lines = input.split('\n');
+          const cleaned = [];
+          let skipDependencyBlock = false;
+
+          for (const line of lines) {
+            // Start skipping when we see "Updated dependencies"
+            if (line.match(/^Updated dependencies \[/)) {
+              skipDependencyBlock = true;
+              continue;
+            }
+            
+            // Skip indented dependency lines
+            if (skipDependencyBlock && (line.match(/^\s+@uiid\//) || line.trim() === '')) {
+              continue;
+            }
+            
+            // Stop skipping when we hit a non-dependency line
+            if (skipDependencyBlock && line.trim() !== '' && !line.match(/^\s+@uiid\//)) {
+              skipDependencyBlock = false;
+            }
+            
+            // Keep the line if we're not in a dependency block
+            if (!skipDependencyBlock) {
+              cleaned.push(line);
+            }
+          }
+
+          console.log(cleaned.join('\n'));
+          EOF
+
+          # Write current body to temp file and clean it
+          echo "$CURRENT_BODY" > /tmp/pr-body.txt
+          CLEANED_BODY=$(node /tmp/clean-pr-body.js)
+
+          # Update the PR body
+          echo "$CLEANED_BODY" | gh pr edit $PR_NUMBER --body-file -
+
+          # Cleanup temp files
+          rm -f /tmp/pr-body.txt /tmp/clean-pr-body.js
+
+          echo "✅ Cleaned up release PR description"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Provide manual cleanup instructions on failure
+        if: failure() && steps.changeset_check.outputs.has_changesets == 'true'
+        run: |
+          echo "❌ Release workflow failed after comprehensive recovery attempts."
+          echo ""
+          echo "🔍 The workflow attempted:"
+          echo "  ✅ Smart state detection (open PRs, closed PRs, stale branches)"
+          echo "  ✅ Automatic cleanup of stale branches"
+          echo "  ✅ Retry logic with delays"
+          echo "  ✅ Final verification"
+          echo ""
+          echo "📋 Manual investigation needed:"
+          echo "1. Check workflow logs above for specific error details"
+          echo "2. Check GitHub repository state:"
+          echo "   - Open PRs: https://github.com/${{ github.repository }}/pulls"
+          echo "   - All PRs: https://github.com/${{ github.repository }}/pulls?q=is%3Apr+head%3Achangeset-release%2Fmain"
+          echo "3. Check branch existence: git ls-remote --heads origin changeset-release/main"
+          echo ""
+          echo "🛠️  Common fixes:"
+          echo "   - If authentication errors: Check GITHUB_TOKEN permissions"
+          echo "   - If persistent conflicts: Manually close any stale PRs and delete branch"
+          echo "   - If GitHub API issues: Wait a few minutes and re-run workflow"
+          echo ""
+          echo "⚠️  If this workflow 'passes' but creates no PR, check the changesets outcome above."
+
+      - name: Get current version for release
+        if: steps.changeset_check.outputs.has_changesets == 'false'
+        id: version_check
+        run: |
+          # Use tokens package as the version source (all packages are versioned together)
+          VERSION=$(node -p "require('./packages/tokens/package.json').version")
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if release already exists
+        if: steps.changeset_check.outputs.has_changesets == 'false'
+        id: release_exists
+        run: |
+          VERSION="${{ steps.version_check.outputs.version }}"
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "release_exists=true" >> $GITHUB_OUTPUT
+            echo "Release $VERSION already exists"
+          else
+            echo "release_exists=false" >> $GITHUB_OUTPUT
+            echo "Release $VERSION does not exist - will create"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build packages after version bump
+        if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
+        run: pnpm run build
+
+      - name: Create GitHub Release
+        if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        with:
+          tag_name: ${{ steps.version_check.outputs.version }}
+          release_name: Release ${{ steps.version_check.outputs.version }}
+          body: |
+            ## Changes
+
+            See [changelog](https://github.com/${{ github.repository }}/blob/main/packages/changelog.json) for detailed changes.
+
+            ## Packages
+
+            All UIID packages have been updated to ${{ steps.version_check.outputs.version }}
+          draft: false
+          prerelease: false
