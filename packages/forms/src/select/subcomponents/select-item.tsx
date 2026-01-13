@@ -16,6 +16,7 @@ export const SelectItem = ({
     <BaseSelect.Item
       data-slot="select-item"
       value={value}
+      label={label}
       className={styles["select-item"]}
       {...props}
       render={(renderProps, state) => (

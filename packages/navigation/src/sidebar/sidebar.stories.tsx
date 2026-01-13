@@ -13,8 +13,9 @@ import {
   SidebarTrigger,
   SidebarAppContainer,
   SidebarFooter,
+  SidebarProvider,
 } from "./sidebar";
-import { SidebarProvider, useSidebar } from "./sidebar.context";
+import { useSidebar } from "./sidebar.context";
 
 const MOCK_LINKS: ListProps["items"] = [
   {
