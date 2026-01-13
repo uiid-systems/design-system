@@ -149,22 +149,45 @@ jobs:
           fi
           echo "workflow_status=completed" >> $GITHUB_OUTPUT
 
-      - name: Add comment to PR about changeset
+      - name: Add or update comment about changeset
         if: steps.changeset_check.outputs.needs_changeset == 'true'
         uses: actions/github-script@v7
         with:
           script: |
-            const comment = `🤖 **Auto-changeset created!**
+            const commentBody = `**🤖 Auto-changeset created**
 
-            This PR didn't have a changeset, so I've automatically created one based on the changes.
+            A changeset was automatically generated from your PR title and description.
 
-            The changeset has been added and committed to this PR. When this PR is merged, it will be included in the next release.
+            To customize it, edit the \`.changeset/*.md\` file in this PR.`;
 
-            If you'd like to customize the changeset description, you can edit the \`.changeset/*.md\` file that was created.`;
-
-            github.rest.issues.createComment({
+            // Check for existing bot comment
+            const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
             });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes('Auto-changeset created')
+            );
+
+            if (botComment) {
+              // Update existing comment only if content changed
+              if (botComment.body !== commentBody) {
+                await github.rest.issues.updateComment({
+                  comment_id: botComment.id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: commentBody
+                });
+              }
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
