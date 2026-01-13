@@ -20,8 +20,8 @@ export const LoginModal = () => {
     <Modal
       open={isOpen}
       onOpenChange={handleOpenChange}
-      title="Welcome back"
-      description="Login with one of your social accounts."
+      title="Welcome back!"
+      description="Log in with one of your social accounts..."
       trigger={<LoginButton />}
       action={<LoginAction onOpenChange={handleOpenChange} />}
       size="small"
@@ -79,10 +79,10 @@ const LoginForm = ({
       <LoginFormEmail />
 
       <Group gap={2} ax="end">
-        <Button variant="subtle" onClick={() => onOpenChange(false)}>
+        <Button ghost onClick={() => onOpenChange(false)}>
           Cancel
         </Button>
-        <Button>Login</Button>
+        <Button>Login with email</Button>
       </Group>
     </Stack>
   );
@@ -131,7 +131,7 @@ const Divider = () => {
         px={2}
         className="bg-(--shade-surface) justify-self-center"
       >
-        Or continue with your email
+        or continue with your email
       </Text>
     </Layer>
   );

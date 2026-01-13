@@ -1,4 +1,6 @@
-import { CircleStarIcon, SwordsIcon } from "@uiid/icons";
+import { Button } from "@uiid/buttons";
+import { CircleStarIcon, MailIcon, SwordsIcon } from "@uiid/icons";
+import { Alert } from "@uiid/indicators";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -22,6 +24,12 @@ export const Profile = () => {
       </ProfileSidebar>
 
       <Stack ax="stretch" gap={GRID_GAP} fullwidth>
+        <Alert
+          tone="positive"
+          icon={MailIcon}
+          title="Please verify your email address."
+          action={<Button variant="inverted">Verify email</Button>}
+        />
         <Group gap={4} fullwidth evenly>
           <ProfileStat title="Matches played" value={21} icon={SwordsIcon} />
           <ProfileStat title="Rank" value={1613} icon={CircleStarIcon} />

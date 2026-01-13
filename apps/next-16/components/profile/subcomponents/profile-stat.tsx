@@ -14,7 +14,7 @@ export const ProfileStat = ({ icon, title, value }: ProfileStatProps) => {
       icon={icon}
       title={title}
       action={
-        <Text size={6} mono>
+        <Text size={5} mono>
           {value}
         </Text>
       }

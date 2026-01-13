@@ -7,8 +7,9 @@ import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
 import { cx } from "@uiid/utils";
 
-import { SwitchAppearance } from "../buttons";
 import { LoginModal } from "../modals";
+
+import { SwitchAppearance } from "./switch-appearance";
 
 export const AppHeader = () => {
   return (
