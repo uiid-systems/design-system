@@ -44,8 +44,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests for changed packages
-        run: pnpm turbo test:run --filter="...[HEAD^]"
+      - name: Run tests
+        run: pnpm test:run
 
-      - name: Run linting for changed packages
-        run: pnpm turbo lint --filter="...[HEAD^]"
+      - name: Run linting
+        run: pnpm lint
