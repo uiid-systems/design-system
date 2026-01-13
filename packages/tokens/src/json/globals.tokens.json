@@ -42,6 +42,9 @@
       "offset": { "$value": "0.125rem", "$type": "dimension" },
       "style": { "$value": "solid", "$type": "strokeStyle" },
       "width": { "$value": "0.125rem", "$type": "dimension" }
+    },
+    "placeholder": {
+      "color": { "$value": "{shade.accent}", "$type": "color" }
     }
   }
 }

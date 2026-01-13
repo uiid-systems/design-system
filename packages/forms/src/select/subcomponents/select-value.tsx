@@ -6,6 +6,7 @@ import { cx } from "@uiid/utils";
 import { inputVariants } from "../../input/input.variants";
 
 import type { SelectValueProps } from "../select.types";
+import styles from "../select.module.css";
 
 export const SelectValue = ({
   size,
@@ -16,7 +17,7 @@ export const SelectValue = ({
     <BaseSelect.Value
       data-slot="select-value"
       render={<Text />}
-      className={cx(inputVariants({ size }), className)}
+      className={cx(styles["select-value"], inputVariants({ size }), className)}
       {...props}
     />
   );

@@ -19,3 +19,9 @@
   height: 1rem;
   width: var(--globals-icon-size);
 }
+
+.select-value {
+  [data-placeholder] & {
+    color: var(--globals-placeholder-color);
+  }
+}
