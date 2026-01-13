@@ -59,6 +59,7 @@ export const SelectMultiple = ({
         name={name}
         multiple
         defaultValue={defaultValue}
+        items={items}
         {...props}
         {...RootProps}
       >

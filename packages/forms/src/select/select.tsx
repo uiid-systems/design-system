@@ -61,6 +61,7 @@ export const Select = <Value = string,>({
       <SelectRoot<Value>
         name={name}
         defaultValue={resolvedDefaultValue}
+        items={items}
         {...props}
         {...RootProps}
       >
