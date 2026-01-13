@@ -1,4 +1,4 @@
-# UIID Design System
+# The UIID Design System
 
 A modern, modular React component library built with TypeScript, Vite, and Base UI. Designed for performance, accessibility, and developer experience.
 
