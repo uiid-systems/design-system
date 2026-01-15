@@ -7,6 +7,7 @@ import { Text } from "@uiid/typography";
 
 import type { ToasterProps } from "./toast.types";
 import styles from "./toast.module.css";
+import { useToastManager } from "./toast.hooks";
 
 const ToastList = () => {
   const { toasts } = useToastManager();
@@ -39,6 +40,3 @@ export const Toaster = ({ position = "bottom" }: ToasterProps) => {
   );
 };
 Toaster.displayName = "Toaster";
-
-export const ToastProvider = BaseToast.Provider;
-export const useToastManager = BaseToast.useToastManager;
