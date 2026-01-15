@@ -7,6 +7,7 @@ const config: StorybookConfig = {
   stories: [
     // "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/backgrounds/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../../../packages/blocks/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/buttons/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/calendars/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/cards/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",

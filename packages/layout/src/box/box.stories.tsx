@@ -4,21 +4,19 @@ import { Box } from "./box";
 const meta = {
   title: "Layout/Utilities/Box",
   component: Box,
+  parameters: {
+    layout: "fullscreen",
+  },
   args: {},
   render: (args) => (
     <Box
       {...args}
       render={<aside style={{ opacity: 0.5 }} className="foo" />}
       className="bar"
-      fullwidth
-      ml={2}
+      fullscreen
       ax="center"
       ay="center"
-      style={{
-        background: "tomato",
-        minWidth: 64,
-        height: 64,
-      }}
+      style={{ background: "tomato" }}
     />
   ),
 } satisfies Meta<typeof Box>;

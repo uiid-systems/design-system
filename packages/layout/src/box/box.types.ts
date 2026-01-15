@@ -10,6 +10,6 @@ export type BoxProps = React.HTMLAttributes<HTMLElement> & {
   render?: RenderProp;
   style?: React.CSSProperties;
   className?: string;
-} & Pick<ToggleProps, "evenly" | "fullwidth" | "fullheight"> &
+} & Pick<ToggleProps, "evenly" | "fullwidth" | "fullheight" | "fullscreen"> &
   LayoutProps &
   SpacingProps;
