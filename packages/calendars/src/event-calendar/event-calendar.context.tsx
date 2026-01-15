@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useId,
-  useReducer,
-  useRef,
-  type ReactNode,
-} from "react";
+import { useId, useReducer, useRef, type ReactNode } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -33,27 +26,12 @@ import {
   hasDateChanged,
   hasDateTimeChanged,
 } from "./event-calendar.utils";
+import {
+  EventCalendarDndContext,
+  initialDragState,
+} from "./event-calendar.hooks";
 
 import { EventDragOverlay } from "./subcomponents";
-
-// Initial state for drag reducer
-const initialDragState: EventCalendarDndContextType = {
-  activeEvent: null,
-  activeId: null,
-  activeView: null,
-  currentTime: null,
-  eventHeight: null,
-  isMultiDay: false,
-  multiDayWidth: null,
-  dragHandlePosition: null,
-};
-
-// Create the context
-const EventCalendarDndContext =
-  createContext<EventCalendarDndContextType>(initialDragState);
-
-// Hook to use the context
-export const useEventCalendarDnd = () => useContext(EventCalendarDndContext);
 
 // Props for the provider
 interface CalendarDndProviderProps {

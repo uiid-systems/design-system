@@ -19,15 +19,14 @@ export const BackgroundIridescence = ({
   mouseReact = DEFAULT_MOUSE_REACT,
   ...props
 }: BackgroundIridescenceProps) => {
-  // Convert hex to OGL Color (handles parsing internally)
-  const oglColor = new Color(color);
-
   const ctnDom = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
     if (!ctnDom.current) return;
     const ctn = ctnDom.current;
+    // Convert hex to OGL Color inside useEffect to avoid dependency issues
+    const oglColor = new Color(color);
     const renderer = new Renderer();
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
@@ -103,7 +102,7 @@ export const BackgroundIridescence = ({
       ctn.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [oglColor, speed, amplitude, mouseReact]);
+  }, [color, speed, amplitude, mouseReact]);
 
   return (
     <div ref={ctnDom} style={{ width: "100%", height: "100%" }} {...props} />

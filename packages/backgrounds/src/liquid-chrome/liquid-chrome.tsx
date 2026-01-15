@@ -28,13 +28,12 @@ export const BackgroundLiquidChrome = ({
   mouseIntensity = DEFAULT_MOUSE_INTENSITY,
   ...props
 }: BackgroundLiquidChromeProps) => {
-  // Convert hex to normalized RGB for WebGL
-  const normalizedBaseColor = hexToNormalizedRgb(baseColor);
-  const normalizedSecondaryColor = hexToNormalizedRgb(secondaryColor);
-
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    // Convert hex to normalized RGB for WebGL inside useEffect
+    const normalizedBaseColor = hexToNormalizedRgb(baseColor);
+    const normalizedSecondaryColor = hexToNormalizedRgb(secondaryColor);
     if (!containerRef.current) return;
 
     const container = containerRef.current;

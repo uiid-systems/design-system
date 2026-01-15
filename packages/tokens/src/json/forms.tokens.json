@@ -16,6 +16,13 @@
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
     "size": {
+      "xsmall": {
+        "font-size": { "$value": "0.75rem", "$type": "dimension" },
+        "padding": {
+          "x": { "$value": "0.5rem", "$type": "dimension" },
+          "y": { "$value": "0.5rem", "$type": "dimension" }
+        }
+      },
       "small": {
         "fontSize": { "$value": "0.75rem", "$type": "dimension" }
       },

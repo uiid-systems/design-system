@@ -46,12 +46,18 @@ jobs:
       - name: Setup Turbo cache
         uses: actions/cache@v4
         with:
-          path: |
-            node_modules/.cache/turbo
-            packages/*/dist
-          key: ${{ runner.os }}-turbo-build-${{ hashFiles('packages/*/src/**', 'packages/*/package.json') }}
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-build-
+            ${{ runner.os }}-turbo-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile

@@ -131,6 +131,7 @@ export function Sortable<T>({
       config.modifiers,
       config.strategy,
       activeId,
+      setActiveId,
       getItemValue,
       flatCursor,
     ],

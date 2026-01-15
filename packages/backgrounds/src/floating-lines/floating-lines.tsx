@@ -59,17 +59,21 @@ export const BackgroundFloatingLines = ({
   const targetParallaxRef = useRef<Vector2>(new Vector2(0, 0));
   const currentParallaxRef = useRef<Vector2>(new Vector2(0, 0));
 
-  const {
-    topLineCount,
-    middleLineCount,
-    bottomLineCount,
-    topLineDistance,
-    middleLineDistance,
-    bottomLineDistance,
-  } = getWaveConfig(enabledWaves, lineCount, lineDistance);
-
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Copy ref to variable for cleanup function
+    const container = containerRef.current;
+
+    // Get wave config inside useEffect to avoid missing dependency warnings
+    const {
+      topLineCount,
+      middleLineCount,
+      bottomLineCount,
+      topLineDistance,
+      middleLineDistance,
+      bottomLineDistance,
+    } = getWaveConfig(enabledWaves, lineCount, lineDistance);
 
     const scene = new Scene();
 
@@ -80,7 +84,7 @@ export const BackgroundFloatingLines = ({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
-    containerRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const uniforms = {
       iTime: { value: 0 },
@@ -163,9 +167,8 @@ export const BackgroundFloatingLines = ({
     const clock = new Clock();
 
     const setSize = () => {
-      const el = containerRef.current!;
-      const width = el.clientWidth || 1;
-      const height = el.clientHeight || 1;
+      const width = container.clientWidth || 1;
+      const height = container.clientHeight || 1;
 
       renderer.setSize(width, height, false);
 
@@ -181,8 +184,8 @@ export const BackgroundFloatingLines = ({
         ? new ResizeObserver(setSize)
         : null;
 
-    if (ro && containerRef.current) {
-      ro.observe(containerRef.current);
+    if (ro) {
+      ro.observe(container);
     }
 
     const handlePointerMove = (event: PointerEvent) => {
@@ -244,7 +247,7 @@ export const BackgroundFloatingLines = ({
 
     return () => {
       cancelAnimationFrame(raf);
-      if (ro && containerRef.current) {
+      if (ro && container) {
         ro.disconnect();
       }
 

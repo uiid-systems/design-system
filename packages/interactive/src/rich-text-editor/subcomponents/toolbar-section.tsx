@@ -66,7 +66,7 @@ export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
         {action.icon}
       </ToolbarButton>
     ),
-    [editor],
+    [editor, toolbarButtonProps],
   );
 
   const renderDropdownMenuItem = React.useCallback(

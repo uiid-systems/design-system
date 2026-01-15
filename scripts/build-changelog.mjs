@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
+import fs from "fs";
+import path from "path";
+import { execSync } from "child_process";
 
 // Function to get version date from git tags or preserve existing
 function getVersionDate(version, existingDate = null, isNewVersion = false) {

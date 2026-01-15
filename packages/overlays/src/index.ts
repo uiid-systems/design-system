@@ -11,6 +11,7 @@ export * from "./sheet/sheet";
 export * from "./sheet/sheet.types";
 
 export * from "./toast/toast";
+export * from "./toast/toast.hooks";
 export * from "./toast/toast.types";
 
 export * from "./tooltip/tooltip";
