@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/layout";
 
-import { ToastProvider, useToastManager, Toaster } from "./toast";
+import { Toaster } from "./toast";
+import { ToastProvider, useToastManager } from "./toast.hooks";
 
 const meta: Meta<typeof ToastProvider> = {
   title: "Overlays/Toast",
