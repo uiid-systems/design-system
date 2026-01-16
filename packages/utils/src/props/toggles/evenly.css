@@ -1,6 +1,0 @@
-[evenly="true"] > * {
-  flex: 1;
-  flex-basis: auto;
-  width: -webkit-fill-available;
-  width: 100%;
-}

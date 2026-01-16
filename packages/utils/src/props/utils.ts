@@ -1,10 +1,8 @@
-import { type ToggleProps } from "./types";
 import { styleProps } from "./styles";
 
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
   props: T;
-  toggleProps?: (keyof ToggleProps)[];
   styleProps?: (keyof typeof styleProps)[];
 };
 
@@ -15,7 +13,6 @@ export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
 export function prepareComponentProps<T extends Record<string, unknown>>({
   componentName,
   props,
-  toggleProps = [],
   styleProps: stylePropKeys = [],
 }: PrepareComponentPropsOptions<T>) {
   const dataAttrs: Record<string, string> = {
@@ -27,13 +24,6 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
 
   for (const [key, value] of Object.entries(props)) {
     if (
-      toggleProps.includes(key as keyof ToggleProps) &&
-      typeof value === "boolean"
-    ) {
-      if (value) {
-        dataAttrs[`${key}`] = "true";
-      }
-    } else if (
       stylePropKeys.includes(key as keyof typeof styleProps) &&
       value !== undefined
     ) {

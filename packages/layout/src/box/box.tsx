@@ -1,16 +1,21 @@
-import { prepareComponentProps, renderWithProps } from "@uiid/utils";
+import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
 
 import type { BoxProps } from "./box.types";
+import { boxVariants } from "./box.variants";
+import styles from "./box.module.css";
 
-import "@uiid/utils/evenly.css";
-import "@uiid/utils/fullheight.css";
-import "@uiid/utils/fullwidth.css";
-import "@uiid/utils/fullscreen.css";
-
-export const Box = ({ render, children, ...props }: BoxProps) => {
+export const Box = ({
+  evenly,
+  fullwidth,
+  fullheight,
+  fullscreen,
+  render,
+  className,
+  children,
+  ...props
+}: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
-    toggleProps: ["evenly", "fullwidth", "fullheight", "fullscreen"],
     styleProps: [
       "ax",
       "ay",
@@ -36,7 +41,19 @@ export const Box = ({ render, children, ...props }: BoxProps) => {
 
   return renderWithProps({
     fallbackElement: "div",
-    props: preparedProps,
+    props: {
+      ...preparedProps,
+      className: cx(
+        styles["box"],
+        boxVariants({
+          evenly,
+          fullwidth,
+          fullheight,
+          fullscreen,
+        }),
+        className,
+      ),
+    },
     render,
     children,
   });
