@@ -1,3 +1,5 @@
+"use client";
+
 import { Toast as BaseToast } from "@base-ui/react/toast";
 
 export const ToastProvider = BaseToast.Provider;
