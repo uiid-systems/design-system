@@ -1,4 +1,6 @@
-import { CircleStarIcon, SwordsIcon } from "@uiid/icons";
+import { Button } from "@uiid/buttons";
+import { CircleStarIcon, MailIcon, SwordsIcon } from "@uiid/icons";
+import { Alert } from "@uiid/indicators";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -7,7 +9,7 @@ import { MOCK_PROFILE_DETAILS, MOCK_MATCHES } from "./profile.mocks";
 
 import { ProfileInfoCard } from "./profile-info-card";
 import { RecentMatchCard } from "./recent-match-card";
-import { ProfileAlert, ProfileSidebar, ProfileStat } from "./subcomponents";
+import { ProfileSidebar, ProfileStat } from "./subcomponents";
 
 export const Profile = () => {
   return (
@@ -22,8 +24,12 @@ export const Profile = () => {
       </ProfileSidebar>
 
       <Stack ax="stretch" gap={GRID_GAP} fullwidth>
-        <ProfileAlert />
-
+        <Alert
+          tone="positive"
+          icon={MailIcon}
+          title="Please verify your email address."
+          action={<Button variant="inverted">Verify email</Button>}
+        />
         <Group gap={4} fullwidth evenly>
           <ProfileStat title="Matches played" value={21} icon={SwordsIcon} />
           <ProfileStat title="Rank" value={1613} icon={CircleStarIcon} />
