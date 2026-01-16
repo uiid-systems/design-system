@@ -42,6 +42,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Generate tokens
+        run: node scripts/generate-tokens.cjs
+
       - name: Run tests
         run: pnpm test:run
 

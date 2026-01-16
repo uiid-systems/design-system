@@ -33,7 +33,12 @@ const uiidAliases = Object.fromEntries(
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: uiidAliases,
+    alias: {
+      ...uiidAliases,
+      // Resolve @uiid/tokens/* CSS imports to source files
+      // This uses a regex to match any .css file under @uiid/tokens/
+      "@uiid/tokens": path.resolve(__dirname, "packages/tokens/src/css"),
+    },
   },
   test: {
     environment: "happy-dom",
