@@ -16,5 +16,3 @@ export type StyleProps<
 > = {
   [K in keyof P]?: P[K]["values"][number];
 };
-
-export * from "./toggles/types";

@@ -10,11 +10,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./evenly.css": "./dist/evenly.css",
-    "./fullheight.css": "./dist/fullheight.css",
-    "./fullwidth.css": "./dist/fullwidth.css",
-    "./fullscreen.css": "./dist/fullscreen.css"
+    }
   },
   "files": [
     "dist"
