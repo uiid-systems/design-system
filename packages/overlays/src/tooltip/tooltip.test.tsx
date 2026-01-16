@@ -13,7 +13,9 @@ describe("Tooltip", () => {
       <Tooltip trigger={<button>Hover me</button>}>Tooltip content</Tooltip>,
     );
 
-    expect(screen.getByRole("button", { name: "Hover me" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Hover me" }),
+    ).toBeInTheDocument();
   });
 
   it("does not show tooltip content initially", () => {
@@ -158,9 +160,7 @@ describe("Tooltip", () => {
   it("tooltip popup has data-slot attribute", async () => {
     const user = userEvent.setup();
 
-    render(
-      <Tooltip trigger={<button>Hover me</button>}>Helpful info</Tooltip>,
-    );
+    render(<Tooltip trigger={<button>Hover me</button>}>Helpful info</Tooltip>);
 
     await user.hover(screen.getByRole("button"));
 
@@ -223,9 +223,9 @@ describe("Tooltip", () => {
     await user.hover(screen.getByRole("button"));
 
     await waitFor(() => {
-      expect(
-        document.querySelector('[data-slot="tooltip-popup"]'),
-      ).toHaveClass("custom-popup");
+      expect(document.querySelector('[data-slot="tooltip-popup"]')).toHaveClass(
+        "custom-popup",
+      );
     });
   });
 
