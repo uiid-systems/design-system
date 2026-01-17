@@ -30,5 +30,8 @@ storybook-static
 # Turborepo
 .turbo
 
+# Next.js
+.next
+
 # CSS tokens
 packages/tokens/src/css/

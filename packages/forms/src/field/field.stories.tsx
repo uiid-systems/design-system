@@ -11,6 +11,7 @@ import { Combobox } from "../combobox/combobox";
 import { Autocomplete } from "../autocomplete/autocomplete";
 import { Slider } from "../slider/slider";
 import { Switch } from "../switch/switch";
+import { Textarea } from "../textarea/textarea";
 
 import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
 import { MOCK_RADIOGROUP_OPTIONS } from "../radio-group/radio-group.mocks";
@@ -89,6 +90,10 @@ const meta = {
 
       <Field {...args} label="Field with switch">
         <Switch bordered label="Switch" />
+      </Field>
+
+      <Field {...args} label="Field with textarea">
+        <Textarea placeholder="Type something..." />
       </Field>
     </Stack>
   ),

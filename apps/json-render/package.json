@@ -1,0 +1,35 @@
+{
+  "name": "json-render-playground",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@json-render/core": "^0.2.0",
+    "@json-render/react": "^0.2.0",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/cards": "workspace:*",
+    "@uiid/forms": "workspace:*",
+    "@uiid/layout": "workspace:*",
+    "@uiid/registry": "workspace:*",
+    "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*",
+    "ai": "^4.3.0",
+    "next": "16.0.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.1",
+    "typescript": "^5"
+  }
+}
