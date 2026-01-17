@@ -58,7 +58,9 @@ export const registry: Registry = {
 /**
  * List of all component names in the registry.
  */
-export const componentNames = Object.keys(registry) as Array<keyof typeof registry>;
+export const componentNames = Object.keys(registry) as Array<
+  keyof typeof registry
+>;
 
 /**
  * Get components by category.
@@ -71,4 +73,3 @@ export const getComponentsByCategory = (category: string) =>
  */
 export const getComponentsByPackage = (packageName: string) =>
   Object.values(registry).filter((entry) => entry.package === packageName);
-
