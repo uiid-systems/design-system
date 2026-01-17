@@ -7,6 +7,7 @@ import { JSONUIProvider, Renderer } from "@json-render/react";
 
 import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
+import { Textarea } from "@uiid/forms";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -45,7 +46,7 @@ export default function PlaygroundPage() {
     >
       <Stack gap={6} p={6} fullwidth>
         {/* Header */}
-        <Stack gap={2}>
+        <Stack gap={4}>
           <Text size={4} weight="bold">
             UIID + json-render Playground
           </Text>
@@ -57,19 +58,19 @@ export default function PlaygroundPage() {
         {/* Main content */}
         <Group gap={6} fullwidth evenly>
           {/* JSON Editor */}
-          <Stack gap={3}>
+          <Stack gap={4}>
             <Text size={2} weight="bold">
               JSON Input
             </Text>
-            <Card
+            <Textarea
+              value={jsonInput}
+              onChange={(e) => setJsonInput(e.target.value)}
+              rows={20}
               fullwidth
-              fullheight
-              render={
-                <textarea
-                  value={jsonInput}
-                  onChange={(e) => setJsonInput(e.target.value)}
-                />
-              }
+              style={{
+                fontFamily: "monospace",
+                backgroundColor: "var(--shade-surface)",
+              }}
             />
 
             {error && (
@@ -83,7 +84,7 @@ export default function PlaygroundPage() {
           </Stack>
 
           {/* Preview */}
-          <Stack gap={3}>
+          <Stack gap={4}>
             <Text size={2} weight="bold">
               Preview
             </Text>

@@ -18,6 +18,7 @@ import {
   InputEntry,
   SelectEntry,
   SwitchEntry,
+  TextareaEntry,
 } from "./schemas/forms";
 
 // Typography components
@@ -44,6 +45,7 @@ export const registry: Registry = {
 
   // Forms
   Input: InputEntry,
+  Textarea: TextareaEntry,
   Checkbox: CheckboxEntry,
   Select: SelectEntry,
   Switch: SwitchEntry,

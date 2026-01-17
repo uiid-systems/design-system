@@ -50,4 +50,7 @@ export * from "./switch/switch";
 export * from "./switch/switch.types";
 export * from "./switch/subcomponents";
 
+export * from "./textarea/textarea";
+export * from "./textarea/textarea.types";
+
 export * from "./types";
