@@ -6,7 +6,6 @@ import type { UITree } from "@json-render/core";
 import { JSONUIProvider, Renderer } from "@json-render/react";
 
 import { Button } from "@uiid/buttons";
-import { Card } from "@uiid/cards";
 import { Textarea } from "@uiid/forms";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
@@ -20,15 +19,15 @@ export default function PlaygroundPage() {
     JSON.stringify(exampleTree, null, 2),
   );
   const [tree, setTree] = useState<UITree>(exampleTree);
-  const [error, setError] = useState<string | null>(null);
+  const [parseError, setParseError] = useState<string | null>(null);
 
   const handleParseJson = () => {
     try {
       const parsed = JSON.parse(jsonInput);
       setTree(parsed);
-      setError(null);
+      setParseError(null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Invalid JSON");
+      setParseError(e instanceof Error ? e.message : "Invalid JSON");
     }
   };
 
@@ -39,6 +38,9 @@ export default function PlaygroundPage() {
         submit: async () => {
           alert("Submit action triggered!");
         },
+        reset: async () => {
+          alert("Reset action triggered!");
+        },
         navigate: async () => {
           alert("Navigate action triggered!");
         },
@@ -46,19 +48,19 @@ export default function PlaygroundPage() {
     >
       <Stack gap={6} p={6} fullwidth>
         {/* Header */}
-        <Stack gap={4}>
-          <Text size={4} weight="bold">
+        <Stack gap={2}>
+          <Text size={5} weight="bold">
             UIID + json-render Playground
           </Text>
-          <Text>
-            Edit the JSON below to see UIID components rendered in real-time.
+          <Text shade="muted">
+            Edit the JSON below to build UI with UIID components.
           </Text>
         </Stack>
 
         {/* Main content */}
-        <Group gap={6} fullwidth evenly>
+        <Group gap={6} fullwidth evenly ay="start">
           {/* JSON Editor */}
-          <Stack gap={4}>
+          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
             <Text size={2} weight="bold">
               JSON Input
             </Text>
@@ -73,18 +75,18 @@ export default function PlaygroundPage() {
               }}
             />
 
-            {error && (
+            {parseError && (
               <Text tone="negative" size={0}>
-                Error: {error}
+                Parse Error: {parseError}
               </Text>
             )}
             <Button onClick={handleParseJson} fullwidth>
-              Render JSON
+              Update Preview
             </Button>
           </Stack>
 
           {/* Preview */}
-          <Stack gap={4}>
+          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
             <Text size={2} weight="bold">
               Preview
             </Text>

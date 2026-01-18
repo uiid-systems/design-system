@@ -16,3 +16,6 @@ export * from "./typography";
 // Card components
 export * from "./cards";
 
+// Overlay components
+export * from "./overlays";
+

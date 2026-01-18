@@ -6,69 +6,116 @@ export const exampleTree: UITree = {
     root: {
       key: "root",
       type: "Stack",
-      props: { gap: 4, p: 4 },
-      children: ["heading", "description", "card"],
+      props: { gap: 4, ax: "stretch", fullwidth: true },
+      children: ["contact-form"],
     },
-    heading: {
-      key: "heading",
-      type: "Text",
+    "contact-form": {
+      key: "contact-form",
+      type: "Form",
       props: {
-        size: 4,
-        weight: "bold",
-        children: "Welcome to UIID + json-render",
+        action: { type: "submit" },
       },
+      children: ["form-card"],
       parentKey: "root",
     },
-    description: {
-      key: "description",
-      type: "Text",
-      props: {
-        children:
-          "This UI was generated from JSON using the UIID component registry.",
-      },
-      parentKey: "root",
-    },
-    card: {
-      key: "card",
+    "form-card": {
+      key: "form-card",
       type: "Card",
       props: {
-        title: "Example Card",
-        description: "This is a card component",
-        fullwidth: true,
         ax: "stretch",
+        gap: 4,
+        fullwidth: true,
       },
-      children: ["input", "checkbox", "button-group"],
-      parentKey: "root",
+      children: [
+        "name-input",
+        "email-input",
+        "message-input",
+        "terms-checkbox",
+        "button-group",
+      ],
+      parentKey: "contact-form",
     },
-    input: {
-      key: "input",
+    "name-input": {
+      key: "name-input",
       type: "Input",
-      props: { label: "Your name", placeholder: "Enter your name..." },
-      parentKey: "card",
+      props: {
+        name: "name",
+        label: "Full Name",
+        placeholder: "Enter your full name...",
+        required: true,
+      },
+      parentKey: "form-card",
     },
-    checkbox: {
-      key: "checkbox",
+    "email-input": {
+      key: "email-input",
+      type: "Input",
+      props: {
+        name: "email",
+        label: "Email Address",
+        placeholder: "you@example.com",
+        type: "email",
+        required: true,
+      },
+      parentKey: "form-card",
+    },
+    "message-input": {
+      key: "message-input",
+      type: "Textarea",
+      props: {
+        name: "message",
+        label: "Message",
+        placeholder: "How can we help you?",
+        rows: 4,
+        required: true,
+      },
+      parentKey: "form-card",
+    },
+    "terms-checkbox": {
+      key: "terms-checkbox",
       type: "Checkbox",
-      props: { label: "I agree to the terms" },
-      parentKey: "card",
+      props: {
+        name: "terms",
+        label: "I agree to the terms and conditions",
+        required: true,
+      },
+      parentKey: "form-card",
     },
     "button-group": {
       key: "button-group",
       type: "Group",
       props: { gap: 2, ax: "end" },
-      children: ["cancel-btn", "submit-btn"],
-      parentKey: "card",
+      children: ["reset-modal", "submit-btn"],
+      parentKey: "form-card",
     },
-    "cancel-btn": {
-      key: "cancel-btn",
-      type: "Button",
-      props: { variant: "subtle", children: "Cancel" },
+    "reset-modal": {
+      key: "reset-modal",
+      type: "Modal",
+      props: {
+        title: "Reset Form?",
+        description:
+          "Are you sure you want to reset the form? All entered data will be lost.",
+        size: "small",
+      },
+      children: ["reset-trigger-btn"],
       parentKey: "button-group",
+    },
+    "reset-trigger-btn": {
+      key: "reset-trigger-btn",
+      type: "Button",
+      props: {
+        variant: "subtle",
+        children: "Reset",
+        type: "reset",
+      },
+      parentKey: "reset-modal",
     },
     "submit-btn": {
       key: "submit-btn",
       type: "Button",
-      props: { children: "Submit" },
+      props: {
+        children: "Submit",
+        type: "submit",
+      },
       parentKey: "button-group",
     },
   },

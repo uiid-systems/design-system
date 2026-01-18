@@ -11,8 +11,9 @@ import type { ComponentRegistry } from "@json-render/react";
 
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Checkbox, Input, Select, Switch } from "@uiid/forms";
+import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
+import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 /**
@@ -37,67 +38,105 @@ export const registry: ComponentRegistry = {
   Separator: ({ element }) => <Separator {...element.props} />,
 
   // Button components
-  Button: ({ element, children, onAction }) => (
-    <Button
-      {...element.props}
-      onClick={() => {
-        if (element.props.action && onAction) {
-          onAction(element.props.action);
-        }
-      }}
-    >
-      {children || element.props.children}
-    </Button>
-  ),
+  Button: ({ element, children, onAction }) => {
+    // Destructure action to prevent it from being spread to the native button
+    // React 19 reserves "action" prop for form actions on <button> elements
+    const { action, ...props } = element.props;
+    return (
+      <Button
+        {...props}
+        onClick={() => {
+          if (action && onAction) {
+            onAction(action);
+          }
+        }}
+      >
+        {children || props.children}
+      </Button>
+    );
+  },
 
-  ToggleButton: ({ element, children, onAction }) => (
-    <ToggleButton
-      {...element.props}
-      onPressedChange={() => {
-        if (element.props.action && onAction) {
-          onAction(element.props.action);
-        }
-      }}
-    >
-      {children || element.props.children}
-    </ToggleButton>
-  ),
+  ToggleButton: ({ element, children, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <ToggleButton
+        {...props}
+        onPressedChange={() => {
+          if (action && onAction) {
+            onAction(action);
+          }
+        }}
+      >
+        {children || props.children}
+      </ToggleButton>
+    );
+  },
 
   // Form components
+  Form: ({ element, children, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Form
+        {...props}
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (action && onAction) {
+            const formData = new FormData(event.currentTarget);
+            const data = Object.fromEntries(formData.entries());
+            onAction({ ...action, params: { formData: data } });
+          }
+        }}
+      >
+        {children}
+      </Form>
+    );
+  },
+
   Input: ({ element }) => <Input {...element.props} />,
 
-  Checkbox: ({ element, onAction }) => (
-    <Checkbox
-      {...element.props}
-      onCheckedChange={(checked) => {
-        if (element.props.action && onAction) {
-          onAction({ ...element.props.action, params: { checked } });
-        }
-      }}
-    />
-  ),
+  Textarea: ({ element }) => <Textarea {...element.props} />,
 
-  Select: ({ element, onAction }) => (
-    <Select
-      {...element.props}
-      onValueChange={(value) => {
-        if (element.props.action && onAction) {
-          onAction({ ...element.props.action, params: { value } });
-        }
-      }}
-    />
-  ),
+  Checkbox: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Checkbox
+        {...props}
+        onCheckedChange={(checked) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { checked } });
+          }
+        }}
+      />
+    );
+  },
 
-  Switch: ({ element, onAction }) => (
-    <Switch
-      {...element.props}
-      onCheckedChange={(checked) => {
-        if (element.props.action && onAction) {
-          onAction({ ...element.props.action, params: { checked } });
-        }
-      }}
-    />
-  ),
+  Select: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Select
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
+  Switch: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Switch
+        {...props}
+        onCheckedChange={(checked) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { checked } });
+          }
+        }}
+      />
+    );
+  },
 
   // Typography components
   Text: ({ element, children }) => (
@@ -106,4 +145,9 @@ export const registry: ComponentRegistry = {
 
   // Card components
   Card: ({ element, children }) => <Card {...element.props}>{children}</Card>,
+
+  // Overlay components
+  Modal: ({ element, children }) => (
+    <Modal {...element.props} trigger={children} />
+  ),
 };

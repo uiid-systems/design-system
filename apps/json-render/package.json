@@ -15,6 +15,7 @@
     "@uiid/cards": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/overlays": "workspace:*",
     "@uiid/registry": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
