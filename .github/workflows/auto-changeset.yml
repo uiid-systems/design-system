@@ -55,6 +55,7 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           # Configure git
           git config user.name "github-actions[bot]"
@@ -66,6 +67,12 @@ jobs:
           # Use PR title + description for changeset message
           if [ -z "$PR_TITLE" ]; then
             PR_TITLE="Automatic patch release for PR changes"
+          fi
+
+          # Append PR number to title for linking (e.g., "feat: add feature (#123)")
+          # Only add if not already present
+          if [[ ! "$PR_TITLE" =~ \(#[0-9]+\)$ ]]; then
+            PR_TITLE="${PR_TITLE} (#${PR_NUMBER})"
           fi
 
           # Extract first paragraph (up to first blank line) and clean it up

@@ -1,6 +1,6 @@
 import type { UITree } from "@json-render/core";
 
-export const exampleTree: UITree = {
+export const MOCK_UI_TREE: UITree = {
   root: "root",
   elements: {
     root: {

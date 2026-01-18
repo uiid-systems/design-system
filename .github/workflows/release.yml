@@ -322,6 +322,86 @@ jobs:
         if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
         run: pnpm run build
 
+      - name: Generate release notes
+        if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
+        id: release_notes
+        run: |
+          VERSION="${{ steps.version_check.outputs.version }}"
+          VERSION_NUM="${VERSION#v}"
+          
+          # Read the changelog and generate formatted release notes
+          node -e "
+            const fs = require('fs');
+            const changelog = JSON.parse(fs.readFileSync('packages/changelog.json', 'utf8'));
+            const entry = changelog.find(e => e.version === '${VERSION_NUM}');
+            
+            if (!entry) {
+              console.log('No changelog entry found for this version.');
+              process.exit(0);
+            }
+            
+            const lines = [];
+            
+            // Features
+            if (entry.changes.features?.length) {
+              lines.push('## ✨ Features\\n');
+              entry.changes.features.forEach(f => {
+                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
+                lines.push('- ' + f.description + prLink);
+              });
+              lines.push('');
+            }
+            
+            // Fixes
+            if (entry.changes.fixes?.length) {
+              lines.push('## 🐛 Bug Fixes\\n');
+              entry.changes.fixes.forEach(f => {
+                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
+                lines.push('- ' + f.description + prLink);
+              });
+              lines.push('');
+            }
+            
+            // Refactors
+            if (entry.changes.refactors?.length) {
+              lines.push('## ♻️ Refactors\\n');
+              entry.changes.refactors.forEach(f => {
+                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
+                lines.push('- ' + f.description + prLink);
+              });
+              lines.push('');
+            }
+            
+            // Performance
+            if (entry.changes.performance?.length) {
+              lines.push('## ⚡ Performance\\n');
+              entry.changes.performance.forEach(f => {
+                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
+                lines.push('- ' + f.description + prLink);
+              });
+              lines.push('');
+            }
+            
+            // Documentation
+            if (entry.changes.documentation?.length) {
+              lines.push('## 📚 Documentation\\n');
+              entry.changes.documentation.forEach(f => {
+                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
+                lines.push('- ' + f.description + prLink);
+              });
+              lines.push('');
+            }
+            
+            // Packages
+            lines.push('## 📦 Packages\\n');
+            lines.push('All UIID packages updated to ${VERSION}:\\n');
+            entry.packages.forEach(p => lines.push('- \`' + p + '\`'));
+            
+            console.log(lines.join('\\n'));
+          " > /tmp/release-notes.md
+          
+          echo "notes_file=/tmp/release-notes.md" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
         uses: actions/create-release@v1
@@ -330,13 +410,6 @@ jobs:
         with:
           tag_name: ${{ steps.version_check.outputs.version }}
           release_name: Release ${{ steps.version_check.outputs.version }}
-          body: |
-            ## Changes
-
-            See [changelog](https://github.com/${{ github.repository }}/blob/main/packages/changelog.json) for detailed changes.
-
-            ## Packages
-
-            All UIID packages have been updated to ${{ steps.version_check.outputs.version }}
+          body_path: ${{ steps.release_notes.outputs.notes_file }}
           draft: false
           prerelease: false

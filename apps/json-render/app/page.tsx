@@ -12,13 +12,13 @@ import { Text } from "@uiid/typography";
 
 import { registry } from "@/lib/components";
 
-import { exampleTree } from "./exampleTree";
+import { MOCK_UI_TREE } from "./mocks";
 
 export default function PlaygroundPage() {
   const [jsonInput, setJsonInput] = useState(
-    JSON.stringify(exampleTree, null, 2),
+    JSON.stringify(MOCK_UI_TREE, null, 2),
   );
-  const [tree, setTree] = useState<UITree>(exampleTree);
+  const [tree, setTree] = useState<UITree>(MOCK_UI_TREE);
   const [parseError, setParseError] = useState<string | null>(null);
 
   const handleParseJson = () => {

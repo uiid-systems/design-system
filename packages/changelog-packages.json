@@ -1,0 +1,401 @@
+[
+  {
+    "packageName": "@uiid/backgrounds",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/blocks",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks package, newsletter block",
+              "raw": "feat: add blocks package, newsletter block",
+              "semverType": "patch"
+            }
+          ],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            },
+            {
+              "description": "Build failures, recover profile block",
+              "raw": "fix: build failures, recover profile block",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/buttons",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/calendars",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            },
+            {
+              "description": "Build failures, recover profile block",
+              "raw": "fix: build failures, recover profile block",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/cards",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/forms",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/icons",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/indicators",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/interactive",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/layout",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks package, newsletter block",
+              "raw": "feat: add blocks package, newsletter block",
+              "semverType": "patch"
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Remove css toggles, more GHA optimizations",
+              "raw": "refactor: remove css toggles, more GHA optimizations",
+              "semverType": "patch"
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/lists",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/navigation",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/overlays",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            },
+            {
+              "description": "Build failures, recover profile block",
+              "raw": "fix: build failures, recover profile block",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/tables",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/tokens",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks package, newsletter block",
+              "raw": "feat: add blocks package, newsletter block",
+              "semverType": "patch"
+            }
+          ],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/typography",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "packageName": "@uiid/utils",
+    "entries": [
+      {
+        "version": "0.0.1",
+        "date": "January 16, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks package, newsletter block",
+              "raw": "feat: add blocks package, newsletter block",
+              "semverType": "patch"
+            }
+          ],
+          "fixes": [
+            {
+              "description": "React hook errors",
+              "raw": "fix: react hook errors",
+              "semverType": "patch"
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Remove css toggles, more GHA optimizations",
+              "raw": "refactor: remove css toggles, more GHA optimizations",
+              "semverType": "patch"
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      }
+    ]
+  }
+]
