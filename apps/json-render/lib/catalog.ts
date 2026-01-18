@@ -16,11 +16,13 @@ import {
   GroupPropsSchema,
   InputPropsSchema,
   LayerPropsSchema,
+  ModalPropsSchema,
   SelectPropsSchema,
   SeparatorPropsSchema,
   StackPropsSchema,
   SwitchPropsSchema,
   TextPropsSchema,
+  TextareaPropsSchema,
   ToggleButtonPropsSchema,
 } from "@uiid/registry";
 
@@ -69,6 +71,10 @@ export const catalog = createCatalog({
       props: InputPropsSchema,
       hasChildren: false,
     },
+    Textarea: {
+      props: TextareaPropsSchema,
+      hasChildren: false,
+    },
     Checkbox: {
       props: CheckboxPropsSchema,
       hasChildren: false,
@@ -91,6 +97,12 @@ export const catalog = createCatalog({
     // Card components
     Card: {
       props: CardPropsSchema,
+      hasChildren: true,
+    },
+
+    // Overlay components
+    Modal: {
+      props: ModalPropsSchema,
       hasChildren: true,
     },
   },

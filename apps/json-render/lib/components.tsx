@@ -11,8 +11,9 @@ import type { ComponentRegistry } from "@json-render/react";
 
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Checkbox, Input, Select, Switch } from "@uiid/forms";
+import { Checkbox, Input, Select, Switch, Textarea } from "@uiid/forms";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
+import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 /**
@@ -66,6 +67,8 @@ export const registry: ComponentRegistry = {
   // Form components
   Input: ({ element }) => <Input {...element.props} />,
 
+  Textarea: ({ element }) => <Textarea {...element.props} />,
+
   Checkbox: ({ element, onAction }) => (
     <Checkbox
       {...element.props}
@@ -106,4 +109,9 @@ export const registry: ComponentRegistry = {
 
   // Card components
   Card: ({ element, children }) => <Card {...element.props}>{children}</Card>,
+
+  // Overlay components
+  Modal: ({ element, children }) => (
+    <Modal {...element.props} trigger={children} />
+  ),
 };

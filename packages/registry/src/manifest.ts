@@ -27,6 +27,16 @@ import { TextEntry } from "./schemas/typography";
 // Card components
 import { CardEntry } from "./schemas/cards";
 
+// Overlay components
+import {
+  DrawerEntry,
+  ModalEntry,
+  PopoverEntry,
+  SheetEntry,
+  ToasterEntry,
+  TooltipEntry,
+} from "./schemas/overlays";
+
 /**
  * Complete registry of all UIID components.
  * Maps component names to their entries (schema, metadata, defaults).
@@ -55,6 +65,14 @@ export const registry: Registry = {
 
   // Cards
   Card: CardEntry,
+
+  // Overlays
+  Drawer: DrawerEntry,
+  Modal: ModalEntry,
+  Popover: PopoverEntry,
+  Sheet: SheetEntry,
+  Toaster: ToasterEntry,
+  Tooltip: TooltipEntry,
 };
 
 /**
