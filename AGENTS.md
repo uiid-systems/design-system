@@ -607,6 +607,30 @@ Use workspace protocol for internal packages:
 
 ## Common Tasks
 
+### Creating a New Package
+
+When creating a new `@uiid/*` package:
+
+1. Create the package directory under `packages/`
+2. Add `package.json`, `tsconfig.json`, and `vite.config.ts` (using `createViteConfig`)
+3. Create `src/index.ts` barrel export
+4. Add `src/vite-env.d.ts` for CSS module types
+5. **Register in Storybook** - Add the stories path to `apps/storybook/.storybook/main.ts`:
+   ```ts
+   stories: [
+     // ... existing packages
+     "../../../packages/{new-package}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+   ],
+   ```
+6. **Register in Vitest** - Add the package alias to `vitest.config.ts`:
+   ```ts
+   const uiidPackages = [
+     // ... existing packages
+     "{new-package}",
+   ];
+   ```
+7. Run `pnpm install` to link the workspace package
+
 ### Creating a New Component
 
 1. Create component directory with standard file structure

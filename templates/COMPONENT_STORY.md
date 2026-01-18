@@ -115,3 +115,20 @@ Stories should demonstrate the simple component API, not composed subcomponents:
 ```
 
 Only show composed usage if it's the only way to achieve a pattern (and consider adding the feature to the simple component instead).
+
+### New Package Registration
+
+When creating stories for a **new package**, you must register it in the Storybook config:
+
+**`apps/storybook/.storybook/main.ts`**
+```ts
+const config: StorybookConfig = {
+  stories: [
+    // ... existing packages
+    "../../../packages/{new-package}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+  ],
+  // ...
+};
+```
+
+Stories won't appear in Storybook until this path is added.

@@ -1,0 +1,64 @@
+{
+  "name": "@uiid/code",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./globals.css": "./dist/code.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ignore-pattern 'dist/**'",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "shiki": "^3.0.0",
+    "@shikijs/langs": "^3.0.0",
+    "@shikijs/themes": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@uiid/utils": "workspace:*",
+    "@uiid/layout": "workspace:*",
+    "@uiid/tokens": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/typography": "workspace:*",
+    "@eslint/js": "^9.29.0",
+    "@storybook/react-vite": "^10.1.10",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^3.10.2",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "happy-dom": "^15.11.6",
+    "prettier": "3.6.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "storybook": "^10.1.10",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.16"
+  }
+}
