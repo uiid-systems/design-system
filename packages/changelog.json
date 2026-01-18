@@ -1,230 +1,80 @@
 [
   {
-    "packageName": "@uiid/buttons",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: release workflows"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/cards",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/forms",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: release workflows"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/icons",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/indicators",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/interactive",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: react hook errors"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/layout",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "refactor: remove css toggles, more GHA optimizations"
-          },
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "feat: add blocks package, newsletter block"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/overlays",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: react hook errors"
-          },
-          {
-            "type": "patch",
-            "description": "fix: build failures, recover profile block"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/tokens",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: react hook errors"
-          },
-          {
-            "type": "patch",
-            "description": "feat: add blocks package, newsletter block"
-          },
-          {
-            "type": "patch",
-            "description": "fix: release workflows"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/typography",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
-  },
-  {
-    "packageName": "@uiid/utils",
-    "entries": [
-      {
-        "version": "0.0.1",
-        "date": "January 16, 2026",
-        "changes": [
-          {
-            "type": "patch",
-            "description": "refactor: remove css toggles, more GHA optimizations"
-          },
-          {
-            "type": "patch",
-            "description": "chore: remove changelog story"
-          },
-          {
-            "type": "patch",
-            "description": "fix: react hook errors"
-          },
-          {
-            "type": "patch",
-            "description": "feat: add blocks package, newsletter block"
-          }
-        ],
-        "dependencies": []
-      }
-    ]
+    "version": "0.0.1",
+    "date": "January 16, 2026",
+    "packages": [
+      "@uiid/backgrounds",
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [
+        {
+          "description": "Add blocks package, newsletter block",
+          "raw": "feat: add blocks package, newsletter block",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/layout",
+            "@uiid/tokens",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "description": "React hook errors",
+          "raw": "fix: react hook errors",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/backgrounds",
+            "@uiid/blocks",
+            "@uiid/calendars",
+            "@uiid/interactive",
+            "@uiid/overlays",
+            "@uiid/tokens",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Build failures, recover profile block",
+          "raw": "fix: build failures, recover profile block",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/calendars",
+            "@uiid/overlays"
+          ]
+        }
+      ],
+      "refactors": [
+        {
+          "description": "Remove css toggles, more GHA optimizations",
+          "raw": "refactor: remove css toggles, more GHA optimizations",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/layout",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "performance": [],
+      "documentation": [],
+      "other": []
+    }
   }
 ]
