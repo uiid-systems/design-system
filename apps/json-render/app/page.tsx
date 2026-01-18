@@ -19,7 +19,7 @@ export default function PlaygroundPage() {
     JSON.stringify(MOCK_UI_TREE, null, 2),
   );
   const [tree, setTree] = useState<UITree>(MOCK_UI_TREE);
-  const [error, setError] = useState<string | null>(null);
+  const [parseError, setParseError] = useState<string | null>(null);
 
   const handleParseJson = () => {
     try {
