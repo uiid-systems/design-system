@@ -13,6 +13,7 @@ import {
   ButtonPropsSchema,
   CardPropsSchema,
   CheckboxPropsSchema,
+  FormPropsSchema,
   GroupPropsSchema,
   InputPropsSchema,
   LayerPropsSchema,
@@ -67,6 +68,10 @@ export const catalog = createCatalog({
     },
 
     // Form components
+    Form: {
+      props: FormPropsSchema,
+      hasChildren: true,
+    },
     Input: {
       props: InputPropsSchema,
       hasChildren: false,

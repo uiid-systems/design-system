@@ -1,6 +1,11 @@
 @import "@uiid/tokens/overlays.tokens.css";
 @import "@uiid/tokens/modal.tokens.css";
 
+/* Disable Base UI's focus styles on the trigger - let the child component handle focus */
+.modal-trigger:focus-visible {
+  outline: none;
+}
+
 .modal-backdrop {
   position: fixed;
   min-height: 100dvh;

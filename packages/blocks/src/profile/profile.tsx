@@ -28,7 +28,11 @@ export const Profile = () => {
           tone="positive"
           icon={MailIcon}
           title="Please verify your email address."
-          action={<Button variant="inverted">Verify email</Button>}
+          action={
+            <Button variant="inverted" size="small">
+              Verify email
+            </Button>
+          }
         />
         <Group gap={4} fullwidth evenly>
           <ProfileStat title="Matches played" value={21} icon={SwordsIcon} />

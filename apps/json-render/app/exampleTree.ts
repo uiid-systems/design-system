@@ -6,8 +6,17 @@ export const exampleTree: UITree = {
     root: {
       key: "root",
       type: "Stack",
-      props: { gap: 4, fullwidth: true },
+      props: { gap: 4, ax: "stretch", fullwidth: true },
+      children: ["contact-form"],
+    },
+    "contact-form": {
+      key: "contact-form",
+      type: "Form",
+      props: {
+        action: { type: "submit" },
+      },
       children: ["form-card"],
+      parentKey: "root",
     },
     "form-card": {
       key: "form-card",
@@ -24,7 +33,7 @@ export const exampleTree: UITree = {
         "terms-checkbox",
         "button-group",
       ],
-      parentKey: "root",
+      parentKey: "contact-form",
     },
     "name-input": {
       key: "name-input",
@@ -96,6 +105,7 @@ export const exampleTree: UITree = {
       props: {
         variant: "subtle",
         children: "Reset",
+        type: "reset",
       },
       parentKey: "reset-modal",
     },
@@ -104,7 +114,7 @@ export const exampleTree: UITree = {
       type: "Button",
       props: {
         children: "Submit",
-        action: { type: "submit" },
+        type: "submit",
       },
       parentKey: "button-group",
     },
