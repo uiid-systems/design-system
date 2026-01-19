@@ -25,6 +25,11 @@
     padding-inline: 0.25rem;
     margin-inline: -0.25rem;
   }
+
+  /* Highlighted lines */
+  & :global(.line[data-highlighted]) {
+    background-color: rgba(var(--shade-accent-rgb, 128, 128, 128), 0.15);
+  }
 }
 
 .code-block-loading {

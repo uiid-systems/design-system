@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "UIID + json-render Playground",
+  title: "uiid + json-render",
   description: "Test AI-generated UI with UIID components and json-render",
 };
 

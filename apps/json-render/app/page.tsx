@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import type { UITree } from "@json-render/core";
 import { JSONUIProvider, Renderer } from "@json-render/react";
 
 import { Button } from "@uiid/buttons";
-import { CodeEditor } from "@uiid/code";
+import { CodeBlock, CodeEditor } from "@uiid/code";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { registry } from "@/lib/components";
+import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
 import { MOCK_UI_TREE } from "./mocks";
 
@@ -20,6 +21,11 @@ export default function PlaygroundPage() {
   );
   const [tree, setTree] = useState<UITree>(MOCK_UI_TREE);
   const [parseError, setParseError] = useState<string | null>(null);
+  const [jsxCode, setJsxCode] = useState<string>("");
+
+  useEffect(() => {
+    treeToFormattedJsx(tree).then(setJsxCode);
+  }, [tree]);
 
   const handleParseJson = () => {
     try {
@@ -46,15 +52,37 @@ export default function PlaygroundPage() {
         },
       }}
     >
-      <Stack gap={6} p={6} fullwidth>
+      <Stack gap={8} p={8} fullwidth>
         {/* Header */}
-        <Stack gap={2}>
+        <Stack gap={4}>
           <Text size={5} weight="bold">
             uiid + json-render
           </Text>
-          <Text shade="accent">
+          <Text shade="muted">
             Edit the JSON below to build UI with UIID components.
           </Text>
+        </Stack>
+
+        {/* Component list */}
+        <Stack gap={3}>
+          <Text size={2} weight="bold">
+            Available Components
+          </Text>
+          <Group gap={2} style={{ flexWrap: "wrap" }}>
+            {Object.keys(registry).map((name) => (
+              <Text
+                key={name}
+                size={0}
+                style={{
+                  padding: "4px 8px",
+                  backgroundColor: "#262626",
+                  borderRadius: 4,
+                }}
+              >
+                {name}
+              </Text>
+            ))}
+          </Group>
         </Stack>
 
         {/* Main content */}
@@ -89,29 +117,20 @@ export default function PlaygroundPage() {
             </Text>
             <Renderer tree={tree} registry={registry} />
           </Stack>
-        </Group>
 
-        {/* Component list */}
-        <Stack gap={3}>
-          <Text size={2} weight="bold">
-            Available Components
-          </Text>
-          <Group gap={2} style={{ flexWrap: "wrap" }}>
-            {Object.keys(registry).map((name) => (
-              <Text
-                key={name}
-                size={0}
-                style={{
-                  padding: "4px 8px",
-                  backgroundColor: "#262626",
-                  borderRadius: 4,
-                }}
-              >
-                {name}
-              </Text>
-            ))}
-          </Group>
-        </Stack>
+          {/* JSX Output */}
+          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
+            <Text size={2} weight="bold">
+              JSX output
+            </Text>
+            <CodeBlock
+              code={jsxCode}
+              language="tsx"
+              filename="component.tsx"
+              showLineNumbers
+            />
+          </Stack>
+        </Group>
       </Stack>
     </JSONUIProvider>
   );
