@@ -50,7 +50,7 @@ export default function PlaygroundPage() {
         {/* Header */}
         <Stack gap={2}>
           <Text size={5} weight="bold">
-            UIID + json-render Playground
+            uiid + json-render
           </Text>
           <Text shade="muted">
             Edit the JSON below to build UI with UIID components.
@@ -85,7 +85,7 @@ export default function PlaygroundPage() {
           {/* Preview */}
           <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
             <Text size={2} weight="bold">
-              Preview
+              Rendered output
             </Text>
             <Renderer tree={tree} registry={registry} />
           </Stack>
