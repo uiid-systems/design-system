@@ -355,6 +355,29 @@ export const Default: Story = {
 };
 ```
 
+### Pull Request Descriptions
+
+When creating pull requests for new features or packages, use the template at:
+
+**`templates/PR_DESCRIPTION.md`**
+
+**Required sections:**
+
+| Section | When to Include |
+|---------|-----------------|
+| **Summary** | Always - bullet-point overview |
+| **Test plan** | Always - verification checklist |
+| **Details** | For new packages, components, or significant changes |
+
+**Test plan must include:**
+
+1. Build verification: `pnpm build --filter=@uiid/{package}`
+2. Test verification: `pnpm test:run packages/{package}`
+3. Storybook verification (if UI changes)
+4. Feature-specific verification steps
+
+For small fixes or minor changes, a brief summary and test plan is sufficient.
+
 ## Styling
 
 ### Prefer Component Props Over CSS
@@ -606,6 +629,30 @@ Use workspace protocol for internal packages:
 - **react** / **react-dom** - Peer dependencies
 
 ## Common Tasks
+
+### Creating a New Package
+
+When creating a new `@uiid/*` package:
+
+1. Create the package directory under `packages/`
+2. Add `package.json`, `tsconfig.json`, and `vite.config.ts` (using `createViteConfig`)
+3. Create `src/index.ts` barrel export
+4. Add `src/vite-env.d.ts` for CSS module types
+5. **Register in Storybook** - Add the stories path to `apps/storybook/.storybook/main.ts`:
+   ```ts
+   stories: [
+     // ... existing packages
+     "../../../packages/{new-package}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+   ],
+   ```
+6. **Register in Vitest** - Add the package alias to `vitest.config.ts`:
+   ```ts
+   const uiidPackages = [
+     // ... existing packages
+     "{new-package}",
+   ];
+   ```
+7. Run `pnpm install` to link the workspace package
 
 ### Creating a New Component
 

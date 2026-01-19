@@ -11,6 +11,7 @@ const config: StorybookConfig = {
     "../../../packages/buttons/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/calendars/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/cards/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../../../packages/code/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/indicators/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/interactive/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",

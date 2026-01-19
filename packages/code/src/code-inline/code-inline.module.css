@@ -1,0 +1,32 @@
+.code-inline {
+  --code-inline-bg: var(--shade-subtle, rgba(0, 0, 0, 0.1));
+  --code-inline-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --code-inline-font-size: 0.875em;
+  --code-inline-padding-x: 0.375em;
+  --code-inline-padding-y: 0.125em;
+  --code-inline-border-radius: 0.25em;
+
+  display: inline;
+  padding: var(--code-inline-padding-y) var(--code-inline-padding-x);
+  background-color: var(--code-inline-bg);
+  border-radius: var(--code-inline-border-radius);
+  font-family: var(--code-inline-font-family);
+  font-size: var(--code-inline-font-size);
+  white-space: nowrap;
+
+  /* Shiki dual theme support - dark mode by default */
+  & :global(span) {
+    display: inline;
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+  }
+
+  @media (prefers-color-scheme: light) {
+    & :global(span) {
+      color: var(--shiki-light) !important;
+      font-style: var(--shiki-light-font-style) !important;
+      font-weight: var(--shiki-light-font-weight) !important;
+    }
+  }
+}

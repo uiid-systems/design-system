@@ -10,6 +10,7 @@ const uiidPackages = [
   "buttons",
   "calendars",
   "cards",
+  "code",
   "forms",
   "icons",
   "indicators",
