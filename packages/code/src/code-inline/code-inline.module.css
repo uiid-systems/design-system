@@ -14,8 +14,19 @@
   font-size: var(--code-inline-font-size);
   white-space: nowrap;
 
-  /* Ensure inline spans display properly */
+  /* Shiki spans - inline code strips the .shiki wrapper, so target spans directly */
   & :global(span) {
     display: inline;
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+  }
+
+  @media (prefers-color-scheme: light) {
+    & :global(span) {
+      color: var(--shiki-light) !important;
+      font-style: var(--shiki-light-font-style) !important;
+      font-weight: var(--shiki-light-font-weight) !important;
+    }
   }
 }

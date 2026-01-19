@@ -10,52 +10,39 @@
   pointer-events: none;
 }
 
-/* Shared typography for both layers - MUST be identical */
-.code-editor-highlight,
-.code-editor-textarea {
-  font-family: var(--font-mono);
-  font-size: var(--code-font-size);
-  font-weight: var(--code-font-weight);
-  line-height: var(--code-line-height);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  tab-size: 2;
-  margin: 0;
-}
-
-.code-editor-textarea {
-  padding: var(--code-padding);
-}
-
 /* Highlighted code backdrop */
 .code-editor-highlight {
   pointer-events: none;
 
-  /* Inherit all typography for consistent alignment */
-  & :global(pre) {
-    letter-spacing: inherit;
-    word-spacing: inherit;
-    font-kerning: inherit;
-    font-variant-ligatures: inherit;
-    text-rendering: inherit;
-  }
-
-  & :global(code) {
-    letter-spacing: inherit;
-    word-spacing: inherit;
-  }
-
-  /* Ensure spans don't add extra space */
+  /* Ensure Shiki elements inherit typography */
+  & :global(pre),
+  & :global(code),
   & :global(span) {
     font-family: inherit;
     font-size: inherit;
+    font-weight: inherit;
     line-height: inherit;
+    letter-spacing: inherit;
   }
 }
 
-/* Transparent textarea overlay */
+/* Transparent textarea overlay - must match highlight typography exactly */
 .code-editor-textarea {
+  /* Typography from shared variant is applied to parent, inherit here */
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  tab-size: inherit;
+
+  /* Text handling */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: var(--code-padding);
+
   /* Reset form element defaults */
   appearance: none;
   -webkit-appearance: none;

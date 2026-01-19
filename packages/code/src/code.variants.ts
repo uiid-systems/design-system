@@ -3,13 +3,26 @@ import { cva } from "@uiid/utils";
 import styles from "./code.module.css";
 import { DEFAULT_SHOW_LINE_NUMBERS } from "./code.constants";
 
-/** Shared Shiki theme variant - applies dual theme support */
-export const shikiThemeVariant = cva({
-  base: styles["shiki-theme"],
+/** Shared typography for code components */
+export const codeTypographyVariant = cva({
+  base: styles["code-typography"],
 });
 
-/** Full code content variants - includes shiki theme, reset, and line numbers */
+/** Code content variants - includes typography, shiki theme, reset, and line numbers */
 export const codeContentVariants = cva({
+  base: [styles["code-typography"], styles["shiki-theme"], styles["shiki-reset"]],
+  variants: {
+    showLineNumbers: {
+      true: styles["line-numbers"],
+    },
+  },
+  defaultVariants: {
+    showLineNumbers: DEFAULT_SHOW_LINE_NUMBERS,
+  },
+});
+
+/** Shiki-only variants for elements that need theme/reset without typography */
+export const shikiVariants = cva({
   base: [styles["shiki-theme"], styles["shiki-reset"]],
   variants: {
     showLineNumbers: {

@@ -4,7 +4,6 @@ import { cx } from "@uiid/utils";
 
 import type { CodeInlineProps } from "./code-inline.types";
 import { useHighlight } from "../highlighter/highlighter.hooks";
-import { shikiThemeVariant } from "../code.variants";
 import styles from "./code-inline.module.css";
 
 export const CodeInline = ({
@@ -44,7 +43,7 @@ export const CodeInline = ({
     return (
       <code
         data-slot="code-inline"
-        className={cx(styles["code-inline"], shikiThemeVariant(), className)}
+        className={cx(styles["code-inline"], className)}
         dangerouslySetInnerHTML={{ __html: codeContent }}
         {...props}
       />

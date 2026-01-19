@@ -1,5 +1,15 @@
 @import "@uiid/tokens/code.tokens.css";
 
+/* Shared code typography */
+.code-typography {
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
+  font-weight: var(--code-font-weight);
+  line-height: var(--code-line-height);
+  letter-spacing: var(--code-letter-spacing);
+  tab-size: var(--code-tab-size);
+}
+
 /* Shiki dual theme support - dark mode by default */
 .shiki-theme :global(.shiki),
 .shiki-theme :global(.shiki span) {
@@ -29,7 +39,10 @@
   background: transparent !important;
   font-family: inherit;
   font-size: inherit;
+  font-weight: inherit;
   line-height: inherit;
+  letter-spacing: inherit;
+  tab-size: inherit;
 }
 
 .shiki-reset :global(code) {
@@ -37,7 +50,9 @@
   background: transparent;
   font-family: inherit;
   font-size: inherit;
+  font-weight: inherit;
   line-height: inherit;
+  letter-spacing: inherit;
 }
 
 /* Line numbers support */

@@ -35,9 +35,11 @@ export const CodeBlockHeader = ({
         {filename}
       </Text>
       {children}
-      {copyable && code && (
-        <CodeBlockCopyButton code={code} {...CopyButtonProps} />
-      )}
+      <CodeBlockCopyButton
+        code={code}
+        disabled={!copyable || !code}
+        {...CopyButtonProps}
+      />
     </Group>
   );
 };

@@ -13,7 +13,7 @@ import {
   DEFAULT_COPYABLE,
   DEFAULT_CODE,
 } from "../code.constants";
-import { codeContentVariants } from "../code.variants";
+import { codeTypographyVariant, shikiVariants } from "../code.variants";
 
 import type { CodeEditorProps } from "./code-editor.types";
 import styles from "./code-editor.module.css";
@@ -87,14 +87,18 @@ export const CodeEditor = ({
         />
       )}
 
-      <Layer className={styles["code-editor-layer"]} fullwidth>
+      {/* Typography on parent so both children inherit */}
+      <Layer
+        className={cx(styles["code-editor-layer"], codeTypographyVariant())}
+        fullwidth
+      >
         {/* Highlighted code backdrop */}
         <div
           ref={highlightRef}
           data-slot="code-editor-highlight"
           className={cx(
             styles["code-editor-highlight"],
-            codeContentVariants({ showLineNumbers })
+            shikiVariants({ showLineNumbers })
           )}
           dangerouslySetInnerHTML={{ __html: html || "" }}
         />

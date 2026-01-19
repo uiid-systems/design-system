@@ -1,6 +1,4 @@
 .code-block {
-  --code-block-line-height: 1.75;
-
   position: relative;
   background-color: rgba(var(--shade-subtle), 0.5);
   border: 1px solid var(--globals-border-color);
@@ -19,7 +17,6 @@
 
 .code-block-content {
   overflow-x: auto;
-  line-height: var(--code-block-line-height);
 
   /* Line styling - .line is a Shiki class */
   & :global(.line) {
