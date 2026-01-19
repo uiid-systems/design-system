@@ -14,7 +14,7 @@
   font-size: var(--code-inline-font-size);
   white-space: nowrap;
 
-  /* Shiki dual theme support - dark mode by default */
+  /* Shiki spans - inline code strips the .shiki wrapper, so target spans directly */
   & :global(span) {
     display: inline;
     color: var(--shiki-dark) !important;

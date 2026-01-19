@@ -1,0 +1,83 @@
+@import "@uiid/tokens/code.tokens.css";
+
+/* Shared code typography */
+.code-typography {
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
+  font-weight: var(--code-font-weight);
+  line-height: var(--code-line-height);
+  letter-spacing: var(--code-letter-spacing);
+  tab-size: var(--code-tab-size);
+}
+
+/* Shiki dual theme support - dark mode by default */
+.shiki-theme :global(.shiki),
+.shiki-theme :global(.shiki span) {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg, transparent) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+  .shiki-theme :global(.shiki),
+  .shiki-theme :global(.shiki span) {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg, transparent) !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
+}
+
+/* Reset Shiki pre/code styles */
+.shiki-reset :global(pre) {
+  margin: 0;
+  padding: var(--code-padding);
+  background: transparent !important;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  tab-size: inherit;
+}
+
+.shiki-reset :global(code) {
+  display: block;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+/* Line numbers support */
+.line-numbers :global(pre) {
+  counter-reset: line;
+}
+
+.line-numbers :global(code) {
+  display: flex;
+  flex-direction: column;
+}
+
+.line-numbers :global(.line) {
+  display: flex;
+  align-items: baseline;
+
+  &::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2rem;
+    margin-right: 1rem;
+    text-align: right;
+    color: var(--shade-accent, #666);
+    flex-shrink: 0;
+    user-select: none;
+  }
+}

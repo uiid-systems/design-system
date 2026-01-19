@@ -4,7 +4,7 @@ import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
-import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../code-block.constants";
+import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockHeaderProps } from "../code-block.types";
 import styles from "../code-block.module.css";
 
@@ -28,15 +28,18 @@ export const CodeBlockHeader = ({
       gap={4}
       py={2}
       px={4}
+      fullwidth
       {...props}
     >
       <Text size={-1} family="mono" shade="accent">
         {filename}
       </Text>
       {children}
-      {copyable && code && (
-        <CodeBlockCopyButton code={code} {...CopyButtonProps} />
-      )}
+      <CodeBlockCopyButton
+        code={code}
+        disabled={!copyable || !code}
+        {...CopyButtonProps}
+      />
     </Group>
   );
 };

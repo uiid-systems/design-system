@@ -1,6 +1,10 @@
 import { createHighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import type { HighlighterCore } from "shiki/core";
+import {
+  DEFAULT_THEME_DARK,
+  DEFAULT_THEME_LIGHT,
+} from "./highlighter.constants";
 
 import type { BundledLanguage } from "./highlighter.types";
 
@@ -21,9 +25,6 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
 // Themes - Vitesse for light/dark mode support
 const THEME_DARK = () => import("@shikijs/themes/vitesse-dark");
 const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
-
-export const DEFAULT_THEME_DARK = "vitesse-dark";
-export const DEFAULT_THEME_LIGHT = "vitesse-light";
 
 // Singleton state
 let highlighterInstance: HighlighterCore | null = null;
@@ -78,7 +79,7 @@ export async function loadLanguage(language: BundledLanguage): Promise<void> {
  */
 export async function highlight(
   code: string,
-  language: BundledLanguage = "typescript"
+  language: BundledLanguage = "typescript",
 ): Promise<string> {
   await loadLanguage(language);
   const highlighter = await getHighlighter();
@@ -97,7 +98,7 @@ export async function highlight(
  * Check if a language is supported
  */
 export function isSupportedLanguage(
-  language: string
+  language: string,
 ): language is BundledLanguage {
   return language in BUNDLED_LANGS;
 }

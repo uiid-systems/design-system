@@ -28,6 +28,7 @@
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "shiki": "^3.0.0"
   },
