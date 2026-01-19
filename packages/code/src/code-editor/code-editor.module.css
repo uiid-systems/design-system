@@ -1,17 +1,10 @@
-.code-editor {
-  --code-editor-line-height: 1.5;
-  --code-editor-padding: 1rem;
-  --code-editor-font-size: 0.875rem;
+@import "@uiid/tokens/code.tokens.css";
 
-  position: relative;
-  background-color: rgba(var(--shade-surface), 0.5);
-  border: 1px solid var(--globals-border-color);
+.code-editor {
+  border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
-}
-
-.code-editor[data-fullwidth] {
-  width: 100%;
+  position: relative;
 }
 
 .code-editor[data-disabled] {
@@ -19,54 +12,18 @@
   pointer-events: none;
 }
 
-/* Header - ensure space between filename and copy button */
-.code-editor [data-slot="code-block-header"] {
-  justify-content: space-between;
-  width: 100%;
-}
-
-.code-editor [data-slot="code-block-header"] > *:first-child {
-  flex: 1;
-}
-
-.code-editor-layer {
-  position: relative;
-  overflow: auto;
-}
-
 /* Shared typography for both layers - MUST be identical */
 .code-editor-highlight,
 .code-editor-textarea {
   font-family: var(--font-mono);
-  font-size: var(--code-editor-font-size);
-  line-height: var(--code-editor-line-height);
+  font-size: var(--code-font-size);
+  font-weight: var(--code-font-weight);
+  line-height: var(--code-line-height);
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
   tab-size: 2;
-  min-height: 8rem;
   margin: 0;
-  padding: var(--code-editor-padding);
-  box-sizing: border-box;
-
-  /* Force identical text rendering between textarea and div */
-  letter-spacing: normal;
-  word-spacing: normal;
-  font-kerning: none;
-  font-variant-ligatures: none;
-  text-rendering: geometricPrecision;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  code {
-    padding: 0;
-    border: 0;
-    margin: 0;
-    border-radius: 0;
-    background: transparent !important;
-  }
 }
 
 /* Highlighted code backdrop */
@@ -188,10 +145,4 @@
       user-select: none;
     }
   }
-}
-
-/* Loading state */
-.code-editor-loading {
-  color: var(--shade-accent);
-  padding: var(--code-editor-padding);
 }

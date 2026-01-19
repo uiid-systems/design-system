@@ -30,11 +30,6 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /** Show copy button in header */
   copyable?: boolean;
 
-  /** Number of spaces per tab */
-  tabSize?: number;
-  /** Use spaces instead of tabs */
-  insertSpaces?: boolean;
-
   /** Props for the header element */
   HeaderProps?: CodeBlockHeaderProps;
   /** Props for the copy button */

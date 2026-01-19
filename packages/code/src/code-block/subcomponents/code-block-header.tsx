@@ -28,6 +28,7 @@ export const CodeBlockHeader = ({
       gap={4}
       py={2}
       px={4}
+      fullwidth
       {...props}
     >
       <Text size={-1} family="mono" shade="accent">

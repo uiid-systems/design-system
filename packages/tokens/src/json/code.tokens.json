@@ -1,0 +1,12 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "UIID Design System - Code Component Tokens",
+  "code": {
+    "font": {
+      "size": { "$value": "0.875rem", "$type": "dimension" },
+      "weight": { "$value": "400", "$type": "fontWeight" }
+    },
+    "line-height": { "$value": "1.5", "$type": "dimension" },
+    "min-height": { "$value": "8rem", "$type": "dimension" }
+  }
+}

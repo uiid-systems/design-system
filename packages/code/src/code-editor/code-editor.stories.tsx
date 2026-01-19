@@ -30,16 +30,10 @@ const meta = {
       ],
       table: { category: "Options" },
     },
-    tabSize: {
-      control: { type: "number", min: 1, max: 8 },
-      table: { category: "Options" },
-    },
     showLineNumbers: { control: "boolean", table: { category: "Toggles" } },
     copyable: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    insertSpaces: { control: "boolean", table: { category: "Toggles" } },
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     filename: { control: "text", table: { category: "Text" } },
     placeholder: { control: "text", table: { category: "Text" } },
   },
@@ -107,18 +101,17 @@ const sampleJSON = `{
 export const Default: Story = {
   args: {
     defaultValue: sampleTypeScript,
-    language: "typescript",
+    language: "tsx",
     filename: "counter.tsx",
     showLineNumbers: false,
     copyable: true,
-    fullwidth: true,
   },
 };
 
 export const WithLineNumbers: Story = {
   args: {
     defaultValue: sampleTypeScript,
-    language: "typescript",
+    language: "tsx",
     filename: "counter.tsx",
     showLineNumbers: true,
     copyable: true,
@@ -128,7 +121,7 @@ export const WithLineNumbers: Story = {
 export const ReadOnly: Story = {
   args: {
     defaultValue: sampleTypeScript,
-    language: "typescript",
+    language: "tsx",
     filename: "counter.tsx",
     readOnly: true,
     copyable: true,
@@ -196,44 +189,3 @@ export const Languages: Story = {
   ),
 };
 
-export const KeyboardShortcuts: Story = {
-  render: () => (
-    <Stack gap={4}>
-      <Text size={1} weight="bold">
-        Try these keyboard shortcuts:
-      </Text>
-      <Stack gap={1}>
-        <Text size={0} shade="accent">
-          • Tab — Insert indentation
-        </Text>
-        <Text size={0} shade="accent">
-          • Shift+Tab — Remove indentation
-        </Text>
-        <Text size={0} shade="accent">
-          • Cmd/Ctrl+D — Duplicate line
-        </Text>
-        <Text size={0} shade="accent">
-          • Cmd/Ctrl+/ — Toggle comment
-        </Text>
-        <Text size={0} shade="accent">
-          • Cmd/Ctrl+] — Indent line
-        </Text>
-        <Text size={0} shade="accent">
-          • Cmd/Ctrl+[ — Dedent line
-        </Text>
-        <Text size={0} shade="accent">
-          • Enter — Auto-indent on new line
-        </Text>
-      </Stack>
-      <CodeEditor
-        defaultValue={`function example() {
-  // Try the keyboard shortcuts above!
-  const message = "Hello, World!";
-  console.log(message);
-}`}
-        language="typescript"
-        filename="shortcuts.ts"
-      />
-    </Stack>
-  ),
-};

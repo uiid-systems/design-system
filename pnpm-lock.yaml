@@ -826,6 +826,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
+      '@uiid/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
@@ -854,9 +857,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils

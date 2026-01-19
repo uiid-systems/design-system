@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { CodeEditor } from "./code-editor";
@@ -118,85 +118,6 @@ describe("CodeEditor", () => {
 
     await user.type(screen.getByRole("textbox"), "new text");
     expect(handleChange).not.toHaveBeenCalled();
-  });
-
-  // ============================================
-  // KEYBOARD SHORTCUTS
-  // ============================================
-
-  it("inserts tab on Tab key", async () => {
-    const handleChange = vi.fn();
-    const user = userEvent.setup();
-
-    render(<CodeEditor defaultValue="test" onValueChange={handleChange} />);
-
-    const textarea = screen.getByRole("textbox");
-    await user.click(textarea);
-    await user.keyboard("{Tab}");
-
-    await waitFor(() => {
-      expect(handleChange).toHaveBeenCalledWith(expect.stringContaining("  "));
-    });
-  });
-
-  it("duplicates line on Cmd+D", async () => {
-    const handleChange = vi.fn();
-    const user = userEvent.setup();
-
-    render(<CodeEditor defaultValue="line1" onValueChange={handleChange} />);
-
-    const textarea = screen.getByRole("textbox");
-    await user.click(textarea);
-    await user.keyboard("{Meta>}d{/Meta}");
-
-    await waitFor(() => {
-      expect(handleChange).toHaveBeenCalledWith("line1\nline1");
-    });
-  });
-
-  it("toggles comment on Cmd+/", async () => {
-    const handleChange = vi.fn();
-    const user = userEvent.setup();
-
-    render(
-      <CodeEditor
-        defaultValue="const x = 1;"
-        language="typescript"
-        onValueChange={handleChange}
-      />
-    );
-
-    const textarea = screen.getByRole("textbox");
-    await user.click(textarea);
-    await user.keyboard("{Meta>}/{/Meta}");
-
-    await waitFor(() => {
-      expect(handleChange).toHaveBeenCalledWith(
-        expect.stringContaining("//")
-      );
-    });
-  });
-
-  it("auto-indents on Enter", async () => {
-    const handleChange = vi.fn();
-    const user = userEvent.setup();
-
-    render(
-      <CodeEditor defaultValue="  indented" onValueChange={handleChange} />
-    );
-
-    const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
-    await user.click(textarea);
-    
-    // Move cursor to end of line
-    textarea.setSelectionRange(10, 10);
-    await user.keyboard("{Enter}");
-
-    await waitFor(() => {
-      expect(handleChange).toHaveBeenCalledWith(
-        expect.stringContaining("\n  ")
-      );
-    });
   });
 
   // ============================================

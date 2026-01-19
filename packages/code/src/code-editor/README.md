@@ -1,6 +1,6 @@
 # CodeEditor
 
-> Syntax-highlighted code editor with IDE keyboard shortcuts. Uses [Shiki](https://shiki.style/) for highlighting with a transparent textarea overlay for editing.
+> Syntax-highlighted code editor using [Shiki](https://shiki.style/) for highlighting with a transparent textarea overlay for editing.
 
 ## Quick Reference
 
@@ -34,25 +34,10 @@ import { CodeEditor } from "@uiid/code";
 | `placeholder` | `string` | — | Placeholder when empty |
 | `filename` | `string` | — | Filename for header |
 | `copyable` | `boolean` | `true` | Show copy button |
-| `tabSize` | `number` | `2` | Spaces per tab |
-| `insertSpaces` | `boolean` | `true` | Use spaces instead of tabs |
-| `fullwidth` | `boolean` | `false` | Full width layout |
 | `HeaderProps` | `CodeBlockHeaderProps` | — | Props for header |
 | `CopyButtonProps` | `CodeBlockCopyButtonProps` | — | Props for copy button |
 
 > `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`
-
-## Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Tab` | Insert indentation |
-| `Shift+Tab` | Remove indentation |
-| `Enter` | New line with auto-indent |
-| `Cmd/Ctrl+D` | Duplicate current line |
-| `Cmd/Ctrl+/` | Toggle line comment |
-| `Cmd/Ctrl+]` | Indent line |
-| `Cmd/Ctrl+[` | Dedent line |
 
 ## Data Slots
 
