@@ -1,8 +1,0 @@
-.table-root {
-  width: 100%;
-  caption-side: bottom;
-  font-size: 0.875rem;
-  border-collapse: collapse;
-  table-layout: auto;
-  min-width: var(--table-min-width);
-}

@@ -1,6 +1,6 @@
 import { cx } from "@uiid/utils";
 
-import styles from "./table-cell.module.css";
+import styles from "../table.module.css";
 
 export type TableCellProps = React.ComponentProps<"td"> & {
   collapse?: boolean;

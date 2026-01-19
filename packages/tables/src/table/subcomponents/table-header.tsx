@@ -1,6 +1,6 @@
 import { cx } from "@uiid/utils";
 
-import styles from "./table-header.module.css";
+import styles from "../table.module.css";
 
 export const TableHeader = ({
   className,
