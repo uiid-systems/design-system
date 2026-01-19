@@ -11,11 +11,10 @@ export const textVariants = cva({
       true: styles["toggle-underline"],
       false: styles["toggle-no-underline"],
     },
-    align: {
-      center: styles["toggle-center"],
-      left: styles["toggle-left"],
-      right: styles["toggle-right"],
-      justify: styles["toggle-justify"],
+    family: {
+      mono: styles["family-mono"],
+      serif: styles["family-serif"],
+      sans: styles["family-sans"],
     },
     weight: {
       bold: styles["weight-bold"],

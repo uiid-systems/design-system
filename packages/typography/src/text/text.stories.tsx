@@ -13,6 +13,7 @@ const shades: TextProps["shade"][] = [
 ];
 const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
 const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
+const families: TextProps["family"][] = ["mono", "serif", "sans"];
 
 const meta: Meta<typeof Text> = {
   title: "Typography/Text",
@@ -35,6 +36,11 @@ const meta: Meta<typeof Text> = {
     shade: {
       control: "select",
       options: shades,
+      table: { category: "Variants" },
+    },
+    family: {
+      control: "select",
+      options: families,
       table: { category: "Variants" },
     },
     tone: {
@@ -61,8 +67,17 @@ const meta: Meta<typeof Text> = {
     },
   },
   render: (args) => (
-    <div style={{ width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        width: "100%",
+      }}
+    >
       <Text {...args} />
+      <Text {...args} family="mono" />
+      <Text {...args} family="serif" />
     </div>
   ),
 };

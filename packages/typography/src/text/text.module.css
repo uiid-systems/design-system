@@ -130,8 +130,16 @@
   text-wrap: balance;
 }
 
-.toggle-mono {
+.family-mono {
   font-family: var(--font-mono);
+}
+
+.family-serif {
+  font-family: var(--font-serif);
+}
+
+.family-sans {
+  font-family: var(--font-sans);
 }
 
 .weight-bold {
@@ -145,17 +153,4 @@
 }
 .weight-thin {
   font-weight: 100;
-}
-
-.align-center {
-  text-align: center;
-}
-.align-left {
-  text-align: left;
-}
-.align-right {
-  text-align: right;
-}
-.align-justify {
-  text-align: justify;
 }

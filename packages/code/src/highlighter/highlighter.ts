@@ -18,8 +18,12 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
   python: () => import("@shikijs/langs/python"),
 };
 
-// Theme - dark-plus (VS Code default dark)
-const DEFAULT_THEME = () => import("@shikijs/themes/dark-plus");
+// Themes - Vitesse for light/dark mode support
+const THEME_DARK = () => import("@shikijs/themes/vitesse-dark");
+const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
+
+export const DEFAULT_THEME_DARK = "vitesse-dark";
+export const DEFAULT_THEME_LIGHT = "vitesse-light";
 
 // Singleton state
 let highlighterInstance: HighlighterCore | null = null;
@@ -39,7 +43,7 @@ export async function getHighlighter(): Promise<HighlighterCore> {
   }
 
   highlighterPromise = createHighlighterCore({
-    themes: [DEFAULT_THEME],
+    themes: [THEME_DARK, THEME_LIGHT],
     langs: [],
     engine: createJavaScriptRegexEngine(),
   });
@@ -70,6 +74,7 @@ export async function loadLanguage(language: BundledLanguage): Promise<void> {
 
 /**
  * Highlight code with the given language
+ * Uses dual themes for automatic light/dark mode switching via CSS variables
  */
 export async function highlight(
   code: string,
@@ -80,7 +85,11 @@ export async function highlight(
 
   return highlighter.codeToHtml(code, {
     lang: language,
-    theme: "dark-plus",
+    themes: {
+      light: DEFAULT_THEME_LIGHT,
+      dark: DEFAULT_THEME_DARK,
+    },
+    defaultColor: false,
   });
 }
 

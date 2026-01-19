@@ -1,88 +1,57 @@
 .code-block {
-  --code-block-bg: var(--shade-subtle, #1e1e1e);
-  --code-block-border-color: var(--globals-border-color, #333);
-  --code-block-border-radius: var(--globals-border-radius, 0.5rem);
-  --code-block-header-bg: color-mix(in oklab, var(--code-block-bg), transparent 50%);
-  --code-block-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  --code-block-font-size: 0.875rem;
-  --code-block-line-height: 1.5;
-  --code-block-padding: 1rem;
+  --code-block-line-height: 1.75;
 
   position: relative;
-  background-color: var(--code-block-bg);
-  border: 1px solid var(--code-block-border-color);
-  border-radius: var(--code-block-border-radius);
+  background-color: rgba(var(--shade-subtle), 0.5);
+  border: 1px solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
   overflow: hidden;
 }
 
 .code-block-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem var(--code-block-padding);
-  background-color: var(--code-block-header-bg);
-  border-bottom: 1px solid var(--code-block-border-color);
-  min-height: 2.5rem;
-}
-
-.code-block-filename {
-  font-family: var(--code-block-font-family);
-  font-size: 0.75rem;
-  color: var(--shade-accent, #888);
-  font-weight: 500;
-}
-
-.code-block-copy-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem 0.5rem;
-  background: transparent;
-  border: 1px solid var(--code-block-border-color);
-  border-radius: 0.25rem;
-  color: var(--shade-accent, #888);
-  font-family: var(--code-block-font-family);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 150ms ease-in-out;
-  gap: 0.25rem;
-
-  &:hover {
-    background-color: color-mix(in oklab, var(--shade-foreground, #fff), transparent 90%);
-    color: var(--shade-foreground, #fff);
-  }
-
-  &:focus {
-    outline: 2px solid var(--globals-outline-color, #fff);
-    outline-offset: 2px;
-  }
-
-  svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
+  border-bottom: var(--globals-border-width, 1px) solid var(--globals-border-color, #333);
 }
 
 .code-block-copy-button[data-copied="true"] {
-  color: var(--tones-positive, #4ade80);
-  border-color: var(--tones-positive, #4ade80);
+  color: var(--tones-positive);
+  border-color: var(--tones-positive);
 }
 
 .code-block-content {
   overflow-x: auto;
-  font-family: var(--code-block-font-family);
-  font-size: var(--code-block-font-size);
   line-height: var(--code-block-line-height);
 
+  /* Shiki dual theme support - dark mode by default */
+  & :global(.shiki),
+  & :global(.shiki span) {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg, transparent) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+
+  /* Light mode support */
+  @media (prefers-color-scheme: light) {
+    & :global(.shiki),
+    & :global(.shiki span) {
+      color: var(--shiki-light) !important;
+      background-color: var(--shiki-light-bg, transparent) !important;
+      font-style: var(--shiki-light-font-style) !important;
+      font-weight: var(--shiki-light-font-weight) !important;
+      text-decoration: var(--shiki-light-text-decoration) !important;
+    }
+  }
+
   /* Reset Shiki pre/code styles */
-  & pre {
+  & :global(pre) {
     margin: 0;
     padding: var(--code-block-padding);
     background: transparent !important;
     overflow-x: auto;
   }
 
-  & code {
+  & :global(code) {
     display: block;
     background: transparent;
     font-family: inherit;
@@ -90,8 +59,8 @@
     line-height: inherit;
   }
 
-  /* Line styling */
-  & .line {
+  /* Line styling - .line is a Shiki class */
+  & :global(.line) {
     display: inline-block;
     width: 100%;
     padding-inline: 0.25rem;
@@ -100,13 +69,18 @@
 }
 
 .code-block-content[data-line-numbers="true"] {
-  & pre {
+  & :global(pre) {
     counter-reset: line;
   }
 
-  & .line {
+  & :global(code) {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  & :global(.line) {
+    display: flex;
+    align-items: baseline;
 
     &::before {
       counter-increment: line;

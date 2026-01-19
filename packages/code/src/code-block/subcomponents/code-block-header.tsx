@@ -1,5 +1,7 @@
 "use client";
 
+import { Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../code-block.constants";
@@ -18,17 +20,24 @@ export const CodeBlockHeader = ({
   ...props
 }: CodeBlockHeaderProps) => {
   return (
-    <div
+    <Group
       data-slot="code-block-header"
       className={cx(styles["code-block-header"], className)}
+      ay="center"
+      ax="space-between"
+      gap={4}
+      py={2}
+      px={4}
       {...props}
     >
-      <span className={styles["code-block-filename"]}>{filename}</span>
+      <Text size={-1} family="mono" shade="accent">
+        {filename}
+      </Text>
       {children}
       {copyable && code && (
         <CodeBlockCopyButton code={code} {...CopyButtonProps} />
       )}
-    </div>
+    </Group>
   );
 };
 CodeBlockHeader.displayName = "CodeBlockHeader";

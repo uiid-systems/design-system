@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import * as React from "react";
+
+import { Button } from "@uiid/buttons";
 import { CopyIcon, CheckIcon } from "@uiid/icons";
 import { cx } from "@uiid/utils";
 
@@ -13,9 +15,9 @@ export const CodeBlockCopyButton = ({
   children,
   ...props
 }: CodeBlockCopyButtonProps) => {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = React.useState(false);
 
-  const handleCopy = useCallback(async () => {
+  const handleCopy = React.useCallback(async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
@@ -26,18 +28,20 @@ export const CodeBlockCopyButton = ({
   }, [code]);
 
   return (
-    <button
+    <Button
       type="button"
       data-slot="code-block-copy-button"
       data-copied={copied}
+      aria-label={copied ? "Copied" : "Copy code"}
       className={cx(styles["code-block-copy-button"], className)}
       onClick={handleCopy}
-      aria-label={copied ? "Copied" : "Copy code"}
+      size="xsmall"
+      ghost
       {...props}
     >
       {copied ? <CheckIcon /> : <CopyIcon />}
       {children ?? (copied ? "Copied" : "Copy")}
-    </button>
+    </Button>
   );
 };
 CodeBlockCopyButton.displayName = "CodeBlockCopyButton";

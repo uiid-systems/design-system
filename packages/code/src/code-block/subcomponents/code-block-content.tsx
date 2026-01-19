@@ -1,5 +1,6 @@
 "use client";
 
+import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { DEFAULT_SHOW_LINE_NUMBERS } from "../code-block.constants";
@@ -13,11 +14,14 @@ export const CodeBlockContent = ({
   ...props
 }: CodeBlockContentProps) => {
   return (
-    <div
+    <Stack
       data-slot="code-block-content"
       data-line-numbers={showLineNumbers || undefined}
       className={cx(styles["code-block-content"], className)}
       dangerouslySetInnerHTML={{ __html: html }}
+      m={2}
+      ax="stretch"
+      fullwidth
       {...props}
     />
   );

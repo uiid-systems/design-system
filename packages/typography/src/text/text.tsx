@@ -4,18 +4,17 @@ import type { TextProps } from "./text.types";
 
 import { textVariants } from "./text.variants";
 import styles from "./text.module.css";
-import { TEXT_DEFAULT_SIZE } from "./text.constants";
+import { TEXT_DEFAULT_SIZE, TEXT_DEFAULT_FAMILY } from "./text.constants";
 
 export const Text = ({
   shade,
-  size = TEXT_DEFAULT_SIZE,
+  weight,
   tone,
   underline,
-  mono,
-  weight,
-  align,
   strikethrough,
   balance,
+  size = TEXT_DEFAULT_SIZE,
+  family = TEXT_DEFAULT_FAMILY,
   render,
   className,
   children,
@@ -52,9 +51,8 @@ export const Text = ({
           shade,
           size,
           tone,
-          align,
           weight,
-          mono,
+          family,
           balance,
           underline,
           strikethrough,

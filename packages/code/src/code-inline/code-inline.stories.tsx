@@ -6,7 +6,7 @@ import { Text } from "@uiid/typography";
 import { CodeInline } from "./code-inline";
 
 const meta = {
-  title: "Code/CodeInline",
+  title: "Code/Code Inline",
   component: CodeInline,
   tags: ["beta"],
   parameters: {
@@ -57,8 +57,8 @@ export const InText: Story = {
         Run <CodeInline>npm install</CodeInline> to install dependencies.
       </Text>
       <Text>
-        The <CodeInline language="typescript">useState</CodeInline> hook is
-        used for managing component state.
+        The <CodeInline language="typescript">useState</CodeInline> hook is used
+        for managing component state.
       </Text>
       <Text>
         Set <CodeInline language="bash">NODE_ENV=production</CodeInline> for
