@@ -355,6 +355,29 @@ export const Default: Story = {
 };
 ```
 
+### Pull Request Descriptions
+
+When creating pull requests for new features or packages, use the template at:
+
+**`templates/PR_DESCRIPTION.md`**
+
+**Required sections:**
+
+| Section | When to Include |
+|---------|-----------------|
+| **Summary** | Always - bullet-point overview |
+| **Test plan** | Always - verification checklist |
+| **Details** | For new packages, components, or significant changes |
+
+**Test plan must include:**
+
+1. Build verification: `pnpm build --filter=@uiid/{package}`
+2. Test verification: `pnpm test:run packages/{package}`
+3. Storybook verification (if UI changes)
+4. Feature-specific verification steps
+
+For small fixes or minor changes, a brief summary and test plan is sufficient.
+
 ## Styling
 
 ### Prefer Component Props Over CSS
