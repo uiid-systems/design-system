@@ -1,8 +1,0 @@
-.table-cell {
-  padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
-  height: var(--table-cell-min-height);
-
-  &:where([data-collapse]) {
-    width: 0;
-  }
-}

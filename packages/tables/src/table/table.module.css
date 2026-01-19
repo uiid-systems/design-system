@@ -1,0 +1,57 @@
+@import "@uiid/tokens/table.tokens.css";
+
+.table-cell {
+  padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+  height: var(--table-cell-min-height);
+
+  &:where([data-collapse]) {
+    width: 0;
+  }
+}
+
+.table-container {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-head {
+  font-weight: 700;
+  text-align: left;
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+  padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
+
+  &:where([data-collapse]) {
+    width: 0;
+  }
+}
+
+.table-header {
+  background-color: var(--table-head-background-color);
+  color: var(--table-head-color);
+}
+
+.table-root {
+  width: 100%;
+  caption-side: bottom;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+  table-layout: auto;
+  min-width: var(--table-min-width);
+}
+
+.table-row {
+  display: table-row;
+
+  &:where([data-bordered="true"] tbody &) {
+    border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+  }
+
+  &:where([data-striped="true"] tbody &:nth-child(even)) {
+    background-color: color-mix(in oklab, var(--shade-surface), transparent 25%);
+  }
+
+  tbody &:hover {
+    background-color: var(--shade-surface);
+  }
+}
