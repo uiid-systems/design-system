@@ -115,7 +115,7 @@ export const Section1 = ({
           backgroundColor:
             editor.isActive("heading", { level }) ||
             editor.isActive("paragraph")
-              ? "var(--shade-muted)"
+              ? "var(--shade-accent)"
               : undefined,
         }}
       >

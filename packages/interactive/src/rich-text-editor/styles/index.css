@@ -33,15 +33,15 @@
   float: left;
   height: 0;
   pointer-events: none;
-  color: var(--shade-muted-foreground, oklch(0.556 0 0));
+  color: var(--shade-accent-foreground, oklch(0.556 0 0));
 }
 
 /* Block nodes (blockquote, code, etc.) */
 .minimal-tiptap-editor .block-node {
   margin-block: 1rem;
   padding-inline-start: 1rem;
-  border-inline-start: 3px solid var(--shade-muted, oklch(0.928 0 0));
-  color: var(--shade-muted-foreground, oklch(0.556 0 0));
+  border-inline-start: 3px solid var(--shade-accent, oklch(0.928 0 0));
+  color: var(--shade-accent-foreground, oklch(0.556 0 0));
 }
 
 /* List nodes */
@@ -72,14 +72,14 @@
   font-size: 0.875em;
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
-  background-color: var(--shade-muted, oklch(0.928 0 0));
+  background-color: var(--shade-accent, oklch(0.928 0 0));
 }
 
 /* Code block */
 .minimal-tiptap-editor pre {
   padding: 1rem;
   border-radius: var(--globals-border-radius, 0.375rem);
-  background-color: var(--shade-muted, oklch(0.15 0 0));
+  background-color: var(--shade-accent, oklch(0.15 0 0));
   font-family: var(--typography-font-mono, ui-monospace, monospace);
   font-size: 0.875rem;
   overflow-x: auto;
@@ -95,7 +95,7 @@
 /* Horizontal rule */
 .minimal-tiptap-editor hr {
   border: none;
-  border-top: 1px solid var(--shade-muted, oklch(0.928 0 0));
+  border-top: 1px solid var(--shade-accent, oklch(0.928 0 0));
   margin-block: 1.5rem;
 }
 

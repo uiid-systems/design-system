@@ -270,7 +270,7 @@ export const ImageViewBlock: React.FC<NodeViewProps> = ({
                     size={28}
                     style={{ color: "var(--colors-negative-bg)" }}
                   />
-                  <Text shade="accent" mt={2}>
+                  <Text shade="muted" mt={2}>
                     Failed to load image
                   </Text>
                 </Stack>

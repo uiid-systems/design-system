@@ -124,10 +124,10 @@ LoginFormEmail.displayName = "LoginFormEmail";
 const Divider = () => {
   return (
     <Layer>
-      <hr className="w-full border-t border-(--shade-accent) mt-[6px]" />
+      <hr className="w-full border-t border-(--shade-muted) mt-[6px]" />
       <Text
         size={0}
-        shade="accent"
+        shade="muted"
         px={2}
         className="bg-(--shade-surface) justify-self-center"
       >

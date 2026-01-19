@@ -231,7 +231,7 @@ Visual divider line.
   "type": "Separator",
   "props": {
     "orientation": "horizontal",
-    "shade": "muted"
+    "shade": "accent"
   }
 }
 ```
@@ -239,7 +239,7 @@ Visual divider line.
 | Prop          | Type   | Description                                                                 |
 | ------------- | ------ | --------------------------------------------------------------------------- |
 | `orientation` | string | `horizontal` or `vertical`                                                  |
-| `shade`       | string | Color: `background`, `surface`, `muted`, `halftone`, `accent`, `foreground` |
+| `shade`       | string | Color: `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
 
 ---
 
@@ -255,7 +255,7 @@ All text content must use the Text component.
   "props": {
     "size": 2,
     "weight": "bold",
-    "shade": "muted",
+    "shade": "accent",
     "children": "Your text content here"
   }
 }
@@ -266,7 +266,7 @@ All text content must use the Text component.
 | `children`      | string  | **Required.** The text content                                       |
 | `size`          | number  | Font size: -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 (larger = bigger)           |
 | `weight`        | string  | `thin`, `light`, `normal`, `bold`                                    |
-| `shade`         | string  | `background`, `surface`, `muted`, `halftone`, `accent`, `foreground` |
+| `shade`         | string  | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
 | `tone`          | string  | Semantic color: `positive`, `negative`, `warning`, `info`            |
 | `align`         | string  | `left`, `center`, `right`, `justify`                                 |
 | `underline`     | boolean | Add underline                                                        |

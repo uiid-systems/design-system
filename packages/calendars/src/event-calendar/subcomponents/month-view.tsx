@@ -70,10 +70,9 @@ export const MonthView = ({
           <Text
             key={day}
             data-slot="month-view-weekday"
-            shade="accent"
+            shade="muted"
             size={0}
             py={4}
-            align="center"
           >
             {day}
           </Text>
@@ -147,7 +146,7 @@ const MonthDay = ({ value }: { value: string }) => {
     <Text
       className={styles["month-view-day-number"]}
       data-slot="month-view-day-number"
-      shade="accent"
+      shade="muted"
       size={-1}
       weight="bold"
     >

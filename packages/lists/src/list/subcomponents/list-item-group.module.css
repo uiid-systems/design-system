@@ -15,7 +15,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--shade-muted);
+      background-color: var(--shade-accent);
     }
 
     &:active {
@@ -39,7 +39,7 @@
 
 .list-item-panel {
   position: relative;
-  border-inline-start: var(--globals-border-width) solid var(--shade-muted);
+  border-inline-start: var(--globals-border-width) solid var(--shade-accent);
   margin-inline-start: 0.875rem;
   /* padding-block-start: calc(var(--list-padding-y) / 2); */
   gap: 0.5rem;

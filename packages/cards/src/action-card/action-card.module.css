@@ -3,7 +3,7 @@
   transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
 
   &:hover {
-    background-color: var(--shade-muted);
+    background-color: var(--shade-accent);
     scale: var(--card-scale-up);
   }
 

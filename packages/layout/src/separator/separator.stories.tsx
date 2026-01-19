@@ -14,9 +14,9 @@ const meta = {
       options: [
         "background",
         "surface",
-        "muted",
-        "halftone",
         "accent",
+        "halftone",
+        "muted",
         "foreground",
       ],
       table: { category: "Variants" },

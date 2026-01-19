@@ -30,7 +30,7 @@
   position: absolute;
   z-index: 0;
   border-radius: var(--globals-border-radius);
-  background-color: var(--shade-muted);
+  background-color: var(--shade-accent);
   scale: 0.9;
   transition-property: translate, width, height;
   transition-duration: 300ms;
@@ -59,7 +59,7 @@
   appearance: none;
   border: none;
   background-color: transparent;
-  color: var(--shade-accent);
+  color: var(--shade-muted);
   user-select: none;
   cursor: pointer;
   border-radius: var(--globals-border-radius);

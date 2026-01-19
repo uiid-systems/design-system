@@ -149,7 +149,7 @@ export const Controlled: Story = {
           language="typescript"
           filename="controlled.tsx"
         />
-        <Text size={-1} shade="accent">
+        <Text size={-1} shade="muted">
           Character count: {code.length}
         </Text>
       </Stack>
@@ -188,4 +188,3 @@ export const Languages: Story = {
     </Stack>
   ),
 };
-

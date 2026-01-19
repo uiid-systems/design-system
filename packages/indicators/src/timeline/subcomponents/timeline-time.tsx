@@ -9,7 +9,7 @@ export const TimelineTime = ({ children, ...props }: TimelineTimeProps) => {
     <Text
       data-slot="timeline-time"
       render={<time />}
-      shade="accent"
+      shade="muted"
       size={-1}
       {...props}
     >

@@ -106,7 +106,7 @@ const AppTitle = ({ children }: React.PropsWithChildren) => {
     <Text
       data-hide-collapsed
       size={0}
-      shade="accent"
+      shade="muted"
       weight="bold"
       pl={open ? 2 : 0}
       style={{

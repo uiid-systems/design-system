@@ -506,7 +506,7 @@ Use `Text` for all text content instead of raw HTML elements:
 <span className={styles["label"]}>Label</span>
 
 // Use Text with props:
-<Text size={0} shade="accent" weight="bold">Label</Text>
+<Text size={0} shade="muted" weight="bold">Label</Text>
 ```
 
 **Text Props**:
@@ -515,7 +515,7 @@ Use `Text` for all text content instead of raw HTML elements:
 |------|--------|---------|
 | `size` | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 | Font size scale |
 | `weight` | `thin`, `light`, `normal`, `bold` | Font weight |
-| `shade` | `background`, `surface`, `muted`, `halftone`, `accent`, `foreground` | Text color |
+| `shade` | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` | Text color |
 | `tone` | `positive`, `negative`, `warning`, `info` | Semantic color |
 | `align` | `left`, `center`, `right`, `justify` | Text alignment |
 | `underline` | `true`, `false` | Text decoration |
@@ -539,7 +539,7 @@ Text also supports all spacing props (`m`, `mb`, `p`, etc.).
 ```tsx
 // Do this instead
 <Stack gap={4} p={2}>
-  <Text size={0} shade="accent" weight="bold" mb={2}>Title</Text>
+  <Text size={0} shade="muted" weight="bold" mb={2}>Title</Text>
   <Group gap={2} ay="center">...</Group>
 </Stack>
 ```
@@ -552,7 +552,7 @@ Text also supports all spacing props (`m`, `mb`, `p`, etc.).
   <TimelineConnector />
   <TimelineContent>
     <Text size={1} weight="bold">Event Title</Text>
-    <Text size={0} shade="accent">2 hours ago</Text>
+    <Text size={0} shade="muted">2 hours ago</Text>
   </TimelineContent>
 </Group>
 ```

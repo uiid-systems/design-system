@@ -12,7 +12,7 @@ import { PaginationButton } from "./subcomponents";
 export const Pagination = () => {
   return (
     <Group gap={2} ay="center">
-      <Text size={0} shade="accent" mr={2}>
+      <Text size={0} shade="muted" mr={2}>
         Page 1 of 10
       </Text>
 

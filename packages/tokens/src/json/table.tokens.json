@@ -4,7 +4,7 @@
   "table": {
     "min-width": { "$value": "48rem", "$type": "dimension" },
     "head": {
-      "background-color": { "$value": "{shade.muted}", "$type": "color" },
+      "background-color": { "$value": "{shade.accent}", "$type": "color" },
       "color": { "$value": "{shade.foreground}", "$type": "color" }
     },
     "cell": {

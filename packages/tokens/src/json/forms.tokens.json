@@ -2,7 +2,7 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Button Component Tokens",
   "forms": {
-    "background": { "$value": "{shade.muted}", "$type": "color" },
+    "background": { "$value": "{shade.accent}", "$type": "color" },
     "backgroundHover": { "$value": "{shade.surface}", "$type": "color" },
     "backgroundFocus": {
       "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
