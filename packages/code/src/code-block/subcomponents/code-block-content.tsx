@@ -17,6 +17,7 @@ export const CodeBlockContent = ({
   return (
     <Stack
       data-slot="code-block-content"
+      data-line-numbers={showLineNumbers || undefined}
       className={cx(
         styles["code-block-content"],
         codeContentVariants({ showLineNumbers }),
