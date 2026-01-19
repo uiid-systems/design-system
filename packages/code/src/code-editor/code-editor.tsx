@@ -7,14 +7,15 @@ import { cx } from "@uiid/utils";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodeBlockHeader } from "../code-block/subcomponents";
-
-import type { CodeEditorProps } from "./code-editor.types";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_SHOW_LINE_NUMBERS,
   DEFAULT_COPYABLE,
   DEFAULT_CODE,
-} from "./code-editor.constants";
+} from "../code.constants";
+import { codeContentVariants } from "../code.variants";
+
+import type { CodeEditorProps } from "./code-editor.types";
 import styles from "./code-editor.module.css";
 
 export const CodeEditor = ({
@@ -91,8 +92,10 @@ export const CodeEditor = ({
         <div
           ref={highlightRef}
           data-slot="code-editor-highlight"
-          data-line-numbers={showLineNumbers || undefined}
-          className={styles["code-editor-highlight"]}
+          className={cx(
+            styles["code-editor-highlight"],
+            codeContentVariants({ showLineNumbers })
+          )}
           dangerouslySetInnerHTML={{ __html: html || "" }}
         />
 

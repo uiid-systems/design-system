@@ -1,4 +1,4 @@
-import type { BundledLanguage } from "../highlighter/highlighter.types";
+import type { BundledLanguage } from "./highlighter/highlighter.types";
 
 export const DEFAULT_LANGUAGE: BundledLanguage = "typescript";
 export const DEFAULT_SHOW_LINE_NUMBERS = false;

@@ -6,7 +6,7 @@ import { cx } from "@uiid/utils";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 
 import type { CodeBlockProps } from "./code-block.types";
-import { DEFAULT_LANGUAGE } from "./code-block.constants";
+import { DEFAULT_LANGUAGE } from "../code.constants";
 import styles from "./code-block.module.css";
 
 import { CodeBlockHeader, CodeBlockContent } from "./subcomponents";

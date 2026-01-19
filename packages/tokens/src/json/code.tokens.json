@@ -6,7 +6,9 @@
       "size": { "$value": "0.875rem", "$type": "dimension" },
       "weight": { "$value": "400", "$type": "fontWeight" }
     },
+    "letter-spacing": { "$value": "0.01rem", "$type": "dimension" },
     "line-height": { "$value": "1.5", "$type": "dimension" },
-    "min-height": { "$value": "8rem", "$type": "dimension" }
+    "min-height": { "$value": "8rem", "$type": "dimension" },
+    "padding": { "$value": "1rem", "$type": "dimension" }
   }
 }

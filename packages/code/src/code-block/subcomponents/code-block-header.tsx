@@ -4,7 +4,7 @@ import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
-import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../code-block.constants";
+import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockHeaderProps } from "../code-block.types";
 import styles from "../code-block.module.css";
 
