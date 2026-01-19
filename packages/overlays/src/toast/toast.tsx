@@ -19,7 +19,7 @@ const ToastList = () => {
       className={styles["toast"]}
       render={
         <Card data-slot="toast">
-          <Text size={0} shade="accent" render={<BaseToast.Description />} />
+          <Text size={0} shade="muted" render={<BaseToast.Description />} />
         </Card>
       }
     />

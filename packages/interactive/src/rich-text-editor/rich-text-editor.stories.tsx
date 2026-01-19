@@ -35,7 +35,7 @@ const RichTextEditorDemo = () => {
         <pre
           style={{
             padding: 16,
-            background: "var(--shade-muted)",
+            background: "var(--shade-accent)",
             borderRadius: 8,
             marginTop: 8,
             overflow: "auto",

@@ -52,7 +52,7 @@ export default function PlaygroundPage() {
           <Text size={5} weight="bold">
             uiid + json-render
           </Text>
-          <Text shade="muted">
+          <Text shade="accent">
             Edit the JSON below to build UI with UIID components.
           </Text>
         </Stack>

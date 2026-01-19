@@ -22,7 +22,7 @@ export type ProfileListItemProps = {
 export const ProfileListItem = ({ label, value }: ProfileListItemProps) => {
   return (
     <Group render={<li />} ax="space-between" fullwidth>
-      <Text shade="accent">{label}</Text>
+      <Text shade="muted">{label}</Text>
       <Text weight="bold">{value}</Text>
     </Group>
   );

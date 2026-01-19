@@ -81,7 +81,7 @@ export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
         }
         style={{
           backgroundColor: action.isActive(editor)
-            ? "var(--shade-muted)"
+            ? "var(--shade-accent)"
             : undefined,
         }}
       >

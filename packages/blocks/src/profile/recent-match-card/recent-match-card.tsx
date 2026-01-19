@@ -33,7 +33,8 @@ export const RecentMatchCard = ({
       title={<VersusText opponent={opponent} />}
       IconProps={{
         icon: result === "win" ? TrophyIcon : HeartCrackIcon,
-        className: result === "win" ? styles["text-yellow"] : styles["text-red"],
+        className:
+          result === "win" ? styles["text-yellow"] : styles["text-red"],
       }}
       action={
         <ScoreBadge
@@ -43,7 +44,7 @@ export const RecentMatchCard = ({
         />
       }
     >
-      <Separator shade="muted" />
+      <Separator shade="accent" />
 
       <ProfileList>
         <ProfileListItem label="Format" value={format} />

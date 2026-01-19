@@ -8,14 +8,14 @@
 .shade-surface {
   background-color: var(--shade-surface);
 }
-.shade-muted {
-  background-color: var(--shade-muted);
+.shade-accent {
+  background-color: var(--shade-accent);
 }
 .shade-halftone {
   background-color: var(--shade-halftone);
 }
-.shade-accent {
-  background-color: var(--shade-accent);
+.shade-muted {
+  background-color: var(--shade-muted);
 }
 .shade-foreground {
   background-color: var(--shade-foreground);

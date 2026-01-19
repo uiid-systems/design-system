@@ -28,7 +28,7 @@
 }
 
 .code-block-loading {
-  color: var(--shade-accent);
+  color: var(--shade-muted);
 }
 
 .code-block-error {

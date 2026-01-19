@@ -25,9 +25,9 @@ export const textVariants = cva({
     shade: {
       background: styles["shade-background"],
       surface: styles["shade-surface"],
-      muted: styles["shade-muted"],
-      halftone: styles["shade-halftone"],
       accent: styles["shade-accent"],
+      halftone: styles["shade-halftone"],
+      muted: styles["shade-muted"],
       foreground: styles["shade-foreground"],
     },
     tone: {

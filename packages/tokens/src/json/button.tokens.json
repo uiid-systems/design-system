@@ -57,7 +57,7 @@
       },
       "inverted": {
         "bg": { "$value": "{shade.background}", "$type": "color" },
-        "bg-hover": { "$value": "{shade.muted}", "$type": "color" },
+        "bg-hover": { "$value": "{shade.accent}", "$type": "color" },
         "fg": { "$value": "{shade.foreground}", "$type": "color" }
       }
     }

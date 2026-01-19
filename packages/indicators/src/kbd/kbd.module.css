@@ -6,7 +6,7 @@
 
 .kbd {
   all: unset;
-  background-color: var(--shade-muted);
+  background-color: var(--shade-accent);
   box-shadow: inset 0 0 0 1px black;
   color: var(--shade-foreground);
   display: inline-flex;

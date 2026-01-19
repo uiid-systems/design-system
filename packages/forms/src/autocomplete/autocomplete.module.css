@@ -8,6 +8,6 @@
 
 .autocomplete-item {
   &:focus-visible {
-    background-color: var(--shade-muted);
+    background-color: var(--shade-accent);
   }
 }

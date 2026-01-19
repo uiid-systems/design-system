@@ -14,16 +14,16 @@ import { Separator } from "@uiid/layout";
 <Separator orientation="vertical" />
 
 // With shade variant
-<Separator shade="muted" />
+<Separator shade="accent" />
 ```
 
 ## Props
 
-| Prop          | Type                                                                      | Default        | Description            |
-| ------------- | ------------------------------------------------------------------------- | -------------- | ---------------------- |
-| `orientation` | `"horizontal" \| "vertical"`                                              | `"horizontal"` | Separator direction    |
-| `shade`       | `"background" \| "surface" \| "muted" \| "halftone" \| "accent" \| "foreground"` | —              | Color shade variant    |
-| `className`   | `string`                                                                  | —              | Additional CSS classes |
+| Prop          | Type                                                                             | Default        | Description            |
+| ------------- | -------------------------------------------------------------------------------- | -------------- | ---------------------- |
+| `orientation` | `"horizontal" \| "vertical"`                                                     | `"horizontal"` | Separator direction    |
+| `shade`       | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | —              | Color shade variant    |
+| `className`   | `string`                                                                         | —              | Additional CSS classes |
 
 > Inherits all [Box](../box/README.md) props (spacing, sizing, render).
 

@@ -41,7 +41,7 @@ export const RecentMatchCard = ({
         />
       }
     >
-      <Separator shade="muted" />
+      <Separator shade="accent" />
 
       <ProfileList>
         <ProfileListItem label="Format" value={format} />

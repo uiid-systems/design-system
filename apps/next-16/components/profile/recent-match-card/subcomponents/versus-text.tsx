@@ -7,7 +7,7 @@ export type VersusTextProps = {
 
 export const VersusText = ({ opponent }: VersusTextProps) => (
   <Group ay="center" gap={2}>
-    <Text shade="accent" size={0}>
+    <Text shade="muted" size={0}>
       vs.
     </Text>
     {opponent}

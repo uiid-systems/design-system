@@ -143,7 +143,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Vertical
         </Text>
-        <Text size={0} shade="accent" mb={4}>
+        <Text size={0} shade="muted" mb={4}>
           Drag items up and down
         </Text>
         <VerticalDemo />
@@ -153,7 +153,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Horizontal
         </Text>
-        <Text size={0} shade="accent" mb={4}>
+        <Text size={0} shade="muted" mb={4}>
           Drag items left and right
         </Text>
         <HorizontalDemo />
@@ -161,7 +161,7 @@ export const Default: Story = {
 
       <Stack gap={2}>
         <Text size={1}>Mixed</Text>
-        <Text size={0} shade="accent" mb={4}>
+        <Text size={0} shade="muted" mb={4}>
           Drag items in any direction
         </Text>
         <MixedDemo />

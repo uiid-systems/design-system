@@ -4,6 +4,6 @@
 
   [data-slot="sidebar"][data-variant="floating"] & {
     border-radius: var(--globals-border-radius);
-    border: var(--globals-border-width) solid var(--shade-muted);
+    border: var(--globals-border-width) solid var(--shade-accent);
   }
 }

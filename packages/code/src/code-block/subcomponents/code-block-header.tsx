@@ -31,7 +31,7 @@ export const CodeBlockHeader = ({
       fullwidth
       {...props}
     >
-      <Text size={-1} family="mono" shade="accent">
+      <Text size={-1} family="mono" shade="muted">
         {filename}
       </Text>
       {children}

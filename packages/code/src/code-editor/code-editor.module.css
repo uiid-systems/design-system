@@ -58,7 +58,7 @@
   min-height: inherit;
 
   &::placeholder {
-    color: var(--shade-accent);
+    color: var(--shade-muted);
   }
 
   &:focus {
@@ -66,7 +66,7 @@
   }
 
   &::selection {
-    background-color: rgba(var(--shade-accent-rgb, 128, 128, 128), 0.3);
+    background-color: rgba(var(--shade-muted-rgb, 128, 128, 128), 0.3);
   }
 }
 

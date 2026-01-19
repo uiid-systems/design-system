@@ -24,7 +24,7 @@
 }
 
 .avatar-description {
-  color: var(--shade-accent);
+  color: var(--shade-muted);
   white-space: nowrap;
 }
 

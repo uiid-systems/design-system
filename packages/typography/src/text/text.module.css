@@ -9,7 +9,7 @@
   code {
     margin-inline: 0.25em;
     font-weight: 600;
-    color: var(--shade-accent);
+    color: var(--shade-muted);
   }
 }
 
@@ -80,14 +80,14 @@
 .shade-surface {
   color: var(--shade-surface);
 }
-.shade-muted {
-  color: var(--shade-muted);
+.shade-accent {
+  color: var(--shade-accent);
 }
 .shade-halftone {
   color: var(--shade-halftone);
 }
-.shade-accent {
-  color: var(--shade-accent);
+.shade-muted {
+  color: var(--shade-muted);
 }
 .shade-foreground {
   color: var(--shade-foreground);

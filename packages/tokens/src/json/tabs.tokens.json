@@ -9,13 +9,13 @@
       }
     },
     "list": {
-      "border": { "$value": "{shade.muted}", "$type": "color" }
+      "border": { "$value": "{shade.accent}", "$type": "color" }
     },
     "tab": {
       "height": { "$value": "3rem", "$type": "dimension" },
       "color": {
         "default": { "$value": "{shade.halftone}", "$type": "color" },
-        "active": { "$value": "{shade.accent}", "$type": "color" }
+        "active": { "$value": "{shade.muted}", "$type": "color" }
       }
     },
     "panel": {

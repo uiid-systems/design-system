@@ -11,11 +11,11 @@
 
   &:hover {
     background-color: var(--shade-surface);
-    color: var(--shade-accent);
+    color: var(--shade-muted);
   }
 
   &:active {
-    background-color: var(--shade-muted);
+    background-color: var(--shade-accent);
     color: var(--shade-foreground);
   }
 
@@ -31,7 +31,7 @@
 
   [data-active="true"] {
     background-color: var(--shade-surface);
-    color: var(--shade-accent);
+    color: var(--shade-muted);
   }
 
   [data-slot="sidebar"][data-collapsible="icon"] & {

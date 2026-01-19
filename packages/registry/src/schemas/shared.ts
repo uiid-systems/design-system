@@ -68,7 +68,13 @@ export type SpacingProps = z.infer<typeof SpacingPropsSchema>;
 /**
  * Alignment values for justify-content (ax).
  */
-export const AlignX = z.enum(["start", "center", "end", "space-between", "stretch"]);
+export const AlignX = z.enum([
+  "start",
+  "center",
+  "end",
+  "space-between",
+  "stretch",
+]);
 
 /**
  * Alignment values for align-items (ay).
@@ -100,9 +106,9 @@ export type LayoutProps = z.infer<typeof LayoutPropsSchema>;
 export const Shade = z.enum([
   "background",
   "surface",
-  "muted",
-  "halftone",
   "accent",
+  "halftone",
+  "muted",
   "foreground",
 ]);
 
@@ -128,4 +134,3 @@ export type Size = z.infer<typeof Size>;
 export const FormSize = z.enum(["small", "medium", "large"]);
 
 export type FormSize = z.infer<typeof FormSize>;
-

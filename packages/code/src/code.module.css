@@ -76,7 +76,7 @@
     width: 2rem;
     margin-right: 1rem;
     text-align: right;
-    color: var(--shade-accent, #666);
+    color: var(--shade-muted, #666);
     flex-shrink: 0;
     user-select: none;
   }

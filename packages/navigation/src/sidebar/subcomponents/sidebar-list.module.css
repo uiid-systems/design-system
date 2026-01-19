@@ -10,7 +10,7 @@
   }
 
   [data-slot="list-item"] {
-    color: var(--shade-accent);
+    color: var(--shade-muted);
 
     &:hover {
       color: var(--shade-foreground);

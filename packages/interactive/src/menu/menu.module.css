@@ -44,7 +44,7 @@
     inset-block: 0;
     inset-inline: 0.25rem;
     border-radius: 0.25rem;
-    background-color: var(--shade-muted);
+    background-color: var(--shade-accent);
   }
 
   &[data-highlighted] {

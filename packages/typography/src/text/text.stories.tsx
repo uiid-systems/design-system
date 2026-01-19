@@ -6,9 +6,9 @@ const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
 const shades: TextProps["shade"][] = [
   "background",
   "surface",
-  "muted",
-  "halftone",
   "accent",
+  "halftone",
+  "muted",
   "foreground",
 ];
 const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
