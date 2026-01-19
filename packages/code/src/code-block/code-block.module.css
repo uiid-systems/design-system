@@ -1,6 +1,6 @@
 .code-block {
   position: relative;
-  background-color: rgba(var(--shade-subtle), 0.5);
+  background-color: rgba(var(--shade-surface), 0.5);
   border: 1px solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
@@ -24,6 +24,11 @@
     width: 100%;
     padding-inline: 0.25rem;
     margin-inline: -0.25rem;
+  }
+
+  /* Highlighted lines */
+  & :global(.line[data-highlighted]) {
+    background-color: rgba(var(--shade-accent-rgb, 128, 128, 128), 0.15);
   }
 }
 

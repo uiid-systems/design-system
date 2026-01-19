@@ -11,10 +11,12 @@
   "dependencies": {
     "@json-render/core": "^0.2.0",
     "@json-render/react": "^0.2.0",
+    "prettier": "^3.6.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/code": "workspace:*",
     "@uiid/forms": "workspace:*",
+    "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/registry": "workspace:*",

@@ -9,7 +9,7 @@ export const TabsTab = ({ className, children, ...props }: TabsTabProps) => {
   return (
     <BaseTabs.Tab
       data-slot="tabs-tab"
-      className={cx(styles["tabs-tab"], className)}
+      className={cx(styles["tab"], className)}
       {...props}
     >
       {children}

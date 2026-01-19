@@ -4,14 +4,19 @@ import { cx } from "@uiid/utils";
 import { Group } from "@uiid/layout";
 
 import type { TabsListProps } from "../tabs.types";
-import styles from "../tabs.module.css";
+import { tabsListVariants } from "../tabs.variants";
 
-export const TabsList = ({ className, children, ...props }: TabsListProps) => {
+export const TabsList = ({
+  align,
+  className,
+  children,
+  ...props
+}: TabsListProps) => {
   return (
     <BaseTabs.List
       data-slot="tabs-list"
-      render={<Group gap={2} ay="end" ax="center" />}
-      className={cx(styles["tabs-list"], className)}
+      render={<Group gap={2} ay="end" />}
+      className={cx(tabsListVariants({ align }), className)}
       {...props}
     >
       {children}

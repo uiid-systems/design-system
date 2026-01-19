@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UIID Design System",
+  title: "uiid + next-16",
   description:
     "A modern, modular component library built with TypeScript, Vite, React, CSS Modules and Base UI.",
 };
