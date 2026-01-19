@@ -1,4 +1,6 @@
 .table-row {
+  display: table-row;
+
   &:where([data-bordered="true"] tbody &) {
     border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   }
