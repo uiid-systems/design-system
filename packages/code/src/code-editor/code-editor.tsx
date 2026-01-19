@@ -27,6 +27,7 @@ export const CodeEditor = ({
   readOnly,
   disabled,
   placeholder,
+  rows,
   filename,
   copyable = DEFAULT_COPYABLE,
   HeaderProps,
@@ -90,6 +91,14 @@ export const CodeEditor = ({
       {/* Typography on parent so both children inherit */}
       <Layer
         className={cx(styles["code-editor-layer"], codeTypographyVariant())}
+        style={
+          rows
+            ? {
+                maxHeight: `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`,
+                overflow: "auto",
+              }
+            : undefined
+        }
         fullwidth
       >
         {/* Highlighted code backdrop */}

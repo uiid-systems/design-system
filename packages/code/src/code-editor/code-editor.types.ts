@@ -24,6 +24,8 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   disabled?: boolean;
   /** Placeholder text when empty */
   placeholder?: string;
+  /** Maximum visible rows (sets max-height) */
+  rows?: number;
 
   /** Filename to display in header */
   filename?: string;

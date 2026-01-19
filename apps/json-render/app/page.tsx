@@ -6,7 +6,7 @@ import type { UITree } from "@json-render/core";
 import { JSONUIProvider, Renderer } from "@json-render/react";
 
 import { Button } from "@uiid/buttons";
-import { Textarea } from "@uiid/forms";
+import { CodeEditor } from "@uiid/code";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -64,15 +64,12 @@ export default function PlaygroundPage() {
             <Text size={2} weight="bold">
               JSON Input
             </Text>
-            <Textarea
+            <CodeEditor
               value={jsonInput}
-              onChange={(e) => setJsonInput(e.target.value)}
+              onValueChange={setJsonInput}
+              language="json"
+              filename="ui-tree.json"
               rows={20}
-              fullwidth
-              style={{
-                fontFamily: "monospace",
-                backgroundColor: "var(--shade-surface)",
-              }}
             />
 
             {parseError && (
