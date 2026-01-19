@@ -26,5 +26,5 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uiid/storybook", "next-16"]
+  "ignore": ["@uiid/storybook", "next-16", "json-render-playground"]
 }
