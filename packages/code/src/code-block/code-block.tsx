@@ -1,5 +1,6 @@
 "use client";
 
+import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
@@ -45,13 +46,17 @@ export const CodeBlock = ({
       )}
 
       {loading && !prerenderedHtml && (
-        <div className={styles["code-block-loading"]}>Loading...</div>
+        <Stack
+          ay="center"
+          ax="center"
+          className={styles["code-block-loading"]}
+        />
       )}
 
       {error && !prerenderedHtml && (
-        <div className={styles["code-block-error"]}>
+        <Stack ay="center" ax="center" className={styles["code-block-error"]}>
           Error highlighting code: {error.message}
-        </div>
+        </Stack>
       )}
 
       {displayHtml && (

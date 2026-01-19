@@ -97,18 +97,9 @@
 }
 
 .code-block-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--code-block-padding);
-  color: var(--shade-accent, #888);
-  font-family: var(--code-block-font-family);
-  font-size: var(--code-block-font-size);
+  color: var(--shade-accent);
 }
 
 .code-block-error {
-  padding: var(--code-block-padding);
-  color: var(--tones-negative, #f87171);
-  font-family: var(--code-block-font-family);
-  font-size: var(--code-block-font-size);
+  color: var(--tones-negative);
 }
