@@ -20,6 +20,7 @@ export const Tabs = ({
   value,
   onValueChange,
   keepMounted,
+  align,
   /** subcomponents */
   RootProps,
   ListProps,
@@ -34,9 +35,9 @@ export const Tabs = ({
       onValueChange={onValueChange}
       {...RootProps}
     >
-      <TabsList {...ListProps}>
+      <TabsList align={align} {...ListProps}>
         {items.map((item) => (
-          <TabsTab value={item.value} {...TabProps}>
+          <TabsTab key={item.value} value={item.value} {...TabProps}>
             {item.label}
           </TabsTab>
         ))}
@@ -46,12 +47,12 @@ export const Tabs = ({
       <Layer>
         {items.map((item) => (
           <TabsPanel
+            key={item.value}
             value={item.value}
-            aria-hidden={item.value !== defaultValue}
             keepMounted={keepMounted}
             {...PanelProps}
           >
-            {item.label}
+            {item.render}
           </TabsPanel>
         ))}
       </Layer>

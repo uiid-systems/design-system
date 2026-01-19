@@ -11,7 +11,12 @@ const meta: Meta<typeof Tabs> = {
   args: {
     items: MOCK_TABS,
   },
-  argTypes: {},
+  argTypes: {
+    align: {
+      control: "select",
+      options: ["start", "center", "end"],
+    },
+  },
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>
       <Tabs {...args} />
@@ -23,3 +28,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Tabs" };
+
+export const AlignStart: Story = {
+  name: "Align Start",
+  args: { align: "start" },
+};
+
+export const AlignCenter: Story = {
+  name: "Align Center",
+  args: { align: "center" },
+};
+
+export const AlignEnd: Story = {
+  name: "Align End",
+  args: { align: "end" },
+};

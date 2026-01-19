@@ -95,6 +95,9 @@ importers:
       '@uiid/forms':
         specifier: workspace:*
         version: link:../../packages/forms
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../../packages/interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../../packages/layout

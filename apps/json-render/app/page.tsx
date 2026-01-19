@@ -7,6 +7,7 @@ import { JSONUIProvider, Renderer } from "@json-render/react";
 
 import { Button } from "@uiid/buttons";
 import { CodeBlock, CodeEditor } from "@uiid/code";
+import { Tabs } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -110,24 +111,29 @@ export default function PlaygroundPage() {
             </Button>
           </Stack>
 
-          {/* Preview */}
+          {/* Output Tabs */}
           <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
-            <Text size={2} weight="bold">
-              Rendered output
-            </Text>
-            <Renderer tree={tree} registry={registry} />
-          </Stack>
-
-          {/* JSX Output */}
-          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
-            <Text size={2} weight="bold">
-              JSX output
-            </Text>
-            <CodeBlock
-              code={jsxCode}
-              language="tsx"
-              filename="component.tsx"
-              showLineNumbers
+            <Tabs
+              items={[
+                {
+                  label: "Preview",
+                  value: "preview",
+                  render: <Renderer tree={tree} registry={registry} />,
+                },
+                {
+                  label: "JSX",
+                  value: "jsx",
+                  render: (
+                    <CodeBlock
+                      code={jsxCode}
+                      language="tsx"
+                      filename="component.tsx"
+                      showLineNumbers
+                    />
+                  ),
+                },
+              ]}
+              keepMounted
             />
           </Stack>
         </Group>

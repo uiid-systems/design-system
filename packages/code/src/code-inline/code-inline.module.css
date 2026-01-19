@@ -1,5 +1,5 @@
 .code-inline {
-  --code-inline-bg: var(--shade-subtle, rgba(0, 0, 0, 0.1));
+  --code-inline-bg: var(--shade-surface, rgba(0, 0, 0, 0.1));
   --code-inline-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --code-inline-font-size: 0.875em;
   --code-inline-padding-x: 0.375em;

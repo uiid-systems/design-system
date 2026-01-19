@@ -3,7 +3,6 @@
 .tabs-list {
   position: relative;
   z-index: 0;
-  /* box-shadow: inset 0 -1px var(--tabs-list-border); */
 }
 
 .tab {
@@ -15,21 +14,19 @@
   font-weight: 600;
   cursor: pointer;
   background: none;
-  color: var(--tabs-tab-color-default);
+  color: var(--shade-foreground);
   user-select: none;
   white-space: nowrap;
   word-break: keep-all;
   padding-inline: var(--globals-padding-x);
   height: var(--tabs-tab-height);
 
-  /* &[data-selected] {
-    color: var(--tabs-tab-color-active);
-  } */
+  &[data-active] {
+    color: var(--shade-background);
+  }
 
-  @media (hover: hover) {
-    &:hover {
-      color: var(--tabs-tab-color-active);
-    }
+  &:not([data-active]):hover {
+    text-decoration: underline;
   }
 
   &:focus-visible {
@@ -49,14 +46,14 @@
 .tabs-indicator {
   position: absolute;
   z-index: -1;
-  left: 0;
-  bottom: 0;
-  translate: var(--active-tab-left) -50%;
+  left: var(--active-tab-left);
+  top: 50%;
+  transform: translateY(-50%);
   width: var(--active-tab-width);
   height: var(--tabs-indicator-height);
-  background-color: var(--tabs-indicator-color-bg);
+  background-color: var(--shade-foreground);
   border-radius: var(--globals-border-radius);
-  transition-property: translate, width;
+  transition-property: left, width;
   transition-duration: var(--globals-transition-timing);
 }
 
@@ -85,4 +82,17 @@
     transition: max-height var(--timing) ease-in-out;
     transition-delay: 0s;
   }
+}
+
+/* Alignment variants */
+.align-start {
+  justify-content: flex-start;
+}
+
+.align-center {
+  justify-content: center;
+}
+
+.align-end {
+  justify-content: flex-end;
 }

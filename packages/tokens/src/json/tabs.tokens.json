@@ -3,23 +3,11 @@
   "$description": "UIID Design System - Tabs Component Tokens",
   "tabs": {
     "indicator": {
-      "height": { "$value": "50%", "$type": "dimension" },
-      "color": {
-        "bg": { "$value": "{shade.foreground}", "$type": "color" }
-      }
-    },
-    "list": {
-      "border": { "$value": "{shade.accent}", "$type": "color" }
+      "height": { "$value": "80%", "$type": "dimension" },
+      "bg": { "$value": "{shade.foreground}", "$type": "color" }
     },
     "tab": {
-      "height": { "$value": "3rem", "$type": "dimension" },
-      "color": {
-        "default": { "$value": "{shade.halftone}", "$type": "color" },
-        "active": { "$value": "{shade.muted}", "$type": "color" }
-      }
-    },
-    "panel": {
-      "minHeight": { "$value": "8rem", "$type": "dimension" }
+      "height": { "$value": "2.5rem", "$type": "dimension" }
     }
   }
 }
