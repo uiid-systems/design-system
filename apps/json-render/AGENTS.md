@@ -268,7 +268,6 @@ All text content must use the Text component.
 | `weight`        | string  | `thin`, `light`, `normal`, `bold`                                    |
 | `shade`         | string  | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
 | `tone`          | string  | Semantic color: `positive`, `negative`, `warning`, `info`            |
-| `align`         | string  | `left`, `center`, `right`, `justify`                                 |
 | `underline`     | boolean | Add underline                                                        |
 | `strikethrough` | boolean | Add strikethrough                                                    |
 | `mono`          | boolean | Use monospace font                                                   |

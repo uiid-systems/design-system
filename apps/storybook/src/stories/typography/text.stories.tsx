@@ -1,0 +1,87 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Text, type TextProps } from "@uiid/typography";
+
+const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+const shades: TextProps["shade"][] = [
+  "background",
+  "surface",
+  "muted",
+  "halftone",
+  "accent",
+  "foreground",
+];
+const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
+const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
+const families: TextProps["family"][] = ["mono", "serif", "sans"];
+
+const meta: Meta<typeof Text> = {
+  title: "Typography/Text",
+  component: Text,
+  tags: ["beta"],
+  args: {
+    children:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+  },
+  argTypes: {
+    children: {
+      control: "text",
+      table: { category: "Content" },
+    },
+    size: {
+      control: "select",
+      options: levels,
+      table: { category: "Variants" },
+    },
+    shade: {
+      control: "select",
+      options: shades,
+      table: { category: "Variants" },
+    },
+    family: {
+      control: "select",
+      options: families,
+      table: { category: "Variants" },
+    },
+    tone: {
+      control: "select",
+      options: tones,
+      table: { category: "Variants" },
+    },
+    weight: {
+      control: "select",
+      options: weights,
+      table: { category: "Variants" },
+    },
+    underline: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
+    strikethrough: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
+    balance: {
+      control: "boolean",
+      table: { category: "Toggles" },
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        width: "100%",
+      }}
+    >
+      <Text {...args} />
+      <Text {...args} family="mono" />
+      <Text {...args} family="serif" />
+    </div>
+  ),
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = { name: "Text" };
