@@ -19,7 +19,6 @@ export const CodeBlockContent = ({
       data-line-numbers={showLineNumbers || undefined}
       className={cx(styles["code-block-content"], className)}
       dangerouslySetInnerHTML={{ __html: html }}
-      m={2}
       ax="stretch"
       fullwidth
       {...props}

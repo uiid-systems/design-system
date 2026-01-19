@@ -1,0 +1,197 @@
+.code-editor {
+  --code-editor-line-height: 1.5;
+  --code-editor-padding: 1rem;
+  --code-editor-font-size: 0.875rem;
+
+  position: relative;
+  background-color: rgba(var(--shade-surface), 0.5);
+  border: 1px solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  overflow: hidden;
+}
+
+.code-editor[data-fullwidth] {
+  width: 100%;
+}
+
+.code-editor[data-disabled] {
+  opacity: var(--globals-disabled-opacity);
+  pointer-events: none;
+}
+
+/* Header - ensure space between filename and copy button */
+.code-editor [data-slot="code-block-header"] {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.code-editor [data-slot="code-block-header"] > *:first-child {
+  flex: 1;
+}
+
+.code-editor-layer {
+  position: relative;
+  overflow: auto;
+}
+
+/* Shared typography for both layers - MUST be identical */
+.code-editor-highlight,
+.code-editor-textarea {
+  font-family: var(--font-mono);
+  font-size: var(--code-editor-font-size);
+  line-height: var(--code-editor-line-height);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  tab-size: 2;
+  min-height: 8rem;
+  margin: 0;
+  padding: var(--code-editor-padding);
+  box-sizing: border-box;
+
+  /* Force identical text rendering between textarea and div */
+  letter-spacing: normal;
+  word-spacing: normal;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  text-rendering: geometricPrecision;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  code {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    border-radius: 0;
+    background: transparent !important;
+  }
+}
+
+/* Highlighted code backdrop */
+.code-editor-highlight {
+  pointer-events: none;
+
+  /* Shiki dual theme support - dark mode by default */
+  & :global(.shiki),
+  & :global(.shiki span) {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg, transparent) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+
+  /* Light mode support */
+  @media (prefers-color-scheme: light) {
+    & :global(.shiki),
+    & :global(.shiki span) {
+      color: var(--shiki-light) !important;
+      background-color: var(--shiki-light-bg, transparent) !important;
+      font-style: var(--shiki-light-font-style) !important;
+      font-weight: var(--shiki-light-font-weight) !important;
+      text-decoration: var(--shiki-light-text-decoration) !important;
+    }
+  }
+
+  /* Reset Shiki pre/code styles - inherit all typography from parent */
+  & :global(pre) {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+    font-kerning: inherit;
+    font-variant-ligatures: inherit;
+    text-rendering: inherit;
+  }
+
+  & :global(code) {
+    display: block;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+  }
+
+  /* Ensure spans don't add extra space */
+  & :global(span) {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
+
+/* Transparent textarea overlay */
+.code-editor-textarea {
+  /* Reset form element defaults */
+  appearance: none;
+  -webkit-appearance: none;
+
+  color: transparent;
+  caret-color: var(--shade-foreground);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+
+  &::placeholder {
+    color: var(--shade-accent);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::selection {
+    background-color: rgba(var(--shade-accent-rgb, 128, 128, 128), 0.3);
+  }
+}
+
+.code-editor-textarea[data-readonly] {
+  cursor: default;
+}
+
+/* Line numbers support */
+.code-editor-highlight[data-line-numbers="true"] {
+  & :global(pre) {
+    counter-reset: line;
+  }
+
+  & :global(code) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & :global(.line) {
+    display: flex;
+    align-items: baseline;
+
+    &::before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      width: 2rem;
+      margin-right: 1rem;
+      text-align: right;
+      color: var(--shade-accent, #666);
+      flex-shrink: 0;
+      user-select: none;
+    }
+  }
+}
+
+/* Loading state */
+.code-editor-loading {
+  color: var(--shade-accent);
+  padding: var(--code-editor-padding);
+}
