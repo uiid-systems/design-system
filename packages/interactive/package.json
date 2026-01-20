@@ -48,7 +48,8 @@
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
     "lowlight": "^3.3.0",
-    "react-medium-image-zoom": "^5.4.0"
+    "react-medium-image-zoom": "^5.4.0",
+    "react-resizable-panels": "^2.1.7"
   },
   "peerDependencies": {
     "react": "^19.1.1",
