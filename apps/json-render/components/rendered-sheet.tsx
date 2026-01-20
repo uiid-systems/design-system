@@ -3,7 +3,7 @@ import { CodeIcon } from "@uiid/icons";
 import { Tabs } from "@uiid/interactive";
 import { Sheet, type SheetProps } from "@uiid/overlays";
 
-import { RenderedJson, type RenderedJsonProps } from "./rendered-json";
+import { RenderedJson } from "./rendered-json";
 import { RenderedJsx } from "./rendered-jsx";
 
 type RenderedSheetProps = SheetProps & {

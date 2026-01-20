@@ -1,4 +1,4 @@
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 export const ChatSidebarHeader = () => {

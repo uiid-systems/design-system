@@ -8,7 +8,6 @@ import type { ChatMessage } from "@/lib/use-chat";
 
 import { RenderedSheet } from "./rendered-sheet";
 import type { RenderedJsxProps } from "./rendered-jsx";
-import type { RenderedJsonProps } from "./rendered-json";
 
 type ChatSidebarActionsProps = {
   clear: () => void;
