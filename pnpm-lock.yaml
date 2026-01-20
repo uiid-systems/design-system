@@ -268,9 +268,15 @@ importers:
       '@uiid/cards':
         specifier: workspace:*
         version: link:../../packages/cards
+      '@uiid/code':
+        specifier: workspace:*
+        version: link:../../packages/code
       '@uiid/forms':
         specifier: workspace:*
         version: link:../../packages/forms
+      '@uiid/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@uiid/indicators':
         specifier: workspace:*
         version: link:../../packages/indicators
@@ -289,6 +295,9 @@ importers:
       '@uiid/overlays':
         specifier: workspace:*
         version: link:../../packages/overlays
+      '@uiid/tables':
+        specifier: workspace:*
+        version: link:../../packages/tables
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
