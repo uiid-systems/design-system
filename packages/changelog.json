@@ -1,5 +1,152 @@
 [
   {
+    "version": "0.0.2",
+    "date": "January 20, 2026",
+    "packages": [
+      "@uiid/backgrounds",
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [
+        {
+          "description": "Add overlays to json-render, clean up",
+          "raw": "feat: add overlays to json-render, clean up",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/overlays"
+          ]
+        },
+        {
+          "description": "Add `code` package, shiki (#22)",
+          "raw": "feat: add `code` package, shiki (#22)",
+          "semverType": "patch",
+          "pr": 22,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Add resizable to interactive package (#28)",
+          "raw": "feat: add resizable to interactive package (#28)",
+          "semverType": "patch",
+          "pr": 28,
+          "packages": [
+            "@uiid/interactive"
+          ]
+        },
+        {
+          "description": "Json render page (#26)",
+          "raw": "feat: json render page (#26)",
+          "semverType": "patch",
+          "pr": 26,
+          "packages": [
+            "@uiid/interactive",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add json-render chat (#27)",
+          "raw": "feat: add json-render chat (#27)",
+          "semverType": "patch",
+          "pr": 27,
+          "packages": [
+            "@uiid/interactive",
+            "@uiid/overlays",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add code editor component (#23)",
+          "raw": "feat: add code editor component (#23)",
+          "semverType": "patch",
+          "pr": 23,
+          "packages": [
+            "@uiid/tokens"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "description": "Changelogs (#20)",
+          "raw": "fix: changelogs (#20)",
+          "semverType": "patch",
+          "pr": 20,
+          "packages": [
+            "@uiid/backgrounds",
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "refactors": [
+        {
+          "description": "Swap accent and muted colors (#25)",
+          "raw": "refactor: swap accent and muted colors (#25)",
+          "semverType": "patch",
+          "pr": 25,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Consolidate table styles (#24)",
+          "raw": "refactor: consolidate table styles (#24)",
+          "semverType": "patch",
+          "pr": 24,
+          "packages": [
+            "@uiid/tables"
+          ]
+        }
+      ],
+      "performance": [],
+      "documentation": [],
+      "other": []
+    }
+  },
+  {
     "version": "0.0.1",
     "date": "January 16, 2026",
     "packages": [
