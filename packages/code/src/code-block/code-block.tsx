@@ -18,6 +18,7 @@ export const CodeBlock = ({
   showLineNumbers,
   copyable = true,
   highlightLines,
+  rows,
   html: prerenderedHtml,
   className,
   HeaderProps,
@@ -28,6 +29,14 @@ export const CodeBlock = ({
   const displayHtml = prerenderedHtml || html;
 
   const showHeader = filename || copyable;
+
+  // Calculate max-height for rows constraint (same formula as CodeEditor)
+  const contentStyle = rows
+    ? {
+        maxHeight: `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`,
+        overflowY: "auto" as const,
+      }
+    : undefined;
 
   return (
     <div
@@ -64,6 +73,7 @@ export const CodeBlock = ({
           html={displayHtml}
           showLineNumbers={showLineNumbers}
           highlightLines={highlightLines}
+          style={contentStyle}
         />
       )}
     </div>

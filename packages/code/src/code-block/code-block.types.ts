@@ -41,6 +41,8 @@ export type CodeBlockProps = React.ComponentProps<"div"> & {
   copyable?: boolean;
   /** Lines to highlight (1-indexed) */
   highlightLines?: number[];
+  /** Maximum visible rows (sets max-height with scrolling) */
+  rows?: number;
   /** Pre-highlighted HTML for SSR */
   html?: string;
   /** Props for the header element */

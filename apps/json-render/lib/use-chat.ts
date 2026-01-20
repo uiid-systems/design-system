@@ -158,20 +158,26 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   const abortControllerRef = useRef<AbortController | null>(null);
   const isInitialized = useRef(false);
 
-  // Load from URL hash or localStorage on mount
-  useEffect(() => {
-    if (isInitialized.current) return;
-    isInitialized.current = true;
-
-    // First check URL for shared tree
+  // Load tree from URL hash
+  const loadFromUrlHash = useCallback(() => {
     const urlTree = getTreeFromUrl();
     if (urlTree) {
       setTreeState(urlTree);
       setIsRestored(true);
       // Clear hash after loading
       window.history.replaceState(null, "", window.location.pathname);
-      return;
+      return true;
     }
+    return false;
+  }, []);
+
+  // Load from URL hash or localStorage on mount
+  useEffect(() => {
+    if (isInitialized.current) return;
+    isInitialized.current = true;
+
+    // First check URL for shared tree
+    if (loadFromUrlHash()) return;
 
     // Then check localStorage for saved session
     try {
@@ -194,7 +200,34 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     } catch {
       // Ignore storage errors
     }
-  }, [storageKey]);
+  }, [storageKey, loadFromUrlHash]);
+
+  // Listen for hash changes and page focus (e.g., pasting a share URL)
+  useEffect(() => {
+    const handleHashChange = () => {
+      loadFromUrlHash();
+    };
+
+    // Also check on focus in case URL was changed while tab was inactive
+    const handleFocus = () => {
+      if (window.location.hash) {
+        loadFromUrlHash();
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("focus", handleFocus);
+    
+    // Check immediately in case hash is present but wasn't caught during init
+    if (window.location.hash && !tree) {
+      loadFromUrlHash();
+    }
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [loadFromUrlHash, tree]);
 
   // Save to localStorage when state changes
   useEffect(() => {
