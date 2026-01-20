@@ -27,7 +27,8 @@ function getModel() {
   const provider = process.env.AI_PROVIDER || "anthropic";
 
   if (provider === "anthropic") {
-    return anthropic("claude-3-5-sonnet-latest");
+    // Claude Sonnet 4 (3.5 Sonnet was deprecated August 2025)
+    return anthropic("claude-sonnet-4-20250514");
   }
 
   // Default to OpenAI GPT-4o
@@ -51,7 +52,7 @@ const MOCK_RESPONSES: Record<string, string> = {
     "form-fields": {
       "key": "form-fields",
       "type": "Stack",
-      "props": { "gap": 4 },
+      "props": { "gap": 4, "ax": "stretch" },
       "children": ["email-input", "password-input", "submit-btn"],
       "parentKey": "login-form"
     },
@@ -137,7 +138,7 @@ const MOCK_RESPONSES: Record<string, string> = {
     "options": {
       "key": "options",
       "type": "Stack",
-      "props": { "gap": 4 },
+      "props": { "gap": 4, "ax": "stretch" },
       "children": ["notifications", "dark-mode", "analytics"],
       "parentKey": "settings"
     },

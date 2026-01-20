@@ -316,7 +316,7 @@ export default function PlaygroundPage() {
                   label: "JSON",
                   value: "json",
                   render: (
-                    <Stack gap={3} style={{ height: "100%" }}>
+                    <Stack gap={3} fullwidth>
                       <CodeEditor
                         value={jsonInput}
                         onValueChange={setJsonInput}
@@ -337,14 +337,22 @@ export default function PlaygroundPage() {
                   label: "JSX",
                   value: "jsx",
                   render: (
-                    <Stack style={{ height: "100%" }}>
+                    <Stack fullwidth>
                       {jsxCode ? (
-                        <CodeBlock
-                          code={jsxCode}
-                          language="tsx"
-                          filename="component.tsx"
-                          showLineNumbers
-                        />
+                        <div
+                          style={{
+                            maxHeight: "500px",
+                            overflow: "auto",
+                            width: "100%",
+                          }}
+                        >
+                          <CodeBlock
+                            code={jsxCode}
+                            language="tsx"
+                            filename="component.tsx"
+                            showLineNumbers
+                          />
+                        </div>
                       ) : (
                         <Stack ax="center" ay="center" style={{ flex: 1 }}>
                           <Text shade="muted" style={{ textAlign: "center" }}>
