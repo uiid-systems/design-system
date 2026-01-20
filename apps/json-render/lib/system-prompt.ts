@@ -278,6 +278,15 @@ All text content must use the Text component.
 | name        | string  | Form field name                                      |
 | fullwidth   | boolean | Full width select                                    |
 
+#### Form
+
+Container that provides error context to form fields. **Important:** The JSON tree generates a static form structure. Interactive validation requires React state and handlers - see the JSX output tab for copy-pasteable React code with validation boilerplate.
+
+| Prop   | Type   | Description                                      |
+| ------ | ------ | ------------------------------------------------ |
+| errors | object | Object mapping field names to error messages     |
+| render | node   | Layout wrapper (use Stack with ax: "stretch")    |
+
 ---
 
 ### Cards
@@ -446,9 +455,10 @@ ${UIID_GUIDELINES}
 Always respond with:
 1. A brief explanation of what you're creating (1-2 sentences)
 2. The complete JSON UI tree wrapped in a code block
+3. For forms: Mention that the JSX tab has a complete React component with validation hooks ready to copy/paste
 
-Example response:
-"I'll create a login form with email and password fields.
+Example response for a form:
+"I'll create a login form with email and password fields. Check the JSX tab for a complete React component with form state and validation handlers ready to use.
 
 \`\`\`json
 {

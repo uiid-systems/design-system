@@ -433,6 +433,27 @@ Dropdown select.
 | `disabled`    | boolean | Disable the select                                   |
 | `fullwidth`   | boolean | Full width select                                    |
 
+#### Form
+
+Container that provides error context to form fields.
+
+**Important:** The JSON tree generates a static form structure. For interactive validation with error handling, use the **JSX output tab** which provides a complete React component with form state and validation handlers ready to copy/paste.
+
+```json
+{
+  "type": "Form",
+  "props": {
+    "render": "Stack"
+  },
+  "children": ["email-input", "submit-button"]
+}
+```
+
+| Prop     | Type   | Description                                      |
+| -------- | ------ | ------------------------------------------------ |
+| `errors` | object | Object mapping field names to error messages     |
+| `render` | node   | Layout wrapper component (use Stack or Group)    |
+
 ---
 
 ### Cards
@@ -609,7 +630,7 @@ Before outputting a tree, verify:
 - [ ] All non-root elements have `parentKey`
 - [ ] All `children` arrays contain valid keys that exist in `elements`
 - [ ] Text content is in `props.children`, not as structural children
-- [ ] Component types match the registry: `Stack`, `Group`, `Box`, `Text`, `Button`, `Input`, `Checkbox`, `Switch`, `Select`, `Card`, `Separator`, `Layer`, `ToggleButton`
+- [ ] Component types match the registry: `Stack`, `Group`, `Box`, `Text`, `Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Select`, `Card`, `Separator`, `Layer`, `ToggleButton`, `Form`, `Modal`
 - [ ] **No `style` prop anywhere** - use layout props instead
 - [ ] **Precomposed props used** - Card uses `title`/`description`, Input uses `label`, etc.
 - [ ] **Minimal element count** - don't create unnecessary wrapper elements

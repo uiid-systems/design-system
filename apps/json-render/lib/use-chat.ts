@@ -2,13 +2,16 @@
  * Custom hook for managing chat state and UI generation.
  *
  * Handles message history, streaming responses, and JSON tree extraction.
+ * Persists state to localStorage and supports shareable URLs.
  */
 
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type { UITree } from "@json-render/core";
 import type { CoreMessage } from "ai";
+
+const STORAGE_KEY = "json-render-session";
 
 export type ChatMessage = {
   id: string;
@@ -18,6 +21,14 @@ export type ChatMessage = {
   timestamp: Date;
 };
 
+// Serializable version for storage
+type StoredMessage = Omit<ChatMessage, "timestamp"> & { timestamp: string };
+
+type StoredSession = {
+  messages: StoredMessage[];
+  tree: UITree | null;
+};
+
 export type UseChatOptions = {
   /** Initial UI tree */
   initialTree?: UITree;
@@ -25,6 +36,8 @@ export type UseChatOptions = {
   endpoint?: string;
   /** Callback when tree is updated */
   onTreeUpdate?: (tree: UITree) => void;
+  /** Storage key for persistence */
+  storageKey?: string;
 };
 
 export type UseChatReturn = {
@@ -42,7 +55,46 @@ export type UseChatReturn = {
   clear: () => void;
   /** Set tree directly (for manual edits) */
   setTree: (tree: UITree) => void;
+  /** Generate shareable URL for current tree */
+  getShareUrl: () => string | null;
+  /** Whether session was restored from storage */
+  isRestored: boolean;
 };
+
+/**
+ * Encode tree to URL-safe base64
+ */
+function encodeTree(tree: UITree): string {
+  const json = JSON.stringify(tree);
+  // Use base64 encoding
+  return btoa(encodeURIComponent(json));
+}
+
+/**
+ * Decode tree from URL-safe base64
+ */
+function decodeTree(encoded: string): UITree | null {
+  try {
+    const json = decodeURIComponent(atob(encoded));
+    const parsed = JSON.parse(json);
+    if (parsed.root && parsed.elements) {
+      return parsed as UITree;
+    }
+  } catch {
+    // Invalid encoding
+  }
+  return null;
+}
+
+/**
+ * Get tree from URL hash if present
+ */
+function getTreeFromUrl(): UITree | null {
+  if (typeof window === "undefined") return null;
+  const hash = window.location.hash.slice(1); // Remove #
+  if (!hash) return null;
+  return decodeTree(hash);
+}
 
 /**
  * Extract JSON tree from response text.
@@ -93,15 +145,74 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     initialTree = null,
     endpoint = "/api/generate",
     onTreeUpdate,
+    storageKey = STORAGE_KEY,
   } = options;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [tree, setTreeState] = useState<UITree | null>(initialTree);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRestored, setIsRestored] = useState(false);
 
   // Track abort controller for cancellation
   const abortControllerRef = useRef<AbortController | null>(null);
+  const isInitialized = useRef(false);
+
+  // Load from URL hash or localStorage on mount
+  useEffect(() => {
+    if (isInitialized.current) return;
+    isInitialized.current = true;
+
+    // First check URL for shared tree
+    const urlTree = getTreeFromUrl();
+    if (urlTree) {
+      setTreeState(urlTree);
+      setIsRestored(true);
+      // Clear hash after loading
+      window.history.replaceState(null, "", window.location.pathname);
+      return;
+    }
+
+    // Then check localStorage for saved session
+    try {
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        const session: StoredSession = JSON.parse(stored);
+        if (session.messages?.length > 0) {
+          // Convert stored messages back to ChatMessage (restore Date objects)
+          const restoredMessages: ChatMessage[] = session.messages.map((msg) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp),
+          }));
+          setMessages(restoredMessages);
+        }
+        if (session.tree) {
+          setTreeState(session.tree);
+        }
+        setIsRestored(true);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, [storageKey]);
+
+  // Save to localStorage when state changes
+  useEffect(() => {
+    if (!isInitialized.current) return;
+
+    try {
+      const session: StoredSession = {
+        messages: messages.map((msg) => ({
+          ...msg,
+          timestamp: msg.timestamp.toISOString(),
+        })),
+        tree,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(session));
+    } catch {
+      // Ignore storage errors (quota exceeded, etc.)
+    }
+  }, [messages, tree, storageKey]);
 
   const setTree = useCallback(
     (newTree: UITree) => {
@@ -252,7 +363,27 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     setTreeState(null);
     setError(null);
     setIsLoading(false);
-  }, []);
+
+    // Clear localStorage
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      // Ignore storage errors
+    }
+  }, [storageKey]);
+
+  const getShareUrl = useCallback(() => {
+    if (!tree) return null;
+    
+    try {
+      const encoded = encodeTree(tree);
+      const url = new URL(window.location.href);
+      url.hash = encoded;
+      return url.toString();
+    } catch {
+      return null;
+    }
+  }, [tree]);
 
   return {
     messages,
@@ -262,5 +393,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     send,
     clear,
     setTree,
+    getShareUrl,
+    isRestored,
   };
 }
