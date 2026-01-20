@@ -9,12 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^1.2.12",
+    "@ai-sdk/openai": "^1.3.22",
     "@json-render/core": "^0.2.0",
     "@json-render/react": "^0.2.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/code": "workspace:*",
     "@uiid/forms": "workspace:*",
+    "@uiid/icons": "workspace:*",
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/overlays": "workspace:*",

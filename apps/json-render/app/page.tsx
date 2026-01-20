@@ -1,36 +1,102 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 import type { UITree } from "@json-render/core";
 import { JSONUIProvider, Renderer } from "@json-render/react";
 
-import { Button } from "@uiid/buttons";
-import { CodeBlock, CodeEditor } from "@uiid/code";
-import { Tabs } from "@uiid/interactive";
-import { Group, Stack } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { registry } from "@/lib/components";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
+import { useChat } from "@/lib/use-chat";
 
-import { MOCK_UI_TREE } from "./mocks";
+import {
+  ChatOuterContainer,
+  ChatSidebarContainer,
+  ChatSidebarHeader,
+  ChatSidebarActions,
+  ChatMessageEmpty,
+  ChatMessageContainer,
+  ChatMessageBubble,
+  ChatMessageError,
+  ChatInputContainer,
+  ChatInput,
+  RenderedContainer,
+} from "@/components";
 
 export default function PlaygroundPage() {
-  const [jsonInput, setJsonInput] = useState(
-    JSON.stringify(MOCK_UI_TREE, null, 2),
-  );
-  const [tree, setTree] = useState<UITree>(MOCK_UI_TREE);
-  const [parseError, setParseError] = useState<string | null>(null);
-  const [jsxCode, setJsxCode] = useState<string>("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const {
+    messages,
+    tree,
+    isLoading,
+    error,
+    send,
+    clear,
+    setTree,
+    getShareUrl,
+  } = useChat();
+  const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    treeToFormattedJsx(tree).then(setJsxCode);
+  const handleShare = async () => {
+    const url = getShareUrl();
+    if (url) {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  // JSON editor state (for manual editing)
+  // Initialize from tree, but allow manual edits
+  const [jsonInput, setJsonInput] = useState("");
+  const [parseError, setParseError] = useState<string | null>(null);
+  const [jsxCode, setJsxCode] = useState("");
+  const lastTreeRef = useRef<UITree | null>(null);
+
+  // Derive JSON from tree (only when tree actually changes from AI)
+  const treeJson = useMemo(() => {
+    return tree ? JSON.stringify(tree, null, 2) : "";
   }, [tree]);
 
+  // Sync JSON input when tree changes from AI (not from manual edits)
+  useEffect(() => {
+    if (tree && tree !== lastTreeRef.current) {
+      lastTreeRef.current = tree;
+      // Use a microtask to avoid the lint warning about synchronous setState
+      queueMicrotask(() => setJsonInput(treeJson));
+    } else if (!tree && lastTreeRef.current) {
+      // Tree was cleared (e.g., "Start fresh")
+      lastTreeRef.current = null;
+      queueMicrotask(() => {
+        setJsonInput("");
+        setParseError(null);
+      });
+    }
+  }, [tree, treeJson]);
+
+  // Generate JSX when tree changes
+  useEffect(() => {
+    if (tree) {
+      treeToFormattedJsx(tree).then((jsx) => {
+        queueMicrotask(() => setJsxCode(jsx));
+      });
+    } else {
+      queueMicrotask(() => setJsxCode(""));
+    }
+  }, [tree]);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Parse JSON and update tree from manual edits
   const handleParseJson = () => {
     try {
-      const parsed = JSON.parse(jsonInput);
+      const parsed = JSON.parse(jsonInput) as UITree;
       setTree(parsed);
       setParseError(null);
     } catch (e) {
@@ -53,91 +119,58 @@ export default function PlaygroundPage() {
         },
       }}
     >
-      <Stack gap={8} p={8} fullwidth>
-        {/* Header */}
-        <Stack gap={4}>
-          <Text size={5} weight="bold">
-            uiid + json-render
-          </Text>
-          <Text shade="muted">
-            Edit the JSON below to build UI with UIID components.
-          </Text>
-        </Stack>
+      <ChatOuterContainer style={{ overflow: "hidden" }}>
+        <ChatSidebarContainer>
+          {/* Header */}
+          <ChatSidebarHeader />
 
-        {/* Component list */}
-        <Stack gap={3}>
-          <Text size={2} weight="bold">
-            Available Components
-          </Text>
-          <Group gap={2} style={{ flexWrap: "wrap" }}>
-            {Object.keys(registry).map((name) => (
-              <Text
-                key={name}
-                size={0}
-                style={{
-                  padding: "4px 8px",
-                  backgroundColor: "#262626",
-                  borderRadius: 4,
-                }}
-              >
-                {name}
-              </Text>
-            ))}
-          </Group>
-        </Stack>
-
-        {/* Main content */}
-        <Group gap={6} fullwidth evenly ay="start">
-          {/* JSON Editor */}
-          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
-            <Text size={2} weight="bold">
-              JSON Input
-            </Text>
-            <CodeEditor
-              value={jsonInput}
-              onValueChange={setJsonInput}
-              language="json"
-              filename="ui-tree.json"
-              rows={20}
-            />
-
-            {parseError && (
-              <Text tone="negative" size={0}>
-                Parse Error: {parseError}
-              </Text>
+          {/* Messages Area */}
+          <ChatMessageContainer style={{ overflowY: "auto" }}>
+            {messages.length === 0 ? (
+              <ChatMessageEmpty />
+            ) : (
+              <>
+                {messages.map((message) => (
+                  <ChatMessageBubble key={message.id} message={message} />
+                ))}
+                <div ref={messagesEndRef} />
+              </>
             )}
-            <Button onClick={handleParseJson} fullwidth>
-              Update Preview
-            </Button>
-          </Stack>
+          </ChatMessageContainer>
 
-          {/* Output Tabs */}
-          <Stack gap={3} style={{ flex: 1, minWidth: 0 }}>
-            <Tabs
-              items={[
-                {
-                  label: "Preview",
-                  value: "preview",
-                  render: <Renderer tree={tree} registry={registry} />,
-                },
-                {
-                  label: "JSX",
-                  value: "jsx",
-                  render: (
-                    <CodeBlock
-                      code={jsxCode}
-                      language="tsx"
-                      filename="component.tsx"
-                      showLineNumbers
-                    />
-                  ),
-                },
-              ]}
-              keepMounted
-            />
-          </Stack>
-        </Group>
-      </Stack>
+          {/* Error Display */}
+          {error && <ChatMessageError>{error}</ChatMessageError>}
+
+          {/* Input Area */}
+          <ChatInputContainer>
+            <ChatInput onSend={send} isLoading={isLoading} />
+          </ChatInputContainer>
+        </ChatSidebarContainer>
+
+        {/* Right Panel - Output Tabs */}
+        <Stack ax="stretch" fullwidth>
+          <ChatSidebarActions
+            clear={clear}
+            messages={messages}
+            copied={copied}
+            handleShare={handleShare}
+            tree={tree}
+            code={jsxCode}
+            jsonValue={jsonInput}
+            onJsonChange={setJsonInput}
+            parseError={parseError}
+            onApply={handleParseJson}
+          />
+          {/* Rendered Content */}
+          <RenderedContainer>
+            {tree ? (
+              <Renderer tree={tree} registry={registry} />
+            ) : (
+              <Text shade="muted">Generated UI will appear here</Text>
+            )}
+          </RenderedContainer>
+        </Stack>
+      </ChatOuterContainer>
     </JSONUIProvider>
   );
 }

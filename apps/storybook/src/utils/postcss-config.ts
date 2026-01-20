@@ -1,3 +1,4 @@
+// @ts-expect-error - CJS module without type declarations
 import postcssLayerWrapper from "../../../../scripts/postcss-layer-wrapper.cjs";
 
 /**
@@ -37,7 +38,7 @@ export function applyPostCSSLayers(config: any): any {
   // Add layer wrapper for component CSS only
   config.css.postcss.plugins.push(
     postcssLayerWrapper("uiid.components", {
-      shouldWrap: (filePath) => {
+      shouldWrap: (filePath: string) => {
         // Only wrap CSS from component packages, not tokens or utils
         return COMPONENT_PACKAGES.some((pkg) =>
           filePath.includes(`packages/${pkg}/`),

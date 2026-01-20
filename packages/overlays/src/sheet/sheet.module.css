@@ -78,8 +78,6 @@
 .side-left {
   inset-block: var(--inset);
   height: calc(100% - var(--inset) * 2);
-  width: 75%;
-  max-width: 24rem;
 }
 
 .side-top,

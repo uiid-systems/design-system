@@ -27,6 +27,7 @@ export const Tabs = ({
   TabProps,
   IndicatorProps,
   PanelProps,
+  ContainerProps,
 }: TabsProps) => {
   return (
     <TabsRoot
@@ -44,7 +45,7 @@ export const Tabs = ({
         <TabsIndicator {...IndicatorProps} />
       </TabsList>
 
-      <Layer>
+      <Layer data-slot="tabs-container" {...ContainerProps}>
         {items.map((item) => (
           <TabsPanel
             key={item.value}

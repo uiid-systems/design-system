@@ -9,7 +9,54 @@ type TreeToJsxOptions = {
   indent?: string;
   /** Include import statement at top */
   includeImports?: boolean;
+  /** Generate complete React component (default: true) */
+  wrapInComponent?: boolean;
+  /** Component name (default: derived from root key) */
+  componentName?: string;
 };
+
+/**
+ * Maps component types to their UIID packages
+ */
+const COMPONENT_PACKAGES: Record<string, string> = {
+  // Layout
+  Box: "@uiid/layout",
+  Stack: "@uiid/layout",
+  Group: "@uiid/layout",
+  Layer: "@uiid/layout",
+  Separator: "@uiid/layout",
+  // Forms
+  Form: "@uiid/forms",
+  Input: "@uiid/forms",
+  Textarea: "@uiid/forms",
+  Checkbox: "@uiid/forms",
+  Select: "@uiid/forms",
+  Switch: "@uiid/forms",
+  // Buttons
+  Button: "@uiid/buttons",
+  ToggleButton: "@uiid/buttons",
+  // Typography
+  Text: "@uiid/typography",
+  // Cards
+  Card: "@uiid/cards",
+  // Overlays
+  Modal: "@uiid/overlays",
+};
+
+/**
+ * Form field components that need state management
+ */
+const FORM_FIELD_TYPES = new Set(["Input", "Textarea", "Checkbox", "Select", "Switch"]);
+
+/**
+ * Convert kebab-case to PascalCase for component names
+ */
+function toPascalCase(str: string): string {
+  return str
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
+}
 
 /**
  * Converts a UITree to formatted JSX code string.
@@ -18,9 +65,31 @@ export function treeToJsx(
   tree: UITree,
   options: TreeToJsxOptions = {}
 ): string {
-  const { indent = "  ", includeImports = true } = options;
+  const { indent = "  ", includeImports = true, wrapInComponent = true, componentName } = options;
 
   const usedComponents = new Set<string>();
+  const formFields: Array<{ name: string; type: string; elementType: string }> = [];
+
+  // Collect all form fields for state generation
+  function collectFormFields(elementKey: string) {
+    const element = tree.elements[elementKey];
+    if (!element) return;
+
+    if (FORM_FIELD_TYPES.has(element.type) && element.props?.name) {
+      formFields.push({
+        name: element.props.name as string,
+        type: element.type === "Checkbox" || element.type === "Switch" ? "boolean" : "string",
+        elementType: element.type,
+      });
+    }
+
+    // Recurse into children
+    if (element.children) {
+      for (const childKey of element.children) {
+        collectFormFields(childKey);
+      }
+    }
+  }
 
   function serializeValue(value: unknown): string {
     if (typeof value === "string") {
@@ -39,8 +108,11 @@ export function treeToJsx(
     return String(value);
   }
 
-  function serializeProps(props: Record<string, unknown>): string[] {
+  function serializeProps(props: Record<string, unknown>, elementType: string): string[] {
     const result: string[] = [];
+    const fieldName = props.name as string | undefined;
+    const isFormField = FORM_FIELD_TYPES.has(elementType) && fieldName && formFields.length > 0;
+    const isCheckboxOrSwitch = elementType === "Checkbox" || elementType === "Switch";
 
     for (const [key, value] of Object.entries(props)) {
       // Skip children prop - handled separately
@@ -58,6 +130,17 @@ export function treeToJsx(
       }
     }
 
+    // Add value/onChange handlers for form fields when wrapping in component
+    if (isFormField && wrapInComponent) {
+      if (isCheckboxOrSwitch) {
+        result.push(`checked={formData.${fieldName}}`);
+        result.push(`onCheckedChange={(checked) => handleChange("${fieldName}", checked)}`);
+      } else {
+        result.push(`value={formData.${fieldName}}`);
+        result.push(`onChange={(e) => handleChange("${fieldName}", e.target.value)}`);
+      }
+    }
+
     return result;
   }
 
@@ -69,7 +152,7 @@ export function treeToJsx(
 
     const currentIndent = indent.repeat(depth);
     const childIndent = indent.repeat(depth + 1);
-    const props = serializeProps(element.props || {});
+    const props = serializeProps(element.props || {}, element.type);
 
     // Get text children from props.children (if string)
     const textChildren =
@@ -125,18 +208,93 @@ export function treeToJsx(
     return jsx;
   }
 
+  // Collect form fields for state generation
+  collectFormFields(tree.root);
+
   // Render the tree starting from root
-  const jsxCode = renderElement(tree.root, 0);
+  const jsxCode = renderElement(tree.root, wrapInComponent ? 2 : 0);
 
   if (!includeImports) {
     return jsxCode;
   }
 
-  // Generate import statement
-  const components = Array.from(usedComponents).sort();
-  const importStatement = `import { ${components.join(", ")} } from "@uiid/ui";\n\n`;
+  // Group components by package
+  const componentsByPackage = new Map<string, string[]>();
+  for (const component of Array.from(usedComponents).sort()) {
+    const pkg = COMPONENT_PACKAGES[component] || "@uiid/ui";
+    if (!componentsByPackage.has(pkg)) {
+      componentsByPackage.set(pkg, []);
+    }
+    componentsByPackage.get(pkg)!.push(component);
+  }
 
-  return importStatement + jsxCode;
+  // Build import statements
+  let imports = `"use client";\n\n`;
+  
+  const hasFormFields = formFields.length > 0;
+  if (hasFormFields) {
+    imports += `import { useState } from "react";\n`;
+  }
+  imports += `\n`;
+
+  // Add UIID package imports
+  for (const [pkg, components] of componentsByPackage) {
+    imports += `import { ${components.join(", ")} } from "${pkg}";\n`;
+  }
+
+  if (!wrapInComponent) {
+    return imports + "\n" + jsxCode;
+  }
+
+  // Generate component name from root key
+  const derivedName = componentName || toPascalCase(tree.root);
+
+  // Build the complete component
+  let component = imports + "\n";
+
+  if (hasFormFields) {
+    // Generate form state interface
+    component += `interface FormData {\n`;
+    for (const field of formFields) {
+      component += `  ${field.name}: ${field.type};\n`;
+    }
+    component += `}\n\n`;
+
+    // Generate component with form handling
+    component += `export function ${derivedName}() {\n`;
+    component += `  const [formData, setFormData] = useState<FormData>({\n`;
+    for (const field of formFields) {
+      const defaultValue = field.type === "boolean" ? "false" : '""';
+      component += `    ${field.name}: ${defaultValue},\n`;
+    }
+    component += `  });\n\n`;
+    
+    component += `  const handleSubmit = (e: React.FormEvent) => {\n`;
+    component += `    e.preventDefault();\n`;
+    component += `    // Add your validation and submission logic here\n`;
+    component += `    console.log(formData);\n`;
+    component += `  };\n\n`;
+
+    component += `  const handleChange = (name: keyof FormData, value: FormData[keyof FormData]) => {\n`;
+    component += `    setFormData((prev) => ({ ...prev, [name]: value }));\n`;
+    component += `  };\n\n`;
+
+    component += `  return (\n`;
+    component += `    <form onSubmit={handleSubmit} noValidate>\n`;
+    component += jsxCode + "\n";
+    component += `    </form>\n`;
+    component += `  );\n`;
+    component += `}\n`;
+  } else {
+    // Simple component without form state
+    component += `export function ${derivedName}() {\n`;
+    component += `  return (\n`;
+    component += jsxCode + "\n";
+    component += `  );\n`;
+    component += `}\n`;
+  }
+
+  return component;
 }
 
 /**

@@ -1,5 +1,7 @@
 import type { Tabs } from "@base-ui/react/tabs";
 
+import type { LayerProps } from "@uiid/layout";
+
 import type { TabsAlign } from "./tabs.variants";
 
 export type TabProps = {
@@ -26,5 +28,6 @@ export type TabsProps = {
   TabProps?: TabsTabProps;
   IndicatorProps?: TabsIndicatorProps;
   PanelProps?: TabsPanelProps;
+  ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted">;
