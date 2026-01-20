@@ -22,7 +22,6 @@ export const RenderedSheet = ({
   onJsonChange,
   parseError,
   onApply,
-  children,
   ...props
 }: RenderedSheetProps) => {
   return (
