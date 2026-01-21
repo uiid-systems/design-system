@@ -3,6 +3,26 @@
     "packageName": "@uiid/backgrounds",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -26,6 +46,45 @@
   {
     "packageName": "@uiid/blocks",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add overlays to json-render, clean up",
+              "raw": "feat: add overlays to json-render, clean up",
+              "semverType": "patch"
+            },
+            {
+              "description": "Add `code` package, shiki (#22)",
+              "raw": "feat: add `code` package, shiki (#22)",
+              "semverType": "patch",
+              "pr": 22
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -62,6 +121,26 @@
     "packageName": "@uiid/buttons",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -79,6 +158,33 @@
   {
     "packageName": "@uiid/calendars",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -109,6 +215,33 @@
     "packageName": "@uiid/cards",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -126,6 +259,33 @@
   {
     "packageName": "@uiid/forms",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -145,6 +305,26 @@
     "packageName": "@uiid/icons",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -163,6 +343,33 @@
     "packageName": "@uiid/indicators",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -180,6 +387,52 @@
   {
     "packageName": "@uiid/interactive",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add resizable to interactive package (#28)",
+              "raw": "feat: add resizable to interactive package (#28)",
+              "semverType": "patch",
+              "pr": 28
+            },
+            {
+              "description": "Json render page (#26)",
+              "raw": "feat: json render page (#26)",
+              "semverType": "patch",
+              "pr": 26
+            },
+            {
+              "description": "Add json-render chat (#27)",
+              "raw": "feat: add json-render chat (#27)",
+              "semverType": "patch",
+              "pr": 27
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -204,6 +457,33 @@
   {
     "packageName": "@uiid/layout",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -235,6 +515,33 @@
     "packageName": "@uiid/lists",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -253,6 +560,33 @@
     "packageName": "@uiid/navigation",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -270,6 +604,45 @@
   {
     "packageName": "@uiid/overlays",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add overlays to json-render, clean up",
+              "raw": "feat: add overlays to json-render, clean up",
+              "semverType": "patch"
+            },
+            {
+              "description": "Add json-render chat (#27)",
+              "raw": "feat: add json-render chat (#27)",
+              "semverType": "patch",
+              "pr": 27
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -300,6 +673,33 @@
     "packageName": "@uiid/tables",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Consolidate table styles (#24)",
+              "raw": "refactor: consolidate table styles (#24)",
+              "semverType": "patch",
+              "pr": 24
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -317,6 +717,58 @@
   {
     "packageName": "@uiid/tokens",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add code editor component (#23)",
+              "raw": "feat: add code editor component (#23)",
+              "semverType": "patch",
+              "pr": 23
+            },
+            {
+              "description": "Json render page (#26)",
+              "raw": "feat: json render page (#26)",
+              "semverType": "patch",
+              "pr": 26
+            },
+            {
+              "description": "Add json-render chat (#27)",
+              "raw": "feat: add json-render chat (#27)",
+              "semverType": "patch",
+              "pr": 27
+            },
+            {
+              "description": "Add `code` package, shiki (#22)",
+              "raw": "feat: add `code` package, shiki (#22)",
+              "semverType": "patch",
+              "pr": 22
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
@@ -348,6 +800,40 @@
     "packageName": "@uiid/typography",
     "entries": [
       {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add `code` package, shiki (#22)",
+              "raw": "feat: add `code` package, shiki (#22)",
+              "semverType": "patch",
+              "pr": 22
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Swap accent and muted colors (#25)",
+              "raw": "refactor: swap accent and muted colors (#25)",
+              "semverType": "patch",
+              "pr": 25
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.1",
         "date": "January 16, 2026",
         "changes": {
@@ -365,6 +851,26 @@
   {
     "packageName": "@uiid/utils",
     "entries": [
+      {
+        "version": "0.0.2",
+        "date": "January 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Changelogs (#20)",
+              "raw": "fix: changelogs (#20)",
+              "semverType": "patch",
+              "pr": 20
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.1",
         "date": "January 16, 2026",
