@@ -53,3 +53,38 @@ export type ComponentCategory =
   | "navigation"
   | "data-display";
 
+/**
+ * Documentation for a single prop extracted from a Zod schema.
+ */
+export type PropDocumentation = {
+  /** Property name */
+  name: string;
+  /** TypeScript type representation */
+  type: string;
+  /** Whether the prop is required */
+  required: boolean;
+  /** Description from JSDoc comment (if available) */
+  description?: string;
+  /** Default value (if set in schema or component defaults) */
+  defaultValue?: unknown;
+  /** Enum values (for z.enum types) */
+  enumValues?: string[];
+};
+
+/**
+ * Full documentation for a component.
+ */
+export type ComponentDocumentation = {
+  /** Component name */
+  name: string;
+  /** Package name */
+  package: string;
+  /** Component description */
+  description?: string;
+  /** Category */
+  category?: string;
+  /** Whether component accepts children */
+  hasChildren: boolean;
+  /** Documented props */
+  props: PropDocumentation[];
+};

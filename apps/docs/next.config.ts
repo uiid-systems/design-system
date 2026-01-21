@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     viewTransition: true,
   },
   turbopack: {
-    root: "../..", // Points to design-system root for workspace package resolution
+    root: "../..",
   },
 };
 

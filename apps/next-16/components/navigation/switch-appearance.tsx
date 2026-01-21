@@ -54,11 +54,6 @@ export function SwitchAppearance() {
       tooltip="Toggle appearance"
       size="small"
       square
-      style={
-        {
-          "--button-height": "var(--forms-size-sm-height)",
-        } as React.CSSProperties
-      }
     />
   );
 }
