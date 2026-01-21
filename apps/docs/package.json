@@ -1,0 +1,44 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@uiid/backgrounds": "workspace:*",
+    "@uiid/buttons": "workspace:*",
+    "@uiid/calendars": "workspace:*",
+    "@uiid/cards": "workspace:*",
+    "@uiid/code": "workspace:*",
+    "@uiid/forms": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
+    "@uiid/interactive": "workspace:*",
+    "@uiid/layout": "workspace:*",
+    "@uiid/lists": "workspace:*",
+    "@uiid/navigation": "workspace:*",
+    "@uiid/overlays": "workspace:*",
+    "@uiid/registry": "workspace:*",
+    "@uiid/tables": "workspace:*",
+    "@uiid/tokens": "workspace:*",
+    "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*",
+    "next": "^16.1.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^20.19.30",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.0.1",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}

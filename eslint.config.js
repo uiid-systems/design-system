@@ -6,7 +6,15 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/*.d.ts", "**/*.stories.{ts,tsx}", "storybook-static/**"],
+    ignores: [
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/out/**",
+      "**/*.d.ts",
+      "**/*.stories.{ts,tsx}",
+      "storybook-static/**",
+    ],
   },
   {
     files: ["**/*.{ts,tsx,js,jsx}"],
@@ -26,7 +34,16 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        {
+          allowConstantExport: true,
+          allowExportNames: [
+            "metadata",
+            "generateMetadata",
+            "generateStaticParams",
+            "generateViewport",
+            "viewport",
+          ],
+        },
       ],
     },
   },
