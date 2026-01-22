@@ -1,30 +1,11 @@
 import { z } from "zod";
 
 /**
- * Valid spacing values matching @uiid/utils SPACING_VALUES.
- * Used for gap, padding, and margin props.
+ * Margin value - allows number (pixels) or "auto".
  */
-export const SpacingValue = z.union([
-  z.literal(0),
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
-  z.literal(4),
-  z.literal(6),
-  z.literal(8),
-  z.literal(10),
-  z.literal(12),
-  z.literal(16),
-  z.literal(20),
-  z.literal(24),
-  z.literal(32),
-  z.literal(40),
-  z.literal(48),
-  z.literal(56),
-  z.literal(64),
-]);
+export const MarginValue = z.union([z.number(), z.literal("auto")]);
 
-export type SpacingValue = z.infer<typeof SpacingValue>;
+export type MarginValue = z.infer<typeof MarginValue>;
 
 /**
  * Spacing props available on layout components.
@@ -32,38 +13,61 @@ export type SpacingValue = z.infer<typeof SpacingValue>;
  */
 export const SpacingPropsSchema = z.object({
   /** CSS gap property */
-  gap: SpacingValue.optional(),
+  gap: z.number().optional(),
   /** CSS padding (all sides) */
-  p: SpacingValue.optional(),
+  p: z.number().optional(),
   /** CSS padding-inline (left/right) */
-  px: SpacingValue.optional(),
+  px: z.number().optional(),
   /** CSS padding-block (top/bottom) */
-  py: SpacingValue.optional(),
+  py: z.number().optional(),
   /** CSS padding-block-start (top) */
-  pt: SpacingValue.optional(),
+  pt: z.number().optional(),
   /** CSS padding-block-end (bottom) */
-  pb: SpacingValue.optional(),
+  pb: z.number().optional(),
   /** CSS padding-inline-start (left) */
-  pl: SpacingValue.optional(),
+  pl: z.number().optional(),
   /** CSS padding-inline-end (right) */
-  pr: SpacingValue.optional(),
+  pr: z.number().optional(),
   /** CSS margin (all sides) */
-  m: SpacingValue.optional(),
+  m: MarginValue.optional(),
   /** CSS margin-inline (left/right) */
-  mx: SpacingValue.optional(),
+  mx: MarginValue.optional(),
   /** CSS margin-block (top/bottom) */
-  my: SpacingValue.optional(),
+  my: MarginValue.optional(),
   /** CSS margin-block-start (top) */
-  mt: SpacingValue.optional(),
+  mt: MarginValue.optional(),
   /** CSS margin-block-end (bottom) */
-  mb: SpacingValue.optional(),
+  mb: MarginValue.optional(),
   /** CSS margin-inline-start (left) */
-  ml: SpacingValue.optional(),
+  ml: MarginValue.optional(),
   /** CSS margin-inline-end (right) */
-  mr: SpacingValue.optional(),
+  mr: MarginValue.optional(),
 });
 
 export type SpacingProps = z.infer<typeof SpacingPropsSchema>;
+
+/**
+ * Border width props available on layout components.
+ * Values are in pixels.
+ */
+export const BorderPropsSchema = z.object({
+  /** CSS border-width (all sides) */
+  b: z.number().optional(),
+  /** CSS border-inline-width (left/right) */
+  bx: z.number().optional(),
+  /** CSS border-block-width (top/bottom) */
+  by: z.number().optional(),
+  /** CSS border-inline-start-width (left) */
+  bl: z.number().optional(),
+  /** CSS border-inline-end-width (right) */
+  br: z.number().optional(),
+  /** CSS border-block-start-width (top) */
+  bt: z.number().optional(),
+  /** CSS border-block-end-width (bottom) */
+  bb: z.number().optional(),
+});
+
+export type BorderProps = z.infer<typeof BorderPropsSchema>;
 
 /**
  * Alignment values for justify-content (ax).

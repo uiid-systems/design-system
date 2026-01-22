@@ -1,12 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Home } from "@uiid/icons";
+import { SiStorybook, SiGithub } from "@icons-pack/react-simple-icons";
+
+import { Button } from "@uiid/buttons";
+import { Home, SquarePen } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
 
 import { fromSlug, urls } from "@/constants/urls";
+
+import { CREATE_URL, GITHUB_URL, STORYBOOK_URL } from "@/constants";
 
 type BreadcrumbItem = {
   label: string;
@@ -49,12 +55,44 @@ export const DocsHeader = () => {
   return (
     <Group
       ay="center"
+      ax="space-between"
       gap={4}
       p={4}
       fullwidth
-      style={{ borderBottomWidth: 1 }}
+      bb={1}
+      className="sticky top-0 bg-(--shade-background) z-10"
     >
       <Breadcrumbs items={breadcrumbItems} />
+      
+      <Group gap={2} ay="center">
+        <Button
+          tooltip="Create"
+          size="small"
+          nativeButton={false}
+          render={<Link href={CREATE_URL} target="_blank" />}
+        >
+          <SquarePen />
+          Edit with AI
+        </Button>
+        <Button
+          tooltip="Storybook"
+          size="small"
+          nativeButton={false}
+          render={<Link href={STORYBOOK_URL} target="_blank" />}
+        >
+          <SiStorybook />
+          Storybook
+        </Button>
+        <Button
+          tooltip="GitHub"
+          size="small"
+          nativeButton={false}
+          render={<Link href={GITHUB_URL} target="_blank" />}
+        >
+          <SiGithub />
+          GitHub
+        </Button>
+      </Group>
     </Group>
   );
 };

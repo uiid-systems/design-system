@@ -38,13 +38,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Stack fullwidth mx="auto" bx={1} style={{ minHeight: "100vh", maxWidth: "1200px" }}>
+        <Stack fullwidth br={1} mx="auto" className="bg-(--shade-background) max-w-7xl">
           <Group fullwidth>
-            <Stack br={1} ax="stretch" className="sticky top-0 min-w-3xs">
-              <Group p={4}>
-                <Text size={3} weight="bold">uiid docs</Text>
-              </Group>
-                <List py={4} items={navItems} LinkComponent={Link} />
+            <Stack br={1} ax="stretch" className="min-w-3xs">
+              <Stack ax="stretch" className="sticky top-0">
+                <Group px={4} py={8}>
+                  <Text size={3} weight="bold">uiid docs</Text>
+                </Group>
+                <List items={navItems} LinkComponent={Link} pb={12} />
+              </Stack>
             </Stack>
             <Stack className="flex-1">
               <DocsHeader />

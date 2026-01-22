@@ -9,6 +9,8 @@ import { CodeBlock } from "@uiid/code";
 import { PropsTable, ComponentPreview } from "@/components";
 import { getPreviewComponent } from "@/lib/preview-registry";
 
+const HEADER_SIZE = 3;
+
 type ComponentDetailsProps = {
   name: string;
   packageName: string;
@@ -27,30 +29,25 @@ export function ComponentDetails({
   const PreviewComponent = getPreviewComponent(name);
 
   return (
-    <Stack gap={6} p={8}>
+    <Stack data-slot="component-details" gap={6} p={8} pb={32} fullwidth>
       {/* Header */}
-      <Stack gap={2}>
-        <Text render={<h1 />} size={6} weight="bold">
-          {name}
+      <Text render={<h1 />} size={6} weight="bold">
+        {name}
+      </Text>
+      {description && (
+        <Text shade="muted" size={1}>
+          {description}
         </Text>
-        {description && (
-          <Text shade="muted" size={1}>
-            {description}
-          </Text>
-        )}
-        <Text size={0} family="mono" shade="accent">
-          {packageName}
-        </Text>
-      </Stack>
+      )}
 
       {/* Preview Section */}
       {PreviewComponent && (
         <>
           <Separator />
-          <Stack gap={4}>
-            <Text render={<h2 />} size={4} weight="bold">
+          <Stack id="preview" gap={4} ax="stretch" fullwidth>
+            <Header>
               Preview
-            </Text>
+            </Header>
             <ComponentPreview>
               <PreviewComponent />
             </ComponentPreview>
@@ -58,23 +55,21 @@ export function ComponentDetails({
         </>
       )}
 
-      {/* Installation */}
       <Separator />
-      <Stack gap={4}>
-        <Text render={<h2 />} size={4} weight="bold">
+      <Stack id="installation" gap={4} ax="stretch" fullwidth>
+        <Header>
           Installation
-        </Text>
+        </Header>
         <CodeBlock code={`pnpm add ${packageName}`} language="bash" />
       </Stack>
 
-      {/* Source Code */}
       {sourceCode && (
         <>
           <Separator />
-          <Stack gap={4}>
-            <Text render={<h2 />} size={4} weight="bold">
-              Example
-            </Text>
+          <Stack id="usage" gap={4} ax="stretch" fullwidth>
+            <Header>
+              Usage
+            </Header>
             <CodeBlock code={sourceCode} language="tsx" />
           </Stack>
         </>
@@ -82,12 +77,20 @@ export function ComponentDetails({
 
       {/* Props Section */}
       <Separator />
-      <Stack gap={4}>
-        <Text render={<h2 />} size={4} weight="bold">
+      <Stack id="props" gap={4} ax="stretch" fullwidth>
+        <Header>
           Props
-        </Text>
+        </Header>
         <PropsTable props={props} />
       </Stack>
     </Stack>
   );
 }
+
+const Header = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Text render={<h2 />} size={HEADER_SIZE} weight="bold">
+      {children}
+    </Text>
+  );
+};
