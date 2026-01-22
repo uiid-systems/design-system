@@ -1,4 +1,5 @@
 import type {
+  BorderProps,
   LayoutProps,
   SpacingProps,
   RenderProp,
@@ -14,6 +15,7 @@ export type BoxProps = React.HTMLAttributes<HTMLElement> & {
   render?: RenderProp;
   style?: React.CSSProperties;
   className?: string;
-} & LayoutProps &
+} & BorderProps &
+  LayoutProps &
   SpacingProps &
   BoxVariants;

@@ -11,7 +11,7 @@ export const ToggleButtonPreview = ({ ...props }: ToggleButtonProps) => {
     <ToggleButton
       pressed={pressed}
       onPressedChange={setPressed}
-      icon={{ pressed: <Heart />, unpressed: <HeartOff /> }}
+      icon={{ pressed: <Heart fill="red" />, unpressed: <HeartOff /> }}
       text={{ pressed: "Liked", unpressed: "Like" }}
       {...props}
     />

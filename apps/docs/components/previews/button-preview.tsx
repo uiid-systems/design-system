@@ -8,10 +8,10 @@ export const ButtonPreview = () => {
     <Group gap={4} style={{ flexWrap: "wrap" }}>
       <Button>Default</Button>
       <Button variant="subtle">Subtle</Button>
-      <Button variant="inverted">Inverted</Button>
-      <Button ghost>Ghost</Button>
       <Button tone="positive">Positive</Button>
       <Button tone="negative">Negative</Button>
+      <Button tone="warning">Warning</Button>
+      <Button tone="info">Info</Button>
     </Group>
   );
 };

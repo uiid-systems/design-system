@@ -20,22 +20,20 @@ export const ListItem = ({
   icon: Icon,
   label,
   description,
+  LinkComponent,
   ...props
 }: ListItemProps) => {
+  // Determine the link element to use
+  const linkElement = LinkComponent ? (
+    <LinkComponent href={href ?? ""} style={{ display: "contents" }}>
+      {null}
+    </LinkComponent>
+  ) : (
+    <a href={href} target={target} rel={rel} style={{ display: "contents" }} />
+  );
+
   return (
-    <ConditionalRender
-      condition={!!href}
-      render={
-        render ?? (
-          <a
-            href={href}
-            target={target}
-            rel={rel}
-            style={{ display: "contents" }}
-          />
-        )
-      }
-    >
+    <ConditionalRender condition={!!href} render={linkElement}>
       <Group
         data-slot="list-item"
         render={render ?? <li />}

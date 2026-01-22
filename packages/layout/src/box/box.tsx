@@ -19,6 +19,13 @@ export const Box = ({
     styleProps: [
       "ax",
       "ay",
+      "b",
+      "bb",
+      "bl",
+      "br",
+      "bt",
+      "bx",
+      "by",
       "direction",
       "gap",
       "m",

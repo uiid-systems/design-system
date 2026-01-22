@@ -1,7 +1,7 @@
 import type { UITree } from "@json-render/core";
 
 import { Button } from "@uiid/buttons";
-import { MessageCircleXIcon, CircleCheckIcon, ShareIcon } from "@uiid/icons";
+import { RefreshCwIcon, CircleCheckIcon, ShareIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
 import type { ChatMessage } from "@/lib/use-chat";
@@ -41,9 +41,8 @@ export const ChatSidebarActions = ({
         onClick={clear}
         disabled={messages.length === 0 && !tree}
         tooltip="Clear the UI you've created"
-        tone="negative"
       >
-        <MessageCircleXIcon />
+        <RefreshCwIcon />
         Reset UI
       </Button>
       <Button

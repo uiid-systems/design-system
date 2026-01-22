@@ -2,7 +2,12 @@ import { z } from "zod";
 
 import type { ComponentEntry } from "../types";
 
-import { LayoutPropsSchema, Shade, SpacingPropsSchema } from "./shared";
+import {
+  BorderPropsSchema,
+  LayoutPropsSchema,
+  Shade,
+  SpacingPropsSchema,
+} from "./shared";
 
 /**
  * Box variant props (toggle flags).
@@ -20,11 +25,11 @@ export const BoxVariantsSchema = z.object({
 
 /**
  * Box component props schema.
- * Generic flex container with layout and spacing props.
+ * Generic flex container with layout, spacing, and border props.
  */
-export const BoxPropsSchema = SpacingPropsSchema.merge(LayoutPropsSchema).merge(
-  BoxVariantsSchema
-);
+export const BoxPropsSchema = SpacingPropsSchema.merge(LayoutPropsSchema)
+  .merge(BorderPropsSchema)
+  .merge(BoxVariantsSchema);
 
 export type BoxProps = z.infer<typeof BoxPropsSchema>;
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { Collapsible } from "@base-ui/react";
 
 import { ChevronsUpDown } from "@uiid/icons";
@@ -15,6 +17,7 @@ export const ListItemGroup = ({
   collapsible,
   icon: Icon,
   items,
+  LinkComponent,
 }: ListItemGroupProps) => {
   return (
     <Stack
@@ -29,7 +32,7 @@ export const ListItemGroup = ({
       {category && (
         <Group
           data-slot="list-item-group-collapsible-trigger"
-          gap={2}
+          gap={4}
           py={1}
           ay="center"
           fullwidth
@@ -81,7 +84,7 @@ export const ListItemGroup = ({
         }}
       >
         {items.map((item) => (
-          <ListItem key={item.value} {...item} />
+          <ListItem key={item.value} LinkComponent={LinkComponent} {...item} />
         ))}
       </SwitchRender>
     </Stack>

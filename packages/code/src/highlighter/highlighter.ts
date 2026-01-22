@@ -23,7 +23,7 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
 };
 
 // Themes - Vitesse for light/dark mode support
-const THEME_DARK = () => import("@shikijs/themes/vitesse-dark");
+const THEME_DARK = () => import("@shikijs/themes/vitesse-black");
 const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
 
 // Singleton state
