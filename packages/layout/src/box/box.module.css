@@ -1,5 +1,8 @@
 .box {
   display: flex;
+  border-color: var(--globals-border-color);
+  border-style: solid;
+  border-width: 0;
 }
 
 .toggle-evenly > * {

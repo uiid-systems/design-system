@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { Home } from "@uiid/icons";
 import { Group } from "@uiid/layout";
-import { Breadcrumbs, SidebarTrigger, useSidebar } from "@uiid/navigation";
+import { Breadcrumbs } from "@uiid/navigation";
 
 import { fromSlug, urls } from "@/constants/urls";
 
@@ -16,7 +16,6 @@ type BreadcrumbItem = {
 
 export const DocsHeader = () => {
   const pathname = usePathname();
-  const { isMobile } = useSidebar();
 
   const generateBreadcrumbs = (): BreadcrumbItem[] => {
     const items: BreadcrumbItem[] = [
@@ -51,13 +50,10 @@ export const DocsHeader = () => {
     <Group
       ay="center"
       gap={4}
-      px={4}
-      py={3}
-      style={{
-        borderBottom: "1px solid var(--color-halftone)",
-      }}
+      p={4}
+      fullwidth
+      style={{ borderBottomWidth: 1 }}
     >
-      {isMobile && <SidebarTrigger />}
       <Breadcrumbs items={breadcrumbItems} />
     </Group>
   );

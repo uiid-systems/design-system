@@ -39,9 +39,6 @@
 
 .list-item-panel {
   position: relative;
-  border-inline-start: var(--globals-border-width) solid var(--shade-accent);
-  margin-inline-start: 0.875rem;
-  /* padding-block-start: calc(var(--list-padding-y) / 2); */
   gap: 0.5rem;
   padding-inline-start: 0.875rem;
   list-style: none;

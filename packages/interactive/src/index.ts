@@ -1,5 +1,6 @@
 export * from "./collapsible/collapsible";
 export * from "./collapsible/collapsible.types";
+export * from "./collapsible/subcomponents";
 
 export * from "./menu/menu";
 export * from "./menu/menu.types";

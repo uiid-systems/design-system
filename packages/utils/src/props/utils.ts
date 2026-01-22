@@ -38,6 +38,8 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
             "unit" in styleProp.scale ? styleProp.scale.unit || "" : "";
           const calcValue = `calc(${value} * var(${styleProp.scale.variable}))${unit}`;
           (styleObj as Record<string, unknown>)[styleProp.property] = calcValue;
+        } else if (typeof value === "number") {
+          (styleObj as Record<string, unknown>)[styleProp.property] = `${value}px`;
         } else {
           (styleObj as Record<string, unknown>)[styleProp.property] = value;
         }

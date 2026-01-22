@@ -96,7 +96,7 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
 
     return {
       category: config.label,
-      icon: config.icon,
+      // icon: config.icon,
       collapsible: true,
       items: components.map((component) => ({
         label: component.name,

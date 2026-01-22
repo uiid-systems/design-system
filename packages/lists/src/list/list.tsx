@@ -20,6 +20,7 @@ export const List = ({
   variant,
   items,
   children,
+  LinkComponent,
   ...props
 }: ListProps) => {
   const ListElement = type === "ordered" ? <ol /> : <ul />;
@@ -47,11 +48,16 @@ export const List = ({
       {items
         ? items.map((item) =>
             "items" in item ? (
-              <ListItemGroup key={item.category} {...item} />
+              <ListItemGroup
+                key={item.category}
+                LinkComponent={LinkComponent}
+                {...item}
+              />
             ) : (
               <ListItem
                 key={item.value}
                 fullwidth={direction === "column"}
+                LinkComponent={LinkComponent}
                 {...item}
               />
             ),

@@ -1,5 +1,3 @@
-"use client";
-
 import type { CollapsibleProps } from "./collapsible.types";
 
 import {
@@ -9,13 +7,11 @@ import {
 } from "./subcomponents";
 
 export const Collapsible = ({
-  /** shortcuts */
   trigger,
-  /** subcomponents */
+  instant = false,
   RootProps,
   TriggerProps,
   PanelProps,
-  instant = true,
   children,
 }: CollapsibleProps) => {
   return (
