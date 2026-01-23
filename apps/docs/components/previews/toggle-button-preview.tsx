@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
+
 import { ToggleButton, type ToggleButtonProps } from "@uiid/buttons";
 import { Heart, HeartOff } from "@uiid/icons";
 
-export const ToggleButtonPreview = ({ ...props }: ToggleButtonProps) => {
+export function ToggleButtonPreview({ ...props }: ToggleButtonProps) {
   const [pressed, setPressed] = React.useState(false);
 
   return (
@@ -16,5 +17,4 @@ export const ToggleButtonPreview = ({ ...props }: ToggleButtonProps) => {
       {...props}
     />
   );
-};
-ToggleButtonPreview.displayName = "ToggleButtonPreview";
+}

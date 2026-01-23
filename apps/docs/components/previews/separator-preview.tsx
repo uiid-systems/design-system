@@ -1,15 +1,12 @@
-"use client";
-
 import { Separator, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-export const SeparatorPreview = () => {
+export function SeparatorPreview() {
   return (
-    <Stack gap={4} style={{ width: "100%", maxWidth: 300 }}>
-      <Text>Above</Text>
+    <Stack gap={4} ax="center" fullwidth>
+      <Text>As Above</Text>
       <Separator />
-      <Text>Below</Text>
+      <Text>So Below</Text>
     </Stack>
   );
 };
-SeparatorPreview.displayName = "SeparatorPreview";

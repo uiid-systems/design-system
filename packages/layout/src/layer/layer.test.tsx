@@ -68,13 +68,13 @@ describe("Layer", () => {
       </Layer>,
     );
 
-    expect(screen.getByTestId("child-1")).toHaveStyle({
+    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
       transform: "translate(0px, 0px)",
     });
-    expect(screen.getByTestId("child-2")).toHaveStyle({
+    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
       transform: "translate(10px, 0px)",
     });
-    expect(screen.getByTestId("child-3")).toHaveStyle({
+    expect(screen.getByTestId("child-3").parentElement).toHaveStyle({
       transform: "translate(20px, 0px)",
     });
   });
@@ -87,10 +87,10 @@ describe("Layer", () => {
       </Layer>,
     );
 
-    expect(screen.getByTestId("child-1")).toHaveStyle({
+    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
       transform: "translate(0px, 0px)",
     });
-    expect(screen.getByTestId("child-2")).toHaveStyle({
+    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
       transform: "translate(0px, 5px)",
     });
   });
@@ -103,10 +103,10 @@ describe("Layer", () => {
       </Layer>,
     );
 
-    expect(screen.getByTestId("child-1")).toHaveStyle({
+    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
       transform: "translate(0px, 0px)",
     });
-    expect(screen.getByTestId("child-2")).toHaveStyle({
+    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
       transform: "translate(8px, 4px)",
     });
   });
@@ -136,7 +136,7 @@ describe("Layer", () => {
     );
 
     // Negative offset for overlapping avatars
-    expect(screen.getByTestId("avatar-2")).toHaveStyle({
+    expect(screen.getByTestId("avatar-2").parentElement).toHaveStyle({
       transform: "translate(-8px, 0px)",
     });
   });

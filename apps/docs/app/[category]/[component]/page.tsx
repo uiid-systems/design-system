@@ -3,6 +3,7 @@ import path from "path";
 import { notFound } from "next/navigation";
 
 import { registry, generateComponentDocs } from "@uiid/registry";
+import { highlight } from "@uiid/code";
 
 import { toSlug } from "@/constants/urls";
 import { ComponentDetails } from "./component-details";
@@ -64,6 +65,11 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
   const docs = generateComponentDocs(entry);
   const sourceCode = getPreviewSource(entry.name);
 
+  const installHtml = await highlight(`pnpm add ${entry.package}`, "bash");
+  const sourceHtml = sourceCode
+    ? await highlight(sourceCode, "tsx")
+    : undefined;
+
   return (
     <ComponentDetails
       name={entry.name}
@@ -71,6 +77,8 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       description={entry.description}
       props={docs.props}
       sourceCode={sourceCode}
+      installHtml={installHtml}
+      sourceHtml={sourceHtml}
     />
   );
 }

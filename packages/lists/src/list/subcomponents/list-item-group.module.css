@@ -7,9 +7,10 @@
 .list-item-group-collapsible-trigger {
   border: none;
   background-color: transparent;
-  color: var(--shade-foreground);
+  color: var(--shade-muted);
   padding-inline: 0.5rem;
   border-radius: var(--globals-border-radius);
+  transition: all var(--globals-transition-timing) ease-in-out;
 
   &:is(button) {
     cursor: pointer;
@@ -41,5 +42,6 @@
   position: relative;
   gap: 0.5rem;
   padding-inline-start: 0.875rem;
+  margin-block-end: 1rem;
   list-style: none;
 }

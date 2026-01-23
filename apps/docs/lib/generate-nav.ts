@@ -31,22 +31,22 @@ export const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
   buttons: {
     label: "Buttons",
     icon: MousePointerClick,
-    order: 2,
+    order: 3,
   },
   forms: {
     label: "Forms",
     icon: FormInput,
-    order: 3,
+    order: 5,
   },
   typography: {
     label: "Typography",
     icon: Type,
-    order: 4,
+    order: 2,
   },
   cards: {
     label: "Cards",
     icon: CreditCard,
-    order: 5,
+    order: 4,
   },
   overlays: {
     label: "Overlays",

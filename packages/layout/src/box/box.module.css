@@ -27,3 +27,12 @@
   width: 100dvw;
   height: 100dvh;
 }
+
+.toggle-rounded {
+  border-radius: var(--globals-border-radius);
+}
+
+.toggle-square {
+  aspect-ratio: 1;
+}
+

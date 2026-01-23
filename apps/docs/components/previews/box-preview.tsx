@@ -1,11 +1,10 @@
 import { Box } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-export const BoxPreview = () => {
+export function BoxPreview() {
   return (
-    <Box p={4} b={1} mx={4} fullwidth>
-      <Text>Box with padding</Text>
+    <Box p={5} b={5} rounded>
+      <Text>What's in the box?</Text>
     </Box>
   );
-};
-BoxPreview.displayName = "BoxPreview";
+}

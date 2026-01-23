@@ -1,15 +1,13 @@
-"use client";
-
+import { Card } from "@uiid/cards";
+import { Check, Info, Ban } from "@uiid/icons";
 import { Group } from "@uiid/layout";
-import { Button } from "@uiid/buttons";
 
-export const GroupPreview = () => {
+export function GroupPreview() {
   return (
-    <Group gap={4}>
-      <Button>First</Button>
-      <Button variant="subtle">Second</Button>
-      <Button ghost>Third</Button>
+    <Group gap={2}>
+      <Card tone="negative" title="Negative" icon={Ban} />
+      <Card tone="warning" title="Warning" icon={Info} />
+      <Card tone="positive" title="Positive" icon={Check} />
     </Group>
   );
 };
-GroupPreview.displayName = "GroupPreview";

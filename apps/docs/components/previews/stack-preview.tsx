@@ -1,15 +1,12 @@
-"use client";
-
+import { Card } from "@uiid/cards";
 import { Stack } from "@uiid/layout";
-import { Text } from "@uiid/typography";
 
-export const StackPreview = () => {
+export function StackPreview() {
   return (
     <Stack gap={2}>
-      <Text>Item 1</Text>
-      <Text>Item 2</Text>
-      <Text>Item 3</Text>
+      <Card tone="negative" title="Negative" />
+      <Card tone="warning" title="Warning" />
+      <Card tone="positive" title="Positive" />
     </Stack>
   );
 };
-StackPreview.displayName = "StackPreview";

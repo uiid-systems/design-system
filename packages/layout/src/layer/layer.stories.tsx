@@ -25,33 +25,9 @@ const meta = {
   render: (args) => (
     <Stack gap={2}>
       <Layer {...args}>
-        <div
-          style={{
-            background: "tomato",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "gold",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "mediumseagreen",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
+       <Square />
+       <Square /> 
+       <Square /> 
       </Layer>
 
       <Layer {...args} offset={{ x: 20 }}>
@@ -151,3 +127,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Layer" };
+
+const Square = () => (
+  <div
+  style={{
+    background: "tomato",
+    height: 64,
+    width: 64,
+    borderRadius: 8,
+    border: "2px solid var(--shade-background)",
+  }}
+/>
+)

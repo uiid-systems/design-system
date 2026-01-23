@@ -38,7 +38,9 @@ export const Card = ({
     <CardContainer tone={tone} {...props} {...ContainerProps}>
       <ConditionalRender
         condition={Boolean(title || icon || action)}
-        render={<CardHeader {...HeaderProps} />}
+        render={
+          <CardHeader mb={!description ? 8 : undefined} {...HeaderProps} />
+        }
       >
         {Icon && <CardIcon tone={tone} icon={Icon} {...IconProps} />}
         {Title && <CardTitle {...TitleProps}>{Title}</CardTitle>}
@@ -46,7 +48,9 @@ export const Card = ({
       </ConditionalRender>
 
       {Description && (
-        <CardDescription {...DescriptionProps}>{Description}</CardDescription>
+        <CardDescription mb={4} {...DescriptionProps}>
+          {Description}
+        </CardDescription>
       )}
 
       {children}

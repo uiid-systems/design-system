@@ -1,4 +1,4 @@
-import { Children, isValidElement, cloneElement } from "react";
+import { Children, isValidElement } from "react";
 
 import { cx } from "@uiid/utils";
 
@@ -25,37 +25,21 @@ export const Layer = ({
     }),
   };
 
-  // If an offset is provided, we map over the children and add inline transforms.
+  // If an offset is provided, wrap each child in a positioned element with the transform.
   const layeredChildren = offset
     ? Children.map(children, (child, index) => {
         if (!isValidElement(child)) return child;
 
-        // Tell TypeScript that the child element's props include a style property.
-        const validChild = child as React.ReactElement<{
-          style?: React.CSSProperties;
-        }>;
-
-        // Extract any existing style from the child.
-        const childStyle: React.CSSProperties = validChild.props.style || {};
-
-        // Calculate the offsets for this child.
         const translateX = offset.x ? offset.x * index : 0;
         const translateY = offset.y ? offset.y * index : 0;
-        const offsetTransform = `translate(${translateX}px, ${translateY}px)`;
 
-        // Merge with any existing transform.
-        const newTransform = childStyle.transform
-          ? `${childStyle.transform} ${offsetTransform}`
-          : offsetTransform;
-
-        // Create a new style object including the updated transform.
-        const newStyle: React.CSSProperties = {
-          ...childStyle,
-          transform: newTransform,
-        };
-
-        // Clone the child element, overriding its style.
-        return cloneElement(validChild, { style: newStyle });
+        return (
+          <div
+            style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
+          >
+            {child}
+          </div>
+        );
       })
     : children;
 

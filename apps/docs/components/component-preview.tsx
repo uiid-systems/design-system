@@ -7,13 +7,13 @@ type ComponentPreviewProps = {
   children: React.ReactNode;
 };
 
-export const ComponentPreview = ({
-  children,
-}: ComponentPreviewProps) => {
+export const ComponentPreview = ({ children }: ComponentPreviewProps) => {
   return (
     <Card>
       <Card
         gap={4}
+        py={12}
+        px={8}
         ax="center"
         ay="center"
         fullwidth

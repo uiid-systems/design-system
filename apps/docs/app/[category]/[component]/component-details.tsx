@@ -17,14 +17,18 @@ type ComponentDetailsProps = {
   description?: string;
   props: PropDocumentation[];
   sourceCode?: string;
+  installHtml?: string;
+  sourceHtml?: string;
 };
 
 export function ComponentDetails({
   name,
-  packageName,
+  // packageName,
   description,
   props,
   sourceCode,
+  // installHtml,
+  sourceHtml,
 }: ComponentDetailsProps) {
   const PreviewComponent = getPreviewComponent(name);
 
@@ -45,9 +49,7 @@ export function ComponentDetails({
         <>
           <Separator />
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
-            <Header>
-              Preview
-            </Header>
+            <Header>Preview</Header>
             <ComponentPreview>
               <PreviewComponent />
             </ComponentPreview>
@@ -55,22 +57,12 @@ export function ComponentDetails({
         </>
       )}
 
-      <Separator />
-      <Stack id="installation" gap={4} ax="stretch" fullwidth>
-        <Header>
-          Installation
-        </Header>
-        <CodeBlock code={`pnpm add ${packageName}`} language="bash" />
-      </Stack>
-
       {sourceCode && (
         <>
           <Separator />
           <Stack id="usage" gap={4} ax="stretch" fullwidth>
-            <Header>
-              Usage
-            </Header>
-            <CodeBlock code={sourceCode} language="tsx" />
+            <Header>Usage</Header>
+            <CodeBlock code={sourceCode} language="tsx" html={sourceHtml} />
           </Stack>
         </>
       )}
@@ -78,9 +70,7 @@ export function ComponentDetails({
       {/* Props Section */}
       <Separator />
       <Stack id="props" gap={4} ax="stretch" fullwidth>
-        <Header>
-          Props
-        </Header>
+        <Header>Props</Header>
         <PropsTable props={props} />
       </Stack>
     </Stack>

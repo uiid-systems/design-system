@@ -66,7 +66,6 @@ export const DocsHeader = () => {
       
       <Group gap={2} ay="center">
         <Button
-          tooltip="Create"
           size="small"
           nativeButton={false}
           render={<Link href={CREATE_URL} target="_blank" />}
@@ -75,7 +74,6 @@ export const DocsHeader = () => {
           Edit with AI
         </Button>
         <Button
-          tooltip="Storybook"
           size="small"
           nativeButton={false}
           render={<Link href={STORYBOOK_URL} target="_blank" />}
@@ -84,7 +82,6 @@ export const DocsHeader = () => {
           Storybook
         </Button>
         <Button
-          tooltip="GitHub"
           size="small"
           nativeButton={false}
           render={<Link href={GITHUB_URL} target="_blank" />}
