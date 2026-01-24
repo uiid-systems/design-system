@@ -1,12 +1,12 @@
 "use client";
 
-import type { PropDocumentation } from "@uiid/registry";
+import type { PropDocumentation, PreviewConfig } from "@uiid/registry";
 
 import { Stack, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { CodeBlock } from "@uiid/code";
 
-import { PropsTable, ComponentPreview } from "@/components";
+import { PropsTable, ComponentPreview, TreePreviewList } from "@/components";
 import { getPreviewComponent } from "@/lib/preview-registry";
 
 const HEADER_SIZE = 3;
@@ -19,6 +19,7 @@ type ComponentDetailsProps = {
   sourceCode?: string;
   installHtml?: string;
   sourceHtml?: string;
+  previews?: PreviewConfig[];
 };
 
 export function ComponentDetails({
@@ -29,6 +30,7 @@ export function ComponentDetails({
   sourceCode,
   // installHtml,
   sourceHtml,
+  previews,
 }: ComponentDetailsProps) {
   const PreviewComponent = getPreviewComponent(name);
 
@@ -44,8 +46,18 @@ export function ComponentDetails({
         </Text>
       )}
 
-      {/* Preview Section */}
-      {PreviewComponent && (
+      {/* Preview Section — tree-based if available, otherwise legacy component */}
+      {previews && previews.length > 0 ? (
+        <>
+          <Separator />
+          <Stack id="preview" gap={4} ax="stretch" fullwidth>
+            <Header>Preview</Header>
+            <ComponentPreview>
+              <TreePreviewList previews={previews} />
+            </ComponentPreview>
+          </Stack>
+        </>
+      ) : PreviewComponent ? (
         <>
           <Separator />
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
@@ -55,7 +67,7 @@ export function ComponentDetails({
             </ComponentPreview>
           </Stack>
         </>
-      )}
+      ) : null}
 
       {sourceCode && (
         <>

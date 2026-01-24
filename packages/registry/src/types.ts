@@ -1,6 +1,30 @@
 import type { z } from "zod";
 
 /**
+ * A single element in a preview tree.
+ */
+export type PreviewElement = {
+  key: string;
+  type: string;
+  props: Record<string, unknown>;
+  children?: string[];
+  parentKey?: string;
+};
+
+/**
+ * A labeled UI tree structure for component previews.
+ * Framework-agnostic representation that can be rendered
+ * by docs, json-render, or any tree renderer.
+ */
+export type PreviewConfig = {
+  label: string;
+  tree: {
+    root: string;
+    elements: Record<string, PreviewElement>;
+  };
+};
+
+/**
  * Metadata for a single component in the registry.
  * Framework-agnostic structure that can be consumed by
  * json-render, a2ui, or any AI-to-UI library.
@@ -26,6 +50,15 @@ export type ComponentEntry<T extends z.ZodType = z.ZodType> = {
 
   /** Category for organization (e.g., "layout", "forms", "feedback") */
   category?: string;
+
+  /** Preview trees for documentation and json-render initial states */
+  previews?: PreviewConfig[];
+
+  /** Props that accept rich content (slot name → description) */
+  slots?: Record<string, string>;
+
+  /** Short LLM-oriented usage note */
+  usage?: string;
 };
 
 /**

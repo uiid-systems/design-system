@@ -3,6 +3,7 @@ import type { Plugin } from "prettier";
 import * as prettier from "prettier/standalone";
 import * as prettierPluginBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
+import { getPackageMap } from "@uiid/registry";
 
 type TreeToJsxOptions = {
   /** Indentation string (default: 2 spaces) */
@@ -16,32 +17,10 @@ type TreeToJsxOptions = {
 };
 
 /**
- * Maps component types to their UIID packages
+ * Maps component types to their UIID packages.
+ * Derived from the registry — no hardcoded duplication.
  */
-const COMPONENT_PACKAGES: Record<string, string> = {
-  // Layout
-  Box: "@uiid/layout",
-  Stack: "@uiid/layout",
-  Group: "@uiid/layout",
-  Layer: "@uiid/layout",
-  Separator: "@uiid/layout",
-  // Forms
-  Form: "@uiid/forms",
-  Input: "@uiid/forms",
-  Textarea: "@uiid/forms",
-  Checkbox: "@uiid/forms",
-  Select: "@uiid/forms",
-  Switch: "@uiid/forms",
-  // Buttons
-  Button: "@uiid/buttons",
-  ToggleButton: "@uiid/buttons",
-  // Typography
-  Text: "@uiid/typography",
-  // Cards
-  Card: "@uiid/cards",
-  // Overlays
-  Modal: "@uiid/overlays",
-};
+const COMPONENT_PACKAGES: Record<string, string> = getPackageMap();
 
 /**
  * Form field components that need state management

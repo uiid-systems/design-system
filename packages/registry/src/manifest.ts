@@ -15,6 +15,7 @@ import { ButtonEntry, ToggleButtonEntry } from "./schemas/buttons";
 // Form components
 import {
   CheckboxEntry,
+  FormEntry,
   InputEntry,
   SelectEntry,
   SwitchEntry,
@@ -54,6 +55,7 @@ export const registry: Registry = {
   ToggleButton: ToggleButtonEntry,
 
   // Forms
+  Form: FormEntry,
   Input: InputEntry,
   Textarea: TextareaEntry,
   Checkbox: CheckboxEntry,
