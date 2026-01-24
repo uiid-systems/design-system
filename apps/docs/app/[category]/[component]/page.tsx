@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 
-import { registry, generateComponentDocs } from "@uiid/registry";
+import { registry, generateComponentDocs, type PreviewConfig } from "@uiid/registry";
 import { highlight } from "@uiid/code";
 
 import { toSlug } from "@/constants/urls";
@@ -70,6 +70,8 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
     ? await highlight(sourceCode, "tsx")
     : undefined;
 
+  const previews = (entry.previews as PreviewConfig[] | undefined) ?? undefined;
+
   return (
     <ComponentDetails
       name={entry.name}
@@ -79,6 +81,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       sourceCode={sourceCode}
       installHtml={installHtml}
       sourceHtml={sourceHtml}
+      previews={previews}
     />
   );
 }

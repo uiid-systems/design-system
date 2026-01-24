@@ -2,19 +2,17 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 
 import { Button } from "@uiid/buttons";
-import { CircleQuestionMark } from "@uiid/icons";
-import { Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 
 import { Input } from "../input/input";
 import { Form, type FormProps } from "./form";
 import { useFormState, type FormErrors } from "./hooks/use-form-state";
+import type { FieldProps } from "../field/field.types";
 
 const meta = {
   title: "Forms/Form/Username & Password",
   component: Form,
-  parameters: {
-    layout: "centered",
-  },
+  parameters: { layout: "centered" },
 } satisfies Meta<FormProps>;
 
 export default meta;
@@ -62,52 +60,11 @@ export const WithOnSubmit: Story = {
     };
 
     return (
-      <form
-        key={formKey}
-        onSubmit={handleSubmit}
-        noValidate
-        style={{ width: "320px" }}
-      >
-        <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
-            required
-            autoComplete="username"
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-          />
-
-          <Stack gap={2} ax="stretch">
-            <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
-            </Button>
-            <Button type="button" ghost onClick={handleReset}>
-              Reset
-            </Button>
-          </Stack>
-
-          {successMessage && (
-            <p
-              style={{
-                color: "var(--tones-positive)",
-                margin: 0,
-                textAlign: "center",
-              }}
-            >
-              Account created successfully!
-            </p>
-          )}
-        </Form>
-      </form>
+      <Form key={formKey} onSubmit={handleSubmit} errors={errors}>
+        <Fields />
+        <Controls handleReset={handleReset} loading={loading} />
+        {successMessage && <SuccessMessage />}
+      </Form>
     );
   },
 };
@@ -152,52 +109,11 @@ export const WithFormData: Story = {
     };
 
     return (
-      <form
-        key={formKey}
-        onSubmit={handleSubmit}
-        noValidate
-        style={{ width: "320px" }}
-      >
-        <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
-            required
-            autoComplete="username"
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-          />
-
-          <Stack gap={2} ax="stretch">
-            <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
-            </Button>
-            <Button type="button" ghost onClick={handleReset}>
-              Reset
-            </Button>
-          </Stack>
-
-          {successMessage && (
-            <p
-              style={{
-                color: "var(--tones-positive)",
-                margin: 0,
-                textAlign: "center",
-              }}
-            >
-              Account created successfully!
-            </p>
-          )}
-        </Form>
-      </form>
+      <Form key={formKey} onSubmit={handleSubmit} errors={errors}>
+        <Fields />
+        <Controls handleReset={handleReset} loading={loading} />
+        {successMessage && <SuccessMessage />}
+      </Form>
     );
   },
 };
@@ -243,46 +159,14 @@ export const WithTooltipErrors: Story = {
         style={{ width: "320px" }}
       >
         <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
-            required
-            autoComplete="username"
-            FieldProps={{
-              errorType: "tooltip",
-              hint: { icon: CircleQuestionMark, tooltip: "This is a tooltip" },
-            }}
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-            FieldProps={{ errorType: "tooltip" }}
-          />
-
-          <Stack gap={2} ax="stretch">
-            <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
-            </Button>
-            <Button type="button" ghost onClick={handleReset}>
-              Reset
-            </Button>
-          </Stack>
+          <Fields />
+          <Controls handleReset={handleReset} loading={loading} />
         </Form>
       </form>
     );
   },
 };
 
-/**
- * Error messages displayed with absolute positioning.
- * Same text style as inline, but no layout shift.
- */
 export const WithAbsoluteErrors: Story = {
   name: "With Absolute Errors",
   render: () => {
@@ -320,38 +204,65 @@ export const WithAbsoluteErrors: Story = {
         style={{ width: "320px" }}
       >
         <Form errors={errors} render={<Stack ax="stretch" gap={4} fullwidth />}>
-          <Input
-            label="Username"
-            name="username"
-            placeholder="Enter username"
-            required
-            autoComplete="username"
-            FieldProps={{ errorType: "absolute" }}
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            autoComplete="new-password"
-            FieldProps={{ errorType: "absolute" }}
-          />
-
-          <Stack gap={2} ax="stretch">
-            <Button type="submit" disabled={loading} loading={loading}>
-              Sign Up
-            </Button>
-            <Button type="button" ghost onClick={handleReset}>
-              Reset
-            </Button>
-          </Stack>
+          <Fields />
+          <Controls handleReset={handleReset} loading={loading} />
         </Form>
       </form>
     );
   },
 };
+
+const Controls = ({
+  handleReset,
+  loading,
+}: {
+  handleReset: () => void;
+  loading: boolean;
+}) => (
+  <Group gap={2} ax="end" fullwidth mt={8}>
+    <Button type="button" ghost onClick={handleReset}>
+      Reset
+    </Button>
+    <Button type="submit" disabled={loading} loading={loading}>
+      Sign Up
+    </Button>
+  </Group>
+);
+
+const Fields = ({ errorType = "inline" }: Pick<FieldProps, "errorType">) => (
+  <Stack gap={2} ax="stretch" style={{ minWidth: "16rem" }}>
+    <Input
+      label="Username"
+      name="username"
+      placeholder="Enter username"
+      required
+      autoComplete="username"
+      FieldProps={{ errorType }}
+    />
+
+    <Input
+      label="Password"
+      name="password"
+      type="password"
+      placeholder="••••••••"
+      required
+      autoComplete="new-password"
+      FieldProps={{ errorType }}
+    />
+  </Stack>
+);
+
+const SuccessMessage = () => (
+  <p
+    style={{
+      color: "var(--tones-positive)",
+      margin: 0,
+      textAlign: "center",
+    }}
+  >
+    Account created successfully!
+  </p>
+);
 
 /**
  * Simulates server-side validation for username/password

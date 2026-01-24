@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { ComponentEntry } from "../types";
+import type { ComponentEntry, PreviewConfig } from "../types";
 
 import { BoxPropsSchema } from "./layout";
 import { Tone } from "./shared";
@@ -36,6 +36,40 @@ export const CardPropsSchema = BoxPropsSchema.extend({
 
 export type CardProps = z.infer<typeof CardPropsSchema>;
 
+const cardPreviews: PreviewConfig[] = [
+  {
+    label: "With slots",
+    tree: {
+      root: "card",
+      elements: {
+        card: {
+          key: "card",
+          type: "Card",
+          props: {
+            title: "Card Title",
+            description: "A short description of this card's content.",
+            footer: "Footer content",
+          },
+          children: ["body"],
+        },
+        body: { key: "body", type: "Text", props: { children: "Card body content goes here." }, parentKey: "card" },
+      },
+    },
+  },
+  {
+    label: "Tones",
+    tree: {
+      root: "group",
+      elements: {
+        group: { key: "group", type: "Group", props: { gap: 4 }, children: ["neutral", "positive", "critical"] },
+        neutral: { key: "neutral", type: "Card", props: { title: "Neutral" }, parentKey: "group" },
+        positive: { key: "positive", type: "Card", props: { title: "Positive", tone: "positive" }, parentKey: "group" },
+        critical: { key: "critical", type: "Card", props: { title: "Critical", tone: "critical" }, parentKey: "group" },
+      },
+    },
+  },
+];
+
 export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
   name: "Card",
   package: "@uiid/cards",
@@ -45,5 +79,14 @@ export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
     "Container card with title, description, icon, action, and footer slots",
   category: "cards",
   defaults: {},
+  previews: cardPreviews,
+  slots: {
+    title: "Card heading, rendered above the body",
+    description: "Subheading beneath the title",
+    action: "Action buttons, typically top-right",
+    footer: "Footer content at the bottom of the card",
+    icon: "Icon displayed in the card header",
+  },
+  usage: "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
 };
 

@@ -15,7 +15,6 @@
 }
 
 .field-hint svg,
-.field-error-tooltip,
 .field-error-tooltip svg {
   display: inline-block;
   height: var(--forms-icon-size);
