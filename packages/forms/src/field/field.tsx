@@ -1,69 +1,71 @@
+import { Group } from "@uiid/layout";
+import { cx } from "@uiid/utils";
+
 import type { FieldProps } from "./field.types";
+import styles from "./field.module.css";
 
 import {
   FieldRoot,
   FieldLabel,
   FieldDescription,
   FieldError,
+  FieldErrorTooltip,
 } from "./subcomponents";
+import { FieldHint } from "./subcomponents/field-hint";
 
 export const Field = ({
-  name,
   label,
-  my,
-  mx,
-  mt,
-  mb,
-  ml,
-  mr,
-  p,
-  py,
-  px,
-  pt,
-  pb,
-  pl,
-  pr,
-  gap,
+  hint,
+  errorType = "inline",
   description,
   required,
-  fullwidth,
   RootProps,
   LabelProps,
   ErrorProps,
+  HintProps,
   DescriptionProps,
   children,
   ...props
 }: FieldProps) => {
+  const isFloating = errorType === "absolute";
+
   return (
     <FieldRoot
-      name={name}
-      fullwidth={fullwidth}
-      my={my}
-      mx={mx}
-      mt={mt}
-      mb={mb}
-      ml={ml}
-      mr={mr}
-      p={p}
-      py={py}
-      px={px}
-      pt={pt}
-      pb={pb}
-      pl={pl}
-      pr={pr}
-      gap={gap}
-      {...RootProps}
       {...props}
+      {...RootProps}
+      className={cx(
+        isFloating && styles["field-root-floating"],
+        RootProps?.className,
+      )}
     >
-      {label && (
-        <FieldLabel required={required} {...LabelProps}>
-          {label}
-        </FieldLabel>
+      {(label || hint || errorType === "tooltip") && (
+        <Group
+          className={styles["field-label-group"]}
+          ax="space-between"
+          ay="center"
+        >
+          {label && (
+            <FieldLabel required={required} {...LabelProps}>
+              {label}
+            </FieldLabel>
+          )}
+
+          <Group ay="center">
+            {errorType === "tooltip" && <FieldErrorTooltip {...ErrorProps} />}
+            {hint && <FieldHint {...hint} {...HintProps} />}
+          </Group>
+        </Group>
       )}
 
       {children}
 
-      <FieldError {...ErrorProps} />
+      {errorType === "absolute" && (
+        <FieldError
+          className={styles["field-error-absolute"]}
+          {...ErrorProps}
+        />
+      )}
+      {errorType === "inline" && <FieldError {...ErrorProps} />}
 
       {description && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>

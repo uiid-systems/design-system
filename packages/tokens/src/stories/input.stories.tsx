@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import inputTokens from "../json/input.tokens.json";
+import inputTokens from "../json/forms.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens, filterByPathIncludes } from "./utilities";
 
@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Input: Story = {
   render: () => {
-    const input = inputTokens.input;
+    const input = inputTokens.forms;
     const allTokens = flattenTokens(input, ["input"]);
 
     // Extract required properties
