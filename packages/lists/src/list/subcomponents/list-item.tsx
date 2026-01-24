@@ -3,8 +3,7 @@ import { ConditionalRender, Group } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
 import { ICON_SIZE_LARGE } from "../list.constants";
-
-import styles from "./list-item.module.css";
+import styles from "../list.module.css";
 
 import { ListTextBlock } from "./list-text-block";
 import { ListSelectedIcon } from "./list-selected-icon";

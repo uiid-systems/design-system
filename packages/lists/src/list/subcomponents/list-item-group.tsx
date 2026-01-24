@@ -8,9 +8,9 @@ import { Group, Stack, SwitchRender } from "@uiid/layout";
 
 import type { ListItemGroupProps } from "../list.types";
 
-import styles from "./list-item-group.module.css";
 import { ListItem } from "./list-item";
 import { ICON_SIZE_LARGE } from "../list.constants";
+import styles from "../list.module.css";
 
 export const ListItemGroup = ({
   category,

@@ -1,3 +1,5 @@
+@import "@uiid/tokens/list.tokens.css";
+
 .list {
   margin-inline-start: 1rem;
 
@@ -9,4 +11,80 @@
   &:is([data-direction="row"]) li {
     width: auto;
   }
+}
+
+.list-item-group {
+  padding: var(--list-padding-y) var(--list-padding-x);
+}
+
+.list-item-group-collapsible-trigger {
+  border: none;
+  background-color: transparent;
+  color: var(--shade-muted);
+  padding-inline: 0.5rem;
+  border-radius: var(--globals-border-radius);
+  transition: all var(--globals-transition-timing) ease-in-out;
+
+  &:is(button) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--shade-accent);
+    }
+
+    &:active {
+      background-color: var(--shade-halftone);
+    }
+
+    &:focus-visible {
+      background-color: var(--shade-surface);
+      border-radius: var(--globals-border-radius);
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: var(--globals-outline-offset);
+    }
+  }
+}
+
+.list-item-group-category {
+  min-height: var(--list-group-category-minHeight);
+  align-content: center;
+  padding-inline: 0.25rem;
+}
+
+.list-item-panel {
+  position: relative;
+  gap: 0.5rem;
+  padding-inline-start: 0.875rem;
+  margin-block-end: 1rem;
+  list-style: none;
+}
+
+.list-item {
+  padding: var(--list-item-padding-y) var(--list-item-padding-x);
+  border-radius: var(--globals-border-radius);
+  transition: all var(--globals-transition-timing) ease-in-out;
+
+  &:not([data-disabled]):where(:hover, [data-highlighted]) {
+    background-color: var(--shade-accent);
+  }
+
+  &:where([data-disabled]) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.list-text-label {
+  display: list-item;
+  min-height: var(--globals-icon-size);
+  align-content: center;
+
+  :is(ol) &::marker {
+    font-size: 0.625rem;
+    font-weight: 700;
+  }
+}
+
+.list-text-description {
+  color: var(--shade-muted);
 }
