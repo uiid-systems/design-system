@@ -30,6 +30,7 @@
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/lists": "workspace:*",
+    "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"

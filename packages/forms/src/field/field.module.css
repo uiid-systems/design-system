@@ -1,7 +1,34 @@
+.field-label-group {
+  min-height: 1.2rem;
+}
+
 .field-label[data-required="true"] {
   &::after {
     content: "*";
     color: var(--tones-negative);
     margin-left: 0.25rem;
   }
+}
+
+.field-root-floating {
+  position: relative;
+}
+
+.field-hint svg,
+.field-error-tooltip,
+.field-error-tooltip svg {
+  display: inline-block;
+  height: var(--forms-icon-size);
+  opacity: 1;
+  transition: opacity var(--globals-transition-timing) ease;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.field-error-absolute {
+  position: absolute;
+  top: calc(100% + var(--globals-padding-y));
+  left: 0;
 }

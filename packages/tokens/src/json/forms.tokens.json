@@ -15,6 +15,9 @@
     "border": {
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
+    "icon": {
+      "size": { "$value": "{globals.icon.size}", "$type": "dimension" }
+    },
     "size": {
       "xsmall": {
         "font-size": { "$value": "0.75rem", "$type": "dimension" },
