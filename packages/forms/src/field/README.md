@@ -53,6 +53,40 @@ import { Input } from "@uiid/forms";
 </Field>
 ```
 
+### Error Types
+
+The `errorType` prop controls how validation errors are displayed:
+
+#### Inline (default)
+
+Error text appears below the input:
+
+```tsx
+<Field label="Email" errorType="inline">
+  <Input name="email" />
+</Field>
+```
+
+#### Tooltip
+
+Error appears as an icon in the label row that reveals the message on hover:
+
+```tsx
+<Field label="Email" errorType="tooltip">
+  <Input name="email" />
+</Field>
+```
+
+#### Absolute
+
+Error text is positioned absolutely below the field, avoiding layout shifts:
+
+```tsx
+<Field label="Email" errorType="absolute">
+  <Input name="email" />
+</Field>
+```
+
 ### With Any Form Control
 
 Field works with any form control:
@@ -79,6 +113,7 @@ Field works with any form control:
 | `description` | `string` | — | Helper text displayed below the control |
 | `name` | `string` | — | Field name for form submission |
 | `required` | `boolean` | `false` | Shows required indicator on label |
+| `errorType` | `"inline" \| "tooltip" \| "absolute"` | `"inline"` | Controls how validation errors are displayed |
 | `children` | `ReactNode` | — | The form control to wrap |
 | `RootProps` | `FieldRootProps` | — | Props for the root element |
 | `LabelProps` | `FieldLabelProps` | — | Props for the label element |
@@ -90,8 +125,9 @@ Field works with any form control:
 ```tsx
 <FieldRoot>              {/* Container */}
   <FieldLabel />         {/* Label text */}
+  <FieldErrorTooltip />  {/* Error tooltip icon (errorType="tooltip") */}
   {children}             {/* Form control */}
-  <FieldError />         {/* Error message */}
+  <FieldError />         {/* Error message (errorType="inline" | "absolute") */}
   <FieldDescription />   {/* Helper text */}
 </FieldRoot>
 ```
@@ -103,7 +139,8 @@ Field works with any form control:
 | `FieldRoot` | Root container element |
 | `FieldLabel` | Label element with required indicator |
 | `FieldDescription` | Helper text element |
-| `FieldError` | Error message element |
+| `FieldError` | Error message element (inline/absolute) |
+| `FieldErrorTooltip` | Error icon with tooltip hover (tooltip) |
 
 ## Data Slots
 
@@ -112,7 +149,8 @@ Field works with any form control:
 | `field-root` | The root container |
 | `field-label` | The label element |
 | `field-description` | The description element |
-| `field-error` | The error element |
+| `field-error` | The inline/absolute error element |
+| `field-error-tooltip` | The tooltip error trigger element |
 
 ## When to Use Field
 
