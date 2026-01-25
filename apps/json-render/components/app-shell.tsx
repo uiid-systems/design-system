@@ -19,17 +19,23 @@ type AppShellProps = {
 
 export const AppShell = ({ children }: AppShellProps) => {
   const loadFromUrlHash = useChatStore((s) => s.loadFromUrlHash);
+  const syncTreeToHash = useChatStore((s) => s.syncTreeToHash);
+  const tree = useChatStore((s) => s.tree);
 
   // Load from URL hash on mount
   useEffect(() => {
     loadFromUrlHash();
   }, [loadFromUrlHash]);
 
+  // Keep URL hash in sync with tree state
+  useEffect(() => {
+    syncTreeToHash();
+  }, [tree, syncTreeToHash]);
+
   // Handle browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
-      // Load tree from hash without clearing it (for history navigation)
-      loadFromUrlHash(false);
+      loadFromUrlHash();
     };
 
     window.addEventListener("popstate", handlePopState);

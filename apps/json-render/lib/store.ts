@@ -37,8 +37,9 @@ type ChatActions = {
   clear: () => void;
   setTree: (tree: UITree) => void;
   getShareUrl: () => string | null;
-  loadFromUrlHash: (clearHash?: boolean) => boolean;
+  loadFromUrlHash: () => boolean;
   pushTreeToHistory: () => void;
+  syncTreeToHash: () => void;
   setError: (error: string | null) => void;
 };
 
@@ -136,14 +137,11 @@ export const useChatStore = create<ChatStore>()(
 
       setTree: (tree) => set({ tree }),
 
-      loadFromUrlHash: (clearHash = true) => {
+      loadFromUrlHash: () => {
         const urlTree = getTreeFromUrl();
         if (urlTree) {
           set({ tree: urlTree, isRestored: true });
-          // Only clear hash if requested (not for back/forward navigation)
-          if (clearHash) {
-            window.history.replaceState(null, "", window.location.pathname + window.location.search);
-          }
+          // Don't clear hash - URL should always reflect state
           return true;
         }
         return false;
@@ -158,6 +156,24 @@ export const useChatStore = create<ChatStore>()(
           const url = new URL(window.location.href);
           url.hash = encoded;
           window.history.pushState({ tree: true }, "", url.toString());
+        } catch {
+          // Ignore encoding errors
+        }
+      },
+
+      syncTreeToHash: () => {
+        const { tree } = get();
+        if (typeof window === "undefined") return;
+
+        try {
+          const url = new URL(window.location.href);
+          if (tree) {
+            url.hash = encodeTree(tree);
+          } else {
+            url.hash = "";
+          }
+          // Use replaceState so we don't spam history
+          window.history.replaceState(window.history.state, "", url.toString());
         } catch {
           // Ignore encoding errors
         }

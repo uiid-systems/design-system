@@ -20,7 +20,7 @@ export const CardIcon = ({
     if (IconProp) return <IconProp {...iconProps} />;
     if (tone === "info") return <Info {...iconProps} />;
     if (tone === "warning") return <TriangleAlert {...iconProps} />;
-    if (tone === "negative") return <Ban {...iconProps} />;
+    if (tone === "critical") return <Ban {...iconProps} />;
     if (tone === "positive") return <CircleCheck {...iconProps} />;
     return null;
   };

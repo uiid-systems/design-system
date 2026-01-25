@@ -40,6 +40,7 @@ export const ComponentPicker = () => {
         value={component}
         onValueChange={(value) => selectComponent(value ?? null)}
         size="small"
+        PositionerProps={{ align: "start" }}
       />
       {component && variantItems.length > 1 && (
         <Select
@@ -48,6 +49,7 @@ export const ComponentPicker = () => {
           value={variant}
           onValueChange={(value) => selectVariant(value ?? null)}
           size="small"
+          PositionerProps={{ align: "start" }}
         />
       )}
     </Group>

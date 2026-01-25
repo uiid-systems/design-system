@@ -26,7 +26,7 @@ const meta = {
       <Badge {...args} tone="positive">
         Positive
       </Badge>
-      <Badge {...args} tone="negative">
+      <Badge {...args} tone="critical">
         Negative
       </Badge>
       <Badge {...args} tone="info">

@@ -18,7 +18,7 @@ const meta = {
       <Alert {...args} inverted icon={Globe} action={<a href="#">Action</a>} />
       <Alert {...args} tone="info" />
       <Alert {...args} tone="warning" />
-      <Alert {...args} tone="negative" />
+      <Alert {...args} tone="critical" />
       <Alert {...args} tone="positive" />
     </Stack>
   ),

@@ -13,7 +13,7 @@ export const ScoreBadge = ({
 }: ScoreBadgeProps) => (
   <Badge
     size="large"
-    tone={result === "win" ? "positive" : "negative"}
+    tone={result === "win" ? "positive" : "critical"}
     hideIndicator
   >
     {heroScore} - {villainScore}

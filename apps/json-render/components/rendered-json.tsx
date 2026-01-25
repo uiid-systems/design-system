@@ -24,7 +24,7 @@ export const RenderedJson = ({
         rows={20}
         {...props}
       />
-      {parseError && <Text tone="negative">Parse Error: {parseError}</Text>}
+      {parseError && <Text tone="critical">Parse Error: {parseError}</Text>}
       {onApply && (
         <Button onClick={onApply} fullwidth>
           Apply Changes

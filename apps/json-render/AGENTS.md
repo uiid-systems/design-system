@@ -267,7 +267,7 @@ All text content must use the Text component.
 | `size`          | number  | Font size: -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 (larger = bigger)           |
 | `weight`        | string  | `thin`, `light`, `normal`, `bold`                                    |
 | `shade`         | string  | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
-| `tone`          | string  | Semantic color: `positive`, `negative`, `warning`, `info`            |
+| `tone`          | string  | Semantic color: `positive`, `critical`, `warning`, `info`            |
 | `underline`     | boolean | Add underline                                                        |
 | `strikethrough` | boolean | Add strikethrough                                                    |
 | `mono`          | boolean | Use monospace font                                                   |
@@ -305,7 +305,7 @@ Primary action button.
 | `children`  | string  | **Required.** Button label                |
 | `size`      | string  | `xsmall`, `small`, `medium`, `large`      |
 | `variant`   | string  | `subtle`, `inverted` (omit for default)   |
-| `tone`      | string  | `positive`, `negative`, `warning`, `info` |
+| `tone`      | string  | `positive`, `critical`, `warning`, `info` |
 | `disabled`  | boolean | Disable the button                        |
 | `loading`   | boolean | Show loading spinner                      |
 | `fullwidth` | boolean | Full width button                         |
@@ -449,10 +449,10 @@ Container that provides error context to form fields.
 }
 ```
 
-| Prop     | Type   | Description                                      |
-| -------- | ------ | ------------------------------------------------ |
-| `errors` | object | Object mapping field names to error messages     |
-| `render` | node   | Layout wrapper component (use Stack or Group)    |
+| Prop     | Type   | Description                                   |
+| -------- | ------ | --------------------------------------------- |
+| `errors` | object | Object mapping field names to error messages  |
+| `render` | node   | Layout wrapper component (use Stack or Group) |
 
 ---
 
@@ -478,7 +478,7 @@ Container card with optional title, description, icon, and footer. **Use props f
 | `title`       | string  | Card title (rendered automatically in header) |
 | `description` | string  | Card description (rendered below header)      |
 | `footer`      | string  | Footer content                                |
-| `tone`        | string  | `positive`, `negative`, `warning`, `info`     |
+| `tone`        | string  | `positive`, `critical`, `warning`, `info`     |
 | `inverted`    | boolean | Inverted color scheme                         |
 | `ghost`       | boolean | Minimal borders                               |
 | `transparent` | boolean | Transparent background                        |

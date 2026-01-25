@@ -13,6 +13,7 @@ export const CardContainer = ({
   transparent,
   ghost,
   inverted,
+  size,
   className,
   children,
   ...props
@@ -23,7 +24,7 @@ export const CardContainer = ({
       gap={gap}
       className={cx(
         styles["card"],
-        cardVariants({ tone, trimmed, transparent, ghost, inverted }),
+        cardVariants({ tone, trimmed, transparent, ghost, inverted, size }),
         className,
       )}
       {...props}

@@ -196,7 +196,7 @@ All text content must use the Text component.
 | size       | number  | Font size: -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                   |
 | weight     | string  | thin, light, normal, bold                                  |
 | shade      | string  | background, surface, accent, halftone, muted, foreground   |
-| tone       | string  | positive, negative, warning, info                          |
+| tone       | string  | positive, critical, warning, info                          |
 
 **Text Size Guide:**
 - -1, 0: Small/caption text
@@ -216,7 +216,7 @@ All text content must use the Text component.
 | children  | string  | **Required.** Button label                |
 | size      | string  | xsmall, small, medium, large              |
 | variant   | string  | subtle, inverted (omit for default)       |
-| tone      | string  | positive, negative, warning, info         |
+| tone      | string  | positive, critical, warning, info         |
 | disabled  | boolean | Disable the button                        |
 | fullwidth | boolean | Full width button                         |
 | ghost     | boolean | Transparent background                    |
@@ -298,7 +298,7 @@ Container that provides error context to form fields. **Important:** The JSON tr
 | title       | string  | Card title (rendered automatically in header) |
 | description | string  | Card description (rendered below header)      |
 | footer      | string  | Footer content                                |
-| tone        | string  | positive, negative, warning, info             |
+| tone        | string  | positive, critical, warning, info             |
 | inverted    | boolean | Inverted color scheme                         |
 | ghost       | boolean | Minimal borders                               |
 | transparent | boolean | Transparent background                        |

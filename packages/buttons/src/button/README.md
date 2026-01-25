@@ -45,7 +45,7 @@ import { Button } from "@uiid/buttons";
 
 ```tsx
 <Button tone="positive">Success</Button>
-<Button tone="negative">Danger</Button>
+<Button tone="critical">Danger</Button>
 <Button tone="warning">Warning</Button>
 <Button tone="info">Info</Button>
 ```
@@ -74,30 +74,30 @@ import { Button } from "@uiid/buttons";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | `"subtle" \| "inverted"` | — | Visual variant |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Button size |
-| `tone` | `"positive" \| "negative" \| "warning" \| "info"` | — | Semantic color |
-| `ghost` | `boolean` | `false` | Transparent background |
-| `pill` | `boolean` | `false` | Fully rounded corners |
-| `square` | `boolean` | `false` | Equal width and height |
-| `circle` | `boolean` | `false` | Circular shape (combines pill + square) |
-| `grows` | `boolean` | `true` | Allow button to grow |
-| `loading` | `boolean` | `false` | Show loading spinner |
-| `tooltip` | `ReactNode` | — | Tooltip content on hover |
-| `disabled` | `boolean` | `false` | Disable interactions |
-| `className` | `string` | — | Additional CSS classes |
+| Prop        | Type                                              | Default    | Description                             |
+| ----------- | ------------------------------------------------- | ---------- | --------------------------------------- |
+| `variant`   | `"subtle" \| "inverted"`                          | —          | Visual variant                          |
+| `size`      | `"small" \| "medium" \| "large"`                  | `"medium"` | Button size                             |
+| `tone`      | `"positive" \| "critical" \| "warning" \| "info"` | —          | Semantic color                          |
+| `ghost`     | `boolean`                                         | `false`    | Transparent background                  |
+| `pill`      | `boolean`                                         | `false`    | Fully rounded corners                   |
+| `square`    | `boolean`                                         | `false`    | Equal width and height                  |
+| `circle`    | `boolean`                                         | `false`    | Circular shape (combines pill + square) |
+| `grows`     | `boolean`                                         | `true`     | Allow button to grow                    |
+| `loading`   | `boolean`                                         | `false`    | Show loading spinner                    |
+| `tooltip`   | `ReactNode`                                       | —          | Tooltip content on hover                |
+| `disabled`  | `boolean`                                         | `false`    | Disable interactions                    |
+| `className` | `string`                                          | —          | Additional CSS classes                  |
 
 > Additional props are forwarded to the underlying Base UI Button.
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `button` | Root button element |
-| `button-content-container` | Content wrapper |
-| `button-spinner` | Loading spinner |
+| Slot                       | Element             |
+| -------------------------- | ------------------- |
+| `button`                   | Root button element |
+| `button-content-container` | Content wrapper     |
+| `button-spinner`           | Loading spinner     |
 
 ## Accessibility
 

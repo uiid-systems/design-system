@@ -32,8 +32,8 @@
 .tone-positive {
   background-color: var(--tones-positive);
 }
-.tone-negative {
-  background-color: var(--tones-negative);
+.tone-critical {
+  background-color: var(--tones-critical);
 }
 .tone-warning {
   background-color: var(--tones-warning);

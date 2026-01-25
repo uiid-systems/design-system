@@ -11,7 +11,7 @@ const shades: TextProps["shade"][] = [
   "muted",
   "foreground",
 ];
-const tones: TextProps["tone"][] = ["positive", "negative", "warning", "info"];
+const tones: TextProps["tone"][] = ["positive", "critical", "warning", "info"];
 const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
 const families: TextProps["family"][] = ["mono", "serif", "sans"];
 

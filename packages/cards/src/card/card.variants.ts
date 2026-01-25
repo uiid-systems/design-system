@@ -11,8 +11,13 @@ export const cardVariants = cva({
     tone: {
       info: styles["tone-info"],
       warning: styles["tone-warning"],
-      negative: styles["tone-negative"],
+      critical: styles["tone-critical"],
       positive: styles["tone-positive"],
+    },
+    size: {
+      small: styles["size-small"],
+      medium: styles["size-medium"],
+      large: styles["size-large"],
     },
   },
 });

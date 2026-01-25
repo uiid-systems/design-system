@@ -8,6 +8,17 @@
     "scale": {
       "up": { "$value": "1.02", "$type": "number" },
       "down": { "$value": "0.99", "$type": "number" }
+    },
+    "size": {
+      "small": {
+        "max-width": { "$value": "24rem", "$type": "dimension" }
+      },
+      "medium": {
+        "max-width": { "$value": "32rem", "$type": "dimension" }
+      },
+      "large": {
+        "max-width": { "$value": "48rem", "$type": "dimension" }
+      }
     }
   }
 }

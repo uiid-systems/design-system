@@ -22,7 +22,7 @@ export const buttonVariants = cva({
     },
     tone: {
       positive: styles["tone-positive"],
-      negative: styles["tone-negative"],
+      critical: styles["tone-critical"],
       warning: styles["tone-warning"],
       info: styles["tone-info"],
     },

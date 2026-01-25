@@ -12,7 +12,7 @@ const meta = {
   argTypes: {
     tone: {
       control: "select",
-      options: ["positive", "warning", "negative", "info"],
+      options: ["positive", "warning", "critical", "info"],
       table: { category: "Variants" },
     },
     pulse: { control: "boolean", table: { category: "Toggles" } },
@@ -30,8 +30,8 @@ const meta = {
       <Status {...args} tone="warning">
         warning
       </Status>
-      <Status {...args} tone="negative">
-        negative
+      <Status {...args} tone="critical">
+        critical
       </Status>
       <Status {...args} tone="info">
         info

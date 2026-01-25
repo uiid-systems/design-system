@@ -56,8 +56,8 @@
   color: var(--black);
 }
 
-.tone-negative {
-  background-color: var(--tones-negative);
+.tone-critical {
+  background-color: var(--tones-critical);
   color: var(--black);
 }
 
@@ -85,4 +85,16 @@
 
 .toggle-transparent {
   background-color: transparent;
+}
+
+.size-small {
+  max-width: var(--card-size-small-max-width);
+}
+
+.size-medium {
+  max-width: var(--card-size-medium-max-width);
+}
+
+.size-large {
+  max-width: var(--card-size-large-max-width);
 }

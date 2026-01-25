@@ -60,8 +60,8 @@ describe("Button", () => {
     const { rerender } = render(<Button tone="positive">Positive</Button>);
     expect(screen.getByRole("button").className).toContain("tone-positive");
 
-    rerender(<Button tone="negative">Negative</Button>);
-    expect(screen.getByRole("button").className).toContain("tone-negative");
+    rerender(<Button tone="critical">Negative</Button>);
+    expect(screen.getByRole("button").className).toContain("tone-critical");
 
     rerender(<Button tone="warning">Warning</Button>);
     expect(screen.getByRole("button").className).toContain("tone-warning");

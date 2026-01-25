@@ -46,5 +46,5 @@
 }
 
 .code-block-error {
-  color: var(--tones-negative);
+  color: var(--tones-critical);
 }

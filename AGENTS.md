@@ -46,14 +46,14 @@ design-system/
 
 Shared tooling configs live at the repository root:
 
-| File               | Purpose                                      |
-| ------------------ | -------------------------------------------- |
-| `vite.config.ts`   | Shared Vite build config factory             |
-| `vitest.config.ts` | Test configuration for all packages          |
-| `vitest.setup.ts`  | Test setup (jest-dom matchers)               |
-| `tsconfig.json`    | Base TypeScript config (packages extend it)  |
-| `turbo.json`       | Turbo task orchestration                     |
-| `eslint.config.js` | Shared ESLint configuration                  |
+| File               | Purpose                                     |
+| ------------------ | ------------------------------------------- |
+| `vite.config.ts`   | Shared Vite build config factory            |
+| `vitest.config.ts` | Test configuration for all packages         |
+| `vitest.setup.ts`  | Test setup (jest-dom matchers)              |
+| `tsconfig.json`    | Base TypeScript config (packages extend it) |
+| `turbo.json`       | Turbo task orchestration                    |
+| `eslint.config.js` | Shared ESLint configuration                 |
 
 ### Vite Configuration
 
@@ -63,14 +63,15 @@ The root `vite.config.ts` exports a `createViteConfig()` factory function. Packa
 import { createViteConfig } from "../../vite.config";
 
 export default createViteConfig({
-  external: ["@base-ui/react"],  // Additional externals
-  cssLayer: "uiid.components",   // Optional CSS layer wrapping
-  preserveDirectives: false,     // Default: true
+  external: ["@base-ui/react"], // Additional externals
+  cssLayer: "uiid.components", // Optional CSS layer wrapping
+  preserveDirectives: false, // Default: true
 });
 ```
 
 **Options:**
-- `external` - Additional dependencies to exclude from bundle (React and @uiid/* are always external)
+
+- `external` - Additional dependencies to exclude from bundle (React and @uiid/\* are always external)
 - `cssLayer` - CSS layer name for postcss wrapper (e.g., "uiid.components")
 - `preserveDirectives` - Whether to preserve "use client" directives (default: true)
 
@@ -80,13 +81,13 @@ export default createViteConfig({
 
 The `scripts/` directory contains **custom build scripts** specific to this project:
 
-| Script                              | Purpose                                    |
-| ----------------------------------- | ------------------------------------------ |
-| `generate-tokens.cjs`               | Converts JSON design tokens to CSS         |
-| `postcss-layer-wrapper.cjs`         | PostCSS plugin for CSS layer scoping       |
-| `vite-plugin-preserve-directives.mjs` | Vite plugin to preserve "use client"     |
-| `build-changelog.mjs`               | Generates changelog from changesets        |
-| `auto-changeset.mjs`                | Automates changeset creation               |
+| Script                                | Purpose                              |
+| ------------------------------------- | ------------------------------------ |
+| `generate-tokens.cjs`                 | Converts JSON design tokens to CSS   |
+| `postcss-layer-wrapper.cjs`           | PostCSS plugin for CSS layer scoping |
+| `vite-plugin-preserve-directives.mjs` | Vite plugin to preserve "use client" |
+| `build-changelog.mjs`                 | Generates changelog from changesets  |
+| `auto-changeset.mjs`                  | Automates changeset creation         |
 
 **Note:** Standard config files (vitest, tsconfig, eslint) belong at the root, not in scripts.
 
@@ -334,7 +335,11 @@ const meta = {
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    size: { control: "select", options: ["small", "medium", "large"], table: { category: "Options" } },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Options" },
+    },
     label: { control: "text", table: { category: "Text" } },
   },
   render: (args) => (
@@ -363,11 +368,11 @@ When creating pull requests for new features or packages, use the template at:
 
 **Required sections:**
 
-| Section | When to Include |
-|---------|-----------------|
-| **Summary** | Always - bullet-point overview |
-| **Test plan** | Always - verification checklist |
-| **Details** | For new packages, components, or significant changes |
+| Section       | When to Include                                      |
+| ------------- | ---------------------------------------------------- |
+| **Summary**   | Always - bullet-point overview                       |
+| **Test plan** | Always - verification checklist                      |
+| **Details**   | For new packages, components, or significant changes |
 
 **Test plan must include:**
 
@@ -388,39 +393,39 @@ For small fixes or minor changes, a brief summary and test plan is sufficient.
 
 Use `Stack`, `Group`, and `Box` for layout instead of CSS flexbox:
 
-| Component | Purpose |
-|-----------|---------|
-| `Stack` | Vertical flex layout (column) |
-| `Group` | Horizontal flex layout (row) |
-| `Box` | Generic flex container |
+| Component | Purpose                       |
+| --------- | ----------------------------- |
+| `Stack`   | Vertical flex layout (column) |
+| `Group`   | Horizontal flex layout (row)  |
+| `Box`     | Generic flex container        |
 
 **Spacing Props** (available on all layout components):
 
-| Prop | CSS Property | Example |
-|------|-------------|---------|
-| `gap` | gap | `<Stack gap={2}>` |
-| `p` | padding | `<Box p={4}>` |
-| `px` | padding-inline | `<Box px={2}>` |
-| `py` | padding-block | `<Box py={3}>` |
-| `pt`, `pb`, `pl`, `pr` | padding-block-start, etc. | `<Group pb={4}>` |
-| `m` | margin | `<Stack m={2}>` |
-| `mx`, `my`, `mt`, `mb`, `ml`, `mr` | margin variants | `<Text mb={4}>` |
+| Prop                               | CSS Property              | Example           |
+| ---------------------------------- | ------------------------- | ----------------- |
+| `gap`                              | gap                       | `<Stack gap={2}>` |
+| `p`                                | padding                   | `<Box p={4}>`     |
+| `px`                               | padding-inline            | `<Box px={2}>`    |
+| `py`                               | padding-block             | `<Box py={3}>`    |
+| `pt`, `pb`, `pl`, `pr`             | padding-block-start, etc. | `<Group pb={4}>`  |
+| `m`                                | margin                    | `<Stack m={2}>`   |
+| `mx`, `my`, `mt`, `mb`, `ml`, `mr` | margin variants           | `<Text mb={4}>`   |
 
 **Layout Props** (available on layout components):
 
-| Prop | CSS Property | Values |
-|------|-------------|--------|
-| `ax` | justify-content | `start`, `center`, `end`, `space-between`, `stretch` |
-| `ay` | align-items | `start`, `center`, `end`, `baseline`, `stretch` |
-| `direction` | flex-direction | `row`, `column` |
+| Prop        | CSS Property    | Values                                               |
+| ----------- | --------------- | ---------------------------------------------------- |
+| `ax`        | justify-content | `start`, `center`, `end`, `space-between`, `stretch` |
+| `ay`        | align-items     | `start`, `center`, `end`, `baseline`, `stretch`      |
+| `direction` | flex-direction  | `row`, `column`                                      |
 
 **Toggle Props**:
 
-| Prop | Effect |
-|------|--------|
-| `fullwidth` | width: 100% |
-| `fullheight` | height: 100% |
-| `evenly` | flex: 1 on children |
+| Prop         | Effect              |
+| ------------ | ------------------- |
+| `fullwidth`  | width: 100%         |
+| `fullheight` | height: 100%        |
+| `evenly`     | flex: 1 on children |
 
 #### Conditional Rendering Utilities (`@uiid/layout`)
 
@@ -430,33 +435,37 @@ Use `ConditionalRender` and `SwitchRender` to conditionally wrap content without
 
 ```tsx
 // Instead of:
-{showWrapper ? <Card>{children}</Card> : children}
+{
+  showWrapper ? <Card>{children}</Card> : children;
+}
 
 // Use:
 <ConditionalRender condition={showWrapper} render={<Card />}>
   {children}
-</ConditionalRender>
+</ConditionalRender>;
 ```
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `condition` | `boolean` | Whether to wrap content |
-| `render` | `ReactElement` | Wrapper element (used when condition is true) |
-| `children` | `ReactNode` | Content to render |
+| Prop        | Type           | Description                                   |
+| ----------- | -------------- | --------------------------------------------- |
+| `condition` | `boolean`      | Whether to wrap content                       |
+| `render`    | `ReactElement` | Wrapper element (used when condition is true) |
+| `children`  | `ReactNode`    | Content to render                             |
 
 **SwitchRender** - Switch between two wrapper components based on condition:
 
 ```tsx
 // Instead of duplicating shared props:
-{isVertical ? (
-  <Stack gap={2} p={4} data-slot="container" className={styles.container}>
-    {children}
-  </Stack>
-) : (
-  <Group gap={2} p={4} data-slot="container" className={styles.container}>
-    {children}
-  </Group>
-)}
+{
+  isVertical ? (
+    <Stack gap={2} p={4} data-slot="container" className={styles.container}>
+      {children}
+    </Stack>
+  ) : (
+    <Group gap={2} p={4} data-slot="container" className={styles.container}>
+      {children}
+    </Group>
+  );
+}
 
 // Use SwitchRender with shared props:
 <SwitchRender
@@ -468,15 +477,15 @@ Use `ConditionalRender` and `SwitchRender` to conditionally wrap content without
   className={styles.container}
 >
   {children}
-</SwitchRender>
+</SwitchRender>;
 ```
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `condition` | `boolean` | Which wrapper to use |
-| `render` | `{ true: ReactElement, false: ReactElement }` | Wrapper options |
-| `children` | `ReactNode` | Content to render |
-| `...props` | `HTMLAttributes` | **Shared props passed to selected wrapper** |
+| Prop        | Type                                          | Description                                 |
+| ----------- | --------------------------------------------- | ------------------------------------------- |
+| `condition` | `boolean`                                     | Which wrapper to use                        |
+| `render`    | `{ true: ReactElement, false: ReactElement }` | Wrapper options                             |
+| `children`  | `ReactNode`                                   | Content to render                           |
+| `...props`  | `HTMLAttributes`                              | **Shared props passed to selected wrapper** |
 
 **Key benefit**: Any additional props on `SwitchRender` are automatically passed to whichever wrapper is selected. This eliminates prop duplication and keeps code DRY.
 
@@ -511,22 +520,23 @@ Use `Text` for all text content instead of raw HTML elements:
 
 **Text Props**:
 
-| Prop | Values | Purpose |
-|------|--------|---------|
-| `size` | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 | Font size scale |
-| `weight` | `thin`, `light`, `normal`, `bold` | Font weight |
-| `shade` | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` | Text color |
-| `tone` | `positive`, `negative`, `warning`, `info` | Semantic color |
-| `align` | `left`, `center`, `right`, `justify` | Text alignment |
-| `underline` | `true`, `false` | Text decoration |
-| `strikethrough` | `true` | Strikethrough text |
-| `balance` | `true` | CSS text-wrap: balance |
+| Prop            | Values                                                               | Purpose                |
+| --------------- | -------------------------------------------------------------------- | ---------------------- |
+| `size`          | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                                        | Font size scale        |
+| `weight`        | `thin`, `light`, `normal`, `bold`                                    | Font weight            |
+| `shade`         | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` | Text color             |
+| `tone`          | `positive`, `critical`, `warning`, `info`                            | Semantic color         |
+| `align`         | `left`, `center`, `right`, `justify`                                 | Text alignment         |
+| `underline`     | `true`, `false`                                                      | Text decoration        |
+| `strikethrough` | `true`                                                               | Strikethrough text     |
+| `balance`       | `true`                                                               | CSS text-wrap: balance |
 
 Text also supports all spacing props (`m`, `mb`, `p`, etc.).
 
 #### Examples
 
 **Before (CSS/Tailwind approach):**
+
 ```tsx
 // Don't do this
 <div className="flex flex-col gap-4 p-2">
@@ -536,23 +546,33 @@ Text also supports all spacing props (`m`, `mb`, `p`, etc.).
 ```
 
 **After (Component props approach):**
+
 ```tsx
 // Do this instead
 <Stack gap={4} p={2}>
-  <Text size={0} shade="muted" weight="bold" mb={2}>Title</Text>
-  <Group gap={2} ay="center">...</Group>
+  <Text size={0} shade="muted" weight="bold" mb={2}>
+    Title
+  </Text>
+  <Group gap={2} ay="center">
+    ...
+  </Group>
 </Stack>
 ```
 
 **Timeline item example:**
+
 ```tsx
 // Layout controlled by component props, not CSS
 <Group gap={3} pb={4}>
   <TimelineDot />
   <TimelineConnector />
   <TimelineContent>
-    <Text size={1} weight="bold">Event Title</Text>
-    <Text size={0} shade="muted">2 hours ago</Text>
+    <Text size={1} weight="bold">
+      Event Title
+    </Text>
+    <Text size={0} shade="muted">
+      2 hours ago
+    </Text>
   </TimelineContent>
 </Group>
 ```
@@ -560,6 +580,7 @@ Text also supports all spacing props (`m`, `mb`, `p`, etc.).
 #### When to Use CSS Modules
 
 Only use CSS Modules for:
+
 - **Visual styling** that can't be expressed as props (colors, borders, shadows, animations)
 - **State-based styling** using `data-*` attributes
 - **Pseudo-elements** (::before, ::after)
@@ -697,6 +718,7 @@ Create the standard file structure for the component:
 Most components should use standard React elements, not the `renderWithProps` pattern:
 
 **Before (Radix pattern):**
+
 ```tsx
 import { Slot } from "@radix-ui/react-slot";
 
@@ -711,6 +733,7 @@ function Component({ asChild, ...props }: Props) {
 ```
 
 **After (UIID pattern):**
+
 ```tsx
 import { cx } from "@uiid/utils";
 
@@ -732,6 +755,7 @@ function Component({ className, children, ...props }: Props) {
 **When to use `renderWithProps`:**
 
 Only use `renderWithProps` for **low-level primitives** where polymorphism is essential:
+
 - `Box` - needs to render as any element
 - `Text` - needs to render as p, span, h1-h6, etc.
 - Layout primitives that wrap other components
@@ -748,7 +772,7 @@ For compound components like Timeline, Sortable, or domain-specific components, 
 /* Use design tokens instead of arbitrary values */
 .component {
   display: flex;
-  gap: 0.75rem;  /* or var(--spacing-3) if token exists */
+  gap: 0.75rem; /* or var(--spacing-3) if token exists */
 }
 
 /* Use data attributes for state */
@@ -789,14 +813,14 @@ export const componentVariants = cva({
 
 #### 4. Separate Concerns
 
-| Content | File |
-|---------|------|
+| Content                                             | File                       |
+| --------------------------------------------------- | -------------------------- |
 | Component name constants (`ROOT_NAME`, `ITEM_NAME`) | `{component}.constants.ts` |
-| All TypeScript types and interfaces | `{component}.types.ts` |
-| React contexts and `use{X}Context` hooks | `{component}.context.ts` |
-| Custom hooks (`useStore`, `useLazyRef`, etc.) | `{component}.hooks.ts` |
-| Pure utility functions | `{component}.utils.ts` |
-| CVA variant definitions | `{component}.variants.ts` |
+| All TypeScript types and interfaces                 | `{component}.types.ts`     |
+| React contexts and `use{X}Context` hooks            | `{component}.context.ts`   |
+| Custom hooks (`useStore`, `useLazyRef`, etc.)       | `{component}.hooks.ts`     |
+| Pure utility functions                              | `{component}.utils.ts`     |
+| CVA variant definitions                             | `{component}.variants.ts`  |
 
 #### 5. Handle Name Conflicts
 
@@ -814,12 +838,12 @@ export type TimelineStatus = "active" | "pending";
 
 Check if external dependencies can be replaced:
 
-| External | UIID Alternative |
-|----------|------------------|
-| `@radix-ui/react-slot` | `renderWithProps` from `@uiid/utils` |
+| External                    | UIID Alternative                                        |
+| --------------------------- | ------------------------------------------------------- |
+| `@radix-ui/react-slot`      | `renderWithProps` from `@uiid/utils`                    |
 | `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider` |
-| `class-variance-authority` | `cva` from `@uiid/utils` (pre-configured) |
-| `clsx` / `tailwind-merge` | `cx` from `@uiid/utils` |
+| `class-variance-authority`  | `cva` from `@uiid/utils` (pre-configured)               |
+| `clsx` / `tailwind-merge`   | `cx` from `@uiid/utils`                                 |
 
 **Direction handling example:**
 
@@ -840,7 +864,7 @@ Add to `src/index.ts`:
 ```ts
 export * from "./{component}/{component}";
 export * from "./{component}/{component}.types";
-export * from "./{component}/subcomponents";  // if applicable
+export * from "./{component}/subcomponents"; // if applicable
 ```
 
 #### 8. Verification Checklist

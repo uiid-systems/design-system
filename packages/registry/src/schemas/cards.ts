@@ -48,8 +48,32 @@ const cardPreviews: PreviewConfig[] = [
           props: {
             title: "Acme Corporation",
             description: "The global leader in everything.",
+            size: "medium",
+            __slot_footer: {
+              root: "footer",
+              elements: {
+                footer: {
+                  key: "footer",
+                  type: "Group",
+                  props: { gap: 2, ax: "end", fullwidth: true },
+                  children: ["cancel", "submit"],
+                },
+                cancel: {
+                  key: "cancel",
+                  type: "Button",
+                  props: { size: "small", ghost: true, children: "Cancel" },
+                  parentKey: "footer",
+                },
+                submit: {
+                  key: "submit",
+                  type: "Button",
+                  props: { size: "small", children: "Complete purchase" },
+                  parentKey: "footer",
+                },
+              },
+            },
           },
-          children: ["body", "footer"],
+          children: ["body"],
         },
         body: {
           key: "body",
@@ -59,26 +83,6 @@ const cardPreviews: PreviewConfig[] = [
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
           },
           parentKey: "card",
-        },
-        footer: {
-          key: "footer",
-          type: "Group",
-          props: { gap: 2, ax: "end", fullwidth: true },
-          children: ["cancel", "submit"],
-          parentKey: "card",
-          slot: "footer",
-        },
-        cancel: {
-          key: "cancel",
-          type: "Button",
-          props: { size: "small", ghost: true, children: "Cancel" },
-          parentKey: "footer",
-        },
-        submit: {
-          key: "submit",
-          type: "Button",
-          props: { size: "small", children: "Complete purchase" },
-          parentKey: "footer",
         },
       },
     },
@@ -134,6 +138,6 @@ export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
     footer: "Footer content at the bottom of the card",
     icon: "Icon displayed in the card header",
   },
-  usage: "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
+  usage:
+    "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
 };
-

@@ -83,7 +83,7 @@ export function Select<Value = string>({
           disabled={disabled}
           {...TriggerProps}
         >
-          <SelectValue size={size} {...ValueProps}>
+          <SelectValue {...ValueProps}>
             {(value: Value) =>
               value != null ? (
                 (itemToStringLabel?.(value) ?? String(value))
