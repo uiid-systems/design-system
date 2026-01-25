@@ -20,13 +20,12 @@ export type SelectRootProps<Value = string> = BaseSelect.Root.Props<
   false
 >;
 export type SelectTriggerProps = BaseSelect.Trigger.Props &
-  Pick<InputVariants, "ghost" | "fullwidth">;
+  Pick<InputVariants, "ghost" | "fullwidth" | "size">;
 export type SelectPortalProps = BaseSelect.Portal.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
 export type SelectPopupProps = BaseSelect.Popup.Props;
 export type SelectListProps = BaseSelect.List.Props;
-export type SelectValueProps = BaseSelect.Value.Props &
-  Pick<InputVariants, "size">;
+export type SelectValueProps = BaseSelect.Value.Props;
 export type SelectIndicatorProps = BaseSelect.Icon.Props;
 
 export type SelectProps<Value = string> = React.PropsWithChildren<{

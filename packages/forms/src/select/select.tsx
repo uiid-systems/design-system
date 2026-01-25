@@ -77,6 +77,7 @@ export function Select<Value = string>({
         {...RootProps}
       >
         <SelectTrigger
+          size={size}
           fullwidth={fullwidth}
           ghost={ghost}
           disabled={disabled}

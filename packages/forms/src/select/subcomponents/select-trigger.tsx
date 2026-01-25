@@ -9,6 +9,7 @@ import inputStyles from "../../input/input.module.css";
 import type { SelectTriggerProps } from "../select.types";
 
 export const SelectTrigger = ({
+  size,
   ghost,
   fullwidth,
   className,
@@ -23,7 +24,7 @@ export const SelectTrigger = ({
       }
       className={cx(
         inputStyles["input"],
-        inputVariants({ ghost, fullwidth }),
+        inputVariants({ size, ghost, fullwidth }),
         className,
       )}
       {...props}

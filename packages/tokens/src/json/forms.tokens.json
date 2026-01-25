@@ -26,15 +26,21 @@
           "y": { "$value": "0.5rem", "$type": "dimension" }
         }
       },
-      "small": {
-        "fontSize": { "$value": "0.75rem", "$type": "dimension" }
-      },
-      "medium": {
-        "fontSize": { "$value": "0.875rem", "$type": "dimension" }
-      },
-      "large": {
-        "fontSize": { "$value": "1rem", "$type": "dimension" }
-      }
+    "small": {
+      "fontSize": { "$value": "0.75rem", "$type": "dimension" },
+      "height": { "$value": "2rem", "$type": "dimension" },
+      "padding-x": { "$value": "0.75rem", "$type": "dimension" }
+    },
+    "medium": {
+      "fontSize": { "$value": "0.875rem", "$type": "dimension" },
+      "height": { "$value": "2.625rem", "$type": "dimension" },
+      "padding-x": { "$value": "1rem", "$type": "dimension" }
+    },
+    "large": {
+      "fontSize": { "$value": "1rem", "$type": "dimension" },
+      "height": { "$value": "3rem", "$type": "dimension" },
+      "padding-x": { "$value": "1.25rem", "$type": "dimension" }
+    }
     }
   }
 }

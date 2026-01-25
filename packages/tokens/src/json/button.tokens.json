@@ -24,24 +24,24 @@
     },
     "size": {
       "xs": {
-        "font-size": { "$value": "0.625rem", "$type": "dimension" },
+        "font-size": { "$value": "{forms.size.xsmall.font-size}", "$type": "dimension" },
         "height": { "$value": "1.75rem", "$type": "dimension" },
-        "padding-x": { "$value": "0.5rem", "$type": "dimension" }
+        "padding-x": { "$value": "{forms.size.xsmall.padding.x}", "$type": "dimension" }
       },
       "sm": {
-        "font-size": { "$value": "0.75rem", "$type": "dimension" },
-        "height": { "$value": "2rem", "$type": "dimension" },
-        "padding-x": { "$value": "0.75rem", "$type": "dimension" }
+        "font-size": { "$value": "{forms.size.small.fontSize}", "$type": "dimension" },
+        "height": { "$value": "{forms.size.small.height}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.small.padding-x}", "$type": "dimension" }
       },
       "md": {
-        "font-size": { "$value": "0.875rem", "$type": "dimension" },
-        "height": { "$value": "2.625rem", "$type": "dimension" },
-        "padding-x": { "$value": "1rem", "$type": "dimension" }
+        "font-size": { "$value": "{forms.size.medium.fontSize}", "$type": "dimension" },
+        "height": { "$value": "{forms.size.medium.height}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.medium.padding-x}", "$type": "dimension" }
       },
       "lg": {
-        "font-size": { "$value": "1rem", "$type": "dimension" },
-        "height": { "$value": "3rem", "$type": "dimension" },
-        "padding-x": { "$value": "1.25rem", "$type": "dimension" }
+        "font-size": { "$value": "{forms.size.large.fontSize}", "$type": "dimension" },
+        "height": { "$value": "{forms.size.large.height}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.large.padding-x}", "$type": "dimension" }
       }
     },
     "variant": {
