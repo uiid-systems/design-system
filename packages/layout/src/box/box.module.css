@@ -36,3 +36,7 @@
   aspect-ratio: 1;
 }
 
+.toggle-bordered {
+  border-width: var(--globals-border-width);
+}
+

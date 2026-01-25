@@ -37,7 +37,8 @@ type ChatActions = {
   clear: () => void;
   setTree: (tree: UITree) => void;
   getShareUrl: () => string | null;
-  loadFromUrlHash: () => boolean;
+  loadFromUrlHash: (clearHash?: boolean) => boolean;
+  pushTreeToHistory: () => void;
   setError: (error: string | null) => void;
 };
 
@@ -135,15 +136,31 @@ export const useChatStore = create<ChatStore>()(
 
       setTree: (tree) => set({ tree }),
 
-      loadFromUrlHash: () => {
+      loadFromUrlHash: (clearHash = true) => {
         const urlTree = getTreeFromUrl();
         if (urlTree) {
           set({ tree: urlTree, isRestored: true });
-          // Clear hash after loading
-          window.history.replaceState(null, "", window.location.pathname);
+          // Only clear hash if requested (not for back/forward navigation)
+          if (clearHash) {
+            window.history.replaceState(null, "", window.location.pathname + window.location.search);
+          }
           return true;
         }
         return false;
+      },
+
+      pushTreeToHistory: () => {
+        const { tree } = get();
+        if (!tree || typeof window === "undefined") return;
+
+        try {
+          const encoded = encodeTree(tree);
+          const url = new URL(window.location.href);
+          url.hash = encoded;
+          window.history.pushState({ tree: true }, "", url.toString());
+        } catch {
+          // Ignore encoding errors
+        }
       },
 
       getShareUrl: () => {
@@ -225,6 +242,8 @@ export const useChatStore = create<ChatStore>()(
           const decoder = new TextDecoder();
           let fullContent = "";
 
+          let finalTree: UITree | null = null;
+
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
@@ -244,6 +263,7 @@ export const useChatStore = create<ChatStore>()(
             // Try to extract tree from accumulated content
             const extractedTree = extractTree(fullContent);
             if (extractedTree) {
+              finalTree = extractedTree;
               set((state) => ({
                 tree: extractedTree,
                 messages: state.messages.map((msg) =>
@@ -253,6 +273,11 @@ export const useChatStore = create<ChatStore>()(
                 ),
               }));
             }
+          }
+
+          // Push to browser history after successful generation
+          if (finalTree) {
+            get().pushTreeToHistory();
           }
         } catch (err) {
           if (err instanceof Error && err.name === "AbortError") {

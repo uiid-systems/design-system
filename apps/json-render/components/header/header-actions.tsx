@@ -84,21 +84,18 @@ export const HeaderActions = () => {
         size="small"
         onClick={clearSelection}
         disabled={messages.length === 0 && !tree && !component}
-        tooltip="Clear the UI you've created"
-        square
       >
+        Start over
         <RefreshCwIcon />
       </Button>
       <Button
         data-slot="header-actions-share"
-        tooltip="Copy Url"
         size="small"
         onClick={handleShare}
         disabled={!tree || copied}
-        square
       >
+        {copied ? "Link copied!" : "Copy link"}
         {copied ? <SquareCheckIcon /> : <CopyIcon />}
-        {/* {copied ? "Link copied!" : "Copy link"} */}
       </Button>
       <RenderedSheet
         code={jsxCode}
@@ -106,6 +103,7 @@ export const HeaderActions = () => {
         onJsonChange={setJsonInput}
         parseError={parseError}
         onApply={handleParseJson}
+        triggerText="View code"
       />
     </Group>
   );

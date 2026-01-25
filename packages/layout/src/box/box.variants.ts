@@ -4,6 +4,7 @@ import styles from "./box.module.css";
 
 export const boxVariants = cva({
   variants: {
+    bordered: { true: styles["toggle-bordered"] },
     evenly: { true: styles["toggle-evenly"] },
     rounded: { true: styles["toggle-rounded"] },
     square: { true: styles["toggle-square"] },

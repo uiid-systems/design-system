@@ -22,9 +22,6 @@ export const ListItem = ({
   LinkComponent,
   ...props
 }: ListItemProps) => {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/83801fb3-41cc-4a8e-a1bd-20c34a8ecb67',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'list-item.tsx:ListItem',message:'ListItem rendered',data:{label,stylesListItem:styles["list-item"],allStyles:Object.keys(styles),hasClassName:!!className,computedClassName:cx(styles["list-item"],className)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1-missing-css'})}).catch(()=>{});
-  // #endregion
   // Determine the link element to use
   const linkElement = LinkComponent ? (
     <LinkComponent href={href ?? ""} style={{ display: "contents" }}>

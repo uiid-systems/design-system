@@ -20,16 +20,20 @@ type AppShellProps = {
 export const AppShell = ({ children }: AppShellProps) => {
   const loadFromUrlHash = useChatStore((s) => s.loadFromUrlHash);
 
-  // Load from URL hash on mount and listen for hash changes
+  // Load from URL hash on mount
   useEffect(() => {
     loadFromUrlHash();
+  }, [loadFromUrlHash]);
 
-    const handleHashChange = () => {
-      loadFromUrlHash();
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      // Load tree from hash without clearing it (for history navigation)
+      loadFromUrlHash(false);
     };
 
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, [loadFromUrlHash]);
 
   return (
