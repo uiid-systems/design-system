@@ -8,6 +8,7 @@ import { RefreshCwIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
 import { useChatStore } from "@/lib/store";
+import { useComponentLoader } from "@/lib/use-component-loader";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
 import { RenderedSheet } from "../rendered-sheet";
@@ -16,8 +17,9 @@ export const HeaderActions = () => {
   const messages = useChatStore((s) => s.messages);
   const tree = useChatStore((s) => s.tree);
   const setTree = useChatStore((s) => s.setTree);
-  const clear = useChatStore((s) => s.clear);
   const getShareUrl = useChatStore((s) => s.getShareUrl);
+
+  const { clearSelection, component } = useComponentLoader();
 
   const lastTreeRef = useRef<UITree | null>(null);
 
@@ -80,9 +82,10 @@ export const HeaderActions = () => {
       <Button
         data-slot="header-actions-clear"
         size="small"
-        onClick={clear}
-        disabled={messages.length === 0 && !tree}
+        onClick={clearSelection}
+        disabled={messages.length === 0 && !tree && !component}
         tooltip="Clear the UI you've created"
+        square
       >
         <RefreshCwIcon />
       </Button>

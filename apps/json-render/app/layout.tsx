@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { AppShell } from "@/components";
 
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppShell>{children}</AppShell>
+        <NuqsAdapter>
+          <AppShell>{children}</AppShell>
+        </NuqsAdapter>
       </body>
     </html>
   );
