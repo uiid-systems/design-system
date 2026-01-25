@@ -96,8 +96,8 @@
 .tone-positive {
   color: var(--tones-positive);
 }
-.tone-negative {
-  color: var(--tones-negative);
+.tone-critical {
+  color: var(--tones-critical);
 }
 .tone-warning {
   color: var(--tones-warning);

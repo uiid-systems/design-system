@@ -21,7 +21,7 @@ import {
   SelectIndicator,
 } from "./subcomponents";
 
-export const Select = <Value = string,>({
+export function Select<Value = string>({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
   ghost,
@@ -44,16 +44,15 @@ export const Select = <Value = string,>({
   FieldProps,
   children,
   ...props
-}: SelectProps<Value>) => {
+}: SelectProps<Value>) {
   // Only use defaultValue or first item, not placeholder
-  const resolvedDefaultValue = defaultValue ?? (placeholder ? undefined : items?.[0]?.value);
+  const resolvedDefaultValue =
+    defaultValue ?? (placeholder ? undefined : items?.[0]?.value);
 
   // Create a lookup function to resolve labels from values
   const itemToStringLabel = useMemo(() => {
     if (!items) return undefined;
-    const labelMap = new Map(
-      items.map((item) => [item.value, item.label]),
-    );
+    const labelMap = new Map(items.map((item) => [item.value, item.label]));
     return (value: Value) => labelMap.get(value as string) ?? String(value);
   }, [items]);
 
@@ -78,15 +77,16 @@ export const Select = <Value = string,>({
         {...RootProps}
       >
         <SelectTrigger
+          size={size}
           fullwidth={fullwidth}
           ghost={ghost}
           disabled={disabled}
           {...TriggerProps}
         >
-          <SelectValue size={size} {...ValueProps}>
+          <SelectValue {...ValueProps}>
             {(value: Value) =>
               value != null ? (
-                itemToStringLabel?.(value) ?? String(value)
+                (itemToStringLabel?.(value) ?? String(value))
               ) : placeholder ? (
                 <span className={styles["select-placeholder"]}>
                   {placeholder}
@@ -127,5 +127,5 @@ export const Select = <Value = string,>({
       </SelectRoot>
     </ConditionalRender>
   );
-};
+}
 Select.displayName = "Select";

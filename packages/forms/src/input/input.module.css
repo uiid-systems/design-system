@@ -29,8 +29,8 @@
 
   /** Invalid */
   &[data-invalid] {
-    border-color: var(--tones-negative);
-    outline-color: var(--tones-negative);
+    border-color: var(--tones-critical);
+    outline-color: var(--tones-critical);
   }
 
   /** Hack to prevent browser-assigned autofill color */
@@ -44,12 +44,18 @@
 
 .size-small {
   font-size: var(--forms-size-small-fontSize);
+  height: var(--forms-size-small-height);
+  padding-inline: var(--forms-size-small-padding-x);
 }
 .size-medium {
   font-size: var(--forms-size-medium-fontSize);
+  height: var(--forms-size-medium-height);
+  padding-inline: var(--forms-size-medium-padding-x);
 }
 .size-large {
   font-size: var(--forms-size-large-fontSize);
+  height: var(--forms-size-large-height);
+  padding-inline: var(--forms-size-large-padding-x);
 }
 
 .toggle-fullwidth {

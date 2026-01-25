@@ -105,7 +105,7 @@ export const Default: Story = {
             Positive tone
             <CircleCheckIcon />
           </Button>
-          <Button {...args} tone="negative">
+          <Button {...args} tone="critical">
             Negative tone
             <BanIcon />
           </Button>

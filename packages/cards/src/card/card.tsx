@@ -19,6 +19,7 @@ export const Card = ({
   action,
   footer,
   tone,
+  size,
   ContainerProps,
   HeaderProps,
   TitleProps,
@@ -35,7 +36,7 @@ export const Card = ({
   const Icon = IconProps?.icon || icon;
 
   return (
-    <CardContainer tone={tone} {...props} {...ContainerProps}>
+    <CardContainer tone={tone} size={size} {...props} {...ContainerProps}>
       <ConditionalRender
         condition={Boolean(title || icon || action)}
         render={

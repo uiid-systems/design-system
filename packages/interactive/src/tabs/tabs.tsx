@@ -13,15 +13,13 @@ import {
 } from "./subcomponents";
 
 export const Tabs = ({
-  /** data */
   items,
-  /** shortcuts */
   defaultValue,
   value,
   onValueChange,
   keepMounted,
   align,
-  /** subcomponents */
+  evenly,
   RootProps,
   ListProps,
   TabProps,
@@ -36,7 +34,7 @@ export const Tabs = ({
       onValueChange={onValueChange}
       {...RootProps}
     >
-      <TabsList align={align} {...ListProps}>
+      <TabsList align={align} evenly={evenly} {...ListProps}>
         {items.map((item) => (
           <TabsTab key={item.value} value={item.value} {...TabProps}>
             {item.label}

@@ -17,7 +17,7 @@ const meta = {
   argTypes: {
     tone: {
       control: "select",
-      options: ["info", "warning", "negative", "positive"],
+      options: ["info", "warning", "critical", "positive"],
       table: { category: "Variants" },
     },
 
@@ -56,7 +56,7 @@ const meta = {
       />
       <Card {...args} tone="info" title="Info card" />
       <Card {...args} tone="warning" title="Warning card" />
-      <Card {...args} tone="negative" title="Negative card" />
+      <Card {...args} tone="critical" title="Negative card" />
       <Card {...args} tone="positive" title="Positive card" />
       <Card
         {...args}

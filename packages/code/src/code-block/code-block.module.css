@@ -1,8 +1,8 @@
 .code-block {
   position: relative;
-  background-color: rgba(var(--shade-surface), 0.5);
   border: 1px solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -20,6 +20,12 @@
 
 .code-block-content {
   overflow-x: auto;
+
+  /* Apply background to pre so it extends with scrollable content */
+  & :global(pre) {
+    background-color: rgba(var(--shade-surface), 0.5) !important;
+    min-width: fit-content;
+  }
 
   /* Line styling - .line is a Shiki class */
   & :global(.line) {
@@ -40,5 +46,5 @@
 }
 
 .code-block-error {
-  color: var(--tones-negative);
+  color: var(--tones-critical);
 }

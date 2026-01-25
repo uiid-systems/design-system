@@ -9,7 +9,7 @@ export const statusVariants = cva({
     tone: {
       positive: styles["tone-positive"],
       warning: styles["tone-warning"],
-      negative: styles["tone-negative"],
+      critical: styles["tone-critical"],
       info: styles["tone-info"],
     },
   },

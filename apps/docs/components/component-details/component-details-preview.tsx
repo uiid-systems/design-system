@@ -2,12 +2,14 @@
 
 import { Card } from "@uiid/cards";
 
-type ComponentPreviewProps = {
+interface ComponentDetailsPreviewProps {
   title?: string;
   children: React.ReactNode;
-};
+}
 
-export const ComponentPreview = ({ children }: ComponentPreviewProps) => {
+export function ComponentDetailsPreview({
+  children,
+}: ComponentDetailsPreviewProps) {
   return (
     <Card>
       <Card
@@ -23,5 +25,5 @@ export const ComponentPreview = ({ children }: ComponentPreviewProps) => {
       </Card>
     </Card>
   );
-};
-ComponentPreview.displayName = "ComponentPreview";
+}
+ComponentDetailsPreview.displayName = "ComponentDetailsPreview";

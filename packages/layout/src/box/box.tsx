@@ -5,6 +5,7 @@ import { boxVariants } from "./box.variants";
 import styles from "./box.module.css";
 
 export const Box = ({
+  bordered,
   evenly,
   fullwidth,
   fullheight,
@@ -55,6 +56,7 @@ export const Box = ({
       className: cx(
         styles["box"],
         boxVariants({
+          bordered,
           evenly,
           fullwidth,
           fullheight,

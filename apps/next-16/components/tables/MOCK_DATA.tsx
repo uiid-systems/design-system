@@ -43,7 +43,7 @@ export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
     date: "2025-01-01",
     player: "John Doe",
     duration: (
-      <Badge tone="negative" hideIndicator>
+      <Badge tone="critical" hideIndicator>
         16 frames
       </Badge>
     ),
@@ -65,7 +65,7 @@ export const FIND_A_MATCH_MOCK_DATA: TableProps["items"] = [
     ),
     stakes: <Badge tone="warning">Medium</Badge>,
     accepting: (
-      <Badge tone="negative" hideIndicator>
+      <Badge tone="critical" hideIndicator>
         1700 & up
       </Badge>
     ),
@@ -106,7 +106,7 @@ export const TABLE_MOCK_DATA: TableProps["items"] = [
     lastPlayed: formatDate(new Date("2025-01-03"), "EEE',' MMM d"),
   },
   {
-    rank: <Badge tone="negative">4</Badge>,
+    rank: <Badge tone="critical">4</Badge>,
     name: "Jane Smith",
     played: 10,
     won: 9,

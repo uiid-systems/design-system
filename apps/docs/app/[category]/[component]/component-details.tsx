@@ -2,29 +2,36 @@
 
 import type { PropDocumentation, PreviewConfig } from "@uiid/registry";
 
+import { CodeBlock } from "@uiid/code";
 import { Stack, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
-import { CodeBlock } from "@uiid/code";
 
-import { PropsTable, ComponentPreview, TreePreviewList } from "@/components";
+import { PropsTable, TreePreviewList } from "@/components";
 import { getPreviewComponent } from "@/lib/preview-registry";
+
+import {
+  ComponentDetailsHeader,
+  ComponentDetailsPreview,
+} from "@/components/component-details";
 
 const HEADER_SIZE = 3;
 
-type ComponentDetailsProps = {
+interface ComponentDetailsProps {
   name: string;
   packageName: string;
+  category: string;
   description?: string;
   props: PropDocumentation[];
   sourceCode?: string;
   installHtml?: string;
   sourceHtml?: string;
   previews?: PreviewConfig[];
-};
+}
 
 export function ComponentDetails({
   name,
-  // packageName,
+  packageName,
+  category,
   description,
   props,
   sourceCode,
@@ -37,14 +44,12 @@ export function ComponentDetails({
   return (
     <Stack data-slot="component-details" gap={6} p={8} pb={32} fullwidth>
       {/* Header */}
-      <Text render={<h1 />} size={6} weight="bold">
-        {name}
-      </Text>
-      {description && (
-        <Text shade="muted" size={1}>
-          {description}
-        </Text>
-      )}
+      <ComponentDetailsHeader
+        name={name}
+        description={description}
+        packageName={packageName}
+        category={category}
+      />
 
       {/* Preview Section — tree-based if available, otherwise legacy component */}
       {previews && previews.length > 0 ? (
@@ -52,9 +57,9 @@ export function ComponentDetails({
           <Separator />
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
             <Header>Preview</Header>
-            <ComponentPreview>
+            <ComponentDetailsPreview>
               <TreePreviewList previews={previews} />
-            </ComponentPreview>
+            </ComponentDetailsPreview>
           </Stack>
         </>
       ) : PreviewComponent ? (
@@ -62,9 +67,9 @@ export function ComponentDetails({
           <Separator />
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
             <Header>Preview</Header>
-            <ComponentPreview>
+            <ComponentDetailsPreview>
               <PreviewComponent />
-            </ComponentPreview>
+            </ComponentDetailsPreview>
           </Stack>
         </>
       ) : null}

@@ -76,6 +76,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
     <ComponentDetails
       name={entry.name}
       packageName={entry.package}
+      category={category}
       description={entry.description}
       props={docs.props}
       sourceCode={sourceCode}

@@ -16,7 +16,7 @@ export const ProfileInfoFooter = () => {
         }
       />
 
-      <Button tone="negative" fullwidth>
+      <Button tone="critical" fullwidth>
         <BanIcon />
         Delete profile
       </Button>

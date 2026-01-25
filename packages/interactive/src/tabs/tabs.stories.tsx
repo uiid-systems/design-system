@@ -16,6 +16,9 @@ const meta: Meta<typeof Tabs> = {
       control: "select",
       options: ["start", "center", "end"],
     },
+    evenly: {
+      control: "boolean",
+    },
   },
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>

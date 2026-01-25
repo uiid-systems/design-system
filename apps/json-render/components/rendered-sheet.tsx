@@ -12,9 +12,8 @@ type RenderedSheetProps = SheetProps & {
   onJsonChange: (value: string) => void;
   parseError?: string | null;
   onApply?: () => void;
+  triggerText?: string;
 };
-
-const TITLE = "Code";
 
 export const RenderedSheet = ({
   code,
@@ -22,21 +21,29 @@ export const RenderedSheet = ({
   onJsonChange,
   parseError,
   onApply,
+  triggerText = "View source",
   ...props
 }: RenderedSheetProps) => {
   return (
     <Sheet
       data-slot="rendered-sheet"
-      title={TITLE}
+      title={triggerText}
+      side="right"
+      PopupProps={{ style: { width: "40rem" } }}
       trigger={
-        <Button size="small" disabled={!code && !jsonValue}>
-          <CodeIcon /> {TITLE}
+        <Button
+          tooltip={triggerText}
+          disabled={!code && !jsonValue}
+          size="small"
+        >
+          {triggerText}
+          <CodeIcon />
         </Button>
       }
-      side="right"
       {...props}
     >
       <Tabs
+        evenly
         items={[
           {
             label: "JSON",

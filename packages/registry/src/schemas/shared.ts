@@ -121,7 +121,7 @@ export type Shade = z.infer<typeof Shade>;
 /**
  * Tone values for semantic colors.
  */
-export const Tone = z.enum(["positive", "negative", "warning", "info"]);
+export const Tone = z.enum(["positive", "critical", "warning", "info"]);
 
 export type Tone = z.infer<typeof Tone>;
 

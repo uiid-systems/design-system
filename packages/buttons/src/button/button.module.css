@@ -158,24 +158,24 @@
     }
   }
 }
-.tone-negative {
-  background-color: var(--tones-negative);
-  border-color: var(--tones-negative);
-  outline-color: var(--tones-negative);
+.tone-critical {
+  background-color: var(--tones-critical);
+  border-color: var(--tones-critical);
+  outline-color: var(--tones-critical);
   color: var(--black);
 
   &:where(:hover, :active) {
-    --active-color: color-mix(in oklab, var(--tones-negative), var(--shade-background) 10%);
+    --active-color: color-mix(in oklab, var(--tones-critical), var(--shade-background) 10%);
     background-color: var(--active-color);
   }
 
   &:where([data-ghost="true"]) {
     background-color: transparent;
     border-color: transparent;
-    color: var(--tones-negative);
+    color: var(--tones-critical);
 
     &:where(:hover, :active) {
-      --active-color: color-mix(in oklab, var(--tones-negative), transparent 80%);
+      --active-color: color-mix(in oklab, var(--tones-critical), transparent 80%);
       background-color: var(--active-color);
     }
   }
