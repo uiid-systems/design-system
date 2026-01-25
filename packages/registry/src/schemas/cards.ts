@@ -38,7 +38,7 @@ export type CardProps = z.infer<typeof CardPropsSchema>;
 
 const cardPreviews: PreviewConfig[] = [
   {
-    label: "With slots",
+    label: "Default",
     tree: {
       root: "card",
       elements: {
@@ -46,13 +46,40 @@ const cardPreviews: PreviewConfig[] = [
           key: "card",
           type: "Card",
           props: {
-            title: "Card Title",
-            description: "A short description of this card's content.",
-            footer: "Footer content",
+            title: "Acme Corporation",
+            description: "The global leader in everything.",
           },
-          children: ["body"],
+          children: ["body", "footer"],
         },
-        body: { key: "body", type: "Text", props: { children: "Card body content goes here." }, parentKey: "card" },
+        body: {
+          key: "body",
+          type: "Text",
+          props: {
+            children:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          },
+          parentKey: "card",
+        },
+        footer: {
+          key: "footer",
+          type: "Group",
+          props: { gap: 2, ax: "end", fullwidth: true },
+          children: ["cancel", "submit"],
+          parentKey: "card",
+          slot: "footer",
+        },
+        cancel: {
+          key: "cancel",
+          type: "Button",
+          props: { size: "small", ghost: true, children: "Cancel" },
+          parentKey: "footer",
+        },
+        submit: {
+          key: "submit",
+          type: "Button",
+          props: { size: "small", children: "Complete purchase" },
+          parentKey: "footer",
+        },
       },
     },
   },
@@ -61,10 +88,30 @@ const cardPreviews: PreviewConfig[] = [
     tree: {
       root: "group",
       elements: {
-        group: { key: "group", type: "Group", props: { gap: 4 }, children: ["neutral", "positive", "critical"] },
-        neutral: { key: "neutral", type: "Card", props: { title: "Neutral" }, parentKey: "group" },
-        positive: { key: "positive", type: "Card", props: { title: "Positive", tone: "positive" }, parentKey: "group" },
-        critical: { key: "critical", type: "Card", props: { title: "Critical", tone: "critical" }, parentKey: "group" },
+        group: {
+          key: "group",
+          type: "Group",
+          props: { gap: 4 },
+          children: ["neutral", "positive", "critical"],
+        },
+        neutral: {
+          key: "neutral",
+          type: "Card",
+          props: { title: "Neutral" },
+          parentKey: "group",
+        },
+        positive: {
+          key: "positive",
+          type: "Card",
+          props: { title: "Positive", tone: "positive" },
+          parentKey: "group",
+        },
+        critical: {
+          key: "critical",
+          type: "Card",
+          props: { title: "Critical", tone: "critical" },
+          parentKey: "group",
+        },
       },
     },
   },

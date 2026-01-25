@@ -45,22 +45,38 @@ function renderElement(
   const { children: childKeys, ...restProps } = element.props || {};
   const elementChildren = element.children;
 
-  // Render child elements recursively
-  let renderedChildren: ReactNode = null;
+  // Separate slotted vs regular children
+  const slottedChildren: Record<string, ReactNode> = {};
+  const regularChildren: ReactNode[] = [];
+
   if (elementChildren && elementChildren.length > 0) {
-    renderedChildren = elementChildren.map((childKey) => {
+    for (const childKey of elementChildren) {
       const child = elements[childKey];
-      if (!child) return null;
-      return <span key={childKey}>{renderElement(child, elements)}</span>;
-    });
+      if (!child) continue;
+
+      if (child.slot) {
+        // Render into the designated slot prop
+        slottedChildren[child.slot] = renderElement(child, elements);
+      } else {
+        // Regular child
+        regularChildren.push(
+          <span key={childKey}>{renderElement(child, elements)}</span>
+        );
+      }
+    }
   }
 
   // Text children from props.children
   const textChildren = typeof childKeys === "string" ? childKeys : null;
 
-  const finalChildren = renderedChildren || textChildren || undefined;
+  const finalChildren =
+    regularChildren.length > 0 ? regularChildren : textChildren || undefined;
 
-  return <Component {...restProps}>{finalChildren}</Component>;
+  return (
+    <Component {...restProps} {...slottedChildren}>
+      {finalChildren}
+    </Component>
+  );
 }
 
 type TreePreviewProps = {

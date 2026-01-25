@@ -3,6 +3,7 @@
   background-color: rgba(var(--shade-surface), 0.5);
   border: 1px solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
+  max-width: 100%;
   overflow-x: hidden;
 }
 

@@ -9,13 +9,14 @@ import { tabsListVariants } from "../tabs.variants";
 export const TabsList = ({
   align,
   className,
+  evenly,
   children,
   ...props
 }: TabsListProps) => {
   return (
     <BaseTabs.List
       data-slot="tabs-list"
-      render={<Group gap={2} ay="end" />}
+      render={<Group gap={2} ay="end" evenly={evenly} />}
       className={cx(tabsListVariants({ align }), className)}
       {...props}
     >

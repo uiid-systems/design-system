@@ -14,7 +14,7 @@ type RenderedSheetProps = SheetProps & {
   onApply?: () => void;
 };
 
-const TITLE = "Code";
+const TITLE = "View code";
 
 export const RenderedSheet = ({
   code,
@@ -28,15 +28,22 @@ export const RenderedSheet = ({
     <Sheet
       data-slot="rendered-sheet"
       title={TITLE}
+      side="right"
+      PopupProps={{ style: { width: "40rem" } }}
       trigger={
-        <Button size="small" disabled={!code && !jsonValue}>
-          <CodeIcon /> {TITLE}
+        <Button
+          tooltip={TITLE}
+          disabled={!code && !jsonValue}
+          size="small"
+          square
+        >
+          <CodeIcon />
         </Button>
       }
-      side="right"
       {...props}
     >
       <Tabs
+        evenly
         items={[
           {
             label: "JSON",

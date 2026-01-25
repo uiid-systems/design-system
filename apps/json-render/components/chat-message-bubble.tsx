@@ -4,7 +4,7 @@ import { Card } from "@uiid/cards";
 import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-import type { ChatMessage } from "@/lib/use-chat";
+import type { ChatMessage } from "@/lib/store";
 
 /**
  * Strip JSON code blocks from message content for cleaner chat display.

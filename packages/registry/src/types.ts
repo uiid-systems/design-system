@@ -9,6 +9,8 @@ export type PreviewElement = {
   props: Record<string, unknown>;
   children?: string[];
   parentKey?: string;
+  /** If set, render this element into the parent's prop with this name instead of as children */
+  slot?: string;
 };
 
 /**

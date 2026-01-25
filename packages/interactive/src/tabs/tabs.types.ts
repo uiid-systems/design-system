@@ -12,8 +12,8 @@ export type TabProps = {
 
 export type TabsRootProps = Tabs.Root.Props;
 export type TabsListProps = Tabs.List.Props & {
-  /** Alignment of tabs within the list */
   align?: TabsAlign;
+  evenly?: boolean;
 };
 export type TabsTabProps = Tabs.Tab.Props;
 export type TabsIndicatorProps = Tabs.Indicator.Props;
@@ -21,8 +21,6 @@ export type TabsPanelProps = Tabs.Panel.Props;
 
 export type TabsProps = {
   items: TabProps[];
-  /** Alignment of tabs within the list */
-  align?: TabsAlign;
   RootProps?: TabsRootProps;
   ListProps?: TabsListProps;
   TabProps?: TabsTabProps;
@@ -30,4 +28,5 @@ export type TabsProps = {
   PanelProps?: TabsPanelProps;
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
-  Pick<TabsPanelProps, "keepMounted">;
+  Pick<TabsPanelProps, "keepMounted"> &
+  Pick<TabsListProps, "evenly" | "align">;
