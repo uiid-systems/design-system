@@ -102,7 +102,7 @@ export const ComponentPicker = () => {
       <Select
         placeholder="Select component"
         items={componentItems}
-        value={component ?? undefined}
+        value={component}
         onValueChange={(value) => selectComponent(value ?? null)}
         ghost
       />
@@ -110,7 +110,7 @@ export const ComponentPicker = () => {
         <Select
           placeholder="Select variant"
           items={variantItems}
-          value={variant ?? undefined}
+          value={variant}
           onValueChange={(value) => selectVariant(value ?? null)}
           ghost
         />
