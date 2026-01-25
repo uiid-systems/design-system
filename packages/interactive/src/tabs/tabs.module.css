@@ -49,12 +49,13 @@
   left: var(--active-tab-left);
   top: 50%;
   transform: translateY(-50%);
-  width: var(--active-tab-width);
+  width: var(--active-tab-width) !important;
   height: var(--tabs-indicator-height);
   background-color: var(--shade-foreground);
   border-radius: var(--globals-border-radius);
   transition-property: left, width;
   transition-duration: var(--globals-transition-timing);
+  flex: none;
 }
 
 .tabs-panel {

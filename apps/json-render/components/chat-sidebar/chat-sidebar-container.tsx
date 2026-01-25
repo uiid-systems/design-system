@@ -10,12 +10,9 @@ export const ChatSidebarContainer = ({
     <Stack
       data-slot="chat-sidebar-container"
       fullheight
+      fullwidth
       ax="stretch"
-      style={{
-        width: "400px",
-        minWidth: "400px",
-        borderRight: "1px solid var(--globals-border-color)",
-      }}
+      br={1}
       {...props}
     >
       {children}
