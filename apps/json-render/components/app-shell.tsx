@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 import type { ReactNode } from "react";
 import { JSONUIProvider } from "@json-render/react";
+
+import { Resizable, ResizablePanel, ResizableHandle } from "@uiid/interactive";
 import { Stack } from "@uiid/layout";
 
 import { registry } from "@/lib/components";
@@ -58,11 +60,18 @@ export const AppShell = ({ children }: AppShellProps) => {
       }}
     >
       <ChatOuterContainer style={{ overflow: "hidden" }}>
-        <ChatSidebar />
-        <Stack ax="stretch" fullwidth>
-          <Header />
-          {children}
-        </Stack>
+        <Resizable direction="horizontal">
+          <ResizablePanel defaultSize={25} minSize={20}>
+            <ChatSidebar />
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={75} minSize={50}>
+            <Stack ax="stretch" fullwidth fullheight>
+              <Header />
+              {children}
+            </Stack>
+          </ResizablePanel>
+        </Resizable>
       </ChatOuterContainer>
     </JSONUIProvider>
   );
