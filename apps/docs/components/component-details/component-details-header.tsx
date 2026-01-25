@@ -29,7 +29,7 @@ export function ComponentDetailsHeader({
   const packageFolder = packageName.replace("@uiid/", "");
 
   // Build component-specific URLs
-  const builderUrl = `${CREATE_URL}/components/${name}`;
+  const builderUrl = `${CREATE_URL}?component=${name}`;
   const storybookUrl = `${STORYBOOK_URL}/?path=/story/${category}-${componentSlug}--default`;
   const githubUrl = `${GITHUB_URL}/tree/main/packages/${packageFolder}/src/${componentSlug}`;
 
