@@ -1,11 +1,11 @@
-import fs from "fs";
-import path from "path";
 import { notFound } from "next/navigation";
 
 import { registry, generateComponentDocs, type PreviewConfig } from "@uiid/registry";
-import { highlight } from "@uiid/code";
 
 import { toSlug } from "@/constants/urls";
+import { getMdxSource, compileMdxContent } from "@/lib/mdx";
+import { CodeBlock, Preview, PropsTable } from "@/components/mdx";
+import { MdxContent } from "./mdx-content";
 import { ComponentDetails } from "./component-details";
 
 /**
@@ -31,29 +31,6 @@ function findComponentBySlug(slug: string) {
   );
 }
 
-/**
- * Read the preview source file for a component
- */
-function getPreviewSource(componentName: string): string | undefined {
-  const slug = toSlug(componentName);
-  const previewPath = path.join(
-    process.cwd(),
-    "components",
-    "previews",
-    `${slug}-preview.tsx`
-  );
-
-  try {
-    if (fs.existsSync(previewPath)) {
-      return fs.readFileSync(previewPath, "utf-8");
-    }
-  } catch {
-    // File doesn't exist or can't be read
-  }
-
-  return undefined;
-}
-
 export default async function ComponentPage({ params }: ComponentPageProps) {
   const { category, component } = await params;
   const entry = findComponentBySlug(component);
@@ -63,15 +40,37 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
   }
 
   const docs = generateComponentDocs(entry);
-  const sourceCode = getPreviewSource(entry.name);
-
-  const installHtml = await highlight(`pnpm add ${entry.package}`, "bash");
-  const sourceHtml = sourceCode
-    ? await highlight(sourceCode, "tsx")
-    : undefined;
-
   const previews = (entry.previews as PreviewConfig[] | undefined) ?? undefined;
 
+  // Check for MDX content
+  const mdxSource = getMdxSource(category, entry.name);
+
+  if (mdxSource) {
+    // Render MDX page
+    const { content } = await compileMdxContent(mdxSource, {
+      // Wrap code blocks with styled container
+      pre: (props: Record<string, unknown>) => <CodeBlock {...props} />,
+      // Pass components that get data from this page
+      Preview: (props: Record<string, unknown>) => (
+        <Preview name={entry.name} previews={previews} {...props} />
+      ),
+      PropsTable: (props: Record<string, unknown>) => (
+        <PropsTable props={docs.props} {...props} />
+      ),
+    });
+
+    return (
+      <MdxContent
+        name={entry.name}
+        packageName={entry.package}
+        category={category}
+      >
+        {content}
+      </MdxContent>
+    );
+  }
+
+  // Fallback to legacy component details (no MDX)
   return (
     <ComponentDetails
       name={entry.name}
@@ -79,9 +78,6 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       category={category}
       description={entry.description}
       props={docs.props}
-      sourceCode={sourceCode}
-      installHtml={installHtml}
-      sourceHtml={sourceHtml}
       previews={previews}
     />
   );

@@ -2,7 +2,6 @@
 
 import type { PropDocumentation, PreviewConfig } from "@uiid/registry";
 
-import { CodeBlock } from "@uiid/code";
 import { Stack, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -22,21 +21,18 @@ interface ComponentDetailsProps {
   category: string;
   description?: string;
   props: PropDocumentation[];
-  sourceCode?: string;
-  installHtml?: string;
-  sourceHtml?: string;
   previews?: PreviewConfig[];
 }
 
+/**
+ * Legacy component details page (fallback when no MDX content exists).
+ */
 export function ComponentDetails({
   name,
   packageName,
   category,
   description,
   props,
-  sourceCode,
-  // installHtml,
-  sourceHtml,
   previews,
 }: ComponentDetailsProps) {
   const PreviewComponent = getPreviewComponent(name);
@@ -73,16 +69,6 @@ export function ComponentDetails({
           </Stack>
         </>
       ) : null}
-
-      {sourceCode && (
-        <>
-          <Separator />
-          <Stack id="usage" gap={4} ax="stretch" fullwidth>
-            <Header>Usage</Header>
-            <CodeBlock code={sourceCode} language="tsx" html={sourceHtml} />
-          </Stack>
-        </>
-      )}
 
       {/* Props Section */}
       <Separator />

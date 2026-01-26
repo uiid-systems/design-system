@@ -11,7 +11,7 @@ export function ComponentDetailsPreview({
   children,
 }: ComponentDetailsPreviewProps) {
   return (
-    <Card>
+    <Card fullwidth>
       <Card
         gap={4}
         py={12}

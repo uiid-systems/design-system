@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { AppShell } from "@/components";
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NuqsAdapter>
-          <AppShell>{children}</AppShell>
-        </NuqsAdapter>
+        <Suspense>
+          <NuqsAdapter>
+            <AppShell>{children}</AppShell>
+          </NuqsAdapter>
+        </Suspense>
       </body>
     </html>
   );

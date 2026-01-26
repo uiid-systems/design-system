@@ -35,7 +35,7 @@ export function ComponentDetailsHeader({
 
   return (
     <Group ax="space-between" ay="start" gap={4} fullwidth>
-      <Stack gap={2} ax="stretch">
+      <Stack gap={6} ax="stretch">
         <Text render={<h1 />} size={6} weight="bold">
           {name}
         </Text>
