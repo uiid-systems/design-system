@@ -2,7 +2,6 @@
 
 import type { PropDocumentation } from "@uiid/registry";
 
-import { Card } from "@uiid/cards";
 import { CodeInline } from "@uiid/code";
 import { Stack } from "@uiid/layout";
 import { Table } from "@uiid/tables";
@@ -57,10 +56,6 @@ export const PropsTable = ({ props }: PropsTableProps) => {
     ),
   }));
 
-  return (
-    <Card fullwidth transparent b={1} p={0} style={{ overflow: "hidden" }}>
-      <Table bordered items={items} />
-    </Card>
-  );
+  return <Table bordered striped items={items} />;
 };
 PropsTable.displayName = "PropsTable";
