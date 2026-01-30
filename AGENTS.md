@@ -19,6 +19,8 @@ UIID is a modular React component library built with:
 ```
 design-system/
 ├── apps/                    # Consumer applications
+│   ├── json-render/         # AI-powered UI generator (has its own AGENTS.md)
+│   └── storybook/           # Component documentation
 ├── packages/                # Component packages (@uiid/*)
 │   ├── buttons/
 │   ├── calendars/
@@ -41,6 +43,16 @@ design-system/
 ├── vitest.setup.ts          # Test setup with jest-dom matchers
 └── AGENTS.md                # This file
 ```
+
+## Apps
+
+### json-render (`apps/json-render/`)
+
+An AI-powered playground that generates UIs from natural language using a JSON tree structure and UIID components. When working on this app, refer to its own `apps/json-render/AGENTS.md` for JSON tree format, available components, and layout patterns specific to tree generation.
+
+### Storybook (`apps/storybook/`)
+
+Component documentation and visual testing. See [Storybook Stories](#storybook-stories) for story writing guidelines.
 
 ## Root Configuration Files
 
@@ -137,7 +149,7 @@ If a component has subcomponents, place them in a `subcomponents/` directory:
 ```tsx
 "use client";
 
-import { SomeBase } from "@base-ui-components/react/some-base";
+import { SomeBase } from "@base-ui/react/some-base";
 import { cx } from "@uiid/utils";
 
 import { COMPONENT_DEFAULT_VALUE } from "./component.constants";
@@ -384,6 +396,29 @@ When creating pull requests for new features or packages, use the template at:
 For small fixes or minor changes, a brief summary and test plan is sufficient.
 
 ## Styling
+
+### No Inline Styles for Layout or Typography
+
+**Never use `style={{}}` for layout, spacing, sizing, or text styling.** The resolution order is:
+
+1. **Component props** (always try first) — `gap`, `p`, `ax`, `evenly`, `fullwidth`, `size`, `shade`, etc.
+2. **CSS Modules** — for visual styling that can't be expressed as props (colors, borders, animations)
+3. **Inline styles** — avoid entirely. If you think you need one, check the component README for a prop that does the same thing.
+
+**If no prop exists for what you need, stop and ask the user.** Do not fall back to inline styles. The prop may already exist and you missed it, or it may be worth adding to the component.
+
+Common mistakes to avoid:
+
+| Instead of...                                  | Use...                        |
+| ---------------------------------------------- | ----------------------------- |
+| `style={{ flex: 1 }}` on children              | `<Group evenly>`              |
+| `style={{ width: "100%" }}`                    | `fullwidth` or `ax="stretch"` on parent Stack |
+| `style={{ alignItems: "center" }}`             | `ay="center"` (Group) or `ax="center"` (Stack) |
+| `style={{ gap: "16px" }}`                      | `gap={4}`                     |
+| `style={{ padding: "16px" }}`                  | `p={4}`                       |
+| `style={{ fontSize: "14px", color: "gray" }}`  | `<Text size={0} shade="muted">` |
+
+See layout and typography component READMEs for full prop references and common patterns.
 
 ### Prefer Component Props Over CSS
 
@@ -646,7 +681,7 @@ Use workspace protocol for internal packages:
 
 ### External Dependencies
 
-- **@base-ui-components/react** - Accessible UI primitives
+- **@base-ui/react** - Accessible UI primitives
 - **react** / **react-dom** - Peer dependencies
 
 ## Common Tasks
@@ -872,7 +907,7 @@ export * from "./{component}/subcomponents"; // if applicable
 - [ ] `pnpm tsc --noEmit` passes
 - [ ] `pnpm build --filter=@uiid/{package}` succeeds
 - [ ] No name conflicts with existing exports
-- [ ] All subcomponents use `renderWithProps` pattern
+- [ ] Low-level primitives (Box, Text) use `renderWithProps`; all other components use regular elements
 - [ ] CSS uses design tokens where available
 - [ ] Stories demonstrate all variants
 - [ ] `data-slot` attributes on all elements

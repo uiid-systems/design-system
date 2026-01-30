@@ -96,8 +96,8 @@ The Card component automatically renders its title, description, icon, and foote
 | `flex: 1`                  | `evenly`                                         |
 | `width: "100%"`            | `fullwidth`                                      |
 | `height: "100%"`           | `fullheight`                                     |
-| `justifyContent: "center"` | `ax: "center"` (Stack) or `ax: "center"` (Group) |
-| `alignItems: "center"`     | `ay: "center"` (Stack) or `ay: "center"` (Group) |
+| `justifyContent: "center"` | `ay: "center"` (Stack) or `ax: "center"` (Group) |
+| `alignItems: "center"`     | `ax: "center"` (Stack) or `ay: "center"` (Group) |
 | `gap: "16px"`              | `gap: 4`                                         |
 | `padding: "16px"`          | `p: 4`                                           |
 | `margin: "8px"`            | `m: 2`                                           |
@@ -498,6 +498,61 @@ The `children` will render inside the card body, after the description.
 ---
 
 ## Layout Patterns
+
+### Full-Width Stacked Children
+
+Use `ax: "stretch"` on a Stack to make all children full-width. This is the standard pattern for forms, input groups, and any vertical layout where children should fill the container. Group children inside a stretched Stack also become full-width automatically — no need to set `fullwidth` on each one.
+
+```json
+{
+  "root": "form-fields",
+  "elements": {
+    "form-fields": {
+      "key": "form-fields",
+      "type": "Stack",
+      "props": { "ax": "stretch", "gap": 3 },
+      "children": ["name-input", "name-row"]
+    },
+    "name-input": {
+      "key": "name-input",
+      "type": "Input",
+      "props": { "label": "Email" },
+      "parentKey": "form-fields"
+    },
+    "name-row": {
+      "key": "name-row",
+      "type": "Group",
+      "props": { "gap": 2 },
+      "children": ["first-name", "last-name"],
+      "parentKey": "form-fields"
+    },
+    "first-name": {
+      "key": "first-name",
+      "type": "Input",
+      "props": { "label": "First name" },
+      "parentKey": "name-row"
+    },
+    "last-name": {
+      "key": "last-name",
+      "type": "Input",
+      "props": { "label": "Last name" },
+      "parentKey": "name-row"
+    }
+  }
+}
+```
+
+### Equal-Width Children in a Row
+
+Use `evenly` on a Group to give all children equal width (`flex: 1`), instead of setting styles on each child.
+
+```json
+{
+  "type": "Group",
+  "props": { "evenly": true, "gap": 2 },
+  "children": ["btn-save", "btn-cancel"]
+}
+```
 
 ### Form Layout
 
