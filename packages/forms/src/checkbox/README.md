@@ -1,6 +1,6 @@
 # Checkbox
 
-> A checkbox input with optional label and description. Built on [Base UI Checkbox](https://base-ui.com/react/components/checkbox).
+> Checkbox input with label, description, and indeterminate state support
 
 ## Quick Reference
 
@@ -88,18 +88,16 @@ Places the label before the checkbox:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `ReactNode` | — | Label text |
-| `description` | `ReactNode` | — | Helper text below label |
-| `checked` | `boolean` | — | Controlled checked state |
-| `defaultChecked` | `boolean` | `false` | Initial checked state (uncontrolled) |
-| `onCheckedChange` | `(checked: boolean) => void` | — | Called when checked state changes |
-| `indeterminate` | `boolean` | `false` | Shows indeterminate state |
-| `bordered` | `boolean` | `false` | Adds border around checkbox and label |
-| `reversed` | `boolean` | `false` | Places label before checkbox |
-| `hideIndicator` | `boolean` | `false` | Hides the checkbox visually |
-| `disabled` | `boolean` | `false` | Disables the checkbox |
-| `ContainerProps` | `CheckboxFieldProps` | — | Props for the container element |
-| `IndicatorProps` | `CheckboxIndicatorProps` | — | Props for the indicator element |
+| `bordered` | `boolean` | — | — |
+| `checked` | `boolean` | — | — |
+| `defaultChecked` | `boolean` | — | — |
+| `description` | `string` | — | — |
+| `disabled` | `boolean` | — | — |
+| `indeterminate` | `boolean` | — | — |
+| `label` | `string` | — | — |
+| `name` | `string` | — | — |
+| `required` | `boolean` | — | — |
+| `reversed` | `boolean` | — | — |
 
 > All other props are forwarded to the Base UI Checkbox.Root component.
 

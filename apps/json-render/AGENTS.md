@@ -2,6 +2,8 @@
 
 This document provides rules for AI models generating UI trees using the UIID component library with json-render.
 
+> **Note:** The "Available Components" section below is generated from `@uiid/registry` via `generateComponentReference()`. Do not edit it manually — update the registry entries instead.
+
 ---
 
 ## Critical Concepts
@@ -50,16 +52,6 @@ UIID components are **precomposed** - they handle their own internal structure. 
 ```
 
 The Card component automatically renders its title, description, icon, and footer from props. Only use `children` for custom body content.
-
-**This pattern applies to most UIID components:**
-
-| Component | Use props for...                         | Use children for... |
-| --------- | ---------------------------------------- | ------------------- |
-| Card      | `title`, `description`, `icon`, `footer` | Custom body content |
-| Input     | `label`, `description`, `placeholder`    | N/A (no children)   |
-| Checkbox  | `label`, `description`                   | N/A (no children)   |
-| Select    | `label`, `description`, `items`          | N/A (no children)   |
-| Button    | N/A                                      | Button label text   |
 
 ### No Inline Styles
 
@@ -155,91 +147,89 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 
 ---
 
+<!-- BEGIN GENERATED COMPONENT REFERENCE — do not edit below this line -->
+<!-- Source: @uiid/registry generateComponentReference() -->
+
 ## Available Components
+
+### Precomposed Components
+
+UIID components are **precomposed** — they handle their own internal structure. Use props for metadata, children for custom content only.
+
+| Component | Use props for... | Use children for... |
+| --- | --- | --- |
+| Box | N/A | Content |
+| Stack | N/A | Content |
+| Group | N/A | Content |
+| Layer | N/A | Content |
+| Button | N/A | Content |
+| ToggleButton | `icon` | Content |
+| Form | N/A | Content |
+| Input | `placeholder`, `label`, `description` | N/A (no children) |
+| Textarea | `placeholder`, `label`, `description` | N/A (no children) |
+| Checkbox | `label`, `description` | N/A (no children) |
+| Select | `placeholder`, `items`, `label`, `description` | N/A (no children) |
+| Switch | `label`, `description` | N/A (no children) |
+| Text | N/A | Content |
+| Card | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
+| Drawer | `title` | Custom body content |
+| Modal | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Popover | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Sheet | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Tooltip | N/A | Content |
 
 ### Layout Components
 
-Use these to structure and position content.
+#### Box
+
+Generic flex container with layout and spacing props
+
+Supports children.
+
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
 #### Stack
 
-Vertical flex layout (column direction).
+Vertical flex layout (column). ax controls vertical alignment, ay controls horizontal
 
-```json
-{
-  "type": "Stack",
-  "props": {
-    "gap": 4,
-    "p": 4,
-    "ax": "center",
-    "ay": "start"
-  },
-  "children": ["child-1", "child-2"]
-}
-```
+Use Stack for vertical layouts. Children flow top-to-bottom. ax controls vertical alignment, ay horizontal.
 
-| Prop                                    | Type    | Description                                                              |
-| --------------------------------------- | ------- | ------------------------------------------------------------------------ |
-| `gap`                                   | number  | Space between children (0,1,2,3,4,6,8,10,12,16,20,24,32,40,48,56,64)     |
-| `p`, `px`, `py`, `pt`, `pb`, `pl`, `pr` | number  | Padding (same scale as gap)                                              |
-| `m`, `mx`, `my`, `mt`, `mb`, `ml`, `mr` | number  | Margin (same scale as gap)                                               |
-| `ax`                                    | string  | Vertical alignment: `start`, `center`, `end`, `space-between`, `stretch` |
-| `ay`                                    | string  | Horizontal alignment: `start`, `center`, `end`, `baseline`, `stretch`    |
-| `fullwidth`                             | boolean | Set width to 100%                                                        |
-| `fullheight`                            | boolean | Set height to 100%                                                       |
+Supports children.
+
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
 #### Group
 
-Horizontal flex layout (row direction).
+Horizontal flex layout (row). ax controls horizontal alignment, ay controls vertical
 
-```json
-{
-  "type": "Group",
-  "props": {
-    "gap": 2,
-    "ax": "space-between",
-    "ay": "center"
-  },
-  "children": ["left-content", "right-content"]
-}
-```
+Use Group for horizontal layouts. Children flow left-to-right. ax controls horizontal alignment, ay vertical.
 
-Same props as Stack, but `ax` controls horizontal and `ay` controls vertical alignment.
+Supports children.
 
-#### Box
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
-Generic flex container. Use when you need explicit direction control.
+#### Layer
 
-```json
-{
-  "type": "Box",
-  "props": {
-    "direction": "column",
-    "gap": 4
-  }
-}
-```
+Positioned layer with offset support for overlays and positioned content
 
-Additional prop: `direction` - `row` or `column`
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `offset` | object |  |
+
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
 #### Separator
 
-Visual divider line.
+Visual divider line with horizontal or vertical orientation
 
-```json
-{
-  "type": "Separator",
-  "props": {
-    "orientation": "horizontal",
-    "shade": "accent"
-  }
-}
-```
+| Prop | Type | Description |
+| --- | --- | --- |
+| `orientation` | "horizontal" \| "vertical" |  (default: `"horizontal"`) |
+| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
 
-| Prop          | Type   | Description                                                                 |
-| ------------- | ------ | --------------------------------------------------------------------------- |
-| `orientation` | string | `horizontal` or `vertical`                                                  |
-| `shade`       | string | Color: `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
+Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
 ---
 
@@ -247,38 +237,24 @@ Visual divider line.
 
 #### Text
 
-All text content must use the Text component.
+Typography component with size scale, weight, color shades, and text decorations
 
-```json
-{
-  "type": "Text",
-  "props": {
-    "size": 2,
-    "weight": "bold",
-    "shade": "accent",
-    "children": "Your text content here"
-  }
-}
-```
+Supports children.
 
-| Prop            | Type    | Description                                                          |
-| --------------- | ------- | -------------------------------------------------------------------- |
-| `children`      | string  | **Required.** The text content                                       |
-| `size`          | number  | Font size: -1, 0, 1, 2, 3, 4, 5, 6, 7, 8 (larger = bigger)           |
-| `weight`        | string  | `thin`, `light`, `normal`, `bold`                                    |
-| `shade`         | string  | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
-| `tone`          | string  | Semantic color: `positive`, `critical`, `warning`, `info`            |
-| `underline`     | boolean | Add underline                                                        |
-| `strikethrough` | boolean | Add strikethrough                                                    |
-| `mono`          | boolean | Use monospace font                                                   |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 |  |
+| `weight` | "thin" \| "light" \| "normal" \| "bold" |  |
+| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `align` | "left" \| "center" \| "right" \| "justify" |  |
+| `underline` | boolean |  |
+| `strikethrough` | boolean |  |
+| `balance` | boolean |  |
+| `mono` | boolean |  |
 
-**Text Size Guide:**
-
-- `-1`, `0`: Small/caption text
-- `1`, `2`: Body text (default)
-- `3`, `4`: Subheadings
-- `5`, `6`: Headings
-- `7`, `8`: Large display text
+Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
 ---
 
@@ -286,173 +262,156 @@ All text content must use the Text component.
 
 #### Button
 
-Primary action button.
+Primary action button with multiple size, variant, and tone options
 
-```json
-{
-  "type": "Button",
-  "props": {
-    "children": "Submit",
-    "size": "medium",
-    "variant": "subtle",
-    "tone": "positive"
-  }
-}
-```
+Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.
 
-| Prop        | Type    | Description                               |
-| ----------- | ------- | ----------------------------------------- |
-| `children`  | string  | **Required.** Button label                |
-| `size`      | string  | `xsmall`, `small`, `medium`, `large`      |
-| `variant`   | string  | `subtle`, `inverted` (omit for default)   |
-| `tone`      | string  | `positive`, `critical`, `warning`, `info` |
-| `disabled`  | boolean | Disable the button                        |
-| `loading`   | boolean | Show loading spinner                      |
-| `fullwidth` | boolean | Full width button                         |
-| `ghost`     | boolean | Transparent background                    |
-| `pill`      | boolean | Fully rounded corners                     |
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | "xsmall" \| "small" \| "medium" \| "large" |  (default: `"medium"`) |
+| `variant` | "subtle" \| "inverted" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `disabled` | boolean |  |
+| `loading` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
+| `pill` | boolean |  |
+| `square` | boolean |  |
+| `grows` | boolean |  (default: `true`) |
+| `circle` | boolean |  |
+| `tooltip` | string |  |
 
 #### ToggleButton
 
-Button with pressed/unpressed state.
+Toggle button with pressed/unpressed states and optional dynamic icon/text
 
-```json
-{
-  "type": "ToggleButton",
-  "props": {
-    "children": "Toggle",
-    "pressed": false
-  }
-}
-```
+Supports children.
 
-Same props as Button, plus:
-
-- `pressed`: boolean - Current pressed state
-- `defaultPressed`: boolean - Initial state (uncontrolled)
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | "xsmall" \| "small" \| "medium" \| "large" |  (default: `"medium"`) |
+| `variant` | "subtle" \| "inverted" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `disabled` | boolean |  |
+| `loading` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
+| `pill` | boolean |  |
+| `square` | boolean |  |
+| `grows` | boolean |  |
+| `circle` | boolean |  |
+| `tooltip` | string |  |
+| `pressed` | boolean |  |
+| `defaultPressed` | boolean |  |
+| `icon` | object |  |
+| `text` | object |  |
 
 ---
 
 ### Form Components
 
+#### Form
+
+Form container with built-in validation support. Fields with required/pattern attributes validate on submit.
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `gap` | number |  (default: `4`) |
+| `fullwidth` | boolean |  |
+
 #### Input
 
-Text input field.
+Text input field with label and description support
 
-```json
-{
-  "type": "Input",
-  "props": {
-    "label": "Email",
-    "placeholder": "Enter your email...",
-    "type": "email",
-    "required": true
-  }
-}
-```
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `type` | string |  |
+| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
 
-| Prop          | Type    | Description                                             |
-| ------------- | ------- | ------------------------------------------------------- |
-| `label`       | string  | Field label                                             |
-| `description` | string  | Helper text below the input                             |
-| `placeholder` | string  | Placeholder text                                        |
-| `type`        | string  | Input type: `text`, `email`, `password`, `number`, etc. |
-| `size`        | string  | `small`, `medium`, `large`                              |
-| `disabled`    | boolean | Disable the input                                       |
-| `required`    | boolean | Mark as required                                        |
-| `fullwidth`   | boolean | Full width input                                        |
+#### Textarea
+
+Multi-line text input with label and description support
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `rows` | number |  (default: `3`) |
+| `resize` | "none" \| "vertical" \| "horizontal" \| "both" |  (default: `"vertical"`) |
+| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
 
 #### Checkbox
 
-Checkbox with label.
+Checkbox input with label, description, and indeterminate state support
 
-```json
-{
-  "type": "Checkbox",
-  "props": {
-    "label": "I agree to the terms",
-    "description": "You must agree to continue",
-    "required": true
-  }
-}
-```
-
-| Prop             | Type    | Description                  |
-| ---------------- | ------- | ---------------------------- |
-| `label`          | string  | Checkbox label               |
-| `description`    | string  | Helper text                  |
-| `checked`        | boolean | Controlled checked state     |
-| `defaultChecked` | boolean | Initial state (uncontrolled) |
-| `indeterminate`  | boolean | Indeterminate state          |
-| `disabled`       | boolean | Disable the checkbox         |
-| `reversed`       | boolean | Label before checkbox        |
-| `bordered`       | boolean | Add border around field      |
-
-#### Switch
-
-Toggle switch.
-
-```json
-{
-  "type": "Switch",
-  "props": {
-    "label": "Enable notifications",
-    "description": "Receive email updates"
-  }
-}
-```
-
-Same props as Checkbox.
+| Prop | Type | Description |
+| --- | --- | --- |
+| `checked` | boolean |  |
+| `defaultChecked` | boolean |  |
+| `indeterminate` | boolean |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `name` | string |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
 
 #### Select
 
-Dropdown select.
+Dropdown select with customizable options, label, and description
 
-```json
-{
-  "type": "Select",
-  "props": {
-    "label": "Country",
-    "placeholder": "Select a country",
-    "items": [
-      { "label": "United States", "value": "us" },
-      { "label": "Canada", "value": "ca" },
-      { "label": "Mexico", "value": "mx" }
-    ]
-  }
-}
-```
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `items` | object[] |  |
+| `label` | string |  |
+| `description` | string |  |
+| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
 
-| Prop          | Type    | Description                                          |
-| ------------- | ------- | ---------------------------------------------------- |
-| `label`       | string  | Field label                                          |
-| `description` | string  | Helper text                                          |
-| `placeholder` | string  | Placeholder when no selection                        |
-| `items`       | array   | Options: `{ label, value, description?, disabled? }` |
-| `size`        | string  | `small`, `medium`, `large`                           |
-| `disabled`    | boolean | Disable the select                                   |
-| `fullwidth`   | boolean | Full width select                                    |
+#### Switch
 
-#### Form
+Toggle switch with label and description support
 
-Container that provides error context to form fields.
-
-**Important:** The JSON tree generates a static form structure. For interactive validation with error handling, use the **JSX output tab** which provides a complete React component with form state and validation handlers ready to copy/paste.
-
-```json
-{
-  "type": "Form",
-  "props": {
-    "render": "Stack"
-  },
-  "children": ["email-input", "submit-button"]
-}
-```
-
-| Prop     | Type   | Description                                   |
-| -------- | ------ | --------------------------------------------- |
-| `errors` | object | Object mapping field names to error messages  |
-| `render` | node   | Layout wrapper component (use Stack or Group) |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `checked` | boolean |  |
+| `defaultChecked` | boolean |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `name` | string |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
 
 ---
 
@@ -460,40 +419,140 @@ Container that provides error context to form fields.
 
 #### Card
 
-Container card with optional title, description, icon, and footer. **Use props for metadata, children for custom body content only.**
+Container card with title, description, icon, action, and footer slots
 
-```json
-{
-  "type": "Card",
-  "props": {
-    "title": "Card Title",
-    "description": "Card description text",
-    "tone": "info"
-  }
-}
-```
+Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.
 
-| Prop          | Type    | Description                                   |
-| ------------- | ------- | --------------------------------------------- |
-| `title`       | string  | Card title (rendered automatically in header) |
-| `description` | string  | Card description (rendered below header)      |
-| `footer`      | string  | Footer content                                |
-| `tone`        | string  | `positive`, `critical`, `warning`, `info`     |
-| `inverted`    | boolean | Inverted color scheme                         |
-| `ghost`       | boolean | Minimal borders                               |
-| `transparent` | boolean | Transparent background                        |
+Supports children.
 
-**Card with custom body content:**
+**Slots (use as props):**
+- `title`: Card heading, rendered above the body
+- `description`: Subheading beneath the title
+- `action`: Action buttons, typically top-right
+- `footer`: Footer content at the bottom of the card
+- `icon`: Icon displayed in the card header
 
-```json
-{
-  "type": "Card",
-  "props": { "title": "Settings" },
-  "children": ["form-fields"]
-}
-```
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `footer` | string |  |
+| `icon` | string |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `inverted` | boolean |  |
+| `trimmed` | boolean |  |
+| `transparent` | boolean |  |
+| `ghost` | boolean |  |
 
-The `children` will render inside the card body, after the description.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+
+---
+
+### Overlays
+
+#### Drawer
+
+Bottom sheet with drag-to-close interaction
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `direction` | "top" \| "right" \| "bottom" \| "left" |  (default: `"bottom"`) |
+| `open` | boolean |  |
+| `defaultOpen` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Modal
+
+Dialog overlay with Card-like content structure
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `size` | "small" \| "medium" \| "large" \| "xlarge" |  (default: `"medium"`) |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Popover
+
+Floating card attached to a trigger element
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Sheet
+
+Slide-in panel overlay from any edge of the screen
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `side` | "top" \| "right" \| "bottom" \| "left" |  (default: `"right"`) |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Toaster
+
+Container for toast notifications
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `position` | "top" \| "bottom" |  (default: `"bottom"`) |
+
+#### Tooltip
+
+Informational popup shown on hover or focus
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `delay` | number |  |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+---
+
+### All Component Types
+
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Drawer, Modal, Popover, Sheet, Toaster, Tooltip
+
+<!-- END GENERATED COMPONENT REFERENCE -->
 
 ---
 
@@ -685,7 +744,6 @@ Before outputting a tree, verify:
 - [ ] All non-root elements have `parentKey`
 - [ ] All `children` arrays contain valid keys that exist in `elements`
 - [ ] Text content is in `props.children`, not as structural children
-- [ ] Component types match the registry: `Stack`, `Group`, `Box`, `Text`, `Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Select`, `Card`, `Separator`, `Layer`, `ToggleButton`, `Form`, `Modal`
 - [ ] **No `style` prop anywhere** - use layout props instead
 - [ ] **Precomposed props used** - Card uses `title`/`description`, Input uses `label`, etc.
 - [ ] **Minimal element count** - don't create unnecessary wrapper elements

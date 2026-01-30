@@ -1,6 +1,6 @@
 # Tooltip
 
-> A popup that displays information on hover or focus. Built on [Base UI Tooltip](https://base-ui.com/react/components/tooltip).
+> Informational popup shown on hover or focus
 
 ## Quick Reference
 
@@ -46,14 +46,16 @@ import { Tooltip } from "@uiid/overlays";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `trigger` | `ReactNode` | — | Element that triggers the tooltip |
-| `children` | `ReactNode` | — | Tooltip content |
-| `ProviderProps` | `TooltipProviderProps` | — | Props for TooltipProvider |
-| `RootProps` | `TooltipRootProps` | — | Props for TooltipRoot |
-| `TriggerProps` | `TooltipTriggerProps` | — | Props for trigger wrapper |
-| `PortalProps` | `TooltipPortalProps` | — | Props for portal |
-| `PositionerProps` | `TooltipPositionerProps` | `{ sideOffset: 8, collisionPadding: 16 }` | Positioning options |
-| `PopupProps` | `TooltipPopupProps` | — | Props for popup element |
+| `trigger` | `ReactNode` | — | — |
+| `delay` | `number` | — | — |
+| `onOpenChange` | `(...args: any[]) => any` | — | — |
+| `open` | `boolean` | — | — |
+| `PopupProps` | `any` | — | — |
+| `PortalProps` | `any` | — | — |
+| `PositionerProps` | `any` | — | — |
+| `ProviderProps` | `any` | — | — |
+| `RootProps` | `any` | — | — |
+| `TriggerProps` | `any` | — | — |
 
 ## Anatomy
 

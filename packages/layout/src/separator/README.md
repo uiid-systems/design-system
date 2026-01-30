@@ -1,6 +1,6 @@
 # Separator
 
-> A visual divider for separating content. Built on [Base UI Separator](https://base-ui.com/react/components/separator).
+> Visual divider line with horizontal or vertical orientation
 
 ## Quick Reference
 
@@ -19,11 +19,25 @@ import { Separator } from "@uiid/layout";
 
 ## Props
 
-| Prop          | Type                                                                             | Default        | Description            |
-| ------------- | -------------------------------------------------------------------------------- | -------------- | ---------------------- |
-| `orientation` | `"horizontal" \| "vertical"`                                                     | `"horizontal"` | Separator direction    |
-| `shade`       | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | —              | Color shade variant    |
-| `className`   | `string`                                                                         | —              | Additional CSS classes |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `gap` | `number` | — | — |
+| `m` | `number \| "auto"` | — | — |
+| `mb` | `number \| "auto"` | — | — |
+| `ml` | `number \| "auto"` | — | — |
+| `mr` | `number \| "auto"` | — | — |
+| `mt` | `number \| "auto"` | — | — |
+| `mx` | `number \| "auto"` | — | — |
+| `my` | `number \| "auto"` | — | — |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | — |
+| `p` | `number` | — | — |
+| `pb` | `number` | — | — |
+| `pl` | `number` | — | — |
+| `pr` | `number` | — | — |
+| `pt` | `number` | — | — |
+| `px` | `number` | — | — |
+| `py` | `number` | — | — |
+| `shade` | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | — | — |
 
 > Inherits all [Box](../box/README.md) props (spacing, sizing, render).
 

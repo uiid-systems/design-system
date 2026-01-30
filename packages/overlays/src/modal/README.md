@@ -1,6 +1,6 @@
 # Modal
 
-> A dialog overlay for focused interactions. Built on [Base UI Dialog](https://base-ui.com/react/components/dialog).
+> Dialog overlay with Card-like content structure
 
 ## Quick Reference
 
@@ -62,16 +62,20 @@ const [open, setOpen] = useState(false);
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `boolean` | — | Controlled open state (required) |
-| `onOpenChange` | `(open: boolean, reason) => void` | — | Called when open state changes (required) |
-| `trigger` | `ReactNode` | — | Element that opens the modal |
-| `children` | `ReactNode` | — | Modal content |
-| `size` | `"small" \| "medium" \| "large" \| "xlarge"` | — | Modal width |
-| `RootProps` | `ModalRootProps` | — | Props for ModalRoot |
-| `TriggerProps` | `ModalTriggerProps` | — | Props for trigger wrapper |
-| `PortalProps` | `ModalPortalProps` | — | Props for portal |
-| `BackdropProps` | `ModalBackdropProps` | — | Props for backdrop |
-| `PopupProps` | `ModalPopupProps` | — | Props for popup element |
+| `action` | `ReactNode` | — | — |
+| `BackdropProps` | `any` | — | — |
+| `description` | `ReactNode` | — | — |
+| `footer` | `ReactNode` | — | — |
+| `icon` | `ReactNode` | — | — |
+| `onOpenChange` | `(...args: any[]) => any` | — | — |
+| `open` | `boolean` | — | — |
+| `PopupProps` | `any` | — | — |
+| `PortalProps` | `any` | — | — |
+| `RootProps` | `any` | — | — |
+| `size` | `"small" \| "medium" \| "large" \| "xlarge"` | `"medium"` | — |
+| `title` | `ReactNode` | — | — |
+| `trigger` | `ReactNode` | — | — |
+| `TriggerProps` | `any` | — | — |
 
 ## Anatomy
 

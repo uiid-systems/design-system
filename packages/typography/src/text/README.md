@@ -1,6 +1,6 @@
 # Text
 
-> A polymorphic typography component for all text content with variant props for size, weight, shade, and tone.
+> Typography component with size scale, weight, color shades, and text decorations
 
 ## Quick Reference
 
@@ -25,33 +25,32 @@ import { Text } from "@uiid/typography";
 
 ## Props
 
-| Prop            | Type                                                                 | Default      | Description            |
-| --------------- | -------------------------------------------------------------------- | ------------ | ---------------------- |
-| `size`          | `-1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8`                | —            | Font size scale        |
-| `weight`        | `"thin" \| "light" \| "normal" \| "bold"`                           | —            | Font weight            |
-| `shade`         | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | — | Text color             |
-| `tone`          | `"positive" \| "critical" \| "warning" \| "info"`                   | —            | Semantic color         |
-| `family`        | `"sans" \| "serif" \| "mono"`                                       | —            | Font family            |
-| `underline`     | `boolean`                                                            | —            | Text decoration        |
-| `strikethrough` | `boolean`                                                            | —            | Strikethrough text     |
-| `balance`       | `boolean`                                                            | —            | CSS text-wrap: balance |
-| `mono`          | `boolean`                                                            | —            | Monospace font         |
-| `render`        | `ReactElement`                                                       | `<span />`   | Custom element to render as |
-| `className`     | `string`                                                             | —            | Additional CSS classes |
-| `p`             | `SpacingValue`                                                       | —            | Padding on all sides   |
-| `px`            | `SpacingValue`                                                       | —            | Horizontal padding     |
-| `py`            | `SpacingValue`                                                       | —            | Vertical padding       |
-| `pt`            | `SpacingValue`                                                       | —            | Padding top            |
-| `pr`            | `SpacingValue`                                                       | —            | Padding right          |
-| `pb`            | `SpacingValue`                                                       | —            | Padding bottom         |
-| `pl`            | `SpacingValue`                                                       | —            | Padding left           |
-| `m`             | `SpacingValue`                                                       | —            | Margin on all sides    |
-| `mx`            | `SpacingValue`                                                       | —            | Horizontal margin      |
-| `my`            | `SpacingValue`                                                       | —            | Vertical margin        |
-| `mt`            | `SpacingValue`                                                       | —            | Margin top             |
-| `mr`            | `SpacingValue`                                                       | —            | Margin right           |
-| `mb`            | `SpacingValue`                                                       | —            | Margin bottom          |
-| `ml`            | `SpacingValue`                                                       | —            | Margin left            |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `align` | `"left" \| "center" \| "right" \| "justify"` | — | — |
+| `balance` | `boolean` | — | — |
+| `gap` | `number` | — | — |
+| `m` | `number \| "auto"` | — | — |
+| `mb` | `number \| "auto"` | — | — |
+| `ml` | `number \| "auto"` | — | — |
+| `mono` | `boolean` | — | — |
+| `mr` | `number \| "auto"` | — | — |
+| `mt` | `number \| "auto"` | — | — |
+| `mx` | `number \| "auto"` | — | — |
+| `my` | `number \| "auto"` | — | — |
+| `p` | `number` | — | — |
+| `pb` | `number` | — | — |
+| `pl` | `number` | — | — |
+| `pr` | `number` | — | — |
+| `pt` | `number` | — | — |
+| `px` | `number` | — | — |
+| `py` | `number` | — | — |
+| `shade` | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | — | — |
+| `size` | `-1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8` | — | — |
+| `strikethrough` | `boolean` | — | — |
+| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
+| `underline` | `boolean` | — | — |
+| `weight` | `"thin" \| "light" \| "normal" \| "bold"` | — | — |
 
 ```tsx
 type SpacingValue =

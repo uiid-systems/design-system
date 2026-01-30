@@ -1,6 +1,6 @@
 # Stack
 
-> A vertical layout component for stacking children from top to bottom with consistent spacing.
+> Vertical flex layout (column). ax controls vertical alignment, ay controls horizontal
 
 ## Quick Reference
 
@@ -26,7 +26,37 @@ import { Stack } from "@uiid/layout";
 
 ## Props
 
-Stack swaps `ax` and `ay` to be intuitive in a vertical context.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ax` | `"start" \| "center" \| "end" \| "space-between" \| "stretch"` | — | — |
+| `ay` | `"start" \| "center" \| "end" \| "baseline" \| "stretch"` | — | — |
+| `b` | `number` | — | — |
+| `bb` | `number` | — | — |
+| `bl` | `number` | — | — |
+| `br` | `number` | — | — |
+| `bt` | `number` | — | — |
+| `bx` | `number` | — | — |
+| `by` | `number` | — | — |
+| `direction` | `"column" \| "row"` | — | — |
+| `evenly` | `boolean` | — | — |
+| `fullheight` | `boolean` | — | — |
+| `fullscreen` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `gap` | `number` | — | — |
+| `m` | `number \| "auto"` | — | — |
+| `mb` | `number \| "auto"` | — | — |
+| `ml` | `number \| "auto"` | — | — |
+| `mr` | `number \| "auto"` | — | — |
+| `mt` | `number \| "auto"` | — | — |
+| `mx` | `number \| "auto"` | — | — |
+| `my` | `number \| "auto"` | — | — |
+| `p` | `number` | — | — |
+| `pb` | `number` | — | — |
+| `pl` | `number` | — | — |
+| `pr` | `number` | — | — |
+| `pt` | `number` | — | — |
+| `px` | `number` | — | — |
+| `py` | `number` | — | — |
 
 | Prop         | Type                                                                                                                   | Default   | Description                      |
 | ------------ | ---------------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------- |

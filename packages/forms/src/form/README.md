@@ -1,6 +1,6 @@
 # Form
 
-> A form container with built-in error handling. Built on [Base UI Form](https://base-ui.com/react/components/form).
+> Form container with built-in validation support. Fields with required/pattern attributes validate on submit.
 
 ## Quick Reference
 
@@ -173,9 +173,8 @@ import { Stack, Group } from "@uiid/layout";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `errors` | `Record<string, string \| string[]>` | — | Field errors to display |
-| `render` | `ReactElement` | — | Custom render element for layout |
-| `children` | `ReactNode` | — | Form contents |
+| `fullwidth` | `boolean` | — | — |
+| `gap` | `number` | `4` | — |
 
 > All other props are forwarded to the Base UI Form component.
 

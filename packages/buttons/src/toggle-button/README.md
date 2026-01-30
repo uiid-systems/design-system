@@ -1,6 +1,6 @@
 # ToggleButton
 
-> A button that toggles between pressed and unpressed states. Built on [Base UI Toggle](https://base-ui.com/react/components/toggle).
+> Toggle button with pressed/unpressed states and optional dynamic icon/text
 
 ## Quick Reference
 
@@ -60,12 +60,22 @@ const [pressed, setPressed] = useState(false);
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `pressed` | `boolean` | — | Controlled pressed state |
-| `defaultPressed` | `boolean` | `false` | Initial pressed state (uncontrolled) |
-| `onPressedChange` | `(pressed: boolean) => void` | — | Called when pressed state changes |
-| `text` | `{ pressed: string; unpressed: string }` | — | Text content based on state |
-| `icon` | `{ pressed: ReactNode; unpressed: ReactNode }` | — | Icon content based on state |
-| `disabled` | `boolean` | `false` | Disable interactions |
+| `circle` | `boolean` | — | — |
+| `defaultPressed` | `boolean` | — | — |
+| `disabled` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `ghost` | `boolean` | — | — |
+| `grows` | `boolean` | — | — |
+| `icon` | `object` | — | — |
+| `loading` | `boolean` | — | — |
+| `pill` | `boolean` | — | — |
+| `pressed` | `boolean` | — | — |
+| `size` | `"xsmall" \| "small" \| "medium" \| "large"` | `"medium"` | — |
+| `square` | `boolean` | — | — |
+| `text` | `object` | — | — |
+| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
+| `tooltip` | `ReactNode` | — | — |
+| `variant` | `"subtle" \| "inverted"` | — | — |
 
 > Inherits all props from [Button](../button/README.md) including `variant`, `size`, `tone`, etc.
 

@@ -1,6 +1,6 @@
 # Select
 
-> A dropdown select for choosing from a list of options. Built on [Base UI Select](https://base-ui.com/react/components/select).
+> Dropdown select with customizable options, label, and description
 
 ## Quick Reference
 
@@ -112,18 +112,17 @@ const items = [
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `items` | `SelectItemProps[]` | — | Array of select options |
-| `defaultValue` | `string` | First item | Initial selected value |
-| `onValueChange` | `(value: string) => void` | — | Called when selection changes |
-| `placeholder` | `string` | — | Placeholder text when nothing selected |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Size of the trigger |
-| `label` | `ReactNode` | — | Label text |
-| `description` | `ReactNode` | — | Helper text below the select |
-| `error` | `ReactNode` | — | Error message |
-| `disabled` | `boolean` | `false` | Disables the select |
-| `RootProps` | `SelectRootProps` | — | Props for the root element |
-| `TriggerProps` | `SelectTriggerProps` | — | Props for the trigger button |
-| `PopupProps` | `SelectPopupProps` | — | Props for the popup |
+| `defaultValue` | `string` | — | — |
+| `description` | `string` | — | — |
+| `disabled` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `ghost` | `boolean` | — | — |
+| `items` | `object[]` | — | — |
+| `label` | `string` | — | — |
+| `placeholder` | `string` | — | — |
+| `required` | `boolean` | — | — |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
+| `value` | `string` | — | — |
 
 ### SelectItemProps
 

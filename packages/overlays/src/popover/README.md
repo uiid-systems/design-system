@@ -1,6 +1,6 @@
 # Popover
 
-> A popup triggered by clicking that displays rich content. Built on [Base UI Popover](https://base-ui.com/react/components/popover).
+> Floating card attached to a trigger element
 
 ## Quick Reference
 
@@ -55,16 +55,20 @@ const [open, setOpen] = useState(false);
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `trigger` | `ReactNode` | — | Element that opens the popover |
-| `children` | `ReactNode` | — | Popover content |
-| `open` | `boolean` | — | Controlled open state |
-| `onOpenChange` | `(open: boolean, reason) => void` | — | Called when open state changes |
-| `RootProps` | `PopoverRootProps` | — | Props for PopoverRoot |
-| `TriggerProps` | `PopoverTriggerProps` | — | Props for trigger wrapper |
-| `PortalProps` | `PopoverPortalProps` | — | Props for portal |
-| `BackdropProps` | `PopoverBackdropProps` | — | Props for backdrop |
-| `PositionerProps` | `PopoverPositionerProps` | `{ sideOffset: 4, collisionPadding: 16 }` | Positioning options |
-| `PopupProps` | `PopoverPopupProps` | — | Props for popup element |
+| `action` | `ReactNode` | — | — |
+| `BackdropProps` | `any` | — | — |
+| `description` | `ReactNode` | — | — |
+| `footer` | `ReactNode` | — | — |
+| `icon` | `ReactNode` | — | — |
+| `onOpenChange` | `(...args: any[]) => any` | — | — |
+| `open` | `boolean` | — | — |
+| `PopupProps` | `any` | — | — |
+| `PortalProps` | `any` | — | — |
+| `PositionerProps` | `any` | — | — |
+| `RootProps` | `any` | — | — |
+| `title` | `ReactNode` | — | — |
+| `trigger` | `ReactNode` | — | — |
+| `TriggerProps` | `any` | — | — |
 
 ## Anatomy
 
