@@ -7,10 +7,10 @@ import {
   LayerEntry,
   SeparatorEntry,
   StackEntry,
-} from "./schemas/layout";
+} from "./entries/layout";
 
 // Button components
-import { ButtonEntry, ToggleButtonEntry } from "./schemas/buttons";
+import { ButtonEntry, ToggleButtonEntry } from "./entries/buttons";
 
 // Form components
 import {
@@ -20,13 +20,13 @@ import {
   SelectEntry,
   SwitchEntry,
   TextareaEntry,
-} from "./schemas/forms";
+} from "./entries/forms";
 
 // Typography components
-import { TextEntry } from "./schemas/typography";
+import { TextEntry } from "./entries/typography";
 
 // Card components
-import { CardEntry } from "./schemas/cards";
+import { CardEntry } from "./entries/cards";
 
 // Overlay components
 import {
@@ -36,7 +36,7 @@ import {
   SheetEntry,
   ToasterEntry,
   TooltipEntry,
-} from "./schemas/overlays";
+} from "./entries/overlays";
 
 /**
  * Complete registry of all UIID components.
