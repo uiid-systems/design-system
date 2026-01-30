@@ -77,6 +77,74 @@ type SpacingValue =
 | ------- | ------------------ |
 | `group` | Root group element |
 
+## Common Patterns
+
+### Equal-width children
+
+Use `evenly` instead of applying `flex: 1` or `style={{ flex: 1 }}` to each child.
+
+```tsx
+// DON'T — inline styles on children
+<Group gap={2}>
+  <Button style={{ flex: 1 }}>Save</Button>
+  <Button style={{ flex: 1 }}>Cancel</Button>
+</Group>
+
+// DO — evenly prop on parent
+<Group evenly gap={2}>
+  <Button>Save</Button>
+  <Button>Cancel</Button>
+</Group>
+```
+
+### Full-width row
+
+Use `fullwidth` instead of `style={{ width: "100%" }}`.
+
+```tsx
+// DON'T
+<Group style={{ width: "100%" }} gap={2}>...</Group>
+
+// DO
+<Group fullwidth gap={2}>...</Group>
+```
+
+### Vertically centered row
+
+Use `ay="center"` instead of `style={{ alignItems: "center" }}`.
+
+```tsx
+// DON'T
+<Group style={{ alignItems: "center" }} gap={2}>
+  <Icon />
+  <Text>Label</Text>
+</Group>
+
+// DO
+<Group ay="center" gap={2}>
+  <Icon />
+  <Text>Label</Text>
+</Group>
+```
+
+### Groups inside a Stack
+
+When Groups are children of a `Stack ax="stretch"`, they automatically become full-width. This is preferable to setting `fullwidth` on each Group individually.
+
+```tsx
+// DON'T — redundant fullwidth on each Group
+<Stack gap={4}>
+  <Group fullwidth gap={2}>...</Group>
+  <Group fullwidth gap={2}>...</Group>
+</Stack>
+
+// DO — stretch from the parent
+<Stack ax="stretch" gap={4}>
+  <Group gap={2}>...</Group>
+  <Group gap={2}>...</Group>
+</Stack>
+```
+
 ## See Also
 
 - [Stack](../stack/README.md) - Vertical layout component

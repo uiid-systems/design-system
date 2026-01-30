@@ -79,6 +79,48 @@ type SpacingValue =
 | ------- | ------------------ |
 | `stack` | Root stack element |
 
+## Common Patterns
+
+### Full-width children with `ax="stretch"`
+
+Use `ax="stretch"` to make all children fill the available width. This is the standard pattern for form layouts, stacked inputs, and any vertical layout where children should be full-width — including Group children.
+
+```tsx
+// DON'T — per-child inline styles or props
+<Stack gap={4}>
+  <Input style={{ width: "100%" }} label="Name" />
+  <Group fullwidth gap={2}>
+    <Input label="City" />
+    <Input label="State" />
+  </Group>
+</Stack>
+
+// DO — stretch from the parent cascades to all children
+<Stack ax="stretch" gap={4}>
+  <Input label="Name" />
+  <Group gap={2}>
+    <Input label="City" />
+    <Input label="State" />
+  </Group>
+</Stack>
+```
+
+### Centered content
+
+Use `ax="center"` for horizontal centering and `ay="center"` for vertical centering within the stack.
+
+```tsx
+// DON'T
+<Stack style={{ alignItems: "center", justifyContent: "center", height: "100%" }}>
+  <Text>Centered</Text>
+</Stack>
+
+// DO
+<Stack ax="center" ay="center" fullheight>
+  <Text>Centered</Text>
+</Stack>
+```
+
 ## See Also
 
 - [Group](../group/README.md) - Horizontal layout component
