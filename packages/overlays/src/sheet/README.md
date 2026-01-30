@@ -1,6 +1,6 @@
 # Sheet
 
-> A slide-in panel from any edge of the screen. Built on [Base UI Dialog](https://base-ui.com/react/components/dialog).
+> Slide-in panel overlay from any edge of the screen
 
 ## Quick Reference
 
@@ -69,16 +69,20 @@ const [open, setOpen] = useState(false);
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Edge to slide from |
-| `trigger` | `ReactNode` | — | Element that opens the sheet |
-| `children` | `ReactNode` | — | Sheet content |
-| `open` | `boolean` | — | Controlled open state |
-| `onOpenChange` | `(open: boolean, reason) => void` | — | Called when open state changes |
-| `RootProps` | `SheetRootProps` | — | Props for SheetRoot |
-| `TriggerProps` | `SheetTriggerProps` | — | Props for trigger wrapper |
-| `PortalProps` | `SheetPortalProps` | — | Props for portal |
-| `BackdropProps` | `SheetBackdropProps` | — | Props for backdrop |
-| `PopupProps` | `SheetPopupProps` | — | Props for popup element |
+| `action` | `ReactNode` | — | — |
+| `BackdropProps` | `any` | — | — |
+| `description` | `ReactNode` | — | — |
+| `footer` | `ReactNode` | — | — |
+| `icon` | `ReactNode` | — | — |
+| `onOpenChange` | `(...args: any[]) => any` | — | — |
+| `open` | `boolean` | — | — |
+| `PopupProps` | `any` | — | — |
+| `PortalProps` | `any` | — | — |
+| `RootProps` | `any` | — | — |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | — |
+| `title` | `ReactNode` | — | — |
+| `trigger` | `ReactNode` | — | — |
+| `TriggerProps` | `any` | — | — |
 
 ## Anatomy
 

@@ -3,20 +3,23 @@
  *
  * Combines json-render catalog documentation with UIID-specific guidelines
  * to create an optimized prompt for generating valid UI trees.
+ *
+ * The component reference section is generated from @uiid/registry,
+ * while architectural guidelines are hand-maintained.
  */
 
 import { generateCatalogPrompt } from "@json-render/core";
 import type { UITree } from "@json-render/core";
 
+import { generateComponentReference } from "@uiid/registry";
+
 import { catalog } from "./catalog";
 
 /**
- * Full UIID guidelines for LLMs - directly from AGENTS.md
- * This comprehensive guide ensures accurate UI tree generation.
+ * Hand-written architectural guidelines for LLMs.
+ * These cover patterns and conventions that can't be derived from schemas.
  */
-const UIID_GUIDELINES = `
-# LLM Guidelines for UIID Component Tree Generation
-
+const ARCHITECTURAL_GUIDELINES = `
 ## Critical Concepts
 
 ### Precomposed Components (Preferred for LLMs)
@@ -59,18 +62,6 @@ UIID components are **precomposed** - they handle their own internal structure. 
   }
 }
 \`\`\`
-
-**This pattern applies to most UIID components:**
-
-| Component | Use props for...                         | Use children for... |
-| --------- | ---------------------------------------- | ------------------- |
-| Card      | title, description, icon, footer         | Custom body content |
-| Input     | label, description, placeholder          | N/A (no children)   |
-| Checkbox  | label, description                       | N/A (no children)   |
-| Select    | label, description, items                | N/A (no children)   |
-| Button    | N/A                                      | Button label text   |
-| Switch    | label, description                       | N/A (no children)   |
-| Textarea  | label, description, placeholder          | N/A (no children)   |
 
 ### No Inline Styles
 
@@ -154,154 +145,6 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 | props       | object   | Yes      | Component props (can be empty {})                      |
 | children    | string[] | No       | Array of child element keys (for container components) |
 | parentKey   | string   | No       | Key of parent element (null for root)                  |
-
----
-
-## Available Components
-
-### Layout Components
-
-#### Stack
-Vertical flex layout (column direction).
-
-| Prop      | Type    | Description                                                              |
-| --------- | ------- | ------------------------------------------------------------------------ |
-| gap       | number  | Space between children (0,1,2,3,4,6,8,10,12,16,20,24)                    |
-| p, px, py | number  | Padding (same scale as gap)                                              |
-| ax        | string  | Cross-axis alignment: start, center, end, stretch                        |
-| ay        | string  | Main-axis alignment: start, center, end, space-between, stretch          |
-| fullwidth | boolean | Set width to 100%                                                        |
-
-#### Group
-Horizontal flex layout (row direction). Same props as Stack, but axes are swapped.
-
-#### Separator
-Visual divider line.
-
-| Prop        | Type   | Description                                                  |
-| ----------- | ------ | ------------------------------------------------------------ |
-| orientation | string | horizontal or vertical                                       |
-| shade       | string | background, surface, accent, halftone, muted, foreground     |
-
----
-
-### Typography
-
-#### Text
-All text content must use the Text component.
-
-| Prop       | Type    | Description                                                |
-| ---------- | ------- | ---------------------------------------------------------- |
-| children   | string  | **Required.** The text content                             |
-| size       | number  | Font size: -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                   |
-| weight     | string  | thin, light, normal, bold                                  |
-| shade      | string  | background, surface, accent, halftone, muted, foreground   |
-| tone       | string  | positive, critical, warning, info                          |
-
-**Text Size Guide:**
-- -1, 0: Small/caption text
-- 1, 2: Body text (default)
-- 3, 4: Subheadings
-- 5, 6: Headings
-- 7, 8: Large display text
-
----
-
-### Buttons
-
-#### Button
-
-| Prop      | Type    | Description                               |
-| --------- | ------- | ----------------------------------------- |
-| children  | string  | **Required.** Button label                |
-| size      | string  | xsmall, small, medium, large              |
-| variant   | string  | subtle, inverted (omit for default)       |
-| tone      | string  | positive, critical, warning, info         |
-| disabled  | boolean | Disable the button                        |
-| fullwidth | boolean | Full width button                         |
-| ghost     | boolean | Transparent background                    |
-| pill      | boolean | Fully rounded corners                     |
-
----
-
-### Form Components
-
-#### Input
-
-| Prop        | Type    | Description                                   |
-| ----------- | ------- | --------------------------------------------- |
-| label       | string  | Field label                                   |
-| description | string  | Helper text below the input                   |
-| placeholder | string  | Placeholder text                              |
-| type        | string  | text, email, password, number, etc.           |
-| name        | string  | Form field name                               |
-| required    | boolean | Mark as required                              |
-| fullwidth   | boolean | Full width input                              |
-
-#### Textarea
-
-| Prop        | Type    | Description                                   |
-| ----------- | ------- | --------------------------------------------- |
-| label       | string  | Field label                                   |
-| description | string  | Helper text                                   |
-| placeholder | string  | Placeholder text                              |
-| rows        | number  | Number of visible rows                        |
-| name        | string  | Form field name                               |
-| required    | boolean | Mark as required                              |
-
-#### Checkbox
-
-| Prop        | Type    | Description                  |
-| ----------- | ------- | ---------------------------- |
-| label       | string  | Checkbox label               |
-| description | string  | Helper text                  |
-| name        | string  | Form field name              |
-| required    | boolean | Mark as required             |
-| bordered    | boolean | Add border around field      |
-
-#### Switch
-
-| Prop        | Type    | Description                  |
-| ----------- | ------- | ---------------------------- |
-| label       | string  | Switch label                 |
-| description | string  | Helper text                  |
-| name        | string  | Form field name              |
-
-#### Select
-
-| Prop        | Type    | Description                                          |
-| ----------- | ------- | ---------------------------------------------------- |
-| label       | string  | Field label                                          |
-| description | string  | Helper text                                          |
-| placeholder | string  | Placeholder when no selection                        |
-| items       | array   | Options: { label, value, description?, disabled? }   |
-| name        | string  | Form field name                                      |
-| fullwidth   | boolean | Full width select                                    |
-
-#### Form
-
-Container that provides error context to form fields. **Important:** The JSON tree generates a static form structure. Interactive validation requires React state and handlers - see the JSX output tab for copy-pasteable React code with validation boilerplate.
-
-| Prop   | Type   | Description                                      |
-| ------ | ------ | ------------------------------------------------ |
-| errors | object | Object mapping field names to error messages     |
-| render | node   | Layout wrapper (use Stack with ax: "stretch")    |
-
----
-
-### Cards
-
-#### Card
-
-| Prop        | Type    | Description                                   |
-| ----------- | ------- | --------------------------------------------- |
-| title       | string  | Card title (rendered automatically in header) |
-| description | string  | Card description (rendered below header)      |
-| footer      | string  | Footer content                                |
-| tone        | string  | positive, critical, warning, info             |
-| inverted    | boolean | Inverted color scheme                         |
-| ghost       | boolean | Minimal borders                               |
-| transparent | boolean | Transparent background                        |
 
 ---
 
@@ -427,7 +270,6 @@ Before outputting a tree, verify:
 - All non-root elements have parentKey
 - All children arrays contain valid keys that exist in elements
 - Text content is in props.children, not as structural children
-- Component types match the registry: Stack, Group, Box, Text, Button, Input, Checkbox, Switch, Select, Card, Separator, Textarea, ToggleButton, Form, Modal, Layer
 - No style prop anywhere - use layout props instead
 - Precomposed props used - Card uses title/description, Input uses label, etc.
 - Minimal element count - don't create unnecessary wrapper elements
@@ -443,12 +285,19 @@ export function buildSystemPrompt(currentTree?: UITree): string {
   // Get component documentation from json-render catalog
   const catalogPrompt = generateCatalogPrompt(catalog);
 
+  // Get component reference from registry (generated from schemas)
+  const componentReference = generateComponentReference();
+
   // Build the full prompt
   let prompt = `You are a UI generation assistant that creates JSON UI trees for the UIID component library.
 
 ${catalogPrompt}
 
-${UIID_GUIDELINES}
+# LLM Guidelines for UIID Component Tree Generation
+
+${ARCHITECTURAL_GUIDELINES}
+
+${componentReference}
 
 ## Response Format
 

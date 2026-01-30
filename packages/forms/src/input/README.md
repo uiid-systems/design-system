@@ -1,6 +1,6 @@
 # Input
 
-> Text input field with optional label and description. Built on [Base UI Input](https://base-ui.com/react/components/input).
+> Text input field with label and description support
 
 ## Quick Reference
 
@@ -73,17 +73,17 @@ import { Input } from "@uiid/forms";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `ReactNode` | — | Label text displayed above input |
-| `description` | `ReactNode` | — | Helper text displayed below input |
-| `required` | `boolean` | `false` | Shows required indicator on label |
-| `name` | `string` | — | Input name for form submission |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Controls input height and font size |
-| `fullwidth` | `boolean` | `false` | Input takes full container width |
-| `ghost` | `boolean` | `false` | Removes border until focused |
-| `disabled` | `boolean` | `false` | Disables the input |
-| `placeholder` | `string` | — | Placeholder text |
-| `FieldProps` | `FieldProps` | — | Props forwarded to Field wrapper |
-| `className` | `string` | — | Additional CSS classes |
+| `defaultValue` | `string` | — | — |
+| `description` | `string` | — | — |
+| `disabled` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `ghost` | `boolean` | — | — |
+| `label` | `string` | — | — |
+| `placeholder` | `string` | — | — |
+| `required` | `boolean` | — | — |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
+| `type` | `string` | — | — |
+| `value` | `string` | — | — |
 
 > All other props are forwarded to the Base UI Input component.
 

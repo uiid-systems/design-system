@@ -1,6 +1,6 @@
-# Toast
+# Toaster
 
-> A notification system for brief messages. Built on [Base UI Toast](https://base-ui.com/react/components/toast).
+> Container for toast notifications
 
 ## Quick Reference
 
@@ -85,7 +85,7 @@ toastManager.add({ description: "Second notification" });
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `"top" \| "bottom"` | `"bottom"` | Vertical position on screen |
+| `position` | `"top" \| "bottom"` | `"bottom"` | — |
 
 ## useToastManager API
 

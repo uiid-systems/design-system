@@ -1,6 +1,6 @@
 # Layer
 
-> A layout component for stacking children on top of each other, with optional offset for visual effects like avatar stacks.
+> Positioned layer with offset support for overlays and positioned content
 
 ## Quick Reference
 
@@ -24,13 +24,38 @@ import { Layer } from "@uiid/layout";
 
 ## Props
 
-| Prop         | Type                                                                                                    | Default   | Description                      |
-| ------------ | ------------------------------------------------------------------------------------------------------- | --------- | -------------------------------- |
-| `offset`     | `{ x?: number; y?: number }`                                                                            | —         | Pixel offset per child           |
-| `ax`         | `"space-around" \| "baseline" \| "space-between" \| "center" \| "end" \| "evenly" \| "normal" \| "start" \| "stretch"` | —         | Horizontal alignment             |
-| `ay`         | `"baseline" \| "center" \| "end" \| "start" \| "stretch"`                                               | —         | Vertical alignment               |
-| `className`  | `string`                                                                                                | —         | Additional CSS classes           |
-| `style`      | `CSSProperties`                                                                                         | —         | Inline styles                    |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ax` | `"start" \| "center" \| "end" \| "space-between" \| "stretch"` | — | — |
+| `ay` | `"start" \| "center" \| "end" \| "baseline" \| "stretch"` | — | — |
+| `b` | `number` | — | — |
+| `bb` | `number` | — | — |
+| `bl` | `number` | — | — |
+| `br` | `number` | — | — |
+| `bt` | `number` | — | — |
+| `bx` | `number` | — | — |
+| `by` | `number` | — | — |
+| `direction` | `"column" \| "row"` | — | — |
+| `evenly` | `boolean` | — | — |
+| `fullheight` | `boolean` | — | — |
+| `fullscreen` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `gap` | `number` | — | — |
+| `m` | `number \| "auto"` | — | — |
+| `mb` | `number \| "auto"` | — | — |
+| `ml` | `number \| "auto"` | — | — |
+| `mr` | `number \| "auto"` | — | — |
+| `mt` | `number \| "auto"` | — | — |
+| `mx` | `number \| "auto"` | — | — |
+| `my` | `number \| "auto"` | — | — |
+| `offset` | `object` | — | — |
+| `p` | `number` | — | — |
+| `pb` | `number` | — | — |
+| `pl` | `number` | — | — |
+| `pr` | `number` | — | — |
+| `pt` | `number` | — | — |
+| `px` | `number` | — | — |
+| `py` | `number` | — | — |
 
 > Inherits all [Box](../box/README.md) props (spacing, sizing, render).
 

@@ -1,6 +1,6 @@
 # Button
 
-> A clickable button component with multiple variants, sizes, and states. Built on [Base UI Button](https://base-ui.com/react/components/button).
+> Primary action button with multiple size, variant, and tone options
 
 ## Quick Reference
 
@@ -74,20 +74,20 @@ import { Button } from "@uiid/buttons";
 
 ## Props
 
-| Prop        | Type                                              | Default    | Description                             |
-| ----------- | ------------------------------------------------- | ---------- | --------------------------------------- |
-| `variant`   | `"subtle" \| "inverted"`                          | —          | Visual variant                          |
-| `size`      | `"small" \| "medium" \| "large"`                  | `"medium"` | Button size                             |
-| `tone`      | `"positive" \| "critical" \| "warning" \| "info"` | —          | Semantic color                          |
-| `ghost`     | `boolean`                                         | `false`    | Transparent background                  |
-| `pill`      | `boolean`                                         | `false`    | Fully rounded corners                   |
-| `square`    | `boolean`                                         | `false`    | Equal width and height                  |
-| `circle`    | `boolean`                                         | `false`    | Circular shape (combines pill + square) |
-| `grows`     | `boolean`                                         | `true`     | Allow button to grow                    |
-| `loading`   | `boolean`                                         | `false`    | Show loading spinner                    |
-| `tooltip`   | `ReactNode`                                       | —          | Tooltip content on hover                |
-| `disabled`  | `boolean`                                         | `false`    | Disable interactions                    |
-| `className` | `string`                                          | —          | Additional CSS classes                  |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `circle` | `boolean` | — | — |
+| `disabled` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `ghost` | `boolean` | — | — |
+| `grows` | `boolean` | `true` | — |
+| `loading` | `boolean` | — | — |
+| `pill` | `boolean` | — | — |
+| `size` | `"xsmall" \| "small" \| "medium" \| "large"` | `"medium"` | — |
+| `square` | `boolean` | — | — |
+| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
+| `tooltip` | `ReactNode` | — | — |
+| `variant` | `"subtle" \| "inverted"` | — | — |
 
 > Additional props are forwarded to the underlying Base UI Button.
 

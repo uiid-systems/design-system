@@ -1,6 +1,6 @@
 # Textarea
 
-> Multi-line text input with optional label and description. Built on native textarea with [Base UI Field](https://base-ui.com/react/components/field) integration.
+> Multi-line text input with label and description support
 
 ## Quick Reference
 
@@ -92,19 +92,18 @@ import { Textarea } from "@uiid/forms";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `ReactNode` | — | Label text displayed above textarea |
-| `description` | `ReactNode` | — | Helper text displayed below textarea |
-| `required` | `boolean` | `false` | Shows required indicator on label |
-| `name` | `string` | — | Textarea name for form submission |
-| `rows` | `number` | `3` | Number of visible text lines |
-| `resize` | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | Controls resize behavior |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | Controls textarea padding and font size |
-| `fullwidth` | `boolean` | `false` | Textarea takes full container width |
-| `ghost` | `boolean` | `false` | Removes border until focused |
-| `disabled` | `boolean` | `false` | Disables the textarea |
-| `placeholder` | `string` | — | Placeholder text |
-| `FieldProps` | `FieldProps` | — | Props forwarded to Field wrapper |
-| `className` | `string` | — | Additional CSS classes |
+| `defaultValue` | `string` | — | — |
+| `description` | `string` | — | — |
+| `disabled` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `ghost` | `boolean` | — | — |
+| `label` | `string` | — | — |
+| `placeholder` | `string` | — | — |
+| `required` | `boolean` | — | — |
+| `resize` | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | — |
+| `rows` | `number` | `3` | — |
+| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
+| `value` | `string` | — | — |
 
 > All other props are forwarded to the native textarea element.
 

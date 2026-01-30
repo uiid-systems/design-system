@@ -1,6 +1,6 @@
 # Group
 
-> A horizontal layout component for arranging children side by side with consistent spacing.
+> Horizontal flex layout (row). ax controls horizontal alignment, ay controls vertical
 
 ## Quick Reference
 
@@ -26,29 +26,37 @@ import { Group } from "@uiid/layout";
 
 ## Props
 
-| Prop        | Type                                                                                                                   | Default   | Description                     |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------- |
-| `ax`        | `"space-around" \| "baseline" \| "space-between" \| "center" \| "end" \| "evenly" \| "normal" \| "start" \| "stretch"` | —         | Horizontal distribution         |
-| `ay`        | `"baseline" \| "center" \| "end" \| "start" \| "stretch"`                                                              | —         | Vertical alignment              |
-| `gap`       | `SpacingValue`                                                                                                         | —         | Space between children          |
-| `p`         | `SpacingValue`                                                                                                         | —         | Padding on all sides            |
-| `px`        | `SpacingValue`                                                                                                         | —         | Horizontal padding              |
-| `py`        | `SpacingValue`                                                                                                         | —         | Vertical padding                |
-| `pt`        | `SpacingValue`                                                                                                         | —         | Padding top                     |
-| `pr`        | `SpacingValue`                                                                                                         | —         | Padding right                   |
-| `pb`        | `SpacingValue`                                                                                                         | —         | Padding bottom                  |
-| `pl`        | `SpacingValue`                                                                                                         | —         | Padding left                    |
-| `m`         | `SpacingValue`                                                                                                         | —         | Margin on all sides             |
-| `mx`        | `SpacingValue`                                                                                                         | —         | Horizontal margin               |
-| `my`        | `SpacingValue`                                                                                                         | —         | Vertical margin                 |
-| `mt`        | `SpacingValue`                                                                                                         | —         | Margin top                      |
-| `mr`        | `SpacingValue`                                                                                                         | —         | Margin right                    |
-| `mb`        | `SpacingValue`                                                                                                         | —         | Margin bottom                   |
-| `ml`        | `SpacingValue`                                                                                                         | —         | Margin left                     |
-| `fullwidth` | `boolean`                                                                                                              | `false`   | Stretch to fill container width |
-| `evenly`    | `boolean`                                                                                                              | `false`   | Distribute children evenly      |
-| `render`    | `ReactElement`                                                                                                         | `<div />` | Custom element to render as     |
-| `className` | `string`                                                                                                               | —         | Additional CSS classes          |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ax` | `"start" \| "center" \| "end" \| "space-between" \| "stretch"` | — | — |
+| `ay` | `"start" \| "center" \| "end" \| "baseline" \| "stretch"` | — | — |
+| `b` | `number` | — | — |
+| `bb` | `number` | — | — |
+| `bl` | `number` | — | — |
+| `br` | `number` | — | — |
+| `bt` | `number` | — | — |
+| `bx` | `number` | — | — |
+| `by` | `number` | — | — |
+| `direction` | `"column" \| "row"` | — | — |
+| `evenly` | `boolean` | — | — |
+| `fullheight` | `boolean` | — | — |
+| `fullscreen` | `boolean` | — | — |
+| `fullwidth` | `boolean` | — | — |
+| `gap` | `number` | — | — |
+| `m` | `number \| "auto"` | — | — |
+| `mb` | `number \| "auto"` | — | — |
+| `ml` | `number \| "auto"` | — | — |
+| `mr` | `number \| "auto"` | — | — |
+| `mt` | `number \| "auto"` | — | — |
+| `mx` | `number \| "auto"` | — | — |
+| `my` | `number \| "auto"` | — | — |
+| `p` | `number` | — | — |
+| `pb` | `number` | — | — |
+| `pl` | `number` | — | — |
+| `pr` | `number` | — | — |
+| `pt` | `number` | — | — |
+| `px` | `number` | — | — |
+| `py` | `number` | — | — |
 
 ```tsx
 type SpacingValue =

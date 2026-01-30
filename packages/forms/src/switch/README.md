@@ -1,6 +1,6 @@
 # Switch
 
-> A toggle switch for on/off states. Built on [Base UI Switch](https://base-ui.com/react/components/switch).
+> Toggle switch with label and description support
 
 ## Quick Reference
 
@@ -60,15 +60,15 @@ const [checked, setChecked] = useState(false);
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | — | Label text displayed next to the switch |
-| `labelPosition` | `"before" \| "after"` | `"after"` | Position of the label relative to switch |
-| `checked` | `boolean` | — | Controlled checked state |
-| `defaultChecked` | `boolean` | — | Initial checked state (uncontrolled) |
-| `onCheckedChange` | `(checked: boolean) => void` | — | Called when state changes |
-| `name` | `string` | — | Form field name and label `htmlFor` |
-| `disabled` | `boolean` | `false` | Disables the switch |
-| `RootProps` | `SwitchRootProps` | — | Props for the root element |
-| `ThumbProps` | `SwitchThumbProps` | — | Props for the thumb element |
+| `bordered` | `boolean` | — | — |
+| `checked` | `boolean` | — | — |
+| `defaultChecked` | `boolean` | — | — |
+| `description` | `string` | — | — |
+| `disabled` | `boolean` | — | — |
+| `label` | `string` | — | — |
+| `name` | `string` | — | — |
+| `required` | `boolean` | — | — |
+| `reversed` | `boolean` | — | — |
 
 > All other props are forwarded to the Base UI Switch.Root component.
 
