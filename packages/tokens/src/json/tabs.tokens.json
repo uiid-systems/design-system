@@ -8,6 +8,9 @@
     },
     "tab": {
       "height": { "$value": "2.5rem", "$type": "dimension" }
+    },
+    "panel": {
+      "translateY": { "$value": "2%", "$type": "dimension" }
     }
   }
 }

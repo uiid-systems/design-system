@@ -79,7 +79,7 @@
     max-height: 0;
     user-select: none;
     opacity: 0;
-    transform: translate3d(0, 5%, 0);
+    transform: translate3d(0, var(--tabs-panel-translateY), 0);
     transition: max-height var(--timing) ease-in-out;
     transition-delay: 0s;
   }
