@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { formPreviews } from "./previews";
 
 /**
  * Form component props schema.
@@ -26,4 +27,5 @@ export const FormEntry: ComponentEntry<typeof FormPropsSchema> = {
   defaults: {
     gap: 4,
   },
+  previews: formPreviews,
 };

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { switchPreviews } from "./previews";
 
 /**
  * Switch component props schema.
@@ -36,4 +37,5 @@ export const SwitchEntry: ComponentEntry<typeof SwitchPropsSchema> = {
   description: "Toggle switch with label and description support",
   category: "forms",
   defaults: {},
+  previews: switchPreviews,
 };

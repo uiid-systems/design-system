@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type { PreviewConfig, PreviewElement } from "@uiid/registry";
 
 import { Button, ToggleButton } from "@uiid/buttons";
@@ -12,7 +12,10 @@ import { Text } from "@uiid/typography";
 /**
  * Maps component type strings to React components for tree rendering.
  */
-const componentMap: Record<string, React.ComponentType<Record<string, unknown>>> = {
+const componentMap: Record<
+  string,
+  React.ComponentType<Record<string, unknown>>
+> = {
   Box: Box as React.ComponentType<Record<string, unknown>>,
   Stack: Stack as React.ComponentType<Record<string, unknown>>,
   Group: Group as React.ComponentType<Record<string, unknown>>,
@@ -35,7 +38,7 @@ const componentMap: Record<string, React.ComponentType<Record<string, unknown>>>
  */
 function renderElement(
   element: PreviewElement,
-  elements: Record<string, PreviewElement>
+  elements: Record<string, PreviewElement>,
 ): ReactNode {
   const Component = componentMap[element.type];
   if (!Component) {
@@ -60,7 +63,7 @@ function renderElement(
       } else {
         // Regular child
         regularChildren.push(
-          <span key={childKey}>{renderElement(child, elements)}</span>
+          <span key={childKey}>{renderElement(child, elements)}</span>,
         );
       }
     }
@@ -103,14 +106,21 @@ type TreePreviewListProps = {
  */
 export function TreePreviewList({ previews }: TreePreviewListProps) {
   return (
-    <Stack gap={6} fullwidth>
+    <Stack
+      ax="center"
+      ay="center"
+      gap={3}
+      fullheight
+      fullwidth
+      style={{ minHeight: "16rem" }}
+    >
       {previews.map((preview) => (
-        <Stack key={preview.label} gap={3} fullwidth>
-          <Text size={1} shade="muted" weight="bold">
+        <Fragment key={preview.label}>
+          {/* <Text size={1} shade="muted" weight="bold">
             {preview.label}
-          </Text>
+          </Text> */}
           <TreePreview preview={preview} />
-        </Stack>
+        </Fragment>
       ))}
     </Stack>
   );

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { FormSize } from "../../shared";
 import type { ComponentEntry } from "../../types";
+import { textareaPreviews } from "./previews";
 
 /**
  * Textarea resize options.
@@ -52,4 +53,5 @@ export const TextareaEntry: ComponentEntry<typeof TextareaPropsSchema> = {
     rows: 3,
     resize: "vertical",
   },
+  previews: textareaPreviews,
 };

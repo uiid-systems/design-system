@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { FormSize } from "../../shared";
 import type { ComponentEntry } from "../../types";
+import { inputPreviews } from "./previews";
 
 /**
  * Input component props schema.
@@ -43,4 +44,5 @@ export const InputEntry: ComponentEntry<typeof InputPropsSchema> = {
   defaults: {
     size: "medium",
   },
+  previews: inputPreviews,
 };
