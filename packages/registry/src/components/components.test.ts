@@ -1,25 +1,14 @@
 import { describe, it, expect } from "vitest";
 import type { z } from "zod";
 import { registry, componentNames } from "../manifest";
-
-const VALID_CATEGORIES = [
-  "layout",
-  "forms",
-  "buttons",
-  "typography",
-  "cards",
-  "feedback",
-  "navigation",
-  "data-display",
-  "overlays",
-];
+import { categoryKeys } from "../categories";
 
 describe("component entry integrity", () => {
   it("every component has a valid category", () => {
     for (const [name, entry] of Object.entries(registry)) {
       if (entry.category) {
         expect(
-          VALID_CATEGORIES,
+          categoryKeys,
           `${name} has invalid category "${entry.category}"`
         ).toContain(entry.category);
       }

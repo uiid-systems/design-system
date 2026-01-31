@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { generateComponentReference } from "./generate-reference";
+import { categories } from "../categories";
 import { registry } from "../manifest";
 
 describe("generateComponentReference", () => {
@@ -11,16 +12,8 @@ describe("generateComponentReference", () => {
   });
 
   it("includes all component category sections", () => {
-    const categories = [
-      "Layout Components",
-      "Typography",
-      "Buttons",
-      "Form Components",
-      "Cards",
-      "Overlays",
-    ];
-    for (const category of categories) {
-      expect(output, `missing category: ${category}`).toContain(category);
+    for (const { label } of categories) {
+      expect(output, `missing category: ${label}`).toContain(label);
     }
   });
 

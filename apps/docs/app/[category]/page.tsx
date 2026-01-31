@@ -5,8 +5,12 @@ import { Card } from "@uiid/cards";
 import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
-import { fromSlug, toSlug, urls } from "@/constants/urls";
-import { CATEGORY_CONFIG, getCategories } from "@/lib/generate-nav";
+import { toSlug, urls } from "@/constants/urls";
+import {
+  getCategories,
+  getCategoryIcon,
+  getCategoryLabel,
+} from "@/lib/generate-nav";
 
 export function generateStaticParams() {
   return getCategories().map((category) => ({
@@ -26,8 +30,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const config = CATEGORY_CONFIG[category];
-  const Icon = config?.icon;
+  const Icon = getCategoryIcon(category);
+  const label = getCategoryLabel(category);
   const components = Object.values(registry)
     .filter((entry) => entry.category === category)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -39,7 +43,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <Group gap={3} ay="center">
           {Icon && <Icon size={32} />}
           <Text render={<h1 />} size={6} weight="bold">
-            {config?.label || fromSlug(category)}
+            {label}
           </Text>
         </Group>
         <Text shade="muted" size={1}>
@@ -55,10 +59,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             href={urls.component(category, toSlug(component.name))}
             style={{ textDecoration: "none", flex: "1 1 280px", maxWidth: 360 }}
           >
-            <Card
-              title={component.name}
-              description={component.description}
-            />
+            <Card title={component.name} description={component.description} />
           </a>
         ))}
       </Group>
