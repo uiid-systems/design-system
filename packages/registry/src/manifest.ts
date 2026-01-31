@@ -1,42 +1,37 @@
 import type { Registry } from "./types";
 
 // Layout components
-import {
-  BoxEntry,
-  GroupEntry,
-  LayerEntry,
-  SeparatorEntry,
-  StackEntry,
-} from "./entries/layout";
+import { BoxEntry } from "./components/box";
+import { GroupEntry } from "./components/group";
+import { LayerEntry } from "./components/layer";
+import { SeparatorEntry } from "./components/separator";
+import { StackEntry } from "./components/stack";
 
 // Button components
-import { ButtonEntry, ToggleButtonEntry } from "./entries/buttons";
+import { ButtonEntry } from "./components/button";
+import { ToggleButtonEntry } from "./components/toggle-button";
 
 // Form components
-import {
-  CheckboxEntry,
-  FormEntry,
-  InputEntry,
-  SelectEntry,
-  SwitchEntry,
-  TextareaEntry,
-} from "./entries/forms";
+import { CheckboxEntry } from "./components/checkbox";
+import { FormEntry } from "./components/form";
+import { InputEntry } from "./components/input";
+import { SelectEntry } from "./components/select";
+import { SwitchEntry } from "./components/switch";
+import { TextareaEntry } from "./components/textarea";
 
 // Typography components
-import { TextEntry } from "./entries/typography";
+import { TextEntry } from "./components/text";
 
 // Card components
-import { CardEntry } from "./entries/cards";
+import { CardEntry } from "./components/card";
 
 // Overlay components
-import {
-  DrawerEntry,
-  ModalEntry,
-  PopoverEntry,
-  SheetEntry,
-  ToasterEntry,
-  TooltipEntry,
-} from "./entries/overlays";
+import { DrawerEntry } from "./components/drawer";
+import { ModalEntry } from "./components/modal";
+import { PopoverEntry } from "./components/popover";
+import { SheetEntry } from "./components/sheet";
+import { ToasterEntry } from "./components/toaster";
+import { TooltipEntry } from "./components/tooltip";
 
 /**
  * Complete registry of all UIID components.

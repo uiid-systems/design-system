@@ -1,8 +1,6 @@
-import type { ComponentEntry, PreviewConfig } from "../types";
+import type { PreviewConfig } from "../../types";
 
-import { CardPropsSchema } from "../schemas/cards";
-
-const cardPreviews: PreviewConfig[] = [
+export const cardPreviews: PreviewConfig[] = [
   {
     label: "Default",
     tree: {
@@ -86,24 +84,3 @@ const cardPreviews: PreviewConfig[] = [
     },
   },
 ];
-
-export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
-  name: "Card",
-  package: "@uiid/cards",
-  hasChildren: true,
-  propsSchema: CardPropsSchema,
-  description:
-    "Container card with title, description, icon, action, and footer slots",
-  category: "cards",
-  defaults: {},
-  previews: cardPreviews,
-  slots: {
-    title: "Card heading, rendered above the body",
-    description: "Subheading beneath the title",
-    action: "Action buttons, typically top-right",
-    footer: "Footer content at the bottom of the card",
-    icon: "Icon displayed in the card header",
-  },
-  usage:
-    "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
-};

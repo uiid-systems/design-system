@@ -1,8 +1,6 @@
-import type { ComponentEntry, PreviewConfig } from "../types";
+import type { PreviewConfig } from "../../types";
 
-import { ButtonPropsSchema, ToggleButtonPropsSchema } from "../schemas/buttons";
-
-const buttonPreviews: PreviewConfig[] = [
+export const buttonPreviews: PreviewConfig[] = [
   {
     label: "Sizes",
     tree: {
@@ -43,30 +41,3 @@ const buttonPreviews: PreviewConfig[] = [
     },
   },
 ];
-
-export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
-  name: "Button",
-  package: "@uiid/buttons",
-  hasChildren: true,
-  propsSchema: ButtonPropsSchema,
-  description: "Primary action button with multiple size, variant, and tone options",
-  category: "buttons",
-  defaults: {
-    size: "medium",
-    grows: true,
-  },
-  previews: buttonPreviews,
-  usage: "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.",
-};
-
-export const ToggleButtonEntry: ComponentEntry<typeof ToggleButtonPropsSchema> = {
-  name: "ToggleButton",
-  package: "@uiid/buttons",
-  hasChildren: true,
-  propsSchema: ToggleButtonPropsSchema,
-  description: "Toggle button with pressed/unpressed states and optional dynamic icon/text",
-  category: "buttons",
-  defaults: {
-    size: "medium",
-  },
-};

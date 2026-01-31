@@ -1,7 +1,9 @@
 import { z } from "zod";
 
-import { BoxPropsSchema } from "./layout";
-import { Tone } from "./shared";
+import { Tone } from "../../shared";
+import type { ComponentEntry } from "../../types";
+import { BoxPropsSchema } from "../box";
+import { cardPreviews } from "./previews";
 
 /**
  * Card component props schema.
@@ -33,3 +35,24 @@ export const CardPropsSchema = BoxPropsSchema.extend({
 });
 
 export type CardProps = z.infer<typeof CardPropsSchema>;
+
+export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
+  name: "Card",
+  package: "@uiid/cards",
+  hasChildren: true,
+  propsSchema: CardPropsSchema,
+  description:
+    "Container card with title, description, icon, action, and footer slots",
+  category: "cards",
+  defaults: {},
+  previews: cardPreviews,
+  slots: {
+    title: "Card heading, rendered above the body",
+    description: "Subheading beneath the title",
+    action: "Action buttons, typically top-right",
+    footer: "Footer content at the bottom of the card",
+    icon: "Icon displayed in the card header",
+  },
+  usage:
+    "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
+};
