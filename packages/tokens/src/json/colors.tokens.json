@@ -1,7 +1,7 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Color Tokens",
-  "colors": {
+  "color": {
     "white": { "$value": "white", "$type": "color" },
     "black": { "$value": "black", "$type": "color" },
     "red": { "$value": "oklch(0.63 0.24 27)", "$type": "color" },
@@ -62,7 +62,7 @@
       "$type": "color"
     },
     "background": {
-      "$value": "light-dark({colors.white}, {colors.black})",
+      "$value": "light-dark({color.white}, {color.black})",
       "$type": "color"
     },
     "surface": { "$value": "{shade.4}", "$type": "color" },
@@ -70,12 +70,12 @@
     "halftone": { "$value": "{shade.7}", "$type": "color" },
     "muted": { "$value": "{shade.9}", "$type": "color" },
     "foreground": {
-      "$value": "light-dark({colors.black}, {colors.white})",
+      "$value": "light-dark({color.black}, {color.white})",
       "$type": "color"
     }
   },
   "tones": {
-    "positive": { "$value": "{colors.green}", "$type": "color" },
+    "positive": { "$value": "{color.green}", "$type": "color" },
     "positive-surface": {
       "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 75%)",
       "$type": "color"
@@ -88,7 +88,7 @@
       "$value": "color-mix(in oklch, {tones.positive}, {shade.foreground} 60%)",
       "$type": "color"
     },
-    "warning": { "$value": "{colors.yellow}", "$type": "color" },
+    "warning": { "$value": "{color.yellow}", "$type": "color" },
     "warning-surface": {
       "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 75%)",
       "$type": "color"
@@ -101,7 +101,7 @@
       "$value": "color-mix(in oklch, {tones.warning}, {shade.foreground} 60%)",
       "$type": "color"
     },
-    "critical": { "$value": "{colors.red}", "$type": "color" },
+    "critical": { "$value": "{color.red}", "$type": "color" },
     "critical-surface": {
       "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 75%)",
       "$type": "color"
@@ -114,7 +114,7 @@
       "$value": "color-mix(in oklch, {tones.critical}, {shade.foreground} 60%)",
       "$type": "color"
     },
-    "info": { "$value": "{colors.blue}", "$type": "color" },
+    "info": { "$value": "{color.blue}", "$type": "color" },
     "info-surface": {
       "$value": "color-mix(in oklch, {tones.info}, {shade.background} 75%)",
       "$type": "color"
