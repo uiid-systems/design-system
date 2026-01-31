@@ -2,6 +2,8 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Color Tokens",
   "colors": {
+    "white": { "$value": "white", "$type": "color" },
+    "black": { "$value": "black", "$type": "color" },
     "red": { "$value": "oklch(0.63 0.24 27)", "$type": "color" },
     "orange": { "$value": "oklch(0.75 0.18 55)", "$type": "color" },
     "yellow": { "$value": "oklch(0.80 0.17 90)", "$type": "color" },
@@ -10,10 +12,114 @@
     "indigo": { "$value": "oklch(0.55 0.24 285)", "$type": "color" },
     "purple": { "$value": "oklch(0.55 0.24 303)", "$type": "color" }
   },
+  "shade": {
+    "background": { "$value": "light-dark({colors.white}, {colors.black})", "$type": "color" },
+    "foreground": { "$value": "light-dark({colors.black}, {colors.white})", "$type": "color" },
+    "1": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 97%)",
+      "$type": "color"
+    },
+    "2": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 93%)",
+      "$type": "color"
+    },
+    "3": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 88%)",
+      "$type": "color"
+    },
+    "4": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 82%)",
+      "$type": "color"
+    },
+    "5": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 74%)",
+      "$type": "color"
+    },
+    "6": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 64%)",
+      "$type": "color"
+    },
+    "7": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 50%)",
+      "$type": "color"
+    },
+    "8": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 38%)",
+      "$type": "color"
+    },
+    "9": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 28%)",
+      "$type": "color"
+    },
+    "10": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 18%)",
+      "$type": "color"
+    },
+    "11": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 10%)",
+      "$type": "color"
+    },
+    "12": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 4%)",
+      "$type": "color"
+    },
+    "surface": { "$value": "{shade.1}", "$type": "color" },
+    "accent": { "$value": "{shade.2}", "$type": "color" },
+    "halftone": { "$value": "{shade.7}", "$type": "color" },
+    "muted": { "$value": "{shade.9}", "$type": "color" }
+  },
   "tones": {
     "positive": { "$value": "{colors.green}", "$type": "color" },
+    "positive-surface": {
+      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 90%)",
+      "$type": "color"
+    },
+    "positive-border": {
+      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "positive-foreground": {
+      "$value": "color-mix(in oklch, {tones.positive}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
     "warning": { "$value": "{colors.yellow}", "$type": "color" },
+    "warning-surface": {
+      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 90%)",
+      "$type": "color"
+    },
+    "warning-border": {
+      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "warning-foreground": {
+      "$value": "color-mix(in oklch, {tones.warning}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
     "critical": { "$value": "{colors.red}", "$type": "color" },
-    "info": { "$value": "{colors.blue}", "$type": "color" }
+    "critical-surface": {
+      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 90%)",
+      "$type": "color"
+    },
+    "critical-border": {
+      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "critical-foreground": {
+      "$value": "color-mix(in oklch, {tones.critical}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
+    "info": { "$value": "{colors.blue}", "$type": "color" },
+    "info-surface": {
+      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 90%)",
+      "$type": "color"
+    },
+    "info-border": {
+      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "info-foreground": {
+      "$value": "color-mix(in oklch, {tones.info}, {shade.foreground} 60%)",
+      "$type": "color"
+    }
   }
 }

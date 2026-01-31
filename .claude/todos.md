@@ -102,9 +102,9 @@ If components truly only use the shade system and semantic tones, the full Tailw
 
 ## Next Steps
 
-- [ ] Expand the shade ramp to 8-12 stops using `oklch` mixing, with semantic aliases
-- [ ] Remove the per-theme percentage variables — let the foreground/background flip handle it
+- [x] Expand the shade ramp to 12 stops using `oklch` mixing, with semantic aliases
+- [x] Remove the per-theme percentage variables — let the foreground/background flip handle it
 - [x] Adopt `light-dark()` for the base foreground/background definitions
 - [x] Build out tone palettes with surface, border, and foreground variants
 - [ ] Add a Figma export build step that resolves dynamic values to static hex
-- [ ] Audit `colors.tokens.json` — either make it the source for tone bases or remove the neutral scale entirely since grays are generated dynamically
+- [x] Audit `colors.tokens.json` — neutrals removed, shades defined as scale + semantic aliases, tones reference OKLCH bases

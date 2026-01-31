@@ -6,78 +6,15 @@
 @import "./css/forms.tokens.css";
 
 @layer uiid.globals {
-  /* Base tokens: colors and mixing percentages */
   :root {
     color-scheme: light dark;
-
-    --white: white;
-    --black: black;
-
-    --shade-background: light-dark(var(--white), var(--black));
-    --shade-foreground: light-dark(var(--black), var(--white));
-
-    /* Percentages for light/dark variants */
-    --percentage-muted-light: 35%;
-    --percentage-accent-light: 92%;
-    --percentage-surface-light: 98%;
-
-    --percentage-muted-dark: 30%;
-    --percentage-accent-dark: 73%;
-    --percentage-surface-dark: 80%;
-
-    /* Active percentages default to light */
-    --percentage-surface: var(--percentage-surface-light);
-    --percentage-accent: var(--percentage-accent-light);
-    --percentage-muted: var(--percentage-muted-light);
-
-    /* Mixed shades */
-    --shade-muted: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-muted));
-    --shade-halftone: color-mix(in oklab, var(--shade-foreground), var(--shade-background) 50%);
-    --shade-accent: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-accent));
-    --shade-surface: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-surface));
-
-    /* Tone variants: surface (tinted bg), border, foreground (text on tone surface) */
-    --tones-positive-surface: color-mix(in oklch, var(--tones-positive), var(--shade-background) 90%);
-    --tones-positive-border: color-mix(in oklch, var(--tones-positive), var(--shade-background) 60%);
-    --tones-positive-foreground: color-mix(in oklch, var(--tones-positive), var(--shade-foreground) 60%);
-
-    --tones-warning-surface: color-mix(in oklch, var(--tones-warning), var(--shade-background) 90%);
-    --tones-warning-border: color-mix(in oklch, var(--tones-warning), var(--shade-background) 60%);
-    --tones-warning-foreground: color-mix(in oklch, var(--tones-warning), var(--shade-foreground) 60%);
-
-    --tones-critical-surface: color-mix(in oklch, var(--tones-critical), var(--shade-background) 90%);
-    --tones-critical-border: color-mix(in oklch, var(--tones-critical), var(--shade-background) 60%);
-    --tones-critical-foreground: color-mix(in oklch, var(--tones-critical), var(--shade-foreground) 60%);
-
-    --tones-info-surface: color-mix(in oklch, var(--tones-info), var(--shade-background) 90%);
-    --tones-info-border: color-mix(in oklch, var(--tones-info), var(--shade-background) 60%);
-    --tones-info-foreground: color-mix(in oklch, var(--tones-info), var(--shade-foreground) 60%);
   }
 
-  /* Switch percentages based on system preference if no explicit data-theme */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) {
-      --percentage-surface: var(--percentage-surface-dark);
-      --percentage-accent: var(--percentage-accent-dark);
-      --percentage-muted: var(--percentage-muted-dark);
-    }
-  }
-
-  /* Explicit theme overrides */
   :root[data-theme="light"] {
     color-scheme: light;
-
-    --percentage-surface: var(--percentage-surface-light);
-    --percentage-accent: var(--percentage-accent-light);
-    --percentage-muted: var(--percentage-muted-light);
   }
-
   :root[data-theme="dark"] {
     color-scheme: dark;
-
-    --percentage-surface: var(--percentage-surface-dark);
-    --percentage-accent: var(--percentage-accent-dark);
-    --percentage-muted: var(--percentage-muted-dark);
   }
 
   html,
