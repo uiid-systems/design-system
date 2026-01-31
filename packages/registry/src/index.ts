@@ -1,11 +1,11 @@
 // Types
 export * from "./types";
 
-// Schemas
-export * from "./schemas";
+// Shared schemas
+export * from "./shared";
 
-// Entries
-export * from "./entries";
+// Components
+export * from "./components";
 
 // Manifest
 export * from "./manifest";

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { Shade, SpacingPropsSchema, Tone } from "./shared";
+import { Shade, SpacingPropsSchema, Tone } from "../../shared";
+import type { ComponentEntry } from "../../types";
 
 /**
  * Text size values (typographic scale).
@@ -61,3 +62,14 @@ export const TextPropsSchema = SpacingPropsSchema.extend({
 });
 
 export type TextProps = z.infer<typeof TextPropsSchema>;
+
+export const TextEntry: ComponentEntry<typeof TextPropsSchema> = {
+  name: "Text",
+  package: "@uiid/typography",
+  hasChildren: true,
+  propsSchema: TextPropsSchema,
+  description:
+    "Typography component with size scale, weight, color shades, and text decorations",
+  category: "typography",
+  defaults: {},
+};
