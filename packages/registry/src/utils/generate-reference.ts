@@ -1,27 +1,7 @@
+import { categories } from "../categories";
 import { registry } from "../manifest";
 import type { ComponentEntry, PropDocumentation } from "../types";
 import { extractPropsFromSchema } from "./schema-to-docs";
-
-/**
- * Category display names and order for the component reference.
- */
-const CATEGORY_CONFIG: Record<string, string> = {
-  layout: "Layout Components",
-  typography: "Typography",
-  buttons: "Buttons",
-  forms: "Form Components",
-  cards: "Cards",
-  overlays: "Overlays",
-};
-
-const CATEGORY_ORDER = [
-  "layout",
-  "typography",
-  "buttons",
-  "forms",
-  "cards",
-  "overlays",
-];
 
 /**
  * Props that should be excluded from the LLM reference.
@@ -308,17 +288,14 @@ export function generateComponentReference(): string {
   sections.push("");
 
   // Group by category
-  for (const category of CATEGORY_ORDER) {
-    const title = CATEGORY_CONFIG[category];
-    if (!title) continue;
-
+  for (const { key, label } of categories) {
     const components = Object.entries(registry).filter(
-      ([, entry]) => entry.category === category
+      ([, entry]) => entry.category === key
     );
 
     if (components.length === 0) continue;
 
-    sections.push(`### ${title}`);
+    sections.push(`### ${label}`);
     sections.push("");
 
     for (const [name, entry] of components) {

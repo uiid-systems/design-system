@@ -1,4 +1,5 @@
 import type { z } from "zod";
+import type { CategoryKey } from "./categories";
 
 /**
  * A single element in a preview tree.
@@ -50,8 +51,8 @@ export type ComponentEntry<T extends z.ZodType = z.ZodType> = {
   /** Default prop values */
   defaults?: Record<string, unknown>;
 
-  /** Category for organization (e.g., "layout", "forms", "feedback") */
-  category?: string;
+  /** Category for organization (e.g., "layout", "forms", "overlays") */
+  category?: CategoryKey;
 
   /** Preview trees for documentation and json-render initial states */
   previews?: PreviewConfig[];
@@ -74,19 +75,6 @@ export type Registry = Record<string, ComponentEntry>;
 export type InferProps<T extends ComponentEntry> = T["propsSchema"] extends z.ZodType<infer P>
   ? P
   : never;
-
-/**
- * Categories for organizing components in the registry.
- */
-export type ComponentCategory =
-  | "layout"
-  | "forms"
-  | "buttons"
-  | "typography"
-  | "cards"
-  | "feedback"
-  | "navigation"
-  | "data-display";
 
 /**
  * Documentation for a single prop extracted from a Zod schema.

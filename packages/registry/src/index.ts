@@ -1,3 +1,6 @@
+// Categories
+export * from "./categories";
+
 // Types
 export * from "./types";
 

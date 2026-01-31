@@ -9,67 +9,33 @@ import {
   Layers,
 } from "@uiid/icons";
 
-import { registry } from "@uiid/registry";
+import { categories, registry } from "@uiid/registry";
 
 import { toSlug, urls } from "@/constants/urls";
 
 /**
- * Category configuration with display labels and icons
+ * Icon mapping for categories (kept in docs — icons are React components).
  */
-type CategoryConfig = {
-  label: string;
-  icon: Icon;
-  order: number;
-};
-
-export const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
-  layout: {
-    label: "Layout",
-    icon: LayoutGrid,
-    order: 1,
-  },
-  buttons: {
-    label: "Buttons",
-    icon: MousePointerClick,
-    order: 3,
-  },
-  forms: {
-    label: "Forms",
-    icon: FormInput,
-    order: 5,
-  },
-  typography: {
-    label: "Typography",
-    icon: Type,
-    order: 2,
-  },
-  cards: {
-    label: "Cards",
-    icon: CreditCard,
-    order: 4,
-  },
-  overlays: {
-    label: "Overlays",
-    icon: Layers,
-    order: 6,
-  },
+const CATEGORY_ICONS: Record<string, Icon> = {
+  layout: LayoutGrid,
+  typography: Type,
+  buttons: MousePointerClick,
+  cards: CreditCard,
+  forms: FormInput,
+  overlays: Layers,
 };
 
 /**
- * Get all unique categories from the registry, sorted by config order
+ * Get all categories that have at least one registry component, in canonical order.
  */
 export function getCategories(): string[] {
-  const categories = new Set<string>();
+  const used = new Set<string>();
   Object.values(registry).forEach((entry) => {
     if (entry.category) {
-      categories.add(entry.category);
+      used.add(entry.category);
     }
   });
-  return Array.from(categories).sort((a, b) => {
-    const orderA = CATEGORY_CONFIG[a]?.order ?? 99;
-    const orderB = CATEGORY_CONFIG[b]?.order ?? 99;
-    return orderA - orderB;
-  });
+  return categories.filter((c) => used.has(c.key)).map((c) => c.key);
 }
 
 /**
@@ -82,21 +48,29 @@ export function getComponentsByCategory(category: string) {
 }
 
 /**
+ * Get the icon for a category key.
+ */
+export function getCategoryIcon(category: string): Icon | undefined {
+  return CATEGORY_ICONS[category];
+}
+
+/**
+ * Get the label for a category key.
+ */
+export function getCategoryLabel(category: string): string {
+  const meta = categories.find((c) => c.key === category);
+  return meta?.label ?? category.charAt(0).toUpperCase() + category.slice(1);
+}
+
+/**
  * Generate navigation items for the sidebar
  */
 export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
-  const categories = getCategories();
-
-  return categories.map((category) => {
-    const config = CATEGORY_CONFIG[category] || {
-      label: category.charAt(0).toUpperCase() + category.slice(1),
-      icon: LayoutGrid,
-    };
+  return getCategories().map((category) => {
     const components = getComponentsByCategory(category);
 
     return {
-      category: config.label,
-      // icon: config.icon,
+      category: getCategoryLabel(category),
       collapsible: true,
       items: components.map((component) => ({
         label: component.name,
