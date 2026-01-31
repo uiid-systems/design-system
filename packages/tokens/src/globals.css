@@ -35,6 +35,23 @@
     --shade-halftone: color-mix(in oklab, var(--shade-foreground), var(--shade-background) 50%);
     --shade-accent: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-accent));
     --shade-surface: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-surface));
+
+    /* Tone variants: surface (tinted bg), border, foreground (text on tone surface) */
+    --tones-positive-surface: color-mix(in oklch, var(--tones-positive), var(--shade-background) 90%);
+    --tones-positive-border: color-mix(in oklch, var(--tones-positive), var(--shade-background) 60%);
+    --tones-positive-foreground: color-mix(in oklch, var(--tones-positive), var(--shade-foreground) 60%);
+
+    --tones-warning-surface: color-mix(in oklch, var(--tones-warning), var(--shade-background) 90%);
+    --tones-warning-border: color-mix(in oklch, var(--tones-warning), var(--shade-background) 60%);
+    --tones-warning-foreground: color-mix(in oklch, var(--tones-warning), var(--shade-foreground) 60%);
+
+    --tones-critical-surface: color-mix(in oklch, var(--tones-critical), var(--shade-background) 90%);
+    --tones-critical-border: color-mix(in oklch, var(--tones-critical), var(--shade-background) 60%);
+    --tones-critical-foreground: color-mix(in oklch, var(--tones-critical), var(--shade-foreground) 60%);
+
+    --tones-info-surface: color-mix(in oklch, var(--tones-info), var(--shade-background) 90%);
+    --tones-info-border: color-mix(in oklch, var(--tones-info), var(--shade-background) 60%);
+    --tones-info-foreground: color-mix(in oklch, var(--tones-info), var(--shade-foreground) 60%);
   }
 
   /* Switch percentages based on system preference if no explicit data-theme */
