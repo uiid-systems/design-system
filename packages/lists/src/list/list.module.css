@@ -1,4 +1,4 @@
-@import "@uiid/tokens/list.tokens.css";
+@import "@uiid/tokens/component/list.tokens.css";
 
 .list {
   margin-inline-start: 1rem;

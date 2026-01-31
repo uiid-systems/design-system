@@ -1,0 +1,69 @@
+{
+  "$description": "UIID Design System - Primitive Color Tokens",
+  "color": {
+    "$type": "color",
+    "white": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.996, 0.996, 0.98],
+        "hex": "#fefefa"
+      }
+    },
+    "black": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.051, 0.051, 0.051],
+        "hex": "#0d0d0d"
+      }
+    },
+    "red": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.63, 0.24, 27],
+        "hex": "#f9262a"
+      }
+    },
+    "orange": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.75, 0.18, 55],
+        "hex": "#ff8918"
+      }
+    },
+    "yellow": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.80, 0.17, 90],
+        "hex": "#e8b700"
+      }
+    },
+    "green": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.72, 0.19, 152],
+        "hex": "#00c565"
+      }
+    },
+    "blue": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.62, 0.21, 261],
+        "hex": "#347eff"
+      }
+    },
+    "indigo": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.55, 0.24, 285],
+        "hex": "#6d49f4"
+      }
+    },
+    "purple": {
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.55, 0.24, 303],
+        "hex": "#9036e1"
+      }
+    }
+  }
+}

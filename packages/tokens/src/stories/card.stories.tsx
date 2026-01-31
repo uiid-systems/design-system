@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import cardTokens from "../json/card.tokens.json";
+import cardTokens from "../json/component/card.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens, filterByPathIncludes, capitalize } from "./utilities";
 

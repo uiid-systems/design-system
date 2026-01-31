@@ -1,4 +1,4 @@
-@import "@uiid/tokens/avatar.tokens.css";
+@import "@uiid/tokens/component/avatar.tokens.css";
 
 .avatar-layers {
   aspect-ratio: 1;

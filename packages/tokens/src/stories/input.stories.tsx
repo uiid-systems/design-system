@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import inputTokens from "../json/forms.tokens.json";
+import inputTokens from "../json/semantic/forms.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens, filterByPathIncludes } from "./utilities";
 

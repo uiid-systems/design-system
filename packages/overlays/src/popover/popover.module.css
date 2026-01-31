@@ -1,4 +1,4 @@
-@import "@uiid/tokens/popover.tokens.css";
+@import "@uiid/tokens/component/popover.tokens.css";
 
 .popover-popup {
   max-width: var(--popover-maxWidth);

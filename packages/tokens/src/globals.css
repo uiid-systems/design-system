@@ -1,9 +1,12 @@
 @layer uiid.globals, uiid.tokens, uiid.components, uiid.utilities;
 
-@import "./css/globals.tokens.css";
-@import "./css/colors.tokens.css";
-@import "./css/spacing.tokens.css";
-@import "./css/forms.tokens.css";
+@import "./css/primitives/colors.tokens.css";
+@import "./css/primitives/spacing.tokens.css";
+@import "./css/primitives/typography.tokens.css";
+@import "./css/semantic/globals.tokens.css";
+@import "./css/semantic/shade.tokens.css";
+@import "./css/semantic/tone.tokens.css";
+@import "./css/semantic/forms.tokens.css";
 
 @layer uiid.globals {
   :root {

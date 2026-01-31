@@ -1,6 +1,6 @@
 "use client";
 
-import "@uiid/tokens/sidebar.tokens.css";
+import "@uiid/tokens/component/sidebar.tokens.css";
 
 import {
   SIDEBAR_DEFAULT_COLLAPSIBLE,

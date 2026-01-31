@@ -1,4 +1,4 @@
-@import "@uiid/tokens/overlays.tokens.css";
+@import "@uiid/tokens/component/overlays.tokens.css";
 
 .sheet-backdrop {
   position: fixed;

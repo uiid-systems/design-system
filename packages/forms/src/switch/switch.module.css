@@ -1,4 +1,4 @@
-@import "@uiid/tokens/switch.tokens.css";
+@import "@uiid/tokens/component/switch.tokens.css";
 
 .switch-root {
   position: relative;

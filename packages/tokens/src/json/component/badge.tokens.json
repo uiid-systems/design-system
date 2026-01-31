@@ -1,5 +1,4 @@
 {
-  "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Badge Component Tokens",
   "badge": {
     "padding": {

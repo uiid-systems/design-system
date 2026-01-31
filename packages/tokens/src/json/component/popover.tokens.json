@@ -1,5 +1,4 @@
 {
-  "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Popover Component Tokens",
   "popover": {
     "maxWidth": { "$value": "320px", "$type": "dimension" }

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Button Component Tokens",
   "button": {
     "bg": { "$value": "{shade.foreground}", "$type": "color" },

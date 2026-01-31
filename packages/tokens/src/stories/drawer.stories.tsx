@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import drawerTokens from "../json/drawer.tokens.json";
+import drawerTokens from "../json/component/drawer.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 
