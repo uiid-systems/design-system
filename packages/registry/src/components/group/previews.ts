@@ -22,13 +22,13 @@ export const groupPreviews: PreviewConfig[] = [
           key: "g2b",
           type: "Button",
           props: { children: "A", size: "small", fullwidth: true },
-          parentKey: "g2",
+          parentKey: "evenly",
         },
         g2c: {
           key: "g2c",
           type: "Button",
           props: { children: "B", size: "small" },
-          parentKey: "g2",
+          parentKey: "evenly",
         },
         g4: {
           key: "g4",
