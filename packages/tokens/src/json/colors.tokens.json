@@ -13,8 +13,6 @@
     "purple": { "$value": "oklch(0.55 0.24 303)", "$type": "color" }
   },
   "shade": {
-    "background": { "$value": "light-dark({colors.white}, {colors.black})", "$type": "color" },
-    "foreground": { "$value": "light-dark({colors.black}, {colors.white})", "$type": "color" },
     "1": {
       "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 97%)",
       "$type": "color"
@@ -63,15 +61,23 @@
       "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 4%)",
       "$type": "color"
     },
-    "surface": { "$value": "{shade.1}", "$type": "color" },
-    "accent": { "$value": "{shade.2}", "$type": "color" },
+    "background": {
+      "$value": "light-dark({colors.white}, {colors.black})",
+      "$type": "color"
+    },
+    "surface": { "$value": "{shade.4}", "$type": "color" },
+    "accent": { "$value": "{shade.5}", "$type": "color" },
     "halftone": { "$value": "{shade.7}", "$type": "color" },
-    "muted": { "$value": "{shade.9}", "$type": "color" }
+    "muted": { "$value": "{shade.9}", "$type": "color" },
+    "foreground": {
+      "$value": "light-dark({colors.black}, {colors.white})",
+      "$type": "color"
+    }
   },
   "tones": {
     "positive": { "$value": "{colors.green}", "$type": "color" },
     "positive-surface": {
-      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 90%)",
+      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 75%)",
       "$type": "color"
     },
     "positive-border": {
@@ -84,7 +90,7 @@
     },
     "warning": { "$value": "{colors.yellow}", "$type": "color" },
     "warning-surface": {
-      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 90%)",
+      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 75%)",
       "$type": "color"
     },
     "warning-border": {
@@ -97,7 +103,7 @@
     },
     "critical": { "$value": "{colors.red}", "$type": "color" },
     "critical-surface": {
-      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 90%)",
+      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 75%)",
       "$type": "color"
     },
     "critical-border": {
@@ -110,7 +116,7 @@
     },
     "info": { "$value": "{colors.blue}", "$type": "color" },
     "info-surface": {
-      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 90%)",
+      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 75%)",
       "$type": "color"
     },
     "info-border": {
