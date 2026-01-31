@@ -1,5 +1,16 @@
 # @uiid/tokens
 
+## 0.0.3
+
+### Patch Changes
+
+- feat: input-tooltip (#33)
+- feat: add mdx support to docs, test on button (#37)
+- refactor: cleanup tokens (#45)
+- chore(deps): bump next from 16.1.3 to 16.1.5 (#48)
+- refactor: tokens (#50)
+- feat: link component docs to builder (#35)
+
 ## 0.0.2
 
 ### Patch Changes

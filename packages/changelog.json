@@ -1,7 +1,169 @@
 [
   {
+    "version": "0.0.3",
+    "date": "January 31, 2026",
+    "packages": [
+      "@uiid/backgrounds",
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [
+        {
+          "description": "Add mdx support to docs, test on button (#37)",
+          "raw": "feat: add mdx support to docs, test on button (#37)",
+          "semverType": "patch",
+          "pr": 37,
+          "packages": [
+            "@uiid/backgrounds",
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Link component docs to builder (#35)",
+          "raw": "feat: link component docs to builder (#35)",
+          "semverType": "patch",
+          "pr": 35,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Input-tooltip (#33)",
+          "raw": "feat: input-tooltip (#33)",
+          "semverType": "patch",
+          "pr": 33,
+          "packages": [
+            "@uiid/forms",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add resize, fix tabs width (#36)",
+          "raw": "feat: add resize, fix tabs width (#36)",
+          "semverType": "patch",
+          "pr": 36,
+          "packages": [
+            "@uiid/interactive"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "description": "Test nags (#44)",
+          "raw": "fix: test nags (#44)",
+          "semverType": "patch",
+          "pr": 44,
+          "packages": [
+            "@uiid/interactive"
+          ]
+        }
+      ],
+      "refactors": [
+        {
+          "description": "Cleanup tokens (#45)",
+          "raw": "refactor: cleanup tokens (#45)",
+          "semverType": "patch",
+          "pr": 45,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/lists",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Tokens (#50)",
+          "raw": "refactor: tokens (#50)",
+          "semverType": "patch",
+          "pr": 50,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Automate docs (#40)",
+          "raw": "refactor: automate docs (#40)",
+          "semverType": "patch",
+          "pr": 40,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/layout",
+            "@uiid/overlays",
+            "@uiid/typography"
+          ]
+        },
+        {
+          "description": "Registry as source of truth (#34)",
+          "raw": "refactor: registry as source of truth (#34)",
+          "semverType": "patch",
+          "pr": 34,
+          "packages": [
+            "@uiid/forms"
+          ]
+        }
+      ],
+      "performance": [],
+      "documentation": [],
+      "other": []
+    }
+  },
+  {
     "version": "0.0.2",
-    "date": "January 20, 2026",
+    "date": "January 21, 2026",
     "packages": [
       "@uiid/backgrounds",
       "@uiid/blocks",
