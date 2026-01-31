@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { CodeEditor } from "./code-editor";
@@ -87,13 +87,15 @@ describe("CodeEditor", () => {
   // DISABLED STATE
   // ============================================
 
-  it("can be disabled", () => {
+  it("can be disabled", async () => {
     render(<CodeEditor defaultValue="test" disabled />);
+    await act(async () => {});
     expect(screen.getByRole("textbox")).toBeDisabled();
   });
 
-  it("shows disabled state styling", () => {
+  it("shows disabled state styling", async () => {
     render(<CodeEditor defaultValue="test" disabled />);
+    await act(async () => {});
     expect(
       screen.getByRole("textbox").closest("[data-slot='code-editor']")
     ).toHaveAttribute("data-disabled");
@@ -103,8 +105,9 @@ describe("CodeEditor", () => {
   // READ ONLY STATE
   // ============================================
 
-  it("can be read only", () => {
+  it("can be read only", async () => {
     render(<CodeEditor defaultValue="test" readOnly />);
+    await act(async () => {});
     expect(screen.getByRole("textbox")).toHaveAttribute("readonly");
   });
 
@@ -124,13 +127,15 @@ describe("CodeEditor", () => {
   // COPY BUTTON
   // ============================================
 
-  it("renders copy button when copyable is true", () => {
+  it("renders copy button when copyable is true", async () => {
     render(<CodeEditor defaultValue="test" copyable filename="test.ts" />);
+    await act(async () => {});
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("disables copy button when copyable is false", () => {
+  it("disables copy button when copyable is false", async () => {
     render(<CodeEditor defaultValue="test" copyable={false} filename="test.ts" />);
+    await act(async () => {});
     expect(screen.getByRole("button")).toBeDisabled();
   });
 });
