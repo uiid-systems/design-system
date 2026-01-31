@@ -8,11 +8,13 @@
 @layer uiid.globals {
   /* Base tokens: colors and mixing percentages */
   :root {
+    color-scheme: light dark;
+
     --white: white;
     --black: black;
 
-    --shade-background: var(--background, var(--white));
-    --shade-foreground: var(--black, var(--black));
+    --shade-background: light-dark(var(--white), var(--black));
+    --shade-foreground: light-dark(var(--black), var(--white));
 
     /* Percentages for light/dark variants */
     --percentage-muted-light: 35%;
@@ -35,35 +37,30 @@
     --shade-surface: color-mix(in oklab, var(--shade-foreground), var(--shade-background) var(--percentage-surface));
   }
 
-  /* Switch based on system preference if no explicit data-theme */
+  /* Switch percentages based on system preference if no explicit data-theme */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
       --percentage-surface: var(--percentage-surface-dark);
       --percentage-accent: var(--percentage-accent-dark);
       --percentage-muted: var(--percentage-muted-dark);
-
-      --shade-background: var(--black);
-      --shade-foreground: var(--white);
     }
   }
 
   /* Explicit theme overrides */
   :root[data-theme="light"] {
+    color-scheme: light;
+
     --percentage-surface: var(--percentage-surface-light);
     --percentage-accent: var(--percentage-accent-light);
     --percentage-muted: var(--percentage-muted-light);
-
-    --shade-background: var(--white);
-    --shade-foreground: var(--black);
   }
 
   :root[data-theme="dark"] {
+    color-scheme: dark;
+
     --percentage-surface: var(--percentage-surface-dark);
     --percentage-accent: var(--percentage-accent-dark);
     --percentage-muted: var(--percentage-muted-dark);
-
-    --shade-background: var(--black);
-    --shade-foreground: var(--white);
   }
 
   html,
