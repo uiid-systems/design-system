@@ -53,36 +53,36 @@ const [pressed, setPressed] = useState(false);
 
 <ToggleButton pressed={pressed} onPressedChange={setPressed}>
   {pressed ? "Active" : "Inactive"}
-</ToggleButton>
+</ToggleButton>;
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `circle` | `boolean` | — | — |
-| `defaultPressed` | `boolean` | — | — |
-| `disabled` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `ghost` | `boolean` | — | — |
-| `grows` | `boolean` | — | — |
-| `icon` | `object` | — | — |
-| `loading` | `boolean` | — | — |
-| `pill` | `boolean` | — | — |
-| `pressed` | `boolean` | — | — |
-| `size` | `"xsmall" \| "small" \| "medium" \| "large"` | `"medium"` | — |
-| `square` | `boolean` | — | — |
-| `text` | `object` | — | — |
-| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
-| `tooltip` | `ReactNode` | — | — |
-| `variant` | `"subtle" \| "inverted"` | — | — |
+| Prop             | Type                                              | Default    | Description |
+| ---------------- | ------------------------------------------------- | ---------- | ----------- |
+| `circle`         | `boolean`                                         | —          | —           |
+| `defaultPressed` | `boolean`                                         | —          | —           |
+| `disabled`       | `boolean`                                         | —          | —           |
+| `fullwidth`      | `boolean`                                         | —          | —           |
+| `ghost`          | `boolean`                                         | —          | —           |
+| `interactive`    | `boolean`                                         | —          | —           |
+| `icon`           | `object`                                          | —          | —           |
+| `loading`        | `boolean`                                         | —          | —           |
+| `pill`           | `boolean`                                         | —          | —           |
+| `pressed`        | `boolean`                                         | —          | —           |
+| `size`           | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | —           |
+| `square`         | `boolean`                                         | —          | —           |
+| `text`           | `object`                                          | —          | —           |
+| `tone`           | `"positive" \| "critical" \| "warning" \| "info"` | —          | —           |
+| `tooltip`        | `ReactNode`                                       | —          | —           |
+| `variant`        | `"subtle" \| "inverted"`                          | —          | —           |
 
 > Inherits all props from [Button](../button/README.md) including `variant`, `size`, `tone`, etc.
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot     | Element                                     |
+| -------- | ------------------------------------------- |
 | `button` | Root button element (inherited from Button) |
 
 ## Accessibility

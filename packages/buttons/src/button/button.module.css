@@ -103,7 +103,7 @@
   padding-inline: var(--button-size-lg-padding-x);
 }
 
-.toggle-grows {
+.toggle-interactive {
   &:hover {
     scale: var(--button-scale-hover);
   }

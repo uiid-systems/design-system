@@ -15,7 +15,7 @@ export const Button = ({
   tooltip,
   ghost,
   pill,
-  grows,
+  interactive,
   fullwidth,
   size,
   tone,
@@ -43,7 +43,7 @@ export const Button = ({
           styles["button"],
           buttonVariants({
             ghost,
-            grows,
+            interactive,
             pill,
             size,
             square,

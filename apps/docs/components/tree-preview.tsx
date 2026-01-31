@@ -63,7 +63,7 @@ function renderElement(
       } else {
         // Regular child
         regularChildren.push(
-          <span key={childKey}>{renderElement(child, elements)}</span>,
+          <Fragment key={childKey}>{renderElement(child, elements)}</Fragment>,
         );
       }
     }
