@@ -1,116 +1,131 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Color Tokens",
-  "colors": {
-    "neutral": {
-      "50": { "$value": "#f9fafb", "$type": "color" },
-      "100": { "$value": "#f3f4f6", "$type": "color" },
-      "200": { "$value": "#e5e7eb", "$type": "color" },
-      "300": { "$value": "#d1d5db", "$type": "color" },
-      "400": { "$value": "#9ca3af", "$type": "color" },
-      "500": { "$value": "#6b7280", "$type": "color" },
-      "600": { "$value": "#4b5563", "$type": "color" },
-      "700": { "$value": "#374151", "$type": "color" },
-      "800": { "$value": "#1f2937", "$type": "color" },
-      "900": { "$value": "#111827", "$type": "color" },
-      "950": { "$value": "#030712", "$type": "color" }
+  "color": {
+    "white": { "$value": "white", "$type": "color" },
+    "black": { "$value": "black", "$type": "color" },
+    "red": { "$value": "oklch(0.63 0.24 27)", "$type": "color" },
+    "orange": { "$value": "oklch(0.75 0.18 55)", "$type": "color" },
+    "yellow": { "$value": "oklch(0.80 0.17 90)", "$type": "color" },
+    "green": { "$value": "oklch(0.72 0.19 152)", "$type": "color" },
+    "blue": { "$value": "oklch(0.62 0.21 261)", "$type": "color" },
+    "indigo": { "$value": "oklch(0.55 0.24 285)", "$type": "color" },
+    "purple": { "$value": "oklch(0.55 0.24 303)", "$type": "color" }
+  },
+  "shade": {
+    "1": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 97%)",
+      "$type": "color"
     },
-    "red": {
-      "50": { "$value": "#fef2f2", "$type": "color" },
-      "100": { "$value": "#fee2e2", "$type": "color" },
-      "200": { "$value": "#fecaca", "$type": "color" },
-      "300": { "$value": "#fca5a5", "$type": "color" },
-      "400": { "$value": "#f87171", "$type": "color" },
-      "500": { "$value": "#ef4444", "$type": "color" },
-      "600": { "$value": "#dc2626", "$type": "color" },
-      "700": { "$value": "#b91c1c", "$type": "color" },
-      "800": { "$value": "#991b1b", "$type": "color" },
-      "900": { "$value": "#7f1d1d", "$type": "color" },
-      "950": { "$value": "#450a0a", "$type": "color" }
+    "2": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 93%)",
+      "$type": "color"
     },
-    "orange": {
-      "50": { "$value": "#fff7ed", "$type": "color" },
-      "100": { "$value": "#ffedd5", "$type": "color" },
-      "200": { "$value": "#fed7aa", "$type": "color" },
-      "300": { "$value": "#fdba74", "$type": "color" },
-      "400": { "$value": "#fb923c", "$type": "color" },
-      "500": { "$value": "#f97316", "$type": "color" },
-      "600": { "$value": "#ea580c", "$type": "color" },
-      "700": { "$value": "#c2410c", "$type": "color" },
-      "800": { "$value": "#9a3412", "$type": "color" },
-      "900": { "$value": "#7c2d12", "$type": "color" },
-      "950": { "$value": "#451a03", "$type": "color" }
+    "3": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 88%)",
+      "$type": "color"
     },
-    "yellow": {
-      "50": { "$value": "#fefce8", "$type": "color" },
-      "100": { "$value": "#fef9c3", "$type": "color" },
-      "200": { "$value": "#fef08a", "$type": "color" },
-      "300": { "$value": "#fde047", "$type": "color" },
-      "400": { "$value": "#facc15", "$type": "color" },
-      "500": { "$value": "#eab308", "$type": "color" },
-      "600": { "$value": "#ca8a04", "$type": "color" },
-      "700": { "$value": "#a16207", "$type": "color" },
-      "800": { "$value": "#854d0e", "$type": "color" },
-      "900": { "$value": "#713f12", "$type": "color" },
-      "950": { "$value": "#422006", "$type": "color" }
+    "4": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 82%)",
+      "$type": "color"
     },
-    "green": {
-      "50": { "$value": "#f0fdf4", "$type": "color" },
-      "100": { "$value": "#dcfce7", "$type": "color" },
-      "200": { "$value": "#bbf7d0", "$type": "color" },
-      "300": { "$value": "#86efac", "$type": "color" },
-      "400": { "$value": "#4ade80", "$type": "color" },
-      "500": { "$value": "#22c55e", "$type": "color" },
-      "600": { "$value": "#16a34a", "$type": "color" },
-      "700": { "$value": "#15803d", "$type": "color" },
-      "800": { "$value": "#166534", "$type": "color" },
-      "900": { "$value": "#14532d", "$type": "color" },
-      "950": { "$value": "#052e16", "$type": "color" }
+    "5": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 74%)",
+      "$type": "color"
     },
-    "blue": {
-      "50": { "$value": "#eff6ff", "$type": "color" },
-      "100": { "$value": "#dbeafe", "$type": "color" },
-      "200": { "$value": "#bfdbfe", "$type": "color" },
-      "300": { "$value": "#93c5fd", "$type": "color" },
-      "400": { "$value": "#60a5fa", "$type": "color" },
-      "500": { "$value": "#3b82f6", "$type": "color" },
-      "600": { "$value": "#2563eb", "$type": "color" },
-      "700": { "$value": "#1d4ed8", "$type": "color" },
-      "800": { "$value": "#1e40af", "$type": "color" },
-      "900": { "$value": "#1e3a8a", "$type": "color" },
-      "950": { "$value": "#172554", "$type": "color" }
+    "6": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 64%)",
+      "$type": "color"
     },
-    "indigo": {
-      "50": { "$value": "#eef2ff", "$type": "color" },
-      "100": { "$value": "#e0e7ff", "$type": "color" },
-      "200": { "$value": "#c7d2fe", "$type": "color" },
-      "300": { "$value": "#a5b4fc", "$type": "color" },
-      "400": { "$value": "#818cf8", "$type": "color" },
-      "500": { "$value": "#6366f1", "$type": "color" },
-      "600": { "$value": "#4f46e5", "$type": "color" },
-      "700": { "$value": "#4338ca", "$type": "color" },
-      "800": { "$value": "#3730a3", "$type": "color" },
-      "900": { "$value": "#312e81", "$type": "color" },
-      "950": { "$value": "#1e1b4b", "$type": "color" }
+    "7": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 50%)",
+      "$type": "color"
     },
-    "purple": {
-      "50": { "$value": "#f5f3ff", "$type": "color" },
-      "100": { "$value": "#ede9fe", "$type": "color" },
-      "200": { "$value": "#ddd6fe", "$type": "color" },
-      "300": { "$value": "#c4b5fd", "$type": "color" },
-      "400": { "$value": "#a78bfa", "$type": "color" },
-      "500": { "$value": "#8b5cf6", "$type": "color" },
-      "600": { "$value": "#7c3aed", "$type": "color" },
-      "700": { "$value": "#6d28d9", "$type": "color" },
-      "800": { "$value": "#5b21b6", "$type": "color" },
-      "900": { "$value": "#4c1d95", "$type": "color" },
-      "950": { "$value": "#2e1065", "$type": "color" }
+    "8": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 38%)",
+      "$type": "color"
+    },
+    "9": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 28%)",
+      "$type": "color"
+    },
+    "10": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 18%)",
+      "$type": "color"
+    },
+    "11": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 10%)",
+      "$type": "color"
+    },
+    "12": {
+      "$value": "color-mix(in oklch, {shade.foreground}, {shade.background} 4%)",
+      "$type": "color"
+    },
+    "background": {
+      "$value": "light-dark({color.white}, {color.black})",
+      "$type": "color"
+    },
+    "surface": { "$value": "{shade.4}", "$type": "color" },
+    "accent": { "$value": "{shade.5}", "$type": "color" },
+    "halftone": { "$value": "{shade.7}", "$type": "color" },
+    "muted": { "$value": "{shade.9}", "$type": "color" },
+    "foreground": {
+      "$value": "light-dark({color.black}, {color.white})",
+      "$type": "color"
     }
   },
-  "tones": {
-    "positive": { "$value": "{colors.green.500}", "$type": "color" },
-    "warning": { "$value": "{colors.yellow.500}", "$type": "color" },
-    "critical": { "$value": "{colors.red.500}", "$type": "color" },
-    "info": { "$value": "{colors.blue.500}", "$type": "color" }
+  "tone": {
+    "positive": { "$value": "{color.green}", "$type": "color" },
+    "positive-surface": {
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.background} 75%)",
+      "$type": "color"
+    },
+    "positive-border": {
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "positive-foreground": {
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
+    "warning": { "$value": "{color.yellow}", "$type": "color" },
+    "warning-surface": {
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.background} 75%)",
+      "$type": "color"
+    },
+    "warning-border": {
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "warning-foreground": {
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
+    "critical": { "$value": "{color.red}", "$type": "color" },
+    "critical-surface": {
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.background} 75%)",
+      "$type": "color"
+    },
+    "critical-border": {
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "critical-foreground": {
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.foreground} 60%)",
+      "$type": "color"
+    },
+    "info": { "$value": "{color.blue}", "$type": "color" },
+    "info-surface": {
+      "$value": "color-mix(in oklch, {tone.info}, {shade.background} 75%)",
+      "$type": "color"
+    },
+    "info-border": {
+      "$value": "color-mix(in oklch, {tone.info}, {shade.background} 60%)",
+      "$type": "color"
+    },
+    "info-foreground": {
+      "$value": "color-mix(in oklch, {tone.info}, {shade.foreground} 60%)",
+      "$type": "color"
+    }
   }
 }

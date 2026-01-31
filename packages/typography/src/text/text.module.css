@@ -94,16 +94,16 @@
 }
 
 .tone-positive {
-  color: var(--tones-positive);
+  color: var(--tone-positive);
 }
 .tone-critical {
-  color: var(--tones-critical);
+  color: var(--tone-critical);
 }
 .tone-warning {
-  color: var(--tones-warning);
+  color: var(--tone-warning);
 }
 .tone-info {
-  color: var(--tones-info);
+  color: var(--tone-info);
 }
 
 .toggle-bold {

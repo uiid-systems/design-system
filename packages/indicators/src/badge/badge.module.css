@@ -30,16 +30,16 @@
 }
 
 .tone-positive {
-  background-color: var(--tones-positive);
+  background-color: var(--tone-positive);
 }
 .tone-critical {
-  background-color: var(--tones-critical);
+  background-color: var(--tone-critical);
 }
 .tone-warning {
-  background-color: var(--tones-warning);
+  background-color: var(--tone-warning);
 }
 .tone-info {
-  background-color: var(--tones-info);
+  background-color: var(--tone-info);
 }
 
 .toggle-inverted {

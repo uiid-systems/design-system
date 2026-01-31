@@ -14,8 +14,8 @@
 }
 
 .code-block-copy-button[data-copied="true"] {
-  color: var(--tones-positive);
-  border-color: var(--tones-positive);
+  color: var(--tone-positive);
+  border-color: var(--tone-positive);
 }
 
 .code-block-content {
@@ -46,5 +46,5 @@
 }
 
 .code-block-error {
-  color: var(--tones-critical);
+  color: var(--tone-critical);
 }

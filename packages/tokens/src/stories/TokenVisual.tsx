@@ -7,7 +7,7 @@ interface TokenVisualProps {
 }
 
 // Helper to convert token references to CSS variables
-// e.g., "{colors.blue.500}" -> "var(--colors-blue-500)"
+// e.g., "{color.blue}" -> "var(--color-blue)"
 const toCssVariable = (value: string): string => {
   if (value.startsWith("{") && value.endsWith("}")) {
     const path = value.slice(1, -1).replace(/\./g, "-");
