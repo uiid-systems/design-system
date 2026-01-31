@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { checkboxPreviews } from "./previews";
 
 /**
  * Checkbox component props schema.
@@ -38,4 +39,5 @@ export const CheckboxEntry: ComponentEntry<typeof CheckboxPropsSchema> = {
   description: "Checkbox input with label, description, and indeterminate state support",
   category: "forms",
   defaults: {},
+  previews: checkboxPreviews,
 };

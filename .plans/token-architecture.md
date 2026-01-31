@@ -15,24 +15,30 @@ specification.
 
 ## Spec Compliance Audit
 
+The spec delegates color representation to a dedicated
+[Color Module](https://www.designtokens.org/tr/drafts/color/). Colors are **structured
+objects**, not strings. oklch is a first-class supported color space.
+
 Current issues against the 2025.10 spec:
 
 | Issue | Current | Spec Requirement |
 |-------|---------|-----------------|
 | `$schema` URL | Points to community group draft | Should reference the 2025.10 spec or be removed |
-| Color values | `oklch(0.63 0.24 27)`, `color-mix(...)`, `light-dark(...)` | Colors must be sRGB hex (`#rrggbb` or `#rrggbbaa`) |
+| Color values | CSS strings like `"oklch(0.63 0.24 27)"` | Must be structured objects: `{ "colorSpace": "oklch", "components": [0.63, 0.24, 27] }` |
+| Color derivations | `color-mix(...)`, `light-dark(...)` in `$value` | `$value` must be a literal or alias; derivation logic belongs in `$extensions` |
 | Font families | `$type: "string"` | Must use `$type: "fontFamily"` |
 | Font weight | `$type: "fontWeight"` with string values like `"600"` | Values should be numbers (1-1000), not strings |
 | Typography | Individual tokens for size/weight/lineHeight | Could use composite `typography` type |
-| Derived values | CSS functions embedded in `$value` | `$value` must be a literal or alias; derivation logic belongs in `$extensions` |
 | Percentages | `"80%"`, `"140%"` used as dimension values | `dimension` type requires `px` or `rem` units only |
 
 ### The core problem
 
-CSS-specific functions (`color-mix`, `light-dark`, `oklch`) are embedded directly in
-`$value` fields. This makes the JSON a CSS intermediate format rather than a
-platform-agnostic source of truth. Per the spec, `$value` must contain a resolved
-literal or an alias reference -- not a platform-specific expression.
+CSS function strings (`color-mix`, `light-dark`) are embedded directly in `$value`
+fields, and color values are plain strings instead of structured objects. This makes the
+JSON a CSS intermediate format rather than a platform-agnostic source of truth.
+
+The good news: the spec's color format natively supports oklch, so we keep the color
+space we want. We just need to express it as structured data instead of CSS syntax.
 
 ---
 
@@ -96,6 +102,11 @@ and avoids introducing build dependencies between component packages and token g
 
 ### 2. Make color tokens spec-compliant
 
+The spec's [Color Module](https://www.designtokens.org/tr/drafts/color/) defines colors
+as structured objects with `colorSpace`, `components`, and an optional `hex` fallback.
+oklch is a fully supported color space. This means we keep oklch as the primary color
+representation -- we just express it as data instead of CSS syntax.
+
 **Before (current):**
 
 ```json
@@ -122,50 +133,78 @@ and avoids introducing build dependencies between component packages and token g
 {
   "color": {
     "$type": "color",
-    "white": { "$value": "#fefefa" },
-    "black": { "$value": "#0d0d0d" },
+    "white": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.996, 0.996, 0.98],
+        "hex": "#fefefa"
+      }
+    },
+    "black": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.051, 0.051, 0.051],
+        "hex": "#0d0d0d"
+      }
+    },
     "red": {
-      "$value": "#d93a2b",
-      "$extensions": {
-        "org.uiid.oklch": { "l": 0.63, "c": 0.24, "h": 27 }
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.63, 0.24, 27],
+        "hex": "#d93a2b"
       }
     },
     "orange": {
-      "$value": "#d4882a",
-      "$extensions": {
-        "org.uiid.oklch": { "l": 0.75, "c": 0.18, "h": 55 }
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.75, 0.18, 55],
+        "hex": "#d4882a"
       }
     }
   }
 }
 ```
 
-The `$value` is a resolved sRGB hex color (spec-compliant, works everywhere). The
-`$extensions` field preserves the oklch source values as structured data using reverse
-domain notation per spec. The CSS adapter reads the extension and outputs `oklch()`
-instead of hex when generating CSS, because CSS supports it natively. Other adapters
-use the hex value.
+The `$value` is a structured object per the Color Module spec. `colorSpace` declares
+the authoring space (oklch for chromatic colors, srgb for neutrals). `components`
+holds the raw channel values. `hex` provides a universal sRGB fallback for tools that
+don't support oklch natively.
+
+The CSS adapter reads `colorSpace` + `components` and outputs `oklch(0.63 0.24 27)`.
+A Figma adapter reads `hex`. Each adapter picks the representation it needs from the
+same structured data.
 
 **For derived/computed colors (shade scale, tones):**
+
+Derivation functions like `color-mix` and `light-dark` are not part of the spec -- they
+are CSS-specific. These go in `$extensions` with a resolved `$value` as fallback:
 
 ```json
 {
   "shade": {
     "$type": "color",
     "1": {
-      "$value": "#0f0f0f",
+      "$value": {
+        "colorSpace": "oklch",
+        "components": [0.988, 0.001, 0],
+        "hex": "#fcfcfb"
+      },
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
           "colorSpace": "oklch",
           "color1": "{shade.foreground}",
           "color2": "{shade.background}",
-          "weight": 0.03
+          "ratio": 0.03
         }
       }
     },
     "background": {
-      "$value": "#fefefa",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.996, 0.996, 0.98],
+        "hex": "#fefefa"
+      },
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
@@ -177,7 +216,11 @@ use the hex value.
     "surface": { "$value": "{shade.4}" },
     "accent": { "$value": "{shade.5}" },
     "foreground": {
-      "$value": "#0d0d0d",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.051, 0.051, 0.051],
+        "hex": "#0d0d0d"
+      },
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
@@ -195,12 +238,14 @@ use the hex value.
 | Adapter | Reads | Outputs |
 |---------|-------|---------|
 | CSS | `org.uiid.derive` extension | `color-mix(in oklch, ...)`, `light-dark(...)` |
-| Figma | `$value` (hex) | Static resolved colors |
-| iOS | `$value` (hex) or extension | `UIColor` / dynamic color assets |
-| Android | `$value` (hex) | XML color resources |
+| CSS (no derive) | `$value.colorSpace` + `$value.components` | `oklch(0.63 0.24 27)` |
+| Figma | `$value.hex` | Static hex colors |
+| iOS | `$value.components` + `$value.colorSpace` | Programmatic color objects |
+| Android | `$value.hex` | XML color resources |
 
-The `$value` always contains a valid, resolved fallback. The extension describes the
-dynamic derivation for platforms that support it.
+The `$value` is always a fully resolved structured color. The `org.uiid.derive`
+extension describes dynamic derivation for platforms that support it (CSS). Platforms
+that don't support runtime derivation use the resolved `$value` directly.
 
 ### 3. Fix type compliance across all files
 
@@ -312,8 +357,9 @@ scripts/
 
 **CSS adapter responsibilities:**
 - Generate CSS custom properties
-- Read `org.uiid.oklch` extensions to output oklch() values instead of hex
-- Read `org.uiid.derive` extensions to output color-mix()/light-dark()
+- Read structured color values (`colorSpace` + `components`) to output native CSS
+  color functions (e.g., `oklch(0.63 0.24 27)`)
+- Read `org.uiid.derive` extensions to output `color-mix()`/`light-dark()`
 - Generate `@layer` scoping based on tier
 - Handle `{alias}` to `var(--alias)` conversion
 
@@ -361,12 +407,14 @@ aliases. After the split, each file is ~30-40 lines with a single purpose.
 
 ### Phase 1: Spec compliance + naming normalization
 
-1. Convert all color `$value` fields to sRGB hex, move oklch to `$extensions`
-2. Add `org.uiid.derive` extensions for all computed colors
+1. Convert all color `$value` fields to structured objects per the Color Module
+   (`{ colorSpace, components, hex }`) -- oklch for chromatic colors, srgb for neutrals
+2. Add `org.uiid.derive` extensions for all computed colors (shade scale, tones)
 3. Fix `$type` values (`fontFamily`, number font weights, etc.)
 4. Normalize all token names to kebab-case
 5. Fix `$description` fields that are wrong (forms says "Button")
-6. Update generator to read extensions and produce the same CSS output as today
+6. Update generator to read structured color values and derive extensions, producing
+   the same CSS output as today (`oklch()`, `color-mix()`, `light-dark()`)
 
 **Result:** JSON is spec-compliant. CSS output is identical. Nothing downstream breaks.
 
@@ -417,8 +465,8 @@ provide backwards-compatible paths.
 
 ## What changes
 
-- JSON values become spec-compliant (hex colors, proper types)
-- CSS-specific derivation logic moves to `$extensions`
+- Color values become structured objects per the Color Module (oklch preserved natively)
+- CSS-specific derivation logic (`color-mix`, `light-dark`) moves to `$extensions`
 - Flat directory becomes three-tier directory
 - One `colors.tokens.json` becomes three focused files
 - `globals.css` splits into composable parts
@@ -433,10 +481,11 @@ provide backwards-compatible paths.
    export aliases to maintain the current flat paths? Export aliases are simpler
    short-term but hide the tier structure.
 
-2. **Hex fallback values:** For derived colors (shade scale, tones), the `$value` needs
-   a resolved hex color. Should we compute these once by hand and hardcode them, or
-   write a small script that resolves the color math and fills in `$value` fields?
-   Hardcoded values are simpler but can drift from the derivation logic.
+2. **Resolved fallback values:** For derived colors (shade scale, tones), the `$value`
+   needs a fully resolved structured color (with hex fallback). Should we compute these
+   once by hand and hardcode them, or write a small script that resolves the color math
+   and fills in `$value` fields? Hardcoded values are simpler but can drift from the
+   derivation logic.
 
 3. **Typography composite type:** The spec supports a composite `typography` type that
    bundles fontFamily, fontSize, fontWeight, and lineHeight into one token. Should

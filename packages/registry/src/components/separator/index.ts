@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { Shade, SpacingPropsSchema } from "../../shared";
 import type { ComponentEntry } from "../../types";
+import { separatorPreviews } from "./previews";
 
 /**
  * Separator orientation values.
@@ -31,4 +32,5 @@ export const SeparatorEntry: ComponentEntry<typeof SeparatorPropsSchema> = {
   defaults: {
     orientation: "horizontal",
   },
+  previews: separatorPreviews,
 };

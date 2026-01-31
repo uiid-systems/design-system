@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { Shade, SpacingPropsSchema, Tone } from "../../shared";
 import type { ComponentEntry } from "../../types";
+import { textPreviews } from "./previews";
 
 /**
  * Text size values (typographic scale).
@@ -72,4 +73,5 @@ export const TextEntry: ComponentEntry<typeof TextPropsSchema> = {
     "Typography component with size scale, weight, color shades, and text decorations",
   category: "typography",
   defaults: {},
+  previews: textPreviews,
 };

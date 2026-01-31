@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
 import { ButtonPropsSchema } from "../button";
+import { toggleButtonPreviews } from "./previews";
 
 /**
  * Toggle button icon configuration.
@@ -46,4 +47,5 @@ export const ToggleButtonEntry: ComponentEntry<typeof ToggleButtonPropsSchema> =
   defaults: {
     size: "medium",
   },
+  previews: toggleButtonPreviews,
 };

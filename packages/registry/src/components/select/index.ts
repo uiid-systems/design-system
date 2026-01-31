@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { FormSize } from "../../shared";
 import type { ComponentEntry } from "../../types";
+import { selectPreviews } from "./previews";
 
 /**
  * Select item schema for options.
@@ -57,4 +58,5 @@ export const SelectEntry: ComponentEntry<typeof SelectPropsSchema> = {
   defaults: {
     size: "medium",
   },
+  previews: selectPreviews,
 };
