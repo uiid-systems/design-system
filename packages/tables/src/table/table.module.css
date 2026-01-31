@@ -1,4 +1,4 @@
-@import "@uiid/tokens/table.tokens.css";
+@import "@uiid/tokens/component/table.tokens.css";
 
 .table-cell {
   padding: var(--table-cell-padding-y) var(--table-cell-padding-x);

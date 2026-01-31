@@ -1,0 +1,230 @@
+{
+  "$description": "UIID Design System - Shade Scale Tokens",
+  "shade": {
+    "$type": "color",
+    "1": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.969, 0.969, 0.953],
+        "hex": "#f7f7f3"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.03
+        }
+      }
+    },
+    "2": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.929, 0.929, 0.914],
+        "hex": "#edede9"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.07
+        }
+      }
+    },
+    "3": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.882, 0.882, 0.871],
+        "hex": "#e1e1de"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.12
+        }
+      }
+    },
+    "4": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.827, 0.827, 0.812],
+        "hex": "#d3d3cf"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.18
+        }
+      }
+    },
+    "5": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.749, 0.749, 0.737],
+        "hex": "#bfbfbc"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.26
+        }
+      }
+    },
+    "6": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.655, 0.655, 0.647],
+        "hex": "#a7a7a5"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.36
+        }
+      }
+    },
+    "7": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.525, 0.525, 0.518],
+        "hex": "#868684"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.50
+        }
+      }
+    },
+    "8": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.412, 0.412, 0.404],
+        "hex": "#696967"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.62
+        }
+      }
+    },
+    "9": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.314, 0.314, 0.310],
+        "hex": "#50504f"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.72
+        }
+      }
+    },
+    "10": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.220, 0.220, 0.220],
+        "hex": "#383838"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.82
+        }
+      }
+    },
+    "11": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.145, 0.145, 0.145],
+        "hex": "#252525"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.90
+        }
+      }
+    },
+    "12": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.090, 0.090, 0.086],
+        "hex": "#171716"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "oklch",
+          "color1": "{shade.foreground}",
+          "color2": "{shade.background}",
+          "ratio": 0.96
+        }
+      }
+    },
+    "background": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.996, 0.996, 0.98],
+        "hex": "#fefefa"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "{color.white}",
+          "dark": "{color.black}"
+        }
+      }
+    },
+    "surface": { "$value": "{shade.4}" },
+    "accent": { "$value": "{shade.5}" },
+    "halftone": { "$value": "{shade.7}" },
+    "muted": { "$value": "{shade.9}" },
+    "foreground": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.051, 0.051, 0.051],
+        "hex": "#0d0d0d"
+      },
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "{color.black}",
+          "dark": "{color.white}"
+        }
+      }
+    }
+  }
+}

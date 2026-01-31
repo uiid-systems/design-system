@@ -1,4 +1,4 @@
-@import "@uiid/tokens/card.tokens.css";
+@import "@uiid/tokens/component/card.tokens.css";
 
 .card {
   position: relative;

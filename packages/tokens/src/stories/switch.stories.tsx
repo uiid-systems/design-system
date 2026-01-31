@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import switchTokens from "../json/switch.tokens.json";
+import switchTokens from "../json/component/switch.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens, filterByPathIncludes } from "./utilities";
 

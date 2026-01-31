@@ -1,22 +1,26 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import colorTokens from "../json/colors.tokens.json";
+import colorTokens from "../json/primitives/colors.tokens.json";
+import shadeTokens from "../json/semantic/shade.tokens.json";
+import toneTokens from "../json/semantic/tone.tokens.json";
 
-type Token = { $value: string; $type: string };
+type TokenValue = string | { colorSpace: string; components: number[]; hex: string };
+type Token = { $value: TokenValue; $type?: string };
 
 const extractTokens = (group: Record<string, Token | unknown>) =>
   Object.entries(group).reduce(
     (acc, [key, token]) => {
       if (key.startsWith("$")) return acc;
-      acc[key] = (token as Token).$value;
+      const val = (token as Token).$value;
+      acc[key] = typeof val === "object" && val !== null ? val.hex : val;
       return acc;
     },
     {} as Record<string, string>,
   );
 
 const COLORS = extractTokens(colorTokens.color);
-const SHADES = extractTokens(colorTokens.shade);
-const TONES = extractTokens(colorTokens.tone);
+const SHADES = extractTokens(shadeTokens.shade);
+const TONES = extractTokens(toneTokens.tone);
 
 const TONE_GROUPS = ["positive", "warning", "critical", "info"] as const;
 

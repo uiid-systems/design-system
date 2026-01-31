@@ -1,4 +1,4 @@
-@import "@uiid/tokens/tabs.tokens.css";
+@import "@uiid/tokens/component/tabs.tokens.css";
 
 .tabs-list {
   position: relative;

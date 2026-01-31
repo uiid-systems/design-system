@@ -1,4 +1,4 @@
-@import "@uiid/tokens/typography.tokens.css";
+@import "@uiid/tokens/primitives/typography.tokens.css";
 
 .text {
   text-box-trim: trim-both;

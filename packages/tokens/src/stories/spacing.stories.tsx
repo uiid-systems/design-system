@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import spacingTokens from "../json/spacing.tokens.json";
+import spacingTokens from "../json/primitives/spacing.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 

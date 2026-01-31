@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import globalsTokens from "../json/globals.tokens.json";
+import globalsTokens from "../json/semantic/globals.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens, filterByPathIncludes } from "./utilities";
 

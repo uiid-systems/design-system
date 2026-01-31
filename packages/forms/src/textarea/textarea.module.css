@@ -1,4 +1,4 @@
-@import "@uiid/tokens/forms.tokens.css";
+@import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
   background-color: var(--forms-background);

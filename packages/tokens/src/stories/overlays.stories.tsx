@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import overlaysTokens from "../json/overlays.tokens.json";
+import overlaysTokens from "../json/component/overlays.tokens.json";
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 

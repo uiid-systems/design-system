@@ -1,5 +1,4 @@
 {
-  "$schema": "https://design-tokens.github.io/community-group/format/",
   "$description": "UIID Design System - Switch Component Tokens",
   "switch": {
     "height": { "$value": "1.5rem", "$type": "dimension" },

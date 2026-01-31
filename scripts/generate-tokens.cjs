@@ -235,7 +235,7 @@ ${cssProperties.trimEnd()}
       if (this.isTokenValue(value)) {
         // This is a token with a $value
         const cssVarName = this.generateCssVariableName(prefix, key);
-        const cssValue = this.processCssValue(value.$value);
+        const cssValue = this.processCssValueForToken(value);
         css += `${indent}--${cssVarName}: ${cssValue};\n`;
       } else if (typeof value === "object" && value !== null) {
         // This is a nested object, recurse
@@ -272,7 +272,41 @@ ${cssProperties.trimEnd()}
   }
 
   /**
-   * Process CSS value, handling references and transformations
+   * Process a full token object for CSS output, checking for derive extensions
+   */
+  processCssValueForToken(token) {
+    const derive = token.$extensions?.["org.uiid.derive"];
+
+    if (derive) {
+      return this.processDeriveExtension(derive);
+    }
+
+    return this.processCssValue(token.$value);
+  }
+
+  /**
+   * Process org.uiid.derive extension into CSS
+   */
+  processDeriveExtension(derive) {
+    if (derive.method === "mix") {
+      const color1 = this.processCssValue(derive.color1);
+      const color2 = this.processCssValue(derive.color2);
+      const pct = Math.round((1 - derive.ratio) * 100);
+      return `color-mix(in ${derive.colorSpace}, ${color1}, ${color2} ${pct}%)`;
+    }
+
+    if (derive.method === "light-dark") {
+      const light = this.processCssValue(derive.light);
+      const dark = this.processCssValue(derive.dark);
+      return `light-dark(${light}, ${dark})`;
+    }
+
+    // Fallback: shouldn't happen
+    return "/* unknown derive method */";
+  }
+
+  /**
+   * Process CSS value, handling references, structured colors, and transformations
    */
   processCssValue(value) {
     if (typeof value === "string") {
@@ -283,7 +317,35 @@ ${cssProperties.trimEnd()}
       });
     }
 
+    // Handle structured color objects per Design Tokens Color Module
+    if (typeof value === "object" && value !== null && value.colorSpace) {
+      return this.colorObjectToCss(value);
+    }
+
     return String(value);
+  }
+
+  /**
+   * Convert a structured color object to a CSS color value
+   */
+  colorObjectToCss(color) {
+    const { colorSpace, components, alpha } = color;
+
+    if (colorSpace === "oklch") {
+      const [l, c, h] = components;
+      const alphaStr = alpha !== undefined && alpha !== 1 ? ` / ${alpha}` : "";
+      return `oklch(${l} ${c} ${h}${alphaStr})`;
+    }
+
+    // For srgb and other spaces, prefer hex fallback if available
+    if (color.hex) {
+      return color.hex;
+    }
+
+    // Generic CSS color() function fallback
+    const comps = components.join(" ");
+    const alphaStr = alpha !== undefined && alpha !== 1 ? ` / ${alpha}` : "";
+    return `color(${colorSpace} ${comps}${alphaStr})`;
   }
 
   /**
