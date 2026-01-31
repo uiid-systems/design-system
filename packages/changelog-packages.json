@@ -3,8 +3,28 @@
     "packageName": "@uiid/backgrounds",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -47,8 +67,34 @@
     "packageName": "@uiid/blocks",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [
             {
@@ -121,8 +167,53 @@
     "packageName": "@uiid/buttons",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            },
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -159,8 +250,28 @@
     "packageName": "@uiid/calendars",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -215,8 +326,53 @@
     "packageName": "@uiid/cards",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            },
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -260,8 +416,65 @@
     "packageName": "@uiid/forms",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Input-tooltip (#33)",
+              "raw": "feat: input-tooltip (#33)",
+              "semverType": "patch",
+              "pr": 33
+            },
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            },
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            },
+            {
+              "description": "Registry as source of truth (#34)",
+              "raw": "refactor: registry as source of truth (#34)",
+              "semverType": "patch",
+              "pr": 34
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -305,8 +518,28 @@
     "packageName": "@uiid/icons",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -343,8 +576,47 @@
     "packageName": "@uiid/indicators",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -388,8 +660,60 @@
     "packageName": "@uiid/interactive",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            },
+            {
+              "description": "Add resize, fix tabs width (#36)",
+              "raw": "feat: add resize, fix tabs width (#36)",
+              "semverType": "patch",
+              "pr": 36
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Test nags (#44)",
+              "raw": "fix: test nags (#44)",
+              "semverType": "patch",
+              "pr": 44
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [
             {
@@ -458,8 +782,41 @@
     "packageName": "@uiid/layout",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -515,8 +872,41 @@
     "packageName": "@uiid/lists",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -560,8 +950,35 @@
     "packageName": "@uiid/navigation",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -605,8 +1022,41 @@
     "packageName": "@uiid/overlays",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            },
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [
             {
@@ -673,8 +1123,35 @@
     "packageName": "@uiid/tables",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -718,8 +1195,53 @@
     "packageName": "@uiid/tokens",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Input-tooltip (#33)",
+              "raw": "feat: input-tooltip (#33)",
+              "semverType": "patch",
+              "pr": 33
+            },
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [
             {
@@ -800,8 +1322,53 @@
     "packageName": "@uiid/typography",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            },
+            {
+              "description": "Link component docs to builder (#35)",
+              "raw": "feat: link component docs to builder (#35)",
+              "semverType": "patch",
+              "pr": 35
+            }
+          ],
+          "fixes": [],
+          "refactors": [
+            {
+              "description": "Cleanup tokens (#45)",
+              "raw": "refactor: cleanup tokens (#45)",
+              "semverType": "patch",
+              "pr": 45
+            },
+            {
+              "description": "Tokens (#50)",
+              "raw": "refactor: tokens (#50)",
+              "semverType": "patch",
+              "pr": 50
+            },
+            {
+              "description": "Automate docs (#40)",
+              "raw": "refactor: automate docs (#40)",
+              "semverType": "patch",
+              "pr": 40
+            }
+          ],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [
             {
@@ -852,8 +1419,28 @@
     "packageName": "@uiid/utils",
     "entries": [
       {
+        "version": "0.0.3",
+        "date": "January 31, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add mdx support to docs, test on button (#37)",
+              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "semverType": "patch",
+              "pr": 37
+            }
+          ],
+          "fixes": [],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
         "version": "0.0.2",
-        "date": "January 20, 2026",
+        "date": "January 21, 2026",
         "changes": {
           "features": [],
           "fixes": [
