@@ -39,13 +39,6 @@ export default defineConfig({
       // Resolve @uiid/tokens/* CSS imports to source files
       // This uses a regex to match any .css file under @uiid/tokens/
       "@uiid/tokens": path.resolve(__dirname, "packages/tokens/src/css"),
-      // Force a single React instance across all packages to prevent
-      // dual-package issues when aliasing workspace packages to source
-      react: path.resolve(__dirname, "packages/forms/node_modules/react"),
-      "react-dom": path.resolve(
-        __dirname,
-        "packages/forms/node_modules/react-dom"
-      ),
     },
   },
   test: {
