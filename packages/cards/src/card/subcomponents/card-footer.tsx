@@ -4,7 +4,7 @@ import type { CardFooterProps } from "../card.types";
 
 export const CardFooter = ({ children, ...props }: CardFooterProps) => {
   return (
-    <Group data-slot="card-footer" gap={2} mt={8} fullwidth {...props}>
+    <Group data-slot="card-footer" gap={2} fullwidth {...props}>
       {children}
     </Group>
   );
