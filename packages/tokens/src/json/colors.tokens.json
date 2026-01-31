@@ -74,57 +74,57 @@
       "$type": "color"
     }
   },
-  "tones": {
+  "tone": {
     "positive": { "$value": "{color.green}", "$type": "color" },
     "positive-surface": {
-      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 75%)",
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.background} 75%)",
       "$type": "color"
     },
     "positive-border": {
-      "$value": "color-mix(in oklch, {tones.positive}, {shade.background} 60%)",
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.background} 60%)",
       "$type": "color"
     },
     "positive-foreground": {
-      "$value": "color-mix(in oklch, {tones.positive}, {shade.foreground} 60%)",
+      "$value": "color-mix(in oklch, {tone.positive}, {shade.foreground} 60%)",
       "$type": "color"
     },
     "warning": { "$value": "{color.yellow}", "$type": "color" },
     "warning-surface": {
-      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 75%)",
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.background} 75%)",
       "$type": "color"
     },
     "warning-border": {
-      "$value": "color-mix(in oklch, {tones.warning}, {shade.background} 60%)",
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.background} 60%)",
       "$type": "color"
     },
     "warning-foreground": {
-      "$value": "color-mix(in oklch, {tones.warning}, {shade.foreground} 60%)",
+      "$value": "color-mix(in oklch, {tone.warning}, {shade.foreground} 60%)",
       "$type": "color"
     },
     "critical": { "$value": "{color.red}", "$type": "color" },
     "critical-surface": {
-      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 75%)",
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.background} 75%)",
       "$type": "color"
     },
     "critical-border": {
-      "$value": "color-mix(in oklch, {tones.critical}, {shade.background} 60%)",
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.background} 60%)",
       "$type": "color"
     },
     "critical-foreground": {
-      "$value": "color-mix(in oklch, {tones.critical}, {shade.foreground} 60%)",
+      "$value": "color-mix(in oklch, {tone.critical}, {shade.foreground} 60%)",
       "$type": "color"
     },
     "info": { "$value": "{color.blue}", "$type": "color" },
     "info-surface": {
-      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 75%)",
+      "$value": "color-mix(in oklch, {tone.info}, {shade.background} 75%)",
       "$type": "color"
     },
     "info-border": {
-      "$value": "color-mix(in oklch, {tones.info}, {shade.background} 60%)",
+      "$value": "color-mix(in oklch, {tone.info}, {shade.background} 60%)",
       "$type": "color"
     },
     "info-foreground": {
-      "$value": "color-mix(in oklch, {tones.info}, {shade.foreground} 60%)",
+      "$value": "color-mix(in oklch, {tone.info}, {shade.foreground} 60%)",
       "$type": "color"
     }
   }

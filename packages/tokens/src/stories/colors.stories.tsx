@@ -16,7 +16,7 @@ const extractTokens = (group: Record<string, Token | unknown>) =>
 
 const COLORS = extractTokens(colorTokens.color);
 const SHADES = extractTokens(colorTokens.shade);
-const TONES = extractTokens(colorTokens.tones);
+const TONES = extractTokens(colorTokens.tone);
 
 const TONE_GROUPS = ["positive", "warning", "critical", "info"] as const;
 
@@ -154,7 +154,7 @@ export const Colors: Story = {
                   <Swatch
                     key={name}
                     name={suffix || "base"}
-                    cssVar={`tones-${name}`}
+                    cssVar={`tone-${name}`}
                   />
                 );
               })}

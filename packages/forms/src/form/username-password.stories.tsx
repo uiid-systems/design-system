@@ -255,7 +255,7 @@ const Fields = ({ errorType = "inline" }: Pick<FieldProps, "errorType">) => (
 const SuccessMessage = () => (
   <p
     style={{
-      color: "var(--tones-positive)",
+      color: "var(--tone-positive)",
       margin: 0,
       textAlign: "center",
     }}

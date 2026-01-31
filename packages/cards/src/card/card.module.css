@@ -47,22 +47,22 @@
 }
 
 .tone-info {
-  background-color: var(--tones-info);
+  background-color: var(--tone-info);
   color: var(--black);
 }
 
 .tone-warning {
-  background-color: var(--tones-warning);
+  background-color: var(--tone-warning);
   color: var(--black);
 }
 
 .tone-critical {
-  background-color: var(--tones-critical);
+  background-color: var(--tone-critical);
   color: var(--black);
 }
 
 .tone-positive {
-  background-color: var(--tones-positive);
+  background-color: var(--tone-positive);
   color: var(--black);
 }
 
