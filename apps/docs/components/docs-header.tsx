@@ -10,6 +10,7 @@ import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
 
 import { fromSlug, urls } from "@/constants/urls";
+import { NPM_URL } from "@/constants";
 
 type BreadcrumbItem = {
   label: string;
@@ -61,7 +62,12 @@ export const DocsHeader = () => {
     >
       <Breadcrumbs items={breadcrumbItems} />
       <Group gap={2} ay="center">
-        <Button size="xsmall" ghost render={<Link href={urls.home()} />}>
+        <Button
+          size="xsmall"
+          ghost
+          render={<Link href={NPM_URL} target="_blank" />}
+          nativeButton={false}
+        >
           <SiNpm />
           v0.0.3
         </Button>

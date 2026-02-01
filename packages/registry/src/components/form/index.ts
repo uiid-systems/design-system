@@ -16,8 +16,7 @@ export const FormEntry: ComponentEntry<typeof FormPropsSchema> = {
   package: "@uiid/forms",
   hasChildren: true,
   propsSchema: FormPropsSchema,
-  description:
-    "Form container with built-in validation support. Uses display:contents so wrap children in a Stack for layout. Fields with required/pattern attributes validate on submit.",
+  description: "Form container with built-in validation support.",
   category: "forms",
   defaults: {},
   usage:
