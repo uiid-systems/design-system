@@ -21,7 +21,7 @@ export const RenderedJson = ({
       <CodeEditor
         language="json"
         filename="ui-tree.json"
-        rows={20}
+        rows={24}
         {...props}
       />
       {parseError && <Text tone="critical">Parse Error: {parseError}</Text>}

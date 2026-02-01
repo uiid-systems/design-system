@@ -44,6 +44,9 @@ export const RenderedSheet = ({
     >
       <Tabs
         evenly
+        keepMounted
+        RootProps={{ fullwidth: true, ax: "stretch" }}
+        ContainerProps={{ pt: 4 }}
         items={[
           {
             label: "JSON",
@@ -57,9 +60,12 @@ export const RenderedSheet = ({
               />
             ),
           },
-          { label: "JSX", value: "jsx", render: <RenderedJsx code={code} /> },
+          {
+            label: "JSX",
+            value: "jsx",
+            render: <RenderedJsx code={code} style={{ width: "100%" }} />,
+          },
         ]}
-        keepMounted
       />
     </Sheet>
   );
