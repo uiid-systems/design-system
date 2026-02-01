@@ -21,7 +21,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@icons-pack/react-simple-icons": "^12.6.0",
+    "@icons-pack/react-simple-icons": "^13.8.0",
     "@uiid/backgrounds": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",
@@ -44,11 +44,11 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@storybook/react-vite": "^10.1.10",
+    "@storybook/react-vite": "^10.2.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "typescript": "~5.8.3",
-    "vite": "^7.1.11",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1",
     "vite-plugin-dts": "^4.3.0"
   }
 }
