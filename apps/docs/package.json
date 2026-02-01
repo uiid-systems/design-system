@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",
-    "@shikijs/rehype": "^3.21.0",
+    "@shikijs/rehype": "^3.22.0",
     "@uiid/backgrounds": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",
@@ -36,11 +36,11 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^20.19.30",
+    "@types/node": "^25.1.0",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
-    "eslint-config-next": "16.0.1",
+    "eslint-config-next": "16.1.6",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }
