@@ -8,11 +8,11 @@ export const ChatSidebarHeader = () => {
       gap={4}
       ax="space-between"
       ay="center"
-      p={4}
-      style={{ borderBottom: "1px solid var(--globals-border-color)" }}
+      py={8}
+      px={4}
     >
       <Text size={3} weight="bold">
-        uiid + json-render
+        uiid playground
       </Text>
     </Group>
   );

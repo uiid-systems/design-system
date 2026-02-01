@@ -1,7 +1,10 @@
 "use client";
 
+import { SiNpm } from "@icons-pack/react-simple-icons";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Button } from "@uiid/buttons";
 import { Home } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
@@ -49,13 +52,20 @@ export const DocsHeader = () => {
   return (
     <Group
       ay="center"
+      ax="space-between"
+      fullwidth
       gap={4}
       p={4}
-      fullwidth
       bb={1}
       className="sticky top-0 bg-(--shade-background) z-10"
     >
       <Breadcrumbs items={breadcrumbItems} />
+      <Group gap={2} ay="center">
+        <Button size="xsmall" ghost render={<Link href={urls.home()} />}>
+          <SiNpm />
+          v0.0.3
+        </Button>
+      </Group>
     </Group>
   );
 };

@@ -8,6 +8,7 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   padding: var(--globals-padding-y) var(--globals-padding-x);
   box-shadow: var(--globals-box-shadow);
+  transition: var(--globals-transition-timing);
 
   font-size: var(--typography-text-0-size);
   line-height: var(--typography-text-0-lineHeight);

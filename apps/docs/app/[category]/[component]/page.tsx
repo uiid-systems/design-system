@@ -65,6 +65,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
     return (
       <MdxContent
         name={entry.name}
+        description={entry.description}
         packageName={entry.package}
         category={category}
         previews={previews}

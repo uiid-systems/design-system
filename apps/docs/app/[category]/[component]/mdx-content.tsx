@@ -7,6 +7,7 @@ import { PreviewProvider } from "@/components/preview-context";
 
 interface MdxContentProps {
   name: string;
+  description?: string;
   packageName: string;
   category: string;
   previews?: PreviewConfig[];
@@ -19,6 +20,7 @@ interface MdxContentProps {
  */
 export function MdxContent({
   name,
+  description,
   packageName,
   category,
   previews,
@@ -29,6 +31,7 @@ export function MdxContent({
       <PreviewProvider previews={previews ?? []}>
         <ComponentDetailsHeader
           name={name}
+          description={description}
           packageName={packageName}
           category={category}
           previews={previews}

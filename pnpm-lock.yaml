@@ -179,7 +179,98 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  apps/json-render:
+  apps/next-16:
+    dependencies:
+      '@icons-pack/react-simple-icons':
+        specifier: ^13.8.0
+        version: 13.8.0(react@19.2.3)
+      '@uiid/backgrounds':
+        specifier: workspace:*
+        version: link:../../packages/backgrounds
+      '@uiid/buttons':
+        specifier: workspace:*
+        version: link:../../packages/buttons
+      '@uiid/calendars':
+        specifier: workspace:*
+        version: link:../../packages/calendars
+      '@uiid/cards':
+        specifier: workspace:*
+        version: link:../../packages/cards
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
+      '@uiid/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@uiid/indicators':
+        specifier: workspace:*
+        version: link:../../packages/indicators
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../../packages/interactive
+      '@uiid/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
+      '@uiid/lists':
+        specifier: workspace:*
+        version: link:../../packages/lists
+      '@uiid/navigation':
+        specifier: workspace:*
+        version: link:../../packages/navigation
+      '@uiid/overlays':
+        specifier: workspace:*
+        version: link:../../packages/overlays
+      '@uiid/tables':
+        specifier: workspace:*
+        version: link:../../packages/tables
+      '@uiid/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
+      '@uiid/typography':
+        specifier: workspace:*
+        version: link:../../packages/typography
+      '@uiid/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      next:
+        specifier: ^16.1.5
+        version: 16.1.5(@babel/core@7.28.6)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4.1.18
+        version: 4.1.18
+      '@types/node':
+        specifier: ^20.19.30
+        version: 20.19.30
+      '@types/react':
+        specifier: ^19.2.8
+        version: 19.2.8
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.8)
+      baseline-browser-mapping:
+        specifier: ^2.9.15
+        version: 2.9.15
+      eslint:
+        specifier: ^9.39.2
+        version: 9.39.2(jiti@2.6.1)
+      eslint-config-next:
+        specifier: 16.0.1
+        version: 16.0.1(@typescript-eslint/parser@8.46.3(eslint@9.36.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.1.18
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  apps/playground:
     dependencies:
       '@ai-sdk/anthropic':
         specifier: ^1.2.12
@@ -272,97 +363,6 @@ importers:
       eslint-config-next:
         specifier: 16.0.1
         version: 16.0.1(@typescript-eslint/parser@8.46.3(eslint@9.36.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  apps/next-16:
-    dependencies:
-      '@icons-pack/react-simple-icons':
-        specifier: ^13.8.0
-        version: 13.8.0(react@19.2.3)
-      '@uiid/backgrounds':
-        specifier: workspace:*
-        version: link:../../packages/backgrounds
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../../packages/buttons
-      '@uiid/calendars':
-        specifier: workspace:*
-        version: link:../../packages/calendars
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../../packages/cards
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../../packages/forms
-      '@uiid/icons':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@uiid/indicators':
-        specifier: workspace:*
-        version: link:../../packages/indicators
-      '@uiid/interactive':
-        specifier: workspace:*
-        version: link:../../packages/interactive
-      '@uiid/layout':
-        specifier: workspace:*
-        version: link:../../packages/layout
-      '@uiid/lists':
-        specifier: workspace:*
-        version: link:../../packages/lists
-      '@uiid/navigation':
-        specifier: workspace:*
-        version: link:../../packages/navigation
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../../packages/overlays
-      '@uiid/tables':
-        specifier: workspace:*
-        version: link:../../packages/tables
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../../packages/tokens
-      '@uiid/typography':
-        specifier: workspace:*
-        version: link:../../packages/typography
-      '@uiid/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
-      next:
-        specifier: ^16.1.5
-        version: 16.1.5(@babel/core@7.28.6)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
-    devDependencies:
-      '@tailwindcss/postcss':
-        specifier: ^4.1.18
-        version: 4.1.18
-      '@types/node':
-        specifier: ^20.19.30
-        version: 20.19.30
-      '@types/react':
-        specifier: ^19.2.8
-        version: 19.2.8
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.8)
-      baseline-browser-mapping:
-        specifier: ^2.9.15
-        version: 2.9.15
-      eslint:
-        specifier: ^9.39.2
-        version: 9.39.2(jiti@2.6.1)
-      eslint-config-next:
-        specifier: 16.0.1
-        version: 16.0.1(@typescript-eslint/parser@8.46.3(eslint@9.36.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      tailwindcss:
-        specifier: ^4.1.18
-        version: 4.1.18
       typescript:
         specifier: ^5.9.3
         version: 5.9.3

@@ -35,8 +35,8 @@ export const RenderedSheet = ({
           tooltip={triggerText}
           disabled={!code && !jsonValue}
           size="small"
+          square
         >
-          {triggerText}
           <CodeIcon />
         </Button>
       }

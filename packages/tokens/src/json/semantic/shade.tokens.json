@@ -203,8 +203,8 @@
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
-          "light": "{color.white}",
-          "dark": "{color.black}"
+          "light": "{theme.white}",
+          "dark": "{theme.black}"
         }
       }
     },
@@ -221,8 +221,8 @@
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
-          "light": "{color.black}",
-          "dark": "{color.white}"
+          "light": "{theme.black}",
+          "dark": "{theme.white}"
         }
       }
     }

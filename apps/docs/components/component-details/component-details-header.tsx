@@ -48,47 +48,47 @@ export function ComponentDetailsHeader({
   const githubUrl = `${GITHUB_URL}/tree/main/packages/${packageFolder}/src/${componentSlug}`;
 
   return (
-    <Group ax="space-between" ay="start" gap={4} fullwidth>
-      <Stack gap={6} ax="stretch">
+    <Group ax="space-between" gap={16} pt={4} pb={8} bb={1} fullwidth>
+      <Stack gap={8} ax="stretch">
         <Text render={<h1 />} size={6} weight="bold">
           {name}
         </Text>
         {description && (
-          <Text shade="muted" size={1}>
+          <Text shade="muted" size={1} balance>
             {description}
           </Text>
         )}
       </Stack>
 
-      <Group gap={2} ay="center">
+      <Stack gap={2} ax="end">
         <Button
-          tooltip="Open in Playground"
+          ghost
           size="small"
           nativeButton={false}
-          square
           render={<Link href={builderUrl} target="_blank" />}
         >
+          Open&nbsp;in&nbsp;Playground
           <Blocks />
         </Button>
         <Button
-          tooltip="Open in Storybook"
+          ghost
           size="small"
           nativeButton={false}
-          square
           render={<Link href={storybookUrl} target="_blank" />}
         >
+          Open in Storybook
           <SiStorybook />
         </Button>
         <Button
-          tooltip="Open in GitHub"
+          ghost
           size="small"
           nativeButton={false}
-          square
           render={<Link href={githubUrl} target="_blank" />}
         >
+          Open in GitHub
           <SiGithub />
         </Button>
-      </Group>
+      </Stack>
     </Group>
   );
 }

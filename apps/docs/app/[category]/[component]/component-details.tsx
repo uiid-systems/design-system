@@ -52,25 +52,19 @@ export function ComponentDetails({
 
         {/* Preview Section — tree-based if available, otherwise legacy component */}
         {previews && previews.length > 0 ? (
-          <>
-            <Separator />
-            <Stack id="preview" gap={4} ax="stretch" fullwidth>
-              <Header>Preview</Header>
-              <ComponentDetailsPreview>
-                <TreePreviewList previews={previews} />
-              </ComponentDetailsPreview>
-            </Stack>
-          </>
+          <Stack id="preview" gap={4} ax="stretch" fullwidth>
+            <Header>Preview</Header>
+            <ComponentDetailsPreview>
+              <TreePreviewList previews={previews} />
+            </ComponentDetailsPreview>
+          </Stack>
         ) : PreviewComponent ? (
-          <>
-            <Separator />
-            <Stack id="preview" gap={4} ax="stretch" fullwidth>
-              <Header>Preview</Header>
-              <ComponentDetailsPreview>
-                <PreviewComponent />
-              </ComponentDetailsPreview>
-            </Stack>
-          </>
+          <Stack id="preview" gap={4} ax="stretch" fullwidth>
+            <Header>Preview</Header>
+            <ComponentDetailsPreview>
+              <PreviewComponent />
+            </ComponentDetailsPreview>
+          </Stack>
         ) : null}
 
         {/* Props Section */}

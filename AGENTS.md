@@ -19,7 +19,7 @@ UIID is a modular React component library built with:
 ```
 design-system/
 ├── apps/                    # Consumer applications
-│   ├── json-render/         # AI-powered UI generator (has its own AGENTS.md)
+│   ├── playground/          # AI-powered UI generator (has its own AGENTS.md)
 │   └── storybook/           # Component documentation
 ├── packages/                # Component packages (@uiid/*)
 │   ├── buttons/
@@ -46,9 +46,9 @@ design-system/
 
 ## Apps
 
-### json-render (`apps/json-render/`)
+### Playground (`apps/playground/`)
 
-An AI-powered playground that generates UIs from natural language using a JSON tree structure and UIID components. When working on this app, refer to its own `apps/json-render/AGENTS.md` for JSON tree format, available components, and layout patterns specific to tree generation.
+An AI-powered playground that generates UIs from natural language using a JSON tree structure and UIID components. When working on this app, refer to its own `apps/playground/AGENTS.md` for JSON tree format, available components, and layout patterns specific to tree generation.
 
 ### Storybook (`apps/storybook/`)
 

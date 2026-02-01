@@ -49,7 +49,7 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   hasChildren: true,
   propsSchema: ButtonPropsSchema,
   description:
-    "Primary action button with multiple size, variant, and tone options",
+    "Primary action button with multiple size, variant, and tone options.",
   category: "buttons",
   defaults: {
     size: "medium",
