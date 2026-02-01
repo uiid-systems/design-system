@@ -26,12 +26,13 @@ export function MdxContent({
 }: MdxContentProps) {
   return (
     <Stack data-slot="mdx-content" gap={6} p={8} pb={32} fullwidth>
-      <ComponentDetailsHeader
-        name={name}
-        packageName={packageName}
-        category={category}
-      />
       <PreviewProvider previews={previews ?? []}>
+        <ComponentDetailsHeader
+          name={name}
+          packageName={packageName}
+          category={category}
+          previews={previews}
+        />
         <article className="prose">{children}</article>
       </PreviewProvider>
     </Stack>
