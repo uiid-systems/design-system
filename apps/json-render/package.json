@@ -18,6 +18,7 @@
     "@uiid/code": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/lists": "workspace:*",

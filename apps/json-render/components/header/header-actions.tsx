@@ -4,7 +4,7 @@ import type { UITree } from "@json-render/core";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
-import { RefreshCwIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
+import { SaveIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
 import { useChatStore } from "@/lib/store";
@@ -81,20 +81,22 @@ export const HeaderActions = () => {
     <Group data-slot="header-actions" gap={2} p={2} ax="end">
       <Button
         data-slot="header-actions-clear"
+        tooltip="Save progress"
         size="small"
+        square
         onClick={clearSelection}
         disabled={messages.length === 0 && !tree && !component}
       >
-        Start over
-        <RefreshCwIcon />
+        <SaveIcon />
       </Button>
       <Button
         data-slot="header-actions-share"
+        tooltip={copied ? "Link copied!" : "Copy link"}
         size="small"
+        square
         onClick={handleShare}
         disabled={!tree || copied}
       >
-        {copied ? "Link copied!" : "Copy link"}
         {copied ? <SquareCheckIcon /> : <CopyIcon />}
       </Button>
       <RenderedSheet

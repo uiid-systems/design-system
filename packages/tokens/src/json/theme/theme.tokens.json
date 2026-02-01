@@ -1,7 +1,7 @@
 {
   "$description": "UIID Design System - Theme Tokens",
   "theme": {
-    "primary": { "$value": "{color.green}", "$type": "color" },
+    "primary": { "$value": "{color.red}", "$type": "color" },
     "secondary": { "$value": "#6F00FF", "$type": "color" }
   }
 }
