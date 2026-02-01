@@ -22,7 +22,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@base-ui/react": "1.0.0",
+    "@base-ui/react": "1.1.0",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
