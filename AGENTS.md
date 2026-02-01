@@ -925,6 +925,20 @@ export * from "./{component}/subcomponents"; // if applicable
 | Lint                 | `pnpm run lint`                           |
 | Format               | `pnpm run format`                         |
 
+## Known Bugs
+
+### `@base-ui/react` — Controlled RadioGroup causes stack overflow
+
+**Status:** Open (upstream bug)
+**Affected tests:**
+
+- `packages/forms/src/radio/radio.test.tsx` — "supports controlled value" (skipped)
+- `packages/forms/src/radio-group/radio-group.test.tsx` — "supports controlled value" (skipped)
+
+**Description:** When using `RadioGroup` as a controlled component (passing `value` + `onValueChange`), clicking a radio button triggers infinite recursion in base-ui's `useStableCallback` trampoline (`@base-ui/utils`). The call chain is: `RadioRoot.onChange` -> `setCheckedValue` (trampoline) -> `onValueChange` (trampoline) -> user callback calls `setValue` -> re-render -> change fires again -> stack overflow. React catches the error, so `onValueChange` is never actually invoked (0 calls).
+
+This affects `@base-ui/react` versions 1.0.0 and 1.1.0. The tests are valid controlled-component patterns and should be unskipped once the upstream bug is resolved. Uncontrolled usage (no `value` prop) works fine.
+
 ## Public Release Roadmap
 
 This section tracks the system-level improvements needed to prepare UIID for public release. These are long-term goals that should be addressed incrementally.
