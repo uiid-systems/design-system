@@ -209,7 +209,7 @@
       }
     },
     "surface": { "$value": "{shade.2}" },
-    "accent": { "$value": "{shade.4}" },
+    "accent": { "$value": "{shade.3}" },
     "halftone": { "$value": "{shade.7}" },
     "muted": { "$value": "{shade.9}" },
     "foreground": {

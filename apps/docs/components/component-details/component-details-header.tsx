@@ -60,7 +60,7 @@ export function ComponentDetailsHeader({
         )}
       </Stack>
 
-      <Stack gap={2} ax="end">
+      <Stack gap={1} ax="end">
         <Button
           ghost
           size="small"
