@@ -25,7 +25,7 @@ export const DrawerPropsSchema = z.object({
   /** Default open state */
   defaultOpen: z.boolean().optional(),
   /** Open state change callback */
-  onOpenChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onOpenChange: z.function().input(z.tuple([z.boolean()])).output(z.void()).optional(),
   /** Root drawer props */
   RootProps: z.any().optional(),
   /** Trigger props */

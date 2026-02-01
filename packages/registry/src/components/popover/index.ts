@@ -24,7 +24,7 @@ export const PopoverPropsSchema = z.object({
   /** Controlled open state */
   open: z.boolean().optional(),
   /** Open state change callback */
-  onOpenChange: z.function().args(z.boolean()).returns(z.void()).optional(),
+  onOpenChange: z.function().input(z.tuple([z.boolean()])).output(z.void()).optional(),
   /** Root popover props */
   RootProps: z.any().optional(),
   /** Trigger props */

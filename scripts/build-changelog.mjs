@@ -348,7 +348,6 @@ function hasChanges(entry) {
 // Main function to build changelog data
 function buildChangelogData() {
   const packages = [
-    { name: "@uiid/backgrounds", path: "packages/backgrounds/CHANGELOG.md" },
     { name: "@uiid/blocks", path: "packages/blocks/CHANGELOG.md" },
     { name: "@uiid/buttons", path: "packages/buttons/CHANGELOG.md" },
     { name: "@uiid/calendars", path: "packages/calendars/CHANGELOG.md" },

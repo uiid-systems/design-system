@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -22,6 +22,7 @@ export const DraggableEvent = ({
   "aria-hidden": ariaHidden,
 }: DraggableEventProps) => {
   const elementRef = useRef<HTMLDivElement>(null);
+  const [elementHeight, setElementHeight] = useState<number | null>(null);
   const [dragHandlePosition, setDragHandlePosition] = useState<Omit<
     DragHandlePosition,
     "data"
@@ -33,7 +34,7 @@ export const DraggableEvent = ({
       data: {
         event,
         view,
-        height: height || elementRef.current?.offsetHeight || null,
+        height: height || elementHeight || null,
         dragHandlePosition,
         isFirstDay,
         isLastDay,
@@ -45,9 +46,16 @@ export const DraggableEvent = ({
     (node: HTMLDivElement | null) => {
       setNodeRef(node);
       elementRef.current = node;
+      setElementHeight(node?.offsetHeight ?? null);
     },
     [setNodeRef],
   );
+
+  useEffect(() => {
+    if (elementRef.current) {
+      setElementHeight(elementRef.current.offsetHeight);
+    }
+  }, [height]);
 
   // Track where on the event the user clicked/touched
   const updateDragHandlePosition = (clientX: number, clientY: number) => {

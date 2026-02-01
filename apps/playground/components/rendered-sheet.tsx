@@ -36,6 +36,7 @@ export const RenderedSheet = ({
           disabled={!code && !jsonValue}
           size="small"
           square
+          ghost
         >
           <CodeIcon />
         </Button>

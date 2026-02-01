@@ -4,7 +4,6 @@
   "commit": false,
   "fixed": [
     [
-      "@uiid/backgrounds",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",

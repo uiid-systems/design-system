@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelGroup } from "react-resizable-panels";
+import { Group } from "react-resizable-panels";
 import { cx } from "@uiid/utils";
 
 import type { ResizableProps } from "./resizable.types";
@@ -13,15 +13,15 @@ export const Resizable = ({
   ...props
 }: ResizableProps) => {
   return (
-    <PanelGroup
+    <Group
       data-slot="resizable"
       data-direction={direction}
-      direction={direction}
+      orientation={direction}
       className={cx(styles["resizable"], className)}
       {...props}
     >
       {children}
-    </PanelGroup>
+    </Group>
   );
 };
 Resizable.displayName = "Resizable";

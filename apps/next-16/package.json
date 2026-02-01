@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",
-    "@uiid/backgrounds": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",
     "@uiid/cards": "workspace:*",

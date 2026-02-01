@@ -4,22 +4,21 @@ import type { UITree } from "@json-render/core";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
-import { SaveIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
+import { CopyIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 
 import { useChatStore } from "@/lib/store";
-import { useComponentLoader } from "@/lib/use-component-loader";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
 import { RenderedSheet } from "../rendered-sheet";
 
+import { NewChatButton } from "../new-chat-button";
+import { SaveButton } from "../save-button";
+
 export const HeaderActions = () => {
-  const messages = useChatStore((s) => s.messages);
   const tree = useChatStore((s) => s.tree);
   const setTree = useChatStore((s) => s.setTree);
   const getShareUrl = useChatStore((s) => s.getShareUrl);
-
-  const { clearSelection, component } = useComponentLoader();
 
   const lastTreeRef = useRef<UITree | null>(null);
 
@@ -78,35 +77,29 @@ export const HeaderActions = () => {
   }, [tree]);
 
   return (
-    <Group data-slot="header-actions" gap={2} p={2} ax="end">
-      <Button
-        data-slot="header-actions-clear"
-        tooltip="Save progress"
-        size="small"
-        square
-        onClick={clearSelection}
-        disabled={messages.length === 0 && !tree && !component}
-      >
-        <SaveIcon />
-      </Button>
+    <Group data-slot="header-actions" ax="center" fullwidth gap={2} p={2}>
+      <NewChatButton />
+
       <Button
         data-slot="header-actions-share"
         tooltip={copied ? "Link copied!" : "Copy link"}
         size="small"
         square
+        ghost
         onClick={handleShare}
         disabled={!tree || copied}
       >
         {copied ? <SquareCheckIcon /> : <CopyIcon />}
       </Button>
-      <RenderedSheet
-        code={jsxCode}
-        jsonValue={jsonInput}
-        onJsonChange={setJsonInput}
-        parseError={parseError}
-        onApply={handleParseJson}
-        triggerText="View code"
-      />
+      <SaveButton />
+      {/* <RenderedSheet
+          code={jsxCode}
+          jsonValue={jsonInput}
+          onJsonChange={setJsonInput}
+          parseError={parseError}
+          onApply={handleParseJson}
+          triggerText="View code"
+        /> */}
     </Group>
   );
 };

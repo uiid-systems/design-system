@@ -9,20 +9,20 @@ import type {
 /**
  * Get the TypeScript type representation from a Zod schema.
  */
-function getTypeFromSchema(schema: z.ZodTypeAny): string {
+function getTypeFromSchema(schema: z.ZodType): string {
   // Handle optional wrapper first
   if (schema instanceof z.ZodOptional) {
-    return getTypeFromSchema(schema.unwrap());
+    return getTypeFromSchema(schema.unwrap() as z.ZodTypeAny);
   }
 
   // Handle nullable wrapper
   if (schema instanceof z.ZodNullable) {
-    return `${getTypeFromSchema(schema.unwrap())} | null`;
+    return `${getTypeFromSchema(schema.unwrap() as z.ZodTypeAny)} | null`;
   }
 
   // Handle default wrapper
   if (schema instanceof z.ZodDefault) {
-    return getTypeFromSchema(schema._def.innerType);
+    return getTypeFromSchema(schema.unwrap() as z.ZodTypeAny);
   }
 
   // Primitive types
@@ -41,18 +41,14 @@ function getTypeFromSchema(schema: z.ZodTypeAny): string {
 
   // Enum types
   if (schema instanceof z.ZodEnum) {
-    const values = schema._def.values as string[];
+    const values = schema.options as string[];
     return values.map((v) => `"${v}"`).join(" | ");
-  }
-
-  // Native enum
-  if (schema instanceof z.ZodNativeEnum) {
-    return "enum";
   }
 
   // Literal types
   if (schema instanceof z.ZodLiteral) {
-    const value = schema._def.value;
+    const values = schema.def.values as unknown[];
+    const value = values[0];
     if (typeof value === "string") return `"${value}"`;
     if (typeof value === "number") return String(value);
     if (typeof value === "boolean") return String(value);
@@ -61,13 +57,13 @@ function getTypeFromSchema(schema: z.ZodTypeAny): string {
 
   // Union types
   if (schema instanceof z.ZodUnion) {
-    const options = schema._def.options as z.ZodTypeAny[];
+    const options = schema.def.options as z.ZodType[];
     return options.map((opt) => getTypeFromSchema(opt)).join(" | ");
   }
 
   // Array types
   if (schema instanceof z.ZodArray) {
-    const elementType = getTypeFromSchema(schema._def.type);
+    const elementType = getTypeFromSchema(schema.element as z.ZodTypeAny);
     return `${elementType}[]`;
   }
 
@@ -78,13 +74,13 @@ function getTypeFromSchema(schema: z.ZodTypeAny): string {
 
   // Record types
   if (schema instanceof z.ZodRecord) {
-    const valueType = getTypeFromSchema(schema._def.valueType);
+    const valueType = getTypeFromSchema(schema.valueType as z.ZodTypeAny);
     return `Record<string, ${valueType}>`;
   }
 
   // Tuple types
   if (schema instanceof z.ZodTuple) {
-    const items = schema._def.items as z.ZodTypeAny[];
+    const items = schema.def.items as z.ZodType[];
     return `[${items.map((item) => getTypeFromSchema(item)).join(", ")}]`;
   }
 
@@ -95,17 +91,12 @@ function getTypeFromSchema(schema: z.ZodTypeAny): string {
 
   // Promise types
   if (schema instanceof z.ZodPromise) {
-    return `Promise<${getTypeFromSchema(schema._def.type)}>`;
+    return `Promise<${getTypeFromSchema(schema.unwrap() as z.ZodTypeAny)}>`;
   }
 
   // Lazy types
   if (schema instanceof z.ZodLazy) {
     return "lazy";
-  }
-
-  // Effects (refinements, transforms, etc.)
-  if (schema instanceof z.ZodEffects) {
-    return getTypeFromSchema(schema._def.schema);
   }
 
   return "unknown";
@@ -114,30 +105,30 @@ function getTypeFromSchema(schema: z.ZodTypeAny): string {
 /**
  * Get enum values from a Zod enum schema.
  */
-function getEnumValues(schema: z.ZodTypeAny): string[] | undefined {
+function getEnumValues(schema: z.ZodType): string[] | undefined {
   // Unwrap optional/nullable/default
   if (schema instanceof z.ZodOptional) {
-    return getEnumValues(schema.unwrap());
+    return getEnumValues(schema.unwrap() as z.ZodTypeAny);
   }
   if (schema instanceof z.ZodNullable) {
-    return getEnumValues(schema.unwrap());
+    return getEnumValues(schema.unwrap() as z.ZodTypeAny);
   }
   if (schema instanceof z.ZodDefault) {
-    return getEnumValues(schema._def.innerType);
+    return getEnumValues(schema.unwrap() as z.ZodTypeAny);
   }
 
   if (schema instanceof z.ZodEnum) {
-    return schema._def.values as string[];
+    return schema.options as string[];
   }
 
   // Check if it's a union of literals (common pattern)
   if (schema instanceof z.ZodUnion) {
-    const options = schema._def.options as z.ZodTypeAny[];
+    const options = schema.def.options as z.ZodType[];
     const allLiterals = options.every((opt) => opt instanceof z.ZodLiteral);
     if (allLiterals) {
       return options.map((opt) => {
-        const val = (opt as z.ZodLiteral<unknown>)._def.value;
-        return String(val);
+        const values = (opt as z.ZodLiteral<unknown>).def.values as unknown[];
+        return String(values[0]);
       });
     }
   }
@@ -148,14 +139,14 @@ function getEnumValues(schema: z.ZodTypeAny): string[] | undefined {
 /**
  * Check if a schema field is required (not optional).
  */
-function isRequired(schema: z.ZodTypeAny): boolean {
+function isRequired(schema: z.ZodType): boolean {
   return !(schema instanceof z.ZodOptional);
 }
 
 /**
  * Get the description from a Zod schema (from .describe()).
  */
-function getDescription(schema: z.ZodTypeAny): string | undefined {
+function getDescription(schema: z.ZodType): string | undefined {
   return schema.description;
 }
 
@@ -163,11 +154,11 @@ function getDescription(schema: z.ZodTypeAny): string | undefined {
  * Extract prop documentation from a Zod object schema.
  */
 export function extractPropsFromSchema(
-  schema: z.ZodTypeAny,
+  schema: z.ZodType,
   defaults?: Record<string, unknown>
 ): PropDocumentation[] {
   // Unwrap any wrappers to get to the object
-  let objectSchema = schema;
+  let objectSchema: z.ZodTypeAny = schema;
   if (objectSchema instanceof z.ZodOptional) {
     objectSchema = objectSchema.unwrap();
   }
@@ -175,17 +166,14 @@ export function extractPropsFromSchema(
     objectSchema = objectSchema.unwrap();
   }
   if (objectSchema instanceof z.ZodDefault) {
-    objectSchema = objectSchema._def.innerType;
-  }
-  if (objectSchema instanceof z.ZodEffects) {
-    objectSchema = objectSchema._def.schema;
+    objectSchema = objectSchema.unwrap();
   }
 
   if (!(objectSchema instanceof z.ZodObject)) {
     return [];
   }
 
-  const shape = objectSchema.shape as Record<string, z.ZodTypeAny>;
+  const shape = objectSchema.shape as Record<string, z.ZodType>;
   const props: PropDocumentation[] = [];
 
   for (const [name, propSchema] of Object.entries(shape)) {

@@ -3,7 +3,6 @@
     "version": "0.0.3",
     "date": "January 31, 2026",
     "packages": [
-      "@uiid/backgrounds",
       "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
@@ -29,8 +28,7 @@
           "semverType": "patch",
           "pr": 37,
           "packages": [
-            "@uiid/backgrounds",
-            "@uiid/blocks",
+                  "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -165,7 +163,6 @@
     "version": "0.0.2",
     "date": "January 21, 2026",
     "packages": [
-      "@uiid/backgrounds",
       "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
@@ -252,8 +249,7 @@
           "semverType": "patch",
           "pr": 20,
           "packages": [
-            "@uiid/backgrounds",
-            "@uiid/blocks",
+                  "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -312,7 +308,6 @@
     "version": "0.0.1",
     "date": "January 16, 2026",
     "packages": [
-      "@uiid/backgrounds",
       "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
@@ -350,8 +345,7 @@
           "raw": "fix: react hook errors",
           "semverType": "patch",
           "packages": [
-            "@uiid/backgrounds",
-            "@uiid/blocks",
+                  "@uiid/blocks",
             "@uiid/calendars",
             "@uiid/interactive",
             "@uiid/overlays",

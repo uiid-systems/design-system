@@ -33,7 +33,7 @@ describe("component entry integrity", () => {
       // Get the schema shape to check each default key individually
       const shape =
         "shape" in entry.propsSchema
-          ? (entry.propsSchema as z.AnyZodObject).shape
+          ? (entry.propsSchema as z.ZodObject<z.ZodRawShape>).shape
           : null;
       if (!shape) continue;
       for (const key of Object.keys(entry.defaults)) {
