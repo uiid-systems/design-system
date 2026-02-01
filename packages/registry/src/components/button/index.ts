@@ -34,7 +34,7 @@ export const ButtonPropsSchema = z.object({
   /** Square shape (equal width/height) */
   square: z.boolean().optional(),
   /** Grow to fill available space */
-  grows: z.boolean().optional(),
+  interactive: z.boolean().optional(),
   /** Circular button */
   circle: z.boolean().optional(),
   /** Tooltip content */
@@ -48,12 +48,14 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   package: "@uiid/buttons",
   hasChildren: true,
   propsSchema: ButtonPropsSchema,
-  description: "Primary action button with multiple size, variant, and tone options",
+  description:
+    "Primary action button with multiple size, variant, and tone options",
   category: "buttons",
   defaults: {
     size: "medium",
-    grows: true,
+    interactive: true,
   },
   previews: buttonPreviews,
-  usage: "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.",
+  usage:
+    "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.",
 };

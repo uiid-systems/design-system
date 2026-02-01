@@ -14,7 +14,7 @@
   font-weight: 600;
   cursor: pointer;
   background: none;
-  color: var(--shade-foreground);
+  color: var(--tabs-tab-fg);
   user-select: none;
   white-space: nowrap;
   word-break: keep-all;
@@ -22,7 +22,7 @@
   height: var(--tabs-tab-height);
 
   &[data-active] {
-    color: var(--shade-background);
+    color: var(--tabs-tab-fg-active);
   }
 
   &:not([data-active]):hover {
@@ -47,12 +47,12 @@
   position: absolute;
   z-index: -1;
   left: var(--active-tab-left);
-  top: 50%;
+  top: 100%;
   transform: translateY(-50%);
   width: var(--active-tab-width) !important;
   height: var(--tabs-indicator-height);
-  background-color: var(--shade-foreground);
-  border-radius: var(--globals-border-radius);
+  background-color: var(--tabs-indicator-bg);
+  border-radius: var(--tabs-indicator-border-radius);
   transition-property: left, width;
   transition-duration: var(--globals-transition-timing);
   flex: none;

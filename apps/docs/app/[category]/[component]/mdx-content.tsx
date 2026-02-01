@@ -1,22 +1,27 @@
+import type { PreviewConfig } from "@uiid/registry";
+
 import { Stack } from "@uiid/layout";
 
 import { ComponentDetailsHeader } from "@/components/component-details";
+import { PreviewProvider } from "@/components/preview-context";
 
 interface MdxContentProps {
   name: string;
   packageName: string;
   category: string;
+  previews?: PreviewConfig[];
   children: React.ReactNode;
 }
 
 /**
  * Wrapper for MDX content pages.
- * Provides consistent layout and header.
+ * Provides consistent layout, header, and preview context.
  */
 export function MdxContent({
   name,
   packageName,
   category,
+  previews,
   children,
 }: MdxContentProps) {
   return (
@@ -26,7 +31,9 @@ export function MdxContent({
         packageName={packageName}
         category={category}
       />
-      <article className="prose">{children}</article>
+      <PreviewProvider previews={previews ?? []}>
+        <article className="prose">{children}</article>
+      </PreviewProvider>
     </Stack>
   );
 }

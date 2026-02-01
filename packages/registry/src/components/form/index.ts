@@ -7,12 +7,7 @@ import { formPreviews } from "./previews";
  * Form component props schema.
  * Container for form fields with built-in validation support.
  */
-export const FormPropsSchema = z.object({
-  /** Gap between form fields */
-  gap: z.number().optional(),
-  /** Full width form */
-  fullwidth: z.boolean().optional(),
-});
+export const FormPropsSchema = z.object({});
 
 export type FormProps = z.infer<typeof FormPropsSchema>;
 
@@ -22,10 +17,10 @@ export const FormEntry: ComponentEntry<typeof FormPropsSchema> = {
   hasChildren: true,
   propsSchema: FormPropsSchema,
   description:
-    "Form container with built-in validation support. Fields with required/pattern attributes validate on submit.",
+    "Form container with built-in validation support. Uses display:contents so wrap children in a Stack for layout. Fields with required/pattern attributes validate on submit.",
   category: "forms",
-  defaults: {
-    gap: 4,
-  },
+  defaults: {},
+  usage:
+    "Form has no visual presence (display:contents). Wrap a Stack inside it for spacing between fields.",
   previews: formPreviews,
 };

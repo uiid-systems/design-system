@@ -156,27 +156,27 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 
 UIID components are **precomposed** — they handle their own internal structure. Use props for metadata, children for custom content only.
 
-| Component | Use props for... | Use children for... |
-| --- | --- | --- |
-| Box | N/A | Content |
-| Stack | N/A | Content |
-| Group | N/A | Content |
-| Layer | N/A | Content |
-| Button | N/A | Content |
-| ToggleButton | `icon` | Content |
-| Form | N/A | Content |
-| Input | `placeholder`, `label`, `description` | N/A (no children) |
-| Textarea | `placeholder`, `label`, `description` | N/A (no children) |
-| Checkbox | `label`, `description` | N/A (no children) |
-| Select | `placeholder`, `items`, `label`, `description` | N/A (no children) |
-| Switch | `label`, `description` | N/A (no children) |
-| Text | N/A | Content |
-| Card | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
-| Drawer | `title` | Custom body content |
-| Modal | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Popover | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Sheet | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Tooltip | N/A | Content |
+| Component    | Use props for...                                   | Use children for... |
+| ------------ | -------------------------------------------------- | ------------------- |
+| Box          | N/A                                                | Content             |
+| Stack        | N/A                                                | Content             |
+| Group        | N/A                                                | Content             |
+| Layer        | N/A                                                | Content             |
+| Button       | N/A                                                | Content             |
+| ToggleButton | `icon`                                             | Content             |
+| Form         | N/A                                                | Content             |
+| Input        | `placeholder`, `label`, `description`              | N/A (no children)   |
+| Textarea     | `placeholder`, `label`, `description`              | N/A (no children)   |
+| Checkbox     | `label`, `description`                             | N/A (no children)   |
+| Select       | `placeholder`, `items`, `label`, `description`     | N/A (no children)   |
+| Switch       | `label`, `description`                             | N/A (no children)   |
+| Text         | N/A                                                | Content             |
+| Card         | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
+| Drawer       | `title`                                            | Custom body content |
+| Modal        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Popover      | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Sheet        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Tooltip      | N/A                                                | Content             |
 
 ### Layout Components
 
@@ -214,9 +214,9 @@ Positioned layer with offset support for overlays and positioned content
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `offset` | object |  |
+| Prop     | Type   | Description |
+| -------- | ------ | ----------- |
+| `offset` | object |             |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
@@ -224,10 +224,10 @@ Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `
 
 Visual divider line with horizontal or vertical orientation
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `orientation` | "horizontal" \| "vertical" |  (default: `"horizontal"`) |
-| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
+| Prop          | Type                                                                           | Description               |
+| ------------- | ------------------------------------------------------------------------------ | ------------------------- |
+| `orientation` | "horizontal" \| "vertical"                                                     | (default: `"horizontal"`) |
+| `shade`       | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |                           |
 
 Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
@@ -241,18 +241,18 @@ Typography component with size scale, weight, color shades, and text decorations
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `size` | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 |  |
-| `weight` | "thin" \| "light" \| "normal" \| "bold" |  |
-| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
-| `align` | "left" \| "center" \| "right" \| "justify" |  |
-| `underline` | boolean |  |
-| `strikethrough` | boolean |  |
-| `balance` | boolean |  |
-| `mono` | boolean |  |
+| Prop            | Type                                                                           | Description |
+| --------------- | ------------------------------------------------------------------------------ | ----------- |
+| `children`      | string                                                                         |             |
+| `size`          | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8                                |             |
+| `weight`        | "thin" \| "light" \| "normal" \| "bold"                                        |             |
+| `shade`         | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |             |
+| `tone`          | "positive" \| "critical" \| "warning" \| "info"                                |             |
+| `align`         | "left" \| "center" \| "right" \| "justify"                                     |             |
+| `underline`     | boolean                                                                        |             |
+| `strikethrough` | boolean                                                                        |             |
+| `balance`       | boolean                                                                        |             |
+| `mono`          | boolean                                                                        |             |
 
 Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
@@ -268,21 +268,21 @@ Use Button for primary actions. Set tone for semantic meaning, variant for visua
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `size` | "xsmall" \| "small" \| "medium" \| "large" |  (default: `"medium"`) |
-| `variant` | "subtle" \| "inverted" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
-| `disabled` | boolean |  |
-| `loading` | boolean |  |
-| `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
-| `pill` | boolean |  |
-| `square` | boolean |  |
-| `grows` | boolean |  (default: `true`) |
-| `circle` | boolean |  |
-| `tooltip` | string |  |
+| Prop          | Type                                            | Description           |
+| ------------- | ----------------------------------------------- | --------------------- |
+| `children`    | string                                          |                       |
+| `size`        | "xsmall" \| "small" \| "medium" \| "large"      | (default: `"medium"`) |
+| `variant`     | "subtle" \| "inverted"                          |                       |
+| `tone`        | "positive" \| "critical" \| "warning" \| "info" |                       |
+| `disabled`    | boolean                                         |                       |
+| `loading`     | boolean                                         |                       |
+| `fullwidth`   | boolean                                         |                       |
+| `ghost`       | boolean                                         |                       |
+| `pill`        | boolean                                         |                       |
+| `square`      | boolean                                         |                       |
+| `interactive` | boolean                                         | (default: `true`)     |
+| `circle`      | boolean                                         |                       |
+| `tooltip`     | string                                          |                       |
 
 #### ToggleButton
 
@@ -290,25 +290,25 @@ Toggle button with pressed/unpressed states and optional dynamic icon/text
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `size` | "xsmall" \| "small" \| "medium" \| "large" |  (default: `"medium"`) |
-| `variant` | "subtle" \| "inverted" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
-| `disabled` | boolean |  |
-| `loading` | boolean |  |
-| `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
-| `pill` | boolean |  |
-| `square` | boolean |  |
-| `grows` | boolean |  |
-| `circle` | boolean |  |
-| `tooltip` | string |  |
-| `pressed` | boolean |  |
-| `defaultPressed` | boolean |  |
-| `icon` | object |  |
-| `text` | object |  |
+| Prop             | Type                                            | Description           |
+| ---------------- | ----------------------------------------------- | --------------------- |
+| `children`       | string                                          |                       |
+| `size`           | "xsmall" \| "small" \| "medium" \| "large"      | (default: `"medium"`) |
+| `variant`        | "subtle" \| "inverted"                          |                       |
+| `tone`           | "positive" \| "critical" \| "warning" \| "info" |                       |
+| `disabled`       | boolean                                         |                       |
+| `loading`        | boolean                                         |                       |
+| `fullwidth`      | boolean                                         |                       |
+| `ghost`          | boolean                                         |                       |
+| `pill`           | boolean                                         |                       |
+| `square`         | boolean                                         |                       |
+| `interactive`    | boolean                                         |                       |
+| `circle`         | boolean                                         |                       |
+| `tooltip`        | string                                          |                       |
+| `pressed`        | boolean                                         |                       |
+| `defaultPressed` | boolean                                         |                       |
+| `icon`           | object                                          |                       |
+| `text`           | object                                          |                       |
 
 ---
 
@@ -320,98 +320,98 @@ Form container with built-in validation support. Fields with required/pattern at
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `gap` | number |  (default: `4`) |
-| `fullwidth` | boolean |  |
+| Prop        | Type    | Description    |
+| ----------- | ------- | -------------- |
+| `gap`       | number  | (default: `4`) |
+| `fullwidth` | boolean |                |
 
 #### Input
 
 Text input field with label and description support
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `value` | string |  |
-| `defaultValue` | string |  |
-| `placeholder` | string |  |
-| `type` | string |  |
-| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
-| `label` | string |  |
-| `description` | string |  |
-| `disabled` | boolean |  |
-| `required` | boolean |  |
-| `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
+| Prop           | Type                           | Description           |
+| -------------- | ------------------------------ | --------------------- |
+| `value`        | string                         |                       |
+| `defaultValue` | string                         |                       |
+| `placeholder`  | string                         |                       |
+| `type`         | string                         |                       |
+| `size`         | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `label`        | string                         |                       |
+| `description`  | string                         |                       |
+| `disabled`     | boolean                        |                       |
+| `required`     | boolean                        |                       |
+| `fullwidth`    | boolean                        |                       |
+| `ghost`        | boolean                        |                       |
 
 #### Textarea
 
 Multi-line text input with label and description support
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `value` | string |  |
-| `defaultValue` | string |  |
-| `placeholder` | string |  |
-| `rows` | number |  (default: `3`) |
-| `resize` | "none" \| "vertical" \| "horizontal" \| "both" |  (default: `"vertical"`) |
-| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
-| `label` | string |  |
-| `description` | string |  |
-| `disabled` | boolean |  |
-| `required` | boolean |  |
-| `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
+| Prop           | Type                                           | Description             |
+| -------------- | ---------------------------------------------- | ----------------------- |
+| `value`        | string                                         |                         |
+| `defaultValue` | string                                         |                         |
+| `placeholder`  | string                                         |                         |
+| `rows`         | number                                         | (default: `3`)          |
+| `resize`       | "none" \| "vertical" \| "horizontal" \| "both" | (default: `"vertical"`) |
+| `size`         | "small" \| "medium" \| "large"                 | (default: `"medium"`)   |
+| `label`        | string                                         |                         |
+| `description`  | string                                         |                         |
+| `disabled`     | boolean                                        |                         |
+| `required`     | boolean                                        |                         |
+| `fullwidth`    | boolean                                        |                         |
+| `ghost`        | boolean                                        |                         |
 
 #### Checkbox
 
 Checkbox input with label, description, and indeterminate state support
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `checked` | boolean |  |
-| `defaultChecked` | boolean |  |
-| `indeterminate` | boolean |  |
-| `label` | string |  |
-| `description` | string |  |
-| `disabled` | boolean |  |
-| `required` | boolean |  |
-| `name` | string |  |
-| `reversed` | boolean |  |
-| `bordered` | boolean |  |
+| Prop             | Type    | Description |
+| ---------------- | ------- | ----------- |
+| `checked`        | boolean |             |
+| `defaultChecked` | boolean |             |
+| `indeterminate`  | boolean |             |
+| `label`          | string  |             |
+| `description`    | string  |             |
+| `disabled`       | boolean |             |
+| `required`       | boolean |             |
+| `name`           | string  |             |
+| `reversed`       | boolean |             |
+| `bordered`       | boolean |             |
 
 #### Select
 
 Dropdown select with customizable options, label, and description
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `value` | string |  |
-| `defaultValue` | string |  |
-| `placeholder` | string |  |
-| `items` | object[] |  |
-| `label` | string |  |
-| `description` | string |  |
-| `size` | "small" \| "medium" \| "large" |  (default: `"medium"`) |
-| `disabled` | boolean |  |
-| `required` | boolean |  |
-| `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
+| Prop           | Type                           | Description           |
+| -------------- | ------------------------------ | --------------------- |
+| `value`        | string                         |                       |
+| `defaultValue` | string                         |                       |
+| `placeholder`  | string                         |                       |
+| `items`        | object[]                       |                       |
+| `label`        | string                         |                       |
+| `description`  | string                         |                       |
+| `size`         | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `disabled`     | boolean                        |                       |
+| `required`     | boolean                        |                       |
+| `fullwidth`    | boolean                        |                       |
+| `ghost`        | boolean                        |                       |
 
 #### Switch
 
 Toggle switch with label and description support
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `checked` | boolean |  |
-| `defaultChecked` | boolean |  |
-| `label` | string |  |
-| `description` | string |  |
-| `disabled` | boolean |  |
-| `required` | boolean |  |
-| `name` | string |  |
-| `reversed` | boolean |  |
-| `bordered` | boolean |  |
+| Prop             | Type    | Description |
+| ---------------- | ------- | ----------- |
+| `checked`        | boolean |             |
+| `defaultChecked` | boolean |             |
+| `label`          | string  |             |
+| `description`    | string  |             |
+| `disabled`       | boolean |             |
+| `required`       | boolean |             |
+| `name`           | string  |             |
+| `reversed`       | boolean |             |
+| `bordered`       | boolean |             |
 
 ---
 
@@ -426,25 +426,26 @@ Use Card as a content container. Pass title/description as props, children as bo
 Supports children.
 
 **Slots (use as props):**
+
 - `title`: Card heading, rendered above the body
 - `description`: Subheading beneath the title
 - `action`: Action buttons, typically top-right
 - `footer`: Footer content at the bottom of the card
 - `icon`: Icon displayed in the card header
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `title` | string |  |
-| `description` | string |  |
-| `action` | string |  |
-| `footer` | string |  |
-| `icon` | string |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
-| `inverted` | boolean |  |
-| `trimmed` | boolean |  |
-| `transparent` | boolean |  |
-| `ghost` | boolean |  |
+| Prop          | Type                                            | Description |
+| ------------- | ----------------------------------------------- | ----------- |
+| `children`    | string                                          |             |
+| `title`       | string                                          |             |
+| `description` | string                                          |             |
+| `action`      | string                                          |             |
+| `footer`      | string                                          |             |
+| `icon`        | string                                          |             |
+| `tone`        | "positive" \| "critical" \| "warning" \| "info" |             |
+| `inverted`    | boolean                                         |             |
+| `trimmed`     | boolean                                         |             |
+| `transparent` | boolean                                         |             |
+| `ghost`       | boolean                                         |             |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
 
@@ -458,15 +459,15 @@ Bottom sheet with drag-to-close interaction
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `title` | string |  |
-| `direction` | "top" \| "right" \| "bottom" \| "left" |  (default: `"bottom"`) |
-| `open` | boolean |  |
-| `defaultOpen` | boolean |  |
-| `onOpenChange` | function |  |
+| Prop           | Type                                   | Description           |
+| -------------- | -------------------------------------- | --------------------- |
+| `children`     | string                                 |                       |
+| `trigger`      | string                                 |                       |
+| `title`        | string                                 |                       |
+| `direction`    | "top" \| "right" \| "bottom" \| "left" | (default: `"bottom"`) |
+| `open`         | boolean                                |                       |
+| `defaultOpen`  | boolean                                |                       |
+| `onOpenChange` | function                               |                       |
 
 #### Modal
 
@@ -474,18 +475,18 @@ Dialog overlay with Card-like content structure
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `title` | string |  |
-| `description` | string |  |
-| `action` | string |  |
-| `icon` | string |  |
-| `footer` | string |  |
-| `size` | "small" \| "medium" \| "large" \| "xlarge" |  (default: `"medium"`) |
-| `open` | boolean |  |
-| `onOpenChange` | function |  |
+| Prop           | Type                                       | Description           |
+| -------------- | ------------------------------------------ | --------------------- |
+| `children`     | string                                     |                       |
+| `trigger`      | string                                     |                       |
+| `title`        | string                                     |                       |
+| `description`  | string                                     |                       |
+| `action`       | string                                     |                       |
+| `icon`         | string                                     |                       |
+| `footer`       | string                                     |                       |
+| `size`         | "small" \| "medium" \| "large" \| "xlarge" | (default: `"medium"`) |
+| `open`         | boolean                                    |                       |
+| `onOpenChange` | function                                   |                       |
 
 #### Popover
 
@@ -493,17 +494,17 @@ Floating card attached to a trigger element
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `title` | string |  |
-| `description` | string |  |
-| `action` | string |  |
-| `icon` | string |  |
-| `footer` | string |  |
-| `open` | boolean |  |
-| `onOpenChange` | function |  |
+| Prop           | Type     | Description |
+| -------------- | -------- | ----------- |
+| `children`     | string   |             |
+| `trigger`      | string   |             |
+| `title`        | string   |             |
+| `description`  | string   |             |
+| `action`       | string   |             |
+| `icon`         | string   |             |
+| `footer`       | string   |             |
+| `open`         | boolean  |             |
+| `onOpenChange` | function |             |
 
 #### Sheet
 
@@ -511,26 +512,26 @@ Slide-in panel overlay from any edge of the screen
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `title` | string |  |
-| `description` | string |  |
-| `action` | string |  |
-| `icon` | string |  |
-| `footer` | string |  |
-| `side` | "top" \| "right" \| "bottom" \| "left" |  (default: `"right"`) |
-| `open` | boolean |  |
-| `onOpenChange` | function |  |
+| Prop           | Type                                   | Description          |
+| -------------- | -------------------------------------- | -------------------- |
+| `children`     | string                                 |                      |
+| `trigger`      | string                                 |                      |
+| `title`        | string                                 |                      |
+| `description`  | string                                 |                      |
+| `action`       | string                                 |                      |
+| `icon`         | string                                 |                      |
+| `footer`       | string                                 |                      |
+| `side`         | "top" \| "right" \| "bottom" \| "left" | (default: `"right"`) |
+| `open`         | boolean                                |                      |
+| `onOpenChange` | function                               |                      |
 
 #### Toaster
 
 Container for toast notifications
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `position` | "top" \| "bottom" |  (default: `"bottom"`) |
+| Prop       | Type              | Description           |
+| ---------- | ----------------- | --------------------- |
+| `position` | "top" \| "bottom" | (default: `"bottom"`) |
 
 #### Tooltip
 
@@ -538,13 +539,13 @@ Informational popup shown on hover or focus
 
 Supports children.
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `delay` | number |  |
-| `open` | boolean |  |
-| `onOpenChange` | function |  |
+| Prop           | Type     | Description |
+| -------------- | -------- | ----------- |
+| `children`     | string   |             |
+| `trigger`      | string   |             |
+| `delay`        | number   |             |
+| `open`         | boolean  |             |
+| `onOpenChange` | function |             |
 
 ---
 

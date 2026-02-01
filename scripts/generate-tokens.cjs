@@ -221,6 +221,16 @@ ${cssProperties.trimEnd()}
   }
 
   /**
+   * Color variant recipes applied to theme tokens.
+   * Same ratios used by tone tokens (positive, warning, critical, info).
+   */
+  colorVariants = [
+    { suffix: "surface", mix: "shade-background", ratio: 0.25 },
+    { suffix: "border", mix: "shade-background", ratio: 0.40 },
+    { suffix: "foreground", mix: "shade-foreground", ratio: 0.60 },
+  ];
+
+  /**
    * Generate CSS custom properties from token object
    */
   generateCssProperties(tokens, prefix = "", indent = "    ") {
@@ -237,6 +247,14 @@ ${cssProperties.trimEnd()}
         const cssVarName = this.generateCssVariableName(prefix, key);
         const cssValue = this.processCssValueForToken(value);
         css += `${indent}--${cssVarName}: ${cssValue};\n`;
+
+        // Auto-generate color variants for theme tokens
+        if (prefix === "theme") {
+          for (const variant of this.colorVariants) {
+            const pct = Math.round((1 - variant.ratio) * 100);
+            css += `${indent}--${cssVarName}-${variant.suffix}: color-mix(in oklch, var(--${cssVarName}), var(--${variant.mix}) ${pct}%);\n`;
+          }
+        }
       } else if (typeof value === "object" && value !== null) {
         // This is a nested object, recurse
         const newPrefix = prefix ? `${prefix}-${key}` : key;

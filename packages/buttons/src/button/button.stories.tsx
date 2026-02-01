@@ -27,7 +27,7 @@ const meta = {
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
     ghost: { control: "boolean", table: { category: "Toggles" } },
-    grows: { control: "boolean", table: { category: "Toggles" } },
+    interactive: { control: "boolean", table: { category: "Toggles" } },
     pill: { control: "boolean", table: { category: "Toggles" } },
     square: { control: "boolean", table: { category: "Toggles" } },
     circle: { control: "boolean", table: { category: "Toggles" } },

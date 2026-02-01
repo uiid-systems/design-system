@@ -74,20 +74,20 @@ import { Button } from "@uiid/buttons";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `circle` | `boolean` | — | — |
-| `disabled` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `ghost` | `boolean` | — | — |
-| `grows` | `boolean` | `true` | — |
-| `loading` | `boolean` | — | — |
-| `pill` | `boolean` | — | — |
-| `size` | `"xsmall" \| "small" \| "medium" \| "large"` | `"medium"` | — |
-| `square` | `boolean` | — | — |
-| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
-| `tooltip` | `ReactNode` | — | — |
-| `variant` | `"subtle" \| "inverted"` | — | — |
+| Prop          | Type                                              | Default    | Description |
+| ------------- | ------------------------------------------------- | ---------- | ----------- |
+| `circle`      | `boolean`                                         | —          | —           |
+| `disabled`    | `boolean`                                         | —          | —           |
+| `fullwidth`   | `boolean`                                         | —          | —           |
+| `ghost`       | `boolean`                                         | —          | —           |
+| `interactive` | `boolean`                                         | `true`     | —           |
+| `loading`     | `boolean`                                         | —          | —           |
+| `pill`        | `boolean`                                         | —          | —           |
+| `size`        | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | —           |
+| `square`      | `boolean`                                         | —          | —           |
+| `tone`        | `"positive" \| "critical" \| "warning" \| "info"` | —          | —           |
+| `tooltip`     | `ReactNode`                                       | —          | —           |
+| `variant`     | `"subtle" \| "inverted"`                          | —          | —           |
 
 > Additional props are forwarded to the underlying Base UI Button.
 

@@ -6,7 +6,7 @@ export type FormProps = BaseForm.Props;
 
 export const Form = ({ children, ...props }: FormProps) => {
   return (
-    <BaseForm data-slot="form" {...props}>
+    <BaseForm data-slot="form" style={{ display: "contents" }} {...props}>
       {children}
     </BaseForm>
   );
