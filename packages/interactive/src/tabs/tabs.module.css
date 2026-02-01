@@ -56,6 +56,11 @@
   transition-property: left, width;
   transition-duration: var(--globals-transition-timing);
   flex: none;
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
 }
 
 .tabs-panel {

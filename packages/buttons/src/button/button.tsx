@@ -38,6 +38,7 @@ export const Button = ({
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
       <BaseButton
+        nativeButton={!props.render}
         data-slot="button"
         className={cx(
           styles["button"],

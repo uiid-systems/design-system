@@ -19,9 +19,10 @@ export const StackEntry: ComponentEntry<typeof StackPropsSchema> = {
   hasChildren: true,
   propsSchema: StackPropsSchema,
   description:
-    "Vertical flex layout (column). ax controls vertical alignment, ay controls horizontal",
+    "A vertical layout component built on flexbox. Foundational building block for both complex and simple layouts.",
   category: "layout",
   defaults: {},
   previews: stackPreviews,
-  usage: "Use Stack for vertical layouts. Children flow top-to-bottom. ax controls vertical alignment, ay horizontal.",
+  usage:
+    "Use Stack for vertical layouts. Children flow top-to-bottom. ax controls vertical alignment, ay horizontal.",
 };

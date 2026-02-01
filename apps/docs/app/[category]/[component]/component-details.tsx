@@ -7,6 +7,7 @@ import { Text } from "@uiid/typography";
 
 import { PropsTable, TreePreviewList } from "@/components";
 import { getPreviewComponent } from "@/lib/preview-registry";
+import { PreviewProvider } from "@/components/preview-context";
 
 import {
   ComponentDetailsHeader,
@@ -38,45 +39,42 @@ export function ComponentDetails({
   const PreviewComponent = getPreviewComponent(name);
 
   return (
-    <Stack data-slot="component-details" gap={6} p={8} pb={32} fullwidth>
-      {/* Header */}
-      <ComponentDetailsHeader
-        name={name}
-        description={description}
-        packageName={packageName}
-        category={category}
-      />
+    <PreviewProvider previews={previews ?? []}>
+      <Stack data-slot="component-details" gap={6} p={8} pb={32} fullwidth>
+        {/* Header */}
+        <ComponentDetailsHeader
+          name={name}
+          description={description}
+          packageName={packageName}
+          category={category}
+          previews={previews}
+        />
 
-      {/* Preview Section — tree-based if available, otherwise legacy component */}
-      {previews && previews.length > 0 ? (
-        <>
-          <Separator />
+        {/* Preview Section — tree-based if available, otherwise legacy component */}
+        {previews && previews.length > 0 ? (
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
             <Header>Preview</Header>
             <ComponentDetailsPreview>
               <TreePreviewList previews={previews} />
             </ComponentDetailsPreview>
           </Stack>
-        </>
-      ) : PreviewComponent ? (
-        <>
-          <Separator />
+        ) : PreviewComponent ? (
           <Stack id="preview" gap={4} ax="stretch" fullwidth>
             <Header>Preview</Header>
             <ComponentDetailsPreview>
               <PreviewComponent />
             </ComponentDetailsPreview>
           </Stack>
-        </>
-      ) : null}
+        ) : null}
 
-      {/* Props Section */}
-      <Separator />
-      <Stack id="props" gap={4} ax="stretch" fullwidth>
-        <Header>Props</Header>
-        <PropsTable props={props} />
+        {/* Props Section */}
+        <Separator />
+        <Stack id="props" gap={4} ax="stretch" fullwidth>
+          <Header>Props</Header>
+          <PropsTable props={props} />
+        </Stack>
       </Stack>
-    </Stack>
+    </PreviewProvider>
   );
 }
 

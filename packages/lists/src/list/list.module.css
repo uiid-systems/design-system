@@ -57,6 +57,10 @@
   padding-inline-start: 0.875rem;
   margin-block-end: 1rem;
   list-style: none;
+
+  a {
+    color: var(--shade-foreground);
+  }
 }
 
 .list-item {

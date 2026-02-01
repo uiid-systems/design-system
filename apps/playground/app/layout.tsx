@@ -7,8 +7,8 @@ import { AppShell } from "@/components";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "uiid + json-render",
-  description: "Test AI-generated UI with UIID components and json-render",
+  title: "uiid playground",
+  description: "Test AI-generated UI with UIID components",
 };
 
 export default function RootLayout({

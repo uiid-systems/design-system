@@ -10,7 +10,7 @@ import type { CoreMessage } from "ai";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-const STORAGE_KEY = "json-render-session";
+const STORAGE_KEY = "playground-session";
 const API_ENDPOINT = "/api/generate";
 
 export type ChatMessage = {

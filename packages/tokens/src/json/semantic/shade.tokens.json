@@ -203,13 +203,13 @@
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
-          "light": "{color.white}",
-          "dark": "{color.black}"
+          "light": "{theme.white}",
+          "dark": "{theme.black}"
         }
       }
     },
     "surface": { "$value": "{shade.2}" },
-    "accent": { "$value": "{shade.4}" },
+    "accent": { "$value": "{shade.3}" },
     "halftone": { "$value": "{shade.7}" },
     "muted": { "$value": "{shade.9}" },
     "foreground": {
@@ -221,8 +221,8 @@
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
-          "light": "{color.black}",
-          "dark": "{color.white}"
+          "light": "{theme.black}",
+          "dark": "{theme.white}"
         }
       }
     }

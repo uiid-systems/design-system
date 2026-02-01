@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { registry } from "@uiid/registry";
@@ -39,30 +40,33 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <Stack gap={8} p={8}>
       {/* Header */}
-      <Stack gap={2}>
-        <Group gap={3} ay="center">
+      <Stack gap={4}>
+        <Group gap={3}>
           {Icon && <Icon size={32} />}
-          <Text render={<h1 />} size={6} weight="bold">
-            {label}
-          </Text>
+
+          <Stack gap={4}>
+            <Text render={<h1 />} size={6} weight="bold">
+              {label}
+            </Text>
+            <Text shade="muted" size={1}>
+              {components.length} component{components.length !== 1 ? "s" : ""}
+            </Text>
+          </Stack>
         </Group>
-        <Text shade="muted" size={1}>
-          {components.length} component{components.length !== 1 ? "s" : ""}
-        </Text>
       </Stack>
 
       {/* Component Cards */}
-      <Group gap={4} style={{ flexWrap: "wrap" }}>
+      <Stack gap={4}>
         {components.map((component) => (
-          <a
-            key={component.name}
-            href={urls.component(category, toSlug(component.name))}
-            style={{ textDecoration: "none", flex: "1 1 280px", maxWidth: 360 }}
-          >
-            <Card title={component.name} description={component.description} />
-          </a>
+          <Card
+            render={
+              <Link href={urls.component(category, toSlug(component.name))} />
+            }
+            title={component.name}
+            description={component.description}
+          />
         ))}
-      </Group>
+      </Stack>
     </Stack>
   );
 }
