@@ -60,18 +60,11 @@ export const AppShell = ({ children }: AppShellProps) => {
       }}
     >
       <ChatOuterContainer style={{ overflow: "hidden" }}>
-        <Resizable direction="horizontal">
-          <ResizablePanel defaultSize={25} minSize={20}>
-            <ChatSidebar />
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={75} minSize={50}>
-            <Stack ax="stretch" fullwidth fullheight>
-              <Header />
-              {children}
-            </Stack>
-          </ResizablePanel>
-        </Resizable>
+        <ChatSidebar />
+        <Stack ax="stretch" fullwidth fullheight>
+          <Header />
+          {children}
+        </Stack>
       </ChatOuterContainer>
     </JSONUIProvider>
   );

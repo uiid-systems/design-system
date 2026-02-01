@@ -1,6 +1,5 @@
 import { Group } from "@uiid/layout";
 
-import { ComponentPicker } from "./component-picker";
 import { HeaderActions } from "./header-actions";
 
 export const Header = () => {
@@ -13,7 +12,6 @@ export const Header = () => {
       gap={2}
       bb={1}
     >
-      <ComponentPicker />
       <HeaderActions />
     </Group>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelResizeHandle } from "react-resizable-panels";
+import { Separator } from "react-resizable-panels";
 import { GripVertical } from "@uiid/icons";
 import { cx } from "@uiid/utils";
 
@@ -15,10 +15,9 @@ export const ResizableHandle = ({
   ...props
 }: ResizableHandleProps) => {
   return (
-    <PanelResizeHandle
+    <Separator
       data-slot="resizable-handle"
       data-disabled={disabled ? "" : undefined}
-      disabled={disabled}
       className={cx(styles["resizable-handle"], className)}
       {...props}
     >
@@ -27,7 +26,7 @@ export const ResizableHandle = ({
           <GripVertical size={10} />
         </div>
       ))}
-    </PanelResizeHandle>
+    </Separator>
   );
 };
 ResizableHandle.displayName = "ResizableHandle";

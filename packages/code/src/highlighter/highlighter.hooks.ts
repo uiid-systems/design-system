@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import type { BundledLanguage, HighlightResult } from "./highlighter.types";
 import { getHighlighter, loadLanguage, highlight } from "./highlighter";
@@ -50,29 +50,25 @@ export function useHighlight(
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const requestRef = useRef(0);
 
   useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    setError(null);
+    const requestId = ++requestRef.current;
 
     highlight(code, language)
       .then((result) => {
-        if (mounted) {
+        if (requestRef.current === requestId) {
           setHtml(result);
           setLoading(false);
+          setError(null);
         }
       })
       .catch((err) => {
-        if (mounted) {
+        if (requestRef.current === requestId) {
           setError(err);
           setLoading(false);
         }
       });
-
-    return () => {
-      mounted = false;
-    };
   }, [code, language]);
 
   return { html, loading, error };

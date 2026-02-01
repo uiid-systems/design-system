@@ -30,7 +30,7 @@ export const SheetPopup = ({
           action={action}
           footer={footer}
           FooterProps={{
-            style: { marginTop: "auto" },
+            style: { marginTop: "auto", border: "none", borderRadius: 0 },
           }}
         />
       }

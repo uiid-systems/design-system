@@ -1,5 +1,7 @@
 import { Stack, type StackProps } from "@uiid/layout";
 
+import styles from "./rendered-container.module.css";
+
 type RenderedContainerProps = StackProps;
 
 export const RenderedContainer = ({
@@ -8,10 +10,9 @@ export const RenderedContainer = ({
 }: RenderedContainerProps) => {
   return (
     <Stack
-      data-slot="rendered-content"
+      data-slot="rendered-container"
       ay="center"
       ax="center"
-      p={4}
       fullwidth
       fullheight
       {...props}

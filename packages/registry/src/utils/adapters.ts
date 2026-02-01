@@ -20,12 +20,12 @@ export function getPackageMap(): Record<string, string> {
  */
 export function getCatalogEntries(): Record<
   string,
-  { props: z.ZodType; hasChildren: boolean }
+  { props: z.ZodType<Record<string, unknown>>; hasChildren: boolean }
 > {
-  const entries: Record<string, { props: z.ZodType; hasChildren: boolean }> = {};
+  const entries: Record<string, { props: z.ZodType<Record<string, unknown>>; hasChildren: boolean }> = {};
   for (const [name, entry] of Object.entries(registry)) {
     entries[name] = {
-      props: entry.propsSchema,
+      props: entry.propsSchema as z.ZodType<Record<string, unknown>>,
       hasChildren: entry.hasChildren,
     };
   }

@@ -21,6 +21,7 @@ export const ModalPopup = ({
   return (
     <BaseDialog.Popup
       data-slot="modal-popup"
+      data-is-popup
       className={cx(styles["modal-popup"], modalVariants({ size }), className)}
       render={
         <Card
@@ -33,7 +34,6 @@ export const ModalPopup = ({
           {children}
         </Card>
       }
-      data-is-popup
       {...props}
     >
       {children}

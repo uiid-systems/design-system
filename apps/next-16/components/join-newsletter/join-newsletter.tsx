@@ -3,7 +3,6 @@ import { SiDiscord } from "@icons-pack/react-simple-icons";
 import { Group, Stack } from "@uiid/layout";
 
 import {
-  NewsletterBackground,
   NewsletterList,
   NewsletterSignupCard,
   NewsletterSignupForm,
@@ -14,8 +13,6 @@ import {
 export const JoinNewsletter = () => {
   return (
     <Group fullwidth fullheight evenly>
-      <NewsletterBackground />
-
       <Stack fullwidth fullheight ax="center" ay="center">
         <NewsletterSignupCard>
           <NewsletterList />

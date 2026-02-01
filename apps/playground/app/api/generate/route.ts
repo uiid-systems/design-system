@@ -5,7 +5,7 @@
  * Provider is configurable via AI_PROVIDER env var (default: anthropic).
  */
 
-import { generateText, type CoreMessage } from "ai";
+import { generateText, type ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 
@@ -198,7 +198,7 @@ export async function POST(req: Request) {
   try {
     const { prompt, history, currentTree } = (await req.json()) as {
       prompt: string;
-      history?: CoreMessage[];
+      history?: ModelMessage[];
       currentTree?: UITree;
     };
 
@@ -245,7 +245,7 @@ export async function POST(req: Request) {
     const systemPrompt = buildSystemPrompt(currentTree);
 
     // Build messages array with history
-    const messages: CoreMessage[] = [
+    const messages: ModelMessage[] = [
       ...(history || []),
       { role: "user", content: prompt },
     ];

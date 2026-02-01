@@ -25,18 +25,18 @@
   transition: background-color 0.15s ease;
 }
 
-.resizable-handle[data-direction="horizontal"] {
+.resizable[data-direction="horizontal"] > .resizable-handle {
   width: 1px;
   background-color: var(--globals-border-color);
 }
 
-.resizable-handle[data-direction="vertical"] {
+.resizable[data-direction="vertical"] > .resizable-handle {
   height: 1px;
   background-color: var(--globals-border-color);
 }
 
 .resizable-handle:hover,
-.resizable-handle[data-resize-handle-active] {
+.resizable-handle[data-separator]:not([data-separator="inactive"]) {
   background-color: var(--shade-accent);
 }
 
@@ -56,12 +56,12 @@
   z-index: 1;
 }
 
-.resizable-handle[data-direction="horizontal"] .resizable-handle-grip {
+.resizable[data-direction="horizontal"] > .resizable-handle .resizable-handle-grip {
   width: 12px;
   height: 24px;
 }
 
-.resizable-handle[data-direction="vertical"] .resizable-handle-grip {
+.resizable[data-direction="vertical"] > .resizable-handle .resizable-handle-grip {
   width: 24px;
   height: 12px;
 }
@@ -70,6 +70,6 @@
   color: var(--shade-muted);
 }
 
-.resizable-handle[data-direction="horizontal"] .resizable-handle-grip svg {
+.resizable[data-direction="horizontal"] > .resizable-handle .resizable-handle-grip svg {
   transform: rotate(90deg);
 }

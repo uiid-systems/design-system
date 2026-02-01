@@ -1,11 +1,11 @@
 import type {
-  PanelGroupProps,
+  GroupProps,
   PanelProps,
-  PanelResizeHandleProps,
+  SeparatorProps,
 } from "react-resizable-panels";
 
 export interface ResizableProps
-  extends Omit<PanelGroupProps, "direction" | "children"> {
+  extends Omit<GroupProps, "orientation" | "children"> {
   /** Layout direction of the panels */
   direction: "horizontal" | "vertical";
   /** Panel group children (ResizablePanel and ResizableHandle components) */
@@ -22,9 +22,11 @@ export interface ResizablePanelProps extends PanelProps {
 }
 
 export interface ResizableHandleProps
-  extends Omit<PanelResizeHandleProps, "children"> {
+  extends Omit<SeparatorProps, "children"> {
   /** Show a visible grip indicator */
   withHandle?: boolean;
+  /** Disable the handle */
+  disabled?: boolean;
   /** Additional CSS class name */
   className?: string;
   /** Handle content (overrides withHandle) */
