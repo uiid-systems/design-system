@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build": "tsc -b && vite build",
-    "dev": "tsc -b && vite build",
+    "dev": "tsc -b --watch & vite build --watch",
     "watch": "tsc -b --watch & vite build --watch",
     "lint": "eslint . --ignore-pattern 'dist/**'",
     "format": "prettier --write ."

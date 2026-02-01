@@ -14,8 +14,6 @@ export function ComponentDetailsPreview({
     <Card fullwidth>
       <Card
         gap={4}
-        py={12}
-        px={8}
         ax="center"
         ay="center"
         fullwidth

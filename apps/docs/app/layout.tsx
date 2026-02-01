@@ -53,7 +53,7 @@ export default function RootLayout({
                 <List items={navItems} LinkComponent={Link} pb={12} />
               </Stack>
             </Stack>
-            <Stack br={1} className="flex-1 max-w-6xl">
+            <Stack br={1} className="flex-1 max-w-4xl">
               <DocsHeader />
               {children}
             </Stack>

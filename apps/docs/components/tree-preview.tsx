@@ -6,8 +6,11 @@ import type { PreviewConfig, PreviewElement } from "@uiid/registry";
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
 import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
+import { Tabs } from "@uiid/interactive";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+
+import { usePreviewContext } from "./preview-context";
 
 /**
  * Maps component type strings to React components for tree rendering.
@@ -102,26 +105,55 @@ type TreePreviewListProps = {
 };
 
 /**
- * Renders all preview trees for a component, each with its label.
+ * Renders all preview trees for a component.
+ * Uses Tabs when multiple previews exist, direct render for a single preview.
+ * Syncs active tab with PreviewContext when available.
  */
 export function TreePreviewList({ previews }: TreePreviewListProps) {
+  const ctx = usePreviewContext();
+
+  if (previews.length === 1) {
+    return (
+      <Stack
+        ax="center"
+        ay="center"
+        fullheight
+        fullwidth
+        style={{ minHeight: "16rem" }}
+      >
+        <TreePreview preview={previews[0]} />
+      </Stack>
+    );
+  }
+
+  const activeLabel = ctx ? previews[ctx.activeIndex]?.label : undefined;
+
   return (
-    <Stack
-      ax="center"
-      ay="center"
-      gap={3}
-      fullheight
-      fullwidth
-      style={{ minHeight: "16rem" }}
-    >
-      {previews.map((preview) => (
-        <Fragment key={preview.label}>
-          {/* <Text size={1} shade="muted" weight="bold">
-            {preview.label}
-          </Text> */}
-          <TreePreview preview={preview} />
-        </Fragment>
-      ))}
+    <Stack fullheight fullwidth style={{ minHeight: "16rem" }}>
+      <Tabs
+        keepMounted
+        {...(activeLabel !== undefined && { value: activeLabel })}
+        onValueChange={(value) => {
+          if (!ctx) return;
+          const idx = previews.findIndex((p) => p.label === value);
+          if (idx !== -1) ctx.setActiveIndex(idx);
+        }}
+        RootProps={{ fullwidth: true, ax: "stretch" }}
+        items={previews.map((preview) => ({
+          label: preview.label,
+          value: preview.label,
+          render: (
+            <Stack
+              ax="center"
+              ay="center"
+              fullwidth
+              style={{ minHeight: "12rem" }}
+            >
+              <TreePreview preview={preview} />
+            </Stack>
+          ),
+        }))}
+      />
     </Stack>
   );
 }

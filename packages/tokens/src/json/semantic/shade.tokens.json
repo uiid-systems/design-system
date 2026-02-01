@@ -110,7 +110,7 @@
           "colorSpace": "oklch",
           "color1": "{shade.foreground}",
           "color2": "{shade.background}",
-          "ratio": 0.50
+          "ratio": 0.5
         }
       }
     },
@@ -133,7 +133,7 @@
     "9": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.314, 0.314, 0.310],
+        "components": [0.314, 0.314, 0.31],
         "hex": "#50504f"
       },
       "$extensions": {
@@ -149,7 +149,7 @@
     "10": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.220, 0.220, 0.220],
+        "components": [0.22, 0.22, 0.22],
         "hex": "#383838"
       },
       "$extensions": {
@@ -174,14 +174,14 @@
           "colorSpace": "oklch",
           "color1": "{shade.foreground}",
           "color2": "{shade.background}",
-          "ratio": 0.90
+          "ratio": 0.9
         }
       }
     },
     "12": {
       "$value": {
         "colorSpace": "srgb",
-        "components": [0.090, 0.090, 0.086],
+        "components": [0.09, 0.09, 0.086],
         "hex": "#171716"
       },
       "$extensions": {
@@ -208,8 +208,8 @@
         }
       }
     },
-    "surface": { "$value": "{shade.4}" },
-    "accent": { "$value": "{shade.5}" },
+    "surface": { "$value": "{shade.2}" },
+    "accent": { "$value": "{shade.4}" },
     "halftone": { "$value": "{shade.7}" },
     "muted": { "$value": "{shade.9}" },
     "foreground": {

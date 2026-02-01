@@ -140,7 +140,7 @@
   background-color: var(--tone-positive);
   border-color: var(--tone-positive);
   outline-color: var(--tone-positive);
-  color: var(--black);
+  color: var(--tone-positive-surface);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-positive), var(--shade-background) 10%);
@@ -162,7 +162,7 @@
   background-color: var(--tone-critical);
   border-color: var(--tone-critical);
   outline-color: var(--tone-critical);
-  color: var(--black);
+  color: var(--tone-critical-surface);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-critical), var(--shade-background) 10%);
@@ -184,7 +184,7 @@
   background-color: var(--tone-warning);
   border-color: var(--tone-warning);
   outline-color: var(--tone-warning);
-  color: var(--black);
+  color: var(--tone-warning-surface);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-warning), var(--shade-background) 10%);
@@ -206,7 +206,7 @@
   background-color: var(--tone-info);
   border-color: var(--tone-info);
   outline-color: var(--tone-info);
-  color: var(--black);
+  color: var(--tone-info-surface);
 
   &:where(:hover, :active) {
     --active-color: color-mix(in oklab, var(--tone-info), var(--shade-background) 10%);

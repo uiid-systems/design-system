@@ -4,7 +4,7 @@ import { registry, generateComponentDocs, type PreviewConfig } from "@uiid/regis
 
 import { toSlug } from "@/constants/urls";
 import { getMdxSource, compileMdxContent } from "@/lib/mdx";
-import { CodeBlock, Preview, PropsTable } from "@/components/mdx";
+import { CodeBlock, Preview, PropsTable, Usage } from "@/components/mdx";
 import { MdxContent } from "./mdx-content";
 import { ComponentDetails } from "./component-details";
 
@@ -57,6 +57,9 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       PropsTable: (props: Record<string, unknown>) => (
         <PropsTable props={docs.props} {...props} />
       ),
+      Usage: (props: Record<string, unknown>) => (
+        <Usage previews={previews} {...props} />
+      ),
     });
 
     return (
@@ -64,6 +67,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
         name={entry.name}
         packageName={entry.package}
         category={category}
+        previews={previews}
       >
         {content}
       </MdxContent>

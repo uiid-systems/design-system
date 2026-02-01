@@ -2,7 +2,20 @@ import type { PreviewConfig } from "../../types";
 
 export const buttonPreviews: PreviewConfig[] = [
   {
-    label: "Action bar",
+    label: "Default",
+    tree: {
+      root: "button",
+      elements: {
+        button: {
+          key: "button",
+          type: "Button",
+          props: { children: "Button" },
+        },
+      },
+    },
+  },
+  {
+    label: "Sizes",
     tree: {
       root: "group",
       elements: {
@@ -10,24 +23,95 @@ export const buttonPreviews: PreviewConfig[] = [
           key: "group",
           type: "Group",
           props: { gap: 2, ay: "center" },
-          children: ["delete", "cancel", "save"],
+          children: ["small", "medium", "large"],
         },
-        delete: {
-          key: "delete",
+        small: {
+          key: "small",
           type: "Button",
-          props: { tone: "critical", ghost: true, children: "Delete" },
+          props: { size: "small", children: "Small" },
           parentKey: "group",
         },
-        cancel: {
-          key: "cancel",
+        medium: {
+          key: "medium",
           type: "Button",
-          props: { variant: "subtle", children: "Cancel" },
+          props: { size: "medium", children: "Medium" },
           parentKey: "group",
         },
-        save: {
-          key: "save",
+        large: {
+          key: "large",
           type: "Button",
-          props: { children: "Save changes" },
+          props: { size: "large", children: "Large" },
+          parentKey: "group",
+        },
+      },
+    },
+  },
+  {
+    label: "Variants",
+    tree: {
+      root: "group",
+      elements: {
+        group: {
+          key: "group",
+          type: "Group",
+          props: { gap: 2, ay: "center" },
+          children: [
+            "default",
+            "subtle",
+            "inverted",
+            "positive",
+            "critical",
+            "warning",
+            "info",
+            "ghost",
+          ],
+        },
+        default: {
+          key: "default",
+          type: "Button",
+          props: { children: "Default" },
+          parentKey: "group",
+        },
+        subtle: {
+          key: "subtle",
+          type: "Button",
+          props: { variant: "subtle", children: "Subtle" },
+          parentKey: "group",
+        },
+        inverted: {
+          key: "inverted",
+          type: "Button",
+          props: { variant: "inverted", children: "Inverted" },
+          parentKey: "group",
+        },
+        positive: {
+          key: "positive",
+          type: "Button",
+          props: { tone: "positive", children: "Positive" },
+          parentKey: "group",
+        },
+        critical: {
+          key: "critical",
+          type: "Button",
+          props: { tone: "critical", children: "Critical" },
+          parentKey: "group",
+        },
+        warning: {
+          key: "warning",
+          type: "Button",
+          props: { tone: "warning", children: "Warning" },
+          parentKey: "group",
+        },
+        info: {
+          key: "info",
+          type: "Button",
+          props: { tone: "info", children: "Info" },
+          parentKey: "group",
+        },
+        ghost: {
+          key: "ghost",
+          type: "Button",
+          props: { ghost: true, children: "Ghost" },
           parentKey: "group",
         },
       },
