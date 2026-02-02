@@ -142,7 +142,7 @@ export const SavedBlocksPanel = () => {
                 ax="stretch"
                 className={styles["block-card"]}
               >
-                <Group ax="space-between" ay="start" fullwidth gap={4}>
+                <Group ax="space-between" ay="start" fullwidth gap={8}>
                   <Stack gap={4}>
                     {isEditing ? (
                       <Input
@@ -185,9 +185,7 @@ export const SavedBlocksPanel = () => {
                             &middot;
                             <Text size={-1} weight="bold">
                               {cc.total}{" "}
-                              {cc.total === 1
-                                ? "component"
-                                : "components"}
+                              {cc.total === 1 ? "component" : "components"}
                             </Text>
                           </>
                         );

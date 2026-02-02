@@ -14,6 +14,7 @@ import { NewChatButton } from "../new-chat-button";
 import { SaveButton } from "../save-button";
 import { SavedBlocksPanel } from "../saved-blocks-panel";
 import { RenderedSheet } from "../rendered-sheet";
+import { StatsSheet } from "../stats-sheet";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -85,6 +86,7 @@ export const HeaderActions = () => {
           onApply={handleParseJson}
           triggerText="View code"
         />
+        <StatsSheet />
 
         <Button
           data-slot="header-actions-copy"
