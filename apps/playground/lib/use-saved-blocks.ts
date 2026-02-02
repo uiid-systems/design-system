@@ -44,17 +44,19 @@ export function useSavedBlocks() {
     };
   }, []);
 
-  // Deduplicated list: latest version per blockId
-  const latestBlocks = useMemo(() => {
+  // Deduplicated list: latest version per blockId, plus version counts
+  const { latestBlocks, versionCounts } = useMemo(() => {
     const map = new Map<string, SavedBlockDoc>();
+    const counts = new Map<string, number>();
     for (const block of blocks) {
+      counts.set(block.blockId, (counts.get(block.blockId) ?? 0) + 1);
       const existing = map.get(block.blockId);
       if (!existing || block.version > existing.version) {
         map.set(block.blockId, block);
       }
     }
-    // Sort by updatedAt desc
-    return Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
+    const sorted = Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
+    return { latestBlocks: sorted, versionCounts: counts };
   }, [blocks]);
 
   const getVersionsForBlock = useCallback(
@@ -131,29 +133,34 @@ export function useSavedBlocks() {
   const remove = useCallback(
     async (blockId: string) => {
       if (!collection) return;
-      // Remove all versions of the block
-      const docs = await collection.find({ selector: { blockId } }).exec();
-      for (const doc of docs) {
-        await doc.remove();
+      // Find matching version IDs from in-memory state and remove by primary key
+      const idsToRemove = blocks
+        .filter((b) => b.blockId === blockId)
+        .map((b) => b.id);
+      for (const id of idsToRemove) {
+        const doc = await collection.findOne(id).exec();
+        if (doc) await doc.remove();
       }
-      // Clear active block if we deleted the active one
       if (activeBlockId === blockId) {
         clearActiveBlock();
       }
     },
-    [collection, activeBlockId, clearActiveBlock]
+    [collection, blocks, activeBlockId, clearActiveBlock]
   );
 
   const rename = useCallback(
     async (blockId: string, newName: string) => {
       if (!collection || !newName.trim()) return;
-      // Rename all versions of the block
-      const docs = await collection.find({ selector: { blockId } }).exec();
-      for (const doc of docs) {
-        await doc.patch({ name: newName.trim(), updatedAt: Date.now() });
+      // Find matching version IDs from in-memory state and rename by primary key
+      const idsToRename = blocks
+        .filter((b) => b.blockId === blockId)
+        .map((b) => b.id);
+      for (const id of idsToRename) {
+        const doc = await collection.findOne(id).exec();
+        if (doc) await doc.patch({ name: newName.trim(), updatedAt: Date.now() });
       }
     },
-    [collection]
+    [collection, blocks]
   );
 
   const load = useCallback(
@@ -169,5 +176,5 @@ export function useSavedBlocks() {
     [setTree, setActiveBlock]
   );
 
-  return { blocks, latestBlocks, save, saveAsNew, remove, rename, load, getVersionsForBlock };
+  return { blocks, latestBlocks, versionCounts, save, saveAsNew, remove, rename, load, getVersionsForBlock };
 }

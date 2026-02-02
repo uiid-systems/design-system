@@ -68,7 +68,9 @@ export const SaveButton = () => {
       data-slot="save-button"
       open={open}
       onOpenChange={handleOpenChange}
-      title={isExistingBlock ? "Save a new version?" : "Ready to save your block?"}
+      title={
+        isExistingBlock ? "Save a new version?" : "Ready to save your block?"
+      }
       description={
         isExistingBlock
           ? "This will save a new version of the current block. You can also save it as a brand new block."
@@ -77,9 +79,15 @@ export const SaveButton = () => {
       size="small"
       icon={SaveIcon}
       trigger={
-        <Button size="small" disabled={!tree} ghost>
+        <Button
+          data-slot="save-button"
+          tooltip="Save block"
+          size="small"
+          disabled={!tree}
+          ghost
+          square
+        >
           <SaveIcon />
-          Save
         </Button>
       }
       footer={

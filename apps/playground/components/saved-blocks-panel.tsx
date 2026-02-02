@@ -3,20 +3,21 @@
 import { useState } from "react";
 
 import { Button } from "@uiid/buttons";
+import { Input } from "@uiid/forms";
 import {
   FolderOpenIcon,
   Trash2Icon,
   PencilIcon,
-  CheckIcon,
-  XIcon,
+  CircleCheckIcon,
+  CircleXIcon,
   CopyIcon,
   EyeIcon,
 } from "@uiid/icons";
-import { Badge } from "@uiid/indicators";
-import { Input } from "@uiid/forms";
 import { Group, Stack, Separator } from "@uiid/layout";
 import { Sheet, useToastManager } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
+
+import { countComponents } from "@uiid/registry";
 
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
 
@@ -32,7 +33,8 @@ function formatDate(timestamp: number): string {
 }
 
 export const SavedBlocksPanel = () => {
-  const { latestBlocks, remove, rename, load } = useSavedBlocks();
+  const { latestBlocks, versionCounts, remove, rename, load } =
+    useSavedBlocks();
   const toastManager = useToastManager();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -82,6 +84,28 @@ export const SavedBlocksPanel = () => {
     }
   };
 
+  const handleChangeEditName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditName(e.target.value);
+  };
+
+  const handleKeyDownEditName = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleConfirmRename();
+    if (e.key === "Escape") handleCancelRename();
+  };
+
+  const getVersionCount = (blockId: string) => {
+    return versionCounts.get(blockId) ?? 1;
+  };
+
+  const getComponentCount = (treeJson: string) => {
+    try {
+      const tree = JSON.parse(treeJson);
+      return countComponents(tree);
+    } catch {
+      return null;
+    }
+  };
+
   return (
     <Sheet
       data-slot="saved-blocks-panel"
@@ -92,14 +116,13 @@ export const SavedBlocksPanel = () => {
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
       trigger={
-        <Button tooltip="View saved blocks" size="small" ghost>
+        <Button tooltip="View saved blocks" size="small" ghost square>
           <FolderOpenIcon />
-          View saved
         </Button>
       }
     >
-      <Separator />
-      <Stack gap={2} py={4} ax="stretch" fullwidth>
+      <Separator mt={4} />
+      <Stack gap={12} py={4} ax="stretch" fullwidth>
         {latestBlocks.length === 0 ? (
           <Stack ax="center" ay="center" p={8} gap={2}>
             <Text shade="muted" size={0}>
@@ -110,117 +133,141 @@ export const SavedBlocksPanel = () => {
             </Text>
           </Stack>
         ) : (
-          latestBlocks.map((block) => (
-            <Stack
-              key={block.id}
-              gap={3}
-              ax="stretch"
-              p={4}
-              className={styles["block-card"]}
-            >
-              {editingId === block.blockId ? (
-                <Group gap={1} ay="center">
-                  <Input
-                    size="small"
-                    value={editName}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setEditName(e.target.value)
-                    }
-                    onKeyDown={(e: React.KeyboardEvent) => {
-                      if (e.key === "Enter") handleConfirmRename();
-                      if (e.key === "Escape") handleCancelRename();
-                    }}
-                  />
-                  <Button
-                    size="xsmall"
-                    square
-                    ghost
-                    tone="positive"
-                    onClick={handleConfirmRename}
-                  >
-                    <CheckIcon />
-                  </Button>
-                  <Button
-                    size="xsmall"
-                    square
-                    ghost
-                    onClick={handleCancelRename}
-                  >
-                    <XIcon />
-                  </Button>
-                </Group>
-              ) : (
-                <Group
-                  ax="space-between"
-                  ay="start"
-                  fullwidth
-                  gap={4}
-                  onClick={() => handleLoad(block)}
-                >
+          latestBlocks.map((block) => {
+            const isEditing = editingId === block.blockId;
+            return (
+              <Stack
+                key={block.id}
+                gap={8}
+                ax="stretch"
+                className={styles["block-card"]}
+              >
+                <Group ax="space-between" ay="start" fullwidth gap={4}>
                   <Stack gap={4}>
-                    <Text size={2} weight="bold">
-                      {block.name}
-                    </Text>
+                    {isEditing ? (
+                      <Input
+                        value={editName}
+                        onChange={handleChangeEditName}
+                        onKeyDown={handleKeyDownEditName}
+                        ghost
+                        size="large"
+                        style={{
+                          padding: 0,
+                          height: "auto",
+                          fontWeight: "bold",
+                          fontSize: "var(--typography-text-2-size)",
+                        }}
+                      />
+                    ) : (
+                      <Text size={2} weight="bold">
+                        {block.name}
+                      </Text>
+                    )}
                     {block.description && (
                       <Text shade="muted">{block.description}</Text>
                     )}
-                    <Text size={-1} shade="halftone">
-                      {formatDate(block.updatedAt)}
-                    </Text>
-                  </Stack>
-
-                  <Stack
-                    gap={3}
-                    ay="end"
-                    ax="end"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Badge size="small">v{block.version}</Badge>
-                    <Group gap={1}>
-                      <Button
-                        tooltip="View"
-                        onClick={() => handleLoad(block)}
-                        size="xsmall"
-                        ghost
-                        square
-                      >
-                        <EyeIcon />
-                      </Button>
-                      <Button
-                        tooltip="Copy link"
-                        onClick={() => handleCopyLink(block)}
-                        size="xsmall"
-                        ghost
-                        square
-                      >
-                        <CopyIcon />
-                      </Button>
-                      <Button
-                        tooltip="Rename"
-                        onClick={() =>
-                          handleStartRename(block.blockId, block.name)
-                        }
-                        size="xsmall"
-                        ghost
-                        square
-                      >
-                        <PencilIcon />
-                      </Button>
-                      <Button
-                        tooltip="Delete"
-                        onClick={() => handleDelete(block)}
-                        size="xsmall"
-                        ghost
-                        square
-                      >
-                        <Trash2Icon />
-                      </Button>
+                    <Group gap={2} ay="center">
+                      <Text size={-1} weight="bold">
+                        Last saved {formatDate(block.updatedAt)}
+                      </Text>
+                      &middot;
+                      <Text size={-1} weight="bold">
+                        {getVersionCount(block.blockId)}{" "}
+                        {getVersionCount(block.blockId) === 1
+                          ? "version"
+                          : "versions"}
+                      </Text>
+                      {(() => {
+                        const cc = getComponentCount(block.tree);
+                        if (!cc) return null;
+                        return (
+                          <>
+                            &middot;
+                            <Text size={-1} weight="bold">
+                              {cc.total}{" "}
+                              {cc.total === 1
+                                ? "component"
+                                : "components"}
+                            </Text>
+                          </>
+                        );
+                      })()}
                     </Group>
                   </Stack>
+
+                  <Group gap={1}>
+                    <Button
+                      tooltip="View"
+                      onClick={() => handleLoad(block)}
+                      size="xsmall"
+                      ghost
+                      square
+                      disabled={isEditing}
+                    >
+                      <EyeIcon />
+                    </Button>
+                    <Button
+                      tooltip="Copy link"
+                      onClick={() => handleCopyLink(block)}
+                      size="xsmall"
+                      ghost
+                      square
+                      disabled={isEditing}
+                    >
+                      <CopyIcon />
+                    </Button>
+                    {isEditing ? (
+                      <>
+                        <Button
+                          tooltip="Confirm"
+                          tone="positive"
+                          onClick={handleConfirmRename}
+                          size="xsmall"
+                          ghost
+                          square
+                        >
+                          <CircleCheckIcon />
+                        </Button>
+                        <Button
+                          tooltip="Cancel"
+                          tone="critical"
+                          onClick={handleCancelRename}
+                          size="xsmall"
+                          ghost
+                          square
+                        >
+                          <CircleXIcon />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          tooltip="Rename"
+                          onClick={() =>
+                            handleStartRename(block.blockId, block.name)
+                          }
+                          size="xsmall"
+                          ghost
+                          square
+                        >
+                          <PencilIcon />
+                        </Button>
+                        <Button
+                          tooltip="Delete"
+                          onClick={() => handleDelete(block)}
+                          size="xsmall"
+                          ghost
+                          square
+                        >
+                          <Trash2Icon />
+                        </Button>
+                      </>
+                    )}
+                  </Group>
                 </Group>
-              )}
-            </Stack>
-          ))
+              </Stack>
+            );
+          })
         )}
       </Stack>
     </Sheet>

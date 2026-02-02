@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
 import { CopyIcon, SquareCheckIcon } from "@uiid/icons";
-import { Group } from "@uiid/layout";
+import { Group, Separator } from "@uiid/layout";
 
 import { useChatStore } from "@/lib/store";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
@@ -13,6 +13,7 @@ import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 import { NewChatButton } from "../new-chat-button";
 import { SaveButton } from "../save-button";
 import { SavedBlocksPanel } from "../saved-blocks-panel";
+import { RenderedSheet } from "../rendered-sheet";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -45,22 +46,20 @@ export const HeaderActions = () => {
     }
   }, [tree, treeJson]);
 
+  const handleParseJson = () => {
+    try {
+      setTree(JSON.parse(jsonInput));
+    } catch (error) {
+      setParseError(error instanceof Error ? error.message : "Invalid JSON");
+    }
+  };
+
   const handleShare = async () => {
     const url = getShareUrl();
     if (url) {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const handleParseJson = () => {
-    try {
-      const parsed = JSON.parse(jsonInput) as UITree;
-      setTree(parsed);
-      setParseError(null);
-    } catch (e) {
-      setParseError(e instanceof Error ? e.message : "Invalid JSON");
     }
   };
 
@@ -76,33 +75,36 @@ export const HeaderActions = () => {
   }, [tree]);
 
   return (
-    <Group data-slot="header-actions" fullwidth gap={2} p={2}>
-      <NewChatButton />
-
-      <Button
-        data-slot="header-actions-share"
-        size="small"
-        ghost
-        onClick={handleShare}
-        disabled={!tree || copied}
-      >
-        {copied ? <SquareCheckIcon /> : <CopyIcon />}
-        Copy
-      </Button>
-      <SaveButton />
-
-      <div style={{ marginLeft: "auto" }}>
-        <SavedBlocksPanel />
-      </div>
-      {/* <RenderedSheet
+    <>
+      <Group data-slot="header-actions" gap={1} p={2}>
+        <RenderedSheet
           code={jsxCode}
           jsonValue={jsonInput}
           onJsonChange={setJsonInput}
           parseError={parseError}
           onApply={handleParseJson}
           triggerText="View code"
-        /> */}
-    </Group>
+        />
+
+        <Button
+          data-slot="header-actions-copy"
+          tooltip="Copy link to block"
+          onClick={handleShare}
+          disabled={!tree || copied}
+          size="small"
+          ghost
+          square
+        >
+          {copied ? <SquareCheckIcon /> : <CopyIcon />}
+        </Button>
+        <SaveButton />
+      </Group>
+      <Group gap={2} style={{ marginLeft: "auto" }}>
+        <NewChatButton />
+        <Separator orientation="vertical" />
+        <SavedBlocksPanel />
+      </Group>
+    </>
   );
 };
 HeaderActions.displayName = "HeaderActions";
