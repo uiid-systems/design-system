@@ -30,15 +30,15 @@ import { Text } from "@uiid/typography";
  */
 export const registry: ComponentRegistry = {
   // Layout components
-  Box: ({ element, children }) => <Box {...element.props}>{children}</Box>,
+  Box: ({ element, children }) => <Box data-element-key={element.key} {...element.props}>{children}</Box>,
 
-  Stack: ({ element, children }) => <Stack {...element.props}>{children}</Stack>,
+  Stack: ({ element, children }) => <Stack data-element-key={element.key} {...element.props}>{children}</Stack>,
 
-  Group: ({ element, children }) => <Group {...element.props}>{children}</Group>,
+  Group: ({ element, children }) => <Group data-element-key={element.key} {...element.props}>{children}</Group>,
 
-  Layer: ({ element, children }) => <Layer {...element.props}>{children}</Layer>,
+  Layer: ({ element, children }) => <Layer data-element-key={element.key} {...element.props}>{children}</Layer>,
 
-  Separator: ({ element }) => <Separator {...element.props} />,
+  Separator: ({ element }) => <Separator data-element-key={element.key} {...element.props} />,
 
   // Button components
   Button: ({ element, children, onAction }) => {
@@ -47,6 +47,7 @@ export const registry: ComponentRegistry = {
     const { action, ...props } = element.props;
     return (
       <Button
+        data-element-key={element.key}
         {...props}
         onClick={() => {
           if (action && onAction) {
@@ -63,6 +64,7 @@ export const registry: ComponentRegistry = {
     const { action, ...props } = element.props;
     return (
       <ToggleButton
+        data-element-key={element.key}
         {...props}
         onPressedChange={() => {
           if (action && onAction) {
@@ -80,6 +82,7 @@ export const registry: ComponentRegistry = {
     const { action, ...props } = element.props;
     return (
       <Form
+        data-element-key={element.key}
         {...props}
         onSubmit={(event) => {
           event.preventDefault();
@@ -95,14 +98,15 @@ export const registry: ComponentRegistry = {
     );
   },
 
-  Input: ({ element }) => <Input {...element.props} />,
+  Input: ({ element }) => <Input data-element-key={element.key} {...element.props} />,
 
-  Textarea: ({ element }) => <Textarea {...element.props} />,
+  Textarea: ({ element }) => <Textarea data-element-key={element.key} {...element.props} />,
 
   Checkbox: ({ element, onAction }) => {
     const { action, ...props } = element.props;
     return (
       <Checkbox
+        data-element-key={element.key}
         {...props}
         onCheckedChange={(checked) => {
           if (action && onAction) {
@@ -117,6 +121,7 @@ export const registry: ComponentRegistry = {
     const { action, ...props } = element.props;
     return (
       <Select
+        data-element-key={element.key}
         {...props}
         onValueChange={(value) => {
           if (action && onAction) {
@@ -131,6 +136,7 @@ export const registry: ComponentRegistry = {
     const { action, ...props } = element.props;
     return (
       <Switch
+        data-element-key={element.key}
         {...props}
         onCheckedChange={(checked) => {
           if (action && onAction) {
@@ -143,7 +149,7 @@ export const registry: ComponentRegistry = {
 
   // Typography components
   Text: ({ element, children }) => (
-    <Text {...element.props}>{children || element.props.children}</Text>
+    <Text data-element-key={element.key} {...element.props}>{children || element.props.children}</Text>
   ),
 
   // Card components
@@ -166,7 +172,7 @@ export const registry: ComponentRegistry = {
     }
 
     return (
-      <Card {...regularProps} {...slotProps}>
+      <Card data-element-key={element.key} {...regularProps} {...slotProps}>
         {children}
       </Card>
     );
@@ -174,6 +180,6 @@ export const registry: ComponentRegistry = {
 
   // Overlay components
   Modal: ({ element, children }) => (
-    <Modal {...element.props} trigger={children} />
+    <Modal data-element-key={element.key} {...element.props} trigger={children} />
   ),
 };

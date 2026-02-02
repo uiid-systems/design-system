@@ -1,6 +1,6 @@
 {
   "$description": "UIID Design System - Popover Component Tokens",
   "popover": {
-    "maxWidth": { "$value": "320px", "$type": "dimension" }
+    "maxWidth": { "$value": "40rem", "$type": "dimension" }
   }
 }

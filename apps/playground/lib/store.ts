@@ -26,6 +26,7 @@ type ChatState = {
   error: string | null;
   activeBlockId: string | null;
   activeVersionId: string | null;
+  inspecting: boolean;
 };
 
 type ChatActions = {
@@ -39,6 +40,7 @@ type ChatActions = {
   setError: (error: string | null) => void;
   setActiveBlock: (blockId: string, versionId: string) => void;
   clearActiveBlock: () => void;
+  toggleInspecting: () => void;
 };
 
 type ChatStore = ChatState & ChatActions;
@@ -128,6 +130,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   error: null,
   activeBlockId: null,
   activeVersionId: null,
+  inspecting: false,
 
   // Actions
   setError: (error) => set({ error }),
@@ -139,6 +142,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
 
   clearActiveBlock: () =>
     set({ activeBlockId: null, activeVersionId: null }),
+
+  toggleInspecting: () => set((state) => ({ inspecting: !state.inspecting })),
 
   loadFromUrlHash: () => {
     const urlTree = getTreeFromUrl();

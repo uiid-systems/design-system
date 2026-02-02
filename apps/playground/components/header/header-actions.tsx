@@ -4,7 +4,7 @@ import type { UITree } from "@json-render/core";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
-import { CopyIcon, SquareCheckIcon } from "@uiid/icons";
+import { CopyIcon, ScanSearchIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group, Separator } from "@uiid/layout";
 
 import { useChatStore } from "@/lib/store";
@@ -20,6 +20,8 @@ export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
   const setTree = useChatStore((s) => s.setTree);
   const getShareUrl = useChatStore((s) => s.getShareUrl);
+  const inspecting = useChatStore((s) => s.inspecting);
+  const toggleInspecting = useChatStore((s) => s.toggleInspecting);
 
   const lastTreeRef = useRef<UITree | null>(null);
 
@@ -87,6 +89,18 @@ export const HeaderActions = () => {
           triggerText="View code"
         />
         <StatsSheet />
+        <Button
+          data-slot="header-actions-inspect"
+          tooltip="Inspect elements"
+          onClick={toggleInspecting}
+          disabled={!tree}
+          size="small"
+          ghost
+          square
+          tone={inspecting ? "info" : undefined}
+        >
+          <ScanSearchIcon />
+        </Button>
 
         <Button
           data-slot="header-actions-copy"
