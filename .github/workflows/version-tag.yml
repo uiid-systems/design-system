@@ -69,11 +69,10 @@ jobs:
           git tag -a ${{ steps.package-version.outputs.version }} -m "Release ${{ steps.package-version.outputs.version }}"
           git push origin ${{ steps.package-version.outputs.version }}
 
-      - name: Extract changelog content for release
+      - name: Generate release notes
         if: steps.check-tag.outputs.exists == 'false'
         id: changelog
         run: |
-          # Extract changelog content for current version from JSON
           VERSION=$(echo "${{ steps.package-version.outputs.version }}" | sed 's/^v//')
 
           # Generate changelog if it doesn't exist
@@ -82,32 +81,64 @@ jobs:
             pnpm run build-changelog
           fi
 
-          # Use node to extract changelog content from JSON
-          CHANGELOG=$(node -e "
+          REPO="${{ github.repository }}"
+
+          node -e "
             const fs = require('fs');
             try {
               const data = JSON.parse(fs.readFileSync('packages/changelog.json', 'utf8'));
-              // Get all packages' changes for this version
-              const allChanges = [];
-              data.forEach(pkg => {
-                const entry = pkg.entries.find(e => e.version === '$VERSION');
-                if (entry && entry.changes.length > 0) {
-                  entry.changes.forEach(c => allChanges.push('- ' + c.description));
-                }
-              });
-              if (allChanges.length > 0) {
-                console.log(allChanges.join('\n'));
-              } else {
-                console.log('- Release $VERSION with latest updates');
-              }
-            } catch (error) {
-              console.log('- Release $VERSION with latest updates');
-            }
-          ")
+              const entry = data.find(e => e.version === '${VERSION}');
 
-          echo "content<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+              if (!entry) {
+                console.log('No changelog entry found for this version.');
+                process.exit(0);
+              }
+
+              const lines = [];
+              const repo = '${REPO}';
+
+              function linkPr(desc) {
+                return desc.replace(/\(#(\d+)\)/, '([#\$1](https://github.com/' + repo + '/pull/\$1))');
+              }
+
+              if (entry.changes.features?.length) {
+                lines.push('## ✨ Features\n');
+                entry.changes.features.forEach(f => lines.push('- ' + linkPr(f.description)));
+                lines.push('');
+              }
+
+              if (entry.changes.fixes?.length) {
+                lines.push('## 🐛 Bug Fixes\n');
+                entry.changes.fixes.forEach(f => lines.push('- ' + linkPr(f.description)));
+                lines.push('');
+              }
+
+              if (entry.changes.refactors?.length) {
+                lines.push('## ♻️ Refactors\n');
+                entry.changes.refactors.forEach(f => lines.push('- ' + linkPr(f.description)));
+                lines.push('');
+              }
+
+              if (entry.changes.performance?.length) {
+                lines.push('## ⚡ Performance\n');
+                entry.changes.performance.forEach(f => lines.push('- ' + linkPr(f.description)));
+                lines.push('');
+              }
+
+              if (entry.changes.documentation?.length) {
+                lines.push('## 📚 Documentation\n');
+                entry.changes.documentation.forEach(f => lines.push('- ' + linkPr(f.description)));
+                lines.push('');
+              }
+
+              console.log(lines.join('\n'));
+            } catch (error) {
+              console.error(error);
+              process.exit(1);
+            }
+          " > /tmp/release-notes.md
+
+          echo "notes_file=/tmp/release-notes.md" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         if: steps.check-tag.outputs.exists == 'false'
@@ -117,13 +148,6 @@ jobs:
         with:
           tag_name: ${{ steps.package-version.outputs.version }}
           name: Release ${{ steps.package-version.outputs.version }}
-          body: |
-            ## Changes
-
-            ${{ steps.changelog.outputs.content }}
-
-            ### Packages
-
-            All UIID packages have been updated to `${{ steps.package-version.outputs.version }}`
+          body_path: /tmp/release-notes.md
           draft: false
           prerelease: false

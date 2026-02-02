@@ -330,73 +330,55 @@ jobs:
           VERSION_NUM="${VERSION#v}"
           
           # Read the changelog and generate formatted release notes
+          REPO="${{ github.repository }}"
+
           node -e "
             const fs = require('fs');
             const changelog = JSON.parse(fs.readFileSync('packages/changelog.json', 'utf8'));
             const entry = changelog.find(e => e.version === '${VERSION_NUM}');
-            
+
             if (!entry) {
               console.log('No changelog entry found for this version.');
               process.exit(0);
             }
-            
+
             const lines = [];
-            
-            // Features
+            const repo = '${REPO}';
+
+            function linkPr(desc) {
+              return desc.replace(/\(#(\d+)\)/, '([#\$1](https://github.com/' + repo + '/pull/\$1))');
+            }
+
             if (entry.changes.features?.length) {
               lines.push('## ✨ Features\\n');
-              entry.changes.features.forEach(f => {
-                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
-                lines.push('- ' + f.description + prLink);
-              });
+              entry.changes.features.forEach(f => lines.push('- ' + linkPr(f.description)));
               lines.push('');
             }
-            
-            // Fixes
+
             if (entry.changes.fixes?.length) {
               lines.push('## 🐛 Bug Fixes\\n');
-              entry.changes.fixes.forEach(f => {
-                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
-                lines.push('- ' + f.description + prLink);
-              });
+              entry.changes.fixes.forEach(f => lines.push('- ' + linkPr(f.description)));
               lines.push('');
             }
-            
-            // Refactors
+
             if (entry.changes.refactors?.length) {
               lines.push('## ♻️ Refactors\\n');
-              entry.changes.refactors.forEach(f => {
-                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
-                lines.push('- ' + f.description + prLink);
-              });
+              entry.changes.refactors.forEach(f => lines.push('- ' + linkPr(f.description)));
               lines.push('');
             }
-            
-            // Performance
+
             if (entry.changes.performance?.length) {
               lines.push('## ⚡ Performance\\n');
-              entry.changes.performance.forEach(f => {
-                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
-                lines.push('- ' + f.description + prLink);
-              });
+              entry.changes.performance.forEach(f => lines.push('- ' + linkPr(f.description)));
               lines.push('');
             }
-            
-            // Documentation
+
             if (entry.changes.documentation?.length) {
               lines.push('## 📚 Documentation\\n');
-              entry.changes.documentation.forEach(f => {
-                const prLink = f.pr ? ' ([#' + f.pr + '](https://github.com/${{ github.repository }}/pull/' + f.pr + '))' : '';
-                lines.push('- ' + f.description + prLink);
-              });
+              entry.changes.documentation.forEach(f => lines.push('- ' + linkPr(f.description)));
               lines.push('');
             }
-            
-            // Packages
-            lines.push('## 📦 Packages\\n');
-            lines.push('All UIID packages updated to ${VERSION}:\\n');
-            entry.packages.forEach(p => lines.push('- \`' + p + '\`'));
-            
+
             console.log(lines.join('\\n'));
           " > /tmp/release-notes.md
           
