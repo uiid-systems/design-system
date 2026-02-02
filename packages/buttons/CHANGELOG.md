@@ -1,5 +1,12 @@
 # @uiid/buttons
 
+## 0.0.4
+
+### Patch Changes
+
+- refactor: cleanup previews (#52)
+- fix: preview link to playground (#54)
+
 ## 0.0.3
 
 ### Patch Changes

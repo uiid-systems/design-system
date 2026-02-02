@@ -1,5 +1,81 @@
 [
   {
+    "version": "0.0.4",
+    "date": "February 2, 2026",
+    "packages": [
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [
+        {
+          "description": "Add local db, saving, versioning (#63)",
+          "raw": "feat: add local db, saving, versioning (#63)",
+          "semverType": "patch",
+          "pr": 63,
+          "packages": [
+            "@uiid/overlays"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "description": "Preview link to playground (#54)",
+          "raw": "fix: preview link to playground (#54)",
+          "semverType": "patch",
+          "pr": 54,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/cards",
+            "@uiid/interactive",
+            "@uiid/lists",
+            "@uiid/tokens"
+          ]
+        }
+      ],
+      "refactors": [
+        {
+          "description": "Cleanup previews (#52)",
+          "raw": "refactor: cleanup previews (#52)",
+          "semverType": "patch",
+          "pr": 52,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/forms",
+            "@uiid/interactive",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "More playground tinkering (#64)",
+          "raw": "refactor: more playground tinkering (#64)",
+          "semverType": "patch",
+          "pr": 64,
+          "packages": [
+            "@uiid/tokens"
+          ]
+        }
+      ],
+      "performance": [],
+      "documentation": [],
+      "other": []
+    }
+  },
+  {
     "version": "0.0.3",
     "date": "January 31, 2026",
     "packages": [
@@ -28,7 +104,7 @@
           "semverType": "patch",
           "pr": 37,
           "packages": [
-                  "@uiid/blocks",
+            "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -249,7 +325,7 @@
           "semverType": "patch",
           "pr": 20,
           "packages": [
-                  "@uiid/blocks",
+            "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -306,7 +382,7 @@
   },
   {
     "version": "0.0.1",
-    "date": "January 16, 2026",
+    "date": "Date unavailable",
     "packages": [
       "@uiid/blocks",
       "@uiid/buttons",
@@ -345,7 +421,7 @@
           "raw": "fix: react hook errors",
           "semverType": "patch",
           "packages": [
-                  "@uiid/blocks",
+            "@uiid/blocks",
             "@uiid/calendars",
             "@uiid/interactive",
             "@uiid/overlays",

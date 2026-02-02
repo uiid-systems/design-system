@@ -1,5 +1,11 @@
 # @uiid/forms
 
+## 0.0.4
+
+### Patch Changes
+
+- refactor: cleanup previews (#52)
+
 ## 0.0.3
 
 ### Patch Changes
