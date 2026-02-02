@@ -1,5 +1,11 @@
 # @uiid/overlays
 
+## 0.0.4
+
+### Patch Changes
+
+- feat: add local db, saving, versioning (#63)
+
 ## 0.0.3
 
 ### Patch Changes

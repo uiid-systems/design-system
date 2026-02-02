@@ -1,5 +1,14 @@
 # @uiid/registry
 
+## 0.0.4
+
+### Patch Changes
+
+- refactor: more playground tinkering (#64)
+- refactor: cleanup previews (#52)
+- refactor: more mdx docs (#60)
+- fix: preview link to playground (#54)
+
 ## 0.0.3
 
 ### Patch Changes
