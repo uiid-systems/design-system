@@ -66,7 +66,7 @@ export function getCategoryLabel(category: string): string {
  * Generate navigation items for the sidebar
  */
 export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
-  return getCategories().map((category) => {
+  const categories = getCategories().map((category) => {
     const components = getComponentsByCategory(category);
 
     return {
@@ -79,6 +79,11 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
       })),
     } satisfies ListItemGroupProps;
   });
+
+  return [
+    ...categories,
+    { label: "Releases", value: "/releases", href: "/releases" },
+  ];
 }
 
 /**
