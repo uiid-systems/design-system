@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 import { Button } from "@uiid/buttons";
-import { Input } from "@uiid/forms";
 import { SquarePenIcon } from "@uiid/icons";
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 
 import { useComponentLoader } from "@/lib/use-component-loader";

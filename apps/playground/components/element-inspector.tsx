@@ -12,7 +12,7 @@ import {
   TextCursorInputIcon,
   LayersIcon,
 } from "@uiid/icons";
-import { Group, Separator, Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 import { registry as componentRegistry } from "@uiid/registry";
 import { Text } from "@uiid/typography";
 
