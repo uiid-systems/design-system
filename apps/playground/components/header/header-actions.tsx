@@ -14,6 +14,7 @@ import { RenderedSheet } from "../rendered-sheet";
 
 import { NewChatButton } from "../new-chat-button";
 import { SaveButton } from "../save-button";
+import { SavedBlocksPanel } from "../saved-blocks-panel";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -92,6 +93,7 @@ export const HeaderActions = () => {
         {copied ? <SquareCheckIcon /> : <CopyIcon />}
       </Button>
       <SaveButton />
+      <SavedBlocksPanel />
       {/* <RenderedSheet
           code={jsxCode}
           jsonValue={jsonInput}

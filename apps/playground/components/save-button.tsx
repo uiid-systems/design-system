@@ -4,24 +4,34 @@ import { useState } from "react";
 
 import { Button } from "@uiid/buttons";
 import { SaveIcon } from "@uiid/icons";
-import { CheckboxGroup, Input, Switch } from "@uiid/forms";
-import { Group, Stack } from "@uiid/layout";
+import { Input } from "@uiid/forms";
+import { Stack } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
+
+import { useSavedBlocks } from "@/lib/use-saved-blocks";
+import { useChatStore } from "@/lib/store";
 
 export const SaveButton = () => {
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const tree = useChatStore((s) => s.tree);
+  const { save } = useSavedBlocks();
 
   const handleCancel = () => {
     setOpen(false);
+    setName("");
   };
 
-  const handleSave = () => {
-    console.log("save");
+  const handleSave = async () => {
+    if (!name.trim() || !tree) return;
+    await save(name.trim(), tree);
     setOpen(false);
+    setName("");
   };
 
   return (
     <Modal
+      data-slot="save-button"
       open={open}
       onOpenChange={setOpen}
       title="Ready to save your block?"
@@ -29,14 +39,16 @@ export const SaveButton = () => {
       size="small"
       icon={SaveIcon}
       trigger={
-        <Button size="small">
+        <Button size="small" disabled={!tree}>
           <SaveIcon />
           Save block
         </Button>
       }
       footer={
         <Stack ax="stretch" fullwidth gap={2}>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} disabled={!name.trim()}>
+            Save
+          </Button>
           <Button ghost onClick={handleCancel}>
             Cancel
           </Button>
@@ -48,6 +60,13 @@ export const SaveButton = () => {
           required
           label="Block name"
           placeholder="Give your UIID block a name..."
+          value={name}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === "Enter") handleSave();
+          }}
         />
       </Stack>
     </Modal>
