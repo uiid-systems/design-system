@@ -16,6 +16,7 @@ export const NewChatButton = () => {
 
   const messages = useChatStore((s) => s.messages);
   const tree = useChatStore((s) => s.tree);
+  const clearActiveBlock = useChatStore((s) => s.clearActiveBlock);
   const { clearSelection, component } = useComponentLoader();
 
   const handleCancel = () => {
@@ -24,6 +25,7 @@ export const NewChatButton = () => {
 
   const handleClear = () => {
     clearSelection();
+    clearActiveBlock();
     setOpen(false);
   };
 
@@ -37,13 +39,12 @@ export const NewChatButton = () => {
       onOpenChange={setOpen}
       trigger={
         <Button
-          tooltip="Start a new chat"
           size="small"
           ghost
-          square
           disabled={messages.length === 0 && !tree && !component}
         >
           <SquarePenIcon />
+          New
         </Button>
       }
       footer={

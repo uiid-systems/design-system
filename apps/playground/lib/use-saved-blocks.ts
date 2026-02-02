@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import type { UITree } from "@json-render/core";
 import type { RxCollection } from "rxdb/plugins/core";
 
@@ -15,6 +15,9 @@ export function useSavedBlocks() {
   const [blocks, setBlocks] = useState<SavedBlockDoc[]>([]);
   const [collection, setCollection] = useState<RxCollection<SavedBlockDoc> | null>(null);
   const setTree = useChatStore((s) => s.setTree);
+  const activeBlockId = useChatStore((s) => s.activeBlockId);
+  const setActiveBlock = useChatStore((s) => s.setActiveBlock);
+  const clearActiveBlock = useChatStore((s) => s.clearActiveBlock);
 
   // Initialize database and subscribe to changes
   useEffect(() => {
@@ -41,35 +44,112 @@ export function useSavedBlocks() {
     };
   }, []);
 
+  // Deduplicated list: latest version per blockId
+  const latestBlocks = useMemo(() => {
+    const map = new Map<string, SavedBlockDoc>();
+    for (const block of blocks) {
+      const existing = map.get(block.blockId);
+      if (!existing || block.version > existing.version) {
+        map.set(block.blockId, block);
+      }
+    }
+    // Sort by updatedAt desc
+    return Array.from(map.values()).sort((a, b) => b.updatedAt - a.updatedAt);
+  }, [blocks]);
+
+  const getVersionsForBlock = useCallback(
+    (blockId: string): SavedBlockDoc[] => {
+      return blocks
+        .filter((b) => b.blockId === blockId)
+        .sort((a, b) => b.version - a.version);
+    },
+    [blocks]
+  );
+
   const save = useCallback(
-    async (name: string, tree: UITree) => {
+    async (name: string, description: string, tree: UITree) => {
       if (!collection || !name.trim()) return;
       const now = Date.now();
+
+      if (activeBlockId) {
+        // Save as new version of existing block
+        const versions = blocks.filter((b) => b.blockId === activeBlockId);
+        const maxVersion = versions.reduce((max, b) => Math.max(max, b.version), 0);
+        const newId = generateId();
+        await collection.insert({
+          id: newId,
+          blockId: activeBlockId,
+          name: name.trim(),
+          description: description.trim(),
+          version: maxVersion + 1,
+          tree: JSON.stringify(tree),
+          createdAt: now,
+          updatedAt: now,
+        });
+        setActiveBlock(activeBlockId, newId);
+      } else {
+        // Create new block
+        const newBlockId = generateId();
+        const newId = newBlockId;
+        await collection.insert({
+          id: newId,
+          blockId: newBlockId,
+          name: name.trim(),
+          description: description.trim(),
+          version: 1,
+          tree: JSON.stringify(tree),
+          createdAt: now,
+          updatedAt: now,
+        });
+        setActiveBlock(newBlockId, newId);
+      }
+    },
+    [collection, activeBlockId, blocks, setActiveBlock]
+  );
+
+  const saveAsNew = useCallback(
+    async (name: string, description: string, tree: UITree) => {
+      if (!collection || !name.trim()) return;
+      const now = Date.now();
+      const newBlockId = generateId();
+      const newId = newBlockId;
       await collection.insert({
-        id: generateId(),
+        id: newId,
+        blockId: newBlockId,
         name: name.trim(),
+        description: description.trim(),
+        version: 1,
         tree: JSON.stringify(tree),
         createdAt: now,
         updatedAt: now,
       });
+      setActiveBlock(newBlockId, newId);
     },
-    [collection]
+    [collection, setActiveBlock]
   );
 
   const remove = useCallback(
-    async (id: string) => {
+    async (blockId: string) => {
       if (!collection) return;
-      const doc = await collection.findOne(id).exec();
-      if (doc) await doc.remove();
+      // Remove all versions of the block
+      const docs = await collection.find({ selector: { blockId } }).exec();
+      for (const doc of docs) {
+        await doc.remove();
+      }
+      // Clear active block if we deleted the active one
+      if (activeBlockId === blockId) {
+        clearActiveBlock();
+      }
     },
-    [collection]
+    [collection, activeBlockId, clearActiveBlock]
   );
 
   const rename = useCallback(
-    async (id: string, newName: string) => {
+    async (blockId: string, newName: string) => {
       if (!collection || !newName.trim()) return;
-      const doc = await collection.findOne(id).exec();
-      if (doc) {
+      // Rename all versions of the block
+      const docs = await collection.find({ selector: { blockId } }).exec();
+      for (const doc of docs) {
         await doc.patch({ name: newName.trim(), updatedAt: Date.now() });
       }
     },
@@ -81,12 +161,13 @@ export function useSavedBlocks() {
       try {
         const tree = JSON.parse(block.tree) as UITree;
         setTree(tree);
+        setActiveBlock(block.blockId, block.id);
       } catch {
         console.error("Failed to parse saved block:", block.id);
       }
     },
-    [setTree]
+    [setTree, setActiveBlock]
   );
 
-  return { blocks, save, remove, rename, load };
+  return { blocks, latestBlocks, save, saveAsNew, remove, rename, load, getVersionsForBlock };
 }

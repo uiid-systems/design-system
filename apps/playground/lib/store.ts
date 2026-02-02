@@ -24,6 +24,8 @@ type ChatState = {
   tree: UITree | null;
   isLoading: boolean;
   error: string | null;
+  activeBlockId: string | null;
+  activeVersionId: string | null;
 };
 
 type ChatActions = {
@@ -35,6 +37,8 @@ type ChatActions = {
   pushTreeToHistory: () => void;
   syncTreeToHash: () => void;
   setError: (error: string | null) => void;
+  setActiveBlock: (blockId: string, versionId: string) => void;
+  clearActiveBlock: () => void;
 };
 
 type ChatStore = ChatState & ChatActions;
@@ -122,11 +126,19 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   tree: null,
   isLoading: false,
   error: null,
+  activeBlockId: null,
+  activeVersionId: null,
 
   // Actions
   setError: (error) => set({ error }),
 
   setTree: (tree) => set({ tree }),
+
+  setActiveBlock: (blockId, versionId) =>
+    set({ activeBlockId: blockId, activeVersionId: versionId }),
+
+  clearActiveBlock: () =>
+    set({ activeBlockId: null, activeVersionId: null }),
 
   loadFromUrlHash: () => {
     const urlTree = getTreeFromUrl();
@@ -189,6 +201,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
       tree: null,
       error: null,
       isLoading: false,
+      activeBlockId: null,
+      activeVersionId: null,
     });
   },
 

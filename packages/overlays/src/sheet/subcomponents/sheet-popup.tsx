@@ -29,9 +29,7 @@ export const SheetPopup = ({
           icon={icon}
           action={action}
           footer={footer}
-          FooterProps={{
-            style: { marginTop: "auto", border: "none", borderRadius: 0 },
-          }}
+          FooterProps={{ style: { marginTop: "auto" } }}
         />
       }
       className={cx(styles["sheet-popup"], sheetVariants({ side }), className)}

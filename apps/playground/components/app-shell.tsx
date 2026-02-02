@@ -7,6 +7,7 @@ import { JSONUIProvider } from "@json-render/react";
 
 import { Resizable, ResizablePanel, ResizableHandle } from "@uiid/interactive";
 import { Stack } from "@uiid/layout";
+import { ToastProvider, Toaster } from "@uiid/overlays";
 
 import { registry } from "@/lib/components";
 import { useChatStore } from "@/lib/store";
@@ -45,28 +46,31 @@ export const AppShell = ({ children }: AppShellProps) => {
   }, [loadFromUrlHash]);
 
   return (
-    <JSONUIProvider
-      registry={registry}
-      actionHandlers={{
-        submit: async () => {
-          alert("Submit action triggered!");
-        },
-        reset: async () => {
-          alert("Reset action triggered!");
-        },
-        navigate: async () => {
-          alert("Navigate action triggered!");
-        },
-      }}
-    >
-      <ChatOuterContainer style={{ overflow: "hidden" }}>
-        <ChatSidebar />
-        <Stack ax="stretch" fullwidth fullheight>
-          <Header />
-          {children}
-        </Stack>
-      </ChatOuterContainer>
-    </JSONUIProvider>
+    <ToastProvider>
+      <JSONUIProvider
+        registry={registry}
+        actionHandlers={{
+          submit: async () => {
+            alert("Submit action triggered!");
+          },
+          reset: async () => {
+            alert("Reset action triggered!");
+          },
+          navigate: async () => {
+            alert("Navigate action triggered!");
+          },
+        }}
+      >
+        <ChatOuterContainer style={{ overflow: "hidden" }}>
+          <ChatSidebar />
+          <Stack ax="stretch" fullwidth fullheight>
+            <Header />
+            {children}
+          </Stack>
+        </ChatOuterContainer>
+      </JSONUIProvider>
+      <Toaster />
+    </ToastProvider>
   );
 };
 AppShell.displayName = "AppShell";
