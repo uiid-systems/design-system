@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 import { Button } from "@uiid/buttons";
-import { Input } from "@uiid/forms";
 import { SquarePenIcon } from "@uiid/icons";
-import { Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 
 import { useComponentLoader } from "@/lib/use-component-loader";
@@ -39,28 +38,29 @@ export const NewChatButton = () => {
       onOpenChange={setOpen}
       trigger={
         <Button
+          tooltip="Create a new block"
+          disabled={messages.length === 0 && !tree && !component}
           size="small"
           ghost
-          disabled={messages.length === 0 && !tree && !component}
+          square
         >
           <SquarePenIcon />
-          New
         </Button>
       }
       footer={
-        <Stack ax="stretch" fullwidth gap={2}>
-          <Button size="small" fullwidth onClick={handleClear}>
-            Start over
-          </Button>
-          <Button size="small" fullwidth ghost onClick={handleCancel}>
+        <Group ax="end" fullwidth gap={4} mt={2}>
+          <Button size="small" ghost onClick={handleCancel}>
             Cancel
           </Button>
-        </Stack>
+          <Button size="small" tone="critical" onClick={handleClear}>
+            Start over
+          </Button>
+        </Group>
       }
     >
-      <Stack gap={6} py={6} ax="stretch" fullwidth>
+      {/* <Stack gap={6} py={6} ax="stretch" fullwidth>
         <Input placeholder="Enter a prompt to start building..." />
-      </Stack>
+      </Stack> */}
     </Modal>
   );
 };

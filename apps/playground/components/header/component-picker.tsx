@@ -31,8 +31,7 @@ type CategoryGroup = {
 };
 
 export const ComponentPicker = () => {
-  const { component, variant, selectComponent, selectVariant } =
-    useComponentLoader();
+  const { component, selectComponent } = useComponentLoader();
 
   const grouped = useMemo((): CategoryGroup[] => {
     return categories
