@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { JSONUIProvider } from "@json-render/react";
 
-import { Resizable, ResizablePanel, ResizableHandle } from "@uiid/interactive";
 import { Stack } from "@uiid/layout";
 import { ToastProvider, Toaster } from "@uiid/overlays";
 
@@ -63,6 +62,7 @@ export const AppShell = ({ children }: AppShellProps) => {
       >
         <ChatOuterContainer style={{ overflow: "hidden" }}>
           <ChatSidebar />
+
           <Stack ax="stretch" fullwidth fullheight>
             <Header />
             {children}

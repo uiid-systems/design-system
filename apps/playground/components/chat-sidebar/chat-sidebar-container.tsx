@@ -13,7 +13,7 @@ export const ChatSidebarContainer = ({
       fullwidth
       ax="stretch"
       br={1}
-      style={{ maxWidth: "30rem" }}
+      style={{ maxWidth: "28rem" }}
       {...props}
     >
       {children}
