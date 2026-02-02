@@ -10,10 +10,9 @@ import { Group } from "@uiid/layout";
 import { useChatStore } from "@/lib/store";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
-import { RenderedSheet } from "../rendered-sheet";
-
 import { NewChatButton } from "../new-chat-button";
 import { SaveButton } from "../save-button";
+import { SavedBlocksPanel } from "../saved-blocks-panel";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -77,21 +76,24 @@ export const HeaderActions = () => {
   }, [tree]);
 
   return (
-    <Group data-slot="header-actions" ax="center" fullwidth gap={2} p={2}>
+    <Group data-slot="header-actions" fullwidth gap={2} p={2}>
       <NewChatButton />
 
       <Button
         data-slot="header-actions-share"
-        tooltip={copied ? "Link copied!" : "Copy link"}
         size="small"
-        square
         ghost
         onClick={handleShare}
         disabled={!tree || copied}
       >
         {copied ? <SquareCheckIcon /> : <CopyIcon />}
+        Copy
       </Button>
       <SaveButton />
+
+      <div style={{ marginLeft: "auto" }}>
+        <SavedBlocksPanel />
+      </div>
       {/* <RenderedSheet
           code={jsxCode}
           jsonValue={jsonInput}

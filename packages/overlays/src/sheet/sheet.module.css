@@ -15,7 +15,7 @@
 }
 
 .sheet-popup {
-  --inset: 0;
+  --inset: 1rem;
   position: fixed;
   background-color: var(--shade-surface);
   color: var(--shade-foreground);
