@@ -47,8 +47,7 @@ function getTypeFromSchema(schema: z.ZodType): string {
 
   // Literal types
   if (schema instanceof z.ZodLiteral) {
-    const values = schema.def.values as unknown[];
-    const value = values[0];
+    const value = schema.value;
     if (typeof value === "string") return `"${value}"`;
     if (typeof value === "number") return String(value);
     if (typeof value === "boolean") return String(value);
@@ -127,8 +126,10 @@ function getEnumValues(schema: z.ZodType): string[] | undefined {
     const allLiterals = options.every((opt) => opt instanceof z.ZodLiteral);
     if (allLiterals) {
       return options.map((opt) => {
-        const values = (opt as z.ZodLiteral<unknown>).def.values as unknown[];
-        return String(values[0]);
+        if (opt instanceof z.ZodLiteral) {
+          return String(opt.value);
+        }
+        return "";
       });
     }
   }
@@ -160,13 +161,13 @@ export function extractPropsFromSchema(
   // Unwrap any wrappers to get to the object
   let objectSchema: z.ZodTypeAny = schema;
   if (objectSchema instanceof z.ZodOptional) {
-    objectSchema = objectSchema.unwrap();
+    objectSchema = objectSchema.unwrap() as z.ZodTypeAny;
   }
   if (objectSchema instanceof z.ZodNullable) {
-    objectSchema = objectSchema.unwrap();
+    objectSchema = objectSchema.unwrap() as z.ZodTypeAny;
   }
   if (objectSchema instanceof z.ZodDefault) {
-    objectSchema = objectSchema.unwrap();
+    objectSchema = objectSchema.unwrap() as z.ZodTypeAny;
   }
 
   if (!(objectSchema instanceof z.ZodObject)) {
