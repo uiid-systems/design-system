@@ -21,6 +21,7 @@ function formatDate(timestamp: number): string {
 export const BlockInfo = () => {
   const activeBlockId = useChatStore((s) => s.activeBlockId);
   const activeVersionId = useChatStore((s) => s.activeVersionId);
+  const activeRegistryBlock = useChatStore((s) => s.activeRegistryBlock);
   const { getVersionsForBlock, load } = useSavedBlocks();
 
   const versions = useMemo(
@@ -40,6 +41,18 @@ export const BlockInfo = () => {
     const version = versions.find((v) => v.id === versionId);
     if (version) load(version);
   };
+
+  // Registry block: show name and version without RxDB version selector
+  if (activeRegistryBlock) {
+    return (
+      <BlockInfoContainer>
+        <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
+        <Text size={-1} shade="muted">
+          v{activeRegistryBlock.version} · registry
+        </Text>
+      </BlockInfoContainer>
+    );
+  }
 
   return (
     <BlockInfoContainer>

@@ -12,6 +12,7 @@ import {
   CircleXIcon,
   CopyIcon,
   EyeIcon,
+  DownloadIcon,
 } from "@uiid/icons";
 import { Group, Stack, Separator } from "@uiid/layout";
 import { Sheet, useToastManager } from "@uiid/overlays";
@@ -19,6 +20,8 @@ import { Text } from "@uiid/typography";
 
 import { countComponents } from "@uiid/registry";
 
+import { slugify } from "@/lib/block-file";
+import type { BlockFile } from "@/lib/block-file";
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
 
 import styles from "./saved-blocks-panel.module.css";
@@ -39,6 +42,31 @@ export const SavedBlocksPanel = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [open, setOpen] = useState(false);
+
+  const handleExport = async (block: (typeof latestBlocks)[number]) => {
+    try {
+      const tree = JSON.parse(block.tree);
+      const body: BlockFile = {
+        name: block.name,
+        slug: slugify(block.name),
+        description: block.description,
+        version: 1,
+        tags: [],
+        tree,
+        createdAt: new Date(block.createdAt).toISOString(),
+        updatedAt: new Date(block.updatedAt).toISOString(),
+      };
+      const res = await fetch("/api/blocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error("Export failed");
+      toastManager.add({ description: `"${block.name}" exported to blocks/` });
+    } catch {
+      toastManager.add({ description: "Failed to export block" });
+    }
+  };
 
   const handleStartRename = (blockId: string, currentName: string) => {
     setEditingId(blockId);
@@ -239,6 +267,15 @@ export const SavedBlocksPanel = () => {
                       </>
                     ) : (
                       <>
+                        <Button
+                          tooltip="Export to file"
+                          onClick={() => handleExport(block)}
+                          size="xsmall"
+                          ghost
+                          square
+                        >
+                          <DownloadIcon />
+                        </Button>
                         <Button
                           tooltip="Rename"
                           onClick={() =>

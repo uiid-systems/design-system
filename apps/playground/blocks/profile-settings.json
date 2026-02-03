@@ -1,0 +1,173 @@
+{
+  "name": "Profile settings",
+  "slug": "profile-settings",
+  "description": "Two sections in a settings menu, with switches for a bunch of settings. Cancel and save buttons at the bottom.",
+  "version": "1.0.0",
+  "tags": [],
+  "tree": {
+    "root": "settings-section",
+    "elements": {
+      "settings-section": {
+        "key": "settings-section",
+        "type": "Stack",
+        "props": {
+          "gap": 8,
+          "ax": "stretch"
+        },
+        "children": [
+          "notifications-section",
+          "privacy-section",
+          "actions"
+        ]
+      },
+      "notifications-section": {
+        "key": "notifications-section",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "ax": "stretch"
+        },
+        "children": [
+          "notifications-title",
+          "email-notifications",
+          "push-notifications",
+          "marketing-emails"
+        ],
+        "parentKey": "settings-section"
+      },
+      "notifications-title": {
+        "key": "notifications-title",
+        "type": "Text",
+        "props": {
+          "children": "Notifications",
+          "size": 3,
+          "weight": "bold"
+        },
+        "parentKey": "notifications-section"
+      },
+      "email-notifications": {
+        "key": "email-notifications",
+        "type": "Switch",
+        "props": {
+          "label": "Email notifications",
+          "description": "Receive notifications via email for important updates",
+          "name": "emailNotifications",
+          "defaultChecked": true
+        },
+        "parentKey": "notifications-section"
+      },
+      "push-notifications": {
+        "key": "push-notifications",
+        "type": "Switch",
+        "props": {
+          "label": "Push notifications",
+          "description": "Get instant notifications on your device",
+          "name": "pushNotifications",
+          "defaultChecked": false
+        },
+        "parentKey": "notifications-section"
+      },
+      "marketing-emails": {
+        "key": "marketing-emails",
+        "type": "Switch",
+        "props": {
+          "label": "Marketing emails",
+          "description": "Receive updates about new features and promotions",
+          "name": "marketingEmails",
+          "defaultChecked": false
+        },
+        "parentKey": "notifications-section"
+      },
+      "privacy-section": {
+        "key": "privacy-section",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "ax": "stretch"
+        },
+        "children": [
+          "privacy-title",
+          "profile-visibility",
+          "data-sharing",
+          "analytics"
+        ],
+        "parentKey": "settings-section"
+      },
+      "privacy-title": {
+        "key": "privacy-title",
+        "type": "Text",
+        "props": {
+          "children": "Privacy",
+          "size": 3,
+          "weight": "bold"
+        },
+        "parentKey": "privacy-section"
+      },
+      "profile-visibility": {
+        "key": "profile-visibility",
+        "type": "Switch",
+        "props": {
+          "label": "Public profile",
+          "description": "Make your profile visible to other users",
+          "name": "profileVisibility",
+          "defaultChecked": true
+        },
+        "parentKey": "privacy-section"
+      },
+      "data-sharing": {
+        "key": "data-sharing",
+        "type": "Switch",
+        "props": {
+          "label": "Data sharing",
+          "description": "Share anonymized usage data to help improve our service",
+          "name": "dataSharing",
+          "defaultChecked": false
+        },
+        "parentKey": "privacy-section"
+      },
+      "analytics": {
+        "key": "analytics",
+        "type": "Switch",
+        "props": {
+          "label": "Analytics tracking",
+          "description": "Allow us to track your usage for analytics purposes",
+          "name": "analytics",
+          "defaultChecked": false
+        },
+        "parentKey": "privacy-section"
+      },
+      "actions": {
+        "key": "actions",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "ax": "end"
+        },
+        "children": [
+          "cancel-button",
+          "save-button"
+        ],
+        "parentKey": "settings-section"
+      },
+      "cancel-button": {
+        "key": "cancel-button",
+        "type": "Button",
+        "props": {
+          "children": "Cancel",
+          "ghost": true
+        },
+        "parentKey": "actions"
+      },
+      "save-button": {
+        "key": "save-button",
+        "type": "Button",
+        "props": {
+          "children": "Save Changes"
+        },
+        "parentKey": "actions"
+      }
+    }
+  },
+  "createdAt": "2026-02-02T04:25:49.521Z",
+  "updatedAt": "2026-02-03T03:24:01.769Z"
+}
