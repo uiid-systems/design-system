@@ -9,6 +9,8 @@ import type { UITree } from "@json-render/core";
 import type { ModelMessage } from "ai";
 import { create } from "zustand";
 
+import type { BlockFile } from "./block-file";
+
 const API_ENDPOINT = "/api/generate";
 
 export type ChatMessage = {
@@ -26,6 +28,7 @@ type ChatState = {
   error: string | null;
   activeBlockId: string | null;
   activeVersionId: string | null;
+  activeRegistryBlock: BlockFile | null;
   inspecting: boolean;
 };
 
@@ -40,6 +43,7 @@ type ChatActions = {
   setError: (error: string | null) => void;
   setActiveBlock: (blockId: string, versionId: string) => void;
   clearActiveBlock: () => void;
+  setActiveRegistryBlock: (block: BlockFile) => void;
   toggleInspecting: () => void;
 };
 
@@ -130,6 +134,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   error: null,
   activeBlockId: null,
   activeVersionId: null,
+  activeRegistryBlock: null,
   inspecting: false,
 
   // Actions
@@ -138,10 +143,13 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   setTree: (tree) => set({ tree }),
 
   setActiveBlock: (blockId, versionId) =>
-    set({ activeBlockId: blockId, activeVersionId: versionId }),
+    set({ activeBlockId: blockId, activeVersionId: versionId, activeRegistryBlock: null }),
 
   clearActiveBlock: () =>
-    set({ activeBlockId: null, activeVersionId: null }),
+    set({ activeBlockId: null, activeVersionId: null, activeRegistryBlock: null }),
+
+  setActiveRegistryBlock: (block) =>
+    set({ activeRegistryBlock: block, activeBlockId: null, activeVersionId: null }),
 
   toggleInspecting: () => set((state) => ({ inspecting: !state.inspecting })),
 
@@ -208,6 +216,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
       isLoading: false,
       activeBlockId: null,
       activeVersionId: null,
+      activeRegistryBlock: null,
     });
   },
 

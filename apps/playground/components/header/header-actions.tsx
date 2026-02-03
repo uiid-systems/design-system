@@ -12,6 +12,7 @@ import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
 import { NewChatButton } from "../new-chat-button";
 import { SaveButton } from "../save-button";
+import { RegistryPanel } from "../registry-panel";
 import { SavedBlocksPanel } from "../saved-blocks-panel";
 import { RenderedSheet } from "../rendered-sheet";
 import { StatsSheet } from "../stats-sheet";
@@ -119,6 +120,7 @@ export const HeaderActions = () => {
         <NewChatButton />
         <Separator orientation="vertical" />
         <SavedBlocksPanel />
+        <RegistryPanel />
       </Group>
     </>
   );
