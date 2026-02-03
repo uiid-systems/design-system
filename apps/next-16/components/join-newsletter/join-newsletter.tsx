@@ -15,7 +15,7 @@ export const JoinNewsletter = () => {
     <Group fullwidth fullheight evenly>
       <Stack fullwidth fullheight ax="center" ay="center">
         <NewsletterSignupCard>
-          <NewsletterList />
+          {/* <NewsletterList /> */}
           <NewsletterSignupForm />
 
           <NewsletterJoinButton color="#5865F2" icon={SiDiscord}>
