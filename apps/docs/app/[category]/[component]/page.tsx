@@ -18,6 +18,7 @@ import {
 } from "@/components/mdx";
 import { MdxContent } from "./mdx-content";
 import { ComponentDetails } from "./component-details";
+import { Stack } from "@uiid/layout";
 
 /**
  * Generate static params for all components in the registry
@@ -60,6 +61,25 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       // Map native elements to design system components
       p: (props: Record<string, unknown>) => (
         <Text render={<p />} size={1} balance {...props} />
+      ),
+      ul: (props: Record<string, unknown>) => (
+        <Stack
+          render={<ul />}
+          gap={2}
+          style={{ maxWidth: "40rem" }}
+          {...props}
+        />
+      ),
+      ol: (props: Record<string, unknown>) => (
+        <Stack
+          render={<ol />}
+          gap={2}
+          style={{ maxWidth: "40rem" }}
+          {...props}
+        />
+      ),
+      li: (props: Record<string, unknown>) => (
+        <Text render={<li />} size={0} {...props} />
       ),
       pre: (props: Record<string, unknown>) => <CodeBlock {...props} />,
       // Pass components that get data from this page
