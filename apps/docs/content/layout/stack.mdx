@@ -2,7 +2,15 @@
 component: Stack
 ---
 
-## Preview
+A vertical flex container. Stack is a wrapper around <ComponentLink name="Box" /> with `flex-direction: column` applied. It swaps the meaning of `ax` and `ay` so they read naturally — `ax` controls horizontal alignment and `ay` controls vertical distribution.
+
+### Quick tips
+
+- `ax` maps to `alignItems` and `ay` maps to `justifyContent` — the opposite of <ComponentLink name="Box" /> — so the axis names match the visual direction.
+- Inherits all of Box's spacing, border, and sizing props.
+- Use `gap` to control the spacing between stacked children.
+
+### Preview
 
 <Preview />
 
@@ -25,5 +33,5 @@ component: Stack
 
 ## See Also
 
-- [Group](/layout/group) - Horizontal flex layout
-- [Box](/layout/box) - Generic flex container
+- <ComponentLink name="Group" /> - Horizontal flex layout
+- <ComponentLink name="Box" /> - Generic flex container

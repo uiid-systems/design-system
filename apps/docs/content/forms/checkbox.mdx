@@ -2,7 +2,16 @@
 component: Checkbox
 ---
 
-## Preview
+A checkbox input built on [Base UI Checkbox](https://base-ui.com/react/components/checkbox). Checkbox is composed of three parts — Field, Root, and Indicator. Pass `ContainerProps` or `IndicatorProps` to customize them inline, or import `CheckboxField`, `CheckboxRoot`, and `CheckboxIndicator` directly for full control over composition.
+
+### Quick tips
+
+- Supports an `indeterminate` state for partial or mixed selections.
+- Use `reversed` to flip the layout so the label appears before the checkbox.
+- The `bordered` variant adds a visible border around the field for more prominent groupings.
+- Set `hideIndicator` to visually hide the checkbox while keeping it accessible.
+
+### Preview
 
 <Preview />
 
@@ -20,13 +29,13 @@ component: Checkbox
 
 ## Accessibility
 
-- Built on Base UI Checkbox with proper ARIA attributes
+- Built on [Base UI Checkbox](https://base-ui.com/react/components/checkbox) with proper ARIA attributes
 - Supports `indeterminate` state for partial selections
 - Label and description are associated with the input
 - Keyboard: `Space` toggles the checked state
 
 ## See Also
 
-- [Switch](/forms/switch) - Toggle switch for on/off settings
-- [Form](/forms/form) - Form container with validation
+- <ComponentLink name="Switch" /> - Toggle switch for on/off settings
+- <ComponentLink name="Form" /> - Form container with validation
 - [Base UI Checkbox](https://base-ui.com/react/components/checkbox) - Underlying primitive

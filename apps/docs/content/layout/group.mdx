@@ -2,7 +2,15 @@
 component: Group
 ---
 
-## Preview
+A horizontal flex container. Group is a thin wrapper around <ComponentLink name="Box" /> with `flex-direction: row` applied — it inherits all of Box's spacing, alignment, border, and sizing props.
+
+### Quick tips
+
+- Use `ax` for horizontal alignment (`justifyContent`) and `ay` for vertical alignment (`alignItems`).
+- Supports all the same props as <ComponentLink name="Box" />, including `gap`, `fullwidth`, and `render`.
+- Pair with <ComponentLink name="Stack" /> when you need to nest vertical layouts inside horizontal ones.
+
+### Preview
 
 <Preview />
 
@@ -25,5 +33,5 @@ component: Group
 
 ## See Also
 
-- [Stack](/layout/stack) - Vertical flex layout
-- [Box](/layout/box) - Generic flex container
+- <ComponentLink name="Stack" /> - Vertical flex layout
+- <ComponentLink name="Box" /> - Generic flex container

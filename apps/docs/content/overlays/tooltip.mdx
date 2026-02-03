@@ -2,7 +2,16 @@
 component: Tooltip
 ---
 
-## Preview
+A small informational popup shown on hover or focus, built on [Base UI Tooltip](https://base-ui.com/react/components/tooltip). Tooltip renders a compact inverted <ComponentLink name="Card" /> with small <ComponentLink name="Text" /> — designed for brief labels and hints, not interactive content.
+
+### Quick tips
+
+- Set `delay` via `ProviderProps` to control how long the user must hover before the tooltip appears.
+- Positioning is automatic with collision detection. Defaults to 8px offset from the trigger.
+- Fine-tune internals with `ProviderProps`, `RootProps`, `TriggerProps`, `PortalProps`, `PositionerProps`, and `PopupProps` — or import `TooltipProvider`, `TooltipRoot`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner`, and `TooltipPopup` directly for full control over composition.
+- For interactive floating content, use <ComponentLink name="Popover" /> instead.
+
+### Preview
 
 <Preview />
 
@@ -20,12 +29,12 @@ component: Tooltip
 
 ## Accessibility
 
-- Built on Base UI Tooltip with proper ARIA attributes
+- Built on [Base UI Tooltip](https://base-ui.com/react/components/tooltip) with proper ARIA attributes
 - Shown on hover and focus for keyboard accessibility
 - Associated with the trigger via `aria-describedby`
 - Supports a delay before showing to avoid accidental triggers
 
 ## See Also
 
-- [Popover](/overlays/popover) - Interactive floating content
+- <ComponentLink name="Popover" /> - Interactive floating content
 - [Base UI Tooltip](https://base-ui.com/react/components/tooltip) - Underlying primitive

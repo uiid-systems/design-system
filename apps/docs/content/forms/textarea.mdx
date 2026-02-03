@@ -2,7 +2,15 @@
 component: Textarea
 ---
 
-## Preview
+A multi-line text field for longer-form content. Like <ComponentLink name="Input" />, Textarea conditionally wraps itself in a Field component when you pass a `label` or `description` — keeping things clean when you don't need them.
+
+### Quick tips
+
+- Defaults to 3 rows. Adjust with the `rows` prop.
+- Resize behavior is controlled via the `resize` prop: `none`, `vertical`, `horizontal`, or `both`. Defaults to `vertical`.
+- Supports the same `size`, `fullwidth`, and `ghost` variants as <ComponentLink name="Input" /> for visual consistency.
+
+### Preview
 
 <Preview />
 
@@ -26,5 +34,5 @@ component: Textarea
 
 ## See Also
 
-- [Input](/forms/input) - Single-line text input
-- [Form](/forms/form) - Form container with validation
+- <ComponentLink name="Input" /> - Single-line text input
+- <ComponentLink name="Form" /> - Form container with validation

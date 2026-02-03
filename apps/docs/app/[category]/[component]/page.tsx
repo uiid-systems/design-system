@@ -1,10 +1,21 @@
 import { notFound } from "next/navigation";
 
-import { registry, generateComponentDocs, type PreviewConfig } from "@uiid/registry";
+import {
+  registry,
+  generateComponentDocs,
+  type PreviewConfig,
+} from "@uiid/registry";
+import { Text } from "@uiid/typography";
 
 import { toSlug } from "@/constants/urls";
 import { getMdxSource, compileMdxContent } from "@/lib/mdx";
-import { CodeBlock, Preview, PropsTable, Usage } from "@/components/mdx";
+import {
+  CodeBlock,
+  ComponentLink,
+  Preview,
+  PropsTable,
+  Usage,
+} from "@/components/mdx";
 import { MdxContent } from "./mdx-content";
 import { ComponentDetails } from "./component-details";
 
@@ -26,9 +37,7 @@ type ComponentPageProps = {
  * Find a component entry by its slug
  */
 function findComponentBySlug(slug: string) {
-  return Object.values(registry).find(
-    (entry) => toSlug(entry.name) === slug
-  );
+  return Object.values(registry).find((entry) => toSlug(entry.name) === slug);
 }
 
 export default async function ComponentPage({ params }: ComponentPageProps) {
@@ -48,7 +57,10 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
   if (mdxSource) {
     // Render MDX page
     const { content } = await compileMdxContent(mdxSource, {
-      // Wrap code blocks with styled container
+      // Map native elements to design system components
+      p: (props: Record<string, unknown>) => (
+        <Text render={<p />} size={1} balance {...props} />
+      ),
       pre: (props: Record<string, unknown>) => <CodeBlock {...props} />,
       // Pass components that get data from this page
       Preview: (props: Record<string, unknown>) => (
@@ -60,6 +72,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       Usage: (props: Record<string, unknown>) => (
         <Usage previews={previews} {...props} />
       ),
+      ComponentLink,
     });
 
     return (
