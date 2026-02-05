@@ -2,7 +2,17 @@
 component: Select
 ---
 
-## Preview
+A dropdown select built on [Base UI Select](https://base-ui.com/react/components/select). Pass an `items` array for simple use cases, or use children for fully custom option rendering. Select is generic — it accepts any value type, not just strings.
+
+### Quick tips
+
+- The trigger inherits <ComponentLink name="Input" /> styling, so `size`, `fullwidth`, and `ghost` variants work here too.
+- Items support `label`, `value`, `disabled`, `description`, and `icon` properties.
+- The dropdown renders through a portal, so it won't be clipped by overflow containers.
+- Like other form components, providing a `label` or `description` will automatically wrap the trigger in a Field.
+- Fine-tune internals with `RootProps`, `TriggerProps`, `PortalProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IndicatorProps`, and `FieldProps` — or import `SelectRoot`, `SelectTrigger`, `SelectPortal`, `SelectPositioner`, `SelectPopup`, `SelectList`, `SelectValue`, `SelectIndicator`, and `SelectItem` directly for full control over composition.
+
+### Preview
 
 <Preview />
 
@@ -20,13 +30,13 @@ component: Select
 
 ## Accessibility
 
-- Built on Base UI Select with full keyboard navigation
+- Built on [Base UI Select](https://base-ui.com/react/components/select) with full keyboard navigation
 - Label and description are associated with the trigger
 - Keyboard: `Arrow` keys navigate options, `Enter` selects, `Escape` closes
 - Supports `required` and `disabled` states
 
 ## See Also
 
-- [Input](/forms/input) - Text input field
-- [Form](/forms/form) - Form container with validation
+- <ComponentLink name="Input" /> - Text input field
+- <ComponentLink name="Form" /> - Form container with validation
 - [Base UI Select](https://base-ui.com/react/components/select) - Underlying primitive

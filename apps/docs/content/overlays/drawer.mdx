@@ -2,7 +2,16 @@
 component: Drawer
 ---
 
-## Preview
+A draggable slide-in panel powered by Vaul. Drawer supports drag-to-close interaction and can slide from any edge of the viewport. Content renders inside a <ComponentLink name="Card" />.
+
+### Quick tips
+
+- Use the `direction` prop to control which edge the drawer slides from: `top`, `right`, `bottom`, or `left`. Defaults to `right`.
+- Supports drag-to-close — users can swipe to dismiss.
+- Fine-tune internals with `RootProps`, `TriggerProps`, and `ContentProps`.
+- For a non-draggable alternative, use <ComponentLink name="Sheet" />.
+
+### Preview
 
 <Preview />
 
@@ -27,5 +36,5 @@ component: Drawer
 
 ## See Also
 
-- [Sheet](/overlays/sheet) - Slide-in panel from any edge
-- [Modal](/overlays/modal) - Centered dialog overlay
+- <ComponentLink name="Sheet" /> - Slide-in panel from any edge
+- <ComponentLink name="Modal" /> - Centered dialog overlay

@@ -2,7 +2,16 @@
 component: Text
 ---
 
-## Preview
+The core typography primitive. Text renders a `span` by default and provides access to the full typographic scale, font weights, families, colors, and decorations — all through props.
+
+### Quick tips
+
+- The `size` prop follows a scale from `-1` to `8`. `0` is the default, `1`–`2` work well for body copy, and `5`+ are heading territory.
+- Use `render` to change the element — `<Text render={<h1 />}>` gives you a heading with all of Text's styling props.
+- `shade` controls color (`muted`, `halftone`, `foreground`, etc.) and `tone` applies semantic colors (`positive`, `critical`, `warning`, `info`).
+- `balance` enables CSS `text-wrap: balance` for better line distribution in short blocks of text.
+
+### Preview
 
 <Preview />
 
@@ -25,4 +34,4 @@ component: Text
 
 ## See Also
 
-- [Stack](/layout/stack) - Vertical flex layout for text blocks
+- <ComponentLink name="Stack" /> - Vertical flex layout for text blocks

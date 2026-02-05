@@ -2,7 +2,15 @@
 component: Popover
 ---
 
-## Preview
+A floating panel anchored to a trigger element, built on [Base UI Popover](https://base-ui.com/react/components/popover). Popover handles positioning, collision detection, and click-outside dismissal. Like <ComponentLink name="Modal" />, its content renders inside a <ComponentLink name="Card" /> with structured layout slots.
+
+### Quick tips
+
+- Positioning is automatic — the popover adjusts to stay in the viewport. Customize offset and padding via `PositionerProps`.
+- Pass `trigger` for simple use cases, or control open state directly with `open` and `onOpenChange`.
+- Fine-tune internals with `RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, and `PopupProps` — or import `PopoverRoot`, `PopoverTrigger`, `PopoverPortal`, `PopoverBackdrop`, `PopoverPositioner`, and `PopoverPopup` directly for full control over composition.
+
+### Preview
 
 <Preview />
 
@@ -20,13 +28,13 @@ component: Popover
 
 ## Accessibility
 
-- Built on Base UI Popover with proper ARIA attributes
+- Built on [Base UI Popover](https://base-ui.com/react/components/popover) with proper ARIA attributes
 - Focus is managed when the popover opens
 - `Escape` key closes the popover
 - Trigger element is associated with the popover via `aria-controls`
 
 ## See Also
 
-- [Tooltip](/overlays/tooltip) - Informational popup on hover
-- [Modal](/overlays/modal) - Full dialog overlay
+- <ComponentLink name="Tooltip" /> - Informational popup on hover
+- <ComponentLink name="Modal" /> - Full dialog overlay
 - [Base UI Popover](https://base-ui.com/react/components/popover) - Underlying primitive

@@ -2,7 +2,15 @@
 component: Layer
 ---
 
-## Preview
+A container for overlapping elements. Layer builds on <ComponentLink name="Box" /> and adds an `offset` prop that shifts each child by a calculated amount, useful for stacked avatars, fanned cards, or any overlapping layout.
+
+### Quick tips
+
+- Pass `offset={{ x: number, y: number }}` to shift each child incrementally using CSS transforms.
+- Layer automatically adds padding to account for shifted children so nothing gets clipped.
+- Without an `offset`, Layer behaves like a standard <ComponentLink name="Box" />.
+
+### Preview
 
 <Preview />
 
@@ -25,5 +33,5 @@ component: Layer
 
 ## See Also
 
-- [Box](/layout/box) - Generic flex container
-- [Stack](/layout/stack) - Vertical flex layout
+- <ComponentLink name="Box" /> - Generic flex container
+- <ComponentLink name="Stack" /> - Vertical flex layout

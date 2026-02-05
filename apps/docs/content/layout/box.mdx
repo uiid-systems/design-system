@@ -2,7 +2,17 @@
 component: Box
 ---
 
-## Preview
+The foundational layout primitive, you probably don't need to use this component directly. Box renders a `div` with built-in support for spacing, alignment, borders, and sizing — all via props. Every other layout component (<ComponentLink name="Stack" />, <ComponentLink name="Group" />, <ComponentLink name="Layer" />) is built on top of Box.
+
+### Quick tips
+
+- You probably don't need to use this component directly. Instead, use <ComponentLink name="Stack" /> or <ComponentLink name="Group" />.
+- Use `ax` and `ay` to control `justifyContent` and `alignItems` without writing CSS.
+- Spacing props (`p`, `m`, `gap`) map to a spacing scale using CSS custom properties.
+- `fullwidth`, `fullheight`, and `fullscreen` toggle common sizing patterns.
+- The `render` prop makes Box polymorphic — render it as any HTML element or custom component.
+
+### Preview
 
 <Preview />
 
@@ -25,5 +35,6 @@ component: Box
 
 ## See Also
 
-- [Stack](/layout/stack) - Vertical flex layout
-- [Group](/layout/group) - Horizontal flex layout
+- <ComponentLink name="Stack" /> - Vertical flex layout
+- <ComponentLink name="Group" /> - Horizontal flex layout
+- <ComponentLink name="Layer" /> - Layered/stacked positioning

@@ -2,11 +2,15 @@
 component: Form
 ---
 
+A lightweight form wrapper built on [Base UI Form](https://base-ui.com/react/components/form). Form renders a native `<form>` element with `display: contents`, so it won't interfere with your layout — children participate directly in the parent's grid or flex context.
+
 ### Quick tips
 
-- Form has no visual presence in the DOM, it leverages the `display: contents` CSS property.
+- Form has no visual presence in the DOM. Wrap children in a <ComponentLink name="Stack" /> or other layout component for spacing.
+- Use the `useFormState` hook to manage errors, loading, success, and result states.
+- The `useFormSubmit` hook combines state management with a submit handler, automatically tracking loading and error transitions.
 
-## Preview
+### Preview
 
 <Preview />
 
@@ -26,12 +30,12 @@ component: Form
 
 - Renders a native `form` element with `display: contents`
 - Fields with `required` or `pattern` attributes validate on submit
-- Wrap children in a Stack for visual spacing between fields
+- Wrap children in a <ComponentLink name="Stack" /> for visual spacing between fields
 
 ## See Also
 
-- [Input](/forms/input) - Text input field
-- [Textarea](/forms/textarea) - Multi-line text input
-- [Select](/forms/select) - Dropdown select
-- [Checkbox](/forms/checkbox) - Checkbox input
-- [Switch](/forms/switch) - Toggle switch
+- <ComponentLink name="Input" /> - Text input field
+- <ComponentLink name="Textarea" /> - Multi-line text input
+- <ComponentLink name="Select" /> - Dropdown select
+- <ComponentLink name="Checkbox" /> - Checkbox input
+- <ComponentLink name="Switch" /> - Toggle switch
