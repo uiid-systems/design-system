@@ -35,6 +35,7 @@ describe("Layer", () => {
 
   // ============================================
   // ALIGNMENT PROPS (inherited from Box)
+  // Style props are now applied as inline styles, not attributes.
   // ============================================
 
   it("applies ax alignment", () => {
@@ -43,7 +44,7 @@ describe("Layer", () => {
         Content
       </Layer>,
     );
-    expect(screen.getByTestId("layer")).toHaveAttribute("ax", "center");
+    expect(screen.getByTestId("layer")).toHaveStyle({ justifyContent: "center" });
   });
 
   it("applies ay alignment", () => {
@@ -52,7 +53,7 @@ describe("Layer", () => {
         Content
       </Layer>,
     );
-    expect(screen.getByTestId("layer")).toHaveAttribute("ay", "center");
+    expect(screen.getByTestId("layer")).toHaveStyle({ alignItems: "center" });
   });
 
   // ============================================
@@ -149,8 +150,9 @@ describe("Layer", () => {
       </Layer>,
     );
 
-    const layer = screen.getByTestId("layer");
-    expect(layer).toHaveAttribute("ax", "center");
-    expect(layer).toHaveAttribute("ay", "center");
+    expect(screen.getByTestId("layer")).toHaveStyle({
+      justifyContent: "center",
+      alignItems: "center",
+    });
   });
 });
