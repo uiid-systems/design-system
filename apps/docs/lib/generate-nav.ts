@@ -7,6 +7,7 @@ import {
   Type,
   CreditCard,
   Layers,
+  Pointer,
 } from "@uiid/icons";
 
 import { categories, registry } from "@uiid/registry";
@@ -22,6 +23,7 @@ const CATEGORY_ICONS: Record<string, Icon> = {
   buttons: MousePointerClick,
   cards: CreditCard,
   forms: FormInput,
+  interactive: Pointer,
   overlays: Layers,
 };
 

@@ -1,3 +1,10 @@
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .select-positioner {
   z-index: var(--globals-z-index-modal);
 }

@@ -24,6 +24,10 @@ const meta: Meta<typeof Collapsible> = {
         A simple component is a single component primarily configured via props.
       </Collapsible>
 
+      <Collapsible {...args} trigger="this is a string trigger">
+        A simple component is a single component primarily configured via props.
+      </Collapsible>
+
       <CollapsibleRoot>
         <CollapsibleTrigger>
           <button>This is a composed collapsible</button>

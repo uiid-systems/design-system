@@ -23,6 +23,9 @@ export * from "./text";
 // Card components
 export * from "./card";
 
+// Interactive components
+export * from "./collapsible";
+
 // Overlay components
 export * from "./modal";
 export * from "./sheet";

@@ -1,0 +1,41 @@
+---
+component: Collapsible
+---
+
+An expandable content panel that can be toggled open or closed, built on [Base UI Collapsible](https://base-ui.com/react/components/collapsible). Useful for FAQs, settings sections, or any content that should be hidden by default but accessible on demand.
+
+### Quick tips
+
+- Pass any element as `trigger` — it becomes the clickable toggle.
+- Content animates smoothly by default. Set `instant` to skip animation.
+- Control open state with `open` and `onOpenChange`, or use `defaultOpen` for uncontrolled.
+- Fine-tune internals with `RootProps`, `TriggerProps`, and `PanelProps` — or import `CollapsibleRoot`, `CollapsibleTrigger`, and `CollapsiblePanel` directly for full composition control.
+
+### Preview
+
+<Preview />
+
+---
+
+## Usage
+
+<Usage />
+
+---
+
+## Props
+
+<PropsTable />
+
+## Accessibility
+
+- Built on [Base UI Collapsible](https://base-ui.com/react/components/collapsible) with proper ARIA attributes
+- Trigger has `aria-expanded` to indicate current state
+- Panel is associated with trigger via `aria-controls`
+- Keyboard accessible — Enter/Space toggles the panel
+
+## See Also
+
+- <ComponentLink name="Drawer" /> - Slide-in panel overlay
+- <ComponentLink name="Sheet" /> - Slide-in panel from screen edge
+- [Base UI Collapsible](https://base-ui.com/react/components/collapsible) - Underlying primitive

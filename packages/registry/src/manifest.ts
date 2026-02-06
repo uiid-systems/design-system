@@ -25,6 +25,9 @@ import { TextEntry } from "./components/text";
 // Card components
 import { CardEntry } from "./components/card";
 
+// Interactive components
+import { CollapsibleEntry } from "./components/collapsible";
+
 // Overlay components
 import { DrawerEntry } from "./components/drawer";
 import { ModalEntry } from "./components/modal";
@@ -62,6 +65,9 @@ export const registry: Registry = {
 
   // Cards
   Card: CardEntry,
+
+  // Interactive
+  Collapsible: CollapsibleEntry,
 
   // Overlays
   Drawer: DrawerEntry,

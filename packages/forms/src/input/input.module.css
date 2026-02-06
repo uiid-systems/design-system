@@ -1,6 +1,8 @@
 .input {
   background-color: var(--forms-background);
-  border: var(--globals-border-width) solid var(--forms-border-color);
+  border-width: var(--globals-border-width);
+  border-style: solid;
+  border-color: var(--forms-border-color);
   border-radius: var(--globals-border-radius);
   color: var(--shade-foreground);
   font-size: var(--forms-fontSize);
