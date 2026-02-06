@@ -70,6 +70,27 @@ export const BorderPropsSchema = z.object({
 export type BorderProps = z.infer<typeof BorderPropsSchema>;
 
 /**
+ * Sizing props available on layout components.
+ * Values are in pixels.
+ */
+export const SizingPropsSchema = z.object({
+  /** CSS width */
+  w: z.number().optional(),
+  /** CSS min-width */
+  minw: z.number().optional(),
+  /** CSS max-width */
+  maxw: z.number().optional(),
+  /** CSS height */
+  h: z.number().optional(),
+  /** CSS min-height */
+  minh: z.number().optional(),
+  /** CSS max-height */
+  maxh: z.number().optional(),
+});
+
+export type SizingProps = z.infer<typeof SizingPropsSchema>;
+
+/**
  * Alignment values for justify-content (ax).
  */
 export const AlignX = z.enum([

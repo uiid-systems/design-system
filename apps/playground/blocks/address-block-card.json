@@ -1,0 +1,415 @@
+{
+  "name": "Address block card",
+  "slug": "address-block-card",
+  "description": "An address form with a checkbox to use the same address for shipping.",
+  "version": 1,
+  "tags": [],
+  "tree": {
+    "root": "address-form",
+    "elements": {
+      "address-form": {
+        "key": "address-form",
+        "type": "Card",
+        "props": {
+          "title": "Billing Address",
+          "description": "Enter your billing address information"
+        },
+        "children": [
+          "form-wrapper"
+        ]
+      },
+      "form-wrapper": {
+        "key": "form-wrapper",
+        "type": "Stack",
+        "props": {
+          "gap": 6,
+          "ax": "stretch",
+          "fullwidth": true,
+          "pt": 6
+        },
+        "children": [
+          "form-content",
+          "shipping-checkbox",
+          "form-actions"
+        ],
+        "parentKey": "address-form"
+      },
+      "form-content": {
+        "key": "form-content",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "ax": "stretch",
+          "fullwidth": true
+        },
+        "children": [
+          "name-row",
+          "street-field",
+          "street2-field",
+          "location-row",
+          "zipcode-field"
+        ],
+        "parentKey": "form-wrapper"
+      },
+      "name-row": {
+        "key": "name-row",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "evenly": true
+        },
+        "children": [
+          "first-name-field",
+          "last-name-field"
+        ],
+        "parentKey": "form-content"
+      },
+      "first-name-field": {
+        "key": "first-name-field",
+        "type": "Input",
+        "props": {
+          "label": "First Name",
+          "type": "text",
+          "name": "firstName",
+          "placeholder": "First name",
+          "required": true,
+          "fullwidth": true
+        },
+        "parentKey": "name-row"
+      },
+      "last-name-field": {
+        "key": "last-name-field",
+        "type": "Input",
+        "props": {
+          "label": "Last Name",
+          "type": "text",
+          "name": "lastName",
+          "placeholder": "Last name",
+          "required": true,
+          "fullwidth": true
+        },
+        "parentKey": "name-row"
+      },
+      "street-field": {
+        "key": "street-field",
+        "type": "Input",
+        "props": {
+          "label": "Street Address",
+          "type": "text",
+          "name": "street",
+          "placeholder": "123 Main Street",
+          "required": true,
+          "fullwidth": true
+        },
+        "parentKey": "form-content"
+      },
+      "street2-field": {
+        "key": "street2-field",
+        "type": "Input",
+        "props": {
+          "label": "Apartment, Suite, etc.",
+          "type": "text",
+          "name": "street2",
+          "placeholder": "Apt 4B (optional)",
+          "fullwidth": true
+        },
+        "parentKey": "form-content"
+      },
+      "location-row": {
+        "key": "location-row",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "evenly": true
+        },
+        "children": [
+          "city-field",
+          "state-field"
+        ],
+        "parentKey": "form-content"
+      },
+      "city-field": {
+        "key": "city-field",
+        "type": "Input",
+        "props": {
+          "label": "City",
+          "type": "text",
+          "name": "city",
+          "placeholder": "New York",
+          "required": true,
+          "fullwidth": true
+        },
+        "parentKey": "location-row"
+      },
+      "state-field": {
+        "key": "state-field",
+        "type": "Select",
+        "props": {
+          "label": "State",
+          "name": "state",
+          "placeholder": "Select state",
+          "required": true,
+          "fullwidth": true,
+          "items": [
+            {
+              "label": "Alabama",
+              "value": "AL"
+            },
+            {
+              "label": "Alaska",
+              "value": "AK"
+            },
+            {
+              "label": "Arizona",
+              "value": "AZ"
+            },
+            {
+              "label": "Arkansas",
+              "value": "AR"
+            },
+            {
+              "label": "California",
+              "value": "CA"
+            },
+            {
+              "label": "Colorado",
+              "value": "CO"
+            },
+            {
+              "label": "Connecticut",
+              "value": "CT"
+            },
+            {
+              "label": "Delaware",
+              "value": "DE"
+            },
+            {
+              "label": "Florida",
+              "value": "FL"
+            },
+            {
+              "label": "Georgia",
+              "value": "GA"
+            },
+            {
+              "label": "Hawaii",
+              "value": "HI"
+            },
+            {
+              "label": "Idaho",
+              "value": "ID"
+            },
+            {
+              "label": "Illinois",
+              "value": "IL"
+            },
+            {
+              "label": "Indiana",
+              "value": "IN"
+            },
+            {
+              "label": "Iowa",
+              "value": "IA"
+            },
+            {
+              "label": "Kansas",
+              "value": "KS"
+            },
+            {
+              "label": "Kentucky",
+              "value": "KY"
+            },
+            {
+              "label": "Louisiana",
+              "value": "LA"
+            },
+            {
+              "label": "Maine",
+              "value": "ME"
+            },
+            {
+              "label": "Maryland",
+              "value": "MD"
+            },
+            {
+              "label": "Massachusetts",
+              "value": "MA"
+            },
+            {
+              "label": "Michigan",
+              "value": "MI"
+            },
+            {
+              "label": "Minnesota",
+              "value": "MN"
+            },
+            {
+              "label": "Mississippi",
+              "value": "MS"
+            },
+            {
+              "label": "Missouri",
+              "value": "MO"
+            },
+            {
+              "label": "Montana",
+              "value": "MT"
+            },
+            {
+              "label": "Nebraska",
+              "value": "NE"
+            },
+            {
+              "label": "Nevada",
+              "value": "NV"
+            },
+            {
+              "label": "New Hampshire",
+              "value": "NH"
+            },
+            {
+              "label": "New Jersey",
+              "value": "NJ"
+            },
+            {
+              "label": "New Mexico",
+              "value": "NM"
+            },
+            {
+              "label": "New York",
+              "value": "NY"
+            },
+            {
+              "label": "North Carolina",
+              "value": "NC"
+            },
+            {
+              "label": "North Dakota",
+              "value": "ND"
+            },
+            {
+              "label": "Ohio",
+              "value": "OH"
+            },
+            {
+              "label": "Oklahoma",
+              "value": "OK"
+            },
+            {
+              "label": "Oregon",
+              "value": "OR"
+            },
+            {
+              "label": "Pennsylvania",
+              "value": "PA"
+            },
+            {
+              "label": "Rhode Island",
+              "value": "RI"
+            },
+            {
+              "label": "South Carolina",
+              "value": "SC"
+            },
+            {
+              "label": "South Dakota",
+              "value": "SD"
+            },
+            {
+              "label": "Tennessee",
+              "value": "TN"
+            },
+            {
+              "label": "Texas",
+              "value": "TX"
+            },
+            {
+              "label": "Utah",
+              "value": "UT"
+            },
+            {
+              "label": "Vermont",
+              "value": "VT"
+            },
+            {
+              "label": "Virginia",
+              "value": "VA"
+            },
+            {
+              "label": "Washington",
+              "value": "WA"
+            },
+            {
+              "label": "West Virginia",
+              "value": "WV"
+            },
+            {
+              "label": "Wisconsin",
+              "value": "WI"
+            },
+            {
+              "label": "Wyoming",
+              "value": "WY"
+            }
+          ]
+        },
+        "parentKey": "location-row"
+      },
+      "zipcode-field": {
+        "key": "zipcode-field",
+        "type": "Input",
+        "props": {
+          "label": "ZIP Code",
+          "type": "text",
+          "name": "zipcode",
+          "placeholder": "12345",
+          "required": true,
+          "fullwidth": true
+        },
+        "parentKey": "form-content"
+      },
+      "shipping-checkbox": {
+        "key": "shipping-checkbox",
+        "type": "Checkbox",
+        "props": {
+          "label": "Use this address for shipping",
+          "name": "sameAsShipping",
+          "defaultChecked": true
+        },
+        "parentKey": "form-wrapper"
+      },
+      "form-actions": {
+        "key": "form-actions",
+        "type": "Group",
+        "props": {
+          "gap": 2,
+          "ax": "end"
+        },
+        "children": [
+          "cancel-button",
+          "save-button"
+        ],
+        "parentKey": "form-wrapper"
+      },
+      "cancel-button": {
+        "key": "cancel-button",
+        "type": "Button",
+        "props": {
+          "variant": "subtle",
+          "children": "Cancel"
+        },
+        "parentKey": "form-actions"
+      },
+      "save-button": {
+        "key": "save-button",
+        "type": "Button",
+        "props": {
+          "children": "Save Address"
+        },
+        "parentKey": "form-actions"
+      }
+    }
+  },
+  "createdAt": "2026-02-02T04:02:28.438Z",
+  "updatedAt": "2026-02-06T01:55:00.347Z"
+}

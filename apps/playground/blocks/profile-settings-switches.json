@@ -1,8 +1,8 @@
 {
-  "name": "Profile settings",
-  "slug": "profile-settings",
-  "description": "Two sections in a settings menu, with switches for a bunch of settings. Cancel and save buttons at the bottom.",
-  "version": "1.0.0",
+  "name": "Profile settings switches",
+  "slug": "profile-settings-switches",
+  "description": "Displays a bunch of switches and a couple buttons",
+  "version": 1,
   "tags": [],
   "tree": {
     "root": "settings-section",
@@ -168,6 +168,6 @@
       }
     }
   },
-  "createdAt": "2026-02-02T04:25:49.521Z",
-  "updatedAt": "2026-02-03T03:24:01.769Z"
+  "createdAt": "2026-02-03T04:22:00.956Z",
+  "updatedAt": "2026-02-06T01:56:01.653Z"
 }

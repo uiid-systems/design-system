@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   BorderPropsSchema,
   LayoutPropsSchema,
+  SizingPropsSchema,
   SpacingPropsSchema,
 } from "../../shared";
 import type { ComponentEntry } from "../../types";
@@ -27,6 +28,7 @@ export const BoxVariantsSchema = z.object({
  */
 export const BoxPropsSchema = SpacingPropsSchema.merge(LayoutPropsSchema)
   .merge(BorderPropsSchema)
+  .merge(SizingPropsSchema)
   .merge(BoxVariantsSchema);
 
 export type BoxProps = z.infer<typeof BoxPropsSchema>;

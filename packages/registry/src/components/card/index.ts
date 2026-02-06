@@ -32,6 +32,20 @@ export const CardPropsSchema = BoxPropsSchema.extend({
   transparent: z.boolean().optional(),
   /** Ghost style (minimal borders) */
   ghost: z.boolean().optional(),
+  /** Props forwarded to the container Stack */
+  ContainerProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the header Group */
+  HeaderProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the title Text */
+  TitleProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the description Text */
+  DescriptionProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the icon wrapper */
+  IconProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the action Group */
+  ActionProps: z.record(z.string(), z.any()).optional(),
+  /** Props forwarded to the footer Group */
+  FooterProps: z.record(z.string(), z.any()).optional(),
 });
 
 export type CardProps = z.infer<typeof CardPropsSchema>;
