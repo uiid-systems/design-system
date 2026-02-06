@@ -6,7 +6,7 @@ import type { PreviewConfig, PreviewElement } from "@uiid/registry";
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
 import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
-import { Tabs } from "@uiid/interactive";
+import { Collapsible, Tabs } from "@uiid/interactive";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -34,6 +34,7 @@ const componentMap: Record<
   Switch: Switch as React.ComponentType<Record<string, unknown>>,
   Text: Text as React.ComponentType<Record<string, unknown>>,
   Card: Card as React.ComponentType<Record<string, unknown>>,
+  Collapsible: Collapsible as React.ComponentType<Record<string, unknown>>,
 };
 
 /**

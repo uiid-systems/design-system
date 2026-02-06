@@ -2,8 +2,8 @@ import { registry } from "@uiid/registry";
 
 import { urls, toSlug } from "@/constants/urls";
 
-interface ComponentLinkProps {
-  name: string;
+export interface ComponentLinkProps extends Record<string, unknown> {
+  name?: string;
 }
 
 /**
@@ -13,6 +13,10 @@ interface ComponentLinkProps {
  * Usage in MDX: <ComponentLink name="Stack" />
  */
 export function ComponentLink({ name }: ComponentLinkProps) {
+  if (!name) {
+    return null;
+  }
+
   const entry = registry[name as keyof typeof registry];
 
   if (!entry) {
