@@ -43,7 +43,6 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
         } else {
           (styleObj as Record<string, unknown>)[styleProp.property] = value;
         }
-        dataAttrs[`${key}`] = String(value);
       }
     } else {
       restProps[key] = value;

@@ -88,11 +88,43 @@ The Card component automatically renders its title, description, icon, and foote
 | `flex: 1`                  | `evenly`                                         |
 | `width: "100%"`            | `fullwidth`                                      |
 | `height: "100%"`           | `fullheight`                                     |
+| `width: "200px"`           | `w: 50` (value × 4 = pixels)                     |
+| `height: "120px"`          | `h: 30` (value × 4 = pixels)                     |
+| `minWidth: "100px"`        | `minw: 25`                                       |
+| `maxWidth: "400px"`        | `maxw: 100`                                      |
+| `minHeight: "80px"`        | `minh: 20`                                       |
+| `maxHeight: "300px"`       | `maxh: 75`                                       |
 | `justifyContent: "center"` | `ay: "center"` (Stack) or `ax: "center"` (Group) |
 | `alignItems: "center"`     | `ax: "center"` (Stack) or `ay: "center"` (Group) |
 | `gap: "16px"`              | `gap: 4`                                         |
 | `padding: "16px"`          | `p: 4`                                           |
 | `margin: "8px"`            | `m: 2`                                           |
+
+### Subcomponent Props (Customization Escape Hatches)
+
+Precomposed components like Card, Modal, and Sheet have internal subcomponents (header, title, footer, etc.). When you need fine-grained control over a subcomponent, use **subcomponent props** instead of decomposing the component manually.
+
+**Example - Customizing Card's title alignment:**
+
+```json
+{
+  "type": "Card",
+  "props": {
+    "title": "Settings",
+    "description": "Manage your preferences",
+    "TitleProps": { "align": "center" },
+    "DescriptionProps": { "shade": "muted" }
+  }
+}
+```
+
+This is cleaner than building the Card from parts. Subcomponent props let you pass any valid prop to the internal component.
+
+**Common subcomponent props:**
+
+| Component | Available Subcomponent Props |
+| --------- | ---------------------------- |
+| Card      | `ContainerProps`, `HeaderProps`, `TitleProps`, `DescriptionProps`, `IconProps`, `ActionProps`, `FooterProps` |
 
 ---
 
@@ -186,7 +218,7 @@ Generic flex container with layout and spacing props
 
 Supports children.
 
-Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
 #### Stack
 
@@ -196,7 +228,7 @@ Use Stack for vertical layouts. Children flow top-to-bottom. ax controls vertica
 
 Supports children.
 
-Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
 #### Group
 
@@ -206,7 +238,7 @@ Use Group for horizontal layouts. Children flow left-to-right. ax controls horiz
 
 Supports children.
 
-Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
 #### Layer
 
@@ -218,7 +250,7 @@ Supports children.
 | -------- | ------ | ----------- |
 | `offset` | object |             |
 
-Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
 #### Separator
 
@@ -447,7 +479,17 @@ Supports children.
 | `transparent` | boolean                                         |             |
 | `ghost`       | boolean                                         |             |
 
-Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), and border (`b`, `bx`, `by`...) props.
+Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
+
+**Subcomponent Props (customization escape hatches):**
+
+- `ContainerProps`: Props forwarded to the container Stack
+- `HeaderProps`: Props forwarded to the header Group
+- `TitleProps`: Props forwarded to the title Text
+- `DescriptionProps`: Props forwarded to the description Text
+- `IconProps`: Props forwarded to the icon wrapper
+- `ActionProps`: Props forwarded to the action Group
+- `FooterProps`: Props forwarded to the footer Group
 
 ---
 

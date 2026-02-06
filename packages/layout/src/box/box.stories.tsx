@@ -13,9 +13,11 @@ const meta = {
       {...args}
       render={<aside style={{ opacity: 0.5 }} className="foo" />}
       className="bar"
-      fullscreen
       ax="center"
       ay="center"
+      maxw={244 * 2}
+      fullwidth
+      h={80}
       style={{ background: "tomato" }}
     />
   ),

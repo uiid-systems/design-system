@@ -1,4 +1,9 @@
-import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
+import {
+  prepareComponentProps,
+  renderWithProps,
+  cx,
+  stylePropKeys,
+} from "@uiid/utils";
 
 import type { BoxProps } from "./box.types";
 import { boxVariants } from "./box.variants";
@@ -19,33 +24,7 @@ export const Box = ({
 }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
-    styleProps: [
-      "ax",
-      "ay",
-      "b",
-      "bb",
-      "bl",
-      "br",
-      "bt",
-      "bx",
-      "by",
-      "direction",
-      "gap",
-      "m",
-      "mx",
-      "my",
-      "ml",
-      "mr",
-      "mt",
-      "mb",
-      "p",
-      "px",
-      "py",
-      "pl",
-      "pr",
-      "pt",
-      "pb",
-    ],
+    styleProps: stylePropKeys,
     props,
   });
 

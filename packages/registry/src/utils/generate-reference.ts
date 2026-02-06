@@ -21,7 +21,7 @@ const EXCLUDED_PROPS = new Set([
 /**
  * Inherited spacing/border props that are available on layout-based components
  * but should be collapsed into a single note rather than listed individually.
- * These come from SpacingPropsSchema, BorderPropsSchema, and LayoutPropsSchema.
+ * These come from SpacingPropsSchema, BorderPropsSchema, LayoutPropsSchema, and SizingPropsSchema.
  */
 const SHARED_LAYOUT_PROPS = new Set([
   "gap",
@@ -53,7 +53,22 @@ const SHARED_LAYOUT_PROPS = new Set([
   "fullwidth",
   "fullheight",
   "fullscreen",
+  "w",
+  "minw",
+  "maxw",
+  "h",
+  "minh",
+  "maxh",
 ]);
+
+/**
+ * Check if a prop name is a subcomponent props pattern.
+ * These are customization escape hatches like ContainerProps, HeaderProps, etc.
+ * Excludes Base UI primitive props which are internal implementation details.
+ */
+function isSubcomponentProp(name: string): boolean {
+  return name.endsWith("Props") && !EXCLUDED_PROPS.has(name);
+}
 
 /**
  * Key layout props to highlight for layout components (not exhaustive list).
@@ -119,30 +134,42 @@ function hasSpacingProps(entry: ComponentEntry): boolean {
 /**
  * Generate a markdown prop table for a single component.
  * Collapses inherited layout/spacing props into a summary note.
+ * Separates subcomponent props into their own section.
  */
 function generatePropTable(entry: ComponentEntry): string {
   const allProps = extractPropsFromSchema(entry.propsSchema, entry.defaults);
   const isLayout = hasLayoutProps(entry);
   const isSpacing = !isLayout && hasSpacingProps(entry);
 
-  // Split into component-specific and inherited props
+  // Split props into categories
+  const subcomponentProps = allProps.filter((p) => isSubcomponentProp(p.name));
   const specificProps = allProps.filter(
-    (p) => !EXCLUDED_PROPS.has(p.name) && !SHARED_LAYOUT_PROPS.has(p.name)
+    (p) =>
+      !EXCLUDED_PROPS.has(p.name) &&
+      !SHARED_LAYOUT_PROPS.has(p.name) &&
+      !isSubcomponentProp(p.name)
   );
-
   const inheritedProps = allProps.filter(
     (p) => !EXCLUDED_PROPS.has(p.name) && SHARED_LAYOUT_PROPS.has(p.name)
   );
 
   // For non-layout components with no inherited props, just show everything
   if (!isLayout && !isSpacing) {
-    const filtered = allProps.filter((p) => !EXCLUDED_PROPS.has(p.name));
-    if (filtered.length === 0) return "";
-    return [
-      "| Prop | Type | Description |",
-      "| --- | --- | --- |",
-      ...filtered.map(formatPropRow),
-    ].join("\n");
+    const filtered = allProps.filter(
+      (p) => !EXCLUDED_PROPS.has(p.name) && !isSubcomponentProp(p.name)
+    );
+    const lines: string[] = [];
+    if (filtered.length > 0) {
+      lines.push("| Prop | Type | Description |");
+      lines.push("| --- | --- | --- |");
+      lines.push(...filtered.map(formatPropRow));
+    }
+    // Add subcomponent props section
+    if (subcomponentProps.length > 0) {
+      if (lines.length > 0) lines.push("");
+      lines.push(...generateSubcomponentPropsSection(subcomponentProps));
+    }
+    return lines.join("\n");
   }
 
   const lines: string[] = [];
@@ -161,7 +188,7 @@ function generatePropTable(entry: ComponentEntry): string {
       inheritedProps.some((p) => p.name === k)
     );
     lines.push(
-      `Also supports layout props: \`${keyProps.join("`, `")}\`, plus all spacing (\`px\`, \`py\`, \`pt\`...), margin (\`mx\`, \`my\`, \`mt\`...), and border (\`b\`, \`bx\`, \`by\`...) props.`
+      `Also supports layout props: \`${keyProps.join("`, `")}\`, plus all spacing (\`px\`, \`py\`, \`pt\`...), margin (\`mx\`, \`my\`, \`mt\`...), border (\`b\`, \`bx\`, \`by\`...), and sizing (\`w\`, \`minw\`, \`maxw\`, \`h\`, \`minh\`, \`maxh\`) props.`
     );
   } else if (isSpacing && inheritedProps.length > 0) {
     lines.push(
@@ -169,7 +196,31 @@ function generatePropTable(entry: ComponentEntry): string {
     );
   }
 
+  // Add subcomponent props section
+  if (subcomponentProps.length > 0) {
+    lines.push("");
+    lines.push(...generateSubcomponentPropsSection(subcomponentProps));
+  }
+
   return lines.join("\n");
+}
+
+/**
+ * Generate documentation for subcomponent props.
+ * These are escape hatches for fine-grained customization.
+ */
+function generateSubcomponentPropsSection(
+  props: PropDocumentation[]
+): string[] {
+  const lines: string[] = [];
+  lines.push("**Subcomponent Props (customization escape hatches):**");
+  lines.push("");
+  for (const prop of props) {
+    const subName = prop.name.replace(/Props$/, "");
+    const desc = prop.description || `Props forwarded to ${subName}`;
+    lines.push(`- \`${prop.name}\`: ${desc}`);
+  }
+  return lines;
 }
 
 /**
