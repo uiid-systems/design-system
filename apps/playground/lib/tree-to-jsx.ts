@@ -47,6 +47,7 @@ export function treeToJsx(
   const { indent = "  ", includeImports = true, wrapInComponent = true, componentName } = options;
 
   const usedComponents = new Set<string>();
+  const usedIcons = new Set<string>();
   const formFields: Array<{ name: string; type: string; elementType: string }> = [];
 
   // Collect all form fields for state generation
@@ -87,7 +88,7 @@ export function treeToJsx(
     return String(value);
   }
 
-  function serializeProps(props: Record<string, unknown>, elementType: string): string[] {
+  function serializeProps(props: Record<string, unknown>, elementType: string, isIcon: boolean): string[] {
     const result: string[] = [];
     const fieldName = props.name as string | undefined;
     const isFormField = FORM_FIELD_TYPES.has(elementType) && fieldName && formFields.length > 0;
@@ -98,6 +99,8 @@ export function treeToJsx(
       if (key === "children") continue;
       // Skip action prop - internal to json-render
       if (key === "action") continue;
+      // Skip name prop for Icon - it becomes the component type
+      if (key === "name" && isIcon) continue;
 
       if (typeof value === "boolean" && value === true) {
         // Boolean shorthand: <Input required /> instead of <Input required={true} />
@@ -127,11 +130,20 @@ export function treeToJsx(
     const element = tree.elements[elementKey];
     if (!element) return "";
 
-    usedComponents.add(element.type);
+    // Handle Icon type specially - use the name prop as the component type
+    const isIcon = element.type === "Icon";
+    const iconName = isIcon ? (element.props?.name as string) : null;
+    const componentType = isIcon && iconName ? iconName : element.type;
+
+    if (isIcon && iconName) {
+      usedIcons.add(iconName);
+    } else {
+      usedComponents.add(element.type);
+    }
 
     const currentIndent = indent.repeat(depth);
     const childIndent = indent.repeat(depth + 1);
-    const props = serializeProps(element.props || {}, element.type);
+    const props = serializeProps(element.props || {}, element.type, isIcon);
 
     // Get text children from props.children (if string)
     const textChildren =
@@ -144,7 +156,7 @@ export function treeToJsx(
     const hasChildren = childElements.length > 0 || textChildren;
 
     // Build opening tag
-    let jsx = `${currentIndent}<${element.type}`;
+    let jsx = `${currentIndent}<${componentType}`;
 
     if (props.length > 0) {
       if (props.length <= 2 && props.every((p) => p.length < 20)) {
@@ -181,7 +193,7 @@ export function treeToJsx(
         jsx += currentIndent;
       }
 
-      jsx += `</${element.type}>`;
+      jsx += `</${componentType}>`;
     }
 
     return jsx;
@@ -219,6 +231,12 @@ export function treeToJsx(
   // Add UIID package imports
   for (const [pkg, components] of componentsByPackage) {
     imports += `import { ${components.join(", ")} } from "${pkg}";\n`;
+  }
+
+  // Add icon imports (direct imports for tree-shaking)
+  if (usedIcons.size > 0) {
+    const sortedIcons = Array.from(usedIcons).sort();
+    imports += `import { ${sortedIcons.join(", ")} } from "@uiid/icons";\n`;
   }
 
   if (!wrapInComponent) {
