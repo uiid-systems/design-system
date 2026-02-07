@@ -1,7 +1,7 @@
 @import "@uiid/tokens/component/list.tokens.css";
 
 .list {
-  margin-inline-start: 1rem;
+  list-style-position: inside;
 
   &:where([data-type="none"]) {
     list-style: none;
@@ -10,6 +10,22 @@
 
   &:is([data-direction="row"]) li {
     width: auto;
+  }
+
+  &:is([data-type="ordered"], [data-type="unordered"]) {
+    list-style-position: outside;
+
+    & > li {
+      margin-inline-start: 1rem;
+    }
+  }
+
+  &:is([data-type="ordered"]) {
+    list-style-type: decimal;
+  }
+
+  &:is([data-type="unordered"]) {
+    list-style-type: disc;
   }
 }
 
@@ -68,7 +84,7 @@
   border-radius: var(--globals-border-radius);
   transition: all var(--globals-transition-timing) ease-in-out;
 
-  &:not([data-disabled]):where(:hover, [data-highlighted]) {
+  &:not([data-disabled]):where([data-highlighted], :is(button, a) &:hover) {
     background-color: var(--shade-accent);
   }
 

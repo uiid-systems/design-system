@@ -10,6 +10,7 @@ export const categories: CategoryMeta[] = [
   { key: "buttons", label: "Buttons" },
   { key: "cards", label: "Cards" },
   { key: "forms", label: "Forms" },
+  { key: "indicators", label: "Indicators" },
   { key: "interactive", label: "Interactive" },
   { key: "overlays", label: "Overlays" },
 ];

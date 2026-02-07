@@ -36,6 +36,14 @@ import { SheetEntry } from "./components/sheet";
 import { ToasterEntry } from "./components/toaster";
 import { TooltipEntry } from "./components/tooltip";
 
+// Indicator components
+import { AlertEntry } from "./components/alert";
+import { AvatarEntry } from "./components/avatar";
+import { BadgeEntry } from "./components/badge";
+import { KbdEntry } from "./components/kbd";
+import { StatusEntry } from "./components/status";
+import { TimelineEntry } from "./components/timeline";
+
 /**
  * Complete registry of all UIID components.
  * Maps component names to their entries (schema, metadata, defaults).
@@ -76,6 +84,14 @@ export const registry: Registry = {
   Sheet: SheetEntry,
   Toaster: ToasterEntry,
   Tooltip: TooltipEntry,
+
+  // Indicators
+  Alert: AlertEntry,
+  Avatar: AvatarEntry,
+  Badge: BadgeEntry,
+  Kbd: KbdEntry,
+  Status: StatusEntry,
+  Timeline: TimelineEntry,
 };
 
 /**

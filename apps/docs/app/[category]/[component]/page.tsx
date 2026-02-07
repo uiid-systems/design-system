@@ -6,6 +6,9 @@ import {
   type PreviewConfig,
 } from "@uiid/registry";
 import { Text } from "@uiid/typography";
+import { Box, Separator } from "@uiid/layout";
+import { CodeInline } from "@uiid/code";
+import { List, ListItem } from "@uiid/lists";
 
 import { toSlug } from "@/constants/urls";
 import { getMdxSource, compileMdxContent } from "@/lib/mdx";
@@ -14,11 +17,9 @@ import {
   ComponentLink,
   Preview,
   PropsTable,
-  Usage,
 } from "@/components/mdx";
 import { MdxContent } from "./mdx-content";
 import { ComponentDetails } from "./component-details";
-import { Stack } from "@uiid/layout";
 
 /**
  * Generate static params for all components in the registry
@@ -58,39 +59,78 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
   if (mdxSource) {
     // Render MDX page
     const { content } = await compileMdxContent(mdxSource, {
-      // Map native elements to design system components
+      // Headings
+      h1: (props: Record<string, unknown>) => (
+        <Text render={<h1 />} size={6} weight="bold" {...props} />
+      ),
+      h2: (props: Record<string, unknown>) => (
+        <Text render={<h2 />} size={4} weight="bold" {...props} />
+      ),
+      h3: (props: Record<string, unknown>) => (
+        <Text
+          render={<h3 />}
+          size={3}
+          mt={12}
+          mb={4}
+          weight="bold"
+          {...props}
+        />
+      ),
+      h4: (props: Record<string, unknown>) => (
+        <Text render={<h4 />} size={2} weight="bold" {...props} />
+      ),
+      // Body text
       p: (props: Record<string, unknown>) => (
         <Text render={<p />} size={1} balance {...props} />
       ),
+      // Lists
       ul: (props: Record<string, unknown>) => (
-        <Stack
-          render={<ul />}
-          gap={2}
-          style={{ maxWidth: "40rem" }}
-          {...props}
-        />
+        <List type="unordered" {...props} />
       ),
       ol: (props: Record<string, unknown>) => (
-        <Stack
-          render={<ol />}
-          gap={2}
-          style={{ maxWidth: "40rem" }}
+        <List type="ordered" {...props} />
+      ),
+      li: (props: Record<string, unknown>) => (
+        <ListItem
+          label={props.children as string}
+          value={props.children as string}
+          maxw={640}
+          mb={2}
           {...props}
         />
       ),
-      li: (props: Record<string, unknown>) => (
-        <Text render={<li />} size={0} {...props} />
+      // Links
+      a: (props: Record<string, unknown>) => (
+        <Text render={<a />} size={1} underline tone="info" {...props} />
       ),
+      // Text emphasis
+      strong: (props: Record<string, unknown>) => (
+        <Text render={<strong />} weight="bold" {...props} />
+      ),
+      em: (props: Record<string, unknown>) => (
+        <Text render={<em />} style={{ fontStyle: "italic" }} {...props} />
+      ),
+      // Code
+      code: (props: Record<string, unknown>) => <CodeInline {...props} />,
       pre: (props: Record<string, unknown>) => <CodeBlock {...props} />,
+      // Blockquote
+      blockquote: (props: Record<string, unknown>) => (
+        <Box
+          render={<blockquote />}
+          pl={4}
+          py={2}
+          style={{ borderLeft: "4px solid var(--shade-accent)" }}
+          {...props}
+        />
+      ),
+      // Horizontal rule
+      hr: () => <Separator my={6} />,
       // Pass components that get data from this page
       Preview: (props: Record<string, unknown>) => (
         <Preview name={entry.name} previews={previews} {...props} />
       ),
       PropsTable: (props: Record<string, unknown>) => (
         <PropsTable props={docs.props} {...props} />
-      ),
-      Usage: (props: Record<string, unknown>) => (
-        <Usage previews={previews} {...props} />
       ),
       ComponentLink,
     });

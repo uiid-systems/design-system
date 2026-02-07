@@ -17,6 +17,7 @@ import { Card } from "@uiid/cards";
 import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
 import * as Icons from "@uiid/icons";
 import type { Icon as LucideIcon } from "@uiid/icons";
+import { Alert, Avatar, Badge, Kbd, Status, Timeline } from "@uiid/indicators";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -200,4 +201,33 @@ export const registry: ComponentRegistry = {
     if (!IconComponent) return null;
     return <IconComponent data-element-key={element.key} {...props} />;
   },
+
+  // Indicator components
+  Alert: ({ element, children }) => (
+    <Alert data-element-key={element.key} {...element.props}>{children}</Alert>
+  ),
+
+  Avatar: ({ element }) => <Avatar data-element-key={element.key} {...element.props} />,
+
+  Badge: ({ element, children }) => (
+    <Badge data-element-key={element.key} {...element.props}>
+      {children || element.props.children}
+    </Badge>
+  ),
+
+  Kbd: ({ element, children }) => (
+    <Kbd data-element-key={element.key} {...element.props}>
+      {children || element.props.children}
+    </Kbd>
+  ),
+
+  Status: ({ element, children }) => (
+    <Status data-element-key={element.key} {...element.props}>
+      {children || element.props.children}
+    </Status>
+  ),
+
+  Timeline: ({ element, children }) => (
+    <Timeline data-element-key={element.key} {...element.props}>{children}</Timeline>
+  ),
 };

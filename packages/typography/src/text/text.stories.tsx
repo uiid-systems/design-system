@@ -21,7 +21,7 @@ const meta: Meta<typeof Text> = {
   tags: ["beta"],
   args: {
     children:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+      "This PR was opened by the Changesets release GitHub action. When you're ready to do a release, you can merge this and publish to npm yourself or setup this action to publish automatically. If you're not ready to do a release yet, that's fine, whenever you add more changesets to main, this PR will be updated.",
   },
   argTypes: {
     children: {
@@ -71,13 +71,18 @@ const meta: Meta<typeof Text> = {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        gap: 48,
         width: "100%",
       }}
     >
-      <Text {...args} />
-      <Text {...args} family="mono" />
-      <Text {...args} family="serif" />
+      <Text {...args} size={-1} />
+      <Text {...args} size={0} />
+      <Text {...args} size={1} />
+      {/* <Text {...args} size={2} />
+      <Text {...args} size={3} />
+      <Text {...args} size={4} />
+      <Text {...args} size={5} />
+      <Text {...args} size={6} /> */}
     </div>
   ),
 };

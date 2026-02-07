@@ -36,7 +36,9 @@ export function MdxContent({
           category={category}
           previews={previews}
         />
-        <article className="prose">{children}</article>
+        <Stack render={<article />} fullwidth>
+          {children}
+        </Stack>
       </PreviewProvider>
     </Stack>
   );

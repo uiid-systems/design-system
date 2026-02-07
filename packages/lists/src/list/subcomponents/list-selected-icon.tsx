@@ -8,6 +8,7 @@ export const ListSelectedIcon = () => {
       size={ICON_SIZE_SMALL}
       strokeWidth={4}
       stroke="var(--tone-positive)"
+      style={{ marginInlineStart: "auto" }}
     />
   );
 };
