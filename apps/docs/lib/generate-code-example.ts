@@ -180,7 +180,7 @@ export function generateCodeExample(preview: PreviewConfig): string {
 
 export function ExampleComponent() {
   return (
-${jsx}
+  ${jsx}
   );
 }`;
 }

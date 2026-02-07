@@ -147,6 +147,7 @@ export function TreePreviewList({ previews }: TreePreviewListProps) {
           if (idx !== -1) ctx.setActiveIndex(idx);
         }}
         RootProps={{ fullwidth: true, ax: "stretch" }}
+        ContainerProps={{ py: 8 }}
         items={previews.map((preview) => ({
           label: preview.label,
           value: preview.label,
