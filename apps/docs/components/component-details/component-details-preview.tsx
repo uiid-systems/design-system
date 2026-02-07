@@ -11,10 +11,11 @@ export function ComponentDetailsPreview({
   children,
 }: ComponentDetailsPreviewProps) {
   return (
-    <Card fullwidth>
+    <Card title="Preview" fullwidth mt={12}>
       <Card
+        data-slot="component-details-preview"
         gap={4}
-        ax="center"
+        ax="stretch"
         ay="center"
         fullwidth
         className="bg-(--shade-background) min-h-64"

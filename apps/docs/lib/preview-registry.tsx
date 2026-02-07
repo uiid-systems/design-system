@@ -23,6 +23,12 @@ import {
   SheetPreview,
   ToasterPreview,
   TooltipPreview,
+  AlertPreview,
+  AvatarPreview,
+  BadgePreview,
+  KbdPreview,
+  StatusPreview,
+  TimelinePreview,
 } from "@/components/previews";
 
 /**
@@ -60,6 +66,14 @@ export const previewRegistry: Record<string, ComponentType> = {
   Sheet: SheetPreview,
   Toaster: ToasterPreview,
   Tooltip: TooltipPreview,
+
+  // Indicators
+  Alert: AlertPreview,
+  Avatar: AvatarPreview,
+  Badge: BadgePreview,
+  Kbd: KbdPreview,
+  Status: StatusPreview,
+  Timeline: TimelinePreview,
 };
 
 /**

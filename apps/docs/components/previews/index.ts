@@ -29,3 +29,11 @@ export { PopoverPreview } from "./popover-preview";
 export { SheetPreview } from "./sheet-preview";
 export { ToasterPreview } from "./toaster-preview";
 export { TooltipPreview } from "./tooltip-preview";
+
+// Indicators
+export { AlertPreview } from "./alert-preview";
+export { AvatarPreview } from "./avatar-preview";
+export { BadgePreview } from "./badge-preview";
+export { KbdPreview } from "./kbd-preview";
+export { StatusPreview } from "./status-preview";
+export { TimelinePreview } from "./timeline-preview";

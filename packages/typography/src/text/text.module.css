@@ -5,6 +5,7 @@
   text-box-edge: cap alphabetic;
   text-wrap: pretty;
   text-underline-offset: 5%;
+  letter-spacing: -0.01em;
 
   code {
     margin-inline: 0.25em;
@@ -16,61 +17,52 @@
 .text-size--1 {
   font-size: var(--typography-text--1-size);
   font-weight: var(--typography-text--1-weight);
-  letter-spacing: var(--typography-text--1-leading);
   line-height: var(--typography-text--1-lineHeight);
 }
 .text-size-0 {
   font-size: var(--typography-text-0-size);
   font-weight: var(--typography-text-0-weight);
-  letter-spacing: var(--typography-text-0-leading);
   line-height: var(--typography-text-0-lineHeight);
 }
 .text-size-1 {
   font-size: var(--typography-text-1-size);
   font-weight: var(--typography-text-1-weight);
-  letter-spacing: var(--typography-text-1-leading);
   line-height: var(--typography-text-1-lineHeight);
 }
 .text-size-2 {
   font-size: var(--typography-text-2-size);
   font-weight: var(--typography-text-2-weight);
-  letter-spacing: var(--typography-text-2-leading);
   line-height: var(--typography-text-2-lineHeight);
 }
 .text-size-3 {
   font-size: var(--typography-text-3-size);
   font-weight: var(--typography-text-3-weight);
-  letter-spacing: var(--typography-text-3-leading);
   line-height: var(--typography-text-3-lineHeight);
 }
 .text-size-4 {
   font-size: var(--typography-text-4-size);
   font-weight: var(--typography-text-4-weight);
-  letter-spacing: var(--typography-text-4-leading);
   line-height: var(--typography-text-4-lineHeight);
 }
 .text-size-5 {
   font-size: var(--typography-text-5-size);
   font-weight: var(--typography-text-5-weight);
-  letter-spacing: var(--typography-text-5-leading);
   line-height: var(--typography-text-5-lineHeight);
 }
 .text-size-6 {
   font-size: var(--typography-text-6-size);
   font-weight: var(--typography-text-6-weight);
-  letter-spacing: var(--typography-text-6-leading);
   line-height: var(--typography-text-6-lineHeight);
 }
 .text-size-7 {
   font-size: var(--typography-text-7-size);
   font-weight: var(--typography-text-7-weight);
-  letter-spacing: var(--typography-text-7-leading);
   line-height: var(--typography-text-7-lineHeight);
 }
 .text-size-8 {
   font-size: var(--typography-text-8-size);
   font-weight: var(--typography-text-8-weight);
-  letter-spacing: var(--typography-text-8-leading);
+  /* letter-spacing: var(--typography-text-8-leading); */
   line-height: var(--typography-text-8-lineHeight);
 }
 

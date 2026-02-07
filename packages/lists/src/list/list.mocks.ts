@@ -3,9 +3,9 @@ import { Star, Hammer, Bug, File, Ghost, Smartphone } from "@uiid/icons";
 import type { ListProps } from "./list.types";
 
 export const MOCK_ITEMS: ListProps["items"] = [
-  { value: "1", label: "Item 1", description: "Description 1" },
-  { value: "2", label: "Item 2", description: "Description 2" },
-  { value: "3", label: "Item 3", description: "Description 3" },
+  { value: "1", label: "Item 1" },
+  { value: "2", label: "Item 2" },
+  { value: "3", label: "Item 3" },
 ];
 
 export const MOCK_LINKS: ListProps["items"] = [

@@ -45,7 +45,17 @@ export const ListItem = ({
         data-selected={selected}
         {...props}
       >
-        <Group gap={3} ay="start" style={{ listStyleType: "none" }}>
+        <ConditionalRender
+          condition={Boolean(!!Icon || selected)}
+          render={
+            <Group
+              gap={3}
+              ay="start"
+              fullwidth
+              style={{ listStyleType: "none" }}
+            />
+          }
+        >
           {Icon && (
             <Icon
               data-slot="list-item-icon"
@@ -58,8 +68,8 @@ export const ListItem = ({
             label={label}
             description={description}
           />
-        </Group>
-        {selected && !disabled && <ListSelectedIcon />}
+          {selected && !disabled && <ListSelectedIcon />}
+        </ConditionalRender>
       </Group>
     </ConditionalRender>
   );
