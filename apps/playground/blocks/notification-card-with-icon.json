@@ -1,0 +1,79 @@
+{
+  "name": "Notification card with icon",
+  "slug": "notification-card-with-icon",
+  "description": "A notification card featuring an icon in the header, title, message, and action buttons.",
+  "version": 1,
+  "tags": [],
+  "tree": {
+    "root": "notification-card",
+    "elements": {
+      "notification-card": {
+        "key": "notification-card",
+        "type": "Card",
+        "props": {
+          "title": "New message received",
+          "description": "You have a new notification",
+          "icon": "Mail"
+        },
+        "children": [
+          "card-content"
+        ]
+      },
+      "card-content": {
+        "key": "card-content",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "ax": "stretch",
+          "pt": 4
+        },
+        "children": [
+          "message-text",
+          "actions"
+        ],
+        "parentKey": "notification-card"
+      },
+      "message-text": {
+        "key": "message-text",
+        "type": "Text",
+        "props": {
+          "children": "John Doe sent you a message: \"Hey, are we still on for the meeting tomorrow at 3pm?\""
+        },
+        "parentKey": "card-content"
+      },
+      "actions": {
+        "key": "actions",
+        "type": "Group",
+        "props": {
+          "gap": 2,
+          "ax": "end"
+        },
+        "children": [
+          "dismiss-button",
+          "view-button"
+        ],
+        "parentKey": "card-content"
+      },
+      "dismiss-button": {
+        "key": "dismiss-button",
+        "type": "Button",
+        "props": {
+          "variant": "subtle",
+          "ghost": true,
+          "children": "Dismiss"
+        },
+        "parentKey": "actions"
+      },
+      "view-button": {
+        "key": "view-button",
+        "type": "Button",
+        "props": {
+          "children": "View Message"
+        },
+        "parentKey": "actions"
+      }
+    }
+  },
+  "createdAt": "2026-02-06T12:00:00.000Z",
+  "updatedAt": "2026-02-06T12:00:00.000Z"
+}

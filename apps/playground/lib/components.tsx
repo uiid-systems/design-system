@@ -15,6 +15,8 @@ import { Renderer } from "@json-render/react";
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
 import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
+import * as Icons from "@uiid/icons";
+import type { Icon as LucideIcon } from "@uiid/icons";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -166,6 +168,13 @@ export const registry: ComponentRegistry = {
         slotProps[slotName] = (
           <Renderer tree={slotTree} registry={registry} />
         );
+      } else if (key === "icon" && typeof value === "string") {
+        // Handle icon prop as an icon name string
+        // Card expects a component reference, not a JSX element
+        const IconComponent = Icons[value as keyof typeof Icons] as LucideIcon | undefined;
+        if (IconComponent) {
+          regularProps.icon = IconComponent;
+        }
       } else {
         regularProps[key] = value;
       }
@@ -182,4 +191,13 @@ export const registry: ComponentRegistry = {
   Modal: ({ element, children }) => (
     <Modal data-element-key={element.key} {...element.props} trigger={children} />
   ),
+
+  // Icon component (playground-only, for JSON block rendering)
+  // Generated JSX converts to direct imports for tree-shaking
+  Icon: ({ element }) => {
+    const { name, ...props } = element.props;
+    const IconComponent = Icons[name as keyof typeof Icons] as LucideIcon | undefined;
+    if (!IconComponent) return null;
+    return <IconComponent data-element-key={element.key} {...props} />;
+  },
 };

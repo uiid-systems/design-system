@@ -209,6 +209,7 @@ UIID components are **precomposed** — they handle their own internal structure
 | Popover      | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Sheet        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Tooltip      | N/A                                                | Content             |
+| Icon         | `name`, `size`                                     | N/A (no children)   |
 
 ### Layout Components
 
@@ -591,9 +592,35 @@ Supports children.
 
 ---
 
+### Icons
+
+#### Icon
+
+Renders any icon from the Lucide icon set by name.
+
+| Prop   | Type   | Required | Description                                      |
+| ------ | ------ | -------- | ------------------------------------------------ |
+| `name` | string | Yes      | Lucide icon name in PascalCase (e.g., "ChevronRight", "Plus", "Settings") |
+| `size` | number | No       | Icon size in pixels (default: 24)                |
+
+**Example:**
+
+```json
+{
+  "type": "Icon",
+  "props": { "name": "ChevronRight", "size": 16 }
+}
+```
+
+**Common icons:** Plus, Minus, Check, X, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Settings, User, Search, Menu, Home, Mail, Phone, Calendar, Clock, Edit, Trash, Download, Upload, Eye, EyeOff, Lock, Unlock, Star, Heart, Bell, Info, AlertCircle, AlertTriangle, CheckCircle, XCircle
+
+**Note:** The full Lucide icon set is available. See https://lucide.dev/icons for all options.
+
+---
+
 ### All Component Types
 
-Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Drawer, Modal, Popover, Sheet, Toaster, Tooltip
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Icon
 
 <!-- END GENERATED COMPONENT REFERENCE -->
 
