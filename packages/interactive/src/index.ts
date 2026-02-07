@@ -1,3 +1,7 @@
+export * from "./accordion/accordion";
+export * from "./accordion/accordion.types";
+export * from "./accordion/subcomponents";
+
 export * from "./collapsible/collapsible";
 export * from "./collapsible/collapsible.types";
 export * from "./collapsible/subcomponents";

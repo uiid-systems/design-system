@@ -1,0 +1,18 @@
+{
+  "$description": "UIID Design System - Accordion Component Tokens",
+  "accordion": {
+    "trigger": {
+      "padding": {
+        "x": { "$value": "{globals.padding.x}", "$type": "dimension" },
+        "y": { "$value": "{globals.padding.y}", "$type": "dimension" }
+      }
+    },
+    "panel": {
+      "height": { "$value": "2rem", "$type": "dimension" },
+      "padding": {
+        "x": { "$value": "{globals.padding.x}", "$type": "dimension" },
+        "y": { "$value": "1.5rem", "$type": "dimension" }
+      }
+    }
+  }
+}

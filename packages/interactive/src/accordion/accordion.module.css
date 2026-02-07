@@ -1,0 +1,47 @@
+@import "@uiid/tokens/component/accordion.tokens.css";
+
+.accordion-root[data-disabled] {
+  opacity: var(--globals-disabled-opacity);
+  pointer-events: none;
+}
+
+.accordion-trigger {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding-block: var(--accordion-trigger-padding-y);
+  padding-inline: var(--accordion-trigger-padding-x);
+  display: block;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  svg {
+    stroke: var(--shade-halftone);
+    height: var(--globals-icon-size);
+    transition: all var(--globals-transition-timing) ease;
+
+    [data-open] & {
+      opacity: var(--globals-disabled-opacity);
+    }
+  }
+}
+
+.accordion-panel {
+  height: var(--accordion-panel-height);
+  background-color: color-mix(in srgb, var(--shade-background), transparent 50%);
+  overflow: hidden;
+  transition: height var(--globals-transition-timing) ease-out;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    height: 0;
+  }
+}
+
+.accordion-panel-content {
+  padding-block: var(--accordion-panel-padding-y);
+  padding-inline: var(--accordion-panel-padding-x);
+}
