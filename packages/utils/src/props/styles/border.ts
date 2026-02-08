@@ -1,5 +1,7 @@
 import type { StyleProp } from "../types";
 
+export const borderPropKeys = ["b", "bx", "bl", "br", "by", "bt", "bb"] as const;
+
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/border-width */
 export const b = {
   property: "borderWidth",

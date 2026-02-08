@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { stylePropCategories, type PropCategory } from "@uiid/utils";
 
 import type {
   ComponentEntry,
@@ -152,6 +153,14 @@ function getDescription(schema: z.ZodType): string | undefined {
 }
 
 /**
+ * Get the category for a prop based on its name.
+ */
+function getPropCategory(name: string): PropCategory {
+  if (name.endsWith("Props")) return "subcomponent";
+  return stylePropCategories[name] ?? "core";
+}
+
+/**
  * Extract prop documentation from a Zod object schema.
  */
 export function extractPropsFromSchema(
@@ -185,6 +194,7 @@ export function extractPropsFromSchema(
       description: getDescription(propSchema),
       defaultValue: defaults?.[name],
       enumValues: getEnumValues(propSchema),
+      category: getPropCategory(name),
     });
   }
 

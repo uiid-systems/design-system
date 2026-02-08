@@ -1,5 +1,7 @@
 import type { StyleProp } from "../types";
 
+export const sizingPropKeys = ["w", "minw", "maxw", "h", "minh", "maxh"] as const;
+
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/width */
 export const w = {
   property: "width",

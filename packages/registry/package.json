@@ -23,6 +23,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@uiid/utils": "workspace:*",
     "zod": "^4.3.6"
   },
   "peerDependencies": {

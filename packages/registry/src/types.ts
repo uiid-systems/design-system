@@ -1,4 +1,5 @@
 import type { z } from "zod";
+import type { PropCategory } from "@uiid/utils";
 import type { CategoryKey } from "./categories";
 
 /**
@@ -92,6 +93,8 @@ export type PropDocumentation = {
   defaultValue?: unknown;
   /** Enum values (for z.enum types) */
   enumValues?: string[];
+  /** Prop category (core, spacing, layout, sizing, border, subcomponent) */
+  category?: PropCategory;
 };
 
 /**

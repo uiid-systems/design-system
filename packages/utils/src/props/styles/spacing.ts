@@ -1,5 +1,23 @@
 import type { StyleProp } from "../types";
 
+export const spacingPropKeys = [
+  "gap",
+  "m",
+  "mx",
+  "ml",
+  "mr",
+  "my",
+  "mt",
+  "mb",
+  "p",
+  "px",
+  "pl",
+  "pr",
+  "py",
+  "pt",
+  "pb",
+] as const;
+
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/gap */
 export const gap = {
   property: "gap",

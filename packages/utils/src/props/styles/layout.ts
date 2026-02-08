@@ -1,5 +1,7 @@
 import type { StyleProp } from "../types";
 
+export const layoutPropKeys = ["ax", "ay", "direction"] as const;
+
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content */
 export const ax = {
   property: "justifyContent",

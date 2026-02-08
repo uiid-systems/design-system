@@ -95,7 +95,6 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
           label={props.children as string}
           value={props.children as string}
           maxw={640}
-          mb={2}
           {...props}
         />
       ),

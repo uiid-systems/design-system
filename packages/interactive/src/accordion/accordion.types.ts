@@ -1,4 +1,6 @@
 import type { Accordion } from "@base-ui/react/accordion";
+import type { CardProps } from "@uiid/cards";
+
 import type { Icon } from "@uiid/icons";
 
 export type AccordionItemData = {
@@ -9,7 +11,7 @@ export type AccordionItemData = {
   disabled?: boolean;
 };
 
-export type AccordionRootProps = Accordion.Root.Props;
+export type AccordionRootProps = Accordion.Root.Props & CardProps;
 export type AccordionItemProps = Accordion.Item.Props;
 export type AccordionHeaderProps = Accordion.Header.Props;
 export type AccordionTriggerProps = Accordion.Trigger.Props &
@@ -31,4 +33,5 @@ export type AccordionProps = {
   | "disabled"
   | "orientation"
   | "multiple"
+  | "fullwidth"
 >;
