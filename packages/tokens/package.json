@@ -11,19 +11,25 @@
     "src"
   ],
   "scripts": {
-    "build": "node ../../scripts/generate-tokens.cjs",
+    "build": "npm run build:generate && npm run build:legacy",
+    "build:generate": "node --experimental-json-modules ./scripts/generate-scales.js",
+    "build:legacy": "node ../../scripts/generate-tokens.cjs",
+    "build:sd": "style-dictionary build --config style-dictionary.config.js",
     "dev": "node ../../scripts/generate-tokens.cjs",
     "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.cjs\"",
     "lint": "echo 'No linting for CSS tokens'",
+    "lint:tokens": "ajv validate -s dtcg.schema.json -d 'src/json/**/*.tokens.json'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\""
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.2.3",
     "@types/react": "^19.1.10",
+    "ajv-cli": "^5.0.0",
     "nodemon": "^3.1.10",
     "prettier": "3.8.1",
     "react": "^19.1.1",
     "storybook": "^10.2.3",
+    "style-dictionary": "^4.3.0",
     "typescript": "~5.9.3"
   }
 }

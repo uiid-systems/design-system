@@ -15,7 +15,7 @@ import {
   TableCellCheckbox,
 } from "./subcomponents";
 
-export const Table = <T extends Record<string, unknown>>({
+export function Table<T extends Record<string, unknown>>({
   items,
   actions,
   columns,
@@ -24,8 +24,7 @@ export const Table = <T extends Record<string, unknown>>({
   striped,
   bordered,
   ...props
-}: TableProps<T>) => {
-  const columnKeys = items.length > 0 ? Object.keys(items[0]) : [];
+}: TableProps<T>): React.ReactElement {
   const displayColumns =
     columns || (items.length > 0 ? Object.keys(items[0]) : []);
 
@@ -50,14 +49,14 @@ export const Table = <T extends Record<string, unknown>>({
           {items.map((item, index) => (
             <TableRow key={index}>
               {selectable && <TableCellCheckbox />}
-              {columnKeys.map((column) => (
+              {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {isValidElement(item[column])
                     ? item[column]
                     : String(item[column])}
                 </TableCell>
               ))}
-              {actions && <TableCellActions actions={actions} />}
+              {actions && <TableCellActions actions={actions} item={item} />}
             </TableRow>
           ))}
         </TableBody>
@@ -66,5 +65,5 @@ export const Table = <T extends Record<string, unknown>>({
       </TableRoot>
     </TableContainer>
   );
-};
+}
 Table.displayName = "Table";

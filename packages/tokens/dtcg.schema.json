@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uiid.design/schemas/dtcg.schema.json",
+  "title": "UIID Design Tokens (DTCG)",
+  "description": "JSON Schema for W3C Design Tokens Community Group format with UIID extensions",
+
+  "$defs": {
+    "tokenReference": {
+      "type": "string",
+      "pattern": "^\\{[a-zA-Z][a-zA-Z0-9._-]*\\}$",
+      "description": "Reference to another token using {token.path} syntax"
+    },
+
+    "colorValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
+          "description": "Hex color value"
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "dimensionValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^-?[0-9]+(\\.[0-9]+)?(px|rem|em|%|vw|vh|vmin|vmax|ch|ex|cap|ic|lh|rlh|vi|vb|svw|svh|lvw|lvh|dvw|dvh)$",
+          "description": "Dimension with unit"
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "durationValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?(ms|s)$",
+          "description": "Duration with unit"
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "fontFamilyValue": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "fontWeightValue": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        {
+          "type": "string",
+          "enum": ["thin", "hairline", "extra-light", "ultra-light", "light", "normal", "regular", "book", "medium", "semi-bold", "demi-bold", "bold", "extra-bold", "ultra-bold", "black", "heavy", "extra-black", "ultra-black"]
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "numberValue": {
+      "oneOf": [
+        { "type": "number" },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "shadowValue": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "color": { "$ref": "#/$defs/colorValue" },
+            "offsetX": { "$ref": "#/$defs/dimensionValue" },
+            "offsetY": { "$ref": "#/$defs/dimensionValue" },
+            "blur": { "$ref": "#/$defs/dimensionValue" },
+            "spread": { "$ref": "#/$defs/dimensionValue" },
+            "inset": { "type": "boolean" }
+          },
+          "required": ["color", "offsetX", "offsetY", "blur"]
+        },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/shadowValue" }
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "strokeStyleValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["solid", "dashed", "dotted", "double", "groove", "ridge", "outset", "inset", "none"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "dashArray": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/dimensionValue" }
+            },
+            "lineCap": {
+              "type": "string",
+              "enum": ["round", "butt", "square"]
+            }
+          },
+          "required": ["dashArray"]
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
+    "uiidDeriveExtension": {
+      "type": "object",
+      "description": "UIID custom extension for derived/computed values",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["mix", "light-dark", "scale"]
+        },
+        "colorSpace": {
+          "type": "string",
+          "enum": ["oklch", "oklab", "srgb", "display-p3", "lab", "lch"]
+        },
+        "color1": { "$ref": "#/$defs/tokenReference" },
+        "color2": { "$ref": "#/$defs/tokenReference" },
+        "ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "light": { "$ref": "#/$defs/tokenReference" },
+        "dark": { "$ref": "#/$defs/tokenReference" },
+        "steps": { "type": "integer", "minimum": 3, "maximum": 21 }
+      },
+      "required": ["method"]
+    },
+
+    "uiidSourceExtension": {
+      "type": "object",
+      "description": "UIID extension for source color information",
+      "properties": {
+        "colorSpace": {
+          "type": "string",
+          "enum": ["oklch", "oklab", "srgb", "display-p3", "lab", "lch"]
+        },
+        "components": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 4
+        }
+      },
+      "required": ["colorSpace", "components"]
+    },
+
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced extensions",
+      "properties": {
+        "org.uiid.derive": { "$ref": "#/$defs/uiidDeriveExtension" },
+        "org.uiid.source": { "$ref": "#/$defs/uiidSourceExtension" }
+      },
+      "additionalProperties": true
+    },
+
+    "tokenBase": {
+      "type": "object",
+      "properties": {
+        "$description": { "type": "string" },
+        "$extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+
+    "colorToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/colorValue" },
+            "$type": { "const": "color" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "dimensionToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/dimensionValue" },
+            "$type": { "const": "dimension" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "durationToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/durationValue" },
+            "$type": { "const": "duration" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "fontFamilyToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/fontFamilyValue" },
+            "$type": { "const": "fontFamily" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "fontWeightToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/fontWeightValue" },
+            "$type": { "const": "fontWeight" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "numberToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/numberValue" },
+            "$type": { "const": "number" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "shadowToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/shadowValue" },
+            "$type": { "const": "shadow" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "strokeStyleToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/strokeStyleValue" },
+            "$type": { "const": "strokeStyle" }
+          },
+          "required": ["$value"]
+        }
+      ]
+    },
+
+    "token": {
+      "oneOf": [
+        { "$ref": "#/$defs/colorToken" },
+        { "$ref": "#/$defs/dimensionToken" },
+        { "$ref": "#/$defs/durationToken" },
+        { "$ref": "#/$defs/fontFamilyToken" },
+        { "$ref": "#/$defs/fontWeightToken" },
+        { "$ref": "#/$defs/numberToken" },
+        { "$ref": "#/$defs/shadowToken" },
+        { "$ref": "#/$defs/strokeStyleToken" }
+      ]
+    },
+
+    "tokenGroup": {
+      "type": "object",
+      "properties": {
+        "$description": { "type": "string" },
+        "$type": {
+          "type": "string",
+          "enum": ["color", "dimension", "duration", "fontFamily", "fontWeight", "number", "shadow", "strokeStyle"]
+        },
+        "$extensions": { "$ref": "#/$defs/extensions" }
+      },
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/token" },
+          { "$ref": "#/$defs/tokenGroup" }
+        ]
+      }
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "$description": { "type": "string" }
+  },
+  "additionalProperties": {
+    "oneOf": [
+      { "$ref": "#/$defs/token" },
+      { "$ref": "#/$defs/tokenGroup" }
+    ]
+  }
+}

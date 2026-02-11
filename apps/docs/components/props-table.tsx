@@ -1,13 +1,35 @@
 "use client";
 
-import type { PropDocumentation } from "@uiid/registry";
-import type { PropCategory } from "@uiid/utils";
+import { SiMdnwebdocs } from "@icons-pack/react-simple-icons";
+import Link from "next/link";
 
-import { Badge } from "@uiid/indicators";
+import { Card } from "@uiid/cards";
 import { CodeInline } from "@uiid/code";
+import { Badge } from "@uiid/indicators";
 import { Accordion } from "@uiid/interactive";
 import { Box, Group, Stack } from "@uiid/layout";
+import type { PropDocumentation } from "@uiid/registry";
+import { Table } from "@uiid/tables";
 import { Text } from "@uiid/typography";
+import { styleProps, type PropCategory } from "@uiid/utils";
+
+import { MDN_CSS_URL } from "@/constants";
+
+function toKebabCase(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+function getMdnUrl(propName: string): string | undefined {
+  const prop = styleProps[propName as keyof typeof styleProps];
+  if (!prop) return undefined;
+  return `${MDN_CSS_URL}/${toKebabCase(prop.property)}`;
+}
+
+function getCssProperty(propName: string): string | undefined {
+  const prop = styleProps[propName as keyof typeof styleProps];
+  if (!prop) return undefined;
+  return toKebabCase(prop.property);
+}
 
 type PropsTableProps = {
   props: PropDocumentation[];
@@ -68,7 +90,7 @@ function categorizeProps(props: PropDocumentation[]): CategorizedProps {
 
 function PropRow({ prop }: { prop: PropDocumentation }) {
   return (
-    <Box py={3} bb={1}>
+    <Box bb={1}>
       <Stack gap={2}>
         <Group gap={3} ay="center" style={{ flexWrap: "wrap" }}>
           <Text size={0} weight="bold" mono>
@@ -132,14 +154,14 @@ function StylePropsSection({ props }: { props: PropDocumentation[] }) {
       acc[cat].push(prop);
       return acc;
     },
-    {} as Record<string, PropDocumentation[]>
+    {} as Record<string, PropDocumentation[]>,
   );
 
   const categoryOrder = Object.keys(
-    STYLE_CATEGORY_META
+    STYLE_CATEGORY_META,
   ) as (keyof typeof STYLE_CATEGORY_META)[];
   const availableCategories = categoryOrder.filter(
-    (key) => byCategory[key]?.length > 0
+    (key) => byCategory[key]?.length > 0,
   );
 
   const categoryItems = availableCategories.map((categoryKey) => {
@@ -153,33 +175,71 @@ function StylePropsSection({ props }: { props: PropDocumentation[] }) {
           <Text size={0} weight="bold">
             {meta.label}
           </Text>
-          <Text size={-1} shade="muted">
-            {categoryProps.length}
-          </Text>
+          <Badge hideIndicator>{categoryProps.length}</Badge>
         </Group>
       ),
       content: (
-        <Stack py={3} gap={3}>
-          <Text size={0} shade="muted">
+        <Stack gap={3} fullwidth>
+          {/* <Text size={0} shade="muted">
             {meta.description}
-          </Text>
-          <Group gap={2} style={{ flexWrap: "wrap" }}>
-            {categoryProps.map((prop) => (
-              <CodeInline key={prop.name}>{prop.name}</CodeInline>
-            ))}
-          </Group>
+          </Text> */}
+          <Table
+            striped
+            bordered
+            items={categoryProps.map((prop) => ({
+              propName: prop.name,
+              type: <CodeInline>{prop.type}</CodeInline>,
+              cssProperty: (
+                <Text shade="muted" family="mono" size={-1}>
+                  {getCssProperty(prop.name) ?? prop.description}
+                </Text>
+              ),
+            }))}
+            columns={["prop", "type", "cssProperty"]}
+            formatHeader={(key) => {
+              const headers: Record<string, string> = {
+                prop: "Prop",
+                type: "Type",
+                cssProperty: "CSS Property",
+              };
+              return headers[key as string] || key;
+            }}
+            actions={{
+              primary: [
+                {
+                  icon: SiMdnwebdocs,
+                  tooltip: "View MDN docs",
+                  wrapper: (button, item) => {
+                    const url = getMdnUrl(item.propName);
+                    return url ? (
+                      <Link href={url} target="_blank">
+                        {button}
+                      </Link>
+                    ) : (
+                      button
+                    );
+                  },
+                },
+              ],
+            }}
+          />
         </Stack>
       ),
     };
   });
 
   return (
-    <Accordion
-      items={categoryItems}
-      multiple
-      fullwidth
-      RootProps={{ ghost: true }}
-    />
+    <Card title="Style props" fullwidth mt={8}>
+      <Accordion
+        items={categoryItems}
+        multiple
+        RootProps={{
+          fullwidth: true,
+          ghost: true,
+          style: { backgroundColor: "var(--shade-background)" },
+        }}
+      />
+    </Card>
   );
 }
 
@@ -187,7 +247,7 @@ function SubcomponentPropsSection({ props }: { props: PropDocumentation[] }) {
   if (props.length === 0) return null;
 
   return (
-    <Stack py={3} gap={3}>
+    <Stack gap={3}>
       <Text size={0} shade="muted">
         Forward props to internal subcomponents:
       </Text>
@@ -212,7 +272,7 @@ export const PropsTable = ({ props }: PropsTableProps) => {
   const categorized = categorizeProps(props);
   const hasMultipleCategories =
     [categorized.core, categorized.style, categorized.subcomponent].filter(
-      (arr) => arr.length > 0
+      (arr) => arr.length > 0,
     ).length > 1;
 
   if (!hasMultipleCategories) {
@@ -274,8 +334,6 @@ export const PropsTable = ({ props }: PropsTableProps) => {
     });
   }
 
-  return (
-    <Accordion items={items} defaultValue={["core"]} multiple fullwidth />
-  );
+  return <Accordion items={items} defaultValue={["core"]} multiple fullwidth />;
 };
 PropsTable.displayName = "PropsTable";

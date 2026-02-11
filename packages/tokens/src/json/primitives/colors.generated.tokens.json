@@ -1,0 +1,1175 @@
+{
+  "$description": "UIID Design System - Generated Color Scales (AUTO-GENERATED - DO NOT EDIT)",
+  "$schema": "../../../dtcg.schema.json",
+  "color": {
+    "$type": "color",
+    "red": {
+      "50": {
+        "$value": "#ffe3db",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.072,
+              27
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#ffd6ce",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.072,
+              27
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#ffb5a9",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.12,
+              27
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#ff665c",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.24,
+              27
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#ff3f3c",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.24,
+              27
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#e60016",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.24,
+              27
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#c10000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.24,
+              27
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#a00000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.24,
+              27
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#720000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.192,
+              27
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#490000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.144,
+              27
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#300000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.144,
+              27
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "orange": {
+      "50": {
+        "$value": "#ffecd3",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.054,
+              55
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#ffdfc6",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.054,
+              55
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#ffc59b",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.09,
+              55
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#ff932a",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.18,
+              55
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#e97300",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.18,
+              55
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#c65300",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.18,
+              55
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#a43200",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.18,
+              55
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#860c00",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.18,
+              55
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#5e0100",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.144,
+              55
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#3c0000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.108,
+              55
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#250000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.108,
+              55
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "yellow": {
+      "50": {
+        "$value": "#fff4cf",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.051,
+              90
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#f5e7c2",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.051,
+              90
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#ead293",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.085,
+              90
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#e1b000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.17,
+              90
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#c19100",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.17,
+              90
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#a17200",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.17,
+              90
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#825400",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.17,
+              90
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#683a00",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.17,
+              90
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#482500",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.136,
+              90
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#2d1400",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.102,
+              90
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#190300",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.102,
+              90
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "green": {
+      "50": {
+        "$value": "#daffe3",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.057,
+              152
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#cdf4d6",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.057,
+              152
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#a5e7b6",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.095,
+              152
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#33d977",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.19,
+              152
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#00b858",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.19,
+              152
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#00983a",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.19,
+              152
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#007819",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.19,
+              152
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#005d00",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.19,
+              152
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#004000",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.152,
+              152
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#002700",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.114,
+              152
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#001300",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.114,
+              152
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "blue": {
+      "50": {
+        "$value": "#def6ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.063,
+              261
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#d1e9ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.063,
+              261
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#add5ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.105,
+              261
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#65b2ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.21,
+              261
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#4691ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.21,
+              261
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#2771f4",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.21,
+              261
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#0050d1",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.21,
+              261
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#0031b2",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.21,
+              261
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#001d7f",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.168,
+              261
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#000f53",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.126,
+              261
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#00003c",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.126,
+              261
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "indigo": {
+      "50": {
+        "$value": "#efefff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.072,
+              285
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#e2e2ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.072,
+              285
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#ccc9ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.12,
+              285
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#ad97ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.24,
+              285
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#9076ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.24,
+              285
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#7453fe",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.24,
+              285
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#5b2ddb",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.24,
+              285
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#4700bc",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.24,
+              285
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#300087",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.192,
+              285
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#1c0058",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.144,
+              285
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#100040",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.144,
+              285
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "purple": {
+      "50": {
+        "$value": "#ffeaff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.97,
+              0.072,
+              303
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#f1ddff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.93,
+              0.072,
+              303
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#e4c1ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.12,
+              303
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#d887ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.24,
+              303
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#b865ff",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.68,
+              0.24,
+              303
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#9942eb",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.58,
+              0.24,
+              303
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#7c15c9",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.48,
+              0.24,
+              303
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#6200aa",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.39,
+              0.24,
+              303
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#440079",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.192,
+              303
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#2a004f",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.22,
+              0.144,
+              303
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#180038",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.14,
+              0.144,
+              303
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    },
+    "neutral": {
+      "50": {
+        "$value": "#fbfaf6",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.985,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "100": {
+        "$value": "#f5f3f0",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.965,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "200": {
+        "$value": "#e7e6e2",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.925,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "300": {
+        "$value": "#d5d4d0",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.87,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "400": {
+        "$value": "#b8b7b4",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.78,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "500": {
+        "$value": "#908f8c",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.65,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "600": {
+        "$value": "#6a6966",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.52,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "700": {
+        "$value": "#494845",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.4,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "800": {
+        "$value": "#2f2e2b",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.3,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "900": {
+        "$value": "#171613",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.2,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "950": {
+        "$value": "#040302",
+        "$extensions": {
+          "org.uiid.source": {
+            "colorSpace": "oklch",
+            "components": [
+              0.1,
+              0.005,
+              90
+            ]
+          }
+        }
+      },
+      "$type": "color"
+    }
+  }
+}

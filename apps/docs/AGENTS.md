@@ -208,6 +208,31 @@ import { Text } from "@uiid/typography";
 
 ---
 
+## Component Prop Availability
+
+Not all components have the same style props. Know which props each component accepts:
+
+| Component | Spacing | Sizing | Layout | Border |
+|-----------|---------|--------|--------|--------|
+| `Box`     | ✓       | ✓      | ✓      | ✓      |
+| `Stack`   | ✓       | ✓      | ✓      | ✓      |
+| `Group`   | ✓       | ✓      | ✓      | ✓      |
+| `Text`    | ✓       | ✗      | ✗      | ✗      |
+
+**Important:** If you need sizing on text (e.g., `minw` for column alignment), wrap in a `Box`:
+
+```tsx
+// Wrong — Text doesn't have minw
+<Text minw={10}>Name</Text>
+
+// Correct — wrap in Box
+<Box minw={10}>
+  <Text>Name</Text>
+</Box>
+```
+
+---
+
 ## Best Practices
 
 ### DO
