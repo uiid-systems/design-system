@@ -1,11 +1,10 @@
 {
   "$description": "UIID Design System - Switch Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "switch": {
     "height": { "$value": "1.5rem", "$type": "dimension" },
     "width": { "$value": "2.5rem", "$type": "dimension" },
-    "color": {
-      "bg": { "$value": "{shade.muted}", "$type": "color" },
-      "fg": { "$value": "{shade.foreground}", "$type": "color" }
-    }
+    "bg": { "$value": "{shade.muted}", "$type": "color" },
+    "fg": { "$value": "{shade.foreground}", "$type": "color" }
   }
 }

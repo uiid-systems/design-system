@@ -19,7 +19,9 @@
     "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.cjs\"",
     "lint": "echo 'No linting for CSS tokens'",
     "lint:tokens": "ajv validate -s dtcg.schema.json -d 'src/json/**/*.tokens.json'",
-    "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\""
+    "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\"",
+    "figma:preview": "DRY_RUN=true node ./scripts/sync-to-figma.js",
+    "figma:sync": "node ./scripts/sync-to-figma.js"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.2.3",

@@ -1,5 +1,6 @@
 {
   "$description": "UIID Design System - Tabs Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "tabs": {
     "indicator": {
       "height": { "$value": "0.5rem", "$type": "dimension" },
@@ -9,10 +10,10 @@
     "tab": {
       "height": { "$value": "2.5rem", "$type": "dimension" },
       "fg": { "$value": "{shade.foreground}", "$type": "color" },
-      "fg-active": { "$value": "{theme.primary.foreground}", "$type": "color" }
+      "fg-active": { "$value": "{theme.primary}", "$type": "color" }
     },
     "panel": {
-      "translateY": { "$value": "2%", "$type": "dimension" }
+      "translate-y": { "$value": "2%", "$type": "dimension" }
     }
   }
 }

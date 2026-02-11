@@ -1,13 +1,10 @@
 {
   "$description": "UIID Design System - Shade Scale Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "shade": {
     "$type": "color",
     "1": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.969, 0.969, 0.953],
-        "hex": "#f7f7f3"
-      },
+      "$value": "#f7f7f3",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -19,11 +16,7 @@
       }
     },
     "2": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.929, 0.929, 0.914],
-        "hex": "#edede9"
-      },
+      "$value": "#edede9",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -35,11 +28,7 @@
       }
     },
     "3": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.882, 0.882, 0.871],
-        "hex": "#e1e1de"
-      },
+      "$value": "#e1e1de",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -51,11 +40,7 @@
       }
     },
     "4": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.827, 0.827, 0.812],
-        "hex": "#d3d3cf"
-      },
+      "$value": "#d3d3cf",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -67,11 +52,7 @@
       }
     },
     "5": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.749, 0.749, 0.737],
-        "hex": "#bfbfbc"
-      },
+      "$value": "#bfbfbc",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -83,11 +64,7 @@
       }
     },
     "6": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.655, 0.655, 0.647],
-        "hex": "#a7a7a5"
-      },
+      "$value": "#a7a7a5",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -99,11 +76,7 @@
       }
     },
     "7": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.525, 0.525, 0.518],
-        "hex": "#868684"
-      },
+      "$value": "#868684",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -115,11 +88,7 @@
       }
     },
     "8": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.412, 0.412, 0.404],
-        "hex": "#696967"
-      },
+      "$value": "#696967",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -131,11 +100,7 @@
       }
     },
     "9": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.314, 0.314, 0.31],
-        "hex": "#50504f"
-      },
+      "$value": "#50504f",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -147,11 +112,7 @@
       }
     },
     "10": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.22, 0.22, 0.22],
-        "hex": "#383838"
-      },
+      "$value": "#383838",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -163,11 +124,7 @@
       }
     },
     "11": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.145, 0.145, 0.145],
-        "hex": "#252525"
-      },
+      "$value": "#252525",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -179,11 +136,7 @@
       }
     },
     "12": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.09, 0.09, 0.086],
-        "hex": "#171716"
-      },
+      "$value": "#171716",
       "$extensions": {
         "org.uiid.derive": {
           "method": "mix",
@@ -195,11 +148,7 @@
       }
     },
     "background": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.996, 0.996, 0.98],
-        "hex": "#fefefa"
-      },
+      "$value": "#fefefa",
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",
@@ -213,11 +162,7 @@
     "halftone": { "$value": "{shade.7}" },
     "muted": { "$value": "{shade.9}" },
     "foreground": {
-      "$value": {
-        "colorSpace": "srgb",
-        "components": [0.051, 0.051, 0.051],
-        "hex": "#0d0d0d"
-      },
+      "$value": "#0d0d0d",
       "$extensions": {
         "org.uiid.derive": {
           "method": "light-dark",

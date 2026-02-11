@@ -1,11 +1,21 @@
 {
-  "$description": "UIID Design System - Button Component Tokens",
+  "$description": "UIID Design System - Form Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "forms": {
-    "background": { "$value": "{shade.accent}", "$type": "color" },
-    "backgroundHover": { "$value": "{shade.surface}", "$type": "color" },
-    "backgroundFocus": {
-      "$value": "color_mix(in srgb, {shade.background}, {shade.foreground} 10%)",
-      "$type": "color"
+    "bg": { "$value": "{shade.accent}", "$type": "color" },
+    "bg-hover": { "$value": "{shade.surface}", "$type": "color" },
+    "bg-focus": {
+      "$value": "#1a1a19",
+      "$type": "color",
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "mix",
+          "colorSpace": "srgb",
+          "color1": "{shade.background}",
+          "color2": "{shade.foreground}",
+          "ratio": 0.10
+        }
+      }
     },
     "padding": {
       "x": { "$value": "0.75rem", "$type": "dimension" },
@@ -18,28 +28,26 @@
       "size": { "$value": "{globals.icon.size}", "$type": "dimension" }
     },
     "size": {
-      "xsmall": {
+      "xs": {
         "font-size": { "$value": "0.75rem", "$type": "dimension" },
-        "padding": {
-          "x": { "$value": "0.5rem", "$type": "dimension" },
-          "y": { "$value": "0.5rem", "$type": "dimension" }
-        }
+        "height": { "$value": "1.75rem", "$type": "dimension" },
+        "padding-x": { "$value": "0.5rem", "$type": "dimension" }
       },
-    "small": {
-      "fontSize": { "$value": "0.75rem", "$type": "dimension" },
-      "height": { "$value": "2rem", "$type": "dimension" },
-      "padding-x": { "$value": "0.75rem", "$type": "dimension" }
-    },
-    "medium": {
-      "fontSize": { "$value": "0.875rem", "$type": "dimension" },
-      "height": { "$value": "2.625rem", "$type": "dimension" },
-      "padding-x": { "$value": "1rem", "$type": "dimension" }
-    },
-    "large": {
-      "fontSize": { "$value": "1rem", "$type": "dimension" },
-      "height": { "$value": "3rem", "$type": "dimension" },
-      "padding-x": { "$value": "1.25rem", "$type": "dimension" }
-    }
+      "sm": {
+        "font-size": { "$value": "0.75rem", "$type": "dimension" },
+        "height": { "$value": "2rem", "$type": "dimension" },
+        "padding-x": { "$value": "0.75rem", "$type": "dimension" }
+      },
+      "md": {
+        "font-size": { "$value": "0.875rem", "$type": "dimension" },
+        "height": { "$value": "2.625rem", "$type": "dimension" },
+        "padding-x": { "$value": "1rem", "$type": "dimension" }
+      },
+      "lg": {
+        "font-size": { "$value": "1rem", "$type": "dimension" },
+        "height": { "$value": "3rem", "$type": "dimension" },
+        "padding-x": { "$value": "1.25rem", "$type": "dimension" }
+      }
     }
   }
 }

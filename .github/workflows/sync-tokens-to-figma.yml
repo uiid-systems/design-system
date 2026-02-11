@@ -1,0 +1,60 @@
+name: Sync Tokens to Figma
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/tokens/src/json/**/*.tokens.json"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview changes without syncing"
+        required: false
+        default: "false"
+        type: boolean
+
+jobs:
+  sync:
+    name: Sync Design Tokens
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: packages/tokens
+
+      - name: Generate color scales
+        run: npm run build:generate
+        working-directory: packages/tokens
+
+      - name: Preview token sync
+        if: github.event.inputs.dry_run == 'true'
+        run: npm run figma:preview
+        working-directory: packages/tokens
+
+      - name: Sync tokens to Figma
+        if: github.event.inputs.dry_run != 'true'
+        run: npm run figma:sync
+        working-directory: packages/tokens
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+
+      - name: Summary
+        run: |
+          echo "## Token Sync Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Tokens have been synced to Figma." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

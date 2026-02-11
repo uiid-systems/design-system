@@ -1,61 +1,58 @@
 {
   "$description": "UIID Design System - Primitive Typography Tokens",
-  "typography": {
-    "text": {
-      "-1": {
-        "size": { "$value": "0.75rem", "$type": "dimension" },
-        "lineHeight": { "$value": "150%", "$type": "dimension" },
-        "weight": { "$value": "400", "$type": "fontWeight" }
-      },
-      "0": {
-        "size": { "$value": "0.875rem", "$type": "dimension" },
-        "lineHeight": { "$value": "150%", "$type": "dimension" },
-        "weight": { "$value": "400", "$type": "fontWeight" }
-      },
-      "1": {
-        "size": { "$value": "1rem", "$type": "dimension" },
-        "lineHeight": { "$value": "150%", "$type": "dimension" },
-        "weight": { "$value": "400", "$type": "fontWeight" }
-      },
-      "2": {
-        "size": { "$value": "1.25rem", "$type": "dimension" },
-        "lineHeight": { "$value": "140%", "$type": "dimension" },
-        "weight": { "$value": "400", "$type": "fontWeight" }
-      },
-      "3": {
-        "size": { "$value": "1.5rem", "$type": "dimension" },
-        "lineHeight": { "$value": "140%", "$type": "dimension" },
-        "weight": { "$value": "500", "$type": "fontWeight" }
-      },
-      "4": {
-        "size": { "$value": "1.875rem", "$type": "dimension" },
-        "lineHeight": { "$value": "140%", "$type": "dimension" },
-        "weight": { "$value": "600", "$type": "fontWeight" }
-      },
-      "5": {
-        "size": { "$value": "2.25rem", "$type": "dimension" },
-        "lineHeight": { "$value": "130%", "$type": "dimension" },
-        "weight": { "$value": "600", "$type": "fontWeight" }
-      },
-      "6": {
-        "size": { "$value": "3rem", "$type": "dimension" },
-        "lineHeight": { "$value": "120%", "$type": "dimension" },
-        "weight": { "$value": "600", "$type": "fontWeight" }
-      }
+  "$schema": "../../../dtcg.schema.json",
+  "text": {
+    "-1": {
+      "font-size": { "$value": "0.75rem", "$type": "dimension" },
+      "line-height": { "$value": "150%", "$type": "dimension" },
+      "font-weight": { "$value": 400, "$type": "fontWeight" }
+    },
+    "0": {
+      "font-size": { "$value": "0.875rem", "$type": "dimension" },
+      "line-height": { "$value": "150%", "$type": "dimension" },
+      "font-weight": { "$value": 400, "$type": "fontWeight" }
+    },
+    "1": {
+      "font-size": { "$value": "1rem", "$type": "dimension" },
+      "line-height": { "$value": "150%", "$type": "dimension" },
+      "font-weight": { "$value": 400, "$type": "fontWeight" }
+    },
+    "2": {
+      "font-size": { "$value": "1.25rem", "$type": "dimension" },
+      "line-height": { "$value": "140%", "$type": "dimension" },
+      "font-weight": { "$value": 400, "$type": "fontWeight" }
+    },
+    "3": {
+      "font-size": { "$value": "1.5rem", "$type": "dimension" },
+      "line-height": { "$value": "140%", "$type": "dimension" },
+      "font-weight": { "$value": 500, "$type": "fontWeight" }
+    },
+    "4": {
+      "font-size": { "$value": "1.875rem", "$type": "dimension" },
+      "line-height": { "$value": "140%", "$type": "dimension" },
+      "font-weight": { "$value": 600, "$type": "fontWeight" }
+    },
+    "5": {
+      "font-size": { "$value": "2.25rem", "$type": "dimension" },
+      "line-height": { "$value": "130%", "$type": "dimension" },
+      "font-weight": { "$value": 600, "$type": "fontWeight" }
+    },
+    "6": {
+      "font-size": { "$value": "3rem", "$type": "dimension" },
+      "line-height": { "$value": "120%", "$type": "dimension" },
+      "font-weight": { "$value": 600, "$type": "fontWeight" }
     }
   },
   "font": {
+    "$type": "fontFamily",
     "mono": {
-      "$value": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace",
-      "$type": "string"
+      "$value": ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", "monospace"]
     },
     "serif": {
-      "$value": "ui-serif, Georgia, Cambria, \"Times New Roman\", Times, serif;",
-      "$type": "string"
+      "$value": ["ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"]
     },
     "sans": {
-      "$value": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
-      "$type": "string"
+      "$value": ["ui-sans-serif", "system-ui", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
     }
   }
 }

@@ -1,17 +1,16 @@
 {
   "$description": "UIID Design System - Table Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "table": {
     "min-width": { "$value": "48rem", "$type": "dimension" },
     "head": {
-      "background-color": { "$value": "{shade.accent}", "$type": "color" },
-      "color": { "$value": "{shade.foreground}", "$type": "color" }
+      "bg": { "$value": "{shade.accent}", "$type": "color" },
+      "fg": { "$value": "{shade.foreground}", "$type": "color" }
     },
     "cell": {
       "min-height": { "$value": "3rem", "$type": "dimension" },
-      "padding": {
-        "x": { "$value": "0.75rem", "$type": "dimension" },
-        "y": { "$value": "0.5rem", "$type": "dimension" }
-      }
+      "padding-x": { "$value": "0.75rem", "$type": "dimension" },
+      "padding-y": { "$value": "0.5rem", "$type": "dimension" }
     }
   }
 }

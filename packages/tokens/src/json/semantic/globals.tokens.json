@@ -1,31 +1,36 @@
 {
-  "$description": "UIID Design System - Primitive Globals Tokens",
+  "$description": "UIID Design System - Global Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "globals": {
     "header": {
       "height": { "$value": "3.5rem", "$type": "dimension" }
     },
     "transition": {
-      "timing": { "$value": "125ms", "$type": "duration" }
+      "duration": { "$value": "125ms", "$type": "duration" }
     },
     "transform": {
       "origin": { "$value": "center", "$type": "string" },
-      "scale": {
-        "down": { "$value": "0.9", "$type": "number" },
-        "up": { "$value": "1.1", "$type": "number" }
-      }
+      "scale-down": { "$value": 0.9, "$type": "number" },
+      "scale-up": { "$value": 1.1, "$type": "number" }
     },
-    "box-shadow": {
-      "$value": "0 0 10px rgba(0, 0, 0, 0.075)",
+    "shadow": {
+      "$value": {
+        "color": "#00000013",
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "10px",
+        "spread": "0px"
+      },
       "$type": "shadow"
     },
     "disabled": {
-      "opacity": { "$value": "0.5", "$type": "number" }
+      "opacity": { "$value": 0.5, "$type": "number" }
     },
     "icon": {
       "size": { "$value": "0.875rem", "$type": "dimension" }
     },
     "z-index": {
-      "modal": { "$value": "3", "$type": "number" }
+      "modal": { "$value": 3, "$type": "number" }
     },
     "border": {
       "color": { "$value": "{shade.accent}", "$type": "color" },
