@@ -1,23 +1,15 @@
 {
   "$description": "UIID Design System - Card Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "card": {
-    "icon": {
-      "size": { "$value": "1rem", "$type": "dimension" }
-    },
-    "scale": {
-      "up": { "$value": "1.02", "$type": "number" },
-      "down": { "$value": "0.99", "$type": "number" }
-    },
+    "icon-size": { "$value": "1rem", "$type": "dimension" },
+    "scale-up": { "$value": 1.02, "$type": "number" },
+    "scale-down": { "$value": 0.99, "$type": "number" },
     "size": {
-      "small": {
-        "max-width": { "$value": "24rem", "$type": "dimension" }
-      },
-      "medium": {
-        "max-width": { "$value": "32rem", "$type": "dimension" }
-      },
-      "large": {
-        "max-width": { "$value": "48rem", "$type": "dimension" }
-      }
+      "$type": "dimension",
+      "sm": { "$value": "24rem" },
+      "md": { "$value": "32rem" },
+      "lg": { "$value": "48rem" }
     }
   }
 }

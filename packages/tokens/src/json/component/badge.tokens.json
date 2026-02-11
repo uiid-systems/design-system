@@ -1,31 +1,24 @@
 {
   "$description": "UIID Design System - Badge Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "badge": {
     "padding": {
       "x": { "$value": "0.5rem", "$type": "dimension" },
       "y": { "$value": "0.25rem", "$type": "dimension" }
     },
-    "border": {
-      "radius": { "$value": "999999px", "$type": "dimension" }
-    },
+    "border-radius": { "$value": "999999px", "$type": "dimension" },
     "size": {
       "sm": {
-        "padding": {
-          "x": { "$value": "0.25rem", "$type": "dimension" },
-          "y": { "$value": "0.125rem", "$type": "dimension" }
-        }
+        "padding-x": { "$value": "0.25rem", "$type": "dimension" },
+        "padding-y": { "$value": "0.125rem", "$type": "dimension" }
       },
       "md": {
-        "padding": {
-          "x": { "$value": "0.5rem", "$type": "dimension" },
-          "y": { "$value": "0.25rem", "$type": "dimension" }
-        }
+        "padding-x": { "$value": "0.5rem", "$type": "dimension" },
+        "padding-y": { "$value": "0.25rem", "$type": "dimension" }
       },
       "lg": {
-        "padding": {
-          "x": { "$value": "0.75rem", "$type": "dimension" },
-          "y": { "$value": "0.375rem", "$type": "dimension" }
-        }
+        "padding-x": { "$value": "0.75rem", "$type": "dimension" },
+        "padding-y": { "$value": "0.375rem", "$type": "dimension" }
       }
     }
   }

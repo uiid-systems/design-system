@@ -1,6 +1,7 @@
 {
   "$description": "UIID Design System - Popover Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "popover": {
-    "maxWidth": { "$value": "40rem", "$type": "dimension" }
+    "max-width": { "$value": "40rem", "$type": "dimension" }
   }
 }

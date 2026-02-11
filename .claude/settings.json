@@ -2,6 +2,6 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": false
+    "frontend-design@claude-plugins-official": true
   }
 }

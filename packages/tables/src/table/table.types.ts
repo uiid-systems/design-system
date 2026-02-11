@@ -1,11 +1,11 @@
 import type { MenuItemType } from "@uiid/interactive";
 import type { Icon } from "@uiid/icons";
 
-export type TableActionsProps = {
+export type TableActionsProps<T = Record<string, unknown>> = {
   icon: Icon;
   tooltip: string;
-  onClick?: () => void;
-  wrapper?: (button: React.ReactElement) => React.ReactElement;
+  onClick?: (item: T) => void;
+  wrapper?: (button: React.ReactElement, item: T) => React.ReactElement;
 };
 
 export type TableCellDropdownProps = {
@@ -26,8 +26,8 @@ export type TableProps<
   items: T[];
   columns?: string[];
   actions?: {
-    primary?: TableActionsProps[];
+    primary?: TableActionsProps<T>[];
     secondary?: TableCellDropdownProps;
   };
-  formatHeader?: (key: keyof T) => React.ReactNode;
+  formatHeader?: (key: keyof T | string) => React.ReactNode;
 };

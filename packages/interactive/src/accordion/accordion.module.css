@@ -45,3 +45,9 @@
   padding-block: var(--accordion-panel-padding-y);
   padding-inline: var(--accordion-panel-padding-x);
 }
+
+.toggle-fullwidth {
+  width: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
+}

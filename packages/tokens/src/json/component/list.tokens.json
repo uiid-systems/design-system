@@ -1,20 +1,15 @@
 {
   "$description": "UIID Design System - List Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "list": {
-    "padding": {
-      "x": { "$value": "0.5rem", "$type": "dimension" },
-      "y": { "$value": "0.5rem", "$type": "dimension" }
-    },
+    "padding-x": { "$value": "0.5rem", "$type": "dimension" },
+    "padding-y": { "$value": "0.5rem", "$type": "dimension" },
     "group": {
-      "category": {
-        "minHeight": { "$value": "1.5rem", "$type": "dimension" }
-      }
+      "category-min-height": { "$value": "1.5rem", "$type": "dimension" }
     },
     "item": {
-      "padding": {
-        "x": { "$value": "0.5rem", "$type": "dimension" },
-        "y": { "$value": "0.5rem", "$type": "dimension" }
-      }
+      "padding-x": { "$value": "0.5rem", "$type": "dimension" },
+      "padding-y": { "$value": "0.5rem", "$type": "dimension" }
     }
   }
 }

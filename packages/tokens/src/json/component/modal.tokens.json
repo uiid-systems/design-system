@@ -1,11 +1,13 @@
 {
   "$description": "UIID Design System - Modal Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
   "modal": {
     "size": {
-      "sm": { "$value": "24rem", "$type": "dimension" },
-      "md": { "$value": "40rem", "$type": "dimension" },
-      "lg": { "$value": "48rem", "$type": "dimension" },
-      "xl": { "$value": "56rem", "$type": "dimension" }
+      "$type": "dimension",
+      "sm": { "$value": "24rem" },
+      "md": { "$value": "40rem" },
+      "lg": { "$value": "48rem" },
+      "xl": { "$value": "56rem" }
     }
   }
 }
