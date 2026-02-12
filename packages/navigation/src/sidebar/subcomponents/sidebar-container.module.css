@@ -34,7 +34,7 @@
 
   &:is([data-variant="floating"], [data-variant="inset"]) {
     [data-collapsible="icon"] & {
-      width: calc(var(--sidebar-width-icon) + var(--spacing-scale) * 4 + 2px);
+      width: calc(var(--sidebar-width-icon) + var(--spacing-unit) * 4 + 2px);
     }
   }
 }

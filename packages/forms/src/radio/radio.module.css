@@ -2,7 +2,7 @@
   aspect-ratio: 1;
   border-radius: 100%;
   outline: 0;
-  background-color: var(--forms-background);
+  background-color: var(--forms-bg);
   border: var(--globals-border-width) solid var(--forms-border-color);
 
   &[data-unchecked] {

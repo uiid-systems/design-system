@@ -30,13 +30,13 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
       const styleProp = styleProps[key as keyof typeof styleProps];
       if (styleProp && value != null) {
         if (
-          "scale" in styleProp &&
-          styleProp.scale &&
+          "unit" in styleProp &&
+          styleProp.unit &&
           typeof value === "number"
         ) {
-          const unit =
-            "unit" in styleProp.scale ? styleProp.scale.unit || "" : "";
-          const calcValue = `calc(${value} * var(${styleProp.scale.variable}))${unit}`;
+          const suffix =
+            "suffix" in styleProp.unit ? styleProp.unit.suffix || "" : "";
+          const calcValue = `calc(${value} * var(${styleProp.unit.variable}))${suffix}`;
           (styleObj as Record<string, unknown>)[styleProp.property] = calcValue;
         } else if (typeof value === "number") {
           (styleObj as Record<string, unknown>)[styleProp.property] = `${value}px`;

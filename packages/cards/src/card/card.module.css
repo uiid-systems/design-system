@@ -10,10 +10,10 @@
   box-shadow: var(--globals-box-shadow);
   transition: var(--globals-transition-timing);
 
-  font-size: var(--typography-text-0-size);
-  line-height: var(--typography-text-0-lineHeight);
-  font-weight: var(--typography-text-0-weight);
-  letter-spacing: var(--typography-text-0-letterSpacing);
+  font-size: var(--text-0-font-size);
+  line-height: var(--text-0-line-height);
+  font-weight: var(--text-0-weight);
+  letter-spacing: var(--text-0-letterSpacing);
 
   &:where([href]) {
     text-decoration: none;

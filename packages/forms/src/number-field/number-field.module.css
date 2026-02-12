@@ -39,7 +39,7 @@
   padding: 0;
   border: var(--globals-border-width) solid var(--forms-border-color);
   border-radius: var(--globals-border-radius);
-  background-color: var(--forms-background);
+  background-color: var(--forms-bg);
   background-clip: padding-box;
   color: var(--shade-muted);
   user-select: none;
@@ -50,11 +50,11 @@
   }
 
   &:hover {
-    background-color: var(--forms-backgroundHover);
+    background-color: var(--forms-bg-hover);
   }
 
   &:active {
-    background-color: var(--forms-backgroundActive);
+    background-color: var(--forms-bgActive);
   }
 
   &:disabled {

@@ -1,11 +1,11 @@
 .input {
-  background-color: var(--forms-background);
+  background-color: var(--forms-bg);
   border-width: var(--globals-border-width);
   border-style: solid;
   border-color: var(--forms-border-color);
   border-radius: var(--globals-border-radius);
   color: var(--shade-foreground);
-  font-size: var(--forms-fontSize);
+  font-size: var(--forms-font-size);
   outline: var(--globals-outline-width) var(--globals-outline-color);
   outline-offset: var(--globals-outline-offset);
   padding: var(--forms-padding-y) var(--forms-padding-x);
@@ -14,12 +14,12 @@
 
   /** Hover */
   &:hover {
-    background-color: var(--forms-backgroundHover);
+    background-color: var(--forms-bg-hover);
   }
 
   /** Focus */
   &:focus {
-    background-color: var(--forms-backgroundFocus);
+    background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }
 
@@ -45,19 +45,19 @@
 }
 
 .size-small {
-  font-size: var(--forms-size-small-fontSize);
-  height: var(--forms-size-small-height);
-  padding-inline: var(--forms-size-small-padding-x);
+  font-size: var(--forms-size-sm-font-size);
+  height: var(--forms-size-sm-height);
+  padding-inline: var(--forms-size-sm-padding-x);
 }
 .size-medium {
-  font-size: var(--forms-size-medium-fontSize);
-  height: var(--forms-size-medium-height);
-  padding-inline: var(--forms-size-medium-padding-x);
+  font-size: var(--forms-size-md-font-size);
+  height: var(--forms-size-md-height);
+  padding-inline: var(--forms-size-md-padding-x);
 }
 .size-large {
-  font-size: var(--forms-size-large-fontSize);
-  height: var(--forms-size-large-height);
-  padding-inline: var(--forms-size-large-padding-x);
+  font-size: var(--forms-size-lg-font-size);
+  height: var(--forms-size-lg-height);
+  padding-inline: var(--forms-size-lg-padding-x);
 }
 
 .toggle-fullwidth {
@@ -79,6 +79,6 @@
   }
 
   &:hover {
-    background-color: var(--forms-backgroundHover);
+    background-color: var(--forms-bg-hover);
   }
 }

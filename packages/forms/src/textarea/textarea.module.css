@@ -1,12 +1,12 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
-  background-color: var(--forms-background);
+  background-color: var(--forms-bg);
   border: var(--globals-border-width) solid var(--forms-border-color);
   border-radius: var(--globals-border-radius);
   color: var(--shade-foreground);
   font-family: inherit;
-  font-size: var(--forms-fontSize);
+  font-size: var(--forms-font-size);
   outline: var(--globals-outline-width) var(--globals-outline-color);
   outline-offset: var(--globals-outline-offset);
   padding: var(--forms-padding-y) var(--forms-padding-x);
@@ -16,12 +16,12 @@
 
   /** Hover */
   &:hover {
-    background-color: var(--forms-backgroundHover);
+    background-color: var(--forms-bg-hover);
   }
 
   /** Focus */
   &:focus {
-    background-color: var(--forms-backgroundFocus);
+    background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }
 
@@ -40,15 +40,15 @@
 
 /* Size variants */
 .size-small {
-  font-size: var(--forms-size-small-fontSize);
+  font-size: var(--forms-size-small-font-size);
   min-height: 4rem;
 }
 .size-medium {
-  font-size: var(--forms-size-medium-fontSize);
+  font-size: var(--forms-size-medium-font-size);
   min-height: 5rem;
 }
 .size-large {
-  font-size: var(--forms-size-large-fontSize);
+  font-size: var(--forms-size-large-font-size);
   min-height: 6rem;
 }
 
@@ -86,6 +86,6 @@
   }
 
   &:hover {
-    background-color: var(--forms-backgroundHover);
+    background-color: var(--forms-bg-hover);
   }
 }

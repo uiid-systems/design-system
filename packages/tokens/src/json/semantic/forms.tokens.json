@@ -4,19 +4,7 @@
   "forms": {
     "bg": { "$value": "{shade.accent}", "$type": "color" },
     "bg-hover": { "$value": "{shade.surface}", "$type": "color" },
-    "bg-focus": {
-      "$value": "#1a1a19",
-      "$type": "color",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "srgb",
-          "color1": "{shade.background}",
-          "color2": "{shade.foreground}",
-          "ratio": 0.10
-        }
-      }
-    },
+    "bg-focus": { "$value": "{shade.accent}", "$type": "color" },
     "padding": {
       "x": { "$value": "0.75rem", "$type": "dimension" },
       "y": { "$value": "0.75rem", "$type": "dimension" }

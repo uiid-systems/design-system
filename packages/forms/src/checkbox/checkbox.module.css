@@ -17,9 +17,9 @@
 
   &[data-unchecked] {
     border: 1px solid var(--forms-border-color);
-    background-color: var(--forms-background);
+    background-color: var(--forms-bg);
     &:hover {
-      background-color: var(--forms-backgroundHover);
+      background-color: var(--forms-bg-hover);
     }
   }
 
@@ -85,7 +85,7 @@
   }
 
   &:has([data-checked]) {
-    background-color: var(--forms-background);
+    background-color: var(--forms-bg);
   }
 }
 
