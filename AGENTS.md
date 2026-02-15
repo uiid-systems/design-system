@@ -93,13 +93,14 @@ export default createViteConfig({
 
 The `scripts/` directory contains **custom build scripts** specific to this project:
 
-| Script                                | Purpose                              |
-| ------------------------------------- | ------------------------------------ |
-| `generate-tokens.cjs`                 | Converts JSON design tokens to CSS   |
-| `postcss-layer-wrapper.cjs`           | PostCSS plugin for CSS layer scoping |
-| `vite-plugin-preserve-directives.mjs` | Vite plugin to preserve "use client" |
-| `build-changelog.mjs`                 | Generates changelog from changesets  |
-| `auto-changeset.mjs`                  | Automates changeset creation         |
+| Script                                | Purpose                                |
+| ------------------------------------- | -------------------------------------- |
+| `generate-tokens.cjs`                 | Converts JSON design tokens to CSS     |
+| `postcss-layer-wrapper.cjs`           | PostCSS plugin for CSS layer scoping   |
+| `vite-plugin-preserve-directives.mjs` | Vite plugin to preserve "use client"   |
+| `build-changelog.mjs`                 | Generates changelog from changesets    |
+| `auto-changeset.mjs`                  | Automates changeset creation           |
+| `generate-registry.ts`                | Shows registry coverage and gaps       |
 
 **Note:** Standard config files (vitest, tsconfig, eslint) belong at the root, not in scripts.
 
@@ -662,6 +663,90 @@ export { Component } from "./component/component";
 
 // Types
 export type { ComponentProps } from "./component/component.types";
+```
+
+## Registry (`@uiid/registry`)
+
+The registry package provides component metadata for AI-powered tools (playground, docs). Each registered component has:
+
+- **Zod schema** for props validation
+- **ComponentEntry** with metadata (name, package, category, description, defaults)
+- **Previews** - JSON tree structures for demo renders
+
+### Registry Structure
+
+```
+packages/registry/src/
+├── categories.ts       # Category definitions
+├── shared.ts           # Shared Zod schemas (Size, Tone, etc.)
+├── types.ts            # TypeScript types
+├── manifest.ts         # Central registry export
+├── components/         # Component entries
+│   ├── index.ts        # Barrel export
+│   ├── button/
+│   │   ├── index.ts    # Schema + ComponentEntry
+│   │   └── previews.ts # Preview configurations
+│   └── ...
+└── utils/              # Documentation utilities
+```
+
+### Adding a Component to the Registry
+
+When adding a component to the registry, use the template at:
+
+**`templates/REGISTRY_ENTRY.md`**
+
+**Quick steps:**
+
+1. Create `packages/registry/src/components/{component-name}/index.ts` with:
+   - Zod schema for props
+   - `ComponentEntry` object with metadata
+
+2. Optionally create `previews.ts` for demo configurations
+
+3. Export from `packages/registry/src/components/index.ts`
+
+4. Import and add to `packages/registry/src/manifest.ts`
+
+5. Build: `pnpm build --filter=@uiid/registry`
+
+### ComponentEntry Fields
+
+| Field         | Required | Description                                        |
+| ------------- | -------- | -------------------------------------------------- |
+| `name`        | Yes      | Component display name (e.g., "Button")            |
+| `package`     | Yes      | Source package (e.g., "@uiid/buttons")             |
+| `hasChildren` | Yes      | Whether component accepts children                 |
+| `propsSchema` | Yes      | Zod schema for props validation                    |
+| `description` | No       | Brief description for AI context                   |
+| `category`    | No       | Category key (layout, forms, overlays, etc.)       |
+| `defaults`    | No       | Default prop values                                |
+| `previews`    | No       | Preview configurations for docs/playground         |
+| `usage`       | No       | LLM-oriented usage guidance                        |
+
+### Components with Items
+
+For components with an `items` prop (Select, RadioGroup, CheckboxGroup), define an item schema:
+
+```ts
+const ItemSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  disabled: z.boolean().optional(),
+});
+
+const ComponentPropsSchema = z.object({
+  items: z.array(ItemSchema).optional(),
+  // ...
+});
+```
+
+### Checking Registry Coverage
+
+Run the generator script to see which components are missing:
+
+```bash
+npx tsx scripts/generate-registry.ts
 ```
 
 ## Dependencies

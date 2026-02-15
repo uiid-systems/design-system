@@ -13,8 +13,11 @@ import { ToggleButtonEntry } from "./components/toggle-button";
 
 // Form components
 import { CheckboxEntry } from "./components/checkbox";
+import { CheckboxGroupEntry } from "./components/checkbox-group";
 import { FormEntry } from "./components/form";
 import { InputEntry } from "./components/input";
+import { RadioEntry } from "./components/radio";
+import { RadioGroupEntry } from "./components/radio-group";
 import { SelectEntry } from "./components/select";
 import { SwitchEntry } from "./components/switch";
 import { TextareaEntry } from "./components/textarea";
@@ -65,6 +68,9 @@ export const registry: Registry = {
   Input: InputEntry,
   Textarea: TextareaEntry,
   Checkbox: CheckboxEntry,
+  CheckboxGroup: CheckboxGroupEntry,
+  Radio: RadioEntry,
+  RadioGroup: RadioGroupEntry,
   Select: SelectEntry,
   Switch: SwitchEntry,
 
