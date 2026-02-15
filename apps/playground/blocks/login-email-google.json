@@ -1,0 +1,100 @@
+{
+  "name": "Login with email and Google",
+  "slug": "login-email-google",
+  "description": "Simple email login form with a Google SSO option, an OR WITH separator, and a terms of service footer.",
+  "version": 1,
+  "tags": [],
+  "tree": {
+    "root": "login-form",
+    "elements": {
+      "login-form": {
+        "key": "login-form",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "ax": "stretch",
+          "maxw": 400
+        },
+        "children": [
+          "heading",
+          "email-field",
+          "signin-button",
+          "divider",
+          "google-button",
+          "terms-text"
+        ]
+      },
+      "heading": {
+        "key": "heading",
+        "type": "Text",
+        "props": {
+          "children": "Log in or create account",
+          "size": 4,
+          "weight": "bold",
+          "align": "center"
+        },
+        "parentKey": "login-form"
+      },
+      "email-field": {
+        "key": "email-field",
+        "type": "Input",
+        "props": {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "john@company.com",
+          "required": true
+        },
+        "parentKey": "login-form"
+      },
+      "signin-button": {
+        "key": "signin-button",
+        "type": "Button",
+        "props": {
+          "children": "Sign in",
+          "fullwidth": true
+        },
+        "parentKey": "login-form"
+      },
+      "divider": {
+        "key": "divider",
+        "type": "Separator",
+        "props": {
+          "children": "OR WITH"
+        },
+        "parentKey": "login-form"
+      },
+      "google-button": {
+        "key": "google-button",
+        "type": "Button",
+        "props": {
+          "children": "Sign in with Google",
+          "variant": "subtle",
+          "fullwidth": true
+        },
+        "children": ["google-icon"],
+        "parentKey": "login-form"
+      },
+      "google-icon": {
+        "key": "google-icon",
+        "type": "SimpleIcon",
+        "props": {
+          "name": "SiGoogle"
+        },
+        "parentKey": "google-button"
+      },
+      "terms-text": {
+        "key": "terms-text",
+        "type": "Text",
+        "props": {
+          "children": "By signing in, you agree to our terms of service and privacy policy.",
+          "size": -1,
+          "shade": "muted",
+          "align": "center"
+        },
+        "parentKey": "login-form"
+      }
+    }
+  },
+  "createdAt": "2026-02-15T00:00:00.000Z",
+  "updatedAt": "2026-02-15T00:00:00.000Z"
+}

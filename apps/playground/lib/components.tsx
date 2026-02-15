@@ -29,6 +29,7 @@ import {
 } from "@uiid/forms";
 import * as Icons from "@uiid/icons";
 import type { Icon as LucideIcon } from "@uiid/icons";
+import * as SimpleIcons from "@icons-pack/react-simple-icons";
 import { Alert, Avatar, Badge, Kbd, Progress, Status, Timeline } from "@uiid/indicators";
 import { Accordion } from "@uiid/interactive";
 import { Breadcrumbs } from "@uiid/navigation";
@@ -72,7 +73,8 @@ export const registry: ComponentRegistry = {
           }
         }}
       >
-        {children || props.children}
+        {children}
+        {props.children}
       </Button>
     );
   },
@@ -274,6 +276,14 @@ export const registry: ComponentRegistry = {
   Icon: ({ element }) => {
     const { name, ...props } = element.props;
     const IconComponent = Icons[name as keyof typeof Icons] as LucideIcon | undefined;
+    if (!IconComponent) return null;
+    return <IconComponent data-element-key={element.key} {...props} />;
+  },
+
+  // Simple Icon component (for brand icons like Google, GitHub, Apple, etc.)
+  SimpleIcon: ({ element }) => {
+    const { name, ...props } = element.props;
+    const IconComponent = SimpleIcons[name as keyof typeof SimpleIcons];
     if (!IconComponent) return null;
     return <IconComponent data-element-key={element.key} {...props} />;
   },

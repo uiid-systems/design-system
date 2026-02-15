@@ -100,7 +100,7 @@ const meta = {
         <Text size={1} weight="bold">
           With children (vertical)
         </Text>
-        <Group gap={2} style={{ height: 120 }}>
+        <Group gap={2} ay="center" ax="center" fullwidth minh={240}>
           <div
             style={{
               background: "tomato",
