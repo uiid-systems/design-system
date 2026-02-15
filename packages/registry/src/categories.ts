@@ -13,6 +13,7 @@ export const categories: CategoryMeta[] = [
   { key: "indicators", label: "Indicators" },
   { key: "interactive", label: "Interactive" },
   { key: "overlays", label: "Overlays" },
+  { key: "navigation", label: "Navigation" },
 ];
 
 export const categoryKeys = categories.map((c) => c.key);

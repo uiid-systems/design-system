@@ -30,3 +30,13 @@
   height: 100%;
   height: -webkit-fill-available;
 }
+
+.line {
+  flex: 1;
+}
+.line-horizontal {
+  height: 1px;
+}
+.line-vertical {
+  width: 1px;
+}

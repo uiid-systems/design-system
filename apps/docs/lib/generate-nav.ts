@@ -75,7 +75,7 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
       category: getCategoryLabel(category),
       collapsible: true,
       items: components.map((component) => ({
-        label: component.name,
+        label: component.name.replace(/(?<!^)([A-Z])/g, " $1"),
         value: urls.component(category, toSlug(component.name)),
         href: urls.component(category, toSlug(component.name)),
       })),

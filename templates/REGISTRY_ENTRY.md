@@ -136,10 +136,66 @@ export const registry: Registry = {
 };
 ```
 
-### 3. Build and verify
+### 3. Add to app component maps (for preview rendering)
+
+If you created previews, add the component to the renderer maps in both apps:
+
+**`apps/docs/components/tree-preview.tsx`:**
+
+```ts
+// Import
+import { Component } from "@uiid/{package}";
+
+// Add to componentMap (use `as unknown as` for components with required props like `items`)
+const componentMap = {
+  // ...existing entries
+  Component: Component as React.ComponentType<Record<string, unknown>>,
+  // Or for components with required props:
+  Component: Component as unknown as React.ComponentType<Record<string, unknown>>,
+};
+```
+
+**`apps/playground/lib/components.tsx`:**
+
+```ts
+// Import
+import { Component } from "@uiid/{package}";
+
+// Add to registry
+export const registry: ComponentRegistry = {
+  // ...existing entries
+  Component: ({ element, children }) => (
+    <Component data-element-key={element.key} {...element.props}>
+      {children}
+    </Component>
+  ),
+};
+```
+
+For components with actions (form controls), add `onAction` handling:
+
+```ts
+Component: ({ element, onAction }) => {
+  const { action, ...props } = element.props;
+  return (
+    <Component
+      data-element-key={element.key}
+      {...props}
+      onValueChange={(value) => {
+        if (action && onAction) {
+          onAction({ ...action, params: { value } });
+        }
+      }}
+    />
+  );
+},
+```
+
+### 4. Build and verify
 
 ```bash
 pnpm build --filter=@uiid/registry
+pnpm build --filter=docs --filter=playground
 ```
 
 ## Checklist
@@ -152,4 +208,6 @@ pnpm build --filter=@uiid/registry
 - [ ] At least one preview exists (for docs/playground)
 - [ ] Exported from `components/index.ts`
 - [ ] Added to `manifest.ts`
-- [ ] Package builds successfully
+- [ ] Added to `apps/docs/components/tree-preview.tsx` componentMap
+- [ ] Added to `apps/playground/lib/components.tsx` registry
+- [ ] All packages build successfully

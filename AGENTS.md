@@ -708,7 +708,11 @@ When adding a component to the registry, use the template at:
 
 4. Import and add to `packages/registry/src/manifest.ts`
 
-5. Build: `pnpm build --filter=@uiid/registry`
+5. **Add to app component maps** (required for preview rendering):
+   - `apps/docs/components/tree-preview.tsx` - add to `componentMap`
+   - `apps/playground/lib/components.tsx` - add to `registry`
+
+6. Build: `pnpm build --filter=@uiid/registry && pnpm build --filter=docs --filter=playground`
 
 ### ComponentEntry Fields
 

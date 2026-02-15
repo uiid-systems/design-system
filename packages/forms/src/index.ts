@@ -46,6 +46,10 @@ export * from "./select/select.constants";
 export * from "./select-multiple/select-multiple";
 export * from "./select-multiple/select-multiple.types";
 
+export * from "./slider/slider";
+export * from "./slider/slider.types";
+export * from "./slider/subcomponents";
+
 export * from "./switch/switch";
 export * from "./switch/switch.types";
 export * from "./switch/subcomponents";

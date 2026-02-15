@@ -252,37 +252,46 @@ Without `"slot": "footer"`, the Group would render inside Card's body. With it, 
 
 UIID components are **precomposed** — they handle their own internal structure. Use props for metadata, children for custom content only.
 
-| Component    | Use props for...                                   | Use children for... |
-| ------------ | -------------------------------------------------- | ------------------- |
-| Box          | N/A                                                | Content             |
-| Stack        | N/A                                                | Content             |
-| Group        | N/A                                                | Content             |
-| Layer        | N/A                                                | Content             |
-| Button       | N/A                                                | Content             |
-| ToggleButton | `icon`                                             | Content             |
-| Form         | N/A                                                | Content             |
-| Input        | `placeholder`, `label`, `description`              | N/A (no children)   |
-| Textarea     | `placeholder`, `label`, `description`              | N/A (no children)   |
-| Checkbox     | `label`, `description`                             | N/A (no children)   |
-| Select       | `placeholder`, `items`, `label`, `description`     | N/A (no children)   |
-| Switch       | `label`, `description`                             | N/A (no children)   |
-| Text         | N/A                                                | Content             |
-| Card         | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
-| Drawer       | `title`                                            | Custom body content |
-| Modal        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Popover      | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Sheet        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Tooltip      | N/A                                                | Content             |
-| Collapsible  | N/A                                                | Content             |
-| Alert        | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
-| Avatar       | `initials`, `name`, `description`                  | N/A (no children)   |
-| Badge        | N/A                                                | Content             |
-| Kbd          | N/A                                                | Content             |
-| Status       | N/A                                                | Content             |
-| Timeline     | `items`                                            | Custom composition  |
-| Icon         | `name`, `size`                                     | N/A (no children)   |
+| Component | Use props for... | Use children for... |
+| --- | --- | --- |
+| Box | N/A | Content |
+| Stack | N/A | Content |
+| Group | N/A | Content |
+| Layer | N/A | Content |
+| Separator | N/A | Content |
+| Button | N/A | Content |
+| ToggleButton | `icon` | Content |
+| Form | N/A | Content |
+| Input | `placeholder`, `label`, `description` | N/A (no children) |
+| NumberField | `placeholder`, `label`, `description` | N/A (no children) |
+| Textarea | `placeholder`, `label`, `description` | N/A (no children) |
+| Checkbox | `label`, `description` | N/A (no children) |
+| CheckboxGroup | `items`, `label`, `description` | N/A (no children) |
+| Radio | `label`, `description` | N/A (no children) |
+| RadioGroup | `items`, `label`, `description` | N/A (no children) |
+| Select | `placeholder`, `items`, `label`, `description` | N/A (no children) |
+| Slider | `label`, `description` | N/A (no children) |
+| Switch | `label`, `description` | N/A (no children) |
+| Text | N/A | Content |
+| Card | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
+| Accordion | `items` | N/A (no children) |
+| Collapsible | N/A | Content |
+| Drawer | `title` | Custom body content |
+| Modal | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Popover | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Sheet | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Tooltip | N/A | Content |
+| Alert | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
+| Avatar | `description` | N/A (no children) |
+| Badge | N/A | Content |
+| Kbd | N/A | Content |
+| Progress | N/A | N/A (no children) |
+| Status | N/A | Content |
+| Timeline | `items` | Content |
+| Breadcrumbs | `items` | N/A (no children) |
+| Icon | `name`, `size` | N/A (no children) |
 
-### Layout Components
+### Layout
 
 #### Box
 
@@ -294,7 +303,7 @@ Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `
 
 #### Stack
 
-Vertical flex layout (column). ax controls vertical alignment, ay controls horizontal
+A vertical layout component built on flexbox. Foundational building block for both complex and simple layouts.
 
 Use Stack for vertical layouts. Children flow top-to-bottom. ax controls vertical alignment, ay horizontal.
 
@@ -318,9 +327,9 @@ Positioned layer with offset support for overlays and positioned content
 
 Supports children.
 
-| Prop     | Type   | Description |
-| -------- | ------ | ----------- |
-| `offset` | object |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `offset` | object |  |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
@@ -328,10 +337,15 @@ Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `
 
 Visual divider line with horizontal or vertical orientation
 
-| Prop          | Type                                                                           | Description               |
-| ------------- | ------------------------------------------------------------------------------ | ------------------------- |
-| `orientation` | "horizontal" \| "vertical"                                                     | (default: `"horizontal"`) |
-| `shade`       | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |                           |
+Use without children for a simple line divider. Pass children (typically Text) to create a labeled divider like 'or continue with email'.
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `orientation` | "horizontal" \| "vertical" | (default: `"horizontal"`) |
+| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
 
 Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
@@ -345,18 +359,18 @@ Typography component with size scale, weight, color shades, and text decorations
 
 Supports children.
 
-| Prop            | Type                                                                           | Description |
-| --------------- | ------------------------------------------------------------------------------ | ----------- |
-| `children`      | string                                                                         |             |
-| `size`          | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8                                |             |
-| `weight`        | "thin" \| "light" \| "normal" \| "bold"                                        |             |
-| `shade`         | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |             |
-| `tone`          | "positive" \| "critical" \| "warning" \| "info"                                |             |
-| `align`         | "left" \| "center" \| "right" \| "justify"                                     |             |
-| `underline`     | boolean                                                                        |             |
-| `strikethrough` | boolean                                                                        |             |
-| `balance`       | boolean                                                                        |             |
-| `mono`          | boolean                                                                        |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 |  |
+| `weight` | "thin" \| "light" \| "normal" \| "bold" |  |
+| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `align` | "left" \| "center" \| "right" \| "justify" |  |
+| `underline` | boolean |  |
+| `strikethrough` | boolean |  |
+| `balance` | boolean |  |
+| `mono` | boolean |  |
 
 Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
@@ -366,27 +380,27 @@ Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
 #### Button
 
-Primary action button with multiple size, variant, and tone options
+Primary action button with multiple size, variant, and tone options.
 
 Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.
 
 Supports children.
 
-| Prop          | Type                                            | Description           |
-| ------------- | ----------------------------------------------- | --------------------- |
-| `children`    | string                                          |                       |
-| `size`        | "xsmall" \| "small" \| "medium" \| "large"      | (default: `"medium"`) |
-| `variant`     | "subtle" \| "inverted"                          |                       |
-| `tone`        | "positive" \| "critical" \| "warning" \| "info" |                       |
-| `disabled`    | boolean                                         |                       |
-| `loading`     | boolean                                         |                       |
-| `fullwidth`   | boolean                                         |                       |
-| `ghost`       | boolean                                         |                       |
-| `pill`        | boolean                                         |                       |
-| `square`      | boolean                                         |                       |
-| `interactive` | boolean                                         | (default: `true`)     |
-| `circle`      | boolean                                         |                       |
-| `tooltip`     | string                                          |                       |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `variant` | "subtle" \| "inverted" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `disabled` | boolean |  |
+| `loading` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
+| `pill` | boolean |  |
+| `square` | boolean |  |
+| `interactive` | boolean | (default: `true`) |
+| `circle` | boolean |  |
+| `tooltip` | string |  |
 
 #### ToggleButton
 
@@ -394,128 +408,25 @@ Toggle button with pressed/unpressed states and optional dynamic icon/text
 
 Supports children.
 
-| Prop             | Type                                            | Description           |
-| ---------------- | ----------------------------------------------- | --------------------- |
-| `children`       | string                                          |                       |
-| `size`           | "xsmall" \| "small" \| "medium" \| "large"      | (default: `"medium"`) |
-| `variant`        | "subtle" \| "inverted"                          |                       |
-| `tone`           | "positive" \| "critical" \| "warning" \| "info" |                       |
-| `disabled`       | boolean                                         |                       |
-| `loading`        | boolean                                         |                       |
-| `fullwidth`      | boolean                                         |                       |
-| `ghost`          | boolean                                         |                       |
-| `pill`           | boolean                                         |                       |
-| `square`         | boolean                                         |                       |
-| `interactive`    | boolean                                         |                       |
-| `circle`         | boolean                                         |                       |
-| `tooltip`        | string                                          |                       |
-| `pressed`        | boolean                                         |                       |
-| `defaultPressed` | boolean                                         |                       |
-| `icon`           | object                                          |                       |
-| `text`           | object                                          |                       |
-
----
-
-### Form Components
-
-#### Form
-
-Form container with built-in validation support. Fields with required/pattern attributes validate on submit.
-
-Supports children.
-
-| Prop        | Type    | Description    |
-| ----------- | ------- | -------------- |
-| `gap`       | number  | (default: `4`) |
-| `fullwidth` | boolean |                |
-
-#### Input
-
-Text input field with label and description support
-
-| Prop           | Type                           | Description           |
-| -------------- | ------------------------------ | --------------------- |
-| `value`        | string                         |                       |
-| `defaultValue` | string                         |                       |
-| `placeholder`  | string                         |                       |
-| `type`         | string                         |                       |
-| `size`         | "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `label`        | string                         |                       |
-| `description`  | string                         |                       |
-| `disabled`     | boolean                        |                       |
-| `required`     | boolean                        |                       |
-| `fullwidth`    | boolean                        |                       |
-| `ghost`        | boolean                        |                       |
-
-#### Textarea
-
-Multi-line text input with label and description support
-
-| Prop           | Type                                           | Description             |
-| -------------- | ---------------------------------------------- | ----------------------- |
-| `value`        | string                                         |                         |
-| `defaultValue` | string                                         |                         |
-| `placeholder`  | string                                         |                         |
-| `rows`         | number                                         | (default: `3`)          |
-| `resize`       | "none" \| "vertical" \| "horizontal" \| "both" | (default: `"vertical"`) |
-| `size`         | "small" \| "medium" \| "large"                 | (default: `"medium"`)   |
-| `label`        | string                                         |                         |
-| `description`  | string                                         |                         |
-| `disabled`     | boolean                                        |                         |
-| `required`     | boolean                                        |                         |
-| `fullwidth`    | boolean                                        |                         |
-| `ghost`        | boolean                                        |                         |
-
-#### Checkbox
-
-Checkbox input with label, description, and indeterminate state support
-
-| Prop             | Type    | Description |
-| ---------------- | ------- | ----------- |
-| `checked`        | boolean |             |
-| `defaultChecked` | boolean |             |
-| `indeterminate`  | boolean |             |
-| `label`          | string  |             |
-| `description`    | string  |             |
-| `disabled`       | boolean |             |
-| `required`       | boolean |             |
-| `name`           | string  |             |
-| `reversed`       | boolean |             |
-| `bordered`       | boolean |             |
-
-#### Select
-
-Dropdown select with customizable options, label, and description
-
-| Prop           | Type                           | Description           |
-| -------------- | ------------------------------ | --------------------- |
-| `value`        | string                         |                       |
-| `defaultValue` | string                         |                       |
-| `placeholder`  | string                         |                       |
-| `items`        | object[]                       |                       |
-| `label`        | string                         |                       |
-| `description`  | string                         |                       |
-| `size`         | "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `disabled`     | boolean                        |                       |
-| `required`     | boolean                        |                       |
-| `fullwidth`    | boolean                        |                       |
-| `ghost`        | boolean                        |                       |
-
-#### Switch
-
-Toggle switch with label and description support
-
-| Prop             | Type    | Description |
-| ---------------- | ------- | ----------- |
-| `checked`        | boolean |             |
-| `defaultChecked` | boolean |             |
-| `label`          | string  |             |
-| `description`    | string  |             |
-| `disabled`       | boolean |             |
-| `required`       | boolean |             |
-| `name`           | string  |             |
-| `reversed`       | boolean |             |
-| `bordered`       | boolean |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `variant` | "subtle" \| "inverted" |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `disabled` | boolean |  |
+| `loading` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
+| `pill` | boolean |  |
+| `square` | boolean |  |
+| `interactive` | boolean |  |
+| `circle` | boolean |  |
+| `tooltip` | string |  |
+| `pressed` | boolean |  |
+| `defaultPressed` | boolean |  |
+| `icon` | object |  |
+| `text` | object |  |
 
 ---
 
@@ -530,157 +441,235 @@ Use Card as a content container. Pass title/description as props, children as bo
 Supports children.
 
 **Slots (use as props):**
-
 - `title`: Card heading, rendered above the body
 - `description`: Subheading beneath the title
 - `action`: Action buttons, typically top-right
 - `footer`: Footer content at the bottom of the card
 - `icon`: Icon displayed in the card header
 
-| Prop          | Type                                            | Description |
-| ------------- | ----------------------------------------------- | ----------- |
-| `children`    | string                                          |             |
-| `title`       | string                                          |             |
-| `description` | string                                          |             |
-| `action`      | string                                          |             |
-| `footer`      | string                                          |             |
-| `icon`        | string                                          |             |
-| `tone`        | "positive" \| "critical" \| "warning" \| "info" |             |
-| `inverted`    | boolean                                         |             |
-| `trimmed`     | boolean                                         |             |
-| `transparent` | boolean                                         |             |
-| `ghost`       | boolean                                         |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `footer` | string |  |
+| `icon` | string |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `inverted` | boolean |  |
+| `trimmed` | boolean |  |
+| `transparent` | boolean |  |
+| `ghost` | boolean |  |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
 **Subcomponent Props (customization escape hatches):**
 
-- `ContainerProps`: Props forwarded to the container Stack
-- `HeaderProps`: Props forwarded to the header Group
-- `TitleProps`: Props forwarded to the title Text
-- `DescriptionProps`: Props forwarded to the description Text
-- `IconProps`: Props forwarded to the icon wrapper
-- `ActionProps`: Props forwarded to the action Group
-- `FooterProps`: Props forwarded to the footer Group
+- `ContainerProps`: Props forwarded to Container
+- `HeaderProps`: Props forwarded to Header
+- `TitleProps`: Props forwarded to Title
+- `DescriptionProps`: Props forwarded to Description
+- `IconProps`: Props forwarded to Icon
+- `ActionProps`: Props forwarded to Action
+- `FooterProps`: Props forwarded to Footer
 
 ---
 
-### Overlays
+### Forms
 
-#### Drawer
+#### Form
 
-Bottom sheet with drag-to-close interaction
+Form container with built-in validation support.
 
-Supports children.
-
-| Prop           | Type                                   | Description           |
-| -------------- | -------------------------------------- | --------------------- |
-| `children`     | string                                 |                       |
-| `trigger`      | string                                 |                       |
-| `title`        | string                                 |                       |
-| `direction`    | "top" \| "right" \| "bottom" \| "left" | (default: `"bottom"`) |
-| `open`         | boolean                                |                       |
-| `defaultOpen`  | boolean                                |                       |
-| `onOpenChange` | function                               |                       |
-
-#### Modal
-
-Dialog overlay with Card-like content structure
+Form has no visual presence (display:contents). Wrap a Stack inside it for spacing between fields.
 
 Supports children.
 
-| Prop           | Type                                       | Description           |
-| -------------- | ------------------------------------------ | --------------------- |
-| `children`     | string                                     |                       |
-| `trigger`      | string                                     |                       |
-| `title`        | string                                     |                       |
-| `description`  | string                                     |                       |
-| `action`       | string                                     |                       |
-| `icon`         | string                                     |                       |
-| `footer`       | string                                     |                       |
-| `size`         | "small" \| "medium" \| "large" \| "xlarge" | (default: `"medium"`) |
-| `open`         | boolean                                    |                       |
-| `onOpenChange` | function                                   |                       |
+#### Input
 
-#### Popover
+Text input field with label and description support
 
-Floating card attached to a trigger element
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `type` | string |  |
+| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
 
-Supports children.
+#### NumberField
 
-| Prop           | Type     | Description |
-| -------------- | -------- | ----------- |
-| `children`     | string   |             |
-| `trigger`      | string   |             |
-| `title`        | string   |             |
-| `description`  | string   |             |
-| `action`       | string   |             |
-| `icon`         | string   |             |
-| `footer`       | string   |             |
-| `open`         | boolean  |             |
-| `onOpenChange` | function |             |
+Numeric input with increment/decrement buttons and optional label
 
-#### Sheet
+Use for numeric input with built-in increment/decrement controls. Supports min, max, and step constraints.
 
-Slide-in panel overlay from any edge of the screen
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | number |  |
+| `defaultValue` | number |  |
+| `min` | number |  |
+| `max` | number |  |
+| `step` | number |  |
+| `placeholder` | string |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `name` | string |  |
 
-Supports children.
+#### Textarea
 
-| Prop           | Type                                   | Description          |
-| -------------- | -------------------------------------- | -------------------- |
-| `children`     | string                                 |                      |
-| `trigger`      | string                                 |                      |
-| `title`        | string                                 |                      |
-| `description`  | string                                 |                      |
-| `action`       | string                                 |                      |
-| `icon`         | string                                 |                      |
-| `footer`       | string                                 |                      |
-| `side`         | "top" \| "right" \| "bottom" \| "left" | (default: `"right"`) |
-| `open`         | boolean                                |                      |
-| `onOpenChange` | function                               |                      |
+Multi-line text input with label and description support
 
-#### Toaster
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `rows` | number | (default: `3`) |
+| `resize` | "none" \| "vertical" \| "horizontal" \| "both" | (default: `"vertical"`) |
+| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
 
-Container for toast notifications
+#### Checkbox
 
-| Prop       | Type              | Description           |
-| ---------- | ----------------- | --------------------- |
-| `position` | "top" \| "bottom" | (default: `"bottom"`) |
+Checkbox input with label, description, and indeterminate state support
 
-#### Tooltip
+| Prop | Type | Description |
+| --- | --- | --- |
+| `checked` | boolean |  |
+| `defaultChecked` | boolean |  |
+| `indeterminate` | boolean |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `name` | string |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
 
-Informational popup shown on hover or focus
+#### CheckboxGroup
 
-Supports children.
+Group of checkboxes for multi-select options with label and description
 
-| Prop           | Type     | Description |
-| -------------- | -------- | ----------- |
-| `children`     | string   |             |
-| `trigger`      | string   |             |
-| `delay`        | number   |             |
-| `open`         | boolean  |             |
-| `onOpenChange` | function |             |
+Use for multi-select choice lists. Pass items array with label/value pairs. Value is an array of selected values.
 
----
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string[] |  |
+| `defaultValue` | string[] |  |
+| `items` | object[] |  |
+| `label` | string |  |
+| `description` | string |  |
+| `direction` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
+| `hideIndicators` | boolean |  |
+| `name` | string |  |
 
-### Interactive
+#### Radio
 
-#### Collapsible
+Radio button input with label and description support
 
-Expandable content panel that can be toggled open or closed via a trigger element
+Use Radio within a RadioGroup for single-select options. For standalone usage, wrap in RadioGroup.Root.
 
-Use Collapsible to hide/show content. Pass the toggle element as trigger, content as children.
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
+| `hideIndicator` | boolean |  |
 
-Supports children.
+#### RadioGroup
 
-| Prop           | Type     | Description             |
-| -------------- | -------- | ----------------------- |
-| `children`     | string   |                         |
-| `trigger`      | string   |                         |
-| `instant`      | boolean  | Skip animation (default: `false`) |
-| `open`         | boolean  |                         |
-| `defaultOpen`  | boolean  |                         |
-| `onOpenChange` | function |                         |
+Group of radio buttons for single-select options with label and description
+
+Use for single-select choice lists. Pass items array with label/value pairs.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `items` | object[] |  |
+| `label` | string |  |
+| `description` | string |  |
+| `direction` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
+| `hideIndicators` | boolean |  |
+| `name` | string |  |
+
+#### Select
+
+Dropdown select with customizable options, label, and description
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | string |  |
+| `defaultValue` | string |  |
+| `placeholder` | string |  |
+| `items` | object[] |  |
+| `label` | string |  |
+| `description` | string |  |
+| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `fullwidth` | boolean |  |
+| `ghost` | boolean |  |
+
+#### Slider
+
+Range slider input with optional label and description
+
+Use for selecting numeric values within a range. Supports single value or range (array of two values).
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | number \| number[] |  |
+| `defaultValue` | number \| number[] |  |
+| `min` | number | (default: `0`) |
+| `max` | number | (default: `100`) |
+| `step` | number | (default: `1`) |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `ghost` | boolean |  |
+| `fullwidth` | boolean |  |
+
+#### Switch
+
+Toggle switch with label and description support
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `checked` | boolean |  |
+| `defaultChecked` | boolean |  |
+| `label` | string |  |
+| `description` | string |  |
+| `disabled` | boolean |  |
+| `required` | boolean |  |
+| `name` | string |  |
+| `reversed` | boolean |  |
+| `bordered` | boolean |  |
 
 ---
 
@@ -695,26 +684,25 @@ Use Alert for important messages. Set tone for semantic meaning (positive, warni
 Supports children.
 
 **Slots (use as props):**
-
 - `title`: Alert heading
 - `description`: Alert message text
 - `action`: Action buttons
 - `footer`: Footer content
 - `icon`: Alert icon
 
-| Prop          | Type                                            | Description |
-| ------------- | ----------------------------------------------- | ----------- |
-| `children`    | string                                          |             |
-| `title`       | string                                          |             |
-| `description` | string                                          |             |
-| `action`      | string                                          |             |
-| `footer`      | string                                          |             |
-| `icon`        | string                                          |             |
-| `tone`        | "positive" \| "critical" \| "warning" \| "info" |             |
-| `inverted`    | boolean                                         |             |
-| `trimmed`     | boolean                                         |             |
-| `transparent` | boolean                                         |             |
-| `ghost`       | boolean                                         |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `footer` | string |  |
+| `icon` | string |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `inverted` | boolean |  |
+| `trimmed` | boolean |  |
+| `transparent` | boolean |  |
+| `ghost` | boolean |  |
 
 #### Avatar
 
@@ -722,13 +710,21 @@ User avatar with initials fallback, name, and optional description
 
 Use Avatar for user profiles. Pass initials as fallback, name for display. Use orientation for layout direction.
 
-| Prop          | Type                           | Description                    |
-| ------------- | ------------------------------ | ------------------------------ |
-| `initials`    | string                         | User initials (required)       |
-| `name`        | string                         | User name (required)           |
-| `description` | string                         | User description or role       |
-| `size`        | "small" \| "medium" \| "large" | (default: `"medium"`)          |
-| `orientation` | "horizontal" \| "vertical"     | (default: `"horizontal"`)      |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `initials` | string |  |
+| `name` | string |  |
+| `description` | string |  |
+| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `orientation` | "horizontal" \| "vertical" | (default: `"horizontal"`) |
+
+**Subcomponent Props (customization escape hatches):**
+
+- `ContainerProps`: Props forwarded to Container
+- `ImageProps`: Props forwarded to Image
+- `InitialsProps`: Props forwarded to Initials
+- `NameProps`: Props forwarded to Name
+- `DescriptionProps`: Props forwarded to Description
 
 #### Badge
 
@@ -738,13 +734,13 @@ Use Badge for status labels, counts, or tags. Set tone for semantic meaning, hid
 
 Supports children.
 
-| Prop            | Type                                            | Description           |
-| --------------- | ----------------------------------------------- | --------------------- |
-| `children`      | string                                          |                       |
-| `size`          | "small" \| "medium" \| "large"                  | (default: `"medium"`) |
-| `tone`          | "positive" \| "critical" \| "warning" \| "info" |                       |
-| `inverted`      | boolean                                         |                       |
-| `hideIndicator` | boolean                                         |                       |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `inverted` | boolean |  |
+| `hideIndicator` | boolean |  |
 
 #### Kbd
 
@@ -754,9 +750,19 @@ Use Kbd to display keyboard shortcuts. Wrap each key separately for multi-key co
 
 Supports children.
 
-| Prop       | Type   | Description |
-| ---------- | ------ | ----------- |
-| `children` | string |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+
+#### Progress
+
+Progress bar indicator for showing completion status
+
+Use to show progress of an operation. Pass null for indeterminate state.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | number \| null |  |
 
 #### Status
 
@@ -766,12 +772,12 @@ Use Status for online/offline indicators or activity states. Set pulse for live 
 
 Supports children.
 
-| Prop       | Type                                            | Description |
-| ---------- | ----------------------------------------------- | ----------- |
-| `children` | string                                          |             |
-| `tone`     | "positive" \| "critical" \| "warning" \| "info" |             |
-| `pulse`    | boolean                                         |             |
-| `inverted` | boolean                                         |             |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
+| `pulse` | boolean |  |
+| `inverted` | boolean |  |
 
 #### Timeline
 
@@ -781,22 +787,175 @@ Use Timeline for chronological events. Pass items array for simple usage, or chi
 
 Supports children.
 
-| Prop          | Type                         | Description                   |
-| ------------- | ---------------------------- | ----------------------------- |
-| `children`    | string                       |                               |
-| `items`       | object[]                     | Array of `{ title, description?, time? }` |
-| `orientation` | "vertical" \| "horizontal"   | (default: `"vertical"`)       |
-| `dir`         | "ltr" \| "rtl"               |                               |
-| `activeIndex` | number                       | Index of active/current item  |
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `items` | object[] |  |
+| `orientation` | "vertical" \| "horizontal" | (default: `"vertical"`) |
+| `dir` | "ltr" \| "rtl" |  |
+| `activeIndex` | number |  |
 
 **Subcomponent Props (customization escape hatches):**
 
-- `ItemProps`: Props forwarded to each TimelineItem
-- `DotProps`: Props forwarded to each TimelineDot
-- `ConnectorProps`: Props forwarded to each TimelineConnector
-- `TitleProps`: Props forwarded to each TimelineTitle
-- `DescriptionProps`: Props forwarded to each TimelineDescription
-- `TimeProps`: Props forwarded to each TimelineTime
+- `ItemProps`: Props forwarded to Item
+- `DotProps`: Props forwarded to Dot
+- `ConnectorProps`: Props forwarded to Connector
+- `TitleProps`: Props forwarded to Title
+- `DescriptionProps`: Props forwarded to Description
+- `TimeProps`: Props forwarded to Time
+
+---
+
+### Interactive
+
+#### Accordion
+
+Collapsible accordion panels for organizing content
+
+Use for collapsible content sections. Set multiple=true to allow multiple panels open simultaneously.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `items` | object[] |  |
+| `value` | string \| string[] |  |
+| `defaultValue` | string \| string[] |  |
+| `multiple` | boolean |  |
+| `disabled` | boolean |  |
+| `orientation` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `fullwidth` | boolean |  |
+
+#### Collapsible
+
+Expandable content panel that can be toggled open or closed via a trigger element
+
+Use Collapsible to hide/show content. Pass the toggle element as trigger, content as children.
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `instant` | boolean | (default: `false`) |
+| `open` | boolean |  |
+| `defaultOpen` | boolean |  |
+| `onOpenChange` | function |  |
+
+**Subcomponent Props (customization escape hatches):**
+
+- `PanelProps`: Props forwarded to Panel
+
+---
+
+### Overlays
+
+#### Drawer
+
+Bottom sheet with drag-to-close interaction
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `direction` | "top" \| "right" \| "bottom" \| "left" | (default: `"bottom"`) |
+| `open` | boolean |  |
+| `defaultOpen` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Modal
+
+Dialog overlay with Card-like content structure
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `size` | "small" \| "medium" \| "large" \| "xlarge" | (default: `"medium"`) |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Popover
+
+Floating card attached to a trigger element
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Sheet
+
+Slide-in panel overlay from any edge of the screen
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `title` | string |  |
+| `description` | string |  |
+| `action` | string |  |
+| `icon` | string |  |
+| `footer` | string |  |
+| `side` | "top" \| "right" \| "bottom" \| "left" | (default: `"right"`) |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+#### Toaster
+
+Container for toast notifications
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `position` | "top" \| "bottom" | (default: `"bottom"`) |
+
+#### Tooltip
+
+Informational popup shown on hover or focus
+
+Supports children.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `children` | string |  |
+| `trigger` | string |  |
+| `delay` | number |  |
+| `open` | boolean |  |
+| `onOpenChange` | function |  |
+
+---
+
+### Navigation
+
+#### Breadcrumbs
+
+Breadcrumb navigation showing page hierarchy
+
+Use to show navigation hierarchy. Last item is typically the current page.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `items` | object[] |  |
 
 ---
 
@@ -828,7 +987,7 @@ Renders any icon from the Lucide icon set by name.
 
 ### All Component Types
 
-Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Status, Timeline, Icon
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs, Icon
 
 <!-- END GENERATED COMPONENT REFERENCE -->
 

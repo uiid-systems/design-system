@@ -12,6 +12,9 @@ export * from "./status/status.types";
 
 export * from "./kbd/kbd";
 
+export * from "./progress/progress";
+export * from "./progress/progress.types";
+
 export * from "./timeline/timeline";
 export * from "./timeline/timeline.types";
 export * from "./timeline/subcomponents";
