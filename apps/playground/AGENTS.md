@@ -88,12 +88,12 @@ The Card component automatically renders its title, description, icon, and foote
 | `flex: 1`                  | `evenly`                                         |
 | `width: "100%"`            | `fullwidth`                                      |
 | `height: "100%"`           | `fullheight`                                     |
-| `width: "200px"`           | `w: 50` (value × 4 = pixels)                     |
-| `height: "120px"`          | `h: 30` (value × 4 = pixels)                     |
-| `minWidth: "100px"`        | `minw: 25`                                       |
-| `maxWidth: "400px"`        | `maxw: 100`                                      |
-| `minHeight: "80px"`        | `minh: 20`                                       |
-| `maxHeight: "300px"`       | `maxh: 75`                                       |
+| `width: "200px"`           | `w: 200` (value in pixels)                        |
+| `height: "120px"`          | `h: 120` (value in pixels)                        |
+| `minWidth: "100px"`        | `minw: 100`                                       |
+| `maxWidth: "400px"`        | `maxw: 400`                                       |
+| `minHeight: "80px"`        | `minh: 80`                                        |
+| `maxHeight: "300px"`       | `maxh: 300`                                       |
 | `justifyContent: "center"` | `ay: "center"` (Stack) or `ax: "center"` (Group) |
 | `alignItems: "center"`     | `ax: "center"` (Stack) or `ay: "center"` (Group) |
 | `gap: "16px"`              | `gap: 4`                                         |
@@ -162,13 +162,77 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 
 ### Element Properties
 
-| Property    | Type     | Required | Description                                            |
-| ----------- | -------- | -------- | ------------------------------------------------------ |
-| `key`       | string   | Yes      | Unique identifier for the element                      |
-| `type`      | string   | Yes      | Component type from the registry                       |
-| `props`     | object   | Yes      | Component props (can be empty `{}`)                    |
-| `children`  | string[] | No       | Array of child element keys (for container components) |
-| `parentKey` | string   | No       | Key of parent element (null for root)                  |
+| Property    | Type     | Required | Description                                                              |
+| ----------- | -------- | -------- | ------------------------------------------------------------------------ |
+| `key`       | string   | Yes      | Unique identifier for the element                                        |
+| `type`      | string   | Yes      | Component type from the registry                                         |
+| `props`     | object   | Yes      | Component props (can be empty `{}`)                                      |
+| `children`  | string[] | No       | Array of child element keys (for container components)                   |
+| `parentKey` | string   | No       | Key of parent element (null for root)                                    |
+| `slot`      | string   | No       | Render into a parent's named slot prop instead of as regular children    |
+
+### Slot Rendering
+
+Use the `slot` property to render an element into a parent's named prop slot (like `footer`, `action`, `icon`) instead of as a regular child. This is how you place rich content (not just strings) into precomposed component slots.
+
+**Example — Card with a footer containing buttons:**
+
+```json
+{
+  "root": "card",
+  "elements": {
+    "card": {
+      "key": "card",
+      "type": "Card",
+      "props": { "title": "Settings", "description": "Manage your preferences" },
+      "children": ["body-text", "card-footer"]
+    },
+    "body-text": {
+      "key": "body-text",
+      "type": "Text",
+      "props": { "children": "Card body content" },
+      "parentKey": "card"
+    },
+    "card-footer": {
+      "key": "card-footer",
+      "type": "Group",
+      "props": { "gap": 2, "ax": "end", "fullwidth": true },
+      "children": ["cancel-btn", "save-btn"],
+      "parentKey": "card",
+      "slot": "footer"
+    },
+    "cancel-btn": {
+      "key": "cancel-btn",
+      "type": "Button",
+      "props": { "ghost": true, "size": "small", "children": "Cancel" },
+      "parentKey": "card-footer"
+    },
+    "save-btn": {
+      "key": "save-btn",
+      "type": "Button",
+      "props": { "size": "small", "children": "Save" },
+      "parentKey": "card-footer"
+    }
+  }
+}
+```
+
+Without `"slot": "footer"`, the Group would render inside Card's body. With it, the Group renders in the Card's footer area.
+
+**Components with named slots:**
+
+| Component | Available slots                            |
+| --------- | ------------------------------------------ |
+| Card      | `title`, `description`, `action`, `footer`, `icon` |
+| Modal     | `title`, `description`, `action`, `footer`, `icon` |
+| Sheet     | `title`, `description`, `action`, `footer`, `icon` |
+| Popover   | `title`, `description`, `action`, `footer`, `icon` |
+| Alert     | `title`, `description`, `action`, `footer`, `icon` |
+
+**When to use `slot` vs string props:**
+
+- **String value** → pass directly as prop: `"title": "My Title"`
+- **Rich content** (components, multiple elements) → use `slot`: create a child element with `"slot": "footer"`
 
 ### Key Naming Rules
 
@@ -209,6 +273,13 @@ UIID components are **precomposed** — they handle their own internal structure
 | Popover      | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Sheet        | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Tooltip      | N/A                                                | Content             |
+| Collapsible  | N/A                                                | Content             |
+| Alert        | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
+| Avatar       | `initials`, `name`, `description`                  | N/A (no children)   |
+| Badge        | N/A                                                | Content             |
+| Kbd          | N/A                                                | Content             |
+| Status       | N/A                                                | Content             |
+| Timeline     | `items`                                            | Custom composition  |
 | Icon         | `name`, `size`                                     | N/A (no children)   |
 
 ### Layout Components
@@ -592,6 +663,143 @@ Supports children.
 
 ---
 
+### Interactive
+
+#### Collapsible
+
+Expandable content panel that can be toggled open or closed via a trigger element
+
+Use Collapsible to hide/show content. Pass the toggle element as trigger, content as children.
+
+Supports children.
+
+| Prop           | Type     | Description             |
+| -------------- | -------- | ----------------------- |
+| `children`     | string   |                         |
+| `trigger`      | string   |                         |
+| `instant`      | boolean  | Skip animation (default: `false`) |
+| `open`         | boolean  |                         |
+| `defaultOpen`  | boolean  |                         |
+| `onOpenChange` | function |                         |
+
+---
+
+### Indicators
+
+#### Alert
+
+Semantic alert component for displaying important messages with optional title and actions
+
+Use Alert for important messages. Set tone for semantic meaning (positive, warning, critical, info).
+
+Supports children.
+
+**Slots (use as props):**
+
+- `title`: Alert heading
+- `description`: Alert message text
+- `action`: Action buttons
+- `footer`: Footer content
+- `icon`: Alert icon
+
+| Prop          | Type                                            | Description |
+| ------------- | ----------------------------------------------- | ----------- |
+| `children`    | string                                          |             |
+| `title`       | string                                          |             |
+| `description` | string                                          |             |
+| `action`      | string                                          |             |
+| `footer`      | string                                          |             |
+| `icon`        | string                                          |             |
+| `tone`        | "positive" \| "critical" \| "warning" \| "info" |             |
+| `inverted`    | boolean                                         |             |
+| `trimmed`     | boolean                                         |             |
+| `transparent` | boolean                                         |             |
+| `ghost`       | boolean                                         |             |
+
+#### Avatar
+
+User avatar with initials fallback, name, and optional description
+
+Use Avatar for user profiles. Pass initials as fallback, name for display. Use orientation for layout direction.
+
+| Prop          | Type                           | Description                    |
+| ------------- | ------------------------------ | ------------------------------ |
+| `initials`    | string                         | User initials (required)       |
+| `name`        | string                         | User name (required)           |
+| `description` | string                         | User description or role       |
+| `size`        | "small" \| "medium" \| "large" | (default: `"medium"`)          |
+| `orientation` | "horizontal" \| "vertical"     | (default: `"horizontal"`)      |
+
+#### Badge
+
+Status badge with optional dot indicator and semantic tones
+
+Use Badge for status labels, counts, or tags. Set tone for semantic meaning, hideIndicator to show text-only.
+
+Supports children.
+
+| Prop            | Type                                            | Description           |
+| --------------- | ----------------------------------------------- | --------------------- |
+| `children`      | string                                          |                       |
+| `size`          | "small" \| "medium" \| "large"                  | (default: `"medium"`) |
+| `tone`          | "positive" \| "critical" \| "warning" \| "info" |                       |
+| `inverted`      | boolean                                         |                       |
+| `hideIndicator` | boolean                                         |                       |
+
+#### Kbd
+
+Keyboard key indicator for displaying keyboard shortcuts
+
+Use Kbd to display keyboard shortcuts. Wrap each key separately for multi-key combinations.
+
+Supports children.
+
+| Prop       | Type   | Description |
+| ---------- | ------ | ----------- |
+| `children` | string |             |
+
+#### Status
+
+Status dot indicator with optional label and pulsing animation
+
+Use Status for online/offline indicators or activity states. Set pulse for live activity, tone for semantic meaning.
+
+Supports children.
+
+| Prop       | Type                                            | Description |
+| ---------- | ----------------------------------------------- | ----------- |
+| `children` | string                                          |             |
+| `tone`     | "positive" \| "critical" \| "warning" \| "info" |             |
+| `pulse`    | boolean                                         |             |
+| `inverted` | boolean                                         |             |
+
+#### Timeline
+
+Timeline component for displaying chronological events with active state tracking
+
+Use Timeline for chronological events. Pass items array for simple usage, or children for custom composition. Set activeIndex to highlight current step.
+
+Supports children.
+
+| Prop          | Type                         | Description                   |
+| ------------- | ---------------------------- | ----------------------------- |
+| `children`    | string                       |                               |
+| `items`       | object[]                     | Array of `{ title, description?, time? }` |
+| `orientation` | "vertical" \| "horizontal"   | (default: `"vertical"`)       |
+| `dir`         | "ltr" \| "rtl"               |                               |
+| `activeIndex` | number                       | Index of active/current item  |
+
+**Subcomponent Props (customization escape hatches):**
+
+- `ItemProps`: Props forwarded to each TimelineItem
+- `DotProps`: Props forwarded to each TimelineDot
+- `ConnectorProps`: Props forwarded to each TimelineConnector
+- `TitleProps`: Props forwarded to each TimelineTitle
+- `DescriptionProps`: Props forwarded to each TimelineDescription
+- `TimeProps`: Props forwarded to each TimelineTime
+
+---
+
 ### Icons
 
 #### Icon
@@ -620,7 +828,7 @@ Renders any icon from the Lucide icon set by name.
 
 ### All Component Types
 
-Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Icon
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, Textarea, Checkbox, Select, Switch, Text, Card, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Status, Timeline, Icon
 
 <!-- END GENERATED COMPONENT REFERENCE -->
 

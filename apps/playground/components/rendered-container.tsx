@@ -11,7 +11,6 @@ export const RenderedContainer = ({
       data-slot="rendered-container"
       ay="center"
       ax="center"
-      p={16}
       fullwidth
       fullheight
       {...props}

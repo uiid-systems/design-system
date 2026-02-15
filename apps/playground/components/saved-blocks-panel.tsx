@@ -183,7 +183,7 @@ export const SavedBlocksPanel = () => {
                           padding: 0,
                           height: "auto",
                           fontWeight: "bold",
-                          fontSize: "var(--typography-text-2-size)",
+                          fontSize: "var(--text-2-font-size)",
                         }}
                       />
                     ) : (

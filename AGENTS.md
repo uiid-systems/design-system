@@ -409,14 +409,14 @@ For small fixes or minor changes, a brief summary and test plan is sufficient.
 
 Common mistakes to avoid:
 
-| Instead of...                                  | Use...                        |
-| ---------------------------------------------- | ----------------------------- |
-| `style={{ flex: 1 }}` on children              | `<Group evenly>`              |
-| `style={{ width: "100%" }}`                    | `fullwidth` or `ax="stretch"` on parent Stack |
-| `style={{ alignItems: "center" }}`             | `ay="center"` (Group) or `ax="center"` (Stack) |
-| `style={{ gap: "16px" }}`                      | `gap={4}`                     |
-| `style={{ padding: "16px" }}`                  | `p={4}`                       |
-| `style={{ fontSize: "14px", color: "gray" }}`  | `<Text size={0} shade="muted">` |
+| Instead of...                                 | Use...                                         |
+| --------------------------------------------- | ---------------------------------------------- |
+| `style={{ flex: 1 }}` on children             | `<Group evenly>`                               |
+| `style={{ width: "100%" }}`                   | `fullwidth` or `ax="stretch"` on parent Stack  |
+| `style={{ alignItems: "center" }}`            | `ay="center"` (Group) or `ax="center"` (Stack) |
+| `style={{ gap: "16px" }}`                     | `gap={4}`                                      |
+| `style={{ padding: "16px" }}`                 | `p={4}`                                        |
+| `style={{ fontSize: "14px", color: "gray" }}` | `<Text size={0} shade="muted">`                |
 
 See layout and typography component READMEs for full prop references and common patterns.
 
@@ -646,8 +646,8 @@ Only use CSS Modules for:
 Examples:
 
 ```css
---forms-background
---forms-backgroundHover
+--forms-bg
+--forms-bg-hover
 --buttons-variant-primary-background
 --forms-state-disabled-opacity
 ```

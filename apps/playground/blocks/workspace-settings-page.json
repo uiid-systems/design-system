@@ -1,0 +1,436 @@
+{
+  "name": "Workspace settings page",
+  "slug": "workspace-settings-page",
+  "description": "Multi-section settings page with personal information, workspace settings, and notification preferences. Two-column layout with label column on the left and form fields on the right, separated by horizontal dividers.",
+  "version": 1,
+  "tags": [],
+  "tree": {
+    "root": "settings-page",
+    "elements": {
+      "settings-page": {
+        "key": "settings-page",
+        "type": "Stack",
+        "props": {
+          "gap": 8,
+          "ax": "stretch",
+          "py": 4,
+          "fullwidth": true,
+          "maxw": 1200
+        },
+        "children": [
+          "personal-section",
+          "separator-1",
+          "workspace-section",
+          "separator-2",
+          "notification-section",
+          "separator-3",
+          "footer-actions"
+        ]
+      },
+      "personal-section": {
+        "key": "personal-section",
+        "type": "Group",
+        "props": {
+          "gap": 8,
+          "ay": "start",
+          "fullwidth": true
+        },
+        "children": ["personal-label", "personal-fields"],
+        "parentKey": "settings-page"
+      },
+      "personal-label": {
+        "key": "personal-label",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "maxw": 320
+        },
+        "children": ["personal-heading", "personal-description"],
+        "parentKey": "personal-section"
+      },
+      "personal-heading": {
+        "key": "personal-heading",
+        "type": "Text",
+        "props": {
+          "children": "Personal information",
+          "size": 1,
+          "weight": "bold"
+        },
+        "parentKey": "personal-label"
+      },
+      "personal-description": {
+        "key": "personal-description",
+        "type": "Text",
+        "props": {
+          "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+          "size": 0,
+          "shade": "muted"
+        },
+        "parentKey": "personal-label"
+      },
+      "personal-fields": {
+        "key": "personal-fields",
+        "type": "Stack",
+        "props": {
+          "gap": 3,
+          "ax": "stretch",
+          "fullwidth": true
+        },
+        "children": [
+          "name-row",
+          "email-field",
+          "birth-role-row",
+          "role-helper"
+        ],
+        "parentKey": "personal-section"
+      },
+      "name-row": {
+        "key": "name-row",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "evenly": true
+        },
+        "children": ["first-name", "last-name"],
+        "parentKey": "personal-fields"
+      },
+      "first-name": {
+        "key": "first-name",
+        "type": "Input",
+        "props": {
+          "label": "First name",
+          "defaultValue": "Emma"
+        },
+        "parentKey": "name-row"
+      },
+      "last-name": {
+        "key": "last-name",
+        "type": "Input",
+        "props": {
+          "label": "Last name",
+          "defaultValue": "Crown"
+        },
+        "parentKey": "name-row"
+      },
+      "email-field": {
+        "key": "email-field",
+        "type": "Input",
+        "props": {
+          "label": "Email",
+          "type": "email",
+          "defaultValue": "emma@company.com"
+        },
+        "parentKey": "personal-fields"
+      },
+      "birth-role-row": {
+        "key": "birth-role-row",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "evenly": true
+        },
+        "children": ["birth-year", "role-field"],
+        "parentKey": "personal-fields"
+      },
+      "birth-year": {
+        "key": "birth-year",
+        "type": "Input",
+        "props": {
+          "label": "Birth year",
+          "defaultValue": "1990"
+        },
+        "parentKey": "birth-role-row"
+      },
+      "role-field": {
+        "key": "role-field",
+        "type": "Input",
+        "props": {
+          "label": "Role",
+          "defaultValue": "Senior Manager",
+          "disabled": true
+        },
+        "parentKey": "birth-role-row"
+      },
+      "role-helper": {
+        "key": "role-helper",
+        "type": "Text",
+        "props": {
+          "children": "Roles can only be changed by system admin.",
+          "size": -1,
+          "shade": "muted",
+          "align": "right"
+        },
+        "parentKey": "personal-fields"
+      },
+      "separator-1": {
+        "key": "separator-1",
+        "type": "Separator",
+        "props": {},
+        "parentKey": "settings-page"
+      },
+      "workspace-section": {
+        "key": "workspace-section",
+        "type": "Group",
+        "props": {
+          "gap": 8,
+          "ay": "start",
+          "fullwidth": true
+        },
+        "children": ["workspace-label", "workspace-fields"],
+        "parentKey": "settings-page"
+      },
+      "workspace-label": {
+        "key": "workspace-label",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "maxw": 320
+        },
+        "children": ["workspace-heading", "workspace-description"],
+        "parentKey": "workspace-section"
+      },
+      "workspace-heading": {
+        "key": "workspace-heading",
+        "type": "Text",
+        "props": {
+          "children": "Workspace settings",
+          "size": 1,
+          "weight": "bold"
+        },
+        "parentKey": "workspace-label"
+      },
+      "workspace-description": {
+        "key": "workspace-description",
+        "type": "Text",
+        "props": {
+          "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+          "size": 0,
+          "shade": "muted"
+        },
+        "parentKey": "workspace-label"
+      },
+      "workspace-fields": {
+        "key": "workspace-fields",
+        "type": "Stack",
+        "props": {
+          "gap": 3,
+          "ax": "stretch",
+          "fullwidth": true
+        },
+        "children": [
+          "workspace-name-row",
+          "workspace-desc-textarea",
+          "workspace-note"
+        ],
+        "parentKey": "workspace-section"
+      },
+      "workspace-name-row": {
+        "key": "workspace-name-row",
+        "type": "Group",
+        "props": {
+          "gap": 3,
+          "evenly": true
+        },
+        "children": ["workspace-name", "visibility-select"],
+        "parentKey": "workspace-fields"
+      },
+      "workspace-name": {
+        "key": "workspace-name",
+        "type": "Input",
+        "props": {
+          "label": "Workspace name",
+          "defaultValue": "Test workspace"
+        },
+        "parentKey": "workspace-name-row"
+      },
+      "visibility-select": {
+        "key": "visibility-select",
+        "type": "Select",
+        "props": {
+          "label": "Visibility",
+          "defaultValue": "private",
+          "items": [
+            { "label": "Private", "value": "private" },
+            { "label": "Public", "value": "public" }
+          ]
+        },
+        "parentKey": "workspace-name-row"
+      },
+      "workspace-desc-textarea": {
+        "key": "workspace-desc-textarea",
+        "type": "Textarea",
+        "props": {
+          "label": "Workspace description",
+          "rows": 4,
+          "resize": "vertical"
+        },
+        "parentKey": "workspace-fields"
+      },
+      "workspace-note": {
+        "key": "workspace-note",
+        "type": "Text",
+        "props": {
+          "children": "Note: description provided will not be displayed externally.",
+          "size": -1,
+          "shade": "muted"
+        },
+        "parentKey": "workspace-fields"
+      },
+      "separator-2": {
+        "key": "separator-2",
+        "type": "Separator",
+        "props": {},
+        "parentKey": "settings-page"
+      },
+      "notification-section": {
+        "key": "notification-section",
+        "type": "Group",
+        "props": {
+          "gap": 8,
+          "ay": "start",
+          "fullwidth": true
+        },
+        "children": ["notification-label", "notification-fields"],
+        "parentKey": "settings-page"
+      },
+      "notification-label": {
+        "key": "notification-label",
+        "type": "Stack",
+        "props": {
+          "gap": 4,
+          "maxw": 320
+        },
+        "children": ["notification-heading", "notification-description"],
+        "parentKey": "notification-section"
+      },
+      "notification-heading": {
+        "key": "notification-heading",
+        "type": "Text",
+        "props": {
+          "children": "Notification settings",
+          "size": 1,
+          "weight": "bold"
+        },
+        "parentKey": "notification-label"
+      },
+      "notification-description": {
+        "key": "notification-description",
+        "type": "Text",
+        "props": {
+          "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+          "size": 0,
+          "shade": "muted"
+        },
+        "parentKey": "notification-label"
+      },
+      "notification-fields": {
+        "key": "notification-fields",
+        "type": "Stack",
+        "props": {
+          "gap": 3,
+          "ax": "stretch",
+          "fullwidth": true
+        },
+        "children": [
+          "newsletter-heading",
+          "newsletter-description",
+          "newsletter-options"
+        ],
+        "parentKey": "notification-section"
+      },
+      "newsletter-heading": {
+        "key": "newsletter-heading",
+        "type": "Text",
+        "props": {
+          "children": "Newsletter",
+          "size": 0,
+          "weight": "bold"
+        },
+        "parentKey": "notification-fields"
+      },
+      "newsletter-description": {
+        "key": "newsletter-description",
+        "type": "Text",
+        "props": {
+          "children": "Change how often you want to receive updates from our newsletter.",
+          "size": 0,
+          "shade": "muted"
+        },
+        "parentKey": "notification-fields"
+      },
+      "newsletter-options": {
+        "key": "newsletter-options",
+        "type": "Stack",
+        "props": {
+          "gap": 1
+        },
+        "children": ["option-weekly", "option-monthly", "option-never"],
+        "parentKey": "notification-fields"
+      },
+      "option-weekly": {
+        "key": "option-weekly",
+        "type": "Checkbox",
+        "props": {
+          "label": "Every week",
+          "name": "newsletter"
+        },
+        "parentKey": "newsletter-options"
+      },
+      "option-monthly": {
+        "key": "option-monthly",
+        "type": "Checkbox",
+        "props": {
+          "label": "Every month",
+          "name": "newsletter"
+        },
+        "parentKey": "newsletter-options"
+      },
+      "option-never": {
+        "key": "option-never",
+        "type": "Checkbox",
+        "props": {
+          "label": "Never",
+          "name": "newsletter",
+          "defaultChecked": true
+        },
+        "parentKey": "newsletter-options"
+      },
+      "separator-3": {
+        "key": "separator-3",
+        "type": "Separator",
+        "props": {},
+        "parentKey": "settings-page"
+      },
+      "footer-actions": {
+        "key": "footer-actions",
+        "type": "Group",
+        "props": {
+          "gap": 2,
+          "ax": "end",
+          "fullwidth": true
+        },
+        "children": ["go-back-button", "save-button"],
+        "parentKey": "settings-page"
+      },
+      "go-back-button": {
+        "key": "go-back-button",
+        "type": "Button",
+        "props": {
+          "ghost": true,
+          "children": "Go back"
+        },
+        "parentKey": "footer-actions"
+      },
+      "save-button": {
+        "key": "save-button",
+        "type": "Button",
+        "props": {
+          "children": "Save settings"
+        },
+        "parentKey": "footer-actions"
+      }
+    }
+  },
+  "createdAt": "2026-02-15T00:00:00.000Z",
+  "updatedAt": "2026-02-15T00:00:00.000Z"
+}
