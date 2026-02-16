@@ -8,7 +8,7 @@ export const NewsletterSignupForm = () => {
   return (
     <Field label="Join the newsletter" fullwidth my={4}>
       <Group gap={2} fullwidth>
-        <Input required placeholder="Enter your email" size="small" fullwidth />
+        <Input required placeholder="Enter your email" fullwidth />
         <Button
           style={{ marginLeft: "auto" }}
           square
