@@ -1,6 +1,6 @@
 "use client";
 
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 import { Renderer } from "@json-render/react";
 
 import { registry } from "@/lib/components";
@@ -8,7 +8,7 @@ import { registry } from "@/lib/components";
 import styles from "./block-thumbnail.module.css";
 
 type BlockThumbnailProps = {
-  spec: Spec;
+  spec: UISpec;
 };
 
 export const BlockThumbnail = ({ spec }: BlockThumbnailProps) => {

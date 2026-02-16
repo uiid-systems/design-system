@@ -84,10 +84,10 @@ export const SaveButton = () => {
           tooltip="Save block to browser storage"
           size="small"
           disabled={!tree}
-          ghost
+          variant="inverted"
+          square
         >
           <SaveIcon />
-          Save
         </Button>
       }
       footer={

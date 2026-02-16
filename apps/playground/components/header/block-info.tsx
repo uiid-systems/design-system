@@ -5,11 +5,15 @@ import { useMemo } from "react";
 import { Button } from "@uiid/buttons";
 import { Select, type SelectProps } from "@uiid/forms";
 import { ChevronLeftIcon, ChevronRightIcon } from "@uiid/icons";
-import { Group } from "@uiid/layout";
+import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
+
+import { NewChatButton } from "../new-chat-button";
+import { OpenBlocksPanel } from "../open-blocks-panel";
+import { SaveButton } from "../save-button";
 
 function formatDate(timestamp: number): string {
   return new Date(timestamp).toLocaleDateString(undefined, {
@@ -49,42 +53,89 @@ export const BlockInfo = () => {
   const canNavigate = activeRegistryBlock && registryBlocks.length > 1;
 
   // Registry block: show name, version, and prev/next navigation
-  if (activeRegistryBlock) {
-    return (
-      <BlockInfoContainer>
-        {canNavigate && (
-          <Button
-            tooltip="Previous block"
-            onClick={() => navigateRegistryBlock("prev")}
-            size="xsmall"
-            ghost
-            square
-          >
-            <ChevronLeftIcon />
-          </Button>
-        )}
-        <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
-        <Text size={-1} shade="muted">
-          v{activeRegistryBlock.version} · registry
-        </Text>
-        {canNavigate && (
-          <Button
-            tooltip="Next block"
-            onClick={() => navigateRegistryBlock("next")}
-            size="xsmall"
-            ghost
-            square
-          >
-            <ChevronRightIcon />
-          </Button>
-        )}
-      </BlockInfoContainer>
-    );
-  }
+  // if (activeRegistryBlock) {
+  //   return (
+  //     <BlockInfoContainer>
+  //       {canNavigate && (
+  //         <Button
+  //           tooltip="Previous block"
+  //           onClick={() => navigateRegistryBlock("prev")}
+  //           size="xsmall"
+  //           variant="inverted"
+  //           square
+  //         >
+  //           <ChevronLeftIcon />
+  //         </Button>
+  //       )}
+  //       {canNavigate && (
+  //         <Button
+  //           tooltip="Next block"
+  //           onClick={() => navigateRegistryBlock("next")}
+  //           size="xsmall"
+  //           variant="inverted"
+  //           square
+  //         >
+  //           <ChevronRightIcon />
+  //         </Button>
+  //       )}
+
+  //       <Separator orientation="vertical" mr={4} />
+
+  //       <NewChatButton />
+  //       <OpenBlocksPanel />
+  //       <SaveButton />
+
+  //       <Separator orientation="vertical" mr={4} />
+
+  //       <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
+  //       <Text size={-1} shade="muted">
+  //         v{activeRegistryBlock.version} · registry
+  //       </Text>
+  //     </BlockInfoContainer>
+  //   );
+  // }
 
   return (
     <BlockInfoContainer>
-      <BlockInfoTitle>{activeVersion?.name ?? "Untitled block"}</BlockInfoTitle>
+      <Group>
+        <NewChatButton />
+        <OpenBlocksPanel />
+        <SaveButton />
+      </Group>
+
+      <Separator orientation="vertical" mr={2} />
+
+      {canNavigate && (
+        <>
+          <Group>
+            <Button
+              tooltip="Previous block"
+              onClick={() => navigateRegistryBlock("prev")}
+              size="xsmall"
+              variant="inverted"
+              square
+            >
+              <ChevronLeftIcon />
+            </Button>
+            <Button
+              tooltip="Next block"
+              onClick={() => navigateRegistryBlock("next")}
+              size="xsmall"
+              variant="inverted"
+              square
+            >
+              <ChevronRightIcon />
+            </Button>
+          </Group>
+          <Separator orientation="vertical" mr={4} />
+        </>
+      )}
+
+      <BlockInfoTitle>
+        {activeRegistryBlock
+          ? activeRegistryBlock.name
+          : (activeVersion?.name ?? "Untitled block")}
+      </BlockInfoTitle>
 
       <BlockInfoVersionSelector
         items={items}

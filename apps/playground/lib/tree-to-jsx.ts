@@ -1,4 +1,4 @@
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "./catalog";
 import type { Plugin } from "prettier";
 import * as prettier from "prettier/standalone";
 import * as prettierPluginBabel from "prettier/plugins/babel";
@@ -38,10 +38,10 @@ function toPascalCase(str: string): string {
 }
 
 /**
- * Converts a Spec to formatted JSX code string.
+ * Converts a UISpec to formatted JSX code string.
  */
 export function treeToJsx(
-  tree: Spec,
+  tree: UISpec,
   options: TreeToJsxOptions = {}
 ): string {
   const { indent = "  ", includeImports = true, wrapInComponent = true, componentName } = options;
@@ -329,7 +329,7 @@ export async function formatJsx(code: string): Promise<string> {
  * Convert tree to JSX and format with Prettier
  */
 export async function treeToFormattedJsx(
-  tree: Spec,
+  tree: UISpec,
   options: TreeToJsxOptions = {}
 ): Promise<string> {
   const jsx = treeToJsx(tree, options);

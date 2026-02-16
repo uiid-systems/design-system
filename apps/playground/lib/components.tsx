@@ -8,7 +8,7 @@
  */
 
 import type { ComponentType, ReactNode } from "react";
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "./catalog";
 import type { ComponentRegistry } from "@json-render/react";
 import { Renderer } from "@json-render/react";
 
@@ -133,7 +133,7 @@ export const registry: ComponentRegistry = {
     for (const [key, value] of Object.entries(element.props)) {
       if (key.startsWith("__slot_")) {
         const slotName = key.replace("__slot_", "");
-        const slotTree = value as { root: string; elements: Spec["elements"] };
+        const slotTree = value as { root: string; elements: UISpec["elements"] };
         // Render the slot subtree using the same registry
         slotProps[slotName] = (
           <Renderer spec={slotTree} registry={registry} />

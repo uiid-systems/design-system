@@ -34,4 +34,5 @@ export const catalog = defineCatalog(schema, {
 });
 
 export type Catalog = typeof catalog;
+export type UISpec = Catalog["_specType"];
 

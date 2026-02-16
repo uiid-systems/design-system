@@ -1,26 +1,19 @@
 "use client";
 
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
-import {
-  ScanSearchIcon,
-  CopyIcon,
-  SquareCheckIcon,
-} from "@uiid/icons";
+import { ScanSearchIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
-import { SaveButton } from "../save-button";
 import { RegistryBrowser } from "../registry-browser";
-import { SavedBlocksPanel } from "../saved-blocks-panel";
 import { RenderedSheet } from "../rendered-sheet";
 import { StatsSheet } from "../stats-sheet";
-import { NewChatButton } from "../new-chat-button";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -29,7 +22,7 @@ export const HeaderActions = () => {
   const inspecting = useChatStore((s) => s.inspecting);
   const toggleInspecting = useChatStore((s) => s.toggleInspecting);
 
-  const lastTreeRef = useRef<Spec | null>(null);
+  const lastTreeRef = useRef<UISpec | null>(null);
 
   const [copied, setCopied] = useState(false);
   const [jsxCode, setJsxCode] = useState("");
@@ -120,7 +113,6 @@ export const HeaderActions = () => {
               {copied ? <SquareCheckIcon /> : <CopyIcon />}
               <Text size={-1}>{copied ? "Copied" : "Share"}</Text>
             </Button>
-            <SaveButton />
           </Group>
 
           <Separator orientation="vertical" />
@@ -130,8 +122,6 @@ export const HeaderActions = () => {
       {/* Navigation — always visible */}
       <Group gap={1}>
         <RegistryBrowser />
-        <SavedBlocksPanel />
-        <NewChatButton />
       </Group>
     </Group>
   );

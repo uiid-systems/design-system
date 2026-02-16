@@ -24,7 +24,7 @@ import { slugify } from "@/lib/block-file";
 import type { BlockFile } from "@/lib/block-file";
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
 
-import styles from "./saved-blocks-panel.module.css";
+import styles from "./open-blocks-panel.module.css";
 
 function formatDate(timestamp: number): string {
   return new Date(timestamp).toLocaleDateString(undefined, {
@@ -35,7 +35,7 @@ function formatDate(timestamp: number): string {
   });
 }
 
-export const SavedBlocksPanel = () => {
+export const OpenBlocksPanel = () => {
   const { latestBlocks, versionCounts, remove, rename, load } =
     useSavedBlocks();
   const toastManager = useToastManager();
@@ -139,14 +139,18 @@ export const SavedBlocksPanel = () => {
       data-slot="saved-blocks-panel"
       title="Saved blocks"
       description="View and manage your saved blocks. They're stored in your browser's local storage."
-      side="right"
+      side="left"
       open={open}
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
       trigger={
-        <Button tooltip="View saved blocks (browser storage)" size="small" ghost>
+        <Button
+          tooltip="View saved blocks (browser storage)"
+          size="small"
+          variant="inverted"
+          square
+        >
           <FolderOpenIcon />
-          Saved
         </Button>
       }
     >
@@ -309,4 +313,4 @@ export const SavedBlocksPanel = () => {
     </Sheet>
   );
 };
-SavedBlocksPanel.displayName = "SavedBlocksPanel";
+OpenBlocksPanel.displayName = "OpenBlocksPanel";

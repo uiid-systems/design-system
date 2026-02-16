@@ -9,7 +9,7 @@ import { generateText, type ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 
 import { buildSystemPrompt } from "@/lib/system-prompt";
 
@@ -170,7 +170,7 @@ export async function POST(req: Request) {
     const { prompt, history, currentTree } = (await req.json()) as {
       prompt: string;
       history?: ModelMessage[];
-      currentTree?: Spec;
+      currentTree?: UISpec;
     };
 
     if (!prompt) {
