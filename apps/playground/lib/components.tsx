@@ -7,8 +7,8 @@
  * Each entry receives ComponentRenderProps from the renderer.
  */
 
-import type { ReactNode } from "react";
-import type { UITree } from "@json-render/core";
+import type { ComponentType, ReactNode } from "react";
+import type { Spec } from "@json-render/core";
 import type { ComponentRegistry } from "@json-render/react";
 import { Renderer } from "@json-render/react";
 
@@ -42,36 +42,29 @@ import { Text } from "@uiid/typography";
  *
  * json-render passes ComponentRenderProps:
  * - element: The parsed JSON element with type and props
- * - children: Rendered child elements (for hasChildren: true components)
- * - onAction: Callback for handling actions
+ * - children: Rendered child elements (for container components)
+ * - emit: Callback for emitting named events (resolved to action bindings)
  * - loading: Whether parent is loading
  */
 export const registry: ComponentRegistry = {
   // Layout components
-  Box: ({ element, children }) => <Box data-element-key={element.key} {...element.props}>{children}</Box>,
+  Box: ({ element, children }) => <Box {...element.props}>{children}</Box>,
 
-  Stack: ({ element, children }) => <Stack data-element-key={element.key} {...element.props}>{children}</Stack>,
+  Stack: ({ element, children }) => <Stack {...element.props}>{children}</Stack>,
 
-  Group: ({ element, children }) => <Group data-element-key={element.key} {...element.props}>{children}</Group>,
+  Group: ({ element, children }) => <Group {...element.props}>{children}</Group>,
 
-  Layer: ({ element, children }) => <Layer data-element-key={element.key} {...element.props}>{children}</Layer>,
+  Layer: ({ element, children }) => <Layer {...element.props}>{children}</Layer>,
 
-  Separator: ({ element, children }) => <Separator data-element-key={element.key} {...element.props}>{children || element.props.children}</Separator>,
+  Separator: ({ element, children }) => <Separator {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
-  Button: ({ element, children, onAction }) => {
-    // Destructure action to prevent it from being spread to the native button
-    // React 19 reserves "action" prop for form actions on <button> elements
+  Button: ({ element, children, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Button
-        data-element-key={element.key}
         {...props}
-        onClick={() => {
-          if (action && onAction) {
-            onAction(action);
-          }
-        }}
+        onClick={() => emit("click")}
       >
         {children}
         {props.children}
@@ -79,17 +72,12 @@ export const registry: ComponentRegistry = {
     );
   },
 
-  ToggleButton: ({ element, children, onAction }) => {
+  ToggleButton: ({ element, children, emit }) => {
     const { action, ...props } = element.props;
     return (
       <ToggleButton
-        data-element-key={element.key}
         {...props}
-        onPressedChange={() => {
-          if (action && onAction) {
-            onAction(action);
-          }
-        }}
+        onPressedChange={() => emit("click")}
       >
         {children || props.children}
       </ToggleButton>
@@ -97,19 +85,14 @@ export const registry: ComponentRegistry = {
   },
 
   // Form components
-  Form: ({ element, children, onAction }) => {
+  Form: ({ element, children, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Form
-        data-element-key={element.key}
         {...props}
         onSubmit={(event) => {
           event.preventDefault();
-          if (action && onAction) {
-            const formData = new FormData(event.currentTarget);
-            const data = Object.fromEntries(formData.entries());
-            onAction({ ...action, params: { formData: data } });
-          }
+          emit("submit");
         }}
       >
         {children}
@@ -117,120 +100,85 @@ export const registry: ComponentRegistry = {
     );
   },
 
-  Input: ({ element }) => <Input data-element-key={element.key} {...element.props} />,
+  Input: ({ element }) => <Input {...element.props} />,
 
-  Textarea: ({ element }) => <Textarea data-element-key={element.key} {...element.props} />,
+  Textarea: ({ element }) => <Textarea {...element.props} />,
 
-  Checkbox: ({ element, onAction }) => {
+  Checkbox: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Checkbox
-        data-element-key={element.key}
         {...props}
-        onCheckedChange={(checked) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { checked } });
-          }
-        }}
+        onCheckedChange={() => emit("change")}
       />
     );
   },
 
-  Select: ({ element, onAction }) => {
+  Select: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Select
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
-  Switch: ({ element, onAction }) => {
+  Switch: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Switch
-        data-element-key={element.key}
         {...props}
-        onCheckedChange={(checked) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { checked } });
-          }
-        }}
+        onCheckedChange={() => emit("change")}
       />
     );
   },
 
-  Radio: ({ element }) => <Radio data-element-key={element.key} {...element.props} />,
+  Radio: ({ element }) => <Radio {...element.props} />,
 
-  RadioGroup: ({ element, onAction }) => {
+  RadioGroup: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <RadioGroup
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
-  CheckboxGroup: ({ element, onAction }) => {
+  CheckboxGroup: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <CheckboxGroup
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
-  NumberField: ({ element, onAction }) => {
+  NumberField: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <NumberField
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
-  Slider: ({ element, onAction }) => {
+  Slider: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Slider
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
   // Typography components
   Text: ({ element, children }) => (
-    <Text data-element-key={element.key} {...element.props}>{children || element.props.children}</Text>
+    <Text {...element.props}>{children || element.props.children}</Text>
   ),
 
   // Card components
@@ -242,10 +190,10 @@ export const registry: ComponentRegistry = {
     for (const [key, value] of Object.entries(element.props)) {
       if (key.startsWith("__slot_")) {
         const slotName = key.replace("__slot_", "");
-        const slotTree = value as { root: string; elements: UITree["elements"] };
+        const slotTree = value as { root: string; elements: Spec["elements"] };
         // Render the slot subtree using the same registry
         slotProps[slotName] = (
-          <Renderer tree={slotTree} registry={registry} />
+          <Renderer spec={slotTree} registry={registry} />
         );
       } else if (key === "icon" && typeof value === "string") {
         // Handle icon prop as an icon name string
@@ -260,7 +208,7 @@ export const registry: ComponentRegistry = {
     }
 
     return (
-      <Card data-element-key={element.key} {...regularProps} {...slotProps}>
+      <Card {...regularProps} {...slotProps}>
         {children}
       </Card>
     );
@@ -268,7 +216,7 @@ export const registry: ComponentRegistry = {
 
   // Overlay components
   Modal: ({ element, children }) => (
-    <Modal data-element-key={element.key} {...element.props} trigger={children} />
+    <Modal {...element.props} trigger={children} />
   ),
 
   // Icon component (playground-only, for JSON block rendering)
@@ -277,64 +225,61 @@ export const registry: ComponentRegistry = {
     const { name, ...props } = element.props;
     const IconComponent = Icons[name as keyof typeof Icons] as LucideIcon | undefined;
     if (!IconComponent) return null;
-    return <IconComponent data-element-key={element.key} {...props} />;
+    return <IconComponent {...props} />;
   },
 
   // Simple Icon component (for brand icons like Google, GitHub, Apple, etc.)
+  // SimpleIcons exports both components (objects) and hex color strings — filter out strings
   SimpleIcon: ({ element }) => {
     const { name, ...props } = element.props;
-    const IconComponent = SimpleIcons[name as keyof typeof SimpleIcons];
-    if (!IconComponent) return null;
-    return <IconComponent data-element-key={element.key} {...props} />;
+    const value = SimpleIcons[name as keyof typeof SimpleIcons];
+    if (!value || typeof value === "string") return null;
+    const IconComponent = value as ComponentType<Record<string, unknown>>;
+    return <IconComponent {...props} />;
   },
 
   // Indicator components
   Alert: ({ element, children }) => (
-    <Alert data-element-key={element.key} {...element.props}>{children}</Alert>
+    <Alert {...element.props}>{children}</Alert>
   ),
 
-  Avatar: ({ element }) => <Avatar data-element-key={element.key} {...element.props} />,
+  Avatar: ({ element }) => <Avatar {...element.props} />,
 
   Badge: ({ element, children }) => (
-    <Badge data-element-key={element.key} {...element.props}>
+    <Badge {...element.props}>
       {children || element.props.children}
     </Badge>
   ),
 
   Kbd: ({ element, children }) => (
-    <Kbd data-element-key={element.key} {...element.props}>
+    <Kbd {...element.props}>
       {children || element.props.children}
     </Kbd>
   ),
 
   Status: ({ element, children }) => (
-    <Status data-element-key={element.key} {...element.props}>
+    <Status {...element.props}>
       {children || element.props.children}
     </Status>
   ),
 
   Timeline: ({ element, children }) => (
-    <Timeline data-element-key={element.key} {...element.props}>{children}</Timeline>
+    <Timeline {...element.props}>{children}</Timeline>
   ),
 
-  Progress: ({ element }) => <Progress data-element-key={element.key} {...element.props} />,
+  Progress: ({ element }) => <Progress {...element.props} />,
 
   // Interactive components
-  Accordion: ({ element, onAction }) => {
+  Accordion: ({ element, emit }) => {
     const { action, ...props } = element.props;
     return (
       <Accordion
-        data-element-key={element.key}
         {...props}
-        onValueChange={(value) => {
-          if (action && onAction) {
-            onAction({ ...action, params: { value } });
-          }
-        }}
+        onValueChange={() => emit("change")}
       />
     );
   },
 
   // Navigation components
-  Breadcrumbs: ({ element }) => <Breadcrumbs data-element-key={element.key} {...element.props} />,
+  Breadcrumbs: ({ element }) => <Breadcrumbs {...element.props} />,
 };

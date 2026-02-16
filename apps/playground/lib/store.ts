@@ -5,7 +5,7 @@
  * Supports shareable URLs.
  */
 
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 import type { ModelMessage } from "ai";
 import { create } from "zustand";
 
@@ -17,13 +17,13 @@ export type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
-  tree?: UITree;
+  tree?: Spec;
   timestamp: Date;
 };
 
 type ChatState = {
   messages: ChatMessage[];
-  tree: UITree | null;
+  tree: Spec | null;
   isLoading: boolean;
   error: string | null;
   activeBlockId: string | null;
@@ -35,7 +35,7 @@ type ChatState = {
 type ChatActions = {
   send: (prompt: string) => Promise<void>;
   clear: () => void;
-  setTree: (tree: UITree) => void;
+  setTree: (tree: Spec) => void;
   getShareUrl: () => string | null;
   loadFromUrlHash: () => boolean;
   pushTreeToHistory: () => void;
@@ -55,7 +55,7 @@ let abortController: AbortController | null = null;
 /**
  * Encode tree to URL-safe base64
  */
-function encodeTree(tree: UITree): string {
+function encodeTree(tree: Spec): string {
   const json = JSON.stringify(tree);
   return btoa(encodeURIComponent(json));
 }
@@ -63,12 +63,12 @@ function encodeTree(tree: UITree): string {
 /**
  * Decode tree from URL-safe base64
  */
-function decodeTree(encoded: string): UITree | null {
+function decodeTree(encoded: string): Spec | null {
   try {
     const json = decodeURIComponent(atob(encoded));
     const parsed = JSON.parse(json);
     if (parsed.root && parsed.elements) {
-      return parsed as UITree;
+      return parsed as Spec;
     }
   } catch {
     // Invalid encoding
@@ -79,7 +79,7 @@ function decodeTree(encoded: string): UITree | null {
 /**
  * Get tree from URL hash if present
  */
-function getTreeFromUrl(): UITree | null {
+function getTreeFromUrl(): Spec | null {
   if (typeof window === "undefined") return null;
   const hash = window.location.hash.slice(1);
   if (!hash) return null;
@@ -89,14 +89,14 @@ function getTreeFromUrl(): UITree | null {
 /**
  * Extract JSON tree from response text.
  */
-function extractTree(text: string): UITree | null {
+function extractTree(text: string): Spec | null {
   // Try to find JSON in code block first
   const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (codeBlockMatch) {
     try {
       const parsed = JSON.parse(codeBlockMatch[1].trim());
       if (parsed.root && parsed.elements) {
-        return parsed as UITree;
+        return parsed as Spec;
       }
     } catch {
       // Not valid JSON in code block
@@ -109,7 +109,7 @@ function extractTree(text: string): UITree | null {
     try {
       const parsed = JSON.parse(jsonMatch[0]);
       if (parsed.root && parsed.elements) {
-        return parsed as UITree;
+        return parsed as Spec;
       }
     } catch {
       // Not valid JSON
@@ -271,7 +271,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
 
       const decoder = new TextDecoder();
       let fullContent = "";
-      let finalTree: UITree | null = null;
+      let finalTree: Spec | null = null;
 
       while (true) {
         const { done, value } = await reader.read();

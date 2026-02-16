@@ -5,7 +5,8 @@
  * of component schemas or hasChildren flags.
  */
 
-import { createCatalog } from "@json-render/core";
+import { defineCatalog } from "@json-render/core";
+import { schema } from "@json-render/react/schema";
 import { getCatalogEntries } from "@uiid/registry";
 
 /**
@@ -14,7 +15,7 @@ import { getCatalogEntries } from "@uiid/registry";
  * Defines what components the AI can generate and their prop schemas.
  * The AI will only generate JSON that matches these schemas.
  */
-export const catalog = createCatalog({
+export const catalog = defineCatalog(schema, {
   components: getCatalogEntries(),
   actions: {
     submit: {

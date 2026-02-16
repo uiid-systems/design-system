@@ -8,8 +8,7 @@
  * while architectural guidelines are hand-maintained.
  */
 
-import { generateCatalogPrompt } from "@json-render/core";
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 
 import { generateComponentReference } from "@uiid/registry";
 
@@ -45,7 +44,6 @@ UIID components are **precomposed** - they handle their own internal structure. 
   "root": "card",
   "elements": {
     "card": {
-      "key": "card",
       "type": "Card",
       "props": {
         "title": "Title",
@@ -54,10 +52,8 @@ UIID components are **precomposed** - they handle their own internal structure. 
       "children": ["content"]
     },
     "content": {
-      "key": "content",
       "type": "Text",
-      "props": { "children": "Card body content here" },
-      "parentKey": "card"
+      "props": { "children": "Card body content here" }
     }
   }
 }
@@ -115,22 +111,17 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
   "root": "root-key",
   "elements": {
     "root-key": {
-      "key": "root-key",
       "type": "Stack",
       "props": { "gap": 4 },
       "children": ["child-1", "child-2"]
     },
     "child-1": {
-      "key": "child-1",
       "type": "Text",
-      "props": { "children": "Hello World" },
-      "parentKey": "root-key"
+      "props": { "children": "Hello World" }
     },
     "child-2": {
-      "key": "child-2",
       "type": "Button",
-      "props": { "children": "Click Me" },
-      "parentKey": "root-key"
+      "props": { "children": "Click Me" }
     }
   }
 }
@@ -140,11 +131,9 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 
 | Property    | Type     | Required | Description                                            |
 | ----------- | -------- | -------- | ------------------------------------------------------ |
-| key         | string   | Yes      | Unique identifier for the element                      |
 | type        | string   | Yes      | Component type from the registry                       |
 | props       | object   | Yes      | Component props (can be empty {})                      |
 | children    | string[] | No       | Array of child element keys (for container components) |
-| parentKey   | string   | No       | Key of parent element (null for root)                  |
 
 ---
 
@@ -159,41 +148,30 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
   "root": "form",
   "elements": {
     "form": {
-      "key": "form",
       "type": "Stack",
       "props": { "gap": 4, "ax": "stretch" },
       "children": ["email", "password", "actions"]
     },
     "email": {
-      "key": "email",
       "type": "Input",
-      "props": { "label": "Email", "type": "email", "name": "email", "required": true },
-      "parentKey": "form"
+      "props": { "label": "Email", "type": "email", "name": "email", "required": true }
     },
     "password": {
-      "key": "password",
       "type": "Input",
-      "props": { "label": "Password", "type": "password", "name": "password", "required": true },
-      "parentKey": "form"
+      "props": { "label": "Password", "type": "password", "name": "password", "required": true }
     },
     "actions": {
-      "key": "actions",
       "type": "Group",
       "props": { "gap": 2, "ax": "end" },
-      "children": ["cancel", "submit"],
-      "parentKey": "form"
+      "children": ["cancel", "submit"]
     },
     "cancel": {
-      "key": "cancel",
       "type": "Button",
-      "props": { "variant": "subtle", "children": "Cancel" },
-      "parentKey": "actions"
+      "props": { "variant": "subtle", "children": "Cancel" }
     },
     "submit": {
-      "key": "submit",
       "type": "Button",
-      "props": { "children": "Sign In" },
-      "parentKey": "actions"
+      "props": { "children": "Sign In" }
     }
   }
 }
@@ -206,28 +184,21 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
   "root": "grid",
   "elements": {
     "grid": {
-      "key": "grid",
       "type": "Group",
       "props": { "gap": 4, "evenly": true },
       "children": ["card-1", "card-2", "card-3"]
     },
     "card-1": {
-      "key": "card-1",
       "type": "Card",
-      "props": { "title": "Feature 1", "description": "Description here" },
-      "parentKey": "grid"
+      "props": { "title": "Feature 1", "description": "Description here" }
     },
     "card-2": {
-      "key": "card-2",
       "type": "Card",
-      "props": { "title": "Feature 2", "description": "Description here" },
-      "parentKey": "grid"
+      "props": { "title": "Feature 2", "description": "Description here" }
     },
     "card-3": {
-      "key": "card-3",
       "type": "Card",
-      "props": { "title": "Feature 3", "description": "Description here" },
-      "parentKey": "grid"
+      "props": { "title": "Feature 3", "description": "Description here" }
     }
   }
 }
@@ -249,11 +220,10 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 ### DON'T
 1. Don't nest children objects - use the flat structure with keys
 2. Don't use arbitrary spacing values - stick to the defined scale
-3. Don't skip the key property - every element needs a unique key
-4. Don't forget parentKey - all non-root elements need this
-5. Don't use raw strings - all text must be in a Text component
-6. Don't use style={{}} objects - use component props
-7. Don't build components from subparts - use precomposed props
+3. Don't use raw strings - all text must be in a Text component
+4. Don't use style={{}} objects - use component props
+5. Don't build components from subparts - use precomposed props
+6. Don't add "key" or "parentKey" properties on elements - the key is the object key in the elements map, and parent relationships are inferred from children arrays
 
 ### Spacing Scale Reference
 - 0 = 0px, 1 = 4px, 2 = 8px, 3 = 12px, 4 = 16px
@@ -264,10 +234,8 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 ## Validation Checklist
 
 Before outputting a tree, verify:
-- root field matches the key of the root element
-- Every element has a unique key
+- root field matches a key in the elements map
 - Every element has type and props
-- All non-root elements have parentKey
 - All children arrays contain valid keys that exist in elements
 - Text content is in props.children, not as structural children
 - No style prop anywhere - use layout props instead
@@ -281,9 +249,9 @@ Before outputting a tree, verify:
  * @param currentTree - Optional current UI tree for context during refinement
  * @returns Complete system prompt string
  */
-export function buildSystemPrompt(currentTree?: UITree): string {
+export function buildSystemPrompt(currentTree?: Spec): string {
   // Get component documentation from json-render catalog
-  const catalogPrompt = generateCatalogPrompt(catalog);
+  const catalogPrompt = catalog.prompt();
 
   // Get component reference from registry (generated from schemas)
   const componentReference = generateComponentReference();
@@ -338,4 +306,4 @@ When the user asks for changes, modify the existing tree - add, remove, or updat
   return prompt;
 }
 
-export type { UITree };
+export type { Spec };
