@@ -147,7 +147,7 @@ export const OpenBlocksPanel = () => {
         <Button
           tooltip="View saved blocks (browser storage)"
           size="small"
-          variant="inverted"
+          ghost
           square
         >
           <FolderOpenIcon />

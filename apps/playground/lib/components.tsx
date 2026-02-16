@@ -38,6 +38,13 @@ import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 /**
+ * Get the element key injected by useEnrichedSpec in page.tsx.
+ * Used to stamp data-element-key on DOM nodes for the inspector.
+ */
+const keyOf = (element: { key?: string }) =>
+  (element as unknown as { key?: string }).key;
+
+/**
  * Registry mapping component names to UIID implementations.
  *
  * json-render passes ComponentRenderProps:
@@ -45,29 +52,31 @@ import { Text } from "@uiid/typography";
  * - children: Rendered child elements (for container components)
  * - emit: Callback for emitting named events (resolved to action bindings)
  * - loading: Whether parent is loading
+ *
+ * Each entry adds data-element-key for the element inspector overlay.
  */
 export const registry: ComponentRegistry = {
   // Layout components
-  Box: ({ element, children }) => <Box {...element.props}>{children}</Box>,
+  Box: ({ element, children }) => <Box data-element-key={keyOf(element)} {...element.props}>{children}</Box>,
 
-  Stack: ({ element, children }) => <Stack {...element.props}>{children}</Stack>,
+  Stack: ({ element, children }) => <Stack data-element-key={keyOf(element)} {...element.props}>{children}</Stack>,
 
-  Group: ({ element, children }) => <Group {...element.props}>{children}</Group>,
+  Group: ({ element, children }) => <Group data-element-key={keyOf(element)} {...element.props}>{children}</Group>,
 
-  Layer: ({ element, children }) => <Layer {...element.props}>{children}</Layer>,
+  Layer: ({ element, children }) => <Layer data-element-key={keyOf(element)} {...element.props}>{children}</Layer>,
 
-  Separator: ({ element, children }) => <Separator {...element.props}>{children || element.props.children}</Separator>,
+  Separator: ({ element, children }) => <Separator data-element-key={keyOf(element)} {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
   Button: ({ element, children, emit }) => (
-    <Button {...element.props} onClick={() => emit("click")}>
+    <Button data-element-key={keyOf(element)} {...element.props} onClick={() => emit("click")}>
       {children}
       {element.props.children}
     </Button>
   ),
 
   ToggleButton: ({ element, children, emit }) => (
-    <ToggleButton {...element.props} onPressedChange={() => emit("click")}>
+    <ToggleButton data-element-key={keyOf(element)} {...element.props} onPressedChange={() => emit("click")}>
       {children || element.props.children}
     </ToggleButton>
   ),
@@ -75,6 +84,7 @@ export const registry: ComponentRegistry = {
   // Form components
   Form: ({ element, children, emit }) => (
     <Form
+      data-element-key={keyOf(element)}
       {...element.props}
       onSubmit={(event) => {
         event.preventDefault();
@@ -85,43 +95,43 @@ export const registry: ComponentRegistry = {
     </Form>
   ),
 
-  Input: ({ element }) => <Input {...element.props} />,
+  Input: ({ element }) => <Input data-element-key={keyOf(element)} {...element.props} />,
 
-  Textarea: ({ element }) => <Textarea {...element.props} />,
+  Textarea: ({ element }) => <Textarea data-element-key={keyOf(element)} {...element.props} />,
 
   Checkbox: ({ element, emit }) => (
-    <Checkbox {...element.props} onCheckedChange={() => emit("change")} />
+    <Checkbox data-element-key={keyOf(element)} {...element.props} onCheckedChange={() => emit("change")} />
   ),
 
   Select: ({ element, emit }) => (
-    <Select {...element.props} onValueChange={() => emit("change")} />
+    <Select data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   Switch: ({ element, emit }) => (
-    <Switch {...element.props} onCheckedChange={() => emit("change")} />
+    <Switch data-element-key={keyOf(element)} {...element.props} onCheckedChange={() => emit("change")} />
   ),
 
-  Radio: ({ element }) => <Radio {...element.props} />,
+  Radio: ({ element }) => <Radio data-element-key={keyOf(element)} {...element.props} />,
 
   RadioGroup: ({ element, emit }) => (
-    <RadioGroup {...element.props} onValueChange={() => emit("change")} />
+    <RadioGroup data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   CheckboxGroup: ({ element, emit }) => (
-    <CheckboxGroup {...element.props} onValueChange={() => emit("change")} />
+    <CheckboxGroup data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   NumberField: ({ element, emit }) => (
-    <NumberField {...element.props} onValueChange={() => emit("change")} />
+    <NumberField data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   Slider: ({ element, emit }) => (
-    <Slider {...element.props} onValueChange={() => emit("change")} />
+    <Slider data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   // Typography components
   Text: ({ element, children }) => (
-    <Text {...element.props}>{children || element.props.children}</Text>
+    <Text data-element-key={keyOf(element)} {...element.props}>{children || element.props.children}</Text>
   ),
 
   // Card components
@@ -151,7 +161,7 @@ export const registry: ComponentRegistry = {
     }
 
     return (
-      <Card {...regularProps} {...slotProps}>
+      <Card data-element-key={keyOf(element)} {...regularProps} {...slotProps}>
         {children}
       </Card>
     );
@@ -159,7 +169,7 @@ export const registry: ComponentRegistry = {
 
   // Overlay components
   Modal: ({ element, children }) => (
-    <Modal {...element.props} trigger={children} />
+    <Modal data-element-key={keyOf(element)} {...element.props} trigger={children} />
   ),
 
   // Icon component (playground-only, for JSON block rendering)
@@ -168,7 +178,7 @@ export const registry: ComponentRegistry = {
     const { name, ...props } = element.props;
     const IconComponent = Icons[name as keyof typeof Icons] as LucideIcon | undefined;
     if (!IconComponent) return null;
-    return <IconComponent {...props} />;
+    return <IconComponent data-element-key={keyOf(element)} {...props} />;
   },
 
   // Simple Icon component (for brand icons like Google, GitHub, Apple, etc.)
@@ -178,45 +188,45 @@ export const registry: ComponentRegistry = {
     const value = SimpleIcons[name as keyof typeof SimpleIcons];
     if (!value || typeof value === "string") return null;
     const IconComponent = value as ComponentType<Record<string, unknown>>;
-    return <IconComponent {...props} />;
+    return <IconComponent data-element-key={keyOf(element)} {...props} />;
   },
 
   // Indicator components
   Alert: ({ element, children }) => (
-    <Alert {...element.props}>{children}</Alert>
+    <Alert data-element-key={keyOf(element)} {...element.props}>{children}</Alert>
   ),
 
-  Avatar: ({ element }) => <Avatar {...element.props} />,
+  Avatar: ({ element }) => <Avatar data-element-key={keyOf(element)} {...element.props} />,
 
   Badge: ({ element, children }) => (
-    <Badge {...element.props}>
+    <Badge data-element-key={keyOf(element)} {...element.props}>
       {children || element.props.children}
     </Badge>
   ),
 
   Kbd: ({ element, children }) => (
-    <Kbd {...element.props}>
+    <Kbd data-element-key={keyOf(element)} {...element.props}>
       {children || element.props.children}
     </Kbd>
   ),
 
   Status: ({ element, children }) => (
-    <Status {...element.props}>
+    <Status data-element-key={keyOf(element)} {...element.props}>
       {children || element.props.children}
     </Status>
   ),
 
   Timeline: ({ element, children }) => (
-    <Timeline {...element.props}>{children}</Timeline>
+    <Timeline data-element-key={keyOf(element)} {...element.props}>{children}</Timeline>
   ),
 
-  Progress: ({ element }) => <Progress {...element.props} />,
+  Progress: ({ element }) => <Progress data-element-key={keyOf(element)} {...element.props} />,
 
   // Interactive components
   Accordion: ({ element, emit }) => (
-    <Accordion {...element.props} onValueChange={() => emit("change")} />
+    <Accordion data-element-key={keyOf(element)} {...element.props} onValueChange={() => emit("change")} />
   ),
 
   // Navigation components
-  Breadcrumbs: ({ element }) => <Breadcrumbs {...element.props} />,
+  Breadcrumbs: ({ element }) => <Breadcrumbs data-element-key={keyOf(element)} {...element.props} />,
 };

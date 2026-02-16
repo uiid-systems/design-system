@@ -13,11 +13,7 @@
           "gap": 8,
           "ax": "stretch"
         },
-        "children": [
-          "notifications-section",
-          "privacy-section",
-          "actions"
-        ]
+        "children": ["notifications-section", "privacy-section", "actions"]
       },
       "notifications-section": {
         "type": "Stack",
@@ -37,6 +33,7 @@
         "props": {
           "children": "Notifications",
           "size": 3,
+          "mb": 4,
           "weight": "bold"
         }
       },
@@ -85,6 +82,7 @@
         "props": {
           "children": "Privacy",
           "size": 3,
+          "mb": 4,
           "weight": "bold"
         }
       },
@@ -121,10 +119,7 @@
           "gap": 3,
           "ax": "end"
         },
-        "children": [
-          "cancel-button",
-          "save-button"
-        ]
+        "children": ["cancel-button", "save-button"]
       },
       "cancel-button": {
         "type": "Button",

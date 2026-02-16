@@ -41,7 +41,7 @@ export const NewChatButton = () => {
           tooltip="Clear and start a new block"
           disabled={messages.length === 0 && !tree && !component}
           size="small"
-          variant="inverted"
+          ghost
           square
         >
           <SquarePenIcon />

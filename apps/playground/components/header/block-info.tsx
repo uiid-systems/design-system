@@ -69,7 +69,7 @@ export const BlockInfo = () => {
               tooltip="Previous block"
               onClick={() => navigateRegistryBlock("prev")}
               size="xsmall"
-              variant="inverted"
+              ghost
               square
             >
               <ChevronLeftIcon />
@@ -78,7 +78,7 @@ export const BlockInfo = () => {
               tooltip="Next block"
               onClick={() => navigateRegistryBlock("next")}
               size="xsmall"
-              variant="inverted"
+              ghost
               square
             >
               <ChevronRightIcon />

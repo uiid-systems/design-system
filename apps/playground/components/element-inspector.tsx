@@ -32,6 +32,7 @@ type InspectedInfo = {
   type: string;
   props: Record<string, unknown>;
   rect: DOMRect;
+  cursor: { x: number; y: number };
 };
 
 export const ElementInspector = ({
@@ -40,6 +41,7 @@ export const ElementInspector = ({
   containerRef: React.RefObject<HTMLElement | null>;
 }) => {
   const inspecting = useChatStore((s) => s.inspecting);
+  const toggleInspecting = useChatStore((s) => s.toggleInspecting);
   const tree = useChatStore((s) => s.tree);
   const [info, setInfo] = useState<InspectedInfo | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -65,10 +67,17 @@ export const ElementInspector = ({
         type: element.type,
         props: element.props as Record<string, unknown>,
         rect: target.getBoundingClientRect(),
+        cursor: { x: e.clientX, y: e.clientY },
       });
     },
     [tree],
   );
+
+  const handlePointerMove = useCallback((e: PointerEvent) => {
+    setInfo((prev) =>
+      prev ? { ...prev, cursor: { x: e.clientX, y: e.clientY } } : prev,
+    );
+  }, []);
 
   const handlePointerLeave = useCallback(() => {
     setInfo(null);
@@ -78,13 +87,30 @@ export const ElementInspector = ({
     const container = containerRef.current;
     if (!inspecting || !container) return;
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        toggleInspecting();
+      }
+    };
+
     container.addEventListener("pointerover", handlePointerOver);
+    container.addEventListener("pointermove", handlePointerMove);
     container.addEventListener("pointerleave", handlePointerLeave);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       container.removeEventListener("pointerover", handlePointerOver);
+      container.removeEventListener("pointermove", handlePointerMove);
       container.removeEventListener("pointerleave", handlePointerLeave);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [inspecting, containerRef, handlePointerOver, handlePointerLeave]);
+  }, [
+    inspecting,
+    containerRef,
+    handlePointerOver,
+    handlePointerMove,
+    handlePointerLeave,
+    toggleInspecting,
+  ]);
 
   if (!inspecting || !info) return null;
 
@@ -98,9 +124,9 @@ export const ElementInspector = ({
   const category = entry?.category;
   const CategoryIcon = category ? categoryIcons[category] : undefined;
 
-  // Position the popover above the hovered element
-  const top = info.rect.top - 8;
-  const left = info.rect.left + info.rect.width / 2;
+  // Position the popover above the cursor
+  const top = info.cursor.y - 24;
+  const left = info.cursor.x;
 
   return (
     <>
