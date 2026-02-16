@@ -52,49 +52,6 @@ export const BlockInfo = () => {
 
   const canNavigate = activeRegistryBlock && registryBlocks.length > 1;
 
-  // Registry block: show name, version, and prev/next navigation
-  // if (activeRegistryBlock) {
-  //   return (
-  //     <BlockInfoContainer>
-  //       {canNavigate && (
-  //         <Button
-  //           tooltip="Previous block"
-  //           onClick={() => navigateRegistryBlock("prev")}
-  //           size="xsmall"
-  //           variant="inverted"
-  //           square
-  //         >
-  //           <ChevronLeftIcon />
-  //         </Button>
-  //       )}
-  //       {canNavigate && (
-  //         <Button
-  //           tooltip="Next block"
-  //           onClick={() => navigateRegistryBlock("next")}
-  //           size="xsmall"
-  //           variant="inverted"
-  //           square
-  //         >
-  //           <ChevronRightIcon />
-  //         </Button>
-  //       )}
-
-  //       <Separator orientation="vertical" mr={4} />
-
-  //       <NewChatButton />
-  //       <OpenBlocksPanel />
-  //       <SaveButton />
-
-  //       <Separator orientation="vertical" mr={4} />
-
-  //       <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
-  //       <Text size={-1} shade="muted">
-  //         v{activeRegistryBlock.version} · registry
-  //       </Text>
-  //     </BlockInfoContainer>
-  //   );
-  // }
-
   return (
     <BlockInfoContainer>
       <Group>
