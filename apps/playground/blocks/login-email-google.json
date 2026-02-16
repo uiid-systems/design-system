@@ -30,6 +30,7 @@
         "props": {
           "children": "Log in or create account",
           "size": 4,
+          "mb": 4,
           "weight": "bold",
           "align": "center"
         },
@@ -59,7 +60,7 @@
         "key": "divider",
         "type": "Separator",
         "props": {
-          "children": "OR WITH"
+          "children": "or with"
         },
         "parentKey": "login-form"
       },

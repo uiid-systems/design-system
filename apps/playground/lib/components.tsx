@@ -56,7 +56,7 @@ export const registry: ComponentRegistry = {
 
   Layer: ({ element, children }) => <Layer data-element-key={element.key} {...element.props}>{children}</Layer>,
 
-  Separator: ({ element, children }) => <Separator data-element-key={element.key} {...element.props}>{children}</Separator>,
+  Separator: ({ element, children }) => <Separator data-element-key={element.key} {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
   Button: ({ element, children, onAction }) => {
