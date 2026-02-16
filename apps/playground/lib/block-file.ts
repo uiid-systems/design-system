@@ -1,4 +1,4 @@
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 
 /**
  * Schema for a block JSON file stored in the blocks/ directory.
@@ -16,7 +16,7 @@ export type BlockFile = {
   /** Tags for categorization (not yet surfaced in UI) */
   tags: string[];
   /** The UI tree */
-  tree: UITree;
+  tree: Spec;
   /** ISO 8601 timestamps */
   createdAt: string;
   updatedAt: string;

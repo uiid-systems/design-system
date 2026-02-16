@@ -48,7 +48,7 @@ export const AppShell = ({ children }: AppShellProps) => {
     <ToastProvider>
       <JSONUIProvider
         registry={registry}
-        actionHandlers={{
+        handlers={{
           submit: async () => {
             alert("Submit action triggered!");
           },

@@ -8,16 +8,17 @@
     "root": "registration-card",
     "elements": {
       "registration-card": {
-        "key": "registration-card",
         "type": "Card",
         "props": {
           "title": "Register to workspace",
           "description": "Take a few moments to register for your company's workspace"
         },
-        "children": ["form-fields", "card-footer"]
+        "children": [
+          "form-fields",
+          "card-footer"
+        ]
       },
       "form-fields": {
-        "key": "form-fields",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -29,124 +30,109 @@
           "email-field",
           "address-field",
           "location-row"
-        ],
-        "parentKey": "registration-card"
+        ]
       },
       "name-row": {
-        "key": "name-row",
         "type": "Group",
         "props": {
           "gap": 3,
           "evenly": true
         },
-        "children": ["first-name", "last-name"],
-        "parentKey": "form-fields"
+        "children": [
+          "first-name",
+          "last-name"
+        ]
       },
       "first-name": {
-        "key": "first-name",
         "type": "Input",
         "props": {
           "label": "First name",
           "placeholder": "First name",
           "required": true
-        },
-        "parentKey": "name-row"
+        }
       },
       "last-name": {
-        "key": "last-name",
         "type": "Input",
         "props": {
           "label": "Last name",
           "placeholder": "Last name",
           "required": true
-        },
-        "parentKey": "name-row"
+        }
       },
       "email-field": {
-        "key": "email-field",
         "type": "Input",
         "props": {
           "label": "Email",
           "placeholder": "Email",
           "type": "email",
           "required": true
-        },
-        "parentKey": "form-fields"
+        }
       },
       "address-field": {
-        "key": "address-field",
         "type": "Input",
         "props": {
           "label": "Address",
           "placeholder": "Address"
-        },
-        "parentKey": "form-fields"
+        }
       },
       "location-row": {
-        "key": "location-row",
         "type": "Group",
         "props": {
           "gap": 3,
           "evenly": true
         },
-        "children": ["city-field", "state-field", "postal-code-field"],
-        "parentKey": "form-fields"
+        "children": [
+          "city-field",
+          "state-field",
+          "postal-code-field"
+        ]
       },
       "city-field": {
-        "key": "city-field",
         "type": "Input",
         "props": {
           "label": "City",
           "placeholder": "City"
-        },
-        "parentKey": "location-row"
+        }
       },
       "state-field": {
-        "key": "state-field",
         "type": "Input",
         "props": {
           "label": "State",
           "placeholder": "State"
-        },
-        "parentKey": "location-row"
+        }
       },
       "postal-code-field": {
-        "key": "postal-code-field",
         "type": "Input",
         "props": {
           "label": "Postal code",
           "placeholder": "Postal code"
-        },
-        "parentKey": "location-row"
+        }
       },
       "card-footer": {
-        "key": "card-footer",
         "type": "Group",
         "props": {
           "gap": 2,
           "fullwidth": true,
           "ax": "end"
         },
-        "children": ["cancel-button", "submit-button"],
-        "parentKey": "registration-card",
+        "children": [
+          "cancel-button",
+          "submit-button"
+        ],
         "slot": "footer"
       },
       "cancel-button": {
-        "key": "cancel-button",
         "type": "Button",
         "props": {
           "ghost": true,
           "children": "Cancel"
-        },
-        "parentKey": "card-footer"
+        }
       },
       "submit-button": {
-        "key": "submit-button",
         "type": "Button",
         "props": {
           "children": "Submit"
-        },
-        "parentKey": "card-footer"
+        }
       }
     }
   },

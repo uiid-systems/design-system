@@ -9,7 +9,7 @@ import { generateText, type ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 
 import { buildSystemPrompt } from "@/lib/system-prompt";
 
@@ -44,35 +44,26 @@ const MOCK_RESPONSES: Record<string, string> = {
   "root": "login-form",
   "elements": {
     "login-form": {
-      "key": "login-form",
       "type": "Card",
       "props": { "title": "Sign In", "description": "Enter your credentials to continue" },
       "children": ["form-fields"]
     },
     "form-fields": {
-      "key": "form-fields",
       "type": "Stack",
       "props": { "gap": 4, "ax": "stretch" },
-      "children": ["email-input", "password-input", "submit-btn"],
-      "parentKey": "login-form"
+      "children": ["email-input", "password-input", "submit-btn"]
     },
     "email-input": {
-      "key": "email-input",
       "type": "Input",
-      "props": { "label": "Email", "type": "email", "placeholder": "you@example.com", "required": true },
-      "parentKey": "form-fields"
+      "props": { "label": "Email", "type": "email", "placeholder": "you@example.com", "required": true }
     },
     "password-input": {
-      "key": "password-input",
       "type": "Input",
-      "props": { "label": "Password", "type": "password", "placeholder": "Enter your password", "required": true },
-      "parentKey": "form-fields"
+      "props": { "label": "Password", "type": "password", "placeholder": "Enter your password", "required": true }
     },
     "submit-btn": {
-      "key": "submit-btn",
       "type": "Button",
-      "props": { "children": "Sign In", "fullwidth": true },
-      "parentKey": "form-fields"
+      "props": { "children": "Sign In", "fullwidth": true }
     }
   }
 }
@@ -84,41 +75,30 @@ const MOCK_RESPONSES: Record<string, string> = {
   "root": "pricing",
   "elements": {
     "pricing": {
-      "key": "pricing",
       "type": "Stack",
       "props": { "gap": 4 },
       "children": ["heading", "cards"]
     },
     "heading": {
-      "key": "heading",
       "type": "Text",
-      "props": { "size": 5, "weight": "bold", "children": "Choose Your Plan" },
-      "parentKey": "pricing"
+      "props": { "size": 5, "weight": "bold", "children": "Choose Your Plan" }
     },
     "cards": {
-      "key": "cards",
       "type": "Group",
       "props": { "gap": 4, "evenly": true },
-      "children": ["basic", "pro", "enterprise"],
-      "parentKey": "pricing"
+      "children": ["basic", "pro", "enterprise"]
     },
     "basic": {
-      "key": "basic",
       "type": "Card",
-      "props": { "title": "Basic", "description": "$9/month - Perfect for individuals" },
-      "parentKey": "cards"
+      "props": { "title": "Basic", "description": "$9/month - Perfect for individuals" }
     },
     "pro": {
-      "key": "pro",
       "type": "Card",
-      "props": { "title": "Pro", "description": "$29/month - Great for teams", "tone": "info" },
-      "parentKey": "cards"
+      "props": { "title": "Pro", "description": "$29/month - Great for teams", "tone": "info" }
     },
     "enterprise": {
-      "key": "enterprise",
       "type": "Card",
-      "props": { "title": "Enterprise", "description": "$99/month - For large organizations" },
-      "parentKey": "cards"
+      "props": { "title": "Enterprise", "description": "$99/month - For large organizations" }
     }
   }
 }
@@ -130,35 +110,26 @@ const MOCK_RESPONSES: Record<string, string> = {
   "root": "settings",
   "elements": {
     "settings": {
-      "key": "settings",
       "type": "Card",
       "props": { "title": "Settings", "description": "Manage your preferences" },
       "children": ["options"]
     },
     "options": {
-      "key": "options",
       "type": "Stack",
       "props": { "gap": 4, "ax": "stretch" },
-      "children": ["notifications", "dark-mode", "analytics"],
-      "parentKey": "settings"
+      "children": ["notifications", "dark-mode", "analytics"]
     },
     "notifications": {
-      "key": "notifications",
       "type": "Switch",
-      "props": { "label": "Email Notifications", "description": "Receive updates via email" },
-      "parentKey": "options"
+      "props": { "label": "Email Notifications", "description": "Receive updates via email" }
     },
     "dark-mode": {
-      "key": "dark-mode",
       "type": "Switch",
-      "props": { "label": "Dark Mode", "description": "Use dark theme" },
-      "parentKey": "options"
+      "props": { "label": "Dark Mode", "description": "Use dark theme" }
     },
     "analytics": {
-      "key": "analytics",
       "type": "Switch",
-      "props": { "label": "Analytics", "description": "Help improve the product" },
-      "parentKey": "options"
+      "props": { "label": "Analytics", "description": "Help improve the product" }
     }
   }
 }
@@ -199,7 +170,7 @@ export async function POST(req: Request) {
     const { prompt, history, currentTree } = (await req.json()) as {
       prompt: string;
       history?: ModelMessage[];
-      currentTree?: UITree;
+      currentTree?: Spec;
     };
 
     if (!prompt) {

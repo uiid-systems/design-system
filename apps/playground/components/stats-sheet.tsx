@@ -1,5 +1,5 @@
 import { countComponents, type ComponentCount } from "@uiid/registry";
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 
 import { Button } from "@uiid/buttons";
 import { BarChart3Icon } from "@uiid/icons";
@@ -11,7 +11,7 @@ import { useChatStore } from "@/lib/store";
 
 export const StatsSheet = () => {
   const tree = useChatStore((s) => s.tree);
-  const stats = tree ? countComponents(tree as UITree) : null;
+  const stats = tree ? countComponents(tree as Spec) : null;
 
   return (
     <Sheet

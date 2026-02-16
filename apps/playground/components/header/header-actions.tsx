@@ -1,6 +1,6 @@
 "use client";
 
-import type { UITree } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
@@ -24,7 +24,7 @@ export const HeaderActions = () => {
   const inspecting = useChatStore((s) => s.inspecting);
   const toggleInspecting = useChatStore((s) => s.toggleInspecting);
 
-  const lastTreeRef = useRef<UITree | null>(null);
+  const lastTreeRef = useRef<Spec | null>(null);
 
   const [copied, setCopied] = useState(false);
   const [jsxCode, setJsxCode] = useState("");

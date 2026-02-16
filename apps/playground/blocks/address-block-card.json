@@ -8,7 +8,6 @@
     "root": "address-form",
     "elements": {
       "address-form": {
-        "key": "address-form",
         "type": "Card",
         "props": {
           "title": "Billing Address",
@@ -19,7 +18,6 @@
         ]
       },
       "form-wrapper": {
-        "key": "form-wrapper",
         "type": "Stack",
         "props": {
           "gap": 6,
@@ -31,11 +29,9 @@
           "form-content",
           "shipping-checkbox",
           "form-actions"
-        ],
-        "parentKey": "address-form"
+        ]
       },
       "form-content": {
-        "key": "form-content",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -48,11 +44,9 @@
           "street2-field",
           "location-row",
           "zipcode-field"
-        ],
-        "parentKey": "form-wrapper"
+        ]
       },
       "name-row": {
-        "key": "name-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -61,11 +55,9 @@
         "children": [
           "first-name-field",
           "last-name-field"
-        ],
-        "parentKey": "form-content"
+        ]
       },
       "first-name-field": {
-        "key": "first-name-field",
         "type": "Input",
         "props": {
           "label": "First Name",
@@ -74,11 +66,9 @@
           "placeholder": "First name",
           "required": true,
           "fullwidth": true
-        },
-        "parentKey": "name-row"
+        }
       },
       "last-name-field": {
-        "key": "last-name-field",
         "type": "Input",
         "props": {
           "label": "Last Name",
@@ -87,11 +77,9 @@
           "placeholder": "Last name",
           "required": true,
           "fullwidth": true
-        },
-        "parentKey": "name-row"
+        }
       },
       "street-field": {
-        "key": "street-field",
         "type": "Input",
         "props": {
           "label": "Street Address",
@@ -100,11 +88,9 @@
           "placeholder": "123 Main Street",
           "required": true,
           "fullwidth": true
-        },
-        "parentKey": "form-content"
+        }
       },
       "street2-field": {
-        "key": "street2-field",
         "type": "Input",
         "props": {
           "label": "Apartment, Suite, etc.",
@@ -112,11 +98,9 @@
           "name": "street2",
           "placeholder": "Apt 4B (optional)",
           "fullwidth": true
-        },
-        "parentKey": "form-content"
+        }
       },
       "location-row": {
-        "key": "location-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -125,11 +109,9 @@
         "children": [
           "city-field",
           "state-field"
-        ],
-        "parentKey": "form-content"
+        ]
       },
       "city-field": {
-        "key": "city-field",
         "type": "Input",
         "props": {
           "label": "City",
@@ -138,11 +120,9 @@
           "placeholder": "New York",
           "required": true,
           "fullwidth": true
-        },
-        "parentKey": "location-row"
+        }
       },
       "state-field": {
-        "key": "state-field",
         "type": "Select",
         "props": {
           "label": "State",
@@ -352,11 +332,9 @@
               "value": "WY"
             }
           ]
-        },
-        "parentKey": "location-row"
+        }
       },
       "zipcode-field": {
-        "key": "zipcode-field",
         "type": "Input",
         "props": {
           "label": "ZIP Code",
@@ -365,21 +343,17 @@
           "placeholder": "12345",
           "required": true,
           "fullwidth": true
-        },
-        "parentKey": "form-content"
+        }
       },
       "shipping-checkbox": {
-        "key": "shipping-checkbox",
         "type": "Checkbox",
         "props": {
           "label": "Use this address for shipping",
           "name": "sameAsShipping",
           "defaultChecked": true
-        },
-        "parentKey": "form-wrapper"
+        }
       },
       "form-actions": {
-        "key": "form-actions",
         "type": "Group",
         "props": {
           "gap": 2,
@@ -388,25 +362,20 @@
         "children": [
           "cancel-button",
           "save-button"
-        ],
-        "parentKey": "form-wrapper"
+        ]
       },
       "cancel-button": {
-        "key": "cancel-button",
         "type": "Button",
         "props": {
           "variant": "subtle",
           "children": "Cancel"
-        },
-        "parentKey": "form-actions"
+        }
       },
       "save-button": {
-        "key": "save-button",
         "type": "Button",
         "props": {
           "children": "Save Address"
-        },
-        "parentKey": "form-actions"
+        }
       }
     }
   },

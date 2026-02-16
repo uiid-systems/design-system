@@ -10,13 +10,13 @@ import { ElementInspector } from "@/components/element-inspector";
 // import { LandingScreen } from "@/components/landing-screen";
 
 export default function PlaygroundPage() {
-  const tree = useChatStore((s) => s.tree);
+  const spec = useChatStore((s) => s.tree);
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <RenderedContainer ref={containerRef}>
-      {/* {tree ? <Renderer tree={tree} registry={registry} /> : <LandingScreen />} */}
-      <Renderer tree={tree} registry={registry} />
+      {/* {spec ? <Renderer spec={spec} registry={registry} /> : <LandingScreen />} */}
+      <Renderer spec={spec} registry={registry} />
       <ElementInspector containerRef={containerRef} />
     </RenderedContainer>
   );
