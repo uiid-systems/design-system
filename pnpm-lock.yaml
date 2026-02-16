@@ -269,9 +269,6 @@ importers:
       '@ai-sdk/anthropic':
         specifier: ^3.0.34
         version: 3.0.34(zod@4.3.6)
-      '@ai-sdk/openai':
-        specifier: ^3.0.24
-        version: 3.0.24(zod@4.3.6)
       '@icons-pack/react-simple-icons':
         specifier: ^13.8.0
         version: 13.11.2(react@19.2.3)
@@ -2114,12 +2111,6 @@ packages:
 
   '@ai-sdk/gateway@3.0.31':
     resolution: {integrity: sha512-WActnxPeW46XcfZWWEcJ1FytpjCtKQEo25WZVa2xZSf+u2FgSNVt/dXIvlSZetPnXo6T2P/GhFAPBULMN6siRA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
-  '@ai-sdk/openai@3.0.24':
-    resolution: {integrity: sha512-f4d2z4cQpaLnCxlhL5X+/FIpA7u55eYbfCtu7hJxukav7MIQi+5uufy5OAXdCieqPnsdoiGRWaI+VTPh151mZQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -8526,12 +8517,6 @@ snapshots:
       '@ai-sdk/provider': 3.0.6
       '@ai-sdk/provider-utils': 4.0.12(zod@4.3.6)
       '@vercel/oidc': 3.1.0
-      zod: 4.3.6
-
-  '@ai-sdk/openai@3.0.24(zod@4.3.6)':
-    dependencies:
-      '@ai-sdk/provider': 3.0.6
-      '@ai-sdk/provider-utils': 4.0.12(zod@4.3.6)
       zod: 4.3.6
 
   '@ai-sdk/provider-utils@4.0.12(zod@4.3.6)':

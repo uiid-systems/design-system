@@ -1,38 +1,22 @@
 /**
  * API route for AI-powered UI generation.
  *
- * Uses Vercel AI SDK to stream responses from Claude or GPT-4o.
- * Provider is configurable via AI_PROVIDER env var (default: anthropic).
+ * Uses Vercel AI SDK with Claude to generate UI specs.
  */
 
 import { generateText, type ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { createOpenAI } from "@ai-sdk/openai";
 
 import type { UISpec } from "@/lib/catalog";
 
 import { buildSystemPrompt } from "@/lib/system-prompt";
 
-// Configure AI providers
 const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Get the configured model based on environment
 function getModel() {
-  const provider = process.env.AI_PROVIDER || "anthropic";
-
-  if (provider === "anthropic") {
-    // Claude Sonnet 4 (3.5 Sonnet was deprecated August 2025)
-    return anthropic("claude-sonnet-4-20250514");
-  }
-
-  // Default to OpenAI GPT-4o
-  return openai("gpt-4o");
+  return anthropic("claude-sonnet-4-20250514");
 }
 
 // Mock responses for testing without API credits
@@ -180,10 +164,9 @@ export async function POST(req: Request) {
       });
     }
 
-    // Check if we should use mock mode (no API keys or explicitly enabled)
+    // Check if we should use mock mode (no API key or explicitly enabled)
     const useMock =
-      process.env.USE_MOCK === "true" ||
-      (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY);
+      process.env.USE_MOCK === "true" || !process.env.ANTHROPIC_API_KEY;
 
     if (useMock) {
       console.log("[API] Using mock mode");
@@ -195,17 +178,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Check for API keys
-    const provider = process.env.AI_PROVIDER || "openai";
-    console.log("[API] Provider:", provider);
-
-    if (provider === "openai" && !process.env.OPENAI_API_KEY) {
-      return new Response(JSON.stringify({ error: "OPENAI_API_KEY not set" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    if (provider === "anthropic" && !process.env.ANTHROPIC_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return new Response(
         JSON.stringify({ error: "ANTHROPIC_API_KEY not set" }),
         { status: 500, headers: { "Content-Type": "application/json" } },
