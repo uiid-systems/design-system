@@ -54,7 +54,7 @@
   background-color: var(--tabs-indicator-bg);
   border-radius: var(--tabs-indicator-border-radius);
   transition-property: left, width;
-  transition-duration: var(--globals-transition-timing);
+  transition-duration: var(--globals-transition-duration);
   flex: none;
   opacity: 1;
 
@@ -64,7 +64,7 @@
 }
 
 .tabs-panel {
-  --timing: var(--globals-transition-timing);
+  --timing: var(--globals-transition-duration);
   position: relative;
   outline: 0;
   opacity: 1;

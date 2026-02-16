@@ -14,7 +14,7 @@
   font-weight: var(--button-font-weight);
   border: var(--globals-border-width) solid var(--button-border-color);
   border-radius: var(--globals-border-radius);
-  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   text-decoration: none;
 
   &:where(:hover, :active) {
@@ -42,7 +42,7 @@
 
 .button-content-container {
   scale: 1;
-  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   &[data-loading="true"] {
     opacity: 0;
@@ -54,7 +54,7 @@
   margin-inline: auto;
   opacity: 0;
   scale: 0.6;
-  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   &[data-loading="true"] {
     scale: 1;

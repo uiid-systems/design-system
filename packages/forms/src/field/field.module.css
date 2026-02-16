@@ -19,7 +19,7 @@
   display: inline-block;
   height: var(--forms-icon-size);
   opacity: 1;
-  transition: opacity var(--globals-transition-timing) ease;
+  transition: opacity var(--globals-transition-duration) ease;
 
   @starting-style {
     opacity: 0;

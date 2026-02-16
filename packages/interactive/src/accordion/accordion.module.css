@@ -21,7 +21,7 @@
   svg {
     stroke: var(--shade-halftone);
     height: var(--globals-icon-size);
-    transition: all var(--globals-transition-timing) ease;
+    transition: all var(--globals-transition-duration) ease;
 
     [data-open] & {
       opacity: var(--globals-disabled-opacity);
@@ -33,7 +33,7 @@
   height: var(--accordion-panel-height);
   background-color: color-mix(in srgb, var(--shade-background), transparent 50%);
   overflow: hidden;
-  transition: height var(--globals-transition-timing) ease-out;
+  transition: height var(--globals-transition-duration) ease-out;
 
   &[data-starting-style],
   &[data-ending-style] {

@@ -1,6 +1,6 @@
 .action-card {
   cursor: pointer;
-  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   &:hover {
     background-color: var(--shade-accent);

@@ -39,7 +39,7 @@
   color: var(--shade-muted);
   padding-inline: 0.5rem;
   border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-timing) ease-in-out;
+  transition: all var(--globals-transition-duration) ease-in-out;
 
   &:is(button) {
     cursor: pointer;
@@ -82,7 +82,7 @@
 .list-item {
   padding: var(--list-item-padding-y) var(--list-item-padding-x);
   border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-timing) ease-in-out;
+  transition: all var(--globals-transition-duration) ease-in-out;
 
   &:not([data-disabled]):where([data-highlighted], :is(button, a) &:hover) {
     background-color: var(--shade-accent);

@@ -12,7 +12,7 @@
   inset: 0;
   background-color: var(--shade-background);
   opacity: var(--overlays-backdrop-opacity);
-  transition: opacity var(--globals-transition-timing) cubic-bezier(0.45, 1.005, 0, 1.005);
+  transition: opacity var(--globals-transition-duration) cubic-bezier(0.45, 1.005, 0, 1.005);
   z-index: 2;
 
   /* iOS 26+: Ensure the backdrop covers the entire visible viewport. */
@@ -31,7 +31,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  transition: all var(--globals-transition-timing);
+  transition: all var(--globals-transition-duration);
   z-index: 3;
 
   max-width: var(--modal-width);

@@ -110,9 +110,9 @@ const meta = {
             }}
           />
           <Separator {...args} orientation="vertical">
-            <Text size={0} shade="muted">
-              or
-            </Text>
+            {/* <Text size={0} shade="muted"> */}
+            or
+            {/* </Text> */}
           </Separator>
           <div
             style={{

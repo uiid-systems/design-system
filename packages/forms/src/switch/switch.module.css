@@ -15,8 +15,8 @@
   background-position-x: 100%;
   background-repeat: no-repeat;
   transition-property: background-position, box-shadow, background-color;
-  transition-timing-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
-  transition-duration: var(--globals-transition-timing);
+  transition-duration-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
+  transition-duration: var(--globals-transition-duration);
   width: 2rem;
   height: 1rem;
 
@@ -47,7 +47,7 @@
   height: 100%;
   border-radius: 100%;
   background-color: var(--shade-foreground);
-  transition: translate var(--globals-transition-timing);
+  transition: translate var(--globals-transition-duration);
 
   &[data-checked] {
     translate: 1rem 0;

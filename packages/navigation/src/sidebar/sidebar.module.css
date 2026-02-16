@@ -10,7 +10,7 @@
   [data-hide-collapsed] {
     height: 100%;
     width: 100%;
-    transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+    transition: all var(--sidebar-transition-duration) var(--sidebar-transition-easing);
 
     [data-collapsible="icon"][data-state="collapsed"] & {
       margin: 0 !important;

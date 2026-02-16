@@ -1,8 +1,10 @@
 import { Separator as BaseSeparator } from "@base-ui/react/separator";
 
+import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
+import { ConditionalRender } from "../conditional-render/conditional-render";
 import { Group } from "../group/group";
 import { Stack } from "../stack/stack";
 import { SwitchRender } from "../switch-render/switch-render";
@@ -41,7 +43,12 @@ export const Separator = ({
         {...props}
       >
         <Box className={lineClass} />
-        {children}
+        <ConditionalRender
+          condition={typeof children === "string"}
+          render={<Text shade="muted" weight="bold" />}
+        >
+          {children}
+        </ConditionalRender>
         <Box className={lineClass} />
       </SwitchRender>
     );

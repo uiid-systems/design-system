@@ -12,7 +12,7 @@
 
 .event-wrapper {
   user-select: none;
-  transition: scale calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: scale calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   * {
     white-space: nowrap;

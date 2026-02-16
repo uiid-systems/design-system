@@ -20,7 +20,7 @@
   [data-slot="list-item-panel"] {
     overflow: hidden;
     /** TODO: this delays manual open/close of sidebar collapsible groups, fix */
-    transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+    transition: all var(--sidebar-transition-duration) var(--sidebar-transition-easing);
 
     [data-collapsible="icon"][data-state="collapsed"] & {
       padding-block: 0 !important;
@@ -30,7 +30,7 @@
   }
 
   [data-collapsible="icon"][data-state="collapsed"] & [data-slot="list-item-group-collapsible-trigger"] {
-    transition: width var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+    transition: width var(--sidebar-transition-duration) var(--sidebar-transition-easing);
     overflow: hidden;
     width: 2rem;
   }
