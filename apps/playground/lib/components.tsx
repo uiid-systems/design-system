@@ -59,122 +59,65 @@ export const registry: ComponentRegistry = {
   Separator: ({ element, children }) => <Separator {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
-  Button: ({ element, children, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Button
-        {...props}
-        onClick={() => emit("click")}
-      >
-        {children}
-        {props.children}
-      </Button>
-    );
-  },
+  Button: ({ element, children, emit }) => (
+    <Button {...element.props} onClick={() => emit("click")}>
+      {children}
+      {element.props.children}
+    </Button>
+  ),
 
-  ToggleButton: ({ element, children, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <ToggleButton
-        {...props}
-        onPressedChange={() => emit("click")}
-      >
-        {children || props.children}
-      </ToggleButton>
-    );
-  },
+  ToggleButton: ({ element, children, emit }) => (
+    <ToggleButton {...element.props} onPressedChange={() => emit("click")}>
+      {children || element.props.children}
+    </ToggleButton>
+  ),
 
   // Form components
-  Form: ({ element, children, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Form
-        {...props}
-        onSubmit={(event) => {
-          event.preventDefault();
-          emit("submit");
-        }}
-      >
-        {children}
-      </Form>
-    );
-  },
+  Form: ({ element, children, emit }) => (
+    <Form
+      {...element.props}
+      onSubmit={(event) => {
+        event.preventDefault();
+        emit("submit");
+      }}
+    >
+      {children}
+    </Form>
+  ),
 
   Input: ({ element }) => <Input {...element.props} />,
 
   Textarea: ({ element }) => <Textarea {...element.props} />,
 
-  Checkbox: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Checkbox
-        {...props}
-        onCheckedChange={() => emit("change")}
-      />
-    );
-  },
+  Checkbox: ({ element, emit }) => (
+    <Checkbox {...element.props} onCheckedChange={() => emit("change")} />
+  ),
 
-  Select: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Select
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  Select: ({ element, emit }) => (
+    <Select {...element.props} onValueChange={() => emit("change")} />
+  ),
 
-  Switch: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Switch
-        {...props}
-        onCheckedChange={() => emit("change")}
-      />
-    );
-  },
+  Switch: ({ element, emit }) => (
+    <Switch {...element.props} onCheckedChange={() => emit("change")} />
+  ),
 
   Radio: ({ element }) => <Radio {...element.props} />,
 
-  RadioGroup: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <RadioGroup
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  RadioGroup: ({ element, emit }) => (
+    <RadioGroup {...element.props} onValueChange={() => emit("change")} />
+  ),
 
-  CheckboxGroup: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <CheckboxGroup
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  CheckboxGroup: ({ element, emit }) => (
+    <CheckboxGroup {...element.props} onValueChange={() => emit("change")} />
+  ),
 
-  NumberField: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <NumberField
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  NumberField: ({ element, emit }) => (
+    <NumberField {...element.props} onValueChange={() => emit("change")} />
+  ),
 
-  Slider: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Slider
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  Slider: ({ element, emit }) => (
+    <Slider {...element.props} onValueChange={() => emit("change")} />
+  ),
 
   // Typography components
   Text: ({ element, children }) => (
@@ -270,15 +213,9 @@ export const registry: ComponentRegistry = {
   Progress: ({ element }) => <Progress {...element.props} />,
 
   // Interactive components
-  Accordion: ({ element, emit }) => {
-    const { action: _action, ...props } = element.props;
-    return (
-      <Accordion
-        {...props}
-        onValueChange={() => emit("change")}
-      />
-    );
-  },
+  Accordion: ({ element, emit }) => (
+    <Accordion {...element.props} onValueChange={() => emit("change")} />
+  ),
 
   // Navigation components
   Breadcrumbs: ({ element }) => <Breadcrumbs {...element.props} />,
