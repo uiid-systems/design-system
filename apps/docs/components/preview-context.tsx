@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, use, useState, type ReactNode } from "react";
 import type { PreviewConfig } from "@uiid/registry";
 
 type PreviewContextValue = {
@@ -11,8 +11,9 @@ type PreviewContextValue = {
 
 const PreviewContext = createContext<PreviewContextValue | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function usePreviewContext() {
-  return useContext(PreviewContext);
+  return use(PreviewContext);
 }
 
 type PreviewProviderProps = {

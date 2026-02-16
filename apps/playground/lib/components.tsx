@@ -60,7 +60,7 @@ export const registry: ComponentRegistry = {
 
   // Button components
   Button: ({ element, children, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Button
         {...props}
@@ -73,7 +73,7 @@ export const registry: ComponentRegistry = {
   },
 
   ToggleButton: ({ element, children, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <ToggleButton
         {...props}
@@ -86,7 +86,7 @@ export const registry: ComponentRegistry = {
 
   // Form components
   Form: ({ element, children, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Form
         {...props}
@@ -105,7 +105,7 @@ export const registry: ComponentRegistry = {
   Textarea: ({ element }) => <Textarea {...element.props} />,
 
   Checkbox: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Checkbox
         {...props}
@@ -115,7 +115,7 @@ export const registry: ComponentRegistry = {
   },
 
   Select: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Select
         {...props}
@@ -125,7 +125,7 @@ export const registry: ComponentRegistry = {
   },
 
   Switch: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Switch
         {...props}
@@ -137,7 +137,7 @@ export const registry: ComponentRegistry = {
   Radio: ({ element }) => <Radio {...element.props} />,
 
   RadioGroup: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <RadioGroup
         {...props}
@@ -147,7 +147,7 @@ export const registry: ComponentRegistry = {
   },
 
   CheckboxGroup: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <CheckboxGroup
         {...props}
@@ -157,7 +157,7 @@ export const registry: ComponentRegistry = {
   },
 
   NumberField: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <NumberField
         {...props}
@@ -167,7 +167,7 @@ export const registry: ComponentRegistry = {
   },
 
   Slider: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Slider
         {...props}
@@ -271,7 +271,7 @@ export const registry: ComponentRegistry = {
 
   // Interactive components
   Accordion: ({ element, emit }) => {
-    const { action, ...props } = element.props;
+    const { action: _action, ...props } = element.props;
     return (
       <Accordion
         {...props}

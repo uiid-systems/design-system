@@ -3,7 +3,6 @@ import { SiDiscord } from "@icons-pack/react-simple-icons";
 import { Group, Stack } from "@uiid/layout";
 
 import {
-  NewsletterList,
   NewsletterSignupCard,
   NewsletterSignupForm,
   NewsletterJoinButton,
