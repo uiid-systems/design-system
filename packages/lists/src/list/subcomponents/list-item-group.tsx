@@ -33,7 +33,7 @@ export const ListItemGroup = ({
         <Group
           data-slot="list-item-group-collapsible-trigger"
           gap={4}
-          py={1}
+          py={2}
           ay="center"
           fullwidth
           className={styles["list-item-group-collapsible-trigger"]}

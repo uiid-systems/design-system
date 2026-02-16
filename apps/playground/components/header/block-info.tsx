@@ -2,12 +2,18 @@
 
 import { useMemo } from "react";
 
+import { Button } from "@uiid/buttons";
 import { Select, type SelectProps } from "@uiid/forms";
-import { Group } from "@uiid/layout";
+import { ChevronLeftIcon, ChevronRightIcon } from "@uiid/icons";
+import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
+
+import { NewChatButton } from "../new-chat-button";
+import { OpenBlocksPanel } from "../open-blocks-panel";
+import { SaveButton } from "../save-button";
 
 function formatDate(timestamp: number): string {
   return new Date(timestamp).toLocaleDateString(undefined, {
@@ -22,6 +28,8 @@ export const BlockInfo = () => {
   const activeBlockId = useChatStore((s) => s.activeBlockId);
   const activeVersionId = useChatStore((s) => s.activeVersionId);
   const activeRegistryBlock = useChatStore((s) => s.activeRegistryBlock);
+  const registryBlocks = useChatStore((s) => s.registryBlocks);
+  const navigateRegistryBlock = useChatStore((s) => s.navigateRegistryBlock);
   const { getVersionsForBlock, load } = useSavedBlocks();
 
   const versions = useMemo(
@@ -42,21 +50,49 @@ export const BlockInfo = () => {
     if (version) load(version);
   };
 
-  // Registry block: show name and version without RxDB version selector
-  if (activeRegistryBlock) {
-    return (
-      <BlockInfoContainer>
-        <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
-        <Text size={-1} shade="muted">
-          v{activeRegistryBlock.version} · registry
-        </Text>
-      </BlockInfoContainer>
-    );
-  }
+  const canNavigate = activeRegistryBlock && registryBlocks.length > 1;
 
   return (
     <BlockInfoContainer>
-      <BlockInfoTitle>{activeVersion?.name ?? "Untitled block"}</BlockInfoTitle>
+      <Group>
+        <NewChatButton />
+        <OpenBlocksPanel />
+        <SaveButton />
+      </Group>
+
+      <Separator orientation="vertical" mr={2} />
+
+      {canNavigate && (
+        <>
+          <Group>
+            <Button
+              tooltip="Previous block"
+              onClick={() => navigateRegistryBlock("prev")}
+              size="xsmall"
+              ghost
+              square
+            >
+              <ChevronLeftIcon />
+            </Button>
+            <Button
+              tooltip="Next block"
+              onClick={() => navigateRegistryBlock("next")}
+              size="xsmall"
+              ghost
+              square
+            >
+              <ChevronRightIcon />
+            </Button>
+          </Group>
+          <Separator orientation="vertical" mr={4} />
+        </>
+      )}
+
+      <BlockInfoTitle>
+        {activeRegistryBlock
+          ? activeRegistryBlock.name
+          : (activeVersion?.name ?? "Untitled block")}
+      </BlockInfoTitle>
 
       <BlockInfoVersionSelector
         items={items}

@@ -14,7 +14,7 @@
           "ax": "stretch",
           "py": 4,
           "fullwidth": true,
-          "maxw": 1200
+          "maxw": 1024
         },
         "children": [
           "personal-section",
@@ -33,10 +33,7 @@
           "ay": "start",
           "fullwidth": true
         },
-        "children": [
-          "personal-label",
-          "personal-fields"
-        ]
+        "children": ["personal-label", "personal-fields"]
       },
       "personal-label": {
         "type": "Stack",
@@ -44,10 +41,7 @@
           "gap": 4,
           "maxw": 320
         },
-        "children": [
-          "personal-heading",
-          "personal-description"
-        ]
+        "children": ["personal-heading", "personal-description"]
       },
       "personal-heading": {
         "type": "Text",
@@ -72,12 +66,7 @@
           "ax": "stretch",
           "fullwidth": true
         },
-        "children": [
-          "name-row",
-          "email-field",
-          "birth-role-row",
-          "role-helper"
-        ]
+        "children": ["name-row", "email-field", "birth-role-row", "role-helper"]
       },
       "name-row": {
         "type": "Group",
@@ -85,10 +74,7 @@
           "gap": 3,
           "evenly": true
         },
-        "children": [
-          "first-name",
-          "last-name"
-        ]
+        "children": ["first-name", "last-name"]
       },
       "first-name": {
         "type": "Input",
@@ -118,10 +104,7 @@
           "gap": 3,
           "evenly": true
         },
-        "children": [
-          "birth-year",
-          "role-field"
-        ]
+        "children": ["birth-year", "role-field"]
       },
       "birth-year": {
         "type": "Input",
@@ -158,10 +141,7 @@
           "ay": "start",
           "fullwidth": true
         },
-        "children": [
-          "workspace-label",
-          "workspace-fields"
-        ]
+        "children": ["workspace-label", "workspace-fields"]
       },
       "workspace-label": {
         "type": "Stack",
@@ -169,10 +149,7 @@
           "gap": 4,
           "maxw": 320
         },
-        "children": [
-          "workspace-heading",
-          "workspace-description"
-        ]
+        "children": ["workspace-heading", "workspace-description"]
       },
       "workspace-heading": {
         "type": "Text",
@@ -209,10 +186,7 @@
           "gap": 3,
           "evenly": true
         },
-        "children": [
-          "workspace-name",
-          "visibility-select"
-        ]
+        "children": ["workspace-name", "visibility-select"]
       },
       "workspace-name": {
         "type": "Input",
@@ -265,10 +239,7 @@
           "ay": "start",
           "fullwidth": true
         },
-        "children": [
-          "notification-label",
-          "notification-fields"
-        ]
+        "children": ["notification-label", "notification-fields"]
       },
       "notification-label": {
         "type": "Stack",
@@ -276,10 +247,7 @@
           "gap": 4,
           "maxw": 320
         },
-        "children": [
-          "notification-heading",
-          "notification-description"
-        ]
+        "children": ["notification-heading", "notification-description"]
       },
       "notification-heading": {
         "type": "Text",
@@ -331,11 +299,7 @@
         "props": {
           "gap": 1
         },
-        "children": [
-          "option-weekly",
-          "option-monthly",
-          "option-never"
-        ]
+        "children": ["option-weekly", "option-monthly", "option-never"]
       },
       "option-weekly": {
         "type": "Checkbox",
@@ -370,10 +334,7 @@
           "ax": "end",
           "fullwidth": true
         },
-        "children": [
-          "go-back-button",
-          "save-button"
-        ]
+        "children": ["go-back-button", "save-button"]
       },
       "go-back-button": {
         "type": "Button",

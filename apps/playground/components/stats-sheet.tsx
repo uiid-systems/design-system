@@ -1,5 +1,5 @@
 import { countComponents, type ComponentCount } from "@uiid/registry";
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 
 import { Button } from "@uiid/buttons";
 import { BarChart3Icon } from "@uiid/icons";
@@ -11,7 +11,7 @@ import { useChatStore } from "@/lib/store";
 
 export const StatsSheet = () => {
   const tree = useChatStore((s) => s.tree);
-  const stats = tree ? countComponents(tree as Spec) : null;
+  const stats = tree ? countComponents(tree as UISpec) : null;
 
   return (
     <Sheet
@@ -21,13 +21,13 @@ export const StatsSheet = () => {
       side="right"
       trigger={
         <Button
-          tooltip="Component stats"
+          tooltip="Component usage breakdown"
           disabled={!tree}
           size="small"
-          square
           ghost
         >
           <BarChart3Icon />
+          Stats
         </Button>
       }
     >

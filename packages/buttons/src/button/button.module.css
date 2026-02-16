@@ -22,7 +22,7 @@
     border-color: var(--button-bg-hover);
   }
 
-  &:where(:focus) {
+  &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
@@ -131,7 +131,7 @@
   border-color: transparent;
   color: var(--button-bg);
   &:where(:hover, :active) {
-    background-color: color-mix(in oklab, var(--button-bg-hover), transparent 80%);
+    background-color: var(--button-variant-inverted-bg-hover);
     border-color: transparent;
   }
 }

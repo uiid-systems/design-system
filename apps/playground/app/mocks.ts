@@ -1,6 +1,6 @@
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 
-export const MOCK_UI_TREE: Spec = {
+export const MOCK_UI_TREE: UISpec = {
   root: "root",
   elements: {
     root: {

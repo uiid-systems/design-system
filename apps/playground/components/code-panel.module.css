@@ -1,0 +1,17 @@
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 28rem;
+  min-width: 28rem;
+  height: 100%;
+  overflow: hidden;
+  border-left: 1px solid var(--globals-border-color);
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  z-index: 1;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "./catalog";
 import type { RxCollection } from "rxdb/plugins/core";
 
 import { getDatabase, type SavedBlockDoc } from "./db";
@@ -69,7 +69,7 @@ export function useSavedBlocks() {
   );
 
   const save = useCallback(
-    async (name: string, description: string, tree: Spec) => {
+    async (name: string, description: string, tree: UISpec) => {
       if (!collection || !name.trim()) return;
       const now = Date.now();
 
@@ -110,7 +110,7 @@ export function useSavedBlocks() {
   );
 
   const saveAsNew = useCallback(
-    async (name: string, description: string, tree: Spec) => {
+    async (name: string, description: string, tree: UISpec) => {
       if (!collection || !name.trim()) return;
       const now = Date.now();
       const newBlockId = generateId();
@@ -166,7 +166,7 @@ export function useSavedBlocks() {
   const load = useCallback(
     (block: SavedBlockDoc) => {
       try {
-        const tree = JSON.parse(block.tree) as Spec;
+        const tree = JSON.parse(block.tree) as UISpec;
         setTree(tree);
         setActiveBlock(block.blockId, block.id);
       } catch {

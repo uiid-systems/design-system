@@ -1,8 +1,8 @@
 @import "@uiid/tokens/component/overlays.tokens.css";
 @import "@uiid/tokens/component/modal.tokens.css";
 
-/* Disable Base UI's focus styles on the trigger - let the child component handle focus */
-.modal-trigger:focus-visible {
+/* Disable browser's default focus ring on the trigger — child components handle their own focus styles */
+.modal-trigger:where(:focus-visible) {
   outline: none;
 }
 

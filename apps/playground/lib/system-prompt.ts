@@ -8,7 +8,7 @@
  * while architectural guidelines are hand-maintained.
  */
 
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "./catalog";
 
 import { generateComponentReference } from "@uiid/registry";
 
@@ -249,7 +249,7 @@ Before outputting a tree, verify:
  * @param currentTree - Optional current UI tree for context during refinement
  * @returns Complete system prompt string
  */
-export function buildSystemPrompt(currentTree?: Spec): string {
+export function buildSystemPrompt(currentTree?: UISpec): string {
   // Get component documentation from json-render catalog
   const catalogPrompt = catalog.prompt();
 
@@ -306,4 +306,4 @@ When the user asks for changes, modify the existing tree - add, remove, or updat
   return prompt;
 }
 
-export type { Spec };
+export type { UISpec };

@@ -38,6 +38,7 @@
   background-color: transparent;
   color: var(--shade-muted);
   padding-inline: 0.5rem;
+  padding-block: 1rem;
   border-radius: var(--globals-border-radius);
   transition: all var(--globals-transition-duration) ease-in-out;
 
@@ -91,6 +92,10 @@
   &:where([data-disabled]) {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  svg {
+    width: var(--globals-icon-size);
   }
 }
 

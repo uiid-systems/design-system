@@ -1,19 +1,17 @@
 "use client";
 
-import type { Spec } from "@json-render/core";
+import type { UISpec } from "@/lib/catalog";
 import { useState, useEffect, useRef, useMemo } from "react";
 
 import { Button } from "@uiid/buttons";
-import { CopyIcon, ScanSearchIcon, SquareCheckIcon } from "@uiid/icons";
+import { ScanSearchIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
 import { Group, Separator } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
 
-import { NewChatButton } from "../new-chat-button";
-import { SaveButton } from "../save-button";
-import { RegistryPanel } from "../registry-panel";
-import { SavedBlocksPanel } from "../saved-blocks-panel";
+import { RegistryBrowser } from "../registry-browser";
 import { RenderedSheet } from "../rendered-sheet";
 import { StatsSheet } from "../stats-sheet";
 
@@ -24,19 +22,17 @@ export const HeaderActions = () => {
   const inspecting = useChatStore((s) => s.inspecting);
   const toggleInspecting = useChatStore((s) => s.toggleInspecting);
 
-  const lastTreeRef = useRef<Spec | null>(null);
+  const lastTreeRef = useRef<UISpec | null>(null);
 
   const [copied, setCopied] = useState(false);
   const [jsxCode, setJsxCode] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [parseError, setParseError] = useState<string | null>(null);
 
-  // Derive JSON from tree
   const treeJson = useMemo(() => {
     return tree ? JSON.stringify(tree, null, 2) : "";
   }, [tree]);
 
-  // Sync JSON input when tree changes from AI (not from manual edits)
   useEffect(() => {
     if (tree && tree !== lastTreeRef.current) {
       lastTreeRef.current = tree;
@@ -67,7 +63,6 @@ export const HeaderActions = () => {
     }
   };
 
-  // Generate JSX when tree changes
   useEffect(() => {
     if (tree) {
       treeToFormattedJsx(tree).then((jsx) => {
@@ -79,50 +74,56 @@ export const HeaderActions = () => {
   }, [tree]);
 
   return (
-    <>
-      <Group data-slot="header-actions" gap={1} p={2}>
-        <RenderedSheet
-          code={jsxCode}
-          jsonValue={jsonInput}
-          onJsonChange={setJsonInput}
-          parseError={parseError}
-          onApply={handleParseJson}
-          triggerText="View code"
-        />
-        <StatsSheet />
-        <Button
-          data-slot="header-actions-inspect"
-          tooltip="Inspect elements"
-          onClick={toggleInspecting}
-          disabled={!tree}
-          size="small"
-          ghost
-          square
-          tone={inspecting ? "info" : undefined}
-        >
-          <ScanSearchIcon />
-        </Button>
+    <Group data-slot="header-actions" gap={2} ay="center">
+      {/* Block tools — only visible when a block is loaded */}
+      {tree && (
+        <>
+          <Group gap={1}>
+            <RenderedSheet
+              code={jsxCode}
+              jsonValue={jsonInput}
+              onJsonChange={setJsonInput}
+              parseError={parseError}
+              onApply={handleParseJson}
+              triggerText="View code"
+            />
+            <StatsSheet />
+            <Button
+              tooltip="Inspect elements — hover to see component info"
+              onClick={toggleInspecting}
+              size="small"
+              ghost
+              tone={inspecting ? "info" : undefined}
+            >
+              <ScanSearchIcon />
+              Inspect
+            </Button>
+          </Group>
 
-        <Button
-          data-slot="header-actions-copy"
-          tooltip="Copy link to block"
-          onClick={handleShare}
-          disabled={!tree || copied}
-          size="small"
-          ghost
-          square
-        >
-          {copied ? <SquareCheckIcon /> : <CopyIcon />}
-        </Button>
-        <SaveButton />
+          <Separator orientation="vertical" />
+
+          <Group gap={1}>
+            <Button
+              tooltip={copied ? "Copied!" : "Copy shareable link"}
+              onClick={handleShare}
+              disabled={copied}
+              size="small"
+              ghost
+            >
+              {copied ? <SquareCheckIcon /> : <CopyIcon />}
+              <Text size={-1}>{copied ? "Copied" : "Share"}</Text>
+            </Button>
+          </Group>
+
+          <Separator orientation="vertical" />
+        </>
+      )}
+
+      {/* Navigation — always visible */}
+      <Group gap={1}>
+        <RegistryBrowser />
       </Group>
-      <Group gap={2} style={{ marginLeft: "auto" }}>
-        <NewChatButton />
-        <Separator orientation="vertical" />
-        <SavedBlocksPanel />
-        <RegistryPanel />
-      </Group>
-    </>
+    </Group>
   );
 };
 HeaderActions.displayName = "HeaderActions";

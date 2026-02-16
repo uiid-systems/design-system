@@ -38,7 +38,7 @@ export const NewChatButton = () => {
       onOpenChange={setOpen}
       trigger={
         <Button
-          tooltip="Create a new block"
+          tooltip="Clear and start a new block"
           disabled={messages.length === 0 && !tree && !component}
           size="small"
           ghost
@@ -57,11 +57,7 @@ export const NewChatButton = () => {
           </Button>
         </Group>
       }
-    >
-      {/* <Stack gap={6} py={6} ax="stretch" fullwidth>
-        <Input placeholder="Enter a prompt to start building..." />
-      </Stack> */}
-    </Modal>
+    />
   );
 };
 NewChatButton.displayName = "NewChatButton";
