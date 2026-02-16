@@ -5,9 +5,22 @@ import type { PreviewConfig, PreviewElement } from "@uiid/registry";
 
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
-import { Alert, Avatar, Badge, Kbd, Status, Timeline } from "@uiid/indicators";
-import { Collapsible, Tabs } from "@uiid/interactive";
+import {
+  Checkbox,
+  CheckboxGroup,
+  Form,
+  Input,
+  NumberField,
+  Radio,
+  RadioGroup,
+  Select,
+  Slider,
+  Switch,
+  Textarea,
+} from "@uiid/forms";
+import { Alert, Avatar, Badge, Kbd, Progress, Status, Timeline } from "@uiid/indicators";
+import { Accordion, Collapsible, Tabs } from "@uiid/interactive";
+import { Breadcrumbs } from "@uiid/navigation";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -31,17 +44,25 @@ const componentMap: Record<
   Input: Input as React.ComponentType<Record<string, unknown>>,
   Textarea: Textarea as React.ComponentType<Record<string, unknown>>,
   Checkbox: Checkbox as React.ComponentType<Record<string, unknown>>,
+  CheckboxGroup: CheckboxGroup as unknown as React.ComponentType<Record<string, unknown>>,
+  NumberField: NumberField as React.ComponentType<Record<string, unknown>>,
+  Radio: Radio as unknown as React.ComponentType<Record<string, unknown>>,
+  RadioGroup: RadioGroup as unknown as React.ComponentType<Record<string, unknown>>,
   Select: Select as React.ComponentType<Record<string, unknown>>,
+  Slider: Slider as React.ComponentType<Record<string, unknown>>,
   Switch: Switch as React.ComponentType<Record<string, unknown>>,
   Text: Text as React.ComponentType<Record<string, unknown>>,
   Card: Card as React.ComponentType<Record<string, unknown>>,
+  Accordion: Accordion as unknown as React.ComponentType<Record<string, unknown>>,
   Collapsible: Collapsible as React.ComponentType<Record<string, unknown>>,
   Alert: Alert as React.ComponentType<Record<string, unknown>>,
   Avatar: Avatar as React.ComponentType<Record<string, unknown>>,
   Badge: Badge as React.ComponentType<Record<string, unknown>>,
   Kbd: Kbd as React.ComponentType<Record<string, unknown>>,
+  Progress: Progress as unknown as React.ComponentType<Record<string, unknown>>,
   Status: Status as React.ComponentType<Record<string, unknown>>,
   Timeline: Timeline as React.ComponentType<Record<string, unknown>>,
+  Breadcrumbs: Breadcrumbs as unknown as React.ComponentType<Record<string, unknown>>,
 };
 
 /**

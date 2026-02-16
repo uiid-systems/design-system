@@ -9,7 +9,7 @@
   outline: var(--globals-outline-width) var(--globals-outline-color);
   outline-offset: var(--globals-outline-offset);
   padding: var(--forms-padding-y) var(--forms-padding-x);
-  transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   line-height: 1;
 
   /** Hover */
@@ -72,7 +72,7 @@
   outline-color: transparent;
 
   &::placeholder {
-    transition: all calc(var(--globals-transition-timing) / 2) ease-in-out;
+    transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   }
   &:not(:focus)::placeholder {
     color: var(--shade-foreground);

@@ -48,6 +48,7 @@ export function treeToJsx(
 
   const usedComponents = new Set<string>();
   const usedIcons = new Set<string>();
+  const usedSimpleIcons = new Set<string>();
   const formFields: Array<{ name: string; type: string; elementType: string }> = [];
 
   // Collect all form fields for state generation
@@ -88,7 +89,7 @@ export function treeToJsx(
     return String(value);
   }
 
-  function serializeProps(props: Record<string, unknown>, elementType: string, isIcon: boolean): string[] {
+  function serializeProps(props: Record<string, unknown>, elementType: string, isIcon: boolean, isSimpleIcon: boolean): string[] {
     const result: string[] = [];
     const fieldName = props.name as string | undefined;
     const isFormField = FORM_FIELD_TYPES.has(elementType) && fieldName && formFields.length > 0;
@@ -99,8 +100,8 @@ export function treeToJsx(
       if (key === "children") continue;
       // Skip action prop - internal to json-render
       if (key === "action") continue;
-      // Skip name prop for Icon - it becomes the component type
-      if (key === "name" && isIcon) continue;
+      // Skip name prop for Icon/SimpleIcon - it becomes the component type
+      if (key === "name" && (isIcon || isSimpleIcon)) continue;
 
       if (typeof value === "boolean" && value === true) {
         // Boolean shorthand: <Input required /> instead of <Input required={true} />
@@ -130,20 +131,23 @@ export function treeToJsx(
     const element = tree.elements[elementKey];
     if (!element) return "";
 
-    // Handle Icon type specially - use the name prop as the component type
+    // Handle Icon/SimpleIcon type specially - use the name prop as the component type
     const isIcon = element.type === "Icon";
-    const iconName = isIcon ? (element.props?.name as string) : null;
-    const componentType = isIcon && iconName ? iconName : element.type;
+    const isSimpleIcon = element.type === "SimpleIcon";
+    const iconName = (isIcon || isSimpleIcon) ? (element.props?.name as string) : null;
+    const componentType = (isIcon || isSimpleIcon) && iconName ? iconName : element.type;
 
     if (isIcon && iconName) {
       usedIcons.add(iconName);
+    } else if (isSimpleIcon && iconName) {
+      usedSimpleIcons.add(iconName);
     } else {
       usedComponents.add(element.type);
     }
 
     const currentIndent = indent.repeat(depth);
     const childIndent = indent.repeat(depth + 1);
-    const props = serializeProps(element.props || {}, element.type, isIcon);
+    const props = serializeProps(element.props || {}, element.type, isIcon, isSimpleIcon);
 
     // Get text children from props.children (if string)
     const textChildren =
@@ -237,6 +241,12 @@ export function treeToJsx(
   if (usedIcons.size > 0) {
     const sortedIcons = Array.from(usedIcons).sort();
     imports += `import { ${sortedIcons.join(", ")} } from "@uiid/icons";\n`;
+  }
+
+  // Add simple icon imports (brand icons)
+  if (usedSimpleIcons.size > 0) {
+    const sortedSimpleIcons = Array.from(usedSimpleIcons).sort();
+    imports += `import { ${sortedSimpleIcons.join(", ")} } from "@icons-pack/react-simple-icons";\n`;
   }
 
   if (!wrapInComponent) {

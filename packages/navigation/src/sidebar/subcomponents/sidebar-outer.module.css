@@ -2,7 +2,7 @@
   color: var(--shade-foreground);
   display: none;
   width: var(--sidebar-width);
-  transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+  transition: all var(--sidebar-transition-duration) var(--sidebar-transition-easing);
   overflow: hidden;
   clip-path: inset(0 0 0 0);
 

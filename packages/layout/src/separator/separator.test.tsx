@@ -104,4 +104,77 @@ describe("Separator", () => {
     );
     expect(screen.getByText("Right")).toBeInTheDocument();
   });
+
+  // ============================================
+  // WITH CHILDREN
+  // ============================================
+
+  it("renders children text content", () => {
+    render(
+      <Separator data-testid="separator">
+        <span>or continue with email</span>
+      </Separator>,
+    );
+
+    expect(screen.getByText("or continue with email")).toBeInTheDocument();
+  });
+
+  it("maintains data-slot when children are present", () => {
+    render(
+      <Separator data-testid="separator">
+        <span>divider text</span>
+      </Separator>,
+    );
+
+    expect(screen.getByTestId("separator")).toHaveAttribute(
+      "data-slot",
+      "separator",
+    );
+  });
+
+  it("has separator role when children are present", () => {
+    render(
+      <Separator data-testid="separator">
+        <span>divider text</span>
+      </Separator>,
+    );
+
+    expect(screen.getByRole("separator")).toBeInTheDocument();
+  });
+
+  it("renders data-orientation with children", () => {
+    render(
+      <Separator data-testid="separator" orientation="vertical">
+        <span>divider text</span>
+      </Separator>,
+    );
+
+    expect(screen.getByTestId("separator")).toHaveAttribute(
+      "data-orientation",
+      "vertical",
+    );
+  });
+
+  it("defaults to horizontal orientation with children", () => {
+    render(
+      <Separator data-testid="separator">
+        <span>divider text</span>
+      </Separator>,
+    );
+
+    expect(screen.getByTestId("separator")).toHaveAttribute(
+      "data-orientation",
+      "horizontal",
+    );
+  });
+
+  it("applies custom className with children", () => {
+    render(
+      <Separator className="custom-class" data-testid="separator">
+        <span>divider text</span>
+      </Separator>,
+    );
+
+    expect(screen.getByTestId("separator")).toHaveClass("custom-class");
+  });
 });

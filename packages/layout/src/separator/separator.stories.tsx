@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Text } from "@uiid/typography";
 import { Stack, Group } from "../";
 
 import { Separator } from "./separator";
@@ -43,8 +44,8 @@ const meta = {
     mb: { control: "number", table: { category: "Spacing" } },
   },
   render: (args) => (
-    <Stack gap={2}>
-      <Stack gap={2}>
+    <Stack gap={8} fullwidth maxw={640} ax="stretch">
+      <Stack gap={2} ax="center">
         <div
           style={{
             background: "tomato",
@@ -64,7 +65,7 @@ const meta = {
         />
       </Stack>
 
-      <Group gap={2}>
+      <Group gap={2} minh={240} ay="center" ax="center">
         <div
           style={{
             background: "tomato",
@@ -83,6 +84,46 @@ const meta = {
           }}
         />
       </Group>
+
+      <Stack gap={4} ax="stretch">
+        <Text size={1} weight="bold">
+          With children
+        </Text>
+        <Separator {...args}>
+          <Text size={0} shade="muted">
+            or continue with email
+          </Text>
+        </Separator>
+      </Stack>
+
+      <Stack gap={4}>
+        <Text size={1} weight="bold">
+          With children (vertical)
+        </Text>
+        <Group gap={2} ay="center" ax="center" fullwidth minh={240}>
+          <div
+            style={{
+              background: "tomato",
+              height: 64,
+              width: 64,
+              borderRadius: "8px",
+            }}
+          />
+          <Separator {...args} orientation="vertical">
+            {/* <Text size={0} shade="muted"> */}
+            or
+            {/* </Text> */}
+          </Separator>
+          <div
+            style={{
+              background: "gold",
+              height: 64,
+              width: 64,
+              borderRadius: "8px",
+            }}
+          />
+        </Group>
+      </Stack>
     </Stack>
   ),
 } satisfies Meta<typeof Separator>;

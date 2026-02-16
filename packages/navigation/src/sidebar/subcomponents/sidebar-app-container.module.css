@@ -1,4 +1,4 @@
 .sidebar-app-container {
   flex: 1;
-  transition: all var(--globals-transition-timing) linear;
+  transition: all var(--globals-transition-duration) linear;
 }

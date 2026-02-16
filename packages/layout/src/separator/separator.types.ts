@@ -8,4 +8,8 @@ import type { separatorVariants } from "./separator.variants";
 
 export type SeparatorVariants = VariantProps<typeof separatorVariants>;
 
-export type SeparatorProps = BaseSeparatorProps & SeparatorVariants & BoxProps;
+export type SeparatorProps = BaseSeparatorProps &
+  SeparatorVariants &
+  BoxProps & {
+    children?: React.ReactNode;
+  };

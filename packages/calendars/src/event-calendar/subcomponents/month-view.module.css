@@ -24,7 +24,7 @@
 .month-view-day {
   border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   border-right: var(--globals-border-width) solid var(--globals-border-color);
-  transition: background-color var(--globals-transition-timing) ease-in-out;
+  transition: background-color var(--globals-transition-duration) ease-in-out;
 
   &[data-outside-cell] {
     background-color: var(--shade-surface);

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.34",
+    "@icons-pack/react-simple-icons": "^13.8.0",
     "@ai-sdk/openai": "^3.0.24",
     "@json-render/core": "^0.3.0",
     "@json-render/react": "^0.2.0",
@@ -22,6 +23,7 @@
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/lists": "workspace:*",
+    "@uiid/navigation": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/registry": "workspace:*",
     "@uiid/tokens": "workspace:*",

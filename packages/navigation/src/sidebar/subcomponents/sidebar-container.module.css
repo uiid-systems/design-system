@@ -4,7 +4,7 @@
   height: 100svh;
   inset-block: 0;
   position: fixed;
-  transition: all var(--sidebar-transition-timing) var(--sidebar-transition-easing);
+  transition: all var(--sidebar-transition-duration) var(--sidebar-transition-easing);
   width: var(--sidebar-width);
   z-index: 10;
 

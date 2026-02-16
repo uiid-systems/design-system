@@ -14,10 +14,25 @@ import { Renderer } from "@json-render/react";
 
 import { Button, ToggleButton } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
-import { Checkbox, Form, Input, Select, Switch, Textarea } from "@uiid/forms";
+import {
+  Checkbox,
+  CheckboxGroup,
+  Form,
+  Input,
+  NumberField,
+  Radio,
+  RadioGroup,
+  Select,
+  Slider,
+  Switch,
+  Textarea,
+} from "@uiid/forms";
 import * as Icons from "@uiid/icons";
 import type { Icon as LucideIcon } from "@uiid/icons";
-import { Alert, Avatar, Badge, Kbd, Status, Timeline } from "@uiid/indicators";
+import * as SimpleIcons from "@icons-pack/react-simple-icons";
+import { Alert, Avatar, Badge, Kbd, Progress, Status, Timeline } from "@uiid/indicators";
+import { Accordion } from "@uiid/interactive";
+import { Breadcrumbs } from "@uiid/navigation";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
 import { Modal } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -41,7 +56,7 @@ export const registry: ComponentRegistry = {
 
   Layer: ({ element, children }) => <Layer data-element-key={element.key} {...element.props}>{children}</Layer>,
 
-  Separator: ({ element }) => <Separator data-element-key={element.key} {...element.props} />,
+  Separator: ({ element, children }) => <Separator data-element-key={element.key} {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
   Button: ({ element, children, onAction }) => {
@@ -58,7 +73,8 @@ export const registry: ComponentRegistry = {
           }
         }}
       >
-        {children || props.children}
+        {children}
+        {props.children}
       </Button>
     );
   },
@@ -150,6 +166,68 @@ export const registry: ComponentRegistry = {
     );
   },
 
+  Radio: ({ element }) => <Radio data-element-key={element.key} {...element.props} />,
+
+  RadioGroup: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <RadioGroup
+        data-element-key={element.key}
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
+  CheckboxGroup: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <CheckboxGroup
+        data-element-key={element.key}
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
+  NumberField: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <NumberField
+        data-element-key={element.key}
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
+  Slider: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Slider
+        data-element-key={element.key}
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
   // Typography components
   Text: ({ element, children }) => (
     <Text data-element-key={element.key} {...element.props}>{children || element.props.children}</Text>
@@ -202,6 +280,14 @@ export const registry: ComponentRegistry = {
     return <IconComponent data-element-key={element.key} {...props} />;
   },
 
+  // Simple Icon component (for brand icons like Google, GitHub, Apple, etc.)
+  SimpleIcon: ({ element }) => {
+    const { name, ...props } = element.props;
+    const IconComponent = SimpleIcons[name as keyof typeof SimpleIcons];
+    if (!IconComponent) return null;
+    return <IconComponent data-element-key={element.key} {...props} />;
+  },
+
   // Indicator components
   Alert: ({ element, children }) => (
     <Alert data-element-key={element.key} {...element.props}>{children}</Alert>
@@ -230,4 +316,25 @@ export const registry: ComponentRegistry = {
   Timeline: ({ element, children }) => (
     <Timeline data-element-key={element.key} {...element.props}>{children}</Timeline>
   ),
+
+  Progress: ({ element }) => <Progress data-element-key={element.key} {...element.props} />,
+
+  // Interactive components
+  Accordion: ({ element, onAction }) => {
+    const { action, ...props } = element.props;
+    return (
+      <Accordion
+        data-element-key={element.key}
+        {...props}
+        onValueChange={(value) => {
+          if (action && onAction) {
+            onAction({ ...action, params: { value } });
+          }
+        }}
+      />
+    );
+  },
+
+  // Navigation components
+  Breadcrumbs: ({ element }) => <Breadcrumbs data-element-key={element.key} {...element.props} />,
 };

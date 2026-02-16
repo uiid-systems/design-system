@@ -272,6 +272,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^3.0.24
         version: 3.0.24(zod@4.3.6)
+      '@icons-pack/react-simple-icons':
+        specifier: ^13.8.0
+        version: 13.8.0(react@19.2.3)
       '@json-render/core':
         specifier: ^0.3.0
         version: 0.3.0(zod@4.3.6)
@@ -305,6 +308,9 @@ importers:
       '@uiid/lists':
         specifier: workspace:*
         version: link:../../packages/lists
+      '@uiid/navigation':
+        specifier: workspace:*
+        version: link:../../packages/navigation
       '@uiid/overlays':
         specifier: workspace:*
         version: link:../../packages/overlays

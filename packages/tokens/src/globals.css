@@ -56,8 +56,8 @@
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     transform-origin: var(--globals-transform-origin);
     transition:
-      transform var(--globals-transition-timing),
-      opacity var(--globals-transition-timing);
+      transform var(--globals-transition-duration),
+      opacity var(--globals-transition-duration);
 
     &[data-starting-style],
     &[data-ending-style] {
