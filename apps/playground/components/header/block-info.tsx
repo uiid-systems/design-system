@@ -2,7 +2,9 @@
 
 import { useMemo } from "react";
 
+import { Button } from "@uiid/buttons";
 import { Select, type SelectProps } from "@uiid/forms";
+import { ChevronLeftIcon, ChevronRightIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -22,6 +24,8 @@ export const BlockInfo = () => {
   const activeBlockId = useChatStore((s) => s.activeBlockId);
   const activeVersionId = useChatStore((s) => s.activeVersionId);
   const activeRegistryBlock = useChatStore((s) => s.activeRegistryBlock);
+  const registryBlocks = useChatStore((s) => s.registryBlocks);
+  const navigateRegistryBlock = useChatStore((s) => s.navigateRegistryBlock);
   const { getVersionsForBlock, load } = useSavedBlocks();
 
   const versions = useMemo(
@@ -42,14 +46,38 @@ export const BlockInfo = () => {
     if (version) load(version);
   };
 
-  // Registry block: show name and version without RxDB version selector
+  const canNavigate = activeRegistryBlock && registryBlocks.length > 1;
+
+  // Registry block: show name, version, and prev/next navigation
   if (activeRegistryBlock) {
     return (
       <BlockInfoContainer>
+        {canNavigate && (
+          <Button
+            tooltip="Previous block"
+            onClick={() => navigateRegistryBlock("prev")}
+            size="xsmall"
+            ghost
+            square
+          >
+            <ChevronLeftIcon />
+          </Button>
+        )}
         <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
         <Text size={-1} shade="muted">
           v{activeRegistryBlock.version} · registry
         </Text>
+        {canNavigate && (
+          <Button
+            tooltip="Next block"
+            onClick={() => navigateRegistryBlock("next")}
+            size="xsmall"
+            ghost
+            square
+          >
+            <ChevronRightIcon />
+          </Button>
+        )}
       </BlockInfoContainer>
     );
   }

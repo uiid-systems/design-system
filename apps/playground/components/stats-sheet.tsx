@@ -21,13 +21,13 @@ export const StatsSheet = () => {
       side="right"
       trigger={
         <Button
-          tooltip="Component stats"
+          tooltip="Component usage breakdown"
           disabled={!tree}
           size="small"
-          square
           ghost
         >
           <BarChart3Icon />
+          Stats
         </Button>
       }
     >

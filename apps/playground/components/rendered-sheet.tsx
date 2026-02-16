@@ -32,13 +32,13 @@ export const RenderedSheet = ({
       PopupProps={{ style: { width: "40rem" } }}
       trigger={
         <Button
-          tooltip={triggerText}
+          tooltip="View and edit JSON or JSX source"
           disabled={!code && !jsonValue}
           size="small"
-          square
           ghost
         >
           <CodeIcon />
+          Code
         </Button>
       }
       {...props}

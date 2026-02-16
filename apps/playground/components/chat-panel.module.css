@@ -1,0 +1,40 @@
+.panel {
+  position: fixed;
+  bottom: 5rem;
+  right: 1.5rem;
+  width: 400px;
+  height: 520px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--globals-border-color);
+  border-radius: 12px;
+  background: var(--globals-surface-color);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+.panelHeader {
+  border-bottom: 1px solid var(--globals-border-color);
+}
+
+.toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 16px oklch(0 0 0 / 0.12);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

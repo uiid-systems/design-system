@@ -29,6 +29,7 @@ type ChatState = {
   activeBlockId: string | null;
   activeVersionId: string | null;
   activeRegistryBlock: BlockFile | null;
+  registryBlocks: BlockFile[];
   inspecting: boolean;
 };
 
@@ -44,6 +45,8 @@ type ChatActions = {
   setActiveBlock: (blockId: string, versionId: string) => void;
   clearActiveBlock: () => void;
   setActiveRegistryBlock: (block: BlockFile) => void;
+  setRegistryBlocks: (blocks: BlockFile[]) => void;
+  navigateRegistryBlock: (direction: "prev" | "next") => void;
   toggleInspecting: () => void;
 };
 
@@ -135,6 +138,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   activeBlockId: null,
   activeVersionId: null,
   activeRegistryBlock: null,
+  registryBlocks: [],
   inspecting: false,
 
   // Actions
@@ -150,6 +154,31 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
 
   setActiveRegistryBlock: (block) =>
     set({ activeRegistryBlock: block, activeBlockId: null, activeVersionId: null }),
+
+  setRegistryBlocks: (blocks) => set({ registryBlocks: blocks }),
+
+  navigateRegistryBlock: (direction) => {
+    const { registryBlocks, activeRegistryBlock } = get();
+    if (!activeRegistryBlock || registryBlocks.length === 0) return;
+
+    const currentIndex = registryBlocks.findIndex(
+      (b) => b.slug === activeRegistryBlock.slug
+    );
+    if (currentIndex === -1) return;
+
+    const nextIndex =
+      direction === "next"
+        ? (currentIndex + 1) % registryBlocks.length
+        : (currentIndex - 1 + registryBlocks.length) % registryBlocks.length;
+
+    const nextBlock = registryBlocks[nextIndex];
+    set({
+      tree: nextBlock.tree,
+      activeRegistryBlock: nextBlock,
+      activeBlockId: null,
+      activeVersionId: null,
+    });
+  },
 
   toggleInspecting: () => set((state) => ({ inspecting: !state.inspecting })),
 
@@ -217,6 +246,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
       activeBlockId: null,
       activeVersionId: null,
       activeRegistryBlock: null,
+      registryBlocks: [],
     });
   },
 

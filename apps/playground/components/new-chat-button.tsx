@@ -38,13 +38,13 @@ export const NewChatButton = () => {
       onOpenChange={setOpen}
       trigger={
         <Button
-          tooltip="Create a new block"
+          tooltip="Clear and start a new block"
           disabled={messages.length === 0 && !tree && !component}
           size="small"
           ghost
-          square
         >
           <SquarePenIcon />
+          New
         </Button>
       }
       footer={

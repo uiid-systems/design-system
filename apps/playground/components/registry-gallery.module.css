@@ -1,0 +1,28 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.card {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--globals-border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: var(--globals-surface-color);
+}
+
+.card:hover {
+  border-color: var(--globals-focus-color, oklch(0.65 0.2 250));
+  box-shadow: 0 2px 12px oklch(0 0 0 / 0.06);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--globals-focus-color, oklch(0.65 0.2 250));
+  outline-offset: 2px;
+}

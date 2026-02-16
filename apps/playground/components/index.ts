@@ -1,7 +1,6 @@
 export * from "./app-shell";
-export * from "./chat-outer-container";
 
-export * from "./chat-sidebar";
+export * from "./chat-panel";
 export * from "./header";
 
 export * from "./chat-message-container";

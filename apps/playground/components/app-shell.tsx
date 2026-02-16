@@ -11,8 +11,7 @@ import { ToastProvider, Toaster } from "@uiid/overlays";
 import { registry } from "@/lib/components";
 import { useChatStore } from "@/lib/store";
 
-import { ChatOuterContainer } from "./chat-outer-container";
-import { ChatSidebar } from "./chat-sidebar";
+import { ChatPanel } from "./chat-panel";
 import { Header } from "./header";
 
 type AppShellProps = {
@@ -60,14 +59,16 @@ export const AppShell = ({ children }: AppShellProps) => {
           },
         }}
       >
-        <ChatOuterContainer style={{ overflow: "hidden" }}>
-          <ChatSidebar />
-
-          <Stack ax="stretch" fullwidth fullheight>
-            <Header />
-            {children}
-          </Stack>
-        </ChatOuterContainer>
+        <Stack
+          data-slot="app-shell"
+          fullscreen
+          ax="stretch"
+          style={{ overflow: "hidden" }}
+        >
+          <Header />
+          {children}
+        </Stack>
+        <ChatPanel />
       </JSONUIProvider>
       <Toaster />
     </ToastProvider>

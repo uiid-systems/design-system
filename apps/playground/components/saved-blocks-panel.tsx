@@ -144,8 +144,9 @@ export const SavedBlocksPanel = () => {
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
       trigger={
-        <Button tooltip="View saved blocks" size="small" ghost square>
+        <Button tooltip="View saved blocks (browser storage)" size="small" ghost>
           <FolderOpenIcon />
+          Saved
         </Button>
       }
     >

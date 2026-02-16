@@ -81,13 +81,13 @@ export const SaveButton = () => {
       trigger={
         <Button
           data-slot="save-button"
-          tooltip="Save block"
+          tooltip="Save block to browser storage"
           size="small"
           disabled={!tree}
           ghost
-          square
         >
           <SaveIcon />
+          Save
         </Button>
       }
       footer={
