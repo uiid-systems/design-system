@@ -21,7 +21,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@icons-pack/react-simple-icons": "^13.8.0",
+    "@icons-pack/react-simple-icons": "^13.11.2",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",
     "@uiid/cards": "workspace:*",
