@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { Card } from "@uiid/cards";
 import { Badge } from "@uiid/indicators";
 import { LoadingSpinner } from "@uiid/icons";
@@ -27,6 +29,7 @@ const LAYOUT_TYPES = new Set([
 ]);
 
 export const RegistryGallery = () => {
+  const router = useRouter();
   const { blocks, isLoading } = useRegistryBlocks();
   const setTree = useChatStore((s) => s.setTree);
   const setActiveRegistryBlock = useChatStore((s) => s.setActiveRegistryBlock);
@@ -34,6 +37,7 @@ export const RegistryGallery = () => {
   const handleLoad = (block: BlockFile) => {
     setTree(block.tree);
     setActiveRegistryBlock(block);
+    router.push("/");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, block: BlockFile) => {
@@ -100,7 +104,6 @@ export const RegistryGallery = () => {
           return (
             <Card
               key={block.slug}
-              render={<button role="button" />}
               onClick={() => handleLoad(block)}
               onKeyDown={(e) => handleKeyDown(e, block)}
               tabIndex={0}

@@ -2,16 +2,20 @@
 
 import type { UISpec } from "@/lib/catalog";
 import { useState, useEffect, useRef, useMemo } from "react";
+import Link from "next/link";
 
 import { Button } from "@uiid/buttons";
-import { ScanSearchIcon, CopyIcon, SquareCheckIcon } from "@uiid/icons";
+import {
+  ScanSearchIcon,
+  CopyIcon,
+  SquareCheckIcon,
+  PackageIcon,
+} from "@uiid/icons";
 import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { treeToFormattedJsx } from "@/lib/tree-to-jsx";
-
-import { RegistryBrowser } from "../registry-browser";
 import { RenderedSheet } from "../rendered-sheet";
 import { StatsSheet } from "../stats-sheet";
 
@@ -121,7 +125,15 @@ export const HeaderActions = () => {
 
       {/* Navigation — always visible */}
       <Group gap={1}>
-        <RegistryBrowser />
+        <Button
+          render={<Link href="/registry" />}
+          tooltip="Browse block registry"
+          size="small"
+          ghost
+        >
+          <PackageIcon />
+          Registry
+        </Button>
       </Group>
     </Group>
   );

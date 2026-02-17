@@ -9,7 +9,7 @@
   flex-direction: column;
   border: 1px solid var(--globals-border-color);
   border-radius: 12px;
-  background: var(--globals-surface-color);
+  background: var(--shade-surface);
   box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
   overflow: hidden;
   animation: slideUp 0.2s ease-out;

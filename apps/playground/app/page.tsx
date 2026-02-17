@@ -7,7 +7,6 @@ import { registry } from "@/lib/components";
 import { useChatStore } from "@/lib/store";
 import { RenderedContainer } from "@/components";
 import { ElementInspector } from "@/components/element-inspector";
-import { RegistryGallery } from "@/components/registry-gallery";
 
 /**
  * Enrich spec elements with their record key so component renderers
@@ -31,7 +30,7 @@ export default function PlaygroundPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   if (!enrichedSpec) {
-    return <RegistryGallery />;
+    return <RenderedContainer ref={containerRef} />;
   }
 
   return (
