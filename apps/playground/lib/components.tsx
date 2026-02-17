@@ -8,7 +8,7 @@
  */
 
 import type { ComponentType, ReactNode } from "react";
-import type { UISpec } from "./catalog";
+import type { Spec } from "@json-render/core";
 import type { ComponentRegistry } from "@json-render/react";
 import { Renderer } from "@json-render/react";
 
@@ -40,8 +40,12 @@ import { Text } from "@uiid/typography";
 /**
  * Get the element key injected by useEnrichedSpec in page.tsx.
  * Used to stamp data-element-key on DOM nodes for the inspector.
+ *
+ * At runtime, elements are enriched with a `key` property by useEnrichedSpec,
+ * but UIElement's static type doesn't include it. We use `object` as the
+ * parameter type so any element is accepted, then cast to extract the key.
  */
-const keyOf = (element: { key?: string }) =>
+const keyOf = (element: object) =>
   (element as unknown as { key?: string }).key;
 
 /**
@@ -143,7 +147,7 @@ export const registry: ComponentRegistry = {
     for (const [key, value] of Object.entries(element.props)) {
       if (key.startsWith("__slot_")) {
         const slotName = key.replace("__slot_", "");
-        const slotTree = value as { root: string; elements: UISpec["elements"] };
+        const slotTree = value as Spec;
         // Render the slot subtree using the same registry
         slotProps[slotName] = (
           <Renderer spec={slotTree} registry={registry} />
