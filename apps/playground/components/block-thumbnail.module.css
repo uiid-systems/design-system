@@ -1,18 +1,16 @@
 .frame {
-  width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid var(--globals-border-color);
-  background: var(--globals-surface-color);
   position: relative;
 }
 
 .scaler {
   position: absolute;
-  inset: 0;
-  transform: scale(0.5);
+  top: 0;
+  left: 0;
+  width: 300%;
+  height: 300%;
+  transform: scale(0.3333);
   transform-origin: top left;
   pointer-events: none;
-  padding: 1rem;
 }
