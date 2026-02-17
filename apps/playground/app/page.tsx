@@ -36,7 +36,6 @@ export default function PlaygroundPage() {
 
   return (
     <RenderedContainer ref={containerRef}>
-      {/* @ts-expect-error — UISpec (inferred catalog type) is structurally compatible with Spec at runtime */}
       <Renderer spec={enrichedSpec} registry={registry} />
       <ElementInspector containerRef={containerRef} />
     </RenderedContainer>

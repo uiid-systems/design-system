@@ -11,8 +11,6 @@
 .scaler {
   position: absolute;
   inset: 0;
-  width: 200%;
-  height: 200%;
   transform: scale(0.5);
   transform-origin: top left;
   pointer-events: none;

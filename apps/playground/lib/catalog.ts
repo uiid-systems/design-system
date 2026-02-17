@@ -6,6 +6,7 @@
  */
 
 import { defineCatalog } from "@json-render/core";
+import type { Spec } from "@json-render/core";
 import { schema } from "@json-render/react/schema";
 import { getCatalogEntries } from "@uiid/registry";
 
@@ -34,5 +35,13 @@ export const catalog = defineCatalog(schema, {
 });
 
 export type Catalog = typeof catalog;
-export type UISpec = Catalog["_specType"];
+
+/**
+ * Spec type used throughout the playground.
+ *
+ * Uses the core `Spec` type from json-render rather than the catalog's
+ * inferred `_specType`, which makes `visible` a required `unknown` field
+ * and breaks structural compatibility with `Renderer`'s expected props.
+ */
+export type UISpec = Spec;
 

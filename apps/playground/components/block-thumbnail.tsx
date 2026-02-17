@@ -1,8 +1,8 @@
 "use client";
 
-import type { UISpec } from "@/lib/catalog";
 import { Renderer } from "@json-render/react";
 
+import type { UISpec } from "@/lib/catalog";
 import { registry } from "@/lib/components";
 
 import styles from "./block-thumbnail.module.css";
@@ -13,7 +13,7 @@ type BlockThumbnailProps = {
 
 export const BlockThumbnail = ({ spec }: BlockThumbnailProps) => {
   return (
-    <div className={styles.frame}>
+    <div data-slot="block-thumbnail" className={styles.frame}>
       <div className={styles.scaler}>
         <Renderer spec={spec} registry={registry} />
       </div>
