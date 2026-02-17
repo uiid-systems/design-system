@@ -3,12 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 
 import { Button } from "@uiid/buttons";
-import {
-  PackageIcon,
-  EyeIcon,
-  CopyIcon,
-  Trash2Icon,
-} from "@uiid/icons";
+import { PackageIcon, EyeIcon, CopyIcon, Trash2Icon } from "@uiid/icons";
 import { Group, Stack, Separator } from "@uiid/layout";
 import { Sheet, useToastManager } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
@@ -71,9 +66,13 @@ export const RegistryPanel = () => {
 
   const handleDelete = async (block: BlockFile) => {
     try {
-      const res = await fetch(`/api/blocks/${block.slug}`, { method: "DELETE" });
+      const res = await fetch(`/api/blocks/${block.slug}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Delete failed");
-      toastManager.add({ description: `"${block.name}" removed from registry` });
+      toastManager.add({
+        description: `"${block.name}" removed from registry`,
+      });
       fetchBlocks();
     } catch {
       toastManager.add({ description: "Failed to delete block" });

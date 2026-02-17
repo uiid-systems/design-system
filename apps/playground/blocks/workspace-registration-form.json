@@ -1,7 +1,7 @@
 {
   "name": "Workspace registration form",
   "slug": "workspace-registration-form",
-  "description": "Registration form with name, email, and address fields. Includes side-by-side name fields, a full-width email and address row, a city/state/postal code row, and a cancel/submit footer.",
+  "description": "Registration form with name, email, and address fields.",
   "version": 1,
   "tags": [],
   "tree": {
@@ -13,10 +13,7 @@
           "title": "Register to workspace",
           "description": "Take a few moments to register for your company's workspace"
         },
-        "children": [
-          "form-fields",
-          "card-footer"
-        ]
+        "children": ["form-fields", "card-footer"]
       },
       "form-fields": {
         "type": "Stack",
@@ -25,12 +22,7 @@
           "my": 4,
           "ax": "stretch"
         },
-        "children": [
-          "name-row",
-          "email-field",
-          "address-field",
-          "location-row"
-        ]
+        "children": ["name-row", "email-field", "address-field", "location-row"]
       },
       "name-row": {
         "type": "Group",
@@ -38,10 +30,7 @@
           "gap": 3,
           "evenly": true
         },
-        "children": [
-          "first-name",
-          "last-name"
-        ]
+        "children": ["first-name", "last-name"]
       },
       "first-name": {
         "type": "Input",
@@ -81,11 +70,7 @@
           "gap": 3,
           "evenly": true
         },
-        "children": [
-          "city-field",
-          "state-field",
-          "postal-code-field"
-        ]
+        "children": ["city-field", "state-field", "postal-code-field"]
       },
       "city-field": {
         "type": "Input",
@@ -115,10 +100,7 @@
           "fullwidth": true,
           "ax": "end"
         },
-        "children": [
-          "cancel-button",
-          "submit-button"
-        ],
+        "children": ["cancel-button", "submit-button"],
         "slot": "footer"
       },
       "cancel-button": {

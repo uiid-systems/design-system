@@ -2,6 +2,9 @@
 
 import { Renderer } from "@json-render/react";
 
+import { Card } from "@uiid/cards";
+import { Group } from "@uiid/layout";
+
 import type { UISpec } from "@/lib/catalog";
 import { registry } from "@/lib/components";
 
@@ -13,11 +16,13 @@ type BlockThumbnailProps = {
 
 export const BlockThumbnail = ({ spec }: BlockThumbnailProps) => {
   return (
-    <div data-slot="block-thumbnail" className={styles.frame}>
-      <div className={styles.scaler}>
-        <Renderer spec={spec} registry={registry} />
-      </div>
-    </div>
+    <Card data-slot="block-thumbnail" fullwidth className={styles.frame}>
+      <Group ax="center" p={8} className={styles.scaler}>
+        <div>
+          <Renderer spec={spec} registry={registry} />
+        </div>
+      </Group>
+    </Card>
   );
 };
 BlockThumbnail.displayName = "BlockThumbnail";
