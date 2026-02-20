@@ -22,16 +22,17 @@ export const AppShell = ({ children }: AppShellProps) => {
   const loadFromUrlHash = useChatStore((s) => s.loadFromUrlHash);
   const syncTreeToHash = useChatStore((s) => s.syncTreeToHash);
   const tree = useChatStore((s) => s.tree);
+  const activeRegistryBlock = useChatStore((s) => s.activeRegistryBlock);
 
-  // Load from URL hash on mount
+  // Load from URL hash on mount (only for non-registry routes)
   useEffect(() => {
-    loadFromUrlHash();
-  }, [loadFromUrlHash]);
+    if (!activeRegistryBlock) loadFromUrlHash();
+  }, [loadFromUrlHash, activeRegistryBlock]);
 
-  // Keep URL hash in sync with tree state
+  // Keep URL hash in sync with tree state (skipped for registry blocks)
   useEffect(() => {
-    syncTreeToHash();
-  }, [tree, syncTreeToHash]);
+    if (!activeRegistryBlock) syncTreeToHash();
+  }, [tree, syncTreeToHash, activeRegistryBlock]);
 
   // Handle browser back/forward navigation
   useEffect(() => {
@@ -65,10 +66,10 @@ export const AppShell = ({ children }: AppShellProps) => {
           ax="stretch"
           style={{ overflow: "hidden" }}
         >
-          <Header />
+          {tree && <Header />}
           {children}
         </Stack>
-        <ChatPanel />
+        {tree && <ChatPanel />}
       </JSONUIProvider>
       <Toaster />
     </ToastProvider>

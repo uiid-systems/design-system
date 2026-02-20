@@ -37,7 +37,7 @@ export const RegistryGallery = () => {
   const handleLoad = (block: BlockFile) => {
     setTree(block.tree);
     setActiveRegistryBlock(block);
-    router.push("/");
+    router.push(`/registry/${block.slug}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, block: BlockFile) => {
@@ -116,10 +116,10 @@ export const RegistryGallery = () => {
               </div>
 
               <Stack
+                data-slot="registry-gallery-card-content"
                 gap={4}
-                px={8}
-                pb={8}
-                pt={4}
+                p={6}
+                pt={2}
                 fullheight
                 style={{ textAlign: "left" }}
               >
@@ -128,7 +128,7 @@ export const RegistryGallery = () => {
                 </Text>
 
                 {block.description && (
-                  <Text size={-1} shade="muted">
+                  <Text size={-1} shade="muted" balance>
                     {block.description}
                   </Text>
                 )}
