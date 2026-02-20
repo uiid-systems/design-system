@@ -58,7 +58,7 @@ jobs:
         uses: changesets/action@v1.4.7
         with:
           version: pnpm run changeset:version
-          publish: pnpm run build && pnpm run release
+          publish: pnpm run release
           commit: "chore(release): version packages and update changelogs"
           title: "chore(release): version packages"
         env:
