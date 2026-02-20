@@ -1,7 +1,62 @@
 [
   {
-    "version": "0.0.6",
+    "version": "0.0.7",
     "date": "February 20, 2026",
+    "packages": [
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [],
+      "fixes": [
+        {
+          "description": "Release again (#89)",
+          "raw": "fix: release again (#89)",
+          "semverType": "patch",
+          "pr": 89,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "refactors": [],
+      "performance": [],
+      "documentation": [],
+      "other": []
+    }
+  },
+  {
+    "version": "0.0.6",
+    "date": "Date unavailable",
     "packages": [
       "@uiid/blocks",
       "@uiid/buttons",

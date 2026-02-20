@@ -1,6 +1,6 @@
 {
   "name": "@uiid/code",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Code highlighting components powered by Shiki",
   "license": "MIT",
   "author": "Adam Fratino",

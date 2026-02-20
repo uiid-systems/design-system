@@ -1,5 +1,11 @@
 # @uiid/overlays
 
+## 0.0.7
+
+### Patch Changes
+
+- fix: release again (#89)
+
 ## 0.0.6
 
 ### Patch Changes
