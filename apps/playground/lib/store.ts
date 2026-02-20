@@ -192,8 +192,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   },
 
   pushTreeToHistory: () => {
-    const { tree } = get();
-    if (!tree || typeof window === "undefined") return;
+    const { tree, activeRegistryBlock } = get();
+    if (!tree || activeRegistryBlock || typeof window === "undefined") return;
 
     try {
       const encoded = encodeTree(tree);
@@ -206,8 +206,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   },
 
   syncTreeToHash: () => {
-    const { tree } = get();
-    if (typeof window === "undefined") return;
+    const { tree, activeRegistryBlock } = get();
+    if (activeRegistryBlock || typeof window === "undefined") return;
 
     try {
       const url = new URL(window.location.href);
@@ -223,8 +223,18 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   },
 
   getShareUrl: () => {
-    const { tree } = get();
+    const { tree, activeRegistryBlock } = get();
     if (!tree) return null;
+
+    if (activeRegistryBlock) {
+      try {
+        const url = new URL(window.location.origin);
+        url.pathname = `/registry/${activeRegistryBlock.slug}`;
+        return url.toString();
+      } catch {
+        return null;
+      }
+    }
 
     try {
       const encoded = encodeTree(tree);

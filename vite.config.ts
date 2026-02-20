@@ -38,11 +38,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     preserveDirectives: usePreserveDirectives = true,
   } = options;
 
-  const plugins = [
-    react(),
-    tsconfigPaths(),
-    dts({ insertTypesEntry: true }),
-  ];
+  const plugins = [react(), tsconfigPaths(), dts({ insertTypesEntry: true })];
 
   if (usePreserveDirectives) {
     plugins.push(preserveDirectives());

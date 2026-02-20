@@ -1,15 +1,27 @@
-import { Stack, Group } from "@uiid/layout";
+"use client";
 
-import { LandingScreenChat } from "./landing-screen-chat";
+import { Stack, Separator } from "@uiid/layout";
+
+import { LandingScreenHero } from "./landing-screen-hero";
 import { LandingScreenBlocks } from "./landing-screen-blocks";
+import { LandingScreenStats } from "./landing-screen-stats";
 
 export const LandingScreen = () => {
   return (
-    <Stack ax="center" ay="center" fullwidth fullheight>
-      <Group evenly fullwidth fullheight>
-        <LandingScreenChat />
+    <Stack
+      data-slot="landing-screen"
+      ax="center"
+      fullwidth
+      fullheight
+      style={{ overflowY: "auto" }}
+    >
+      <Stack ax="center" fullwidth maxw={960} gap={16} py={16} px={6}>
+        <LandingScreenHero />
+        <Separator />
         <LandingScreenBlocks />
-      </Group>
+        <Separator />
+        <LandingScreenStats />
+      </Stack>
     </Stack>
   );
 };

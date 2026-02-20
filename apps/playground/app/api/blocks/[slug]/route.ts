@@ -1,21 +1,18 @@
-import { unlink } from "node:fs/promises";
-import { join } from "node:path";
-
-const BLOCKS_DIR = join(process.cwd(), "blocks");
+import { blocks } from "@uiid/blocks";
 
 /**
- * DELETE /api/blocks/[slug] — Remove a block file from the blocks/ directory.
+ * GET /api/blocks/[slug] — Read a single block by slug from the @uiid/blocks package.
  */
-export async function DELETE(
+export async function GET(
   _req: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
+  const block = blocks[slug];
 
-  try {
-    await unlink(join(BLOCKS_DIR, `${slug}.json`));
-    return Response.json({ ok: true });
-  } catch {
+  if (!block) {
     return Response.json({ error: "Block not found" }, { status: 404 });
   }
+
+  return Response.json(block);
 }

@@ -50,6 +50,16 @@ export const BlockInfo = () => {
     if (version) load(version);
   };
 
+  const handleNavigate = (direction: "prev" | "next") => {
+    navigateRegistryBlock(direction);
+    // Update the URL without triggering a Next.js navigation — the store
+    // is already updated synchronously so we only need the address bar to match.
+    const next = useChatStore.getState().activeRegistryBlock;
+    if (next) {
+      window.history.replaceState(null, "", `/registry/${next.slug}`);
+    }
+  };
+
   const canNavigate = activeRegistryBlock && registryBlocks.length > 1;
 
   return (
@@ -67,7 +77,7 @@ export const BlockInfo = () => {
           <Group>
             <Button
               tooltip="Previous block"
-              onClick={() => navigateRegistryBlock("prev")}
+              onClick={() => handleNavigate("prev")}
               size="xsmall"
               ghost
               square
@@ -76,7 +86,7 @@ export const BlockInfo = () => {
             </Button>
             <Button
               tooltip="Next block"
-              onClick={() => navigateRegistryBlock("next")}
+              onClick={() => handleNavigate("next")}
               size="xsmall"
               ghost
               square
