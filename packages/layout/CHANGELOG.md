@@ -1,5 +1,11 @@
 # @uiid/layout
 
+## 0.0.6
+
+### Patch Changes
+
+- fix: release (#87)
+
 ## 0.0.5
 
 ### Patch Changes
