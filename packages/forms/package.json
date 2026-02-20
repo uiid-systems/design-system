@@ -1,8 +1,19 @@
 {
   "name": "@uiid/forms",
   "version": "0.0.4",
+  "description": "Form components — Input, Select, Checkbox, Radio, Switch, and more",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/forms"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/forms",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "forms", "input", "select", "checkbox"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

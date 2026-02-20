@@ -1,8 +1,19 @@
 {
   "name": "@uiid/indicators",
   "version": "0.0.4",
+  "description": "Status indicators — Alert, Avatar, Badge, Progress, Timeline, and more",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/indicators"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/indicators",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "indicators", "alert", "avatar", "badge"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

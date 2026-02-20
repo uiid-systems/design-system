@@ -1,8 +1,19 @@
 {
   "name": "@uiid/layout",
   "version": "0.0.4",
+  "description": "Layout primitives — Stack, Group, Box, Separator, and more",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/layout"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/layout",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "layout", "stack", "group", "box"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

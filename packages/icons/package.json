@@ -1,8 +1,19 @@
 {
   "name": "@uiid/icons",
   "version": "0.0.4",
+  "description": "Icon components powered by Lucide",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/icons"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/icons",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "icons", "lucide"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

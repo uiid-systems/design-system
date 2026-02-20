@@ -4,9 +4,11 @@
   "commit": false,
   "fixed": [
     [
+      "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",
+      "@uiid/code",
       "@uiid/forms",
       "@uiid/icons",
       "@uiid/indicators",
@@ -15,6 +17,7 @@
       "@uiid/lists",
       "@uiid/navigation",
       "@uiid/overlays",
+      "@uiid/registry",
       "@uiid/tables",
       "@uiid/tokens",
       "@uiid/typography",
@@ -22,7 +25,7 @@
     ]
   ],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": ["@uiid/storybook", "next-16", "playground", "docs"]
