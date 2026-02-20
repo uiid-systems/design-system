@@ -1,6 +1,6 @@
 {
   "name": "@uiid/tokens",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Design tokens and CSS custom properties for the UIID design system",
   "license": "MIT",
   "author": "Adam Fratino",

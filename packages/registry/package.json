@@ -1,6 +1,6 @@
 {
   "name": "@uiid/registry",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Component metadata, Zod schemas, and AI-friendly documentation",
   "license": "MIT",
   "author": "Adam Fratino",
