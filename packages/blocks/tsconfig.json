@@ -8,8 +8,9 @@
     "noEmit": false,
     "composite": true,
     "rootDir": "src",
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/**/*.json"],
   "exclude": ["dist", "node_modules"]
 }

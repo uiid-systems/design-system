@@ -1,31 +1,18 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 
-import type { BlockFile } from "@/lib/block-file";
-import { slugify } from "@/lib/block-file";
+import { blocks, slugify } from "@uiid/blocks";
+import type { BlockFile } from "@uiid/blocks";
 
 const BLOCKS_DIR = join(process.cwd(), "blocks");
 
 /**
- * GET /api/blocks — List all exported block files.
+ * GET /api/blocks — List all block files from the @uiid/blocks package.
  */
 export async function GET() {
-  try {
-    const files = await readdir(BLOCKS_DIR);
-    const jsonFiles = files.filter((f) => f.endsWith(".json"));
-
-    const blocks: BlockFile[] = [];
-    for (const file of jsonFiles) {
-      const raw = await readFile(join(BLOCKS_DIR, file), "utf-8");
-      blocks.push(JSON.parse(raw) as BlockFile);
-    }
-
-    blocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-
-    return Response.json(blocks);
-  } catch {
-    return Response.json([]);
-  }
+  const allBlocks = Object.values(blocks);
+  allBlocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  return Response.json(allBlocks);
 }
 
 /**
@@ -46,11 +33,16 @@ export async function POST(req: Request) {
       description: body.description || "",
       version: body.version || 1,
       tags: body.tags || [],
+      category: body.category || "content",
+      components: body.components || [],
+      complexity: body.complexity || "low",
+      elementCount: body.elementCount || 0,
       tree: body.tree,
       createdAt: body.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
+    await mkdir(BLOCKS_DIR, { recursive: true });
     const filePath = join(BLOCKS_DIR, `${slug}.json`);
     await writeFile(filePath, JSON.stringify(block, null, 2) + "\n", "utf-8");
 

@@ -278,6 +278,9 @@ importers:
       '@json-render/react':
         specifier: ^0.6.0
         version: 0.6.0(react@19.2.3)(zod@4.3.6)
+      '@uiid/blocks':
+        specifier: workspace:*
+        version: link:../../packages/blocks
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../../packages/buttons
@@ -369,9 +372,6 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@uiid/blocks':
-        specifier: workspace:*
-        version: link:../../packages/blocks
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../../packages/buttons
@@ -489,71 +489,7 @@ importers:
         version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.0.16)(happy-dom@20.6.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
 
   packages/blocks:
-    dependencies:
-      '@icons-pack/react-simple-icons':
-        specifier: ^13.11.2
-        version: 13.11.2(react@19.2.3)
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../buttons
-      '@uiid/calendars':
-        specifier: workspace:*
-        version: link:../calendars
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../cards
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../forms
-      '@uiid/icons':
-        specifier: workspace:*
-        version: link:../icons
-      '@uiid/indicators':
-        specifier: workspace:*
-        version: link:../indicators
-      '@uiid/interactive':
-        specifier: workspace:*
-        version: link:../interactive
-      '@uiid/layout':
-        specifier: workspace:*
-        version: link:../layout
-      '@uiid/lists':
-        specifier: workspace:*
-        version: link:../lists
-      '@uiid/navigation':
-        specifier: workspace:*
-        version: link:../navigation
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../overlays
-      '@uiid/tables':
-        specifier: workspace:*
-        version: link:../tables
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../tokens
-      '@uiid/typography':
-        specifier: workspace:*
-        version: link:../typography
-      '@uiid/utils':
-        specifier: workspace:*
-        version: link:../utils
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
     devDependencies:
-      '@storybook/react-vite':
-        specifier: ^10.2.3
-        version: 10.2.3(esbuild@0.27.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.57.1)(storybook@10.2.3(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@types/react':
-        specifier: ^19.1.8
-        version: 19.1.10
-      '@types/react-dom':
-        specifier: ^19.1.6
-        version: 19.1.7(@types/react@19.1.10)
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

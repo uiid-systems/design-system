@@ -3,11 +3,16 @@
   "slug": "notification-card-with-icon",
   "description": "A notification card featuring an icon in the header, title, message, and action buttons.",
   "version": 1,
-  "tags": [],
+  "tags": ["notification", "card", "alert", "icon"],
+  "category": "cards",
+  "components": ["Button", "Card", "Group", "Stack", "Text"],
+  "complexity": "low",
+  "elementCount": 6,
   "tree": {
     "root": "notification-card",
     "elements": {
       "notification-card": {
+        "key": "notification-card",
         "type": "Card",
         "props": {
           "title": "New message received",
@@ -19,6 +24,7 @@
         ]
       },
       "card-content": {
+        "key": "card-content",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -31,12 +37,14 @@
         ]
       },
       "message-text": {
+        "key": "message-text",
         "type": "Text",
         "props": {
           "children": "John Doe sent you a message: \"Hey, are we still on for the meeting tomorrow at 3pm?\""
         }
       },
       "actions": {
+        "key": "actions",
         "type": "Group",
         "props": {
           "gap": 2,
@@ -48,6 +56,7 @@
         ]
       },
       "dismiss-button": {
+        "key": "dismiss-button",
         "type": "Button",
         "props": {
           "variant": "subtle",
@@ -56,6 +65,7 @@
         }
       },
       "view-button": {
+        "key": "view-button",
         "type": "Button",
         "props": {
           "children": "View Message"
