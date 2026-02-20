@@ -1,8 +1,19 @@
 {
   "name": "@uiid/tokens",
   "version": "0.0.4",
+  "description": "Design tokens and CSS custom properties for the UIID design system",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/tokens",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "tokens", "css-custom-properties", "design-tokens"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "exports": {
     "./globals.css": "./src/globals.css",
     "./*": "./src/css/*"

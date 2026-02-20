@@ -1,8 +1,19 @@
 {
   "name": "@uiid/cards",
   "version": "0.0.4",
+  "description": "Card container component with title, description, and footer slots",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/cards"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/cards",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "cards"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

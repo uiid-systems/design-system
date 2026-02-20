@@ -1,8 +1,19 @@
 {
   "name": "@uiid/buttons",
   "version": "0.0.4",
+  "description": "Button and toggle button components",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/buttons"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/buttons",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "buttons", "toggle"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,8 +1,19 @@
 {
   "name": "@uiid/typography",
   "version": "0.0.4",
+  "description": "Text component with size, weight, shade, and tone props",
   "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/typography"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/typography",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": ["uiid", "react", "components", "design-system", "typography", "text"],
   "type": "module",
+  "sideEffects": ["*.css"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
