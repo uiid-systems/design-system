@@ -22,7 +22,7 @@
     "auto-changeset": "node scripts/auto-changeset.mjs",
     "version-packages": "changeset version && pnpm run build-changelog",
     "auto-release": "pnpm run auto-changeset && pnpm run version-packages && git add packages/changelog.json packages/changelog-packages.json && git commit --amend --no-edit",
-    "release": "changeset publish",
+    "release": "turbo build && changeset publish",
     "generate-readmes": "node scripts/generate-readmes.mjs",
     "build-changelog": "node scripts/build-changelog.mjs",
     "sync-changelog": "pnpm run build-changelog",
