@@ -3,11 +3,16 @@
   "slug": "workspace-settings-page",
   "description": "Multi-section settings page with personal information, workspace settings, and notification preferences. Two-column layout with label column on the left and form fields on the right, separated by horizontal dividers.",
   "version": 1,
-  "tags": [],
+  "tags": ["settings", "workspace", "profile", "form"],
+  "category": "settings",
+  "components": ["Button", "Checkbox", "Group", "Input", "Select", "Separator", "Stack", "Text", "Textarea"],
+  "complexity": "high",
+  "elementCount": 41,
   "tree": {
     "root": "settings-page",
     "elements": {
       "settings-page": {
+        "key": "settings-page",
         "type": "Stack",
         "props": {
           "gap": 8,
@@ -27,6 +32,7 @@
         ]
       },
       "personal-section": {
+        "key": "personal-section",
         "type": "Group",
         "props": {
           "gap": 8,
@@ -36,6 +42,7 @@
         "children": ["personal-label", "personal-fields"]
       },
       "personal-label": {
+        "key": "personal-label",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -44,6 +51,7 @@
         "children": ["personal-heading", "personal-description"]
       },
       "personal-heading": {
+        "key": "personal-heading",
         "type": "Text",
         "props": {
           "children": "Personal information",
@@ -52,6 +60,7 @@
         }
       },
       "personal-description": {
+        "key": "personal-description",
         "type": "Text",
         "props": {
           "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
@@ -60,6 +69,7 @@
         }
       },
       "personal-fields": {
+        "key": "personal-fields",
         "type": "Stack",
         "props": {
           "gap": 3,
@@ -69,6 +79,7 @@
         "children": ["name-row", "email-field", "birth-role-row", "role-helper"]
       },
       "name-row": {
+        "key": "name-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -77,6 +88,7 @@
         "children": ["first-name", "last-name"]
       },
       "first-name": {
+        "key": "first-name",
         "type": "Input",
         "props": {
           "label": "First name",
@@ -84,6 +96,7 @@
         }
       },
       "last-name": {
+        "key": "last-name",
         "type": "Input",
         "props": {
           "label": "Last name",
@@ -91,6 +104,7 @@
         }
       },
       "email-field": {
+        "key": "email-field",
         "type": "Input",
         "props": {
           "label": "Email",
@@ -99,6 +113,7 @@
         }
       },
       "birth-role-row": {
+        "key": "birth-role-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -107,6 +122,7 @@
         "children": ["birth-year", "role-field"]
       },
       "birth-year": {
+        "key": "birth-year",
         "type": "Input",
         "props": {
           "label": "Birth year",
@@ -114,6 +130,7 @@
         }
       },
       "role-field": {
+        "key": "role-field",
         "type": "Input",
         "props": {
           "label": "Role",
@@ -122,6 +139,7 @@
         }
       },
       "role-helper": {
+        "key": "role-helper",
         "type": "Text",
         "props": {
           "children": "Roles can only be changed by system admin.",
@@ -131,10 +149,12 @@
         }
       },
       "separator-1": {
+        "key": "separator-1",
         "type": "Separator",
         "props": {}
       },
       "workspace-section": {
+        "key": "workspace-section",
         "type": "Group",
         "props": {
           "gap": 8,
@@ -144,6 +164,7 @@
         "children": ["workspace-label", "workspace-fields"]
       },
       "workspace-label": {
+        "key": "workspace-label",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -152,6 +173,7 @@
         "children": ["workspace-heading", "workspace-description"]
       },
       "workspace-heading": {
+        "key": "workspace-heading",
         "type": "Text",
         "props": {
           "children": "Workspace settings",
@@ -160,6 +182,7 @@
         }
       },
       "workspace-description": {
+        "key": "workspace-description",
         "type": "Text",
         "props": {
           "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
@@ -168,6 +191,7 @@
         }
       },
       "workspace-fields": {
+        "key": "workspace-fields",
         "type": "Stack",
         "props": {
           "gap": 3,
@@ -181,6 +205,7 @@
         ]
       },
       "workspace-name-row": {
+        "key": "workspace-name-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -189,6 +214,7 @@
         "children": ["workspace-name", "visibility-select"]
       },
       "workspace-name": {
+        "key": "workspace-name",
         "type": "Input",
         "props": {
           "label": "Workspace name",
@@ -196,6 +222,7 @@
         }
       },
       "visibility-select": {
+        "key": "visibility-select",
         "type": "Select",
         "props": {
           "label": "Visibility",
@@ -213,6 +240,7 @@
         }
       },
       "workspace-desc-textarea": {
+        "key": "workspace-desc-textarea",
         "type": "Textarea",
         "props": {
           "label": "Workspace description",
@@ -221,6 +249,7 @@
         }
       },
       "workspace-note": {
+        "key": "workspace-note",
         "type": "Text",
         "props": {
           "children": "Note: description provided will not be displayed externally.",
@@ -229,10 +258,12 @@
         }
       },
       "separator-2": {
+        "key": "separator-2",
         "type": "Separator",
         "props": {}
       },
       "notification-section": {
+        "key": "notification-section",
         "type": "Group",
         "props": {
           "gap": 8,
@@ -242,6 +273,7 @@
         "children": ["notification-label", "notification-fields"]
       },
       "notification-label": {
+        "key": "notification-label",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -250,6 +282,7 @@
         "children": ["notification-heading", "notification-description"]
       },
       "notification-heading": {
+        "key": "notification-heading",
         "type": "Text",
         "props": {
           "children": "Notification settings",
@@ -258,6 +291,7 @@
         }
       },
       "notification-description": {
+        "key": "notification-description",
         "type": "Text",
         "props": {
           "children": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
@@ -266,6 +300,7 @@
         }
       },
       "notification-fields": {
+        "key": "notification-fields",
         "type": "Stack",
         "props": {
           "gap": 3,
@@ -279,6 +314,7 @@
         ]
       },
       "newsletter-heading": {
+        "key": "newsletter-heading",
         "type": "Text",
         "props": {
           "children": "Newsletter",
@@ -287,6 +323,7 @@
         }
       },
       "newsletter-description": {
+        "key": "newsletter-description",
         "type": "Text",
         "props": {
           "children": "Change how often you want to receive updates from our newsletter.",
@@ -295,6 +332,7 @@
         }
       },
       "newsletter-options": {
+        "key": "newsletter-options",
         "type": "Stack",
         "props": {
           "gap": 1
@@ -302,6 +340,7 @@
         "children": ["option-weekly", "option-monthly", "option-never"]
       },
       "option-weekly": {
+        "key": "option-weekly",
         "type": "Checkbox",
         "props": {
           "label": "Every week",
@@ -309,6 +348,7 @@
         }
       },
       "option-monthly": {
+        "key": "option-monthly",
         "type": "Checkbox",
         "props": {
           "label": "Every month",
@@ -316,6 +356,7 @@
         }
       },
       "option-never": {
+        "key": "option-never",
         "type": "Checkbox",
         "props": {
           "label": "Never",
@@ -324,10 +365,12 @@
         }
       },
       "separator-3": {
+        "key": "separator-3",
         "type": "Separator",
         "props": {}
       },
       "footer-actions": {
+        "key": "footer-actions",
         "type": "Group",
         "props": {
           "gap": 2,
@@ -337,6 +380,7 @@
         "children": ["go-back-button", "save-button"]
       },
       "go-back-button": {
+        "key": "go-back-button",
         "type": "Button",
         "props": {
           "ghost": true,
@@ -344,6 +388,7 @@
         }
       },
       "save-button": {
+        "key": "save-button",
         "type": "Button",
         "props": {
           "children": "Save settings"

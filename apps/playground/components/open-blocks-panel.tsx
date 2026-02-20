@@ -46,12 +46,19 @@ export const OpenBlocksPanel = () => {
   const handleExport = async (block: (typeof latestBlocks)[number]) => {
     try {
       const tree = JSON.parse(block.tree);
+      const elements = (tree.elements ?? {}) as Record<string, { type: string }>;
+      const types = [...new Set(Object.values(elements).map((e) => e.type))].sort();
+      const elementCount = Object.keys(elements).length;
       const body: BlockFile = {
         name: block.name,
         slug: slugify(block.name),
         description: block.description,
         version: 1,
         tags: [],
+        category: "content",
+        components: types,
+        complexity: elementCount <= 10 ? "low" : elementCount <= 20 ? "medium" : "high",
+        elementCount,
         tree,
         createdAt: new Date(block.createdAt).toISOString(),
         updatedAt: new Date(block.updatedAt).toISOString(),

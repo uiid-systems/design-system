@@ -9,7 +9,6 @@
     "preview": "serve storybook-static"
   },
   "dependencies": {
-    "@uiid/blocks": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",
     "@uiid/cards": "workspace:*",

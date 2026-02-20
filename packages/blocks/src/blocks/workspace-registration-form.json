@@ -3,11 +3,16 @@
   "slug": "workspace-registration-form",
   "description": "Registration form with name, email, and address fields.",
   "version": 1,
-  "tags": [],
+  "tags": ["registration", "form", "card", "signup"],
+  "category": "forms",
+  "components": ["Button", "Card", "Group", "Input", "Stack"],
+  "complexity": "medium",
+  "elementCount": 14,
   "tree": {
     "root": "registration-card",
     "elements": {
       "registration-card": {
+        "key": "registration-card",
         "type": "Card",
         "props": {
           "title": "Register to workspace",
@@ -16,6 +21,7 @@
         "children": ["form-fields", "card-footer"]
       },
       "form-fields": {
+        "key": "form-fields",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -25,6 +31,7 @@
         "children": ["name-row", "email-field", "address-field", "location-row"]
       },
       "name-row": {
+        "key": "name-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -33,6 +40,7 @@
         "children": ["first-name", "last-name"]
       },
       "first-name": {
+        "key": "first-name",
         "type": "Input",
         "props": {
           "label": "First name",
@@ -41,6 +49,7 @@
         }
       },
       "last-name": {
+        "key": "last-name",
         "type": "Input",
         "props": {
           "label": "Last name",
@@ -49,6 +58,7 @@
         }
       },
       "email-field": {
+        "key": "email-field",
         "type": "Input",
         "props": {
           "label": "Email",
@@ -58,6 +68,7 @@
         }
       },
       "address-field": {
+        "key": "address-field",
         "type": "Input",
         "props": {
           "label": "Address",
@@ -65,6 +76,7 @@
         }
       },
       "location-row": {
+        "key": "location-row",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -73,6 +85,7 @@
         "children": ["city-field", "state-field", "postal-code-field"]
       },
       "city-field": {
+        "key": "city-field",
         "type": "Input",
         "props": {
           "label": "City",
@@ -80,6 +93,7 @@
         }
       },
       "state-field": {
+        "key": "state-field",
         "type": "Input",
         "props": {
           "label": "State",
@@ -87,6 +101,7 @@
         }
       },
       "postal-code-field": {
+        "key": "postal-code-field",
         "type": "Input",
         "props": {
           "label": "Postal code",
@@ -94,6 +109,7 @@
         }
       },
       "card-footer": {
+        "key": "card-footer",
         "type": "Group",
         "props": {
           "gap": 2,
@@ -104,6 +120,7 @@
         "slot": "footer"
       },
       "cancel-button": {
+        "key": "cancel-button",
         "type": "Button",
         "props": {
           "ghost": true,
@@ -111,6 +128,7 @@
         }
       },
       "submit-button": {
+        "key": "submit-button",
         "type": "Button",
         "props": {
           "children": "Submit"

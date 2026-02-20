@@ -3,11 +3,16 @@
   "slug": "profile-settings-switches",
   "description": "Displays a bunch of switches and a couple buttons",
   "version": 1,
-  "tags": [],
+  "tags": ["settings", "profile", "switches", "notifications", "privacy"],
+  "category": "settings",
+  "components": ["Button", "Group", "Stack", "Switch", "Text"],
+  "complexity": "medium",
+  "elementCount": 14,
   "tree": {
     "root": "settings-section",
     "elements": {
       "settings-section": {
+        "key": "settings-section",
         "type": "Stack",
         "props": {
           "gap": 8,
@@ -16,6 +21,7 @@
         "children": ["notifications-section", "privacy-section", "actions"]
       },
       "notifications-section": {
+        "key": "notifications-section",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -29,6 +35,7 @@
         ]
       },
       "notifications-title": {
+        "key": "notifications-title",
         "type": "Text",
         "props": {
           "children": "Notifications",
@@ -38,6 +45,7 @@
         }
       },
       "email-notifications": {
+        "key": "email-notifications",
         "type": "Switch",
         "props": {
           "label": "Email notifications",
@@ -47,6 +55,7 @@
         }
       },
       "push-notifications": {
+        "key": "push-notifications",
         "type": "Switch",
         "props": {
           "label": "Push notifications",
@@ -56,6 +65,7 @@
         }
       },
       "marketing-emails": {
+        "key": "marketing-emails",
         "type": "Switch",
         "props": {
           "label": "Marketing emails",
@@ -65,6 +75,7 @@
         }
       },
       "privacy-section": {
+        "key": "privacy-section",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -78,6 +89,7 @@
         ]
       },
       "privacy-title": {
+        "key": "privacy-title",
         "type": "Text",
         "props": {
           "children": "Privacy",
@@ -87,6 +99,7 @@
         }
       },
       "profile-visibility": {
+        "key": "profile-visibility",
         "type": "Switch",
         "props": {
           "label": "Public profile",
@@ -96,6 +109,7 @@
         }
       },
       "data-sharing": {
+        "key": "data-sharing",
         "type": "Switch",
         "props": {
           "label": "Data sharing",
@@ -105,6 +119,7 @@
         }
       },
       "analytics": {
+        "key": "analytics",
         "type": "Switch",
         "props": {
           "label": "Analytics tracking",
@@ -114,6 +129,7 @@
         }
       },
       "actions": {
+        "key": "actions",
         "type": "Group",
         "props": {
           "gap": 3,
@@ -122,6 +138,7 @@
         "children": ["cancel-button", "save-button"]
       },
       "cancel-button": {
+        "key": "cancel-button",
         "type": "Button",
         "props": {
           "children": "Cancel",
@@ -129,6 +146,7 @@
         }
       },
       "save-button": {
+        "key": "save-button",
         "type": "Button",
         "props": {
           "children": "Save Changes"

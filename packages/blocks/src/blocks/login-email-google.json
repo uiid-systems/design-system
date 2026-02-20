@@ -3,11 +3,16 @@
   "slug": "login-email-google",
   "description": "Simple email login form with a Google SSO option, an OR WITH separator, and a terms of service footer.",
   "version": 1,
-  "tags": [],
+  "tags": ["auth", "login", "sso", "google", "email"],
+  "category": "authentication",
+  "components": ["Button", "Input", "Separator", "SimpleIcon", "Stack", "Text"],
+  "complexity": "low",
+  "elementCount": 8,
   "tree": {
     "root": "login-form",
     "elements": {
       "login-form": {
+        "key": "login-form",
         "type": "Stack",
         "props": {
           "gap": 4,
@@ -24,6 +29,7 @@
         ]
       },
       "heading": {
+        "key": "heading",
         "type": "Text",
         "props": {
           "children": "Log in or create account",
@@ -34,6 +40,7 @@
         }
       },
       "email-field": {
+        "key": "email-field",
         "type": "Input",
         "props": {
           "label": "Email",
@@ -43,6 +50,7 @@
         }
       },
       "signin-button": {
+        "key": "signin-button",
         "type": "Button",
         "props": {
           "children": "Sign in",
@@ -50,12 +58,14 @@
         }
       },
       "divider": {
+        "key": "divider",
         "type": "Separator",
         "props": {
           "children": "or with"
         }
       },
       "google-button": {
+        "key": "google-button",
         "type": "Button",
         "props": {
           "children": "Sign in with Google",
@@ -67,12 +77,14 @@
         ]
       },
       "google-icon": {
+        "key": "google-icon",
         "type": "SimpleIcon",
         "props": {
           "name": "SiGoogle"
         }
       },
       "terms-text": {
+        "key": "terms-text",
         "type": "Text",
         "props": {
           "children": "By signing in, you agree to our terms of service and privacy policy.",
