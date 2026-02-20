@@ -1,9 +1,303 @@
 [
   {
+    "version": "0.0.5",
+    "date": "February 20, 2026",
+    "packages": [
+      "@uiid/blocks",
+      "@uiid/buttons",
+      "@uiid/calendars",
+      "@uiid/cards",
+      "@uiid/forms",
+      "@uiid/icons",
+      "@uiid/indicators",
+      "@uiid/interactive",
+      "@uiid/layout",
+      "@uiid/lists",
+      "@uiid/navigation",
+      "@uiid/overlays",
+      "@uiid/tables",
+      "@uiid/tokens",
+      "@uiid/typography",
+      "@uiid/utils"
+    ],
+    "changes": {
+      "features": [
+        {
+          "description": "Add blocks using screenshots (#77)",
+          "raw": "feat: add blocks using screenshots (#77)",
+          "semverType": "patch",
+          "pr": 77,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Add icons to playground (#72)",
+          "raw": "feat: add icons to playground (#72)",
+          "semverType": "patch",
+          "pr": 72,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Block registry (#66)",
+          "raw": "feat: block registry (#66)",
+          "semverType": "patch",
+          "pr": 66,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Add more components to registry, separator children, other stuff (#78)",
+          "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+          "semverType": "patch",
+          "pr": 78,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add collapsible to registry (#70)",
+          "raw": "feat: add collapsible to registry (#70)",
+          "semverType": "patch",
+          "pr": 70,
+          "packages": [
+            "@uiid/forms",
+            "@uiid/interactive",
+            "@uiid/layout"
+          ]
+        },
+        {
+          "description": "Add accordion (#71)",
+          "raw": "feat: add accordion (#71)",
+          "semverType": "patch",
+          "pr": 71,
+          "packages": [
+            "@uiid/interactive",
+            "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add sizing props (#69)",
+          "raw": "feat: add sizing props (#69)",
+          "semverType": "patch",
+          "pr": 69,
+          "packages": [
+            "@uiid/layout",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "description": "Json-render migration (#81)",
+          "raw": "fix: json-render migration (#81)",
+          "semverType": "patch",
+          "pr": 81,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "refactors": [
+        {
+          "description": "Move json to blocks package (#83)",
+          "raw": "refactor: move json to blocks package (#83)",
+          "semverType": "patch",
+          "pr": 83,
+          "packages": [
+            "@uiid/blocks"
+          ]
+        },
+        {
+          "description": "Playground enhancements (#82)",
+          "raw": "refactor: playground enhancements (#82)",
+          "semverType": "patch",
+          "pr": 82,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Playground routing (#84)",
+          "raw": "refactor: playground routing (#84)",
+          "semverType": "patch",
+          "pr": 84,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Redesign playground (#80)",
+          "raw": "refactor: redesign playground (#80)",
+          "semverType": "patch",
+          "pr": 80,
+          "packages": [
+            "@uiid/buttons",
+            "@uiid/lists",
+            "@uiid/overlays"
+          ]
+        },
+        {
+          "description": "Tokens (#75)",
+          "raw": "refactor: tokens (#75)",
+          "semverType": "patch",
+          "pr": 75,
+          "packages": [
+            "@uiid/interactive",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/utils"
+          ]
+        },
+        {
+          "description": "Cleanup list, docs, text (#73)",
+          "raw": "refactor: cleanup list, docs, text (#73)",
+          "semverType": "patch",
+          "pr": 73,
+          "packages": [
+            "@uiid/lists",
+            "@uiid/tokens",
+            "@uiid/typography"
+          ]
+        }
+      ],
+      "performance": [],
+      "documentation": [
+        {
+          "description": "Update docs (#68)",
+          "raw": "docs: update docs (#68)",
+          "semverType": "patch",
+          "pr": 68,
+          "packages": [
+            "@uiid/blocks",
+            "@uiid/buttons",
+            "@uiid/calendars",
+            "@uiid/cards",
+            "@uiid/forms",
+            "@uiid/icons",
+            "@uiid/indicators",
+            "@uiid/interactive",
+            "@uiid/layout",
+            "@uiid/lists",
+            "@uiid/navigation",
+            "@uiid/overlays",
+            "@uiid/tables",
+            "@uiid/tokens",
+            "@uiid/typography",
+            "@uiid/utils"
+          ]
+        }
+      ],
+      "other": []
+    }
+  },
+  {
     "version": "0.0.4",
     "date": "February 2, 2026",
     "packages": [
-      "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",
@@ -79,7 +373,6 @@
     "version": "0.0.3",
     "date": "January 31, 2026",
     "packages": [
-      "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",
@@ -104,7 +397,6 @@
           "semverType": "patch",
           "pr": 37,
           "packages": [
-            "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -128,7 +420,6 @@
           "semverType": "patch",
           "pr": 35,
           "packages": [
-            "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/cards",
             "@uiid/forms",
@@ -239,7 +530,6 @@
     "version": "0.0.2",
     "date": "January 21, 2026",
     "packages": [
-      "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",
@@ -258,26 +548,6 @@
     ],
     "changes": {
       "features": [
-        {
-          "description": "Add overlays to json-render, clean up",
-          "raw": "feat: add overlays to json-render, clean up",
-          "semverType": "patch",
-          "packages": [
-            "@uiid/blocks",
-            "@uiid/overlays"
-          ]
-        },
-        {
-          "description": "Add `code` package, shiki (#22)",
-          "raw": "feat: add `code` package, shiki (#22)",
-          "semverType": "patch",
-          "pr": 22,
-          "packages": [
-            "@uiid/blocks",
-            "@uiid/tokens",
-            "@uiid/typography"
-          ]
-        },
         {
           "description": "Add resizable to interactive package (#28)",
           "raw": "feat: add resizable to interactive package (#28)",
@@ -309,12 +579,30 @@
           ]
         },
         {
+          "description": "Add overlays to json-render, clean up",
+          "raw": "feat: add overlays to json-render, clean up",
+          "semverType": "patch",
+          "packages": [
+            "@uiid/overlays"
+          ]
+        },
+        {
           "description": "Add code editor component (#23)",
           "raw": "feat: add code editor component (#23)",
           "semverType": "patch",
           "pr": 23,
           "packages": [
             "@uiid/tokens"
+          ]
+        },
+        {
+          "description": "Add `code` package, shiki (#22)",
+          "raw": "feat: add `code` package, shiki (#22)",
+          "semverType": "patch",
+          "pr": 22,
+          "packages": [
+            "@uiid/tokens",
+            "@uiid/typography"
           ]
         }
       ],
@@ -325,7 +613,6 @@
           "semverType": "patch",
           "pr": 20,
           "packages": [
-            "@uiid/blocks",
             "@uiid/buttons",
             "@uiid/calendars",
             "@uiid/cards",
@@ -351,7 +638,6 @@
           "semverType": "patch",
           "pr": 25,
           "packages": [
-            "@uiid/blocks",
             "@uiid/calendars",
             "@uiid/cards",
             "@uiid/forms",
@@ -382,9 +668,8 @@
   },
   {
     "version": "0.0.1",
-    "date": "Date unavailable",
+    "date": "January 16, 2026",
     "packages": [
-      "@uiid/blocks",
       "@uiid/buttons",
       "@uiid/calendars",
       "@uiid/cards",
@@ -408,7 +693,6 @@
           "raw": "feat: add blocks package, newsletter block",
           "semverType": "patch",
           "packages": [
-            "@uiid/blocks",
             "@uiid/layout",
             "@uiid/tokens",
             "@uiid/utils"
@@ -421,7 +705,6 @@
           "raw": "fix: react hook errors",
           "semverType": "patch",
           "packages": [
-            "@uiid/blocks",
             "@uiid/calendars",
             "@uiid/interactive",
             "@uiid/overlays",
@@ -434,7 +717,6 @@
           "raw": "fix: build failures, recover profile block",
           "semverType": "patch",
           "packages": [
-            "@uiid/blocks",
             "@uiid/calendars",
             "@uiid/overlays"
           ]

@@ -1,6 +1,6 @@
 {
   "name": "@uiid/navigation",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Navigation components — Breadcrumbs, Tabs, Pagination",
   "license": "MIT",
   "author": "Adam Fratino",
@@ -11,9 +11,20 @@
   },
   "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/navigation",
   "bugs": "https://github.com/uiid-systems/design-system/issues",
-  "keywords": ["uiid", "react", "components", "design-system", "navigation", "breadcrumbs", "tabs", "pagination"],
+  "keywords": [
+    "uiid",
+    "react",
+    "components",
+    "design-system",
+    "navigation",
+    "breadcrumbs",
+    "tabs",
+    "pagination"
+  ],
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
