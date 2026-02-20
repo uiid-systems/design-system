@@ -1,6 +1,6 @@
 {
   "name": "@uiid/registry",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Component metadata, Zod schemas, and AI-friendly documentation",
   "license": "MIT",
   "author": "Adam Fratino",
@@ -11,7 +11,15 @@
   },
   "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/registry",
   "bugs": "https://github.com/uiid-systems/design-system/issues",
-  "keywords": ["uiid", "react", "components", "design-system", "registry", "schemas", "zod"],
+  "keywords": [
+    "uiid",
+    "react",
+    "components",
+    "design-system",
+    "registry",
+    "schemas",
+    "zod"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

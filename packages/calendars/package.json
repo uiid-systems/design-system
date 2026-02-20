@@ -1,6 +1,6 @@
 {
   "name": "@uiid/calendars",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Calendar and date picker components",
   "license": "MIT",
   "author": "Adam Fratino",
@@ -11,9 +11,18 @@
   },
   "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/calendars",
   "bugs": "https://github.com/uiid-systems/design-system/issues",
-  "keywords": ["uiid", "react", "components", "design-system", "calendars", "date-picker"],
+  "keywords": [
+    "uiid",
+    "react",
+    "components",
+    "design-system",
+    "calendars",
+    "date-picker"
+  ],
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

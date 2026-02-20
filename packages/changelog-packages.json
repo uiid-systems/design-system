@@ -3,109 +3,66 @@
     "packageName": "@uiid/blocks",
     "entries": [
       {
-        "version": "0.0.4",
-        "date": "February 2, 2026",
-        "changes": {
-          "features": [],
-          "fixes": [],
-          "refactors": [],
-          "performance": [],
-          "documentation": [],
-          "other": []
-        },
-        "dependencies": []
-      },
-      {
-        "version": "0.0.3",
-        "date": "January 31, 2026",
+        "version": "0.0.5",
+        "date": "February 20, 2026",
         "changes": {
           "features": [
             {
-              "description": "Add mdx support to docs, test on button (#37)",
-              "raw": "feat: add mdx support to docs, test on button (#37)",
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
               "semverType": "patch",
-              "pr": 37
+              "pr": 77
             },
             {
-              "description": "Link component docs to builder (#35)",
-              "raw": "feat: link component docs to builder (#35)",
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
               "semverType": "patch",
-              "pr": 35
-            }
-          ],
-          "fixes": [],
-          "refactors": [],
-          "performance": [],
-          "documentation": [],
-          "other": []
-        },
-        "dependencies": []
-      },
-      {
-        "version": "0.0.2",
-        "date": "January 21, 2026",
-        "changes": {
-          "features": [
-            {
-              "description": "Add overlays to json-render, clean up",
-              "raw": "feat: add overlays to json-render, clean up",
-              "semverType": "patch"
+              "pr": 72
             },
             {
-              "description": "Add `code` package, shiki (#22)",
-              "raw": "feat: add `code` package, shiki (#22)",
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
               "semverType": "patch",
-              "pr": 22
+              "pr": 66
             }
           ],
           "fixes": [
             {
-              "description": "Changelogs (#20)",
-              "raw": "fix: changelogs (#20)",
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
               "semverType": "patch",
-              "pr": 20
+              "pr": 81
             }
           ],
           "refactors": [
             {
-              "description": "Swap accent and muted colors (#25)",
-              "raw": "refactor: swap accent and muted colors (#25)",
+              "description": "Move json to blocks package (#83)",
+              "raw": "refactor: move json to blocks package (#83)",
               "semverType": "patch",
-              "pr": 25
-            }
-          ],
-          "performance": [],
-          "documentation": [],
-          "other": []
-        },
-        "dependencies": []
-      },
-      {
-        "version": "0.0.1",
-        "date": "Date unavailable",
-        "changes": {
-          "features": [
-            {
-              "description": "Add blocks package, newsletter block",
-              "raw": "feat: add blocks package, newsletter block",
-              "semverType": "patch"
-            }
-          ],
-          "fixes": [
-            {
-              "description": "React hook errors",
-              "raw": "fix: react hook errors",
-              "semverType": "patch"
+              "pr": 83
             },
             {
-              "description": "Build failures, recover profile block",
-              "raw": "fix: build failures, recover profile block",
-              "semverType": "patch"
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
             }
           ],
-          "refactors": [],
           "performance": [],
-          "documentation": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
           "other": []
         },
         "dependencies": []
@@ -115,6 +72,77 @@
   {
     "packageName": "@uiid/buttons",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Redesign playground (#80)",
+              "raw": "refactor: redesign playground (#80)",
+              "semverType": "patch",
+              "pr": 80
+            },
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -209,7 +237,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -225,6 +253,71 @@
   {
     "packageName": "@uiid/calendars",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -287,7 +380,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -314,6 +407,71 @@
   {
     "packageName": "@uiid/cards",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -408,7 +566,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -424,6 +582,77 @@
   {
     "packageName": "@uiid/forms",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add collapsible to registry (#70)",
+              "raw": "feat: add collapsible to registry (#70)",
+              "semverType": "patch",
+              "pr": 70
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -530,7 +759,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -546,6 +775,65 @@
   {
     "packageName": "@uiid/icons",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -601,7 +889,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -617,6 +905,71 @@
   {
     "packageName": "@uiid/indicators",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -698,7 +1051,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -714,6 +1067,89 @@
   {
     "packageName": "@uiid/interactive",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add collapsible to registry (#70)",
+              "raw": "feat: add collapsible to registry (#70)",
+              "semverType": "patch",
+              "pr": 70
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            },
+            {
+              "description": "Add accordion (#71)",
+              "raw": "feat: add accordion (#71)",
+              "semverType": "patch",
+              "pr": 71
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Tokens (#75)",
+              "raw": "refactor: tokens (#75)",
+              "semverType": "patch",
+              "pr": 75
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -841,7 +1277,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -863,6 +1299,83 @@
   {
     "packageName": "@uiid/layout",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add sizing props (#69)",
+              "raw": "feat: add sizing props (#69)",
+              "semverType": "patch",
+              "pr": 69
+            },
+            {
+              "description": "Add collapsible to registry (#70)",
+              "raw": "feat: add collapsible to registry (#70)",
+              "semverType": "patch",
+              "pr": 70
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -938,7 +1451,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [
             {
@@ -966,6 +1479,83 @@
   {
     "packageName": "@uiid/lists",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Redesign playground (#80)",
+              "raw": "refactor: redesign playground (#80)",
+              "semverType": "patch",
+              "pr": 80
+            },
+            {
+              "description": "Cleanup list, docs, text (#73)",
+              "raw": "refactor: cleanup list, docs, text (#73)",
+              "semverType": "patch",
+              "pr": 73
+            },
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1048,7 +1638,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -1064,6 +1654,71 @@
   {
     "packageName": "@uiid/navigation",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1133,7 +1788,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -1149,6 +1804,77 @@
   {
     "packageName": "@uiid/overlays",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Redesign playground (#80)",
+              "raw": "refactor: redesign playground (#80)",
+              "semverType": "patch",
+              "pr": 80
+            },
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1243,7 +1969,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [
@@ -1270,6 +1996,71 @@
   {
     "packageName": "@uiid/tables",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Tokens (#75)",
+              "raw": "refactor: tokens (#75)",
+              "semverType": "patch",
+              "pr": 75
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1339,7 +2130,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -1355,6 +2146,89 @@
   {
     "packageName": "@uiid/tokens",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            },
+            {
+              "description": "Add more components to registry, separator children, other stuff (#78)",
+              "raw": "feat: add more components to registry, separator children, other stuff (#78)",
+              "semverType": "patch",
+              "pr": 78
+            },
+            {
+              "description": "Add accordion (#71)",
+              "raw": "feat: add accordion (#71)",
+              "semverType": "patch",
+              "pr": 71
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Cleanup list, docs, text (#73)",
+              "raw": "refactor: cleanup list, docs, text (#73)",
+              "semverType": "patch",
+              "pr": 73
+            },
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Tokens (#75)",
+              "raw": "refactor: tokens (#75)",
+              "semverType": "patch",
+              "pr": 75
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1487,7 +2361,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [
             {
@@ -1515,6 +2389,71 @@
   {
     "packageName": "@uiid/typography",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Cleanup list, docs, text (#73)",
+              "raw": "refactor: cleanup list, docs, text (#73)",
+              "semverType": "patch",
+              "pr": 73
+            },
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1609,7 +2548,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [],
           "fixes": [],
@@ -1625,6 +2564,77 @@
   {
     "packageName": "@uiid/utils",
     "entries": [
+      {
+        "version": "0.0.5",
+        "date": "February 20, 2026",
+        "changes": {
+          "features": [
+            {
+              "description": "Add blocks using screenshots (#77)",
+              "raw": "feat: add blocks using screenshots (#77)",
+              "semverType": "patch",
+              "pr": 77
+            },
+            {
+              "description": "Add sizing props (#69)",
+              "raw": "feat: add sizing props (#69)",
+              "semverType": "patch",
+              "pr": 69
+            },
+            {
+              "description": "Add icons to playground (#72)",
+              "raw": "feat: add icons to playground (#72)",
+              "semverType": "patch",
+              "pr": 72
+            },
+            {
+              "description": "Block registry (#66)",
+              "raw": "feat: block registry (#66)",
+              "semverType": "patch",
+              "pr": 66
+            }
+          ],
+          "fixes": [
+            {
+              "description": "Json-render migration (#81)",
+              "raw": "fix: json-render migration (#81)",
+              "semverType": "patch",
+              "pr": 81
+            }
+          ],
+          "refactors": [
+            {
+              "description": "Playground enhancements (#82)",
+              "raw": "refactor: playground enhancements (#82)",
+              "semverType": "patch",
+              "pr": 82
+            },
+            {
+              "description": "Tokens (#75)",
+              "raw": "refactor: tokens (#75)",
+              "semverType": "patch",
+              "pr": 75
+            },
+            {
+              "description": "Playground routing (#84)",
+              "raw": "refactor: playground routing (#84)",
+              "semverType": "patch",
+              "pr": 84
+            }
+          ],
+          "performance": [],
+          "documentation": [
+            {
+              "description": "Update docs (#68)",
+              "raw": "docs: update docs (#68)",
+              "semverType": "patch",
+              "pr": 68
+            }
+          ],
+          "other": []
+        },
+        "dependencies": []
+      },
       {
         "version": "0.0.4",
         "date": "February 2, 2026",
@@ -1680,7 +2690,7 @@
       },
       {
         "version": "0.0.1",
-        "date": "Date unavailable",
+        "date": "January 16, 2026",
         "changes": {
           "features": [
             {
