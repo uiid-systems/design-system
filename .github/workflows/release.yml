@@ -22,10 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-<<<<<<< Updated upstream
-=======
           registry-url: "https://registry.npmjs.org"
->>>>>>> Stashed changes
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -107,61 +104,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-<<<<<<< Updated upstream
-      - name: Provide manual cleanup instructions on failure
-        if: failure() && steps.changeset_check.outputs.has_changesets == 'true'
-        run: |
-          echo "❌ Release workflow failed after comprehensive recovery attempts."
-          echo ""
-          echo "🔍 The workflow attempted:"
-          echo "  ✅ Smart state detection (open PRs, closed PRs, stale branches)"
-          echo "  ✅ Automatic cleanup of stale branches"
-          echo "  ✅ Retry logic with delays"
-          echo "  ✅ Final verification"
-          echo ""
-          echo "📋 Manual investigation needed:"
-          echo "1. Check workflow logs above for specific error details"
-          echo "2. Check GitHub repository state:"
-          echo "   - Open PRs: https://github.com/${{ github.repository }}/pulls"
-          echo "   - All PRs: https://github.com/${{ github.repository }}/pulls?q=is%3Apr+head%3Achangeset-release%2Fmain"
-          echo "3. Check branch existence: git ls-remote --heads origin changeset-release/main"
-          echo ""
-          echo "🛠️  Common fixes:"
-          echo "   - If authentication errors: Check GITHUB_TOKEN permissions"
-          echo "   - If persistent conflicts: Manually close any stale PRs and delete branch"
-          echo "   - If GitHub API issues: Wait a few minutes and re-run workflow"
-          echo ""
-          echo "⚠️  If this workflow 'passes' but creates no PR, check the changesets outcome above."
-
-      - name: Get current version for release
-        if: steps.changeset_check.outputs.has_changesets == 'false'
-        id: version_check
-        run: |
-          # Use tokens package as the version source (all packages are versioned together)
-          VERSION=$(node -p "require('./packages/tokens/package.json').version")
-          echo "version=v$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Check if release already exists
-        if: steps.changeset_check.outputs.has_changesets == 'false'
-        id: release_exists
-        run: |
-          VERSION="${{ steps.version_check.outputs.version }}"
-          if gh release view "$VERSION" >/dev/null 2>&1; then
-            echo "release_exists=true" >> $GITHUB_OUTPUT
-            echo "Release $VERSION already exists"
-          else
-            echo "release_exists=false" >> $GITHUB_OUTPUT
-            echo "Release $VERSION does not exist - will create"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build packages after version bump
-        if: steps.changeset_check.outputs.has_changesets == 'false' && steps.release_exists.outputs.release_exists == 'false'
-        run: pnpm run build
-
-=======
->>>>>>> Stashed changes
       - name: Generate release notes
         if: steps.changesets.outputs.published == 'true'
         run: |
