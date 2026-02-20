@@ -3,8 +3,28 @@
     "packageName": "@uiid/blocks",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -93,8 +113,28 @@
     "packageName": "@uiid/buttons",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -294,8 +334,28 @@
     "packageName": "@uiid/calendars",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -468,8 +528,28 @@
     "packageName": "@uiid/cards",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -663,8 +743,28 @@
     "packageName": "@uiid/forms",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -876,8 +976,28 @@
     "packageName": "@uiid/icons",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -1026,8 +1146,28 @@
     "packageName": "@uiid/indicators",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -1208,8 +1348,28 @@
     "packageName": "@uiid/interactive",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -1460,8 +1620,28 @@
     "packageName": "@uiid/layout",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -1660,8 +1840,28 @@
     "packageName": "@uiid/lists",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -1855,8 +2055,28 @@
     "packageName": "@uiid/navigation",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -2025,8 +2245,28 @@
     "packageName": "@uiid/overlays",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -2237,8 +2477,28 @@
     "packageName": "@uiid/tables",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -2407,8 +2667,28 @@
     "packageName": "@uiid/tokens",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -2670,8 +2950,28 @@
     "packageName": "@uiid/typography",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [
@@ -2865,8 +3165,28 @@
     "packageName": "@uiid/utils",
     "entries": [
       {
-        "version": "0.0.6",
+        "version": "0.0.7",
         "date": "February 20, 2026",
+        "changes": {
+          "features": [],
+          "fixes": [
+            {
+              "description": "Release again (#89)",
+              "raw": "fix: release again (#89)",
+              "semverType": "patch",
+              "pr": 89
+            }
+          ],
+          "refactors": [],
+          "performance": [],
+          "documentation": [],
+          "other": []
+        },
+        "dependencies": []
+      },
+      {
+        "version": "0.0.6",
+        "date": "Date unavailable",
         "changes": {
           "features": [],
           "fixes": [

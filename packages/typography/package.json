@@ -1,6 +1,6 @@
 {
   "name": "@uiid/typography",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Text component with size, weight, shade, and tone props",
   "license": "MIT",
   "author": "Adam Fratino",
