@@ -32,6 +32,7 @@ storybook-static
 
 # Next.js
 .next
+next-env.d.ts
 
 # CSS tokens
 packages/tokens/src/css/
