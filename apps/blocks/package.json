@@ -11,8 +11,8 @@
     "dependencies": {
         "@ai-sdk/anthropic": "^3.0.34",
         "@icons-pack/react-simple-icons": "^13.8.0",
-        "@json-render/core": "^0.6.0",
-        "@json-render/react": "^0.6.0",
+        "@json-render/core": "^0.8.0",
+        "@json-render/react": "^0.8.0",
         "@uiid/blocks": "workspace:*",
         "@uiid/buttons": "workspace:*",
         "@uiid/cards": "workspace:*",
@@ -39,10 +39,10 @@
         "zustand": "^5.0.10"
     },
     "devDependencies": {
-        "@types/node": "^25.2.3",
+        "@types/node": "^25.3.0",
         "@types/react": "^19.2.8",
         "@types/react-dom": "^19.2.3",
-        "eslint": "^9.0.0",
+        "eslint": "^10.0.1",
         "eslint-config-next": "16.1.6",
         "typescript": "^5.9.3"
     }
