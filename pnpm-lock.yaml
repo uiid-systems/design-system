@@ -79,6 +79,112 @@ importers:
         specifier: ^4.0.16
         version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.0.16)(happy-dom@20.6.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
 
+  apps/blocks:
+    dependencies:
+      '@ai-sdk/anthropic':
+        specifier: ^3.0.34
+        version: 3.0.34(zod@4.3.6)
+      '@icons-pack/react-simple-icons':
+        specifier: ^13.8.0
+        version: 13.11.2(react@19.2.3)
+      '@json-render/core':
+        specifier: ^0.6.0
+        version: 0.6.0(zod@4.3.6)
+      '@json-render/react':
+        specifier: ^0.6.0
+        version: 0.6.0(react@19.2.3)(zod@4.3.6)
+      '@uiid/blocks':
+        specifier: workspace:*
+        version: link:../../packages/blocks
+      '@uiid/buttons':
+        specifier: workspace:*
+        version: link:../../packages/buttons
+      '@uiid/cards':
+        specifier: workspace:*
+        version: link:../../packages/cards
+      '@uiid/code':
+        specifier: workspace:*
+        version: link:../../packages/code
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
+      '@uiid/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@uiid/indicators':
+        specifier: workspace:*
+        version: link:../../packages/indicators
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../../packages/interactive
+      '@uiid/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
+      '@uiid/lists':
+        specifier: workspace:*
+        version: link:../../packages/lists
+      '@uiid/navigation':
+        specifier: workspace:*
+        version: link:../../packages/navigation
+      '@uiid/overlays':
+        specifier: workspace:*
+        version: link:../../packages/overlays
+      '@uiid/registry':
+        specifier: workspace:*
+        version: link:../../packages/registry
+      '@uiid/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
+      '@uiid/typography':
+        specifier: workspace:*
+        version: link:../../packages/typography
+      ai:
+        specifier: ^6.0.66
+        version: 6.0.66(zod@4.3.6)
+      next:
+        specifier: ^16.1.5
+        version: 16.1.5(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      nuqs:
+        specifier: ^2.8.6
+        version: 2.8.6(next@16.1.5(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+      rxdb:
+        specifier: ^16.21.1
+        version: 16.21.1(rxjs@7.8.2)
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
+      zustand:
+        specifier: ^5.0.10
+        version: 5.0.10(@types/react@19.2.8)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
+    devDependencies:
+      '@types/node':
+        specifier: ^25.2.3
+        version: 25.2.3
+      '@types/react':
+        specifier: ^19.2.8
+        version: 19.2.8
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.8)
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.2(jiti@2.6.1)
+      eslint-config-next:
+        specifier: 16.1.6
+        version: 16.1.6(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   apps/docs:
     dependencies:
       '@icons-pack/react-simple-icons':
@@ -260,112 +366,6 @@ importers:
       tailwindcss:
         specifier: ^4.1.18
         version: 4.1.18
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  apps/playground:
-    dependencies:
-      '@ai-sdk/anthropic':
-        specifier: ^3.0.34
-        version: 3.0.34(zod@4.3.6)
-      '@icons-pack/react-simple-icons':
-        specifier: ^13.8.0
-        version: 13.11.2(react@19.2.3)
-      '@json-render/core':
-        specifier: ^0.6.0
-        version: 0.6.0(zod@4.3.6)
-      '@json-render/react':
-        specifier: ^0.6.0
-        version: 0.6.0(react@19.2.3)(zod@4.3.6)
-      '@uiid/blocks':
-        specifier: workspace:*
-        version: link:../../packages/blocks
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../../packages/buttons
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../../packages/cards
-      '@uiid/code':
-        specifier: workspace:*
-        version: link:../../packages/code
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../../packages/forms
-      '@uiid/icons':
-        specifier: workspace:*
-        version: link:../../packages/icons
-      '@uiid/indicators':
-        specifier: workspace:*
-        version: link:../../packages/indicators
-      '@uiid/interactive':
-        specifier: workspace:*
-        version: link:../../packages/interactive
-      '@uiid/layout':
-        specifier: workspace:*
-        version: link:../../packages/layout
-      '@uiid/lists':
-        specifier: workspace:*
-        version: link:../../packages/lists
-      '@uiid/navigation':
-        specifier: workspace:*
-        version: link:../../packages/navigation
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../../packages/overlays
-      '@uiid/registry':
-        specifier: workspace:*
-        version: link:../../packages/registry
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../../packages/tokens
-      '@uiid/typography':
-        specifier: workspace:*
-        version: link:../../packages/typography
-      ai:
-        specifier: ^6.0.66
-        version: 6.0.66(zod@4.3.6)
-      next:
-        specifier: ^16.1.5
-        version: 16.1.5(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      nuqs:
-        specifier: ^2.8.6
-        version: 2.8.6(next@16.1.5(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
-      prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
-      rxdb:
-        specifier: ^16.21.1
-        version: 16.21.1(rxjs@7.8.2)
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
-      zustand:
-        specifier: ^5.0.10
-        version: 5.0.10(@types/react@19.2.8)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
-    devDependencies:
-      '@types/node':
-        specifier: ^25.2.3
-        version: 25.2.3
-      '@types/react':
-        specifier: ^19.2.8
-        version: 19.2.8
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.8)
-      eslint:
-        specifier: ^9.0.0
-        version: 9.39.2(jiti@2.6.1)
-      eslint-config-next:
-        specifier: 16.1.6
-        version: 16.1.6(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
