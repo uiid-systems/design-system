@@ -5,22 +5,16 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
-    "build-changelog": {
-      "cache": false,
-      "inputs": ["packages/*/CHANGELOG.md"],
-      "outputs": ["packages/changelog.json"]
-    },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "storybook": {
       "cache": false,
-      "persistent": true,
-      "dependsOn": ["build-changelog"]
+      "persistent": true
     },
     "build-storybook": {
-      "dependsOn": ["build-changelog", "^build"],
+      "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
     },
     "lint": {},
