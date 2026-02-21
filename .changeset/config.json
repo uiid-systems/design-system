@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "./changelog-generator.cjs",
+  "changelog": ["@changesets/changelog-github", { "repo": "uiid-systems/design-system" }],
   "commit": false,
   "fixed": [
     [

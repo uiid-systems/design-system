@@ -1,0 +1,29 @@
+name: PR Title
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  validate:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    # Release PRs from changesets use a different title format — skip them
+    if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            refactor
+            perf
+            docs
+            chore
+            test
+            ci
+          requireScope: false

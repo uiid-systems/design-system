@@ -11,6 +11,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
 
     steps:
       - name: Check out code
@@ -52,6 +53,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
 
     steps:
       - name: Check out code

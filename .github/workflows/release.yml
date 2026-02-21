@@ -65,104 +65,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Clean up release PR description
-        if: steps.changesets.outputs.pullRequestNumber
-        run: |
-          PR_NUMBER="${{ steps.changesets.outputs.pullRequestNumber }}"
-          CURRENT_BODY=$(gh pr view $PR_NUMBER --json body --jq '.body')
-
-          cat > /tmp/clean-pr-body.js << 'EOF'
-          const fs = require('fs');
-          const input = fs.readFileSync('/tmp/pr-body.txt', 'utf8');
-          const lines = input.split('\n');
-          const cleaned = [];
-          let skipDependencyBlock = false;
-
-          for (const line of lines) {
-            if (line.match(/^Updated dependencies \[/)) {
-              skipDependencyBlock = true;
-              continue;
-            }
-            if (skipDependencyBlock && (line.match(/^\s+@uiid\//) || line.trim() === '')) {
-              continue;
-            }
-            if (skipDependencyBlock && line.trim() !== '' && !line.match(/^\s+@uiid\//)) {
-              skipDependencyBlock = false;
-            }
-            if (!skipDependencyBlock) {
-              cleaned.push(line);
-            }
-          }
-
-          console.log(cleaned.join('\n'));
-          EOF
-
-          echo "$CURRENT_BODY" > /tmp/pr-body.txt
-          CLEANED_BODY=$(node /tmp/clean-pr-body.js)
-          echo "$CLEANED_BODY" | gh pr edit $PR_NUMBER --body-file -
-          rm -f /tmp/pr-body.txt /tmp/clean-pr-body.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate release notes
+      - name: Create GitHub Release
         if: steps.changesets.outputs.published == 'true'
         run: |
           VERSION=$(node -p "require('./packages/tokens/package.json').version")
-          echo "RELEASE_VERSION=v${VERSION}" >> $GITHUB_ENV
+          TAG="v${VERSION}"
 
-          REPO="${{ github.repository }}"
-
-          node -e "
+          # Extract this version's section from the tokens CHANGELOG.md
+          NOTES=$(node -e "
             const fs = require('fs');
-            const version = '${VERSION}';
+            const changelog = fs.readFileSync('packages/tokens/CHANGELOG.md', 'utf8');
+            const sections = changelog.split(/^## /m);
+            const entry = sections.find(s => s.startsWith('${VERSION}'));
+            console.log(entry ? '## ' + entry.trim() : 'Release ${VERSION}');
+          ")
 
-            try {
-              const changelog = JSON.parse(fs.readFileSync('packages/changelog.json', 'utf8'));
-              const entry = changelog.find(e => e.version === version);
-
-              if (!entry) {
-                fs.writeFileSync('/tmp/release-notes.md', 'Release v' + version);
-                process.exit(0);
-              }
-
-              const lines = [];
-              const repo = '${REPO}';
-
-              function linkPr(desc) {
-                return desc.replace(/\(#(\d+)\)/, '([#\$1](https://github.com/' + repo + '/pull/\$1))');
-              }
-
-              const sections = [
-                ['features', '## ✨ Features'],
-                ['fixes', '## 🐛 Bug Fixes'],
-                ['refactors', '## ♻️ Refactors'],
-                ['performance', '## ⚡ Performance'],
-                ['documentation', '## 📚 Documentation'],
-              ];
-
-              for (const [key, heading] of sections) {
-                if (entry.changes[key]?.length) {
-                  lines.push(heading + '\\n');
-                  entry.changes[key].forEach(f => lines.push('- ' + linkPr(f.description)));
-                  lines.push('');
-                }
-              }
-
-              fs.writeFileSync('/tmp/release-notes.md', lines.join('\\n'));
-            } catch (error) {
-              console.error('Failed to generate release notes:', error.message);
-              fs.writeFileSync('/tmp/release-notes.md', 'Release v' + version);
-            }
-          "
-
-      - name: Create GitHub Release
-        if: steps.changesets.outputs.published == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.RELEASE_VERSION }}
-          name: Release ${{ env.RELEASE_VERSION }}
-          body_path: /tmp/release-notes.md
-          draft: false
-          prerelease: false
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes "$NOTES"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
