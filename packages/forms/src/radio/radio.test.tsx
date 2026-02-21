@@ -56,7 +56,7 @@ describe("Radio", () => {
   });
 
   // BUG: @base-ui/react useStableCallback trampoline causes infinite recursion
-  // with controlled RadioGroup. See AGENTS.md for details.
+  // with controlled RadioGroup. See CLAUDE.md for details.
   it.skip("supports controlled value", async () => {
     const handleChange = vi.fn();
 

@@ -35,7 +35,7 @@ This monorepo contains the following packages:
 
 ### Apps
 
-- **`apps/playground`** - AI-powered UI generator (see `apps/playground/AGENTS.md`)
+- **`apps/playground`** - AI-powered UI generator (see `apps/playground/CLAUDE.md`)
 - **`apps/storybook`** - Component documentation and visual testing
 - **`apps/docs`** - Documentation site
 
@@ -106,7 +106,7 @@ pnpm test:run packages/buttons
 
 Visit [Storybook](http://localhost:6006) after running `pnpm run storybook` for component documentation and interactive examples.
 
-For AI agent guidelines, see [AGENTS.md](./AGENTS.md).
+For AI agent guidelines, see [CLAUDE.md](./CLAUDE.md).
 
 ## License
 
