@@ -54,7 +54,7 @@ packages/{package}/
 
 - Updated `vitest.config.ts` to include {package} alias
 - Updated `apps/storybook/.storybook/main.ts` to include stories
-- Updated `AGENTS.md` with relevant documentation
+- Updated `CLAUDE.md` with relevant documentation
 ```
 
 ## Guidelines
