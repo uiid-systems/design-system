@@ -28,5 +28,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uiid/storybook", "next-16", "playground", "docs"]
+  "ignore": ["@uiid/storybook", "next-16", "blocks", "docs"]
 }

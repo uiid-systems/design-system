@@ -17,7 +17,7 @@ UIID is a modular React component library. Follow these conventions to maintain 
 design-system/
 ├── apps/
 │   ├── docs/          # Documentation site (see apps/docs/CLAUDE.md)
-│   ├── playground/    # AI-powered UI generator (see apps/playground/CLAUDE.md)
+│   ├── blocks/        # AI-powered UI composer (see apps/blocks/CLAUDE.md)
 │   └── storybook/     # Component documentation
 ├── packages/          # Component packages (@uiid/*)
 │   ├── buttons/, cards/, forms/, layout/, typography/, ...
@@ -41,6 +41,10 @@ design-system/
 | `tsconfig.json`    | Base TypeScript config (packages extend it) |
 | `turbo.json`       | Turbo task orchestration                    |
 | `eslint.config.js` | Shared ESLint configuration                 |
+
+## Commit Policy
+
+- **Never add yourself as co-author.** Do not include `Co-Authored-By` trailers in commit messages. The repo owner maintains sole authorship of all commits.
 
 ## Quick Reference
 

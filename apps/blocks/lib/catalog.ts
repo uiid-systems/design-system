@@ -37,7 +37,7 @@ export const catalog = defineCatalog(schema, {
 export type Catalog = typeof catalog;
 
 /**
- * Spec type used throughout the playground.
+ * Spec type used throughout the blocks app.
  *
  * Uses the core `Spec` type from json-render rather than the catalog's
  * inferred `_specType`, which makes `visible` a required `unknown` field

@@ -75,7 +75,7 @@ description, and tags joined).
 ### 2. `get-block`
 
 Fetch a specific block by slug. Returns the full `BlockFile` including the tree, ready
-for an LLM to use directly or pass to the playground renderer.
+for an LLM to use directly or pass to the blocks app renderer.
 
 **Input**: `slug` (required)
 

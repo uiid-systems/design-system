@@ -1,6 +1,6 @@
 # Registry (`@uiid/registry`)
 
-The registry provides component metadata for AI-powered tools (playground, docs). Each registered component has a Zod schema, `ComponentEntry` metadata, and optional previews.
+The registry provides component metadata for AI-powered tools (blocks app, docs). Each registered component has a Zod schema, `ComponentEntry` metadata, and optional previews.
 
 ## Structure
 
@@ -31,7 +31,7 @@ See the full template at `.claude/templates/REGISTRY_ENTRY.md`.
 4. Import and add to `packages/registry/src/manifest.ts`
 5. Add to app component maps:
    - `apps/docs/components/tree-preview.tsx` — add to `componentMap`
-   - `apps/playground/lib/components.tsx` — add to `registry`
+   - `apps/blocks/lib/components.tsx` — add to `registry`
 6. Build: `pnpm build --filter=@uiid/registry`
 
 ## ComponentEntry Fields
@@ -45,7 +45,7 @@ See the full template at `.claude/templates/REGISTRY_ENTRY.md`.
 | `description` | No       | Brief description for AI context                   |
 | `category`    | No       | Category key (layout, forms, overlays, etc.)       |
 | `defaults`    | No       | Default prop values                                |
-| `previews`    | No       | Preview configurations for docs/playground         |
+| `previews`    | No       | Preview configurations for docs/blocks app         |
 | `usage`       | No       | LLM-oriented usage guidance                        |
 
 ## Shared Schemas

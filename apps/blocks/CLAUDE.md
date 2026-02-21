@@ -1,6 +1,6 @@
 # LLM Guidelines for UIID Component Tree Generation
 
-This document provides rules for AI models generating UI trees using the UIID component library in the playground.
+This document provides rules for AI models generating UI trees using the UIID component library in the blocks app.
 
 > **Note:** The "Available Components" section below is generated from `@uiid/registry` via `generateComponentReference()`. Do not edit it manually — update the registry entries instead.
 

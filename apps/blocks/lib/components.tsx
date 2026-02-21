@@ -176,7 +176,7 @@ export const registry: ComponentRegistry = {
     <Modal data-element-key={keyOf(element)} {...element.props} trigger={children} />
   ),
 
-  // Icon component (playground-only, for JSON block rendering)
+  // Icon component (blocks app only, for JSON block rendering)
   // Generated JSX converts to direct imports for tree-shaking
   Icon: ({ element }) => {
     const { name, ...props } = element.props;
