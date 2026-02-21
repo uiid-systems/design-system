@@ -21,7 +21,7 @@ export const LandingScreenHero = () => {
         </Text>
         <Text size={2} shade="muted" balance style={{ textAlign: "center" }}>
           UIID is a component library with full accessibility, design tokens,
-          and theming — paired with an AI playground that lets you describe
+          and theming — paired with an AI composer that lets you describe
           interfaces in plain language and get working layouts instantly.
         </Text>
       </Stack>

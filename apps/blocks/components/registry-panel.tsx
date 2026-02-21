@@ -162,7 +162,7 @@ export const RegistryPanel = () => {
 
                   <Group gap={1}>
                     <Button
-                      tooltip="Load into playground"
+                      tooltip="Load block"
                       onClick={() => handleLoad(block)}
                       size="xsmall"
                       ghost

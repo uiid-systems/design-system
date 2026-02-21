@@ -17,7 +17,7 @@ UIID is a modular React component library. Follow these conventions to maintain 
 design-system/
 ├── apps/
 │   ├── docs/          # Documentation site (see apps/docs/CLAUDE.md)
-│   ├── playground/    # AI-powered UI generator (see apps/playground/CLAUDE.md)
+│   ├── blocks/        # AI-powered UI composer (see apps/blocks/CLAUDE.md)
 │   └── storybook/     # Component documentation
 ├── packages/          # Component packages (@uiid/*)
 │   ├── buttons/, cards/, forms/, layout/, typography/, ...

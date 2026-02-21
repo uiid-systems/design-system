@@ -38,11 +38,11 @@ type DatabaseCollections = {
   "saved-blocks": RxCollection<SavedBlockDoc>;
 };
 
-type PlaygroundDatabase = RxDatabase<DatabaseCollections>;
+type BlocksDatabase = RxDatabase<DatabaseCollections>;
 
-let dbPromise: Promise<PlaygroundDatabase> | null = null;
+let dbPromise: Promise<BlocksDatabase> | null = null;
 
-export function getDatabase(): Promise<PlaygroundDatabase> {
+export function getDatabase(): Promise<BlocksDatabase> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Database requires a browser environment"));
   }
@@ -52,9 +52,9 @@ export function getDatabase(): Promise<PlaygroundDatabase> {
   return dbPromise;
 }
 
-async function createDatabase(): Promise<PlaygroundDatabase> {
+async function createDatabase(): Promise<BlocksDatabase> {
   const db = await createRxDatabase<DatabaseCollections>({
-    name: "playground",
+    name: "blocks",
     storage: getRxStorageLocalstorage(),
   });
 

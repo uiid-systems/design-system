@@ -155,7 +155,7 @@ const componentMap = {
 };
 ```
 
-**`apps/playground/lib/components.tsx`:**
+**`apps/blocks/lib/components.tsx`:**
 
 ```ts
 // Import
@@ -195,7 +195,7 @@ Component: ({ element, onAction }) => {
 
 ```bash
 pnpm build --filter=@uiid/registry
-pnpm build --filter=docs --filter=playground
+pnpm build --filter=docs --filter=blocks
 ```
 
 ## Checklist
@@ -205,9 +205,9 @@ pnpm build --filter=docs --filter=playground
 - [ ] `hasChildren` is set correctly
 - [ ] `category` matches the component's package
 - [ ] `defaults` includes sensible default values
-- [ ] At least one preview exists (for docs/playground)
+- [ ] At least one preview exists (for docs/blocks app)
 - [ ] Exported from `components/index.ts`
 - [ ] Added to `manifest.ts`
 - [ ] Added to `apps/docs/components/tree-preview.tsx` componentMap
-- [ ] Added to `apps/playground/lib/components.tsx` registry
+- [ ] Added to `apps/blocks/lib/components.tsx` registry
 - [ ] All packages build successfully

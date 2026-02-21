@@ -12,7 +12,7 @@ export const ChatSidebarHeader = () => {
       px={4}
     >
       <Text size={3} weight="bold">
-        uiid playground
+        uiid blocks
       </Text>
     </Group>
   );
