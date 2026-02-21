@@ -12,6 +12,8 @@ Three skills are installed at the project level (`.agents/skills/`) and availabl
 | `receiving-code-review` | `/receiving-code-review` | Guides how to act on feedback technically |
 | `code-review-excellence` | `/code-review-excellence` | The review rubric — 4-phase process + severity labels |
 
+**Supported editors:** Claude Code, Cursor, Amp, Codex, Gemini CLI, GitHub Copilot. **Windsurf is not supported** — do not add `.windsurf/` symlinks when installing new skills.
+
 ---
 
 ## When to Request a Review
