@@ -42,6 +42,10 @@ design-system/
 | `turbo.json`       | Turbo task orchestration                    |
 | `eslint.config.js` | Shared ESLint configuration                 |
 
+## Commit Policy
+
+- **Never add yourself as co-author.** Do not include `Co-Authored-By` trailers in commit messages. The repo owner maintains sole authorship of all commits.
+
 ## Quick Reference
 
 | Task                 | Command                                   |
