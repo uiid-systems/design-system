@@ -66,3 +66,4 @@ design-system/
 @.claude/guides/registry.md
 @.claude/guides/storybook.md
 @.claude/guides/pull-requests.md
+@.claude/guides/pull-reviews.md
