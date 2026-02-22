@@ -225,13 +225,23 @@ export function computeColorMix(color1, color2, ratio) {
   const l = l1 + (l2 - l1) * ratio;
   const c = c1 + (c2 - c1) * ratio;
 
-  // Hue interpolation (shortest path)
-  let hDiff = h2 - h1;
-  if (hDiff > 180) hDiff -= 360;
-  if (hDiff < -180) hDiff += 360;
-  let h = h1 + hDiff * ratio;
-  if (h < 0) h += 360;
-  if (h >= 360) h -= 360;
+  // Hue interpolation — if one color is achromatic (C≈0, hue is "powerless"),
+  // use the other color's hue. Matches CSS color-mix(in oklch, ...) behavior.
+  const ACHROMATIC = 0.02;
+  let h;
+  if (c1 < ACHROMATIC) {
+    h = h2;
+  } else if (c2 < ACHROMATIC) {
+    h = h1;
+  } else {
+    // Shortest-path hue interpolation
+    let hDiff = h2 - h1;
+    if (hDiff > 180) hDiff -= 360;
+    if (hDiff < -180) hDiff += 360;
+    h = h1 + hDiff * ratio;
+    if (h < 0) h += 360;
+    if (h >= 360) h -= 360;
+  }
 
   return oklchToHex(l, c, h);
 }

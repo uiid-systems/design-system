@@ -1,5 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 
+import generatedColorTokens from "../json/primitives/colors.generated.tokens.json";
 import colorTokens from "../json/primitives/colors.tokens.json";
 import shadeTokens from "../json/semantic/shade.tokens.json";
 import toneTokens from "../json/semantic/tone.tokens.json";
@@ -23,6 +24,28 @@ const SHADES = extractTokens(shadeTokens.shade);
 const TONES = extractTokens(toneTokens.tone);
 
 const TONE_GROUPS = ["positive", "warning", "critical", "info"] as const;
+
+// Build SCALES map: { red: { "50": "#ffe3db", "100": "...", ... }, ... }
+type ScaleStep = { $value: string };
+type ScaleHue = Record<string, ScaleStep | string>;
+
+const SCALES = Object.fromEntries(
+  Object.entries(generatedColorTokens.color as unknown as Record<string, ScaleHue>)
+    .filter(([key]) => !key.startsWith("$"))
+    .map(([hue, steps]) => [
+      hue,
+      Object.fromEntries(
+        Object.entries(steps)
+          .filter(([step]) => !step.startsWith("$"))
+          .map(([step, token]) => [
+            step,
+            (token as ScaleStep).$value,
+          ]),
+      ),
+    ]),
+);
+
+const SCALE_STEPS = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] as const;
 
 const meta = {
   title: "Tokens/Primitives/Colors",
@@ -83,9 +106,42 @@ const Swatch = ({
   </div>
 );
 
+const ScaleSwatch = ({ hue, step }: { hue: string; step: string }) => (
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.25rem" }}>
+    <div
+      style={{
+        backgroundColor: `var(--color-${hue}-${step})`,
+        width: "100%",
+        height: "40px",
+        borderRadius: "4px",
+        border: "1px solid rgba(0,0,0,0.08)",
+      }}
+    />
+    <span style={{ fontSize: "0.65rem", color: "var(--shade-muted)", textAlign: "center" }}>
+      {step}
+    </span>
+  </div>
+);
+
 export const Colors: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+      <SectionLabel>Color Scales</SectionLabel>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        {Object.entries(SCALES).map(([hue]) => (
+          <div key={hue} style={{ display: "grid", gridTemplateColumns: "80px 1fr", alignItems: "center", gap: "0.75rem" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--shade-foreground)", textTransform: "capitalize" }}>
+              {hue}
+            </span>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(11, 1fr)", gap: "0.25rem" }}>
+              {SCALE_STEPS.map((step) => (
+                <ScaleSwatch key={step} hue={hue} step={step} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <SectionLabel>Color Primitives</SectionLabel>
       <div
         style={{
@@ -94,8 +150,8 @@ export const Colors: Story = {
           gap: "0.5rem",
         }}
       >
-        {Object.entries(COLORS).map(([name]) => (
-          <Swatch key={name} name={name} cssVar={`color-${name}`} tall />
+        {Object.entries(COLORS).map(([name, value]) => (
+          <Swatch key={name} name={name} cssVar={`color-${name}`} value={value as string} tall />
         ))}
       </div>
 

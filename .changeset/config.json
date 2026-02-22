@@ -1,6 +1,9 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "uiid-systems/design-system" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "uiid-systems/design-system" }
+  ],
   "commit": false,
   "fixed": [
     [
@@ -28,5 +31,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uiid/storybook", "next-16", "blocks", "docs"]
+  "ignore": ["@uiid/storybook", "blocks", "docs"]
 }
