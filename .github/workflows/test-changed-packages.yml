@@ -10,10 +10,10 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     concurrency:
-      group: test-${{ github.head_ref || github.ref }}
-      cancel-in-progress: true
+      group: test-${{ github.sha }}
+      cancel-in-progress: false
 
     steps:
       - name: Check out code
@@ -56,8 +56,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
-      group: lint-${{ github.head_ref || github.ref }}
-      cancel-in-progress: true
+      group: lint-${{ github.sha }}
+      cancel-in-progress: false
 
     steps:
       - name: Check out code
