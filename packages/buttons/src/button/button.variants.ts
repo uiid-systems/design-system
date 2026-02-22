@@ -10,7 +10,7 @@ export const buttonVariants = cva({
       square: styles["shape-square"],
       circle: styles["shape-circle"],
     },
-    fullwidth: { true: styles["toggle-fullwidth"] },
+    fullwidth: { true: styles["fullwidth"] },
     variant: {
       subtle: styles["variant-subtle"],
       ghost: styles["variant-ghost"],

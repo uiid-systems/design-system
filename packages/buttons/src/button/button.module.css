@@ -134,7 +134,8 @@
   padding-inline: 0;
 }
 
-.toggle-fullwidth {
+.fullwidth {
+  width: -webkit-fill-available;
   width: 100%;
 }
 
