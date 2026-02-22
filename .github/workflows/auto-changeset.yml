@@ -35,23 +35,21 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Setup Node.js 20
+      - name: Check PAT token availability
         if: steps.check.outputs.skip != 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Setup pnpm
-        if: steps.check.outputs.skip != 'true'
-        uses: pnpm/action-setup@v4
-
-      - name: Install Dependencies
-        if: steps.check.outputs.skip != 'true'
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        id: auth
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          if [ -n "$PAT_TOKEN" ]; then
+            echo "has_pat=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_pat=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Check for new changesets in PR
         if: steps.check.outputs.skip != 'true'
@@ -75,8 +73,9 @@ jobs:
           fi
 
       - name: Create automatic changeset
-        if: steps.check.outputs.skip != 'true' && steps.changeset_check.outputs.needs_changeset == 'true'
+        if: steps.check.outputs.skip != 'true' && steps.changeset_check.outputs.needs_changeset == 'true' && steps.auth.outputs.has_pat == 'true'
         env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -122,10 +121,10 @@ jobs:
 
           git add .changeset/${CHANGESET_ID}.md
           git commit -m "chore: add automatic changeset for PR"
-          git push origin ${{ github.head_ref }}
+          git push "https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}.git" "HEAD:${{ github.head_ref }}"
 
       - name: Add or update comment about changeset
-        if: steps.check.outputs.skip != 'true' && steps.changeset_check.outputs.needs_changeset == 'true'
+        if: steps.check.outputs.skip != 'true' && steps.changeset_check.outputs.needs_changeset == 'true' && steps.auth.outputs.has_pat == 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -140,6 +139,42 @@ jobs:
             const botComment = comments.data.find(comment =>
               comment.user.login === 'github-actions[bot]' &&
               comment.body.includes('Auto-changeset created')
+            );
+
+            if (botComment) {
+              if (botComment.body !== commentBody) {
+                await github.rest.issues.updateComment({
+                  comment_id: botComment.id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: commentBody
+                });
+              }
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
+
+      - name: Add or update comment about missing PAT token
+        if: steps.check.outputs.skip != 'true' && steps.changeset_check.outputs.needs_changeset == 'true' && steps.auth.outputs.has_pat != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commentBody = `**⚠️ Auto-changeset skipped**\n\nThis PR needs a changeset, but \`PAT_TOKEN\` is not configured for pushing commits that can trigger required PR checks.\n\nPlease add a changeset manually with \`pnpm changeset\`, or configure \`PAT_TOKEN\` and re-run this workflow.`;
+
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const botComment = comments.data.find(comment =>
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes('Auto-changeset skipped')
             );
 
             if (botComment) {
