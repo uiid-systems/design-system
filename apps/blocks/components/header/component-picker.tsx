@@ -59,7 +59,7 @@ export const ComponentPicker = () => {
     <MenuRoot>
       <MenuTrigger
         render={
-          <Button size="small" ghost>
+          <Button size="small" variant="ghost">
             {triggerLabel}
             <ChevronDownIcon size={14} />
           </Button>

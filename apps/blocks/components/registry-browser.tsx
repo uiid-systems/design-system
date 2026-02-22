@@ -73,7 +73,7 @@ export const RegistryBrowser = () => {
       onOpenChange={setOpen}
       size="xlarge"
       trigger={
-        <Button tooltip="Browse block registry (⌘K)" size="small" ghost>
+        <Button tooltip="Browse block registry (⌘K)" size="small" variant="ghost">
           <PackageIcon />
           Registry
         </Button>

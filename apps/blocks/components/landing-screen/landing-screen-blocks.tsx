@@ -87,7 +87,7 @@ export const LandingScreenBlocks = () => {
       </Group>
 
       {blocks.length > MAX_FEATURED && (
-        <Button render={<Link href="/registry" />} ghost pill>
+        <Button render={<Link href="/registry" />} variant="ghost" shape="pill">
           Browse all {blocks.length} blocks
           <ArrowRightIcon size={16} />
         </Button>

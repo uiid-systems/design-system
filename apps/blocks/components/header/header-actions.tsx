@@ -96,7 +96,7 @@ export const HeaderActions = () => {
               tooltip="Inspect elements — hover to see component info"
               onClick={toggleInspecting}
               size="small"
-              ghost
+              variant="ghost"
               tone={inspecting ? "info" : undefined}
             >
               <ScanSearchIcon />
@@ -112,7 +112,7 @@ export const HeaderActions = () => {
               onClick={handleShare}
               disabled={copied}
               size="small"
-              ghost
+              variant="ghost"
             >
               {copied ? <SquareCheckIcon /> : <CopyIcon />}
               <Text size={-1}>{copied ? "Copied" : "Share"}</Text>
@@ -129,7 +129,7 @@ export const HeaderActions = () => {
           render={<Link href="/registry" />}
           tooltip="Browse block registry"
           size="small"
-          ghost
+          variant="ghost"
         >
           <PackageIcon />
           Registry

@@ -41,15 +41,15 @@ export const NewChatButton = () => {
           tooltip="Clear and start a new block"
           disabled={messages.length === 0 && !tree && !component}
           size="small"
-          ghost
-          square
+          variant="ghost"
+          shape="square"
         >
           <SquarePenIcon />
         </Button>
       }
       footer={
         <Group ax="end" fullwidth gap={4} mt={2}>
-          <Button size="small" ghost onClick={handleCancel}>
+          <Button size="small" variant="ghost" onClick={handleCancel}>
             Cancel
           </Button>
           <Button size="small" tone="critical" onClick={handleClear}>

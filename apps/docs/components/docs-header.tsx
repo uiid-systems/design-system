@@ -64,7 +64,7 @@ export const DocsHeader = () => {
       <Group gap={2} ay="center">
         <Button
           size="xsmall"
-          ghost
+          variant="ghost"
           render={<Link href={NPM_URL} target="_blank" />}
           nativeButton={false}
         >

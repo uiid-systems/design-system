@@ -79,8 +79,8 @@ export const BlockInfo = () => {
               tooltip="Previous block"
               onClick={() => handleNavigate("prev")}
               size="xsmall"
-              ghost
-              square
+              variant="ghost"
+              shape="square"
             >
               <ChevronLeftIcon />
             </Button>
@@ -88,8 +88,8 @@ export const BlockInfo = () => {
               tooltip="Next block"
               onClick={() => handleNavigate("next")}
               size="xsmall"
-              ghost
-              square
+              variant="ghost"
+              shape="square"
             >
               <ChevronRightIcon />
             </Button>

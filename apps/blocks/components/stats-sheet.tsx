@@ -24,7 +24,7 @@ export const StatsSheet = () => {
           tooltip="Component usage breakdown"
           disabled={!tree}
           size="small"
-          ghost
+          variant="ghost"
         >
           <BarChart3Icon />
           Stats

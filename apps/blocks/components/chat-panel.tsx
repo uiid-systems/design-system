@@ -47,8 +47,8 @@ export const ChatPanel = () => {
               </Text>
               <Button
                 size="xsmall"
-                ghost
-                square
+                variant="ghost"
+                shape="square"
                 onClick={() => setOpen(false)}
               >
                 <XIcon />
@@ -78,7 +78,7 @@ export const ChatPanel = () => {
       <Button
         className={styles.toggle}
         onClick={() => setOpen((prev) => !prev)}
-        square
+        shape="square"
         size="large"
         tone={open ? "info" : undefined}
       >

@@ -97,7 +97,7 @@ export const RegistryPanel = () => {
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
       trigger={
-        <Button tooltip="Block registry" size="small" ghost square>
+        <Button tooltip="Block registry" size="small" variant="ghost" shape="square">
           <PackageIcon />
         </Button>
       }
@@ -165,8 +165,8 @@ export const RegistryPanel = () => {
                       tooltip="Load block"
                       onClick={() => handleLoad(block)}
                       size="xsmall"
-                      ghost
-                      square
+                      variant="ghost"
+                      shape="square"
                     >
                       <EyeIcon />
                     </Button>
@@ -174,8 +174,8 @@ export const RegistryPanel = () => {
                       tooltip="Copy link"
                       onClick={() => handleCopyLink(block)}
                       size="xsmall"
-                      ghost
-                      square
+                      variant="ghost"
+                      shape="square"
                     >
                       <CopyIcon />
                     </Button>
@@ -183,8 +183,8 @@ export const RegistryPanel = () => {
                       tooltip="Delete from registry"
                       onClick={() => handleDelete(block)}
                       size="xsmall"
-                      ghost
-                      square
+                      variant="ghost"
+                      shape="square"
                     >
                       <Trash2Icon />
                     </Button>

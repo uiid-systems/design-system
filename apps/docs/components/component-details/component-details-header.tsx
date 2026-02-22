@@ -62,7 +62,7 @@ export function ComponentDetailsHeader({
 
       <Stack gap={1} ax="end">
         <Button
-          ghost
+          variant="ghost"
           size="small"
           nativeButton={false}
           render={<Link href={builderUrl} target="_blank" />}
@@ -71,7 +71,7 @@ export function ComponentDetailsHeader({
           <Blocks />
         </Button>
         <Button
-          ghost
+          variant="ghost"
           size="small"
           nativeButton={false}
           render={<Link href={storybookUrl} target="_blank" />}
@@ -80,7 +80,7 @@ export function ComponentDetailsHeader({
           <SiStorybook />
         </Button>
         <Button
-          ghost
+          variant="ghost"
           size="small"
           nativeButton={false}
           render={<Link href={githubUrl} target="_blank" />}

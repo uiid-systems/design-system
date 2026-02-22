@@ -10,7 +10,7 @@ export function ButtonPreview() {
       <Button tone="critical">Negative</Button>
       <Button tone="warning">Warning</Button>
       <Button tone="info">Info</Button>
-      <Button ghost>Ghost</Button>
+      <Button variant="ghost">Ghost</Button>
     </Group>
   );
 }

@@ -15,7 +15,7 @@
   border: var(--globals-border-width) solid var(--button-border-color);
   border-radius: var(--globals-border-radius);
   transition-property: background-color, border-color, color, opacity;
-  transition-duration: calc(var(--globals-transition-duration) / 2);
+  transition-duration: var(--globals-transition-duration);
   transition-timing-function: ease-in-out;
   text-decoration: none;
 
