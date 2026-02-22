@@ -35,7 +35,7 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
