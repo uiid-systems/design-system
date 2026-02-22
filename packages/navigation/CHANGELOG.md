@@ -1,5 +1,31 @@
 # @uiid/navigation
 
+## 0.0.8
+
+### Patch Changes
+
+- [#95](https://github.com/uiid-systems/design-system/pull/95) [`3989ce1`](https://github.com/uiid-systems/design-system/commit/3989ce127ab06f41ca006dae2681f1c3271fc7a1) Thanks [@adamfratino](https://github.com/adamfratino)! - chore: establish code review workflow and PR review guide (#95)
+
+- [#98](https://github.com/uiid-systems/design-system/pull/98) [`d931595`](https://github.com/uiid-systems/design-system/commit/d9315954b8ef775f8282723079e35b753473d195) Thanks [@adamfratino](https://github.com/adamfratino)! - ci: fix workflows not running on Dependabot PRs (#98)
+
+- [#94](https://github.com/uiid-systems/design-system/pull/94) [`833327c`](https://github.com/uiid-systems/design-system/commit/833327c5056a78b6069e7497966139c4e108982e) Thanks [@adamfratino](https://github.com/adamfratino)! - refactor: simplify versioning and changelog pipeline (#94)
+
+- [#93](https://github.com/uiid-systems/design-system/pull/93) [`4c3ed11`](https://github.com/uiid-systems/design-system/commit/4c3ed11df32fd06d9513bea1b94797327fbafc0f) Thanks [@adamfratino](https://github.com/adamfratino)! - chore: rename playground to blocks, rewrite README, add vision doc (#93)
+
+  ## Summary
+
+- Updated dependencies [[`a411bf3`](https://github.com/uiid-systems/design-system/commit/a411bf3e887a3d8a9722824c3ea2e5096ff08142), [`85038b4`](https://github.com/uiid-systems/design-system/commit/85038b4dc5f10092e508d5a5e3ea39ff3d668cbd), [`8678fa2`](https://github.com/uiid-systems/design-system/commit/8678fa2b558299e9eff3885aab9b5345ccc9d83b), [`3989ce1`](https://github.com/uiid-systems/design-system/commit/3989ce127ab06f41ca006dae2681f1c3271fc7a1), [`d931595`](https://github.com/uiid-systems/design-system/commit/d9315954b8ef775f8282723079e35b753473d195), [`63117da`](https://github.com/uiid-systems/design-system/commit/63117daf62005c6a194d9adc6b82dc89259e034c), [`833327c`](https://github.com/uiid-systems/design-system/commit/833327c5056a78b6069e7497966139c4e108982e), [`4c3ed11`](https://github.com/uiid-systems/design-system/commit/4c3ed11df32fd06d9513bea1b94797327fbafc0f), [`33ba183`](https://github.com/uiid-systems/design-system/commit/33ba1833b162fee82c0dee10c4893e58baef8b7c)]:
+  - @uiid/buttons@0.0.8
+  - @uiid/tokens@0.0.8
+  - @uiid/forms@0.0.8
+  - @uiid/icons@0.0.8
+  - @uiid/indicators@0.0.8
+  - @uiid/layout@0.0.8
+  - @uiid/lists@0.0.8
+  - @uiid/overlays@0.0.8
+  - @uiid/typography@0.0.8
+  - @uiid/utils@0.0.8
+
 ## 0.0.7
 
 ### Patch Changes

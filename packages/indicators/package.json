@@ -1,6 +1,6 @@
 {
   "name": "@uiid/indicators",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Status indicators — Alert, Avatar, Badge, Progress, Timeline, and more",
   "license": "MIT",
   "author": "Adam Fratino",
