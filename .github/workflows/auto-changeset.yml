@@ -55,17 +55,20 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         id: changeset_check
         run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+
           CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
-          NEW_CHANGESETS=$(echo "$CHANGED_FILES" | grep '^\.changeset/.*\.md$' | grep -v 'README.md' | wc -l)
-          CHANGED_PACKAGE_COUNT=$(echo "$CHANGED_FILES" | awk -F/ '/^packages\/[^/]+\// { print $2 }' | sort -u | wc -l)
+
+          NEW_CHANGESETS=$(echo "$CHANGED_FILES" | grep -c '^\\.changeset/.*\\.md$' || true)
+          CHANGED_PACKAGE_COUNT=$(echo "$CHANGED_FILES" | awk -F/ '/^packages\/[^/]+\// { print $2 }' | sort -u | wc -l | tr -d ' ')
 
           echo "new_changeset_count=$NEW_CHANGESETS" >> $GITHUB_OUTPUT
           echo "changed_package_count=$CHANGED_PACKAGE_COUNT" >> $GITHUB_OUTPUT
 
-          if [ "$NEW_CHANGESETS" -gt 0 ]; then
+          if [ "${NEW_CHANGESETS:-0}" -gt 0 ]; then
             echo "needs_changeset=false" >> $GITHUB_OUTPUT
             echo "Found $NEW_CHANGESETS new changeset(s) — skipping creation"
-          elif [ "$CHANGED_PACKAGE_COUNT" -eq 0 ]; then
+          elif [ "${CHANGED_PACKAGE_COUNT:-0}" -eq 0 ]; then
             echo "needs_changeset=false" >> $GITHUB_OUTPUT
             echo "No package changes detected — skipping changeset creation"
           else
@@ -93,7 +96,7 @@ jobs:
             PR_TITLE="${PR_TITLE} (#${PR_NUMBER})"
           fi
 
-          CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- 'packages/')
           PACKAGES=$(find packages -maxdepth 1 -type d -not -name "packages" -exec basename {} \; | sort)
           CHANGED_PACKAGES=()
 
