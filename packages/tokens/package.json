@@ -34,10 +34,10 @@
   "scripts": {
     "build": "npm run build:generate && npm run build:legacy",
     "build:generate": "node --experimental-json-modules ./scripts/generate-scales.js",
-    "build:legacy": "node ../../scripts/generate-tokens.cjs",
+    "build:legacy": "node ../../scripts/generate-tokens.js",
     "build:sd": "style-dictionary build --config style-dictionary.config.js",
-    "dev": "node ../../scripts/generate-tokens.cjs",
-    "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.cjs\"",
+    "dev": "node ../../scripts/generate-tokens.js",
+    "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.js\"",
     "lint": "echo 'No linting for CSS tokens'",
     "lint:tokens": "ajv validate -s dtcg.schema.json -d 'src/json/**/*.tokens.json'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\"",
