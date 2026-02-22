@@ -15,12 +15,15 @@ jobs:
       pull-requests: write
       statuses: write
     steps:
-      - name: Check if release PR
+      - name: Check if release PR or Dependabot PR
         id: check
         run: |
           if [[ "${{ github.head_ref }}" == changeset-release/* ]]; then
             echo "skip=true" >> $GITHUB_OUTPUT
             echo "Release PR — skipping changeset creation"
+          elif [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Dependabot PR — skipping changeset creation"
           else
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
