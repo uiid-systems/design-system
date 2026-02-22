@@ -52,6 +52,9 @@ describe("Button", () => {
     const { rerender } = render(<Button variant="subtle">Subtle</Button>);
     expect(screen.getByRole("button").className).toContain("variant-subtle");
 
+    rerender(<Button variant="ghost">Ghost</Button>);
+    expect(screen.getByRole("button").className).toContain("variant-ghost");
+
     rerender(<Button variant="inverted">Inverted</Button>);
     expect(screen.getByRole("button").className).toContain("variant-inverted");
   });
@@ -70,26 +73,15 @@ describe("Button", () => {
     expect(screen.getByRole("button").className).toContain("tone-info");
   });
 
-  it("renders with ghost prop", () => {
-    render(<Button ghost>Ghost</Button>);
-    expect(screen.getByRole("button")).toHaveAttribute("data-ghost", "true");
-  });
+  it("renders with shape prop", () => {
+    const { rerender } = render(<Button shape="pill">Pill</Button>);
+    expect(screen.getByRole("button").className).toContain("shape-pill");
 
-  it("renders with pill prop for rounded corners", () => {
-    render(<Button pill>Pill</Button>);
-    expect(screen.getByRole("button").className).toContain("toggle-pill");
-  });
+    rerender(<Button shape="square">■</Button>);
+    expect(screen.getByRole("button").className).toContain("shape-square");
 
-  it("renders with square prop for equal dimensions", () => {
-    render(<Button square>■</Button>);
-    expect(screen.getByRole("button").className).toContain("toggle-square");
-  });
-
-  it("renders with circle prop (combines pill and square)", () => {
-    render(<Button circle>●</Button>);
-    const button = screen.getByRole("button");
-    expect(button.className).toContain("toggle-pill");
-    expect(button.className).toContain("toggle-square");
+    rerender(<Button shape="circle">●</Button>);
+    expect(screen.getByRole("button").className).toContain("shape-circle");
   });
 
   // ============================================

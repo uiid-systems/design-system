@@ -7,7 +7,7 @@ import { buttonPreviews } from "./previews";
 /**
  * Button variant values.
  */
-export const ButtonVariant = z.enum(["subtle", "inverted"]);
+export const ButtonVariant = z.enum(["subtle", "ghost", "inverted"]);
 
 /**
  * Button component props schema.
@@ -27,16 +27,8 @@ export const ButtonPropsSchema = z.object({
   loading: z.boolean().optional(),
   /** Full width button */
   fullwidth: z.boolean().optional(),
-  /** Ghost style (transparent background) */
-  ghost: z.boolean().optional(),
-  /** Pill shape (fully rounded) */
-  pill: z.boolean().optional(),
-  /** Square shape (equal width/height) */
-  square: z.boolean().optional(),
-  /** Grow to fill available space */
-  interactive: z.boolean().optional(),
-  /** Circular button */
-  circle: z.boolean().optional(),
+  /** Button shape */
+  shape: z.enum(["pill", "square", "circle"]).optional(),
   /** Tooltip content */
   tooltip: z.any().optional(),
 });
@@ -53,9 +45,8 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   category: "buttons",
   defaults: {
     size: "medium",
-    interactive: true,
   },
   previews: buttonPreviews,
   usage:
-    "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.",
+    "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, use variant=\"ghost\" for minimal chrome.",
 };

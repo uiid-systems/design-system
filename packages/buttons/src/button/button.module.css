@@ -14,7 +14,9 @@
   font-weight: var(--button-font-weight);
   border: var(--globals-border-width) solid var(--button-border-color);
   border-radius: var(--globals-border-radius);
-  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: calc(var(--globals-transition-duration) / 2);
+  transition-timing-function: ease-in-out;
   text-decoration: none;
 
   &:where(:hover, :active) {
@@ -42,7 +44,9 @@
 
 .button-content-container {
   scale: 1;
-  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+  transition-property: opacity, scale;
+  transition-duration: calc(var(--globals-transition-duration) / 2);
+  transition-timing-function: ease-in-out;
 
   &[data-loading="true"] {
     opacity: 0;
@@ -54,7 +58,9 @@
   margin-inline: auto;
   opacity: 0;
   scale: 0.6;
-  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+  transition-property: opacity, scale;
+  transition-duration: calc(var(--globals-transition-duration) / 2);
+  transition-timing-function: ease-in-out;
 
   &[data-loading="true"] {
     scale: 1;
@@ -68,6 +74,16 @@
   color: var(--button-variant-subtle-fg);
   &:where(:hover, :active) {
     background-color: var(--button-variant-subtle-bg-hover);
+  }
+}
+
+.variant-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-bg);
+  &:where(:hover, :active) {
+    background-color: color-mix(in oklab, var(--button-bg), transparent 90%);
+    border-color: transparent;
   }
 }
 
@@ -103,37 +119,23 @@
   padding-inline: var(--button-size-lg-padding-x);
 }
 
-.toggle-interactive {
-  &:hover {
-    scale: var(--button-scale-hover);
-  }
-  &:active {
-    scale: var(--button-scale-active);
-  }
-}
-
-.toggle-pill {
+.shape-pill {
   border-radius: 99999px;
 }
 
-.toggle-fullwidth {
-  width: 100%;
-  width: -webkit-fill-available;
-}
-
-.toggle-square {
+.shape-square {
   aspect-ratio: 1;
   padding-inline: 0;
 }
 
-.toggle-ghost {
-  background-color: transparent;
-  border-color: transparent;
-  color: var(--button-bg);
-  &:where(:hover, :active) {
-    background-color: var(--button-variant-inverted-bg-hover);
-    border-color: transparent;
-  }
+.shape-circle {
+  border-radius: 99999px;
+  aspect-ratio: 1;
+  padding-inline: 0;
+}
+
+.toggle-fullwidth {
+  width: 100%;
 }
 
 .tone-positive {
@@ -147,7 +149,7 @@
     background-color: var(--active-color);
   }
 
-  &:where([data-ghost="true"]) {
+  &.variant-ghost {
     background-color: transparent;
     border-color: transparent;
     color: var(--tone-positive);
@@ -169,7 +171,7 @@
     background-color: var(--active-color);
   }
 
-  &:where([data-ghost="true"]) {
+  &.variant-ghost {
     background-color: transparent;
     border-color: transparent;
     color: var(--tone-critical);
@@ -191,7 +193,7 @@
     background-color: var(--active-color);
   }
 
-  &:where([data-ghost="true"]) {
+  &.variant-ghost {
     background-color: transparent;
     border-color: transparent;
     color: var(--tone-warning);
@@ -213,7 +215,7 @@
     background-color: var(--active-color);
   }
 
-  &:where([data-ghost="true"]) {
+  &.variant-ghost {
     background-color: transparent;
     border-color: transparent;
     color: var(--tone-info);

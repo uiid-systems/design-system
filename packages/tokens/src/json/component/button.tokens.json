@@ -23,8 +23,6 @@
     "font-weight": { "$value": 600, "$type": "fontWeight" },
     "padding-x": { "$value": "{forms.padding.x}", "$type": "dimension" },
     "padding-y": { "$value": "{forms.padding.y}", "$type": "dimension" },
-    "scale-active": { "$value": 0.98, "$type": "number" },
-    "scale-hover": { "$value": 1.02, "$type": "number" },
     "size": {
       "xs": {
         "font-size": { "$value": "{forms.size.xs.font-size}", "$type": "dimension" },
@@ -48,10 +46,6 @@
       }
     },
     "variant": {
-      "default": {
-        "bg": { "$value": "{shade.foreground}", "$type": "color" },
-        "fg": { "$value": "{shade.background}", "$type": "color" }
-      },
       "subtle": {
         "bg": { "$value": "{shade.surface}", "$type": "color" },
         "bg-hover": { "$value": "{shade.accent}", "$type": "color" },
