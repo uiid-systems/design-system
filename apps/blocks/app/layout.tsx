@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "uiid blocks",
-  description: "AI-powered UI composition with UIID components",
+  description: "Create, browse, save and reuse UIID blocks with AI assistance",
 };
 
 export default function RootLayout({

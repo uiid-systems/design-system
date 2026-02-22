@@ -220,7 +220,7 @@ const Controls = ({
   loading: boolean;
 }) => (
   <Group gap={2} ax="end" fullwidth mt={8}>
-    <Button type="button" ghost onClick={handleReset}>
+    <Button type="button" variant="ghost" onClick={handleReset}>
       Reset
     </Button>
     <Button type="submit" disabled={loading} loading={loading}>

@@ -5,24 +5,19 @@ on:
     branches: [main]
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["Auto Changeset"]
-    types: [completed]
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     concurrency:
-      group: test-${{ github.event.workflow_run.head_branch || github.head_ref || github.ref }}
-      cancel-in-progress: true
+      group: test-${{ github.sha }}
+      cancel-in-progress: false
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -43,9 +38,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-store-v2-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-store-v2-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
@@ -61,14 +56,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
-      group: lint-${{ github.event.workflow_run.head_branch || github.head_ref || github.ref }}
-      cancel-in-progress: true
+      group: lint-${{ github.sha }}
+      cancel-in-progress: false
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -89,9 +82,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-store-v2-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-pnpm-store-v2-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
