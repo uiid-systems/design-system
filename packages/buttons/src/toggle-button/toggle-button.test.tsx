@@ -220,13 +220,13 @@ describe("ToggleButton", () => {
   });
 
   it("supports ghost variant", () => {
-    render(<ToggleButton ghost>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("data-ghost", "true");
+    render(<ToggleButton variant="ghost">Toggle</ToggleButton>);
+    expect(screen.getByRole("button").className).toContain("variant-ghost");
   });
 
-  it("supports pill variant", () => {
-    render(<ToggleButton pill>Toggle</ToggleButton>);
-    expect(screen.getByRole("button").className).toContain("toggle-pill");
+  it("supports pill shape", () => {
+    render(<ToggleButton shape="pill">Toggle</ToggleButton>);
+    expect(screen.getByRole("button").className).toContain("shape-pill");
   });
 
   // ============================================

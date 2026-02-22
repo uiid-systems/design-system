@@ -1,20 +1,19 @@
 import { cva } from "@uiid/utils";
 
-import {
-  BUTTON_DEFAULT_SIZE,
-  BUTTON_DEFAULT_INTERACTIVE,
-} from "./button.constants";
+import { BUTTON_DEFAULT_SIZE } from "./button.constants";
 import styles from "./button.module.css";
 
 export const buttonVariants = cva({
   variants: {
-    interactive: { true: styles["toggle-interactive"] },
-    square: { true: styles["toggle-square"] },
-    pill: { true: styles["toggle-pill"] },
-    fullwidth: { true: styles["toggle-fullwidth"] },
-    ghost: { true: styles["toggle-ghost"] },
+    shape: {
+      pill: styles["shape-pill"],
+      square: styles["shape-square"],
+      circle: styles["shape-circle"],
+    },
+    fullwidth: { true: styles["fullwidth"] },
     variant: {
       subtle: styles["variant-subtle"],
+      ghost: styles["variant-ghost"],
       inverted: styles["variant-inverted"],
     },
     size: {
@@ -32,6 +31,5 @@ export const buttonVariants = cva({
   },
   defaultVariants: {
     size: BUTTON_DEFAULT_SIZE,
-    interactive: BUTTON_DEFAULT_INTERACTIVE,
   },
 });

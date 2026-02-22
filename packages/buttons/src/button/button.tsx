@@ -13,25 +13,16 @@ import { ButtonContentContainer } from "./subcomponents/button-content-container
 
 export const Button = ({
   tooltip,
-  ghost,
-  pill,
-  interactive,
+  shape,
   fullwidth,
   size,
   tone,
-  square,
-  circle,
   variant,
   loading,
   className,
   children,
   ...props
 }: ButtonProps) => {
-  if (circle) {
-    pill = true;
-    square = true;
-  }
-
   return (
     <ConditionalRender
       condition={!!tooltip}
@@ -43,18 +34,14 @@ export const Button = ({
         className={cx(
           styles["button"],
           buttonVariants({
-            ghost,
-            interactive,
-            pill,
+            shape,
             size,
-            square,
             variant,
             tone,
             fullwidth,
           }),
           className,
         )}
-        data-ghost={ghost}
         {...props}
       >
         <Layer ay="center" ax="center">

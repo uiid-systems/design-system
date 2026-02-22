@@ -28,7 +28,7 @@ export const Default: Story = {
           <ToggleButton
             {...args}
             icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
-            square
+            shape="square"
           />
           <ToggleButton
             {...args}
@@ -51,7 +51,7 @@ export const Default: Story = {
               pressed: <Sun stroke="gold" />,
               unpressed: <Moon stroke="aqua" />,
             }}
-            square
+            shape="square"
           />
           <ToggleButton
             {...args}

@@ -42,7 +42,7 @@ import { ToggleButton } from "@uiid/buttons";
     pressed: <Heart fill="red" />,
     unpressed: <Heart />,
   }}
-  square
+  shape="square"
 />
 ```
 
@@ -60,22 +60,18 @@ const [pressed, setPressed] = useState(false);
 
 | Prop             | Type                                              | Default    | Description |
 | ---------------- | ------------------------------------------------- | ---------- | ----------- |
-| `circle`         | `boolean`                                         | —          | —           |
 | `defaultPressed` | `boolean`                                         | —          | —           |
 | `disabled`       | `boolean`                                         | —          | —           |
 | `fullwidth`      | `boolean`                                         | —          | —           |
-| `ghost`          | `boolean`                                         | —          | —           |
-| `interactive`    | `boolean`                                         | —          | —           |
 | `icon`           | `object`                                          | —          | —           |
 | `loading`        | `boolean`                                         | —          | —           |
-| `pill`           | `boolean`                                         | —          | —           |
 | `pressed`        | `boolean`                                         | —          | —           |
+| `shape`          | `"pill" \| "square" \| "circle"`                  | —          | —           |
 | `size`           | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | —           |
-| `square`         | `boolean`                                         | —          | —           |
 | `text`           | `object`                                          | —          | —           |
 | `tone`           | `"positive" \| "critical" \| "warning" \| "info"` | —          | —           |
 | `tooltip`        | `ReactNode`                                       | —          | —           |
-| `variant`        | `"subtle" \| "inverted"`                          | —          | —           |
+| `variant`        | `"subtle" \| "ghost" \| "inverted"`               | —          | —           |
 
 > Inherits all props from [Button](../button/README.md) including `variant`, `size`, `tone`, etc.
 

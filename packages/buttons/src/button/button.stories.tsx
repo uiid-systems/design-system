@@ -26,21 +26,21 @@ const meta = {
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    ghost: { control: "boolean", table: { category: "Toggles" } },
-    interactive: { control: "boolean", table: { category: "Toggles" } },
-    pill: { control: "boolean", table: { category: "Toggles" } },
-    square: { control: "boolean", table: { category: "Toggles" } },
-    circle: { control: "boolean", table: { category: "Toggles" } },
     loading: { control: "boolean", table: { category: "Toggles" } },
 
     size: {
       control: "select",
-      options: ["small", "medium", "large"],
+      options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
     variant: {
       control: "select",
-      options: ["subtle", "inverted"],
+      options: ["subtle", "ghost", "inverted"],
+      table: { category: "Variants" },
+    },
+    shape: {
+      control: "select",
+      options: ["pill", "square", "circle"],
       table: { category: "Variants" },
     },
 
@@ -57,7 +57,7 @@ export const Default: Story = {
     return (
       <Stack gap={4}>
         <Group gap={2}>
-          <Button {...args} square>
+          <Button {...args} shape="square">
             <GlobeIcon />
           </Button>
           <Button {...args}>
@@ -72,6 +72,10 @@ export const Default: Story = {
             <GlobeIcon />
             travel the world
           </Button>
+          <Button {...args} variant="ghost">
+            <GlobeIcon />
+            travel the world
+          </Button>
           <Button {...args} variant="inverted">
             <GlobeIcon />
             travel the world
@@ -79,22 +83,26 @@ export const Default: Story = {
         </Group>
 
         <Group gap={2}>
-          <Button {...args} circle>
+          <Button {...args} shape="circle">
             <GlobeIcon />
           </Button>
-          <Button {...args} pill>
-            <GlobeIcon />
-            travel the world
-          </Button>
-          <Button {...args} disabled pill>
+          <Button {...args} shape="pill">
             <GlobeIcon />
             travel the world
           </Button>
-          <Button {...args} variant="subtle" pill>
+          <Button {...args} disabled shape="pill">
             <GlobeIcon />
             travel the world
           </Button>
-          <Button {...args} variant="inverted" pill>
+          <Button {...args} variant="subtle" shape="pill">
+            <GlobeIcon />
+            travel the world
+          </Button>
+          <Button {...args} variant="ghost" shape="pill">
+            <GlobeIcon />
+            travel the world
+          </Button>
+          <Button {...args} variant="inverted" shape="pill">
             <GlobeIcon />
             travel the world
           </Button>

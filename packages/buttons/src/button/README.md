@@ -11,7 +11,7 @@ import { Button } from "@uiid/buttons";
 <Button>Click me</Button>
 
 // With variants
-<Button variant="subtle" size="large" pill>
+<Button variant="subtle" size="large" shape="pill">
   Submit
 </Button>
 ```
@@ -29,13 +29,14 @@ import { Button } from "@uiid/buttons";
 
 ```tsx
 <Button variant="subtle">Subtle</Button>
+<Button variant="ghost">Ghost</Button>
 <Button variant="inverted">Inverted</Button>
-<Button ghost>Ghost</Button>
 ```
 
 ### Sizes
 
 ```tsx
+<Button size="xsmall">Extra Small</Button>
 <Button size="small">Small</Button>
 <Button size="medium">Medium</Button>
 <Button size="large">Large</Button>
@@ -53,9 +54,9 @@ import { Button } from "@uiid/buttons";
 ### Shapes
 
 ```tsx
-<Button pill>Rounded pill</Button>
-<Button square>■</Button>
-<Button circle>●</Button>
+<Button shape="pill">Rounded pill</Button>
+<Button shape="square">■</Button>
+<Button shape="circle">●</Button>
 ```
 
 ### Loading State
@@ -74,20 +75,16 @@ import { Button } from "@uiid/buttons";
 
 ## Props
 
-| Prop          | Type                                              | Default    | Description |
-| ------------- | ------------------------------------------------- | ---------- | ----------- |
-| `circle`      | `boolean`                                         | —          | —           |
-| `disabled`    | `boolean`                                         | —          | —           |
-| `fullwidth`   | `boolean`                                         | —          | —           |
-| `ghost`       | `boolean`                                         | —          | —           |
-| `interactive` | `boolean`                                         | `true`     | —           |
-| `loading`     | `boolean`                                         | —          | —           |
-| `pill`        | `boolean`                                         | —          | —           |
-| `size`        | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | —           |
-| `square`      | `boolean`                                         | —          | —           |
-| `tone`        | `"positive" \| "critical" \| "warning" \| "info"` | —          | —           |
-| `tooltip`     | `ReactNode`                                       | —          | —           |
-| `variant`     | `"subtle" \| "inverted"`                          | —          | —           |
+| Prop        | Type                                              | Default    | Description                           |
+| ----------- | ------------------------------------------------- | ---------- | ------------------------------------- |
+| `variant`   | `"subtle" \| "ghost" \| "inverted"`               | —          | Visual style variant                  |
+| `shape`     | `"pill" \| "square" \| "circle"`                  | —          | Button shape                          |
+| `size`      | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | Size variant                          |
+| `tone`      | `"positive" \| "critical" \| "warning" \| "info"` | —          | Semantic color tone                   |
+| `fullwidth` | `boolean`                                         | —          | Expand to fill container width        |
+| `loading`   | `boolean`                                         | —          | Show loading spinner, hide content    |
+| `disabled`  | `boolean`                                         | —          | Disable the button                    |
+| `tooltip`   | `ReactNode`                                       | —          | Tooltip content                       |
 
 > Additional props are forwarded to the underlying Base UI Button.
 
