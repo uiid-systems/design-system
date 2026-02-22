@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
 
 jobs:
   auto-changeset:
@@ -15,7 +15,7 @@ jobs:
       pull-requests: write
       statuses: write
     steps:
-      - name: Check if release PR or Dependabot PR
+      - name: Check if PR should skip auto changeset
         id: check
         run: |
           if [[ "${{ github.head_ref }}" == changeset-release/* ]]; then
@@ -24,6 +24,9 @@ jobs:
           elif [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
             echo "skip=true" >> $GITHUB_OUTPUT
             echo "Dependabot PR — skipping changeset creation"
+          elif [[ "${{ github.actor }}" == "github-actions[bot]" ]]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "GitHub Actions PR — skipping changeset creation"
           else
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
@@ -54,14 +57,21 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         id: changeset_check
         run: |
-          NEW_CHANGESETS=$(git diff --name-only origin/main..HEAD | grep '^\.changeset/.*\.md$' | grep -v 'README.md' | wc -l)
-          echo "new_changeset_count=$NEW_CHANGESETS" >> $GITHUB_OUTPUT
+          CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          NEW_CHANGESETS=$(echo "$CHANGED_FILES" | grep '^\.changeset/.*\.md$' | grep -v 'README.md' | wc -l)
+          CHANGED_PACKAGE_COUNT=$(echo "$CHANGED_FILES" | awk -F/ '/^packages\/[^/]+\// { print $2 }' | sort -u | wc -l)
 
-          if [ $NEW_CHANGESETS -eq 0 ]; then
-            echo "needs_changeset=true" >> $GITHUB_OUTPUT
-          else
+          echo "new_changeset_count=$NEW_CHANGESETS" >> $GITHUB_OUTPUT
+          echo "changed_package_count=$CHANGED_PACKAGE_COUNT" >> $GITHUB_OUTPUT
+
+          if [ "$NEW_CHANGESETS" -gt 0 ]; then
             echo "needs_changeset=false" >> $GITHUB_OUTPUT
             echo "Found $NEW_CHANGESETS new changeset(s) — skipping creation"
+          elif [ "$CHANGED_PACKAGE_COUNT" -eq 0 ]; then
+            echo "needs_changeset=false" >> $GITHUB_OUTPUT
+            echo "No package changes detected — skipping changeset creation"
+          else
+            echo "needs_changeset=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Create automatic changeset
@@ -84,7 +94,7 @@ jobs:
             PR_TITLE="${PR_TITLE} (#${PR_NUMBER})"
           fi
 
-          CHANGED_FILES=$(git diff --name-only origin/main..HEAD)
+          CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
           PACKAGES=$(find packages -maxdepth 1 -type d -not -name "packages" -exec basename {} \; | sort)
           CHANGED_PACKAGES=()
 

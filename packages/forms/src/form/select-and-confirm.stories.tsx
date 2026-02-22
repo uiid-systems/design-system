@@ -84,7 +84,7 @@ export const WithOnSubmit: Story = {
             <Button type="submit" disabled={loading} loading={loading}>
               Save Preferences
             </Button>
-            <Button type="button" ghost onClick={handleReset}>
+            <Button type="button" variant="ghost" onClick={handleReset}>
               Reset
             </Button>
           </Stack>
@@ -166,7 +166,7 @@ export const WithFormData: Story = {
             <Button type="submit" disabled={loading} loading={loading}>
               Save Preferences
             </Button>
-            <Button type="button" ghost onClick={handleReset}>
+            <Button type="button" variant="ghost" onClick={handleReset}>
               Reset
             </Button>
           </Stack>
