@@ -84,6 +84,61 @@ describe("Button", () => {
     expect(screen.getByRole("button").className).toContain("shape-circle");
   });
 
+  it("renders correctly with variant='ghost'", () => {
+    render(<Button variant="ghost">Ghost</Button>);
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("variant-ghost");
+    expect(button.className).not.toContain("variant-subtle");
+    expect(button.className).not.toContain("variant-inverted");
+    expect(button).toHaveTextContent("Ghost");
+  });
+
+  it("renders correctly with shape='square'", () => {
+    render(<Button shape="square">■</Button>);
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("shape-square");
+    expect(button.className).not.toContain("shape-pill");
+    expect(button.className).not.toContain("shape-circle");
+    expect(button).toHaveTextContent("■");
+  });
+
+  it("applies both variant='ghost' and shape='square' together", () => {
+    render(
+      <Button variant="ghost" shape="square">
+        ■
+      </Button>,
+    );
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("variant-ghost");
+    expect(button.className).toContain("shape-square");
+    expect(button).toBeInTheDocument();
+  });
+
+  it("applies transition-related base styles class", () => {
+    render(<Button>Styled</Button>);
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("button");
+
+    const contentContainer = document.querySelector(
+      '[data-slot="button-content-container"]',
+    );
+    expect(contentContainer).toBeInTheDocument();
+  });
+
+  it("renders with all size variants including xsmall", () => {
+    const { rerender } = render(<Button size="xsmall">XSmall</Button>);
+    expect(screen.getByRole("button").className).toContain("size-xsmall");
+
+    rerender(<Button size="small">Small</Button>);
+    expect(screen.getByRole("button").className).toContain("size-small");
+
+    rerender(<Button size="medium">Medium</Button>);
+    expect(screen.getByRole("button").className).toContain("size-medium");
+
+    rerender(<Button size="large">Large</Button>);
+    expect(screen.getByRole("button").className).toContain("size-large");
+  });
+
   // ============================================
   // INTERACTIONS
   // ============================================
