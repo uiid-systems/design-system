@@ -12,37 +12,64 @@
           "colorSpace": "oklab",
           "color1": "{shade.foreground}",
           "color2": "{shade.background}",
-          "ratio": 0.15
+          "ratio": 0.85
         }
       }
     },
     "fg": { "$value": "{shade.background}", "$type": "color" },
     "border-width": { "$value": "2px", "$type": "dimension" },
     "border-color": { "$value": "{button.bg}", "$type": "color" },
-    "border-radius": { "$value": "{globals.border.radius}", "$type": "dimension" },
+    "border-radius": {
+      "$value": "{globals.border.radius}",
+      "$type": "dimension"
+    },
     "font-weight": { "$value": 600, "$type": "fontWeight" },
     "padding-x": { "$value": "{forms.padding.x}", "$type": "dimension" },
     "padding-y": { "$value": "{forms.padding.y}", "$type": "dimension" },
     "size": {
       "xs": {
-        "font-size": { "$value": "{forms.size.xs.font-size}", "$type": "dimension" },
+        "font-size": {
+          "$value": "{forms.size.xs.font-size}",
+          "$type": "dimension"
+        },
         "height": { "$value": "{forms.size.xs.height}", "$type": "dimension" },
-        "padding-x": { "$value": "{forms.size.xs.padding-x}", "$type": "dimension" }
+        "padding-x": {
+          "$value": "{forms.size.xs.padding-x}",
+          "$type": "dimension"
+        }
       },
       "sm": {
-        "font-size": { "$value": "{forms.size.sm.font-size}", "$type": "dimension" },
+        "font-size": {
+          "$value": "{forms.size.sm.font-size}",
+          "$type": "dimension"
+        },
         "height": { "$value": "{forms.size.sm.height}", "$type": "dimension" },
-        "padding-x": { "$value": "{forms.size.sm.padding-x}", "$type": "dimension" }
+        "padding-x": {
+          "$value": "{forms.size.sm.padding-x}",
+          "$type": "dimension"
+        }
       },
       "md": {
-        "font-size": { "$value": "{forms.size.md.font-size}", "$type": "dimension" },
+        "font-size": {
+          "$value": "{forms.size.md.font-size}",
+          "$type": "dimension"
+        },
         "height": { "$value": "{forms.size.md.height}", "$type": "dimension" },
-        "padding-x": { "$value": "{forms.size.md.padding-x}", "$type": "dimension" }
+        "padding-x": {
+          "$value": "{forms.size.md.padding-x}",
+          "$type": "dimension"
+        }
       },
       "lg": {
-        "font-size": { "$value": "{forms.size.lg.font-size}", "$type": "dimension" },
+        "font-size": {
+          "$value": "{forms.size.lg.font-size}",
+          "$type": "dimension"
+        },
         "height": { "$value": "{forms.size.lg.height}", "$type": "dimension" },
-        "padding-x": { "$value": "{forms.size.lg.padding-x}", "$type": "dimension" }
+        "padding-x": {
+          "$value": "{forms.size.lg.padding-x}",
+          "$type": "dimension"
+        }
       }
     },
     "variant": {

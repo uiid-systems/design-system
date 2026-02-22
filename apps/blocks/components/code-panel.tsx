@@ -72,8 +72,8 @@ export const CodePanel = () => {
         tooltip="Close code panel"
         onClick={toggleSidebar}
         size="xsmall"
-        ghost
-        square
+        variant="ghost"
+        shape="square"
         className={styles.closeButton}
       >
         <XIcon />

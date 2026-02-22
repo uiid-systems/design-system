@@ -26,7 +26,7 @@ export const LandingScreenHero = () => {
         </Text>
       </Stack>
 
-      <Button render={<Link href="/registry" />} pill>
+      <Button render={<Link href="/registry" />} shape="pill">
         Browse the registry
         <ArrowRightIcon size={16} />
       </Button>

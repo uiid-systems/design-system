@@ -11,13 +11,13 @@ export function CardPreview() {
       title="Acme Corporation"
       description="The global leader in everything."
       action={
-        <Button tooltip="Close" size="xsmall" square ghost>
+        <Button tooltip="Close" size="xsmall" shape="square" variant="ghost">
           <X />
         </Button>
       }
       footer={
         <Group gap={2} ax="end" fullwidth>
-          <Button size="small" ghost>
+          <Button size="small" variant="ghost">
             Cancel
           </Button>
           <Button size="small">Complete purchase</Button>

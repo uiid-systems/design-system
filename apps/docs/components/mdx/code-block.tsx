@@ -34,8 +34,8 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
       <Group className={styles["code-block-header"]} ax="end">
         <Button
           size="small"
-          ghost
-          square
+          variant="ghost"
+          shape="square"
           onClick={handleCopy}
           tooltip={copied ? "Copied!" : "Copy code"}
         >

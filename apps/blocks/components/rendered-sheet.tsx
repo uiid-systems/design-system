@@ -35,7 +35,7 @@ export const RenderedSheet = ({
           tooltip="View and edit JSON or JSX source"
           disabled={!code && !jsonValue}
           size="small"
-          ghost
+          variant="ghost"
         >
           <CodeIcon />
           Code

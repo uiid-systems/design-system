@@ -154,8 +154,8 @@ export const OpenBlocksPanel = () => {
         <Button
           tooltip="View saved blocks (browser storage)"
           size="small"
-          ghost
-          square
+          variant="ghost"
+          shape="square"
         >
           <FolderOpenIcon />
         </Button>
@@ -238,8 +238,8 @@ export const OpenBlocksPanel = () => {
                       tooltip="View"
                       onClick={() => handleLoad(block)}
                       size="xsmall"
-                      ghost
-                      square
+                      variant="ghost"
+                      shape="square"
                       disabled={isEditing}
                     >
                       <EyeIcon />
@@ -248,8 +248,8 @@ export const OpenBlocksPanel = () => {
                       tooltip="Copy link"
                       onClick={() => handleCopyLink(block)}
                       size="xsmall"
-                      ghost
-                      square
+                      variant="ghost"
+                      shape="square"
                       disabled={isEditing}
                     >
                       <CopyIcon />
@@ -261,8 +261,8 @@ export const OpenBlocksPanel = () => {
                           tone="positive"
                           onClick={handleConfirmRename}
                           size="xsmall"
-                          ghost
-                          square
+                          variant="ghost"
+                          shape="square"
                         >
                           <CircleCheckIcon />
                         </Button>
@@ -271,8 +271,8 @@ export const OpenBlocksPanel = () => {
                           tone="critical"
                           onClick={handleCancelRename}
                           size="xsmall"
-                          ghost
-                          square
+                          variant="ghost"
+                          shape="square"
                         >
                           <CircleXIcon />
                         </Button>
@@ -283,8 +283,8 @@ export const OpenBlocksPanel = () => {
                           tooltip="Export to file"
                           onClick={() => handleExport(block)}
                           size="xsmall"
-                          ghost
-                          square
+                          variant="ghost"
+                          shape="square"
                         >
                           <DownloadIcon />
                         </Button>
@@ -294,8 +294,8 @@ export const OpenBlocksPanel = () => {
                             handleStartRename(block.blockId, block.name)
                           }
                           size="xsmall"
-                          ghost
-                          square
+                          variant="ghost"
+                          shape="square"
                         >
                           <PencilIcon />
                         </Button>
@@ -303,8 +303,8 @@ export const OpenBlocksPanel = () => {
                           tooltip="Delete"
                           onClick={() => handleDelete(block)}
                           size="xsmall"
-                          ghost
-                          square
+                          variant="ghost"
+                          shape="square"
                         >
                           <Trash2Icon />
                         </Button>

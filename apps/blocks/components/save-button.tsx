@@ -84,8 +84,8 @@ export const SaveButton = () => {
           tooltip="Save block to browser storage"
           size="small"
           disabled={!tree}
-          ghost
-          square
+          variant="ghost"
+          shape="square"
         >
           <SaveIcon />
         </Button>
@@ -97,7 +97,7 @@ export const SaveButton = () => {
               <Button onClick={handleSave} disabled={!name.trim()}>
                 Save version
               </Button>
-              <Button ghost onClick={handleSaveAsNew} disabled={!name.trim()}>
+              <Button variant="ghost" onClick={handleSaveAsNew} disabled={!name.trim()}>
                 Save as new block
               </Button>
             </>
@@ -106,7 +106,7 @@ export const SaveButton = () => {
               <Button onClick={handleSave} disabled={!name.trim()}>
                 Save
               </Button>
-              <Button ghost onClick={resetAndClose}>
+              <Button variant="ghost" onClick={resetAndClose}>
                 Cancel
               </Button>
             </>

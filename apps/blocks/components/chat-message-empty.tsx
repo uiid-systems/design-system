@@ -33,7 +33,7 @@ export const ChatMessageEmpty = ({ ...props }: ChatMessageEmptyProps) => {
           <Button
             key={prompt}
             size="xsmall"
-            ghost
+            variant="ghost"
             onClick={() => send(prompt)}
           >
             {prompt}
