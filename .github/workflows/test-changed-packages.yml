@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 10
     concurrency:
       group: test-${{ github.head_ref || github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: ${{ github.event_name == 'push' }}
 
     steps:
       - name: Check out code
@@ -57,7 +57,7 @@ jobs:
     timeout-minutes: 10
     concurrency:
       group: lint-${{ github.head_ref || github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: ${{ github.event_name == 'push' }}
 
     steps:
       - name: Check out code
