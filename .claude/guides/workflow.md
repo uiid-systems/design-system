@@ -27,6 +27,7 @@ Labels encode what layer a ticket belongs to, what risk it carries, and how much
 | `layer:stories`  | Storybook documentation              |
 | `layer:test`     | Behavior, a11y, interaction tests    |
 | `layer:docs`     | Usage guidance and documentation     |
+| `layer:design`   | Figma design or visual artifact creation |
 | `layer:blocks`   | Block composition work               |
 | `layer:release`  | Version bump or publish impact       |
 
@@ -42,7 +43,7 @@ Labels encode what layer a ticket belongs to, what risk it carries, and how much
 
 | Label          | Pipeline                                              |
 | -------------- | ----------------------------------------------------- |
-| `size:small`   | Dev → PR → Review → Merge                             |
+| `size:small`   | Builder(s) → Review (if code) → Human Sign-Off → Merge |
 | `size:medium`  | Planner → Breakdown → CPP → Build → Review → QA      |
 | `size:large`   | Full pipeline including ADR + migration planning      |
 
@@ -51,10 +52,10 @@ Labels encode what layer a ticket belongs to, what risk it carries, and how much
 ### Execution Order
 
 ```
-Sequential:  Planner → Breakdown → Interface Steward
+Sequential:  Planner → Breakdown → Interface Steward (medium/large only)
 Gate:        Token Curator (if CPP proposes new tokens)
-Parallel:    Designer + Feature Coder
-Sequential:  Code Review → QA (recommendation) → Human Sign-Off → Release
+Parallel:    Designer + Feature Coder (either or both, determined by layer: labels)
+Sequential:  Code Review (if code output) → QA (recommendation) → Human Sign-Off → Release
 Continuous:  All agents → retro feed
 Periodic:    Retro (per milestone, synthesizes + resets retro feed)
 ```
@@ -63,16 +64,36 @@ Periodic:    Retro (per milestone, synthesizes + resets retro feed)
 
 #### Small
 
-**What qualifies:** Bug fix, doc change, internal refactor with no API change, adding a field to a type, config updates, single-layer work with no design input needed.
+**What qualifies:** Bug fix, doc change, internal refactor with no API change, adding a field to a type, config updates, Figma component creation from existing spec, single-layer work.
 
-**Pipeline:** Feature Coder → Code Review → Human Sign-Off → Merge
+**Pipeline:** Builder(s) → Code Review (if code output) → Human Sign-Off → Merge
 
-**What gets skipped:** Planner, Breakdown, Interface Steward, Designer, QA, Release Captain.
+**What gets skipped:** Planner, Breakdown, Interface Steward, QA, Release Captain.
+
+**Builder selection:** The ticket's `layer:` labels determine which builders run. These are sibling roles — either or both may be needed at any size.
+
+| Layer label      | Builder         |
+| ---------------- | --------------- |
+| `layer:comp`     | Feature Coder   |
+| `layer:design`   | Designer        |
+| `layer:tokens`   | Feature Coder   |
+| `layer:registry` | Feature Coder   |
+| `layer:stories`  | Feature Coder   |
+| `layer:test`     | Feature Coder   |
+| `layer:docs`     | Feature Coder   |
+| `layer:blocks`   | Feature Coder   |
+
+When both Feature Coder and Designer are needed, they work in parallel — same as medium and large.
+
+**Review logic:**
+- If the ticket produces a **GitHub PR** → Code Review is required.
+- If the ticket produces **only Figma artifacts** (no PR) → no Code Review. Human validates the Figma output directly.
+- If the ticket produces **both** → Code Review covers the PR. Human validates Figma.
 
 **Rules:**
 - The Linear ticket description is the spec. No PRD, no CPP.
 - The ticket must have a `layer:` label and `size:small`.
-- Feature Coder reads the ticket, the relevant guides, and the codebase — nothing else.
+- Builders read the ticket, the relevant guides, and the codebase — nothing else.
 - Code Review reviews the PR against the diff and project conventions — no CPP to verify against.
 - Human gives final approval. QA may validate post-merge if no risk labels are present.
 - PR includes changeset if the change affects a published package.
@@ -80,10 +101,11 @@ Periodic:    Retro (per milestone, synthesizes + resets retro feed)
 
 **Agent inputs for `size:small`:**
 
-| Agent          | Reads                                           | Writes                     |
-| -------------- | ----------------------------------------------- | -------------------------- |
-| Feature Coder  | Linear ticket + guides + codebase               | GitHub PR + retro feed     |
-| Code Review    | PR diff + guides + registry                     | PR review + retro feed     |
+| Agent          | Reads                                           | Writes                          |
+| -------------- | ----------------------------------------------- | ------------------------------- |
+| Feature Coder  | Linear ticket + guides + codebase               | GitHub PR + retro feed          |
+| Designer       | Linear ticket + registry + tokens + Figma       | Figma artifact + retro feed     |
+| Code Review    | PR diff + guides + registry                     | PR review + retro feed          |
 
 #### Medium
 
