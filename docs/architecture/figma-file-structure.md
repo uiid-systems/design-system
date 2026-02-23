@@ -143,24 +143,74 @@ no `tone` is set.
 
 ---
 
+## Variant Axis Strategy
+
+Not every enum prop should become a Figma variant axis. A full cartesian product
+creates an unmanageable number of variants (e.g., Button with 4 sizes × 4 variants
+× 5 tones × 4 shapes = 320 variants). Instead, select variant axes deliberately.
+
+### Deciding what becomes a variant axis
+
+Use this priority order to decide which enum props become variant axes:
+
+1. **Always a variant axis:** Props that change the component's structure or sizing
+   (e.g., `size` — different padding, font size, height).
+2. **Usually a variant axis:** Props that change the component's visual identity
+   (e.g., `variant` — different bg/fg/border tokens).
+3. **Variant axis when commonly varied:** Props that are frequently changed together
+   with the above (e.g., `tone` — different semantic colors, used across most
+   variant/size combos).
+4. **Display instances only:** Props that change a single visual property and can be
+   overridden on instances (e.g., `shape` — just cornerRadius and aspect-ratio).
+
+**Target:** Keep the variant count under ~100. Beyond that, the component set becomes
+unwieldy in Figma's variant grid.
+
+### Props that should NOT be variant axes
+
+These are always component properties, never variant axes:
+
+- Boolean toggles (`disabled`, `loading`, `fullwidth`) → Boolean properties
+- Text content (`children`, `label`, `placeholder`) → Text properties
+- Override-friendly props (`shape`) → Show as display instances in the Variants section
+
+### Display instances for non-variant props
+
+Props that aren't variant axes are documented in the **Variants** section as display
+instances — real instances of the component with manual overrides applied. For example,
+`shape=pill` is shown by creating an instance and setting `cornerRadius = 99999`.
+This gives designers a visual reference without bloating the variant count.
+
+---
+
 ## Full Example: Button
 
 The Button component in Figma demonstrates all conventions applied together.
 
 **Component name:** `Button`
 
-**Properties:**
+**Variant axes** (3 axes, 80 variants = 4 × 4 × 5):
 
 | Property    | Type    | Values                                    | Default  |
 | ----------- | ------- | ----------------------------------------- | -------- |
 | `size`      | Variant | `xsmall`, `small`, `medium`, `large`      | `medium` |
 | `variant`   | Variant | `default`, `subtle`, `ghost`, `inverted`  | `default`|
 | `tone`      | Variant | `none`, `positive`, `critical`, `warning`, `info` | `none` |
-| `shape`     | Variant | `default`, `pill`, `square`, `circle`     | `default`|
-| `disabled`  | Boolean | true / false                              | false    |
-| `loading`   | Boolean | true / false                              | false    |
-| `fullwidth` | Boolean | true / false                              | false    |
-| `children`  | Text    | --                                        | "Button" |
+
+**Component properties** (not variant axes):
+
+| Property    | Type    | Default  | Notes |
+| ----------- | ------- | -------- | ----- |
+| `disabled`  | Boolean | false    | |
+| `loading`   | Boolean | false    | |
+| `fullwidth` | Boolean | false    | |
+| `children`  | Text    | "Button" | Linked to text nodes via `componentPropertyReferences` |
+
+**Display instances** (shown in Variants section, not variant axes):
+
+| Property    | Values                                | Override method |
+| ----------- | ------------------------------------- | --------------- |
+| `shape`     | `default`, `pill`, `square`, `circle` | cornerRadius + resize on instances |
 
 Note: `variant` and `tone` include a `default` / `none` value for the unset state.
 In code, these props are optional (not passing them gives the base style). In Figma,
@@ -172,16 +222,14 @@ unset state.
 ```
 Section: Button
   ├── Button / Base
-  │   └── Single Button instance, all defaults
+  │   └── Single Button instance, all defaults (medium / default / none)
   ├── Button / Variants
-  │   ├── Row: size (xsmall, small, medium, large)
-  │   ├── Row: variant (default, subtle, ghost, inverted)
-  │   ├── Row: tone (none, positive, critical, warning, info)
-  │   └── Row: shape (default, pill, square, circle)
+  │   └── Row: shape (default, pill, square, circle) — display instances with overrides
   ├── Button / States
   │   └── Row: default, hover, focus, active, disabled, loading
   └── Button / Compositions
-      └── Button group, Button in Card footer, etc.
+      ├── Button group (default + subtle + ghost)
+      └── Tone buttons (positive + critical + warning + info)
 ```
 
 ---

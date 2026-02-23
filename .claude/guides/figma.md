@@ -168,27 +168,30 @@ For colors, always use variable binding. For numeric values (spacing, radii, fon
 
 ## Component Construction Sequence
 
-High-level order for building any component:
+High-level order for building any component. See `.claude/templates/FIGMA_COMPONENT.md` for the detailed script with code examples.
 
-1. **Orient** — read the file, navigate to the correct page, check for existing components
-2. **Read** — understand the registry entry, token values, and prop types
-3. **Build base** — create the default component with auto-layout, fills, text
-4. **Bind tokens** — attach all fills/strokes to token variables
-5. **Add properties** — boolean and text properties via `figma_add_component_property`
-6. **Build variants** — clone, rename with variant syntax, combine as component set
-7. **Arrange section** — place in section with Base / Variants / States / Compositions groups
-8. **Validate** — screenshot, verify checklist
-9. **Register** — update `figma.nodeId` in the registry entry
+1. **Pre-flight** — read registry entry, component source code (`.tsx`, `.types.ts`, `.variants.ts`, `.module.css`), and tokens
+2. **Orient** — read the file, navigate to the correct page, check for existing components, get variable IDs
+3. **Decide variant axes** — follow the strategy in `figma-file-structure.md` § Variant Axis Strategy. Keep under ~100 variants.
+4. **Build all variants** — create all variant components in one `figma_execute` call with auto-layout, token-bound fills/strokes, text
+5. **Combine & arrange** — `combineAsVariants`, then `figma_arrange_component_set` (note: this recreates the set with a new ID)
+6. **Add properties** — boolean and text properties via `figma_add_component_property` on the **new** component set ID (must come AFTER arrange)
+7. **Link text nodes** — explicitly connect text nodes to text properties via `componentPropertyReferences`
+8. **Build section layout** — Base / Variants (display instances for non-axis props) / States / Compositions
+9. **Validate** — screenshot, verify checklist
+10. **Register** — update `figma.nodeId` in the registry entry with the final ID
 
-Follow the detailed script in `.claude/templates/FIGMA_COMPONENT.md` for each step.
+**Critical ordering:** Properties must be added AFTER `figma_arrange_component_set`, because arrange recreates the component set and drops non-variant properties. This is the most common mistake.
 
 ## Validation Workflow
 
 After every major construction step (base created, variants built, section arranged), take a screenshot and verify:
 
 ```
-figma_take_screenshot → capture current canvas
+figma_capture_screenshot  nodeId: {nodeId}  scale: 1
 ```
+
+**Prefer `figma_capture_screenshot`** over `figma_take_screenshot`. The capture tool uses the plugin's `exportAsync` API and reflects the current plugin state immediately. The take tool uses the REST API, which may lag behind recent changes and requires a node-id in the URL.
 
 **What to check:**
 
@@ -199,8 +202,31 @@ figma_take_screenshot → capture current canvas
 5. **Values** — variant values are lowercase, match code enum values
 6. **Spacing** — 64px between groups, 16px within groups
 7. **Fonts** — no missing font indicators (always `loadFontAsync` before text operations)
+8. **Text property linking** — `componentPropertyReferences` set on all text nodes
+9. **Variant count** — matches expected product (e.g., 4 × 4 × 5 = 80, not 320)
+10. **No quoted text** — text shows `Button`, not `"Button"` (check default values)
 
 **Iteration limit:** Fix issues and re-screenshot up to 3 times per step. If something can't be resolved, flag it rather than iterating endlessly.
+
+## Known Gotchas
+
+Lessons learned from building components. These are the most common pitfalls:
+
+1. **`figma_arrange_component_set` recreates the component set.** The old ID is dead. All non-variant properties (boolean, text) are dropped. Always add properties AFTER arranging, and always use the new ID from the response.
+
+2. **Use `figma.setCurrentPageAsync(page)`, not `figma.currentPage = page`.** The synchronous setter throws `Cannot call with documentAccess: dynamic-page` in the plugin bridge.
+
+3. **Text properties don't auto-link.** After adding a text property to a component set, you must explicitly link each variant's text node via `textNode.componentPropertyReferences = { characters: 'propertyName#suffix' }`. Without this, changing the property on an instance does nothing.
+
+4. **Variant default values can't be changed via API.** `figma_edit_component_property` cannot change `defaultValue` on variant properties. The default is determined by the first variant created. Build variants in the right order if the default matters.
+
+5. **Don't explode variant axes.** A full cartesian product of all enum props creates hundreds of variants. Follow the Variant Axis Strategy in `figma-file-structure.md` to keep the count manageable (under ~100).
+
+6. **Text default values with extra quotes.** If you pass `"\"Button\""` or `'"Button"'` as a default value, the text will render with literal quote characters. Pass just `Button`.
+
+7. **`figma_get_file_data` on large component sets is expensive.** A 320-variant component set produced 533K chars. Use `figma_execute` for targeted inspection instead.
+
+8. **Instance overrides are limited.** You can override `cornerRadius`, `opacity`, `effects`, and `resize` on instances. You cannot switch variant property values on instances via the Plugin API — that requires `figma_set_instance_properties`.
 
 ## Code Connect
 

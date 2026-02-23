@@ -49,5 +49,5 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   previews: buttonPreviews,
   usage:
     "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, use variant=\"ghost\" for minimal chrome.",
-  figma: { nodeId: "156:165" },
+  figma: { nodeId: "156:1221" },
 };
