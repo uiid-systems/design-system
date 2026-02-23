@@ -63,6 +63,9 @@ export type ComponentEntry<T extends z.ZodType = z.ZodType> = {
 
   /** Short LLM-oriented usage note */
   usage?: string;
+
+  /** Figma node reference for design-code linkage */
+  figma?: { nodeId: string };
 };
 
 /**
