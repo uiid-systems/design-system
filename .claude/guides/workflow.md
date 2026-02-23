@@ -52,21 +52,50 @@ Labels encode what layer a ticket belongs to, what risk it carries, and how much
 
 ```
 Sequential:  Planner → Breakdown → Interface Steward
+Gate:        Token Curator (if CPP proposes new tokens)
 Parallel:    Designer + Feature Coder
-Sequential:  Code Review → QA → Release
-Periodic:    Retro (per milestone)
+Sequential:  Code Review → QA (recommendation) → Human Sign-Off → Release
+Continuous:  All agents → retro feed
+Periodic:    Retro (per milestone, synthesizes + resets retro feed)
 ```
 
 ### Scaling by Size
 
-**Small** (bug fix, doc change, internal refactor with no API change):
-Skip to Feature Coder. No PRD, no CPP. PR includes changeset if applicable.
+#### Small
 
-**Medium** (new variant, new prop, visual change):
-Planner → Breakdown → Interface Steward → parallel build → Review → QA.
+**What qualifies:** Bug fix, doc change, internal refactor with no API change, adding a field to a type, config updates, single-layer work with no design input needed.
 
-**Large** (new component, breaking change, new package):
-Full pipeline. PRD in Notion. CPP in Notion. Figma design. All layers ticketed.
+**Pipeline:** Feature Coder → Code Review → Human Sign-Off → Merge
+
+**What gets skipped:** Planner, Breakdown, Interface Steward, Designer, QA, Release Captain.
+
+**Rules:**
+- The Linear ticket description is the spec. No PRD, no CPP.
+- The ticket must have a `layer:` label and `size:small`.
+- Feature Coder reads the ticket, the relevant guides, and the codebase — nothing else.
+- Code Review reviews the PR against the diff and project conventions — no CPP to verify against.
+- Human gives final approval. QA may validate post-merge if no risk labels are present.
+- PR includes changeset if the change affects a published package.
+- If a ticket drives changes to workflow guides or agent prompts (`.claude/agents/`, `.claude/guides/`), those changes go in a **separate PR** from the ticket's deliverable. This keeps review scope clean — the ticket PR contains only what the ticket describes, and the workflow PR captures process evolution independently.
+
+**Agent inputs for `size:small`:**
+
+| Agent          | Reads                                           | Writes                     |
+| -------------- | ----------------------------------------------- | -------------------------- |
+| Feature Coder  | Linear ticket + guides + codebase               | GitHub PR + retro feed     |
+| Code Review    | PR diff + guides + registry                     | PR review + retro feed     |
+
+#### Medium
+
+**What qualifies:** New variant, new prop, visual change, multi-layer work.
+
+**Pipeline:** Planner → Breakdown → Interface Steward → parallel build → Review → QA → Human Sign-Off → Merge
+
+#### Large
+
+**What qualifies:** New component, breaking change, new package.
+
+**Pipeline:** Full pipeline including ADR + migration planning. PRD in Notion. CPP in Notion. Figma design. All layers ticketed.
 
 ---
 
@@ -286,10 +315,11 @@ Full pipeline. PRD in Notion. CPP in Notion. Figma design. All layers ticketed.
 - [ ] Edge cases validated
 - [ ] Cross-browser spot check (if needed)
 
-**Output:** QA verdict as a Linear issue comment on the implementation ticket.
+**Output:** QA recommendation as a Linear issue comment on the implementation ticket. A human reviews the findings and gives final sign-off.
 
 **Merge policy:**
-- `risk:breaking` or `risk:visual` → QA required before merge
+- `risk:breaking` or `risk:visual` → QA + human sign-off required before merge
+- `size:medium` with no risk labels → QA + human sign-off required before merge
 - `size:small` with no risk labels → QA may validate post-merge
 
 ---
@@ -341,11 +371,32 @@ Full pipeline. PRD in Notion. CPP in Notion. Figma design. All layers ticketed.
 
 ---
 
+### 10. Token Curator
+
+**Purpose:** Prevent token explosion and maintain token system integrity.
+
+**Trigger:** New token proposals in a CPP, PRs modifying token JSON, periodic health checks.
+
+**Inputs:**
+- Token definitions (`packages/tokens/src/json/`)
+- CPP token map (if reviewing a proposal)
+- PR diff (if reviewing a PR)
+- CSS Module token references across all packages
+
+**Output:** Token audit report (Notion comment on CPP, PR review comment, or standalone Notion doc).
+
+**Exit criteria:**
+- [ ] Every proposed token evaluated against existing inventory
+- [ ] No naming convention violations unaddressed
+- [ ] No redundant tokens approved without justification
+- [ ] Interface Steward notified of any CPP changes needed
+
+---
+
 ## Optional Agents (Add When Needed)
 
 | Agent                     | Purpose                                        | Trigger                    |
 | ------------------------- | ---------------------------------------------- | -------------------------- |
-| **Token Curator**         | Prevents token explosion                       | New token proposals in CPP |
 | **Migration Planner**     | Generates codemods for breaking changes         | `risk:breaking` tickets    |
 | **Documentation Synth**   | Auto-generates usage docs from stories + CPP   | Post-release               |
 | **Visual Diff Enforcer**  | Blocks PRs without story coverage              | CI integration             |
@@ -356,17 +407,18 @@ Full pipeline. PRD in Notion. CPP in Notion. Figma design. All layers ticketed.
 
 Every agent reads from and writes to predictable locations:
 
-| Agent              | Reads From                | Writes To               |
-| ------------------ | ------------------------- | ----------------------- |
-| Planner            | Request + registry + tokens | Notion PRD              |
-| Breakdown          | Notion PRD                | Linear tickets          |
-| Interface Steward  | PRD + tickets + registry  | Notion CPP              |
-| Designer           | CPP + tokens + Figma      | Figma + Notion embeds   |
-| Feature Coder      | CPP + Figma + tickets     | GitHub PR               |
-| Code Review Bot    | PR diff + CPP             | GitHub PR review        |
-| QA Agent           | PR + Storybook + CPP      | Linear comment          |
-| Release Captain    | Merged PR + changesets    | Release validation      |
-| Retro Agent        | Milestone artifacts       | Notion retro doc        |
+| Agent              | Reads From                | Writes To                          |
+| ------------------ | ------------------------- | ---------------------------------- |
+| Planner            | Request + registry + tokens | Notion PRD + retro feed          |
+| Breakdown          | Notion PRD                | Linear tickets + retro feed        |
+| Interface Steward  | PRD + tickets + registry  | Notion CPP + retro feed            |
+| Token Curator      | Tokens + CPP + CSS Modules | Audit report (Notion/PR) + retro feed |
+| Designer           | CPP + tokens + Figma      | Figma + Notion embeds + retro feed |
+| Feature Coder      | CPP + Figma + tickets     | GitHub PR + retro feed             |
+| Code Review Bot    | PR diff + CPP             | GitHub PR review + retro feed      |
+| QA Agent           | PR + Storybook + CPP      | Linear comment (recommendation) + retro feed |
+| Release Captain    | Merged PR + changesets    | Release validation + retro feed    |
+| Retro Agent        | Retro feed + milestone artifacts | Notion retro doc (archives + resets retro feed) |
 
 ## Agent Prompt Files
 
@@ -383,12 +435,38 @@ Each agent has a self-contained prompt file in `.claude/agents/`. These define p
 | `07-qa.md`                   | QA Agent             |
 | `08-release-captain.md`      | Release Captain      |
 | `09-retro.md`                | Retro Agent          |
+| `10-token-curator.md`        | Token Curator        |
+
+---
+
+## Runtime Environment
+
+Agents run in **Warp cloud agent environments** (Oz). Each agent execution spins up an isolated Docker container, clones the repo, runs setup commands, and executes the agent workflow. Key implications:
+
+- **No persistent local state** — containers are destroyed after each run. Agents must read from and write to durable stores (GitHub, Linear, Notion, Figma, `.claude/retro-feed.md`).
+- **MCP availability** — environment configuration determines which MCP servers are accessible. Ensure the environment includes the MCPs each agent needs (Linear, Notion, Figma, GitHub).
+- **Setup commands must be idempotent** — `pnpm install`, `pnpm build`, etc. run fresh each time.
+- **glibc-based images required** — Alpine/musl images are not supported by Warp.
+
+See [Warp environments docs](https://docs.warp.dev/agent-platform/cloud-agents/environments) for configuration details.
 
 ---
 
 ## Outstanding Work
 
 The following items are needed to complete the workflow infrastructure:
+
+### Completed
+- [x] Agent prompt files written (`.claude/agents/01-10.md`)
+- [x] Token Curator promoted to mandatory agent (`10-token-curator.md`)
+- [x] QA Agent updated with human sign-off requirement
+- [x] Retro Agent updated with continuous feedback collection model
+- [x] Retro feedback file created (`.claude/retro-feed.md`)
+- [x] Templates created (PRD, CPP, story, test, registry, README)
+- [x] Linear labels created (`layer:`, `risk:`, `size:`)
+- [x] Linear backlog cleaned — onboarding artifacts and premature tickets canceled
+- [x] Active tickets labeled (UI-7, UI-8, UI-10) with dependencies set
+- [x] `size:small` workflow formalized with explicit agent inputs/outputs
 
 ### Notion Structure
 Set up Notion workspace pages for:
@@ -397,8 +475,17 @@ Set up Notion workspace pages for:
 - Retro archive (one page per milestone retro)
 - Link the Notion workspace in the workflow guide once created
 
-### Retroactive Labeling
-Apply the new `layer:`, `risk:`, and `size:` labels to existing Linear tickets (UI-6 through UI-28) so the backlog is consistent with the new system.
+### Warp Environment Configuration
+- Configure a Warp environment with the correct Docker image, repo clone, and setup commands
+- Verify MCP server access (Linear, Notion, Figma, GitHub) within the environment
+- Test that `pnpm install && pnpm build` succeeds in the container
 
-### Oz Integration Testing
-Run a real feature through the full pipeline using Oz to validate that the agent prompts work end-to-end. Identify any gaps in the prompt files and iterate. The Button Figma work (UI-10) or a new component would be a good candidate.
+### Pilot Run
+- Select a feature to run through the full pipeline end-to-end using Oz
+- Validate that agent prompts work in the cloud environment
+- Identify gaps in prompt files, MCP access, or cross-agent handoffs
+- Feed findings into the first retro
+
+### Release Captain Strategy
+- Deferred pending more context on CI integration and changeset validation needs
+- Evaluate whether this agent adds value beyond what CI already enforces, or whether it should become a CI enhancement

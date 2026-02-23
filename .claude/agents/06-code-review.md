@@ -84,9 +84,20 @@ Read the PR description and verify every checkbox item against the diff:
 2. If verifiable and incorrect, leave unchecked and comment
 3. If not verifiable (requires runtime testing), leave unchecked and note why
 
+## Post-Review Actions
+
+If the review verdict is **Approve** (no blocking items):
+- Mark the PR as **ready for review** (remove draft status) using `gh pr ready {number}`
+- This signals to the human that the PR has passed automated review and is ready for sign-off
+
+If the review verdict is **Request Changes** (blocking items exist):
+- Leave the PR in draft
+- The Feature Coder must address blocking items before re-review
+
 ## Exit Criteria
 
 - [ ] All `blocking` items have been flagged clearly
 - [ ] No unaccounted regression risk
 - [ ] PR checklist items verified against the actual diff
 - [ ] Summary comment posted with overall assessment
+- [ ] PR draft status updated to reflect verdict (ready if approved, draft if changes requested)
