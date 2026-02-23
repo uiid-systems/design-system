@@ -67,3 +67,4 @@ design-system/
 @.claude/guides/storybook.md
 @.claude/guides/pull-requests.md
 @.claude/guides/pull-reviews.md
+@.claude/guides/workflow.md
