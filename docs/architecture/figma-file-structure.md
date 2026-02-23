@@ -1,5 +1,7 @@
 # Figma File Structure
 
+> For the agent workflow and MCP tool usage, see `.claude/guides/figma.md`. For the step-by-step construction script, see `.claude/templates/FIGMA_COMPONENT.md`.
+
 Conventions for the UIID Figma file. Every decision here optimizes for Code Connect
 generation -- Figma component names, property names, and property values must match code
 exactly so that mappings are automatic, not manually maintained.

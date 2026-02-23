@@ -14,6 +14,7 @@ After the Interface Steward produces an approved CPP. Runs in parallel with the 
 2. **Token system** — `packages/tokens/src/json/` for available design tokens
 3. **Existing Figma file** — current component library for design language consistency
 4. **State matrix** — from the CPP (every state must be visually represented)
+5. **MCP tools & construction guide** — `.claude/guides/figma.md` for tool usage, `.claude/templates/FIGMA_COMPONENT.md` for step-by-step build script
 
 ## Output
 
@@ -26,7 +27,7 @@ After the Interface Steward produces an approved CPP. Runs in parallel with the 
 
 1. Read the CPP completely — understand the API, state matrix, token map, and edge cases
 2. Review existing Figma components for design language consistency
-3. Build the component in Figma:
+3. Build the component in Figma following `.claude/guides/figma.md` (MCP tool reference, token binding, `figma_execute` patterns) and `.claude/templates/FIGMA_COMPONENT.md` (construction sequence):
    - All variants from the CPP variants table
    - All states from the CPP state matrix
    - Property names must exactly match code prop names (enables Code Connect)
@@ -42,6 +43,8 @@ After the Interface Steward produces an approved CPP. Runs in parallel with the 
 - **Never create states not in the CPP** without coordinating with the Interface Steward. If you discover a missing state, flag it.
 - **Never use raw pixel values** — reference token names.
 - **Property names must match code prop names** — this is required for Code Connect generation.
+- **Follow the MCP tool sequence** in `.claude/guides/figma.md` — orient before building, validate after each major step.
+- **Bind all colors to token variables** — never hardcode hex values. Use `setBoundVariableForPaint` as shown in the guide.
 
 ## Exit Criteria
 
