@@ -65,6 +65,7 @@ design-system/
 @.claude/guides/testing.md
 @.claude/guides/registry.md
 @.claude/guides/storybook.md
+@.claude/guides/figma.md
 @.claude/guides/pull-requests.md
 @.claude/guides/pull-reviews.md
 @.claude/guides/workflow.md
