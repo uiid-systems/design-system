@@ -67,19 +67,32 @@ Work in this order. Each step should be a commit that leaves the repo in a build
    - Update or create README following `.claude/templates/COMPONENT_README.md`
    - Commit: `docs({package}): add {component} readme`
 
-7. **Changeset** (`layer:release`, if applicable)
-   - Add changeset with correct level (patch/minor/major matching risk classification)
+7. **Changeset** (required if any published package is modified)
+   - If your changes touch any package under `packages/` that has a `package.json` with a `name` field, you must add a changeset
+   - Create `.changeset/{random-three-word-kebab}.md` with the format:
+     ```
+     ---
+     "@uiid/{package}": patch | minor | major
+     ---
+
+     Brief description of the change
+     ```
+   - Use `patch` for non-breaking additions, `minor` for new features, `major` for breaking changes
+   - Commit: `chore: changeset`
 
 ### PR Preparation
 
-After implementation is complete, open a PR:
+After implementation is complete, open a **draft** PR:
 
-1. Use the PR template at `.github/PULL_REQUEST_TEMPLATE.md`
-2. Fill in summary, links (Linear tickets, Notion CPP, Figma)
-3. Check applicable risk boxes
-4. Fill in Definition of Done checklist — only check boxes that are actually done
-5. Add custom verification items specific to this PR
-6. Reference Linear tickets with `Closes UI-XX` to auto-close on merge
+1. Use `gh pr create --draft` to open in draft mode — all Feature Coder PRs start as drafts
+2. Use the PR template at `.github/PULL_REQUEST_TEMPLATE.md`
+3. Fill in summary, links (Linear tickets, Notion CPP, Figma)
+4. Check applicable risk boxes
+5. Fill in Definition of Done checklist — only check boxes that are actually done
+6. Add custom verification items specific to this PR
+7. Reference Linear tickets with `Closes UI-XX` to auto-close on merge
+
+The PR remains in draft until the Code Review agent approves it.
 
 ## Rules
 
@@ -101,7 +114,7 @@ Do not open the PR unless ALL of the following are true:
 - [ ] API matches CPP (props, slots, variants, defaults)
 - [ ] Registry updated and builds (`pnpm build --filter=@uiid/registry`)
 - [ ] PR description complete with all links and checklist
-- [ ] Changeset included (if this affects published packages)
+- [ ] Changeset included — required if any `packages/*` directory was modified
 
 ## Common Failures
 
