@@ -1,6 +1,6 @@
 # Agent-Driven Workflow
 
-This guide defines the agent pipeline for UIID. Each agent is a discrete, scoped task with typed inputs and outputs. Agents run in Warp Oz, Claude Code, Cursor, or any tool that can follow structured instructions.
+This guide defines the agent pipeline for UIID. Each agent is a discrete, scoped task with typed inputs and outputs. Agents run in Claude Code (local or web), Cursor, or any tool that can follow structured instructions.
 
 ## Tool Ecosystem
 
@@ -444,7 +444,7 @@ Every agent reads from and writes to predictable locations:
 
 ## Agent Prompt Files
 
-Each agent has a self-contained prompt file in `.claude/agents/`. These define purpose, inputs, outputs, steps, and exit criteria. They are runtime-agnostic — usable in Warp Oz, Claude Code, Cursor, or any agent framework.
+Each agent has a self-contained prompt file in `.claude/agents/`. These define purpose, inputs, outputs, steps, and exit criteria. They are runtime-agnostic — usable in Claude Code (local or web), Cursor, or any agent framework.
 
 | File                         | Agent                |
 | ---------------------------- | -------------------- |
@@ -463,14 +463,19 @@ Each agent has a self-contained prompt file in `.claude/agents/`. These define p
 
 ## Runtime Environment
 
-Agents run in **Warp cloud agent environments** (Oz). Each agent execution spins up an isolated Docker container, clones the repo, runs setup commands, and executes the agent workflow. Key implications:
+Agents run in **Claude Code on the web** — Anthropic-managed VMs that clone the repo, respect `CLAUDE.md`, and push results to a branch. Key implications:
 
-- **No persistent local state** — containers are destroyed after each run. Agents must read from and write to durable stores (GitHub, Linear, Notion, Figma, `.claude/retro-feed.md`).
-- **MCP availability** — environment configuration determines which MCP servers are accessible. Ensure the environment includes the MCPs each agent needs (Linear, Notion, Figma, GitHub).
-- **Setup commands must be idempotent** — `pnpm install`, `pnpm build`, etc. run fresh each time.
-- **glibc-based images required** — Alpine/musl images are not supported by Warp.
+- **No persistent local state** — VMs are ephemeral. Agents must read from and write to durable stores (GitHub, Linear, Notion, Figma, `.claude/retro-feed.md`).
+- **MCP availability** — environment variables configure which MCP servers are accessible. Add tokens (e.g., Linear API key) via Claude Code web environment settings.
+- **Setup via hooks** — use `SessionStart` hooks in `.claude/settings.json` to install dependencies on each session start.
+- **Network access** — limited by default (allowlisted domains). Configure full access if agents need external APIs.
 
-See [Warp environments docs](https://docs.warp.dev/agent-platform/cloud-agents/environments) for configuration details.
+**Triggering agents:**
+- From terminal: `& groom ticket UI-XX` or `claude --remote "groom ticket UI-XX"`
+- From web: visit [claude.ai/code](https://claude.ai/code) and submit a task
+- From mobile: use the Claude iOS app
+
+See [Claude Code on the web docs](https://code.claude.com/docs/en/claude-code-on-the-web) for configuration details.
 
 ---
 
@@ -497,13 +502,14 @@ Set up Notion workspace pages for:
 - Retro archive (one page per milestone retro)
 - Link the Notion workspace in the workflow guide once created
 
-### Warp Environment Configuration
-- Configure a Warp environment with the correct Docker image, repo clone, and setup commands
-- Verify MCP server access (Linear, Notion, Figma, GitHub) within the environment
-- Test that `pnpm install && pnpm build` succeeds in the container
+### Claude Code Web Environment
+- Configure Claude Code web environment with Linear MCP token
+- Add `SessionStart` hook to install dependencies (`pnpm install`)
+- Test that groom agent runs successfully from `& groom ticket UI-XX`
+- Verify MCP server access (Linear) within the cloud environment
 
 ### Pilot Run
-- Select a feature to run through the full pipeline end-to-end using Oz
+- Select a feature to run through the full pipeline end-to-end using Claude Code web
 - Validate that agent prompts work in the cloud environment
 - Identify gaps in prompt files, MCP access, or cross-agent handoffs
 - Feed findings into the first retro
