@@ -60,12 +60,21 @@ design-system/
 
 ---
 
+## Core Guides (always loaded)
+
 @.claude/guides/components.md
 @.claude/guides/styling.md
-@.claude/guides/testing.md
 @.claude/guides/registry.md
-@.claude/guides/storybook.md
-@.claude/guides/figma.md
-@.claude/guides/pull-requests.md
-@.claude/guides/pull-reviews.md
-@.claude/guides/workflow.md
+
+## On-Demand Guides
+
+Read these files when the task requires them — do not import by default:
+
+| Guide | Read when... |
+| ----- | ------------ |
+| `.claude/guides/testing.md` | Writing or reviewing tests |
+| `.claude/guides/storybook.md` | Creating or updating stories |
+| `.claude/guides/figma.md` | Building or inspecting Figma components |
+| `.claude/guides/pull-requests.md` | Creating a PR |
+| `.claude/guides/pull-reviews.md` | Reviewing a PR |
+| `.claude/guides/workflow.md` | Running the agent pipeline or grooming tickets |
