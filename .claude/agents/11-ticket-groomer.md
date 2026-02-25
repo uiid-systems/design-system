@@ -136,6 +136,134 @@ Quick reference for the groomer (full definitions in `workflow.md`):
 - **Be concise.** The groom comment should take 30 seconds to read.
 - **Remove `task:groom` after grooming** to signal the ticket has been processed.
 
+## Linear MCP Integration
+
+This agent runs in Claude Code web sessions and uses Linear MCP to automate ticket updates.
+
+### Step 0: Fetch the Ticket (Linear MCP)
+
+Use the Linear MCP server (configured via `LINEAR_API_KEY` in `.env.local`) to read the ticket:
+
+```graphql
+query {
+  issue(id: "UI-35") {
+    id
+    title
+    description
+    labels {
+      id
+      name
+    }
+    estimate
+    state {
+      id
+      name
+    }
+    priority
+    relations {
+      nodes {
+        relatedIssue {
+          id
+          title
+        }
+      }
+    }
+  }
+}
+```
+
+Extract and store:
+- Title
+- Current description
+- Current labels (for reference when adding new ones)
+- Current estimate
+- Current state
+- Priority
+- Any relations
+
+### Step 8: Update Linear (Linear MCP)
+
+After completing Steps 1-7 (grooming process), update the ticket in Linear:
+
+```graphql
+mutation {
+  issueUpdate(id: "UI-35", input: {
+    title: "{preserved or improved title}",
+    description: "{groomed description with AC and Groom Notes}",
+    estimate: {1-5},
+    labelIds: ["{layer-label-id}", "{size-label-id}", "{risk-label-id if applicable}"],
+    stateId: "{todo-state-id}"
+  }) {
+    issue {
+      id
+      title
+      labels { name }
+      estimate
+      state { name }
+    }
+  }
+}
+```
+
+Then remove the `task:groom` label:
+
+```graphql
+mutation {
+  issueUpdate(id: "UI-35", input: {
+    labelIds: ["{all-labels-except-task-groom}"]
+  }) {
+    issue {
+      id
+      labels { name }
+    }
+  }
+}
+```
+
+### Environment Variables
+
+Linear MCP requires these to be set (configured via `.env.local` and loaded by SessionStart hook):
+- `LINEAR_API_KEY` — your Linear API token
+- `LINEAR_TEAM_ID` — your team ID
+- `LINEAR_WORKSPACE_ID` — workspace ID (optional)
+
+### Fetching Label IDs
+
+To apply labels via MCP, you need their UUIDs. Query available labels:
+
+```graphql
+query {
+  labels(first: 100) {
+    nodes {
+      id
+      name
+    }
+  }
+}
+```
+
+Common labels and their selection logic:
+- `layer:comp`, `layer:test`, `layer:stories`, `layer:docs`, `layer:design`, `layer:tokens`, `layer:registry`, `layer:release`, `layer:blocks`
+- `size:small`, `size:medium`, `size:large`
+- `risk:breaking`, `risk:visual`, `risk:behavioral` (only if applicable)
+
+### Fetching State IDs
+
+To move a ticket to "Todo" status, you need the state UUID. Query available states:
+
+```graphql
+query {
+  workflowStates(first: 20) {
+    nodes {
+      id
+      name
+    }
+  }
+}
+```
+
+Find the state named "Todo" and use its `id`.
+
 ## Exit Criteria
 
 - [ ] Ticket has a `layer` label
@@ -145,4 +273,8 @@ Quick reference for the groomer (full definitions in `workflow.md`):
 - [ ] Next step recommendation included
 - [ ] Acceptance criteria added to description
 - [ ] Groom notes appended to description
-- [ ] `task:groom` label removed
+- [ ] Ticket description updated in Linear via MCP
+- [ ] Ticket labels applied in Linear via MCP
+- [ ] Ticket estimate set in Linear via MCP
+- [ ] Ticket state moved to "Todo" in Linear via MCP
+- [ ] `task:groom` label removed in Linear via MCP
