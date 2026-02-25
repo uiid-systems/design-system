@@ -1,8 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
-# SessionStart hook for Linear API agent setup
-# This hook sets up environment variables for agents that interact with Linear
+echo '{"async": true, "asyncTimeout": 300000}'
+
+# SessionStart hook for Claude Code web agent runtime
+# Installs dependencies and sets up Linear API environment variables for agents
+
+# Only run in remote Claude Code web environment
+if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
+  exit 0
+fi
+
+# Install dependencies for the remote session
+echo "Installing dependencies..." >&2
+pnpm install
 
 # Load from local .env.local file if it exists (not committed to git)
 if [ -f "${CLAUDE_PROJECT_DIR}/.env.local" ]; then
