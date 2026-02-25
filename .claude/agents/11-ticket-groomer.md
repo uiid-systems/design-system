@@ -22,12 +22,11 @@ Review and refine Linear tickets so they are actionable, properly labeled, and r
 
 ## Output
 
-An updated ticket with:
-- Groomed description (original context preserved, AC and groom notes appended)
-- Labels applied
-- Complexity estimate (1-5 points)
-- Next step recommendation
-- `task:groom` label removed
+A single `update_issue` API call that sets:
+- **Description** — groomed spec with acceptance criteria (no metadata in text)
+- **Labels** — `layer:*` + `size:*` + `risk:*` (if any), `groom` omitted
+- **Estimate** — 1-5 integer
+- **Status** — `Todo`
 
 ## Grooming Process
 
@@ -85,38 +84,61 @@ The groomer does NOT create sub-tasks, projects, or milestones. It flags the nee
 
 ### Step 6: Update the Ticket Description
 
-Replace the ticket description with a groomed version. The new description must:
-
-1. **Preserve the author's original context** — keep their intent, motivation, and any links intact
-2. **Tighten the scope** — clarify what's in and out if ambiguous
-3. **Add acceptance criteria** — testable, state-based conditions for "done"
-4. **Add a groom section** with label reasoning, estimate, and next step
+Replace the ticket description with a groomed version. The description should contain **only the spec** — context, scope, and acceptance criteria. Do NOT put labels, estimates, or next-step recommendations in the description; those are ticket properties set via the API in Step 7.
 
 Structure:
 
 ```markdown
 {Original context — preserved and tightened}
 
+## What
+
+* {Concrete deliverable 1}
+* {Concrete deliverable 2}
+
 ## Acceptance Criteria
 
 - [ ] {criteria 1}
 - [ ] {criteria 2}
-
-## Groom Notes
-
-**Estimate**: {1-5} ({rationale})
-**Labels**: `layer:{x}` ({reason}), `size:{x}` ({reason}), `risk:{x}` ({reason or "none"})
-**Next step**: {Ready to build | Needs planning | Needs breakdown | Needs project} — {brief reason}
-
-**Recommendations**:
-- {Any suggestions: split ticket, add relations, link docs, clarify scope, etc.}
 ```
 
-### Step 7: Apply Labels and Estimate
+If the groomer has recommendations (split ticket, add relations, clarify scope, etc.), add them as a brief section:
 
-1. Apply recommended labels
-2. Set the `estimate` field
-3. Remove the `task:groom` label
+```markdown
+## Recommendations
+
+- {suggestion}
+```
+
+### Step 7: Apply Ticket Properties via API
+
+These are **separate API calls**, not text in the description. Each must be set as a ticket property:
+
+| Property | API field | Details |
+|----------|-----------|---------|
+| **Labels** | `labels` | Array of label names. Replaces all existing labels, so include all desired labels and omit `groom`. |
+| **Estimate** | `estimate` | Number 1-5. Must be sent as a separate `update_issue` call (cannot be combined with other fields due to an API quirk). |
+| **Status** | `state` | Set to `"Todo"`. Groomed tickets leave Backlog. |
+
+Use two `update_issue` calls:
+
+```
+# Call 1: description, labels, and status
+update_issue(
+  id: "UI-XX",
+  description: "...",           # groomed description (Step 6)
+  labels: ["comp", "small"],    # replaces all labels, groom removed by omission
+  state: "Todo"
+)
+
+# Call 2: estimate (separate call)
+update_issue(
+  id: "UI-XX",
+  estimate: 2
+)
+```
+
+**Important:** Setting `labels` replaces the full label set. To remove `task:groom`, simply omit it from the array. Include only the labels you want the ticket to have after grooming.
 
 ## Sizing Guide
 
@@ -135,14 +157,21 @@ Quick reference for the groomer (full definitions in `workflow.md`):
 - **Don't over-label.** Risk labels are only for tickets that actually carry risk. Most don't.
 - **Be concise.** The groom comment should take 30 seconds to read.
 - **Remove `task:groom` after grooming** to signal the ticket has been processed.
+- **Move to Todo after grooming.** Groomed tickets are ready for work and should not stay in Backlog.
 
 ## Exit Criteria
 
-- [ ] Ticket has a `layer` label
-- [ ] Ticket has a `size` label
-- [ ] Risk assessed — label applied if warranted, omitted if not
-- [ ] Complexity estimate set (1-5)
-- [ ] Next step recommendation included
+All of these are verified as **ticket properties**, not description text:
+
+- [ ] `layer` label set (ticket property)
+- [ ] `size` label set (ticket property)
+- [ ] Risk label set if warranted, omitted if not (ticket property)
+- [ ] `estimate` field set to 1-5 (ticket property)
+- [ ] `task:groom` label removed (by omission from `labelNames`)
+- [ ] Ticket status set to **Todo** (ticket property)
+
+Description quality:
+
 - [ ] Acceptance criteria added to description
-- [ ] Groom notes appended to description
-- [ ] `task:groom` label removed
+- [ ] Original context preserved
+- [ ] Description contains only the spec — no labels, estimates, or groom metadata in the text
