@@ -1,5 +1,25 @@
 # @uiid/tokens
 
+## 0.0.8
+
+### Patch Changes
+
+- [#97](https://github.com/uiid-systems/design-system/pull/97) [`a411bf3`](https://github.com/uiid-systems/design-system/commit/a411bf3e887a3d8a9722824c3ea2e5096ff08142) Thanks [@adamfratino](https://github.com/adamfratino)! - refactor(ui): refactor Button API for Figma parity (#97)
+
+- [#99](https://github.com/uiid-systems/design-system/pull/99) [`85038b4`](https://github.com/uiid-systems/design-system/commit/85038b4dc5f10092e508d5a5e3ea39ff3d668cbd) Thanks [@adamfratino](https://github.com/adamfratino)! - fix: button props (#99)
+
+- [#95](https://github.com/uiid-systems/design-system/pull/95) [`3989ce1`](https://github.com/uiid-systems/design-system/commit/3989ce127ab06f41ca006dae2681f1c3271fc7a1) Thanks [@adamfratino](https://github.com/adamfratino)! - chore: establish code review workflow and PR review guide (#95)
+
+- [#98](https://github.com/uiid-systems/design-system/pull/98) [`d931595`](https://github.com/uiid-systems/design-system/commit/d9315954b8ef775f8282723079e35b753473d195) Thanks [@adamfratino](https://github.com/adamfratino)! - ci: fix workflows not running on Dependabot PRs (#98)
+
+- [#94](https://github.com/uiid-systems/design-system/pull/94) [`833327c`](https://github.com/uiid-systems/design-system/commit/833327c5056a78b6069e7497966139c4e108982e) Thanks [@adamfratino](https://github.com/adamfratino)! - refactor: simplify versioning and changelog pipeline (#94)
+
+- [#93](https://github.com/uiid-systems/design-system/pull/93) [`4c3ed11`](https://github.com/uiid-systems/design-system/commit/4c3ed11df32fd06d9513bea1b94797327fbafc0f) Thanks [@adamfratino](https://github.com/adamfratino)! - chore: rename playground to blocks, rewrite README, add vision doc (#93)
+
+  ## Summary
+
+- [#100](https://github.com/uiid-systems/design-system/pull/100) [`33ba183`](https://github.com/uiid-systems/design-system/commit/33ba1833b162fee82c0dee10c4893e58baef8b7c) Thanks [@adamfratino](https://github.com/adamfratino)! - clean up tokens
+
 ## 0.0.7
 
 ### Patch Changes
