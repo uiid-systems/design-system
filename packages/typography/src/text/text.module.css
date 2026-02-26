@@ -40,7 +40,7 @@
   line-height: var(--text-3-line-height);
 }
 .text-size-4 {
-  font-size: var(--text-4-font--size);
+  font-size: var(--text-4-font-size);
   font-weight: var(--text-4-font-weight);
   line-height: var(--text-4-line-height);
 }
@@ -53,16 +53,6 @@
   font-size: var(--text-6-font-size);
   font-weight: var(--text-6-font-weight);
   line-height: var(--text-6-line-height);
-}
-.text-size-7 {
-  font-size: var(--text-7-font-size);
-  font-weight: var(--text-7-font-weight);
-  line-height: var(--text-7-line-height);
-}
-.text-size-8 {
-  font-size: var(--text-8-font-size);
-  font-weight: var(--text-8-font-weight);
-  line-height: var(--text-8-line-height);
 }
 
 .shade-background {

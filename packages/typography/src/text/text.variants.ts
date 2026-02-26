@@ -45,8 +45,6 @@ export const textVariants = cva({
       4: styles["text-size-4"],
       5: styles["text-size-5"],
       6: styles["text-size-6"],
-      7: styles["text-size-7"],
-      8: styles["text-size-8"],
     },
   },
 });

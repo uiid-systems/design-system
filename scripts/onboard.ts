@@ -15,6 +15,7 @@
 import * as readline from "node:readline/promises";
 import { execSync } from "node:child_process";
 import * as path from "node:path";
+import { saveConfig } from "./config.ts";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const REBRAND_SCRIPT = path.join(ROOT, "scripts/rebrand.ts");
@@ -242,6 +243,9 @@ async function main() {
 			console.log(c.dim("\n  Cancelled. No changes made.\n"));
 			return;
 		}
+
+		// Persist config for future use
+		saveConfig({ name: scope, org, repo });
 
 		console.log("");
 		runRebrand({ scope, org, repo, dryRun: decision === "dry-run" });

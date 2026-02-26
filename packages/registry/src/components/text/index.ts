@@ -16,8 +16,6 @@ export const TextSize = z.union([
   z.literal(4),
   z.literal(5),
   z.literal(6),
-  z.literal(7),
-  z.literal(8),
 ]);
 
 export type TextSize = z.infer<typeof TextSize>;
@@ -42,7 +40,7 @@ export type TextAlign = z.infer<typeof TextAlign>;
 export const TextPropsSchema = SpacingPropsSchema.extend({
   /** Text content */
   children: z.any().optional(),
-  /** Font size from typographic scale (-1 to 8) */
+  /** Font size from typographic scale (-1 to 6) */
   size: TextSize.optional(),
   /** Font weight */
   weight: TextWeight.optional(),

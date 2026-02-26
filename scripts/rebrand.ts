@@ -149,6 +149,8 @@ const TARGET_EXTENSIONS = new Set([
 const SELF_EXCLUDE = new Set([
 	path.join(ROOT, "scripts/rebrand.ts"),
 	path.join(ROOT, "scripts/onboard.ts"),
+	path.join(ROOT, "scripts/config.ts"),
+	path.join(ROOT, "uiid.config.json"),
 	path.join(ROOT, "docs/architecture/rebrand-script.md"),
 ]);
 
@@ -231,15 +233,8 @@ function buildRules(args: Args): Rule[] {
 			extensions: [".json", ".md"],
 		},
 
-		// 5. App metadata — title strings like "uiid blocks"
-		{
-			name: "app-metadata",
-			find: /"uiid /g,
-			replace: `"${args.scope} `,
-			extensions: [".ts", ".tsx", ".js", ".json"],
-		},
-
-		// 6. Config variable names — uiidPackages, uiidAliases
+		// 5. Config variable names — uiidPackages, uiidAliases
+		// (before bare \buiid\b to preserve camelCase for hyphenated scope names)
 		{
 			name: "config-vars",
 			find: /\buiid(Packages|Aliases)\b/g,
@@ -247,15 +242,23 @@ function buildRules(args: Args): Rule[] {
 			extensions: [".ts", ".js"],
 		},
 
-		// 7a. Documentation prose — UIID (uppercase)
+		// 6. App metadata — lowercase "uiid" in TSX/TS strings
 		{
-			name: "docs-uppercase",
-			find: /\bUIID\b/g,
-			replace: args.scope.toUpperCase(),
-			extensions: [".md"],
+			name: "app-metadata",
+			find: /\buiid\b/g,
+			replace: args.scope,
+			extensions: [".ts", ".tsx"],
 		},
 
-		// 7b. Documentation prose — uiid (lowercase, last to catch stragglers)
+		// 7. UIID uppercase — comments, strings, JSON descriptions, docs, configs
+		{
+			name: "uppercase",
+			find: /\bUIID\b/g,
+			replace: args.scope.toUpperCase(),
+			extensions: [".ts", ".tsx", ".js", ".cjs", ".css", ".json", ".yml", ".yaml", ".md"],
+		},
+
+		// 8. Documentation/config prose — uiid (lowercase, last to catch stragglers)
 		{
 			name: "docs-lowercase",
 			find: /\buiid\b/g,

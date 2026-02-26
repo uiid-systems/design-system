@@ -16,8 +16,8 @@ UIID is a modular React component library. Follow these conventions to maintain 
 ```
 design-system/
 ├── apps/
-│   ├── docs/          # Documentation site (see apps/docs/CLAUDE.md)
-│   ├── blocks/        # AI-powered UI composer (see apps/blocks/CLAUDE.md)
+│   ├── docs/          # Documentation site
+│   ├── blocks/        # AI-powered UI composer
 │   └── storybook/     # Component documentation
 ├── packages/          # Component packages (@uiid/*)
 │   ├── buttons/, cards/, forms/, layout/, typography/, ...
@@ -78,3 +78,6 @@ Read these files when the task requires them — do not import by default:
 | `.claude/guides/pull-requests.md` | Creating a PR |
 | `.claude/guides/pull-reviews.md` | Reviewing a PR |
 | `.claude/guides/workflow.md` | Running the agent pipeline or grooming tickets |
+| `apps/blocks/BLOCKS_GUIDE.md` | Working on the blocks app (tree format, rules, patterns) |
+| `apps/blocks/COMPONENT_REFERENCE.md` | Looking up component props for block tree generation |
+| `apps/docs/DOCS_GUIDE.md` | Working on the documentation site |

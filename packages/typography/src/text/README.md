@@ -46,7 +46,7 @@ import { Text } from "@uiid/typography";
 | `px` | `number` | — | — |
 | `py` | `number` | — | — |
 | `shade` | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | — | — |
-| `size` | `-1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8` | — | — |
+| `size` | `-1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | — | — |
 | `strikethrough` | `boolean` | — | — |
 | `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
 | `underline` | `boolean` | — | — |
@@ -80,8 +80,7 @@ type SpacingValue =
 | `-1`, `0` | Captions, small labels      |
 | `1`, `2`  | Body text                   |
 | `3`, `4`  | Subheadings                 |
-| `5`, `6`  | Section headings            |
-| `7`, `8`  | Page titles, large display  |
+| `5`, `6`  | Section headings, page titles |
 
 ## Common Patterns
 
