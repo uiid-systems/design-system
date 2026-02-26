@@ -37,6 +37,7 @@
     { "path": "./packages/tables" },
     { "path": "./packages/tokens" },
     { "path": "./packages/typography" },
-    { "path": "./packages/utils" }
+    { "path": "./packages/utils" },
+    { "path": "./packages/mcp" }
   ]
 }

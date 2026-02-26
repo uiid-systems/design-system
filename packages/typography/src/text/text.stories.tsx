@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "./text";
 import type { TextProps } from "./text.types";
 
-const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6];
 const shades: TextProps["shade"][] = [
   "background",
   "surface",

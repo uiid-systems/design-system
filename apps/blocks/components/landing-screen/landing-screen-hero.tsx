@@ -16,7 +16,7 @@ export const LandingScreenHero = () => {
       </Badge>
 
       <Stack gap={4} ax="center">
-        <Text size={8} weight="bold" balance style={{ textAlign: "center" }}>
+        <Text size={6} weight="bold" balance style={{ textAlign: "center" }}>
           Production-ready UI components, assembled by AI
         </Text>
         <Text size={2} shade="muted" balance style={{ textAlign: "center" }}>
