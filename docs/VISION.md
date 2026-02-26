@@ -8,7 +8,7 @@
 
 Most design systems are component libraries. UIID is a **registry-first design system** — the distinction matters.
 
-A component library gives you building blocks. A registry-first design system gives you building blocks *and* a structured understanding of what those blocks are, what they accept, and how they should be used. That structured understanding — the registry — is what makes the whole system coherent and extensible.
+A component library gives you building blocks. A registry-first design system gives you building blocks _and_ a structured understanding of what those blocks are, what they accept, and how they should be used. That structured understanding — the registry — is what makes the whole system coherent and extensible.
 
 The three layers of UIID are in balance: each has a clear responsibility, and none bleeds into another.
 
@@ -52,7 +52,7 @@ This matters for the future of agentic design systems: an agent that can read fr
 
 ## MCP Server
 
-The `@uiid/mcp` package (planned) exposes the registry and blocks to external LLMs via the Model Context Protocol. Once set up, any AI tool in any codebase can:
+The `@uiid/mcp` package exposes the registry and blocks to external LLMs via the Model Context Protocol. Once set up, any AI tool in any codebase can:
 
 - Browse available components by category
 - Look up a component's props, defaults, and usage without guessing
@@ -81,14 +81,14 @@ See [`docs/architecture/token-architecture.md`](./architecture/token-architectur
 
 ## Current State
 
-| Layer | Status |
-|-------|--------|
-| Tokens | Functional. Spec compliance and tier reorganization planned. |
-| Components | 40+ React components across 13 packages. Accessible via Base UI primitives. |
-| Registry | Implemented. Zod schemas, usage docs, previews for all components. |
-| Blocks | Package exists. ~9 blocks. App functional. |
-| MCP Server | Planned. Architecture documented. |
-| Figma integration | Directional. figma-console-mcp available. |
+| Layer             | Status                                                                      |
+| ----------------- | --------------------------------------------------------------------------- |
+| Tokens            | Functional. Spec compliance and tier reorganization planned.                |
+| Components        | 40+ React components across 13 packages. Accessible via Base UI primitives. |
+| Registry          | Implemented. Zod schemas, usage docs, previews for all components.          |
+| Blocks            | Package exists. ~9 blocks. App functional.                                  |
+| MCP Server        | Planned. Architecture documented.                                           |
+| Figma integration | Directional. figma-console-mcp available.                                   |
 
 ---
 
