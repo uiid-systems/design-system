@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@github-ui/storybook-addon-performance-panel": "^1.1.2",
     "@storybook/addon-a11y": "^10.2.3",
     "@storybook/addon-docs": "^10.2.3",
     "@storybook/addon-vitest": "^10.2.3",
