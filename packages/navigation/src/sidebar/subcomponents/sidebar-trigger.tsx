@@ -27,8 +27,8 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
         </Group>
       }
       size="small"
-      ghost
-      square
+      variant="ghost"
+      shape="square"
       {...props}
     >
       <PanelLeft />

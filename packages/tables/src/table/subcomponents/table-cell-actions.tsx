@@ -11,9 +11,10 @@ type TableCellActionsProps<T extends Record<string, unknown>> = {
   item: T;
 };
 
-type ActionButtonProps<T extends Record<string, unknown>> = TableActionsProps<T> & {
-  item: T;
-};
+type ActionButtonProps<T extends Record<string, unknown>> =
+  TableActionsProps<T> & {
+    item: T;
+  };
 
 function ActionButton<T extends Record<string, unknown>>({
   wrapper,
@@ -26,8 +27,8 @@ function ActionButton<T extends Record<string, unknown>>({
       key={action.tooltip}
       tooltip={action.tooltip}
       size="small"
-      ghost
-      square
+      variant="ghost"
+      shape="square"
       onClick={onClick ? () => onClick(item) : undefined}
     >
       {action.icon ? <action.icon /> : <EllipsisVertical size={14} />}

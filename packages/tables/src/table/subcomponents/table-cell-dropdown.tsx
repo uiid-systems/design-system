@@ -18,8 +18,8 @@ export const TableCellDropdown = ({
           tooltip={tooltip}
           aria-label={tooltip}
           size="small"
-          ghost
-          square
+          variant="ghost"
+          shape="square"
         >
           {Icon ? <Icon /> : <EllipsisVertical size={14} />}
         </Button>

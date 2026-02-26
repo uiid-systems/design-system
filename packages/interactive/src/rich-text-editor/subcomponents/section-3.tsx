@@ -62,8 +62,8 @@ export const Section3 = ({
       activeActions={activeActions}
       mainActionCount={mainActionCount}
       toolbarButtonProps={{
-        square: false,
-        ghost: true,
+        shape: "square",
+        variant: "ghost",
       }}
       dropdownIcon={
         <>

@@ -20,7 +20,7 @@ export const ToolbarButton = ({
       pressed={isActive}
       size="small"
       variant="subtle"
-      square
+      shape="square"
       {...props}
     >
       {children}

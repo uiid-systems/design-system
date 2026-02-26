@@ -13,7 +13,7 @@ export const PaginationButton = ({
       tooltip={props["aria-label"]}
       variant={active ? undefined : "subtle"}
       size="small"
-      square
+      shape="square"
       {...props}
     />
   );

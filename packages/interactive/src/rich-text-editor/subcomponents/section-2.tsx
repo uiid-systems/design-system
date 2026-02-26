@@ -113,7 +113,7 @@ export const Section2 = ({
       dropdownIcon={<EllipsisIcon size={20} />}
       dropdownTooltip="More formatting"
       toolbarButtonProps={{
-        ghost: true,
+        variant: "ghost",
       }}
     />
   );

@@ -20,11 +20,10 @@ import { ToolbarButton } from "./toolbar-button";
 import { ShortcutKey } from "./shortcut-key";
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
-interface TextStyle
-  extends Omit<
-    FormatAction,
-    "value" | "icon" | "action" | "isActive" | "canExecute"
-  > {
+interface TextStyle extends Omit<
+  FormatAction,
+  "value" | "icon" | "action" | "isActive" | "canExecute"
+> {
   element: keyof React.JSX.IntrinsicElements;
   level?: Level;
   icon?: Icon;
@@ -134,8 +133,8 @@ export const Section1 = ({
             tooltip="Text styles"
             aria-label="Text styles"
             disabled={editor.isActive("codeBlock")}
-            square={false}
-            ghost
+            shape="square"
+            variant="ghost"
           >
             <ALargeSmallIcon size={20} />
             <ChevronDownIcon size={20} />

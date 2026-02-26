@@ -76,9 +76,9 @@ const HeaderButton = ({
       aria-label={label}
       tooltip={label}
       onClick={onClick}
-      square={square}
+      shape={square ? "square" : undefined}
       size="small"
-      ghost
+      variant="ghost"
     >
       <>
         {Icon && <Icon />}
