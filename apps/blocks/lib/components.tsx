@@ -72,12 +72,20 @@ export const registry: ComponentRegistry = {
   Separator: ({ element, children }) => <Separator data-element-key={keyOf(element)} {...element.props}>{children || element.props.children}</Separator>,
 
   // Button components
-  Button: ({ element, children, emit }) => (
-    <Button data-element-key={keyOf(element)} {...element.props} onClick={() => emit("click")}>
-      {children}
-      {element.props.children}
-    </Button>
-  ),
+  Button: ({ element, children, emit }) => {
+    const { ghost, ...props } = element.props;
+    return (
+      <Button
+        data-element-key={keyOf(element)}
+        {...props}
+        variant={ghost ? "ghost" : props.variant}
+        onClick={() => emit("click")}
+      >
+        {children}
+        {props.children}
+      </Button>
+    );
+  },
 
   ToggleButton: ({ element, children, emit }) => (
     <ToggleButton data-element-key={keyOf(element)} {...element.props} onPressedChange={() => emit("click")}>

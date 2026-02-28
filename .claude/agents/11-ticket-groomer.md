@@ -13,18 +13,23 @@ Review and refine Linear tickets so they are actionable, properly labeled, and r
 ## Inputs
 
 1. **Linear ticket** — title, description, labels, relations, priority
-2. **Label taxonomy** — the current label groups and their children:
-   - `layer`: design, comp, test, stories, release, blocks, docs, registry, tokens
-   - `size`: small, medium, large
-   - `risk`: breaking, visual, behavioral
-   - `task`: groom
+2. **Label taxonomy** — the exact label names to pass to the Linear API. Labels are **child names only** (not prefixed with the group). The group is metadata in Linear, not part of the name.
+
+   | Group | API label names (use these exact strings) |
+   |-------|------------------------------------------|
+   | layer | `design`, `comp`, `test`, `stories`, `release`, `blocks`, `docs`, `registry`, `tokens` |
+   | size  | `small`, `medium`, `large` |
+   | risk  | `breaking`, `visual`, `behavioral` |
+   | task  | `groom` |
+
+   **Example:** To label a ticket as layer:comp + size:small, pass `labels: ["comp", "small"]` — NOT `["layer:comp", "size:small"]`.
 3. **Workflow guide** — `.claude/guides/workflow.md` (for size definitions and pipeline rules)
 
 ## Output
 
 A single `update_issue` API call that sets:
 - **Description** — groomed spec with acceptance criteria (no metadata in text)
-- **Labels** — `layer:*` + `size:*` + `risk:*` (if any), `groom` omitted
+- **Labels** — one `layer` + one `size` + one `risk` (if any), `groom` removed by omission
 - **Estimate** — 1-5 integer
 - **Status** — `Todo`
 
@@ -116,19 +121,21 @@ These are **separate API calls**, not text in the description. Each must be set 
 
 | Property | API field | Details |
 |----------|-----------|---------|
-| **Labels** | `labels` | Array of label names. Replaces all existing labels, so include all desired labels and omit `groom`. |
+| **Labels** | `labels` | Array of **child label names** (e.g., `"comp"` not `"layer:comp"`). Replaces all existing labels, so include all desired labels and omit `groom`. |
 | **Estimate** | `estimate` | Number 1-5. Must be sent as a separate `update_issue` call (cannot be combined with other fields due to an API quirk). |
 | **Status** | `state` | Set to `"Todo"`. Groomed tickets leave Backlog. |
+| **Assignee** | `assignee` | Assign to Adam Fratino (`"me"`). All groomed tickets are assigned to the repo owner. |
 
 Use two `update_issue` calls:
 
 ```
-# Call 1: description, labels, and status
+# Call 1: description, labels, status, and assignee
 update_issue(
   id: "UI-XX",
   description: "...",           # groomed description (Step 6)
   labels: ["comp", "small"],    # replaces all labels, groom removed by omission
-  state: "Todo"
+  state: "Todo",
+  assignee: "me"                # always assign to repo owner
 )
 
 # Call 2: estimate (separate call)
@@ -138,7 +145,7 @@ update_issue(
 )
 ```
 
-**Important:** Setting `labels` replaces the full label set. To remove `task:groom`, simply omit it from the array. Include only the labels you want the ticket to have after grooming.
+**Important:** Setting `labels` replaces the full label set. To remove `groom`, simply omit it from the array. Include only the labels you want the ticket to have after grooming. Use **child names only** — `"tokens"` not `"layer:tokens"`, `"small"` not `"size:small"`.
 
 ## Sizing Guide
 
@@ -169,6 +176,7 @@ All of these are verified as **ticket properties**, not description text:
 - [ ] `estimate` field set to 1-5 (ticket property)
 - [ ] `task:groom` label removed (by omission from `labelNames`)
 - [ ] Ticket status set to **Todo** (ticket property)
+- [ ] Ticket assigned to Adam Fratino (ticket property)
 
 Description quality:
 

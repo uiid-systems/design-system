@@ -62,8 +62,6 @@ design-system/
 
 ## Core Guides (always loaded)
 
-@.claude/guides/components.md
-@.claude/guides/styling.md
 @.claude/guides/registry.md
 
 ## On-Demand Guides
@@ -72,6 +70,8 @@ Read these files when the task requires them — do not import by default:
 
 | Guide | Read when... |
 | ----- | ------------ |
+| `.claude/guides/components.md` | Building, modifying, or reviewing components |
+| `.claude/guides/styling.md` | Working with styles, layout, CSS modules, or design tokens |
 | `.claude/guides/testing.md` | Writing or reviewing tests |
 | `.claude/guides/storybook.md` | Creating or updating stories |
 | `.claude/guides/figma.md` | Building or inspecting Figma components |

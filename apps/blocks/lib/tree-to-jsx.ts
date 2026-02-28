@@ -37,6 +37,201 @@ function toPascalCase(str: string): string {
     .join("");
 }
 
+// ---------------------------------------------------------------------------
+// Expression type guards
+// ---------------------------------------------------------------------------
+
+function isBindState(v: unknown): v is { $bindState: string } {
+  return typeof v === "object" && v !== null && "$bindState" in v;
+}
+
+function isComputed(v: unknown): v is { $computed: Record<string, unknown> } {
+  return typeof v === "object" && v !== null && "$computed" in v;
+}
+
+function isTemplate(v: unknown): v is { $template: string } {
+  return typeof v === "object" && v !== null && "$template" in v;
+}
+
+function isStateRef(v: unknown): v is { $state: string } {
+  return typeof v === "object" && v !== null && "$state" in v;
+}
+
+function isExpression(v: unknown): boolean {
+  return isBindState(v) || isComputed(v) || isTemplate(v) || isStateRef(v);
+}
+
+// ---------------------------------------------------------------------------
+// State path utilities
+// ---------------------------------------------------------------------------
+
+/**
+ * Convert an absolute state path to a JS variable reference.
+ * `/form/email` → `formData.email`
+ * `/settings/theme` → `settingsData.theme`
+ * `/count` → `rootState.count`
+ */
+function pathToJsRef(path: string): string {
+  const segments = path.replace(/^\//, "").split("/");
+  if (segments.length === 1) {
+    return `rootState.${segments[0]}`;
+  }
+  const [group, ...rest] = segments;
+  return `${group}Data.${rest.join(".")}`;
+}
+
+/** Extract the group name from a state path (first segment, or "root" for single-segment). */
+function pathGroup(path: string): string {
+  const segments = path.replace(/^\//, "").split("/");
+  return segments.length === 1 ? "root" : segments[0];
+}
+
+/** Extract the field name from a state path (everything after the group). */
+function pathField(path: string): string {
+  const segments = path.replace(/^\//, "").split("/");
+  return segments.length === 1 ? segments[0] : segments.slice(1).join(".");
+}
+
+// ---------------------------------------------------------------------------
+// Expression compiler
+// ---------------------------------------------------------------------------
+
+const OPERATOR_MAP: Record<string, string> = {
+  eq: "===",
+  neq: "!==",
+  gt: ">",
+  gte: ">=",
+  lt: "<",
+  lte: "<=",
+  and: "&&",
+  or: "||",
+};
+
+function compileOperator(op: string, args: unknown): string {
+  if (op === "not") {
+    return `!(${compileExpression(args)})`;
+  }
+  if (op === "if") {
+    const [cond, thenVal, elseVal] = args as unknown[];
+    return `${compileExpression(cond)} ? ${compileExpression(thenVal)} : ${compileExpression(elseVal)}`;
+  }
+  const jsOp = OPERATOR_MAP[op];
+  if (jsOp && Array.isArray(args)) {
+    const [left, right] = args;
+    return `${compileExpression(left)} ${jsOp} ${compileExpression(right)}`;
+  }
+  // Fallback — unknown operator, emit as-is
+  return JSON.stringify({ [op]: args });
+}
+
+function compileExpression(value: unknown): string {
+  if (isStateRef(value)) {
+    return pathToJsRef(value.$state);
+  }
+  if (isBindState(value)) {
+    return pathToJsRef(value.$bindState);
+  }
+  if (isTemplate(value)) {
+    // Convert {{/form/name}} → ${formData.name}
+    const body = value.$template.replace(/\{\{([^}]+)\}\}/g, (_match, p: string) => {
+      return `\${${pathToJsRef(p)}}`;
+    });
+    return `\`${body}\``;
+  }
+  if (isComputed(value)) {
+    const expr = value.$computed;
+    const [op] = Object.keys(expr);
+    return compileOperator(op, expr[op]);
+  }
+  if (typeof value === "string") {
+    return `"${value.replace(/"/g, '\\"')}"`;
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  return JSON.stringify(value);
+}
+
+// ---------------------------------------------------------------------------
+// Binding collection
+// ---------------------------------------------------------------------------
+
+type StateBinding = {
+  path: string;
+  group: string;
+  field: string;
+  type: "string" | "boolean";
+  twoWay: boolean;
+};
+
+function collectBindings(
+  tree: { root: string; elements: Record<string, { type: string; props?: Record<string, unknown>; children?: string[] }> },
+): Map<string, StateBinding> {
+  const bindings = new Map<string, StateBinding>();
+
+  function addPath(path: string, twoWay: boolean, inferredType: "string" | "boolean") {
+    const existing = bindings.get(path);
+    if (existing) {
+      if (twoWay) existing.twoWay = true;
+      return;
+    }
+    bindings.set(path, {
+      path,
+      group: pathGroup(path),
+      field: pathField(path),
+      type: inferredType,
+      twoWay,
+    });
+  }
+
+  function extractPaths(value: unknown) {
+    if (isStateRef(value)) {
+      addPath(value.$state, false, "string");
+    } else if (isBindState(value)) {
+      // twoWay set below with prop context
+    } else if (isTemplate(value)) {
+      const matches = value.$template.matchAll(/\{\{([^}]+)\}\}/g);
+      for (const m of matches) {
+        addPath(m[1], false, "string");
+      }
+    } else if (isComputed(value)) {
+      extractPathsFromComputed(value.$computed);
+    }
+  }
+
+  function extractPathsFromComputed(expr: Record<string, unknown>) {
+    for (const args of Object.values(expr)) {
+      if (Array.isArray(args)) {
+        for (const arg of args) extractPaths(arg);
+      } else {
+        extractPaths(args);
+      }
+    }
+  }
+
+  function walk(elementKey: string) {
+    const element = tree.elements[elementKey];
+    if (!element) return;
+
+    const props = element.props || {};
+    for (const [propKey, value] of Object.entries(props)) {
+      if (isBindState(value)) {
+        const isBool = propKey === "checked" || propKey === "pressed";
+        addPath(value.$bindState, true, isBool ? "boolean" : "string");
+      } else if (isExpression(value)) {
+        extractPaths(value);
+      }
+    }
+
+    if (element.children) {
+      for (const childKey of element.children) walk(childKey);
+    }
+  }
+
+  walk(tree.root);
+  return bindings;
+}
+
 /**
  * Converts a UISpec to formatted JSX code string.
  */
@@ -50,6 +245,9 @@ export function treeToJsx(
   const usedIcons = new Set<string>();
   const usedSimpleIcons = new Set<string>();
   const formFields: Array<{ name: string; type: string; elementType: string }> = [];
+
+  // Collect expression bindings upfront (referenced by serializeProps)
+  let expressionBindings: Map<string, StateBinding> = new Map();
 
   // Collect all form fields for state generation
   function collectFormFields(elementKey: string) {
@@ -73,6 +271,9 @@ export function treeToJsx(
   }
 
   function serializeValue(value: unknown): string {
+    if (isExpression(value)) {
+      return compileExpression(value);
+    }
     if (typeof value === "string") {
       // Use double quotes for strings, escape internal quotes
       return `"${value.replace(/"/g, '\\"')}"`;
@@ -89,11 +290,21 @@ export function treeToJsx(
     return String(value);
   }
 
-  function serializeProps(props: Record<string, unknown>, elementType: string, isIcon: boolean, isSimpleIcon: boolean): string[] {
+  function serializeProps(
+    props: Record<string, unknown>,
+    elementType: string,
+    isIcon: boolean,
+    isSimpleIcon: boolean,
+    elementKey?: string,
+  ): string[] {
     const result: string[] = [];
     const fieldName = props.name as string | undefined;
-    const isFormField = FORM_FIELD_TYPES.has(elementType) && fieldName && formFields.length > 0;
+    const hasExprBindings = expressionBindings.size > 0;
+    const isFormField = !hasExprBindings && FORM_FIELD_TYPES.has(elementType) && fieldName && formFields.length > 0;
     const isCheckboxOrSwitch = elementType === "Checkbox" || elementType === "Switch";
+
+    // Track which props are $bindState so we generate value + onChange together
+    const bindStateProps: Array<{ propKey: string; path: string }> = [];
 
     for (const [key, value] of Object.entries(props)) {
       // Skip children prop - handled separately
@@ -103,7 +314,15 @@ export function treeToJsx(
       // Skip name prop for Icon/SimpleIcon - it becomes the component type
       if (key === "name" && (isIcon || isSimpleIcon)) continue;
 
-      if (typeof value === "boolean" && value === true) {
+      // $bindState props — defer to generate value + handler pair
+      if (isBindState(value)) {
+        bindStateProps.push({ propKey: key, path: value.$bindState });
+        continue;
+      }
+
+      if (isExpression(value)) {
+        result.push(`${key}={${compileExpression(value)}}`);
+      } else if (typeof value === "boolean" && value === true) {
         // Boolean shorthand: <Input required /> instead of <Input required={true} />
         result.push(key);
       } else if (typeof value === "string") {
@@ -113,7 +332,26 @@ export function treeToJsx(
       }
     }
 
-    // Add value/onChange handlers for form fields when wrapping in component
+    // Generate value + onChange pairs for $bindState props
+    for (const { propKey, path } of bindStateProps) {
+      const ref = pathToJsRef(path);
+      const group = pathGroup(path);
+      const field = pathField(path);
+      const setterName = `set${group.charAt(0).toUpperCase() + group.slice(1)}${group === "root" ? "State" : "Data"}`;
+
+      result.push(`${propKey}={${ref}}`);
+
+      // Generate the appropriate change handler
+      if (propKey === "checked") {
+        result.push(`onCheckedChange={(checked) => ${setterName}((prev) => ({ ...prev, ${field}: checked }))}`);
+      } else if (propKey === "pressed") {
+        result.push(`onPressedChange={(pressed) => ${setterName}((prev) => ({ ...prev, ${field}: pressed }))}`);
+      } else {
+        result.push(`onChange={(e) => ${setterName}((prev) => ({ ...prev, ${field}: e.target.value }))}`);
+      }
+    }
+
+    // Legacy: add value/onChange handlers for form fields when wrapping in component
     if (isFormField && wrapInComponent) {
       if (isCheckboxOrSwitch) {
         result.push(`checked={formData.${fieldName}}`);
@@ -147,13 +385,16 @@ export function treeToJsx(
 
     const currentIndent = indent.repeat(depth);
     const childIndent = indent.repeat(depth + 1);
-    const props = serializeProps(element.props || {}, element.type, isIcon, isSimpleIcon);
+    const props = serializeProps(element.props || {}, element.type, isIcon, isSimpleIcon, elementKey);
 
-    // Get text children from props.children (if string)
+    // Get text children from props.children (if string or expression)
+    const rawChildren = element.props?.children;
     const textChildren =
-      typeof element.props?.children === "string"
-        ? element.props.children
-        : null;
+      typeof rawChildren === "string"
+        ? rawChildren
+        : isExpression(rawChildren)
+          ? `{${compileExpression(rawChildren)}}`
+          : null;
 
     // Get element children
     const childElements = element.children || [];
@@ -203,8 +444,13 @@ export function treeToJsx(
     return jsx;
   }
 
-  // Collect form fields for state generation
-  collectFormFields(tree.root);
+  // Collect expression bindings (new path) — if none found, fall back to legacy formFields
+  expressionBindings = collectBindings(tree);
+
+  // Collect legacy form fields (only used when no expressions found)
+  if (expressionBindings.size === 0) {
+    collectFormFields(tree.root);
+  }
 
   // Render the tree starting from root
   const jsxCode = renderElement(tree.root, wrapInComponent ? 2 : 0);
@@ -225,9 +471,11 @@ export function treeToJsx(
 
   // Build import statements
   let imports = `"use client";\n\n`;
-  
+
   const hasFormFields = formFields.length > 0;
-  if (hasFormFields) {
+  const hasExprBindings = expressionBindings.size > 0;
+  const needsState = hasFormFields || hasExprBindings;
+  if (needsState) {
     imports += `import { useState } from "react";\n`;
   }
   imports += `\n`;
@@ -259,15 +507,78 @@ export function treeToJsx(
   // Build the complete component
   let component = imports + "\n";
 
-  if (hasFormFields) {
-    // Generate form state interface
+  if (hasExprBindings) {
+    // --- Expression-aware state generation ---
+
+    // Group bindings by state group
+    const groups = new Map<string, StateBinding[]>();
+    for (const binding of expressionBindings.values()) {
+      const list = groups.get(binding.group) || [];
+      list.push(binding);
+      groups.set(binding.group, list);
+    }
+
+    const hasTwoWayBindings = [...expressionBindings.values()].some((b) => b.twoWay);
+
+    // Emit interfaces
+    for (const [group, bindings] of groups) {
+      const interfaceName = group === "root"
+        ? "RootState"
+        : `${group.charAt(0).toUpperCase() + group.slice(1)}Data`;
+
+      component += `interface ${interfaceName} {\n`;
+      for (const b of bindings) {
+        component += `  ${b.field}: ${b.type};\n`;
+      }
+      component += `}\n\n`;
+    }
+
+    // Open component function
+    component += `export function ${derivedName}() {\n`;
+
+    // Emit one useState per group
+    for (const [group, bindings] of groups) {
+      const interfaceName = group === "root"
+        ? "RootState"
+        : `${group.charAt(0).toUpperCase() + group.slice(1)}Data`;
+      const varName = group === "root" ? "rootState" : `${group}Data`;
+      const setterName = group === "root"
+        ? "setRootState"
+        : `set${group.charAt(0).toUpperCase() + group.slice(1)}Data`;
+
+      component += `  const [${varName}, ${setterName}] = useState<${interfaceName}>({\n`;
+      for (const b of bindings) {
+        const defaultValue = b.type === "boolean" ? "false" : '""';
+        component += `    ${b.field}: ${defaultValue},\n`;
+      }
+      component += `  });\n\n`;
+    }
+
+    if (hasTwoWayBindings) {
+      component += `  const handleSubmit = (e: React.FormEvent) => {\n`;
+      component += `    e.preventDefault();\n`;
+      component += `    // Add your submission logic here\n`;
+      component += `  };\n\n`;
+
+      component += `  return (\n`;
+      component += `    <form onSubmit={handleSubmit} noValidate>\n`;
+      component += jsxCode + "\n";
+      component += `    </form>\n`;
+      component += `  );\n`;
+    } else {
+      component += `  return (\n`;
+      component += jsxCode + "\n";
+      component += `  );\n`;
+    }
+    component += `}\n`;
+  } else if (hasFormFields) {
+    // --- Legacy form field state generation (unchanged) ---
     component += `interface FormData {\n`;
     for (const field of formFields) {
       component += `  ${field.name}: ${field.type};\n`;
     }
     component += `}\n\n`;
 
-    // Generate component with form handling
     component += `export function ${derivedName}() {\n`;
     component += `  const [formData, setFormData] = useState<FormData>({\n`;
     for (const field of formFields) {
@@ -275,7 +586,7 @@ export function treeToJsx(
       component += `    ${field.name}: ${defaultValue},\n`;
     }
     component += `  });\n\n`;
-    
+
     component += `  const handleSubmit = (e: React.FormEvent) => {\n`;
     component += `    e.preventDefault();\n`;
     component += `    // Add your validation and submission logic here\n`;
@@ -293,7 +604,7 @@ export function treeToJsx(
     component += `  );\n`;
     component += `}\n`;
   } else {
-    // Simple component without form state
+    // Simple component without state
     component += `export function ${derivedName}() {\n`;
     component += `  return (\n`;
     component += jsxCode + "\n";
