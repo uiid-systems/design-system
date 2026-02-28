@@ -231,6 +231,97 @@ UIID uses a **flat tree structure** optimized for streaming. Never use nested ch
 
 ---
 
+## State Management & Data Binding
+
+### Two-Way Binding with $bindState
+
+Use \`$bindState\` to bind a form element's value to the state store. The renderer resolves expressions automatically — the component receives the current value and writes back on change.
+
+\`\`\`json
+{
+  "type": "Input",
+  "props": {
+    "label": "Email",
+    "value": { "$bindState": "/form/email" },
+    "placeholder": "Enter your email"
+  }
+}
+\`\`\`
+
+**Bindable props by component:**
+
+| Component      | Prop to bind            |
+| -------------- | ----------------------- |
+| Input          | \`value\`               |
+| Textarea       | \`value\`               |
+| Select         | \`value\`               |
+| RadioGroup     | \`value\`               |
+| CheckboxGroup  | \`value\`               |
+| NumberField    | \`value\`               |
+| Slider         | \`value\`               |
+| Checkbox       | \`checked\`             |
+| Switch         | \`checked\`             |
+| ToggleButton   | \`pressed\`             |
+
+### setState Action
+
+Use the \`setState\` action to write to the state store from event handlers:
+
+\`\`\`json
+{
+  "type": "Button",
+  "props": { "children": "Reset" },
+  "on": {
+    "click": { "action": "setState", "params": { "path": "/form/email", "value": "" } }
+  }
+}
+\`\`\`
+
+### Computed Expressions with $computed
+
+Use \`$computed\` to derive prop values from state. Useful for conditional styling, disabling buttons, etc.
+
+\`\`\`json
+{
+  "type": "Button",
+  "props": {
+    "children": "Submit",
+    "disabled": { "$computed": { "eq": [{ "$state": "/form/email" }, ""] } }
+  }
+}
+\`\`\`
+
+**Available operators:** \`eq\`, \`neq\`, \`gt\`, \`gte\`, \`lt\`, \`lte\`, \`and\`, \`or\`, \`not\`, \`if\`
+
+### Template Strings with $template
+
+Use \`$template\` for dynamic text that includes state values:
+
+\`\`\`json
+{
+  "type": "Text",
+  "props": {
+    "children": { "$template": "Hello, {{/form/name}}!" }
+  }
+}
+\`\`\`
+
+### Form Validation with validateForm
+
+Use the \`validateForm\` action to validate all bound form fields:
+
+\`\`\`json
+{
+  "type": "Button",
+  "props": { "children": "Submit" },
+  "on": {
+    "click": { "action": "validateForm" }
+  }
+}
+\`\`\`
+
+---
+
 ## Validation Checklist
 
 Before outputting a tree, verify:
@@ -241,6 +332,8 @@ Before outputting a tree, verify:
 - No style prop anywhere - use layout props instead
 - Precomposed props used - Card uses title/description, Input uses label, etc.
 - Minimal element count - don't create unnecessary wrapper elements
+- \`$bindState\` expressions use absolute paths starting with /
+- \`$computed\` expressions use valid operators
 `;
 
 /**
