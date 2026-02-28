@@ -4,13 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Renderer } from "@json-render/react";
 import { LoadingSpinner } from "@uiid/icons";
-import { Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 
 import type { BlockFile } from "@/lib/block-file";
 import { registry } from "@/lib/components";
 import { useChatStore } from "@/lib/store";
 import { useEnrichedSpec } from "@/lib/use-enriched-spec";
-import { RenderedContainer } from "@/components";
+import { useViewState } from "@/hooks/use-view-state";
+import { useCodeView } from "@/hooks/use-code-view";
+import { RenderedContainer, TreeNavigator } from "@/components";
+import { CodeView } from "@/components/code-view";
+import { ViewToggle } from "@/components/view-toggle";
 import { ElementInspector } from "@/components/element-inspector";
 
 export default function RegistryBlockPage() {
@@ -20,6 +24,8 @@ export default function RegistryBlockPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const enrichedSpec = useEnrichedSpec(tree);
+  const { view, tab, setView, setTab, isCodeView } = useViewState();
+  const { jsonInput, jsxCode, parseError, handleJsonChange } = useCodeView();
 
   // Only fetch on cold loads (direct URL visit). When prev/next navigation
   // updates the store via navigateRegistryBlock + replaceState, useParams
@@ -77,9 +83,26 @@ export default function RegistryBlockPage() {
   }
 
   return (
-    <RenderedContainer ref={containerRef}>
-      <Renderer spec={enrichedSpec} registry={registry} />
-      <ElementInspector containerRef={containerRef} />
-    </RenderedContainer>
+    <Group fullwidth fullheight>
+      <TreeNavigator />
+      <Stack fullwidth fullheight style={{ position: "relative", flex: 1 }}>
+        <ViewToggle view={view} onViewChange={setView} />
+        {isCodeView ? (
+          <CodeView
+            tab={tab}
+            onTabChange={setTab}
+            jsonInput={jsonInput}
+            jsxCode={jsxCode}
+            parseError={parseError}
+            onJsonChange={handleJsonChange}
+          />
+        ) : (
+          <RenderedContainer ref={containerRef}>
+            <Renderer spec={enrichedSpec} registry={registry} />
+            <ElementInspector containerRef={containerRef} />
+          </RenderedContainer>
+        )}
+      </Stack>
+    </Group>
   );
 }

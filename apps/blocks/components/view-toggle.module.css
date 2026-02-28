@@ -1,0 +1,6 @@
+.view-toggle {
+  position: absolute;
+  top: var(--spacing-3);
+  right: var(--spacing-3);
+  z-index: 10;
+}
