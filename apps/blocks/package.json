@@ -11,8 +11,8 @@
     "dependencies": {
         "@ai-sdk/anthropic": "^3.0.34",
         "@icons-pack/react-simple-icons": "^13.8.0",
-        "@json-render/core": "^0.6.0",
-        "@json-render/react": "^0.6.0",
+        "@json-render/core": "^0.10.0",
+        "@json-render/react": "^0.10.0",
         "@uiid/blocks": "workspace:*",
         "@uiid/buttons": "workspace:*",
         "@uiid/cards": "workspace:*",

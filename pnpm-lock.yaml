@@ -88,11 +88,11 @@ importers:
         specifier: ^13.8.0
         version: 13.11.2(react@19.2.3)
       '@json-render/core':
-        specifier: ^0.6.0
-        version: 0.6.0(zod@4.3.6)
+        specifier: ^0.10.0
+        version: 0.10.0(zod@4.3.6)
       '@json-render/react':
-        specifier: ^0.6.0
-        version: 0.6.0(react@19.2.3)(zod@4.3.6)
+        specifier: ^0.10.0
+        version: 0.10.0(react@19.2.3)(zod@4.3.6)
       '@uiid/blocks':
         specifier: workspace:*
         version: link:../../packages/blocks
@@ -3126,13 +3126,13 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@json-render/core@0.6.0':
-    resolution: {integrity: sha512-ZHpbSFHcINyNkuyrK4eOS8euEcAXqDHxILO/8VYeg9jWoaj8OIi70+eCqiKMmkvt1JF6HHZU5MZAzdH5igD3tw==}
+  '@json-render/core@0.10.0':
+    resolution: {integrity: sha512-aqV9vwpBMIH7J/3d0szxfAwB6Wa2t1U3g9DkiFaFAYlvAotnpGiR+XeOYVK6CxeIJsq0RK7BaUKOa0arWEGNWg==}
     peerDependencies:
       zod: ^4.0.0
 
-  '@json-render/react@0.6.0':
-    resolution: {integrity: sha512-lStrFqpI14MVKLxa75cUK23o/TdDin6TKGCXebqYOH3UEUZIdPQR3PQ+CPO54yO2sIW+sVwrc6Q4BUsTeKa4cQ==}
+  '@json-render/react@0.10.0':
+    resolution: {integrity: sha512-gyl3YiZ8CZZauAxvUtL1cYkO2mWnKkWmJEC9naqzxIjJp5oHg5v/4F+4zEx4xH5AeGAcY+g2/C7X9Kz8rWMRFg==}
     peerDependencies:
       react: ^19.2.3
 
@@ -9849,13 +9849,13 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@json-render/core@0.6.0(zod@4.3.6)':
+  '@json-render/core@0.10.0(zod@4.3.6)':
     dependencies:
       zod: 4.3.6
 
-  '@json-render/react@0.6.0(react@19.2.3)(zod@4.3.6)':
+  '@json-render/react@0.10.0(react@19.2.3)(zod@4.3.6)':
     dependencies:
-      '@json-render/core': 0.6.0(zod@4.3.6)
+      '@json-render/core': 0.10.0(zod@4.3.6)
       react: 19.2.3
     transitivePeerDependencies:
       - zod
@@ -12524,7 +12524,7 @@ snapshots:
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react-hooks: 7.0.1(eslint@9.39.2(jiti@2.6.1))
@@ -12557,7 +12557,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-import: 2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -12571,7 +12571,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1)):
+  eslint-plugin-import@2.32.0(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
