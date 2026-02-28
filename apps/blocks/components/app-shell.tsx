@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import type { ReactNode } from "react";
-import { JSONUIProvider } from "@json-render/react";
+import { JSONUIProvider, createStateStore } from "@json-render/react";
 
 import { Stack } from "@uiid/layout";
 import { ToastProvider, Toaster } from "@uiid/overlays";
@@ -44,10 +44,19 @@ export const AppShell = ({ children }: AppShellProps) => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [loadFromUrlHash]);
 
+  // Create a fresh state store whenever the tree changes so stale form
+  // values don't persist across blocks. Referencing `tree` inside the
+  // callback satisfies the exhaustive-deps rule while acting as the key.
+  const stateStore = useMemo(
+    () => { void tree; return createStateStore({}); },
+    [tree],
+  );
+
   return (
     <ToastProvider>
       <JSONUIProvider
         registry={registry}
+        store={stateStore}
         handlers={{
           submit: async () => {
             alert("Submit action triggered!");

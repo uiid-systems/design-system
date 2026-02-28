@@ -429,6 +429,133 @@ Common patterns:
 
 ---
 
+## State Management & Data Binding
+
+### Two-Way Binding with `$bindState`
+
+Use `$bindState` to bind a form element's value to the state store. The renderer resolves the expression automatically — the component receives the current value and writes back on change.
+
+```json
+{
+  "type": "Input",
+  "props": {
+    "label": "Email",
+    "value": { "$bindState": "/form/email" },
+    "placeholder": "Enter your email"
+  }
+}
+```
+
+**Bindable props by component:**
+
+| Component      | Prop to bind  |
+| -------------- | ------------- |
+| Input          | `value`       |
+| Textarea       | `value`       |
+| Select         | `value`       |
+| RadioGroup     | `value`       |
+| CheckboxGroup  | `value`       |
+| NumberField    | `value`       |
+| Slider         | `value`       |
+| Checkbox       | `checked`     |
+| Switch         | `checked`     |
+| ToggleButton   | `pressed`     |
+
+**Path format:** Always use absolute paths starting with `/`, e.g. `/form/email`, `/settings/theme`.
+
+### `setState` Action
+
+Write to the state store from event handlers:
+
+```json
+{
+  "type": "Button",
+  "props": { "children": "Reset" },
+  "on": {
+    "click": { "action": "setState", "params": { "path": "/form/email", "value": "" } }
+  }
+}
+```
+
+---
+
+## Computed Expressions
+
+### `$computed` — Derived Prop Values
+
+Use `$computed` to derive a prop value from state. Useful for conditional styling, disabling buttons based on form state, showing/hiding elements, etc.
+
+```json
+{
+  "type": "Button",
+  "props": {
+    "children": "Submit",
+    "disabled": { "$computed": { "eq": [{ "$state": "/form/email" }, ""] } }
+  }
+}
+```
+
+**Available operators:**
+
+| Operator | Description              | Example                                              |
+| -------- | ------------------------ | ---------------------------------------------------- |
+| `eq`     | Equal                    | `{ "eq": [{ "$state": "/a" }, "b"] }`                |
+| `neq`    | Not equal                | `{ "neq": [{ "$state": "/a" }, ""] }`                |
+| `gt`     | Greater than             | `{ "gt": [{ "$state": "/count" }, 0] }`              |
+| `gte`    | Greater than or equal    | `{ "gte": [{ "$state": "/count" }, 1] }`             |
+| `lt`     | Less than                | `{ "lt": [{ "$state": "/count" }, 10] }`             |
+| `lte`    | Less than or equal       | `{ "lte": [{ "$state": "/count" }, 100] }`           |
+| `and`    | Logical AND              | `{ "and": [{ "neq": [...] }, { "neq": [...] }] }`   |
+| `or`     | Logical OR               | `{ "or": [{ "eq": [...] }, { "eq": [...] }] }`      |
+| `not`    | Logical NOT              | `{ "not": { "eq": [...] } }`                         |
+| `if`     | Conditional              | `{ "if": [condition, trueValue, falseValue] }`       |
+
+### `$template` — Dynamic Strings
+
+Interpolate state values into strings:
+
+```json
+{
+  "type": "Text",
+  "props": {
+    "children": { "$template": "Hello, {{/form/name}}!" }
+  }
+}
+```
+
+---
+
+## Form Validation
+
+### `validateForm` Action
+
+Trigger batch validation of all bound form fields:
+
+```json
+{
+  "type": "Button",
+  "props": { "children": "Submit" },
+  "on": {
+    "click": { "action": "validateForm" }
+  }
+}
+```
+
+---
+
+## Available Actions
+
+| Action         | Description                                   |
+| -------------- | --------------------------------------------- |
+| `submit`       | Submit a form                                 |
+| `navigate`     | Navigate to a different page or section       |
+| `toggle`       | Toggle a boolean state                        |
+| `dismiss`      | Dismiss or close something                    |
+| `setState`     | Set a value in the state store                |
+| `validateForm` | Validate all form fields and show errors      |
+
+---
+
 ## Validation Checklist
 
 Before outputting a tree, verify:
@@ -442,3 +569,5 @@ Before outputting a tree, verify:
 - [ ] **No `style` prop anywhere** - use layout props instead
 - [ ] **Precomposed props used** - Card uses `title`/`description`, Input uses `label`, etc.
 - [ ] **Minimal element count** - don't create unnecessary wrapper elements
+- [ ] `$bindState` paths are absolute (start with `/`)
+- [ ] `$computed` expressions use valid operators
