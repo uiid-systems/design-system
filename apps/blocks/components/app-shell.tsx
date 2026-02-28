@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import type { ReactNode } from "react";
 import { JSONUIProvider } from "@json-render/react";
@@ -9,6 +9,7 @@ import { Stack } from "@uiid/layout";
 import { ToastProvider, Toaster } from "@uiid/overlays";
 
 import { registry } from "@/lib/components";
+import { getStateStore, resetStateStore } from "@/lib/state-store";
 import { useChatStore } from "@/lib/store";
 
 import { ChatPanel } from "./chat-panel";
@@ -44,10 +45,17 @@ export const AppShell = ({ children }: AppShellProps) => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [loadFromUrlHash]);
 
+  // Reset form state when the tree changes (new block generated or loaded)
+  const stateStore = useMemo(() => {
+    resetStateStore();
+    return getStateStore();
+  }, [tree]);
+
   return (
     <ToastProvider>
       <JSONUIProvider
         registry={registry}
+        store={stateStore}
         handlers={{
           submit: async () => {
             alert("Submit action triggered!");

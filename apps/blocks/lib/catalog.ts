@@ -31,6 +31,9 @@ export const catalog = defineCatalog(schema, {
     dismiss: {
       description: "Dismiss or close something",
     },
+    setState: {
+      description: "Set a value in the state store",
+    },
   },
 });
 
