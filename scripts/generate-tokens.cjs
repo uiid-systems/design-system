@@ -205,9 +205,8 @@ ${cssProperties.trimEnd()}
   /**
    * Generate CSS layer name from file path
    */
-  generateLayerName(relativePath) {
-    const parts = relativePath.replace(/\.tokens\.json$/, "").split(path.sep);
-    return `uiid.tokens.${parts.join(".")}`;
+  generateLayerName(_relativePath) {
+    return "uiid.tokens";
   }
 
   /**
