@@ -1,9 +1,8 @@
-export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
+import type { SVGProps } from "react";
+
+export const Logo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    style={{
-      overflow: "visible",
-    }}
     viewBox="0 0 926.17 334.46"
     {...props}
   >
@@ -26,4 +25,4 @@ export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
       }}
     />
   </svg>
-)
+);
