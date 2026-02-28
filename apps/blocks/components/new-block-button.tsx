@@ -10,7 +10,7 @@ import { Modal } from "@uiid/overlays";
 import { useComponentLoader } from "@/lib/use-component-loader";
 import { useChatStore } from "@/lib/store";
 
-export const NewChatButton = () => {
+export const NewBlockButton = () => {
   const [open, setOpen] = useState(false);
 
   const messages = useChatStore((s) => s.messages);
@@ -38,7 +38,7 @@ export const NewChatButton = () => {
       onOpenChange={setOpen}
       trigger={
         <Button
-          tooltip="Clear and start a new block"
+          tooltip="New block"
           disabled={messages.length === 0 && !tree && !component}
           size="small"
           variant="ghost"
@@ -60,4 +60,4 @@ export const NewChatButton = () => {
     />
   );
 };
-NewChatButton.displayName = "NewChatButton";
+NewBlockButton.displayName = "NewBlockButton";

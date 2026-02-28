@@ -55,23 +55,27 @@ type ChatStore = ChatState & ChatActions;
 // Track abort controller outside store to avoid serialization issues
 let abortController: AbortController | null = null;
 
+type EncodedPayload = UISpec & { name?: string };
+
 /**
- * Encode tree to URL-safe base64
+ * Encode tree (and optional name) to URL-safe base64
  */
-function encodeTree(tree: UISpec): string {
-  const json = JSON.stringify(tree);
+function encodeTree(tree: UISpec, name?: string): string {
+  const payload: EncodedPayload = name ? { ...tree, name } : tree;
+  const json = JSON.stringify(payload);
   return btoa(encodeURIComponent(json));
 }
 
 /**
- * Decode tree from URL-safe base64
+ * Decode tree from URL-safe base64, returning tree and optional name
  */
-function decodeTree(encoded: string): UISpec | null {
+function decodeTree(encoded: string): { tree: UISpec; name?: string } | null {
   try {
     const json = decodeURIComponent(atob(encoded));
     const parsed = JSON.parse(json);
     if (parsed.root && parsed.elements) {
-      return parsed as UISpec;
+      const { name, ...tree } = parsed;
+      return { tree: tree as UISpec, name: name as string | undefined };
     }
   } catch {
     // Invalid encoding
@@ -80,9 +84,16 @@ function decodeTree(encoded: string): UISpec | null {
 }
 
 /**
- * Get tree from URL hash if present
+ * Check if the current tree differs from the active registry block's tree
  */
-function getTreeFromUrl(): UISpec | null {
+function isTreeModified(current: UISpec, original: UISpec): boolean {
+  return JSON.stringify(current) !== JSON.stringify(original);
+}
+
+/**
+ * Get tree (and optional name) from URL hash if present
+ */
+function getTreeFromUrl(): { tree: UISpec; name?: string } | null {
   if (typeof window === "undefined") return null;
   const hash = window.location.hash.slice(1);
   if (!hash) return null;
@@ -149,8 +160,10 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   setActiveBlock: (blockId, versionId) =>
     set({ activeBlockId: blockId, activeVersionId: versionId, activeRegistryBlock: null }),
 
-  clearActiveBlock: () =>
-    set({ activeBlockId: null, activeVersionId: null, activeRegistryBlock: null }),
+  clearActiveBlock: () => {
+    abortController?.abort();
+    set({ activeBlockId: null, activeVersionId: null, activeRegistryBlock: null, isLoading: false });
+  },
 
   setActiveRegistryBlock: (block) =>
     set({ activeRegistryBlock: block, activeBlockId: null, activeVersionId: null }),
@@ -183,9 +196,9 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   toggleInspecting: () => set((state) => ({ inspecting: !state.inspecting })),
 
   loadFromUrlHash: () => {
-    const urlTree = getTreeFromUrl();
-    if (urlTree) {
-      set({ tree: urlTree });
+    const result = getTreeFromUrl();
+    if (result) {
+      set({ tree: result.tree });
       return true;
     }
     return false;
@@ -226,7 +239,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     const { tree, activeRegistryBlock } = get();
     if (!tree) return null;
 
-    if (activeRegistryBlock) {
+    // Use slug URL for unmodified registry blocks
+    if (activeRegistryBlock && !isTreeModified(tree, activeRegistryBlock.tree)) {
       try {
         const url = new URL(window.location.origin);
         url.pathname = `/registry/${activeRegistryBlock.slug}`;
@@ -237,8 +251,10 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     }
 
     try {
-      const encoded = encodeTree(tree);
+      const name = activeRegistryBlock?.name;
+      const encoded = encodeTree(tree, name);
       const url = new URL(window.location.href);
+      url.pathname = "/";
       url.hash = encoded;
       return url.toString();
     } catch {

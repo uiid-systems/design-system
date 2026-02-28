@@ -47,10 +47,10 @@ export const AppShell = ({ children }: AppShellProps) => {
   // Create a fresh state store whenever the tree changes so stale form
   // values don't persist across blocks. Referencing `tree` inside the
   // callback satisfies the exhaustive-deps rule while acting as the key.
-  const stateStore = useMemo(
-    () => { void tree; return createStateStore({}); },
-    [tree],
-  );
+  const stateStore = useMemo(() => {
+    void tree;
+    return createStateStore({});
+  }, [tree]);
 
   return (
     <ToastProvider>
@@ -75,7 +75,7 @@ export const AppShell = ({ children }: AppShellProps) => {
           ax="stretch"
           style={{ overflow: "hidden" }}
         >
-          {tree && <Header />}
+          <Header />
           {children}
         </Stack>
         {tree && <ChatPanel />}

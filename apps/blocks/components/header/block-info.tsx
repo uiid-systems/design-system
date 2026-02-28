@@ -11,7 +11,7 @@ import { Text } from "@uiid/typography";
 import { useChatStore } from "@/lib/store";
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
 
-import { NewChatButton } from "../new-chat-button";
+import { NewBlockButton } from "../new-block-button";
 import { OpenBlocksPanel } from "../open-blocks-panel";
 import { SaveButton } from "../save-button";
 
@@ -65,7 +65,7 @@ export const BlockInfo = () => {
   return (
     <BlockInfoContainer>
       <Group>
-        <NewChatButton />
+        <NewBlockButton />
         <OpenBlocksPanel />
         <SaveButton />
       </Group>
@@ -98,19 +98,23 @@ export const BlockInfo = () => {
         </>
       )}
 
-      <BlockInfoTitle>
-        {activeRegistryBlock
-          ? activeRegistryBlock.name
-          : (activeVersion?.name ?? "Untitled block")}
-      </BlockInfoTitle>
+      {activeRegistryBlock && (
+        <BlockInfoTitle>
+          {activeRegistryBlock
+            ? activeRegistryBlock.name
+            : (activeVersion?.name ?? "Untitled block")}
+        </BlockInfoTitle>
+      )}
 
-      <BlockInfoVersionSelector
-        items={items}
-        disabled={items.length <= 0}
-        placeholder="Select version"
-        value={activeVersionId}
-        onValueChange={handleVersionChange}
-      />
+      {items.length > 0 && (
+        <BlockInfoVersionSelector
+          items={items}
+          disabled={items.length <= 0}
+          placeholder="Select version"
+          value={activeVersionId}
+          onValueChange={handleVersionChange}
+        />
+      )}
     </BlockInfoContainer>
   );
 };

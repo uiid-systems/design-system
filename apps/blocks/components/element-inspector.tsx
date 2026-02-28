@@ -158,7 +158,7 @@ export const ElementInspector = ({
           maxWidth: 320,
         }}
       >
-        <Card title={info.type} icon={CategoryIcon}>
+        <Card title={info.type} description={info.key} icon={CategoryIcon}>
           {displayProps.length > 0 ? (
             <Stack gap={4} pt={2}>
               {displayProps.map(([key, value]) => (
