@@ -37,8 +37,6 @@ export const BlockInfo = () => {
     [activeBlockId, getVersionsForBlock],
   );
 
-  const activeVersion = versions.find((v) => v.id === activeVersionId);
-
   const items = versions.map((v) => ({
     label: `ver. ${v.version} · ${formatDate(v.updatedAt)}`,
     value: v.id,
@@ -99,11 +97,7 @@ export const BlockInfo = () => {
       )}
 
       {activeRegistryBlock && (
-        <BlockInfoTitle>
-          {activeRegistryBlock
-            ? activeRegistryBlock.name
-            : (activeVersion?.name ?? "Untitled block")}
-        </BlockInfoTitle>
+        <BlockInfoTitle>{activeRegistryBlock.name}</BlockInfoTitle>
       )}
 
       {items.length > 0 && (
