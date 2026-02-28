@@ -40,6 +40,25 @@ type(scope): description
 - Prefer **bullet points** over paragraphs for scannability
 - Keep it brief — the diff tells the full story
 
+## Changesets
+
+If the PR modifies any publishable package under `packages/` (bug fix, new feature, breaking change), **add a changeset file** before opening the PR.
+
+1. Create a markdown file in `.changeset/` with a short kebab-case name (e.g., `.changeset/add-list-nesting.md`)
+2. Use this format:
+
+```md
+---
+"@uiid/package-name": patch | minor | major
+---
+
+Short description of the change
+```
+
+3. Use **patch** for bug fixes, **minor** for new features, **major** for breaking changes
+4. Only list the package(s) you directly changed — the `fixed` group in changeset config handles version alignment across all packages
+5. Skip changesets for changes that don't affect published packages (docs, CI, storybook-only, configs)
+
 ## Authorship
 
 **Never add yourself or any AI agent as a co-author of a PR or commit.** Do not include `Co-Authored-By` trailers or attribute work to an AI in any authorship metadata. The human is the sole author of all contributions — they own the code, the decisions, and the accountability. AI is a tool, not a collaborator of record.

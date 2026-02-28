@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Group, Stack } from "@uiid/layout";
 
 import { List } from "./list";
-import { MOCK_ITEMS, MOCK_LINKS } from "./list.mocks";
+import { MOCK_ITEMS, MOCK_LINKS, MOCK_NESTED } from "./list.mocks";
 
 const meta = {
   title: "Lists/List",
@@ -36,3 +36,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "List" };
+
+export const NestedGroups: Story = {
+  name: "Nested Groups",
+  args: { items: MOCK_NESTED },
+  render: (args) => <List {...args} />,
+};
