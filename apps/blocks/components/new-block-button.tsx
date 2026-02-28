@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@uiid/buttons";
 import { SquarePenIcon } from "@uiid/icons";
@@ -12,6 +13,7 @@ import { useChatStore } from "@/lib/store";
 
 export const NewBlockButton = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const messages = useChatStore((s) => s.messages);
   const tree = useChatStore((s) => s.tree);
@@ -26,6 +28,7 @@ export const NewBlockButton = () => {
     clearSelection();
     clearActiveBlock();
     setOpen(false);
+    router.push("/registry");
   };
 
   return (
