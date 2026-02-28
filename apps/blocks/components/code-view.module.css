@@ -1,0 +1,24 @@
+.code-view {
+  padding: var(--spacing-4);
+  animation: fade-in 150ms ease-out;
+}
+
+.tab-toggle {
+  display: flex;
+  justify-content: center;
+}
+
+.code-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

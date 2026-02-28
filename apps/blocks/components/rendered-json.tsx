@@ -1,4 +1,3 @@
-import { Button } from "@uiid/buttons";
 import { CodeEditor, type CodeEditorProps } from "@uiid/code";
 import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
@@ -8,12 +7,10 @@ export type RenderedJsonProps = Omit<
   "language" | "filename"
 > & {
   parseError?: string | null;
-  onApply?: () => void;
 };
 
 export const RenderedJson = ({
   parseError,
-  onApply,
   ...props
 }: RenderedJsonProps) => {
   return (
@@ -25,11 +22,6 @@ export const RenderedJson = ({
         {...props}
       />
       {parseError && <Text tone="critical">Parse Error: {parseError}</Text>}
-      {onApply && (
-        <Button onClick={onApply} fullwidth>
-          Apply Changes
-        </Button>
-      )}
     </Stack>
   );
 };

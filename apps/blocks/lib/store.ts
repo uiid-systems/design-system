@@ -31,6 +31,7 @@ type ChatState = {
   activeRegistryBlock: BlockFile | null;
   registryBlocks: BlockFile[];
   inspecting: boolean;
+  selectedElementKey: string | null;
 };
 
 type ChatActions = {
@@ -48,6 +49,7 @@ type ChatActions = {
   setRegistryBlocks: (blocks: BlockFile[]) => void;
   navigateRegistryBlock: (direction: "prev" | "next") => void;
   toggleInspecting: () => void;
+  selectElement: (key: string | null) => void;
 };
 
 type ChatStore = ChatState & ChatActions;
@@ -151,6 +153,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   activeRegistryBlock: null,
   registryBlocks: [],
   inspecting: false,
+  selectedElementKey: null,
 
   // Actions
   setError: (error) => set({ error }),
@@ -194,6 +197,8 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   },
 
   toggleInspecting: () => set((state) => ({ inspecting: !state.inspecting })),
+
+  selectElement: (key) => set({ selectedElementKey: key }),
 
   loadFromUrlHash: () => {
     const result = getTreeFromUrl();
@@ -273,6 +278,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
       activeVersionId: null,
       activeRegistryBlock: null,
       registryBlocks: [],
+      selectedElementKey: null,
     });
   },
 
