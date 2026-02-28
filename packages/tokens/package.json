@@ -51,7 +51,7 @@
     "nodemon": "^3.1.10",
     "prettier": "3.8.1",
     "react": "^19.1.1",
-    "storybook": "^10.2.3",
+    "storybook": "^10.2.10",
     "style-dictionary": "^5.3.0",
     "typescript": "~5.9.3"
   }

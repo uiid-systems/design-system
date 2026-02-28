@@ -45,7 +45,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "serve": "^14.2.4",
-    "storybook": "^10.2.3",
+    "storybook": "^10.2.10",
     "storybook-addon-tag-badges": "^3.0.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.55.0",
