@@ -83,9 +83,21 @@ export const ListItemGroup = ({
           ),
         }}
       >
-        {items.map((item) => (
-          <ListItem key={item.value} LinkComponent={LinkComponent} {...item} />
-        ))}
+        {items.map((item) =>
+          "items" in item ? (
+            <ListItemGroup
+              key={item.category}
+              LinkComponent={LinkComponent}
+              {...item}
+            />
+          ) : (
+            <ListItem
+              key={item.value}
+              LinkComponent={LinkComponent}
+              {...item}
+            />
+          ),
+        )}
       </SwitchRender>
     </Stack>
   );

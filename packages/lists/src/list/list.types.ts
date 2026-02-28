@@ -28,11 +28,14 @@ export type ListItemProps = {
   LinkComponent?: LinkComponent;
 } & GroupProps;
 
+/** A single item or a nested group (recursive). */
+export type ListItemOrGroup = ListItemProps | ListItemGroupProps;
+
 export type ListItemGroupProps = {
   category?: string;
   collapsible?: boolean;
   icon?: Icon;
-  items: ListItemProps[];
+  items: ListItemOrGroup[];
   /** Custom link component passed to all child items */
   LinkComponent?: LinkComponent;
 };
@@ -40,7 +43,7 @@ export type ListItemGroupProps = {
 type BaseListProps = Omit<BoxProps, "ax" | "ay" | "direction"> & {
   type?: "ordered" | "unordered" | "none";
   variant?: "line";
-  items?: (ListItemProps | ListItemGroupProps)[];
+  items?: ListItemOrGroup[];
   /** Custom link component passed to all items (e.g., Next.js Link, React Router Link) */
   LinkComponent?: LinkComponent;
 };

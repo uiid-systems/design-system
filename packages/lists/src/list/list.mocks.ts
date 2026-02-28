@@ -1,4 +1,15 @@
-import { Star, Hammer, Bug, File, Ghost, Smartphone } from "@uiid/icons";
+import {
+  Star,
+  Hammer,
+  Bug,
+  File,
+  Ghost,
+  Smartphone,
+  Folder,
+  FileText,
+  Image,
+  Code,
+} from "@uiid/icons";
 
 import type { ListProps } from "./list.types";
 
@@ -6,6 +17,43 @@ export const MOCK_ITEMS: ListProps["items"] = [
   { value: "1", label: "Item 1" },
   { value: "2", label: "Item 2" },
   { value: "3", label: "Item 3" },
+];
+
+export const MOCK_NESTED: ListProps["items"] = [
+  {
+    category: "Source",
+    collapsible: true,
+    icon: Folder,
+    items: [
+      {
+        category: "Components",
+        collapsible: true,
+        icon: Folder,
+        items: [
+          { value: "button.tsx", label: "button.tsx", icon: Code },
+          { value: "card.tsx", label: "card.tsx", icon: Code },
+          {
+            category: "Forms",
+            collapsible: true,
+            icon: Folder,
+            items: [
+              { value: "input.tsx", label: "input.tsx", icon: Code },
+              { value: "select.tsx", label: "select.tsx", icon: Code },
+            ],
+          },
+        ],
+      },
+      {
+        category: "Assets",
+        icon: Folder,
+        items: [
+          { value: "logo.svg", label: "logo.svg", icon: Image },
+          { value: "banner.png", label: "banner.png", icon: Image },
+        ],
+      },
+      { value: "index.ts", label: "index.ts", icon: FileText },
+    ],
+  },
 ];
 
 export const MOCK_LINKS: ListProps["items"] = [
