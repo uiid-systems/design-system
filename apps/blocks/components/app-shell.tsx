@@ -3,13 +3,12 @@
 import { useEffect, useMemo } from "react";
 
 import type { ReactNode } from "react";
-import { JSONUIProvider } from "@json-render/react";
+import { JSONUIProvider, createStateStore } from "@json-render/react";
 
 import { Stack } from "@uiid/layout";
 import { ToastProvider, Toaster } from "@uiid/overlays";
 
 import { registry } from "@/lib/components";
-import { getStateStore, resetStateStore } from "@/lib/state-store";
 import { useChatStore } from "@/lib/store";
 
 import { ChatPanel } from "./chat-panel";
@@ -45,11 +44,13 @@ export const AppShell = ({ children }: AppShellProps) => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, [loadFromUrlHash]);
 
-  // Reset form state when the tree changes (new block generated or loaded)
-  const stateStore = useMemo(() => {
-    resetStateStore();
-    return getStateStore();
-  }, [tree]);
+  // Create a fresh state store whenever the tree changes so stale form
+  // values don't persist across blocks. Referencing `tree` inside the
+  // callback satisfies the exhaustive-deps rule while acting as the key.
+  const stateStore = useMemo(
+    () => { void tree; return createStateStore({}); },
+    [tree],
+  );
 
   return (
     <ToastProvider>
