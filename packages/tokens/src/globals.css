@@ -1,4 +1,4 @@
-@layer uiid.globals, uiid.tokens, uiid.components, uiid.utilities;
+@layer uiid.globals, uiid.tokens, uiid.components;
 
 @import "./css/primitives/colors.tokens.css";
 @import "./css/primitives/colors.generated.tokens.css";

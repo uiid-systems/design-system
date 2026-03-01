@@ -1,3 +1,5 @@
 import { createViteConfig } from "../../vite.config";
 
-export default createViteConfig();
+export default createViteConfig({
+  cssLayer: "uiid.components",
+});
