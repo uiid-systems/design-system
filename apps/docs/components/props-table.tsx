@@ -2,40 +2,13 @@
 
 import { CodeInline } from "@uiid/code";
 import { Badge } from "@uiid/indicators";
-import { Collapsible } from "@uiid/interactive";
+import { Accordion } from "@uiid/interactive";
 import { Box, Group, Stack } from "@uiid/layout";
 import type { PropDocumentation } from "@uiid/registry";
 import { Text } from "@uiid/typography";
-import type { PropCategory } from "@uiid/utils";
 
 type PropsTableProps = {
   props: PropDocumentation[];
-};
-
-const STYLE_CATEGORY_META: Record<
-  Exclude<PropCategory, "core" | "subcomponent">,
-  { label: string; description: string }
-> = {
-  spacing: {
-    label: "Spacing",
-    description: "Margin and padding using the spacing scale",
-  },
-  layout: {
-    label: "Layout",
-    description: "Flexbox alignment and direction",
-  },
-  sizing: {
-    label: "Sizing",
-    description: "Width and height constraints",
-  },
-  border: {
-    label: "Border",
-    description: "Border width on each side",
-  },
-  toggle: {
-    label: "Toggle",
-    description: "Boolean flags for component variants",
-  },
 };
 
 type CategorizedProps = {
@@ -63,6 +36,11 @@ function categorizeProps(props: PropDocumentation[]): CategorizedProps {
   }
 
   return result;
+}
+
+function getSlotDescription(propName: string): string {
+  const slot = propName.replace(/Props$/, "");
+  return `Forwarded to the internal ${slot} element`;
 }
 
 function PropRow({ prop }: { prop: PropDocumentation }) {
@@ -112,8 +90,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
   );
 }
 
-function CorePropsSection({ props }: { props: PropDocumentation[] }) {
-  if (props.length === 0) return null;
+function PropsList({ props }: { props: PropDocumentation[] }) {
   return (
     <Box>
       {props.map((prop) => (
@@ -123,126 +100,14 @@ function CorePropsSection({ props }: { props: PropDocumentation[] }) {
   );
 }
 
-function StylePropsSection({ props }: { props: PropDocumentation[] }) {
-  if (props.length === 0) return null;
-
-  const byCategory = props.reduce(
-    (acc, prop) => {
-      const cat = prop.category as keyof typeof STYLE_CATEGORY_META;
-      if (!acc[cat]) acc[cat] = [];
-      acc[cat].push(prop);
-      return acc;
-    },
-    {} as Record<string, PropDocumentation[]>,
-  );
-
-  const categoryOrder = Object.keys(
-    STYLE_CATEGORY_META,
-  ) as (keyof typeof STYLE_CATEGORY_META)[];
-  const availableCategories = categoryOrder.filter(
-    (key) => byCategory[key]?.length > 0,
-  );
-
+function makeTrigger(label: string, count: number) {
   return (
-    <Collapsible
-      trigger={
-        <Group gap={3} ay="center">
-          <Text size={0} weight="bold">
-            Style Props
-          </Text>
-          <Text size={-1} shade="muted">
-            {props.length}
-          </Text>
-        </Group>
-      }
-    >
-      <Stack gap={4} py={3}>
-        {availableCategories.map((categoryKey) => {
-          const categoryProps = byCategory[categoryKey];
-          const meta = STYLE_CATEGORY_META[categoryKey];
-
-          if (categoryKey === "toggle") {
-            return (
-              <Stack key={categoryKey} gap={2}>
-                <Text size={0} weight="bold">
-                  {meta.label}
-                </Text>
-                <Text size={-1} shade="muted">
-                  {meta.description}
-                </Text>
-                {categoryProps.map((prop) => (
-                  <Box key={prop.name} bb={1}>
-                    <Group gap={3} ay="center">
-                      <Text size={0} weight="bold" mono>
-                        {prop.name}
-                      </Text>
-                      <Text size={-1} shade="muted" mono>
-                        boolean
-                      </Text>
-                    </Group>
-                  </Box>
-                ))}
-              </Stack>
-            );
-          }
-
-          return (
-            <Stack key={categoryKey} gap={2}>
-              <Text size={0} weight="bold">
-                {meta.label}
-              </Text>
-              <Text size={-1} shade="muted">
-                {meta.description}
-              </Text>
-              <Group gap={2} style={{ flexWrap: "wrap" }}>
-                {categoryProps.map((prop) => (
-                  <CodeInline key={prop.name}>{prop.name}</CodeInline>
-                ))}
-              </Group>
-            </Stack>
-          );
-        })}
-      </Stack>
-    </Collapsible>
-  );
-}
-
-function getSlotName(propName: string): string {
-  return propName.replace(/Props$/, "");
-}
-
-function SubcomponentPropsSection({ props }: { props: PropDocumentation[] }) {
-  if (props.length === 0) return null;
-
-  return (
-    <Collapsible
-      trigger={
-        <Group gap={3} ay="center">
-          <Text size={0} weight="bold">
-            Slot Props
-          </Text>
-          <Text size={-1} shade="muted">
-            {props.length}
-          </Text>
-        </Group>
-      }
-    >
-      <Box py={3}>
-        {props.map((prop) => (
-          <Box key={prop.name} bb={1}>
-            <Stack gap={2}>
-              <Text size={0} weight="bold" mono>
-                {prop.name}
-              </Text>
-              <Text size={0} shade="muted">
-                {prop.description ||
-                  `Forwarded to the internal ${getSlotName(prop.name)} element`}
-              </Text>
-            </Stack>
-          </Box>
-        ))}
-      </Box>
-    </Collapsible>
+    <Group gap={3} ay="center">
+      <Text weight="bold">{label}</Text>
+      <Text size={-1} shade="muted">
+        {count}
+      </Text>
+    </Group>
   );
 }
 
@@ -257,12 +122,45 @@ export const PropsTable = ({ props }: PropsTableProps) => {
 
   const categorized = categorizeProps(props);
 
+  // Add forwarding descriptions to subcomponent props that don't have one
+  const subcomponentProps = categorized.subcomponent.map((prop) => ({
+    ...prop,
+    description: prop.description || getSlotDescription(prop.name),
+  }));
+
+  const items = [];
+
+  if (categorized.core.length > 0) {
+    items.push({
+      value: "props",
+      trigger: makeTrigger("Props", categorized.core.length),
+      content: <PropsList props={categorized.core} />,
+    });
+  }
+
+  if (categorized.style.length > 0) {
+    items.push({
+      value: "style",
+      trigger: makeTrigger("Style Props", categorized.style.length),
+      content: <PropsList props={categorized.style} />,
+    });
+  }
+
+  if (subcomponentProps.length > 0) {
+    items.push({
+      value: "slots",
+      trigger: makeTrigger("Slot Props", subcomponentProps.length),
+      content: <PropsList props={subcomponentProps} />,
+    });
+  }
+
   return (
-    <Stack gap={4} fullwidth>
-      <CorePropsSection props={categorized.core} />
-      <StylePropsSection props={categorized.style} />
-      <SubcomponentPropsSection props={categorized.subcomponent} />
-    </Stack>
+    <Accordion
+      items={items}
+      defaultValue={["props"]}
+      multiple
+      fullwidth
+    />
   );
 };
 PropsTable.displayName = "PropsTable";

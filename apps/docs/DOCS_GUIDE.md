@@ -85,19 +85,19 @@ When subcomponent customization is needed, use the `*Props` escape hatches:
 
 Information should be layered. Show the essential summary first, with details available on demand.
 
-**Pattern: Collapsible Sections**
+**Pattern: Accordion Sections**
 
 ```tsx
-// Core props always visible, secondary sections collapsed
-<Stack gap={4} fullwidth>
-  <CorePropsSection props={coreProps} />
-  <Collapsible trigger={<Text weight="bold">Style Props</Text>}>
-    {/* Compact grouped summary */}
-  </Collapsible>
-  <Collapsible trigger={<Text weight="bold">Slot Props</Text>}>
-    {/* PropRow entries with forwarding descriptions */}
-  </Collapsible>
-</Stack>
+<Accordion
+  items={[
+    { value: "props", trigger: "Props", content: <PropsList /> },
+    { value: "style", trigger: "Style Props", content: <PropsList /> },
+    { value: "slots", trigger: "Slot Props", content: <PropsList /> },
+  ]}
+  defaultValue={["props"]}
+  multiple
+  fullwidth
+/>
 ```
 
 ### Visual Hierarchy
@@ -115,7 +115,7 @@ Use proper semantic containers:
 |------|-----------|
 | Lifted surface with shadow/border | `Card` or `CardContainer` |
 | Simple flex container | `Box`, `Stack`, `Group` |
-| Collapsible sections | `Collapsible` |
+| Collapsible sections | `Accordion` or `Collapsible` |
 
 **Never** add borders/backgrounds via inline styles to simulate cards:
 
@@ -126,7 +126,7 @@ Use proper semantic containers:
 // Good
 <Card ghost>
 // or
-<Collapsible>
+<Accordion RootProps={{ ghost: true }}>
 ```
 
 ---
@@ -135,23 +135,11 @@ Use proper semantic containers:
 
 ### Structure
 
-The `PropsTable` renders three sections in a flat `Stack` — no outer `Accordion`:
+The `PropsTable` uses a single `Accordion` with up to three sections. All sections render props identically using `PropRow`:
 
-1. **Core Props** — Always visible. Each prop rendered as a `PropRow`.
-2. **Style Props** — Collapsed `Collapsible`. Compact grouped summary with `CodeInline` chips per category. Toggle props (`fullwidth`, `fullheight`, `evenly`) rendered as mini PropRow items.
-3. **Slot Props** — Collapsed `Collapsible`. Each entry shows the prop name and a forwarding description (e.g. "Forwarded to the internal Container element").
-
-### Style Props Categories
-
-Style props are grouped by category inside a single collapsed `Collapsible`. Each category shows a label, description, and `CodeInline` chips:
-
-| Category | Props |
-|----------|-------|
-| Spacing | `p`, `px`, `py`, `pt`, `pr`, `pb`, `pl`, `m`, `mx`, `my`, `mt`, `mr`, `mb`, `ml` |
-| Layout | `gap`, `ax`, `ay`, `direction`, `wrap` |
-| Sizing | `w`, `h`, `minw`, `maxw`, `minh`, `maxh` |
-| Border | `b`, `bx`, `by`, `bt`, `br`, `bb`, `bl` |
-| Toggle | `fullwidth`, `fullheight`, `evenly` (rendered as name + `boolean` type) |
+1. **Props** — Core component props, expanded by default
+2. **Style Props** — Layout, spacing, sizing, border, and toggle props
+3. **Slot Props** — Subcomponent forwarding props (auto-generates descriptions like "Forwarded to the internal Container element")
 
 ### PropRow Structure
 
@@ -190,7 +178,7 @@ Standard imports for docs components:
 ```tsx
 import { Badge } from "@uiid/indicators";
 import { CodeInline } from "@uiid/code";
-import { Collapsible } from "@uiid/interactive";
+import { Accordion } from "@uiid/interactive";
 import { Box, Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 ```
