@@ -85,30 +85,19 @@ When subcomponent customization is needed, use the `*Props` escape hatches:
 
 Information should be layered. Show the essential summary first, with details available on demand.
 
-**Pattern: Nested Accordions**
+**Pattern: Collapsible Sections**
 
 ```tsx
-// Outer accordion shows major categories
-<Accordion
-  items={[
-    { value: "core", trigger: "Props", content: <CoreProps /> },
-    { value: "style", trigger: "Style Props", content: <StyleProps /> },
-  ]}
-  defaultValue={["core"]}
-  multiple
-  fullwidth
-/>
-
-// Inner accordion (inside StyleProps) shows subcategories
-<Accordion
-  items={[
-    { value: "spacing", trigger: "Spacing", content: <SpacingDetails /> },
-    { value: "layout", trigger: "Layout", content: <LayoutDetails /> },
-  ]}
-  multiple
-  fullwidth
-  RootProps={{ ghost: true }}
-/>
+// Core props always visible, secondary sections collapsed
+<Stack gap={4} fullwidth>
+  <CorePropsSection props={coreProps} />
+  <Collapsible trigger={<Text weight="bold">Style Props</Text>}>
+    {/* Compact grouped summary */}
+  </Collapsible>
+  <Collapsible trigger={<Text weight="bold">Slot Props</Text>}>
+    {/* PropRow entries with forwarding descriptions */}
+  </Collapsible>
+</Stack>
 ```
 
 ### Visual Hierarchy
@@ -126,7 +115,7 @@ Use proper semantic containers:
 |------|-----------|
 | Lifted surface with shadow/border | `Card` or `CardContainer` |
 | Simple flex container | `Box`, `Stack`, `Group` |
-| Collapsible sections | `Accordion` |
+| Collapsible sections | `Collapsible` |
 
 **Never** add borders/backgrounds via inline styles to simulate cards:
 
@@ -137,7 +126,7 @@ Use proper semantic containers:
 // Good
 <Card ghost>
 // or
-<Accordion RootProps={{ ghost: true }}>
+<Collapsible>
 ```
 
 ---
@@ -146,15 +135,15 @@ Use proper semantic containers:
 
 ### Structure
 
-The PropsTable component follows this hierarchy:
+The `PropsTable` renders three sections in a flat `Stack` — no outer `Accordion`:
 
-1. **Core Props** — Component-specific props, shown by default
-2. **Style Props** — Shared layout/spacing props, shown as category accordions
-3. **Slot Props** — Subcomponent forwarding props
+1. **Core Props** — Always visible. Each prop rendered as a `PropRow`.
+2. **Style Props** — Collapsed `Collapsible`. Compact grouped summary with `CodeInline` chips per category. Toggle props (`fullwidth`, `fullheight`, `evenly`) rendered as mini PropRow items.
+3. **Slot Props** — Collapsed `Collapsible`. Each entry shows the prop name and a forwarding description (e.g. "Forwarded to the internal Container element").
 
 ### Style Props Categories
 
-Style props are grouped into categories. Each category is an accordion trigger that expands to show individual props:
+Style props are grouped by category inside a single collapsed `Collapsible`. Each category shows a label, description, and `CodeInline` chips:
 
 | Category | Props |
 |----------|-------|
@@ -162,21 +151,21 @@ Style props are grouped into categories. Each category is an accordion trigger t
 | Layout | `gap`, `ax`, `ay`, `direction`, `wrap` |
 | Sizing | `w`, `h`, `minw`, `maxw`, `minh`, `maxh` |
 | Border | `b`, `bx`, `by`, `bt`, `br`, `bb`, `bl` |
-| Toggle | `fullwidth`, `fullheight`, `evenly` |
+| Toggle | `fullwidth`, `fullheight`, `evenly` (rendered as name + `boolean` type) |
 
 ### PropRow Structure
 
 ```tsx
-<Box py={3} bb={1}>
+<Box bb={1}>
   <Stack gap={2}>
-    {/* Line 1: name + required badge + type */}
+    {/* Line 1: name + required badge + type (type hidden when enum chips shown) */}
     <Group gap={3} ay="center">
       <Text size={0} weight="bold" mono>{prop.name}</Text>
       {prop.required && <Badge tone="critical" size="small" hideIndicator>required</Badge>}
-      <Text size={-1} shade="muted" mono>{prop.type}</Text>
+      {!prop.enumValues && <Text size={-1} shade="muted" mono>{prop.type}</Text>}
     </Group>
 
-    {/* Line 2: enum values as CodeInline chips */}
+    {/* Line 2: enum values as CodeInline chips (replaces type string) */}
     {prop.enumValues && (
       <Group gap={2}>
         {prop.enumValues.map(val => <CodeInline key={val}>{val}</CodeInline>)}
@@ -201,7 +190,7 @@ Standard imports for docs components:
 ```tsx
 import { Badge } from "@uiid/indicators";
 import { CodeInline } from "@uiid/code";
-import { Accordion } from "@uiid/interactive";
+import { Collapsible } from "@uiid/interactive";
 import { Box, Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 ```

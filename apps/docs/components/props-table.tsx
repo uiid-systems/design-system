@@ -1,35 +1,12 @@
 "use client";
 
-import { SiMdnwebdocs } from "@icons-pack/react-simple-icons";
-import Link from "next/link";
-
-import { Card } from "@uiid/cards";
 import { CodeInline } from "@uiid/code";
 import { Badge } from "@uiid/indicators";
-import { Accordion } from "@uiid/interactive";
+import { Collapsible } from "@uiid/interactive";
 import { Box, Group, Stack } from "@uiid/layout";
 import type { PropDocumentation } from "@uiid/registry";
-import { Table } from "@uiid/tables";
 import { Text } from "@uiid/typography";
-import { styleProps, type PropCategory } from "@uiid/utils";
-
-import { MDN_CSS_URL } from "@/constants";
-
-function toKebabCase(str: string): string {
-  return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-}
-
-function getMdnUrl(propName: string): string | undefined {
-  const prop = styleProps[propName as keyof typeof styleProps];
-  if (!prop) return undefined;
-  return `${MDN_CSS_URL}/${toKebabCase(prop.property)}`;
-}
-
-function getCssProperty(propName: string): string | undefined {
-  const prop = styleProps[propName as keyof typeof styleProps];
-  if (!prop) return undefined;
-  return toKebabCase(prop.property);
-}
+import type { PropCategory } from "@uiid/utils";
 
 type PropsTableProps = {
   props: PropDocumentation[];
@@ -101,9 +78,11 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
               required
             </Badge>
           )}
-          <Text size={-1} shade="muted" mono>
-            {prop.type}
-          </Text>
+          {!(prop.enumValues && prop.enumValues.length > 0) && (
+            <Text size={-1} shade="muted" mono>
+              {prop.type}
+            </Text>
+          )}
         </Group>
 
         {prop.enumValues && prop.enumValues.length > 0 && (
@@ -164,99 +143,106 @@ function StylePropsSection({ props }: { props: PropDocumentation[] }) {
     (key) => byCategory[key]?.length > 0,
   );
 
-  const categoryItems = availableCategories.map((categoryKey) => {
-    const categoryProps = byCategory[categoryKey];
-    const meta = STYLE_CATEGORY_META[categoryKey];
-
-    return {
-      value: categoryKey,
-      trigger: (
+  return (
+    <Collapsible
+      trigger={
         <Group gap={3} ay="center">
           <Text size={0} weight="bold">
-            {meta.label}
+            Style Props
           </Text>
-          <Badge hideIndicator>{categoryProps.length}</Badge>
+          <Text size={-1} shade="muted">
+            {props.length}
+          </Text>
         </Group>
-      ),
-      content: (
-        <Stack gap={3} fullwidth>
-          {/* <Text size={0} shade="muted">
-            {meta.description}
-          </Text> */}
-          <Table
-            striped
-            bordered
-            items={categoryProps.map((prop) => ({
-              propName: prop.name,
-              type: <CodeInline>{prop.type}</CodeInline>,
-              cssProperty: (
-                <Text shade="muted" family="mono" size={-1}>
-                  {getCssProperty(prop.name) ?? prop.description}
-                </Text>
-              ),
-            }))}
-            columns={["prop", "type", "cssProperty"]}
-            formatHeader={(key) => {
-              const headers: Record<string, string> = {
-                prop: "Prop",
-                type: "Type",
-                cssProperty: "CSS Property",
-              };
-              return headers[key as string] || key;
-            }}
-            actions={{
-              primary: [
-                {
-                  icon: SiMdnwebdocs,
-                  tooltip: "View MDN docs",
-                  wrapper: (button, item) => {
-                    const url = getMdnUrl(item.propName);
-                    return url ? (
-                      <Link href={url} target="_blank">
-                        {button}
-                      </Link>
-                    ) : (
-                      button
-                    );
-                  },
-                },
-              ],
-            }}
-          />
-        </Stack>
-      ),
-    };
-  });
+      }
+    >
+      <Stack gap={4} py={3}>
+        {availableCategories.map((categoryKey) => {
+          const categoryProps = byCategory[categoryKey];
+          const meta = STYLE_CATEGORY_META[categoryKey];
 
-  return (
-    <Card title="Style props" fullwidth mt={8}>
-      <Accordion
-        items={categoryItems}
-        multiple
-        RootProps={{
-          fullwidth: true,
-          ghost: true,
-          style: { backgroundColor: "var(--shade-background)" },
-        }}
-      />
-    </Card>
+          if (categoryKey === "toggle") {
+            return (
+              <Stack key={categoryKey} gap={2}>
+                <Text size={0} weight="bold">
+                  {meta.label}
+                </Text>
+                <Text size={-1} shade="muted">
+                  {meta.description}
+                </Text>
+                {categoryProps.map((prop) => (
+                  <Box key={prop.name} bb={1}>
+                    <Group gap={3} ay="center">
+                      <Text size={0} weight="bold" mono>
+                        {prop.name}
+                      </Text>
+                      <Text size={-1} shade="muted" mono>
+                        boolean
+                      </Text>
+                    </Group>
+                  </Box>
+                ))}
+              </Stack>
+            );
+          }
+
+          return (
+            <Stack key={categoryKey} gap={2}>
+              <Text size={0} weight="bold">
+                {meta.label}
+              </Text>
+              <Text size={-1} shade="muted">
+                {meta.description}
+              </Text>
+              <Group gap={2} style={{ flexWrap: "wrap" }}>
+                {categoryProps.map((prop) => (
+                  <CodeInline key={prop.name}>{prop.name}</CodeInline>
+                ))}
+              </Group>
+            </Stack>
+          );
+        })}
+      </Stack>
+    </Collapsible>
   );
+}
+
+function getSlotName(propName: string): string {
+  return propName.replace(/Props$/, "");
 }
 
 function SubcomponentPropsSection({ props }: { props: PropDocumentation[] }) {
   if (props.length === 0) return null;
 
   return (
-    <Stack gap={3}>
-      <Text size={0} shade="muted">
-        Forward props to internal subcomponents:
-      </Text>
-      <Group gap={2} style={{ flexWrap: "wrap" }}>
+    <Collapsible
+      trigger={
+        <Group gap={3} ay="center">
+          <Text size={0} weight="bold">
+            Slot Props
+          </Text>
+          <Text size={-1} shade="muted">
+            {props.length}
+          </Text>
+        </Group>
+      }
+    >
+      <Box py={3}>
         {props.map((prop) => (
-          <CodeInline key={prop.name}>{prop.name}</CodeInline>
+          <Box key={prop.name} bb={1}>
+            <Stack gap={2}>
+              <Text size={0} weight="bold" mono>
+                {prop.name}
+              </Text>
+              <Text size={0} shade="muted">
+                {prop.description ||
+                  `Forwarded to the internal ${getSlotName(prop.name)} element`}
+              </Text>
+            </Stack>
+          </Box>
         ))}
-      </Group>
-    </Stack>
+      </Box>
+    </Collapsible>
   );
 }
 
@@ -270,70 +256,13 @@ export const PropsTable = ({ props }: PropsTableProps) => {
   }
 
   const categorized = categorizeProps(props);
-  const hasMultipleCategories =
-    [categorized.core, categorized.style, categorized.subcomponent].filter(
-      (arr) => arr.length > 0,
-    ).length > 1;
 
-  if (!hasMultipleCategories) {
-    if (categorized.core.length > 0) {
-      return <CorePropsSection props={categorized.core} />;
-    }
-    if (categorized.style.length > 0) {
-      return <StylePropsSection props={categorized.style} />;
-    }
-    if (categorized.subcomponent.length > 0) {
-      return <SubcomponentPropsSection props={categorized.subcomponent} />;
-    }
-  }
-
-  const items = [];
-
-  if (categorized.core.length > 0) {
-    items.push({
-      value: "core",
-      trigger: (
-        <Group gap={3} ay="center">
-          <Text weight="bold">Props</Text>
-          <Text size={-1} shade="muted">
-            {categorized.core.length}
-          </Text>
-        </Group>
-      ),
-      content: <CorePropsSection props={categorized.core} />,
-    });
-  }
-
-  if (categorized.style.length > 0) {
-    items.push({
-      value: "style",
-      trigger: (
-        <Group gap={3} ay="center">
-          <Text weight="bold">Style Props</Text>
-          <Text size={-1} shade="muted">
-            {categorized.style.length}
-          </Text>
-        </Group>
-      ),
-      content: <StylePropsSection props={categorized.style} />,
-    });
-  }
-
-  if (categorized.subcomponent.length > 0) {
-    items.push({
-      value: "subcomponent",
-      trigger: (
-        <Group gap={3} ay="center">
-          <Text weight="bold">Slot Props</Text>
-          <Text size={-1} shade="muted">
-            {categorized.subcomponent.length}
-          </Text>
-        </Group>
-      ),
-      content: <SubcomponentPropsSection props={categorized.subcomponent} />,
-    });
-  }
-
-  return <Accordion items={items} defaultValue={["core"]} multiple fullwidth />;
+  return (
+    <Stack gap={4} fullwidth>
+      <CorePropsSection props={categorized.core} />
+      <StylePropsSection props={categorized.style} />
+      <SubcomponentPropsSection props={categorized.subcomponent} />
+    </Stack>
+  );
 };
 PropsTable.displayName = "PropsTable";
