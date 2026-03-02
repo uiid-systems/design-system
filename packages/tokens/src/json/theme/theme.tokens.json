@@ -6,6 +6,10 @@
     "white": { "$value": "{color.white}" },
     "black": { "$value": "{color.black}" },
     "primary": { "$value": "{color.red}" },
-    "secondary": { "$value": "{color.purple}" }
+    "secondary": { "$value": "{color.purple}" },
+    "positive": { "$value": "{color.green}" },
+    "warning": { "$value": "{color.yellow}" },
+    "critical": { "$value": "{color.red}" },
+    "info": { "$value": "{color.blue}" }
   }
 }
