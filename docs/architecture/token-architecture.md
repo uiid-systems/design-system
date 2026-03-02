@@ -474,6 +474,67 @@ provide backwards-compatible paths.
 - Generator gains adapter pattern (CSS adapter first)
 - Naming conventions normalized to kebab-case throughout
 
+## Theme Tier
+
+The `theme/` tier sits between primitives and semantic tokens. It provides runtime
+customization — the values consumers override to rebrand or adapt the system.
+
+### Purpose
+
+Theme tokens are the **public customization API** for the design system. They let
+consumers change brand colors and tone colors without touching primitives or semantic
+tokens. Semantic tokens reference theme tokens, which reference primitives:
+
+```
+primitives/colors → theme/ → semantic/ → component/
+   {color.red}   → {theme.primary} → {tone.critical} → {button.danger-bg}
+```
+
+### Auto-generation rule
+
+Every token added to `theme.tokens.json` automatically gets three derived variants
+via the generator:
+
+| Variant        | Formula                                                  |
+|----------------|----------------------------------------------------------|
+| `-surface`     | `color-mix(in oklch, var(--theme-X), var(--shade-background) 75%)` |
+| `-border`      | `color-mix(in oklch, var(--theme-X), var(--shade-background) 60%)` |
+| `-foreground`  | `color-mix(in oklch, var(--theme-X), var(--shade-foreground) 40%)` |
+
+Adding `"positive": { "$value": "{color.green}" }` to the theme file produces
+`--theme-positive`, `--theme-positive-surface`, `--theme-positive-border`, and
+`--theme-positive-foreground` automatically.
+
+### The `data-theme` CSS hook
+
+The token system declares `color-scheme: light dark` on `:root` and provides
+attribute-based overrides in `globals.css`:
+
+```css
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+```
+
+Setting `data-theme` on `<html>` forces the color scheme, which causes all
+`light-dark()` CSS functions in the token system to resolve to the forced mode.
+When no `data-theme` is set, the system follows the OS preference.
+
+### Invariant
+
+All theme token values **must** alias a `{color.*}` primitive — never a raw hex.
+This ensures the palette is the single source of truth for actual color values.
+
+```json
+// ✅ Correct
+"primary": { "$value": "{color.red}" }
+
+// ❌ Wrong — raw hex bypasses the palette
+"secondary": { "$value": "#6F00FF" }
+```
+
+---
+
 ## Open questions
 
 1. **Package export paths:** When token files move into tier subdirectories, should we
