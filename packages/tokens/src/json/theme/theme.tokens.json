@@ -6,6 +6,6 @@
     "white": { "$value": "{color.white}" },
     "black": { "$value": "{color.black}" },
     "primary": { "$value": "{color.red}" },
-    "secondary": { "$value": "#6F00FF" }
+    "secondary": { "$value": "{color.purple}" }
   }
 }
