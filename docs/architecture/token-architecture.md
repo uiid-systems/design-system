@@ -533,6 +533,48 @@ This ensures the palette is the single source of truth for actual color values.
 "secondary": { "$value": "#6F00FF" }
 ```
 
+## Consumer Theming
+
+Consumers can customize UIID's visual identity by overriding theme tokens on `:root`.
+No need to touch semantic or component tokens — the cascade handles it.
+
+### Brand colors
+
+Override `--theme-primary` and `--theme-secondary` to set brand colors.
+The surface/border/foreground variants auto-update via `color-mix()`:
+
+```css
+:root {
+  --theme-primary: oklch(0.65 0.25 145);   /* custom green primary */
+  --theme-secondary: oklch(0.55 0.20 280); /* custom purple secondary */
+}
+```
+
+### Tone colors
+
+Override `--theme-positive`, `--theme-warning`, `--theme-critical`, and
+`--theme-info` to customize status colors:
+
+```css
+:root {
+  --theme-positive: oklch(0.72 0.20 155);
+  --theme-critical: oklch(0.55 0.28 25);
+}
+```
+
+### Light/dark mode
+
+Set `data-theme` on `<html>` to force a color scheme:
+
+- `data-theme="light"` — force light mode
+- `data-theme="dark"` — force dark mode
+- No attribute — follow system preference (default)
+
+Both apps include a `ThemeToggle` component that manages this attribute
+and persists the choice to `localStorage` under the key `"uiid-theme"`.
+A flash-prevention `<script>` in `<head>` restores the preference before
+first paint.
+
 ---
 
 ## Open questions
