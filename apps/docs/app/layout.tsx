@@ -50,7 +50,7 @@ export default function RootLayout({
                     uiid docs
                   </Text>
                 </Group>
-                <List items={navItems} LinkComponent={Link} pb={12} />
+                <List items={navItems} LinkComponent={Link} px={4} pb={36} />
               </Stack>
             </Stack>
             <Stack br={1} className="flex-1 max-w-4xl">
