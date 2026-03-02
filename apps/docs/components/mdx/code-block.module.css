@@ -40,14 +40,24 @@
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-/* Light mode support */
+/* System-default light (only when no data-theme is forced) */
 @media (prefers-color-scheme: light) {
-  .shiki-theme :global(.shiki),
-  .shiki-theme :global(.shiki span) {
+  :root:not([data-theme]) .shiki-theme :global(.shiki),
+  :root:not([data-theme]) .shiki-theme :global(.shiki span) {
     color: var(--shiki-light) !important;
     background-color: var(--shiki-light-bg, transparent) !important;
     font-style: var(--shiki-light-font-style) !important;
     font-weight: var(--shiki-light-font-weight) !important;
     text-decoration: var(--shiki-light-text-decoration) !important;
   }
+}
+
+/* Forced light via toggle */
+:root[data-theme="light"] .shiki-theme :global(.shiki),
+:root[data-theme="light"] .shiki-theme :global(.shiki span) {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg, transparent) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
 }
