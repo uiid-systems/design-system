@@ -174,6 +174,30 @@ class TokenGenerator {
   }
 
   /**
+   * Apply overrides to the registry. Each entry in the overrides Map replaces
+   * the corresponding token's $value (and clears any derive extension so
+   * the static hex is used directly).
+   *
+   * @param {Map<string, string>} overrides - Map of dot-path → hex value
+   */
+  applyOverrides(overrides) {
+    for (const [tokenPath, hexValue] of overrides) {
+      const existing = this.registry.get(tokenPath);
+      if (existing) {
+        // Replace value and remove derive extension so resolveToHexPair
+        // treats this as a plain hex token
+        existing.$value = hexValue;
+        if (existing.$extensions?.["org.uiid.derive"]) {
+          delete existing.$extensions["org.uiid.derive"];
+        }
+      } else {
+        // Create a new entry if it doesn't exist
+        this.registry.set(tokenPath, { $value: hexValue });
+      }
+    }
+  }
+
+  /**
    * Recursively discover all JSON files in the tokens directory
    */
   discoverJsonFiles(dir, relativePath = "") {

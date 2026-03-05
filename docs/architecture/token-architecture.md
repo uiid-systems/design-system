@@ -575,6 +575,59 @@ and persists the choice to `localStorage` under the key `"uiid-theme"`.
 A flash-prevention `<script>` in `<head>` restores the preference before
 first paint.
 
+## Build-Time User Theming
+
+Consumers can generate a complete CSS override file from a simple JSON input.
+This uses the same `resolveToHexPair()` + `computeColorMix()` pipeline as the
+default token build, ensuring shade and tone derivations are identical.
+
+### Input schema
+
+```json
+{
+  "name": "Ocean",
+  "white": "#f0f4f8",
+  "black": "#0a1628",
+  "primary": "#0077cc",
+  "secondary": "#6b5ce7",
+  "positive": "#00c565",
+  "warning": "#e8b700",
+  "critical": "#f9262a",
+  "info": "#347eff"
+}
+```
+
+Required: `name`, `white`, `black`, `primary`, `secondary`.
+Optional: `positive`, `warning`, `critical`, `info` (fall back to default palette).
+
+The schema is defined in `packages/tokens/src/schema/theme-input.ts` using Zod
+and exported via `@uiid/tokens/schema`.
+
+### How it works
+
+1. `scripts/generate-theme.js` reads the theme JSON and validates it
+2. Builds the full token registry from the default JSON files
+3. Applies user hex values as overrides (theme tokens + backing color primitives)
+4. Walks all tokens with `org.uiid.derive` extensions that transitively depend
+   on overridden values
+5. Re-derives each using `resolveToHexPair()` to get pre-computed hex pairs
+6. Emits a `:root {}` CSS block (unlayered — beats layered styles in the cascade)
+
+### Why build-time
+
+- **No runtime `color-mix()` expansion needed** — shades and tones are static
+  `light-dark(#hex, #hex)` values, identical to the default build output
+- **Single CSS file** — drop it after `globals.css` and the override takes effect
+- **Round-trip validated** — generating a theme with the default palette produces
+  hex values matching the existing `shade.tokens.css` exactly
+
+### Future: runtime theming
+
+The build-time approach could be complemented by a runtime option that uses
+`color-mix()` for shade/tone variants (the `--theme-*-surface/border/foreground`
+properties already use `color-mix()` today). This would allow live previews
+without a build step, at the cost of browser support constraints.
+
 ---
 
 ## Open questions

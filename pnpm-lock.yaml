@@ -1790,6 +1790,10 @@ importers:
         version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.0.16)(happy-dom@20.6.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
 
   packages/tokens:
+    dependencies:
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
     devDependencies:
       '@storybook/react-vite':
         specifier: ^10.2.3
@@ -8711,6 +8715,9 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
+
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
@@ -16425,6 +16432,8 @@ snapshots:
   zod-validation-error@4.0.2(zod@4.3.6):
     dependencies:
       zod: 4.3.6
+
+  zod@3.25.76: {}
 
   zod@4.3.6: {}
 

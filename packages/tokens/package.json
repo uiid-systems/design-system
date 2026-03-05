@@ -26,6 +26,7 @@
   ],
   "exports": {
     "./globals.css": "./src/globals.css",
+    "./schema": "./src/schema/index.ts",
     "./*": "./src/css/*"
   },
   "files": [
@@ -41,8 +42,12 @@
     "lint": "echo 'No linting for CSS tokens'",
     "lint:tokens": "ajv validate -s dtcg.schema.json -d 'src/json/**/*.tokens.json'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\"",
+    "build:theme": "node ../../scripts/generate-theme.js",
     "figma:preview": "DRY_RUN=true node ./scripts/sync-to-figma.js",
     "figma:sync": "node ./scripts/sync-to-figma.js"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.2.3",
