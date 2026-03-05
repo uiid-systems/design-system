@@ -10,6 +10,7 @@
     "item": {
       "padding-x": { "$value": "0.5rem", "$type": "dimension" },
       "padding-y": { "$value": "0.5rem", "$type": "dimension" }
-    }
+    },
+    "icon-size": { "$value": "0.75rem", "$type": "dimension" }
   }
 }

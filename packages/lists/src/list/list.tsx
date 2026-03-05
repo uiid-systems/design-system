@@ -7,7 +7,7 @@ import { ListItem, ListItemGroup } from "./subcomponents";
 export const List = ({
   type = "none",
   direction = "column",
-  variant,
+  line,
   items,
   children,
   LinkComponent,
@@ -16,11 +16,11 @@ export const List = ({
   const ListElement = type === "ordered" ? <ol /> : <ul />;
 
   const sharedProps = {
-    className: styles["list"],
     "data-slot": "list",
     "data-type": type,
     "data-direction": direction,
-    "data-variant": variant,
+    "data-line": line ? "true" : undefined,
+    className: styles["list"],
     ...props,
   };
 
@@ -36,10 +36,11 @@ export const List = ({
       }}
     >
       {items
-        ? items.map((item) =>
+        ? items.map((item, index) =>
             "items" in item ? (
               <ListItemGroup
-                key={item.category}
+                data-line
+                key={`${item.category ?? "group"}-${index}`}
                 LinkComponent={LinkComponent}
                 {...item}
               />

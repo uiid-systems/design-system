@@ -29,10 +29,6 @@
   }
 }
 
-.list-item-group {
-  padding: var(--list-padding-y) var(--list-padding-x);
-}
-
 .list-item-group-collapsible-trigger {
   border: none;
   background-color: transparent;
@@ -62,6 +58,10 @@
   }
 }
 
+.list-item-group svg {
+  width: var(--list-icon-size);
+}
+
 .list-item-group-category {
   min-height: var(--list-group-category-minHeight);
   align-content: center;
@@ -77,6 +77,12 @@
 
   a {
     color: var(--shade-foreground);
+  }
+
+  [data-line] & {
+    margin-inline-start: 0.75rem;
+    border-inline-start: var(--globals-border-width) solid var(--globals-border-color);
+    padding-inline-start: 0.125rem;
   }
 }
 
@@ -95,13 +101,13 @@
   }
 
   svg {
-    width: var(--globals-icon-size);
+    width: var(--list-icon-size);
   }
 }
 
 .list-text-label {
   display: list-item;
-  min-height: var(--globals-icon-size);
+  min-height: var(--list-icon-size);
   align-content: center;
 
   :is(ol) &::marker {
