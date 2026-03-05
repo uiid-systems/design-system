@@ -44,30 +44,30 @@ describe("generate-theme", () => {
 
     const { css } = await generateTheme(inputPath, outputPath);
 
-    // Read existing shade CSS from build output
-    const existingShade = fs.readFileSync(
-      path.join(ROOT, "packages/tokens/src/css/semantic/shade.tokens.css"),
-      "utf8"
-    );
+    // Build a fresh generator with default JSON to get expected values
+    const TokenGenerator = (
+      await import(path.join(ROOT, "scripts/generate-tokens.js"))
+    ).default;
+    const gen = new TokenGenerator({ force: true });
+    const jsonFiles = gen.discoverJsonFiles(gen.jsonDir);
+    gen.buildRegistry(jsonFiles);
 
-    // Extract shade-N values from both
-    const extractShades = (text: string) => {
-      const map = new Map<string, string>();
-      const re = /--shade-(\d+):\s*(light-dark\([^)]+\))/g;
-      let m;
-      while ((m = re.exec(text))) {
-        map.set(`shade-${m[1]}`, m[2]);
-      }
-      return map;
-    };
+    // Verify each shade-N in the generated CSS matches the default registry
+    const re = /--shade-(\d+):\s*(light-dark\(([^,]+),\s*([^)]+)\))/g;
+    let m;
+    let count = 0;
+    while ((m = re.exec(css))) {
+      const shadeKey = `shade.${m[1]}`;
+      const generatedLight = m[3].trim();
+      const generatedDark = m[4].trim();
 
-    const generated = extractShades(css);
-    const existing = extractShades(existingShade);
-
-    expect(generated.size).toBeGreaterThan(0);
-    for (const [key, value] of generated) {
-      expect(value).toBe(existing.get(key));
+      // Resolve the same token from the unmodified registry
+      const expected = gen.resolveToHexPair(`{${shadeKey}}`);
+      expect(generatedLight).toBe(expected.light);
+      expect(generatedDark).toBe(expected.dark);
+      count++;
     }
+    expect(count).toBe(12);
   });
 
   it("produces different values for a custom palette", async () => {
