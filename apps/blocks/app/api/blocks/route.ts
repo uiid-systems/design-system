@@ -1,16 +1,19 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 
-import { blocks, slugify } from "@uiid/blocks";
+import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
+
+import { getDefaultManager } from "../../../lib/sources";
 
 const BLOCKS_DIR = join(process.cwd(), "blocks");
 
 /**
- * GET /api/blocks — List all block files from the @uiid/blocks package.
+ * GET /api/blocks — List all blocks from configured sources.
  */
 export async function GET() {
-  const allBlocks = Object.values(blocks);
+  const manager = getDefaultManager();
+  const allBlocks = await manager.list();
   allBlocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return Response.json(allBlocks);
 }
