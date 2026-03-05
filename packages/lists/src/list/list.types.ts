@@ -33,6 +33,7 @@ export type ListItemOrGroup = ListItemProps | ListItemGroupProps;
 
 export type ListItemGroupProps = {
   category?: string;
+  description?: string;
   collapsible?: boolean;
   icon?: Icon;
   items: ListItemOrGroup[];
@@ -42,7 +43,7 @@ export type ListItemGroupProps = {
 
 type BaseListProps = Omit<BoxProps, "ax" | "ay" | "direction"> & {
   type?: "ordered" | "unordered" | "none";
-  variant?: "line";
+  line?: boolean;
   items?: ListItemOrGroup[];
   /** Custom link component passed to all items (e.g., Next.js Link, React Router Link) */
   LinkComponent?: LinkComponent;
