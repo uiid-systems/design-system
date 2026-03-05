@@ -2,16 +2,16 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "dark" | "system";
 
 const STORAGE_KEY = "uiid-theme";
 
-function getSnapshot(): Theme | null {
-  return (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? null;
+function getSnapshot(): Theme {
+  return (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
 }
 
-function getServerSnapshot(): Theme | null {
-  return null;
+function getServerSnapshot(): Theme {
+  return "system";
 }
 
 function subscribe(callback: () => void): () => void {
@@ -22,26 +22,28 @@ function subscribe(callback: () => void): () => void {
   return () => window.removeEventListener("storage", handler);
 }
 
+function applyTheme(theme: Theme) {
+  if (theme === "system") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+}
+
 export function useTheme() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const toggleTheme = useCallback(() => {
-    const current = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    let next: Theme;
-    if (current) {
-      next = current === "light" ? "dark" : "light";
+  const setTheme = useCallback((next: Theme) => {
+    if (next === "system") {
+      localStorage.removeItem(STORAGE_KEY);
     } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
-      next = prefersDark ? "light" : "dark";
+      localStorage.setItem(STORAGE_KEY, next);
     }
-    localStorage.setItem(STORAGE_KEY, next);
-    document.documentElement.setAttribute("data-theme", next);
+    applyTheme(next);
     window.dispatchEvent(
       new StorageEvent("storage", { key: STORAGE_KEY, newValue: next }),
     );
   }, []);
 
-  return { theme, toggleTheme } as const;
+  return { theme, setTheme } as const;
 }

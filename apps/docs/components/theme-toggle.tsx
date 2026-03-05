@@ -1,26 +1,32 @@
 "use client";
 
-import { ToggleButton } from "@uiid/buttons";
-import { Moon, Sun } from "@uiid/icons";
+import { Toggle, ToggleGroup } from "@uiid/interactive";
+import { Monitor, Moon, Sun } from "@uiid/icons";
 
 import { useTheme } from "@/lib/use-theme";
 
 export const ThemeToggle = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <ToggleButton
-      pressed={theme === "light"}
-      onPressedChange={toggleTheme}
-      icon={{
-        pressed: <Sun />,
-        unpressed: <Moon />,
+    <ToggleGroup
+      value={[theme]}
+      onValueChange={(value) => {
+        const next = value[0] as "light" | "dark" | "system";
+        if (next) setTheme(next);
       }}
-      variant="ghost"
-      size="xsmall"
-      shape="square"
-      tooltip={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-    />
+      size="sm"
+    >
+      <Toggle value="light" aria-label="Light mode">
+        <Sun />
+      </Toggle>
+      <Toggle value="system" aria-label="System theme">
+        <Monitor />
+      </Toggle>
+      <Toggle value="dark" aria-label="Dark mode">
+        <Moon />
+      </Toggle>
+    </ToggleGroup>
   );
 };
 ThemeToggle.displayName = "ThemeToggle";
