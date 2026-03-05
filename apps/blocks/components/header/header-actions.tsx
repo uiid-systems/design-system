@@ -15,6 +15,7 @@ import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
 import { StatsSheet } from "../stats-sheet";
+import { ThemeToggle } from "./theme-toggle";
 
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
@@ -73,6 +74,7 @@ export const HeaderActions = () => {
 
       {/* Navigation — always visible */}
       <Group gap={1}>
+        <ThemeToggle />
         <Button
           render={<Link href="/registry" />}
           tooltip="Browse block registry"
