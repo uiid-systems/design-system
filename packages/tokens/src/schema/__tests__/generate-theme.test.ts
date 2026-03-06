@@ -52,6 +52,11 @@ describe("generate-theme", () => {
     const jsonFiles = gen.discoverJsonFiles(gen.jsonDir);
     gen.buildRegistry(jsonFiles);
 
+    // Count shade tokens in the registry to avoid a magic number
+    const shadeKeys = [...gen.registry.keys()].filter((k) =>
+      /^shade\.\d+$/.test(k)
+    );
+
     // Verify each shade-N in the generated CSS matches the default registry
     const re = /--shade-(\d+):\s*(light-dark\(([^,]+),\s*([^)]+)\))/g;
     let m;
@@ -67,7 +72,7 @@ describe("generate-theme", () => {
       expect(generatedDark).toBe(expected.dark);
       count++;
     }
-    expect(count).toBe(12);
+    expect(count).toBe(shadeKeys.length);
   });
 
   it("produces different values for a custom palette", async () => {

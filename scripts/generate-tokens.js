@@ -184,14 +184,14 @@ class TokenGenerator {
     for (const [tokenPath, hexValue] of overrides) {
       const existing = this.registry.get(tokenPath);
       if (existing) {
-        // Replace value and remove derive extension so resolveToHexPair
-        // treats this as a plain hex token
-        existing.$value = hexValue;
-        if (existing.$extensions?.["org.uiid.derive"]) {
-          delete existing.$extensions["org.uiid.derive"];
+        // Clone before mutating so the original token object is not corrupted
+        const clone = JSON.parse(JSON.stringify(existing));
+        clone.$value = hexValue;
+        if (clone.$extensions?.["org.uiid.derive"]) {
+          delete clone.$extensions["org.uiid.derive"];
         }
+        this.registry.set(tokenPath, clone);
       } else {
-        // Create a new entry if it doesn't exist
         this.registry.set(tokenPath, { $value: hexValue });
       }
     }
