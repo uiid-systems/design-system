@@ -22,6 +22,7 @@ import {
 } from "../packages/tokens/src/schema/theme-input.ts";
 import { buildOverrides, collectDerivedOverrides } from "./theme/overrides.js";
 import { generateCss } from "./theme/css.js";
+import { validateThemeContrast } from "./theme/validate.js";
 
 // --- CLI argument parsing ---
 
@@ -98,11 +99,24 @@ export async function generateTheme(inputPath, outputPath, options = {}) {
     fs.writeFileSync(outputPath, css, "utf8");
   }
 
+  // 8. Validate contrast
+  const warnings = await validateThemeContrast(theme, TokenGenerator);
+
   const label = dryRun ? "(dry run)" : `→ ${outputPath}`;
   console.log(`Theme "${theme.name}" ${label}`);
   console.log(`  ${directOverrides.size} direct overrides, ${derivedOverrides.size} derived tokens`);
 
-  return { directOverrides, derivedOverrides, css };
+  if (warnings.length > 0) {
+    console.log(`  ${warnings.length} contrast warning(s):`);
+    for (const w of warnings) {
+      const icon = w.level === "error" ? "✗" : "!";
+      console.log(`    ${icon} ${w.message}`);
+    }
+  } else {
+    console.log("  All contrast checks passed");
+  }
+
+  return { directOverrides, derivedOverrides, css, warnings };
 }
 
 // Execute if run directly

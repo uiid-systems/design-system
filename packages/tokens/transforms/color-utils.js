@@ -118,7 +118,7 @@ export function oklchToHex(l, c, h) {
 /**
  * Parse hex to sRGB [0-1]
  */
-function hexToSrgb(hex) {
+export function hexToSrgb(hex) {
   const match = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
   if (!match) throw new Error(`Invalid hex: ${hex}`);
   return [
