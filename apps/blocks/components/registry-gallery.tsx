@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Card } from "@uiid/cards";
@@ -10,7 +11,7 @@ import { Text } from "@uiid/typography";
 
 import { countComponents } from "@uiid/registry";
 
-import type { BlockFile } from "@/lib/block-file";
+import type { BlockFile, BlockFileWithSource } from "@/lib/block-file";
 import { useChatStore } from "@/lib/store";
 import { useRegistryBlocks } from "@/lib/use-registry-blocks";
 
@@ -67,7 +68,11 @@ export const RegistryGallery = () => {
           No blocks yet
         </Text>
         <Text shade="muted">
-          Use the AI assistant to generate blocks, or create one manually.
+          Use the AI assistant to generate blocks, or{" "}
+          <Link href="/settings" className={styles.settingsLink}>
+            configure a block source
+          </Link>{" "}
+          to get started.
         </Text>
       </Stack>
     );
@@ -164,9 +169,14 @@ export const RegistryGallery = () => {
                       {cc.total} elements · {cc.unique} types
                     </Text>
                   )}
-                  <Text size={-1} shade="muted">
-                    {formatDate(block.updatedAt)}
-                  </Text>
+                  <Group gap={2} ay="center">
+                    {hasSource(block) && (
+                      <Badge size="small">{block._source}</Badge>
+                    )}
+                    <Text size={-1} shade="muted">
+                      {formatDate(block.updatedAt)}
+                    </Text>
+                  </Group>
                 </Group>
               </Stack>
             </Card>
@@ -195,6 +205,10 @@ function getComponentTypes(block: BlockFile): string[] {
   } catch {
     return [];
   }
+}
+
+function hasSource(block: BlockFile): block is BlockFileWithSource {
+  return "_source" in block && typeof (block as BlockFileWithSource)._source === "string";
 }
 
 function formatDate(iso: string): string {

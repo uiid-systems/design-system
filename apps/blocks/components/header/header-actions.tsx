@@ -9,6 +9,7 @@ import {
   CopyIcon,
   SquareCheckIcon,
   PackageIcon,
+  SettingsIcon,
 } from "@uiid/icons";
 import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
@@ -83,6 +84,14 @@ export const HeaderActions = () => {
         >
           <PackageIcon />
           Registry
+        </Button>
+        <Button
+          render={<Link href="/settings" />}
+          tooltip="Configure block sources"
+          size="small"
+          variant="ghost"
+        >
+          <SettingsIcon />
         </Button>
       </Group>
     </Group>

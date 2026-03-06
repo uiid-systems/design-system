@@ -1,16 +1,17 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 
-import { blocks, slugify } from "@uiid/blocks";
+import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
 
-const BLOCKS_DIR = join(process.cwd(), "blocks");
+import { createManagerFromConfig, getWritableSourcePath } from "../../../lib/sources";
 
 /**
- * GET /api/blocks — List all block files from the @uiid/blocks package.
+ * GET /api/blocks — List all blocks from configured sources.
  */
 export async function GET() {
-  const allBlocks = Object.values(blocks);
+  const manager = await createManagerFromConfig();
+  const allBlocks = await manager.list();
   allBlocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return Response.json(allBlocks);
 }
@@ -20,13 +21,21 @@ export async function GET() {
  */
 export async function POST(req: Request) {
   try {
+    const writePath = await getWritableSourcePath();
+    if (!writePath) {
+      return Response.json(
+        { error: "No writable source configured. Add a local source with mode \"read-write\" in blocks.config.json." },
+        { status: 400 },
+      );
+    }
+
     const body = (await req.json()) as BlockFile;
 
     if (!body.name || !body.tree) {
       return Response.json({ error: "name and tree are required" }, { status: 400 });
     }
 
-    const slug = body.slug || slugify(body.name);
+    const slug = slugify(body.slug || body.name);
     const block: BlockFile = {
       name: body.name,
       slug,
@@ -42,8 +51,8 @@ export async function POST(req: Request) {
       updatedAt: new Date().toISOString(),
     };
 
-    await mkdir(BLOCKS_DIR, { recursive: true });
-    const filePath = join(BLOCKS_DIR, `${slug}.json`);
+    await mkdir(writePath, { recursive: true });
+    const filePath = join(writePath, `${slug}.json`);
     await writeFile(filePath, JSON.stringify(block, null, 2) + "\n", "utf-8");
 
     return Response.json(block, { status: 201 });
