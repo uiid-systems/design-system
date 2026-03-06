@@ -10,6 +10,6 @@ export type InputVariants = VariantProps<typeof inputVariants>;
 
 export type InputProps = Omit<Input.Props, "size"> & {
   FieldProps?: FieldProps;
-  ref?: React.RefObject<HTMLInputElement>;
+  ref?: React.Ref<HTMLInputElement>;
 } & Pick<FieldProps, "label" | "description"> &
   InputVariants;
