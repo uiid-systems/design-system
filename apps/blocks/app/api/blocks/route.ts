@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "name and tree are required" }, { status: 400 });
     }
 
-    const slug = body.slug || slugify(body.name);
+    const slug = slugify(body.slug || body.name);
     const block: BlockFile = {
       name: body.name,
       slug,
