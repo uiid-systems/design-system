@@ -18,3 +18,6 @@
   @import "@uiid/overlays/globals.css";
   @import "@uiid/tables/globals.css";
 }
+
+/* Theme override — unlayered :root beats layered styles */
+@import "./ayu.theme.css";
