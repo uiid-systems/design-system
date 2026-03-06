@@ -571,3 +571,69 @@ Before outputting a tree, verify:
 - [ ] **Minimal element count** - don't create unnecessary wrapper elements
 - [ ] `$bindState` paths are absolute (start with `/`)
 - [ ] `$computed` expressions use valid operators
+
+---
+
+## Block Sources
+
+Blocks can be loaded from multiple sources, configured via `blocks.config.json` at the app root.
+
+### Configuration
+
+The config file is auto-generated on first run with default sources:
+
+```json
+{
+  "sources": [
+    {
+      "type": "bundled",
+      "label": "Built-in Blocks",
+      "mode": "read",
+      "enabled": true
+    },
+    {
+      "type": "local",
+      "path": "./blocks",
+      "label": "Local Blocks",
+      "mode": "read-write",
+      "enabled": true
+    }
+  ]
+}
+```
+
+### Source Types
+
+| Type | Description |
+| --- | --- |
+| `bundled` | Static blocks from the `@uiid/blocks` package (read-only) |
+| `local` | JSON files in a local directory |
+| `url` | Remote URL source (Phase 2 — not yet implemented) |
+
+### Source Entry Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `type` | `"bundled" \| "local" \| "url"` | Source type |
+| `path` | `string` | Directory path (local) or URL (url sources) |
+| `label` | `string` | Display name shown in the UI |
+| `mode` | `"read" \| "read-write"` | Whether blocks can be saved to this source |
+| `enabled` | `boolean` | Whether this source is active |
+
+### Priority Resolution
+
+Sources are checked in array order. When multiple sources contain a block with the same slug, the first source wins. Reorder sources in the settings UI or config file to change priority.
+
+### API Endpoints
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/api/blocks` | List all blocks from all enabled sources |
+| `GET` | `/api/blocks/[slug]` | Get a single block by slug |
+| `POST` | `/api/blocks` | Save a block to the first `read-write` source |
+| `GET` | `/api/config` | Read the current source configuration |
+| `PUT` | `/api/config` | Update the source configuration |
+
+### Settings UI
+
+Access source settings from the gear icon in the header. From there you can add, remove, reorder, enable/disable, and configure sources. Changes persist immediately to `blocks.config.json`.
