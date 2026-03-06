@@ -139,3 +139,7 @@
   border-radius: 3px;
   background: var(--shade-halftone);
 }
+
+.settingsLink {
+  text-decoration: underline;
+}

@@ -3,10 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@uiid/buttons";
-import { Input } from "@uiid/forms";
-import { Select } from "@uiid/forms";
-import { Switch } from "@uiid/forms";
-import { Field } from "@uiid/forms";
+import { Field, Input, Select, Switch } from "@uiid/forms";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
@@ -66,6 +63,15 @@ export const SourceSettings = () => {
   };
 
   const updateSource = (index: number, updates: Partial<SourceEntry>) => {
+    if (!config) return;
+    const sources = config.sources.map((s, i) =>
+      i === index ? { ...s, ...updates } : s,
+    );
+    const updated = { ...config, sources };
+    setConfig(updated);
+  };
+
+  const updateAndSaveSource = (index: number, updates: Partial<SourceEntry>) => {
     if (!config) return;
     const sources = config.sources.map((s, i) =>
       i === index ? { ...s, ...updates } : s,
@@ -151,6 +157,7 @@ export const SourceSettings = () => {
             index={index}
             total={config.sources.length}
             onUpdate={(updates) => updateSource(index, updates)}
+            onSave={(updates) => updateAndSaveSource(index, updates)}
             onRemove={() => removeSource(index)}
             onMove={(dir) => moveSource(index, dir)}
             saving={saving}
@@ -172,6 +179,7 @@ type SourceCardProps = {
   index: number;
   total: number;
   onUpdate: (updates: Partial<SourceEntry>) => void;
+  onSave: (updates: Partial<SourceEntry>) => void;
   onRemove: () => void;
   onMove: (direction: "up" | "down") => void;
   saving: boolean;
@@ -182,6 +190,7 @@ const SourceCard = ({
   index,
   total,
   onUpdate,
+  onSave,
   onRemove,
   onMove,
   saving,
@@ -221,10 +230,11 @@ const SourceCard = ({
       </Group>
 
       <Group gap={4} ay="end">
-        <Field label="Label" style={{ flex: 1 }}>
+        <Field label="Label" className={styles.flexField}>
           <Input
             value={source.label}
             onChange={(e) => onUpdate({ label: e.target.value })}
+            onBlur={() => onSave({ label: source.label })}
             disabled={saving}
           />
         </Field>
@@ -234,7 +244,7 @@ const SourceCard = ({
             <Select
               value={source.type}
               onValueChange={(val) =>
-                onUpdate({ type: val as SourceEntry["type"] })
+                onSave({ type: val as SourceEntry["type"] })
               }
               disabled={saving}
             >
@@ -245,10 +255,11 @@ const SourceCard = ({
         )}
 
         {!isBundled && source.type === "local" && (
-          <Field label="Path" style={{ flex: 1 }}>
+          <Field label="Path" className={styles.flexField}>
             <Input
               value={source.path ?? ""}
               onChange={(e) => onUpdate({ path: e.target.value })}
+              onBlur={() => onSave({ path: source.path })}
               placeholder="./blocks"
               disabled={saving}
             />
@@ -261,7 +272,7 @@ const SourceCard = ({
           <Switch
             label="Enabled"
             checked={source.enabled}
-            onCheckedChange={(checked) => onUpdate({ enabled: checked })}
+            onCheckedChange={(checked) => onSave({ enabled: checked })}
             disabled={saving}
           />
           {!isBundled && (
@@ -269,7 +280,7 @@ const SourceCard = ({
               label="Writable"
               checked={source.mode === "read-write"}
               onCheckedChange={(checked) =>
-                onUpdate({ mode: checked ? "read-write" : "read" })
+                onSave({ mode: checked ? "read-write" : "read" })
               }
               disabled={saving}
             />

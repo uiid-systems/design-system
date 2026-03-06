@@ -19,6 +19,13 @@ export class LocalDirectorySource implements BlockSource {
   }
 
   async get(slug: string): Promise<BlockFile | null> {
+    try {
+      const raw = await readFile(join(this.dir, `${slug}.json`), "utf-8");
+      const parsed = JSON.parse(raw) as BlockFile;
+      if (parsed.name && parsed.slug && parsed.tree) return parsed;
+    } catch {
+      // File doesn't match slug name, fall through to full scan
+    }
     const files = await this.readJsonFiles();
     return files.find((f) => f.slug === slug) ?? null;
   }

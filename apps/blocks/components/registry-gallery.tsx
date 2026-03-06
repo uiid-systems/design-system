@@ -69,7 +69,7 @@ export const RegistryGallery = () => {
         </Text>
         <Text shade="muted">
           Use the AI assistant to generate blocks, or{" "}
-          <Link href="/settings" style={{ textDecoration: "underline" }}>
+          <Link href="/settings" className={styles.settingsLink}>
             configure a block source
           </Link>{" "}
           to get started.

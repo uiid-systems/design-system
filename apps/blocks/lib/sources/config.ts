@@ -48,7 +48,10 @@ export async function readConfig(): Promise<BlocksConfig> {
     const raw = await readFile(configPath, "utf-8");
     const parsed = JSON.parse(raw);
     return BlocksConfigSchema.parse(parsed);
-  } catch {
+  } catch (err: unknown) {
+    if (err instanceof Error && "code" in err && (err as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw err;
+    }
     await writeConfig(DEFAULT_CONFIG);
     return DEFAULT_CONFIG;
   }
