@@ -91,7 +91,7 @@ export const TreeNavigator = () => {
       style={{ overflowY: "auto" }}
       br={1}
     >
-      <List variant="line" items={items} />
+      <List line items={items} />
     </Stack>
   );
 };
