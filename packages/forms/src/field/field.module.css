@@ -1,3 +1,5 @@
+@import "@uiid/tokens/semantic/forms.tokens.css";
+
 .field-label-group {
   min-height: 1.2rem;
 }

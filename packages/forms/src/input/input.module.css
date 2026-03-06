@@ -1,3 +1,5 @@
+@import "@uiid/tokens/semantic/forms.tokens.css";
+
 .input {
   background-color: var(--forms-bg);
   border-width: var(--globals-border-width);
