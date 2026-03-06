@@ -8,6 +8,7 @@ import type { SourceEntry } from "./config";
 
 export type { BlockSource } from "./types";
 export { BlockSourceManager } from "./manager";
+export type { BlockFileWithSource } from "./manager";
 export { BundledSource } from "./bundled";
 export { LocalDirectorySource } from "./local-directory";
 export { readConfig, writeConfig, getWritableSourcePath, BlocksConfigSchema } from "./config";
