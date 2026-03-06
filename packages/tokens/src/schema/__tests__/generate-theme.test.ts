@@ -125,6 +125,24 @@ describe("generate-theme", () => {
     expect(fs.existsSync(outputPath)).toBe(true);
   });
 
+  it("generates ayu theme with no contrast errors", async () => {
+    const inputPath = path.join(
+      ROOT,
+      "packages/tokens/src/schema/examples/ayu.theme.json"
+    );
+    const outputPath = path.join(TMP_DIR, "ayu.theme.css");
+
+    const { warnings, css } = await generateTheme(inputPath, outputPath);
+
+    // No hard errors (ratio < 3:1)
+    const errors = warnings.filter((w: { level: string }) => w.level === "error");
+    expect(errors).toEqual([]);
+
+    // CSS was generated with overrides
+    expect(css).toContain("--theme-primary");
+    expect(css).toContain("--shade-1");
+  });
+
   it("rejects invalid input", async () => {
     const inputPath = writeTheme("invalid", {
       name: "",
