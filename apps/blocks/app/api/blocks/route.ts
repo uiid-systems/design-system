@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
 
-import { getDefaultManager } from "../../../lib/sources";
+import { createManagerFromConfig } from "../../../lib/sources";
 
 const BLOCKS_DIR = join(process.cwd(), "blocks");
 
@@ -12,7 +12,7 @@ const BLOCKS_DIR = join(process.cwd(), "blocks");
  * GET /api/blocks — List all blocks from configured sources.
  */
 export async function GET() {
-  const manager = getDefaultManager();
+  const manager = await createManagerFromConfig();
   const allBlocks = await manager.list();
   allBlocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return Response.json(allBlocks);

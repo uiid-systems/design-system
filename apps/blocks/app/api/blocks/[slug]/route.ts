@@ -1,4 +1,4 @@
-import { getDefaultManager } from "../../../../lib/sources";
+import { createManagerFromConfig } from "../../../../lib/sources";
 
 /**
  * GET /api/blocks/[slug] — Read a single block by slug from configured sources.
@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
-  const manager = getDefaultManager();
+  const manager = await createManagerFromConfig();
   const block = await manager.get(slug);
 
   if (!block) {
