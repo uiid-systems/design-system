@@ -1,0 +1,7 @@
+.page {
+  overflow-y: auto;
+}
+
+.card {
+  background: var(--color-surface);
+}
