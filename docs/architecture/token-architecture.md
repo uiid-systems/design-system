@@ -493,13 +493,15 @@ primitives/colors → theme/ → semantic/ → component/
 ### Auto-generation rule
 
 Every token added to `theme.tokens.json` automatically gets three derived variants
-via the generator:
+via the generator. These are resolved to static `light-dark(#hex, #hex)` values
+at build time — not runtime `color-mix()` — so they can be validated for contrast
+and behave identically to shade and tone tokens:
 
-| Variant        | Formula                                                  |
-|----------------|----------------------------------------------------------|
-| `-surface`     | `color-mix(in oklch, var(--theme-X), var(--shade-background) 75%)` |
-| `-border`      | `color-mix(in oklch, var(--theme-X), var(--shade-background) 60%)` |
-| `-foreground`  | `color-mix(in oklch, var(--theme-X), var(--shade-foreground) 40%)` |
+| Variant        | Derivation                                       | Output example                          |
+|----------------|--------------------------------------------------|-----------------------------------------|
+| `-surface`     | 25% theme color mixed with shade-background      | `light-dark(#ffd0c9, #411b17)`          |
+| `-border`      | 40% theme color mixed with shade-background      | `light-dark(#ffb5ab, #62211d)`          |
+| `-foreground`  | 60% theme color mixed with shade-foreground      | `light-dark(#922722, #ff8f82)`          |
 
 Adding `"positive": { "$value": "{color.green}" }` to the theme file produces
 `--theme-positive`, `--theme-positive-surface`, `--theme-positive-border`, and

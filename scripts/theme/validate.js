@@ -1,6 +1,15 @@
-import { hexToSrgb } from "../../packages/tokens/transforms/color-utils.js";
+import { hexToSrgb, computeColorMix } from "../../packages/tokens/transforms/color-utils.js";
 import { THEME_DEFAULTS } from "../../packages/tokens/src/schema/theme-input.ts";
 import { buildOverrides, collectDerivedOverrides } from "./overrides.js";
+
+/**
+ * Same variant recipes as TokenGenerator.colorVariants.
+ */
+const COLOR_VARIANTS = [
+  { suffix: "surface", mixToken: "shade.background", ratio: 0.25 },
+  { suffix: "border", mixToken: "shade.background", ratio: 0.40 },
+  { suffix: "foreground", mixToken: "shade.foreground", ratio: 0.60 },
+];
 
 /**
  * Relative luminance per WCAG 2.x (sRGB input [0-1]).
@@ -79,6 +88,24 @@ export async function validateThemeContrast(theme, TokenGenerator) {
     }
   }
 
+  // Compute theme variant tokens (surface/border/foreground for each theme color)
+  const themeColorKeys = ["primary", "secondary", "positive", "warning", "critical", "info"];
+  for (const key of themeColorKeys) {
+    const colorHex = resolved.get(`--theme-${key}`);
+    if (!colorHex) continue;
+
+    for (const variant of COLOR_VARIANTS) {
+      try {
+        const mixPair = generator.resolveToHexPair(`{${variant.mixToken}}`);
+        const lightHex = computeColorMix(colorHex.light, mixPair.light, 1 - variant.ratio);
+        const darkHex = computeColorMix(colorHex.dark, mixPair.dark, 1 - variant.ratio);
+        resolved.set(`--theme-${key}-${variant.suffix}`, { light: lightHex, dark: darkHex });
+      } catch {
+        // Skip if resolution fails
+      }
+    }
+  }
+
   const warnings = [];
 
   function check(fgVar, bgVar, label, required) {
@@ -118,6 +145,14 @@ export async function validateThemeContrast(theme, TokenGenerator) {
   // Primary / secondary on background (3:1 for UI components)
   check("--theme-primary", "--shade-background", "primary / background", 3);
   check("--theme-secondary", "--shade-background", "secondary / background", 3);
+
+  // Theme variant quality: foreground variant on surface variant (4.5:1 for text)
+  for (const key of themeColorKeys) {
+    check(
+      `--theme-${key}-foreground`, `--theme-${key}-surface`,
+      `${key}-foreground / ${key}-surface`, 4.5,
+    );
+  }
 
   return warnings;
 }

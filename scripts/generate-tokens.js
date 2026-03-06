@@ -379,11 +379,22 @@ ${cssProperties.trimEnd()}
         const cssValue = this.processCssValueForToken(value);
         css += `${indent}--${cssVarName}: ${cssValue};\n`;
 
-        // Auto-generate color variants for theme tokens
+        // Auto-generate color variants for theme tokens (resolved to static values)
         if (prefix === "theme") {
+          const tokenPath = prefix ? `${prefix}.${key}` : key;
           for (const variant of this.colorVariants) {
-            const pct = Math.round((1 - variant.ratio) * 100);
-            css += `${indent}--${cssVarName}-${variant.suffix}: color-mix(in oklch, var(--${cssVarName}), var(--${variant.mix}) ${pct}%);\n`;
+            try {
+              const colorPair = this.resolveToHexPair(`{${tokenPath}}`);
+              const mixRef = `{${variant.mix.replace(/-/g, ".")}}`;
+              const mixPair = this.resolveToHexPair(mixRef);
+              const lightHex = computeColorMix(colorPair.light, mixPair.light, 1 - variant.ratio);
+              const darkHex = computeColorMix(colorPair.dark, mixPair.dark, 1 - variant.ratio);
+              css += `${indent}--${cssVarName}-${variant.suffix}: light-dark(${lightHex}, ${darkHex});\n`;
+            } catch (err) {
+              console.warn(`  Warning: could not resolve ${cssVarName}-${variant.suffix}: ${err.message}`);
+              const pct = Math.round((1 - variant.ratio) * 100);
+              css += `${indent}--${cssVarName}-${variant.suffix}: color-mix(in oklch, var(--${cssVarName}), var(--${variant.mix}) ${pct}%);\n`;
+            }
           }
         }
       } else if (typeof value === "object" && value !== null) {
