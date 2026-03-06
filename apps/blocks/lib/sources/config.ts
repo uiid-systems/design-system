@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 import { z } from "zod";
 
@@ -52,6 +52,15 @@ export async function readConfig(): Promise<BlocksConfig> {
     await writeConfig(DEFAULT_CONFIG);
     return DEFAULT_CONFIG;
   }
+}
+
+export async function getWritableSourcePath(): Promise<string | null> {
+  const config = await readConfig();
+  const writable = config.sources.find(
+    (s) => s.enabled && s.type === "local" && s.mode === "read-write" && s.path,
+  );
+  if (!writable?.path) return null;
+  return resolve(process.cwd(), writable.path);
 }
 
 export async function writeConfig(config: BlocksConfig): Promise<void> {

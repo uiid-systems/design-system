@@ -10,7 +10,7 @@ export type { BlockSource } from "./types";
 export { BlockSourceManager } from "./manager";
 export { BundledSource } from "./bundled";
 export { LocalDirectorySource } from "./local-directory";
-export { readConfig, writeConfig, BlocksConfigSchema } from "./config";
+export { readConfig, writeConfig, getWritableSourcePath, BlocksConfigSchema } from "./config";
 export type { BlocksConfig, SourceEntry } from "./config";
 
 function buildSource(entry: SourceEntry) {

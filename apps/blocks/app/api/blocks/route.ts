@@ -4,9 +4,7 @@ import { join } from "node:path";
 import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
 
-import { createManagerFromConfig } from "../../../lib/sources";
-
-const BLOCKS_DIR = join(process.cwd(), "blocks");
+import { createManagerFromConfig, getWritableSourcePath } from "../../../lib/sources";
 
 /**
  * GET /api/blocks — List all blocks from configured sources.
@@ -23,6 +21,14 @@ export async function GET() {
  */
 export async function POST(req: Request) {
   try {
+    const writePath = await getWritableSourcePath();
+    if (!writePath) {
+      return Response.json(
+        { error: "No writable source configured. Add a local source with mode \"read-write\" in blocks.config.json." },
+        { status: 400 },
+      );
+    }
+
     const body = (await req.json()) as BlockFile;
 
     if (!body.name || !body.tree) {
@@ -45,8 +51,8 @@ export async function POST(req: Request) {
       updatedAt: new Date().toISOString(),
     };
 
-    await mkdir(BLOCKS_DIR, { recursive: true });
-    const filePath = join(BLOCKS_DIR, `${slug}.json`);
+    await mkdir(writePath, { recursive: true });
+    const filePath = join(writePath, `${slug}.json`);
     await writeFile(filePath, JSON.stringify(block, null, 2) + "\n", "utf-8");
 
     return Response.json(block, { status: 201 });
