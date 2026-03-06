@@ -12,7 +12,7 @@ export const Radio = ({
   bordered,
   hideIndicator,
   IndicatorProps,
-  ContainerProps,
+  FieldProps,
   ...props
 }: RadioProps) => {
   return (
@@ -21,7 +21,7 @@ export const Radio = ({
       description={description}
       reversed={reversed}
       bordered={bordered}
-      {...ContainerProps}
+      {...FieldProps}
     >
       <RadioRoot value={value} hideIndicator={hideIndicator} {...props}>
         <RadioIndicator {...IndicatorProps} />

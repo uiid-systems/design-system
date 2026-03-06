@@ -36,6 +36,6 @@ export type CheckboxIndicatorProps = BaseCheckbox.Indicator.Props & {
 export type CheckboxProps = CheckboxRootProps &
   Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &
   Pick<CheckboxIndicatorProps, "indeterminate"> & {
-    ContainerProps?: CheckboxFieldProps;
+    FieldProps?: CheckboxFieldProps;
     IndicatorProps?: CheckboxIndicatorProps;
   };
