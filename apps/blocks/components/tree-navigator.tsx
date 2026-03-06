@@ -87,7 +87,7 @@ export const TreeNavigator = () => {
       data-slot="tree-navigator"
       render={<nav />}
       ax="stretch"
-      minw={320}
+      w={320}
       style={{ overflowY: "auto" }}
       br={1}
     >
