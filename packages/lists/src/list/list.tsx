@@ -40,7 +40,7 @@ export const List = ({
             "items" in item ? (
               <ListItemGroup
                 data-line
-                key={`${item.category ?? "group"}-${index}`}
+                key={item.id ?? `${item.category ?? "group"}-${index}`}
                 LinkComponent={LinkComponent}
                 {...item}
               />

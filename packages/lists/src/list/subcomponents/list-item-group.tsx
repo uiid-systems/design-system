@@ -86,7 +86,7 @@ export const ListItemGroup = ({
         {items.map((item) =>
           "items" in item ? (
             <ListItemGroup
-              key={item.category}
+              key={item.id ?? item.category}
               LinkComponent={LinkComponent}
               {...item}
             />

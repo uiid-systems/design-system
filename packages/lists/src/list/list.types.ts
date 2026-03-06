@@ -32,6 +32,8 @@ export type ListItemProps = {
 export type ListItemOrGroup = ListItemProps | ListItemGroupProps;
 
 export type ListItemGroupProps = {
+  /** Stable unique identifier used as React key when provided. */
+  id?: string;
   category?: string;
   description?: string;
   collapsible?: boolean;

@@ -45,6 +45,7 @@ function buildListItems(
   if (element.children && element.children.length > 0) {
     return [
       {
+        id: elementKey,
         category: element.type,
         description: elementKey,
         icon: getIconForType(element.type),
