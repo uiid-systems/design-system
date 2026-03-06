@@ -38,7 +38,7 @@ const meta: Meta<typeof Checkbox> = {
     readOnly: { control: "boolean", table: { category: "Toggles" } },
     nativeButton: { control: "boolean", table: { category: "Toggles" } },
     /** Subcomponents */
-    ContainerProps: { control: "object", table: { category: "Subcomponents" } },
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (

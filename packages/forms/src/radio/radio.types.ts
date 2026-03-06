@@ -20,6 +20,6 @@ export type RadioProps = RadioRootProps &
     CheckboxFieldProps,
     "label" | "description" | "reversed" | "bordered"
   > & {
-    ContainerProps?: GroupProps;
+    FieldProps?: GroupProps;
     IndicatorProps?: RadioIndicatorProps;
   };

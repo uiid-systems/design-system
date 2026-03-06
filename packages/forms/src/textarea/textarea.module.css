@@ -40,15 +40,15 @@
 
 /* Size variants */
 .size-small {
-  font-size: var(--forms-size-small-font-size);
+  font-size: var(--forms-size-sm-font-size);
   min-height: 4rem;
 }
 .size-medium {
-  font-size: var(--forms-size-medium-font-size);
+  font-size: var(--forms-size-md-font-size);
   min-height: 5rem;
 }
 .size-large {
-  font-size: var(--forms-size-large-font-size);
+  font-size: var(--forms-size-lg-font-size);
   min-height: 6rem;
 }
 

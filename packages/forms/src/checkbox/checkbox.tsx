@@ -16,7 +16,7 @@ export const Checkbox = ({
   bordered,
   indeterminate,
   hideIndicator,
-  ContainerProps,
+  FieldProps,
   IndicatorProps,
   ...props
 }: CheckboxProps) => {
@@ -27,7 +27,7 @@ export const Checkbox = ({
       description={description}
       reversed={reversed}
       bordered={bordered}
-      {...ContainerProps}
+      {...FieldProps}
     >
       <CheckboxRoot name={name} hideIndicator={hideIndicator} {...props}>
         <CheckboxIndicator indeterminate={indeterminate} {...IndicatorProps} />

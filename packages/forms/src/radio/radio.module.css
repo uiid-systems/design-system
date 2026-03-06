@@ -1,3 +1,5 @@
+@import "@uiid/tokens/semantic/forms.tokens.css";
+
 .radio {
   aspect-ratio: 1;
   border-radius: 100%;
@@ -13,9 +15,18 @@
     background-color: var(--shade-foreground);
   }
 
+  &:hover {
+    background-color: var(--forms-bg-hover);
+  }
+
   &:focus-visible {
     outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
+  }
+
+  &:where(:disabled, [disabled], [data-disabled]) {
+    pointer-events: none;
+    opacity: var(--globals-disabled-opacity);
   }
 }
 

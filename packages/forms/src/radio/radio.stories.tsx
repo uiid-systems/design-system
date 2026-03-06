@@ -30,7 +30,7 @@ const meta: Meta<typeof Radio> = {
     hideIndicator: { control: "boolean", table: { category: "Toggles" } },
     nativeButton: { control: "boolean", table: { category: "Toggles" } },
 
-    ContainerProps: { control: "object", table: { category: "Subcomponents" } },
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
