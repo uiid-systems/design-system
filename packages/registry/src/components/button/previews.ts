@@ -111,7 +111,7 @@ export const buttonPreviews: PreviewConfig[] = [
         ghost: {
           key: "ghost",
           type: "Button",
-          props: { ghost: true, children: "Ghost" },
+          props: { variant: "ghost", children: "Ghost" },
           parentKey: "group",
         },
       },
