@@ -1,0 +1,26 @@
+{
+  "name": "Solarized Light",
+  "type": "light",
+  "colors": {
+    "editor.background": "#fdf6e3",
+    "editor.foreground": "#657b83",
+    "foreground": "#657b83",
+    "focusBorder": "#268bd2",
+    "button.background": "#268bd2",
+    "activityBarBadge.background": "#268bd2",
+    "badge.background": "#b58900",
+    "progressBar.background": "#268bd2",
+    "textLink.foreground": "#268bd2",
+    "terminal.ansiGreen": "#859900",
+    "terminal.ansiYellow": "#b58900",
+    "terminal.ansiRed": "#dc322f",
+    "terminal.ansiBlue": "#268bd2",
+    "errorForeground": "#dc322f",
+    "editorError.foreground": "#dc322f",
+    "editorWarning.foreground": "#b58900",
+    "editorInfo.foreground": "#268bd2",
+    "gitDecoration.addedResourceForeground": "#859900",
+    "list.warningForeground": "#b58900",
+    "list.errorForeground": "#dc322f"
+  }
+}

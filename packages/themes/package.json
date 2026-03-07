@@ -32,6 +32,10 @@
       "types": "./src/utils/index.ts",
       "import": "./src/utils/index.ts"
     },
+    "./vscode": {
+      "types": "./src/vscode/index.ts",
+      "import": "./src/vscode/index.ts"
+    },
     "./presets/*": "./src/presets/*"
   },
   "files": [

@@ -1,0 +1,26 @@
+{
+  "name": "GitHub Light Default",
+  "type": "light",
+  "colors": {
+    "editor.background": "#ffffff",
+    "editor.foreground": "#24292e",
+    "foreground": "#24292e",
+    "focusBorder": "#2188ff",
+    "button.background": "#2ea44f",
+    "activityBarBadge.background": "#2188ff",
+    "badge.background": "#0366d6",
+    "progressBar.background": "#2188ff",
+    "textLink.foreground": "#0366d6",
+    "terminal.ansiGreen": "#22863a",
+    "terminal.ansiYellow": "#b08800",
+    "terminal.ansiRed": "#cb2431",
+    "terminal.ansiBlue": "#0366d6",
+    "errorForeground": "#cb2431",
+    "editorError.foreground": "#cb2431",
+    "editorWarning.foreground": "#b08800",
+    "editorInfo.foreground": "#0366d6",
+    "gitDecoration.addedResourceForeground": "#22863a",
+    "list.warningForeground": "#b08800",
+    "list.errorForeground": "#cb2431"
+  }
+}
