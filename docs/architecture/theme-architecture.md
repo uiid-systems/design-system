@@ -41,17 +41,17 @@ Each step mixes foreground into background at a specific ratio in OKLCH color sp
 
 ```
 Step:   1     2     3     4     5     6     7     8     9     10    11    12
-Ratio:  0.03  0.07  0.12  0.18  0.26  0.36  0.47  0.59  0.71  0.82  0.91  1.0
+Ratio:  0.03  0.07  0.12  0.18  0.26  0.36  0.50  0.62  0.72  0.82  0.90  0.96
 ```
 
 Named aliases map to specific steps:
 
 | Alias | Step |
 |-------|------|
-| `shade.surface` | `shade.4` |
-| `shade.accent` | `shade.5` |
-| `shade.halftone` | `shade.6` |
-| `shade.muted` | `shade.8` |
+| `shade.surface` | `shade.2` |
+| `shade.accent` | `shade.3` |
+| `shade.halftone` | `shade.7` |
+| `shade.muted` | `shade.9` |
 
 When a theme overrides `white` and `black`, all 12 shade steps are re-derived using the same ratios and the new anchors.
 
