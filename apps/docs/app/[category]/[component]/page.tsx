@@ -7,8 +7,10 @@ import {
 } from "@uiid/registry";
 import { Text } from "@uiid/typography";
 import { Box, Separator } from "@uiid/layout";
-import { CodeInline } from "@uiid/code";
+import { CodeInline, highlight } from "@uiid/code";
 import { List, ListItem } from "@uiid/lists";
+
+import { generateCodeExample } from "@/lib/generate-code-example";
 
 import { toSlug } from "@/constants/urls";
 import { getMdxSource, compileMdxContent } from "@/lib/mdx";
@@ -52,6 +54,12 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
 
   const docs = generateComponentDocs(entry);
   const previews = (entry.previews as PreviewConfig[] | undefined) ?? undefined;
+
+  // Pre-render code examples server-side to avoid FOUC
+  const codeExamples = (previews ?? []).map((p) => generateCodeExample(p));
+  const prerenderedHtml = await Promise.all(
+    codeExamples.map((code) => (code ? highlight(code, "tsx") : "")),
+  );
 
   // Check for MDX content
   const mdxSource = getMdxSource(category, entry.name);
@@ -126,7 +134,13 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       hr: () => <Separator my={6} />,
       // Pass components that get data from this page
       Preview: (props: Record<string, unknown>) => (
-        <Preview name={entry.name} previews={previews} {...props} />
+        <Preview
+          name={entry.name}
+          previews={previews}
+          codeExamples={codeExamples}
+          prerenderedHtml={prerenderedHtml}
+          {...props}
+        />
       ),
       PropsTable: (props: Record<string, unknown>) => (
         <PropsTable props={docs.props} {...props} />
