@@ -61,6 +61,27 @@ describe("SourceEntrySchema", () => {
       }),
     ).toThrow();
   });
+
+  it("accepts optional description and author", () => {
+    const result = SourceEntrySchema.parse({
+      type: "local",
+      path: "./community",
+      label: "Community Blocks",
+      description: "Curated component patterns",
+      author: "UIID Team",
+    });
+    expect(result.description).toBe("Curated component patterns");
+    expect(result.author).toBe("UIID Team");
+  });
+
+  it("omits description and author when not provided", () => {
+    const result = SourceEntrySchema.parse({
+      type: "bundled",
+      label: "Built-in",
+    });
+    expect(result.description).toBeUndefined();
+    expect(result.author).toBeUndefined();
+  });
 });
 
 describe("BlocksConfigSchema", () => {
