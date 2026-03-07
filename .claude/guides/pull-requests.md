@@ -57,7 +57,7 @@ Short description of the change
 
 3. **Version bump rules (pre-1.0.0):** Until the design system reaches 1.0.0, **only use `patch`** bumps. Do not use `minor` or `major` — all changes are `patch` during the 0.0.x phase. This prevents accidental version jumps.
 4. Only list the package(s) you directly changed — the `fixed` group in changeset config handles version alignment across all packages
-5. Skip changesets for changes that don't affect published packages (docs, CI, storybook-only, configs)
+5. Skip changesets for changes that don't affect published packages (docs, CI, storybook-only, test-only, configs)
 
 ## Authorship
 
