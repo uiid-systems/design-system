@@ -235,6 +235,9 @@ importers:
       '@uiid/tables':
         specifier: workspace:*
         version: link:../../packages/tables
+      '@uiid/themes':
+        specifier: workspace:*
+        version: link:../../packages/themes
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

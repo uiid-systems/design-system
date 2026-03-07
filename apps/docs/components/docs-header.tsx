@@ -11,6 +11,7 @@ import { Breadcrumbs } from "@uiid/navigation";
 
 import { fromSlug, urls } from "@/constants/urls";
 import { NPM_URL } from "@/constants";
+import { ThemeSelector } from "./theme-selector";
 import { ThemeToggle } from "./theme-toggle";
 
 type BreadcrumbItem = {
@@ -59,10 +60,11 @@ export const DocsHeader = () => {
       gap={4}
       p={4}
       bb={1}
-      className="sticky top-0 bg-(--shade-background) z-10"
+      className="sticky top-0 bg-(--shade-background) z-1"
     >
       <Breadcrumbs items={breadcrumbItems} />
       <Group gap={2} ay="center">
+        <ThemeSelector />
         <ThemeToggle />
         <Button
           size="xsmall"

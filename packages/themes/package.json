@@ -38,7 +38,8 @@
     "src"
   ],
   "scripts": {
-    "build:theme": "npx tsx src/generator/generate-theme.ts",
+    "build": "npx tsx ../../scripts/build-theme-presets.js",
+    "build:theme": "npx tsx ../../scripts/generate-theme.js",
     "lint": "echo 'No linting configured yet'"
   },
   "devDependencies": {
