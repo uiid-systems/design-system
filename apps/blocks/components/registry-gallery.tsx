@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -14,6 +15,7 @@ import { countComponents } from "@uiid/registry";
 import type { BlockFile, BlockFileWithSource } from "@/lib/block-file";
 import { useChatStore } from "@/lib/store";
 import { useRegistryBlocks } from "@/lib/use-registry-blocks";
+import type { SourceMeta } from "@/lib/use-registry-blocks";
 
 import { BlockThumbnail } from "./block-thumbnail";
 
@@ -31,9 +33,14 @@ const LAYOUT_TYPES = new Set([
 
 export const RegistryGallery = () => {
   const router = useRouter();
-  const { blocks, sourceErrors, isLoading } = useRegistryBlocks();
+  const { blocks, sourceErrors, sources, isLoading } = useRegistryBlocks();
   const setTree = useChatStore((s) => s.setTree);
   const setActiveRegistryBlock = useChatStore((s) => s.setActiveRegistryBlock);
+  const [activeSource, setActiveSource] = useState<string | null>(null);
+
+  const filteredBlocks = activeSource
+    ? blocks.filter((b) => hasSource(b) && b._source === activeSource)
+    : blocks;
 
   const handleLoad = (block: BlockFile) => {
     setTree(block.tree);
@@ -93,13 +100,23 @@ export const RegistryGallery = () => {
             Registry
           </Text>
           <Text size={0} shade="muted" className={styles.count}>
-            {blocks.length} {blocks.length === 1 ? "block" : "blocks"}
+            {filteredBlocks.length} {filteredBlocks.length === 1 ? "block" : "blocks"}
+            {activeSource && ` in ${activeSource}`}
           </Text>
         </Group>
         <Text shade="muted">
           Browse and load component blocks from the registry.
         </Text>
       </Stack>
+
+      {sources.length > 1 && (
+        <SourceFilter
+          sources={sources}
+          blocks={blocks}
+          activeSource={activeSource}
+          onSelect={setActiveSource}
+        />
+      )}
 
       {sourceErrors.length > 0 && (
         <Stack gap={2} fullwidth maxw={1152}>
@@ -122,7 +139,7 @@ export const RegistryGallery = () => {
       )}
 
       <div className={styles.grid}>
-        {blocks.map((block) => {
+        {filteredBlocks.map((block) => {
           const cc = safeCount(block);
           const types = getComponentTypes(block);
 
@@ -207,6 +224,69 @@ export const RegistryGallery = () => {
   );
 };
 RegistryGallery.displayName = "RegistryGallery";
+
+type SourceFilterProps = {
+  sources: SourceMeta[];
+  blocks: BlockFile[];
+  activeSource: string | null;
+  onSelect: (source: string | null) => void;
+};
+
+const SourceFilter = ({
+  sources,
+  blocks,
+  activeSource,
+  onSelect,
+}: SourceFilterProps) => {
+  const countForSource = (label: string) =>
+    blocks.filter((b) => hasSource(b) && b._source === label).length;
+
+  const activeMeta = activeSource
+    ? sources.find((s) => s.label === activeSource)
+    : null;
+
+  return (
+    <Stack gap={2} fullwidth maxw={1152}>
+      <Group gap={2} ay="center" className={styles.filterBar}>
+        <button
+          className={`${styles.filterPill} ${!activeSource ? styles.filterPillActive : ""}`}
+          onClick={() => onSelect(null)}
+        >
+          All ({blocks.length})
+        </button>
+        {sources.map((source) => {
+          const count = countForSource(source.label);
+          return (
+            <button
+              key={source.label}
+              className={`${styles.filterPill} ${activeSource === source.label ? styles.filterPillActive : ""}`}
+              onClick={() =>
+                onSelect(activeSource === source.label ? null : source.label)
+              }
+            >
+              {source.label} ({count})
+            </button>
+          );
+        })}
+      </Group>
+      {activeMeta && (activeMeta.description || activeMeta.author) && (
+        <Group gap={4} ay="center">
+          {activeMeta.description && (
+            <Text size={-1} shade="muted">
+              {activeMeta.description}
+            </Text>
+          )}
+          {activeMeta.author && (
+            <Text size={-1} shade="muted">
+              by {activeMeta.author}
+            </Text>
+          )}
+        </Group>
+      )}
+    </Stack>
+  );
+};
+SourceFilter.displayName = "SourceFilter";
 
 function safeCount(block: BlockFile) {
   try {

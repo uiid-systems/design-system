@@ -10,9 +10,16 @@ export type SourceError = {
   error: string;
 };
 
+export type SourceMeta = {
+  label: string;
+  description?: string;
+  author?: string;
+};
+
 export function useRegistryBlocks() {
   const [blocks, setBlocks] = useState<BlockFile[]>([]);
   const [sourceErrors, setSourceErrors] = useState<SourceError[]>([]);
+  const [sources, setSources] = useState<SourceMeta[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const setRegistryBlocks = useChatStore((s) => s.setRegistryBlocks);
 
@@ -24,6 +31,7 @@ export function useRegistryBlocks() {
         const data = await res.json();
         setBlocks(data.blocks);
         setSourceErrors(data.errors ?? []);
+        setSources(data.sources ?? []);
         setRegistryBlocks(data.blocks);
       }
     } catch {
@@ -37,5 +45,5 @@ export function useRegistryBlocks() {
     fetchBlocks();
   }, [fetchBlocks]);
 
-  return { blocks, sourceErrors, isLoading, refetch: fetchBlocks };
+  return { blocks, sourceErrors, sources, isLoading, refetch: fetchBlocks };
 }

@@ -7,6 +7,8 @@ export const SourceEntrySchema = z.object({
   type: z.enum(["bundled", "local", "url"]),
   path: z.string().optional(),
   label: z.string(),
+  description: z.string().optional(),
+  author: z.string().optional(),
   mode: z.enum(["read", "read-write"]).default("read"),
   enabled: z.boolean().default(true),
 });

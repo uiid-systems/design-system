@@ -11,6 +11,8 @@ import {
   Trash2Icon,
   CircleCheckIcon,
   CircleXIcon,
+  DownloadIcon,
+  UploadIcon,
   LoadingSpinner,
 } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
@@ -101,6 +103,67 @@ export const SourceSettings = () => {
     saveConfig(updated);
   };
 
+  const handleExport = async (sourceLabel: string) => {
+    try {
+      const res = await fetch(
+        `/api/blocks/export?source=${encodeURIComponent(sourceLabel)}`,
+      );
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Export failed");
+        return;
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download =
+        res.headers.get("Content-Disposition")?.match(/filename="(.+)"/)?.[1] ??
+        "blocks.zip";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      setError("Failed to export blocks");
+    }
+  };
+
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<string | null>(null);
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    setImportResult(null);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/blocks/import", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setImportResult(
+          `Imported ${data.blockCount} block${data.blockCount === 1 ? "" : "s"} as "${data.label}"`,
+        );
+        fetchConfig();
+      } else {
+        setError(data.error || "Import failed");
+      }
+    } catch {
+      setError("Failed to import archive");
+    } finally {
+      setImporting(false);
+      e.target.value = "";
+    }
+  };
+
   const removeSource = (index: number) => {
     if (!config) return;
     const updated = {
@@ -155,6 +218,12 @@ export const SourceSettings = () => {
         </Stack>
       )}
 
+      {importResult && (
+        <Stack fullwidth maxw={768}>
+          <Badge tone="positive">{importResult}</Badge>
+        </Stack>
+      )}
+
       <Stack gap={4} fullwidth maxw={768}>
         {config.sources.map((source, index) => (
           <SourceCard
@@ -166,14 +235,35 @@ export const SourceSettings = () => {
             onSave={(updates) => updateAndSaveSource(index, updates)}
             onRemove={() => removeSource(index)}
             onMove={(dir) => moveSource(index, dir)}
+            onExport={() => handleExport(source.label)}
             saving={saving}
           />
         ))}
 
-        <Button onClick={addSource} variant="subtle" size="small">
-          <PlusIcon />
-          Add Source
-        </Button>
+        <Group gap={2}>
+          <Button onClick={addSource} variant="subtle" size="small">
+            <PlusIcon />
+            Add Source
+          </Button>
+          <Button
+            variant="subtle"
+            size="small"
+            onClick={() =>
+              document.getElementById("zip-import-input")?.click()
+            }
+            disabled={importing}
+          >
+            {importing ? <LoadingSpinner size={14} /> : <UploadIcon />}
+            Import Zip
+          </Button>
+          <input
+            id="zip-import-input"
+            type="file"
+            accept=".zip"
+            onChange={handleImport}
+            style={{ display: "none" }}
+          />
+        </Group>
       </Stack>
     </Stack>
   );
@@ -188,6 +278,7 @@ type SourceCardProps = {
   onSave: (updates: Partial<SourceEntry>) => void;
   onRemove: () => void;
   onMove: (direction: "up" | "down") => void;
+  onExport: () => void;
   saving: boolean;
 };
 
@@ -206,6 +297,7 @@ const SourceCard = ({
   onSave,
   onRemove,
   onMove,
+  onExport,
   saving,
 }: SourceCardProps) => {
   const isBundled = source.type === "bundled";
@@ -323,6 +415,27 @@ const SourceCard = ({
         )}
       </Group>
 
+      <Group gap={4} ay="end">
+        <Field label="Description" className={styles.flexField}>
+          <Input
+            value={source.description ?? ""}
+            onChange={(e) => onUpdate({ description: e.target.value })}
+            onBlur={() => onSave({ description: source.description })}
+            placeholder="What this source contains"
+            disabled={saving}
+          />
+        </Field>
+        <Field label="Author">
+          <Input
+            value={source.author ?? ""}
+            onChange={(e) => onUpdate({ author: e.target.value })}
+            onBlur={() => onSave({ author: source.author })}
+            placeholder="Author name"
+            disabled={saving}
+          />
+        </Field>
+      </Group>
+
       {source.type === "url" && (checking || urlCheck) && (
         <Group gap={2} ay="center">
           {checking && (
@@ -375,19 +488,31 @@ const SourceCard = ({
           )}
         </Group>
 
-        {!isBundled && (
+        <Group gap={1}>
           <Button
-            onClick={onRemove}
+            onClick={onExport}
             variant="ghost"
             size="small"
-            tone="critical"
             disabled={saving}
-            tooltip="Remove source"
-            aria-label={`Remove ${source.label}`}
+            tooltip="Export as zip"
+            aria-label={`Export ${source.label} as zip`}
           >
-            <Trash2Icon />
+            <DownloadIcon />
           </Button>
-        )}
+          {!isBundled && (
+            <Button
+              onClick={onRemove}
+              variant="ghost"
+              size="small"
+              tone="critical"
+              disabled={saving}
+              tooltip="Remove source"
+              aria-label={`Remove ${source.label}`}
+            >
+              <Trash2Icon />
+            </Button>
+          )}
+        </Group>
       </Group>
     </Stack>
   );
