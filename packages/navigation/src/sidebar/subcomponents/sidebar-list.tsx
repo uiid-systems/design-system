@@ -14,7 +14,7 @@ export const SidebarList = ({
     <List
       data-slot="sidebar-list"
       items={items}
-      variant="line"
+      line
       gap={2}
       fullwidth
       className={cx(styles["sidebar-list"], className)}
