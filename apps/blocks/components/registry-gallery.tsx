@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { Card } from "@uiid/cards";
 import { Badge } from "@uiid/indicators";
-import { LoadingSpinner } from "@uiid/icons";
+import { LoadingSpinner, TriangleAlertIcon } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -31,7 +31,7 @@ const LAYOUT_TYPES = new Set([
 
 export const RegistryGallery = () => {
   const router = useRouter();
-  const { blocks, isLoading } = useRegistryBlocks();
+  const { blocks, sourceErrors, isLoading } = useRegistryBlocks();
   const setTree = useChatStore((s) => s.setTree);
   const setActiveRegistryBlock = useChatStore((s) => s.setActiveRegistryBlock);
 
@@ -100,6 +100,26 @@ export const RegistryGallery = () => {
           Browse and load component blocks from the registry.
         </Text>
       </Stack>
+
+      {sourceErrors.length > 0 && (
+        <Stack gap={2} fullwidth maxw={1152}>
+          {sourceErrors.map((err) => (
+            <Group
+              key={err.source}
+              gap={2}
+              ay="center"
+              p={3}
+              b={1}
+              className={styles.warning}
+            >
+              <TriangleAlertIcon size={14} />
+              <Text size={-1}>
+                Failed to load blocks from <strong>{err.source}</strong>: {err.error}
+              </Text>
+            </Group>
+          ))}
+        </Stack>
+      )}
 
       <div className={styles.grid}>
         {blocks.map((block) => {

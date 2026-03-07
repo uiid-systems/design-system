@@ -34,7 +34,10 @@ export const RegistryPanel = () => {
   const fetchBlocks = useCallback(async () => {
     try {
       const res = await fetch("/api/blocks");
-      if (res.ok) setBlocks(await res.json());
+      if (res.ok) {
+        const data = await res.json();
+        setBlocks(data.blocks);
+      }
     } catch {
       // silently fail
     }

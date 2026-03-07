@@ -11,9 +11,9 @@ import { createManagerFromConfig, getWritableSourcePath } from "../../../lib/sou
  */
 export async function GET() {
   const manager = await createManagerFromConfig();
-  const allBlocks = await manager.list();
-  allBlocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  return Response.json(allBlocks);
+  const { blocks, errors } = await manager.list();
+  blocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  return Response.json({ blocks, errors });
 }
 
 /**
