@@ -14,7 +14,7 @@ import {
   ComponentDetailsPreview,
 } from "@/components/component-details";
 
-const HEADER_SIZE = 3;
+const HEADER_SIZE = 4;
 
 interface ComponentDetailsProps {
   name: string;
