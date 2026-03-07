@@ -1,0 +1,11 @@
+{
+  "name": "Ayu",
+  "white": "#fcfcfc",
+  "black": "#1a1f29",
+  "primary": "#d06818",
+  "secondary": "#2b7cb5",
+  "positive": "#5c7a00",
+  "warning": "#b07a00",
+  "critical": "#c74545",
+  "info": "#2d8aab"
+}

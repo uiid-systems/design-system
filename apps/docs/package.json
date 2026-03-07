@@ -25,6 +25,7 @@
     "@uiid/overlays": "workspace:*",
     "@uiid/registry": "workspace:*",
     "@uiid/tables": "workspace:*",
+    "@uiid/themes": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",

@@ -1,0 +1,49 @@
+{
+  "name": "@uiid/themes",
+  "version": "0.0.1",
+  "description": "Theme schema, generation, validation, and presets for the UIID design system",
+  "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/themes"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/themes",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": [
+    "uiid",
+    "design-system",
+    "themes",
+    "color-scheme",
+    "design-tokens"
+  ],
+  "type": "module",
+  "exports": {
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "import": "./src/schema/index.ts"
+    },
+    "./generator": {
+      "types": "./src/generator/index.ts",
+      "import": "./src/generator/index.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/index.ts",
+      "import": "./src/utils/index.ts"
+    },
+    "./presets/*": "./src/presets/*"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "npx tsx ../../scripts/build-theme-presets.js",
+    "build:theme": "npx tsx ../../scripts/generate-theme.js",
+    "lint": "echo 'No linting configured yet'"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "zod": "^3.24.0"
+  }
+}

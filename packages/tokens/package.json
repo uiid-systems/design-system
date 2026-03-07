@@ -49,6 +49,9 @@
     "figma:preview": "DRY_RUN=true node ./scripts/sync-to-figma.js",
     "figma:sync": "node ./scripts/sync-to-figma.js"
   },
+  "dependencies": {
+    "@uiid/themes": "workspace:*"
+  },
   "devDependencies": {
     "@storybook/react-vite": "^10.2.3",
     "@types/react": "^19.1.10",

@@ -41,8 +41,9 @@ describe("Slider", () => {
           RootProps={{
             value: value,
             onValueChange: (v) => {
-              setValue(v);
-              handleChange(v);
+              const num = Array.isArray(v) ? v[0] : v;
+              setValue(num);
+              handleChange(num);
             },
           }}
         />

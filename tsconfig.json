@@ -35,6 +35,7 @@
     { "path": "./packages/navigation" },
     { "path": "./packages/overlays" },
     { "path": "./packages/tables" },
+    { "path": "./packages/themes" },
     { "path": "./packages/tokens" },
     { "path": "./packages/typography" },
     { "path": "./packages/utils" },

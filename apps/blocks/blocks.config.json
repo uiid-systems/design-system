@@ -1,0 +1,17 @@
+{
+  "sources": [
+    {
+      "type": "bundled",
+      "label": "Built-in Blocks",
+      "mode": "read",
+      "enabled": true
+    },
+    {
+      "type": "local",
+      "path": "./blocks",
+      "label": "Local Blocks",
+      "mode": "read-write",
+      "enabled": true
+    }
+  ]
+}
