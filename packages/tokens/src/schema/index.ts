@@ -1,6 +1,7 @@
+// Re-export from @uiid/themes for backwards compatibility
 export {
   HexColor,
   ThemeInputSchema,
   THEME_DEFAULTS,
   type ThemeInput,
-} from "./theme-input";
+} from "@uiid/themes/schema";

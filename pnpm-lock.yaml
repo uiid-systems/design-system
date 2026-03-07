@@ -1789,7 +1789,20 @@ importers:
         specifier: ^4.0.16
         version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(@vitest/browser-playwright@4.0.16)(happy-dom@20.6.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
 
+  packages/themes:
+    devDependencies:
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
+
   packages/tokens:
+    dependencies:
+      '@uiid/themes':
+        specifier: workspace:*
+        version: link:../themes
     devDependencies:
       '@storybook/react-vite':
         specifier: ^10.2.3
