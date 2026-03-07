@@ -66,7 +66,7 @@ export function convertVscodeTheme(
     name,
     white,
     black,
-    primary: accents.primary ?? THEME_DEFAULTS.critical, // fallback to a visible color
+    primary: accents.primary ?? THEME_DEFAULTS.info, // fallback to a neutral accent
     secondary: accents.secondary ?? accents.primary ?? THEME_DEFAULTS.info,
     ...(accents.positive && { positive: accents.positive }),
     ...(accents.warning && { warning: accents.warning }),
@@ -76,7 +76,7 @@ export function convertVscodeTheme(
 
   if (!accents.primary) {
     warnings.push(
-      `No primary accent color found. Falling back to default critical color (${THEME_DEFAULTS.critical}).`,
+      `No primary accent color found. Falling back to default info color (${THEME_DEFAULTS.info}).`,
     );
   }
 
