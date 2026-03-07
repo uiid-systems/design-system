@@ -1,15 +1,19 @@
 "use server";
 
+import fs from "fs";
+import os from "os";
 import path from "path";
-import { ThemeInputSchema, THEME_DEFAULTS } from "@uiid/themes/schema";
-import { buildOverrides, collectDerivedOverrides, generateCss } from "@uiid/themes/generator";
+import { fileURLToPath } from "url";
+import { ThemeInputSchema } from "@uiid/themes/schema";
 import type { ThemeInput } from "@uiid/themes/schema";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Server Action: generate theme CSS from a ThemeInput.
  *
- * Runs the full derivation pipeline on the server and returns a CSS string.
- * Used for on-the-fly theme creation in the theme selector.
+ * Delegates to the generate-theme wrapper script which provides
+ * the TokenGenerator binding.
  */
 export async function generateThemeCSS(
   input: ThemeInput
@@ -23,35 +27,23 @@ export async function generateThemeCSS(
   }
 
   try {
-    // Dynamic import to keep TokenGenerator out of the client bundle
-    const { default: TokenGenerator } = await import(
+    const { generateTheme } = await import(
       /* webpackIgnore: true */
-      path.join(process.cwd(), "../../scripts/generate-tokens.js")
+      path.resolve(__dirname, "../../../../scripts/generate-theme.js")
     );
 
-    const generator = new TokenGenerator({ force: true });
-    const jsonFiles = generator.discoverJsonFiles(generator.jsonDir);
-    generator.buildRegistry(jsonFiles);
+    const tmpInput = path.join(os.tmpdir(), `uiid-theme-${Date.now()}.json`);
+    const tmpOutput = tmpInput.replace(/\.json$/, ".css");
 
-    const theme = result.data;
-    const overrides = buildOverrides(theme);
-    const overriddenPaths = new Set(overrides.keys());
-    generator.applyOverrides(overrides);
+    fs.writeFileSync(tmpInput, JSON.stringify(result.data), "utf8");
 
-    const directOverrides = new Map<string, string>();
-    directOverrides.set("--theme-white", theme.white);
-    directOverrides.set("--theme-black", theme.black);
-    directOverrides.set("--theme-primary", theme.primary);
-    directOverrides.set("--theme-secondary", theme.secondary);
-    directOverrides.set("--theme-positive", theme.positive ?? THEME_DEFAULTS.positive);
-    directOverrides.set("--theme-warning", theme.warning ?? THEME_DEFAULTS.warning);
-    directOverrides.set("--theme-critical", theme.critical ?? THEME_DEFAULTS.critical);
-    directOverrides.set("--theme-info", theme.info ?? THEME_DEFAULTS.info);
-
-    const derivedOverrides = collectDerivedOverrides(generator, overriddenPaths);
-    const css = generateCss(theme.name, directOverrides, derivedOverrides);
-
-    return { css };
+    try {
+      const { css } = await generateTheme(tmpInput, tmpOutput);
+      return { css };
+    } finally {
+      fs.rmSync(tmpInput, { force: true });
+      fs.rmSync(tmpOutput, { force: true });
+    }
   } catch (err) {
     return { error: `Theme generation failed: ${(err as Error).message}` };
   }

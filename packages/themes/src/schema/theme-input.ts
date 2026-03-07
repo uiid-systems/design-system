@@ -10,8 +10,7 @@ export const HexColor = z
 /**
  * Theme input schema for user-supplied brand palettes.
  *
- * Required: name, primary, secondary.
- * Optional: white, black (default to #ffffff / #0d0d0d).
+ * Required: name, white, black, primary, secondary.
  * Optional tone overrides fall back to THEME_DEFAULTS.
  */
 export const ThemeInputSchema = z.object({

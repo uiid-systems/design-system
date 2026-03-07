@@ -28,6 +28,6 @@ export function injectPresetCSS(css: string | null) {
 }
 
 export function useThemePreset() {
-  const [preset, setPreset] = useState<PresetName>("ayu");
+  const [preset, setPreset] = useState<PresetName>("default");
   return { preset, setPreset } as const;
 }

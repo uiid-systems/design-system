@@ -1,4 +1,4 @@
-import { hexToSrgb, computeColorMix, contrastRatio } from "../utils/color-utils";
+import { computeColorMix, contrastRatio } from "../utils/color-utils";
 import { THEME_DEFAULTS } from "../schema/theme-input";
 import type { ThemeInput } from "../schema/theme-input";
 import { buildOverrides, collectDerivedOverrides } from "./overrides";
@@ -12,9 +12,6 @@ const COLOR_VARIANTS = [
   { suffix: "border", mixToken: "shade.background", ratio: 0.40 },
   { suffix: "foreground", mixToken: "shade.foreground", ratio: 0.60 },
 ];
-
-// Re-export for convenience
-export { contrastRatio };
 
 /**
  * Validate a theme for WCAG AA contrast.

@@ -128,7 +128,6 @@ export function generateColorScale(
   baseL: number,
   baseC: number,
   baseH: number,
-  _steps = 11
 ): Array<{ step: number; hex: string; oklch: number[] }> {
   const scale: Array<{ step: number; hex: string; oklch: number[] }> = [];
   const stepKeys = Object.keys(LIGHTNESS_SCALE).map(Number);
@@ -207,7 +206,7 @@ export function computeColorMix(color1: string, color2: string, ratio: number): 
  */
 function relativeLuminance(r: number, g: number, b: number): number {
   const toLinear = (c: number) =>
-    c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
   return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
 }
 
