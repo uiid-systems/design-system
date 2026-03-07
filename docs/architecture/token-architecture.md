@@ -649,3 +649,10 @@ without a build step, at the cost of browser support constraints.
    bundles fontFamily, fontSize, fontWeight, and lineHeight into one token. Should
    the text scale (`typography.text.0`, `typography.text.1`, etc.) use this, or keep
    individual tokens? Individual tokens are more granular for CSS variable usage.
+
+---
+
+## Related Guides
+
+- [Theme Architecture](./theme-architecture.md) — how the theme generation pipeline works end-to-end (internal)
+- [Theming Guide](../guides/theming.md) — creating and using custom themes, including VSCode import (consumer-facing)
