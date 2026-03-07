@@ -96,7 +96,8 @@ describe("zip roundtrip", () => {
   it("strips _source property during export", () => {
     const block = makeBlock("test");
     const withSource = { ...block, _source: "Built-in Blocks" };
-    const { _source: _, ...exported } = withSource;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _source, ...exported } = withSource;
 
     expect(exported).not.toHaveProperty("_source");
     expect(exported.slug).toBe("test");

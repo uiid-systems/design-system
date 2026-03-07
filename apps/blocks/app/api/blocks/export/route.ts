@@ -52,7 +52,8 @@ export async function GET(req: Request) {
 
   // Add each block as a JSON file (strip _source before export)
   for (const block of sourceBlocks) {
-    const { _source: _, ...blockData } = block;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _source, ...blockData } = block;
     zip.file(`${block.slug}.json`, JSON.stringify(blockData, null, 2) + "\n");
   }
 
