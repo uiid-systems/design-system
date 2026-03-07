@@ -57,10 +57,10 @@ export async function GET(req: Request) {
     zip.file(`${block.slug}.json`, JSON.stringify(blockData, null, 2) + "\n");
   }
 
-  const uint8 = await zip.generateAsync({ type: "uint8array" });
+  const bytes = await zip.generateAsync({ type: "arraybuffer" });
   const safeName = sourceLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-  return new Response(uint8.buffer as ArrayBuffer, {
+  return new Response(bytes, {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": `attachment; filename="${safeName}-blocks.zip"`,

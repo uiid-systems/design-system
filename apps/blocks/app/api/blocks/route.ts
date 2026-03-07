@@ -5,9 +5,7 @@ import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
 
 import { createManagerFromConfig, getWritableSourcePath, readConfig } from "../../../lib/sources";
-import type { SourceEntry } from "../../../lib/sources";
-
-export type SourceMeta = Pick<SourceEntry, "label" | "description" | "author">;
+import type { SourceMeta } from "../../../lib/sources";
 
 /**
  * GET /api/blocks — List all blocks from configured sources.

@@ -19,6 +19,7 @@ export const BlocksConfigSchema = z.object({
 
 export type SourceEntry = z.infer<typeof SourceEntrySchema>;
 export type BlocksConfig = z.infer<typeof BlocksConfigSchema>;
+export type SourceMeta = Pick<SourceEntry, "label" | "description" | "author">;
 
 const CONFIG_FILENAME = "blocks.config.json";
 

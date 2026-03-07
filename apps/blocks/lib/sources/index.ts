@@ -14,7 +14,7 @@ export { BundledSource } from "./bundled";
 export { LocalDirectorySource } from "./local-directory";
 export { RemoteUrlSource } from "./remote-url";
 export { readConfig, writeConfig, getWritableSourcePath, BlocksConfigSchema } from "./config";
-export type { BlocksConfig, SourceEntry } from "./config";
+export type { BlocksConfig, SourceEntry, SourceMeta } from "./config";
 
 function buildSource(entry: SourceEntry) {
   switch (entry.type) {

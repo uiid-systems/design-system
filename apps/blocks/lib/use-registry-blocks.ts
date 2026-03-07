@@ -3,17 +3,14 @@
 import { useState, useCallback, useEffect } from "react";
 
 import type { BlockFile } from "./block-file";
+import type { SourceMeta } from "./sources";
 import { useChatStore } from "./store";
+
+export type { SourceMeta };
 
 export type SourceError = {
   source: string;
   error: string;
-};
-
-export type SourceMeta = {
-  label: string;
-  description?: string;
-  author?: string;
 };
 
 export function useRegistryBlocks() {
