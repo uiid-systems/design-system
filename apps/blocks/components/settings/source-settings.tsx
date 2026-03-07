@@ -71,7 +71,10 @@ export const SourceSettings = () => {
     setConfig(updated);
   };
 
-  const updateAndSaveSource = (index: number, updates: Partial<SourceEntry>) => {
+  const updateAndSaveSource = (
+    index: number,
+    updates: Partial<SourceEntry>,
+  ) => {
     if (!config) return;
     const sources = config.sources.map((s, i) =>
       i === index ? { ...s, ...updates } : s,
@@ -164,7 +167,7 @@ export const SourceSettings = () => {
           />
         ))}
 
-        <Button onClick={addSource} variant="outlined" size="small">
+        <Button onClick={addSource} variant="subtle" size="small">
           <PlusIcon />
           Add Source
         </Button>
@@ -198,7 +201,7 @@ const SourceCard = ({
   const isBundled = source.type === "bundled";
 
   return (
-    <Stack className={styles.card} gap={4} p={6} b={1} radius={2}>
+    <Stack className={styles.card} gap={4} p={6} b={1}>
       <Group ay="center" ax="space-between">
         <Group gap={2} ay="center">
           <Text weight="bold">{source.label}</Text>
