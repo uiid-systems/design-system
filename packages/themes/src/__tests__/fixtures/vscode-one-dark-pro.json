@@ -1,0 +1,26 @@
+{
+  "name": "One Dark Pro",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#282c34",
+    "editor.foreground": "#abb2bf",
+    "foreground": "#abb2bf",
+    "focusBorder": "#528bff",
+    "button.background": "#404754",
+    "activityBarBadge.background": "#528bff",
+    "badge.background": "#528bff",
+    "progressBar.background": "#528bff",
+    "textLink.foreground": "#61afef",
+    "terminal.ansiGreen": "#98c379",
+    "terminal.ansiYellow": "#d19a66",
+    "terminal.ansiRed": "#e06c75",
+    "terminal.ansiBlue": "#61afef",
+    "errorForeground": "#e06c75",
+    "editorError.foreground": "#e06c75",
+    "editorWarning.foreground": "#d19a66",
+    "editorInfo.foreground": "#61afef",
+    "gitDecoration.addedResourceForeground": "#98c379",
+    "list.warningForeground": "#d19a66",
+    "list.errorForeground": "#e06c75"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Catppuccin Mocha",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1e1e2e",
+    "editor.foreground": "#cdd6f4",
+    "foreground": "#cdd6f4",
+    "focusBorder": "#b4befe",
+    "button.background": "#cba6f7",
+    "activityBarBadge.background": "#cba6f7",
+    "badge.background": "#f5c2e7",
+    "progressBar.background": "#cba6f7",
+    "textLink.foreground": "#89b4fa",
+    "terminal.ansiGreen": "#a6e3a1",
+    "terminal.ansiYellow": "#f9e2af",
+    "terminal.ansiRed": "#f38ba8",
+    "terminal.ansiBlue": "#89b4fa",
+    "errorForeground": "#f38ba8",
+    "editorError.foreground": "#f38ba8",
+    "editorWarning.foreground": "#f9e2af",
+    "editorInfo.foreground": "#89dceb",
+    "gitDecoration.addedResourceForeground": "#a6e3a1",
+    "list.warningForeground": "#f9e2af",
+    "list.errorForeground": "#f38ba8",
+    "tab.activeBorder": "#cba6f7",
+    "activityBar.activeBorder": "#cba6f7"
+  }
+}
