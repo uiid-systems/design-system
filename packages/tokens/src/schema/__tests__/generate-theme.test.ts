@@ -11,7 +11,7 @@ const { generateTheme } = await import(
   path.join(ROOT, "scripts/generate-theme.js")
 );
 
-const TMP_DIR = path.join(ROOT, "node_modules/.cache/theme-test");
+const TMP_DIR = path.join(ROOT, "node_modules/.cache/theme-test-tokens");
 
 beforeAll(() => {
   fs.mkdirSync(TMP_DIR, { recursive: true });

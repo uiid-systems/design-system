@@ -40,7 +40,8 @@ jobs:
 
           CHANGED_FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
 
-          CHANGED_PACKAGE_COUNT=$(echo "$CHANGED_FILES" | awk -F/ '/^packages\/[^/]+\// { print $2 }' | sort -u | wc -l | tr -d ' ')
+          # Exclude test files and storybook stories from package change detection
+          CHANGED_PACKAGE_COUNT=$(echo "$CHANGED_FILES" | grep -v '\.test\.\|\.spec\.\|__tests__/\|\.stories\.' | awk -F/ '/^packages\/[^/]+\// { print $2 }' | sort -u | wc -l | tr -d ' ')
           NEW_CHANGESETS=$(echo "$CHANGED_FILES" | grep -cE '^\.changeset/.+\.md$' || true)
 
           if [ "${CHANGED_PACKAGE_COUNT:-0}" -eq 0 ]; then
