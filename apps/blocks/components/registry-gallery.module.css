@@ -143,3 +143,12 @@
 .settingsLink {
   text-decoration: underline;
 }
+
+/* ── Warning banner ── */
+
+.warning {
+  border-color: var(--warning-surface);
+  background: var(--warning-surface);
+  border-radius: var(--globals-border-radius);
+  color: var(--warning-foreground);
+}

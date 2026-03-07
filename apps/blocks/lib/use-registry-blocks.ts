@@ -5,8 +5,14 @@ import { useState, useCallback, useEffect } from "react";
 import type { BlockFile } from "./block-file";
 import { useChatStore } from "./store";
 
+export type SourceError = {
+  source: string;
+  error: string;
+};
+
 export function useRegistryBlocks() {
   const [blocks, setBlocks] = useState<BlockFile[]>([]);
+  const [sourceErrors, setSourceErrors] = useState<SourceError[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const setRegistryBlocks = useChatStore((s) => s.setRegistryBlocks);
 
@@ -16,8 +22,9 @@ export function useRegistryBlocks() {
       const res = await fetch("/api/blocks");
       if (res.ok) {
         const data = await res.json();
-        setBlocks(data);
-        setRegistryBlocks(data);
+        setBlocks(data.blocks);
+        setSourceErrors(data.errors ?? []);
+        setRegistryBlocks(data.blocks);
       }
     } catch {
       // silently fail
@@ -30,5 +37,5 @@ export function useRegistryBlocks() {
     fetchBlocks();
   }, [fetchBlocks]);
 
-  return { blocks, isLoading, refetch: fetchBlocks };
+  return { blocks, sourceErrors, isLoading, refetch: fetchBlocks };
 }

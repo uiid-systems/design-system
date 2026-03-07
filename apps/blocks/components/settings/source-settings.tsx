@@ -9,6 +9,9 @@ import {
   ChevronDownIcon,
   PlusIcon,
   Trash2Icon,
+  CircleCheckIcon,
+  CircleXIcon,
+  LoadingSpinner,
 } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 import { Badge } from "@uiid/indicators";
@@ -188,6 +191,13 @@ type SourceCardProps = {
   saving: boolean;
 };
 
+type UrlCheckResult = {
+  reachable?: boolean;
+  valid?: boolean;
+  blockCount?: number;
+  error?: string;
+};
+
 const SourceCard = ({
   source,
   index,
@@ -199,6 +209,32 @@ const SourceCard = ({
   saving,
 }: SourceCardProps) => {
   const isBundled = source.type === "bundled";
+  const [urlCheck, setUrlCheck] = useState<UrlCheckResult | null>(null);
+  const [checking, setChecking] = useState(false);
+
+  const checkUrl = async (url: string) => {
+    if (!url) return;
+    setChecking(true);
+    setUrlCheck(null);
+    try {
+      const res = await fetch("/api/config/check-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+      const data = await res.json();
+      setUrlCheck(data);
+    } catch {
+      setUrlCheck({ reachable: false, error: "Check failed" });
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const handleUrlBlur = () => {
+    onSave({ path: source.path });
+    if (source.path) checkUrl(source.path);
+  };
 
   return (
     <Stack className={styles.card} gap={4} p={6} b={1}>
@@ -246,9 +282,14 @@ const SourceCard = ({
           <Field label="Type">
             <Select
               value={source.type}
-              onValueChange={(val) =>
-                onSave({ type: val as SourceEntry["type"] })
-              }
+              onValueChange={(val) => {
+                const updates: Partial<SourceEntry> = {
+                  type: val as SourceEntry["type"],
+                };
+                if (val === "url") updates.mode = "read";
+                onSave(updates);
+                setUrlCheck(null);
+              }}
               disabled={saving}
             >
               <option value="local">Local</option>
@@ -268,7 +309,51 @@ const SourceCard = ({
             />
           </Field>
         )}
+
+        {!isBundled && source.type === "url" && (
+          <Field label="URL" className={styles.flexField}>
+            <Input
+              value={source.path ?? ""}
+              onChange={(e) => onUpdate({ path: e.target.value })}
+              onBlur={handleUrlBlur}
+              placeholder="https://example.com/blocks.json"
+              disabled={saving}
+            />
+          </Field>
+        )}
       </Group>
+
+      {source.type === "url" && (checking || urlCheck) && (
+        <Group gap={2} ay="center">
+          {checking && (
+            <>
+              <LoadingSpinner size={12} />
+              <Text size={-1} shade="muted">Checking URL...</Text>
+            </>
+          )}
+          {!checking && urlCheck?.reachable && urlCheck?.valid && (
+            <>
+              <CircleCheckIcon size={14} color="var(--positive-foreground)" />
+              <Text size={-1}>
+                Reachable — {urlCheck.blockCount} valid{" "}
+                {urlCheck.blockCount === 1 ? "block" : "blocks"} found
+              </Text>
+            </>
+          )}
+          {!checking && urlCheck?.reachable && !urlCheck?.valid && (
+            <>
+              <CircleXIcon size={14} color="var(--warning-foreground)" />
+              <Text size={-1}>{urlCheck.error}</Text>
+            </>
+          )}
+          {!checking && urlCheck && !urlCheck.reachable && (
+            <>
+              <CircleXIcon size={14} color="var(--critical-foreground)" />
+              <Text size={-1}>{urlCheck.error}</Text>
+            </>
+          )}
+        </Group>
+      )}
 
       <Group ay="center" ax="space-between">
         <Group gap={4} ay="center">
@@ -278,7 +363,7 @@ const SourceCard = ({
             onCheckedChange={(checked) => onSave({ enabled: checked })}
             disabled={saving}
           />
-          {!isBundled && (
+          {!isBundled && source.type !== "url" && (
             <Switch
               label="Writable"
               checked={source.mode === "read-write"}

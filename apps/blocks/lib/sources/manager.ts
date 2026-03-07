@@ -6,6 +6,16 @@ export type BlockFileWithSource = BlockFile & {
   _source: string;
 };
 
+export type SourceError = {
+  source: string;
+  error: string;
+};
+
+export type ListResult = {
+  blocks: BlockFileWithSource[];
+  errors: SourceError[];
+};
+
 export class BlockSourceManager {
   private sources: BlockSource[] = [];
 
@@ -13,27 +23,39 @@ export class BlockSourceManager {
     this.sources.push(source);
   }
 
-  async list(): Promise<BlockFileWithSource[]> {
+  async list(): Promise<ListResult> {
     const seen = new Set<string>();
-    const result: BlockFileWithSource[] = [];
+    const blocks: BlockFileWithSource[] = [];
+    const errors: SourceError[] = [];
 
     for (const source of this.sources) {
-      const blocks = await source.list();
-      for (const block of blocks) {
-        if (!seen.has(block.slug)) {
-          seen.add(block.slug);
-          result.push({ ...block, _source: source.name });
+      try {
+        const sourceBlocks = await source.list();
+        for (const block of sourceBlocks) {
+          if (!seen.has(block.slug)) {
+            seen.add(block.slug);
+            blocks.push({ ...block, _source: source.name });
+          }
         }
+      } catch (err) {
+        errors.push({
+          source: source.name,
+          error: err instanceof Error ? err.message : "Failed to load blocks",
+        });
       }
     }
 
-    return result;
+    return { blocks, errors };
   }
 
   async get(slug: string): Promise<BlockFileWithSource | null> {
     for (const source of this.sources) {
-      const block = await source.get(slug);
-      if (block) return { ...block, _source: source.name };
+      try {
+        const block = await source.get(slug);
+        if (block) return { ...block, _source: source.name };
+      } catch {
+        // Skip failed sources, try next
+      }
     }
     return null;
   }

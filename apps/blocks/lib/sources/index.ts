@@ -3,14 +3,16 @@ import { resolve } from "node:path";
 import { BlockSourceManager } from "./manager";
 import { BundledSource } from "./bundled";
 import { LocalDirectorySource } from "./local-directory";
+import { RemoteUrlSource } from "./remote-url";
 import { readConfig } from "./config";
 import type { SourceEntry } from "./config";
 
 export type { BlockSource } from "./types";
 export { BlockSourceManager } from "./manager";
-export type { BlockFileWithSource } from "./manager";
+export type { BlockFileWithSource, ListResult, SourceError } from "./manager";
 export { BundledSource } from "./bundled";
 export { LocalDirectorySource } from "./local-directory";
+export { RemoteUrlSource } from "./remote-url";
 export { readConfig, writeConfig, getWritableSourcePath, BlocksConfigSchema } from "./config";
 export type { BlocksConfig, SourceEntry } from "./config";
 
@@ -24,8 +26,8 @@ function buildSource(entry: SourceEntry) {
         entry.label,
       );
     case "url":
-      // Remote sources are Phase 2 (UI-92)
-      return null;
+      if (!entry.path) return null;
+      return new RemoteUrlSource(entry.path, entry.label);
   }
 }
 
