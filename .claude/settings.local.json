@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm:*)",
+      "Bash(git:*)",
+      "Bash(node:*)",
+      "Bash(npx:*)",
+      "Bash(npm:*)",
+      "Bash(gh pr:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(gh api:*)",
+      "Bash(printf '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"test\",\"version\":\"1.0\"}}}\\\\n{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}\\\\n{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":{\"name\":\"list-components\",\"arguments\":{\"category\":\"buttons\"}}}' | node /Users/adamfratino/www/uiid/design-system/packages/mcp/dist/index.js 2>/dev/null)",
+      "Bash(printf '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"test\",\"version\":\"1.0\"}}}\\\\n{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}\\\\n{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/list\",\"params\":{}}\\\\n' | node /Users/adamfratino/www/uiid/design-system/packages/mcp/dist/index.js 2>&1)",
+      "Bash(gh issue:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:json-render.dev)",
+      "mcp__claude_ai_Linear__list_teams",
+      "mcp__claude_ai_Linear__list_projects",
+      "mcp__claude_ai_Linear__list_issues",
+      "mcp__claude_ai_Linear__list_issue_labels",
+      "mcp__claude_ai_Linear__save_project",
+      "mcp__claude_ai_Linear__save_milestone",
+      "mcp__claude_ai_Linear__save_issue",
+      "mcp__claude_ai_Context7__resolve-library-id",
+      "mcp__claude_ai_Context7__query-docs",
+      "mcp__claude_ai_Linear__get_milestone",
+      "mcp__claude_ai_Linear__get_issue",
+      "mcp__claude_ai_Linear__create_comment",
+      "WebFetch(domain:github.com)",
+      "mcp__claude_ai_Linear__create_document",
+      "mcp__claude_ai_Linear__update_document",
+      "Bash(grep:*)",
+      "mcp__claude_ai_Linear__list_issue_statuses",
+      "mcp__claude_ai_Linear__get_project",
+      "Bash(open:*)"
+    ]
+  },
+  "enabledPlugins": {}
+}
