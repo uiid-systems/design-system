@@ -2,13 +2,13 @@
 
 import type { PreviewConfig } from "@uiid/registry";
 
-import { CodeBlock } from "@uiid/code";
 import { Stack } from "@uiid/layout";
 
-import { TreePreviewList } from "@/components";
 import { getPreviewComponent } from "@/lib/preview-registry";
-import { ComponentDetailsPreview } from "@/components/component-details";
-import { usePreviewContext } from "@/components/preview-context";
+
+import { PreviewSection } from "./preview-section";
+
+import "./preview-section.css";
 
 interface PreviewProps {
   name: string;
@@ -18,10 +18,9 @@ interface PreviewProps {
 }
 
 /**
- * MDX component to render a component preview with code example.
- * Uses tree-based previews from registry if available, otherwise falls back to legacy preview components.
- * Includes synchronized code examples that update with the active preview tab.
- * Code examples are pre-rendered server-side to avoid FOUC.
+ * MDX component to render component previews in a section-based layout.
+ * Each preview variant gets its own section with heading, live preview,
+ * collapsible code block, and playground link.
  */
 export function Preview({
   name,
@@ -29,36 +28,39 @@ export function Preview({
   codeExamples = [],
   prerenderedHtml = [],
 }: PreviewProps) {
-  const PreviewComponent = getPreviewComponent(name);
-  const ctx = usePreviewContext();
-
-  const activeIndex = ctx?.activeIndex ?? 0;
-  const code = codeExamples[activeIndex] ?? codeExamples[0];
-  const html = prerenderedHtml[activeIndex] ?? prerenderedHtml[0];
-
   if (previews && previews.length > 0) {
+    const isSingle = previews.length === 1;
+
     return (
-      <Stack fullwidth ax="stretch">
-        <ComponentDetailsPreview>
-          <TreePreviewList previews={previews} />
-          {code && (
-            <CodeBlock
-              code={code}
-              language="tsx"
-              filename="Example.tsx"
-              html={html}
-            />
-          )}
-        </ComponentDetailsPreview>
+      <Stack gap={12} fullwidth ax="stretch" mt={6}>
+        {previews.map((preview, i) => (
+          <PreviewSection
+            key={preview.label}
+            preview={preview}
+            code={codeExamples[i]}
+            prerenderedHtml={prerenderedHtml[i]}
+            showLabel={!isSingle}
+          />
+        ))}
       </Stack>
     );
   }
 
+  const PreviewComponent = getPreviewComponent(name);
+
   if (PreviewComponent) {
     return (
-      <ComponentDetailsPreview>
+      <Stack
+        data-slot="preview-container"
+        ax="center"
+        ay="center"
+        fullwidth
+        py={10}
+        px={6}
+        mt={6}
+      >
         <PreviewComponent />
-      </ComponentDetailsPreview>
+      </Stack>
     );
   }
 

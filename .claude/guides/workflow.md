@@ -58,7 +58,7 @@ Backlog → Todo → In Progress → In Review → Done
 | Transition | Trigger | Responsible Agent |
 |------------|---------|-------------------|
 | `Backlog → Todo` | Ticket groomed and ready for work | Ticket Groomer / Task Breakdown |
-| `Todo → In Progress` | Agent or human starts working on the ticket | Feature Coder / Designer |
+| `Todo → In Progress` | Agent or human starts working on the ticket (branch created) | Feature Coder / Designer |
 | `In Progress → In Review` | PR opened or Figma artifact ready for review | Feature Coder |
 | `In Review → In Progress` | PR receives "Request Changes" | Code Review Bot |
 | `In Review → Done` | PR merged (auto-close via `Closes UI-XX`) or human sign-off | GitHub / Human |
@@ -68,6 +68,7 @@ Backlog → Todo → In Progress → In Review → Done
 - **Every ticket must have a priority** (1=Urgent, 2=High, 3=Medium, 4=Low, 0=None). Default to Medium (3).
 - **Every ticket must have an estimate** (1-5 complexity points).
 - **Status must reflect reality.** If you're working on it, it's `In Progress`. If a PR is open, it's `In Review`. No ticket should sit in `Todo` while actively being worked on.
+- **Always create a branch when starting a ticket.** Use the branch name from Linear (visible in the ticket detail). Create the branch from `main` before making any changes. Never work directly on `main` for ticket work.
 
 ## Agent Pipeline
 

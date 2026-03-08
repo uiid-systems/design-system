@@ -22,6 +22,7 @@ export type PreviewElement = {
  */
 export type PreviewConfig = {
   label: string;
+  description?: string;
   tree: {
     root: string;
     elements: Record<string, PreviewElement>;
