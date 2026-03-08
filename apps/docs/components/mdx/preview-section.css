@@ -1,0 +1,3 @@
+[data-panel-open] [data-collapsible-chevron] {
+  transform: rotate(180deg);
+}
