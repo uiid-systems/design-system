@@ -1,5 +1,7 @@
 # @uiid/utils
 
+## 0.0.10
+
 ## 0.0.8
 
 ### Patch Changes

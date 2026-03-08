@@ -1,6 +1,6 @@
 {
   "name": "@uiid/themes",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Theme schema, generation, validation, and presets for the UIID design system",
   "license": "MIT",
   "author": "Adam Fratino",

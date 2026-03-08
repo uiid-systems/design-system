@@ -1,5 +1,15 @@
 # @uiid/mcp
 
+## 0.0.3
+
+### Patch Changes
+
+- [#118](https://github.com/uiid-systems/design-system/pull/118) [`e6470d9`](https://github.com/uiid-systems/design-system/commit/e6470d9830a662dbd3ac52ead0ac6ba38e41c94c) Thanks [@adamfratino](https://github.com/adamfratino)! - Add README with setup instructions for Claude Code, Cursor, and VS Code
+
+- Updated dependencies [[`9771afa`](https://github.com/uiid-systems/design-system/commit/9771afa21e08d34f7ff1cdaa59a8c5bdf8c0d990), [`c50a499`](https://github.com/uiid-systems/design-system/commit/c50a4994365a9e42aed888759ac0b6e7764a7988)]:
+  - @uiid/registry@0.0.10
+  - @uiid/blocks@0.0.10
+
 ## 0.0.2
 
 ### Patch Changes
