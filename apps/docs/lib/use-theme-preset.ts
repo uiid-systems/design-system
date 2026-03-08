@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { PRESET_COOKIE, type PresetName } from "./theme-presets";
 
-export type PresetName = "default" | "ayu" | "ocean" | "ember";
+export type { PresetName };
 
 const STYLE_ID = "uiid-theme-preset-style";
 
@@ -27,7 +28,17 @@ export function injectPresetCSS(css: string | null) {
   style.textContent = css;
 }
 
-export function useThemePreset() {
-  const [preset, setPreset] = useState<PresetName>("default");
+function setCookie(name: string, value: string) {
+  document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
+}
+
+export function useThemePreset(initialPreset: PresetName = "default") {
+  const [preset, setPresetState] = useState<PresetName>(initialPreset);
+
+  const setPreset = useCallback((name: PresetName) => {
+    setPresetState(name);
+    setCookie(PRESET_COOKIE, name);
+  }, []);
+
   return { preset, setPreset } as const;
 }

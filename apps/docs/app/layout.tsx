@@ -7,6 +7,7 @@ import { List } from "@uiid/lists";
 import { Text } from "@uiid/typography";
 
 import { DocsHeader } from "@/components";
+import { ThemeStyle } from "@/components/theme-style";
 import { generateDocsNav } from "@/lib/generate-nav";
 
 import "./globals.css";
@@ -33,6 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const navItems = generateDocsNav();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -41,6 +43,7 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("uiid-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`,
           }}
         />
+        <ThemeStyle />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
