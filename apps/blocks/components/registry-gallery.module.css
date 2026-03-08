@@ -144,6 +144,42 @@
   text-decoration: underline;
 }
 
+/* ── Source filter ── */
+
+.filterBar {
+  flex-wrap: wrap;
+}
+
+.filterPill {
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--globals-border-color);
+  background: transparent;
+  color: var(--shade-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterPill:hover {
+  border-color: var(--shade-halftone);
+  color: var(--shade-foreground);
+}
+
+.filterPillActive {
+  background: var(--shade-foreground);
+  color: var(--shade-background);
+  border-color: var(--shade-foreground);
+}
+
+.filterPillActive:hover {
+  background: var(--shade-foreground);
+  color: var(--shade-background);
+  border-color: var(--shade-foreground);
+}
+
 /* ── Warning banner ── */
 
 .warning {

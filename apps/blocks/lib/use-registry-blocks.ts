@@ -3,7 +3,10 @@
 import { useState, useCallback, useEffect } from "react";
 
 import type { BlockFile } from "./block-file";
+import type { SourceMeta } from "./sources";
 import { useChatStore } from "./store";
+
+export type { SourceMeta };
 
 export type SourceError = {
   source: string;
@@ -13,6 +16,7 @@ export type SourceError = {
 export function useRegistryBlocks() {
   const [blocks, setBlocks] = useState<BlockFile[]>([]);
   const [sourceErrors, setSourceErrors] = useState<SourceError[]>([]);
+  const [sources, setSources] = useState<SourceMeta[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const setRegistryBlocks = useChatStore((s) => s.setRegistryBlocks);
 
@@ -24,6 +28,7 @@ export function useRegistryBlocks() {
         const data = await res.json();
         setBlocks(data.blocks);
         setSourceErrors(data.errors ?? []);
+        setSources(data.sources ?? []);
         setRegistryBlocks(data.blocks);
       }
     } catch {
@@ -37,5 +42,5 @@ export function useRegistryBlocks() {
     fetchBlocks();
   }, [fetchBlocks]);
 
-  return { blocks, sourceErrors, isLoading, refetch: fetchBlocks };
+  return { blocks, sourceErrors, sources, isLoading, refetch: fetchBlocks };
 }

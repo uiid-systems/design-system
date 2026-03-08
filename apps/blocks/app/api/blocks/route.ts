@@ -4,16 +4,23 @@ import { join } from "node:path";
 import { slugify } from "@uiid/blocks";
 import type { BlockFile } from "@uiid/blocks";
 
-import { createManagerFromConfig, getWritableSourcePath } from "../../../lib/sources";
+import { createManagerFromConfig, getWritableSourcePath, readConfig } from "../../../lib/sources";
+import type { SourceMeta } from "../../../lib/sources";
 
 /**
  * GET /api/blocks — List all blocks from configured sources.
  */
 export async function GET() {
+  const config = await readConfig();
   const manager = await createManagerFromConfig();
   const { blocks, errors } = await manager.list();
   blocks.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
-  return Response.json({ blocks, errors });
+
+  const sources: SourceMeta[] = config.sources
+    .filter((s) => s.enabled)
+    .map(({ label, description, author }) => ({ label, description, author }));
+
+  return Response.json({ blocks, errors, sources });
 }
 
 /**

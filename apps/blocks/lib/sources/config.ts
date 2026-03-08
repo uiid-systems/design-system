@@ -7,6 +7,8 @@ export const SourceEntrySchema = z.object({
   type: z.enum(["bundled", "local", "url"]),
   path: z.string().optional(),
   label: z.string(),
+  description: z.string().optional(),
+  author: z.string().optional(),
   mode: z.enum(["read", "read-write"]).default("read"),
   enabled: z.boolean().default(true),
 });
@@ -17,6 +19,7 @@ export const BlocksConfigSchema = z.object({
 
 export type SourceEntry = z.infer<typeof SourceEntrySchema>;
 export type BlocksConfig = z.infer<typeof BlocksConfigSchema>;
+export type SourceMeta = Pick<SourceEntry, "label" | "description" | "author">;
 
 const CONFIG_FILENAME = "blocks.config.json";
 
