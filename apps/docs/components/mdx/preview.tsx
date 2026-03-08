@@ -8,6 +8,8 @@ import { getPreviewComponent } from "@/lib/preview-registry";
 
 import { PreviewSection } from "./preview-section";
 
+import "./preview-section.css";
+
 interface PreviewProps {
   name: string;
   previews?: PreviewConfig[];
@@ -49,15 +51,13 @@ export function Preview({
   if (PreviewComponent) {
     return (
       <Stack
-        data-slot="preview-section"
+        data-slot="preview-container"
         ax="center"
         ay="center"
         fullwidth
         py={10}
         px={6}
         mt={6}
-        className="bg-(--shade-background)"
-        style={{ borderRadius: "var(--radius-2)", minHeight: "12rem" }}
       >
         <PreviewComponent />
       </Stack>

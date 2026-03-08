@@ -1,3 +1,19 @@
+[data-slot="preview-container"] {
+  background: var(--shade-background);
+  border-radius: var(--radius-2);
+  min-height: 12rem;
+}
+
 [data-panel-open] [data-collapsible-chevron] {
   transform: rotate(180deg);
+}
+
+[data-slot="playground-link"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--shade-muted);
+  font-size: var(--font-size--1);
+  text-decoration: none;
+  margin-left: auto;
 }

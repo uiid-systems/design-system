@@ -48,15 +48,13 @@ export function PreviewSection({
       )}
 
       <Stack
-        data-slot="preview-section"
+        data-slot="preview-container"
         gap={4}
         ax="center"
         ay="center"
         fullwidth
         py={10}
         px={6}
-        className="bg-(--shade-background)"
-        style={{ borderRadius: "var(--radius-2)", minHeight: "12rem" }}
       >
         <TreePreview preview={preview} />
       </Stack>
@@ -96,15 +94,7 @@ export function PreviewSection({
                   href={builderUrl}
                   target="_blank"
                   rel="noreferrer"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "var(--space-2)",
-                    color: "var(--shade-muted)",
-                    fontSize: "var(--font-size--1)",
-                    textDecoration: "none",
-                    marginLeft: "auto",
-                  }}
+                  data-slot="playground-link"
                 >
                   <Blocks size={14} />
                   Open in Playground
