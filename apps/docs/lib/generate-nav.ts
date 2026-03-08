@@ -65,6 +65,16 @@ export function getCategoryLabel(category: string): string {
 }
 
 /**
+ * Get the description for a category key.
+ */
+export function getCategoryDescription(
+  category: string
+): string | undefined {
+  const meta = categories.find((c) => c.key === category);
+  return meta?.description;
+}
+
+/**
  * Generate navigation items for the sidebar
  */
 export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
