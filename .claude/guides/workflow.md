@@ -47,6 +47,28 @@ Labels encode what layer a ticket belongs to, what risk it carries, and how much
 | `size:medium`  | Planner → Breakdown → CPP → Build → Review → QA      |
 | `size:large`   | Full pipeline including ADR + migration planning      |
 
+## Ticket Status Lifecycle
+
+Every ticket must move through these statuses. The responsible agent is listed for each transition.
+
+```
+Backlog → Todo → In Progress → In Review → Done
+```
+
+| Transition | Trigger | Responsible Agent |
+|------------|---------|-------------------|
+| `Backlog → Todo` | Ticket groomed and ready for work | Ticket Groomer / Task Breakdown |
+| `Todo → In Progress` | Agent or human starts working on the ticket | Feature Coder / Designer |
+| `In Progress → In Review` | PR opened or Figma artifact ready for review | Feature Coder |
+| `In Review → In Progress` | PR receives "Request Changes" | Code Review Bot |
+| `In Review → Done` | PR merged (auto-close via `Closes UI-XX`) or human sign-off | GitHub / Human |
+
+### Rules
+
+- **Every ticket must have a priority** (1=Urgent, 2=High, 3=Medium, 4=Low, 0=None). Default to Medium (3).
+- **Every ticket must have an estimate** (1-5 complexity points).
+- **Status must reflect reality.** If you're working on it, it's `In Progress`. If a PR is open, it's `In Review`. No ticket should sit in `Todo` while actively being worked on.
+
 ## Agent Pipeline
 
 ### Execution Order

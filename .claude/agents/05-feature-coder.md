@@ -24,6 +24,18 @@ After the CPP is approved. Runs in parallel with the Product Designer. For `size
 
 A GitHub PR containing all implementation artifacts, with a structured description following `.github/PULL_REQUEST_TEMPLATE.md`.
 
+## Linear Status Transitions
+
+Update ticket status at each phase of work. This keeps the board accurate for anyone watching.
+
+| Moment | Status | How |
+|--------|--------|-----|
+| **Starting work** | `In Progress` | Update all assigned tickets to `In Progress` before writing code |
+| **Opening PR** | `In Review` | Update tickets to `In Review` when the PR is created |
+| **PR merged** | `Done` | Tickets auto-close via `Closes UI-XX` in the PR description — verify they moved to `Done` |
+
+If a PR receives "Request Changes" from the Code Review agent, move tickets back to `In Progress` while addressing feedback.
+
 ## Steps
 
 ### Implementation Order

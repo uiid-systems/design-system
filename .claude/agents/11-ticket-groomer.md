@@ -124,17 +124,19 @@ These are **separate API calls**, not text in the description. Each must be set 
 | **Labels** | `labels` | Array of **child label names** (e.g., `"comp"` not `"layer:comp"`). Replaces all existing labels, so include all desired labels and omit `groom`. |
 | **Estimate** | `estimate` | Number 1-5. Must be sent as a separate `update_issue` call (cannot be combined with other fields due to an API quirk). |
 | **Status** | `state` | Set to `"Todo"`. Groomed tickets leave Backlog. |
+| **Priority** | `priority` | Set based on urgency and impact (see Priority Guide below). |
 | **Assignee** | `assignee` | Assign to Adam Fratino (`"me"`). All groomed tickets are assigned to the repo owner. |
 
 Use two `update_issue` calls:
 
 ```
-# Call 1: description, labels, status, and assignee
+# Call 1: description, labels, status, priority, and assignee
 update_issue(
   id: "UI-XX",
   description: "...",           # groomed description (Step 6)
   labels: ["comp", "small"],    # replaces all labels, groom removed by omission
   state: "Todo",
+  priority: 3,                  # 1=Urgent, 2=High, 3=Medium, 4=Low, 0=None
   assignee: "me"                # always assign to repo owner
 )
 
@@ -146,6 +148,20 @@ update_issue(
 ```
 
 **Important:** Setting `labels` replaces the full label set. To remove `groom`, simply omit it from the array. Include only the labels you want the ticket to have after grooming. Use **child names only** — `"tokens"` not `"layer:tokens"`, `"small"` not `"size:small"`.
+
+## Priority Guide
+
+Set the `priority` field (Linear integer) based on urgency and impact:
+
+| Priority | Value | When to use |
+|----------|-------|-------------|
+| **Urgent** | 1 | Blocking other work, broken in production, regression |
+| **High** | 2 | Important for current cycle, user-facing impact, dependency for upcoming work |
+| **Medium** | 3 | Standard planned work, no external pressure |
+| **Low** | 4 | Nice-to-have, cleanup, improvement with no deadline |
+| **None** | 0 | Exploratory, informational, or not yet assessed |
+
+Default to **Medium (3)** if there's no clear signal either way.
 
 ## Sizing Guide
 
@@ -174,6 +190,7 @@ All of these are verified as **ticket properties**, not description text:
 - [ ] `size` label set (ticket property)
 - [ ] Risk label set if warranted, omitted if not (ticket property)
 - [ ] `estimate` field set to 1-5 (ticket property)
+- [ ] `priority` field set to 0-4 (ticket property)
 - [ ] `task:groom` label removed (by omission from `labelNames`)
 - [ ] Ticket status set to **Todo** (ticket property)
 - [ ] Ticket assigned to Adam Fratino (ticket property)

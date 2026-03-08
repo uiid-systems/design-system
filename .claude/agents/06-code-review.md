@@ -105,10 +105,12 @@ Do NOT recreate the checklist in your review comment. The PR description is the 
 
 If the review verdict is **Approve** (no blocking items):
 - Mark the PR as **ready for review** (remove draft status) using `gh pr ready {number}`
+- Verify linked Linear tickets are in `In Review` status — update them if the Feature Coder missed this
 - This signals to the human that the PR has passed automated review and is ready for sign-off
 
 If the review verdict is **Request Changes** (blocking items exist):
 - Leave the PR in draft
+- Move linked Linear tickets back to `In Progress`
 - The Feature Coder must address blocking items before re-review
 
 ## Exit Criteria

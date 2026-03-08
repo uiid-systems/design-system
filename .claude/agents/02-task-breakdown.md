@@ -19,6 +19,9 @@ Linear tickets under a parent issue or project, each with:
 - Layer label
 - Risk label (if applicable)
 - Size label
+- Estimate (1-5 complexity points)
+- Priority (1=Urgent, 2=High, 3=Medium, 4=Low, 0=None)
+- Status set to `Todo`
 - Clear acceptance criteria
 - Definition of Done
 - Link to PRD in the ticket description
@@ -44,7 +47,10 @@ Linear tickets under a parent issue or project, each with:
 
 4. Apply risk labels to tickets that carry risk
 5. Set size label on each ticket
-6. Verify constraint rules (see below)
+6. Set estimate (1-5) on each ticket based on complexity
+7. Set priority on each ticket (default to Medium/3 unless PRD indicates urgency)
+8. Set status to `Todo` on all created tickets
+9. Verify constraint rules (see below)
 
 ### Constraint Rules
 
@@ -87,3 +93,6 @@ Each ticket description should follow this structure:
 - [ ] Layer dependencies are reflected in ticket ordering or blocking relationships
 - [ ] Risk labels applied where applicable
 - [ ] Size labels applied to all tickets
+- [ ] Estimate (1-5) set on all tickets
+- [ ] Priority set on all tickets
+- [ ] All tickets set to `Todo` status
