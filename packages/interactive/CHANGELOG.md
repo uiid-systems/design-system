@@ -1,5 +1,21 @@
 # @uiid/interactive
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [[`541df17`](https://github.com/uiid-systems/design-system/commit/541df17c59ab21bd6efd7232225c6420599b1015), [`0af03b7`](https://github.com/uiid-systems/design-system/commit/0af03b75ae17444678846a7a8602200798312b51), [`bf38c58`](https://github.com/uiid-systems/design-system/commit/bf38c58367bfe4c02b7ebc55362d735ac855ff3b), [`e02fb0d`](https://github.com/uiid-systems/design-system/commit/e02fb0ddfd9f07e5f1daba78dfea8dedabe139ef), [`16449d9`](https://github.com/uiid-systems/design-system/commit/16449d922a0664bee47673e2a802af63cfe794da), [`6b81080`](https://github.com/uiid-systems/design-system/commit/6b81080780b4a173873a822bf346404e0381aa43), [`b05f3d3`](https://github.com/uiid-systems/design-system/commit/b05f3d334b12aed413ff49611c2c786c7fb0f994)]:
+  - @uiid/forms@0.0.10
+  - @uiid/tokens@0.0.10
+  - @uiid/buttons@0.0.10
+  - @uiid/cards@0.0.10
+  - @uiid/layout@0.0.10
+  - @uiid/overlays@0.0.10
+  - @uiid/typography@0.0.10
+  - @uiid/indicators@0.0.10
+  - @uiid/icons@0.0.10
+  - @uiid/utils@0.0.10
+
 ## 0.0.8
 
 ### Patch Changes

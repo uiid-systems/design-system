@@ -1,5 +1,24 @@
 # @uiid/tokens
 
+## 0.0.10
+
+### Patch Changes
+
+- [#127](https://github.com/uiid-systems/design-system/pull/127) [`0af03b7`](https://github.com/uiid-systems/design-system/commit/0af03b75ae17444678846a7a8602200798312b51) Thanks [@adamfratino](https://github.com/adamfratino)! - Refactor List `variant` prop to boolean `line` prop, add `description` to ListItemGroupProps, add `icon-size` token, and remove duplicate stylesheet
+
+- [#120](https://github.com/uiid-systems/design-system/pull/120) [`bf38c58`](https://github.com/uiid-systems/design-system/commit/bf38c58367bfe4c02b7ebc55362d735ac855ff3b) Thanks [@adamfratino](https://github.com/adamfratino)! - Simplify CSS layer system: collapse token sub-layers into flat `uiid.tokens`, remove unused `uiid.utilities` layer, and add consistent `cssLayer` wrapping to all component packages
+
+- [#131](https://github.com/uiid-systems/design-system/pull/131) [`e02fb0d`](https://github.com/uiid-systems/design-system/commit/e02fb0ddfd9f07e5f1daba78dfea8dedabe139ef) Thanks [@adamfratino](https://github.com/adamfratino)! - Add WCAG AA contrast validation to theme generation pipeline and resolve theme variant tokens to static light-dark() values instead of runtime color-mix()
+
+- [#122](https://github.com/uiid-systems/design-system/pull/122) [`16449d9`](https://github.com/uiid-systems/design-system/commit/16449d922a0664bee47673e2a802af63cfe794da) Thanks [@adamfratino](https://github.com/adamfratino)! - Replace raw hex in theme.secondary with color primitive alias
+
+- [#123](https://github.com/uiid-systems/design-system/pull/123) [`6b81080`](https://github.com/uiid-systems/design-system/commit/6b81080780b4a173873a822bf346404e0381aa43) Thanks [@adamfratino](https://github.com/adamfratino)! - Route tone tokens through theme tier for consumer customization
+
+- [#126](https://github.com/uiid-systems/design-system/pull/126) [`b05f3d3`](https://github.com/uiid-systems/design-system/commit/b05f3d334b12aed413ff49611c2c786c7fb0f994) Thanks [@adamfratino](https://github.com/adamfratino)! - Add user theme input schema (Zod) and build-time theme CSS generation pipeline
+
+- Updated dependencies [[`868b793`](https://github.com/uiid-systems/design-system/commit/868b79369eef51c492efee857946595175504e91), [`f1fb926`](https://github.com/uiid-systems/design-system/commit/f1fb926d40d5beead17d520f58a4d680e2f094f1)]:
+  - @uiid/themes@0.0.2
+
 ## 0.0.8
 
 ### Patch Changes

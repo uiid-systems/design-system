@@ -1,5 +1,21 @@
 # @uiid/registry
 
+## 0.0.10
+
+### Patch Changes
+
+- [#141](https://github.com/uiid-systems/design-system/pull/141) [`9771afa`](https://github.com/uiid-systems/design-system/commit/9771afa21e08d34f7ff1cdaa59a8c5bdf8c0d990) Thanks [@adamfratino](https://github.com/adamfratino)! - Add optional `description` field to `CategoryMeta` with descriptions for all 9 component categories
+
+- [#144](https://github.com/uiid-systems/design-system/pull/144) [`c50a499`](https://github.com/uiid-systems/design-system/commit/c50a4994365a9e42aed888759ac0b6e7764a7988) Thanks [@adamfratino](https://github.com/adamfratino)! - Add optional `description` field to `PreviewConfig` type
+
+- Updated dependencies [[`541df17`](https://github.com/uiid-systems/design-system/commit/541df17c59ab21bd6efd7232225c6420599b1015), [`bf38c58`](https://github.com/uiid-systems/design-system/commit/bf38c58367bfe4c02b7ebc55362d735ac855ff3b)]:
+  - @uiid/forms@0.0.10
+  - @uiid/buttons@0.0.10
+  - @uiid/cards@0.0.10
+  - @uiid/layout@0.0.10
+  - @uiid/typography@0.0.10
+  - @uiid/utils@0.0.10
+
 ## 0.0.8
 
 ### Patch Changes
