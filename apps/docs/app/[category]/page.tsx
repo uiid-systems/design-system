@@ -12,7 +12,9 @@ import {
   getCategoryDescription,
   getCategoryIcon,
   getCategoryLabel,
+  getPrevNext,
 } from "@/lib/generate-nav";
+import { PrevNextNav } from "@/components/prev-next-nav";
 
 export function generateStaticParams() {
   return getCategories().map((category) => ({
@@ -35,6 +37,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const Icon = getCategoryIcon(category);
   const label = getCategoryLabel(category);
   const description = getCategoryDescription(category);
+  const { prev, next } = getPrevNext(urls.category(category));
   const components = Object.values(registry)
     .filter((entry) => entry.category === category)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -72,6 +75,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           />
         ))}
       </Stack>
+
+      <PrevNextNav prev={prev} next={next} />
     </Stack>
   );
 }
