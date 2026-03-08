@@ -42,9 +42,11 @@ design-system/
 | `turbo.json`       | Turbo task orchestration                    |
 | `eslint.config.js` | Shared ESLint configuration                 |
 
-## Commit Policy
+## Attribution Policy
 
-- **Never add yourself as co-author.** Do not include `Co-Authored-By` trailers in commit messages. The repo owner maintains sole authorship of all commits.
+- **Never add yourself as co-author.** Do not include `Co-Authored-By` trailers in commit messages.
+- **Never add AI attribution.** Do not include "Generated with Claude Code", "Built by AI", or any similar credit in PR descriptions, code comments, changelogs, or any output.
+- The repo owner maintains sole authorship of all commits and artifacts.
 
 ## Quick Reference
 
