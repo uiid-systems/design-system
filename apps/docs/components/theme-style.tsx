@@ -1,13 +1,4 @@
-import { cookies } from "next/headers";
-
-import { getPresetCSS } from "@/lib/get-preset-css";
-import { PRESET_COOKIE, isPresetName, type PresetName } from "@/lib/theme-presets";
-
-async function getServerPreset(): Promise<PresetName> {
-  const cookieStore = await cookies();
-  const value = cookieStore.get(PRESET_COOKIE)?.value ?? "default";
-  return isPresetName(value) ? value : "default";
-}
+import { getPresetCSS, getServerPreset } from "@/lib/get-preset-css";
 
 export async function ThemeStyle() {
   const presetName = await getServerPreset();
@@ -22,5 +13,3 @@ export async function ThemeStyle() {
     />
   );
 }
-
-export { getServerPreset };

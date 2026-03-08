@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import { cookies } from "next/headers";
+import { PRESET_COOKIE, isPresetName, type PresetName } from "./theme-presets";
 
 const PRESET_CSS_DIR = path.resolve(
   process.cwd(),
@@ -21,4 +23,13 @@ export function getPresetCSS(presetName: string): string | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * Read the preset name from the request cookie.
+ */
+export async function getServerPreset(): Promise<PresetName> {
+  const cookieStore = await cookies();
+  const value = cookieStore.get(PRESET_COOKIE)?.value ?? "default";
+  return isPresetName(value) ? value : "default";
 }
