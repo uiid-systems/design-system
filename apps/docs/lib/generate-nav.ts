@@ -78,7 +78,7 @@ export function getCategoryDescription(
  * Generate navigation items for the sidebar
  */
 export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
-  return getCategories().map((category) => {
+  const categoryItems = getCategories().map((category) => {
     const components = getComponentsByCategory(category);
 
     return {
@@ -91,6 +91,15 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
       })),
     } satisfies ListItemGroupProps;
   });
+
+  return [
+    ...categoryItems,
+    {
+      label: "Changelog",
+      value: "/changelog",
+      href: "/changelog",
+    } satisfies ListItemProps,
+  ];
 }
 
 export type PageLink = {
