@@ -6,7 +6,7 @@ import { Group, Stack } from "@uiid/layout";
 import { List } from "@uiid/lists";
 import { Text } from "@uiid/typography";
 
-import { DocsHeader } from "@/components/docs-header-server";
+import { DocsHeader } from "@/components";
 import { ThemeStyle } from "@/components/theme-style";
 import { generateDocsNav } from "@/lib/generate-nav";
 
