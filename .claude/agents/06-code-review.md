@@ -84,6 +84,23 @@ Read the PR description and verify every checkbox item against the diff:
 2. If verifiable and incorrect, leave unchecked and comment
 3. If not verifiable (requires runtime testing), leave unchecked and note why
 
+**How to check boxes:** Fetch the current PR body, replace `- [ ]` with `- [x]` for verified items, then PATCH via `gh api`:
+
+```bash
+# 1. Get the current body
+BODY=$(gh pr view {number} --json body -q '.body')
+
+# 2. Update checkboxes (use sed, jq, or string replacement)
+UPDATED_BODY=$(echo "$BODY" | sed 's/- \[ \] Verified item text/- [x] Verified item text/')
+
+# 3. PATCH the PR
+gh api repos/{owner}/{repo}/pulls/{number} \
+  --method PATCH \
+  --field body="$UPDATED_BODY"
+```
+
+Do NOT recreate the checklist in your review comment. The PR description is the single source of truth for checklist state.
+
 ## Post-Review Actions
 
 If the review verdict is **Approve** (no blocking items):
