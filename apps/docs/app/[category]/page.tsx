@@ -59,6 +59,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <Stack gap={4}>
         {components.map((component) => (
           <Card
+            key={component.name}
             render={
               <Link href={urls.component(category, toSlug(component.name))} />
             }

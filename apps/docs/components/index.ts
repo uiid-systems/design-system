@@ -1,4 +1,3 @@
-export { DocsHeader } from "./docs-header-server";
 export { PreviewProvider } from "./preview-context";
 export { PropsTable } from "./props-table";
 export { TreePreviewList } from "./tree-preview";
