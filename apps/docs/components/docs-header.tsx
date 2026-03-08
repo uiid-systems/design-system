@@ -9,6 +9,7 @@ import { Home } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Breadcrumbs } from "@uiid/navigation";
 
+import type { PresetName } from "@/lib/theme-presets";
 import { fromSlug, urls } from "@/constants/urls";
 import { NPM_URL } from "@/constants";
 import { ThemeSelector } from "./theme-selector";
@@ -20,7 +21,7 @@ type BreadcrumbItem = {
   icon?: typeof Home;
 };
 
-export const DocsHeader = () => {
+export const DocsHeader = ({ initialPreset }: { initialPreset?: PresetName }) => {
   const pathname = usePathname();
 
   const generateBreadcrumbs = (): BreadcrumbItem[] => {
@@ -64,7 +65,7 @@ export const DocsHeader = () => {
     >
       <Breadcrumbs items={breadcrumbItems} />
       <Group gap={2} ay="center">
-        <ThemeSelector />
+        <ThemeSelector initialPreset={initialPreset} />
         <ThemeToggle />
         <Button
           size="xsmall"

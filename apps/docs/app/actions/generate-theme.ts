@@ -1,50 +1,27 @@
 "use server";
 
 import fs from "fs";
-import os from "os";
 import path from "path";
-import { fileURLToPath } from "url";
-import { ThemeInputSchema } from "@uiid/themes/schema";
-import type { ThemeInput } from "@uiid/themes/schema";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+/** Map preset names to pre-built CSS files in @uiid/themes */
+const PRESET_CSS_DIR = path.resolve(
+  process.cwd(),
+  "../../packages/themes/src/presets/css"
+);
 
 /**
- * Server Action: generate theme CSS from a ThemeInput.
- *
- * Delegates to the generate-theme wrapper script which provides
- * the TokenGenerator binding.
+ * Server Action: return pre-built theme CSS for a given preset name.
  */
 export async function generateThemeCSS(
-  input: ThemeInput
+  presetName: string
 ): Promise<{ css: string } | { error: string }> {
-  const result = ThemeInputSchema.safeParse(input);
-  if (!result.success) {
-    const messages = result.error.issues.map(
-      (i) => `${i.path.join(".")}: ${i.message}`
-    );
-    return { error: `Invalid theme input: ${messages.join(", ")}` };
-  }
+  const safeName = presetName.replace(/[^a-z0-9-]/gi, "");
+  const cssPath = path.join(PRESET_CSS_DIR, `${safeName}.theme.css`);
 
   try {
-    const { generateTheme } = await import(
-      /* webpackIgnore: true */
-      path.resolve(__dirname, "../../../../scripts/generate-theme.js")
-    );
-
-    const tmpInput = path.join(os.tmpdir(), `uiid-theme-${Date.now()}.json`);
-    const tmpOutput = tmpInput.replace(/\.json$/, ".css");
-
-    fs.writeFileSync(tmpInput, JSON.stringify(result.data), "utf8");
-
-    try {
-      const { css } = await generateTheme(tmpInput, tmpOutput);
-      return { css };
-    } finally {
-      fs.rmSync(tmpInput, { force: true });
-      fs.rmSync(tmpOutput, { force: true });
-    }
-  } catch (err) {
-    return { error: `Theme generation failed: ${(err as Error).message}` };
+    const css = fs.readFileSync(cssPath, "utf8");
+    return { css };
+  } catch {
+    return { error: `Unknown theme preset: ${presetName}` };
   }
 }
