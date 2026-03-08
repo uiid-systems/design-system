@@ -12,7 +12,9 @@ import { List, ListItem } from "@uiid/lists";
 
 import { generateCodeExample } from "@/lib/generate-code-example";
 
-import { toSlug } from "@/constants/urls";
+import { toSlug, urls } from "@/constants/urls";
+import { getPrevNext } from "@/lib/generate-nav";
+import { PrevNextNav } from "@/components/prev-next-nav";
 import { getMdxSource, compileMdxContent } from "@/lib/mdx";
 import {
   CodeBlock,
@@ -52,6 +54,9 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
     notFound();
   }
 
+  const { prev, next } = getPrevNext(
+    urls.component(category, toSlug(entry.name))
+  );
   const docs = generateComponentDocs(entry);
   const previews = (entry.previews as PreviewConfig[] | undefined) ?? undefined;
 
@@ -149,27 +154,37 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
     });
 
     return (
-      <MdxContent
-        name={entry.name}
-        description={entry.description}
-        packageName={entry.package}
-        category={category}
-        previews={previews}
-      >
-        {content}
-      </MdxContent>
+      <>
+        <MdxContent
+          name={entry.name}
+          description={entry.description}
+          packageName={entry.package}
+          category={category}
+          previews={previews}
+        >
+          {content}
+        </MdxContent>
+        <Box px={8} pb={8}>
+          <PrevNextNav prev={prev} next={next} />
+        </Box>
+      </>
     );
   }
 
   // Fallback to legacy component details (no MDX)
   return (
-    <ComponentDetails
-      name={entry.name}
-      packageName={entry.package}
-      category={category}
-      description={entry.description}
-      props={docs.props}
-      previews={previews}
-    />
+    <>
+      <ComponentDetails
+        name={entry.name}
+        packageName={entry.package}
+        category={category}
+        description={entry.description}
+        props={docs.props}
+        previews={previews}
+      />
+      <Box px={8} pb={8}>
+        <PrevNextNav prev={prev} next={next} />
+      </Box>
+    </>
   );
 }

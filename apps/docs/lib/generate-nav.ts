@@ -93,6 +93,55 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
   });
 }
 
+export type PageLink = {
+  label: string;
+  href: string;
+};
+
+/**
+ * Get a flat, ordered list of all navigable pages.
+ * Order: Home → [Category → Components...] for each category.
+ */
+export function getPageList(): PageLink[] {
+  const pages: PageLink[] = [];
+
+  for (const category of getCategories()) {
+    pages.push({
+      label: getCategoryLabel(category),
+      href: urls.category(category),
+    });
+
+    for (const component of getComponentsByCategory(category)) {
+      pages.push({
+        label: component.name.replace(/(?<!^)([A-Z])/g, " $1"),
+        href: urls.component(category, toSlug(component.name)),
+      });
+    }
+  }
+
+  return pages;
+}
+
+/**
+ * Get the previous and next pages relative to the given path.
+ */
+export function getPrevNext(pathname: string): {
+  prev: PageLink | null;
+  next: PageLink | null;
+} {
+  const pages = getPageList();
+  const index = pages.findIndex((p) => p.href === pathname);
+
+  if (index === -1) {
+    return { prev: null, next: null };
+  }
+
+  return {
+    prev: index > 0 ? pages[index - 1] : null,
+    next: index < pages.length - 1 ? pages[index + 1] : null,
+  };
+}
+
 /**
  * Get total component count
  */
