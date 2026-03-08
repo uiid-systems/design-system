@@ -49,7 +49,7 @@ If the PR modifies any publishable package under `packages/` (bug fix, new featu
 
 ```md
 ---
-"@uiid/package-name": patch | minor | major
+"@uiid/package-name": patch
 ---
 
 Short description of the change

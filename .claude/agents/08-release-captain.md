@@ -22,10 +22,9 @@ A validation that the release is correct, posted as a comment on the merged PR o
 ## Steps
 
 1. Read the changeset file(s) in the PR
-2. Verify the **bump level** matches the risk:
-   - `risk:breaking` → must be `major`
-   - `risk:visual` or `risk:behavioral` → at minimum `minor`
-   - No risk labels → `patch` is appropriate
+2. Verify the **bump level** is `patch`:
+   - Until the design system reaches 1.0.0, **all bumps must be `patch`** — never `minor` or `major`. This is a hard rule, no exceptions.
+   - If a changeset uses `minor` or `major`, flag it as incorrect and change it to `patch`.
 3. Verify the **package scope** is complete:
    - If `@uiid/buttons` changed, the changeset should include `@uiid/buttons`
    - If the change affects downstream packages (e.g., tokens change that affects all consumers), verify scope

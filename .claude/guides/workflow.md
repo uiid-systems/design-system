@@ -356,7 +356,7 @@ When both Feature Coder and Designer are needed, they work in parallel — same 
 - Package dependency graph
 
 **Responsibilities:**
-- Validate changeset level is correct (patch / minor / major)
+- Validate changeset level is `patch` (all bumps are `patch` until 1.0.0 — no exceptions)
 - Confirm package scope is complete
 - Verify changelog is human-readable
 - Identify migration notes (if breaking)

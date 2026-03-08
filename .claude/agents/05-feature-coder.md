@@ -72,12 +72,12 @@ Work in this order. Each step should be a commit that leaves the repo in a build
    - Create `.changeset/{random-three-word-kebab}.md` with the format:
      ```
      ---
-     "@uiid/{package}": patch | minor | major
+     "@uiid/{package}": patch
      ---
 
      Brief description of the change
      ```
-   - Use `patch` for non-breaking additions, `minor` for new features, `major` for breaking changes
+   - **Always use `patch`.** Until the design system reaches 1.0.0, all bumps are `patch` — never `minor` or `major`. This is a hard rule, no exceptions.
    - Commit: `chore: changeset`
 
 ### PR Preparation
