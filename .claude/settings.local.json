@@ -33,7 +33,8 @@
       "Bash(grep:*)",
       "mcp__claude_ai_Linear__list_issue_statuses",
       "mcp__claude_ai_Linear__get_project",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "mcp__claude_ai_Linear__save_comment"
     ]
   },
   "enabledPlugins": {}
