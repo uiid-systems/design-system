@@ -37,8 +37,8 @@
       position: absolute;
       inset: 0.25rem 0;
       border-radius: 0.25rem;
-      outline: 2px solid var(--shade-foreground);
-      outline-offset: -1px;
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: calc(var(--globals-outline-offset) * -1);
     }
   }
 }
@@ -74,9 +74,9 @@
   transition-delay: calc(var(--timing) / 2);
 
   &:focus-visible {
-    outline: 2px solid var(--shade-foreground);
-    outline-offset: -1px;
-    border-radius: 0.375rem;
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: calc(var(--globals-outline-offset) * -1);
+    border-radius: var(--globals-border-radius);
   }
 
   &[hidden] {

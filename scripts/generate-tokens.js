@@ -494,6 +494,16 @@ ${cssProperties.trimEnd()}
       return this.colorObjectToCss(value);
     }
 
+    // Handle shadow objects per DTCG Shadow type
+    if (typeof value === "object" && value !== null && "offsetX" in value && "offsetY" in value) {
+      return this.shadowObjectToCss(value);
+    }
+
+    // Handle shadow arrays (layered shadows)
+    if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object" && value[0] !== null && "offsetX" in value[0]) {
+      return value.map((s) => this.shadowObjectToCss(s)).join(", ");
+    }
+
     return String(value);
   }
 
@@ -518,6 +528,21 @@ ${cssProperties.trimEnd()}
     const comps = components.join(" ");
     const alphaStr = alpha !== undefined && alpha !== 1 ? ` / ${alpha}` : "";
     return `color(${colorSpace} ${comps}${alphaStr})`;
+  }
+
+  /**
+   * Convert a DTCG shadow object to a CSS box-shadow value
+   */
+  shadowObjectToCss(shadow) {
+    const { color, offsetX, offsetY, blur, spread, inset } = shadow;
+    const parts = [];
+    if (inset) parts.push("inset");
+    parts.push(this.processCssValue(offsetX));
+    parts.push(this.processCssValue(offsetY));
+    parts.push(this.processCssValue(blur));
+    if (spread) parts.push(this.processCssValue(spread));
+    parts.push(this.processCssValue(color));
+    return parts.join(" ");
   }
 
   /**

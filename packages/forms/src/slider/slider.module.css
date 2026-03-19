@@ -31,10 +31,10 @@
   height: 1rem;
   border-radius: 100%;
   background-color: var(--shade-foreground);
-  outline: 1px solid var(--shade-muted);
+  outline: var(--globals-border-width) solid var(--shade-muted);
   user-select: none;
 
   &:has(:focus-visible) {
-    outline: 2px solid var(--shade-foreground);
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
   }
 }

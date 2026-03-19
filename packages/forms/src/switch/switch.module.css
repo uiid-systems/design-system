@@ -36,8 +36,8 @@
       inset: 0;
       position: absolute;
       border-radius: inherit;
-      outline: 2px solid var(--shade-foreground);
-      outline-offset: 2px;
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: var(--globals-outline-offset);
     }
   }
 }

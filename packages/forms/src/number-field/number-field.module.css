@@ -7,7 +7,7 @@
 }
 
 .ScrubAreaCursor {
-  filter: drop-shadow(0 1px 1px #0008);
+  filter: drop-shadow(var(--globals-shadow-xs));
 }
 
 .number-field {
