@@ -1,5 +1,13 @@
 # @uiid/typography
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [[`e2c1394`](https://github.com/uiid-systems/design-system/commit/e2c13948302371959e2b006de776aeab6c8a3c81)]:
+  - @uiid/tokens@0.0.11
+  - @uiid/utils@0.0.11
+
 ## 0.0.10
 
 ### Patch Changes
