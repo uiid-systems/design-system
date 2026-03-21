@@ -59,6 +59,7 @@ design-system/
 | Run tests (watch)    | `pnpm test`                               |
 | Start Storybook      | `pnpm run storybook`                      |
 | Lint                 | `pnpm run lint`                           |
+| Check bundle sizes   | `pnpm size`                               |
 
 ---
 
