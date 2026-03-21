@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Size, Tone } from "../../shared";
+import { Size } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { buttonPreviews } from "./previews";
 
@@ -19,8 +19,6 @@ export const ButtonPropsSchema = z.object({
   size: Size.optional(),
   /** Visual variant */
   variant: ButtonVariant.optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Disabled state */
   disabled: z.boolean().optional(),
   /** Loading state (shows spinner) */
@@ -41,13 +39,13 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   hasChildren: true,
   propsSchema: ButtonPropsSchema,
   description:
-    "Primary action button with multiple size, variant, and tone options.",
+    "Primary action button with multiple size and variant options.",
   category: "buttons",
   defaults: {
     size: "medium",
   },
   previews: buttonPreviews,
   usage:
-    "Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, use variant=\"ghost\" for minimal chrome.",
+    "Use Button for primary actions. Set variant for visual weight, use variant=\"ghost\" for minimal chrome.",
   figma: { nodeId: "156:1221" },
 };

@@ -1,6 +1,6 @@
 # Button
 
-> Primary action button with multiple size, variant, and tone options
+> Primary action button with multiple size and variant options
 
 ## Quick Reference
 
@@ -42,15 +42,6 @@ import { Button } from "@uiid/buttons";
 <Button size="large">Large</Button>
 ```
 
-### Tones
-
-```tsx
-<Button tone="positive">Success</Button>
-<Button tone="critical">Danger</Button>
-<Button tone="warning">Warning</Button>
-<Button tone="info">Info</Button>
-```
-
 ### Shapes
 
 ```tsx
@@ -80,7 +71,6 @@ import { Button } from "@uiid/buttons";
 | `variant`   | `"subtle" \| "ghost" \| "inverted"`               | —          | Visual style variant                  |
 | `shape`     | `"pill" \| "square" \| "circle"`                  | —          | Button shape                          |
 | `size`      | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | Size variant                          |
-| `tone`      | `"positive" \| "critical" \| "warning" \| "info"` | —          | Semantic color tone                   |
 | `fullwidth` | `boolean`                                         | —          | Expand to fill container width        |
 | `loading`   | `boolean`                                         | —          | Show loading spinner, hide content    |
 | `disabled`  | `boolean`                                         | —          | Disable the button                    |

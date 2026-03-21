@@ -50,7 +50,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
     <Group gap={2} fullwidth ay="center" bb={1} pb={1} minh={40}>
       <Group gap={2} ay="center" ax="start" minw={160}>
         {prop.required && (
-          <AsteriskIcon size={12} className="text-(--tone-critical)" />
+          <AsteriskIcon size={12} className="text-(--shade-foreground)" />
         )}
         <Text size={-1} weight="bold">
           {prop.name}

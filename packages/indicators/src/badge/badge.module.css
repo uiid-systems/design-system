@@ -29,19 +29,6 @@
   padding: var(--badge-size-lg-padding-y) var(--badge-size-lg-padding-x);
 }
 
-.tone-positive {
-  background-color: var(--tone-positive);
-}
-.tone-critical {
-  background-color: var(--tone-critical);
-}
-.tone-warning {
-  background-color: var(--tone-warning);
-}
-.tone-info {
-  background-color: var(--tone-info);
-}
-
 .toggle-inverted {
   background-color: var(--shade-background);
   color: var(--shade-foreground);

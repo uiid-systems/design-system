@@ -16,10 +16,6 @@ const meta = {
     <Stack gap={4} fullwidth>
       <Alert {...args} action={<Globe />} />
       <Alert {...args} inverted icon={Globe} action={<a href="#">Action</a>} />
-      <Alert {...args} tone="info" />
-      <Alert {...args} tone="warning" />
-      <Alert {...args} tone="critical" />
-      <Alert {...args} tone="positive" />
     </Stack>
   ),
 } satisfies Meta<typeof Alert>;

@@ -47,30 +47,6 @@
   }
 }
 
-.tone-info {
-  background-color: var(--tone-info-surface);
-  border-color: var(--tone-info-border);
-  color: var(--tone-info-foreground);
-}
-
-.tone-warning {
-  background-color: var(--tone-warning-surface);
-  border-color: var(--tone-warning-border);
-  color: var(--tone-warning-foreground);
-}
-
-.tone-critical {
-  background-color: var(--tone-critical-surface);
-  border-color: var(--tone-critical-border);
-  color: var(--tone-critical-foreground);
-}
-
-.tone-positive {
-  background-color: var(--tone-positive-surface);
-  border-color: var(--tone-positive-border);
-  color: var(--black);
-}
-
 .toggle-inverted {
   background-color: var(--shade-foreground);
   color: var(--shade-background);

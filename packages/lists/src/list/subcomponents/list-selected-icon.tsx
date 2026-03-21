@@ -7,7 +7,7 @@ export const ListSelectedIcon = () => {
     <Check
       size={ICON_SIZE_SMALL}
       strokeWidth={4}
-      stroke="var(--tone-positive)"
+      stroke="var(--shade-foreground)"
       style={{ marginInlineStart: "auto" }}
     />
   );

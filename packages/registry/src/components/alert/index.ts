@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { Tone } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { alertPreviews } from "./previews";
 
@@ -21,8 +20,6 @@ export const AlertPropsSchema = z.object({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
   /** Trimmed padding */
@@ -53,5 +50,5 @@ export const AlertEntry: ComponentEntry<typeof AlertPropsSchema> = {
     icon: "Alert icon",
   },
   usage:
-    "Use Alert for important messages. Set tone for semantic meaning (positive, warning, critical, info).",
+    "Use Alert for important messages with optional title and actions.",
 };

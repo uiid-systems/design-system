@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   Size,
   FormSize,
-  Tone,
   Shade,
   MarginValue,
   SpacingPropsSchema,
@@ -32,18 +31,6 @@ describe("FormSize enum", () => {
 
   it("rejects xsmall", () => {
     expect(FormSize.safeParse("xsmall").success).toBe(false);
-  });
-});
-
-describe("Tone enum", () => {
-  it("accepts valid tones", () => {
-    for (const v of ["positive", "critical", "warning", "info"]) {
-      expect(Tone.safeParse(v).success).toBe(true);
-    }
-  });
-
-  it("rejects invalid values", () => {
-    expect(Tone.safeParse("danger").success).toBe(false);
   });
 });
 

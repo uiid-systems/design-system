@@ -172,7 +172,7 @@ Style props are grouped into categories. Each category is an accordion trigger t
     {/* Line 1: name + required badge + type */}
     <Group gap={3} ay="center">
       <Text size={0} weight="bold" mono>{prop.name}</Text>
-      {prop.required && <Badge tone="critical" size="small" hideIndicator>required</Badge>}
+      {prop.required && <Badge size="small" hideIndicator>required</Badge>}
       <Text size={-1} shade="muted" mono>{prop.type}</Text>
     </Group>
 

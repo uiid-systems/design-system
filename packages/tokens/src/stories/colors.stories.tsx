@@ -3,7 +3,6 @@ import type { StoryObj } from "@storybook/react-vite";
 import generatedColorTokens from "../json/primitives/colors.generated.tokens.json";
 import colorTokens from "../json/primitives/colors.tokens.json";
 import shadeTokens from "../json/semantic/shade.tokens.json";
-import toneTokens from "../json/semantic/tone.tokens.json";
 
 type TokenValue = string | { colorSpace: string; components: number[]; hex: string };
 type Token = { $value: TokenValue; $type?: string };
@@ -21,9 +20,6 @@ const extractTokens = (group: Record<string, Token | unknown>) =>
 
 const COLORS = extractTokens(colorTokens.color);
 const SHADES = extractTokens(shadeTokens.shade);
-const TONES = extractTokens(toneTokens.tone);
-
-const TONE_GROUPS = ["positive", "warning", "critical", "info"] as const;
 
 // Build SCALES map: { red: { "50": "#ffe3db", "100": "...", ... }, ... }
 type ScaleStep = { $value: string };
@@ -186,41 +182,6 @@ export const Colors: Story = {
           ))}
       </div>
 
-      <SectionLabel>Tones</SectionLabel>
-      {TONE_GROUPS.map((tone) => (
-        <div key={tone}>
-          <div
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              marginBottom: "0.5rem",
-              color: "var(--shade-foreground)",
-            }}
-          >
-            {tone}
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-              gap: "0.5rem",
-            }}
-          >
-            {Object.entries(TONES)
-              .filter(([key]) => key === tone || key.startsWith(`${tone}-`))
-              .map(([name]) => {
-                const suffix = name === tone ? "" : name.slice(tone.length + 1);
-                return (
-                  <Swatch
-                    key={name}
-                    name={suffix || "base"}
-                    cssVar={`tone-${name}`}
-                  />
-                );
-              })}
-          </div>
-        </div>
-      ))}
     </div>
   ),
 };

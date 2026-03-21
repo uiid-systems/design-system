@@ -120,7 +120,6 @@ Supports children.
 | `size` | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 |  |
 | `weight` | "thin" \| "light" \| "normal" \| "bold" |  |
 | `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `align` | "left" \| "center" \| "right" \| "justify" |  |
 | `underline` | boolean |  |
 | `strikethrough` | boolean |  |
@@ -135,9 +134,9 @@ Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
 #### Button
 
-Primary action button with multiple size, variant, and tone options.
+Primary action button with multiple size and variant options.
 
-Use Button for primary actions. Set tone for semantic meaning, variant for visual weight, ghost for minimal chrome.
+Use Button for primary actions. Set variant for visual weight, ghost for minimal chrome.
 
 Supports children.
 
@@ -146,7 +145,6 @@ Supports children.
 | `children` | string |  |
 | `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
 | `variant` | "subtle" \| "inverted" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |
@@ -168,7 +166,6 @@ Supports children.
 | `children` | string |  |
 | `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
 | `variant` | "subtle" \| "inverted" |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |
@@ -191,7 +188,7 @@ Supports children.
 
 Container card with title, description, icon, action, and footer slots
 
-Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.
+Use Card as a content container. Pass title/description as props, children as body.
 
 Supports children.
 
@@ -210,7 +207,6 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `inverted` | boolean |  |
 | `trimmed` | boolean |  |
 | `transparent` | boolean |  |
@@ -434,7 +430,7 @@ Toggle switch with label and description support
 
 Semantic alert component for displaying important messages with optional title and actions
 
-Use Alert for important messages. Set tone for semantic meaning (positive, warning, critical, info).
+Use Alert for important messages.
 
 Supports children.
 
@@ -453,7 +449,6 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `inverted` | boolean |  |
 | `trimmed` | boolean |  |
 | `transparent` | boolean |  |
@@ -483,9 +478,9 @@ Use Avatar for user profiles. Pass initials as fallback, name for display. Use o
 
 #### Badge
 
-Status badge with optional dot indicator and semantic tones
+Status badge with optional dot indicator
 
-Use Badge for status labels, counts, or tags. Set tone for semantic meaning, hideIndicator to show text-only.
+Use Badge for status labels, counts, or tags. Set hideIndicator to show text-only.
 
 Supports children.
 
@@ -493,7 +488,6 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `inverted` | boolean |  |
 | `hideIndicator` | boolean |  |
 
@@ -523,14 +517,13 @@ Use to show progress of an operation. Pass null for indeterminate state.
 
 Status dot indicator with optional label and pulsing animation
 
-Use Status for online/offline indicators or activity states. Set pulse for live activity, tone for semantic meaning.
+Use Status for online/offline indicators or activity states. Set pulse for live activity.
 
 Supports children.
 
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `tone` | "positive" \| "critical" \| "warning" \| "info" |  |
 | `pulse` | boolean |  |
 | `inverted` | boolean |  |
 

@@ -258,7 +258,6 @@ export const OpenBlocksPanel = () => {
                       <>
                         <Button
                           tooltip="Confirm"
-                          tone="positive"
                           onClick={handleConfirmRename}
                           size="xsmall"
                           variant="ghost"
@@ -268,7 +267,6 @@ export const OpenBlocksPanel = () => {
                         </Button>
                         <Button
                           tooltip="Cancel"
-                          tone="critical"
                           onClick={handleCancelRename}
                           size="xsmall"
                           variant="ghost"

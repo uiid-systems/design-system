@@ -21,7 +21,7 @@ export const RenderedJson = ({
         rows={24}
         {...props}
       />
-      {parseError && <Text tone="critical">Parse Error: {parseError}</Text>}
+      {parseError && <Text>Parse Error: {parseError}</Text>}
     </Stack>
   );
 };

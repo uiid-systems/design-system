@@ -30,12 +30,6 @@ export const textVariants = cva({
       muted: styles["shade-muted"],
       foreground: styles["shade-foreground"],
     },
-    tone: {
-      positive: styles["tone-positive"],
-      critical: styles["tone-critical"],
-      warning: styles["tone-warning"],
-      info: styles["tone-info"],
-    },
     size: {
       [-1]: styles["text-size--1"],
       0: styles["text-size-0"],

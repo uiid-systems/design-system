@@ -25,10 +25,10 @@ export function generateCss(themeName, directOverrides, derivedOverrides) {
     lines.push(`  ${cssVar}: ${value};`);
   }
 
-  // Derived shade/tone overrides
+  // Derived shade overrides
   if (derivedOverrides.size > 0) {
     lines.push(``);
-    lines.push(`  /* Derived shade + tone tokens */`);
+    lines.push(`  /* Derived shade tokens */`);
     for (const [cssVar, value] of derivedOverrides) {
       lines.push(`  ${cssVar}: ${value};`);
     }

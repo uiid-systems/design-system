@@ -47,7 +47,7 @@ export const HeaderActions = () => {
               onClick={toggleInspecting}
               size="small"
               variant="ghost"
-              tone={inspecting ? "info" : undefined}
+
             >
               <ScanSearchIcon />
               Inspect

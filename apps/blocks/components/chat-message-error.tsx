@@ -8,7 +8,7 @@ export const ChatMessageError = ({
   ...props
 }: ChatMessageErrorProps) => {
   return (
-    <Card tone="critical" {...props}>
+    <Card {...props}>
       <Text>{children}</Text>
     </Card>
   );
