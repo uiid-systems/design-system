@@ -1,6 +1,7 @@
 import type { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 
 import type { FieldProps } from "../field/field.types";
+import type { InputVariants } from "../input/input.types";
 
 export type NumberFieldRootProps = BaseNumberField.Root.Props;
 export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
@@ -15,4 +16,5 @@ export type NumberFieldProps = {
   InputProps?: NumberFieldInputProps;
 } & NumberFieldRootProps &
   Pick<FieldProps, "label" | "description"> &
-  Pick<NumberFieldInputProps, "placeholder">;
+  Pick<NumberFieldInputProps, "placeholder"> &
+  Pick<InputVariants, "size">;

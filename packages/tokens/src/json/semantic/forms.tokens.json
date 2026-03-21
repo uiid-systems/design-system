@@ -12,6 +12,7 @@
     "border": {
       "color": { "$value": "{shade.halftone}", "$type": "color" }
     },
+    "font-size": { "$value": "{forms.size.md.font-size}", "$type": "dimension" },
     "icon": {
       "size": { "$value": "{globals.icon.size}", "$type": "dimension" }
     },
