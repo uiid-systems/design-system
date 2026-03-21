@@ -66,24 +66,24 @@
   width: var(--checkbox-size-sm);
 
   & .checkbox-icon {
-    width: 0.625rem;
-    height: 0.625rem;
+    width: var(--checkbox-icon-size-sm);
+    height: var(--checkbox-icon-size-sm);
   }
 }
 .size-medium {
   width: var(--checkbox-size-md);
 
   & .checkbox-icon {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: var(--checkbox-icon-size-md);
+    height: var(--checkbox-icon-size-md);
   }
 }
 .size-large {
   width: var(--checkbox-size-lg);
 
   & .checkbox-icon {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: var(--checkbox-icon-size-lg);
+    height: var(--checkbox-icon-size-lg);
   }
 }
 

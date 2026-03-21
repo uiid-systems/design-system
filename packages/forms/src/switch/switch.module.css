@@ -7,7 +7,7 @@
   border: 0;
   margin: 0;
   padding: 1px;
-  border-radius: calc(var(--switch-height));
+  border-radius: var(--switch-height);
   outline: 1px solid var(--shade-halftone);
   outline-offset: -1px;
   background-color: var(--switch-bg);
