@@ -15,6 +15,7 @@ import {
 } from "./subcomponents";
 
 import type { NumberFieldProps } from "./number-field.types";
+import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import styles from "./number-field.module.css";
 
 /**
@@ -28,6 +29,7 @@ export const NumberField = ({
   placeholder,
   disabled,
   required,
+  size = NUMBER_FIELD_DEFAULT_SIZE,
   RootProps,
   DecrementProps,
   IncrementProps,
@@ -35,6 +37,8 @@ export const NumberField = ({
   InputProps,
   ...props
 }: NumberFieldProps) => {
+  const sizeClass = size ? styles[`size-${size}`] : undefined;
+
   return (
     <ConditionalRender
       condition={Boolean(label || description)}
@@ -49,11 +53,16 @@ export const NumberField = ({
         />
       }
     >
-      <NumberFieldRoot name={name} {...RootProps} {...props}>
+      <NumberFieldRoot
+        name={name}
+        {...RootProps}
+        className={cx(sizeClass, RootProps?.className)}
+        {...props}
+      >
         <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
         <BaseNumberField.Input
-          render={<Input FieldProps={{ style: { flex: 1 } }} />}
+          render={<Input size={size} FieldProps={{ style: { flex: 1 } }} />}
           className={cx(styles["number-field-input"], InputProps?.className)}
           placeholder={placeholder}
           required={required}
