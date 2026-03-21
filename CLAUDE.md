@@ -81,6 +81,5 @@ Read these files when the task requires them — do not import by default:
 | `.claude/guides/figma.md` | Building or inspecting Figma components |
 | `.claude/guides/pull-requests.md` | Creating a PR |
 | `.claude/guides/pull-reviews.md` | Reviewing a PR |
-| `.claude/guides/workflow.md` | Running the agent pipeline or grooming tickets |
 | `apps/blocks/BLOCKS_GUIDE.md` | Working on the blocks app (tree format, rules, patterns) |
 | `apps/docs/DOCS_GUIDE.md` | Working on the documentation site |
