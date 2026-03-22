@@ -1,5 +1,19 @@
 # @uiid/registry
 
+## 0.0.12
+
+### Patch Changes
+
+- [#150](https://github.com/uiid-systems/design-system/pull/150) [`cac4e08`](https://github.com/uiid-systems/design-system/commit/cac4e08c36279836e8bee85ccc26dd260fba4db4) Thanks [@adamfratino](https://github.com/adamfratino)! - Remove tone system (positive/critical/warning/info) from all components and tokens. Form validation errors now use shade-based styling.
+
+- Updated dependencies [[`cac4e08`](https://github.com/uiid-systems/design-system/commit/cac4e08c36279836e8bee85ccc26dd260fba4db4)]:
+  - @uiid/buttons@0.0.12
+  - @uiid/cards@0.0.12
+  - @uiid/typography@0.0.12
+  - @uiid/forms@0.0.12
+  - @uiid/layout@0.0.12
+  - @uiid/utils@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes

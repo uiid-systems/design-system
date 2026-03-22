@@ -1,6 +1,6 @@
 {
   "name": "@uiid/interactive",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Interactive components — Accordion, Collapsible, Sortable, Rich Text Editor",
   "license": "MIT",
   "author": "Adam Fratino",
