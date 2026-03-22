@@ -1,0 +1,17 @@
+/* Tokens (must come first — defines layers + custom properties) */
+@import "@uiid/tokens/globals.css";
+
+/* Component styles */
+@import "@uiid/buttons/globals.css";
+@import "@uiid/calendars/globals.css";
+@import "@uiid/cards/globals.css";
+@import "@uiid/code/globals.css";
+@import "@uiid/forms/globals.css";
+@import "@uiid/indicators/globals.css";
+@import "@uiid/interactive/globals.css";
+@import "@uiid/layout/globals.css";
+@import "@uiid/lists/globals.css";
+@import "@uiid/navigation/globals.css";
+@import "@uiid/overlays/globals.css";
+@import "@uiid/tables/globals.css";
+@import "@uiid/typography/globals.css";

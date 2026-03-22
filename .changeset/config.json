@@ -24,12 +24,13 @@
       "@uiid/tables",
       "@uiid/tokens",
       "@uiid/typography",
-      "@uiid/utils"
+      "@uiid/utils",
+      "@uiid/design-system"
     ]
   ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uiid/storybook", "blocks", "docs"]
+  "ignore": ["@uiid/storybook", "@uiid/design-system", "blocks", "docs"]
 }
