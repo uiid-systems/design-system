@@ -1,5 +1,11 @@
 # @uiid/tokens
 
+## 0.0.13
+
+### Patch Changes
+
+- [#162](https://github.com/uiid-systems/design-system/pull/162) [`8a1be59`](https://github.com/uiid-systems/design-system/commit/8a1be592a3aec2f8add47df394fee79a2b3feff0) Thanks [@adamfratino](https://github.com/adamfratino)! - badge refactor
+
 ## 0.0.12
 
 ### Patch Changes
