@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { PaletteColor } from "../../shared";
 import { badgePreviews } from "./previews";
 
 /**
@@ -16,6 +17,8 @@ export const BadgePropsSchema = z.object({
   children: z.any().optional(),
   /** Size variant */
   size: BadgeSize.optional(),
+  /** Palette color for tinted badge */
+  color: PaletteColor.optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
   /** Hide the dot indicator */

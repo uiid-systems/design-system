@@ -34,7 +34,8 @@
       "mcp__claude_ai_Linear__list_issue_statuses",
       "mcp__claude_ai_Linear__get_project",
       "Bash(open:*)",
-      "mcp__claude_ai_Linear__save_comment"
+      "mcp__claude_ai_Linear__save_comment",
+      "Bash(gh run:*)"
     ]
   },
   "enabledPlugins": {}

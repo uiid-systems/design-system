@@ -10,9 +10,12 @@
       "y": { "$value": "0.75rem", "$type": "dimension" }
     },
     "border": {
-      "color": { "$value": "{shade.halftone}", "$type": "color" }
+      "color": { "$value": "{globals.border.color}", "$type": "color" }
     },
-    "font-size": { "$value": "{forms.size.md.font-size}", "$type": "dimension" },
+    "font-size": {
+      "$value": "{forms.size.md.font-size}",
+      "$type": "dimension"
+    },
     "icon": {
       "size": { "$value": "{globals.icon.size}", "$type": "dimension" }
     },

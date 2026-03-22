@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 
 import { Badge } from "./badge";
 
@@ -15,9 +15,19 @@ const meta = {
       options: ["small", "medium", "large"],
       table: { category: "Variants" },
     },
-    hideIndicator: {
-      control: "boolean",
-      table: { category: "Toggles" },
+    color: {
+      control: "select",
+      options: [
+        undefined,
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+      ],
+      table: { category: "Variants" },
     },
   },
   render: (args) => (
@@ -34,3 +44,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Badge" };
+
+const colors = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+] as const;
+
+export const Colors: Story = {
+  render: (args) => (
+    <Group gap={2}>
+      {colors.map((color) => (
+        <Badge key={color} {...args} color={color}>
+          {color}
+        </Badge>
+      ))}
+    </Group>
+  ),
+};
