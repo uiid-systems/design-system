@@ -19,6 +19,7 @@
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "release": "turbo build && changeset publish",
+    "size": "size-limit",
     "generate-readmes": "node scripts/generate-readmes.mjs",
     "prepare": "husky",
     "postinstall": "playwright install chromium --with-deps"
@@ -29,6 +30,7 @@
     "@commitlint/cli": "^20.4.0",
     "@commitlint/config-conventional": "^20.4.0",
     "@eslint/js": "^10.0.1",
+    "@size-limit/preset-small-lib": "^12.0.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
@@ -41,6 +43,7 @@
     "husky": "^9.1.7",
     "playwright": "^1.58.1",
     "prettier": "3.8.1",
+    "size-limit": "^12.0.1",
     "turbo": "^2.8.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.55.0",

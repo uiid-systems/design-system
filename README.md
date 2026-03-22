@@ -109,6 +109,20 @@ Build a single package:
 pnpm run build --filter=@uiid/buttons
 ```
 
+### Bundle size
+
+All packages have size budgets enforced by [size-limit](https://github.com/ai/size-limit). Sizes are measured as minified + brotli with all dependencies included.
+
+```bash
+pnpm size                # Check all package sizes against budgets
+```
+
+**Local hook:** A pre-push hook runs `pnpm size` automatically. If any package exceeds its budget, the push is blocked. Bypass with `git push --no-verify` in emergencies.
+
+**CI:** PRs against `main` get an automated comment comparing bundle sizes between the PR and base branch.
+
+**Updating budgets:** Edit `.size-limit.json` at the repo root. Each entry has a `path`, `name`, and `limit`. When a size increase is intentional (new features, new dependencies), bump the limit to accommodate it with reasonable headroom.
+
 ---
 
 ## Architecture
