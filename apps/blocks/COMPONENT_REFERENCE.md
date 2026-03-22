@@ -478,9 +478,9 @@ Use Avatar for user profiles. Pass initials as fallback, name for display. Use o
 
 #### Badge
 
-Status badge with optional dot indicator
+Status badge for labels, counts, or tags
 
-Use Badge for status labels, counts, or tags. Set hideIndicator to show text-only.
+Use Badge for status labels, counts, or tags.
 
 Supports children.
 
@@ -488,8 +488,8 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `color` | "red" \| "orange" \| "yellow" \| "green" \| "blue" \| "indigo" \| "purple" |  |
 | `inverted` | boolean |  |
-| `hideIndicator` | boolean |  |
 
 #### Kbd
 

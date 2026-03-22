@@ -8,7 +8,7 @@ export function BadgePreview() {
       <Badge>Pending</Badge>
       <Badge>Completed</Badge>
       <Badge>Critical</Badge>
-      <Badge hideIndicator>Text only</Badge>
+      <Badge>Text only</Badge>
     </Group>
   );
 }

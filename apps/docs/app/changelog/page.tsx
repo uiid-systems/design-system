@@ -52,11 +52,7 @@ export default async function ChangelogPage() {
             <Stack key={changeset.id} gap={3} bb={1} pb={4}>
               <Group gap={2} ay="center" style={{ flexWrap: "wrap" }}>
                 {changeset.packages.map((pkg) => (
-                  <Badge
-                    key={pkg.name}
-                    size="small"
-                    hideIndicator
-                  >
+                  <Badge key={pkg.name} size="small">
                     {pkg.name} · {pkg.bump}
                   </Badge>
                 ))}

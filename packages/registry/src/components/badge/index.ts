@@ -21,8 +21,6 @@ export const BadgePropsSchema = z.object({
   color: PaletteColor.optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
-  /** Hide the dot indicator */
-  hideIndicator: z.boolean().optional(),
 });
 
 export type BadgeProps = z.infer<typeof BadgePropsSchema>;
@@ -32,12 +30,11 @@ export const BadgeEntry: ComponentEntry<typeof BadgePropsSchema> = {
   package: "@uiid/indicators",
   hasChildren: true,
   propsSchema: BadgePropsSchema,
-  description: "Status badge with optional dot indicator",
+  description: "Status badge for labels, counts, or tags",
   category: "indicators",
   defaults: {
     size: "medium",
   },
   previews: badgePreviews,
-  usage:
-    "Use Badge for status labels, counts, or tags. Use hideIndicator to show text-only.",
+  usage: "Use Badge for status labels, counts, or tags.",
 };
