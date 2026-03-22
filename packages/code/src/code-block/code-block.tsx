@@ -1,5 +1,3 @@
-"use client";
-
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
