@@ -214,13 +214,13 @@ export const SourceSettings = () => {
 
       {error && (
         <Stack fullwidth maxw={768}>
-          <Badge tone="critical">{error}</Badge>
+          <Badge>{error}</Badge>
         </Stack>
       )}
 
       {importResult && (
         <Stack fullwidth maxw={768}>
-          <Badge tone="positive">{importResult}</Badge>
+          <Badge>{importResult}</Badge>
         </Stack>
       )}
 
@@ -504,7 +504,6 @@ const SourceCard = ({
               onClick={onRemove}
               variant="ghost"
               size="small"
-              tone="critical"
               disabled={saving}
               tooltip="Remove source"
               aria-label={`Remove ${source.label}`}

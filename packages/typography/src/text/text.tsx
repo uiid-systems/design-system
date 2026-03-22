@@ -9,7 +9,6 @@ import { TEXT_DEFAULT_SIZE, TEXT_DEFAULT_FAMILY } from "./text.constants";
 export const Text = ({
   shade,
   weight,
-  tone,
   underline,
   strikethrough,
   balance,
@@ -50,7 +49,6 @@ export const Text = ({
         textVariants({
           shade,
           size,
-          tone,
           weight,
           family,
           balance,

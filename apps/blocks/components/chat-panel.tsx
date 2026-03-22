@@ -80,7 +80,6 @@ export const ChatPanel = () => {
         onClick={() => setOpen((prev) => !prev)}
         shape="square"
         size="large"
-        tone={open ? "info" : undefined}
       >
         <MessageCircleIcon />
       </Button>

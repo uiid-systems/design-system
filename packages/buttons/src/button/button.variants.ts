@@ -22,12 +22,6 @@ export const buttonVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
     },
-    tone: {
-      positive: styles["tone-positive"],
-      critical: styles["tone-critical"],
-      warning: styles["tone-warning"],
-      info: styles["tone-info"],
-    },
   },
   defaultVariants: {
     size: BUTTON_DEFAULT_SIZE,

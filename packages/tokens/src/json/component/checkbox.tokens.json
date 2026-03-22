@@ -8,6 +8,12 @@
       "sm": { "$value": "1rem" },
       "md": { "$value": "1.25rem" },
       "lg": { "$value": "1.5rem" }
+    },
+    "icon-size": {
+      "$type": "dimension",
+      "sm": { "$value": "0.625rem" },
+      "md": { "$value": "0.75rem" },
+      "lg": { "$value": "0.875rem" }
     }
   }
 }

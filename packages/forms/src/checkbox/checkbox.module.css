@@ -16,7 +16,7 @@
   transition: all var(--globals-transition-duration) ease-in-out;
 
   &[data-unchecked] {
-    border: 1px solid var(--forms-border-color);
+    border: var(--globals-border-width) solid var(--forms-border-color);
     background-color: var(--forms-bg);
     &:hover {
       background-color: var(--forms-bg-hover);
@@ -35,6 +35,11 @@
   &:where(:disabled, [disabled], [data-disabled]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
+  }
+
+  &[data-invalid] {
+    border-color: var(--tone-critical);
+    outline: 1px solid var(--tone-critical);
   }
 
   &::after {
@@ -57,19 +62,29 @@
   }
 }
 
-.checkbox-icon {
-  width: 0.75rem;
-  height: 0.75rem;
-}
-
 .size-small {
   width: var(--checkbox-size-sm);
+
+  & .checkbox-icon {
+    width: var(--checkbox-icon-size-sm);
+    height: var(--checkbox-icon-size-sm);
+  }
 }
 .size-medium {
   width: var(--checkbox-size-md);
+
+  & .checkbox-icon {
+    width: var(--checkbox-icon-size-md);
+    height: var(--checkbox-icon-size-md);
+  }
 }
 .size-large {
   width: var(--checkbox-size-lg);
+
+  & .checkbox-icon {
+    width: var(--checkbox-icon-size-lg);
+    height: var(--checkbox-icon-size-lg);
+  }
 }
 
 .toggle-bordered {

@@ -268,7 +268,7 @@ export const ImageViewBlock: React.FC<NodeViewProps> = ({
                 >
                   <InfoIcon
                     size={28}
-                    style={{ color: "var(--tone-critical)" }}
+                    style={{ color: "var(--shade-muted)" }}
                   />
                   <Text shade="muted" mt={2}>
                     Failed to load image

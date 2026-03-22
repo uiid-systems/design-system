@@ -28,6 +28,11 @@
     pointer-events: none;
     opacity: var(--globals-disabled-opacity);
   }
+
+  &[data-invalid] {
+    border-color: var(--tone-critical);
+    outline: 1px solid var(--tone-critical);
+  }
 }
 
 .indicator {

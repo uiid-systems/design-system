@@ -21,7 +21,6 @@ import { ThemeToggle } from "./theme-toggle";
 export const HeaderActions = () => {
   const tree = useChatStore((s) => s.tree);
   const getShareUrl = useChatStore((s) => s.getShareUrl);
-  const inspecting = useChatStore((s) => s.inspecting);
   const toggleInspecting = useChatStore((s) => s.toggleInspecting);
 
   const [copied, setCopied] = useState(false);
@@ -47,7 +46,7 @@ export const HeaderActions = () => {
               onClick={toggleInspecting}
               size="small"
               variant="ghost"
-              tone={inspecting ? "info" : undefined}
+
             >
               <ScanSearchIcon />
               Inspect

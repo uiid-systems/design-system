@@ -4,10 +4,10 @@ import { Group } from "@uiid/layout";
 export function BadgePreview() {
   return (
     <Group gap={2}>
-      <Badge tone="info">New</Badge>
-      <Badge tone="warning">Pending</Badge>
-      <Badge tone="positive">Completed</Badge>
-      <Badge tone="critical">Critical</Badge>
+      <Badge>New</Badge>
+      <Badge>Pending</Badge>
+      <Badge>Completed</Badge>
+      <Badge>Critical</Badge>
       <Badge hideIndicator>Text only</Badge>
     </Group>
   );

@@ -10,9 +10,8 @@ import { Text } from "@uiid/typography";
 // Size and weight
 <Text size={2} weight="bold">Heading</Text>
 
-// Shade and tone
+// Shade
 <Text shade="muted">Secondary text</Text>
-<Text tone="critical">Error message</Text>
 
 // Spacing properties
 <Text p={1} px={1} py={1} pl={1} pr={1} pt={1} pb={1} />
@@ -48,7 +47,6 @@ import { Text } from "@uiid/typography";
 | `shade` | `"background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground"` | — | — |
 | `size` | `-1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | — | — |
 | `strikethrough` | `boolean` | — | — |
-| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
 | `underline` | `boolean` | — | — |
 | `weight` | `"thin" \| "light" \| "normal" \| "bold"` | — | — |
 

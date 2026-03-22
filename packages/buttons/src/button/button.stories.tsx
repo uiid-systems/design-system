@@ -1,13 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import {
-  GlobeIcon,
-  ExternalLinkIcon,
-  CircleCheckIcon,
-  BanIcon,
-  TriangleAlertIcon,
-  InfoIcon,
-} from "@uiid/icons";
+import { GlobeIcon, ExternalLinkIcon } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -108,24 +101,6 @@ export const Default: Story = {
           </Button>
         </Group>
 
-        <Group gap={2}>
-          <Button {...args} tone="positive">
-            Positive tone
-            <CircleCheckIcon />
-          </Button>
-          <Button {...args} tone="critical">
-            Negative tone
-            <BanIcon />
-          </Button>
-          <Button {...args} tone="warning">
-            Warning tone
-            <TriangleAlertIcon />
-          </Button>
-          <Button {...args} tone="info">
-            Info tone
-            <InfoIcon />
-          </Button>
-        </Group>
         <Button
           {...args}
           nativeButton={false}
@@ -133,7 +108,7 @@ export const Default: Story = {
           tooltip={
             <Text size={-1}>
               use{" "}
-              <Text weight="bold" tone="info">
+              <Text weight="bold">
                 nativeButton
               </Text>{" "}
               when rendering a link

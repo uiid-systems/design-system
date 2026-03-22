@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { Tone } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { BoxPropsSchema } from "../box";
 import { cardPreviews } from "./previews";
@@ -22,8 +21,6 @@ export const CardPropsSchema = BoxPropsSchema.extend({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
   /** Trimmed padding */
@@ -68,5 +65,5 @@ export const CardEntry: ComponentEntry<typeof CardPropsSchema> = {
     icon: "Icon displayed in the card header",
   },
   usage:
-    "Use Card as a content container. Pass title/description as props, children as body. Use tone for semantic color.",
+    "Use Card as a content container. Pass title/description as props, children as body.",
 };

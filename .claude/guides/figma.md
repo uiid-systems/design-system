@@ -135,7 +135,7 @@ const boundPaint = figma.variables.setBoundVariableForPaint(
 node.fills = [boundPaint];
 ```
 
-**Never hardcode hex values.** If a token variable doesn't exist yet, flag it to the Interface Steward — don't create ad-hoc variables.
+**Never hardcode hex values.** If a token variable doesn't exist yet, flag it — don't create ad-hoc variables.
 
 ### Adding Component Properties to a Component Set
 

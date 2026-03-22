@@ -32,16 +32,5 @@
   --shade-12: light-dark(#212630, #f2f2f3);
   --shade-background: light-dark(#fcfcfc, #1a1f29);
   --shade-foreground: light-dark(#1a1f29, #fcfcfc);
-  --tone-positive-surface: light-dark(#d1dbc3, #113645);
-  --tone-positive-border: light-dark(#b9c7a2, #00464f);
-  --tone-positive-fg: light-dark(#005b4f, #98ad75);
-  --tone-warning-surface: light-dark(#eadbc6, #3d304a);
-  --tone-warning-border: light-dark(#dec8a6, #5a3854);
-  --tone-warning-fg: light-dark(#824450, #cfae7b);
-  --tone-critical-surface: light-dark(#f4d0cc, #352d4e);
-  --tone-critical-border: light-dark(#eeb5b0, #4e335e);
-  --tone-critical-fg: light-dark(#763869, #e3928c);
-  --tone-info-surface: light-dark(#cbdfe8, #273649);
-  --tone-info-border: light-dark(#aecedc, #2c455d);
-  --tone-info-fg: light-dark(#315a78, #87b7cc);
+
 }

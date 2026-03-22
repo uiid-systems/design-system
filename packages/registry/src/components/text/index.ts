@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Shade, SpacingPropsSchema, Tone } from "../../shared";
+import { Shade, SpacingPropsSchema } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { textPreviews } from "./previews";
 
@@ -46,8 +46,6 @@ export const TextPropsSchema = SpacingPropsSchema.extend({
   weight: TextWeight.optional(),
   /** Color shade */
   shade: Shade.optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Text alignment */
   align: TextAlign.optional(),
   /** Underline decoration */

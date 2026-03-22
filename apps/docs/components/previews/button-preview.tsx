@@ -6,10 +6,6 @@ export function ButtonPreview() {
     <Group gap={2}>
       <Button>Default</Button>
       <Button variant="subtle">Subtle</Button>
-      <Button tone="positive">Positive</Button>
-      <Button tone="critical">Negative</Button>
-      <Button tone="warning">Warning</Button>
-      <Button tone="info">Info</Button>
       <Button variant="ghost">Ghost</Button>
     </Group>
   );

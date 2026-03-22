@@ -15,12 +15,6 @@ const meta = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   argTypes: {
-    tone: {
-      control: "select",
-      options: ["info", "warning", "critical", "positive"],
-      table: { category: "Variants" },
-    },
-
     title: {
       control: "text",
       table: { category: "Text" },
@@ -54,10 +48,6 @@ const meta = {
         action={<a href="#">Card action</a>}
         footer="Card footer"
       />
-      <Card {...args} tone="info" title="Info card" />
-      <Card {...args} tone="warning" title="Warning card" />
-      <Card {...args} tone="critical" title="Negative card" />
-      <Card {...args} tone="positive" title="Positive card" />
       <Card
         {...args}
         inverted

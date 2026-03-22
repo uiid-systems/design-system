@@ -33,22 +33,25 @@
 
   /** Invalid */
   &[data-invalid] {
-    border-color: var(--tone-critical);
-    outline-color: var(--tone-critical);
+    border-color: var(--shade-foreground);
+    outline-color: var(--shade-foreground);
   }
 }
 
 /* Size variants */
 .size-small {
   font-size: var(--forms-size-sm-font-size);
+  padding-inline: var(--forms-size-sm-padding-x);
   min-height: 4rem;
 }
 .size-medium {
   font-size: var(--forms-size-md-font-size);
+  padding-inline: var(--forms-size-md-padding-x);
   min-height: 5rem;
 }
 .size-large {
   font-size: var(--forms-size-lg-font-size);
+  padding-inline: var(--forms-size-lg-padding-x);
   min-height: 6rem;
 }
 

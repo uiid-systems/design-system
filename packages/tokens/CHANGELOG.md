@@ -1,5 +1,11 @@
 # @uiid/tokens
 
+## 0.0.11
+
+### Patch Changes
+
+- [#151](https://github.com/uiid-systems/design-system/pull/151) [`e2c1394`](https://github.com/uiid-systems/design-system/commit/e2c13948302371959e2b006de776aeab6c8a3c81) Thanks [@adamfratino](https://github.com/adamfratino)! - Unify form variant styles: add default font-size token, wire switch to tokens, scale checkbox icons per size, add textarea padding-inline, add number-field size prop, and add invalid state to checkbox and radio.
+
 ## 0.0.10
 
 ### Patch Changes

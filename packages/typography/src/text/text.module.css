@@ -74,19 +74,6 @@
   color: var(--shade-foreground);
 }
 
-.tone-positive {
-  color: var(--tone-positive);
-}
-.tone-critical {
-  color: var(--tone-critical);
-}
-.tone-warning {
-  color: var(--tone-warning);
-}
-.tone-info {
-  color: var(--tone-info);
-}
-
 .toggle-bold {
   font-weight: 700;
 }

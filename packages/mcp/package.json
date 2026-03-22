@@ -1,6 +1,6 @@
 {
   "name": "@uiid/mcp",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "MCP server exposing UIID component metadata and blocks to LLMs",
   "license": "MIT",
   "author": "Adam Fratino",

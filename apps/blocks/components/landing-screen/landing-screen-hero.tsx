@@ -11,7 +11,7 @@ import { Text } from "@uiid/typography";
 export const LandingScreenHero = () => {
   return (
     <Stack gap={8} ax="center">
-      <Badge hideIndicator tone="info">
+      <Badge hideIndicator>
         Open-source design system
       </Badge>
 

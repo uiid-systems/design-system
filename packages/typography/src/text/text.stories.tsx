@@ -11,7 +11,6 @@ const shades: TextProps["shade"][] = [
   "muted",
   "foreground",
 ];
-const tones: TextProps["tone"][] = ["positive", "critical", "warning", "info"];
 const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
 const families: TextProps["family"][] = ["mono", "serif", "sans"];
 
@@ -41,11 +40,6 @@ const meta: Meta<typeof Text> = {
     family: {
       control: "select",
       options: families,
-      table: { category: "Variants" },
-    },
-    tone: {
-      control: "select",
-      options: tones,
       table: { category: "Variants" },
     },
     weight: {

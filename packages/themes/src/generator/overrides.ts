@@ -6,7 +6,7 @@ import type { TokenRegistry } from "./types";
 /**
  * Build override map from a validated theme input.
  *
- * Sets both theme tokens and their backing color.* / tone.* primitives
+ * Sets theme tokens and their backing color.* primitives
  * so that any token referencing either path gets the user-supplied value.
  */
 export function buildOverrides(theme: ThemeInput): Map<string, string> {
@@ -21,23 +21,6 @@ export function buildOverrides(theme: ThemeInput): Map<string, string> {
   // Brand colors
   overrides.set("theme.primary", theme.primary);
   overrides.set("theme.secondary", theme.secondary);
-
-  // Tone colors (with defaults)
-  const positive = theme.positive ?? THEME_DEFAULTS.positive;
-  const warning = theme.warning ?? THEME_DEFAULTS.warning;
-  const critical = theme.critical ?? THEME_DEFAULTS.critical;
-  const info = theme.info ?? THEME_DEFAULTS.info;
-
-  overrides.set("theme.positive", positive);
-  overrides.set("theme.warning", warning);
-  overrides.set("theme.critical", critical);
-  overrides.set("theme.info", info);
-
-  // Also set tone.* base values since they alias theme.*
-  overrides.set("tone.positive", positive);
-  overrides.set("tone.warning", warning);
-  overrides.set("tone.critical", critical);
-  overrides.set("tone.info", info);
 
   return overrides;
 }

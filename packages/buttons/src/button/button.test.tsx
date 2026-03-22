@@ -59,20 +59,6 @@ describe("Button", () => {
     expect(screen.getByRole("button").className).toContain("variant-inverted");
   });
 
-  it("renders with tone variants", () => {
-    const { rerender } = render(<Button tone="positive">Positive</Button>);
-    expect(screen.getByRole("button").className).toContain("tone-positive");
-
-    rerender(<Button tone="critical">Negative</Button>);
-    expect(screen.getByRole("button").className).toContain("tone-critical");
-
-    rerender(<Button tone="warning">Warning</Button>);
-    expect(screen.getByRole("button").className).toContain("tone-warning");
-
-    rerender(<Button tone="info">Info</Button>);
-    expect(screen.getByRole("button").className).toContain("tone-info");
-  });
-
   it("renders with shape prop", () => {
     const { rerender } = render(<Button shape="pill">Pill</Button>);
     expect(screen.getByRole("button").className).toContain("shape-pill");

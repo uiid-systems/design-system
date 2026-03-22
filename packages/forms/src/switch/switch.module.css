@@ -7,18 +7,18 @@
   border: 0;
   margin: 0;
   padding: 1px;
-  border-radius: 1.5rem;
+  border-radius: var(--switch-height);
   outline: 1px solid var(--shade-halftone);
   outline-offset: -1px;
-  background-color: var(--shade-surface);
+  background-color: var(--switch-bg);
   background-size: 6.5rem 100%;
   background-position-x: 100%;
   background-repeat: no-repeat;
   transition-property: background-position, box-shadow, background-color;
   transition-duration-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
   transition-duration: var(--globals-transition-duration);
-  width: 2rem;
-  height: 1rem;
+  width: var(--switch-width);
+  height: var(--switch-height);
 
   &[data-checked] {
     background-position-x: 0%;
@@ -46,10 +46,10 @@
   aspect-ratio: 1;
   height: 100%;
   border-radius: 100%;
-  background-color: var(--shade-foreground);
+  background-color: var(--switch-fg);
   transition: translate var(--globals-transition-duration);
 
   &[data-checked] {
-    translate: 1rem 0;
+    translate: calc(var(--switch-width) - var(--switch-height)) 0;
   }
 }

@@ -34,5 +34,5 @@
 .Indicator {
   display: block;
   background-color: var(--shade-halftone);
-  transition: width 500ms;
+  transition: width var(--globals-transition-duration-slow);
 }

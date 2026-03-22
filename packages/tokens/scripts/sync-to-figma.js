@@ -56,11 +56,6 @@ const CONFIG = {
       modes: ["light", "dark"],
     },
     {
-      name: "semantic/tone",
-      sources: ["semantic/tone.tokens.json"],
-      modes: ["light", "dark"],
-    },
-    {
       name: "theme",
       sources: ["theme/theme.tokens.json"],
       modes: ["light", "dark"],

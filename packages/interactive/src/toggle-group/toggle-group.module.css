@@ -4,7 +4,6 @@
 
   position: relative;
   gap: var(--globals-border-width);
-  border: 1px solid var(--globals-border-color);
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
@@ -33,7 +32,7 @@
   background-color: var(--shade-accent);
   scale: 0.9;
   transition-property: translate, width, height;
-  transition-duration: 300ms;
+  transition-duration: var(--globals-transition-duration-slow);
   transition-duration-function: cubic-bezier(0.16, 1, 0.3, 1);
 
   .toggle-group-panel:not([data-orientation="vertical"]) & {
@@ -65,7 +64,7 @@
   border-radius: var(--globals-border-radius);
   padding-inline: var(--globals-padding-x);
   min-height: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
-  transition: color 150ms ease-in-out;
+  transition: color var(--globals-transition-duration) ease-in-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;

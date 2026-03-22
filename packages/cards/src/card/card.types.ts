@@ -11,7 +11,7 @@ export type CardContainerProps = StackProps & CardVariantProps;
 export type CardHeaderProps = GroupProps;
 export type CardTitleProps = TextProps;
 export type CardDescriptionProps = TextProps;
-export type CardIconProps = Pick<CardVariantProps, "tone"> & {
+export type CardIconProps = {
   icon?: Icon;
   className?: string;
   render?: RenderProp;

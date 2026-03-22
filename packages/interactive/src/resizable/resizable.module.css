@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--globals-transition-duration) ease;
 }
 
 .resizable[data-direction="horizontal"] > .resizable-handle {
@@ -50,9 +50,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: calc(var(--globals-border-radius) / 2);
   background-color: var(--shade-surface);
-  border: 1px solid var(--globals-border-color);
+  border: var(--globals-border-width) solid var(--globals-border-color);
   z-index: 1;
 }
 

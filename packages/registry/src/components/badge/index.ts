@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { Tone } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { badgePreviews } from "./previews";
 
@@ -17,8 +16,6 @@ export const BadgePropsSchema = z.object({
   children: z.any().optional(),
   /** Size variant */
   size: BadgeSize.optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
   /** Hide the dot indicator */
@@ -32,12 +29,12 @@ export const BadgeEntry: ComponentEntry<typeof BadgePropsSchema> = {
   package: "@uiid/indicators",
   hasChildren: true,
   propsSchema: BadgePropsSchema,
-  description: "Status badge with optional dot indicator and semantic tones",
+  description: "Status badge with optional dot indicator",
   category: "indicators",
   defaults: {
     size: "medium",
   },
   previews: badgePreviews,
   usage:
-    "Use Badge for status labels, counts, or tags. Set tone for semantic meaning, hideIndicator to show text-only.",
+    "Use Badge for status labels, counts, or tags. Use hideIndicator to show text-only.",
 };

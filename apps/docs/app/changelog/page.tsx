@@ -7,12 +7,6 @@ import { Text } from "@uiid/typography";
 
 import { getChangesets } from "@/lib/get-changesets";
 
-const BUMP_TONE = {
-  major: "critical",
-  minor: "warning",
-  patch: "info",
-} as const;
-
 const mdxComponents = {
   p: (props: Record<string, unknown>) => (
     <Text render={<p />} size={0} {...props} />
@@ -22,7 +16,7 @@ const mdxComponents = {
   ),
   code: (props: Record<string, unknown>) => <CodeInline {...props} />,
   a: (props: Record<string, unknown>) => (
-    <Text render={<a />} size={0} underline tone="info" {...props} />
+    <Text render={<a />} size={0} underline {...props} />
   ),
 };
 
@@ -61,7 +55,6 @@ export default async function ChangelogPage() {
                   <Badge
                     key={pkg.name}
                     size="small"
-                    tone={BUMP_TONE[pkg.bump as keyof typeof BUMP_TONE]}
                     hideIndicator
                   >
                     {pkg.name} · {pkg.bump}

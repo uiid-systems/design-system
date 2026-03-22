@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { Tone } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { statusPreviews } from "./previews";
 
@@ -10,8 +9,6 @@ import { statusPreviews } from "./previews";
 export const StatusPropsSchema = z.object({
   /** Status label (optional) */
   children: z.any().optional(),
-  /** Semantic color tone */
-  tone: Tone.optional(),
   /** Animate with pulsing effect */
   pulse: z.boolean().optional(),
   /** Inverted color scheme */
@@ -30,5 +27,5 @@ export const StatusEntry: ComponentEntry<typeof StatusPropsSchema> = {
   defaults: {},
   previews: statusPreviews,
   usage:
-    "Use Status for online/offline indicators or activity states. Set pulse for live activity, tone for semantic meaning.",
+    "Use Status for online/offline indicators or activity states. Set pulse for live activity.",
 };

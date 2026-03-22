@@ -10,8 +10,8 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   transform-origin: var(--transform-origin);
   transition:
-    transform 150ms,
-    opacity 150ms;
+    transform var(--globals-transition-duration),
+    opacity var(--globals-transition-duration);
 
   &[data-starting-style],
   &[data-ending-style] {
