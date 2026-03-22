@@ -25,7 +25,8 @@ export type SelectPortalProps = BaseSelect.Portal.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
 export type SelectPopupProps = BaseSelect.Popup.Props;
 export type SelectListProps = BaseSelect.List.Props;
-export type SelectValueProps = BaseSelect.Value.Props;
+export type SelectValueProps = BaseSelect.Value.Props &
+  Pick<InputVariants, "size">;
 export type SelectIndicatorProps = BaseSelect.Icon.Props;
 
 export type SelectProps<Value = string> = React.PropsWithChildren<{

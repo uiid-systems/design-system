@@ -50,7 +50,6 @@ export const EventWrapper = ({
 
   return (
     <Badge
-      hideIndicator
       fullwidth
       size="large"
       render={<button />}

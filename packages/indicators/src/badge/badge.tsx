@@ -9,7 +9,7 @@ import styles from "./badge.module.css";
 export const Badge = ({
   size,
   inverted,
-  hideIndicator,
+  color,
   className,
   children,
   ...props
@@ -19,19 +19,13 @@ export const Badge = ({
       data-slot="badge"
       className={cx(
         styles["badge"],
-        badgeVariants({ size, inverted }),
+        badgeVariants({ size, inverted, color }),
         className,
       )}
       ay="center"
       gap={1}
       {...props}
     >
-      {!hideIndicator && (
-        <span
-          data-slot="badge-indicator"
-          className={styles["badge-indicator"]}
-        />
-      )}
       <Text
         data-slot="badge-text"
         className={styles["badge-text"]}

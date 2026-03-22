@@ -73,19 +73,19 @@ export const badgePreviews: PreviewConfig[] = [
         new: {
           key: "new",
           type: "Badge",
-          props: { hideIndicator: true, children: "New" },
+          props: { children: "New" },
           parentKey: "badges",
         },
         beta: {
           key: "beta",
           type: "Badge",
-          props: { hideIndicator: true, children: "Beta" },
+          props: { children: "Beta" },
           parentKey: "badges",
         },
         pro: {
           key: "pro",
           type: "Badge",
-          props: { hideIndicator: true, children: "Pro" },
+          props: { children: "Pro" },
           parentKey: "badges",
         },
       },

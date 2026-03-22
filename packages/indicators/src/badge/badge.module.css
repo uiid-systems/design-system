@@ -8,7 +8,6 @@
   background-color: var(--badge-bg);
   color: var(--badge-fg);
   display: inline-flex !important;
-  padding: var(--badge-padding-y) var(--badge-padding-x);
   border-radius: var(--badge-border-radius);
 }
 
@@ -32,4 +31,50 @@
 .toggle-inverted {
   background-color: var(--shade-background);
   color: var(--shade-foreground);
+}
+
+/* Color variant: derives surface/text/border from hue + chroma via oklch */
+.colored {
+  --badge-bg: light-dark(oklch(0.95 calc(var(--badge-chroma) * 0.3) var(--badge-hue)), oklch(0.25 calc(var(--badge-chroma) * 0.3) var(--badge-hue)));
+  --badge-fg: light-dark(oklch(0.45 var(--badge-chroma) var(--badge-hue)), oklch(0.8 calc(var(--badge-chroma) * 0.7) var(--badge-hue)));
+  --badge-border: light-dark(
+    oklch(0.85 calc(var(--badge-chroma) * 0.5) var(--badge-hue)),
+    oklch(0.35 calc(var(--badge-chroma) * 0.5) var(--badge-hue))
+  );
+}
+
+.color-red {
+  composes: colored;
+  --badge-hue: 27;
+  --badge-chroma: 0.24;
+}
+.color-orange {
+  composes: colored;
+  --badge-hue: 55;
+  --badge-chroma: 0.18;
+}
+.color-yellow {
+  composes: colored;
+  --badge-hue: 90;
+  --badge-chroma: 0.17;
+}
+.color-green {
+  composes: colored;
+  --badge-hue: 152;
+  --badge-chroma: 0.19;
+}
+.color-blue {
+  composes: colored;
+  --badge-hue: 261;
+  --badge-chroma: 0.21;
+}
+.color-indigo {
+  composes: colored;
+  --badge-hue: 285;
+  --badge-chroma: 0.24;
+}
+.color-purple {
+  composes: colored;
+  --badge-hue: 303;
+  --badge-chroma: 0.24;
 }

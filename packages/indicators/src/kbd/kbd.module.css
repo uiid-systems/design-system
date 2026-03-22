@@ -8,6 +8,7 @@
   all: unset;
   background-color: var(--shade-accent);
   box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-foreground);
+  border-color: var(--globals-border-color);
   color: var(--shade-foreground);
   display: inline-flex;
   height: 1.25rem;

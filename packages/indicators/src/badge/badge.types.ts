@@ -5,7 +5,4 @@ import type { badgeVariants } from "./badge.variants";
 
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
 
-export type BadgeProps = {
-  hideIndicator?: boolean;
-} & BadgeVariants &
-  GroupProps;
+export type BadgeProps = BadgeVariants & GroupProps;

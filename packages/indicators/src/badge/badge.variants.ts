@@ -10,5 +10,17 @@ export const badgeVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
     },
+    color: {
+      red: styles["color-red"],
+      orange: styles["color-orange"],
+      yellow: styles["color-yellow"],
+      green: styles["color-green"],
+      blue: styles["color-blue"],
+      indigo: styles["color-indigo"],
+      purple: styles["color-purple"],
+    },
+  },
+  defaultVariants: {
+    size: "medium",
   },
 });

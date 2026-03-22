@@ -126,6 +126,21 @@ export const LayoutPropsSchema = z.object({
 export type LayoutProps = z.infer<typeof LayoutPropsSchema>;
 
 /**
+ * Palette color values for colored variants (badge, etc).
+ */
+export const PaletteColor = z.enum([
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+]);
+
+export type PaletteColor = z.infer<typeof PaletteColor>;
+
+/**
  * Shade values for color variants.
  */
 export const Shade = z.enum([
