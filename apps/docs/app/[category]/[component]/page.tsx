@@ -113,7 +113,7 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
       ),
       // Links
       a: (props: Record<string, unknown>) => (
-        <Text render={<a />} size={1} underline tone="info" {...props} />
+        <Text render={<a />} size={1} underline {...props} />
       ),
       // Text emphasis
       strong: (props: Record<string, unknown>) => (

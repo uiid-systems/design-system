@@ -16,7 +16,7 @@
   transition: all var(--globals-transition-duration) ease-in-out;
 
   &[data-unchecked] {
-    border: 1px solid var(--forms-border-color);
+    border: var(--globals-border-width) solid var(--forms-border-color);
     background-color: var(--forms-bg);
     &:hover {
       background-color: var(--forms-bg-hover);

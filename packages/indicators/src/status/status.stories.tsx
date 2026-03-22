@@ -10,11 +10,6 @@ const meta = {
   tags: ["beta"],
   args: {},
   argTypes: {
-    tone: {
-      control: "select",
-      options: ["positive", "warning", "critical", "info"],
-      table: { category: "Variants" },
-    },
     pulse: { control: "boolean", table: { category: "Toggles" } },
   },
   render: (args) => (
@@ -23,18 +18,6 @@ const meta = {
       <Status {...args}>with label</Status>
       <Status {...args} pulse>
         pulsing
-      </Status>
-      <Status {...args} tone="positive">
-        positive
-      </Status>
-      <Status {...args} tone="warning">
-        warning
-      </Status>
-      <Status {...args} tone="critical">
-        critical
-      </Status>
-      <Status {...args} tone="info">
-        info
       </Status>
       <Status {...args} inverted>
         inverted

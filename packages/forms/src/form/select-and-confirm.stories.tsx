@@ -92,7 +92,7 @@ export const WithOnSubmit: Story = {
           {successMessage && (
             <p
               style={{
-                color: "var(--tone-positive)",
+                color: "var(--shade-foreground)",
                 margin: 0,
                 textAlign: "center",
               }}
@@ -174,7 +174,7 @@ export const WithFormData: Story = {
           {successMessage && (
             <p
               style={{
-                color: "var(--tone-positive)",
+                color: "var(--shade-foreground)",
                 margin: 0,
                 textAlign: "center",
               }}

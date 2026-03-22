@@ -2,9 +2,9 @@ import { Card } from "@uiid/cards";
 
 import type { AlertProps } from "./alert.types";
 
-export const Alert = ({ tone, children, ...props }: AlertProps) => {
+export const Alert = ({ children, ...props }: AlertProps) => {
   return (
-    <Card data-slot="alert" role="alert" tone={tone} fullwidth {...props}>
+    <Card data-slot="alert" role="alert" fullwidth {...props}>
       {children}
     </Card>
   );

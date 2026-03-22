@@ -55,7 +55,7 @@ export const NewBlockButton = () => {
           <Button size="small" variant="ghost" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button size="small" tone="critical" onClick={handleClear}>
+          <Button size="small" onClick={handleClear}>
             Start over
           </Button>
         </Group>

@@ -2,7 +2,7 @@ import type { PreviewConfig } from "../../types";
 
 export const badgePreviews: PreviewConfig[] = [
   {
-    label: "Tones",
+    label: "Default",
     tree: {
       root: "badges",
       elements: {
@@ -10,7 +10,7 @@ export const badgePreviews: PreviewConfig[] = [
           key: "badges",
           type: "Group",
           props: { gap: 2 },
-          children: ["default", "info", "positive", "warning", "critical"],
+          children: ["default", "inverted"],
         },
         default: {
           key: "default",
@@ -18,28 +18,10 @@ export const badgePreviews: PreviewConfig[] = [
           props: { children: "Default" },
           parentKey: "badges",
         },
-        info: {
-          key: "info",
+        inverted: {
+          key: "inverted",
           type: "Badge",
-          props: { tone: "info", children: "Info" },
-          parentKey: "badges",
-        },
-        positive: {
-          key: "positive",
-          type: "Badge",
-          props: { tone: "positive", children: "Positive" },
-          parentKey: "badges",
-        },
-        warning: {
-          key: "warning",
-          type: "Badge",
-          props: { tone: "warning", children: "Warning" },
-          parentKey: "badges",
-        },
-        critical: {
-          key: "critical",
-          type: "Badge",
-          props: { tone: "critical", children: "Critical" },
+          props: { inverted: true, children: "Inverted" },
           parentKey: "badges",
         },
       },
@@ -59,19 +41,19 @@ export const badgePreviews: PreviewConfig[] = [
         small: {
           key: "small",
           type: "Badge",
-          props: { size: "small", tone: "info", children: "Small" },
+          props: { size: "small", children: "Small" },
           parentKey: "badges",
         },
         medium: {
           key: "medium",
           type: "Badge",
-          props: { size: "medium", tone: "info", children: "Medium" },
+          props: { size: "medium", children: "Medium" },
           parentKey: "badges",
         },
         large: {
           key: "large",
           type: "Badge",
-          props: { size: "large", tone: "info", children: "Large" },
+          props: { size: "large", children: "Large" },
           parentKey: "badges",
         },
       },
@@ -91,19 +73,19 @@ export const badgePreviews: PreviewConfig[] = [
         new: {
           key: "new",
           type: "Badge",
-          props: { hideIndicator: true, tone: "info", children: "New" },
+          props: { hideIndicator: true, children: "New" },
           parentKey: "badges",
         },
         beta: {
           key: "beta",
           type: "Badge",
-          props: { hideIndicator: true, tone: "warning", children: "Beta" },
+          props: { hideIndicator: true, children: "Beta" },
           parentKey: "badges",
         },
         pro: {
           key: "pro",
           type: "Badge",
-          props: { hideIndicator: true, tone: "positive", children: "Pro" },
+          props: { hideIndicator: true, children: "Pro" },
           parentKey: "badges",
         },
       },

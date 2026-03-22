@@ -4,7 +4,6 @@
 
   position: relative;
   gap: var(--globals-border-width);
-  border: 1px solid var(--globals-border-color);
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);

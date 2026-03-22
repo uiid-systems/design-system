@@ -33,8 +33,8 @@
 
   /** Invalid */
   &[data-invalid] {
-    border-color: var(--tone-critical);
-    outline-color: var(--tone-critical);
+    border-color: var(--shade-foreground);
+    outline-color: var(--shade-foreground);
   }
 
   /** Hack to prevent browser-assigned autofill color */

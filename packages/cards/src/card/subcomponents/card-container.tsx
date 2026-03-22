@@ -8,7 +8,6 @@ import styles from "../card.module.css";
 
 export const CardContainer = ({
   gap = CARD_DEFAULT_GAP,
-  tone,
   trimmed,
   transparent,
   ghost,
@@ -24,7 +23,7 @@ export const CardContainer = ({
       gap={gap}
       className={cx(
         styles["card"],
-        cardVariants({ tone, trimmed, transparent, ghost, inverted, size }),
+        cardVariants({ trimmed, transparent, ghost, inverted, size }),
         className,
       )}
       {...props}

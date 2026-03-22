@@ -1,6 +1,6 @@
 .code-block {
   position: relative;
-  border: 1px solid var(--globals-border-color);
+  border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   max-width: 100%;
   overflow-x: hidden;
@@ -8,14 +8,14 @@
 
 .code-block-header {
   background-color: var(--shade-surface);
-  border-bottom: var(--globals-border-width, 1px) solid var(--globals-border-color, #333);
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   position: sticky;
   top: 0;
 }
 
 .code-block-copy-button[data-copied="true"] {
-  color: var(--tone-positive);
-  border-color: var(--tone-positive);
+  color: var(--shade-foreground);
+  border-color: var(--shade-foreground);
 }
 
 .code-block-content {
@@ -46,5 +46,5 @@
 }
 
 .code-block-error {
-  color: var(--tone-critical);
+  color: var(--shade-foreground);
 }

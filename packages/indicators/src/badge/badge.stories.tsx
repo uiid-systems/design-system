@@ -23,18 +23,6 @@ const meta = {
   render: (args) => (
     <Stack gap={4}>
       <Badge {...args}>Badge</Badge>
-      <Badge {...args} tone="positive">
-        Positive
-      </Badge>
-      <Badge {...args} tone="critical">
-        Negative
-      </Badge>
-      <Badge {...args} tone="info">
-        Info
-      </Badge>
-      <Badge {...args} tone="warning">
-        Warning
-      </Badge>
       <Badge {...args} inverted>
         Inverted
       </Badge>

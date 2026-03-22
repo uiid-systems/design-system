@@ -132,16 +132,6 @@ export async function validateThemeContrast(theme, TokenGenerator) {
   // Core readability: foreground on background (4.5:1 for normal text)
   check("--shade-foreground", "--shade-background", "foreground / background", 4.5);
 
-  // Tone foreground variants on their surface (4.5:1 for normal text)
-  for (const tone of ["positive", "critical", "warning", "info"]) {
-    check(`--tone-${tone}-fg`, `--tone-${tone}-surface`, `${tone}-fg / ${tone}-surface`, 4.5);
-  }
-
-  // Tone base color on background (3:1 for UI components / large text)
-  for (const tone of ["positive", "critical", "warning", "info"]) {
-    check(`--tone-${tone}`, "--shade-background", `${tone} / background`, 3);
-  }
-
   // Primary / secondary on background (3:1 for UI components)
   check("--theme-primary", "--shade-background", "primary / background", 3);
   check("--theme-secondary", "--shade-background", "secondary / background", 3);

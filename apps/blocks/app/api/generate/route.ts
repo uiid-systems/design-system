@@ -78,7 +78,7 @@ const MOCK_RESPONSES: Record<string, string> = {
     },
     "pro": {
       "type": "Card",
-      "props": { "title": "Pro", "description": "$29/month - Great for teams", "tone": "info" }
+      "props": { "title": "Pro", "description": "$29/month - Great for teams" }
     },
     "enterprise": {
       "type": "Card",

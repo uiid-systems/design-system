@@ -7,7 +7,6 @@ import { statusVariants } from "./status.variants";
 import styles from "./status.module.css";
 
 export const Status = ({
-  tone,
   pulse,
   inverted,
   className,
@@ -31,7 +30,7 @@ export const Status = ({
         data-slot="status-dot"
         className={cx(
           styles["status-dot"],
-          statusVariants({ pulse, tone, inverted }),
+          statusVariants({ pulse, inverted }),
         )}
       />
       {children && (
