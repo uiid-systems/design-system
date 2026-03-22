@@ -11,6 +11,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message, 'Merge pull request') || !contains(github.event.head_commit.message, 'changeset-release/main') }}
     permissions:
       contents: write
       pull-requests: write
