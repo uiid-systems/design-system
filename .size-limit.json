@@ -1,19 +1,7 @@
 [
-  { "path": "packages/blocks/dist/index.js", "name": "@uiid/blocks", "limit": "5.5 kB" },
-  { "path": "packages/buttons/dist/index.js", "name": "@uiid/buttons", "limit": "53 kB" },
-  { "path": "packages/calendars/dist/index.js", "name": "@uiid/calendars", "limit": "100 kB" },
-  { "path": "packages/cards/dist/index.js", "name": "@uiid/cards", "limit": "17 kB" },
-  { "path": "packages/code/dist/index.js", "name": "@uiid/code", "limit": "173 kB" },
-  { "path": "packages/forms/dist/index.js", "name": "@uiid/forms", "limit": "124 kB" },
-  { "path": "packages/icons/dist/index.js", "name": "@uiid/icons", "limit": "132 kB" },
-  { "path": "packages/indicators/dist/index.js", "name": "@uiid/indicators", "limit": "23 kB" },
-  { "path": "packages/interactive/dist/index.js", "name": "@uiid/interactive", "limit": "109 kB" },
-  { "path": "packages/layout/dist/index.js", "name": "@uiid/layout", "limit": "17 kB" },
-  { "path": "packages/lists/dist/index.js", "name": "@uiid/lists", "limit": "25 kB" },
-  { "path": "packages/navigation/dist/index.js", "name": "@uiid/navigation", "limit": "80 kB" },
-  { "path": "packages/overlays/dist/index.js", "name": "@uiid/overlays", "limit": "89 kB" },
-  { "path": "packages/registry/dist/index.js", "name": "@uiid/registry", "limit": "33 kB" },
-  { "path": "packages/tables/dist/index.js", "name": "@uiid/tables", "limit": "89 kB" },
-  { "path": "packages/typography/dist/index.js", "name": "@uiid/typography", "limit": "14 kB" },
-  { "path": "packages/utils/dist/index.js", "name": "@uiid/utils", "limit": "14 kB" }
+  {
+    "path": "packages/design-system/dist/index.js",
+    "name": "@uiid/design-system",
+    "limit": "500 kB"
+  }
 ]
