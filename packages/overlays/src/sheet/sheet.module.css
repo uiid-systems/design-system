@@ -5,7 +5,7 @@
   inset: 0;
   background-color: var(--shade-background);
   opacity: var(--overlays-backdrop-opacity);
-  transition: opacity 150ms ease-out;
+  transition: opacity var(--globals-transition-duration) ease-out;
   z-index: var(--overlays-backdrop-zIndex);
 
   &[data-starting-style],
@@ -21,8 +21,8 @@
   color: var(--shade-foreground);
   z-index: var(--overlays-backdrop-zIndex);
   transition:
-    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform var(--globals-transition-duration-slow) var(--globals-transition-easing),
+    opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
 
   &[data-starting-style],
   &[data-ending-style] {
