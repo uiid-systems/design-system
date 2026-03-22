@@ -23,9 +23,10 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - run: pnpm install
+
       - uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          package_manager: pnpm
           build_script: build
           skip_step: install
