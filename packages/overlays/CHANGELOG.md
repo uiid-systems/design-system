@@ -1,5 +1,19 @@
 # @uiid/overlays
 
+## 0.0.12
+
+### Patch Changes
+
+- [#149](https://github.com/uiid-systems/design-system/pull/149) [`3a3a4df`](https://github.com/uiid-systems/design-system/commit/3a3a4dffde260e22e7886f74461fcfdb143614c1) Thanks [@adamfratino](https://github.com/adamfratino)! - Unify transition tokens across all components to use shared semantic globals
+
+- Updated dependencies [[`cac4e08`](https://github.com/uiid-systems/design-system/commit/cac4e08c36279836e8bee85ccc26dd260fba4db4), [`3a3a4df`](https://github.com/uiid-systems/design-system/commit/3a3a4dffde260e22e7886f74461fcfdb143614c1)]:
+  - @uiid/tokens@0.0.12
+  - @uiid/cards@0.0.12
+  - @uiid/typography@0.0.12
+  - @uiid/layout@0.0.12
+  - @uiid/icons@0.0.12
+  - @uiid/utils@0.0.12
+
 ## 0.0.11
 
 ### Patch Changes
