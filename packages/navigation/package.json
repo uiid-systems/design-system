@@ -1,6 +1,6 @@
 {
   "name": "@uiid/navigation",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Navigation components — Breadcrumbs, Tabs, Pagination",
   "license": "MIT",
   "author": "Adam Fratino",

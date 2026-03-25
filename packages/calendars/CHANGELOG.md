@@ -1,5 +1,21 @@
 # @uiid/calendars
 
+## 0.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`0b88a10`](https://github.com/uiid-systems/design-system/commit/0b88a10f830003bb07f7f72faf1698951fe0c2a4)]:
+  - @uiid/indicators@0.0.14
+  - @uiid/interactive@0.0.14
+  - @uiid/buttons@0.0.14
+  - @uiid/cards@0.0.14
+  - @uiid/icons@0.0.14
+  - @uiid/layout@0.0.14
+  - @uiid/overlays@0.0.14
+  - @uiid/tokens@0.0.14
+  - @uiid/typography@0.0.14
+  - @uiid/utils@0.0.14
+
 ## 0.0.13
 
 ### Patch Changes

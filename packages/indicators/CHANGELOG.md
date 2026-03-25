@@ -1,5 +1,17 @@
 # @uiid/indicators
 
+## 0.0.14
+
+### Patch Changes
+
+- [#167](https://github.com/uiid-systems/design-system/pull/167) [`0b88a10`](https://github.com/uiid-systems/design-system/commit/0b88a10f830003bb07f7f72faf1698951fe0c2a4) Thanks [@adamfratino](https://github.com/adamfratino)! - Add color prop to Status component, sharing Badge's oklch color system
+
+- Updated dependencies []:
+  - @uiid/cards@0.0.14
+  - @uiid/tokens@0.0.14
+  - @uiid/typography@0.0.14
+  - @uiid/utils@0.0.14
+
 ## 0.0.13
 
 ### Patch Changes
