@@ -1,7 +1,3 @@
-"use client";
-
-import { useMemo } from "react";
-
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
@@ -36,10 +32,9 @@ export const CodeBlockContent = ({
   className,
   ...props
 }: CodeBlockContentProps) => {
-  const processedHtml = useMemo(() => {
-    if (!highlightLines?.length) return html;
-    return addLineHighlights(html, highlightLines);
-  }, [html, highlightLines]);
+  const processedHtml = highlightLines?.length
+    ? addLineHighlights(html, highlightLines)
+    : html;
 
   return (
     <Stack
