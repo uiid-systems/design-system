@@ -1,6 +1,6 @@
 ---
-"@uiid/indicators": minor
-"@uiid/registry": minor
+"@uiid/indicators": patch
+"@uiid/registry": patch
 ---
 
-add color prop to Status component, sharing Badge's oklch color system
+Add color prop to Status component, sharing Badge's oklch color system
