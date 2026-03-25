@@ -1,6 +1,6 @@
 {
   "name": "@uiid/cards",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Card container component with title, description, and footer slots",
   "license": "MIT",
   "author": "Adam Fratino",
