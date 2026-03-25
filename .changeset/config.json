@@ -32,5 +32,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uiid/storybook", "@uiid/design-system", "blocks", "docs"]
+  "ignore": ["@uiid/storybook", "blocks", "docs"]
 }
