@@ -1,6 +1,6 @@
 {
   "name": "@uiid/overlays",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "description": "Overlay components — Modal, Drawer, Sheet, Popover, Tooltip, Toaster",
   "license": "MIT",
   "author": "Adam Fratino",

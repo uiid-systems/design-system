@@ -1,5 +1,21 @@
 # @uiid/interactive
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`bb3d5f4`](https://github.com/uiid-systems/design-system/commit/bb3d5f4ec3a9180efff71aae7f0b1f9e194446e1)]:
+  - @uiid/indicators@1.0.0
+  - @uiid/buttons@1.0.0
+  - @uiid/cards@1.0.0
+  - @uiid/forms@1.0.0
+  - @uiid/icons@1.0.0
+  - @uiid/layout@1.0.0
+  - @uiid/overlays@1.0.0
+  - @uiid/tokens@1.0.0
+  - @uiid/typography@1.0.0
+  - @uiid/utils@1.0.0
+
 ## 0.0.13
 
 ### Patch Changes

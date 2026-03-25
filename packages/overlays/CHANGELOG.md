@@ -1,5 +1,17 @@
 # @uiid/overlays
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/cards@1.0.0
+  - @uiid/icons@1.0.0
+  - @uiid/layout@1.0.0
+  - @uiid/tokens@1.0.0
+  - @uiid/typography@1.0.0
+  - @uiid/utils@1.0.0
+
 ## 0.0.13
 
 ### Patch Changes

@@ -1,5 +1,7 @@
 # @uiid/tokens
 
+## 1.0.0
+
 ## 0.0.13
 
 ### Patch Changes

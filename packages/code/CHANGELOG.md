@@ -1,5 +1,19 @@
 # @uiid/code
 
+## 1.0.0
+
+### Patch Changes
+
+- [#165](https://github.com/uiid-systems/design-system/pull/165) [`b09ea39`](https://github.com/uiid-systems/design-system/commit/b09ea39dd605cdfea9e5b1a8665d780d96634ce7) Thanks [@adamfratino](https://github.com/adamfratino)! - Remove "use client" from CodeBlock, CodeBlockHeader, and CodeBlockContent — only the copy button remains a client component
+
+- Updated dependencies []:
+  - @uiid/buttons@1.0.0
+  - @uiid/cards@1.0.0
+  - @uiid/icons@1.0.0
+  - @uiid/layout@1.0.0
+  - @uiid/tokens@1.0.0
+  - @uiid/typography@1.0.0
+
 ## 0.0.13
 
 ### Patch Changes
