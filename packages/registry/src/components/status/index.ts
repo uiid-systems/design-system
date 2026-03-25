@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { PaletteColor } from "../../shared";
 import type { ComponentEntry } from "../../types";
 import { statusPreviews } from "./previews";
 
@@ -13,6 +14,8 @@ export const StatusPropsSchema = z.object({
   pulse: z.boolean().optional(),
   /** Inverted color scheme */
   inverted: z.boolean().optional(),
+  /** Color variant (shared with Badge) */
+  color: PaletteColor.optional(),
 });
 
 export type StatusProps = z.infer<typeof StatusPropsSchema>;

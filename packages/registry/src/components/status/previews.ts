@@ -2,6 +2,50 @@ import type { PreviewConfig } from "../../types";
 
 export const statusPreviews: PreviewConfig[] = [
   {
+    label: "Colors",
+    tree: {
+      root: "statuses",
+      elements: {
+        statuses: {
+          key: "statuses",
+          type: "Group",
+          props: { gap: 3 },
+          children: ["red", "green", "blue", "orange", "purple"],
+        },
+        red: {
+          key: "red",
+          type: "Status",
+          props: { color: "red", children: "Error" },
+          parentKey: "statuses",
+        },
+        green: {
+          key: "green",
+          type: "Status",
+          props: { color: "green", children: "Online" },
+          parentKey: "statuses",
+        },
+        blue: {
+          key: "blue",
+          type: "Status",
+          props: { color: "blue", children: "Info" },
+          parentKey: "statuses",
+        },
+        orange: {
+          key: "orange",
+          type: "Status",
+          props: { color: "orange", children: "Warning" },
+          parentKey: "statuses",
+        },
+        purple: {
+          key: "purple",
+          type: "Status",
+          props: { color: "purple", children: "Custom" },
+          parentKey: "statuses",
+        },
+      },
+    },
+  },
+  {
     label: "With label",
     tree: {
       root: "statuses",

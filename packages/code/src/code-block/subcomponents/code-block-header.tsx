@@ -1,5 +1,3 @@
-"use client";
-
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
