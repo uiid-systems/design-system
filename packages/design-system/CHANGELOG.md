@@ -1,5 +1,29 @@
 # @uiid/design-system
 
+## 0.0.15
+
+### Patch Changes
+
+- [#171](https://github.com/uiid-systems/design-system/pull/171) [`b0aa13d`](https://github.com/uiid-systems/design-system/commit/b0aa13d7009aa9ffe0c19d092228417bcba2395f) Thanks [@adamfratino](https://github.com/adamfratino)! - Inline globals.css into dist for pnpm compatibility
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.15
+  - @uiid/calendars@0.0.15
+  - @uiid/cards@0.0.15
+  - @uiid/code@0.0.15
+  - @uiid/forms@0.0.15
+  - @uiid/icons@0.0.15
+  - @uiid/indicators@0.0.15
+  - @uiid/interactive@0.0.15
+  - @uiid/layout@0.0.15
+  - @uiid/lists@0.0.15
+  - @uiid/navigation@0.0.15
+  - @uiid/overlays@0.0.15
+  - @uiid/tables@0.0.15
+  - @uiid/tokens@0.0.15
+  - @uiid/typography@0.0.15
+  - @uiid/utils@0.0.15
+
 ## 0.0.14
 
 ### Patch Changes
