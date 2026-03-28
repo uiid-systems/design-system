@@ -29,6 +29,7 @@ export const Status = ({
     >
       <span
         data-slot="status-dot"
+        data-colored={color ? "" : undefined}
         className={cx(
           styles["status-dot"],
           statusVariants({ pulse, inverted, color }),
