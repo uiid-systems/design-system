@@ -16,7 +16,7 @@ export const TabsList = ({
   return (
     <BaseTabs.List
       data-slot="tabs-list"
-      render={<Group gap={2} ay="end" evenly={evenly} />}
+      render={<Group gap={2} ay="center" evenly={evenly} />}
       className={cx(tabsListVariants({ align }), className)}
       {...props}
     >

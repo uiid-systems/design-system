@@ -3,58 +3,62 @@
 .tabs-list {
   position: relative;
   z-index: 0;
+  gap: 8px;
+  background-color: var(--shade-surface);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  height: var(--tabs-tab-height);
 }
 
 .tab {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 0;
-  outline: 0;
-  font-weight: 600;
+  appearance: none;
+  font-weight: 700;
   cursor: pointer;
   background: none;
-  color: var(--tabs-tab-fg);
+  color: var(--shade-muted);
   user-select: none;
   white-space: nowrap;
   word-break: keep-all;
   padding-inline: var(--globals-padding-x);
   height: var(--tabs-tab-height);
+  border-radius: var(--globals-border-radius);
+  transition: color var(--globals-transition-duration) ease-in-out;
 
   &[data-active] {
-    color: var(--tabs-tab-fg-active);
+    pointer-events: none;
+    color: var(--shade-background);
   }
 
   &:not([data-active]):hover {
-    text-decoration: underline;
+    color: var(--shade-foreground);
   }
 
   &:focus-visible {
-    position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0.25rem 0;
-      border-radius: 0.25rem;
-      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-      outline-offset: calc(var(--globals-outline-offset) * -1);
-    }
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    border-radius: calc(var(--globals-border-radius) / 1.5);
   }
 }
 
 .tabs-indicator {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   left: var(--active-tab-left);
-  top: 100%;
+  top: 50%;
   transform: translateY(-50%);
   width: var(--active-tab-width) !important;
-  height: var(--tabs-indicator-height);
-  background-color: var(--tabs-indicator-bg);
-  border-radius: var(--tabs-indicator-border-radius);
+  height: var(--tabs-tab-height);
+  background-color: var(--shade-foreground);
+  border-radius: calc(var(--globals-border-radius) / 1.5);
   transition-property: left, width;
-  transition-duration: var(--globals-transition-duration);
+  transition-duration: var(--globals-transition-duration-slow);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   flex: none;
   opacity: 1;
 
