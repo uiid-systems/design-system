@@ -29,11 +29,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./dist/design-system.css"
   },
   "files": [
-    "dist",
-    "src/globals.css"
+    "dist"
   ],
   "scripts": {
     "build": "tsc -b && vite build",
