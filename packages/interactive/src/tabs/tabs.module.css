@@ -8,6 +8,11 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   height: var(--tabs-tab-height);
+
+  &[data-ghost] {
+    background-color: transparent;
+    border-color: transparent;
+  }
 }
 
 .tab {

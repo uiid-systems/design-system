@@ -1,7 +1,6 @@
 import type { Tabs } from "@base-ui/react/tabs";
 
 import type { LayerProps, StackProps } from "@uiid/layout";
-import type { LayoutProps } from "@uiid/utils";
 
 export type TabProps = {
   label: string;
@@ -11,7 +10,8 @@ export type TabProps = {
 
 export type TabsRootProps = Tabs.Root.Props & StackProps;
 export type TabsListProps = Tabs.List.Props & {
-  align?: LayoutProps["ax"];
+  /** Removes the container background and border. */
+  ghost?: boolean;
   evenly?: boolean;
 };
 export type TabsTabProps = Tabs.Tab.Props;
@@ -28,4 +28,4 @@ export type TabsProps = {
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
-  Pick<TabsListProps, "evenly" | "align">;
+  Pick<TabsListProps, "evenly" | "ghost">;

@@ -14,6 +14,11 @@
     height: auto;
   }
 
+  &[data-ghost] {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
   &:where([data-size="sm"]) {
     --toggleGroup-height: var(--forms-size-sm-height);
   }

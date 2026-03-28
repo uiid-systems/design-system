@@ -12,6 +12,7 @@ import styles from "./toggle-group.module.css";
 
 export const ToggleGroup = ({
   size = "md",
+  ghost,
   orientation,
   value,
   defaultValue,
@@ -60,6 +61,7 @@ export const ToggleGroup = ({
       onValueChange={handleValueChange}
       className={styles["toggle-group-panel"]}
       data-size={size}
+      data-ghost={ghost || undefined}
       data-orientation={orientation}
       render={orientation === "vertical" ? <Stack /> : <Group />}
       {...props}

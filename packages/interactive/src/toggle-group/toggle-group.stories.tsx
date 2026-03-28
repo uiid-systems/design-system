@@ -16,6 +16,9 @@ const meta: Meta<typeof ToggleGroup> = {
       control: "select",
       options: ["sm", "md", "lg"],
     },
+    ghost: {
+      control: "boolean",
+    },
   },
 };
 
