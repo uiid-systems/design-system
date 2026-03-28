@@ -38,5 +38,8 @@ next-env.d.ts
 .claude/worktrees/
 .claude/settings.local.json
 
+# pnpm
+.pnpm-store/
+
 # CSS tokens
 packages/tokens/src/css/
