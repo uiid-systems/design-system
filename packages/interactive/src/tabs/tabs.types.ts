@@ -1,8 +1,7 @@
 import type { Tabs } from "@base-ui/react/tabs";
 
 import type { LayerProps, StackProps } from "@uiid/layout";
-
-import type { TabsAlign } from "./tabs.variants";
+import type { LayoutProps } from "@uiid/utils";
 
 export type TabProps = {
   label: string;
@@ -12,7 +11,7 @@ export type TabProps = {
 
 export type TabsRootProps = Tabs.Root.Props & StackProps;
 export type TabsListProps = Tabs.List.Props & {
-  align?: TabsAlign;
+  align?: LayoutProps["ax"];
   evenly?: boolean;
 };
 export type TabsTabProps = Tabs.Tab.Props;
