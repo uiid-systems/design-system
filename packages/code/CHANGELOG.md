@@ -1,5 +1,17 @@
 # @uiid/code
 
+## 0.0.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.15
+  - @uiid/cards@0.0.15
+  - @uiid/icons@0.0.15
+  - @uiid/layout@0.0.15
+  - @uiid/tokens@0.0.15
+  - @uiid/typography@0.0.15
+
 ## 0.0.14
 
 ### Patch Changes
