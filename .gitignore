@@ -34,8 +34,9 @@ storybook-static
 .next
 next-env.d.ts
 
-# Claude Code worktrees
+# Claude Code
 .claude/worktrees/
+.claude/settings.local.json
 
 # CSS tokens
 packages/tokens/src/css/
