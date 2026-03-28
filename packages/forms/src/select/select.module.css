@@ -29,6 +29,7 @@
 
 .select-value {
   align-content: center;
+
   [data-placeholder] & {
     color: var(--globals-placeholder-color);
   }
