@@ -33,7 +33,7 @@
   transition: background-color calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   &:hover {
-    background-color: var(--forms-bg-hover);
+    background-color: var(--shade-accent);
   }
 
   svg {
