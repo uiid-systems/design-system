@@ -5,18 +5,35 @@
   pointer-events: none;
 }
 
+.accordion-item {
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  [data-ghost] & {
+    border-bottom: none;
+  }
+}
+
 .accordion-trigger {
   all: unset;
   box-sizing: border-box;
   cursor: pointer;
   padding-block: var(--accordion-trigger-padding-y);
   padding-inline: var(--accordion-trigger-padding-x);
-  display: block;
-  width: 100%;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  border-radius: var(--globals-border-radius);
+  transition: background-color calc(var(--globals-transition-duration) / 2) ease-in-out;
+
+  &:hover {
+    background-color: var(--shade-accent);
+  }
 
   svg {
     stroke: var(--shade-halftone);
@@ -50,4 +67,60 @@
   width: 100%;
   width: -webkit-fill-available;
   width: -moz-available;
+}
+
+/* Ghost variant */
+.toggle-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Trigger sizes */
+.size-small {
+  font-size: var(--accordion-size-sm-font-size);
+  padding-inline: var(--accordion-size-sm-padding-x);
+  padding-block: var(--accordion-size-sm-padding-y);
+
+  svg {
+    height: var(--accordion-size-sm-icon-size);
+  }
+}
+.size-medium {
+  font-size: var(--accordion-size-md-font-size);
+  padding-inline: var(--accordion-size-md-padding-x);
+  padding-block: var(--accordion-size-md-padding-y);
+
+  svg {
+    height: var(--accordion-size-md-icon-size);
+  }
+}
+.size-large {
+  font-size: var(--accordion-size-lg-font-size);
+  padding-inline: var(--accordion-size-lg-padding-x);
+  padding-block: var(--accordion-size-lg-padding-y);
+
+  svg {
+    height: var(--accordion-size-lg-icon-size);
+  }
+}
+
+/* Panel sizes */
+.panel-size-small {
+  .accordion-panel-content {
+    padding-inline: var(--accordion-size-sm-padding-x);
+    padding-block: var(--accordion-size-sm-padding-y);
+  }
+}
+.panel-size-medium {
+  .accordion-panel-content {
+    padding-inline: var(--accordion-size-md-padding-x);
+    padding-block: var(--accordion-size-md-padding-y);
+  }
+}
+.panel-size-large {
+  .accordion-panel-content {
+    padding-inline: var(--accordion-size-lg-padding-x);
+    padding-block: var(--accordion-size-lg-padding-y);
+  }
 }

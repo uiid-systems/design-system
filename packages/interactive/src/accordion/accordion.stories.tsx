@@ -14,6 +14,12 @@ const meta: Meta<typeof Accordion> = {
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
+    ghost: { control: "boolean", table: { category: "Toggles" } },
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Options" },
+    },
     orientation: {
       control: "select",
       options: ["vertical", "horizontal"],
@@ -33,3 +39,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Accordion" };
+
+export const Ghost: Story = {
+  name: "Ghost",
+  args: { ghost: true },
+};
+
+export const Sizes: Story = {
+  name: "Sizes",
+  render: (args) => (
+    <Stack gap={4} fullwidth maxw={640} ax="stretch">
+      <Accordion {...args} size="small" />
+      <Accordion {...args} size="medium" />
+      <Accordion {...args} size="large" />
+    </Stack>
+  ),
+};

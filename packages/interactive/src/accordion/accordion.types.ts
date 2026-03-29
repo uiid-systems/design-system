@@ -1,7 +1,13 @@
 import type { Accordion } from "@base-ui/react/accordion";
 import type { CardProps } from "@uiid/cards";
+import type { VariantProps } from "@uiid/utils";
 
 import type { Icon } from "@uiid/icons";
+
+import type {
+  accordionRootVariants,
+  accordionTriggerVariants,
+} from "./accordion.variants";
 
 export type AccordionItemData = {
   value: string;
@@ -11,12 +17,21 @@ export type AccordionItemData = {
   disabled?: boolean;
 };
 
-export type AccordionRootProps = Accordion.Root.Props & CardProps;
+export type AccordionRootVariants = VariantProps<typeof accordionRootVariants>;
+export type AccordionTriggerVariants = VariantProps<
+  typeof accordionTriggerVariants
+>;
+
+export type AccordionRootProps = Accordion.Root.Props &
+  CardProps &
+  AccordionRootVariants;
 export type AccordionItemProps = Accordion.Item.Props;
 export type AccordionHeaderProps = Accordion.Header.Props;
 export type AccordionTriggerProps = Accordion.Trigger.Props &
-  Pick<AccordionItemData, "icon">;
-export type AccordionPanelProps = Accordion.Panel.Props;
+  Pick<AccordionItemData, "icon"> &
+  AccordionTriggerVariants;
+export type AccordionPanelProps = Accordion.Panel.Props &
+  AccordionTriggerVariants;
 
 export type AccordionProps = {
   items: AccordionItemData[];
@@ -34,4 +49,6 @@ export type AccordionProps = {
   | "orientation"
   | "multiple"
   | "fullwidth"
->;
+  | "ghost"
+> &
+  AccordionTriggerVariants;

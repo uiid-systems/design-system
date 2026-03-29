@@ -8,10 +8,12 @@ import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { AccordionTriggerProps } from "../accordion.types";
+import { accordionTriggerVariants } from "../accordion.variants";
 import styles from "../accordion.module.css";
 
 export const AccordionTrigger = ({
   icon,
+  size,
   className,
   children,
   ...props
@@ -20,7 +22,11 @@ export const AccordionTrigger = ({
   return (
     <BaseAccordion.Trigger
       data-slot="accordion-trigger"
-      className={cx(className, styles["accordion-trigger"])}
+      className={cx(
+        styles["accordion-trigger"],
+        accordionTriggerVariants({ size }),
+        className,
+      )}
       {...props}
     >
       <ConditionalRender
