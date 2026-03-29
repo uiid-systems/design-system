@@ -1,5 +1,27 @@
 # @uiid/interactive
 
+## 0.0.16
+
+### Patch Changes
+
+- [#176](https://github.com/uiid-systems/design-system/pull/176) [`b2c5a8a`](https://github.com/uiid-systems/design-system/commit/b2c5a8a107237dc97a4209fc0d4ae6c3c617c701) Thanks [@adamfratino](https://github.com/adamfratino)! - Default withHandle to true on ResizableHandle for visible drag affordance. Export sortable hooks from package index. Use globals disabled opacity token in sortable handle CSS.
+
+- [#175](https://github.com/uiid-systems/design-system/pull/175) [`652f428`](https://github.com/uiid-systems/design-system/commit/652f4286b8c56c337f1e6fe12e41ab77f7e52fe6) Thanks [@adamfratino](https://github.com/adamfratino)! - accordion cleanup
+
+- [#173](https://github.com/uiid-systems/design-system/pull/173) [`6e1874a`](https://github.com/uiid-systems/design-system/commit/6e1874a7fcfb20755f418b2c5ea3df07c31dac0b) Thanks [@adamfratino](https://github.com/adamfratino)! - Add neutral color variant and shared PaletteColor system across indicator components. Remove badge inverted variant. Add Kbd active state with hotkey detection. Boost badge/status oklch color saturation. Restyle tabs and toggle-group with filled pill indicator, ghost prop, and remove tabs align prop. Fix input/select specificity conflict.
+
+- Updated dependencies [[`2981db4`](https://github.com/uiid-systems/design-system/commit/2981db4f96237196766636e482920eb1ac4ec709), [`652f428`](https://github.com/uiid-systems/design-system/commit/652f4286b8c56c337f1e6fe12e41ab77f7e52fe6), [`6e1874a`](https://github.com/uiid-systems/design-system/commit/6e1874a7fcfb20755f418b2c5ea3df07c31dac0b)]:
+  - @uiid/forms@0.0.16
+  - @uiid/tokens@0.0.16
+  - @uiid/indicators@0.0.16
+  - @uiid/buttons@0.0.16
+  - @uiid/cards@0.0.16
+  - @uiid/layout@0.0.16
+  - @uiid/overlays@0.0.16
+  - @uiid/typography@0.0.16
+  - @uiid/icons@0.0.16
+  - @uiid/utils@0.0.16
+
 ## 0.0.15
 
 ### Patch Changes

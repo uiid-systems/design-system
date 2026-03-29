@@ -1,5 +1,11 @@
 # @uiid/tokens
 
+## 0.0.16
+
+### Patch Changes
+
+- [#175](https://github.com/uiid-systems/design-system/pull/175) [`652f428`](https://github.com/uiid-systems/design-system/commit/652f4286b8c56c337f1e6fe12e41ab77f7e52fe6) Thanks [@adamfratino](https://github.com/adamfratino)! - accordion cleanup
+
 ## 0.0.15
 
 ## 0.0.14
