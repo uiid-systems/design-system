@@ -21,7 +21,7 @@ export const ResizableHandle = ({
       className={cx(styles["resizable-handle"], className)}
       {...props}
     >
-      {children ?? (withHandle && (
+      {children ?? (withHandle !== false && (
         <div className={styles["resizable-handle-grip"]}>
           <GripVertical size={10} />
         </div>
