@@ -4,7 +4,11 @@ import { useTransition } from "react";
 import { Select } from "@uiid/forms";
 
 import { generateThemeCSS } from "@/app/actions/generate-theme";
-import { useThemePreset, injectPresetCSS, type PresetName } from "@/lib/use-theme-preset";
+import {
+  useThemePreset,
+  injectPresetCSS,
+  type PresetName,
+} from "@/lib/use-theme-preset";
 
 const PRESET_ITEMS = [
   { label: "Default", value: "default" },
@@ -13,7 +17,11 @@ const PRESET_ITEMS = [
   { label: "Ember", value: "ember" },
 ];
 
-export const ThemeSelector = ({ initialPreset }: { initialPreset?: PresetName }) => {
+export const ThemeSelector = ({
+  initialPreset,
+}: {
+  initialPreset?: PresetName;
+}) => {
   const { preset, setPreset } = useThemePreset(initialPreset);
   const [, startTransition] = useTransition();
 

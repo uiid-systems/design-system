@@ -1,15 +1,8 @@
-.kbd-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
 .kbd {
   all: unset;
   background-color: var(--shade-accent);
-  box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-foreground);
-  border-color: var(--globals-border-color);
-  color: var(--shade-foreground);
+  box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-halftone);
+  color: var(--shade-muted);
   display: inline-flex;
   height: 1.25rem;
   width: fit-content;
@@ -24,6 +17,11 @@
   pointer-events: none;
   font-family: sans-serif;
   font-size: 0.75rem;
+  transition: color var(--globals-transition-duration) ease-in-out;
+
+  &[data-active] {
+    color: var(--shade-foreground);
+  }
 
   svg {
     height: var(--globals-icon-size);

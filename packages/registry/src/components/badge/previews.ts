@@ -10,7 +10,7 @@ export const badgePreviews: PreviewConfig[] = [
           key: "badges",
           type: "Group",
           props: { gap: 2 },
-          children: ["default", "inverted"],
+          children: ["default", "neutral"],
         },
         default: {
           key: "default",
@@ -18,10 +18,10 @@ export const badgePreviews: PreviewConfig[] = [
           props: { children: "Default" },
           parentKey: "badges",
         },
-        inverted: {
-          key: "inverted",
+        neutral: {
+          key: "neutral",
           type: "Badge",
-          props: { inverted: true, children: "Inverted" },
+          props: { color: "neutral", children: "Neutral" },
           parentKey: "badges",
         },
       },

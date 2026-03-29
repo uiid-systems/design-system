@@ -12,6 +12,7 @@ import styles from "./toggle-group.module.css";
 
 export const ToggleGroup = ({
   size = "md",
+  ghost,
   orientation,
   value,
   defaultValue,
@@ -40,7 +41,8 @@ export const ToggleGroup = ({
       const originalClassName = child.props.className || "";
 
       return cloneElement<BaseToggle.Props & { ref?: unknown }>(child, {
-        className: `${styles.Button} ${originalClassName}`.trim(),
+        className:
+          `${styles["toggle-group-button"]} ${originalClassName}`.trim(),
         ref: (el: HTMLButtonElement | null) => {
           if (el && toggleValue) {
             buttonsRef.current.set(toggleValue, el);
@@ -59,11 +61,15 @@ export const ToggleGroup = ({
       onValueChange={handleValueChange}
       className={styles["toggle-group-panel"]}
       data-size={size}
+      data-ghost={ghost || undefined}
       data-orientation={orientation}
       render={orientation === "vertical" ? <Stack /> : <Group />}
       {...props}
     >
-      <div className={styles.Indicator} />
+      <div
+        data-slot="toggle-group-indicator"
+        className={styles["toggle-group-indicator"]}
+      />
       {enhancedChildren}
     </BaseToggleGroup>
   );

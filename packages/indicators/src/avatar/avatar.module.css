@@ -3,13 +3,13 @@
 .avatar-layers {
   aspect-ratio: 1;
   text-align: center;
-  background-color: var(--shade-foreground);
+  background-color: var(--badge-bg, var(--shade-foreground));
   border-radius: var(--globals-border-radius);
   padding-inline: 0.5rem;
 }
 
 .avatar-initials {
-  color: var(--shade-background);
+  color: var(--badge-fg, var(--shade-background));
   font-weight: 700;
   user-select: none;
 }

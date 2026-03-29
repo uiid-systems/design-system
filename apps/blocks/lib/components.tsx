@@ -216,10 +216,8 @@ export const registry: ComponentRegistry = {
     </Badge>
   ),
 
-  Kbd: ({ element, children }) => (
-    <Kbd data-element-key={keyOf(element)} {...element.props}>
-      {children || element.props.children}
-    </Kbd>
+  Kbd: ({ element }) => (
+    <Kbd data-element-key={keyOf(element)} {...element.props} />
   ),
 
   Status: ({ element, children }) => (

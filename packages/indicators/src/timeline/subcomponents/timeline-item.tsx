@@ -18,12 +18,13 @@ import type {
   TimelineItemContextValue,
 } from "../timeline.types";
 import { getItemStatus } from "../timeline.utils";
-import { timelineItemVariants } from "../timeline.variants";
+import { timelineItemVariants, timelineVariants } from "../timeline.variants";
 
 export const TimelineItem = ({
   className,
   id,
   ref,
+  color,
   children,
   ...props
 }: TimelineItemProps) => {
@@ -62,7 +63,7 @@ export const TimelineItem = ({
     id: itemId,
     dir,
     ref: composedRef,
-    className: cx(timelineItemVariants(), className),
+    className: cx(timelineItemVariants(), timelineVariants({ color }), className),
     ...props,
   };
 

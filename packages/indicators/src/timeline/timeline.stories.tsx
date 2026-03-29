@@ -3,11 +3,12 @@ import { Stack } from "@uiid/layout";
 
 import { Timeline } from "./timeline";
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
+import type { TimelineItemType } from "./timeline.types";
 
 const meta = {
   title: "Indicators/Timeline",
   component: Timeline,
-  tags: ["new"],
+  tags: ["beta"],
   args: {
     activeIndex: 1,
   },
@@ -26,6 +27,21 @@ const meta = {
       options: ["ltr", "rtl"],
       table: { category: "Options" },
     },
+    color: {
+      control: "select",
+      options: [
+        undefined,
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
   },
 } satisfies Meta<typeof Timeline>;
 
@@ -43,5 +59,44 @@ export const Default: Story = {
         {...args}
       />
     </Stack>
+  ),
+};
+
+const COLORED_ITEMS: TimelineItemType[] = [
+  {
+    title: "Created",
+    description: "Issue opened",
+    time: "9:00 AM",
+    color: "blue",
+  },
+  {
+    title: "In Progress",
+    description: "Work started",
+    time: "10:30 AM",
+    color: "orange",
+  },
+  {
+    title: "Review",
+    description: "PR submitted",
+    time: "2:00 PM",
+    color: "purple",
+  },
+  {
+    title: "Done",
+    description: "Merged to main",
+    time: "4:30 PM",
+    color: "green",
+  },
+];
+
+export const PerItemColors: Story = {
+  name: "Per-item colors",
+  render: (args) => (
+    <Timeline
+      orientation="vertical"
+      items={COLORED_ITEMS}
+      activeIndex={3}
+      {...args}
+    />
   ),
 };

@@ -1,6 +1,7 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
-.input {
+/** clean this up! terrible pattern */
+.input:not([data-slot="select-value"]) {
   background-color: var(--forms-bg);
   border-width: var(--globals-border-width);
   border-style: solid;

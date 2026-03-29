@@ -1,17 +1,22 @@
 .toggle-group-panel {
   --toggle-gap: 1px;
-  --toggle-size: calc(var(--toggleGroup-height) - var(--toggle-gap) * 2);
+  --toggle-size: calc(var(--toggleGroup-height) - 2px);
 
   position: relative;
-  gap: var(--globals-border-width);
+  gap: 8px;
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   height: var(--toggleGroup-height);
-  overflow: hidden;
+  /* overflow: hidden; */
 
   &[data-orientation="vertical"] {
     height: auto;
+  }
+
+  &[data-ghost] {
+    background-color: transparent;
+    border-color: transparent;
   }
 
   &:where([data-size="sm"]) {
@@ -25,15 +30,14 @@
   }
 }
 
-.Indicator {
+.toggle-group-indicator {
   position: absolute;
   z-index: 0;
-  border-radius: var(--globals-border-radius);
-  background-color: var(--shade-accent);
-  scale: 0.9;
+  border-radius: calc(var(--globals-border-radius) / 1.5);
+  background-color: var(--shade-foreground);
   transition-property: translate, width, height;
   transition-duration: var(--globals-transition-duration-slow);
-  transition-duration-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 
   .toggle-group-panel:not([data-orientation="vertical"]) & {
     left: 0;
@@ -52,13 +56,14 @@
   }
 }
 
-.Button {
+.toggle-group-button {
   position: relative;
   z-index: 1;
   appearance: none;
   border: none;
   background-color: transparent;
   color: var(--shade-muted);
+  font-weight: 700;
   user-select: none;
   cursor: pointer;
   border-radius: var(--globals-border-radius);
@@ -86,7 +91,8 @@
 
   &:focus {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-    outline-offset: calc(var(--globals-outline-offset) * -1);
+    outline-offset: var(--globals-outline-offset);
+    border-radius: calc(var(--globals-border-radius) / 1.5);
   }
 
   &:hover {
@@ -94,7 +100,8 @@
   }
 
   &[data-pressed] {
-    color: var(--shade-foreground);
+    pointer-events: none;
+    color: var(--shade-background);
   }
 
   svg {

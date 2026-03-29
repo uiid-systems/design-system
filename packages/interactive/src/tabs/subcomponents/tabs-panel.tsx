@@ -16,6 +16,7 @@ export const TabsPanel = ({
       data-slot="tabs-panel"
       render={<Stack ay="center" ax="center" fullwidth />}
       className={cx(styles["tabs-panel"], className)}
+      tabIndex={-1}
       {...props}
     >
       {children}

@@ -1,12 +1,18 @@
 "use client";
 
 import { Progress as BaseProgress } from "@base-ui/react/progress";
+import { cx } from "@uiid/utils";
 
 import type { ProgressProps } from "./progress.types";
+import { progressVariants } from "./progress.variants";
 import styles from "./progress.module.css";
 
 export const Progress = ({
   value = 0,
+  label,
+  size,
+  color,
+  className,
   RootProps,
   TrackProps,
   IndicatorProps,
@@ -14,14 +20,38 @@ export const Progress = ({
   LabelProps,
 }: ProgressProps) => {
   return (
-    <BaseProgress.Root className={styles.Progress} value={value} {...RootProps}>
-      <BaseProgress.Label className={styles.Label} {...LabelProps}>
-        Export data
-      </BaseProgress.Label>
-      <BaseProgress.Value className={styles.Value} {...ValueProps} />
-      <BaseProgress.Track className={styles.Track} {...TrackProps}>
+    <BaseProgress.Root
+      data-slot="progress"
+      className={cx(
+        styles["progress"],
+        progressVariants({ size, color }),
+        className,
+      )}
+      value={value}
+      {...RootProps}
+    >
+      {label && (
+        <BaseProgress.Label
+          data-slot="progress-label"
+          className={styles["progress-label"]}
+          {...LabelProps}
+        >
+          {label}
+        </BaseProgress.Label>
+      )}
+      <BaseProgress.Value
+        data-slot="progress-value"
+        className={styles["progress-value"]}
+        {...ValueProps}
+      />
+      <BaseProgress.Track
+        data-slot="progress-track"
+        className={styles["progress-track"]}
+        {...TrackProps}
+      >
         <BaseProgress.Indicator
-          className={styles.Indicator}
+          data-slot="progress-indicator"
+          className={styles["progress-indicator"]}
           {...IndicatorProps}
         />
       </BaseProgress.Track>

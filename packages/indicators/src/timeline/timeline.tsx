@@ -17,6 +17,7 @@ import type {
   TimelineContextValue,
 } from "./timeline.types";
 import { getItemStatus, getSortedEntries } from "./timeline.utils";
+import { timelineVariants } from "./timeline.variants";
 import styles from "./timeline.module.css";
 
 import {
@@ -33,6 +34,7 @@ export function Timeline({
   orientation = DEFAULT_ORIENTATION,
   dir: dirProp,
   activeIndex,
+  color,
   items,
   ItemProps,
   DotProps,
@@ -116,12 +118,12 @@ export function Timeline({
           data-slot="timeline"
           data-orientation={orientation}
           dir={dir}
-          className={cx(styles["timeline"], className)}
+          className={cx(styles["timeline"], timelineVariants({ color }), className)}
           {...props}
         >
           {items
-            ? items.map(({ title, description, time }, i) => (
-                <TimelineItem key={i} {...ItemProps}>
+            ? items.map(({ title, description, time, color: itemColor }, i) => (
+                <TimelineItem key={i} color={itemColor} {...ItemProps}>
                   <TimelineDot {...DotProps} />
                   <TimelineConnector {...ConnectorProps} />
                   <TimelineContent {...ContentProps}>

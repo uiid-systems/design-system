@@ -7,24 +7,15 @@ export function KbdPreview() {
     <Stack gap={3}>
       <Group gap={2} ay="center">
         <Text size={0}>Save</Text>
-        <Group gap={1}>
-          <Kbd>{"\u2318"}</Kbd>
-          <Kbd>S</Kbd>
-        </Group>
+        <Kbd hotkey={["meta", "s"]} />
       </Group>
       <Group gap={2} ay="center">
         <Text size={0}>Copy</Text>
-        <Group gap={1}>
-          <Kbd>{"\u2318"}</Kbd>
-          <Kbd>C</Kbd>
-        </Group>
+        <Kbd hotkey={["meta", "c"]} />
       </Group>
       <Group gap={2} ay="center">
         <Text size={0}>Undo</Text>
-        <Group gap={1}>
-          <Kbd>{"\u2318"}</Kbd>
-          <Kbd>Z</Kbd>
-        </Group>
+        <Kbd hotkey={["meta", "z"]} />
       </Group>
     </Stack>
   );

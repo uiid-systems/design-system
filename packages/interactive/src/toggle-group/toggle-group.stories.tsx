@@ -7,7 +7,7 @@ import { ToggleGroup, Toggle } from "./toggle-group";
 const meta: Meta<typeof ToggleGroup> = {
   title: "Interactive/Toggle Group",
   component: ToggleGroup,
-  tags: ["danger"],
+  tags: ["new"],
   args: {
     size: "md",
   },
@@ -15,6 +15,9 @@ const meta: Meta<typeof ToggleGroup> = {
     size: {
       control: "select",
       options: ["sm", "md", "lg"],
+    },
+    ghost: {
+      control: "boolean",
     },
   },
 };
@@ -57,7 +60,7 @@ export const Default: Story = {
       <ToggleGroup {...args} defaultValue={["left"]}>
         <Toggle value="left">Left</Toggle>
         <Toggle value="center">Center</Toggle>
-        <Toggle value="right">Right</Toggle>
+        <Toggle value="right">Right Right Right Right</Toggle>
       </ToggleGroup>
 
       <ToggleGroup {...args} defaultValue={["left"]} orientation="vertical">

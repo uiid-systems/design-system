@@ -1,32 +1,18 @@
-import * as React from "react";
-
 import { Kbd } from "@uiid/indicators";
-import { Group } from "@uiid/layout";
 
-import { getShortcutKey } from "../rich-text-editor.utils";
+import { isMacOS } from "../rich-text-editor.utils";
 
-export interface ShortcutKeyProps extends React.ComponentProps<"span"> {
+export interface ShortcutKeyProps {
   keys: string[];
 }
 
-export const ShortcutKey = ({ ref, keys, ...props }: ShortcutKeyProps) => {
-  const modifiedKeys = keys.map((key) => getShortcutKey(key));
-  const ariaLabel = modifiedKeys
-    .map((shortcut) => shortcut.readable)
-    .join(" + ");
+/** Map tiptap's "mod" key to the platform-specific key name used by Kbd. */
+function normalizeKey(key: string): string {
+  if (key.toLowerCase() === "mod") return isMacOS() ? "meta" : "ctrl";
+  return key;
+}
 
-  return (
-    <Group
-      aria-label={ariaLabel}
-      ay="center"
-      gap={1}
-      {...props}
-      render={<Kbd ref={ref} />}
-    >
-      {modifiedKeys.map((shortcut) => (
-        <span key={shortcut.symbol}>{shortcut.symbol}</span>
-      ))}
-    </Group>
-  );
+export const ShortcutKey = ({ keys }: ShortcutKeyProps) => {
+  return <Kbd hotkey={keys.map(normalizeKey)} />;
 };
 ShortcutKey.displayName = "ShortcutKey";

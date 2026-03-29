@@ -8,7 +8,7 @@ import { Alert } from "./alert";
 const meta = {
   title: "Indicators/Alert",
   component: Alert,
-  tags: ["beta"],
+  tags: ["danger"],
   args: {
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },

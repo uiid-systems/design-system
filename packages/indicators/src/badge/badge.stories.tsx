@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 
 import { Badge } from "./badge";
 
@@ -26,18 +26,12 @@ const meta = {
         "blue",
         "indigo",
         "purple",
+        "neutral",
       ],
       table: { category: "Variants" },
     },
   },
-  render: (args) => (
-    <Stack gap={4}>
-      <Badge {...args}>Badge</Badge>
-      <Badge {...args} inverted>
-        Inverted
-      </Badge>
-    </Stack>
-  ),
+  render: (args) => <Badge {...args}>Badge</Badge>,
 } satisfies Meta<typeof Badge>;
 
 export default meta;
@@ -53,6 +47,7 @@ const colors = [
   "blue",
   "indigo",
   "purple",
+  "neutral",
 ] as const;
 
 export const Colors: Story = {

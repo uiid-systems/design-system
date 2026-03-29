@@ -198,24 +198,18 @@ describe("Tabs", () => {
   });
 
   // ============================================
-  // ALIGNMENT
+  // GHOST
   // ============================================
 
-  it("applies start alignment by default", () => {
+  it("applies ghost data attribute when ghost prop is set", () => {
+    render(<Tabs items={MOCK_ITEMS} ghost />);
+    const tablist = screen.getByRole("tablist");
+    expect(tablist).toHaveAttribute("data-ghost");
+  });
+
+  it("does not apply ghost data attribute by default", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const tablist = screen.getByRole("tablist");
-    expect(tablist.className).toMatch(/align-start/);
-  });
-
-  it("applies center alignment when specified", () => {
-    render(<Tabs items={MOCK_ITEMS} align="center" />);
-    const tablist = screen.getByRole("tablist");
-    expect(tablist.className).toMatch(/align-center/);
-  });
-
-  it("applies end alignment when specified", () => {
-    render(<Tabs items={MOCK_ITEMS} align="end" />);
-    const tablist = screen.getByRole("tablist");
-    expect(tablist.className).toMatch(/align-end/);
+    expect(tablist).not.toHaveAttribute("data-ghost");
   });
 });

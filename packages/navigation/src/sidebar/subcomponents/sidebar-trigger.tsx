@@ -23,7 +23,7 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
       tooltip={
         <Group gap={1} ay="center">
           <span>Toggle Sidebar</span>
-          <Kbd>⌘B</Kbd>
+          <Kbd hotkey={["meta", "b"]} />
         </Group>
       }
       size="small"

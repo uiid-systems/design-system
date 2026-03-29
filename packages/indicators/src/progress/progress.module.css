@@ -1,38 +1,51 @@
-.Progress {
+.progress {
+  --progress-track-height: 0.25rem;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 0.25rem;
-  grid-row-gap: 0.5rem;
-  width: 12rem;
+  gap: 0.25rem;
+  row-gap: 0.5rem;
+  width: 100%;
 }
 
-.Label {
+.progress-label {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
   color: var(--shade-foreground);
 }
 
-.Value {
+.progress-value {
   grid-column-start: 2;
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--shade-foreground);
+  color: var(--shade-muted);
   text-align: right;
 }
 
-.Track {
+.progress-track {
   grid-column: 1 / 3;
   overflow: hidden;
-  background-color: var(--shade-accent);
-  box-shadow: inset 0 0 0 1px var(--shade-accent);
-  height: 0.25rem;
-  border-radius: 0.25rem;
+  background-color: var(--badge-bg, var(--shade-accent));
+  border-radius: var(--globals-border-radius);
+  height: var(--progress-track-height);
 }
 
-.Indicator {
+.progress-indicator {
   display: block;
-  background-color: var(--shade-halftone);
+  height: 100%;
+  background-color: var(--badge-fg, var(--shade-foreground));
+  border-radius: var(--globals-border-radius);
   transition: width var(--globals-transition-duration-slow);
+}
+
+.size-small {
+  --progress-track-height: 0.125rem;
+}
+.size-medium {
+  --progress-track-height: 0.25rem;
+}
+.size-large {
+  --progress-track-height: 0.5rem;
 }
