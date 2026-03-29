@@ -1,5 +1,4 @@
 @import "@uiid/tokens/component/accordion.tokens.css";
-@import "@uiid/tokens/semantic/forms.tokens.css";
 
 .accordion-root[data-disabled] {
   opacity: var(--globals-disabled-opacity);
