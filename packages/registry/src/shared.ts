@@ -136,6 +136,7 @@ export const PaletteColor = z.enum([
   "blue",
   "indigo",
   "purple",
+  "neutral",
 ]);
 
 export type PaletteColor = z.infer<typeof PaletteColor>;

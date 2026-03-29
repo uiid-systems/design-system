@@ -35,7 +35,7 @@
 /* When a color is applied, use its hue + chroma for the dot */
 .status-dot[data-colored] {
   background-color: light-dark(
-    oklch(0.55 var(--badge-chroma) var(--badge-hue)),
-    oklch(0.75 calc(var(--badge-chroma) * 0.7) var(--badge-hue))
+    oklch(0.65 var(--badge-chroma) var(--badge-hue)),
+    oklch(0.7 var(--badge-chroma) var(--badge-hue))
   );
 }

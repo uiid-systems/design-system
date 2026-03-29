@@ -11,6 +11,7 @@ export * from "./status/status";
 export * from "./status/status.types";
 
 export * from "./kbd/kbd";
+export * from "./kbd/kbd.types";
 
 export * from "./progress/progress";
 export * from "./progress/progress.types";

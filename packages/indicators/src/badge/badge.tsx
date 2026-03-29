@@ -8,7 +8,6 @@ import styles from "./badge.module.css";
 
 export const Badge = ({
   size,
-  inverted,
   color,
   className,
   children,
@@ -19,7 +18,7 @@ export const Badge = ({
       data-slot="badge"
       className={cx(
         styles["badge"],
-        badgeVariants({ size, inverted, color }),
+        badgeVariants({ size, color }),
         className,
       )}
       ay="center"

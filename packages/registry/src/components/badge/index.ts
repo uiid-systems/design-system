@@ -19,8 +19,6 @@ export const BadgePropsSchema = z.object({
   size: BadgeSize.optional(),
   /** Palette color for tinted badge */
   color: PaletteColor.optional(),
-  /** Inverted color scheme */
-  inverted: z.boolean().optional(),
 });
 
 export type BadgeProps = z.infer<typeof BadgePropsSchema>;

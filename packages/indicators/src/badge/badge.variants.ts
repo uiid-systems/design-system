@@ -10,11 +10,11 @@ export const badgeColorStyles = {
   blue: styles["color-blue"],
   indigo: styles["color-indigo"],
   purple: styles["color-purple"],
+  neutral: styles["color-neutral"],
 };
 
 export const badgeVariants = cva({
   variants: {
-    inverted: { true: styles["toggle-inverted"] },
     size: {
       small: styles["size-small"],
       medium: styles["size-medium"],

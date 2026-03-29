@@ -28,18 +28,13 @@
   padding: var(--badge-size-lg-padding-y) var(--badge-size-lg-padding-x);
 }
 
-.toggle-inverted {
-  background-color: var(--shade-background);
-  color: var(--shade-foreground);
-}
-
 /* Color variant: derives surface/text/border from hue + chroma via oklch */
 .colored {
-  --badge-bg: light-dark(oklch(0.95 calc(var(--badge-chroma) * 0.3) var(--badge-hue)), oklch(0.25 calc(var(--badge-chroma) * 0.3) var(--badge-hue)));
-  --badge-fg: light-dark(oklch(0.45 var(--badge-chroma) var(--badge-hue)), oklch(0.8 calc(var(--badge-chroma) * 0.7) var(--badge-hue)));
+  --badge-bg: light-dark(oklch(0.9 calc(var(--badge-chroma) * 0.7) var(--badge-hue)), oklch(0.25 calc(var(--badge-chroma) * 0.5) var(--badge-hue)));
+  --badge-fg: light-dark(oklch(0.35 var(--badge-chroma) var(--badge-hue)), oklch(0.88 var(--badge-chroma) var(--badge-hue)));
   --badge-border: light-dark(
-    oklch(0.85 calc(var(--badge-chroma) * 0.5) var(--badge-hue)),
-    oklch(0.35 calc(var(--badge-chroma) * 0.5) var(--badge-hue))
+    oklch(0.78 calc(var(--badge-chroma) * 0.8) var(--badge-hue)),
+    oklch(0.38 calc(var(--badge-chroma) * 0.8) var(--badge-hue))
   );
 }
 
@@ -77,4 +72,9 @@
   composes: colored;
   --badge-hue: 303;
   --badge-chroma: 0.24;
+}
+.color-neutral {
+  composes: colored;
+  --badge-hue: 0;
+  --badge-chroma: 0;
 }
