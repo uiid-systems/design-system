@@ -2,6 +2,7 @@
 "@uiid/indicators": patch
 "@uiid/interactive": minor
 "@uiid/forms": patch
+"@uiid/navigation": patch
 "@uiid/registry": patch
 ---
 
