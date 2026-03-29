@@ -7,7 +7,7 @@ import { Kbd } from "./kbd";
 const meta = {
   title: "Indicators/Kbd",
   component: Kbd,
-  tags: ["new"],
+  tags: ["beta"],
   args: {},
   render: () => <Kbd hotkey={["meta", "b"]} />,
 } satisfies Meta<typeof Kbd>;

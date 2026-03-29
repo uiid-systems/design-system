@@ -8,7 +8,7 @@ import type { TimelineItemType } from "./timeline.types";
 const meta = {
   title: "Indicators/Timeline",
   component: Timeline,
-  tags: ["new"],
+  tags: ["beta"],
   args: {
     activeIndex: 1,
   },
