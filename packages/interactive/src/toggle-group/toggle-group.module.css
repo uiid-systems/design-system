@@ -37,7 +37,7 @@
   background-color: var(--shade-foreground);
   transition-property: translate, width, height;
   transition-duration: var(--globals-transition-duration-slow);
-  transition-duration-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 
   .toggle-group-panel:not([data-orientation="vertical"]) & {
     left: 0;
