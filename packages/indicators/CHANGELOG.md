@@ -1,5 +1,17 @@
 # @uiid/indicators
 
+## 0.0.16
+
+### Patch Changes
+
+- [#173](https://github.com/uiid-systems/design-system/pull/173) [`6e1874a`](https://github.com/uiid-systems/design-system/commit/6e1874a7fcfb20755f418b2c5ea3df07c31dac0b) Thanks [@adamfratino](https://github.com/adamfratino)! - Add neutral color variant and shared PaletteColor system across indicator components. Remove badge inverted variant. Add Kbd active state with hotkey detection. Boost badge/status oklch color saturation. Restyle tabs and toggle-group with filled pill indicator, ghost prop, and remove tabs align prop. Fix input/select specificity conflict.
+
+- Updated dependencies [[`652f428`](https://github.com/uiid-systems/design-system/commit/652f4286b8c56c337f1e6fe12e41ab77f7e52fe6)]:
+  - @uiid/tokens@0.0.16
+  - @uiid/cards@0.0.16
+  - @uiid/typography@0.0.16
+  - @uiid/utils@0.0.16
+
 ## 0.0.15
 
 ### Patch Changes
