@@ -19,17 +19,16 @@
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  border-width: 2px solid var(--shade-foreground);
-  border-style: solid;
+  border: 2px solid var(--badge-fg, var(--shade-foreground));
   background-color: var(--shade-background);
 
   &[data-status="completed"] {
-    background-color: var(--shade-foreground);
+    background-color: var(--badge-fg, var(--shade-foreground));
   }
-}
 
-.timeline-dot.status-pending {
-  border-color: var(--globals-border-color);
+  &[data-status="pending"] {
+    border-color: var(--badge-border, var(--globals-border-color));
+  }
 }
 
 /* Timeline Connector */
@@ -39,11 +38,11 @@
 }
 
 .timeline-connector.completed {
-  background-color: var(--shade-foreground);
+  background-color: var(--badge-fg, var(--shade-foreground));
 }
 
 .timeline-connector:not(.completed) {
-  background-color: var(--globals-border-color);
+  background-color: var(--badge-border, var(--globals-border-color));
 }
 
 .timeline-connector.orientation-vertical {

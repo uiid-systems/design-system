@@ -1,4 +1,7 @@
 import type { TextProps } from "@uiid/typography";
+import type { VariantProps } from "@uiid/utils";
+
+import type { timelineVariants } from "./timeline.variants";
 
 export type Direction = "ltr" | "rtl";
 export type Orientation = "vertical" | "horizontal";
@@ -41,9 +44,11 @@ export type TimelineItemType = {
   title: string;
   description?: string;
   time?: string;
+  color?: VariantProps<typeof timelineVariants>["color"];
 };
 
-export type TimelineItemProps = React.ComponentProps<"div">;
+export type TimelineItemProps = React.ComponentProps<"div"> &
+  VariantProps<typeof timelineVariants>;
 export type TimelineDotProps = React.ComponentProps<"div">;
 export type TimelineConnectorProps = React.ComponentProps<"div"> & {
   /** Force mount even if last item */
@@ -56,7 +61,8 @@ export type TimelineDescriptionProps = TextProps;
 export type TimelineTimeProps = TextProps & React.ComponentProps<"time">;
 
 export type TimelineProps = React.ComponentProps<"div"> &
-  Partial<TimelineContextValue> & {
+  Partial<TimelineContextValue> &
+  VariantProps<typeof timelineVariants> & {
     items?: TimelineItemType[];
     ItemProps?: TimelineItemProps;
     DotProps?: TimelineDotProps;

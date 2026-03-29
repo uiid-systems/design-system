@@ -1,5 +1,6 @@
 import { cva } from "@uiid/utils";
 
+import { badgeColorStyles } from "../badge/badge.variants";
 import styles from "./avatar.module.css";
 
 export const avatarVariants = cva({
@@ -9,6 +10,7 @@ export const avatarVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
     },
+    color: badgeColorStyles,
   },
   defaultVariants: {
     size: "medium",

@@ -17,6 +17,7 @@ export const Avatar = ({
   description,
   orientation = "horizontal",
   size = "medium",
+  color,
   ContainerProps,
   ImageProps,
   InitialsProps,
@@ -26,7 +27,7 @@ export const Avatar = ({
 }: AvatarProps) => {
   return (
     <AvatarContainer orientation={orientation} {...props} {...ContainerProps}>
-      <AvatarLayers size={size}>
+      <AvatarLayers size={size} color={color}>
         <AvatarImage {...ImageProps} />
         <AvatarInitials initials={initials} size={size} {...InitialsProps} />
       </AvatarLayers>

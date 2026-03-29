@@ -1,4 +1,6 @@
-export const MOCK_TIMELINE_ITEMS = [
+import type { TimelineItemType } from "./timeline.types";
+
+export const MOCK_TIMELINE_ITEMS: TimelineItemType[] = [
   {
     title: "Order placed",
     description: "Your order has been confirmed",

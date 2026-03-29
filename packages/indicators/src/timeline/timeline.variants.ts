@@ -1,6 +1,13 @@
 import { cva } from "@uiid/utils";
 
+import { badgeColorStyles } from "../badge/badge.variants";
 import styles from "./timeline.module.css";
+
+export const timelineVariants = cva({
+  variants: {
+    color: badgeColorStyles,
+  },
+});
 
 export const timelineItemVariants = cva({
   base: styles["timeline-item"],
