@@ -10,6 +10,26 @@
       "height": { "$value": "2rem", "$type": "dimension" },
       "padding-x": { "$value": "{globals.padding.x}", "$type": "dimension" },
       "padding-y": { "$value": "1.5rem", "$type": "dimension" }
+    },
+    "size": {
+      "sm": {
+        "font-size": { "$value": "{forms.size.sm.font-size}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.sm.padding-x}", "$type": "dimension" },
+        "padding-y": { "$value": "0.5rem", "$type": "dimension" },
+        "icon-size": { "$value": "0.875rem", "$type": "dimension" }
+      },
+      "md": {
+        "font-size": { "$value": "{forms.size.md.font-size}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.md.padding-x}", "$type": "dimension" },
+        "padding-y": { "$value": "0.75rem", "$type": "dimension" },
+        "icon-size": { "$value": "{globals.icon.size}", "$type": "dimension" }
+      },
+      "lg": {
+        "font-size": { "$value": "{forms.size.lg.font-size}", "$type": "dimension" },
+        "padding-x": { "$value": "{forms.size.lg.padding-x}", "$type": "dimension" },
+        "padding-y": { "$value": "1rem", "$type": "dimension" },
+        "icon-size": { "$value": "1.25rem", "$type": "dimension" }
+      }
     }
   }
 }

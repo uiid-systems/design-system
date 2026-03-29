@@ -17,6 +17,8 @@ export const Accordion = ({
   orientation,
   multiple,
   fullwidth,
+  ghost,
+  size,
   RootProps,
   ItemProps,
   HeaderProps,
@@ -26,6 +28,7 @@ export const Accordion = ({
   return (
     <AccordionRoot
       fullwidth={fullwidth}
+      ghost={ghost}
       defaultValue={defaultValue}
       value={value}
       onValueChange={onValueChange}
@@ -42,11 +45,17 @@ export const Accordion = ({
           {...ItemProps}
         >
           <AccordionHeader {...HeaderProps}>
-            <AccordionTrigger icon={item.icon} {...TriggerProps}>
+            <AccordionTrigger
+              icon={item.icon}
+              size={size}
+              {...TriggerProps}
+            >
               {item.trigger}
             </AccordionTrigger>
           </AccordionHeader>
-          <AccordionPanel {...PanelProps}>{item.content}</AccordionPanel>
+          <AccordionPanel size={size} {...PanelProps}>
+            {item.content}
+          </AccordionPanel>
         </AccordionItem>
       ))}
     </AccordionRoot>
