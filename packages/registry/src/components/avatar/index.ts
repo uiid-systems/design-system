@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { PaletteColor } from "../../shared";
 import { avatarPreviews } from "./previews";
 
 /**
@@ -25,6 +26,8 @@ export const AvatarPropsSchema = z.object({
   description: z.string().optional(),
   /** Size variant */
   size: AvatarSize.optional(),
+  /** Palette color for tinted avatar */
+  color: PaletteColor.optional(),
   /** Layout orientation */
   orientation: AvatarOrientation.optional(),
   /** Props forwarded to the container */

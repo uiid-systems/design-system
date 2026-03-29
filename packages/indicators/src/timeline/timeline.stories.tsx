@@ -63,15 +63,40 @@ export const Default: Story = {
 };
 
 const COLORED_ITEMS: TimelineItemType[] = [
-  { title: "Created", description: "Issue opened", time: "9:00 AM", color: "blue" },
-  { title: "In Progress", description: "Work started", time: "10:30 AM", color: "orange" },
-  { title: "Review", description: "PR submitted", time: "2:00 PM", color: "purple" },
-  { title: "Done", description: "Merged to main", time: "4:30 PM", color: "green" },
+  {
+    title: "Created",
+    description: "Issue opened",
+    time: "9:00 AM",
+    color: "blue",
+  },
+  {
+    title: "In Progress",
+    description: "Work started",
+    time: "10:30 AM",
+    color: "orange",
+  },
+  {
+    title: "Review",
+    description: "PR submitted",
+    time: "2:00 PM",
+    color: "purple",
+  },
+  {
+    title: "Done",
+    description: "Merged to main",
+    time: "4:30 PM",
+    color: "green",
+  },
 ];
 
 export const PerItemColors: Story = {
   name: "Per-item colors",
   render: (args) => (
-    <Timeline orientation="vertical" items={COLORED_ITEMS} activeIndex={2} {...args} />
+    <Timeline
+      orientation="vertical"
+      items={COLORED_ITEMS}
+      activeIndex={3}
+      {...args}
+    />
   ),
 };

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { PaletteColor } from "../../shared";
 import { timelinePreviews } from "./previews";
 
 /**
@@ -23,6 +24,8 @@ export const TimelineItemSchema = z.object({
   description: z.string().optional(),
   /** Timestamp or time label */
   time: z.string().optional(),
+  /** Palette color for this item's dot and connector */
+  color: PaletteColor.optional(),
 });
 
 /**
@@ -39,6 +42,8 @@ export const TimelinePropsSchema = z.object({
   dir: TimelineDirection.optional(),
   /** Index of the active/current item */
   activeIndex: z.number().optional(),
+  /** Palette color for all dots and connectors */
+  color: PaletteColor.optional(),
   /** Props forwarded to each TimelineItem */
   ItemProps: z.record(z.string(), z.any()).optional(),
   /** Props forwarded to each TimelineDot */
