@@ -6,6 +6,18 @@
   pointer-events: none;
 }
 
+.accordion-item {
+  border-bottom: var(--globals-border-width) solid var(--globals-border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  [data-ghost] & {
+    border-bottom: none;
+  }
+}
+
 .accordion-trigger {
   all: unset;
   box-sizing: border-box;
