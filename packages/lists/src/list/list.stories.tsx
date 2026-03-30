@@ -42,3 +42,21 @@ export const NestedGroups: Story = {
   args: { items: MOCK_NESTED },
   render: (args) => <List {...args} />,
 };
+
+export const Sizes: Story = {
+  name: "Sizes",
+  args: { items: MOCK_LINKS },
+  render: (args) => (
+    <Group gap={8} ay="start">
+      <Stack gap={2}>
+        <List {...args} size="small" />
+      </Stack>
+      <Stack gap={2}>
+        <List {...args} size="medium" />
+      </Stack>
+      <Stack gap={2}>
+        <List {...args} size="large" />
+      </Stack>
+    </Group>
+  ),
+};

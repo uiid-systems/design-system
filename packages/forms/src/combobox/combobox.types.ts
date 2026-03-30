@@ -15,7 +15,8 @@ export type ComboboxInputProps = BaseCombobox.Input.Props &
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
 export type ComboboxPopupProps = BaseCombobox.Popup.Props;
-export type ComboboxListProps = BaseCombobox.List.Props;
+export type ComboboxListProps = BaseCombobox.List.Props &
+  Pick<import("@uiid/lists").ListProps, "size">;
 export type ComboboxItemProps = BaseCombobox.Item.Props;
 export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 
@@ -32,4 +33,5 @@ export type ComboboxProps<
 }> &
   ComboboxRootProps<Value, Multiple> &
   Pick<ComboboxInputProps, "placeholder" | "onFocus" | "onBlur"> &
-  Pick<FieldProps, "label" | "description">;
+  Pick<FieldProps, "label" | "description"> &
+  Pick<ComboboxListProps, "size">;

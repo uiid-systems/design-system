@@ -9,7 +9,8 @@ export type AutocompleteInputProps = BaseAutocomplete.Input.Props &
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;
 export type AutocompletePopupProps = BaseAutocomplete.Popup.Props;
-export type AutocompleteListProps = BaseAutocomplete.List.Props;
+export type AutocompleteListProps = BaseAutocomplete.List.Props &
+  Pick<import("@uiid/lists").ListProps, "size">;
 export type AutocompleteItemProps = BaseAutocomplete.Item.Props;
 export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
 
@@ -22,4 +23,5 @@ export type AutocompleteProps<Value = string> = {
   ListProps?: AutocompleteListProps;
 } & AutocompleteRootProps<Value> &
   Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur"> &
-  Pick<FieldProps, "label" | "description">;
+  Pick<FieldProps, "label" | "description"> &
+  Pick<AutocompleteListProps, "size">;
