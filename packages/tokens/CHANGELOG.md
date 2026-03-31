@@ -1,5 +1,13 @@
 # @uiid/tokens
 
+## 0.0.17
+
+### Patch Changes
+
+- [#180](https://github.com/uiid-systems/design-system/pull/180) [`d61e1d7`](https://github.com/uiid-systems/design-system/commit/d61e1d71fbc5d60fde02768c74e4eca8aa50578d) Thanks [@adamfratino](https://github.com/adamfratino)! - Add size prop (small, medium, large) to List component with form-size-aligned tokens. Wire size through Select, Combobox, and Autocomplete consumers.
+
+- [#181](https://github.com/uiid-systems/design-system/pull/181) [`e19fa9c`](https://github.com/uiid-systems/design-system/commit/e19fa9cb3a5bbe7f7e613740fadde507d70031a0) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `uiid.primitives` CSS layer for typography and layout packages to fix cascade ordering issues when consuming the design system
+
 ## 0.0.16
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @uiid/lists
 
+## 0.0.17
+
+### Patch Changes
+
+- [#180](https://github.com/uiid-systems/design-system/pull/180) [`d61e1d7`](https://github.com/uiid-systems/design-system/commit/d61e1d71fbc5d60fde02768c74e4eca8aa50578d) Thanks [@adamfratino](https://github.com/adamfratino)! - Add size prop (small, medium, large) to List component with form-size-aligned tokens. Wire size through Select, Combobox, and Autocomplete consumers.
+
+- Updated dependencies [[`d61e1d7`](https://github.com/uiid-systems/design-system/commit/d61e1d71fbc5d60fde02768c74e4eca8aa50578d), [`e19fa9c`](https://github.com/uiid-systems/design-system/commit/e19fa9cb3a5bbe7f7e613740fadde507d70031a0)]:
+  - @uiid/tokens@0.0.17
+  - @uiid/typography@0.0.17
+  - @uiid/layout@0.0.17
+  - @uiid/icons@0.0.17
+  - @uiid/utils@0.0.17
+
 ## 0.0.16
 
 ### Patch Changes

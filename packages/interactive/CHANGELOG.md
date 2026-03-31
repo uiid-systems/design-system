@@ -1,5 +1,23 @@
 # @uiid/interactive
 
+## 0.0.17
+
+### Patch Changes
+
+- [#184](https://github.com/uiid-systems/design-system/pull/184) [`2adc74e`](https://github.com/uiid-systems/design-system/commit/2adc74e2d2d67864d31d77571c28b9a945da3fa3) Thanks [@adamfratino](https://github.com/adamfratino)! - Add size prop (sm/md/lg) to Tabs matching toggle-group pattern
+
+- Updated dependencies [[`7cbd9c1`](https://github.com/uiid-systems/design-system/commit/7cbd9c109cb59fa559416b393292828593535949), [`d61e1d7`](https://github.com/uiid-systems/design-system/commit/d61e1d71fbc5d60fde02768c74e4eca8aa50578d), [`e19fa9c`](https://github.com/uiid-systems/design-system/commit/e19fa9cb3a5bbe7f7e613740fadde507d70031a0)]:
+  - @uiid/forms@0.0.17
+  - @uiid/tokens@0.0.17
+  - @uiid/typography@0.0.17
+  - @uiid/layout@0.0.17
+  - @uiid/buttons@0.0.17
+  - @uiid/cards@0.0.17
+  - @uiid/indicators@0.0.17
+  - @uiid/overlays@0.0.17
+  - @uiid/icons@0.0.17
+  - @uiid/utils@0.0.17
+
 ## 0.0.16
 
 ### Patch Changes
