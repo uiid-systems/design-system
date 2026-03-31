@@ -10,6 +10,7 @@ export type TabProps = {
 
 export type TabsRootProps = Tabs.Root.Props & StackProps;
 export type TabsListProps = Tabs.List.Props & {
+  size?: "sm" | "md" | "lg";
   /** Removes the container background and border. */
   ghost?: boolean;
   evenly?: boolean;
@@ -28,4 +29,4 @@ export type TabsProps = {
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
-  Pick<TabsListProps, "evenly" | "ghost">;
+  Pick<TabsListProps, "size" | "evenly" | "ghost">;

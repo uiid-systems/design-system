@@ -1,5 +1,17 @@
 # @uiid/buttons
 
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies [[`652f428`](https://github.com/uiid-systems/design-system/commit/652f4286b8c56c337f1e6fe12e41ab77f7e52fe6)]:
+  - @uiid/tokens@0.0.16
+  - @uiid/layout@0.0.16
+  - @uiid/overlays@0.0.16
+  - @uiid/typography@0.0.16
+  - @uiid/icons@0.0.16
+  - @uiid/utils@0.0.16
+
 ## 0.0.15
 
 ### Patch Changes

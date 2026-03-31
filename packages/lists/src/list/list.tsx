@@ -1,11 +1,13 @@
 import { SwitchRender, Stack, Group } from "@uiid/layout";
 
 import type { ListProps } from "./list.types";
+import { LIST_DEFAULT_SIZE } from "./list.constants";
 import styles from "./list.module.css";
 import { ListItem, ListItemGroup } from "./subcomponents";
 
 export const List = ({
   type = "none",
+  size = LIST_DEFAULT_SIZE,
   direction = "column",
   line,
   items,
@@ -18,6 +20,7 @@ export const List = ({
   const sharedProps = {
     "data-slot": "list",
     "data-type": type,
+    "data-size": size,
     "data-direction": direction,
     "data-line": line ? "true" : undefined,
     className: styles["list"],

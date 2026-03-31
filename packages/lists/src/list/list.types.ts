@@ -2,6 +2,7 @@ import type { Icon } from "@uiid/icons";
 import type { BoxProps, GroupProps, StackProps } from "@uiid/layout";
 
 export type ListDirection = "row" | "column";
+export type ListSize = "small" | "medium" | "large";
 
 /**
  * A link component type that accepts href and children props.
@@ -45,6 +46,7 @@ export type ListItemGroupProps = {
 
 type BaseListProps = Omit<BoxProps, "ax" | "ay" | "direction"> & {
   type?: "ordered" | "unordered" | "none";
+  size?: ListSize;
   line?: boolean;
   items?: ListItemOrGroup[];
   /** Custom link component passed to all items (e.g., Next.js Link, React Router Link) */

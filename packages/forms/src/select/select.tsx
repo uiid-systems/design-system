@@ -99,7 +99,7 @@ export function Select<Value = string>({
         <SelectPortal {...PortalProps}>
           <SelectPositioner {...PositionerProps}>
             <SelectPopup {...PopupProps}>
-              <SelectList {...ListProps}>
+              <SelectList size={size} {...ListProps}>
                 {!items
                   ? children
                   : items.map(
