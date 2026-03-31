@@ -11,6 +11,9 @@
   }
 
   &:where([data-size="medium"]) {
+    --list-item-padding-x: var(--list-size-md-padding-x);
+    --list-item-padding-y: var(--list-size-md-padding-y);
+    --list-icon-size: var(--list-size-md-icon-size);
     --list-font-size: var(--list-size-md-font-size);
   }
 
