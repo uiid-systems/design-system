@@ -21,6 +21,8 @@ export const Combobox = ({
   label,
   description,
   placeholder,
+  before,
+  after,
   disabled,
   onFocus,
   onBlur,
@@ -40,6 +42,8 @@ export const Combobox = ({
           placeholder={placeholder}
           label={label}
           description={description}
+          before={before}
+          after={after}
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}

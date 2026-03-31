@@ -45,6 +45,10 @@ export type InputElement = React.ComponentRef<"input">;
 export interface MaskInputProps
   extends Omit<React.ComponentProps<"input">, "size">,
     InputVariants {
+  /** Content rendered before the input */
+  before?: React.ReactNode;
+  /** Content rendered after the input */
+  after?: React.ReactNode;
   /** Field wrapper props when using label/description */
   FieldProps?: FieldProps;
   /** Label text for the input field */

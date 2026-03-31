@@ -84,3 +84,92 @@
     background-color: var(--forms-bg-hover);
   }
 }
+
+/** Input Wrapper (for before/after slots) */
+.input-wrapper {
+  padding: 0 !important;
+
+  /** Focus state on wrapper */
+  &:focus-within {
+    background-color: var(--forms-bg-focus);
+    outline-style: var(--globals-outline-style);
+  }
+
+  /** Disabled state on wrapper */
+  &:has(:disabled, [data-disabled]) {
+    pointer-events: none;
+    opacity: var(--globals-disabled-opacity);
+  }
+
+  /** Invalid state on wrapper */
+  &:has([data-invalid]) {
+    border-color: var(--shade-foreground);
+    outline-color: var(--shade-foreground);
+  }
+}
+
+/** Input inside wrapper becomes transparent */
+.input-wrapper > .input-inner {
+  border: none;
+  flex: 1;
+  background: transparent;
+  outline: none;
+  min-width: 0;
+  height: 100%;
+  padding-block: 0;
+
+  &:hover {
+    background: transparent;
+  }
+
+  &:focus {
+    background: transparent;
+    outline: none;
+  }
+}
+
+.input-slot {
+  flex-shrink: 0;
+  color: var(--shade-muted);
+  pointer-events: none;
+
+  /** Make slots interactive when they contain buttons/links */
+  &:has(button, a, [role="button"]) {
+    pointer-events: auto;
+  }
+
+  svg {
+    width: var(--forms-icon-size);
+    height: var(--forms-icon-size);
+  }
+
+  .size-small > & {
+    padding-inline: var(--forms-size-sm-padding-x);
+  }
+  .size-medium > & {
+    padding-inline: var(--forms-size-md-padding-x);
+  }
+  .size-large > & {
+    padding-inline: var(--forms-size-lg-padding-x);
+  }
+
+  & + .input-inner {
+    padding-inline-start: 0;
+  }
+
+  .input-inner:has(+ &) {
+    padding-inline-end: 0;
+  }
+}
+
+.input-inner {
+  .size-small > & {
+    font-size: var(--forms-size-sm-font-size);
+  }
+  .size-medium > & {
+    font-size: var(--forms-size-md-font-size);
+  }
+  .size-large > & {
+    font-size: var(--forms-size-lg-font-size);
+  }
+}

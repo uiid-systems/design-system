@@ -6,6 +6,7 @@ import { cx, useComposedRefs } from "@uiid/utils";
 import { ConditionalRender } from "@uiid/layout";
 
 import { Field } from "../field/field";
+import { InputWrapper } from "../input/input-wrapper";
 import { inputVariants } from "../input/input.variants";
 
 import inputStyles from "../input/input.module.css";
@@ -30,6 +31,9 @@ export const MaskInput = (props: MaskInputProps) => {
     locale = DEFAULT_LOCALE,
     invalid = false,
     withoutMask = false,
+    // Slot props
+    before,
+    after,
     // Input variant props
     size,
     fullwidth,
@@ -115,31 +119,41 @@ export const MaskInput = (props: MaskInputProps) => {
         />
       }
     >
-      <input
-        aria-invalid={invalid}
-        data-disabled={disabled ? "" : undefined}
-        data-invalid={invalid ? "" : undefined}
-        data-readonly={readOnly ? "" : undefined}
-        data-required={required ? "" : undefined}
-        data-slot="mask-input"
-        {...inputProps}
-        {...maskInputProps}
-        className={cx(
-          inputStyles["input"],
-          inputVariants({ size, fullwidth, ghost }),
-          className,
-        )}
-        placeholder={placeholderValue}
-        ref={composedRef}
-        value={displayValue}
-        disabled={disabled}
-        maxLength={calculatedMaxLength}
-        readOnly={readOnly}
-        required={required}
-        inputMode={calculatedInputMode}
-        min={min}
-        max={max}
-      />
+      <InputWrapper
+        before={before}
+        after={after}
+        size={size}
+        fullwidth={fullwidth}
+        ghost={ghost}
+      >
+        <input
+          aria-invalid={invalid}
+          data-disabled={disabled ? "" : undefined}
+          data-invalid={invalid ? "" : undefined}
+          data-readonly={readOnly ? "" : undefined}
+          data-required={required ? "" : undefined}
+          data-slot="mask-input"
+          {...inputProps}
+          {...maskInputProps}
+          className={cx(
+            inputStyles["input"],
+            before || after
+              ? inputStyles["input-inner"]
+              : inputVariants({ size, fullwidth, ghost }),
+            className,
+          )}
+          placeholder={placeholderValue}
+          ref={composedRef}
+          value={displayValue}
+          disabled={disabled}
+          maxLength={calculatedMaxLength}
+          readOnly={readOnly}
+          required={required}
+          inputMode={calculatedInputMode}
+          min={min}
+          max={max}
+        />
+      </InputWrapper>
     </ConditionalRender>
   );
 };

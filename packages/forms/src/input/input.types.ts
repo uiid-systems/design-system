@@ -9,6 +9,8 @@ import { inputVariants } from "./input.variants";
 export type InputVariants = VariantProps<typeof inputVariants>;
 
 export type InputProps = Omit<Input.Props, "size"> & {
+  before?: React.ReactNode;
+  after?: React.ReactNode;
   FieldProps?: FieldProps;
   ref?: React.Ref<HTMLInputElement>;
 } & Pick<FieldProps, "label" | "description"> &

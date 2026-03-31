@@ -14,6 +14,8 @@ export const ComboboxInput = ({
   description,
   name,
   placeholder,
+  before,
+  after,
   className,
   ...props
 }: ComboboxInputProps) => {
@@ -22,7 +24,7 @@ export const ComboboxInput = ({
       data-slot="combobox-input"
       name={name}
       render={
-        <Input name={name} label={label} description={description} fullwidth />
+        <Input name={name} label={label} description={description} before={before} after={after} fullwidth />
       }
       className={cx(styles["combobox-input"], className)}
       placeholder={placeholder}
