@@ -1,10 +1,12 @@
 import type { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import type { FieldProps } from "../field/field.types";
+import type { InputProps } from "../input/input.types";
 
 export type AutocompleteRootProps<Value = string> =
   BaseAutocomplete.Root.Props<Value>;
 export type AutocompleteInputProps = BaseAutocomplete.Input.Props &
+  Pick<InputProps, "before" | "after"> &
   Pick<FieldProps, "label" | "description">;
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;
@@ -21,5 +23,5 @@ export type AutocompleteProps<Value = string> = {
   PopupProps?: AutocompletePopupProps;
   ListProps?: AutocompleteListProps;
 } & AutocompleteRootProps<Value> &
-  Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur"> &
+  Pick<AutocompleteInputProps, "placeholder" | "onFocus" | "onBlur" | "before" | "after"> &
   Pick<FieldProps, "label" | "description">;

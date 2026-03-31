@@ -16,6 +16,8 @@ export const AutocompleteInput = ({
   onFocus,
   onBlur,
   placeholder,
+  before,
+  after,
   className,
   ...props
 }: AutocompleteInputProps) => {
@@ -28,6 +30,8 @@ export const AutocompleteInput = ({
           name={name}
           label={label}
           description={description}
+          before={before}
+          after={after}
           onFocus={onFocus}
           onBlur={onBlur}
         />

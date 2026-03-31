@@ -2,6 +2,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group } from "@uiid/layout";
+import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
 
 import { Field } from "../field/field";
 
@@ -85,4 +86,32 @@ export const Default: Story = {
     await userEvent.type(input, message);
     await expect(input).toHaveValue(message);
   },
+};
+
+export const BeforeAfterSlots: Story = {
+  name: "Before & After Slots",
+  render: (args) => (
+    <Stack ax="stretch" gap={8}>
+      <Input {...args} before={<SearchIcon />} placeholder="Search..." label="Before slot" />
+      <Input {...args} after={<MailIcon />} placeholder="Email" label="After slot" />
+      <Input
+        {...args}
+        before={<LockIcon />}
+        after={<EyeIcon />}
+        placeholder="Password"
+        label="Both slots"
+      />
+      <Input {...args} before={<span>$</span>} after={<span>.00</span>} placeholder="0" label="Text slots" />
+
+      <Group fullwidth gap={4}>
+        <Input {...args} before={<SearchIcon />} placeholder="Small" size="small" />
+        <Input {...args} before={<SearchIcon />} placeholder="Medium" size="medium" />
+        <Input {...args} before={<SearchIcon />} placeholder="Large" size="large" />
+      </Group>
+
+      <Input {...args} before={<SearchIcon />} placeholder="Ghost with slot" ghost />
+      <Input {...args} before={<SearchIcon />} placeholder="Full width" fullwidth />
+      <Input {...args} before={<SearchIcon />} placeholder="Disabled" disabled />
+    </Stack>
+  ),
 };

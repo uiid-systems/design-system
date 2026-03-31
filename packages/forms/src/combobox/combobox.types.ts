@@ -10,7 +10,7 @@ export type ComboboxRootProps<
 > = BaseCombobox.Root.Props<Value, Multiple>;
 
 export type ComboboxInputProps = BaseCombobox.Input.Props &
-  Pick<InputProps, "FieldProps"> &
+  Pick<InputProps, "FieldProps" | "before" | "after"> &
   Pick<FieldProps, "label" | "description">;
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
@@ -31,5 +31,5 @@ export type ComboboxProps<
   ListProps?: ComboboxListProps;
 }> &
   ComboboxRootProps<Value, Multiple> &
-  Pick<ComboboxInputProps, "placeholder" | "onFocus" | "onBlur"> &
+  Pick<ComboboxInputProps, "placeholder" | "onFocus" | "onBlur" | "before" | "after"> &
   Pick<FieldProps, "label" | "description">;
