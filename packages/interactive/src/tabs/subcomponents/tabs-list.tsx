@@ -7,6 +7,7 @@ import type { TabsListProps } from "../tabs.types";
 import styles from "../tabs.module.css";
 
 export const TabsList = ({
+  size = "md",
   ghost,
   className,
   evenly,
@@ -16,6 +17,7 @@ export const TabsList = ({
   return (
     <BaseTabs.List
       data-slot="tabs-list"
+      data-size={size}
       data-ghost={ghost || undefined}
       render={<Group gap={2} ay="center" evenly={evenly} />}
       className={cx(styles["tabs-list"], className)}

@@ -18,6 +18,7 @@ export const Tabs = ({
   value,
   onValueChange,
   keepMounted,
+  size,
   ghost,
   evenly,
   RootProps,
@@ -34,7 +35,7 @@ export const Tabs = ({
       onValueChange={onValueChange}
       {...RootProps}
     >
-      <TabsList ghost={ghost} evenly={evenly} {...ListProps}>
+      <TabsList size={size} ghost={ghost} evenly={evenly} {...ListProps}>
         {items.map((item) => (
           <TabsTab key={item.value} value={item.value} {...TabProps}>
             {item.label}
