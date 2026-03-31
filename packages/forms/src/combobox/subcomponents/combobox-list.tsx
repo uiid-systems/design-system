@@ -6,11 +6,11 @@ import { List } from "@uiid/lists";
 
 import type { ComboboxListProps } from "../combobox.types";
 
-export const ComboboxList = ({ children, ...props }: ComboboxListProps) => {
+export const ComboboxList = ({ size, children, ...props }: ComboboxListProps) => {
   return (
     <BaseCombobox.List
       data-slot="combobox-list"
-      render={<List fullwidth />}
+      render={<List fullwidth size={size} />}
       {...props}
     >
       {children}

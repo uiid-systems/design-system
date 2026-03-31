@@ -4,11 +4,11 @@ import { List } from "@uiid/lists";
 
 import type { SelectListProps } from "../select.types";
 
-export const SelectList = ({ children, ...props }: SelectListProps) => {
+export const SelectList = ({ size, children, ...props }: SelectListProps) => {
   return (
     <BaseSelect.List
       data-slot="select-list"
-      render={<List fullwidth type="none" />}
+      render={<List fullwidth type="none" size={size} />}
       {...props}
     >
       {children}

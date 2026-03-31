@@ -3,6 +3,27 @@
 .list {
   list-style-position: inside;
 
+  &:where([data-size="small"]) {
+    --list-item-padding-x: var(--list-size-sm-padding-x);
+    --list-item-padding-y: var(--list-size-sm-padding-y);
+    --list-icon-size: var(--list-size-sm-icon-size);
+    --list-font-size: var(--list-size-sm-font-size);
+  }
+
+  &:where([data-size="medium"]) {
+    --list-item-padding-x: var(--list-size-md-padding-x);
+    --list-item-padding-y: var(--list-size-md-padding-y);
+    --list-icon-size: var(--list-size-md-icon-size);
+    --list-font-size: var(--list-size-md-font-size);
+  }
+
+  &:where([data-size="large"]) {
+    --list-item-padding-x: var(--list-size-lg-padding-x);
+    --list-item-padding-y: var(--list-size-lg-padding-y);
+    --list-icon-size: var(--list-size-lg-icon-size);
+    --list-font-size: var(--list-size-lg-font-size);
+  }
+
   &:where([data-type="none"]) {
     list-style: none;
     margin-inline-start: 0;
@@ -109,6 +130,7 @@
   display: list-item;
   min-height: var(--list-icon-size);
   align-content: center;
+  font-size: var(--list-font-size);
 
   :is(ol) &::marker {
     font-size: 0.625rem;
@@ -118,4 +140,5 @@
 
 .list-text-description {
   color: var(--shade-muted);
+  font-size: var(--list-font-size);
 }
