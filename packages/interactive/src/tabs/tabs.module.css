@@ -9,6 +9,16 @@
   border-radius: var(--globals-border-radius);
   height: var(--tabs-tab-height);
 
+  &:where([data-size="sm"]) {
+    --tabs-tab-height: var(--forms-size-sm-height);
+  }
+  &:where([data-size="md"]) {
+    --tabs-tab-height: var(--forms-size-md-height);
+  }
+  &:where([data-size="lg"]) {
+    --tabs-tab-height: var(--forms-size-lg-height);
+  }
+
   &[data-ghost] {
     background-color: transparent;
     border-color: transparent;
