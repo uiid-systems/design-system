@@ -6,6 +6,7 @@ import {
   AccordionHeader,
   AccordionTrigger,
   AccordionPanel,
+  AccordionContent,
 } from "./subcomponents";
 
 export const Accordion = ({
@@ -24,6 +25,7 @@ export const Accordion = ({
   HeaderProps,
   TriggerProps,
   PanelProps,
+  ContentProps,
 }: AccordionProps) => {
   return (
     <AccordionRoot
@@ -45,16 +47,14 @@ export const Accordion = ({
           {...ItemProps}
         >
           <AccordionHeader {...HeaderProps}>
-            <AccordionTrigger
-              icon={item.icon}
-              size={size}
-              {...TriggerProps}
-            >
+            <AccordionTrigger icon={item.icon} size={size} {...TriggerProps}>
               {item.trigger}
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionPanel size={size} {...PanelProps}>
-            {item.content}
+            <AccordionContent {...ContentProps}>
+              {item.content}
+            </AccordionContent>
           </AccordionPanel>
         </AccordionItem>
       ))}

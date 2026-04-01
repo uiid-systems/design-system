@@ -1,7 +1,6 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { AccordionPanelProps } from "../accordion.types";
@@ -24,7 +23,7 @@ export const AccordionPanel = ({
       )}
       {...props}
     >
-      <Stack className={styles["accordion-panel-content"]}>{children}</Stack>
+      {children}
     </BaseAccordion.Panel>
   );
 };
