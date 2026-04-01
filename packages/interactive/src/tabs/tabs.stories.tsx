@@ -7,7 +7,7 @@ import { MOCK_TABS } from "./tabs.mocks";
 const meta: Meta<typeof Tabs> = {
   title: "Interactive/Tabs",
   component: Tabs,
-  tags: ["beta"],
+  tags: ["new"],
   args: {
     items: MOCK_TABS,
   },
@@ -16,12 +16,8 @@ const meta: Meta<typeof Tabs> = {
       control: "inline-radio",
       options: ["sm", "md", "lg"],
     },
-    evenly: {
-      control: "boolean",
-    },
-    ghost: {
-      control: "boolean",
-    },
+    fullwidth: { control: "boolean" },
+    ghost: { control: "boolean" },
   },
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>

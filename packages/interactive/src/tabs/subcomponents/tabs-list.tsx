@@ -9,8 +9,8 @@ import styles from "../tabs.module.css";
 export const TabsList = ({
   size = "md",
   ghost,
+  fullwidth,
   className,
-  evenly,
   children,
   ...props
 }: TabsListProps) => {
@@ -19,7 +19,7 @@ export const TabsList = ({
       data-slot="tabs-list"
       data-size={size}
       data-ghost={ghost || undefined}
-      render={<Group gap={2} ay="center" evenly={evenly} />}
+      render={<Group gap={4} ay="center" fullwidth={fullwidth} />}
       className={cx(styles["tabs-list"], className)}
       {...props}
     >

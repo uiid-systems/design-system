@@ -11,9 +11,8 @@ export type TabProps = {
 export type TabsRootProps = Tabs.Root.Props & StackProps;
 export type TabsListProps = Tabs.List.Props & {
   size?: "sm" | "md" | "lg";
-  /** Removes the container background and border. */
   ghost?: boolean;
-  evenly?: boolean;
+  fullwidth?: boolean;
 };
 export type TabsTabProps = Tabs.Tab.Props;
 export type TabsIndicatorProps = Tabs.Indicator.Props;
@@ -29,4 +28,4 @@ export type TabsProps = {
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
-  Pick<TabsListProps, "size" | "evenly" | "ghost">;
+  Pick<TabsListProps, "size" | "ghost" | "fullwidth">;

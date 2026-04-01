@@ -3,7 +3,6 @@
 .tabs-list {
   position: relative;
   z-index: 0;
-  gap: 8px;
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
@@ -43,15 +42,17 @@
   padding-inline: var(--globals-padding-x);
   height: var(--tabs-tab-height);
   border-radius: var(--globals-border-radius);
-  transition: color var(--globals-transition-duration) ease-in-out;
+  flex: 1;
 
   &[data-active] {
     pointer-events: none;
     color: var(--shade-background);
+    transition: color var(--globals-transition-duration) ease-in-out;
   }
 
   &:not([data-active]):hover {
     color: var(--shade-foreground);
+    transition: color var(--globals-transition-duration) ease-in-out;
   }
 
   &:focus-visible {
@@ -108,4 +109,3 @@
     transition-delay: 0s;
   }
 }
-
