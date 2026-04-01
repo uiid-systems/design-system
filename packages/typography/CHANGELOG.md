@@ -1,5 +1,15 @@
 # @uiid/typography
 
+## 0.0.17
+
+### Patch Changes
+
+- [#181](https://github.com/uiid-systems/design-system/pull/181) [`e19fa9c`](https://github.com/uiid-systems/design-system/commit/e19fa9cb3a5bbe7f7e613740fadde507d70031a0) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `uiid.primitives` CSS layer for typography and layout packages to fix cascade ordering issues when consuming the design system
+
+- Updated dependencies [[`d61e1d7`](https://github.com/uiid-systems/design-system/commit/d61e1d71fbc5d60fde02768c74e4eca8aa50578d), [`e19fa9c`](https://github.com/uiid-systems/design-system/commit/e19fa9cb3a5bbe7f7e613740fadde507d70031a0)]:
+  - @uiid/tokens@0.0.17
+  - @uiid/utils@0.0.17
+
 ## 0.0.16
 
 ### Patch Changes
