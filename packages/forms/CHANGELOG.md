@@ -1,5 +1,26 @@
 # @uiid/forms
 
+## 0.0.18
+
+### Patch Changes
+
+- [#188](https://github.com/uiid-systems/design-system/pull/188) [`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951) Thanks [@adamfratino](https://github.com/adamfratino)! - tinkering
+
+- [#187](https://github.com/uiid-systems/design-system/pull/187) [`274bc07`](https://github.com/uiid-systems/design-system/commit/274bc077ead25d1dd9d25881373561bfd35239e5) Thanks [@adamfratino](https://github.com/adamfratino)! - tinkering
+
+- [#188](https://github.com/uiid-systems/design-system/pull/188) [`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951) Thanks [@adamfratino](https://github.com/adamfratino)! - Add color prop to Text component with palette colors (red, orange, yellow, green, blue, indigo, purple, neutral). Move shared palette color system from Badge to Text as the primitive owner. Badge, Status, and other indicator components now consume palette definitions from typography.
+
+- Updated dependencies [[`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951)]:
+  - @uiid/typography@0.0.18
+  - @uiid/buttons@0.0.18
+  - @uiid/cards@0.0.18
+  - @uiid/layout@0.0.18
+  - @uiid/lists@0.0.18
+  - @uiid/overlays@0.0.18
+  - @uiid/icons@0.0.18
+  - @uiid/tokens@0.0.18
+  - @uiid/utils@0.0.18
+
 ## 0.0.17
 
 ### Patch Changes
