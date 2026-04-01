@@ -74,6 +74,48 @@
   color: var(--shade-foreground);
 }
 
+/* Palette colors — portable hue/chroma definitions used by Text and downstream components */
+.color-red {
+  --palette-hue: 27;
+  --palette-chroma: 0.24;
+}
+.color-orange {
+  --palette-hue: 55;
+  --palette-chroma: 0.18;
+}
+.color-yellow {
+  --palette-hue: 90;
+  --palette-chroma: 0.17;
+}
+.color-green {
+  --palette-hue: 152;
+  --palette-chroma: 0.19;
+}
+.color-blue {
+  --palette-hue: 261;
+  --palette-chroma: 0.21;
+}
+.color-indigo {
+  --palette-hue: 285;
+  --palette-chroma: 0.24;
+}
+.color-purple {
+  --palette-hue: 303;
+  --palette-chroma: 0.24;
+}
+.color-neutral {
+  --palette-hue: 0;
+  --palette-chroma: 0;
+}
+
+/* Text-specific: derive text color from palette hue/chroma */
+.colored {
+  color: light-dark(
+    oklch(0.35 var(--palette-chroma) var(--palette-hue)),
+    oklch(0.88 var(--palette-chroma) var(--palette-hue))
+  );
+}
+
 .toggle-bold {
   font-weight: 700;
 }
