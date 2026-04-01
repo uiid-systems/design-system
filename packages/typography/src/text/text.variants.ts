@@ -2,6 +2,28 @@ import { cva } from "@uiid/utils";
 
 import styles from "./text.module.css";
 
+/** Palette color styles — portable hue/chroma class definitions for use across components */
+export const paletteColorStyles = {
+  red: styles["color-red"],
+  orange: styles["color-orange"],
+  yellow: styles["color-yellow"],
+  green: styles["color-green"],
+  blue: styles["color-blue"],
+  indigo: styles["color-indigo"],
+  purple: styles["color-purple"],
+  neutral: styles["color-neutral"],
+};
+
+const coloredClass = styles["colored"];
+
+/** Text color styles — palette classes combined with text-specific color rendering */
+const textColorStyles = Object.fromEntries(
+  Object.entries(paletteColorStyles).map(([key, value]) => [
+    key,
+    `${value} ${coloredClass}`,
+  ]),
+) as Record<keyof typeof paletteColorStyles, string>;
+
 export const textVariants = cva({
   variants: {
     strikethrough: { true: styles["toggle-strikethrough"] },
@@ -30,6 +52,7 @@ export const textVariants = cva({
       muted: styles["shade-muted"],
       foreground: styles["shade-foreground"],
     },
+    color: textColorStyles,
     size: {
       [-1]: styles["text-size--1"],
       0: styles["text-size-0"],

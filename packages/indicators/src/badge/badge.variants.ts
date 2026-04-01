@@ -1,17 +1,17 @@
 import { cva } from "@uiid/utils";
+import { paletteColorStyles } from "@uiid/typography";
 
 import styles from "./badge.module.css";
 
-export const badgeColorStyles = {
-  red: styles["color-red"],
-  orange: styles["color-orange"],
-  yellow: styles["color-yellow"],
-  green: styles["color-green"],
-  blue: styles["color-blue"],
-  indigo: styles["color-indigo"],
-  purple: styles["color-purple"],
-  neutral: styles["color-neutral"],
-};
+const coloredClass = styles["colored"];
+
+/** Badge color styles — palette classes combined with badge-specific bg/fg/border derivation */
+export const badgeColorStyles = Object.fromEntries(
+  Object.entries(paletteColorStyles).map(([key, value]) => [
+    key,
+    `${value} ${coloredClass}`,
+  ]),
+) as Record<keyof typeof paletteColorStyles, string>;
 
 export const badgeVariants = cva({
   variants: {

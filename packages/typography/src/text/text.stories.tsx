@@ -11,6 +11,16 @@ const shades: TextProps["shade"][] = [
   "muted",
   "foreground",
 ];
+const colors: TextProps["color"][] = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+  "neutral",
+];
 const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
 const families: TextProps["family"][] = ["mono", "serif", "sans"];
 
@@ -35,6 +45,11 @@ const meta: Meta<typeof Text> = {
     shade: {
       control: "select",
       options: shades,
+      table: { category: "Variants" },
+    },
+    color: {
+      control: "select",
+      options: colors,
       table: { category: "Variants" },
     },
     family: {
@@ -85,3 +100,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Text" };
+
+export const Colors: Story = {
+  name: "Colors",
+  render: (args) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {colors.map((color) => (
+        <Text key={color} {...args} color={color} size={1}>
+          {color}
+        </Text>
+      ))}
+    </div>
+  ),
+};
