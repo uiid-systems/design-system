@@ -12,7 +12,7 @@ export const SliderValue = ({ ...props }: SliderValueProps) => {
       data-slot="slider-value"
       render={(valueProps, state) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { children, ...restProps } = valueProps;
+        const { children, color, ...restProps } = valueProps;
         return (
           <Text weight="bold" {...restProps}>
             {state.values[0]}
