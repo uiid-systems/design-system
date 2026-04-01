@@ -3,3 +3,4 @@ export * from "./accordion-item";
 export * from "./accordion-header";
 export * from "./accordion-trigger";
 export * from "./accordion-panel";
+export * from "./accordion-content";

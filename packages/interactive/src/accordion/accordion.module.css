@@ -58,7 +58,7 @@
   }
 }
 
-.accordion-panel-content {
+.accordion-content {
   padding-block: var(--accordion-panel-padding-y);
   padding-inline: var(--accordion-panel-padding-x);
 }

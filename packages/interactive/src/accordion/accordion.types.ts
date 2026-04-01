@@ -1,8 +1,9 @@
 import type { Accordion } from "@base-ui/react/accordion";
-import type { CardProps } from "@uiid/cards";
-import type { VariantProps } from "@uiid/utils";
 
+import type { CardProps } from "@uiid/cards";
+import type { StackProps } from "@uiid/layout";
 import type { Icon } from "@uiid/icons";
+import type { VariantProps } from "@uiid/utils";
 
 import type {
   accordionRootVariants,
@@ -32,6 +33,7 @@ export type AccordionTriggerProps = Accordion.Trigger.Props &
   AccordionTriggerVariants;
 export type AccordionPanelProps = Accordion.Panel.Props &
   AccordionTriggerVariants;
+export type AccordionContentProps = StackProps;
 
 export type AccordionProps = {
   items: AccordionItemData[];
@@ -40,6 +42,7 @@ export type AccordionProps = {
   HeaderProps?: AccordionHeaderProps;
   TriggerProps?: AccordionTriggerProps;
   PanelProps?: AccordionPanelProps;
+  ContentProps?: AccordionContentProps;
 } & Pick<
   AccordionRootProps,
   | "defaultValue"
