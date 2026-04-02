@@ -36,6 +36,18 @@
   }
 }
 
+.card-thumbnail {
+  background-color: var(--shade-background);
+  border-radius: var(--globals-border-radius);
+  overflow: hidden;
+
+  & > * {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
 .card-action {
   margin-inline-start: auto;
 

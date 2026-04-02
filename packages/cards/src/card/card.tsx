@@ -10,11 +10,13 @@ import {
   CardDescription,
   CardAction,
   CardFooter,
+  CardThumbnail,
 } from "./subcomponents";
 
 export const Card = ({
   title,
   description,
+  thumbnail,
   icon,
   action,
   footer,
@@ -26,6 +28,7 @@ export const Card = ({
   IconProps,
   ActionProps,
   FooterProps,
+  ThumbnailProps,
   children,
   ...props
 }: CardProps) => {
@@ -36,6 +39,12 @@ export const Card = ({
 
   return (
     <CardContainer size={size} {...props} {...ContainerProps}>
+      {thumbnail && (
+        <CardThumbnail mb={2} {...ThumbnailProps}>
+          {thumbnail}
+        </CardThumbnail>
+      )}
+
       <ConditionalRender
         condition={Boolean(title || icon || action)}
         render={<CardHeader {...HeaderProps} />}

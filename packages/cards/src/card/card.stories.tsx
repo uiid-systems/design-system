@@ -62,3 +62,83 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Card" };
+
+const PlaceholderThumbnail = () => (
+  <svg
+    viewBox="0 0 300 300"
+    fill="none"
+    style={{ width: "100%", height: "auto", display: "block" }}
+  >
+    <rect width="300" height="300" rx="12" />
+    <rect
+      x="40"
+      y="44"
+      width="220"
+      height="56"
+      rx="12"
+      fill="var(--theme-primary)"
+    />
+    <rect
+      x="100"
+      y="62"
+      width="100"
+      height="20"
+      rx="6"
+      fill="var(--shade-background)"
+      opacity="0.9"
+    />
+    <rect
+      x="40"
+      y="120"
+      width="220"
+      height="56"
+      rx="12"
+      fill="var(--theme-secondary)"
+    />
+    <rect
+      x="100"
+      y="138"
+      width="100"
+      height="20"
+      rx="6"
+      fill="var(--shade-background)"
+      opacity="0.9"
+    />
+    <rect
+      x="40"
+      y="196"
+      width="220"
+      height="56"
+      rx="12"
+      fill="var(--shade-foreground)"
+    />
+    <rect
+      x="100"
+      y="214"
+      width="100"
+      height="20"
+      rx="6"
+      fill="var(--shade-background)"
+      opacity="0.9"
+    />
+  </svg>
+);
+
+export const Thumbnail: Story = {
+  name: "Thumbnail",
+  render: (args) => (
+    <Stack gap={4} style={{ maxWidth: "24rem" }}>
+      <Card
+        {...args}
+        title="Card with thumbnail"
+        description="Thumbnail slot renders above the header"
+        thumbnail={<PlaceholderThumbnail />}
+      />
+      <Card
+        {...args}
+        title="No thumbnail"
+        description="Regular card without thumbnail"
+      />
+    </Stack>
+  ),
+};

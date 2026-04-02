@@ -5,17 +5,16 @@ import { Stack, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { Logo } from "@/components";
+import { thumbnails } from "@/components/thumbnails";
 import { GITHUB_URL, NPM_URL } from "@/constants";
 import {
+  getAllComponents,
   getCategories,
-  getCategoryComponentCount,
-  getCategoryIcon,
-  getCategoryLabel,
   getComponentCount,
 } from "@/lib/generate-nav";
-import { urls } from "@/constants/urls";
 
 export default function HomePage() {
+  const components = getAllComponents();
   const categories = getCategories();
   const componentCount = getComponentCount();
 
@@ -59,27 +58,30 @@ export default function HomePage() {
         </Group>
       </Stack>
 
-      {/* Categories */}
+      {/* Components grid */}
       <Stack gap={4}>
         <Text size={1} weight="bold">
-          Browse by category
+          Components
         </Text>
-        <Stack gap={3}>
-          {categories.map((category) => {
-            const Icon = getCategoryIcon(category);
-            const count = getCategoryComponentCount(category);
+        <Group
+          gap={4}
+          className="[&>*]:min-w-[240px] [&>*]:flex-1 [&>*]:max-w-[360px] flex-wrap"
+        >
+          {components.map((component) => {
+            const Thumbnail = thumbnails[component.slug];
+            const displayName = component.name.replace(/(?<!^)([A-Z])/g, " $1");
 
             return (
               <Card
-                key={category}
-                render={<Link href={urls.category(category)} />}
-                title={getCategoryLabel(category)}
-                description={`${count} component${count !== 1 ? "s" : ""}`}
-                icon={Icon}
+                key={component.name}
+                render={<Link href={component.href} style={{ textDecoration: "none" }} />}
+                title={displayName}
+                description={component.categoryLabel}
+                thumbnail={Thumbnail ? <Thumbnail /> : undefined}
               />
             );
           })}
-        </Stack>
+        </Group>
       </Stack>
     </Stack>
   );
