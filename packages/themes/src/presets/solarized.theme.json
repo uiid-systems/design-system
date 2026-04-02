@@ -1,0 +1,11 @@
+{
+  "name": "Solarized",
+  "white": "#fdf6e3",
+  "black": "#657b83",
+  "primary": "#268bd2",
+  "secondary": "#b58900",
+  "positive": "#859900",
+  "warning": "#b58900",
+  "critical": "#dc322f",
+  "info": "#268bd2"
+}

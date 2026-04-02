@@ -1,0 +1,11 @@
+{
+  "name": "Catppuccin",
+  "white": "#cdd6f4",
+  "black": "#1e1e2e",
+  "primary": "#b4befe",
+  "secondary": "#f5c2e7",
+  "positive": "#a6e3a1",
+  "warning": "#f9e2af",
+  "critical": "#f38ba8",
+  "info": "#89b4fa"
+}
