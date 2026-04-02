@@ -5,7 +5,6 @@ export type PresetName =
   | "ember"
   | "dracula"
   | "catppuccin"
-  | "solarized"
   | "github";
 
 export const PRESET_COOKIE = "uiid-preset";
@@ -17,7 +16,6 @@ const VALID_PRESETS: PresetName[] = [
   "ember",
   "dracula",
   "catppuccin",
-  "solarized",
   "github",
 ];
 

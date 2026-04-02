@@ -2,4 +2,4 @@
 "@uiid/themes": patch
 ---
 
-Add Dracula, Catppuccin, Solarized, and GitHub theme presets converted from VS Code themes.
+Add Dracula, Catppuccin, and GitHub theme presets converted from VS Code themes.

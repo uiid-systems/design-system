@@ -17,7 +17,6 @@ const PRESET_ITEMS = [
   { label: "Ember", value: "ember" },
   { label: "Dracula", value: "dracula" },
   { label: "Catppuccin", value: "catppuccin" },
-  { label: "Solarized", value: "solarized" },
   { label: "GitHub", value: "github" },
 ];
 
