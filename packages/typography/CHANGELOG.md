@@ -1,5 +1,15 @@
 # @uiid/typography
 
+## 0.0.18
+
+### Patch Changes
+
+- [#188](https://github.com/uiid-systems/design-system/pull/188) [`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951) Thanks [@adamfratino](https://github.com/adamfratino)! - Add color prop to Text component with palette colors (red, orange, yellow, green, blue, indigo, purple, neutral). Move shared palette color system from Badge to Text as the primitive owner. Badge, Status, and other indicator components now consume palette definitions from typography.
+
+- Updated dependencies []:
+  - @uiid/tokens@0.0.18
+  - @uiid/utils@0.0.18
+
 ## 0.0.17
 
 ### Patch Changes
