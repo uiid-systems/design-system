@@ -51,4 +51,5 @@ export const AccordionEntry: ComponentEntry<typeof AccordionPropsSchema> = {
   },
   previews: accordionPreviews,
   usage: "Use for collapsible content sections. Set multiple=true to allow multiple panels open simultaneously.",
+  libs: ["base-ui"],
 };

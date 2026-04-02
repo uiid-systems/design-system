@@ -28,4 +28,5 @@ export const ToasterEntry: ComponentEntry<typeof ToasterPropsSchema> = {
   defaults: {
     position: "bottom",
   },
+  libs: ["base-ui"],
 };

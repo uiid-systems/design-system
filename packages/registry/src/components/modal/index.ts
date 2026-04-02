@@ -56,4 +56,5 @@ export const ModalEntry: ComponentEntry<typeof ModalPropsSchema> = {
   defaults: {
     size: "medium",
   },
+  libs: ["base-ui"],
 };

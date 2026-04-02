@@ -48,4 +48,5 @@ export const ToggleButtonEntry: ComponentEntry<typeof ToggleButtonPropsSchema> =
     size: "medium",
   },
   previews: toggleButtonPreviews,
+  libs: ["base-ui"],
 };

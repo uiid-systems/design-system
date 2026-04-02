@@ -59,4 +59,5 @@ export const SelectEntry: ComponentEntry<typeof SelectPropsSchema> = {
     size: "medium",
   },
   previews: selectPreviews,
+  libs: ["base-ui"],
 };

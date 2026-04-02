@@ -152,6 +152,23 @@ export function getPrevNext(pathname: string): {
 }
 
 /**
+ * Get all components across all categories, sorted alphabetically.
+ */
+export function getAllComponents() {
+  return getCategories()
+    .flatMap((category) =>
+      getComponentsByCategory(category).map((component) => ({
+        ...component,
+        category,
+        categoryLabel: getCategoryLabel(category),
+        slug: toSlug(component.name),
+        href: urls.component(category, toSlug(component.name)),
+      }))
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
  * Get total component count
  */
 export function getComponentCount(): number {

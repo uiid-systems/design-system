@@ -18,11 +18,13 @@ export type CardIconProps = {
 };
 export type CardActionProps = GroupProps;
 export type CardFooterProps = GroupProps;
+export type CardThumbnailProps = StackProps;
 
 export type CardProps = Omit<StackProps, "size" | "title"> &
   CardVariantProps & {
     title?: React.ReactNode;
     description?: React.ReactNode;
+    thumbnail?: React.ReactNode;
     action?: React.ReactNode;
     footer?: React.ReactNode;
     ContainerProps?: CardContainerProps;
@@ -32,4 +34,5 @@ export type CardProps = Omit<StackProps, "size" | "title"> &
     IconProps?: CardIconProps;
     ActionProps?: CardActionProps;
     FooterProps?: CardFooterProps;
+    ThumbnailProps?: CardThumbnailProps;
   } & Pick<CardIconProps, "icon">;

@@ -15,6 +15,9 @@ const PRESET_ITEMS = [
   { label: "Ayu", value: "ayu" },
   { label: "Ocean", value: "ocean" },
   { label: "Ember", value: "ember" },
+  { label: "Dracula", value: "dracula" },
+  { label: "Catppuccin", value: "catppuccin" },
+  { label: "GitHub", value: "github" },
 ];
 
 export const ThemeSelector = ({
@@ -51,7 +54,6 @@ export const ThemeSelector = ({
       onValueChange={handleChange}
       items={PRESET_ITEMS}
       size="small"
-      ghost
     />
   );
 };
