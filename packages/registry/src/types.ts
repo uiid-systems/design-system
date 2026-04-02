@@ -65,6 +65,9 @@ export type ComponentEntry<T extends z.ZodType = z.ZodType> = {
   /** Short LLM-oriented usage note */
   usage?: string;
 
+  /** External libraries this component is built on (e.g., ["base-ui", "tiptap"]) */
+  libs?: string[];
+
   /** Figma node reference for design-code linkage */
   figma?: { nodeId: string };
 };

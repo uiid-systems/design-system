@@ -47,5 +47,6 @@ export const ButtonEntry: ComponentEntry<typeof ButtonPropsSchema> = {
   previews: buttonPreviews,
   usage:
     "Use Button for primary actions. Set variant for visual weight, use variant=\"ghost\" for minimal chrome.",
+  libs: ["base-ui"],
   figma: { nodeId: "156:1221" },
 };

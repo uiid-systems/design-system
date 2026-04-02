@@ -41,4 +41,5 @@ export const TooltipEntry: ComponentEntry<typeof TooltipPropsSchema> = {
   description: "Informational popup shown on hover or focus",
   category: "overlays",
   defaults: {},
+  libs: ["base-ui"],
 };

@@ -37,4 +37,5 @@ export const SeparatorEntry: ComponentEntry<typeof SeparatorPropsSchema> = {
   previews: separatorPreviews,
   usage:
     "Use without children for a simple line divider. Pass children (typically Text) to create a labeled divider like 'or continue with email'.",
+  libs: ["base-ui"],
 };

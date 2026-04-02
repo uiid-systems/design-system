@@ -49,4 +49,5 @@ export const PopoverEntry: ComponentEntry<typeof PopoverPropsSchema> = {
   description: "Floating card attached to a trigger element",
   category: "overlays",
   defaults: {},
+  libs: ["base-ui"],
 };

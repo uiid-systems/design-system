@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@icons-pack/react-simple-icons": "^13.11.2",
+    "@icons-pack/react-simple-icons": "^13.13.0",
     "@shikijs/rehype": "^3.22.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/calendars": "workspace:*",

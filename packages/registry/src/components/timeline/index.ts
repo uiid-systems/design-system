@@ -76,4 +76,5 @@ export const TimelineEntry: ComponentEntry<typeof TimelinePropsSchema> = {
   previews: timelinePreviews,
   usage:
     "Use Timeline for chronological events. Pass items array for simple usage, or children for custom composition. Set activeIndex to highlight current step.",
+  libs: ["base-ui"],
 };

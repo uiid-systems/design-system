@@ -56,4 +56,5 @@ export const SheetEntry: ComponentEntry<typeof SheetPropsSchema> = {
   defaults: {
     side: "right",
   },
+  libs: ["base-ui"],
 };

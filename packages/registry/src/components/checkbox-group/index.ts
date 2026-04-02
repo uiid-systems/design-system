@@ -59,4 +59,5 @@ export const CheckboxGroupEntry: ComponentEntry<typeof CheckboxGroupPropsSchema>
   },
   previews: checkboxGroupPreviews,
   usage: "Use for multi-select choice lists. Pass items array with label/value pairs. Value is an array of selected values.",
+  libs: ["base-ui"],
 };

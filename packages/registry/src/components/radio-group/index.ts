@@ -59,4 +59,5 @@ export const RadioGroupEntry: ComponentEntry<typeof RadioGroupPropsSchema> = {
   },
   previews: radioGroupPreviews,
   usage: "Use for single-select choice lists. Pass items array with label/value pairs.",
+  libs: ["base-ui"],
 };

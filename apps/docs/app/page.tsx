@@ -1,3 +1,4 @@
+import { SiBaseui } from "@icons-pack/react-simple-icons";
 import Link from "next/link";
 
 import { Card } from "@uiid/cards";
@@ -70,13 +71,20 @@ export default function HomePage() {
           {components.map((component) => {
             const Thumbnail = thumbnails[component.slug];
             const displayName = component.name.replace(/(?<!^)([A-Z])/g, " $1");
+            const isBaseUI = component.libs?.includes("base-ui");
 
             return (
               <Card
                 key={component.name}
-                render={<Link href={component.href} style={{ textDecoration: "none" }} />}
+                render={
+                  <Link
+                    href={component.href}
+                    style={{ textDecoration: "none" }}
+                  />
+                }
                 title={displayName}
                 description={component.categoryLabel}
+                action={isBaseUI ? <SiBaseui size={10} title="Base UI" /> : undefined}
                 thumbnail={Thumbnail ? <Thumbnail /> : undefined}
               />
             );
