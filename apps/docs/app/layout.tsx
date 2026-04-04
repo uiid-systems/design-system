@@ -63,9 +63,11 @@ export default function RootLayout({
                 <List items={navItems} LinkComponent={Link} px={4} pb={36} />
               </Stack>
             </Stack>
-            <Stack br={1} className="flex-1 max-w-4xl">
+            <Stack className="flex-1">
               <DocsHeader />
-              {children}
+              <Stack br={1} maxw={960}>
+                {children}
+              </Stack>
             </Stack>
           </Group>
         </Stack>
