@@ -1,5 +1,17 @@
 # @uiid/registry
 
+## 0.0.18
+
+### Patch Changes
+
+- Updated dependencies [[`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951), [`274bc07`](https://github.com/uiid-systems/design-system/commit/274bc077ead25d1dd9d25881373561bfd35239e5), [`cf359fa`](https://github.com/uiid-systems/design-system/commit/cf359fac1a8343169bf63ad4f16619f8d633b951)]:
+  - @uiid/forms@0.0.18
+  - @uiid/typography@0.0.18
+  - @uiid/buttons@0.0.18
+  - @uiid/cards@0.0.18
+  - @uiid/layout@0.0.18
+  - @uiid/utils@0.0.18
+
 ## 0.0.17
 
 ### Patch Changes

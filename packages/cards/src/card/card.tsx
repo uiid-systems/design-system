@@ -40,7 +40,9 @@ export const Card = ({
   return (
     <CardContainer size={size} {...props} {...ContainerProps}>
       {thumbnail && (
-        <CardThumbnail {...ThumbnailProps}>{thumbnail}</CardThumbnail>
+        <CardThumbnail mb={2} {...ThumbnailProps}>
+          {thumbnail}
+        </CardThumbnail>
       )}
 
       <ConditionalRender
