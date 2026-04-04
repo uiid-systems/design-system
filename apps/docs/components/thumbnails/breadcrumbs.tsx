@@ -4,9 +4,9 @@ export function BreadcrumbsThumbnail() {
 
       {/* Breadcrumb trail — centered vertically */}
       <rect x="40" y="128" width="48" height="12" rx="3" fill="var(--shade-halftone)" />
-      <path d="M96 134 L104 134" stroke="var(--shade-4)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M96 134 L104 134" stroke="var(--shade-halftone)" strokeWidth="2" strokeLinecap="round" />
       <rect x="112" y="128" width="64" height="12" rx="3" fill="var(--shade-halftone)" />
-      <path d="M184 134 L192 134" stroke="var(--shade-4)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M184 134 L192 134" stroke="var(--shade-halftone)" strokeWidth="2" strokeLinecap="round" />
       <rect x="200" y="128" width="80" height="12" rx="3" fill="var(--shade-foreground)" />
 
       {/* Page title below */}

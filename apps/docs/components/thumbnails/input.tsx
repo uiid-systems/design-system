@@ -7,7 +7,7 @@ export function InputThumbnail() {
       <rect x="168" y="60" width="2" height="20" rx="1" fill="var(--theme-primary)" opacity="0.7" />
 
       <rect x="40" y="120" width="220" height="52" rx="10" fill="var(--shade-background)" stroke="var(--shade-accent)" strokeWidth="2" />
-      <rect x="60" y="140" width="80" height="12" rx="3" fill="var(--shade-4)" />
+      <rect x="60" y="140" width="80" height="12" rx="3" fill="var(--shade-halftone)" />
 
       <rect x="40" y="200" width="220" height="52" rx="10" fill="var(--shade-background)" stroke="var(--theme-critical)" strokeWidth="2.5" />
       <rect x="60" y="220" width="120" height="12" rx="3" fill="var(--shade-foreground)" />
