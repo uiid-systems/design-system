@@ -92,8 +92,18 @@ export const BeforeAfterSlots: Story = {
   name: "Before & After Slots",
   render: (args) => (
     <Stack ax="stretch" gap={8}>
-      <Input {...args} before={<SearchIcon />} placeholder="Search..." label="Before slot" />
-      <Input {...args} after={<MailIcon />} placeholder="Email" label="After slot" />
+      <Input
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Search..."
+        label="Before slot"
+      />
+      <Input
+        {...args}
+        after={<MailIcon />}
+        placeholder="Email"
+        label="After slot"
+      />
       <Input
         {...args}
         before={<LockIcon />}
@@ -101,17 +111,53 @@ export const BeforeAfterSlots: Story = {
         placeholder="Password"
         label="Both slots"
       />
-      <Input {...args} before={<span>$</span>} after={<span>.00</span>} placeholder="0" label="Text slots" />
+      <Input
+        {...args}
+        before={<span>$</span>}
+        after={<span>.00</span>}
+        placeholder="0"
+        label="Text slots"
+      />
 
       <Group fullwidth gap={4}>
-        <Input {...args} before={<SearchIcon />} placeholder="Small" size="small" />
-        <Input {...args} before={<SearchIcon />} placeholder="Medium" size="medium" />
-        <Input {...args} before={<SearchIcon />} placeholder="Large" size="large" />
+        <Input
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Small"
+          size="small"
+        />
+        <Input
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Medium"
+          size="medium"
+        />
+        <Input
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Large"
+          size="large"
+        />
       </Group>
 
-      <Input {...args} before={<SearchIcon />} placeholder="Ghost with slot" ghost />
-      <Input {...args} before={<SearchIcon />} placeholder="Full width" fullwidth />
-      <Input {...args} before={<SearchIcon />} placeholder="Disabled" disabled />
+      <Input
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Ghost with slot"
+        ghost
+      />
+      <Input
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Full width"
+        fullwidth
+      />
+      <Input
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Disabled"
+        disabled
+      />
     </Stack>
   ),
 };
