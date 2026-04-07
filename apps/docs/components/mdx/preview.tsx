@@ -8,8 +8,6 @@ import { getPreviewComponent } from "@/lib/preview-registry";
 
 import { PreviewSection } from "./preview-section";
 
-import "./preview-section.css";
-
 interface PreviewProps {
   name: string;
   previews?: PreviewConfig[];
