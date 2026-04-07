@@ -1,11 +1,19 @@
 "use client";
 
 import { CodeInline } from "@uiid/code";
-import { InfoIcon, AsteriskIcon } from "@uiid/icons";
-import { Accordion } from "@uiid/interactive";
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
+import { AsteriskIcon, InfoIcon } from "@uiid/icons";
 import { Tooltip } from "@uiid/overlays";
 import type { PropDocumentation } from "@uiid/registry";
+import {
+  TableContainer,
+  TableRoot,
+  TableHeader,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@uiid/tables";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
@@ -18,6 +26,8 @@ type CategorizedProps = {
   style: PropDocumentation[];
   subcomponent: PropDocumentation[];
 };
+
+const COLUMN_COUNT = 3;
 
 function categorizeProps(props: PropDocumentation[]): CategorizedProps {
   const result: CategorizedProps = {
@@ -45,72 +55,80 @@ function getSlotDescription(propName: string): string {
   return `Forwarded to the internal ${slot} element`;
 }
 
+function GroupHeaderRow({ label, count }: { label: string; count: number }) {
+  return (
+    <TableRow>
+      <TableCell
+        colSpan={COLUMN_COUNT}
+        className="bg-(--shade-surface) pt-4 pb-2"
+      >
+        <Group gap={2} ay="center">
+          <Text size={-1} weight="bold" shade="muted">
+            {label}
+          </Text>
+          <Text size={-2} shade="muted">
+            {count}
+          </Text>
+        </Group>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 function PropRow({ prop }: { prop: PropDocumentation }) {
   return (
-    <Group gap={2} fullwidth ay="center" bb={1} pb={1} minh={40}>
-      <Group gap={2} ay="center" ax="start" minw={160}>
-        {prop.required && (
-          <AsteriskIcon size={12} className="text-(--shade-foreground)" />
-        )}
-        <Text size={-1} weight="bold">
-          {prop.name}
-        </Text>
-      </Group>
-
-      {!(prop.enumValues && prop.enumValues.length > 0) && (
-        <div>
-          <CodeInline>{prop.type}</CodeInline>
-        </div>
-      )}
-
-      {prop.enumValues && prop.enumValues.length > 0 && (
-        <Group gap={2}>
-          {prop.enumValues.map((val) => (
-            <CodeInline
-              key={val}
-              className={cx({
-                "text-(--theme-primary)": prop.defaultValue === val,
-              })}
+    <TableRow>
+      <TableCell>
+        <Group gap={1} ay="center">
+          {prop.required && (
+            <AsteriskIcon size={10} className="text-(--shade-foreground)" />
+          )}
+          <Text size={-1} weight="bold">
+            {prop.name}
+          </Text>
+          {prop.description && (
+            <Tooltip
+              trigger={<InfoIcon size={12} className="text-(--shade-muted)" />}
+              ProviderProps={{ delay: 0 }}
+              PositionerProps={{ side: "inline-start", sideOffset: 8 }}
             >
-              {val}
-            </CodeInline>
-          ))}
+              <div className="max-w-80">{prop.description}</div>
+            </Tooltip>
+          )}
         </Group>
-      )}
+      </TableCell>
 
-      {prop.description && (
-        <div className="ml-auto">
-          <Tooltip
-            trigger={<InfoIcon size={14} />}
-            ProviderProps={{ delay: 0 }}
-            PositionerProps={{ side: "inline-start", sideOffset: 8 }}
-          >
-            <div className="max-w-80">{prop.description}</div>
-          </Tooltip>
-        </div>
-      )}
-    </Group>
-  );
-}
+      <TableCell>
+        {prop.enumValues && prop.enumValues.length > 0 ? (
+          <Group gap={1}>
+            {prop.enumValues.map((val) => (
+              <CodeInline
+                key={val}
+                className={cx({
+                  "text-(--theme-primary)": prop.defaultValue === val,
+                })}
+              >
+                {val}
+              </CodeInline>
+            ))}
+          </Group>
+        ) : (
+          <CodeInline>{prop.type}</CodeInline>
+        )}
+      </TableCell>
 
-function PropsList({ props }: { props: PropDocumentation[] }) {
-  return (
-    <Stack fullwidth ax="stretch">
-      {props.map((prop) => (
-        <PropRow key={prop.name} prop={prop} />
-      ))}
-    </Stack>
-  );
-}
-
-function makeTrigger(label: string, count: number) {
-  return (
-    <Group gap={3} ay="center">
-      <Text weight="bold">{label}</Text>
-      <Text size={-1} shade="muted">
-        {count}
-      </Text>
-    </Group>
+      <TableCell>
+        {prop.defaultValue != null ? (
+          <CodeInline className="text-(--theme-primary)">
+            {String(prop.defaultValue)}
+          </CodeInline>
+        ) : (
+          <Text size={-1} shade="muted">
+            —
+          </Text>
+        )}
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -124,39 +142,72 @@ export const PropsTable = ({ props }: PropsTableProps) => {
   }
 
   const categorized = categorizeProps(props);
+  const hasMultipleCategories =
+    [categorized.core, categorized.style, categorized.subcomponent].filter(
+      (c) => c.length > 0,
+    ).length > 1;
 
-  // Add forwarding descriptions to subcomponent props that don't have one
   const subcomponentProps = categorized.subcomponent.map((prop) => ({
     ...prop,
     description: prop.description || getSlotDescription(prop.name),
   }));
 
-  const items = [];
+  return (
+    <TableContainer>
+      <TableRoot bordered>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Default</TableHead>
+          </TableRow>
+        </TableHeader>
 
-  if (categorized.core.length > 0) {
-    items.push({
-      value: "props",
-      trigger: makeTrigger("Props", categorized.core.length),
-      content: <PropsList props={categorized.core} />,
-    });
-  }
+        <TableBody>
+          {categorized.core.length > 0 && (
+            <>
+              {hasMultipleCategories && (
+                <GroupHeaderRow
+                  label="Props"
+                  count={categorized.core.length}
+                />
+              )}
+              {categorized.core.map((prop) => (
+                <PropRow key={prop.name} prop={prop} />
+              ))}
+            </>
+          )}
 
-  if (categorized.style.length > 0) {
-    items.push({
-      value: "style",
-      trigger: makeTrigger("Style Props", categorized.style.length),
-      content: <PropsList props={categorized.style} />,
-    });
-  }
+          {categorized.style.length > 0 && (
+            <>
+              {hasMultipleCategories && (
+                <GroupHeaderRow
+                  label="Style Props"
+                  count={categorized.style.length}
+                />
+              )}
+              {categorized.style.map((prop) => (
+                <PropRow key={prop.name} prop={prop} />
+              ))}
+            </>
+          )}
 
-  if (subcomponentProps.length > 0) {
-    items.push({
-      value: "slots",
-      trigger: makeTrigger("Slot Props", subcomponentProps.length),
-      content: <PropsList props={subcomponentProps} />,
-    });
-  }
-
-  return <Accordion items={items} defaultValue={["props"]} multiple />;
+          {subcomponentProps.length > 0 && (
+            <>
+              {hasMultipleCategories && (
+                <GroupHeaderRow
+                  label="Slot Props"
+                  count={subcomponentProps.length}
+                />
+              )}
+              {subcomponentProps.map((prop) => (
+                <PropRow key={prop.name} prop={prop} />
+              ))}
+            </>
+          )}
+        </TableBody>
+      </TableRoot>
+    </TableContainer>
+  );
 };
 PropsTable.displayName = "PropsTable";
