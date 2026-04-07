@@ -2,17 +2,3 @@
   min-height: 12rem;
   background: var(--shade-background);
 }
-
-[data-panel-open] [data-collapsible-chevron] {
-  transform: rotate(180deg);
-}
-/* 
-[data-slot="playground-link"] {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--shade-muted);
-  font-size: var(--font-size--1);
-  text-decoration: none;
-  margin-left: auto;
-} */

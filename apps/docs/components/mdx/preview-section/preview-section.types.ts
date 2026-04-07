@@ -1,7 +1,7 @@
-import type { StackProps } from "@uiid/layout";
+import type { CardProps } from "@uiid/cards";
 import type { PreviewConfig } from "@uiid/registry";
 
-export type PreviewSectionWrapperProps = StackProps;
+export type PreviewSectionWrapperProps = CardProps;
 
 export type PreviewSectionCodeBlockProps = {
   code: string;

@@ -9,6 +9,8 @@ import { PreviewSectionWrapper } from "./preview-section-wrapper";
 import { PreviewSectionCodeBlock } from "./preview-section-code-block";
 import type { PreviewSectionProps } from "./preview-section.types";
 
+import "./preview-section.css";
+
 export const PreviewSection = ({
   preview,
   code,
@@ -34,7 +36,9 @@ export const PreviewSection = ({
         <TreePreview preview={preview} />
       </PreviewSectionWrapper>
 
-      <PreviewSectionCodeBlock code={code} prerenderedHtml={prerenderedHtml} />
+      {code && (
+        <PreviewSectionCodeBlock code={code} prerenderedHtml={prerenderedHtml} />
+      )}
     </Stack>
   );
 };
