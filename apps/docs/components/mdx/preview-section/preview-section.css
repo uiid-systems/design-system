@@ -1,0 +1,4 @@
+[data-slot="preview-container"] {
+  min-height: 12rem;
+  background: var(--shade-background);
+}
