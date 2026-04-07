@@ -63,10 +63,10 @@ function GroupHeaderRow({ label, count }: { label: string; count: number }) {
         className="bg-(--shade-surface) pt-4 pb-2"
       >
         <Group gap={2} ay="center">
-          <Text size={-1} weight="bold" shade="muted">
+          <Text weight="bold" shade="muted">
             {label}
           </Text>
-          <Text size={-2} shade="muted">
+          <Text shade="muted">
             {count}
           </Text>
         </Group>
@@ -83,7 +83,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
           {prop.required && (
             <AsteriskIcon size={10} className="text-(--shade-foreground)" />
           )}
-          <Text size={-1} weight="bold">
+          <Text weight="bold">
             {prop.name}
           </Text>
           {prop.description && (
@@ -123,7 +123,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
             {String(prop.defaultValue)}
           </CodeInline>
         ) : (
-          <Text size={-1} shade="muted">
+          <Text shade="muted">
             —
           </Text>
         )}
@@ -135,7 +135,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
 export const PropsTable = ({ props }: PropsTableProps) => {
   if (props.length === 0) {
     return (
-      <Text shade="muted" size={0}>
+      <Text shade="muted">
         No props defined for this component.
       </Text>
     );
