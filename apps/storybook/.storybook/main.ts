@@ -1,25 +1,10 @@
 import { fileURLToPath } from "node:url";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import type { StorybookConfig } from "@storybook/react-vite";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {
-  stories: [
-    "../../../packages/buttons/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/calendars/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/cards/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/code/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/forms/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/indicators/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/interactive/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/layout/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/lists/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/navigation/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/overlays/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/tables/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/tokens/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../../../packages/typography/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
+  stories: ["../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-a11y"),
@@ -33,6 +18,14 @@ const config: StorybookConfig = {
     options: {},
   },
   async viteFinal(config) {
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+
+    if (!config.resolve) config.resolve = {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@tokens": resolve(__dirname, "../../../packages/tokens/src"),
+    };
+
     return applyPostCSSLayers(config);
   },
 };

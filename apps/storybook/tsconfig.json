@@ -2,8 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "paths": {
+      "@tokens/*": ["../../packages/tokens/src/*"]
+    }
   },
-  "include": ["src/**/*", ".storybook/**/*"],
+  "include": ["src/**/*", "stories/**/*", ".storybook/**/*"],
   "exclude": ["node_modules"]
 }

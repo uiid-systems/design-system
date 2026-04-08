@@ -9,21 +9,8 @@
     "preview": "serve storybook-static"
   },
   "dependencies": {
-    "@uiid/buttons": "workspace:*",
-    "@uiid/calendars": "workspace:*",
-    "@uiid/cards": "workspace:*",
-    "@uiid/code": "workspace:*",
-    "@uiid/forms": "workspace:*",
-    "@uiid/icons": "workspace:*",
-    "@uiid/indicators": "workspace:*",
-    "@uiid/interactive": "workspace:*",
-    "@uiid/layout": "workspace:*",
-    "@uiid/lists": "workspace:*",
-    "@uiid/navigation": "workspace:*",
-    "@uiid/overlays": "workspace:*",
-    "@uiid/tables": "workspace:*",
-    "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*"
+    "@uiid/design-system": "workspace:*",
+    "@uiid/icons": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
