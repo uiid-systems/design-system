@@ -1,17 +1,6 @@
 import type { Preview } from "@storybook/react-vite";
 
-import "@uiid/tokens/globals.css";
-import "@uiid/typography/globals.css";
-import "@uiid/layout/globals.css";
-import "@uiid/buttons/globals.css";
-import "@uiid/cards/globals.css";
-import "@uiid/lists/globals.css";
-import "@uiid/calendars/globals.css";
-import "@uiid/forms/globals.css";
-import "@uiid/indicators/globals.css";
-import "@uiid/interactive/globals.css";
-import "@uiid/navigation/globals.css";
-import "@uiid/overlays/globals.css";
+import "@uiid/design-system/globals.css";
 
 const preview: Preview = {
   // tags: ["autodocs"],

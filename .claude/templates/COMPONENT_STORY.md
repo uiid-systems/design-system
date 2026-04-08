@@ -4,11 +4,11 @@ Use this template when creating Storybook stories for components.
 
 ## Template
 
+Story files live in `apps/storybook/stories/{category}/`. Create the file at `apps/storybook/stories/{category}/{component}.stories.tsx`.
+
 ```tsx
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack } from "@uiid/layout";
-
-import { Component } from "./component";
+import { Component, Stack } from "@uiid/design-system";
 
 const meta = {
   title: "Category/Component",
@@ -116,19 +116,8 @@ Stories should demonstrate the simple component API, not composed subcomponents:
 
 Only show composed usage if it's the only way to achieve a pattern (and consider adding the feature to the simple component instead).
 
-### New Package Registration
+### New Story Location
 
-When creating stories for a **new package**, you must register it in the Storybook config:
+Stories live in `apps/storybook/stories/{category}/`. The storybook config uses a single glob pattern (`../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)`) so new stories are automatically discovered — no config changes needed.
 
-**`apps/storybook/.storybook/main.ts`**
-```ts
-const config: StorybookConfig = {
-  stories: [
-    // ... existing packages
-    "../../../packages/{new-package}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-  ],
-  // ...
-};
-```
-
-Stories won't appear in Storybook until this path is added.
+Import components from `@uiid/design-system` and icons from `@uiid/icons`.
