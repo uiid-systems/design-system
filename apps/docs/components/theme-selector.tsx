@@ -54,6 +54,7 @@ export const ThemeSelector = ({
       onValueChange={handleChange}
       items={PRESET_ITEMS}
       size="small"
+      TriggerProps={{ className: "min-w-40" }}
     />
   );
 };

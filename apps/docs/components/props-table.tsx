@@ -16,6 +16,7 @@ import {
 } from "@uiid/tables";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
+import { Card } from "@uiid/cards";
 
 type PropsTableProps = {
   props: PropDocumentation[];
@@ -58,16 +59,10 @@ function getSlotDescription(propName: string): string {
 function GroupHeaderRow({ label, count }: { label: string; count: number }) {
   return (
     <TableRow>
-      <TableCell
-        colSpan={COLUMN_COUNT}
-        className="bg-(--shade-surface) pt-4 pb-2"
-      >
+      <TableCell colSpan={COLUMN_COUNT} className="pointer-events-none">
         <Group gap={2} ay="center">
-          <Text weight="bold" shade="muted">
-            {label}
-          </Text>
-          <Text shade="muted">
-            {count}
+          <Text size={-1} weight="bold" shade="muted">
+            {label} ({count})
           </Text>
         </Group>
       </TableCell>
@@ -83,9 +78,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
           {prop.required && (
             <AsteriskIcon size={10} className="text-(--shade-foreground)" />
           )}
-          <Text weight="bold">
-            {prop.name}
-          </Text>
+          <Text weight="bold">{prop.name}</Text>
           {prop.description && (
             <Tooltip
               trigger={<InfoIcon size={12} className="text-(--shade-muted)" />}
@@ -123,9 +116,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
             {String(prop.defaultValue)}
           </CodeInline>
         ) : (
-          <Text shade="muted">
-            —
-          </Text>
+          <Text shade="muted">—</Text>
         )}
       </TableCell>
     </TableRow>
@@ -134,11 +125,7 @@ function PropRow({ prop }: { prop: PropDocumentation }) {
 
 export const PropsTable = ({ props }: PropsTableProps) => {
   if (props.length === 0) {
-    return (
-      <Text shade="muted">
-        No props defined for this component.
-      </Text>
-    );
+    return <Text shade="muted">No props defined for this component.</Text>;
   }
 
   const categorized = categorizeProps(props);
@@ -153,61 +140,68 @@ export const PropsTable = ({ props }: PropsTableProps) => {
   }));
 
   return (
-    <TableContainer>
-      <TableRoot bordered>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Default</TableHead>
-          </TableRow>
-        </TableHeader>
+    <Card
+      trimmed
+      fullwidth
+      my={4}
+      style={{ backgroundColor: "var(--shade-background)" }}
+    >
+      <TableContainer>
+        <TableRoot bordered>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Default</TableHead>
+            </TableRow>
+          </TableHeader>
 
-        <TableBody>
-          {categorized.core.length > 0 && (
-            <>
-              {hasMultipleCategories && (
-                <GroupHeaderRow
-                  label="Props"
-                  count={categorized.core.length}
-                />
-              )}
-              {categorized.core.map((prop) => (
-                <PropRow key={prop.name} prop={prop} />
-              ))}
-            </>
-          )}
+          <TableBody>
+            {categorized.core.length > 0 && (
+              <>
+                {hasMultipleCategories && (
+                  <GroupHeaderRow
+                    label="Props"
+                    count={categorized.core.length}
+                  />
+                )}
+                {categorized.core.map((prop) => (
+                  <PropRow key={prop.name} prop={prop} />
+                ))}
+              </>
+            )}
 
-          {categorized.style.length > 0 && (
-            <>
-              {hasMultipleCategories && (
-                <GroupHeaderRow
-                  label="Style Props"
-                  count={categorized.style.length}
-                />
-              )}
-              {categorized.style.map((prop) => (
-                <PropRow key={prop.name} prop={prop} />
-              ))}
-            </>
-          )}
+            {categorized.style.length > 0 && (
+              <>
+                {hasMultipleCategories && (
+                  <GroupHeaderRow
+                    label="Style Props"
+                    count={categorized.style.length}
+                  />
+                )}
+                {categorized.style.map((prop) => (
+                  <PropRow key={prop.name} prop={prop} />
+                ))}
+              </>
+            )}
 
-          {subcomponentProps.length > 0 && (
-            <>
-              {hasMultipleCategories && (
-                <GroupHeaderRow
-                  label="Slot Props"
-                  count={subcomponentProps.length}
-                />
-              )}
-              {subcomponentProps.map((prop) => (
-                <PropRow key={prop.name} prop={prop} />
-              ))}
-            </>
-          )}
-        </TableBody>
-      </TableRoot>
-    </TableContainer>
+            {subcomponentProps.length > 0 && (
+              <>
+                {hasMultipleCategories && (
+                  <GroupHeaderRow
+                    label="Slot Props"
+                    count={subcomponentProps.length}
+                  />
+                )}
+                {subcomponentProps.map((prop) => (
+                  <PropRow key={prop.name} prop={prop} />
+                ))}
+              </>
+            )}
+          </TableBody>
+        </TableRoot>
+      </TableContainer>
+    </Card>
   );
 };
 PropsTable.displayName = "PropsTable";

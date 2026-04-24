@@ -32,27 +32,15 @@ const meta = {
     FooterProps: { table: { category: "Subcomponents" } },
   },
   render: (args) => (
-    <Stack gap={4} style={{ maxWidth: "32rem" }}>
-      <Card
-        {...args}
-        title="Card title"
-        description={
-          <>
-            Card description can be a <code>string</code> or a{" "}
-            <code>ReactNode</code>.
-          </>
-        }
-        icon={Globe}
-        action={<a href="#">Card action</a>}
-        footer="Card footer"
-      />
-      <Card
-        {...args}
-        inverted
-        icon={Globe}
-        title="Inverted card with custom icon"
-      />
-    </Stack>
+    <Card
+      {...args}
+      maxw={480}
+      title="Card title"
+      description="This is the card description"
+      icon={Globe}
+      action={<button>Card action</button>}
+      footer="Card footer"
+    />
   ),
 } satisfies Meta<typeof Card>;
 
