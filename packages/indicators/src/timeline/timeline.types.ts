@@ -1,3 +1,4 @@
+import type { StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
 import type { VariantProps } from "@uiid/utils";
 
@@ -45,6 +46,7 @@ export type TimelineItemType = {
   description?: string;
   time?: string;
   color?: VariantProps<typeof timelineVariants>["color"];
+  content?: React.ReactNode;
 };
 
 export type TimelineItemProps = React.ComponentProps<"div"> &
@@ -54,7 +56,7 @@ export type TimelineConnectorProps = React.ComponentProps<"div"> & {
   /** Force mount even if last item */
   forceMount?: boolean;
 };
-export type TimelineContentProps = React.ComponentProps<"div">;
+export type TimelineContentProps = StackProps;
 export type TimelineHeaderProps = React.ComponentProps<"div">;
 export type TimelineTitleProps = TextProps;
 export type TimelineDescriptionProps = TextProps;

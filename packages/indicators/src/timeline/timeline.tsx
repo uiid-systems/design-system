@@ -111,32 +111,44 @@ export function Timeline({
     <StoreContext.Provider value={store}>
       <TimelineContext.Provider value={contextValue}>
         <SwitchRender
-          condition={orientation === "vertical"}
-          render={{ true: <Stack gap={2} />, false: <Group gap={2} /> }}
-          role="list"
-          aria-orientation={orientation}
           data-slot="timeline"
+          role="list"
+          className={cx(
+            styles["timeline"],
+            timelineVariants({ color }),
+            className,
+          )}
+          render={{ true: <Stack gap={2} />, false: <Group gap={2} /> }}
+          condition={orientation === "vertical"}
+          aria-orientation={orientation}
           data-orientation={orientation}
           dir={dir}
-          className={cx(styles["timeline"], timelineVariants({ color }), className)}
           {...props}
         >
           {items
-            ? items.map(({ title, description, time, color: itemColor }, i) => (
-                <TimelineItem key={i} color={itemColor} {...ItemProps}>
-                  <TimelineDot {...DotProps} />
-                  <TimelineConnector {...ConnectorProps} />
-                  <TimelineContent {...ContentProps}>
-                    <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
-                    {time && <TimelineTime {...TimeProps}>{time}</TimelineTime>}
-                    {description && (
-                      <TimelineDescription {...DescriptionProps}>
-                        {description}
-                      </TimelineDescription>
-                    )}
-                  </TimelineContent>
-                </TimelineItem>
-              ))
+            ? items.map(
+                (
+                  { title, description, time, color: itemColor, content },
+                  i,
+                ) => (
+                  <TimelineItem key={i} color={itemColor} {...ItemProps}>
+                    <TimelineDot {...DotProps} />
+                    <TimelineConnector {...ConnectorProps} />
+                    <TimelineContent {...ContentProps}>
+                      <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
+                      {time && (
+                        <TimelineTime {...TimeProps}>{time}</TimelineTime>
+                      )}
+                      {description && (
+                        <TimelineDescription {...DescriptionProps}>
+                          {description}
+                        </TimelineDescription>
+                      )}
+                      {content}
+                    </TimelineContent>
+                  </TimelineItem>
+                ),
+              )
             : children}
         </SwitchRender>
       </TimelineContext.Provider>
