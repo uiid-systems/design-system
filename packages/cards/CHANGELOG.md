@@ -1,5 +1,18 @@
 # @uiid/cards
 
+## 0.0.19
+
+### Patch Changes
+
+- [#191](https://github.com/uiid-systems/design-system/pull/191) [`e43f0d2`](https://github.com/uiid-systems/design-system/commit/e43f0d28bee9ee88a9ffe4d928344de6962ef2fc) Thanks [@adamfratino](https://github.com/adamfratino)! - Add thumbnail slot to Card component
+
+- Updated dependencies []:
+  - @uiid/tokens@0.0.19
+  - @uiid/layout@0.0.19
+  - @uiid/typography@0.0.19
+  - @uiid/icons@0.0.19
+  - @uiid/utils@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes

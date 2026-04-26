@@ -1,5 +1,12 @@
 # @uiid/tokens
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies [[`0460113`](https://github.com/uiid-systems/design-system/commit/0460113c452a26e70dfa7f75061546e13a34ff76)]:
+  - @uiid/themes@0.0.3
+
 ## 0.0.18
 
 ## 0.0.17
