@@ -1,5 +1,11 @@
 # @uiid/themes
 
+## 0.0.3
+
+### Patch Changes
+
+- [#189](https://github.com/uiid-systems/design-system/pull/189) [`0460113`](https://github.com/uiid-systems/design-system/commit/0460113c452a26e70dfa7f75061546e13a34ff76) Thanks [@adamfratino](https://github.com/adamfratino)! - Add Dracula, Catppuccin, and GitHub theme presets converted from VS Code themes.
+
 ## 0.0.2
 
 ### Patch Changes

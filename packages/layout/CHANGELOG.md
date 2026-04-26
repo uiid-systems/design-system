@@ -1,5 +1,15 @@
 # @uiid/layout
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/tokens@0.0.19
+  - @uiid/typography@0.0.19
+  - @uiid/icons@0.0.19
+  - @uiid/utils@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes

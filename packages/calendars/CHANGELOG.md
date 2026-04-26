@@ -1,5 +1,21 @@
 # @uiid/calendars
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies [[`e43f0d2`](https://github.com/uiid-systems/design-system/commit/e43f0d28bee9ee88a9ffe4d928344de6962ef2fc), [`5a9b9f7`](https://github.com/uiid-systems/design-system/commit/5a9b9f79a625979273b09dcd7d9418cddc2b6552), [`00add6f`](https://github.com/uiid-systems/design-system/commit/00add6f06f946f2ae1f1c43d6f5659ede4169ced)]:
+  - @uiid/cards@0.0.19
+  - @uiid/interactive@0.0.19
+  - @uiid/indicators@0.0.19
+  - @uiid/overlays@0.0.19
+  - @uiid/tokens@0.0.19
+  - @uiid/buttons@0.0.19
+  - @uiid/layout@0.0.19
+  - @uiid/typography@0.0.19
+  - @uiid/icons@0.0.19
+  - @uiid/utils@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes

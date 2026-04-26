@@ -1,5 +1,13 @@
 # @uiid/mcp
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`e43f0d2`](https://github.com/uiid-systems/design-system/commit/e43f0d28bee9ee88a9ffe4d928344de6962ef2fc)]:
+  - @uiid/registry@0.0.19
+  - @uiid/blocks@0.0.19
+
 ## 0.0.11
 
 ### Patch Changes
