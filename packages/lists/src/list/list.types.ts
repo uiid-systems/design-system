@@ -25,6 +25,8 @@ export type ListItemProps = {
   href?: string;
   target?: string;
   rel?: string;
+  content?: React.ReactNode;
+  action?: React.ReactNode;
   /** Custom link component (e.g., Next.js Link, React Router Link) */
   LinkComponent?: LinkComponent;
 } & GroupProps;

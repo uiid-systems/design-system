@@ -31,7 +31,14 @@ export const MOCK_NESTED: ListProps["items"] = [
         icon: Folder,
         items: [
           { value: "button.tsx", label: "button.tsx", icon: Code },
-          { value: "card.tsx", label: "card.tsx", icon: Code },
+          {
+            value: "card.tsx",
+            label: "card.tsx",
+            icon: Code,
+            selected: true,
+            action: "action",
+            content: "lorem ipsum",
+          },
           {
             category: "Forms",
             collapsible: true,

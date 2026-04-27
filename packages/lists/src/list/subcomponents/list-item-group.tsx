@@ -32,12 +32,12 @@ export const ListItemGroup = ({
       {category && (
         <Group
           data-slot="list-item-group-collapsible-trigger"
-          gap={4}
-          py={2}
-          ay="center"
-          fullwidth
-          className={styles["list-item-group-collapsible-trigger"]}
           render={collapsible ? <Collapsible.Trigger /> : <div />}
+          className={styles["list-item-group-collapsible-trigger"]}
+          ay="center"
+          gap={2}
+          py={2}
+          fullwidth
         >
           {Icon && (
             <Icon data-slot="list-item-group-icon" size={ICON_SIZE_LARGE} />
@@ -46,8 +46,9 @@ export const ListItemGroup = ({
             data-slot="list-item-group-category-text"
             render={<h3 />}
             className={styles["list-item-group-category"]}
-            size={0}
+            mr={collapsible ? 8 : undefined}
             weight="bold"
+            size={0}
             data-is-collapsible={collapsible}
           >
             {category}

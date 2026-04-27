@@ -1,5 +1,5 @@
 import { cx } from "@uiid/utils";
-import { ConditionalRender, Group } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
 import { ICON_SIZE_LARGE } from "../list.constants";
@@ -19,6 +19,8 @@ export const ListItem = ({
   icon: Icon,
   label,
   description,
+  content,
+  action,
   LinkComponent,
   ...props
 }: ListItemProps) => {
@@ -63,12 +65,27 @@ export const ListItem = ({
               style={{ color: "var(--shade-foreground)" }}
             />
           )}
-          <ListTextBlock
-            data-slot="list-item-text"
-            label={label}
-            description={description}
-          />
-          {selected && !disabled && <ListSelectedIcon />}
+          <ConditionalRender
+            condition={!!content}
+            render={<Stack fullwidth gap={1} />}
+          >
+            <ConditionalRender
+              condition={!!selected || !!action}
+              render={
+                <Group fullwidth ay="center" gap={2} ax="space-between" />
+              }
+            >
+              <ListTextBlock
+                data-slot="list-item-text"
+                label={label}
+                description={description}
+              />
+              {selected && <ListSelectedIcon />}
+              {action}
+              {}
+            </ConditionalRender>
+            {content}
+          </ConditionalRender>
         </ConditionalRender>
       </Group>
     </ConditionalRender>

@@ -38,7 +38,7 @@ export const Default: Story = { name: "List" };
 export const NestedGroups: Story = {
   name: "Nested Groups",
   args: { items: MOCK_NESTED },
-  render: (args) => <List {...args} />,
+  render: (args) => <List {...args} line />,
 };
 
 export const Sizes: Story = {
