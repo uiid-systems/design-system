@@ -33,7 +33,7 @@ export const MOCK_NESTED: ListProps["items"] = [
           { value: "button.tsx", label: "button.tsx", icon: Code },
           {
             value: "card.tsx",
-            label: "card.tsx",
+            label: <a href="#">card.tsx</a>,
             icon: Code,
             selected: true,
             action: "action",
