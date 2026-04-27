@@ -1,5 +1,17 @@
 # @uiid/indicators
 
+## 0.0.20
+
+### Patch Changes
+
+- [#200](https://github.com/uiid-systems/design-system/pull/200) [`6a55e55`](https://github.com/uiid-systems/design-system/commit/6a55e5586706f134b7a93140e8c42245f4ee3ec7) Thanks [@adamfratino](https://github.com/adamfratino)! - add card variant to timeline
+
+- Updated dependencies []:
+  - @uiid/cards@0.0.20
+  - @uiid/tokens@0.0.20
+  - @uiid/typography@0.0.20
+  - @uiid/utils@0.0.20
+
 ## 0.0.19
 
 ### Patch Changes
