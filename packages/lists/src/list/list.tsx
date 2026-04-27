@@ -12,7 +12,6 @@ export const List = ({
   line,
   items,
   children,
-  LinkComponent,
   ...props
 }: ListProps) => {
   const ListElement = type === "ordered" ? <ol /> : <ul />;
@@ -44,14 +43,12 @@ export const List = ({
               <ListItemGroup
                 data-line
                 key={item.id ?? `${item.category ?? "group"}-${index}`}
-                LinkComponent={LinkComponent}
                 {...item}
               />
             ) : (
               <ListItem
                 key={item.value}
                 fullwidth={direction === "column"}
-                LinkComponent={LinkComponent}
                 {...item}
               />
             ),

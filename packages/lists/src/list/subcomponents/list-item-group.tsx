@@ -17,7 +17,6 @@ export const ListItemGroup = ({
   collapsible,
   icon: Icon,
   items,
-  LinkComponent,
 }: ListItemGroupProps) => {
   return (
     <Stack
@@ -86,17 +85,9 @@ export const ListItemGroup = ({
       >
         {items.map((item) =>
           "items" in item ? (
-            <ListItemGroup
-              key={item.id ?? item.category}
-              LinkComponent={LinkComponent}
-              {...item}
-            />
+            <ListItemGroup key={item.id ?? item.category} {...item} />
           ) : (
-            <ListItem
-              key={item.value}
-              LinkComponent={LinkComponent}
-              {...item}
-            />
+            <ListItem key={item.value} {...item} />
           ),
         )}
       </SwitchRender>
