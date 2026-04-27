@@ -7,8 +7,12 @@ export const MOCK_ITEMS: AccordionItemData[] = [
     icon: Info,
     value: "item-1",
     trigger: "What is UIID?",
-    content:
-      "UIID is a modular React component library built with React 19, TypeScript, and Base UI primitives.",
+    content: (
+      <div>
+        <strong>UIID</strong> is a modular React component library built with
+        React 19, TypeScript, and Base UI primitives.
+      </div>
+    ),
   },
   {
     icon: Info,

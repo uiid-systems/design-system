@@ -3,6 +3,8 @@ import type { VariantProps } from "@uiid/utils";
 
 import type { statusVariants } from "./status.variants";
 
-export type StatusVariants = VariantProps<typeof statusVariants>;
+export type StatusVariants = VariantProps<typeof statusVariants> & {
+  outline?: boolean;
+};
 
 export type StatusProps = GroupProps & StatusVariants;

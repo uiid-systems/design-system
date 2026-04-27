@@ -22,7 +22,7 @@ export const List = ({
     "data-type": type,
     "data-size": size,
     "data-direction": direction,
-    "data-line": line ? "true" : undefined,
+    "data-line": line ? "" : undefined,
     className: styles["list"],
     ...props,
   };

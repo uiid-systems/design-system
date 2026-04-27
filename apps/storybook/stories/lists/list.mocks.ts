@@ -8,7 +8,6 @@ import {
   Folder,
   FileText,
   Image,
-  Code,
 } from "@uiid/icons";
 
 import type { ListProps } from "@uiid/design-system";
@@ -30,25 +29,23 @@ export const MOCK_NESTED: ListProps["items"] = [
         collapsible: true,
         icon: Folder,
         items: [
-          { value: "button.tsx", label: "button.tsx", icon: Code },
-          { value: "card.tsx", label: "card.tsx", icon: Code },
+          { value: "button.tsx", label: "button.tsx" },
+          { value: "card.tsx", label: "card.tsx" },
           {
             category: "Forms",
             collapsible: true,
-            icon: Folder,
             items: [
-              { value: "input.tsx", label: "input.tsx", icon: Code },
-              { value: "select.tsx", label: "select.tsx", icon: Code },
+              { value: "input.tsx", label: "input.tsx" },
+              { value: "select.tsx", label: "select.tsx" },
             ],
           },
         ],
       },
       {
         category: "Assets",
-        icon: Folder,
         items: [
-          { value: "logo.svg", label: "logo.svg", icon: Image },
-          { value: "banner.png", label: "banner.png", icon: Image },
+          { value: "logo.svg", label: "logo.svg" },
+          { value: "banner.png", label: "banner.png" },
         ],
       },
       { value: "index.ts", label: "index.ts", icon: FileText },

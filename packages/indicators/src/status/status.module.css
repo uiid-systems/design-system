@@ -34,8 +34,12 @@
 
 /* When a color is applied, use its hue + chroma for the dot */
 .status-dot[data-colored] {
-  background-color: light-dark(
-    oklch(0.65 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.7 var(--palette-chroma) var(--palette-hue))
-  );
+  --status-color: light-dark(oklch(0.65 var(--palette-chroma) var(--palette-hue)), oklch(0.7 var(--palette-chroma) var(--palette-hue)));
+
+  background-color: var(--status-color);
+
+  &[data-outline] {
+    background-color: transparent;
+    border: 2px solid var(--status-color);
+  }
 }

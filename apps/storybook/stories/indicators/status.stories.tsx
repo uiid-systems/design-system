@@ -9,6 +9,7 @@ const meta = {
   args: {},
   argTypes: {
     pulse: { control: "boolean", table: { category: "Toggles" } },
+    outline: { control: "boolean", table: { category: "Toggles" } },
     color: {
       control: "select",
       options: [

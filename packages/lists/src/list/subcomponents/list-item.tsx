@@ -19,6 +19,7 @@ export const ListItem = ({
   icon: Icon,
   label,
   description,
+  children,
   LinkComponent,
   ...props
 }: ListItemProps) => {
@@ -63,11 +64,15 @@ export const ListItem = ({
               style={{ color: "var(--shade-foreground)" }}
             />
           )}
-          <ListTextBlock
-            data-slot="list-item-text"
-            label={label}
-            description={description}
-          />
+          {children ? (
+            <div>{children}</div>
+          ) : (
+            <ListTextBlock
+              data-slot="list-item-text"
+              label={label}
+              description={description}
+            />
+          )}
           {selected && !disabled && <ListSelectedIcon />}
         </ConditionalRender>
       </Group>

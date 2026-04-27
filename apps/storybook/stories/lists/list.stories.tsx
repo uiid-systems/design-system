@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Group, Stack, List } from "@uiid/design-system";
+import { Group, Stack, List, ListItem } from "@uiid/design-system";
 import { MOCK_ITEMS, MOCK_LINKS, MOCK_NESTED } from "./list.mocks";
 
 const meta = {
@@ -38,7 +38,18 @@ export const Default: Story = { name: "List" };
 export const NestedGroups: Story = {
   name: "Nested Groups",
   args: { items: MOCK_NESTED },
-  render: (args) => <List {...args} />,
+  render: (args) => <List {...args} line />,
+};
+
+export const Composed: Story = {
+  name: "Composed",
+  render: () => (
+    <List type="ordered" size="small">
+      <ListItem>test</ListItem>
+      <ListItem>test</ListItem>
+      <ListItem>test</ListItem>
+    </List>
+  ),
 };
 
 export const Sizes: Story = {

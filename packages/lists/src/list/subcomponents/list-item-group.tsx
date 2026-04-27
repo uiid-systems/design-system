@@ -32,7 +32,7 @@ export const ListItemGroup = ({
       {category && (
         <Group
           data-slot="list-item-group-collapsible-trigger"
-          gap={4}
+          gap={1}
           py={2}
           ay="center"
           fullwidth
@@ -47,6 +47,7 @@ export const ListItemGroup = ({
             render={<h3 />}
             className={styles["list-item-group-category"]}
             size={0}
+            mr={collapsible ? 8 : undefined}
             weight="bold"
             data-is-collapsible={collapsible}
           >

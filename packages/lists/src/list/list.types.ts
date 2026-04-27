@@ -16,8 +16,8 @@ export type LinkComponent = React.ComponentType<{
 }>;
 
 export type ListItemProps = {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
   description?: string;
   disabled?: boolean;
   selected?: boolean;

@@ -66,6 +66,7 @@ const COLORED_ITEMS: TimelineItemType[] = [
     description: "Issue opened",
     time: "9:00 AM",
     color: "blue",
+    content: <h1>CONTENT</h1>,
   },
   {
     title: "In Progress",

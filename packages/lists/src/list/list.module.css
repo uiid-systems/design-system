@@ -83,6 +83,10 @@
   width: var(--list-icon-size);
 }
 
+.list-item-group .list-item-group {
+  margin-top: 0.5rem;
+}
+
 .list-item-group-category {
   min-height: var(--list-group-category-minHeight);
   align-content: center;
