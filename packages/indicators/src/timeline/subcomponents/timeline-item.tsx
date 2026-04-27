@@ -63,7 +63,11 @@ export const TimelineItem = ({
     id: itemId,
     dir,
     ref: composedRef,
-    className: cx(timelineItemVariants(), timelineVariants({ color }), className),
+    className: cx(
+      timelineItemVariants(),
+      timelineVariants({ color }),
+      className,
+    ),
     ...props,
   };
 

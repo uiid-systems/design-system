@@ -56,7 +56,9 @@ export type TimelineConnectorProps = React.ComponentProps<"div"> & {
   /** Force mount even if last item */
   forceMount?: boolean;
 };
-export type TimelineContentProps = StackProps;
+export type TimelineContentProps = StackProps & {
+  variant?: "card";
+};
 export type TimelineHeaderProps = React.ComponentProps<"div">;
 export type TimelineTitleProps = TextProps;
 export type TimelineDescriptionProps = TextProps;
