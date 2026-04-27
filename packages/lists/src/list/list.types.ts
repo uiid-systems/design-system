@@ -13,7 +13,7 @@ export type ListItemProps = {
   icon?: Icon;
   content?: React.ReactNode;
   action?: React.ReactNode;
-} & GroupProps;
+} & Omit<GroupProps, "content">;
 
 /** A single item or a nested group (recursive). */
 export type ListItemOrGroup = ListItemProps | ListItemGroupProps;
