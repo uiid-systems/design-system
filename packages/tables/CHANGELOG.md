@@ -1,5 +1,19 @@
 # @uiid/tables
 
+## 0.0.20
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/interactive@0.0.20
+  - @uiid/buttons@0.0.20
+  - @uiid/icons@0.0.20
+  - @uiid/layout@0.0.20
+  - @uiid/overlays@0.0.20
+  - @uiid/tokens@0.0.20
+  - @uiid/typography@0.0.20
+  - @uiid/utils@0.0.20
+
 ## 0.0.19
 
 ### Patch Changes
