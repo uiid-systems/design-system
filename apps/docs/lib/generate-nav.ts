@@ -67,9 +67,7 @@ export function getCategoryLabel(category: string): string {
 /**
  * Get the description for a category key.
  */
-export function getCategoryDescription(
-  category: string
-): string | undefined {
+export function getCategoryDescription(category: string): string | undefined {
   const meta = categories.find((c) => c.key === category);
   return meta?.description;
 }
@@ -97,7 +95,6 @@ export function generateDocsNav(): (ListItemProps | ListItemGroupProps)[] {
     {
       label: "Changelog",
       value: "/changelog",
-      href: "/changelog",
     } satisfies ListItemProps,
   ];
 }
@@ -163,7 +160,7 @@ export function getAllComponents() {
         categoryLabel: getCategoryLabel(category),
         slug: toSlug(component.name),
         href: urls.component(category, toSlug(component.name)),
-      }))
+      })),
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 }

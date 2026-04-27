@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { List } from "@uiid/lists";
@@ -26,7 +24,7 @@ export const Sidebar = () => {
         >
           <Input size="small" before={<SearchIcon />} />
         </Stack>
-        <List items={navItems} LinkComponent={Link} px={4} pb={36} />
+        <List items={navItems} px={4} pb={36} />
       </Stack>
     </Stack>
   );
