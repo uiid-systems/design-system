@@ -2,11 +2,16 @@ import { createHighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import type { HighlighterCore } from "shiki/core";
 import {
+  transformerNotationDiff,
+  transformerNotationHighlight,
+  transformerMetaHighlight,
+} from "@shikijs/transformers";
+import {
   DEFAULT_THEME_DARK,
   DEFAULT_THEME_LIGHT,
 } from "./highlighter.constants";
 
-import type { BundledLanguage } from "./highlighter.types";
+import type { BundledLanguage, HighlightOptions } from "./highlighter.types";
 
 // Lazy-loaded bundled languages
 const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
@@ -74,15 +79,23 @@ export async function loadLanguage(language: BundledLanguage): Promise<void> {
 }
 
 /**
- * Highlight code with the given language
- * Uses dual themes for automatic light/dark mode switching via CSS variables
+ * Highlight code with the given language.
+ * Uses dual themes for automatic light/dark switching via CSS variables.
+ * Transformers enable diff/highlight notations (`// [!code ++]`, etc.) and
+ * meta-string line highlighting (built from options.highlightLines).
  */
 export async function highlight(
   code: string,
   language: BundledLanguage = "typescript",
+  options: HighlightOptions = {},
 ): Promise<string> {
   await loadLanguage(language);
   const highlighter = await getHighlighter();
+
+  const { highlightLines } = options;
+  const meta = highlightLines?.length
+    ? { __raw: `{${highlightLines.join(",")}}` }
+    : undefined;
 
   return highlighter.codeToHtml(code, {
     lang: language,
@@ -91,6 +104,12 @@ export async function highlight(
       dark: DEFAULT_THEME_DARK,
     },
     defaultColor: false,
+    ...(meta && { meta }),
+    transformers: [
+      transformerNotationDiff(),
+      transformerNotationHighlight(),
+      transformerMetaHighlight(),
+    ],
   });
 }
 

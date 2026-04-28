@@ -21,6 +21,7 @@ export type HighlighterState = {
 
 export type HighlightOptions = {
   language?: BundledLanguage;
+  highlightLines?: number[];
 };
 
 export type HighlightResult = {

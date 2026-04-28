@@ -23,7 +23,9 @@ export const CodeBlock = ({
   CopyButtonProps,
   ...props
 }: CodeBlockProps) => {
-  const { html, loading, error } = useHighlight(code, language);
+  const { html, loading, error } = useHighlight(code, language, {
+    highlightLines,
+  });
   const displayHtml = prerenderedHtml || html;
 
   const showHeader = filename || copyable;
@@ -70,7 +72,6 @@ export const CodeBlock = ({
         <CodeBlockContent
           html={displayHtml}
           showLineNumbers={showLineNumbers}
-          highlightLines={highlightLines}
           style={contentStyle}
         />
       )}

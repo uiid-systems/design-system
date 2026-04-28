@@ -6,36 +6,12 @@ import { codeContentVariants } from "../../code.variants";
 import type { CodeBlockContentProps } from "../code-block.types";
 import styles from "../code-block.module.css";
 
-/**
- * Adds data-highlighted attribute to specific lines in Shiki HTML output.
- * Lines are 1-indexed to match editor conventions.
- */
-function addLineHighlights(html: string, lines: number[]): string {
-  if (!lines.length) return html;
-
-  const lineSet = new Set(lines);
-  let lineNumber = 0;
-
-  return html.replace(/<span class="line">/g, (match) => {
-    lineNumber++;
-    if (lineSet.has(lineNumber)) {
-      return '<span class="line" data-highlighted>';
-    }
-    return match;
-  });
-}
-
 export const CodeBlockContent = ({
   html,
   showLineNumbers = DEFAULT_SHOW_LINE_NUMBERS,
-  highlightLines,
   className,
   ...props
 }: CodeBlockContentProps) => {
-  const processedHtml = highlightLines?.length
-    ? addLineHighlights(html, highlightLines)
-    : html;
-
   return (
     <Stack
       data-slot="code-block-content"
@@ -45,7 +21,7 @@ export const CodeBlockContent = ({
         codeContentVariants({ showLineNumbers }),
         className
       )}
-      dangerouslySetInnerHTML={{ __html: processedHtml }}
+      dangerouslySetInnerHTML={{ __html: html }}
       ax="stretch"
       fullwidth
       {...props}
