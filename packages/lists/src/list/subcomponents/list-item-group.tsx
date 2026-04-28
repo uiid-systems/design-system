@@ -34,10 +34,12 @@ export const ListItemGroup = ({
           render={collapsible ? <Collapsible.Trigger /> : <div />}
           className={styles["list-item-group-collapsible-trigger"]}
           ay="center"
+          ax="start"
           gap={2}
           py={2}
           fullwidth
         >
+          {collapsible && <ChevronsUpDown size={14} strokeWidth={3} />}
           {Icon && (
             <Icon data-slot="list-item-group-icon" size={ICON_SIZE_LARGE} />
           )}
@@ -52,13 +54,6 @@ export const ListItemGroup = ({
           >
             {category}
           </Text>
-          {collapsible && (
-            <ChevronsUpDown
-              size={14}
-              strokeWidth={3}
-              style={{ marginInlineStart: "auto" }}
-            />
-          )}
         </Group>
       )}
 
