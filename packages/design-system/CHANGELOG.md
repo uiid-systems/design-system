@@ -1,5 +1,27 @@
 # @uiid/design-system
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`00cafe8`](https://github.com/uiid-systems/design-system/commit/00cafe834483820b1609a6450061c18b69e274ae)]:
+  - @uiid/code@0.0.21
+  - @uiid/buttons@0.0.21
+  - @uiid/calendars@0.0.21
+  - @uiid/cards@0.0.21
+  - @uiid/forms@0.0.21
+  - @uiid/icons@0.0.21
+  - @uiid/indicators@0.0.21
+  - @uiid/interactive@0.0.21
+  - @uiid/layout@0.0.21
+  - @uiid/lists@0.0.21
+  - @uiid/navigation@0.0.21
+  - @uiid/overlays@0.0.21
+  - @uiid/tables@0.0.21
+  - @uiid/tokens@0.0.21
+  - @uiid/typography@0.0.21
+  - @uiid/utils@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @uiid/calendars
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.21
+  - @uiid/cards@0.0.21
+  - @uiid/icons@0.0.21
+  - @uiid/indicators@0.0.21
+  - @uiid/interactive@0.0.21
+  - @uiid/layout@0.0.21
+  - @uiid/overlays@0.0.21
+  - @uiid/tokens@0.0.21
+  - @uiid/typography@0.0.21
+  - @uiid/utils@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes

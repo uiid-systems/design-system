@@ -1,5 +1,17 @@
 # @uiid/buttons
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/icons@0.0.21
+  - @uiid/layout@0.0.21
+  - @uiid/overlays@0.0.21
+  - @uiid/tokens@0.0.21
+  - @uiid/typography@0.0.21
+  - @uiid/utils@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @uiid/registry
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.21
+  - @uiid/cards@0.0.21
+  - @uiid/forms@0.0.21
+  - @uiid/layout@0.0.21
+  - @uiid/typography@0.0.21
+  - @uiid/utils@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes
