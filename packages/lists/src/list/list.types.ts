@@ -42,4 +42,6 @@ export type VerticalListProps = BaseListProps & {
   direction?: "column";
 } & Pick<StackProps, "ax" | "ay">;
 
-export type ListProps = HorizontalListProps | VerticalListProps;
+export type ListProps = (HorizontalListProps | VerticalListProps) & {
+  ItemProps?: ListItemProps;
+};
