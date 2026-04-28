@@ -35,9 +35,37 @@
     margin-inline: -0.25rem;
   }
 
-  /* Highlighted lines */
-  & :global(.line[data-highlighted]) {
-    background-color: rgba(var(--shade-accent-rgb, 128, 128, 128), 0.15);
+  /* Highlighted lines (transformerMetaHighlight + transformerNotationHighlight) */
+  & :global(.line.highlighted) {
+    background-color: var(--theme-warning-surface);
+  }
+
+  /* Diff lines (transformerNotationDiff) */
+  & :global(.line.diff) {
+    &::before {
+      display: inline-block;
+      width: 1ch;
+      margin-right: 0.5ch;
+      text-align: center;
+    }
+  }
+
+  & :global(.line.diff.add) {
+    background-color: var(--theme-positive-surface);
+
+    &::before {
+      content: "+";
+      color: var(--theme-positive-foreground);
+    }
+  }
+
+  & :global(.line.diff.remove) {
+    background-color: var(--theme-critical-surface);
+
+    &::before {
+      content: "-";
+      color: var(--theme-critical-foreground);
+    }
   }
 }
 

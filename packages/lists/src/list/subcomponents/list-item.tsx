@@ -29,8 +29,8 @@ export const ListItem = ({
       gap={8}
       className={cx(styles["list-item"], className)}
       tabIndex={disabled ? -1 : 0}
-      data-disabled={disabled ?? undefined}
-      data-selected={selected}
+      data-disabled={disabled ? "" : undefined}
+      data-selected={selected ? "" : undefined}
       {...props}
     >
       <ConditionalRender

@@ -24,8 +24,6 @@ export type CodeBlockContentProps = StackProps & {
   html: string;
   /** Show line numbers */
   showLineNumbers?: boolean;
-  /** Lines to highlight (1-indexed) */
-  highlightLines?: number[];
 };
 
 export type CodeBlockProps = React.ComponentProps<"div"> & {

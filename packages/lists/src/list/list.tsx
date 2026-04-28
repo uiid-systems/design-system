@@ -1,17 +1,22 @@
 import { SwitchRender, Stack, Group } from "@uiid/layout";
 
 import type { ListProps } from "./list.types";
-import { LIST_DEFAULT_SIZE } from "./list.constants";
+import {
+  LIST_DEFAULT_TYPE,
+  LIST_DEFAULT_SIZE,
+  LIST_DEFAULT_DIRECTION,
+} from "./list.constants";
 import styles from "./list.module.css";
 import { ListItem, ListItemGroup } from "./subcomponents";
 
 export const List = ({
-  type = "none",
+  type = LIST_DEFAULT_TYPE,
+  direction = LIST_DEFAULT_DIRECTION,
   size = LIST_DEFAULT_SIZE,
-  direction = "column",
   line,
   items,
   children,
+  ItemProps,
   ...props
 }: ListProps) => {
   const ListElement = type === "ordered" ? <ol /> : <ul />;
@@ -50,6 +55,7 @@ export const List = ({
                 key={item.value}
                 fullwidth={direction === "column"}
                 {...item}
+                {...ItemProps}
               />
             ),
           )

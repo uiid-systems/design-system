@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
-import type { BundledLanguage, HighlightResult } from "./highlighter.types";
+import type {
+  BundledLanguage,
+  HighlightOptions,
+  HighlightResult,
+} from "./highlighter.types";
 import { getHighlighter, loadLanguage, highlight } from "./highlighter";
 
 /**
@@ -45,17 +49,21 @@ export function useHighlighter() {
  */
 export function useHighlight(
   code: string,
-  language: BundledLanguage = "typescript"
+  language: BundledLanguage = "typescript",
+  options: Pick<HighlightOptions, "highlightLines"> = {}
 ): HighlightResult {
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const requestRef = useRef(0);
 
+  // Stable key so callers don't need to memoize the highlightLines array
+  const highlightLinesKey = options.highlightLines?.join(",") ?? "";
+
   useEffect(() => {
     const requestId = ++requestRef.current;
 
-    highlight(code, language)
+    highlight(code, language, { highlightLines: options.highlightLines })
       .then((result) => {
         if (requestRef.current === requestId) {
           setHtml(result);
@@ -69,7 +77,8 @@ export function useHighlight(
           setLoading(false);
         }
       });
-  }, [code, language]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, language, highlightLinesKey]);
 
   return { html, loading, error };
 }
