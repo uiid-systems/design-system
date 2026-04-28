@@ -1,5 +1,19 @@
 # @uiid/code
 
+## 0.0.21
+
+### Patch Changes
+
+- [#203](https://github.com/uiid-systems/design-system/pull/203) [`00cafe8`](https://github.com/uiid-systems/design-system/commit/00cafe834483820b1609a6450061c18b69e274ae) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix code block theme switching to respect `[data-theme]` (not just OS preference) via `light-dark()`. Wire `@shikijs/transformers` for diff (`// [!code ++]` / `// [!code --]`) and notation/meta line highlighting; replace the regex-based `addLineHighlights` with shiki's meta `__raw` driven by the existing `highlightLines` prop.
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.21
+  - @uiid/cards@0.0.21
+  - @uiid/icons@0.0.21
+  - @uiid/layout@0.0.21
+  - @uiid/tokens@0.0.21
+  - @uiid/typography@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes
