@@ -1,6 +1,7 @@
+import { useMemo, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Group, Stack, List } from "@uiid/design-system";
+import { Button, Group, Stack, List, type ListItemOrGroup } from "@uiid/design-system";
 import { MOCK_ITEMS, MOCK_LINKS, MOCK_NESTED } from "./list.mocks";
 
 const meta = {
@@ -39,6 +40,53 @@ export const NestedGroups: Story = {
   name: "Nested Groups",
   args: { items: MOCK_NESTED },
   render: (args) => <List {...args} line />,
+};
+
+export const ControlledOpen: Story = {
+  name: "Controlled Open",
+  render: () => {
+    const items: ListItemOrGroup[] = MOCK_LINKS ?? [];
+    const groupKeys = useMemo(
+      () =>
+        items
+          .filter((item): item is Extract<ListItemOrGroup, { items: unknown }> =>
+            "items" in item,
+          )
+          .map((group) => group.id ?? group.category ?? ""),
+      [items],
+    );
+
+    const [openMap, setOpenMap] = useState<Record<string, boolean>>(() =>
+      Object.fromEntries(groupKeys.map((key) => [key, true])),
+    );
+
+    const allOpen = groupKeys.every((key) => openMap[key]);
+
+    const toggleAll = () =>
+      setOpenMap(Object.fromEntries(groupKeys.map((key) => [key, !allOpen])));
+
+    const decorated = items.map((item) => {
+      if (!("items" in item)) return item;
+      const key = item.id ?? item.category ?? "";
+      return {
+        ...item,
+        open: openMap[key],
+        onOpenChange: (open: boolean) =>
+          setOpenMap((map) => ({ ...map, [key]: open })),
+      };
+    });
+
+    return (
+      <Stack gap={4}>
+        <Group ax="end">
+          <Button size="small" onClick={toggleAll}>
+            {allOpen ? "Collapse all" : "Expand all"}
+          </Button>
+        </Group>
+        <List items={decorated} line size="small" />
+      </Stack>
+    );
+  },
 };
 
 export const Sizes: Story = {
