@@ -15,6 +15,9 @@ import styles from "../list.module.css";
 export const ListItemGroup = ({
   category,
   collapsible,
+  open,
+  defaultOpen = true,
+  onOpenChange,
   icon: Icon,
   items,
 }: ListItemGroupProps) => {
@@ -25,7 +28,16 @@ export const ListItemGroup = ({
       fullwidth
       className={styles["list-item-group"]}
       render={
-        collapsible ? <Collapsible.Root render={<li />} defaultOpen /> : <li />
+        collapsible ? (
+          <Collapsible.Root
+            render={<li />}
+            open={open}
+            defaultOpen={defaultOpen}
+            onOpenChange={onOpenChange}
+          />
+        ) : (
+          <li />
+        )
       }
     >
       {category && (
