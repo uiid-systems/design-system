@@ -1,5 +1,21 @@
 # @uiid/interactive
 
+## 0.0.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/forms@0.0.22
+  - @uiid/buttons@0.0.22
+  - @uiid/cards@0.0.22
+  - @uiid/icons@0.0.22
+  - @uiid/indicators@0.0.22
+  - @uiid/layout@0.0.22
+  - @uiid/overlays@0.0.22
+  - @uiid/tokens@0.0.22
+  - @uiid/typography@0.0.22
+  - @uiid/utils@0.0.22
+
 ## 0.0.21
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @uiid/lists
 
+## 0.0.22
+
+### Patch Changes
+
+- [#205](https://github.com/uiid-systems/design-system/pull/205) [`84bb4f9`](https://github.com/uiid-systems/design-system/commit/84bb4f9e2650affe8e617bae0a47579cb609b481) Thanks [@adamfratino](https://github.com/adamfratino)! - Expose `open`, `defaultOpen`, and `onOpenChange` on `ListItemGroup` so consumers can control collapsible state.
+
+- Updated dependencies []:
+  - @uiid/icons@0.0.22
+  - @uiid/layout@0.0.22
+  - @uiid/tokens@0.0.22
+  - @uiid/typography@0.0.22
+  - @uiid/utils@0.0.22
+
 ## 0.0.21
 
 ### Patch Changes
