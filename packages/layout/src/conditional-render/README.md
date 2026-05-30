@@ -1,36 +1,11 @@
 # ConditionalRender
 
-> A utility component for conditionally wrapping children in a container element.
+> Wraps children in a provided element when a condition is true; otherwise renders the children alone. Hoists the `{cond ? <Wrapper>{kids}</Wrapper> : kids}` pattern out of the JSX so the children only have to be written once.
 
-## Quick Reference
+Pair with [`SwitchRender`](../switch-render/README.md) when you need to choose between two wrappers instead of "wrap or don't."
 
-```tsx
-import { ConditionalRender } from "@uiid/layout";
+Use ConditionalRender when you want to:
 
-// Wrap children when condition is true
-<ConditionalRender condition={true} render={<a href="/link" />}>
-  Click me
-</ConditionalRender>
-
-// Render children directly when condition is false
-<ConditionalRender condition={false} render={<a href="/link" />}>
-  Just text
-</ConditionalRender>
-
-// Render children directly when render is undefined
-<ConditionalRender condition={true} render={undefined}>
-  Just text
-</ConditionalRender>
-```
-
-## Props
-
-| Prop        | Type                     | Default | Description                   |
-| ----------- | ------------------------ | ------- | ----------------------------- |
-| `condition` | `boolean`                | —       | Whether to wrap children      |
-| `render`    | `ReactElement<unknown>`  | —       | Element to wrap children with |
-| `children`  | `ReactNode`              | —       | Content to conditionally wrap |
-
-## See Also
-
-- [SwitchRender](../switch-render/README.md) - Choose between two wrappers
+- Wrap text in a link only when an `href` is provided
+- Add an analytics, tracking, or theming wrapper only in certain environments
+- Toggle a wrapper element without restructuring the children tree

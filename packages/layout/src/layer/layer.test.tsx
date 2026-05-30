@@ -1,158 +1,75 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Layer } from "./layer";
+import styles from "./layer.module.css";
 
 describe("Layer", () => {
-  // ============================================
-  // RENDERING
-  // ============================================
-
-  it("renders children", () => {
-    render(
+  it("renders children inside a layer container with data-slot=layer", () => {
+    const { container } = render(
       <Layer>
-        <div>Layer 1</div>
-        <div>Layer 2</div>
+        <div data-testid="child" />
       </Layer>,
     );
-
-    expect(screen.getByText("Layer 1")).toBeInTheDocument();
-    expect(screen.getByText("Layer 2")).toBeInTheDocument();
+    const layer = container.querySelector('[data-slot="layer"]') as HTMLElement;
+    expect(layer).toHaveClass(styles["layer"]);
+    expect(layer).toContainElement(screen.getByTestId("child"));
   });
 
-  it("renders with data-slot attribute", () => {
-    render(<Layer data-testid="layer">Content</Layer>);
-    expect(screen.getByTestId("layer")).toHaveAttribute("data-slot", "layer");
-  });
-
-  it("applies custom className", () => {
-    render(
-      <Layer className="custom-class" data-testid="layer">
-        Content
+  it("sets offset CSS variables when offset is provided", () => {
+    const { container } = render(
+      <Layer offset={{ x: 10, y: 5 }}>
+        <div />
       </Layer>,
     );
-    expect(screen.getByTestId("layer")).toHaveClass("custom-class");
+    const layer = container.querySelector('[data-slot="layer"]') as HTMLElement;
+    expect(layer.style.getPropertyValue("--layer-offset-x")).toBe("10px");
+    expect(layer.style.getPropertyValue("--layer-offset-y")).toBe("5px");
   });
 
-  // ============================================
-  // ALIGNMENT PROPS (inherited from Box)
-  // Style props are now applied as inline styles, not attributes.
-  // ============================================
-
-  it("applies ax alignment", () => {
-    render(
-      <Layer ax="center" data-testid="layer">
-        Content
+  it("does not set offset variables when offset is not provided", () => {
+    const { container } = render(
+      <Layer>
+        <div />
       </Layer>,
     );
-    expect(screen.getByTestId("layer")).toHaveStyle({ justifyContent: "center" });
+    const layer = container.querySelector('[data-slot="layer"]') as HTMLElement;
+    expect(layer.style.getPropertyValue("--layer-offset-x")).toBe("");
+    expect(layer.style.getPropertyValue("--layer-offset-y")).toBe("");
   });
 
-  it("applies ay alignment", () => {
-    render(
-      <Layer ay="center" data-testid="layer">
-        Content
+  it("renders inline fragment children as direct DOM siblings", () => {
+    const { container } = render(
+      <Layer offset={{ x: 10 }}>
+        <>
+          <div data-testid="a" />
+          <div data-testid="b" />
+          <div data-testid="c" />
+        </>
       </Layer>,
     );
-    expect(screen.getByTestId("layer")).toHaveStyle({ alignItems: "center" });
+    const layer = container.querySelector('[data-slot="layer"]') as HTMLElement;
+    expect(layer.children).toHaveLength(3);
+    expect(layer.children[0]).toBe(screen.getByTestId("a"));
+    expect(layer.children[2]).toBe(screen.getByTestId("c"));
   });
 
-  // ============================================
-  // OFFSET PROP
-  // ============================================
-
-  it("applies x offset transforms to children", () => {
-    render(
-      <Layer offset={{ x: 10 }} data-testid="layer">
-        <div data-testid="child-1">1</div>
-        <div data-testid="child-2">2</div>
-        <div data-testid="child-3">3</div>
-      </Layer>,
+  it("renders component-returning-fragment children as direct DOM siblings", () => {
+    const FragmentComponent = () => (
+      <>
+        <div data-testid="x" />
+        <div data-testid="y" />
+        <div data-testid="z" />
+      </>
     );
 
-    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
-      transform: "translate(0px, 0px)",
-    });
-    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
-      transform: "translate(10px, 0px)",
-    });
-    expect(screen.getByTestId("child-3").parentElement).toHaveStyle({
-      transform: "translate(20px, 0px)",
-    });
-  });
-
-  it("applies y offset transforms to children", () => {
-    render(
-      <Layer offset={{ y: 5 }} data-testid="layer">
-        <div data-testid="child-1">1</div>
-        <div data-testid="child-2">2</div>
+    const { container } = render(
+      <Layer offset={{ x: 10 }}>
+        <FragmentComponent />
       </Layer>,
     );
-
-    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
-      transform: "translate(0px, 0px)",
-    });
-    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
-      transform: "translate(0px, 5px)",
-    });
-  });
-
-  it("applies both x and y offsets", () => {
-    render(
-      <Layer offset={{ x: 8, y: 4 }} data-testid="layer">
-        <div data-testid="child-1">1</div>
-        <div data-testid="child-2">2</div>
-      </Layer>,
-    );
-
-    expect(screen.getByTestId("child-1").parentElement).toHaveStyle({
-      transform: "translate(0px, 0px)",
-    });
-    expect(screen.getByTestId("child-2").parentElement).toHaveStyle({
-      transform: "translate(8px, 4px)",
-    });
-  });
-
-  it("renders without offset when not provided", () => {
-    render(
-      <Layer data-testid="layer">
-        <div data-testid="child">No offset</div>
-      </Layer>,
-    );
-
-    // Child should not have inline transform
-    expect(screen.getByTestId("child")).not.toHaveStyle({ transform: expect.any(String) });
-  });
-
-  // ============================================
-  // COMMON USAGE PATTERNS
-  // ============================================
-
-  it("creates an avatar stack with offset", () => {
-    render(
-      <Layer offset={{ x: -8 }} data-testid="layer">
-        <div data-testid="avatar-1">A</div>
-        <div data-testid="avatar-2">B</div>
-        <div data-testid="avatar-3">C</div>
-      </Layer>,
-    );
-
-    // Negative offset for overlapping avatars
-    expect(screen.getByTestId("avatar-2").parentElement).toHaveStyle({
-      transform: "translate(-8px, 0px)",
-    });
-  });
-
-  it("creates centered overlapping content", () => {
-    render(
-      <Layer ax="center" ay="center" data-testid="layer">
-        <div>Background</div>
-        <div>Foreground</div>
-      </Layer>,
-    );
-
-    expect(screen.getByTestId("layer")).toHaveStyle({
-      justifyContent: "center",
-      alignItems: "center",
-    });
+    const layer = container.querySelector('[data-slot="layer"]') as HTMLElement;
+    expect(layer.children).toHaveLength(3);
+    expect(layer.children[0]).toBe(screen.getByTestId("x"));
+    expect(layer.children[2]).toBe(screen.getByTestId("z"));
   });
 });

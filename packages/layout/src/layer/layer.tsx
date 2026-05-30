@@ -1,5 +1,3 @@
-import { Children, isValidElement } from "react";
-
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
@@ -14,43 +12,20 @@ export const Layer = ({
   children,
   ...props
 }: LayerProps) => {
-  const childCount = Children.count(children);
-
-  // Set extra padding on the parent so that shifted children remain visible.
-  const parentStyle: React.CSSProperties = {
+  const layerStyle = {
     ...style,
-    ...(offset && {
-      paddingInlineEnd: offset.x ? offset.x * (childCount - 1) : undefined,
-      paddingBlockEnd: offset.y ? offset.y * (childCount - 1) : undefined,
-    }),
-  };
-
-  // If an offset is provided, wrap each child in a positioned element with the transform.
-  const layeredChildren = offset
-    ? Children.map(children, (child, index) => {
-        if (!isValidElement(child)) return child;
-
-        const translateX = offset.x ? offset.x * index : 0;
-        const translateY = offset.y ? offset.y * index : 0;
-
-        return (
-          <div
-            style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
-          >
-            {child}
-          </div>
-        );
-      })
-    : children;
+    ...(offset?.x !== undefined && { "--layer-offset-x": `${offset.x}px` }),
+    ...(offset?.y !== undefined && { "--layer-offset-y": `${offset.y}px` }),
+  } as React.CSSProperties;
 
   return (
     <Box
       data-slot="layer"
       className={cx(styles["layer"], className)}
-      style={parentStyle}
+      style={layerStyle}
       {...props}
     >
-      {layeredChildren}
+      {children}
     </Box>
   );
 };

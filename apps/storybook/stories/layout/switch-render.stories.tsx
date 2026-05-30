@@ -1,27 +1,42 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwitchRender } from "@uiid/design-system";
+import * as Examples from "../../../../packages/layout/src/switch-render/switch-render.examples";
+
+import { ExampleBox, disabledControls } from "./constants";
 
 const meta = {
-  title: "Layout/Utilities/Switch Render",
+  title: "Layout/Switch Render",
   component: SwitchRender,
+  tags: ["beta"],
   args: {
     condition: true,
     render: {
-      true: (
-        <div style={{ background: "mediumseagreen", height: 64, width: 64 }} />
-      ),
-      false: <div style={{ background: "tomato", height: 64, width: 64 }} />,
+      true: <ExampleBox bg="mediumseagreen" />,
+      false: <ExampleBox bg="tomato" />,
     },
   },
   argTypes: {
-    condition: { type: "boolean" },
-    children: { table: { disable: true } },
-    render: { table: { disable: true } },
+    condition: { control: "boolean" },
+    ...disabledControls,
+    render: { control: false },
   },
-  render: (args) => <SwitchRender {...args} data-test="test" />,
 } satisfies Meta<typeof SwitchRender>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Switch Render" };
+export const Playground: Story = {
+  render: (args) => <SwitchRender {...args}>Children content</SwitchRender>,
+};
+
+export const TrueBranch: Story = {
+  render: () => <Examples.TrueBranch />,
+};
+
+export const FalseBranch: Story = {
+  render: () => <Examples.FalseBranch />,
+};
+
+export const Orientation: Story = {
+  render: () => <Examples.Orientation />,
+};

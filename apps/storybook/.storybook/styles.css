@@ -1,0 +1,6 @@
+.sbdocs.sbdocs-content {
+  code,
+  pre {
+    background: var(--shade-surface) !important;
+  }
+}

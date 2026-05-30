@@ -1,7 +1,11 @@
 .layer {
-  display: grid;
+  display: grid !important;
 
   & > * {
     grid-area: 1 / 1;
+    transform: translate(
+      calc(var(--layer-offset-x, 0px) * (sibling-index() - 1)),
+      calc(var(--layer-offset-y, 0px) * (sibling-index() - 1))
+    );
   }
 }

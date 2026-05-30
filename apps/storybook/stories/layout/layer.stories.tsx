@@ -1,141 +1,56 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Layer } from "@uiid/design-system";
-/**
- * @todo handle fragments as layer children
- */
+import { Layer } from "@uiid/design-system";
+import * as Examples from "../../../../packages/layout/src/layer/layer.examples";
+
+import { ExampleBox, disabledControls } from "./constants";
 
 const meta = {
   title: "Layout/Layer",
   component: Layer,
   tags: ["beta"],
-  args: {
-    offset: { x: 0, y: 0 },
-  },
+  args: { offset: { x: 0, y: 0 } },
   argTypes: {
     offset: {
       control: "object",
-      table: { category: "Spacing" },
+      table: { category: "Position" },
     },
-    render: { table: { disable: true } },
-    children: { table: { disable: true } },
-    ref: { table: { disable: true } },
-    style: { table: { disable: true } },
-    className: { table: { disable: true } },
+    ...disabledControls,
   },
-  render: (args) => (
-    <Stack gap={2}>
-      <Layer {...args}>
-       <Square />
-       <Square /> 
-       <Square /> 
-      </Layer>
-
-      <Layer {...args} offset={{ x: 20 }}>
-        <div
-          style={{
-            background: "tomato",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "gold",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "mediumseagreen",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-      </Layer>
-
-      <Layer {...args} offset={{ y: 20 }}>
-        <div
-          style={{
-            background: "tomato",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "gold",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "mediumseagreen",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-      </Layer>
-
-      <Layer {...args} offset={{ x: 20, y: 20 }}>
-        <div
-          style={{
-            background: "tomato",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "gold",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-        <div
-          style={{
-            background: "mediumseagreen",
-            height: 64,
-            width: 64,
-            borderRadius: 8,
-            border: "2px solid var(--shade-background)",
-          }}
-        />
-      </Layer>
-    </Stack>
-  ),
 } satisfies Meta<typeof Layer>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Layer" };
+export const Playground: Story = {
+  render: (args) => (
+    <Layer {...args}>
+      <ExampleBox bg="tomato" />
+      <ExampleBox bg="gold" />
+      <ExampleBox bg="dodgerblue" />
+    </Layer>
+  ),
+};
 
-const Square = () => (
-  <div
-  style={{
-    background: "tomato",
-    height: 64,
-    width: 64,
-    borderRadius: 8,
-    border: "2px solid var(--shade-background)",
-  }}
-/>
-)
+export const Stacked: Story = {
+  render: () => <Examples.Stacked />,
+};
+
+export const OffsetX: Story = {
+  render: () => <Examples.OffsetX />,
+};
+
+export const OffsetY: Story = {
+  render: () => <Examples.OffsetY />,
+};
+
+export const Diagonal: Story = {
+  render: () => <Examples.Diagonal />,
+};
+
+export const FragmentChildren: Story = {
+  render: () => <Examples.FragmentChildren />,
+};
+
+export const ComponentChildren: Story = {
+  render: () => <Examples.ComponentChildren />,
+};

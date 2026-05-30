@@ -4,7 +4,10 @@ import type { StorybookConfig } from "@storybook/react-vite";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {
-  stories: ["../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: [
+    "../stories/**/*.mdx",
+    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+  ],
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-a11y"),

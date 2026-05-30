@@ -1,0 +1,23 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Layout/Overview" />
+
+# Layout
+
+Primitives for arranging content. All wrap [`Box`](?path=/docs/layout-box--docs), the foundational layout primitive that accepts every spacing, sizing, and border prop the others build on.
+
+## Which one do I reach for?
+
+- **[Stack](?path=/docs/layout-stack--docs)** — children flow top-to-bottom (column)
+- **[Group](?path=/docs/layout-group--docs)** — children flow left-to-right (row)
+- **[Layer](?path=/docs/layout-layer--docs)** — children overlap at the same position
+- **[Separator](?path=/docs/layout-separator--docs)** — a divider line between sibling content
+- **[ConditionalRender](?path=/docs/layout-conditional-render--docs)** — wrap children only when a condition holds
+- **[SwitchRender](?path=/docs/layout-switch-render--docs)** — pick one of two wrappers based on a condition
+- **[Box](?path=/docs/layout-box--docs)** — the foundation; reach for it directly when none of the above fit
+
+## Shared conventions
+
+- `ax` and `ay` mean the same thing on every layout primitive: `ax` is main-axis alignment, `ay` is cross-axis.
+- Spacing (`p`, `m`, etc.) and sizing (`w`, `h`, `fullwidth`, etc.) props work the same way everywhere.
+- All accept a `render` prop to swap the rendered element (`<section>`, `<header>`, `<form>`, etc.).
