@@ -36,5 +36,5 @@ export type CardProps = Omit<StackProps, "size" | "title"> &
     ActionProps?: CardActionProps;
     FooterProps?: CardFooterProps;
     ThumbnailProps?: CardThumbnailProps;
-    InnerContainerProps: InnerContainerProps;
+    InnerContainerProps?: InnerContainerProps;
   } & Pick<CardIconProps, "icon">;
