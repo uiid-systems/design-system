@@ -1,54 +1,11 @@
 # SwitchRender
 
-> A utility component for switching between two wrapper elements based on a condition.
+> Picks one of two wrapper elements based on a boolean and renders the children inside it. The two-branch sibling of [`ConditionalRender`](../conditional-render/README.md), which is wrap-or-pass-through.
 
-## Quick Reference
+Used internally by [`Separator`](../separator/README.md) to swap between a `Group` (horizontal) and a `Stack` (vertical) without duplicating its children.
 
-```tsx
-import { SwitchRender } from "@uiid/layout";
+Use SwitchRender when you want to:
 
-// Use render.true when condition is true
-<SwitchRender
-  condition={true}
-  render={{
-    true: <a href="/link" />,
-    false: <span />,
-  }}
->
-  Content
-</SwitchRender>
-
-// Use render.false when condition is false
-<SwitchRender
-  condition={false}
-  render={{
-    true: <a href="/link" />,
-    false: <span />,
-  }}
->
-  Content
-</SwitchRender>
-
-// Render children directly when selected wrapper is undefined
-<SwitchRender
-  condition={true}
-  render={{
-    true: undefined,
-    false: <span />,
-  }}
->
-  Content
-</SwitchRender>
-```
-
-## Props
-
-| Prop           | Type                                                        | Default | Description                     |
-| -------------- | ----------------------------------------------------------- | ------- | ------------------------------- |
-| `condition`    | `boolean`                                                   | —       | Which render element to use     |
-| `render`       | `{ true: ReactElement<unknown>; false: ReactElement<unknown> }` | —       | Elements for true/false states  |
-| `children`     | `ReactNode`                                                 | —       | Content to wrap                 |
-
-## See Also
-
-- [ConditionalRender](../conditional-render/README.md) - Wrap or don't wrap (simpler)
+- Render children inside one of two semantic wrappers based on a prop (e.g. `Stack` vs. `Group`, `<button>` vs. `<a>`, mobile vs. desktop layout)
+- Switch the rendered container at runtime without restructuring the JSX
+- Avoid writing the same `children` twice in a ternary

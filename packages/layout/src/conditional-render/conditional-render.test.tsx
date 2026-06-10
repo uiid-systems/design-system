@@ -3,11 +3,18 @@ import { render, screen } from "@testing-library/react";
 import { ConditionalRender } from "./conditional-render";
 
 describe("ConditionalRender", () => {
-  // ============================================
-  // BASIC BEHAVIOR
-  // ============================================
+  it("wraps children in the render element when condition is true", () => {
+    render(
+      <ConditionalRender condition render={<div data-testid="wrapper" />}>
+        <span>Content</span>
+      </ConditionalRender>,
+    );
+    expect(screen.getByTestId("wrapper")).toContainElement(
+      screen.getByText("Content"),
+    );
+  });
 
-  it("renders children directly when condition is false", () => {
+  it("renders children without a wrapper when condition is false", () => {
     render(
       <ConditionalRender
         condition={false}
@@ -16,118 +23,31 @@ describe("ConditionalRender", () => {
         <span>Content</span>
       </ConditionalRender>,
     );
-
-    expect(screen.getByText("Content")).toBeInTheDocument();
     expect(screen.queryByTestId("wrapper")).not.toBeInTheDocument();
-  });
-
-  it("wraps children in render element when condition is true", () => {
-    render(
-      <ConditionalRender
-        condition={true}
-        render={<div data-testid="wrapper" />}
-      >
-        <span>Content</span>
-      </ConditionalRender>,
-    );
-
     expect(screen.getByText("Content")).toBeInTheDocument();
-    expect(screen.getByTestId("wrapper")).toBeInTheDocument();
-    expect(screen.getByTestId("wrapper")).toContainElement(
-      screen.getByText("Content"),
-    );
   });
 
-  // ============================================
-  // RENDER PROP
-  // ============================================
-
-  it("preserves wrapper element props", () => {
+  it("preserves the wrapper element's own props", () => {
     render(
       <ConditionalRender
-        condition={true}
-        render={<div data-testid="wrapper" className="custom-wrapper" />}
-      >
-        <span>Content</span>
-      </ConditionalRender>,
-    );
-
-    expect(screen.getByTestId("wrapper")).toHaveClass("custom-wrapper");
-  });
-
-  // ============================================
-  // COMMON USAGE PATTERNS
-  // ============================================
-
-  it("conditionally wraps in a link", () => {
-    const hasLink = true;
-
-    render(
-      <ConditionalRender
-        condition={hasLink}
-        render={<a href="/page" data-testid="link" />}
+        condition
+        render={<a href="/page" data-testid="link" className="custom" />}
       >
         <span>Click me</span>
       </ConditionalRender>,
     );
-
-    expect(screen.getByRole("link")).toBeInTheDocument();
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/page");
+    const link = screen.getByTestId("link");
+    expect(link).toHaveAttribute("href", "/page");
+    expect(link).toHaveClass("custom");
   });
 
-  it("conditionally wraps in a tooltip trigger", () => {
-    const showTooltip = true;
-
+  it("falls back to render's own children when no children are passed", () => {
     render(
       <ConditionalRender
-        condition={showTooltip}
-        render={
-          <div data-testid="tooltip-trigger" aria-describedby="tooltip" />
-        }
-      >
-        <button>Hover me</button>
-      </ConditionalRender>,
+        condition
+        render={<div data-testid="wrapper">Fallback</div>}
+      />,
     );
-
-    expect(screen.getByTestId("tooltip-trigger")).toContainElement(
-      screen.getByRole("button"),
-    );
-  });
-
-  it("does not wrap when feature flag is off", () => {
-    const featureEnabled = false;
-
-    render(
-      <ConditionalRender
-        condition={featureEnabled}
-        render={<div data-testid="feature-wrapper" />}
-      >
-        <span>Base content</span>
-      </ConditionalRender>,
-    );
-
-    expect(screen.getByText("Base content")).toBeInTheDocument();
-    expect(screen.queryByTestId("feature-wrapper")).not.toBeInTheDocument();
-  });
-
-  // ============================================
-  // NESTED CONTENT
-  // ============================================
-
-  it("wraps complex nested content", () => {
-    render(
-      <ConditionalRender
-        condition={true}
-        render={<section data-testid="wrapper" />}
-      >
-        <h2>Title</h2>
-        <p>Paragraph 1</p>
-        <p>Paragraph 2</p>
-      </ConditionalRender>,
-    );
-
-    const wrapper = screen.getByTestId("wrapper");
-    expect(wrapper).toContainElement(screen.getByRole("heading"));
-    expect(wrapper.querySelectorAll("p")).toHaveLength(2);
+    expect(screen.getByTestId("wrapper")).toHaveTextContent("Fallback");
   });
 });

@@ -1,22 +1,41 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ConditionalRender } from "@uiid/design-system";
+import * as Examples from "../../../../packages/layout/src/conditional-render/conditional-render.examples";
+
+import { ExampleBox, disabledControls } from "./constants";
 
 const meta = {
-  title: "Layout/Utilities/Conditional Render",
+  title: "Layout/Conditional Render",
   component: ConditionalRender,
+  tags: ["beta"],
   args: {
     condition: true,
-    render: <div style={{ background: "gold", height: 64, width: 64 }} />,
+    render: <ExampleBox bg="gold" />,
   },
   argTypes: {
-    condition: { type: "boolean" },
-    children: { table: { disable: true } },
-    render: { table: { disable: true } },
+    condition: { control: "boolean" },
+    ...disabledControls,
+    render: { control: false },
   },
-  render: (args) => <ConditionalRender {...args} />,
 } satisfies Meta<typeof ConditionalRender>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Conditional Render" };
+export const Playground: Story = {
+  render: (args) => (
+    <ConditionalRender {...args}>Children content</ConditionalRender>
+  ),
+};
+
+export const Wrapped: Story = {
+  render: () => <Examples.Wrapped />,
+};
+
+export const Unwrapped: Story = {
+  render: () => <Examples.Unwrapped />,
+};
+
+export const ConditionalLink: Story = {
+  render: () => <Examples.ConditionalLink />,
+};

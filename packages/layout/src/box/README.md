@@ -1,92 +1,11 @@
 # Box
 
-> Generic flex container with layout and spacing props
+> Foundational layout primitive — a polymorphic div with prop-based layout, spacing, sizing, and border control.
 
-## Quick Reference
+Most teams should reach for [`Stack`](../stack/README.md) or [`Group`](../group/README.md) instead. Box is what they're built on.
 
-```tsx
-import { Box } from "@uiid/layout";
+Use Box directly when:
 
-// Layout properties
-<Box ax="center" ay="center" direction="column" gap={2} />
-
-// Spacing properties
-<Box p={1} px={1} py={1} pl={1} pr={1} pt={1} pb={1} />
-<Box m={1} mx={1} my={1} ml={1} mr={1} mt={1} mb={1} />
-
-// Sizing properties
-<Box fullwidth fullheight evenly />
-
-// Render a custom element
-<Box render={<section />} />
-
-// Custom-rendered elements can receive props
-<Box render={<form onSubmit={handleSubmit} />} />
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `ax` | `"start" \| "center" \| "end" \| "space-between" \| "stretch"` | — | — |
-| `ay` | `"start" \| "center" \| "end" \| "baseline" \| "stretch"` | — | — |
-| `b` | `number` | — | — |
-| `bb` | `number` | — | — |
-| `bl` | `number` | — | — |
-| `br` | `number` | — | — |
-| `bt` | `number` | — | — |
-| `bx` | `number` | — | — |
-| `by` | `number` | — | — |
-| `direction` | `"column" \| "row"` | — | — |
-| `evenly` | `boolean` | — | — |
-| `fullheight` | `boolean` | — | — |
-| `fullscreen` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `gap` | `number` | — | — |
-| `m` | `number \| "auto"` | — | — |
-| `mb` | `number \| "auto"` | — | — |
-| `ml` | `number \| "auto"` | — | — |
-| `mr` | `number \| "auto"` | — | — |
-| `mt` | `number \| "auto"` | — | — |
-| `mx` | `number \| "auto"` | — | — |
-| `my` | `number \| "auto"` | — | — |
-| `p` | `number` | — | — |
-| `pb` | `number` | — | — |
-| `pl` | `number` | — | — |
-| `pr` | `number` | — | — |
-| `pt` | `number` | — | — |
-| `px` | `number` | — | — |
-| `py` | `number` | — | — |
-
-```tsx
-type SpacingValue =
-  | 0
-  | 1
-  | 2
-  | 3
-  | 4
-  | 6
-  | 8
-  | 10
-  | 12
-  | 16
-  | 20
-  | 24
-  | 32
-  | 40
-  | 48
-  | 56
-  | 64;
-```
-
-## Data Slots
-
-| Slot  | Element          |
-| ----- | ---------------- |
-| `box` | Root box element |
-
-## See Also
-
-- [Stack](../stack/README.md) - Vertical layout (uses Box)
-- [Group](../group/README.md) - Horizontal layout (uses Box)
-- [Layer](../layer/README.md) - Overlapping layers (uses Box)
+- You need full flex control without an opinion about direction
+- You need to render as a non-div semantic element (`<section>`, `<form>`, etc.) via the `render` prop
+- You're composing a new layout primitive

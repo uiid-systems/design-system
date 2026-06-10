@@ -1,29 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box } from "@uiid/design-system";
+import * as Examples from "../../../../packages/layout/src/box/box.examples";
+
+import { boxControls } from "./constants";
 
 const meta = {
-  title: "Layout/Utilities/Box",
+  title: "Layout/Box",
   component: Box,
-  parameters: {
-    layout: "fullscreen",
+  tags: ["beta"],
+  args: { h: 64, w: 64, bordered: true, rounded: true },
+  argTypes: {
+    ...boxControls,
   },
-  args: {},
-  render: (args) => (
-    <Box
-      {...args}
-      render={<aside style={{ opacity: 0.5 }} className="foo" />}
-      className="bar"
-      ax="center"
-      ay="center"
-      maxw={244 * 2}
-      fullwidth
-      h={80}
-      style={{ background: "tomato" }}
-    />
-  ),
 } satisfies Meta<typeof Box>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Box" };
+export const Playground: Story = {
+  render: (args) => <Box {...args} />,
+};
+
+export const Centered: Story = {
+  render: () => <Examples.Centered />,
+};
+
+export const WithSpacing: Story = {
+  render: () => <Examples.WithSpacing />,
+};
+
+export const Polymorphic: Story = {
+  render: () => <Examples.Polymorphic />,
+};
