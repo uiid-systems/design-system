@@ -1,114 +1,60 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "@uiid/design-system";
-import type { TextProps } from "@uiid/design-system";
-const levels: TextProps["size"][] = [-1, 0, 1, 2, 3, 4, 5, 6];
-const shades: TextProps["shade"][] = [
-  "background",
-  "surface",
-  "accent",
-  "halftone",
-  "muted",
-  "foreground",
-];
-const colors: TextProps["color"][] = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "indigo",
-  "purple",
-  "neutral",
-];
-const weights: TextProps["weight"][] = ["bold", "normal", "light", "thin"];
-const families: TextProps["family"][] = ["mono", "serif", "sans"];
+import * as Examples from "../../../../packages/typography/src/text/text.examples";
 
-const meta: Meta<typeof Text> = {
+import { textControls } from "./constants";
+
+const meta = {
   title: "Typography/Text",
   component: Text,
   tags: ["beta"],
   args: {
     children:
-      "This PR was opened by the Changesets release GitHub action. When you're ready to do a release, you can merge this and publish to npm yourself or setup this action to publish automatically. If you're not ready to do a release yet, that's fine, whenever you add more changesets to main, this PR will be updated.",
+      "The quick brown fox jumps over the lazy dog — 1234567890",
+    size: 1,
   },
-  argTypes: {
-    children: {
-      control: "text",
-      table: { category: "Content" },
-    },
-    size: {
-      control: "select",
-      options: levels,
-      table: { category: "Variants" },
-    },
-    shade: {
-      control: "select",
-      options: shades,
-      table: { category: "Variants" },
-    },
-    color: {
-      control: "select",
-      options: colors,
-      table: { category: "Variants" },
-    },
-    family: {
-      control: "select",
-      options: families,
-      table: { category: "Variants" },
-    },
-    weight: {
-      control: "select",
-      options: weights,
-      table: { category: "Variants" },
-    },
-    underline: {
-      control: "boolean",
-      table: { category: "Toggles" },
-    },
-    strikethrough: {
-      control: "boolean",
-      table: { category: "Toggles" },
-    },
-    balance: {
-      control: "boolean",
-      table: { category: "Toggles" },
-    },
-  },
-  render: (args) => (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 48,
-        width: "100%",
-      }}
-    >
-      <Text {...args} size={-1} />
-      <Text {...args} size={0} />
-      <Text {...args} size={1} />
-      {/* <Text {...args} size={2} />
-      <Text {...args} size={3} />
-      <Text {...args} size={4} />
-      <Text {...args} size={5} />
-      <Text {...args} size={6} /> */}
-    </div>
-  ),
-};
+  argTypes: textControls,
+} satisfies Meta<typeof Text>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Text" };
+export const Playground: Story = {
+  render: (args) => <Text {...args} />,
+};
+
+export const Scale: Story = {
+  render: () => <Examples.Scale />,
+};
+
+export const Weights: Story = {
+  render: () => <Examples.Weights />,
+};
+
+export const Families: Story = {
+  render: () => <Examples.Families />,
+};
+
+export const Shades: Story = {
+  render: () => <Examples.Shades />,
+};
 
 export const Colors: Story = {
-  name: "Colors",
-  render: (args) => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      {colors.map((color) => (
-        <Text key={color} {...args} color={color} size={1}>
-          {color}
-        </Text>
-      ))}
-    </div>
-  ),
+  render: () => <Examples.Colors />,
+};
+
+export const Truncate: Story = {
+  render: () => <Examples.Truncate />,
+};
+
+export const Balance: Story = {
+  render: () => <Examples.Balance />,
+};
+
+export const InlineCode: Story = {
+  render: () => <Examples.InlineCode />,
+};
+
+export const Polymorphic: Story = {
+  render: () => <Examples.Polymorphic />,
 };

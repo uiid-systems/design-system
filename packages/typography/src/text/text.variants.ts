@@ -28,7 +28,7 @@ export const textVariants = cva({
   variants: {
     strikethrough: { true: styles["toggle-strikethrough"] },
     balance: { true: styles["toggle-balance"] },
-    mono: { true: styles["toggle-mono"] },
+    truncate: { true: styles["toggle-truncate"] },
     underline: {
       true: styles["toggle-underline"],
       false: styles["toggle-no-underline"],
@@ -39,10 +39,12 @@ export const textVariants = cva({
       sans: styles["family-sans"],
     },
     weight: {
-      bold: styles["weight-bold"],
-      normal: styles["weight-normal"],
-      light: styles["weight-light"],
       thin: styles["weight-thin"],
+      light: styles["weight-light"],
+      normal: styles["weight-normal"],
+      medium: styles["weight-medium"],
+      semibold: styles["weight-semibold"],
+      bold: styles["weight-bold"],
     },
     shade: {
       background: styles["shade-background"],

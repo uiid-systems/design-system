@@ -1,0 +1,220 @@
+@import "@uiid/tokens/primitives/typography.tokens.css";
+
+.prose {
+  color: var(--shade-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-1-font-size);
+  font-weight: var(--text-1-font-weight);
+  line-height: var(--text-1-line-height);
+  letter-spacing: var(--text-1-letter-spacing);
+  text-wrap: pretty;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "calt", "liga";
+
+  /* Reset all direct children — margins are set deliberately per element */
+  & > * {
+    margin: 0;
+  }
+
+  /* Default rhythm between sibling blocks */
+  & > p,
+  & > ul,
+  & > ol,
+  & > blockquote,
+  & > pre,
+  & > hr {
+    margin-block-start: 1.25em;
+  }
+
+  /*
+   * Dashboard-style heading mapping (shifted one step down from a
+   * marketing/article scale): h1=36, h2=30, h3=24, h4=20, h5=16, h6=14.
+   * Top margins use em multipliers calibrated to land at calm absolute
+   * distances regardless of heading size.
+   */
+  & > h1 {
+    margin-block-start: 1.333em; /* 1.333 × 36 = 48px */
+    text-wrap: balance;
+    font-size: var(--text-5-font-size);
+    line-height: var(--text-5-line-height);
+    font-weight: var(--text-5-font-weight);
+    letter-spacing: var(--text-5-letter-spacing);
+  }
+  & > h2 {
+    margin-block-start: 1.2em; /* 1.2 × 30 = 36px */
+    text-wrap: balance;
+    font-size: var(--text-4-font-size);
+    line-height: var(--text-4-line-height);
+    font-weight: var(--text-4-font-weight);
+    letter-spacing: var(--text-4-letter-spacing);
+  }
+  & > h3 {
+    margin-block-start: 1.333em; /* 1.333 × 24 = 32px */
+    text-wrap: balance;
+    font-size: var(--text-3-font-size);
+    line-height: var(--text-3-line-height);
+    font-weight: var(--text-3-font-weight);
+    letter-spacing: var(--text-3-letter-spacing);
+  }
+  & > h4 {
+    margin-block-start: 1.4em; /* 1.4 × 20 = 28px */
+    text-wrap: balance;
+    font-size: var(--text-2-font-size);
+    line-height: var(--text-2-line-height);
+    font-weight: var(--text-2-font-weight);
+    letter-spacing: var(--text-2-letter-spacing);
+  }
+  & > h5 {
+    margin-block-start: 1.5em; /* 1.5 × 16 = 24px */
+    text-wrap: balance;
+    font-size: var(--text-1-font-size);
+    line-height: var(--text-1-line-height);
+    font-weight: 600;
+    letter-spacing: var(--text-1-letter-spacing);
+  }
+  & > h6 {
+    margin-block-start: 1.429em; /* 1.429 × 14 = 20px */
+    text-wrap: balance;
+    font-size: var(--text-0-font-size);
+    line-height: var(--text-0-line-height);
+    letter-spacing: var(--text-0-letter-spacing);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* All headings: trim cap-height so margins read true */
+  & :is(h1, h2, h3, h4, h5, h6) {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+
+  /* The first child has no top margin */
+  & > :first-child {
+    margin-block-start: 0;
+  }
+
+  /* After a heading: tighter than default rhythm */
+  /* & > :is(h1, h2, h3, h4, h5, h6) + * {
+    margin-block-start: 0.75em;
+  } */
+
+  /* Heading immediately followed by another heading: minimal gap */
+  & > :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+    margin-block-start: 1em;
+  }
+
+  /* Code blocks and blockquotes get extra breathing room */
+  & > pre,
+  & > blockquote {
+    margin-block-start: 2em;
+    margin-block-end: 2em;
+  }
+
+  /* Rules separate sections cleanly */
+  & > hr {
+    margin-block-start: 1.5em;
+    margin-block-end: 1.5em;
+  }
+
+  /* Inline elements ------------------------------------------------------ */
+
+  & a {
+    color: var(--theme-primary, currentColor);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 0.06em;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  & strong {
+    font-weight: 600;
+  }
+
+  & em {
+    font-style: italic;
+  }
+
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    font-weight: 500;
+    color: var(--shade-foreground);
+    background-color: var(--shade-accent);
+    padding-inline: 0.4em;
+    padding-block: 0.1em;
+    border-radius: 0.25em;
+  }
+
+  /* Block code ----------------------------------------------------------- */
+
+  & pre {
+    padding: 1em 1.25em;
+    border-radius: 0.5em;
+    background-color: var(--shade-surface);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    line-height: 1.6;
+
+    & code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      font-weight: 400;
+      color: inherit;
+    }
+  }
+
+  /* Lists ---------------------------------------------------------------- */
+
+  & ul,
+  & ol {
+    padding-inline-start: 1.5em;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li {
+    padding-inline-start: 0.25em;
+  }
+
+  & li + li {
+    margin-block-start: 0.375em;
+  }
+
+  & li > :is(ul, ol) {
+    margin-block-start: 0.375em;
+  }
+
+  & li > p {
+    margin-block-start: 0.5em;
+  }
+  & li > p:first-child {
+    margin-block-start: 0;
+  }
+
+  /* Blockquotes ---------------------------------------------------------- */
+
+  & blockquote {
+    padding-inline-start: 1em;
+    border-inline-start: 2px solid var(--shade-accent);
+    color: var(--shade-muted);
+    font-style: italic;
+  }
+
+  /* Horizontal rules ----------------------------------------------------- */
+
+  & hr {
+    border: 0;
+    border-block-start: 1px solid var(--shade-accent);
+  }
+}

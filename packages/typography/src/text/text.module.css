@@ -1,16 +1,24 @@
 @import "@uiid/tokens/primitives/typography.tokens.css";
 
 .text {
-  text-box-trim: trim-both;
-  text-box-edge: cap alphabetic;
   text-wrap: pretty;
-  text-underline-offset: 5%;
-  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "calt", "liga";
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 0.06em;
 
   code {
-    margin-inline: 0.25em;
-    font-weight: 600;
-    color: var(--shade-muted);
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--shade-foreground);
+    background-color: var(--shade-accent);
+    padding-inline: 0.4em;
+    padding-block: 0.1em;
+    border-radius: 0.25em;
+    margin-inline: 0.125em;
   }
 }
 
@@ -18,41 +26,59 @@
   font-size: var(--text--1-font-size);
   font-weight: var(--text--1-font-weight);
   line-height: var(--text--1-line-height);
+  letter-spacing: var(--text--1-letter-spacing);
 }
 .text-size-0 {
   font-size: var(--text-0-font-size);
   font-weight: var(--text-0-font-weight);
   line-height: var(--text-0-line-height);
+  letter-spacing: var(--text-0-letter-spacing);
 }
 .text-size-1 {
   font-size: var(--text-1-font-size);
   font-weight: var(--text-1-font-weight);
   line-height: var(--text-1-line-height);
+  letter-spacing: var(--text-1-letter-spacing);
 }
 .text-size-2 {
   font-size: var(--text-2-font-size);
   font-weight: var(--text-2-font-weight);
   line-height: var(--text-2-line-height);
+  letter-spacing: var(--text-2-letter-spacing);
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 .text-size-3 {
   font-size: var(--text-3-font-size);
   font-weight: var(--text-3-font-weight);
   line-height: var(--text-3-line-height);
+  letter-spacing: var(--text-3-letter-spacing);
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 .text-size-4 {
   font-size: var(--text-4-font-size);
   font-weight: var(--text-4-font-weight);
   line-height: var(--text-4-line-height);
+  letter-spacing: var(--text-4-letter-spacing);
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 .text-size-5 {
   font-size: var(--text-5-font-size);
   font-weight: var(--text-5-font-weight);
   line-height: var(--text-5-line-height);
+  letter-spacing: var(--text-5-letter-spacing);
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 .text-size-6 {
   font-size: var(--text-6-font-size);
   font-weight: var(--text-6-font-weight);
   line-height: var(--text-6-line-height);
+  letter-spacing: var(--text-6-letter-spacing);
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 
 .shade-background {
@@ -116,14 +142,6 @@
   );
 }
 
-.toggle-bold {
-  font-weight: 700;
-}
-
-.toggle-center {
-  text-align: center;
-}
-
 .toggle-underline {
   text-decoration-line: underline;
 }
@@ -140,6 +158,14 @@
   text-wrap: balance;
 }
 
+.toggle-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
 .family-mono {
   font-family: var(--font-mono);
 }
@@ -152,15 +178,21 @@
   font-family: var(--font-sans);
 }
 
-.weight-bold {
-  font-weight: 700;
-}
-.weight-normal {
-  font-weight: 400;
+.weight-thin {
+  font-weight: 100;
 }
 .weight-light {
   font-weight: 300;
 }
-.weight-thin {
-  font-weight: 100;
+.weight-normal {
+  font-weight: 400;
+}
+.weight-medium {
+  font-weight: 500;
+}
+.weight-semibold {
+  font-weight: 600;
+}
+.weight-bold {
+  font-weight: 700;
 }
