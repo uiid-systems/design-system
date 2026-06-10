@@ -1,4 +1,4 @@
-import { ConditionalRender } from "@uiid/layout";
+import { ConditionalRender, Stack, type StackProps } from "@uiid/layout";
 
 import type { CardProps } from "./card.types";
 
@@ -12,6 +12,7 @@ import {
   CardFooter,
   CardThumbnail,
 } from "./subcomponents";
+import { ICON_SIZE } from "./card.constants";
 
 export const Card = ({
   title,
@@ -29,6 +30,7 @@ export const Card = ({
   ActionProps,
   FooterProps,
   ThumbnailProps,
+  InnerContainerProps,
   children,
   ...props
 }: CardProps) => {
@@ -49,23 +51,33 @@ export const Card = ({
         condition={Boolean(title || icon || action)}
         render={<CardHeader {...HeaderProps} />}
       >
-        {Icon && <CardIcon icon={Icon} {...IconProps} />}
-        {Title && <CardTitle {...TitleProps}>{Title}</CardTitle>}
-        {Action && <CardAction {...ActionProps}>{Action}</CardAction>}
+        <Container>{Icon && <CardIcon icon={Icon} {...IconProps} />}</Container>
+
+        <Container>
+          {Title && <CardTitle {...TitleProps}>{Title}</CardTitle>}
+          {Description && (
+            <CardDescription {...DescriptionProps}>
+              {Description}
+            </CardDescription>
+          )}
+        </Container>
+        <Container ml="auto">
+          {Action && <CardAction {...ActionProps}>{Action}</CardAction>}
+        </Container>
       </ConditionalRender>
 
-      {Description && (
-        <CardDescription {...DescriptionProps}>{Description}</CardDescription>
-      )}
+      <Stack data-slot="card-inner-container" my={2} {...InnerContainerProps}>
+        {children}
+      </Stack>
 
-      {children}
-
-      {footer && (
-        <CardFooter mt={4} {...FooterProps}>
-          {footer}
-        </CardFooter>
-      )}
+      {footer && <CardFooter {...FooterProps}>{footer}</CardFooter>}
     </CardContainer>
   );
 };
 Card.displayName = "Card";
+
+const Container = ({ children, ...props }: StackProps) => (
+  <Stack minh={ICON_SIZE * 1.5} ay="center" {...props}>
+    {children}
+  </Stack>
+);

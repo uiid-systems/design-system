@@ -298,8 +298,9 @@ describe("Popover", () => {
     await user.click(screen.getByRole("button", { name: "Open popover" }));
 
     await waitFor(() => {
-      const popup = screen.getByText("Popover content").closest("[data-slot]");
-      expect(popup).toHaveClass("custom-popup");
+      expect(document.querySelector('[data-slot="popover-popup"]')).toHaveClass(
+        "custom-popup",
+      );
     });
   });
 

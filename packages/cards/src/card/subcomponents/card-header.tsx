@@ -4,7 +4,7 @@ import type { CardHeaderProps } from "../card.types";
 
 export const CardHeader = ({ children, ...props }: CardHeaderProps) => {
   return (
-    <Group data-slot="card-header" ay="center" gap={2} fullwidth {...props}>
+    <Group data-slot="card-header" ay="start" gap={3} fullwidth {...props}>
       {children}
     </Group>
   );

@@ -19,6 +19,7 @@ export type CardIconProps = {
 export type CardActionProps = GroupProps;
 export type CardFooterProps = GroupProps;
 export type CardThumbnailProps = StackProps;
+export type InnerContainerProps = StackProps;
 
 export type CardProps = Omit<StackProps, "size" | "title"> &
   CardVariantProps & {
@@ -35,4 +36,5 @@ export type CardProps = Omit<StackProps, "size" | "title"> &
     ActionProps?: CardActionProps;
     FooterProps?: CardFooterProps;
     ThumbnailProps?: CardThumbnailProps;
+    InnerContainerProps?: InnerContainerProps;
   } & Pick<CardIconProps, "icon">;
