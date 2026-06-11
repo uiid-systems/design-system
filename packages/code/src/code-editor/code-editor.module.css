@@ -1,13 +1,10 @@
 .code-editor {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
   position: relative;
-}
-
-.code-editor[data-disabled] {
-  opacity: var(--globals-disabled-opacity);
-  pointer-events: none;
 }
 
 /* Highlighted code backdrop */

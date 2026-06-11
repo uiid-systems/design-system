@@ -36,6 +36,12 @@ export default defineConfig({
   resolve: {
     alias: {
       ...uiidAliases,
+      // Hand-written CSS Modules in tokens live at the package root
+      // (src/css/ is gitignored, holds only generated token files).
+      "@uiid/tokens/compositions.module.css": path.resolve(
+        __dirname,
+        "packages/tokens/src/compositions.module.css"
+      ),
       // Resolve @uiid/tokens/* CSS imports to source files
       // This uses a regex to match any .css file under @uiid/tokens/
       "@uiid/tokens": path.resolve(__dirname, "packages/tokens/src/css"),

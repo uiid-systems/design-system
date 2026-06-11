@@ -5,13 +5,10 @@
 }
 
 .sortable-item-handle {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   all: unset;
   cursor: grab;
-
-  &:disabled {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
-  }
 
   &[data-dragging] {
     cursor: grabbing;

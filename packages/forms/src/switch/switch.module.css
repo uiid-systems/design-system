@@ -1,6 +1,8 @@
 @import "@uiid/tokens/component/switch.tokens.css";
 
 .switch-root {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   position: relative;
   display: flex;
   appearance: none;
@@ -23,11 +25,6 @@
   &[data-checked] {
     background-position-x: 0%;
     background-color: var(--shade-halftone);
-  }
-
-  &:where(:disabled, [disabled], [data-disabled]) {
-    opacity: var(--globals-disabled-opacity);
-    pointer-events: none;
   }
 
   &:focus-visible {

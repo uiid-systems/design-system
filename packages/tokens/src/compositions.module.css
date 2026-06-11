@@ -1,0 +1,6 @@
+@layer uiid.compositions {
+  .disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
+    opacity: var(--globals-disabled-opacity);
+    pointer-events: none;
+  }
+}

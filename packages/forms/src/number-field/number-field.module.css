@@ -28,6 +28,13 @@
   }
 }
 
+.number-field-decrement {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+}
+.number-field-increment {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+}
+
 .number-field-decrement,
 .number-field-increment {
   box-sizing: border-box;
@@ -56,11 +63,6 @@
 
   &:active {
     background-color: var(--forms-bgActive);
-  }
-
-  &:disabled {
-    opacity: var(--globals-disabled-opacity);
-    pointer-events: none;
   }
 }
 

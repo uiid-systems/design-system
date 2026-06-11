@@ -1,4 +1,6 @@
 .slider-control {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   flex: 1;
   min-width: 12rem;
   min-height: 1rem;
@@ -19,11 +21,6 @@
   border-radius: 0.25rem;
   background-color: var(--shade-muted);
   user-select: none;
-}
-
-.slider-control:where([data-disabled]) {
-  pointer-events: none;
-  opacity: var(--globals-disabled-opacity);
 }
 
 .slider-thumb {

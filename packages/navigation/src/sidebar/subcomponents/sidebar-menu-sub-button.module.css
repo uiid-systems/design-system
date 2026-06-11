@@ -1,4 +1,6 @@
 .sidebar-menu-sub-button {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   color: var(--shade-foreground);
   display: flex;
   min-width: 0;
@@ -17,11 +19,6 @@
   &:active {
     background-color: var(--shade-accent);
     color: var(--shade-foreground);
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
   }
 
   & > svg {
