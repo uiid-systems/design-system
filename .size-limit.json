@@ -1,7 +1,92 @@
 [
   {
-    "path": "packages/design-system/dist/index.js",
     "name": "@uiid/design-system",
+    "path": "packages/design-system/dist/index.js",
     "limit": "500 kB"
+  },
+  {
+    "name": "@uiid/blocks",
+    "path": "packages/blocks/dist/index.js",
+    "limit": "10 kB"
+  },
+  {
+    "name": "@uiid/buttons",
+    "path": "packages/buttons/dist/index.js",
+    "limit": "60 kB"
+  },
+  {
+    "name": "@uiid/calendars",
+    "path": "packages/calendars/dist/index.js",
+    "limit": "110 kB"
+  },
+  {
+    "name": "@uiid/cards",
+    "path": "packages/cards/dist/index.js",
+    "limit": "25 kB"
+  },
+  {
+    "name": "@uiid/code",
+    "path": "packages/code/dist/index.js",
+    "limit": "180 kB"
+  },
+  {
+    "name": "@uiid/forms",
+    "path": "packages/forms/dist/index.js",
+    "limit": "135 kB"
+  },
+  {
+    "name": "@uiid/icons",
+    "path": "packages/icons/dist/index.js",
+    "limit": "140 kB"
+  },
+  {
+    "name": "@uiid/indicators",
+    "path": "packages/indicators/dist/index.js",
+    "limit": "30 kB"
+  },
+  {
+    "name": "@uiid/interactive",
+    "path": "packages/interactive/dist/index.js",
+    "limit": "120 kB"
+  },
+  {
+    "name": "@uiid/layout",
+    "path": "packages/layout/dist/index.js",
+    "limit": "25 kB"
+  },
+  {
+    "name": "@uiid/lists",
+    "path": "packages/lists/dist/index.js",
+    "limit": "35 kB"
+  },
+  {
+    "name": "@uiid/navigation",
+    "path": "packages/navigation/dist/index.js",
+    "limit": "90 kB"
+  },
+  {
+    "name": "@uiid/overlays",
+    "path": "packages/overlays/dist/index.js",
+    "limit": "100 kB"
+  },
+  {
+    "name": "@uiid/registry",
+    "path": "packages/registry/dist/index.js",
+    "limit": "50 kB"
+  },
+  {
+    "name": "@uiid/tables",
+    "path": "packages/tables/dist/index.js",
+    "limit": "100 kB"
+  },
+  {
+    "name": "@uiid/typography",
+    "path": "packages/typography/dist/index.js",
+    "limit": "25 kB"
+  },
+  {
+    "name": "@uiid/utils",
+    "path": "packages/utils/dist/index.js",
+    "limit": "25 kB"
   }
 ]
