@@ -1,6 +1,8 @@
 @import "@uiid/tokens/component/checkbox.tokens.css";
 
 .checkbox {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   /** todo: replace with default */
   width: var(--checkbox-size-sm);
   aspect-ratio: 1;
@@ -30,11 +32,6 @@
   &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-  }
-
-  &:where(:disabled, [disabled], [data-disabled]) {
-    opacity: var(--globals-disabled-opacity);
-    pointer-events: none;
   }
 
   &[data-invalid] {

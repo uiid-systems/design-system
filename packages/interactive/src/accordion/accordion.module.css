@@ -1,8 +1,7 @@
 @import "@uiid/tokens/component/accordion.tokens.css";
 
-.accordion-root[data-disabled] {
-  opacity: var(--globals-disabled-opacity);
-  pointer-events: none;
+.accordion-root {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
 }
 
 .accordion-item {

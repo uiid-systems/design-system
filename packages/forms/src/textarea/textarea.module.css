@@ -1,6 +1,8 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   background-color: var(--forms-bg);
   border: var(--globals-border-width) solid var(--forms-border-color);
   border-radius: var(--globals-border-radius);
@@ -23,12 +25,6 @@
   &:focus {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
-  }
-
-  /** Disabled */
-  &:where(:disabled, [disabled], [data-disabled]) {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
   }
 
   /** Invalid */

@@ -1,5 +1,9 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
+.input {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+}
+
 .input:where(:not([data-slot="select-value"])) {
   background-color: var(--forms-bg);
   border-width: var(--globals-border-width);
@@ -23,12 +27,6 @@
   &:focus {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
-  }
-
-  /** Disabled */
-  &:where(:disabled, [disabled], [data-disabled]) {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
   }
 
   /** Invalid */

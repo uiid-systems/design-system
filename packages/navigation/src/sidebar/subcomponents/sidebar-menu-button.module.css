@@ -1,4 +1,6 @@
 .sidebar-menu-button {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   align-items: center;
   border-radius: var(--globals-border-radius);
   display: flex;
@@ -18,11 +20,6 @@
   &:active {
     background-color: var(--shade-accent);
     color: var(--shade-foreground);
-  }
-
-  &:disabled {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
   }
 
   [data-slot="sidebar-menu"]:has([data-slot="sidebar-menu-action"]) & {

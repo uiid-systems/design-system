@@ -1,6 +1,8 @@
 @import "@uiid/tokens/component/button.tokens.css";
 
 .button {
+  composes: disabled from "@uiid/tokens/compositions.module.css";
+
   --button-bg: var(--shade-foreground);
   --button-fg: var(--shade-background);
 
@@ -31,11 +33,6 @@
   &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-  }
-
-  &:where([aria-disabled="true"], [disabled]) {
-    opacity: var(--globals-disabled-opacity);
-    pointer-events: none;
   }
 
   svg {
