@@ -120,6 +120,28 @@
       ]
     },
 
+    "typographyValue": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "fontFamily": { "$ref": "#/$defs/fontFamilyValue" },
+            "fontSize": { "$ref": "#/$defs/dimensionValue" },
+            "fontWeight": { "$ref": "#/$defs/fontWeightValue" },
+            "letterSpacing": { "$ref": "#/$defs/dimensionValue" },
+            "lineHeight": {
+              "oneOf": [
+                { "type": "number" },
+                { "$ref": "#/$defs/dimensionValue" }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        { "$ref": "#/$defs/tokenReference" }
+      ]
+    },
+
     "uiidDeriveExtension": {
       "type": "object",
       "description": "UIID custom extension for derived/computed values",
@@ -290,6 +312,20 @@
       ]
     },
 
+    "typographyToken": {
+      "allOf": [
+        { "$ref": "#/$defs/tokenBase" },
+        {
+          "type": "object",
+          "properties": {
+            "$value": { "$ref": "#/$defs/typographyValue" },
+            "$type": { "const": "typography" }
+          },
+          "required": ["$value", "$type"]
+        }
+      ]
+    },
+
     "token": {
       "oneOf": [
         { "$ref": "#/$defs/colorToken" },
@@ -299,7 +335,8 @@
         { "$ref": "#/$defs/fontWeightToken" },
         { "$ref": "#/$defs/numberToken" },
         { "$ref": "#/$defs/shadowToken" },
-        { "$ref": "#/$defs/strokeStyleToken" }
+        { "$ref": "#/$defs/strokeStyleToken" },
+        { "$ref": "#/$defs/typographyToken" }
       ]
     },
 
@@ -309,7 +346,7 @@
         "$description": { "type": "string" },
         "$type": {
           "type": "string",
-          "enum": ["color", "dimension", "duration", "fontFamily", "fontWeight", "number", "shadow", "strokeStyle"]
+          "enum": ["color", "dimension", "duration", "fontFamily", "fontWeight", "number", "shadow", "strokeStyle", "typography"]
         },
         "$extensions": { "$ref": "#/$defs/extensions" }
       },

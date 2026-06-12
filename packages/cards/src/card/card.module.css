@@ -12,8 +12,8 @@
 
   font-size: var(--text-0-font-size);
   line-height: var(--text-0-line-height);
-  font-weight: var(--text-0-weight);
-  letter-spacing: var(--text-0-letterSpacing);
+  font-weight: var(--text-0-font-weight);
+  letter-spacing: var(--text-0-letter-spacing);
 
   &:where([href]) {
     text-decoration: none;

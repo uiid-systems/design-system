@@ -362,7 +362,9 @@ ${cssProperties.trimEnd()}
   ];
 
   /**
-   * Generate CSS custom properties from token object
+   * Generate CSS custom properties from token object.
+   * Composite tokens (currently $type: "typography") are decomposed into
+   * per-property vars (e.g. --text-1-font-size).
    */
   generateCssProperties(tokens, prefix = "", indent = "    ") {
     let css = "";
@@ -374,7 +376,14 @@ ${cssProperties.trimEnd()}
       const [key, value] = entries[i];
 
       if (this.isTokenValue(value)) {
-        // This is a token with a $value
+        // Composite typography token: decompose into per-property vars
+        if (value.$type === "typography") {
+          const cssVarName = this.generateCssVariableName(prefix, key);
+          css += this.generateTypographyVars(cssVarName, value.$value, indent);
+          continue;
+        }
+
+        // Regular token with a $value
         const cssVarName = this.generateCssVariableName(prefix, key);
         const cssValue = this.processCssValueForToken(value);
         css += `${indent}--${cssVarName}: ${cssValue};\n`;
@@ -413,6 +422,34 @@ ${cssProperties.trimEnd()}
       }
     }
 
+    return css;
+  }
+
+  /**
+   * DTCG typography sub-property names → CSS kebab-case suffixes.
+   */
+  typographyProperties = [
+    ["fontFamily", "font-family"],
+    ["fontSize", "font-size"],
+    ["fontWeight", "font-weight"],
+    ["lineHeight", "line-height"],
+    ["letterSpacing", "letter-spacing"],
+  ];
+
+  /**
+   * Emit per-property CSS vars for a composite typography token, e.g.
+   *   --text-1-font-size: 1rem;
+   *   --text-1-line-height: 1.5;
+   *   ...
+   */
+  generateTypographyVars(cssVarName, value, indent) {
+    let css = "";
+    for (const [jsonKey, cssKey] of this.typographyProperties) {
+      if (jsonKey in value) {
+        const cssValue = this.processCssValue(value[jsonKey]);
+        css += `${indent}--${cssVarName}-${cssKey}: ${cssValue};\n`;
+      }
+    }
     return css;
   }
 
