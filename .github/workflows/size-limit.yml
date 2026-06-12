@@ -35,22 +35,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Identify affected packages
+      - name: Build affected size-limit config
         id: affected
         run: |
           # Names of packages changed vs origin/main, including their dependents.
           NAMES=$(pnpm m ls --filter '...[origin/main]' --depth=-1 --json \
             | jq -r '.[].name' \
             | grep -v '^@uiid/design-system$' || true)
-          # Strip trailing newline; emit as space-separated for size-limit args.
-          ARGS=$(echo "$NAMES" | tr '\n' ' ' | sed 's/ *$//')
-          echo "args=$ARGS" >> $GITHUB_OUTPUT
-          if [ -z "$ARGS" ]; then
+          # Keep only entries that exist in .size-limit.json (mcp, tokens, apps are skipped).
+          jq --argjson names "$(echo "$NAMES" | jq -R . | jq -s .)" \
+            '[.[] | select(.name as $n | $names | index($n))]' \
+            .size-limit.json > .size-limit.filtered.json
+          COUNT=$(jq 'length' .size-limit.filtered.json)
+          if [ "$COUNT" -eq 0 ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
-            echo "No package changes — size check skipped."
+            echo "No measured packages affected — size check skipped."
           else
             echo "skip=false" >> $GITHUB_OUTPUT
-            echo "Affected: $ARGS"
+            echo "Measuring $COUNT package(s):"
+            jq -r '.[].name' .size-limit.filtered.json
           fi
 
       - name: Build affected packages
@@ -59,11 +62,7 @@ jobs:
 
       - name: Run size-limit for affected packages
         if: steps.affected.outputs.skip != 'true'
-        run: |
-          # size-limit treats positional args as name patterns; quote each one.
-          ARGS=$(printf '"%s" ' ${{ steps.affected.outputs.args }})
-          eval "pnpm size-limit $ARGS --json" > size-report.json
-          cat size-report.json
+        run: pnpm size-limit --config .size-limit.filtered.json --json > size-report.json && cat size-report.json
 
       - name: Comment results on PR
         if: steps.affected.outputs.skip != 'true'
