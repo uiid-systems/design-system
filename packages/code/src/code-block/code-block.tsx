@@ -1,79 +1,143 @@
-import { Stack } from "@uiid/layout";
+"use client";
+
+import * as React from "react";
+
 import { cx } from "@uiid/utils";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 
 import type { CodeBlockProps } from "./code-block.types";
-import { DEFAULT_LANGUAGE } from "../code.constants";
+import { DEFAULT_LANGUAGE, DEFAULT_WRAP } from "../code.constants";
 import styles from "./code-block.module.css";
 
 import { CodeBlockHeader, CodeBlockContent } from "./subcomponents";
 
 export const CodeBlock = ({
   code,
-  language = DEFAULT_LANGUAGE,
+  language: languageProp,
   filename,
   showLineNumbers,
-  copyable = true,
   highlightLines,
   rows,
+  defaultExpanded = false,
+  defaultWrap = DEFAULT_WRAP,
+  onWrapChange,
+  onCopy,
   html: prerenderedHtml,
   className,
   HeaderProps,
+  LanguageIconProps,
+  WrapButtonProps,
   CopyButtonProps,
   ...props
 }: CodeBlockProps) => {
+  const language = languageProp ?? DEFAULT_LANGUAGE;
+
+  const [wrap, setWrap] = React.useState(defaultWrap);
+  const handleWrapChange = React.useCallback(
+    (next: boolean) => {
+      setWrap(next);
+      onWrapChange?.(next);
+    },
+    [onWrapChange],
+  );
+
   const { html, loading, error } = useHighlight(code, language, {
     highlightLines,
   });
   const displayHtml = prerenderedHtml || html;
 
-  const showHeader = filename || copyable;
+  const [expanded, setExpanded] = React.useState(defaultExpanded);
+  const [overflows, setOverflows] = React.useState(false);
+  const contentWrapperRef = React.useRef<HTMLDivElement>(null);
 
-  // Calculate max-height for rows constraint (same formula as CodeEditor)
-  const contentStyle = rows
+  const collapsedMaxHeight = rows
+    ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
+    : undefined;
+
+  const isCollapsed = rows != null && !expanded;
+  const wrapperStyle = collapsedMaxHeight
     ? {
-        maxHeight: `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`,
+        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
         overflowY: "auto" as const,
       }
     : undefined;
 
+  React.useEffect(() => {
+    if (!rows || !contentWrapperRef.current || !displayHtml) {
+      return;
+    }
+    const el = contentWrapperRef.current;
+    setOverflows(el.scrollHeight > el.clientHeight + 1);
+  }, [displayHtml, rows, wrap, expanded]);
+
+  const showToggle = rows != null && (overflows || expanded);
+
   return (
     <div
       data-slot="code-block"
+      data-expanded={rows != null ? expanded || undefined : undefined}
+      data-wrap={wrap || undefined}
       className={cx(styles["code-block"], className)}
       {...props}
     >
-      {showHeader && (
-        <CodeBlockHeader
-          filename={filename}
-          copyable={copyable}
-          code={code}
-          CopyButtonProps={CopyButtonProps}
-          {...HeaderProps}
-        />
-      )}
+      <CodeBlockHeader
+        filename={filename}
+        language={languageProp}
+        copyable
+        code={code}
+        wrappable
+        wrap={wrap}
+        onWrapChange={handleWrapChange}
+        LanguageIconProps={LanguageIconProps}
+        WrapButtonProps={WrapButtonProps}
+        CopyButtonProps={{ onCopy, ...CopyButtonProps }}
+        {...HeaderProps}
+      />
 
       {loading && !prerenderedHtml && (
-        <Stack
-          ay="center"
-          ax="center"
+        <div
+          data-slot="code-block-loading"
           className={styles["code-block-loading"]}
-        />
+        >
+          [Loading...]
+        </div>
       )}
 
       {error && !prerenderedHtml && (
-        <Stack ay="center" ax="center" className={styles["code-block-error"]}>
-          Error highlighting code: {error.message}
-        </Stack>
+        <div
+          data-slot="code-block-error"
+          className={styles["code-block-error"]}
+        >
+          [Error: {error.message}]
+        </div>
       )}
 
       {displayHtml && (
-        <CodeBlockContent
-          html={displayHtml}
-          showLineNumbers={showLineNumbers}
-          style={contentStyle}
-        />
+        <div
+          ref={contentWrapperRef}
+          data-slot="code-block-scroll"
+          className={styles["code-block-scroll"]}
+          style={wrapperStyle}
+        >
+          <CodeBlockContent
+            html={displayHtml}
+            showLineNumbers={showLineNumbers}
+            wrap={wrap}
+          />
+        </div>
+      )}
+
+      {showToggle && (
+        <button
+          type="button"
+          data-slot="code-block-expand-toggle"
+          className={styles["code-block-expand-toggle"]}
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
       )}
     </div>
   );

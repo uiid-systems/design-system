@@ -6,13 +6,14 @@ import { Button } from "@uiid/buttons";
 import { CopyIcon, CheckIcon } from "@uiid/icons";
 import { cx } from "@uiid/utils";
 
+import { DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockCopyButtonProps } from "../code-block.types";
 import styles from "../code-block.module.css";
 
 export const CodeBlockCopyButton = ({
-  code,
+  code = DEFAULT_CODE,
+  onCopy,
   className,
-  children,
   ...props
 }: CodeBlockCopyButtonProps) => {
   const [copied, setCopied] = React.useState(false);
@@ -21,11 +22,12 @@ export const CodeBlockCopyButton = ({
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
+      onCopy?.(code);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy code:", err);
     }
-  }, [code]);
+  }, [code, onCopy]);
 
   return (
     <Button
@@ -33,14 +35,14 @@ export const CodeBlockCopyButton = ({
       data-slot="code-block-copy-button"
       data-copied={copied}
       aria-label={copied ? "Copied" : "Copy code"}
-      className={cx(styles["code-block-copy-button"], className)}
+      tooltip={copied ? "Copied" : "Copy"}
+      className={cx(styles["code-block-icon-button"], className)}
       onClick={handleCopy}
       size="xsmall"
       variant="inverted"
       {...props}
     >
       {copied ? <CheckIcon /> : <CopyIcon />}
-      {children ?? (copied ? "Copied" : "Copy")}
     </Button>
   );
 };

@@ -26,7 +26,9 @@ const meta = {
       ],
     },
     showLineNumbers: { control: "boolean" },
-    copyable: { control: "boolean" },
+    defaultExpanded: { control: "boolean" },
+    defaultWrap: { control: "boolean" },
+    rows: { control: { type: "number", min: 1, max: 30 } },
   },
 } satisfies Meta<typeof CodeBlock>;
 
@@ -88,13 +90,20 @@ const sampleCSS = `.button {
   }
 }`;
 
+const sampleLong = Array.from(
+  { length: 40 },
+  (_, i) =>
+    `const line${i.toString().padStart(2, "0")} = ${i} * 2; // line ${i + 1}`,
+).join("\n");
+
+const sampleLongLine = `const veryLongConstName = "this is an intentionally long string that exceeds typical container widths so we can demonstrate horizontal scroll versus soft wrap behavior across various layouts";`;
+
 export const Default: Story = {
   args: {
     code: sampleTypeScript,
     language: "typescript",
     filename: "counter.tsx",
     showLineNumbers: false,
-    copyable: true,
   },
 };
 
@@ -104,15 +113,42 @@ export const WithLineNumbers: Story = {
     language: "typescript",
     filename: "counter.tsx",
     showLineNumbers: true,
-    copyable: true,
   },
 };
 
-export const WithoutHeader: Story = {
+export const Collapsed: Story = {
   args: {
-    code: sampleTypeScript,
+    code: sampleLong,
     language: "typescript",
-    copyable: false,
+    filename: "long-file.ts",
+    rows: 8,
+  },
+};
+
+export const ExpandedByDefault: Story = {
+  args: {
+    code: sampleLong,
+    language: "typescript",
+    filename: "long-file.ts",
+    rows: 8,
+    defaultExpanded: true,
+  },
+};
+
+export const LongLineWrapOff: Story = {
+  args: {
+    code: sampleLongLine,
+    language: "typescript",
+    filename: "long-line.ts",
+  },
+};
+
+export const LongLineWrapOn: Story = {
+  args: {
+    code: sampleLongLine,
+    language: "typescript",
+    filename: "long-line.ts",
+    defaultWrap: true,
   },
 };
 
@@ -121,7 +157,7 @@ export const Languages: Story = {
     code: sampleTypeScript,
   },
   render: () => (
-    <Stack gap={4}>
+    <Stack gap={4} ax="stretch" fullwidth>
       <CodeBlock
         code={sampleTypeScript}
         language="typescript"
@@ -138,3 +174,4 @@ export const Languages: Story = {
     </Stack>
   ),
 };
+

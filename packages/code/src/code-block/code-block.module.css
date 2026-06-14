@@ -3,7 +3,8 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
+  background-color: var(--shade-surface);
 }
 
 .code-block-header {
@@ -11,11 +12,25 @@
   border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
-.code-block-copy-button[data-copied="true"] {
+.code-block-language-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.code-block-icon-button {
+  /* hook for instance-level overrides; size handled by Button size="xsmall" */
+}
+
+.code-block-icon-button[data-copied="true"] {
   color: var(--shade-foreground);
   border-color: var(--shade-foreground);
+}
+
+.code-block-scroll {
+  position: relative;
 }
 
 .code-block-content {
@@ -23,7 +38,7 @@
 
   /* Apply background to pre so it extends with scrollable content */
   & :global(pre) {
-    background-color: rgba(var(--shade-surface), 0.5) !important;
+    background-color: var(--shade-surface) !important;
     min-width: fit-content;
   }
 
@@ -69,10 +84,50 @@
   }
 }
 
-.code-block-loading {
+/* Soft-wrap long lines instead of horizontal scroll */
+.code-block-content-wrap {
+  overflow-x: hidden;
+
+  & :global(pre),
+  & :global(code),
+  & :global(.line) {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+}
+
+.code-block-loading,
+.code-block-error {
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
   color: var(--shade-muted);
+  padding: var(--code-padding);
 }
 
 .code-block-error {
-  color: var(--shade-foreground);
+  color: var(--theme-critical-foreground);
+}
+
+.code-block-expand-toggle {
+  appearance: none;
+  width: 100%;
+  border: none;
+  border-top: var(--globals-border-width) solid var(--globals-border-color);
+  background-color: var(--shade-surface);
+  color: var(--shade-muted);
+  font-family: inherit;
+  font-size: var(--code-font-size);
+  padding: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--shade-foreground);
+    background-color: var(--shade-halftone, var(--shade-surface));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--shade-foreground);
+    outline-offset: -2px;
+  }
 }

@@ -133,9 +133,9 @@ describe("CodeEditor", () => {
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
-  it("disables copy button when copyable is false", async () => {
+  it("does not render copy button when copyable is false", async () => {
     render(<CodeEditor defaultValue="test" copyable={false} filename="test.ts" />);
     await act(async () => {});
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 });
