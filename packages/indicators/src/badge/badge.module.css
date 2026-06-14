@@ -9,6 +9,11 @@
   color: var(--badge-fg);
   display: inline-flex !important;
   border-radius: var(--badge-border-radius);
+  line-height: var(--badge-line-height);
+}
+
+.badge-text {
+  line-height: var(--badge-line-height);
 }
 
 .badge-indicator {
