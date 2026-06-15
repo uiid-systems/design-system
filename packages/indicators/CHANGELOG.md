@@ -1,5 +1,17 @@
 # @uiid/indicators
 
+## 0.0.23
+
+### Patch Changes
+
+- [#220](https://github.com/uiid-systems/design-system/pull/220) [`1d0c6e2`](https://github.com/uiid-systems/design-system/commit/1d0c6e24e6212f7f12530259110ac1cbc1344c0d) Thanks [@adamfratino](https://github.com/adamfratino)! - Tighten `Badge` sizing to feel sane at `small`. Reduces padding-y across all sizes (small `0.375rem` → `0.125rem`), trims padding-x on medium/large, drops border-radius from `0.5rem` → `0.375rem`, and adds a new `--badge-line-height` token (`1.25`) applied to both `.badge` and `.badge-text` so the inner `<Text>` no longer forces 1.5 line-height padding into the box. The small badge now lands around 18–20px tall — proportional to shadcn's default badge.
+
+- Updated dependencies [[`1d0c6e2`](https://github.com/uiid-systems/design-system/commit/1d0c6e24e6212f7f12530259110ac1cbc1344c0d), [`de26147`](https://github.com/uiid-systems/design-system/commit/de261474d8621bc40da0e24f20ecdb2f6b921aad), [`f4ef8ce`](https://github.com/uiid-systems/design-system/commit/f4ef8ce332a0f1fa88d5323e6105120b972a74b9), [`23351be`](https://github.com/uiid-systems/design-system/commit/23351bef77f49a5e90ace39a8c223441e88cf094), [`101b095`](https://github.com/uiid-systems/design-system/commit/101b0956bedd5690878d910b4e420aa54e9df2a6), [`e61d7f5`](https://github.com/uiid-systems/design-system/commit/e61d7f50c25c96377272aea5c8c071298659fae4)]:
+  - @uiid/tokens@0.0.23
+  - @uiid/cards@0.0.23
+  - @uiid/typography@0.0.23
+  - @uiid/utils@0.0.23
+
 ## 0.0.22
 
 ### Patch Changes
