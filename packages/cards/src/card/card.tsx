@@ -1,4 +1,5 @@
 import { ConditionalRender, Stack, type StackProps } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
 
@@ -12,7 +13,7 @@ import {
   CardFooter,
   CardThumbnail,
 } from "./subcomponents";
-import { ICON_SIZE } from "./card.constants";
+import styles from "./card.module.css";
 
 export const Card = ({
   title,
@@ -21,7 +22,6 @@ export const Card = ({
   icon,
   action,
   footer,
-  size,
   ContainerProps,
   HeaderProps,
   TitleProps,
@@ -39,36 +39,57 @@ export const Card = ({
   const Action = ActionProps?.children || action;
   const Icon = IconProps?.icon || icon;
 
+  const hasIcon = Boolean(Icon);
+  const hasTitle = Boolean(Title);
+  const hasAction = Boolean(Action);
+  const hasDescription = Boolean(Description);
+  const hasHeader = hasIcon || hasTitle || hasAction;
+
   return (
-    <CardContainer size={size} {...props} {...ContainerProps}>
+    <CardContainer {...props} {...ContainerProps}>
       {thumbnail && (
         <CardThumbnail mb={2} {...ThumbnailProps}>
           {thumbnail}
         </CardThumbnail>
       )}
 
-      <ConditionalRender
-        condition={Boolean(title || icon || action)}
-        render={<CardHeader {...HeaderProps} />}
-      >
-        <Container>{Icon && <CardIcon icon={Icon} {...IconProps} />}</Container>
-
-        <Container>
-          {Title && <CardTitle {...TitleProps}>{Title}</CardTitle>}
-          {Description && (
+      {(hasHeader || hasDescription) && (
+        <ConditionalRender
+          condition={hasHeader && hasDescription}
+          render={<Stack gap={2} fullwidth />}
+        >
+          {hasHeader && (
+            <CardHeader {...HeaderProps}>
+              {hasIcon && (
+                <Container>
+                  <CardIcon icon={Icon} {...IconProps} />
+                </Container>
+              )}
+              {hasTitle && (
+                <Container>
+                  <CardTitle {...TitleProps}>{Title}</CardTitle>
+                </Container>
+              )}
+              {hasAction && (
+                <Container ml="auto">
+                  <CardAction {...ActionProps}>{Action}</CardAction>
+                </Container>
+              )}
+            </CardHeader>
+          )}
+          {hasDescription && (
             <CardDescription {...DescriptionProps}>
               {Description}
             </CardDescription>
           )}
-        </Container>
-        <Container ml="auto">
-          {Action && <CardAction {...ActionProps}>{Action}</CardAction>}
-        </Container>
-      </ConditionalRender>
+        </ConditionalRender>
+      )}
 
-      <Stack data-slot="card-inner-container" my={2} {...InnerContainerProps}>
-        {children}
-      </Stack>
+      {children && (
+        <Stack data-slot="card-inner-container" my={2} {...InnerContainerProps}>
+          {children}
+        </Stack>
+      )}
 
       {footer && <CardFooter {...FooterProps}>{footer}</CardFooter>}
     </CardContainer>
@@ -76,8 +97,12 @@ export const Card = ({
 };
 Card.displayName = "Card";
 
-const Container = ({ children, ...props }: StackProps) => (
-  <Stack minh={ICON_SIZE * 1.5} ay="center" {...props}>
+const Container = ({ children, className, ...props }: StackProps) => (
+  <Stack
+    className={cx(styles["card-header-cell"], className)}
+    ay="center"
+    {...props}
+  >
     {children}
   </Stack>
 );

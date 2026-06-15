@@ -1,18 +1,16 @@
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { CARD_DEFAULT_GAP } from "../card.constants";
 import type { CardContainerProps } from "../card.types";
 import { cardVariants } from "../card.variants";
 import styles from "../card.module.css";
 
 export const CardContainer = ({
-  gap = CARD_DEFAULT_GAP,
+  gap = 3,
   trimmed,
   transparent,
   ghost,
   inverted,
-  size,
   className,
   children,
   ...props
@@ -23,7 +21,7 @@ export const CardContainer = ({
       gap={gap}
       className={cx(
         styles["card"],
-        cardVariants({ trimmed, transparent, ghost, inverted, size }),
+        cardVariants({ trimmed, transparent, ghost, inverted }),
         className,
       )}
       {...props}

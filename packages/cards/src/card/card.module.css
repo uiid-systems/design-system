@@ -48,9 +48,17 @@
   }
 }
 
-.card-action {
-  margin-inline-start: auto;
+.card-header-cell {
+  min-height: calc(var(--card-icon-size) * 1.5);
+}
 
+.card-icon {
+  width: var(--card-icon-size);
+  height: auto;
+  flex-shrink: 0;
+}
+
+.card-action {
   svg {
     width: var(--card-icon-size);
     height: auto;
@@ -78,16 +86,4 @@
 
 .toggle-transparent {
   background-color: transparent;
-}
-
-.size-small {
-  max-width: var(--card-size-small-max-width);
-}
-
-.size-medium {
-  max-width: var(--card-size-medium-max-width);
-}
-
-.size-large {
-  max-width: var(--card-size-large-max-width);
 }

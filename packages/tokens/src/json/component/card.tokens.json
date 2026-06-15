@@ -4,12 +4,6 @@
   "card": {
     "icon-size": { "$value": "1rem", "$type": "dimension" },
     "scale-up": { "$value": 1.02, "$type": "number" },
-    "scale-down": { "$value": 0.99, "$type": "number" },
-    "size": {
-      "$type": "dimension",
-      "sm": { "$value": "24rem" },
-      "md": { "$value": "32rem" },
-      "lg": { "$value": "48rem" }
-    }
+    "scale-down": { "$value": 0.99, "$type": "number" }
   }
 }
