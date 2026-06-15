@@ -1,5 +1,17 @@
 # @uiid/overlays
 
+## 0.0.24
+
+### Patch Changes
+
+- Updated dependencies [[`ba0c026`](https://github.com/uiid-systems/design-system/commit/ba0c0265e6b1f19afec07637d73c02d113212016)]:
+  - @uiid/cards@0.0.24
+  - @uiid/tokens@0.0.24
+  - @uiid/layout@0.0.24
+  - @uiid/typography@0.0.24
+  - @uiid/icons@0.0.24
+  - @uiid/utils@0.0.24
+
 ## 0.0.23
 
 ### Patch Changes
