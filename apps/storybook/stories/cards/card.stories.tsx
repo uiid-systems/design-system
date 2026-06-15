@@ -49,6 +49,69 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Card" };
 
+const HEADER_VARIANTS = [
+  { label: "No header", props: {} },
+  { label: "Title only", props: { title: "Title only" } },
+  { label: "Description only", props: { description: "Description only" } },
+  {
+    label: "Title + description",
+    props: { title: "Title", description: "And a description" },
+  },
+  { label: "Icon only", props: { icon: Globe } },
+  { label: "Icon + title", props: { icon: Globe, title: "Icon + title" } },
+  {
+    label: "Action only",
+    props: { action: <button>Action</button> },
+  },
+  {
+    label: "Title + action",
+    props: { title: "Title + action", action: <button>Action</button> },
+  },
+  {
+    label: "Icon + title + action",
+    props: {
+      icon: Globe,
+      title: "Icon + title + action",
+      action: <button>Action</button>,
+    },
+  },
+  {
+    label: "Full header",
+    props: {
+      icon: Globe,
+      title: "Full header",
+      description: "Icon, title, description, and action all present",
+      action: <button>Action</button>,
+    },
+  },
+] as const;
+
+export const HeaderVariants: Story = {
+  name: "Header Variants",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Stack gap={4} style={{ maxWidth: "30rem" }}>
+      {HEADER_VARIANTS.map((v) => (
+        <Card key={v.label} {...v.props}>
+          {`Body for: ${v.label}`}
+        </Card>
+      ))}
+    </Stack>
+  ),
+};
+
+export const HeaderVariantsNoBody: Story = {
+  name: "Header Variants (no body)",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Stack gap={4} style={{ maxWidth: "30rem" }}>
+      {HEADER_VARIANTS.map((v) => (
+        <Card key={v.label} {...v.props} />
+      ))}
+    </Stack>
+  ),
+};
+
 const PlaceholderThumbnail = () => (
   <svg
     viewBox="0 0 300 300"

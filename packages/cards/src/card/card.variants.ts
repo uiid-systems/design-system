@@ -8,10 +8,5 @@ export const cardVariants = cva({
     trimmed: { true: styles["toggle-trimmed"] },
     transparent: { true: styles["toggle-transparent"] },
     ghost: { true: styles["toggle-ghost"] },
-    size: {
-      small: styles["size-small"],
-      medium: styles["size-medium"],
-      large: styles["size-large"],
-    },
   },
 });

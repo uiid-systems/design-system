@@ -21,7 +21,7 @@ export type CardFooterProps = GroupProps;
 export type CardThumbnailProps = StackProps;
 export type InnerContainerProps = StackProps;
 
-export type CardProps = Omit<StackProps, "size" | "title"> &
+export type CardProps = Omit<StackProps, "title"> &
   CardVariantProps & {
     title?: React.ReactNode;
     description?: React.ReactNode;
