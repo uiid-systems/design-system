@@ -39,8 +39,10 @@ export type CodeBlockHeaderProps = GroupProps & {
 };
 
 export type CodeBlockContentProps = StackProps & {
-  /** HTML content to render */
-  html: string;
+  /** Highlighted HTML content from shiki (preferred when available) */
+  html?: string;
+  /** Raw code, rendered as a fallback while highlighting is async-pending */
+  code?: string;
   /** Show line numbers */
   showLineNumbers?: boolean;
   /** Soft-wrap long lines instead of horizontal scroll */
