@@ -97,16 +97,11 @@
   }
 }
 
-.code-block-loading,
 .code-block-error {
   font-family: var(--code-font-family);
   font-size: var(--code-font-size);
-  color: var(--shade-muted);
-  padding: var(--code-padding);
-}
-
-.code-block-error {
   color: var(--theme-critical-foreground);
+  padding: var(--code-padding);
 }
 
 .code-block-expand-toggle {

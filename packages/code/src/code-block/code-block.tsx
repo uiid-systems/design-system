@@ -42,10 +42,10 @@ export const CodeBlock = ({
     [onWrapChange],
   );
 
-  const { html, loading, error } = useHighlight(code, language, {
+  const { html, error } = useHighlight(code, language, {
     highlightLines,
   });
-  const displayHtml = prerenderedHtml || html;
+  const displayHtml = prerenderedHtml || html || undefined;
 
   const [expanded, setExpanded] = React.useState(defaultExpanded);
   const [overflows, setOverflows] = React.useState(false);
@@ -95,14 +95,19 @@ export const CodeBlock = ({
         {...HeaderProps}
       />
 
-      {loading && !prerenderedHtml && (
-        <div
-          data-slot="code-block-loading"
-          className={styles["code-block-loading"]}
-        >
-          [Loading...]
-        </div>
-      )}
+      <div
+        ref={contentWrapperRef}
+        data-slot="code-block-scroll"
+        className={styles["code-block-scroll"]}
+        style={wrapperStyle}
+      >
+        <CodeBlockContent
+          html={displayHtml}
+          code={code}
+          showLineNumbers={showLineNumbers}
+          wrap={wrap}
+        />
+      </div>
 
       {error && !prerenderedHtml && (
         <div
@@ -110,21 +115,6 @@ export const CodeBlock = ({
           className={styles["code-block-error"]}
         >
           [Error: {error.message}]
-        </div>
-      )}
-
-      {displayHtml && (
-        <div
-          ref={contentWrapperRef}
-          data-slot="code-block-scroll"
-          className={styles["code-block-scroll"]}
-          style={wrapperStyle}
-        >
-          <CodeBlockContent
-            html={displayHtml}
-            showLineNumbers={showLineNumbers}
-            wrap={wrap}
-          />
         </div>
       )}
 
