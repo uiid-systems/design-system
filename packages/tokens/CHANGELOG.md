@@ -1,5 +1,11 @@
 # @uiid/tokens
 
+## 0.0.24
+
+### Patch Changes
+
+- [#222](https://github.com/uiid-systems/design-system/pull/222) [`ba0c026`](https://github.com/uiid-systems/design-system/commit/ba0c0265e6b1f19afec07637d73c02d113212016) Thanks [@adamfratino](https://github.com/adamfratino)! - Polish `Card`: rebuild header conditional rendering so empty cells and the inner container no longer reserve phantom space. Move description out of the title lockup; the header + description are wrapped in a `Stack(gap=2)` only when both are present. Lift icon and header-cell sizing into CSS via `--card-icon-size` and drop `card.constants.ts`. Remove the orphan `size` variant — the `--card-size-*-max-width` CSS references never matched the sm/md/lg tokens and no consumer used it. `CardTitle` drops inline `minHeight`/`alignContent` and switches `weight` from `bold` to `semibold`. `CardFooter` gains a leading `Separator`.
+
 ## 0.0.23
 
 ### Patch Changes
