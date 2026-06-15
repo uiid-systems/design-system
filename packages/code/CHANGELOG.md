@@ -1,5 +1,23 @@
 # @uiid/code
 
+## 0.0.23
+
+### Patch Changes
+
+- [#221](https://github.com/uiid-systems/design-system/pull/221) [`8aa2ccd`](https://github.com/uiid-systems/design-system/commit/8aa2ccdc05b175595a5b352efb8e224660e5eb21) Thanks [@adamfratino](https://github.com/adamfratino)! - Polish `CodeBlock`: add language icon (Devicon SVGs auto-shown when `language` is set), wrap toggle (`ToggleButton` + `WrapText` icon), and auto expand/collapse (footer toggle when `rows` overflows). Copy button is now icon-only with a `tooltip` swap.
+
+  Simplified the public API: removed `copyable`, `wrappable`, controlled `wrap`, `expandable`, and `showLanguageIcon`. Use `defaultWrap` / `onWrapChange` and `defaultExpanded` to seed/observe state. Both action buttons always render. New escape hatches: `LanguageIconProps`, `WrapButtonProps`. `CodeBlockHeader` subcomponent retains `copyable` / `wrappable` flags for direct consumers like `CodeEditor`.
+
+- [#214](https://github.com/uiid-systems/design-system/pull/214) [`f4ef8ce`](https://github.com/uiid-systems/design-system/commit/f4ef8ce332a0f1fa88d5323e6105120b972a74b9) Thanks [@adamfratino](https://github.com/adamfratino)! - Introduce `@uiid/tokens/compositions.module.css` as a shared CSS Modules source for `composes`. Adds a `.disabled` class that bundles `opacity: var(--globals-disabled-opacity)` and `pointer-events: none` under the new `uiid.compositions` layer, and converts 14 consumers (input, checkbox, radio, switch, textarea, slider, number-field's increment/decrement, button, code-editor, sidebar-menu-button, sidebar-menu-sub-button, accordion-root, resizable-handle, sortable-item-handle) to compose this source instead of duplicating the rule.
+
+- Updated dependencies [[`1d0c6e2`](https://github.com/uiid-systems/design-system/commit/1d0c6e24e6212f7f12530259110ac1cbc1344c0d), [`de26147`](https://github.com/uiid-systems/design-system/commit/de261474d8621bc40da0e24f20ecdb2f6b921aad), [`f4ef8ce`](https://github.com/uiid-systems/design-system/commit/f4ef8ce332a0f1fa88d5323e6105120b972a74b9), [`10bd3dc`](https://github.com/uiid-systems/design-system/commit/10bd3dc9b358e08278b9b59e0ec4668c97d58c22), [`23351be`](https://github.com/uiid-systems/design-system/commit/23351bef77f49a5e90ace39a8c223441e88cf094), [`101b095`](https://github.com/uiid-systems/design-system/commit/101b0956bedd5690878d910b4e420aa54e9df2a6), [`e61d7f5`](https://github.com/uiid-systems/design-system/commit/e61d7f50c25c96377272aea5c8c071298659fae4)]:
+  - @uiid/tokens@0.0.23
+  - @uiid/cards@0.0.23
+  - @uiid/buttons@0.0.23
+  - @uiid/layout@0.0.23
+  - @uiid/typography@0.0.23
+  - @uiid/icons@0.0.23
+
 ## 0.0.22
 
 ### Patch Changes

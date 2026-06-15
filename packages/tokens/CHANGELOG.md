@@ -1,5 +1,17 @@
 # @uiid/tokens
 
+## 0.0.23
+
+### Patch Changes
+
+- [#220](https://github.com/uiid-systems/design-system/pull/220) [`1d0c6e2`](https://github.com/uiid-systems/design-system/commit/1d0c6e24e6212f7f12530259110ac1cbc1344c0d) Thanks [@adamfratino](https://github.com/adamfratino)! - Tighten `Badge` sizing to feel sane at `small`. Reduces padding-y across all sizes (small `0.375rem` → `0.125rem`), trims padding-x on medium/large, drops border-radius from `0.5rem` → `0.375rem`, and adds a new `--badge-line-height` token (`1.25`) applied to both `.badge` and `.badge-text` so the inner `<Text>` no longer forces 1.5 line-height padding into the box. The small badge now lands around 18–20px tall — proportional to shadcn's default badge.
+
+- [#214](https://github.com/uiid-systems/design-system/pull/214) [`f4ef8ce`](https://github.com/uiid-systems/design-system/commit/f4ef8ce332a0f1fa88d5323e6105120b972a74b9) Thanks [@adamfratino](https://github.com/adamfratino)! - Introduce `@uiid/tokens/compositions.module.css` as a shared CSS Modules source for `composes`. Adds a `.disabled` class that bundles `opacity: var(--globals-disabled-opacity)` and `pointer-events: none` under the new `uiid.compositions` layer, and converts 14 consumers (input, checkbox, radio, switch, textarea, slider, number-field's increment/decrement, button, code-editor, sidebar-menu-button, sidebar-menu-sub-button, accordion-root, resizable-handle, sortable-item-handle) to compose this source instead of duplicating the rule.
+
+- [#218](https://github.com/uiid-systems/design-system/pull/218) [`101b095`](https://github.com/uiid-systems/design-system/commit/101b0956bedd5690878d910b4e420aa54e9df2a6) Thanks [@adamfratino](https://github.com/adamfratino)! - Internal cleanup. Delete the duplicate `src/schema/theme-input.ts`, `src/schema/__tests__/`, and `src/schema/examples/` left over from when the schema migrated to `@uiid/themes` in #132. The public `./schema` export continues to re-export from `@uiid/themes/schema` via `src/schema/index.ts` — no API change for consumers.
+
+- [#217](https://github.com/uiid-systems/design-system/pull/217) [`e61d7f5`](https://github.com/uiid-systems/design-system/commit/e61d7f50c25c96377272aea5c8c071298659fae4) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix Card referencing dead CSS vars (`--text-0-weight`, `--text-0-letterSpacing`) left over from the typography refit in #212 — corrected to `--text-0-font-weight` and `--text-0-letter-spacing`. Migrate `typography.tokens.json` to the DTCG composite `$type: "typography"` token format and teach the generator to decompose composite tokens into per-property CSS vars; the emitted CSS output is unchanged.
+
 ## 0.0.22
 
 ## 0.0.21
