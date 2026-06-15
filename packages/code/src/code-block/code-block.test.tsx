@@ -61,21 +61,16 @@ describe("CodeBlock", () => {
     expect(screen.getByText("example.ts")).toBeInTheDocument();
   });
 
-  it("renders copy button when copyable is true", () => {
-    render(<CodeBlock code="const x = 1;" copyable />);
+  it("always renders the copy button", () => {
+    render(<CodeBlock code="const x = 1;" />);
     expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
   });
 
-  it("does not render copy button when copyable is false", () => {
-    render(<CodeBlock code="const x = 1;" copyable={false} />);
-    expect(screen.queryByRole("button", { name: /copy/i })).not.toBeInTheDocument();
-  });
-
-  it("does not render header when no filename and copyable is false", () => {
-    render(<CodeBlock code="const x = 1;" copyable={false} />);
+  it("always renders the wrap toggle", () => {
+    render(<CodeBlock code="const x = 1;" />);
     expect(
-      document.querySelector('[data-slot="code-block-header"]')
-    ).not.toBeInTheDocument();
+      document.querySelector('[data-slot="code-block-wrap-button"]')
+    ).toBeInTheDocument();
   });
 
   // ============================================
@@ -90,7 +85,6 @@ describe("CodeBlock", () => {
     const copyButton = screen.getByRole("button", { name: /copy/i });
     await user.click(copyButton);
 
-    // Verify the button state changed to copied (which means the click handler ran)
     await waitFor(() => {
       expect(copyButton).toHaveAttribute("data-copied", "true");
     });
@@ -142,7 +136,9 @@ describe("CodeBlock", () => {
 
   it("copy button has accessible name", () => {
     render(<CodeBlock code="const x = 1;" />);
-    expect(screen.getByRole("button")).toHaveAccessibleName(/copy/i);
+    expect(
+      screen.getByRole("button", { name: /copy/i })
+    ).toHaveAccessibleName(/copy/i);
   });
 
   it("copy button updates accessible name after copying", async () => {
@@ -154,6 +150,82 @@ describe("CodeBlock", () => {
 
     await waitFor(() => {
       expect(copyButton).toHaveAccessibleName(/copied/i);
+    });
+  });
+
+  // ============================================
+  // WRAP
+  // ============================================
+
+  it("toggling the wrap button flips the content wrap attribute", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+    const content = document.querySelector(
+      '[data-slot="code-block-content"]'
+    );
+    expect(content).not.toHaveAttribute("data-wrap");
+
+    await user.click(
+      screen.getByRole("button", { name: /toggle line wrap/i })
+    );
+    await waitFor(() => {
+      expect(content).toHaveAttribute("data-wrap", "true");
+    });
+  });
+
+  it("respects defaultWrap=true on first render", () => {
+    render(<CodeBlock code="const x = 1;" defaultWrap />);
+    expect(
+      document.querySelector('[data-slot="code-block-content"]')
+    ).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("fires onWrapChange when the wrap toggle is pressed", async () => {
+    const user = userEvent.setup();
+    const onWrapChange = vi.fn();
+    render(<CodeBlock code="const x = 1;" onWrapChange={onWrapChange} />);
+
+    await user.click(
+      screen.getByRole("button", { name: /toggle line wrap/i })
+    );
+
+    await waitFor(() => {
+      expect(onWrapChange).toHaveBeenCalledWith(true);
+    });
+  });
+
+  // ============================================
+  // LANGUAGE ICON
+  // ============================================
+
+  it("renders a language icon when language is explicitly set", () => {
+    render(<CodeBlock code="const x = 1;" language="typescript" />);
+    const icon = document.querySelector('[data-slot="language-icon"]');
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveAttribute("data-language", "typescript");
+  });
+
+  it("does not render a language icon when language is not explicitly set", () => {
+    render(<CodeBlock code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="language-icon"]')
+    ).not.toBeInTheDocument();
+  });
+
+  // ============================================
+  // ONCOPY CALLBACK
+  // ============================================
+
+  it("fires onCopy with the code after copying", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    const code = "const x = 1;";
+    render(<CodeBlock code={code} onCopy={onCopy} />);
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    await waitFor(() => {
+      expect(onCopy).toHaveBeenCalledWith(code);
     });
   });
 });
