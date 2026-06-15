@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Timeline } from "@uiid/design-system";
+import { Card, CodeBlock, Stack, Text, Timeline } from "@uiid/design-system";
 import type { TimelineItemType } from "@uiid/design-system";
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
@@ -95,6 +95,44 @@ export const PerItemColors: Story = {
       items={COLORED_ITEMS}
       activeIndex={3}
       {...args}
+    />
+  ),
+};
+
+const sampleCode = `export function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(count + 1)}>Count: {count}</button>;
+}`;
+
+const recapText =
+  "Reworked the timeline content card to honor the slot width. The previous layout shrank to its content because Stack defaults to inline-flex with `align-items: flex-start`; without `fullwidth` on both the wrapping Stack and the Card, the Card sizes to its longest child (a code line, typically) instead of the slot.";
+
+export const ComplexCard: Story = {
+  name: "Card content (pitfall: no fullwidth)",
+  render: () => (
+    <Timeline
+      ContentProps={{ maxw: 720 }}
+      activeIndex={1}
+      items={[
+        {
+          title: "Session recap",
+          time: "9:00 AM",
+          content: (
+            <Card InnerContainerProps={{ gap: 4 }}>
+              <Text>{recapText}</Text>
+              <CodeBlock
+                code={sampleCode}
+                language="typescript"
+                filename="counter.tsx"
+              />
+            </Card>
+          ),
+        },
+        {
+          title: "Next event",
+          time: "9:15 AM",
+        },
+      ]}
     />
   ),
 };
