@@ -1,5 +1,3 @@
-import { ChevronRight } from "@uiid/icons";
-
 export const BreadcrumbsSeparator = ({
   children,
   ...props
@@ -11,7 +9,7 @@ export const BreadcrumbsSeparator = ({
       aria-hidden="true"
       {...props}
     >
-      {children ?? <ChevronRight size={16} />}
+      {children ?? "/"}
     </li>
   );
 };
