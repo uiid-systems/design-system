@@ -1,5 +1,19 @@
 # @uiid/code
 
+## 0.0.25
+
+### Patch Changes
+
+- [#225](https://github.com/uiid-systems/design-system/pull/225) [`ba7ca2c`](https://github.com/uiid-systems/design-system/commit/ba7ca2cc1d87b3240d9b994f8b8f629633e09661) Thanks [@adamfratino](https://github.com/adamfratino)! - Fixed a flash of unstyled content during the (unavoidable) async shiki load: `CodeBlockContent` now renders the raw `code` as a styled `<pre><code>` with per-line spans while highlighting is pending, then swaps to the highlighted HTML in place. Identical layout, only token colors fill in.
+
+- Updated dependencies []:
+  - @uiid/buttons@0.0.25
+  - @uiid/cards@0.0.25
+  - @uiid/icons@0.0.25
+  - @uiid/layout@0.0.25
+  - @uiid/tokens@0.0.25
+  - @uiid/typography@0.0.25
+
 ## 0.0.24
 
 ### Patch Changes

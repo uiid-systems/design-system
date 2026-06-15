@@ -1,5 +1,15 @@
 # @uiid/indicators
 
+## 0.0.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/cards@0.0.25
+  - @uiid/tokens@0.0.25
+  - @uiid/typography@0.0.25
+  - @uiid/utils@0.0.25
+
 ## 0.0.24
 
 ### Patch Changes
