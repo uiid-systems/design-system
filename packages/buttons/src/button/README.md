@@ -1,99 +1,16 @@
 # Button
 
-> Primary action button with multiple size and variant options
+> The standard action trigger. Filled by default; swap the surface with `variant`, the footprint with `shape`, and the element with `render`.
 
-## Quick Reference
+Use Button when you want to:
 
-```tsx
-import { Button } from "@uiid/buttons";
+- Trigger an action — `onClick` is forwarded straight to the underlying `<button>`
+- Match a form-control row with `size` (`xsmall`, `small`, `medium`, `large`)
+- Soften the surface with `variant`: `subtle` (low-contrast fill), `ghost` (transparent), `inverted` (background-on-foreground)
+- Reshape the footprint with `shape`: `pill` (rounded), `square` (1:1, no padding), `circle` (round, 1:1) — pair `shape="square"` with `aria-label` for icon-only buttons
+- Show a spinner with `loading` without the button changing size
+- Wrap the trigger in a Tooltip via `tooltip` — no manual composition
+- Stretch to the container with `fullwidth`
+- Render as a different element (`<a>`, `<span>`, etc.) via the `render` prop with `nativeButton={false}` — useful for link buttons; the link keeps its `href`, `target`, and `rel`
 
-// Basic usage
-<Button>Click me</Button>
-
-// With variants
-<Button variant="subtle" size="large" shape="pill">
-  Submit
-</Button>
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<Button>Default button</Button>
-<Button disabled>Disabled</Button>
-```
-
-### Variants
-
-```tsx
-<Button variant="subtle">Subtle</Button>
-<Button variant="ghost">Ghost</Button>
-<Button variant="inverted">Inverted</Button>
-```
-
-### Sizes
-
-```tsx
-<Button size="xsmall">Extra Small</Button>
-<Button size="small">Small</Button>
-<Button size="medium">Medium</Button>
-<Button size="large">Large</Button>
-```
-
-### Shapes
-
-```tsx
-<Button shape="pill">Rounded pill</Button>
-<Button shape="square">■</Button>
-<Button shape="circle">●</Button>
-```
-
-### Loading State
-
-```tsx
-<Button loading>Submitting...</Button>
-```
-
-### As Link
-
-```tsx
-<Button nativeButton={false} render={<a href="/page" />}>
-  Navigate
-</Button>
-```
-
-## Props
-
-| Prop        | Type                                              | Default    | Description                           |
-| ----------- | ------------------------------------------------- | ---------- | ------------------------------------- |
-| `variant`   | `"subtle" \| "ghost" \| "inverted"`               | —          | Visual style variant                  |
-| `shape`     | `"pill" \| "square" \| "circle"`                  | —          | Button shape                          |
-| `size`      | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | Size variant                          |
-| `fullwidth` | `boolean`                                         | —          | Expand to fill container width        |
-| `loading`   | `boolean`                                         | —          | Show loading spinner, hide content    |
-| `disabled`  | `boolean`                                         | —          | Disable the button                    |
-| `tooltip`   | `ReactNode`                                       | —          | Tooltip content                       |
-
-> Additional props are forwarded to the underlying Base UI Button.
-
-## Data Slots
-
-| Slot                       | Element             |
-| -------------------------- | ------------------- |
-| `button`                   | Root button element |
-| `button-content-container` | Content wrapper     |
-| `button-spinner`           | Loading spinner     |
-
-## Accessibility
-
-- Built on Base UI Button with proper ARIA attributes
-- Keyboard: `Enter` and `Space` trigger click
-- Supports `aria-label` for icon-only buttons
-- `disabled` state is properly announced
-
-## See Also
-
-- [ToggleButton](../toggle-button/README.md) - Button with toggle state
-- [Base UI Button](https://base-ui.com/react/components/button) - Underlying primitive
+Additional props are forwarded to the underlying Base UI Button.

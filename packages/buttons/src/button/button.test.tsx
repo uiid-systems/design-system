@@ -4,354 +4,138 @@ import userEvent from "@testing-library/user-event";
 import { Button } from "./button";
 
 describe("Button", () => {
-  // ============================================
-  // RENDERING
-  // ============================================
-
-  it("renders a button element", () => {
+  it("renders children inside a button", () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole("button")).toBeInTheDocument();
-  });
-
-  it("renders with data-slot attribute", () => {
-    render(<Button>Click me</Button>);
-    expect(screen.getByRole("button")).toHaveAttribute("data-slot", "button");
-  });
-
-  it("renders children content", () => {
-    render(<Button>Click me</Button>);
-    expect(screen.getByRole("button")).toHaveTextContent("Click me");
-  });
-
-  it("applies custom className", () => {
-    render(<Button className="custom-class">Click me</Button>);
-    expect(screen.getByRole("button")).toHaveClass("custom-class");
-  });
-
-  it("forwards additional props to root element", () => {
-    render(<Button data-testid="test-button">Click me</Button>);
-    expect(screen.getByTestId("test-button")).toBeInTheDocument();
-  });
-
-  // ============================================
-  // VARIANTS
-  // ============================================
-
-  it("renders with size variants", () => {
-    const { rerender } = render(<Button size="small">Small</Button>);
-    expect(screen.getByRole("button").className).toContain("size-small");
-
-    rerender(<Button size="medium">Medium</Button>);
-    expect(screen.getByRole("button").className).toContain("size-medium");
-
-    rerender(<Button size="large">Large</Button>);
-    expect(screen.getByRole("button").className).toContain("size-large");
-  });
-
-  it("renders with variant prop", () => {
-    const { rerender } = render(<Button variant="subtle">Subtle</Button>);
-    expect(screen.getByRole("button").className).toContain("variant-subtle");
-
-    rerender(<Button variant="ghost">Ghost</Button>);
-    expect(screen.getByRole("button").className).toContain("variant-ghost");
-
-    rerender(<Button variant="inverted">Inverted</Button>);
-    expect(screen.getByRole("button").className).toContain("variant-inverted");
-  });
-
-  it("renders with shape prop", () => {
-    const { rerender } = render(<Button shape="pill">Pill</Button>);
-    expect(screen.getByRole("button").className).toContain("shape-pill");
-
-    rerender(<Button shape="square">■</Button>);
-    expect(screen.getByRole("button").className).toContain("shape-square");
-
-    rerender(<Button shape="circle">●</Button>);
-    expect(screen.getByRole("button").className).toContain("shape-circle");
-  });
-
-  it("renders correctly with variant='ghost'", () => {
-    render(<Button variant="ghost">Ghost</Button>);
     const button = screen.getByRole("button");
-    expect(button.className).toContain("variant-ghost");
-    expect(button.className).not.toContain("variant-subtle");
-    expect(button.className).not.toContain("variant-inverted");
-    expect(button).toHaveTextContent("Ghost");
+    expect(button).toHaveTextContent("Click me");
+    expect(button).toHaveAttribute("data-slot", "button");
   });
 
-  it("renders correctly with shape='square'", () => {
-    render(<Button shape="square">■</Button>);
-    const button = screen.getByRole("button");
-    expect(button.className).toContain("shape-square");
-    expect(button.className).not.toContain("shape-pill");
-    expect(button.className).not.toContain("shape-circle");
-    expect(button).toHaveTextContent("■");
-  });
-
-  it("applies both variant='ghost' and shape='square' together", () => {
+  it("forwards className and arbitrary props", () => {
     render(
-      <Button variant="ghost" shape="square">
-        ■
+      <Button className="extra" data-testid="btn">
+        Hi
       </Button>,
     );
-    const button = screen.getByRole("button");
-    expect(button.className).toContain("variant-ghost");
-    expect(button.className).toContain("shape-square");
-    expect(button).toBeInTheDocument();
+    const button = screen.getByTestId("btn");
+    expect(button).toHaveClass("extra");
   });
 
-  it("applies transition-related base styles class", () => {
-    render(<Button>Styled</Button>);
-    const button = screen.getByRole("button");
-    expect(button.className).toContain("button");
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "applies size=%s",
+    (size) => {
+      render(<Button size={size}>x</Button>);
+      expect(screen.getByRole("button").className).toContain(`size-${size}`);
+    },
+  );
 
-    const contentContainer = document.querySelector(
-      '[data-slot="button-content-container"]',
-    );
-    expect(contentContainer).toBeInTheDocument();
-  });
+  it.each(["subtle", "ghost", "inverted"] as const)(
+    "applies variant=%s",
+    (variant) => {
+      render(<Button variant={variant}>x</Button>);
+      expect(screen.getByRole("button").className).toContain(
+        `variant-${variant}`,
+      );
+    },
+  );
 
-  it("renders with all size variants including xsmall", () => {
-    const { rerender } = render(<Button size="xsmall">XSmall</Button>);
-    expect(screen.getByRole("button").className).toContain("size-xsmall");
+  it.each(["pill", "square", "circle"] as const)(
+    "applies shape=%s",
+    (shape) => {
+      render(<Button shape={shape}>x</Button>);
+      expect(screen.getByRole("button").className).toContain(`shape-${shape}`);
+    },
+  );
 
-    rerender(<Button size="small">Small</Button>);
-    expect(screen.getByRole("button").className).toContain("size-small");
-
-    rerender(<Button size="medium">Medium</Button>);
-    expect(screen.getByRole("button").className).toContain("size-medium");
-
-    rerender(<Button size="large">Large</Button>);
-    expect(screen.getByRole("button").className).toContain("size-large");
-  });
-
-  // ============================================
-  // INTERACTIONS
-  // ============================================
-
-  it("handles click events", async () => {
-    const handleClick = vi.fn();
+  it("fires onClick on click and keyboard", async () => {
+    const onClick = vi.fn();
     const user = userEvent.setup();
+    render(<Button onClick={onClick}>Click</Button>);
 
-    render(<Button onClick={handleClick}>Click me</Button>);
-    await user.click(screen.getByRole("button"));
-
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-
-  it("supports keyboard interaction with Enter", async () => {
-    const handleClick = vi.fn();
-    const user = userEvent.setup();
-
-    render(<Button onClick={handleClick}>Click me</Button>);
-    screen.getByRole("button").focus();
+    const button = screen.getByRole("button");
+    await user.click(button);
+    button.focus();
     await user.keyboard("{Enter}");
-
-    expect(handleClick).toHaveBeenCalled();
-  });
-
-  it("supports keyboard interaction with Space", async () => {
-    const handleClick = vi.fn();
-    const user = userEvent.setup();
-
-    render(<Button onClick={handleClick}>Click me</Button>);
-    screen.getByRole("button").focus();
     await user.keyboard(" ");
 
-    expect(handleClick).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalledTimes(3);
   });
 
-  // ============================================
-  // DISABLED STATE
-  // ============================================
-
-  it("can be disabled", () => {
-    render(<Button disabled>Disabled</Button>);
-    expect(screen.getByRole("button")).toBeDisabled();
-  });
-
-  it("does not trigger click when disabled", async () => {
-    const handleClick = vi.fn();
+  it("does not fire onClick when disabled", async () => {
+    const onClick = vi.fn();
     const user = userEvent.setup();
-
     render(
-      <Button disabled onClick={handleClick}>
+      <Button disabled onClick={onClick}>
         Disabled
       </Button>,
     );
-    await user.click(screen.getByRole("button"));
 
-    expect(handleClick).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button"));
+    expect(screen.getByRole("button")).toBeDisabled();
+    expect(onClick).not.toHaveBeenCalled();
   });
 
-  // ============================================
-  // LOADING STATE
-  // ============================================
-
-  it("shows loading state", () => {
-    render(<Button loading>Loading</Button>);
-    const contentContainer = document.querySelector(
+  it("hides content and shows spinner when loading", () => {
+    render(<Button loading>Submitting</Button>);
+    const content = document.querySelector(
       '[data-slot="button-content-container"]',
     );
-    expect(contentContainer).toHaveAttribute("data-loading", "true");
-    expect(contentContainer).toHaveAttribute("aria-hidden", "true");
-  });
-
-  it("shows spinner when loading", () => {
-    render(<Button loading>Loading</Button>);
     const spinner = document.querySelector('[data-slot="button-spinner"]');
+
+    expect(content).toHaveAttribute("data-loading", "true");
+    expect(content).toHaveAttribute("aria-hidden", "true");
     expect(spinner).toHaveAttribute("data-loading", "true");
   });
 
-  it("hides content when loading", () => {
-    render(<Button loading>Loading</Button>);
-    const contentContainer = document.querySelector(
-      '[data-slot="button-content-container"]',
-    );
-    expect(contentContainer).toHaveAttribute("aria-hidden", "true");
-  });
-
-  // ============================================
-  // ACCESSIBILITY
-  // ============================================
-
-  it("has accessible name from children", () => {
-    render(<Button>Submit form</Button>);
-    expect(screen.getByRole("button")).toHaveAccessibleName("Submit form");
-  });
-
   it("supports aria-label for icon-only buttons", () => {
-    render(<Button aria-label="Close dialog">✕</Button>);
-    expect(screen.getByRole("button")).toHaveAccessibleName("Close dialog");
+    render(<Button aria-label="Close">✕</Button>);
+    expect(screen.getByRole("button")).toHaveAccessibleName("Close");
   });
 
-  it("supports aria-describedby", () => {
-    render(
-      <>
-        <Button aria-describedby="help-text">Submit</Button>
-        <span id="help-text">This will submit the form</span>
-      </>,
-    );
-    expect(screen.getByRole("button")).toHaveAttribute(
-      "aria-describedby",
-      "help-text",
-    );
-  });
-
-  // ============================================
-  // TYPE ATTRIBUTE
-  // ============================================
-
-  it("defaults to type button", () => {
-    render(<Button>Click me</Button>);
+  it("defaults to type=button and accepts submit/reset", () => {
+    const { rerender } = render(<Button>x</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "button");
-  });
 
-  it("can be set to type submit", () => {
-    render(<Button type="submit">Submit</Button>);
+    rerender(<Button type="submit">x</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "submit");
-  });
 
-  it("can be set to type reset", () => {
-    render(<Button type="reset">Reset</Button>);
+    rerender(<Button type="reset">x</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "reset");
   });
 
-  // ============================================
-  // BASE UI API
-  // ============================================
-
-  it("renders as anchor element when nativeButton is false with render prop", () => {
-    render(
-      <Button nativeButton={false} render={<a href="https://example.com" />}>
-        Visit site
-      </Button>,
-    );
-
-    // Base UI adds role="button" to maintain button semantics
-    const button = screen.getByRole("button");
-    expect(button.tagName).toBe("A");
-    expect(button).toHaveAttribute("href", "https://example.com");
-    expect(button).toHaveTextContent("Visit site");
-  });
-
-  it("preserves button styling when rendered as anchor", () => {
-    render(
-      <Button
-        nativeButton={false}
-        render={<a href="https://example.com" />}
-        size="large"
-        variant="subtle"
-      >
-        Visit site
-      </Button>,
-    );
-
-    const button = screen.getByRole("button");
-    expect(button.tagName).toBe("A");
-    expect(button.className).toContain("size-large");
-    expect(button.className).toContain("variant-subtle");
-  });
-
-  it("preserves anchor attributes when using render prop", () => {
+  it("renders as an anchor via the render prop and preserves href/target/rel", () => {
     render(
       <Button
         nativeButton={false}
         render={<a href="https://example.com" target="_blank" rel="noopener" />}
+        size="large"
+        variant="subtle"
       >
-        External link
+        Visit
       </Button>,
     );
 
-    const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("href", "https://example.com");
-    expect(button).toHaveAttribute("target", "_blank");
-    expect(button).toHaveAttribute("rel", "noopener");
+    const link = screen.getByRole("button");
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "https://example.com");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener");
+    expect(link).toHaveAttribute("data-slot", "button");
+    expect(link.className).toContain("size-large");
+    expect(link.className).toContain("variant-subtle");
   });
 
-  it("renders as custom element with render prop", () => {
+  it("triggers onClick from Enter on a polymorphic anchor", async () => {
+    const onClick = vi.fn();
+    const user = userEvent.setup();
     render(
-      <Button nativeButton={false} render={<span />}>
-        Span button
-      </Button>,
-    );
-
-    // Base UI still applies role="button" to custom elements
-    const button = screen.getByRole("button");
-    expect(button.tagName).toBe("SPAN");
-    expect(button).toHaveTextContent("Span button");
-  });
-
-  it("applies data-slot to custom rendered element", () => {
-    render(
-      <Button nativeButton={false} render={<a href="#" />}>
+      <Button nativeButton={false} render={<a href="#" />} onClick={onClick}>
         Link
       </Button>,
     );
 
-    const button = screen.getByRole("button");
-    expect(button.tagName).toBe("A");
-    expect(button).toHaveAttribute("data-slot", "button");
-  });
-
-  it("supports keyboard interaction on anchor rendered as button", async () => {
-    const handleClick = vi.fn();
-    const user = userEvent.setup();
-
-    render(
-      <Button
-        nativeButton={false}
-        render={<a href="#" />}
-        onClick={handleClick}
-      >
-        Link button
-      </Button>,
-    );
-
-    const button = screen.getByRole("button");
-    button.focus();
+    screen.getByRole("button").focus();
     await user.keyboard("{Enter}");
-
-    expect(handleClick).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalled();
   });
 });

@@ -1,0 +1,20 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Buttons/Overview" />
+
+# Buttons
+
+Action triggers. Variants change the surface, sizes match form-control heights, and shapes adapt the button for icon-only or pill-shaped affordances.
+
+## Which one do I reach for?
+
+- **[Button](?path=/docs/buttons-button--docs)** — the standard action. Renders as `<button>` by default; swap to `<a>`, `<span>`, or any element via the `render` prop (with `nativeButton={false}`).
+- **[Toggle Button](?path=/docs/buttons-toggle-button--docs)** — a Button with on/off state. Pair pressed/unpressed icons or text via the `icon`/`text` props.
+
+## Shared conventions
+
+- `size` mirrors form-control sizes (`xsmall`, `small`, `medium`, `large`) so buttons line up with `Input`, `Select`, etc.
+- `variant` only changes the surface: `subtle`, `ghost`, `inverted`. Default is the foreground-on-background filled style.
+- `shape` overrides the default rectangle: `pill` (rounded), `square` (1:1, no padding), `circle` (round, 1:1). Icon-only buttons typically pair `shape="square"` with `aria-label`.
+- `loading` swaps the content for a spinner while keeping the button's footprint stable.
+- `tooltip` wraps the trigger in a Tooltip — no need to compose it manually.

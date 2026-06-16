@@ -1,79 +1,55 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Heart, Sun, Moon } from "@uiid/icons";
-import { Stack, Group, ToggleButton } from "@uiid/design-system";
+import { Heart } from "@uiid/icons";
+import { ToggleButton } from "@uiid/design-system";
+
+import * as Examples from "../../../../packages/buttons/src/toggle-button/toggle-button.examples";
 
 const meta = {
   title: "Buttons/Toggle Button",
   component: ToggleButton,
   tags: ["beta"],
-  args: {},
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
+  args: {
+    children: "Favorite",
+  },
   argTypes: {
-    disabled: { control: "boolean" },
-    onClick: { action: "onClick" },
+    children: { control: "text", table: { category: "Content" } },
+    defaultPressed: { control: "boolean", table: { category: "State" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    size: {
+      control: "select",
+      options: ["xsmall", "small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+    variant: {
+      control: "select",
+      options: ["subtle", "ghost", "inverted"],
+      table: { category: "Variants" },
+    },
+    shape: {
+      control: "select",
+      options: ["pill", "square", "circle"],
+      table: { category: "Variants" },
+    },
   },
 } satisfies Meta<typeof ToggleButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Toggle Button",
-  render: (args) => {
-    return (
-      <Stack gap={4}>
-        <Group gap={2} ay="center">
-          <ToggleButton
-            {...args}
-            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
-            shape="square"
-          />
-          <ToggleButton
-            {...args}
-            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
-          >
-            Favorite
-          </ToggleButton>
-          <ToggleButton
-            {...args}
-            icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
-            text={{ pressed: "Favorited", unpressed: "Favorite" }}
-          />
-        </Group>
-
-        <Group gap={2} ay="center">
-          <ToggleButton
-            {...args}
-            variant="subtle"
-            icon={{
-              pressed: <Sun stroke="gold" />,
-              unpressed: <Moon stroke="aqua" />,
-            }}
-            shape="square"
-          />
-          <ToggleButton
-            {...args}
-            variant="subtle"
-            icon={{
-              pressed: <Sun stroke="gold" />,
-              unpressed: <Moon stroke="aqua" />,
-            }}
-          >
-            Toggle theme
-          </ToggleButton>
-          <ToggleButton
-            {...args}
-            variant="subtle"
-            text={{ pressed: "Dark Mode", unpressed: "Light Mode" }}
-            icon={{
-              pressed: <Sun stroke="gold" />,
-              unpressed: <Moon stroke="aqua" />,
-            }}
-          >
-            Light Mode
-          </ToggleButton>
-        </Group>
-      </Stack>
-    );
-  },
+export const Playground: Story = {
+  render: (args) => (
+    <ToggleButton
+      {...args}
+      icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+    />
+  ),
 };
+
+export const Pressed: Story = { render: () => <Examples.Pressed /> };
+export const DynamicIcon: Story = { render: () => <Examples.DynamicIcon /> };
+export const DynamicText: Story = { render: () => <Examples.DynamicText /> };
+export const IconAndText: Story = { render: () => <Examples.IconAndText /> };

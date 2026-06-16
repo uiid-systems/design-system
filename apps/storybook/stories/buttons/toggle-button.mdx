@@ -1,0 +1,11 @@
+import { Meta, Markdown, Controls } from "@storybook/addon-docs/blocks";
+import readme from "../../../../packages/buttons/src/toggle-button/README.md?raw";
+import * as Stories from "./toggle-button.stories";
+
+<Meta of={Stories} />
+
+<Markdown>{readme}</Markdown>
+
+# Props
+
+<Controls of={Stories.Playground} />
