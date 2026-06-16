@@ -1,5 +1,15 @@
 # @uiid/mcp
 
+## 0.0.19
+
+### Patch Changes
+
+- [`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1) Thanks [@adamfratino](https://github.com/adamfratino)! - simplify breadcrumbs caret
+
+- Updated dependencies [[`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1)]:
+  - @uiid/blocks@0.0.26
+  - @uiid/registry@0.0.26
+
 ## 0.0.18
 
 ### Patch Changes

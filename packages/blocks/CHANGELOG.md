@@ -1,5 +1,11 @@
 # @uiid/blocks
 
+## 0.0.26
+
+### Patch Changes
+
+- [`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1) Thanks [@adamfratino](https://github.com/adamfratino)! - simplify breadcrumbs caret
+
 ## 0.0.25
 
 ## 0.0.24
