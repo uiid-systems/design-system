@@ -10,7 +10,7 @@ All stories live in `apps/storybook/stories/`, organized by package category:
 apps/storybook/stories/
 ├── buttons/          # Button, ToggleButton
 ├── calendars/        # DatePicker, DateRangePicker, EventCalendar
-├── cards/            # Card, ActionCard
+├── cards/            # Card
 ├── code/             # CodeBlock, CodeEditor, CodeInline
 ├── forms/            # Input, Select, Checkbox, etc.
 ├── indicators/       # Badge, Alert, Avatar, Status, etc.

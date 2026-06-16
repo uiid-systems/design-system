@@ -1,59 +1,15 @@
 # Card
 
-> Container card with title, description, icon, action, and footer slots
+> Container card. Title, description, icon, action, footer, and thumbnail are slot props; the children prop fills the body.
 
-## Quick Reference
+Use Card when you want to:
 
-```tsx
-import { Card } from "@uiid/cards";
+- Group related content behind a single surface with consistent padding, border, and shadow
+- Compose a header from any combination of `icon`, `title`, `description`, and `action` — pass only the props you need
+- Add a flush `thumbnail` above the header (image, illustration, chart)
+- Place a `footer` separated by a divider — typically a row of actions
+- Drop the surface fill (`transparent`), padding (`trimmed`), or all three (`ghost`) for inline placements
+- Invert to a foreground surface with `inverted`
+- Render as a different element (`<a>`, `<article>`, `<button>`) via the `render` prop — links and buttons gain a scale-on-hover affordance automatically
 
-<Card />
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `action` | `ReactNode` | — | — |
-| `ax` | `"start" \| "center" \| "end" \| "space-between" \| "stretch"` | — | — |
-| `ay` | `"start" \| "center" \| "end" \| "baseline" \| "stretch"` | — | — |
-| `b` | `number` | — | — |
-| `bb` | `number` | — | — |
-| `bl` | `number` | — | — |
-| `br` | `number` | — | — |
-| `bt` | `number` | — | — |
-| `bx` | `number` | — | — |
-| `by` | `number` | — | — |
-| `description` | `ReactNode` | — | — |
-| `direction` | `"column" \| "row"` | — | — |
-| `evenly` | `boolean` | — | — |
-| `footer` | `ReactNode` | — | — |
-| `fullheight` | `boolean` | — | — |
-| `fullscreen` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `gap` | `number` | — | — |
-| `ghost` | `boolean` | — | — |
-| `icon` | `ReactNode` | — | — |
-| `inverted` | `boolean` | — | — |
-| `m` | `number \| "auto"` | — | — |
-| `mb` | `number \| "auto"` | — | — |
-| `ml` | `number \| "auto"` | — | — |
-| `mr` | `number \| "auto"` | — | — |
-| `mt` | `number \| "auto"` | — | — |
-| `mx` | `number \| "auto"` | — | — |
-| `my` | `number \| "auto"` | — | — |
-| `p` | `number` | — | — |
-| `pb` | `number` | — | — |
-| `pl` | `number` | — | — |
-| `pr` | `number` | — | — |
-| `pt` | `number` | — | — |
-| `px` | `number` | — | — |
-| `py` | `number` | — | — |
-| `title` | `ReactNode` | — | — |
-| `tone` | `"positive" \| "critical" \| "warning" \| "info"` | — | — |
-| `transparent` | `boolean` | — | — |
-| `trimmed` | `boolean` | — | — |
-
-## See Also
-
-- TODO: Add related components
+Slot overrides (`HeaderProps`, `TitleProps`, `DescriptionProps`, `IconProps`, `ActionProps`, `FooterProps`, `ThumbnailProps`, `InnerContainerProps`) forward props through to the subcomponent when the slot prop isn't expressive enough.
