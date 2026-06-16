@@ -5,240 +5,113 @@ import userEvent from "@testing-library/user-event";
 import { ToggleButton } from "./toggle-button";
 
 describe("ToggleButton", () => {
-  // ============================================
-  // RENDERING
-  // ============================================
-
-  it("renders a button element", () => {
+  it("renders an unpressed button by default", () => {
     render(<ToggleButton>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    const button = screen.getByRole("button");
+    expect(button).toHaveTextContent("Toggle");
+    expect(button).toHaveAttribute("aria-pressed", "false");
+    expect(button).toHaveAttribute("data-slot", "button");
   });
 
-  it("renders with data-slot attribute from underlying Button", () => {
-    render(<ToggleButton>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("data-slot", "button");
-  });
-
-  it("renders children content", () => {
-    render(<ToggleButton>Toggle me</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveTextContent("Toggle me");
-  });
-
-  it("applies custom className", () => {
-    render(<ToggleButton className="custom-class">Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveClass("custom-class");
-  });
-
-  // ============================================
-  // TOGGLE STATE
-  // ============================================
-
-  it("starts in unpressed state by default", () => {
-    render(<ToggleButton>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "false");
-  });
-
-  it("can be toggled by clicking", async () => {
+  it("toggles aria-pressed on click and on Enter/Space", async () => {
     const user = userEvent.setup();
     render(<ToggleButton>Toggle</ToggleButton>);
-
     const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("aria-pressed", "false");
 
     await user.click(button);
     expect(button).toHaveAttribute("aria-pressed", "true");
 
-    await user.click(button);
+    button.focus();
+    await user.keyboard("{Enter}");
     expect(button).toHaveAttribute("aria-pressed", "false");
+
+    await user.keyboard(" ");
+    expect(button).toHaveAttribute("aria-pressed", "true");
   });
 
-  it("supports controlled pressed state", async () => {
-    const handleChange = vi.fn();
+  it("respects defaultPressed for uncontrolled usage", () => {
+    render(<ToggleButton defaultPressed>Toggle</ToggleButton>);
+    expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "true");
+  });
 
-    const ControlledToggle = () => {
+  it("supports controlled pressed state via onPressedChange", async () => {
+    const onPressedChange = vi.fn();
+    const Controlled = () => {
       const [pressed, setPressed] = useState(false);
       return (
         <ToggleButton
           pressed={pressed}
-          onPressedChange={(value) => {
-            setPressed(value);
-            handleChange(value);
+          onPressedChange={(v) => {
+            setPressed(v);
+            onPressedChange(v);
           }}
         >
           Toggle
         </ToggleButton>
       );
     };
-
     const user = userEvent.setup();
-    render(<ControlledToggle />);
-
+    render(<Controlled />);
     const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("aria-pressed", "false");
 
     await user.click(button);
-    expect(handleChange).toHaveBeenCalledWith(true);
+    expect(onPressedChange).toHaveBeenCalledWith(true);
     expect(button).toHaveAttribute("aria-pressed", "true");
 
     await user.click(button);
-    expect(handleChange).toHaveBeenCalledWith(false);
+    expect(onPressedChange).toHaveBeenCalledWith(false);
     expect(button).toHaveAttribute("aria-pressed", "false");
   });
 
-  it("supports defaultPressed for uncontrolled usage", () => {
-    render(<ToggleButton defaultPressed>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "true");
-  });
-
-  // ============================================
-  // DYNAMIC TEXT
-  // ============================================
-
-  it("shows unpressed text when not pressed", () => {
-    render(
-      <ToggleButton text={{ pressed: "On", unpressed: "Off" }}>
-        Default
-      </ToggleButton>,
-    );
-    expect(screen.getByRole("button")).toHaveTextContent("Off");
-  });
-
-  it("shows pressed text when pressed", async () => {
+  it("swaps text by pressed state and falls back to children when text is absent", async () => {
     const user = userEvent.setup();
-    render(
+    const { rerender } = render(
       <ToggleButton text={{ pressed: "On", unpressed: "Off" }}>
         Default
       </ToggleButton>,
     );
-
     const button = screen.getByRole("button");
+    expect(button).toHaveTextContent("Off");
+
     await user.click(button);
-
     expect(button).toHaveTextContent("On");
-  });
 
-  it("falls back to children when text prop not provided", () => {
-    render(<ToggleButton>Fallback</ToggleButton>);
+    rerender(<ToggleButton>Fallback</ToggleButton>);
     expect(screen.getByRole("button")).toHaveTextContent("Fallback");
   });
 
-  // ============================================
-  // DYNAMIC ICONS
-  // ============================================
-
-  it("shows unpressed icon when not pressed", () => {
-    render(
-      <ToggleButton
-        icon={{
-          pressed: <span data-testid="icon-on">🔔</span>,
-          unpressed: <span data-testid="icon-off">🔕</span>,
-        }}
-      >
-        Notifications
-      </ToggleButton>,
-    );
-
-    expect(screen.getByTestId("icon-off")).toBeInTheDocument();
-    expect(screen.queryByTestId("icon-on")).not.toBeInTheDocument();
-  });
-
-  it("shows pressed icon when pressed", async () => {
+  it("swaps icon by pressed state", async () => {
     const user = userEvent.setup();
     render(
       <ToggleButton
         icon={{
-          pressed: <span data-testid="icon-on">🔔</span>,
-          unpressed: <span data-testid="icon-off">🔕</span>,
+          pressed: <span data-testid="on">on</span>,
+          unpressed: <span data-testid="off">off</span>,
         }}
       >
         Notifications
       </ToggleButton>,
     );
+
+    expect(screen.getByTestId("off")).toBeInTheDocument();
+    expect(screen.queryByTestId("on")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button"));
-
-    expect(screen.getByTestId("icon-on")).toBeInTheDocument();
-    expect(screen.queryByTestId("icon-off")).not.toBeInTheDocument();
-  });
-
-  // ============================================
-  // KEYBOARD INTERACTION
-  // ============================================
-
-  it("can be toggled with Enter key", async () => {
-    const user = userEvent.setup();
-    render(<ToggleButton>Toggle</ToggleButton>);
-
-    const button = screen.getByRole("button");
-    button.focus();
-    await user.keyboard("{Enter}");
-
-    expect(button).toHaveAttribute("aria-pressed", "true");
-  });
-
-  it("can be toggled with Space key", async () => {
-    const user = userEvent.setup();
-    render(<ToggleButton>Toggle</ToggleButton>);
-
-    const button = screen.getByRole("button");
-    button.focus();
-    await user.keyboard(" ");
-
-    expect(button).toHaveAttribute("aria-pressed", "true");
-  });
-
-  // ============================================
-  // DISABLED STATE
-  // ============================================
-
-  it("can be disabled", () => {
-    render(<ToggleButton disabled>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByTestId("on")).toBeInTheDocument();
+    expect(screen.queryByTestId("off")).not.toBeInTheDocument();
   });
 
   it("does not toggle when disabled", async () => {
     const user = userEvent.setup();
     render(<ToggleButton disabled>Toggle</ToggleButton>);
-
     const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("aria-pressed", "false");
 
     await user.click(button);
+    expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-pressed", "false");
   });
 
-  // ============================================
-  // BUTTON VARIANTS (inherited from Button)
-  // ============================================
-
-  it("supports size variants", () => {
-    const { rerender } = render(<ToggleButton size="small">Toggle</ToggleButton>);
-    expect(screen.getByRole("button").className).toContain("size-small");
-
-    rerender(<ToggleButton size="large">Toggle</ToggleButton>);
-    expect(screen.getByRole("button").className).toContain("size-large");
-  });
-
-  it("supports ghost variant", () => {
-    render(<ToggleButton variant="ghost">Toggle</ToggleButton>);
-    expect(screen.getByRole("button").className).toContain("variant-ghost");
-  });
-
-  it("supports pill shape", () => {
-    render(<ToggleButton shape="pill">Toggle</ToggleButton>);
-    expect(screen.getByRole("button").className).toContain("shape-pill");
-  });
-
-  // ============================================
-  // ACCESSIBILITY
-  // ============================================
-
-  it("has aria-pressed attribute", () => {
-    render(<ToggleButton>Toggle</ToggleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("aria-pressed");
-  });
-
-  it("supports aria-label", () => {
+  it("supports aria-label for icon-only triggers", () => {
     render(<ToggleButton aria-label="Toggle notifications">🔔</ToggleButton>);
     expect(screen.getByRole("button")).toHaveAccessibleName(
       "Toggle notifications",

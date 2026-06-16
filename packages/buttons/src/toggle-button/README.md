@@ -1,93 +1,12 @@
 # ToggleButton
 
-> Toggle button with pressed/unpressed states and optional dynamic icon/text
+> A Button with an on/off state. Pair `pressed`/`unpressed` icons or text via the `icon` and `text` props.
 
-## Quick Reference
+Use ToggleButton when you want to:
 
-```tsx
-import { ToggleButton } from "@uiid/buttons";
+- Track a binary pressed state — controlled via `pressed` + `onPressedChange`, or uncontrolled via `defaultPressed`
+- Swap icons by pressed state with `icon={{ pressed, unpressed }}` — common for favorite/like, follow, theme toggles
+- Swap labels by pressed state with `text={{ pressed, unpressed }}` — overrides `children` while the toggle is in that state; if `text` is omitted, `children` renders in both states
+- Inherit everything from [Button](../button/README.md): `variant`, `size`, `shape`, `fullwidth`, `loading`, `tooltip`, `render`
 
-// Basic usage
-<ToggleButton>Toggle me</ToggleButton>
-
-// With dynamic content
-<ToggleButton
-  text={{ pressed: "On", unpressed: "Off" }}
-  icon={{ pressed: <CheckIcon />, unpressed: <XIcon /> }}
-/>
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<ToggleButton>Toggle</ToggleButton>
-<ToggleButton disabled>Disabled</ToggleButton>
-```
-
-### Dynamic Text
-
-```tsx
-<ToggleButton text={{ pressed: "Enabled", unpressed: "Disabled" }}>
-  Default text
-</ToggleButton>
-```
-
-### Dynamic Icons
-
-```tsx
-<ToggleButton
-  icon={{
-    pressed: <Heart fill="red" />,
-    unpressed: <Heart />,
-  }}
-  shape="square"
-/>
-```
-
-### Controlled
-
-```tsx
-const [pressed, setPressed] = useState(false);
-
-<ToggleButton pressed={pressed} onPressedChange={setPressed}>
-  {pressed ? "Active" : "Inactive"}
-</ToggleButton>;
-```
-
-## Props
-
-| Prop             | Type                                              | Default    | Description |
-| ---------------- | ------------------------------------------------- | ---------- | ----------- |
-| `defaultPressed` | `boolean`                                         | —          | —           |
-| `disabled`       | `boolean`                                         | —          | —           |
-| `fullwidth`      | `boolean`                                         | —          | —           |
-| `icon`           | `object`                                          | —          | —           |
-| `loading`        | `boolean`                                         | —          | —           |
-| `pressed`        | `boolean`                                         | —          | —           |
-| `shape`          | `"pill" \| "square" \| "circle"`                  | —          | —           |
-| `size`           | `"xsmall" \| "small" \| "medium" \| "large"`      | `"medium"` | —           |
-| `text`           | `object`                                          | —          | —           |
-| `tone`           | `"positive" \| "critical" \| "warning" \| "info"` | —          | —           |
-| `tooltip`        | `ReactNode`                                       | —          | —           |
-| `variant`        | `"subtle" \| "ghost" \| "inverted"`               | —          | —           |
-
-> Inherits all props from [Button](../button/README.md) including `variant`, `size`, `tone`, etc.
-
-## Data Slots
-
-| Slot     | Element                                     |
-| -------- | ------------------------------------------- |
-| `button` | Root button element (inherited from Button) |
-
-## Accessibility
-
-- Built on Base UI Toggle with `aria-pressed` attribute
-- Keyboard: `Enter` and `Space` toggle state
-- Screen readers announce pressed/unpressed state
-
-## See Also
-
-- [Button](../button/README.md) - Base button component
-- [Base UI Toggle](https://base-ui.com/react/components/toggle) - Underlying primitive
+The underlying primitive is Base UI Toggle, so `aria-pressed` is managed automatically and `Enter`/`Space` toggle the state.
