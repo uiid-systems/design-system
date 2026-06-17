@@ -1,5 +1,15 @@
 # @uiid/typography
 
+## 0.0.26
+
+### Patch Changes
+
+- [`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1) Thanks [@adamfratino](https://github.com/adamfratino)! - simplify breadcrumbs caret
+
+- Updated dependencies [[`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1), [`e740c85`](https://github.com/uiid-systems/design-system/commit/e740c8594ae614462e63543436cc4816c6a7ab02)]:
+  - @uiid/tokens@0.0.26
+  - @uiid/utils@0.0.26
+
 ## 0.0.25
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # @uiid/design-system
 
+## 0.0.26
+
+### Patch Changes
+
+- [`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1) Thanks [@adamfratino](https://github.com/adamfratino)! - simplify breadcrumbs caret
+
+- Updated dependencies [[`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1), [`e740c85`](https://github.com/uiid-systems/design-system/commit/e740c8594ae614462e63543436cc4816c6a7ab02), [`486ea23`](https://github.com/uiid-systems/design-system/commit/486ea2349e200b75f54f2f4073a318f2238376ef)]:
+  - @uiid/buttons@0.0.26
+  - @uiid/calendars@0.0.26
+  - @uiid/cards@0.0.26
+  - @uiid/code@0.0.26
+  - @uiid/forms@0.0.26
+  - @uiid/icons@0.0.26
+  - @uiid/indicators@0.0.26
+  - @uiid/interactive@0.0.26
+  - @uiid/layout@0.0.26
+  - @uiid/lists@0.0.26
+  - @uiid/navigation@0.0.26
+  - @uiid/overlays@0.0.26
+  - @uiid/tables@0.0.26
+  - @uiid/tokens@0.0.26
+  - @uiid/typography@0.0.26
+  - @uiid/utils@0.0.26
+
 ## 0.0.25
 
 ### Patch Changes

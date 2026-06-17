@@ -1,5 +1,21 @@
 # @uiid/buttons
 
+## 0.0.26
+
+### Patch Changes
+
+- [`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1) Thanks [@adamfratino](https://github.com/adamfratino)! - simplify breadcrumbs caret
+
+- [#229](https://github.com/uiid-systems/design-system/pull/229) [`e740c85`](https://github.com/uiid-systems/design-system/commit/e740c8594ae614462e63543436cc4816c6a7ab02) Thanks [@adamfratino](https://github.com/adamfratino)! - Trim the buttons package: rewrite both READMEs (button, toggle-button) in short-form, add `button.examples.tsx` and `toggle-button.examples.tsx` consumed by per-variant Storybook stories + a Playground each, add Buttons Overview / Button / Toggle Button MDX docs, regenerate `button.tokens.css` to drop the dead `--button-border-width`, `--button-border-radius`, and `--button-padding-y` vars, and tighten both test files (parameterized matrices, dropped redundant and class-name-only assertions, focused toggle-button tests on the toggle-specific behavior).
+
+- Updated dependencies [[`2808033`](https://github.com/uiid-systems/design-system/commit/2808033e3a20be69ed9f20d6d25220244072e7f1), [`e740c85`](https://github.com/uiid-systems/design-system/commit/e740c8594ae614462e63543436cc4816c6a7ab02)]:
+  - @uiid/icons@0.0.26
+  - @uiid/layout@0.0.26
+  - @uiid/overlays@0.0.26
+  - @uiid/tokens@0.0.26
+  - @uiid/typography@0.0.26
+  - @uiid/utils@0.0.26
+
 ## 0.0.25
 
 ### Patch Changes
