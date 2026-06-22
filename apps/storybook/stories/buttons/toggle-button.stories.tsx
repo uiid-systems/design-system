@@ -8,7 +8,6 @@ import * as Examples from "../../../../packages/buttons/src/toggle-button/toggle
 const meta = {
   title: "Buttons/Toggle Button",
   component: ToggleButton,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },

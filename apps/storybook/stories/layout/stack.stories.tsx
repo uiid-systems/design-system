@@ -7,7 +7,6 @@ import { ExampleBox, boxControls, EXAMPLE_LAYOUT_GAP } from "./constants";
 const meta = {
   title: "Layout/Stack",
   component: Stack,
-  tags: ["beta"],
   args: { gap: EXAMPLE_LAYOUT_GAP },
   argTypes: boxControls,
 } satisfies Meta<typeof Stack>;

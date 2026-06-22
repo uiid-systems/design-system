@@ -7,7 +7,6 @@ import { ExampleBox, disabledControls } from "./constants";
 const meta = {
   title: "Layout/Layer",
   component: Layer,
-  tags: ["beta"],
   args: { offset: { x: 0, y: 0 } },
   argTypes: {
     offset: {

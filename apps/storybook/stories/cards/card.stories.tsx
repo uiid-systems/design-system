@@ -7,7 +7,6 @@ import * as Examples from "../../../../packages/cards/src/card/card.examples";
 const meta = {
   title: "Cards/Card",
   component: Card,
-  tags: ["beta"],
   args: {
     title: "Card title",
     description: "A short supporting description that sits beneath the title.",

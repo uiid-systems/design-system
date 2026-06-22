@@ -8,7 +8,6 @@ import * as Examples from "../../../../packages/buttons/src/button/button.exampl
 const meta = {
   title: "Buttons/Button",
   component: Button,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
