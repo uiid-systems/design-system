@@ -7,7 +7,6 @@ import { boxControls } from "./constants";
 const meta = {
   title: "Layout/Box",
   component: Box,
-  tags: ["beta"],
   args: { h: 64, w: 64, bordered: true, rounded: true },
   argTypes: {
     ...boxControls,

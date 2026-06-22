@@ -7,7 +7,6 @@ import { ExampleBox, disabledControls } from "./constants";
 const meta = {
   title: "Layout/Conditional Render",
   component: ConditionalRender,
-  tags: ["beta"],
   args: {
     condition: true,
     render: <ExampleBox bg="gold" />,

@@ -5,7 +5,6 @@ import * as Examples from "../../../../packages/typography/src/prose/prose.examp
 const meta = {
   title: "Typography/Prose",
   component: Prose,
-  tags: ["beta"],
   argTypes: {
     render: { table: { disable: true } },
     ref: { table: { disable: true } },

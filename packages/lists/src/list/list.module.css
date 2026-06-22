@@ -1,136 +1,54 @@
 @import "@uiid/tokens/component/list.tokens.css";
 
 .list {
-  list-style-position: inside;
-
-  &:where([data-size="small"]) {
-    --list-item-padding-x: var(--list-size-sm-padding-x);
-    --list-item-padding-y: var(--list-size-sm-padding-y);
-    --list-icon-size: var(--list-size-sm-icon-size);
-    --list-font-size: var(--list-size-sm-font-size);
-  }
-
-  &:where([data-size="medium"]) {
-    --list-item-padding-x: var(--list-size-md-padding-x);
-    --list-item-padding-y: var(--list-size-md-padding-y);
-    --list-icon-size: var(--list-size-md-icon-size);
-    --list-font-size: var(--list-size-md-font-size);
-  }
-
-  &:where([data-size="large"]) {
-    --list-item-padding-x: var(--list-size-lg-padding-x);
-    --list-item-padding-y: var(--list-size-lg-padding-y);
-    --list-icon-size: var(--list-size-lg-icon-size);
-    --list-font-size: var(--list-size-lg-font-size);
-  }
-
-  &:where([data-type="none"]) {
+  &:where([data-marker="none"]) {
     list-style: none;
-    margin-inline-start: 0;
   }
 
-  &:is([data-direction="row"]) li {
-    width: auto;
-  }
-
-  &:is([data-type="ordered"], [data-type="unordered"]) {
+  &:is([data-marker="decimal"], [data-marker="disc"], [data-marker="square"]) {
     list-style-position: outside;
-
-    & > li {
-      margin-inline-start: 1rem;
-    }
+    padding-inline-start: 1rem;
   }
 
-  &:is([data-type="ordered"]) {
+  &:where([data-marker="decimal"]) {
     list-style-type: decimal;
   }
 
-  &:is([data-type="unordered"]) {
+  &:where([data-marker="disc"]) {
     list-style-type: disc;
   }
-}
 
-.list-item-group-collapsible-trigger {
-  border: none;
-  background-color: transparent;
-  color: var(--shade-muted);
-  padding-inline: 0.5rem;
-  padding-block: 1rem;
-  border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-duration) ease-in-out;
-
-  &:is(button) {
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--shade-accent);
-    }
-
-    &:active {
-      background-color: var(--shade-halftone);
-    }
-
-    &:focus-visible {
-      background-color: var(--shade-surface);
-      border-radius: var(--globals-border-radius);
-      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-      outline-offset: var(--globals-outline-offset);
-    }
+  &:where([data-marker="square"]) {
+    list-style-type: square;
   }
 }
 
-.list-item-group svg {
+.list-group-header + *:is(ul, ol) {
+  padding-inline-start: 0.5rem;
+}
+
+.list-group-icon {
   width: var(--list-icon-size);
 }
 
-.list-item-group-category {
-  min-height: var(--list-group-category-minHeight);
+.list-group-category {
+  min-height: var(--list-group-category-min-height);
   align-content: center;
-  padding-inline: 0.25rem;
 }
 
-.list-item-panel {
-  position: relative;
-  gap: 0.5rem;
-  padding-inline-start: 0.875rem;
-  margin-block-end: 1rem;
+.list-group-panel {
   list-style: none;
-
-  a {
-    color: var(--shade-foreground);
-  }
-
-  [data-line] & {
-    margin-inline-start: 0.75rem;
-    border-inline-start: var(--globals-border-width) solid var(--globals-border-color);
-    padding-inline-start: 0.125rem;
-  }
+  margin-block-end: 0.5rem;
 }
 
-.list-item {
-  padding: var(--list-item-padding-y) var(--list-item-padding-x);
-  border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-duration) ease-in-out;
-
-  &:not([data-disabled]):where([data-highlighted], :is(button, a) &:hover) {
-    background-color: var(--shade-accent);
-  }
-
-  &:where([data-disabled]) {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  svg {
-    width: var(--list-icon-size);
-  }
+.list-item svg {
+  transform: translateY(calc(var(--list-icon-size) * 0.25));
+  width: var(--list-icon-size);
 }
 
 .list-text-label {
   display: list-item;
-  min-height: var(--list-icon-size);
   align-content: center;
-  font-size: var(--list-font-size);
 
   :is(ol) &::marker {
     font-size: 0.625rem;
@@ -140,5 +58,4 @@
 
 .list-text-description {
   color: var(--shade-muted);
-  font-size: var(--list-font-size);
 }

@@ -15,7 +15,7 @@ export const ListTextBlock = ({
   return (
     <ConditionalRender
       condition={!!description}
-      render={<Stack data-slot="list-text-block" gap={2} {...props} />}
+      render={<Stack data-slot="list-text-block" mb={2} {...props} />}
     >
       <ListLabel>{label}</ListLabel>
       {description && <ListDescription>{description}</ListDescription>}

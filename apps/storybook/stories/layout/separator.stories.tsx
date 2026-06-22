@@ -12,7 +12,6 @@ import {
 const meta = {
   title: "Layout/Separator",
   component: Separator,
-  tags: ["beta"],
   args: { shade: "halftone" },
   argTypes: {
     shade: {

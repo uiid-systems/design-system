@@ -17,38 +17,35 @@ import {
 const MOCK_LINKS: ListProps["items"] = [
   {
     label: "TODO: Fix top-level item",
-    value: "top-level-item",
     icon: UserCircle,
   },
   {
     category: "TODO: Fix non-collapsible",
     icon: Home,
     items: [
-      { label: "Subitem 1", value: "subitem-1" },
-      { label: "Subitem 2", value: "subitem-2" },
-      { label: "Subitem 3", value: "subitem-3" },
+      { label: "Subitem 1" },
+      { label: "Subitem 2" },
+      { label: "Subitem 3" },
     ],
   },
   {
     category: "Community",
-    collapsible: true,
     icon: Home,
     items: [
-      { label: "Leaderboards", value: "leaderboards" },
-      { label: "Recent matches", value: "recent-matches" },
-      { label: "Find a match", value: "find-a-match" },
-      { label: "Join the Discord", value: "join-the-discord" },
+      { label: "Leaderboards" },
+      { label: "Recent matches" },
+      { label: "Find a match" },
+      { label: "Join the Discord" },
     ],
   },
   {
     category: "Favorites",
-    collapsible: true,
     icon: Heart,
     items: [
-      { label: "Allie Hyde", value: "allie-hyde" },
-      { label: "Sammy Shuffle", value: "sammy-shuffle" },
-      { label: "Jimmy Biscuits", value: "jimmy-biscuits" },
-      { label: "More...", value: "more" },
+      { label: "Allie Hyde" },
+      { label: "Sammy Shuffle" },
+      { label: "Jimmy Biscuits" },
+      { label: "More..." },
     ],
   },
 ];

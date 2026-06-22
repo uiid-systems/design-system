@@ -7,10 +7,8 @@ import { textControls } from "./constants";
 const meta = {
   title: "Typography/Text",
   component: Text,
-  tags: ["beta"],
   args: {
-    children:
-      "The quick brown fox jumps over the lazy dog — 1234567890",
+    children: "The quick brown fox jumps over the lazy dog — 1234567890",
     size: 1,
   },
   argTypes: textControls,

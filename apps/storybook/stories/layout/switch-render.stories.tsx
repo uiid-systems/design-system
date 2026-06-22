@@ -7,7 +7,6 @@ import { ExampleBox, disabledControls } from "./constants";
 const meta = {
   title: "Layout/Switch Render",
   component: SwitchRender,
-  tags: ["beta"],
   args: {
     condition: true,
     render: {

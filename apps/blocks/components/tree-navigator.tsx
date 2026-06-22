@@ -45,11 +45,8 @@ function buildListItems(
   if (element.children && element.children.length > 0) {
     return [
       {
-        id: elementKey,
         category: element.type,
-        description: elementKey,
         icon: getIconForType(element.type),
-        collapsible: true,
         items: element.children.flatMap((childKey) =>
           buildListItems(tree, childKey, selectedKey, onSelect),
         ),
@@ -62,8 +59,6 @@ function buildListItems(
       label: element.type,
       description: elementKey,
       icon: getIconForType(element.type),
-      value: elementKey,
-      selected: selectedKey === elementKey,
       onClick: () => onSelect(selectedKey === elementKey ? null : elementKey),
     },
   ];

@@ -15,7 +15,6 @@ import {
 
 export const Autocomplete = ({
   items,
-  size,
   label,
   description,
   placeholder,
@@ -54,7 +53,7 @@ export const Autocomplete = ({
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
           <AutocompletePopup {...PopupProps}>
-            <AutocompleteList size={size} {...ListProps}>
+            <AutocompleteList {...ListProps}>
               {children ??
                 ((item: string) => (
                   <AutocompleteItem
