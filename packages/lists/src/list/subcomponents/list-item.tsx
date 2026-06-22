@@ -13,7 +13,6 @@ export const ListItem = ({
   icon: Icon,
   label,
   description,
-  action,
   children,
   ...props
 }: ListItemProps) => {
@@ -46,17 +45,11 @@ export const ListItem = ({
               style={{ color: "var(--shade-foreground)" }}
             />
           )}
-          <ConditionalRender
-            condition={!!action}
-            render={<Group fullwidth ay="center" gap={2} ax="space-between" />}
-          >
-            <ListTextBlock
-              data-slot="list-item-text"
-              label={label}
-              description={description}
-            />
-            {action}
-          </ConditionalRender>
+          <ListTextBlock
+            data-slot="list-item-text"
+            label={label}
+            description={description}
+          />
         </ConditionalRender>
       )}
     </Group>

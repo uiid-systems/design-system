@@ -8,7 +8,6 @@ export type ListItemProps = {
   label?: React.ReactNode;
   description?: React.ReactNode;
   icon?: Icon;
-  action?: React.ReactNode;
 } & GroupProps;
 
 export type ListItemOrGroup = ListItemProps | ListGroupProps;
