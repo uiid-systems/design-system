@@ -1,6 +1,9 @@
-export const CREATE_URL = "http://localhost:3002";
-export const STORYBOOK_URL = "http://localhost:6006";
+export const SITE_TITLE = "uiid docs";
+export const SITE_DESCRIPTION =
+  "Documentation for UIID - A modern, modular component library built with TypeScript, Vite, React, and CSS Modules.";
 
-export const GITHUB_URL = "https://github.com/uiid-systems/design-system";
-export const NPM_URL = "https://www.npmjs.com/org/uiid";
-export const MDN_CSS_URL = "https://developer.mozilla.org/en-US/docs/Web/CSS";
+export const SIDEBAR_WIDTH = 280;
+export const CONTENT_MAX_WIDTH = 960;
+
+export const SHELL_SPACING = 4;
+export const SHELL_BORDER_WIDTH = 1;

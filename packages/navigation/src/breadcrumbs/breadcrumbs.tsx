@@ -24,7 +24,7 @@ const Breadcrumbs = ({
           const content = (
             <ConditionalRender
               condition={Boolean(Icon)}
-              render={<Group gap={2} ay="center" />}
+              render={<Group gap={1} ay="center" />}
             >
               {Icon && <Icon size={14} />}
               {item.label}

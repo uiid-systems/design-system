@@ -1,58 +1,90 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { Group, Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/design-system";
 
-import { DocsHeader } from "@/components/docs-header-server";
-import { ThemeStyle } from "@/components/theme-style";
+import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
+
+import {
+  CONTENT_MAX_WIDTH,
+  SHELL_SPACING,
+  SHELL_BORDER_WIDTH,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+} from "@/constants";
 
 import "./globals.css";
 
-const geistSans = Geist({
+export const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+export const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "uiid docs",
-  description:
-    "Documentation for UIID - A modern, modular component library built with TypeScript, Vite, React, and CSS Modules.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("uiid-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`,
-          }}
-        />
-        <ThemeStyle />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+      <Stack
+        data-slot="body"
+        render={<body />}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        fullwidth
       >
-        <Group fullwidth>
+        <AppShellOuter>
           <Sidebar />
-          <Stack className="flex-1">
-            <DocsHeader />
-            <Stack br={1} maxw={960}>
-              {children}
-            </Stack>
-          </Stack>
-        </Group>
-      </body>
+          <AppShellInner>
+            <Header />
+            <Main>{children}</Main>
+          </AppShellInner>
+        </AppShellOuter>
+      </Stack>
     </html>
   );
 }
+
+const AppShellOuter = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Group data-slot="app-shell-outer" fullwidth>
+      {children}
+    </Group>
+  );
+};
+AppShellOuter.displayName = "AppShellOuter";
+
+const AppShellInner = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Stack data-slot="app-shell-inner" className="flex-1">
+      {children}
+    </Stack>
+  );
+};
+AppShellInner.displayName = "AppShellInner";
+
+const Main = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Stack
+      data-slot="main"
+      render={<main />}
+      maxw={CONTENT_MAX_WIDTH}
+      br={SHELL_BORDER_WIDTH}
+      p={SHELL_SPACING}
+      fullwidth
+      fullheight
+    >
+      {children}
+    </Stack>
+  );
+};
+Main.displayName = "Main";

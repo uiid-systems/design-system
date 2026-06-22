@@ -1,32 +1,50 @@
-import { Stack } from "@uiid/layout";
-import { Text } from "@uiid/typography";
-import { List } from "@uiid/lists";
-import { Input } from "@uiid/forms";
-import { SearchIcon } from "@uiid/icons";
+import { Stack, Text } from "@uiid/design-system";
 
-import { generateDocsNav } from "@/lib/generate-nav";
+import { SIDEBAR_WIDTH, SHELL_SPACING, SHELL_BORDER_WIDTH } from "@/constants";
 
-export const Sidebar = () => {
-  const navItems = generateDocsNav();
-
+export function Sidebar() {
   return (
-    <Stack br={1} ax="stretch" className="min-w-3xs">
-      <Stack ax="stretch" className="sticky top-0 h-screen overflow-y-auto">
-        <Text size={3} weight="bold" px={4} py={6}>
-          uiid docs
-        </Text>
-        <Stack
-          ax="stretch"
-          by={1}
-          p={4}
-          fullwidth
-          className="sticky -top-px bg-(--shade-background) z-1"
-        >
-          <Input size="small" before={<SearchIcon />} />
-        </Stack>
-        <List items={navItems} px={4} pb={36} />
-      </Stack>
+    <SidebarContainer>
+      <SidebarScrollContainer>
+        <SidebarHeader>uiid docs</SidebarHeader>
+      </SidebarScrollContainer>
+    </SidebarContainer>
+  );
+}
+
+const SidebarContainer = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Stack
+      data-slot="sidebar"
+      render={<aside />}
+      w={SIDEBAR_WIDTH}
+      br={SHELL_BORDER_WIDTH}
+      ax="stretch"
+    >
+      {children}
     </Stack>
   );
 };
-Sidebar.displayName = "Sidebar";
+SidebarContainer.displayName = "SidebarContainer";
+
+const SidebarScrollContainer = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Stack
+      data-slot="sidebar-scroll-container"
+      className="sticky top-0 overflow-y-auto h-screen"
+      ax="stretch"
+    >
+      {children}
+    </Stack>
+  );
+};
+SidebarScrollContainer.displayName = "SidebarScrollContainer";
+
+const SidebarHeader = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Text data-slot="sidebar-header" weight="bold" p={SHELL_SPACING} size={3}>
+      {children}
+    </Text>
+  );
+};
+SidebarHeader.displayName = "SidebarHeader";
