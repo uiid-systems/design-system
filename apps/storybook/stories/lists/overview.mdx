@@ -1,0 +1,22 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Lists/Overview" />
+
+# Lists
+
+A single primitive for vertical collections — flat lists, grouped lists, and nested trees. `List` is a thin precomposed wrapper around `ListItem` and `ListGroup`; reach for the wrapper when you have data, drop down to the subcomponents when you need to compose layouts by hand.
+
+## Which one do I reach for?
+
+- **[List](?path=/docs/lists-list--docs)** — the entry point. Pass an `items` array for the data-driven path, or JSX children to compose `<ListItem>` and `<ListGroup>` yourself. Both shapes coexist; pick whichever fits your call site.
+
+## Shared conventions
+
+- `marker` controls the bullet style: `"none"` (default) renders an unstyled `<ul>`; `"disc"` / `"square"` render bulleted `<ul>`s; `"decimal"` renders an `<ol>`.
+- `line` adds a vertical guide on nested group panels — useful for tree-style navigation.
+- `ItemProps` and `GroupProps` on `<List>` pass shared overrides down to every rendered item or group (e.g., a `render` element).
+- `ListItem` accepts `label`, `description`, and `icon` for the precomposed shape, or `children` to take full control of the item's contents.
+- `ListGroup` accepts `category` (header text), `icon`, and `items` — a purely visual grouping with no collapsible behavior; nest groups to build trees.
+- Items render as `<li>` by default. For interactive items (Base UI option lists, links, buttons), pass `render={<a />}` or `render={<div onClick={...} />}` at the item level.
+
+Forms `Select`, `Combobox`, and `Autocomplete` compose `ListItem` for their dropdown rows via the Base UI render system — the `data-highlighted` and `data-selected` attributes flow through automatically.
