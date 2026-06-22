@@ -31,7 +31,6 @@ const MOCK_LINKS: ListProps["items"] = [
   },
   {
     category: "Community",
-    collapsible: true,
     icon: Home,
     items: [
       { label: "Leaderboards", value: "leaderboards" },
@@ -42,7 +41,6 @@ const MOCK_LINKS: ListProps["items"] = [
   },
   {
     category: "Favorites",
-    collapsible: true,
     icon: Heart,
     items: [
       { label: "Allie Hyde", value: "allie-hyde" },
