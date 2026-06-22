@@ -1,66 +1,52 @@
-import { SwitchRender, Stack, Group } from "@uiid/layout";
+import { Stack } from "@uiid/layout";
 
 import type { ListProps } from "./list.types";
-import {
-  LIST_DEFAULT_TYPE,
-  LIST_DEFAULT_SIZE,
-  LIST_DEFAULT_DIRECTION,
-} from "./list.constants";
+import { LIST_DEFAULT_MARKER } from "./list.constants";
 import styles from "./list.module.css";
-import { ListItem, ListItemGroup } from "./subcomponents";
+import { ListItem, ListGroup } from "./subcomponents";
 
 export const List = ({
-  type = LIST_DEFAULT_TYPE,
-  direction = LIST_DEFAULT_DIRECTION,
-  size = LIST_DEFAULT_SIZE,
+  marker = LIST_DEFAULT_MARKER,
   line,
   items,
   children,
   ItemProps,
+  GroupProps,
   ...props
 }: ListProps) => {
-  const ListElement = type === "ordered" ? <ol /> : <ul />;
-
-  const sharedProps = {
-    "data-slot": "list",
-    "data-type": type,
-    "data-size": size,
-    "data-direction": direction,
-    "data-line": line ? "true" : undefined,
-    className: styles["list"],
-    ...props,
-  };
+  const ListElement = marker === "decimal" ? <ol /> : <ul />;
 
   return (
-    <SwitchRender
-      condition={direction === "row"}
+    <Stack
+      data-slot="list"
+      data-marker={marker}
+      data-line={line ? "true" : undefined}
+      ax="stretch"
       p={0}
       m={0}
-      {...sharedProps}
-      render={{
-        true: <Group render={ListElement} ay="start" gap={4} />,
-        false: <Stack render={ListElement} ax="stretch" />,
-      }}
+      className={styles["list"]}
+      render={ListElement}
+      {...props}
     >
       {items
         ? items.map((item, index) =>
             "items" in item ? (
-              <ListItemGroup
-                data-line
+              <ListGroup
                 key={item.id ?? `${item.category ?? "group"}-${index}`}
                 {...item}
+                {...GroupProps}
               />
             ) : (
               <ListItem
                 key={item.value}
-                fullwidth={direction === "column"}
+                fullwidth
                 {...item}
                 {...ItemProps}
               />
             ),
           )
         : children}
-    </SwitchRender>
+    </Stack>
   );
 };
 List.displayName = "List";

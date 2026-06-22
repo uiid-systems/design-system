@@ -3,37 +3,12 @@
 .list {
   list-style-position: inside;
 
-  &:where([data-size="small"]) {
-    --list-item-padding-x: var(--list-size-sm-padding-x);
-    --list-item-padding-y: var(--list-size-sm-padding-y);
-    --list-icon-size: var(--list-size-sm-icon-size);
-    --list-font-size: var(--list-size-sm-font-size);
-  }
-
-  &:where([data-size="medium"]) {
-    --list-item-padding-x: var(--list-size-md-padding-x);
-    --list-item-padding-y: var(--list-size-md-padding-y);
-    --list-icon-size: var(--list-size-md-icon-size);
-    --list-font-size: var(--list-size-md-font-size);
-  }
-
-  &:where([data-size="large"]) {
-    --list-item-padding-x: var(--list-size-lg-padding-x);
-    --list-item-padding-y: var(--list-size-lg-padding-y);
-    --list-icon-size: var(--list-size-lg-icon-size);
-    --list-font-size: var(--list-size-lg-font-size);
-  }
-
-  &:where([data-type="none"]) {
+  &:where([data-marker="none"]) {
     list-style: none;
     margin-inline-start: 0;
   }
 
-  &:is([data-direction="row"]) li {
-    width: auto;
-  }
-
-  &:is([data-type="ordered"], [data-type="unordered"]) {
+  &:is([data-marker="decimal"], [data-marker="disc"], [data-marker="square"]) {
     list-style-position: outside;
 
     & > li {
@@ -41,16 +16,20 @@
     }
   }
 
-  &:is([data-type="ordered"]) {
+  &:is([data-marker="decimal"]) {
     list-style-type: decimal;
   }
 
-  &:is([data-type="unordered"]) {
+  &:is([data-marker="disc"]) {
     list-style-type: disc;
+  }
+
+  &:is([data-marker="square"]) {
+    list-style-type: square;
   }
 }
 
-.list-item-group-collapsible-trigger {
+.list-group-trigger {
   border: none;
   background-color: transparent;
   color: var(--shade-muted);
@@ -79,17 +58,17 @@
   }
 }
 
-.list-item-group svg {
+.list-group svg {
   width: var(--list-icon-size);
 }
 
-.list-item-group-category {
-  min-height: var(--list-group-category-minHeight);
+.list-group-category {
+  min-height: var(--list-group-category-min-height);
   align-content: center;
   padding-inline: 0.25rem;
 }
 
-.list-item-panel {
+.list-group-panel {
   position: relative;
   gap: 0.5rem;
   padding-inline-start: 0.875rem;
@@ -130,7 +109,6 @@
   display: list-item;
   min-height: var(--list-icon-size);
   align-content: center;
-  font-size: var(--list-font-size);
 
   :is(ol) &::marker {
     font-size: 0.625rem;
@@ -140,5 +118,4 @@
 
 .list-text-description {
   color: var(--shade-muted);
-  font-size: var(--list-font-size);
 }

@@ -6,13 +6,13 @@ import { ChevronsUpDown } from "@uiid/icons";
 import { Text } from "@uiid/typography";
 import { Group, Stack, SwitchRender } from "@uiid/layout";
 
-import type { ListItemGroupProps } from "../list.types";
+import type { ListGroupProps } from "../list.types";
 
 import { ListItem } from "./list-item";
 import { ICON_SIZE_LARGE } from "../list.constants";
 import styles from "../list.module.css";
 
-export const ListItemGroup = ({
+export const ListGroup = ({
   category,
   collapsible,
   open,
@@ -20,13 +20,13 @@ export const ListItemGroup = ({
   onOpenChange,
   icon: Icon,
   items,
-}: ListItemGroupProps) => {
+}: ListGroupProps) => {
   return (
     <Stack
-      data-slot="list-item-group"
+      data-slot="list-group"
       ax="stretch"
       fullwidth
-      className={styles["list-item-group"]}
+      className={styles["list-group"]}
       render={
         collapsible ? (
           <Collapsible.Root
@@ -42,9 +42,9 @@ export const ListItemGroup = ({
     >
       {category && (
         <Group
-          data-slot="list-item-group-collapsible-trigger"
+          data-slot="list-group-trigger"
           render={collapsible ? <Collapsible.Trigger /> : <div />}
-          className={styles["list-item-group-collapsible-trigger"]}
+          className={styles["list-group-trigger"]}
           ay="center"
           ax="start"
           gap={2}
@@ -52,17 +52,15 @@ export const ListItemGroup = ({
           fullwidth
         >
           {collapsible && <ChevronsUpDown size={14} strokeWidth={3} />}
-          {Icon && (
-            <Icon data-slot="list-item-group-icon" size={ICON_SIZE_LARGE} />
-          )}
+          {Icon && <Icon data-slot="list-group-icon" size={ICON_SIZE_LARGE} />}
           <Text
-            data-slot="list-item-group-category-text"
+            data-slot="list-group-category"
             render={<h3 />}
-            className={styles["list-item-group-category"]}
+            className={styles["list-group-category"]}
+            data-is-collapsible={collapsible}
             mr={collapsible ? 8 : undefined}
             weight="bold"
             size={0}
-            data-is-collapsible={collapsible}
           >
             {category}
           </Text>
@@ -76,23 +74,23 @@ export const ListItemGroup = ({
             <Collapsible.Panel
               render={
                 <ul
-                  data-slot="list-item-panel"
-                  className={styles["list-item-panel"]}
+                  data-slot="list-group-panel"
+                  className={styles["list-group-panel"]}
                 />
               }
             />
           ),
           false: (
             <ul
-              data-slot="list-item-panel"
-              className={styles["list-item-panel"]}
+              data-slot="list-group-panel"
+              className={styles["list-group-panel"]}
             />
           ),
         }}
       >
         {items.map((item) =>
           "items" in item ? (
-            <ListItemGroup key={item.id ?? item.category} {...item} />
+            <ListGroup key={item.id ?? item.category} {...item} />
           ) : (
             <ListItem key={item.value} {...item} />
           ),
@@ -101,4 +99,4 @@ export const ListItemGroup = ({
     </Stack>
   );
 };
-ListItemGroup.displayName = "ListItemGroup";
+ListGroup.displayName = "ListGroup";

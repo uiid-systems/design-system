@@ -3,8 +3,7 @@ import type { Collapsible } from "@base-ui/react";
 import type { Icon } from "@uiid/icons";
 import type { BoxProps, GroupProps, StackProps } from "@uiid/layout";
 
-export type ListDirection = "row" | "column";
-export type ListSize = "small" | "medium" | "large";
+export type ListMarker = "none" | "disc" | "decimal" | "square";
 
 export type ListItemProps = {
   value?: string;
@@ -13,37 +12,23 @@ export type ListItemProps = {
   disabled?: boolean;
   selected?: boolean;
   icon?: Icon;
-  content?: React.ReactNode;
   action?: React.ReactNode;
-} & Omit<GroupProps, "content">;
+} & GroupProps;
 
-/** A single item or a nested group (recursive). */
-export type ListItemOrGroup = ListItemProps | ListItemGroupProps;
+export type ListItemOrGroup = ListItemProps | ListGroupProps;
 
-export type ListItemGroupProps = {
+export type ListGroupProps = {
   id?: string;
   category?: string;
-  description?: string;
   collapsible?: boolean;
   icon?: Icon;
   items: ListItemOrGroup[];
 } & Pick<Collapsible.Root.Props, "open" | "defaultOpen" | "onOpenChange">;
 
-type BaseListProps = Omit<BoxProps, "ax" | "ay" | "direction"> & {
-  type?: "ordered" | "unordered" | "none";
-  size?: ListSize;
+export type ListProps = Omit<BoxProps, "direction"> & {
+  marker?: ListMarker;
   line?: boolean;
   items?: ListItemOrGroup[];
-};
-
-export type HorizontalListProps = BaseListProps & {
-  direction: "row";
-} & Pick<GroupProps, "ax" | "ay">;
-
-export type VerticalListProps = BaseListProps & {
-  direction?: "column";
+  ItemProps?: Partial<ListItemProps>;
+  GroupProps?: Partial<ListGroupProps>;
 } & Pick<StackProps, "ax" | "ay">;
-
-export type ListProps = (HorizontalListProps | VerticalListProps) & {
-  ItemProps?: ListItemProps;
-};

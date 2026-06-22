@@ -1,5 +1,5 @@
 import { cx } from "@uiid/utils";
-import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { ConditionalRender, Group } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
 import { ICON_SIZE_LARGE } from "../list.constants";
@@ -16,8 +16,8 @@ export const ListItem = ({
   icon: Icon,
   label,
   description,
-  content,
   action,
+  children,
   ...props
 }: ListItemProps) => {
   return (
@@ -33,28 +33,27 @@ export const ListItem = ({
       data-selected={selected ? "" : undefined}
       {...props}
     >
-      <ConditionalRender
-        condition={Boolean(!!Icon || selected)}
-        render={
-          <Group
-            gap={3}
-            ay="start"
-            fullwidth
-            style={{ listStyleType: "none" }}
-          />
-        }
-      >
-        {Icon && (
-          <Icon
-            data-slot="list-item-icon"
-            size={ICON_SIZE_LARGE}
-            style={{ color: "var(--shade-foreground)" }}
-          />
-        )}
+      {children ? (
+        children
+      ) : (
         <ConditionalRender
-          condition={!!content}
-          render={<Stack fullwidth gap={1} />}
+          condition={Boolean(!!Icon || selected)}
+          render={
+            <Group
+              gap={3}
+              ay="start"
+              fullwidth
+              style={{ listStyleType: "none" }}
+            />
+          }
         >
+          {Icon && (
+            <Icon
+              data-slot="list-item-icon"
+              size={ICON_SIZE_LARGE}
+              style={{ color: "var(--shade-foreground)" }}
+            />
+          )}
           <ConditionalRender
             condition={!!selected || !!action}
             render={<Group fullwidth ay="center" gap={2} ax="space-between" />}
@@ -66,11 +65,9 @@ export const ListItem = ({
             />
             {selected && <ListSelectedIcon />}
             {action}
-            {}
           </ConditionalRender>
-          {content}
         </ConditionalRender>
-      </ConditionalRender>
+      )}
     </Group>
   );
 };
