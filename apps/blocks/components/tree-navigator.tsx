@@ -47,9 +47,7 @@ function buildListItems(
       {
         id: elementKey,
         category: element.type,
-        description: elementKey,
         icon: getIconForType(element.type),
-        collapsible: true,
         items: element.children.flatMap((childKey) =>
           buildListItems(tree, childKey, selectedKey, onSelect),
         ),

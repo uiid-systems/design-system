@@ -29,33 +29,10 @@
   }
 }
 
-.list-group-trigger {
-  border: none;
-  background-color: transparent;
+.list-group-header {
   color: var(--shade-muted);
   padding-inline: 0.5rem;
   padding-block: 1rem;
-  border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-duration) ease-in-out;
-
-  &:is(button) {
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--shade-accent);
-    }
-
-    &:active {
-      background-color: var(--shade-halftone);
-    }
-
-    &:focus-visible {
-      background-color: var(--shade-surface);
-      border-radius: var(--globals-border-radius);
-      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-      outline-offset: var(--globals-outline-offset);
-    }
-  }
 }
 
 .list-group svg {

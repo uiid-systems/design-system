@@ -22,19 +22,16 @@ export const MOCK_ITEMS: ListProps["items"] = [
 export const MOCK_NESTED: ListProps["items"] = [
   {
     category: "Source",
-    collapsible: true,
     icon: Folder,
     items: [
       {
         category: "Components",
-        collapsible: true,
         icon: Folder,
         items: [
           { value: "button.tsx", label: "button.tsx", icon: Code },
           { value: "card.tsx", label: "card.tsx", icon: Code },
           {
             category: "Forms",
-            collapsible: true,
             icon: Folder,
             items: [
               { value: "input.tsx", label: "input.tsx", icon: Code },
@@ -59,7 +56,6 @@ export const MOCK_NESTED: ListProps["items"] = [
 export const MOCK_LINKS: ListProps["items"] = [
   {
     category: "Features",
-    collapsible: true,
     items: [
       {
         value: "feature",
@@ -76,7 +72,6 @@ export const MOCK_LINKS: ListProps["items"] = [
   },
   {
     category: "Selected items",
-    collapsible: true,
     items: [
       { value: "accordion", label: "accordion", selected: true },
       { value: "alert dialog", label: "alert dialog", selected: true },
