@@ -4,7 +4,6 @@ import type { BoxProps, GroupProps, StackProps } from "@uiid/layout";
 export type ListMarker = "none" | "disc" | "decimal" | "square";
 
 export type ListItemProps = {
-  value?: string;
   label?: React.ReactNode;
   description?: React.ReactNode;
   icon?: Icon;

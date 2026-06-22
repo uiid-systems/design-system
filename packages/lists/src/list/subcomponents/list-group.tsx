@@ -45,11 +45,14 @@ export const ListGroup = ({ category, icon: Icon, items }: ListGroupProps) => {
       )}
 
       <ul data-slot="list-group-panel" className={styles["list-group-panel"]}>
-        {items.map((item) =>
+        {items.map((item, index) =>
           "items" in item ? (
-            <ListGroup key={item.id ?? item.category} {...item} />
+            <ListGroup
+              key={item.id ?? item.category ?? index}
+              {...item}
+            />
           ) : (
-            <ListItem key={item.value} {...item} />
+            <ListItem key={index} {...item} />
           ),
         )}
       </ul>

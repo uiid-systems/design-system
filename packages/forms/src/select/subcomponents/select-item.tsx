@@ -23,7 +23,6 @@ export const SelectItem = ({
         <ListItem
           render={<div />}
           fullwidth
-          value={value}
           label={label}
           description={description}
           icon={icon}

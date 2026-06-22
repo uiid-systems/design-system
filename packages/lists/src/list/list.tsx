@@ -38,7 +38,7 @@ export const List = ({
               />
             ) : (
               <ListItem
-                key={item.value}
+                key={index}
                 fullwidth
                 {...item}
                 {...ItemProps}

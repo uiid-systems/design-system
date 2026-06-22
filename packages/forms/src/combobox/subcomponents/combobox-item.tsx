@@ -23,7 +23,6 @@ export const ComboboxItem = ({
           render={<div />}
           fullwidth
           label={value}
-          value={value}
           data-selected={state.highlighted}
           {...renderProps}
         />

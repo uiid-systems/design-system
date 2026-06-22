@@ -23,7 +23,6 @@ export const AutocompleteItem = ({
           render={<div />}
           fullwidth
           label={value as string}
-          value={value}
           {...renderProps}
         />
       )}

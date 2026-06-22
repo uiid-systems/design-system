@@ -16,9 +16,9 @@ import { ListGroup, ListItem } from "./subcomponents";
 export const Default = () => (
   <List
     items={[
-      { value: "1", label: "Item 1" },
-      { value: "2", label: "Item 2" },
-      { value: "3", label: "Item 3" },
+      { label: "Item 1" },
+      { label: "Item 2" },
+      { label: "Item 3" },
     ]}
   />
 );
@@ -26,10 +26,10 @@ export const Default = () => (
 export const WithIcons = () => (
   <List
     items={[
-      { value: "feature", label: "Feature", icon: Star },
-      { value: "fix", label: "Fix", icon: Hammer },
-      { value: "bug", label: "Bug", icon: Bug },
-      { value: "docs", label: "Docs", icon: FileText },
+      { label: "Feature", icon: Star },
+      { label: "Fix", icon: Hammer },
+      { label: "Bug", icon: Bug },
+      { label: "Docs", icon: FileText },
     ]}
   />
 );
@@ -38,13 +38,11 @@ export const WithDescriptions = () => (
   <List
     items={[
       {
-        value: "feature",
         label: "Feature",
         description: "A net-new capability",
         icon: Star,
       },
       {
-        value: "fix",
         label: "Fix",
         description: "Behavior correction on an existing feature",
         icon: Hammer,
@@ -65,19 +63,19 @@ export const NestedGroups = () => (
             category: "Components",
             icon: Folder,
             items: [
-              { value: "button.tsx", label: "button.tsx", icon: Code },
-              { value: "card.tsx", label: "card.tsx", icon: Code },
+              { label: "button.tsx", icon: Code },
+              { label: "card.tsx", icon: Code },
             ],
           },
           {
             category: "Assets",
             icon: Folder,
             items: [
-              { value: "logo.svg", label: "logo.svg", icon: Image },
-              { value: "banner.png", label: "banner.png", icon: Image },
+              { label: "logo.svg", icon: Image },
+              { label: "banner.png", icon: Image },
             ],
           },
-          { value: "index.ts", label: "index.ts", icon: FileText },
+          { label: "index.ts", icon: FileText },
         ],
       },
     ]}
@@ -86,9 +84,9 @@ export const NestedGroups = () => (
 
 export const Markers = () => {
   const items = [
-    { value: "1", label: "First" },
-    { value: "2", label: "Second" },
-    { value: "3", label: "Third" },
+    { label: "First" },
+    { label: "Second" },
+    { label: "Third" },
   ];
   return (
     <Group gap={8} ay="start">
@@ -120,8 +118,8 @@ export const Composable = () => (
       category="Group"
       icon={Folder}
       items={[
-        { value: "nested-1", label: "Nested 1", icon: Code },
-        { value: "nested-2", label: "Nested 2", icon: Code },
+        { label: "Nested 1", icon: Code },
+        { label: "Nested 2", icon: Code },
       ]}
     />
   </List>
