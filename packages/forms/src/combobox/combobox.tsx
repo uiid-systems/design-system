@@ -17,7 +17,6 @@ import {
 
 export const Combobox = ({
   items,
-  size,
   label,
   description,
   placeholder,
@@ -56,7 +55,7 @@ export const Combobox = ({
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>
           <ComboboxPopup {...PopupProps}>
-            <ComboboxList size={size} {...ListProps}>
+            <ComboboxList {...ListProps}>
               {children ??
                 ((item: string) => (
                   <ComboboxItem key={item} value={item} disabled={disabled} />

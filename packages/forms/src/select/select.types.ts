@@ -24,8 +24,7 @@ export type SelectTriggerProps = BaseSelect.Trigger.Props &
 export type SelectPortalProps = BaseSelect.Portal.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
 export type SelectPopupProps = BaseSelect.Popup.Props;
-export type SelectListProps = BaseSelect.List.Props &
-  Pick<import("@uiid/lists").ListProps, "size">;
+export type SelectListProps = BaseSelect.List.Props;
 export type SelectValueProps = BaseSelect.Value.Props &
   Pick<InputVariants, "size">;
 export type SelectIndicatorProps = BaseSelect.Icon.Props;

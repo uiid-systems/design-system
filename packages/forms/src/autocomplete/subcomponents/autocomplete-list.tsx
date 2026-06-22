@@ -9,7 +9,6 @@ import type { AutocompleteListProps } from "../autocomplete.types";
 import styles from "../autocomplete.module.css";
 
 export const AutocompleteList = ({
-  size,
   className,
   children,
   ...props
@@ -17,7 +16,7 @@ export const AutocompleteList = ({
   return (
     <BaseAutocomplete.List
       data-slot="autocomplete-list"
-      render={<List fullwidth size={size} />}
+      render={<List fullwidth />}
       className={cx(styles["autocomplete-list"], className)}
       {...props}
     >
