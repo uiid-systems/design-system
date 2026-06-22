@@ -32,7 +32,7 @@ export const List = ({
         ? items.map((item, index) =>
             "items" in item ? (
               <ListGroup
-                key={item.id ?? `${item.category ?? "group"}-${index}`}
+                key={item.category ?? index}
                 {...item}
                 {...GroupProps}
               />

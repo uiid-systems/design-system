@@ -48,7 +48,7 @@ export const ListGroup = ({ category, icon: Icon, items }: ListGroupProps) => {
         {items.map((item, index) =>
           "items" in item ? (
             <ListGroup
-              key={item.id ?? item.category ?? index}
+              key={item.category ?? index}
               {...item}
             />
           ) : (

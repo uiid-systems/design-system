@@ -12,7 +12,6 @@ export type ListItemProps = {
 export type ListItemOrGroup = ListItemProps | ListGroupProps;
 
 export type ListGroupProps = {
-  id?: string;
   category?: string;
   icon?: Icon;
   items: ListItemOrGroup[];

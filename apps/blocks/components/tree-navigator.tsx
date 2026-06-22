@@ -45,7 +45,6 @@ function buildListItems(
   if (element.children && element.children.length > 0) {
     return [
       {
-        id: elementKey,
         category: element.type,
         icon: getIconForType(element.type),
         items: element.children.flatMap((childKey) =>
