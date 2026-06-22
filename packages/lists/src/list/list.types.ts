@@ -7,8 +7,6 @@ export type ListItemProps = {
   value?: string;
   label?: React.ReactNode;
   description?: React.ReactNode;
-  disabled?: boolean;
-  selected?: boolean;
   icon?: Icon;
   action?: React.ReactNode;
 } & GroupProps;

@@ -28,8 +28,8 @@ export const WithIcons = () => (
     items={[
       { value: "feature", label: "Feature", icon: Star },
       { value: "fix", label: "Fix", icon: Hammer },
-      { value: "bug", label: "Bug", icon: Bug, selected: true },
-      { value: "docs", label: "Docs", icon: FileText, disabled: true },
+      { value: "bug", label: "Bug", icon: Bug },
+      { value: "docs", label: "Docs", icon: FileText },
     ]}
   />
 );
@@ -115,7 +115,7 @@ export const Markers = () => {
 export const Composable = () => (
   <List>
     <ListItem label="First" icon={Star} />
-    <ListItem label="Second" icon={Hammer} selected />
+    <ListItem label="Second" icon={Hammer} />
     <ListGroup
       category="Group"
       icon={Folder}

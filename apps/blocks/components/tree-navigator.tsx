@@ -61,7 +61,6 @@ function buildListItems(
       description: elementKey,
       icon: getIconForType(element.type),
       value: elementKey,
-      selected: selectedKey === elementKey,
       onClick: () => onSelect(selectedKey === elementKey ? null : elementKey),
     },
   ];

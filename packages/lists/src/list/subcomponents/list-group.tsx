@@ -7,11 +7,7 @@ import { ListItem } from "./list-item";
 import { ICON_SIZE_LARGE } from "../list.constants";
 import styles from "../list.module.css";
 
-export const ListGroup = ({
-  category,
-  icon: Icon,
-  items,
-}: ListGroupProps) => {
+export const ListGroup = ({ category, icon: Icon, items }: ListGroupProps) => {
   return (
     <Stack
       data-slot="list-group"
@@ -27,10 +23,15 @@ export const ListGroup = ({
           ay="center"
           ax="start"
           gap={2}
-          py={2}
+          py={1}
           fullwidth
         >
-          {Icon && <Icon data-slot="list-group-icon" size={ICON_SIZE_LARGE} />}
+          {Icon && (
+            <Icon
+              className={styles["list-group-icon"]}
+              size={ICON_SIZE_LARGE}
+            />
+          )}
           <Text
             data-slot="list-group-category"
             render={<h3 />}
@@ -43,10 +44,7 @@ export const ListGroup = ({
         </Group>
       )}
 
-      <ul
-        data-slot="list-group-panel"
-        className={styles["list-group-panel"]}
-      >
+      <ul data-slot="list-group-panel" className={styles["list-group-panel"]}>
         {items.map((item) =>
           "items" in item ? (
             <ListGroup key={item.id ?? item.category} {...item} />

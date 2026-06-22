@@ -25,7 +25,6 @@ export const ComboboxItem = ({
           label={value}
           value={value}
           data-selected={state.highlighted}
-          selected={state.selected}
           {...renderProps}
         />
       )}

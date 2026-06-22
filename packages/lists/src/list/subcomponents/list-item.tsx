@@ -6,11 +6,8 @@ import { ICON_SIZE_LARGE } from "../list.constants";
 import styles from "../list.module.css";
 
 import { ListTextBlock } from "./list-text-block";
-import { ListSelectedIcon } from "./list-selected-icon";
 
 export const ListItem = ({
-  disabled,
-  selected,
   render,
   className,
   icon: Icon,
@@ -28,19 +25,14 @@ export const ListItem = ({
       ax="space-between"
       gap={8}
       className={cx(styles["list-item"], className)}
-      tabIndex={disabled ? -1 : 0}
-      data-disabled={disabled ? "" : undefined}
-      data-selected={selected ? "" : undefined}
       {...props}
     >
-      {children ? (
-        children
-      ) : (
+      {children || (
         <ConditionalRender
-          condition={Boolean(!!Icon || selected)}
+          condition={!!Icon}
           render={
             <Group
-              gap={3}
+              gap={2}
               ay="start"
               fullwidth
               style={{ listStyleType: "none" }}
@@ -55,7 +47,7 @@ export const ListItem = ({
             />
           )}
           <ConditionalRender
-            condition={!!selected || !!action}
+            condition={!!action}
             render={<Group fullwidth ay="center" gap={2} ax="space-between" />}
           >
             <ListTextBlock
@@ -63,7 +55,6 @@ export const ListItem = ({
               label={label}
               description={description}
             />
-            {selected && <ListSelectedIcon />}
             {action}
           </ConditionalRender>
         </ConditionalRender>

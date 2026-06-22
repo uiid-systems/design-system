@@ -1,90 +1,53 @@
 @import "@uiid/tokens/component/list.tokens.css";
 
 .list {
-  list-style-position: inside;
-
   &:where([data-marker="none"]) {
     list-style: none;
-    margin-inline-start: 0;
   }
 
   &:is([data-marker="decimal"], [data-marker="disc"], [data-marker="square"]) {
     list-style-position: outside;
-
-    & > li {
-      margin-inline-start: 1rem;
-    }
+    padding-inline-start: 1rem;
   }
 
-  &:is([data-marker="decimal"]) {
+  &:where([data-marker="decimal"]) {
     list-style-type: decimal;
   }
 
-  &:is([data-marker="disc"]) {
+  &:where([data-marker="disc"]) {
     list-style-type: disc;
   }
 
-  &:is([data-marker="square"]) {
+  &:where([data-marker="square"]) {
     list-style-type: square;
   }
 }
 
-.list-group-header {
-  color: var(--shade-muted);
-  padding-inline: 0.5rem;
-  padding-block: 1rem;
+.list-group-header + *:is(ul, ol) {
+  padding-inline-start: 0.5rem;
 }
 
-.list-group svg {
+.list-group-icon {
   width: var(--list-icon-size);
 }
 
 .list-group-category {
   min-height: var(--list-group-category-min-height);
   align-content: center;
-  padding-inline: 0.25rem;
 }
 
 .list-group-panel {
-  position: relative;
-  gap: 0.5rem;
-  padding-inline-start: 0.875rem;
-  margin-block-end: 1rem;
   list-style: none;
-
-  a {
-    color: var(--shade-foreground);
-  }
-
-  [data-line] & {
-    margin-inline-start: 0.75rem;
-    border-inline-start: var(--globals-border-width) solid var(--globals-border-color);
-    padding-inline-start: 0.125rem;
-  }
+  margin-block-end: 0.5rem;
 }
 
-.list-item {
-  padding: var(--list-item-padding-y) var(--list-item-padding-x);
-  border-radius: var(--globals-border-radius);
-  transition: all var(--globals-transition-duration) ease-in-out;
-
-  &:not([data-disabled]):where([data-highlighted], :is(button, a) &:hover) {
-    background-color: var(--shade-accent);
-  }
-
-  &:where([data-disabled]) {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  svg {
-    width: var(--list-icon-size);
-  }
+.list-item svg {
+  transform: translateY(calc(var(--list-icon-size) * 0.25));
+  width: var(--list-icon-size);
 }
 
 .list-text-label {
   display: list-item;
-  min-height: var(--list-icon-size);
   align-content: center;
 
   :is(ol) &::marker {
