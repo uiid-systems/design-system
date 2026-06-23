@@ -7,6 +7,7 @@ import styles from "../table.module.css";
 export const TableRoot = ({
   striped,
   bordered,
+  highlightOnHover,
   className,
   children,
   ...props
@@ -16,6 +17,7 @@ export const TableRoot = ({
       data-slot="table-root"
       data-striped={striped}
       data-bordered={bordered}
+      data-hover={highlightOnHover}
       className={cx(styles["table-root"], className)}
       {...props}
     >

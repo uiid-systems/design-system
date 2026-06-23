@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   TableBody,
+  TableFooter,
   TableCell,
   TableCellActions,
   TableCellCheckbox,
@@ -24,6 +25,7 @@ export function Table<T extends Record<string, unknown>>({
   selectable,
   striped,
   bordered,
+  footer,
   selectedRows,
   defaultSelectedRows,
   onSelectedRowsChange,
@@ -31,6 +33,9 @@ export function Table<T extends Record<string, unknown>>({
 }: TableProps<T>): React.ReactElement {
   const displayColumns =
     columns || (items.length > 0 ? Object.keys(items[0]) : []);
+
+  const columnCount =
+    displayColumns.length + (selectable ? 1 : 0) + (actions ? 1 : 0);
 
   const table = (
     <TableContainer>
@@ -65,7 +70,13 @@ export function Table<T extends Record<string, unknown>>({
           ))}
         </TableBody>
 
-        {/** @todo: Add table footer */}
+        {footer && (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={columnCount}>{footer}</TableCell>
+            </TableRow>
+          </TableFooter>
+        )}
       </TableRoot>
     </TableContainer>
   );

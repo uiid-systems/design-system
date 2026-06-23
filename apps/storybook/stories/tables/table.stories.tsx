@@ -29,6 +29,8 @@ export const Default = {
         }}
         striped
         bordered
+        highlightOnHover
+        footer={`${TABLE_MOCK_DATA.length} users`}
       />
     </Stack>
   ),

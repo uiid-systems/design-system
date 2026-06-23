@@ -81,11 +81,13 @@ export default function HomePage() {
         selectable
         striped
         bordered
+        highlightOnHover
         items={TABLE_MOCK_DATA}
         actions={{
           primary: TABLE_MOCK_ACTIONS,
           secondary: TABLE_MOCK_MORE_ACTIONS,
         }}
+        footer={`${TABLE_MOCK_DATA.length} users`}
       />
     </Stack>
   );

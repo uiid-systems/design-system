@@ -29,6 +29,10 @@
   color: var(--table-head-fg);
 }
 
+.table-footer td {
+  border-top: var(--globals-border-width) solid var(--globals-border-color);
+}
+
 .table-root {
   width: 100%;
   caption-side: bottom;
@@ -46,10 +50,26 @@
   }
 
   &:where([data-striped="true"] tbody &:nth-child(even)) {
-    background-color: color-mix(in oklab, var(--shade-surface), transparent 25%);
+    background-color: color-mix(in oklab, var(--shade-foreground) 4%, transparent);
   }
 
-  tbody &:hover {
-    background-color: var(--shade-surface);
+  /* Hover highlight (opt-in via highlightOnHover) */
+  &:where([data-hover="true"] tbody &:hover) {
+    background-color: color-mix(in oklab, var(--shade-foreground) 8%, transparent);
+  }
+
+  /* Selection highlight — driven by the row's checkbox state via :has(), so the
+     server-rendered row reacts to the client checkbox without knowing selection. */
+  &:where(tbody &:has([data-slot="checkbox"][data-checked])) {
+    background-color: color-mix(in oklab, var(--shade-accent), transparent 35%);
+  }
+
+  /* Selected + hovered: keep the selection readable, add a touch more emphasis. */
+  &:where(
+      [data-hover="true"]
+        tbody
+        &:has([data-slot="checkbox"][data-checked]):hover
+    ) {
+    background-color: color-mix(in oklab, var(--shade-accent), transparent 20%);
   }
 }
