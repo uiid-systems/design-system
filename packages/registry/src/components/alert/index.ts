@@ -20,14 +20,6 @@ export const AlertPropsSchema = z.object({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
-  /** Inverted color scheme */
-  inverted: z.boolean().optional(),
-  /** Trimmed padding */
-  trimmed: z.boolean().optional(),
-  /** Transparent background */
-  transparent: z.boolean().optional(),
-  /** Ghost style (minimal borders) */
-  ghost: z.boolean().optional(),
 });
 
 export type AlertProps = z.infer<typeof AlertPropsSchema>;

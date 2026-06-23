@@ -150,7 +150,7 @@ export const RegistryGallery = () => {
               onKeyDown={(e) => handleKeyDown(e, block)}
               tabIndex={0}
               className={styles.card}
-              trimmed
+              p={0}
               ax="stretch"
             >
               <div className={styles.preview}>

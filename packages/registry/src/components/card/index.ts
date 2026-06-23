@@ -21,14 +21,6 @@ export const CardPropsSchema = BoxPropsSchema.extend({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
-  /** Inverted color scheme */
-  inverted: z.boolean().optional(),
-  /** Trimmed padding */
-  trimmed: z.boolean().optional(),
-  /** Transparent background */
-  transparent: z.boolean().optional(),
-  /** Ghost style (minimal borders) */
-  ghost: z.boolean().optional(),
   /** Props forwarded to the container Stack */
   ContainerProps: z.record(z.string(), z.any()).optional(),
   /** Props forwarded to the header Group */

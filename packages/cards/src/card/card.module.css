@@ -66,24 +66,3 @@
     vertical-align: middle;
   }
 }
-
-.toggle-inverted {
-  background-color: var(--shade-foreground);
-  color: var(--shade-background);
-}
-
-.toggle-trimmed {
-  padding-block: 0;
-  padding-inline: 0;
-}
-
-.toggle-ghost {
-  padding-block: 0;
-  padding-inline: 0;
-  border: none;
-  background-color: transparent;
-}
-
-.toggle-transparent {
-  background-color: transparent;
-}

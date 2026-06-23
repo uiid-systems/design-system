@@ -18,7 +18,7 @@ export const AccordionRoot = ({
     <BaseAccordion.Root
       data-slot="accordion-root"
       data-ghost={ghost || undefined}
-      render={<Card gap={0} trimmed fullwidth ghost={ghost} />}
+      render={<Card gap={0} p={0} fullwidth />}
       className={cx(
         styles["accordion-root"],
         accordionRootVariants({ ghost }),
