@@ -7,7 +7,6 @@ Use List when you want to:
 - Render an array of items with `items` — each entry is a `ListItem` (`{ label, description, icon }`) or a `ListGroup` (`{ category, icon, items }`) for nesting
 - Compose by hand instead — pass `<ListItem>` and `<ListGroup>` as children
 - Pick a bullet style with `marker`: `"none"` (default, unstyled), `"disc"` / `"square"` (renders `<ul>`), or `"decimal"` (renders `<ol>`)
-- Add a vertical guide on nested group panels with `line` — useful for tree-style navigation
 - Apply shared overrides to every rendered item or group via `ItemProps` and `GroupProps` on the wrapper
 
 Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. They render the same output.
