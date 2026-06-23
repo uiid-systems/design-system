@@ -19,7 +19,8 @@ export type ListGroupProps = {
 
 export type ListProps = Omit<BoxProps, "direction"> & {
   marker?: ListMarker;
-  line?: boolean;
+  category?: string;
+  icon?: Icon;
   items?: ListItemOrGroup[];
   ItemProps?: Partial<ListItemProps>;
   GroupProps?: Partial<ListGroupProps>;

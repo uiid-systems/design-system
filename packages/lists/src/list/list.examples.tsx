@@ -1,12 +1,4 @@
-import {
-  Bug,
-  Code,
-  FileText,
-  Folder,
-  Hammer,
-  Image,
-  Star,
-} from "@uiid/icons";
+import { Bug, Code, FileText, Folder, Hammer, Image, Star } from "@uiid/icons";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -15,11 +7,7 @@ import { ListGroup, ListItem } from "./subcomponents";
 
 export const Default = () => (
   <List
-    items={[
-      { label: "Item 1" },
-      { label: "Item 2" },
-      { label: "Item 3" },
-    ]}
+    items={[{ label: "Item 1" }, { label: "Item 2" }, { label: "Item 3" }]}
   />
 );
 
@@ -51,9 +39,16 @@ export const WithDescriptions = () => (
   />
 );
 
+export const WithCategory = () => (
+  <List
+    category="Navigation"
+    icon={Folder}
+    items={[{ label: "Home" }, { label: "About" }, { label: "Contact" }]}
+  />
+);
+
 export const NestedGroups = () => (
   <List
-    line
     items={[
       {
         category: "Source",
@@ -83,27 +78,31 @@ export const NestedGroups = () => (
 );
 
 export const Markers = () => {
-  const items = [
-    { label: "First" },
-    { label: "Second" },
-    { label: "Third" },
-  ];
+  const items = [{ label: "First" }, { label: "Second" }, { label: "Third" }];
   return (
     <Group gap={8} ay="start">
       <Stack gap={2}>
-        <Text size={0} weight="bold">none</Text>
+        <Text size={0} weight="bold">
+          none
+        </Text>
         <List marker="none" items={items} />
       </Stack>
       <Stack gap={2}>
-        <Text size={0} weight="bold">disc</Text>
+        <Text size={0} weight="bold">
+          disc
+        </Text>
         <List marker="disc" items={items} />
       </Stack>
       <Stack gap={2}>
-        <Text size={0} weight="bold">decimal</Text>
+        <Text size={0} weight="bold">
+          decimal
+        </Text>
         <List marker="decimal" items={items} />
       </Stack>
       <Stack gap={2}>
-        <Text size={0} weight="bold">square</Text>
+        <Text size={0} weight="bold">
+          square
+        </Text>
         <List marker="square" items={items} />
       </Stack>
     </Group>

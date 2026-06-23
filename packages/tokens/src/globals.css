@@ -71,7 +71,6 @@
   }
 
   a {
-    color: var(--theme-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
 
