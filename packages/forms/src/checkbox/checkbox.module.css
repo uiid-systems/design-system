@@ -18,7 +18,7 @@
 
   &[data-unchecked] {
     border: var(--globals-border-width) solid var(--forms-border-color);
-    background-color: var(--forms-bg);
+    background-color: var(--shade-background);
     &:hover {
       background-color: var(--forms-bg-hover);
     }
