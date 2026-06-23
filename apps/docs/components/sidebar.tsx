@@ -26,9 +26,10 @@ const SidebarContainer = ({ children }: React.PropsWithChildren) => {
     <Stack
       data-slot="sidebar"
       render={<aside />}
-      w={SIDEBAR_WIDTH}
+      maxw={SIDEBAR_WIDTH}
       br={SHELL_BORDER_WIDTH}
       ax="stretch"
+      fullwidth
     >
       {children}
     </Stack>
