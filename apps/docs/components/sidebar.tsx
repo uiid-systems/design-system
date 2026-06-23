@@ -14,7 +14,8 @@ export function Sidebar() {
     <SidebarContainer>
       <SidebarScrollContainer>
         <SidebarHeader>uiid docs</SidebarHeader>
-        <SidebarList items={SITEMAP} category="Navigation" />
+        <SidebarList items={SITEMAP} />
+        <SidebarList items={SITEMAP} category="Components" />
       </SidebarScrollContainer>
     </SidebarContainer>
   );
