@@ -1623,6 +1623,9 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
+      '@uiid/cards':
+        specifier: workspace:*
+        version: link:../cards
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
@@ -1663,9 +1666,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../cards
       '@uiid/forms':
         specifier: workspace:*
         version: link:../forms

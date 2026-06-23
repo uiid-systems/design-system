@@ -4,8 +4,8 @@
   "table": {
     "min-width": { "$value": "48rem", "$type": "dimension" },
     "head": {
-      "bg": { "$value": "{shade.accent}", "$type": "color" },
-      "fg": { "$value": "{shade.foreground}", "$type": "color" }
+      "bg": { "$value": "{shade.foreground}", "$type": "color" },
+      "fg": { "$value": "{shade.background}", "$type": "color" }
     },
     "cell": {
       "min-height": { "$value": "3rem", "$type": "dimension" },

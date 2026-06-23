@@ -10,8 +10,6 @@
 }
 
 .table-container {
-  position: relative;
-  width: 100%;
   overflow-x: auto;
 }
 
@@ -27,8 +25,8 @@
 }
 
 .table-header {
-  background-color: var(--table-head-background-color);
-  color: var(--table-head-color);
+  background-color: var(--table-head-bg);
+  color: var(--table-head-fg);
 }
 
 .table-root {
@@ -43,7 +41,7 @@
 .table-row {
   display: table-row;
 
-  &:where([data-bordered="true"] tbody &) {
+  &:where([data-bordered="true"] tbody &:not(:last-child)) {
     border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   }
 
