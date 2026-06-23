@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack, Table } from "@uiid/design-system";
+import { Badge, Stack, Table } from "@uiid/design-system";
 import type {
   TableActionsProps,
   TableCellDropdownProps,
@@ -12,7 +12,7 @@ type TableMockData = {
   email: string;
   location: string;
   balance: string;
-  status: string;
+  status: React.ReactNode;
 };
 
 const TABLE_MOCK_DATA: TableMockData[] = [
@@ -21,35 +21,55 @@ const TABLE_MOCK_DATA: TableMockData[] = [
     email: "alex.t@company.com",
     location: "San Francisco, US",
     balance: "$1,250.00",
-    status: "Active",
+    status: (
+      <Badge size="small" color="green">
+        Active
+      </Badge>
+    ),
   },
   {
     name: "Sarah Chen",
     email: "sarah.c@company.com",
     location: "Singapore",
     balance: "$600.00",
-    status: "Active",
+    status: (
+      <Badge size="small" color="green">
+        Active
+      </Badge>
+    ),
   },
   {
     name: "James Wilson",
     email: "j.wilson@company.com",
     location: "London, UK",
     balance: "$650.00",
-    status: "Inactive",
+    status: (
+      <Badge size="small" color="neutral">
+        Inactive
+      </Badge>
+    ),
   },
   {
     name: "Maria Garcia",
     email: "m.garcia@company.com",
     location: "Madrid, Spain",
     balance: "$0.00",
-    status: "Active",
+    status: (
+      <Badge size="small" color="green">
+        Active
+      </Badge>
+    ),
   },
   {
     name: "David Kim",
     email: "d.kim@company.com",
     location: "Seoul, KR",
     balance: "-$1,000.00",
-    status: "Active",
+    status: (
+      <Badge size="small" color="green">
+        Active
+      </Badge>
+    ),
   },
 ];
 
