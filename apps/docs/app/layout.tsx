@@ -36,12 +36,7 @@ export default function RootLayout({
 }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Stack
-        data-slot="body"
-        render={<body />}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
-        fullwidth
-      >
+      <Body>
         <AppShellOuter>
           <Sidebar />
           <AppShellInner>
@@ -49,10 +44,24 @@ export default function RootLayout({
             <Main>{children}</Main>
           </AppShellInner>
         </AppShellOuter>
-      </Stack>
+      </Body>
     </html>
   );
 }
+
+const Body = ({ children }: React.PropsWithChildren) => {
+  return (
+    <Stack
+      data-slot="body"
+      render={<body />}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+      fullwidth
+    >
+      {children}
+    </Stack>
+  );
+};
+Body.displayName = "Body";
 
 const AppShellOuter = ({ children }: React.PropsWithChildren) => {
   return (

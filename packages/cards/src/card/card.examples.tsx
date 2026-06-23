@@ -1,4 +1,4 @@
-import { Bell, Globe, Settings, Sparkles } from "@uiid/icons";
+import { Bell, Globe, Settings } from "@uiid/icons";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -94,48 +94,14 @@ export const Footer = () => (
   </Card>
 );
 
-export const Inverted = () => (
-  <Card
-    inverted
-    maxw={420}
-    icon={Sparkles}
-    title="Inverted"
-    description="Foreground surface with background-colored text."
-  >
-    {BODY}
-  </Card>
-);
-
 export const Trimmed = () => (
   <Card
-    trimmed
+    p={0}
     maxw={320}
     title="Trimmed"
     description="Padding removed so a thumbnail can sit edge-to-edge."
     thumbnail={<Thumb />}
   />
-);
-
-export const Ghost = () => (
-  <Card
-    ghost
-    maxw={420}
-    title="Ghost"
-    description="Borderless and transparent — useful inside dense layouts."
-  >
-    {BODY}
-  </Card>
-);
-
-export const Transparent = () => (
-  <Card
-    transparent
-    maxw={420}
-    title="Transparent"
-    description="Keeps the border and padding but drops the surface fill."
-  >
-    {BODY}
-  </Card>
 );
 
 export const Polymorphic = () => (

@@ -18,6 +18,8 @@ export type TableRootProps = React.ComponentProps<"table"> & {
   selectable?: boolean;
   striped?: boolean;
   bordered?: boolean;
+  /** Highlight rows on hover. */
+  highlightOnHover?: boolean;
 };
 
 export type TableProps<
@@ -30,4 +32,12 @@ export type TableProps<
     secondary?: TableCellDropdownProps;
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
+  /** Footer content, rendered in a <tfoot> cell spanning all columns. */
+  footer?: React.ReactNode;
+  /** Controlled selected row indices. Pair with `onSelectedRowsChange`. */
+  selectedRows?: number[];
+  /** Initial selected row indices when uncontrolled. */
+  defaultSelectedRows?: number[];
+  /** Called with the selected row indices whenever selection changes. */
+  onSelectedRowsChange?: (selectedRows: number[]) => void;
 };

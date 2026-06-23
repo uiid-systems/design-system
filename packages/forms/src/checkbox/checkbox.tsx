@@ -29,7 +29,12 @@ export const Checkbox = ({
       bordered={bordered}
       {...FieldProps}
     >
-      <CheckboxRoot name={name} hideIndicator={hideIndicator} {...props}>
+      <CheckboxRoot
+        name={name}
+        hideIndicator={hideIndicator}
+        indeterminate={indeterminate}
+        {...props}
+      >
         <CheckboxIndicator indeterminate={indeterminate} {...IndicatorProps} />
       </CheckboxRoot>
     </CheckboxField>

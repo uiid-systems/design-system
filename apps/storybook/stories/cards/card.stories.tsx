@@ -18,10 +18,6 @@ const meta = {
     title: { control: "text", table: { category: "Content" } },
     description: { control: "text", table: { category: "Content" } },
     children: { control: "text", table: { category: "Content" } },
-    inverted: { control: "boolean", table: { category: "Toggles" } },
-    trimmed: { control: "boolean", table: { category: "Toggles" } },
-    transparent: { control: "boolean", table: { category: "Toggles" } },
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     HeaderProps: { table: { category: "Subcomponents" } },
     TitleProps: { table: { category: "Subcomponents" } },
     DescriptionProps: { table: { category: "Subcomponents" } },
@@ -52,20 +48,8 @@ export const Footer: Story = {
   render: () => <Examples.Footer />,
 };
 
-export const Inverted: Story = {
-  render: () => <Examples.Inverted />,
-};
-
 export const Trimmed: Story = {
   render: () => <Examples.Trimmed />,
-};
-
-export const Ghost: Story = {
-  render: () => <Examples.Ghost />,
-};
-
-export const Transparent: Story = {
-  render: () => <Examples.Transparent />,
 };
 
 export const Polymorphic: Story = {

@@ -207,10 +207,6 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
-| `inverted` | boolean |  |
-| `trimmed` | boolean |  |
-| `transparent` | boolean |  |
-| `ghost` | boolean |  |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
@@ -449,10 +445,6 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
-| `inverted` | boolean |  |
-| `trimmed` | boolean |  |
-| `transparent` | boolean |  |
-| `ghost` | boolean |  |
 
 #### Avatar
 

@@ -13,7 +13,7 @@ const meta = {
   render: (args) => (
     <Stack gap={4} fullwidth>
       <Alert {...args} action={<Globe />} />
-      <Alert {...args} inverted icon={Globe} action={<a href="#">Action</a>} />
+      <Alert {...args} icon={Globe} action={<a href="#">Action</a>} />
     </Stack>
   ),
 } satisfies Meta<typeof Alert>;

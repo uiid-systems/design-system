@@ -34,7 +34,15 @@ export const ChatMessageBubble = ({ message }: { message: ChatMessage }) => {
       <Text size={-1} shade="muted">
         {isUser ? "You" : "Assistant"}
       </Text>
-      <Card ghost={isUser}>
+      <Card
+        p={isUser ? 0 : undefined}
+        b={isUser ? 0 : undefined}
+        style={
+          isUser
+            ? { backgroundColor: "transparent", boxShadow: "none" }
+            : undefined
+        }
+      >
         <Text style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
           {displayContent}
         </Text>

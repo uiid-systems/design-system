@@ -56,7 +56,7 @@ export const LandingScreenBlocks = () => {
                 handleLoad(block);
               }
             }}
-            trimmed
+            p={0}
             ax="stretch"
             style={{ cursor: "pointer", flex: 1 }}
           >

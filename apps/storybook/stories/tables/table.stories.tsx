@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react-vite";
 
-import { Card, Stack, Table } from "@uiid/design-system";
+import { Stack, Table } from "@uiid/design-system";
 import {
   TABLE_MOCK_DATA,
   type TableMockData,
@@ -20,22 +20,18 @@ export const Default = {
   tags: ["new"],
   render: () => (
     <Stack gap={4} fullwidth>
-      <Card
-        trimmed
-        fullwidth
-        style={{ backgroundColor: "var(--shade-background)" }}
-      >
-        <Table<TableMockData>
-          selectable
-          items={TABLE_MOCK_DATA}
-          actions={{
-            primary: TABLE_MOCK_ACTIONS,
-            secondary: TABLE_MOCK_MORE_ACTIONS,
-          }}
-          striped
-          bordered
-        />
-      </Card>
+      <Table<TableMockData>
+        selectable
+        items={TABLE_MOCK_DATA}
+        actions={{
+          primary: TABLE_MOCK_ACTIONS,
+          secondary: TABLE_MOCK_MORE_ACTIONS,
+        }}
+        striped
+        bordered
+        highlightOnHover
+        footer={`${TABLE_MOCK_DATA.length} users`}
+      />
     </Stack>
   ),
 };

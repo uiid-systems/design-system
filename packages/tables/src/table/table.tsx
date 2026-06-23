@@ -2,6 +2,7 @@ import { isValidElement } from "react";
 
 import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
+import { TableSelectionProvider } from "./table-selection";
 
 import {
   TableContainer,
@@ -10,6 +11,7 @@ import {
   TableHead,
   TableRow,
   TableBody,
+  TableFooter,
   TableCell,
   TableCellActions,
   TableCellCheckbox,
@@ -23,12 +25,19 @@ export function Table<T extends Record<string, unknown>>({
   selectable,
   striped,
   bordered,
+  footer,
+  selectedRows,
+  defaultSelectedRows,
+  onSelectedRowsChange,
   ...props
 }: TableProps<T>): React.ReactElement {
   const displayColumns =
     columns || (items.length > 0 ? Object.keys(items[0]) : []);
 
-  return (
+  const columnCount =
+    displayColumns.length + (selectable ? 1 : 0) + (actions ? 1 : 0);
+
+  const table = (
     <TableContainer>
       <TableRoot striped={striped} bordered={bordered} {...props}>
         <TableHeader>
@@ -48,7 +57,7 @@ export function Table<T extends Record<string, unknown>>({
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
-              {selectable && <TableCellCheckbox />}
+              {selectable && <TableCellCheckbox index={index} />}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {isValidElement(item[column])
@@ -61,9 +70,28 @@ export function Table<T extends Record<string, unknown>>({
           ))}
         </TableBody>
 
-        {/** @todo: Add table footer */}
+        {footer && (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={columnCount}>{footer}</TableCell>
+            </TableRow>
+          </TableFooter>
+        )}
       </TableRoot>
     </TableContainer>
+  );
+
+  return selectable ? (
+    <TableSelectionProvider
+      count={items.length}
+      selectedRows={selectedRows}
+      defaultSelectedRows={defaultSelectedRows}
+      onSelectedRowsChange={onSelectedRowsChange}
+    >
+      {table}
+    </TableSelectionProvider>
+  ) : (
+    table
   );
 }
 Table.displayName = "Table";

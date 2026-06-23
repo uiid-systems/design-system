@@ -129,7 +129,7 @@ export const MainRichTextEditor = ({
 
   return (
     <MeasuredContainer
-      render={<Card gap={0} trimmed fullwidth ax="stretch" />}
+      render={<Card gap={0} p={0} fullwidth ax="stretch" />}
       name="editor"
     >
       <Toolbar editor={editor} />
