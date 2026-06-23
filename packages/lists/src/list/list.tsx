@@ -3,11 +3,12 @@ import { Stack } from "@uiid/layout";
 import type { ListProps } from "./list.types";
 import { LIST_DEFAULT_MARKER } from "./list.constants";
 import styles from "./list.module.css";
-import { ListItem, ListGroup } from "./subcomponents";
+import { ListItem, ListGroup, ListGroupHeader } from "./subcomponents";
 
 export const List = ({
   marker = LIST_DEFAULT_MARKER,
-  line,
+  category,
+  icon,
   items,
   children,
   ItemProps,
@@ -16,14 +17,11 @@ export const List = ({
 }: ListProps) => {
   const ListElement = marker === "decimal" ? <ol /> : <ul />;
 
-  return (
+  const list = (
     <Stack
       data-slot="list"
       data-marker={marker}
-      data-line={line ? "true" : undefined}
       ax="stretch"
-      p={0}
-      m={0}
       className={styles["list"]}
       render={ListElement}
       {...props}
@@ -31,21 +29,21 @@ export const List = ({
       {items
         ? items.map((item, index) =>
             "items" in item ? (
-              <ListGroup
-                key={item.category ?? index}
-                {...item}
-                {...GroupProps}
-              />
+              <ListGroup key={item.category ?? index} {...item} {...GroupProps} />
             ) : (
-              <ListItem
-                key={index}
-                fullwidth
-                {...item}
-                {...ItemProps}
-              />
+              <ListItem key={index} fullwidth {...item} {...ItemProps} />
             ),
           )
         : children}
+    </Stack>
+  );
+
+  if (!category) return list;
+
+  return (
+    <Stack data-slot="list-section" ax="stretch" fullwidth>
+      <ListGroupHeader category={category} icon={icon} />
+      {list}
     </Stack>
   );
 };

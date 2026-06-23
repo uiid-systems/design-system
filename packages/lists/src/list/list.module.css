@@ -1,6 +1,9 @@
 @import "@uiid/tokens/component/list.tokens.css";
 
 .list {
+  margin: 0;
+  padding: 0;
+
   &:where([data-marker="none"]) {
     list-style: none;
   }

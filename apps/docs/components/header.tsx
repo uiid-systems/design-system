@@ -9,12 +9,7 @@ import {
 import { SearchIcon, SunIcon, MoonIcon, MonitorIcon } from "@uiid/icons";
 
 import { SHELL_SPACING, SHELL_BORDER_WIDTH } from "@/constants";
-
-const BREADCRUMBS_ITEMS = [
-  { label: "Home", value: "/" },
-  { label: "About", value: "/about" },
-  { label: "Contact", value: "/contact" },
-];
+import { SITEMAP } from "@/sitemap";
 
 export function Header() {
   return (
@@ -59,9 +54,7 @@ const HeaderGroup = ({ children }: React.PropsWithChildren) => {
 HeaderGroup.displayName = "HeaderGroup";
 
 const HeaderBreadcrumbs = () => {
-  return (
-    <Breadcrumbs data-slot="header-breadcrumbs" items={BREADCRUMBS_ITEMS} />
-  );
+  return <Breadcrumbs data-slot="header-breadcrumbs" items={SITEMAP} />;
 };
 HeaderBreadcrumbs.displayName = "HeaderBreadcrumbs";
 
