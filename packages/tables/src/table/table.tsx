@@ -2,6 +2,7 @@ import { isValidElement } from "react";
 
 import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
+import { TableSelectionProvider } from "./table-selection";
 
 import {
   TableContainer,
@@ -23,12 +24,15 @@ export function Table<T extends Record<string, unknown>>({
   selectable,
   striped,
   bordered,
+  selectedRows,
+  defaultSelectedRows,
+  onSelectedRowsChange,
   ...props
 }: TableProps<T>): React.ReactElement {
   const displayColumns =
     columns || (items.length > 0 ? Object.keys(items[0]) : []);
 
-  return (
+  const table = (
     <TableContainer>
       <TableRoot striped={striped} bordered={bordered} {...props}>
         <TableHeader>
@@ -48,7 +52,7 @@ export function Table<T extends Record<string, unknown>>({
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
-              {selectable && <TableCellCheckbox />}
+              {selectable && <TableCellCheckbox index={index} />}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {isValidElement(item[column])
@@ -64,6 +68,19 @@ export function Table<T extends Record<string, unknown>>({
         {/** @todo: Add table footer */}
       </TableRoot>
     </TableContainer>
+  );
+
+  return selectable ? (
+    <TableSelectionProvider
+      count={items.length}
+      selectedRows={selectedRows}
+      defaultSelectedRows={defaultSelectedRows}
+      onSelectedRowsChange={onSelectedRowsChange}
+    >
+      {table}
+    </TableSelectionProvider>
+  ) : (
+    table
   );
 }
 Table.displayName = "Table";

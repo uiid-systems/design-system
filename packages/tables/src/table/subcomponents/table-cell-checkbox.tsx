@@ -1,17 +1,37 @@
-import { Checkbox } from "@uiid/forms";
+"use client";
+
+import { Checkbox, type CheckboxProps } from "@uiid/forms";
 import { SwitchRender } from "@uiid/layout";
 
-import { TableCell, type TableCellProps } from "./table-cell";
-import { TableHead, type TableHeadProps } from "./table-head";
+import { useTableSelection } from "../table-selection";
+import { TableCell } from "./table-cell";
+import { TableHead } from "./table-head";
 
-type TableCellCheckboxProps = (TableCellProps | TableHeadProps) & {
+type TableCellCheckboxProps = {
   head?: boolean;
+  index?: number;
 };
 
 export const TableCellCheckbox = ({
   head = false,
-  ...props
+  index,
 }: TableCellCheckboxProps) => {
+  const selection = useTableSelection();
+
+  const checkboxProps: CheckboxProps = head
+    ? {
+        "aria-label": "Select all rows",
+        checked: selection.allSelected,
+        indeterminate: selection.someSelected,
+        onCheckedChange: (checked) => selection.toggleAll(Boolean(checked)),
+      }
+    : {
+        "aria-label": "Select row",
+        checked: index !== undefined && selection.isSelected(index),
+        onCheckedChange: (checked) =>
+          index !== undefined && selection.toggleRow(index, Boolean(checked)),
+      };
+
   return (
     <SwitchRender
       condition={head}
@@ -19,9 +39,8 @@ export const TableCellCheckbox = ({
         true: <TableHead collapse />,
         false: <TableCell collapse />,
       }}
-      {...props}
     >
-      <Checkbox />
+      <Checkbox {...checkboxProps} />
     </SwitchRender>
   );
 };

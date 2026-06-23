@@ -1626,6 +1626,9 @@ importers:
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
@@ -1666,9 +1669,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../forms
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(vite@7.3.5(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
