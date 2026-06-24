@@ -1,5 +1,33 @@
 # @uiid/forms
 
+## 0.0.27
+
+### Patch Changes
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Forward the `indeterminate` prop to the underlying Checkbox root so the indeterminate (mixed) state is reflected in the control's state and indicator, not just the icon.
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Remove CSS transitions from the Checkbox (the control and the bordered wrapper).
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Use `--shade-background` for the unchecked Checkbox fill so it stays visible on tinted surfaces (e.g. striped table rows) where the previous `--forms-bg` blended in.
+
+- [#233](https://github.com/uiid-systems/design-system/pull/233) [`6fdd5df`](https://github.com/uiid-systems/design-system/commit/6fdd5df7f2468ae6a836492845363d58f5dde904) Thanks [@adamfratino](https://github.com/adamfratino)! - Simplify the lists package and prune downstream consumers.
+  - **`@uiid/lists`**: replace `type` (ordered/unordered/none), `direction`, and `size` with a single `marker` prop (`"none" | "disc" | "decimal" | "square"`; `decimal` renders `<ol>`, others `<ul>`). Rename `ListItemGroup` → `ListGroup` and export it alongside `ListItem`. `ListItem` now accepts `children`, which override the label/description block. Drop the `content` and `action` slots, the `selected` and `disabled` props (along with the `ListSelectedIcon` subcomponent), the `value` field on `ListItemProps` and the `id` field on `ListGroupProps` (callers no longer need to thread a key through items; map index / category are used), the dead `description` field on `ListGroupProps`, the `HorizontalListProps | VerticalListProps` discriminated union, and all collapsible behavior (Base UI `Collapsible` wiring, `collapsible`/`open`/`defaultOpen`/`onOpenChange` props, the ChevronsUpDown trigger icon). `ListGroup` is now a purely visual grouping with a static header. Add `GroupProps` pass-through on `List` alongside the existing `ItemProps`. Tighten default item padding via tokens. Fixes a latent token-name typo (`--list-group-category-minHeight` → `-min-height`).
+  - **`@uiid/forms`**: drop `size` from `AutocompleteListProps`, `ComboboxListProps`, and `SelectListProps`; stop forwarding it to `<List>`. Remove `size` from the `Autocomplete` and `Combobox` roots (its only effect was the list scaling). `Select` keeps `size` on the trigger/value via `InputVariants`. Stop forwarding `selected={state.selected}` from `SelectItem`/`ComboboxItem` to `ListItem` (Base UI's `data-selected` attribute is still set via the renderProps spread). Dropdown list items now render at the default token sizing.
+  - **`@uiid/tokens`**: remove the dead `list.size.{sm,md,lg}` block and the orphan `list.padding-x` / `list.padding-y` tokens from `list.tokens.json`.
+
+  Adopt the examples-driven storybook pattern: add `list.examples.tsx` (Default, WithIcons, WithDescriptions, NestedGroups, Markers, Composable) and rewrite the story as a thin shim. Drop the orphaned mock files.
+
+- Updated dependencies [[`0ebdc4c`](https://github.com/uiid-systems/design-system/commit/0ebdc4c14209eece848e8d288e6a814a0e021ca6), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`0ebdc4c`](https://github.com/uiid-systems/design-system/commit/0ebdc4c14209eece848e8d288e6a814a0e021ca6), [`6fdd5df`](https://github.com/uiid-systems/design-system/commit/6fdd5df7f2468ae6a836492845363d58f5dde904), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`247daed`](https://github.com/uiid-systems/design-system/commit/247daedd33450a0794ca81a532ba9b0328967a52)]:
+  - @uiid/tokens@0.0.27
+  - @uiid/cards@0.0.27
+  - @uiid/lists@0.0.27
+  - @uiid/typography@0.0.27
+  - @uiid/buttons@0.0.27
+  - @uiid/layout@0.0.27
+  - @uiid/overlays@0.0.27
+  - @uiid/icons@0.0.27
+  - @uiid/utils@0.0.27
+
 ## 0.0.26
 
 ### Patch Changes
