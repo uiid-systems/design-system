@@ -4,11 +4,12 @@ import { textVariants } from "./text.variants";
 
 export type TextVariantProps = VariantProps<typeof textVariants>;
 
-export type TextProps = React.PropsWithChildren<{
-  ref?: React.Ref<HTMLSpanElement>;
-  render?: RenderProp;
-  style?: React.CSSProperties;
-  className?: string;
-}> &
+export type TextProps = React.HTMLAttributes<HTMLSpanElement> &
+  React.PropsWithChildren<{
+    ref?: React.Ref<HTMLSpanElement>;
+    render?: RenderProp;
+    style?: React.CSSProperties;
+    className?: string;
+  }> &
   TextVariantProps &
   SpacingProps;
