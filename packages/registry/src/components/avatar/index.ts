@@ -5,11 +5,6 @@ import { PaletteColor } from "../../shared";
 import { avatarPreviews } from "./previews";
 
 /**
- * Avatar size values.
- */
-export const AvatarSize = z.enum(["small", "medium", "large"]);
-
-/**
  * Avatar orientation values.
  */
 export const AvatarOrientation = z.enum(["horizontal", "vertical"]);
@@ -24,8 +19,6 @@ export const AvatarPropsSchema = z.object({
   name: z.string(),
   /** User description or role */
   description: z.string().optional(),
-  /** Size variant */
-  size: AvatarSize.optional(),
   /** Palette color for tinted avatar */
   color: PaletteColor.optional(),
   /** Layout orientation */
@@ -53,7 +46,6 @@ export const AvatarEntry: ComponentEntry<typeof AvatarPropsSchema> = {
     "User avatar with initials fallback, name, and optional description",
   category: "indicators",
   defaults: {
-    size: "medium",
     orientation: "horizontal",
   },
   previews: avatarPreviews,

@@ -1,88 +1,82 @@
 "use client";
 
-import * as React from "react";
-import { Group, Stack } from "@uiid/layout";
-import { cx, useComposedRefs } from "@uiid/utils";
+import { Group } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import { ITEM_NAME } from "../timeline.constants";
-import {
-  useTimelineContext,
-  useStoreContext,
-  TimelineItemContext,
-} from "../timeline.context";
-import { useIsomorphicLayoutEffect, useStore } from "../timeline.hooks";
-import type {
-  TimelineStatus,
-  ItemElement,
-  TimelineItemProps,
-  TimelineItemContextValue,
-} from "../timeline.types";
-import { getItemStatus } from "../timeline.utils";
+import { useTimelineItemContext } from "../timeline.context";
+import type { TimelineItemProps } from "../timeline.types";
 import { timelineItemVariants, timelineVariants } from "../timeline.variants";
+import styles from "../timeline.module.css";
+
+import { TimelineMedia } from "./timeline-media";
+import { TimelineMarker } from "./timeline-marker";
+import { TimelineConnector } from "./timeline-connector";
+import { TimelineContent } from "./timeline-content";
+import { TimelineTitle } from "./timeline-title";
+import { TimelineTime } from "./timeline-time";
+import { TimelineDescription } from "./timeline-description";
 
 export const TimelineItem = ({
-  className,
-  id,
-  ref,
+  title,
+  time,
+  description,
   color,
+  media,
+  content,
+  className,
   children,
+  MediaProps,
+  MarkerProps,
+  ConnectorProps,
+  ContentProps,
+  TitleProps,
+  TimeProps,
+  DescriptionProps,
   ...props
 }: TimelineItemProps) => {
-  const { dir, orientation, activeIndex } = useTimelineContext(ITEM_NAME);
-  const store = useStoreContext(ITEM_NAME);
+  const { status } = useTimelineItemContext(ITEM_NAME);
 
-  const instanceId = React.useId();
-  const itemId = id ?? instanceId;
-  const itemRef = React.useRef<ItemElement | null>(null);
-  const composedRef = useComposedRefs(ref, itemRef);
-
-  const itemIndex = useStore((state) => state.getItemIndex(itemId));
-
-  const status = React.useMemo<TimelineStatus>(() => {
-    return getItemStatus(itemIndex, activeIndex);
-  }, [activeIndex, itemIndex]);
-
-  useIsomorphicLayoutEffect(() => {
-    store.onItemRegister(itemId, itemRef);
-    return () => {
-      store.onItemUnregister(itemId);
-    };
-  }, [id, store]);
-
-  const itemContextValue = React.useMemo<TimelineItemContextValue>(
-    () => ({ id: itemId, status }),
-    [itemId, status],
-  );
-
-  const sharedProps = {
-    role: "listitem" as const,
-    "aria-current": status === "active" ? ("step" as const) : undefined,
-    "data-slot": "timeline-item",
-    "data-status": status,
-    "data-orientation": orientation,
-    id: itemId,
-    dir,
-    ref: composedRef,
-    className: cx(
-      timelineItemVariants(),
-      timelineVariants({ color }),
-      className,
-    ),
-    ...props,
-  };
+  const hasHeading = title != null || time != null;
 
   return (
-    <TimelineItemContext.Provider value={itemContextValue}>
-      {orientation === "vertical" ? (
-        <Group gap={3} pb={4} {...sharedProps}>
-          {children}
-        </Group>
-      ) : (
-        <Stack gap={3} {...sharedProps}>
-          {children}
-        </Stack>
-      )}
-    </TimelineItemContext.Provider>
+    <li
+      data-slot="timeline-item"
+      data-status={status}
+      aria-current={status === "active" ? "step" : undefined}
+      className={cx(timelineItemVariants(), className)}
+      {...props}
+    >
+      {media != null && <TimelineMedia {...MediaProps}>{media}</TimelineMedia>}
+
+      <div
+        data-slot="timeline-rail"
+        className={cx(styles["timeline-rail"], timelineVariants({ color }))}
+      >
+        <div className={styles["timeline-marker-box"]}>
+          <TimelineMarker {...MarkerProps} />
+        </div>
+        <TimelineConnector {...ConnectorProps} />
+      </div>
+
+      <TimelineContent {...ContentProps}>
+        {hasHeading && (
+          <Group gap={2} ay="baseline" data-slot="timeline-heading">
+            {title != null && (
+              <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
+            )}
+            {time != null && <TimelineTime {...TimeProps}>{time}</TimelineTime>}
+          </Group>
+        )}
+        {description != null && (
+          <TimelineDescription {...DescriptionProps}>
+            {description}
+          </TimelineDescription>
+        )}
+        {content}
+        {children}
+      </TimelineContent>
+    </li>
   );
 };
 TimelineItem.displayName = "TimelineItem";

@@ -2,6 +2,8 @@
 
 .avatar-layers {
   aspect-ratio: 1;
+  height: var(--avatar-size-md);
+  min-width: var(--avatar-size-md);
   text-align: center;
   background-color: var(--badge-bg, var(--shade-foreground));
   border-radius: var(--globals-border-radius);
@@ -26,17 +28,4 @@
 .avatar-description {
   color: var(--shade-muted);
   white-space: nowrap;
-}
-
-.size-small {
-  height: var(--avatar-size-small);
-  min-width: var(--avatar-size-small);
-}
-.size-medium {
-  height: var(--avatar-size-medium);
-  min-width: var(--avatar-size-medium);
-}
-.size-large {
-  height: var(--avatar-size-large);
-  min-width: var(--avatar-size-large);
 }

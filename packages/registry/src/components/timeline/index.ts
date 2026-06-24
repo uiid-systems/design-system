@@ -5,11 +5,6 @@ import { PaletteColor } from "../../shared";
 import { timelinePreviews } from "./previews";
 
 /**
- * Timeline orientation values.
- */
-export const TimelineOrientation = z.enum(["vertical", "horizontal"]);
-
-/**
  * Timeline direction values.
  */
 export const TimelineDirection = z.enum(["ltr", "rtl"]);
@@ -24,7 +19,7 @@ export const TimelineItemSchema = z.object({
   description: z.string().optional(),
   /** Timestamp or time label */
   time: z.string().optional(),
-  /** Palette color for this item's dot and connector */
+  /** Palette color for this item's marker and connector */
   color: PaletteColor.optional(),
 });
 
@@ -36,28 +31,14 @@ export const TimelinePropsSchema = z.object({
   children: z.any().optional(),
   /** Array of timeline items */
   items: z.array(TimelineItemSchema).optional(),
-  /** Layout orientation */
-  orientation: TimelineOrientation.optional(),
   /** Text direction */
   dir: TimelineDirection.optional(),
-  /** Index of the active/current item */
+  /** Index of the active/current item; earlier items read as completed */
   activeIndex: z.number().optional(),
-  /** Palette color for all dots and connectors */
+  /** Palette color for all markers and connectors */
   color: PaletteColor.optional(),
-  /** Props forwarded to each TimelineItem */
+  /** Props forwarded to every TimelineItem (incl. nested MarkerProps, etc.) */
   ItemProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineDot */
-  DotProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineConnector */
-  ConnectorProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineContent */
-  ContentProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineTitle */
-  TitleProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineDescription */
-  DescriptionProps: z.record(z.string(), z.any()).optional(),
-  /** Props forwarded to each TimelineTime */
-  TimeProps: z.record(z.string(), z.any()).optional(),
 });
 
 export type TimelineProps = z.infer<typeof TimelinePropsSchema>;
@@ -68,13 +49,10 @@ export const TimelineEntry: ComponentEntry<typeof TimelinePropsSchema> = {
   hasChildren: true,
   propsSchema: TimelinePropsSchema,
   description:
-    "Timeline component for displaying chronological events with active state tracking",
+    "Vertical timeline for chronological events with a marker rail and active-step tracking",
   category: "indicators",
-  defaults: {
-    orientation: "vertical",
-  },
   previews: timelinePreviews,
   usage:
-    "Use Timeline for chronological events. Pass items array for simple usage, or children for custom composition. Set activeIndex to highlight current step.",
+    "Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. Set `activeIndex` to mark the current step (earlier items render as completed). Each item shows a dot on the rail; pass a `media` node (e.g. an icon or Avatar) to add a prominent leading column to the left of the rail.",
   libs: ["base-ui"],
 };

@@ -6,7 +6,6 @@ import type { AvatarLayersProps } from "../avatar.types";
 import { avatarVariants } from "../avatar.variants";
 
 export const AvatarLayers = ({
-  size,
   color,
   className,
   children,
@@ -17,7 +16,7 @@ export const AvatarLayers = ({
       data-slot="avatar-layers"
       className={cx(
         styles["avatar-layers"],
-        avatarVariants({ size, color }),
+        avatarVariants({ color }),
         className,
       )}
       ax="center"

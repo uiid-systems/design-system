@@ -1,22 +1,20 @@
-import type { TimelineStatus, ItemElement } from "./timeline.types";
+import type { TimelineStatus } from "./timeline.types";
 
-export function getItemStatus(itemIndex: number, activeIndex?: number): TimelineStatus {
+/** Derive an item's status from its position relative to `activeIndex`. */
+export function getItemStatus(
+  index: number,
+  activeIndex?: number,
+): TimelineStatus {
   if (activeIndex === undefined) return "pending";
-  if (itemIndex < activeIndex) return "completed";
-  if (itemIndex === activeIndex) return "active";
+  if (index < activeIndex) return "completed";
+  if (index === activeIndex) return "active";
   return "pending";
 }
 
-export function getSortedEntries(
-  entries: [string, React.RefObject<ItemElement | null>][],
-) {
-  return entries.sort((a, b) => {
-    const elementA = a[1].current;
-    const elementB = b[1].current;
-    if (!elementA || !elementB) return 0;
-    const position = elementA.compareDocumentPosition(elementB);
-    if (position & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
-    if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1;
-    return 0;
-  });
+/**
+ * Whether the connector below an item should read as completed. The segment is
+ * "filled" once the step it leads into has been reached.
+ */
+export function isConnectorActive(index: number, activeIndex?: number): boolean {
+  return activeIndex !== undefined && index < activeIndex;
 }

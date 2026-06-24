@@ -3,6 +3,7 @@ import { cva } from "@uiid/utils";
 import { badgeColorStyles } from "../badge/badge.variants";
 import styles from "./timeline.module.css";
 
+/** Palette color, shared by the root and per-item overrides. */
 export const timelineVariants = cva({
   variants: {
     color: badgeColorStyles,
@@ -13,8 +14,8 @@ export const timelineItemVariants = cva({
   base: styles["timeline-item"],
 });
 
-export const timelineDotVariants = cva({
-  base: styles["timeline-dot"],
+export const timelineMarkerVariants = cva({
+  base: styles["timeline-marker"],
   variants: {
     status: {
       completed: styles["status-completed"],
@@ -30,16 +31,11 @@ export const timelineDotVariants = cva({
 export const timelineConnectorVariants = cva({
   base: styles["timeline-connector"],
   variants: {
-    isCompleted: {
-      true: styles["completed"],
-    },
-    orientation: {
-      vertical: styles["orientation-vertical"],
-      horizontal: styles["orientation-horizontal"],
+    active: {
+      true: styles["connector-active"],
     },
   },
   defaultVariants: {
-    isCompleted: false,
-    orientation: "vertical",
+    active: false,
   },
 });

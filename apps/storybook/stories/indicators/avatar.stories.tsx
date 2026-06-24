@@ -8,11 +8,6 @@ const meta: Meta<typeof Avatar> = {
   tags: ["beta"],
   args: {},
   argTypes: {
-    size: {
-      control: "select",
-      options: ["small", "medium", "large"],
-      table: { category: "Variants" },
-    },
     color: {
       control: "select",
       options: [
