@@ -77,6 +77,12 @@
     &:hover {
       text-decoration: none;
     }
+
+    &:focus {
+      outline: solid var(--globals-outline-width) var(--globals-outline-color);
+      border-radius: 2px;
+      outline-offset: 2px;
+    }
   }
 
   .sr-only {

@@ -96,18 +96,18 @@ const TABLE_MOCK_MORE_ACTIONS: TableCellDropdownProps = {
 
 export default function HomePage() {
   return (
-    <Stack gap={4} fullwidth>
+    <Stack data-slot="home-page" gap={4} fullwidth>
       <Table<TableMockData>
-        selectable
-        striped
-        bordered
-        highlightOnHover
         items={TABLE_MOCK_DATA}
         actions={{
           primary: TABLE_MOCK_ACTIONS,
           secondary: TABLE_MOCK_MORE_ACTIONS,
         }}
         footer={`${TABLE_MOCK_DATA.length} users`}
+        highlightOnHover
+        selectable
+        bordered
+        striped
       />
     </Stack>
   );
