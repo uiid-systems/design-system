@@ -48,8 +48,17 @@
   }
 }
 
+.card-lockup {
+  flex: 1;
+  min-width: 0;
+}
+
 .card-header-cell {
   min-height: calc(var(--card-icon-size) * 1.5);
+}
+
+.card-action-cell {
+  flex-shrink: 0;
 }
 
 .card-icon {
