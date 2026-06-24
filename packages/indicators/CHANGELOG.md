@@ -1,5 +1,17 @@
 # @uiid/indicators
 
+## 0.0.27
+
+### Patch Changes
+
+- [#236](https://github.com/uiid-systems/design-system/pull/236) [`fc746f4`](https://github.com/uiid-systems/design-system/commit/fc746f48c3af9cfa215e375d5c888e76f4800dfc) Thanks [@adamfratino](https://github.com/adamfratino)! - Rebuild Timeline on a subgrid `media` / rail / content layout: a prominent leading media column (avatar/icon) right-aligned to the rail, a continuous connector masked behind status-colored dots, and dot/media centered on the title's first line. Removes `orientation` (vertical-only), the internal subscription store, and the dead `TimelineHeader`; renames `TimelineDot` → `TimelineMarker` and adds `TimelineMedia`. Also removes the inert Avatar `size` prop (fixing its underlying token-mismatch sizing bug) and makes Avatar `name`/`description` optional.
+
+- Updated dependencies [[`0ebdc4c`](https://github.com/uiid-systems/design-system/commit/0ebdc4c14209eece848e8d288e6a814a0e021ca6), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`6fdd5df`](https://github.com/uiid-systems/design-system/commit/6fdd5df7f2468ae6a836492845363d58f5dde904), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`247daed`](https://github.com/uiid-systems/design-system/commit/247daedd33450a0794ca81a532ba9b0328967a52)]:
+  - @uiid/tokens@0.0.27
+  - @uiid/cards@0.0.27
+  - @uiid/typography@0.0.27
+  - @uiid/utils@0.0.27
+
 ## 0.0.26
 
 ### Patch Changes

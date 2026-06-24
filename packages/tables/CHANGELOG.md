@@ -1,5 +1,27 @@
 # @uiid/tables
 
+## 0.0.27
+
+### Patch Changes
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Add row highlighting and a footer slot to Table. Selected rows are highlighted (driven by the checkbox state via CSS so rows stay server-rendered), a new `highlightOnHover` prop enables hover highlighting, and the two coexist. Also fixes `striped` rows being invisible against the table's own surface, and adds a `footer` slot rendered in a `<tfoot>` spanning all columns.
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Add built-in row selection to Table. The header checkbox selects/clears all rows (with an indeterminate state for partial selection) and each row toggles individually. Selection state is isolated to a client boundary so the table markup stays server-renderable. Supports controlled (`selectedRows` + `onSelectedRowsChange`) and uncontrolled (`defaultSelectedRows`) usage, keyed by row index.
+
+- [#235](https://github.com/uiid-systems/design-system/pull/235) [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a) Thanks [@adamfratino](https://github.com/adamfratino)! - Table now renders its own Card-based surface (border, radius, fill, shadow) and a differentiated inverted header. Fixes header token variable names that previously referenced undefined CSS variables, and drops the bottom border on the last body row.
+
+- Updated dependencies [[`0ebdc4c`](https://github.com/uiid-systems/design-system/commit/0ebdc4c14209eece848e8d288e6a814a0e021ca6), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`6fdd5df`](https://github.com/uiid-systems/design-system/commit/6fdd5df7f2468ae6a836492845363d58f5dde904), [`14ac344`](https://github.com/uiid-systems/design-system/commit/14ac344da71d78f844123208532fb81a33cadc6a), [`247daed`](https://github.com/uiid-systems/design-system/commit/247daedd33450a0794ca81a532ba9b0328967a52)]:
+  - @uiid/tokens@0.0.27
+  - @uiid/cards@0.0.27
+  - @uiid/forms@0.0.27
+  - @uiid/typography@0.0.27
+  - @uiid/buttons@0.0.27
+  - @uiid/interactive@0.0.27
+  - @uiid/layout@0.0.27
+  - @uiid/overlays@0.0.27
+  - @uiid/icons@0.0.27
+  - @uiid/utils@0.0.27
+
 ## 0.0.26
 
 ### Patch Changes
