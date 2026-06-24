@@ -1,6 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Card, CodeBlock, Stack, Text, Timeline } from "@uiid/design-system";
+import {
+  Avatar,
+  Card,
+  CodeBlock,
+  Stack,
+  Text,
+  Timeline,
+  TimelineItem,
+} from "@uiid/design-system";
 import type { TimelineItemType } from "@uiid/design-system";
+import {
+  CreditCard,
+  GitCommitHorizontal,
+  GitMerge,
+  MapPin,
+  Package,
+  Truck,
+  UserPlus,
+} from "@uiid/icons";
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
 const meta = {
@@ -11,13 +28,8 @@ const meta = {
     activeIndex: 1,
   },
   argTypes: {
-    orientation: {
-      control: "select",
-      options: ["vertical", "horizontal"],
-      table: { category: "Options" },
-    },
     activeIndex: {
-      control: { type: "number", min: 0, max: 3 },
+      control: { type: "number", min: 0, max: 5 },
       table: { category: "Options" },
     },
     dir: {
@@ -48,52 +60,78 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   name: "Timeline",
-  render: (args) => (
-    <Stack gap={8}>
-      <Timeline orientation="vertical" items={MOCK_TIMELINE_ITEMS} {...args} />
-      <Timeline
-        orientation="horizontal"
-        items={MOCK_TIMELINE_ITEMS}
-        {...args}
-      />
-    </Stack>
-  ),
+  render: (args) => <Timeline items={MOCK_TIMELINE_ITEMS} {...args} />,
 };
 
-const COLORED_ITEMS: TimelineItemType[] = [
+const ICON_ITEMS: TimelineItemType[] = [
   {
-    title: "Created",
-    description: "Issue opened",
+    title: "Order placed",
+    description: "Your order has been confirmed",
     time: "9:00 AM",
-    color: "blue",
+    media: <CreditCard size={24} />,
   },
   {
-    title: "In Progress",
-    description: "Work started",
+    title: "Processing",
+    description: "Your order is being prepared",
     time: "10:30 AM",
-    color: "orange",
+    media: <Package size={24} />,
   },
   {
-    title: "Review",
-    description: "PR submitted",
+    title: "Shipped",
+    description: "Your order is on the way",
     time: "2:00 PM",
-    color: "purple",
+    media: <Truck size={24} />,
   },
   {
-    title: "Done",
-    description: "Merged to main",
+    title: "Delivered",
+    description: "Package arrived at destination",
     time: "4:30 PM",
-    color: "green",
+    media: <MapPin size={24} />,
   },
 ];
+
+export const IconMedia: Story = {
+  name: "Icon media",
+  render: (args) => <Timeline items={ICON_ITEMS} activeIndex={2} {...args} />,
+};
+
+const AVATAR_ITEMS: TimelineItemType[] = [
+  {
+    title: "Adam opened the issue",
+    description: "Timeline feels limiting in practice",
+    time: "Mon 9:00 AM",
+    media: <Avatar initials="AF" />,
+  },
+  {
+    title: "Jane left a review",
+    description: "The rail alignment looks much better now",
+    time: "Mon 2:15 PM",
+    media: <Avatar initials="JD" color="purple" />,
+  },
+  {
+    title: "Alex merged the PR",
+    description: "Shipped in the next release",
+    time: "Tue 11:40 AM",
+    media: <Avatar initials="AB" color="green" />,
+  },
+];
+
+export const AvatarMedia: Story = {
+  name: "Avatar media",
+  render: (args) => <Timeline items={AVATAR_ITEMS} activeIndex={2} {...args} />,
+};
 
 export const PerItemColors: Story = {
   name: "Per-item colors",
   render: (args) => (
     <Timeline
-      orientation="vertical"
-      items={COLORED_ITEMS}
       activeIndex={3}
+      items={[
+        { title: "Created", description: "Issue opened", color: "blue" },
+        { title: "In progress", description: "Work started", color: "orange" },
+        { title: "Review", description: "PR submitted", color: "purple" },
+        { title: "Done", description: "Merged to main", color: "green" },
+      ]}
       {...args}
     />
   ),
@@ -104,35 +142,166 @@ const sampleCode = `export function Counter() {
   return <button onClick={() => setCount(count + 1)}>Count: {count}</button>;
 }`;
 
-const recapText =
-  "Reworked the timeline content card to honor the slot width. The previous layout shrank to its content because Stack defaults to inline-flex with `align-items: flex-start`; without `fullwidth` on both the wrapping Stack and the Card, the Card sizes to its longest child (a code line, typically) instead of the slot.";
-
-export const ComplexCard: Story = {
-  name: "Card content (pitfall: no fullwidth)",
+export const CardContent: Story = {
+  name: "Card content over the rail",
   render: () => (
+    <Timeline activeIndex={1} ItemProps={{ ContentProps: { maxw: 640 } }}>
+      <TimelineItem
+        title="Session recap"
+        time="9:00 AM"
+        media={<Avatar initials="AF" />}
+      >
+        <Card InnerContainerProps={{ gap: 4 }}>
+          <Text>
+            The content column stretches by default, so a Card fills the slot
+            without any extra <code>fullwidth</code> wiring.
+          </Text>
+          <CodeBlock
+            code={sampleCode}
+            language="typescript"
+            filename="counter.tsx"
+          />
+        </Card>
+      </TimelineItem>
+      <TimelineItem title="Next event" time="9:15 AM" />
+    </Timeline>
+  ),
+};
+
+export const Composition: Story = {
+  name: "Composition (advanced)",
+  render: (args) => (
+    <Timeline activeIndex={1} {...args}>
+      <TimelineItem title="Draft" description="Document created" time="Mon" />
+      <TimelineItem
+        title="In review"
+        description="Awaiting approval"
+        time="Tue"
+      />
+      <TimelineItem
+        title="Published"
+        description="Live for everyone"
+        time="Wed"
+      />
+    </Timeline>
+  ),
+};
+
+const ACTIVITY_ITEMS: TimelineItemType[] = [
+  {
+    title: "Adam Fratino opened this pull request",
+    description: "feat(ui): rebuild the Timeline component",
+    time: "Jun 18",
+    color: "blue",
+    media: <Avatar initials="AF" color="blue" />,
+  },
+  {
+    title: "Reviewers requested",
+    time: "Jun 18",
+    media: <UserPlus size={20} />,
+    content: (
+      <Card p={4}>
+        <Stack gap={4}>
+          <Avatar
+            initials="JD"
+            name="Jane Doe"
+            description="Senior Engineer"
+            color="purple"
+          />
+          <Avatar
+            initials="AB"
+            name="Alex Brown"
+            description="Design Lead"
+            color="green"
+          />
+        </Stack>
+      </Card>
+    ),
+  },
+  {
+    title: "Jane Doe requested changes",
+    time: "Jun 19",
+    color: "orange",
+    media: <Avatar initials="JD" color="purple" />,
+    content: (
+      <Card p={4}>
+        <Text>
+          The rail looks great. Can we center the avatar on the title line
+          rather than top-aligning it? Otherwise this is ready to go.
+        </Text>
+      </Card>
+    ),
+  },
+  {
+    title: "Adam pushed 5 commits",
+    description: "Centered media, added a README, removed the legacy store",
+    time: "Jun 20",
+    media: <GitCommitHorizontal size={20} />,
+  },
+  {
+    title: "Alex Brown approved these changes",
+    description: "LGTM — the alignment is much cleaner now",
+    time: "Jun 21",
+    color: "green",
+    media: <Avatar initials="AB" color="green" />,
+  },
+  {
+    title: "Merged into main",
+    description: "Adam Fratino merged commit a1b2c3d",
+    time: "Jun 23",
+    color: "green",
+    media: <GitMerge size={20} />,
+  },
+];
+
+export const ActivityFeed: Story = {
+  name: "Activity feed (realistic)",
+  args: { activeIndex: 5 },
+  render: (args) => (
     <Timeline
-      ContentProps={{ maxw: 720 }}
-      activeIndex={1}
-      items={[
-        {
-          title: "Session recap",
-          time: "9:00 AM",
-          content: (
-            <Card InnerContainerProps={{ gap: 4 }}>
-              <Text>{recapText}</Text>
-              <CodeBlock
-                code={sampleCode}
-                language="typescript"
-                filename="counter.tsx"
-              />
-            </Card>
-          ),
-        },
-        {
-          title: "Next event",
-          time: "9:15 AM",
-        },
-      ]}
+      items={ACTIVITY_ITEMS}
+      ItemProps={{ ContentProps: { maxw: 520 } }}
+      {...args}
     />
   ),
+};
+
+const VARIABLE_MEDIA_ITEMS: TimelineItemType[] = [
+  {
+    title: "Icon media",
+    description: "Narrowest — a bare icon",
+    time: "9:00 AM",
+    media: <Package size={20} />,
+  },
+  {
+    title: "Avatar circle",
+    description: "Just initials",
+    time: "9:30 AM",
+    media: <Avatar initials="AF" />,
+  },
+  {
+    title: "Avatar with name",
+    description: "Circle plus a label",
+    time: "10:15 AM",
+    media: <Avatar initials="JD" name="Jane Doe" color="purple" />,
+  },
+  {
+    title: "Avatar with name and description",
+    description: "The widest media in this list",
+    time: "11:40 AM",
+    media: (
+      <Avatar
+        initials="AB"
+        name="Alex Brown"
+        description="Design Lead"
+        color="green"
+      />
+    ),
+  },
+];
+
+export const VariableMediaWidths: Story = {
+  name: "Variable media widths",
+  args: { activeIndex: 3 },
+  render: (args) => <Timeline items={VARIABLE_MEDIA_ITEMS} {...args} />,
 };

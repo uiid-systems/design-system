@@ -1,60 +1,144 @@
 .timeline {
+  /* Rail geometry — all positioning derives from these. */
+  --timeline-media-size: 2.5rem;
+  --timeline-rail-size: 1rem;
+  --timeline-line: 1.5rem;
   --timeline-connector-thickness: 0.125rem;
-  --timeline-dot-size: 0.875rem;
-  padding-block: var(--globals-padding-y);
+  --timeline-column-gap: 0.75rem;
+  --timeline-row-gap: 2.5rem;
+  --timeline-dot-size: 0.75rem;
+  --timeline-marker-bg: var(--shade-background);
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* The list owns the column tracks; items subgrid them so every rail, dot,
+     and content edge stays aligned even when media differ in width. */
+  display: grid;
+  grid-template-columns: var(--timeline-rail-size) minmax(0, 1fr);
+  column-gap: var(--timeline-column-gap);
 }
 
+/* The media track sizes to the widest media (min one rail-size), shared across
+   all items via subgrid. */
+.timeline[data-has-media] {
+  grid-template-columns:
+    minmax(var(--timeline-media-size), auto)
+    var(--timeline-rail-size)
+    minmax(0, 1fr);
+}
+
+/* Item — subgrids the list's columns; `align-items: stretch` lets the rail
+   fill the row height. */
 .timeline-item {
-  position: relative;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
 }
 
-/* Timeline Dot */
-.timeline-dot {
+/* Media — a prominent leading column to the left of the rail. Pinned to the
+   rail side so it sits close to the marker; fixed to the first-line height so
+   it centers on the title row (like the marker), overflowing symmetrically
+   when taller than the line. */
+.timeline-media {
+  grid-column: 1;
+  justify-self: end;
+  align-self: start;
+  height: var(--timeline-line);
+  display: flex;
+  align-items: center;
+}
+
+/* Rail — holds the marker and the connector, stretched to the row height. */
+.timeline-rail {
+  grid-column: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline[data-has-media] .timeline-rail {
+  grid-column: 2;
+}
+
+/* Marker box — aligns the marker's center to the title's first line. */
+.timeline-marker-box {
   z-index: 1;
   display: flex;
-  width: var(--timeline-dot-size);
-  height: var(--timeline-dot-size);
-  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
-  border: 2px solid var(--badge-fg, var(--shade-foreground));
-  background-color: var(--shade-background);
-
-  &[data-status="completed"] {
-    background-color: var(--badge-fg, var(--shade-foreground));
-  }
-
-  &[data-status="pending"] {
-    border-color: var(--badge-border, var(--globals-border-color));
-  }
+  min-height: var(--timeline-line);
 }
 
-/* Timeline Connector */
+/* Connector — a continuous line behind the markers, masked by their fill.
+   Spans from this marker's center to the next marker's center. */
 .timeline-connector {
   position: absolute;
+  inset-inline: 0;
+  margin-inline: auto;
   z-index: 0;
-}
-
-.timeline-connector.completed {
-  background-color: var(--badge-fg, var(--shade-foreground));
-}
-
-.timeline-connector:not(.completed) {
+  width: var(--timeline-connector-thickness);
+  top: calc(var(--timeline-line) / 2);
+  bottom: calc(var(--timeline-line) / -2);
+  border-radius: 9999px;
   background-color: var(--badge-border, var(--globals-border-color));
 }
 
-.timeline-connector.orientation-vertical {
-  inset-inline-start: calc(var(--timeline-dot-size) / 2 - var(--timeline-connector-thickness) / 2);
-  top: 0.75rem;
-  height: calc(100% + 0.5rem);
-  width: var(--timeline-connector-thickness);
+.timeline-connector.connector-active {
+  background-color: var(--badge-fg, var(--shade-foreground));
 }
 
-.timeline-connector.orientation-horizontal {
-  inset-inline-start: 0.75rem;
-  top: calc(var(--timeline-dot-size) / 2 - var(--timeline-connector-thickness) / 2);
-  height: var(--timeline-connector-thickness);
-  width: calc(100% + 0.5rem);
+/* Marker — the dot on the rail. Solid background masks the line behind it. */
+.timeline-marker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background-color: var(--timeline-marker-bg);
+  color: var(--badge-fg, var(--shade-foreground));
+}
+
+.timeline-marker[data-variant="dot"] {
+  width: var(--timeline-dot-size);
+  height: var(--timeline-dot-size);
+  border: var(--timeline-connector-thickness) solid var(--badge-fg, var(--shade-foreground));
+  border-radius: 9999px;
+}
+
+.timeline-marker[data-variant="dot"][data-status="completed"] {
+  background-color: var(--badge-fg, var(--shade-foreground));
+}
+
+.timeline-marker[data-variant="dot"][data-status="active"] {
+  background-color: var(--badge-fg, var(--shade-foreground));
+  box-shadow: 0 0 0 0.25rem color-mix(in oklch, var(--badge-fg, var(--shade-foreground)) 18%, transparent);
+}
+
+.timeline-marker[data-variant="dot"][data-status="pending"] {
+  border-color: var(--badge-border, var(--globals-border-color));
+}
+
+/* Custom marker content (rarely needed — media is the usual home for icons). */
+.timeline-marker[data-variant="content"] {
+  min-width: var(--timeline-dot-size);
+  min-height: var(--timeline-dot-size);
+  padding: 0.1875rem;
+  border-radius: 9999px;
+}
+
+/* Content column. */
+.timeline-content {
+  grid-column: 2;
+  min-width: 0;
+  padding-block-end: var(--timeline-row-gap);
+}
+
+.timeline[data-has-media] .timeline-content {
+  grid-column: 3;
+}
+
+.timeline-item:last-child .timeline-content {
+  padding-block-end: 0;
 }

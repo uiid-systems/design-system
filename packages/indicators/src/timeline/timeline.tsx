@@ -1,158 +1,64 @@
 "use client";
 
 import * as React from "react";
-import { useDirection } from "@base-ui/react/direction-provider";
-
-import { Group, Stack, SwitchRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { DEFAULT_ORIENTATION } from "./timeline.constants";
-import { StoreContext, TimelineContext } from "./timeline.context";
-import { useLazyRef } from "./timeline.hooks";
-import type {
-  Store,
-  StoreState,
-  ItemElement,
-  TimelineProps,
-  TimelineContextValue,
-} from "./timeline.types";
-import { getItemStatus, getSortedEntries } from "./timeline.utils";
+import { TimelineItemContext } from "./timeline.context";
+import type { TimelineProps, TimelineItemContextValue } from "./timeline.types";
+import { getItemStatus, isConnectorActive } from "./timeline.utils";
 import { timelineVariants } from "./timeline.variants";
 import styles from "./timeline.module.css";
 
-import {
-  TimelineItem,
-  TimelineDot,
-  TimelineConnector,
-  TimelineContent,
-  TimelineTitle,
-  TimelineDescription,
-  TimelineTime,
-} from "./subcomponents";
+import { TimelineItem } from "./subcomponents";
 
 export function Timeline({
-  orientation = DEFAULT_ORIENTATION,
-  dir: dirProp,
+  items,
   activeIndex,
   color,
-  items,
-  ItemProps,
-  DotProps,
-  ConnectorProps,
-  ContentProps,
-  TitleProps,
-  DescriptionProps,
-  TimeProps,
+  dir,
   className,
   children,
+  ItemProps,
   ...props
 }: TimelineProps) {
-  const direction = useDirection();
-  const dir = dirProp ?? direction ?? "ltr";
+  const nodes = items
+    ? items.map((item, i) => <TimelineItem key={i} {...ItemProps} {...item} />)
+    : children;
 
-  const listenersRef = useLazyRef(() => new Set<() => void>());
-  const stateRef = useLazyRef<StoreState>(() => ({
-    items: new Map(),
-  }));
+  const itemArray = React.Children.toArray(nodes);
+  const count = itemArray.length;
 
-  const store = React.useMemo<Store>(() => {
-    return {
-      subscribe: (cb) => {
-        listenersRef.current.add(cb);
-        return () => listenersRef.current.delete(cb);
-      },
-      getState: () => stateRef.current,
-      notify: () => {
-        for (const cb of listenersRef.current) {
-          cb();
-        }
-      },
-      onItemRegister: (
-        id: string,
-        ref: React.RefObject<ItemElement | null>,
-      ) => {
-        stateRef.current.items.set(id, ref);
-        store.notify();
-      },
-      onItemUnregister: (id: string) => {
-        stateRef.current.items.delete(id);
-        store.notify();
-      },
-      getNextItemStatus: (id: string, activeIndex?: number) => {
-        const entries = Array.from(stateRef.current.items.entries());
-        const sortedEntries = getSortedEntries(entries);
+  const hasMedia = itemArray.some(
+    (child) =>
+      React.isValidElement<{ media?: React.ReactNode }>(child) &&
+      child.props.media != null,
+  );
 
-        const currentIndex = sortedEntries.findIndex(([key]) => key === id);
-        if (currentIndex === -1 || currentIndex === sortedEntries.length - 1) {
-          return undefined;
-        }
-
-        const nextItemIndex = currentIndex + 1;
-        return getItemStatus(nextItemIndex, activeIndex);
-      },
-      getItemIndex: (id: string) => {
-        const entries = Array.from(stateRef.current.items.entries());
-        const sortedEntries = getSortedEntries(entries);
-        return sortedEntries.findIndex(([key]) => key === id);
-      },
-    };
-  }, [listenersRef, stateRef]);
-
-  const contextValue = React.useMemo<TimelineContextValue>(
-    () => ({
-      dir,
-      orientation,
-      activeIndex,
-    }),
-    [dir, orientation, activeIndex],
+  const contextValues = React.useMemo<TimelineItemContextValue[]>(
+    () =>
+      Array.from({ length: count }, (_, index) => ({
+        index,
+        status: getItemStatus(index, activeIndex),
+        isLast: index === count - 1,
+        connectorActive: isConnectorActive(index, activeIndex),
+      })),
+    [count, activeIndex],
   );
 
   return (
-    <StoreContext.Provider value={store}>
-      <TimelineContext.Provider value={contextValue}>
-        <SwitchRender
-          data-slot="timeline"
-          role="list"
-          className={cx(
-            styles["timeline"],
-            timelineVariants({ color }),
-            className,
-          )}
-          render={{ true: <Stack gap={2} />, false: <Group gap={2} /> }}
-          condition={orientation === "vertical"}
-          aria-orientation={orientation}
-          data-orientation={orientation}
-          dir={dir}
-          {...props}
-        >
-          {items
-            ? items.map(
-                (
-                  { title, description, time, color: itemColor, content },
-                  i,
-                ) => (
-                  <TimelineItem key={i} color={itemColor} {...ItemProps}>
-                    <TimelineDot {...DotProps} />
-                    <TimelineConnector {...ConnectorProps} />
-                    <TimelineContent {...ContentProps}>
-                      <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
-                      {time && (
-                        <TimelineTime {...TimeProps}>{time}</TimelineTime>
-                      )}
-                      {description && (
-                        <TimelineDescription {...DescriptionProps}>
-                          {description}
-                        </TimelineDescription>
-                      )}
-                      {content}
-                    </TimelineContent>
-                  </TimelineItem>
-                ),
-              )
-            : children}
-        </SwitchRender>
-      </TimelineContext.Provider>
-    </StoreContext.Provider>
+    <ol
+      data-slot="timeline"
+      data-has-media={hasMedia ? "" : undefined}
+      className={cx(styles["timeline"], timelineVariants({ color }), className)}
+      dir={dir}
+      {...props}
+    >
+      {itemArray.map((child, index) => (
+        <TimelineItemContext.Provider key={index} value={contextValues[index]}>
+          {child}
+        </TimelineItemContext.Provider>
+      ))}
+    </ol>
   );
 }
 Timeline.displayName = "Timeline";

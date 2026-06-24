@@ -9,7 +9,7 @@ export const TimelineDescription = ({
   ...props
 }: TimelineDescriptionProps) => {
   return (
-    <Text data-slot="timeline-description" shade="muted" mt={1} {...props}>
+    <Text data-slot="timeline-description" shade="muted" size={0} {...props}>
       {children}
     </Text>
   );

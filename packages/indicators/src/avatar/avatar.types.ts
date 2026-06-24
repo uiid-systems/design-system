@@ -8,8 +8,8 @@ export type AvatarVariants = VariantProps<typeof avatarVariants>;
 
 export type AvatarType = {
   initials: string;
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
 };
 
 export type AvatarContainerProps = Omit<GroupProps, "ax" | "ay"> & {
@@ -22,17 +22,11 @@ export type AvatarImageProps = {
   className?: string;
 } & React.HTMLAttributes<HTMLSpanElement>;
 
-export type AvatarInitialsProps = Pick<AvatarType, "initials"> &
-  Omit<TextProps, "size"> &
-  Pick<AvatarVariants, "size">;
+export type AvatarInitialsProps = Pick<AvatarType, "initials"> & TextProps;
 
-export type AvatarNameProps = Pick<AvatarType, "name"> &
-  Omit<TextProps, "size"> &
-  Pick<AvatarVariants, "size">;
+export type AvatarNameProps = Pick<AvatarType, "name"> & TextProps;
 
-export type AvatarDescriptionProps = Pick<AvatarType, "description"> &
-  Omit<TextProps, "size"> &
-  Pick<AvatarVariants, "size">;
+export type AvatarDescriptionProps = Pick<AvatarType, "description"> & TextProps;
 
 export type AvatarProps = {
   ContainerProps?: AvatarContainerProps;

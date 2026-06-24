@@ -3,19 +3,13 @@ import { cx } from "@uiid/utils";
 
 import type { AvatarNameProps } from "../avatar.types";
 import styles from "../avatar.module.css";
-import { TITLE_SIZE_VARIANTS } from "../avatar.variants";
 
-export const AvatarName = ({
-  name,
-  size,
-  className,
-  ...props
-}: AvatarNameProps) => {
+export const AvatarName = ({ name, className, ...props }: AvatarNameProps) => {
   return (
     <Text
       data-slot="avatar-name"
       className={cx(styles["avatar-name"], className)}
-      size={TITLE_SIZE_VARIANTS[size!]}
+      size={1}
       weight="bold"
       {...props}
     >
