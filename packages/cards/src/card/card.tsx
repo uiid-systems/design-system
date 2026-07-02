@@ -1,4 +1,4 @@
-import { ConditionalRender, Stack, type StackProps } from "@uiid/layout";
+import { Group, Stack, type StackProps } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
@@ -43,7 +43,9 @@ export const Card = ({
   const hasTitle = Boolean(Title);
   const hasAction = Boolean(Action);
   const hasDescription = Boolean(Description);
-  const hasHeader = hasIcon || hasTitle || hasAction;
+  const hasHeading = hasIcon || hasTitle;
+  const hasLockup = hasHeading || hasDescription;
+  const hasHeader = hasLockup || hasAction;
 
   return (
     <CardContainer {...props} {...ContainerProps}>
@@ -53,40 +55,41 @@ export const Card = ({
         </CardThumbnail>
       )}
 
-      {(hasHeader || hasDescription) && (
-        <ConditionalRender
-          condition={hasHeader && hasDescription}
-          render={<Stack gap={2} fullwidth />}
-        >
-          {hasHeader && (
-            <CardHeader {...HeaderProps}>
-              {hasIcon && (
-                <Container>
-                  <CardIcon icon={Icon} {...IconProps} />
-                </Container>
+      {hasHeader && (
+        <Group data-slot="card-header-region" ay="start" gap={3} fullwidth>
+          {hasLockup && (
+            <Stack className={styles["card-lockup"]} gap={1}>
+              {hasHeading && (
+                <CardHeader {...HeaderProps}>
+                  {hasIcon && (
+                    <Container>
+                      <CardIcon icon={Icon} {...IconProps} />
+                    </Container>
+                  )}
+                  {hasTitle && (
+                    <Container>
+                      <CardTitle {...TitleProps}>{Title}</CardTitle>
+                    </Container>
+                  )}
+                </CardHeader>
               )}
-              {hasTitle && (
-                <Container>
-                  <CardTitle {...TitleProps}>{Title}</CardTitle>
-                </Container>
+              {hasDescription && (
+                <CardDescription {...DescriptionProps}>
+                  {Description}
+                </CardDescription>
               )}
-              {hasAction && (
-                <Container ml="auto">
-                  <CardAction {...ActionProps}>{Action}</CardAction>
-                </Container>
-              )}
-            </CardHeader>
+            </Stack>
           )}
-          {hasDescription && (
-            <CardDescription {...DescriptionProps}>
-              {Description}
-            </CardDescription>
+          {hasAction && (
+            <Container ml="auto" className={styles["card-action-cell"]}>
+              <CardAction {...ActionProps}>{Action}</CardAction>
+            </Container>
           )}
-        </ConditionalRender>
+        </Group>
       )}
 
       {children && (
-        <Stack data-slot="card-inner-container" my={2} {...InnerContainerProps}>
+        <Stack data-slot="card-inner-container" {...InnerContainerProps}>
           {children}
         </Stack>
       )}
