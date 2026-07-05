@@ -75,6 +75,7 @@ export const SelectMultiple = ({
         {...RootProps}
       >
         <SelectTrigger
+          size={size}
           fullwidth={fullwidth}
           ghost={ghost}
           disabled={disabled}
