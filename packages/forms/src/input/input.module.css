@@ -45,19 +45,13 @@
 }
 
 .size-small {
-  font-size: var(--forms-size-sm-font-size);
-  height: var(--forms-size-sm-height);
-  padding-inline: var(--forms-size-sm-padding-x);
+  composes: size-small from "@uiid/tokens/compositions.module.css";
 }
 .size-medium {
-  font-size: var(--forms-size-md-font-size);
-  height: var(--forms-size-md-height);
-  padding-inline: var(--forms-size-md-padding-x);
+  composes: size-medium from "@uiid/tokens/compositions.module.css";
 }
 .size-large {
-  font-size: var(--forms-size-lg-font-size);
-  height: var(--forms-size-lg-height);
-  padding-inline: var(--forms-size-lg-padding-x);
+  composes: size-large from "@uiid/tokens/compositions.module.css";
 }
 
 .toggle-fullwidth {
