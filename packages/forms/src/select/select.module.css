@@ -5,6 +5,36 @@
   gap: 1rem;
 }
 
+/**
+ * Before/after slots. Mirrors input's wrapper model: the trigger drops its
+ * padding on any slotted side so the slot provides that edge instead, giving a
+ * slotted select the same insets as a slotted Input. The value flexes to fill
+ * and keeps its trailing padding as the gap to the chevron; its leading padding
+ * is dropped since the trigger or before-slot already provides the left edge.
+ */
+.select-slot {
+  composes: field-slot from "@uiid/tokens/compositions.module.css";
+}
+
+.select-trigger-slots {
+  gap: 0;
+  justify-content: normal;
+}
+
+.select-trigger-slots:has([data-slot="select-before"]) {
+  padding-inline-start: 0 !important;
+}
+
+.select-trigger-slots:has([data-slot="select-after"]) {
+  padding-inline-end: 0 !important;
+}
+
+.select-trigger-slots [data-slot="select-value"] {
+  flex: 1;
+  min-width: 0;
+  padding-inline-start: 0 !important;
+}
+
 .select-positioner {
   z-index: var(--globals-z-index-modal);
 }
@@ -46,6 +76,7 @@
 }
 
 .select-value {
+  text-align: left;
   align-content: center;
 
   [data-placeholder] & {

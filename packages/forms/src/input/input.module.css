@@ -121,29 +121,7 @@
 }
 
 .input-slot {
-  flex-shrink: 0;
-  color: var(--shade-muted);
-  pointer-events: none;
-
-  /** Make slots interactive when they contain buttons/links */
-  &:has(button, a, [role="button"]) {
-    pointer-events: auto;
-  }
-
-  svg {
-    width: var(--forms-icon-size);
-    height: var(--forms-icon-size);
-  }
-
-  .size-small > & {
-    padding-inline: var(--forms-size-sm-padding-x);
-  }
-  .size-medium > & {
-    padding-inline: var(--forms-size-md-padding-x);
-  }
-  .size-large > & {
-    padding-inline: var(--forms-size-lg-padding-x);
-  }
+  composes: field-slot from "@uiid/tokens/compositions.module.css";
 
   & + .input-inner {
     padding-inline-start: 0;

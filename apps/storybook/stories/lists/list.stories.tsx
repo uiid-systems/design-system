@@ -7,14 +7,12 @@ import * as Examples from "../../../../packages/lists/src/list/list.examples";
 const meta = {
   title: "Lists/List",
   component: List,
-  tags: ["beta"],
   argTypes: {
     marker: {
       control: "select",
       options: ["none", "disc", "decimal", "square"],
       table: { category: "Variants" },
     },
-    line: { control: "boolean", table: { category: "Toggles" } },
   },
 } satisfies Meta<typeof List>;
 

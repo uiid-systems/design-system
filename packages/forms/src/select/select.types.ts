@@ -20,7 +20,10 @@ export type SelectRootProps<Value = string> = BaseSelect.Root.Props<
   false
 >;
 export type SelectTriggerProps = BaseSelect.Trigger.Props &
-  Pick<InputVariants, "ghost" | "fullwidth" | "size">;
+  Pick<InputVariants, "ghost" | "fullwidth" | "size"> & {
+    before?: React.ReactNode;
+    after?: React.ReactNode;
+  };
 export type SelectPortalProps = BaseSelect.Portal.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
 export type SelectPopupProps = BaseSelect.Popup.Props;
@@ -31,6 +34,8 @@ export type SelectIndicatorProps = BaseSelect.Icon.Props;
 
 export type SelectProps<Value = string> = React.PropsWithChildren<{
   placeholder?: string;
+  before?: React.ReactNode;
+  after?: React.ReactNode;
   items?: SelectItemProps[];
   RootProps?: SelectRootProps<Value>;
   TriggerProps?: SelectTriggerProps;
