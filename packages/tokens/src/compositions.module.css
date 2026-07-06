@@ -29,4 +29,26 @@
     height: var(--forms-size-lg-height);
     padding-inline: var(--forms-size-lg-padding-x);
   }
+
+  /**
+   * Selectable option item, shared by dropdown-style controls (select,
+   * combobox, autocomplete). Keyed off Base UI's data attributes so the same
+   * class covers highlight and disabled states across all of them.
+   */
+  .option {
+    padding: var(--list-item-padding-y) var(--list-item-padding-x);
+    border-radius: var(--globals-border-radius);
+    transition: background-color var(--globals-transition-duration) ease-in-out;
+    cursor: pointer;
+
+    &:where([data-highlighted], :focus-visible) {
+      background-color: var(--shade-accent);
+    }
+
+    &:where([data-disabled]) {
+      opacity: var(--globals-disabled-opacity);
+      cursor: default;
+      pointer-events: none;
+    }
+  }
 }

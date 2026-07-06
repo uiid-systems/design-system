@@ -89,7 +89,7 @@ export const Card = ({
       )}
 
       {children && (
-        <Stack data-slot="card-inner-container" {...InnerContainerProps}>
+        <Stack data-slot="card-inner-container" fullwidth {...InnerContainerProps}>
           {children}
         </Stack>
       )}

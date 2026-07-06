@@ -18,14 +18,8 @@ export const ComboboxItem = ({
       value={value}
       className={styles["combobox-item"]}
       {...props}
-      render={(renderProps, state) => (
-        <ListItem
-          render={<div />}
-          fullwidth
-          label={value}
-          data-selected={state.highlighted}
-          {...renderProps}
-        />
+      render={(renderProps) => (
+        <ListItem render={<div />} fullwidth label={value} {...renderProps} />
       )}
     >
       {children}
