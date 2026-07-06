@@ -16,7 +16,7 @@ export const AutocompletePopup = ({
   return (
     <BaseAutocomplete.Popup
       data-slot="autocomplete-popup"
-      render={<Card p={2} gap={0} fullwidth data-is-popup />}
+      render={<Card p={2} gap={0} fullwidth />}
       className={cx(styles["autocomplete-popup"], className)}
       {...props}
     >

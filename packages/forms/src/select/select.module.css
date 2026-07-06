@@ -10,6 +10,7 @@
 }
 
 .select-popup {
+  composes: popup from "@uiid/tokens/compositions.module.css";
   min-width: var(--anchor-width);
 }
 

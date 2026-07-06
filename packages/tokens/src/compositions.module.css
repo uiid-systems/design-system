@@ -31,6 +31,33 @@
   }
 
   /**
+   * Enter/exit animation for anchored floating popups (tooltip, popover,
+   * select, combobox, autocomplete). Base UI toggles [data-starting-style] and
+   * [data-ending-style] around open/close, and exposes --transform-origin on
+   * the positioner (pointing at the anchor) so the popup scales out of its
+   * trigger rather than its own center. [data-instant] is set for
+   * non-animated, keyboard-driven changes and collapses the transition.
+   *
+   * Transitions (not keyframes) so an interrupted open animates back to closed
+   * from its current position instead of snapping.
+   */
+  .popup {
+    transform-origin: var(--transform-origin, center);
+    transition:
+      transform var(--globals-transition-duration) var(--globals-transition-easing),
+      opacity var(--globals-transition-duration) var(--globals-transition-easing);
+
+    &:where([data-starting-style], [data-ending-style]) {
+      opacity: 0;
+      transform: scale(var(--globals-transform-scale-down));
+    }
+
+    &:where([data-instant]) {
+      transition-duration: 0ms;
+    }
+  }
+
+  /**
    * Selectable option item, shared by dropdown-style controls (select,
    * combobox, autocomplete). Keyed off Base UI's data attributes so the same
    * class covers highlight and disabled states across all of them.

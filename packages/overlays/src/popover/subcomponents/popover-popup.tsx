@@ -31,7 +31,6 @@ export const PopoverPopup = ({
         </Card>
       }
       className={cx(styles["popover-popup"], className)}
-      data-is-popup
       {...props}
     >
       {children}

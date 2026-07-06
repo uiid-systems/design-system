@@ -52,24 +52,6 @@
     }
   }
 
-  [data-is-popup] {
-    box-shadow: var(--globals-shadow-md);
-    transform-origin: var(--globals-transform-origin);
-    transition:
-      transform var(--globals-transition-duration),
-      opacity var(--globals-transition-duration);
-
-    &[data-starting-style],
-    &[data-ending-style] {
-      opacity: 0;
-      transform: scale(var(--globals-transform-scale));
-    }
-
-    &[data-instant] {
-      transition-duration: 0ms;
-    }
-  }
-
   a {
     text-decoration: underline;
     text-underline-offset: 2px;
