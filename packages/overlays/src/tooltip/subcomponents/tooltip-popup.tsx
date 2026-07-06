@@ -4,10 +4,16 @@ import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 
 import { Text } from "@uiid/typography";
 import { Card } from "@uiid/cards";
+import { cx } from "@uiid/utils";
 
 import type { TooltipPopupProps } from "../tooltip.types";
+import styles from "../tooltip.module.css";
 
-export const TooltipPopup = ({ children, ...props }: TooltipPopupProps) => {
+export const TooltipPopup = ({
+  children,
+  className,
+  ...props
+}: TooltipPopupProps) => {
   return (
     <BaseTooltip.Popup
       data-slot="tooltip-popup"
@@ -21,7 +27,7 @@ export const TooltipPopup = ({ children, ...props }: TooltipPopupProps) => {
           }}
         />
       }
-      data-is-popup
+      className={cx(styles["tooltip-popup"], className)}
       {...props}
     >
       <Text size={-1}>{children}</Text>

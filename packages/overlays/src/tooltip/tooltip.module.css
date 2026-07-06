@@ -1,0 +1,3 @@
+.tooltip-popup {
+  composes: popup from "@uiid/tokens/compositions.module.css";
+}
