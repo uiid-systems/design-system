@@ -7,17 +7,21 @@ import { cx } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
 import styles from "./button.module.css";
-import { ButtonSpinner, ButtonTooltipWrapper } from "./subcomponents";
+import {
+  ButtonSpinner,
+  ButtonTooltipWrapper,
+  ButtonContentContainer,
+} from "./subcomponents";
 import { buttonVariants } from "./button.variants";
-import { ButtonContentContainer } from "./subcomponents/button-content-container";
+import { BUTTON_DEFAULT_SIZE } from "./button.constants";
 
 export const Button = ({
   tooltip,
   shape,
   fullwidth,
-  size,
   variant,
   loading,
+  size = BUTTON_DEFAULT_SIZE,
   className,
   children,
   ...props
