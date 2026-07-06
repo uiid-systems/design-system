@@ -1,5 +1,11 @@
 # @uiid/tokens
 
+## 0.0.28
+
+### Patch Changes
+
+- [#240](https://github.com/uiid-systems/design-system/pull/240) [`8d30a84`](https://github.com/uiid-systems/design-system/commit/8d30a8458f94682612ac022879f84a981b41bb24) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix `SelectMultiple` ignoring the `size` prop (the trigger now resizes, not just the label). Consolidate the duplicated control size scale (input, button) and the drifting dropdown option states (select, combobox, autocomplete) into shared `composes` sources in `compositions.module.css`. Add a checkmark indicator to the selected `Select` item, and make the `Card` inner container fullwidth so body content spans the card.
+
 ## 0.0.27
 
 ### Patch Changes

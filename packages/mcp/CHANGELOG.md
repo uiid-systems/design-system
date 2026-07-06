@@ -1,5 +1,13 @@
 # @uiid/mcp
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/registry@0.0.28
+  - @uiid/blocks@0.0.28
+
 ## 0.0.20
 
 ### Patch Changes
