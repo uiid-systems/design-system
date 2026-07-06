@@ -20,7 +20,7 @@ export const TimelineContent = ({
       data-slot="timeline-content"
       data-status={status}
       className={cx(styles["timeline-content"], className)}
-      gap={1}
+      gap={2}
       fullwidth
       ax="stretch"
       {...props}

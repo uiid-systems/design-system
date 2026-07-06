@@ -1,6 +1,6 @@
 "use client";
 
-import { Group } from "@uiid/layout";
+import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { ITEM_NAME } from "../timeline.constants";
@@ -60,19 +60,23 @@ export const TimelineItem = ({
       </div>
 
       <TimelineContent {...ContentProps}>
-        {hasHeading && (
-          <Group gap={2} ay="baseline" data-slot="timeline-heading">
-            {title != null && (
-              <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
-            )}
-            {time != null && <TimelineTime {...TimeProps}>{time}</TimelineTime>}
-          </Group>
-        )}
-        {description != null && (
-          <TimelineDescription {...DescriptionProps}>
-            {description}
-          </TimelineDescription>
-        )}
+        <ConditionalRender condition={hasHeading} render={<Stack />}>
+          {hasHeading && (
+            <Group gap={2} ay="baseline" data-slot="timeline-heading">
+              {title != null && (
+                <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
+              )}
+              {time != null && (
+                <TimelineTime {...TimeProps}>{time}</TimelineTime>
+              )}
+            </Group>
+          )}
+          {description != null && (
+            <TimelineDescription {...DescriptionProps}>
+              {description}
+            </TimelineDescription>
+          )}
+        </ConditionalRender>
         {content}
         {children}
       </TimelineContent>
