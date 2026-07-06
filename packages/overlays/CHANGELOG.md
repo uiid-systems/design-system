@@ -1,5 +1,19 @@
 # @uiid/overlays
 
+## 0.0.29
+
+### Patch Changes
+
+- [#241](https://github.com/uiid-systems/design-system/pull/241) [`60f51d5`](https://github.com/uiid-systems/design-system/commit/60f51d5fb6aac0bb78a2c8714787ab683ef2ca7c) Thanks [@adamfratino](https://github.com/adamfratino)! - Consolidate anchored popup enter/exit animations into a shared `.popup` composition in `@uiid/tokens/compositions.module.css`, composed by Tooltip, Popover, Select, SelectMultiple, Autocomplete, and Combobox. Fixes the previously broken scale (the old `[data-is-popup]` rule referenced an undefined `--globals-transform-scale`, so popups only faded), scales popups from their anchor via Base UI's `--transform-origin`, and applies the shared easing token. Removes the dead `[data-is-popup]` block from `globals.css`.
+
+- Updated dependencies [[`60f51d5`](https://github.com/uiid-systems/design-system/commit/60f51d5fb6aac0bb78a2c8714787ab683ef2ca7c), [`693ad6f`](https://github.com/uiid-systems/design-system/commit/693ad6fd35585601ab18e8f8b09834b0e6b61a6e)]:
+  - @uiid/tokens@0.0.29
+  - @uiid/cards@0.0.29
+  - @uiid/layout@0.0.29
+  - @uiid/typography@0.0.29
+  - @uiid/icons@0.0.29
+  - @uiid/utils@0.0.29
+
 ## 0.0.28
 
 ### Patch Changes
