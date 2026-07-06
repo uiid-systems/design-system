@@ -1,5 +1,20 @@
 # @uiid/cards
 
+## 0.0.28
+
+### Patch Changes
+
+- [#238](https://github.com/uiid-systems/design-system/pull/238) [`62d4892`](https://github.com/uiid-systems/design-system/commit/62d489279afcaa7ba8f875ddad2a0b610c051768) Thanks [@adamfratino](https://github.com/adamfratino)! - Group the Card description with the icon and title in a stacked lockup, laid out beside the action in a two-column header. A taller action slot no longer pushes the description away from the heading.
+
+- [#240](https://github.com/uiid-systems/design-system/pull/240) [`8d30a84`](https://github.com/uiid-systems/design-system/commit/8d30a8458f94682612ac022879f84a981b41bb24) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix `SelectMultiple` ignoring the `size` prop (the trigger now resizes, not just the label). Consolidate the duplicated control size scale (input, button) and the drifting dropdown option states (select, combobox, autocomplete) into shared `composes` sources in `compositions.module.css`. Add a checkmark indicator to the selected `Select` item, and make the `Card` inner container fullwidth so body content spans the card.
+
+- Updated dependencies [[`8d30a84`](https://github.com/uiid-systems/design-system/commit/8d30a8458f94682612ac022879f84a981b41bb24)]:
+  - @uiid/tokens@0.0.28
+  - @uiid/layout@0.0.28
+  - @uiid/typography@0.0.28
+  - @uiid/icons@0.0.28
+  - @uiid/utils@0.0.28
+
 ## 0.0.27
 
 ### Patch Changes
