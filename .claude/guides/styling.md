@@ -92,7 +92,7 @@ Use `Text` for all text content instead of raw HTML elements:
 | `size`          | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                                        |
 | `weight`        | `thin`, `light`, `normal`, `bold`                                    |
 | `shade`         | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
-| `tone`          | `positive`, `critical`, `warning`, `info`                            |
+| `color`         | `red`, `orange`, `yellow`, `green`, `blue`, `indigo`, `purple`, `neutral` |
 | `align`         | `left`, `center`, `right`, `justify`                                 |
 | `underline`     | boolean                                                              |
 | `strikethrough` | boolean                                                              |

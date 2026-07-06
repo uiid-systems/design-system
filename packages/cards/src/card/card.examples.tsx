@@ -7,6 +7,17 @@ import { Card } from "./card";
 const BODY =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
+const COLORS = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+  "neutral",
+] as const;
+
 const Thumb = () => (
   <svg
     viewBox="0 0 300 160"
@@ -102,6 +113,33 @@ export const Trimmed = () => (
     description="Padding removed so a thumbnail can sit edge-to-edge."
     thumbnail={<Thumb />}
   />
+);
+
+export const ColorSurfaces = () => (
+  <Stack gap={3} maxw={720}>
+    <Group gap={3}>
+      {COLORS.slice(0, 4).map((color) => (
+        <Card
+          key={color}
+          color={color}
+          maxw={160}
+          title={color.charAt(0).toUpperCase() + color.slice(1)}
+          description="bg, fg, and border derive from one palette hue."
+        />
+      ))}
+    </Group>
+    <Group gap={3}>
+      {COLORS.slice(4).map((color) => (
+        <Card
+          key={color}
+          color={color}
+          maxw={160}
+          title={color.charAt(0).toUpperCase() + color.slice(1)}
+          description="bg, fg, and border derive from one palette hue."
+        />
+      ))}
+    </Group>
+  </Stack>
 );
 
 export const Polymorphic = () => (

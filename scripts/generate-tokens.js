@@ -352,8 +352,8 @@ ${cssProperties.trimEnd()}
   }
 
   /**
-   * Color variant recipes applied to theme tokens.
-   * Same ratios used by tone tokens (positive, warning, critical, info).
+   * Color variant recipes applied to theme tokens
+   * (generates --theme-<name>-surface / -border / -foreground).
    */
   colorVariants = [
     { suffix: "surface", mix: "shade-background", ratio: 0.25 },

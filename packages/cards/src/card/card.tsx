@@ -1,4 +1,5 @@
 import { Group, Stack, type StackProps } from "@uiid/layout";
+import { paletteColorStyles } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
@@ -22,6 +23,8 @@ export const Card = ({
   icon,
   action,
   footer,
+  color,
+  className,
   ContainerProps,
   HeaderProps,
   TitleProps,
@@ -34,6 +37,13 @@ export const Card = ({
   children,
   ...props
 }: CardProps) => {
+  const { className: containerClassName, ...containerProps } =
+    ContainerProps ?? {};
+
+  const colorClassName = color
+    ? cx(paletteColorStyles[color], styles["color-surface"])
+    : undefined;
+
   const Description = DescriptionProps?.children || description;
   const Title = TitleProps?.children || title;
   const Action = ActionProps?.children || action;
@@ -48,7 +58,11 @@ export const Card = ({
   const hasHeader = hasLockup || hasAction;
 
   return (
-    <CardContainer {...props} {...ContainerProps}>
+    <CardContainer
+      {...props}
+      {...containerProps}
+      className={cx(colorClassName, className, containerClassName)}
+    >
       {thumbnail && (
         <CardThumbnail mb={2} {...ThumbnailProps}>
           {thumbnail}

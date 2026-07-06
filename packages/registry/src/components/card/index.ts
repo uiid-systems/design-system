@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { ComponentEntry } from "../../types";
+import { PaletteColor } from "../../shared";
 import { BoxPropsSchema } from "../box";
 import { cardPreviews } from "./previews";
 
@@ -21,6 +22,8 @@ export const CardPropsSchema = BoxPropsSchema.extend({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
+  /** Palette hue applied as a full bg/fg/border surface treatment */
+  color: PaletteColor.optional(),
   /** Props forwarded to the container Stack */
   ContainerProps: z.record(z.string(), z.any()).optional(),
   /** Props forwarded to the header Group */

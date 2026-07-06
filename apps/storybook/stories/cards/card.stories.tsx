@@ -52,6 +52,10 @@ export const Trimmed: Story = {
   render: () => <Examples.Trimmed />,
 };
 
+export const ColorSurfaces: Story = {
+  render: () => <Examples.ColorSurfaces />,
+};
+
 export const Polymorphic: Story = {
   render: () => <Examples.Polymorphic />,
 };

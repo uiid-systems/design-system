@@ -17,8 +17,25 @@ export type CardFooterProps = GroupProps;
 export type CardThumbnailProps = StackProps;
 export type InnerContainerProps = StackProps;
 
-export type CardProps = Omit<StackProps, "title"> & {
+/**
+ * Palette hue for the colored surface treatment. Mirrors the portable palette
+ * from `@uiid/typography` (`paletteColorStyles`); one hue resolves the card's
+ * background, foreground, and border together.
+ */
+export type CardColor =
+  | "red"
+  | "orange"
+  | "yellow"
+  | "green"
+  | "blue"
+  | "indigo"
+  | "purple"
+  | "neutral";
+
+export type CardProps = Omit<StackProps, "title" | "color"> & {
   title?: React.ReactNode;
+  /** Palette hue applied as a full bg/fg/border surface treatment. */
+  color?: CardColor;
   description?: React.ReactNode;
   thumbnail?: React.ReactNode;
   action?: React.ReactNode;
