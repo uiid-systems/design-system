@@ -2,12 +2,14 @@ import type { Select as BaseSelect } from "@base-ui/react/select";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
-import type { SelectItemProps } from "../select/select.types";
+import type {
+  SelectItemProps,
+  SelectTriggerProps,
+} from "../select/select.types";
 
 export type SelectMultipleRootProps = BaseSelect.Root.Props<string, true>;
 
-export type SelectMultipleTriggerProps = BaseSelect.Trigger.Props &
-  Pick<InputVariants, "ghost" | "fullwidth">;
+export type SelectMultipleTriggerProps = SelectTriggerProps;
 
 export type SelectMultipleProps = React.PropsWithChildren<{
   placeholder?: string;

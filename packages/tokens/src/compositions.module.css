@@ -3,4 +3,52 @@
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
+
+  /**
+   * Control sizing scale, shared by form controls and buttons.
+   * Compose these into a component's local size class rather than
+   * re-declaring height/padding/font-size per component.
+   */
+  .size-xsmall {
+    font-size: var(--forms-size-xs-font-size);
+    height: var(--forms-size-xs-height);
+    padding-inline: var(--forms-size-xs-padding-x);
+  }
+  .size-small {
+    font-size: var(--forms-size-sm-font-size);
+    height: var(--forms-size-sm-height);
+    padding-inline: var(--forms-size-sm-padding-x);
+  }
+  .size-medium {
+    font-size: var(--forms-size-md-font-size);
+    height: var(--forms-size-md-height);
+    padding-inline: var(--forms-size-md-padding-x);
+  }
+  .size-large {
+    font-size: var(--forms-size-lg-font-size);
+    height: var(--forms-size-lg-height);
+    padding-inline: var(--forms-size-lg-padding-x);
+  }
+
+  /**
+   * Selectable option item, shared by dropdown-style controls (select,
+   * combobox, autocomplete). Keyed off Base UI's data attributes so the same
+   * class covers highlight and disabled states across all of them.
+   */
+  .option {
+    padding: var(--list-item-padding-y) var(--list-item-padding-x);
+    border-radius: var(--globals-border-radius);
+    transition: background-color var(--globals-transition-duration) ease-in-out;
+    cursor: pointer;
+
+    &:where([data-highlighted], :focus-visible) {
+      background-color: var(--shade-accent);
+    }
+
+    &:where([data-disabled]) {
+      opacity: var(--globals-disabled-opacity);
+      cursor: default;
+      pointer-events: none;
+    }
+  }
 }

@@ -34,7 +34,5 @@
 }
 
 .combobox-item {
-  &:focus-visible {
-    background-color: var(--shade-accent);
-  }
+  composes: option from "@uiid/tokens/compositions.module.css";
 }

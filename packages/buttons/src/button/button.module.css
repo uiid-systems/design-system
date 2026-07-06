@@ -99,25 +99,16 @@
 }
 
 .size-xsmall {
-  font-size: var(--button-size-xs-font-size);
-  height: var(--button-size-xs-height);
-  padding-inline: var(--button-size-xs-padding-x);
+  composes: size-xsmall from "@uiid/tokens/compositions.module.css";
 }
-
 .size-small {
-  font-size: var(--button-size-sm-font-size);
-  height: var(--button-size-sm-height);
-  padding-inline: var(--button-size-sm-padding-x);
+  composes: size-small from "@uiid/tokens/compositions.module.css";
 }
 .size-medium {
-  font-size: var(--button-size-md-font-size);
-  height: var(--button-size-md-height);
-  padding-inline: var(--button-size-md-padding-x);
+  composes: size-medium from "@uiid/tokens/compositions.module.css";
 }
 .size-large {
-  font-size: var(--button-size-lg-font-size);
-  height: var(--button-size-lg-height);
-  padding-inline: var(--button-size-lg-padding-x);
+  composes: size-large from "@uiid/tokens/compositions.module.css";
 }
 
 .shape-pill {

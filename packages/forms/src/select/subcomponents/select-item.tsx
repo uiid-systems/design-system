@@ -1,5 +1,6 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 
+import { CheckIcon } from "@uiid/icons";
 import { ListItem } from "@uiid/lists";
 
 import styles from "../select.module.css";
@@ -19,17 +20,20 @@ export const SelectItem = ({
       label={label}
       className={styles["select-item"]}
       {...props}
-      render={(renderProps) => (
-        <ListItem
-          render={<div />}
-          fullwidth
-          label={label}
-          description={description}
-          icon={icon}
-          {...renderProps}
-        />
-      )}
-    />
+    >
+      <ListItem
+        render={<div />}
+        fullwidth
+        label={label}
+        description={description}
+        icon={icon}
+      />
+      <BaseSelect.ItemIndicator
+        data-slot="select-item-indicator"
+        className={styles["select-item-indicator"]}
+        render={<CheckIcon />}
+      />
+    </BaseSelect.Item>
   );
 };
 SelectItem.displayName = "SelectItem";

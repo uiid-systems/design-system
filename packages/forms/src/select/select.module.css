@@ -13,12 +13,29 @@
   min-width: var(--anchor-width);
 }
 
-.select-item:not([data-disabled]) {
-  cursor: pointer;
+.select-item {
+  composes: option from "@uiid/tokens/compositions.module.css";
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .select-item:focus {
   outline: none;
+}
+
+.select-item > [data-slot="list-item"] {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The ItemIndicator render merges this class onto the svg itself, so size it
+   directly (matching .select-icon). Sized to the list icon so a selected
+   row's checkmark stays within the text line and never grows the row. */
+.select-item-indicator {
+  flex-shrink: 0;
+  height: var(--list-icon-size);
+  width: var(--list-icon-size);
 }
 
 .select-icon {
