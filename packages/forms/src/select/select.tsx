@@ -31,6 +31,8 @@ export function Select<Value = string>({
   label,
   description,
   placeholder,
+  before,
+  after,
   items,
   defaultValue,
   RootProps,
@@ -81,6 +83,8 @@ export function Select<Value = string>({
           fullwidth={fullwidth}
           ghost={ghost}
           disabled={disabled}
+          before={before}
+          after={after}
           {...TriggerProps}
         >
           <SelectValue size={size} {...ValueProps}>

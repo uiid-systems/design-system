@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, SelectMultiple } from "@uiid/design-system";
+import { Stack, Group, SelectMultiple } from "@uiid/design-system";
 import type { SelectMultipleProps } from "@uiid/design-system";
+import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
@@ -59,3 +60,61 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Select Multiple" };
+
+export const BeforeAfterSlots: Story = {
+  name: "Before & After Slots",
+  render: (args) => (
+    <Stack ax="stretch" gap={8}>
+      <SelectMultiple
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Before slot"
+      />
+      <SelectMultiple
+        {...args}
+        after={<MailIcon />}
+        placeholder="After slot"
+      />
+      <SelectMultiple
+        {...args}
+        before={<LockIcon />}
+        after={<EyeIcon />}
+        placeholder="Both slots"
+      />
+
+      <Group fullwidth gap={4}>
+        <SelectMultiple
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Small"
+          size="small"
+        />
+        <SelectMultiple
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Medium"
+          size="medium"
+        />
+        <SelectMultiple
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Large"
+          size="large"
+        />
+      </Group>
+
+      <SelectMultiple
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Ghost with slot"
+        ghost
+      />
+      <SelectMultiple
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Disabled"
+        disabled
+      />
+    </Stack>
+  ),
+};

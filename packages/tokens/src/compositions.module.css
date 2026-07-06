@@ -58,6 +58,38 @@
   }
 
   /**
+   * Before/after slot inside a form control (input, select). Holds the slot's
+   * visual identity — muted color, non-shrinking, icon sizing, and pointer
+   * pass-through so a decorative icon doesn't swallow clicks meant for the
+   * control (interactive contents opt back in). Size-based edge padding is
+   * child-scoped to the control's size class so the same slot spacing applies
+   * whether the parent is an input wrapper or a select trigger.
+   */
+  .field-slot {
+    flex-shrink: 0;
+    color: var(--shade-muted);
+    pointer-events: none;
+
+    &:where(:has(button, a, [role="button"])) {
+      pointer-events: auto;
+    }
+
+    & svg {
+      width: var(--forms-icon-size);
+      height: var(--forms-icon-size);
+    }
+  }
+  .size-small > .field-slot {
+    padding-inline: var(--forms-size-sm-padding-x);
+  }
+  .size-medium > .field-slot {
+    padding-inline: var(--forms-size-md-padding-x);
+  }
+  .size-large > .field-slot {
+    padding-inline: var(--forms-size-lg-padding-x);
+  }
+
+  /**
    * Selectable option item, shared by dropdown-style controls (select,
    * combobox, autocomplete). Keyed off Base UI's data attributes so the same
    * class covers highlight and disabled states across all of them.

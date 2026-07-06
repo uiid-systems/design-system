@@ -13,6 +13,8 @@ export type SelectMultipleTriggerProps = SelectTriggerProps;
 
 export type SelectMultipleProps = React.PropsWithChildren<{
   placeholder?: string;
+  before?: React.ReactNode;
+  after?: React.ReactNode;
   items?: SelectItemProps[];
   RootProps?: SelectMultipleRootProps;
   TriggerProps?: SelectMultipleTriggerProps;

@@ -6,6 +6,7 @@ import {
   Select,
 } from "@uiid/design-system";
 import type { SelectProps } from "@uiid/design-system";
+import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
@@ -90,3 +91,65 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Select" };
+
+export const BeforeAfterSlots: Story = {
+  name: "Before & After Slots",
+  render: (args) => (
+    <Stack ax="stretch" gap={8}>
+      <Select {...args} before={<SearchIcon />} placeholder="Before slot" />
+      <Select {...args} after={<MailIcon />} placeholder="After slot" />
+      <Select
+        {...args}
+        before={<LockIcon />}
+        after={<EyeIcon />}
+        placeholder="Both slots"
+      />
+      <Select
+        {...args}
+        before={<span>$</span>}
+        after={<span>USD</span>}
+        placeholder="Text slots"
+      />
+
+      <Group fullwidth gap={4}>
+        <Select
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Small"
+          size="small"
+        />
+        <Select
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Medium"
+          size="medium"
+        />
+        <Select
+          {...args}
+          before={<SearchIcon />}
+          placeholder="Large"
+          size="large"
+        />
+      </Group>
+
+      <Select
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Ghost with slot"
+        ghost
+      />
+      <Select
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Full width"
+        fullwidth
+      />
+      <Select
+        {...args}
+        before={<SearchIcon />}
+        placeholder="Disabled"
+        disabled
+      />
+    </Stack>
+  ),
+};

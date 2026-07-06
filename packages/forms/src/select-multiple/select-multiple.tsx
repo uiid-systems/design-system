@@ -30,6 +30,8 @@ export const SelectMultiple = ({
   label,
   description,
   placeholder,
+  before,
+  after,
   items,
   defaultValue = [],
   RootProps,
@@ -79,6 +81,8 @@ export const SelectMultiple = ({
           fullwidth={fullwidth}
           ghost={ghost}
           disabled={disabled}
+          before={before}
+          after={after}
           {...TriggerProps}
         >
           <SelectValue size={size} {...ValueProps}>
