@@ -1,114 +1,169 @@
-"use client";
+import Link from "next/link";
 
-import { Badge, Stack, Table } from "@uiid/design-system";
-import type {
-  TableActionsProps,
-  TableCellDropdownProps,
+import {
+  Card,
+  CodeBlock,
+  Group,
+  Separator,
+  Stack,
+  StackProps,
+  Table,
+  Text,
 } from "@uiid/design-system";
-import { Star, Swords } from "@uiid/icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@uiid/icons";
 
-type TableMockData = {
-  name: string;
-  email: string;
-  location: string;
-  balance: string;
-  status: React.ReactNode;
+type PropRow = {
+  prop: React.ReactNode;
+  type: React.ReactNode;
+  default: React.ReactNode;
+  description: string;
 };
 
-const TABLE_MOCK_DATA: TableMockData[] = [
+const Mono = ({
+  children,
+  muted,
+}: React.PropsWithChildren<{ muted?: boolean }>) => (
+  <Text family="mono" size={-1} shade={muted ? "muted" : undefined}>
+    {children}
+  </Text>
+);
+
+const EMPTY = <Text shade="muted">—</Text>;
+
+const PROPS_MOCK_DATA: PropRow[] = [
   {
-    name: "Alex Thompson",
-    email: "alex.t@company.com",
-    location: "San Francisco, US",
-    balance: "$1,250.00",
-    status: (
-      <Badge size="small" color="green">
-        Active
-      </Badge>
-    ),
+    prop: <Mono>code</Mono>,
+    type: <Mono muted>string</Mono>,
+    default: EMPTY,
+    description: "The code to display.",
   },
   {
-    name: "Sarah Chen",
-    email: "sarah.c@company.com",
-    location: "Singapore",
-    balance: "$600.00",
-    status: (
-      <Badge size="small" color="green">
-        Active
-      </Badge>
-    ),
+    prop: <Mono>language</Mono>,
+    type: <Mono muted>BundledLanguage</Mono>,
+    default: <Mono muted>&quot;typescript&quot;</Mono>,
+    description: "Language used for syntax highlighting.",
   },
   {
-    name: "James Wilson",
-    email: "j.wilson@company.com",
-    location: "London, UK",
-    balance: "$650.00",
-    status: (
-      <Badge size="small" color="neutral">
-        Inactive
-      </Badge>
-    ),
+    prop: <Mono>filename</Mono>,
+    type: <Mono muted>string</Mono>,
+    default: EMPTY,
+    description: "Filename shown in the header.",
   },
   {
-    name: "Maria Garcia",
-    email: "m.garcia@company.com",
-    location: "Madrid, Spain",
-    balance: "$0.00",
-    status: (
-      <Badge size="small" color="green">
-        Active
-      </Badge>
-    ),
+    prop: <Mono>showLineNumbers</Mono>,
+    type: <Mono muted>boolean</Mono>,
+    default: <Mono muted>false</Mono>,
+    description: "Render line numbers in the gutter.",
   },
   {
-    name: "David Kim",
-    email: "d.kim@company.com",
-    location: "Seoul, KR",
-    balance: "-$1,000.00",
-    status: (
-      <Badge size="small" color="green">
-        Active
-      </Badge>
-    ),
+    prop: <Mono>highlightLines</Mono>,
+    type: <Mono muted>number[]</Mono>,
+    default: EMPTY,
+    description: "Line numbers to highlight (1-indexed).",
+  },
+  {
+    prop: <Mono>rows</Mono>,
+    type: <Mono muted>number</Mono>,
+    default: EMPTY,
+    description:
+      "Maximum visible rows before content collapses behind a toggle.",
   },
 ];
 
-const TABLE_MOCK_ACTIONS: TableActionsProps<TableMockData>[] = [
-  {
-    icon: Swords,
-    tooltip: "Challenge",
-    onClick: (item) => console.log("Challenge", item.name),
-  },
-  {
-    icon: Star,
-    tooltip: "Favorite",
-    onClick: (item) => console.log("Favorite", item.name),
-  },
-];
+const EXAMPLE_CODE = `import { CodeBlock } from "@uiid/design-system";
 
-const TABLE_MOCK_MORE_ACTIONS: TableCellDropdownProps = {
-  tooltip: "Settings",
-  items: [
-    { label: "Edit", value: "edit" },
-    { label: "Delete", value: "delete" },
-  ],
-};
+export const Example = () => (
+  <CodeBlock
+    language="tsx"
+    filename="button.tsx"
+    showLineNumbers
+    code={buttonSource}
+  />
+);`;
 
 export default function HomePage() {
   return (
-    <Stack data-slot="home-page" gap={4} fullwidth>
-      <Table<TableMockData>
-        items={TABLE_MOCK_DATA}
-        actions={{
-          primary: TABLE_MOCK_ACTIONS,
-          secondary: TABLE_MOCK_MORE_ACTIONS,
-        }}
-        footer={`${TABLE_MOCK_DATA.length} users`}
-        highlightOnHover
-        selectable
-        bordered
-        striped
-      />
-    </Stack>
+    <PageContainer data-slot="home-page">
+      <HeaderSection />
+      <Separator />
+      <CodeBlockSection />
+      <Separator />
+      <PropsSection />
+      <Separator />
+      <FooterSection />
+    </PageContainer>
   );
 }
+
+const PageContainer = ({ children, ...props }: StackProps) => (
+  <Stack px={4} pt={8} pb={32} gap={8} ax="stretch" fullwidth {...props}>
+    {children}
+  </Stack>
+);
+PageContainer.displayName = "PageContainer";
+
+const HeaderSection = () => (
+  <Stack data-slot="page-intro" gap={3} maxw={640}>
+    <Text render={<h1 />} size={5} weight="semibold">
+      CodeBlock
+    </Text>
+    <Text size={1} shade="muted" balance>
+      A syntax-highlighted code block with a copy button, optional line numbers,
+      a soft-wrap toggle, and collapsible rows.
+    </Text>
+  </Stack>
+);
+HeaderSection.displayName = "HeaderSection";
+
+const SectionTitle = ({ children }: React.PropsWithChildren) => (
+  <Text render={<h2 />} size={4} weight="semibold">
+    {children}
+  </Text>
+);
+SectionTitle.displayName = "SectionTitle";
+
+const CodeBlockSection = () => (
+  <Stack data-slot="code-block-section" id="code-example" gap={4} ax="stretch">
+    <SectionTitle>Example</SectionTitle>
+    <CodeBlock
+      language="tsx"
+      filename="example.tsx"
+      code={EXAMPLE_CODE}
+      showLineNumbers
+    />
+  </Stack>
+);
+CodeBlockSection.displayName = "CodeBlockSection";
+
+const PropsSection = () => (
+  <Stack data-slot="props-section" id="props" gap={3}>
+    <SectionTitle>Props</SectionTitle>
+    <Table<PropRow>
+      items={PROPS_MOCK_DATA}
+      footer={`${PROPS_MOCK_DATA.length} props`}
+      bordered
+      striped
+    />
+  </Stack>
+);
+PropsSection.displayName = "PropsSection";
+
+const FooterSection = () => (
+  <Group data-slot="footer-section" id="footer" gap={4} evenly>
+    <Card
+      render={<Link href="/" />}
+      icon={ArrowLeftIcon}
+      title="Previous component"
+      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    />
+    <Card
+      render={<Link href="/" />}
+      icon={ArrowRightIcon}
+      title="Next component"
+      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      /** @todo create reverse prop? */
+      HeaderProps={{ className: "flex-row-reverse" }}
+    />
+  </Group>
+);
+FooterSection.displayName = "FooterSection";
