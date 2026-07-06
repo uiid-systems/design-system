@@ -35,6 +35,7 @@ export const CodeBlockHeader = ({
       gap={3}
       py={2}
       px={4}
+      bb={1}
       fullwidth
       {...props}
     >
