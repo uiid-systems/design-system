@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 
 import { cx } from "@uiid/utils";
 
@@ -22,6 +23,7 @@ export const CodeBlock = ({
   defaultExpanded = false,
   defaultWrap = DEFAULT_WRAP,
   onWrapChange,
+  onFullscreenChange,
   onCopy,
   html: prerenderedHtml,
   className,
@@ -29,6 +31,7 @@ export const CodeBlock = ({
   LanguageIconProps,
   WrapButtonProps,
   CopyButtonProps,
+  FullscreenButtonProps,
   ...props
 }: CodeBlockProps) => {
   const language = languageProp ?? DEFAULT_LANGUAGE;
@@ -41,6 +44,30 @@ export const CodeBlock = ({
     },
     [onWrapChange],
   );
+
+  const [fullscreen, setFullscreen] = React.useState(false);
+  const handleFullscreenChange = React.useCallback(
+    (next: boolean) => {
+      setFullscreen(next);
+      onFullscreenChange?.(next);
+    },
+    [onFullscreenChange],
+  );
+
+  // While fullscreen: close on Escape and lock body scroll behind the overlay.
+  React.useEffect(() => {
+    if (!fullscreen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleFullscreenChange(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [fullscreen, handleFullscreenChange]);
 
   const { html, error } = useHighlight(code, language, {
     highlightLines,
@@ -55,13 +82,16 @@ export const CodeBlock = ({
     ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
     : undefined;
 
-  const isCollapsed = rows != null && !expanded;
-  const wrapperStyle = collapsedMaxHeight
-    ? {
-        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
-        overflowY: "auto" as const,
-      }
-    : undefined;
+  const isCollapsed = rows != null && !expanded && !fullscreen;
+  // In fullscreen the scroll area flex-fills the overlay (see CSS); skip the
+  // collapsed max-height so the inline style doesn't fight the layout.
+  const wrapperStyle =
+    !fullscreen && collapsedMaxHeight
+      ? {
+          maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
+          overflowY: "auto" as const,
+        }
+      : undefined;
 
   React.useEffect(() => {
     if (!rows || !contentWrapperRef.current || !displayHtml) {
@@ -71,13 +101,14 @@ export const CodeBlock = ({
     setOverflows(el.scrollHeight > el.clientHeight + 1);
   }, [displayHtml, rows, wrap, expanded]);
 
-  const showToggle = rows != null && (overflows || expanded);
+  const showToggle = rows != null && (overflows || expanded) && !fullscreen;
 
-  return (
+  const block = (
     <div
       data-slot="code-block"
       data-expanded={rows != null ? expanded || undefined : undefined}
       data-wrap={wrap || undefined}
+      data-fullscreen={fullscreen || undefined}
       className={cx(styles["code-block"], className)}
       {...props}
     >
@@ -89,9 +120,13 @@ export const CodeBlock = ({
         wrappable
         wrap={wrap}
         onWrapChange={handleWrapChange}
+        fullscreenable
+        fullscreen={fullscreen}
+        onFullscreenChange={handleFullscreenChange}
         LanguageIconProps={LanguageIconProps}
         WrapButtonProps={WrapButtonProps}
         CopyButtonProps={{ onCopy, ...CopyButtonProps }}
+        FullscreenButtonProps={FullscreenButtonProps}
         {...HeaderProps}
       />
 
@@ -130,6 +165,22 @@ export const CodeBlock = ({
         </button>
       )}
     </div>
+  );
+
+  if (!fullscreen) return block;
+
+  // Portal to the body so the overlay escapes any ancestor stacking/overflow
+  // context. `fullscreen` is always false on the server, so SSR renders `block`.
+  return createPortal(
+    <div data-slot="code-block-fullscreen" className={styles["code-block-fullscreen"]}>
+      <div
+        data-slot="code-block-backdrop"
+        className={styles["code-block-backdrop"]}
+        onClick={() => handleFullscreenChange(false)}
+      />
+      {block}
+    </div>,
+    document.body,
   );
 };
 CodeBlock.displayName = "CodeBlock";

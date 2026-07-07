@@ -6,9 +6,6 @@
   --button-bg: var(--shade-foreground);
   --button-fg: var(--shade-background);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   padding-inline: var(--button-padding-x);
   background-color: var(--button-bg);
@@ -27,7 +24,7 @@
   }
 
   &:where(:active) {
-    scale: 0.99;
+    scale: var(--globals-transform-scale-down);
   }
 
   &:focus-visible {
@@ -130,4 +127,3 @@
   width: -webkit-fill-available;
   width: 100%;
 }
-

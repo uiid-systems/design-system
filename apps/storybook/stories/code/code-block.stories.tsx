@@ -152,6 +152,14 @@ export const LongLineWrapOn: Story = {
   },
 };
 
+export const Fullscreen: Story = {
+  args: {
+    code: sampleLong,
+    language: "typescript",
+    filename: "long-file.ts",
+  },
+};
+
 export const Languages: Story = {
   args: {
     code: sampleTypeScript,

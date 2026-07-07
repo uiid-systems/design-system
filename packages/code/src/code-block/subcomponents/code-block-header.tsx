@@ -9,6 +9,7 @@ import { LanguageIcon } from "../language-icons";
 
 import { CodeBlockCopyButton } from "./code-block-copy-button";
 import { CodeBlockWrapButton } from "./code-block-wrap-button";
+import { CodeBlockFullscreenButton } from "./code-block-fullscreen-button";
 
 export const CodeBlockHeader = ({
   filename,
@@ -19,10 +20,14 @@ export const CodeBlockHeader = ({
   wrap,
   defaultWrap,
   onWrapChange,
+  fullscreenable = false,
+  fullscreen,
+  onFullscreenChange,
   className,
   LanguageIconProps,
   WrapButtonProps,
   CopyButtonProps,
+  FullscreenButtonProps,
   children,
   ...props
 }: CodeBlockHeaderProps) => {
@@ -54,7 +59,7 @@ export const CodeBlockHeader = ({
         )}
       </Group>
       {children}
-      {(wrappable || copyable) && (
+      {(wrappable || copyable || fullscreenable) && (
         <Group ay="center" gap={1}>
           {wrappable && (
             <CodeBlockWrapButton
@@ -69,6 +74,13 @@ export const CodeBlockHeader = ({
               code={code}
               disabled={!code}
               {...CopyButtonProps}
+            />
+          )}
+          {fullscreenable && (
+            <CodeBlockFullscreenButton
+              pressed={fullscreen}
+              onPressedChange={onFullscreenChange}
+              {...FullscreenButtonProps}
             />
           )}
         </Group>

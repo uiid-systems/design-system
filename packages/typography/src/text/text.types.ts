@@ -2,7 +2,7 @@ import type { SpacingProps, RenderProp, VariantProps } from "@uiid/utils";
 
 import { textVariants } from "./text.variants";
 
-export type TextVariantProps = VariantProps<typeof textVariants>;
+export type TextVariants = VariantProps<typeof textVariants>;
 
 export type TextProps = React.HTMLAttributes<HTMLSpanElement> &
   React.PropsWithChildren<{
@@ -11,5 +11,5 @@ export type TextProps = React.HTMLAttributes<HTMLSpanElement> &
     style?: React.CSSProperties;
     className?: string;
   }> &
-  TextVariantProps &
+  TextVariants &
   SpacingProps;
