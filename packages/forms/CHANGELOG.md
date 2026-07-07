@@ -1,5 +1,22 @@
 # @uiid/forms
 
+## 0.0.30
+
+### Patch Changes
+
+- [#244](https://github.com/uiid-systems/design-system/pull/244) [`f748549`](https://github.com/uiid-systems/design-system/commit/f748549795c163f5888f758ddba74fa1acff5f9f) Thanks [@adamfratino](https://github.com/adamfratino)! - Add a palette-driven `color` prop to Card (one hue resolves background, foreground, and border via oklch + light-dark) and retire the vestigial tone token concept. Form validation (invalid radio/checkbox and the required-field asterisk) now uses the raw `--color-red` primitive instead of the undefined `--tone-critical`.
+
+- Updated dependencies [[`f748549`](https://github.com/uiid-systems/design-system/commit/f748549795c163f5888f758ddba74fa1acff5f9f)]:
+  - @uiid/cards@0.0.30
+  - @uiid/overlays@0.0.30
+  - @uiid/buttons@0.0.30
+  - @uiid/icons@0.0.30
+  - @uiid/layout@0.0.30
+  - @uiid/lists@0.0.30
+  - @uiid/tokens@0.0.30
+  - @uiid/typography@0.0.30
+  - @uiid/utils@0.0.30
+
 ## 0.0.29
 
 ### Patch Changes

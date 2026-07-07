@@ -1,5 +1,13 @@
 # @uiid/typography
 
+## 0.0.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @uiid/tokens@0.0.30
+  - @uiid/utils@0.0.30
+
 ## 0.0.29
 
 ### Patch Changes
