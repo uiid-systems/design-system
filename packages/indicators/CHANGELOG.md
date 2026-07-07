@@ -1,5 +1,15 @@
 # @uiid/indicators
 
+## 0.0.30
+
+### Patch Changes
+
+- Updated dependencies [[`f748549`](https://github.com/uiid-systems/design-system/commit/f748549795c163f5888f758ddba74fa1acff5f9f)]:
+  - @uiid/cards@0.0.30
+  - @uiid/tokens@0.0.30
+  - @uiid/typography@0.0.30
+  - @uiid/utils@0.0.30
+
 ## 0.0.29
 
 ### Patch Changes
