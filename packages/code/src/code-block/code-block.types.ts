@@ -13,6 +13,11 @@ export type CodeBlockCopyButtonProps = Omit<ButtonProps, "onCopy"> & {
 
 export type CodeBlockWrapButtonProps = Omit<ToggleButtonProps, "icon" | "text">;
 
+export type CodeBlockFullscreenButtonProps = Omit<
+  ToggleButtonProps,
+  "icon" | "text"
+>;
+
 export type CodeBlockHeaderProps = GroupProps & {
   /** Filename to display */
   filename?: string;
@@ -30,12 +35,20 @@ export type CodeBlockHeaderProps = GroupProps & {
   defaultWrap?: boolean;
   /** Fires when the wrap toggle is pressed */
   onWrapChange?: (wrap: boolean) => void;
+  /** Render a fullscreen toggle in the header */
+  fullscreenable?: boolean;
+  /** Current fullscreen state (controlled) */
+  fullscreen?: boolean;
+  /** Fires when the fullscreen toggle is pressed */
+  onFullscreenChange?: (fullscreen: boolean) => void;
   /** Props for the language icon */
   LanguageIconProps?: Omit<LanguageIconProps, "language">;
   /** Props for the wrap button */
   WrapButtonProps?: CodeBlockWrapButtonProps;
   /** Props for the copy button */
   CopyButtonProps?: CodeBlockCopyButtonProps;
+  /** Props for the fullscreen button */
+  FullscreenButtonProps?: CodeBlockFullscreenButtonProps;
 };
 
 export type CodeBlockContentProps = StackProps & {
@@ -68,6 +81,8 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   defaultWrap?: boolean;
   /** Fires when the wrap toggle is pressed */
   onWrapChange?: (wrap: boolean) => void;
+  /** Fires when the fullscreen toggle is pressed */
+  onFullscreenChange?: (fullscreen: boolean) => void;
   /** Fires after the code is successfully copied */
   onCopy?: (code: string) => void;
   /** Pre-highlighted HTML for SSR */
@@ -80,4 +95,6 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   WrapButtonProps?: CodeBlockWrapButtonProps;
   /** Props for the copy button */
   CopyButtonProps?: CodeBlockCopyButtonProps;
+  /** Props for the fullscreen button */
+  FullscreenButtonProps?: CodeBlockFullscreenButtonProps;
 };
