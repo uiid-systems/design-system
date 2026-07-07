@@ -35,9 +35,6 @@
   z-index: 0;
   border-radius: calc(var(--globals-border-radius) / 1.5);
   background-color: var(--shade-foreground);
-  transition-property: translate, width, height;
-  transition-duration: var(--globals-transition-duration-slow);
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 
   .toggle-group-panel:not([data-orientation="vertical"]) & {
     left: 0;
@@ -53,6 +50,15 @@
     translate: -50% var(--active-toggle-top, 0);
     height: var(--active-toggle-height, 0);
     width: 100%;
+  }
+
+  /* Only animate once the first position has been measured (data-ready).
+     Before that the indicator snaps straight to the active button instead
+     of sliding in from zero width on load. */
+  .toggle-group-panel[data-ready] & {
+    transition-property: translate, width, height;
+    transition-duration: var(--globals-transition-duration-slow);
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 

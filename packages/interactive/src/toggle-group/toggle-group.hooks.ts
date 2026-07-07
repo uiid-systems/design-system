@@ -1,4 +1,15 @@
-import { useEffect, useRef, useCallback } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+
+// useLayoutEffect emits a warning during server rendering; fall back to
+// useEffect on the server where there is no DOM to measure anyway.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export const useToggleIndicator = (
   value: readonly (string | number)[] | undefined,
@@ -7,6 +18,7 @@ export const useToggleIndicator = (
 ) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonsRef = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [ready, setReady] = useState(false);
 
   const updateIndicatorPosition = useCallback(() => {
     const currentValue = value ?? activeValue;
@@ -43,7 +55,9 @@ export const useToggleIndicator = (
     }
   }, [value, activeValue, orientation]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    // Position the indicator before the browser paints so the first frame is
+    // already correct rather than starting at zero width.
     updateIndicatorPosition();
 
     const panel = panelRef.current;
@@ -54,6 +68,10 @@ export const useToggleIndicator = (
       : null;
 
     if (!panel) return;
+
+    // Enable transitions only after the initial (snap) placement has painted,
+    // so subsequent value changes animate but the first render does not.
+    const raf = requestAnimationFrame(() => setReady(true));
 
     const resizeObserver = new ResizeObserver(() => {
       updateIndicatorPosition();
@@ -68,9 +86,10 @@ export const useToggleIndicator = (
     }
 
     return () => {
+      cancelAnimationFrame(raf);
       resizeObserver.disconnect();
     };
   }, [value, activeValue, orientation, updateIndicatorPosition]);
 
-  return { panelRef, buttonsRef };
+  return { panelRef, buttonsRef, ready };
 };

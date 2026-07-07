@@ -23,7 +23,7 @@ export const ToggleGroup = ({
   const [activeValue, setActiveValue] = useState<string[]>(
     defaultValue ? [...defaultValue] : [],
   );
-  const { panelRef, buttonsRef } = useToggleIndicator(
+  const { panelRef, buttonsRef, ready } = useToggleIndicator(
     value,
     activeValue,
     orientation,
@@ -55,6 +55,7 @@ export const ToggleGroup = ({
 
   return (
     <BaseToggleGroup
+      data-slot="toggle-group"
       ref={panelRef}
       value={value}
       defaultValue={defaultValue}
@@ -63,6 +64,7 @@ export const ToggleGroup = ({
       data-size={size}
       data-ghost={ghost || undefined}
       data-orientation={orientation}
+      data-ready={ready || undefined}
       render={orientation === "vertical" ? <Stack /> : <Group />}
       {...props}
     >
