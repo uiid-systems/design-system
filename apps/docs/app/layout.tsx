@@ -31,11 +31,19 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
 };
 
+// Applies the stored color scheme to <html> before first paint so a saved
+// light/dark preference never flashes the default scheme on reload. Kept in
+// sync with COLOR_SCHEME_STORAGE_KEY in hooks/use-color-scheme.ts.
+const COLOR_SCHEME_SCRIPT = `try{var t=localStorage.getItem('uiid-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: COLOR_SCHEME_SCRIPT }} />
+      </head>
       <Body>
         <AppShellOuter>
           <Sidebar />

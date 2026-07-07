@@ -1,13 +1,7 @@
-import {
-  Breadcrumbs,
-  Group,
-  Input,
-  Kbd,
-  ToggleGroup,
-  Toggle,
-} from "@uiid/design-system";
-import { SearchIcon, SunIcon, MoonIcon, MonitorIcon } from "@uiid/icons";
+import { Breadcrumbs, Group, Input, Kbd } from "@uiid/design-system";
+import { SearchIcon } from "@uiid/icons";
 
+import { ModeToggle } from "@/components/mode-toggle";
 import { SHELL_SPACING, SHELL_BORDER_WIDTH } from "@/constants";
 import { SITEMAP } from "@/sitemap";
 
@@ -19,7 +13,7 @@ export function Header() {
       </HeaderGroup>
       <HeaderGroup>
         <HeaderSearch />
-        <HeaderModeToggle />
+        <ModeToggle />
       </HeaderGroup>
     </HeaderContainer>
   );
@@ -70,20 +64,3 @@ const HeaderSearch = () => {
   );
 };
 HeaderSearch.displayName = "HeaderSearch";
-
-const HeaderModeToggle = () => {
-  return (
-    <ToggleGroup size="sm" value={["light"]}>
-      <Toggle value="light">
-        <SunIcon />
-      </Toggle>
-      <Toggle value="dark">
-        <MoonIcon />
-      </Toggle>
-      <Toggle value="system">
-        <MonitorIcon />
-      </Toggle>
-    </ToggleGroup>
-  );
-};
-HeaderModeToggle.displayName = "HeaderModeToggle";
