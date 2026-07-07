@@ -9,7 +9,8 @@ export const ButtonSpinner = ({ loading, ...props }: ButtonSpinnerProps) => {
       data-slot="button-spinner"
       className={styles["button-spinner"]}
       data-loading={loading}
-      aria-hidden={loading}
+      aria-hidden={!loading}
+      aria-label={loading ? "Loading" : undefined}
       {...props}
     />
   );
