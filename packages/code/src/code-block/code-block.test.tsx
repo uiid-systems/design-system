@@ -195,6 +195,72 @@ describe("CodeBlock", () => {
   });
 
   // ============================================
+  // FULLSCREEN
+  // ============================================
+
+  it("always renders the fullscreen toggle", () => {
+    render(<CodeBlock code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen-button"]')
+    ).toBeInTheDocument();
+  });
+
+  it("enters fullscreen when the toggle is pressed", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+
+    await user.click(
+      screen.getByRole("button", { name: /enter fullscreen/i })
+    );
+
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="code-block-fullscreen"]')
+      ).toBeInTheDocument();
+      expect(
+        document.querySelector('[data-slot="code-block"]')
+      ).toHaveAttribute("data-fullscreen", "true");
+    });
+  });
+
+  it("exits fullscreen on Escape", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+
+    await user.click(
+      screen.getByRole("button", { name: /enter fullscreen/i })
+    );
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="code-block-fullscreen"]')
+      ).toBeInTheDocument();
+    });
+
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="code-block-fullscreen"]')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("fires onFullscreenChange when toggled", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: /enter fullscreen/i })
+    );
+
+    await waitFor(() => {
+      expect(onFullscreenChange).toHaveBeenCalledWith(true);
+    });
+  });
+
+  // ============================================
   // LANGUAGE ICON
   // ============================================
 
