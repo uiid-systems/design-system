@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -87,7 +87,7 @@ jobs:
           echo "changed_packages=$COMPACT_JSON" >> $GITHUB_OUTPUT
 
       - name: Add labels dynamically
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const changedPackages = JSON.parse('${{ steps.detect-changes.outputs.changed_packages }}');
