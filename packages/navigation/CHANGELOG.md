@@ -1,5 +1,21 @@
 # @uiid/navigation
 
+## 0.0.32
+
+### Patch Changes
+
+- Updated dependencies [[`44f8663`](https://github.com/uiid-systems/design-system/commit/44f866323350069637adc500e71d8315e6cb2a5f)]:
+  - @uiid/buttons@0.0.32
+  - @uiid/forms@0.0.32
+  - @uiid/icons@0.0.32
+  - @uiid/indicators@0.0.32
+  - @uiid/layout@0.0.32
+  - @uiid/lists@0.0.32
+  - @uiid/overlays@0.0.32
+  - @uiid/tokens@0.0.32
+  - @uiid/typography@0.0.32
+  - @uiid/utils@0.0.32
+
 ## 0.0.31
 
 ### Patch Changes
