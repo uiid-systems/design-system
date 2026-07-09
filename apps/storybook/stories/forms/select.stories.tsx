@@ -92,6 +92,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Select" };
 
+const LONG_SELECT_ITEMS = [
+  {
+    label:
+      "A very long option label that cannot fit inside the trigger and must truncate with an ellipsis",
+    value: "long",
+  },
+  { label: "Short option", value: "short" },
+];
+
+export const TruncatedValue: Story = {
+  name: "Truncated Value",
+  args: { items: LONG_SELECT_ITEMS, defaultValue: "long" },
+  render: (args) => (
+    <Stack ax="stretch" gap={8} maxw={280}>
+      <Select {...args} fullwidth />
+      <Select {...args} fullwidth before={<SearchIcon />} after={<MailIcon />} />
+    </Stack>
+  ),
+};
+
 export const BeforeAfterSlots: Story = {
   name: "Before & After Slots",
   render: (args) => (

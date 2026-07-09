@@ -18,6 +18,25 @@
   }
 
   /**
+   * Text-wrap toggles. These MUST live in this layer, declared after .text,
+   * because .text sets text-wrap: pretty here (the always-wins compositions
+   * layer). white-space: nowrap and text-wrap: balance both resolve the same
+   * text-wrap-mode longhand, so a toggle in a lower layer (uiid.primitives)
+   * can never override .text's wrap — it has to win by source order within
+   * this same layer. Composed into Text's .toggle-truncate / .toggle-balance.
+   */
+  .balance {
+    text-wrap: balance;
+  }
+  .truncate {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  /**
    * Control sizing scale, shared by form controls and buttons.
    * Compose these into a component's local size class rather than
    * re-declaring height/padding/font-size per component.

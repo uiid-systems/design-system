@@ -76,8 +76,10 @@
 }
 
 .select-value {
+  min-width: 0;
   text-align: left;
   align-content: center;
+  padding-inline-end: 0;
 
   [data-placeholder] & {
     color: var(--globals-placeholder-color);
