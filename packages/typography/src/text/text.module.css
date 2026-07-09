@@ -1,9 +1,8 @@
 @import "@uiid/tokens/primitives/typography.tokens.css";
 
 .text {
-  text-wrap: pretty;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "kern", "calt", "liga";
+  composes: text from "@uiid/tokens/compositions.module.css";
+
   text-underline-offset: 0.15em;
   text-decoration-thickness: 0.06em;
 

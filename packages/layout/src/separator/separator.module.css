@@ -31,6 +31,10 @@
   height: -webkit-fill-available;
 }
 
+.label {
+  composes: text from "@uiid/tokens/compositions.module.css";
+}
+
 .line {
   flex: 1;
 }
