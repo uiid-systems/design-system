@@ -27,8 +27,6 @@ graph TD
   code[code]
   calendars[calendars]
 
-  layout --> icons & typography
-
   cards --> icons & layout & typography
   lists --> icons & layout & typography
 
@@ -54,6 +52,8 @@ graph TD
 
 - Cycle-free — `buttons` uses `overlays` (the built-in tooltip), `overlays` uses
   `cards`, and nothing points back up.
-- `typography` and `icons` are leaves — they rely on no other UI component.
+- `layout`, `typography`, and `icons` are leaves — they rely on no other UI
+  component. (`layout` composes shared text styles from `@uiid/tokens`, so it no
+  longer depends on `typography`.)
 - To regenerate, inspect the `@uiid/*` entries in each `packages/*/package.json`,
   dropping `tokens`, `themes`, and `utils`.
