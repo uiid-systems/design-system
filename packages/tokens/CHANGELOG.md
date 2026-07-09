@@ -1,5 +1,13 @@
 # @uiid/tokens
 
+## 0.0.31
+
+### Patch Changes
+
+- [#250](https://github.com/uiid-systems/design-system/pull/250) [`e3d09bf`](https://github.com/uiid-systems/design-system/commit/e3d09bfdb8dfdc38440c77226738e90f45cdc998) Thanks [@adamfratino](https://github.com/adamfratino)! - Add a shared `.text` composition to `@uiid/tokens/compositions.module.css` holding the root text-rendering fundamentals (`text-wrap`, `text-rendering`, `font-feature-settings`). `Text`, `Prose`, and the form `Textarea` now compose it instead of duplicating those declarations, and `Separator` composes it for its label — removing `@uiid/typography` as a dependency of `@uiid/layout` so the layout primitives no longer rely on the `Text` component. Note: the `Separator` string label no longer renders with `muted`/`bold` emphasis; it uses the default text style.
+
+- [#251](https://github.com/uiid-systems/design-system/pull/251) [`3bf512a`](https://github.com/uiid-systems/design-system/commit/3bf512aa1427d9ba1f52e4929abe8360fb1bdddc) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix `Text` `truncate` and `balance`, which were silently overridden by the `.text` composition's `text-wrap: pretty` in the always-win `uiid.compositions` layer. Both toggles now live in that layer (declared after `.text`) so they actually apply. As a result, `Select` and `SelectMultiple` triggers truncate their value to a single line with an ellipsis instead of wrapping. When truncated with string/number children, `Text` also sets a native `title` attribute exposing the full text on hover.
+
 ## 0.0.30
 
 ## 0.0.29

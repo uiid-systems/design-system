@@ -1,5 +1,19 @@
 # @uiid/code
 
+## 0.0.31
+
+### Patch Changes
+
+- [#247](https://github.com/uiid-systems/design-system/pull/247) [`d97496b`](https://github.com/uiid-systems/design-system/commit/d97496b616b92c9367d0e0acbb488d65012cb818) Thanks [@adamfratino](https://github.com/adamfratino)! - Add a fullscreen toggle to CodeBlock that maximizes the block into a centered overlay (Escape or backdrop click to close).
+
+- Updated dependencies [[`e3d09bf`](https://github.com/uiid-systems/design-system/commit/e3d09bfdb8dfdc38440c77226738e90f45cdc998), [`3bf512a`](https://github.com/uiid-systems/design-system/commit/3bf512aa1427d9ba1f52e4929abe8360fb1bdddc)]:
+  - @uiid/tokens@0.0.31
+  - @uiid/typography@0.0.31
+  - @uiid/layout@0.0.31
+  - @uiid/buttons@0.0.31
+  - @uiid/cards@0.0.31
+  - @uiid/icons@0.0.31
+
 ## 0.0.30
 
 ### Patch Changes

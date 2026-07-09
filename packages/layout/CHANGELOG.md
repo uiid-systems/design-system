@@ -1,5 +1,15 @@
 # @uiid/layout
 
+## 0.0.31
+
+### Patch Changes
+
+- [#250](https://github.com/uiid-systems/design-system/pull/250) [`e3d09bf`](https://github.com/uiid-systems/design-system/commit/e3d09bfdb8dfdc38440c77226738e90f45cdc998) Thanks [@adamfratino](https://github.com/adamfratino)! - Add a shared `.text` composition to `@uiid/tokens/compositions.module.css` holding the root text-rendering fundamentals (`text-wrap`, `text-rendering`, `font-feature-settings`). `Text`, `Prose`, and the form `Textarea` now compose it instead of duplicating those declarations, and `Separator` composes it for its label — removing `@uiid/typography` as a dependency of `@uiid/layout` so the layout primitives no longer rely on the `Text` component. Note: the `Separator` string label no longer renders with `muted`/`bold` emphasis; it uses the default text style.
+
+- Updated dependencies [[`e3d09bf`](https://github.com/uiid-systems/design-system/commit/e3d09bfdb8dfdc38440c77226738e90f45cdc998), [`3bf512a`](https://github.com/uiid-systems/design-system/commit/3bf512aa1427d9ba1f52e4929abe8360fb1bdddc)]:
+  - @uiid/tokens@0.0.31
+  - @uiid/utils@0.0.31
+
 ## 0.0.30
 
 ### Patch Changes

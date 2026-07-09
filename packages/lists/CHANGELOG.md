@@ -1,5 +1,16 @@
 # @uiid/lists
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies [[`e3d09bf`](https://github.com/uiid-systems/design-system/commit/e3d09bfdb8dfdc38440c77226738e90f45cdc998), [`3bf512a`](https://github.com/uiid-systems/design-system/commit/3bf512aa1427d9ba1f52e4929abe8360fb1bdddc)]:
+  - @uiid/tokens@0.0.31
+  - @uiid/typography@0.0.31
+  - @uiid/layout@0.0.31
+  - @uiid/icons@0.0.31
+  - @uiid/utils@0.0.31
+
 ## 0.0.30
 
 ### Patch Changes
