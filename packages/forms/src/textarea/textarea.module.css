@@ -2,6 +2,7 @@
 
 .textarea {
   composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: text from "@uiid/tokens/compositions.module.css";
 
   background-color: var(--forms-bg);
   border: var(--globals-border-width) solid var(--forms-border-color);

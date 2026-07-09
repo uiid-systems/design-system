@@ -1,6 +1,5 @@
 import { Separator as BaseSeparator } from "@base-ui/react/separator";
 
-import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
@@ -45,7 +44,7 @@ export const Separator = ({
         <Box className={lineClass} />
         <ConditionalRender
           condition={typeof children === "string"}
-          render={<Text shade="muted" weight="bold" />}
+          render={<span className={styles["label"]} />}
         >
           {children}
         </ConditionalRender>

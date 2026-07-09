@@ -5,6 +5,19 @@
   }
 
   /**
+   * Root text-rendering fundamentals, shared by anything that renders text
+   * (Text, Prose, textarea, separator label). Constant values only —
+   * size-coupled properties (font-size, letter-spacing, line-height) stay
+   * with each component's own size scale rather than being forced here from
+   * the always-wins compositions layer.
+   */
+  .text {
+    text-wrap: pretty;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "calt", "liga";
+  }
+
+  /**
    * Control sizing scale, shared by form controls and buttons.
    * Compose these into a component's local size class rather than
    * re-declaring height/padding/font-size per component.
