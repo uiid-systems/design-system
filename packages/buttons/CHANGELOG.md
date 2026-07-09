@@ -1,5 +1,19 @@
 # @uiid/buttons
 
+## 0.0.32
+
+### Patch Changes
+
+- [#253](https://github.com/uiid-systems/design-system/pull/253) [`44f8663`](https://github.com/uiid-systems/design-system/commit/44f866323350069637adc500e71d8315e6cb2a5f) Thanks [@adamfratino](https://github.com/adamfratino)! - Fix `Button` rendered as a link losing its box. Restore `display: flex` and content centering on `.button` unconditionally so the box owns its own layout regardless of the element produced by `render`. Previously these were pruned on the assumption the native `<button>` UA styles (and the inner `Layer`) sufficed — but an `<a>` is `display: inline` and drops the `height` from the `.size-*` composition, collapsing the box. `display: flex` alone is insufficient; `fullwidth` links also need `justify-content: center`.
+
+- Updated dependencies []:
+  - @uiid/icons@0.0.32
+  - @uiid/layout@0.0.32
+  - @uiid/overlays@0.0.32
+  - @uiid/tokens@0.0.32
+  - @uiid/typography@0.0.32
+  - @uiid/utils@0.0.32
+
 ## 0.0.31
 
 ### Patch Changes
