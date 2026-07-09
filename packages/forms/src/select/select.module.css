@@ -60,9 +60,6 @@
   min-width: 0;
 }
 
-/* The ItemIndicator render merges this class onto the svg itself, so size it
-   directly (matching .select-icon). Sized to the list icon so a selected
-   row's checkmark stays within the text line and never grows the row. */
 .select-item-indicator {
   flex-shrink: 0;
   height: var(--list-icon-size);
