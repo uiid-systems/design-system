@@ -14,6 +14,7 @@ export const Text = ({
   strikethrough,
   balance,
   truncate,
+  title,
   size = TEXT_DEFAULT_SIZE,
   family = TEXT_DEFAULT_FAMILY,
   render,
@@ -21,6 +22,15 @@ export const Text = ({
   children,
   ...props
 }: TextProps) => {
+  // When truncated, expose the full text as a native tooltip so clipped content
+  // stays readable on hover. Only derivable from string/number children; an
+  // explicit title always wins.
+  const resolvedTitle =
+    title ??
+    (truncate && (typeof children === "string" || typeof children === "number")
+      ? String(children)
+      : undefined);
+
   const preparedProps = prepareComponentProps({
     componentName: "text",
     styleProps: [
@@ -46,6 +56,7 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
+      title: resolvedTitle,
       className: cx(
         styles["text"],
         textVariants({

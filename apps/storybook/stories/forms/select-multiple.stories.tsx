@@ -61,6 +61,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Select Multiple" };
 
+export const TruncatedValue: Story = {
+  name: "Truncated Value",
+  args: { defaultValue: ["sans", "serif", "mono", "cursive"] },
+  render: (args) => (
+    <Stack ax="stretch" gap={8} maxw={280}>
+      <SelectMultiple {...args} fullwidth />
+      <SelectMultiple
+        {...args}
+        fullwidth
+        before={<SearchIcon />}
+        after={<MailIcon />}
+      />
+    </Stack>
+  ),
+};
+
 export const BeforeAfterSlots: Story = {
   name: "Before & After Slots",
   render: (args) => (

@@ -153,16 +153,14 @@
   text-decoration-line: line-through;
 }
 
+/* Composed from compositions so they share .text's layer and can override its
+   text-wrap: pretty — a primitives-layer rule cannot. See compositions.module.css. */
 .toggle-balance {
-  text-wrap: balance;
+  composes: balance from "@uiid/tokens/compositions.module.css";
 }
 
 .toggle-truncate {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+  composes: truncate from "@uiid/tokens/compositions.module.css";
 }
 
 .family-mono {

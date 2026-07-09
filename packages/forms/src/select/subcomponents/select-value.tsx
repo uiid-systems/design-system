@@ -17,7 +17,7 @@ export const SelectValue = ({
   return (
     <BaseSelect.Value
       data-slot="select-value"
-      render={<Text pl={0} />}
+      render={<Text truncate pl={0} />}
       className={cx(
         styles["select-value"],
         inputStyles["input"],
