@@ -3,4 +3,4 @@
 "@uiid/typography": patch
 ---
 
-i Please enter a summary for your changes.
+Add `HeadingProps` to Timeline items, forwarding props to the heading `Group` (the title/time wrapper) so consumers can override its layout.
