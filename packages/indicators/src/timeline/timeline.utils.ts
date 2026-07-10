@@ -26,6 +26,7 @@ const SLOT_KEYS = [
   "MarkerProps",
   "ConnectorProps",
   "ContentProps",
+  "CardProps",
   "TitleProps",
   "TimeProps",
   "DescriptionProps",

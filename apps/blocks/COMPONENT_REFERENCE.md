@@ -198,6 +198,7 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
+| `variant` | "ghost" |  |
 | `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
@@ -515,7 +516,7 @@ Supports children.
 
 Vertical timeline for chronological events with a marker rail and active-step tracking
 
-Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. For steppers, set `activeIndex` to mark the current step (earlier items render as completed). For feeds of past events, set `defaultStatus="completed"` instead. Pass a `marker` node (small icon) to render inside the rail dot, or a `media` node (icon or Avatar) for a prominent leading column left of the rail. Use `gap` to control the space between items.
+Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. Every item renders its content in a Card — `title`/`time` fill the card header and `content`/children fill the body; pass `CardProps={{ variant: "ghost" }}` (root or per item) for flat rows. For steppers, set `activeIndex` to mark the current step (earlier items render as completed). For feeds of past events, set `defaultStatus="completed"` instead. Pass a `marker` node (small icon) to render inside the rail dot, or a `media` node (icon or Avatar) for a prominent leading column left of the rail. Use `gap` to control the space between items.
 
 Supports children.
 
@@ -535,6 +536,7 @@ Supports children.
 - `MediaProps`: Props forwarded to Media
 - `MarkerProps`: Props forwarded to Marker
 - `ConnectorProps`: Props forwarded to Connector
+- `CardProps`: Props forwarded to Card
 - `TitleProps`: Props forwarded to Title
 - `TimeProps`: Props forwarded to Time
 - `DescriptionProps`: Props forwarded to Description

@@ -28,6 +28,8 @@ export const TimelineItemSchema = z.object({
   color: PaletteColor.optional(),
   /** Explicit status; overrides activeIndex/defaultStatus derivation */
   status: TimelineStatus.optional(),
+  /** Props for this item's Card (e.g. { variant: "ghost" } for a flat row) */
+  CardProps: z.record(z.string(), z.any()).optional(),
   /** Node rendered inside the marker on the rail (e.g. a small icon) */
   marker: z.any().optional(),
   /** Prominent leading visual (e.g. an Avatar or icon) left of the rail */
@@ -64,6 +66,8 @@ export const TimelinePropsSchema = z.object({
   ConnectorProps: z.record(z.string(), z.any()).optional(),
   /** Props for every item's content column (e.g. maxw) */
   ContentProps: z.record(z.string(), z.any()).optional(),
+  /** Props for every item's Card (e.g. { variant: "ghost" }) */
+  CardProps: z.record(z.string(), z.any()).optional(),
   /** Props for every item's title text */
   TitleProps: z.record(z.string(), z.any()).optional(),
   /** Props for every item's time text */
@@ -86,6 +90,6 @@ export const TimelineEntry: ComponentEntry<typeof TimelinePropsSchema> = {
   category: "indicators",
   previews: timelinePreviews,
   usage:
-    "Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. For steppers, set `activeIndex` to mark the current step (earlier items render as completed). For feeds of past events, set `defaultStatus=\"completed\"` instead. Pass a `marker` node (small icon) to render inside the rail dot, or a `media` node (icon or Avatar) for a prominent leading column left of the rail. Use `gap` to control the space between items.",
+    "Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. Every item renders its content in a Card — `title`/`time` fill the card header and `content`/children fill the body; pass `CardProps={{ variant: \"ghost\" }}` (root or per item) for flat rows. For steppers, set `activeIndex` to mark the current step (earlier items render as completed). For feeds of past events, set `defaultStatus=\"completed\"` instead. Pass a `marker` node (small icon) to render inside the rail dot, or a `media` node (icon or Avatar) for a prominent leading column left of the rail. Use `gap` to control the space between items.",
   libs: ["base-ui"],
 };

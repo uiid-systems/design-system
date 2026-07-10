@@ -9,6 +9,12 @@
   --timeline-dot-size: 0.75rem;
   --timeline-marker-size: 1.5rem;
   --timeline-marker-bg: var(--shade-background);
+  /* Items render their content in a Card; the marker and media shift down by
+     the card's block padding so they center on the card's title row. The
+     card's header row min-height equals --timeline-line (1rem icon * 1.5). */
+  --timeline-anchor-offset: var(--globals-padding-y);
+  /* Distance from an item's top edge to its marker's center. */
+  --timeline-anchor: calc(var(--timeline-anchor-offset) + var(--timeline-line) / 2);
 
   list-style: none;
   margin: 0;
@@ -45,13 +51,14 @@
 
 /* Media — a prominent leading column to the left of the rail. Pinned to the
    rail side so it sits close to the marker; fixed to the first-line height so
-   it centers on the title row (like the marker), overflowing symmetrically
-   when taller than the line. */
+   it centers on the card's title row (like the marker), overflowing
+   symmetrically when taller than the line. */
 .timeline-media {
   grid-column: 1;
   justify-self: end;
   align-self: start;
   height: var(--timeline-line);
+  margin-block-start: var(--timeline-anchor-offset);
   display: flex;
   align-items: center;
 }
@@ -69,13 +76,14 @@
   grid-column: 2;
 }
 
-/* Marker box — aligns the marker's center to the title's first line. */
+/* Marker box — aligns the marker's center to the card's title row. */
 .timeline-marker-box {
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: var(--timeline-line);
+  margin-block-start: var(--timeline-anchor-offset);
 }
 
 /* Connector — a continuous line behind the markers, masked by their fill.
@@ -86,8 +94,8 @@
   margin-inline: auto;
   z-index: 0;
   width: var(--timeline-connector-thickness);
-  top: calc(var(--timeline-line) / 2);
-  bottom: calc(var(--timeline-line) / -2);
+  top: var(--timeline-anchor);
+  bottom: calc(-1 * var(--timeline-anchor));
   border-radius: 9999px;
   background-color: var(--badge-border, var(--globals-border-color));
 }

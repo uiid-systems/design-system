@@ -163,6 +163,44 @@ describe("Timeline", () => {
   });
 
   // ============================================
+  // CARD VEHICLE
+  // ============================================
+
+  it("renders every item's content inside a Card", () => {
+    const { container } = render(<Timeline items={ITEMS} />);
+    const cards = container.querySelectorAll('[data-slot="card-container"]');
+    expect(cards).toHaveLength(3);
+  });
+
+  it("renders the title and time inside the card header", () => {
+    const { container } = render(
+      <Timeline items={[{ title: "Order placed", time: "9:00 AM" }]} />,
+    );
+    const card = container.querySelector('[data-slot="card-container"]');
+    expect(card?.querySelector('[data-slot="card-title"]')).toHaveTextContent(
+      "Order placed",
+    );
+    expect(card?.querySelector("time")).toHaveTextContent("9:00 AM");
+  });
+
+  it("applies root CardProps to every card, merged under per-item values", () => {
+    const { container } = render(
+      <Timeline
+        items={[
+          { title: "Quiet row", CardProps: { variant: "ghost" } },
+          { title: "Solid row" },
+        ]}
+        CardProps={{ className: "feed-card" }}
+      />,
+    );
+    const cards = container.querySelectorAll('[data-slot="card-container"]');
+    expect(cards[0]).toHaveClass("feed-card");
+    expect(cards[0]).toHaveAttribute("data-variant", "ghost");
+    expect(cards[1]).toHaveClass("feed-card");
+    expect(cards[1]).not.toHaveAttribute("data-variant");
+  });
+
+  // ============================================
   // MEDIA
   // ============================================
 

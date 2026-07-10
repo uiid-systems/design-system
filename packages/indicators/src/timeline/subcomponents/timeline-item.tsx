@@ -1,6 +1,6 @@
 "use client";
 
-import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import { ITEM_NAME } from "../timeline.constants";
@@ -13,9 +13,7 @@ import { TimelineMedia } from "./timeline-media";
 import { TimelineMarker } from "./timeline-marker";
 import { TimelineConnector } from "./timeline-connector";
 import { TimelineContent } from "./timeline-content";
-import { TimelineTitle } from "./timeline-title";
 import { TimelineTime } from "./timeline-time";
-import { TimelineDescription } from "./timeline-description";
 
 export const TimelineItem = ({
   title,
@@ -34,6 +32,7 @@ export const TimelineItem = ({
   MarkerProps,
   ConnectorProps,
   ContentProps,
+  CardProps,
   TitleProps,
   TimeProps,
   DescriptionProps,
@@ -42,7 +41,13 @@ export const TimelineItem = ({
 }: TimelineItemProps) => {
   const { status } = useTimelineItemContext(ITEM_NAME);
 
-  const hasHeading = title != null || time != null;
+  const body =
+    content != null || children != null ? (
+      <>
+        {content}
+        {children}
+      </>
+    ) : undefined;
 
   return (
     <li
@@ -67,30 +72,21 @@ export const TimelineItem = ({
       </div>
 
       <TimelineContent {...ContentProps}>
-        <ConditionalRender condition={hasHeading} render={<Stack />}>
-          {hasHeading && (
-            <Group
-              data-slot="timeline-heading"
-              gap={2}
-              ay="baseline"
-              {...HeadingProps}
-            >
-              {title != null && (
-                <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
-              )}
-              {time != null && (
-                <TimelineTime {...TimeProps}>{time}</TimelineTime>
-              )}
-            </Group>
-          )}
-          {description != null && (
-            <TimelineDescription {...DescriptionProps}>
-              {description}
-            </TimelineDescription>
-          )}
-        </ConditionalRender>
-        {content}
-        {children}
+        <Card
+          title={title}
+          description={description}
+          action={
+            time != null ? (
+              <TimelineTime {...TimeProps}>{time}</TimelineTime>
+            ) : undefined
+          }
+          TitleProps={TitleProps}
+          DescriptionProps={DescriptionProps}
+          HeaderProps={HeadingProps}
+          {...CardProps}
+        >
+          {body}
+        </Card>
       </TimelineContent>
     </li>
   );

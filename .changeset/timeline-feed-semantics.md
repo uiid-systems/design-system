@@ -3,7 +3,9 @@
 "@uiid/registry": patch
 ---
 
-Timeline: feed semantics, marker slot, and hoisted slot props.
+Timeline: card content vehicle, feed semantics, marker slot, and hoisted slot props.
+
+- **Every item now renders its content in a `Card`** — `title` and `time` fill the card header (time in the action corner), `description` sits under the title, and `content`/children fill the body. A new `CardProps` slot (root or per item) customizes it; `CardProps={{ variant: "ghost" }}` gives flat rows. `TimelineTitle` and `TimelineDescription` are removed — the Card renders those slots now. Markers, media, and connectors anchor to the card's title row via `--timeline-anchor-offset`.
 
 - `defaultStatus` on the root sets the status for every item when `activeIndex` is absent, and per-item `status` overrides either derivation — event feeds write `defaultStatus="completed"` instead of faking `activeIndex`. Connectors below completed items render filled.
 - Per-item `marker` renders a node (e.g. a small icon) inside the rail dot. The content marker is redesigned: fixed `--timeline-marker-size` circle, tinted `--badge-bg` fill with `--badge-fg` icon when completed/active, muted when pending; the rail widens automatically when any item has a marker.

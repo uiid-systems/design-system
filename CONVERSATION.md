@@ -100,8 +100,9 @@ Two optional upgrades while you're in there:
   the separator visuals deserve Storybook prototypes you can react to.
 - **Animation** — none added, per your project-level sweep plan. The `active` marker ring
   and the future `ongoing` cap are the natural pulse targets when you get there.
-- **Nothing committed** — the working tree holds everything; say the word and I'll branch,
-  commit, and open a PR.
+- ~~**Nothing committed**~~ **Shipped:** branch `timeline-feed-semantics`, PR
+  [#260](https://github.com/uiid-systems/design-system/pull/260). The Event Feed story now
+  renders Cards in the prompt/assistant items, mirroring bertrand.
 
 ---
 
@@ -130,3 +131,77 @@ Recommended fix, in layers (details + copy-paste hook language in `FABLE_SUPPORT
 
 I've saved all of this to memory, so future sessions in this project will use the
 file-narration pattern from the start.
+
+---
+
+## Card as the default content vehicle — discussion (2026-07-10, your latest ask)
+
+You proposed: make Card the default vehicle for timeline content, fold `title`/`time`
+into the card's own title row instead of the separate heading section, and add a "ghost"
+card (essentially transparent) like the form components' ghost variants.
+
+### Why this fits better than you might expect
+
+Card already has the anatomy for it — `title`, `description`, and an `action` slot
+(top-right). TimelineItem's loose heading maps onto it almost 1:1:
+
+| Timeline today          | Card slot                              |
+| ----------------------- | -------------------------------------- |
+| `title` (heading row)   | `title`                                |
+| `time` (beside title)   | `action` (top-right) — bertrand's Badge lands naturally |
+| `description`           | `description`                          |
+| `content` / children    | card body (children)                   |
+
+So the card-vehicle mode doesn't need new Card features — TimelineItem just renders its
+existing slots *into* a Card instead of the bare `Group`/`Stack` heading. bertrand's
+`EventCard` wrapper (Stack py → Card p=3) gets deleted entirely; the timeline owns the
+vehicle. This is the "reuse existing components" principle doing real work.
+
+Sketch:
+
+```tsx
+<Timeline card …>                         // root toggle: every item renders as a card
+  items={[{ title, time, description, content, marker, color }]}
+/>
+// per-item override: { card: false } or ghost for quiet rows (see below)
+```
+
+Marker alignment is solvable: all geometry is var-driven, so card mode shifts the
+marker's anchor line by the card's padding-top (`--timeline-line` gets a card-mode
+offset). The dot centers on the card's title row, GitHub-style.
+
+### The ghost question — one honest tension to resolve
+
+A few weeks ago you removed **all** Card toggles (`trimmed`/`inverted`/`transparent`/
+`ghost`) in favor of `p`/`b` + consumer styling, and rejected a `bg` prop with "user
+styles transparent." Re-adding `ghost` to Card reverses that decision, so it should be
+deliberate, not incidental.
+
+The case for reversing it now: since that cleanup, `ghost` has become a *system
+convention* — forms expose a boolean `ghost` toggle (`Input`, `Select`, …). A single
+boolean `ghost` on Card is no longer "a pile of one-off variants"; it's the same word
+meaning the same thing on a different surface. That's the API-uniformity principle
+pointing the opposite direction from the earlier cleanup.
+
+The alternative that preserves the old decision: ghost stays *internal to Timeline* — a
+per-item `ghost` (or `card: "ghost"`) that the timeline's own CSS implements by flattening
+its internally-composed Card (transparent bg, no border, padding preserved so columns
+stay aligned). Card's public API stays toggle-free; only Timeline knows the concept.
+
+My take: if you can imagine wanting a transparent-but-structured Card anywhere outside
+Timeline (dashboards, list rows, nav panels — likely, honestly), put `ghost` on Card and
+accept the reversal as the system catching up with the forms convention. If it's only a
+timeline need, keep it internal and revisit when a second consumer appears.
+
+### Decisions I need from you
+
+1. **Default or opt-in?** You said "default vehicle" — true default changes every existing
+   Timeline (steppers included) and every current consumer visually. My recommendation:
+   ship as a root `card` toggle first, let bertrand and the stories bake on it, then flip
+   the default in a follow-up once it feels right. Cheap to flip; hard to un-ship.
+2. **Ghost's home**: on Card (system-wide, reverses the old cleanup, matches forms) or
+   internal to Timeline (preserves the cleanup, less uniform)?
+3. **Time placement**: Card `action` slot (top-right corner, like bertrand's Badge) or
+   inline beside the title inside the card header? I lean `action`.
+
+Pick via the question dialog — options map to these decisions — or answer free-form.

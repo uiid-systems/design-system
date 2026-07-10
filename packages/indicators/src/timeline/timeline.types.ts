@@ -1,3 +1,4 @@
+import type { CardProps } from "@uiid/cards";
 import type { GroupProps, StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
 import type { VariantProps } from "@uiid/utils";
@@ -60,10 +61,15 @@ export type TimelineConnectorProps = React.ComponentProps<"div"> & {
   forceMount?: boolean;
 };
 export type TimelineContentProps = StackProps;
+/** Forwarded to the item Card's `TitleProps`. */
 export type TimelineTitleProps = TextProps;
 export type TimelineTimeProps = TextProps & React.ComponentProps<"time">;
+/** Forwarded to the item Card's `DescriptionProps`. */
 export type TimelineDescriptionProps = TextProps;
+/** Forwarded to the item Card's `HeaderProps`. */
 export type TimelineHeadingProps = GroupProps;
+/** The Card every item renders its content into. */
+export type TimelineCardProps = CardProps;
 
 /** Props forwarded to each item's subcomponents (override hooks). */
 export interface TimelineSlotProps {
@@ -71,6 +77,8 @@ export interface TimelineSlotProps {
   MarkerProps?: TimelineMarkerProps;
   ConnectorProps?: TimelineConnectorProps;
   ContentProps?: TimelineContentProps;
+  /** Props for the item's Card — e.g. `{ variant: "ghost" }` for a flat row. */
+  CardProps?: TimelineCardProps;
   TitleProps?: TimelineTitleProps;
   TimeProps?: TimelineTimeProps;
   DescriptionProps?: TimelineDescriptionProps;
