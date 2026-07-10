@@ -29,10 +29,10 @@
 }
 
 .number-field-decrement {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 }
 .number-field-increment {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 }
 
 .number-field-decrement,

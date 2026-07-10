@@ -1,5 +1,17 @@
+/**
+ * Shared composition primitives.
+ *
+ * These are GLOBAL class names (unhashed), referenced from component CSS Modules
+ * via `composes: composes-<name> from global` — which appends the literal class
+ * name to the element without copying the rule. The rules are defined here once
+ * and loaded once (via globals.css), so a single definition is shared across
+ * every package instead of being inlined per consumer.
+ *
+ * The `@layer uiid.compositions` wrapper is load-bearing: this layer is declared
+ * last in globals.css, so these rules win over uiid.primitives / uiid.components.
+ */
 @layer uiid.compositions {
-  .disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
+  .composes-disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
@@ -11,24 +23,25 @@
    * with each component's own size scale rather than being forced here from
    * the always-wins compositions layer.
    */
-  .text {
+  .composes-text {
     text-wrap: pretty;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern", "calt", "liga";
   }
 
   /**
-   * Text-wrap toggles. These MUST live in this layer, declared after .text,
-   * because .text sets text-wrap: pretty here (the always-wins compositions
-   * layer). white-space: nowrap and text-wrap: balance both resolve the same
-   * text-wrap-mode longhand, so a toggle in a lower layer (uiid.primitives)
-   * can never override .text's wrap — it has to win by source order within
-   * this same layer. Composed into Text's .toggle-truncate / .toggle-balance.
+   * Text-wrap toggles. These MUST live in this layer, declared after
+   * .composes-text, because .composes-text sets text-wrap: pretty here (the
+   * always-wins compositions layer). white-space: nowrap and text-wrap: balance
+   * both resolve the same text-wrap-mode longhand, so a toggle in a lower layer
+   * (uiid.primitives) can never override .composes-text's wrap — it has to win by
+   * source order within this same layer. Composed into Text's
+   * .toggle-truncate / .toggle-balance.
    */
-  .balance {
+  .composes-balance {
     text-wrap: balance;
   }
-  .truncate {
+  .composes-truncate {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -41,22 +54,22 @@
    * Compose these into a component's local size class rather than
    * re-declaring height/padding/font-size per component.
    */
-  .size-xsmall {
+  .composes-size-xsmall {
     font-size: var(--forms-size-xs-font-size);
     height: var(--forms-size-xs-height);
     padding-inline: var(--forms-size-xs-padding-x);
   }
-  .size-small {
+  .composes-size-small {
     font-size: var(--forms-size-sm-font-size);
     height: var(--forms-size-sm-height);
     padding-inline: var(--forms-size-sm-padding-x);
   }
-  .size-medium {
+  .composes-size-medium {
     font-size: var(--forms-size-md-font-size);
     height: var(--forms-size-md-height);
     padding-inline: var(--forms-size-md-padding-x);
   }
-  .size-large {
+  .composes-size-large {
     font-size: var(--forms-size-lg-font-size);
     height: var(--forms-size-lg-height);
     padding-inline: var(--forms-size-lg-padding-x);
@@ -73,7 +86,7 @@
    * Transitions (not keyframes) so an interrupted open animates back to closed
    * from its current position instead of snapping.
    */
-  .popup {
+  .composes-popup {
     transform-origin: var(--transform-origin, center);
     transition:
       transform var(--globals-transition-duration) var(--globals-transition-easing),
@@ -97,7 +110,7 @@
    * child-scoped to the control's size class so the same slot spacing applies
    * whether the parent is an input wrapper or a select trigger.
    */
-  .field-slot {
+  .composes-field-slot {
     flex-shrink: 0;
     color: var(--shade-muted);
     pointer-events: none;
@@ -111,13 +124,13 @@
       height: var(--forms-icon-size);
     }
   }
-  .size-small > .field-slot {
+  .composes-size-small > .composes-field-slot {
     padding-inline: var(--forms-size-sm-padding-x);
   }
-  .size-medium > .field-slot {
+  .composes-size-medium > .composes-field-slot {
     padding-inline: var(--forms-size-md-padding-x);
   }
-  .size-large > .field-slot {
+  .composes-size-large > .composes-field-slot {
     padding-inline: var(--forms-size-lg-padding-x);
   }
 
@@ -126,7 +139,7 @@
    * combobox, autocomplete). Keyed off Base UI's data attributes so the same
    * class covers highlight and disabled states across all of them.
    */
-  .option {
+  .composes-option {
     padding: var(--list-item-padding-y) var(--list-item-padding-x);
     border-radius: var(--globals-border-radius);
     transition: background-color var(--globals-transition-duration) ease-in-out;

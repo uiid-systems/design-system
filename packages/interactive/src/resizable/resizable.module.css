@@ -17,7 +17,7 @@
 }
 
 .resizable-handle {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   position: relative;
   display: flex;

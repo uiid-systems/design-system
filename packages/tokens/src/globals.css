@@ -9,6 +9,10 @@
 @import "./css/semantic/forms.tokens.css";
 @import "./css/theme/theme.tokens.css";
 
+/* Shared composition primitives (uiid.compositions layer). Loaded once here;
+   referenced from component modules via `composes: composes-<name> from global`. */
+@import "./compositions.css";
+
 @layer uiid.globals {
   :root {
     color-scheme: light dark;

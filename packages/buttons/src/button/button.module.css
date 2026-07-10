@@ -1,7 +1,7 @@
 @import "@uiid/tokens/component/button.tokens.css";
 
 .button {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   --button-bg: var(--shade-foreground);
   --button-fg: var(--shade-background);
@@ -99,16 +99,16 @@
 }
 
 .size-xsmall {
-  composes: size-xsmall from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-xsmall from global;
 }
 .size-small {
-  composes: size-small from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-small from global;
 }
 .size-medium {
-  composes: size-medium from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-medium from global;
 }
 .size-large {
-  composes: size-large from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-large from global;
 }
 
 .shape-pill {

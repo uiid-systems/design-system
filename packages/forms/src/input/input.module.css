@@ -1,7 +1,7 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .input {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 }
 
 .input:where(:not([data-slot="select-value"])) {
@@ -45,13 +45,13 @@
 }
 
 .size-small {
-  composes: size-small from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-small from global;
 }
 .size-medium {
-  composes: size-medium from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-medium from global;
 }
 .size-large {
-  composes: size-large from "@uiid/tokens/compositions.module.css";
+  composes: composes-size-large from global;
 }
 
 .toggle-fullwidth {
@@ -121,7 +121,7 @@
 }
 
 .input-slot {
-  composes: field-slot from "@uiid/tokens/compositions.module.css";
+  composes: composes-field-slot from global;
 
   & + .input-inner {
     padding-inline-start: 0;

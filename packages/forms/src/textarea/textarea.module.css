@@ -1,8 +1,8 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
-  composes: text from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
+  composes: composes-text from global;
 
   background-color: var(--forms-bg);
   border: var(--globals-border-width) solid var(--forms-border-color);

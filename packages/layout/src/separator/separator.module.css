@@ -32,7 +32,7 @@
 }
 
 .label {
-  composes: text from "@uiid/tokens/compositions.module.css";
+  composes: composes-text from global;
 }
 
 .line {

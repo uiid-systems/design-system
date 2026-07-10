@@ -1,7 +1,7 @@
 @import "@uiid/tokens/primitives/typography.tokens.css";
 
 .text {
-  composes: text from "@uiid/tokens/compositions.module.css";
+  composes: composes-text from global;
 
   text-underline-offset: 0.15em;
   text-decoration-thickness: 0.06em;
@@ -153,14 +153,14 @@
   text-decoration-line: line-through;
 }
 
-/* Composed from compositions so they share .text's layer and can override its
-   text-wrap: pretty — a primitives-layer rule cannot. See compositions.module.css. */
+/* Composed from compositions so they share .composes-text's layer and can override
+   its text-wrap: pretty — a primitives-layer rule cannot. See compositions.css. */
 .toggle-balance {
-  composes: balance from "@uiid/tokens/compositions.module.css";
+  composes: composes-balance from global;
 }
 
 .toggle-truncate {
-  composes: truncate from "@uiid/tokens/compositions.module.css";
+  composes: composes-truncate from global;
 }
 
 .family-mono {

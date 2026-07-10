@@ -5,7 +5,7 @@
 }
 
 .sortable-item-handle {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   all: unset;
   cursor: grab;
