@@ -1,6 +1,6 @@
 {
   "name": "@uiid/layout",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Layout primitives — Stack, Group, Box, Separator, and more",
   "license": "MIT",
   "author": "Adam Fratino",

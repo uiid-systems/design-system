@@ -1,5 +1,13 @@
 # @uiid/tokens
 
+## 0.0.34
+
+### Patch Changes
+
+- [#258](https://github.com/uiid-systems/design-system/pull/258) [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3) Thanks [@adamfratino](https://github.com/adamfratino)! - Deliver shared composition primitives as a single global stylesheet instead of inlining them per consumer.
+
+  `@uiid/tokens/compositions.module.css` — composed by file path, which copied the entire file into every consuming module — is replaced by a plain global `@uiid/tokens/compositions.css` whose classes are prefixed `composes-*` (e.g. `.composes-text`, `.composes-disabled`) and loaded once via the tokens globals. Component modules now reference them with `composes: composes-<name> from global`, which appends the class name without copying the rule. This removes ~22 duplicate `@layer uiid.compositions` blocks from the shipped CSS (down to one) with no change to component APIs or the cascade.
+
 ## 0.0.33
 
 ## 0.0.32

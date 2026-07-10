@@ -1,5 +1,25 @@
 # @uiid/indicators
 
+## 0.0.34
+
+### Patch Changes
+
+- [#258](https://github.com/uiid-systems/design-system/pull/258) [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `HeadingProps` to Timeline items, forwarding props to the heading `Group` (the title/time wrapper) so consumers can override its layout.
+
+- [#260](https://github.com/uiid-systems/design-system/pull/260) [`df29cd1`](https://github.com/uiid-systems/design-system/commit/df29cd1d9b90ec5c38114425ee893caf92e9bc9f) Thanks [@adamfratino](https://github.com/adamfratino)! - Timeline: card content vehicle, feed semantics, marker slot, and hoisted slot props.
+  - **Every item now renders its content in a `Card`** — `title` and `time` fill the card header (time in the action corner), `description` sits under the title, and `content`/children fill the body. A new `CardProps` slot (root or per item) customizes it; `CardProps={{ variant: "ghost" }}` gives flat rows. `TimelineTitle` and `TimelineDescription` are removed — the Card renders those slots now. Markers, media, and connectors anchor to the card's title row via `--timeline-anchor-offset`.
+  - `defaultStatus` on the root sets the status for every item when `activeIndex` is absent, and per-item `status` overrides either derivation — event feeds write `defaultStatus="completed"` instead of faking `activeIndex`. Connectors below completed items render filled.
+  - Per-item `marker` renders a node (e.g. a small icon) inside the rail dot. The content marker is redesigned: fixed `--timeline-marker-size` circle, tinted `--badge-bg` fill with `--badge-fg` icon when completed/active, muted when pending; the rail widens automatically when any item has a marker.
+  - Root `gap` prop controls the space between items using spacing tokens, like `Stack`.
+  - Slot props (`ContentProps`, `TitleProps`, `MarkerProps`, …) are hoisted to the Timeline root and apply to every item in data mode; items accept the same slot props and merge over the root's key-by-key. **Breaking:** `ItemProps` no longer nests slot props — it now forwards plain `<li>` props only (`ItemProps={{ ContentProps }}` becomes `ContentProps={...}` on the root).
+  - First Timeline unit tests; registry schema now covers `media`, `content`, `marker`, `status`, `defaultStatus`, `gap`, and the hoisted slot props.
+
+- Updated dependencies [[`df29cd1`](https://github.com/uiid-systems/design-system/commit/df29cd1d9b90ec5c38114425ee893caf92e9bc9f), [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3), [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3), [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3)]:
+  - @uiid/cards@0.0.34
+  - @uiid/tokens@0.0.34
+  - @uiid/typography@0.0.34
+  - @uiid/utils@0.0.34
+
 ## 0.0.33
 
 ### Patch Changes
