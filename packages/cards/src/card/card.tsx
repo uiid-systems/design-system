@@ -23,6 +23,7 @@ export const Card = ({
   icon,
   action,
   footer,
+  variant,
   color,
   className,
   ContainerProps,
@@ -59,9 +60,15 @@ export const Card = ({
 
   return (
     <CardContainer
+      data-variant={variant}
       {...props}
       {...containerProps}
-      className={cx(colorClassName, className, containerClassName)}
+      className={cx(
+        variant && styles[`variant-${variant}`],
+        colorClassName,
+        className,
+        containerClassName,
+      )}
     >
       {thumbnail && (
         <CardThumbnail mb={2} {...ThumbnailProps}>

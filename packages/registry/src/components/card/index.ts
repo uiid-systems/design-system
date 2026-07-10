@@ -22,6 +22,8 @@ export const CardPropsSchema = BoxPropsSchema.extend({
   footer: z.any().optional(),
   /** Icon component */
   icon: z.any().optional(),
+  /** Ghost removes the background, border, and shadow but keeps the layout */
+  variant: z.enum(["ghost"]).optional(),
   /** Palette hue applied as a full bg/fg/border surface treatment */
   color: PaletteColor.optional(),
   /** Props forwarded to the container Stack */

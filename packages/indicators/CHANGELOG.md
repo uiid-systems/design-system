@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- [#257](https://github.com/uiid-systems/design-system/pull/257) [`c638753`](https://github.com/uiid-systems/design-system/commit/c638753f33bd4d6e45d02e3d92960852de116ba6) Thanks [@adamfratino](https://github.com/adamfratino)! - i Please enter a summary for your changes.
+- [#257](https://github.com/uiid-systems/design-system/pull/257) [`c638753`](https://github.com/uiid-systems/design-system/commit/c638753f33bd4d6e45d02e3d92960852de116ba6) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `HeadingProps` slot to `TimelineItem` for overriding the title/time heading row.
 
 - Updated dependencies [[`44ed916`](https://github.com/uiid-systems/design-system/commit/44ed9164b57a49258b0bd90bba695b186a3c2cdf), [`c638753`](https://github.com/uiid-systems/design-system/commit/c638753f33bd4d6e45d02e3d92960852de116ba6)]:
   - @uiid/typography@0.0.33

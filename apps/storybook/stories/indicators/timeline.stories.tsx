@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Avatar,
-  Card,
   CodeBlock,
   Stack,
   Text,
@@ -14,9 +13,13 @@ import {
   GitCommitHorizontal,
   GitMerge,
   MapPin,
+  MessageSquare,
   Package,
+  Play,
+  Sparkles,
   Truck,
   UserPlus,
+  Wrench,
 } from "@uiid/icons";
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
@@ -30,6 +33,15 @@ const meta = {
   argTypes: {
     activeIndex: {
       control: { type: "number", min: 0, max: 5 },
+      table: { category: "Options" },
+    },
+    defaultStatus: {
+      control: "select",
+      options: [undefined, "pending", "active", "completed"],
+      table: { category: "Options" },
+    },
+    gap: {
+      control: { type: "number", min: 0, max: 12 },
       table: { category: "Options" },
     },
     dir: {
@@ -145,25 +157,28 @@ const sampleCode = `export function Counter() {
 export const CardContent: Story = {
   name: "Card content over the rail",
   render: () => (
-    <Timeline activeIndex={1} ItemProps={{ ContentProps: { maxw: 640 } }}>
+    <Timeline activeIndex={1} ContentProps={{ maxw: 640 }}>
       <TimelineItem
         title="Session recap"
         time="9:00 AM"
         media={<Avatar initials="AF" />}
       >
-        <Card InnerContainerProps={{ gap: 4 }}>
-          <Text>
-            The content column stretches by default, so a Card fills the slot
-            without any extra <code>fullwidth</code> wiring.
-          </Text>
-          <CodeBlock
-            code={sampleCode}
-            language="typescript"
-            filename="counter.tsx"
-          />
-        </Card>
+        <Text>
+          Every item renders its content in a Card — the title and time live in
+          the card header, and children fill the body.
+        </Text>
+        <CodeBlock
+          code={sampleCode}
+          language="typescript"
+          filename="counter.tsx"
+        />
       </TimelineItem>
-      <TimelineItem title="Next event" time="9:15 AM" />
+      <TimelineItem
+        title="Ghost card"
+        time="9:15 AM"
+        description="Pass CardProps={{ variant: 'ghost' }} for a flat row."
+        CardProps={{ variant: "ghost" }}
+      />
     </Timeline>
   ),
 };
@@ -200,22 +215,20 @@ const ACTIVITY_ITEMS: TimelineItemType[] = [
     time: "Jun 18",
     media: <UserPlus size={20} />,
     content: (
-      <Card p={4}>
-        <Stack gap={4}>
-          <Avatar
-            initials="JD"
-            name="Jane Doe"
-            description="Senior Engineer"
-            color="purple"
-          />
-          <Avatar
-            initials="AB"
-            name="Alex Brown"
-            description="Design Lead"
-            color="green"
-          />
-        </Stack>
-      </Card>
+      <Stack gap={4}>
+        <Avatar
+          initials="JD"
+          name="Jane Doe"
+          description="Senior Engineer"
+          color="purple"
+        />
+        <Avatar
+          initials="AB"
+          name="Alex Brown"
+          description="Design Lead"
+          color="green"
+        />
+      </Stack>
     ),
   },
   {
@@ -224,12 +237,10 @@ const ACTIVITY_ITEMS: TimelineItemType[] = [
     color: "orange",
     media: <Avatar initials="JD" color="purple" />,
     content: (
-      <Card p={4}>
-        <Text>
-          The rail looks great. Can we center the avatar on the title line
-          rather than top-aligning it? Otherwise this is ready to go.
-        </Text>
-      </Card>
+      <Text>
+        The rail looks great. Can we center the avatar on the title line rather
+        than top-aligning it? Otherwise this is ready to go.
+      </Text>
     ),
   },
   {
@@ -258,9 +269,65 @@ export const ActivityFeed: Story = {
   name: "Activity feed (realistic)",
   args: { activeIndex: 5 },
   render: (args) => (
+    <Timeline items={ACTIVITY_ITEMS} ContentProps={{ maxw: 520 }} {...args} />
+  ),
+};
+
+const FEED_ITEMS: TimelineItemType[] = [
+  {
+    title: "session started",
+    time: "09:00:12",
+    color: "orange",
+    marker: <Play size={12} />,
+    TitleProps: { color: "orange" },
+    CardProps: { variant: "ghost" },
+  },
+  {
+    title: "prompt",
+    time: "09:00:41",
+    color: "blue",
+    marker: <MessageSquare size={12} />,
+    TitleProps: { color: "blue" },
+    content: (
+      <Text>
+        i'd like to have a deep look at our timeline component. it's very
+        important to a sibling project, as is it feels stable but raw.
+      </Text>
+    ),
+  },
+  {
+    title: "tool work",
+    description: "25× Read, 3× Bash",
+    time: "09:04:02",
+    color: "yellow",
+    marker: <Wrench size={12} />,
+    TitleProps: { color: "yellow" },
+    CardProps: { variant: "ghost" },
+  },
+  {
+    title: "assistant",
+    time: "09:06:58",
+    color: "indigo",
+    marker: <Sparkles size={12} />,
+    TitleProps: { color: "indigo" },
+    content: (
+      <Text>
+        The rail redesign is clear — the grid owns the column tracks and every
+        item subgrids them, so the markers stay aligned at any content width.
+      </Text>
+    ),
+  },
+];
+
+export const EventFeed: Story = {
+  name: "Event feed (markers)",
+  args: { activeIndex: undefined },
+  render: (args) => (
     <Timeline
-      items={ACTIVITY_ITEMS}
-      ItemProps={{ ContentProps: { maxw: 520 } }}
+      items={FEED_ITEMS}
+      defaultStatus="completed"
+      gap={4}
+      ContentProps={{ maxw: 520 }}
       {...args}
     />
   ),

@@ -7,7 +7,14 @@
   --timeline-column-gap: 0.75rem;
   --timeline-row-gap: 2.5rem;
   --timeline-dot-size: 0.75rem;
+  --timeline-marker-size: 1.5rem;
   --timeline-marker-bg: var(--shade-background);
+  /* Items render their content in a Card; the marker and media shift down by
+     the card's block padding so they center on the card's title row. The
+     card's header row min-height equals --timeline-line (1rem icon * 1.5). */
+  --timeline-anchor-offset: var(--globals-padding-y);
+  /* Distance from an item's top edge to its marker's center. */
+  --timeline-anchor: calc(var(--timeline-anchor-offset) + var(--timeline-line) / 2);
 
   list-style: none;
   margin: 0;
@@ -28,6 +35,12 @@
     minmax(0, 1fr);
 }
 
+/* Content markers are wider than the bare dot — grow the rail track so they
+   fit without overflowing into the neighboring columns. */
+.timeline[data-has-markers] {
+  --timeline-rail-size: var(--timeline-marker-size);
+}
+
 /* Item — subgrids the list's columns; `align-items: stretch` lets the rail
    fill the row height. */
 .timeline-item {
@@ -38,13 +51,14 @@
 
 /* Media — a prominent leading column to the left of the rail. Pinned to the
    rail side so it sits close to the marker; fixed to the first-line height so
-   it centers on the title row (like the marker), overflowing symmetrically
-   when taller than the line. */
+   it centers on the card's title row (like the marker), overflowing
+   symmetrically when taller than the line. */
 .timeline-media {
   grid-column: 1;
   justify-self: end;
   align-self: start;
   height: var(--timeline-line);
+  margin-block-start: var(--timeline-anchor-offset);
   display: flex;
   align-items: center;
 }
@@ -62,13 +76,14 @@
   grid-column: 2;
 }
 
-/* Marker box — aligns the marker's center to the title's first line. */
+/* Marker box — aligns the marker's center to the card's title row. */
 .timeline-marker-box {
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: var(--timeline-line);
+  margin-block-start: var(--timeline-anchor-offset);
 }
 
 /* Connector — a continuous line behind the markers, masked by their fill.
@@ -79,8 +94,8 @@
   margin-inline: auto;
   z-index: 0;
   width: var(--timeline-connector-thickness);
-  top: calc(var(--timeline-line) / 2);
-  bottom: calc(var(--timeline-line) / -2);
+  top: var(--timeline-anchor);
+  bottom: calc(-1 * var(--timeline-anchor));
   border-radius: 9999px;
   background-color: var(--badge-border, var(--globals-border-color));
 }
@@ -120,12 +135,30 @@
   border-color: var(--badge-border, var(--globals-border-color));
 }
 
-/* Custom marker content (rarely needed — media is the usual home for icons). */
+/* Content marker — a node (usually a small icon) inside the dot. Fixed to the
+   marker size so every rail stays aligned regardless of the node inside. */
 .timeline-marker[data-variant="content"] {
-  min-width: var(--timeline-dot-size);
-  min-height: var(--timeline-dot-size);
-  padding: 0.1875rem;
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
+  border: var(--timeline-connector-thickness) solid
+    var(--badge-border, var(--globals-border-color));
   border-radius: 9999px;
+}
+
+.timeline-marker[data-variant="content"][data-status="completed"],
+.timeline-marker[data-variant="content"][data-status="active"] {
+  background-color: var(--badge-bg, var(--shade-surface));
+  color: var(--badge-fg, var(--shade-foreground));
+}
+
+.timeline-marker[data-variant="content"][data-status="active"] {
+  box-shadow: 0 0 0 0.25rem
+    color-mix(in oklch, var(--badge-fg, var(--shade-foreground)) 18%, transparent);
+}
+
+.timeline-marker[data-variant="content"][data-status="pending"] {
+  border-color: var(--badge-border, var(--globals-border-color));
+  color: var(--shade-muted);
 }
 
 /* Content column. */

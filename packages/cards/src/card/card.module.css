@@ -37,6 +37,16 @@
 }
 
 /*
+ * Ghost surface treatment — no background, border, or shadow; padding and
+ * layout are preserved so ghost cards keep their alignment among solid ones.
+ */
+.variant-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/*
  * Colored surface treatment. Pairs with the portable palette classes from
  * @uiid/typography (`.color-*`), which set --palette-hue / --palette-chroma.
  * A single hue derives background, foreground, and border via oklch() +

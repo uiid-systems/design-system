@@ -40,11 +40,9 @@ UIID components are **precomposed** — they handle their own internal structure
 | Avatar | `description` | N/A (no children) |
 | Badge | N/A | Content |
 | Kbd | N/A | Content |
-| Progress | N/A | N/A (no children) |
 | Status | N/A | Content |
 | Timeline | `items` | Content |
 | Breadcrumbs | `items` | N/A (no children) |
-| Icon | `name`, `size` | N/A (no children) |
 
 ### Layout
 
@@ -99,8 +97,8 @@ Supports children.
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `orientation` | "horizontal" \| "vertical" | (default: `"horizontal"`) |
-| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
+| `orientation` | "horizontal" | "vertical" |  (default: `"horizontal"`) |
+| `shade` | "background" | "surface" | "accent" | "halftone" | "muted" | "foreground" |  |
 
 Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
@@ -117,10 +115,11 @@ Supports children.
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `size` | -1 \| 0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 |  |
-| `weight` | "thin" \| "light" \| "normal" \| "bold" |  |
-| `shade` | "background" \| "surface" \| "accent" \| "halftone" \| "muted" \| "foreground" |  |
-| `align` | "left" \| "center" \| "right" \| "justify" |  |
+| `size` | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 |  |
+| `weight` | "thin" | "light" | "normal" | "bold" |  |
+| `shade` | "background" | "surface" | "accent" | "halftone" | "muted" | "foreground" |  |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
+| `align` | "left" | "center" | "right" | "justify" |  |
 | `underline` | boolean |  |
 | `strikethrough` | boolean |  |
 | `balance` | boolean |  |
@@ -136,23 +135,19 @@ Also supports spacing props: `p`, `px`, `py`, `m`, `mx`, `my`, etc.
 
 Primary action button with multiple size and variant options.
 
-Use Button for primary actions. Set variant for visual weight, ghost for minimal chrome.
+Use Button for primary actions. Set variant for visual weight, use variant="ghost" for minimal chrome.
 
 Supports children.
 
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `variant` | "subtle" \| "inverted" |  |
+| `size` | "xsmall" | "small" | "medium" | "large" |  (default: `"medium"`) |
+| `variant` | "subtle" | "ghost" | "inverted" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
-| `pill` | boolean |  |
-| `square` | boolean |  |
-| `interactive` | boolean | (default: `true`) |
-| `circle` | boolean |  |
+| `shape` | "pill" | "square" | "circle" |  |
 | `tooltip` | string |  |
 
 #### ToggleButton
@@ -164,16 +159,12 @@ Supports children.
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `size` | "xsmall" \| "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `variant` | "subtle" \| "inverted" |  |
+| `size` | "xsmall" | "small" | "medium" | "large" |  (default: `"medium"`) |
+| `variant` | "subtle" | "ghost" | "inverted" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |
-| `ghost` | boolean |  |
-| `pill` | boolean |  |
-| `square` | boolean |  |
-| `interactive` | boolean |  |
-| `circle` | boolean |  |
+| `shape` | "pill" | "square" | "circle" |  |
 | `tooltip` | string |  |
 | `pressed` | boolean |  |
 | `defaultPressed` | boolean |  |
@@ -207,6 +198,8 @@ Supports children.
 | `action` | string |  |
 | `footer` | string |  |
 | `icon` | string |  |
+| `variant` | "ghost" |  |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
 
 Also supports layout props: `gap`, `p`, `ax`, `ay`, `fullwidth`, `fullheight`, `evenly`, plus all spacing (`px`, `py`, `pt`...), margin (`mx`, `my`, `mt`...), border (`b`, `bx`, `by`...), and sizing (`w`, `minw`, `maxw`, `h`, `minh`, `maxh`) props.
 
@@ -242,7 +235,7 @@ Text input field with label and description support
 | `defaultValue` | string |  |
 | `placeholder` | string |  |
 | `type` | string |  |
-| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `size` | "small" | "medium" | "large" |  (default: `"medium"`) |
 | `label` | string |  |
 | `description` | string |  |
 | `disabled` | boolean |  |
@@ -279,9 +272,9 @@ Multi-line text input with label and description support
 | `value` | string |  |
 | `defaultValue` | string |  |
 | `placeholder` | string |  |
-| `rows` | number | (default: `3`) |
-| `resize` | "none" \| "vertical" \| "horizontal" \| "both" | (default: `"vertical"`) |
-| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `rows` | number |  (default: `3`) |
+| `resize` | "none" | "vertical" | "horizontal" | "both" |  (default: `"vertical"`) |
+| `size` | "small" | "medium" | "large" |  (default: `"medium"`) |
 | `label` | string |  |
 | `description` | string |  |
 | `disabled` | boolean |  |
@@ -319,7 +312,7 @@ Use for multi-select choice lists. Pass items array with label/value pairs. Valu
 | `items` | object[] |  |
 | `label` | string |  |
 | `description` | string |  |
-| `direction` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `direction` | "horizontal" | "vertical" |  (default: `"vertical"`) |
 | `disabled` | boolean |  |
 | `required` | boolean |  |
 | `reversed` | boolean |  |
@@ -357,7 +350,7 @@ Use for single-select choice lists. Pass items array with label/value pairs.
 | `items` | object[] |  |
 | `label` | string |  |
 | `description` | string |  |
-| `direction` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `direction` | "horizontal" | "vertical" |  (default: `"vertical"`) |
 | `disabled` | boolean |  |
 | `required` | boolean |  |
 | `reversed` | boolean |  |
@@ -377,7 +370,7 @@ Dropdown select with customizable options, label, and description
 | `items` | object[] |  |
 | `label` | string |  |
 | `description` | string |  |
-| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
+| `size` | "small" | "medium" | "large" |  (default: `"medium"`) |
 | `disabled` | boolean |  |
 | `required` | boolean |  |
 | `fullwidth` | boolean |  |
@@ -391,11 +384,11 @@ Use for selecting numeric values within a range. Supports single value or range 
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | number \| number[] |  |
-| `defaultValue` | number \| number[] |  |
-| `min` | number | (default: `0`) |
-| `max` | number | (default: `100`) |
-| `step` | number | (default: `1`) |
+| `value` | number | number[] |  |
+| `defaultValue` | number | number[] |  |
+| `min` | number |  (default: `0`) |
+| `max` | number |  (default: `100`) |
+| `step` | number |  (default: `1`) |
 | `label` | string |  |
 | `description` | string |  |
 | `disabled` | boolean |  |
@@ -426,7 +419,7 @@ Toggle switch with label and description support
 
 Semantic alert component for displaying important messages with optional title and actions
 
-Use Alert for important messages.
+Use Alert for important messages with optional title and actions.
 
 Supports children.
 
@@ -457,8 +450,8 @@ Use Avatar for user profiles. Pass initials as fallback, name for display. Use o
 | `initials` | string |  |
 | `name` | string |  |
 | `description` | string |  |
-| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `orientation` | "horizontal" \| "vertical" | (default: `"horizontal"`) |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
+| `orientation` | "horizontal" | "vertical" |  (default: `"horizontal"`) |
 
 **Subcomponent Props (customization escape hatches):**
 
@@ -479,9 +472,8 @@ Supports children.
 | Prop | Type | Description |
 | --- | --- | --- |
 | `children` | string |  |
-| `size` | "small" \| "medium" \| "large" | (default: `"medium"`) |
-| `color` | "red" \| "orange" \| "yellow" \| "green" \| "blue" \| "indigo" \| "purple" |  |
-| `inverted` | boolean |  |
+| `size` | "small" | "medium" | "large" |  (default: `"medium"`) |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
 
 #### Kbd
 
@@ -503,7 +495,7 @@ Use to show progress of an operation. Pass null for indeterminate state.
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `value` | number \| null |  |
+| `value` | number | null |  |
 
 #### Status
 
@@ -518,12 +510,13 @@ Supports children.
 | `children` | string |  |
 | `pulse` | boolean |  |
 | `inverted` | boolean |  |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
 
 #### Timeline
 
-Timeline component for displaying chronological events with active state tracking
+Vertical timeline for chronological events with a marker rail and active-step tracking
 
-Use Timeline for chronological events. Pass items array for simple usage, or children for custom composition. Set activeIndex to highlight current step.
+Use Timeline for chronological events. Pass an `items` array for simple usage, or compose `TimelineItem`s as children. Every item renders its content in a Card — `title`/`time` fill the card header and `content`/children fill the body; pass `CardProps={{ variant: "ghost" }}` (root or per item) for flat rows. For steppers, set `activeIndex` to mark the current step (earlier items render as completed). For feeds of past events, set `defaultStatus="completed"` instead. Pass a `marker` node (small icon) to render inside the rail dot, or a `media` node (icon or Avatar) for a prominent leading column left of the rail. Use `gap` to control the space between items.
 
 Supports children.
 
@@ -531,18 +524,23 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `items` | object[] |  |
-| `orientation` | "vertical" \| "horizontal" | (default: `"vertical"`) |
-| `dir` | "ltr" \| "rtl" |  |
+| `dir` | "ltr" | "rtl" |  |
 | `activeIndex` | number |  |
+| `defaultStatus` | "completed" | "active" | "pending" |  |
+| `gap` | number |  |
+| `color` | "red" | "orange" | "yellow" | "green" | "blue" | "indigo" | "purple" | "neutral" |  |
 
 **Subcomponent Props (customization escape hatches):**
 
 - `ItemProps`: Props forwarded to Item
-- `DotProps`: Props forwarded to Dot
+- `MediaProps`: Props forwarded to Media
+- `MarkerProps`: Props forwarded to Marker
 - `ConnectorProps`: Props forwarded to Connector
+- `CardProps`: Props forwarded to Card
 - `TitleProps`: Props forwarded to Title
-- `DescriptionProps`: Props forwarded to Description
 - `TimeProps`: Props forwarded to Time
+- `DescriptionProps`: Props forwarded to Description
+- `HeadingProps`: Props forwarded to Heading
 
 ---
 
@@ -557,11 +555,11 @@ Use for collapsible content sections. Set multiple=true to allow multiple panels
 | Prop | Type | Description |
 | --- | --- | --- |
 | `items` | object[] |  |
-| `value` | string \| string[] |  |
-| `defaultValue` | string \| string[] |  |
+| `value` | string | string[] |  |
+| `defaultValue` | string | string[] |  |
 | `multiple` | boolean |  |
 | `disabled` | boolean |  |
-| `orientation` | "horizontal" \| "vertical" | (default: `"vertical"`) |
+| `orientation` | "horizontal" | "vertical" |  (default: `"vertical"`) |
 | `fullwidth` | boolean |  |
 
 #### Collapsible
@@ -576,7 +574,7 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `trigger` | string |  |
-| `instant` | boolean | (default: `false`) |
+| `instant` | boolean |  (default: `false`) |
 | `open` | boolean |  |
 | `defaultOpen` | boolean |  |
 | `onOpenChange` | function |  |
@@ -600,7 +598,7 @@ Supports children.
 | `children` | string |  |
 | `trigger` | string |  |
 | `title` | string |  |
-| `direction` | "top" \| "right" \| "bottom" \| "left" | (default: `"bottom"`) |
+| `direction` | "top" | "right" | "bottom" | "left" |  (default: `"bottom"`) |
 | `open` | boolean |  |
 | `defaultOpen` | boolean |  |
 | `onOpenChange` | function |  |
@@ -620,7 +618,7 @@ Supports children.
 | `action` | string |  |
 | `icon` | string |  |
 | `footer` | string |  |
-| `size` | "small" \| "medium" \| "large" \| "xlarge" | (default: `"medium"`) |
+| `size` | "small" | "medium" | "large" | "xlarge" |  (default: `"medium"`) |
 | `open` | boolean |  |
 | `onOpenChange` | function |  |
 
@@ -657,7 +655,7 @@ Supports children.
 | `action` | string |  |
 | `icon` | string |  |
 | `footer` | string |  |
-| `side` | "top" \| "right" \| "bottom" \| "left" | (default: `"right"`) |
+| `side` | "top" | "right" | "bottom" | "left" |  (default: `"right"`) |
 | `open` | boolean |  |
 | `onOpenChange` | function |  |
 
@@ -667,7 +665,7 @@ Container for toast notifications
 
 | Prop | Type | Description |
 | --- | --- | --- |
-| `position` | "top" \| "bottom" | (default: `"bottom"`) |
+| `position` | "top" | "bottom" |  (default: `"bottom"`) |
 
 #### Tooltip
 
@@ -699,28 +697,7 @@ Use to show navigation hierarchy. Last item is typically the current page.
 
 ---
 
-### Icons
+### All Component Types
 
-#### Icon
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs
 
-Renders any icon from the Lucide icon set by name.
-
-| Prop   | Type   | Required | Description                                      |
-| ------ | ------ | -------- | ------------------------------------------------ |
-| `name` | string | Yes      | Lucide icon name in PascalCase (e.g., "ChevronRight", "Plus", "Settings") |
-| `size` | number | No       | Icon size in pixels (default: 24)                |
-
-**Example:**
-
-```json
-{
-  "type": "Icon",
-  "props": { "name": "ChevronRight", "size": 16 }
-}
-```
-
-**Common icons:** Plus, Minus, Check, X, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Settings, User, Search, Menu, Home, Mail, Phone, Calendar, Clock, Edit, Trash, Download, Upload, Eye, EyeOff, Lock, Unlock, Star, Heart, Bell, Info, AlertCircle, AlertTriangle, CheckCircle, XCircle
-
-**Note:** The full Lucide icon set is available. See https://lucide.dev/icons for all options.
-
-<!-- END GENERATED COMPONENT REFERENCE -->
