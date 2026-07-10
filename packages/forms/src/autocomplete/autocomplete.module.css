@@ -3,10 +3,10 @@
 }
 
 .autocomplete-popup {
-  composes: popup from "@uiid/tokens/compositions.module.css";
+  composes: composes-popup from global;
   min-width: var(--anchor-width);
 }
 
 .autocomplete-item {
-  composes: option from "@uiid/tokens/compositions.module.css";
+  composes: composes-option from global;
 }

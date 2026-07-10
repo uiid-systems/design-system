@@ -1,7 +1,7 @@
 @import "@uiid/tokens/component/accordion.tokens.css";
 
 .accordion-root {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 }
 
 .accordion-item {

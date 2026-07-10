@@ -1,7 +1,7 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .radio {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   aspect-ratio: 1;
   border-radius: 100%;

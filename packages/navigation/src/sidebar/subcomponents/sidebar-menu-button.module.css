@@ -1,5 +1,5 @@
 .sidebar-menu-button {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   align-items: center;
   border-radius: var(--globals-border-radius);

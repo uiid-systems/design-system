@@ -1,7 +1,7 @@
 @import "@uiid/tokens/primitives/typography.tokens.css";
 
 .prose {
-  composes: text from "@uiid/tokens/compositions.module.css";
+  composes: composes-text from global;
 
   color: var(--shade-foreground);
   font-family: var(--font-sans);

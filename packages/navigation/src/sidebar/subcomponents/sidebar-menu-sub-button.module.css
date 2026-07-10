@@ -1,5 +1,5 @@
 .sidebar-menu-sub-button {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   color: var(--shade-foreground);
   display: flex;

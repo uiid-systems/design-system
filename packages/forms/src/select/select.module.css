@@ -13,7 +13,7 @@
  * is dropped since the trigger or before-slot already provides the left edge.
  */
 .select-slot {
-  composes: field-slot from "@uiid/tokens/compositions.module.css";
+  composes: composes-field-slot from global;
 }
 
 .select-trigger-slots {
@@ -40,12 +40,12 @@
 }
 
 .select-popup {
-  composes: popup from "@uiid/tokens/compositions.module.css";
+  composes: composes-popup from global;
   min-width: var(--anchor-width);
 }
 
 .select-item {
-  composes: option from "@uiid/tokens/compositions.module.css";
+  composes: composes-option from global;
   display: flex;
   align-items: center;
   gap: 0.5rem;

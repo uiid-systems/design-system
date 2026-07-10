@@ -1,5 +1,5 @@
 .slider-control {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   flex: 1;
   min-width: 12rem;

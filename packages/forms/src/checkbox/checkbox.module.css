@@ -1,7 +1,7 @@
 @import "@uiid/tokens/component/checkbox.tokens.css";
 
 .checkbox {
-  composes: disabled from "@uiid/tokens/compositions.module.css";
+  composes: composes-disabled from global;
 
   /** todo: replace with default */
   width: var(--checkbox-size-sm);
