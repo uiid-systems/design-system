@@ -5,10 +5,10 @@
 
   color: var(--shade-foreground);
   font-family: var(--font-sans);
-  font-size: var(--text-1-font-size);
-  font-weight: var(--text-1-font-weight);
-  line-height: var(--text-1-line-height);
-  letter-spacing: var(--text-1-letter-spacing);
+  font-size: var(--text-0-font-size);
+  font-weight: var(--text-0-font-weight);
+  line-height: var(--text-0-line-height);
+  letter-spacing: var(--text-0-letter-spacing);
 
   /* Reset all direct children — margins are set deliberately per element */
   & > * {
