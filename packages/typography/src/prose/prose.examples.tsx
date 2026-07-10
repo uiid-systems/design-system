@@ -22,11 +22,10 @@ export const Markdown = () => (
     </p>
     <h3>Registry</h3>
     <p>
-      A machine-readable description of every component: props, types,
-      defaults, slots, and usage guidance. The registry is what keeps
-      documentation accurate, gives LLMs correct knowledge of the system, and
-      powers the blocks app. It's also what an MCP server exposes to external
-      tools.
+      A machine-readable description of every component: props, types, defaults,
+      slots, and usage guidance. The registry is what keeps documentation
+      accurate, gives LLMs correct knowledge of the system, and powers the
+      blocks app. It's also what an MCP server exposes to external tools.
     </p>
     <h3>Blocks</h3>
     <p>
@@ -105,17 +104,15 @@ pnpm run storybook`}</code>
     <hr />
     <h2>Development</h2>
     <p>
-      Build a single package by passing the <code>--filter</code> flag to
-      Turbo:
+      Build a single package by passing the <code>--filter</code> flag to Turbo:
     </p>
     <pre>
       <code>{`pnpm run build --filter=@uiid/buttons`}</code>
     </pre>
     <h3>Bundle size</h3>
     <p>
-      All packages have size budgets enforced by{" "}
-      <a href="#">size-limit</a>. Sizes are measured as minified + brotli with
-      all dependencies included.
+      All packages have size budgets enforced by <a href="#">size-limit</a>.
+      Sizes are measured as minified + brotli with all dependencies included.
     </p>
     <blockquote>
       A pre-push hook runs <code>pnpm size</code> automatically. If any package
@@ -173,8 +170,8 @@ export const Article = () => (
     </p>
     <hr />
     <p>
-      The same rule applies to weight: <strong>each step should feel
-      deliberate</strong>, not algorithmic.
+      The same rule applies to weight:{" "}
+      <strong>each step should feel deliberate</strong>, not algorithmic.
     </p>
   </Prose>
 );
