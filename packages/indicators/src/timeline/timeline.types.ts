@@ -1,4 +1,4 @@
-import type { StackProps } from "@uiid/layout";
+import type { GroupProps, StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
 import type { VariantProps } from "@uiid/utils";
 
@@ -56,6 +56,7 @@ export type TimelineContentProps = StackProps;
 export type TimelineTitleProps = TextProps;
 export type TimelineTimeProps = TextProps & React.ComponentProps<"time">;
 export type TimelineDescriptionProps = TextProps;
+export type TimelineHeadingProps = GroupProps;
 
 /** Props forwarded to each item's subcomponents (override hooks). */
 export interface TimelineSlotProps {
@@ -66,6 +67,7 @@ export interface TimelineSlotProps {
   TitleProps?: TimelineTitleProps;
   TimeProps?: TimelineTimeProps;
   DescriptionProps?: TimelineDescriptionProps;
+  HeadingProps?: TimelineHeadingProps;
 }
 
 export type TimelineItemProps = Omit<

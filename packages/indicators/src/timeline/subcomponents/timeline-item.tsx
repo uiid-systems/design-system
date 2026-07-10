@@ -33,6 +33,7 @@ export const TimelineItem = ({
   TitleProps,
   TimeProps,
   DescriptionProps,
+  HeadingProps,
   ...props
 }: TimelineItemProps) => {
   const { status } = useTimelineItemContext(ITEM_NAME);
@@ -62,7 +63,12 @@ export const TimelineItem = ({
       <TimelineContent {...ContentProps}>
         <ConditionalRender condition={hasHeading} render={<Stack />}>
           {hasHeading && (
-            <Group gap={2} ay="baseline" data-slot="timeline-heading">
+            <Group
+              data-slot="timeline-heading"
+              gap={2}
+              ay="baseline"
+              {...HeadingProps}
+            >
               {title != null && (
                 <TimelineTitle {...TitleProps}>{title}</TimelineTitle>
               )}
