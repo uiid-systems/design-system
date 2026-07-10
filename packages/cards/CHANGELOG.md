@@ -1,5 +1,18 @@
 # @uiid/cards
 
+## 0.0.34
+
+### Patch Changes
+
+- [#260](https://github.com/uiid-systems/design-system/pull/260) [`df29cd1`](https://github.com/uiid-systems/design-system/commit/df29cd1d9b90ec5c38114425ee893caf92e9bc9f) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `variant="ghost"` to Card — removes the background, border, and shadow while keeping the card's padding and layout, mirroring the form components' ghost treatment. Reflected as `data-variant="ghost"` on the container.
+
+- Updated dependencies [[`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3), [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3), [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3)]:
+  - @uiid/tokens@0.0.34
+  - @uiid/typography@0.0.34
+  - @uiid/layout@0.0.34
+  - @uiid/icons@0.0.34
+  - @uiid/utils@0.0.34
+
 ## 0.0.33
 
 ### Patch Changes

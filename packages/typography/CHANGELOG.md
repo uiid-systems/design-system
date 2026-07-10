@@ -1,5 +1,17 @@
 # @uiid/typography
 
+## 0.0.34
+
+### Patch Changes
+
+- [#258](https://github.com/uiid-systems/design-system/pull/258) [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3) Thanks [@adamfratino](https://github.com/adamfratino)! - prose default size was 1 now 0
+
+- [#258](https://github.com/uiid-systems/design-system/pull/258) [`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3) Thanks [@adamfratino](https://github.com/adamfratino)! - Add `HeadingProps` to Timeline items, forwarding props to the heading `Group` (the title/time wrapper) so consumers can override its layout.
+
+- Updated dependencies [[`3cb2189`](https://github.com/uiid-systems/design-system/commit/3cb218908b8d2e95b43cb4146a5263418c203da3)]:
+  - @uiid/tokens@0.0.34
+  - @uiid/utils@0.0.34
+
 ## 0.0.33
 
 ### Patch Changes
