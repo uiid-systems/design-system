@@ -22,6 +22,10 @@ export const TimelineItem = ({
   time,
   description,
   color,
+  // Consumed by the Timeline root (folded into context); stripped from the DOM.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  status: _status,
+  marker,
   media,
   content,
   className,
@@ -55,7 +59,9 @@ export const TimelineItem = ({
         className={cx(styles["timeline-rail"], timelineVariants({ color }))}
       >
         <div className={styles["timeline-marker-box"]}>
-          <TimelineMarker {...MarkerProps} />
+          <TimelineMarker {...MarkerProps}>
+            {marker ?? MarkerProps?.children}
+          </TimelineMarker>
         </div>
         <TimelineConnector {...ConnectorProps} />
       </div>

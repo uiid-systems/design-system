@@ -6,7 +6,7 @@
 
 - [#255](https://github.com/uiid-systems/design-system/pull/255) [`44ed916`](https://github.com/uiid-systems/design-system/commit/44ed9164b57a49258b0bd90bba695b186a3c2cdf) Thanks [@adamfratino](https://github.com/adamfratino)! - prose default size was 1 now 0
 
-- [#257](https://github.com/uiid-systems/design-system/pull/257) [`c638753`](https://github.com/uiid-systems/design-system/commit/c638753f33bd4d6e45d02e3d92960852de116ba6) Thanks [@adamfratino](https://github.com/adamfratino)! - i Please enter a summary for your changes.
+- [#257](https://github.com/uiid-systems/design-system/pull/257) [`c638753`](https://github.com/uiid-systems/design-system/commit/c638753f33bd4d6e45d02e3d92960852de116ba6) Thanks [@adamfratino](https://github.com/adamfratino)! - Update prose examples for the new default size.
 
 - Updated dependencies []:
   - @uiid/tokens@0.0.33

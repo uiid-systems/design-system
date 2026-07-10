@@ -32,6 +32,16 @@ export interface TimelineItemContent {
   /** Palette color for this item's marker and connector. */
   color?: TimelineColor;
   /**
+   * Explicit status for this item. Overrides whatever the timeline derives
+   * from `activeIndex`/`defaultStatus`.
+   */
+  status?: TimelineStatus;
+  /**
+   * A node rendered inside the marker on the rail (e.g. a small icon).
+   * Switches the marker from the plain dot to its content variant.
+   */
+  marker?: React.ReactNode;
+  /**
    * A prominent visual (e.g. an `<Avatar />` or icon) shown in a dedicated
    * column to the left of the rail. Optional — items without it keep the
    * column empty so every marker stays aligned.
@@ -40,9 +50,6 @@ export interface TimelineItemContent {
   /** Arbitrary content (e.g. a `<Card />`) rendered below the text block. */
   content?: React.ReactNode;
 }
-
-/** Data-driven item passed via the `items` prop. */
-export type TimelineItemType = TimelineItemContent;
 
 export type TimelineMediaProps = React.ComponentProps<"div">;
 export type TimelineMarkerProps = React.ComponentProps<"div"> & {
@@ -77,20 +84,33 @@ export type TimelineItemProps = Omit<
   TimelineItemContent &
   TimelineSlotProps;
 
+/**
+ * Data-driven item passed via the `items` prop — full parity with
+ * `TimelineItem`, including per-item slot props like `TitleProps`.
+ */
+export type TimelineItemType = TimelineItemProps;
+
 export type TimelineProps = Omit<
   React.ComponentProps<"ol">,
   "color" | "title"
 > &
-  VariantProps<typeof timelineVariants> & {
+  VariantProps<typeof timelineVariants> &
+  // Slot props on the root apply to every item in data mode; per-item values
+  // merge over them key-by-key.
+  TimelineSlotProps & {
     /** Data-driven events. Omit to compose `TimelineItem`s as children. */
     items?: TimelineItemType[];
     /** Index of the current step; earlier items read as completed. */
     activeIndex?: number;
+    /**
+     * Status for items when `activeIndex` is absent (default `"pending"`).
+     * Feeds of past events set `"completed"` so every marker reads as done.
+     */
+    defaultStatus?: TimelineStatus;
+    /** Space between items as a spacing token (like `Stack`'s `gap`). */
+    gap?: number;
     /** Text direction; RTL flips the rail to the opposite edge. */
     dir?: Direction;
-    /**
-     * Props forwarded to every `TimelineItem` in data mode — including nested
-     * `MarkerProps`, `ContentProps`, `TitleProps`, etc.
-     */
-    ItemProps?: Omit<TimelineItemProps, keyof TimelineItemContent>;
+    /** `<li>` props forwarded to every `TimelineItem` in data mode. */
+    ItemProps?: Omit<React.ComponentProps<"li">, "color" | "content" | "title">;
   };

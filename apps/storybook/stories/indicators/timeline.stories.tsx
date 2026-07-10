@@ -14,9 +14,13 @@ import {
   GitCommitHorizontal,
   GitMerge,
   MapPin,
+  MessageSquare,
   Package,
+  Play,
+  Sparkles,
   Truck,
   UserPlus,
+  Wrench,
 } from "@uiid/icons";
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
@@ -30,6 +34,15 @@ const meta = {
   argTypes: {
     activeIndex: {
       control: { type: "number", min: 0, max: 5 },
+      table: { category: "Options" },
+    },
+    defaultStatus: {
+      control: "select",
+      options: [undefined, "pending", "active", "completed"],
+      table: { category: "Options" },
+    },
+    gap: {
+      control: { type: "number", min: 0, max: 12 },
       table: { category: "Options" },
     },
     dir: {
@@ -145,7 +158,7 @@ const sampleCode = `export function Counter() {
 export const CardContent: Story = {
   name: "Card content over the rail",
   render: () => (
-    <Timeline activeIndex={1} ItemProps={{ ContentProps: { maxw: 640 } }}>
+    <Timeline activeIndex={1} ContentProps={{ maxw: 640 }}>
       <TimelineItem
         title="Session recap"
         time="9:00 AM"
@@ -258,9 +271,67 @@ export const ActivityFeed: Story = {
   name: "Activity feed (realistic)",
   args: { activeIndex: 5 },
   render: (args) => (
+    <Timeline items={ACTIVITY_ITEMS} ContentProps={{ maxw: 520 }} {...args} />
+  ),
+};
+
+const FEED_ITEMS: TimelineItemType[] = [
+  {
+    title: "session started",
+    time: "09:00:12",
+    color: "orange",
+    marker: <Play size={12} />,
+    TitleProps: { color: "orange" },
+  },
+  {
+    title: "prompt",
+    time: "09:00:41",
+    color: "blue",
+    marker: <MessageSquare size={12} />,
+    TitleProps: { color: "blue" },
+    content: (
+      <Card p={3}>
+        <Text>
+          i'd like to have a deep look at our timeline component. it's very
+          important to a sibling project, as is it feels stable but raw.
+        </Text>
+      </Card>
+    ),
+  },
+  {
+    title: "tool work",
+    description: "25× Read, 3× Bash",
+    time: "09:04:02",
+    color: "yellow",
+    marker: <Wrench size={12} />,
+    TitleProps: { color: "yellow" },
+  },
+  {
+    title: "assistant",
+    time: "09:06:58",
+    color: "indigo",
+    marker: <Sparkles size={12} />,
+    TitleProps: { color: "indigo" },
+    content: (
+      <Card p={3}>
+        <Text>
+          The rail redesign is clear — the grid owns the column tracks and every
+          item subgrids them, so the markers stay aligned at any content width.
+        </Text>
+      </Card>
+    ),
+  },
+];
+
+export const EventFeed: Story = {
+  name: "Event feed (markers)",
+  args: { activeIndex: undefined },
+  render: (args) => (
     <Timeline
-      items={ACTIVITY_ITEMS}
-      ItemProps={{ ContentProps: { maxw: 520 } }}
+      items={FEED_ITEMS}
+      defaultStatus="completed"
+      gap={4}
+      ContentProps={{ maxw: 520 }}
       {...args}
     />
   ),
