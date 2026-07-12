@@ -43,3 +43,7 @@ next-env.d.ts
 
 # CSS tokens
 packages/tokens/src/css/
+
+# Session narration files (Claude conversation channel — never commit)
+CONVERSATION.md
+FABLE_SUPPORT.md
