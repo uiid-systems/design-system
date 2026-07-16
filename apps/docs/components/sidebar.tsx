@@ -16,6 +16,7 @@ export function Sidebar() {
         <SidebarHeader>uiid docs</SidebarHeader>
         <Stack gap={2}>
           <Text render={<Link href="/">Home</Link>} shade="muted" />
+          <Text render={<Link href="/changelog">Changelog</Link>} shade="muted" />
           <SidebarList items={COMPONENTS_SITEMAP} />
         </Stack>
       </SidebarScrollContainer>
