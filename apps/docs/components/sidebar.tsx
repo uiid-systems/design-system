@@ -14,7 +14,7 @@ export function Sidebar() {
     <SidebarContainer>
       <SidebarScrollContainer>
         <SidebarHeader>uiid docs</SidebarHeader>
-        <Stack mb={2}>
+        <Stack>
           <Text render={<Link href="/">Home</Link>} shade="muted" />
           <Text
             render={<Link href="/changelog">Changelog</Link>}
