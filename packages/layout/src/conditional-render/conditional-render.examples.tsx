@@ -1,6 +1,5 @@
 import { ConditionalRender } from "./conditional-render";
 import { Box } from "../box/box";
-import { Stack } from "../stack/stack";
 
 export const Wrapped = () => (
   <ConditionalRender condition={true} render={<Box bordered p={2} rounded />}>
@@ -14,22 +13,8 @@ export const Unwrapped = () => (
   </ConditionalRender>
 );
 
-type LabelProps = {
-  href?: string;
-  children: React.ReactNode;
-};
-const Label = ({ href, children }: LabelProps) => (
-  <ConditionalRender
-    condition={Boolean(href)}
-    render={<a href={href} style={{ color: "dodgerblue" }} />}
-  >
-    {children}
+export const ConditionalLink = ({ href = "#" }: { href?: string }) => (
+  <ConditionalRender condition={!!href} render={<a href={href} />}>
+    element renders as a link because an href ({href}) is present
   </ConditionalRender>
-);
-
-export const ConditionalLink = () => (
-  <Stack gap={2}>
-    <Label href="https://example.com">With href — renders as a link</Label>
-    <Label>Without href — renders as plain text</Label>
-  </Stack>
 );
