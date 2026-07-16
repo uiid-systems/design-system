@@ -1,27 +1,28 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { Group, Stack } from "@uiid/design-system";
-
+import { OnThisPage } from "@/components/docs";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
-
 import {
-  CONTENT_MAX_WIDTH,
-  SHELL_SPACING,
-  SHELL_BORDER_WIDTH,
-  SITE_TITLE,
-  SITE_DESCRIPTION,
-} from "@/constants";
+  Body,
+  AppShellOuter,
+  AppShellInner,
+  AsideContainer,
+  ContentRow,
+  Main,
+} from "@/components/shell";
+
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
 
 import "./globals.css";
 
-export const geistSans = Geist({
+const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-export const geistMono = Geist_Mono({
+const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -36,64 +37,20 @@ export default function RootLayout({
 }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Body>
+      <Body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppShellOuter>
           <Sidebar />
           <AppShellInner>
             <Header />
-            <Main>{children}</Main>
+            <ContentRow>
+              <Main>{children}</Main>
+              <AsideContainer>
+                <OnThisPage />
+              </AsideContainer>
+            </ContentRow>
           </AppShellInner>
         </AppShellOuter>
       </Body>
     </html>
   );
 }
-
-const Body = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Stack
-      data-slot="body"
-      render={<body />}
-      className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
-      fullwidth
-    >
-      {children}
-    </Stack>
-  );
-};
-Body.displayName = "Body";
-
-const AppShellOuter = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Group data-slot="app-shell-outer" fullwidth>
-      {children}
-    </Group>
-  );
-};
-AppShellOuter.displayName = "AppShellOuter";
-
-const AppShellInner = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Stack data-slot="app-shell-inner" className="flex-1">
-      {children}
-    </Stack>
-  );
-};
-AppShellInner.displayName = "AppShellInner";
-
-const Main = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Stack
-      data-slot="main"
-      render={<main />}
-      maxw={CONTENT_MAX_WIDTH}
-      br={SHELL_BORDER_WIDTH}
-      p={SHELL_SPACING}
-      fullwidth
-      fullheight
-    >
-      {children}
-    </Stack>
-  );
-};
-Main.displayName = "Main";
