@@ -120,7 +120,7 @@
   /* Inline elements ------------------------------------------------------ */
 
   & a {
-    color: var(--theme-primary, currentColor);
+    color: var(--shade-muted);
     text-decoration: underline;
     text-underline-offset: 0.15em;
     text-decoration-thickness: 0.06em;

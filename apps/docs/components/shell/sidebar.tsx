@@ -95,6 +95,7 @@ export const SidebarList = ({ items, category }: SidebarListProps) => {
       gap={SIDEBAR_LIST_ITEM_SPACING}
       category={category}
       items={toListItems(items)}
+      mt={4}
     />
   );
 };
