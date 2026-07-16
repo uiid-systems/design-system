@@ -24,4 +24,23 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
       { label: "Toggle Button", value: "/buttons/toggle-button" },
     ],
   },
+  {
+    category: "Layout",
+    items: [
+      { label: "Box", value: "/layout/box" },
+      { label: "Conditional Render", value: "/layout/conditional-render" },
+      { label: "Group", value: "/layout/group" },
+      { label: "Layer", value: "/layout/layer" },
+      { label: "Separator", value: "/layout/separator" },
+      { label: "Stack", value: "/layout/stack" },
+      { label: "Switch Render", value: "/layout/switch-render" },
+    ],
+  },
+  {
+    category: "Typography",
+    items: [
+      { label: "Prose", value: "/typography/prose" },
+      { label: "Text", value: "/typography/text" },
+    ],
+  },
 ];
