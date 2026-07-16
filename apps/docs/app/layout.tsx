@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { OnThisPage } from "@/components/docs";
+import { OnThisPage, Pager } from "@/components/docs";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import {
@@ -43,7 +43,10 @@ export default function RootLayout({
           <AppShellInner>
             <Header />
             <ContentRow>
-              <Main>{children}</Main>
+              <Main>
+                {children}
+                <Pager />
+              </Main>
               <AsideContainer>
                 <OnThisPage />
               </AsideContainer>
