@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { List, ListItem, Stack, Text } from "@uiid/design-system";
+import { List, Stack, Text } from "@uiid/design-system";
+import type { ListItemOrGroup } from "@uiid/design-system";
 
 import {
   SIDEBAR_WIDTH,
@@ -55,8 +56,26 @@ export type SidebarListItem = {
   value: string;
 };
 
+export type SidebarListGroup = {
+  category: string;
+  items: SidebarListEntry[];
+};
+
+export type SidebarListEntry = SidebarListItem | SidebarListGroup;
+
+const toListItems = (entries: SidebarListEntry[]): ListItemOrGroup[] =>
+  entries.map((entry) =>
+    "category" in entry
+      ? { category: entry.category, items: toListItems(entry.items) }
+      : {
+          label: (
+            <Text render={<Link href={entry.value} />}>{entry.label}</Text>
+          ),
+        },
+  );
+
 type SidebarListProps = {
-  items: SidebarListItem[];
+  items: SidebarListEntry[];
   category?: string;
 };
 
@@ -66,13 +85,8 @@ export const SidebarList = ({ items, category }: SidebarListProps) => {
       data-slot="sidebar-list"
       gap={SIDEBAR_LIST_ITEM_SPACING}
       category={category}
-    >
-      {items.map((item) => (
-        <ListItem key={item.value}>
-          <Text render={<Link href={item.value} />}>{item.label}</Text>
-        </ListItem>
-      ))}
-    </List>
+      items={toListItems(items)}
+    />
   );
 };
 SidebarList.displayName = "SidebarList";

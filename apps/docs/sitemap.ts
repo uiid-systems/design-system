@@ -3,12 +3,25 @@ export type SitemapItem = {
   value: string;
 };
 
+export type SitemapGroup = {
+  category: string;
+  items: SitemapEntry[];
+};
+
+export type SitemapEntry = SitemapItem | SitemapGroup;
+
 export const SITEMAP: SitemapItem[] = [
   { label: "Home", value: "/" },
   { label: "About", value: "/about" },
   { label: "Contact", value: "/contact" },
 ];
 
-export const COMPONENTS_SITEMAP: SitemapItem[] = [
-  { label: "Button", value: "/components/button" },
+export const COMPONENTS_SITEMAP: SitemapEntry[] = [
+  {
+    category: "Buttons",
+    items: [
+      { label: "Button", value: "/components/buttons/button" },
+      { label: "Toggle Button", value: "/components/buttons/toggle-button" },
+    ],
+  },
 ];

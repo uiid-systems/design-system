@@ -140,7 +140,7 @@
     font-family: var(--font-mono);
     font-size: 0.875em;
     font-weight: 500;
-    color: var(--shade-foreground);
+    color: var(--color-orange);
     background-color: var(--shade-accent);
     padding-inline: 0.4em;
     padding-block: 0.1em;
