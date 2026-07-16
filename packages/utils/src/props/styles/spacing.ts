@@ -109,19 +109,34 @@ export const pb = {
 } satisfies StyleProp<"paddingBlockEnd">;
 
 export type SpacingProps = {
+  /** Gap between children, in spacing units */
   gap?: number;
+  /** Margin on all sides, in spacing units */
   m?: number | "auto";
+  /** Margin on the left and right (inline) edges, in spacing units */
   mx?: number | "auto";
+  /** Margin on the top and bottom (block) edges, in spacing units */
   my?: number | "auto";
+  /** Margin on the left (inline-start) edge, in spacing units */
   ml?: number | "auto";
+  /** Margin on the right (inline-end) edge, in spacing units */
   mr?: number | "auto";
+  /** Margin on the top (block-start) edge, in spacing units */
   mt?: number | "auto";
+  /** Margin on the bottom (block-end) edge, in spacing units */
   mb?: number | "auto";
+  /** Padding on all sides, in spacing units */
   p?: number;
+  /** Padding on the left and right (inline) edges, in spacing units */
   px?: number;
+  /** Padding on the top and bottom (block) edges, in spacing units */
   py?: number;
+  /** Padding on the left (inline-start) edge, in spacing units */
   pl?: number;
+  /** Padding on the right (inline-end) edge, in spacing units */
   pr?: number;
+  /** Padding on the top (block-start) edge, in spacing units */
   pt?: number;
+  /** Padding on the bottom (block-end) edge, in spacing units */
   pb?: number;
 };

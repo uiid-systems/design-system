@@ -34,10 +34,16 @@ export const maxh = {
 } satisfies StyleProp<"maxHeight">;
 
 export type SizingProps = {
+  /** Width, in px */
   w?: number;
+  /** Minimum width, in px */
   minw?: number;
+  /** Maximum width, in px */
   maxw?: number;
+  /** Height, in px */
   h?: number;
+  /** Minimum height, in px */
   minh?: number;
+  /** Maximum height, in px */
   maxh?: number;
 };
