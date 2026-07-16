@@ -1,8 +1,8 @@
-import { Group } from "@uiid/design-system";
+import { Group, type GroupProps } from "@uiid/design-system";
 
 import { SHELL_SPACING, SHELL_BORDER_WIDTH } from "./constants";
 
-export const HeaderContainer = ({ children }: React.PropsWithChildren) => {
+export const HeaderContainer = ({ children, ...props }: GroupProps) => {
   return (
     <Group
       data-slot="header-container"
@@ -14,6 +14,7 @@ export const HeaderContainer = ({ children }: React.PropsWithChildren) => {
       p={SHELL_SPACING}
       bb={SHELL_BORDER_WIDTH}
       fullwidth
+      {...props}
     >
       {children}
     </Group>
@@ -21,9 +22,9 @@ export const HeaderContainer = ({ children }: React.PropsWithChildren) => {
 };
 HeaderContainer.displayName = "HeaderContainer";
 
-export const HeaderGroup = ({ children }: React.PropsWithChildren) => {
+export const HeaderGroup = ({ children, ...props }: GroupProps) => {
   return (
-    <Group data-slot="header-group" gap={SHELL_SPACING / 2}>
+    <Group data-slot="header-group" gap={SHELL_SPACING / 2} {...props}>
       {children}
     </Group>
   );

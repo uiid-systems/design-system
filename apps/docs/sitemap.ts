@@ -25,6 +25,10 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
     ],
   },
   {
+    category: "Cards",
+    items: [{ label: "Card", value: "/cards/card" }],
+  },
+  {
     category: "Layout",
     items: [
       { label: "Box", value: "/layout/box" },
@@ -35,6 +39,10 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
       { label: "Stack", value: "/layout/stack" },
       { label: "Switch Render", value: "/layout/switch-render" },
     ],
+  },
+  {
+    category: "Lists",
+    items: [{ label: "List", value: "/lists/list" }],
   },
   {
     category: "Typography",

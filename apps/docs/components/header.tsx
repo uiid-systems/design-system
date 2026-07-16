@@ -16,14 +16,14 @@ export function Header() {
       <HeaderGroup>
         <HeaderBreadcrumbs />
       </HeaderGroup>
-      <HeaderGroup>
+      <HeaderGroup gap={0}>
         <Button
           nativeButton={false}
           render={<a href={REPO_URL} target="_blank" rel="noopener" />}
           tooltip="View on GitHub"
-          variant="subtle"
+          variant="ghost"
           shape="square"
-          size="small"
+          size="xsmall"
         >
           <SiGithub />
         </Button>
@@ -31,9 +31,9 @@ export function Header() {
           nativeButton={false}
           render={<a href={NPM_URL} target="_blank" rel="noopener" />}
           tooltip="View on npm"
-          variant="subtle"
+          variant="ghost"
           shape="square"
-          size="small"
+          size="xsmall"
         >
           <SiNpm />
         </Button>
@@ -41,9 +41,9 @@ export function Header() {
           nativeButton={false}
           render={<a href={STORYBOOK_URL} />}
           tooltip="Storybook (coming soon)"
-          variant="subtle"
+          variant="ghost"
           shape="square"
-          size="small"
+          size="xsmall"
         >
           <SiStorybook />
         </Button>
