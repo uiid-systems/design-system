@@ -1,5 +1,11 @@
 # @uiid/utils
 
+## 0.0.35
+
+### Patch Changes
+
+- [#262](https://github.com/uiid-systems/design-system/pull/262) [`4a7e1c7`](https://github.com/uiid-systems/design-system/commit/4a7e1c7c3e5f9f938aaa8a9b11fc89141f8181d1) Thanks [@adamfratino](https://github.com/adamfratino)! - Add JSDoc descriptions to shared style props (border, layout, sizing, spacing) and to layout and typography component props and variants
+
 ## 0.0.34
 
 ## 0.0.33

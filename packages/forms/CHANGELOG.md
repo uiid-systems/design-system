@@ -1,5 +1,20 @@
 # @uiid/forms
 
+## 0.0.35
+
+### Patch Changes
+
+- Updated dependencies [[`4a7e1c7`](https://github.com/uiid-systems/design-system/commit/4a7e1c7c3e5f9f938aaa8a9b11fc89141f8181d1), [`4a7e1c7`](https://github.com/uiid-systems/design-system/commit/4a7e1c7c3e5f9f938aaa8a9b11fc89141f8181d1), [`4a7e1c7`](https://github.com/uiid-systems/design-system/commit/4a7e1c7c3e5f9f938aaa8a9b11fc89141f8181d1)]:
+  - @uiid/buttons@0.0.35
+  - @uiid/typography@0.0.35
+  - @uiid/utils@0.0.35
+  - @uiid/layout@0.0.35
+  - @uiid/cards@0.0.35
+  - @uiid/lists@0.0.35
+  - @uiid/overlays@0.0.35
+  - @uiid/icons@0.0.35
+  - @uiid/tokens@0.0.35
+
 ## 0.0.34
 
 ### Patch Changes
