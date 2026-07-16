@@ -5,7 +5,7 @@ import ReactMarkdown, { type Components } from "react-markdown";
 import { CodeBlock, CodeInline, Prose } from "@uiid/design-system";
 import type { BundledLanguage } from "@uiid/design-system";
 
-const PACKAGES_DIR = path.resolve(process.cwd(), "../../packages");
+const ROOT = path.resolve(process.cwd(), "../..");
 
 const markdownComponents: Components = {
   pre: ({ children }) => <>{children}</>,
@@ -23,6 +23,22 @@ const markdownComponents: Components = {
   },
 };
 
+type MarkdownProps = {
+  /** Path to a markdown file, relative to the repo root */
+  file: string;
+};
+
+/** Renders a repo markdown file inside Prose — the single-source pattern. */
+export async function Markdown({ file }: MarkdownProps) {
+  const markdown = await fs.readFile(path.join(ROOT, file), "utf-8");
+
+  return (
+    <Prose data-slot="readme">
+      <ReactMarkdown components={markdownComponents}>{markdown}</ReactMarkdown>
+    </Prose>
+  );
+}
+
 type ReadmeProps = {
   /** Path to a component within packages, e.g. "buttons/button" */
   of: string;
@@ -32,14 +48,9 @@ type ReadmeProps = {
  * Renders a component's package README.md — the same source Storybook
  * renders via its Markdown block.
  */
-export async function Readme({ of }: ReadmeProps) {
+export function Readme({ of }: ReadmeProps) {
   const [pkg, component] = of.split("/");
-  const file = path.join(PACKAGES_DIR, pkg, "src", component, "README.md");
-  const markdown = await fs.readFile(file, "utf-8");
-
   return (
-    <Prose data-slot="readme">
-      <ReactMarkdown components={markdownComponents}>{markdown}</ReactMarkdown>
-    </Prose>
+    <Markdown file={path.join("packages", pkg, "src", component, "README.md")} />
   );
 }

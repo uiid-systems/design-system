@@ -29,13 +29,13 @@ export const Pager = () => {
   const next = pages[index + 1];
 
   return (
-    <Group data-slot="pager" gap={4} evenly fullwidth>
+    <Group data-slot="pager" gap={4} evenly fullwidth pb={32} pt={8} bt={1}>
       {prev ? (
         <Card
           render={<Link href={prev.value} />}
           icon={ArrowLeftIcon}
           title={prev.label}
-          description={prev.category}
+          // description={prev.category}
         />
       ) : (
         <Box aria-hidden />
@@ -45,7 +45,7 @@ export const Pager = () => {
           render={<Link href={next.value} />}
           icon={ArrowRightIcon}
           title={next.label}
-          description={next.category}
+          // description={next.category}
           /** @todo create reverse prop? */
           HeaderProps={{ className: "flex-row-reverse" }}
         />
