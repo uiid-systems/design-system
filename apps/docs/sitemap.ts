@@ -16,18 +16,8 @@ export const SITEMAP: SitemapItem[] = [
   { label: "Contact", value: "/contact" },
 ];
 
+/** Manual order — drives the sidebar nav and the pager sequence */
 export const COMPONENTS_SITEMAP: SitemapEntry[] = [
-  {
-    category: "Buttons",
-    items: [
-      { label: "Button", value: "/buttons/button" },
-      { label: "Toggle Button", value: "/buttons/toggle-button" },
-    ],
-  },
-  {
-    category: "Cards",
-    items: [{ label: "Card", value: "/cards/card" }],
-  },
   {
     category: "Layout",
     items: [
@@ -41,14 +31,25 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
     ],
   },
   {
-    category: "Lists",
-    items: [{ label: "List", value: "/lists/list" }],
-  },
-  {
     category: "Typography",
     items: [
       { label: "Prose", value: "/typography/prose" },
       { label: "Text", value: "/typography/text" },
     ],
+  },
+  {
+    category: "Buttons",
+    items: [
+      { label: "Button", value: "/buttons/button" },
+      { label: "Toggle Button", value: "/buttons/toggle-button" },
+    ],
+  },
+  {
+    category: "Lists",
+    items: [{ label: "List", value: "/lists/list" }],
+  },
+  {
+    category: "Cards",
+    items: [{ label: "Card", value: "/cards/card" }],
   },
 ];
