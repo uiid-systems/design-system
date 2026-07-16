@@ -13,7 +13,7 @@ export const AsideContainer = ({ children }: React.PropsWithChildren) => {
       px={4}
       fullwidth
       fullheight
-      className="sticky top-16 overflow-y-auto max-h-screen"
+      className="sticky top-20 overflow-y-auto max-h-screen"
     >
       {children}
     </Stack>

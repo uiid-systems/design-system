@@ -19,6 +19,8 @@ export type ButtonSpinnerProps = LoadingSpinnerProps & {
 export type ButtonProps = React.ComponentProps<"button"> &
   Omit<BaseButton.Props, "onClick"> &
   ButtonVariants & {
+    /** Wraps the button in a Tooltip with this content — no manual composition */
     tooltip?: React.ReactNode;
+    /** Show a spinner without the button changing size */
     loading?: boolean;
   };
