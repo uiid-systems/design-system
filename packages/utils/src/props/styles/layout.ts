@@ -28,7 +28,10 @@ export const direction = {
 } satisfies StyleProp<"flexDirection">;
 
 export type LayoutProps = {
+  /** Alignment of children along the main axis (justify-content) */
   ax?: (typeof ax.values)[number];
+  /** Alignment of children along the cross axis (align-items) */
   ay?: (typeof ay.values)[number];
+  /** Flex direction of children */
   direction?: (typeof direction.values)[number];
 };

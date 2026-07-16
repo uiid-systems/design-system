@@ -39,11 +39,18 @@ export const bb = {
 } satisfies StyleProp<"borderBlockEndWidth">;
 
 export type BorderProps = {
+  /** Border width on all sides, in px */
   b?: number;
+  /** Border width on the left and right (inline) edges, in px */
   bx?: number;
+  /** Border width on the top and bottom (block) edges, in px */
   by?: number;
+  /** Border width on the left (inline-start) edge, in px */
   bl?: number;
+  /** Border width on the right (inline-end) edge, in px */
   br?: number;
+  /** Border width on the top (block-start) edge, in px */
   bt?: number;
+  /** Border width on the bottom (block-end) edge, in px */
   bb?: number;
 };

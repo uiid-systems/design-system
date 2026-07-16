@@ -1,15 +1,14 @@
-import {
-  Breadcrumbs,
-  Group,
-  Input,
-  Kbd,
-  ToggleGroup,
-  Toggle,
-} from "@uiid/design-system";
-import { SearchIcon, SunIcon, MoonIcon, MonitorIcon } from "@uiid/icons";
+import { SiGithub, SiNpm, SiStorybook } from "@icons-pack/react-simple-icons";
 
-import { SHELL_SPACING, SHELL_BORDER_WIDTH } from "@/constants";
-import { SITEMAP } from "@/sitemap";
+import { Button } from "@uiid/design-system";
+
+import { HeaderBreadcrumbs } from "@/components/breadcrumbs";
+import { HeaderContainer, HeaderGroup } from "@/components/shell";
+
+const REPO_URL = "https://github.com/uiid-systems/design-system";
+const NPM_URL = "https://www.npmjs.com/package/@uiid/design-system";
+/** @todo point at the deployed storybook once it has a home */
+const STORYBOOK_URL = "#";
 
 export function Header() {
   return (
@@ -17,73 +16,38 @@ export function Header() {
       <HeaderGroup>
         <HeaderBreadcrumbs />
       </HeaderGroup>
-      <HeaderGroup>
-        <HeaderSearch />
-        <HeaderModeToggle />
+      <HeaderGroup gap={0}>
+        <Button
+          nativeButton={false}
+          render={<a href={REPO_URL} target="_blank" rel="noopener" />}
+          tooltip="View on GitHub"
+          variant="ghost"
+          shape="square"
+          size="xsmall"
+        >
+          <SiGithub />
+        </Button>
+        <Button
+          nativeButton={false}
+          render={<a href={NPM_URL} target="_blank" rel="noopener" />}
+          tooltip="View on npm"
+          variant="ghost"
+          shape="square"
+          size="xsmall"
+        >
+          <SiNpm />
+        </Button>
+        <Button
+          nativeButton={false}
+          render={<a href={STORYBOOK_URL} />}
+          tooltip="Storybook (coming soon)"
+          variant="ghost"
+          shape="square"
+          size="xsmall"
+        >
+          <SiStorybook />
+        </Button>
       </HeaderGroup>
     </HeaderContainer>
   );
 }
-
-const HeaderContainer = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Group
-      data-slot="header-container"
-      render={<header />}
-      className="sticky top-0 bg-(--shade-background) z-1"
-      ay="center"
-      ax="space-between"
-      gap={SHELL_SPACING}
-      p={SHELL_SPACING}
-      bb={SHELL_BORDER_WIDTH}
-      fullwidth
-    >
-      {children}
-    </Group>
-  );
-};
-HeaderContainer.displayName = "HeaderContainer";
-
-const HeaderGroup = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Group data-slot="header-group" gap={SHELL_SPACING / 2}>
-      {children}
-    </Group>
-  );
-};
-HeaderGroup.displayName = "HeaderGroup";
-
-const HeaderBreadcrumbs = () => {
-  return <Breadcrumbs data-slot="header-breadcrumbs" items={SITEMAP} />;
-};
-HeaderBreadcrumbs.displayName = "HeaderBreadcrumbs";
-
-const HeaderSearch = () => {
-  return (
-    <Input
-      data-slot="header-search"
-      placeholder="Search"
-      before={<SearchIcon />}
-      after={<Kbd hotkey={["meta", "k"]} />}
-      size="small"
-    />
-  );
-};
-HeaderSearch.displayName = "HeaderSearch";
-
-const HeaderModeToggle = () => {
-  return (
-    <ToggleGroup size="sm" value={["light"]}>
-      <Toggle value="light">
-        <SunIcon />
-      </Toggle>
-      <Toggle value="dark">
-        <MoonIcon />
-      </Toggle>
-      <Toggle value="system">
-        <MonitorIcon />
-      </Toggle>
-    </ToggleGroup>
-  );
-};
-HeaderModeToggle.displayName = "HeaderModeToggle";

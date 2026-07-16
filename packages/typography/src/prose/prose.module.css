@@ -102,9 +102,11 @@
     margin-block-start: 1em;
   }
 
-  /* Code blocks and blockquotes get extra breathing room */
+  /* Code blocks, blockquotes, and embedded block components (e.g. a
+     CodeBlock rendered in place of pre) get extra breathing room */
   & > pre,
-  & > blockquote {
+  & > blockquote,
+  & > div {
     margin-block-start: 2em;
     margin-block-end: 2em;
   }
@@ -140,7 +142,7 @@
     font-family: var(--font-mono);
     font-size: 0.875em;
     font-weight: 500;
-    color: var(--shade-foreground);
+    color: var(--color-orange);
     background-color: var(--shade-accent);
     padding-inline: 0.4em;
     padding-block: 0.1em;

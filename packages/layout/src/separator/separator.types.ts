@@ -11,5 +11,6 @@ export type SeparatorVariants = VariantProps<typeof separatorVariants>;
 export type SeparatorProps = BaseSeparatorProps &
   SeparatorVariants &
   BoxProps & {
+    /** Inline content (e.g. "OR") rendered centered between two lines */
     children?: React.ReactNode;
   };

@@ -1,5 +1,5 @@
 import { Heart, Moon, Sun } from "@uiid/icons";
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 
 import { ToggleButton } from "./toggle-button";
 
@@ -42,7 +42,7 @@ export const DynamicText = () => (
 );
 
 export const IconAndText = () => (
-  <Stack gap={2} maxw={320}>
+  <Group gap={2}>
     <ToggleButton
       variant="subtle"
       icon={{ pressed: <Sun stroke="gold" />, unpressed: <Moon /> }}
@@ -52,5 +52,5 @@ export const IconAndText = () => (
       icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
       text={{ pressed: "Liked", unpressed: "Like" }}
     />
-  </Stack>
+  </Group>
 );

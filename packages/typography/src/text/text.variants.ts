@@ -26,18 +26,24 @@ const textColorStyles = Object.fromEntries(
 
 export const textVariants = cva({
   variants: {
+    /** Strike through the text */
     strikethrough: { true: styles["toggle-strikethrough"] },
+    /** Balance line lengths across wrapped lines */
     balance: { true: styles["toggle-balance"] },
+    /** Truncate overflowing text with an ellipsis */
     truncate: { true: styles["toggle-truncate"] },
+    /** Underline the text — `false` forces no underline */
     underline: {
       true: styles["toggle-underline"],
       false: styles["toggle-no-underline"],
     },
+    /** Typeface family */
     family: {
       mono: styles["family-mono"],
       serif: styles["family-serif"],
       sans: styles["family-sans"],
     },
+    /** Font weight */
     weight: {
       thin: styles["weight-thin"],
       light: styles["weight-light"],
@@ -46,6 +52,7 @@ export const textVariants = cva({
       semibold: styles["weight-semibold"],
       bold: styles["weight-bold"],
     },
+    /** Foreground color from the shade scale */
     shade: {
       background: styles["shade-background"],
       surface: styles["shade-surface"],
@@ -54,7 +61,9 @@ export const textVariants = cva({
       muted: styles["shade-muted"],
       foreground: styles["shade-foreground"],
     },
+    /** Palette color for the text */
     color: textColorStyles,
+    /** Type scale step, from -1 to 6 */
     size: {
       [-1]: styles["text-size--1"],
       0: styles["text-size-0"],
