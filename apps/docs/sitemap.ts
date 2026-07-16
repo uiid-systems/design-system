@@ -20,8 +20,8 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
   {
     category: "Buttons",
     items: [
-      { label: "Button", value: "/components/buttons/button" },
-      { label: "Toggle Button", value: "/components/buttons/toggle-button" },
+      { label: "Button", value: "/buttons/button" },
+      { label: "Toggle Button", value: "/buttons/toggle-button" },
     ],
   },
 ];

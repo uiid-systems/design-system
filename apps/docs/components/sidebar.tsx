@@ -4,15 +4,16 @@ import {
   SidebarHeader,
   SidebarList,
 } from "@/components/shell";
-import { SITEMAP, COMPONENTS_SITEMAP } from "@/sitemap";
+import { COMPONENTS_SITEMAP } from "@/sitemap";
+import Link from "next/link";
 
 export function Sidebar() {
   return (
     <SidebarContainer>
       <SidebarScrollContainer>
         <SidebarHeader>uiid docs</SidebarHeader>
-        <SidebarList items={SITEMAP} />
-        <SidebarList items={COMPONENTS_SITEMAP} category="Components" />
+        <Link href="/">Home</Link>
+        <SidebarList items={COMPONENTS_SITEMAP} />
       </SidebarScrollContainer>
     </SidebarContainer>
   );
