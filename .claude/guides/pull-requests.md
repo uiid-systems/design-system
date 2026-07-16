@@ -25,7 +25,7 @@ type(scope): description
 
 - **Scope** is optional but encouraged for package-specific changes (e.g., `feat(buttons): add icon support`)
 - Use **imperative mood** — "add X" not "added X" or "adds X"
-- Keep it **concise** — the title feeds directly into changelogs via auto-changeset
+- Keep it **concise** — squash-merged PR titles become the commits release-please reads to build changelogs and version bumps
 
 ## PR Descriptions
 
@@ -40,24 +40,14 @@ type(scope): description
 - Prefer **bullet points** over paragraphs for scannability
 - Keep it brief — the diff tells the full story
 
-## Changesets
+## Releases (release-please)
 
-If the PR modifies any publishable package under `packages/` (bug fix, new feature, breaking change), **add a changeset file** before opening the PR.
+Versioning and changelogs are fully automated by **release-please** — there is nothing to add to a PR beyond a good conventional title. On merge to main, release-please maintains a release PR that accumulates changes; merging that release PR bumps all packages in lockstep, updates the root `CHANGELOG.md`, tags a `v*` release, and publishes to npm.
 
-1. Create a markdown file in `.changeset/` with a short kebab-case name (e.g., `.changeset/add-list-nesting.md`)
-2. Use this format:
-
-```md
----
-"@uiid/package-name": patch
----
-
-Short description of the change
-```
-
-3. **Version bump rules (pre-1.0.0):** Until the design system reaches 1.0.0, **only use `patch`** bumps. Do not use `minor` or `major` — all changes are `patch` during the 0.0.x phase. This prevents accidental version jumps.
-4. Only list the package(s) you directly changed — the `fixed` group in changeset config handles version alignment across all packages
-5. Skip changesets for changes that don't affect published packages (docs, CI, storybook-only, test-only, configs)
+- The **PR title is the changelog entry** — write it for a reader of the changelog
+- `feat` and `fix` titles trigger a release; `docs`, `chore`, `ci`, `test`, `refactor` are recorded but don't force one
+- **Pre-1.0.0:** version bumps are patch-only (`bump-patch-for-minor-pre-major` is set); breaking changes bump minor, never major
+- All `@uiid/*` packages share one version — release-please's `extra-files` config keeps every `packages/*/package.json` in sync
 
 ## Authorship
 

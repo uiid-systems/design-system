@@ -215,7 +215,7 @@ gh api repos/{owner}/{repo}/pulls/{number}/reviews/{review_id} \
 Reviewers verify the checklist and assess correctness, design, and completeness of the changes in the diff. **Stay within scope** — do not flag things that are not the reviewer's responsibility:
 
 - **In scope:** correctness, test coverage, checklist items, UIID-specific patterns, architectural fit
-- **Out of scope:** changeset configuration, dependency versions, unrelated file cleanup, CI internals, anything not touching the diff's intent
+- **Out of scope:** release configuration, dependency versions, unrelated file cleanup, CI internals, anything not touching the diff's intent
 
 If something genuinely looks wrong but falls outside the diff (e.g. a pre-existing issue), note it as a separate follow-up — not a review blocker.
 

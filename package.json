@@ -1,7 +1,7 @@
 {
   "name": "@uiid/design-system",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.34",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -16,17 +16,12 @@
     "preview": "vite preview",
     "storybook": "turbo storybook",
     "build-storybook": "turbo build-storybook",
-    "changeset": "changeset",
-    "changeset:version": "changeset version",
-    "release": "turbo build && changeset publish",
     "size": "size-limit",
     "generate-readmes": "node scripts/generate-readmes.mjs",
     "prepare": "husky",
     "postinstall": "playwright install chromium --with-deps"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.5.1",
-    "@changesets/cli": "^2.29.7",
     "@commitlint/cli": "^20.4.0",
     "@commitlint/config-conventional": "^20.4.0",
     "@eslint/js": "^10.0.1",
