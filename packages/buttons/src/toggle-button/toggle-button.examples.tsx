@@ -1,5 +1,5 @@
 import { Heart, Moon, Sun } from "@uiid/icons";
-import { Group, Stack } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 
 import { ToggleButton } from "./toggle-button";
 
