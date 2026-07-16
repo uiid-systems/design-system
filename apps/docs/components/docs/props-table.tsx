@@ -16,8 +16,14 @@ const parser = withCustomConfig(path.join(ROOT, "tsconfig.json"), {
 const Mono = ({
   children,
   muted,
-}: React.PropsWithChildren<{ muted?: boolean }>) => (
-  <Text family="mono" size={-1} shade={muted ? "muted" : undefined}>
+  primary,
+}: React.PropsWithChildren<{ muted?: boolean; primary?: boolean }>) => (
+  <Text
+    family="mono"
+    size={-1}
+    shade={muted ? "muted" : undefined}
+    color={primary ? "orange" : undefined}
+  >
     {children}
   </Text>
 );
@@ -57,24 +63,34 @@ export function PropsTable({ of }: PropsTableProps) {
   const rows = Object.entries(doc.props)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, prop]) => ({
-      prop: <Mono>{name}</Mono>,
-      type: <Mono muted>{formatType(prop)}</Mono>,
+      prop: <Mono primary>{name}</Mono>,
+      description: prop.description || EMPTY,
       default: prop.defaultValue ? (
         <Mono muted>{String(prop.defaultValue.value)}</Mono>
       ) : (
         EMPTY
       ),
-      description: prop.description || EMPTY,
+      type: <Mono muted>{formatType(prop)}</Mono>,
     }));
 
   return (
     <Stack
       data-slot="props-table"
-      className="overflow-x-auto"
+      className="overflow-auto"
       ax="stretch"
       fullwidth
+      maxh={640}
     >
-      <Table items={rows} footer={`${rows.length} props`} bordered striped />
+      <Table
+        items={rows}
+        footer={
+          <Text weight="bold" size={-1}>
+            {rows.length} props
+          </Text>
+        }
+        bordered
+        striped
+      />
     </Stack>
   );
 }
