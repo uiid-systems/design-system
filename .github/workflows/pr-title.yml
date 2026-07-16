@@ -10,8 +10,8 @@ jobs:
   validate:
     name: Validate PR Title
     runs-on: ubuntu-latest
-    # Release PRs from changesets use a different title format — skip them
-    if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
+    # Release PRs from release-please manage their own title format — skip them
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         env:
