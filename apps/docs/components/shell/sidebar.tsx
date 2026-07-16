@@ -100,7 +100,7 @@ export const SidebarList = ({ items, category }: SidebarListProps) => {
 };
 SidebarList.displayName = "SidebarList";
 
-export const Search = () => {
+export const SidebarSearch = () => {
   return (
     <Input
       data-slot="header-search"
@@ -111,4 +111,4 @@ export const Search = () => {
     />
   );
 };
-Search.displayName = "Search";
+SidebarSearch.displayName = "SidebarSearch";

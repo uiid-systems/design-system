@@ -1,5 +1,4 @@
-import { Group, Input, Kbd, ToggleGroup, Toggle } from "@uiid/design-system";
-import { SearchIcon, SunIcon, MoonIcon, MonitorIcon } from "@uiid/icons";
+import { Group } from "@uiid/design-system";
 
 import { SHELL_SPACING, SHELL_BORDER_WIDTH } from "./constants";
 
@@ -30,33 +29,3 @@ export const HeaderGroup = ({ children }: React.PropsWithChildren) => {
   );
 };
 HeaderGroup.displayName = "HeaderGroup";
-
-export const HeaderSearch = () => {
-  return (
-    <Input
-      data-slot="header-search"
-      placeholder="Search"
-      before={<SearchIcon />}
-      after={<Kbd hotkey={["meta", "k"]} />}
-      size="small"
-    />
-  );
-};
-HeaderSearch.displayName = "HeaderSearch";
-
-export const HeaderModeToggle = () => {
-  return (
-    <ToggleGroup size="sm" value={["light"]}>
-      <Toggle value="light">
-        <SunIcon />
-      </Toggle>
-      <Toggle value="dark">
-        <MoonIcon />
-      </Toggle>
-      <Toggle value="system">
-        <MonitorIcon />
-      </Toggle>
-    </ToggleGroup>
-  );
-};
-HeaderModeToggle.displayName = "HeaderModeToggle";
