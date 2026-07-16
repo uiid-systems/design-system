@@ -5,13 +5,12 @@ A modular React component library built with React 19, TypeScript, and [Base UI]
 ## Installation
 
 ```bash
-pnpm add @uiid/buttons @uiid/layout @uiid/tokens
+pnpm add @uiid/design-system
 ```
 
 ```tsx
-import { Button } from "@uiid/buttons";
-import { Stack } from "@uiid/layout";
-import "@uiid/tokens/globals.css";
+import { Button, Stack } from "@uiid/design-system";
+import "@uiid/design-system/globals.css";
 
 function App() {
   return (
@@ -23,7 +22,7 @@ function App() {
 }
 ```
 
-Or install everything at once with `@uiid/design-system`, which re-exports all component packages and includes the global styles.
+Every component also ships as an individual package (`@uiid/buttons`, `@uiid/layout`, …) if you'd rather install only what you use — pair them with `@uiid/tokens` for the global styles.
 
 ## Packages
 

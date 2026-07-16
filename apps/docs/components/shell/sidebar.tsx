@@ -1,6 +1,13 @@
 import Link from "next/link";
-import { List, Stack, Text } from "@uiid/design-system";
-import type { ListItemOrGroup } from "@uiid/design-system";
+import {
+  List,
+  Stack,
+  Text,
+  Input,
+  Kbd,
+  type ListItemOrGroup,
+} from "@uiid/design-system";
+import { SearchIcon } from "@uiid/icons";
 
 import {
   SIDEBAR_WIDTH,
@@ -92,3 +99,16 @@ export const SidebarList = ({ items, category }: SidebarListProps) => {
   );
 };
 SidebarList.displayName = "SidebarList";
+
+export const Search = () => {
+  return (
+    <Input
+      data-slot="header-search"
+      placeholder="Search"
+      before={<SearchIcon />}
+      after={<Kbd hotkey={["meta", "k"]} />}
+      size="small"
+    />
+  );
+};
+Search.displayName = "Search";
