@@ -9,11 +9,11 @@ export const AsideContainer = ({ children }: React.PropsWithChildren) => {
       render={<aside />}
       maxw={ASIDE_WIDTH}
       gap={SIDEBAR_SPACING}
+      px={SIDEBAR_SPACING}
       ax="stretch"
-      px={4}
       fullwidth
       fullheight
-      className="sticky top-20 overflow-y-auto max-h-screen"
+      className="sticky top-24 overflow-y-auto max-h-screen"
     >
       {children}
     </Stack>

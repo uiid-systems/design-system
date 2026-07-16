@@ -1,18 +1,16 @@
-import { Breadcrumbs } from "@uiid/design-system";
-
+import { HeaderBreadcrumbs } from "@/components/breadcrumbs";
 import {
   HeaderContainer,
   HeaderGroup,
   HeaderSearch,
   HeaderModeToggle,
 } from "@/components/shell";
-import { SITEMAP } from "@/sitemap";
 
 export function Header() {
   return (
     <HeaderContainer>
       <HeaderGroup>
-        <Breadcrumbs data-slot="header-breadcrumbs" items={SITEMAP} />
+        <HeaderBreadcrumbs />
       </HeaderGroup>
       <HeaderGroup>
         <HeaderSearch />
