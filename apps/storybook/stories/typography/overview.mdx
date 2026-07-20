@@ -4,12 +4,14 @@ import { Meta, Markdown } from "@storybook/addon-docs/blocks";
 
 # Typography
 
-A typographic foundation — one component that renders any string with the system's scale, weight, family, and color, plus a wrapper for full markdown blocks.
+A typographic foundation — one primitive that renders any string with the system's scale, weight, family, and color, a wrapper for full markdown blocks, and two animated variants for numbers and word-by-word reveals.
 
 ## Which one do I reach for?
 
 - **[Text](?path=/docs/typography-text--docs)** — the primitive. Use it for every label, paragraph, heading, caption, badge. Sizes -1..6 plus weight, family, shade, and palette color.
 - **[Prose](?path=/docs/typography-prose--docs)** — wrap arbitrary markdown HTML (h1..h6, p, ul, ol, code, blockquote, pre, hr, a) and the descendant elements pick up the scale and rhythm automatically.
+- **[Number](?path=/docs/typography-number--docs)** — an animated number. When `value` changes, digits spin smoothly to the new value. Formats via native `Intl.NumberFormat` (currency, percent, compact, locales); reach for it for metrics, prices, and counters.
+- **[Reveal](?path=/docs/typography-reveal--docs)** — fades a string in word-by-word with a soft blur — the streaming-text pattern from AI chat UIs. Use it for on-mount reveals or live-streamed text (LLM responses, transcripts).
 
 ## The scale
 
@@ -36,3 +38,4 @@ The Scale story under [Text](?path=/story/typography-text--scale) shows every si
 - `family` is `sans` by default. `mono` picks up the system mono stack; `serif` picks up the system serif stack.
 - `shade` maps to the shade ladder (`background`..`foreground`); `color` maps to the palette (`red`, `blue`, etc.) and renders contrast-aware tones via OKLCH.
 - Inline `<code>` inside a `Text` or `Prose` renders as a subtle mono chip.
+- `Number` and `Reveal` build on `Text`, so `size`, `weight`, `family`, `shade`, `color`, and spacing all pass through. Both respect `prefers-reduced-motion` and degrade to static text.
