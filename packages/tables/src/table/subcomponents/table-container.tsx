@@ -3,11 +3,17 @@ import { cx } from "@uiid/utils";
 
 import styles from "../table.module.css";
 
+type TableContainerProps = CardProps & {
+  maxHeight?: React.CSSProperties["maxHeight"];
+};
+
 export const TableContainer = ({
   children,
   className,
+  maxHeight,
+  style,
   ...props
-}: CardProps) => {
+}: TableContainerProps) => {
   return (
     <Card
       data-slot="table-container"
@@ -16,6 +22,7 @@ export const TableContainer = ({
       p={0}
       fullwidth
       InnerContainerProps={{ my: 0 }}
+      style={maxHeight != null ? { maxHeight, ...style } : style}
       {...props}
     >
       {children}

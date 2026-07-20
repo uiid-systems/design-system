@@ -25,6 +25,9 @@ export function Table<T extends Record<string, unknown>>({
   selectable,
   striped,
   bordered,
+  stickyHeader,
+  stickyFooter,
+  maxHeight,
   footer,
   selectedRows,
   defaultSelectedRows,
@@ -38,9 +41,9 @@ export function Table<T extends Record<string, unknown>>({
     displayColumns.length + (selectable ? 1 : 0) + (actions ? 1 : 0);
 
   const table = (
-    <TableContainer>
+    <TableContainer maxHeight={maxHeight}>
       <TableRoot striped={striped} bordered={bordered} {...props}>
-        <TableHeader>
+        <TableHeader data-sticky={stickyHeader || undefined}>
           <TableRow>
             {selectable && <TableCellCheckbox head />}
             {displayColumns.map((column) => (
@@ -71,7 +74,7 @@ export function Table<T extends Record<string, unknown>>({
         </TableBody>
 
         {footer && (
-          <TableFooter>
+          <TableFooter data-sticky={stickyFooter || undefined}>
             <TableRow>
               <TableCell colSpan={columnCount}>{footer}</TableCell>
             </TableRow>

@@ -35,3 +35,41 @@ export const Default = {
     </Stack>
   ),
 };
+
+export const StickyHeader = {
+  name: "Sticky Header",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={4} fullwidth>
+      <Table<TableMockData>
+        stickyHeader
+        maxHeight={220}
+        selectable
+        items={TABLE_MOCK_DATA}
+        striped
+        bordered
+        highlightOnHover
+      />
+    </Stack>
+  ),
+};
+
+export const StickyHeaderFooter = {
+  name: "Sticky Header + Footer",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={4} fullwidth>
+      <Table<TableMockData>
+        stickyHeader
+        stickyFooter
+        maxHeight={220}
+        selectable
+        items={TABLE_MOCK_DATA}
+        striped
+        bordered
+        highlightOnHover
+        footer={`${TABLE_MOCK_DATA.length} users`}
+      />
+    </Stack>
+  ),
+};
