@@ -10,7 +10,7 @@
 }
 
 .table-container {
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .table-head {
@@ -29,8 +29,33 @@
   color: var(--table-head-fg);
 }
 
+/* Sticky header: pin the header cells to the top of the scroll container.
+   Applied per-cell (not <thead>) so it works with border-collapse. The
+   bottom border is redrawn as a box-shadow since collapsed borders scroll
+   away with the body. */
+.table-header:where([data-sticky]) .table-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--table-head-bg);
+  box-shadow: inset 0 calc(-1 * var(--globals-border-width)) 0
+    var(--globals-border-color);
+}
+
 .table-footer td {
   border-top: var(--globals-border-width) solid var(--globals-border-color);
+}
+
+/* Sticky footer: pin the footer cell to the bottom of the scroll container.
+   Mirrors the sticky header — opaque surface so body rows scroll underneath,
+   and the top border redrawn as a box-shadow since collapsed borders scroll
+   away with the body. */
+.table-footer:where([data-sticky]) td {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background-color: var(--shade-surface);
+  box-shadow: inset 0 var(--globals-border-width) 0 var(--globals-border-color);
 }
 
 .table-root {

@@ -32,6 +32,14 @@ export type TableProps<
     secondary?: TableCellDropdownProps;
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
+  /** Pin the header to the top of the scroll container while the body scrolls.
+   * Requires a bounded height — pass `maxHeight` (or constrain the container). */
+  stickyHeader?: boolean;
+  /** Pin the footer to the bottom of the scroll container while the body
+   * scrolls. Requires `footer` content and a bounded height (`maxHeight`). */
+  stickyFooter?: boolean;
+  /** Bound the scroll container's height so it scrolls vertically. */
+  maxHeight?: React.CSSProperties["maxHeight"];
   /** Footer content, rendered in a <tfoot> cell spanning all columns. */
   footer?: React.ReactNode;
   /** Controlled selected row indices. Pair with `onSelectedRowsChange`. */
