@@ -33,6 +33,7 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
   {
     category: "Typography",
     items: [
+      { label: "Number", value: "/typography/number" },
       { label: "Prose", value: "/typography/prose" },
       { label: "Reveal", value: "/typography/reveal" },
       { label: "Text", value: "/typography/text" },
