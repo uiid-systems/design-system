@@ -88,6 +88,8 @@ export function PropsTable({ of }: PropsTableProps) {
             {rows.length} props
           </Text>
         }
+        stickyHeader
+        stickyFooter
         bordered
         striped
       />
