@@ -1,0 +1,3 @@
+export const REVEAL_DEFAULT_STAGGER = 30;
+export const REVEAL_DEFAULT_DURATION = 400;
+export const REVEAL_DEFAULT_BLUR = 6;

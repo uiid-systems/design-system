@@ -1,0 +1,21 @@
+.reveal-word {
+  animation: reveal var(--reveal-duration) ease-out both;
+  animation-delay: calc(var(--reveal-index) * var(--reveal-stagger));
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    filter: blur(var(--reveal-blur));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word {
+    animation: none;
+  }
+}
