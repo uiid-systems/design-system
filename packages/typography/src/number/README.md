@@ -18,23 +18,8 @@ import { Number } from "@uiid/typography";
   format={{ style: "currency", currency: "USD" }}
   size={4}
   weight="semibold"
-/>
+/>;
 ```
-
-## Props
-
-All [`Text`](../text/README.md) props except `children` and `render`, plus these from [`@number-flow/react`](https://number-flow.barvian.me/):
-
-| Prop       | Type                       | Description                                        |
-| ---------- | -------------------------- | -------------------------------------------------- |
-| `value`    | `number \| string \| bigint` | The number to display                            |
-| `format`   | `Intl.NumberFormatOptions` | Number formatting (currency, percent, compact, …)  |
-| `locales`  | `Intl.LocalesArgument`     | Locale for formatting                              |
-| `prefix`   | `string`                   | Text rendered before the number                    |
-| `suffix`   | `string`                   | Text rendered after the number                     |
-| `trend`    | `Trend`                    | Digit spin direction: increasing, decreasing, or 0 |
-| `animated` | `boolean`                  | Toggle the animation                               |
-| `plugins`  | `Plugin[]`                 | e.g. `continuous` to spin through big jumps        |
 
 ## Notes
 
