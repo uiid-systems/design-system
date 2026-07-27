@@ -58,7 +58,6 @@ export const buttonPreviews: PreviewConfig[] = [
           children: [
             "default",
             "subtle",
-            "inverted",
             "ghost",
           ],
         },
@@ -72,12 +71,6 @@ export const buttonPreviews: PreviewConfig[] = [
           key: "subtle",
           type: "Button",
           props: { variant: "subtle", children: "Subtle" },
-          parentKey: "group",
-        },
-        inverted: {
-          key: "inverted",
-          type: "Button",
-          props: { variant: "inverted", children: "Inverted" },
           parentKey: "group",
         },
         ghost: {

@@ -12,11 +12,10 @@ export const buttonVariants = cva({
     },
     /** Stretch to fill the container width */
     fullwidth: { true: styles["fullwidth"] },
-    /** Surface treatment — filled by default, `subtle` low-contrast fill, `ghost` transparent, `inverted` background-on-foreground */
+    /** Surface treatment — filled by default, `subtle` low-contrast fill, `ghost` transparent */
     variant: {
       subtle: styles["variant-subtle"],
       ghost: styles["variant-ghost"],
-      inverted: styles["variant-inverted"],
     },
     /** Control size, matches form-control rows */
     size: {

@@ -3,6 +3,7 @@
 import { Button as BaseButton } from "@base-ui/react/button";
 
 import { ConditionalRender, Layer } from "@uiid/layout";
+import { paletteColorStyles } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";
@@ -20,12 +21,17 @@ export const Button = ({
   shape,
   fullwidth,
   variant,
+  color,
   loading,
   size = BUTTON_DEFAULT_SIZE,
   className,
   children,
   ...props
 }: ButtonProps) => {
+  const colorClassName = color
+    ? cx(paletteColorStyles[color], styles["color"])
+    : undefined;
+
   return (
     <ConditionalRender
       condition={!!tooltip}
@@ -42,6 +48,7 @@ export const Button = ({
             variant,
             fullwidth,
           }),
+          colorClassName,
           className,
         )}
         {...props}

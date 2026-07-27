@@ -3,6 +3,18 @@ import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { Button } from "./button";
+import type { ButtonColor } from "./button.types";
+
+const COLORS = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "purple",
+  "neutral",
+] as const satisfies readonly ButtonColor[];
 
 export const Default = () => <Button>Travel the world</Button>;
 
@@ -11,7 +23,6 @@ export const Variants = () => (
     <Button>Default</Button>
     <Button variant="subtle">Subtle</Button>
     <Button variant="ghost">Ghost</Button>
-    <Button variant="inverted">Inverted</Button>
   </Group>
 );
 
@@ -64,9 +75,6 @@ export const Disabled = () => (
     <Button disabled variant="ghost">
       Ghost
     </Button>
-    <Button disabled variant="inverted">
-      Inverted
-    </Button>
   </Group>
 );
 
@@ -86,6 +94,32 @@ export const Fullwidth = () => (
     <Button fullwidth variant="subtle">
       Subtle
     </Button>
+  </Stack>
+);
+
+export const Colors = () => (
+  <Stack gap={3}>
+    <Group gap={2}>
+      {COLORS.map((color) => (
+        <Button key={color} color={color}>
+          {color}
+        </Button>
+      ))}
+    </Group>
+    <Group gap={2}>
+      {COLORS.map((color) => (
+        <Button key={color} color={color} variant="subtle">
+          {color}
+        </Button>
+      ))}
+    </Group>
+    <Group gap={2}>
+      {COLORS.map((color) => (
+        <Button key={color} color={color} variant="ghost">
+          {color}
+        </Button>
+      ))}
+    </Group>
   </Stack>
 );
 

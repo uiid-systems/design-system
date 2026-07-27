@@ -4,6 +4,7 @@ import { Toggle } from "@base-ui/react/toggle";
 
 import { Button } from "../button/button";
 
+import type { ButtonProps } from "../button/button.types";
 import type { ToggleButtonProps } from "./toggle-button.types";
 
 export const ToggleButton = ({
@@ -20,7 +21,7 @@ export const ToggleButton = ({
         const activeIcon = state.pressed ? icon?.pressed : icon?.unpressed;
 
         return (
-          <Button {...toggleProps}>
+          <Button {...(toggleProps as ButtonProps)}>
             {activeIcon}
             {activeContent ?? children}
           </Button>

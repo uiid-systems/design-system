@@ -43,6 +43,55 @@
   }
 }
 
+/*
+ * Colored surface treatment. Pairs with the portable palette classes from
+ * @uiid/typography (`.color-*`), which set --palette-hue / --palette-chroma.
+ * Redefines the button's core surface vars from a single hue, so every
+ * downstream style (hover, border, focus, and the `ghost` variant) inherits
+ * the color for free. `neutral` (chroma 0) degrades to a gray solid button.
+ * Defined after `.button` so it wins the cascade at equal specificity.
+ * NOTE: first-pass values — tune in Storybook.
+ */
+.color {
+  --button-bg: light-dark(
+    oklch(0.55 var(--palette-chroma) var(--palette-hue)),
+    oklch(0.6 calc(var(--palette-chroma) * 0.9) var(--palette-hue))
+  );
+  --button-fg: oklch(0.99 calc(var(--palette-chroma) * 0.08) var(--palette-hue));
+  --button-bg-hover: light-dark(
+    oklch(0.48 var(--palette-chroma) var(--palette-hue)),
+    oklch(0.67 calc(var(--palette-chroma) * 0.9) var(--palette-hue))
+  );
+  --button-border-color: var(--button-bg);
+}
+
+/*
+ * Soft (tinted) surface — the composed `color` + `variant="subtle"` treatment.
+ * Redefines the subtle variant's own vars from the palette hue, so the existing
+ * `.variant-subtle` rules (base + hover) render a Card-style tinted surface:
+ * light bg + colored fg in light mode, dark bg + light colored fg in dark mode.
+ * Higher specificity than `.color` alone, so the solid fill is superseded here.
+ * Values mirror the Card `.color-surface` derivation. Tune in Storybook.
+ */
+.color.variant-subtle {
+  --button-variant-subtle-bg: light-dark(
+    oklch(0.95 calc(var(--palette-chroma) * 0.35) var(--palette-hue)),
+    oklch(0.25 calc(var(--palette-chroma) * 0.4) var(--palette-hue))
+  );
+  --button-variant-subtle-bg-hover: light-dark(
+    oklch(0.91 calc(var(--palette-chroma) * 0.45) var(--palette-hue)),
+    oklch(0.31 calc(var(--palette-chroma) * 0.45) var(--palette-hue))
+  );
+  --button-variant-subtle-fg: light-dark(
+    oklch(0.32 var(--palette-chroma) var(--palette-hue)),
+    oklch(0.9 calc(var(--palette-chroma) * 0.7) var(--palette-hue))
+  );
+  --button-variant-subtle-border-color: light-dark(
+    oklch(0.85 calc(var(--palette-chroma) * 0.5) var(--palette-hue)),
+    oklch(0.42 calc(var(--palette-chroma) * 0.5) var(--palette-hue))
+  );
+}
+
 .button-content-container {
   scale: 1;
   transition-property: opacity, scale;
@@ -85,16 +134,6 @@
   &:where(:hover, :active) {
     background-color: color-mix(in oklab, var(--button-bg), transparent 90%);
     border-color: transparent;
-  }
-}
-
-.variant-inverted {
-  background-color: var(--button-variant-inverted-bg);
-  color: var(--button-variant-inverted-fg);
-  border-color: var(--button-variant-inverted-bg);
-  outline-color: var(--button-variant-inverted-bg);
-  &:where(:hover, :active) {
-    background-color: var(--button-variant-inverted-bg-hover);
   }
 }
 
