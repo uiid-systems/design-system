@@ -8,9 +8,8 @@
 **Status:** §7 has been actioned — `Modal` → `Dialog`, and `Sheet` → a new
 `Drawer` on Base UI's primitive (see 7.8 for what landed and how it was
 verified). Sections 1–6 describe the state *as found*, and the file paths they
-cite are pre-rename; they are kept as the record of why. D2, D3, D4 and D8 are
-resolved by that work; **D1 and D7 remain open prerequisites** for the docs
-routes.
+cite are pre-rename; they are kept as the record of why. **D1, D2, D3, D4, D7 and
+D8 are resolved** — the docs routes are unblocked. D5 and D6 remain.
 **Revisit:** A1–A5 and 7.10, after the docs/stories/examples layer feels stable.
 
 ---
@@ -99,9 +98,19 @@ overlays/popover → trigger, RootProps, TriggerProps, PortalProps, BackdropProp
 and layout are unaffected because their props are declared locally. A docs page
 built today would document overlays as having no way to control them.
 
-This is the one gap that must be resolved before docs routes ship. Options:
-relax `propFilter` to allow `@base-ui/react` declarations; or re-declare the
-control props locally in each `*.types.ts` instead of `Pick`-ing them.
+**Resolved.** `propFilter` now lets `@base-ui/react` declarations through — it is
+the one dependency whose props are part of our public API. React's HTML
+attributes still come from `@types/react` and stay filtered, so Card is unchanged
+at 57 props. Re-running the parser after the fix:
+
+```
+overlays/dialog  → …, onOpenChange, open, size            (14 props)
+overlays/drawer  → …, defaultOpen, modal, onOpenChange, open,
+                   onSnapPointChange, snapPoint, snapPoints,
+                   swipeDirection, defaultSnapPoint        (22 props)
+overlays/tooltip → …, delay, onOpenChange, open           (10 props)
+overlays/popover → …, onOpenChange, open                  (14 props)
+```
 
 ### D2 — `var(--modal-width)` is undefined
 
@@ -171,9 +180,17 @@ authored READMEs. Running `pnpm generate-readmes` today would inject stale
 `any`-typed props tables into them and overwrite their authored descriptions.
 This is a live regression risk for already-treated packages, not just overlays.
 
-Given the stated direction (docs source from README + examples + docgen; registry
-is outdated and not the docs source), the generator's ownership of README bodies
-should be retired or narrowed.
+**Resolved.** The generator now only ever **scaffolds a README that does not
+exist** — it never rewrites one. `replacePropsSection`,
+`updateTitleAndDescription`, and the props-table builders are deleted (the script
+went from ~200 lines to 96), and the scaffold no longer embeds a props table,
+since docgen renders props from the real source.
+
+Verified by running `pnpm generate-readmes`: **zero tracked READMEs modified**,
+27 reported as `KEEP`. (It offered to scaffold 8 READMEs for components that have
+none — Alert, Avatar, Badge, Kbd, Progress, Status, Collapsible, Breadcrumbs.
+Those stubs were discarded as out of scope; the gap is real but belongs to
+whoever treats those packages.)
 
 ### D8 — Sheet hand-rolls layout that the system already owns
 
