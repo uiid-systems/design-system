@@ -25,7 +25,7 @@ const meta = {
     },
     variant: {
       control: "select",
-      options: ["subtle", "ghost", "inverted"],
+      options: ["subtle", "ghost"],
       table: { category: "Variants" },
     },
     shape: {

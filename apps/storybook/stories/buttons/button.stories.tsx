@@ -27,7 +27,21 @@ const meta = {
     },
     variant: {
       control: "select",
-      options: ["subtle", "ghost", "inverted"],
+      options: ["subtle", "ghost"],
+      table: { category: "Variants" },
+    },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
       table: { category: "Variants" },
     },
     shape: {
@@ -52,6 +66,7 @@ export const Playground: Story = {
 };
 
 export const Variants: Story = { render: () => <Examples.Variants /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const Shapes: Story = { render: () => <Examples.Shapes /> };
 export const WithIcon: Story = { render: () => <Examples.WithIcon /> };

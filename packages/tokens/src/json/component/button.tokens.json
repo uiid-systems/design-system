@@ -26,11 +26,6 @@
         "bg-hover": { "$value": "{shade.accent}", "$type": "color" },
         "fg": { "$value": "{shade.foreground}", "$type": "color" },
         "border-color": { "$value": "{forms.border.color}", "$type": "color" }
-      },
-      "inverted": {
-        "bg": { "$value": "{shade.background}", "$type": "color" },
-        "bg-hover": { "$value": "{shade.accent}", "$type": "color" },
-        "fg": { "$value": "{shade.foreground}", "$type": "color" }
       }
     }
   }

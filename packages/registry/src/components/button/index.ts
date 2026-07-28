@@ -7,7 +7,7 @@ import { buttonPreviews } from "./previews";
 /**
  * Button variant values.
  */
-export const ButtonVariant = z.enum(["subtle", "ghost", "inverted"]);
+export const ButtonVariant = z.enum(["subtle", "ghost"]);
 
 /**
  * Button component props schema.

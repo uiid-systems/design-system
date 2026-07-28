@@ -29,7 +29,7 @@ describe("Button", () => {
     },
   );
 
-  it.each(["subtle", "ghost", "inverted"] as const)(
+  it.each(["subtle", "ghost"] as const)(
     "applies variant=%s",
     (variant) => {
       render(<Button variant={variant}>x</Button>);

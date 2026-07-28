@@ -143,7 +143,7 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `size` | "xsmall" | "small" | "medium" | "large" |  (default: `"medium"`) |
-| `variant` | "subtle" | "ghost" | "inverted" |  |
+| `variant` | "subtle" | "ghost" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |
@@ -160,7 +160,7 @@ Supports children.
 | --- | --- | --- |
 | `children` | string |  |
 | `size` | "xsmall" | "small" | "medium" | "large" |  (default: `"medium"`) |
-| `variant` | "subtle" | "ghost" | "inverted" |  |
+| `variant` | "subtle" | "ghost" |  |
 | `disabled` | boolean |  |
 | `loading` | boolean |  |
 | `fullwidth` | boolean |  |

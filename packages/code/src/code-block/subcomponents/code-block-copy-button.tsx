@@ -39,7 +39,7 @@ export const CodeBlockCopyButton = ({
       className={cx(styles["code-block-icon-button"], className)}
       onClick={handleCopy}
       size="xsmall"
-      variant="inverted"
+      variant="ghost"
       {...props}
     >
       {copied ? <CheckIcon /> : <CopyIcon />}
