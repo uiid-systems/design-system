@@ -54,4 +54,14 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
     category: "Cards",
     items: [{ label: "Card", value: "/cards/card" }],
   },
+  {
+    category: "Overlays",
+    items: [
+      { label: "Dialog", value: "/overlays/dialog" },
+      { label: "Drawer", value: "/overlays/drawer" },
+      { label: "Popover", value: "/overlays/popover" },
+      { label: "Toast", value: "/overlays/toast" },
+      { label: "Tooltip", value: "/overlays/tooltip" },
+    ],
+  },
 ];

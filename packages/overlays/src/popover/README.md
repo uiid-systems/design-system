@@ -1,105 +1,23 @@
 # Popover
 
-> Floating card attached to a trigger element
+> A floating card anchored to a trigger. Title, description, icon, action, and footer are slot props; the children prop fills the body.
 
-## Quick Reference
+Use Popover when you want to:
 
-```tsx
-import { Popover } from "@uiid/overlays";
+- Attach rich content to a control without taking over the page — the rest stays visible and usable
+- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen
+- Compose the header from any combination of `icon`, `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
+- Hold things a user interacts with: filters, a short form, a set of links
 
-// Basic usage
-<Popover trigger={<button>Open</button>}>
-  <p>Popover content</p>
-</Popover>
+Leave `open` unset and the popover runs itself from the trigger; pass `open` and
+`onOpenChange` to drive it yourself.
 
-// Controlled
-<Popover open={isOpen} onOpenChange={setIsOpen} trigger={<button>Open</button>}>
-  <p>Controlled popover</p>
-</Popover>
-```
+Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover)
+and takes its props unchanged — anything not listed above is forwarded.
 
-## Examples
+**Popover or Tooltip?** Popover is click-triggered, focusable, and can contain
+controls. Tooltip is hover-triggered, holds plain text, and is unreachable by
+touch — so anything a user must read or act on belongs here, not there.
 
-### Basic
-
-```tsx
-<Popover trigger={<button>Click me</button>}>
-  <h3>Popover Title</h3>
-  <p>Some helpful content here.</p>
-</Popover>
-```
-
-### Controlled
-
-```tsx
-const [open, setOpen] = useState(false);
-
-<Popover open={open} onOpenChange={setOpen} trigger={<button>Open</button>}>
-  <p>Content</p>
-  <button onClick={() => setOpen(false)}>Close</button>
-</Popover>
-```
-
-### Custom Positioning
-
-```tsx
-<Popover
-  trigger={<button>Open</button>}
-  PositionerProps={{ side: "right", align: "start" }}
->
-  Positioned to the right
-</Popover>
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `action` | `ReactNode` | — | — |
-| `BackdropProps` | `any` | — | — |
-| `description` | `ReactNode` | — | — |
-| `footer` | `ReactNode` | — | — |
-| `icon` | `ReactNode` | — | — |
-| `onOpenChange` | `(...args: any[]) => any` | — | — |
-| `open` | `boolean` | — | — |
-| `PopupProps` | `any` | — | — |
-| `PortalProps` | `any` | — | — |
-| `PositionerProps` | `any` | — | — |
-| `RootProps` | `any` | — | — |
-| `title` | `ReactNode` | — | — |
-| `trigger` | `ReactNode` | — | — |
-| `TriggerProps` | `any` | — | — |
-
-## Anatomy
-
-```tsx
-<PopoverRoot>
-  <PopoverTrigger>{trigger}</PopoverTrigger>
-  <PopoverPortal>
-    <PopoverBackdrop />
-    <PopoverPositioner>
-      <PopoverPopup>{children}</PopoverPopup>
-    </PopoverPositioner>
-  </PopoverPortal>
-</PopoverRoot>
-```
-
-## Data Slots
-
-| Slot | Element |
-|------|---------|
-| `popover-backdrop` | Backdrop overlay |
-| `popover-popup` | Popup container |
-
-## Accessibility
-
-- Trigger has `aria-expanded` and `aria-haspopup="dialog"`
-- Opens with `Enter` or `Space` on trigger
-- Closes with `Escape` or click outside
-- Focus is managed within the popover
-
-## See Also
-
-- [Tooltip](../tooltip/README.md) - Hover-triggered simple popup
-- [Dialog](../dialog/README.md) - Full dialog overlay
-- [Base UI Popover](https://base-ui.com/react/components/popover) - Underlying primitive
+The popup shares the floating-surface motion used by Select, Combobox, and
+Tooltip: it scales out of its anchor rather than its own centre.

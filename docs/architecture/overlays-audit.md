@@ -5,12 +5,15 @@
 > architectural opportunities so the platform work (docs, stories, examples) can
 > proceed without silently baking in the current shape.
 
-**Status:** §7 has been actioned — `Modal` → `Dialog`, and `Sheet` → a new
-`Drawer` on Base UI's primitive (see 7.8 for what landed and how it was
-verified). Sections 1–6 describe the state *as found*, and the file paths they
-cite are pre-rename; they are kept as the record of why. **D1, D2, D3, D4, D7 and
-D8 are resolved** — the docs routes are unblocked. D5 and D6 remain.
-**Revisit:** A1–A5 and 7.10, after the docs/stories/examples layer feels stable.
+**Status: complete.** Overlays meets the treatment contract — authored READMEs,
+`*.examples.tsx`, Storybook MDX + overview, and docs routes for all five. §7 was
+actioned first (`Modal` → `Dialog`, `Sheet` → a Base UI `Drawer`); see 7.8.
+**D1–D4 and D6–D8 are resolved.** Only **D5** (TooltipPopup's inline colors)
+remains.
+
+Sections 1–6 describe the state *as found* and cite pre-rename paths; they are
+kept as the record of why.
+**Revisit:** A1–A5 and 7.10, now that the docs/stories/examples layer is in place.
 
 ---
 
@@ -40,7 +43,10 @@ resolve everything by path convention from the `of="pkg/component"` string
 | typography (4) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | cards (1) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | lists (1) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **overlays (5)** | **generated** | **❌** | minimal | **❌** | **❌** | **❌** | ✅ |
+| **overlays (5)** | ~~generated~~ **authored** | ~~❌~~ **✅** | ~~minimal~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** | ✅ |
+
+Struck-through cells are the state as found; overlays now meets the contract in
+full. What follows describes the original state and why each gap mattered.
 
 Overlays was **Modal, Popover, Sheet, Tooltip, Toaster** — now **Dialog, Drawer,
 Popover, Tooltip, Toaster.**
@@ -165,6 +171,14 @@ render props from docgen.
 
 Consequence: an overlays docs page rendering `<Readme>` *and* `<PropsTable>`
 shows props **twice** — once stale and `any`-typed, once real.
+
+**Resolved.** All five READMEs are rewritten in the treated voice — a blockquote,
+a "Use X when you want to" list, and only the genuinely non-obvious extras
+(Drawer's `Parts`/`Caveats`, Toast's `Three pieces`). The `Quick Reference`,
+`Examples`, `Anatomy`, `Data Slots`, and `Accessibility` sections are gone: props
+come from docgen and examples from the live `<Example>` blocks, so keeping them
+in the README was a second, drifting copy. Verified on the rendered pages — each
+now has exactly one `Props` and one `Examples` heading.
 
 ### D7 — The README generator is now adversarial to authored READMEs
 

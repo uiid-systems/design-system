@@ -1,119 +1,33 @@
 # Toaster
 
-> Container for toast notifications
+> The viewport for transient notifications. Unlike the other overlays there is no trigger — toasts are added imperatively from anywhere in the tree.
 
-## Quick Reference
+Use Toaster when you want to:
+
+- Confirm something happened after the fact — saved, copied, deleted — without interrupting what the user is doing
+- Fire a notification from outside the render tree of whatever displays it
+- Anchor the stack to the `top` or `bottom` of the screen with `position`
+
+Toast is not a dialog. It dismisses itself and holds nothing the user must act
+on. If a message needs a decision, use `Dialog`.
+
+## Three pieces
+
+Unlike the other overlays, Toaster is not one component — it's a provider, a
+viewport, and a hook, and all three have to be present:
+
+- **`ToastProvider`** — wraps the app once, holds the queue
+- **`Toaster`** — rendered once inside the provider; this is the viewport the toasts appear in
+- **`useToastManager`** — called anywhere below the provider; `add({ description })` pushes a toast, and `toasts` reads the active list
 
 ```tsx
-import { ToastProvider, Toaster, useToastManager } from "@uiid/overlays";
-
-// Wrap your app
 <ToastProvider>
   <App />
-  <Toaster />
+  <Toaster position="bottom" />
 </ToastProvider>
-
-// Trigger toasts anywhere
-const toastManager = useToastManager();
-toastManager.add({ description: "Changes saved!" });
 ```
 
-## Examples
-
-### Setup
-
-```tsx
-// In your app root
-import { ToastProvider, Toaster } from "@uiid/overlays";
-
-function App() {
-  return (
-    <ToastProvider>
-      <MainContent />
-      <Toaster position="bottom" />
-    </ToastProvider>
-  );
-}
-```
-
-### Triggering Toasts
-
-```tsx
-import { useToastManager } from "@uiid/overlays";
-
-function SaveButton() {
-  const toastManager = useToastManager();
-
-  const handleSave = async () => {
-    await saveData();
-    toastManager.add({ description: "Changes saved successfully!" });
-  };
-
-  return <button onClick={handleSave}>Save</button>;
-}
-```
-
-### Position
-
-```tsx
-// Bottom of screen (default)
-<Toaster position="bottom" />
-
-// Top of screen
-<Toaster position="top" />
-```
-
-### Multiple Toasts
-
-```tsx
-const toastManager = useToastManager();
-
-// Each call adds a new toast
-toastManager.add({ description: "First notification" });
-toastManager.add({ description: "Second notification" });
-```
-
-## Exports
-
-| Export | Type | Description |
-|--------|------|-------------|
-| `ToastProvider` | `Component` | Context provider (wrap your app) |
-| `Toaster` | `Component` | Toast viewport (place once in app) |
-| `useToastManager` | `Hook` | Hook to trigger and manage toasts |
-
-## Toaster Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `position` | `"top" \| "bottom"` | `"bottom"` | — |
-
-## useToastManager API
-
-```tsx
-const toastManager = useToastManager();
-
-// Add a toast
-toastManager.add({
-  description: "Message text",
-  // Additional Base UI toast options...
-});
-
-// Access current toasts
-toastManager.toasts; // Array of active toasts
-```
-
-## Data Slots
-
-| Slot | Element |
-|------|---------|
-| `toast` | Individual toast container |
-
-## Accessibility
-
-- Toasts are announced to screen readers
-- Non-intrusive notifications that auto-dismiss
-- Viewport is positioned for visibility
-
-## See Also
-
-- [Base UI Toast](https://base-ui.com/react/components/toast) - Underlying primitive
+Each toast renders as a `Card`, so it inherits the surface treatment of the
+other overlays. Base UI's
+[Toast](https://base-ui.com/react/components/toast) is the underlying primitive
+and its options pass through `add`.

@@ -1,112 +1,23 @@
 # Dialog
 
-> Centered dialog overlay with Card-like content structure
+> A centered modal dialog. Title, description, icon, action, and footer are slot props; the children prop fills the body.
 
-## Quick Reference
+Use Dialog when you want to:
 
-```tsx
-import { Dialog } from "@uiid/overlays";
+- Interrupt the page for a decision or a focused task — focus is trapped and everything behind it is inert
+- Compose the header from any combination of `icon`, `title`, `description`, and `action`, with a `footer` below the body for a row of actions
+- Constrain the width with `size` (`small`, `medium`, `large`, `xlarge`) — the dialog stays centered and only the max width changes
+- Open from anything: pass an element as `trigger` and it's used as-is, or a string and it's wrapped in a focusable element
 
-// Controlled usage (required)
-const [open, setOpen] = useState(false);
+Leave `open` unset and the dialog runs itself from the trigger; pass `open` and
+`onOpenChange` to drive it yourself.
 
-<Dialog open={open} onOpenChange={setOpen} trigger={<button>Open</button>}>
-  <h2>Dialog Title</h2>
-  <p>Dialog content here.</p>
-</Dialog>
-```
+Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog) and
+takes its props unchanged — anything not listed above is forwarded. Slot
+overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`,
+`PopupProps`) reach the individual parts when a slot prop isn't expressive
+enough.
 
-## Examples
-
-### Basic
-
-```tsx
-const [open, setOpen] = useState(false);
-
-<Dialog open={open} onOpenChange={setOpen} trigger={<button>Open Dialog</button>}>
-  <h2>Welcome</h2>
-  <p>This is a dialog dialog.</p>
-  <button onClick={() => setOpen(false)}>Close</button>
-</Dialog>
-```
-
-### Sizes
-
-```tsx
-<Dialog size="small" open={open} onOpenChange={setOpen} trigger={<button>Small</button>}>
-  Small dialog
-</Dialog>
-
-<Dialog size="large" open={open} onOpenChange={setOpen} trigger={<button>Large</button>}>
-  Large dialog
-</Dialog>
-
-<Dialog size="xlarge" open={open} onOpenChange={setOpen} trigger={<button>XLarge</button>}>
-  Extra large dialog
-</Dialog>
-```
-
-### Without Trigger
-
-```tsx
-const [open, setOpen] = useState(false);
-
-<button onClick={() => setOpen(true)}>Open Externally</button>
-
-<Dialog open={open} onOpenChange={setOpen}>
-  <p>Opened programmatically</p>
-</Dialog>
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `action` | `ReactNode` | — | — |
-| `BackdropProps` | `any` | — | — |
-| `description` | `ReactNode` | — | — |
-| `footer` | `ReactNode` | — | — |
-| `icon` | `ReactNode` | — | — |
-| `onOpenChange` | `(...args: any[]) => any` | — | — |
-| `open` | `boolean` | — | — |
-| `PopupProps` | `any` | — | — |
-| `PortalProps` | `any` | — | — |
-| `RootProps` | `any` | — | — |
-| `size` | `"small" \| "medium" \| "large" \| "xlarge"` | `"medium"` | — |
-| `title` | `ReactNode` | — | — |
-| `trigger` | `ReactNode` | — | — |
-| `TriggerProps` | `any` | — | — |
-
-## Anatomy
-
-```tsx
-<DialogRoot>
-  <DialogTrigger>{trigger}</DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop />
-    <DialogPopup>{children}</DialogPopup>
-  </DialogPortal>
-</DialogRoot>
-```
-
-## Data Slots
-
-| Slot | Element |
-|------|---------|
-| `dialog-backdrop` | Backdrop overlay |
-| `dialog-popup` | Popup container |
-
-## Accessibility
-
-- Has `role="dialog"` with proper ARIA attributes
-- Trigger has `aria-haspopup="dialog"`
-- Closes with `Escape` key
-- Focus is trapped within the dialog
-- Focus returns to trigger on close
-- Backdrop click closes by default
-
-## See Also
-
-- [Drawer](../drawer/README.md) - Edge-anchored panel with swipe-to-dismiss
-- [Popover](../popover/README.md) - Positioned popup
-- [Base UI Dialog](https://base-ui.com/react/components/dialog) - Underlying primitive
+The popup renders as a `Card`, so its content slots match Drawer and Popover.
+For a panel anchored to an edge, use `Drawer`; for something attached to a
+control without blocking the page, use `Popover`.
