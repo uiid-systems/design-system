@@ -36,7 +36,6 @@ export * from "./collapsible";
 export * from "./modal";
 export * from "./sheet";
 export * from "./popover";
-export * from "./drawer";
 export * from "./tooltip";
 export * from "./toaster";
 

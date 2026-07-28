@@ -1,6 +1,3 @@
-export * from "./drawer/drawer";
-export * from "./drawer/drawer.types";
-
 export * from "./modal/modal";
 export * from "./modal/modal.types";
 

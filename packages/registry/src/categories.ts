@@ -52,7 +52,7 @@ export const categories: CategoryMeta[] = [
     key: "overlays",
     label: "Overlays",
     description:
-      "Layered surfaces that appear above the page — modals, drawers, sheets, and popovers.",
+      "Layered surfaces that appear above the page — modals, sheets, and popovers.",
   },
   {
     key: "navigation",

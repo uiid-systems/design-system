@@ -22,7 +22,6 @@ const EXPECTED_NAMES = [
   "Switch",
   "Text",
   "Card",
-  "Drawer",
   "Modal",
   "Popover",
   "Sheet",

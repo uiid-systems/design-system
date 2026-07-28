@@ -56,7 +56,7 @@ export const Markdown = () => (
         <code>@uiid/layout</code> — Stack, Group, Box, Container, Separator
       </li>
       <li>
-        <code>@uiid/overlays</code> — Modal, Drawer, Sheet, Popover, Tooltip
+        <code>@uiid/overlays</code> — Modal, Sheet, Popover, Tooltip
       </li>
       <li>
         <code>@uiid/typography</code> — Text and heading components

@@ -31,7 +31,6 @@ UIID components are **precomposed** — they handle their own internal structure
 | Card | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
 | Accordion | `items` | N/A (no children) |
 | Collapsible | N/A | Content |
-| Drawer | `title` | Custom body content |
 | Modal | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Popover | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Sheet | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
@@ -587,22 +586,6 @@ Supports children.
 
 ### Overlays
 
-#### Drawer
-
-Bottom sheet with drag-to-close interaction
-
-Supports children.
-
-| Prop | Type | Description |
-| --- | --- | --- |
-| `children` | string |  |
-| `trigger` | string |  |
-| `title` | string |  |
-| `direction` | "top" | "right" | "bottom" | "left" |  (default: `"bottom"`) |
-| `open` | boolean |  |
-| `defaultOpen` | boolean |  |
-| `onOpenChange` | function |  |
-
 #### Modal
 
 Dialog overlay with Card-like content structure
@@ -699,5 +682,5 @@ Use to show navigation hierarchy. Last item is typically the current page.
 
 ### All Component Types
 
-Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs
 
