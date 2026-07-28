@@ -89,11 +89,11 @@ export const Loading = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={2} maxw={320}>
-    <Button fullwidth>Default</Button>
-    <Button fullwidth variant="subtle">
-      Subtle
+  <Stack gap={2} fullwidth>
+    <Button fullwidth color="green">
+      Fullwidth
     </Button>
+    <Button color="red">Not fullwidth</Button>
   </Stack>
 );
 
