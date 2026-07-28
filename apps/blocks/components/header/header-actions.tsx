@@ -15,7 +15,7 @@ import { Group, Separator } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { useChatStore } from "@/lib/store";
-import { StatsSheet } from "../stats-sheet";
+import { StatsDrawer } from "../stats-drawer";
 import { ThemeToggle } from "./theme-toggle";
 
 export const HeaderActions = () => {
@@ -40,7 +40,7 @@ export const HeaderActions = () => {
       {tree && (
         <>
           <Group gap={1}>
-            <StatsSheet />
+            <StatsDrawer />
             <Button
               tooltip="Inspect elements — hover to see component info"
               onClick={toggleInspecting}

@@ -1,0 +1,7 @@
+{
+  "$description": "UIID Design System - Drawer Component Tokens",
+  "$schema": "../../../dtcg.schema.json",
+  "drawer": {
+    "size": { "$value": "28rem", "$type": "dimension" }
+  }
+}

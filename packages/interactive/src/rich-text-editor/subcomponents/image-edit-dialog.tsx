@@ -2,7 +2,7 @@ import type { Editor } from "@tiptap/react";
 import { useState } from "react";
 
 import { ImageIcon } from "@uiid/icons";
-import { Modal } from "@uiid/overlays";
+import { Dialog } from "@uiid/overlays";
 
 import { ToolbarButton } from "./toolbar-button";
 
@@ -16,7 +16,7 @@ const ImageEditDialog = ({ editor }: ImageEditDialogProps) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Modal
+    <Dialog
       open={open}
       onOpenChange={setOpen}
       trigger={
@@ -31,7 +31,7 @@ const ImageEditDialog = ({ editor }: ImageEditDialogProps) => {
     >
       <p>Select image</p>
       <ImageEditBlock editor={editor} close={() => setOpen(false)} />
-    </Modal>
+    </Dialog>
   );
 };
 

@@ -6,7 +6,7 @@ import { Button } from "@uiid/buttons";
 import { SaveIcon } from "@uiid/icons";
 import { Input, Textarea } from "@uiid/forms";
 import { Stack } from "@uiid/layout";
-import { Modal, useToastManager } from "@uiid/overlays";
+import { Dialog, useToastManager } from "@uiid/overlays";
 
 import { useSavedBlocks } from "@/lib/use-saved-blocks";
 import { useChatStore } from "@/lib/store";
@@ -64,7 +64,7 @@ export const SaveButton = () => {
   };
 
   return (
-    <Modal
+    <Dialog
       data-slot="save-button"
       open={open}
       onOpenChange={handleOpenChange}
@@ -137,7 +137,7 @@ export const SaveButton = () => {
           }
         />
       </Stack>
-    </Modal>
+    </Dialog>
   );
 };
 SaveButton.displayName = "SaveButton";

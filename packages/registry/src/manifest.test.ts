@@ -22,9 +22,9 @@ const EXPECTED_NAMES = [
   "Switch",
   "Text",
   "Card",
-  "Modal",
+  "Dialog",
   "Popover",
-  "Sheet",
+  "Drawer",
   "Toaster",
   "Tooltip",
 ];

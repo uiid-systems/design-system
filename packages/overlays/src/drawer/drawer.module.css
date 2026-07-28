@@ -1,0 +1,128 @@
+@import "@uiid/tokens/component/overlays.tokens.css";
+@import "@uiid/tokens/component/drawer.tokens.css";
+
+/*
+ * Base UI drives the drag through CSS variables and does not position itself:
+ *   --drawer-swipe-movement-x/y  live offset while dragging
+ *   --drawer-snap-point-offset   offset of the active snap point
+ *   --drawer-swipe-progress      0→1 dismissal progress (backdrop fade)
+ *   --drawer-swipe-strength      fling velocity, scales the release duration
+ * The popup's `transform` therefore belongs to the gesture system — edge
+ * placement uses inset properties instead, never a transform.
+ */
+
+.drawer-trigger:where(:focus-visible) {
+  outline: none;
+}
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  min-height: 100dvh;
+  background-color: var(--shade-background);
+  opacity: calc(var(--overlays-backdrop-opacity) * (1 - var(--drawer-swipe-progress, 0)));
+  transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);
+  z-index: var(--overlays-backdrop-z-index);
+
+  /* iOS 26+: keep the backdrop over the whole visible viewport. */
+  @supports (-webkit-touch-callout: none) {
+    position: absolute;
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+/* Positioning container. Transparent to pointers so the backdrop still
+   receives outside clicks; the popup opts back in. */
+.drawer-viewport {
+  position: fixed;
+  inset: 0;
+  z-index: var(--overlays-popup-z-index);
+  pointer-events: none;
+}
+
+.drawer-popup {
+  --drawer-inset: calc(var(--spacing-unit) * 4);
+
+  position: absolute;
+  pointer-events: auto;
+  transition:
+    transform var(--globals-transition-duration-slow) var(--globals-transition-easing),
+    opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
+}
+
+/* --- Edge placement ------------------------------------------------------ */
+
+.drawer-popup[data-swipe-direction="left"],
+.drawer-popup[data-swipe-direction="right"] {
+  inset-block: var(--drawer-inset);
+  width: min(var(--drawer-size), calc(100vw - var(--drawer-inset) * 2));
+}
+
+.drawer-popup[data-swipe-direction="up"],
+.drawer-popup[data-swipe-direction="down"] {
+  inset-inline: var(--drawer-inset);
+  max-height: calc(100dvh - var(--drawer-inset) * 2);
+}
+
+.drawer-popup[data-swipe-direction="left"] {
+  left: var(--drawer-inset);
+}
+.drawer-popup[data-swipe-direction="right"] {
+  right: var(--drawer-inset);
+}
+.drawer-popup[data-swipe-direction="up"] {
+  top: var(--drawer-inset);
+}
+.drawer-popup[data-swipe-direction="down"] {
+  bottom: var(--drawer-inset);
+}
+
+/* --- Drag tracking ------------------------------------------------------- */
+
+.drawer-popup[data-swipe-direction="left"],
+.drawer-popup[data-swipe-direction="right"] {
+  transform: translateX(var(--drawer-swipe-movement-x, 0px));
+}
+
+.drawer-popup[data-swipe-direction="up"],
+.drawer-popup[data-swipe-direction="down"] {
+  transform: translateY(
+    calc(var(--drawer-snap-point-offset, 0px) + var(--drawer-swipe-movement-y, 0px))
+  );
+}
+
+/* --- Enter / exit -------------------------------------------------------- */
+
+.drawer-popup:where([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
+.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="left"] {
+  transform: translateX(calc(-100% - var(--drawer-inset)));
+}
+.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="right"] {
+  transform: translateX(calc(100% + var(--drawer-inset)));
+}
+.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="up"] {
+  transform: translateY(calc(-100% - var(--drawer-inset)));
+}
+.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="down"] {
+  transform: translateY(calc(100% + var(--drawer-inset)));
+}
+
+/* Never animate mid-drag; scale the release by how hard it was flung. */
+.drawer-popup[data-swiping],
+.drawer-backdrop[data-swiping] {
+  transition-duration: 0ms;
+}
+
+.drawer-popup[data-ending-style],
+.drawer-backdrop[data-ending-style] {
+  transition-duration: calc(var(--drawer-swipe-strength, 1) * var(--globals-transition-duration-slow));
+}
+
+

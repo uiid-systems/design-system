@@ -101,5 +101,5 @@ const [open, setOpen] = useState(false);
 ## See Also
 
 - [Tooltip](../tooltip/README.md) - Hover-triggered simple popup
-- [Modal](../modal/README.md) - Full dialog overlay
+- [Dialog](../dialog/README.md) - Full dialog overlay
 - [Base UI Popover](https://base-ui.com/react/components/popover) - Underlying primitive

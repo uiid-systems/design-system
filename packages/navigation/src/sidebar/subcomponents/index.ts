@@ -11,7 +11,7 @@ export * from "./sidebar-group-action";
 export * from "./sidebar-menu-item";
 export * from "./sidebar-menu-button";
 export * from "./sidebar-menu-sub-button";
-export * from "./sidebar-mobile-sheet";
+export * from "./sidebar-mobile-drawer";
 export * from "./sidebar-outer";
 export * from "./sidebar-inner";
 export * from "./sidebar-container";

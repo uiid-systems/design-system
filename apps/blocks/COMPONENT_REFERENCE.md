@@ -31,9 +31,9 @@ UIID components are **precomposed** — they handle their own internal structure
 | Card | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
 | Accordion | `items` | N/A (no children) |
 | Collapsible | N/A | Content |
-| Modal | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Dialog | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Popover | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
-| Sheet | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
+| Drawer | `title`, `description`, `action`, `icon`, `footer` | Custom body content |
 | Tooltip | N/A | Content |
 | Alert | `title`, `description`, `action`, `footer`, `icon` | Custom body content |
 | Avatar | `description` | N/A (no children) |
@@ -586,7 +586,7 @@ Supports children.
 
 ### Overlays
 
-#### Modal
+#### Dialog
 
 Dialog overlay with Card-like content structure
 
@@ -623,7 +623,7 @@ Supports children.
 | `open` | boolean |  |
 | `onOpenChange` | function |  |
 
-#### Sheet
+#### Drawer
 
 Slide-in panel overlay from any edge of the screen
 
@@ -682,5 +682,5 @@ Use to show navigation hierarchy. Last item is typically the current page.
 
 ### All Component Types
 
-Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs
+Valid types: Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Dialog, Popover, Drawer, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs
 
