@@ -1,56 +1,72 @@
 "use client";
 
-import { isValidElement } from "react";
-import { Drawer as BaseDrawer, type DialogProps } from "vaul";
-
-import { Card, CardTitle } from "@uiid/cards";
-
 import type { DrawerProps } from "./drawer.types";
-import styles from "./drawer.module.css";
 
-/**
- * @deprecated Vaul is currently abandoned. Also uses Radix instead of Base UI.
- * @see https://github.com/emilkowalski/vaul/blob/main/README.md
- */
+import {
+  DrawerRoot,
+  DrawerTrigger,
+  DrawerPortal,
+  DrawerBackdrop,
+  DrawerViewport,
+  DrawerPopup,
+  DrawerContent,
+} from "./subcomponents";
+
 export const Drawer = ({
   trigger,
-  direction = "right",
-  title,
-  children,
   open,
-  onOpenChange,
   defaultOpen,
+  onOpenChange,
+  modal,
+  swipeDirection,
+  snapPoints,
+  snapPoint,
+  defaultSnapPoint,
+  onSnapPointChange,
+  title,
+  description,
+  icon,
+  action,
+  footer,
   RootProps,
   TriggerProps,
+  PortalProps,
+  BackdropProps,
+  ViewportProps,
+  PopupProps,
   ContentProps,
+  children,
 }: DrawerProps) => {
-  const triggerIsEl = isValidElement(trigger);
-
   return (
-    <BaseDrawer.Root
-      direction={direction}
+    <DrawerRoot
       open={open}
-      onOpenChange={onOpenChange}
       defaultOpen={defaultOpen}
-      {...(RootProps as DialogProps)}
+      onOpenChange={onOpenChange}
+      modal={modal}
+      swipeDirection={swipeDirection}
+      snapPoints={snapPoints}
+      snapPoint={snapPoint}
+      defaultSnapPoint={defaultSnapPoint}
+      onSnapPointChange={onSnapPointChange}
+      {...RootProps}
     >
-      <BaseDrawer.Trigger {...TriggerProps} asChild>
-        <div tabIndex={triggerIsEl ? -1 : 0}>{trigger}</div>
-      </BaseDrawer.Trigger>
-      <BaseDrawer.Portal>
-        <BaseDrawer.Overlay className={styles["drawer-overlay"]} />
-        <BaseDrawer.Content
-          aria-describedby={undefined} // vaul requirement, or add Drawer.Description support
-          className={styles["drawer-content"]}
-          {...ContentProps}
-        >
-          <Card data-slot="drawer" fullwidth fullheight>
-            <CardTitle render={<BaseDrawer.Title />}>{title}</CardTitle>
-            {children}
-          </Card>
-        </BaseDrawer.Content>
-      </BaseDrawer.Portal>
-    </BaseDrawer.Root>
+      <DrawerTrigger {...TriggerProps}>{trigger}</DrawerTrigger>
+      <DrawerPortal {...PortalProps}>
+        <DrawerBackdrop {...BackdropProps} />
+        <DrawerViewport {...ViewportProps}>
+          <DrawerPopup
+            title={title}
+            description={description}
+            icon={icon}
+            action={action}
+            footer={footer}
+            {...PopupProps}
+          >
+            <DrawerContent {...ContentProps}>{children}</DrawerContent>
+          </DrawerPopup>
+        </DrawerViewport>
+      </DrawerPortal>
+    </DrawerRoot>
   );
 };
 Drawer.displayName = "Drawer";

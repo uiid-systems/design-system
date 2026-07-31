@@ -1,91 +1,25 @@
 # Tooltip
 
-> Informational popup shown on hover or focus
+> Short descriptive text on hover or focus. The children prop is the text; the trigger prop is what it describes.
 
-## Quick Reference
+Use Tooltip when you want to:
 
-```tsx
-import { Tooltip } from "@uiid/overlays";
+- Explain a control whose purpose isn't obvious from its own label — icon-only buttons are the usual case
+- Tune the hover dwell time before it appears with `delay`, in milliseconds
+- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen
 
-// Basic usage
-<Tooltip trigger={<button>Hover me</button>}>
-  Helpful information
-</Tooltip>
-```
+Tooltip wraps Base UI's [Tooltip](https://base-ui.com/react/components/tooltip)
+and takes its props unchanged — anything not listed above is forwarded.
 
-## Examples
+**Only for non-essential, non-interactive text.** A tooltip can't be opened by
+touch and is announced as a description rather than as content, so never put a
+control, a link, or information a user actually needs inside one — use `Popover`.
+The trigger also still needs its own accessible name: a tooltip supplies a
+description, not a label.
 
-### Basic
+Every Tooltip mounts its own provider by default. Wrap a group of them in a
+single `TooltipProvider` so that once one is open, moving between neighbouring
+triggers skips the delay.
 
-```tsx
-<Tooltip trigger={<button>Hover me</button>}>
-  This is a tooltip
-</Tooltip>
-```
-
-### With Icon Button
-
-```tsx
-<Tooltip trigger={<Button square aria-label="Help"><HelpIcon /></Button>}>
-  Click for more information
-</Tooltip>
-```
-
-### Custom Positioning
-
-```tsx
-<Tooltip
-  trigger={<button>Hover</button>}
-  PositionerProps={{ side: "bottom", sideOffset: 12 }}
->
-  Positioned below
-</Tooltip>
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `trigger` | `ReactNode` | — | — |
-| `delay` | `number` | — | — |
-| `onOpenChange` | `(...args: any[]) => any` | — | — |
-| `open` | `boolean` | — | — |
-| `PopupProps` | `any` | — | — |
-| `PortalProps` | `any` | — | — |
-| `PositionerProps` | `any` | — | — |
-| `ProviderProps` | `any` | — | — |
-| `RootProps` | `any` | — | — |
-| `TriggerProps` | `any` | — | — |
-
-## Anatomy
-
-```tsx
-<TooltipProvider>
-  <TooltipRoot>
-    <TooltipTrigger>{trigger}</TooltipTrigger>
-    <TooltipPortal>
-      <TooltipPositioner>
-        <TooltipPopup>{children}</TooltipPopup>
-      </TooltipPositioner>
-    </TooltipPortal>
-  </TooltipRoot>
-</TooltipProvider>
-```
-
-## Data Slots
-
-| Slot | Element |
-|------|---------|
-| `tooltip-popup` | Popup container |
-
-## Accessibility
-
-- Shows on hover and focus
-- Hides on `Escape` key
-- Associates with trigger via `aria-describedby`
-- Respects `prefers-reduced-motion`
-
-## See Also
-
-- [Popover](../popover/README.md) - Click-triggered popup with more content
-- [Base UI Tooltip](https://base-ui.com/react/components/tooltip) - Underlying primitive
+The popup inverts its surface — foreground background, background text — which is
+what separates it visually from `Popover`.

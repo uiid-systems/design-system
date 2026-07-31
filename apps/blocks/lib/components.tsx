@@ -34,7 +34,7 @@ import { Alert, Avatar, Badge, Kbd, Progress, Status, Timeline } from "@uiid/ind
 import { Accordion } from "@uiid/interactive";
 import { Breadcrumbs } from "@uiid/navigation";
 import { Box, Group, Layer, Separator, Stack } from "@uiid/layout";
-import { Modal } from "@uiid/overlays";
+import { Dialog } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 /**
@@ -180,8 +180,8 @@ export const registry: ComponentRegistry = {
   },
 
   // Overlay components
-  Modal: ({ element, children }) => (
-    <Modal data-element-key={keyOf(element)} {...element.props} trigger={children} />
+  Dialog: ({ element, children }) => (
+    <Dialog data-element-key={keyOf(element)} {...element.props} trigger={children} />
   ),
 
   // Icon component (blocks app only, for JSON block rendering)

@@ -33,10 +33,9 @@ export * from "./accordion";
 export * from "./collapsible";
 
 // Overlay components
-export * from "./modal";
-export * from "./sheet";
-export * from "./popover";
+export * from "./dialog";
 export * from "./drawer";
+export * from "./popover";
 export * from "./tooltip";
 export * from "./toaster";
 

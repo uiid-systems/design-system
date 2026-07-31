@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Button } from "@uiid/buttons";
 import { PackageIcon, EyeIcon, CopyIcon, Trash2Icon } from "@uiid/icons";
 import { Group, Stack, Separator } from "@uiid/layout";
-import { Sheet, useToastManager } from "@uiid/overlays";
+import { Drawer, useToastManager } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 import { countComponents } from "@uiid/registry";
@@ -91,11 +91,11 @@ export const RegistryPanel = () => {
   };
 
   return (
-    <Sheet
+    <Drawer
       data-slot="registry-panel"
       title="Block registry"
       description="Blocks exported to the blocks/ directory. These are version-controlled and shareable."
-      side="right"
+      swipeDirection="right"
       open={open}
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
@@ -198,7 +198,7 @@ export const RegistryPanel = () => {
           })
         )}
       </Stack>
-    </Sheet>
+    </Drawer>
   );
 };
 RegistryPanel.displayName = "RegistryPanel";

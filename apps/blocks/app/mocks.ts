@@ -73,7 +73,7 @@ export const MOCK_UI_TREE: UISpec = {
       children: ["reset-modal", "submit-btn"],
     },
     "reset-modal": {
-      type: "Modal",
+      type: "Dialog",
       props: {
         title: "Reset Form?",
         description:

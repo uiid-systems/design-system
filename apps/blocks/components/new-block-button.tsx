@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@uiid/buttons";
 import { SquarePenIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
-import { Modal } from "@uiid/overlays";
+import { Dialog } from "@uiid/overlays";
 
 import { useComponentLoader } from "@/lib/use-component-loader";
 import { useChatStore } from "@/lib/store";
@@ -32,7 +32,7 @@ export const NewBlockButton = () => {
   };
 
   return (
-    <Modal
+    <Dialog
       data-slot="header-action-clear"
       size="small"
       title="You have unsaved changes"

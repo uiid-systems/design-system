@@ -24,7 +24,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSubButton,
-  SidebarMobileSheet,
+  SidebarMobileDrawer,
   SidebarOuter,
   SidebarInner,
   SidebarContainer,
@@ -44,7 +44,13 @@ function Sidebar({
   const { isMobile } = useSidebar();
 
   if (isMobile) {
-    return <SidebarMobileSheet {...props}>{children}</SidebarMobileSheet>;
+    // `side` doubles as the drawer's swipe direction, so the mobile drawer now
+    // enters from the same edge the desktop sidebar sits on.
+    return (
+      <SidebarMobileDrawer swipeDirection={side} {...props}>
+        {children}
+      </SidebarMobileDrawer>
+    );
   }
 
   return (

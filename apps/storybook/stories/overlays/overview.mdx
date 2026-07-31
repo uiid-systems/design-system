@@ -1,0 +1,32 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Overlays/Overview" />
+
+# Overlays
+
+Surfaces that render above the page. Each one wraps a [Base UI](https://base-ui.com/react/overview/quick-start) primitive and keeps its name and its props, so upstream documentation and examples transfer directly — our additions are the `Card` content slots, never renamed versions of props the primitive already has.
+
+## Which one do I reach for?
+
+- **[Dialog](?path=/docs/overlays-dialog--docs)** — centered and modal. For a decision or a focused task that should block the page. Width comes from `size`.
+- **[Drawer](?path=/docs/overlays-drawer--docs)** — anchored to an edge, dismissed by swiping toward it. For navigation, inspectors, and mobile bottom sheets. The only overlay with gestures and snap points.
+- **[Popover](?path=/docs/overlays-popover--docs)** — anchored to a trigger, non-blocking, can hold controls. For filters, short forms, link menus.
+- **[Tooltip](?path=/docs/overlays-tooltip--docs)** — hover and focus only, plain text, no controls. For naming a control that lacks a visible label.
+- **[Toast](?path=/docs/overlays-toast--docs)** — no trigger at all. Fired imperatively through a hook to confirm something already happened.
+
+**Dialog or Drawer?** Both are modal by default and both render as a `Card`. Dialog is centered and sized; Drawer is pinned to an edge and can be dragged away. On touch, prefer Drawer.
+
+**Popover or Tooltip?** Popover is click-triggered and focusable, so it can hold controls. Tooltip is hover-triggered, unreachable by touch, and announced as a description — anything a user must read or act on belongs in a Popover.
+
+## Shared conventions
+
+- **Content slots.** Dialog, Drawer, and Popover render their popup as a `Card`, so `icon`, `title`, `description`, `action`, and `footer` mean the same thing in all three, and `children` is the body.
+- **Triggers.** Pass an element as `trigger` and it is used as-is; pass a string and it is wrapped in a focusable element.
+- **Controlled or not.** Leave `open` unset and the overlay runs itself from its trigger. Pass `open` and `onOpenChange` to drive it.
+- **Escape hatches.** `RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `ViewportProps`, `PopupProps`, and `ContentProps` forward to the individual Base UI parts when a slot prop isn't enough. Positioning always lives on `PositionerProps`.
+- **Layering.** Backdrops and popups read `--overlays-backdrop-z-index` and `--overlays-popup-z-index` rather than hardcoding a stacking order.
+- **Motion.** Popover and Tooltip share the floating-surface composition used by Select, Combobox, and Autocomplete: they scale out of their anchor, not their own centre. Drawer's motion is driven by the drag instead — see its `data-swipe-direction` styling.
+
+## Toast is the odd one out
+
+Toast has no trigger and is not one component. It needs `ToastProvider` around the app, a single `Toaster` viewport inside it, and `useToastManager()` wherever the notification is fired from.

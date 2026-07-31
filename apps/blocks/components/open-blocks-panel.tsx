@@ -15,7 +15,7 @@ import {
   DownloadIcon,
 } from "@uiid/icons";
 import { Group, Stack, Separator } from "@uiid/layout";
-import { Sheet, useToastManager } from "@uiid/overlays";
+import { Drawer, useToastManager } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 import { countComponents } from "@uiid/registry";
@@ -142,11 +142,11 @@ export const OpenBlocksPanel = () => {
   };
 
   return (
-    <Sheet
+    <Drawer
       data-slot="saved-blocks-panel"
       title="Saved blocks"
       description="View and manage your saved blocks. They're stored in your browser's local storage."
-      side="left"
+      swipeDirection="left"
       open={open}
       onOpenChange={setOpen}
       PopupProps={{ className: styles["popup"] }}
@@ -315,7 +315,7 @@ export const OpenBlocksPanel = () => {
           })
         )}
       </Stack>
-    </Sheet>
+    </Drawer>
   );
 };
 OpenBlocksPanel.displayName = "OpenBlocksPanel";

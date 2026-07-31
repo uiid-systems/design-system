@@ -7,7 +7,7 @@ import { Input } from "@uiid/forms";
 import { Badge } from "@uiid/indicators";
 import { PackageIcon } from "@uiid/icons";
 import { Stack, Group } from "@uiid/layout";
-import { Modal, useToastManager } from "@uiid/overlays";
+import { Dialog, useToastManager } from "@uiid/overlays";
 import { Text } from "@uiid/typography";
 
 import { countComponents } from "@uiid/registry";
@@ -67,7 +67,7 @@ export const RegistryBrowser = () => {
   );
 
   return (
-    <Modal
+    <Dialog
       data-slot="registry-browser"
       open={open}
       onOpenChange={setOpen}
@@ -141,7 +141,7 @@ export const RegistryBrowser = () => {
           )}
         </div>
       </Stack>
-    </Modal>
+    </Dialog>
   );
 };
 RegistryBrowser.displayName = "RegistryBrowser";

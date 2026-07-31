@@ -35,10 +35,9 @@ import { AccordionEntry } from "./components/accordion";
 import { CollapsibleEntry } from "./components/collapsible";
 
 // Overlay components
-import { DrawerEntry } from "./components/drawer";
-import { ModalEntry } from "./components/modal";
+import { DialogEntry } from "./components/dialog";
 import { PopoverEntry } from "./components/popover";
-import { SheetEntry } from "./components/sheet";
+import { DrawerEntry } from "./components/drawer";
 import { ToasterEntry } from "./components/toaster";
 import { TooltipEntry } from "./components/tooltip";
 
@@ -94,10 +93,9 @@ export const registry: Registry = {
   Collapsible: CollapsibleEntry,
 
   // Overlays
-  Drawer: DrawerEntry,
-  Modal: ModalEntry,
+  Dialog: DialogEntry,
   Popover: PopoverEntry,
-  Sheet: SheetEntry,
+  Drawer: DrawerEntry,
   Toaster: ToasterEntry,
   Tooltip: TooltipEntry,
 

@@ -5,10 +5,22 @@ import { Stack, Table, Text } from "@uiid/design-system";
 
 const ROOT = path.resolve(process.cwd(), "../..");
 
+/**
+ * Base UI is the one dependency whose props are part of our public API — our
+ * components re-expose them by `Pick`ing from `BaseX.Root.Props`. Filtering all
+ * of node_modules drops `open`, `onOpenChange`, `swipeDirection` and friends
+ * from every overlay table, so it is allowed back through. React's own HTML
+ * attributes still come from @types/react and stay filtered.
+ */
+const isExternalDeclaration = (fileName?: string) =>
+  !!fileName &&
+  fileName.includes("node_modules") &&
+  !/@base-ui[/\\]/.test(fileName);
+
 const parser = withCustomConfig(path.join(ROOT, "tsconfig.json"), {
   propFilter: (prop) =>
-    !prop.parent?.fileName.includes("node_modules") &&
-    !prop.declarations?.some((d) => d.fileName.includes("node_modules")),
+    !isExternalDeclaration(prop.parent?.fileName) &&
+    !prop.declarations?.some((d) => isExternalDeclaration(d.fileName)),
   shouldExtractLiteralValuesFromEnum: true,
   savePropValueAsString: true,
 });

@@ -102,7 +102,7 @@ The Card component automatically renders its title, description, icon, and foote
 
 ### Subcomponent Props (Customization Escape Hatches)
 
-Precomposed components like Card, Modal, and Sheet have internal subcomponents (header, title, footer, etc.). When you need fine-grained control over a subcomponent, use **subcomponent props** instead of decomposing the component manually.
+Precomposed components like Card, Dialog, and Drawer have internal subcomponents (header, title, footer, etc.). When you need fine-grained control over a subcomponent, use **subcomponent props** instead of decomposing the component manually.
 
 **Example - Customizing Card's title alignment:**
 
@@ -224,8 +224,8 @@ Without `"slot": "footer"`, the Group would render inside Card's body. With it, 
 | Component | Available slots                            |
 | --------- | ------------------------------------------ |
 | Card      | `title`, `description`, `action`, `footer`, `icon` |
-| Modal     | `title`, `description`, `action`, `footer`, `icon` |
-| Sheet     | `title`, `description`, `action`, `footer`, `icon` |
+| Dialog     | `title`, `description`, `action`, `footer`, `icon` |
+| Drawer     | `title`, `description`, `action`, `footer`, `icon` |
 | Popover   | `title`, `description`, `action`, `footer`, `icon` |
 | Alert     | `title`, `description`, `action`, `footer`, `icon` |
 
@@ -245,7 +245,7 @@ Without `"slot": "footer"`, the Group would render inside Card's body. With it, 
 
 ## Valid Component Types
 
-Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Drawer, Modal, Popover, Sheet, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs, Icon
+Box, Stack, Group, Layer, Separator, Button, ToggleButton, Form, Input, NumberField, Textarea, Checkbox, CheckboxGroup, Radio, RadioGroup, Select, Slider, Switch, Text, Card, Accordion, Collapsible, Dialog, Popover, Drawer, Toaster, Tooltip, Alert, Avatar, Badge, Kbd, Progress, Status, Timeline, Breadcrumbs, Icon
 
 > For full prop tables, read `apps/blocks/COMPONENT_REFERENCE.md`.
 
