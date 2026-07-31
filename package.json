@@ -19,7 +19,7 @@
     "size": "size-limit",
     "generate-readmes": "node scripts/generate-readmes.mjs",
     "prepare": "husky",
-    "postinstall": "playwright install chromium --with-deps"
+    "postinstall": "node scripts/postinstall.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.0",
