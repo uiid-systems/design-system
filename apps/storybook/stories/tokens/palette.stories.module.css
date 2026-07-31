@@ -1,0 +1,38 @@
+/*
+ * Hover states are real CSS rules rather than captions, so --palette-fill-hover
+ * and --palette-tint-hover can be seen instead of read about.
+ *
+ * Every value here comes from the `.palette-<hue>` class applied alongside these
+ * — nothing in this file names a hue or a step.
+ */
+
+.tint {
+  background-color: var(--palette-tint);
+  color: var(--palette-on-tint);
+  border: 1px solid var(--palette-tint-border);
+  border-radius: 8px;
+  transition: background-color 120ms ease;
+}
+
+.tint:hover {
+  background-color: var(--palette-tint-hover);
+}
+
+.fill {
+  background-color: var(--palette-fill);
+  color: var(--palette-on-fill);
+  border-radius: 6px;
+  transition: background-color 120ms ease;
+}
+
+.fill:hover {
+  background-color: var(--palette-fill-hover);
+}
+
+/*
+ * --palette-text is measured against the page background, so this swatch
+ * deliberately sits outside the tint surface above it.
+ */
+.text {
+  color: var(--palette-text);
+}

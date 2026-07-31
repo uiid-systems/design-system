@@ -1,3 +1,4 @@
+import { PALETTE_HUES, type PaletteColor as PaletteHue } from "@uiid/tokens";
 import { z } from "zod";
 
 /**
@@ -128,16 +129,12 @@ export type LayoutProps = z.infer<typeof LayoutPropsSchema>;
 /**
  * Palette color values for colored variants (badge, etc).
  */
-export const PaletteColor = z.enum([
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "indigo",
-  "purple",
-  "neutral",
-]);
+export const PaletteColor = z.enum(
+  /* Derived from the token ramps rather than restated, so a hue added to
+     colors.tokens.json reaches the generated component reference on its own.
+     z.enum wants a non-empty tuple; PALETTE_HUES is only known as an array. */
+  PALETTE_HUES as [PaletteHue, ...PaletteHue[]],
+);
 
 export type PaletteColor = z.infer<typeof PaletteColor>;
 

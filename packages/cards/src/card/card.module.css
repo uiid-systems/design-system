@@ -53,26 +53,15 @@
 }
 
 /*
- * Colored surface treatment. Pairs with the portable palette classes from
- * @uiid/typography (`.color-*`), which set --palette-hue / --palette-chroma.
- * A single hue derives background, foreground, and border via oklch() +
- * light-dark(); `neutral` (chroma 0) degrades to a gray surface.
+ * Colored surface treatment. The hue travels on the `.palette-<hue>` class from
+ * @uiid/tokens; this block only reads the semantic names it publishes, so a
+ * tinted Card and a subtle Button share one contract and cannot drift apart.
  * Defined after `.card` so it wins the cascade at equal specificity.
- * NOTE: the L/C multipliers below are first-pass values — tune in Storybook.
  */
 .color-surface {
-  background-color: light-dark(
-    oklch(0.95 calc(var(--palette-chroma) * 0.35) var(--palette-hue)),
-    oklch(0.25 calc(var(--palette-chroma) * 0.4) var(--palette-hue))
-  );
-  color: light-dark(
-    oklch(0.32 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.9 calc(var(--palette-chroma) * 0.7) var(--palette-hue))
-  );
-  border-color: light-dark(
-    oklch(0.85 calc(var(--palette-chroma) * 0.5) var(--palette-hue)),
-    oklch(0.42 calc(var(--palette-chroma) * 0.5) var(--palette-hue))
-  );
+  background-color: var(--palette-tint);
+  color: var(--palette-on-tint);
+  border-color: var(--palette-tint-border);
 }
 
 .card-thumbnail {

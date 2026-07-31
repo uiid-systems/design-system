@@ -5,7 +5,7 @@
     "build": {
       "outputs": [
         "src/css/**",
-        "src/json/primitives/colors.generated.tokens.json"
+        "dist/**"
       ]
     }
   }

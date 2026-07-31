@@ -3,7 +3,7 @@
 import { Button as BaseButton } from "@base-ui/react/button";
 
 import { ConditionalRender, Layer } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/typography";
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { ButtonProps } from "./button.types";

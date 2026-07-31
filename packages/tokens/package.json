@@ -24,27 +24,31 @@
   "sideEffects": [
     "*.css"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
     "./globals.css": "./src/globals.css",
     "./compositions.css": "./src/compositions.css",
     "./palette.css": "./src/palette.css",
-    "./palette": {
-      "types": "./src/palette.ts",
-      "import": "./src/palette.ts"
-    },
+    "./json/*": "./src/json/*",
     "./*": "./src/css/*"
   },
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "scripts": {
-    "build": "node ../../scripts/generate-tokens.js",
-    "dev": "node ../../scripts/generate-tokens.js",
+    "build": "node ../../scripts/generate-tokens.js && vite build",
+    "dev": "node ../../scripts/generate-tokens.js && vite build",
     "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.js\"",
     "lint": "echo 'No linting for CSS tokens'",
-    "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\"",
-    "figma:preview": "DRY_RUN=true node ./scripts/sync-to-figma.js",
-    "figma:sync": "node ./scripts/sync-to-figma.js"
+    "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\" \"src/**/*.ts\""
   },
   "devDependencies": {
     "@types/react": "^19.1.10",
@@ -54,6 +58,9 @@
     "react": "^19.1.1",
     "style-dictionary": "^5.4.4",
     "typescript": "~5.9.3",
+    "vite": "^7.3.5",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-tsconfig-paths": "^6.1.1",
     "zod": "^3.24.0"
   }
 }

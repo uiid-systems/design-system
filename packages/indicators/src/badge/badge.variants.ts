@@ -1,5 +1,5 @@
 import { cva } from "@uiid/utils";
-import { paletteColorStyles } from "@uiid/typography";
+import { paletteColorStyles } from "@uiid/tokens";
 
 import styles from "./badge.module.css";
 

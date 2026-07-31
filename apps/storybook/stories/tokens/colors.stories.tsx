@@ -1,47 +1,43 @@
 import type { StoryObj } from "@storybook/react-vite";
 
-import generatedColorTokens from "@tokens/json/primitives/colors.generated.tokens.json";
+import { Stack, Group, Text } from "@uiid/design-system";
+
 import colorTokens from "@tokens/json/primitives/colors.tokens.json";
-import shadeTokens from "@tokens/json/semantic/shade.tokens.json";
 
-type TokenValue = string | { colorSpace: string; components: number[]; hex: string };
-type Token = { $value: TokenValue; $type?: string };
+/*
+ * The ramps are hand-authored, so this story reads colors.tokens.json directly.
+ * There is no generated companion file any more — every step below is a value a
+ * designer typed, and each hue's 500 is its authored anchor by construction.
+ */
+type Step = { $value: string };
+type Ramp = Record<string, Step | string>;
 
-const extractTokens = (group: Record<string, Token | unknown>) =>
-  Object.entries(group).reduce(
-    (acc, [key, token]) => {
-      if (key.startsWith("$")) return acc;
-      const val = (token as Token).$value;
-      acc[key] = typeof val === "object" && val !== null ? val.hex : val;
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
+const isRamp = (entry: unknown): entry is Ramp =>
+  typeof entry === "object" && entry !== null && "500" in entry;
 
-const COLORS = extractTokens(colorTokens.color);
-const SHADES = extractTokens(shadeTokens.shade);
-
-// Build SCALES map: { red: { "50": "#ffe3db", "100": "...", ... }, ... }
-type ScaleStep = { $value: string };
-type ScaleHue = Record<string, ScaleStep | string>;
-
-const SCALES = Object.fromEntries(
-  Object.entries(generatedColorTokens.color as unknown as Record<string, ScaleHue>)
-    .filter(([key]) => !key.startsWith("$"))
-    .map(([hue, steps]) => [
-      hue,
-      Object.fromEntries(
-        Object.entries(steps)
-          .filter(([step]) => !step.startsWith("$"))
-          .map(([step, token]) => [
-            step,
-            (token as ScaleStep).$value,
-          ]),
-      ),
-    ]),
+const entries = Object.entries(colorTokens.color).filter(
+  ([key]) => !key.startsWith("$"),
 );
 
-const SCALE_STEPS = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"] as const;
+/** A hue is an entry carrying a `500` step — the same test @uiid/tokens uses. */
+const RAMPS = entries.filter(([, entry]) => isRamp(entry)) as [string, Ramp][];
+
+/** white/black are deliberately outside the palette but still emitted. */
+const BASE = entries.filter(([, entry]) => !isRamp(entry)) as [string, Step][];
+
+const STEPS = [
+  "50",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900",
+  "950",
+] as const;
 
 const meta = {
   title: "Tokens/Primitives/Colors",
@@ -50,138 +46,103 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <h2
-    style={{
-      fontSize: "0.75rem",
-      fontWeight: 600,
-      textTransform: "uppercase",
-      letterSpacing: "0.05em",
-      color: "var(--shade-muted)",
-      margin: 0,
-    }}
-  >
-    {children}
-  </h2>
-);
-
 const Swatch = ({
-  name,
   cssVar,
-  value,
-  tall,
+  label,
+  anchor,
 }: {
-  name: string;
   cssVar: string;
-  value?: string;
-  tall?: boolean;
+  label: string;
+  anchor?: boolean;
 }) => (
-  <div
-    style={{
-      border: "1px solid var(--shade-accent)",
-      borderRadius: "8px",
-      overflow: "hidden",
-      backgroundColor: "var(--shade-surface)",
-    }}
-  >
+  <Stack gap={1}>
     <div
       style={{
         backgroundColor: `var(--${cssVar})`,
-        height: tall ? "80px" : "48px",
-        width: "100%",
-        borderBottom: "1px solid var(--shade-accent)",
-      }}
-    />
-    <div style={{ padding: "0.5rem", fontSize: "0.75rem" }}>
-      <div style={{ fontWeight: 600, marginBottom: "0.125rem" }}>{name}</div>
-      {value && <div style={{ color: "var(--shade-muted)" }}>{value}</div>}
-      <div style={{ color: "var(--shade-muted)", opacity: 0.7 }}>
-        --{cssVar}
-      </div>
-    </div>
-  </div>
-);
-
-const ScaleSwatch = ({ hue, step }: { hue: string; step: string }) => (
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.25rem" }}>
-    <div
-      style={{
-        backgroundColor: `var(--color-${hue}-${step})`,
-        width: "100%",
         height: "40px",
         borderRadius: "4px",
-        border: "1px solid rgba(0,0,0,0.08)",
+        border: anchor
+          ? "2px solid var(--shade-foreground)"
+          : "1px solid var(--shade-accent)",
       }}
     />
-    <span style={{ fontSize: "0.65rem", color: "var(--shade-muted)", textAlign: "center" }}>
-      {step}
-    </span>
-  </div>
+    <Text size={-1} shade="muted" style={{ textAlign: "center" }}>
+      {label}
+    </Text>
+  </Stack>
 );
 
 export const Colors: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-      <SectionLabel>Color Scales</SectionLabel>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-        {Object.entries(SCALES).map(([hue]) => (
-          <div key={hue} style={{ display: "grid", gridTemplateColumns: "80px 1fr", alignItems: "center", gap: "0.75rem" }}>
-            <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--shade-foreground)", textTransform: "capitalize" }}>
-              {hue}
-            </span>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(11, 1fr)", gap: "0.25rem" }}>
-              {SCALE_STEPS.map((step) => (
-                <ScaleSwatch key={step} hue={hue} step={step} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <SectionLabel>Color Primitives</SectionLabel>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-          gap: "0.5rem",
-        }}
-      >
-        {Object.entries(COLORS).map(([name, value]) => (
-          <Swatch key={name} name={name} cssVar={`color-${name}`} value={value as string} tall />
-        ))}
-      </div>
-
-      <SectionLabel>Shade Scale</SectionLabel>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
-          gap: "0.5rem",
-        }}
-      >
-        {Object.entries(SHADES)
-          .filter(([key]) => !Number.isNaN(Number(key)))
-          .sort(([a], [b]) => Number(a) - Number(b))
-          .map(([name]) => (
-            <Swatch key={name} name={name} cssVar={`shade-${name}`} />
+    <Stack gap={5}>
+      <Stack gap={2}>
+        <Text size={2} weight="semibold">
+          Ramps
+        </Text>
+        <Text size={-1} shade="muted">
+          Eight hues, 50&ndash;950. The outlined step is the hue&rsquo;s authored
+          anchor, which every ramp contains by construction.
+        </Text>
+        <Stack gap={3}>
+          {RAMPS.map(([hue, ramp]) => (
+            <Stack key={hue} gap={1}>
+              <Group gap={2}>
+                <Text
+                  size={0}
+                  weight="semibold"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {hue}
+                </Text>
+                <Text size={-1} shade="muted">
+                  {(ramp["500"] as Step)?.$value}
+                </Text>
+              </Group>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(11, 1fr)",
+                  gap: "0.25rem",
+                }}
+              >
+                {STEPS.map((step) => (
+                  <Swatch
+                    key={step}
+                    cssVar={`color-${hue}-${step}`}
+                    label={step}
+                    anchor={step === "500"}
+                  />
+                ))}
+              </div>
+            </Stack>
           ))}
-      </div>
+        </Stack>
+      </Stack>
 
-      <SectionLabel>Shade Aliases</SectionLabel>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-          gap: "0.5rem",
-        }}
-      >
-        {Object.entries(SHADES)
-          .filter(([key]) => Number.isNaN(Number(key)))
-          .map(([name]) => (
-            <Swatch key={name} name={name} cssVar={`shade-${name}`} />
+      <Stack gap={2}>
+        <Text size={2} weight="semibold">
+          Base
+        </Text>
+        <Text size={-1} shade="muted">
+          Not palette hues. They are emitted because the shade aliases reference
+          them, so tokens render even where no theme is loaded.
+        </Text>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: "0.5rem",
+          }}
+        >
+          {BASE.map(([name, token]) => (
+            <Swatch
+              key={name}
+              cssVar={`color-${name}`}
+              label={`${name} · ${token.$value}`}
+            />
           ))}
-      </div>
-
-    </div>
+        </div>
+      </Stack>
+    </Stack>
   ),
 };

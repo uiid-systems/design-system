@@ -2,6 +2,7 @@ import type { Button as BaseButton } from "@base-ui/react/button";
 
 import type { GroupProps } from "@uiid/layout";
 import type { LoadingSpinnerProps } from "@uiid/icons";
+import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps } from "@uiid/utils";
 
 import type { buttonVariants } from "./button.variants";
@@ -9,19 +10,10 @@ import type { buttonVariants } from "./button.variants";
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 /**
- * Palette hue for the colored surface treatment. Mirrors the portable palette
- * from `@uiid/typography` (`paletteColorStyles`); one hue resolves the button's
+ * Palette hue for the colored surface treatment. One hue resolves the button's
  * background, foreground, border, and hover together.
  */
-export type ButtonColor =
-  | "red"
-  | "orange"
-  | "yellow"
-  | "green"
-  | "blue"
-  | "indigo"
-  | "purple"
-  | "neutral";
+export type ButtonColor = PaletteColor;
 
 export type ButtonContentContainerProps = GroupProps & {
   loading?: boolean;

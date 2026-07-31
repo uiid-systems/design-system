@@ -44,52 +44,40 @@
 }
 
 /*
- * Colored surface treatment. Pairs with the portable palette classes from
- * @uiid/typography (`.color-*`), which set --palette-hue / --palette-chroma.
- * Redefines the button's core surface vars from a single hue, so every
- * downstream style (hover, border, focus, and the `ghost` variant) inherits
- * the color for free. `neutral` (chroma 0) degrades to a gray solid button.
+ * Colored surfaces. The palette classes from @uiid/tokens (`.palette-<hue>`)
+ * publish the semantic --palette-* names; the blocks below only choose which
+ * treatment each variant wears, so a retune happens in the tokens package.
+ * `neutral` degrades to a grey treatment rather than a tint.
  * Defined after `.button` so it wins the cascade at equal specificity.
- * NOTE: first-pass values — tune in Storybook.
  */
 .color {
-  --button-bg: light-dark(
-    oklch(0.55 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.6 calc(var(--palette-chroma) * 0.9) var(--palette-hue))
-  );
-  --button-fg: oklch(0.99 calc(var(--palette-chroma) * 0.08) var(--palette-hue));
-  --button-bg-hover: light-dark(
-    oklch(0.48 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.67 calc(var(--palette-chroma) * 0.9) var(--palette-hue))
-  );
+  --button-bg: var(--palette-fill);
+  --button-fg: var(--palette-on-fill);
+  --button-bg-hover: var(--palette-fill-hover);
   --button-border-color: var(--button-bg);
 }
 
-/*
- * Soft (tinted) surface — the composed `color` + `variant="subtle"` treatment.
- * Redefines the subtle variant's own vars from the palette hue, so the existing
- * `.variant-subtle` rules (base + hover) render a Card-style tinted surface:
- * light bg + colored fg in light mode, dark bg + light colored fg in dark mode.
- * Higher specificity than `.color` alone, so the solid fill is superseded here.
- * Values mirror the Card `.color-surface` derivation. Tune in Storybook.
- */
+/* Higher specificity than `.color` alone, so it supersedes the solid fill. */
 .color.variant-subtle {
-  --button-variant-subtle-bg: light-dark(
-    oklch(0.95 calc(var(--palette-chroma) * 0.35) var(--palette-hue)),
-    oklch(0.25 calc(var(--palette-chroma) * 0.4) var(--palette-hue))
-  );
-  --button-variant-subtle-bg-hover: light-dark(
-    oklch(0.91 calc(var(--palette-chroma) * 0.45) var(--palette-hue)),
-    oklch(0.31 calc(var(--palette-chroma) * 0.45) var(--palette-hue))
-  );
-  --button-variant-subtle-fg: light-dark(
-    oklch(0.32 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.9 calc(var(--palette-chroma) * 0.7) var(--palette-hue))
-  );
-  --button-variant-subtle-border-color: light-dark(
-    oklch(0.85 calc(var(--palette-chroma) * 0.5) var(--palette-hue)),
-    oklch(0.42 calc(var(--palette-chroma) * 0.5) var(--palette-hue))
-  );
+  --button-variant-subtle-bg: var(--palette-tint);
+  --button-variant-subtle-bg-hover: var(--palette-tint-hover);
+  --button-variant-subtle-fg: var(--palette-on-tint);
+  --button-variant-subtle-border-color: var(--palette-tint-border);
+}
+
+/*
+ * A colored ghost is a tint surface that stays transparent until hover, so it
+ * takes the tint's foreground. Inheriting `--button-bg` (as the uncolored ghost
+ * does) would paint the text at fill strength, which is only measured against
+ * the page background — once hover paints `--palette-tint` underneath it, the
+ * guaranteed pairing is `--palette-on-tint`.
+ */
+.color.variant-ghost {
+  color: var(--palette-on-tint);
+
+  &:where(:hover, :active) {
+    background-color: var(--palette-tint);
+  }
 }
 
 .button-content-container {
