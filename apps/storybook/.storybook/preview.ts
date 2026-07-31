@@ -1,7 +1,15 @@
 import type { Preview } from "@storybook/react-vite";
 import { themes, getPreferredColorScheme } from "storybook/theming";
 
-import "@uiid/design-system/globals.css";
+/*
+ * Tokens only — layer order, custom properties, and the shared compositions.
+ * Component CSS already reaches the preview through `@uiid/design-system`, whose
+ * entry imports its own globals.css; importing the prebuilt bundle here as well
+ * put a redundant third copy of every component rule on the page. Uses the
+ * `@tokens` alias from main.ts because `@uiid/tokens` is not a dependency of
+ * this app.
+ */
+import "@tokens/globals.css";
 import "./styles.css";
 
 const preview: Preview = {
