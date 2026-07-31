@@ -6,8 +6,8 @@ export const HeaderContainer = ({ children, ...props }: GroupProps) => {
   return (
     <Group
       data-slot="header-container"
-      render={<header />}
-      className="sticky top-0 bg-(--shade-background) z-1"
+      render={<header style={{ zIndex: 2 }} />}
+      className="sticky top-0 bg-(--shade-background)"
       ay="center"
       ax="space-between"
       gap={SHELL_SPACING}
