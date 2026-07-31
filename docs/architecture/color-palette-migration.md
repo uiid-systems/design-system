@@ -6,9 +6,8 @@ This is a two-part migration. **Part 1 (the token layer) is done and in review.*
 **Part 2 (the component conversion) has not been started.** This document is the
 handoff for part 2 — it should be enough to start from without re-deriving anything.
 
-The work was ported in reverse from balance's `UI-364`
-(`Tabs-Platform/tabs-backend#19166`), which did the same migration first. That PR
-is a useful reference, but UIID diverges in several places noted below.
+The approach follows a prior implementation of this same migration in another
+design system, adapted where UIID differs — those divergences are noted inline.
 
 ---
 
@@ -58,8 +57,8 @@ is a useful reference, but UIID diverges in several places noted below.
 ```
 
 Every pairing clears WCAG AA measured from the authored hex; the tightest is
-**5.10:1**. Unlike balance, no hue needed an exception block (balance had to
-special-case `cyan`).
+**5.10:1**, and no hue needed an exception block — a bright hue whose `700`
+fill cannot carry near-white text would need one, but none of UIID's do.
 
 ---
 
@@ -85,9 +84,7 @@ part 1 left that mechanism untouched, so everything renders as it did before.
 The mapping is direct — every current derivation is already one of the eight
 treatments. Badge's `bg`/`fg`/`border` are exactly `tint`/`on-tint`/`tint-border`;
 Button's `.color` is `fill`/`on-fill`/`fill-hover` and `.color.variant-subtle` is
-the tint set; Card's `.color-surface` is the tint set. Balance's versions of
-`button.module.css`, `card.module.css` and `text.module.css` are worth reading as
-a reference for the exact shape.
+the tint set; Card's `.color-surface` is the tint set.
 
 Note Card's `.color-surface` and Button's `.color.variant-subtle` were
 byte-identical derivations — after conversion they share one `--palette-tint`
@@ -97,8 +94,8 @@ contract and can no longer drift apart.
 
 `paletteColorStyles` / `PaletteColor` currently live in `@uiid/typography`, which
 means `@uiid/buttons` depends on `@uiid/typography` purely for palette work.
-Replace with the already-published `@uiid/tokens/palette`. Balance made exactly
-this move and dropped the dependency.
+Replace with the already-published `@uiid/tokens/palette`, which lets that
+dependency be dropped.
 
 Consumers to update:
 
@@ -109,11 +106,10 @@ Consumers to update:
 - `packages/registry/src/shared.ts` plus the `card`, `status`, `avatar`, `text`,
   `timeline`, `badge` entries under `packages/registry/src/components/`
 
-The registry coupling is **UIID-only** — balance had no registry, so its PR is no
-guide here.
+The registry coupling has no precedent to copy from — treat it as new work.
 
 Text's per-hue classes collapse to one rule once the hue travels on the tokens
-class (balance went from 66 lines to 11).
+class — expect roughly 66 lines to collapse to about 11.
 
 ### 3. Consumer sweep — which components should take a hue?
 
@@ -129,7 +125,7 @@ the `fill` set, the `tint` set, or just `--palette-text`.
 - **`packages/interactive/src/rich-text-editor/styles/index.css`** still contains
   `oklch()` and was outside part 1's scope.
 - `dtcg.schema.json` and the `lint:tokens` script are still present but were never
-  wired into the `lint` task. Balance deleted both. Removing them means stripping
+  wired into the `lint` task, and are candidates for removal. Doing so means stripping
   `$schema` from ~23 token files, so it was deferred.
 
 ---
