@@ -32,10 +32,8 @@
   animation: pulse 1.5s infinite;
 }
 
-/* When a color is applied, use its hue + chroma for the dot */
+/* When a color is applied, the dot is a small filled surface, so it takes the
+   fill treatment published by the `.palette-<hue>` class from @uiid/tokens. */
 .status-dot[data-colored] {
-  background-color: light-dark(
-    oklch(0.65 var(--palette-chroma) var(--palette-hue)),
-    oklch(0.7 var(--palette-chroma) var(--palette-hue))
-  );
+  background-color: var(--palette-fill);
 }

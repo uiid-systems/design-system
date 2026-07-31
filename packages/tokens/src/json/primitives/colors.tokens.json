@@ -3,86 +3,302 @@
   "$schema": "../../../dtcg.schema.json",
   "color": {
     "$type": "color",
+    "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows.",
     "white": {
       "$value": "#fefefa",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "srgb",
-          "components": [0.996, 0.996, 0.98]
-        }
-      }
+      "$description": "Not a palette hue. Kept because shade.background references it, so the tokens must emit it to render anywhere a theme is not loaded."
     },
     "black": {
       "$value": "#0d0d0d",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "srgb",
-          "components": [0.051, 0.051, 0.051]
-        }
-      }
+      "$description": "Not a palette hue. Kept because shade.foreground references it."
     },
     "red": {
-      "$value": "#f9262a",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.63, 0.24, 27]
-        }
-      }
+      "50": {
+        "$value": "#ffe4e0"
+      },
+      "100": {
+        "$value": "#ffcdc7"
+      },
+      "200": {
+        "$value": "#ffb1a7"
+      },
+      "300": {
+        "$value": "#ff8e82"
+      },
+      "400": {
+        "$value": "#ff6358"
+      },
+      "500": {
+        "$value": "#f9262a"
+      },
+      "600": {
+        "$value": "#c50014"
+      },
+      "700": {
+        "$value": "#8f000b"
+      },
+      "800": {
+        "$value": "#610005"
+      },
+      "900": {
+        "$value": "#3d0002"
+      },
+      "950": {
+        "$value": "#230001"
+      },
+      "$type": "color"
     },
     "orange": {
-      "$value": "#ff8918",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.75, 0.18, 55]
-        }
-      }
+      "50": {
+        "$value": "#ffe6d5"
+      },
+      "100": {
+        "$value": "#ffd8bf"
+      },
+      "200": {
+        "$value": "#ffc8a4"
+      },
+      "300": {
+        "$value": "#ffb684"
+      },
+      "400": {
+        "$value": "#ffa15e"
+      },
+      "500": {
+        "$value": "#ff8918"
+      },
+      "600": {
+        "$value": "#c56500"
+      },
+      "700": {
+        "$value": "#8c4600"
+      },
+      "800": {
+        "$value": "#5b2b00"
+      },
+      "900": {
+        "$value": "#351600"
+      },
+      "950": {
+        "$value": "#1a0800"
+      },
+      "$type": "color"
     },
     "yellow": {
-      "$value": "#e8b700",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.80, 0.17, 90]
-        }
-      }
+      "50": {
+        "$value": "#ffeab1"
+      },
+      "100": {
+        "$value": "#fee195"
+      },
+      "200": {
+        "$value": "#f9d87c"
+      },
+      "300": {
+        "$value": "#f4cd5e"
+      },
+      "400": {
+        "$value": "#eec238"
+      },
+      "500": {
+        "$value": "#e8b700"
+      },
+      "600": {
+        "$value": "#ad8900"
+      },
+      "700": {
+        "$value": "#7a5f00"
+      },
+      "800": {
+        "$value": "#4e3c00"
+      },
+      "900": {
+        "$value": "#2b2000"
+      },
+      "950": {
+        "$value": "#130c00"
+      },
+      "$type": "color"
     },
     "green": {
-      "$value": "#00c565",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.72, 0.19, 152]
-        }
-      }
+      "50": {
+        "$value": "#bbfecc"
+      },
+      "100": {
+        "$value": "#a6f5bb"
+      },
+      "200": {
+        "$value": "#8ceba7"
+      },
+      "300": {
+        "$value": "#6ddf91"
+      },
+      "400": {
+        "$value": "#48d27b"
+      },
+      "500": {
+        "$value": "#00c565"
+      },
+      "600": {
+        "$value": "#00954b"
+      },
+      "700": {
+        "$value": "#006933"
+      },
+      "800": {
+        "$value": "#00441f"
+      },
+      "900": {
+        "$value": "#00270f"
+      },
+      "950": {
+        "$value": "#001205"
+      },
+      "$type": "color"
     },
     "blue": {
-      "$value": "#347eff",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.62, 0.21, 261]
-        }
-      }
+      "50": {
+        "$value": "#e1ecff"
+      },
+      "100": {
+        "$value": "#c7dbff"
+      },
+      "200": {
+        "$value": "#a7c8ff"
+      },
+      "300": {
+        "$value": "#85b1ff"
+      },
+      "400": {
+        "$value": "#5f99ff"
+      },
+      "500": {
+        "$value": "#347eff"
+      },
+      "600": {
+        "$value": "#195cd2"
+      },
+      "700": {
+        "$value": "#003ea4"
+      },
+      "800": {
+        "$value": "#002871"
+      },
+      "900": {
+        "$value": "#001648"
+      },
+      "950": {
+        "$value": "#00092b"
+      },
+      "$type": "color"
     },
     "indigo": {
-      "$value": "#6d49f4",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.55, 0.24, 285]
-        }
-      }
+      "50": {
+        "$value": "#e8e9ff"
+      },
+      "100": {
+        "$value": "#d2d2ff"
+      },
+      "200": {
+        "$value": "#b8b6ff"
+      },
+      "300": {
+        "$value": "#9c95ff"
+      },
+      "400": {
+        "$value": "#8370ff"
+      },
+      "500": {
+        "$value": "#6d49f4"
+      },
+      "600": {
+        "$value": "#542dca"
+      },
+      "700": {
+        "$value": "#3e12a0"
+      },
+      "800": {
+        "$value": "#2a0076"
+      },
+      "900": {
+        "$value": "#1a004f"
+      },
+      "950": {
+        "$value": "#0e0033"
+      },
+      "$type": "color"
     },
     "purple": {
-      "$value": "#9036e1",
-      "$extensions": {
-        "org.uiid.source": {
-          "colorSpace": "oklch",
-          "components": [0.55, 0.24, 303]
-        }
-      }
+      "50": {
+        "$value": "#f0e6ff"
+      },
+      "100": {
+        "$value": "#e0ccff"
+      },
+      "200": {
+        "$value": "#ceabff"
+      },
+      "300": {
+        "$value": "#bc85ff"
+      },
+      "400": {
+        "$value": "#a75ef4"
+      },
+      "500": {
+        "$value": "#9036e1"
+      },
+      "600": {
+        "$value": "#7219b9"
+      },
+      "700": {
+        "$value": "#56008f"
+      },
+      "800": {
+        "$value": "#3b0065"
+      },
+      "900": {
+        "$value": "#250043"
+      },
+      "950": {
+        "$value": "#15002a"
+      },
+      "$type": "color"
+    },
+    "neutral": {
+      "50": {
+        "$value": "#ecebe9"
+      },
+      "100": {
+        "$value": "#d9d8d6"
+      },
+      "200": {
+        "$value": "#c3c2c0"
+      },
+      "300": {
+        "$value": "#abaaa7"
+      },
+      "400": {
+        "$value": "#93928f"
+      },
+      "500": {
+        "$value": "#868684"
+      },
+      "600": {
+        "$value": "#5e5d5a"
+      },
+      "700": {
+        "$value": "#444341"
+      },
+      "800": {
+        "$value": "#2d2c2a"
+      },
+      "900": {
+        "$value": "#1b1a19"
+      },
+      "950": {
+        "$value": "#0e0d0c"
+      },
+      "$type": "color"
     }
   }
 }

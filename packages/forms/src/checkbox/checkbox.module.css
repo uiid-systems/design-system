@@ -34,8 +34,8 @@
   }
 
   &[data-invalid] {
-    border-color: var(--color-red);
-    outline: 1px solid var(--color-red);
+    border-color: var(--color-red-500);
+    outline: 1px solid var(--color-red-500);
   }
 
   &::after {

@@ -3,7 +3,6 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { computeColorMix } from "../packages/tokens/transforms/color-utils.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -142,15 +141,6 @@ class TokenGenerator {
         const lightPair = this.resolveToHexPair(derive.light, newVisited);
         const darkPair = this.resolveToHexPair(derive.dark, newVisited);
         return { light: lightPair.light, dark: darkPair.dark };
-      }
-
-      // mix derive: compute color mix for each mode independently
-      if (derive?.method === "mix") {
-        const pair1 = this.resolveToHexPair(derive.color1, newVisited);
-        const pair2 = this.resolveToHexPair(derive.color2, newVisited);
-        const lightHex = computeColorMix(pair1.light, pair2.light, 1 - derive.ratio);
-        const darkHex = computeColorMix(pair1.dark, pair2.dark, 1 - derive.ratio);
-        return { light: lightHex, dark: darkHex };
       }
 
       // No derive — resolve the $value directly
@@ -352,16 +342,6 @@ ${cssProperties.trimEnd()}
   }
 
   /**
-   * Color variant recipes applied to theme tokens
-   * (generates --theme-<name>-surface / -border / -foreground).
-   */
-  colorVariants = [
-    { suffix: "surface", mix: "shade-background", ratio: 0.25 },
-    { suffix: "border", mix: "shade-background", ratio: 0.40 },
-    { suffix: "foreground", mix: "shade-foreground", ratio: 0.60 },
-  ];
-
-  /**
    * Generate CSS custom properties from token object.
    * Composite tokens (currently $type: "typography") are decomposed into
    * per-property vars (e.g. --text-1-font-size).
@@ -387,25 +367,6 @@ ${cssProperties.trimEnd()}
         const cssVarName = this.generateCssVariableName(prefix, key);
         const cssValue = this.processCssValueForToken(value);
         css += `${indent}--${cssVarName}: ${cssValue};\n`;
-
-        // Auto-generate color variants for theme tokens (resolved to static values)
-        if (prefix === "theme") {
-          const tokenPath = prefix ? `${prefix}.${key}` : key;
-          for (const variant of this.colorVariants) {
-            try {
-              const colorPair = this.resolveToHexPair(`{${tokenPath}}`);
-              const mixRef = `{${variant.mix.replace(/-/g, ".")}}`;
-              const mixPair = this.resolveToHexPair(mixRef);
-              const lightHex = computeColorMix(colorPair.light, mixPair.light, 1 - variant.ratio);
-              const darkHex = computeColorMix(colorPair.dark, mixPair.dark, 1 - variant.ratio);
-              css += `${indent}--${cssVarName}-${variant.suffix}: light-dark(${lightHex}, ${darkHex});\n`;
-            } catch (err) {
-              console.warn(`  Warning: could not resolve ${cssVarName}-${variant.suffix}: ${err.message}`);
-              const pct = Math.round((1 - variant.ratio) * 100);
-              css += `${indent}--${cssVarName}-${variant.suffix}: color-mix(in oklch, var(--${cssVarName}), var(--${variant.mix}) ${pct}%);\n`;
-            }
-          }
-        }
       } else if (typeof value === "object" && value !== null) {
         // This is a nested object, recurse
         const newPrefix = prefix ? `${prefix}-${key}` : key;
@@ -483,27 +444,13 @@ ${cssProperties.trimEnd()}
 
   /**
    * Process org.uiid.derive extension into CSS.
-   * For method="mix", resolves both light and dark mode hex values statically
-   * using computeColorMix, emitting light-dark(#lightHex, #darkHex).
+   *
+   * `light-dark` is the only method: every colour token is either a plain value
+   * or a light/dark pair of them. Colour is no longer computed here — ramps are
+   * hand-authored in json/primitives/colors.tokens.json and semantic treatments
+   * are named in palette.css.
    */
   processDeriveExtension(derive) {
-    if (derive.method === "mix") {
-      try {
-        const pair1 = this.resolveToHexPair(derive.color1);
-        const pair2 = this.resolveToHexPair(derive.color2);
-        const lightHex = computeColorMix(pair1.light, pair2.light, 1 - derive.ratio);
-        const darkHex = computeColorMix(pair1.dark, pair2.dark, 1 - derive.ratio);
-        return `light-dark(${lightHex}, ${darkHex})`;
-      } catch (err) {
-        // Fall back to color-mix if resolution fails
-        console.warn(`  ⚠️  mix fallback: ${err.message}`);
-        const color1 = this.processCssValue(derive.color1);
-        const color2 = this.processCssValue(derive.color2);
-        const pct = Math.round((1 - derive.ratio) * 100);
-        return `color-mix(in ${derive.colorSpace}, ${color1}, ${color2} ${pct}%)`;
-      }
-    }
-
     if (derive.method === "light-dark") {
       const light = this.processCssValue(derive.light);
       const dark = this.processCssValue(derive.dark);

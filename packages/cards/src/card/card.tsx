@@ -1,5 +1,5 @@
 import { Group, Stack, type StackProps } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/typography";
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";

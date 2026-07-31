@@ -33,12 +33,11 @@
   padding: var(--badge-size-lg-padding-y) var(--badge-size-lg-padding-x);
 }
 
-/* Color variant: derives surface/text/border from palette hue + chroma via oklch */
+/* Color variant: a tinted surface, read from the `.palette-<hue>` class that
+   @uiid/tokens applies alongside this one. Avatar, Progress and Timeline reuse
+   these vars via `badgeColorStyles`, so they follow the same treatment. */
 .colored {
-  --badge-bg: light-dark(oklch(0.9 calc(var(--palette-chroma) * 0.7) var(--palette-hue)), oklch(0.25 calc(var(--palette-chroma) * 0.5) var(--palette-hue)));
-  --badge-fg: light-dark(oklch(0.35 var(--palette-chroma) var(--palette-hue)), oklch(0.88 var(--palette-chroma) var(--palette-hue)));
-  --badge-border: light-dark(
-    oklch(0.78 calc(var(--palette-chroma) * 0.8) var(--palette-hue)),
-    oklch(0.38 calc(var(--palette-chroma) * 0.8) var(--palette-hue))
-  );
+  --badge-bg: var(--palette-tint);
+  --badge-fg: var(--palette-on-tint);
+  --badge-border: var(--palette-tint-border);
 }

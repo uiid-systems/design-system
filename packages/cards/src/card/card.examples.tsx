@@ -24,7 +24,7 @@ const Thumb = () => (
     fill="none"
     style={{ width: "100%", height: "auto", display: "block" }}
   >
-    <rect width="300" height="160" fill="var(--theme-primary)" />
+    <rect width="300" height="160" fill="var(--color-red-500)" />
     <circle cx="80" cy="80" r="36" fill="var(--shade-background)" />
     <rect
       x="140"

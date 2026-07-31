@@ -1,152 +1,9 @@
 {
-  "$description": "UIID Design System - Shade Scale Tokens",
+  "$description": "UIID Design System - Semantic Shade Tokens",
   "$schema": "../../../dtcg.schema.json",
   "shade": {
     "$type": "color",
-    "1": {
-      "$value": "#f7f7f3",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.03
-        }
-      }
-    },
-    "2": {
-      "$value": "#edede9",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.07
-        }
-      }
-    },
-    "3": {
-      "$value": "#e1e1de",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.12
-        }
-      }
-    },
-    "4": {
-      "$value": "#d3d3cf",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.18
-        }
-      }
-    },
-    "5": {
-      "$value": "#bfbfbc",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.26
-        }
-      }
-    },
-    "6": {
-      "$value": "#a7a7a5",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.36
-        }
-      }
-    },
-    "7": {
-      "$value": "#868684",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.5
-        }
-      }
-    },
-    "8": {
-      "$value": "#696967",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.62
-        }
-      }
-    },
-    "9": {
-      "$value": "#50504f",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.72
-        }
-      }
-    },
-    "10": {
-      "$value": "#383838",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.82
-        }
-      }
-    },
-    "11": {
-      "$value": "#252525",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.9
-        }
-      }
-    },
-    "12": {
-      "$value": "#171716",
-      "$extensions": {
-        "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklch",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.96
-        }
-      }
-    },
+    "$description": "The neutral aliases. background and foreground alias the theme's white/black; the four between them are pinned to the values the retired --shade-1..12 ramp resolved to, so nothing re-renders. They are standalone rather than ramp references on purpose: there is no achromatic ramp left to point them at, and retuning neutrals belongs in its own change.",
     "background": {
       "$value": "#fefefa",
       "$extensions": {
@@ -157,10 +14,46 @@
         }
       }
     },
-    "surface": { "$value": "{shade.2}" },
-    "accent": { "$value": "{shade.3}" },
-    "halftone": { "$value": "{shade.7}" },
-    "muted": { "$value": "{shade.9}" },
+    "surface": {
+      "$value": "#eaeae7",
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "#eaeae7",
+          "dark": "#1a1a1a"
+        }
+      }
+    },
+    "accent": {
+      "$value": "#ddddd9",
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "#ddddd9",
+          "dark": "#242423"
+        }
+      }
+    },
+    "halftone": {
+      "$value": "#7a7a78",
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "#7a7a78",
+          "dark": "#7a7978"
+        }
+      }
+    },
+    "muted": {
+      "$value": "#464645",
+      "$extensions": {
+        "org.uiid.derive": {
+          "method": "light-dark",
+          "light": "#464645",
+          "dark": "#b2b1af"
+        }
+      }
+    },
     "foreground": {
       "$value": "#0d0d0d",
       "$extensions": {

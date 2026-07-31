@@ -46,9 +46,16 @@
     margin-inline: -0.25rem;
   }
 
+  /*
+   * Diff and highlight colours are owned here rather than read from a theme
+   * layer: a code block needs three hues at once, so it cannot carry a single
+   * `.palette-<hue>` class. The pairs below are the palette's tint / on-tint
+   * steps for each hue, so they track the ramps and clear AA.
+   */
+
   /* Highlighted lines (transformerMetaHighlight + transformerNotationHighlight) */
   & :global(.line.highlighted) {
-    background-color: var(--theme-warning-surface);
+    background-color: light-dark(var(--color-yellow-50), var(--color-yellow-900));
   }
 
   /* Diff lines (transformerNotationDiff) */
@@ -62,20 +69,20 @@
   }
 
   & :global(.line.diff.add) {
-    background-color: var(--theme-positive-surface);
+    background-color: light-dark(var(--color-green-50), var(--color-green-900));
 
     &::before {
       content: "+";
-      color: var(--theme-positive-foreground);
+      color: light-dark(var(--color-green-800), var(--color-green-200));
     }
   }
 
   & :global(.line.diff.remove) {
-    background-color: var(--theme-critical-surface);
+    background-color: light-dark(var(--color-red-50), var(--color-red-900));
 
     &::before {
       content: "-";
-      color: var(--theme-critical-foreground);
+      color: light-dark(var(--color-red-800), var(--color-red-200));
     }
   }
 }
@@ -145,7 +152,7 @@
 .code-block-error {
   font-family: var(--code-font-family);
   font-size: var(--code-font-size);
-  color: var(--theme-critical-foreground);
+  color: light-dark(var(--color-red-700), var(--color-red-400));
   padding: var(--code-padding);
 }
 

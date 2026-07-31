@@ -1,28 +1,20 @@
+import type { PaletteColor } from "@uiid/tokens";
+import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
 import { cva } from "@uiid/utils";
 
 import styles from "./text.module.css";
 
-/** Palette color styles — portable hue/chroma class definitions for use across components */
-export const paletteColorStyles = {
-  red: styles["color-red"],
-  orange: styles["color-orange"],
-  yellow: styles["color-yellow"],
-  green: styles["color-green"],
-  blue: styles["color-blue"],
-  indigo: styles["color-indigo"],
-  purple: styles["color-purple"],
-  neutral: styles["color-neutral"],
-};
-
-const coloredClass = styles["colored"];
-
-/** Text color styles — palette classes combined with text-specific color rendering */
+/**
+ * A hue is the tokens palette class, which publishes the semantic `--palette-*`
+ * names, paired with Text's own rule that paints from the display one. Every hue
+ * renders the same way, so the pairing is derived rather than listed.
+ */
 const textColorStyles = Object.fromEntries(
-  Object.entries(paletteColorStyles).map(([key, value]) => [
-    key,
-    `${value} ${coloredClass}`,
+  PALETTE_HUES.map((hue) => [
+    hue,
+    `${paletteColorStyles[hue]} ${styles["palette-text"]}`,
   ]),
-) as Record<keyof typeof paletteColorStyles, string>;
+) as Record<PaletteColor, string>;
 
 export const textVariants = cva({
   variants: {

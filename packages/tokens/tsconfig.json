@@ -2,8 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  /* The palette imports its ramps straight from the token JSON, and `composite`
+     requires every file the program touches to be listed explicitly. */
+  "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["node_modules", "dist"]
 }

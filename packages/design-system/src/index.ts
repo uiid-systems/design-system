@@ -13,5 +13,8 @@ export * from "@uiid/lists";
 export * from "@uiid/navigation";
 export * from "@uiid/overlays";
 export * from "@uiid/tables";
+/* The palette is the one token export that is TS rather than CSS: the hue union
+   and the `.palette-<hue>` class map components apply to carry a hue. */
+export * from "@uiid/tokens";
 export * from "@uiid/typography";
 export * from "@uiid/utils";

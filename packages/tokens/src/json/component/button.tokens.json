@@ -4,15 +4,14 @@
   "button": {
     "bg": { "$value": "{shade.foreground}", "$type": "color" },
     "bg-hover": {
-      "$value": "#2b2b2b",
+      "$value": "#2a2a29",
       "$type": "color",
+      "$description": "Pinned to the pair the retired oklab mix of shade.foreground into shade.background baked out, so the press state is unchanged. Retune alongside the shade aliases, not on its own — it is the button's own foreground stepped back toward the page.",
       "$extensions": {
         "org.uiid.derive": {
-          "method": "mix",
-          "colorSpace": "oklab",
-          "color1": "{shade.foreground}",
-          "color2": "{shade.background}",
-          "ratio": 0.85
+          "method": "light-dark",
+          "light": "#2a2a29",
+          "dark": "#d5d4d1"
         }
       }
     },

@@ -36,6 +36,6 @@ The Scale story under [Text](?path=/story/typography-text--scale) shows every si
 
 - `size` accepts any value -1..6. Default is `1` on Prose body and Text-as-paragraph; UI labels typically use `0` or `-1`.
 - `family` is `sans` by default. `mono` picks up the system mono stack; `serif` picks up the system serif stack.
-- `shade` maps to the shade ladder (`background`..`foreground`); `color` maps to the palette (`red`, `blue`, etc.) and renders contrast-aware tones via OKLCH.
+- `shade` maps to the shade ladder (`background`..`foreground`); `color` maps to the palette (`red`, `blue`, etc.) and paints `--palette-text`, the step measured to clear AA against the page background.
 - Inline `<code>` inside a `Text` or `Prose` renders as a subtle mono chip.
 - `Number` and `Reveal` build on `Text`, so `size`, `weight`, `family`, `shade`, `color`, and spacing all pass through. Both respect `prefers-reduced-motion` and degrade to static text.

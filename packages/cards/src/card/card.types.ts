@@ -1,5 +1,6 @@
 import type { Icon } from "@uiid/icons";
 import type { GroupProps, StackProps } from "@uiid/layout";
+import type { PaletteColor } from "@uiid/tokens";
 import type { TextProps } from "@uiid/typography";
 import type { RenderProp } from "@uiid/utils";
 
@@ -18,19 +19,10 @@ export type CardThumbnailProps = StackProps;
 export type InnerContainerProps = StackProps;
 
 /**
- * Palette hue for the colored surface treatment. Mirrors the portable palette
- * from `@uiid/typography` (`paletteColorStyles`); one hue resolves the card's
+ * Palette hue for the colored surface treatment. One hue resolves the card's
  * background, foreground, and border together.
  */
-export type CardColor =
-  | "red"
-  | "orange"
-  | "yellow"
-  | "green"
-  | "blue"
-  | "indigo"
-  | "purple"
-  | "neutral";
+export type CardColor = PaletteColor;
 
 export type CardProps = Omit<StackProps, "title" | "color"> & {
   title?: React.ReactNode;
