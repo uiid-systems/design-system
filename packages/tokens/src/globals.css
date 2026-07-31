@@ -1,13 +1,17 @@
 @layer uiid.globals, uiid.tokens, uiid.primitives, uiid.components, uiid.compositions;
 
 @import "./css/primitives/colors.tokens.css";
-@import "./css/primitives/colors.generated.tokens.css";
 @import "./css/primitives/spacing.tokens.css";
 @import "./css/primitives/typography.tokens.css";
 @import "./css/semantic/globals.tokens.css";
 @import "./css/semantic/shade.tokens.css";
 @import "./css/semantic/forms.tokens.css";
 @import "./css/theme/theme.tokens.css";
+
+/* Semantic palette (uiid.tokens layer). Hand-written, not generated: these are
+   global classes that carry a hue, so components read --palette-* names instead
+   of deriving colour themselves. */
+@import "./palette.css";
 
 /* Shared composition primitives (uiid.compositions layer). Loaded once here;
    referenced from component modules via `composes: composes-<name> from global`. */

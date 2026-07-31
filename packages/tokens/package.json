@@ -27,9 +27,10 @@
   "exports": {
     "./globals.css": "./src/globals.css",
     "./compositions.css": "./src/compositions.css",
-    "./schema": {
-      "types": "./src/schema/index.ts",
-      "import": "./src/schema/index.ts"
+    "./palette.css": "./src/palette.css",
+    "./palette": {
+      "types": "./src/palette.ts",
+      "import": "./src/palette.ts"
     },
     "./*": "./src/css/*"
   },
@@ -37,21 +38,13 @@
     "src"
   ],
   "scripts": {
-    "build": "npm run build:generate && npm run build:legacy",
-    "build:generate": "node --experimental-json-modules ./scripts/generate-scales.js",
-    "build:legacy": "node ../../scripts/generate-tokens.js",
-    "build:sd": "style-dictionary build --config style-dictionary.config.js",
+    "build": "node ../../scripts/generate-tokens.js",
     "dev": "node ../../scripts/generate-tokens.js",
     "watch": "nodemon --watch src/json --ext tokens.json --exec \"node ../../scripts/generate-tokens.js\"",
     "lint": "echo 'No linting for CSS tokens'",
-    "lint:tokens": "ajv validate -s dtcg.schema.json -d 'src/json/**/*.tokens.json'",
     "format": "prettier --write \"src/**/*.css\" \"src/**/*.json\"",
-    "build:theme": "npx tsx ../../scripts/generate-theme.js",
     "figma:preview": "DRY_RUN=true node ./scripts/sync-to-figma.js",
     "figma:sync": "node ./scripts/sync-to-figma.js"
-  },
-  "dependencies": {
-    "@uiid/themes": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.1.10",

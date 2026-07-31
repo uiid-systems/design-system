@@ -7,7 +7,7 @@
 .field-label[data-required="true"] {
   &::after {
     content: "*";
-    color: var(--color-red);
+    color: var(--color-red-500);
     margin-left: 0.25rem;
   }
 }
