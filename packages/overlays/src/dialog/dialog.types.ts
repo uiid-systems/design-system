@@ -16,6 +16,7 @@ export type DialogRootProps = BaseDialog.Root.Props;
 export type DialogTriggerProps = BaseDialog.Trigger.Props;
 export type DialogPortalProps = BaseDialog.Portal.Props;
 export type DialogBackdropProps = BaseDialog.Backdrop.Props;
+export type DialogViewportProps = BaseDialog.Viewport.Props;
 export type DialogPopupProps = VariantProps<typeof dialogVariants> &
   Omit<BaseDialog.Popup.Props, "title"> &
   DialogCardProps;
@@ -26,6 +27,7 @@ export type DialogProps = React.PropsWithChildren<{
   TriggerProps?: DialogTriggerProps;
   PortalProps?: DialogPortalProps;
   BackdropProps?: DialogBackdropProps;
+  ViewportProps?: DialogViewportProps;
   PopupProps?: DialogPopupProps;
 }> &
   DialogVariants &

@@ -26,22 +26,30 @@
   }
 }
 
-.dialog-popup {
+/*
+ * Positioning container. Centering lives here so the popup — which renders as a
+ * Card — never competes with Card's own `position` in the cascade. The extra
+ * bottom padding raises the popup ~2rem above true center, an optical offset.
+ */
+.dialog-viewport {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: all var(--globals-transition-duration);
+  inset: 0;
   z-index: var(--overlays-popup-z-index);
+  display: grid;
+  place-items: center;
+  padding: 1.5rem 1.5rem 5.5rem;
+  pointer-events: none;
+}
 
-  width: calc(100vw - 3rem);
-  margin-top: -2rem;
-
-  &[data-starting-style],
-  &[data-ending-style] {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(var(--globals-transform-scale-down));
-  }
+/*
+ * The open/close transition comes from the shared popup composition, the same
+ * one Popover, Tooltip, and the form comboboxes use — Dialog has no anchor, so
+ * --transform-origin falls back to `center`.
+ */
+.dialog-popup {
+  composes: composes-popup from global;
+  width: 100%;
+  pointer-events: auto;
 }
 
 .size-small {

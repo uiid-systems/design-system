@@ -2,5 +2,5 @@
 
 .popover-popup {
   composes: composes-popup from global;
-  max-width: var(--popover-maxWidth);
+  max-width: var(--popover-max-width);
 }

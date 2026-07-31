@@ -26,9 +26,7 @@ export const PopoverPopup = ({
           icon={icon}
           action={action}
           footer={footer}
-        >
-          {children}
-        </Card>
+        />
       }
       className={cx(styles["popover-popup"], className)}
       {...props}

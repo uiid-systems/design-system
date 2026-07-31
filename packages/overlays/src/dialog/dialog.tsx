@@ -7,6 +7,7 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogBackdrop,
+  DialogViewport,
   DialogPopup,
 } from "./subcomponents";
 
@@ -23,6 +24,7 @@ export const Dialog = ({
   TriggerProps,
   PortalProps,
   BackdropProps,
+  ViewportProps,
   PopupProps,
   trigger,
   children,
@@ -32,17 +34,19 @@ export const Dialog = ({
       <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
       <DialogPortal {...PortalProps}>
         <DialogBackdrop {...BackdropProps} />
-        <DialogPopup
-          size={size}
-          title={title}
-          description={description}
-          icon={icon}
-          action={action}
-          footer={footer}
-          {...PopupProps}
-        >
-          {children}
-        </DialogPopup>
+        <DialogViewport {...ViewportProps}>
+          <DialogPopup
+            size={size}
+            title={title}
+            description={description}
+            icon={icon}
+            action={action}
+            footer={footer}
+            {...PopupProps}
+          >
+            {children}
+          </DialogPopup>
+        </DialogViewport>
       </DialogPortal>
     </DialogRoot>
   );

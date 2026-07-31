@@ -8,15 +8,21 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   padding: var(--globals-padding-y) var(--globals-padding-x);
   box-shadow: var(--globals-shadow-sm);
-  transition: scale calc(var(--globals-transition-duration) / 2) ease-in-out;
 
   font-size: var(--text-0-font-size);
   line-height: var(--text-0-line-height);
   font-weight: var(--text-0-font-weight);
   letter-spacing: var(--text-0-letter-spacing);
 
+  /*
+   * Scoped to link cards: the scale transition only exists for the hover/active
+   * states below. On `.card` itself it leaked onto every consumer that renders
+   * through Card (Dialog, Drawer, Popover, Tooltip), silently replacing their
+   * own transition wherever theirs sat in the same layer.
+   */
   &:where([href]) {
     text-decoration: none;
+    transition: scale calc(var(--globals-transition-duration) / 2) ease-in-out;
 
     &:focus-visible {
       outline-width: var(--globals-outline-width);
