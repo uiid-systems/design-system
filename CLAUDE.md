@@ -17,18 +17,15 @@ UIID is a modular React component library. Follow these conventions to maintain 
 design-system/
 ├── apps/
 │   ├── docs/          # Documentation site
-│   ├── blocks/        # AI-powered UI composer
 │   └── storybook/     # Component documentation
 ├── packages/          # Component packages (@uiid/*)
 │   ├── buttons/, cards/, forms/, layout/, typography/, ...
-│   ├── registry/      # Component metadata for AI tools
 │   └── tokens/        # Design tokens (JSON → CSS)
-├── scripts/           # Token generation, changelog, registry scripts
+├── scripts/           # Token generation and build scripts
 ├── .claude/
-│   ├── guides/        # Detailed guides (imported below)
-│   └── templates/     # Code templates for components, tests, stories, registry entries
+│   └── guides/        # Detailed guides (read on demand)
 └── docs/
-    └── architecture/  # Architecture decision docs (token system, MCP server)
+    └── architecture/  # Architecture decision docs (tokens, themes, components)
 ```
 
 ## Root Config Files
@@ -63,10 +60,6 @@ design-system/
 
 ---
 
-## Core Guides (always loaded)
-
-@.claude/guides/registry.md
-
 ## On-Demand Guides
 
 Read these files when the task requires them — do not import by default:
@@ -74,7 +67,6 @@ Read these files when the task requires them — do not import by default:
 | Guide | Read when... |
 | ----- | ------------ |
 | `.claude/guides/components.md` | Building, modifying, or reviewing components |
-| `apps/blocks/COMPONENT_REFERENCE.md` | Looking up component props for block tree generation (registry subset only) |
 | Component `.types.ts` files | **Using UIID components in any code** — always read the component's types file before using props, variants, or sizes. Never guess. |
 | `.claude/guides/styling.md` | Working with styles, layout, CSS modules, or design tokens |
 | `.claude/guides/testing.md` | Writing or reviewing tests |
@@ -82,5 +74,4 @@ Read these files when the task requires them — do not import by default:
 | `.claude/guides/figma.md` | Building or inspecting Figma components |
 | `.claude/guides/pull-requests.md` | Creating a PR |
 | `.claude/guides/pull-reviews.md` | Reviewing a PR |
-| `apps/blocks/BLOCKS_GUIDE.md` | Working on the blocks app (tree format, rules, patterns) |
 | `apps/docs/DOCS_GUIDE.md` | Working on the documentation site |

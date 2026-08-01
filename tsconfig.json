@@ -23,7 +23,6 @@
   },
   "files": [],
   "references": [
-    { "path": "./packages/blocks" },
     { "path": "./packages/buttons" },
     { "path": "./packages/calendars" },
     { "path": "./packages/cards" },
@@ -35,10 +34,8 @@
     { "path": "./packages/interactive" },
     { "path": "./packages/layout" },
     { "path": "./packages/lists" },
-    { "path": "./packages/mcp" },
     { "path": "./packages/navigation" },
     { "path": "./packages/overlays" },
-    { "path": "./packages/registry" },
     { "path": "./packages/tables" },
     { "path": "./packages/themes" },
     { "path": "./packages/tokens" },

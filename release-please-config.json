@@ -10,7 +10,6 @@
       "include-v-in-tag": true,
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
-        { "type": "json", "path": "packages/blocks/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/buttons/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/calendars/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/cards/package.json", "jsonpath": "$.version" },
@@ -22,10 +21,8 @@
         { "type": "json", "path": "packages/interactive/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/layout/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/lists/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/mcp/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/navigation/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/overlays/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/registry/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/tables/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/themes/package.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/tokens/package.json", "jsonpath": "$.version" },
