@@ -1,7 +1,8 @@
 import { cva } from "@uiid/utils";
 
-import styles from "./code.module.css";
 import { DEFAULT_SHOW_LINE_NUMBERS } from "./code.constants";
+
+import styles from "./code.module.css";
 
 /** Shared typography for code components */
 export const codeTypographyVariant = cva({

@@ -1,8 +1,8 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-
 import { cx } from "@uiid/utils";
 
 import type { DialogBackdropProps } from "../dialog.types";
+
 import styles from "../dialog.module.css";
 
 export const DialogBackdrop = ({

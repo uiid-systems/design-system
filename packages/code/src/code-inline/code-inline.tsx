@@ -2,8 +2,9 @@
 
 import { cx } from "@uiid/utils";
 
-import type { CodeInlineProps } from "./code-inline.types";
 import { useHighlight } from "../highlighter/highlighter.hooks";
+import type { CodeInlineProps } from "./code-inline.types";
+
 import styles from "./code-inline.module.css";
 
 export const CodeInline = ({

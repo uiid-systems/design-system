@@ -1,12 +1,11 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-
 import { cx } from "@uiid/utils";
 
 import { inputVariants } from "../../input/input.variants";
+import type { SelectTriggerProps } from "../select.types";
+
 import inputStyles from "../../input/input.module.css";
 import styles from "../select.module.css";
-
-import type { SelectTriggerProps } from "../select.types";
 
 export const SelectTrigger = ({
   size,

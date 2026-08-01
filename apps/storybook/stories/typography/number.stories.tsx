@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Button,
@@ -7,8 +6,9 @@ import {
   Stack,
   type NumberProps,
 } from "@uiid/design-system";
-import * as Examples from "../../../../packages/typography/src/number/number.examples";
+import { useState } from "react";
 
+import * as Examples from "../../../../packages/typography/src/number/number.examples";
 import {
   variantControls,
   spacingControls,

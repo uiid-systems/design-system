@@ -1,7 +1,7 @@
 import path from "node:path";
-import { withCustomConfig, type PropItem } from "react-docgen-typescript";
 
 import { Stack, Table, Text } from "@uiid/design-system";
+import { withCustomConfig, type PropItem } from "react-docgen-typescript";
 
 const ROOT = path.resolve(process.cwd(), "../..");
 

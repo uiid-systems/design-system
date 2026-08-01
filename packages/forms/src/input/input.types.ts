@@ -1,9 +1,7 @@
 import type { Input } from "@base-ui/react/input";
-
 import type { VariantProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
-
 import { inputVariants } from "./input.variants";
 
 export type InputVariants = VariantProps<typeof inputVariants>;

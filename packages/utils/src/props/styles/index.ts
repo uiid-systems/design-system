@@ -1,8 +1,8 @@
 import type { PropCategory } from "../categories";
 import { togglePropKeys } from "../categories";
-
 import { b, bx, bl, br, by, bt, bb, borderPropKeys } from "./border";
 import { ax, ay, direction, layoutPropKeys } from "./layout";
+import { w, minw, maxw, h, minh, maxh, sizingPropKeys } from "./sizing";
 import {
   gap,
   m,
@@ -21,7 +21,6 @@ import {
   pb,
   spacingPropKeys,
 } from "./spacing";
-import { w, minw, maxw, h, minh, maxh, sizingPropKeys } from "./sizing";
 
 export const styleProps = {
   // border

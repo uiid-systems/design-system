@@ -1,16 +1,14 @@
 import { Image as TiptapImage } from "@tiptap/extension-image";
-import { ReactNodeViewRenderer } from "@tiptap/react";
 import { ReplaceStep } from "@tiptap/pm/transform";
+import { ReactNodeViewRenderer } from "@tiptap/react";
 
+import { filterFiles, randomId } from "../../rich-text-editor.utils";
 import type {
   CustomImageOptions,
   DownloadImageCommandProps,
 } from "./image.types";
-import { filterFiles, randomId } from "../../rich-text-editor.utils";
-
-import { ImageViewBlock } from "./subcomponents/image-view-block";
-
 import { downloadImage, copyImage, copyLink } from "./image.utils";
+import { ImageViewBlock } from "./subcomponents/image-view-block";
 
 declare module "@tiptap/react" {
   interface Commands<ReturnType> {

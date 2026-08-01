@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Heart } from "@uiid/icons";
 import { ToggleButton } from "@uiid/design-system";
+import { Heart } from "@uiid/icons";
 
 import * as Examples from "../../../../packages/buttons/src/toggle-button/toggle-button.examples";
 

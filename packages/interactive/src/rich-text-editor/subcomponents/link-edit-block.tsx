@@ -1,8 +1,7 @@
-import { useRef, useState, useCallback } from "react";
-
 import { Button } from "@uiid/buttons";
 import { Switch, Input } from "@uiid/forms";
 import { Stack, type StackProps } from "@uiid/layout";
+import { useRef, useState, useCallback } from "react";
 
 export type LinkEditorProps = StackProps & {
   defaultUrl?: string;

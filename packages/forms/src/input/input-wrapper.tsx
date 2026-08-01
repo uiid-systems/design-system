@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
+import type { ReactNode } from "react";
 
 import type { InputVariants } from "./input.types";
 import { inputVariants } from "./input.variants";
+
 import styles from "./input.module.css";
 
 type InputWrapperProps = {

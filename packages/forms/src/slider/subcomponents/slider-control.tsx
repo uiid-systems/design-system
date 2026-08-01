@@ -1,12 +1,11 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-
 import { Group } from "@uiid/layout";
 
-import styles from "../slider.module.css";
-
 import type { SliderControlProps } from "../slider.types";
+
+import styles from "../slider.module.css";
 
 export const SliderControl = ({ children, ...props }: SliderControlProps) => {
   return (

@@ -1,8 +1,7 @@
 "use client";
 
-import type { SwitchProps } from "./switch.types";
-
 import { SwitchRoot, SwitchThumb, SwitchField } from "./subcomponents";
+import type { SwitchProps } from "./switch.types";
 
 export const Switch = ({
   label,

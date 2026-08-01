@@ -1,12 +1,12 @@
 "use client";
 
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-
-import { Text } from "@uiid/typography";
 import { Card } from "@uiid/cards";
+import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { TooltipPopupProps } from "../tooltip.types";
+
 import styles from "../tooltip.module.css";
 
 export const TooltipPopup = ({

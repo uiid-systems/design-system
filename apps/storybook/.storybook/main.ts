@@ -1,7 +1,9 @@
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
 import { readdirSync, existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import type { StorybookConfig } from "@storybook/react-vite";
+
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {

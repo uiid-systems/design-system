@@ -1,6 +1,7 @@
 import { cva } from "@uiid/utils";
 
 import { badgeColorStyles } from "../badge/badge.variants";
+
 import styles from "./timeline.module.css";
 
 /** Palette color, shared by the root and per-item overrides. */

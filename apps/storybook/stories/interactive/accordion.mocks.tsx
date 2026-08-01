@@ -1,6 +1,5 @@
-import { Info } from "@uiid/icons";
-
 import type { AccordionItemData } from "@uiid/design-system";
+import { Info } from "@uiid/icons";
 
 export const MOCK_ITEMS: AccordionItemData[] = [
   {

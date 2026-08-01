@@ -1,12 +1,11 @@
 import type { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-
 import type { StackProps } from "@uiid/layout";
 
-import type { FieldProps } from "../field/field.types";
 import type {
   CheckboxProps,
   CheckboxIndicatorProps,
 } from "../checkbox/checkbox.types";
+import type { FieldProps } from "../field/field.types";
 import type { FormItemProps } from "../types";
 
 export type CheckboxGroupProps = {

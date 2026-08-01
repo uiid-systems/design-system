@@ -1,14 +1,14 @@
 import * as React from "react";
 
-import { useMaskPattern } from "./use-mask-pattern";
-import { useMaskValue } from "./use-mask-value";
-import { useMaskValidation, type ValidationMode } from "./use-mask-validation";
-import { useMaskHandlers } from "./use-mask-handlers";
 import type {
   InputElement,
   MaskPattern,
   MaskPatternKey,
 } from "../mask-input.types";
+import { useMaskHandlers } from "./use-mask-handlers";
+import { useMaskPattern } from "./use-mask-pattern";
+import { useMaskValidation, type ValidationMode } from "./use-mask-validation";
+import { useMaskValue } from "./use-mask-value";
 
 export interface UseMaskOptions {
   /** Predefined mask pattern key or custom mask pattern */

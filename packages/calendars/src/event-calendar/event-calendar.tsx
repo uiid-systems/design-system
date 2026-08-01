@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { addHours, addMonths, format, subMonths } from "date-fns";
-
 import { useToastManager } from "@uiid/overlays";
+import { addHours, addMonths, format, subMonths } from "date-fns";
+import { useState } from "react";
 
 import { EventCalendarDndProvider } from "./event-calendar.context";
 import type { CalendarEvent } from "./event-calendar.types";

@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { ToggleButton } from "@uiid/buttons";
+import * as React from "react";
 
 export type ToolbarButtonProps = React.ComponentProps<typeof ToggleButton> & {
   tooltip?: string;

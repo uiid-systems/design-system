@@ -1,8 +1,8 @@
-import { SwitchRender } from "./switch-render";
-import { Stack } from "../stack/stack";
-import { Group } from "../group/group";
 import { Box } from "../box/box";
 import type { BoxProps } from "../box/box.types";
+import { Group } from "../group/group";
+import { Stack } from "../stack/stack";
+import { SwitchRender } from "./switch-render";
 
 type ExampleBoxProps = BoxProps & {
   bg?: React.CSSProperties["backgroundColor"];

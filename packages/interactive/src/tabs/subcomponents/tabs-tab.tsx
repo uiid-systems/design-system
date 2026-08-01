@@ -1,8 +1,8 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-
 import { cx } from "@uiid/utils";
 
 import type { TabsTabProps } from "../tabs.types";
+
 import styles from "../tabs.module.css";
 
 export const TabsTab = ({ className, children, ...props }: TabsTabProps) => {

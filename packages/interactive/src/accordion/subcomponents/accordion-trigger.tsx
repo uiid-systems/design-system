@@ -1,7 +1,6 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-
 import { ChevronsUpDown } from "@uiid/icons";
 import { ConditionalRender, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
@@ -9,6 +8,7 @@ import { cx } from "@uiid/utils";
 
 import type { AccordionTriggerProps } from "../accordion.types";
 import { accordionTriggerVariants } from "../accordion.variants";
+
 import styles from "../accordion.module.css";
 
 export const AccordionTrigger = ({

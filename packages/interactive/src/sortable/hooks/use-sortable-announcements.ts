@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import type { Announcements, ScreenReaderInstructions } from "@dnd-kit/core";
+import * as React from "react";
 
 export interface UseSortableAnnouncementsOptions {
   /** The total number of items in the sortable list */

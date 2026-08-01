@@ -1,7 +1,6 @@
 "use client";
 
 import type { CheckboxProps } from "./checkbox.types";
-
 import {
   CheckboxRoot,
   CheckboxField,

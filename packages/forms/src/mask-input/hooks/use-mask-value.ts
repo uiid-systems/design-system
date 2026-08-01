@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { applyMask, getUnmaskedValue } from "../utils";
 import type {
   MaskPattern,
   MaskPatternKey,
   TransformOptions,
 } from "../mask-input.types";
+import { applyMask, getUnmaskedValue } from "../utils";
 
 export interface UseMaskValueOptions {
   /** The controlled value */

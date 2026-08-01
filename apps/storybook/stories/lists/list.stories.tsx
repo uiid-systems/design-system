@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { List } from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/lists/src/list/list.examples";

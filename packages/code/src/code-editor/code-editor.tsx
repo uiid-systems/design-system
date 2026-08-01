@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
-
 import { Stack, Layer } from "@uiid/layout";
 import { cx } from "@uiid/utils";
+import { useState, useCallback, useRef } from "react";
 
-import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodeBlockHeader } from "../code-block/subcomponents";
 import {
   DEFAULT_LANGUAGE,
@@ -14,8 +12,9 @@ import {
   DEFAULT_CODE,
 } from "../code.constants";
 import { codeTypographyVariant, shikiVariants } from "../code.variants";
-
+import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeEditorProps } from "./code-editor.types";
+
 import styles from "./code-editor.module.css";
 
 export const CodeEditor = ({

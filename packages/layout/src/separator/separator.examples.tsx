@@ -1,8 +1,8 @@
-import { Separator } from "./separator";
-import { Stack } from "../stack/stack";
-import { Group } from "../group/group";
 import { Box } from "../box/box";
 import type { BoxProps } from "../box/box.types";
+import { Group } from "../group/group";
+import { Stack } from "../stack/stack";
+import { Separator } from "./separator";
 import type { SeparatorProps } from "./separator.types";
 
 type ExampleBoxProps = BoxProps & {

@@ -1,12 +1,10 @@
 "use client";
 
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
-
 import { ConditionalRender, Stack, Group } from "@uiid/layout";
 
 import { Field } from "../field/field";
 import { Radio } from "../radio/radio";
-
 import type { RadioGroupProps } from "./radio-group.types";
 
 export const RadioGroup = ({

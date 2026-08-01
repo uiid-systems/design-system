@@ -1,6 +1,5 @@
 import { currencyAtEndCache, REGEX_CACHE } from "../mask-input.constants";
 import type { TransformOptions } from "../mask-input.types";
-
 import { getCachedFormatter } from "./get-cached-formatter";
 
 export function isCurrencyAtEnd(opts: TransformOptions): boolean {

@@ -1,10 +1,10 @@
 import type { StackProps } from "@uiid/layout";
 
-import type { BundledLanguage } from "../highlighter/highlighter.types";
 import type {
   CodeBlockHeaderProps,
   CodeBlockCopyButtonProps,
 } from "../code-block/code-block.types";
+import type { BundledLanguage } from "../highlighter/highlighter.types";
 
 export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /** The code content (controlled) */

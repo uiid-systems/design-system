@@ -1,6 +1,6 @@
-import { Group } from "./group";
 import { Box } from "../box/box";
 import type { BoxProps } from "../box/box.types";
+import { Group } from "./group";
 
 const GAP = 2;
 

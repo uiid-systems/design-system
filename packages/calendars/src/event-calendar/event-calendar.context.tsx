@@ -1,6 +1,5 @@
 "use client";
 
-import { useId, useReducer, useRef, type ReactNode } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -13,7 +12,12 @@ import {
   type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
+import { useId, useReducer, useRef, type ReactNode } from "react";
 
+import {
+  EventCalendarDndContext,
+  initialDragState,
+} from "./event-calendar.hooks";
 import type {
   CalendarEvent,
   DragStartData,
@@ -26,11 +30,6 @@ import {
   hasDateChanged,
   hasDateTimeChanged,
 } from "./event-calendar.utils";
-import {
-  EventCalendarDndContext,
-  initialDragState,
-} from "./event-calendar.hooks";
-
 import { EventDragOverlay } from "./subcomponents";
 
 // Props for the provider

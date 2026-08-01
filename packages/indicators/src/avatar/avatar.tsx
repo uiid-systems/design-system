@@ -1,7 +1,6 @@
 import { Stack, ConditionalRender } from "@uiid/layout";
 
 import type { AvatarProps } from "./avatar.types";
-
 import {
   AvatarContainer,
   AvatarLayers,

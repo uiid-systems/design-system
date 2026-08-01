@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Text, Stack } from "@uiid/design-system";
+import Link from "next/link";
 
 import {
   SidebarContainer,

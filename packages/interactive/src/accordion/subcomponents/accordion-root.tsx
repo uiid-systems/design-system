@@ -6,6 +6,7 @@ import { cx } from "@uiid/utils";
 
 import type { AccordionRootProps } from "../accordion.types";
 import { accordionRootVariants } from "../accordion.variants";
+
 import styles from "../accordion.module.css";
 
 export const AccordionRoot = ({

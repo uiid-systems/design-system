@@ -1,6 +1,5 @@
-import { Home, Star, Hammer, Bug, Ghost } from "@uiid/icons";
-
 import type { SelectItemProps } from "@uiid/design-system";
+import { Home, Star, Hammer, Bug, Ghost } from "@uiid/icons";
 
 export const MOCK_SELECT_ITEMS: SelectItemProps[] = [
   { label: "Select font", value: "", icon: Home, disabled: true },

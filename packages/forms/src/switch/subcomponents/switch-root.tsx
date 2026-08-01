@@ -1,10 +1,10 @@
 "use client";
 
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
-
 import { cx } from "@uiid/utils";
 
 import type { SwitchRootProps } from "../switch.types";
+
 import styles from "../switch.module.css";
 
 export const SwitchRoot = ({

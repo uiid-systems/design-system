@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
 
-import { Timeline } from "./timeline";
 import { TimelineItem } from "./subcomponents";
+import { Timeline } from "./timeline";
 import type { TimelineItemType } from "./timeline.types";
 
 const ITEMS: TimelineItemType[] = [

@@ -1,12 +1,11 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import { inputVariants } from "../../input/input.variants";
-import inputStyles from "../../input/input.module.css";
-
 import type { SelectValueProps } from "../select.types";
+
+import inputStyles from "../../input/input.module.css";
 import styles from "../select.module.css";
 
 export const SelectValue = ({

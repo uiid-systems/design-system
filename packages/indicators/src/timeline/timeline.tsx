@@ -1,8 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
+import { TimelineItem } from "./subcomponents";
 import { TimelineItemContext } from "./timeline.context";
 import type {
   TimelineProps,
@@ -11,9 +12,8 @@ import type {
 } from "./timeline.types";
 import { getItemStatus, mergeItemProps } from "./timeline.utils";
 import { timelineVariants } from "./timeline.variants";
-import styles from "./timeline.module.css";
 
-import { TimelineItem } from "./subcomponents";
+import styles from "./timeline.module.css";
 
 export function Timeline({
   items,

@@ -1,7 +1,6 @@
-import React from "react";
 import type { StoryObj } from "@storybook/react-vite";
-
 import typographyTokens from "@tokens/json/primitives/typography.tokens.json";
+import React from "react";
 
 const meta = {
   title: "Tokens/Primitives/Typography",

@@ -1,18 +1,18 @@
 "use client";
 
-import * as React from "react";
 import { Tooltip } from "@base-ui/react";
-
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
-import { SidebarContext } from "../sidebar.context";
-import { useIsMobile } from "../sidebar.hooks";
 import {
   SIDEBAR_COOKIE_NAME,
   SIDEBAR_COOKIE_MAX_AGE,
   SIDEBAR_KEYBOARD_SHORTCUT,
 } from "../sidebar.constants";
+import { SidebarContext } from "../sidebar.context";
+import { useIsMobile } from "../sidebar.hooks";
 import type { SidebarContextProps } from "../sidebar.types";
+
 import styles from "../sidebar.module.css";
 
 export function SidebarProvider({

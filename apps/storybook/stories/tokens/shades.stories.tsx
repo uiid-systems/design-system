@@ -1,8 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
-import { Stack, Group, Text } from "@uiid/design-system";
-
 import shadeTokens from "@tokens/json/semantic/shade.tokens.json";
+import { Stack, Group, Text } from "@uiid/design-system";
 
 /*
  * The neutral ladder. These are semantic aliases rather than primitives, which

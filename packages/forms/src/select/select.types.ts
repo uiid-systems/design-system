@@ -1,10 +1,8 @@
 import type { Select as BaseSelect } from "@base-ui/react/select";
-
 import type { Icon } from "@uiid/icons";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
-
 import type { FormItemProps } from "../types";
 
 /** Shared type for single/multiple select mode. Used by Combobox. */

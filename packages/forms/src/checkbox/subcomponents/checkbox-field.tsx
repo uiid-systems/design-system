@@ -9,9 +9,9 @@ import {
   FieldDescription,
   FieldError,
 } from "../../field/subcomponents";
-
 import type { CheckboxFieldProps } from "../checkbox.types";
 import { checkboxVariants } from "../checkbox.variants";
+
 import styles from "../checkbox.module.css";
 
 export const CheckboxField = ({

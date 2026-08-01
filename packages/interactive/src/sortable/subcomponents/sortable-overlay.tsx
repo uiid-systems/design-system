@@ -1,20 +1,21 @@
 "use client";
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {
   DragOverlay,
   type DropAnimation,
   defaultDropAnimationSideEffects,
 } from "@dnd-kit/core";
 import { cx } from "@uiid/utils";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
+import { OVERLAY_NAME } from "../sortable.constants";
 import {
   useSortableContext,
   SortableOverlayContext,
 } from "../sortable.context";
-import { OVERLAY_NAME } from "../sortable.constants";
 import type { SortableOverlayProps } from "../sortable.types";
+
 import styles from "../sortable.module.css";
 
 const dropAnimation: DropAnimation = {

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group, Field, Select } from "@uiid/design-system";
 import type { SelectProps } from "@uiid/design-system";
 import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
+
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {

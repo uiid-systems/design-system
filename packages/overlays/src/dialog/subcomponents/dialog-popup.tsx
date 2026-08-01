@@ -1,10 +1,10 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
-import { dialogVariants } from "../dialog.variants";
 import type { DialogPopupProps } from "../dialog.types";
+import { dialogVariants } from "../dialog.variants";
+
 import styles from "../dialog.module.css";
 
 /**

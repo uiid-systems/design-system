@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-
 import { cx } from "@uiid/utils";
+import { useMemo } from "react";
 
 import type { EventItemProps } from "../event-calendar.types";
 import {
@@ -10,7 +9,6 @@ import {
   formatTimeWithOptionalMinutes,
   getDisplayTimes,
 } from "../event-calendar.utils";
-
 import { EventWrapper } from "./event-wrapper";
 
 export type WeekDayEventProps = Omit<EventItemProps, "view"> & {

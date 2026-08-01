@@ -3,9 +3,7 @@
 import { ConditionalRender } from "@uiid/layout";
 
 import { Field } from "../field/field";
-
 import type { SliderProps } from "./slider.types";
-
 import {
   SliderRoot,
   SliderValue,

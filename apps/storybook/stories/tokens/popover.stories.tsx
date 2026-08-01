@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
 import popoverTokens from "@tokens/json/component/popover.tokens.json";
+
 import { TokenTable, SectionHeader } from "./subcomponents";
 import { flattenTokens } from "./utilities";
 

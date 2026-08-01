@@ -21,6 +21,7 @@ import {
   UserPlus,
   Wrench,
 } from "@uiid/icons";
+
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
 const meta = {

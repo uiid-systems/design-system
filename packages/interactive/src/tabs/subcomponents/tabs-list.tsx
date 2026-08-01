@@ -1,9 +1,9 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-
-import { cx } from "@uiid/utils";
 import { Group } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import type { TabsListProps } from "../tabs.types";
+
 import styles from "../tabs.module.css";
 
 export const TabsList = ({

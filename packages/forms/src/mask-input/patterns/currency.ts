@@ -3,8 +3,8 @@ import {
   DEFAULT_CURRENCY,
   DEFAULT_LOCALE,
 } from "../mask-input.constants";
-import { getCachedFormatter } from "../utils/get-cached-formatter";
 import type { MaskPattern } from "../mask-input.types";
+import { getCachedFormatter } from "../utils/get-cached-formatter";
 
 export const currencyPattern: MaskPattern = {
   pattern: "$###,###.##",

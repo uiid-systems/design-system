@@ -1,11 +1,11 @@
-import { cx } from "@uiid/utils";
 import { ConditionalRender, Group } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
-import type { ListItemProps } from "../list.types";
 import { ICON_SIZE_LARGE } from "../list.constants";
-import styles from "../list.module.css";
-
+import type { ListItemProps } from "../list.types";
 import { ListTextBlock } from "./list-text-block";
+
+import styles from "../list.module.css";
 
 export const ListItem = ({
   render,

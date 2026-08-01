@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 /*
  * Tokens are mostly generated CSS, but the palette ships as a tiny ES module

@@ -1,10 +1,11 @@
 "use client";
 
-import { Separator } from "react-resizable-panels";
 import { GripVertical } from "@uiid/icons";
 import { cx } from "@uiid/utils";
+import { Separator } from "react-resizable-panels";
 
 import type { ResizableHandleProps } from "../resizable.types";
+
 import styles from "../resizable.module.css";
 
 export const ResizableHandle = ({

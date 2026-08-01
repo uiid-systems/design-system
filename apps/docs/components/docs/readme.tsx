@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import ReactMarkdown, { type Components } from "react-markdown";
 
 import { CodeBlock, CodeInline, Prose } from "@uiid/design-system";
 import type { BundledLanguage } from "@uiid/design-system";
+import ReactMarkdown, { type Components } from "react-markdown";
 
 const ROOT = path.resolve(process.cwd(), "../..");
 

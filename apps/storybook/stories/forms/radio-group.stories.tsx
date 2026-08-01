@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, RadioGroup } from "@uiid/design-system";
 import type { RadioGroupProps } from "@uiid/design-system";
+
 import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
 
 const meta: Meta<RadioGroupProps> = {

@@ -1,7 +1,8 @@
-import { cx } from "@uiid/utils";
 import { Stack } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import type { CardThumbnailProps } from "../card.types";
+
 import styles from "../card.module.css";
 
 export const CardThumbnail = ({

@@ -1,8 +1,7 @@
-import { useState, useCallback, useMemo } from "react";
-
 import { EllipsisIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
+import { useState, useCallback, useMemo } from "react";
 
 import {
   MenuRoot,
@@ -12,7 +11,6 @@ import {
   MenuTrigger,
   MenuPortal,
 } from "../../../../";
-
 import { ActionButton } from "./action-button";
 import { ActionItems } from "./action-items";
 

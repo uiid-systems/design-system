@@ -5,7 +5,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 /**

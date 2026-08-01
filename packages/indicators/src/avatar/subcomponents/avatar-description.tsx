@@ -2,6 +2,7 @@ import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { AvatarDescriptionProps } from "../avatar.types";
+
 import styles from "../avatar.module.css";
 
 export const AvatarDescription = ({

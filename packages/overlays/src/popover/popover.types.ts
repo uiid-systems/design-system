@@ -1,5 +1,4 @@
 import type { Popover as BasePopover } from "@base-ui/react/popover";
-
 import type { CardProps } from "@uiid/cards";
 
 type PopoverCardProps = Pick<

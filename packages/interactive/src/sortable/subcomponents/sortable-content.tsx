@@ -2,11 +2,11 @@
 
 import { SortableContext } from "@dnd-kit/sortable";
 
+import { CONTENT_NAME } from "../sortable.constants";
 import {
   useSortableContext,
   SortableContentContext,
 } from "../sortable.context";
-import { CONTENT_NAME } from "../sortable.constants";
 import type { SortableContentProps } from "../sortable.types";
 
 export const SortableContent = ({

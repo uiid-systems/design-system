@@ -1,12 +1,10 @@
-import * as React from "react";
-
 import type {
   DragEndEvent,
   DragStartEvent,
   UniqueIdentifier,
 } from "@dnd-kit/core";
-
 import { arrayMove } from "@dnd-kit/sortable";
+import * as React from "react";
 
 export interface UseSortableHandlersOptions<T> {
   /** The array of items being sorted */

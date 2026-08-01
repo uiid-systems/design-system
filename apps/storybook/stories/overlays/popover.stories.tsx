@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { GlobeIcon } from "@uiid/icons";
 import { Stack, Popover } from "@uiid/design-system";
+import { GlobeIcon } from "@uiid/icons";
 
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",

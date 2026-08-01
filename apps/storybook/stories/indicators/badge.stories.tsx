@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Group, Badge } from "@uiid/design-system";
 
 const meta = {

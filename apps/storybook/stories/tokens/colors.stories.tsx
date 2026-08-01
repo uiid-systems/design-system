@@ -1,8 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
-import { Stack, Group, Text } from "@uiid/design-system";
-
 import colorTokens from "@tokens/json/primitives/colors.tokens.json";
+import { Stack, Group, Text } from "@uiid/design-system";
 
 /*
  * The ramps are hand-authored, so this story reads colors.tokens.json directly.

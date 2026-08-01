@@ -1,9 +1,8 @@
 import { ConditionalRender, Stack } from "@uiid/layout";
 
 import type { ListItemProps } from "../list.types";
-
-import { ListLabel } from "./list-label";
 import { ListDescription } from "./list-description";
+import { ListLabel } from "./list-label";
 
 type ListTextBlockProps = Pick<ListItemProps, "label" | "description">;
 

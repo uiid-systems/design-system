@@ -1,14 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
 import { ConditionalRender } from "@uiid/layout";
+import { useMemo } from "react";
 
 import { Field } from "../field/field";
-
 import { SELECT_DEFAULT_SIZE } from "./select.constants";
 import type { SelectProps } from "./select.types";
-import styles from "./select.module.css";
-
 import {
   SelectRoot,
   SelectTrigger,
@@ -20,6 +17,8 @@ import {
   SelectValue,
   SelectIndicator,
 } from "./subcomponents";
+
+import styles from "./select.module.css";
 
 export function Select<Value = string>({
   size = SELECT_DEFAULT_SIZE,

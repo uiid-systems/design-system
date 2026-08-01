@@ -4,12 +4,12 @@ import { cx } from "@uiid/utils";
 
 import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockHeaderProps } from "../code-block.types";
-import styles from "../code-block.module.css";
 import { LanguageIcon } from "../language-icons";
-
 import { CodeBlockCopyButton } from "./code-block-copy-button";
-import { CodeBlockWrapButton } from "./code-block-wrap-button";
 import { CodeBlockFullscreenButton } from "./code-block-fullscreen-button";
+import { CodeBlockWrapButton } from "./code-block-wrap-button";
+
+import styles from "../code-block.module.css";
 
 export const CodeBlockHeader = ({
   filename,

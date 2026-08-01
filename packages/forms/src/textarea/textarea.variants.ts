@@ -1,10 +1,11 @@
 import { cva } from "@uiid/utils";
 
-import styles from "./textarea.module.css";
 import {
   TEXTAREA_DEFAULT_SIZE,
   TEXTAREA_DEFAULT_RESIZE,
 } from "./textarea.constants";
+
+import styles from "./textarea.module.css";
 
 export const textareaVariants = cva({
   variants: {

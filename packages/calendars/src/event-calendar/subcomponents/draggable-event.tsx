@@ -1,14 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type {
   DragHandlePosition,
   DraggableEventProps,
 } from "../event-calendar.types";
-
 import { EventItem } from "./event-item";
 
 export const DraggableEvent = ({

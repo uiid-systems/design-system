@@ -1,10 +1,10 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-
 import { cx } from "@uiid/utils";
 
 import type { DialogViewportProps } from "../dialog.types";
+
 import styles from "../dialog.module.css";
 
 /**

@@ -1,14 +1,13 @@
 import type { BundledLanguage } from "../../highlighter/highlighter.types";
-
-import typescriptSvg from "./typescript-original.svg?raw";
-import javascriptSvg from "./javascript-original.svg?raw";
-import reactSvg from "./react-original.svg?raw";
-import pythonSvg from "./python-original.svg?raw";
-import html5Svg from "./html5-original.svg?raw";
-import css3Svg from "./css3-original.svg?raw";
-import jsonSvg from "./json-original.svg?raw";
 import bashSvg from "./bash-original.svg?raw";
+import css3Svg from "./css3-original.svg?raw";
+import html5Svg from "./html5-original.svg?raw";
+import javascriptSvg from "./javascript-original.svg?raw";
+import jsonSvg from "./json-original.svg?raw";
 import markdownSvg from "./markdown-original.svg?raw";
+import pythonSvg from "./python-original.svg?raw";
+import reactSvg from "./react-original.svg?raw";
+import typescriptSvg from "./typescript-original.svg?raw";
 
 type ParsedIcon = { viewBox: string; body: string };
 

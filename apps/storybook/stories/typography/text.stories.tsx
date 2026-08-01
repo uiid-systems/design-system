@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "@uiid/design-system";
-import * as Examples from "../../../../packages/typography/src/text/text.examples";
 
+import * as Examples from "../../../../packages/typography/src/text/text.examples";
 import { textControls } from "./constants";
 
 const meta = {

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button, Reveal, Stack, type RevealProps } from "@uiid/design-system";
-import * as Examples from "../../../../packages/typography/src/reveal/reveal.examples";
+import { useEffect, useRef, useState } from "react";
 
+import * as Examples from "../../../../packages/typography/src/reveal/reveal.examples";
 import {
   variantControls,
   spacingControls,

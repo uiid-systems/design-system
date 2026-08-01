@@ -5,6 +5,7 @@ import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import type { FieldLabelProps } from "../field.types";
+
 import styles from "../field.module.css";
 
 export const FieldLabel = ({

@@ -3,7 +3,6 @@
  * collide with our own part names, so they're reached through one namespace import.
  */
 import type * as BaseDrawer from "@base-ui/react/drawer";
-
 import type { CardProps } from "@uiid/cards";
 
 type DrawerCardProps = Pick<

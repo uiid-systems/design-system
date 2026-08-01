@@ -1,6 +1,5 @@
 import { currencySymbolsCache } from "../mask-input.constants";
 import type { CurrencySymbols, TransformOptions } from "../mask-input.types";
-
 import { getCachedFormatter } from "./get-cached-formatter";
 
 export function getCachedCurrencySymbols(

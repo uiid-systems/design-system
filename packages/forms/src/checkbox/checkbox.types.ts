@@ -1,5 +1,4 @@
 import type { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-
 import type { GroupProps } from "@uiid/layout";
 import type { VariantProps } from "@uiid/utils";
 
@@ -9,7 +8,6 @@ import type {
   FieldDescriptionProps,
   FieldErrorProps,
 } from "../field/field.types";
-
 import type { checkboxVariants } from "./checkbox.variants";
 
 export type CheckboxVariants = VariantProps<typeof checkboxVariants>;

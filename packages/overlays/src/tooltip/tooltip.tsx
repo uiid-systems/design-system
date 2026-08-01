@@ -1,6 +1,5 @@
 "use client";
 
-import type { TooltipProps } from "./tooltip.types";
 import {
   TooltipProvider,
   TooltipRoot,
@@ -9,6 +8,7 @@ import {
   TooltipPositioner,
   TooltipPopup,
 } from "./subcomponents";
+import type { TooltipProps } from "./tooltip.types";
 
 export const Tooltip = ({
   trigger,

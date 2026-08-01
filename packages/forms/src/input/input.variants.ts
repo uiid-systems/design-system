@@ -1,7 +1,8 @@
 import { cva } from "@uiid/utils";
 
-import styles from "./input.module.css";
 import { INPUT_DEFAULT_SIZE } from "./input.constants";
+
+import styles from "./input.module.css";
 
 export const inputVariants = cva({
   variants: {

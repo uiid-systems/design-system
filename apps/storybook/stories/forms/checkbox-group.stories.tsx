@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, CheckboxGroup } from "@uiid/design-system";
 import type { CheckboxGroupProps } from "@uiid/design-system";
+
 import { MOCK_CHECKBOXGROUP_OPTIONS } from "./checkbox-group.mocks";
 
 const meta = {

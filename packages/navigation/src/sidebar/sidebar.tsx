@@ -1,7 +1,6 @@
 "use client";
 
 import "@uiid/tokens/component/sidebar.tokens.css";
-
 import {
   SIDEBAR_DEFAULT_COLLAPSIBLE,
   SIDEBAR_DEFAULT_SIDE,
@@ -9,7 +8,6 @@ import {
 } from "./sidebar.constants";
 import { useSidebar } from "./sidebar.context";
 import type { SidebarProps } from "./sidebar.types";
-
 import {
   SidebarFooter,
   SidebarHeader,

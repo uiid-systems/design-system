@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Prose } from "@uiid/design-system";
+
 import * as Examples from "../../../../packages/typography/src/prose/prose.examples";
 
 const meta = {

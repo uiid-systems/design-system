@@ -1,5 +1,4 @@
 import type { Switch } from "@base-ui/react/switch";
-
 import type {
   FieldDescriptionProps,
   FieldLabelProps,

@@ -1,7 +1,6 @@
 import type { VariantProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
-
 import { textareaVariants } from "./textarea.variants";
 
 export type TextareaResize = "none" | "vertical" | "horizontal" | "both";

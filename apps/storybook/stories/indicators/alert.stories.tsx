@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Globe } from "@uiid/icons";
 import { Stack, Alert } from "@uiid/design-system";
+import { Globe } from "@uiid/icons";
 
 const meta = {
   title: "Indicators/Alert",

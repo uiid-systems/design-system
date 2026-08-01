@@ -1,5 +1,4 @@
 import type { Tabs } from "@base-ui/react/tabs";
-
 import type { LayerProps, StackProps } from "@uiid/layout";
 
 export type TabProps = {

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   List,
   Stack,
@@ -8,6 +7,7 @@ import {
   type ListItemOrGroup,
 } from "@uiid/design-system";
 import { SearchIcon } from "@uiid/icons";
+import Link from "next/link";
 
 import {
   SIDEBAR_WIDTH,

@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
 import buttonTokens from "@tokens/json/component/button.tokens.json";
+
 import { TokenTable, SectionHeader } from "./subcomponents";
 import {
   flattenTokens,

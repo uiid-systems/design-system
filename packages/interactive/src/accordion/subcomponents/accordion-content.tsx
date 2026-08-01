@@ -1,6 +1,7 @@
 import { Stack } from "@uiid/layout";
 
 import type { AccordionContentProps } from "../accordion.types";
+
 import styles from "../accordion.module.css";
 
 export const AccordionContent = ({

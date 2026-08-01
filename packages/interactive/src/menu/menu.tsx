@@ -3,7 +3,6 @@
 import { ChevronRightIcon } from "@uiid/icons";
 
 import type { MenuProps } from "./menu.types";
-
 import {
   MenuRoot,
   MenuTrigger,

@@ -1,9 +1,9 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import type { SelectPopupProps } from "../select.types";
+
 import styles from "../select.module.css";
 
 export const SelectPopup = ({

@@ -1,6 +1,5 @@
-import { memo } from "react";
-
 import { Group } from "@uiid/layout";
+import { memo } from "react";
 
 import styles from "../image.module.css";
 

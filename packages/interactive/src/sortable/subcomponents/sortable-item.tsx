@@ -1,20 +1,21 @@
 "use client";
 
-import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cx, useComposedRefs } from "@uiid/utils";
+import * as React from "react";
 
+import { CONTENT_NAME, ITEM_NAME, OVERLAY_NAME } from "../sortable.constants";
 import {
   SortableContentContext,
   SortableItemContext,
   SortableOverlayContext,
 } from "../sortable.context";
-import { CONTENT_NAME, ITEM_NAME, OVERLAY_NAME } from "../sortable.constants";
 import type {
   SortableItemProps,
   SortableItemContextValue,
 } from "../sortable.types";
+
 import styles from "../sortable.module.css";
 
 export const SortableItem = ({

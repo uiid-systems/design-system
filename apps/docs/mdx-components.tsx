@@ -1,6 +1,5 @@
-import type { MDXComponents } from "mdx/types";
-
 import { CodeInline, Stack, Text } from "@uiid/design-system";
+import type { MDXComponents } from "mdx/types";
 
 import { slugify } from "@/components/docs";
 

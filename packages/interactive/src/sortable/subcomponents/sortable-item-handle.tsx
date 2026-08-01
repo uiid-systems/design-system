@@ -2,9 +2,10 @@
 
 import { cx, useComposedRefs } from "@uiid/utils";
 
-import { useSortableItemContext } from "../sortable.context";
 import { ITEM_HANDLE_NAME } from "../sortable.constants";
+import { useSortableItemContext } from "../sortable.context";
 import type { SortableItemHandleProps } from "../sortable.types";
+
 import styles from "../sortable.module.css";
 
 export const SortableItemHandle = ({

@@ -1,11 +1,11 @@
 import { Button } from "@uiid/buttons";
-import { Group } from "@uiid/layout";
 import {
   Calendar,
   ChevronLeftIcon,
   ChevronRightIcon,
   type Icon,
 } from "@uiid/icons";
+import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import styles from "../event-calendar.module.css";

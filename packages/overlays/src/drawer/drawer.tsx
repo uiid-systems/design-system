@@ -1,7 +1,6 @@
 "use client";
 
 import type { DrawerProps } from "./drawer.types";
-
 import {
   DrawerRoot,
   DrawerTrigger,

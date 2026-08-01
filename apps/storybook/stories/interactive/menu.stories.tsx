@@ -1,9 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Menu } from "@uiid/design-system";
-import { ChevronRightIcon } from "@uiid/icons";
-
-import { MOCK_ITEMS } from "./menu.mocks";
-
 import {
   MenuRoot,
   MenuPopup,
@@ -14,6 +10,9 @@ import {
   SubmenuTrigger,
   MenuPositioner,
 } from "@uiid/design-system";
+import { ChevronRightIcon } from "@uiid/icons";
+
+import { MOCK_ITEMS } from "./menu.mocks";
 
 const meta: Meta<typeof Menu> = {
   title: "Interactive/Menu",

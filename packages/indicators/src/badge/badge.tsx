@@ -4,6 +4,7 @@ import { cx } from "@uiid/utils";
 
 import type { BadgeProps } from "./badge.types";
 import { badgeVariants } from "./badge.variants";
+
 import styles from "./badge.module.css";
 
 export const Badge = ({

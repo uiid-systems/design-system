@@ -1,12 +1,12 @@
 "use client";
 
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-
 import { CheckIcon, MinusIcon } from "@uiid/icons";
 import { SwitchRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { CheckboxIndicatorProps } from "../checkbox.types";
+
 import styles from "../checkbox.module.css";
 
 export const CheckboxIndicator = ({

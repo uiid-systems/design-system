@@ -1,9 +1,8 @@
 import type { Editor } from "@tiptap/react";
-import { useRef, useState, useCallback } from "react";
-
 import { Button } from "@uiid/buttons";
 import { Input } from "@uiid/forms";
 import { Group, Stack } from "@uiid/layout";
+import { useRef, useState, useCallback } from "react";
 
 interface ImageEditBlockProps {
   editor: Editor;

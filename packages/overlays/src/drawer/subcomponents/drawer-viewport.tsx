@@ -1,10 +1,10 @@
 "use client";
 
 import { DrawerPreview as BaseDrawer } from "@base-ui/react/drawer";
-
 import { cx } from "@uiid/utils";
 
 import type { DrawerViewportProps } from "../drawer.types";
+
 import styles from "../drawer.module.css";
 
 /**

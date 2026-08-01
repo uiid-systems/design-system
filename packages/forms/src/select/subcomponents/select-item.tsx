@@ -1,10 +1,10 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-
 import { CheckIcon } from "@uiid/icons";
 import { ListItem } from "@uiid/lists";
 
-import styles from "../select.module.css";
 import type { SelectItemProps } from "../select.types";
+
+import styles from "../select.module.css";
 
 export const SelectItem = ({
   value,

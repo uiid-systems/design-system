@@ -1,20 +1,20 @@
 "use client";
 
 import { Button as BaseButton } from "@base-ui/react/button";
-
 import { ConditionalRender, Layer } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
+import { BUTTON_DEFAULT_SIZE } from "./button.constants";
 import type { ButtonProps } from "./button.types";
-import styles from "./button.module.css";
+import { buttonVariants } from "./button.variants";
 import {
   ButtonSpinner,
   ButtonTooltipWrapper,
   ButtonContentContainer,
 } from "./subcomponents";
-import { buttonVariants } from "./button.variants";
-import { BUTTON_DEFAULT_SIZE } from "./button.constants";
+
+import styles from "./button.module.css";
 
 export const Button = ({
   tooltip,

@@ -1,7 +1,6 @@
 "use client";
 
 import type { AutocompleteProps } from "./autocomplete.types";
-
 import {
   AutocompleteRoot,
   AutocompleteInput,

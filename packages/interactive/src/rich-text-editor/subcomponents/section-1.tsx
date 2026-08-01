@@ -1,9 +1,8 @@
 import type { Editor } from "@tiptap/react";
-import { useMemo, useCallback } from "react";
-
 import { ChevronDownIcon, ALargeSmallIcon, type Icon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+import { useMemo, useCallback } from "react";
 
 import {
   MenuRoot,
@@ -13,11 +12,9 @@ import {
   MenuTrigger,
   MenuPositioner,
 } from "../../menu/subcomponents";
-
 import type { FormatAction } from "../rich-text-editor.types";
-
-import { ToolbarButton } from "./toolbar-button";
 import { ShortcutKey } from "./shortcut-key";
+import { ToolbarButton } from "./toolbar-button";
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 interface TextStyle extends Omit<

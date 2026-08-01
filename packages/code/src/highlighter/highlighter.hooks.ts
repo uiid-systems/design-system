@@ -2,12 +2,12 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
+import { getHighlighter, loadLanguage, highlight } from "./highlighter";
 import type {
   BundledLanguage,
   HighlightOptions,
   HighlightResult,
 } from "./highlighter.types";
-import { getHighlighter, loadLanguage, highlight } from "./highlighter";
 
 /**
  * Hook to access the shared highlighter instance

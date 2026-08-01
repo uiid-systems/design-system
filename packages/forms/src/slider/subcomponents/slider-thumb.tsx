@@ -1,10 +1,10 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-
 import { cx } from "@uiid/utils";
 
 import type { SliderThumbProps } from "../slider.types";
+
 import styles from "../slider.module.css";
 
 export const SliderThumb = ({ className, ...props }: SliderThumbProps) => {

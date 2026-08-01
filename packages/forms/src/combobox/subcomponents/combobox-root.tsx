@@ -3,7 +3,6 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 
 import type { SelectMultipleMode } from "../../select/select.types";
-
 import type { ComboboxRootProps } from "../combobox.types";
 
 export const ComboboxRoot = <

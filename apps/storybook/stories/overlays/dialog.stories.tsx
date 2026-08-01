@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { GlobeIcon } from "@uiid/icons";
 import { Stack, Dialog } from "@uiid/design-system";
+import { GlobeIcon } from "@uiid/icons";
 
 const meta: Meta<typeof Dialog> = {
   title: "Overlays/Dialog",

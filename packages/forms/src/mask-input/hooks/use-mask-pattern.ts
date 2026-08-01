@@ -7,12 +7,12 @@ import {
   DEFAULT_CURRENCY,
   DEFAULT_LOCALE,
 } from "../mask-input.constants";
-import { MASK_PATTERNS } from "../patterns";
 import type {
   MaskPattern,
   MaskPatternKey,
   TransformOptions,
 } from "../mask-input.types";
+import { MASK_PATTERNS } from "../patterns";
 
 export interface UseMaskPatternOptions {
   /** Predefined mask pattern key or custom mask pattern */

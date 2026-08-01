@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Globe } from "@uiid/icons";
 import { Card } from "@uiid/design-system";
+import { Globe } from "@uiid/icons";
+
 import * as Examples from "../../../../packages/cards/src/card/card.examples";
 
 const meta = {

@@ -1,5 +1,5 @@
-import type { GroupProps, StackProps } from "@uiid/layout";
 import type { ButtonProps, ToggleButtonProps } from "@uiid/buttons";
+import type { GroupProps, StackProps } from "@uiid/layout";
 
 import type { BundledLanguage } from "../highlighter/highlighter.types";
 import type { LanguageIconProps } from "./language-icons";

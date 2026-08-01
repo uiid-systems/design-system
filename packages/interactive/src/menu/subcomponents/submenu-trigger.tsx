@@ -1,9 +1,9 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { SubmenuTriggerProps } from "../menu.types";
+
 import styles from "../menu.module.css";
 
 export const SubmenuTrigger = ({

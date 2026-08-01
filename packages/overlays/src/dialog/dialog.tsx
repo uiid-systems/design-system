@@ -1,7 +1,6 @@
 "use client";
 
 import type { DialogProps } from "./dialog.types";
-
 import {
   DialogRoot,
   DialogTrigger,

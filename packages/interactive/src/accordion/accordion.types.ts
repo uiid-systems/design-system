@@ -1,8 +1,7 @@
 import type { Accordion } from "@base-ui/react/accordion";
-
 import type { CardProps } from "@uiid/cards";
-import type { StackProps } from "@uiid/layout";
 import type { Icon } from "@uiid/icons";
+import type { StackProps } from "@uiid/layout";
 import type { VariantProps } from "@uiid/utils";
 
 import type {

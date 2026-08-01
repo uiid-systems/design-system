@@ -1,11 +1,11 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import type { AutocompletePopupProps } from "../autocomplete.types";
+
 import styles from "../autocomplete.module.css";
 
 export const AutocompletePopup = ({

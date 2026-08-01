@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, DatePicker } from "@uiid/design-system";
 
 const meta = {

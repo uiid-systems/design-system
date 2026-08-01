@@ -1,11 +1,11 @@
 "use client";
 
 import { DrawerPreview as BaseDrawer } from "@base-ui/react/drawer";
-
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import type { DrawerPopupProps } from "../drawer.types";
+
 import styles from "../drawer.module.css";
 
 /**

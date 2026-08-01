@@ -1,7 +1,6 @@
 "use client";
 
 import { Field as BaseField } from "@base-ui/react/field";
-
 import { Stack } from "@uiid/layout";
 
 import type { FieldRootProps } from "../field.types";

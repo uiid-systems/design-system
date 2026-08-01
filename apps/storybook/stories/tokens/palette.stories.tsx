@@ -1,5 +1,4 @@
 import type { StoryObj } from "@storybook/react-vite";
-
 import {
   PALETTE_HUES,
   paletteColorStyles,

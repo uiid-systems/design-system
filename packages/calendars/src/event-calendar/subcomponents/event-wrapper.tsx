@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
 import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import { isPast } from "date-fns";
-
 import { Badge } from "@uiid/indicators";
 import { cx } from "@uiid/utils";
+import { isPast } from "date-fns";
+import React, { useMemo } from "react";
 
 import type { CalendarEvent } from "../event-calendar.types";
 

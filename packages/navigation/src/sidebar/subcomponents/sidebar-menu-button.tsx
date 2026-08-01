@@ -1,6 +1,7 @@
 import { cx } from "@uiid/utils";
 
 import { useSidebar } from "../sidebar.context";
+
 import styles from "./sidebar-menu-button.module.css";
 
 type SidebarMenuButtonProps = React.ComponentProps<"button"> & {

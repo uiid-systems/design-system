@@ -1,6 +1,12 @@
 import * as React from "react";
 
 import { CURRENCY_PERCENTAGE_SYMBOLS } from "../mask-input.constants";
+import type {
+  InputElement,
+  MaskPattern,
+  MaskPatternKey,
+  TransformOptions,
+} from "../mask-input.types";
 import {
   applyMask,
   fromUnmaskedIndex,
@@ -11,12 +17,6 @@ import {
   isCurrencyMask,
   toUnmaskedIndex,
 } from "../utils";
-import type {
-  InputElement,
-  MaskPattern,
-  MaskPatternKey,
-  TransformOptions,
-} from "../mask-input.types";
 
 export interface UseMaskHandlersOptions {
   /** Ref to the input element */

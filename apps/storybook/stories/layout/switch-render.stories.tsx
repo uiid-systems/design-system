@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwitchRender } from "@uiid/design-system";
-import * as Examples from "../../../../packages/layout/src/switch-render/switch-render.examples";
 
+import * as Examples from "../../../../packages/layout/src/switch-render/switch-render.examples";
 import { ExampleBox, disabledControls } from "./constants";
 
 const meta = {

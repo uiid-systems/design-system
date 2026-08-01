@@ -1,12 +1,12 @@
 "use client";
 
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-
 import { cx } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../checkbox.constants";
 import type { CheckboxRootProps } from "../checkbox.types";
 import { checkboxVariants } from "../checkbox.variants";
+
 import styles from "../checkbox.module.css";
 
 export const CheckboxRoot = ({

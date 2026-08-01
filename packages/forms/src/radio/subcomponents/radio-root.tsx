@@ -1,14 +1,13 @@
 "use client";
 
 import { Radio as BaseRadio } from "@base-ui/react/radio";
-
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../../checkbox/checkbox.constants";
 import { checkboxVariants } from "../../checkbox/checkbox.variants";
-
 import type { RadioRootProps } from "../radio.types";
+
 import styles from "../radio.module.css";
 
 export const RadioRoot = ({

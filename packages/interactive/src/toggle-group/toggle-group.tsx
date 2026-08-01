@@ -1,13 +1,13 @@
 "use client";
 
-import { Children, cloneElement, isValidElement, useState } from "react";
-import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
-
+import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
+import { Children, cloneElement, isValidElement, useState } from "react";
 
 import { useToggleIndicator } from "./toggle-group.hooks";
 import type { ToggleGroupProps } from "./toggle-group.types";
+
 import styles from "./toggle-group.module.css";
 
 export const ToggleGroup = ({

@@ -1,7 +1,6 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-
 import { List } from "@uiid/lists";
 
 import type { ComboboxListProps } from "../combobox.types";

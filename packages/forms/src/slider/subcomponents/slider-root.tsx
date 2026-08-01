@@ -1,14 +1,12 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-
+import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { Group } from "@uiid/layout";
-
+import { inputVariants } from "../../input/input.variants";
 import type { SliderRootProps } from "../slider.types";
 
-import { inputVariants } from "../../input/input.variants";
 import inputStyles from "../../input/input.module.css";
 
 export const SliderRoot = ({

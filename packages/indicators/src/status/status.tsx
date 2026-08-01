@@ -4,6 +4,7 @@ import { cx } from "@uiid/utils";
 
 import type { StatusProps } from "./status.types";
 import { statusVariants } from "./status.variants";
+
 import styles from "./status.module.css";
 
 export const Status = ({
