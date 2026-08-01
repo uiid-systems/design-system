@@ -1,10 +1,10 @@
-import { defineConfig, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig, type UserConfig } from "vite";
 import dts from "vite-plugin-dts";
+import tsconfigPaths from "vite-tsconfig-paths";
 
-import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
+import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
 
 type ViteConfigOptions = {
   /**

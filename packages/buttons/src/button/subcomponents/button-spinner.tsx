@@ -1,6 +1,7 @@
 import { LoadingSpinner } from "@uiid/icons";
 
 import type { ButtonSpinnerProps } from "../button.types";
+
 import styles from "../button.module.css";
 
 export const ButtonSpinner = ({ loading, ...props }: ButtonSpinnerProps) => {

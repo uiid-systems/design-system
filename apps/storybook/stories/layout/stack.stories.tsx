@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack } from "@uiid/design-system";
-import * as Examples from "../../../../packages/layout/src/stack/stack.examples";
 
+import * as Examples from "../../../../packages/layout/src/stack/stack.examples";
 import { ExampleBox, boxControls, EXAMPLE_LAYOUT_GAP } from "./constants";
 
 const meta = {

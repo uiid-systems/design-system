@@ -1,6 +1,6 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-
 import { Stack } from "@uiid/layout";
+
 import type { TabsRootProps } from "../tabs.types";
 
 export const TabsRoot = ({ children, ...props }: TabsRootProps) => {

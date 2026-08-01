@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Group, Text, useSidebar } from "@uiid/design-system";
 import type { ListProps } from "@uiid/design-system";
-import { Home, Heart, UserCircle } from "@uiid/icons";
-
 import {
   Sidebar,
   SidebarHeader,
@@ -13,6 +11,7 @@ import {
   SidebarFooter,
   SidebarProvider,
 } from "@uiid/design-system";
+import { Home, Heart, UserCircle } from "@uiid/icons";
 
 const MOCK_LINKS: ListProps["items"] = [
   {

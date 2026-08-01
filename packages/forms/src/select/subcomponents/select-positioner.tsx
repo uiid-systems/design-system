@@ -1,8 +1,8 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-
 import { cx } from "@uiid/utils";
 
 import type { SelectPositionerProps } from "../select.types";
+
 import styles from "../select.module.css";
 
 export const SelectPositioner = ({

@@ -1,5 +1,4 @@
 import type { EventItemProps } from "../event-calendar.types";
-
 import { AgendaEvent } from "./agenda-event";
 import { MonthEvent } from "./month-event";
 import { WeekDayEvent } from "./week-day-event";

@@ -1,7 +1,6 @@
 import type { Button as BaseButton } from "@base-ui/react/button";
-
-import type { GroupProps } from "@uiid/layout";
 import type { LoadingSpinnerProps } from "@uiid/icons";
+import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps } from "@uiid/utils";
 

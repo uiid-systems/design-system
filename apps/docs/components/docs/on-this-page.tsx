@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useMemo, useSyncExternalStore } from "react";
-
 import { List, Stack, Text } from "@uiid/design-system";
 import type { ListItemOrGroup } from "@uiid/design-system";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 type TocNode = {
   id: string;

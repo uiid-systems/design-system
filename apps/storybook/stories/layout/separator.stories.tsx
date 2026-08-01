@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Separator, Stack } from "@uiid/design-system";
-import * as Examples from "../../../../packages/layout/src/separator/separator.examples";
 
+import * as Examples from "../../../../packages/layout/src/separator/separator.examples";
 import {
   disabledControls,
   marginControls,

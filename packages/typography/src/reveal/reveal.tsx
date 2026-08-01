@@ -1,13 +1,12 @@
 import { Text } from "../text/text";
-
-import type { RevealProps } from "./reveal.types";
-
-import styles from "./reveal.module.css";
 import {
   REVEAL_DEFAULT_STAGGER,
   REVEAL_DEFAULT_DURATION,
   REVEAL_DEFAULT_BLUR,
 } from "./reveal.constants";
+import type { RevealProps } from "./reveal.types";
+
+import styles from "./reveal.module.css";
 
 /** Split keeping trailing whitespace attached so spans wrap like words. */
 const splitWords = (text: string) => (text ? text.split(/(?<=\s)/) : []);

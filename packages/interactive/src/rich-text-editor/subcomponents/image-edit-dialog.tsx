@@ -1,12 +1,10 @@
 import type { Editor } from "@tiptap/react";
-import { useState } from "react";
-
 import { ImageIcon } from "@uiid/icons";
 import { Dialog } from "@uiid/overlays";
-
-import { ToolbarButton } from "./toolbar-button";
+import { useState } from "react";
 
 import { ImageEditBlock } from "./image-edit-block";
+import { ToolbarButton } from "./toolbar-button";
 
 interface ImageEditDialogProps {
   editor: Editor;

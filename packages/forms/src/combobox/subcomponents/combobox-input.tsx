@@ -1,12 +1,11 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-
 import { cx } from "@uiid/utils";
 
 import { Input } from "../../input/input";
-
 import type { ComboboxInputProps } from "../combobox.types";
+
 import styles from "../combobox.module.css";
 
 export const ComboboxInput = ({
@@ -24,7 +23,14 @@ export const ComboboxInput = ({
       data-slot="combobox-input"
       name={name}
       render={
-        <Input name={name} label={label} description={description} before={before} after={after} fullwidth />
+        <Input
+          name={name}
+          label={label}
+          description={description}
+          before={before}
+          after={after}
+          fullwidth
+        />
       }
       className={cx(styles["combobox-input"], className)}
       placeholder={placeholder}

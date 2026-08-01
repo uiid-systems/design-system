@@ -6,6 +6,7 @@ import { Tooltip } from "@uiid/overlays";
 
 import { FIELD_TOOLTIP_DELAY } from "../field.constants";
 import type { FieldErrorProps } from "../field.types";
+
 import styles from "../field.module.css";
 
 export const FieldErrorTooltip = (props: FieldErrorProps) => {

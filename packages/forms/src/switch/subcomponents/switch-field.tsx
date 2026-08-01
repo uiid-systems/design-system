@@ -3,14 +3,14 @@
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import { checkboxVariants } from "../../checkbox/checkbox.variants";
 import {
   FieldRoot,
   FieldLabel,
   FieldDescription,
 } from "../../field/subcomponents";
-import { checkboxVariants } from "../../checkbox/checkbox.variants";
-
 import type { SwitchFieldProps } from "../switch.types";
+
 import styles from "../switch.module.css";
 
 export const SwitchField = ({

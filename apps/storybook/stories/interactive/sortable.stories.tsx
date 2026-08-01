@@ -1,23 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
-
-import {
-  Card,
-  Stack,
-  Group,
-  Text,
-  Sortable,
-} from "@uiid/design-system";
-import { GripVertical } from "@uiid/icons";
-
-import { VERTICAL_ITEMS, HORIZONTAL_ITEMS, GRID_ITEMS } from "./sortable.mocks";
-
+import { Card, Stack, Group, Text, Sortable } from "@uiid/design-system";
 import {
   SortableContent,
   SortableItem,
   SortableItemHandle,
   SortableOverlay,
 } from "@uiid/design-system";
+import { GripVertical } from "@uiid/icons";
+import { useState } from "react";
+
+import { VERTICAL_ITEMS, HORIZONTAL_ITEMS, GRID_ITEMS } from "./sortable.mocks";
 
 const meta = {
   title: "Interactive/Sortable",

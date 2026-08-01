@@ -1,7 +1,8 @@
 import { cva } from "@uiid/utils";
 
-import styles from "./accordion.module.css";
 import { ACCORDION_DEFAULT_SIZE } from "./accordion.constants";
+
+import styles from "./accordion.module.css";
 
 export const accordionTriggerVariants = cva({
   variants: {

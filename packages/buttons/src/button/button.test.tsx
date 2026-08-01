@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi } from "vitest";
+
 import { Button } from "./button";
 
 describe("Button", () => {
@@ -29,15 +30,12 @@ describe("Button", () => {
     },
   );
 
-  it.each(["subtle", "ghost"] as const)(
-    "applies variant=%s",
-    (variant) => {
-      render(<Button variant={variant}>x</Button>);
-      expect(screen.getByRole("button").className).toContain(
-        `variant-${variant}`,
-      );
-    },
-  );
+  it.each(["subtle", "ghost"] as const)("applies variant=%s", (variant) => {
+    render(<Button variant={variant}>x</Button>);
+    expect(screen.getByRole("button").className).toContain(
+      `variant-${variant}`,
+    );
+  });
 
   it.each(["pill", "square", "circle"] as const)(
     "applies shape=%s",

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
 
 import { CodeEditor } from "./code-editor";
 
@@ -17,14 +17,16 @@ describe("CodeEditor", () => {
 
   it("renders with data-slot attribute", () => {
     render(<CodeEditor defaultValue="const x = 1;" />);
-    expect(screen.getByRole("textbox").closest("[data-slot='code-editor']")).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox").closest("[data-slot='code-editor']"),
+    ).toBeInTheDocument();
   });
 
   it("applies custom className", () => {
     render(<CodeEditor defaultValue="const x = 1;" className="custom-class" />);
-    expect(screen.getByRole("textbox").closest("[data-slot='code-editor']")).toHaveClass(
-      "custom-class"
-    );
+    expect(
+      screen.getByRole("textbox").closest("[data-slot='code-editor']"),
+    ).toHaveClass("custom-class");
   });
 
   it("renders with placeholder", () => {
@@ -97,7 +99,7 @@ describe("CodeEditor", () => {
     render(<CodeEditor defaultValue="test" disabled />);
     await act(async () => {});
     expect(
-      screen.getByRole("textbox").closest("[data-slot='code-editor']")
+      screen.getByRole("textbox").closest("[data-slot='code-editor']"),
     ).toHaveAttribute("data-disabled");
   });
 
@@ -116,7 +118,11 @@ describe("CodeEditor", () => {
     const user = userEvent.setup();
 
     render(
-      <CodeEditor defaultValue="original" readOnly onValueChange={handleChange} />
+      <CodeEditor
+        defaultValue="original"
+        readOnly
+        onValueChange={handleChange}
+      />,
     );
 
     await user.type(screen.getByRole("textbox"), "new text");
@@ -134,7 +140,9 @@ describe("CodeEditor", () => {
   });
 
   it("does not render copy button when copyable is false", async () => {
-    render(<CodeEditor defaultValue="test" copyable={false} filename="test.ts" />);
+    render(
+      <CodeEditor defaultValue="test" copyable={false} filename="test.ts" />,
+    );
     await act(async () => {});
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });

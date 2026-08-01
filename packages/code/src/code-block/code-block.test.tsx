@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import { CodeBlock } from "./code-block";
 
 // Mock the highlighter module
@@ -37,13 +38,15 @@ describe("CodeBlock", () => {
 
   it("renders with data-slot attribute", () => {
     render(<CodeBlock code="const x = 1;" />);
-    expect(document.querySelector('[data-slot="code-block"]')).toBeInTheDocument();
+    expect(
+      document.querySelector('[data-slot="code-block"]'),
+    ).toBeInTheDocument();
   });
 
   it("applies custom className", () => {
     render(<CodeBlock code="const x = 1;" className="custom-class" />);
     expect(document.querySelector('[data-slot="code-block"]')).toHaveClass(
-      "custom-class"
+      "custom-class",
     );
   });
 
@@ -69,7 +72,7 @@ describe("CodeBlock", () => {
   it("always renders the wrap toggle", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(
-      document.querySelector('[data-slot="code-block-wrap-button"]')
+      document.querySelector('[data-slot="code-block-wrap-button"]'),
     ).toBeInTheDocument();
   });
 
@@ -109,14 +112,14 @@ describe("CodeBlock", () => {
   it("applies line numbers attribute when showLineNumbers is true", () => {
     render(<CodeBlock code="const x = 1;" showLineNumbers />);
     expect(
-      document.querySelector('[data-slot="code-block-content"]')
+      document.querySelector('[data-slot="code-block-content"]'),
     ).toHaveAttribute("data-line-numbers", "true");
   });
 
   it("does not apply line numbers attribute when showLineNumbers is false", () => {
     render(<CodeBlock code="const x = 1;" showLineNumbers={false} />);
     expect(
-      document.querySelector('[data-slot="code-block-content"]')
+      document.querySelector('[data-slot="code-block-content"]'),
     ).not.toHaveAttribute("data-line-numbers");
   });
 
@@ -125,7 +128,7 @@ describe("CodeBlock", () => {
   // ============================================
 
   it("uses pre-rendered HTML when provided", () => {
-    const customHtml = '<pre><code>custom html</code></pre>';
+    const customHtml = "<pre><code>custom html</code></pre>";
     render(<CodeBlock code="ignored" html={customHtml} />);
     expect(document.querySelector("code")).toHaveTextContent("custom html");
   });
@@ -136,9 +139,9 @@ describe("CodeBlock", () => {
 
   it("copy button has accessible name", () => {
     render(<CodeBlock code="const x = 1;" />);
-    expect(
-      screen.getByRole("button", { name: /copy/i })
-    ).toHaveAccessibleName(/copy/i);
+    expect(screen.getByRole("button", { name: /copy/i })).toHaveAccessibleName(
+      /copy/i,
+    );
   });
 
   it("copy button updates accessible name after copying", async () => {
@@ -160,14 +163,10 @@ describe("CodeBlock", () => {
   it("toggling the wrap button flips the content wrap attribute", async () => {
     const user = userEvent.setup();
     render(<CodeBlock code="const x = 1;" />);
-    const content = document.querySelector(
-      '[data-slot="code-block-content"]'
-    );
+    const content = document.querySelector('[data-slot="code-block-content"]');
     expect(content).not.toHaveAttribute("data-wrap");
 
-    await user.click(
-      screen.getByRole("button", { name: /toggle line wrap/i })
-    );
+    await user.click(screen.getByRole("button", { name: /toggle line wrap/i }));
     await waitFor(() => {
       expect(content).toHaveAttribute("data-wrap", "true");
     });
@@ -176,7 +175,7 @@ describe("CodeBlock", () => {
   it("respects defaultWrap=true on first render", () => {
     render(<CodeBlock code="const x = 1;" defaultWrap />);
     expect(
-      document.querySelector('[data-slot="code-block-content"]')
+      document.querySelector('[data-slot="code-block-content"]'),
     ).toHaveAttribute("data-wrap", "true");
   });
 
@@ -185,9 +184,7 @@ describe("CodeBlock", () => {
     const onWrapChange = vi.fn();
     render(<CodeBlock code="const x = 1;" onWrapChange={onWrapChange} />);
 
-    await user.click(
-      screen.getByRole("button", { name: /toggle line wrap/i })
-    );
+    await user.click(screen.getByRole("button", { name: /toggle line wrap/i }));
 
     await waitFor(() => {
       expect(onWrapChange).toHaveBeenCalledWith(true);
@@ -201,7 +198,7 @@ describe("CodeBlock", () => {
   it("always renders the fullscreen toggle", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(
-      document.querySelector('[data-slot="code-block-fullscreen-button"]')
+      document.querySelector('[data-slot="code-block-fullscreen-button"]'),
     ).toBeInTheDocument();
   });
 
@@ -209,16 +206,14 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     render(<CodeBlock code="const x = 1;" />);
 
-    await user.click(
-      screen.getByRole("button", { name: /enter fullscreen/i })
-    );
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
 
     await waitFor(() => {
       expect(
-        document.querySelector('[data-slot="code-block-fullscreen"]')
+        document.querySelector('[data-slot="code-block-fullscreen"]'),
       ).toBeInTheDocument();
       expect(
-        document.querySelector('[data-slot="code-block"]')
+        document.querySelector('[data-slot="code-block"]'),
       ).toHaveAttribute("data-fullscreen", "true");
     });
   });
@@ -227,19 +222,17 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     render(<CodeBlock code="const x = 1;" />);
 
-    await user.click(
-      screen.getByRole("button", { name: /enter fullscreen/i })
-    );
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
     await waitFor(() => {
       expect(
-        document.querySelector('[data-slot="code-block-fullscreen"]')
+        document.querySelector('[data-slot="code-block-fullscreen"]'),
       ).toBeInTheDocument();
     });
 
     await user.keyboard("{Escape}");
     await waitFor(() => {
       expect(
-        document.querySelector('[data-slot="code-block-fullscreen"]')
+        document.querySelector('[data-slot="code-block-fullscreen"]'),
       ).not.toBeInTheDocument();
     });
   });
@@ -248,12 +241,10 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     const onFullscreenChange = vi.fn();
     render(
-      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />
+      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />,
     );
 
-    await user.click(
-      screen.getByRole("button", { name: /enter fullscreen/i })
-    );
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
 
     await waitFor(() => {
       expect(onFullscreenChange).toHaveBeenCalledWith(true);
@@ -274,7 +265,7 @@ describe("CodeBlock", () => {
   it("does not render a language icon when language is not explicitly set", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(
-      document.querySelector('[data-slot="language-icon"]')
+      document.querySelector('[data-slot="language-icon"]'),
     ).not.toBeInTheDocument();
   });
 

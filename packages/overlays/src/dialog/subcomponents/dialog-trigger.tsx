@@ -1,9 +1,9 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import { cx } from "@uiid/utils";
 import { isValidElement } from "react";
 
-import { cx } from "@uiid/utils";
-
 import type { DialogTriggerProps } from "../dialog.types";
+
 import styles from "../dialog.module.css";
 
 export const DialogTrigger = ({

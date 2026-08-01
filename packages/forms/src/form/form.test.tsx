@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi } from "vitest";
 
-import { Form } from "./form";
 import { Input } from "../input/input";
+import { Form } from "./form";
 import { useFormState } from "./hooks/use-form-state";
 
 // Helper component for testing form with native form submission

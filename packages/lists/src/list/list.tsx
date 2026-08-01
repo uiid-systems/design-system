@@ -1,9 +1,10 @@
 import { Stack } from "@uiid/layout";
 
-import type { ListProps } from "./list.types";
 import { LIST_DEFAULT_MARKER } from "./list.constants";
-import styles from "./list.module.css";
+import type { ListProps } from "./list.types";
 import { ListItem, ListGroup, ListGroupHeader } from "./subcomponents";
+
+import styles from "./list.module.css";
 
 export const List = ({
   marker = LIST_DEFAULT_MARKER,
@@ -29,7 +30,11 @@ export const List = ({
       {items
         ? items.map((item, index) =>
             "items" in item ? (
-              <ListGroup key={item.category ?? index} {...item} {...GroupProps} />
+              <ListGroup
+                key={item.category ?? index}
+                {...item}
+                {...GroupProps}
+              />
             ) : (
               <ListItem key={index} fullwidth {...item} {...ItemProps} />
             ),

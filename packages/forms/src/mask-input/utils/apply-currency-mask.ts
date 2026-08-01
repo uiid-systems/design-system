@@ -1,5 +1,4 @@
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "../mask-input.constants";
-
 import { getCachedCurrencySymbols } from "./get-cached-currency-symbols";
 import { getCachedFormatter } from "./get-cached-formatter";
 

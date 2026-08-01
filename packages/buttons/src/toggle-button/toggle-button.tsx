@@ -3,7 +3,6 @@
 import { Toggle } from "@base-ui/react/toggle";
 
 import { Button } from "../button/button";
-
 import type { ButtonProps } from "../button/button.types";
 import type { ToggleButtonProps } from "./toggle-button.types";
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useDroppable, type UniqueIdentifier } from "@dnd-kit/core";
-
 import { Stack, type StackProps } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 

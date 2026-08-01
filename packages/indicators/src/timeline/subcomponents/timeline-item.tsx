@@ -7,13 +7,13 @@ import { ITEM_NAME } from "../timeline.constants";
 import { useTimelineItemContext } from "../timeline.context";
 import type { TimelineItemProps } from "../timeline.types";
 import { timelineItemVariants, timelineVariants } from "../timeline.variants";
-import styles from "../timeline.module.css";
-
-import { TimelineMedia } from "./timeline-media";
-import { TimelineMarker } from "./timeline-marker";
 import { TimelineConnector } from "./timeline-connector";
 import { TimelineContent } from "./timeline-content";
+import { TimelineMarker } from "./timeline-marker";
+import { TimelineMedia } from "./timeline-media";
 import { TimelineTime } from "./timeline-time";
+
+import styles from "../timeline.module.css";
 
 export const TimelineItem = ({
   title,

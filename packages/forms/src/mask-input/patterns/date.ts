@@ -19,18 +19,11 @@ export const datePattern: MaskPattern = {
     const currentYear = new Date().getFullYear();
     const minYear = currentYear - PAST_YEARS_LIMIT;
     const maxYear = currentYear + FUTURE_YEARS_LIMIT;
-    if (
-      month < 1 ||
-      month > 12 ||
-      day < 1 ||
-      year < minYear ||
-      year > maxYear
-    )
+    if (month < 1 || month > 12 || day < 1 || year < minYear || year > maxYear)
       return false;
 
     const maxDays =
-      month === 2 &&
-      ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
+      month === 2 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
         ? 29
         : (daysInMonthCache[month - 1] ?? 31);
 

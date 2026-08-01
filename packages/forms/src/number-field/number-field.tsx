@@ -1,21 +1,19 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-
 import { ConditionalRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
 import { Input } from "../input/input";
-
+import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
+import type { NumberFieldProps } from "./number-field.types";
 import {
   NumberFieldRoot,
   NumberFieldIncrement,
   NumberFieldDecrement,
 } from "./subcomponents";
 
-import type { NumberFieldProps } from "./number-field.types";
-import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import styles from "./number-field.module.css";
 
 /**

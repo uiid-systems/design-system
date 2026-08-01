@@ -3,7 +3,6 @@
  * collide with our own part names, so they're reached through one namespace import.
  */
 import type * as BaseDrawer from "@base-ui/react/drawer";
-
 import type { CardProps } from "@uiid/cards";
 
 type DrawerCardProps = Pick<
@@ -25,7 +24,8 @@ export type DrawerCloseProps = BaseDrawer.DrawerClose.Props;
 export type DrawerTitleProps = BaseDrawer.DrawerTitle.Props;
 export type DrawerDescriptionProps = BaseDrawer.DrawerDescription.Props;
 
-export type DrawerSwipeDirection = BaseDrawer.DrawerRoot.Props["swipeDirection"];
+export type DrawerSwipeDirection =
+  BaseDrawer.DrawerRoot.Props["swipeDirection"];
 export type DrawerSnapPoint = BaseDrawer.DrawerRoot.SnapPoint;
 
 export type DrawerPopupProps = Omit<BaseDrawer.DrawerPopup.Props, "title"> &

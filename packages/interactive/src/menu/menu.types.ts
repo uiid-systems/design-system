@@ -1,5 +1,4 @@
 import type { Menu as BaseMenu } from "@base-ui/react/menu";
-
 import type { Icon } from "@uiid/icons";
 
 export type MenuItemType = {

@@ -65,7 +65,7 @@ const items = [
   { value: "tools", label: "Tools", icon: Hammer },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ### With Descriptions
@@ -74,10 +74,14 @@ const items = [
 const items = [
   { value: "basic", label: "Basic", description: "For individuals" },
   { value: "pro", label: "Pro", description: "For teams" },
-  { value: "enterprise", label: "Enterprise", description: "For organizations" },
+  {
+    value: "enterprise",
+    label: "Enterprise",
+    description: "For organizations",
+  },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ### Sizes
@@ -93,7 +97,7 @@ const items = [
 ```tsx
 const [value, setValue] = useState("react");
 
-<Select items={items} defaultValue={value} onValueChange={setValue} />
+<Select items={items} defaultValue={value} onValueChange={setValue} />;
 ```
 
 ### Disabled Items
@@ -105,24 +109,24 @@ const items = [
   { value: "c", label: "Option C" },
 ];
 
-<Select items={items} />
+<Select items={items} />;
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `defaultValue` | `string` | — | — |
-| `description` | `string` | — | — |
-| `disabled` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `ghost` | `boolean` | — | — |
-| `items` | `object[]` | — | — |
-| `label` | `string` | — | — |
-| `placeholder` | `string` | — | — |
-| `required` | `boolean` | — | — |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
-| `value` | `string` | — | — |
+| Prop           | Type                             | Default    | Description |
+| -------------- | -------------------------------- | ---------- | ----------- |
+| `defaultValue` | `string`                         | —          | —           |
+| `description`  | `string`                         | —          | —           |
+| `disabled`     | `boolean`                        | —          | —           |
+| `fullwidth`    | `boolean`                        | —          | —           |
+| `ghost`        | `boolean`                        | —          | —           |
+| `items`        | `object[]`                       | —          | —           |
+| `label`        | `string`                         | —          | —           |
+| `placeholder`  | `string`                         | —          | —           |
+| `required`     | `boolean`                        | —          | —           |
+| `size`         | `"small" \| "medium" \| "large"` | `"medium"` | —           |
+| `value`        | `string`                         | —          | —           |
 
 ### SelectItemProps
 
@@ -139,16 +143,28 @@ type SelectItemProps = {
 ## Anatomy
 
 ```tsx
-<SelectRoot>              {/* Provider */}
-  <SelectTrigger>         {/* Trigger button */}
-    <SelectValue />       {/* Display selected value */}
-    <SelectIcon />        {/* Chevron icon */}
+<SelectRoot>
+  {" "}
+  {/* Provider */}
+  <SelectTrigger>
+    {" "}
+    {/* Trigger button */}
+    <SelectValue /> {/* Display selected value */}
+    <SelectIcon /> {/* Chevron icon */}
   </SelectTrigger>
-  <SelectPortal>          {/* Portal wrapper */}
-    <SelectPositioner>    {/* Positioning */}
-      <SelectPopup>       {/* Popup container */}
-        <SelectList>      {/* List wrapper */}
-          <SelectItem />  {/* Individual items */}
+  <SelectPortal>
+    {" "}
+    {/* Portal wrapper */}
+    <SelectPositioner>
+      {" "}
+      {/* Positioning */}
+      <SelectPopup>
+        {" "}
+        {/* Popup container */}
+        <SelectList>
+          {" "}
+          {/* List wrapper */}
+          <SelectItem /> {/* Individual items */}
         </SelectList>
       </SelectPopup>
     </SelectPositioner>
@@ -158,24 +174,24 @@ type SelectItemProps = {
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `SelectRoot` | Root provider component |
-| `SelectTrigger` | The trigger button |
-| `SelectValue` | Displays selected value |
-| `SelectIcon` | Chevron indicator |
-| `SelectPopup` | Popup container |
-| `SelectList` | List container |
-| `SelectItem` | Individual option item |
+| Component       | Description             |
+| --------------- | ----------------------- |
+| `SelectRoot`    | Root provider component |
+| `SelectTrigger` | The trigger button      |
+| `SelectValue`   | Displays selected value |
+| `SelectIcon`    | Chevron indicator       |
+| `SelectPopup`   | Popup container         |
+| `SelectList`    | List container          |
+| `SelectItem`    | Individual option item  |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot             | Element            |
+| ---------------- | ------------------ |
 | `select-trigger` | The trigger button |
-| `select-value` | The value display |
-| `select-icon` | The chevron icon |
-| `select-item` | Each option item |
+| `select-value`   | The value display  |
+| `select-icon`    | The chevron icon   |
+| `select-item`    | Each option item   |
 
 ## Accessibility
 

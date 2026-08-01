@@ -5,6 +5,7 @@ import { cx } from "@uiid/utils";
 
 import type { ProgressProps } from "./progress.types";
 import { progressVariants } from "./progress.variants";
+
 import styles from "./progress.module.css";
 
 export const Progress = ({

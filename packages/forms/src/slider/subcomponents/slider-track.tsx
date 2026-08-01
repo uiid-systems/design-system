@@ -1,12 +1,11 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-
 import { cx } from "@uiid/utils";
 
-import styles from "../slider.module.css";
-
 import type { SliderTrackProps } from "../slider.types";
+
+import styles from "../slider.module.css";
 
 export const SliderTrack = ({
   children,

@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Stack } from "@uiid/design-system";
+import type { Metadata } from "next";
 
 import { Markdown } from "@/components/docs";
 

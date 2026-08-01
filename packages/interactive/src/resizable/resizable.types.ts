@@ -4,8 +4,10 @@ import type {
   SeparatorProps,
 } from "react-resizable-panels";
 
-export interface ResizableProps
-  extends Omit<GroupProps, "orientation" | "children"> {
+export interface ResizableProps extends Omit<
+  GroupProps,
+  "orientation" | "children"
+> {
   /** Layout direction of the panels */
   direction: "horizontal" | "vertical";
   /** Panel group children (ResizablePanel and ResizableHandle components) */
@@ -21,8 +23,7 @@ export interface ResizablePanelProps extends PanelProps {
   children?: React.ReactNode;
 }
 
-export interface ResizableHandleProps
-  extends Omit<SeparatorProps, "children"> {
+export interface ResizableHandleProps extends Omit<SeparatorProps, "children"> {
   /** Show a visible grip indicator */
   withHandle?: boolean;
   /** Disable the handle */

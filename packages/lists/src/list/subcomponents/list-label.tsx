@@ -1,5 +1,5 @@
-import { cx } from "@uiid/utils";
 import { Text, type TextProps } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 
 import styles from "../list.module.css";
 

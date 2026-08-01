@@ -11,7 +11,7 @@ actioned first (`Modal` → `Dialog`, `Sheet` → a Base UI `Drawer`); see 7.8.
 **D1–D4 and D6–D8 are resolved.** Only **D5** (TooltipPopup's inline colors)
 remains.
 
-Sections 1–6 describe the state *as found* and cite pre-rename paths; they are
+Sections 1–6 describe the state _as found_ and cite pre-rename paths; they are
 kept as the record of why.
 **Revisit:** A1–A5 and 7.10, now that the docs/stories/examples layer is in place.
 
@@ -22,13 +22,13 @@ kept as the record of why.
 The treated packages converge on one contract. A component is fully treated when
 all five exist:
 
-| Artifact | Path | Consumed by |
-| --- | --- | --- |
-| Authored README | `packages/{pkg}/src/{c}/README.md` | docs `<Readme of>`, Storybook `<Markdown>` |
-| Examples module | `packages/{pkg}/src/{c}/{c}.examples.tsx` | docs `<Example of name>`, Storybook stories |
-| Docgen surface | `packages/{pkg}/src/{c}/{c}.tsx` | docs `<PropsTable of>`, Storybook `<Controls>` |
-| Storybook MDX | `apps/storybook/stories/{pkg}/{c}.mdx` + `.stories.tsx` | Storybook |
-| Docs route | `apps/docs/app/(components)/{pkg}/{c}/page.mdx` + `sitemap.ts` entry | docs site |
+| Artifact        | Path                                                                 | Consumed by                                    |
+| --------------- | -------------------------------------------------------------------- | ---------------------------------------------- |
+| Authored README | `packages/{pkg}/src/{c}/README.md`                                   | docs `<Readme of>`, Storybook `<Markdown>`     |
+| Examples module | `packages/{pkg}/src/{c}/{c}.examples.tsx`                            | docs `<Example of name>`, Storybook stories    |
+| Docgen surface  | `packages/{pkg}/src/{c}/{c}.tsx`                                     | docs `<PropsTable of>`, Storybook `<Controls>` |
+| Storybook MDX   | `apps/storybook/stories/{pkg}/{c}.mdx` + `.stories.tsx`              | Storybook                                      |
+| Docs route      | `apps/docs/app/(components)/{pkg}/{c}/page.mdx` + `sitemap.ts` entry | docs site                                      |
 
 The key property: **examples are written once in the package and rendered by both
 surfaces.** `apps/docs` and `apps/storybook` are both thin consumers. Docs pages
@@ -37,13 +37,13 @@ resolve everything by path convention from the `of="pkg/component"` string
 
 ## 2. Parity matrix
 
-| | README | examples | stories | story MDX | overview MDX | docs route | tests |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| layout (7) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| typography (4) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| cards (1) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| lists (1) | authored | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **overlays (5)** | ~~generated~~ **authored** | ~~❌~~ **✅** | ~~minimal~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** | ✅ |
+|                  |           README           |   examples    |      stories       |   story MDX   | overview MDX  |  docs route   | tests |
+| ---------------- | :------------------------: | :-----------: | :----------------: | :-----------: | :-----------: | :-----------: | :---: |
+| layout (7)       |          authored          |      ✅       |         ✅         |      ✅       |      ✅       |      ✅       |  ✅   |
+| typography (4)   |          authored          |      ✅       |         ✅         |      ✅       |      ✅       |      ✅       |  ✅   |
+| cards (1)        |          authored          |      ✅       |         ✅         |      ✅       |      ✅       |      ✅       |  ❌   |
+| lists (1)        |          authored          |      ✅       |         ✅         |      ✅       |      ✅       |      ✅       |  ❌   |
+| **overlays (5)** | ~~generated~~ **authored** | ~~❌~~ **✅** | ~~minimal~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** | ~~❌~~ **✅** |  ✅   |
 
 Struck-through cells are the state as found; overlays now meets the contract in
 full. What follows describes the original state and why each gap mattered.
@@ -57,7 +57,7 @@ of tests, but it is only a Dialog styled to slide from an edge. Base UI 1.2.0 no
 ships a real `drawer` primitive, so Sheet is being rebuilt on it **under the Base
 UI name** — see §7.
 
-The component removed on this branch (PR #277) was a *different* Drawer, built on
+The component removed on this branch (PR #277) was a _different_ Drawer, built on
 `vaul` and carrying an explicit `@deprecated Vaul is currently abandoned. Also
 uses Radix instead of Base UI.` No `vaul` references remain. The incoming
 `Drawer` shares nothing with it but the word.
@@ -141,7 +141,7 @@ that reads as intentional.
 - **The only real consumer is unrelated.**
   `packages/code/src/code-block/code-block.module.css:101`.
 
-Sheet also assigns the *same* z-index to backdrop and popup, so even once the
+Sheet also assigns the _same_ z-index to backdrop and popup, so even once the
 name is fixed the popup isn't guaranteed to paint above its own backdrop. There
 is no layering scale anywhere — this wants one token set (backdrop / popup /
 toast) rather than a single backdrop value.
@@ -149,7 +149,7 @@ toast) rather than a single backdrop value.
 ### D4 — `children` is passed twice in Modal and Popover popups
 
 `ModalPopup` and `PopoverPopup` both pass `children` into the `render={<Card>}`
-element *and* as JSX children of the Base UI popup
+element _and_ as JSX children of the Base UI popup
 (`modal/subcomponents/modal.popup.tsx:22-37`,
 `popover/subcomponents/popover-popup.tsx:17-35`). Base UI's merge order makes one
 of them dead. Ambiguous at best; should be reduced to a single path.
@@ -169,7 +169,7 @@ Examples / Props / Anatomy / Data Slots / Accessibility / See Also`, with a
 Card's README is authored prose with no Props table, because docs and Storybook
 render props from docgen.
 
-Consequence: an overlays docs page rendering `<Readme>` *and* `<PropsTable>`
+Consequence: an overlays docs page rendering `<Readme>` _and_ `<PropsTable>`
 shows props **twice** — once stale and `any`-typed, once real.
 
 **Resolved.** All five READMEs are rewritten in the treated voice — a blockquote,
@@ -220,16 +220,16 @@ in `sheet-popup.tsx:31`. So the styling exists in two places and the CSS one is
 inert.
 
 `.sheet-popup` also redeclares `background-color: var(--shade-surface)` and
-`color: var(--shade-foreground)`, which `Card` already provides — Sheet *does*
+`color: var(--shade-foreground)`, which `Card` already provides — Sheet _does_
 render through `Card` (`sheet-popup.tsx:25-33`), so these are redundant.
 
 Separately, `SheetPopup` is the only sheet part with **no `data-slot`** — root,
 trigger, portal, backdrop, and close all set one. The README documents only
 `sheet-backdrop`.
 
-*(Cross-links are fine: `modal/README.md` → `../sheet/README.md` resolves, and the
+_(Cross-links are fine: `modal/README.md` → `../sheet/README.md` resolves, and the
 registry's `sheet` entry is still valid. The `drawer` registry entry and token
-file were removed cleanly with the component.)*
+file were removed cleanly with the component.)_
 
 ### D9 — Referenced docs that don't exist
 
@@ -254,7 +254,7 @@ Arguments against:
 - **Structure is fixed.** You cannot omit the backdrop, reorder parts, put two
   triggers on one popup, or render anything between positioner and popup.
 - **It documents badly.** A props table of six opaque `*Props` bags typed as
-  `ModalRootProps` teaches nothing, and D1 means the props that *do* matter are
+  `ModalRootProps` teaches nothing, and D1 means the props that _do_ matter are
   missing. Base UI's own docs are per-part for this reason.
 - **It's unlike its own subcomponents.** The parts already exist and are already
   composable — they're just not all exported (see A2).
@@ -262,8 +262,8 @@ Arguments against:
   transfer to our users.
 
 Note that Card uses the same slot-props idiom, so this is a house pattern, not an
-accident. The honest framing: the pattern suits *content* components (Card) better
-than *structural* ones (overlays), because overlay composition varies more.
+accident. The honest framing: the pattern suits _content_ components (Card) better
+than _structural_ ones (overlays), because overlay composition varies more.
 
 Not proposing a rewrite. Proposing that we decide, before writing examples,
 whether examples teach the flat API only, or the flat API plus a composable
@@ -308,7 +308,7 @@ undocumented and a source of motion drift.
 ### A6 — Base UI now ships a purpose-built Drawer/Sheet primitive we don't use
 
 Base UI **1.2.0** (the version we're on) added a `drawer` primitive — changelog:
-*"Create new Drawer / Sheet component (#3680)"*. Its parts go well beyond Dialog:
+_"Create new Drawer / Sheet component (#3680)"_. Its parts go well beyond Dialog:
 
 ```
 root · provider · trigger · portal · backdrop · popup · content
@@ -348,17 +348,17 @@ The package boundary does not match the behavioural boundary.
 
 Floating, portalled surfaces in the repo today:
 
-| Component | Package | Uses `composes-popup` |
-| --- | --- | --- |
-| Modal | overlays | ❌ (A5) |
-| Popover | overlays | ✅ |
-| Sheet | overlays | ❌ (own `side-*` transforms) |
-| Tooltip | overlays | ✅ |
-| Toaster | overlays | ❌ (viewport, not popup) |
-| Select | forms | ✅ |
-| Combobox | forms | ✅ |
-| Autocomplete | forms | ✅ |
-| Menu | interactive | ? |
+| Component    | Package     | Uses `composes-popup`        |
+| ------------ | ----------- | ---------------------------- |
+| Modal        | overlays    | ❌ (A5)                      |
+| Popover      | overlays    | ✅                           |
+| Sheet        | overlays    | ❌ (own `side-*` transforms) |
+| Tooltip      | overlays    | ✅                           |
+| Toaster      | overlays    | ❌ (viewport, not popup)     |
+| Select       | forms       | ✅                           |
+| Combobox     | forms       | ✅                           |
+| Autocomplete | forms       | ✅                           |
+| Menu         | interactive | ?                            |
 
 Three of the five `composes-popup` consumers live outside `overlays`. That's
 defensible — `forms/select` is a form control first — but it means **"overlay" is
@@ -371,7 +371,7 @@ Questions to settle (not now, but before the taxonomy is documented publicly):
   surfaces"? Tooltip fits the first; Toaster fits neither cleanly.
 - Should the shared floating-surface behaviour be owned by `overlays` and consumed
   by `forms`, rather than both reaching into `tokens`?
-- Does the docs sidebar need an *Overlays* category that cross-references the
+- Does the docs sidebar need an _Overlays_ category that cross-references the
   form popups, so users comparing "Popover vs Select" find both?
 
 Also: `apps/storybook/stories/tokens/overlays.stories.tsx` and
@@ -441,13 +441,13 @@ abstraction we're trying to avoid.
 
 No `side`. No invented `swipeable`. `Drawer.Root` already expresses all of it:
 
-| Prop | Source |
-| --- | --- |
-| `swipeDirection` | `'up' \| 'down' \| 'left' \| 'right'`, default `'down'` — determines the anchored edge *and* dismissal direction |
-| `snapPoints`, `snapPoint`, `defaultSnapPoint`, `onSnapPointChange`, `snapToSequentialPoints` | snap positioning |
-| `modal` | `boolean \| 'trap-focus'` |
-| `open`, `defaultOpen`, `onOpenChange`, `onOpenChangeComplete` | open state |
-| `disablePointerDismissal`, `actionsRef`, `handle`, `triggerId` | behaviour + detached triggers |
+| Prop                                                                                         | Source                                                                                                           |
+| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `swipeDirection`                                                                             | `'up' \| 'down' \| 'left' \| 'right'`, default `'down'` — determines the anchored edge _and_ dismissal direction |
+| `snapPoints`, `snapPoint`, `defaultSnapPoint`, `onSnapPointChange`, `snapToSequentialPoints` | snap positioning                                                                                                 |
+| `modal`                                                                                      | `boolean \| 'trap-focus'`                                                                                        |
+| `open`, `defaultOpen`, `onOpenChange`, `onOpenChangeComplete`                                | open state                                                                                                       |
+| `disablePointerDismissal`, `actionsRef`, `handle`, `triggerId`                               | behaviour + detached triggers                                                                                    |
 
 Part types alias Base UI verbatim, matching Select and Collapsible:
 
@@ -478,7 +478,9 @@ style against it. So the cva and the variants file are deleted outright and the
 CSS keys off the attribute:
 
 ```css
-.drawer-popup[data-swipe-direction="right"] { /* … */ }
+.drawer-popup[data-swipe-direction="right"] {
+  /* … */
+}
 ```
 
 One less abstraction, one less file, and styling stays in lockstep with whatever
@@ -524,20 +526,31 @@ nothing:
 }
 .drawer-popup[data-swipe-direction="up"],
 .drawer-popup[data-swipe-direction="down"] {
-  transform: translateY(calc(var(--drawer-snap-point-offset) + var(--drawer-swipe-movement-y)));
+  transform: translateY(
+    calc(var(--drawer-snap-point-offset) + var(--drawer-swipe-movement-y))
+  );
 }
 
 /* dismissal animates off-screen in the swiped direction */
-.drawer-popup[data-ending-style][data-swipe-direction="right"] { transform: translateX(100%); }
+.drawer-popup[data-ending-style][data-swipe-direction="right"] {
+  transform: translateX(100%);
+}
 
 /* backdrop fades with the drag, not on a fixed timer */
 .drawer-backdrop {
-  opacity: calc(var(--overlays-backdrop-opacity) * (1 - var(--drawer-swipe-progress)));
+  opacity: calc(
+    var(--overlays-backdrop-opacity) * (1 - var(--drawer-swipe-progress))
+  );
 }
 
 /* never transition mid-drag; scale the release by fling velocity */
-.drawer-popup[data-swiping], .drawer-backdrop[data-swiping] { transition-duration: 0ms; }
-.drawer-popup[data-ending-style] { transition-duration: calc(var(--drawer-swipe-strength) * 400ms); }
+.drawer-popup[data-swiping],
+.drawer-backdrop[data-swiping] {
+  transition-duration: 0ms;
+}
+.drawer-popup[data-ending-style] {
+  transition-duration: calc(var(--drawer-swipe-strength) * 400ms);
+}
 ```
 
 Note the popup's `transform` is now owned by the gesture system, so anything that
@@ -632,12 +645,12 @@ Recorded because the two were easy to conflate and the distinction drove a PR.
 
 Three distinct things share two words. In order:
 
-| | `Sheet` (outgoing) | `Drawer` (removed, PR #277) | `Drawer` (incoming) |
-| --- | --- | --- | --- |
-| Backing | `@base-ui/react/dialog` | `vaul` (Radix under the hood) | `@base-ui/react/drawer` |
-| Status | active, 355 lines of tests | `@deprecated`, vaul abandoned | preview (`DrawerPreview`), pinned 1.2.0 |
-| Gestures | none | drag-to-close | swipe, snap points, indent |
-| Fate | replaced by the incoming Drawer | deleted | new, §7 |
+|          | `Sheet` (outgoing)              | `Drawer` (removed, PR #277)   | `Drawer` (incoming)                     |
+| -------- | ------------------------------- | ----------------------------- | --------------------------------------- |
+| Backing  | `@base-ui/react/dialog`         | `vaul` (Radix under the hood) | `@base-ui/react/drawer`                 |
+| Status   | active, 355 lines of tests      | `@deprecated`, vaul abandoned | preview (`DrawerPreview`), pinned 1.2.0 |
+| Gestures | none                            | drag-to-close                 | swipe, snap points, indent              |
+| Fate     | replaced by the incoming Drawer | deleted                       | new, §7                                 |
 
 Removing the vaul Drawer was correct — it was the only non–Base UI overlay. The
 name returns, but for Base UI's primitive rather than vaul's. Sheet's tests and

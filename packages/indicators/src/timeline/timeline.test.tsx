@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
 
-import { Timeline } from "./timeline";
 import { TimelineItem } from "./subcomponents";
+import { Timeline } from "./timeline";
 import type { TimelineItemType } from "./timeline.types";
 
 const ITEMS: TimelineItemType[] = [
@@ -145,7 +145,9 @@ describe("Timeline", () => {
 
   it("renders the marker node inside a content-variant marker", () => {
     const { container } = render(
-      <Timeline items={[{ ...ITEMS[0], marker: <svg data-testid="icon" /> }]} />,
+      <Timeline
+        items={[{ ...ITEMS[0], marker: <svg data-testid="icon" /> }]}
+      />,
     );
     const marker = container.querySelector('[data-slot="timeline-marker"]');
     expect(marker).toHaveAttribute("data-variant", "content");
@@ -156,9 +158,7 @@ describe("Timeline", () => {
     const { rerender } = render(<Timeline items={ITEMS} />);
     expect(screen.getByRole("list")).not.toHaveAttribute("data-has-markers");
 
-    rerender(
-      <Timeline items={[{ ...ITEMS[0], marker: <svg /> }, ITEMS[1]]} />,
-    );
+    rerender(<Timeline items={[{ ...ITEMS[0], marker: <svg /> }, ITEMS[1]]} />);
     expect(screen.getByRole("list")).toHaveAttribute("data-has-markers");
   });
 
@@ -220,16 +220,16 @@ describe("Timeline", () => {
 
   it("maps gap to the row-gap custom property", () => {
     render(<Timeline items={ITEMS} gap={4} />);
-    expect(screen.getByRole("list").style.getPropertyValue("--timeline-row-gap")).toBe(
-      "calc(4 * var(--spacing-unit))",
-    );
+    expect(
+      screen.getByRole("list").style.getPropertyValue("--timeline-row-gap"),
+    ).toBe("calc(4 * var(--spacing-unit))");
   });
 
   it("leaves the row-gap custom property unset without gap", () => {
     render(<Timeline items={ITEMS} />);
-    expect(screen.getByRole("list").style.getPropertyValue("--timeline-row-gap")).toBe(
-      "",
-    );
+    expect(
+      screen.getByRole("list").style.getPropertyValue("--timeline-row-gap"),
+    ).toBe("");
   });
 
   // ============================================

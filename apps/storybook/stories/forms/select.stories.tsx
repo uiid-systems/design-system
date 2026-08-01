@@ -1,12 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  Stack,
-  Group,
-  Field,
-  Select,
-} from "@uiid/design-system";
+import { Stack, Group, Field, Select } from "@uiid/design-system";
 import type { SelectProps } from "@uiid/design-system";
 import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
+
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
@@ -107,7 +103,12 @@ export const TruncatedValue: Story = {
   render: (args) => (
     <Stack ax="stretch" gap={8} maxw={280}>
       <Select {...args} fullwidth />
-      <Select {...args} fullwidth before={<SearchIcon />} after={<MailIcon />} />
+      <Select
+        {...args}
+        fullwidth
+        before={<SearchIcon />}
+        after={<MailIcon />}
+      />
     </Stack>
   ),
 };

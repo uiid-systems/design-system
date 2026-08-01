@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect } from "vitest";
+
 import { Autocomplete } from "./autocomplete";
 
 describe("Autocomplete", () => {
@@ -23,9 +24,7 @@ describe("Autocomplete", () => {
     render(
       <Autocomplete items={defaultItems} placeholder="Search fruits..." />,
     );
-    expect(
-      screen.getByPlaceholderText("Search fruits..."),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Search fruits...")).toBeInTheDocument();
   });
 
   it("opens dropdown when typing", async () => {

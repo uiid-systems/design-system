@@ -1,8 +1,8 @@
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
-
 import type { LayerProps } from "./layer.types";
+
 import styles from "./layer.module.css";
 
 export const Layer = ({

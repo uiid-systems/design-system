@@ -3,7 +3,6 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import { useState, useCallback } from "react";
 
 import type { ShouldShowProps } from "../rich-text-editor.types";
-
 import { LinkEditBlock } from "./link-edit-block";
 import { LinkPopoverBlock } from "./link-popover-block";
 

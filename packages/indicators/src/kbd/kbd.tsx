@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { cx } from "@uiid/utils";
+import { useEffect, useState } from "react";
 
 import type { KbdProps } from "./kbd.types";
 import { formatKeys, matchesHotkey } from "./kbd.utils";
+
 import styles from "./kbd.module.css";
 
 export const Kbd = ({ className, active, hotkey, ...props }: KbdProps) => {

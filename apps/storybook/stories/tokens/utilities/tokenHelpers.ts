@@ -19,19 +19,20 @@ export interface FlattenedToken {
 }
 
 export const flattenTokens = (
-  obj: any,
+  obj: unknown,
   basePath: string[] = [],
   nameTransform?: (path: string[]) => string,
 ): FlattenedToken[] => {
   const tokens: FlattenedToken[] = [];
 
-  const traverse = (current: any, path: string[]) => {
+  const traverse = (current: unknown, path: string[]) => {
     if (!current || typeof current !== "object") {
       return;
     }
 
     // If this object has $value, it's a token
     if ("$value" in current) {
+      const token = current as { $value: string; $type?: string };
       const displayName = nameTransform
         ? nameTransform(path)
         : path
@@ -42,9 +43,9 @@ export const flattenTokens = (
 
       tokens.push({
         name: displayName,
-        value: current.$value,
+        value: token.$value,
         tokenName: generateTokenName(path),
-        type: current.$type || "string",
+        type: token.$type || "string",
         path,
       });
       return;

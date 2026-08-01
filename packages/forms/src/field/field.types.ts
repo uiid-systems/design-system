@@ -1,5 +1,4 @@
 import type { Field } from "@base-ui/react/field";
-
 import type { Icon } from "@uiid/icons";
 import type { TextProps } from "@uiid/typography";
 import type { SpacingProps } from "@uiid/utils";

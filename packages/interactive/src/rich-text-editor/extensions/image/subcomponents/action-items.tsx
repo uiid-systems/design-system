@@ -1,10 +1,11 @@
-import type { ActionKey } from "../image.types";
 import {
   MoveDiagonal2Icon,
   DownloadIcon,
   ClipboardIcon,
   Link2Icon,
 } from "@uiid/icons";
+
+import type { ActionKey } from "../image.types";
 
 export const ActionItems: Array<{
   key: ActionKey;

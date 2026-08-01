@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
 import { Box, Card, Group } from "@uiid/design-system";
 import { ArrowLeftIcon, ArrowRightIcon } from "@uiid/icons";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { COMPONENTS_SITEMAP } from "@/sitemap";
 import type { SitemapEntry, SitemapItem } from "@/sitemap";

@@ -20,8 +20,6 @@
     "build-storybook": {
       "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
-    },
-    "lint": {},
-    "format": {}
+    }
   }
 }

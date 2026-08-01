@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Breadcrumbs } from "@uiid/design-system";
 
 import { MOCK_ITEMS, MOCK_ITEMS_WITH_ICON } from "./breadcrumbs.mocks";

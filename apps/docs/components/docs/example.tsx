@@ -21,9 +21,7 @@ async function getExampleSource(of: string, name: string) {
   );
   const source = await fs.readFile(file, "utf-8");
 
-  const start = source.search(
-    new RegExp(`^export const ${name}\\b`, "m"),
-  );
+  const start = source.search(new RegExp(`^export const ${name}\\b`, "m"));
   if (start === -1) return undefined;
 
   const rest = source.slice(start + 1);

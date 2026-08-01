@@ -1,11 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import {
-  Stack,
-  Group,
-  Text,
-  CodeInline,
-} from "@uiid/design-system";
+import { Stack, Group, Text, CodeInline } from "@uiid/design-system";
 
 const meta = {
   title: "Code/Code Inline",

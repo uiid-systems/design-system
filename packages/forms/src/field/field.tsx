@@ -2,8 +2,6 @@ import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { FieldProps } from "./field.types";
-import styles from "./field.module.css";
-
 import {
   FieldRoot,
   FieldLabel,
@@ -12,6 +10,8 @@ import {
   FieldErrorTooltip,
 } from "./subcomponents";
 import { FieldHint } from "./subcomponents/field-hint";
+
+import styles from "./field.module.css";
 
 export const Field = ({
   label,

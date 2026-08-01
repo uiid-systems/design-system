@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Layer } from "@uiid/design-system";
-import * as Examples from "../../../../packages/layout/src/layer/layer.examples";
 
+import * as Examples from "../../../../packages/layout/src/layer/layer.examples";
 import { ExampleBox, disabledControls } from "./constants";
 
 const meta = {

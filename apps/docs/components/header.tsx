@@ -1,5 +1,4 @@
 import { SiGithub, SiNpm, SiStorybook } from "@icons-pack/react-simple-icons";
-
 import { Button } from "@uiid/design-system";
 
 import { HeaderBreadcrumbs } from "@/components/breadcrumbs";

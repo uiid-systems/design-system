@@ -1,8 +1,6 @@
 "use client";
 
 import type { ComboboxProps } from "./combobox.types";
-import styles from "./combobox.module.css";
-
 import {
   ComboboxRoot,
   ComboboxInput,
@@ -14,6 +12,8 @@ import {
   ComboboxItem,
   ComboboxEmpty,
 } from "./subcomponents";
+
+import styles from "./combobox.module.css";
 
 export const Combobox = ({
   items,

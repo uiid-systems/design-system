@@ -1,15 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
-
 import { Text } from "@uiid/typography";
+import { useMemo } from "react";
 
 import type { EventItemProps } from "../event-calendar.types";
 import {
   formatTimeWithOptionalMinutes,
   getDisplayTimes,
 } from "../event-calendar.utils";
-
 import { EventWrapper } from "./event-wrapper";
 
 export type MonthEventProps = Omit<EventItemProps, "view" | "showTime">;

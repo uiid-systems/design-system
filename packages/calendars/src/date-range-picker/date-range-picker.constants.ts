@@ -1,5 +1,3 @@
-import type { DateRange } from "react-day-picker";
-
 import {
   subDays,
   addDays,
@@ -11,6 +9,7 @@ import {
   startOfYear,
   endOfYear,
 } from "date-fns";
+import type { DateRange } from "react-day-picker";
 
 const today = new Date();
 

@@ -1,6 +1,6 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React from "react";
 import { describe, it, expect } from "vitest";
 
 import { Textarea } from "./textarea";
@@ -91,7 +91,10 @@ describe("Textarea", () => {
 
   it("renders required indicator with label", () => {
     render(<Textarea label="Message" required />);
-    expect(screen.getByText("Message")).toHaveAttribute("data-required", "true");
+    expect(screen.getByText("Message")).toHaveAttribute(
+      "data-required",
+      "true",
+    );
   });
 
   it("has required attribute when required", () => {

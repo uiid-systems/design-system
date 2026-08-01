@@ -5,6 +5,7 @@ import { cx } from "@uiid/utils";
 
 import type { AccordionPanelProps } from "../accordion.types";
 import { accordionPanelVariants } from "../accordion.variants";
+
 import styles from "../accordion.module.css";
 
 export const AccordionPanel = ({

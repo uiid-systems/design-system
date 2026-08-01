@@ -32,36 +32,36 @@ import { Tabs } from "@uiid/interactive";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `TabProps[]` | — | Array of tab items (required) |
-| `defaultValue` | `string` | First item's value | Initially selected tab |
-| `value` | `string` | — | Controlled selected tab |
-| `onValueChange` | `(value: string, details: object) => void` | — | Callback when tab changes |
-| `align` | `"start" \| "center" \| "end"` | `"start"` | Horizontal alignment of tabs |
-| `keepMounted` | `boolean` | `false` | Keep inactive panels in DOM |
-| `RootProps` | `TabsRootProps` | — | Props for root element |
-| `ListProps` | `TabsListProps` | — | Props for tab list |
-| `TabProps` | `TabsTabProps` | — | Props for individual tabs |
-| `IndicatorProps` | `TabsIndicatorProps` | — | Props for indicator |
-| `PanelProps` | `TabsPanelProps` | — | Props for panels |
+| Prop             | Type                                       | Default            | Description                   |
+| ---------------- | ------------------------------------------ | ------------------ | ----------------------------- |
+| `items`          | `TabProps[]`                               | —                  | Array of tab items (required) |
+| `defaultValue`   | `string`                                   | First item's value | Initially selected tab        |
+| `value`          | `string`                                   | —                  | Controlled selected tab       |
+| `onValueChange`  | `(value: string, details: object) => void` | —                  | Callback when tab changes     |
+| `align`          | `"start" \| "center" \| "end"`             | `"start"`          | Horizontal alignment of tabs  |
+| `keepMounted`    | `boolean`                                  | `false`            | Keep inactive panels in DOM   |
+| `RootProps`      | `TabsRootProps`                            | —                  | Props for root element        |
+| `ListProps`      | `TabsListProps`                            | —                  | Props for tab list            |
+| `TabProps`       | `TabsTabProps`                             | —                  | Props for individual tabs     |
+| `IndicatorProps` | `TabsIndicatorProps`                       | —                  | Props for indicator           |
+| `PanelProps`     | `TabsPanelProps`                           | —                  | Props for panels              |
 
 ### TabProps (items)
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `label` | `string` | Tab button label |
-| `value` | `string` | Unique identifier |
-| `render` | `ReactNode` | Panel content |
+| Prop     | Type        | Description       |
+| -------- | ----------- | ----------------- |
+| `label`  | `string`    | Tab button label  |
+| `value`  | `string`    | Unique identifier |
+| `render` | `ReactNode` | Panel content     |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `tabs-list` | Tab button container |
-| `tabs-tab` | Individual tab button |
+| Slot             | Element                      |
+| ---------------- | ---------------------------- |
+| `tabs-list`      | Tab button container         |
+| `tabs-tab`       | Individual tab button        |
 | `tabs-indicator` | Animated selection indicator |
-| `tabs-panel` | Content panel |
+| `tabs-panel`     | Content panel                |
 
 ## Architecture
 
@@ -100,7 +100,7 @@ import {
   </TabsList>
   <TabsPanel value="tab-1">Content 1</TabsPanel>
   <TabsPanel value="tab-2">Content 2</TabsPanel>
-</TabsRoot>
+</TabsRoot>;
 ```
 
 ## Accessibility
@@ -114,10 +114,10 @@ import {
 
 The indicator animates between tabs using CSS transforms. Customize via tokens:
 
-| Token | Default | Description |
-|-------|---------|-------------|
-| `--tabs-tab-height` | `3rem` | Tab button height |
-| `--tabs-tab-color-default` | `--shade-muted` | Inactive tab color |
-| `--tabs-tab-color-active` | `--shade-foreground` | Active/hover tab color |
-| `--tabs-indicator-height` | `50%` | Indicator height |
-| `--tabs-indicator-color-bg` | `--shade-foreground` | Indicator background |
+| Token                       | Default              | Description            |
+| --------------------------- | -------------------- | ---------------------- |
+| `--tabs-tab-height`         | `3rem`               | Tab button height      |
+| `--tabs-tab-color-default`  | `--shade-muted`      | Inactive tab color     |
+| `--tabs-tab-color-active`   | `--shade-foreground` | Active/hover tab color |
+| `--tabs-indicator-height`   | `50%`                | Indicator height       |
+| `--tabs-indicator-color-bg` | `--shade-foreground` | Indicator background   |

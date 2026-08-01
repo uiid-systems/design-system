@@ -1,21 +1,17 @@
 "use client";
 
-import * as React from "react";
-
-import { cx, useComposedRefs } from "@uiid/utils";
 import { ConditionalRender } from "@uiid/layout";
+import { cx, useComposedRefs } from "@uiid/utils";
+import * as React from "react";
 
 import { Field } from "../field/field";
 import { InputWrapper } from "../input/input-wrapper";
 import { inputVariants } from "../input/input.variants";
-
-import inputStyles from "../input/input.module.css";
-
+import { useMask } from "./hooks";
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "./mask-input.constants";
-
 import type { MaskInputProps } from "./mask-input.types";
 
-import { useMask } from "./hooks";
+import inputStyles from "../input/input.module.css";
 
 export const MaskInput = (props: MaskInputProps) => {
   const {

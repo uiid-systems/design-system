@@ -1,11 +1,11 @@
 "use client";
 
 import { DrawerPreview as BaseDrawer } from "@base-ui/react/drawer";
+import { cx } from "@uiid/utils";
 import { isValidElement } from "react";
 
-import { cx } from "@uiid/utils";
-
 import type { DrawerTriggerProps } from "../drawer.types";
+
 import styles from "../drawer.module.css";
 
 export const DrawerTrigger = ({

@@ -15,19 +15,19 @@ import { Reveal } from "@uiid/typography";
 
 <Reveal render={<p />} size={1}>
   Words fade and un-blur in sequence.
-</Reveal>
+</Reveal>;
 ```
 
 ## Props
 
 All [`Text`](../text/README.md) props, plus:
 
-| Prop       | Type     | Default | Description                                  |
-| ---------- | -------- | ------- | -------------------------------------------- |
-| `children` | `string` | —       | Text to reveal — string only, split by word  |
-| `stagger`  | `number` | `30`    | Delay between each word's start, in ms       |
-| `duration` | `number` | `400`   | Duration of each word's fade/blur-in, in ms  |
-| `blur`     | `number` | `6`     | Blur radius each word starts from, in px     |
+| Prop       | Type     | Default | Description                                 |
+| ---------- | -------- | ------- | ------------------------------------------- |
+| `children` | `string` | —       | Text to reveal — string only, split by word |
+| `stagger`  | `number` | `30`    | Delay between each word's start, in ms      |
+| `duration` | `number` | `400`   | Duration of each word's fade/blur-in, in ms |
+| `blur`     | `number` | `6`     | Blur radius each word starts from, in px    |
 
 ## Streaming
 

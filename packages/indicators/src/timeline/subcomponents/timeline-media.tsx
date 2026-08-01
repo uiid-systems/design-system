@@ -3,6 +3,7 @@
 import { cx } from "@uiid/utils";
 
 import type { TimelineMediaProps } from "../timeline.types";
+
 import styles from "../timeline.module.css";
 
 export const TimelineMedia = ({

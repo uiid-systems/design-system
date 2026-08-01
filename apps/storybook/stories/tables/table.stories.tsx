@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react-vite";
-
 import { Stack, Table } from "@uiid/design-system";
+
 import {
   TABLE_MOCK_DATA,
   type TableMockData,

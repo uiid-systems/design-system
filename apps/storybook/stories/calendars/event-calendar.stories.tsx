@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { ToastProvider, Toaster, EventCalendar } from "@uiid/design-system";
 import type { CalendarEvent } from "@uiid/design-system";
 import { useState } from "react";

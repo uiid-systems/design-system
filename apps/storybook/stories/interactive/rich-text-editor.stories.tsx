@@ -1,8 +1,7 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { Content } from "@tiptap/react";
-
 import { RichTextEditor } from "@uiid/design-system";
+import { useState } from "react";
 
 const meta = {
   title: "Interactive/Rich Text Editor",

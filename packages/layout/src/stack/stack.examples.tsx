@@ -1,6 +1,6 @@
-import { Stack } from "./stack";
 import { Box } from "../box/box";
 import type { BoxProps } from "../box/box.types";
+import { Stack } from "./stack";
 
 type ExampleBoxProps = BoxProps & {
   bg?: React.CSSProperties["backgroundColor"];

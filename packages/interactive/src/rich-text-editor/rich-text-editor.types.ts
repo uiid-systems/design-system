@@ -1,6 +1,6 @@
-import type { Content, Editor } from "@tiptap/react";
-import type { EditorView } from "@tiptap/pm/view";
 import type { EditorState } from "@tiptap/pm/state";
+import type { EditorView } from "@tiptap/pm/view";
+import type { Content, Editor } from "@tiptap/react";
 
 import type { UseRichTextEditorProps } from "./hooks/use-rich-text-editor";
 
@@ -29,8 +29,10 @@ export interface FormatAction {
   canExecute: (editor: Editor) => boolean;
 }
 
-export interface RichTextEditorProps
-  extends Omit<UseRichTextEditorProps, "onUpdate"> {
+export interface RichTextEditorProps extends Omit<
+  UseRichTextEditorProps,
+  "onUpdate"
+> {
   value?: Content;
   onChange?: (value: Content) => void;
   className?: string;

@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { Checkbox } from "./checkbox";
 
 describe("Checkbox", () => {
@@ -72,5 +73,4 @@ describe("Checkbox", () => {
     render(<Checkbox defaultChecked />);
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-checked");
   });
-
 });

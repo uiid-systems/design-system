@@ -7,9 +7,8 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 
-const { registry, generateComponentDocs } = await import(
-  "../packages/registry/dist/index.js"
-);
+const { registry, generateComponentDocs } =
+  await import("../packages/registry/dist/index.js");
 
 // --- Helpers ---
 
@@ -64,7 +63,9 @@ for (const [name, entry] of Object.entries(registry)) {
   const dir = getComponentDir(entry);
 
   if (!fs.existsSync(dir)) {
-    console.log(`SKIP  ${name} — directory not found: ${path.relative(ROOT, dir)}`);
+    console.log(
+      `SKIP  ${name} — directory not found: ${path.relative(ROOT, dir)}`,
+    );
     stats.skipped++;
     continue;
   }
@@ -92,5 +93,5 @@ for (const [name, entry] of Object.entries(registry)) {
 }
 
 console.log(
-  `\nDone: ${stats.created} created, ${stats.unchanged} kept, ${stats.skipped} skipped`
+  `\nDone: ${stats.created} created, ${stats.unchanged} kept, ${stats.skipped} skipped`,
 );

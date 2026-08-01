@@ -1,12 +1,11 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-
 import { cx } from "@uiid/utils";
 
 import { Input } from "../../input/input";
-
 import type { AutocompleteInputProps } from "../autocomplete.types";
+
 import styles from "../autocomplete.module.css";
 
 export const AutocompleteInput = ({

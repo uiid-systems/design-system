@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+
 import { Field } from "./field";
 
 describe("Field", () => {
@@ -14,7 +15,9 @@ describe("Field", () => {
 
   it("renders with data-slot attribute", () => {
     const { container } = render(<Field>content</Field>);
-    expect(container.querySelector("[data-slot='field-root']")).toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).toBeInTheDocument();
   });
 
   it("renders with a label", () => {
@@ -81,8 +84,8 @@ describe("Field", () => {
         <input />
       </Field>,
     );
-    expect(
-      container.querySelector("[data-slot='field-root']"),
-    ).toHaveClass("custom-field");
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "custom-field",
+    );
   });
 });

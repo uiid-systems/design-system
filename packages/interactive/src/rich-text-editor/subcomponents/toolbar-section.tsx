@@ -1,8 +1,7 @@
-import * as React from "react";
 import type { Editor } from "@tiptap/react";
-
 import { ChevronDownIcon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
+import * as React from "react";
 
 import {
   MenuRoot,
@@ -12,12 +11,10 @@ import {
   MenuTrigger,
   MenuPositioner,
 } from "../../menu/subcomponents";
-
 import type { FormatAction } from "../rich-text-editor.types";
 import { getShortcutKey } from "../rich-text-editor.utils";
-
-import { ToolbarButton, type ToolbarButtonProps } from "./toolbar-button";
 import { ShortcutKey } from "./shortcut-key";
+import { ToolbarButton, type ToolbarButtonProps } from "./toolbar-button";
 
 interface ToolbarSectionProps {
   editor: Editor;

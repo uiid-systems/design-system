@@ -1,9 +1,10 @@
 "use client";
 
-import { Group } from "react-resizable-panels";
 import { cx } from "@uiid/utils";
+import { Group } from "react-resizable-panels";
 
 import type { ResizableProps } from "./resizable.types";
+
 import styles from "./resizable.module.css";
 
 export const Resizable = ({

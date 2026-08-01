@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { NumberField } from "./number-field";
 
 describe("NumberField", () => {
@@ -12,8 +13,12 @@ describe("NumberField", () => {
 
   it("renders increase and decrease buttons", () => {
     render(<NumberField />);
-    expect(screen.getByRole("button", { name: /increase/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /decrease/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /increase/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /decrease/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders with data-slot attribute", () => {

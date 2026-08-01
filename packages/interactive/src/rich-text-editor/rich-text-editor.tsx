@@ -1,12 +1,10 @@
 import "./styles/index.css";
-
 import {
   EditorContent,
   EditorContext,
   type Content,
   type Editor,
 } from "@tiptap/react";
-
 import { Card } from "@uiid/cards";
 import { Group, Separator } from "@uiid/layout";
 import { cx } from "@uiid/utils";
@@ -16,7 +14,6 @@ import {
   useEditorInstance,
   type UseRichTextEditorProps,
 } from "./hooks";
-
 import {
   LinkBubbleMenu,
   MeasuredContainer,
@@ -27,8 +24,10 @@ import {
 
 import styles from "./rich-text-editor.module.css";
 
-export interface RichTextEditorProps
-  extends Omit<UseRichTextEditorProps, "onUpdate"> {
+export interface RichTextEditorProps extends Omit<
+  UseRichTextEditorProps,
+  "onUpdate"
+> {
   value?: Content;
   onChange?: (value: Content) => void;
   className?: string;
@@ -64,7 +63,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => (
 
     <Section3 editor={editor} />
 
-    {/* 
+    {/*
 
       <Separator orientation="vertical" className="mx-2" />
 

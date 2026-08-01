@@ -1,5 +1,5 @@
-import { cva } from "@uiid/utils";
 import { paletteColorStyles } from "@uiid/tokens";
+import { cva } from "@uiid/utils";
 
 import styles from "./status.module.css";
 

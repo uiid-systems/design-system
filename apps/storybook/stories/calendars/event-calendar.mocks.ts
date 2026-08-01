@@ -1,6 +1,5 @@
-import { addHours, addDays, startOfToday } from "date-fns";
-
 import type { CalendarEvent } from "@uiid/design-system";
+import { addHours, addDays, startOfToday } from "date-fns";
 
 const today = startOfToday();
 

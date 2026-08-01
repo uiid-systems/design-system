@@ -1,11 +1,10 @@
-import { useState, useCallback } from "react";
 import type { Editor } from "@tiptap/react";
-
 import { Link2Icon } from "@uiid/icons";
 import { Popover } from "@uiid/overlays";
+import { useState, useCallback } from "react";
 
-import { ToolbarButton } from "./toolbar-button";
 import { LinkEditBlock } from "./link-edit-block";
+import { ToolbarButton } from "./toolbar-button";
 
 type LinkEditPopoverProps = {
   editor: Editor;

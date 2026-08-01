@@ -1,5 +1,4 @@
 import { Separator as BaseSeparator } from "@base-ui/react/separator";
-
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
@@ -7,9 +6,9 @@ import { ConditionalRender } from "../conditional-render/conditional-render";
 import { Group } from "../group/group";
 import { Stack } from "../stack/stack";
 import { SwitchRender } from "../switch-render/switch-render";
-
 import type { SeparatorProps } from "./separator.types";
 import { separatorVariants } from "./separator.variants";
+
 import styles from "./separator.module.css";
 
 export const Separator = ({

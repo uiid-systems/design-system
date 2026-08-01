@@ -71,30 +71,30 @@ import { Input } from "@uiid/forms";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `defaultValue` | `string` | — | — |
-| `description` | `string` | — | — |
-| `disabled` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `ghost` | `boolean` | — | — |
-| `label` | `string` | — | — |
-| `placeholder` | `string` | — | — |
-| `required` | `boolean` | — | — |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
-| `type` | `string` | — | — |
-| `value` | `string` | — | — |
+| Prop           | Type                             | Default    | Description |
+| -------------- | -------------------------------- | ---------- | ----------- |
+| `defaultValue` | `string`                         | —          | —           |
+| `description`  | `string`                         | —          | —           |
+| `disabled`     | `boolean`                        | —          | —           |
+| `fullwidth`    | `boolean`                        | —          | —           |
+| `ghost`        | `boolean`                        | —          | —           |
+| `label`        | `string`                         | —          | —           |
+| `placeholder`  | `string`                         | —          | —           |
+| `required`     | `boolean`                        | —          | —           |
+| `size`         | `"small" \| "medium" \| "large"` | `"medium"` | —           |
+| `type`         | `string`                         | —          | —           |
+| `value`        | `string`                         | —          | —           |
 
 > All other props are forwarded to the Base UI Input component.
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `input` | The input element |
-| `field-root` | Field wrapper (when label/description present) |
-| `field-label` | Label element |
-| `field-description` | Description element |
+| Slot                | Element                                        |
+| ------------------- | ---------------------------------------------- |
+| `input`             | The input element                              |
+| `field-root`        | Field wrapper (when label/description present) |
+| `field-label`       | Label element                                  |
+| `field-description` | Description element                            |
 
 ## Accessibility
 

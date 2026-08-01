@@ -71,8 +71,10 @@ export interface SortableItemProps extends React.ComponentProps<"div"> {
 
 export type SortableItemHandleProps = React.ComponentProps<"button">;
 
-export interface SortableOverlayProps
-  extends Omit<React.ComponentProps<typeof DragOverlay>, "children"> {
+export interface SortableOverlayProps extends Omit<
+  React.ComponentProps<typeof DragOverlay>,
+  "children"
+> {
   /** Container element for the portal */
   container?: Element | DocumentFragment | null;
   /** Overlay content - can be a function receiving the active item value */

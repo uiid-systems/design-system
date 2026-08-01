@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { Drawer } from "./drawer";
 
 describe("Drawer", () => {
@@ -47,7 +48,11 @@ describe("Drawer", () => {
     const DrawerWrapper = () => {
       const [open, setOpen] = useState(false);
       return (
-        <Drawer trigger={<button>Open drawer</button>} open={open} onOpenChange={setOpen}>
+        <Drawer
+          trigger={<button>Open drawer</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Drawer content
         </Drawer>
       );
@@ -68,7 +73,11 @@ describe("Drawer", () => {
     const DrawerWrapper = () => {
       const [open, setOpen] = useState(true);
       return (
-        <Drawer trigger={<button>Open drawer</button>} open={open} onOpenChange={setOpen}>
+        <Drawer
+          trigger={<button>Open drawer</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Drawer content
         </Drawer>
       );
@@ -96,7 +105,11 @@ describe("Drawer", () => {
     const DrawerWrapper = () => {
       const [open, setOpen] = useState(false);
       return (
-        <Drawer trigger={<button>Open drawer</button>} open={open} onOpenChange={setOpen}>
+        <Drawer
+          trigger={<button>Open drawer</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Drawer content
         </Drawer>
       );
@@ -118,7 +131,11 @@ describe("Drawer", () => {
     const DrawerWrapper = () => {
       const [open, setOpen] = useState(true);
       return (
-        <Drawer trigger={<button>Open drawer</button>} open={open} onOpenChange={setOpen}>
+        <Drawer
+          trigger={<button>Open drawer</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Drawer content
         </Drawer>
       );
@@ -231,7 +248,9 @@ describe("Drawer", () => {
     );
 
     expect(screen.getByTestId("complex-content")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Drawer Title" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Drawer Title" }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
@@ -254,9 +273,10 @@ describe("Drawer", () => {
       <Drawer trigger={<button>Open drawer</button>}>Drawer content</Drawer>,
     );
 
-    expect(
-      screen.getByRole("button", { name: "Open drawer" }),
-    ).toHaveAttribute("aria-haspopup", "dialog");
+    expect(screen.getByRole("button", { name: "Open drawer" })).toHaveAttribute(
+      "aria-haspopup",
+      "dialog",
+    );
   });
 
   it("drawer is rendered in a portal", () => {
@@ -267,11 +287,15 @@ describe("Drawer", () => {
     );
 
     // Drawer content should not be inside the container (it's portaled)
-    const drawerInContainer = container.querySelector('[class*="drawer-popup"]');
+    const drawerInContainer = container.querySelector(
+      '[class*="drawer-popup"]',
+    );
     expect(drawerInContainer).toBeNull();
 
     // But should exist in the document
-    expect(document.querySelector('[class*="drawer-popup"]')).toBeInTheDocument();
+    expect(
+      document.querySelector('[class*="drawer-popup"]'),
+    ).toBeInTheDocument();
   });
 
   // ============================================
@@ -287,8 +311,12 @@ describe("Drawer", () => {
     );
 
     // Drawer should contain focusable elements
-    expect(screen.getByRole("button", { name: "First button" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Second button" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "First button" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Second button" }),
+    ).toBeInTheDocument();
   });
 
   // ============================================

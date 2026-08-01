@@ -73,13 +73,13 @@ part 1 left that mechanism untouched, so everything renders as it did before.
 
 **29 `oklch()` expressions across 5 files** collapse onto the 8 names above:
 
-| file | count |
-| --- | --- |
-| `packages/buttons/src/button/button.module.css` | 13 |
-| `packages/cards/src/card/card.module.css` | 7 |
-| `packages/indicators/src/badge/badge.module.css` | 4 |
-| `packages/indicators/src/status/status.module.css` | 2 |
-| `packages/typography/src/text/text.module.css` | 2 |
+| file                                               | count |
+| -------------------------------------------------- | ----- |
+| `packages/buttons/src/button/button.module.css`    | 13    |
+| `packages/cards/src/card/card.module.css`          | 7     |
+| `packages/indicators/src/badge/badge.module.css`   | 4     |
+| `packages/indicators/src/status/status.module.css` | 2     |
+| `packages/typography/src/text/text.module.css`     | 2     |
 
 The mapping is direct — every current derivation is already one of the eight
 treatments. Badge's `bg`/`fg`/`border` are exactly `tint`/`on-tint`/`tint-border`;
@@ -138,7 +138,7 @@ Hit while part 1 was in review; **not part of PR #280**. Committed but
 1. **Vercel never ran the storybook build.** It runs the root `build` task, which
    builds the 18 packages that have a `build` script. `apps/storybook` only has
    `build-storybook`, so no `storybook-static` was produced — hence
-   *"No Output Directory named storybook-static"*. Fixed by adding
+   _"No Output Directory named storybook-static"_. Fixed by adding
    `apps/storybook/vercel.json` with an explicit `buildCommand`/`outputDirectory`.
 2. **Two undeclared imports.** Stories import `date-fns` and `@tiptap/react`,
    which are declared in `packages/calendars` and `packages/interactive` but not
@@ -154,7 +154,7 @@ hook runs):
 - `@uiid/interactive` — 120 kB limit, 286 kB actual
 - `@uiid/design-system` — 500 kB limit, 629 kB actual
 
-That strongly suggests the omission was deliberate, and the *story* importing from
+That strongly suggests the omission was deliberate, and the _story_ importing from
 `@uiid/design-system` is the actual bug. Options, best first:
 
 1. Give it a `./rich-text-editor` subpath export in `@uiid/interactive` (needs a

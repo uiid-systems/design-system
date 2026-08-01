@@ -1,12 +1,10 @@
 "use client";
 
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-
 import { ConditionalRender, Stack, Group } from "@uiid/layout";
 
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
-
 import type { CheckboxGroupProps } from "./checkbox-group.types";
 
 export const CheckboxGroup = ({

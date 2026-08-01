@@ -2,10 +2,10 @@
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 import { List } from "@uiid/lists";
-
 import { cx } from "@uiid/utils";
 
 import type { AutocompleteListProps } from "../autocomplete.types";
+
 import styles from "../autocomplete.module.css";
 
 export const AutocompleteList = ({

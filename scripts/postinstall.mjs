@@ -2,11 +2,31 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Storybook's browser tests need Chromium locally. Vercel builds only compile
-// the docs app, and its build image has no apt-get for `--with-deps`.
+// Vercel builds only compile the docs app: they have no git hooks to install,
+// and the build image has no apt-get for Playwright's `--with-deps`.
 if (process.env.VERCEL) process.exit(0);
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const playwright = path.join(root, "node_modules", ".bin", "playwright");
+const bin = (name) => path.join(root, "node_modules", ".bin", name);
 
-execFileSync(playwright, ["install", "chromium"], { stdio: "inherit" });
+// Husky pointed core.hooksPath at .husky/_. That directory is gone, and while
+// the config survives in each dev's .git/config, git looks there and silently
+// runs nothing. Clear it so machines migrating off husky heal themselves.
+try {
+  const hooksPath = execFileSync("git", ["config", "--get", "core.hooksPath"], {
+    encoding: "utf8",
+  }).trim();
+  if (hooksPath.startsWith(".husky")) {
+    execFileSync("git", ["config", "--unset", "core.hooksPath"]);
+  }
+} catch {
+  // git exits non-zero when the key is unset, or this isn't a checkout at all.
+}
+
+// pnpm 10 blocks dependency lifecycle scripts, so lefthook's own postinstall
+// never runs and the hooks never land in .git/hooks. Install them ourselves.
+// Kept ahead of Playwright so a slow browser download can't skip hook setup.
+execFileSync(bin("lefthook"), ["install"], { stdio: "inherit" });
+
+// Storybook's browser tests need Chromium locally.
+execFileSync(bin("playwright"), ["install", "chromium"], { stdio: "inherit" });

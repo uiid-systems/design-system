@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { CheckboxGroup } from "./checkbox-group";
 
 describe("CheckboxGroup", () => {
@@ -89,4 +90,3 @@ describe("CheckboxGroup", () => {
     expect(checkboxes).toHaveLength(3);
   });
 });
-

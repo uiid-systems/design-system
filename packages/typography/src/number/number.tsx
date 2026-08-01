@@ -3,7 +3,6 @@
 import NumberFlow from "@number-flow/react";
 
 import { Text } from "../text/text";
-
 import type { NumberProps } from "./number.types";
 
 export const Number = ({

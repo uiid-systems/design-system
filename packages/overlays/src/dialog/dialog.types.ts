@@ -1,5 +1,4 @@
 import type { Dialog as BaseDialog } from "@base-ui/react/dialog";
-
 import type { CardProps } from "@uiid/cards";
 import type { VariantProps } from "@uiid/utils";
 

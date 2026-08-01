@@ -1,5 +1,4 @@
 import type { AccordionProps } from "./accordion.types";
-
 import {
   AccordionRoot,
   AccordionItem,

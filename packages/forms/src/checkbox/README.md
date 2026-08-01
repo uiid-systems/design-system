@@ -41,11 +41,7 @@ import { Checkbox } from "@uiid/forms";
 ```tsx
 const [checked, setChecked] = useState(false);
 
-<Checkbox
-  label="I agree"
-  checked={checked}
-  onCheckedChange={setChecked}
-/>
+<Checkbox label="I agree" checked={checked} onCheckedChange={setChecked} />;
 ```
 
 ### Default Checked
@@ -86,26 +82,30 @@ Places the label before the checkbox:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `bordered` | `boolean` | — | — |
-| `checked` | `boolean` | — | — |
-| `defaultChecked` | `boolean` | — | — |
-| `description` | `string` | — | — |
-| `disabled` | `boolean` | — | — |
-| `indeterminate` | `boolean` | — | — |
-| `label` | `string` | — | — |
-| `name` | `string` | — | — |
-| `required` | `boolean` | — | — |
-| `reversed` | `boolean` | — | — |
+| Prop             | Type      | Default | Description |
+| ---------------- | --------- | ------- | ----------- |
+| `bordered`       | `boolean` | —       | —           |
+| `checked`        | `boolean` | —       | —           |
+| `defaultChecked` | `boolean` | —       | —           |
+| `description`    | `string`  | —       | —           |
+| `disabled`       | `boolean` | —       | —           |
+| `indeterminate`  | `boolean` | —       | —           |
+| `label`          | `string`  | —       | —           |
+| `name`           | `string`  | —       | —           |
+| `required`       | `boolean` | —       | —           |
+| `reversed`       | `boolean` | —       | —           |
 
 > All other props are forwarded to the Base UI Checkbox.Root component.
 
 ## Anatomy
 
 ```tsx
-<CheckboxField>           {/* Container with label */}
-  <CheckboxRoot>          {/* The checkbox control */}
+<CheckboxField>
+  {" "}
+  {/* Container with label */}
+  <CheckboxRoot>
+    {" "}
+    {/* The checkbox control */}
     <CheckboxIndicator /> {/* Check mark icon */}
   </CheckboxRoot>
 </CheckboxField>
@@ -113,16 +113,16 @@ Places the label before the checkbox:
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `CheckboxRoot` | The checkbox control element |
-| `CheckboxField` | Container with label and description |
-| `CheckboxIndicator` | The check mark icon |
+| Component           | Description                          |
+| ------------------- | ------------------------------------ |
+| `CheckboxRoot`      | The checkbox control element         |
+| `CheckboxField`     | Container with label and description |
+| `CheckboxIndicator` | The check mark icon                  |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot       | Element                   |
+| ---------- | ------------------------- |
 | `checkbox` | The checkbox root element |
 
 ## Accessibility

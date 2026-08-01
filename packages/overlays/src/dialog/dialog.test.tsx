@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { Dialog } from "./dialog";
 
 describe("Dialog", () => {
@@ -11,7 +12,11 @@ describe("Dialog", () => {
 
   it("renders the trigger element", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={false} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={false}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
@@ -23,7 +28,11 @@ describe("Dialog", () => {
 
   it("does not show dialog content when closed", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={false} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={false}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
@@ -33,7 +42,11 @@ describe("Dialog", () => {
 
   it("shows dialog content when open", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={true} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
@@ -51,7 +64,11 @@ describe("Dialog", () => {
     const DialogWrapper = () => {
       const [open, setOpen] = useState(false);
       return (
-        <Dialog trigger={<button>Open dialog</button>} open={open} onOpenChange={setOpen}>
+        <Dialog
+          trigger={<button>Open dialog</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Dialog content
         </Dialog>
       );
@@ -72,7 +89,11 @@ describe("Dialog", () => {
     const DialogWrapper = () => {
       const [open, setOpen] = useState(true);
       return (
-        <Dialog trigger={<button>Open dialog</button>} open={open} onOpenChange={setOpen}>
+        <Dialog
+          trigger={<button>Open dialog</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Dialog content
         </Dialog>
       );
@@ -101,7 +122,11 @@ describe("Dialog", () => {
     const DialogWrapper = () => {
       const [open, setOpen] = useState(false);
       return (
-        <Dialog trigger={<button>Open dialog</button>} open={open} onOpenChange={setOpen}>
+        <Dialog
+          trigger={<button>Open dialog</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Dialog content
         </Dialog>
       );
@@ -123,7 +148,11 @@ describe("Dialog", () => {
     const DialogWrapper = () => {
       const [open, setOpen] = useState(true);
       return (
-        <Dialog trigger={<button>Open dialog</button>} open={open} onOpenChange={setOpen}>
+        <Dialog
+          trigger={<button>Open dialog</button>}
+          open={open}
+          onOpenChange={setOpen}
+        >
           Dialog content
         </Dialog>
       );
@@ -258,7 +287,11 @@ describe("Dialog", () => {
 
   it("renders complex content in dialog", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={true} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+      >
         <div data-testid="complex-content">
           <h2>Dialog Title</h2>
           <p>Dialog description</p>
@@ -269,8 +302,12 @@ describe("Dialog", () => {
     );
 
     expect(screen.getByTestId("complex-content")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Dialog Title" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Primary action" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Dialog Title" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Primary action" }),
+    ).toBeInTheDocument();
   });
 
   // ============================================
@@ -279,7 +316,11 @@ describe("Dialog", () => {
 
   it("dialog has role dialog", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={true} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
@@ -289,29 +330,42 @@ describe("Dialog", () => {
 
   it("trigger has aria-haspopup attribute", () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={false} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={false}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
 
-    expect(
-      screen.getByRole("button", { name: "Open dialog" }),
-    ).toHaveAttribute("aria-haspopup", "dialog");
+    expect(screen.getByRole("button", { name: "Open dialog" })).toHaveAttribute(
+      "aria-haspopup",
+      "dialog",
+    );
   });
 
   it("dialog is rendered in a portal", () => {
     const { container } = render(
-      <Dialog trigger={<button>Open dialog</button>} open={true} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+      >
         Dialog content
       </Dialog>,
     );
 
     // Dialog content should not be inside the container (it's portaled)
-    const dialogInContainer = container.querySelector('[data-slot="dialog-popup"]');
+    const dialogInContainer = container.querySelector(
+      '[data-slot="dialog-popup"]',
+    );
     expect(dialogInContainer).toBeNull();
 
     // But should exist in the document
-    expect(document.querySelector('[data-slot="dialog-popup"]')).toBeInTheDocument();
+    expect(
+      document.querySelector('[data-slot="dialog-popup"]'),
+    ).toBeInTheDocument();
   });
 
   // ============================================
@@ -320,15 +374,23 @@ describe("Dialog", () => {
 
   it("moves focus to dialog content when opened", async () => {
     render(
-      <Dialog trigger={<button>Open dialog</button>} open={true} onOpenChange={() => {}}>
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+      >
         <button>First button</button>
         <button>Second button</button>
       </Dialog>,
     );
 
     // Dialog should contain focusable elements
-    expect(screen.getByRole("button", { name: "First button" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Second button" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "First button" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Second button" }),
+    ).toBeInTheDocument();
   });
 
   // ============================================

@@ -1,10 +1,10 @@
-import { TableCell } from "@uiid/tables";
-import { Group } from "@uiid/layout";
 import { Button } from "@uiid/buttons";
-import { TableCellDropdown } from "./table-cell-dropdown";
+import { EllipsisVertical } from "@uiid/icons";
+import { Group } from "@uiid/layout";
+import { TableCell } from "@uiid/tables";
 
 import type { TableProps, TableActionsProps } from "../table.types";
-import { EllipsisVertical } from "@uiid/icons";
+import { TableCellDropdown } from "./table-cell-dropdown";
 
 type TableCellActionsProps<T extends Record<string, unknown>> = {
   actions: NonNullable<TableProps<T>["actions"]>;

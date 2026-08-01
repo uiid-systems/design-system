@@ -36,7 +36,7 @@ export function preserveDirectives() {
                   }
                   break; // Found directive, stop checking
                 }
-              } catch (e) {
+              } catch {
                 // Ignore read errors
               }
             }

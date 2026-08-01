@@ -33,11 +33,7 @@ const items = [
     label="Monthly"
     description="$10/month, billed monthly"
   />
-  <Radio
-    value="yearly"
-    label="Yearly"
-    description="$100/year, save 17%"
-  />
+  <Radio value="yearly" label="Yearly" description="$100/year, save 17%" />
 </RadioGroup>
 ```
 
@@ -76,23 +72,27 @@ For card selections where border indicates selection:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | — | **Required.** Value for the radio option |
-| `label` | `ReactNode` | — | Label text |
-| `description` | `ReactNode` | — | Helper text below label |
-| `bordered` | `boolean` | `false` | Adds border around radio and label |
-| `reversed` | `boolean` | `false` | Places radio after label |
-| `hideIndicator` | `boolean` | `false` | Hides the radio circle |
-| `disabled` | `boolean` | `false` | Disables the radio option |
-| `ContainerProps` | `GroupProps` | — | Props for container element |
-| `IndicatorProps` | `RadioIndicatorProps` | — | Props for indicator element |
+| Prop             | Type                  | Default | Description                              |
+| ---------------- | --------------------- | ------- | ---------------------------------------- |
+| `value`          | `string`              | —       | **Required.** Value for the radio option |
+| `label`          | `ReactNode`           | —       | Label text                               |
+| `description`    | `ReactNode`           | —       | Helper text below label                  |
+| `bordered`       | `boolean`             | `false` | Adds border around radio and label       |
+| `reversed`       | `boolean`             | `false` | Places radio after label                 |
+| `hideIndicator`  | `boolean`             | `false` | Hides the radio circle                   |
+| `disabled`       | `boolean`             | `false` | Disables the radio option                |
+| `ContainerProps` | `GroupProps`          | —       | Props for container element              |
+| `IndicatorProps` | `RadioIndicatorProps` | —       | Props for indicator element              |
 
 ## Anatomy
 
 ```tsx
-<CheckboxField>        {/* Shared with Checkbox */}
-  <RadioRoot>          {/* The radio control */}
+<CheckboxField>
+  {" "}
+  {/* Shared with Checkbox */}
+  <RadioRoot>
+    {" "}
+    {/* The radio control */}
     <RadioIndicator /> {/* Selection dot */}
   </RadioRoot>
 </CheckboxField>
@@ -100,15 +100,15 @@ For card selections where border indicates selection:
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `RadioRoot` | The radio control element |
-| `RadioIndicator` | The selection dot |
+| Component        | Description               |
+| ---------------- | ------------------------- |
+| `RadioRoot`      | The radio control element |
+| `RadioIndicator` | The selection dot         |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot    | Element                |
+| ------- | ---------------------- |
 | `radio` | The radio root element |
 
 ## Accessibility

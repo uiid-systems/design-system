@@ -1,5 +1,4 @@
 import type { MaskPattern } from "../mask-input.types";
-
 import { toUnmaskedIndex } from "./to-unmasked-index";
 
 export function getPatternCaretPosition(opts: {

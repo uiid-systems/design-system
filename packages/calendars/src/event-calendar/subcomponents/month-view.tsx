@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { Stack, Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -11,9 +12,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-
-import { Stack, Group } from "@uiid/layout";
-import { Text } from "@uiid/typography";
+import { useMemo } from "react";
 
 import { DEFAULT_START_HOUR, WEEKDAYS } from "../event-calendar.constants";
 import type { CalendarEvent } from "../event-calendar.types";
@@ -23,7 +22,6 @@ import {
   getSpanningEventsForDay,
   sortEvents,
 } from "../event-calendar.utils";
-
 import { DraggableEvent } from "./draggable-event";
 import { DroppableCell } from "./droppable-cell";
 

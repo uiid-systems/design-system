@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, Accordion } from "@uiid/design-system";
+
 import { MOCK_ITEMS } from "./accordion.mocks";
 
 const meta: Meta<typeof Accordion> = {

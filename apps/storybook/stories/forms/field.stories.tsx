@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import {
   Stack,
   Input,
@@ -15,11 +14,12 @@ import {
   Field,
 } from "@uiid/design-system";
 import type { FieldProps } from "@uiid/design-system";
-import { MOCK_SELECT_ITEMS } from "./select.mocks";
-import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
+
+import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
 import { MOCK_CHECKBOXGROUP_OPTIONS } from "./checkbox-group.mocks";
 import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
-import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
+import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
+import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
   title: "Forms/Field",

@@ -1,11 +1,11 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { AccordionItemProps } from "../accordion.types";
+
 import styles from "../accordion.module.css";
 
 export const AccordionItem = ({

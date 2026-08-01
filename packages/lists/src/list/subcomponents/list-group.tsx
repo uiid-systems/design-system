@@ -1,9 +1,9 @@
 import { Stack } from "@uiid/layout";
 
 import type { ListGroupProps } from "../list.types";
-
-import { ListItem } from "./list-item";
 import { ListGroupHeader } from "./list-group-header";
+import { ListItem } from "./list-item";
+
 import styles from "../list.module.css";
 
 export const ListGroup = ({ category, icon, items }: ListGroupProps) => {

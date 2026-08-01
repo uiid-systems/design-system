@@ -4,6 +4,7 @@ import { cx } from "@uiid/utils";
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
 import type { CodeBlockContentProps } from "../code-block.types";
+
 import styles from "../code-block.module.css";
 
 export const CodeBlockContent = ({

@@ -1,8 +1,9 @@
 import { Group } from "@uiid/layout";
 
-import type { ButtonContentContainerProps } from "../button.types";
-import styles from "../button.module.css";
 import { BUTTON_DEFAULT_GAP } from "../button.constants";
+import type { ButtonContentContainerProps } from "../button.types";
+
+import styles from "../button.module.css";
 
 export const ButtonContentContainer = ({
   loading,

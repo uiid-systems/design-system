@@ -1,8 +1,8 @@
 import { cx } from "@uiid/utils";
 
 import { Box } from "../box/box";
-
 import type { StackProps } from "./stack.types";
+
 import styles from "./stack.module.css";
 
 export const Stack = ({ ax, ay, className, ...props }: StackProps) => (

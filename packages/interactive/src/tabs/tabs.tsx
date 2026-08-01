@@ -1,7 +1,5 @@
 "use client";
 
-import type { TabsProps } from "./tabs.types";
-
 import { Layer } from "@uiid/layout";
 
 import {
@@ -11,6 +9,7 @@ import {
   TabsIndicator,
   TabsPanel,
 } from "./subcomponents";
+import type { TabsProps } from "./tabs.types";
 
 export const Tabs = ({
   items,

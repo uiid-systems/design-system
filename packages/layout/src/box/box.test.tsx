@@ -1,6 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+
 import { Box } from "./box";
+
 import styles from "./box.module.css";
 
 describe("Box", () => {

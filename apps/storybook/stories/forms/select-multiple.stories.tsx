@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group, SelectMultiple } from "@uiid/design-system";
 import type { SelectMultipleProps } from "@uiid/design-system";
 import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
+
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
@@ -86,11 +87,7 @@ export const BeforeAfterSlots: Story = {
         before={<SearchIcon />}
         placeholder="Before slot"
       />
-      <SelectMultiple
-        {...args}
-        after={<MailIcon />}
-        placeholder="After slot"
-      />
+      <SelectMultiple {...args} after={<MailIcon />} placeholder="After slot" />
       <SelectMultiple
         {...args}
         before={<LockIcon />}

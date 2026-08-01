@@ -27,14 +27,14 @@ import { Accordion } from "@uiid/interactive";
 
 ## Props
 
-| Prop            | Type                                           | Default      | Description                          |
-| --------------- | ---------------------------------------------- | ------------ | ------------------------------------ |
-| `items`         | `AccordionItemData[]`                          | —            | Array of accordion items             |
-| `defaultValue`  | `string[]`                                     | —            | Initially expanded items             |
-| `value`         | `string[]`                                     | —            | Controlled expanded items            |
-| `onValueChange` | `(value: string[]) => void`                    | —            | Callback when expanded items change  |
-| `disabled`      | `boolean`                                      | `false`      | Disables all accordion items         |
-| `orientation`   | `"vertical" \| "horizontal"`                   | `"vertical"` | Orientation for keyboard navigation  |
+| Prop            | Type                         | Default      | Description                         |
+| --------------- | ---------------------------- | ------------ | ----------------------------------- |
+| `items`         | `AccordionItemData[]`        | —            | Array of accordion items            |
+| `defaultValue`  | `string[]`                   | —            | Initially expanded items            |
+| `value`         | `string[]`                   | —            | Controlled expanded items           |
+| `onValueChange` | `(value: string[]) => void`  | —            | Callback when expanded items change |
+| `disabled`      | `boolean`                    | `false`      | Disables all accordion items        |
+| `orientation`   | `"vertical" \| "horizontal"` | `"vertical"` | Orientation for keyboard navigation |
 
 ### AccordionItemData
 
@@ -60,23 +60,23 @@ import { Accordion } from "@uiid/interactive";
 
 ## Subcomponents
 
-| Component          | Description                          |
-| ------------------ | ------------------------------------ |
-| `AccordionRoot`    | Container and context provider       |
-| `AccordionItem`    | Groups header with its panel         |
-| `AccordionHeader`  | Labels the corresponding panel       |
-| `AccordionTrigger` | Button that opens/closes the panel   |
-| `AccordionPanel`   | Collapsible content container        |
+| Component          | Description                        |
+| ------------------ | ---------------------------------- |
+| `AccordionRoot`    | Container and context provider     |
+| `AccordionItem`    | Groups header with its panel       |
+| `AccordionHeader`  | Labels the corresponding panel     |
+| `AccordionTrigger` | Button that opens/closes the panel |
+| `AccordionPanel`   | Collapsible content container      |
 
 ## Data Slots
 
-| Slot                | Element           |
-| ------------------- | ----------------- |
-| `accordion-root`    | Root container    |
-| `accordion-item`    | Item container    |
-| `accordion-header`  | Header element    |
-| `accordion-trigger` | Trigger button    |
-| `accordion-panel`   | Panel container   |
+| Slot                | Element         |
+| ------------------- | --------------- |
+| `accordion-root`    | Root container  |
+| `accordion-item`    | Item container  |
+| `accordion-header`  | Header element  |
+| `accordion-trigger` | Trigger button  |
+| `accordion-panel`   | Panel container |
 
 ## Accessibility
 

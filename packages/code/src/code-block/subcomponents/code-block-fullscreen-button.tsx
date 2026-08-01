@@ -5,6 +5,7 @@ import { Maximize2Icon, Minimize2Icon } from "@uiid/icons";
 import { cx } from "@uiid/utils";
 
 import type { CodeBlockFullscreenButtonProps } from "../code-block.types";
+
 import styles from "../code-block.module.css";
 
 export const CodeBlockFullscreenButton = ({

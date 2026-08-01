@@ -61,17 +61,33 @@
         },
         {
           "type": "string",
-          "enum": ["thin", "hairline", "extra-light", "ultra-light", "light", "normal", "regular", "book", "medium", "semi-bold", "demi-bold", "bold", "extra-bold", "ultra-bold", "black", "heavy", "extra-black", "ultra-black"]
+          "enum": [
+            "thin",
+            "hairline",
+            "extra-light",
+            "ultra-light",
+            "light",
+            "normal",
+            "regular",
+            "book",
+            "medium",
+            "semi-bold",
+            "demi-bold",
+            "bold",
+            "extra-bold",
+            "ultra-bold",
+            "black",
+            "heavy",
+            "extra-black",
+            "ultra-black"
+          ]
         },
         { "$ref": "#/$defs/tokenReference" }
       ]
     },
 
     "numberValue": {
-      "oneOf": [
-        { "type": "number" },
-        { "$ref": "#/$defs/tokenReference" }
-      ]
+      "oneOf": [{ "type": "number" }, { "$ref": "#/$defs/tokenReference" }]
     },
 
     "shadowValue": {
@@ -100,7 +116,17 @@
       "oneOf": [
         {
           "type": "string",
-          "enum": ["solid", "dashed", "dotted", "double", "groove", "ridge", "outset", "inset", "none"]
+          "enum": [
+            "solid",
+            "dashed",
+            "dotted",
+            "double",
+            "groove",
+            "ridge",
+            "outset",
+            "inset",
+            "none"
+          ]
         },
         {
           "type": "object",
@@ -346,15 +372,22 @@
         "$description": { "type": "string" },
         "$type": {
           "type": "string",
-          "enum": ["color", "dimension", "duration", "fontFamily", "fontWeight", "number", "shadow", "strokeStyle", "typography"]
+          "enum": [
+            "color",
+            "dimension",
+            "duration",
+            "fontFamily",
+            "fontWeight",
+            "number",
+            "shadow",
+            "strokeStyle",
+            "typography"
+          ]
         },
         "$extensions": { "$ref": "#/$defs/extensions" }
       },
       "additionalProperties": {
-        "oneOf": [
-          { "$ref": "#/$defs/token" },
-          { "$ref": "#/$defs/tokenGroup" }
-        ]
+        "oneOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/tokenGroup" }]
       }
     }
   },
@@ -364,9 +397,6 @@
     "$description": { "type": "string" }
   },
   "additionalProperties": {
-    "oneOf": [
-      { "$ref": "#/$defs/token" },
-      { "$ref": "#/$defs/tokenGroup" }
-    ]
+    "oneOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/tokenGroup" }]
   }
 }

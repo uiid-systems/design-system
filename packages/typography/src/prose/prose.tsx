@@ -1,6 +1,7 @@
 import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
 
 import type { ProseProps } from "./prose.types";
+
 import styles from "./prose.module.css";
 
 export const Prose = ({

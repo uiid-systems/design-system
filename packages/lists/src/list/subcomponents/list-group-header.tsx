@@ -1,8 +1,9 @@
 import type { Icon } from "@uiid/icons";
-import { Text } from "@uiid/typography";
 import { Group } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import { ICON_SIZE_LARGE } from "../list.constants";
+
 import styles from "../list.module.css";
 
 export type ListGroupHeaderProps = {

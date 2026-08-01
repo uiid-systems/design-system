@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import {
-  Stack,
-  Group,
-  Field,
-  Autocomplete,
-} from "@uiid/design-system";
+import { Stack, Group, Field, Autocomplete } from "@uiid/design-system";
 import type { AutocompleteProps } from "@uiid/design-system";
+
 import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
 
 const meta: Meta<AutocompleteProps> = {

@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { OnThisPage, Pager } from "@/components/docs";
 import { Header } from "@/components/header";
-import { Sidebar } from "@/components/sidebar";
 import {
   Body,
   AppShellOuter,
@@ -12,7 +11,7 @@ import {
   ContentRow,
   Main,
 } from "@/components/shell";
-
+import { Sidebar } from "@/components/sidebar";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
 
 import "./globals.css";

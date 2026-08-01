@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Tabs } from "@uiid/design-system";
+
 import { MOCK_TABS } from "./tabs.mocks";
 
 const meta: Meta<typeof Tabs> = {

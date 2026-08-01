@@ -1,5 +1,4 @@
 import type { EventCalendarDndContextType } from "../event-calendar.types";
-
 import { EventItem } from "./event-item";
 
 export type EventDragOverlayProps = EventCalendarDndContextType;

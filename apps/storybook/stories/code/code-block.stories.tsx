@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, CodeBlock } from "@uiid/design-system";
 
 const meta = {
@@ -182,4 +181,3 @@ export const Languages: Story = {
     </Stack>
   ),
 };
-

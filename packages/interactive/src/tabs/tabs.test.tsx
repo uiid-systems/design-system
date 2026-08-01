@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
 
 import { Tabs } from "./tabs";
 import type { TabsProps } from "./tabs.types";
@@ -26,9 +26,15 @@ describe("Tabs", () => {
 
   it("renders with data-slot attributes", () => {
     render(<Tabs items={MOCK_ITEMS} />);
-    expect(document.querySelector("[data-slot='tabs-list']")).toBeInTheDocument();
-    expect(document.querySelector("[data-slot='tabs-tab']")).toBeInTheDocument();
-    expect(document.querySelector("[data-slot='tabs-panel']")).toBeInTheDocument();
+    expect(
+      document.querySelector("[data-slot='tabs-list']"),
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector("[data-slot='tabs-tab']"),
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector("[data-slot='tabs-panel']"),
+    ).toBeInTheDocument();
   });
 
   it("renders the tablist", () => {
@@ -49,7 +55,7 @@ describe("Tabs", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
   });
 
@@ -57,7 +63,7 @@ describe("Tabs", () => {
     render(<Tabs items={MOCK_ITEMS} defaultValue="tab-2" />);
     expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
   });
 
@@ -78,11 +84,11 @@ describe("Tabs", () => {
 
     expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
     expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
       "aria-selected",
-      "false"
+      "false",
     );
   });
 
@@ -136,7 +142,7 @@ describe("Tabs", () => {
     expect(handleChange).toHaveBeenCalledWith("tab-3");
     expect(screen.getByRole("tab", { name: "Tab 3" })).toHaveAttribute(
       "aria-selected",
-      "true"
+      "true",
     );
   });
 
@@ -149,7 +155,9 @@ describe("Tabs", () => {
     render(<Tabs items={MOCK_ITEMS} />);
 
     const firstTab = screen.getByRole("tab", { name: "Tab 1" });
-    act(() => { firstTab.focus(); });
+    act(() => {
+      firstTab.focus();
+    });
 
     await user.keyboard("{ArrowRight}");
 

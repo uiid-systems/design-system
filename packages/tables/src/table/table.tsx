@@ -1,9 +1,5 @@
 import { isValidElement } from "react";
 
-import type { TableProps } from "./table.types";
-import { defaultFormatHeader } from "./table.utils";
-import { TableSelectionProvider } from "./table-selection";
-
 import {
   TableContainer,
   TableRoot,
@@ -16,6 +12,9 @@ import {
   TableCellActions,
   TableCellCheckbox,
 } from "./subcomponents";
+import { TableSelectionProvider } from "./table-selection";
+import type { TableProps } from "./table.types";
+import { defaultFormatHeader } from "./table.utils";
 
 export function Table<T extends Record<string, unknown>>({
   items,

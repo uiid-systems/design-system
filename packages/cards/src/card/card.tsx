@@ -3,7 +3,6 @@ import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { CardProps } from "./card.types";
-
 import {
   CardContainer,
   CardHeader,
@@ -14,6 +13,7 @@ import {
   CardFooter,
   CardThumbnail,
 } from "./subcomponents";
+
 import styles from "./card.module.css";
 
 export const Card = ({
@@ -110,7 +110,11 @@ export const Card = ({
       )}
 
       {children && (
-        <Stack data-slot="card-inner-container" fullwidth {...InnerContainerProps}>
+        <Stack
+          data-slot="card-inner-container"
+          fullwidth
+          {...InnerContainerProps}
+        >
           {children}
         </Stack>
       )}

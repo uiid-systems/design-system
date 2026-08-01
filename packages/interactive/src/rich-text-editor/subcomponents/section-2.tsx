@@ -1,5 +1,4 @@
 import type { Editor } from "@tiptap/react";
-
 import {
   CodeIcon,
   EllipsisIcon,
@@ -9,8 +8,9 @@ import {
   BanIcon,
   UnderlineIcon,
 } from "@uiid/icons";
-import { ToolbarSection } from "./toolbar-section";
+
 import type { FormatAction } from "../rich-text-editor.types";
+import { ToolbarSection } from "./toolbar-section";
 
 type TextStyleAction =
   | "bold"

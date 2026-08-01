@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { GlobeIcon } from "@uiid/icons";
 import { Button, Stack, Drawer } from "@uiid/design-system";
+import { GlobeIcon } from "@uiid/icons";
 
 const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",

@@ -7,6 +7,7 @@ import {
 
 import type { BoxProps } from "./box.types";
 import { boxVariants } from "./box.variants";
+
 import styles from "./box.module.css";
 
 export const Box = ({

@@ -1,9 +1,8 @@
 "use client";
 
+import { Breadcrumbs } from "@uiid/design-system";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { Breadcrumbs } from "@uiid/design-system";
 
 const toLabel = (segment: string) =>
   segment

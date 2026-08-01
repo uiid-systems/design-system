@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ConditionalRender } from "@uiid/layout";
+import { useMemo } from "react";
 
 import { Field } from "../field/field";
 import { SELECT_DEFAULT_SIZE } from "../select/select.constants";
@@ -16,9 +16,9 @@ import {
   SelectValue,
   SelectIndicator,
 } from "../select/subcomponents";
-import selectStyles from "../select/select.module.css";
-
 import type { SelectMultipleProps } from "./select-multiple.types";
+
+import selectStyles from "../select/select.module.css";
 
 export const SelectMultiple = ({
   size = SELECT_DEFAULT_SIZE,

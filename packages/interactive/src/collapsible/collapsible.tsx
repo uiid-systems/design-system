@@ -1,5 +1,4 @@
 import type { CollapsibleProps } from "./collapsible.types";
-
 import {
   CollapsibleRoot,
   CollapsibleTrigger,

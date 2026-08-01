@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { GlobeIcon } from "@uiid/icons";
 import { Button } from "@uiid/design-system";
+import { GlobeIcon } from "@uiid/icons";
 
 import * as Examples from "../../../../packages/buttons/src/button/button.examples";
 

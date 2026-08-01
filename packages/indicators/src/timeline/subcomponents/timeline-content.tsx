@@ -3,9 +3,10 @@
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { useTimelineItemContext } from "../timeline.context";
 import { CONTENT_NAME } from "../timeline.constants";
+import { useTimelineItemContext } from "../timeline.context";
 import type { TimelineContentProps } from "../timeline.types";
+
 import styles from "../timeline.module.css";
 
 export const TimelineContent = ({

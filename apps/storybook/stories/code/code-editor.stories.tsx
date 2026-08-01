@@ -1,7 +1,6 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { Stack, Text, CodeEditor } from "@uiid/design-system";
+import { useState } from "react";
 
 const meta = {
   title: "Code/Code Editor",

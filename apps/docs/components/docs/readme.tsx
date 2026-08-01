@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import ReactMarkdown, { type Components } from "react-markdown";
 
 import { CodeBlock, CodeInline, Prose } from "@uiid/design-system";
 import type { BundledLanguage } from "@uiid/design-system";
+import ReactMarkdown, { type Components } from "react-markdown";
 
 const ROOT = path.resolve(process.cwd(), "../..");
 
@@ -14,9 +14,7 @@ const markdownComponents: Components = {
     const language = /language-(\w+)/.exec(className ?? "")?.[1];
 
     if (language || code.includes("\n")) {
-      return (
-        <CodeBlock code={code} language={language as BundledLanguage} />
-      );
+      return <CodeBlock code={code} language={language as BundledLanguage} />;
     }
 
     return <CodeInline>{code}</CodeInline>;
@@ -51,6 +49,8 @@ type ReadmeProps = {
 export function Readme({ of }: ReadmeProps) {
   const [pkg, component] = of.split("/");
   return (
-    <Markdown file={path.join("packages", pkg, "src", component, "README.md")} />
+    <Markdown
+      file={path.join("packages", pkg, "src", component, "README.md")}
+    />
   );
 }

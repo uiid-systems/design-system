@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
 import badgeTokens from "@tokens/json/component/badge.tokens.json";
+
 import { TokenTable, SectionHeader } from "./subcomponents";
 import {
   flattenTokens,

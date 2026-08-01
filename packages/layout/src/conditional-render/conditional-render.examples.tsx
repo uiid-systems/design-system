@@ -1,5 +1,5 @@
-import { ConditionalRender } from "./conditional-render";
 import { Box } from "../box/box";
+import { ConditionalRender } from "./conditional-render";
 
 export const Wrapped = () => (
   <ConditionalRender condition={true} render={<Box bordered p={2} rounded />}>

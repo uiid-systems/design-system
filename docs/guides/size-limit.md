@@ -62,9 +62,9 @@ Running `pnpm size-limit --why` locally produces a webpack-style bundle analyzer
 
 Two packages are intentionally excluded:
 
-| Package | Reason |
-|---|---|
+| Package        | Reason                                                       |
+| -------------- | ------------------------------------------------------------ |
 | `@uiid/tokens` | Source-only — ships CSS and TS schema, no `dist/` JS bundle. |
-| `@uiid/themes` | Source-only — ships `src/` directly via subpath exports. |
+| `@uiid/themes` | Source-only — ships `src/` directly via subpath exports.     |
 
 Tokens and themes still contribute to consumer bundle size; their impact shows up indirectly inside whichever consumer package imports them.

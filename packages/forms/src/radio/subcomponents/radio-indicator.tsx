@@ -1,11 +1,11 @@
 "use client";
 
 import { Radio as BaseRadio } from "@base-ui/react/radio";
-
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { RadioIndicatorProps } from "../radio.types";
+
 import styles from "../radio.module.css";
 
 export const RadioIndicator = ({

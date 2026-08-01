@@ -1,11 +1,10 @@
 import { NodeViewWrapper, type NodeViewProps } from "@tiptap/react";
-import { Controlled as ControlledZoom } from "react-medium-image-zoom";
-import { useRef, useState, useCallback, useMemo, useEffect } from "react";
-
 import { LoadingSpinner, InfoIcon, TrashIcon } from "@uiid/icons";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
+import { useRef, useState, useCallback, useMemo, useEffect } from "react";
+import { Controlled as ControlledZoom } from "react-medium-image-zoom";
 
 import {
   useDragResize,
@@ -13,9 +12,7 @@ import {
   type ElementDimensions,
 } from "../../../hooks";
 import { blobUrlToBase64, randomId } from "../../../rich-text-editor.utils";
-
 import type { UploadReturnType } from "../image.types";
-
 import { ActionButton } from "./action-button";
 import { ActionWrapper, ImageActions } from "./image-actions";
 import { ImageOverlay } from "./image-overlay";
@@ -266,10 +263,7 @@ export const ImageViewBlock: React.FC<NodeViewProps> = ({
                   ay="center"
                   style={{ position: "absolute", inset: 0 }}
                 >
-                  <InfoIcon
-                    size={28}
-                    style={{ color: "var(--shade-muted)" }}
-                  />
+                  <InfoIcon size={28} style={{ color: "var(--shade-muted)" }} />
                   <Text shade="muted" mt={2}>
                     Failed to load image
                   </Text>

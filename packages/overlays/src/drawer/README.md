@@ -34,5 +34,5 @@ open drawer. A standalone drawer needs none of them.
 
 Built on Base UI's `DrawerPreview` namespace — a preview API. `@base-ui/react` is
 pinned exactly, so treat any version bump as a review point rather than a routine
-update. `Drawer.SwipeArea` (swipe from the edge to *open*) is documented upstream
+update. `Drawer.SwipeArea` (swipe from the edge to _open_) is documented upstream
 but is not exported in `1.2.0`, so it isn't surfaced here yet.

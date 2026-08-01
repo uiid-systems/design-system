@@ -1,8 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-
-import { Stack, Group, Text } from "@uiid/design-system";
-
 import shadeTokens from "@tokens/json/semantic/shade.tokens.json";
+import { Stack, Group, Text } from "@uiid/design-system";
 
 /*
  * The neutral ladder. These are semantic aliases rather than primitives, which
@@ -36,7 +34,8 @@ export const Shades: Story = {
         </Text>
         <Text size={-1} shade="muted">
           Six neutral aliases, background through foreground. Each resolves via
-          light-dark(), so the pair below is what the alias holds in each scheme.
+          light-dark(), so the pair below is what the alias holds in each
+          scheme.
         </Text>
       </Stack>
 

@@ -1,16 +1,16 @@
-import { createHighlighterCore } from "shiki/core";
-import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
-import type { HighlighterCore } from "shiki/core";
 import {
   transformerNotationDiff,
   transformerNotationHighlight,
   transformerMetaHighlight,
 } from "@shikijs/transformers";
+import { createHighlighterCore } from "shiki/core";
+import type { HighlighterCore } from "shiki/core";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
+
 import {
   DEFAULT_THEME_DARK,
   DEFAULT_THEME_LIGHT,
 } from "./highlighter.constants";
-
 import type { BundledLanguage, HighlightOptions } from "./highlighter.types";
 
 // Lazy-loaded bundled languages

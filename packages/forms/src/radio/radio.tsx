@@ -1,7 +1,5 @@
 import { CheckboxField } from "../checkbox/subcomponents";
-
 import type { RadioProps } from "./radio.types";
-
 import { RadioRoot, RadioIndicator } from "./subcomponents";
 
 export const Radio = ({

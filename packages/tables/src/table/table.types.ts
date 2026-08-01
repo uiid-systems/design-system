@@ -1,5 +1,5 @@
-import type { MenuItemType } from "@uiid/interactive";
 import type { Icon } from "@uiid/icons";
+import type { MenuItemType } from "@uiid/interactive";
 
 export type TableActionsProps<T = Record<string, unknown>> = {
   icon: Icon;

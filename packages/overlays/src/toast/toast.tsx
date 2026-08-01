@@ -1,13 +1,13 @@
 "use client";
 
 import { Toast as BaseToast } from "@base-ui/react/toast";
-
 import { Card } from "@uiid/cards";
 import { Text } from "@uiid/typography";
 
-import type { ToasterProps } from "./toast.types";
-import styles from "./toast.module.css";
 import { useToastManager } from "./toast.hooks";
+import type { ToasterProps } from "./toast.types";
+
+import styles from "./toast.module.css";
 
 const ToastList = () => {
   const { toasts } = useToastManager();

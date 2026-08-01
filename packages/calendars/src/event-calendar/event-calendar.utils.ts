@@ -43,9 +43,13 @@ export const roundToNearest15Minutes = (
   const fractionalHour = time - hours;
 
   const minutes =
-    fractionalHour < 0.125 ? 0 :
-    fractionalHour < 0.375 ? 15 :
-    fractionalHour < 0.625 ? 30 : 45;
+    fractionalHour < 0.125
+      ? 0
+      : fractionalHour < 0.375
+        ? 15
+        : fractionalHour < 0.625
+          ? 30
+          : 45;
 
   return { hours, minutes };
 };

@@ -16,7 +16,7 @@ const { errors, setErrors } = useFormState();
     <Input name="email" label="Email" />
     <button type="submit">Submit</button>
   </Form>
-</form>
+</form>;
 ```
 
 ## Form Submission Pattern
@@ -80,15 +80,15 @@ const { errors, loading, success, result, setErrors, setLoading, reset } =
   useFormState();
 ```
 
-| Return Value | Type | Description |
-|--------------|------|-------------|
-| `errors` | `Record<string, string \| string[]>` | Current error state |
-| `loading` | `boolean` | Loading state |
-| `success` | `boolean` | Success state |
-| `result` | `T \| null` | Result data (generic) |
-| `setErrors` | `(errors) => void` | Set error state |
-| `setLoading` | `(loading) => void` | Set loading state |
-| `reset` | `() => void` | Reset all state |
+| Return Value | Type                                 | Description           |
+| ------------ | ------------------------------------ | --------------------- |
+| `errors`     | `Record<string, string \| string[]>` | Current error state   |
+| `loading`    | `boolean`                            | Loading state         |
+| `success`    | `boolean`                            | Success state         |
+| `result`     | `T \| null`                          | Result data (generic) |
+| `setErrors`  | `(errors) => void`                   | Set error state       |
+| `setLoading` | `(loading) => void`                  | Set loading state     |
+| `reset`      | `() => void`                         | Reset all state       |
 
 ## Examples
 
@@ -124,7 +124,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     <Input name="password" label="Password" type="password" required />
     <button type="submit">Sign In</button>
   </Form>
-</form>
+</form>;
 ```
 
 ### With Select and Checkbox
@@ -137,20 +137,11 @@ const { errors, loading, setErrors, setLoading, reset } = useFormState();
 
 <form onSubmit={handleSubmit} noValidate>
   <Form errors={errors} render={<Stack gap={4} />}>
-    <Select
-      label="Country"
-      name="country"
-      items={countries}
-      required
-    />
-    <Checkbox
-      label="I agree to the terms"
-      name="terms"
-      required
-    />
+    <Select label="Country" name="country" items={countries} required />
+    <Checkbox label="I agree to the terms" name="terms" required />
     <button type="submit">Submit</button>
   </Form>
-</form>
+</form>;
 ```
 
 ### With Custom Layout
@@ -166,15 +157,15 @@ import { Stack, Group } from "@uiid/layout";
       <button type="reset">Reset</button>
     </Group>
   </Form>
-</form>
+</form>;
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `fullwidth` | `boolean` | — | — |
-| `gap` | `number` | `4` | — |
+| Prop        | Type      | Default | Description |
+| ----------- | --------- | ------- | ----------- |
+| `fullwidth` | `boolean` | —       | —           |
+| `gap`       | `number`  | `4`     | —           |
 
 > All other props are forwarded to the Base UI Form component.
 
@@ -189,17 +180,17 @@ const errors = {
 };
 
 <Form errors={errors}>
-  <Input name="email" label="Email" />    {/* Shows error */}
+  <Input name="email" label="Email" /> {/* Shows error */}
   <Input name="password" label="Password" /> {/* Shows error */}
-</Form>
+</Form>;
 ```
 
 Errors are automatically displayed by `FieldError` components inside `Field` wrappers that match the error keys.
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot   | Element          |
+| ------ | ---------------- |
 | `form` | The form element |
 
 ## Accessibility

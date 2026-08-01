@@ -92,17 +92,17 @@ Slot props (`MediaProps`, `MarkerProps`, `ConnectorProps`, `ContentProps`, `Card
 
 All geometry derives from CSS variables on the root — override them to retheme without touching markup:
 
-| Variable                          | Default              | Controls                                  |
-| --------------------------------- | -------------------- | ----------------------------------------- |
-| `--timeline-media-size`           | `2.5rem`             | Width of the leading media column         |
-| `--timeline-rail-size`            | `1rem`               | Width of the dot/connector column         |
-| `--timeline-line`                 | `1.5rem`             | First-line height markers align to        |
-| `--timeline-dot-size`             | `0.75rem`            | Diameter of the default dot               |
-| `--timeline-marker-size`          | `1.5rem`             | Diameter of a content marker (`marker`)   |
-| `--timeline-anchor-offset`        | `var(--globals-padding-y)` | Marker/media shift down to the card's title row |
-| `--timeline-connector-thickness`  | `0.125rem`           | Connector line width                      |
-| `--timeline-column-gap`           | `0.75rem`            | Gap between columns                        |
-| `--timeline-row-gap`              | `2.5rem`             | Vertical space between items              |
-| `--timeline-marker-bg`            | `var(--shade-background)` | Fill that masks the line behind a marker |
+| Variable                         | Default                    | Controls                                        |
+| -------------------------------- | -------------------------- | ----------------------------------------------- |
+| `--timeline-media-size`          | `2.5rem`                   | Width of the leading media column               |
+| `--timeline-rail-size`           | `1rem`                     | Width of the dot/connector column               |
+| `--timeline-line`                | `1.5rem`                   | First-line height markers align to              |
+| `--timeline-dot-size`            | `0.75rem`                  | Diameter of the default dot                     |
+| `--timeline-marker-size`         | `1.5rem`                   | Diameter of a content marker (`marker`)         |
+| `--timeline-anchor-offset`       | `var(--globals-padding-y)` | Marker/media shift down to the card's title row |
+| `--timeline-connector-thickness` | `0.125rem`                 | Connector line width                            |
+| `--timeline-column-gap`          | `0.75rem`                  | Gap between columns                             |
+| `--timeline-row-gap`             | `2.5rem`                   | Vertical space between items                    |
+| `--timeline-marker-bg`           | `var(--shade-background)`  | Fill that masks the line behind a marker        |
 
 Set `dir="rtl"` to flip the rail (and media column) to the opposite edge — positioning uses logical properties.

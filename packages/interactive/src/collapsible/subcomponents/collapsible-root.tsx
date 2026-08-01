@@ -1,7 +1,6 @@
 "use client";
 
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
-
 import { Stack } from "@uiid/layout";
 
 import type { CollapsibleRootProps } from "../collapsible.types";

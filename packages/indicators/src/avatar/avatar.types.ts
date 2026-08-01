@@ -26,7 +26,8 @@ export type AvatarInitialsProps = Pick<AvatarType, "initials"> & TextProps;
 
 export type AvatarNameProps = Pick<AvatarType, "name"> & TextProps;
 
-export type AvatarDescriptionProps = Pick<AvatarType, "description"> & TextProps;
+export type AvatarDescriptionProps = Pick<AvatarType, "description"> &
+  TextProps;
 
 export type AvatarProps = {
   ContainerProps?: AvatarContainerProps;

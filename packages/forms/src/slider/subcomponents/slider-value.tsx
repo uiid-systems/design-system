@@ -1,7 +1,6 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-
 import { Text } from "@uiid/typography";
 
 import type { SliderValueProps } from "../slider.types";

@@ -1,13 +1,12 @@
-import * as React from "react";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Typography } from "@tiptap/extension-typography";
+import { Placeholder, Selection } from "@tiptap/extensions";
 import type { Editor } from "@tiptap/react";
 import type { Content, UseEditorOptions } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
 import { useEditor } from "@tiptap/react";
-import { Typography } from "@tiptap/extension-typography";
-import { TextStyle } from "@tiptap/extension-text-style";
-import { Placeholder, Selection } from "@tiptap/extensions";
-
+import { StarterKit } from "@tiptap/starter-kit";
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
 import {
   Image,
@@ -18,7 +17,6 @@ import {
   ResetMarksOnEnter,
   FileHandler,
 } from "../extensions";
-
 import { fileToBase64, getOutput, randomId } from "../rich-text-editor.utils";
 import { useThrottle } from "./use-throttle";
 

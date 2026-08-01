@@ -1,9 +1,7 @@
 import type { Editor } from "@tiptap/react";
-
 import { ChevronDownIcon, ListIcon } from "@uiid/icons";
 
 import type { FormatAction } from "../rich-text-editor.types";
-
 import { ToolbarSection } from "./toolbar-section";
 
 type ListItemAction = "orderedList" | "bulletList";

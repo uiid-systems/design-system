@@ -1,5 +1,5 @@
-import * as React from "react";
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
 import styles from "../image.module.css";
 

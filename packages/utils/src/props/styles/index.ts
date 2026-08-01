@@ -1,20 +1,63 @@
 import type { PropCategory } from "../categories";
 import { togglePropKeys } from "../categories";
-
 import { b, bx, bl, br, by, bt, bb, borderPropKeys } from "./border";
 import { ax, ay, direction, layoutPropKeys } from "./layout";
-import { gap, m, mx, ml, mr, my, mt, mb, p, px, pl, pr, py, pt, pb, spacingPropKeys } from "./spacing";
 import { w, minw, maxw, h, minh, maxh, sizingPropKeys } from "./sizing";
+import {
+  gap,
+  m,
+  mx,
+  ml,
+  mr,
+  my,
+  mt,
+  mb,
+  p,
+  px,
+  pl,
+  pr,
+  py,
+  pt,
+  pb,
+  spacingPropKeys,
+} from "./spacing";
 
 export const styleProps = {
   // border
-  b, bx, bl, br, by, bt, bb,
+  b,
+  bx,
+  bl,
+  br,
+  by,
+  bt,
+  bb,
   // layout
-  ax, ay, direction,
+  ax,
+  ay,
+  direction,
   // spacing
-  gap, m, mx, ml, mr, my, mt, mb, p, px, pl, pr, py, pt, pb,
+  gap,
+  m,
+  mx,
+  ml,
+  mr,
+  my,
+  mt,
+  mb,
+  p,
+  px,
+  pl,
+  pr,
+  py,
+  pt,
+  pb,
   // sizing
-  w, minw, maxw, h, minh, maxh,
+  w,
+  minw,
+  maxw,
+  h,
+  minh,
+  maxh,
 };
 
 export const stylePropKeys = Object.keys(

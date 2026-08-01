@@ -1,6 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect } from "vitest";
+
 import { Toaster } from "./toast";
 import { ToastProvider, useToastManager } from "./toast.hooks";
 

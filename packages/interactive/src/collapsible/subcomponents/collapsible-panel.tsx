@@ -1,10 +1,10 @@
 "use client";
 
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
-
 import { Stack } from "@uiid/layout";
 
 import type { CollapsiblePanelProps } from "../collapsible.types";
+
 import styles from "../collapsible.module.css";
 
 export const CollapsiblePanel = ({

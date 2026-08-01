@@ -1,8 +1,7 @@
-import { Fragment } from "react";
 import { ConditionalRender, Group } from "@uiid/layout";
+import { Fragment } from "react";
 
 import type { BreadcrumbsProps } from "./breadcrumbs.types";
-
 import {
   BreadcrumbsContainer,
   BreadcrumbsList,

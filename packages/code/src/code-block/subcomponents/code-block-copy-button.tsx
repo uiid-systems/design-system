@@ -1,13 +1,13 @@
 "use client";
 
-import * as React from "react";
-
 import { Button } from "@uiid/buttons";
 import { CopyIcon, CheckIcon } from "@uiid/icons";
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
 import { DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockCopyButtonProps } from "../code-block.types";
+
 import styles from "../code-block.module.css";
 
 export const CodeBlockCopyButton = ({

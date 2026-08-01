@@ -1,17 +1,15 @@
 "use client";
 
+import { cx } from "@uiid/utils";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
-import { cx } from "@uiid/utils";
-
-import { useHighlight } from "../highlighter/highlighter.hooks";
-
-import type { CodeBlockProps } from "./code-block.types";
 import { DEFAULT_LANGUAGE, DEFAULT_WRAP } from "../code.constants";
-import styles from "./code-block.module.css";
-
+import { useHighlight } from "../highlighter/highlighter.hooks";
+import type { CodeBlockProps } from "./code-block.types";
 import { CodeBlockHeader, CodeBlockContent } from "./subcomponents";
+
+import styles from "./code-block.module.css";
 
 export const CodeBlock = ({
   code,
@@ -172,7 +170,10 @@ export const CodeBlock = ({
   // Portal to the body so the overlay escapes any ancestor stacking/overflow
   // context. `fullscreen` is always false on the server, so SSR renders `block`.
   return createPortal(
-    <div data-slot="code-block-fullscreen" className={styles["code-block-fullscreen"]}>
+    <div
+      data-slot="code-block-fullscreen"
+      className={styles["code-block-fullscreen"]}
+    >
       <div
         data-slot="code-block-backdrop"
         className={styles["code-block-backdrop"]}

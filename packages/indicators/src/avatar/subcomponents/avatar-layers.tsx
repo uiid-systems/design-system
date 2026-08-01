@@ -1,9 +1,10 @@
 import { Layer } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import styles from "../avatar.module.css";
 import type { AvatarLayersProps } from "../avatar.types";
 import { avatarVariants } from "../avatar.variants";
+
+import styles from "../avatar.module.css";
 
 export const AvatarLayers = ({
   color,

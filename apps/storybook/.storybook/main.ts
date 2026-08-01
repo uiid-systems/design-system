@@ -1,7 +1,9 @@
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
 import { readdirSync, existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import type { StorybookConfig } from "@storybook/react-vite";
+
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {
@@ -54,8 +56,12 @@ const config: StorybookConfig = {
 
 export default config;
 
-function getAbsolutePath(value: string): any {
-  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+// Returns `T` so literal addon/framework names survive, satisfying Storybook's
+// narrowly-typed `framework.name` without widening to `string`.
+function getAbsolutePath<T extends string>(value: T): T {
+  return dirname(
+    fileURLToPath(import.meta.resolve(`${value}/package.json`)),
+  ) as T;
 }
 
 type SourcePackage = { name: string; entry: string };

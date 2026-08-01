@@ -1,0 +1,27 @@
+# https://lefthook.dev/configuration/
+#
+# Deliberately not parallel: oxfmt rewrites staged files and restages them, so
+# oxlint has to read the result. Whole-repo oxlint takes ~0.4s, which makes the
+# sequential cost irrelevant and keeps the ordering correct by construction.
+
+pre-commit:
+  jobs:
+    # Format first, restage the fixes, then lint what will actually be committed.
+    # The glob must cover every format oxfmt handles, not just the JS/TS family:
+    # a markdown table left unaligned here still fails `pnpm format:check` in CI.
+    - name: format
+      run: pnpm format {staged_files}
+      glob:
+        - "*.{ts,tsx,js,jsx,mjs,cjs,md,mdx,json,jsonc,css,yml,yaml}"
+      stage_fixed: true
+
+    # Whole-repo rather than {staged_files}: oxlint covers the entire monorepo
+    # in well under a second, so scoping buys nothing and would miss breakage in
+    # files this commit didn't touch.
+    - name: lint
+      run: pnpm lint
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}

@@ -15,22 +15,21 @@ export { isbnPattern } from "./isbn";
 export { einPattern } from "./ein";
 
 import type { MaskPattern, MaskPatternKey } from "../mask-input.types";
-
-import { phonePattern } from "./phone";
-import { ssnPattern } from "./ssn";
-import { datePattern } from "./date";
-import { timePattern } from "./time";
 import { creditCardPattern } from "./credit-card";
 import { creditCardExpiryPattern } from "./credit-card-expiry";
+import { currencyPattern } from "./currency";
+import { datePattern } from "./date";
+import { einPattern } from "./ein";
+import { ipv4Pattern } from "./ipv4";
+import { isbnPattern } from "./isbn";
+import { licensePlatePattern } from "./license-plate";
+import { macAddressPattern } from "./mac-address";
+import { percentagePattern } from "./percentage";
+import { phonePattern } from "./phone";
+import { ssnPattern } from "./ssn";
+import { timePattern } from "./time";
 import { zipCodePattern } from "./zip-code";
 import { zipCodeExtendedPattern } from "./zip-code-extended";
-import { currencyPattern } from "./currency";
-import { percentagePattern } from "./percentage";
-import { licensePlatePattern } from "./license-plate";
-import { ipv4Pattern } from "./ipv4";
-import { macAddressPattern } from "./mac-address";
-import { isbnPattern } from "./isbn";
-import { einPattern } from "./ein";
 
 /**
  * Map of all mask patterns keyed by pattern name.

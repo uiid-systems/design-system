@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { describe, it, expect, vi } from "vitest";
+
 import { Accordion } from "./accordion";
 import {
   AccordionRoot,
@@ -39,7 +40,10 @@ describe("Accordion", () => {
 
   it("applies custom className to root", () => {
     render(
-      <Accordion items={sampleItems} RootProps={{ className: "custom-class" }} />,
+      <Accordion
+        items={sampleItems}
+        RootProps={{ className: "custom-class" }}
+      />,
     );
     expect(document.querySelector(".custom-class")).toBeInTheDocument();
   });
@@ -131,7 +135,12 @@ describe("Accordion", () => {
   it("supports disabled individual items", () => {
     const itemsWithDisabled = [
       ...sampleItems.slice(0, 2),
-      { value: "item-3", trigger: "Third", content: "Third content", disabled: true },
+      {
+        value: "item-3",
+        trigger: "Third",
+        content: "Third content",
+        disabled: true,
+      },
     ];
     render(<Accordion items={itemsWithDisabled} />);
 
@@ -156,7 +165,9 @@ describe("Accordion", () => {
       </AccordionRoot>,
     );
 
-    expect(screen.getByRole("button", { name: "Test Trigger" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Test Trigger" }),
+    ).toBeInTheDocument();
 
     // Panel content is rendered after opening
     await user.click(screen.getByRole("button", { name: "Test Trigger" }));

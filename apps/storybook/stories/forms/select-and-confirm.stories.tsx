@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
-
 import {
   Stack,
   Button,
@@ -10,6 +8,8 @@ import {
   useFormState,
 } from "@uiid/design-system";
 import type { FormProps, FormErrors } from "@uiid/design-system";
+import { useState } from "react";
+
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {

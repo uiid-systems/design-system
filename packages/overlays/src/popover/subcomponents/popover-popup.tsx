@@ -1,9 +1,9 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import type { PopoverPopupProps } from "../popover.types";
+
 import styles from "../popover.module.css";
 
 /**
