@@ -70,11 +70,6 @@
     "limit": "100 kB"
   },
   {
-    "name": "@uiid/registry",
-    "path": "packages/registry/dist/index.js",
-    "limit": "50 kB"
-  },
-  {
     "name": "@uiid/tables",
     "path": "packages/tables/dist/index.js",
     "limit": "100 kB"

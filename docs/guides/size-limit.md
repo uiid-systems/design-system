@@ -60,11 +60,10 @@ Running `pnpm size-limit --why` locally produces a webpack-style bundle analyzer
 
 ## Packages not gated
 
-Three packages are intentionally excluded:
+Two packages are intentionally excluded:
 
 | Package | Reason |
 |---|---|
-| `@uiid/mcp` | Node-target server — uses `node:process` and top-level await. Not a browser bundle. |
 | `@uiid/tokens` | Source-only — ships CSS and TS schema, no `dist/` JS bundle. |
 | `@uiid/themes` | Source-only — ships `src/` directly via subpath exports. |
 
