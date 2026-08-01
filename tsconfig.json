@@ -23,7 +23,6 @@
   },
   "files": [],
   "references": [
-    { "path": "./packages/blocks" },
     { "path": "./packages/buttons" },
     { "path": "./packages/calendars" },
     { "path": "./packages/cards" },

@@ -3,8 +3,8 @@
 Which UIID UI components rely on other UI components. An arrow `A --> B` means
 "A uses B". Derived from the `@uiid` entries in each package's `package.json`.
 
-Non-visual packages (`tokens`, `themes`, `utils`) and the barrel/tooling packages
-(`design-system`, `blocks`) are excluded — this is only the UI component library.
+Non-visual packages (`tokens`, `themes`, `utils`) and the `design-system` barrel
+are excluded — this is only the UI component library.
 
 `layout`, `typography`, and `icons` are the primitives; they get the most incoming
 arrows because almost everything is built on them.

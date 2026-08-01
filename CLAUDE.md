@@ -20,7 +20,6 @@ design-system/
 │   └── storybook/     # Component documentation
 ├── packages/          # Component packages (@uiid/*)
 │   ├── buttons/, cards/, forms/, layout/, typography/, ...
-│   ├── blocks/        # Pre-built UI block definitions (JSON)
 │   └── tokens/        # Design tokens (JSON → CSS)
 ├── scripts/           # Token generation and build scripts
 ├── .claude/
