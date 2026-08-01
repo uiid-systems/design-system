@@ -40,6 +40,7 @@ design-system/
 | `turbo.json`       | Turbo task orchestration                    |
 | `.oxlintrc.json`   | oxlint configuration (whole repo)           |
 | `.oxfmtrc.json`    | oxfmt formatter configuration               |
+| `lefthook.yml`     | Git hooks (pre-commit format+lint, commit-msg) |
 
 ## Attribution Policy
 
