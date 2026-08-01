@@ -2,7 +2,10 @@
 
 import { SortableContext } from "@dnd-kit/sortable";
 
-import { useSortableContext, SortableContentContext } from "../sortable.context";
+import {
+  useSortableContext,
+  SortableContentContext,
+} from "../sortable.context";
 import { CONTENT_NAME } from "../sortable.constants";
 import type { SortableContentProps } from "../sortable.types";
 

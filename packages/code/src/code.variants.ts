@@ -10,7 +10,11 @@ export const codeTypographyVariant = cva({
 
 /** Code content variants - includes typography, shiki theme, reset, and line numbers */
 export const codeContentVariants = cva({
-  base: [styles["code-typography"], styles["shiki-theme"], styles["shiki-reset"]],
+  base: [
+    styles["code-typography"],
+    styles["shiki-theme"],
+    styles["shiki-reset"],
+  ],
   variants: {
     showLineNumbers: {
       true: styles["line-numbers"],

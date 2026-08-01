@@ -9,7 +9,11 @@ import {
 } from "@uiid/design-system";
 import * as Examples from "../../../../packages/typography/src/number/number.examples";
 
-import { variantControls, spacingControls, disabledControls } from "./constants";
+import {
+  variantControls,
+  spacingControls,
+  disabledControls,
+} from "./constants";
 
 const meta = {
   title: "Typography/Number",

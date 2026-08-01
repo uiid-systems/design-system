@@ -23,9 +23,7 @@ describe("Autocomplete", () => {
     render(
       <Autocomplete items={defaultItems} placeholder="Search fruits..." />,
     );
-    expect(
-      screen.getByPlaceholderText("Search fruits..."),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Search fruits...")).toBeInTheDocument();
   });
 
   it("opens dropdown when typing", async () => {

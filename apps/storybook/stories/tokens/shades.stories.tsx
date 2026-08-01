@@ -36,7 +36,8 @@ export const Shades: Story = {
         </Text>
         <Text size={-1} shade="muted">
           Six neutral aliases, background through foreground. Each resolves via
-          light-dark(), so the pair below is what the alias holds in each scheme.
+          light-dark(), so the pair below is what the alias holds in each
+          scheme.
         </Text>
       </Stack>
 

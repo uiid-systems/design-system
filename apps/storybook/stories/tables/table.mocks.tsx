@@ -1,6 +1,9 @@
 import { Swords, Star } from "@uiid/icons";
 
-import type { TableActionsProps, TableCellDropdownProps } from "@uiid/design-system";
+import type {
+  TableActionsProps,
+  TableCellDropdownProps,
+} from "@uiid/design-system";
 export type TableMockData = {
   balance: string;
   email: string;

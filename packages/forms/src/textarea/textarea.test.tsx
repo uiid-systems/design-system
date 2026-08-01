@@ -91,7 +91,10 @@ describe("Textarea", () => {
 
   it("renders required indicator with label", () => {
     render(<Textarea label="Message" required />);
-    expect(screen.getByText("Message")).toHaveAttribute("data-required", "true");
+    expect(screen.getByText("Message")).toHaveAttribute(
+      "data-required",
+      "true",
+    );
   });
 
   it("has required attribute when required", () => {

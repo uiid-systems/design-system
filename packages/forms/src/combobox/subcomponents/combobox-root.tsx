@@ -6,7 +6,10 @@ import type { SelectMultipleMode } from "../../select/select.types";
 
 import type { ComboboxRootProps } from "../combobox.types";
 
-export const ComboboxRoot = <Value, Multiple extends SelectMultipleMode = false>({
+export const ComboboxRoot = <
+  Value,
+  Multiple extends SelectMultipleMode = false,
+>({
   children,
   ...props
 }: ComboboxRootProps<Value, Multiple>) => {

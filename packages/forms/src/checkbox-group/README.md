@@ -47,11 +47,7 @@ const items = [
 ```tsx
 const [value, setValue] = useState<string[]>([]);
 
-<CheckboxGroup
-  items={items}
-  value={value}
-  onValueChange={setValue}
-/>
+<CheckboxGroup items={items} value={value} onValueChange={setValue} />;
 ```
 
 ### Default Values
@@ -90,21 +86,21 @@ Places checkboxes after labels:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `FormItemProps[]` | — | **Required.** Array of checkbox items |
-| `label` | `ReactNode` | — | Field label for the group |
-| `description` | `ReactNode` | — | Helper text below the group |
-| `value` | `string[]` | — | Controlled selected values |
-| `defaultValue` | `string[]` | — | Initial selected values |
-| `onValueChange` | `(value: string[]) => void` | — | Called when selection changes |
-| `direction` | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction |
-| `bordered` | `boolean` | `false` | Bordered variant for all checkboxes |
-| `reversed` | `boolean` | `false` | Reversed layout for all checkboxes |
-| `disabled` | `boolean` | `false` | Disables entire group |
-| `hideIndicators` | `boolean` | `false` | Hides all checkbox indicators |
-| `CheckboxProps` | `Partial<CheckboxProps>` | — | Props forwarded to each Checkbox |
-| `IndicatorProps` | `CheckboxIndicatorProps` | — | Props forwarded to each indicator |
+| Prop             | Type                         | Default      | Description                           |
+| ---------------- | ---------------------------- | ------------ | ------------------------------------- |
+| `items`          | `FormItemProps[]`            | —            | **Required.** Array of checkbox items |
+| `label`          | `ReactNode`                  | —            | Field label for the group             |
+| `description`    | `ReactNode`                  | —            | Helper text below the group           |
+| `value`          | `string[]`                   | —            | Controlled selected values            |
+| `defaultValue`   | `string[]`                   | —            | Initial selected values               |
+| `onValueChange`  | `(value: string[]) => void`  | —            | Called when selection changes         |
+| `direction`      | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                      |
+| `bordered`       | `boolean`                    | `false`      | Bordered variant for all checkboxes   |
+| `reversed`       | `boolean`                    | `false`      | Reversed layout for all checkboxes    |
+| `disabled`       | `boolean`                    | `false`      | Disables entire group                 |
+| `hideIndicators` | `boolean`                    | `false`      | Hides all checkbox indicators         |
+| `CheckboxProps`  | `Partial<CheckboxProps>`     | —            | Props forwarded to each Checkbox      |
+| `IndicatorProps` | `CheckboxIndicatorProps`     | —            | Props forwarded to each indicator     |
 
 ### FormItemProps
 
@@ -118,8 +114,8 @@ type FormItemProps = {
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot       | Element               |
+| ---------- | --------------------- |
 | `checkbox` | Each checkbox element |
 
 ## Accessibility

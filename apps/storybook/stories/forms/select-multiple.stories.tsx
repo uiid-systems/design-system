@@ -86,11 +86,7 @@ export const BeforeAfterSlots: Story = {
         before={<SearchIcon />}
         placeholder="Before slot"
       />
-      <SelectMultiple
-        {...args}
-        after={<MailIcon />}
-        placeholder="After slot"
-      />
+      <SelectMultiple {...args} after={<MailIcon />} placeholder="After slot" />
       <SelectMultiple
         {...args}
         before={<LockIcon />}

@@ -110,7 +110,11 @@ export const Card = ({
       )}
 
       {children && (
-        <Stack data-slot="card-inner-container" fullwidth {...InnerContainerProps}>
+        <Stack
+          data-slot="card-inner-container"
+          fullwidth
+          {...InnerContainerProps}
+        >
           {children}
         </Stack>
       )}

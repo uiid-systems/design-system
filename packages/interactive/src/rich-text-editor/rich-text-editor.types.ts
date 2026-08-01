@@ -29,8 +29,10 @@ export interface FormatAction {
   canExecute: (editor: Editor) => boolean;
 }
 
-export interface RichTextEditorProps
-  extends Omit<UseRichTextEditorProps, "onUpdate"> {
+export interface RichTextEditorProps extends Omit<
+  UseRichTextEditorProps,
+  "onUpdate"
+> {
   value?: Content;
   onChange?: (value: Content) => void;
   className?: string;

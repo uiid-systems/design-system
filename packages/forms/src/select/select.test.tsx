@@ -115,5 +115,4 @@ describe("Select", () => {
     render(<Select items={defaultItems} description="Helper text" />);
     expect(screen.getByText("Helper text")).toBeInTheDocument();
   });
-
 });

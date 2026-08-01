@@ -48,7 +48,7 @@ import { NumberField } from "@uiid/forms";
 ```tsx
 const [value, setValue] = useState<number | null>(100);
 
-<NumberField value={value} onValueChange={setValue} />
+<NumberField value={value} onValueChange={setValue} />;
 ```
 
 ### With Format Options
@@ -73,61 +73,63 @@ Format the displayed value using `Intl.NumberFormat` options:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `number \| null` | — | Controlled value |
-| `defaultValue` | `number` | `100` | Initial value |
-| `onValueChange` | `(value: number \| null) => void` | — | Called when value changes |
-| `min` | `number` | — | Minimum allowed value |
-| `max` | `number` | — | Maximum allowed value |
-| `step` | `number` | `1` | Increment/decrement step |
-| `smallStep` | `number` | — | Step when holding Shift |
-| `largeStep` | `number` | — | Step when holding Ctrl/Cmd |
-| `disabled` | `boolean` | `false` | Disables the field |
-| `readOnly` | `boolean` | `false` | Makes the input read-only |
-| `formatOptions` | `Intl.NumberFormatOptions` | — | Number formatting options |
-| `DecrementProps` | `NumberFieldDecrementProps` | — | Props for decrement button |
-| `IncrementProps` | `NumberFieldIncrementProps` | — | Props for increment button |
-| `InputProps` | `NumberFieldInputProps` | — | Props for the input element |
+| Prop             | Type                              | Default | Description                 |
+| ---------------- | --------------------------------- | ------- | --------------------------- |
+| `value`          | `number \| null`                  | —       | Controlled value            |
+| `defaultValue`   | `number`                          | `100`   | Initial value               |
+| `onValueChange`  | `(value: number \| null) => void` | —       | Called when value changes   |
+| `min`            | `number`                          | —       | Minimum allowed value       |
+| `max`            | `number`                          | —       | Maximum allowed value       |
+| `step`           | `number`                          | `1`     | Increment/decrement step    |
+| `smallStep`      | `number`                          | —       | Step when holding Shift     |
+| `largeStep`      | `number`                          | —       | Step when holding Ctrl/Cmd  |
+| `disabled`       | `boolean`                         | `false` | Disables the field          |
+| `readOnly`       | `boolean`                         | `false` | Makes the input read-only   |
+| `formatOptions`  | `Intl.NumberFormatOptions`        | —       | Number formatting options   |
+| `DecrementProps` | `NumberFieldDecrementProps`       | —       | Props for decrement button  |
+| `IncrementProps` | `NumberFieldIncrementProps`       | —       | Props for increment button  |
+| `InputProps`     | `NumberFieldInputProps`           | —       | Props for the input element |
 
 ## Anatomy
 
 ```tsx
-<NumberFieldRoot>              {/* Provider */}
-  <NumberFieldDecrement />     {/* Minus button */}
-  <NumberFieldInput />         {/* Numeric input */}
-  <NumberFieldIncrement />     {/* Plus button */}
+<NumberFieldRoot>
+  {" "}
+  {/* Provider */}
+  <NumberFieldDecrement /> {/* Minus button */}
+  <NumberFieldInput /> {/* Numeric input */}
+  <NumberFieldIncrement /> {/* Plus button */}
 </NumberFieldRoot>
 ```
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `NumberFieldRoot` | Root container component |
-| `NumberFieldDecrement` | Decrement button |
-| `NumberFieldInput` | The numeric input |
-| `NumberFieldIncrement` | Increment button |
+| Component              | Description              |
+| ---------------------- | ------------------------ |
+| `NumberFieldRoot`      | Root container component |
+| `NumberFieldDecrement` | Decrement button         |
+| `NumberFieldInput`     | The numeric input        |
+| `NumberFieldIncrement` | Increment button         |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot                     | Element              |
+| ------------------------ | -------------------- |
 | `number-field-decrement` | The decrement button |
 | `number-field-increment` | The increment button |
 
 ## Keyboard
 
-| Key | Action |
-|-----|--------|
-| `↑` | Increment by step |
-| `↓` | Decrement by step |
-| `Shift+↑` | Increment by smallStep |
-| `Shift+↓` | Decrement by smallStep |
-| `Ctrl+↑` | Increment by largeStep |
-| `Ctrl+↓` | Decrement by largeStep |
-| `Home` | Set to min (if defined) |
-| `End` | Set to max (if defined) |
+| Key       | Action                  |
+| --------- | ----------------------- |
+| `↑`       | Increment by step       |
+| `↓`       | Decrement by step       |
+| `Shift+↑` | Increment by smallStep  |
+| `Shift+↓` | Decrement by smallStep  |
+| `Ctrl+↑`  | Increment by largeStep  |
+| `Ctrl+↓`  | Decrement by largeStep  |
+| `Home`    | Set to min (if defined) |
+| `End`     | Set to max (if defined) |
 
 ## Accessibility
 

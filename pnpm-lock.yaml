@@ -48,9 +48,6 @@ importers:
       playwright:
         specifier: ^1.58.1
         version: 1.58.1
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       size-limit:
         specifier: ^12.0.1
         version: 12.0.1(jiti@2.6.1)
@@ -231,9 +228,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -322,9 +316,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -386,9 +377,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -468,9 +456,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -629,9 +614,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -669,9 +651,6 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(vite@7.3.5(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -733,9 +712,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -866,9 +842,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -924,9 +897,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -991,9 +961,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1073,9 +1040,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1143,9 +1107,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1225,9 +1186,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1261,9 +1219,6 @@ importers:
       nodemon:
         specifier: ^3.1.10
         version: 3.1.10
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1319,9 +1274,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -1380,9 +1332,6 @@ importers:
       happy-dom:
         specifier: ^20.8.9
         version: 20.8.9
-      prettier:
-        specifier: 3.8.1
-        version: 3.8.1
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

@@ -31,7 +31,9 @@ describe("Reveal", () => {
       container.querySelector('[data-slot="reveal"]')?.children ?? [],
     );
     expect(
-      words.map((word) => (word as HTMLElement).style.getPropertyValue("--reveal-index")),
+      words.map((word) =>
+        (word as HTMLElement).style.getPropertyValue("--reveal-index"),
+      ),
     ).toEqual(["0", "1", "2"]);
   });
 

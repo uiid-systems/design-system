@@ -149,18 +149,14 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     withoutMask,
   });
 
-  const {
-    touched,
-    setTouched,
-    shouldValidate,
-    onInputValidate,
-  } = useMaskValidation({
-    maskPattern,
-    onValidate,
-    validationMode,
-    min,
-    max,
-  });
+  const { touched, setTouched, shouldValidate, onInputValidate } =
+    useMaskValidation({
+      maskPattern,
+      onValidate,
+      validationMode,
+      min,
+      max,
+    });
 
   const {
     focused,

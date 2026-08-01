@@ -80,8 +80,8 @@ export const Colors: Story = {
           Ramps
         </Text>
         <Text size={-1} shade="muted">
-          Eight hues, 50&ndash;950. The outlined step is the hue&rsquo;s authored
-          anchor, which every ramp contains by construction.
+          Eight hues, 50&ndash;950. The outlined step is the hue&rsquo;s
+          authored anchor, which every ramp contains by construction.
         </Text>
         <Stack gap={3}>
           {RAMPS.map(([hue, ramp]) => (

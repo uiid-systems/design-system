@@ -73,46 +73,48 @@ Field works with any form control:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | — | Label text displayed above the control |
-| `description` | `string` | — | Helper text displayed below the control |
-| `name` | `string` | — | Field name for form submission |
-| `required` | `boolean` | `false` | Shows required indicator on label |
-| `children` | `ReactNode` | — | The form control to wrap |
-| `RootProps` | `FieldRootProps` | — | Props for the root element |
-| `LabelProps` | `FieldLabelProps` | — | Props for the label element |
-| `DescriptionProps` | `FieldDescriptionProps` | — | Props for the description element |
-| `ErrorProps` | `FieldErrorProps` | — | Props for the error element |
+| Prop               | Type                    | Default | Description                             |
+| ------------------ | ----------------------- | ------- | --------------------------------------- |
+| `label`            | `string`                | —       | Label text displayed above the control  |
+| `description`      | `string`                | —       | Helper text displayed below the control |
+| `name`             | `string`                | —       | Field name for form submission          |
+| `required`         | `boolean`               | `false` | Shows required indicator on label       |
+| `children`         | `ReactNode`             | —       | The form control to wrap                |
+| `RootProps`        | `FieldRootProps`        | —       | Props for the root element              |
+| `LabelProps`       | `FieldLabelProps`       | —       | Props for the label element             |
+| `DescriptionProps` | `FieldDescriptionProps` | —       | Props for the description element       |
+| `ErrorProps`       | `FieldErrorProps`       | —       | Props for the error element             |
 
 ## Anatomy
 
 ```tsx
-<FieldRoot>              {/* Container */}
-  <FieldLabel />         {/* Label text */}
-  {children}             {/* Form control */}
-  <FieldError />         {/* Error message */}
-  <FieldDescription />   {/* Helper text */}
+<FieldRoot>
+  {" "}
+  {/* Container */}
+  <FieldLabel /> {/* Label text */}
+  {children} {/* Form control */}
+  <FieldError /> {/* Error message */}
+  <FieldDescription /> {/* Helper text */}
 </FieldRoot>
 ```
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `FieldRoot` | Root container element |
-| `FieldLabel` | Label element with required indicator |
-| `FieldDescription` | Helper text element |
-| `FieldError` | Error message element |
+| Component          | Description                           |
+| ------------------ | ------------------------------------- |
+| `FieldRoot`        | Root container element                |
+| `FieldLabel`       | Label element with required indicator |
+| `FieldDescription` | Helper text element                   |
+| `FieldError`       | Error message element                 |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `field-root` | The root container |
-| `field-label` | The label element |
+| Slot                | Element                 |
+| ------------------- | ----------------------- |
+| `field-root`        | The root container      |
+| `field-label`       | The label element       |
 | `field-description` | The description element |
-| `field-error` | The error element |
+| `field-error`       | The error element       |
 
 ## When to Use Field
 

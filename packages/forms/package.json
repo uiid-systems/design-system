@@ -40,8 +40,7 @@
     "src/**/README.md"
   ],
   "scripts": {
-    "build": "tsc -b && vite build",
-    "format": "prettier --write ."
+    "build": "tsc -b && vite build"
   },
   "dependencies": {
     "@base-ui/react": "1.2.0",
@@ -70,7 +69,6 @@
     "@uiid/layout": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "happy-dom": "^20.8.9",
-    "prettier": "3.8.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~5.9.3",

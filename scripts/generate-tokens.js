@@ -479,12 +479,23 @@ ${cssProperties.trimEnd()}
     }
 
     // Handle shadow objects per DTCG Shadow type
-    if (typeof value === "object" && value !== null && "offsetX" in value && "offsetY" in value) {
+    if (
+      typeof value === "object" &&
+      value !== null &&
+      "offsetX" in value &&
+      "offsetY" in value
+    ) {
       return this.shadowObjectToCss(value);
     }
 
     // Handle shadow arrays (layered shadows)
-    if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object" && value[0] !== null && "offsetX" in value[0]) {
+    if (
+      Array.isArray(value) &&
+      value.length > 0 &&
+      typeof value[0] === "object" &&
+      value[0] !== null &&
+      "offsetX" in value[0]
+    ) {
       return value.map((s) => this.shadowObjectToCss(s)).join(", ");
     }
 

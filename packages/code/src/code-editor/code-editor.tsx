@@ -107,7 +107,7 @@ export const CodeEditor = ({
           data-slot="code-editor-highlight"
           className={cx(
             styles["code-editor-highlight"],
-            shikiVariants({ showLineNumbers })
+            shikiVariants({ showLineNumbers }),
           )}
           dangerouslySetInnerHTML={{ __html: html || "" }}
         />

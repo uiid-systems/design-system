@@ -12,8 +12,12 @@ describe("NumberField", () => {
 
   it("renders increase and decrease buttons", () => {
     render(<NumberField />);
-    expect(screen.getByRole("button", { name: /increase/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /decrease/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /increase/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /decrease/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders with data-slot attribute", () => {

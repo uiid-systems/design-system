@@ -12,14 +12,19 @@ type ColorEntries = typeof colors.color;
  * hues and have no steps to tint a component with.
  */
 export type PaletteColor = {
-  [K in keyof ColorEntries]: ColorEntries[K] extends { "500": { $value: string } }
+  [K in keyof ColorEntries]: ColorEntries[K] extends {
+    "500": { $value: string };
+  }
     ? K
     : never;
 }[keyof ColorEntries];
 
 /** The same set at runtime, in the order the tokens declare them. */
 export const PALETTE_HUES = Object.entries(colors.color)
-  .filter(([, entry]) => typeof entry === "object" && entry !== null && "500" in entry)
+  .filter(
+    ([, entry]) =>
+      typeof entry === "object" && entry !== null && "500" in entry,
+  )
   .map(([hue]) => hue) as PaletteColor[];
 
 /** A hue's authored value — the 500 step every ramp is anchored on. */

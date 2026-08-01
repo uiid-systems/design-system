@@ -140,8 +140,7 @@
 .timeline-marker[data-variant="content"] {
   width: var(--timeline-marker-size);
   height: var(--timeline-marker-size);
-  border: var(--timeline-connector-thickness) solid
-    var(--badge-border, var(--globals-border-color));
+  border: var(--timeline-connector-thickness) solid var(--badge-border, var(--globals-border-color));
   border-radius: 9999px;
 }
 
@@ -152,8 +151,7 @@
 }
 
 .timeline-marker[data-variant="content"][data-status="active"] {
-  box-shadow: 0 0 0 0.25rem
-    color-mix(in oklch, var(--badge-fg, var(--shade-foreground)) 18%, transparent);
+  box-shadow: 0 0 0 0.25rem color-mix(in oklch, var(--badge-fg, var(--shade-foreground)) 18%, transparent);
 }
 
 .timeline-marker[data-variant="content"][data-status="pending"] {

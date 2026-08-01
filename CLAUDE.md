@@ -64,14 +64,14 @@ design-system/
 
 Read these files when the task requires them — do not import by default:
 
-| Guide | Read when... |
-| ----- | ------------ |
-| `.claude/guides/components.md` | Building, modifying, or reviewing components |
-| Component `.types.ts` files | **Using UIID components in any code** — always read the component's types file before using props, variants, or sizes. Never guess. |
-| `.claude/guides/styling.md` | Working with styles, layout, CSS modules, or design tokens |
-| `.claude/guides/testing.md` | Writing or reviewing tests |
-| `.claude/guides/storybook.md` | Creating or updating stories |
-| `.claude/guides/figma.md` | Building or inspecting Figma components |
-| `.claude/guides/pull-requests.md` | Creating a PR |
-| `.claude/guides/pull-reviews.md` | Reviewing a PR |
-| `apps/docs/DOCS_GUIDE.md` | Working on the documentation site |
+| Guide                             | Read when...                                                                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `.claude/guides/components.md`    | Building, modifying, or reviewing components                                                                                        |
+| Component `.types.ts` files       | **Using UIID components in any code** — always read the component's types file before using props, variants, or sizes. Never guess. |
+| `.claude/guides/styling.md`       | Working with styles, layout, CSS modules, or design tokens                                                                          |
+| `.claude/guides/testing.md`       | Writing or reviewing tests                                                                                                          |
+| `.claude/guides/storybook.md`     | Creating or updating stories                                                                                                        |
+| `.claude/guides/figma.md`         | Building or inspecting Figma components                                                                                             |
+| `.claude/guides/pull-requests.md` | Creating a PR                                                                                                                       |
+| `.claude/guides/pull-reviews.md`  | Reviewing a PR                                                                                                                      |
+| `apps/docs/DOCS_GUIDE.md`         | Working on the documentation site                                                                                                   |

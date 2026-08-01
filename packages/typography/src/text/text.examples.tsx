@@ -1,8 +1,7 @@
 import { Text } from "./text";
 import type { TextProps } from "./text.types";
 
-const SAMPLE =
-  "The quick brown fox jumps over the lazy dog — 1234567890";
+const SAMPLE = "The quick brown fox jumps over the lazy dog — 1234567890";
 
 type Size = NonNullable<TextProps["size"]>;
 type Weight = NonNullable<TextProps["weight"]>;
@@ -147,8 +146,8 @@ export const Balance = () => (
 
 export const InlineCode = () => (
   <Text size={1}>
-    Render inline <code>code</code> inside a Text element for a subtle
-    monospace chip that picks up the surrounding scale.
+    Render inline <code>code</code> inside a Text element for a subtle monospace
+    chip that picks up the surrounding scale.
   </Text>
 );
 

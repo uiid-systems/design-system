@@ -72,5 +72,4 @@ describe("Checkbox", () => {
     render(<Checkbox defaultChecked />);
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-checked");
   });
-
 });

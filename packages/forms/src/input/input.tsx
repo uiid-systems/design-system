@@ -55,7 +55,9 @@ export const Input = ({
           name={name}
           className={cx(
             styles["input"],
-            hasSlots ? styles["input-inner"] : inputVariants({ size, fullwidth, ghost }),
+            hasSlots
+              ? styles["input-inner"]
+              : inputVariants({ size, fullwidth, ghost }),
             className,
           )}
           {...props}

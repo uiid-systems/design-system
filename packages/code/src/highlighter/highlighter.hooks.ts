@@ -50,7 +50,7 @@ export function useHighlighter() {
 export function useHighlight(
   code: string,
   language: BundledLanguage = "typescript",
-  options: Pick<HighlightOptions, "highlightLines"> = {}
+  options: Pick<HighlightOptions, "highlightLines"> = {},
 ): HighlightResult {
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(true);

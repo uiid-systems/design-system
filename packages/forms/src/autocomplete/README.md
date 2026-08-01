@@ -50,7 +50,7 @@ const [value, setValue] = useState<string | null>(null);
     value,
     onValueChange: setValue,
   }}
-/>
+/>;
 ```
 
 ### Custom Item Rendering
@@ -67,29 +67,39 @@ const [value, setValue] = useState<string | null>(null);
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `string[]` | — | **Required.** Array of suggestion options |
-| `placeholder` | `string` | — | Placeholder text for input |
-| `defaultValue` | `string` | — | Initial value |
-| `onValueChange` | `(value: string) => void` | — | Called when value changes |
-| `RootProps` | `AutocompleteRootProps` | — | Props for the root element |
-| `InputProps` | `AutocompleteInputProps` | — | Props for the input element |
-| `PopupProps` | `AutocompletePopupProps` | — | Props for the popup |
-| `ListProps` | `AutocompleteListProps` | — | Props for the list container |
+| Prop            | Type                      | Default | Description                               |
+| --------------- | ------------------------- | ------- | ----------------------------------------- |
+| `items`         | `string[]`                | —       | **Required.** Array of suggestion options |
+| `placeholder`   | `string`                  | —       | Placeholder text for input                |
+| `defaultValue`  | `string`                  | —       | Initial value                             |
+| `onValueChange` | `(value: string) => void` | —       | Called when value changes                 |
+| `RootProps`     | `AutocompleteRootProps`   | —       | Props for the root element                |
+| `InputProps`    | `AutocompleteInputProps`  | —       | Props for the input element               |
+| `PopupProps`    | `AutocompletePopupProps`  | —       | Props for the popup                       |
+| `ListProps`     | `AutocompleteListProps`   | —       | Props for the list container              |
 
 ## Anatomy
 
 ```tsx
-<AutocompleteRoot>              {/* Provider */}
-  <AutocompleteInput />         {/* Text input */}
-  <AutocompletePortal>          {/* Portal wrapper */}
-    <AutocompletePositioner>    {/* Positioning */}
-      <AutocompletePopup>       {/* Popup container */}
-        <AutocompleteList>      {/* List wrapper */}
-          <AutocompleteItem />  {/* Individual items */}
+<AutocompleteRoot>
+  {" "}
+  {/* Provider */}
+  <AutocompleteInput /> {/* Text input */}
+  <AutocompletePortal>
+    {" "}
+    {/* Portal wrapper */}
+    <AutocompletePositioner>
+      {" "}
+      {/* Positioning */}
+      <AutocompletePopup>
+        {" "}
+        {/* Popup container */}
+        <AutocompleteList>
+          {" "}
+          {/* List wrapper */}
+          <AutocompleteItem /> {/* Individual items */}
         </AutocompleteList>
-        <AutocompleteEmpty />   {/* Empty state */}
+        <AutocompleteEmpty /> {/* Empty state */}
       </AutocompletePopup>
     </AutocompletePositioner>
   </AutocompletePortal>
@@ -98,32 +108,32 @@ const [value, setValue] = useState<string | null>(null);
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `AutocompleteRoot` | Root provider component |
-| `AutocompleteInput` | The text input |
-| `AutocompletePopup` | Popup container |
-| `AutocompleteList` | List container |
-| `AutocompleteItem` | Individual suggestion item |
-| `AutocompleteEmpty` | Empty state message |
+| Component           | Description                |
+| ------------------- | -------------------------- |
+| `AutocompleteRoot`  | Root provider component    |
+| `AutocompleteInput` | The text input             |
+| `AutocompletePopup` | Popup container            |
+| `AutocompleteList`  | List container             |
+| `AutocompleteItem`  | Individual suggestion item |
+| `AutocompleteEmpty` | Empty state message        |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `autocomplete-root` | The root element |
-| `autocomplete-input` | The input element |
-| `autocomplete-popup` | The popup container |
-| `autocomplete-item` | Each suggestion item |
-| `autocomplete-empty` | Empty state element |
+| Slot                 | Element              |
+| -------------------- | -------------------- |
+| `autocomplete-root`  | The root element     |
+| `autocomplete-input` | The input element    |
+| `autocomplete-popup` | The popup container  |
+| `autocomplete-item`  | Each suggestion item |
+| `autocomplete-empty` | Empty state element  |
 
 ## Autocomplete vs Combobox
 
-| Feature | Autocomplete | Combobox |
-|---------|--------------|----------|
-| Free-form text input | Yes | No |
-| Selection required | No | Yes |
-| Suggestions | Optional | Required |
+| Feature              | Autocomplete | Combobox |
+| -------------------- | ------------ | -------- |
+| Free-form text input | Yes          | No       |
+| Selection required   | No           | Yes      |
+| Suggestions          | Optional     | Required |
 
 Use **Autocomplete** when users can enter custom values not in the list (like a search box).
 

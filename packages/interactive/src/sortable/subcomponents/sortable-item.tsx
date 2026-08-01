@@ -11,7 +11,10 @@ import {
   SortableOverlayContext,
 } from "../sortable.context";
 import { CONTENT_NAME, ITEM_NAME, OVERLAY_NAME } from "../sortable.constants";
-import type { SortableItemProps, SortableItemContextValue } from "../sortable.types";
+import type {
+  SortableItemProps,
+  SortableItemContextValue,
+} from "../sortable.types";
 import styles from "../sortable.module.css";
 
 export const SortableItem = ({

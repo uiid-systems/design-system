@@ -65,7 +65,9 @@ export const TableSelectionProvider = ({
     isSelected: (index) => selected.has(index),
     toggleAll: (checked) =>
       commit(
-        checked ? new Set(Array.from({ length: count }, (_, i) => i)) : new Set(),
+        checked
+          ? new Set(Array.from({ length: count }, (_, i) => i))
+          : new Set(),
       ),
     toggleRow: (index, checked) => {
       const next = new Set(selected);

@@ -47,11 +47,7 @@ const items = [
 ```tsx
 const [value, setValue] = useState("small");
 
-<RadioGroup
-  items={items}
-  value={value}
-  onValueChange={setValue}
-/>
+<RadioGroup items={items} value={value} onValueChange={setValue} />;
 ```
 
 ### Default Value
@@ -100,21 +96,21 @@ For card selections where border indicates selection:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `FormItemProps[]` | — | **Required.** Array of radio items |
-| `label` | `ReactNode` | — | Field label for the group |
-| `description` | `ReactNode` | — | Helper text below the group |
-| `value` | `string` | — | Controlled selected value |
-| `defaultValue` | `string` | First item | Initial selected value |
-| `onValueChange` | `(value: string) => void` | — | Called when selection changes |
-| `direction` | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction |
-| `bordered` | `boolean` | `false` | Bordered variant for all radios |
-| `reversed` | `boolean` | `false` | Reversed layout for all radios |
-| `hideIndicators` | `boolean` | `false` | Hides all radio indicators |
-| `disabled` | `boolean` | `false` | Disables entire group |
-| `RadioProps` | `Partial<RadioProps>` | — | Props forwarded to each Radio |
-| `IndicatorProps` | `RadioIndicatorProps` | — | Props forwarded to each indicator |
+| Prop             | Type                         | Default      | Description                        |
+| ---------------- | ---------------------------- | ------------ | ---------------------------------- |
+| `items`          | `FormItemProps[]`            | —            | **Required.** Array of radio items |
+| `label`          | `ReactNode`                  | —            | Field label for the group          |
+| `description`    | `ReactNode`                  | —            | Helper text below the group        |
+| `value`          | `string`                     | —            | Controlled selected value          |
+| `defaultValue`   | `string`                     | First item   | Initial selected value             |
+| `onValueChange`  | `(value: string) => void`    | —            | Called when selection changes      |
+| `direction`      | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                   |
+| `bordered`       | `boolean`                    | `false`      | Bordered variant for all radios    |
+| `reversed`       | `boolean`                    | `false`      | Reversed layout for all radios     |
+| `hideIndicators` | `boolean`                    | `false`      | Hides all radio indicators         |
+| `disabled`       | `boolean`                    | `false`      | Disables entire group              |
+| `RadioProps`     | `Partial<RadioProps>`        | —            | Props forwarded to each Radio      |
+| `IndicatorProps` | `RadioIndicatorProps`        | —            | Props forwarded to each indicator  |
 
 ### FormItemProps
 
@@ -128,8 +124,8 @@ type FormItemProps = {
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
+| Slot    | Element            |
+| ------- | ------------------ |
 | `radio` | Each radio element |
 
 ## Accessibility

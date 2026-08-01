@@ -29,15 +29,12 @@ describe("Button", () => {
     },
   );
 
-  it.each(["subtle", "ghost"] as const)(
-    "applies variant=%s",
-    (variant) => {
-      render(<Button variant={variant}>x</Button>);
-      expect(screen.getByRole("button").className).toContain(
-        `variant-${variant}`,
-      );
-    },
-  );
+  it.each(["subtle", "ghost"] as const)("applies variant=%s", (variant) => {
+    render(<Button variant={variant}>x</Button>);
+    expect(screen.getByRole("button").className).toContain(
+      `variant-${variant}`,
+    );
+  });
 
   it.each(["pill", "square", "circle"] as const)(
     "applies shape=%s",

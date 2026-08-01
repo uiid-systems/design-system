@@ -89,4 +89,3 @@ describe("RadioGroup", () => {
     expect(radios).toHaveLength(3);
   });
 });
-

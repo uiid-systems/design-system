@@ -101,22 +101,22 @@ function MyComponent() {
 
 ### CodeBlock
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `code` | `string` | Required | The code to display |
-| `language` | `BundledLanguage` | `"typescript"` | Programming language |
-| `filename` | `string` | - | Filename to display in header |
-| `showLineNumbers` | `boolean` | `false` | Show line numbers |
-| `copyable` | `boolean` | `true` | Show copy button |
-| `highlightLines` | `number[]` | - | Lines to highlight (1-indexed) |
-| `html` | `string` | - | Pre-highlighted HTML for SSR |
+| Prop              | Type              | Default        | Description                    |
+| ----------------- | ----------------- | -------------- | ------------------------------ |
+| `code`            | `string`          | Required       | The code to display            |
+| `language`        | `BundledLanguage` | `"typescript"` | Programming language           |
+| `filename`        | `string`          | -              | Filename to display in header  |
+| `showLineNumbers` | `boolean`         | `false`        | Show line numbers              |
+| `copyable`        | `boolean`         | `true`         | Show copy button               |
+| `highlightLines`  | `number[]`        | -              | Lines to highlight (1-indexed) |
+| `html`            | `string`          | -              | Pre-highlighted HTML for SSR   |
 
 ### CodeInline
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `language` | `BundledLanguage` | - | Programming language (optional) |
-| `html` | `string` | - | Pre-highlighted HTML for SSR |
+| Prop       | Type              | Default | Description                     |
+| ---------- | ----------------- | ------- | ------------------------------- |
+| `language` | `BundledLanguage` | -       | Programming language (optional) |
+| `html`     | `string`          | -       | Pre-highlighted HTML for SSR    |
 
 ## SSR Support
 

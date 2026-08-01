@@ -1,12 +1,7 @@
 import { expect, userEvent, within } from "storybook/test";
 import { fn } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  Stack,
-  Group,
-  Field,
-  Input,
-} from "@uiid/design-system";
+import { Stack, Group, Field, Input } from "@uiid/design-system";
 import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
 
 const meta: Meta<typeof Input> = {

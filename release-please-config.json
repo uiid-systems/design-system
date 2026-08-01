@@ -10,24 +10,96 @@
       "include-v-in-tag": true,
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
-        { "type": "json", "path": "packages/buttons/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/calendars/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/cards/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/code/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/design-system/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/forms/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/icons/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/indicators/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/interactive/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/layout/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/lists/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/navigation/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/overlays/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/tables/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/themes/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/tokens/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/typography/package.json", "jsonpath": "$.version" },
-        { "type": "json", "path": "packages/utils/package.json", "jsonpath": "$.version" }
+        {
+          "type": "json",
+          "path": "packages/buttons/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/calendars/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/cards/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/code/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/design-system/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/forms/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/icons/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/indicators/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/interactive/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/layout/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/lists/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/navigation/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/overlays/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/tables/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/themes/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/tokens/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/typography/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "packages/utils/package.json",
+          "jsonpath": "$.version"
+        }
       ]
     }
   }

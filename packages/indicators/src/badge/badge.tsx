@@ -16,11 +16,7 @@ export const Badge = ({
   return (
     <Group
       data-slot="badge"
-      className={cx(
-        styles["badge"],
-        badgeVariants({ size, color }),
-        className,
-      )}
+      className={cx(styles["badge"], badgeVariants({ size, color }), className)}
       ay="center"
       gap={1}
       {...props}

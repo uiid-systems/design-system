@@ -43,8 +43,7 @@ export type MaskPatternKey =
 export type InputElement = React.ComponentRef<"input">;
 
 export interface MaskInputProps
-  extends Omit<React.ComponentProps<"input">, "size">,
-    InputVariants {
+  extends Omit<React.ComponentProps<"input">, "size">, InputVariants {
   /** Content rendered before the input */
   before?: React.ReactNode;
   /** Content rendered after the input */

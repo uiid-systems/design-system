@@ -13,7 +13,7 @@ If no prop exists for what you need, stop and ask the user. Do not fall back to 
 | Instead of...                                 | Use...                                         |
 | --------------------------------------------- | ---------------------------------------------- |
 | `style={{ flex: 1 }}` on children             | `<Group evenly>`                               |
-| `style={{ width: "100%"}}`                   | `fullwidth` or `ax="stretch"` on parent Stack  |
+| `style={{ width: "100%"}}`                    | `fullwidth` or `ax="stretch"` on parent Stack  |
 | `style={{ alignItems: "center" }}`            | `ay="center"` (Group) or `ax="center"` (Stack) |
 | `style={{ gap: "16px" }}`                     | `gap={4}`                                      |
 | `style={{ padding: "16px" }}`                 | `p={4}`                                        |
@@ -29,13 +29,13 @@ If no prop exists for what you need, stop and ask the user. Do not fall back to 
 
 **Spacing Props** (available on all layout components):
 
-| Prop                               | CSS Property              |
-| ---------------------------------- | ------------------------- |
-| `gap`                              | gap                       |
-| `p`                                | padding                   |
-| `px`, `py`                         | padding-inline, padding-block |
-| `pt`, `pb`, `pl`, `pr`             | padding-block-start, etc. |
-| `m`, `mx`, `my`, `mt`, `mb`, `ml`, `mr` | margin variants      |
+| Prop                                    | CSS Property                  |
+| --------------------------------------- | ----------------------------- |
+| `gap`                                   | gap                           |
+| `p`                                     | padding                       |
+| `px`, `py`                              | padding-inline, padding-block |
+| `pt`, `pb`, `pl`, `pr`                  | padding-block-start, etc.     |
+| `m`, `mx`, `my`, `mt`, `mb`, `ml`, `mr` | margin variants               |
 
 **Layout Props:**
 
@@ -87,22 +87,23 @@ If no prop exists for what you need, stop and ask the user. Do not fall back to 
 
 Use `Text` for all text content instead of raw HTML elements:
 
-| Prop            | Values                                                               |
-| --------------- | -------------------------------------------------------------------- |
-| `size`          | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                                        |
-| `weight`        | `thin`, `light`, `normal`, `bold`                                    |
-| `shade`         | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground` |
+| Prop            | Values                                                                    |
+| --------------- | ------------------------------------------------------------------------- |
+| `size`          | -1, 0, 1, 2, 3, 4, 5, 6, 7, 8                                             |
+| `weight`        | `thin`, `light`, `normal`, `bold`                                         |
+| `shade`         | `background`, `surface`, `accent`, `halftone`, `muted`, `foreground`      |
 | `color`         | `red`, `orange`, `yellow`, `green`, `blue`, `indigo`, `purple`, `neutral` |
-| `align`         | `left`, `center`, `right`, `justify`                                 |
-| `underline`     | boolean                                                              |
-| `strikethrough` | boolean                                                              |
-| `balance`       | boolean                                                              |
+| `align`         | `left`, `center`, `right`, `justify`                                      |
+| `underline`     | boolean                                                                   |
+| `strikethrough` | boolean                                                                   |
+| `balance`       | boolean                                                                   |
 
 Text also supports all spacing props (`m`, `mb`, `p`, etc.).
 
 ## CSS Module Patterns
 
 Only use CSS Modules for:
+
 - **Visual styling** (colors, borders, shadows, animations)
 - **State-based styling** using `data-*` attributes
 - **Pseudo-elements** (`::before`, `::after`)
@@ -130,6 +131,7 @@ Only use CSS Modules for:
 ```
 
 Examples:
+
 ```css
 --forms-bg
 --forms-bg-hover

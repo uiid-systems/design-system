@@ -28,30 +28,30 @@ const items = [
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `SelectItemProps[]` | — | Array of selectable options |
-| `defaultValue` | `string[]` | `[]` | Initially selected values |
-| `value` | `string[]` | — | Controlled selected values |
-| `onValueChange` | `(value: string[]) => void` | — | Callback when selection changes |
-| `size` | `"small" \| "medium" \| "large"` | `"small"` | Trigger size |
-| `label` | `string` | — | Field label |
-| `description` | `string` | — | Helper text below the field |
-| `disabled` | `boolean` | `false` | Disables the select |
-| `required` | `boolean` | `false` | Marks field as required |
-| `name` | `string` | — | Form field name |
-| `fullwidth` | `boolean` | `false` | Full width trigger |
-| `ghost` | `boolean` | `false` | Ghost variant styling |
+| Prop            | Type                             | Default   | Description                     |
+| --------------- | -------------------------------- | --------- | ------------------------------- |
+| `items`         | `SelectItemProps[]`              | —         | Array of selectable options     |
+| `defaultValue`  | `string[]`                       | `[]`      | Initially selected values       |
+| `value`         | `string[]`                       | —         | Controlled selected values      |
+| `onValueChange` | `(value: string[]) => void`      | —         | Callback when selection changes |
+| `size`          | `"small" \| "medium" \| "large"` | `"small"` | Trigger size                    |
+| `label`         | `string`                         | —         | Field label                     |
+| `description`   | `string`                         | —         | Helper text below the field     |
+| `disabled`      | `boolean`                        | `false`   | Disables the select             |
+| `required`      | `boolean`                        | `false`   | Marks field as required         |
+| `name`          | `string`                         | —         | Form field name                 |
+| `fullwidth`     | `boolean`                        | `false`   | Full width trigger              |
+| `ghost`         | `boolean`                        | `false`   | Ghost variant styling           |
 
 ### Item Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `value` | `string` | Unique value for the item |
-| `label` | `string` | Display text |
-| `disabled` | `boolean` | Disables the item |
-| `description` | `string` | Secondary text |
-| `icon` | `Icon` | Leading icon |
+| Prop          | Type      | Description               |
+| ------------- | --------- | ------------------------- |
+| `value`       | `string`  | Unique value for the item |
+| `label`       | `string`  | Display text              |
+| `disabled`    | `boolean` | Disables the item         |
+| `description` | `string`  | Secondary text            |
+| `icon`        | `Icon`    | Leading icon              |
 
 ## Anatomy
 
@@ -71,26 +71,26 @@ const items = [
 
 For advanced composition, the following subcomponents are available:
 
-| Component | Description |
-|-----------|-------------|
-| `SelectTrigger` | The trigger button |
-| `SelectValue` | Displays selected values |
-| `SelectIndicator` | Chevron icon |
-| `SelectPortal` | Portal container |
-| `SelectPositioner` | Positions the popup |
-| `SelectPopup` | Popup container |
-| `SelectList` | List container |
-| `SelectItem` | Individual option |
+| Component          | Description              |
+| ------------------ | ------------------------ |
+| `SelectTrigger`    | The trigger button       |
+| `SelectValue`      | Displays selected values |
+| `SelectIndicator`  | Chevron icon             |
+| `SelectPortal`     | Portal container         |
+| `SelectPositioner` | Positions the popup      |
+| `SelectPopup`      | Popup container          |
+| `SelectList`       | List container           |
+| `SelectItem`       | Individual option        |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `select-multiple-root` | Root element |
-| `select-trigger` | Trigger button |
-| `select-value` | Value display |
-| `select-icon` | Chevron indicator |
-| `select-item` | List item |
+| Slot                   | Element           |
+| ---------------------- | ----------------- |
+| `select-multiple-root` | Root element      |
+| `select-trigger`       | Trigger button    |
+| `select-value`         | Value display     |
+| `select-icon`          | Chevron indicator |
+| `select-item`          | List item         |
 
 ## Accessibility
 

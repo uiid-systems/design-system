@@ -90,31 +90,31 @@ import { Textarea } from "@uiid/forms";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `defaultValue` | `string` | — | — |
-| `description` | `string` | — | — |
-| `disabled` | `boolean` | — | — |
-| `fullwidth` | `boolean` | — | — |
-| `ghost` | `boolean` | — | — |
-| `label` | `string` | — | — |
-| `placeholder` | `string` | — | — |
-| `required` | `boolean` | — | — |
-| `resize` | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | — |
-| `rows` | `number` | `3` | — |
-| `size` | `"small" \| "medium" \| "large"` | `"medium"` | — |
-| `value` | `string` | — | — |
+| Prop           | Type                                             | Default      | Description |
+| -------------- | ------------------------------------------------ | ------------ | ----------- |
+| `defaultValue` | `string`                                         | —            | —           |
+| `description`  | `string`                                         | —            | —           |
+| `disabled`     | `boolean`                                        | —            | —           |
+| `fullwidth`    | `boolean`                                        | —            | —           |
+| `ghost`        | `boolean`                                        | —            | —           |
+| `label`        | `string`                                         | —            | —           |
+| `placeholder`  | `string`                                         | —            | —           |
+| `required`     | `boolean`                                        | —            | —           |
+| `resize`       | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | —           |
+| `rows`         | `number`                                         | `3`          | —           |
+| `size`         | `"small" \| "medium" \| "large"`                 | `"medium"`   | —           |
+| `value`        | `string`                                         | —            | —           |
 
 > All other props are forwarded to the native textarea element.
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `textarea` | The textarea element |
-| `field-root` | Field wrapper (when label/description present) |
-| `field-label` | Label element |
-| `field-description` | Description element |
+| Slot                | Element                                        |
+| ------------------- | ---------------------------------------------- |
+| `textarea`          | The textarea element                           |
+| `field-root`        | Field wrapper (when label/description present) |
+| `field-label`       | Label element                                  |
+| `field-description` | Description element                            |
 
 ## Accessibility
 

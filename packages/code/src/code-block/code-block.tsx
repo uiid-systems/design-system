@@ -172,7 +172,10 @@ export const CodeBlock = ({
   // Portal to the body so the overlay escapes any ancestor stacking/overflow
   // context. `fullscreen` is always false on the server, so SSR renders `block`.
   return createPortal(
-    <div data-slot="code-block-fullscreen" className={styles["code-block-fullscreen"]}>
+    <div
+      data-slot="code-block-fullscreen"
+      className={styles["code-block-fullscreen"]}
+    >
       <div
         data-slot="code-block-backdrop"
         className={styles["code-block-backdrop"]}

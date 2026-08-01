@@ -89,4 +89,3 @@ describe("CheckboxGroup", () => {
     expect(checkboxes).toHaveLength(3);
   });
 });
-

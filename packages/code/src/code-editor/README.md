@@ -22,30 +22,30 @@ import { CodeEditor } from "@uiid/code";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | — | Controlled value |
-| `defaultValue` | `string` | `""` | Initial value (uncontrolled) |
-| `onValueChange` | `(value: string) => void` | — | Callback when value changes |
-| `language` | `BundledLanguage` | `"typescript"` | Syntax highlighting language |
-| `showLineNumbers` | `boolean` | `false` | Show line numbers |
-| `readOnly` | `boolean` | `false` | Make editor read-only |
-| `disabled` | `boolean` | `false` | Disable the editor |
-| `placeholder` | `string` | — | Placeholder when empty |
-| `filename` | `string` | — | Filename for header |
-| `copyable` | `boolean` | `true` | Show copy button |
-| `HeaderProps` | `CodeBlockHeaderProps` | — | Props for header |
-| `CopyButtonProps` | `CodeBlockCopyButtonProps` | — | Props for copy button |
+| Prop              | Type                       | Default        | Description                  |
+| ----------------- | -------------------------- | -------------- | ---------------------------- |
+| `value`           | `string`                   | —              | Controlled value             |
+| `defaultValue`    | `string`                   | `""`           | Initial value (uncontrolled) |
+| `onValueChange`   | `(value: string) => void`  | —              | Callback when value changes  |
+| `language`        | `BundledLanguage`          | `"typescript"` | Syntax highlighting language |
+| `showLineNumbers` | `boolean`                  | `false`        | Show line numbers            |
+| `readOnly`        | `boolean`                  | `false`        | Make editor read-only        |
+| `disabled`        | `boolean`                  | `false`        | Disable the editor           |
+| `placeholder`     | `string`                   | —              | Placeholder when empty       |
+| `filename`        | `string`                   | —              | Filename for header          |
+| `copyable`        | `boolean`                  | `true`         | Show copy button             |
+| `HeaderProps`     | `CodeBlockHeaderProps`     | —              | Props for header             |
+| `CopyButtonProps` | `CodeBlockCopyButtonProps` | —              | Props for copy button        |
 
 > `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `code-editor` | Root container |
+| Slot                    | Element                   |
+| ----------------------- | ------------------------- |
+| `code-editor`           | Root container            |
 | `code-editor-highlight` | Highlighted code backdrop |
-| `code-editor-textarea` | Textarea overlay |
+| `code-editor-textarea`  | Textarea overlay          |
 
 ## Architecture
 

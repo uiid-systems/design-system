@@ -29,7 +29,11 @@ export const DialogPopup = ({
   return (
     <BaseDialog.Popup
       data-slot="dialog-popup"
-      className={cx(styles["dialog-popup"], dialogVariants({ size }), className)}
+      className={cx(
+        styles["dialog-popup"],
+        dialogVariants({ size }),
+        className,
+      )}
       render={
         <Card
           title={title}

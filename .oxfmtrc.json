@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "semi": true,
+  "tabWidth": 2,
+  "htmlWhitespaceSensitivity": "css",
+  // Prettier did not sort package.json; keep it that way so manifest diffs
+  // stay reviewable.
+  "sortPackageJson": false,
+  "ignorePatterns": [],
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "options": {
+        "printWidth": 150
+      }
+    }
+  ]
+}

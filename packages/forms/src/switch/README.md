@@ -41,7 +41,7 @@ const [checked, setChecked] = useState(false);
   label="Controlled switch"
   checked={checked}
   onCheckedChange={setChecked}
-/>
+/>;
 ```
 
 ### Default Checked
@@ -58,43 +58,47 @@ const [checked, setChecked] = useState(false);
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `bordered` | `boolean` | — | — |
-| `checked` | `boolean` | — | — |
-| `defaultChecked` | `boolean` | — | — |
-| `description` | `string` | — | — |
-| `disabled` | `boolean` | — | — |
-| `label` | `string` | — | — |
-| `name` | `string` | — | — |
-| `required` | `boolean` | — | — |
-| `reversed` | `boolean` | — | — |
+| Prop             | Type      | Default | Description |
+| ---------------- | --------- | ------- | ----------- |
+| `bordered`       | `boolean` | —       | —           |
+| `checked`        | `boolean` | —       | —           |
+| `defaultChecked` | `boolean` | —       | —           |
+| `description`    | `string`  | —       | —           |
+| `disabled`       | `boolean` | —       | —           |
+| `label`          | `string`  | —       | —           |
+| `name`           | `string`  | —       | —           |
+| `required`       | `boolean` | —       | —           |
+| `reversed`       | `boolean` | —       | —           |
 
 > All other props are forwarded to the Base UI Switch.Root component.
 
 ## Anatomy
 
 ```tsx
-<SwitchLabel>         {/* Container with label */}
-  <SwitchRoot>        {/* The switch track */}
-    <SwitchThumb />   {/* The sliding thumb */}
+<SwitchLabel>
+  {" "}
+  {/* Container with label */}
+  <SwitchRoot>
+    {" "}
+    {/* The switch track */}
+    <SwitchThumb /> {/* The sliding thumb */}
   </SwitchRoot>
 </SwitchLabel>
 ```
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `SwitchRoot` | The switch track element |
+| Component     | Description               |
+| ------------- | ------------------------- |
+| `SwitchRoot`  | The switch track element  |
 | `SwitchThumb` | The sliding thumb element |
-| `SwitchLabel` | Label wrapper element |
+| `SwitchLabel` | Label wrapper element     |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `switch-root` | The switch track |
+| Slot           | Element           |
+| -------------- | ----------------- |
+| `switch-root`  | The switch track  |
 | `switch-thumb` | The thumb element |
 | `switch-label` | The label element |
 

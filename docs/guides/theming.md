@@ -34,6 +34,7 @@ npx tsx scripts/generate-theme.js --input my-brand.theme.json --output my-brand.
 ```
 
 The generator will:
+
 - Derive a full 12-step shade scale from your `white` and `black`
 - Generate surface, border, and foreground variants for every theme color
 - Check all color pairs for WCAG AA contrast compliance
@@ -54,17 +55,17 @@ That's it. Every UIID component automatically picks up your theme.
 
 ## Schema Reference
 
-| Field | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `name` | Yes | — | Theme display name |
-| `white` | Yes | — | Lightest neutral anchor |
-| `black` | Yes | — | Darkest neutral anchor |
-| `primary` | Yes | — | Brand primary color |
-| `secondary` | Yes | — | Brand secondary color |
-| `positive` | No | `#00c565` | Success/positive status color |
-| `warning` | No | `#e8b700` | Warning status color |
-| `critical` | No | `#f9262a` | Error/danger status color |
-| `info` | No | `#347eff` | Informational status color |
+| Field       | Required | Default   | Description                   |
+| ----------- | -------- | --------- | ----------------------------- |
+| `name`      | Yes      | —         | Theme display name            |
+| `white`     | Yes      | —         | Lightest neutral anchor       |
+| `black`     | Yes      | —         | Darkest neutral anchor        |
+| `primary`   | Yes      | —         | Brand primary color           |
+| `secondary` | Yes      | —         | Brand secondary color         |
+| `positive`  | No       | `#00c565` | Success/positive status color |
+| `warning`   | No       | `#e8b700` | Warning status color          |
+| `critical`  | No       | `#f9262a` | Error/danger status color     |
+| `info`      | No       | `#347eff` | Informational status color    |
 
 All color values must be 6-digit hex strings (`#RRGGBB`). The generator handles all OKLCH conversion internally — you never need to work with OKLCH directly.
 
@@ -170,16 +171,16 @@ VSCode themes are JSON files. You can get them from:
 
 The converter extracts colors from VSCode's `colors` object and maps them to UIID fields:
 
-| UIID Field | VSCode Keys (first match wins) |
-|------------|-------------------------------|
-| `white` | Light: `editor.background` / Dark: `editor.foreground` |
-| `black` | Light: `editor.foreground` / Dark: `editor.background` |
-| `primary` | `focusBorder`, `button.background`, `textLink.foreground` |
-| `secondary` | `badge.background`, `activityBar.activeBorder` |
-| `positive` | `terminal.ansiGreen`, `gitDecoration.addedResourceForeground` |
-| `warning` | `terminal.ansiYellow`, `list.warningForeground` |
-| `critical` | `terminal.ansiRed`, `errorForeground` |
-| `info` | `terminal.ansiBlue`, `editorInfo.foreground` |
+| UIID Field  | VSCode Keys (first match wins)                                |
+| ----------- | ------------------------------------------------------------- |
+| `white`     | Light: `editor.background` / Dark: `editor.foreground`        |
+| `black`     | Light: `editor.foreground` / Dark: `editor.background`        |
+| `primary`   | `focusBorder`, `button.background`, `textLink.foreground`     |
+| `secondary` | `badge.background`, `activityBar.activeBorder`                |
+| `positive`  | `terminal.ansiGreen`, `gitDecoration.addedResourceForeground` |
+| `warning`   | `terminal.ansiYellow`, `list.warningForeground`               |
+| `critical`  | `terminal.ansiRed`, `errorForeground`                         |
+| `info`      | `terminal.ansiBlue`, `editorInfo.foreground`                  |
 
 The converter automatically detects light vs dark themes and flips the white/black mapping accordingly.
 
@@ -243,10 +244,10 @@ The generator automatically checks your theme for WCAG AA accessibility. You'll 
 
 ### Warning levels
 
-| Level | Meaning | Action |
-|-------|---------|--------|
-| **error** | Ratio below 3.0:1 | Color pair is likely unreadable — consider adjusting |
-| **warning** | Ratio between 3.0:1 and 4.5:1 | Fine for large text/icons, may fail for body text |
+| Level       | Meaning                       | Action                                               |
+| ----------- | ----------------------------- | ---------------------------------------------------- |
+| **error**   | Ratio below 3.0:1             | Color pair is likely unreadable — consider adjusting |
+| **warning** | Ratio between 3.0:1 and 4.5:1 | Fine for large text/icons, may fail for body text    |
 
 Validation never blocks generation — your theme CSS is always produced. Treat warnings as guidance, not hard failures. Some pairs (like `warning` on a light background) are inherently low-contrast by nature and may be acceptable depending on usage.
 

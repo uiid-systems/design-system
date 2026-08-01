@@ -51,7 +51,11 @@ export function Timeline({
 
   const nodes = items
     ? items.map((item, i) => (
-        <TimelineItem key={i} {...ItemProps} {...mergeItemProps(slotProps, item)} />
+        <TimelineItem
+          key={i}
+          {...ItemProps}
+          {...mergeItemProps(slotProps, item)}
+        />
       ))
     : children;
 

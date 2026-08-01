@@ -55,7 +55,9 @@ describe("Slider", () => {
   });
 
   it("respects min and max values", () => {
-    const { container } = render(<Slider min={10} max={80} defaultValue={20} />);
+    const { container } = render(
+      <Slider min={10} max={80} defaultValue={20} />,
+    );
     const root = container.querySelector("[data-slot='slider-root']");
     expect(root).toBeInTheDocument();
     // Slider renders with constrained value within range

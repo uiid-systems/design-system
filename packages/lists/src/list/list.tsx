@@ -29,7 +29,11 @@ export const List = ({
       {items
         ? items.map((item, index) =>
             "items" in item ? (
-              <ListGroup key={item.category ?? index} {...item} {...GroupProps} />
+              <ListGroup
+                key={item.category ?? index}
+                {...item}
+                {...GroupProps}
+              />
             ) : (
               <ListItem key={index} fullwidth {...item} {...ItemProps} />
             ),

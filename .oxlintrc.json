@@ -18,9 +18,7 @@
   ],
   "overrides": [
     {
-      "files": [
-        "**/*.{ts,tsx,js,jsx}"
-      ],
+      "files": ["**/*.{ts,tsx,js,jsx}"],
       "rules": {
         "constructor-super": "off",
         "for-direction": "error",
@@ -121,10 +119,7 @@
           }
         ]
       },
-      "plugins": [
-        "typescript",
-        "react"
-      ],
+      "plugins": ["typescript", "react"],
       "env": {
         "es2020": true,
         "browser": true
@@ -140,9 +135,7 @@
       // `rules-of-hooks` still lints them, so it has to be disabled here too.
       // Storybook CSF calls `render: () => {}` as a component, so hooks inside
       // it are valid; the rule only sees an anonymous function and misfires.
-      "files": [
-        "**/*.stories.{ts,tsx}"
-      ],
+      "files": ["**/*.stories.{ts,tsx}"],
       "rules": {
         "react/rules-of-hooks": "off"
       }

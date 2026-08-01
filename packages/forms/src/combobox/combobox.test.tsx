@@ -57,7 +57,9 @@ describe("Combobox", () => {
     await user.type(input, "ap");
 
     expect(screen.getByRole("option", { name: /apple/i })).toBeInTheDocument();
-    expect(screen.queryByRole("option", { name: /banana/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: /banana/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("selects item when clicked", async () => {
@@ -139,4 +141,3 @@ describe("Combobox", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 });
-

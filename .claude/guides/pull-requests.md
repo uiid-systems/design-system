@@ -10,16 +10,16 @@ type(scope): description
 
 ### Allowed types
 
-| Type       | Use when...                                      |
-| ---------- | ------------------------------------------------ |
-| `feat`     | Adding new functionality                         |
-| `fix`      | Fixing a bug                                     |
-| `refactor` | Restructuring code without changing behavior     |
-| `perf`     | Improving performance                            |
-| `docs`     | Documentation-only changes                       |
-| `chore`    | Maintenance (deps, configs, scripts)             |
-| `test`     | Adding or updating tests                         |
-| `ci`       | CI/CD workflow changes                           |
+| Type       | Use when...                                  |
+| ---------- | -------------------------------------------- |
+| `feat`     | Adding new functionality                     |
+| `fix`      | Fixing a bug                                 |
+| `refactor` | Restructuring code without changing behavior |
+| `perf`     | Improving performance                        |
+| `docs`     | Documentation-only changes                   |
+| `chore`    | Maintenance (deps, configs, scripts)         |
+| `test`     | Adding or updating tests                     |
+| `ci`       | CI/CD workflow changes                       |
 
 ### Rules
 

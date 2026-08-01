@@ -38,8 +38,7 @@
   top: 0;
   z-index: 1;
   background-color: var(--table-head-bg);
-  box-shadow: inset 0 calc(-1 * var(--globals-border-width)) 0
-    var(--globals-border-color);
+  box-shadow: inset 0 calc(-1 * var(--globals-border-width)) 0 var(--globals-border-color);
 }
 
 .table-footer td {
@@ -90,11 +89,7 @@
   }
 
   /* Selected + hovered: keep the selection readable, add a touch more emphasis. */
-  &:where(
-      [data-hover="true"]
-        tbody
-        &:has([data-slot="checkbox"][data-checked]):hover
-    ) {
+  &:where([data-hover="true"] tbody &:has([data-slot="checkbox"][data-checked]):hover) {
     background-color: color-mix(in oklab, var(--shade-accent), transparent 20%);
   }
 }

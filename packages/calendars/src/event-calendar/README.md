@@ -77,32 +77,32 @@ type CalendarView = "month" | "week" | "day" | "agenda";
 
 Wraps your calendar. Manages drag state via `useReducer` and provides context.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `children` | `ReactNode` | Your calendar content |
+| Prop            | Type                             | Description                     |
+| --------------- | -------------------------------- | ------------------------------- |
+| `children`      | `ReactNode`                      | Your calendar content           |
 | `onEventUpdate` | `(event: CalendarEvent) => void` | Called when an event is dropped |
 
 ### `DraggableEvent`
 
 Makes an event draggable. Renders `EventItem` internally.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `event` | `CalendarEvent` | The event data |
-| `view` | `"month" \| "week" \| "day"` | Current view (no drag in agenda) |
-| `showTime?` | `boolean` | Show time in event display |
-| `height?` | `number` | Fixed height (for week/day views) |
-| `isMultiDay?` | `boolean` | Spans multiple days |
-| `onClick?` | `(e: MouseEvent) => void` | Click handler |
+| Prop          | Type                         | Description                       |
+| ------------- | ---------------------------- | --------------------------------- |
+| `event`       | `CalendarEvent`              | The event data                    |
+| `view`        | `"month" \| "week" \| "day"` | Current view (no drag in agenda)  |
+| `showTime?`   | `boolean`                    | Show time in event display        |
+| `height?`     | `number`                     | Fixed height (for week/day views) |
+| `isMultiDay?` | `boolean`                    | Spans multiple days               |
+| `onClick?`    | `(e: MouseEvent) => void`    | Click handler                     |
 
 ### `DroppableCell`
 
 A drop target. Wrap your calendar cells with this.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `id` | `string` | Unique identifier |
-| `date` | `Date` | The date this cell represents |
+| Prop    | Type     | Description                            |
+| ------- | -------- | -------------------------------------- |
+| `id`    | `string` | Unique identifier                      |
+| `date`  | `Date`   | The date this cell represents          |
 | `time?` | `number` | Hour as decimal (e.g., `9.5` = 9:30am) |
 
 ### `EventItem`
@@ -117,9 +117,9 @@ Access drag state from anywhere in the provider tree.
 
 ```ts
 const {
-  activeEvent,    // Event being dragged (or null)
-  activeView,     // View it came from
-  currentTime,    // Live position during drag
+  activeEvent, // Event being dragged (or null)
+  activeView, // View it came from
+  currentTime, // Live position during drag
   // ...etc
 } = useEventCalendarDnd();
 ```
@@ -142,6 +142,7 @@ const { contentRef, contentHeight, getVisibleEventCount } = useEventVisibility({
 ```
 
 Returns:
+
 - `contentRef` — attach to the container you want to measure
 - `contentHeight` — current height in pixels (or `null` before mount)
 - `getVisibleEventCount(total)` — returns how many events to show (reserves space for "more" button)
@@ -150,15 +151,15 @@ Returns:
 
 All in `event-calendar.utils.ts`:
 
-| Function | Purpose |
-|----------|---------|
-| `hasDateChanged(a, b)` | Compare year/month/day |
-| `hasDateTimeChanged(a, b)` | Compare year/month/day/hour/minute |
-| `roundToNearest15Minutes(time)` | Snap to 15-min intervals |
-| `calculateDropTime(dropData, currentTime, isMonthView)` | Get new time for dropped event |
-| `calculateUpdatedEventTimes(event, newStart)` | Preserve duration when moving |
-| `getDisplayTimes(event, currentTime?)` | Get start/end/duration for rendering |
-| `formatEventTime(...)` | Format time range string |
+| Function                                                | Purpose                              |
+| ------------------------------------------------------- | ------------------------------------ |
+| `hasDateChanged(a, b)`                                  | Compare year/month/day               |
+| `hasDateTimeChanged(a, b)`                              | Compare year/month/day/hour/minute   |
+| `roundToNearest15Minutes(time)`                         | Snap to 15-min intervals             |
+| `calculateDropTime(dropData, currentTime, isMonthView)` | Get new time for dropped event       |
+| `calculateUpdatedEventTimes(event, newStart)`           | Preserve duration when moving        |
+| `getDisplayTimes(event, currentTime?)`                  | Get start/end/duration for rendering |
+| `formatEventTime(...)`                                  | Format time range string             |
 
 ## State Management
 
@@ -172,4 +173,3 @@ type DragAction =
 ```
 
 This keeps all drag-related state in sync and makes transitions predictable.
-

@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # need history for [origin/main] filter
+          fetch-depth: 0 # need history for [origin/main] filter
 
       - uses: pnpm/action-setup@v4
 

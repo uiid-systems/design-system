@@ -24,14 +24,14 @@ describe("CodeInline", () => {
   it("renders with data-slot attribute", () => {
     render(<CodeInline>npm install</CodeInline>);
     expect(
-      document.querySelector('[data-slot="code-inline"]')
+      document.querySelector('[data-slot="code-inline"]'),
     ).toBeInTheDocument();
   });
 
   it("applies custom className", () => {
     render(<CodeInline className="custom-class">npm install</CodeInline>);
     expect(document.querySelector('[data-slot="code-inline"]')).toHaveClass(
-      "custom-class"
+      "custom-class",
     );
   });
 
@@ -63,7 +63,7 @@ describe("CodeInline", () => {
     render(<CodeInline language="typescript">const x = 1;</CodeInline>);
     // The mock returns the code wrapped in a span
     expect(
-      document.querySelector('[data-slot="code-inline"]')
+      document.querySelector('[data-slot="code-inline"]'),
     ).toBeInTheDocument();
   });
 
@@ -77,10 +77,10 @@ describe("CodeInline", () => {
     render(
       <CodeInline language="typescript" html={customHtml}>
         ignored
-      </CodeInline>
+      </CodeInline>,
     );
     expect(
-      document.querySelector('[data-slot="code-inline"]')
+      document.querySelector('[data-slot="code-inline"]'),
     ).toBeInTheDocument();
   });
 
@@ -98,10 +98,12 @@ describe("CodeInline", () => {
     render(
       <p>
         Run <CodeInline>npm install</CodeInline> to install
-      </p>
+      </p>,
     );
     // CodeInline should be within the paragraph
     const paragraph = screen.getByText(/Run/);
-    expect(paragraph.querySelector('[data-slot="code-inline"]')).toBeInTheDocument();
+    expect(
+      paragraph.querySelector('[data-slot="code-inline"]'),
+    ).toBeInTheDocument();
   });
 });

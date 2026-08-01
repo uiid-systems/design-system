@@ -50,7 +50,7 @@ const [value, setValue] = useState<string | null>(null);
     value,
     onValueChange: setValue,
   }}
-/>
+/>;
 ```
 
 ### Custom Item Rendering
@@ -67,30 +67,40 @@ const [value, setValue] = useState<string | null>(null);
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | `string[]` | — | **Required.** Array of options |
-| `placeholder` | `string` | — | Placeholder text for input |
-| `defaultValue` | `string` | — | Initial selected value |
-| `onValueChange` | `(value: string) => void` | — | Called when selection changes |
-| `RootProps` | `ComboboxRootProps` | — | Props for the root element |
-| `InputProps` | `ComboboxInputProps` | — | Props for the input element |
-| `PopupProps` | `ComboboxPopupProps` | — | Props for the popup |
-| `ListProps` | `ComboboxListProps` | — | Props for the list container |
+| Prop            | Type                      | Default | Description                    |
+| --------------- | ------------------------- | ------- | ------------------------------ |
+| `items`         | `string[]`                | —       | **Required.** Array of options |
+| `placeholder`   | `string`                  | —       | Placeholder text for input     |
+| `defaultValue`  | `string`                  | —       | Initial selected value         |
+| `onValueChange` | `(value: string) => void` | —       | Called when selection changes  |
+| `RootProps`     | `ComboboxRootProps`       | —       | Props for the root element     |
+| `InputProps`    | `ComboboxInputProps`      | —       | Props for the input element    |
+| `PopupProps`    | `ComboboxPopupProps`      | —       | Props for the popup            |
+| `ListProps`     | `ComboboxListProps`       | —       | Props for the list container   |
 
 ## Anatomy
 
 ```tsx
-<ComboboxRoot>              {/* Provider */}
-  <ComboboxInput />         {/* Search input */}
+<ComboboxRoot>
+  {" "}
+  {/* Provider */}
+  <ComboboxInput /> {/* Search input */}
   <ComboboxActionButtons /> {/* Clear/chevron buttons */}
-  <ComboboxPortal>          {/* Portal wrapper */}
-    <ComboboxPositioner>    {/* Positioning */}
-      <ComboboxPopup>       {/* Popup container */}
-        <ComboboxList>      {/* List wrapper */}
-          <ComboboxItem />  {/* Individual items */}
+  <ComboboxPortal>
+    {" "}
+    {/* Portal wrapper */}
+    <ComboboxPositioner>
+      {" "}
+      {/* Positioning */}
+      <ComboboxPopup>
+        {" "}
+        {/* Popup container */}
+        <ComboboxList>
+          {" "}
+          {/* List wrapper */}
+          <ComboboxItem /> {/* Individual items */}
         </ComboboxList>
-        <ComboboxEmpty />   {/* Empty state */}
+        <ComboboxEmpty /> {/* Empty state */}
       </ComboboxPopup>
     </ComboboxPositioner>
   </ComboboxPortal>
@@ -99,31 +109,31 @@ const [value, setValue] = useState<string | null>(null);
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `ComboboxRoot` | Root provider component |
-| `ComboboxInput` | The search input |
+| Component               | Description               |
+| ----------------------- | ------------------------- |
+| `ComboboxRoot`          | Root provider component   |
+| `ComboboxInput`         | The search input          |
 | `ComboboxActionButtons` | Clear and chevron buttons |
-| `ComboboxPopup` | Popup container |
-| `ComboboxList` | List container |
-| `ComboboxItem` | Individual option item |
-| `ComboboxEmpty` | Empty state message |
+| `ComboboxPopup`         | Popup container           |
+| `ComboboxList`          | List container            |
+| `ComboboxItem`          | Individual option item    |
+| `ComboboxEmpty`         | Empty state message       |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `combobox-root` | The root element |
+| Slot             | Element           |
+| ---------------- | ----------------- |
+| `combobox-root`  | The root element  |
 | `combobox-input` | The input element |
-| `combobox-item` | Each option item |
+| `combobox-item`  | Each option item  |
 
 ## Combobox vs Autocomplete vs Select
 
-| Feature | Combobox | Autocomplete | Select |
-|---------|----------|--------------|--------|
-| Text input | Yes (filter) | Yes (free-form) | No |
-| Selection required | Yes | No | Yes |
-| Custom values | No | Yes | No |
+| Feature            | Combobox     | Autocomplete    | Select |
+| ------------------ | ------------ | --------------- | ------ |
+| Text input         | Yes (filter) | Yes (free-form) | No     |
+| Selection required | Yes          | No              | Yes    |
+| Custom values      | No           | Yes             | No     |
 
 Use **Combobox** when users must select from a searchable list.
 

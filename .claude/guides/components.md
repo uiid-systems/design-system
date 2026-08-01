@@ -64,6 +64,7 @@ Component.displayName = "Component";
 ```
 
 Key patterns:
+
 1. **"use client"** directive at top for client components
 2. **data-slot** attribute for element identification
 3. **cx()** utility from `@uiid/utils` for className merging

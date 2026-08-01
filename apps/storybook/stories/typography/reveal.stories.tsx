@@ -3,7 +3,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button, Reveal, Stack, type RevealProps } from "@uiid/design-system";
 import * as Examples from "../../../../packages/typography/src/reveal/reveal.examples";
 
-import { variantControls, spacingControls, disabledControls } from "./constants";
+import {
+  variantControls,
+  spacingControls,
+  disabledControls,
+} from "./constants";
 
 const SAMPLE =
   "UIID is a registry-first design system. Tokens define the design language, the registry describes it semantically, and blocks compose it into product surfaces.";
@@ -34,7 +38,11 @@ const ReplayDemo = (args: RevealProps) => {
   return (
     <Stack gap={4} ax="start">
       <Reveal key={run} render={<p />} {...args} />
-      <Button variant="subtle" size="small" onClick={() => setRun((r) => r + 1)}>
+      <Button
+        variant="subtle"
+        size="small"
+        onClick={() => setRun((r) => r + 1)}
+      >
         Replay
       </Button>
     </Stack>
@@ -90,7 +98,11 @@ const StreamDemo = (args: RevealProps) => {
       <Reveal {...args} render={<p />} stagger={0}>
         {words.slice(0, count).join("")}
       </Reveal>
-      <Button variant="subtle" size="small" onClick={() => setRun((r) => r + 1)}>
+      <Button
+        variant="subtle"
+        size="small"
+        onClick={() => setRun((r) => r + 1)}
+      >
         Restart stream
       </Button>
     </Stack>

@@ -28,10 +28,7 @@ import { Slider } from "@uiid/forms";
 ### With Label and Description
 
 ```tsx
-<Slider
-  label="Volume"
-  description="Adjust the volume level"
-/>
+<Slider label="Volume" description="Adjust the volume level" />
 ```
 
 ### Default Value
@@ -51,7 +48,7 @@ import { Slider } from "@uiid/forms";
 ```tsx
 const [value, setValue] = useState(50);
 
-<Slider value={value} onValueChange={setValue} />
+<Slider value={value} onValueChange={setValue} />;
 ```
 
 ### Vertical Orientation
@@ -82,72 +79,80 @@ const [value, setValue] = useState(50);
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `number` | — | Controlled value |
-| `defaultValue` | `number` | `50` | Initial value |
-| `onValueChange` | `(value: number) => void` | — | Called when value changes |
-| `min` | `number` | `0` | Minimum value |
-| `max` | `number` | `100` | Maximum value |
-| `step` | `number` | `1` | Step increment |
-| `largeStep` | `number` | — | Step when using Page Up/Down |
-| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Slider orientation |
-| `disabled` | `boolean` | `false` | Disables the slider |
-| `label` | `string` | — | Field label |
-| `description` | `string` | — | Field description |
-| `format` | `Intl.NumberFormatOptions` | — | Value display format |
-| `locale` | `string` | — | Locale for value formatting |
-| `ghost` | `boolean` | `false` | Ghost variant styling |
-| `fullwidth` | `boolean` | `false` | Full width styling |
+| Prop            | Type                         | Default        | Description                  |
+| --------------- | ---------------------------- | -------------- | ---------------------------- |
+| `value`         | `number`                     | —              | Controlled value             |
+| `defaultValue`  | `number`                     | `50`           | Initial value                |
+| `onValueChange` | `(value: number) => void`    | —              | Called when value changes    |
+| `min`           | `number`                     | `0`            | Minimum value                |
+| `max`           | `number`                     | `100`          | Maximum value                |
+| `step`          | `number`                     | `1`            | Step increment               |
+| `largeStep`     | `number`                     | —              | Step when using Page Up/Down |
+| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` | Slider orientation           |
+| `disabled`      | `boolean`                    | `false`        | Disables the slider          |
+| `label`         | `string`                     | —              | Field label                  |
+| `description`   | `string`                     | —              | Field description            |
+| `format`        | `Intl.NumberFormatOptions`   | —              | Value display format         |
+| `locale`        | `string`                     | —              | Locale for value formatting  |
+| `ghost`         | `boolean`                    | `false`        | Ghost variant styling        |
+| `fullwidth`     | `boolean`                    | `false`        | Full width styling           |
 
 ## Anatomy
 
 ```tsx
-<Field>                  {/* Optional wrapper */}
-  <SliderRoot>           {/* Provider */}
-    <SliderControl>      {/* Interactive area */}
-      <SliderTrack>      {/* Track element */}
+<Field>
+  {" "}
+  {/* Optional wrapper */}
+  <SliderRoot>
+    {" "}
+    {/* Provider */}
+    <SliderControl>
+      {" "}
+      {/* Interactive area */}
+      <SliderTrack>
+        {" "}
+        {/* Track element */}
         <SliderIndicator /> {/* Fill indicator */}
-        <SliderThumb />  {/* Draggable thumb */}
+        <SliderThumb /> {/* Draggable thumb */}
       </SliderTrack>
     </SliderControl>
-    <SliderValue />      {/* Value display */}
+    <SliderValue /> {/* Value display */}
   </SliderRoot>
 </Field>
 ```
 
 ## Subcomponents
 
-| Component | Description |
-|-----------|-------------|
-| `SliderRoot` | Root provider component |
-| `SliderControl` | Interactive control area |
-| `SliderTrack` | The track element |
+| Component         | Description                          |
+| ----------------- | ------------------------------------ |
+| `SliderRoot`      | Root provider component              |
+| `SliderControl`   | Interactive control area             |
+| `SliderTrack`     | The track element                    |
 | `SliderIndicator` | Fill indicator showing current value |
-| `SliderThumb` | Draggable thumb element |
-| `SliderValue` | Formatted value display |
+| `SliderThumb`     | Draggable thumb element              |
+| `SliderValue`     | Formatted value display              |
 
 ## Data Slots
 
-| Slot | Element |
-|------|---------|
-| `slider-root` | The root element |
-| `slider-control` | The control area |
-| `slider-track` | The track element |
+| Slot               | Element            |
+| ------------------ | ------------------ |
+| `slider-root`      | The root element   |
+| `slider-control`   | The control area   |
+| `slider-track`     | The track element  |
 | `slider-indicator` | The fill indicator |
-| `slider-thumb` | The thumb element |
-| `slider-value` | The value display |
+| `slider-thumb`     | The thumb element  |
+| `slider-value`     | The value display  |
 
 ## Keyboard
 
-| Key | Action |
-|-----|--------|
-| `←` / `↓` | Decrease by step |
-| `→` / `↑` | Increase by step |
+| Key         | Action                |
+| ----------- | --------------------- |
+| `←` / `↓`   | Decrease by step      |
+| `→` / `↑`   | Increase by step      |
 | `Page Down` | Decrease by largeStep |
-| `Page Up` | Increase by largeStep |
-| `Home` | Set to min |
-| `End` | Set to max |
+| `Page Up`   | Increase by largeStep |
+| `Home`      | Set to min            |
+| `End`       | Set to max            |
 
 ## Accessibility
 

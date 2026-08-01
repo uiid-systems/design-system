@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
-import {
-  Stack,
-  Group,
-  Field,
-  Combobox,
-} from "@uiid/design-system";
+import { Stack, Group, Field, Combobox } from "@uiid/design-system";
 import type { ComboboxProps } from "@uiid/design-system";
 import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
 

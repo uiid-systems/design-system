@@ -32,6 +32,7 @@ describe("Component", () => {
 ```
 
 See the full template at `.claude/templates/COMPONENT_TEST.md` for patterns covering:
+
 - Rendering and data-slot verification
 - Variant props (size, variant, tone)
 - User interactions (click, keyboard)

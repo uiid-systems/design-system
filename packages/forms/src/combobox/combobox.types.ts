@@ -31,5 +31,8 @@ export type ComboboxProps<
   ListProps?: ComboboxListProps;
 }> &
   ComboboxRootProps<Value, Multiple> &
-  Pick<ComboboxInputProps, "placeholder" | "onFocus" | "onBlur" | "before" | "after"> &
+  Pick<
+    ComboboxInputProps,
+    "placeholder" | "onFocus" | "onBlur" | "before" | "after"
+  > &
   Pick<FieldProps, "label" | "description">;
