@@ -9,6 +9,20 @@ if (process.env.VERCEL) process.exit(0);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bin = (name) => path.join(root, "node_modules", ".bin", name);
 
+// Husky pointed core.hooksPath at .husky/_. That directory is gone, and while
+// the config survives in each dev's .git/config, git looks there and silently
+// runs nothing. Clear it so machines migrating off husky heal themselves.
+try {
+  const hooksPath = execFileSync("git", ["config", "--get", "core.hooksPath"], {
+    encoding: "utf8",
+  }).trim();
+  if (hooksPath.startsWith(".husky")) {
+    execFileSync("git", ["config", "--unset", "core.hooksPath"]);
+  }
+} catch {
+  // git exits non-zero when the key is unset, or this isn't a checkout at all.
+}
+
 // pnpm 10 blocks dependency lifecycle scripts, so lefthook's own postinstall
 // never runs and the hooks never land in .git/hooks. Install them ourselves.
 // Kept ahead of Playwright so a slow browser download can't skip hook setup.
