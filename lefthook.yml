@@ -7,10 +7,12 @@
 pre-commit:
   jobs:
     # Format first, restage the fixes, then lint what will actually be committed.
+    # The glob must cover every format oxfmt handles, not just the JS/TS family:
+    # a markdown table left unaligned here still fails `pnpm format:check` in CI.
     - name: format
       run: pnpm format {staged_files}
       glob:
-        - "*.{ts,tsx,js,jsx,mjs,cjs}"
+        - "*.{ts,tsx,js,jsx,mjs,cjs,md,mdx,json,jsonc,css,yml,yaml}"
       stage_fixed: true
 
     # Whole-repo rather than {staged_files}: oxlint covers the entire monorepo
