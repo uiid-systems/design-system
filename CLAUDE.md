@@ -10,6 +10,7 @@ UIID is a modular React component library. Follow these conventions to maintain 
 - **CSS Modules** with design tokens
 - **pnpm workspaces** + **Turbo** for monorepo management
 - **Vitest** for testing, **Storybook** for documentation
+- **oxlint** for linting, **oxfmt** for formatting (both run once from the repo root, not per package)
 
 ## Monorepo Structure
 
@@ -37,7 +38,8 @@ design-system/
 | `vitest.setup.ts`  | Test setup (jest-dom matchers)              |
 | `tsconfig.json`    | Base TypeScript config (packages extend it) |
 | `turbo.json`       | Turbo task orchestration                    |
-| `eslint.config.js` | Shared ESLint configuration                 |
+| `.oxlintrc.json`   | oxlint configuration (whole repo)           |
+| `.oxfmtrc.json`    | oxfmt formatter configuration               |
 
 ## Attribution Policy
 
@@ -56,6 +58,9 @@ design-system/
 | Run tests (watch)    | `pnpm test`                               |
 | Start Storybook      | `pnpm run storybook`                      |
 | Lint                 | `pnpm run lint`                           |
+| Lint and autofix     | `pnpm run lint:fix`                       |
+| Format               | `pnpm run format`                         |
+| Check formatting     | `pnpm run format:check`                   |
 | Check bundle sizes   | `pnpm size`                               |
 
 ---
