@@ -54,8 +54,12 @@ const config: StorybookConfig = {
 
 export default config;
 
-function getAbsolutePath(value: string): any {
-  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+// Returns `T` so literal addon/framework names survive, satisfying Storybook's
+// narrowly-typed `framework.name` without widening to `string`.
+function getAbsolutePath<T extends string>(value: T): T {
+  return dirname(
+    fileURLToPath(import.meta.resolve(`${value}/package.json`)),
+  ) as T;
 }
 
 type SourcePackage = { name: string; entry: string };

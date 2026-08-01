@@ -21,26 +21,35 @@ const COMPONENT_PACKAGES = [
 ];
 
 /**
+ * The subset of Vite's config this helper reads and mutates. Declared
+ * structurally so the storybook app doesn't need a direct `vite` dependency.
+ */
+type ConfigWithCss = {
+  css?: {
+    postcss?: string | { plugins?: unknown[] };
+  };
+};
+
+/**
  * Applies PostCSS layer wrapper to component packages in the Vite config.
  * This ensures component CSS is wrapped in @layer uiid.components,
  * while tokens and utilities remain in their own layers.
  */
-export function applyPostCSSLayers(config: any): any {
+export function applyPostCSSLayers<T extends ConfigWithCss>(config: T): T {
+  const css = (config.css ??= {});
+
   // Ensure css.postcss is an object, not a string
-  if (!config.css) {
-    config.css = {};
-  }
+  const postcss =
+    typeof css.postcss === "object" && css.postcss
+      ? css.postcss
+      : (css.postcss = {});
 
-  if (typeof config.css.postcss === "string" || !config.css.postcss) {
-    config.css.postcss = { plugins: [] };
-  }
-
-  if (!Array.isArray(config.css.postcss.plugins)) {
-    config.css.postcss.plugins = [];
-  }
+  const plugins = Array.isArray(postcss.plugins)
+    ? postcss.plugins
+    : (postcss.plugins = []);
 
   // Add layer wrapper for component CSS only
-  config.css.postcss.plugins.push(
+  plugins.push(
     postcssLayerWrapper("uiid.components", {
       shouldWrap: (filePath: string) => {
         // Only wrap CSS from component packages, not tokens or utils
