@@ -7,6 +7,19 @@
     },
     "docs#build": {
       "dependsOn": ["^build"],
+      // The docs app reads three repo-root files at build time that belong to no
+      // workspace, so nothing else hashes them: README.md and CHANGELOG.md render
+      // as pages, and tsconfig.json configures the react-docgen-typescript parser
+      // behind every PropsTable. Without these a cache hit serves stale content —
+      // most visibly after a release, when release-please rewrites CHANGELOG.md.
+      // Component READMEs and *.examples.tsx are deliberately absent: they live
+      // inside @uiid/* packages and already invalidate through `dependsOn`.
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/README.md",
+        "$TURBO_ROOT$/CHANGELOG.md",
+        "$TURBO_ROOT$/tsconfig.json"
+      ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "dev": {
