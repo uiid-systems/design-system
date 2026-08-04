@@ -1,6 +1,28 @@
 import { Meta, Markdown } from "@storybook/addon-docs/blocks";
-import claudeMd from "../../../CLAUDE.md?raw";
+import agentsMd from "../../../AGENTS.md?raw";
+import architectureMd from "../../../.agents/architecture.md?raw";
+import componentsMd from "../../../.agents/components.md?raw";
+import stylingMd from "../../../.agents/styling.md?raw";
+import testingMd from "../../../.agents/testing.md?raw";
+import workflowsMd from "../../../.agents/workflows.md?raw";
+import knownIssuesMd from "../../../.agents/known-issues.md?raw";
+
+{/* Chapters carry YAML frontmatter for path-scoped loading; strip it for display. */}
+
+export const stripFrontmatter = (md) => md.replace(/^---\n[\s\S]*?\n---\n/, "");
 
 <Meta title="AI Agent Guidelines" />
 
-<Markdown>{claudeMd}</Markdown>
+<Markdown>{agentsMd}</Markdown>
+
+<Markdown>{stripFrontmatter(architectureMd)}</Markdown>
+
+<Markdown>{stripFrontmatter(componentsMd)}</Markdown>
+
+<Markdown>{stripFrontmatter(stylingMd)}</Markdown>
+
+<Markdown>{stripFrontmatter(testingMd)}</Markdown>
+
+<Markdown>{stripFrontmatter(workflowsMd)}</Markdown>
+
+<Markdown>{stripFrontmatter(knownIssuesMd)}</Markdown>
