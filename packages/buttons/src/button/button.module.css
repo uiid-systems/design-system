@@ -35,9 +35,13 @@
     outline-offset: var(--globals-outline-offset);
   }
 
+  /* Height only — `width: auto` keeps non-square glyphs from being distorted.
+     --forms-icon-size is re-published per tier by the size compositions, so an
+     icon tracks the button it sits in; unsized buttons fall back to the root
+     value. */
   svg {
     flex-shrink: 0;
-    height: var(--globals-icon-size);
+    height: var(--forms-icon-size);
     width: auto;
     vertical-align: middle;
   }

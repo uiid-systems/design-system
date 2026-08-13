@@ -34,26 +34,36 @@
    * Control sizing scale, shared by form controls and buttons.
    * Compose these into a component's local size class rather than
    * re-declaring height/padding/font-size per component.
+   *
+   * Each tier re-publishes --forms-icon-size for its own subtree, so anything
+   * that sizes an icon off that name scales with the control it sits in rather
+   * than pinning one value across every tier. It inherits, so a descendant
+   * (a field slot's svg) picks it up from the control element without the
+   * sizing rule needing to know which tier is active.
    */
   .composes-size-xsmall {
     font-size: var(--forms-size-xs-font-size);
     height: var(--forms-size-xs-height);
     padding-inline: var(--forms-size-xs-padding-x);
+    --forms-icon-size: var(--forms-size-xs-icon-size);
   }
   .composes-size-small {
     font-size: var(--forms-size-sm-font-size);
     height: var(--forms-size-sm-height);
     padding-inline: var(--forms-size-sm-padding-x);
+    --forms-icon-size: var(--forms-size-sm-icon-size);
   }
   .composes-size-medium {
     font-size: var(--forms-size-md-font-size);
     height: var(--forms-size-md-height);
     padding-inline: var(--forms-size-md-padding-x);
+    --forms-icon-size: var(--forms-size-md-icon-size);
   }
   .composes-size-large {
     font-size: var(--forms-size-lg-font-size);
     height: var(--forms-size-lg-height);
     padding-inline: var(--forms-size-lg-padding-x);
+    --forms-icon-size: var(--forms-size-lg-icon-size);
   }
 
   /**
