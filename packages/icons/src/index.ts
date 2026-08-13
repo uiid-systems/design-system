@@ -8,7 +8,7 @@
 //   import { GlobeIcon } from "@uiid/icons/globe";  // parses 1 lucide module
 //   import { GlobeIcon } from "@uiid/icons";        // the barrel
 //
-// Inside this repo, prefer the subpath — see src/README.md.
+// Inside this repo, prefer the subpath — see README.md.
 export * from "./lucide-icons.generated";
 
 // Utility for authoring a custom icon in the lucide style. Reached through

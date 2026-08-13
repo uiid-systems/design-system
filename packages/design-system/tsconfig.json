@@ -11,5 +11,11 @@
     "allowImportingTsExtensions": false
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/**/*.stories.*",
+    "src/**/*.test.*",
+    "src/**/*.spec.*"
+  ]
 }

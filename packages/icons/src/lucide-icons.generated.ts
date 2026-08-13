@@ -2,7 +2,7 @@
 // Regenerate with `pnpm --filter @uiid/icons generate` after bumping lucide-react.
 //
 // Every icon is re-exported from its own lucide module, never from
-// lucide-react's root — see src/README.md for why that matters.
+// lucide-react's root — see README.md for why that matters.
 export { default as AArrowDownIcon } from "lucide-react/dist/esm/icons/a-arrow-down.mjs";
 export { default as AArrowUpIcon } from "lucide-react/dist/esm/icons/a-arrow-up.mjs";
 export { default as AccessibilityIcon } from "lucide-react/dist/esm/icons/accessibility.mjs";
