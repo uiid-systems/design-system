@@ -1,5 +1,5 @@
 import { Button } from "@uiid/buttons";
-import { EllipsisVertical } from "@uiid/icons";
+import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { Group } from "@uiid/layout";
 import { TableCell } from "@uiid/tables";
 
@@ -31,7 +31,7 @@ function ActionButton<T extends Record<string, unknown>>({
       shape="square"
       onClick={onClick ? () => onClick(item) : undefined}
     >
-      {action.icon ? <action.icon /> : <EllipsisVertical size={14} />}
+      {action.icon ? <action.icon /> : <EllipsisVerticalIcon size={14} />}
     </Button>
   );
 

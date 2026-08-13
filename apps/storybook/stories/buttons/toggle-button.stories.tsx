@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ToggleButton } from "@uiid/design-system";
-import { Heart } from "@uiid/icons";
+import { HeartIcon } from "@uiid/icons/heart";
 
 import * as Examples from "../../../../packages/buttons/src/toggle-button/toggle-button.examples";
 
@@ -42,7 +42,7 @@ export const Playground: Story = {
   render: (args) => (
     <ToggleButton
       {...args}
-      icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+      icon={{ pressed: <HeartIcon fill="red" />, unpressed: <HeartIcon /> }}
     />
   ),
 };

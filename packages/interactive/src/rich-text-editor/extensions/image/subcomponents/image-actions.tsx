@@ -1,4 +1,4 @@
-import { EllipsisIcon } from "@uiid/icons";
+import { EllipsisIcon } from "@uiid/icons/ellipsis";
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 import { useState, useCallback, useMemo } from "react";

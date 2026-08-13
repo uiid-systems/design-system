@@ -30,17 +30,25 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./icons/*.d.ts",
+      "import": "./icons/*.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "icons"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && vite build",
+    "build": "tsc -p tsconfig.build.json && vite build && node scripts/emit-per-icon-modules.mjs",
+    "dev": "node scripts/emit-per-icon-modules.mjs && vite build --watch",
+    "generate": "node scripts/generate-icon-exports.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.564.0"
+    "lucide-react": "^1.24.0"
   },
   "peerDependencies": {
     "react": "^19.1.1",

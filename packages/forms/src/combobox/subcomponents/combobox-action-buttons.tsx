@@ -1,7 +1,8 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { XIcon, ChevronDownIcon } from "@uiid/icons";
+import { ChevronDownIcon } from "@uiid/icons/chevron-down";
+import { XIcon } from "@uiid/icons/x";
 import { Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
 

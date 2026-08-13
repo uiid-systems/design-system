@@ -1,4 +1,6 @@
-import { Bell, Globe, Settings } from "@uiid/icons";
+import { BellIcon } from "@uiid/icons/bell";
+import { GlobeIcon } from "@uiid/icons/globe";
+import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -61,14 +63,14 @@ export const HeaderVariants = () => (
     <Card title="Title only">{BODY}</Card>
     <Card description="Description only" />
     <Card title="Title" description="And a supporting description" />
-    <Card icon={Globe} title="Icon and title" />
+    <Card icon={GlobeIcon} title="Icon and title" />
     <Card
-      icon={Settings}
+      icon={SettingsIcon}
       title="Icon, title, and action"
       action={<button>Action</button>}
     />
     <Card
-      icon={Bell}
+      icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
       action={<button>Action</button>}
@@ -146,7 +148,7 @@ export const Polymorphic = () => (
   <Card
     render={<a href="#" />}
     maxw={420}
-    icon={Globe}
+    icon={GlobeIcon}
     title="Linkable card"
     description="Rendered as <a>; gains the scale-on-hover affordance automatically."
   >

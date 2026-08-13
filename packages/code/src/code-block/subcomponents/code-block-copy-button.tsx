@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
-import { CopyIcon, CheckIcon } from "@uiid/icons";
+import { CheckIcon } from "@uiid/icons/check";
+import { CopyIcon } from "@uiid/icons/copy";
 import { cx } from "@uiid/utils";
 import * as React from "react";
 

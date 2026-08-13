@@ -1,7 +1,7 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-import { ChevronsUpDown } from "@uiid/icons";
+import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
 import { ConditionalRender, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
@@ -38,7 +38,7 @@ export const AccordionTrigger = ({
           {children}
         </Text>
       </ConditionalRender>
-      <ChevronsUpDown />
+      <ChevronsUpDownIcon />
     </BaseAccordion.Trigger>
   );
 };

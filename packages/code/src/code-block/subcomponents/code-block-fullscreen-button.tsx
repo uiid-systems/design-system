@@ -1,7 +1,8 @@
 "use client";
 
 import { ToggleButton } from "@uiid/buttons";
-import { Maximize2Icon, Minimize2Icon } from "@uiid/icons";
+import { Maximize2Icon } from "@uiid/icons/maximize-2";
+import { Minimize2Icon } from "@uiid/icons/minimize-2";
 import { cx } from "@uiid/utils";
 
 import type { CodeBlockFullscreenButtonProps } from "../code-block.types";

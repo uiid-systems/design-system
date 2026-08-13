@@ -1,5 +1,5 @@
 import type { Button as BaseButton } from "@base-ui/react/button";
-import type { LoadingSpinnerProps } from "@uiid/icons";
+import { type LoadingSpinnerIconProps } from "@uiid/icons/loading-spinner";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps } from "@uiid/utils";
@@ -18,7 +18,7 @@ export type ButtonContentContainerProps = GroupProps & {
   loading?: boolean;
 };
 
-export type ButtonSpinnerProps = LoadingSpinnerProps & {
+export type ButtonSpinnerProps = LoadingSpinnerIconProps & {
   loading?: boolean;
 };
 

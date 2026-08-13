@@ -1,5 +1,6 @@
 import type { Editor } from "@tiptap/react";
-import { ChevronDownIcon, ListIcon } from "@uiid/icons";
+import { ChevronDownIcon } from "@uiid/icons/chevron-down";
+import { ListIcon } from "@uiid/icons/list";
 
 import type { FormatAction } from "../rich-text-editor.types";
 import { ToolbarSection } from "./toolbar-section";

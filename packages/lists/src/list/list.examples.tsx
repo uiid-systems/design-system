@@ -1,4 +1,10 @@
-import { Bug, Code, FileText, Folder, Hammer, Image, Star } from "@uiid/icons";
+import { BugIcon } from "@uiid/icons/bug";
+import { CodeIcon } from "@uiid/icons/code";
+import { FileTextIcon } from "@uiid/icons/file-text";
+import { FolderIcon } from "@uiid/icons/folder";
+import { HammerIcon } from "@uiid/icons/hammer";
+import { ImageIcon } from "@uiid/icons/image";
+import { StarIcon } from "@uiid/icons/star";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -14,10 +20,10 @@ export const Default = () => (
 export const WithIcons = () => (
   <List
     items={[
-      { label: "Feature", icon: Star },
-      { label: "Fix", icon: Hammer },
-      { label: "Bug", icon: Bug },
-      { label: "Docs", icon: FileText },
+      { label: "Feature", icon: StarIcon },
+      { label: "Fix", icon: HammerIcon },
+      { label: "BugIcon", icon: BugIcon },
+      { label: "Docs", icon: FileTextIcon },
     ]}
   />
 );
@@ -28,12 +34,12 @@ export const WithDescriptions = () => (
       {
         label: "Feature",
         description: "A net-new capability",
-        icon: Star,
+        icon: StarIcon,
       },
       {
         label: "Fix",
         description: "Behavior correction on an existing feature",
-        icon: Hammer,
+        icon: HammerIcon,
       },
     ]}
   />
@@ -42,7 +48,7 @@ export const WithDescriptions = () => (
 export const WithCategory = () => (
   <List
     category="Navigation"
-    icon={Folder}
+    icon={FolderIcon}
     items={[{ label: "Home" }, { label: "About" }, { label: "Contact" }]}
   />
 );
@@ -52,25 +58,25 @@ export const NestedGroups = () => (
     items={[
       {
         category: "Source",
-        icon: Folder,
+        icon: FolderIcon,
         items: [
           {
             category: "Components",
-            icon: Folder,
+            icon: FolderIcon,
             items: [
-              { label: "button.tsx", icon: Code },
-              { label: "card.tsx", icon: Code },
+              { label: "button.tsx", icon: CodeIcon },
+              { label: "card.tsx", icon: CodeIcon },
             ],
           },
           {
             category: "Assets",
-            icon: Folder,
+            icon: FolderIcon,
             items: [
-              { label: "logo.svg", icon: Image },
-              { label: "banner.png", icon: Image },
+              { label: "logo.svg", icon: ImageIcon },
+              { label: "banner.png", icon: ImageIcon },
             ],
           },
-          { label: "index.ts", icon: FileText },
+          { label: "index.ts", icon: FileTextIcon },
         ],
       },
     ]}
@@ -111,14 +117,14 @@ export const Markers = () => {
 
 export const Composable = () => (
   <List>
-    <ListItem label="First" icon={Star} />
-    <ListItem label="Second" icon={Hammer} />
+    <ListItem label="First" icon={StarIcon} />
+    <ListItem label="Second" icon={HammerIcon} />
     <ListGroup
       category="Group"
-      icon={Folder}
+      icon={FolderIcon}
       items={[
-        { label: "Nested 1", icon: Code },
-        { label: "Nested 2", icon: Code },
+        { label: "Nested 1", icon: CodeIcon },
+        { label: "Nested 2", icon: CodeIcon },
       ]}
     />
   </List>

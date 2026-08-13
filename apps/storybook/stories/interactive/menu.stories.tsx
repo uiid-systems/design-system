@@ -10,7 +10,7 @@ import {
   SubmenuTrigger,
   MenuPositioner,
 } from "@uiid/design-system";
-import { ChevronRightIcon } from "@uiid/icons";
+import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 
 import { MOCK_ITEMS } from "./menu.mocks";
 

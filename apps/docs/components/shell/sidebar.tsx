@@ -6,7 +6,7 @@ import {
   Kbd,
   type ListItemOrGroup,
 } from "@uiid/design-system";
-import { SearchIcon } from "@uiid/icons";
+import { SearchIcon } from "@uiid/icons/search";
 import Link from "next/link";
 
 import {

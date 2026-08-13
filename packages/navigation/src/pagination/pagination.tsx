@@ -1,9 +1,7 @@
-import {
-  ChevronLeft,
-  ChevronsLeft,
-  ChevronsRight,
-  ChevronRight,
-} from "@uiid/icons";
+import { ChevronLeftIcon } from "@uiid/icons/chevron-left";
+import { ChevronRightIcon } from "@uiid/icons/chevron-right";
+import { ChevronsLeftIcon } from "@uiid/icons/chevrons-left";
+import { ChevronsRightIcon } from "@uiid/icons/chevrons-right";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -17,19 +15,19 @@ export const Pagination = () => {
       </Text>
 
       <PaginationButton disabled aria-label="First page">
-        <ChevronsLeft />
+        <ChevronsLeftIcon />
       </PaginationButton>
 
       <PaginationButton disabled aria-label="Previous page">
-        <ChevronLeft />
+        <ChevronLeftIcon />
       </PaginationButton>
 
       <PaginationButton aria-label="Next page">
-        <ChevronRight />
+        <ChevronRightIcon />
       </PaginationButton>
 
       <PaginationButton aria-label="Last page">
-        <ChevronsRight />
+        <ChevronsRightIcon />
       </PaginationButton>
     </Group>
   );

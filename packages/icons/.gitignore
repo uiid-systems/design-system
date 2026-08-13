@@ -1,0 +1,4 @@
+# Per-icon subpath modules, generated from lucide's own icon set by
+# scripts/emit-per-icon-modules.mjs (run by `build`, `dev`, and the repo
+# `postinstall`). ~1,750 files — not committed.
+/icons/

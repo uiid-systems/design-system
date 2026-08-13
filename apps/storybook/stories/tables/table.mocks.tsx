@@ -2,7 +2,8 @@ import type {
   TableActionsProps,
   TableCellDropdownProps,
 } from "@uiid/design-system";
-import { Swords, Star } from "@uiid/icons";
+import { StarIcon } from "@uiid/icons/star";
+import { SwordsIcon } from "@uiid/icons/swords";
 export type TableMockData = {
   balance: string;
   email: string;
@@ -57,12 +58,12 @@ export const TABLE_MOCK_DATA: TableMockData[] = [
 
 export const TABLE_MOCK_ACTIONS: TableActionsProps[] = [
   {
-    icon: Swords,
+    icon: SwordsIcon,
     tooltip: "Challenge",
     onClick: () => console.log("Delete"),
   },
   {
-    icon: Star,
+    icon: StarIcon,
     tooltip: "Favorite",
     onClick: () => console.log("Favorite"),
   },

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Card } from "@uiid/design-system";
-import { Globe } from "@uiid/icons";
+import { GlobeIcon } from "@uiid/icons/globe";
 
 import * as Examples from "../../../../packages/cards/src/card/card.examples";
 
@@ -12,7 +12,7 @@ const meta = {
     description: "A short supporting description that sits beneath the title.",
     children:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    icon: Globe,
+    icon: GlobeIcon,
   },
   argTypes: {
     title: { control: "text", table: { category: "Content" } },

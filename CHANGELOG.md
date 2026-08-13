@@ -2,27 +2,24 @@
 
 ## [0.1.0](https://github.com/uiid-systems/design-system/compare/v0.0.36...v0.1.0) (2026-08-04)
 
-
 ### ⚠ BREAKING CHANGES
 
-* @uiid/registry and @uiid/mcp are no longer published.
-* **ui:** `Modal` is now `Dialog` and `Sheet` is now `Drawer`. Sheet's `side` prop is replaced by Drawer's `swipeDirection`, which takes up/down/left/right instead of top/right/bottom/left and defaults to `down`.
+- @uiid/registry and @uiid/mcp are no longer published.
+- **ui:** `Modal` is now `Dialog` and `Sheet` is now `Drawer`. Sheet's `side` prop is replaced by Drawer's `swipeDirection`, which takes up/down/left/right instead of top/right/bottom/left and defaults to `down`.
 
 ### Features
 
-* **ui:** add palette color prop to Button; remove inverted variant ([#275](https://github.com/uiid-systems/design-system/issues/275)) ([7cef6a1](https://github.com/uiid-systems/design-system/commit/7cef6a1f2e4db8dff747ed44510c70572426fa48))
-* **ui:** align overlays with Base UI — remove vaul Drawer, Modal→Dialog, Sheet→Drawer ([#277](https://github.com/uiid-systems/design-system/issues/277)) ([54aba02](https://github.com/uiid-systems/design-system/commit/54aba02ee365f259ffe2b8076579a2788916ee20))
-
+- **ui:** add palette color prop to Button; remove inverted variant ([#275](https://github.com/uiid-systems/design-system/issues/275)) ([7cef6a1](https://github.com/uiid-systems/design-system/commit/7cef6a1f2e4db8dff747ed44510c70572426fa48))
+- **ui:** align overlays with Base UI — remove vaul Drawer, Modal→Dialog, Sheet→Drawer ([#277](https://github.com/uiid-systems/design-system/issues/277)) ([54aba02](https://github.com/uiid-systems/design-system/commit/54aba02ee365f259ffe2b8076579a2788916ee20))
 
 ### Bug Fixes
 
-* **overlays:** restore Dialog centering and animation, wire Popover a11y ([#282](https://github.com/uiid-systems/design-system/issues/282)) ([5f72fe3](https://github.com/uiid-systems/design-system/commit/5f72fe32ae50a2ded21587a2e4c2cd213166629c))
-* **repo:** skip playwright browser install on vercel builds ([#281](https://github.com/uiid-systems/design-system/issues/281)) ([3bddc16](https://github.com/uiid-systems/design-system/commit/3bddc16bfedac3326f5918d4a9e4790b9bf36772))
-
+- **overlays:** restore Dialog centering and animation, wire Popover a11y ([#282](https://github.com/uiid-systems/design-system/issues/282)) ([5f72fe3](https://github.com/uiid-systems/design-system/commit/5f72fe32ae50a2ded21587a2e4c2cd213166629c))
+- **repo:** skip playwright browser install on vercel builds ([#281](https://github.com/uiid-systems/design-system/issues/281)) ([3bddc16](https://github.com/uiid-systems/design-system/commit/3bddc16bfedac3326f5918d4a9e4790b9bf36772))
 
 ### Miscellaneous Chores
 
-* remove @uiid/registry, @uiid/mcp, and @uiid/blocks ([#283](https://github.com/uiid-systems/design-system/issues/283)) ([01c2ae3](https://github.com/uiid-systems/design-system/commit/01c2ae3d70fd7f8a888b736af0f406e0fb32d2a9))
+- remove @uiid/registry, @uiid/mcp, and @uiid/blocks ([#283](https://github.com/uiid-systems/design-system/issues/283)) ([01c2ae3](https://github.com/uiid-systems/design-system/commit/01c2ae3d70fd7f8a888b736af0f406e0fb32d2a9))
 
 ## [0.0.36](https://github.com/uiid-systems/design-system/compare/v0.0.35...v0.0.36) (2026-07-20)
 

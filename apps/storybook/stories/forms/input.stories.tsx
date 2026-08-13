@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Group, Field, Input } from "@uiid/design-system";
-import { SearchIcon, MailIcon, EyeIcon, LockIcon } from "@uiid/icons";
+import { EyeIcon } from "@uiid/icons/eye";
+import { LockIcon } from "@uiid/icons/lock";
+import { MailIcon } from "@uiid/icons/mail";
+import { SearchIcon } from "@uiid/icons/search";
 import { expect, userEvent, within } from "storybook/test";
 import { fn } from "storybook/test";
 

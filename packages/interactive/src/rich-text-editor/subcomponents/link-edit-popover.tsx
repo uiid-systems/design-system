@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react";
-import { Link2Icon } from "@uiid/icons";
+import { Link2Icon } from "@uiid/icons/link-2";
 import { Popover } from "@uiid/overlays";
 import { useState, useCallback } from "react";
 

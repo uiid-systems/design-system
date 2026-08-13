@@ -5,7 +5,10 @@ export * from "@uiid/calendars";
 export * from "@uiid/cards";
 export * from "@uiid/code";
 export * from "@uiid/forms";
-export * as Icons from "@uiid/icons";
+/* Icons are deliberately absent from this barrel. Re-exporting them here put
+   lucide's whole icon set into the module graph of anyone importing a single
+   component from this package. They are served from `@uiid/design-system/icons`
+   (barrel) and `@uiid/design-system/icons/<icon>` (one module per icon). */
 export * from "@uiid/indicators";
 export * from "@uiid/interactive";
 export * from "@uiid/layout";

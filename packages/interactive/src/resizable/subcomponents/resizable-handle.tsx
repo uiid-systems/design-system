@@ -1,6 +1,6 @@
 "use client";
 
-import { GripVertical } from "@uiid/icons";
+import { GripVerticalIcon } from "@uiid/icons/grip-vertical";
 import { cx } from "@uiid/utils";
 import { Separator } from "react-resizable-panels";
 
@@ -25,7 +25,7 @@ export const ResizableHandle = ({
       {children ??
         (withHandle !== false && (
           <div className={styles["resizable-handle-grip"]}>
-            <GripVertical size={10} />
+            <GripVerticalIcon size={10} />
           </div>
         ))}
     </Separator>

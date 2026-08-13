@@ -6,7 +6,7 @@ import {
   SortableItemHandle,
   SortableOverlay,
 } from "@uiid/design-system";
-import { GripVertical } from "@uiid/icons";
+import { GripVerticalIcon } from "@uiid/icons/grip-vertical";
 import { useState } from "react";
 
 import { VERTICAL_ITEMS, HORIZONTAL_ITEMS, GRID_ITEMS } from "./sortable.mocks";
@@ -37,7 +37,7 @@ function VerticalDemo() {
                 title={item.title}
                 fullwidth
                 IconProps={{
-                  icon: GripVertical,
+                  icon: GripVerticalIcon,
                   render: <SortableItemHandle />,
                 }}
               />
@@ -49,7 +49,7 @@ function VerticalDemo() {
         {({ value }) => {
           const item = items.find((i) => i.id === value);
           return item ? (
-            <Card title={item.title} icon={GripVertical} fullwidth />
+            <Card title={item.title} icon={GripVerticalIcon} fullwidth />
           ) : null;
         }}
       </SortableOverlay>
@@ -73,9 +73,9 @@ function HorizontalDemo() {
             <SortableItem key={item.id} value={item.id} asHandle>
               <Card
                 title={item.title}
-                icon={GripVertical}
+                icon={GripVerticalIcon}
                 IconProps={{
-                  icon: GripVertical,
+                  icon: GripVerticalIcon,
                   render: <SortableItemHandle />,
                 }}
               />
@@ -86,7 +86,9 @@ function HorizontalDemo() {
       <SortableOverlay>
         {({ value }) => {
           const item = items.find((i) => i.id === value);
-          return item ? <Card title={item.title} icon={GripVertical} /> : null;
+          return item ? (
+            <Card title={item.title} icon={GripVerticalIcon} />
+          ) : null;
         }}
       </SortableOverlay>
     </Sortable>
@@ -109,9 +111,9 @@ function MixedDemo() {
             <SortableItem key={item.id} value={item.id} asHandle>
               <Card
                 title={item.title}
-                icon={GripVertical}
+                icon={GripVerticalIcon}
                 IconProps={{
-                  icon: GripVertical,
+                  icon: GripVerticalIcon,
                   render: <SortableItemHandle />,
                 }}
               />
@@ -122,7 +124,9 @@ function MixedDemo() {
       <SortableOverlay>
         {({ value }) => {
           const item = items.find((i) => i.id === value);
-          return item ? <Card title={item.title} icon={GripVertical} /> : null;
+          return item ? (
+            <Card title={item.title} icon={GripVerticalIcon} />
+          ) : null;
         }}
       </SortableOverlay>
     </Sortable>

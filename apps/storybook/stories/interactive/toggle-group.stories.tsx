@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, ToggleGroup, Toggle } from "@uiid/design-system";
-import { Sun, Moon, MonitorSmartphone } from "@uiid/icons";
+import { MonitorSmartphoneIcon } from "@uiid/icons/monitor-smartphone";
+import { MoonIcon } from "@uiid/icons/moon";
+import { SunIcon } from "@uiid/icons/sun";
 
 const meta: Meta<typeof ToggleGroup> = {
   title: "Interactive/Toggle Group",
@@ -29,24 +31,24 @@ export const Default: Story = {
     <Stack gap={4}>
       <ToggleGroup {...args} defaultValue={["light"]}>
         <Toggle value="light" aria-label="Light mode">
-          <Sun />
+          <SunIcon />
         </Toggle>
         <Toggle value="dark" aria-label="Dark mode">
-          <Moon />
+          <MoonIcon />
         </Toggle>
         <Toggle value="system" aria-label="System theme">
-          <MonitorSmartphone />
+          <MonitorSmartphoneIcon />
         </Toggle>
       </ToggleGroup>
       <ToggleGroup {...args} defaultValue={["light"]} orientation="vertical">
         <Toggle value="light" aria-label="Light mode">
-          <Sun />
+          <SunIcon />
         </Toggle>
         <Toggle value="dark" aria-label="Dark mode">
-          <Moon />
+          <MoonIcon />
         </Toggle>
         <Toggle value="system" aria-label="System theme">
-          <MonitorSmartphone />
+          <MonitorSmartphoneIcon />
         </Toggle>
       </ToggleGroup>
 

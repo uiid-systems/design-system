@@ -1,7 +1,7 @@
 "use client";
 
 import { ToggleButton } from "@uiid/buttons";
-import { WrapTextIcon } from "@uiid/icons";
+import { WrapTextIcon } from "@uiid/icons/text-wrap";
 import { cx } from "@uiid/utils";
 
 import type { CodeBlockWrapButtonProps } from "../code-block.types";

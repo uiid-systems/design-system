@@ -1,4 +1,6 @@
-import { Heart, Moon, Sun } from "@uiid/icons";
+import { HeartIcon } from "@uiid/icons/heart";
+import { MoonIcon } from "@uiid/icons/moon";
+import { SunIcon } from "@uiid/icons/sun";
 import { Group } from "@uiid/layout";
 
 import { ToggleButton } from "./toggle-button";
@@ -21,10 +23,10 @@ export const DynamicIcon = () => (
     <ToggleButton
       shape="square"
       aria-label="Favorite"
-      icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+      icon={{ pressed: <HeartIcon fill="red" />, unpressed: <HeartIcon /> }}
     />
     <ToggleButton
-      icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+      icon={{ pressed: <HeartIcon fill="red" />, unpressed: <HeartIcon /> }}
     >
       Favorite
     </ToggleButton>
@@ -45,11 +47,11 @@ export const IconAndText = () => (
   <Group gap={2}>
     <ToggleButton
       variant="subtle"
-      icon={{ pressed: <Sun stroke="gold" />, unpressed: <Moon /> }}
+      icon={{ pressed: <SunIcon stroke="gold" />, unpressed: <MoonIcon /> }}
       text={{ pressed: "Light mode", unpressed: "Dark mode" }}
     />
     <ToggleButton
-      icon={{ pressed: <Heart fill="red" />, unpressed: <Heart /> }}
+      icon={{ pressed: <HeartIcon fill="red" />, unpressed: <HeartIcon /> }}
       text={{ pressed: "Liked", unpressed: "Like" }}
     />
   </Group>

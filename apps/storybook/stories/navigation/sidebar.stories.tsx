@@ -11,16 +11,18 @@ import {
   SidebarFooter,
   SidebarProvider,
 } from "@uiid/design-system";
-import { Home, Heart, UserCircle } from "@uiid/icons";
+import { UserCircleIcon } from "@uiid/icons/circle-user";
+import { HeartIcon } from "@uiid/icons/heart";
+import { HomeIcon } from "@uiid/icons/house";
 
 const MOCK_LINKS: ListProps["items"] = [
   {
     label: "TODO: Fix top-level item",
-    icon: UserCircle,
+    icon: UserCircleIcon,
   },
   {
     category: "TODO: Fix non-collapsible",
-    icon: Home,
+    icon: HomeIcon,
     items: [
       { label: "Subitem 1" },
       { label: "Subitem 2" },
@@ -29,7 +31,7 @@ const MOCK_LINKS: ListProps["items"] = [
   },
   {
     category: "Community",
-    icon: Home,
+    icon: HomeIcon,
     items: [
       { label: "Leaderboards" },
       { label: "Recent matches" },
@@ -39,7 +41,7 @@ const MOCK_LINKS: ListProps["items"] = [
   },
   {
     category: "Favorites",
-    icon: Heart,
+    icon: HeartIcon,
     items: [
       { label: "Allie Hyde" },
       { label: "Sammy Shuffle" },
