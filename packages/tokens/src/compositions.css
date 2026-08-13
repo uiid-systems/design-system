@@ -7,46 +7,27 @@
  * and loaded once (via globals.css), so a single definition is shared across
  * every package instead of being inlined per consumer.
  *
- * The `@layer uiid.compositions` wrapper is load-bearing: this layer is declared
- * last in globals.css, so these rules win over uiid.primitives / uiid.components.
+ * The `@layer uiid.compositions` wrapper is load-bearing, and it sits BELOW
+ * uiid.primitives / uiid.components in the order declared by globals.css. These
+ * are bases, not mandates: a component composes one and is then free to
+ * specialize it with an ordinary rule in its own module. Do not move this layer
+ * above its consumers — that is what forced `!important` onto Button's
+ * `shape-square` padding and Select's slot insets.
+ *
+ * State treatments that must outrank a component live in `@layer uiid.states`
+ * at the bottom of this file instead.
  */
 @layer uiid.compositions {
-  .composes-disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
-    opacity: var(--globals-disabled-opacity);
-    pointer-events: none;
-  }
-
   /**
    * Root text-rendering fundamentals, shared by anything that renders text
    * (Text, Prose, textarea, separator label). Constant values only —
    * size-coupled properties (font-size, letter-spacing, line-height) stay
-   * with each component's own size scale rather than being forced here from
-   * the always-wins compositions layer.
+   * with each component's own size scale rather than being restated here.
    */
   .composes-text {
     text-wrap: pretty;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern", "calt", "liga";
-  }
-
-  /**
-   * Text-wrap toggles. These MUST live in this layer, declared after
-   * .composes-text, because .composes-text sets text-wrap: pretty here (the
-   * always-wins compositions layer). white-space: nowrap and text-wrap: balance
-   * both resolve the same text-wrap-mode longhand, so a toggle in a lower layer
-   * (uiid.primitives) can never override .composes-text's wrap — it has to win by
-   * source order within this same layer. Composed into Text's
-   * .toggle-truncate / .toggle-balance.
-   */
-  .composes-balance {
-    text-wrap: balance;
-  }
-  .composes-truncate {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
   }
 
   /**
@@ -154,5 +135,21 @@
       cursor: default;
       pointer-events: none;
     }
+  }
+}
+
+/**
+ * Cross-cutting state treatments. `uiid.states` is declared LAST in globals.css,
+ * so these outrank anything a component paints — a disabled control must read as
+ * disabled regardless of the variant or surface it happens to be wearing.
+ *
+ * This layer is deliberately tiny. A rule belongs here only if a component
+ * overriding it would be a bug; everything a consumer might reasonably want to
+ * specialize goes in `uiid.compositions` above.
+ */
+@layer uiid.states {
+  .composes-disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
+    opacity: var(--globals-disabled-opacity);
+    pointer-events: none;
   }
 }
