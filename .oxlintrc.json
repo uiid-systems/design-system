@@ -14,7 +14,10 @@
     "**/out/**",
     "**/*.d.ts",
     "**/*.stories.{ts,tsx}",
-    "storybook-static/**"
+    "storybook-static/**",
+    ".claude/worktrees/**",
+    "packages/*/icons/**",
+    "**/*.generated.ts"
   ],
   "overrides": [
     {
