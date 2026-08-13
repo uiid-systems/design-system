@@ -81,6 +81,9 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
+    // Emits @uiid/icons' per-icon modules, which source files import directly and
+    // which are generated rather than committed.
+    globalSetup: ["./vitest.globalSetup.ts"],
     include: [
       "packages/**/*.test.{ts,tsx}",
       "apps/**/__tests__/*.test.{ts,tsx}",
