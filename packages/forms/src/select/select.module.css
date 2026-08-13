@@ -22,17 +22,17 @@
 }
 
 .select-trigger-slots:has([data-slot="select-before"]) {
-  padding-inline-start: 0 !important;
+  padding-inline-start: 0;
 }
 
 .select-trigger-slots:has([data-slot="select-after"]) {
-  padding-inline-end: 0 !important;
+  padding-inline-end: 0;
 }
 
 .select-trigger-slots [data-slot="select-value"] {
   flex: 1;
   min-width: 0;
-  padding-inline-start: 0 !important;
+  padding-inline-start: 0;
 }
 
 .select-positioner {

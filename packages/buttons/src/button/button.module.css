@@ -1,5 +1,11 @@
 @import "@uiid/tokens/component/button.tokens.css";
 
+/*
+ * No padding-inline here on purpose. The size tier owns it via
+ * composes-size-*, and uiid.components sits above uiid.compositions — so a
+ * declaration on `.button` would outrank every tier and flatten the scale.
+ * `.shape-square` / `.shape-circle` zero it from this layer by design.
+ */
 .button {
   composes: composes-disabled from global;
 
@@ -10,7 +16,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding-inline: var(--button-padding-x);
   background-color: var(--button-bg);
   color: var(--button-fg);
   font-weight: var(--button-font-weight);
@@ -35,9 +40,13 @@
     outline-offset: var(--globals-outline-offset);
   }
 
+  /* Height only — `width: auto` keeps non-square glyphs from being distorted.
+     --forms-icon-size is re-published per tier by the size compositions, so an
+     icon tracks the button it sits in; unsized buttons fall back to the root
+     value. */
   svg {
     flex-shrink: 0;
-    height: var(--globals-icon-size);
+    height: var(--forms-icon-size);
     width: auto;
     vertical-align: middle;
   }

@@ -14,7 +14,10 @@
   font-size: var(--forms-font-size);
   outline: var(--globals-outline-width) var(--globals-outline-color);
   outline-offset: var(--globals-outline-offset);
-  padding: var(--forms-padding-y) var(--forms-padding-x);
+  /* Block only — inline padding belongs to the size tier (composes-size-*).
+     Restating it here would outrank the tier, since uiid.components sits above
+     uiid.compositions, and pin every size to the same inset. */
+  padding-block: var(--forms-padding-y);
   transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   line-height: 1;
 
@@ -79,7 +82,9 @@
 
 /** Input Wrapper (for before/after slots) */
 .input-wrapper {
-  padding: 0 !important;
+  /* The wrapper carries the size class but delegates its edges to the slots,
+     so it drops the inset it would otherwise inherit from composes-size-*. */
+  padding: 0;
 
   /** Focus state on wrapper */
   &:focus-within {

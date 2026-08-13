@@ -18,7 +18,6 @@
     "fg": { "$value": "{shade.background}", "$type": "color" },
     "border-color": { "$value": "{button.bg}", "$type": "color" },
     "font-weight": { "$value": 600, "$type": "fontWeight" },
-    "padding-x": { "$value": "{forms.padding.x}", "$type": "dimension" },
     "variant": {
       "subtle": {
         "bg": { "$value": "{shade.surface}", "$type": "color" },

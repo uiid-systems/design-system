@@ -123,14 +123,19 @@
   text-decoration-line: line-through;
 }
 
-/* Composed from compositions so they share .composes-text's layer and can override
-   its text-wrap: pretty — a primitives-layer rule cannot. See compositions.css. */
+/* Both resolve the same text-wrap-mode longhand as .composes-text's
+   `text-wrap: pretty`, and win by sitting in uiid.primitives above
+   uiid.compositions. */
 .toggle-balance {
-  composes: composes-balance from global;
+  text-wrap: balance;
 }
 
 .toggle-truncate {
-  composes: composes-truncate from global;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .family-mono {
