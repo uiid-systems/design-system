@@ -26,13 +26,46 @@ export const Variants = () => (
   </Group>
 );
 
+/*
+ * Two rows so the size scale is legible in both shapes it has to hold up in:
+ * icons track the tier alongside a label, and an icon-only square stays 1:1
+ * at every tier rather than being stretched by the tier's inline padding.
+ */
 export const Sizes = () => (
-  <Group gap={2} ay="center">
-    <Button size="xsmall">xsmall</Button>
-    <Button size="small">small</Button>
-    <Button size="medium">medium</Button>
-    <Button size="large">large</Button>
-  </Group>
+  <Stack gap={2}>
+    <Group gap={2} ay="center">
+      <Button size="xsmall">
+        <GlobeIcon />
+        xsmall
+      </Button>
+      <Button size="small">
+        <GlobeIcon />
+        small
+      </Button>
+      <Button size="medium">
+        <GlobeIcon />
+        medium
+      </Button>
+      <Button size="large">
+        <GlobeIcon />
+        large
+      </Button>
+    </Group>
+    <Group gap={2} ay="center">
+      <Button size="xsmall" shape="square" aria-label="Globe, xsmall">
+        <GlobeIcon />
+      </Button>
+      <Button size="small" shape="square" aria-label="Globe, small">
+        <GlobeIcon />
+      </Button>
+      <Button size="medium" shape="square" aria-label="Globe, medium">
+        <GlobeIcon />
+      </Button>
+      <Button size="large" shape="square" aria-label="Globe, large">
+        <GlobeIcon />
+      </Button>
+    </Group>
+  </Stack>
 );
 
 export const Shapes = () => (
