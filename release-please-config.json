@@ -82,11 +82,6 @@
         },
         {
           "type": "json",
-          "path": "packages/themes/package.json",
-          "jsonpath": "$.version"
-        },
-        {
-          "type": "json",
           "path": "packages/tokens/package.json",
           "jsonpath": "$.version"
         },

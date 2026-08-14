@@ -3,7 +3,7 @@
 Which UIID UI components rely on other UI components. An arrow `A --> B` means
 "A uses B". Derived from the `@uiid` entries in each package's `package.json`.
 
-Non-visual packages (`tokens`, `themes`, `utils`) and the `design-system` barrel
+Non-visual packages (`tokens`, `utils`) and the `design-system` barrel
 are excluded — this is only the UI component library.
 
 `layout`, `typography`, and `icons` are the primitives; they get the most incoming
@@ -55,4 +55,4 @@ graph TD
   component. (`layout` composes shared text styles from `@uiid/tokens`, so it no
   longer depends on `typography`.)
 - To regenerate, inspect the `@uiid/*` entries in each `packages/*/package.json`,
-  dropping `tokens`, `themes`, and `utils`.
+  dropping `tokens` and `utils`.
