@@ -38,8 +38,8 @@ design system, adapted where UIID differs — those divergences are noted inline
   `transforms/color-utils.js`, `style-dictionary.config.js` and the orphaned
   `tone.tokens.css` are gone. `light-dark` is the only remaining derive method.
 - **`--shade-1..12` collapsed to 6 aliases**, pinned to the values the ramp baked
-  out, so nothing re-renders. `@uiid/themes` was deleted entirely — see
-  `theme-architecture.md`, which this supersedes.
+  out, so nothing re-renders. `@uiid/themes` was deleted entirely, along with the
+  theme generator/VSCode-converter docs this supersedes.
 
 ### The palette contract
 

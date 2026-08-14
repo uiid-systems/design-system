@@ -23,7 +23,7 @@ design-system/
 ├── scripts/           # Token generation and build scripts
 ├── .agents/           # Agent instruction chapters
 └── docs/
-    ├── architecture/  # Architecture decision docs (tokens, themes, components)
+    ├── architecture/  # Architecture decision docs (tokens, components)
     └── guides/        # Long-form guides (theming, size limits)
 ```
 
