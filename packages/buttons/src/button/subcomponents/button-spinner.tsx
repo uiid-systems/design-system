@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "@uiid/icons";
+import { LoadingSpinnerIcon } from "@uiid/icons/loading-spinner";
 
 import type { ButtonSpinnerProps } from "../button.types";
 
@@ -6,7 +6,7 @@ import styles from "../button.module.css";
 
 export const ButtonSpinner = ({ loading, ...props }: ButtonSpinnerProps) => {
   return (
-    <LoadingSpinner
+    <LoadingSpinnerIcon
       data-slot="button-spinner"
       className={styles["button-spinner"]}
       data-loading={loading}

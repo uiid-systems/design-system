@@ -1,5 +1,7 @@
 import { NodeViewWrapper, type NodeViewProps } from "@tiptap/react";
-import { LoadingSpinner, InfoIcon, TrashIcon } from "@uiid/icons";
+import { InfoIcon } from "@uiid/icons/info";
+import { LoadingSpinnerIcon } from "@uiid/icons/loading-spinner";
+import { TrashIcon } from "@uiid/icons/trash";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
@@ -253,7 +255,7 @@ export const ImageViewBlock: React.FC<NodeViewProps> = ({
                   ax="center"
                   style={{ position: "absolute", inset: 0 }}
                 >
-                  <LoadingSpinner size={28} />
+                  <LoadingSpinnerIcon size={28} />
                 </Group>
               )}
 

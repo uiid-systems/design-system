@@ -1,14 +1,14 @@
 import type { BreadcrumbsItem } from "@uiid/design-system";
-import { Home } from "@uiid/icons";
+import { HomeIcon } from "@uiid/icons/house";
 
 export const MOCK_ITEMS: BreadcrumbsItem[] = [
-  { label: "Home", value: "/" },
+  { label: "HomeIcon", value: "/" },
   { label: "About", value: "/about" },
   { label: "Contact", value: "/contact" },
 ];
 
 export const MOCK_ITEMS_WITH_ICON: BreadcrumbsItem[] = [
-  { label: "Home", value: "/", icon: Home },
+  { label: "HomeIcon", value: "/", icon: HomeIcon },
   { label: "About", value: "/about" },
   { label: "Contact", value: "/contact" },
 ];

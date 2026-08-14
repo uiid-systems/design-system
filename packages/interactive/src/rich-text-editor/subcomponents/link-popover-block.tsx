@@ -1,5 +1,7 @@
 import { Card } from "@uiid/cards";
-import { CopyIcon, ExternalLinkIcon, UnlinkIcon } from "@uiid/icons";
+import { CopyIcon } from "@uiid/icons/copy";
+import { ExternalLinkIcon } from "@uiid/icons/external-link";
+import { UnlinkIcon } from "@uiid/icons/unlink";
 import { Group, Separator } from "@uiid/layout";
 import { useState, useCallback } from "react";
 

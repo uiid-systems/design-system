@@ -1,5 +1,5 @@
 import { Button } from "@uiid/buttons";
-import { EllipsisVertical } from "@uiid/icons";
+import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { Menu } from "@uiid/interactive";
 
 import type { TableCellDropdownProps } from "../table.types";
@@ -20,7 +20,7 @@ export const TableCellDropdown = ({
           variant="ghost"
           shape="square"
         >
-          {Icon ? <Icon /> : <EllipsisVertical size={14} />}
+          {Icon ? <Icon /> : <EllipsisVerticalIcon size={14} />}
         </Button>
       }
       items={items}

@@ -1,10 +1,8 @@
 import { Button } from "@uiid/buttons";
-import {
-  Calendar,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  type Icon,
-} from "@uiid/icons";
+import type { Icon } from "@uiid/icons";
+import { CalendarIcon } from "@uiid/icons/calendar";
+import { ChevronLeftIcon } from "@uiid/icons/chevron-left";
+import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -36,7 +34,7 @@ export const EventCalendarHeader = ({
         <HeaderButton
           label="Jump to today"
           onClick={handleToday}
-          icon={Calendar}
+          icon={CalendarIcon}
         />
 
         <HeaderButton

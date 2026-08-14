@@ -2,7 +2,9 @@
 // icon props are function components and cannot be passed from a server module.
 "use client";
 
-import { Bell, Globe, Settings } from "@uiid/icons";
+import { BellIcon } from "@uiid/icons/bell";
+import { GlobeIcon } from "@uiid/icons/globe";
+import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -79,14 +81,14 @@ export const HeaderVariants = () => (
     </Drawer>
     <Drawer
       trigger={<button>Icon and title</button>}
-      icon={Globe}
+      icon={GlobeIcon}
       title="Icon and title"
     >
       {BODY}
     </Drawer>
     <Drawer
       trigger={<button>Full header</button>}
-      icon={Bell}
+      icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
       action={<button>Action</button>}
@@ -100,7 +102,7 @@ export const Footer = () => (
   <Drawer
     swipeDirection="right"
     trigger={<button>Edit preferences</button>}
-    icon={Settings}
+    icon={SettingsIcon}
     title="Preferences"
     description="The footer sits below the body, separated by a divider."
     footer={

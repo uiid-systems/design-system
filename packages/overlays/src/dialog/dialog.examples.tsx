@@ -2,7 +2,9 @@
 // icon props are function components and cannot be passed from a server module.
 "use client";
 
-import { Bell, Globe, Settings } from "@uiid/icons";
+import { BellIcon } from "@uiid/icons/bell";
+import { GlobeIcon } from "@uiid/icons/globe";
+import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
 
 import { Dialog } from "./dialog";
@@ -45,14 +47,14 @@ export const HeaderVariants = () => (
     </Dialog>
     <Dialog
       trigger={<button>Icon and title</button>}
-      icon={Globe}
+      icon={GlobeIcon}
       title="Icon and title"
     >
       {BODY}
     </Dialog>
     <Dialog
       trigger={<button>Full header</button>}
-      icon={Bell}
+      icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
       action={<button>Action</button>}
@@ -65,7 +67,7 @@ export const HeaderVariants = () => (
 export const Footer = () => (
   <Dialog
     trigger={<button>Notification preferences</button>}
-    icon={Settings}
+    icon={SettingsIcon}
     title="Notification preferences"
     description="Choose how and when you'd like to be notified."
     footer={

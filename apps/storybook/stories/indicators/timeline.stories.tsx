@@ -8,19 +8,17 @@ import {
   TimelineItem,
 } from "@uiid/design-system";
 import type { TimelineItemType } from "@uiid/design-system";
-import {
-  CreditCard,
-  GitCommitHorizontal,
-  GitMerge,
-  MapPin,
-  MessageSquare,
-  Package,
-  Play,
-  Sparkles,
-  Truck,
-  UserPlus,
-  Wrench,
-} from "@uiid/icons";
+import { CreditCardIcon } from "@uiid/icons/credit-card";
+import { GitCommitHorizontalIcon } from "@uiid/icons/git-commit-horizontal";
+import { GitMergeIcon } from "@uiid/icons/git-merge";
+import { MapPinIcon } from "@uiid/icons/map-pin";
+import { MessageSquareIcon } from "@uiid/icons/message-square";
+import { PackageIcon } from "@uiid/icons/package";
+import { PlayIcon } from "@uiid/icons/play";
+import { SparklesIcon } from "@uiid/icons/sparkles";
+import { TruckIcon } from "@uiid/icons/truck";
+import { UserPlusIcon } from "@uiid/icons/user-plus";
+import { WrenchIcon } from "@uiid/icons/wrench";
 
 import { MOCK_TIMELINE_ITEMS } from "./timeline.mocks";
 
@@ -81,25 +79,25 @@ const ICON_ITEMS: TimelineItemType[] = [
     title: "Order placed",
     description: "Your order has been confirmed",
     time: "9:00 AM",
-    media: <CreditCard size={24} />,
+    media: <CreditCardIcon size={24} />,
   },
   {
     title: "Processing",
     description: "Your order is being prepared",
     time: "10:30 AM",
-    media: <Package size={24} />,
+    media: <PackageIcon size={24} />,
   },
   {
     title: "Shipped",
     description: "Your order is on the way",
     time: "2:00 PM",
-    media: <Truck size={24} />,
+    media: <TruckIcon size={24} />,
   },
   {
     title: "Delivered",
-    description: "Package arrived at destination",
+    description: "PackageIcon arrived at destination",
     time: "4:30 PM",
-    media: <MapPin size={24} />,
+    media: <MapPinIcon size={24} />,
   },
 ];
 
@@ -214,7 +212,7 @@ const ACTIVITY_ITEMS: TimelineItemType[] = [
   {
     title: "Reviewers requested",
     time: "Jun 18",
-    media: <UserPlus size={20} />,
+    media: <UserPlusIcon size={20} />,
     content: (
       <Stack gap={4}>
         <Avatar
@@ -248,7 +246,7 @@ const ACTIVITY_ITEMS: TimelineItemType[] = [
     title: "Adam pushed 5 commits",
     description: "Centered media, added a README, removed the legacy store",
     time: "Jun 20",
-    media: <GitCommitHorizontal size={20} />,
+    media: <GitCommitHorizontalIcon size={20} />,
   },
   {
     title: "Alex Brown approved these changes",
@@ -262,7 +260,7 @@ const ACTIVITY_ITEMS: TimelineItemType[] = [
     description: "Adam Fratino merged commit a1b2c3d",
     time: "Jun 23",
     color: "green",
-    media: <GitMerge size={20} />,
+    media: <GitMergeIcon size={20} />,
   },
 ];
 
@@ -279,7 +277,7 @@ const FEED_ITEMS: TimelineItemType[] = [
     title: "session started",
     time: "09:00:12",
     color: "orange",
-    marker: <Play size={12} />,
+    marker: <PlayIcon size={12} />,
     TitleProps: { color: "orange" },
     CardProps: { variant: "ghost" },
   },
@@ -287,7 +285,7 @@ const FEED_ITEMS: TimelineItemType[] = [
     title: "prompt",
     time: "09:00:41",
     color: "blue",
-    marker: <MessageSquare size={12} />,
+    marker: <MessageSquareIcon size={12} />,
     TitleProps: { color: "blue" },
     content: (
       <Text>
@@ -301,7 +299,7 @@ const FEED_ITEMS: TimelineItemType[] = [
     description: "25× Read, 3× Bash",
     time: "09:04:02",
     color: "yellow",
-    marker: <Wrench size={12} />,
+    marker: <WrenchIcon size={12} />,
     TitleProps: { color: "yellow" },
     CardProps: { variant: "ghost" },
   },
@@ -309,7 +307,7 @@ const FEED_ITEMS: TimelineItemType[] = [
     title: "assistant",
     time: "09:06:58",
     color: "indigo",
-    marker: <Sparkles size={12} />,
+    marker: <SparklesIcon size={12} />,
     TitleProps: { color: "indigo" },
     content: (
       <Text>
@@ -339,7 +337,7 @@ const VARIABLE_MEDIA_ITEMS: TimelineItemType[] = [
     title: "Icon media",
     description: "Narrowest — a bare icon",
     time: "9:00 AM",
-    media: <Package size={20} />,
+    media: <PackageIcon size={20} />,
   },
   {
     title: "Avatar circle",

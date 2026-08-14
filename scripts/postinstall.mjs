@@ -28,5 +28,14 @@ try {
 // Kept ahead of Playwright so a slow browser download can't skip hook setup.
 execFileSync(bin("lefthook"), ["install"], { stdio: "inherit" });
 
+// @uiid/icons serves one generated module per icon (`@uiid/icons/globe`). They are
+// not committed, and tests, editors and typechecks resolve against them, so emit
+// them on install rather than making everything wait for a build.
+execFileSync(
+  process.execPath,
+  ["packages/icons/scripts/emit-per-icon-modules.mjs"],
+  { cwd: root, stdio: "inherit" },
+);
+
 // Storybook's browser tests need Chromium locally.
 execFileSync(bin("playwright"), ["install", "chromium"], { stdio: "inherit" });

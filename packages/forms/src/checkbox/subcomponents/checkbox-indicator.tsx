@@ -1,7 +1,8 @@
 "use client";
 
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-import { CheckIcon, MinusIcon } from "@uiid/icons";
+import { CheckIcon } from "@uiid/icons/check";
+import { MinusIcon } from "@uiid/icons/minus";
 import { SwitchRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 

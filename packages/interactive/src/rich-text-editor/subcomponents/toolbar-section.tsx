@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react";
-import { ChevronDownIcon } from "@uiid/icons";
+import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { Group } from "@uiid/layout";
 import * as React from "react";
 

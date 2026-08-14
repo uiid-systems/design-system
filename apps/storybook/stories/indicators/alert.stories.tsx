@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Alert } from "@uiid/design-system";
-import { Globe } from "@uiid/icons";
+import { GlobeIcon } from "@uiid/icons/globe";
 
 const meta = {
   title: "Indicators/Alert",
@@ -11,8 +11,8 @@ const meta = {
   },
   render: (args) => (
     <Stack gap={4} fullwidth>
-      <Alert {...args} action={<Globe />} />
-      <Alert {...args} icon={Globe} action={<a href="#">Action</a>} />
+      <Alert {...args} action={<GlobeIcon />} />
+      <Alert {...args} icon={GlobeIcon} action={<a href="#">Action</a>} />
     </Stack>
   ),
 } satisfies Meta<typeof Alert>;

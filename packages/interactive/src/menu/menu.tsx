@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRightIcon } from "@uiid/icons";
+import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 
 import type { MenuProps } from "./menu.types";
 import {

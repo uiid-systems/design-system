@@ -8,6 +8,13 @@ import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mj
 
 type ViteConfigOptions = {
   /**
+   * Library entry point(s). Defaults to a single `src/index.ts`. Pass an array to
+   * emit additional entries alongside the barrel — `@uiid/design-system` uses
+   * this for its `./icons` subpath, which must stay out of the root barrel so
+   * importing a component never pulls the icon set in.
+   */
+  entry?: string | string[];
+  /**
    * Additional external dependencies to exclude from bundle.
    * React, react-dom, and @uiid/* are always external.
    */
@@ -33,6 +40,7 @@ const baseExternal = [
 
 export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
   const {
+    entry = "src/index.ts",
     external = [],
     cssLayer,
     preserveDirectives: usePreserveDirectives = true,
@@ -55,7 +63,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     }),
     build: {
       lib: {
-        entry: "src/index.ts",
+        entry,
         formats: ["es"],
       },
       rollupOptions: {

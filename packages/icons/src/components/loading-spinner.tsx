@@ -1,13 +1,13 @@
-export type LoadingSpinnerProps = React.SVGProps<SVGSVGElement> & {
+export type LoadingSpinnerIconProps = React.SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
 /** @see https://magecdn.com/tools/svg-loaders/270-ring-with-bg/ */
-export const LoadingSpinner = ({
+export const LoadingSpinnerIcon = ({
   size = 14,
   fill = "currentColor",
   ...props
-}: LoadingSpinnerProps) => (
+}: LoadingSpinnerIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill={fill}
@@ -31,4 +31,4 @@ export const LoadingSpinner = ({
     </path>
   </svg>
 );
-LoadingSpinner.displayName = "LoadingSpinner";
+LoadingSpinnerIcon.displayName = "LoadingSpinnerIcon";

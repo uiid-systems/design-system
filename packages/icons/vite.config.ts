@@ -16,7 +16,11 @@ export default defineConfig({
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
         /^@uiid\//,
-        "lucide-react",
+        // Regex, not the bare string: the generated barrel imports lucide's
+        // per-icon modules (`lucide-react/dist/esm/icons/globe.mjs`), and an
+        // exact-string external does not match those deep specifiers — they
+        // would be bundled in, inlining the entire icon set.
+        /^lucide-react(\/|$)/,
       ],
       output: {
         preserveModules: true,

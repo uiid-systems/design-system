@@ -1,24 +1,24 @@
-import { Info } from "@uiid/icons";
+import { InfoIcon } from "@uiid/icons/info";
 
 import type { AccordionItemData } from "./accordion.types";
 
 export const MOCK_ITEMS: AccordionItemData[] = [
   {
-    icon: Info,
+    icon: InfoIcon,
     value: "item-1",
     trigger: "What is UIID?",
     content:
       "UIID is a modular React component library built with React 19, TypeScript, and Base UI primitives.",
   },
   {
-    icon: Info,
+    icon: InfoIcon,
     value: "item-2",
     trigger: "How do I install it?",
     content:
       "You can install UIID packages individually via npm or pnpm, e.g., pnpm add @uiid/interactive.",
   },
   {
-    icon: Info,
+    icon: InfoIcon,
     value: "item-3",
     trigger: "Is it accessible?",
     content:

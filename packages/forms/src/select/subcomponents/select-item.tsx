@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { CheckIcon } from "@uiid/icons";
+import { CheckIcon } from "@uiid/icons/check";
 import { ListItem } from "@uiid/lists";
 
 import type { SelectItemProps } from "../select.types";

@@ -1,5 +1,7 @@
 import type { Editor } from "@tiptap/react";
-import { ChevronDownIcon, ALargeSmallIcon, type Icon } from "@uiid/icons";
+import type { Icon } from "@uiid/icons";
+import { ALargeSmallIcon } from "@uiid/icons/a-large-small";
+import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { useMemo, useCallback } from "react";

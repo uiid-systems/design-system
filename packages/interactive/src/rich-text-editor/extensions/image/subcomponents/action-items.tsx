@@ -1,9 +1,7 @@
-import {
-  MoveDiagonal2Icon,
-  DownloadIcon,
-  ClipboardIcon,
-  Link2Icon,
-} from "@uiid/icons";
+import { ClipboardIcon } from "@uiid/icons/clipboard";
+import { DownloadIcon } from "@uiid/icons/download";
+import { Link2Icon } from "@uiid/icons/link-2";
+import { MoveDiagonal2Icon } from "@uiid/icons/move-diagonal-2";
 
 import type { ActionKey } from "../image.types";
 

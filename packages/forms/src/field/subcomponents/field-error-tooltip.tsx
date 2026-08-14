@@ -1,7 +1,7 @@
 "use client";
 
 import { Field as BaseField } from "@base-ui/react/field";
-import { TriangleAlertIcon } from "@uiid/icons";
+import { TriangleAlertIcon } from "@uiid/icons/triangle-alert";
 import { Tooltip } from "@uiid/overlays";
 
 import { FIELD_TOOLTIP_DELAY } from "../field.constants";

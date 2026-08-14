@@ -1,13 +1,11 @@
 import type { Editor } from "@tiptap/react";
-import {
-  CodeIcon,
-  EllipsisIcon,
-  BoldIcon,
-  ItalicIcon,
-  StrikethroughIcon,
-  BanIcon,
-  UnderlineIcon,
-} from "@uiid/icons";
+import { BanIcon } from "@uiid/icons/ban";
+import { BoldIcon } from "@uiid/icons/bold";
+import { CodeIcon } from "@uiid/icons/code";
+import { EllipsisIcon } from "@uiid/icons/ellipsis";
+import { ItalicIcon } from "@uiid/icons/italic";
+import { StrikethroughIcon } from "@uiid/icons/strikethrough";
+import { UnderlineIcon } from "@uiid/icons/underline";
 
 import type { FormatAction } from "../rich-text-editor.types";
 import { ToolbarSection } from "./toolbar-section";

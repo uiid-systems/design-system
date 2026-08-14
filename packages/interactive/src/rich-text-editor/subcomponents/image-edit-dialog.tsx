@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react";
-import { ImageIcon } from "@uiid/icons";
+import { ImageIcon } from "@uiid/icons/image";
 import { Dialog } from "@uiid/overlays";
 import { useState } from "react";
 

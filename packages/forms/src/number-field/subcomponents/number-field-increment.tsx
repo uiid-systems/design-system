@@ -1,7 +1,7 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { PlusIcon } from "@uiid/icons";
+import { PlusIcon } from "@uiid/icons/plus";
 import { cx } from "@uiid/utils";
 
 import type { NumberFieldIncrementProps } from "../number-field.types";

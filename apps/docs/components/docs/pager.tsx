@@ -1,7 +1,8 @@
 "use client";
 
 import { Box, Card, Group } from "@uiid/design-system";
-import { ArrowLeftIcon, ArrowRightIcon } from "@uiid/icons";
+import { ArrowLeftIcon } from "@uiid/icons/arrow-left";
+import { ArrowRightIcon } from "@uiid/icons/arrow-right";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

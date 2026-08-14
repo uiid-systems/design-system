@@ -1,4 +1,5 @@
-import { ExternalLinkIcon, GlobeIcon } from "@uiid/icons";
+import { ExternalLinkIcon } from "@uiid/icons/external-link";
+import { GlobeIcon } from "@uiid/icons/globe";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 

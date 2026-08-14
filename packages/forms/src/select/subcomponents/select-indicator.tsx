@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { ChevronsUpDownIcon } from "@uiid/icons";
+import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
 import { cx } from "@uiid/utils";
 
 import type { SelectIndicatorProps } from "../select.types";

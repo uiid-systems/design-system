@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, type ButtonProps } from "@uiid/buttons";
-import { PanelLeft } from "@uiid/icons";
+import { PanelLeftIcon } from "@uiid/icons/panel-left";
 import { Kbd } from "@uiid/indicators";
 import { Group } from "@uiid/layout";
 
@@ -31,7 +31,7 @@ export const SidebarTrigger = ({ onClick, ...props }: ButtonProps) => {
       shape="square"
       {...props}
     >
-      <PanelLeft />
+      <PanelLeftIcon />
     </Button>
   );
 };
