@@ -985,33 +985,15 @@ importers:
 
   packages/navigation:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../forms
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
-      '@uiid/indicators':
-        specifier: workspace:*
-        version: link:../indicators
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
-      '@uiid/lists':
-        specifier: workspace:*
-        version: link:../lists
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../overlays
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../tokens
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography

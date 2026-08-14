@@ -37,7 +37,7 @@ Every component also ships as an individual package (`@uiid/buttons`, `@uiid/lay
 - `@uiid/interactive` — Accordion, Collapsible, Tabs, ToggleGroup
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator
 - `@uiid/lists` — List components
-- `@uiid/navigation` — Breadcrumbs, Pagination, Sidebar
+- `@uiid/navigation` — Breadcrumbs, Pagination
 - `@uiid/overlays` — Dialog, Drawer, Popover, Tooltip
 - `@uiid/tables` — Table components
 - `@uiid/typography` — Text and Prose
