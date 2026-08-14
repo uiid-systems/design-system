@@ -57,7 +57,7 @@
   {
     "name": "@uiid/navigation",
     "path": "packages/navigation/dist/index.js",
-    "limit": "90 kB"
+    "limit": "55 kB"
   },
   {
     "name": "@uiid/overlays",
