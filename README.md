@@ -33,7 +33,7 @@ Every component also ships as an individual package (`@uiid/buttons`, `@uiid/lay
 - `@uiid/cards` — Card components
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting
 - `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, and more
-- `@uiid/indicators` — Alert, Avatar, Badge, Progress, Status, Timeline
+- `@uiid/indicators` — Avatar, Badge, Progress, Status, Timeline
 - `@uiid/interactive` — Accordion, Collapsible, Tabs, ToggleGroup
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator
 - `@uiid/lists` — List components
