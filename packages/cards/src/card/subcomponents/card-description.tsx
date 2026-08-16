@@ -1,17 +1,19 @@
 import { Text } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 
 import type { CardDescriptionProps } from "../card.types";
 
+import styles from "../card.module.css";
+
 export const CardDescription = ({
   children,
+  className,
   ...props
 }: CardDescriptionProps) => {
   return (
     <Text
       data-slot="card-description"
-      render={<p />}
-      shade="muted"
-      balance
+      className={cx(styles["card-description"], className)}
       {...props}
     >
       {children}

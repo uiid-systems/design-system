@@ -18,20 +18,11 @@ export type CardFooterProps = GroupProps;
 export type CardThumbnailProps = StackProps;
 export type InnerContainerProps = StackProps;
 
-/**
- * Palette hue for the colored surface treatment. One hue resolves the card's
- * background, foreground, and border together.
- */
 export type CardColor = PaletteColor;
 
 export type CardProps = Omit<StackProps, "title" | "color"> & {
   title?: React.ReactNode;
-  /**
-   * Surface treatment. `ghost` removes the background, border, and shadow
-   * while keeping the card's padding and layout, like the form ghosts.
-   */
   variant?: "ghost";
-  /** Palette hue applied as a full bg/fg/border surface treatment. */
   color?: CardColor;
   description?: React.ReactNode;
   thumbnail?: React.ReactNode;

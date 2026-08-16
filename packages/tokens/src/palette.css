@@ -162,8 +162,13 @@
     --palette-fill-hover: light-dark(var(--color-neutral-800), var(--color-neutral-300));
 
     /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
-    --palette-tint: light-dark(var(--color-neutral-50), var(--color-neutral-900));
+       borrows --palette-on-tint for text and --palette-tint on hover.
+
+       Light mode is pure white rather than neutral-50. With no chroma to make
+       it read as deliberate, a neutral tint at the ramp's -50 lightness is just
+       grey — so the hue that stands in for "no hue" resolves to the surface a
+       card actually wants, and separates from the page on border and shadow. */
+    --palette-tint: light-dark(#ffffff, var(--color-neutral-900));
     --palette-on-tint: light-dark(var(--color-neutral-800), var(--color-neutral-200));
     --palette-tint-hover: light-dark(var(--color-neutral-100), var(--color-neutral-800));
     --palette-tint-border: light-dark(var(--color-neutral-200), var(--color-neutral-700));

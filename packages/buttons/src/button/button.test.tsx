@@ -136,4 +136,34 @@ describe("Button", () => {
     await user.keyboard("{Enter}");
     expect(onClick).toHaveBeenCalled();
   });
+
+  /*
+   * The tooltip is composed from Base UI directly rather than the Tooltip in
+   * @uiid/overlays — depending on overlays here would close a cycle back
+   * through cards. These cover the behaviour that swap has to preserve.
+   */
+  describe("tooltip", () => {
+    it("renders the button normally when no tooltip is passed", () => {
+      render(<Button>Plain</Button>);
+
+      expect(screen.getByRole("button")).toHaveTextContent("Plain");
+    });
+
+    it("still renders its children when wrapped in a tooltip", () => {
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      expect(screen.getByText("Save")).toBeVisible();
+    });
+
+    it("reveals the tooltip content on hover", async () => {
+      const user = userEvent.setup();
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      expect(screen.queryByText("Helpful hint")).not.toBeInTheDocument();
+
+      await user.hover(screen.getByText("Save"));
+
+      expect(await screen.findByText("Helpful hint")).toBeVisible();
+    });
+  });
 });

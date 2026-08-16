@@ -2,6 +2,7 @@ import { Group, Stack, type StackProps } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
+import { CARD_DEFAULT_COLOR } from "./card.constants";
 import type { CardProps } from "./card.types";
 import {
   CardContainer,
@@ -24,7 +25,7 @@ export const Card = ({
   action,
   footer,
   variant,
-  color,
+  color = CARD_DEFAULT_COLOR,
   className,
   ContainerProps,
   HeaderProps,
@@ -40,10 +41,6 @@ export const Card = ({
 }: CardProps) => {
   const { className: containerClassName, ...containerProps } =
     ContainerProps ?? {};
-
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color-surface"])
-    : undefined;
 
   const Description = DescriptionProps?.children || description;
   const Title = TitleProps?.children || title;
@@ -65,7 +62,7 @@ export const Card = ({
       {...containerProps}
       className={cx(
         variant && styles[`variant-${variant}`],
-        colorClassName,
+        paletteColorStyles[color],
         className,
         containerClassName,
       )}

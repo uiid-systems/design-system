@@ -1,24 +1,15 @@
+import { Button } from "@uiid/buttons";
 import { BellIcon } from "@uiid/icons/bell";
 import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 
 import { Card } from "./card";
 
 const BODY =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
-const COLORS = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "indigo",
-  "purple",
-  "neutral",
-] as const;
 
 const Thumb = () => (
   <svg
@@ -67,13 +58,13 @@ export const HeaderVariants = () => (
     <Card
       icon={SettingsIcon}
       title="Icon, title, and action"
-      action={<button>Action</button>}
+      action={<Button size="xsmall">Action</Button>}
     />
     <Card
       icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
-      action={<button>Action</button>}
+      action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
     </Card>
@@ -98,8 +89,10 @@ export const Footer = () => (
     description="Choose how and when you'd like to be notified."
     footer={
       <Group gap={2} ax="end" fullwidth>
-        <button>Cancel</button>
-        <button>Save</button>
+        <Button size="small" variant="subtle">
+          Cancel
+        </Button>
+        <Button size="small">Save</Button>
       </Group>
     }
   >
@@ -117,31 +110,47 @@ export const Trimmed = () => (
   />
 );
 
+const HueCard = ({ color }: { color: (typeof PALETTE_HUES)[number] }) => (
+  <Card
+    color={color}
+    icon={GlobeIcon}
+    title={color.charAt(0).toUpperCase() + color.slice(1)}
+    maxw={320}
+    description="bg, fg, and border derive from one palette hue."
+    FooterProps={{ ax: "end" }}
+    action={
+      <Button
+        size="xsmall"
+        shape="square"
+        variant="subtle"
+        color={color}
+        aria-label={`${color} settings`}
+      >
+        <SettingsIcon />
+      </Button>
+    }
+    footer={
+      <>
+        <Button size="xsmall" variant="subtle" color={color}>
+          Cancel
+        </Button>
+        <Button size="xsmall" color={color}>
+          Submit
+        </Button>
+      </>
+    }
+  >
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus dolor ipsa
+    beatae, illum iusto eos necessitatibus quibusdam sequi similique?
+  </Card>
+);
+
 export const ColorSurfaces = () => (
-  <Stack gap={3} maxw={720}>
-    <Group gap={3}>
-      {COLORS.slice(0, 4).map((color) => (
-        <Card
-          key={color}
-          color={color}
-          maxw={160}
-          title={color.charAt(0).toUpperCase() + color.slice(1)}
-          description="bg, fg, and border derive from one palette hue."
-        />
-      ))}
-    </Group>
-    <Group gap={3}>
-      {COLORS.slice(4).map((color) => (
-        <Card
-          key={color}
-          color={color}
-          maxw={160}
-          title={color.charAt(0).toUpperCase() + color.slice(1)}
-          description="bg, fg, and border derive from one palette hue."
-        />
-      ))}
-    </Group>
-  </Stack>
+  <Group gap={3} style={{ flexWrap: "wrap" }}>
+    {PALETTE_HUES.map((color) => (
+      <HueCard key={color} color={color} />
+    ))}
+  </Group>
 );
 
 export const Polymorphic = () => (

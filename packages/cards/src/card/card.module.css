@@ -2,24 +2,19 @@
 
 .card {
   position: relative;
-  background-color: var(--shade-surface);
-  color: var(--shade-foreground);
+  background-color: var(--palette-tint);
+  color: var(--palette-on-tint);
   border-radius: var(--globals-border-radius);
-  border: var(--globals-border-width) solid var(--globals-border-color);
+  border: var(--globals-border-width) solid var(--palette-tint-border);
   padding: var(--globals-padding-y) var(--globals-padding-x);
   box-shadow: var(--globals-shadow-sm);
 
+  /** @todo compose this */
   font-size: var(--text-0-font-size);
   line-height: var(--text-0-line-height);
   font-weight: var(--text-0-font-weight);
   letter-spacing: var(--text-0-letter-spacing);
 
-  /*
-   * Scoped to link cards: the scale transition only exists for the hover/active
-   * states below. On `.card` itself it leaked onto every consumer that renders
-   * through Card (Dialog, Drawer, Popover, Tooltip), silently replacing their
-   * own transition wherever theirs sat in the same layer.
-   */
   &:where([href]) {
     text-decoration: none;
     transition: scale calc(var(--globals-transition-duration) / 2) ease-in-out;
@@ -42,26 +37,14 @@
   }
 }
 
-/*
- * Ghost surface treatment — no background, border, or shadow; padding and
- * layout are preserved so ghost cards keep their alignment among solid ones.
- */
 .variant-ghost {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
 }
 
-/*
- * Colored surface treatment. The hue travels on the `.palette-<hue>` class from
- * @uiid/tokens; this block only reads the semantic names it publishes, so a
- * tinted Card and a subtle Button share one contract and cannot drift apart.
- * Defined after `.card` so it wins the cascade at equal specificity.
- */
-.color-surface {
-  background-color: var(--palette-tint);
+.card-description {
   color: var(--palette-on-tint);
-  border-color: var(--palette-tint-border);
 }
 
 .card-thumbnail {
