@@ -1,6 +1,3 @@
-export * from "./alert/alert";
-export * from "./alert/alert.types";
-
 export * from "./avatar/avatar";
 export * from "./avatar/avatar.types";
 
