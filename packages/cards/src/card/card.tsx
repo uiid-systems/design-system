@@ -2,6 +2,7 @@ import { Group, Stack, type StackProps } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
+import { CARD_DEFAULT_COLOR } from "./card.constants";
 import type { CardProps } from "./card.types";
 import {
   CardContainer,
@@ -24,7 +25,7 @@ export const Card = ({
   action,
   footer,
   variant,
-  color,
+  color = CARD_DEFAULT_COLOR,
   className,
   ContainerProps,
   HeaderProps,
@@ -41,9 +42,12 @@ export const Card = ({
   const { className: containerClassName, ...containerProps } =
     ContainerProps ?? {};
 
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color-surface"])
-    : undefined;
+  /*
+   * The hue is always applied — `color` defaults to neutral — so `.card` can
+   * read the --palette-* names directly instead of layering a second class to
+   * override a shade-scale default it never wanted.
+   */
+  const colorClassName = paletteColorStyles[color];
 
   const Description = DescriptionProps?.children || description;
   const Title = TitleProps?.children || title;

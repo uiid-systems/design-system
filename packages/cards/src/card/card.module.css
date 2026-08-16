@@ -1,11 +1,16 @@
 @import "@uiid/tokens/component/card.tokens.css";
 
+/*
+ * The surface is always a palette hue — `color` defaults to neutral — so the
+ * background, foreground, and border all come from the one contract a tinted
+ * Card and a subtle Button share, and cannot drift apart.
+ */
 .card {
   position: relative;
-  background-color: var(--shade-surface);
-  color: var(--shade-foreground);
+  background-color: var(--palette-tint);
+  color: var(--palette-on-tint);
   border-radius: var(--globals-border-radius);
-  border: var(--globals-border-width) solid var(--globals-border-color);
+  border: var(--globals-border-width) solid var(--palette-tint-border);
   padding: var(--globals-padding-y) var(--globals-padding-x);
   box-shadow: var(--globals-shadow-sm);
 
@@ -53,15 +58,12 @@
 }
 
 /*
- * Colored surface treatment. The hue travels on the `.palette-<hue>` class from
- * @uiid/tokens; this block only reads the semantic names it publishes, so a
- * tinted Card and a subtle Button share one contract and cannot drift apart.
- * Defined after `.card` so it wins the cascade at equal specificity.
+ * De-emphasised from the card's own foreground rather than the shade scale's
+ * muted grey — on a tinted card a fixed grey ignores the hue and clashes with
+ * the title sitting right above it.
  */
-.color-surface {
-  background-color: var(--palette-tint);
-  color: var(--palette-on-tint);
-  border-color: var(--palette-tint-border);
+.card-description {
+  color: color-mix(in oklch, var(--palette-on-tint) 72%, transparent);
 }
 
 .card-thumbnail {
