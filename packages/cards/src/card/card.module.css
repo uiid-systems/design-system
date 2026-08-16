@@ -1,10 +1,5 @@
 @import "@uiid/tokens/component/card.tokens.css";
 
-/*
- * The surface is always a palette hue — `color` defaults to neutral — so the
- * background, foreground, and border all come from the one contract a tinted
- * Card and a subtle Button share, and cannot drift apart.
- */
 .card {
   position: relative;
   background-color: var(--palette-tint);
@@ -14,17 +9,12 @@
   padding: var(--globals-padding-y) var(--globals-padding-x);
   box-shadow: var(--globals-shadow-sm);
 
+  /** @todo compose this */
   font-size: var(--text-0-font-size);
   line-height: var(--text-0-line-height);
   font-weight: var(--text-0-font-weight);
   letter-spacing: var(--text-0-letter-spacing);
 
-  /*
-   * Scoped to link cards: the scale transition only exists for the hover/active
-   * states below. On `.card` itself it leaked onto every consumer that renders
-   * through Card (Dialog, Drawer, Popover, Tooltip), silently replacing their
-   * own transition wherever theirs sat in the same layer.
-   */
   &:where([href]) {
     text-decoration: none;
     transition: scale calc(var(--globals-transition-duration) / 2) ease-in-out;
@@ -47,20 +37,12 @@
   }
 }
 
-/*
- * Ghost surface treatment — no background, border, or shadow; padding and
- * layout are preserved so ghost cards keep their alignment among solid ones.
- */
 .variant-ghost {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
 }
 
-/*
- * The description follows the card's hue rather than the shade scale's muted
- * grey, which ignores the hue and clashes with the title above it.
- */
 .card-description {
   color: var(--palette-on-tint);
 }
