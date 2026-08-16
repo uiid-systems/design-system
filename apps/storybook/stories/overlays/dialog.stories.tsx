@@ -5,7 +5,6 @@ import { GlobeIcon } from "@uiid/icons/globe";
 const meta: Meta<typeof Dialog> = {
   title: "Overlays/Dialog",
   component: Dialog,
-  tags: ["beta"],
   args: {
     title: "Dialog Title",
     description: "Dialog Description",

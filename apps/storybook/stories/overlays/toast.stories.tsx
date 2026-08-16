@@ -9,7 +9,6 @@ import {
 const meta: Meta<typeof ToastProvider> = {
   title: "Overlays/Toast",
   component: ToastProvider,
-  tags: ["danger"],
   args: {},
   argTypes: {},
   decorators: [

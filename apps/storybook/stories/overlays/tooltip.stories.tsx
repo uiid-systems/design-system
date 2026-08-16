@@ -4,7 +4,6 @@ import { Stack, Tooltip } from "@uiid/design-system";
 const meta: Meta<typeof Tooltip> = {
   title: "Overlays/Tooltip",
   component: Tooltip,
-  tags: ["beta"],
   args: {
     children: "This is a tooltip",
   },

@@ -5,7 +5,6 @@ import { GlobeIcon } from "@uiid/icons/globe";
 const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",
   component: Drawer,
-  tags: ["beta"],
   args: {
     title: "Drawer Title",
     description: "Drawer Description",

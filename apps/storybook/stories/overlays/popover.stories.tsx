@@ -5,7 +5,6 @@ import { GlobeIcon } from "@uiid/icons/globe";
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",
   component: Popover,
-  tags: ["beta"],
   args: {
     title: "Popover Title",
     description: "Popover Description",
