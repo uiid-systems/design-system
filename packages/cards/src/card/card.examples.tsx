@@ -113,9 +113,11 @@ export const Trimmed = () => (
 const HueCard = ({ color }: { color: (typeof PALETTE_HUES)[number] }) => (
   <Card
     color={color}
-    maxw={240}
     icon={GlobeIcon}
     title={color.charAt(0).toUpperCase() + color.slice(1)}
+    maxw={320}
+    description="bg, fg, and border derive from one palette hue."
+    FooterProps={{ ax: "end" }}
     action={
       <Button
         size="xsmall"
@@ -128,33 +130,27 @@ const HueCard = ({ color }: { color: (typeof PALETTE_HUES)[number] }) => (
       </Button>
     }
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <>
         <Button size="xsmall" variant="subtle" color={color}>
           Cancel
         </Button>
         <Button size="xsmall" color={color}>
           Submit
         </Button>
-      </Group>
+      </>
     }
   >
-    bg, fg, and border derive from one palette hue.
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus dolor ipsa
+    beatae, illum iusto eos necessitatibus quibusdam sequi similique?
   </Card>
 );
 
 export const ColorSurfaces = () => (
-  <Stack gap={3}>
-    <Group gap={3}>
-      {PALETTE_HUES.slice(0, 4).map((color) => (
-        <HueCard key={color} color={color} />
-      ))}
-    </Group>
-    <Group gap={3}>
-      {PALETTE_HUES.slice(4).map((color) => (
-        <HueCard key={color} color={color} />
-      ))}
-    </Group>
-  </Stack>
+  <Group gap={3} style={{ flexWrap: "wrap" }}>
+    {PALETTE_HUES.map((color) => (
+      <HueCard key={color} color={color} />
+    ))}
+  </Group>
 );
 
 export const Polymorphic = () => (

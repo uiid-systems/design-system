@@ -3,25 +3,24 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { Text } from "@uiid/typography";
 
+import {
+  BUTTON_TOOLTIP_DELAY,
+  BUTTON_TOOLTIP_SIDE_OFFSET,
+  BUTTON_TOOLTIP_COLLISION_PADDING,
+} from "../button.constants";
+
 import styles from "../button.module.css";
 
 export type ButtonTooltipWrapperProps = React.PropsWithChildren<{
   tooltip: React.ReactNode;
 }>;
 
-/**
- * Composed from Base UI directly rather than the Tooltip in @uiid/overlays.
- * Overlays renders its popups through Card, and Card's examples use Button, so
- * reaching for it here would close a cycle (buttons → overlays → cards →
- * buttons) that the build graph rejects. Button is a primitive and owns the few
- * lines of tooltip chrome it needs instead.
- */
 export const ButtonTooltipWrapper = ({
   tooltip,
   children,
 }: ButtonTooltipWrapperProps) => {
   return (
-    <BaseTooltip.Provider delay={300}>
+    <BaseTooltip.Provider delay={BUTTON_TOOLTIP_DELAY}>
       <BaseTooltip.Root>
         <BaseTooltip.Trigger
           data-slot="button-tooltip-wrapper"
@@ -32,8 +31,8 @@ export const ButtonTooltipWrapper = ({
         </BaseTooltip.Trigger>
         <BaseTooltip.Portal>
           <BaseTooltip.Positioner
-            sideOffset={8}
-            collisionPadding={16}
+            sideOffset={BUTTON_TOOLTIP_SIDE_OFFSET}
+            collisionPadding={BUTTON_TOOLTIP_COLLISION_PADDING}
             className={styles["button-tooltip-positioner"]}
           >
             <BaseTooltip.Popup className={styles["button-tooltip-popup"]}>

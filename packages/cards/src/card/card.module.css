@@ -58,12 +58,11 @@
 }
 
 /*
- * De-emphasised from the card's own foreground rather than the shade scale's
- * muted grey — on a tinted card a fixed grey ignores the hue and clashes with
- * the title sitting right above it.
+ * The description follows the card's hue rather than the shade scale's muted
+ * grey, which ignores the hue and clashes with the title above it.
  */
 .card-description {
-  color: color-mix(in oklch, var(--palette-on-tint) 72%, transparent);
+  color: var(--palette-on-tint);
 }
 
 .card-thumbnail {

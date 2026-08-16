@@ -42,13 +42,6 @@ export const Card = ({
   const { className: containerClassName, ...containerProps } =
     ContainerProps ?? {};
 
-  /*
-   * The hue is always applied — `color` defaults to neutral — so `.card` can
-   * read the --palette-* names directly instead of layering a second class to
-   * override a shade-scale default it never wanted.
-   */
-  const colorClassName = paletteColorStyles[color];
-
   const Description = DescriptionProps?.children || description;
   const Title = TitleProps?.children || title;
   const Action = ActionProps?.children || action;
@@ -69,7 +62,7 @@ export const Card = ({
       {...containerProps}
       className={cx(
         variant && styles[`variant-${variant}`],
-        colorClassName,
+        paletteColorStyles[color],
         className,
         containerClassName,
       )}
