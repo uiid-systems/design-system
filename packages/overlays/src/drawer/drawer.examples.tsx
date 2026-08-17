@@ -2,6 +2,7 @@
 // icon props are function components and cannot be passed from a server module.
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { BellIcon } from "@uiid/icons/bell";
 import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
@@ -17,7 +18,7 @@ const DIRECTIONS = ["up", "down", "left", "right"] as const;
 
 export const Default = () => (
   <Drawer
-    trigger={<button>Open drawer</button>}
+    trigger={<Button>Open drawer</Button>}
     title="Drawer title"
     description="Drag the panel toward its edge to dismiss it."
   >
@@ -35,7 +36,7 @@ export const SwipeDirections = () => (
       <Drawer
         key={swipeDirection}
         swipeDirection={swipeDirection}
-        trigger={<button>{swipeDirection}</button>}
+        trigger={<Button>{swipeDirection}</Button>}
         title={`Anchored ${swipeDirection}`}
         description="Swipe toward the anchored edge to dismiss."
       >
@@ -53,7 +54,7 @@ export const SnapPoints = () => (
   <Drawer
     swipeDirection="down"
     snapPoints={[0.3, 0.6, 1]}
-    trigger={<button>Open bottom sheet</button>}
+    trigger={<Button>Open bottom sheet</Button>}
     title="Snap points"
     description="Drag between a third, two thirds, and full height."
   >
@@ -66,7 +67,7 @@ export const NonModal = () => (
   <Drawer
     modal={false}
     swipeDirection="right"
-    trigger={<button>Open inspector</button>}
+    trigger={<Button>Open inspector</Button>}
     title="Inspector"
     description="The page behind remains interactive."
   >
@@ -76,22 +77,22 @@ export const NonModal = () => (
 
 export const HeaderVariants = () => (
   <Group gap={2}>
-    <Drawer trigger={<button>Title only</button>} title="Title only">
+    <Drawer trigger={<Button>Title only</Button>} title="Title only">
       {BODY}
     </Drawer>
     <Drawer
-      trigger={<button>Icon and title</button>}
+      trigger={<Button>Icon and title</Button>}
       icon={GlobeIcon}
       title="Icon and title"
     >
       {BODY}
     </Drawer>
     <Drawer
-      trigger={<button>Full header</button>}
+      trigger={<Button>Full header</Button>}
       icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
-      action={<button>Action</button>}
+      action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
     </Drawer>
@@ -101,14 +102,16 @@ export const HeaderVariants = () => (
 export const Footer = () => (
   <Drawer
     swipeDirection="right"
-    trigger={<button>Edit preferences</button>}
+    trigger={<Button>Edit preferences</Button>}
     icon={SettingsIcon}
     title="Preferences"
     description="The footer sits below the body, separated by a divider."
     footer={
       <Group gap={2} ax="end" fullwidth>
-        <button>Cancel</button>
-        <button>Save</button>
+        <Button size="small" variant="subtle">
+          Cancel
+        </Button>
+        <Button size="small">Save</Button>
       </Group>
     }
   >

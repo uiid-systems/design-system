@@ -4,8 +4,6 @@
   "semi": true,
   "tabWidth": 2,
   "htmlWhitespaceSensitivity": "css",
-  // Prettier did not sort package.json; keep it that way so manifest diffs
-  // stay reviewable.
   "sortPackageJson": false,
   // Side-effect imports (`import "./globals.css"`) are never reordered —
   // `sortSideEffects` defaults to false — so the CSS cascade is preserved.

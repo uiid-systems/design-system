@@ -1,29 +1,37 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Popover } from "@uiid/design-system";
+import { Button, Popover } from "@uiid/design-system";
 import { GlobeIcon } from "@uiid/icons/globe";
 
-const meta: Meta<typeof Popover> = {
+import * as Examples from "../../../../packages/overlays/src/popover/popover.examples";
+
+const meta = {
   title: "Overlays/Popover",
   component: Popover,
   args: {
     title: "Popover Title",
     description: "Popover Description",
     icon: GlobeIcon,
-    action: <button>Action</button>,
+    action: <Button size="xsmall">Action</Button>,
     footer: "Popover Footer",
     children:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam ipsa hic, accusamus dolor cum minima pariatur provident vero blanditiis vel! Assumenda ipsum officia autem!",
   },
   argTypes: {},
-  render: (args) => (
-    <Stack gap={4}>
-      <Popover {...args} trigger={<button>button</button>} />
-      <Popover {...args} trigger="string" />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Popover>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Popover" };
+export const Playground: Story = {
+  render: (args) => (
+    <Popover {...args} trigger={<Button>Open popover</Button>} />
+  ),
+};
+
+export const Positioning: Story = { render: () => <Examples.Positioning /> };
+
+export const HeaderVariants: Story = {
+  render: () => <Examples.HeaderVariants />,
+};
+
+export const Footer: Story = { render: () => <Examples.Footer /> };
