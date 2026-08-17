@@ -1,22 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Tooltip } from "@uiid/design-system";
+import { Button, Tooltip } from "@uiid/design-system";
 
-const meta: Meta<typeof Tooltip> = {
+import * as Examples from "../../../../packages/overlays/src/tooltip/tooltip.examples";
+
+const meta = {
   title: "Overlays/Tooltip",
   component: Tooltip,
   args: {
     children: "This is a tooltip",
   },
   argTypes: {},
-  render: (args) => (
-    <Stack gap={4}>
-      <Tooltip {...args} trigger={<button>button</button>} />
-      <Tooltip {...args} trigger="string" />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Tooltip" };
+export const Playground: Story = {
+  render: (args) => <Tooltip {...args} trigger={<Button>Hover me</Button>} />,
+};
+
+export const Positioning: Story = { render: () => <Examples.Positioning /> };
+
+export const Delay: Story = { render: () => <Examples.Delay /> };
+
+export const Triggers: Story = { render: () => <Examples.Triggers /> };

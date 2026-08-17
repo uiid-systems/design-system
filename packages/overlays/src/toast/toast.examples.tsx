@@ -2,6 +2,7 @@
 // imperatively through useToastManager rather than by a trigger element.
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
 
 import { Toaster } from "./toast";
@@ -28,7 +29,7 @@ const AddButton = ({
 }) => {
   const toastManager = useToastManager();
   return (
-    <button onClick={() => toastManager.add({ description })}>{label}</button>
+    <Button onClick={() => toastManager.add({ description })}>{label}</Button>
   );
 };
 

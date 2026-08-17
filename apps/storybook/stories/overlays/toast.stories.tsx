@@ -1,44 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  Stack,
-  Toaster,
-  ToastProvider,
-  useToastManager,
-} from "@uiid/design-system";
+import { ToastProvider } from "@uiid/design-system";
 
-const meta: Meta<typeof ToastProvider> = {
+import * as Examples from "../../../../packages/overlays/src/toast/toast.examples";
+
+const meta = {
   title: "Overlays/Toast",
   component: ToastProvider,
   args: {},
   argTypes: {},
-  decorators: [
-    (Story) => (
-      <ToastProvider>
-        <Story />
-        <Toaster />
-      </ToastProvider>
-    ),
-  ],
-  render: () => {
-    const toastManager = useToastManager();
-
-    const handleClick = () => {
-      toastManager.add({
-        title: "Toast",
-        description: "This is a toast",
-      });
-    };
-
-    return (
-      <Stack gap={4}>
-        <button onClick={handleClick}>native button</button>
-        <span onClick={handleClick}>string</span>
-      </Stack>
-    );
-  },
-};
+} satisfies Meta<typeof ToastProvider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Toast" };
+/** Each example is self-contained: a provider, a viewport, and something to fire from. */
+export const Playground: Story = { render: () => <Examples.Default /> };
+
+export const Positions: Story = { render: () => <Examples.Positions /> };
+
+export const Stacking: Story = { render: () => <Examples.Stacking /> };

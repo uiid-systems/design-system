@@ -2,6 +2,7 @@
 // icon props are function components and cannot be passed from a server module.
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { BellIcon } from "@uiid/icons/bell";
 import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
@@ -16,7 +17,7 @@ const SIDES = ["top", "right", "bottom", "left"] as const;
 
 export const Default = () => (
   <Popover
-    trigger={<button>Open popover</button>}
+    trigger={<Button>Open popover</Button>}
     title="Popover title"
     description="Anchored to the trigger and repositioned to stay on screen."
   >
@@ -30,7 +31,7 @@ export const Positioning = () => (
     {SIDES.map((side) => (
       <Popover
         key={side}
-        trigger={<button>{side}</button>}
+        trigger={<Button>{side}</Button>}
         PositionerProps={{ side, sideOffset: 8, collisionPadding: 16 }}
         title={`Side: ${side}`}
       >
@@ -42,22 +43,22 @@ export const Positioning = () => (
 
 export const HeaderVariants = () => (
   <Group gap={2}>
-    <Popover trigger={<button>Title only</button>} title="Title only">
+    <Popover trigger={<Button>Title only</Button>} title="Title only">
       {BODY}
     </Popover>
     <Popover
-      trigger={<button>Icon and title</button>}
+      trigger={<Button>Icon and title</Button>}
       icon={GlobeIcon}
       title="Icon and title"
     >
       {BODY}
     </Popover>
     <Popover
-      trigger={<button>Full header</button>}
+      trigger={<Button>Full header</Button>}
       icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
-      action={<button>Action</button>}
+      action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
     </Popover>
@@ -66,14 +67,16 @@ export const HeaderVariants = () => (
 
 export const Footer = () => (
   <Popover
-    trigger={<button>Filters</button>}
+    trigger={<Button>Filters</Button>}
     icon={SettingsIcon}
     title="Filters"
     description="Narrow the results."
     footer={
       <Group gap={2} ax="end" fullwidth>
-        <button>Reset</button>
-        <button>Apply</button>
+        <Button size="small" variant="subtle">
+          Reset
+        </Button>
+        <Button size="small">Apply</Button>
       </Group>
     }
   >

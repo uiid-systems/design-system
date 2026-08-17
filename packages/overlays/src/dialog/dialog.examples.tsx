@@ -2,6 +2,7 @@
 // icon props are function components and cannot be passed from a server module.
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { BellIcon } from "@uiid/icons/bell";
 import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
@@ -16,7 +17,7 @@ const SIZES = ["small", "medium", "large", "xlarge"] as const;
 
 export const Default = () => (
   <Dialog
-    trigger={<button>Open dialog</button>}
+    trigger={<Button>Open dialog</Button>}
     title="Dialog title"
     description="A short supporting description that sits beneath the title."
   >
@@ -30,7 +31,7 @@ export const Sizes = () => (
       <Dialog
         key={size}
         size={size}
-        trigger={<button>{size}</button>}
+        trigger={<Button>{size}</Button>}
         title={`Size: ${size}`}
         description="Only the max width changes; the dialog stays centered."
       >
@@ -42,22 +43,22 @@ export const Sizes = () => (
 
 export const HeaderVariants = () => (
   <Group gap={2}>
-    <Dialog trigger={<button>Title only</button>} title="Title only">
+    <Dialog trigger={<Button>Title only</Button>} title="Title only">
       {BODY}
     </Dialog>
     <Dialog
-      trigger={<button>Icon and title</button>}
+      trigger={<Button>Icon and title</Button>}
       icon={GlobeIcon}
       title="Icon and title"
     >
       {BODY}
     </Dialog>
     <Dialog
-      trigger={<button>Full header</button>}
+      trigger={<Button>Full header</Button>}
       icon={BellIcon}
       title="Full header"
       description="Icon, title, description, and action."
-      action={<button>Action</button>}
+      action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
     </Dialog>
@@ -66,14 +67,16 @@ export const HeaderVariants = () => (
 
 export const Footer = () => (
   <Dialog
-    trigger={<button>Notification preferences</button>}
+    trigger={<Button>Notification preferences</Button>}
     icon={SettingsIcon}
     title="Notification preferences"
     description="Choose how and when you'd like to be notified."
     footer={
       <Group gap={2} ax="end" fullwidth>
-        <button>Cancel</button>
-        <button>Save</button>
+        <Button size="small" variant="subtle">
+          Cancel
+        </Button>
+        <Button size="small">Save</Button>
       </Group>
     }
   >
@@ -84,7 +87,7 @@ export const Footer = () => (
 /** A string trigger is wrapped in a focusable element; an element trigger is used as-is. */
 export const Triggers = () => (
   <Stack gap={2} ax="start">
-    <Dialog trigger={<button>Element trigger</button>} title="Element trigger">
+    <Dialog trigger={<Button>Element trigger</Button>} title="Element trigger">
       {BODY}
     </Dialog>
     <Dialog trigger="String trigger" title="String trigger">

@@ -33,147 +33,90 @@
 
 @layer uiid.tokens {
   .palette-red {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-red-700), var(--color-red-400));
     --palette-on-fill: light-dark(var(--color-red-50), var(--color-red-950));
     --palette-fill-hover: light-dark(var(--color-red-800), var(--color-red-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-red-50), var(--color-red-900));
     --palette-on-tint: light-dark(var(--color-red-800), var(--color-red-200));
     --palette-tint-hover: light-dark(var(--color-red-100), var(--color-red-800));
     --palette-tint-border: light-dark(var(--color-red-200), var(--color-red-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
   }
 
   .palette-orange {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-orange-700), var(--color-orange-400));
     --palette-on-fill: light-dark(var(--color-orange-50), var(--color-orange-950));
     --palette-fill-hover: light-dark(var(--color-orange-800), var(--color-orange-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-orange-50), var(--color-orange-900));
     --palette-on-tint: light-dark(var(--color-orange-800), var(--color-orange-200));
     --palette-tint-hover: light-dark(var(--color-orange-100), var(--color-orange-800));
     --palette-tint-border: light-dark(var(--color-orange-200), var(--color-orange-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-orange-700), var(--color-orange-400));
   }
 
   .palette-yellow {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-yellow-700), var(--color-yellow-400));
     --palette-on-fill: light-dark(var(--color-yellow-50), var(--color-yellow-950));
     --palette-fill-hover: light-dark(var(--color-yellow-800), var(--color-yellow-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-yellow-50), var(--color-yellow-900));
     --palette-on-tint: light-dark(var(--color-yellow-800), var(--color-yellow-200));
     --palette-tint-hover: light-dark(var(--color-yellow-100), var(--color-yellow-800));
     --palette-tint-border: light-dark(var(--color-yellow-200), var(--color-yellow-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-yellow-700), var(--color-yellow-400));
   }
 
   .palette-green {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-green-700), var(--color-green-400));
     --palette-on-fill: light-dark(var(--color-green-50), var(--color-green-950));
     --palette-fill-hover: light-dark(var(--color-green-800), var(--color-green-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-green-50), var(--color-green-900));
     --palette-on-tint: light-dark(var(--color-green-800), var(--color-green-200));
     --palette-tint-hover: light-dark(var(--color-green-100), var(--color-green-800));
     --palette-tint-border: light-dark(var(--color-green-200), var(--color-green-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-green-700), var(--color-green-400));
   }
 
   .palette-blue {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-blue-700), var(--color-blue-400));
     --palette-on-fill: light-dark(var(--color-blue-50), var(--color-blue-950));
     --palette-fill-hover: light-dark(var(--color-blue-800), var(--color-blue-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-blue-50), var(--color-blue-900));
     --palette-on-tint: light-dark(var(--color-blue-800), var(--color-blue-200));
     --palette-tint-hover: light-dark(var(--color-blue-100), var(--color-blue-800));
     --palette-tint-border: light-dark(var(--color-blue-200), var(--color-blue-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-blue-700), var(--color-blue-400));
   }
 
   .palette-indigo {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-indigo-700), var(--color-indigo-400));
     --palette-on-fill: light-dark(var(--color-indigo-50), var(--color-indigo-950));
     --palette-fill-hover: light-dark(var(--color-indigo-800), var(--color-indigo-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-indigo-50), var(--color-indigo-900));
     --palette-on-tint: light-dark(var(--color-indigo-800), var(--color-indigo-200));
     --palette-tint-hover: light-dark(var(--color-indigo-100), var(--color-indigo-800));
     --palette-tint-border: light-dark(var(--color-indigo-200), var(--color-indigo-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-indigo-700), var(--color-indigo-400));
   }
 
   .palette-purple {
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-purple-700), var(--color-purple-400));
     --palette-on-fill: light-dark(var(--color-purple-50), var(--color-purple-950));
     --palette-fill-hover: light-dark(var(--color-purple-800), var(--color-purple-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover. */
     --palette-tint: light-dark(var(--color-purple-50), var(--color-purple-900));
     --palette-on-tint: light-dark(var(--color-purple-800), var(--color-purple-200));
     --palette-tint-hover: light-dark(var(--color-purple-100), var(--color-purple-800));
     --palette-tint-border: light-dark(var(--color-purple-200), var(--color-purple-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-purple-700), var(--color-purple-400));
   }
 
   .palette-neutral {
-    /* Chroma is near zero, so this degrades to a grey treatment rather than
-       a tint. It exists so a component can take the palette contract without
-       committing to a hue. */
-
-    /* Filled surface. */
     --palette-fill: light-dark(var(--color-neutral-700), var(--color-neutral-400));
     --palette-on-fill: light-dark(var(--color-neutral-50), var(--color-neutral-950));
     --palette-fill-hover: light-dark(var(--color-neutral-800), var(--color-neutral-300));
-
-    /* Tinted surface. Also drives the transparent (ghost) treatment, which
-       borrows --palette-on-tint for text and --palette-tint on hover.
-
-       Light mode is pure white rather than neutral-50. With no chroma to make
-       it read as deliberate, a neutral tint at the ramp's -50 lightness is just
-       grey — so the hue that stands in for "no hue" resolves to the surface a
-       card actually wants, and separates from the page on border and shadow. */
     --palette-tint: light-dark(#ffffff, var(--color-neutral-900));
     --palette-on-tint: light-dark(var(--color-neutral-800), var(--color-neutral-200));
     --palette-tint-hover: light-dark(var(--color-neutral-100), var(--color-neutral-800));
     --palette-tint-border: light-dark(var(--color-neutral-200), var(--color-neutral-700));
-
-    /* Text on the page background. */
     --palette-text: light-dark(var(--color-neutral-700), var(--color-neutral-400));
   }
 }

@@ -1,18 +1,3 @@
-/**
- * Layer order, lowest precedence first.
- *
- * `uiid.compositions` sits BELOW uiid.primitives / uiid.components on purpose.
- * Compositions are shared *bases* (mixins) that a component pulls in and then
- * specializes — a size scale, a popup animation, an option row. If they
- * outranked their consumers, no component could refine what it composed, and
- * every specialization would need `!important` (see the Button `shape-square`
- * padding and the Select slot insets for what that looked like).
- *
- * `uiid.states` is the one exception, declared last: cross-cutting state
- * treatments that must survive whatever a component paints on top of them.
- * Keep it small — anything a component might legitimately want to override
- * belongs in uiid.compositions instead.
- */
 @layer uiid.globals, uiid.tokens, uiid.compositions, uiid.primitives, uiid.components, uiid.states;
 
 @import "./css/primitives/colors.tokens.css";
@@ -23,13 +8,7 @@
 @import "./css/semantic/forms.tokens.css";
 @import "./css/theme/theme.tokens.css";
 
-/* Semantic palette (uiid.tokens layer). Hand-written, not generated: these are
-   global classes that carry a hue, so components read --palette-* names instead
-   of deriving colour themselves. */
 @import "./palette.css";
-
-/* Shared composition primitives (uiid.compositions layer). Loaded once here;
-   referenced from component modules via `composes: composes-<name> from global`. */
 @import "./compositions.css";
 
 @layer uiid.globals {
@@ -44,6 +23,10 @@
     color-scheme: dark;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   html,
   body {
     @media (pointer: fine) {
@@ -55,13 +38,8 @@
     background-color: var(--shade-background);
     color: var(--shade-foreground);
     font-family: sans-serif;
-    text-wrap: pretty;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  * {
-    box-sizing: border-box;
   }
 
   :is(h1, h2, h3, h4, h5, h6, p, ul, ol) {
@@ -77,17 +55,10 @@
 
   a {
     text-decoration: underline;
-    text-underline-offset: 2px;
     color: inherit;
 
     &:hover {
       text-decoration: none;
-    }
-
-    &:focus {
-      outline: solid var(--globals-outline-width) var(--globals-outline-color);
-      border-radius: 2px;
-      outline-offset: 2px;
     }
   }
 
