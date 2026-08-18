@@ -1,1 +1,0 @@
-../../.agents/components.md

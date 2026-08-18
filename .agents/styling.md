@@ -1,11 +1,3 @@
----
-paths:
-  - "**/*.tsx"
-  - "**/*.css"
-  - "**/*.mdx"
-  - "packages/tokens/**"
----
-
 # Styling
 
 **Never use `style={{}}` for layout, spacing, sizing, or text styling.** Resolution order:

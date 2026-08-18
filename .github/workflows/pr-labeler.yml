@@ -33,7 +33,6 @@ jobs:
           # Check special directories (apps)
           STORYBOOK_CHANGED=false
           DOCS_CHANGED=false
-          SKILLS_CHANGED=false
           CI_CHANGED=false
 
           if echo "$CHANGED_FILES" | grep -qE '^apps/storybook/|\.stories\.tsx$'; then
@@ -42,10 +41,6 @@ jobs:
 
           if echo "$CHANGED_FILES" | grep -qE '^apps/docs/|^docs/|^\.agents/|^AGENTS\.md$|^CLAUDE\.md$|README\.md$'; then
             DOCS_CHANGED=true
-          fi
-
-          if echo "$CHANGED_FILES" | grep -qE '^\.agents/skills/|^\.claude/skills/|^skills-lock\.json$'; then
-            SKILLS_CHANGED=true
           fi
 
           if echo "$CHANGED_FILES" | grep -qE '^\.github/'; then
@@ -68,10 +63,6 @@ jobs:
 
           if [ "$DOCS_CHANGED" = true ]; then
             CHANGED_PACKAGES=$(echo "$CHANGED_PACKAGES" | jq '. += ["docs"]')
-          fi
-
-          if [ "$SKILLS_CHANGED" = true ]; then
-            CHANGED_PACKAGES=$(echo "$CHANGED_PACKAGES" | jq '. += ["skills"]')
           fi
 
           if [ "$CI_CHANGED" = true ]; then

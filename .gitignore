@@ -34,7 +34,7 @@ storybook-static
 .next
 next-env.d.ts
 
-# Claude Code
+# Agent tooling (local, per-machine)
 .claude/worktrees/
 **/settings.local.json
 
@@ -43,7 +43,3 @@ next-env.d.ts
 
 # CSS tokens
 packages/tokens/src/css/
-
-# Session narration files (Claude conversation channel — never commit)
-CONVERSATION.md
-FABLE_SUPPORT.md

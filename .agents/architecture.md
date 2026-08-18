@@ -1,13 +1,3 @@
----
-paths:
-  - "*.config.ts"
-  - "turbo.json"
-  - "tsconfig.json"
-  - "lefthook.yml"
-  - ".oxlintrc.json"
-  - ".oxfmtrc.json"
----
-
 # Architecture
 
 ## Monorepo Structure

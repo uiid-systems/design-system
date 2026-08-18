@@ -1,11 +1,3 @@
----
-paths:
-  - "packages/**/*.tsx"
-  - "packages/**/*.types.ts"
-  - "packages/**/*.variants.ts"
-  - "packages/**/index.ts"
----
-
 # Component Conventions
 
 Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts`, `.constants.ts`, `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.

@@ -57,8 +57,11 @@ describe("RadioGroup", () => {
     expect(radios[2]).toHaveAttribute("data-checked");
   });
 
-  // BUG: @base-ui/react useStableCallback trampoline causes infinite recursion
-  // with controlled RadioGroup. See CLAUDE.md for details.
+  // UPSTREAM BUG (open): passing `value` + `onValueChange` triggers infinite
+  // recursion in @base-ui/react's `useStableCallback` trampoline. Uncontrolled
+  // usage (no `value` prop) works fine. The same skip exists in
+  // radio/radio.test.tsx. Do not un-skip without first confirming the upstream
+  // bug is resolved.
   it.skip("supports controlled value", async () => {
     const handleChange = vi.fn();
 
