@@ -2,7 +2,9 @@
 
 UIID is a modular React component library. Follow these conventions to maintain consistency across the codebase.
 
-This file is tool-agnostic and holds only what every session needs. Deeper topic chapters live in `.agents/` — read the one that matches what you are touching (see [Chapters](#chapters)).
+This file is tool-agnostic and holds only what every session needs. Deeper conventions live in topic chapters under `.agents/`.
+
+**Read the matching chapter before you edit — nothing loads it for you.** The [Chapters](#chapters) table maps file paths to chapters. These are not background reading: they hold the inline-style ban, the required component file layout, and new-package steps that fail silently when skipped. If you are about to change a file and have not opened its chapter this session, open it first.
 
 ## Stack
 
@@ -62,6 +64,8 @@ Versioning and changelogs are automated by **release-please**:
 - `feat` and `fix` trigger a release; `docs`, `chore`, `ci`, `test`, and `refactor` are recorded but do not force one
 
 ## Chapters
+
+Find the row matching the files you are touching and read that chapter before editing.
 
 | Chapter                   | Covers                                                               | Read when                     |
 | ------------------------- | -------------------------------------------------------------------- | ----------------------------- |
