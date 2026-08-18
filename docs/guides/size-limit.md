@@ -62,8 +62,8 @@ Running `pnpm size-limit --why` locally produces a webpack-style bundle analyzer
 
 One package is intentionally excluded:
 
-| Package        | Reason                                                       |
-| -------------- | ------------------------------------------------------------ |
-| `@uiid/tokens` | Source-only — ships CSS and TS schema, no `dist/` JS bundle. |
+| Package        | Reason                                                                                                                                         |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@uiid/tokens` | Primarily source — ships CSS and TS schema. It does build a small `dist/index.js` (the token JSON as JS), but has no `.size-limit.json` entry. |
 
 Tokens still contribute to consumer bundle size; their impact shows up indirectly inside whichever consumer package imports them.
