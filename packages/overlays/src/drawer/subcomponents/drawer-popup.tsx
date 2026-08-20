@@ -1,6 +1,6 @@
 "use client";
 
-import { DrawerPreview as BaseDrawer } from "@base-ui/react/drawer";
+import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { Card } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 

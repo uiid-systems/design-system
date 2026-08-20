@@ -44,7 +44,10 @@ describe("Autocomplete", () => {
     const input = screen.getByRole("combobox");
     await user.type(input, "xyz");
 
-    expect(screen.getByText("No results found.")).toBeInTheDocument();
+    // Base UI appends an invisible Word Joiner (U+2060) to the empty-state text
+    // for ~200ms so Safari VoiceOver announces the polite live region. Match
+    // loosely so the marker does not break the assertion.
+    expect(screen.getByText(/No results found\./)).toBeInTheDocument();
   });
 
   it("closes dropdown on Escape", async () => {

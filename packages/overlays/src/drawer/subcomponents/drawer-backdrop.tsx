@@ -1,6 +1,6 @@
 "use client";
 
-import { DrawerPreview as BaseDrawer } from "@base-ui/react/drawer";
+import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { cx } from "@uiid/utils";
 
 import type { DrawerBackdropProps } from "../drawer.types";
