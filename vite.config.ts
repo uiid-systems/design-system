@@ -4,6 +4,7 @@ import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
+import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
 import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
 
 type ViteConfigOptions = {
@@ -73,6 +74,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
           preserveModulesRoot: "src",
           entryFileNames: "[name].js",
           assetFileNames: "[name].[ext]",
+          sanitizeFileName,
         },
       },
       cssCodeSplit: false,
