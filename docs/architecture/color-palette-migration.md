@@ -122,8 +122,6 @@ the `fill` set, the `tint` set, or just `--palette-text`.
 - **`packages/forms/src/field/field.module.css`** uses `var(--color-red-500)` for
   error text — ~3.4:1, an AA failure. It was left render-neutral in part 1 on
   purpose. It should become `.palette-red` + `--palette-text` (clears AA).
-- **`packages/interactive/src/rich-text-editor/styles/index.css`** still contains
-  `oklch()` and was outside part 1's scope.
 - `dtcg.schema.json` and the `lint:tokens` script are still present but were never
   wired into the `lint` task, and are candidates for removal. Doing so means stripping
   `$schema` from ~23 token files, so it was deferred.

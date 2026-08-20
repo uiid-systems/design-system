@@ -1,7 +1,7 @@
 {
   "name": "@uiid/interactive",
   "version": "0.1.0",
-  "description": "Interactive components — Accordion, Collapsible, Sortable, Rich Text Editor",
+  "description": "Interactive components \u2014 Accordion, Collapsible, Sortable",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
@@ -47,16 +47,6 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@tiptap/extension-code-block-lowlight": "^3.19.0",
-    "@tiptap/extension-color": "^3.19.0",
-    "@tiptap/extension-horizontal-rule": "^3.19.0",
-    "@tiptap/extension-image": "^3.19.0",
-    "@tiptap/extension-text-style": "^3.19.0",
-    "@tiptap/extension-typography": "^3.19.0",
-    "@tiptap/extensions": "^3.19.0",
-    "@tiptap/pm": "^3.19.0",
-    "@tiptap/react": "^3.19.0",
-    "@tiptap/starter-kit": "^3.19.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/forms": "workspace:*",
@@ -67,7 +57,6 @@
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
-    "lowlight": "^3.3.0",
     "react-medium-image-zoom": "^5.4.0",
     "react-resizable-panels": "^4.6.4"
   },
