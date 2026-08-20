@@ -43,9 +43,6 @@ export const Markdown = () => (
         ToggleButton
       </li>
       <li>
-        <code>@uiid/calendars</code> — Date and date range pickers
-      </li>
-      <li>
         <code>@uiid/cards</code> — Card components
       </li>
       <li>

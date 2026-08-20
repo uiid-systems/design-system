@@ -1,7 +1,6 @@
 import "./globals.css";
 
 export * from "@uiid/buttons";
-export * from "@uiid/calendars";
 export * from "@uiid/cards";
 export * from "@uiid/code";
 export * from "@uiid/forms";
