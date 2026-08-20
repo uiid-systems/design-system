@@ -73,7 +73,10 @@ describe("Accordion", () => {
     expect(trigger).toHaveAttribute("data-panel-open");
   });
 
-  it("navigates between triggers with arrow keys", async () => {
+  // Base UI removed roving focus from Accordion in 1.6.0 to follow the APG,
+  // which no longer recommends it (w3c/aria-practices#3434). Triggers are now
+  // plain tab stops: Tab moves between them and arrow keys do not.
+  it("moves focus between triggers with Tab", async () => {
     const user = userEvent.setup();
     render(<Accordion items={sampleItems} />);
 
@@ -81,9 +84,21 @@ describe("Accordion", () => {
     const secondTrigger = screen.getByRole("button", { name: "Second" });
 
     firstTrigger.focus();
-    await user.keyboard("{ArrowDown}");
+    await user.tab();
 
     expect(secondTrigger).toHaveFocus();
+  });
+
+  it("does not move focus between triggers with arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Accordion items={sampleItems} />);
+
+    const firstTrigger = screen.getByRole("button", { name: "First" });
+
+    firstTrigger.focus();
+    await user.keyboard("{ArrowDown}");
+
+    expect(firstTrigger).toHaveFocus();
   });
 
   // ============================================
