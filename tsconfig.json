@@ -24,7 +24,6 @@
   "files": [],
   "references": [
     { "path": "./packages/buttons" },
-    { "path": "./packages/calendars" },
     { "path": "./packages/cards" },
     { "path": "./packages/code" },
     { "path": "./packages/design-system" },

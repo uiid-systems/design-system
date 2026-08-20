@@ -10,11 +10,6 @@
     "limit": "60 kB"
   },
   {
-    "name": "@uiid/calendars",
-    "path": "packages/calendars/dist/index.js",
-    "limit": "110 kB"
-  },
-  {
     "name": "@uiid/cards",
     "path": "packages/cards/dist/index.js",
     "limit": "25 kB"

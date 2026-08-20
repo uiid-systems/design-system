@@ -24,7 +24,6 @@ graph TD
   navigation[navigation]
   tables[tables]
   code[code]
-  calendars[calendars]
 
   cards --> icons & layout & typography
   lists --> icons & layout & typography
@@ -43,8 +42,6 @@ graph TD
   tables --> buttons & cards & forms & icons & interactive & layout & overlays & typography
 
   code --> buttons & cards & icons & layout & typography
-
-  calendars --> buttons & cards & icons & indicators & interactive & layout & overlays & typography
 ```
 
 ## Notes

@@ -6,7 +6,6 @@ import postcssLayerWrapper from "../../../../scripts/postcss-layer-wrapper.cjs";
  */
 const COMPONENT_PACKAGES = [
   "buttons",
-  "calendars",
   "cards",
   "code",
   "forms",
