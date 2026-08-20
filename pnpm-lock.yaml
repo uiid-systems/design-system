@@ -185,9 +185,6 @@ importers:
 
   packages/buttons:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
@@ -204,6 +201,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -468,9 +468,6 @@ importers:
 
   packages/forms:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@number-flow/react':
         specifier: ^0.5.10
         version: 0.5.10(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -502,6 +499,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -578,9 +578,6 @@ importers:
 
   packages/indicators:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
@@ -594,6 +591,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -645,9 +645,6 @@ importers:
 
   packages/interactive:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -697,6 +694,9 @@ importers:
         specifier: ^4.6.4
         version: 4.6.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -742,9 +742,6 @@ importers:
 
   packages/layout:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -752,6 +749,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -797,9 +797,6 @@ importers:
 
   packages/lists:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
@@ -816,6 +813,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -922,9 +922,6 @@ importers:
 
   packages/overlays:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
@@ -944,6 +941,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -992,9 +992,6 @@ importers:
 
   packages/tables:
     dependencies:
-      '@base-ui/react':
-        specifier: 1.2.0
-        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
@@ -1026,6 +1023,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.2.0
+        version: 1.2.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
