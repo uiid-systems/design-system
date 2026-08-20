@@ -7,9 +7,7 @@ import { defineConfig } from "vitest/config";
 // Note: tokens is handled separately below — it serves a TS entry point and
 // several CSS subpaths from different directories, so one prefix cannot cover it
 const uiidPackages = [
-  "blocks",
   "buttons",
-  "calendars",
   "cards",
   "code",
   "forms",

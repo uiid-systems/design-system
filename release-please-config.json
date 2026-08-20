@@ -17,11 +17,6 @@
         },
         {
           "type": "json",
-          "path": "packages/calendars/package.json",
-          "jsonpath": "$.version"
-        },
-        {
-          "type": "json",
           "path": "packages/cards/package.json",
           "jsonpath": "$.version"
         },

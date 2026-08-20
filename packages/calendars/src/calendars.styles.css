@@ -1,9 +1,0 @@
-/** @see: https://daypicker.dev/docs/styling */
-@import "react-day-picker/style.css";
-
-.rdp-root {
-  --rdp-muted-color: var(--shade-muted);
-  --rdp-day_button-border-radius: var(--globals-border-radius);
-  --rdp-range_middle-background-color: var(--shade-accent);
-  --rdp-outside-opacity: 0.25;
-}

@@ -8,7 +8,6 @@ declare module "@uiid/layout/globals.css";
 declare module "@uiid/buttons/globals.css";
 declare module "@uiid/cards/globals.css";
 declare module "@uiid/lists/globals.css";
-declare module "@uiid/calendars/globals.css";
 declare module "@uiid/forms/globals.css";
 declare module "@uiid/indicators/globals.css";
 declare module "@uiid/interactive/globals.css";

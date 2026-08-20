@@ -47,7 +47,6 @@ const preview: Preview = {
           ["Form"],
           "Interactive",
           "Indicators",
-          "Calendars",
           "Tables",
           "Navigation",
           "Backgrounds",
