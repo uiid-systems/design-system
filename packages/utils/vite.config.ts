@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -30,6 +32,7 @@ export default defineConfig({
         preserveModules: true,
         preserveModulesRoot: "src",
         entryFileNames: "[name].js",
+        sanitizeFileName,
       },
     },
     cssCodeSplit: false,

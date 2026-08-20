@@ -1,6 +1,8 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 
+import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -27,6 +29,7 @@ export default defineConfig({
         preserveModulesRoot: "src",
         entryFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
+        sanitizeFileName,
       },
     },
     emptyOutDir: false,
