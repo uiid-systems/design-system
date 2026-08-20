@@ -37,6 +37,7 @@ const baseExternal = [
   "react/jsx-runtime",
   "react/jsx-dev-runtime",
   /^@uiid\//,
+  /^@base-ui\/react(\/|$)/,
 ];
 
 export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {

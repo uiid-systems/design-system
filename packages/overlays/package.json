@@ -42,7 +42,6 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@base-ui/react": "1.2.0",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
@@ -51,10 +50,12 @@
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
+    "@base-ui/react": "^1.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@base-ui/react": "1.2.0",
     "@uiid/buttons": "workspace:*",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.1.0",
