@@ -32,13 +32,13 @@ graph TD
   overlays --> cards & icons & layout & typography
   indicators --> cards & typography
 
-  buttons --> icons & layout & overlays & typography
+  buttons --> icons & layout & typography
 
   forms --> buttons & cards & icons & layout & lists & overlays & typography
 
   interactive --> buttons & cards & forms & icons & indicators & layout & overlays & typography
 
-  navigation --> buttons & forms & icons & indicators & layout & lists & overlays & typography
+  navigation --> buttons & icons & layout & typography
 
   tables --> buttons & cards & forms & icons & interactive & layout & overlays & typography
 
@@ -49,8 +49,9 @@ graph TD
 
 ## Notes
 
-- Cycle-free — `buttons` uses `overlays` (the built-in tooltip), `overlays` uses
-  `cards`, and nothing points back up.
+- Cycle-free — `overlays` uses `cards`, `cards` uses only primitives, and nothing
+  points back up. `buttons` no longer depends on `overlays`: Tooltip was dropped as
+  a Button dependency, so the two are now independent.
 - `layout`, `typography`, and `icons` are leaves — they rely on no other UI
   component. (`layout` composes shared text styles from `@uiid/tokens`, so it no
   longer depends on `typography`.)
