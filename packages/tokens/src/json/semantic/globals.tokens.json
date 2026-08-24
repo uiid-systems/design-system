@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Global Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "globals": {
     "header": {
       "height": { "$value": "3.5rem", "$type": "dimension" }

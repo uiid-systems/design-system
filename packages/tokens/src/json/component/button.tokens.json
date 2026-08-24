@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Button Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "button": {
     "bg": { "$value": "{shade.foreground}", "$type": "color" },
     "bg-hover": {

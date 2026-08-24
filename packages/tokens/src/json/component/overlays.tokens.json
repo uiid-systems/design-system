@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Overlays Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "overlays": {
     "backdrop": {
       "opacity": { "$value": 0.9, "$type": "number" },

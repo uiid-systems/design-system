@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Accordion Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "accordion": {
     "trigger": {
       "padding-x": { "$value": "{globals.padding.x}", "$type": "dimension" },

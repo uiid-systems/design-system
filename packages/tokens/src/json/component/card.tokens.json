@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Card Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "card": {
     "icon-size": { "$value": "1rem", "$type": "dimension" },
     "scale-up": { "$value": 1.02, "$type": "number" },

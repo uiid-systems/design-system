@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Checkbox Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "checkbox": {
     "border-radius": { "$value": "0.25rem", "$type": "dimension" },
     "size": {

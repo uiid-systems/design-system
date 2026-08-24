@@ -1,12 +1,9 @@
 {
   "$description": "UIID Design System - Avatar Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "avatar": {
     "size": {
       "$type": "dimension",
-      "sm": { "$value": "2rem" },
-      "md": { "$value": "2.5rem" },
-      "lg": { "$value": "3rem" }
+      "md": { "$value": "2.5rem" }
     }
   }
 }
