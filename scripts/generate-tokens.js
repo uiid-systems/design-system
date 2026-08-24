@@ -439,6 +439,11 @@ ${cssProperties.trimEnd()}
       return this.processDeriveExtension(derive);
     }
 
+    // DTCG cubicBezier is [x1, y1, x2, y2] — emit the CSS timing function.
+    if (token.$type === "cubicBezier" && Array.isArray(token.$value)) {
+      return `cubic-bezier(${token.$value.join(", ")})`;
+    }
+
     return this.processCssValue(token.$value);
   }
 
