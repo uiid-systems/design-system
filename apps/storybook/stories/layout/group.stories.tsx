@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Group } from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/layout/src/group/group.examples";
-import { ExampleBox, boxControls, EXAMPLE_LAYOUT_GAP } from "./constants";
+import { boxControls, EXAMPLE_LAYOUT_GAP } from "./constants";
+import { ExampleBox } from "./layout.mocks";
 
 const meta = {
   title: "Layout/Group",

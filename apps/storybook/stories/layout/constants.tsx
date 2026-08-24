@@ -1,21 +1,7 @@
 import type { ArgTypes } from "@storybook/react-vite";
-import { Box, type BoxProps } from "@uiid/design-system";
+import type { BoxProps } from "@uiid/design-system";
 
 export const EXAMPLE_LAYOUT_GAP: BoxProps["gap"] = 2;
-
-type ExampleBoxProps = BoxProps & {
-  bg?: React.CSSProperties["backgroundColor"];
-};
-export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
-  <Box
-    h={64}
-    w={64}
-    bordered
-    rounded
-    style={{ backgroundColor: bg, ...props.style }}
-    {...props}
-  />
-);
 
 export const toggleControls: ArgTypes = {
   bordered: { control: "boolean", table: { category: "Toggles" } },

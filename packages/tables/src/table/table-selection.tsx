@@ -1,28 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 
-type TableSelectionContextValue = {
-  allSelected: boolean;
-  someSelected: boolean;
-  isSelected: (index: number) => boolean;
-  toggleAll: (checked: boolean) => void;
-  toggleRow: (index: number, checked: boolean) => void;
-};
-
-const TableSelectionContext = createContext<TableSelectionContextValue | null>(
-  null,
-);
-
-export const useTableSelection = () => {
-  const context = useContext(TableSelectionContext);
-  if (!context) {
-    throw new Error(
-      "useTableSelection must be used within a TableSelectionProvider",
-    );
-  }
-  return context;
-};
+import {
+  TableSelectionContext,
+  type TableSelectionContextValue,
+} from "./table-selection.context";
 
 export type TableSelectionProviderProps = React.PropsWithChildren<{
   count: number;

@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ConditionalRender } from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/layout/src/conditional-render/conditional-render.examples";
-import { ExampleBox, disabledControls } from "./constants";
+import { disabledControls } from "./constants";
+import { ExampleBox } from "./layout.mocks";
 
 const meta = {
   title: "Layout/Conditional Render",
