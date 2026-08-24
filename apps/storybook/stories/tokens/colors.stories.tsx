@@ -58,6 +58,7 @@ const Swatch = ({
       style={{
         backgroundColor: `var(--${cssVar})`,
         height: "40px",
+        aspectRatio: 1,
         borderRadius: "4px",
         border: anchor
           ? "2px solid var(--shade-foreground)"
