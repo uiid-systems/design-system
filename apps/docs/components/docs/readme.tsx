@@ -28,7 +28,13 @@ type MarkdownProps = {
 
 /** Renders a repo markdown file inside Prose — the single-source pattern. */
 export async function Markdown({ file }: MarkdownProps) {
-  const markdown = await fs.readFile(path.join(ROOT, file), "utf-8");
+  // Every page using this is statically prerendered, so the markdown is read at
+  // build time and baked into the HTML. Opt out of Turbopack's dependency
+  // tracing, which would otherwise resolve the dynamic path to the whole repo.
+  const markdown = await fs.readFile(
+    path.join(/* turbopackIgnore: true */ ROOT, file),
+    "utf-8",
+  );
 
   return (
     <Prose data-slot="readme">
