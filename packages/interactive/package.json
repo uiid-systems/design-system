@@ -56,7 +56,6 @@
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
-    "react-medium-image-zoom": "^5.4.0",
     "react-resizable-panels": "^4.6.4"
   },
   "peerDependencies": {
