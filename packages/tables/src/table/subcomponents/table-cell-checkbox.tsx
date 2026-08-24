@@ -3,7 +3,7 @@
 import { Checkbox, type CheckboxProps } from "@uiid/forms";
 import { SwitchRender } from "@uiid/layout";
 
-import { useTableSelection } from "../table-selection";
+import { useTableSelection } from "../table-selection.context";
 import { TableCell } from "./table-cell";
 import { TableHead } from "./table-head";
 
