@@ -23,7 +23,7 @@
   }
 
   /** Focus */
-  &:focus {
+  &:focus-visible {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }

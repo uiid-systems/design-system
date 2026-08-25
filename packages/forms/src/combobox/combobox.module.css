@@ -28,6 +28,13 @@
   padding: 0;
   border-radius: 0.25rem;
   background: none;
+
+  /* `all: unset` wipes the UA focus ring, so restore it — these are real
+     buttons (Clear/Trigger) and are otherwise invisible to keyboard users. */
+  &:focus-visible {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+  }
 }
 
 .combobox-positioner {

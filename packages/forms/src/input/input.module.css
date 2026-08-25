@@ -27,7 +27,11 @@
   }
 
   /** Focus */
-  &:focus {
+  /* `:focus-visible` matches the package-wide pattern. For text fields the UA
+     heuristic matches it on pointer focus too, so the ring still appears on
+     click — but a non-text control landing here (select-value, readonly) now
+     follows the same rule as every other component. */
+  &:focus-visible {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }
@@ -87,7 +91,9 @@
   padding: 0;
 
   /** Focus state on wrapper */
-  &:focus-within {
+  /* `:has(:focus-visible)` rather than `:focus-within` — the wrapper is not
+     focusable, so it mirrors the inner control's focus-visible state. */
+  &:has(:focus-visible) {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }
@@ -119,7 +125,7 @@
     background: transparent;
   }
 
-  &:focus {
+  &:focus-visible {
     background: transparent;
     outline: none;
   }

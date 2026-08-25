@@ -10,8 +10,9 @@
   margin: 0;
   padding: 1px;
   border-radius: var(--switch-height);
-  outline: 1px solid var(--shade-halftone);
-  outline-offset: -1px;
+  /* The track hairline rides an inset box-shadow, not an inset outline, so the
+     `outline` slot stays free for the shared focus ring below. */
+  box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-halftone);
   background-color: var(--switch-bg);
   background-size: 6.5rem 100%;
   background-position-x: 100%;
@@ -28,14 +29,8 @@
   }
 
   &:focus-visible {
-    &::before {
-      content: "";
-      inset: 0;
-      position: absolute;
-      border-radius: inherit;
-      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-      outline-offset: var(--globals-outline-offset);
-    }
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
   }
 }
 
