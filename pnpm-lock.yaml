@@ -468,9 +468,6 @@ importers:
 
   packages/forms:
     dependencies:
-      '@number-flow/react':
-        specifier: ^0.5.10
-        version: 0.5.10(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons

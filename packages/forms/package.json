@@ -43,7 +43,6 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@number-flow/react": "^0.5.10",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
@@ -66,8 +65,6 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@uiid/icons": "workspace:*",
-    "@uiid/layout": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "happy-dom": "^20.8.9",
     "react": "^19.1.1",
