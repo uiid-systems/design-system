@@ -105,7 +105,7 @@
 .code-block-fullscreen {
   position: fixed;
   inset: 0;
-  z-index: var(--overlays-backdrop-z-index, 50);
+  z-index: var(--globals-z-index-backdrop);
   display: grid;
   place-items: center;
   padding: clamp(1rem, 4vw, 3rem);

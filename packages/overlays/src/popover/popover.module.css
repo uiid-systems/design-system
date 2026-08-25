@@ -1,5 +1,9 @@
 @import "@uiid/tokens/component/popover.tokens.css";
 
+.popover-positioner {
+  composes: composes-popup-positioner from global;
+}
+
 .popover-popup {
   composes: composes-popup from global;
   max-width: var(--popover-max-width);

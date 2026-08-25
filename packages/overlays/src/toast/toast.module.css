@@ -3,7 +3,9 @@
   --direction-multiplier: -1;
 
   position: fixed;
-  z-index: 1;
+  /* Above popups and dialog viewports: a toast confirming an action taken
+     inside a Dialog has to be visible over it. */
+  z-index: var(--globals-z-index-toast);
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
@@ -46,6 +48,8 @@
     transform-origin: top center;
   }
 
+  /* Ordering among stacked toasts only — the viewport above is a stacking
+     context, so this never competes with anything outside it. */
   z-index: calc(1000 - var(--toast-index));
   height: var(--height);
   transform: translateX(var(--toast-swipe-movement-x))

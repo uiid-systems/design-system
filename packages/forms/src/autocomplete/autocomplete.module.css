@@ -1,5 +1,5 @@
 .autocomplete-positioner {
-  outline: 0;
+  composes: composes-popup-positioner from global;
 }
 
 .autocomplete-popup {

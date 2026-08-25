@@ -168,7 +168,7 @@
 }
 
 .button-tooltip-positioner {
-  z-index: 1000;
+  composes: composes-popup-positioner from global;
 }
 
 .button-tooltip-popup {
