@@ -18,8 +18,6 @@ import {
   SelectIndicator,
 } from "./subcomponents";
 
-import styles from "./select.module.css";
-
 export function Select<Value = string>({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
@@ -88,13 +86,9 @@ export function Select<Value = string>({
         >
           <SelectValue size={size} {...ValueProps}>
             {(value: Value) =>
-              value != null ? (
-                (itemToStringLabel?.(value) ?? String(value))
-              ) : placeholder ? (
-                <span className={styles["select-placeholder"]}>
-                  {placeholder}
-                </span>
-              ) : null
+              value != null
+                ? (itemToStringLabel?.(value) ?? String(value))
+                : (placeholder ?? null)
             }
           </SelectValue>
           <SelectIndicator {...IndicatorProps} />

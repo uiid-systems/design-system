@@ -18,8 +18,6 @@ import {
 } from "../select/subcomponents";
 import type { SelectMultipleProps } from "./select-multiple.types";
 
-import selectStyles from "../select/select.module.css";
-
 export const SelectMultiple = ({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
@@ -87,13 +85,9 @@ export const SelectMultiple = ({
         >
           <SelectValue size={size} {...ValueProps}>
             {(value: string[]) =>
-              value && value.length > 0 ? (
-                value.map((v) => itemToStringLabel?.(v) ?? v).join(", ")
-              ) : placeholder ? (
-                <span className={selectStyles["select-placeholder"]}>
-                  {placeholder}
-                </span>
-              ) : null
+              value && value.length > 0
+                ? value.map((v) => itemToStringLabel?.(v) ?? v).join(", ")
+                : (placeholder ?? null)
             }
           </SelectValue>
           <SelectIndicator {...IndicatorProps} />
