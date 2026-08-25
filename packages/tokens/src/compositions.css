@@ -71,8 +71,7 @@
    * select, combobox, autocomplete). Base UI toggles [data-starting-style] and
    * [data-ending-style] around open/close, and exposes --transform-origin on
    * the positioner (pointing at the anchor) so the popup scales out of its
-   * trigger rather than its own center. [data-instant] is set for
-   * non-animated, keyboard-driven changes and collapses the transition.
+   * trigger rather than its own center.
    *
    * Transitions (not keyframes) so an interrupted open animates back to closed
    * from its current position instead of snapping.
@@ -88,7 +87,21 @@
       transform: scale(var(--globals-transform-scale-down));
     }
 
-    &:where([data-instant]) {
+    /*
+     * Base UI sets [data-instant] with a reason, and only some of them should
+     * skip the animation. Matching the bare attribute broke the exit fade in
+     * the most ordinary case there is: a Dialog is a focus trap, so clicking
+     * anywhere inside it to dismiss a popup counts as "focus" and the popup
+     * vanished instead of fading. "dismiss" (Escape, outside click) reads the
+     * same way.
+     *
+     * Only the trigger-hopping reasons stay instant — moving between adjacent
+     * tooltips or menu items must not replay the open animation each time.
+     * Reasons, by component: popover/select/menu are
+     * click | dismiss | focus | trigger-change | group, tooltip is
+     * delay | dismiss | focus.
+     */
+    &:where([data-instant="delay"], [data-instant="trigger-change"], [data-instant="group"]) {
       transition-duration: 0ms;
     }
   }
