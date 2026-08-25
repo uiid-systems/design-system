@@ -1,9 +1,9 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const ipv4Pattern: MaskPattern = {
   pattern: "###.###.###.###",
-  transform: (value) => value.replace(REGEX_CACHE.nonNumericDot, ""),
+  transform: (value) => value.replace(MASK_INPUT_REGEX.nonNumericDot, ""),
   validate: (value) => {
     if (value.includes(".")) {
       const segments = value.split(".");
@@ -11,12 +11,12 @@ export const ipv4Pattern: MaskPattern = {
 
       return segments.every((segment) => {
         if (segment === "") return true;
-        if (!REGEX_CACHE.ipv4Segment.test(segment)) return false;
+        if (!MASK_INPUT_REGEX.ipv4Segment.test(segment)) return false;
         const num = parseInt(segment, 10);
         return num <= 255;
       });
     } else {
-      if (!REGEX_CACHE.digitsOnly.test(value)) return false;
+      if (!MASK_INPUT_REGEX.digitsOnly.test(value)) return false;
       if (value.length > 12) return false;
 
       const chunks = [];

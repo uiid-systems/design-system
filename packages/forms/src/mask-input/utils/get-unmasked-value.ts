@@ -1,4 +1,4 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { TransformOptions } from "../mask-input.types";
 
 export function getUnmaskedValue(opts: {
@@ -11,5 +11,5 @@ export function getUnmaskedValue(opts: {
 
   return transform
     ? transform(value, { currency, locale })
-    : value.replace(REGEX_CACHE.nonDigits, "");
+    : value.replace(MASK_INPUT_REGEX.nonDigits, "");
 }

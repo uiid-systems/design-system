@@ -1,10 +1,10 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const percentagePattern: MaskPattern = {
   pattern: "##.##%",
   transform: (value) => {
-    const cleaned = value.replace(REGEX_CACHE.percentageChars, "");
+    const cleaned = value.replace(MASK_INPUT_REGEX.percentageChars, "");
     const parts = cleaned.split(".");
     if (parts.length > 2) {
       return `${parts[0]}.${parts.slice(1).join("")}`;

@@ -1,7 +1,7 @@
 import {
-  REGEX_CACHE,
-  DEFAULT_CURRENCY,
-  DEFAULT_LOCALE,
+  MASK_INPUT_REGEX,
+  MASK_INPUT_DEFAULT_CURRENCY,
+  MASK_INPUT_DEFAULT_LOCALE,
 } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 import { getCachedFormatter } from "../utils/get-cached-formatter";
@@ -10,7 +10,10 @@ export const currencyPattern: MaskPattern = {
   pattern: "$###,###.##",
   transform: (
     value,
-    { currency = DEFAULT_CURRENCY, locale = DEFAULT_LOCALE } = {},
+    {
+      currency = MASK_INPUT_DEFAULT_CURRENCY,
+      locale = MASK_INPUT_DEFAULT_LOCALE,
+    } = {},
   ) => {
     let localeDecimalSeparator = ".";
 
@@ -28,7 +31,7 @@ export const currencyPattern: MaskPattern = {
       // Keep defaults
     }
 
-    const cleaned = value.replace(REGEX_CACHE.nonCurrencyChars, "");
+    const cleaned = value.replace(MASK_INPUT_REGEX.nonCurrencyChars, "");
 
     const dotIndex = cleaned.indexOf(".");
     const commaIndex = cleaned.indexOf(",");
@@ -108,7 +111,7 @@ export const currencyPattern: MaskPattern = {
     return digitsOnly;
   },
   validate: (value) => {
-    if (!REGEX_CACHE.currencyValidation.test(value)) return false;
+    if (!MASK_INPUT_REGEX.currencyValidation.test(value)) return false;
     const num = parseFloat(value);
     return !Number.isNaN(num) && num >= 0;
   },

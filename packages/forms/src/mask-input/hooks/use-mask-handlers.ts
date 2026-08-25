@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { CURRENCY_PERCENTAGE_SYMBOLS } from "../mask-input.constants";
+import { MASK_INPUT_CURRENCY_PERCENTAGE_SYMBOLS } from "../mask-input.constants";
 import type {
   InputElement,
   MaskPattern,
@@ -171,7 +171,9 @@ export function useMaskHandlers(
             ...transformOpts,
           });
 
-          if (CURRENCY_PERCENTAGE_SYMBOLS.test(maskPattern.pattern)) {
+          if (
+            MASK_INPUT_CURRENCY_PERCENTAGE_SYMBOLS.test(maskPattern.pattern)
+          ) {
             newCursorPosition = getCurrencyCaretPosition({
               newValue,
               mask,

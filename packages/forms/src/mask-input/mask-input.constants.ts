@@ -1,22 +1,17 @@
-import type { CurrencySymbols } from "./mask-input.types";
+export const MASK_INPUT_PAST_YEARS_LIMIT = 120;
+export const MASK_INPUT_FUTURE_YEARS_LIMIT = 10;
+export const MASK_INPUT_DEFAULT_CURRENCY = "USD";
+export const MASK_INPUT_DEFAULT_LOCALE = "en-US";
 
-export const PAST_YEARS_LIMIT = 120;
-export const FUTURE_YEARS_LIMIT = 10;
-export const DEFAULT_CURRENCY = "USD";
-export const DEFAULT_LOCALE = "en-US";
-
-export const NUMERIC_MASK_PATTERNS =
+export const MASK_INPUT_NUMERIC_PATTERNS =
   /^(phone|zipCode|zipCodeExtended|ssn|ein|time|date|creditCard|creditCardExpiry)$/;
-export const CURRENCY_PERCENTAGE_SYMBOLS = /[€$%]/;
+export const MASK_INPUT_CURRENCY_PERCENTAGE_SYMBOLS = /[€$%]/;
 
-export const formattersCache = new Map<string, Intl.NumberFormat>();
-export const currencyAtEndCache = new Map<string, boolean>();
-export const currencySymbolsCache = new Map<string, CurrencySymbols>();
-export const daysInMonthCache = [
+export const MASK_INPUT_DAYS_IN_MONTH = [
   31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
 ] as const;
 
-export const REGEX_CACHE = {
+export const MASK_INPUT_REGEX = {
   digitsOnly: /^\d+$/,
   nonDigits: /\D/g,
   nonAlphaNumeric: /[^A-Z0-9]/gi,

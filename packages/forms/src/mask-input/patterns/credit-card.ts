@@ -1,12 +1,12 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const creditCardPattern: MaskPattern = {
   pattern: "#### #### #### ####",
-  transform: (value) => value.replace(REGEX_CACHE.nonDigits, ""),
+  transform: (value) => value.replace(MASK_INPUT_REGEX.nonDigits, ""),
   validate: (value) => {
-    const cleaned = value.replace(REGEX_CACHE.nonDigits, "");
-    if (!REGEX_CACHE.creditCard.test(cleaned)) return false;
+    const cleaned = value.replace(MASK_INPUT_REGEX.nonDigits, "");
+    if (!MASK_INPUT_REGEX.creditCard.test(cleaned)) return false;
 
     let sum = 0;
     let isEven = false;

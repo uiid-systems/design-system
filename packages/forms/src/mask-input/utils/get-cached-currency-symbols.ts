@@ -1,6 +1,7 @@
-import { currencySymbolsCache } from "../mask-input.constants";
 import type { CurrencySymbols, TransformOptions } from "../mask-input.types";
 import { getCachedFormatter } from "./get-cached-formatter";
+
+const currencySymbolsCache = new Map<string, CurrencySymbols>();
 
 export function getCachedCurrencySymbols(
   opts: TransformOptions,

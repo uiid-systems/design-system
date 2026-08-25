@@ -1,9 +1,11 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const zipCodePattern: MaskPattern = {
   pattern: "#####",
-  transform: (value) => value.replace(REGEX_CACHE.nonDigits, ""),
+  transform: (value) => value.replace(MASK_INPUT_REGEX.nonDigits, ""),
   validate: (value) =>
-    REGEX_CACHE.zipCode.test(value.replace(REGEX_CACHE.nonDigits, "")),
+    MASK_INPUT_REGEX.zipCode.test(
+      value.replace(MASK_INPUT_REGEX.nonDigits, ""),
+    ),
 };

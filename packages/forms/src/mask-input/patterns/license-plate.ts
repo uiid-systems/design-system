@@ -1,9 +1,9 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const licensePlatePattern: MaskPattern = {
   pattern: "###-###",
   transform: (value) =>
-    value.replace(REGEX_CACHE.nonAlphaNumeric, "").toUpperCase(),
-  validate: (value) => REGEX_CACHE.licensePlate.test(value),
+    value.replace(MASK_INPUT_REGEX.nonAlphaNumeric, "").toUpperCase(),
+  validate: (value) => MASK_INPUT_REGEX.licensePlate.test(value),
 };

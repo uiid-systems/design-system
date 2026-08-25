@@ -1,3 +1,5 @@
+"use client";
+
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
