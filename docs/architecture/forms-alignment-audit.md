@@ -251,9 +251,18 @@ Playground + per-example stories; per-component MDX + `overview.mdx`; README rew
 the short "use when" genre (drop hand prop tables, fix stale facts); docs-app pages +
 sitemap category; drop `src/**/README.md` from published files.
 
+**Phase 5 — Palette color prop (feature, not remediation).**
+Bring the Button/Card `color` prop (`PaletteColor` + `paletteColorStyles` from
+@uiid/tokens) to form controls. Sequenced after the shared field-surface composition so
+one wiring covers all 16 controls, and built on the same plumbing as the invalid-state
+unification (invalid is palette-red through the same `--palette-*` vars). Input/Textarea
+reference implementation first, then selection controls (checked surfaces), then the
+composed controls + examples coverage.
+
 ## Tracking
 
 Tracked in Linear: [Forms Package Alignment](https://linear.app/uiid/project/forms-package-alignment-ce98502a53f0)
-— 35 issues (UI-147 through UI-181), one milestone per phase. Phase 0 items are
+— 38 issues (UI-147 through UI-184), one milestone per phase (Phase 5 adds the palette
+color prop as a feature). Phase 0 items are
 independent small PRs and can be picked up in any order; the combobox a11y fix (UI-157)
 is marked urgent.
