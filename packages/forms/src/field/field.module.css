@@ -16,6 +16,12 @@
   position: relative;
 }
 
+.field-error-tooltip {
+  /* The icon inherits this through `currentColor` rather than taking a token
+     through a JS `color` prop. */
+  color: var(--shade-foreground);
+}
+
 .field-hint svg,
 .field-error-tooltip svg {
   display: inline-block;

@@ -1,0 +1,5 @@
+.form {
+  /* The form element is a submission boundary, not a layout box — `contents`
+     keeps it out of the layout tree so children align to the parent's flow. */
+  display: contents;
+}
