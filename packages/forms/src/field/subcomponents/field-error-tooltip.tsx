@@ -17,10 +17,9 @@ export const FieldErrorTooltip = (props: FieldErrorProps) => {
         <Tooltip
           delay={FIELD_TOOLTIP_DELAY}
           PositionerProps={{ align: "end" }}
-          PopupProps={{ style: { backgroundColor: "var(--shade-foreground)" } }}
           trigger={
             <span className={styles["field-error-tooltip"]}>
-              <TriangleAlertIcon color="var(--shade-foreground)" />
+              <TriangleAlertIcon />
             </span>
           }
         />

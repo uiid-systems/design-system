@@ -46,7 +46,7 @@ export const Combobox = ({
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
-          FieldProps={{ style: { width: "100%" } }}
+          FieldProps={{ fullwidth: true }}
           {...InputProps}
         />
         <ComboboxActionButtons />

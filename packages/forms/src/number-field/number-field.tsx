@@ -60,7 +60,7 @@ export const NumberField = ({
         <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
         <BaseNumberField.Input
-          render={<Input size={size} FieldProps={{ style: { flex: 1 } }} />}
+          render={<Input size={size} />}
           className={cx(styles["number-field-input"], InputProps?.className)}
           placeholder={placeholder}
           required={required}
