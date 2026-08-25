@@ -81,7 +81,8 @@
     },
     "z-index": {
       "backdrop": { "$value": 50, "$type": "number" },
-      "popup": { "$value": 51, "$type": "number" }
+      "popup": { "$value": 51, "$type": "number" },
+      "toast": { "$value": 60, "$type": "number" }
     },
     "border": {
       "color": { "$value": "{shade.accent}", "$type": "color" },
