@@ -6,6 +6,9 @@ on:
       - main
     types: [opened, edited, synchronize, reopened]
 
+permissions:
+  pull-requests: read
+
 jobs:
   validate:
     name: Validate PR Title

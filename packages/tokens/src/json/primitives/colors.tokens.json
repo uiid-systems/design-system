@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Primitive Color Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "color": {
     "$type": "color",
     "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows.",

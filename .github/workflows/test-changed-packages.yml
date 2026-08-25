@@ -46,7 +46,7 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Generate tokens
-        run: node scripts/generate-tokens.js
+        run: node packages/tokens/build-tokens.js
 
       - name: Run tests
         run: pnpm test:run

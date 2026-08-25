@@ -62,7 +62,7 @@
   }
 
   &:active {
-    background-color: var(--forms-bgActive);
+    background-color: var(--forms-bg-focus);
   }
 }
 

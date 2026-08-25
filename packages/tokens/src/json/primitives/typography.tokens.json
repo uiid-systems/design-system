@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Primitive Typography Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "text": {
     "-1": {
       "$type": "typography",

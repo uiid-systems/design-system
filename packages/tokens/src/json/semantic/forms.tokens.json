@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Form Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "forms": {
     "bg": { "$value": "{shade.accent}", "$type": "color" },
     "bg-hover": { "$value": "{shade.surface}", "$type": "color" },

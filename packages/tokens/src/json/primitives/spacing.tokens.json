@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Primitive Spacing Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "spacing": {
     "$type": "dimension",
     "unit": { "$value": "0.25rem" },

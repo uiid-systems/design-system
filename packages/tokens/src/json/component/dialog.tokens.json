@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Dialog Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "dialog": {
     "size": {
       "$type": "dimension",

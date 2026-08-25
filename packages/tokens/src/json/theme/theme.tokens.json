@@ -1,6 +1,5 @@
 {
   "$description": "UIID Design System - Theme Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "theme": {
     "$type": "color",
     "$description": "The two values the shade aliases resolve through. A theme is now the six --shade-* custom properties overridden on a selector — there is nothing left to generate, so the preset pipeline and its semantic aliases (primary/secondary/positive/warning/critical/info) are gone. Hues live in the palette.",

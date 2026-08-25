@@ -1,9 +1,8 @@
 {
   "$description": "UIID Design System - Badge Component Tokens",
-  "$schema": "../../../dtcg.schema.json",
   "badge": {
     "border-radius": { "$value": "0.375rem", "$type": "dimension" },
-    "line-height": { "$value": "1.25", "$type": "number" },
+    "line-height": { "$value": 1.25, "$type": "number" },
     "size": {
       "sm": {
         "padding-x": { "$value": "0.5rem", "$type": "dimension" },
