@@ -1,7 +1,7 @@
 {
   "name": "@uiid/interactive",
-  "version": "0.1.0",
-  "description": "Interactive components \u2014 Accordion, Collapsible, Sortable",
+  "version": "0.2.0",
+  "description": "Interactive components — Accordion, Collapsible, Sortable",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
