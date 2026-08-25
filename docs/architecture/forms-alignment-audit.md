@@ -253,7 +253,7 @@ sitemap category; drop `src/**/README.md` from published files.
 
 ## Tracking
 
-Roughly 5 phases ≈ 25–35 issue-sized tasks. Recommendation: a **Linear project** with one
-milestone per phase (matches existing preference for multi-ticket initiatives), with
-Phase 0 optionally peeled off as immediate GitHub issues since each item is a
-self-contained small PR. Decision pending.
+Tracked in Linear: [Forms Package Alignment](https://linear.app/uiid/project/forms-package-alignment-ce98502a53f0)
+— 35 issues (UI-147 through UI-181), one milestone per phase. Phase 0 items are
+independent small PRs and can be picked up in any order; the combobox a11y fix (UI-157)
+is marked urgent.
