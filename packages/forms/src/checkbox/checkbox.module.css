@@ -38,7 +38,10 @@
     outline: 1px solid var(--color-red-500);
   }
 
+  /* Transparent hit area. At the small size (1rem) the -0.25rem inset brings
+     the target to 24x24px, the WCAG 2.2 target-size minimum. */
   &::after {
+    content: "";
     position: absolute;
     inset: -0.25rem;
   }
