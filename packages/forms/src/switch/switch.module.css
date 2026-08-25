@@ -14,17 +14,13 @@
      `outline` slot stays free for the shared focus ring below. */
   box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-halftone);
   background-color: var(--switch-bg);
-  background-size: 6.5rem 100%;
-  background-position-x: 100%;
-  background-repeat: no-repeat;
-  transition-property: background-position, box-shadow, background-color;
-  transition-duration-function: cubic-bezier(0.26, 0.75, 0.38, 0.45);
+  transition-property: box-shadow, background-color;
+  transition-timing-function: var(--globals-transition-easing);
   transition-duration: var(--globals-transition-duration);
   width: var(--switch-width);
   height: var(--switch-height);
 
   &[data-checked] {
-    background-position-x: 0%;
     background-color: var(--shade-halftone);
   }
 
@@ -39,7 +35,9 @@
   height: 100%;
   border-radius: 100%;
   background-color: var(--switch-fg);
-  transition: translate var(--globals-transition-duration);
+  /* Same easing and duration as the track above, so the thumb slide and the
+     track crossfade stay in step. */
+  transition: translate var(--globals-transition-duration) var(--globals-transition-easing);
 
   &[data-checked] {
     translate: calc(var(--switch-width) - var(--switch-height)) 0;
