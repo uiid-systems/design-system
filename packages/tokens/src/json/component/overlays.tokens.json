@@ -3,10 +3,10 @@
   "overlays": {
     "backdrop": {
       "opacity": { "$value": 0.9, "$type": "number" },
-      "z-index": { "$value": 50, "$type": "number" }
+      "z-index": { "$value": "{globals.z-index.backdrop}", "$type": "number" }
     },
     "popup": {
-      "z-index": { "$value": 51, "$type": "number" }
+      "z-index": { "$value": "{globals.z-index.popup}", "$type": "number" }
     }
   }
 }

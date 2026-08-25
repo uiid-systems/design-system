@@ -94,6 +94,28 @@
   }
 
   /**
+   * Positioner wrapping an anchored popup (select, combobox, autocomplete,
+   * popover, tooltip). Base UI renders the positioner — not the popup inside
+   * it — as the `position: fixed` element, so stacking order has to be set
+   * here; a z-index on the popup would resolve against the positioner instead
+   * of the page.
+   *
+   * Every portalled popup shares one level, matching Dialog's and Drawer's
+   * viewports. That is what keeps a Select opened inside a Dialog from
+   * rendering behind it: at an equal z-index, the later portal in DOM order
+   * paints on top, and a popup opened from within a dialog is always appended
+   * after it.
+   *
+   * outline: 0 because Base UI moves focus to the positioner on open for some
+   * keyboard flows, and the UA ring would otherwise trace the whole anchored
+   * box rather than the focused item inside it.
+   */
+  .composes-popup-positioner {
+    z-index: var(--globals-z-index-popup);
+    outline: 0;
+  }
+
+  /**
    * Before/after slot inside a form control (input, select). Holds the slot's
    * visual identity — muted color, non-shrinking, icon sizing, and pointer
    * pass-through so a decorative icon doesn't swallow clicks meant for the

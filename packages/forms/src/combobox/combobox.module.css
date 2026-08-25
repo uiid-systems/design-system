@@ -34,7 +34,7 @@
 }
 
 .combobox-positioner {
-  outline: 0;
+  composes: composes-popup-positioner from global;
 }
 
 .combobox-item {

@@ -80,7 +80,8 @@
       "size": { "$value": "0.875rem", "$type": "dimension" }
     },
     "z-index": {
-      "modal": { "$value": 3, "$type": "number" }
+      "backdrop": { "$value": 50, "$type": "number" },
+      "popup": { "$value": 51, "$type": "number" }
     },
     "border": {
       "color": { "$value": "{shade.accent}", "$type": "color" },
