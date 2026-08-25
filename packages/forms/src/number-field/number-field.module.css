@@ -12,8 +12,11 @@
 
 .number-field {
   border-radius: var(--globals-border-radius);
-  &:focus-within {
-    outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+  /* `:has(:focus-visible)` rather than `:focus-within` — the group is not
+     focusable, so it mirrors the focus-visible state of whichever control
+     inside it (input, increment, decrement) holds focus. */
+  &:has(:focus-visible) {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
 }
@@ -23,7 +26,7 @@
   border-radius: 0;
   width: -webkit-fill-available;
 
-  &:focus {
+  &:focus-visible {
     outline: none;
   }
 }

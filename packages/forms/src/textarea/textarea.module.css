@@ -23,7 +23,7 @@
   }
 
   /** Focus */
-  &:focus {
+  &:focus-visible {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
   }
@@ -72,11 +72,14 @@
   width: -webkit-fill-available;
 }
 
+/* Ghost drops the resting surface — background and border only. The focus ring
+   is deliberately left alone: `.toggle-ghost` and `.textarea` tie on
+   specificity and this block wins on source order, so clearing `outline-color`
+   here erased the ring outright. */
 .toggle-ghost {
   background-color: transparent;
   border-color: transparent;
   color: var(--shade-foreground);
-  outline-color: transparent;
 
   &::placeholder {
     transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
