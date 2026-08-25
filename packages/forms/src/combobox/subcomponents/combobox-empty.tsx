@@ -1,12 +1,23 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
+import { cx } from "@uiid/utils";
 
 import type { ComboboxEmptyProps } from "../combobox.types";
 
-export const ComboboxEmpty = ({ children, ...props }: ComboboxEmptyProps) => {
+import styles from "../combobox.module.css";
+
+export const ComboboxEmpty = ({
+  className,
+  children,
+  ...props
+}: ComboboxEmptyProps) => {
   return (
-    <BaseCombobox.Empty data-slot="combobox-empty" {...props}>
+    <BaseCombobox.Empty
+      data-slot="combobox-empty"
+      className={cx(styles["combobox-empty"], className)}
+      {...props}
+    >
       {children}
     </BaseCombobox.Empty>
   );

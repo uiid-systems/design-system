@@ -43,3 +43,12 @@
     translate: calc(var(--switch-width) - var(--switch-height)) 0;
   }
 }
+
+/* SwitchField wraps the control and its text in a <label>. The switch itself
+   already dims via composes-disabled, but the label text sits outside it, so
+   the wrapper carries the treatment for the pair. Mirrors .checkbox-label,
+   which CheckboxField applies to the identical structure. */
+.switch-label:has(:disabled, [disabled], [data-disabled]) {
+  opacity: var(--globals-disabled-opacity);
+  pointer-events: none;
+}

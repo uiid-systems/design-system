@@ -7,6 +7,8 @@
   position: relative;
 }
 
+/* Absolutely positioned, so the actions take up no layout space of their own —
+   the input has to reserve room for them, see .combobox-input. */
 .combobox-actions {
   position: absolute;
   top: 0;
@@ -14,10 +16,20 @@
   right: 0;
 }
 
+/* Reserves the strip .combobox-actions overlays: two 6-unit actions, the 2-unit
+   gap between them (Group gap={2}), and 2 more units of breathing room — 16
+   units, 4rem. Without it the value runs underneath Clear/Toggle, since the
+   size tier only insets the trailing edge by 1rem at medium. Deliberately not
+   tier-scaled: the actions are a fixed size at every tier. Keep in step with
+   .combobox-action's width below. */
+.combobox-input {
+  padding-inline-end: calc(var(--spacing-unit) * 16);
+}
+
 .combobox-action {
   all: unset;
   cursor: text;
-  width: 1.5rem;
+  width: calc(var(--spacing-unit) * 6);
   height: 2.5rem;
   color: var(--shade-muted);
   border: none;
@@ -39,4 +51,12 @@
 
 .combobox-item {
   composes: composes-option from global;
+}
+
+/* The empty message is a sibling of the list inside the popup Card, so it picks
+   up only the Card's inset while items add composes-option's padding on top.
+   Matching that padding lines the message up with the items it stands in for
+   instead of starting half a step to their left. */
+.combobox-empty {
+  padding: var(--list-item-padding-y) var(--list-item-padding-x);
 }
