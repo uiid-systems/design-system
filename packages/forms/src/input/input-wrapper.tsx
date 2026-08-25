@@ -1,3 +1,5 @@
+"use client";
+
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 import type { ReactNode } from "react";

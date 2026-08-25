@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import {
-  NUMERIC_MASK_PATTERNS,
-  CURRENCY_PERCENTAGE_SYMBOLS,
-  REGEX_CACHE,
-  DEFAULT_CURRENCY,
-  DEFAULT_LOCALE,
+  MASK_INPUT_NUMERIC_PATTERNS,
+  MASK_INPUT_CURRENCY_PERCENTAGE_SYMBOLS,
+  MASK_INPUT_REGEX,
+  MASK_INPUT_DEFAULT_CURRENCY,
+  MASK_INPUT_DEFAULT_LOCALE,
 } from "../mask-input.constants";
 import type {
   MaskPattern,
@@ -49,8 +49,8 @@ export function useMaskPattern(
 ): UseMaskPatternReturn {
   const {
     mask,
-    currency = DEFAULT_CURRENCY,
-    locale = DEFAULT_LOCALE,
+    currency = MASK_INPUT_DEFAULT_CURRENCY,
+    locale = MASK_INPUT_DEFAULT_LOCALE,
     inputMode,
     maxLength,
   } = options;
@@ -71,9 +71,12 @@ export function useMaskPattern(
   );
 
   const tokenCount = React.useMemo(() => {
-    if (!maskPattern || CURRENCY_PERCENTAGE_SYMBOLS.test(maskPattern.pattern))
+    if (
+      !maskPattern ||
+      MASK_INPUT_CURRENCY_PERCENTAGE_SYMBOLS.test(maskPattern.pattern)
+    )
       return undefined;
-    return maskPattern.pattern.match(REGEX_CACHE.hashPattern)?.length ?? 0;
+    return maskPattern.pattern.match(MASK_INPUT_REGEX.hashPattern)?.length ?? 0;
   }, [maskPattern]);
 
   const calculatedMaxLength = tokenCount
@@ -88,7 +91,7 @@ export function useMaskPattern(
       return "decimal";
     }
 
-    if (typeof mask === "string" && NUMERIC_MASK_PATTERNS.test(mask)) {
+    if (typeof mask === "string" && MASK_INPUT_NUMERIC_PATTERNS.test(mask)) {
       return "numeric";
     }
     return undefined;

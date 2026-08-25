@@ -1,6 +1,8 @@
-import { currencyAtEndCache, REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { TransformOptions } from "../mask-input.types";
 import { getCachedFormatter } from "./get-cached-formatter";
+
+const currencyAtEndCache = new Map<string, boolean>();
 
 export function isCurrencyAtEnd(opts: TransformOptions): boolean {
   const { locale, currency } = opts;
@@ -18,7 +20,7 @@ export function isCurrencyAtEnd(opts: TransformOptions): boolean {
       maximumFractionDigits: 0,
     });
     const sample = formatter.format(123);
-    const result = REGEX_CACHE.currencyAtEnd.test(sample);
+    const result = MASK_INPUT_REGEX.currencyAtEnd.test(sample);
     currencyAtEndCache.set(key, result);
     return result;
   } catch {

@@ -1,4 +1,7 @@
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "../mask-input.constants";
+import {
+  MASK_INPUT_DEFAULT_CURRENCY,
+  MASK_INPUT_DEFAULT_LOCALE,
+} from "../mask-input.constants";
 import { getCachedCurrencySymbols } from "./get-cached-currency-symbols";
 import { getCachedFormatter } from "./get-cached-formatter";
 
@@ -7,7 +10,11 @@ export function applyCurrencyMask(opts: {
   currency?: string;
   locale?: string;
 }): string {
-  const { value, currency = DEFAULT_CURRENCY, locale = DEFAULT_LOCALE } = opts;
+  const {
+    value,
+    currency = MASK_INPUT_DEFAULT_CURRENCY,
+    locale = MASK_INPUT_DEFAULT_LOCALE,
+  } = opts;
 
   if (!value) return "";
 

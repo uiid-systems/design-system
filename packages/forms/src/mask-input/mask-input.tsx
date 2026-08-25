@@ -8,7 +8,10 @@ import { Field } from "../field/field";
 import { InputWrapper } from "../input/input-wrapper";
 import { inputVariants } from "../input/input.variants";
 import { useMask } from "./hooks";
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "./mask-input.constants";
+import {
+  MASK_INPUT_DEFAULT_CURRENCY,
+  MASK_INPUT_DEFAULT_LOCALE,
+} from "./mask-input.constants";
 import type { MaskInputProps } from "./mask-input.types";
 
 import inputStyles from "../input/input.module.css";
@@ -23,8 +26,8 @@ export const MaskInput = (props: MaskInputProps) => {
     validationMode = "onChange",
     mask,
     maskPlaceholder,
-    currency = DEFAULT_CURRENCY,
-    locale = DEFAULT_LOCALE,
+    currency = MASK_INPUT_DEFAULT_CURRENCY,
+    locale = MASK_INPUT_DEFAULT_LOCALE,
     invalid = false,
     withoutMask = false,
     // Slot props

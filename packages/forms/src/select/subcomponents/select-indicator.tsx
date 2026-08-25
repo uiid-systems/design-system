@@ -1,3 +1,5 @@
+"use client";
+
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
 import { cx } from "@uiid/utils";

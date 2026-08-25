@@ -1,9 +1,9 @@
-import { REGEX_CACHE } from "../mask-input.constants";
+import { MASK_INPUT_REGEX } from "../mask-input.constants";
 import type { MaskPattern } from "../mask-input.types";
 
 export const einPattern: MaskPattern = {
   pattern: "##-#######",
-  transform: (value) => value.replace(REGEX_CACHE.nonDigits, ""),
+  transform: (value) => value.replace(MASK_INPUT_REGEX.nonDigits, ""),
   validate: (value) =>
-    REGEX_CACHE.ein.test(value.replace(REGEX_CACHE.nonDigits, "")),
+    MASK_INPUT_REGEX.ein.test(value.replace(MASK_INPUT_REGEX.nonDigits, "")),
 };

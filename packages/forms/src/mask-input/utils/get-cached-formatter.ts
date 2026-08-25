@@ -1,8 +1,9 @@
 import {
-  formattersCache,
-  DEFAULT_CURRENCY,
-  DEFAULT_LOCALE,
+  MASK_INPUT_DEFAULT_CURRENCY,
+  MASK_INPUT_DEFAULT_LOCALE,
 } from "../mask-input.constants";
+
+const formattersCache = new Map<string, Intl.NumberFormat>();
 
 export function getCachedFormatter(
   locale: string | undefined,
@@ -29,9 +30,9 @@ export function getCachedFormatter(
     } catch {
       formattersCache.set(
         key,
-        new Intl.NumberFormat(DEFAULT_LOCALE, {
+        new Intl.NumberFormat(MASK_INPUT_DEFAULT_LOCALE, {
           style: "currency",
-          currency: DEFAULT_CURRENCY,
+          currency: MASK_INPUT_DEFAULT_CURRENCY,
           ...opts,
         }),
       );

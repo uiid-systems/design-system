@@ -1,3 +1,5 @@
+"use client";
+
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { CheckIcon } from "@uiid/icons/check";
 import { ListItem } from "@uiid/lists";
