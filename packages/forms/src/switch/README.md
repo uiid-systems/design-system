@@ -75,24 +75,24 @@ const [checked, setChecked] = useState(false);
 ## Anatomy
 
 ```tsx
-<SwitchLabel>
+<SwitchField>
   {" "}
-  {/* Container with label */}
+  {/* Container with label and description */}
   <SwitchRoot>
     {" "}
     {/* The switch track */}
     <SwitchThumb /> {/* The sliding thumb */}
   </SwitchRoot>
-</SwitchLabel>
+</SwitchField>
 ```
 
 ## Subcomponents
 
-| Component     | Description               |
-| ------------- | ------------------------- |
-| `SwitchRoot`  | The switch track element  |
-| `SwitchThumb` | The sliding thumb element |
-| `SwitchLabel` | Label wrapper element     |
+| Component     | Description                          |
+| ------------- | ------------------------------------ |
+| `SwitchRoot`  | The switch track element             |
+| `SwitchThumb` | The sliding thumb element            |
+| `SwitchField` | Container with label and description |
 
 ## Data Slots
 
@@ -100,7 +100,6 @@ const [checked, setChecked] = useState(false);
 | -------------- | ----------------- |
 | `switch-root`  | The switch track  |
 | `switch-thumb` | The thumb element |
-| `switch-label` | The label element |
 
 ## Accessibility
 
