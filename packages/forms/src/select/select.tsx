@@ -14,7 +14,7 @@ import {
   SelectList,
   SelectItem,
   SelectValue,
-  SelectIndicator,
+  SelectIcon,
 } from "./subcomponents";
 
 export function Select<Value = string>({
@@ -38,7 +38,7 @@ export function Select<Value = string>({
   PopupProps,
   ListProps,
   ValueProps,
-  IndicatorProps,
+  IconProps,
   FieldProps,
   children,
   ...props
@@ -85,7 +85,7 @@ export function Select<Value = string>({
                 : (placeholder ?? null)
             }
           </SelectValue>
-          <SelectIndicator {...IndicatorProps} />
+          <SelectIcon {...IconProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>
           <SelectPositioner {...PositionerProps}>

@@ -55,7 +55,7 @@ const meta = {
     PopupProps: { control: "object", table: { category: "Subcomponents" } },
     ListProps: { control: "object", table: { category: "Subcomponents" } },
     ValueProps: { control: "object", table: { category: "Subcomponents" } },
-    IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
+    IconProps: { control: "object", table: { category: "Subcomponents" } },
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>

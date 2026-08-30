@@ -4,14 +4,11 @@ import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
 import { cx } from "@uiid/utils";
 
-import type { SelectIndicatorProps } from "../select.types";
+import type { SelectIconProps } from "../select.types";
 
 import styles from "../select.module.css";
 
-export const SelectIndicator = ({
-  className,
-  ...props
-}: SelectIndicatorProps) => {
+export const SelectIcon = ({ className, ...props }: SelectIconProps) => {
   return (
     <BaseSelect.Icon
       data-slot="select-icon"
@@ -21,4 +18,4 @@ export const SelectIndicator = ({
     />
   );
 };
-SelectIndicator.displayName = "SelectIndicator";
+SelectIcon.displayName = "SelectIcon";

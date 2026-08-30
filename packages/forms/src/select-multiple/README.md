@@ -59,7 +59,7 @@ const items = [
 <SelectMultiple>
   └── <SelectTrigger>         {/* Trigger button */}
         ├── <SelectValue />   {/* Displays selected values */}
-        └── <SelectIndicator /> {/* Chevron icon */}
+        └── <SelectIcon /> {/* Chevron icon */}
       <SelectPortal>          {/* Portal wrapper */}
         └── <SelectPositioner>
               └── <SelectPopup>
@@ -75,7 +75,7 @@ For advanced composition, the following subcomponents are available:
 | ------------------ | ------------------------ |
 | `SelectTrigger`    | The trigger button       |
 | `SelectValue`      | Displays selected values |
-| `SelectIndicator`  | Chevron icon             |
+| `SelectIcon`       | Chevron icon             |
 | `SelectPortal`     | Portal container         |
 | `SelectPositioner` | Positions the popup      |
 | `SelectPopup`      | Popup container          |

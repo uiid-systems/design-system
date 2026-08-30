@@ -13,7 +13,7 @@ import {
   SelectList,
   SelectItem,
   SelectValue,
-  SelectIndicator,
+  SelectIcon,
 } from "../select/subcomponents";
 import type { SelectMultipleProps } from "./select-multiple.types";
 
@@ -38,7 +38,7 @@ export const SelectMultiple = ({
   PopupProps,
   ListProps,
   ValueProps,
-  IndicatorProps,
+  IconProps,
   FieldProps,
   children,
   ...props
@@ -84,7 +84,7 @@ export const SelectMultiple = ({
                 : (placeholder ?? null)
             }
           </SelectValue>
-          <SelectIndicator {...IndicatorProps} />
+          <SelectIcon {...IconProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>
           <SelectPositioner {...PositionerProps}>
