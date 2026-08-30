@@ -96,3 +96,10 @@ describe("Checkbox field row scoping", () => {
     expect(row?.className).toMatch(/field-row-bare/);
   });
 });
+
+describe("Checkbox invalid treatment", () => {
+  it("adopts the shared invalid composition", () => {
+    render(<Checkbox />);
+    expect(screen.getByRole("checkbox").className).toMatch(/composes-invalid/);
+  });
+});

@@ -7,7 +7,7 @@
 .field-label[data-required="true"] {
   &::after {
     content: "*";
-    color: var(--color-red-500);
+    color: var(--palette-text);
     margin-left: 0.25rem;
   }
 }
@@ -32,8 +32,8 @@
 
 .field-error-tooltip {
   /* The icon inherits this through `currentColor` rather than taking a token
-     through a JS `color` prop. */
-  color: var(--shade-foreground);
+     through a JS `color` prop. The palette class is applied alongside. */
+  color: var(--palette-text);
 }
 
 .field-hint svg,

@@ -249,3 +249,10 @@ describe("Textarea Field.Control surface", () => {
     expect(onValueChange).toHaveBeenCalled();
   });
 });
+
+describe("Textarea invalid treatment", () => {
+  it("adopts the shared invalid composition", () => {
+    render(<Textarea />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-invalid/);
+  });
+});

@@ -2,6 +2,7 @@
 
 .input {
   composes: composes-disabled from global;
+  composes: composes-invalid from global;
 }
 
 .input:where(:not([data-slot="select-value"])) {
@@ -34,12 +35,6 @@
   &:focus-visible {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
-  }
-
-  /** Invalid */
-  &[data-invalid] {
-    border-color: var(--shade-foreground);
-    outline-color: var(--shade-foreground);
   }
 
   /** Hack to prevent browser-assigned autofill color */
@@ -105,12 +100,6 @@
   &:has(:disabled, [data-disabled]) {
     pointer-events: none;
     opacity: var(--globals-disabled-opacity);
-  }
-
-  /** Invalid state on wrapper */
-  &:has([data-invalid]) {
-    border-color: var(--shade-foreground);
-    outline-color: var(--shade-foreground);
   }
 }
 

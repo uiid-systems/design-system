@@ -126,3 +126,10 @@ describe("Switch field row scoping", () => {
     );
   });
 });
+
+describe("Switch invalid treatment", () => {
+  it("adopts the shared invalid composition", () => {
+    render(<Switch />);
+    expect(screen.getByRole("switch").className).toMatch(/composes-invalid/);
+  });
+});

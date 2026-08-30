@@ -1,6 +1,7 @@
 "use client";
 
 import { Field as BaseField } from "@base-ui/react/field";
+import { paletteColorStyles } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
@@ -20,7 +21,11 @@ export const FieldLabel = ({
       data-slot="field-label"
       data-required={required ?? undefined}
       render={<Text render={<label />} weight={weight} />}
-      className={cx(styles["field-label"], className)}
+      className={cx(
+        styles["field-label"],
+        required && paletteColorStyles.red,
+        className,
+      )}
       {...props}
     >
       {children}

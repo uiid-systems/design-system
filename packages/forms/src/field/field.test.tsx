@@ -245,3 +245,23 @@ describe("Field className merging", () => {
     expect(root).toHaveClass("root-class");
   });
 });
+
+describe("Field invalid language", () => {
+  it("carries the palette class on a required label", () => {
+    render(
+      <Field label="Email" required>
+        <input />
+      </Field>,
+    );
+    expect(screen.getByText("Email").className).toMatch(/palette-red/);
+  });
+
+  it("does not carry it when the field is optional", () => {
+    render(
+      <Field label="Email">
+        <input />
+      </Field>,
+    );
+    expect(screen.getByText("Email").className).not.toMatch(/palette-red/);
+  });
+});
