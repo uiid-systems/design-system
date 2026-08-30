@@ -29,7 +29,6 @@ Every component also ships as an individual package (`@uiid/buttons`, `@uiid/lay
 ### Components
 
 - `@uiid/buttons` — Button, CloseButton, CopyButton, ToggleButton
-- `@uiid/calendars` — Date and date range pickers
 - `@uiid/cards` — Card components
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting
 - `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, ToggleGroup, and more

@@ -35,11 +35,11 @@ graph TD
 
   forms --> buttons & cards & icons & layout & lists & overlays & typography
 
-  interactive --> buttons & cards & forms & icons & indicators & layout & overlays & typography
+  interactive --> icons & layout
 
-  navigation --> buttons & icons & layout & typography
+  navigation --> buttons & cards & icons & layout & typography
 
-  tables --> buttons & cards & forms & icons & interactive & layout & overlays & typography
+  tables --> buttons & cards & forms & icons & layout & navigation & overlays & typography
 
   code --> buttons & cards & icons & layout & typography
 ```
@@ -52,5 +52,10 @@ graph TD
 - `layout`, `typography`, and `icons` are leaves — they rely on no other UI
   component. (`layout` composes shared text styles from `@uiid/tokens`, so it no
   longer depends on `typography`.)
+- `interactive` is now the lightest non-leaf, reaching only `icons` and `layout`.
+  Accordion, Menu, and Tabs moved to `navigation` and ToggleGroup moved to
+  `forms`, which took `buttons`, `cards`, `forms`, `indicators`, `overlays`, and
+  `typography` off its dependency list. `navigation` picked up `cards` in the same
+  move, and `tables` swapped its `interactive` edge for `navigation`.
 - To regenerate, inspect the `@uiid/*` entries in each `packages/*/package.json`,
   dropping `tokens` and `utils`.

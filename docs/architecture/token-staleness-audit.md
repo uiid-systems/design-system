@@ -50,7 +50,7 @@ invalid and dropped:
 
 | Consumer                                            | Reads                     | Actually defined                                        |
 | --------------------------------------------------- | ------------------------- | ------------------------------------------------------- |
-| `interactive/src/tabs/tabs.module.css:107`          | `--tabs-panel-translateY` | `--tabs-panel-translate-y`                              |
+| `navigation/src/tabs/tabs.module.css:107`           | `--tabs-panel-translateY` | `--tabs-panel-translate-y`                              |
 | `forms/src/number-field/number-field.module.css:65` | `--forms-bgActive`        | _nothing_ — forms has `bg`, `bg-hover`, `bg-focus` only |
 
 The tabs one silently disables the panel's `translate3d` entrance transform.
