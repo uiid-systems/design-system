@@ -219,3 +219,23 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 });
+
+describe("Textarea single render path", () => {
+  it("renders a textarea whether or not a label is given", () => {
+    const { container: bare } = render(<Textarea />);
+    const { container: labelled } = render(<Textarea label="Message" />);
+    expect(bare.querySelector("[data-slot='textarea']")?.tagName).toBe(
+      "TEXTAREA",
+    );
+    expect(labelled.querySelector("[data-slot='textarea']")?.tagName).toBe(
+      "TEXTAREA",
+    );
+  });
+
+  it("wires an unlabelled textarea into a field root", () => {
+    const { container } = render(<Textarea />);
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).toBeInTheDocument();
+  });
+});

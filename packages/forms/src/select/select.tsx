@@ -1,6 +1,5 @@
 "use client";
 
-import { ConditionalRender } from "@uiid/layout";
 import { useMemo } from "react";
 
 import { Field } from "../field/field";
@@ -56,17 +55,12 @@ export function Select<Value = string>({
   }, [items]);
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={
-        <Field
-          name={name}
-          label={label}
-          description={description}
-          required={required}
-          {...FieldProps}
-        />
-      }
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      required={required}
+      {...FieldProps}
     >
       <SelectRoot<Value>
         name={name}
@@ -122,7 +116,7 @@ export function Select<Value = string>({
           </SelectPositioner>
         </SelectPortal>
       </SelectRoot>
-    </ConditionalRender>
+    </Field>
   );
 }
 Select.displayName = "Select";

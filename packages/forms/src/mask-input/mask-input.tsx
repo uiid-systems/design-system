@@ -1,6 +1,5 @@
 "use client";
 
-import { ConditionalRender } from "@uiid/layout";
 import { cx, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
@@ -106,17 +105,12 @@ export const MaskInput = (props: MaskInputProps) => {
   }, [placeholder, maskPlaceholder, focused, withoutMask]);
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={
-        <Field
-          name={inputProps.name}
-          label={label}
-          description={description}
-          required={required}
-          {...FieldProps}
-        />
-      }
+    <Field
+      name={inputProps.name}
+      label={label}
+      description={description}
+      required={required}
+      {...FieldProps}
     >
       <InputWrapper
         before={before}
@@ -153,7 +147,7 @@ export const MaskInput = (props: MaskInputProps) => {
           max={max}
         />
       </InputWrapper>
-    </ConditionalRender>
+    </Field>
   );
 };
 MaskInput.displayName = "MaskInput";

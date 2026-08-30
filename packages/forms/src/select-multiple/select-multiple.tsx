@@ -1,7 +1,6 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { ConditionalRender } from "@uiid/layout";
 import { useMemo } from "react";
 
 import { Field } from "../field/field";
@@ -52,17 +51,12 @@ export const SelectMultiple = ({
   }, [items]);
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={
-        <Field
-          name={name}
-          label={label}
-          description={description}
-          required={required}
-          {...FieldProps}
-        />
-      }
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      required={required}
+      {...FieldProps}
     >
       <BaseSelect.Root
         data-slot="select-multiple-root"
@@ -121,7 +115,7 @@ export const SelectMultiple = ({
           </SelectPositioner>
         </SelectPortal>
       </BaseSelect.Root>
-    </ConditionalRender>
+    </Field>
   );
 };
 SelectMultiple.displayName = "SelectMultiple";

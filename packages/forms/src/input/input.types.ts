@@ -6,10 +6,17 @@ import { inputVariants } from "./input.variants";
 
 export type InputVariants = VariantProps<typeof inputVariants>;
 
-export type InputProps = Omit<Input.Props, "size"> & {
+export type InputControlProps = Omit<Input.Props, "size"> & {
+  /**
+   * Rendered inside an `InputWrapper`, which carries the control surface, so
+   * the input paints only its inner treatment.
+   */
+  inner?: boolean;
+  ref?: React.Ref<HTMLInputElement>;
+} & InputVariants;
+
+export type InputProps = Omit<InputControlProps, "inner"> & {
   before?: React.ReactNode;
   after?: React.ReactNode;
   FieldProps?: FieldProps;
-  ref?: React.Ref<HTMLInputElement>;
-} & Pick<FieldProps, "label" | "description"> &
-  InputVariants;
+} & Pick<FieldProps, "label" | "description">;
