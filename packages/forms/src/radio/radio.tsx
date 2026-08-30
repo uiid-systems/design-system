@@ -2,9 +2,9 @@
 
 import { cx } from "@uiid/utils";
 
-import { checkboxVariants } from "../checkbox/checkbox.variants";
 import { FieldRow } from "../field/subcomponents";
 import type { RadioProps } from "./radio.types";
+import { radioVariants } from "./radio.variants";
 import { RadioIndicator, RadioRoot } from "./subcomponents";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
@@ -26,7 +26,7 @@ export const Radio = ({
       description={description}
       className={cx(
         checkboxStyles["checkbox-label"],
-        checkboxVariants({ reversed, bordered }),
+        radioVariants({ reversed, bordered }),
       )}
       {...FieldProps}
     >

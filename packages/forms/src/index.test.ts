@@ -89,6 +89,10 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("CheckboxGroupRoot");
   });
 
+  it("exports the radio-group compound API", () => {
+    expect(forms).toHaveProperty("RadioGroupRoot");
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");

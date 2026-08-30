@@ -1,49 +1,58 @@
 "use client";
 
-import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
-import { Stack, Group } from "@uiid/layout";
-
 import { Field } from "../field/field";
 import { Radio } from "../radio/radio";
 import type { RadioGroupProps } from "./radio-group.types";
+import { RadioGroupRoot } from "./subcomponents";
 
 export const RadioGroup = ({
   items,
   label,
   description,
   name,
-  defaultValue,
   direction = "vertical",
   bordered,
   reversed,
   hideIndicators,
+  disabled,
+  required,
   RadioProps,
   IndicatorProps,
+  FieldProps,
+  children,
   ...props
 }: RadioGroupProps) => {
-  const isHorizontal = direction === "horizontal";
-
   return (
-    <Field name={name} label={label} description={description}>
-      <BaseRadioGroup
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      required={required}
+      disabled={disabled}
+      {...FieldProps}
+    >
+      <RadioGroupRoot
         name={name}
+        direction={direction}
+        disabled={disabled}
         {...props}
-        defaultValue={defaultValue ?? items[0]?.value}
-        render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
       >
-        {items.map(({ value, label }) => (
-          <Radio
-            key={value}
-            {...RadioProps}
-            hideIndicator={hideIndicators}
-            bordered={bordered}
-            reversed={reversed}
-            value={value}
-            label={label}
-            IndicatorProps={IndicatorProps}
-          />
-        ))}
-      </BaseRadioGroup>
+        {!items
+          ? children
+          : items.map(({ value, label, disabled: itemDisabled }) => (
+              <Radio
+                key={value}
+                {...RadioProps}
+                hideIndicator={hideIndicators}
+                bordered={bordered}
+                reversed={reversed}
+                value={value}
+                label={label}
+                disabled={itemDisabled || disabled}
+                IndicatorProps={IndicatorProps}
+              />
+            ))}
+      </RadioGroupRoot>
     </Field>
   );
 };

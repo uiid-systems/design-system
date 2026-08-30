@@ -27,12 +27,12 @@ describe("Radio", () => {
     expect(screen.getByText("Option B")).toBeInTheDocument();
   });
 
-  it("selects first item by default", () => {
+  it("renders nothing selected by default", () => {
     render(<RadioGroup items={defaultItems} />);
-    const radios = screen.getAllByRole("radio");
 
-    expect(radios[0]).toHaveAttribute("data-checked");
-    expect(radios[1]).toHaveAttribute("data-unchecked");
+    for (const radio of screen.getAllByRole("radio")) {
+      expect(radio).toHaveAttribute("data-unchecked");
+    }
   });
 
   it("supports defaultValue", () => {
@@ -48,6 +48,7 @@ describe("Radio", () => {
     render(<RadioGroup items={defaultItems} />);
 
     const radios = screen.getAllByRole("radio");
+    await user.click(radios[0]);
     expect(radios[0]).toHaveAttribute("data-checked");
     expect(radios[1]).toHaveAttribute("data-unchecked");
 

@@ -3,7 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
+import { Radio } from "../radio/radio";
 import { RadioGroup } from "./radio-group";
+import { RadioGroupRoot } from "./subcomponents";
 
 describe("RadioGroup", () => {
   const defaultItems = [
@@ -24,13 +26,12 @@ describe("RadioGroup", () => {
     expect(screen.getByText("Option C")).toBeInTheDocument();
   });
 
-  it("selects first item by default", () => {
+  it("renders nothing selected by default", () => {
     render(<RadioGroup items={defaultItems} />);
-    const radios = screen.getAllByRole("radio");
 
-    expect(radios[0]).toHaveAttribute("data-checked");
-    expect(radios[1]).toHaveAttribute("data-unchecked");
-    expect(radios[2]).toHaveAttribute("data-unchecked");
+    for (const radio of screen.getAllByRole("radio")) {
+      expect(radio).toHaveAttribute("data-unchecked");
+    }
   });
 
   it("supports defaultValue", () => {
@@ -91,5 +92,78 @@ describe("RadioGroup", () => {
     render(<RadioGroup items={defaultItems} direction="horizontal" />);
     const radios = screen.getAllByRole("radio");
     expect(radios).toHaveLength(3);
+  });
+});
+
+describe("RadioGroup disabled and required forwarding", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+    { value: "c", label: "Option C", disabled: true },
+  ];
+
+  it("disables every radio when the group is disabled", () => {
+    render(<RadioGroup items={items} disabled />);
+
+    for (const radio of screen.getAllByRole("radio")) {
+      expect(radio).toBeDisabled();
+    }
+  });
+
+  it("honours per-item disabled without disabling the rest", () => {
+    render(<RadioGroup items={items} />);
+    const [a, b, c] = screen.getAllByRole("radio");
+
+    expect(a).not.toBeDisabled();
+    expect(b).not.toBeDisabled();
+    expect(c).toBeDisabled();
+  });
+
+  it("forwards required to the field so the label is marked", () => {
+    const { container } = render(
+      <RadioGroup items={items} label="Pick one" required />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+});
+
+describe("RadioGroup compound API", () => {
+  it("renders composed children when no items are given", () => {
+    render(
+      <RadioGroup name="size" label="Size">
+        <Radio value="s" label="Small" />
+        <Radio value="m" label="Medium" />
+      </RadioGroup>,
+    );
+
+    expect(screen.getAllByRole("radio")).toHaveLength(2);
+  });
+
+  it("honours defaultValue against composed children", () => {
+    render(
+      <RadioGroup name="size" defaultValue="m">
+        <Radio value="s" label="Small" />
+        <Radio value="m" label="Medium" />
+      </RadioGroup>,
+    );
+
+    const [small, medium] = screen.getAllByRole("radio");
+    expect(small).toHaveAttribute("data-unchecked");
+    expect(medium).toHaveAttribute("data-checked");
+  });
+
+  it("exposes the group root with a data-slot", () => {
+    const { container } = render(
+      <RadioGroupRoot>
+        <Radio value="s" label="Small" />
+      </RadioGroupRoot>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='radio-group-root']"),
+    ).not.toBeNull();
   });
 });
