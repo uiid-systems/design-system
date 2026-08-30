@@ -1,5 +1,6 @@
 import type { Field } from "@base-ui/react/field";
 import type { Icon } from "@uiid/icons";
+import type { GroupProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
 import type { SpacingProps } from "@uiid/utils";
 
@@ -25,6 +26,16 @@ export type FieldDescriptionProps = Field.Description.Props &
 export type FieldHintValue =
   | { icon?: Icon; text?: string; tooltip?: never }
   | { icon: Icon; text?: string; tooltip?: React.ReactNode };
+
+export type FieldRowProps = GroupProps &
+  Pick<FieldRootProps, "name"> &
+  React.PropsWithChildren<{
+    label?: string;
+    description?: string;
+    LabelProps?: FieldLabelProps;
+    DescriptionProps?: FieldDescriptionProps;
+    ErrorProps?: FieldErrorProps;
+  }>;
 
 export type FieldErrorType = "inline" | "tooltip" | "absolute";
 export type FieldErrorProps = Field.Error.Props;

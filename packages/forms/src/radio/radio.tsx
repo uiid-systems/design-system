@@ -1,8 +1,13 @@
 "use client";
 
-import { CheckboxField } from "../checkbox/subcomponents";
+import { cx } from "@uiid/utils";
+
+import { checkboxVariants } from "../checkbox/checkbox.variants";
+import { FieldRow } from "../field/subcomponents";
 import type { RadioProps } from "./radio.types";
-import { RadioRoot, RadioIndicator } from "./subcomponents";
+import { RadioIndicator, RadioRoot } from "./subcomponents";
+
+import checkboxStyles from "../checkbox/checkbox.module.css";
 
 export const Radio = ({
   value,
@@ -16,17 +21,19 @@ export const Radio = ({
   ...props
 }: RadioProps) => {
   return (
-    <CheckboxField
+    <FieldRow
       label={label}
       description={description}
-      reversed={reversed}
-      bordered={bordered}
+      className={cx(
+        checkboxStyles["checkbox-label"],
+        checkboxVariants({ reversed, bordered }),
+      )}
       {...FieldProps}
     >
       <RadioRoot value={value} hideIndicator={hideIndicator} {...props}>
         <RadioIndicator {...IndicatorProps} />
       </RadioRoot>
-    </CheckboxField>
+    </FieldRow>
   );
 };
 Radio.displayName = "Radio";

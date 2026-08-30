@@ -74,3 +74,25 @@ describe("Checkbox", () => {
     expect(screen.getByRole("checkbox")).toHaveAttribute("data-checked");
   });
 });
+
+describe("Checkbox field row scoping", () => {
+  it("renders the control inside the field row, not before it", () => {
+    const { container } = render(<Checkbox label="Accept terms" />);
+    const row = container.querySelector("[data-slot='field-row']");
+    expect(row).toBeInTheDocument();
+    expect(row).toContainElement(screen.getByRole("checkbox"));
+  });
+
+  it("associates the label with its own control", () => {
+    render(<Checkbox label="Accept terms" />);
+    expect(screen.getAllByLabelText("Accept terms")).toContain(
+      screen.getByRole("checkbox"),
+    );
+  });
+
+  it("renders no row presentation when there is no label or description", () => {
+    const { container } = render(<Checkbox />);
+    const row = container.querySelector("[data-slot='field-row']");
+    expect(row?.className).toMatch(/field-row-bare/);
+  });
+});

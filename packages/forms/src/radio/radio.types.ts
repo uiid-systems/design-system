@@ -1,10 +1,10 @@
 import type { Radio as BaseRadio } from "@base-ui/react/radio";
-import type { GroupProps } from "@uiid/layout";
 
 import type {
   CheckboxFieldProps,
   CheckboxVariants,
 } from "../checkbox/checkbox.types";
+import type { FieldRowProps } from "../field/field.types";
 
 export type RadioVariants = CheckboxVariants;
 
@@ -19,6 +19,6 @@ export type RadioProps = RadioRootProps &
     CheckboxFieldProps,
     "label" | "description" | "reversed" | "bordered"
   > & {
-    FieldProps?: GroupProps;
+    FieldProps?: FieldRowProps;
     IndicatorProps?: RadioIndicatorProps;
   };
