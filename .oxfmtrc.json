@@ -5,14 +5,7 @@
   "tabWidth": 2,
   "htmlWhitespaceSensitivity": "css",
   "sortPackageJson": false,
-  // Side-effect imports (`import "./globals.css"`) are never reordered —
-  // `sortSideEffects` defaults to false — so the CSS cascade is preserved.
   "sortImports": true,
-  // `packages/*/icons/` holds ~1,768 generated per-icon modules per package, and
-  // `*.generated.ts` the generated icon barrel. Formatting generated output is
-  // wasted work, and at this file count it exhausts the linter.
-  // `.claude/worktrees/` holds full nested checkouts of this repo, so without
-  // this every file is processed once per live worktree.
   "ignorePatterns": [
     ".claude/worktrees/**",
     "packages/*/icons/**",

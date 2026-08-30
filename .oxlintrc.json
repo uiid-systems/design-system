@@ -134,10 +134,6 @@
       }
     },
     {
-      // Stories are excluded via `ignorePatterns`, but an explicitly-configured
-      // `rules-of-hooks` still lints them, so it has to be disabled here too.
-      // Storybook CSF calls `render: () => {}` as a component, so hooks inside
-      // it are valid; the rule only sees an anonymous function and misfires.
       "files": ["**/*.stories.{ts,tsx}"],
       "rules": {
         "react/rules-of-hooks": "off"
