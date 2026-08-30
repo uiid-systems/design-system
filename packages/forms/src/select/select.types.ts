@@ -13,10 +13,10 @@ export type SelectItemProps = FormItemProps & {
   icon?: Icon;
 };
 
-export type SelectRootProps<Value = string> = BaseSelect.Root.Props<
-  Value,
-  false
->;
+export type SelectRootProps<
+  Value = string,
+  Multiple extends SelectMultipleMode = false,
+> = BaseSelect.Root.Props<Value, Multiple>;
 export type SelectTriggerProps = BaseSelect.Trigger.Props &
   Pick<InputVariants, "ghost" | "fullwidth" | "size"> & {
     before?: React.ReactNode;
@@ -30,12 +30,15 @@ export type SelectValueProps = BaseSelect.Value.Props &
   Pick<InputVariants, "size">;
 export type SelectIconProps = BaseSelect.Icon.Props;
 
-export type SelectProps<Value = string> = React.PropsWithChildren<{
+export type SelectProps<
+  Value = string,
+  Multiple extends SelectMultipleMode = false,
+> = React.PropsWithChildren<{
   placeholder?: string;
   before?: React.ReactNode;
   after?: React.ReactNode;
   items?: SelectItemProps[];
-  RootProps?: SelectRootProps<Value>;
+  RootProps?: SelectRootProps<Value, Multiple>;
   TriggerProps?: SelectTriggerProps;
   PortalProps?: SelectPortalProps;
   PositionerProps?: SelectPositionerProps;
@@ -45,6 +48,6 @@ export type SelectProps<Value = string> = React.PropsWithChildren<{
   FieldProps?: FieldProps;
   IconProps?: SelectIconProps;
 }> &
-  SelectRootProps<Value> &
+  SelectRootProps<Value, Multiple> &
   Pick<FieldProps, "label" | "description"> &
   InputVariants;

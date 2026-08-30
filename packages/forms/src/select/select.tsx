@@ -4,7 +4,11 @@ import { useMemo } from "react";
 
 import { Field } from "../field/field";
 import { SELECT_DEFAULT_SIZE } from "./select.constants";
-import type { SelectProps } from "./select.types";
+import type {
+  SelectMultipleMode,
+  SelectProps,
+  SelectRootProps,
+} from "./select.types";
 import {
   SelectRoot,
   SelectTrigger,
@@ -17,7 +21,10 @@ import {
   SelectIcon,
 } from "./subcomponents";
 
-export function Select<Value = string>({
+export function Select<
+  Value = string,
+  Multiple extends SelectMultipleMode = false,
+>({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
   ghost,
@@ -30,6 +37,7 @@ export function Select<Value = string>({
   before,
   after,
   items,
+  multiple,
   defaultValue,
   RootProps,
   TriggerProps,
@@ -42,10 +50,18 @@ export function Select<Value = string>({
   FieldProps,
   children,
   ...props
-}: SelectProps<Value>) {
-  // Only use defaultValue or first item, not placeholder
-  const resolvedDefaultValue =
-    defaultValue ?? (placeholder ? undefined : items?.[0]?.value);
+}: SelectProps<Value, Multiple>) {
+  // Multiple mode starts empty; single mode falls back to the first item
+  // unless a placeholder should show instead.
+  const resolvedDefaultValue = (defaultValue ??
+    (multiple
+      ? []
+      : placeholder
+        ? undefined
+        : items?.[0]?.value)) as SelectRootProps<
+    Value,
+    Multiple
+  >["defaultValue"];
 
   // Create a lookup function to resolve labels from values
   const itemToStringLabel = useMemo(() => {
@@ -53,6 +69,19 @@ export function Select<Value = string>({
     const labelMap = new Map(items.map((item) => [item.value, item.label]));
     return (value: Value) => labelMap.get(value as string) ?? String(value);
   }, [items]);
+
+  const renderValue = (value: Value | Value[]) => {
+    if (multiple) {
+      const values = Array.isArray(value) ? value : [];
+      return values.length > 0
+        ? values.map((v) => itemToStringLabel?.(v) ?? String(v)).join(", ")
+        : (placeholder ?? null);
+    }
+
+    return value != null
+      ? (itemToStringLabel?.(value as Value) ?? String(value))
+      : (placeholder ?? null);
+  };
 
   return (
     <Field
@@ -62,10 +91,12 @@ export function Select<Value = string>({
       required={required}
       {...FieldProps}
     >
-      <SelectRoot<Value>
+      <SelectRoot<Value, Multiple>
         name={name}
+        multiple={multiple}
         defaultValue={resolvedDefaultValue}
         items={items}
+        itemToStringLabel={itemToStringLabel}
         {...props}
         {...RootProps}
       >
@@ -79,11 +110,7 @@ export function Select<Value = string>({
           {...TriggerProps}
         >
           <SelectValue size={size} {...ValueProps}>
-            {(value: Value) =>
-              value != null
-                ? (itemToStringLabel?.(value) ?? String(value))
-                : (placeholder ?? null)
-            }
+            {renderValue}
           </SelectValue>
           <SelectIcon {...IconProps} />
         </SelectTrigger>

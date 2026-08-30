@@ -22,6 +22,9 @@ const items = [
 // Variants
 <Select items={items} size="small" />
 <Select items={items} placeholder="Select..." />
+
+// Multiple selection
+<Select items={items} multiple />
 ```
 
 ## Examples
@@ -112,21 +115,33 @@ const items = [
 <Select items={items} />;
 ```
 
+### Multiple
+
+Pass `multiple` to allow selecting more than one option. The trigger renders the
+selected labels comma-separated, and `defaultValue` / `value` become arrays.
+
+```tsx
+<Select items={items} multiple placeholder="Select options" />;
+
+<Select items={items} multiple defaultValue={["a", "c"]} />;
+```
+
 ## Props
 
 | Prop           | Type                             | Default    | Description |
 | -------------- | -------------------------------- | ---------- | ----------- |
-| `defaultValue` | `string`                         | —          | —           |
+| `defaultValue` | `string \| string[]`             | —          | —           |
 | `description`  | `string`                         | —          | —           |
 | `disabled`     | `boolean`                        | —          | —           |
 | `fullwidth`    | `boolean`                        | —          | —           |
 | `ghost`        | `boolean`                        | —          | —           |
 | `items`        | `object[]`                       | —          | —           |
 | `label`        | `string`                         | —          | —           |
+| `multiple`     | `boolean`                        | `false`    | —           |
 | `placeholder`  | `string`                         | —          | —           |
 | `required`     | `boolean`                        | —          | —           |
 | `size`         | `"small" \| "medium" \| "large"` | `"medium"` | —           |
-| `value`        | `string`                         | —          | —           |
+| `value`        | `string \| string[]`             | —          | —           |
 
 ### SelectItemProps
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group, SelectMultiple } from "@uiid/design-system";
-import type { SelectMultipleProps } from "@uiid/design-system";
+import { Stack, Group, Select } from "@uiid/design-system";
+import type { SelectProps } from "@uiid/design-system";
 import { EyeIcon } from "@uiid/icons/eye";
 import { LockIcon } from "@uiid/icons/lock";
 import { MailIcon } from "@uiid/icons/mail";
@@ -10,13 +10,14 @@ import { MOCK_SELECT_ITEMS } from "./select.mocks";
 
 const meta = {
   title: "Forms/Select Multiple",
-  component: SelectMultiple,
+  component: Select,
   tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
     items: MOCK_SELECT_ITEMS,
+    multiple: true,
   },
   argTypes: {
     onValueChange: { table: { category: "Events" } },
@@ -42,23 +43,23 @@ const meta = {
   },
   render: (args) => (
     <Stack ax="stretch" gap={8}>
-      <SelectMultiple {...args} />
+      <Select {...args} />
 
-      <SelectMultiple
+      <Select
         {...args}
         label="Multi-select with label"
         description="Select multiple options from the list."
         placeholder="Select options"
       />
 
-      <SelectMultiple
+      <Select
         {...args}
         label="With default values"
         defaultValue={["sans", "mono"]}
       />
     </Stack>
   ),
-} satisfies Meta<SelectMultipleProps>;
+} satisfies Meta<SelectProps<string, true>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -70,8 +71,8 @@ export const TruncatedValue: Story = {
   args: { defaultValue: ["sans", "serif", "mono", "cursive"] },
   render: (args) => (
     <Stack ax="stretch" gap={8} maxw={280}>
-      <SelectMultiple {...args} fullwidth />
-      <SelectMultiple
+      <Select {...args} fullwidth />
+      <Select
         {...args}
         fullwidth
         before={<SearchIcon />}
@@ -85,13 +86,9 @@ export const BeforeAfterSlots: Story = {
   name: "Before & After Slots",
   render: (args) => (
     <Stack ax="stretch" gap={8}>
-      <SelectMultiple
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Before slot"
-      />
-      <SelectMultiple {...args} after={<MailIcon />} placeholder="After slot" />
-      <SelectMultiple
+      <Select {...args} before={<SearchIcon />} placeholder="Before slot" />
+      <Select {...args} after={<MailIcon />} placeholder="After slot" />
+      <Select
         {...args}
         before={<LockIcon />}
         after={<EyeIcon />}
@@ -99,19 +96,19 @@ export const BeforeAfterSlots: Story = {
       />
 
       <Group fullwidth gap={4}>
-        <SelectMultiple
+        <Select
           {...args}
           before={<SearchIcon />}
           placeholder="Small"
           size="small"
         />
-        <SelectMultiple
+        <Select
           {...args}
           before={<SearchIcon />}
           placeholder="Medium"
           size="medium"
         />
-        <SelectMultiple
+        <Select
           {...args}
           before={<SearchIcon />}
           placeholder="Large"
@@ -119,13 +116,13 @@ export const BeforeAfterSlots: Story = {
         />
       </Group>
 
-      <SelectMultiple
+      <Select
         {...args}
         before={<SearchIcon />}
         placeholder="Ghost with slot"
         ghost
       />
-      <SelectMultiple
+      <Select
         {...args}
         before={<SearchIcon />}
         placeholder="Disabled"
