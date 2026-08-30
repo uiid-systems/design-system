@@ -142,3 +142,45 @@ describe("Combobox", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 });
+
+describe("Combobox render target", () => {
+  const items = ["apple", "banana", "cherry"];
+
+  it("keeps the combobox role on the input when a label is passed", () => {
+    render(<Combobox items={items} label="Fruit" />);
+    const input = screen.getByRole("combobox");
+    expect(input.tagName).toBe("INPUT");
+  });
+
+  it("associates the label with the input itself", () => {
+    render(<Combobox items={items} label="Fruit" />);
+    expect(screen.getByLabelText("Fruit")).toBe(screen.getByRole("combobox"));
+  });
+
+  it("puts aria-expanded on the input, not the field wrapper", () => {
+    render(<Combobox items={items} label="Fruit" />);
+    expect(screen.getByRole("combobox")).toHaveAttribute("aria-expanded");
+  });
+
+  it("still targets the input when a description is passed", () => {
+    render(<Combobox items={items} description="Pick one" />);
+    expect(screen.getByRole("combobox").tagName).toBe("INPUT");
+  });
+});
+
+describe("Combobox FieldProps routing", () => {
+  const items = ["apple", "banana", "cherry"];
+
+  it("routes FieldProps to the field root instead of the DOM", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        label="Fruit"
+        InputProps={{ FieldProps: { className: "custom-field" } }}
+      />,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "custom-field",
+    );
+  });
+});

@@ -32,12 +32,21 @@ modernized packages (buttons, cards, overlays, tokens): **architecture/taxonomy*
 
 ### A. Correctness bugs (functional today, independent of any redesign)
 
-1. **Combobox/Autocomplete break a11y when a label is passed.**
-   `AutocompleteInput`/`ComboboxInput` pass `render={<Input label … />}`; `Input` wraps
-   itself in `<Field>` whenever `label || description` is set, so Base UI merges its
-   combobox props (`role`, `aria-*`, keyboard handlers, ref) onto the wrapper `Stack` div
-   instead of the `<input>`. Keyboard nav and ARIA silently vanish in the documented
-   usage. (`autocomplete/subcomponents/autocomplete-input.tsx:17-38`; combobox same.)
+1. ~~**Combobox/Autocomplete break a11y when a label is passed.**~~ **Withdrawn
+   2026-08-30 — did not reproduce.** The original claim was that because
+   `AutocompleteInput`/`ComboboxInput` pass `render={<Input label … />}` and `Input`
+   wraps itself in `<Field>`, Base UI would merge its combobox props (`role`, `aria-*`,
+   keyboard handlers, ref) onto the wrapper `Stack` div instead of the `<input>`.
+   Probed directly against this code: a labelled `Combobox` puts `role="combobox"` on
+   the `<input>`, `getByLabelText` resolves to that same input, and after `ArrowDown` it
+   reports `aria-expanded="true"` with `aria-activedescendant` set and its options
+   rendered. The finding missed that `render={<Input …/>}` passes a _component_, not a
+   host element — Base UI hands the merged props to `Input`, which spreads its rest props
+   onto the control, so the ARIA reached the input all along. Three unrelated defects were
+   found while checking and fixed under UI-157: `ComboboxInput` never destructured the
+   `FieldProps` it was passed (so it spread onto the DOM), `Field` silently discarded a
+   `className` passed directly to it, and `AutocompleteInput` lacked the `fullwidth` and
+   `FieldProps` its sibling had.
 2. **`CheckboxField`/`SwitchField` render the control outside its own `Field.Root`** —
    the control renders as a _sibling before_ `FieldRoot`, so Base UI's validity wiring
    cannot reach it. Both hand-roll `Field.Item`, which Base UI 1.7 ships.
@@ -200,8 +209,9 @@ multi-story 3/16 · README 16/16 but stale-format.
 Most findings collapse into four:
 
 1. **`Field.Control`/`Field.Item` were never wrapped**, so nine components improvised the
-   same conditional-Field idiom — producing the a11y break (A1), the Field-scoping bug
-   (A2), and the textarea/mask-input split-brains.
+   same conditional-Field idiom — producing the Field-scoping bug (A2) and the
+   textarea/mask-input split-brains. (A1 was also attributed here; it has since been
+   withdrawn — see the correction under Findings A.)
 2. **No `.examples.tsx` pipeline**, so forms is invisible to the docs site, stories drift
    independently, and visual drift went unnoticed.
 3. **No component token files + under-adopted compositions**, so styling was hand-rolled
@@ -224,10 +234,11 @@ with overlays; inline-style violations; unused/duplicated deps; `aria-label="che
 
 **Phase 1 — Field architecture (the core fix).**
 Wrap `Field.Control`, `Field.Validity`, `Field.Item`; replace the nine conditional-Field
-reimplementations with one `FieldControl` path; fix Combobox/Autocomplete input render
-target (A1); rebuild `CheckboxField`/`SwitchField`/radio row on `Field.Item` with correct
-scoping (A2); make Textarea/MaskInput use `Field.Control` unconditionally; **one
-invalid-state language** on `--palette-*` tokens across all 16 (closes #297).
+reimplementations with one unconditional `Field` path; correct prop routing in the
+Combobox/Autocomplete inputs (A1 as filed was withdrawn); rebuild
+`CheckboxField`/`SwitchField`/radio row on `Field.Item` with correct scoping (A2); make
+Textarea/MaskInput use `Field.Control` unconditionally; **one invalid-state language** on
+`--palette-*` tokens across all 16 (closes #297).
 
 **Phase 2 — API surface alignment.**
 Export select/radio subcomponents; `SelectIndicator` → `SelectIcon`; collapse

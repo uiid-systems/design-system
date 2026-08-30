@@ -2,7 +2,9 @@
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
-import { Input } from "../../input/input";
+import { Field } from "../../field/field";
+import { InputControl } from "../../input/input-control";
+import { InputWrapper } from "../../input/input-wrapper";
 import type { AutocompleteInputProps } from "../autocomplete.types";
 
 export const AutocompleteInput = ({
@@ -14,26 +16,33 @@ export const AutocompleteInput = ({
   placeholder,
   before,
   after,
+  FieldProps,
+  className,
   ...props
 }: AutocompleteInputProps) => {
+  const hasSlots = Boolean(before || after);
+
   return (
-    <BaseAutocomplete.Input
-      data-slot="autocomplete-input"
+    <Field
       name={name}
-      render={
-        <Input
+      label={label}
+      description={description}
+      fullwidth
+      {...FieldProps}
+    >
+      <InputWrapper before={before} after={after} fullwidth>
+        <BaseAutocomplete.Input
+          data-slot="autocomplete-input"
           name={name}
-          label={label}
-          description={description}
-          before={before}
-          after={after}
+          render={<InputControl inner={hasSlots} fullwidth />}
+          className={className}
+          placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}
+          {...props}
         />
-      }
-      placeholder={placeholder}
-      {...props}
-    />
+      </InputWrapper>
+    </Field>
   );
 };
 AutocompleteInput.displayName = "AutocompleteInput";
