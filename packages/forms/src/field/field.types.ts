@@ -8,6 +8,12 @@ export type FieldRootProps = Field.Root.Props &
     fullwidth?: boolean;
   };
 
+export type FieldItemProps = Field.Item.Props;
+
+export type FieldControlProps = Field.Control.Props;
+
+export type FieldValidityProps = Field.Validity.Props;
+
 export type FieldLabelProps = Field.Label.Props &
   TextProps & {
     required?: boolean;
@@ -16,7 +22,7 @@ export type FieldLabelProps = Field.Label.Props &
 export type FieldDescriptionProps = Field.Description.Props &
   Omit<TextProps, "ref">;
 
-export type FieldHint =
+export type FieldHintValue =
   | { icon?: Icon; text?: string; tooltip?: never }
   | { icon: Icon; text?: string; tooltip?: React.ReactNode };
 
@@ -28,7 +34,7 @@ export type FieldProps = React.PropsWithChildren &
   Field.Root.Props & {
     label?: string;
     description?: string;
-    hint?: FieldHint;
+    hint?: FieldHintValue;
     errorType?: FieldErrorType;
     RootProps?: FieldRootProps;
     LabelProps?: FieldLabelProps;

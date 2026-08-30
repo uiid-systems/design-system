@@ -92,7 +92,7 @@ Field works with any form control:
   {" "}
   {/* Container */}
   <FieldLabel /> {/* Label text */}
-  {children} {/* Form control */}
+  <FieldControl /> {/* Form control, or any Base UI control */}
   <FieldError /> {/* Error message */}
   <FieldDescription /> {/* Helper text */}
 </FieldRoot>
@@ -100,21 +100,32 @@ Field works with any form control:
 
 ## Subcomponents
 
-| Component          | Description                           |
-| ------------------ | ------------------------------------- |
-| `FieldRoot`        | Root container element                |
-| `FieldLabel`       | Label element with required indicator |
-| `FieldDescription` | Helper text element                   |
-| `FieldError`       | Error message element                 |
+| Component           | Description                                          |
+| ------------------- | ---------------------------------------------------- |
+| `FieldRoot`         | Root container element                               |
+| `FieldItem`         | Groups a control with its own label and description  |
+| `FieldControl`      | Adopts any control into the field's validation graph |
+| `FieldValidity`     | Render-prop access to validity state; renders no DOM |
+| `FieldLabel`        | Label element with required indicator                |
+| `FieldDescription`  | Helper text element                                  |
+| `FieldError`        | Error message element                                |
+| `FieldErrorTooltip` | Error surfaced as a tooltip beside the label         |
+| `FieldHint`         | Hint icon and text in the label row                  |
 
 ## Data Slots
 
-| Slot                | Element                 |
-| ------------------- | ----------------------- |
-| `field-root`        | The root container      |
-| `field-label`       | The label element       |
-| `field-description` | The description element |
-| `field-error`       | The error element       |
+| Slot                  | Element                 |
+| --------------------- | ----------------------- |
+| `field-root`          | The root container      |
+| `field-item`          | A grouped control row   |
+| `field-control`       | The adopted control     |
+| `field-label`         | The label element       |
+| `field-description`   | The description element |
+| `field-error`         | The error element       |
+| `field-error-tooltip` | The error tooltip       |
+| `field-hint`          | The hint element        |
+
+`FieldValidity` renders no element and therefore has no data slot.
 
 ## When to Use Field
 

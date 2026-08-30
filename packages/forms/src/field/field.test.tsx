@@ -2,6 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Field } from "./field";
+import {
+  FieldRoot,
+  FieldLabel,
+  FieldControl,
+  FieldItem,
+  FieldValidity,
+  FieldHint,
+} from "./subcomponents";
 
 describe("Field", () => {
   it("renders children", () => {
@@ -87,5 +95,97 @@ describe("Field", () => {
     expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
       "custom-field",
     );
+  });
+});
+
+describe("FieldControl", () => {
+  it("renders an input carrying its data-slot", () => {
+    const { container } = render(
+      <FieldRoot>
+        <FieldControl />
+      </FieldRoot>,
+    );
+    const control = container.querySelector("[data-slot='field-control']");
+    expect(control).toBeInTheDocument();
+    expect(control?.tagName).toBe("INPUT");
+  });
+
+  it("retargets the rendered element through render", () => {
+    const { container } = render(
+      <FieldRoot>
+        <FieldControl render={<textarea />} />
+      </FieldRoot>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-control']")?.tagName,
+    ).toBe("TEXTAREA");
+  });
+
+  it("adopts the control into the field's label association", () => {
+    render(
+      <FieldRoot>
+        <FieldLabel>Email</FieldLabel>
+        <FieldControl />
+      </FieldRoot>,
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "data-slot",
+      "field-control",
+    );
+  });
+});
+
+describe("FieldItem", () => {
+  it("renders a div carrying its data-slot", () => {
+    const { container } = render(
+      <FieldRoot>
+        <FieldItem>content</FieldItem>
+      </FieldRoot>,
+    );
+    const item = container.querySelector("[data-slot='field-item']");
+    expect(item).toBeInTheDocument();
+    expect(item?.tagName).toBe("DIV");
+  });
+
+  it("scopes each label to its own control rather than the root's", () => {
+    render(
+      <FieldRoot>
+        <FieldItem>
+          <FieldLabel>First</FieldLabel>
+          <FieldControl />
+        </FieldItem>
+        <FieldItem>
+          <FieldLabel>Second</FieldLabel>
+          <FieldControl />
+        </FieldItem>
+      </FieldRoot>,
+    );
+    expect(screen.getByLabelText("First")).not.toBe(
+      screen.getByLabelText("Second"),
+    );
+  });
+});
+
+describe("FieldValidity", () => {
+  it("hands validity state to its children function", () => {
+    let received: Record<string, unknown> | undefined;
+    render(
+      <FieldRoot>
+        <FieldControl />
+        <FieldValidity>
+          {(state) => {
+            received = state as unknown as Record<string, unknown>;
+            return null;
+          }}
+        </FieldValidity>
+      </FieldRoot>,
+    );
+    expect(received).toHaveProperty("validity");
+  });
+});
+
+describe("field subcomponents barrel", () => {
+  it("exports FieldHint", () => {
+    expect(FieldHint).toBeDefined();
   });
 });

@@ -10,8 +10,8 @@ import {
   FieldDescription,
   FieldError,
   FieldErrorTooltip,
+  FieldHint,
 } from "./subcomponents";
-import { FieldHint } from "./subcomponents/field-hint";
 
 import styles from "./field.module.css";
 
