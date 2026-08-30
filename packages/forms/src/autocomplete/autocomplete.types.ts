@@ -14,10 +14,19 @@ export type AutocompletePopupProps = BaseAutocomplete.Popup.Props;
 export type AutocompleteListProps = BaseAutocomplete.List.Props;
 export type AutocompleteItemProps = BaseAutocomplete.Item.Props;
 export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
+export type AutocompleteInputGroupProps = BaseAutocomplete.InputGroup.Props;
+export type AutocompleteTriggerProps = BaseAutocomplete.Trigger.Props;
+export type AutocompleteClearProps = BaseAutocomplete.Clear.Props;
+export type AutocompleteIconProps = BaseAutocomplete.Icon.Props;
+export type AutocompleteStatusProps = BaseAutocomplete.Status.Props;
+export type AutocompleteGroupProps = BaseAutocomplete.Group.Props;
+export type AutocompleteGroupLabelProps = BaseAutocomplete.GroupLabel.Props;
+export type AutocompleteValueProps = BaseAutocomplete.Value.Props;
 
 export type AutocompleteProps<Value = string> = {
   RootProps?: AutocompleteRootProps<Value>;
   InputProps?: AutocompleteInputProps;
+  InputGroupProps?: AutocompleteInputGroupProps;
   PortalProps?: AutocompletePortalProps;
   PositionerProps?: AutocompletePositionerProps;
   PopupProps?: AutocompletePopupProps;

@@ -1,10 +1,13 @@
 "use client";
 
+import { InputGroupActions } from "../shared/input-group";
 import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxRoot,
   ComboboxInput,
-  ComboboxActionButtons,
+  ComboboxInputGroup,
+  ComboboxClear,
+  ComboboxTrigger,
   ComboboxPortal,
   ComboboxPositioner,
   ComboboxPopup,
@@ -12,8 +15,6 @@ import {
   ComboboxItem,
   ComboboxEmpty,
 } from "./subcomponents";
-
-import styles from "./combobox.module.css";
 
 export const Combobox = ({
   items,
@@ -27,6 +28,7 @@ export const Combobox = ({
   onBlur,
   RootProps,
   InputProps,
+  InputGroupProps,
   PortalProps,
   PositionerProps,
   PopupProps,
@@ -36,7 +38,7 @@ export const Combobox = ({
 }: ComboboxProps) => {
   return (
     <ComboboxRoot items={items} {...RootProps} {...props}>
-      <div className={styles["combobox-input-wrapper"]}>
+      <ComboboxInputGroup {...InputGroupProps}>
         <ComboboxInput
           placeholder={placeholder}
           label={label}
@@ -48,8 +50,11 @@ export const Combobox = ({
           onBlur={onBlur}
           {...InputProps}
         />
-        <ComboboxActionButtons />
-      </div>
+        <InputGroupActions slot="combobox-actions">
+          <ComboboxClear />
+          <ComboboxTrigger />
+        </InputGroupActions>
+      </ComboboxInputGroup>
 
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>

@@ -104,6 +104,7 @@ export const PopupLayerItem = ({
   value,
   className,
   children,
+  render,
   ...props
 }: WithSlot<BasePopupLayerTypes.Item.Props>) => {
   return (
@@ -112,14 +113,19 @@ export const PopupLayerItem = ({
       value={value}
       className={cx(styles["popup-layer-item"], className)}
       {...props}
-      render={(renderProps) => (
-        <ListItem
-          render={<div />}
-          fullwidth
-          label={value as string}
-          {...renderProps}
-        />
-      )}
+      // A consumer-supplied `render` wins; the ListItem treatment is only the
+      // default. Previously this was spread last and silently discarded it.
+      render={
+        render ??
+        ((renderProps) => (
+          <ListItem
+            render={<div />}
+            fullwidth
+            label={value as string}
+            {...renderProps}
+          />
+        ))
+      }
     >
       {children}
     </BasePopupLayer.Item>
@@ -144,3 +150,46 @@ export const PopupLayerEmpty = ({
   );
 };
 PopupLayerEmpty.displayName = "PopupLayerEmpty";
+
+export const PopupLayerGroup = ({
+  slot,
+  children,
+  ...props
+}: WithSlot<BasePopupLayerTypes.Group.Props>) => {
+  return (
+    <BasePopupLayer.Group data-slot={slot} {...props}>
+      {children}
+    </BasePopupLayer.Group>
+  );
+};
+PopupLayerGroup.displayName = "PopupLayerGroup";
+
+export const PopupLayerGroupLabel = ({
+  slot,
+  children,
+  ...props
+}: WithSlot<BasePopupLayerTypes.GroupLabel.Props>) => {
+  return (
+    <BasePopupLayer.GroupLabel
+      data-slot={slot}
+      render={<Text size={-1} shade="muted" weight="medium" />}
+      {...props}
+    >
+      {children}
+    </BasePopupLayer.GroupLabel>
+  );
+};
+PopupLayerGroupLabel.displayName = "PopupLayerGroupLabel";
+
+export const PopupLayerStatus = ({
+  slot,
+  children,
+  ...props
+}: WithSlot<BasePopupLayerTypes.Status.Props>) => {
+  return (
+    <BasePopupLayer.Status data-slot={slot} render={<Text />} {...props}>
+      {children}
+    </BasePopupLayer.Status>
+  );
+};
+PopupLayerStatus.displayName = "PopupLayerStatus";

@@ -31,6 +31,60 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("InputWrapper");
   });
 
+  it("exports the combobox part coverage", () => {
+    const parts = [
+      "ComboboxInputGroup",
+      "ComboboxTrigger",
+      "ComboboxClear",
+      "ComboboxIcon",
+      "ComboboxValue",
+      "ComboboxStatus",
+      "ComboboxGroup",
+      "ComboboxGroupLabel",
+      "ComboboxChips",
+      "ComboboxChip",
+      "ComboboxChipRemove",
+    ] as const;
+
+    for (const part of parts) {
+      expect(forms, `${part} should be exported`).toHaveProperty(part);
+    }
+  });
+
+  it("no longer exports the invented ComboboxActionButtons", () => {
+    expect(forms).not.toHaveProperty("ComboboxActionButtons");
+  });
+
+  it("exports the autocomplete part coverage", () => {
+    const parts = [
+      "AutocompleteInputGroup",
+      "AutocompleteTrigger",
+      "AutocompleteClear",
+      "AutocompleteIcon",
+      "AutocompleteValue",
+      "AutocompleteStatus",
+      "AutocompleteGroup",
+      "AutocompleteGroupLabel",
+    ] as const;
+
+    for (const part of parts) {
+      expect(forms, `${part} should be exported`).toHaveProperty(part);
+    }
+  });
+
+  it("exports the number-field part coverage", () => {
+    const parts = [
+      "NumberFieldGroup",
+      "NumberFieldInput",
+      "NumberFieldScrubArea",
+      "NumberFieldScrubAreaCursor",
+    ] as const;
+
+    for (const part of parts) {
+      expect(forms, `${part} should be exported`).toHaveProperty(part);
+    }
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");

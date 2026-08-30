@@ -1,12 +1,12 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
-.ScrubArea {
+.number-field-scrub-area {
   cursor: ew-resize;
   font-weight: bold;
   user-select: none;
 }
 
-.ScrubAreaCursor {
+.number-field-scrub-area-cursor {
   filter: drop-shadow(var(--globals-shadow-xs));
 }
 

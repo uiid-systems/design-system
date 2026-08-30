@@ -1,27 +1,27 @@
-.combobox-input-wrapper {
+.input-group-root {
   position: relative;
 }
 
 /* Absolutely positioned, so the actions take up no layout space of their own —
-   the input has to reserve room for them, see .combobox-input. */
-.combobox-actions {
+   the input has to reserve room for them, see .input-group-input. */
+.input-group-actions {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
 }
 
-/* Reserves the strip .combobox-actions overlays: two 6-unit actions, the 2-unit
-   gap between them (Group gap={2}), and 2 more units of breathing room — 16
-   units, 4rem. Without it the value runs underneath Clear/Toggle, since the
+/* Reserves the strip .input-group-actions overlays: two 6-unit actions, the
+   2-unit gap between them (Group gap={2}), and 2 more units of breathing room —
+   16 units, 4rem. Without it the value runs underneath Clear/Trigger, since the
    size tier only insets the trailing edge by 1rem at medium. Deliberately not
    tier-scaled: the actions are a fixed size at every tier. Keep in step with
-   .combobox-action's width below. */
-.combobox-input {
+   .input-group-action's width below. */
+.input-group-input {
   padding-inline-end: calc(var(--spacing-unit) * 16);
 }
 
-.combobox-action {
+.input-group-action {
   all: unset;
   cursor: text;
   width: calc(var(--spacing-unit) * 6);
