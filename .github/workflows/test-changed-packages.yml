@@ -1,8 +1,9 @@
 name: Test
 
 on:
+  # No `branches` filter: stacked PRs target an intermediate branch, not main,
+  # and must still be tested before they merge.
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 
