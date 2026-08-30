@@ -4,7 +4,6 @@ export * from "./autocomplete/subcomponents";
 
 export * from "./checkbox/checkbox";
 export * from "./checkbox/checkbox.types";
-export * from "./checkbox/checkbox.constants";
 export * from "./checkbox/subcomponents";
 
 export * from "./checkbox-group/checkbox-group";
@@ -36,13 +35,14 @@ export * from "./number-field/subcomponents";
 
 export * from "./radio/radio";
 export * from "./radio/radio.types";
+export * from "./radio/subcomponents";
 
 export * from "./radio-group/radio-group";
 export * from "./radio-group/radio-group.types";
 
 export * from "./select/select";
 export * from "./select/select.types";
-export * from "./select/select.constants";
+export * from "./select/subcomponents";
 
 export * from "./select-multiple/select-multiple";
 export * from "./select-multiple/select-multiple.types";
