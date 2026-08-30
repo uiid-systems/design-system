@@ -37,7 +37,7 @@
   {
     "name": "@uiid/interactive",
     "path": "packages/interactive/dist/index.js",
-    "limit": "120 kB"
+    "limit": "60 kB"
   },
   {
     "name": "@uiid/layout",
@@ -52,7 +52,7 @@
   {
     "name": "@uiid/navigation",
     "path": "packages/navigation/dist/index.js",
-    "limit": "55 kB"
+    "limit": "100 kB"
   },
   {
     "name": "@uiid/overlays",

@@ -15,7 +15,7 @@ import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 import { MOCK_ITEMS } from "./menu.mocks";
 
 const meta: Meta<typeof Menu> = {
-  title: "Interactive/Menu",
+  title: "Navigation/Menu",
   component: Menu,
   tags: ["beta"],
   args: {},

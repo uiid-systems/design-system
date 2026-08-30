@@ -5,7 +5,7 @@
 ## Quick Reference
 
 ```tsx
-import { Accordion } from "@uiid/interactive";
+import { Accordion } from "@uiid/navigation";
 
 // Simple usage with items array
 <Accordion

@@ -1,6 +1,6 @@
 import { Button } from "@uiid/buttons";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
-import { Menu } from "@uiid/interactive";
+import { Menu } from "@uiid/navigation";
 
 import type { TableCellDropdownProps } from "../table.types";
 
