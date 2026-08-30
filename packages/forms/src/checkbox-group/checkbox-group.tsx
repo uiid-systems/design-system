@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-import { ConditionalRender, Stack, Group } from "@uiid/layout";
+import { Stack, Group } from "@uiid/layout";
 
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
@@ -27,18 +27,13 @@ export const CheckboxGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <ConditionalRender
-      condition={Boolean(fieldLabel || description)}
-      render={
-        <Field
-          name={name}
-          label={fieldLabel}
-          description={description}
-          required={required}
-          disabled={disabled}
-          {...FieldProps}
-        />
-      }
+    <Field
+      name={name}
+      label={fieldLabel}
+      description={description}
+      required={required}
+      disabled={disabled}
+      {...FieldProps}
     >
       <BaseCheckboxGroup
         render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
@@ -59,7 +54,7 @@ export const CheckboxGroup = ({
           />
         ))}
       </BaseCheckboxGroup>
-    </ConditionalRender>
+    </Field>
   );
 };
 CheckboxGroup.displayName = "CheckboxGroup";

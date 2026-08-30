@@ -123,3 +123,12 @@ describe("NumberField", () => {
     );
   });
 });
+
+describe("NumberField render target", () => {
+  it("merges Base UI's input props onto the input, not the field wrapper", () => {
+    render(<NumberField />);
+    const input = screen.getByRole("textbox");
+    expect(input.tagName).toBe("INPUT");
+    expect(input).toHaveAttribute("data-slot", "input");
+  });
+});

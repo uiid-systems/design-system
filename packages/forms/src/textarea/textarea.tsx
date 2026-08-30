@@ -1,9 +1,9 @@
 "use client";
 
-import { Field as BaseField } from "@base-ui/react/field";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
+import { FieldControl } from "../field/subcomponents";
 import { TEXTAREA_DEFAULT_ROWS } from "./textarea.constants";
 import type { TextareaProps } from "./textarea.types";
 import { textareaVariants } from "./textarea.variants";
@@ -25,43 +25,26 @@ export const Textarea = ({
   ref,
   ...props
 }: TextareaProps) => {
-  const textareaClassName = cx(
-    styles["textarea"],
-    textareaVariants({ size, resize, fullwidth, ghost }),
-    className,
-  );
-
-  // When wrapped in Field, use Field.Control for proper label association
-  if (label || description) {
-    return (
-      <Field
-        name={name}
-        label={label}
-        description={description}
-        required={required}
-        {...FieldProps}
-      >
-        <BaseField.Control
-          data-slot="textarea"
-          name={name}
-          required={required}
-          className={textareaClassName}
-          render={<textarea ref={ref} rows={rows} {...props} />}
-        />
-      </Field>
-    );
-  }
-
   return (
-    <textarea
-      data-slot="textarea"
-      ref={ref}
+    <Field
       name={name}
-      rows={rows}
+      label={label}
+      description={description}
       required={required}
-      className={textareaClassName}
-      {...props}
-    />
+      {...FieldProps}
+    >
+      <FieldControl
+        data-slot="textarea"
+        name={name}
+        required={required}
+        className={cx(
+          styles["textarea"],
+          textareaVariants({ size, resize, fullwidth, ghost }),
+          className,
+        )}
+        render={<textarea ref={ref} rows={rows} {...props} />}
+      />
+    </Field>
   );
 };
 Textarea.displayName = "Textarea";

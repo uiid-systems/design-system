@@ -1,7 +1,7 @@
 "use client";
 
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
-import { ConditionalRender, Stack, Group } from "@uiid/layout";
+import { Stack, Group } from "@uiid/layout";
 
 import { Field } from "../field/field";
 import { Radio } from "../radio/radio";
@@ -24,10 +24,7 @@ export const RadioGroup = ({
   const isHorizontal = direction === "horizontal";
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={<Field name={name} label={label} description={description} />}
-    >
+    <Field name={name} label={label} description={description}>
       <BaseRadioGroup
         name={name}
         {...props}
@@ -47,7 +44,7 @@ export const RadioGroup = ({
           />
         ))}
       </BaseRadioGroup>
-    </ConditionalRender>
+    </Field>
   );
 };
 RadioGroup.displayName = "RadioGroup";

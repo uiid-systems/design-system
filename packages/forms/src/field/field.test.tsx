@@ -189,3 +189,35 @@ describe("field subcomponents barrel", () => {
     expect(FieldHint).toBeDefined();
   });
 });
+
+describe("Field bare mode", () => {
+  it("renders bare when it paints no chrome of its own", () => {
+    const { container } = render(
+      <Field>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/field-root-bare/);
+  });
+
+  it("stops being bare once it has a label", () => {
+    const { container } = render(
+      <Field label="Email">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).not.toMatch(/field-root-bare/);
+  });
+
+  it("stops being bare when the error renders out of flow", () => {
+    const { container } = render(
+      <Field errorType="absolute">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).not.toMatch(/field-root-bare/);
+  });
+});

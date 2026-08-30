@@ -30,6 +30,10 @@ export const Field = ({
   ...props
 }: FieldProps) => {
   const isFloating = errorType === "absolute";
+  // No label, hint, description, or out-of-flow error means this field paints
+  // no chrome of its own, so the root should not participate in layout.
+  const hasChrome =
+    Boolean(label || hint || description) || errorType !== "inline";
 
   return (
     <FieldRoot
@@ -37,6 +41,7 @@ export const Field = ({
       {...RootProps}
       className={cx(
         isFloating && styles["field-root-floating"],
+        !hasChrome && styles["field-root-bare"],
         RootProps?.className,
       )}
     >

@@ -1,11 +1,10 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { ConditionalRender } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
-import { Input } from "../input/input";
+import { InputControl } from "../input/input-control";
 import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import type { NumberFieldProps } from "./number-field.types";
 import {
@@ -38,18 +37,13 @@ export const NumberField = ({
   const sizeClass = size ? styles[`size-${size}`] : undefined;
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={
-        <Field
-          {...FieldProps}
-          name={name}
-          label={label}
-          description={description}
-          disabled={disabled}
-          required={required}
-        />
-      }
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      disabled={disabled}
+      required={required}
+      {...FieldProps}
     >
       <NumberFieldRoot
         name={name}
@@ -60,7 +54,7 @@ export const NumberField = ({
         <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
         <BaseNumberField.Input
-          render={<Input size={size} />}
+          render={<InputControl size={size} />}
           className={cx(styles["number-field-input"], InputProps?.className)}
           placeholder={placeholder}
           required={required}
@@ -69,7 +63,7 @@ export const NumberField = ({
 
         <NumberFieldIncrement disabled={disabled} {...IncrementProps} />
       </NumberFieldRoot>
-    </ConditionalRender>
+    </Field>
   );
 };
 NumberField.displayName = "NumberField";

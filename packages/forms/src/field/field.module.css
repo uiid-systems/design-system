@@ -16,6 +16,13 @@
   position: relative;
 }
 
+/* A field with no label, hint, description, or out-of-flow error paints no
+   chrome. `display: contents` keeps the control laid out exactly as it would be
+   without a Field around it, while still wiring it into the validation graph. */
+.field-root-bare {
+  display: contents;
+}
+
 .field-error-tooltip {
   /* The icon inherits this through `currentColor` rather than taking a token
      through a JS `color` prop. */

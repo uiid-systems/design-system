@@ -67,3 +67,18 @@ describe("Input", () => {
     expect(input).toHaveFocus();
   });
 });
+
+describe("Input field wiring", () => {
+  it("wires an unlabelled input into a field root", () => {
+    const { container } = render(<Input />);
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps an unlabelled input out of layout via a bare field root", () => {
+    const { container } = render(<Input />);
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/field-root-bare/);
+  });
+});

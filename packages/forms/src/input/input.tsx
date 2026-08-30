@@ -1,15 +1,9 @@
 "use client";
 
-import { Input as BaseInput } from "@base-ui/react/input";
-import { ConditionalRender } from "@uiid/layout";
-import { cx } from "@uiid/utils";
-
 import { Field } from "../field/field";
+import { InputControl } from "./input-control";
 import { InputWrapper } from "./input-wrapper";
 import type { InputProps } from "./input.types";
-import { inputVariants } from "./input.variants";
-
-import styles from "./input.module.css";
 
 export const Input = ({
   label,
@@ -29,17 +23,12 @@ export const Input = ({
   const hasSlots = Boolean(before || after);
 
   return (
-    <ConditionalRender
-      condition={Boolean(label || description)}
-      render={
-        <Field
-          name={name}
-          label={label}
-          description={description}
-          required={required}
-          {...FieldProps}
-        />
-      }
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      required={required}
+      {...FieldProps}
     >
       <InputWrapper
         before={before}
@@ -48,21 +37,18 @@ export const Input = ({
         fullwidth={fullwidth}
         ghost={ghost}
       >
-        <BaseInput
-          data-slot="input"
-          ref={ref}
+        <InputControl
           name={name}
-          className={cx(
-            styles["input"],
-            hasSlots
-              ? styles["input-inner"]
-              : inputVariants({ size, fullwidth, ghost }),
-            className,
-          )}
+          inner={hasSlots}
+          size={size}
+          fullwidth={fullwidth}
+          ghost={ghost}
+          className={className}
+          ref={ref}
           {...props}
         />
       </InputWrapper>
-    </ConditionalRender>
+    </Field>
   );
 };
 Input.displayName = "Input";
