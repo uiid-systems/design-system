@@ -7,6 +7,7 @@ export type SliderVariants = InputVariants;
 
 export type SliderRootProps = Slider.Root.Props &
   Pick<SliderVariants, "ghost" | "fullwidth">;
+export type SliderLabelProps = Slider.Label.Props;
 export type SliderValueProps = Slider.Value.Props;
 export type SliderControlProps = Slider.Control.Props;
 export type SliderTrackProps = Slider.Track.Props;

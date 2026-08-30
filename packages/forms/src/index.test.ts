@@ -93,6 +93,10 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("RadioGroupRoot");
   });
 
+  it("exports the slider label part", () => {
+    expect(forms).toHaveProperty("SliderLabel");
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");
