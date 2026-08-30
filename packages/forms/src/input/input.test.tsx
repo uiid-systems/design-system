@@ -120,3 +120,22 @@ describe("InputWrapper composition", () => {
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 });
+
+describe("Input required reaches the control", () => {
+  it("marks the input itself required, not just the label", () => {
+    render(<Input label="Email" required />);
+    expect(screen.getByRole("textbox")).toBeRequired();
+  });
+
+  it("still renders the label's required marker", () => {
+    const { container } = render(<Input label="Email" required />);
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
+  it("leaves the control unrequired when the prop is absent", () => {
+    render(<Input label="Email" />);
+    expect(screen.getByRole("textbox")).not.toBeRequired();
+  });
+});

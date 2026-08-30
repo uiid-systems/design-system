@@ -167,3 +167,19 @@ describe("RadioGroup compound API", () => {
     ).not.toBeNull();
   });
 });
+
+describe("RadioGroup required reaches the group", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("marks the radio group required, not just the label", () => {
+    const { container } = render(
+      <RadioGroup items={items} label="Pick one" required />,
+    );
+
+    const group = container.querySelector("[data-slot='radio-group-root']");
+    expect(group).toHaveAttribute("aria-required", "true");
+  });
+});

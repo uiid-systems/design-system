@@ -5,6 +5,13 @@ import { Field } from "../field/field";
 import type { CheckboxGroupProps } from "./checkbox-group.types";
 import { CheckboxGroupRoot } from "./subcomponents";
 
+/**
+ * `required` marks the label only. Base UI's `CheckboxGroup` has no `required`
+ * prop, and HTML cannot express "at least one of these boxes" — setting
+ * `required` on each `Checkbox` would demand that *every* box be checked, which
+ * is the opposite of what the marker promises. Validate the group's value
+ * instead, via `Field`'s `validate`.
+ */
 export const CheckboxGroup = ({
   items,
   label: fieldLabel,

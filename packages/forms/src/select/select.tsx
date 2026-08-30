@@ -93,6 +93,7 @@ export function Select<
     >
       <SelectRoot<Value, Multiple>
         name={name}
+        required={required}
         multiple={multiple}
         defaultValue={resolvedDefaultValue}
         items={items}

@@ -35,6 +35,7 @@ export const RadioGroup = ({
         name={name}
         direction={direction}
         disabled={disabled}
+        required={required}
         {...props}
       >
         {!items
