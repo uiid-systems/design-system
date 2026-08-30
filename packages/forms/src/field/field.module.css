@@ -23,6 +23,13 @@
   display: contents;
 }
 
+/* A row with no label or description carries no presentation either: the
+   control's own styling is the whole row, and applying the row class would
+   apply treatments (borders, disabled dimming) that have nothing to wrap. */
+.field-row-bare {
+  display: contents;
+}
+
 .field-error-tooltip {
   /* The icon inherits this through `currentColor` rather than taking a token
      through a JS `color` prop. */

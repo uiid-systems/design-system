@@ -92,3 +92,33 @@ describe("Radio", () => {
     expect(radios).toHaveLength(2);
   });
 });
+
+describe("Radio field row", () => {
+  it("builds its row on the shared field row rather than CheckboxField", () => {
+    const { container } = render(
+      <RadioGroup
+        items={[
+          { value: "a", label: "Option A" },
+          { value: "b", label: "Option B" },
+        ]}
+      />,
+    );
+    expect(container.querySelectorAll("[data-slot='field-row']").length).toBe(
+      2,
+    );
+  });
+
+  it("scopes each label to its own radio", () => {
+    render(
+      <RadioGroup
+        items={[
+          { value: "a", label: "Option A" },
+          { value: "b", label: "Option B" },
+        ]}
+      />,
+    );
+    expect(screen.getByLabelText("Option A")).not.toBe(
+      screen.getByLabelText("Option B"),
+    );
+  });
+});

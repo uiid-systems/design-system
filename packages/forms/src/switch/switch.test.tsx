@@ -110,3 +110,19 @@ describe("Switch", () => {
     );
   });
 });
+
+describe("Switch field row scoping", () => {
+  it("renders the control inside the field row, not before it", () => {
+    const { container } = render(<Switch label="Dark mode" />);
+    const row = container.querySelector("[data-slot='field-row']");
+    expect(row).toBeInTheDocument();
+    expect(row).toContainElement(screen.getByRole("switch"));
+  });
+
+  it("associates the label with its own control", () => {
+    render(<Switch label="Dark mode" />);
+    expect(screen.getAllByLabelText("Dark mode")).toContain(
+      screen.getByRole("switch"),
+    );
+  });
+});

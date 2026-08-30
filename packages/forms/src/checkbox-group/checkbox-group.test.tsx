@@ -90,3 +90,24 @@ describe("CheckboxGroup", () => {
     expect(checkboxes).toHaveLength(3);
   });
 });
+
+describe("CheckboxGroup per-item label scoping", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("scopes each item's label to its own control", () => {
+    render(<CheckboxGroup items={items} />);
+    const [first, second] = screen.getAllByRole("checkbox");
+    expect(screen.getAllByLabelText("Option A")).toContain(first);
+    expect(screen.getAllByLabelText("Option B")).toContain(second);
+  });
+
+  it("gives each item its own field row", () => {
+    const { container } = render(<CheckboxGroup items={items} />);
+    expect(container.querySelectorAll("[data-slot='field-row']").length).toBe(
+      2,
+    );
+  });
+});

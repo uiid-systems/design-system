@@ -1,5 +1,6 @@
 export * from "./field-root";
 export * from "./field-item";
+export * from "./field-row";
 export * from "./field-control";
 export * from "./field-validity";
 export * from "./field-label";
