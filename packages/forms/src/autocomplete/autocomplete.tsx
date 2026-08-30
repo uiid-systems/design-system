@@ -62,7 +62,7 @@ export const Autocomplete = ({
                   />
                 ))}
             </AutocompleteList>
-            <AutocompleteEmpty>No results found.</AutocompleteEmpty>
+            <AutocompleteEmpty />
           </AutocompletePopup>
         </AutocompletePositioner>
       </AutocompletePortal>

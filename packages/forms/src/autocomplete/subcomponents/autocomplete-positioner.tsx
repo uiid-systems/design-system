@@ -1,27 +1,9 @@
 "use client";
 
-import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-import { cx } from "@uiid/utils";
-
+import { PopupLayerPositioner } from "../../shared/popup-layer";
 import type { AutocompletePositionerProps } from "../autocomplete.types";
 
-import styles from "../autocomplete.module.css";
-
-export const AutocompletePositioner = ({
-  className,
-  sideOffset = 4,
-  children,
-  ...props
-}: AutocompletePositionerProps) => {
-  return (
-    <BaseAutocomplete.Positioner
-      data-slot="autocomplete-positioner"
-      className={cx(styles["autocomplete-positioner"], className)}
-      sideOffset={sideOffset}
-      {...props}
-    >
-      {children}
-    </BaseAutocomplete.Positioner>
-  );
+export const AutocompletePositioner = (props: AutocompletePositionerProps) => {
+  return <PopupLayerPositioner slot="autocomplete-positioner" {...props} />;
 };
 AutocompletePositioner.displayName = "AutocompletePositioner";

@@ -1,22 +1,9 @@
 "use client";
 
-import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-import { List } from "@uiid/lists";
-
+import { PopupLayerList } from "../../shared/popup-layer";
 import type { AutocompleteListProps } from "../autocomplete.types";
 
-export const AutocompleteList = ({
-  children,
-  ...props
-}: AutocompleteListProps) => {
-  return (
-    <BaseAutocomplete.List
-      data-slot="autocomplete-list"
-      render={<List fullwidth />}
-      {...props}
-    >
-      {children}
-    </BaseAutocomplete.List>
-  );
+export const AutocompleteList = (props: AutocompleteListProps) => {
+  return <PopupLayerList slot="autocomplete-list" {...props} />;
 };
 AutocompleteList.displayName = "AutocompleteList";

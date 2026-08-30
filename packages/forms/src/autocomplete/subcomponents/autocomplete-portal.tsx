@@ -1,17 +1,9 @@
 "use client";
 
-import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-
+import { PopupLayerPortal } from "../../shared/popup-layer";
 import type { AutocompletePortalProps } from "../autocomplete.types";
 
-export const AutocompletePortal = ({
-  children,
-  ...props
-}: AutocompletePortalProps) => {
-  return (
-    <BaseAutocomplete.Portal data-slot="autocomplete-portal" {...props}>
-      {children}
-    </BaseAutocomplete.Portal>
-  );
+export const AutocompletePortal = (props: AutocompletePortalProps) => {
+  return <PopupLayerPortal slot="autocomplete-portal" {...props} />;
 };
 AutocompletePortal.displayName = "AutocompletePortal";

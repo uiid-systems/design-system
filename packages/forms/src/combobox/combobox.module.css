@@ -1,8 +1,3 @@
-.combobox-popup {
-  composes: composes-popup from global;
-  min-width: var(--anchor-width);
-}
-
 .combobox-input-wrapper {
   position: relative;
 }
@@ -43,20 +38,4 @@
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
-}
-
-.combobox-positioner {
-  composes: composes-popup-positioner from global;
-}
-
-.combobox-item {
-  composes: composes-option from global;
-}
-
-/* The empty message is a sibling of the list inside the popup Card, so it picks
-   up only the Card's inset while items add composes-option's padding on top.
-   Matching that padding lines the message up with the items it stands in for
-   instead of starting half a step to their left. */
-.combobox-empty {
-  padding: var(--list-item-padding-y) var(--list-item-padding-x);
 }

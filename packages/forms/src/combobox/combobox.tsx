@@ -60,7 +60,7 @@ export const Combobox = ({
                   <ComboboxItem key={item} value={item} disabled={disabled} />
                 ))}
             </ComboboxList>
-            <ComboboxEmpty>No results found.</ComboboxEmpty>
+            <ComboboxEmpty />
           </ComboboxPopup>
         </ComboboxPositioner>
       </ComboboxPortal>

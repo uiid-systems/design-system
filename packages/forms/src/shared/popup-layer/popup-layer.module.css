@@ -1,13 +1,13 @@
-.autocomplete-positioner {
+.popup-layer-positioner {
   composes: composes-popup-positioner from global;
 }
 
-.autocomplete-popup {
+.popup-layer-popup {
   composes: composes-popup from global;
   min-width: var(--anchor-width);
 }
 
-.autocomplete-item {
+.popup-layer-item {
   composes: composes-option from global;
 }
 
@@ -15,6 +15,6 @@
    up only the Card's inset while items add composes-option's padding on top.
    Matching that padding lines the message up with the items it stands in for
    instead of starting half a step to their left. */
-.autocomplete-empty {
+.popup-layer-empty {
   padding: var(--list-item-padding-y) var(--list-item-padding-x);
 }

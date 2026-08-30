@@ -1,14 +1,9 @@
 "use client";
 
-import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-
+import { PopupLayerPortal } from "../../shared/popup-layer";
 import type { ComboboxPortalProps } from "../combobox.types";
 
-export const ComboboxPortal = ({ children, ...props }: ComboboxPortalProps) => {
-  return (
-    <BaseCombobox.Portal data-slot="combobox-portal" {...props}>
-      {children}
-    </BaseCombobox.Portal>
-  );
+export const ComboboxPortal = (props: ComboboxPortalProps) => {
+  return <PopupLayerPortal slot="combobox-portal" {...props} />;
 };
 ComboboxPortal.displayName = "ComboboxPortal";
