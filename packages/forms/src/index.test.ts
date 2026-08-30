@@ -13,7 +13,7 @@ describe("forms barrel", () => {
       "SelectList",
       "SelectItem",
       "SelectValue",
-      "SelectIndicator",
+      "SelectIcon",
     ] as const;
 
     for (const part of parts) {

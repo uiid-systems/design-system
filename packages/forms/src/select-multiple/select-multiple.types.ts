@@ -24,7 +24,7 @@ export type SelectMultipleProps = React.PropsWithChildren<{
   ListProps?: BaseSelect.List.Props;
   ValueProps?: BaseSelect.Value.Props & Pick<InputVariants, "size">;
   FieldProps?: FieldProps;
-  IndicatorProps?: BaseSelect.Icon.Props;
+  IconProps?: BaseSelect.Icon.Props;
 }> &
   SelectMultipleRootProps &
   Pick<FieldProps, "label" | "description"> &

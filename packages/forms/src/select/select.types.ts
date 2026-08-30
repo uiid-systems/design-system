@@ -28,7 +28,7 @@ export type SelectPopupProps = BaseSelect.Popup.Props;
 export type SelectListProps = BaseSelect.List.Props;
 export type SelectValueProps = BaseSelect.Value.Props &
   Pick<InputVariants, "size">;
-export type SelectIndicatorProps = BaseSelect.Icon.Props;
+export type SelectIconProps = BaseSelect.Icon.Props;
 
 export type SelectProps<Value = string> = React.PropsWithChildren<{
   placeholder?: string;
@@ -43,7 +43,7 @@ export type SelectProps<Value = string> = React.PropsWithChildren<{
   ListProps?: SelectListProps;
   ValueProps?: SelectValueProps;
   FieldProps?: FieldProps;
-  IndicatorProps?: SelectIndicatorProps;
+  IconProps?: SelectIconProps;
 }> &
   SelectRootProps<Value> &
   Pick<FieldProps, "label" | "description"> &
