@@ -2,6 +2,7 @@
 
 .textarea {
   composes: composes-disabled from global;
+  composes: composes-invalid from global;
   composes: composes-text from global;
 
   background-color: var(--forms-bg);
@@ -26,12 +27,6 @@
   &:focus-visible {
     background-color: var(--forms-bg-focus);
     outline-style: var(--globals-outline-style);
-  }
-
-  /** Invalid */
-  &[data-invalid] {
-    border-color: var(--shade-foreground);
-    outline-color: var(--shade-foreground);
   }
 }
 

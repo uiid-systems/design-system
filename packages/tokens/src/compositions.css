@@ -197,4 +197,31 @@
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
+
+  /**
+   * One invalid treatment for every control.
+   *
+   * Invalid is palette-red. The palette variable is redeclared inside the
+   * invalid selector rather than by pinning `.palette-red` on the control, so a
+   * `color` prop's palette is left untouched while the control is valid.
+   *
+   * red-700/red-400 measures 9.56:1 in light and 6.64:1 in dark against the
+   * page, clearing AA for text, and clears the 3:1 non-text threshold as a
+   * border on every surface in the system. The raw --color-red-500 it replaces
+   * measured 3.89:1 in light, and only 2.89:1 as a ring on --forms-bg.
+   *
+   * Only colour is set. Outline geometry stays with the component's
+   * :focus-visible rule, so a focused invalid control keeps its full focus ring
+   * and merely recolours it. The `outline: 1px solid` this replaces on checkbox
+   * and radio tied on specificity with :focus-visible and won on source order,
+   * replacing the ring outright.
+   *
+   * `:has([data-invalid])` covers wrappers that surround the real control.
+   */
+  .composes-invalid:where([data-invalid], [aria-invalid="true"], :has([data-invalid])) {
+    --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
+
+    border-color: var(--palette-text);
+    outline-color: var(--palette-text);
+  }
 }

@@ -82,3 +82,10 @@ describe("Input field wiring", () => {
     expect(root?.className).toMatch(/field-root-bare/);
   });
 });
+
+describe("Input invalid treatment", () => {
+  it("adopts the shared invalid composition", () => {
+    render(<Input />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-invalid/);
+  });
+});

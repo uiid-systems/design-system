@@ -2,6 +2,7 @@
 
 .radio {
   composes: composes-disabled from global;
+  composes: composes-invalid from global;
 
   aspect-ratio: 1;
   border-radius: 100%;
@@ -24,11 +25,6 @@
   &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-  }
-
-  &[data-invalid] {
-    border-color: var(--color-red-500);
-    outline: 1px solid var(--color-red-500);
   }
 }
 

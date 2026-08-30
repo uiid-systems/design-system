@@ -9,7 +9,7 @@ export const FieldError = (props: FieldErrorProps) => {
   return (
     <BaseField.Error
       data-slot="field-error"
-      render={<Text shade="foreground" />}
+      render={<Text color="red" />}
       {...props}
     />
   );

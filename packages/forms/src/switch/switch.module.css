@@ -2,6 +2,7 @@
 
 .switch-root {
   composes: composes-disabled from global;
+  composes: composes-invalid from global;
 
   position: relative;
   display: flex;

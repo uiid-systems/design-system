@@ -2,6 +2,7 @@
 
 .checkbox {
   composes: composes-disabled from global;
+  composes: composes-invalid from global;
 
   /** todo: replace with default */
   width: var(--checkbox-size-sm);
@@ -31,11 +32,6 @@
   &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-  }
-
-  &[data-invalid] {
-    border-color: var(--color-red-500);
-    outline: 1px solid var(--color-red-500);
   }
 
   /* Transparent hit area. At the small size (1rem) the -0.25rem inset brings

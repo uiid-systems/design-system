@@ -3,6 +3,8 @@
 import { Field as BaseField } from "@base-ui/react/field";
 import { TriangleAlertIcon } from "@uiid/icons/triangle-alert";
 import { Tooltip } from "@uiid/overlays";
+import { paletteColorStyles } from "@uiid/tokens";
+import { cx } from "@uiid/utils";
 
 import { FIELD_TOOLTIP_DELAY } from "../field.constants";
 import type { FieldErrorProps } from "../field.types";
@@ -18,7 +20,12 @@ export const FieldErrorTooltip = (props: FieldErrorProps) => {
           delay={FIELD_TOOLTIP_DELAY}
           PositionerProps={{ align: "end" }}
           trigger={
-            <span className={styles["field-error-tooltip"]}>
+            <span
+              className={cx(
+                styles["field-error-tooltip"],
+                paletteColorStyles.red,
+              )}
+            >
               <TriangleAlertIcon />
             </span>
           }
