@@ -51,9 +51,28 @@ modernized packages (buttons, cards, overlays, tokens): **architecture/taxonomy*
    the control renders as a _sibling before_ `FieldRoot`, so Base UI's validity wiring
    cannot reach it. Both hand-roll `Field.Item`, which Base UI 1.7 ships.
    (`checkbox/subcomponents/checkbox-field.tsx:44-73`; switch same.)
-3. **`CheckboxGroup` recasts `Checkbox.Root`'s `value` prop** (Base UI: value submitted
+3. ~~**`CheckboxGroup` recasts `Checkbox.Root`'s `value` prop** (Base UI: value submitted
    when _unchecked_) as group identity and passes the same `name` to every child, so the
-   group's `value` array cannot distinguish members. (`checkbox-group.tsx:49-60`.)
+   group's `value` array cannot distinguish members.~~ **Withdrawn (UI-164) — does not
+   reproduce on Base UI 1.7.** The quoted definition belongs to a _different_ prop:
+   `uncheckedValue` is "the value submitted with the form when the checkbox is unchecked",
+   while `value` is documented as "the checkbox's value. Identifies it within a Checkbox
+   Group, falling back to `name` when omitted" (`CheckboxRoot.d.ts:95-109`). The runtime
+   agrees — `CheckboxRoot.js:94-95,135` resolves `value = valueProp ?? name` and matches
+   the group array with `groupValue.includes(value)`. Passing a unique per-item `value`,
+   which is what the component already did, is the correct Base UI usage. Verified with a
+   rendering test asserting `defaultValue={["b"]}` checks only the middle box.
+
+   Group-level `disabled` was likewise **not** broken: `Field.Root`'s `disabled`
+   propagates to the controls beneath it, so `<CheckboxGroup disabled />` already
+   disabled every child.
+
+   Three real defects _were_ found in the same code and are fixed under UI-164: per-item
+   `disabled` from `items[]` was dropped on the floor (the shipped mocks include an item
+   with `disabled: true` that did nothing), `{...CheckboxProps}` was spread after the
+   per-item props so it could clobber `value`/`label`, and there was no way to compose
+   children instead of passing `items`.
+
 4. **`SliderValue` discards Base UI's `children(formattedValues, values)` contract**
    while claiming `Slider.Value.Props`; `slider.tsx:44` hardcodes a single thumb — range
    sliders cannot render. (`slider/subcomponents/slider-value.tsx:10-22`.)

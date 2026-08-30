@@ -8,6 +8,7 @@ export * from "./checkbox/subcomponents";
 
 export * from "./checkbox-group/checkbox-group";
 export * from "./checkbox-group/checkbox-group.types";
+export * from "./checkbox-group/subcomponents";
 
 export * from "./combobox/combobox";
 export * from "./combobox/combobox.types";
