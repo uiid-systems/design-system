@@ -2,19 +2,11 @@
 
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
-import type { ReactNode } from "react";
 
-import type { InputVariants } from "./input.types";
-import { inputVariants } from "./input.variants";
+import type { InputWrapperProps } from "../input.types";
+import { inputVariants } from "../input.variants";
 
-import styles from "./input.module.css";
-
-type InputWrapperProps = {
-  before?: ReactNode;
-  after?: ReactNode;
-  className?: string;
-  children: ReactNode;
-} & InputVariants;
+import styles from "../input.module.css";
 
 export const InputWrapper = ({
   before,

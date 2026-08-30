@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import { Input } from "./input";
+import { InputControl, InputWrapper } from "./subcomponents";
 
 describe("Input", () => {
   it("renders an input element", () => {
@@ -87,5 +88,35 @@ describe("Input invalid treatment", () => {
   it("adopts the shared invalid composition", () => {
     render(<Input />);
     expect(screen.getByRole("textbox").className).toMatch(/composes-invalid/);
+  });
+});
+
+describe("InputWrapper composition", () => {
+  it("is composable on its own with before and after slots", () => {
+    const { container } = render(
+      <InputWrapper before={<span>before</span>} after={<span>after</span>}>
+        <InputControl inner />
+      </InputWrapper>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='input-wrapper']"),
+    ).not.toBeNull();
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toBeNull();
+    expect(container.querySelector("[data-slot='input-after']")).not.toBeNull();
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  });
+
+  it("renders children bare when neither slot is passed", () => {
+    const { container } = render(
+      <InputWrapper>
+        <InputControl />
+      </InputWrapper>,
+    );
+
+    expect(container.querySelector("[data-slot='input-wrapper']")).toBeNull();
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 });

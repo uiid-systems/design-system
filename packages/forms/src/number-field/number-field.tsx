@@ -4,7 +4,7 @@ import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
-import { InputControl } from "../input/input-control";
+import { InputControl } from "../input/subcomponents";
 import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import type { NumberFieldProps } from "./number-field.types";
 import {

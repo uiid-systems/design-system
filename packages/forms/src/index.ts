@@ -21,8 +21,8 @@ export * from "./form/form";
 export * from "./form/hooks";
 
 export * from "./input/input";
-export * from "./input/input-control";
 export * from "./input/input.types";
+export * from "./input/subcomponents";
 
 export * from "./mask-input/mask-input";
 export * from "./mask-input/mask-input.types";
