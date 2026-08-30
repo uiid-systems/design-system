@@ -1,8 +1,9 @@
 name: Test
 
 on:
+  # No `branches` filter: stacked PRs target an intermediate branch, not main,
+  # and must still be tested before they merge.
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 
@@ -91,3 +92,47 @@ jobs:
 
       - name: Run linting
         run: pnpm lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: typecheck-${{ github.sha }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-v2-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-v2-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate tokens
+        run: node packages/tokens/build-tokens.js
+
+      - name: Run typecheck
+        run: pnpm typecheck

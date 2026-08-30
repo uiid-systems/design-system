@@ -11,6 +11,7 @@
     "format": "oxfmt",
     "test": "vitest",
     "test:run": "vitest run",
+    "typecheck": "pnpm --filter \"./packages/**\" --filter \"./apps/docs\" exec tsc --noEmit",
     "test:verbose": "vitest run --reporter=verbose",
     "test:ui": "vitest --ui",
     "preview": "vite preview",
