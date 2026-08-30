@@ -20,6 +20,7 @@ export const Textarea = ({
   fullwidth,
   ghost,
   rows = TEXTAREA_DEFAULT_ROWS,
+  onValueChange,
   FieldProps,
   className,
   ref,
@@ -37,6 +38,7 @@ export const Textarea = ({
         data-slot="textarea"
         name={name}
         required={required}
+        onValueChange={onValueChange}
         className={cx(
           styles["textarea"],
           textareaVariants({ size, resize, fullwidth, ghost }),

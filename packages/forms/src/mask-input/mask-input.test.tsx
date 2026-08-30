@@ -456,3 +456,19 @@ describe("MaskInput", () => {
     expect(handleKeyDown).toHaveBeenCalled();
   });
 });
+
+describe("MaskInput Field.Control integration", () => {
+  it("associates its label with the input", () => {
+    render(<MaskInput mask="phone" label="Phone Number" />);
+    expect(screen.getByLabelText("Phone Number")).toBe(
+      screen.getByRole("textbox"),
+    );
+  });
+
+  it("takes its invalid state from Field rather than hand-rolled attributes", () => {
+    render(<MaskInput mask="phone" label="Phone" invalid />);
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveAttribute("data-invalid");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+  });
+});

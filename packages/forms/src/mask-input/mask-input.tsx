@@ -4,6 +4,7 @@ import { cx, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
 import { Field } from "../field/field";
+import { FieldControl } from "../field/subcomponents";
 import { InputWrapper } from "../input/input-wrapper";
 import { inputVariants } from "../input/input.variants";
 import { useMask } from "./hooks";
@@ -110,6 +111,8 @@ export const MaskInput = (props: MaskInputProps) => {
       label={label}
       description={description}
       required={required}
+      disabled={disabled}
+      invalid={invalid}
       {...FieldProps}
     >
       <InputWrapper
@@ -119,15 +122,15 @@ export const MaskInput = (props: MaskInputProps) => {
         fullwidth={fullwidth}
         ghost={ghost}
       >
-        <input
-          aria-invalid={invalid}
-          data-disabled={disabled ? "" : undefined}
-          data-invalid={invalid ? "" : undefined}
-          data-readonly={readOnly ? "" : undefined}
-          data-required={required ? "" : undefined}
+        <FieldControl
           data-slot="mask-input"
-          {...inputProps}
-          {...maskInputProps}
+          {...{
+            // Base UI's Field emits data-disabled/valid/invalid/touched/dirty/
+            // filled/focused, but models neither readonly nor required on the
+            // control, so these two stay hand-rolled.
+            "data-readonly": readOnly ? "" : undefined,
+            "data-required": required ? "" : undefined,
+          }}
           className={cx(
             inputStyles["input"],
             before || after
@@ -135,16 +138,22 @@ export const MaskInput = (props: MaskInputProps) => {
               : inputVariants({ size, fullwidth, ghost }),
             className,
           )}
-          placeholder={placeholderValue}
-          ref={composedRef}
-          value={displayValue}
-          disabled={disabled}
-          maxLength={calculatedMaxLength}
-          readOnly={readOnly}
-          required={required}
-          inputMode={calculatedInputMode}
-          min={min}
-          max={max}
+          render={
+            <input
+              {...inputProps}
+              {...maskInputProps}
+              placeholder={placeholderValue}
+              ref={composedRef}
+              value={displayValue}
+              disabled={disabled}
+              maxLength={calculatedMaxLength}
+              readOnly={readOnly}
+              required={required}
+              inputMode={calculatedInputMode}
+              min={min}
+              max={max}
+            />
+          }
         />
       </InputWrapper>
     </Field>
