@@ -5,7 +5,7 @@
 ## Quick Reference
 
 ```tsx
-import { Tabs } from "@uiid/interactive";
+import { Tabs } from "@uiid/navigation";
 
 // Basic usage
 <Tabs
@@ -90,7 +90,7 @@ import {
   TabsTab,
   TabsIndicator,
   TabsPanel,
-} from "@uiid/interactive";
+} from "@uiid/navigation";
 
 <TabsRoot defaultValue="tab-1">
   <TabsList>

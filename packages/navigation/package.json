@@ -1,7 +1,7 @@
 {
   "name": "@uiid/navigation",
   "version": "0.2.0",
-  "description": "Navigation components — Breadcrumbs, Pagination",
+  "description": "Navigation components — Accordion, Breadcrumbs, Menu, Pagination, Tabs",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
@@ -17,8 +17,11 @@
     "components",
     "design-system",
     "navigation",
+    "accordion",
     "breadcrumbs",
-    "pagination"
+    "menu",
+    "pagination",
+    "tabs"
   ],
   "type": "module",
   "sideEffects": [
@@ -41,17 +44,21 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@uiid/icons": "workspace:*",
     "@uiid/buttons": "workspace:*",
+    "@uiid/cards": "workspace:*",
+    "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
+    "@base-ui/react": "^1.7.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@base-ui/react": "1.7.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",

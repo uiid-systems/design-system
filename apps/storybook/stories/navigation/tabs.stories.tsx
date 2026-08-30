@@ -4,7 +4,7 @@ import { Stack, Tabs } from "@uiid/design-system";
 import { MOCK_TABS } from "./tabs.mocks";
 
 const meta: Meta<typeof Tabs> = {
-  title: "Interactive/Tabs",
+  title: "Navigation/Tabs",
   component: Tabs,
   tags: ["new"],
   args: {

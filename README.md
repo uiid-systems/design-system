@@ -34,10 +34,10 @@ Every component also ships as an individual package (`@uiid/buttons`, `@uiid/lay
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting
 - `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, and more
 - `@uiid/indicators` — Avatar, Badge, Progress, Status, Timeline
-- `@uiid/interactive` — Accordion, Collapsible, Tabs, ToggleGroup
+- `@uiid/interactive` — Collapsible, Resizable, Sortable, ToggleGroup
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator
 - `@uiid/lists` — List components
-- `@uiid/navigation` — Breadcrumbs, Pagination
+- `@uiid/navigation` — Accordion, Breadcrumbs, Menu, Pagination, Tabs
 - `@uiid/overlays` — Dialog, Drawer, Popover, Tooltip
 - `@uiid/tables` — Table components
 - `@uiid/typography` — Text and Prose

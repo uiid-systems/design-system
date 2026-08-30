@@ -1,5 +1,6 @@
-import type { AccordionItemData } from "@uiid/design-system";
 import { InfoIcon } from "@uiid/icons/info";
+
+import type { AccordionItemData } from "./accordion.types";
 
 export const MOCK_ITEMS: AccordionItemData[] = [
   {
@@ -14,7 +15,7 @@ export const MOCK_ITEMS: AccordionItemData[] = [
     value: "item-2",
     trigger: "How do I install it?",
     content:
-      "You can install UIID packages individually via npm or pnpm, e.g., pnpm add @uiid/interactive.",
+      "You can install UIID packages individually via npm or pnpm, e.g., pnpm add @uiid/navigation.",
   },
   {
     icon: InfoIcon,

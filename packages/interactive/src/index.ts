@@ -1,17 +1,6 @@
-export * from "./accordion/accordion";
-export * from "./accordion/accordion.types";
-export * from "./accordion/subcomponents";
-
 export * from "./collapsible/collapsible";
 export * from "./collapsible/collapsible.types";
 export * from "./collapsible/subcomponents";
-
-export * from "./menu/menu";
-export * from "./menu/menu.types";
-export * from "./menu/subcomponents";
-
-export * from "./tabs/tabs";
-export * from "./tabs/tabs.types";
 
 export * from "./toggle-group/toggle-group";
 export * from "./toggle-group/toggle-group.types";

@@ -654,33 +654,12 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.3)
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../buttons
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../cards
-      '@uiid/forms':
-        specifier: workspace:*
-        version: link:../forms
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
-      '@uiid/indicators':
-        specifier: workspace:*
-        version: link:../indicators
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../overlays
-      '@uiid/tokens':
-        specifier: workspace:*
-        version: link:../tokens
-      '@uiid/typography':
-        specifier: workspace:*
-        version: link:../typography
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
@@ -858,12 +837,18 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
+      '@uiid/cards':
+        specifier: workspace:*
+        version: link:../cards
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
+      '@uiid/tokens':
+        specifier: workspace:*
+        version: link:../tokens
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
@@ -871,6 +856,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@base-ui/react':
+        specifier: 1.7.0
+        version: 1.7.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -998,12 +986,12 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
-      '@uiid/interactive':
-        specifier: workspace:*
-        version: link:../interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
+      '@uiid/navigation':
+        specifier: workspace:*
+        version: link:../navigation
       '@uiid/overlays':
         specifier: workspace:*
         version: link:../overlays

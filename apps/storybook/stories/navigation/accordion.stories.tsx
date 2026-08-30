@@ -4,7 +4,7 @@ import { Stack, Accordion } from "@uiid/design-system";
 import { MOCK_ITEMS } from "./accordion.mocks";
 
 const meta: Meta<typeof Accordion> = {
-  title: "Interactive/Accordion",
+  title: "Navigation/Accordion",
   component: Accordion,
   tags: ["beta"],
   args: {
