@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { Textarea } from "./textarea";
 
@@ -237,5 +237,15 @@ describe("Textarea single render path", () => {
     expect(
       container.querySelector("[data-slot='field-root']"),
     ).toBeInTheDocument();
+  });
+});
+
+describe("Textarea Field.Control surface", () => {
+  it("supports Field.Control's onValueChange", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<Textarea onValueChange={onValueChange} />);
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(onValueChange).toHaveBeenCalled();
   });
 });
