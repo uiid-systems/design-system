@@ -5,10 +5,7 @@ import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
 import { FIELD_TOOLTIP_DELAY } from "../field.constants";
-import type {
-  FieldHint as FieldHintValue,
-  FieldHintProps,
-} from "../field.types";
+import type { FieldHintValue, FieldHintProps } from "../field.types";
 
 import styles from "../field.module.css";
 
