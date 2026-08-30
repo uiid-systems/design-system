@@ -58,4 +58,7 @@ export * from "./switch/subcomponents";
 export * from "./textarea/textarea";
 export * from "./textarea/textarea.types";
 
+export * from "./toggle-group/toggle-group";
+export * from "./toggle-group/toggle-group.types";
+
 export * from "./types";
