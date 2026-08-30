@@ -5,7 +5,7 @@ import { MoonIcon } from "@uiid/icons/moon";
 import { SunIcon } from "@uiid/icons/sun";
 
 const meta: Meta<typeof ToggleGroup> = {
-  title: "Interactive/Toggle Group",
+  title: "Forms/Toggle Group",
   component: ToggleGroup,
   tags: ["beta"],
   args: {

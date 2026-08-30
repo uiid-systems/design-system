@@ -37,7 +37,7 @@
   {
     "name": "@uiid/interactive",
     "path": "packages/interactive/dist/index.js",
-    "limit": "70 kB"
+    "limit": "60 kB"
   },
   {
     "name": "@uiid/layout",

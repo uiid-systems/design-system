@@ -32,9 +32,9 @@ Every component also ships as an individual package (`@uiid/buttons`, `@uiid/lay
 - `@uiid/calendars` — Date and date range pickers
 - `@uiid/cards` — Card components
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting
-- `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, and more
+- `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, ToggleGroup, and more
 - `@uiid/indicators` — Avatar, Badge, Progress, Status, Timeline
-- `@uiid/interactive` — Collapsible, Resizable, Sortable, ToggleGroup
+- `@uiid/interactive` — Collapsible, Resizable, Sortable
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator
 - `@uiid/lists` — List components
 - `@uiid/navigation` — Accordion, Breadcrumbs, Menu, Pagination, Tabs

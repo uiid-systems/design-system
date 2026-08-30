@@ -1,7 +1,7 @@
 {
   "name": "@uiid/interactive",
   "version": "0.2.0",
-  "description": "Interactive components — Collapsible, Resizable, Sortable, Toggle Group",
+  "description": "Interactive components — Collapsible, Resizable, Sortable",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
@@ -19,8 +19,7 @@
     "interactive",
     "collapsible",
     "resizable",
-    "sortable",
-    "toggle-group"
+    "sortable"
   ],
   "type": "module",
   "sideEffects": [
