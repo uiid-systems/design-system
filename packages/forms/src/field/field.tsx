@@ -26,6 +26,7 @@ export const Field = ({
   ErrorProps,
   HintProps,
   DescriptionProps,
+  className,
   children,
   ...props
 }: FieldProps) => {
@@ -42,6 +43,7 @@ export const Field = ({
       className={cx(
         isFloating && styles["field-root-floating"],
         !hasChrome && styles["field-root-bare"],
+        className,
         RootProps?.className,
       )}
     >

@@ -88,3 +88,40 @@ describe("Autocomplete", () => {
     );
   });
 });
+
+describe("Autocomplete render target", () => {
+  const items = ["apple", "banana", "cherry"];
+
+  it("keeps the combobox role on the input when a label is passed", () => {
+    render(<Autocomplete items={items} label="Fruit" />);
+    const input = screen.getByRole("combobox");
+    expect(input.tagName).toBe("INPUT");
+  });
+
+  it("associates the label with the input itself", () => {
+    render(<Autocomplete items={items} label="Fruit" />);
+    expect(screen.getByLabelText("Fruit")).toBe(screen.getByRole("combobox"));
+  });
+
+  it("puts aria-expanded on the input, not the field wrapper", () => {
+    render(<Autocomplete items={items} label="Fruit" />);
+    expect(screen.getByRole("combobox")).toHaveAttribute("aria-expanded");
+  });
+});
+
+describe("Autocomplete FieldProps routing", () => {
+  const items = ["apple", "banana", "cherry"];
+
+  it("routes FieldProps to the field root instead of the DOM", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        label="Fruit"
+        InputProps={{ FieldProps: { className: "custom-field" } }}
+      />,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "custom-field",
+    );
+  });
+});

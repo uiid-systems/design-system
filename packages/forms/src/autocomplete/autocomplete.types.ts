@@ -6,7 +6,7 @@ import type { InputProps } from "../input/input.types";
 export type AutocompleteRootProps<Value = string> =
   BaseAutocomplete.Root.Props<Value>;
 export type AutocompleteInputProps = BaseAutocomplete.Input.Props &
-  Pick<InputProps, "before" | "after"> &
+  Pick<InputProps, "FieldProps" | "before" | "after"> &
   Pick<FieldProps, "label" | "description">;
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;

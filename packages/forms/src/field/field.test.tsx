@@ -221,3 +221,27 @@ describe("Field bare mode", () => {
     expect(root?.className).not.toMatch(/field-root-bare/);
   });
 });
+
+describe("Field className merging", () => {
+  it("keeps a className passed directly to Field", () => {
+    const { container } = render(
+      <Field className="direct-class">
+        <input />
+      </Field>,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "direct-class",
+    );
+  });
+
+  it("keeps both a direct className and RootProps.className", () => {
+    const { container } = render(
+      <Field className="direct-class" RootProps={{ className: "root-class" }}>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root).toHaveClass("direct-class");
+    expect(root).toHaveClass("root-class");
+  });
+});

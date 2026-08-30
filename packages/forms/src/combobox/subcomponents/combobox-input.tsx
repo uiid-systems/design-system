@@ -3,7 +3,9 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { cx } from "@uiid/utils";
 
-import { Input } from "../../input/input";
+import { Field } from "../../field/field";
+import { InputControl } from "../../input/input-control";
+import { InputWrapper } from "../../input/input-wrapper";
 import type { ComboboxInputProps } from "../combobox.types";
 
 import styles from "../combobox.module.css";
@@ -15,27 +17,31 @@ export const ComboboxInput = ({
   placeholder,
   before,
   after,
+  FieldProps,
   className,
   ...props
 }: ComboboxInputProps) => {
+  const hasSlots = Boolean(before || after);
+
   return (
-    <BaseCombobox.Input
-      data-slot="combobox-input"
+    <Field
       name={name}
-      render={
-        <Input
+      label={label}
+      description={description}
+      fullwidth
+      {...FieldProps}
+    >
+      <InputWrapper before={before} after={after} fullwidth>
+        <BaseCombobox.Input
+          data-slot="combobox-input"
           name={name}
-          label={label}
-          description={description}
-          before={before}
-          after={after}
-          fullwidth
+          render={<InputControl inner={hasSlots} fullwidth />}
+          className={cx(styles["combobox-input"], className)}
+          placeholder={placeholder}
+          {...props}
         />
-      }
-      className={cx(styles["combobox-input"], className)}
-      placeholder={placeholder}
-      {...props}
-    />
+      </InputWrapper>
+    </Field>
   );
 };
 ComboboxInput.displayName = "ComboboxInput";
