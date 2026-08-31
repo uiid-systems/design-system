@@ -1,6 +1,6 @@
 # UIID
 
-A modular React component library built with React 19, TypeScript, and [Base UI](https://base-ui.com/). Components are styled with CSS Modules and design tokens, and ship as independent packages — install only what you need.
+A modular React component library built with React 19, TypeScript, and [Base UI](https://base-ui.com/). Components are styled with CSS Modules and design tokens, Library ships as one consolidated, tree-shakeable package or independent packages — install only what you need.
 
 ## Installation
 
@@ -9,20 +9,24 @@ pnpm add @uiid/design-system
 ```
 
 ```tsx
-import { Button, Stack } from "@uiid/design-system";
+import { Button, Group, Input, Stack, Text } from "@uiid/design-system";
 import "@uiid/design-system/globals.css";
 
-function App() {
+export default function App() {
   return (
     <Stack gap={4}>
-      <Button>Save changes</Button>
-      <Button variant="subtle">Cancel</Button>
+      <Text render={<h1 />} size={2}>
+        Enter your name:
+      </Text>
+      <Input label="name" />
+      <Group gap={2}>
+        <Button variant="subtle">Cancel</Button>
+        <Button>Save changes</Button>
+      </Group>
     </Stack>
   );
 }
 ```
-
-Every component also ships as an individual package (`@uiid/buttons`, `@uiid/layout`, …) if you'd rather install only what you use — pair them with `@uiid/tokens` for the global styles.
 
 ## Packages
 
