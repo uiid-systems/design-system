@@ -21,7 +21,27 @@ When porting components from shadcn or Radix patterns, substitute:
 
 Use regular elements for domain components. Only use `renderWithProps` for low-level layout primitives (`Box`, `Text`).
 
-Share variant styles across components by importing from the source component rather than duplicating them (for example Badge → Status, Input → Select).
+## Sharing code between components
+
+Never duplicate. How you share depends on what the shared thing _is_.
+
+**Standalone components may be imported directly**, including from a sibling
+directory. A component that renders another component is ordinary composition —
+Badge renders Status, and a composite form control may render Input and
+Checkbox. Those stay where they live; do not hoist them into a shared
+directory. The same applies to importing a component's _variant styles_ from its
+source rather than copying them (Input → Select).
+
+**Fragments get abstracted.** When the shared thing is not a component in its own
+right — a popup tree, a label row, a control surface — put it in a neutral shared
+module instead of having one component reach into a sibling for it. See
+`packages/forms/src/shared/` (the combobox/autocomplete popup layer and input
+group) and `packages/forms/src/field/subcomponents/field-row.tsx`, shared by
+checkbox, switch and radio.
+
+The test is whether the thing could stand on its own as a documented component.
+If yes, import it. If it is only ever a piece of something else, share it
+neutrally so neither component owns the other.
 
 ## Creating a new package
 
