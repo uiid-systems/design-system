@@ -4,7 +4,7 @@ A modular React component library built with React 19, TypeScript, and [Base UI]
 ## Installation
 
 ```bash
-pnpm add @uiid/design-system
+pnpm add @uiid/design-system @base-ui/react
 ```
 
 ```tsx
