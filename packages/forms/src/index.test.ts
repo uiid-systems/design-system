@@ -85,6 +85,10 @@ describe("forms barrel", () => {
     }
   });
 
+  it("exports the checkbox-group compound API", () => {
+    expect(forms).toHaveProperty("CheckboxGroupRoot");
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");

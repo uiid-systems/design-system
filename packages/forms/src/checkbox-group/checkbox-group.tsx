@@ -1,11 +1,9 @@
 "use client";
 
-import { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
-import { Stack, Group } from "@uiid/layout";
-
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
 import type { CheckboxGroupProps } from "./checkbox-group.types";
+import { CheckboxGroupRoot } from "./subcomponents";
 
 export const CheckboxGroup = ({
   items,
@@ -22,10 +20,9 @@ export const CheckboxGroup = ({
   CheckboxProps,
   IndicatorProps,
   FieldProps,
+  children,
   ...props
 }: CheckboxGroupProps) => {
-  const isHorizontal = direction === "horizontal";
-
   return (
     <Field
       name={name}
@@ -35,25 +32,31 @@ export const CheckboxGroup = ({
       disabled={disabled}
       {...FieldProps}
     >
-      <BaseCheckboxGroup
-        render={isHorizontal ? <Group gap={2} /> : <Stack gap={2} />}
+      <CheckboxGroupRoot
+        direction={direction}
+        disabled={disabled}
         defaultValue={defaultValue ? [...defaultValue] : undefined}
         {...props}
       >
-        {items.map(({ value, label: checkboxLabel }) => (
-          <Checkbox
-            name={name}
-            key={value}
-            hideIndicator={hideIndicators}
-            bordered={bordered}
-            reversed={reversed}
-            value={value}
-            label={checkboxLabel}
-            IndicatorProps={IndicatorProps}
-            {...CheckboxProps}
-          />
-        ))}
-      </BaseCheckboxGroup>
+        {!items
+          ? children
+          : items.map(
+              ({ value, label: checkboxLabel, disabled: itemDisabled }) => (
+                <Checkbox
+                  key={value}
+                  name={name}
+                  hideIndicator={hideIndicators}
+                  bordered={bordered}
+                  reversed={reversed}
+                  IndicatorProps={IndicatorProps}
+                  {...CheckboxProps}
+                  value={value}
+                  label={checkboxLabel}
+                  disabled={itemDisabled || disabled}
+                />
+              ),
+            )}
+      </CheckboxGroupRoot>
     </Field>
   );
 };

@@ -8,8 +8,16 @@ import type {
 import type { FieldProps } from "../field/field.types";
 import type { FormItemProps } from "../types";
 
+export type CheckboxGroupRootProps = BaseCheckboxGroup.Props & {
+  direction?: "horizontal" | "vertical";
+};
+
 export type CheckboxGroupProps = {
-  items: FormItemProps[];
+  /**
+   * Convenience list for the common case. Omit it and pass `children` to
+   * compose `Checkbox` (or `CheckboxGroupRoot`) directly instead.
+   */
+  items?: FormItemProps[];
   direction?: "horizontal" | "vertical";
   hideIndicators?: CheckboxProps["hideIndicator"];
   CheckboxProps?: Partial<CheckboxProps>;
