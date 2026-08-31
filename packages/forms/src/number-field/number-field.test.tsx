@@ -23,7 +23,10 @@ describe("NumberField", () => {
 
   it("renders with data-slot attribute", () => {
     render(<NumberField />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("data-slot", "input");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "data-slot",
+      "number-field-input",
+    );
   });
 
   it("supports custom defaultValue", () => {
@@ -126,9 +129,17 @@ describe("NumberField", () => {
 
 describe("NumberField render target", () => {
   it("merges Base UI's input props onto the input, not the field wrapper", () => {
-    render(<NumberField />);
+    const { container } = render(<NumberField />);
     const input = screen.getByRole("textbox");
     expect(input.tagName).toBe("INPUT");
-    expect(input).toHaveAttribute("data-slot", "input");
+    expect(input).toHaveAttribute("data-slot", "number-field-input");
+    // The guard this test exists for: the input's own slot must not land on
+    // the field wrapper or the control group.
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).not.toHaveAttribute("data-slot", "number-field-input");
+    expect(
+      container.querySelector("[data-slot='number-field-group']"),
+    ).not.toBeNull();
   });
 });

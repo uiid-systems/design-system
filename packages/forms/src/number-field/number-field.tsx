@@ -1,24 +1,20 @@
 "use client";
 
-import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
-import { InputControl } from "../input/subcomponents";
 import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import type { NumberFieldProps } from "./number-field.types";
 import {
   NumberFieldRoot,
+  NumberFieldGroup,
+  NumberFieldInput,
   NumberFieldIncrement,
   NumberFieldDecrement,
 } from "./subcomponents";
 
 import styles from "./number-field.module.css";
 
-/**
- * @todo apply scrub area
- * @see https://base-ui.com/react/components/number-field#scrub-area
- * */
 export const NumberField = ({
   label,
   description,
@@ -28,6 +24,7 @@ export const NumberField = ({
   required,
   size = NUMBER_FIELD_DEFAULT_SIZE,
   RootProps,
+  GroupProps,
   DecrementProps,
   IncrementProps,
   FieldProps,
@@ -45,23 +42,22 @@ export const NumberField = ({
       required={required}
       {...FieldProps}
     >
-      <NumberFieldRoot
-        name={name}
-        {...RootProps}
-        className={cx(sizeClass, RootProps?.className)}
-        {...props}
-      >
-        <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
+      <NumberFieldRoot name={name} {...RootProps} {...props}>
+        <NumberFieldGroup
+          {...GroupProps}
+          className={cx(sizeClass, GroupProps?.className)}
+        >
+          <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
-        <BaseNumberField.Input
-          render={<InputControl size={size} />}
-          className={cx(styles["number-field-input"], InputProps?.className)}
-          placeholder={placeholder}
-          required={required}
-          {...InputProps}
-        />
+          <NumberFieldInput
+            size={size}
+            placeholder={placeholder}
+            required={required}
+            {...InputProps}
+          />
 
-        <NumberFieldIncrement disabled={disabled} {...IncrementProps} />
+          <NumberFieldIncrement disabled={disabled} {...IncrementProps} />
+        </NumberFieldGroup>
       </NumberFieldRoot>
     </Field>
   );

@@ -5,9 +5,8 @@ import { cx } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { InputControl, InputWrapper } from "../../input/subcomponents";
+import { inputGroupInputClassName } from "../../shared/input-group";
 import type { ComboboxInputProps } from "../combobox.types";
-
-import styles from "../combobox.module.css";
 
 export const ComboboxInput = ({
   label,
@@ -35,7 +34,7 @@ export const ComboboxInput = ({
           data-slot="combobox-input"
           name={name}
           render={<InputControl inner={hasSlots} fullwidth />}
-          className={cx(styles["combobox-input"], className)}
+          className={cx(inputGroupInputClassName, className)}
           placeholder={placeholder}
           {...props}
         />

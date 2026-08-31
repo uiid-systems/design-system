@@ -1,24 +1,15 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
 
 import type { NumberFieldRootProps } from "../number-field.types";
 
-import styles from "../number-field.module.css";
-
-export const NumberFieldRoot = ({
-  className,
-  ...props
-}: NumberFieldRootProps) => {
-  return (
-    <BaseNumberField.Root
-      data-slot="number-field-root"
-      render={<Group />}
-      className={cx(styles["number-field"], className)}
-      {...props}
-    />
-  );
+/**
+ * Groups all parts and manages state. The visible control cluster — and its
+ * surface and focus ring — is `NumberFieldGroup`, matching Base UI's anatomy of
+ * `Root > (ScrubArea, Group > Decrement/Input/Increment)`.
+ */
+export const NumberFieldRoot = (props: NumberFieldRootProps) => {
+  return <BaseNumberField.Root data-slot="number-field-root" {...props} />;
 };
 NumberFieldRoot.displayName = "NumberFieldRoot";

@@ -18,6 +18,17 @@ export type ComboboxPopupProps = BaseCombobox.Popup.Props;
 export type ComboboxListProps = BaseCombobox.List.Props;
 export type ComboboxItemProps = BaseCombobox.Item.Props;
 export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
+export type ComboboxInputGroupProps = BaseCombobox.InputGroup.Props;
+export type ComboboxTriggerProps = BaseCombobox.Trigger.Props;
+export type ComboboxClearProps = BaseCombobox.Clear.Props;
+export type ComboboxIconProps = BaseCombobox.Icon.Props;
+export type ComboboxStatusProps = BaseCombobox.Status.Props;
+export type ComboboxGroupProps = BaseCombobox.Group.Props;
+export type ComboboxGroupLabelProps = BaseCombobox.GroupLabel.Props;
+export type ComboboxValueProps = BaseCombobox.Value.Props;
+export type ComboboxChipsProps = BaseCombobox.Chips.Props;
+export type ComboboxChipProps = BaseCombobox.Chip.Props;
+export type ComboboxChipRemoveProps = BaseCombobox.ChipRemove.Props;
 
 export type ComboboxProps<
   Value = string,
@@ -25,6 +36,7 @@ export type ComboboxProps<
 > = React.PropsWithChildren<{
   RootProps?: ComboboxRootProps<Value, Multiple>;
   InputProps?: ComboboxInputProps;
+  InputGroupProps?: ComboboxInputGroupProps;
   PortalProps?: ComboboxPortalProps;
   PositionerProps?: ComboboxPositionerProps;
   PopupProps?: ComboboxPopupProps;
