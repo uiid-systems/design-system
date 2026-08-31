@@ -4,6 +4,9 @@
   "tasks": {
     "build": {
       "outputs": ["src/css/**", "dist/**"]
+    },
+    "tokens": {
+      "outputs": ["src/css/**"]
     }
   }
 }
