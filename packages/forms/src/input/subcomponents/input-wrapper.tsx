@@ -13,7 +13,7 @@ export const InputWrapper = ({
   after,
   size,
   fullwidth,
-  ghost,
+  variant,
   className,
   children,
 }: InputWrapperProps) => {
@@ -26,7 +26,7 @@ export const InputWrapper = ({
       className={cx(
         styles["input"],
         styles["input-wrapper"],
-        inputVariants({ size, fullwidth, ghost }),
+        inputVariants({ size, fullwidth, variant }),
         className,
       )}
     >

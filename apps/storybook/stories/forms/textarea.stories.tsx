@@ -24,6 +24,11 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+      table: { category: "Variants" },
+    },
     resize: {
       control: "select",
       options: ["none", "vertical", "horizontal", "both"],
@@ -32,7 +37,6 @@ const meta = {
 
     rows: { control: "number", table: { category: "Options" } },
 
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     fullwidth: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },

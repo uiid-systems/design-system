@@ -209,15 +209,15 @@ describe("Tabs", () => {
   // GHOST
   // ============================================
 
-  it("applies ghost data attribute when ghost prop is set", () => {
-    render(<Tabs items={MOCK_ITEMS} ghost />);
+  it("applies the variant data attribute when variant is ghost", () => {
+    render(<Tabs items={MOCK_ITEMS} variant="ghost" />);
     const tablist = screen.getByRole("tablist");
-    expect(tablist).toHaveAttribute("data-ghost");
+    expect(tablist).toHaveAttribute("data-variant", "ghost");
   });
 
-  it("does not apply ghost data attribute by default", () => {
+  it("does not apply the variant data attribute by default", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const tablist = screen.getByRole("tablist");
-    expect(tablist).not.toHaveAttribute("data-ghost");
+    expect(tablist).not.toHaveAttribute("data-variant");
   });
 });

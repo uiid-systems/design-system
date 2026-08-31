@@ -51,6 +51,6 @@ export type AccordionProps = {
   | "orientation"
   | "multiple"
   | "fullwidth"
-  | "ghost"
+  | "variant"
 > &
   AccordionTriggerVariants;

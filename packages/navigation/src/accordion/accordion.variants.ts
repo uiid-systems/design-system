@@ -32,6 +32,9 @@ export const accordionPanelVariants = cva({
 
 export const accordionRootVariants = cva({
   variants: {
-    ghost: { true: styles["toggle-ghost"] },
+    /** Surface treatment — filled by default, `ghost` drops the card surface and item rules */
+    variant: {
+      ghost: styles["variant-ghost"],
+    },
   },
 });

@@ -11,7 +11,10 @@
     border-bottom: none;
   }
 
-  [data-ghost] & {
+  /* Scoped to the accordion's own root: `data-variant="ghost"` is also what a
+     Card sets, and the root renders as one — an unscoped `[data-variant="ghost"] &`
+     would strip these rules for any accordion nested in a ghost Card. */
+  .accordion-root[data-variant="ghost"] & {
     border-bottom: none;
   }
 }
@@ -69,7 +72,7 @@
 }
 
 /* Ghost variant */
-.toggle-ghost {
+.variant-ghost {
   background-color: transparent;
   border: none;
   box-shadow: none;

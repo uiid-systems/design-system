@@ -19,7 +19,7 @@ import type { InputControlProps } from "../input.types";
 export const InputControl = ({
   size,
   fullwidth,
-  ghost,
+  variant,
   inner,
   className,
   ref,
@@ -33,7 +33,7 @@ export const InputControl = ({
         inner,
         size,
         fullwidth,
-        ghost,
+        variant,
         className,
       })}
       {...props}

@@ -11,7 +11,7 @@ Use Slider when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the row height, inline padding, and readout scale with the tier, while the track and thumb stay fixed so a small slider keeps a usable grab target
 - Run it top-to-bottom with `orientation="vertical"`
 - Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
-- Soften the surface with `ghost`, fill the container with `fullwidth`, or mark it `disabled`
+- Soften the surface with `variant="ghost"`, fill the container with `fullwidth`, or mark it `disabled`
 
 Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the drag ends.
 

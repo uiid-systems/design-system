@@ -18,7 +18,7 @@
     --tabs-tab-height: var(--forms-size-lg-height);
   }
 
-  &[data-ghost] {
+  &[data-variant="ghost"] {
     background-color: transparent;
     border-color: transparent;
   }

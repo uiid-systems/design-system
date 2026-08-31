@@ -103,7 +103,7 @@ export const Multiple = () => (
   />
 );
 
-export const Ghost = () => <Select ghost items={MOCK_SELECT_ITEMS} />;
+export const Ghost = () => <Select variant="ghost" items={MOCK_SELECT_ITEMS} />;
 
 export const Fullwidth = () => (
   <Stack gap={4} ax="stretch" fullwidth>

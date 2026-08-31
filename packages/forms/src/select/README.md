@@ -10,7 +10,7 @@ Use Select when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon or a hint inside the trigger with `before` and `after`
 - Collect several values at once with `multiple` — the trigger lists the selection and the popup keeps the checked state
-- Soften the surface with `ghost` or fill the container with `fullwidth`
+- Soften the surface with `variant="ghost"` or fill the container with `fullwidth`
 - Mark it `required`, `disabled`, or `readOnly`
 
 The trigger never grows past its container: a long value truncates instead.

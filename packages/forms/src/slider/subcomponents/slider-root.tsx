@@ -10,7 +10,7 @@ import { sliderVariants } from "../slider.variants";
 import inputStyles from "../../input/input.module.css";
 
 export const SliderRoot = ({
-  ghost,
+  variant,
   fullwidth,
   size,
   children,
@@ -22,7 +22,7 @@ export const SliderRoot = ({
       data-slot="slider-root"
       className={cx(
         inputStyles["input"],
-        sliderVariants({ ghost, fullwidth, size }),
+        sliderVariants({ variant, fullwidth, size }),
         className,
       )}
       render={<Group gap={2} ay="center" />}

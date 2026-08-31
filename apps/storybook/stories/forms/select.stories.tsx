@@ -25,13 +25,17 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+      table: { category: "Variants" },
+    },
 
     items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
 
     multiple: { control: "boolean", table: { category: "Toggles" } },
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     fullwidth: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },

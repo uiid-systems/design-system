@@ -24,8 +24,10 @@ export const sliderVariants = cva({
   variants: {
     /** Stretch the control to the width of its container */
     fullwidth: { true: inputStyles["toggle-fullwidth"] },
-    /** Drop the resting surface — background and border only */
-    ghost: { true: inputStyles["toggle-ghost"] },
+    /** Surface treatment — filled by default, `ghost` drops the resting surface */
+    variant: {
+      ghost: inputStyles["variant-ghost"],
+    },
     /** Control scale, matching a sibling Input at the same size */
     size: {
       xsmall: inputStyles["size-xsmall"],

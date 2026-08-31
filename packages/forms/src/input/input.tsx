@@ -11,7 +11,7 @@ export const Input = ({
   name,
   size,
   fullwidth,
-  ghost,
+  variant,
   before,
   after,
   FieldProps,
@@ -34,7 +34,7 @@ export const Input = ({
         after={after}
         size={size}
         fullwidth={fullwidth}
-        ghost={ghost}
+        variant={variant}
       >
         <InputControl
           name={name}
@@ -42,7 +42,7 @@ export const Input = ({
           inner={hasSlots}
           size={size}
           fullwidth={fullwidth}
-          ghost={ghost}
+          variant={variant}
           className={className}
           ref={ref}
           {...props}

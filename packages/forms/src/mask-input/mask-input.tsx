@@ -36,7 +36,7 @@ export const MaskInput = (props: MaskInputProps) => {
     // Input variant props
     size,
     fullwidth,
-    ghost,
+    variant,
     label,
     description,
     FieldProps,
@@ -120,7 +120,7 @@ export const MaskInput = (props: MaskInputProps) => {
         after={after}
         size={size}
         fullwidth={fullwidth}
-        ghost={ghost}
+        variant={variant}
       >
         <FieldControl
           data-slot="mask-input"
@@ -135,7 +135,7 @@ export const MaskInput = (props: MaskInputProps) => {
             inputStyles["input"],
             before || after
               ? inputStyles["input-inner"]
-              : inputVariants({ size, fullwidth, ghost }),
+              : inputVariants({ size, fullwidth, variant }),
             className,
           )}
           render={

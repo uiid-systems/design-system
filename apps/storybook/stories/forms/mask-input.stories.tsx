@@ -26,6 +26,11 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+      table: { category: "Variants" },
+    },
 
     mask: {
       control: "select",
@@ -64,7 +69,6 @@ const meta = {
       table: { category: "Options" },
     },
 
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     fullwidth: { control: "boolean", table: { category: "Toggles" } },
     withoutMask: { control: "boolean", table: { category: "Toggles" } },
     invalid: { control: "boolean", table: { category: "Toggles" } },

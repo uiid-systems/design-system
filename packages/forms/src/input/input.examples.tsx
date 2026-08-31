@@ -62,8 +62,12 @@ export const BeforeAfterSlots = () => (
 
 export const Ghost = () => (
   <Stack gap={4} ax="stretch">
-    <Input ghost placeholder="Ghost" />
-    <Input ghost before={<SearchIcon />} placeholder="Ghost with a slot" />
+    <Input variant="ghost" placeholder="Ghost" />
+    <Input
+      variant="ghost"
+      before={<SearchIcon />}
+      placeholder="Ghost with a slot"
+    />
   </Stack>
 );
 

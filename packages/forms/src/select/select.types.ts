@@ -18,7 +18,7 @@ export type SelectRootProps<
   Multiple extends SelectMultipleMode = false,
 > = BaseSelect.Root.Props<Value, Multiple>;
 export type SelectTriggerProps = BaseSelect.Trigger.Props &
-  Pick<InputVariants, "ghost" | "fullwidth" | "size"> & {
+  Pick<InputVariants, "variant" | "fullwidth" | "size"> & {
     before?: React.ReactNode;
     after?: React.ReactNode;
   };

@@ -97,7 +97,9 @@ export const Vertical = () => (
   <Slider orientation="vertical" label="Volume" defaultValue={40} />
 );
 
-export const Ghost = () => <Slider ghost label="Volume" defaultValue={40} />;
+export const Ghost = () => (
+  <Slider variant="ghost" label="Volume" defaultValue={40} />
+);
 
 export const Disabled = () => (
   <Slider disabled label="Volume" defaultValue={40} />

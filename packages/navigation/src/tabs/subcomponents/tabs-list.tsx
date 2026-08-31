@@ -8,7 +8,7 @@ import styles from "../tabs.module.css";
 
 export const TabsList = ({
   size = "md",
-  ghost,
+  variant,
   fullwidth,
   className,
   children,
@@ -18,7 +18,7 @@ export const TabsList = ({
     <BaseTabs.List
       data-slot="tabs-list"
       data-size={size}
-      data-ghost={ghost || undefined}
+      data-variant={variant}
       render={<Group gap={4} ay="center" fullwidth={fullwidth} />}
       className={cx(styles["tabs-list"], className)}
       {...props}
