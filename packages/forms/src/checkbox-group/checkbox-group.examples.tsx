@@ -76,19 +76,12 @@ export const Required = () => (
 );
 
 /*
- * The name goes on the group's own Field rather than on the group, because
- * `name` is also handed to every box — and each box builds a Field of its own,
- * so a shared name would print the message once per box. The tradeoff is that
- * the boxes then submit unnamed; give them one through `CheckboxProps` when the
- * group has to post. See UI-190.
+ * One `name` covers both jobs: it matches the group's field to the form error,
+ * and it names every box's input so the group posts as a list.
  */
 export const Invalid = () => (
   <Form errors={{ channels: ERROR }}>
-    <CheckboxGroup
-      label={LABEL}
-      FieldProps={{ name: "channels" }}
-      items={ITEMS}
-    />
+    <CheckboxGroup name="channels" label={LABEL} items={ITEMS} />
   </Form>
 );
 

@@ -33,7 +33,6 @@ export type FieldHintValue =
 
 export type FieldRowProps = GroupProps &
   FieldRowVariants &
-  Pick<FieldRootProps, "name"> &
   React.PropsWithChildren<{
     label?: string;
     description?: string;

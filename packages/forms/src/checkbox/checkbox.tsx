@@ -22,7 +22,6 @@ export const Checkbox = ({
 }: CheckboxProps) => {
   return (
     <CheckboxField
-      name={name}
       label={label}
       description={description}
       size={size}
