@@ -1,0 +1,14 @@
+{
+  "$description": "UIID Design System - Input Group Component Tokens",
+  "input-group": {
+    "$type": "dimension",
+    "action": {
+      "width": { "$value": "calc({spacing.unit} * 6)" },
+      "height": { "$value": "calc({spacing.unit} * 10)" },
+      "border-radius": { "$value": "{spacing.unit}" }
+    },
+    "input": {
+      "padding-inline-end": { "$value": "calc({spacing.unit} * 16)" }
+    }
+  }
+}

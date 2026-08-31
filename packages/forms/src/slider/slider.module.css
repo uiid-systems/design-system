@@ -1,31 +1,35 @@
+@import "@uiid/tokens/component/slider.tokens.css";
+
 .slider-control {
   composes: composes-disabled from global;
 
   flex: 1;
-  min-width: calc(var(--spacing-unit) * 48);
-  min-height: calc(var(--spacing-unit) * 4);
+  min-width: var(--slider-control-min-width);
+  /* Clears the thumb, so a control with no other content still reserves the
+     thumb's diameter rather than collapsing onto the track. */
+  min-height: var(--slider-control-min-height);
   touch-action: none;
   user-select: none;
 }
 
 .slider-track {
   width: 100%;
-  height: var(--spacing-unit);
+  height: var(--slider-track-height);
   background-color: var(--shade-halftone);
-  box-shadow: inset 0 0 0 1px var(--shade-accent);
-  border-radius: 0.25rem;
+  box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-accent);
+  border-radius: var(--slider-track-border-radius);
   user-select: none;
 }
 
 .slider-indicator {
-  border-radius: 0.25rem;
+  border-radius: var(--slider-track-border-radius);
   background-color: var(--shade-muted);
   user-select: none;
 }
 
 .slider-thumb {
-  width: calc(var(--spacing-unit) * 4);
-  height: calc(var(--spacing-unit) * 4);
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
   border-radius: 100%;
   background-color: var(--shade-foreground);
   outline: var(--globals-border-width) solid var(--shade-muted);

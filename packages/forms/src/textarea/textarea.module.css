@@ -1,3 +1,4 @@
+@import "@uiid/tokens/component/textarea.tokens.css";
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
@@ -15,8 +16,8 @@
   outline-offset: var(--globals-outline-offset);
   padding: var(--forms-padding-y) var(--forms-padding-x);
   transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
-  line-height: 1.5;
-  min-height: calc(var(--spacing-unit) * 20);
+  line-height: var(--textarea-line-height);
+  min-height: var(--textarea-min-height-md);
 
   /** Hover */
   &:hover {
@@ -34,17 +35,17 @@
 .size-small {
   font-size: var(--forms-size-sm-font-size);
   padding-inline: var(--forms-size-sm-padding-x);
-  min-height: calc(var(--spacing-unit) * 16);
+  min-height: var(--textarea-min-height-sm);
 }
 .size-medium {
   font-size: var(--forms-size-md-font-size);
   padding-inline: var(--forms-size-md-padding-x);
-  min-height: calc(var(--spacing-unit) * 20);
+  min-height: var(--textarea-min-height-md);
 }
 .size-large {
   font-size: var(--forms-size-lg-font-size);
   padding-inline: var(--forms-size-lg-padding-x);
-  min-height: calc(var(--spacing-unit) * 24);
+  min-height: var(--textarea-min-height-lg);
 }
 
 /* Resize variants */

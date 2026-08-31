@@ -1,3 +1,4 @@
+@import "@uiid/tokens/component/number-field.tokens.css";
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .number-field-scrub-area {
@@ -79,16 +80,18 @@
   border-bottom-left-radius: 0;
 }
 
-/* Size variants for controls */
+/* Size variants for controls. The steppers stretch to the group's height, so
+   the token pins their width to the tier's control height and keeps them
+   square — the relationship lives in number-field.tokens.json, not here. */
 .size-small .number-field-decrement,
 .size-small .number-field-increment {
-  width: var(--forms-size-sm-height);
+  width: var(--number-field-button-width-sm);
 }
 .size-medium .number-field-decrement,
 .size-medium .number-field-increment {
-  width: var(--forms-size-md-height);
+  width: var(--number-field-button-width-md);
 }
 .size-large .number-field-decrement,
 .size-large .number-field-increment {
-  width: var(--forms-size-lg-height);
+  width: var(--number-field-button-width-lg);
 }

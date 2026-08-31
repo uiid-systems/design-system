@@ -1,0 +1,12 @@
+{
+  "$description": "UIID Design System - Select Component Tokens",
+  "select": {
+    "$type": "dimension",
+    "trigger": {
+      "gap": { "$value": "calc({spacing.unit} * 4)" }
+    },
+    "item": {
+      "gap": { "$value": "calc({spacing.unit} * 2)" }
+    }
+  }
+}

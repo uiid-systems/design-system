@@ -1,0 +1,8 @@
+{
+  "$description": "UIID Design System - Radio Component Tokens",
+  "radio": {
+    "indicator": {
+      "size": { "$value": "calc({spacing.unit} * 2)", "$type": "dimension" }
+    }
+  }
+}

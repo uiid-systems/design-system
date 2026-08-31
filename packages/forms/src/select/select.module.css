@@ -1,8 +1,10 @@
+@import "@uiid/tokens/component/select.tokens.css";
+
 .select-trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: calc(var(--spacing-unit) * 4);
+  gap: var(--select-trigger-gap);
 }
 
 /**
@@ -48,7 +50,7 @@
   composes: composes-option from global;
   display: flex;
   align-items: center;
-  gap: calc(var(--spacing-unit) * 2);
+  gap: var(--select-item-gap);
 }
 
 .select-item:focus {
