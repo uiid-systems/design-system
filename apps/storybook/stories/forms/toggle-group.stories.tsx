@@ -19,6 +19,11 @@ const meta = {
       options: ["sm", "md", "lg"],
       table: { category: "Variants" },
     },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+      table: { category: "Variants" },
+    },
     orientation: {
       control: "select",
       options: ["horizontal", "vertical"],
@@ -28,7 +33,6 @@ const meta = {
     value: { control: "object", table: { category: "Data" } },
     defaultValue: { control: "object", table: { category: "Data" } },
 
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     multiple: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
 

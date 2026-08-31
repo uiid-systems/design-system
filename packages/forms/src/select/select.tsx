@@ -27,7 +27,7 @@ export function Select<
 >({
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
-  ghost,
+  variant,
   disabled,
   required,
   name,
@@ -104,7 +104,7 @@ export function Select<
         <SelectTrigger
           size={size}
           fullwidth={fullwidth}
-          ghost={ghost}
+          variant={variant}
           disabled={disabled}
           before={before}
           after={after}

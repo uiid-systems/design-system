@@ -18,7 +18,7 @@ export const Textarea = ({
   size,
   resize,
   fullwidth,
-  ghost,
+  variant,
   rows = TEXTAREA_DEFAULT_ROWS,
   onValueChange,
   FieldProps,
@@ -41,7 +41,7 @@ export const Textarea = ({
         onValueChange={onValueChange}
         className={cx(
           styles["textarea"],
-          textareaVariants({ size, resize, fullwidth, ghost }),
+          textareaVariants({ size, resize, fullwidth, variant }),
           className,
         )}
         render={<textarea ref={ref} rows={rows} {...props} />}

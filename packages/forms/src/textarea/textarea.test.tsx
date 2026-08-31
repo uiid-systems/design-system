@@ -218,7 +218,7 @@ describe("Textarea", () => {
   });
 
   it("applies ghost variant", () => {
-    render(<Textarea ghost />);
+    render(<Textarea variant="ghost" />);
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 });

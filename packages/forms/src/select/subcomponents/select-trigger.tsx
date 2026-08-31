@@ -11,7 +11,7 @@ import styles from "../select.module.css";
 
 export const SelectTrigger = ({
   size,
-  ghost,
+  variant,
   fullwidth,
   before,
   after,
@@ -29,7 +29,7 @@ export const SelectTrigger = ({
         styles["select-trigger"],
         hasSlots && styles["select-trigger-slots"],
         inputStyles["input"],
-        inputVariants({ size, ghost, fullwidth }),
+        inputVariants({ size, variant, fullwidth }),
         className,
       )}
       {...props}

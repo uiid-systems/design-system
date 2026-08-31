@@ -10,7 +10,8 @@ export type TabProps = {
 export type TabsRootProps = Tabs.Root.Props & StackProps;
 export type TabsListProps = Tabs.List.Props & {
   size?: "sm" | "md" | "lg";
-  ghost?: boolean;
+  /** Surface treatment — filled by default, `ghost` drops the list background and border. */
+  variant?: "ghost";
   fullwidth?: boolean;
 };
 export type TabsTabProps = Tabs.Tab.Props;
@@ -27,4 +28,4 @@ export type TabsProps = {
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
-  Pick<TabsListProps, "size" | "ghost" | "fullwidth">;
+  Pick<TabsListProps, "size" | "variant" | "fullwidth">;

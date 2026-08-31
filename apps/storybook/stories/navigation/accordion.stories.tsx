@@ -12,11 +12,15 @@ const meta: Meta<typeof Accordion> = {
   },
   argTypes: {
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    ghost: { control: "boolean", table: { category: "Toggles" } },
     size: {
       control: "select",
       options: ["small", "medium", "large"],
       table: { category: "Options" },
+    },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+      table: { category: "Variants" },
     },
     orientation: {
       control: "select",
@@ -40,7 +44,7 @@ export const Default: Story = { name: "Accordion" };
 
 export const Ghost: Story = {
   name: "Ghost",
-  args: { ghost: true },
+  args: { variant: "ghost" },
 };
 
 export const Sizes: Story = {

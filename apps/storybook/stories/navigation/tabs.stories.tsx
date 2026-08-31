@@ -16,7 +16,10 @@ const meta: Meta<typeof Tabs> = {
       options: ["sm", "md", "lg"],
     },
     fullwidth: { control: "boolean" },
-    ghost: { control: "boolean" },
+    variant: {
+      control: "select",
+      options: ["ghost"],
+    },
   },
   render: (args) => (
     <Stack fullwidth ax="stretch" gap={4}>
@@ -42,5 +45,5 @@ export const Large: Story = {
 
 export const Ghost: Story = {
   name: "Ghost",
-  args: { ghost: true },
+  args: { variant: "ghost" },
 };

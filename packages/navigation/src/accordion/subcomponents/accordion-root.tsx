@@ -12,17 +12,17 @@ import styles from "../accordion.module.css";
 export const AccordionRoot = ({
   children,
   className,
-  ghost,
+  variant,
   ...props
 }: AccordionRootProps) => {
   return (
     <BaseAccordion.Root
       data-slot="accordion-root"
-      data-ghost={ghost || undefined}
+      data-variant={variant}
       render={<Card gap={0} p={0} fullwidth />}
       className={cx(
         styles["accordion-root"],
-        accordionRootVariants({ ghost }),
+        accordionRootVariants({ variant }),
         className,
       )}
       {...props}

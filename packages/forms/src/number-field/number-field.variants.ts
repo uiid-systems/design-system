@@ -12,7 +12,7 @@ import styles from "./number-field.module.css";
  * stepper buttons take their width from it as descendants, so the group is the
  * only element that can size them. The input inside paints from Input's shared
  * control surface (`inputControlClassName`), but the axis itself is declared
- * here — aliasing `InputVariants` would put Input's `ghost` and `fullwidth` on
+ * here — aliasing `InputVariants` would put Input's `variant` and `fullwidth` on
  * Number Field's public type with no styles behind them.
  */
 export const numberFieldVariants = cva({

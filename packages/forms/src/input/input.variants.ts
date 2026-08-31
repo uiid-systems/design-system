@@ -6,8 +6,13 @@ import styles from "./input.module.css";
 
 export const inputVariants = cva({
   variants: {
+    /** Stretch to fill the container width */
     fullwidth: { true: styles["toggle-fullwidth"] },
-    ghost: { true: styles["toggle-ghost"] },
+    /** Surface treatment — filled by default, `ghost` drops the resting surface */
+    variant: {
+      ghost: styles["variant-ghost"],
+    },
+    /** Control size, matches form-control rows */
     size: {
       xsmall: styles["size-xsmall"],
       small: styles["size-small"],

@@ -159,7 +159,15 @@ PR #354; `.variants.ts` now 6/16 — UI-172 below.)
    uses a `variant: {subtle, ghost}` axis; sizes stop at small–large (no `xsmall`,
    though `--forms-size-xs-*` tokens and `composes-size-xsmall` exist); combobox,
    autocomplete, switch, radio, slider expose no `size` at all; checkbox defaults
-   `small` while others default `medium`.
+   `small` while others default `medium`. **The `ghost` half is resolved (UI-170):** it
+   is now `variant?: "ghost"` — a one-value axis matching Card's, not Button's two-value
+   one, since `subtle` has no design or tokens for form controls and inventing one was
+   out of scope. Covers input, textarea, select, slider and mask-input (cva, class
+   `.variant-ghost`) plus toggle-group, and — beyond the forms package, since the drift
+   was identical — navigation's tabs and accordion. The three data-attribute-styled
+   controls (toggle-group, tabs, accordion items) key off `[data-variant="ghost"]`;
+   accordion's descendant rule is scoped to `.accordion-root` because its root renders
+   as a Card, which sets the same attribute. The size half is still open.
 3. **Variants without `cva`:** `number-field.tsx:37` uses a template-literal class
    lookup; `SliderVariants = InputVariants` and `RadioVariants = CheckboxVariants` are
    wholesale type aliases (the sanctioned pattern is importing the _styles_, as

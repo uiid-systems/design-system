@@ -29,11 +29,11 @@ export const inputControlClassName = ({
   inner,
   size,
   fullwidth,
-  ghost,
+  variant,
   className,
 }: InputControlClassNameOptions = {}) =>
   cx(
     styles["input"],
-    inner ? styles["input-inner"] : inputVariants({ size, fullwidth, ghost }),
+    inner ? styles["input-inner"] : inputVariants({ size, fullwidth, variant }),
     className,
   );

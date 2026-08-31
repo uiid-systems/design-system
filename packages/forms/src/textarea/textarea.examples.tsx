@@ -56,7 +56,9 @@ export const Resize = () => (
   </Stack>
 );
 
-export const Ghost = () => <Textarea ghost placeholder="Ghost" rows={3} />;
+export const Ghost = () => (
+  <Textarea variant="ghost" placeholder="Ghost" rows={3} />
+);
 
 export const Fullwidth = () => (
   <Stack gap={4} ax="stretch" fullwidth>

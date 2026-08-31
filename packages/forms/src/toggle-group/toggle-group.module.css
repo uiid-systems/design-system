@@ -14,7 +14,7 @@
     height: auto;
   }
 
-  &[data-ghost] {
+  &[data-variant="ghost"] {
     background-color: transparent;
     border-color: transparent;
   }

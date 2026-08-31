@@ -17,7 +17,7 @@ export const Accordion = ({
   orientation,
   multiple,
   fullwidth,
-  ghost,
+  variant,
   size,
   RootProps,
   ItemProps,
@@ -29,7 +29,7 @@ export const Accordion = ({
   return (
     <AccordionRoot
       fullwidth={fullwidth}
-      ghost={ghost}
+      variant={variant}
       defaultValue={defaultValue}
       value={value}
       onValueChange={onValueChange}

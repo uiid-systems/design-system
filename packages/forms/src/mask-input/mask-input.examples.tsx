@@ -102,7 +102,7 @@ export const BeforeAfterSlots = () => (
 );
 
 export const Ghost = () => (
-  <MaskInput mask="phone" ghost placeholder="Phone number" />
+  <MaskInput mask="phone" variant="ghost" placeholder="Phone number" />
 );
 
 export const Fullwidth = () => (

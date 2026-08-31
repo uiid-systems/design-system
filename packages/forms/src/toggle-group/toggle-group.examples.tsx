@@ -50,9 +50,9 @@ export const Sizes = () => (
   </Stack>
 );
 
-/* `ghost` drops the container surface, leaving only the moving indicator. */
+/* `variant="ghost"` drops the container surface, leaving only the moving indicator. */
 export const Ghost = () => (
-  <ToggleGroup ghost defaultValue={["monthly"]}>
+  <ToggleGroup variant="ghost" defaultValue={["monthly"]}>
     <Toggle value="monthly">Monthly</Toggle>
     <Toggle value="yearly">Yearly</Toggle>
   </ToggleGroup>
