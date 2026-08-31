@@ -1,3 +1,5 @@
+@import "@uiid/tokens/component/input-group.tokens.css";
+
 .input-group-root {
   position: relative;
 }
@@ -16,20 +18,20 @@
    16 units, 4rem. Without it the value runs underneath Clear/Trigger, since the
    size tier only insets the trailing edge by 1rem at medium. Deliberately not
    tier-scaled: the actions are a fixed size at every tier. Keep in step with
-   .input-group-action's width below. */
+   --input-group-action-width. */
 .input-group-input {
-  padding-inline-end: calc(var(--spacing-unit) * 16);
+  padding-inline-end: var(--input-group-input-padding-inline-end);
 }
 
 .input-group-action {
   all: unset;
   cursor: text;
-  width: calc(var(--spacing-unit) * 6);
-  height: calc(var(--spacing-unit) * 10);
+  width: var(--input-group-action-width);
+  height: var(--input-group-action-height);
   color: var(--shade-muted);
   border: none;
   padding: 0;
-  border-radius: 0.25rem;
+  border-radius: var(--input-group-action-border-radius);
   background: none;
 
   /* `all: unset` wipes the UA focus ring, so restore it — these are real

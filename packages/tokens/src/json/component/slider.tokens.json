@@ -1,0 +1,17 @@
+{
+  "$description": "UIID Design System - Slider Component Tokens",
+  "slider": {
+    "$type": "dimension",
+    "control": {
+      "min-width": { "$value": "calc({spacing.unit} * 48)" },
+      "min-height": { "$value": "{slider.thumb.size}" }
+    },
+    "track": {
+      "height": { "$value": "{spacing.unit}" },
+      "border-radius": { "$value": "{slider.track.height}" }
+    },
+    "thumb": {
+      "size": { "$value": "calc({spacing.unit} * 4)" }
+    }
+  }
+}

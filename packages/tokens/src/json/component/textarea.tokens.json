@@ -1,0 +1,12 @@
+{
+  "$description": "UIID Design System - Textarea Component Tokens",
+  "textarea": {
+    "line-height": { "$value": 1.5, "$type": "number" },
+    "min-height": {
+      "$type": "dimension",
+      "sm": { "$value": "calc({spacing.unit} * 16)" },
+      "md": { "$value": "calc({spacing.unit} * 20)" },
+      "lg": { "$value": "calc({spacing.unit} * 24)" }
+    }
+  }
+}
