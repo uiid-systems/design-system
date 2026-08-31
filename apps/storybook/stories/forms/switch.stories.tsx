@@ -16,6 +16,12 @@ const meta = {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
 
+    size: {
+      control: "select",
+      options: ["xsmall", "small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
     defaultChecked: { control: "boolean", table: { category: "Toggles" } },
@@ -39,6 +45,7 @@ export const Playground: Story = { render: (args) => <Switch {...args} /> };
 export const WithDescription: Story = {
   render: () => <Examples.WithDescription />,
 };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const Bordered: Story = { render: () => <Examples.Bordered /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };

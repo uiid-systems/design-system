@@ -24,6 +24,7 @@ export const Combobox = ({
   placeholder,
   before,
   after,
+  size,
   disabled,
   onFocus,
   onBlur,
@@ -39,7 +40,7 @@ export const Combobox = ({
 }: ComboboxProps) => {
   return (
     <ComboboxRoot items={items} name={name} {...RootProps} {...props}>
-      <ComboboxInputGroup {...InputGroupProps}>
+      <ComboboxInputGroup size={size} {...InputGroupProps}>
         <ComboboxInput
           name={name}
           placeholder={placeholder}
@@ -47,6 +48,7 @@ export const Combobox = ({
           description={description}
           before={before}
           after={after}
+          size={size}
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}

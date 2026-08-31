@@ -8,6 +8,7 @@ export const Switch = ({
   description,
   name,
   disabled,
+  size,
   bordered,
   reversed,
   RootProps,
@@ -19,6 +20,7 @@ export const Switch = ({
     <SwitchField
       label={label}
       description={description}
+      size={size}
       reversed={reversed}
       bordered={bordered}
       {...FieldProps}
@@ -26,6 +28,7 @@ export const Switch = ({
       <SwitchRoot
         id={name}
         name={name}
+        size={size}
         disabled={disabled}
         {...props}
         {...RootProps}

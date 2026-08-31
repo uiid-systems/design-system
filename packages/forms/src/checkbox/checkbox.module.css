@@ -4,8 +4,7 @@
   composes: composes-disabled from global;
   composes: composes-invalid from global;
 
-  /** todo: replace with default */
-  width: var(--checkbox-size-sm);
+  width: var(--checkbox-size-md);
   aspect-ratio: 1;
   flex-shrink: 0;
   display: flex;
@@ -34,12 +33,19 @@
     outline-offset: var(--globals-outline-offset);
   }
 
-  /* Transparent hit area. At the small size (1rem) the one-unit outset brings
-     the target to 24x24px, the WCAG 2.2 target-size minimum. */
+  /* Transparent hit area: a one-unit outset past the box, floored at the WCAG
+     2.2 target-size minimum. The outset alone reached 24x24px only from the
+     small tier (1rem) up — at xsmall it lands at 22px, so the floor carries it
+     the rest of the way rather than the tier quietly dropping below the
+     minimum. Centered on the box, since the two sides now differ. */
   &::after {
     content: "";
     position: absolute;
-    inset: calc(var(--spacing-unit) * -1);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: max(calc(100% + var(--spacing-unit) * 2), var(--checkbox-target-size));
+    height: max(calc(100% + var(--spacing-unit) * 2), var(--checkbox-target-size));
   }
 }
 
@@ -57,6 +63,14 @@
   }
 }
 
+.size-xsmall {
+  width: var(--checkbox-size-xs);
+
+  & .checkbox-icon {
+    width: var(--checkbox-icon-size-xs);
+    height: var(--checkbox-icon-size-xs);
+  }
+}
 .size-small {
   width: var(--checkbox-size-sm);
 
@@ -85,7 +99,10 @@
 .toggle-bordered {
   border: var(--globals-border-width) solid var(--forms-border-color);
   border-radius: var(--globals-border-radius);
-  padding: var(--forms-padding-y) var(--forms-padding-x);
+  /* The inset comes from the row's tier (`fieldRowVariants`), not from the
+     single `--forms-padding-*` pair it used to read — that gave a large
+     bordered row the same padding as a small one. */
+  padding: var(--field-row-padding-y) var(--field-row-padding-x);
   color: var(--shade-foreground);
 
   &:has(:focus-visible) {

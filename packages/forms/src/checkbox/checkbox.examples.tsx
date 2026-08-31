@@ -10,7 +10,7 @@ import type { CheckboxVariants } from "./checkbox.types";
 
 type Size = NonNullable<CheckboxVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const LABEL = "Email me about product updates";
 const DESCRIPTION = "Roughly one message a month. Unsubscribe at any time.";

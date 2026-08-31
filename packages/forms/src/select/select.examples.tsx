@@ -16,7 +16,7 @@ import { SelectItem } from "./subcomponents";
 
 type Size = NonNullable<InputVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIBED_ITEMS: SelectItemProps[] = [
   {

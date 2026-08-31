@@ -3,7 +3,7 @@
   "slider": {
     "$type": "dimension",
     "control": {
-      "min-width": { "$value": "calc({spacing.unit} * 48)" },
+      "min-width": { "$value": "12rem" },
       "min-height": { "$value": "{slider.thumb.size}" }
     },
     "track": {
@@ -11,7 +11,7 @@
       "border-radius": { "$value": "{slider.track.height}" }
     },
     "thumb": {
-      "size": { "$value": "calc({spacing.unit} * 4)" }
+      "size": { "$value": "1rem" }
     }
   }
 }

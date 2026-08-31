@@ -16,6 +16,7 @@ export const ComboboxInput = ({
   placeholder,
   before,
   after,
+  size,
   FieldProps,
   className,
   ...props
@@ -30,7 +31,7 @@ export const ComboboxInput = ({
       fullwidth
       {...FieldProps}
     >
-      <InputWrapper before={before} after={after} fullwidth>
+      <InputWrapper before={before} after={after} size={size} fullwidth>
         {/*
          * `name` stops at the Field, which needs it to match a `Form` error.
          * The root already registers this input as the field's control and
@@ -42,6 +43,7 @@ export const ComboboxInput = ({
           render={<input />}
           className={inputControlClassName({
             inner: hasSlots,
+            size,
             fullwidth: true,
             className: cx(inputGroupInputClassName, className),
           })}

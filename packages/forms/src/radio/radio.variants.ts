@@ -17,6 +17,7 @@ export const radioVariants = cva({
     bordered: { true: checkboxStyles["toggle-bordered"] },
     reversed: { true: checkboxStyles["toggle-reversed"] },
     size: {
+      xsmall: checkboxStyles["size-xsmall"],
       small: checkboxStyles["size-small"],
       medium: checkboxStyles["size-medium"],
       large: checkboxStyles["size-large"],

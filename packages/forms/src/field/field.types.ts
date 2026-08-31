@@ -2,7 +2,11 @@ import type { Field } from "@base-ui/react/field";
 import type { Icon } from "@uiid/icons";
 import type { GroupProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
-import type { SpacingProps } from "@uiid/utils";
+import type { SpacingProps, VariantProps } from "@uiid/utils";
+
+import type { fieldRowVariants } from "./field.variants";
+
+export type FieldRowVariants = VariantProps<typeof fieldRowVariants>;
 
 export type FieldRootProps = Field.Root.Props &
   SpacingProps & {
@@ -28,6 +32,7 @@ export type FieldHintValue =
   | { icon: Icon; text?: string; tooltip?: React.ReactNode };
 
 export type FieldRowProps = GroupProps &
+  FieldRowVariants &
   Pick<FieldRootProps, "name"> &
   React.PropsWithChildren<{
     label?: string;

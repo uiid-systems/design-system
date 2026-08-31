@@ -14,7 +14,7 @@ import type { InputVariants } from "./input.types";
 
 type Size = NonNullable<InputVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIPTION = "We'll only ever use this to send you receipts.";
 const ERROR = "Enter a valid email address";

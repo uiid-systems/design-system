@@ -185,7 +185,10 @@ describe("Textarea", () => {
   // ============================================
 
   it("applies size variant classes", () => {
-    const { rerender } = render(<Textarea size="small" />);
+    const { rerender } = render(<Textarea size="xsmall" />);
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+
+    rerender(<Textarea size="small" />);
     expect(screen.getByRole("textbox")).toBeInTheDocument();
 
     rerender(<Textarea size="medium" />);

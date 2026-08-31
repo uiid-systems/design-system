@@ -133,3 +133,37 @@ describe("Switch invalid treatment", () => {
     expect(screen.getByRole("switch").className).toMatch(/composes-invalid/);
   });
 });
+
+describe("Switch size variant", () => {
+  const rowClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='field-row']")?.className ?? "";
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the %s control tier on the track",
+    (size) => {
+      render(<Switch size={size} />);
+      expect(screen.getByRole("switch").className).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier, matching Input", () => {
+    render(<Switch />);
+    expect(screen.getByRole("switch").className).toContain("size-medium");
+  });
+
+  it("applies one tier at a time", () => {
+    render(<Switch size="large" />);
+    expect(screen.getByRole("switch").className).not.toContain("size-small");
+    expect(screen.getByRole("switch").className).not.toContain("size-medium");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto the row, which is what scales bordered padding",
+    (size) => {
+      const { container } = render(
+        <Switch bordered size={size} label="Dark mode" />,
+      );
+      expect(rowClassName(container)).toContain(`row-size-${size}`);
+    },
+  );
+});

@@ -53,3 +53,23 @@
   opacity: var(--globals-disabled-opacity);
   pointer-events: none;
 }
+
+/* Control-scale tiers. Each publishes the width/height pair the track, the
+   corner radius, and the thumb's travel are all derived from, so nothing below
+   has to know which tier is active. */
+.size-xsmall {
+  --switch-height: var(--switch-height-xs);
+  --switch-width: var(--switch-width-xs);
+}
+.size-small {
+  --switch-height: var(--switch-height-sm);
+  --switch-width: var(--switch-width-sm);
+}
+.size-medium {
+  --switch-height: var(--switch-height-md);
+  --switch-width: var(--switch-width-md);
+}
+.size-large {
+  --switch-height: var(--switch-height-lg);
+  --switch-width: var(--switch-width-lg);
+}

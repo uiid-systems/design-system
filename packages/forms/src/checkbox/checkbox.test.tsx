@@ -103,3 +103,37 @@ describe("Checkbox invalid treatment", () => {
     expect(screen.getByRole("checkbox").className).toMatch(/composes-invalid/);
   });
 });
+
+describe("Checkbox size variant", () => {
+  const rowClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='field-row']")?.className ?? "";
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the %s control tier on the box",
+    (size) => {
+      render(<Checkbox size={size} />);
+      expect(screen.getByRole("checkbox").className).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier, matching Input", () => {
+    render(<Checkbox />);
+    expect(screen.getByRole("checkbox").className).toContain("size-medium");
+  });
+
+  it("applies one tier at a time", () => {
+    render(<Checkbox size="large" />);
+    expect(screen.getByRole("checkbox").className).not.toContain("size-small");
+    expect(screen.getByRole("checkbox").className).not.toContain("size-medium");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto the row, which is what scales bordered padding",
+    (size) => {
+      const { container } = render(
+        <Checkbox bordered size={size} label="Accept terms" />,
+      );
+      expect(rowClassName(container)).toContain(`row-size-${size}`);
+    },
+  );
+});

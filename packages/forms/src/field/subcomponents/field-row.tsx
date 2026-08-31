@@ -1,8 +1,10 @@
 "use client";
 
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import type { FieldRowProps } from "../field.types";
+import { fieldRowVariants } from "../field.variants";
 import { FieldDescription } from "./field-description";
 import { FieldError } from "./field-error";
 import { FieldItem } from "./field-item";
@@ -24,9 +26,14 @@ import styles from "../field.module.css";
  * `Field.Item` throws without a `Field.Root` ancestor, so the row supplies one.
  * It is marked `display: contents` and therefore adds no layout of its own; a
  * row used inside a group simply nests inside that group's root.
+ *
+ * `size` paints no dimension here — the control inside carries its own tier —
+ * it only publishes the inset a `bordered` row reads, so the treatment scales
+ * with the control it wraps.
  */
 export const FieldRow = ({
   name,
+  size,
   label,
   description,
   LabelProps,
@@ -43,7 +50,10 @@ export const FieldRow = ({
     <FieldRoot name={name} className={styles["field-root-bare"]}>
       <FieldItem
         data-slot="field-row"
-        className={hasContent ? className : styles["field-row-bare"]}
+        className={cx(
+          fieldRowVariants({ size }),
+          hasContent ? className : styles["field-row-bare"],
+        )}
         render={
           <Group
             ay={needsTextContainer ? "start" : "center"}

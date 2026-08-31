@@ -17,8 +17,8 @@
    2-unit gap between them (Group gap={2}), and 2 more units of breathing room —
    16 units, 4rem. Without it the value runs underneath Clear/Trigger, since the
    size tier only insets the trailing edge by 1rem at medium. Deliberately not
-   tier-scaled: the actions are a fixed size at every tier. Keep in step with
-   --input-group-action-width. */
+   tier-scaled: only the action's *height* follows the tier, and this reserve is
+   a horizontal measure. Keep in step with --input-group-action-width. */
 .input-group-input {
   padding-inline-end: var(--input-group-input-padding-inline-end);
 }
@@ -40,4 +40,23 @@
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
+}
+
+/* Control-scale tiers, carried on the group root so the absolutely positioned
+   actions can read them — they are siblings of the field, not descendants of
+   the input that holds the input's own tier class. Only the height scales: the
+   action is a hit target with no surface of its own, and its width stays fixed
+   because the icon inside it does, which is what keeps
+   --input-group-input-padding-inline-end constant across tiers. */
+.size-xsmall {
+  --input-group-action-height: var(--input-group-action-height-xs);
+}
+.size-small {
+  --input-group-action-height: var(--input-group-action-height-sm);
+}
+.size-medium {
+  --input-group-action-height: var(--input-group-action-height-md);
+}
+.size-large {
+  --input-group-action-height: var(--input-group-action-height-lg);
 }

@@ -172,7 +172,7 @@ describe("NumberField size variant", () => {
     container.querySelector("[data-slot='number-field-group']")?.className ??
     "";
 
-  it.each(["small", "medium", "large"] as const)(
+  it.each(["xsmall", "small", "medium", "large"] as const)(
     "paints the %s control tier on the group the steppers size off",
     (size) => {
       const { container } = render(<NumberField size={size} />);

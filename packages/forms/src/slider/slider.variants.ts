@@ -28,6 +28,7 @@ export const sliderVariants = cva({
     ghost: { true: inputStyles["toggle-ghost"] },
     /** Control scale, matching a sibling Input at the same size */
     size: {
+      xsmall: inputStyles["size-xsmall"],
       small: inputStyles["size-small"],
       medium: inputStyles["size-medium"],
       large: inputStyles["size-large"],

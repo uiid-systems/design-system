@@ -19,7 +19,7 @@ const meta = {
 
     size: {
       control: "select",
-      options: ["small", "medium", "large"],
+      options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
 

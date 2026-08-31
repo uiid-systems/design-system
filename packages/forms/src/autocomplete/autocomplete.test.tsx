@@ -182,3 +182,28 @@ describe("Autocomplete name forwarding", () => {
     ).toHaveTextContent("Pick a fruit");
   });
 });
+
+describe("Autocomplete size variant", () => {
+  const items = ["apple", "banana"];
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the %s control tier on the input",
+    (size) => {
+      render(<Autocomplete items={items} size={size} />);
+      expect(screen.getByRole("combobox").className).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier, matching Input", () => {
+    render(<Autocomplete items={items} />);
+    expect(screen.getByRole("combobox").className).toContain("size-medium");
+  });
+
+  it("moves the tier onto the wrapper when a slot is present", () => {
+    const { container } = render(
+      <Autocomplete items={items} size="large" before="$" />,
+    );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    expect(wrapper?.className).toContain("size-large");
+  });
+});

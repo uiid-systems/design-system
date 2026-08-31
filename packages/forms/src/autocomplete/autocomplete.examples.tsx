@@ -9,6 +9,11 @@ import { Field } from "../field/field";
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
 import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
+import type { AutocompleteProps } from "./autocomplete.types";
+
+type Size = NonNullable<AutocompleteProps["size"]>;
+
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIPTION = "Suggestions narrow as you type; any value is accepted.";
 const ERROR = "We don't stock that fruit";
@@ -19,6 +24,21 @@ const ERROR = "We don't stock that fruit";
  */
 export const Default = () => (
   <Autocomplete items={MOCK_AUTOCOMPLETE_ITEMS} placeholder="Search fruit" />
+);
+
+/* The tier reaches the input, so an autocomplete lines up with a sibling Input. */
+export const Sizes = () => (
+  <Stack gap={4} ax="stretch">
+    {SIZES.map((size) => (
+      <Autocomplete
+        key={size}
+        size={size}
+        label={size}
+        items={MOCK_AUTOCOMPLETE_ITEMS}
+        placeholder="Search fruit"
+      />
+    ))}
+  </Stack>
 );
 
 export const WithLabel = () => (

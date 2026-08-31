@@ -6,6 +6,11 @@ import { useState } from "react";
 
 import { Form } from "../form/form";
 import { Switch } from "./switch";
+import type { SwitchVariants } from "./switch.types";
+
+type Size = NonNullable<SwitchVariants["size"]>;
+
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const LABEL = "Enable notifications";
 const DESCRIPTION = "Get a push notification when someone mentions you.";
@@ -15,6 +20,18 @@ export const Default = () => <Switch label={LABEL} />;
 
 export const WithDescription = () => (
   <Switch label={LABEL} description={DESCRIPTION} />
+);
+
+/*
+ * A tier sets the track's width and height; the thumb and its travel derive from
+ * that pair, so a switch stays in proportion at every size.
+ */
+export const Sizes = () => (
+  <Stack gap={4}>
+    {SIZES.map((size) => (
+      <Switch key={size} size={size} label={size} defaultChecked />
+    ))}
+  </Stack>
 );
 
 /* `bordered` draws the row as a control surface; `reversed` flips the order. */

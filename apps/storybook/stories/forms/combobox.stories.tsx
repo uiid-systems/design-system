@@ -20,6 +20,12 @@ const meta = {
     description: { control: "text", table: { category: "Text" } },
     placeholder: { control: "text", table: { category: "Text" } },
 
+    size: {
+      control: "select",
+      options: ["xsmall", "small", "medium", "large"],
+      table: { category: "Variants" },
+    },
+
     items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
@@ -56,6 +62,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = { render: (args) => <Combobox {...args} /> };
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const BeforeAfterSlots: Story = {
   render: () => <Examples.BeforeAfterSlots />,
 };

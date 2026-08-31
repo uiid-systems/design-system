@@ -9,6 +9,7 @@ import type { SwitchFieldProps } from "../switch.types";
 import styles from "../switch.module.css";
 
 export const SwitchField = ({
+  size,
   reversed,
   bordered,
   className,
@@ -17,6 +18,7 @@ export const SwitchField = ({
 }: SwitchFieldProps) => {
   return (
     <FieldRow
+      size={size}
       className={cx(
         styles["switch-label"],
         checkboxVariants({ reversed, bordered }),

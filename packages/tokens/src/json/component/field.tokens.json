@@ -6,7 +6,23 @@
       "required-gap": { "$value": "{spacing.unit}" }
     },
     "label-group": {
-      "min-height": { "$value": "calc({spacing.unit} * 5)" }
+      "min-height": { "$value": "1.25rem" }
+    },
+    "row": {
+      "padding": {
+        "x": {
+          "xs": { "$value": "{forms.size.xs.padding-x}" },
+          "sm": { "$value": "{forms.size.sm.padding-x}" },
+          "md": { "$value": "{forms.size.md.padding-x}" },
+          "lg": { "$value": "{forms.size.lg.padding-x}" }
+        },
+        "y": {
+          "xs": { "$value": "0.375rem" },
+          "sm": { "$value": "0.5rem" },
+          "md": { "$value": "0.75rem" },
+          "lg": { "$value": "1rem" }
+        }
+      }
     }
   }
 }

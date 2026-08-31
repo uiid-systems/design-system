@@ -10,7 +10,7 @@ import type { TextareaResize, TextareaVariants } from "./textarea.types";
 
 type Size = NonNullable<TextareaVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 const RESIZE: TextareaResize[] = ["none", "vertical", "horizontal", "both"];
 
 const DESCRIPTION = "Markdown is supported.";

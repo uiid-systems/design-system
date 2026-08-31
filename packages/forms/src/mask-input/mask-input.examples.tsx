@@ -13,7 +13,7 @@ import type { MaskPatternKey } from "./mask-input.types";
 
 type Size = NonNullable<InputVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const PATTERNS: { mask: MaskPatternKey; label: string }[] = [
   { mask: "phone", label: "Phone" },
