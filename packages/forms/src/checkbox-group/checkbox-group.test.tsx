@@ -192,3 +192,31 @@ describe("CheckboxGroup compound API", () => {
     ).not.toBeNull();
   });
 });
+
+describe("CheckboxGroup required is label-only by design", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("marks the label required", () => {
+    const { container } = render(
+      <CheckboxGroup items={items} label="Pick some" required />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
+  it("does not make every box individually required", () => {
+    render(<CheckboxGroup items={items} label="Pick some" required />);
+
+    // Base UI's CheckboxGroup has no `required`, and HTML cannot express
+    // "at least one of these". Marking each box required would demand all of
+    // them, which is the opposite of what the marker promises.
+    for (const box of screen.getAllByRole("checkbox")) {
+      expect(box).not.toHaveAttribute("aria-required", "true");
+    }
+  });
+});

@@ -281,3 +281,28 @@ describe("Select multiple", () => {
     expect(screen.getByText("Helper text")).toBeInTheDocument();
   });
 });
+
+describe("Select required reaches the control", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("marks the submitted control required", () => {
+    const { container } = render(
+      <Select items={items} label="Pick" placeholder="Pick one" required />,
+    );
+
+    expect(container.querySelector("input[required]")).not.toBeNull();
+  });
+
+  it("still renders the label's required marker", () => {
+    const { container } = render(
+      <Select items={items} label="Pick" required />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+});

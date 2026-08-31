@@ -38,6 +38,7 @@ export const Input = ({
       >
         <InputControl
           name={name}
+          required={required}
           inner={hasSlots}
           size={size}
           fullwidth={fullwidth}

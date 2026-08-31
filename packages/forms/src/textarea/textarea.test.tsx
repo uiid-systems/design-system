@@ -256,3 +256,10 @@ describe("Textarea invalid treatment", () => {
     expect(screen.getByRole("textbox").className).toMatch(/composes-invalid/);
   });
 });
+
+describe("Textarea required reaches the control", () => {
+  it("marks the textarea itself required", () => {
+    render(<Textarea label="Bio" required />);
+    expect(screen.getByRole("textbox")).toBeRequired();
+  });
+});
