@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
+import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
 
 describe("Autocomplete", () => {
@@ -123,5 +124,61 @@ describe("Autocomplete FieldProps routing", () => {
     expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
       "custom-field",
     );
+  });
+});
+
+describe("Autocomplete name forwarding", () => {
+  const items = ["apple", "banana", "cherry"];
+
+  it("surfaces a Form error keyed to the name", () => {
+    const { container } = render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Autocomplete name="fruit" label="Fruit" items={items} />
+      </Form>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).toHaveTextContent("Pick a fruit");
+  });
+
+  it("still reaches the root, so the value submits under the name", async () => {
+    const user = userEvent.setup();
+    const submitted = vi.fn();
+
+    render(
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          submitted(new FormData(event.currentTarget).getAll("fruit"));
+        }}
+      >
+        <Autocomplete name="fruit" label="Fruit" items={items} />
+        <button type="submit">Submit</button>
+      </form>,
+    );
+
+    await user.type(screen.getByRole("combobox"), "banana");
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    // Exactly one entry: the root submits the value, and the visible input is
+    // not a second, separately named control.
+    expect(submitted).toHaveBeenCalledWith(["banana"]);
+  });
+
+  it("lets InputProps override the name the field matches on", () => {
+    const { container } = render(
+      <Form errors={{ produce: "Pick a fruit" }}>
+        <Autocomplete
+          name="fruit"
+          label="Fruit"
+          items={items}
+          InputProps={{ name: "produce" }}
+        />
+      </Form>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).toHaveTextContent("Pick a fruit");
   });
 });

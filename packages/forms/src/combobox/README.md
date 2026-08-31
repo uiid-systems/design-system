@@ -67,16 +67,17 @@ const [value, setValue] = useState<string | null>(null);
 
 ## Props
 
-| Prop            | Type                      | Default | Description                    |
-| --------------- | ------------------------- | ------- | ------------------------------ |
-| `items`         | `string[]`                | —       | **Required.** Array of options |
-| `placeholder`   | `string`                  | —       | Placeholder text for input     |
-| `defaultValue`  | `string`                  | —       | Initial selected value         |
-| `onValueChange` | `(value: string) => void` | —       | Called when selection changes  |
-| `RootProps`     | `ComboboxRootProps`       | —       | Props for the root element     |
-| `InputProps`    | `ComboboxInputProps`      | —       | Props for the input element    |
-| `PopupProps`    | `ComboboxPopupProps`      | —       | Props for the popup            |
-| `ListProps`     | `ComboboxListProps`       | —       | Props for the list container   |
+| Prop            | Type                      | Default | Description                              |
+| --------------- | ------------------------- | ------- | ---------------------------------------- |
+| `items`         | `string[]`                | —       | **Required.** Array of options           |
+| `name`          | `string`                  | —       | Submits the value and keys `Form` errors |
+| `placeholder`   | `string`                  | —       | Placeholder text for input               |
+| `defaultValue`  | `string`                  | —       | Initial selected value                   |
+| `onValueChange` | `(value: string) => void` | —       | Called when selection changes            |
+| `RootProps`     | `ComboboxRootProps`       | —       | Props for the root element               |
+| `InputProps`    | `ComboboxInputProps`      | —       | Props for the input element              |
+| `PopupProps`    | `ComboboxPopupProps`      | —       | Props for the popup                      |
+| `ListProps`     | `ComboboxListProps`       | —       | Props for the list container             |
 
 ## Anatomy
 

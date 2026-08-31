@@ -4,7 +4,8 @@ import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../../field/field";
-import { InputControl, InputWrapper } from "../../input/subcomponents";
+import { inputControlClassName } from "../../input/input.styles";
+import { InputWrapper } from "../../input/subcomponents";
 import { inputGroupInputClassName } from "../../shared/input-group";
 import type { ComboboxInputProps } from "../combobox.types";
 
@@ -30,11 +31,20 @@ export const ComboboxInput = ({
       {...FieldProps}
     >
       <InputWrapper before={before} after={after} fullwidth>
+        {/*
+         * `name` stops at the Field, which needs it to match a `Form` error.
+         * The root already registers this input as the field's control and
+         * submits the selected value, so rendering a plain `<input>` rather
+         * than `InputControl` keeps it from being named and submitted twice.
+         */}
         <BaseCombobox.Input
           data-slot="combobox-input"
-          name={name}
-          render={<InputControl inner={hasSlots} fullwidth />}
-          className={cx(inputGroupInputClassName, className)}
+          render={<input />}
+          className={inputControlClassName({
+            inner: hasSlots,
+            fullwidth: true,
+            className: cx(inputGroupInputClassName, className),
+          })}
           placeholder={placeholder}
           {...props}
         />

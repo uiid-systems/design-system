@@ -14,6 +14,7 @@ import {
 
 export const Autocomplete = ({
   items,
+  name,
   label,
   description,
   placeholder,
@@ -34,11 +35,13 @@ export const Autocomplete = ({
   return (
     <AutocompleteRoot
       items={items}
+      name={name}
       disabled={disabled}
       {...RootProps}
       {...props}
     >
       <AutocompleteInput
+        name={name}
         placeholder={placeholder}
         label={label}
         description={description}
