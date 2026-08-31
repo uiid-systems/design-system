@@ -1,5 +1,55 @@
 # Changelog
 
+## [0.3.0](https://github.com/uiid-systems/design-system/compare/v0.2.0...v0.3.0) (2026-08-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** migrate ghost boolean to the variant axis ([#363](https://github.com/uiid-systems/design-system/issues/363))
+* **ui:** `RadioGroup` no longer preselects the first item. Pass `defaultValue` to keep the previous behaviour.
+* **ui:** `ComboboxActionButtons` is removed — compose `ComboboxClear` and `ComboboxTrigger` instead. NumberField's input now carries `data-slot="number-field-input"` rather than the generic `data-slot="input"`, matching `combobox-input` and `autocomplete-input`.
+* **ui:** `@uiid/forms` no longer exports from `./input/input-control` directly; `InputControl` now ships from `./input/subcomponents` alongside the newly exported `InputWrapper`. The barrel import path is unchanged.
+* **ui:** the `SelectMultiple` component and `SelectMultipleProps` / `SelectMultipleRootProps` / `SelectMultipleTriggerProps` types are removed. Use `<Select multiple />` and `SelectProps<string, true>`.
+* **ui:** `SelectIndicator` is now `SelectIcon`, `SelectIndicatorProps` is now `SelectIconProps`, and Select's `IndicatorProps` prop is now `IconProps`.
+* **ui:** CHECKBOX_DEFAULT_SIZE and SELECT_DEFAULT_SIZE are no longer exported from @uiid/forms.
+
+### Features
+
+* **tokens:** add component token files for the uncovered forms components ([#359](https://github.com/uiid-systems/design-system/issues/359)) ([da9298e](https://github.com/uiid-systems/design-system/commit/da9298e22c37433b7c6a02cb5fa89a185e4aa06c))
+* **ui:** add xsmall tier and size props to sizeless form controls ([#361](https://github.com/uiid-systems/design-system/issues/361)) ([66cf41d](https://github.com/uiid-systems/design-system/commit/66cf41d52ae0d2bdc905477a0197fff5a9f2f86e))
+* **ui:** collapse SelectMultiple into Select via the multiple prop ([#336](https://github.com/uiid-systems/design-system/issues/336)) ([0a37509](https://github.com/uiid-systems/design-system/commit/0a375090089f0abb1bfab072c6862a0f3cf9f012))
+* **ui:** export select and radio subcomponents, stop exporting forms constants ([#334](https://github.com/uiid-systems/design-system/issues/334)) ([e8f1e26](https://github.com/uiid-systems/design-system/commit/e8f1e26ef83422c3aec55bb2c7d91feb5c8a8aff))
+* **ui:** fill Base UI part coverage for combobox, autocomplete, number-field ([#344](https://github.com/uiid-systems/design-system/issues/344)) ([8c059fa](https://github.com/uiid-systems/design-system/commit/8c059fa3da86a5fd51e62031b88d1ed9f3eb9e36))
+* **ui:** give number-field, slider and radio their own cva variants ([#356](https://github.com/uiid-systems/design-system/issues/356)) ([3e97e03](https://github.com/uiid-systems/design-system/commit/3e97e037916603fcbca5cc7d0b3590aae6d31d50))
+* **ui:** wrap Field.Control, Field.Validity, and Field.Item ([#323](https://github.com/uiid-systems/design-system/issues/323)) ([d6dcbcb](https://github.com/uiid-systems/design-system/commit/d6dcbcbaf11c836ead31a0497d574be198899d16))
+
+
+### Bug Fixes
+
+* **tokens:** clear the build collisions and order CSS generation before dev ([#353](https://github.com/uiid-systems/design-system/issues/353)) ([44761a3](https://github.com/uiid-systems/design-system/commit/44761a3bc3762760729531b378d9fbf19decdaca))
+* **ui:** align popup stacking and restore popup exit animations ([#321](https://github.com/uiid-systems/design-system/issues/321)) ([be10e09](https://github.com/uiid-systems/design-system/commit/be10e0900688b9b51f07f1cd96315ff2b906b41c))
+* **ui:** drop hardcoded checkbox aria-label, add missing "use client" ([#320](https://github.com/uiid-systems/design-system/issues/320)) ([1bd7bec](https://github.com/uiid-systems/design-system/commit/1bd7becbffe04f662ae3d319286306c5fdb0d722))
+* **ui:** forward name to Combobox and Autocomplete inputs ([#355](https://github.com/uiid-systems/design-system/issues/355)) ([b0ece16](https://github.com/uiid-systems/design-system/commit/b0ece16e41d565098aa388b3c3ae9f7469d52865))
+* **ui:** let RadioGroup render unselected and forward its field props ([#349](https://github.com/uiid-systems/design-system/issues/349)) ([ccb70f5](https://github.com/uiid-systems/design-system/commit/ccb70f5a827e448b0f22fd9ed226bf36d1ba56af))
+* **ui:** make required reach the control, not just the label ([#351](https://github.com/uiid-systems/design-system/issues/351)) ([fee1cfa](https://github.com/uiid-systems/design-system/commit/fee1cfa933fd216dba5abb5ffb9c60ffd945038a))
+* **ui:** one invalid-state language on palette tokens across the forms package ([#328](https://github.com/uiid-systems/design-system/issues/328)) ([3225bb1](https://github.com/uiid-systems/design-system/commit/3225bb1ef94e38a3eb362d92b860c510baaf5038))
+* **ui:** rebuild the checkbox, switch, and radio rows on Field.Item ([#327](https://github.com/uiid-systems/design-system/issues/327)) ([2b91d82](https://github.com/uiid-systems/design-system/commit/2b91d82ef42fb4d106d515b7de8f2d0fb806293d))
+* **ui:** render a CheckboxGroup form error once, not once per box ([#362](https://github.com/uiid-systems/design-system/issues/362)) ([eaa37de](https://github.com/uiid-systems/design-system/commit/eaa37de290c46475f16f8bbd5bc0663343e53234))
+* **ui:** repair CheckboxGroup item handling and add its compound API ([#348](https://github.com/uiid-systems/design-system/issues/348)) ([2a65765](https://github.com/uiid-systems/design-system/commit/2a6576593005adff220220afbbd466b2d8d93df9))
+* **ui:** repair switch easing and checkbox hit area, drop dead forms CSS ([#318](https://github.com/uiid-systems/design-system/issues/318)) ([977931b](https://github.com/uiid-systems/design-system/commit/977931bdc77b39a1de9087f0dedd19cacb6ea5ae))
+* **ui:** replace self-referential @uiid/forms imports in switch ([#314](https://github.com/uiid-systems/design-system/issues/314)) ([620a947](https://github.com/uiid-systems/design-system/commit/620a947cb92cb0eea89a650ec13f507314d07f9c))
+* **ui:** resolve dangling forms styles references to missing CSS classes ([#322](https://github.com/uiid-systems/design-system/issues/322)) ([18f93cc](https://github.com/uiid-systems/design-system/commit/18f93cc8306f33b3f9054840b9813ae7d0946877))
+* **ui:** restore the Slider value contract, support ranges, wrap Label ([#350](https://github.com/uiid-systems/design-system/issues/350)) ([91e9714](https://github.com/uiid-systems/design-system/commit/91e97143a3e6704fc1b0429824d57790065ee409))
+* **ui:** route Combobox and Autocomplete props to their intended targets ([#325](https://github.com/uiid-systems/design-system/issues/325)) ([2883a53](https://github.com/uiid-systems/design-system/commit/2883a532b5518469bbd348f47254fdb7d8dbaa0e))
+* **ui:** unify forms focus on :focus-visible and restore missing rings ([#315](https://github.com/uiid-systems/design-system/issues/315)) ([84367c1](https://github.com/uiid-systems/design-system/commit/84367c107dca9fe538c9539e6fcaa33cd3552244))
+
+
+### Code Refactoring
+
+* **ui:** migrate ghost boolean to the variant axis ([#363](https://github.com/uiid-systems/design-system/issues/363)) ([0679949](https://github.com/uiid-systems/design-system/commit/0679949b463330e887e1423aad44c44d2386570a))
+* **ui:** promote input subcomponents and document the Input size recast ([#342](https://github.com/uiid-systems/design-system/issues/342)) ([601a622](https://github.com/uiid-systems/design-system/commit/601a622f54684f470ed68b151aa23c3c633f131c))
+* **ui:** rename SelectIndicator to SelectIcon to mirror Base UI ([#335](https://github.com/uiid-systems/design-system/issues/335)) ([2b3c461](https://github.com/uiid-systems/design-system/commit/2b3c4618e17cc1d739fb503fb61d493d6c777535))
+
 ## [0.2.0](https://github.com/uiid-systems/design-system/compare/v0.1.0...v0.2.0) (2026-08-25)
 
 

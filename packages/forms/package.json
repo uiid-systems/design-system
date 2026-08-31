@@ -1,6 +1,6 @@
 {
   "name": "@uiid/forms",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Form components — Input, Select, Checkbox, Radio, Switch, ToggleGroup, and more",
   "license": "MIT",
   "author": "Adam Fratino",
