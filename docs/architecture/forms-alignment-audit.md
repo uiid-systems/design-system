@@ -148,7 +148,12 @@ PR #354; `.variants.ts` now 6/16 — UI-172 below.)
    generated from types. Several are factually stale: number-field documents nonexistent
    `formatOptions` (real prop: `format`); select documents `<SelectIcon/>`; input omits
    shipped `before`/`after`/`FieldProps`. Forms is also the only package publishing
-   source READMEs (`files: ["dist", "src/**/README.md"]`).
+   source READMEs (`files: ["dist", "src/**/README.md"]`). **Resolved:** the genre
+   rewrite landed in PR #357 (16/16 now 16–26 lines, stale facts corrected); the
+   publishing anomaly is closed by UI-181 — `files` is now `["dist"]`, matching every
+   other package. Nothing read the published copies: Storybook's `?raw` imports and
+   `apps/docs`' `Readme` component both resolve READMEs from the repo source tree, not
+   from `node_modules`.
 2. **Variant vocabulary drift:** `ghost` is a boolean toggle (input/textarea, propagated
    by type-aliasing into select/select-multiple/slider/number-field) where the system
    uses a `variant: {subtle, ghost}` axis; sizes stop at small–large (no `xsmall`,
