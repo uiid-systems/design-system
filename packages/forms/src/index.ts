@@ -40,6 +40,7 @@ export * from "./radio/subcomponents";
 
 export * from "./radio-group/radio-group";
 export * from "./radio-group/radio-group.types";
+export * from "./radio-group/subcomponents";
 
 export * from "./select/select";
 export * from "./select/select.types";

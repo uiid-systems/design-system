@@ -13,7 +13,7 @@ const items = [
   { value: "large", label: "Large" },
 ];
 
-// Basic (first item selected by default)
+// Basic (nothing selected until the user picks)
 <RadioGroup items={items} />
 
 // With specific default
@@ -52,7 +52,7 @@ const [value, setValue] = useState("small");
 
 ### Default Value
 
-First item is selected by default. Override with `defaultValue`:
+Nothing is selected until the user picks one. Pass `defaultValue` to preselect:
 
 ```tsx
 <RadioGroup items={items} defaultValue="medium" />
@@ -102,7 +102,7 @@ For card selections where border indicates selection:
 | `label`          | `ReactNode`                  | —            | Field label for the group          |
 | `description`    | `ReactNode`                  | —            | Helper text below the group        |
 | `value`          | `string`                     | —            | Controlled selected value          |
-| `defaultValue`   | `string`                     | First item   | Initial selected value             |
+| `defaultValue`   | `string`                     | —            | Initial selected value             |
 | `onValueChange`  | `(value: string) => void`    | —            | Called when selection changes      |
 | `direction`      | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                   |
 | `bordered`       | `boolean`                    | `false`      | Bordered variant for all radios    |
