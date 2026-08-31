@@ -13,6 +13,7 @@ export const Radio = ({
   value,
   label,
   description,
+  size,
   reversed,
   bordered,
   hideIndicator,
@@ -24,13 +25,19 @@ export const Radio = ({
     <FieldRow
       label={label}
       description={description}
+      size={size}
       className={cx(
         checkboxStyles["checkbox-label"],
         radioVariants({ reversed, bordered }),
       )}
       {...FieldProps}
     >
-      <RadioRoot value={value} hideIndicator={hideIndicator} {...props}>
+      <RadioRoot
+        value={value}
+        size={size}
+        hideIndicator={hideIndicator}
+        {...props}
+      >
         <RadioIndicator {...IndicatorProps} />
       </RadioRoot>
     </FieldRow>

@@ -83,6 +83,10 @@
 /* Size variants for controls. The steppers stretch to the group's height, so
    the token pins their width to the tier's control height and keeps them
    square — the relationship lives in number-field.tokens.json, not here. */
+.size-xsmall .number-field-decrement,
+.size-xsmall .number-field-increment {
+  width: var(--number-field-button-width-xs);
+}
 .size-small .number-field-decrement,
 .size-small .number-field-increment {
   width: var(--number-field-button-width-sm);

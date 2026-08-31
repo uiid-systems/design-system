@@ -19,7 +19,7 @@ import {
 
 type Size = NonNullable<NumberFieldVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIPTION = "Use the arrow keys for fine adjustments.";
 const ERROR = "Enter a quantity of 1 or more";

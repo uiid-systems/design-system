@@ -1,8 +1,20 @@
 {
   "$description": "UIID Design System - Switch Component Tokens",
   "switch": {
-    "height": { "$value": "1.5rem", "$type": "dimension" },
-    "width": { "$value": "2.5rem", "$type": "dimension" },
+    "height": {
+      "$type": "dimension",
+      "xs": { "$value": "1rem" },
+      "sm": { "$value": "1.25rem" },
+      "md": { "$value": "1.5rem" },
+      "lg": { "$value": "1.75rem" }
+    },
+    "width": {
+      "$type": "dimension",
+      "xs": { "$value": "1.75rem" },
+      "sm": { "$value": "2rem" },
+      "md": { "$value": "2.5rem" },
+      "lg": { "$value": "3rem" }
+    },
     "bg": { "$value": "{shade.muted}", "$type": "color" },
     "fg": { "$value": "{shade.foreground}", "$type": "color" }
   }

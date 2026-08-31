@@ -19,6 +19,7 @@ export const numberFieldVariants = cva({
   variants: {
     /** Control scale — sizes the stepper buttons and the input together */
     size: {
+      xsmall: styles["size-xsmall"],
       small: styles["size-small"],
       medium: styles["size-medium"],
       large: styles["size-large"],

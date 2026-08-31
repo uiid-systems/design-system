@@ -6,6 +6,9 @@ import { Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import type { InputVariants } from "../../input/input.types";
+import { inputGroupVariants } from "./input-group.variants";
+
 import styles from "./input-group.module.css";
 
 /**
@@ -25,14 +28,20 @@ type WithSlot<T> = T & {
 
 export const InputGroupRoot = ({
   slot,
+  size,
   className,
   children,
   ...props
-}: WithSlot<BaseInputGroupTypes.InputGroup.Props>) => {
+}: WithSlot<BaseInputGroupTypes.InputGroup.Props> &
+  Pick<InputVariants, "size">) => {
   return (
     <BaseInputGroup.InputGroup
       data-slot={slot}
-      className={cx(styles["input-group-root"], className)}
+      className={cx(
+        styles["input-group-root"],
+        inputGroupVariants({ size }),
+        className,
+      )}
       {...props}
     >
       {children}

@@ -22,6 +22,8 @@ Dogfood the design system everywhere, including docs, MDX, and examples. If a sy
 
 ## Tokens
 
-Spacing props are multiples of `spacing.unit` (`0.25rem`), so `gap={4}` is `1rem`. Token values must be derived from the scale with `calc()`, never hardcoded.
+Spacing props are multiples of `spacing.unit` (`0.25rem`), so `gap={4}` is `1rem`.
+
+**Token JSON holds primitive values only** — a literal (`"1.25rem"`) or a plain reference to another token (`"{spacing.unit}"`). Never put `calc()` or any other CSS expression in a `$value`. The JSON is the source of truth and is meant to be editable from a UI; an expression in a value breaks that. Tokens flow JSON → CSS, never the reverse. If a value needs arithmetic, do it in the CSS module that consumes the token.
 
 There is no semantic color tone system (no positive/critical/warning/info) — only the shade scale plus palette hues for color variants.

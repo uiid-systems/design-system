@@ -243,3 +243,39 @@ describe("Combobox name forwarding", () => {
     ).toHaveTextContent("Pick a fruit");
   });
 });
+
+describe("Combobox size variant", () => {
+  const items = ["apple", "banana"];
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the %s control tier on the input",
+    (size) => {
+      render(<Combobox items={items} size={size} />);
+      expect(screen.getByRole("combobox").className).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier, matching Input", () => {
+    render(<Combobox items={items} />);
+    expect(screen.getByRole("combobox").className).toContain("size-medium");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto the input group, which sizes the action strip",
+    (size) => {
+      const { container } = render(<Combobox items={items} size={size} />);
+      const group = container.querySelector(
+        "[data-slot='combobox-input-group']",
+      );
+      expect(group?.className).toContain(`size-${size}`);
+    },
+  );
+
+  it("moves the tier onto the wrapper when a slot is present", () => {
+    const { container } = render(
+      <Combobox items={items} size="large" before="$" />,
+    );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    expect(wrapper?.className).toContain("size-large");
+  });
+});

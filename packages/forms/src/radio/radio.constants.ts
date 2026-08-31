@@ -1,1 +1,1 @@
-export const RADIO_DEFAULT_SIZE = "small";
+export const RADIO_DEFAULT_SIZE = "medium";

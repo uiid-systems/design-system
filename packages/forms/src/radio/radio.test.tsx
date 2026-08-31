@@ -137,7 +137,7 @@ describe("Radio size variant", () => {
       </RadioGroupRoot>,
     );
 
-  it.each(["small", "medium", "large"] as const)(
+  it.each(["xsmall", "small", "medium", "large"] as const)(
     "paints the %s control tier on the root",
     (size) => {
       const { container } = renderRadio({ value: "a", size });
@@ -145,9 +145,9 @@ describe("Radio size variant", () => {
     },
   );
 
-  it("falls back to the small tier", () => {
+  it("falls back to the medium tier, matching Input", () => {
     const { container } = renderRadio({ value: "a" });
-    expect(radioClassName(container)).toContain("size-small");
+    expect(radioClassName(container)).toContain("size-medium");
   });
 
   it("applies one tier at a time", () => {

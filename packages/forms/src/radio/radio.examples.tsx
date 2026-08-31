@@ -8,7 +8,7 @@ import type { RadioVariants } from "./radio.types";
 
 type Size = NonNullable<RadioVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIPTION = "Charged monthly, cancel whenever you like.";
 

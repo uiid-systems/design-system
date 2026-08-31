@@ -3,12 +3,17 @@
   "input-group": {
     "$type": "dimension",
     "action": {
-      "width": { "$value": "calc({spacing.unit} * 6)" },
-      "height": { "$value": "calc({spacing.unit} * 10)" },
+      "width": { "$value": "1.5rem" },
+      "height": {
+        "xs": { "$value": "1.5rem" },
+        "sm": { "$value": "1.75rem" },
+        "md": { "$value": "2.25rem" },
+        "lg": { "$value": "2.5rem" }
+      },
       "border-radius": { "$value": "{spacing.unit}" }
     },
     "input": {
-      "padding-inline-end": { "$value": "calc({spacing.unit} * 16)" }
+      "padding-inline-end": { "$value": "4rem" }
     }
   }
 }

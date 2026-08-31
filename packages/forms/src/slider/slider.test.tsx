@@ -140,7 +140,7 @@ describe("Slider size variant", () => {
   const rootClassName = (container: HTMLElement) =>
     container.querySelector("[data-slot='slider-root']")?.className ?? "";
 
-  it.each(["small", "medium", "large"] as const)(
+  it.each(["xsmall", "small", "medium", "large"] as const)(
     "paints the %s control tier on the root",
     (size) => {
       const { container } = render(<Slider size={size} />);

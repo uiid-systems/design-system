@@ -32,6 +32,11 @@
 }
 
 /* Size variants */
+.size-xsmall {
+  font-size: var(--forms-size-xs-font-size);
+  padding-inline: var(--forms-size-xs-padding-x);
+  min-height: var(--textarea-min-height-xs);
+}
 .size-small {
   font-size: var(--forms-size-sm-font-size);
   padding-inline: var(--forms-size-sm-padding-x);

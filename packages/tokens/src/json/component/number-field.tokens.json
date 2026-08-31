@@ -4,6 +4,7 @@
     "button": {
       "width": {
         "$type": "dimension",
+        "xs": { "$value": "{forms.size.xs.height}" },
         "sm": { "$value": "{forms.size.sm.height}" },
         "md": { "$value": "{forms.size.md.height}" },
         "lg": { "$value": "{forms.size.lg.height}" }

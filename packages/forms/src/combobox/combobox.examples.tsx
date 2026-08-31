@@ -9,6 +9,7 @@ import { Field } from "../field/field";
 import { Form } from "../form/form";
 import { Combobox } from "./combobox";
 import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
+import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxChip,
   ComboboxChipRemove,
@@ -24,11 +25,30 @@ import {
   ComboboxValue,
 } from "./subcomponents";
 
+type Size = NonNullable<ComboboxProps["size"]>;
+
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
+
 const DESCRIPTION = "Start typing to filter the list.";
 const ERROR = "Pick a fruit from the list";
 
 export const Default = () => (
   <Combobox items={MOCK_COMBOBOX_ITEMS} placeholder="Search fruit" />
+);
+
+/* The tier reaches the input, so a combobox lines up with a sibling Input. */
+export const Sizes = () => (
+  <Stack gap={4} ax="stretch">
+    {SIZES.map((size) => (
+      <Combobox
+        key={size}
+        size={size}
+        label={size}
+        items={MOCK_COMBOBOX_ITEMS}
+        placeholder="Search fruit"
+      />
+    ))}
+  </Stack>
 );
 
 export const WithLabel = () => (

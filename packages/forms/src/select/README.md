@@ -7,7 +7,7 @@ Use Select when you want to:
 - Pick from a fixed list — each entry in `items` carries `value` and `label`, and optionally an `icon`, a `description`, or `disabled`
 - Open empty rather than preselecting the first option by giving it a `placeholder`
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
-- Match a control row with `size` (`small`, `medium`, `large`)
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon or a hint inside the trigger with `before` and `after`
 - Collect several values at once with `multiple` — the trigger lists the selection and the popup keeps the checked state
 - Soften the surface with `ghost` or fill the container with `fullwidth`

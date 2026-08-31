@@ -6,7 +6,7 @@ Use Radio when you want to:
 
 - Compose a group by hand rather than passing `items` to [`RadioGroup`](../radio-group/README.md) — each radio can then carry its own `description`, `size`, or variants
 - Label the row inline with `label` and `description` instead of composing a `Field` by hand
-- Match a control row with `size` (`small`, `medium`, `large`)
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Draw the row as a control surface with `bordered`, and put the dot after the label with `reversed`
 - Hide the dot from sight with `hideIndicator` while it stays in the accessibility tree, so the row still reads and toggles as a radio
 

@@ -9,7 +9,7 @@ Use NumberField when you want to:
 - Set the increment with `step`, with `largeStep` applying when shift is held and `smallStep` with alt, and round to the grid with `snapOnStep`
 - Format the displayed value with `format`, which takes `Intl.NumberFormat` options — currency, percent, and units all work
 - Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
-- Match a control row with `size` (`small`, `medium`, `large`)
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Mark it `required`, `disabled`, or `readOnly`
 
 Leave `value` unset and the field runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the interaction settles.

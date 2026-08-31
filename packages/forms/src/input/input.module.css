@@ -46,6 +46,9 @@
   }
 }
 
+.size-xsmall {
+  composes: composes-size-xsmall from global;
+}
 .size-small {
   composes: composes-size-small from global;
 }
@@ -136,6 +139,9 @@
 }
 
 .input-inner {
+  .size-xsmall > & {
+    font-size: var(--forms-size-xs-font-size);
+  }
   .size-small > & {
     font-size: var(--forms-size-sm-font-size);
   }

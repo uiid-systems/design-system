@@ -57,3 +57,23 @@
   top: calc(100% + var(--globals-padding-y));
   left: 0;
 }
+
+/* Control-scale tiers for a field row. The row paints no size of its own — each
+   control sizes itself — so these only publish the inset `bordered` reads, and
+   are safe to sit on the same element as the control's own tier class. */
+.row-size-xsmall {
+  --field-row-padding-x: var(--field-row-padding-x-xs);
+  --field-row-padding-y: var(--field-row-padding-y-xs);
+}
+.row-size-small {
+  --field-row-padding-x: var(--field-row-padding-x-sm);
+  --field-row-padding-y: var(--field-row-padding-y-sm);
+}
+.row-size-medium {
+  --field-row-padding-x: var(--field-row-padding-x-md);
+  --field-row-padding-y: var(--field-row-padding-y-md);
+}
+.row-size-large {
+  --field-row-padding-x: var(--field-row-padding-x-lg);
+  --field-row-padding-y: var(--field-row-padding-y-lg);
+}

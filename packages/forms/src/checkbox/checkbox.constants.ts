@@ -1,1 +1,1 @@
-export const CHECKBOX_DEFAULT_SIZE = "small";
+export const CHECKBOX_DEFAULT_SIZE = "medium";

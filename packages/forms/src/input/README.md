@@ -6,7 +6,7 @@ Use Input when you want to:
 
 - Collect a single line of text — `type` is forwarded, so `email`, `password`, `search`, and `url` all work
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
-- Match a control row with `size` (`small`, `medium`, `large`)
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon, a unit, or a hint inside the control with `before` and `after`
 - Soften the surface with `ghost` (no border until focus) or fill the container with `fullwidth`
 - Mark it `required`, `disabled`, or `readOnly`

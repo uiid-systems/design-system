@@ -150,6 +150,9 @@
       height: var(--forms-icon-size);
     }
   }
+  .composes-size-xsmall > .composes-field-slot {
+    padding-inline: var(--forms-size-xs-padding-x);
+  }
   .composes-size-small > .composes-field-slot {
     padding-inline: var(--forms-size-sm-padding-x);
   }

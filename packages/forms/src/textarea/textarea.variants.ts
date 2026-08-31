@@ -12,6 +12,7 @@ export const textareaVariants = cva({
     fullwidth: { true: styles["toggle-fullwidth"] },
     ghost: { true: styles["toggle-ghost"] },
     size: {
+      xsmall: styles["size-xsmall"],
       small: styles["size-small"],
       medium: styles["size-medium"],
       large: styles["size-large"],

@@ -3,10 +3,10 @@
   "select": {
     "$type": "dimension",
     "trigger": {
-      "gap": { "$value": "calc({spacing.unit} * 4)" }
+      "gap": { "$value": "1rem" }
     },
     "item": {
-      "gap": { "$value": "calc({spacing.unit} * 2)" }
+      "gap": { "$value": "0.5rem" }
     }
   }
 }

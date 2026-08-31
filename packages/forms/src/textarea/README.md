@@ -6,7 +6,7 @@ Use Textarea when you want to:
 
 - Collect more than one line of text — `rows` sets the starting height
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
-- Match a control row with `size` (`small`, `medium`, `large`) — this sets the type scale and padding, independently of `rows`
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — this sets the type scale and padding, independently of `rows`
 - Constrain the drag handle with `resize` (`none`, `vertical`, `horizontal`, `both`)
 - Soften the surface with `ghost` or fill the container with `fullwidth`
 - Mark it `required`, `disabled`, or `readOnly`

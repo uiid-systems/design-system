@@ -8,7 +8,7 @@ Use Slider when you want to:
 - Bound and quantize with `min`, `max`, and `step`, with `largeStep` applying when shift is held
 - Format the readout with `format`, which takes `Intl.NumberFormat` options
 - Replace the readout entirely through `ValueProps.children`, a render function receiving the formatted strings and the raw numbers
-- Match a control row with `size` (`small`, `medium`, `large`) — the row height, inline padding, and readout scale with the tier, while the track and thumb stay fixed so a small slider keeps a usable grab target
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the row height, inline padding, and readout scale with the tier, while the track and thumb stay fixed so a small slider keeps a usable grab target
 - Run it top-to-bottom with `orientation="vertical"`
 - Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
 - Soften the surface with `ghost`, fill the container with `fullwidth`, or mark it `disabled`

@@ -6,6 +6,7 @@ Use Switch when you want to:
 
 - Toggle a setting that applies right away — use a checkbox instead when the value is only committed on submit
 - Label the row inline with `label` and `description` instead of composing a `Field` by hand
+- Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier sets the track's width and height, and the thumb and its travel follow from that pair
 - Draw the row as a control surface with `bordered`, and put the switch after the label with `reversed`
 - Mark it `disabled` or `readOnly`
 

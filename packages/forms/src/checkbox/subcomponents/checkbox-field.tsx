@@ -9,6 +9,7 @@ import { checkboxVariants } from "../checkbox.variants";
 import styles from "../checkbox.module.css";
 
 export const CheckboxField = ({
+  size,
   reversed,
   bordered,
   className,
@@ -17,6 +18,7 @@ export const CheckboxField = ({
 }: CheckboxFieldProps) => {
   return (
     <FieldRow
+      size={size}
       className={cx(
         styles["checkbox-label"],
         checkboxVariants({ reversed, bordered }),

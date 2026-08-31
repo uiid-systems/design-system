@@ -10,7 +10,7 @@ import type { SliderVariants } from "./slider.types";
 
 type Size = NonNullable<SliderVariants["size"]>;
 
-const SIZES: Size[] = ["small", "medium", "large"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const DESCRIPTION = "Applies to every output device.";
 const ERROR = "Pick a value above 10";

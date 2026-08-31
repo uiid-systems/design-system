@@ -13,6 +13,7 @@ import type { checkboxVariants } from "./checkbox.variants";
 export type CheckboxVariants = VariantProps<typeof checkboxVariants>;
 
 export type CheckboxFieldProps = GroupProps &
+  Pick<CheckboxVariants, "size"> &
   Pick<FieldProps, "name" | "label" | "description"> &
   React.PropsWithChildren<{
     reversed?: boolean;
