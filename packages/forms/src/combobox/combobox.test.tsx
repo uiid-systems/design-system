@@ -247,21 +247,26 @@ describe("Combobox name forwarding", () => {
 describe("Combobox size variant", () => {
   const items = ["apple", "banana"];
 
+  /* Clear and Trigger always occupy the input's trailing slot, so the wrapper
+     is always present and always the element that carries the tier — the inner
+     input takes its metrics from it rather than from a tier class of its own. */
   it.each(["xsmall", "small", "medium", "large"] as const)(
-    "paints the %s control tier on the input",
+    "paints the %s control tier on the input wrapper",
     (size) => {
-      render(<Combobox items={items} size={size} />);
-      expect(screen.getByRole("combobox").className).toContain(`size-${size}`);
+      const { container } = render(<Combobox items={items} size={size} />);
+      const wrapper = container.querySelector("[data-slot='input-wrapper']");
+      expect(wrapper?.className).toContain(`size-${size}`);
     },
   );
 
   it("falls back to the medium tier, matching Input", () => {
-    render(<Combobox items={items} />);
-    expect(screen.getByRole("combobox").className).toContain("size-medium");
+    const { container } = render(<Combobox items={items} />);
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    expect(wrapper?.className).toContain("size-medium");
   });
 
   it.each(["xsmall", "small", "medium", "large"] as const)(
-    "carries the %s tier onto the input group, which sizes the action strip",
+    "carries the %s tier onto the input group, which sizes the actions",
     (size) => {
       const { container } = render(<Combobox items={items} size={size} />);
       const group = container.querySelector(
@@ -271,11 +276,40 @@ describe("Combobox size variant", () => {
     },
   );
 
-  it("moves the tier onto the wrapper when a slot is present", () => {
+  it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,
     );
     const wrapper = container.querySelector("[data-slot='input-wrapper']");
     expect(wrapper?.className).toContain("size-large");
+  });
+});
+
+describe("Combobox actions", () => {
+  const items = ["apple", "banana"];
+
+  it("renders the actions inside the input's trailing slot", () => {
+    const { container } = render(<Combobox items={items} />);
+    const slot = container.querySelector("[data-slot='input-after']");
+    expect(
+      slot?.querySelector("[data-slot='combobox-actions']"),
+    ).not.toBeNull();
+    expect(
+      slot?.querySelector("[data-slot='combobox-trigger']"),
+    ).not.toBeNull();
+  });
+
+  it("leads the actions row with whatever the caller passed as `after`", () => {
+    const { container } = render(<Combobox items={items} after="kg" />);
+    const actions = container.querySelector("[data-slot='combobox-actions']");
+    expect(actions).toHaveTextContent("kg");
+  });
+
+  it("keeps the trigger's own accessible name rather than the field label", () => {
+    render(<Combobox items={items} label="Fruit" />);
+    expect(screen.getByLabelText("Fruit")).toBe(screen.getByRole("combobox"));
+    expect(
+      screen.getByRole("button", { name: "Toggle dropdown" }),
+    ).toBeInTheDocument();
   });
 });

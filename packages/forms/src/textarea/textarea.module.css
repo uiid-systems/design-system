@@ -2,54 +2,36 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea {
+  composes: composes-field-surface from global;
   composes: composes-disabled from global;
   composes: composes-invalid from global;
   composes: composes-text from global;
 
-  background-color: var(--forms-bg);
-  border: var(--globals-border-width) solid var(--forms-border-color);
-  border-radius: var(--globals-border-radius);
-  color: var(--shade-foreground);
   font-family: inherit;
-  font-size: var(--forms-font-size);
-  outline: var(--globals-outline-width) var(--globals-outline-color);
-  outline-offset: var(--globals-outline-offset);
-  padding: var(--forms-padding-y) var(--forms-padding-x);
-  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   line-height: var(--textarea-line-height);
-  min-height: var(--textarea-min-height-md);
-
-  /** Hover */
-  &:hover {
-    background-color: var(--forms-bg-hover);
-  }
-
-  /** Focus */
-  &:focus-visible {
-    background-color: var(--forms-bg-focus);
-    outline-style: var(--globals-outline-style);
-  }
+  /* Block only — inline padding and font-size come from the size tier. */
+  padding-block: var(--forms-padding-y);
+  /* The tier pins a control `height`; a textarea grows with its content
+     instead, so it drops that and takes a per-tier `min-height` below.
+     uiid.components sits above uiid.compositions, so this outranks the tier. */
+  height: auto;
 }
 
 /* Size variants */
 .size-xsmall {
-  font-size: var(--forms-size-xs-font-size);
-  padding-inline: var(--forms-size-xs-padding-x);
+  composes: composes-size-xsmall from global;
   min-height: var(--textarea-min-height-xs);
 }
 .size-small {
-  font-size: var(--forms-size-sm-font-size);
-  padding-inline: var(--forms-size-sm-padding-x);
+  composes: composes-size-small from global;
   min-height: var(--textarea-min-height-sm);
 }
 .size-medium {
-  font-size: var(--forms-size-md-font-size);
-  padding-inline: var(--forms-size-md-padding-x);
+  composes: composes-size-medium from global;
   min-height: var(--textarea-min-height-md);
 }
 .size-large {
-  font-size: var(--forms-size-lg-font-size);
-  padding-inline: var(--forms-size-lg-padding-x);
+  composes: composes-size-large from global;
   min-height: var(--textarea-min-height-lg);
 }
 
@@ -69,27 +51,9 @@
 
 /* Toggle variants */
 .toggle-fullwidth {
-  width: 100%;
-  width: -webkit-fill-available;
+  composes: composes-fullwidth from global;
 }
 
-/* Ghost drops the resting surface — background and border only. The focus ring
-   is deliberately left alone: `.variant-ghost` and `.textarea` tie on
-   specificity and this block wins on source order, so clearing `outline-color`
-   here erased the ring outright. */
 .variant-ghost {
-  background-color: transparent;
-  border-color: transparent;
-  color: var(--shade-foreground);
-
-  &::placeholder {
-    transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
-  }
-  &:not(:focus)::placeholder {
-    color: var(--shade-foreground);
-  }
-
-  &:hover {
-    background-color: var(--forms-bg-hover);
-  }
+  composes: composes-field-surface-ghost from global;
 }

@@ -67,6 +67,93 @@
   }
 
   /**
+   * The resting surface a form control paints: input, textarea, select trigger,
+   * and the number field's stepper buttons. Everything here is *surface* —
+   * fill, edge, and the states that repaint them. Size-coupled properties
+   * (height, inline padding, font-size) belong to composes-size-* and block
+   * padding to the component, so a control can wear this at any tier.
+   *
+   * Replaces the className-concatenation sharing this used to be done with,
+   * where Select borrowed Input's `.input` class and Input carried a
+   * `:not([data-slot="select-value"])` exclusion to keep the value from
+   * painting a second surface inside the trigger it already sits in.
+   *
+   * `outline` is declared without a style, so the ring is fully specified but
+   * invisible until focus turns it on — that is what lets it animate rather
+   * than snap, and why the focus rule below only adds `outline-style`.
+   */
+  .composes-field-surface {
+    background-color: var(--forms-bg);
+    border: var(--globals-border-width) solid var(--forms-border-color);
+    border-radius: var(--globals-border-radius);
+    color: var(--shade-foreground);
+    outline: var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+
+    &:hover {
+      background-color: var(--forms-bg-hover);
+    }
+
+    /*
+     * `:focus-visible` for a control that takes focus itself; `:has(:focus-visible)`
+     * for the wrappers that surround one (input wrapper, number field group) —
+     * those are not focusable, so they mirror the state of whichever control
+     * inside them holds focus. `:has()` takes its argument's specificity, so the
+     * wrapper form lands a class above `:hover` and wins when both apply.
+     *
+     * For text fields the UA matches `:focus-visible` on pointer focus too, so
+     * the ring still appears on click; a non-text control landing here follows
+     * the same rule as every other component in the system.
+     */
+    &:focus-visible,
+    &:has(:focus-visible) {
+      background-color: var(--forms-bg-focus);
+      outline-style: var(--globals-outline-style);
+    }
+  }
+
+  /**
+   * Ghost drops the field surface's resting fill and edge, and nothing else.
+   *
+   * Declared after `.composes-field-surface` so it wins the tie at equal
+   * specificity, which is also why it must stay in this layer rather than
+   * moving up with a consumer. The focus ring is deliberately left alone:
+   * clearing `outline-color` here erased it outright rather than hiding it
+   * until focus.
+   */
+  .composes-field-surface-ghost {
+    background-color: transparent;
+    border-color: transparent;
+
+    &::placeholder {
+      transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+    }
+    &:not(:focus)::placeholder {
+      color: var(--shade-foreground);
+    }
+
+    &:hover {
+      background-color: var(--forms-bg-hover);
+    }
+  }
+
+  /**
+   * Fill the inline space the parent offers. Matches `Box`'s `fullwidth`
+   * toggle value-for-value, so a component that has no layout primitive to
+   * reach for (a bare `<input>`, a `<button>`) resolves to the same width as
+   * one that does. The fallback chain is deliberate: Firefox drops
+   * `-webkit-fill-available` and lands on `-moz-available`, Chrome and Safari
+   * drop `-moz-available` and keep `-webkit-fill-available`, and anything
+   * older keeps `100%`.
+   */
+  .composes-fullwidth {
+    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+  }
+
+  /**
    * Enter/exit animation for anchored floating popups (tooltip, popover,
    * select, combobox, autocomplete). Base UI toggles [data-starting-style] and
    * [data-ending-style] around open/close, and exposes --transform-origin on
@@ -197,6 +284,24 @@
  */
 @layer uiid.states {
   .composes-disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
+    opacity: var(--globals-disabled-opacity);
+    pointer-events: none;
+  }
+
+  /**
+   * The same treatment for a wrapper that surrounds the real control — an input
+   * wrapper holding a disabled input, a checkbox row holding a disabled box.
+   * The wrapper never carries the disabled state itself, so it reads it off its
+   * subtree instead.
+   *
+   * Deliberately a second name rather than folding `:has()` into
+   * `.composes-disabled` above. Plenty of its consumers are containers whose
+   * children are legitimately disabled while the container is not — an
+   * accordion with one disabled item, a number field whose stepper disables at
+   * the range boundary — and every one of them would start dimming whole.
+   * Compose this only where a disabled descendant means the whole thing is out.
+   */
+  .composes-disabled-within:where(:has(:disabled, [disabled], [data-disabled])) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }

@@ -139,3 +139,29 @@ describe("Input required reaches the control", () => {
     expect(screen.getByRole("textbox")).not.toBeRequired();
   });
 });
+
+describe("Input shared compositions", () => {
+  it("paints the shared field surface", () => {
+    render(<Input />);
+    expect(screen.getByRole("textbox").className).toMatch(
+      /composes-field-surface(?!-)/,
+    );
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "lets the %s tier reach a bare input, which the surface no longer outranks",
+    (size) => {
+      render(<Input size={size} />);
+      expect(screen.getByRole("textbox").className).toMatch(
+        new RegExp(`composes-size-${size}`),
+      );
+    },
+  );
+
+  it("reads disabled off the control it wraps", () => {
+    const { container } = render(<Input before="$" />);
+    expect(
+      container.querySelector("[data-slot='input-wrapper']")?.className,
+    ).toMatch(/composes-disabled-within/);
+  });
+});

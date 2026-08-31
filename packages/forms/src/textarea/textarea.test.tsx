@@ -266,3 +266,30 @@ describe("Textarea required reaches the control", () => {
     expect(screen.getByRole("textbox")).toBeRequired();
   });
 });
+
+describe("Textarea shared compositions", () => {
+  const className = () => screen.getByRole("textbox").className;
+
+  it("paints the shared field surface rather than its own copy of it", () => {
+    render(<Textarea />);
+    expect(className()).toMatch(/composes-field-surface(?!-)/);
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "composes the shared %s tier instead of restating it",
+    (size) => {
+      render(<Textarea size={size} />);
+      expect(className()).toMatch(new RegExp(`composes-size-${size}`));
+    },
+  );
+
+  it("composes the shared ghost surface", () => {
+    render(<Textarea variant="ghost" />);
+    expect(className()).toMatch(/composes-field-surface-ghost/);
+  });
+
+  it("composes the shared fullwidth", () => {
+    render(<Textarea fullwidth />);
+    expect(className()).toMatch(/composes-fullwidth/);
+  });
+});

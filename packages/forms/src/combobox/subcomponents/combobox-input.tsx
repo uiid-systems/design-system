@@ -1,12 +1,10 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { cx } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
 import { InputWrapper } from "../../input/subcomponents";
-import { inputGroupInputClassName } from "../../shared/input-group";
 import type { ComboboxInputProps } from "../combobox.types";
 
 export const ComboboxInput = ({
@@ -45,7 +43,7 @@ export const ComboboxInput = ({
             inner: hasSlots,
             size,
             fullwidth: true,
-            className: cx(inputGroupInputClassName, className),
+            className,
           })}
           placeholder={placeholder}
           {...props}

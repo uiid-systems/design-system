@@ -4,12 +4,11 @@
   composes: composes-disabled from global;
   composes: composes-invalid from global;
 
+  /* Centering comes from the `Group` the root renders as; what is left here is
+     the box itself. */
   width: var(--checkbox-size-md);
   aspect-ratio: 1;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: var(--checkbox-border-radius);
   outline: 0;
   position: relative;
@@ -49,9 +48,9 @@
   }
 }
 
-.checkbox-label:has(:disabled, [disabled], [data-disabled]) {
-  opacity: var(--globals-disabled-opacity);
-  pointer-events: none;
+/* The row is not the control, so it reads disabled off the box inside it. */
+.checkbox-label {
+  composes: composes-disabled-within from global;
 }
 
 .checkbox-indicator {

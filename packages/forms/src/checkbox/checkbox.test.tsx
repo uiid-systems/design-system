@@ -169,3 +169,12 @@ describe("Checkbox form errors", () => {
     ).toHaveLength(0);
   });
 });
+
+describe("Checkbox row disabled treatment", () => {
+  it("reads disabled off the box, using the shared container composition", () => {
+    const { container } = render(<Checkbox label="Accept terms" />);
+    expect(
+      container.querySelector("[data-slot='field-row']")?.className,
+    ).toMatch(/composes-disabled-within/);
+  });
+});

@@ -10,8 +10,8 @@ export type NumberFieldRootProps = BaseNumberField.Root.Props;
 export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
 export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;
 /**
- * The group is where `size` lands — the stepper buttons take their width from
- * it as descendants, so it is the element that can size the cluster.
+ * The group is where `size` lands — it sizes the cluster as a whole, and the
+ * stepper buttons square themselves off the height it gives them.
  */
 export type NumberFieldGroupProps = BaseNumberField.Group.Props &
   NumberFieldVariants;

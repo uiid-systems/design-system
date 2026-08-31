@@ -2,9 +2,6 @@
   "$description": "UIID Design System - Select Component Tokens",
   "select": {
     "$type": "dimension",
-    "trigger": {
-      "gap": { "$value": "1rem" }
-    },
     "item": {
       "gap": { "$value": "0.5rem" }
     }

@@ -47,17 +47,25 @@ export const Combobox = ({
           label={label}
           description={description}
           before={before}
-          after={after}
+          after={
+            /*
+             * Clear and Trigger ride the input's trailing slot rather than
+             * overlaying it, so they take their inset and their icon sizing
+             * from the size tier the way any other slotted content does.
+             * Anything the caller passed as `after` leads the row.
+             */
+            <InputGroupActions slot="combobox-actions">
+              {after}
+              <ComboboxClear />
+              <ComboboxTrigger />
+            </InputGroupActions>
+          }
           size={size}
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
           {...InputProps}
         />
-        <InputGroupActions slot="combobox-actions">
-          <ComboboxClear />
-          <ComboboxTrigger />
-        </InputGroupActions>
       </ComboboxInputGroup>
 
       <ComboboxPortal {...PortalProps}>

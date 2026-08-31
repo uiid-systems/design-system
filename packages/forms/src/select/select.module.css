@@ -1,12 +1,5 @@
 @import "@uiid/tokens/component/select.tokens.css";
 
-.select-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--select-trigger-gap);
-}
-
 /**
  * Before/after slots. Mirrors input's wrapper model: the trigger drops its
  * padding on any slotted side so the slot provides that edge instead, giving a
@@ -18,11 +11,8 @@
   composes: composes-field-slot from global;
 }
 
-.select-trigger-slots {
-  gap: 0;
-  justify-content: normal;
-}
-
+/* Layout for the slotted trigger comes from `Group` props; what is left here
+   is the edge each slot takes over from the trigger. */
 .select-trigger-slots:has([data-slot="select-before"]) {
   padding-inline-start: 0;
 }
@@ -68,10 +58,12 @@
   width: var(--list-icon-size);
 }
 
+/* Square, and sized off the tier the trigger publishes rather than the root
+   icon size, so the chevron tracks the control it sits in. */
 .select-icon {
   flex-shrink: 0;
-  height: var(--globals-icon-size);
-  width: var(--globals-icon-size);
+  height: var(--forms-icon-size);
+  width: var(--forms-icon-size);
 }
 
 .select-value {

@@ -205,10 +205,25 @@ Systemic root causes, then the notable instances:
    autocomplete, number-field, and field hardcode every dimension.
 2. **`composes-*` compositions under-adopted:** textarea restates size tiers instead of
    `composes-size-*`; checkbox/input hand-roll the disabled treatment; combobox bypasses
-   `composes-field-slot` with an absolute-positioned overlay.
+   `composes-field-slot` with an absolute-positioned overlay. **Resolved (UI-175):**
+   textarea composes `composes-size-*` (it drops the tier's `height` for a per-tier
+   `min-height`, since it grows with its content); the two hand-rolled wrapper-disabled
+   blocks compose a new `composes-disabled-within`, kept as a second name because most
+   `composes-disabled` consumers are containers whose children are legitimately disabled
+   while they are not; and Combobox's Clear/Trigger now ride the input wrapper's `after`
+   slot, so `composes-field-slot` gives them their inset and icon sizing and the fixed
+   4rem inset the overlay needed on the input is gone.
 3. **Input→Select style-sharing is done via className concatenation plus an exclusion
    selector** (`input.module.css:7`) instead of a shared composition — which is why
    `.toggle-ghost`/`.toggle-fullwidth` got copy-pasted byte-for-byte into textarea.
+   **Resolved (UI-175):** the surface is now `composes-field-surface` in
+   `compositions.css`, with `composes-field-surface-ghost` and `composes-fullwidth`
+   beside it. `SelectValue` stopped wearing `.input`, so the
+   `:not([data-slot="select-value"])` exclusion the concatenation forced is gone, and
+   textarea's two copy-pasted blocks are one-line composes. Dropping the surface out of
+   `.input` also un-pinned its `font-size`: restated in `uiid.components`, it had been
+   outranking every `composes-size-*` tier, so a bare Input rendered at the medium size
+   whatever tier it asked for.
 4. **Zero `calc(var(--spacing-unit) * n)` in the entire package** — all spacing is raw
    rem literals (20+ sites), against the derived-spacing rule.
 5. **Focus inconsistency:** input/textarea use `:focus` (ring on mouse click) vs
@@ -219,8 +234,15 @@ Systemic root causes, then the notable instances:
 7. **Seven inline-style violations** in `.tsx` (form, select-list, number-field,
    combobox, field-error-tooltip ×2, plus an icon `color=` prop pipe).
 8. **NumberField's +/− buttons re-implement Button's surface** (border/bg/radius/hover/
-   transition/sizing, ~30 lines) instead of composing shared styles.
-9. Assorted: non-square select chevron (height/width from different sources); PascalCase
+   transition/sizing, ~30 lines) instead of composing shared styles. **Resolved
+   (UI-175):** the steppers compose `composes-field-surface` — the surface their own
+   input wears, not Button's solid fill — and square themselves off the height the group
+   stretches them to with `aspect-ratio: 1`, the way Button's `.shape-square` does. The
+   group carries the tier, so `number-field.tokens.json` and its four
+   height-restated-as-width values are deleted.
+9. Assorted: non-square select chevron (height/width from different sources — since made
+   square, and **resolved (UI-175)** to `--forms-icon-size` so it tracks the trigger's
+   tier rather than the root icon size); PascalCase
    `.ScrubArea` classes; radio checked-state hover lightening (checkbox scopes hover to
    `[data-unchecked]`); low-contrast radio indicator; physical `margin-left` amid logical
    properties; `--globals-padding-y` used as a tooltip offset.
