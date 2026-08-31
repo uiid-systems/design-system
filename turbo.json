@@ -11,11 +11,13 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["@uiid/tokens#tokens"]
     },
     "storybook": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["@uiid/tokens#tokens"]
     },
     "build-storybook": {
       "dependsOn": ["^build"],

@@ -44,6 +44,7 @@
     "dist"
   ],
   "scripts": {
+    "tokens": "node build-tokens.js",
     "build": "node build-tokens.js && vite build",
     "dev": "node build-tokens.js && vite build",
     "watch": "nodemon --watch src/json --ext tokens.json --exec \"node build-tokens.js\""
