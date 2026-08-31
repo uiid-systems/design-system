@@ -4,6 +4,8 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { RadioGroup } from "../radio-group/radio-group";
+import { RadioGroupRoot } from "../radio-group/subcomponents";
+import { Radio } from "./radio";
 
 describe("Radio", () => {
   const defaultItems = [
@@ -121,5 +123,36 @@ describe("Radio field row", () => {
     expect(screen.getByLabelText("Option A")).not.toBe(
       screen.getByLabelText("Option B"),
     );
+  });
+});
+
+describe("Radio size variant", () => {
+  const radioClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='radio']")?.className ?? "";
+
+  const renderRadio = (props: React.ComponentProps<typeof Radio>) =>
+    render(
+      <RadioGroupRoot defaultValue="a">
+        <Radio {...props} />
+      </RadioGroupRoot>,
+    );
+
+  it.each(["small", "medium", "large"] as const)(
+    "paints the %s control tier on the root",
+    (size) => {
+      const { container } = renderRadio({ value: "a", size });
+      expect(radioClassName(container)).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the small tier", () => {
+    const { container } = renderRadio({ value: "a" });
+    expect(radioClassName(container)).toContain("size-small");
+  });
+
+  it("applies one tier at a time", () => {
+    const { container } = renderRadio({ value: "a", size: "large" });
+    expect(radioClassName(container)).not.toContain("size-small");
+    expect(radioClassName(container)).not.toContain("size-medium");
   });
 });

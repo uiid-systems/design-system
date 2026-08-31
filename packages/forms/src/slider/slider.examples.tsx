@@ -6,6 +6,11 @@ import { useState } from "react";
 
 import { Form } from "../form/form";
 import { Slider } from "./slider";
+import type { SliderVariants } from "./slider.types";
+
+type Size = NonNullable<SliderVariants["size"]>;
+
+const SIZES: Size[] = ["small", "medium", "large"];
 
 const DESCRIPTION = "Applies to every output device.";
 const ERROR = "Pick a value above 10";
@@ -14,6 +19,18 @@ export const Default = () => <Slider defaultValue={40} />;
 
 export const WithLabel = () => (
   <Slider label="Volume" description={DESCRIPTION} defaultValue={40} />
+);
+
+/*
+ * The tier sets the control row's height, inset and readout. Track and thumb
+ * stay a fixed scale so a small slider keeps a usable grab target.
+ */
+export const Sizes = () => (
+  <Stack gap={4} ax="stretch">
+    {SIZES.map((size) => (
+      <Slider key={size} size={size} label={size} defaultValue={40} />
+    ))}
+  </Stack>
 );
 
 /* An array default gives one thumb per value, so a two-value slider is a range. */

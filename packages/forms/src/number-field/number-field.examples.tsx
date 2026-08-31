@@ -5,8 +5,8 @@ import { Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { Form } from "../form/form";
-import type { InputVariants } from "../input/input.types";
 import { NumberField } from "./number-field";
+import type { NumberFieldVariants } from "./number-field.types";
 import {
   NumberFieldDecrement,
   NumberFieldGroup,
@@ -17,7 +17,7 @@ import {
   NumberFieldScrubAreaCursor,
 } from "./subcomponents";
 
-type Size = NonNullable<InputVariants["size"]>;
+type Size = NonNullable<NumberFieldVariants["size"]>;
 
 const SIZES: Size[] = ["small", "medium", "large"];
 

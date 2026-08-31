@@ -10,6 +10,12 @@ const meta: Meta<typeof Slider> = {
   },
   args: {},
   argTypes: {
+    size: {
+      control: "select",
+      options: ["small", "medium", "large"],
+      table: { category: "Options" },
+    },
+
     ghost: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
 

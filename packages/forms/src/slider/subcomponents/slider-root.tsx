@@ -4,14 +4,15 @@ import { Slider as BaseSlider } from "@base-ui/react/slider";
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { inputVariants } from "../../input/input.variants";
 import type { SliderRootProps } from "../slider.types";
+import { sliderVariants } from "../slider.variants";
 
 import inputStyles from "../../input/input.module.css";
 
 export const SliderRoot = ({
   ghost,
   fullwidth,
+  size,
   children,
   className,
   ...props
@@ -21,7 +22,7 @@ export const SliderRoot = ({
       data-slot="slider-root"
       className={cx(
         inputStyles["input"],
-        inputVariants({ ghost, fullwidth }),
+        sliderVariants({ ghost, fullwidth, size }),
         className,
       )}
       render={<Group gap={2} ay="center" />}

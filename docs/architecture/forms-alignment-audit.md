@@ -140,7 +140,8 @@ types, additive-only extensions, subcomponents exported.
 ### C. Architecture & taxonomy
 
 Score against the 8-file convention: **0/16 have `.examples.tsx`; 3/16 have
-`.variants.ts`**; 16/16 READMEs are the wrong genre.
+`.variants.ts`**; 16/16 READMEs are the wrong genre. (`.examples.tsx` now 16/16,
+PR #354; `.variants.ts` now 6/16 — UI-172 below.)
 
 1. **READMEs are usage manuals (106–206 lines, 2,324 total) where the convention is an
    11–53-line "use when" brief** — code belongs in `.examples.tsx`, prop tables are
@@ -157,7 +158,13 @@ Score against the 8-file convention: **0/16 have `.examples.tsx`; 3/16 have
 3. **Variants without `cva`:** `number-field.tsx:37` uses a template-literal class
    lookup; `SliderVariants = InputVariants` and `RadioVariants = CheckboxVariants` are
    wholesale type aliases (the sanctioned pattern is importing the _styles_, as
-   `select-trigger.tsx` does with `inputVariants`).
+   `select-trigger.tsx` does with `inputVariants`). **Resolved (UI-172):** all three now
+   declare their own `cva` — `number-field.variants.ts`, `slider.variants.ts`,
+   `radio.variants.ts` — and derive `VariantProps` from it while still importing the
+   shared styles. Slider's `size` was reaching the class list only through
+   `inputVariants`' `defaultVariants`, so every slider silently rendered at the medium
+   tier; the axis is now declared and exposed as a prop, which also closes part of C2 for
+   slider.
 4. **`input-wrapper.tsx`** sits stray at component root (not `subcomponents/`), is
    imported cross-component by mask-input, and is never exported — the before/after slot
    pattern is uncomposable by consumers. **Resolved (UI-169):** `input-wrapper.tsx` and
