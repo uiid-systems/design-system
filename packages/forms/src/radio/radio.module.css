@@ -36,8 +36,8 @@
   &::before {
     content: "";
     border-radius: 100%;
-    width: 0.4rem;
-    height: 0.4rem;
+    width: calc(var(--spacing-unit) * 2);
+    height: calc(var(--spacing-unit) * 2);
     background-color: var(--shade-halftone);
   }
 }

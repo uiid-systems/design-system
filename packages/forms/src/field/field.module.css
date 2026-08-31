@@ -1,14 +1,17 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
+/* Reserves the label row so a field carrying only a label lines up with one
+   that also carries a hint or error tooltip. Five units clears the 0.875rem
+   icon those slots render. */
 .field-label-group {
-  min-height: 1.2rem;
+  min-height: calc(var(--spacing-unit) * 5);
 }
 
 .field-label[data-required="true"] {
   &::after {
     content: "*";
     color: var(--palette-text);
-    margin-left: 0.25rem;
+    margin-left: var(--spacing-unit);
   }
 }
 

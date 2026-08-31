@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: calc(var(--spacing-unit) * 4);
 }
 
 /**
@@ -48,7 +48,7 @@
   composes: composes-option from global;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: calc(var(--spacing-unit) * 2);
 }
 
 .select-item:focus {
@@ -68,7 +68,7 @@
 
 .select-icon {
   flex-shrink: 0;
-  height: 1rem;
+  height: var(--globals-icon-size);
   width: var(--globals-icon-size);
 }
 
