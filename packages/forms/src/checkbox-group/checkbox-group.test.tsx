@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Checkbox } from "../checkbox/checkbox";
+import { Form } from "../form/form";
 import { CheckboxGroup } from "./checkbox-group";
 import { CheckboxGroupRoot } from "./subcomponents";
 
@@ -218,5 +219,36 @@ describe("CheckboxGroup required is label-only by design", () => {
     for (const box of screen.getAllByRole("checkbox")) {
       expect(box).not.toHaveAttribute("aria-required", "true");
     }
+  });
+});
+
+describe("CheckboxGroup form errors", () => {
+  const items = [
+    { value: "email", label: "Email" },
+    { value: "sms", label: "SMS" },
+  ];
+
+  it("renders a form error once, not once per box", () => {
+    const { container } = render(
+      <Form errors={{ channels: "Choose at least one channel" }}>
+        <CheckboxGroup name="channels" label="Channels" items={items} />
+      </Form>,
+    );
+
+    const errors = Array.from(
+      container.querySelectorAll("[data-slot='field-error']"),
+    ).filter((el) => el.textContent?.includes("Choose at least one channel"));
+
+    expect(errors).toHaveLength(1);
+  });
+
+  it("still names every box so the group submits", () => {
+    const { container } = render(
+      <CheckboxGroup name="channels" label="Channels" items={items} />,
+    );
+
+    expect(container.querySelectorAll('input[name="channels"]')).toHaveLength(
+      2,
+    );
   });
 });

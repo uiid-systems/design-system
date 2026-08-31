@@ -27,12 +27,19 @@ import styles from "../field.module.css";
  * It is marked `display: contents` and therefore adds no layout of its own; a
  * row used inside a group simply nests inside that group's root.
  *
+ * The row never names that root. Base UI falls back to the name of the control
+ * registered against it, and a control inside a checkbox or radio group
+ * deliberately does not register — the group registers on its behalf. So a
+ * standalone row resolves to its own control's name and shows that control's
+ * form error, while a grouped row stays nameless and leaves the message to the
+ * group's field. Naming the root here instead would match the group's name on
+ * every row and paint the same error once per item (UI-190).
+ *
  * `size` paints no dimension here — the control inside carries its own tier —
  * it only publishes the inset a `bordered` row reads, so the treatment scales
  * with the control it wraps.
  */
 export const FieldRow = ({
-  name,
   size,
   label,
   description,
@@ -47,7 +54,7 @@ export const FieldRow = ({
   const needsTextContainer = Boolean(label) && Boolean(description);
 
   return (
-    <FieldRoot name={name} className={styles["field-root-bare"]}>
+    <FieldRoot className={styles["field-root-bare"]}>
       <FieldItem
         data-slot="field-row"
         className={cx(

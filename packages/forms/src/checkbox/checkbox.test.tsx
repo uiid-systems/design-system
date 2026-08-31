@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
+import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
 
 describe("Checkbox", () => {
@@ -136,4 +137,35 @@ describe("Checkbox size variant", () => {
       expect(rowClassName(container)).toContain(`row-size-${size}`);
     },
   );
+});
+
+describe("Checkbox form errors", () => {
+  /*
+   * The row leaves its `Field.Root` unnamed and lets Base UI fall back to the
+   * name of the control registered against it, so a standalone box still
+   * matches the form's error map. See `FieldRow`.
+   */
+  it("surfaces a form error published under its own name", () => {
+    const { container } = render(
+      <Form errors={{ terms: "You must accept the terms" }}>
+        <Checkbox name="terms" label="I accept the terms" />
+      </Form>,
+    );
+
+    const errors = container.querySelectorAll("[data-slot='field-error']");
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toHaveTextContent("You must accept the terms");
+  });
+
+  it("leaves a box named for another field alone", () => {
+    const { container } = render(
+      <Form errors={{ other: "Something else went wrong" }}>
+        <Checkbox name="terms" label="I accept the terms" />
+      </Form>,
+    );
+
+    expect(
+      container.querySelectorAll("[data-slot='field-error']"),
+    ).toHaveLength(0);
+  });
 });
