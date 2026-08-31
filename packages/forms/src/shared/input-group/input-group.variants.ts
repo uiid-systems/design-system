@@ -8,10 +8,10 @@ import styles from "./input-group.module.css";
  * The control-scale axis for the input group, which is the strip of actions
  * (Clear, Trigger) overlaying a combobox or autocomplete input.
  *
- * The tier has to sit on the group root rather than on the input: the actions
- * are absolutely positioned siblings of the field, not descendants of the
- * control, so the input's own tier class is out of their reach. The class
- * publishes `--input-group-action-height`, which the actions inherit.
+ * The tier sits on the group root rather than on the input: the actions are not
+ * descendants of the control, so the input's own tier class is out of their
+ * reach. The class publishes `--input-group-action-height`, which every action
+ * in the subtree inherits.
  *
  * Sizing the actions at all is the point — a fixed 2.5rem action stood taller
  * than the control it sat inside at both the xsmall (1.75rem) and small (2rem)

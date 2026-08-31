@@ -306,3 +306,29 @@ describe("Select required reaches the control", () => {
     ).not.toBeNull();
   });
 });
+
+describe("Select control surface", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("paints the trigger from the shared field surface", () => {
+    render(<Select items={items} label="Pick" />);
+    expect(screen.getByRole("combobox").className).toMatch(
+      /composes-field-surface/,
+    );
+  });
+
+  it("keeps the value out of the surface, so it paints no second one", () => {
+    const { container } = render(<Select items={items} label="Pick" />);
+    expect(
+      container.querySelector("[data-slot='select-value']")?.className,
+    ).not.toMatch(/composes-field-surface/);
+  });
+
+  it("renders the trigger as a real button", () => {
+    render(<Select items={items} label="Pick" />);
+    expect(screen.getByRole("combobox").tagName).toBe("BUTTON");
+  });
+});

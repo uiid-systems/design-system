@@ -50,7 +50,13 @@ export const InputGroupRoot = ({
 };
 InputGroupRoot.displayName = "InputGroupRoot";
 
-/** The absolutely-positioned strip the Trigger and Clear buttons sit in. */
+/**
+ * The row the Trigger and Clear buttons sit in. It is handed to the input
+ * wrapper's `after` slot, so it takes its edge and its icon sizing from the
+ * field slot like any other slotted content — rather than the absolutely
+ * positioned overlay it used to be, which paid for its own layout space with a
+ * fixed 4rem inset on the input that held across every tier.
+ */
 export const InputGroupActions = ({
   slot,
   className,
@@ -60,7 +66,7 @@ export const InputGroupActions = ({
   return (
     <Group
       data-slot={slot}
-      className={cx(styles["input-group-actions"], className)}
+      className={className}
       ay="center"
       ax="center"
       gap={2}
@@ -81,6 +87,14 @@ export const InputGroupTrigger = ({
   return (
     <BaseInputGroup.Trigger
       data-slot={slot}
+      /*
+       * Base UI labels the trigger with the field's label, which is right when
+       * the trigger *is* the control. Here it sits in the trailing slot of an
+       * input that already carries that label, so leaving it on gave two
+       * elements the same accessible name — and, since `aria-labelledby`
+       * outranks `aria-label`, silently shadowed the trigger's own name.
+       */
+      aria-labelledby={undefined}
       className={cx(styles["input-group-action"], className)}
       {...props}
     >

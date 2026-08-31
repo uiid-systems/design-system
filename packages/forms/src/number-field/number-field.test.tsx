@@ -203,3 +203,37 @@ describe("NumberField size variant", () => {
     expect(groupClassName(container)).toContain("size-large");
   });
 });
+
+describe("NumberField stepper surface", () => {
+  const stepper = (container: HTMLElement, part: "decrement" | "increment") =>
+    container.querySelector(`[data-slot='number-field-${part}']`)?.className ??
+    "";
+
+  it.each(["decrement", "increment"] as const)(
+    "paints the %s stepper from the shared field surface, not a private copy",
+    (part) => {
+      const { container } = render(<NumberField />);
+      expect(stepper(container, part)).toMatch(/composes-field-surface/);
+    },
+  );
+
+  it.each(["decrement", "increment"] as const)(
+    "gives the %s stepper the shared disabled treatment",
+    (part) => {
+      const { container } = render(<NumberField />);
+      expect(stepper(container, part)).toMatch(/composes-disabled/);
+    },
+  );
+
+  /* Base UI disables the stepper that would leave the range, which is exactly
+     the case the container-scoped disabled composition must not be used for:
+     one stepper being out does not put the field out. */
+  it("does not dim the whole group when a stepper disables at the boundary", () => {
+    const { container } = render(<NumberField min={0} defaultValue={0} />);
+    expect(
+      container.querySelector("[data-slot='number-field-decrement']"),
+    ).toBeDisabled();
+    const group = container.querySelector("[data-slot='number-field-group']");
+    expect(group?.className).not.toMatch(/composes-disabled/);
+  });
+});

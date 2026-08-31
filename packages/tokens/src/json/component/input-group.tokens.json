@@ -11,9 +11,6 @@
         "lg": { "$value": "2.5rem" }
       },
       "border-radius": { "$value": "{spacing.unit}" }
-    },
-    "input": {
-      "padding-inline-end": { "$value": "4rem" }
     }
   }
 }

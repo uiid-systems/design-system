@@ -8,12 +8,14 @@ import styles from "./number-field.module.css";
  * Number Field's own size axis, which it used to fake with a template-literal
  * lookup into the CSS module from the component body.
  *
- * The class lands on `NumberFieldGroup` rather than on any one control: the
- * stepper buttons take their width from it as descendants, so the group is the
- * only element that can size them. The input inside paints from Input's shared
- * control surface (`inputControlClassName`), but the axis itself is declared
- * here — aliasing `InputVariants` would put Input's `variant` and `fullwidth` on
- * Number Field's public type with no styles behind them.
+ * The class lands on `NumberFieldGroup` rather than on any one control: it
+ * sizes the cluster as a whole. The group takes the tier's height, the steppers
+ * stretch to it and square themselves off with `aspect-ratio`, and the tier's
+ * --forms-icon-size reaches their glyphs by inheritance. The input inside
+ * paints from Input's shared control surface (`inputControlClassName`), but the
+ * axis itself is declared here — aliasing `InputVariants` would put Input's
+ * `variant` and `fullwidth` on Number Field's public type with no styles behind
+ * them.
  */
 export const numberFieldVariants = cva({
   variants: {

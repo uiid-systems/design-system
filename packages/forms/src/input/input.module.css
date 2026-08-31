@@ -1,41 +1,23 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
+/*
+ * Surface, disabled and invalid all come from the shared compositions, so
+ * Select's trigger can wear the same control surface by composing it rather
+ * than borrowing this class — which is what the `:not([data-slot="select-value"])`
+ * exclusion that used to sit here was propping up.
+ *
+ * What stays is what is Input's alone. No `font-size` and no inline padding:
+ * both belong to the size tier (composes-size-*), and restating either here
+ * would outrank it — uiid.components sits above uiid.compositions — pinning
+ * every tier to one value.
+ */
 .input {
+  composes: composes-field-surface from global;
   composes: composes-disabled from global;
   composes: composes-invalid from global;
-}
 
-.input:where(:not([data-slot="select-value"])) {
-  background-color: var(--forms-bg);
-  border-width: var(--globals-border-width);
-  border-style: solid;
-  border-color: var(--forms-border-color);
-  border-radius: var(--globals-border-radius);
-  color: var(--shade-foreground);
-  font-size: var(--forms-font-size);
-  outline: var(--globals-outline-width) var(--globals-outline-color);
-  outline-offset: var(--globals-outline-offset);
-  /* Block only — inline padding belongs to the size tier (composes-size-*).
-     Restating it here would outrank the tier, since uiid.components sits above
-     uiid.compositions, and pin every size to the same inset. */
   padding-block: var(--forms-padding-y);
-  transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   line-height: 1;
-
-  /** Hover */
-  &:hover {
-    background-color: var(--forms-bg-hover);
-  }
-
-  /** Focus */
-  /* `:focus-visible` matches the package-wide pattern. For text fields the UA
-     heuristic matches it on pointer focus too, so the ring still appears on
-     click — but a non-text control landing here (select-value, readonly) now
-     follows the same rule as every other component. */
-  &:focus-visible {
-    background-color: var(--forms-bg-focus);
-    outline-style: var(--globals-outline-style);
-  }
 
   /** Hack to prevent browser-assigned autofill color */
   &:-webkit-autofill,
@@ -60,50 +42,22 @@
 }
 
 .toggle-fullwidth {
-  width: 100%;
-  width: -webkit-fill-available;
+  composes: composes-fullwidth from global;
 }
 
-/* Ghost drops the resting surface — background and border only. The focus ring
-   is deliberately left alone: `.variant-ghost` and `.input:where(…)` tie on
-   specificity (`:where()` adds none) and this block wins on source order, so
-   clearing `outline-color` here erased the ring outright. */
 .variant-ghost {
-  background-color: transparent;
-  border-color: transparent;
-  color: var(--shade-foreground);
-
-  &::placeholder {
-    transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
-  }
-  &:not(:focus)::placeholder {
-    color: var(--shade-foreground);
-  }
-
-  &:hover {
-    background-color: var(--forms-bg-hover);
-  }
+  composes: composes-field-surface-ghost from global;
 }
 
 /** Input Wrapper (for before/after slots) */
 .input-wrapper {
+  /* The wrapper is not the control, so it reads disabled off the input it
+     holds; the shared surface already mirrors that input's focus state. */
+  composes: composes-disabled-within from global;
+
   /* The wrapper carries the size class but delegates its edges to the slots,
      so it drops the inset it would otherwise inherit from composes-size-*. */
   padding: 0;
-
-  /** Focus state on wrapper */
-  /* `:has(:focus-visible)` rather than `:focus-within` — the wrapper is not
-     focusable, so it mirrors the inner control's focus-visible state. */
-  &:has(:focus-visible) {
-    background-color: var(--forms-bg-focus);
-    outline-style: var(--globals-outline-style);
-  }
-
-  /** Disabled state on wrapper */
-  &:has(:disabled, [data-disabled]) {
-    pointer-events: none;
-    opacity: var(--globals-disabled-opacity);
-  }
 }
 
 /** Input inside wrapper becomes transparent */
@@ -138,6 +92,9 @@
   }
 }
 
+/* An inner input carries no size class of its own — the wrapper holds the tier
+   — and `font-size` does not inherit into a form control, so each tier has to
+   reach the input it wraps. */
 .input-inner {
   .size-xsmall > & {
     font-size: var(--forms-size-xs-font-size);

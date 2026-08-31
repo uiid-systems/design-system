@@ -4,25 +4,6 @@
   position: relative;
 }
 
-/* Absolutely positioned, so the actions take up no layout space of their own —
-   the input has to reserve room for them, see .input-group-input. */
-.input-group-actions {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* Reserves the strip .input-group-actions overlays: two 6-unit actions, the
-   2-unit gap between them (Group gap={2}), and 2 more units of breathing room —
-   16 units, 4rem. Without it the value runs underneath Clear/Trigger, since the
-   size tier only insets the trailing edge by 1rem at medium. Deliberately not
-   tier-scaled: only the action's *height* follows the tier, and this reserve is
-   a horizontal measure. Keep in step with --input-group-action-width. */
-.input-group-input {
-  padding-inline-end: var(--input-group-input-padding-inline-end);
-}
-
 .input-group-action {
   all: unset;
   cursor: text;
@@ -42,12 +23,13 @@
   }
 }
 
-/* Control-scale tiers, carried on the group root so the absolutely positioned
-   actions can read them — they are siblings of the field, not descendants of
-   the input that holds the input's own tier class. Only the height scales: the
+/* Control-scale tiers, carried on the group root so the actions read them by
+   inheritance wherever in the subtree they sit. Only the height scales: the
    action is a hit target with no surface of its own, and its width stays fixed
-   because the icon inside it does, which is what keeps
-   --input-group-input-padding-inline-end constant across tiers. */
+   because the icon inside it is sized by the field slot's own tier rule.
+   Sizing them at all is the point — a fixed 2.5rem action stood taller than the
+   control it sat inside at both the xsmall (1.75rem) and small (2rem) tiers, so
+   its focus ring overhung the field. */
 .size-xsmall {
   --input-group-action-height: var(--input-group-action-height-xs);
 }

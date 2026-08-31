@@ -163,8 +163,7 @@
 }
 
 .fullwidth {
-  width: -webkit-fill-available;
-  width: 100%;
+  composes: composes-fullwidth from global;
 }
 
 .button-tooltip-positioner {
