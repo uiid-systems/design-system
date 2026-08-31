@@ -1,29 +1,9 @@
 "use client";
 
-import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { ListItem } from "@uiid/lists";
-
+import { PopupLayerItem } from "../../shared/popup-layer";
 import type { ComboboxItemProps } from "../combobox.types";
 
-import styles from "../combobox.module.css";
-
-export const ComboboxItem = ({
-  value,
-  children,
-  ...props
-}: ComboboxItemProps) => {
-  return (
-    <BaseCombobox.Item
-      data-slot="combobox-item"
-      value={value}
-      className={styles["combobox-item"]}
-      {...props}
-      render={(renderProps) => (
-        <ListItem render={<div />} fullwidth label={value} {...renderProps} />
-      )}
-    >
-      {children}
-    </BaseCombobox.Item>
-  );
+export const ComboboxItem = (props: ComboboxItemProps) => {
+  return <PopupLayerItem slot="combobox-item" {...props} />;
 };
 ComboboxItem.displayName = "ComboboxItem";
