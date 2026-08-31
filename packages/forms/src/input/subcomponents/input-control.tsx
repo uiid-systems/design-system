@@ -3,10 +3,10 @@
 import { Input as BaseInput } from "@base-ui/react/input";
 import { cx } from "@uiid/utils";
 
-import type { InputControlProps } from "./input.types";
-import { inputVariants } from "./input.variants";
+import type { InputControlProps } from "../input.types";
+import { inputVariants } from "../input.variants";
 
-import styles from "./input.module.css";
+import styles from "../input.module.css";
 
 /**
  * The input element on its own, without Field chrome or before/after slots.

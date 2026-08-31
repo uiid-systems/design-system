@@ -1,9 +1,8 @@
 "use client";
 
 import { Field } from "../field/field";
-import { InputControl } from "./input-control";
-import { InputWrapper } from "./input-wrapper";
 import type { InputProps } from "./input.types";
+import { InputControl, InputWrapper } from "./subcomponents";
 
 export const Input = ({
   label,

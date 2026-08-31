@@ -99,6 +99,12 @@ types, additive-only extensions, subcomponents exported.
    `ConditionalRender condition={label||description} render={<Field/>}` idiom.
    `Fieldset` is unused monorepo-wide.
 5. **`Input` omits Base UI's `size` and re-adds it as a variant** — a documented recast.
+   **Resolved (UI-169): kept, as the one sanctioned deviation from the mirror rule.**
+   `size` is the system-wide control-scale axis (`small | medium | large`) and
+   `inputVariants` is shared by select, slider, number-field, mask-input, combobox and
+   autocomplete; native `size` on an `<input>` is the rarely-used character-width
+   attribute. Surfacing it would desync Input from every other component for no
+   practical gain. The rationale is recorded on `InputControlProps` itself.
 6. **`RadioGroup` forces `defaultValue ?? items[0].value`** (cannot render unselected)
    and doesn't forward `required`/`disabled` to Field; `radio` imports `CheckboxField`
    from the checkbox directory with a `GroupProps` type recast.
@@ -135,7 +141,9 @@ Score against the 8-file convention: **0/16 have `.examples.tsx`; 3/16 have
    `select-trigger.tsx` does with `inputVariants`).
 4. **`input-wrapper.tsx`** sits stray at component root (not `subcomponents/`), is
    imported cross-component by mask-input, and is never exported — the before/after slot
-   pattern is uncomposable by consumers.
+   pattern is uncomposable by consumers. **Resolved (UI-169):** `input-wrapper.tsx` and
+   `input-control.tsx` both moved to `input/subcomponents/` and are exported through the
+   package barrel; `InputWrapperProps` moved to `input.types.ts`.
 5. **Barrel drift:** exports checkbox/select constants (no mature barrel exports
    constants) while omitting the two subcomponent dirs (B1).
 6. **Manifest drift:** unused `@number-flow/react` dependency (zero usage);

@@ -3,8 +3,7 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import { Field } from "../../field/field";
-import { InputControl } from "../../input/input-control";
-import { InputWrapper } from "../../input/input-wrapper";
+import { InputControl, InputWrapper } from "../../input/subcomponents";
 import type { AutocompleteInputProps } from "../autocomplete.types";
 
 export const AutocompleteInput = ({

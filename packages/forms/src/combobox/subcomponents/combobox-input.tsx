@@ -4,8 +4,7 @@ import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../../field/field";
-import { InputControl } from "../../input/input-control";
-import { InputWrapper } from "../../input/input-wrapper";
+import { InputControl, InputWrapper } from "../../input/subcomponents";
 import type { ComboboxInputProps } from "../combobox.types";
 
 import styles from "../combobox.module.css";

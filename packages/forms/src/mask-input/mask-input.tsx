@@ -5,8 +5,8 @@ import * as React from "react";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
-import { InputWrapper } from "../input/input-wrapper";
 import { inputVariants } from "../input/input.variants";
+import { InputWrapper } from "../input/subcomponents";
 import { useMask } from "./hooks";
 import {
   MASK_INPUT_DEFAULT_CURRENCY,
