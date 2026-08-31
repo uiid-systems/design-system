@@ -3,6 +3,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Slider } from "./slider";
+import { SliderLabel, SliderRoot } from "./subcomponents";
 
 describe("Slider", () => {
   it("renders a slider element", () => {
@@ -76,5 +77,61 @@ describe("Slider", () => {
     expect(
       container.querySelector("[data-slot='slider-value']"),
     ).toBeInTheDocument();
+  });
+});
+
+describe("Slider range support", () => {
+  it("renders one thumb per value", () => {
+    render(<Slider defaultValue={[20, 60]} />);
+    expect(screen.getAllByRole("slider")).toHaveLength(2);
+  });
+
+  it("still renders a single thumb for a scalar value", () => {
+    render(<Slider defaultValue={40} />);
+    expect(screen.getAllByRole("slider")).toHaveLength(1);
+  });
+
+  it("gives each thumb its index so a range renders server-side", () => {
+    const { container } = render(<Slider defaultValue={[10, 30, 70]} />);
+    expect(
+      container.querySelectorAll("[data-slot='slider-thumb']").length,
+    ).toBe(3);
+  });
+
+  it("shows every value, not just the first", () => {
+    const { container } = render(<Slider defaultValue={[20, 60]} />);
+    const output = container.querySelector("[data-slot='slider-value']");
+    expect(output?.textContent).toContain("20");
+    expect(output?.textContent).toContain("60");
+  });
+});
+
+describe("SliderValue children contract", () => {
+  it("uses a consumer-supplied render function instead of discarding it", () => {
+    render(
+      <Slider
+        defaultValue={[25, 75]}
+        ValueProps={{
+          children: (formatted, values) =>
+            `${values.length} handles: ${formatted.join(" to ")}`,
+        }}
+      />,
+    );
+
+    expect(screen.getByText(/2 handles: 25 to 75/)).toBeInTheDocument();
+  });
+});
+
+describe("Slider label part", () => {
+  it("exposes SliderLabel as a composable part", () => {
+    const { container } = render(
+      <SliderRoot defaultValue={10}>
+        <SliderLabel>Volume</SliderLabel>
+      </SliderRoot>,
+    );
+
+    const label = container.querySelector("[data-slot='slider-label']");
+    expect(label).not.toBeNull();
+    expect(label?.textContent).toBe("Volume");
   });
 });

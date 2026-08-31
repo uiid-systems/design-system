@@ -15,6 +15,8 @@ export const Slider = ({
   label,
   description,
   name,
+  value,
+  defaultValue,
   RootProps,
   ValueProps,
   ControlProps,
@@ -24,13 +26,27 @@ export const Slider = ({
   FieldProps,
   ...props
 }: SliderProps) => {
+  // One thumb per value. Base UI takes a number for a single slider and an
+  // array for a range; `index` is what lets a range render server-side.
+  const resolvedValue =
+    value ?? defaultValue ?? RootProps?.value ?? RootProps?.defaultValue;
+  const thumbCount = Array.isArray(resolvedValue) ? resolvedValue.length : 1;
+
   return (
     <Field name={name} label={label} description={description} {...FieldProps}>
-      <SliderRoot name={name} {...props} {...RootProps}>
+      <SliderRoot
+        name={name}
+        value={value}
+        defaultValue={defaultValue}
+        {...props}
+        {...RootProps}
+      >
         <SliderControl {...ControlProps}>
           <SliderTrack {...TrackProps}>
             <SliderIndicator {...IndicatorProps} />
-            <SliderThumb {...ThumbProps} />
+            {Array.from({ length: thumbCount }, (_, index) => (
+              <SliderThumb key={index} index={index} {...ThumbProps} />
+            ))}
           </SliderTrack>
         </SliderControl>
         <SliderValue {...ValueProps} />
