@@ -1,124 +1,17 @@
 # Radio
 
-> A radio button for single-selection within a group. Built on [Base UI Radio](https://base-ui.com/react/components/radio). Must be used within a RadioGroup.
+> One choice in a mutually exclusive set. Only meaningful inside a `RadioGroupRoot`, which supplies the shared name, the roving focus, and the single-selection behavior.
 
-## Quick Reference
+Use Radio when you want to:
 
-```tsx
-import { RadioGroup } from "@uiid/forms";
+- Compose a group by hand rather than passing `items` to [`RadioGroup`](../radio-group/README.md) — each radio can then carry its own `description`, `size`, or variants
+- Label the row inline with `label` and `description` instead of composing a `Field` by hand
+- Match a control row with `size` (`small`, `medium`, `large`)
+- Draw the row as a control surface with `bordered`, and put the dot after the label with `reversed`
+- Hide the dot from sight with `hideIndicator` while it stays in the accessibility tree, so the row still reads and toggles as a radio
 
-const items = [
-  { value: "a", label: "Option A" },
-  { value: "b", label: "Option B" },
-];
+`value` identifies the radio within its group; selection state lives on the group, not here.
 
-// Use via RadioGroup (recommended)
-<RadioGroup items={items} />
+Radio and [`Checkbox`](../checkbox/README.md) share one control surface — Radio paints with the checkbox styles rather than duplicating them — and both sit in the same shared field row. `FieldProps` and `IndicatorProps` reach the row and the dot when a top-level prop isn't expressive enough.
 
-// Or compose manually
-<RadioGroup defaultValue="a">
-  <Radio value="a" label="Option A" />
-  <Radio value="b" label="Option B" />
-</RadioGroup>
-```
-
-## Examples
-
-### With Description
-
-```tsx
-<RadioGroup defaultValue="monthly">
-  <Radio
-    value="monthly"
-    label="Monthly"
-    description="$10/month, billed monthly"
-  />
-  <Radio value="yearly" label="Yearly" description="$100/year, save 17%" />
-</RadioGroup>
-```
-
-### Bordered
-
-Card-style selection pattern:
-
-```tsx
-<RadioGroup defaultValue="basic">
-  <Radio bordered value="basic" label="Basic" description="For individuals" />
-  <Radio bordered value="pro" label="Pro" description="For teams" />
-</RadioGroup>
-```
-
-### Reversed
-
-Places radio after label:
-
-```tsx
-<RadioGroup defaultValue="a">
-  <Radio reversed value="a" label="Radio on the right" />
-  <Radio reversed value="b" label="Another option" />
-</RadioGroup>
-```
-
-### Hidden Indicator
-
-For card selections where border indicates selection:
-
-```tsx
-<RadioGroup defaultValue="a">
-  <Radio bordered hideIndicator value="a" label="Card A" />
-  <Radio bordered hideIndicator value="b" label="Card B" />
-</RadioGroup>
-```
-
-## Props
-
-| Prop             | Type                  | Default | Description                              |
-| ---------------- | --------------------- | ------- | ---------------------------------------- |
-| `value`          | `string`              | —       | **Required.** Value for the radio option |
-| `label`          | `ReactNode`           | —       | Label text                               |
-| `description`    | `ReactNode`           | —       | Helper text below label                  |
-| `bordered`       | `boolean`             | `false` | Adds border around radio and label       |
-| `reversed`       | `boolean`             | `false` | Places radio after label                 |
-| `hideIndicator`  | `boolean`             | `false` | Hides the radio circle                   |
-| `disabled`       | `boolean`             | `false` | Disables the radio option                |
-| `ContainerProps` | `GroupProps`          | —       | Props for container element              |
-| `IndicatorProps` | `RadioIndicatorProps` | —       | Props for indicator element              |
-
-## Anatomy
-
-```tsx
-<CheckboxField>
-  {" "}
-  {/* Shared with Checkbox */}
-  <RadioRoot>
-    {" "}
-    {/* The radio control */}
-    <RadioIndicator /> {/* Selection dot */}
-  </RadioRoot>
-</CheckboxField>
-```
-
-## Subcomponents
-
-| Component        | Description               |
-| ---------------- | ------------------------- |
-| `RadioRoot`      | The radio control element |
-| `RadioIndicator` | The selection dot         |
-
-## Data Slots
-
-| Slot    | Element                |
-| ------- | ---------------------- |
-| `radio` | The radio root element |
-
-## Accessibility
-
-- Built on Base UI Radio which handles ARIA attributes
-- Must be used within RadioGroup for proper grouping
-- Keyboard: Arrow keys to navigate, Space to select
-
-## See Also
-
-- [RadioGroup](../radio-group/README.md) - Container for radio buttons
-- [Checkbox](../checkbox/README.md) - For independent toggles
-- [Base UI Radio](https://base-ui.com/react/components/radio) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Radio](https://base-ui.com/react/components/radio).

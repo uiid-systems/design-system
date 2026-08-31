@@ -1,113 +1,16 @@
 # Switch
 
-> Toggle switch with label and description support
+> An on/off control for a setting that takes effect immediately. Same label row as [`Checkbox`](../checkbox/README.md), different affordance.
 
-## Quick Reference
+Use Switch when you want to:
 
-```tsx
-import { Switch } from "@uiid/forms";
+- Toggle a setting that applies right away — use a checkbox instead when the value is only committed on submit
+- Label the row inline with `label` and `description` instead of composing a `Field` by hand
+- Draw the row as a control surface with `bordered`, and put the switch after the label with `reversed`
+- Mark it `disabled` or `readOnly`
 
-// Basic
-<Switch />
+Leave `checked` unset and the switch runs itself; pass `checked` and `onCheckedChange` to drive it yourself.
 
-// With label
-<Switch label="Enable notifications" />
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. Slot overrides (`RootProps`, `ThumbProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
 
-// Variants
-<Switch label="Dark mode" labelPosition="before" />
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<Switch label="Enable notifications" />
-```
-
-### Label Position
-
-```tsx
-<Switch label="Dark mode" labelPosition="before" />
-<Switch label="Dark mode" labelPosition="after" />
-```
-
-### Controlled
-
-```tsx
-const [checked, setChecked] = useState(false);
-
-<Switch
-  label="Controlled switch"
-  checked={checked}
-  onCheckedChange={setChecked}
-/>;
-```
-
-### Default Checked
-
-```tsx
-<Switch label="Enabled by default" defaultChecked />
-```
-
-### Disabled
-
-```tsx
-<Switch label="Cannot change" disabled />
-```
-
-## Props
-
-| Prop             | Type      | Default | Description |
-| ---------------- | --------- | ------- | ----------- |
-| `bordered`       | `boolean` | —       | —           |
-| `checked`        | `boolean` | —       | —           |
-| `defaultChecked` | `boolean` | —       | —           |
-| `description`    | `string`  | —       | —           |
-| `disabled`       | `boolean` | —       | —           |
-| `label`          | `string`  | —       | —           |
-| `name`           | `string`  | —       | —           |
-| `required`       | `boolean` | —       | —           |
-| `reversed`       | `boolean` | —       | —           |
-
-> All other props are forwarded to the Base UI Switch.Root component.
-
-## Anatomy
-
-```tsx
-<SwitchField>
-  {" "}
-  {/* Container with label and description */}
-  <SwitchRoot>
-    {" "}
-    {/* The switch track */}
-    <SwitchThumb /> {/* The sliding thumb */}
-  </SwitchRoot>
-</SwitchField>
-```
-
-## Subcomponents
-
-| Component     | Description                          |
-| ------------- | ------------------------------------ |
-| `SwitchRoot`  | The switch track element             |
-| `SwitchThumb` | The sliding thumb element            |
-| `SwitchField` | Container with label and description |
-
-## Data Slots
-
-| Slot           | Element           |
-| -------------- | ----------------- |
-| `switch-root`  | The switch track  |
-| `switch-thumb` | The thumb element |
-
-## Accessibility
-
-- Built on Base UI Switch which handles ARIA attributes
-- Keyboard: Space to toggle when focused
-- Label is automatically associated via `htmlFor`
-
-## See Also
-
-- [Checkbox](../checkbox/README.md) - For independent toggles with checkmark
-- [Base UI Switch](https://base-ui.com/react/components/switch) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Switch](https://base-ui.com/react/components/switch).

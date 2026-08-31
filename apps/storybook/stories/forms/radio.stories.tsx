@@ -1,14 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Radio } from "@uiid/design-system";
+import { Radio, RadioGroupRoot } from "@uiid/design-system";
 
-const meta: Meta<typeof Radio> = {
+import * as Examples from "../../../../packages/forms/src/radio/radio.examples";
+
+const meta = {
   title: "Forms/Radio",
   component: Radio,
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  tags: ["beta"],
-  args: {},
+  args: {
+    value: "monthly",
+    label: "Monthly",
+  },
   argTypes: {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
@@ -19,35 +23,43 @@ const meta: Meta<typeof Radio> = {
       table: { category: "Variants" },
     },
 
+    value: { control: "text", table: { category: "Data" } },
+
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
+    hideIndicator: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
-    hideIndicator: { control: "boolean", table: { category: "Toggles" } },
-    nativeButton: { control: "boolean", table: { category: "Toggles" } },
 
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack gap={4}>
-      <Radio {...args} />
-      <Radio {...args} label="With label" />
-      <Radio {...args} label="Bordered" bordered />
-      <Radio {...args} label="Reversed" bordered reversed />
-      <Radio {...args} label="Hidden indicator" bordered hideIndicator />
-      <Radio
-        {...args}
-        bordered
-        label="Bordered with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Radio>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Radio" };
+/*
+ * A radio only means something next to its siblings, so the playground sits in
+ * a `RadioGroupRoot` — the controls drive the first radio.
+ */
+export const Playground: Story = {
+  render: (args) => (
+    <RadioGroupRoot defaultValue="monthly">
+      <Radio {...args} />
+      <Radio value="yearly" label="Yearly" />
+    </RadioGroupRoot>
+  ),
+};
+
+export const WithDescription: Story = {
+  render: () => <Examples.WithDescription />,
+};
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const HideIndicator: Story = {
+  render: () => <Examples.HideIndicator />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Unselected: Story = { render: () => <Examples.Unselected /> };

@@ -1,0 +1,53 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Forms/Overview" />
+
+# Forms
+
+Every control a form needs, plus the two components that hold them together. Each one wraps a [Base UI](https://base-ui.com/react/overview/quick-start) primitive and keeps its name and its props, so upstream documentation transfers directly — our additions are the inline `label`/`description` shortcut, the `before`/`after` slots, and the system's `size` scale.
+
+## Which one do I reach for?
+
+### Text
+
+- **[Input](?path=/docs/forms-input--docs)** — one line of text. `type` is forwarded, so `email`, `password`, `search`, and `url` all work.
+- **[Textarea](?path=/docs/forms-textarea--docs)** — more than one line. `rows` sets the starting height, `resize` constrains the drag handle.
+- **[Mask Input](?path=/docs/forms-mask-input--docs)** — a structured value formatted as it is typed. Hands back both the masked string and the raw one.
+
+### Numbers
+
+- **[Number Field](?path=/docs/forms-number-field--docs)** — a number with stepper buttons and `Intl` formatting. Use it when the exact value matters.
+- **[Slider](?path=/docs/forms-slider--docs)** — a value picked by dragging. Use it when the feel of the range matters more than the digits; an array value makes it a range.
+
+### Choosing from a list
+
+- **[Select](?path=/docs/forms-select--docs)** — a dropdown over a known list. Add `multiple` to collect several values.
+- **[Combobox](?path=/docs/forms-combobox--docs)** — a select you can type to filter. The value still has to come from the list.
+- **[Autocomplete](?path=/docs/forms-autocomplete--docs)** — suggests without constraining; the typed value stands on its own.
+
+**Select, Combobox, or Autocomplete?** Start with Select. Reach for Combobox once the list is long enough that scrolling it is the slow part, and for Autocomplete only when a value outside the list is legitimate.
+
+### Booleans and small sets
+
+- **[Checkbox](?path=/docs/forms-checkbox--docs)** — one independent option. `indeterminate` covers the "select all" state.
+- **[Checkbox Group](?path=/docs/forms-checkbox-group--docs)** — several independent options under one label, collected into an array.
+- **[Radio](?path=/docs/forms-radio--docs)** — one choice in a mutually exclusive set. Only meaningful inside a group.
+- **[Radio Group](?path=/docs/forms-radio-group--docs)** — the set. Exactly one value at a time, nothing selected to start.
+- **[Switch](?path=/docs/forms-switch--docs)** — a setting that takes effect immediately, rather than on submit.
+- **[Toggle Group](?path=/docs/forms-toggle-group--docs)** — a segmented picker for two to four options worth showing at once.
+
+**Checkbox or Switch?** A checkbox is a value you are about to submit; a switch is a setting that applies the moment it moves.
+
+### Structure
+
+- **[Field](?path=/docs/forms-field--docs)** — the label, description, hint, and error layer. Every control above is built on it, and wrapping any control in one joins it to the validation graph.
+- **[Form](?path=/docs/forms-form--docs)** — the submission boundary. Collects values by `name`, blocks submission while anything is invalid, and publishes server errors back onto the right fields.
+
+## Shared conventions
+
+- **Labels are a prop, not a wrapper.** Pass `label` and `description` to any control and it builds its own `Field`. Compose a `Field` by hand only when one label covers several controls, or when you need `hint`, `validate`, or a bare field.
+- **Sizes match.** `size` is `small`, `medium`, `large` on every sized control, and lines up with `Button`'s scale so a control row is flush. Toggle Group is the exception — it still uses `sm`/`md`/`lg`.
+- **Controlled or not.** Leave `value` (or `checked`) unset and the control runs itself from `defaultValue`. Pass the value plus its `on*Change` handler to drive it yourself.
+- **Errors travel by name.** Give a control a `name`, and a surrounding `Form` publishes the matching entry of its `errors` map onto it — the same path a server response takes. `errorType` decides where the message lands: `inline` reserves a line beneath the control, `tooltip` moves it to an icon beside the label, and `absolute` floats it so nothing below shifts.
+- **Slot props reach the parts.** `FieldProps`, `RootProps`, `TriggerProps`, `PopupProps`, and their siblings forward to the individual Base UI parts when a top-level prop isn't expressive enough. Every subcomponent is exported too, for when composition beats configuration.
+- **Slots inside the control.** `before` and `after` put an icon, a unit, or a hint inside the control surface on Input, Mask Input, Select, Combobox, and Autocomplete.

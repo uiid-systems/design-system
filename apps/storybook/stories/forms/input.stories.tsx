@@ -1,162 +1,60 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group, Field, Input } from "@uiid/design-system";
-import { EyeIcon } from "@uiid/icons/eye";
-import { LockIcon } from "@uiid/icons/lock";
-import { MailIcon } from "@uiid/icons/mail";
-import { SearchIcon } from "@uiid/icons/search";
-import { expect, userEvent, within } from "storybook/test";
-import { fn } from "storybook/test";
+import { Input } from "@uiid/design-system";
 
-const meta: Meta<typeof Input> = {
+import * as Examples from "../../../../packages/forms/src/input/input.examples";
+
+const meta = {
   title: "Forms/Input",
   component: Input,
-  tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
   args: {
-    disabled: false,
-    required: false,
-    placeholder: "Placeholder",
-    onFocus: fn(),
-    onValueChange: fn(),
-    onBlur: fn(),
+    label: "Email",
+    description: "We'll only ever use this to send you receipts.",
+    placeholder: "you@example.com",
   },
   argTypes: {
-    onFocus: { table: { category: "Events" } },
-    onValueChange: { table: { category: "Events" } },
-    onBlur: { table: { category: "Events" } },
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
+    placeholder: { control: "text", table: { category: "Text" } },
 
     size: {
       control: "select",
       options: ["small", "medium", "large"],
-      table: { category: "Options" },
+      table: { category: "Variants" },
     },
 
-    disabled: { control: "boolean", table: { category: "Toggles" } },
-    required: { control: "boolean", table: { category: "Toggles" } },
     ghost: { control: "boolean", table: { category: "Toggles" } },
+    fullwidth: { control: "boolean", table: { category: "Toggles" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
 
-    placeholder: { control: "text", table: { category: "Text" } },
+    onValueChange: { table: { category: "Events" } },
+    onFocus: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
 
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Input {...args} defaultValue="Default value" />
-      <Input
-        {...args}
-        label="Input with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-
-      <Input {...args} label="Disabled" disabled />
-      <Input {...args} label="Required" required />
-      <Input {...args} placeholder="Ghost input" ghost />
-
-      <Field
-        label="Group of inputs with field wrapper"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        required={args.required}
-      >
-        <Group fullwidth evenly gap={2}>
-          <Input {...args} placeholder="First name" />
-          <Input {...args} placeholder="Last name" />
-        </Group>
-      </Field>
-
-      <Input
-        {...args}
-        data-testid="input"
-        label="Interaction test"
-        description="Check the Interactions panel for a report!"
-      />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Input>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Input",
+export const Playground: Story = { render: (args) => <Input {...args} /> };
 
-  play: async ({ canvasElement }) => {
-    const message = "Welcome to UIID's Storybook!";
-    const canvas = within(canvasElement.ownerDocument.body);
-    const input = await canvas.findByTestId("input");
-    await userEvent.type(input, message);
-    await expect(input).toHaveValue(message);
-  },
-};
-
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const BeforeAfterSlots: Story = {
-  name: "Before & After Slots",
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Input
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Search..."
-        label="Before slot"
-      />
-      <Input
-        {...args}
-        after={<MailIcon />}
-        placeholder="Email"
-        label="After slot"
-      />
-      <Input
-        {...args}
-        before={<LockIcon />}
-        after={<EyeIcon />}
-        placeholder="Password"
-        label="Both slots"
-      />
-      <Input
-        {...args}
-        before={<span>$</span>}
-        after={<span>.00</span>}
-        placeholder="0"
-        label="Text slots"
-      />
-
-      <Group fullwidth gap={4}>
-        <Input
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Small"
-          size="small"
-        />
-        <Input
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Medium"
-          size="medium"
-        />
-        <Input
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Large"
-          size="large"
-        />
-      </Group>
-
-      <Input
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Ghost with slot"
-        ghost
-      />
-      <Input
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Full width"
-        fullwidth
-      />
-      <Input
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Disabled"
-        disabled
-      />
-    </Stack>
-  ),
+  render: () => <Examples.BeforeAfterSlots />,
 };
+export const Ghost: Story = { render: () => <Examples.Ghost /> };
+export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const ErrorTypes: Story = { render: () => <Examples.ErrorTypes /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Grouped: Story = { render: () => <Examples.Grouped /> };

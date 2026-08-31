@@ -1,31 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, CheckboxGroup } from "@uiid/design-system";
-import type { CheckboxGroupProps } from "@uiid/design-system";
+import { CheckboxGroup } from "@uiid/design-system";
 
-import { MOCK_CHECKBOXGROUP_OPTIONS } from "./checkbox-group.mocks";
+import * as Examples from "../../../../packages/forms/src/checkbox-group/checkbox-group.examples";
+import { MOCK_CHECKBOXGROUP_OPTIONS } from "../../../../packages/forms/src/checkbox-group/checkbox-group.mocks";
 
 const meta = {
   title: "Forms/Checkbox Group",
   component: CheckboxGroup,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
+    label: "Notification channels",
     items: MOCK_CHECKBOXGROUP_OPTIONS,
   },
   argTypes: {
-    items: { control: "object", table: { category: "Data" } },
-    defaultValue: { control: "object", table: { category: "Data" } },
-    value: { control: "object", table: { category: "Data" } },
-
-    onValueChange: { table: { category: "Events" } },
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
 
     direction: {
       control: "select",
-      options: ["horizontal", "vertical"],
-      table: { category: "Options" },
+      options: ["vertical", "horizontal"],
+      table: { category: "Variants" },
     },
+
+    items: { control: "object", table: { category: "Data" } },
+    value: { control: "object", table: { category: "Data" } },
+    defaultValue: { control: "object", table: { category: "Data" } },
 
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
@@ -33,34 +34,31 @@ const meta = {
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
 
+    onValueChange: { table: { category: "Events" } },
+
     CheckboxProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack gap={8}>
-      <CheckboxGroup {...args} />
-      <CheckboxGroup {...args} direction="horizontal" />
-      <CheckboxGroup {...args} bordered />
-      <CheckboxGroup {...args} bordered direction="horizontal" />
-      <CheckboxGroup
-        {...args}
-        bordered
-        direction="horizontal"
-        label="With label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-      <CheckboxGroup
-        {...args}
-        bordered
-        direction="horizontal"
-        label="Without indicators"
-        hideIndicators
-      />
-    </Stack>
-  ),
-} satisfies Meta<CheckboxGroupProps>;
+} satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Checkbox Group" };
+export const Playground: Story = {
+  render: (args) => <CheckboxGroup {...args} />,
+};
+
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const Horizontal: Story = { render: () => <Examples.Horizontal /> };
+export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const HideIndicators: Story = {
+  render: () => <Examples.HideIndicators />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Composed: Story = { render: () => <Examples.Composed /> };

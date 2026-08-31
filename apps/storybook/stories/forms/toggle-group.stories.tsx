@@ -1,73 +1,58 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, ToggleGroup, Toggle } from "@uiid/design-system";
-import { MonitorSmartphoneIcon } from "@uiid/icons/monitor-smartphone";
-import { MoonIcon } from "@uiid/icons/moon";
-import { SunIcon } from "@uiid/icons/sun";
+import { Toggle, ToggleGroup } from "@uiid/design-system";
 
-const meta: Meta<typeof ToggleGroup> = {
+import * as Examples from "../../../../packages/forms/src/toggle-group/toggle-group.examples";
+
+const meta = {
   title: "Forms/Toggle Group",
   component: ToggleGroup,
-  tags: ["beta"],
+  parameters: {
+    actions: { argTypesRegex: "^on.*" },
+  },
   args: {
     size: "md",
+    defaultValue: ["monthly"],
   },
   argTypes: {
     size: {
       control: "select",
       options: ["sm", "md", "lg"],
+      table: { category: "Variants" },
     },
-    ghost: {
-      control: "boolean",
+    orientation: {
+      control: "select",
+      options: ["horizontal", "vertical"],
+      table: { category: "Variants" },
     },
+
+    value: { control: "object", table: { category: "Data" } },
+    defaultValue: { control: "object", table: { category: "Data" } },
+
+    ghost: { control: "boolean", table: { category: "Toggles" } },
+    multiple: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+
+    onValueChange: { table: { category: "Events" } },
   },
-};
+} satisfies Meta<typeof ToggleGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  name: "Toggle Group",
+export const Playground: Story = {
   render: (args) => (
-    <Stack gap={4}>
-      <ToggleGroup {...args} defaultValue={["light"]}>
-        <Toggle value="light" aria-label="Light mode">
-          <SunIcon />
-        </Toggle>
-        <Toggle value="dark" aria-label="Dark mode">
-          <MoonIcon />
-        </Toggle>
-        <Toggle value="system" aria-label="System theme">
-          <MonitorSmartphoneIcon />
-        </Toggle>
-      </ToggleGroup>
-      <ToggleGroup {...args} defaultValue={["light"]} orientation="vertical">
-        <Toggle value="light" aria-label="Light mode">
-          <SunIcon />
-        </Toggle>
-        <Toggle value="dark" aria-label="Dark mode">
-          <MoonIcon />
-        </Toggle>
-        <Toggle value="system" aria-label="System theme">
-          <MonitorSmartphoneIcon />
-        </Toggle>
-      </ToggleGroup>
-
-      <ToggleGroup {...args} defaultValue={["monthly"]}>
-        <Toggle value="monthly">Monthly</Toggle>
-        <Toggle value="yearly">Yearly</Toggle>
-      </ToggleGroup>
-
-      <ToggleGroup {...args} defaultValue={["left"]}>
-        <Toggle value="left">Left</Toggle>
-        <Toggle value="center">Center</Toggle>
-        <Toggle value="right">Right Right Right Right</Toggle>
-      </ToggleGroup>
-
-      <ToggleGroup {...args} defaultValue={["left"]} orientation="vertical">
-        <Toggle value="left">Left</Toggle>
-        <Toggle value="center">Center</Toggle>
-        <Toggle value="right">Right</Toggle>
-      </ToggleGroup>
-    </Stack>
+    <ToggleGroup {...args}>
+      <Toggle value="monthly">Monthly</Toggle>
+      <Toggle value="yearly">Yearly</Toggle>
+    </ToggleGroup>
   ),
 };
+
+export const WithIcons: Story = { render: () => <Examples.WithIcons /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Ghost: Story = { render: () => <Examples.Ghost /> };
+export const Vertical: Story = { render: () => <Examples.Vertical /> };
+export const Multiple: Story = { render: () => <Examples.Multiple /> };
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };

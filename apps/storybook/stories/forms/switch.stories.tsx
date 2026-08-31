@@ -1,34 +1,46 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Switch } from "@uiid/design-system";
+import { Switch } from "@uiid/design-system";
 
-const meta: Meta<typeof Switch> = {
+import * as Examples from "../../../../packages/forms/src/switch/switch.examples";
+
+const meta = {
   title: "Forms/Switch",
   component: Switch,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  args: {},
-  argTypes: {},
-  render: (args) => (
-    <Stack gap={4}>
-      <Switch {...args} />
-      <Switch {...args} label="With label and description" />
-      <Switch {...args} label="Default checked" defaultChecked />
-      <Switch {...args} label="Disabled" disabled />
-      <Switch {...args} label="Bordered" bordered />
-      <Switch {...args} label="Reversed" bordered reversed />
-      <Switch
-        {...args}
-        bordered
-        label="Bordered with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-    </Stack>
-  ),
-};
+  args: {
+    label: "Enable notifications",
+  },
+  argTypes: {
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
+
+    bordered: { control: "boolean", table: { category: "Toggles" } },
+    reversed: { control: "boolean", table: { category: "Toggles" } },
+    defaultChecked: { control: "boolean", table: { category: "Toggles" } },
+    required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+
+    onCheckedChange: { table: { category: "Events" } },
+
+    RootProps: { control: "object", table: { category: "Subcomponents" } },
+    ThumbProps: { control: "object", table: { category: "Subcomponents" } },
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
+  },
+} satisfies Meta<typeof Switch>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Switch" };
+export const Playground: Story = { render: (args) => <Switch {...args} /> };
+
+export const WithDescription: Story = {
+  render: () => <Examples.WithDescription />,
+};
+export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };

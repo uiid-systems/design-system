@@ -1,49 +1,44 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group, Field, Select } from "@uiid/design-system";
-import type { SelectProps } from "@uiid/design-system";
-import { EyeIcon } from "@uiid/icons/eye";
-import { LockIcon } from "@uiid/icons/lock";
-import { MailIcon } from "@uiid/icons/mail";
-import { SearchIcon } from "@uiid/icons/search";
+import { Select } from "@uiid/design-system";
 
-import { MOCK_SELECT_ITEMS } from "./select.mocks";
+import * as Examples from "../../../../packages/forms/src/select/select.examples";
+import { MOCK_SELECT_ITEMS } from "../../../../packages/forms/src/select/select.mocks";
 
 const meta = {
   title: "Forms/Select",
   component: Select,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
+    label: "Typeface",
+    placeholder: "Select a typeface",
     items: MOCK_SELECT_ITEMS,
   },
   argTypes: {
-    onValueChange: { table: { category: "Events" } },
-    onOpenChange: { table: { category: "Events" } },
-    onOpenChangeComplete: { table: { category: "Events" } },
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
+    placeholder: { control: "text", table: { category: "Text" } },
 
     size: {
       control: "select",
       options: ["small", "medium", "large"],
-      table: { category: "Options" },
+      table: { category: "Variants" },
     },
 
     items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
 
-    placeholder: { control: "text", table: { category: "Text" } },
-    label: { control: "text", table: { category: "Text" } },
-    description: { control: "text", table: { category: "Text" } },
-
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
+    multiple: { control: "boolean", table: { category: "Toggles" } },
     ghost: { control: "boolean", table: { category: "Toggles" } },
-    defaultOpen: { control: "boolean", table: { category: "Toggles" } },
-    open: { control: "boolean", table: { category: "Toggles" } },
-    readOnly: { control: "boolean", table: { category: "Toggles" } },
-    disabled: { control: "boolean", table: { category: "Toggles" } },
+    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
+    disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+
+    onValueChange: { table: { category: "Events" } },
+    onOpenChange: { table: { category: "Events" } },
 
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
     TriggerProps: { control: "object", table: { category: "Subcomponents" } },
@@ -57,123 +52,30 @@ const meta = {
     ValueProps: { control: "object", table: { category: "Subcomponents" } },
     IconProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Select {...args} placeholder="Placeholder" />
-
-      <Select
-        {...args}
-        label="Select with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-
-      <Select
-        {...args}
-        label="Select with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-
-      <Field
-        label="Group of inputs with field"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      >
-        <Group fullwidth evenly gap={2}>
-          <Select {...args} />
-          <Select {...args} />
-        </Group>
-      </Field>
-    </Stack>
-  ),
-} satisfies Meta<SelectProps>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Select" };
+export const Playground: Story = { render: (args) => <Select {...args} /> };
 
-const LONG_SELECT_ITEMS = [
-  {
-    label:
-      "A very long option label that cannot fit inside the trigger and must truncate with an ellipsis",
-    value: "long",
-  },
-  { label: "Short option", value: "short" },
-];
-
-export const TruncatedValue: Story = {
-  name: "Truncated Value",
-  args: { items: LONG_SELECT_ITEMS, defaultValue: "long" },
-  render: (args) => (
-    <Stack ax="stretch" gap={8} maxw={280}>
-      <Select {...args} fullwidth />
-      <Select
-        {...args}
-        fullwidth
-        before={<SearchIcon />}
-        after={<MailIcon />}
-      />
-    </Stack>
-  ),
-};
-
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const Placeholder: Story = { render: () => <Examples.Placeholder /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const BeforeAfterSlots: Story = {
-  name: "Before & After Slots",
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Select {...args} before={<SearchIcon />} placeholder="Before slot" />
-      <Select {...args} after={<MailIcon />} placeholder="After slot" />
-      <Select
-        {...args}
-        before={<LockIcon />}
-        after={<EyeIcon />}
-        placeholder="Both slots"
-      />
-      <Select
-        {...args}
-        before={<span>$</span>}
-        after={<span>USD</span>}
-        placeholder="Text slots"
-      />
-
-      <Group fullwidth gap={4}>
-        <Select
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Small"
-          size="small"
-        />
-        <Select
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Medium"
-          size="medium"
-        />
-        <Select
-          {...args}
-          before={<SearchIcon />}
-          placeholder="Large"
-          size="large"
-        />
-      </Group>
-
-      <Select
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Ghost with slot"
-        ghost
-      />
-      <Select
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Full width"
-        fullwidth
-      />
-      <Select
-        {...args}
-        before={<SearchIcon />}
-        placeholder="Disabled"
-        disabled
-      />
-    </Stack>
-  ),
+  render: () => <Examples.BeforeAfterSlots />,
 };
+export const ItemContent: Story = { render: () => <Examples.ItemContent /> };
+export const Multiple: Story = { render: () => <Examples.Multiple /> };
+export const Ghost: Story = { render: () => <Examples.Ghost /> };
+export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
+export const TruncatedValue: Story = {
+  render: () => <Examples.TruncatedValue />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Composed: Story = { render: () => <Examples.Composed /> };
+export const Grouped: Story = { render: () => <Examples.Grouped /> };

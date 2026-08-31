@@ -1,130 +1,21 @@
-# CheckboxGroup
+# Checkbox Group
 
-> A group of checkboxes for multi-select scenarios. Built on [Base UI CheckboxGroup](https://base-ui.com/react/components/checkbox-group).
+> Several checkboxes under one label, with the selection collected into an array of values.
 
-## Quick Reference
+Use CheckboxGroup when you want to:
 
-```tsx
-import { CheckboxGroup } from "@uiid/forms";
+- Offer a set of independent options — pass `items` for the common case, each entry carrying `value`, `label`, and optionally `disabled`
+- Label the whole group with `label` and `description`
+- Lay the boxes out with `direction` (`vertical`, `horizontal`)
+- Apply `bordered` and `reversed` to every row at once
+- Hide the boxes with `hideIndicators` while they stay in the accessibility tree
+- Disable the whole group with `disabled` — it propagates to every box
+- Reach every box with anything the group doesn't surface itself through `CheckboxProps` (`size`, for instance)
 
-const items = [
-  { value: "react", label: "React" },
-  { value: "vue", label: "Vue" },
-  { value: "angular", label: "Angular" },
-];
+Drop `items` and pass children to compose [`Checkbox`](../checkbox/README.md) directly instead — each one can then carry its own description, size, or slot content.
 
-// Basic
-<CheckboxGroup items={items} />
+Leave `value` unset and the group runs itself; pass `value` and `onValueChange` to drive it yourself. `required` marks the label only: HTML cannot express "at least one of these", so that rule lives in the validation that produced the error.
 
-// With defaults
-<CheckboxGroup items={items} defaultValue={["react"]} />
+Errors are published by name from the surrounding [`Form`](../form/README.md). Put the name on the group's own field through `FieldProps` rather than on the group — `name` is also handed to every box, and each box builds a field of its own, so a shared name would print the message once per box. The tradeoff is that the boxes then submit unnamed; give them one through `CheckboxProps` when the group has to post.
 
-// Variants
-<CheckboxGroup items={items} direction="horizontal" />
-<CheckboxGroup items={items} bordered />
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<CheckboxGroup items={items} />
-```
-
-### With Field Label
-
-```tsx
-<CheckboxGroup
-  items={items}
-  label="Select frameworks"
-  description="Choose all that apply"
-/>
-```
-
-### Controlled
-
-```tsx
-const [value, setValue] = useState<string[]>([]);
-
-<CheckboxGroup items={items} value={value} onValueChange={setValue} />;
-```
-
-### Default Values
-
-```tsx
-<CheckboxGroup items={items} defaultValue={["react", "vue"]} />
-```
-
-### Horizontal Layout
-
-```tsx
-<CheckboxGroup items={items} direction="horizontal" />
-```
-
-### Bordered
-
-Card-style selection pattern:
-
-```tsx
-<CheckboxGroup items={items} bordered />
-```
-
-### Reversed
-
-Places checkboxes after labels:
-
-```tsx
-<CheckboxGroup items={items} reversed />
-```
-
-### Disabled
-
-```tsx
-<CheckboxGroup items={items} disabled />
-```
-
-## Props
-
-| Prop             | Type                         | Default      | Description                           |
-| ---------------- | ---------------------------- | ------------ | ------------------------------------- |
-| `items`          | `FormItemProps[]`            | —            | **Required.** Array of checkbox items |
-| `label`          | `ReactNode`                  | —            | Field label for the group             |
-| `description`    | `ReactNode`                  | —            | Helper text below the group           |
-| `value`          | `string[]`                   | —            | Controlled selected values            |
-| `defaultValue`   | `string[]`                   | —            | Initial selected values               |
-| `onValueChange`  | `(value: string[]) => void`  | —            | Called when selection changes         |
-| `direction`      | `"horizontal" \| "vertical"` | `"vertical"` | Layout direction                      |
-| `bordered`       | `boolean`                    | `false`      | Bordered variant for all checkboxes   |
-| `reversed`       | `boolean`                    | `false`      | Reversed layout for all checkboxes    |
-| `disabled`       | `boolean`                    | `false`      | Disables entire group                 |
-| `hideIndicators` | `boolean`                    | `false`      | Hides all checkbox indicators         |
-| `CheckboxProps`  | `Partial<CheckboxProps>`     | —            | Props forwarded to each Checkbox      |
-| `IndicatorProps` | `CheckboxIndicatorProps`     | —            | Props forwarded to each indicator     |
-
-### FormItemProps
-
-```ts
-type FormItemProps = {
-  value: string;
-  label: string;
-  disabled?: boolean;
-};
-```
-
-## Data Slots
-
-| Slot       | Element               |
-| ---------- | --------------------- |
-| `checkbox` | Each checkbox element |
-
-## Accessibility
-
-- Built on Base UI CheckboxGroup which manages ARIA attributes
-- Keyboard: Tab to navigate between checkboxes, Space to toggle
-
-## See Also
-
-- [Checkbox](../checkbox/README.md) - Individual checkbox component
-- [RadioGroup](../radio-group/README.md) - Single selection from options
-- [Base UI CheckboxGroup](https://base-ui.com/react/components/checkbox-group) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Checkbox Group](https://base-ui.com/react/components/checkbox-group).
