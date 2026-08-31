@@ -1,149 +1,20 @@
 # Field
 
-> A wrapper that adds labels, descriptions, and error messages to form controls. Built on [Base UI Field](https://base-ui.com/react/components/field).
+> The label, description, hint, and error layer every control in this package is built on. Wrap any control and it joins the validation graph.
 
-## Quick Reference
+Use Field when you want to:
 
-```tsx
-import { Field } from "@uiid/forms";
-import { Input } from "@uiid/forms";
+- Put a `label` and `description` on a control that doesn't take them directly
+- Share one label across several controls — the inputs keep their own `name`s and the field supplies the heading
+- Add a `hint` at the end of the label row: `{ text }` for a quiet aside, or `{ icon, tooltip }` to keep longer guidance out of the layout
+- Choose where the error goes with `errorType` — `inline` reserves a line beneath the control, `tooltip` moves it to an icon beside the label, and `absolute` floats it so nothing below shifts
+- Validate with `validate` (return the message, or `null` when the value passes) and decide when it runs with `validationMode`
+- Mark the whole field `required` or `disabled` — both reach the control, not just the label
 
-// Basic with input
-<Field label="Email">
-  <Input placeholder="you@example.com" />
-</Field>
+A field with no label, hint, description, or out-of-flow error paints no chrome and adds no layout: the control sits exactly where it would alone while still joining the field's validation graph.
 
-// With description
-<Field label="Email" description="We'll never share your email">
-  <Input placeholder="you@example.com" />
-</Field>
+Give the field a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it — the same path a server response takes. Slot overrides (`RootProps`, `LabelProps`, `DescriptionProps`, `ErrorProps`, `HintProps`) reach the individual parts when a top-level prop isn't expressive enough.
 
-// Required
-<Field label="Email" required>
-  <Input placeholder="you@example.com" />
-</Field>
-```
+`FieldRoot`, `FieldControl`, `FieldItem`, `FieldValidity`, `FieldLabel`, `FieldDescription`, and `FieldError` are exported for composition, along with `FieldRow` — the shared label row that [`Checkbox`](../checkbox/README.md), [`Radio`](../radio/README.md), and [`Switch`](../switch/README.md) sit in.
 
-## Examples
-
-### Basic
-
-```tsx
-<Field label="Username">
-  <Input placeholder="Enter username" />
-</Field>
-```
-
-### With Description
-
-```tsx
-<Field
-  label="Email address"
-  description="We'll never share your email with anyone."
->
-  <Input placeholder="you@example.com" />
-</Field>
-```
-
-### Required Field
-
-```tsx
-<Field label="Password" required>
-  <Input type="password" />
-</Field>
-```
-
-### With Any Form Control
-
-Field works with any form control:
-
-```tsx
-<Field label="Framework" description="Choose your preferred framework">
-  <Select items={items} />
-</Field>
-
-<Field label="Quantity">
-  <NumberField min={1} max={10} />
-</Field>
-
-<Field label="Volume">
-  <Slider />
-</Field>
-```
-
-## Props
-
-| Prop               | Type                    | Default | Description                             |
-| ------------------ | ----------------------- | ------- | --------------------------------------- |
-| `label`            | `string`                | —       | Label text displayed above the control  |
-| `description`      | `string`                | —       | Helper text displayed below the control |
-| `name`             | `string`                | —       | Field name for form submission          |
-| `required`         | `boolean`               | `false` | Shows required indicator on label       |
-| `children`         | `ReactNode`             | —       | The form control to wrap                |
-| `RootProps`        | `FieldRootProps`        | —       | Props for the root element              |
-| `LabelProps`       | `FieldLabelProps`       | —       | Props for the label element             |
-| `DescriptionProps` | `FieldDescriptionProps` | —       | Props for the description element       |
-| `ErrorProps`       | `FieldErrorProps`       | —       | Props for the error element             |
-
-## Anatomy
-
-```tsx
-<FieldRoot>
-  {" "}
-  {/* Container */}
-  <FieldLabel /> {/* Label text */}
-  <FieldControl /> {/* Form control, or any Base UI control */}
-  <FieldError /> {/* Error message */}
-  <FieldDescription /> {/* Helper text */}
-</FieldRoot>
-```
-
-## Subcomponents
-
-| Component           | Description                                          |
-| ------------------- | ---------------------------------------------------- |
-| `FieldRoot`         | Root container element                               |
-| `FieldItem`         | Groups a control with its own label and description  |
-| `FieldControl`      | Adopts any control into the field's validation graph |
-| `FieldValidity`     | Render-prop access to validity state; renders no DOM |
-| `FieldLabel`        | Label element with required indicator                |
-| `FieldDescription`  | Helper text element                                  |
-| `FieldError`        | Error message element                                |
-| `FieldErrorTooltip` | Error surfaced as a tooltip beside the label         |
-| `FieldHint`         | Hint icon and text in the label row                  |
-
-## Data Slots
-
-| Slot                  | Element                 |
-| --------------------- | ----------------------- |
-| `field-root`          | The root container      |
-| `field-item`          | A grouped control row   |
-| `field-control`       | The adopted control     |
-| `field-label`         | The label element       |
-| `field-description`   | The description element |
-| `field-error`         | The error element       |
-| `field-error-tooltip` | The error tooltip       |
-| `field-hint`          | The hint element        |
-
-`FieldValidity` renders no element and therefore has no data slot.
-
-## When to Use Field
-
-Many form components have built-in `label` and `description` props. Use Field when:
-
-- You need more control over the label/description layout
-- You're using a component without built-in label support
-- You want consistent styling across different form controls
-
-## Accessibility
-
-- Built on Base UI Field which handles ARIA attributes
-- Labels are automatically associated with form controls
-- Required fields show visual indicator and set `data-required`
-- Error messages are linked via `aria-describedby`
-
-## See Also
-
-- [Form](../form/README.md) - Form container with validation
-- [Input](../input/README.md) - Text input with built-in label support
-- [Base UI Field](https://base-ui.com/react/components/field) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Field](https://base-ui.com/react/components/field).

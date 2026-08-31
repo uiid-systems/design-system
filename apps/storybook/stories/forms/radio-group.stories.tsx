@@ -1,66 +1,65 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, RadioGroup } from "@uiid/design-system";
-import type { RadioGroupProps } from "@uiid/design-system";
+import { RadioGroup } from "@uiid/design-system";
 
-import { MOCK_RADIOGROUP_OPTIONS } from "./radio-group.mocks";
+import * as Examples from "../../../../packages/forms/src/radio-group/radio-group.examples";
+import { MOCK_RADIOGROUP_OPTIONS } from "../../../../packages/forms/src/radio-group/radio-group.mocks";
 
-const meta: Meta<RadioGroupProps> = {
+const meta = {
   title: "Forms/Radio Group",
   component: RadioGroup,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
+    label: "Shipping speed",
     items: MOCK_RADIOGROUP_OPTIONS,
   },
   argTypes: {
-    items: { control: "object", table: { category: "Data" } },
-    defaultValue: { control: "object", table: { category: "Data" } },
-    value: { control: "object", table: { category: "Data" } },
-
-    onValueChange: { table: { category: "Events" } },
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
 
     direction: {
       control: "select",
-      options: ["horizontal", "vertical"],
-      table: { category: "Options" },
+      options: ["vertical", "horizontal"],
+      table: { category: "Variants" },
     },
+
+    items: { control: "object", table: { category: "Data" } },
+    value: { control: "text", table: { category: "Data" } },
+    defaultValue: { control: "text", table: { category: "Data" } },
 
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
     hideIndicators: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
+
+    onValueChange: { table: { category: "Events" } },
 
     RadioProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
+    FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack gap={8}>
-      <RadioGroup {...args} />
-      <RadioGroup {...args} direction="horizontal" />
-      <RadioGroup {...args} bordered />
-      <RadioGroup {...args} bordered direction="horizontal" />
-      <RadioGroup
-        {...args}
-        bordered
-        direction="horizontal"
-        label="With label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-      <RadioGroup
-        {...args}
-        bordered
-        direction="horizontal"
-        label="Without indicators"
-        hideIndicators
-      />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Radio Group" };
+export const Playground: Story = {
+  render: (args) => <RadioGroup {...args} />,
+};
+
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const Horizontal: Story = { render: () => <Examples.Horizontal /> };
+export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const HideIndicators: Story = {
+  render: () => <Examples.HideIndicators />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Composed: Story = { render: () => <Examples.Composed /> };

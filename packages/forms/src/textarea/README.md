@@ -1,129 +1,18 @@
 # Textarea
 
-> Multi-line text input with label and description support
+> Multi-line text control. Same label, description, sizing, and validity behavior as [`Input`](../input/README.md), with a resize axis.
 
-## Quick Reference
+Use Textarea when you want to:
 
-```tsx
-import { Textarea } from "@uiid/forms";
+- Collect more than one line of text — `rows` sets the starting height
+- Label it inline with `label` and `description` instead of composing a `Field` by hand
+- Match a control row with `size` (`small`, `medium`, `large`) — this sets the type scale and padding, independently of `rows`
+- Constrain the drag handle with `resize` (`none`, `vertical`, `horizontal`, `both`)
+- Soften the surface with `ghost` or fill the container with `fullwidth`
+- Mark it `required`, `disabled`, or `readOnly`
 
-// Basic
-<Textarea placeholder="Enter your message..." />
+Leave `value` unset and the textarea runs itself; pass `value` and `onValueChange` to drive it yourself.
 
-// With label and description
-<Textarea label="Comments" description="Share your thoughts" />
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. Reach the field around it through `FieldProps`, which is where `errorType` lives.
 
-// Variants
-<Textarea size="small" />
-<Textarea rows={5} />
-<Textarea resize="none" />
-<Textarea fullwidth />
-<Textarea ghost />
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<Textarea placeholder="Write your message here..." />
-```
-
-### With Label and Description
-
-```tsx
-<Textarea
-  label="Feedback"
-  description="Please provide detailed feedback about your experience."
-  placeholder="Enter your feedback..."
-/>
-```
-
-### Required Field
-
-```tsx
-<Textarea label="Comments" required />
-```
-
-### Custom Rows
-
-```tsx
-<Textarea rows={2} placeholder="Short textarea" />
-<Textarea rows={5} placeholder="Taller textarea" />
-<Textarea rows={10} placeholder="Very tall textarea" />
-```
-
-### Resize Options
-
-```tsx
-<Textarea resize="none" placeholder="Cannot be resized" />
-<Textarea resize="vertical" placeholder="Resize vertically only (default)" />
-<Textarea resize="horizontal" placeholder="Resize horizontally only" />
-<Textarea resize="both" placeholder="Resize in any direction" />
-```
-
-### Sizes
-
-```tsx
-<Textarea size="small" placeholder="Small" />
-<Textarea size="medium" placeholder="Medium" />
-<Textarea size="large" placeholder="Large" />
-```
-
-### Full Width
-
-```tsx
-<Textarea fullwidth placeholder="Takes full container width" />
-```
-
-### Ghost Variant
-
-```tsx
-<Textarea ghost placeholder="No border until focused" />
-```
-
-### Disabled
-
-```tsx
-<Textarea disabled placeholder="Cannot edit" />
-```
-
-## Props
-
-| Prop           | Type                                             | Default      | Description |
-| -------------- | ------------------------------------------------ | ------------ | ----------- |
-| `defaultValue` | `string`                                         | —            | —           |
-| `description`  | `string`                                         | —            | —           |
-| `disabled`     | `boolean`                                        | —            | —           |
-| `fullwidth`    | `boolean`                                        | —            | —           |
-| `ghost`        | `boolean`                                        | —            | —           |
-| `label`        | `string`                                         | —            | —           |
-| `placeholder`  | `string`                                         | —            | —           |
-| `required`     | `boolean`                                        | —            | —           |
-| `resize`       | `"none" \| "vertical" \| "horizontal" \| "both"` | `"vertical"` | —           |
-| `rows`         | `number`                                         | `3`          | —           |
-| `size`         | `"small" \| "medium" \| "large"`                 | `"medium"`   | —           |
-| `value`        | `string`                                         | —            | —           |
-
-> All other props are forwarded to the native textarea element.
-
-## Data Slots
-
-| Slot                | Element                                        |
-| ------------------- | ---------------------------------------------- |
-| `textarea`          | The textarea element                           |
-| `field-root`        | Field wrapper (when label/description present) |
-| `field-label`       | Label element                                  |
-| `field-description` | Description element                            |
-
-## Accessibility
-
-- Labels are automatically associated with textareas via Base UI Field.Control
-- Required fields display visual indicator and set `data-required`
-- Uses native textarea semantics for full screen reader support
-
-## See Also
-
-- [Field](../field/README.md) - Wrapper for form field labels and descriptions
-- [Input](../input/README.md) - Single-line text input
-- [Base UI Field](https://base-ui.com/react/components/field) - Field wrapper primitive
+Base UI ships no Textarea primitive, so this adopts a `<textarea>` into `Field.Control`. The DOM surface is textarea-native — additional props are forwarded to the element itself — with `onValueChange` taken from `Field.Control`.

@@ -1,143 +1,21 @@
-# NumberField
+# Number Field
 
-> A numeric input with increment/decrement buttons. Built on [Base UI NumberField](https://base-ui.com/react/components/number-field).
+> A numeric input with stepper buttons, keyboard stepping, and locale-aware formatting.
 
-## Quick Reference
+Use NumberField when you want to:
 
-```tsx
-import { NumberField } from "@uiid/forms";
+- Collect a number rather than a string — the value comes back as a `number`, not text
+- Bound the range with `min` and `max`; outside it the stepper buttons disable themselves
+- Set the increment with `step`, with `largeStep` applying when shift is held and `smallStep` with alt, and round to the grid with `snapOnStep`
+- Format the displayed value with `format`, which takes `Intl.NumberFormat` options — currency, percent, and units all work
+- Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
+- Match a control row with `size` (`small`, `medium`, `large`)
+- Mark it `required`, `disabled`, or `readOnly`
 
-// Basic
-<NumberField />
+Leave `value` unset and the field runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the interaction settles.
 
-// With constraints
-<NumberField min={0} max={100} defaultValue={50} />
+Compose the parts to add a scrub area — dragging the label changes the value, which is faster than stepping for coarse adjustments. `NumberFieldRoot`, `NumberFieldGroup`, `NumberFieldDecrement`, `NumberFieldIncrement`, `NumberFieldInput`, `NumberFieldScrubArea`, and `NumberFieldScrubAreaCursor` are all exported, and slot overrides (`RootProps`, `GroupProps`, `DecrementProps`, `IncrementProps`, `InputProps`, `FieldProps`) reach them from the monolithic component.
 
-// With step
-<NumberField step={5} defaultValue={0} />
-```
+Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 
-## Examples
-
-### Basic
-
-```tsx
-<NumberField />
-```
-
-### Default Value
-
-```tsx
-<NumberField defaultValue={50} />
-```
-
-### Min and Max
-
-```tsx
-<NumberField min={0} max={100} defaultValue={50} />
-```
-
-### Step
-
-```tsx
-<NumberField step={5} defaultValue={0} />
-```
-
-### Controlled
-
-```tsx
-const [value, setValue] = useState<number | null>(100);
-
-<NumberField value={value} onValueChange={setValue} />;
-```
-
-### With Format Options
-
-Format the displayed value using `Intl.NumberFormat` options:
-
-```tsx
-<NumberField
-  defaultValue={1000}
-  formatOptions={{
-    style: "currency",
-    currency: "USD",
-  }}
-/>
-```
-
-### Disabled
-
-```tsx
-<NumberField disabled defaultValue={50} />
-```
-
-## Props
-
-| Prop             | Type                              | Default | Description                 |
-| ---------------- | --------------------------------- | ------- | --------------------------- |
-| `value`          | `number \| null`                  | —       | Controlled value            |
-| `defaultValue`   | `number`                          | `100`   | Initial value               |
-| `onValueChange`  | `(value: number \| null) => void` | —       | Called when value changes   |
-| `min`            | `number`                          | —       | Minimum allowed value       |
-| `max`            | `number`                          | —       | Maximum allowed value       |
-| `step`           | `number`                          | `1`     | Increment/decrement step    |
-| `smallStep`      | `number`                          | —       | Step when holding Shift     |
-| `largeStep`      | `number`                          | —       | Step when holding Ctrl/Cmd  |
-| `disabled`       | `boolean`                         | `false` | Disables the field          |
-| `readOnly`       | `boolean`                         | `false` | Makes the input read-only   |
-| `formatOptions`  | `Intl.NumberFormatOptions`        | —       | Number formatting options   |
-| `DecrementProps` | `NumberFieldDecrementProps`       | —       | Props for decrement button  |
-| `IncrementProps` | `NumberFieldIncrementProps`       | —       | Props for increment button  |
-| `InputProps`     | `NumberFieldInputProps`           | —       | Props for the input element |
-
-## Anatomy
-
-```tsx
-<NumberFieldRoot>
-  {" "}
-  {/* Provider */}
-  <NumberFieldDecrement /> {/* Minus button */}
-  <NumberFieldInput /> {/* Numeric input */}
-  <NumberFieldIncrement /> {/* Plus button */}
-</NumberFieldRoot>
-```
-
-## Subcomponents
-
-| Component              | Description              |
-| ---------------------- | ------------------------ |
-| `NumberFieldRoot`      | Root container component |
-| `NumberFieldDecrement` | Decrement button         |
-| `NumberFieldInput`     | The numeric input        |
-| `NumberFieldIncrement` | Increment button         |
-
-## Data Slots
-
-| Slot                     | Element              |
-| ------------------------ | -------------------- |
-| `number-field-decrement` | The decrement button |
-| `number-field-increment` | The increment button |
-
-## Keyboard
-
-| Key       | Action                  |
-| --------- | ----------------------- |
-| `↑`       | Increment by step       |
-| `↓`       | Decrement by step       |
-| `Shift+↑` | Increment by smallStep  |
-| `Shift+↓` | Decrement by smallStep  |
-| `Ctrl+↑`  | Increment by largeStep  |
-| `Ctrl+↓`  | Decrement by largeStep  |
-| `Home`    | Set to min (if defined) |
-| `End`     | Set to max (if defined) |
-
-## Accessibility
-
-- Built on Base UI NumberField which handles ARIA attributes
-- Keyboard navigation for increment/decrement
-- Input accepts only numeric values
-
-## See Also
-
-- [Input](../input/README.md) - Basic text input
-- [Base UI NumberField](https://base-ui.com/react/components/number-field) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Number Field](https://base-ui.com/react/components/number-field). `size` is the same deliberate exception as on [`Input`](../input/README.md): the system control scale, not the native character-width attribute.

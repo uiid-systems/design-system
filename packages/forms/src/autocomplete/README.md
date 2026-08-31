@@ -1,154 +1,16 @@
 # Autocomplete
 
-> An input with suggestions that allows free-form text. Built on [Base UI Autocomplete](https://base-ui.com/react/components/autocomplete). Unlike Combobox, selection is optional.
+> A text input that suggests without constraining — the typed value stands on its own, whether or not it appears in the list.
 
-## Quick Reference
+Use Autocomplete when you want to:
 
-```tsx
-import { Autocomplete } from "@uiid/forms";
+- Suggest as the user types while still accepting anything they enter — reach for [`Combobox`](../combobox/README.md) when the value has to come from the list
+- Label it inline with `label` and `description` instead of composing a `Field` by hand
+- Put an icon or a hint inside the control with `before` and `after`
+- Mark it `required`, `disabled`, or `readOnly`
 
-const items = ["apple", "banana", "cherry", "date", "elderberry"];
+Leave `value` unset and the autocomplete runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 
-// Basic
-<Autocomplete items={items} />
+The full tree — `AutocompleteRoot`, `AutocompleteInput`, `AutocompletePortal`, `AutocompletePositioner`, `AutocompletePopup`, `AutocompleteList`, `AutocompleteItem`, and `AutocompleteEmpty` — is exported for composition, and slot overrides (`RootProps`, `InputProps`, `InputGroupProps`, `PortalProps`, `PositionerProps`, `PopupProps`, `ListProps`) reach them from the monolithic component. Autocomplete and Combobox share their popup, list, item, and empty layer.
 
-// With placeholder
-<Autocomplete items={items} placeholder="Search fruits..." />
-
-// With default value
-<Autocomplete items={items} defaultValue="banana" />
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<Autocomplete items={items} />
-```
-
-### With Placeholder
-
-```tsx
-<Autocomplete items={items} placeholder="Search fruits..." />
-```
-
-### Default Value
-
-```tsx
-<Autocomplete items={items} defaultValue="banana" />
-```
-
-### Controlled
-
-```tsx
-const [value, setValue] = useState<string | null>(null);
-
-<Autocomplete
-  items={items}
-  RootProps={{
-    value,
-    onValueChange: setValue,
-  }}
-/>;
-```
-
-### Custom Item Rendering
-
-```tsx
-<Autocomplete items={items}>
-  {(item: string) => (
-    <AutocompleteItem key={item} value={item}>
-      <span>🍎 {item}</span>
-    </AutocompleteItem>
-  )}
-</Autocomplete>
-```
-
-## Props
-
-| Prop            | Type                      | Default | Description                               |
-| --------------- | ------------------------- | ------- | ----------------------------------------- |
-| `items`         | `string[]`                | —       | **Required.** Array of suggestion options |
-| `name`          | `string`                  | —       | Submits the value and keys `Form` errors  |
-| `placeholder`   | `string`                  | —       | Placeholder text for input                |
-| `defaultValue`  | `string`                  | —       | Initial value                             |
-| `onValueChange` | `(value: string) => void` | —       | Called when value changes                 |
-| `RootProps`     | `AutocompleteRootProps`   | —       | Props for the root element                |
-| `InputProps`    | `AutocompleteInputProps`  | —       | Props for the input element               |
-| `PopupProps`    | `AutocompletePopupProps`  | —       | Props for the popup                       |
-| `ListProps`     | `AutocompleteListProps`   | —       | Props for the list container              |
-
-## Anatomy
-
-```tsx
-<AutocompleteRoot>
-  {" "}
-  {/* Provider */}
-  <AutocompleteInput /> {/* Text input */}
-  <AutocompletePortal>
-    {" "}
-    {/* Portal wrapper */}
-    <AutocompletePositioner>
-      {" "}
-      {/* Positioning */}
-      <AutocompletePopup>
-        {" "}
-        {/* Popup container */}
-        <AutocompleteList>
-          {" "}
-          {/* List wrapper */}
-          <AutocompleteItem /> {/* Individual items */}
-        </AutocompleteList>
-        <AutocompleteEmpty /> {/* Empty state */}
-      </AutocompletePopup>
-    </AutocompletePositioner>
-  </AutocompletePortal>
-</AutocompleteRoot>
-```
-
-## Subcomponents
-
-| Component           | Description                |
-| ------------------- | -------------------------- |
-| `AutocompleteRoot`  | Root provider component    |
-| `AutocompleteInput` | The text input             |
-| `AutocompletePopup` | Popup container            |
-| `AutocompleteList`  | List container             |
-| `AutocompleteItem`  | Individual suggestion item |
-| `AutocompleteEmpty` | Empty state message        |
-
-## Data Slots
-
-| Slot                 | Element              |
-| -------------------- | -------------------- |
-| `autocomplete-root`  | The root element     |
-| `autocomplete-input` | The input element    |
-| `autocomplete-popup` | The popup container  |
-| `autocomplete-item`  | Each suggestion item |
-| `autocomplete-empty` | Empty state element  |
-
-## Autocomplete vs Combobox
-
-| Feature              | Autocomplete | Combobox |
-| -------------------- | ------------ | -------- |
-| Free-form text input | Yes          | No       |
-| Selection required   | No           | Yes      |
-| Suggestions          | Optional     | Required |
-
-Use **Autocomplete** when users can enter custom values not in the list (like a search box).
-
-Use **Combobox** when users must select from available options.
-
-## Accessibility
-
-- Built on Base UI Autocomplete which handles ARIA attributes
-- Keyboard: Arrow keys to navigate, Enter to select, Escape to close
-- Typing filters the suggestions
-
-## See Also
-
-- [Combobox](../combobox/README.md) - Selection required from filtered options
-- [Select](../select/README.md) - Dropdown without text input
-- [Input](../input/README.md) - Plain text input
-- [Base UI Autocomplete](https://base-ui.com/react/components/autocomplete) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Autocomplete](https://base-ui.com/react/components/autocomplete).

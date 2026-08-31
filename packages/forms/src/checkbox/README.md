@@ -1,139 +1,19 @@
 # Checkbox
 
-> Checkbox input with label, description, and indeterminate state support
+> A single on/off box with its label row built in. Pass `label` and `description` and it renders a full field row; pass neither and it renders just the box.
 
-## Quick Reference
+Use Checkbox when you want to:
 
-```tsx
-import { Checkbox } from "@uiid/forms";
+- Toggle one independent option — for a set of related options reach for [`CheckboxGroup`](../checkbox-group/README.md)
+- Label the row inline with `label` and `description` instead of composing a `Field` by hand
+- Match a control row with `size` (`small`, `medium`, `large`)
+- Draw the row as a control surface with `bordered`, and put the box after the label with `reversed`
+- Show a partial selection with `indeterminate` — the "select all" state above a list of children
+- Hide the box from sight with `hideIndicator` while it stays in the accessibility tree, so the row still reads and toggles as a checkbox
+- Mark it `required`, `disabled`, or `readOnly`
 
-// Basic
-<Checkbox />
+Leave `checked` unset and the box runs itself; pass `checked` and `onCheckedChange` to drive it yourself.
 
-// With label
-<Checkbox label="Accept terms" />
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. `FieldProps` and `IndicatorProps` reach the row and the box when a top-level prop isn't expressive enough.
 
-// Variants
-<Checkbox bordered label="Bordered style" />
-<Checkbox reversed label="Label on left" />
-<Checkbox indeterminate label="Partial selection" />
-```
-
-## Examples
-
-### Basic
-
-```tsx
-<Checkbox label="Subscribe to newsletter" />
-```
-
-### With Description
-
-```tsx
-<Checkbox
-  label="Marketing emails"
-  description="Receive updates about new features and promotions"
-/>
-```
-
-### Controlled
-
-```tsx
-const [checked, setChecked] = useState(false);
-
-<Checkbox label="I agree" checked={checked} onCheckedChange={setChecked} />;
-```
-
-### Default Checked
-
-```tsx
-<Checkbox label="Enabled by default" defaultChecked />
-```
-
-### Indeterminate
-
-Used for "select all" patterns when some items are selected:
-
-```tsx
-<Checkbox label="Select all" indeterminate />
-```
-
-### Bordered
-
-Adds a border around the checkbox and label:
-
-```tsx
-<Checkbox bordered label="Bordered checkbox" />
-```
-
-### Reversed
-
-Places the label before the checkbox:
-
-```tsx
-<Checkbox reversed label="Label on left" />
-```
-
-### Disabled
-
-```tsx
-<Checkbox disabled label="Cannot change" />
-```
-
-## Props
-
-| Prop             | Type      | Default | Description |
-| ---------------- | --------- | ------- | ----------- |
-| `bordered`       | `boolean` | —       | —           |
-| `checked`        | `boolean` | —       | —           |
-| `defaultChecked` | `boolean` | —       | —           |
-| `description`    | `string`  | —       | —           |
-| `disabled`       | `boolean` | —       | —           |
-| `indeterminate`  | `boolean` | —       | —           |
-| `label`          | `string`  | —       | —           |
-| `name`           | `string`  | —       | —           |
-| `required`       | `boolean` | —       | —           |
-| `reversed`       | `boolean` | —       | —           |
-
-> All other props are forwarded to the Base UI Checkbox.Root component.
-
-## Anatomy
-
-```tsx
-<CheckboxField>
-  {" "}
-  {/* Container with label */}
-  <CheckboxRoot>
-    {" "}
-    {/* The checkbox control */}
-    <CheckboxIndicator /> {/* Check mark icon */}
-  </CheckboxRoot>
-</CheckboxField>
-```
-
-## Subcomponents
-
-| Component           | Description                          |
-| ------------------- | ------------------------------------ |
-| `CheckboxRoot`      | The checkbox control element         |
-| `CheckboxField`     | Container with label and description |
-| `CheckboxIndicator` | The check mark icon                  |
-
-## Data Slots
-
-| Slot       | Element                   |
-| ---------- | ------------------------- |
-| `checkbox` | The checkbox root element |
-
-## Accessibility
-
-- Built on Base UI Checkbox which handles ARIA attributes
-- Clicking label toggles checkbox
-- Keyboard: Space to toggle when focused
-
-## See Also
-
-- [CheckboxGroup](../checkbox-group/README.md) - Multiple checkboxes with shared state
-- [Radio](../radio/README.md) - Single selection from options
-- [Switch](../switch/README.md) - Toggle for on/off states
-- [Base UI Checkbox](https://base-ui.com/react/components/checkbox) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Checkbox](https://base-ui.com/react/components/checkbox).

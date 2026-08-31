@@ -1,63 +1,61 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Checkbox } from "@uiid/design-system";
+import { Checkbox } from "@uiid/design-system";
 
-const meta: Meta<typeof Checkbox> = {
+import * as Examples from "../../../../packages/forms/src/checkbox/checkbox.examples";
+
+const meta = {
   title: "Forms/Checkbox",
   component: Checkbox,
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  tags: ["beta"],
-  args: {},
+  args: {
+    label: "Email me about product updates",
+  },
   argTypes: {
-    /** Text */
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
-    /** Variants */
+
     size: {
       control: "select",
       options: ["small", "medium", "large"],
       table: { category: "Variants" },
     },
-    /** Data */
-    defaultChecked: { control: "boolean", table: { category: "Data" } },
-    uncheckedValue: { control: "boolean", table: { category: "Data" } },
-    /** Events */
-    onCheckedChange: { table: { category: "Events" } },
-    onFocus: { table: { category: "Events" } },
-    onBlur: { table: { category: "Events" } },
-    /** Toggles */
-    indeterminate: { control: "boolean", table: { category: "Toggles" } },
+
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
+    hideIndicator: { control: "boolean", table: { category: "Toggles" } },
+    indeterminate: { control: "boolean", table: { category: "Toggles" } },
+    defaultChecked: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
-    nativeButton: { control: "boolean", table: { category: "Toggles" } },
-    /** Subcomponents */
+
+    onCheckedChange: { table: { category: "Events" } },
+
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
     IndicatorProps: { control: "object", table: { category: "Subcomponents" } },
   },
-  render: (args) => (
-    <Stack gap={4}>
-      <Checkbox {...args} />
-      <Checkbox {...args} label="With label" />
-      <Checkbox {...args} label="Default checked" defaultChecked />
-      <Checkbox {...args} label="Indeterminate" defaultChecked indeterminate />
-      <Checkbox {...args} label="Bordered" bordered />
-      <Checkbox {...args} label="Reversed" bordered reversed />
-      <Checkbox {...args} label="Hidden indicator" bordered hideIndicator />
-      <Checkbox
-        {...args}
-        bordered
-        label="Bordered with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Checkbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Checkbox" };
+export const Playground: Story = { render: (args) => <Checkbox {...args} /> };
+
+export const WithDescription: Story = {
+  render: () => <Examples.WithDescription />,
+};
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const HideIndicator: Story = {
+  render: () => <Examples.HideIndicator />,
+};
+export const Indeterminate: Story = {
+  render: () => <Examples.Indeterminate />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };

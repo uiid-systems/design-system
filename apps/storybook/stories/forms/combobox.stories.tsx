@@ -1,66 +1,68 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group, Field, Combobox } from "@uiid/design-system";
-import type { ComboboxProps } from "@uiid/design-system";
-import { fn } from "storybook/test";
+import { Combobox } from "@uiid/design-system";
 
-import { MOCK_COMBOBOX_ITEMS } from "./combobox.mocks";
+import * as Examples from "../../../../packages/forms/src/combobox/combobox.examples";
+import { MOCK_COMBOBOX_ITEMS } from "../../../../packages/forms/src/combobox/combobox.mocks";
 
-const meta: Meta<ComboboxProps> = {
+const meta = {
   title: "Forms/Combobox",
   component: Combobox,
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
-  tags: ["beta"],
   args: {
-    placeholder: "Placeholder",
+    label: "Fruit",
+    placeholder: "Search fruit",
     items: MOCK_COMBOBOX_ITEMS,
-    onFocus: fn(),
-    onBlur: fn(),
   },
   argTypes: {
-    /** Text */
+    label: { control: "text", table: { category: "Text" } },
+    description: { control: "text", table: { category: "Text" } },
     placeholder: { control: "text", table: { category: "Text" } },
-    /** Data */
-    items: { table: { category: "Data" } },
+
+    items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
-    /** Toggles */
+
+    multiple: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
-    /** Events */
-    onValueChange: { table: { category: "Events" } },
-    /** Subcomponents */
-    RootProps: { table: { category: "Subcomponents" } },
-    InputProps: { table: { category: "Subcomponents" } },
-    PortalProps: { table: { category: "Subcomponents" } },
-    PositionerProps: { table: { category: "Subcomponents" } },
-    PopupProps: { table: { category: "Subcomponents" } },
-    ListProps: { table: { category: "Subcomponents" } },
-  },
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Combobox {...args} />
-      <Combobox
-        {...args}
-        label="Combobox with label and description"
-        description="TODO: Fix icon positioning"
-      />
+    readOnly: { control: "boolean", table: { category: "Toggles" } },
 
-      <Field
-        label="Group of comboboxes with field wrapper"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      >
-        <Group fullwidth evenly gap={2}>
-          <Combobox {...args} placeholder="First name" />
-          <Combobox {...args} placeholder="Last name" />
-        </Group>
-      </Field>
-    </Stack>
-  ),
-};
+    onValueChange: { table: { category: "Events" } },
+    onOpenChange: { table: { category: "Events" } },
+    onFocus: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
+
+    RootProps: { control: "object", table: { category: "Subcomponents" } },
+    InputProps: { control: "object", table: { category: "Subcomponents" } },
+    InputGroupProps: {
+      control: "object",
+      table: { category: "Subcomponents" },
+    },
+    PortalProps: { control: "object", table: { category: "Subcomponents" } },
+    PositionerProps: {
+      control: "object",
+      table: { category: "Subcomponents" },
+    },
+    PopupProps: { control: "object", table: { category: "Subcomponents" } },
+    ListProps: { control: "object", table: { category: "Subcomponents" } },
+  },
+} satisfies Meta<typeof Combobox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Combobox" };
+export const Playground: Story = { render: (args) => <Combobox {...args} /> };
+
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const BeforeAfterSlots: Story = {
+  render: () => <Examples.BeforeAfterSlots />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Multiple: Story = { render: () => <Examples.Multiple /> };
+export const Grouped: Story = { render: () => <Examples.Grouped /> };

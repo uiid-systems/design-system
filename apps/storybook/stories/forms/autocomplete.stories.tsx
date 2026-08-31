@@ -1,70 +1,69 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Group, Field, Autocomplete } from "@uiid/design-system";
-import type { AutocompleteProps } from "@uiid/design-system";
+import { Autocomplete } from "@uiid/design-system";
 
-import { MOCK_AUTOCOMPLETE_ITEMS } from "./autocomplete.mocks";
+import * as Examples from "../../../../packages/forms/src/autocomplete/autocomplete.examples";
+import { MOCK_AUTOCOMPLETE_ITEMS } from "../../../../packages/forms/src/autocomplete/autocomplete.mocks";
 
-const meta: Meta<AutocompleteProps> = {
+const meta = {
   title: "Forms/Autocomplete",
   component: Autocomplete,
-  tags: ["beta"],
   parameters: {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
+    label: "Fruit",
+    placeholder: "Search fruit",
     items: MOCK_AUTOCOMPLETE_ITEMS,
   },
   argTypes: {
-    /** Text */
-    placeholder: { control: "text", table: { category: "Text" } },
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
-    /** Data */
-    items: { table: { category: "Data" } },
-    defaultValue: { control: "text", table: { category: "Data" } },
+    placeholder: { control: "text", table: { category: "Text" } },
+
+    items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
-    /** Toggles */
+    defaultValue: { control: "text", table: { category: "Data" } },
+
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
-    /** Events */
+
+    onValueChange: { table: { category: "Events" } },
+    onOpenChange: { table: { category: "Events" } },
+    onItemHighlighted: { table: { category: "Events" } },
     onFocus: { table: { category: "Events" } },
     onBlur: { table: { category: "Events" } },
-    onItemHighlighted: { table: { category: "Events" } },
-    onOpenChange: { table: { category: "Events" } },
-    onOpenChangeComplete: { table: { category: "Events" } },
-    onValueChange: { table: { category: "Events" } },
-    /** Subcomponents */
-    RootProps: { table: { category: "Subcomponents" } },
-    InputProps: { table: { category: "Subcomponents" } },
-    PortalProps: { table: { category: "Subcomponents" } },
-    PositionerProps: { table: { category: "Subcomponents" } },
-    PopupProps: { table: { category: "Subcomponents" } },
-    ListProps: { table: { category: "Subcomponents" } },
-  },
-  render: (args) => (
-    <Stack ax="stretch" gap={8}>
-      <Autocomplete {...args} />
-      <Autocomplete
-        {...args}
-        label="Autocomplete with label and description"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
 
-      <Field
-        label="Group of autocompletes with field wrapper"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      >
-        <Group fullwidth evenly gap={2}>
-          <Autocomplete {...args} placeholder="First name" />
-          <Autocomplete {...args} placeholder="Last name" />
-        </Group>
-      </Field>
-    </Stack>
-  ),
-};
+    RootProps: { control: "object", table: { category: "Subcomponents" } },
+    InputProps: { control: "object", table: { category: "Subcomponents" } },
+    InputGroupProps: {
+      control: "object",
+      table: { category: "Subcomponents" },
+    },
+    PortalProps: { control: "object", table: { category: "Subcomponents" } },
+    PositionerProps: {
+      control: "object",
+      table: { category: "Subcomponents" },
+    },
+    PopupProps: { control: "object", table: { category: "Subcomponents" } },
+    ListProps: { control: "object", table: { category: "Subcomponents" } },
+  },
+} satisfies Meta<typeof Autocomplete>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Autocomplete" };
+export const Playground: Story = {
+  render: (args) => <Autocomplete {...args} />,
+};
+
+export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const BeforeAfterSlots: Story = {
+  render: () => <Examples.BeforeAfterSlots />,
+};
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const Required: Story = { render: () => <Examples.Required /> };
+export const Invalid: Story = { render: () => <Examples.Invalid /> };
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Grouped: Story = { render: () => <Examples.Grouped /> };

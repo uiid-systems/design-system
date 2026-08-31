@@ -1,0 +1,11 @@
+import { Meta, Markdown, Controls } from "@storybook/addon-docs/blocks";
+import readme from "../../../../packages/forms/src/radio-group/README.md?raw";
+import * as Stories from "./radio-group.stories";
+
+<Meta of={Stories} />
+
+<Markdown>{readme}</Markdown>
+
+# Props
+
+<Controls of={Stories.Playground} />

@@ -1,179 +1,22 @@
 # Slider
 
-> A slider input for selecting numeric values. Built on [Base UI Slider](https://base-ui.com/react/components/slider).
+> A draggable control for a value in a range, with a formatted readout above the track.
 
-## Quick Reference
+Use Slider when you want to:
 
-```tsx
-import { Slider } from "@uiid/forms";
+- Pick a value by dragging rather than typing — an array `defaultValue` gives one thumb per value, so a two-value slider is a range
+- Bound and quantize with `min`, `max`, and `step`, with `largeStep` applying when shift is held
+- Format the readout with `format`, which takes `Intl.NumberFormat` options
+- Replace the readout entirely through `ValueProps.children`, a render function receiving the formatted strings and the raw numbers
+- Match a control row with `size` (`small`, `medium`, `large`) — the row height, inline padding, and readout scale with the tier, while the track and thumb stay fixed so a small slider keeps a usable grab target
+- Run it top-to-bottom with `orientation="vertical"`
+- Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
+- Soften the surface with `ghost`, fill the container with `fullwidth`, or mark it `disabled`
 
-// Basic
-<Slider />
+Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the drag ends.
 
-// With constraints
-<Slider min={0} max={100} defaultValue={50} />
+Slider's root is a control surface like any other form control, so it paints with [`Input`](../input/README.md)'s styles rather than duplicating them — a slider lines up with a sibling input at the same `size`.
 
-// With label
-<Slider label="Volume" description="Adjust the volume level" />
-```
+`SliderRoot`, `SliderLabel`, `SliderValue`, `SliderControl`, `SliderTrack`, `SliderIndicator`, and `SliderThumb` are exported for composition, and slot overrides (`RootProps`, `ValueProps`, `ControlProps`, `TrackProps`, `IndicatorProps`, `ThumbProps`, `FieldProps`) reach them from the monolithic component.
 
-## Examples
-
-### Basic
-
-```tsx
-<Slider />
-```
-
-### With Label and Description
-
-```tsx
-<Slider label="Volume" description="Adjust the volume level" />
-```
-
-### Default Value
-
-```tsx
-<Slider defaultValue={50} />
-```
-
-### Sizes
-
-The tier sets the control row's height, inset and readout — the track and thumb
-stay a fixed scale so a small slider keeps a usable grab target.
-
-```tsx
-<Slider size="small" defaultValue={40} />
-<Slider size="medium" defaultValue={40} />
-<Slider size="large" defaultValue={40} />
-```
-
-### Min, Max, and Step
-
-```tsx
-<Slider min={0} max={100} step={10} defaultValue={50} />
-```
-
-### Controlled
-
-```tsx
-const [value, setValue] = useState(50);
-
-<Slider value={value} onValueChange={setValue} />;
-```
-
-### Vertical Orientation
-
-```tsx
-<Slider orientation="vertical" style={{ height: 200 }} />
-```
-
-### Format Value Display
-
-```tsx
-<Slider
-  defaultValue={50}
-  format={{ style: "percent" }}
-/>
-
-<Slider
-  defaultValue={1000}
-  format={{ style: "currency", currency: "USD" }}
-/>
-```
-
-### Disabled
-
-```tsx
-<Slider disabled defaultValue={50} />
-```
-
-## Props
-
-| Prop            | Type                             | Default        | Description                  |
-| --------------- | -------------------------------- | -------------- | ---------------------------- |
-| `value`         | `number`                         | —              | Controlled value             |
-| `defaultValue`  | `number`                         | `50`           | Initial value                |
-| `onValueChange` | `(value: number) => void`        | —              | Called when value changes    |
-| `min`           | `number`                         | `0`            | Minimum value                |
-| `max`           | `number`                         | `100`          | Maximum value                |
-| `step`          | `number`                         | `1`            | Step increment               |
-| `largeStep`     | `number`                         | —              | Step when using Page Up/Down |
-| `orientation`   | `"horizontal" \| "vertical"`     | `"horizontal"` | Slider orientation           |
-| `disabled`      | `boolean`                        | `false`        | Disables the slider          |
-| `label`         | `string`                         | —              | Field label                  |
-| `description`   | `string`                         | —              | Field description            |
-| `format`        | `Intl.NumberFormatOptions`       | —              | Value display format         |
-| `locale`        | `string`                         | —              | Locale for value formatting  |
-| `size`          | `"small" \| "medium" \| "large"` | `"medium"`     | Control scale                |
-| `ghost`         | `boolean`                        | `false`        | Ghost variant styling        |
-| `fullwidth`     | `boolean`                        | `false`        | Full width styling           |
-
-## Anatomy
-
-```tsx
-<Field>
-  {" "}
-  {/* Optional wrapper */}
-  <SliderRoot>
-    {" "}
-    {/* Provider */}
-    <SliderControl>
-      {" "}
-      {/* Interactive area */}
-      <SliderTrack>
-        {" "}
-        {/* Track element */}
-        <SliderIndicator /> {/* Fill indicator */}
-        <SliderThumb /> {/* Draggable thumb */}
-      </SliderTrack>
-    </SliderControl>
-    <SliderValue /> {/* Value display */}
-  </SliderRoot>
-</Field>
-```
-
-## Subcomponents
-
-| Component         | Description                          |
-| ----------------- | ------------------------------------ |
-| `SliderRoot`      | Root provider component              |
-| `SliderControl`   | Interactive control area             |
-| `SliderTrack`     | The track element                    |
-| `SliderIndicator` | Fill indicator showing current value |
-| `SliderThumb`     | Draggable thumb element              |
-| `SliderValue`     | Formatted value display              |
-
-## Data Slots
-
-| Slot               | Element            |
-| ------------------ | ------------------ |
-| `slider-root`      | The root element   |
-| `slider-control`   | The control area   |
-| `slider-track`     | The track element  |
-| `slider-indicator` | The fill indicator |
-| `slider-thumb`     | The thumb element  |
-| `slider-value`     | The value display  |
-
-## Keyboard
-
-| Key         | Action                |
-| ----------- | --------------------- |
-| `←` / `↓`   | Decrease by step      |
-| `→` / `↑`   | Increase by step      |
-| `Page Down` | Decrease by largeStep |
-| `Page Up`   | Increase by largeStep |
-| `Home`      | Set to min            |
-| `End`       | Set to max            |
-
-## Accessibility
-
-- Built on Base UI Slider which handles ARIA attributes
-- Keyboard navigation for precise control
-- Focus visible indicator on thumb
-
-## See Also
-
-- [NumberField](../number-field/README.md) - Numeric input with buttons
-- [Field](../field/README.md) - Field wrapper for labels
-- [Base UI Slider](https://base-ui.com/react/components/slider) - Underlying primitive
+Additional props are forwarded to the underlying Base UI [Slider](https://base-ui.com/react/components/slider).
