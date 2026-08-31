@@ -1,0 +1,37 @@
+import { Separator } from "@uiid/design-system";
+import { Readme, Example, PropsTable } from "@/components/docs";
+import * as Examples from "../../../../../../packages/forms/src/form/form.examples";
+
+<Readme of="forms/form" />
+
+<Separator />
+## Props
+
+<PropsTable of="forms/form" />
+
+<Separator />
+## Examples
+
+<Example title="Default" of="forms/form" name="Default">
+  <Examples.Default />
+</Example>
+
+<Example title="Username and password" of="forms/form" name="UsernamePassword">
+  <Examples.UsernamePassword />
+</Example>
+
+<Example title="Tooltip errors" of="forms/form" name="TooltipErrors">
+  <Examples.TooltipErrors />
+</Example>
+
+<Example title="Absolute errors" of="forms/form" name="AbsoluteErrors">
+  <Examples.AbsoluteErrors />
+</Example>
+
+<Example title="Select and confirm" of="forms/form" name="SelectAndConfirm">
+  <Examples.SelectAndConfirm />
+</Example>
+
+<Example title="Validation mode" of="forms/form" name="ValidationMode">
+  <Examples.ValidationMode />
+</Example>
