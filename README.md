@@ -8,19 +8,17 @@ pnpm add @uiid/design-system @base-ui/react
 ```
 
 ```tsx
-import { Button, Group, Input, Stack, Text } from "@uiid/design-system";
+import { Button, Stack, Text } from "@uiid/design-system";
 import "@uiid/design-system/globals.css";
 
 export default function App() {
   return (
     <Stack gap={4}>
-      <Text render={<h1 />} size={2}>
-        Enter your name:
+      <Text render={<h1 />} size={1}>
+        Would you like proceed?
       </Text>
-      <Input label="name" />
-      <Group gap={2}>
-        <Button variant="subtle">Cancel</Button>
-        <Button>Save changes</Button>
+      <Button variant="subtle">Cancel</Button>
+      <Button>Save changes</Button>
       </Group>
     </Stack>
   );
