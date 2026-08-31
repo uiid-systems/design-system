@@ -143,3 +143,26 @@ describe("NumberField render target", () => {
     ).not.toBeNull();
   });
 });
+
+describe("NumberField name forwarding", () => {
+  it("submits the value once, not once per registered control", async () => {
+    const user = userEvent.setup();
+    const submitted = vi.fn();
+
+    render(
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          submitted(new FormData(event.currentTarget).getAll("qty"));
+        }}
+      >
+        <NumberField name="qty" label="Qty" defaultValue={3} />
+        <button type="submit">Submit</button>
+      </form>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(submitted).toHaveBeenCalledWith(["3"]);
+  });
+});

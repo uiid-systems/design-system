@@ -70,6 +70,7 @@ const [value, setValue] = useState<string | null>(null);
 | Prop            | Type                      | Default | Description                               |
 | --------------- | ------------------------- | ------- | ----------------------------------------- |
 | `items`         | `string[]`                | —       | **Required.** Array of suggestion options |
+| `name`          | `string`                  | —       | Submits the value and keys `Form` errors  |
 | `placeholder`   | `string`                  | —       | Placeholder text for input                |
 | `defaultValue`  | `string`                  | —       | Initial value                             |
 | `onValueChange` | `(value: string) => void` | —       | Called when value changes                 |

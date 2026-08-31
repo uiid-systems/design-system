@@ -18,6 +18,7 @@ import {
 
 export const Combobox = ({
   items,
+  name,
   label,
   description,
   placeholder,
@@ -37,9 +38,10 @@ export const Combobox = ({
   ...props
 }: ComboboxProps) => {
   return (
-    <ComboboxRoot items={items} {...RootProps} {...props}>
+    <ComboboxRoot items={items} name={name} {...RootProps} {...props}>
       <ComboboxInputGroup {...InputGroupProps}>
         <ComboboxInput
+          name={name}
           placeholder={placeholder}
           label={label}
           description={description}

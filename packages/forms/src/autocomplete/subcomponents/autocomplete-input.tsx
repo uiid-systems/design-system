@@ -3,7 +3,8 @@
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 
 import { Field } from "../../field/field";
-import { InputControl, InputWrapper } from "../../input/subcomponents";
+import { inputControlClassName } from "../../input/input.styles";
+import { InputWrapper } from "../../input/subcomponents";
 import type { AutocompleteInputProps } from "../autocomplete.types";
 
 export const AutocompleteInput = ({
@@ -30,11 +31,20 @@ export const AutocompleteInput = ({
       {...FieldProps}
     >
       <InputWrapper before={before} after={after} fullwidth>
+        {/*
+         * `name` stops at the Field, which needs it to match a `Form` error.
+         * The root already registers this input as the field's control, so
+         * rendering a plain `<input>` rather than `InputControl` leaves Base UI
+         * to decide whether the input carries the name for submission.
+         */}
         <BaseAutocomplete.Input
           data-slot="autocomplete-input"
-          name={name}
-          render={<InputControl inner={hasSlots} fullwidth />}
-          className={className}
+          render={<input />}
+          className={inputControlClassName({
+            inner: hasSlots,
+            fullwidth: true,
+            className,
+          })}
           placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}

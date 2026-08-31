@@ -22,6 +22,7 @@ export * from "./form/form";
 export * from "./form/hooks";
 
 export * from "./input/input";
+export * from "./input/input.styles";
 export * from "./input/input.types";
 export * from "./input/subcomponents";
 

@@ -55,19 +55,9 @@ export const Required = () => (
   <Autocomplete label="Fruit" required items={MOCK_AUTOCOMPLETE_ITEMS} />
 );
 
-/*
- * The name has to reach the input's Field for a `Form` error to find it, which
- * is what `InputProps` is for — `name` on the Autocomplete itself goes to the
- * root, where it drives form submission. See UI-191.
- */
 export const Invalid = () => (
   <Form errors={{ fruit: ERROR }}>
-    <Autocomplete
-      name="fruit"
-      label="Fruit"
-      items={MOCK_AUTOCOMPLETE_ITEMS}
-      InputProps={{ name: "fruit" }}
-    />
+    <Autocomplete name="fruit" label="Fruit" items={MOCK_AUTOCOMPLETE_ITEMS} />
   </Form>
 );
 

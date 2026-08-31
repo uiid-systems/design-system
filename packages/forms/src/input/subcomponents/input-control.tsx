@@ -1,23 +1,20 @@
 "use client";
 
 import { Input as BaseInput } from "@base-ui/react/input";
-import { cx } from "@uiid/utils";
 
+import { inputControlClassName } from "../input.styles";
 import type { InputControlProps } from "../input.types";
-import { inputVariants } from "../input.variants";
-
-import styles from "../input.module.css";
 
 /**
  * The input element on its own, without Field chrome or before/after slots.
  *
- * Base UI merges a `render` prop's props and ref onto the rendered tree's
- * outermost element. This component is always an `<input>`, which makes it the
- * only safe thing to hand to `render`; `Input` would merge onto its Field
- * wrapper and silently drop ARIA and keyboard behaviour.
- *
  * Pass `inner` when rendering inside an `InputWrapper`, which carries the
  * control surface itself.
+ *
+ * This is a `Field.Control`, so it registers itself with the surrounding field
+ * and takes its `name` from it. A composite whose Base UI root already does
+ * both must not hand this to `render` — reach for `inputControlClassName` on a
+ * plain `<input>` instead, or the value submits twice.
  */
 export const InputControl = ({
   size,
@@ -32,13 +29,13 @@ export const InputControl = ({
     <BaseInput
       data-slot="input"
       ref={ref}
-      className={cx(
-        styles["input"],
-        inner
-          ? styles["input-inner"]
-          : inputVariants({ size, fullwidth, ghost }),
+      className={inputControlClassName({
+        inner,
+        size,
+        fullwidth,
+        ghost,
         className,
-      )}
+      })}
       {...props}
     />
   );
