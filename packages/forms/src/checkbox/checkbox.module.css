@@ -34,12 +34,12 @@
     outline-offset: var(--globals-outline-offset);
   }
 
-  /* Transparent hit area. At the small size (1rem) the -0.25rem inset brings
+  /* Transparent hit area. At the small size (1rem) the one-unit outset brings
      the target to 24x24px, the WCAG 2.2 target-size minimum. */
   &::after {
     content: "";
     position: absolute;
-    inset: -0.25rem;
+    inset: calc(var(--spacing-unit) * -1);
   }
 }
 

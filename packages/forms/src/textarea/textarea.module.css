@@ -16,7 +16,7 @@
   padding: var(--forms-padding-y) var(--forms-padding-x);
   transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
   line-height: 1.5;
-  min-height: 5rem;
+  min-height: calc(var(--spacing-unit) * 20);
 
   /** Hover */
   &:hover {
@@ -34,17 +34,17 @@
 .size-small {
   font-size: var(--forms-size-sm-font-size);
   padding-inline: var(--forms-size-sm-padding-x);
-  min-height: 4rem;
+  min-height: calc(var(--spacing-unit) * 16);
 }
 .size-medium {
   font-size: var(--forms-size-md-font-size);
   padding-inline: var(--forms-size-md-padding-x);
-  min-height: 5rem;
+  min-height: calc(var(--spacing-unit) * 20);
 }
 .size-large {
   font-size: var(--forms-size-lg-font-size);
   padding-inline: var(--forms-size-lg-padding-x);
-  min-height: 6rem;
+  min-height: calc(var(--spacing-unit) * 24);
 }
 
 /* Resize variants */
