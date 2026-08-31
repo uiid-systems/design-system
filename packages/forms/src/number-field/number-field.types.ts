@@ -1,19 +1,27 @@
 import type { NumberField as BaseNumberField } from "@base-ui/react/number-field";
+import type { VariantProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
-import type { InputVariants } from "../input/input.types";
+import type { numberFieldVariants } from "./number-field.variants";
+
+export type NumberFieldVariants = VariantProps<typeof numberFieldVariants>;
 
 export type NumberFieldRootProps = BaseNumberField.Root.Props;
 export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
 export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;
-export type NumberFieldGroupProps = BaseNumberField.Group.Props;
+/**
+ * The group is where `size` lands — the stepper buttons take their width from
+ * it as descendants, so it is the element that can size the cluster.
+ */
+export type NumberFieldGroupProps = BaseNumberField.Group.Props &
+  NumberFieldVariants;
 /**
  * `size` is omitted and re-added as the design-system scale, the same sanctioned
  * deviation documented on `InputControlProps` — Base UI's native `size` here is
  * the character-width attribute.
  */
 export type NumberFieldInputProps = Omit<BaseNumberField.Input.Props, "size"> &
-  Pick<InputVariants, "size">;
+  NumberFieldVariants;
 export type NumberFieldScrubAreaProps = BaseNumberField.ScrubArea.Props;
 export type NumberFieldScrubAreaCursorProps =
   BaseNumberField.ScrubAreaCursor.Props;
@@ -28,4 +36,4 @@ export type NumberFieldProps = {
 } & NumberFieldRootProps &
   Pick<FieldProps, "label" | "description"> &
   Pick<NumberFieldInputProps, "placeholder"> &
-  Pick<InputVariants, "size">;
+  NumberFieldVariants;

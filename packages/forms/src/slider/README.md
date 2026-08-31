@@ -37,6 +37,17 @@ import { Slider } from "@uiid/forms";
 <Slider defaultValue={50} />
 ```
 
+### Sizes
+
+The tier sets the control row's height, inset and readout — the track and thumb
+stay a fixed scale so a small slider keeps a usable grab target.
+
+```tsx
+<Slider size="small" defaultValue={40} />
+<Slider size="medium" defaultValue={40} />
+<Slider size="large" defaultValue={40} />
+```
+
 ### Min, Max, and Step
 
 ```tsx
@@ -79,23 +90,24 @@ const [value, setValue] = useState(50);
 
 ## Props
 
-| Prop            | Type                         | Default        | Description                  |
-| --------------- | ---------------------------- | -------------- | ---------------------------- |
-| `value`         | `number`                     | —              | Controlled value             |
-| `defaultValue`  | `number`                     | `50`           | Initial value                |
-| `onValueChange` | `(value: number) => void`    | —              | Called when value changes    |
-| `min`           | `number`                     | `0`            | Minimum value                |
-| `max`           | `number`                     | `100`          | Maximum value                |
-| `step`          | `number`                     | `1`            | Step increment               |
-| `largeStep`     | `number`                     | —              | Step when using Page Up/Down |
-| `orientation`   | `"horizontal" \| "vertical"` | `"horizontal"` | Slider orientation           |
-| `disabled`      | `boolean`                    | `false`        | Disables the slider          |
-| `label`         | `string`                     | —              | Field label                  |
-| `description`   | `string`                     | —              | Field description            |
-| `format`        | `Intl.NumberFormatOptions`   | —              | Value display format         |
-| `locale`        | `string`                     | —              | Locale for value formatting  |
-| `ghost`         | `boolean`                    | `false`        | Ghost variant styling        |
-| `fullwidth`     | `boolean`                    | `false`        | Full width styling           |
+| Prop            | Type                             | Default        | Description                  |
+| --------------- | -------------------------------- | -------------- | ---------------------------- |
+| `value`         | `number`                         | —              | Controlled value             |
+| `defaultValue`  | `number`                         | `50`           | Initial value                |
+| `onValueChange` | `(value: number) => void`        | —              | Called when value changes    |
+| `min`           | `number`                         | `0`            | Minimum value                |
+| `max`           | `number`                         | `100`          | Maximum value                |
+| `step`          | `number`                         | `1`            | Step increment               |
+| `largeStep`     | `number`                         | —              | Step when using Page Up/Down |
+| `orientation`   | `"horizontal" \| "vertical"`     | `"horizontal"` | Slider orientation           |
+| `disabled`      | `boolean`                        | `false`        | Disables the slider          |
+| `label`         | `string`                         | —              | Field label                  |
+| `description`   | `string`                         | —              | Field description            |
+| `format`        | `Intl.NumberFormatOptions`       | —              | Value display format         |
+| `locale`        | `string`                         | —              | Locale for value formatting  |
+| `size`          | `"small" \| "medium" \| "large"` | `"medium"`     | Control scale                |
+| `ghost`         | `boolean`                        | `false`        | Ghost variant styling        |
+| `fullwidth`     | `boolean`                        | `false`        | Full width styling           |
 
 ## Anatomy
 

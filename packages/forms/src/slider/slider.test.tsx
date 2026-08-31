@@ -135,3 +135,27 @@ describe("Slider label part", () => {
     expect(label?.textContent).toBe("Volume");
   });
 });
+
+describe("Slider size variant", () => {
+  const rootClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='slider-root']")?.className ?? "";
+
+  it.each(["small", "medium", "large"] as const)(
+    "paints the %s control tier on the root",
+    (size) => {
+      const { container } = render(<Slider size={size} />);
+      expect(rootClassName(container)).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier", () => {
+    const { container } = render(<Slider />);
+    expect(rootClassName(container)).toContain("size-medium");
+  });
+
+  it("applies one tier at a time", () => {
+    const { container } = render(<Slider size="large" />);
+    expect(rootClassName(container)).not.toContain("size-small");
+    expect(rootClassName(container)).not.toContain("size-medium");
+  });
+});

@@ -1,7 +1,5 @@
 "use client";
 
-import { cx } from "@uiid/utils";
-
 import { Field } from "../field/field";
 import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import type { NumberFieldProps } from "./number-field.types";
@@ -12,8 +10,6 @@ import {
   NumberFieldIncrement,
   NumberFieldDecrement,
 } from "./subcomponents";
-
-import styles from "./number-field.module.css";
 
 export const NumberField = ({
   label,
@@ -31,8 +27,6 @@ export const NumberField = ({
   InputProps,
   ...props
 }: NumberFieldProps) => {
-  const sizeClass = size ? styles[`size-${size}`] : undefined;
-
   return (
     <Field
       name={name}
@@ -43,10 +37,7 @@ export const NumberField = ({
       {...FieldProps}
     >
       <NumberFieldRoot name={name} {...RootProps} {...props}>
-        <NumberFieldGroup
-          {...GroupProps}
-          className={cx(sizeClass, GroupProps?.className)}
-        >
+        <NumberFieldGroup size={size} {...GroupProps}>
           <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
           <NumberFieldInput

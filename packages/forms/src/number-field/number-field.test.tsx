@@ -166,3 +166,40 @@ describe("NumberField name forwarding", () => {
     expect(submitted).toHaveBeenCalledWith(["3"]);
   });
 });
+
+describe("NumberField size variant", () => {
+  const groupClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='number-field-group']")?.className ??
+    "";
+
+  it.each(["small", "medium", "large"] as const)(
+    "paints the %s control tier on the group the steppers size off",
+    (size) => {
+      const { container } = render(<NumberField size={size} />);
+      expect(groupClassName(container)).toContain(`size-${size}`);
+    },
+  );
+
+  it("falls back to the medium tier", () => {
+    const { container } = render(<NumberField />);
+    expect(groupClassName(container)).toContain("size-medium");
+  });
+
+  it("applies one tier at a time", () => {
+    const { container } = render(<NumberField size="large" />);
+    expect(groupClassName(container)).not.toContain("size-small");
+    expect(groupClassName(container)).not.toContain("size-medium");
+  });
+
+  it("sizes the input from the same prop", () => {
+    render(<NumberField size="large" />);
+    expect(screen.getByRole("textbox").className).toContain("size-large");
+  });
+
+  it("lets GroupProps override the tier", () => {
+    const { container } = render(
+      <NumberField size="small" GroupProps={{ size: "large" }} />,
+    );
+    expect(groupClassName(container)).toContain("size-large");
+  });
+});
