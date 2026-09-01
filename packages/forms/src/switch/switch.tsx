@@ -9,6 +9,7 @@ export const Switch = ({
   name,
   disabled,
   size,
+  color,
   bordered,
   reversed,
   RootProps,
@@ -29,6 +30,7 @@ export const Switch = ({
         id={name}
         name={name}
         size={size}
+        color={color}
         disabled={disabled}
         {...props}
         {...RootProps}

@@ -12,6 +12,7 @@ export const Checkbox = ({
   label,
   description,
   size,
+  color,
   reversed,
   bordered,
   indeterminate,
@@ -32,6 +33,7 @@ export const Checkbox = ({
       <CheckboxRoot
         name={name}
         size={size}
+        color={color}
         hideIndicator={hideIndicator}
         indeterminate={indeterminate}
         {...props}

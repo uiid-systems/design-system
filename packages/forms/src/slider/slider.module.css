@@ -1,5 +1,23 @@
 @import "@uiid/tokens/component/slider.tokens.css";
 
+/*
+ * The `color` prop's treatment. Every declaration lives in the shared
+ * composition, which publishes the generic --control-fill name the indicator
+ * and thumb read below.
+ *
+ * This is Slider's own `.color`, deliberately not Input's. The root wears
+ * Input's control surface, but a hue on a slider marks the filled portion of
+ * the track — the fill treatment — rather than tinting the surface the track
+ * sits on, so it must not reuse `composes-field-surface-color`. The surface
+ * stays neutral at every hue.
+ *
+ * It lands on the root, which is an ancestor of track, indicator and thumb, so
+ * one class cascades to all three and the leaf subcomponents stay hue-unaware.
+ */
+.color {
+  composes: composes-control-fill-color from global;
+}
+
 .slider-control {
   composes: composes-disabled from global;
 
@@ -12,6 +30,8 @@
   user-select: none;
 }
 
+/* The unfilled track. It is the groove the value is measured against, not the
+   value itself, so it stays on the shade scale at every hue. */
 .slider-track {
   width: 100%;
   height: var(--slider-track-height);
@@ -21,17 +41,24 @@
   user-select: none;
 }
 
+/* The filled track — the part that reads as the value, so it is what a hue
+   colours. Base UI sizes it; the shade fallback keeps an uncoloured slider
+   exactly as it was. */
 .slider-indicator {
   border-radius: var(--slider-track-border-radius);
-  background-color: var(--shade-muted);
+  background-color: var(--control-fill, var(--shade-muted));
   user-select: none;
 }
 
+/* The thumb sits at the end of the fill and belongs to it, so it takes the
+   same hue. Its outline stays on --shade-muted: at a hue the thumb and the
+   indicator resolve to the same fill, and that neutral ring is the only thing
+   separating them. */
 .slider-thumb {
   width: var(--slider-thumb-size);
   height: var(--slider-thumb-size);
   border-radius: 100%;
-  background-color: var(--shade-foreground);
+  background-color: var(--control-fill, var(--shade-foreground));
   outline: var(--globals-border-width) solid var(--shade-muted);
   user-select: none;
 

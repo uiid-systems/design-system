@@ -178,3 +178,23 @@ describe("Checkbox row disabled treatment", () => {
     ).toMatch(/composes-disabled-within/);
   });
 });
+
+describe("Checkbox color", () => {
+  it("carries the palette hue and the fill treatment on the box", () => {
+    render(<Checkbox color="blue" label="Ship it" />);
+
+    const box = screen.getByRole("checkbox");
+
+    expect(box).toHaveClass("palette-blue");
+    expect(box.className).toMatch(/composes-control-fill-color/);
+  });
+
+  /* Without a hue the checked rules resolve through their shade fallbacks, so
+     the treatment class must be absent rather than merely inert. */
+  it("leaves the box on the shade scale with no color", () => {
+    render(<Checkbox label="Ship it" />);
+    expect(screen.getByRole("checkbox").className).not.toMatch(
+      /composes-control-fill-color/,
+    );
+  });
+});

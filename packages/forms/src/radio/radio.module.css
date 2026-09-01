@@ -20,10 +20,14 @@
   }
 
   &[data-checked] {
-    background-color: var(--shade-foreground);
+    background-color: var(--control-fill, var(--shade-foreground));
   }
 
-  &:hover {
+  /* Scoped to the unchecked state on purpose. Unscoped, this rule matched a
+     checked radio too and, sitting later in the source at equal specificity,
+     repainted it with the resting hover fill — which also dropped the hue off a
+     coloured one. */
+  &[data-unchecked]:hover {
     background-color: var(--forms-bg-hover);
   }
 
@@ -31,6 +35,18 @@
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
+}
+
+/*
+ * The `color` prop's treatment. Every declaration lives in the shared
+ * composition, so the hue lands as `--control-fill` / `--control-on-fill` and
+ * the checked rules above read those names with their shade values as the
+ * fallback — an uncoloured radio resolves exactly as it did before. Radio
+ * composes the global class directly rather than borrowing Checkbox's `.color`,
+ * so neither control owns the other's hue mechanism.
+ */
+.color {
+  composes: composes-control-fill-color from global;
 }
 
 .indicator {
@@ -43,7 +59,9 @@
     border-radius: 100%;
     width: var(--radio-indicator-size);
     height: var(--radio-indicator-size);
-    background-color: var(--shade-halftone);
+    /* `--control-on-fill` is set on the ring and inherits down to here, so the
+       dot pairs with a coloured fill without the ring needing to reach it. */
+    background-color: var(--control-on-fill, var(--shade-halftone));
   }
 }
 

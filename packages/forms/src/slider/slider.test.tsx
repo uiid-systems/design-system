@@ -159,3 +159,34 @@ describe("Slider size variant", () => {
     expect(rootClassName(container)).not.toContain("size-medium");
   });
 });
+
+describe("Slider color", () => {
+  const rootClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='slider-root']")?.className ?? "";
+
+  /* The root is an ancestor of track, indicator and thumb, so one class
+     cascades to all three and the leaf subcomponents stay hue-unaware. */
+  it("carries the palette hue and the fill treatment on the root", () => {
+    const { container } = render(<Slider color="blue" defaultValue={40} />);
+
+    expect(container.querySelector("[data-slot='slider-root']")).toHaveClass(
+      "palette-blue",
+    );
+    expect(rootClassName(container)).toMatch(/composes-control-fill-color/);
+  });
+
+  /* Slider wears Input's control surface, but a hue marks the filled track
+     rather than tinting that surface — so it must not pick up the field
+     treatment. */
+  it("takes the fill treatment, not the field surface tint", () => {
+    const { container } = render(<Slider color="blue" defaultValue={40} />);
+    expect(rootClassName(container)).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  it("leaves the root on the shade scale with no color", () => {
+    const { container } = render(<Slider defaultValue={40} />);
+    expect(rootClassName(container)).not.toMatch(/composes-control-fill-color/);
+  });
+});

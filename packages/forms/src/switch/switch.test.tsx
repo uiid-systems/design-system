@@ -167,3 +167,23 @@ describe("Switch size variant", () => {
     },
   );
 });
+
+describe("Switch color", () => {
+  it("carries the palette hue and the fill treatment on the root", () => {
+    render(<Switch color="blue" label="Dark mode" />);
+
+    const root = screen.getByRole("switch");
+
+    expect(root).toHaveClass("palette-blue");
+    expect(root.className).toMatch(/composes-control-fill-color/);
+  });
+
+  /* The thumb reads --control-on-fill off the root, so the pairing has to land
+     on the root rather than on the thumb itself. */
+  it("leaves the root on the shade scale with no color", () => {
+    render(<Switch label="Dark mode" />);
+    expect(screen.getByRole("switch").className).not.toMatch(
+      /composes-control-fill-color/,
+    );
+  });
+});

@@ -252,3 +252,40 @@ describe("CheckboxGroup form errors", () => {
     );
   });
 });
+
+describe("CheckboxGroup color", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const boxes = () => screen.getAllByRole("checkbox");
+
+  it("dresses every item with the group's hue", () => {
+    render(<CheckboxGroup items={items} color="blue" />);
+
+    expect(boxes()).toHaveLength(2);
+    for (const box of boxes()) {
+      expect(box).toHaveClass("palette-blue");
+      expect(box.className).toMatch(/composes-control-fill-color/);
+    }
+  });
+
+  /* `CheckboxProps` is spread below the group's dressing, so a shared override
+     reaches the items. RadioGroup mirrors this. */
+  it("lets CheckboxProps override the group's hue", () => {
+    render(<CheckboxGroup items={items} CheckboxProps={{ color: "red" }} />);
+
+    for (const box of boxes()) {
+      expect(box).toHaveClass("palette-red");
+    }
+  });
+
+  it("leaves the items on the shade scale with no color", () => {
+    render(<CheckboxGroup items={items} />);
+
+    for (const box of boxes()) {
+      expect(box.className).not.toMatch(/composes-control-fill-color/);
+    }
+  });
+});

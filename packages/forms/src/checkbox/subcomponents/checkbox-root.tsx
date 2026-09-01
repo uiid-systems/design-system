@@ -2,6 +2,7 @@
 
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { Group } from "@uiid/layout";
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../checkbox.constants";
@@ -12,10 +13,15 @@ import styles from "../checkbox.module.css";
 
 export const CheckboxRoot = ({
   size = CHECKBOX_DEFAULT_SIZE,
+  color,
   hideIndicator,
   className,
   ...props
 }: CheckboxRootProps) => {
+  const colorClassName = color
+    ? cx(paletteColorStyles[color], styles["color"])
+    : undefined;
+
   return (
     <BaseCheckbox.Root
       data-slot="checkbox"
@@ -23,9 +29,13 @@ export const CheckboxRoot = ({
          indicator inside the box is props rather than a flex block in the
          module. */
       render={<Group render={<button />} ax="center" ay="center" />}
-      className={cx(styles["checkbox"], checkboxVariants({ size }), className, {
-        "sr-only": hideIndicator,
-      })}
+      className={cx(
+        styles["checkbox"],
+        checkboxVariants({ size }),
+        colorClassName,
+        className,
+        { "sr-only": hideIndicator },
+      )}
       {...props}
     />
   );
