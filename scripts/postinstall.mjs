@@ -2,8 +2,11 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Vercel builds only compile the docs app: they have no git hooks to install,
-// and the build image has no apt-get for Playwright's `--with-deps`.
+// Vercel builds compile one app — apps/docs or apps/storybook — and neither has
+// git hooks to install, nor does the build image have apt-get for Playwright's
+// `--with-deps`. Skipping the per-icon emit below is safe too: both apps build
+// through turbo, whose `^build` runs `@uiid/icons build`, and that script ends
+// in the very emit this file would have run.
 if (process.env.VERCEL) process.exit(0);
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
