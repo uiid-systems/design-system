@@ -1,5 +1,6 @@
 "use client";
 
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
@@ -19,6 +20,7 @@ export const Textarea = ({
   resize,
   fullwidth,
   variant,
+  color,
   rows = TEXTAREA_DEFAULT_ROWS,
   onValueChange,
   FieldProps,
@@ -42,6 +44,7 @@ export const Textarea = ({
         className={cx(
           styles["textarea"],
           textareaVariants({ size, resize, fullwidth, variant }),
+          color && cx(paletteColorStyles[color], styles["color"]),
           className,
         )}
         render={<textarea ref={ref} rows={rows} {...props} />}

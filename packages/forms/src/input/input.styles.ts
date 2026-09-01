@@ -1,6 +1,7 @@
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
-import type { InputVariants } from "./input.types";
+import type { InputColor, InputVariants } from "./input.types";
 import { inputVariants } from "./input.variants";
 
 import styles from "./input.module.css";
@@ -8,9 +9,20 @@ import styles from "./input.module.css";
 export type InputControlClassNameOptions = InputVariants & {
   /** Painted inside an `InputWrapper`, which carries the control surface. */
   inner?: boolean;
+  /** Palette hue for the surface treatment. */
+  color?: InputColor;
   /** Accepts whatever `cx` does, so Base UI's `className` can pass straight through. */
   className?: Parameters<typeof cx>[number];
 };
+
+/**
+ * The pair of classes a palette hue rides on: the hue itself (which publishes
+ * the `--palette-*` names) and the treatment that maps them onto the field
+ * surface. Kept here so Input, its wrapper, and every control that borrows
+ * this surface apply the hue identically.
+ */
+export const inputColorClassName = (color?: InputColor) =>
+  color ? cx(paletteColorStyles[color], styles["color"]) : undefined;
 
 /**
  * The control surface an `<input>` needs, without the element itself.
@@ -30,10 +42,12 @@ export const inputControlClassName = ({
   size,
   fullwidth,
   variant,
+  color,
   className,
 }: InputControlClassNameOptions = {}) =>
   cx(
     styles["input"],
     inner ? styles["input-inner"] : inputVariants({ size, fullwidth, variant }),
+    inputColorClassName(color),
     className,
   );

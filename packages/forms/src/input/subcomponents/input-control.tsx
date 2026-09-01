@@ -20,6 +20,7 @@ export const InputControl = ({
   size,
   fullwidth,
   variant,
+  color,
   inner,
   className,
   ref,
@@ -34,6 +35,7 @@ export const InputControl = ({
         size,
         fullwidth,
         variant,
+        color,
         className,
       })}
       {...props}

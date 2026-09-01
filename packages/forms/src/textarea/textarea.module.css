@@ -57,3 +57,9 @@
 .variant-ghost {
   composes: composes-field-surface-ghost from global;
 }
+
+/* The `color` prop's treatment — the same shared composition Input wears, so a
+   tinted textarea and a tinted input cannot drift apart. */
+.color {
+  composes: composes-field-surface-color from global;
+}

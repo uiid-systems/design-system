@@ -114,6 +114,46 @@
   }
 
   /**
+   * The palette hue on a field surface — the `color` prop's treatment for every
+   * control that wears `.composes-field-surface`. It remaps only the four names
+   * that surface already reads, so a control opts in by composing this next to
+   * it and inherits hover, focus and the whole size scale unchanged. That is
+   * the point: select, combobox, number-field and mask-input get the mechanism
+   * without a line of their own CSS.
+   *
+   * Tint, not fill. A text field is a surface you read *through*, so it takes
+   * the same treatment as a coloured Card or a subtle Button rather than the
+   * solid fill a Button wears. `--palette-on-tint` is the pairing measured
+   * against `--palette-tint`, which is why the foreground has to move with the
+   * background instead of staying on `--shade-foreground`.
+   *
+   * `--forms-bg-focus` resolves back to the resting tint on purpose. Focus is
+   * already carried by the outline, and repainting the fill as well made a
+   * focused control read as a different hue than the same control at rest.
+   *
+   * The focus ring is left alone. `--globals-outline-color` stays neutral so a
+   * coloured control focuses like every other control in the system, and so
+   * `.composes-invalid` — which recolours that ring from `@layer uiid.states`
+   * — still wins outright. A coloured invalid field keeps its tint and gets a
+   * red edge; invalid is the edge, not the surface.
+   *
+   * Source order is load-bearing in both directions. After
+   * `.composes-field-surface`, so `color` beats its `--shade-foreground` at
+   * equal specificity. Before `.composes-field-surface-ghost`, so a ghost
+   * control still drops its resting fill — a coloured ghost is then transparent
+   * until hover, where ghost's own rule reads the remapped `--forms-bg-hover`
+   * and lands on `--palette-tint-hover` with no extra rule for the pairing.
+   */
+  .composes-field-surface-color {
+    --forms-bg: var(--palette-tint);
+    --forms-bg-hover: var(--palette-tint-hover);
+    --forms-bg-focus: var(--palette-tint);
+    --forms-border-color: var(--palette-tint-border);
+
+    color: var(--palette-on-tint);
+  }
+
+  /**
    * Ghost drops the field surface's resting fill and edge, and nothing else.
    *
    * Declared after `.composes-field-surface` so it wins the tie at equal
