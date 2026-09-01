@@ -183,3 +183,47 @@ describe("RadioGroup required reaches the group", () => {
     expect(group).toHaveAttribute("aria-required", "true");
   });
 });
+
+describe("RadioGroup color", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const rings = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("[data-slot='radio']"));
+
+  it("dresses every item with the group's hue", () => {
+    const { container } = render(<RadioGroup items={items} color="blue" />);
+
+    expect(rings(container)).toHaveLength(2);
+    for (const ring of rings(container)) {
+      expect(ring).toHaveClass("palette-blue");
+      expect(ring.className).toMatch(/composes-control-fill-color/);
+    }
+  });
+
+  /*
+   * `RadioProps` is spread below the group's dressing, so a shared override
+   * reaches the items. Spread above it, an unset group-level `color` still won
+   * and this silently rendered neutral radios — the same shape CheckboxGroup
+   * has always had.
+   */
+  it("lets RadioProps override the group's hue", () => {
+    const { container } = render(
+      <RadioGroup items={items} RadioProps={{ color: "red" }} />,
+    );
+
+    for (const ring of rings(container)) {
+      expect(ring).toHaveClass("palette-red");
+    }
+  });
+
+  it("leaves the items on the shade scale with no color", () => {
+    const { container } = render(<RadioGroup items={items} />);
+
+    for (const ring of rings(container)) {
+      expect(ring.className).not.toMatch(/composes-control-fill-color/);
+    }
+  });
+});
