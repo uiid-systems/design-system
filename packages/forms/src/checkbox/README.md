@@ -8,6 +8,7 @@ Use Checkbox when you want to:
 - Label the row inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Draw the row as a control surface with `bordered`, and put the box after the label with `reversed`
+- Colour the checked box with a palette `color` (`red`, `blue`, …) — the hue paints the selected state only, so an unchecked box stays on the neutral scale
 - Show a partial selection with `indeterminate` — the "select all" state above a list of children
 - Hide the box from sight with `hideIndicator` while it stays in the accessibility tree, so the row still reads and toggles as a checkbox
 - Mark it `required`, `disabled`, or `readOnly`

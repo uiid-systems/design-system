@@ -237,3 +237,42 @@ describe("NumberField stepper surface", () => {
     expect(group?.className).not.toMatch(/composes-disabled/);
   });
 });
+
+describe("NumberField color", () => {
+  const group = (container: HTMLElement) =>
+    container.querySelector("[data-slot='number-field-group']");
+
+  /*
+   * The hue lands on the group for the same reason `size` does: it dresses the
+   * cluster. The treatment remaps custom properties, and those inherit, so the
+   * two steppers pick it up without a prop of their own.
+   */
+  it("tints the group the steppers sit in", () => {
+    const { container } = render(<NumberField color="blue" />);
+
+    expect(group(container)).toHaveClass("palette-blue");
+    expect(group(container)?.className).toMatch(/composes-field-surface-color/);
+  });
+
+  /* The input takes the hue a second time. The shared surface sets `color` on
+     the element itself, which an inherited value could never outrank. */
+  it("tints the input directly, not only by inheritance", () => {
+    render(<NumberField color="blue" />);
+
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveClass("palette-blue");
+    expect(input.className).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the cluster on the plain surface with no color", () => {
+    const { container } = render(<NumberField />);
+
+    expect(group(container)?.className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+    expect(screen.getByRole("textbox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+});

@@ -3,6 +3,7 @@
 import { CreditCardIcon } from "@uiid/icons/credit-card";
 import { PhoneIcon } from "@uiid/icons/phone";
 import { Group, Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -85,6 +86,19 @@ export const Sizes = () => (
   <Stack gap={4} ax="stretch">
     {SIZES.map((size) => (
       <MaskInput key={size} mask="phone" size={size} label={size} />
+    ))}
+  </Stack>
+);
+
+/*
+ * A hue tints the whole field surface — background, border, and foreground all
+ * resolve from the one prop, so the control reads as a tinted surface rather
+ * than a neutral one with an accent.
+ */
+export const Colors = () => (
+  <Stack gap={4} ax="stretch">
+    {PALETTE_HUES.map((color) => (
+      <MaskInput key={color} mask="phone" color={color} label={color} />
     ))}
   </Stack>
 );

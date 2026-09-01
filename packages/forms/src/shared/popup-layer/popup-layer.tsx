@@ -4,6 +4,7 @@ import { Combobox as BasePopupLayer } from "@base-ui/react/combobox";
 import type { Combobox as BasePopupLayerTypes } from "@base-ui/react/combobox";
 import { Card } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
+import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
@@ -63,16 +64,25 @@ export const PopupLayerPositioner = ({
 };
 PopupLayerPositioner.displayName = "PopupLayerPositioner";
 
+/**
+ * The popup is portalled, so no class on the input can reach it — the hue has
+ * to arrive as a prop. `Card` already paints the palette, so the treatment is a
+ * pass-through; leaving `color` undefined lands on `Card`'s neutral default.
+ */
 export const PopupLayerPopup = ({
   slot,
   className,
+  color,
   children,
   ...props
-}: WithSlot<BasePopupLayerTypes.Popup.Props>) => {
+}: WithSlot<BasePopupLayerTypes.Popup.Props> & {
+  /** Palette hue for the popup surface, forwarded to the `Card` it renders as. */
+  color?: PaletteColor;
+}) => {
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
-      render={<Card p={2} gap={0} fullwidth />}
+      render={<Card color={color} p={2} gap={0} fullwidth />}
       className={cx(styles["popup-layer-popup"], className)}
       {...props}
     >

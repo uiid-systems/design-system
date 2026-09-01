@@ -1,3 +1,5 @@
+import type { PaletteColor } from "@uiid/tokens";
+
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
 
@@ -42,8 +44,14 @@ export type MaskPatternKey =
 
 export type InputElement = React.ComponentRef<"input">;
 
+/**
+ * Palette hue for the field surface. One hue resolves the control's background,
+ * foreground, border and hover together.
+ */
+export type MaskInputColor = PaletteColor;
+
 export interface MaskInputProps
-  extends Omit<React.ComponentProps<"input">, "size">, InputVariants {
+  extends Omit<React.ComponentProps<"input">, "size" | "color">, InputVariants {
   /** Content rendered before the input */
   before?: React.ReactNode;
   /** Content rendered after the input */
@@ -76,4 +84,11 @@ export interface MaskInputProps
   invalid?: boolean;
   /** Whether to disable masking and use raw input */
   withoutMask?: boolean;
+  /**
+   * Palette hue applied as a tinted bg/fg/border/hover surface treatment.
+   *
+   * Needs the `Omit` above, unlike the Base UI-typed controls: this props type
+   * is the native `<input>` surface, which really does carry `color?: string`.
+   */
+  color?: MaskInputColor;
 }

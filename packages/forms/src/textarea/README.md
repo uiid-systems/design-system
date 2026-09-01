@@ -9,6 +9,7 @@ Use Textarea when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — this sets the type scale and padding, independently of `rows`
 - Constrain the drag handle with `resize` (`none`, `vertical`, `horizontal`, `both`)
 - Soften the surface with `variant="ghost"` or fill the container with `fullwidth`
+- Tint the surface with a palette `color` (`red`, `blue`, …) — the same treatment Input wears, so a tinted pair cannot drift apart
 - Mark it `required`, `disabled`, or `readOnly`
 
 Leave `value` unset and the textarea runs itself; pass `value` and `onValueChange` to drive it yourself.

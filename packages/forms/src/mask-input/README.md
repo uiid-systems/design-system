@@ -11,7 +11,7 @@ Use MaskInput when you want to:
 - Check the value against the pattern's own rule with `onValidate` — Luhn for credit cards, a real month for expiry dates — and choose when with `validationMode`
 - Turn formatting off without swapping the component out, using `withoutMask`
 
-Everything [`Input`](../input/README.md) offers is here too: `label`, `description`, `before`/`after` slots, `size`, `variant`, `fullwidth`, and the `required`/`disabled`/`readOnly` states.
+Everything [`Input`](../input/README.md) offers is here too: `label`, `description`, `before`/`after` slots, `size`, `variant`, `fullwidth`, the palette `color` tint, and the `required`/`disabled`/`readOnly` states.
 
 Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 

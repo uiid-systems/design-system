@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -29,6 +30,18 @@ export const Sizes = () => (
   <Stack gap={4} ax="stretch">
     {SIZES.map((size) => (
       <Slider key={size} size={size} label={size} defaultValue={40} />
+    ))}
+  </Stack>
+);
+
+/*
+ * The hue fills the filled portion of the track and the thumb; the unfilled
+ * remainder stays neutral, so each slider carries a default value to show both.
+ */
+export const Colors = () => (
+  <Stack gap={4} ax="stretch">
+    {PALETTE_HUES.map((color) => (
+      <Slider key={color} color={color} label={color} defaultValue={40} />
     ))}
   </Stack>
 );

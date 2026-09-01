@@ -8,6 +8,7 @@ Use Combobox when you want to:
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
 - Put an icon or a hint inside the control with `before` and `after`
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier reaches the input, so it lines up with a sibling [`Input`](../input/README.md)
+- Tint it with a palette `color` (`red`, `blue`, …) — the hue paints the input and the popup together
 - Mark it `required`, `disabled`, or `readOnly`
 
 Leave `value` unset and the combobox runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.

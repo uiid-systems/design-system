@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -34,6 +35,19 @@ export const Sizes = () => (
   <Stack gap={4} ax="start">
     {SIZES.map((size) => (
       <NumberField key={size} size={size} label={size} defaultValue={1} />
+    ))}
+  </Stack>
+);
+
+/*
+ * A hue tints the whole field surface — background, border, and foreground all
+ * resolve from the one prop, so the control reads as a tinted surface rather
+ * than a neutral one with an accent.
+ */
+export const Colors = () => (
+  <Stack gap={4} ax="start">
+    {PALETTE_HUES.map((color) => (
+      <NumberField key={color} color={color} label={color} defaultValue={1} />
     ))}
   </Stack>
 );

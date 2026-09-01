@@ -15,6 +15,7 @@ export const ComboboxInput = ({
   before,
   after,
   size,
+  color,
   FieldProps,
   className,
   ...props
@@ -29,7 +30,19 @@ export const ComboboxInput = ({
       fullwidth
       {...FieldProps}
     >
-      <InputWrapper before={before} after={after} size={size} fullwidth>
+      {/*
+       * The hue goes to both the wrapper and the control because either can be
+       * the element wearing the surface. Combobox's monolith always renders an
+       * `after`, so the wrapper carries it there; a bare `ComboboxInput` with no
+       * slots has no wrapper at all and the `<input>` carries it instead.
+       */}
+      <InputWrapper
+        before={before}
+        after={after}
+        size={size}
+        color={color}
+        fullwidth
+      >
         {/*
          * `name` stops at the Field, which needs it to match a `Form` error.
          * The root already registers this input as the field's control and
@@ -43,6 +56,7 @@ export const ComboboxInput = ({
             inner: hasSlots,
             size,
             fullwidth: true,
+            color,
             className,
           })}
           placeholder={placeholder}

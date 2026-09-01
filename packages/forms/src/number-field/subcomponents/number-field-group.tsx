@@ -2,6 +2,7 @@
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { Group } from "@uiid/layout";
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { NumberFieldGroupProps } from "../number-field.types";
@@ -14,9 +15,15 @@ import styles from "../number-field.module.css";
  * parts and manages state; `Group` is the row the controls actually sit in, and
  * carries the shared surface, the focus ring, and the size class the stepper
  * buttons take their width from.
+ *
+ * The `color` hue lands here too. Both classes it needs are on this one
+ * element: the hue class publishes the `--palette-*` names, and the treatment
+ * class remaps the field surface onto them. Everything they set inherits, so
+ * the steppers inside are tinted without taking a prop.
  */
 export const NumberFieldGroup = ({
   size,
+  color,
   className,
   ...props
 }: NumberFieldGroupProps) => {
@@ -27,6 +34,7 @@ export const NumberFieldGroup = ({
       className={cx(
         styles["number-field"],
         numberFieldVariants({ size }),
+        color && cx(paletteColorStyles[color], styles["color"]),
         className,
       )}
       {...props}

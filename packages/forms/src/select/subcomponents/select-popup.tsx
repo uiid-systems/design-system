@@ -8,15 +8,21 @@ import type { SelectPopupProps } from "../select.types";
 
 import styles from "../select.module.css";
 
+/**
+ * The popup is portalled, so no class on the trigger can reach it — the hue has
+ * to arrive as a prop. `Card` already paints the palette, so the treatment is a
+ * pass-through; leaving `color` undefined lands on `Card`'s neutral default.
+ */
 export const SelectPopup = ({
   children,
   className,
+  color,
   ...props
 }: SelectPopupProps) => {
   return (
     <BaseSelect.Popup
       data-slot="select-popup"
-      render={<Card p={2} gap={0} fullwidth />}
+      render={<Card color={color} p={2} gap={0} fullwidth />}
       className={cx(styles["select-popup"], className)}
       {...props}
     >

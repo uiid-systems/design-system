@@ -313,3 +313,57 @@ describe("Combobox actions", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("Combobox color", () => {
+  const items = ["apple", "banana"];
+
+  /*
+   * The monolith always renders an `after`, so the wrapper exists and is the
+   * element wearing the surface. The inner input still takes the hue: the
+   * shared surface sets `color` on the element itself, which an inherited
+   * value could never outrank.
+   */
+  it("tints the wrapper and the inner input", () => {
+    const { container } = render(<Combobox items={items} color="blue" />);
+
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+    expect(screen.getByRole("combobox").className).toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  it("leaves the input on the plain surface with no color", () => {
+    render(<Combobox items={items} />);
+    expect(screen.getByRole("combobox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /* The popup is portalled out of the input's subtree, so no class on the
+     input can reach it — the hue has to arrive as a prop. */
+  it("tints the popup with the same hue", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={items} color="blue" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='combobox-popup']")).toHaveClass(
+      "palette-blue",
+    );
+  });
+
+  /* Card is always a palette hue; an unset `color` must land on its default. */
+  it("leaves the popup on Card's neutral hue with no color", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={items} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='combobox-popup']")).toHaveClass(
+      "palette-neutral",
+    );
+  });
+});

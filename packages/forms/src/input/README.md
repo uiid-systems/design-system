@@ -9,6 +9,7 @@ Use Input when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon, a unit, or a hint inside the control with `before` and `after`
 - Soften the surface with `variant="ghost"` (no border until focus) or fill the container with `fullwidth`
+- Tint the surface with a palette `color` (`red`, `blue`, …) — background, border, and text all resolve from the one hue, and an invalid input keeps its tint while the edge turns red
 - Mark it `required`, `disabled`, or `readOnly`
 
 Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself.

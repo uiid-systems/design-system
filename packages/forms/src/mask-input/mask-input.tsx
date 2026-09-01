@@ -5,6 +5,7 @@ import * as React from "react";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
+import { inputColorClassName } from "../input/input.styles";
 import { inputVariants } from "../input/input.variants";
 import { InputWrapper } from "../input/subcomponents";
 import { useMask } from "./hooks";
@@ -37,6 +38,7 @@ export const MaskInput = (props: MaskInputProps) => {
     size,
     fullwidth,
     variant,
+    color,
     label,
     description,
     FieldProps,
@@ -121,6 +123,7 @@ export const MaskInput = (props: MaskInputProps) => {
         size={size}
         fullwidth={fullwidth}
         variant={variant}
+        color={color}
       >
         <FieldControl
           data-slot="mask-input"
@@ -136,6 +139,10 @@ export const MaskInput = (props: MaskInputProps) => {
             before || after
               ? inputStyles["input-inner"]
               : inputVariants({ size, fullwidth, variant }),
+            // Which element wears the control surface flips on the slots, so
+            // the hue goes to both: to the wrapper above when it is the
+            // surface, and here for the foreground pairing either way.
+            inputColorClassName(color),
             className,
           )}
           render={

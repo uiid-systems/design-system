@@ -332,3 +332,54 @@ describe("Select control surface", () => {
     expect(screen.getByRole("combobox").tagName).toBe("BUTTON");
   });
 });
+
+describe("Select color", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("tints the trigger with the palette hue", () => {
+    render(<Select items={items} label="Pick" color="blue" />);
+
+    const trigger = screen.getByRole("combobox");
+
+    expect(trigger).toHaveClass("palette-blue");
+    expect(trigger.className).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the trigger on the plain surface with no color", () => {
+    render(<Select items={items} label="Pick" />);
+
+    expect(screen.getByRole("combobox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /*
+   * The popup is portalled out of the trigger's subtree, so no class on the
+   * trigger can reach it — the hue has to arrive as a prop.
+   */
+  it("tints the popup with the same hue", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} label="Pick" color="blue" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='select-popup']")).toHaveClass(
+      "palette-blue",
+    );
+  });
+
+  /* Card is always a palette hue; an unset `color` must land on its default. */
+  it("leaves the popup on Card's neutral hue with no color", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} label="Pick" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='select-popup']")).toHaveClass(
+      "palette-neutral",
+    );
+  });
+});

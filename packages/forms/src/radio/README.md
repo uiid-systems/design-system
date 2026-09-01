@@ -8,6 +8,7 @@ Use Radio when you want to:
 - Label the row inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Draw the row as a control surface with `bordered`, and put the dot after the label with `reversed`
+- Colour the checked dot with a palette `color` (`red`, `blue`, …) — the hue paints the selected state only, so a resting radio stays on the neutral scale
 - Hide the dot from sight with `hideIndicator` while it stays in the accessibility tree, so the row still reads and toggles as a radio
 
 `value` identifies the radio within its group; selection state lives on the group, not here.

@@ -28,6 +28,7 @@ export function Select<
   size = SELECT_DEFAULT_SIZE,
   fullwidth,
   variant,
+  color,
   disabled,
   required,
   name,
@@ -105,6 +106,7 @@ export function Select<
           size={size}
           fullwidth={fullwidth}
           variant={variant}
+          color={color}
           disabled={disabled}
           before={before}
           after={after}
@@ -117,7 +119,7 @@ export function Select<
         </SelectTrigger>
         <SelectPortal {...PortalProps}>
           <SelectPositioner {...PositionerProps}>
-            <SelectPopup {...PopupProps}>
+            <SelectPopup color={color} {...PopupProps}>
               <SelectList {...ListProps}>
                 {!items
                   ? children

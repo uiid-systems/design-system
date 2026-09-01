@@ -17,6 +17,7 @@ export const AutocompleteInput = ({
   before,
   after,
   size,
+  color,
   FieldProps,
   className,
   ...props
@@ -31,7 +32,19 @@ export const AutocompleteInput = ({
       fullwidth
       {...FieldProps}
     >
-      <InputWrapper before={before} after={after} size={size} fullwidth>
+      {/*
+       * The hue goes to both the wrapper and the control because either can be
+       * the element wearing the surface. Autocomplete renders no slots by
+       * default, so there is usually no wrapper and the `<input>` carries it;
+       * pass `before` or `after` and the wrapper appears and carries it instead.
+       */}
+      <InputWrapper
+        before={before}
+        after={after}
+        size={size}
+        color={color}
+        fullwidth
+      >
         {/*
          * `name` stops at the Field, which needs it to match a `Form` error.
          * The root already registers this input as the field's control, so
@@ -45,6 +58,7 @@ export const AutocompleteInput = ({
             inner: hasSlots,
             size,
             fullwidth: true,
+            color,
             className,
           })}
           placeholder={placeholder}

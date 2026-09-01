@@ -24,6 +24,20 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
 
     value: { control: "number", table: { category: "Data" } },
     defaultValue: { control: "number", table: { category: "Data" } },
@@ -63,6 +77,7 @@ export const Playground: Story = {
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const MinMax: Story = { render: () => <Examples.MinMax /> };
 export const Steps: Story = { render: () => <Examples.Steps /> };
 export const Format: Story = { render: () => <Examples.Format /> };

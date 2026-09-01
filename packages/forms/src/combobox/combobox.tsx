@@ -25,6 +25,7 @@ export const Combobox = ({
   before,
   after,
   size,
+  color,
   disabled,
   onFocus,
   onBlur,
@@ -61,6 +62,7 @@ export const Combobox = ({
             </InputGroupActions>
           }
           size={size}
+          color={color}
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -70,7 +72,7 @@ export const Combobox = ({
 
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>
-          <ComboboxPopup {...PopupProps}>
+          <ComboboxPopup color={color} {...PopupProps}>
             <ComboboxList {...ListProps}>
               {children ??
                 ((item: string) => (

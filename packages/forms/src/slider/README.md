@@ -12,6 +12,7 @@ Use Slider when you want to:
 - Run it top-to-bottom with `orientation="vertical"`
 - Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
 - Soften the surface with `variant="ghost"`, fill the container with `fullwidth`, or mark it `disabled`
+- Colour the filled track and thumb with a palette `color` (`red`, `blue`, …) — the unfilled track and the surrounding surface stay neutral
 
 Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the drag ends.
 
