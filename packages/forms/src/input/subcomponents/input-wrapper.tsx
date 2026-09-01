@@ -3,6 +3,7 @@
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import { inputColorClassName } from "../input.styles";
 import type { InputWrapperProps } from "../input.types";
 import { inputVariants } from "../input.variants";
 
@@ -14,6 +15,7 @@ export const InputWrapper = ({
   size,
   fullwidth,
   variant,
+  color,
   className,
   children,
 }: InputWrapperProps) => {
@@ -27,6 +29,7 @@ export const InputWrapper = ({
         styles["input"],
         styles["input-wrapper"],
         inputVariants({ size, fullwidth, variant }),
+        inputColorClassName(color),
         className,
       )}
     >

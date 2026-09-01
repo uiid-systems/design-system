@@ -12,6 +12,7 @@ export const Input = ({
   size,
   fullwidth,
   variant,
+  color,
   before,
   after,
   FieldProps,
@@ -35,6 +36,7 @@ export const Input = ({
         size={size}
         fullwidth={fullwidth}
         variant={variant}
+        color={color}
       >
         <InputControl
           name={name}
@@ -43,6 +45,7 @@ export const Input = ({
           size={size}
           fullwidth={fullwidth}
           variant={variant}
+          color={color}
           className={className}
           ref={ref}
           {...props}

@@ -49,6 +49,16 @@
   composes: composes-field-surface-ghost from global;
 }
 
+/*
+ * The `color` prop's treatment. Every declaration lives in the shared
+ * composition, so the controls that borrow this class — Select's trigger, the
+ * number field's input, MaskInput — pick up the hue mechanism without
+ * restating the var remap, and a retune happens in one place.
+ */
+.color {
+  composes: composes-field-surface-color from global;
+}
+
 /** Input Wrapper (for before/after slots) */
 .input-wrapper {
   /* The wrapper is not the control, so it reads disabled off the input it
