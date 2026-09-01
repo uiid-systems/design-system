@@ -22,6 +22,7 @@ export const CheckboxGroup = ({
   hideIndicators,
   bordered,
   reversed,
+  color,
   disabled,
   required,
   CheckboxProps,
@@ -55,6 +56,7 @@ export const CheckboxGroup = ({
                   hideIndicator={hideIndicators}
                   bordered={bordered}
                   reversed={reversed}
+                  color={color}
                   IndicatorProps={IndicatorProps}
                   {...CheckboxProps}
                   value={value}

@@ -14,6 +14,7 @@ export const Radio = ({
   label,
   description,
   size,
+  color,
   reversed,
   bordered,
   hideIndicator,
@@ -35,6 +36,7 @@ export const Radio = ({
       <RadioRoot
         value={value}
         size={size}
+        color={color}
         hideIndicator={hideIndicator}
         {...props}
       >

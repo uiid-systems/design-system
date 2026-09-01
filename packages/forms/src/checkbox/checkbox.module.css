@@ -24,7 +24,7 @@
   }
 
   &[data-checked] {
-    background-color: var(--shade-foreground);
+    background-color: var(--control-fill, var(--shade-foreground));
   }
 
   &:focus-visible {
@@ -48,6 +48,16 @@
   }
 }
 
+/*
+ * The `color` prop's treatment. Every declaration lives in the shared
+ * composition, so the hue lands as `--control-fill` / `--control-on-fill` and
+ * the checked rules above read those names with their shade values as the
+ * fallback — an uncoloured checkbox resolves exactly as it did before.
+ */
+.color {
+  composes: composes-control-fill-color from global;
+}
+
 /* The row is not the control, so it reads disabled off the box inside it. */
 .checkbox-label {
   composes: composes-disabled-within from global;
@@ -55,7 +65,9 @@
 
 .checkbox-indicator {
   display: flex;
-  color: var(--shade-background);
+  /* `--control-on-fill` is set on the box and inherits down to here, so the
+     checkmark pairs with a coloured fill without the box needing to reach it. */
+  color: var(--control-on-fill, var(--shade-background));
 
   &[data-unchecked] {
     display: none;

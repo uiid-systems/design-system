@@ -2,6 +2,7 @@
 
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { Group } from "@uiid/layout";
+import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { RADIO_DEFAULT_SIZE } from "../radio.constants";
@@ -13,20 +14,29 @@ import styles from "../radio.module.css";
 export const RadioRoot = ({
   value,
   size = RADIO_DEFAULT_SIZE,
+  color,
   className,
   hideIndicator,
   children,
   ...props
 }: RadioRootProps) => {
+  const colorClassName = color
+    ? cx(paletteColorStyles[color], styles["color"])
+    : undefined;
+
   return (
     <BaseRadio.Root
       data-slot="radio"
       value={value}
       nativeButton
       render={<Group render={<button />} ax="center" ay="center" p={0} m={0} />}
-      className={cx(styles["radio"], radioVariants({ size }), className, {
-        "sr-only": hideIndicator,
-      })}
+      className={cx(
+        styles["radio"],
+        radioVariants({ size }),
+        colorClassName,
+        className,
+        { "sr-only": hideIndicator },
+      )}
       {...props}
     >
       {children}

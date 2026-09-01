@@ -154,6 +154,32 @@
   }
 
   /**
+   * The palette hue on a *selected* surface — the `color` prop's treatment for
+   * the selection controls (checkbox, radio, switch, slider).
+   *
+   * Fill, not tint. These controls have no content to read through: the surface
+   * itself is the signal that something is on, so it takes the solid treatment a
+   * filled Button wears rather than the tint a text field does. Only the
+   * selected state is coloured; unchecked and resting surfaces stay on shade
+   * tokens, so the hue marks the choice rather than the widget.
+   *
+   * The two names are deliberately generic. Each control reads them with its own
+   * shade fallback — `var(--control-fill, var(--shade-foreground))` — so an
+   * uncoloured control resolves exactly as it did before this class existed, and
+   * adopting the hue is one `composes:` line plus no default to keep in sync.
+   * That is why the mapping lives here once instead of four near-identical
+   * remaps of four differently-named component variables.
+   *
+   * `--control-on-fill` is the pairing measured against `--palette-fill`, and it
+   * inherits, so a checkmark or a switch thumb nested inside the control picks
+   * it up without the rule needing to know the hue.
+   */
+  .composes-control-fill-color {
+    --control-fill: var(--palette-fill);
+    --control-on-fill: var(--palette-on-fill);
+  }
+
+  /**
    * Ghost drops the field surface's resting fill and edge, and nothing else.
    *
    * Declared after `.composes-field-surface` so it wins the tie at equal

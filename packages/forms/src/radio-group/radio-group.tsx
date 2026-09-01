@@ -13,6 +13,7 @@ export const RadioGroup = ({
   direction = "vertical",
   bordered,
   reversed,
+  color,
   hideIndicators,
   disabled,
   required,
@@ -47,6 +48,7 @@ export const RadioGroup = ({
                 hideIndicator={hideIndicators}
                 bordered={bordered}
                 reversed={reversed}
+                color={color}
                 value={value}
                 label={label}
                 disabled={itemDisabled || disabled}
