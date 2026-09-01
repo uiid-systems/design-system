@@ -174,3 +174,30 @@ describe("Radio size variant", () => {
     },
   );
 });
+
+describe("Radio color", () => {
+  const ringClassName = (container: HTMLElement) =>
+    container.querySelector("[data-slot='radio']")?.className ?? "";
+
+  it("carries the palette hue and the fill treatment on the ring", () => {
+    const { container } = render(
+      <RadioGroupRoot defaultValue="on">
+        <Radio value="on" color="blue" label="On" />
+      </RadioGroupRoot>,
+    );
+
+    expect(container.querySelector("[data-slot='radio']")).toHaveClass(
+      "palette-blue",
+    );
+    expect(ringClassName(container)).toMatch(/composes-control-fill-color/);
+  });
+
+  it("leaves the ring on the shade scale with no color", () => {
+    const { container } = render(
+      <RadioGroupRoot defaultValue="on">
+        <Radio value="on" label="On" />
+      </RadioGroupRoot>,
+    );
+    expect(ringClassName(container)).not.toMatch(/composes-control-fill-color/);
+  });
+});
