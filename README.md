@@ -1,6 +1,7 @@
 # UIID
 
 A modular React component library built with React 19, TypeScript, and [Base UI](https://base-ui.com/). Components are styled with CSS Modules and Style Dictionary. Library ships as one consolidated, tree-shakeable package or independent packages.
+
 ## Installation
 
 ```bash
