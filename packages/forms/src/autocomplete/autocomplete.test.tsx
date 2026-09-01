@@ -207,3 +207,66 @@ describe("Autocomplete size variant", () => {
     expect(wrapper?.className).toContain("size-large");
   });
 });
+
+describe("Autocomplete color", () => {
+  const items = ["apple", "banana"];
+
+  /*
+   * Autocomplete renders no slots by default, so `InputWrapper` collapses to a
+   * fragment and the `<input>` is the element wearing the surface.
+   */
+  it("tints the bare input when there is no wrapper", () => {
+    const { container } = render(<Autocomplete items={items} color="blue" />);
+
+    expect(container.querySelector("[data-slot='input-wrapper']")).toBeNull();
+    expect(screen.getByRole("combobox")).toHaveClass("palette-blue");
+    expect(screen.getByRole("combobox").className).toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /* Pass a slot and the wrapper appears and carries the surface instead. */
+  it("tints the wrapper once slots bring one into existence", () => {
+    const { container } = render(
+      <Autocomplete items={items} color="blue" before="@" />,
+    );
+
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the input on the plain surface with no color", () => {
+    render(<Autocomplete items={items} />);
+    expect(screen.getByRole("combobox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /* The popup is portalled out of the input's subtree, so no class on the
+     input can reach it — the hue has to arrive as a prop. Autocomplete opens
+     on input rather than on click, so the list needs a query to filter. */
+  it("tints the popup with the same hue", async () => {
+    const user = userEvent.setup();
+    render(<Autocomplete items={items} color="blue" />);
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-popup']"),
+    ).toHaveClass("palette-blue");
+  });
+
+  /* Card is always a palette hue; an unset `color` must land on its default. */
+  it("leaves the popup on Card's neutral hue with no color", async () => {
+    const user = userEvent.setup();
+    render(<Autocomplete items={items} />);
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-popup']"),
+    ).toHaveClass("palette-neutral");
+  });
+});

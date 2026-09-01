@@ -472,3 +472,34 @@ describe("MaskInput Field.Control integration", () => {
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 });
+
+describe("MaskInput color", () => {
+  it("tints the control with the palette hue", () => {
+    render(<MaskInput mask="phone" color="blue" />);
+
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveClass("palette-blue");
+    expect(input.className).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the control on the plain surface with no color", () => {
+    render(<MaskInput mask="phone" />);
+    expect(screen.getByRole("textbox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /* With slots the wrapper is the element wearing the surface, so it takes the
+     hue too — the same split Input makes. */
+  it("tints the wrapper when slots are present", () => {
+    const { container } = render(
+      <MaskInput mask="phone" color="blue" before="+1" />,
+    );
+
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+  });
+});
