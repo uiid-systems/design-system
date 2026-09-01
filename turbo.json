@@ -21,6 +21,11 @@
     },
     "build-storybook": {
       "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/AGENTS.md",
+        "$TURBO_ROOT$/.agents/**"
+      ],
       "outputs": ["storybook-static/**"]
     }
   }
