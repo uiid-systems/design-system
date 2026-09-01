@@ -1,5 +1,4 @@
-import type { PaletteColor } from "@uiid/tokens";
-import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
+import { paletteVariantStyles } from "@uiid/tokens";
 import { cva } from "@uiid/utils";
 
 import styles from "./text.module.css";
@@ -9,12 +8,7 @@ import styles from "./text.module.css";
  * names, paired with Text's own rule that paints from the display one. Every hue
  * renders the same way, so the pairing is derived rather than listed.
  */
-const textColorStyles = Object.fromEntries(
-  PALETTE_HUES.map((hue) => [
-    hue,
-    `${paletteColorStyles[hue]} ${styles["palette-text"]}`,
-  ]),
-) as Record<PaletteColor, string>;
+const textColorStyles = paletteVariantStyles(styles["palette-text"]);
 
 export const textVariants = cva({
   variants: {

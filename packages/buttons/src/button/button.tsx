@@ -2,7 +2,7 @@
 
 import { Button as BaseButton } from "@base-ui/react/button";
 import { ConditionalRender, Layer } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { BUTTON_DEFAULT_SIZE } from "./button.constants";
@@ -28,9 +28,7 @@ export const Button = ({
   children,
   ...props
 }: ButtonProps) => {
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color"])
-    : undefined;
+  const colorClassName = paletteClassName(color, styles["color"]);
 
   return (
     <ConditionalRender

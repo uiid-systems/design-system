@@ -1,4 +1,4 @@
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { InputColor, InputVariants } from "./input.types";
@@ -22,7 +22,7 @@ export type InputControlClassNameOptions = InputVariants & {
  * this surface apply the hue identically.
  */
 export const inputColorClassName = (color?: InputColor) =>
-  color ? cx(paletteColorStyles[color], styles["color"]) : undefined;
+  paletteClassName(color, styles["color"]);
 
 /**
  * The control surface an `<input>` needs, without the element itself.

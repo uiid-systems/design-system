@@ -2,7 +2,7 @@
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { Group } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { NumberFieldGroupProps } from "../number-field.types";
@@ -34,7 +34,7 @@ export const NumberFieldGroup = ({
       className={cx(
         styles["number-field"],
         numberFieldVariants({ size }),
-        color && cx(paletteColorStyles[color], styles["color"]),
+        paletteClassName(color, styles["color"]),
         className,
       )}
       {...props}
