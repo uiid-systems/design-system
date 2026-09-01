@@ -3,5 +3,5 @@
   "framework": null,
   "buildCommand": "cd ../.. && pnpm turbo run build-storybook --filter=@uiid/storybook",
   "outputDirectory": "storybook-static",
-  "ignoreCommand": "cd ../.. && git fetch --no-tags --depth=100 origin +refs/heads/main:refs/remotes/origin/main > /dev/null 2>&1; npx --yes turbo query affected --tasks build-storybook --packages @uiid/storybook --base ${VERCEL_GIT_PREVIOUS_SHA:-origin/main} --exit-code || exit 1"
+  "ignoreCommand": "bash scripts/vercel-ignore.sh"
 }
