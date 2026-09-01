@@ -8,6 +8,7 @@ Use Switch when you want to:
 - Label the row inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier sets the track's width and height, and the thumb and its travel follow from that pair
 - Draw the row as a control surface with `bordered`, and put the switch after the label with `reversed`
+- Colour the checked track with a palette `color` (`red`, `blue`, …) — the thumb takes the paired foreground, and the off state stays on the neutral scale
 - Mark it `disabled` or `readOnly`
 
 Leave `checked` unset and the switch runs itself; pass `checked` and `onCheckedChange` to drive it yourself.

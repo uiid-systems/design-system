@@ -29,6 +29,20 @@ const meta = {
       options: ["ghost"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
     resize: {
       control: "select",
       options: ["none", "vertical", "horizontal", "both"],
@@ -57,6 +71,7 @@ export const Playground: Story = { render: (args) => <Textarea {...args} /> };
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const Rows: Story = { render: () => <Examples.Rows /> };
 export const Resize: Story = { render: () => <Examples.Resize /> };
 export const Ghost: Story = { render: () => <Examples.Ghost /> };

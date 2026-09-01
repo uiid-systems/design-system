@@ -19,6 +19,7 @@ export const NumberField = ({
   disabled,
   required,
   size = NUMBER_FIELD_DEFAULT_SIZE,
+  color,
   RootProps,
   GroupProps,
   DecrementProps,
@@ -37,11 +38,12 @@ export const NumberField = ({
       {...FieldProps}
     >
       <NumberFieldRoot name={name} {...RootProps} {...props}>
-        <NumberFieldGroup size={size} {...GroupProps}>
+        <NumberFieldGroup size={size} color={color} {...GroupProps}>
           <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 
           <NumberFieldInput
             size={size}
+            color={color}
             placeholder={placeholder}
             required={required}
             {...InputProps}

@@ -31,6 +31,20 @@ const meta = {
       options: ["ghost"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
 
     mask: {
       control: "select",
@@ -95,6 +109,7 @@ export const MaskPlaceholder: Story = {
 };
 export const Currency: Story = { render: () => <Examples.Currency /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const BeforeAfterSlots: Story = {
   render: () => <Examples.BeforeAfterSlots />,
 };

@@ -28,6 +28,20 @@ const meta = {
       options: ["ghost"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
     orientation: {
       control: "select",
       options: ["horizontal", "vertical"],
@@ -81,6 +95,7 @@ export const Playground: Story = { render: (args) => <Slider {...args} /> };
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const Range: Story = { render: () => <Examples.Range /> };
 export const MinMaxStep: Story = { render: () => <Examples.MinMaxStep /> };
 export const Format: Story = { render: () => <Examples.Format /> };

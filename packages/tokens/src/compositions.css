@@ -327,8 +327,26 @@
     transition: background-color var(--globals-transition-duration) ease-in-out;
     cursor: pointer;
 
+    /*
+     * The highlight follows the popup's hue. Every popup that hosts these is a
+     * Card, and Card always carries a palette class — `neutral` by default — so
+     * `--palette-tint-hover` resolves whether or not a `color` was passed; the
+     * `--shade-accent` fallback covers an option rendered outside one.
+     *
+     * On an uncoloured popup this is all but invisible: neutral tint-hover is
+     * #d9d8d6 against the #ddddd9 it replaces in light, and #2d2c2a against
+     * #242423 in dark. On a tinted popup it is the whole point — the previous
+     * flat `--shade-accent` painted a grey bar across a coloured surface, worst
+     * in dark mode, because the palette classes publish `--palette-*` and never
+     * remap `--shade-accent`.
+     *
+     * Only the highlight moves. The selected-item indicator, group labels and
+     * `@uiid/lists`' own treatment are still on shade tokens, and choosing
+     * their tokens — measured against a tinted surface rather than the page —
+     * is UI-194.
+     */
     &:where([data-highlighted], :focus-visible) {
-      background-color: var(--shade-accent);
+      background-color: var(--palette-tint-hover, var(--shade-accent));
     }
 
     &:where([data-disabled]) {

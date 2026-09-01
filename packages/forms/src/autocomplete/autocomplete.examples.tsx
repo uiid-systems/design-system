@@ -2,6 +2,7 @@
 
 import { SearchIcon } from "@uiid/icons/search";
 import { Group, Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -34,6 +35,26 @@ export const Sizes = () => (
         key={size}
         size={size}
         label={size}
+        items={MOCK_AUTOCOMPLETE_ITEMS}
+        placeholder="Search fruit"
+      />
+    ))}
+  </Stack>
+);
+
+/*
+ * A hue tints the whole field surface — background, border, and foreground all
+ * resolve from the one prop, so the control reads as a tinted surface rather
+ * than a neutral one with an accent. The same hue rides into the dropdown
+ * popup, which is a `Card`, so it is visible on open.
+ */
+export const Colors = () => (
+  <Stack gap={4} ax="stretch">
+    {PALETTE_HUES.map((color) => (
+      <Autocomplete
+        key={color}
+        color={color}
+        label={color}
         items={MOCK_AUTOCOMPLETE_ITEMS}
         placeholder="Search fruit"
       />

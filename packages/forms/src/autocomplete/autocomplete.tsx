@@ -21,6 +21,7 @@ export const Autocomplete = ({
   before,
   after,
   size,
+  color,
   disabled,
   onFocus,
   onBlur,
@@ -49,6 +50,7 @@ export const Autocomplete = ({
         before={before}
         after={after}
         size={size}
+        color={color}
         onFocus={onFocus}
         onBlur={onBlur}
         {...InputProps}
@@ -56,7 +58,7 @@ export const Autocomplete = ({
 
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
-          <AutocompletePopup {...PopupProps}>
+          <AutocompletePopup color={color} {...PopupProps}>
             <AutocompleteList {...ListProps}>
               {children ??
                 ((item: string) => (

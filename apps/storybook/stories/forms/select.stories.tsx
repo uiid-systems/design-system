@@ -30,6 +30,20 @@ const meta = {
       options: ["ghost"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
 
     items: { control: "object", table: { category: "Data" } },
     value: { control: "text", table: { category: "Data" } },
@@ -66,6 +80,7 @@ export const Playground: Story = { render: (args) => <Select {...args} /> };
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const Placeholder: Story = { render: () => <Examples.Placeholder /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const BeforeAfterSlots: Story = {
   render: () => <Examples.BeforeAfterSlots />,
 };

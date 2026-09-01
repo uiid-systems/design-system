@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -26,6 +27,18 @@ export const Sizes = () => (
   <Stack gap={4}>
     {SIZES.map((size) => (
       <Checkbox key={size} size={size} label={size} />
+    ))}
+  </Stack>
+);
+
+/*
+ * The hue fills the checked box only — an unchecked box stays on the shade
+ * scale — so every row here is checked or there would be nothing to see.
+ */
+export const Colors = () => (
+  <Stack gap={4}>
+    {PALETTE_HUES.map((color) => (
+      <Checkbox key={color} color={color} defaultChecked label={color} />
     ))}
   </Stack>
 );

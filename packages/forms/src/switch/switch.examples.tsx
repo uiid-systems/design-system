@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -30,6 +31,18 @@ export const Sizes = () => (
   <Stack gap={4}>
     {SIZES.map((size) => (
       <Switch key={size} size={size} label={size} defaultChecked />
+    ))}
+  </Stack>
+);
+
+/*
+ * The hue fills the checked track only — an off switch stays on the shade
+ * scale — so every row here is on or there would be nothing to see.
+ */
+export const Colors = () => (
+  <Stack gap={4}>
+    {PALETTE_HUES.map((color) => (
+      <Switch key={color} color={color} defaultChecked label={color} />
     ))}
   </Stack>
 );

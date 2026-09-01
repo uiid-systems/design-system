@@ -21,6 +21,20 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
+    color: {
+      control: "select",
+      options: [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "indigo",
+        "purple",
+        "neutral",
+      ],
+      table: { category: "Variants" },
+    },
 
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
@@ -46,6 +60,7 @@ export const WithDescription: Story = {
   render: () => <Examples.WithDescription />,
 };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
+export const Colors: Story = { render: () => <Examples.Colors /> };
 export const Bordered: Story = { render: () => <Examples.Bordered /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };

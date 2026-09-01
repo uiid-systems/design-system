@@ -90,6 +90,21 @@
   border-end-start-radius: 0;
 }
 
+/* The `color` prop's treatment — the same shared composition Input wears, so a
+   tinted number field and a tinted input cannot drift apart.
+
+   Like the size tier below, this lands on the group rather than on each control.
+   The composition remaps only custom properties (plus `color`, which the group
+   has no text of its own to spend), and custom properties inherit, so the two
+   steppers resolve their `composes-field-surface` fill, hover and border from
+   the hue sitting on the cluster. The input is the one part that also takes the
+   hue directly — `composes-field-surface` sets `color` on the element itself,
+   which an inherited value could never outrank — and it gets it through
+   `inputControlClassName`. */
+.color {
+  composes: composes-field-surface-color from global;
+}
+
 /* Control scale. The tier lands on the group: it sizes the cluster as a whole,
    and publishes --forms-icon-size for the stepper glyphs inside it. */
 .size-xsmall {

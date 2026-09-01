@@ -1,6 +1,7 @@
 "use client";
 
 import { Group, Stack } from "@uiid/layout";
+import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -35,6 +36,19 @@ export const Sizes = () => (
         label={size}
         placeholder="What changed?"
       />
+    ))}
+  </Stack>
+);
+
+/*
+ * A hue tints the whole field surface — background, border, and foreground all
+ * resolve from the one prop, so the control reads as a tinted surface rather
+ * than a neutral one with an accent.
+ */
+export const Colors = () => (
+  <Stack gap={4} ax="stretch">
+    {PALETTE_HUES.map((color) => (
+      <Textarea key={color} color={color} label={color} rows={2} />
     ))}
   </Stack>
 );

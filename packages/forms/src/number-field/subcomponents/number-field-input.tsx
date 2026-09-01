@@ -10,6 +10,7 @@ import styles from "../number-field.module.css";
 
 export const NumberFieldInput = ({
   size,
+  color,
   className,
   ...props
 }: NumberFieldInputProps) => {
@@ -25,6 +26,7 @@ export const NumberFieldInput = ({
       render={<input />}
       className={inputControlClassName({
         size,
+        color,
         className: cx(styles["number-field-input"], className),
       })}
       {...props}

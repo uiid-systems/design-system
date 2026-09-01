@@ -4,6 +4,7 @@ import { Select as BaseSelect } from "@base-ui/react/select";
 import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import { inputColorClassName } from "../../input/input.styles";
 import { inputVariants } from "../../input/input.variants";
 import type { SelectTriggerProps } from "../select.types";
 
@@ -14,6 +15,7 @@ export const SelectTrigger = ({
   size,
   variant,
   fullwidth,
+  color,
   before,
   after,
   className,
@@ -44,6 +46,7 @@ export const SelectTrigger = ({
         hasSlots && styles["select-trigger-slots"],
         inputStyles["input"],
         inputVariants({ size, variant, fullwidth }),
+        inputColorClassName(color),
         className,
       )}
       {...props}
