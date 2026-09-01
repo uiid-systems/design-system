@@ -165,3 +165,38 @@ describe("Input shared compositions", () => {
     ).toMatch(/composes-disabled-within/);
   });
 });
+
+describe("Input color", () => {
+  it("tints the control with the palette hue", () => {
+    render(<Input color="blue" />);
+
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveClass("palette-blue");
+    expect(input.className).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the control on the plain surface with no color", () => {
+    render(<Input />);
+    expect(screen.getByRole("textbox").className).not.toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+
+  /*
+   * With slots the wrapper is the element wearing the surface, so it takes the
+   * hue. The inner input still needs its own copy: the shared surface sets
+   * `color` on the element directly, which an inherited value could not outrank.
+   */
+  it("tints the wrapper and the inner control when slots are present", () => {
+    const { container } = render(<Input before="$" color="blue" />);
+
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+    expect(screen.getByRole("textbox").className).toMatch(
+      /composes-field-surface-color/,
+    );
+  });
+});

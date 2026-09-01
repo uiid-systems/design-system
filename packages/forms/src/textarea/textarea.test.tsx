@@ -293,3 +293,27 @@ describe("Textarea shared compositions", () => {
     expect(className()).toMatch(/composes-fullwidth/);
   });
 });
+
+describe("Textarea color", () => {
+  const className = () => screen.getByRole("textbox").className;
+
+  it("tints the control with the palette hue", () => {
+    render(<Textarea color="blue" />);
+
+    expect(screen.getByRole("textbox")).toHaveClass("palette-blue");
+    expect(className()).toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the control on the plain surface with no color", () => {
+    render(<Textarea />);
+    expect(className()).not.toMatch(/composes-field-surface-color/);
+  });
+
+  /* The hue rides the same shared composition Input wears, so the two cannot
+     drift apart. */
+  it("wears the same shared composition Input does", () => {
+    render(<Textarea color="blue" variant="ghost" />);
+    expect(className()).toMatch(/composes-field-surface-color/);
+    expect(className()).toMatch(/composes-field-surface-ghost/);
+  });
+});
