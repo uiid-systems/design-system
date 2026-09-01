@@ -50,6 +50,26 @@ const config: StorybookConfig = {
       ...sourcePackages.map(({ name }) => name),
     ];
 
+    // `@uiid/*` resolve to source above, so Rollup bundles the 185 files that
+    // carry "use client" for downstream Next.js consumers — plus Base UI's own
+    // "use client" modules. The directive is inert in a bundled static Storybook,
+    // and Rollup warns once per file, then warns again when it cannot map that
+    // warning back through the SWC sourcemap. 653 of the build's 710 warning
+    // lines are these two, which is enough to bury a real failure in a CI log.
+    config.build ??= {};
+    config.build.rollupOptions ??= {};
+    const inheritedOnWarn = config.build.rollupOptions.onwarn;
+    config.build.rollupOptions.onwarn = (warning, defaultHandler) => {
+      if (
+        warning.code === "MODULE_LEVEL_DIRECTIVE" ||
+        warning.code === "SOURCEMAP_ERROR"
+      ) {
+        return;
+      }
+      if (inheritedOnWarn) inheritedOnWarn(warning, defaultHandler);
+      else defaultHandler(warning);
+    };
+
     return applyPostCSSLayers(config);
   },
 };
