@@ -2,7 +2,7 @@
 
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { Group } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../checkbox.constants";
@@ -18,9 +18,7 @@ export const CheckboxRoot = ({
   className,
   ...props
 }: CheckboxRootProps) => {
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color"])
-    : undefined;
+  const colorClassName = paletteClassName(color, styles["color"]);
 
   return (
     <BaseCheckbox.Root

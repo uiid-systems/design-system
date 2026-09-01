@@ -5,4 +5,10 @@
  * instead of restating the hue list.
  */
 export type { PaletteColor } from "./palette";
-export { PALETTE_HUES, paletteAnchor, paletteColorStyles } from "./palette";
+export {
+  PALETTE_HUES,
+  paletteAnchor,
+  paletteClassName,
+  paletteColorStyles,
+  paletteVariantStyles,
+} from "./palette";

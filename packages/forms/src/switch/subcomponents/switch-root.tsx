@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { SWITCH_DEFAULT_SIZE } from "../switch.constants";
@@ -17,9 +17,7 @@ export const SwitchRoot = ({
   children,
   ...props
 }: SwitchRootProps) => {
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color"])
-    : undefined;
+  const colorClassName = paletteClassName(color, styles["color"]);
 
   return (
     <BaseSwitch.Root

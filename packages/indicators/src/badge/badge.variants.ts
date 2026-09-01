@@ -1,17 +1,14 @@
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteVariantStyles } from "@uiid/tokens";
 import { cva } from "@uiid/utils";
 
 import styles from "./badge.module.css";
 
-const coloredClass = styles["colored"];
-
-/** Badge color styles — palette classes combined with badge-specific bg/fg/border derivation */
-export const badgeColorStyles = Object.fromEntries(
-  Object.entries(paletteColorStyles).map(([key, value]) => [
-    key,
-    `${value} ${coloredClass}`,
-  ]),
-) as Record<keyof typeof paletteColorStyles, string>;
+/**
+ * Every hue paired with Badge's own bg/fg/border derivation. Avatar, Timeline
+ * and Progress import this rather than rebuilding the pairing, so the four wear
+ * one treatment.
+ */
+export const badgeColorStyles = paletteVariantStyles(styles["colored"]);
 
 export const badgeVariants = cva({
   variants: {

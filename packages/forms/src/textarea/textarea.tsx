@@ -1,6 +1,6 @@
 "use client";
 
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
@@ -44,7 +44,7 @@ export const Textarea = ({
         className={cx(
           styles["textarea"],
           textareaVariants({ size, resize, fullwidth, variant }),
-          color && cx(paletteColorStyles[color], styles["color"]),
+          paletteClassName(color, styles["color"]),
           className,
         )}
         render={<textarea ref={ref} rows={rows} {...props} />}

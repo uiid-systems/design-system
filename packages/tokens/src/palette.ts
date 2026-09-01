@@ -44,3 +44,35 @@ export const paletteAnchor = (hue: PaletteColor): string =>
 export const paletteColorStyles = Object.fromEntries(
   PALETTE_HUES.map((hue) => [hue, `palette-${hue}`]),
 ) as Record<PaletteColor, string>;
+
+/**
+ * The pair of classes a hue rides on: the hue itself, and the component's own
+ * treatment class that reads the `--palette-*` names it publishes. Neither half
+ * does anything alone — the hue publishes names nothing consumes, and the
+ * treatment consumes names nothing published — so they are only ever applied
+ * together.
+ *
+ * Returns `undefined` rather than an empty string for an unset hue, so a
+ * component drops straight through `cx` and lands on its shade defaults.
+ * `treatment` is the caller's CSS-module class, which is why the pairing is a
+ * function here instead of a second map: the module hash is per-component.
+ */
+export const paletteClassName = (
+  color: PaletteColor | undefined,
+  treatment: string,
+): string | undefined =>
+  color ? `${paletteColorStyles[color]} ${treatment}` : undefined;
+
+/**
+ * The same pairing for every hue at once, shaped as the map a `cva` `color`
+ * variant takes. Use this where the hue is a variant rather than a prop the
+ * component branches on — the treatment is identical across hues, so the map is
+ * derived rather than listed and a new ramp in the token JSON appears here on
+ * its own.
+ */
+export const paletteVariantStyles = (
+  treatment: string,
+): Record<PaletteColor, string> =>
+  Object.fromEntries(
+    PALETTE_HUES.map((hue) => [hue, `${paletteColorStyles[hue]} ${treatment}`]),
+  ) as Record<PaletteColor, string>;

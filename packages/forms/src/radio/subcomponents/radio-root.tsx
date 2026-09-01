@@ -2,7 +2,7 @@
 
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { Group } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import { RADIO_DEFAULT_SIZE } from "../radio.constants";
@@ -20,9 +20,7 @@ export const RadioRoot = ({
   children,
   ...props
 }: RadioRootProps) => {
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color"])
-    : undefined;
+  const colorClassName = paletteClassName(color, styles["color"]);
 
   return (
     <BaseRadio.Root

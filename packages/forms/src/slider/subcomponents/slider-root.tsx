@@ -2,7 +2,7 @@
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
 import { Group } from "@uiid/layout";
-import { paletteColorStyles } from "@uiid/tokens";
+import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
 import type { SliderRootProps } from "../slider.types";
@@ -27,9 +27,7 @@ export const SliderRoot = ({
    * neutral. The root is an ancestor of track, indicator and thumb, so one
    * class cascades to all three.
    */
-  const colorClassName = color
-    ? cx(paletteColorStyles[color], styles["color"])
-    : undefined;
+  const colorClassName = paletteClassName(color, styles["color"]);
 
   return (
     <BaseSlider.Root
