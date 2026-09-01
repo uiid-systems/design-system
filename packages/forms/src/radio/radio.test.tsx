@@ -7,6 +7,9 @@ import { RadioGroup } from "../radio-group/radio-group";
 import { RadioGroupRoot } from "../radio-group/subcomponents";
 import { Radio } from "./radio";
 
+import checkboxStyles from "../checkbox/checkbox.module.css";
+import styles from "./radio.module.css";
+
 describe("Radio", () => {
   const defaultItems = [
     { value: "a", label: "Option A" },
@@ -155,4 +158,19 @@ describe("Radio size variant", () => {
     expect(radioClassName(container)).not.toContain("size-small");
     expect(radioClassName(container)).not.toContain("size-medium");
   });
+
+  /* The box scales with Checkbox's tier class, but the indicator dot is
+     Radio's own, so both have to land. The assertions above match either one
+     by substring and would still pass if Radio's dropped off. */
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "pairs the shared %s box tier with Radio's own dot tier",
+    (size) => {
+      const { container } = renderRadio({ value: "a", size });
+      const className = radioClassName(container);
+
+      expect(className).toContain(checkboxStyles[`size-${size}`]);
+      expect(className).toContain(styles[`size-${size}`]);
+      expect(checkboxStyles[`size-${size}`]).not.toBe(styles[`size-${size}`]);
+    },
+  );
 });

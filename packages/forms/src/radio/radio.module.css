@@ -5,6 +5,10 @@
   composes: composes-disabled from global;
   composes: composes-invalid from global;
 
+  /* Tier default, overridden by the `.size-*` classes below. Mirrors how
+     `.checkbox` bases its width on the medium tier. */
+  --radio-indicator-size: var(--radio-indicator-size-md);
+
   aspect-ratio: 1;
   border-radius: 100%;
   outline: 0;
@@ -41,4 +45,25 @@
     height: var(--radio-indicator-size);
     background-color: var(--shade-halftone);
   }
+}
+
+/* Control-scale tiers. Radio borrows Checkbox's tier classes for the box, but
+   the dot is Radio's own, so each tier publishes the `--radio-indicator-size`
+   the indicator above reads — the same way `switch.module.css` publishes its
+   width/height pair.
+
+   The sizes track the box's *inner* area rather than its outer width: the 1px
+   border does not scale, so one flat dot value drifted from ~67% of the inner
+   circle at xsmall down to ~36% at large. */
+.size-xsmall {
+  --radio-indicator-size: var(--radio-indicator-size-xs);
+}
+.size-small {
+  --radio-indicator-size: var(--radio-indicator-size-sm);
+}
+.size-medium {
+  --radio-indicator-size: var(--radio-indicator-size-md);
+}
+.size-large {
+  --radio-indicator-size: var(--radio-indicator-size-lg);
 }
