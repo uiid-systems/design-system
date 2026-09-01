@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
+    "@uiid/icons#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "icons/**"]
+    },
     "docs#build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
