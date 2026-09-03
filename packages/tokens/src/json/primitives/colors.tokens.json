@@ -2,7 +2,7 @@
   "$description": "UIID Design System - Primitive Color Tokens",
   "color": {
     "$type": "color",
-    "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows.",
+    "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows. One exception: 700 is calibrated rather than free. It is placed ΔL* 10.5 (CIE) above 800, holding the step's oklch hue and chroma, so --palette-fill-hover reads as the same size step at every hue instead of ranging 8.76–15.42. Move 700 or 800 and re-run `node scripts/check-palette-contrast.mjs` or that uniformity is silently lost.",
     "white": {
       "$value": "#fefefa",
       "$description": "Not a palette hue. Kept because shade.background references it, so the tokens must emit it to render anywhere a theme is not loaded."
@@ -34,7 +34,7 @@
         "$value": "#c50014"
       },
       "700": {
-        "$value": "#8f000b"
+        "$value": "#8d000b"
       },
       "800": {
         "$value": "#610005"
@@ -70,7 +70,7 @@
         "$value": "#c56500"
       },
       "700": {
-        "$value": "#8c4600"
+        "$value": "#7f3f00"
       },
       "800": {
         "$value": "#5b2b00"
@@ -106,7 +106,7 @@
         "$value": "#ad8900"
       },
       "700": {
-        "$value": "#7a5f00"
+        "$value": "#6c5400"
       },
       "800": {
         "$value": "#4e3c00"
@@ -142,7 +142,7 @@
         "$value": "#00954b"
       },
       "700": {
-        "$value": "#006933"
+        "$value": "#005f2e"
       },
       "800": {
         "$value": "#00441f"
@@ -178,7 +178,7 @@
         "$value": "#195cd2"
       },
       "700": {
-        "$value": "#003ea4"
+        "$value": "#003da2"
       },
       "800": {
         "$value": "#002871"
@@ -214,7 +214,7 @@
         "$value": "#542dca"
       },
       "700": {
-        "$value": "#3e12a0"
+        "$value": "#4017a3"
       },
       "800": {
         "$value": "#2a0076"
@@ -250,7 +250,7 @@
         "$value": "#7219b9"
       },
       "700": {
-        "$value": "#56008f"
+        "$value": "#5a0a94"
       },
       "800": {
         "$value": "#3b0065"
