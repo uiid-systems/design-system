@@ -1,27 +1,50 @@
 @import "@uiid/tokens/component/tabs.tokens.css";
 
+/*
+ * No `height` and no `font-size` here on purpose — the size tier owns both via
+ * `composes-size-*`, and uiid.components sits above uiid.compositions, so a
+ * declaration here would outrank every tier and flatten the scale.
+ *
+ * Inline padding is the one part of the tier the list does not want: it is a
+ * container, and the padding belongs to the tabs inside it, which pick it up
+ * from `--tabs-tab-padding-x` instead.
+ */
 .tabs-list {
   position: relative;
   z-index: 0;
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
-  height: var(--tabs-tab-height);
+  padding-inline: 0;
 
-  &:where([data-size="sm"]) {
-    --tabs-tab-height: var(--forms-size-sm-height);
-  }
-  &:where([data-size="md"]) {
-    --tabs-tab-height: var(--forms-size-md-height);
-  }
-  &:where([data-size="lg"]) {
-    --tabs-tab-height: var(--forms-size-lg-height);
-  }
+  /* The tier's height measures the list; a tab sits inside its two borders. */
+  --tabs-tab-inner-height: calc(var(--tabs-tab-height) - var(--globals-border-width) * 2);
 
   &[data-variant="ghost"] {
     background-color: transparent;
     border-color: transparent;
   }
+}
+
+.size-xsmall {
+  composes: composes-size-xsmall from global;
+  --tabs-tab-height: var(--forms-size-xs-height);
+  --tabs-tab-padding-x: var(--forms-size-xs-padding-x);
+}
+.size-small {
+  composes: composes-size-small from global;
+  --tabs-tab-height: var(--forms-size-sm-height);
+  --tabs-tab-padding-x: var(--forms-size-sm-padding-x);
+}
+.size-medium {
+  composes: composes-size-medium from global;
+  --tabs-tab-height: var(--forms-size-md-height);
+  --tabs-tab-padding-x: var(--forms-size-md-padding-x);
+}
+.size-large {
+  composes: composes-size-large from global;
+  --tabs-tab-height: var(--forms-size-lg-height);
+  --tabs-tab-padding-x: var(--forms-size-lg-padding-x);
 }
 
 .tab {
@@ -39,8 +62,8 @@
   user-select: none;
   white-space: nowrap;
   word-break: keep-all;
-  padding-inline: var(--globals-padding-x);
-  height: var(--tabs-tab-height);
+  padding-inline: var(--tabs-tab-padding-x);
+  height: var(--tabs-tab-inner-height);
   border-radius: var(--globals-border-radius);
   flex: 1;
 
@@ -69,7 +92,7 @@
   top: 50%;
   transform: translateY(-50%);
   width: var(--active-tab-width) !important;
-  height: var(--tabs-tab-height);
+  height: var(--tabs-tab-inner-height);
   background-color: var(--shade-foreground);
   border-radius: calc(var(--globals-border-radius) / 1.5);
   transition-property: left, width;

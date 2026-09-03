@@ -1,9 +1,8 @@
 .toggle-group-panel {
-  --toggle-gap: 1px;
-  --toggle-size: calc(var(--toggleGroup-height) - 2px);
+  /* The indicator spans the panel's content box, so it sheds both borders. */
+  --toggle-size: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
 
   position: relative;
-  gap: 8px;
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
@@ -19,15 +18,41 @@
     border-color: transparent;
   }
 
-  &:where([data-size="sm"]) {
+  /*
+   * The panel takes only the tier's height. The rest of the tier — inline
+   * padding, font-size, icon size — rides the buttons via `.size-*` below,
+   * because applying it here would inset the whole toggle row.
+   */
+  &:where([data-size="xsmall"]) {
+    --toggleGroup-height: var(--forms-size-xs-height);
+  }
+  &:where([data-size="small"]) {
     --toggleGroup-height: var(--forms-size-sm-height);
   }
-  &:where([data-size="md"]) {
+  &:where([data-size="medium"]) {
     --toggleGroup-height: var(--forms-size-md-height);
   }
-  &:where([data-size="lg"]) {
+  &:where([data-size="large"]) {
     --toggleGroup-height: var(--forms-size-lg-height);
   }
+}
+
+/*
+ * Injected onto each toggle by `toggleVariants`. `composes-size-*` also sets
+ * `height`, which is the *panel's* box rather than the button's — the button
+ * sits inside the panel's border — so `.toggle-group-button` releases it below.
+ */
+.size-xsmall {
+  composes: composes-size-xsmall from global;
+}
+.size-small {
+  composes: composes-size-small from global;
+}
+.size-medium {
+  composes: composes-size-medium from global;
+}
+.size-large {
+  composes: composes-size-large from global;
 }
 
 .toggle-group-indicator {
@@ -67,7 +92,16 @@
   user-select: none;
   cursor: pointer;
   border-radius: var(--globals-border-radius);
-  padding-inline: var(--globals-padding-x);
+  /*
+   * No `padding-inline` here on purpose — the tier owns it via
+   * `composes-size-*`, and uiid.components sits above uiid.compositions, so a
+   * declaration would outrank every tier and flatten the scale.
+   *
+   * `height` is the opposite case and has to be released: the tier's height
+   * measures the panel, so the button is that minus the panel's two borders.
+   * The value still varies per tier, so nothing is flattened.
+   */
+  height: auto;
   min-height: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
   transition: color var(--globals-transition-duration) ease-in-out;
   display: inline-flex;
@@ -105,7 +139,7 @@
   }
 
   svg {
-    height: var(--globals-icon-size);
+    height: var(--forms-icon-size);
     flex-shrink: 0;
   }
 }

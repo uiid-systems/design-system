@@ -13,7 +13,7 @@ const meta: Meta<typeof Tabs> = {
   argTypes: {
     size: {
       control: "inline-radio",
-      options: ["sm", "md", "lg"],
+      options: ["xsmall", "small", "medium", "large"],
     },
     fullwidth: { control: "boolean" },
     variant: {
@@ -35,12 +35,12 @@ export const Default: Story = { name: "Tabs" };
 
 export const Small: Story = {
   name: "Small",
-  args: { size: "sm" },
+  args: { size: "small" },
 };
 
 export const Large: Story = {
   name: "Large",
-  args: { size: "lg" },
+  args: { size: "large" },
 };
 
 export const Ghost: Story = {

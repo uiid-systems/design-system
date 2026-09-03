@@ -15,7 +15,7 @@ import type { ToggleGroupProps } from "./toggle-group.types";
 
 type Size = NonNullable<ToggleGroupProps["size"]>;
 
-const SIZES: Size[] = ["sm", "md", "lg"];
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 export const Default = () => (
   <ToggleGroup defaultValue={["monthly"]}>

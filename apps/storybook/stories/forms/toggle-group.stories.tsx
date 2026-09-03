@@ -10,13 +10,13 @@ const meta = {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
-    size: "md",
+    size: "medium",
     defaultValue: ["monthly"],
   },
   argTypes: {
     size: {
       control: "select",
-      options: ["sm", "md", "lg"],
+      options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
     variant: {

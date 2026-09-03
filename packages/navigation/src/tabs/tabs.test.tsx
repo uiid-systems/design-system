@@ -220,4 +220,25 @@ describe("Tabs", () => {
     const tablist = screen.getByRole("tablist");
     expect(tablist).not.toHaveAttribute("data-variant");
   });
+
+  // ============================================
+  // SIZE
+  // ============================================
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the list with the %s tier from the shared control scale",
+    (size) => {
+      render(<Tabs items={MOCK_ITEMS} size={size} />);
+      const tablist = screen.getByRole("tablist");
+      expect(tablist).toHaveAttribute("data-size", size);
+      expect(tablist.className).toMatch(new RegExp(`composes-size-${size}`));
+    },
+  );
+
+  it("defaults to the medium tier, matching the other controls", () => {
+    render(<Tabs items={MOCK_ITEMS} />);
+    const tablist = screen.getByRole("tablist");
+    expect(tablist).toHaveAttribute("data-size", "medium");
+    expect(tablist.className).toMatch(/composes-size-medium/);
+  });
 });
