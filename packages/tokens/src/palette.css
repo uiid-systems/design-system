@@ -19,7 +19,7 @@
  *
  * Every pairing clears WCAG AA (4.5:1) against the surface it is named for,
  * measured from the authored hex in json/primitives/colors.tokens.json. The
- * tightest is 5.10:1. --palette-text is measured against --shade-background; on
+ * tightest is 6.08:1. --palette-text is measured against --shade-background; on
  * a tinted surface read --palette-on-tint instead, which is also what the
  * transparent (ghost) treatment uses.
  *
