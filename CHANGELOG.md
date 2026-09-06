@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/uiid-systems/design-system/compare/v0.3.0...v0.4.0) (2026-09-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** `ToggleGroup` and `Tabs` no longer accept `size="sm" | "md" | "lg"`. Use `xsmall | small | medium | large`. Shipped as a straight break rather than an alias period — pre-1.0, no consumer outside the repo passes either prop, and the codebase has no deprecation precedent to follow.
+
+### Features
+
+* **ui:** add color prop to Input and Textarea via the shared field surface ([#369](https://github.com/uiid-systems/design-system/issues/369)) ([69d7d8a](https://github.com/uiid-systems/design-system/commit/69d7d8a9dfab04fbf581b806f01bbeb033fcedee))
+* **ui:** align toggle group and tabs size vocabulary with the system tiers ([#378](https://github.com/uiid-systems/design-system/issues/378)) ([5279f43](https://github.com/uiid-systems/design-system/commit/5279f431a10f65e4d2c9bba10ea6bb27d8fbfb97))
+
+
+### Bug Fixes
+
+* **storybook:** move the ignore step into a script to fit Vercel's limit ([#377](https://github.com/uiid-systems/design-system/issues/377)) ([caf4c98](https://github.com/uiid-systems/design-system/commit/caf4c9802b7c2c8a560dd1a1d865f22beb846d56))
+* **storybook:** unbreak the Vercel Storybook deploy ([#376](https://github.com/uiid-systems/design-system/issues/376)) ([cd36068](https://github.com/uiid-systems/design-system/commit/cd3606847991d3725e47436e8a480762bf7c5857))
+* **ui:** scale the radio indicator dot with the size tier ([#366](https://github.com/uiid-systems/design-system/issues/366)) ([f066393](https://github.com/uiid-systems/design-system/commit/f0663932367bde4178c4a6c141fffbea4eab3f32))
+
 ## [0.3.0](https://github.com/uiid-systems/design-system/compare/v0.2.0...v0.3.0) (2026-08-31)
 
 
