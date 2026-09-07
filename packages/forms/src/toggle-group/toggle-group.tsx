@@ -67,13 +67,13 @@ export const ToggleGroup = ({
     <BaseToggleGroup
       ref={panelRef}
       multiple={multiple}
+      orientation={orientation}
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
       className={styles["toggle-group-panel"]}
       data-size={size}
       data-variant={variant}
-      data-orientation={orientation}
       render={
         orientation === "vertical" ? <Stack gap={2} /> : <Group gap={2} />
       }

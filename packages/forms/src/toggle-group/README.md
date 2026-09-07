@@ -8,7 +8,7 @@ Use ToggleGroup when you want to:
 - Let more than one be pressed at a time with `multiple`; without it the toggles are mutually exclusive. A `multiple` group has no sliding indicator — one pill cannot sit behind several pressed toggles — so each pressed toggle carries its own background, and pressing it again releases it
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier sets the group's height and each toggle's inline padding, font size and icon size
 - Drop the container surface with `variant="ghost"`, leaving only the moving indicator
-- Stack the toggles with `orientation="vertical"`
+- Stack the toggles with `orientation="vertical"` — arrow-key navigation follows the axis, so a vertical group walks with up and down
 - Disable the whole group with `disabled`, or a single `Toggle` with its own `disabled`
 
 The group shrink-wraps its toggles rather than stretching to fill its container, so it can be dropped into a layout without being sized down.

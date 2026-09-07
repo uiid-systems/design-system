@@ -136,3 +136,59 @@ describe("ToggleGroup multiple", () => {
     expect(bold).not.toHaveAttribute("data-pressed");
   });
 });
+
+describe("ToggleGroup orientation", () => {
+  const renderOriented = (orientation?: "horizontal" | "vertical") =>
+    render(
+      <ToggleGroup orientation={orientation} defaultValue={["a"]}>
+        <Toggle value="a">A</Toggle>
+        <Toggle value="b">B</Toggle>
+      </ToggleGroup>,
+    );
+
+  it("reports its orientation on the panel, horizontal included", () => {
+    const { container } = renderOriented();
+    expect(container.firstElementChild).toHaveAttribute(
+      "data-orientation",
+      "horizontal",
+    );
+  });
+
+  it("reports a vertical orientation on the panel", () => {
+    const { container } = renderOriented("vertical");
+    expect(container.firstElementChild).toHaveAttribute(
+      "data-orientation",
+      "vertical",
+    );
+  });
+
+  it("walks a horizontal group with the horizontal arrow keys", async () => {
+    const user = userEvent.setup();
+    renderOriented("horizontal");
+    const [a, b] = screen.getAllByRole("button");
+
+    a.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(b).toHaveFocus();
+  });
+
+  it("walks a vertical group with the vertical arrow keys", async () => {
+    const user = userEvent.setup();
+    renderOriented("vertical");
+    const [a, b] = screen.getAllByRole("button");
+
+    a.focus();
+    await user.keyboard("{ArrowDown}");
+    expect(b).toHaveFocus();
+  });
+
+  it("ignores the cross-axis arrow keys in a vertical group", async () => {
+    const user = userEvent.setup();
+    renderOriented("vertical");
+    const [a] = screen.getAllByRole("button");
+
+    a.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(a).toHaveFocus();
+  });
+});
