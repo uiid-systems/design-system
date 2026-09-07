@@ -27,8 +27,10 @@
  * hash per build, so a module here could not be reached from globals.css and
  * the hues would resolve to nothing in the shipped bundle.
  *
- * `light-dark()` picks the first value under `color-scheme: light`. Values are
- * plain var() references to the primitives — no colour maths at render time.
+ * `light-dark()` picks the first value under `color-scheme: light`. The per-hue
+ * blocks are plain var() references to the primitives; the one exception is
+ * --palette-tint-hover, derived below from --palette-tint for reasons given
+ * there.
  */
 
 @layer uiid.tokens {
@@ -38,7 +40,6 @@
     --palette-fill-hover: light-dark(var(--color-red-800), var(--color-red-300));
     --palette-tint: light-dark(var(--color-red-50), var(--color-red-900));
     --palette-on-tint: light-dark(var(--color-red-800), var(--color-red-200));
-    --palette-tint-hover: light-dark(var(--color-red-100), var(--color-red-800));
     --palette-tint-border: light-dark(var(--color-red-200), var(--color-red-700));
     --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
   }
@@ -49,7 +50,6 @@
     --palette-fill-hover: light-dark(var(--color-orange-800), var(--color-orange-300));
     --palette-tint: light-dark(var(--color-orange-50), var(--color-orange-900));
     --palette-on-tint: light-dark(var(--color-orange-800), var(--color-orange-200));
-    --palette-tint-hover: light-dark(var(--color-orange-100), var(--color-orange-800));
     --palette-tint-border: light-dark(var(--color-orange-200), var(--color-orange-700));
     --palette-text: light-dark(var(--color-orange-700), var(--color-orange-400));
   }
@@ -60,7 +60,6 @@
     --palette-fill-hover: light-dark(var(--color-yellow-800), var(--color-yellow-300));
     --palette-tint: light-dark(var(--color-yellow-50), var(--color-yellow-900));
     --palette-on-tint: light-dark(var(--color-yellow-800), var(--color-yellow-200));
-    --palette-tint-hover: light-dark(var(--color-yellow-100), var(--color-yellow-800));
     --palette-tint-border: light-dark(var(--color-yellow-200), var(--color-yellow-700));
     --palette-text: light-dark(var(--color-yellow-700), var(--color-yellow-400));
   }
@@ -71,7 +70,6 @@
     --palette-fill-hover: light-dark(var(--color-green-800), var(--color-green-300));
     --palette-tint: light-dark(var(--color-green-50), var(--color-green-900));
     --palette-on-tint: light-dark(var(--color-green-800), var(--color-green-200));
-    --palette-tint-hover: light-dark(var(--color-green-100), var(--color-green-800));
     --palette-tint-border: light-dark(var(--color-green-200), var(--color-green-700));
     --palette-text: light-dark(var(--color-green-700), var(--color-green-400));
   }
@@ -82,7 +80,6 @@
     --palette-fill-hover: light-dark(var(--color-blue-800), var(--color-blue-300));
     --palette-tint: light-dark(var(--color-blue-50), var(--color-blue-900));
     --palette-on-tint: light-dark(var(--color-blue-800), var(--color-blue-200));
-    --palette-tint-hover: light-dark(var(--color-blue-100), var(--color-blue-800));
     --palette-tint-border: light-dark(var(--color-blue-200), var(--color-blue-700));
     --palette-text: light-dark(var(--color-blue-700), var(--color-blue-400));
   }
@@ -93,7 +90,6 @@
     --palette-fill-hover: light-dark(var(--color-indigo-800), var(--color-indigo-300));
     --palette-tint: light-dark(var(--color-indigo-50), var(--color-indigo-900));
     --palette-on-tint: light-dark(var(--color-indigo-800), var(--color-indigo-200));
-    --palette-tint-hover: light-dark(var(--color-indigo-100), var(--color-indigo-800));
     --palette-tint-border: light-dark(var(--color-indigo-200), var(--color-indigo-700));
     --palette-text: light-dark(var(--color-indigo-700), var(--color-indigo-400));
   }
@@ -104,7 +100,6 @@
     --palette-fill-hover: light-dark(var(--color-purple-800), var(--color-purple-300));
     --palette-tint: light-dark(var(--color-purple-50), var(--color-purple-900));
     --palette-on-tint: light-dark(var(--color-purple-800), var(--color-purple-200));
-    --palette-tint-hover: light-dark(var(--color-purple-100), var(--color-purple-800));
     --palette-tint-border: light-dark(var(--color-purple-200), var(--color-purple-700));
     --palette-text: light-dark(var(--color-purple-700), var(--color-purple-400));
   }
@@ -115,8 +110,46 @@
     --palette-fill-hover: light-dark(var(--color-neutral-800), var(--color-neutral-300));
     --palette-tint: light-dark(#ffffff, var(--color-neutral-900));
     --palette-on-tint: light-dark(var(--color-neutral-800), var(--color-neutral-200));
-    --palette-tint-hover: light-dark(var(--color-neutral-100), var(--color-neutral-800));
     --palette-tint-border: light-dark(var(--color-neutral-200), var(--color-neutral-700));
     --palette-text: light-dark(var(--color-neutral-700), var(--color-neutral-400));
+  }
+
+  /*
+   * --palette-tint-hover, derived rather than declared eight times.
+   *
+   * The ramps are not perceptually uniform, so "one step up" meant something
+   * different at every hue: the hand-authored 100/800 steps spanned ΔL* 2.77
+   * (light yellow) to 13.64 (light neutral) for what is nominally the same
+   * move, and the weak end did not read as a hover at all. Mixing a fixed
+   * proportion of the foreground into the tint collapses that spread to 0.82
+   * (light) / 1.34 (dark), landing every hue at ΔL* ~10.3-11.6 — the system's
+   * own visible-band baseline, since --shade-accent on the page measures 11.54
+   * light / 10.53 dark. Measurements: scripts/check-palette-contrast.mjs and
+   * docs/architecture/ui-194-list-and-option-theming.md.
+   *
+   * Only tint is derived. The fill anchors are not lightness-matched across
+   * hues, so the same mix produces a different ΔL* at each one and gains
+   * nothing over the authored steps — --palette-fill-hover stays hand-written
+   * (UI-196).
+   *
+   * One expression covers both schemes because --shade-foreground is itself a
+   * light-dark(): hover moves toward black on a light tint and toward white on
+   * a dark one. table.module.css already ships the same rule at 4%.
+   *
+   * The selector list cannot be hoisted to :root. Custom properties substitute
+   * at the element that DECLARES them, so var(--palette-tint) would resolve
+   * where it is undefined and yield the guaranteed-invalid value. It has to sit
+   * on the palette classes, which is also why palette.test.ts asserts this list
+   * and PALETTE_HUES stay in step.
+   */
+  .palette-red,
+  .palette-orange,
+  .palette-yellow,
+  .palette-green,
+  .palette-blue,
+  .palette-indigo,
+  .palette-purple,
+  .palette-neutral {
+    --palette-tint-hover: color-mix(in oklab, var(--shade-foreground) 12%, var(--palette-tint));
   }
 }

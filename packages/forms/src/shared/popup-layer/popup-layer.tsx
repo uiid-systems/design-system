@@ -174,6 +174,11 @@ export const PopupLayerGroup = ({
 };
 PopupLayerGroup.displayName = "PopupLayerGroup";
 
+/**
+ * No `shade` — the label inherits the popup `Card`'s `--palette-on-tint` so it
+ * tracks the hue, where a pinned `shade="muted"` stayed grey on every tinted
+ * surface. Size and weight still carry the hierarchy.
+ */
 export const PopupLayerGroupLabel = ({
   slot,
   children,
@@ -182,7 +187,7 @@ export const PopupLayerGroupLabel = ({
   return (
     <BasePopupLayer.GroupLabel
       data-slot={slot}
-      render={<Text size={-1} shade="muted" weight="medium" />}
+      render={<Text size={-1} weight="medium" />}
       {...props}
     >
       {children}

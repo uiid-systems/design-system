@@ -44,9 +44,32 @@
   margin-block-end: 0.5rem;
 }
 
+/*
+ * The row an item builds when it renders from `icon`/`label`/`description`
+ * rather than children. `list-style-type` is set here, not on the item, so it
+ * inherits down to `.list-text-label` — that label is a `display: list-item`,
+ * so inside an `<ol>` it would draw a number beside the icon that has already
+ * taken the marker's job.
+ */
+.list-item-content {
+  list-style-type: none;
+}
+
+/*
+ * Icon and description read a name this package does not own, falling back to
+ * the shade token each used before. A themed surface publishes the name for its
+ * subtree — see `.popup-layer-popup` / `.select-popup` in @uiid/forms — and an
+ * ordinary List resolves to the fallback, so the uncoloured path is unchanged
+ * by construction.
+ *
+ * Deliberately not a `color` prop on List. A List is a structural component,
+ * not inherently a themed surface; a prop would couple this package to the
+ * palette for one consumer that already owns a themed boundary.
+ */
 .list-item svg {
   transform: translateY(calc(var(--list-icon-size) * 0.25));
   width: var(--list-icon-size);
+  color: var(--list-icon-color, var(--shade-foreground));
 }
 
 .list-text-label {
@@ -60,5 +83,5 @@
 }
 
 .list-text-description {
-  color: var(--shade-muted);
+  color: var(--list-description-color, var(--shade-muted));
 }

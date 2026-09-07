@@ -31,9 +31,14 @@
   composes: composes-popup-positioner from global;
 }
 
+/* Publishes the @uiid/lists names for its subtree, matching
+   `.popup-layer-popup` — see the note there for why it is unconditional. */
 .select-popup {
   composes: composes-popup from global;
   min-width: var(--anchor-width);
+
+  --list-description-color: var(--palette-on-tint);
+  --list-icon-color: var(--palette-on-tint);
 }
 
 .select-item {

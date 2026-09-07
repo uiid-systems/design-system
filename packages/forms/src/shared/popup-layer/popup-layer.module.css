@@ -2,9 +2,21 @@
   composes: composes-popup-positioner from global;
 }
 
+/*
+ * The popup is the themed boundary, so it publishes the names @uiid/lists reads
+ * for its subtree. The hue stops here: a `List` anywhere else still resolves to
+ * the shade fallbacks those names carry.
+ *
+ * Unconditional on purpose. The popup renders a `Card`, and `Card` always wears
+ * a palette class — `neutral` when no `color` was passed — so `--palette-on-tint`
+ * resolves either way and there is no second, uncoloured branch to keep in sync.
+ */
 .popup-layer-popup {
   composes: composes-popup from global;
   min-width: var(--anchor-width);
+
+  --list-description-color: var(--palette-on-tint);
+  --list-icon-color: var(--palette-on-tint);
 }
 
 .popup-layer-item {
