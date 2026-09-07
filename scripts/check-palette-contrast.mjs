@@ -21,9 +21,14 @@
  *   a band" and single digits are progressively invisible.
  *
  * The ramps are the reason this matters. They are not perceptually uniform, so
- * "one step up" means something different at every hue: the tint→tint-hover
- * step ranges from ΔL* 2.77 (yellow, light) to 13.64 (neutral, light) for what
- * is nominally the same move. See docs/architecture/ui-194-list-and-option-theming.md.
+ * "one step up" means something different at every hue: the hand-authored
+ * tint→tint-hover step ranged from ΔL* 2.77 (yellow, light) to 13.64 (neutral,
+ * light) for what is nominally the same move. That is why palette.css now
+ * DERIVES --palette-tint-hover, and why this file evaluates the same
+ * color-mix() instead of reading a ramp step — otherwise it would report on a
+ * value that no longer ships. --palette-fill-hover is still hand-authored and
+ * still uncalibrated (UI-196), which is what the fill row below shows.
+ * See docs/architecture/ui-194-list-and-option-theming.md.
  *
  * Usage:
  *   node scripts/check-palette-contrast.mjs            # summary + failures
@@ -81,6 +86,56 @@ const lightness = (hex) => {
 
 const deltaL = (a, b) => Math.abs(lightness(a) - lightness(b));
 
+/** linear-light → sRGB, the inverse of toLinear. */
+const fromLinear = (c) =>
+  c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
+
+/**
+ * sRGB → OKLab and back, so this file can evaluate the `color-mix(in oklab,
+ * ...)` that palette.css derives --palette-tint-hover with. Without it the
+ * script would keep measuring the ramp steps that derivation replaced, and
+ * report numbers for a value that no longer ships.
+ *
+ * Matrices are Björn Ottosson's reference values.
+ */
+const toOklab = (hex) => {
+  const [r, g, b] = srgbChannels(hex).map(toLinear);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return [
+    0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  ];
+};
+
+const fromOklab = ([L, a, b]) => {
+  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const rgb = [
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+  ];
+  return (
+    "#" +
+    rgb
+      .map((c) => {
+        const v = Math.round(Math.min(1, Math.max(0, fromLinear(c))) * 255);
+        return v.toString(16).padStart(2, "0");
+      })
+      .join("")
+  );
+};
+
+/** `color-mix(in oklab, a <weight>, b)` — both operands opaque, so no alpha. */
+const mixOklab = (a, b, weight) => {
+  const [ca, cb] = [toOklab(a), toOklab(b)];
+  return fromOklab(ca.map((v, i) => v * weight + cb[i] * (1 - weight)));
+};
+
 /* -------------------------------------------------------------------------- */
 /* Token model                                                                */
 /* -------------------------------------------------------------------------- */
@@ -113,23 +168,40 @@ const SHADE = {
 };
 
 /**
+ * The proportion of --shade-foreground palette.css mixes into --palette-tint to
+ * get --palette-tint-hover. 12% puts every hue at ΔL* ~10.3-11.6 against its
+ * tint, matching the --shade-accent baseline below; 10-14% is the defensible
+ * range, and below ~10% the weakest hues stop reading as a band.
+ */
+const TINT_HOVER_MIX = 0.12;
+
+/**
  * The treatments each hue block in palette.css publishes. Neutral's tint is a
  * literal #ffffff rather than neutral-50 — it is the one hue whose tinted card
  * is meant to read as "paper", not as a tinted surface.
  */
-const treatment = (hue, m) => ({
-  fill: step(hue, m === 0 ? "700" : "400"),
-  onFill: step(hue, m === 0 ? "50" : "950"),
-  fillHover: step(hue, m === 0 ? "800" : "300"),
-  tint:
+const treatment = (hue, m) => {
+  const tint =
     hue === "neutral" && m === 0
       ? "#ffffff"
-      : step(hue, m === 0 ? "50" : "900"),
-  onTint: step(hue, m === 0 ? "800" : "200"),
-  tintHover: step(hue, m === 0 ? "100" : "800"),
-  tintBorder: step(hue, m === 0 ? "200" : "700"),
-  text: step(hue, m === 0 ? "700" : "400"),
-});
+      : step(hue, m === 0 ? "50" : "900");
+
+  return {
+    fill: step(hue, m === 0 ? "700" : "400"),
+    onFill: step(hue, m === 0 ? "50" : "950"),
+    fillHover: step(hue, m === 0 ? "800" : "300"),
+    tint,
+    onTint: step(hue, m === 0 ? "800" : "200"),
+    /*
+     * Derived, matching the color-mix() in palette.css rather than a ramp
+     * step. Keep TINT_HOVER_MIX and that rule's percentage in step — this is
+     * the only place the two can drift.
+     */
+    tintHover: mixOklab(SHADE.foreground[m], tint, TINT_HOVER_MIX),
+    tintBorder: step(hue, m === 0 ? "200" : "700"),
+    text: step(hue, m === 0 ? "700" : "400"),
+  };
+};
 
 /* -------------------------------------------------------------------------- */
 /* Checks                                                                     */

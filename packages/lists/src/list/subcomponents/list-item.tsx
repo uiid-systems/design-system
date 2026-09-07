@@ -34,17 +34,11 @@ export const ListItem = ({
               gap={2}
               ay="start"
               fullwidth
-              style={{ listStyleType: "none" }}
+              className={styles["list-item-content"]}
             />
           }
         >
-          {Icon && (
-            <Icon
-              data-slot="list-item-icon"
-              size={ICON_SIZE_LARGE}
-              style={{ color: "var(--shade-foreground)" }}
-            />
-          )}
+          {Icon && <Icon data-slot="list-item-icon" size={ICON_SIZE_LARGE} />}
           <ListTextBlock
             data-slot="list-item-text"
             label={label}
