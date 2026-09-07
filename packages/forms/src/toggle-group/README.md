@@ -11,6 +11,8 @@ Use ToggleGroup when you want to:
 - Stack the toggles with `orientation="vertical"`
 - Disable the whole group with `disabled`, or a single `Toggle` with its own `disabled`
 
+The group shrink-wraps its toggles rather than stretching to fill its container, so it can be dropped into a layout without being sized down.
+
 `value` is always an array, even in single-selection mode. Leave it unset and the group runs itself from `defaultValue`; pass `value` and `onValueChange` to drive it yourself.
 
 Children are `Toggle` elements, each carrying its `value`. An icon-only group needs an `aria-label` on every toggle.

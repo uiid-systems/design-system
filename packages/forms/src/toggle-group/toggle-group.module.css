@@ -13,6 +13,13 @@
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   height: var(--toggleGroup-height);
+  /*
+   * A segmented picker is sized by its options, not by whatever it is dropped
+   * into. The panel renders as a `Box`, which is `display: flex` and so
+   * block-level — left alone it stretches to fill any parent that does not
+   * constrain it, which is what made it span the full width in the stories.
+   */
+  width: fit-content;
   /* overflow: hidden; */
 
   &[data-orientation="vertical"] {
