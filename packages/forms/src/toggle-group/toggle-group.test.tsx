@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
@@ -83,5 +84,55 @@ describe("ToggleGroup disabled", () => {
     expect(yearly).toHaveAttribute("data-disabled");
     expect(monthly).toBeEnabled();
     expect(monthly).not.toHaveAttribute("data-disabled");
+  });
+});
+
+describe("ToggleGroup multiple", () => {
+  const renderFormatting = (props = {}) =>
+    render(
+      <ToggleGroup multiple defaultValue={["bold"]} {...props}>
+        <Toggle value="bold">Bold</Toggle>
+        <Toggle value="italic">Italic</Toggle>
+      </ToggleGroup>,
+    );
+
+  it("drops the indicator, which cannot sit behind several toggles at once", () => {
+    const { container } = renderFormatting();
+    expect(
+      container.querySelector('[data-slot="toggle-group-indicator"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps the indicator for a single-selection group", () => {
+    const { container } = renderGroup();
+    expect(
+      container.querySelector('[data-slot="toggle-group-indicator"]'),
+    ).toBeInTheDocument();
+  });
+
+  it("marks the panel so the toggles can paint their own pressed background", () => {
+    const { container } = renderFormatting();
+    expect(container.querySelector("[data-multiple]")).toBeInTheDocument();
+  });
+
+  it("holds every pressed toggle, not just the first", async () => {
+    const user = userEvent.setup();
+    renderFormatting();
+    const [bold, italic] = screen.getAllByRole("button");
+
+    await user.click(italic);
+
+    expect(bold).toHaveAttribute("data-pressed");
+    expect(italic).toHaveAttribute("data-pressed");
+  });
+
+  it("releases a pressed toggle when it is pressed again", async () => {
+    const user = userEvent.setup();
+    renderFormatting();
+    const [bold] = screen.getAllByRole("button");
+
+    await user.click(bold);
+
+    expect(bold).not.toHaveAttribute("data-pressed");
   });
 });
