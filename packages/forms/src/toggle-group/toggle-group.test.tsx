@@ -52,3 +52,36 @@ describe("ToggleGroup size", () => {
     expect(toggle.className).toMatch(/composes-size-large/);
   });
 });
+
+describe("ToggleGroup disabled", () => {
+  it("gives every toggle the shared disabled treatment to dim against", () => {
+    renderGroup();
+    for (const toggle of screen.getAllByRole("button")) {
+      expect(toggle.className).toMatch(/composes-disabled/);
+    }
+  });
+
+  it("marks every toggle disabled when the group is", () => {
+    renderGroup({ disabled: true });
+    for (const toggle of screen.getAllByRole("button")) {
+      expect(toggle).toBeDisabled();
+      expect(toggle).toHaveAttribute("data-disabled");
+    }
+  });
+
+  it("leaves the siblings of a single disabled toggle pressable", () => {
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly" disabled>
+          Yearly
+        </Toggle>
+      </ToggleGroup>,
+    );
+    const [monthly, yearly] = screen.getAllByRole("button");
+    expect(yearly).toBeDisabled();
+    expect(yearly).toHaveAttribute("data-disabled");
+    expect(monthly).toBeEnabled();
+    expect(monthly).not.toHaveAttribute("data-disabled");
+  });
+});

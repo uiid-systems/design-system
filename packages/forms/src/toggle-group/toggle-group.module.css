@@ -79,9 +79,29 @@
     height: var(--active-toggle-height, 0);
     width: 100%;
   }
+
+  /*
+   * The indicator is a sibling of the toggles rather than a child, so the
+   * buttons' own `composes-disabled` never reaches it. Left alone it would keep
+   * painting a full-strength pill behind dimmed labels. Dimming it here rather
+   * than composing onto the panel keeps a single 0.5 across the whole control —
+   * `data-disabled` lands on the panel *and* every button, so composing in both
+   * places would multiply to 0.25.
+   */
+  .toggle-group-panel[data-disabled] & {
+    opacity: var(--globals-disabled-opacity);
+  }
 }
 
 .toggle-group-button {
+  /*
+   * Covers both disabled cases: a single `<Toggle disabled>`, and a disabled
+   * group, which Base UI forwards to every toggle through its context. The
+   * `pointer-events: none` this brings is what stops `:hover` below from
+   * lighting up a control that cannot be pressed.
+   */
+  composes: composes-disabled from global;
+
   position: relative;
   z-index: 1;
   appearance: none;
