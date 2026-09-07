@@ -1,12 +1,25 @@
 .toggle-group-panel {
   /* The indicator spans the panel's content box, so it sheds both borders. */
   --toggle-size: calc(var(--toggleGroup-height) - var(--globals-border-width) * 2);
+  /*
+   * The pressed treatment sits inside the panel's own corner, so it takes a
+   * tighter radius. Shared by the indicator, the focus ring and the background a
+   * `multiple` group paints per toggle, all of which have to agree.
+   */
+  --toggle-radius: calc(var(--globals-border-radius) / 1.5);
 
   position: relative;
   background-color: var(--shade-surface);
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   height: var(--toggleGroup-height);
+  /*
+   * A segmented picker is sized by its options, not by whatever it is dropped
+   * into. The panel renders as a `Box`, which is `display: flex` and so
+   * block-level — left alone it stretches to fill any parent that does not
+   * constrain it, which is what made it span the full width in the stories.
+   */
+  width: fit-content;
   /* overflow: hidden; */
 
   &[data-orientation="vertical"] {
@@ -58,7 +71,7 @@
 .toggle-group-indicator {
   position: absolute;
   z-index: 0;
-  border-radius: calc(var(--globals-border-radius) / 1.5);
+  border-radius: var(--toggle-radius);
   background-color: var(--shade-foreground);
   transition-property: translate, width, height;
   transition-duration: var(--globals-transition-duration-slow);
@@ -79,9 +92,29 @@
     height: var(--active-toggle-height, 0);
     width: 100%;
   }
+
+  /*
+   * The indicator is a sibling of the toggles rather than a child, so the
+   * buttons' own `composes-disabled` never reaches it. Left alone it would keep
+   * painting a full-strength pill behind dimmed labels. Dimming it here rather
+   * than composing onto the panel keeps a single 0.5 across the whole control —
+   * `data-disabled` lands on the panel *and* every button, so composing in both
+   * places would multiply to 0.25.
+   */
+  .toggle-group-panel[data-disabled] & {
+    opacity: var(--globals-disabled-opacity);
+  }
 }
 
 .toggle-group-button {
+  /*
+   * Covers both disabled cases: a single `<Toggle disabled>`, and a disabled
+   * group, which Base UI forwards to every toggle through its context. The
+   * `pointer-events: none` this brings is what stops `:hover` below from
+   * lighting up a control that cannot be pressed.
+   */
+  composes: composes-disabled from global;
+
   position: relative;
   z-index: 1;
   appearance: none;
@@ -126,7 +159,7 @@
   &:focus {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-    border-radius: calc(var(--globals-border-radius) / 1.5);
+    border-radius: var(--toggle-radius);
   }
 
   &:hover {
@@ -134,8 +167,28 @@
   }
 
   &[data-pressed] {
-    pointer-events: none;
     color: var(--shade-background);
+  }
+
+  /*
+   * A single-selection group is meant to always hold a value, so blocking the
+   * pressed toggle keeps a click from emptying it. `multiple` has no such
+   * invariant — un-pressing is the point of it — so the pressed toggle stays
+   * clickable there.
+   */
+  .toggle-group-panel:not([data-multiple]) &[data-pressed] {
+    pointer-events: none;
+  }
+
+  /*
+   * A `multiple` group renders no indicator, because one pill cannot sit behind
+   * several pressed toggles at once. Each pressed toggle paints the background
+   * the indicator would have given it, so the `--shade-background` label above
+   * has something to read against instead of the bare panel surface.
+   */
+  .toggle-group-panel[data-multiple] &[data-pressed] {
+    background-color: var(--shade-foreground);
+    border-radius: var(--toggle-radius);
   }
 
   svg {

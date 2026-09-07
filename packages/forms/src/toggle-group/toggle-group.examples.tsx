@@ -66,9 +66,13 @@ export const Vertical = () => (
   </ToggleGroup>
 );
 
-/* With `multiple`, toggles stop being mutually exclusive. */
+/*
+ * With `multiple`, toggles stop being mutually exclusive — several can be
+ * pressed at once, and pressing one again releases it. Two start pressed so the
+ * multi-selected treatment is visible without interacting.
+ */
 export const Multiple = () => (
-  <ToggleGroup multiple defaultValue={["bold"]}>
+  <ToggleGroup multiple defaultValue={["bold", "underline"]}>
     <Toggle value="bold" aria-label="Bold">
       <BoldIcon />
     </Toggle>

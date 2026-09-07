@@ -17,6 +17,7 @@ export const ToggleGroup = ({
   size = TOGGLE_GROUP_DEFAULT_SIZE,
   variant,
   orientation,
+  multiple,
   value,
   defaultValue,
   onValueChange,
@@ -30,6 +31,7 @@ export const ToggleGroup = ({
     value,
     activeValue,
     orientation,
+    multiple,
   );
 
   const handleValueChange = (newValue: string[]) => {
@@ -64,22 +66,31 @@ export const ToggleGroup = ({
   return (
     <BaseToggleGroup
       ref={panelRef}
+      multiple={multiple}
+      orientation={orientation}
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
       className={styles["toggle-group-panel"]}
       data-size={size}
       data-variant={variant}
-      data-orientation={orientation}
       render={
         orientation === "vertical" ? <Stack gap={2} /> : <Group gap={2} />
       }
       {...props}
     >
-      <div
-        data-slot="toggle-group-indicator"
-        className={styles["toggle-group-indicator"]}
-      />
+      {/*
+       * One indicator can only sit behind one toggle, and a `multiple` group
+       * can have several pressed at once — the ones it could not reach were
+       * being painted as if it had. Multi-select drops it and lets each pressed
+       * toggle carry its own background instead.
+       */}
+      {!multiple && (
+        <div
+          data-slot="toggle-group-indicator"
+          className={styles["toggle-group-indicator"]}
+        />
+      )}
       {enhancedChildren}
     </BaseToggleGroup>
   );
