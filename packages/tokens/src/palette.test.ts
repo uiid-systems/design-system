@@ -1,8 +1,9 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { PALETTE_HUES } from "./palette";
+
+// Imported with the `?raw` suffix rather than read from disk, matching
+// list.test.tsx: no package in this workspace carries node typings, so a
+// builtin import breaks any package whose build runs `tsc`.
+import paletteCss from "./palette.css?raw";
 
 /**
  * `PALETTE_HUES` is derived from the token JSON, but `palette.css` is written by
@@ -17,13 +18,8 @@ import { PALETTE_HUES } from "./palette";
  * the element that declares them), so every hue has to be named there too.
  */
 
-const CSS = readFileSync(
-  resolve(dirname(fileURLToPath(import.meta.url)), "palette.css"),
-  "utf8",
-);
-
 /** Comments name these tokens in prose, which would double every count. */
-const SOURCE = CSS.replace(/\/\*[\s\S]*?\*\//g, "");
+const SOURCE = paletteCss.replace(/\/\*[\s\S]*?\*\//g, "");
 
 /**
  * Rules whose selector is entirely `.palette-*` classes. `[^}]*` is safe

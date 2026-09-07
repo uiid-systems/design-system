@@ -1,7 +1,3 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { render, screen } from "@testing-library/react";
 import { StarIcon } from "@uiid/icons/star";
 import { describe, it, expect } from "vitest";
@@ -9,7 +5,11 @@ import { describe, it, expect } from "vitest";
 import { List } from "./list";
 import { ListItem } from "./subcomponents";
 
-const HERE = dirname(fileURLToPath(import.meta.url));
+// Imported with the `?raw` suffix rather than read from disk: this package
+// builds with `tsc -b` and pins its `types` to vitest and jest-dom, so a
+// builtin import fails to resolve. vite/client declares the suffix, and
+// vite-env.d.ts already references it.
+import listCss from "./list.module.css?raw";
 
 describe("List", () => {
   it("renders each item's label", () => {
@@ -95,16 +95,14 @@ describe("List", () => {
 // whatever the CSS said. The rendered result is verified in Storybook.
 
 describe("list.module.css theming hooks", () => {
-  const CSS = readFileSync(resolve(HERE, "list.module.css"), "utf8");
-
   it("falls back to --shade-foreground for the icon", () => {
-    expect(CSS).toContain(
+    expect(listCss).toContain(
       "color: var(--list-icon-color, var(--shade-foreground))",
     );
   });
 
   it("falls back to --shade-muted for the description", () => {
-    expect(CSS).toContain(
+    expect(listCss).toContain(
       "color: var(--list-description-color, var(--shade-muted))",
     );
   });
