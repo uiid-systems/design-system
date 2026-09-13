@@ -33,6 +33,7 @@ const meta = {
     value: { control: "object", table: { category: "Data" } },
     defaultValue: { control: "object", table: { category: "Data" } },
 
+    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     multiple: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
 
@@ -56,6 +57,7 @@ export const WithIcons: Story = { render: () => <Examples.WithIcons /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const Ghost: Story = { render: () => <Examples.Ghost /> };
 export const Vertical: Story = { render: () => <Examples.Vertical /> };
+export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const Multiple: Story = { render: () => <Examples.Multiple /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };

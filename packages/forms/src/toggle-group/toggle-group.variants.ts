@@ -27,3 +27,15 @@ export const toggleVariants = cva({
     size: TOGGLE_GROUP_DEFAULT_SIZE,
   },
 });
+
+/**
+ * The panel's own axis. `fullwidth` stretches the row as a whole, so it lands on
+ * the panel; how each toggle then shares that width depends on the orientation,
+ * which `.toggle-group-button` resolves by keying off this class.
+ */
+export const toggleGroupVariants = cva({
+  variants: {
+    /** Stretch to fill the container width, sharing it evenly between the toggles */
+    fullwidth: { true: styles["toggle-fullwidth"] },
+  },
+});
