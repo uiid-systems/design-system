@@ -122,11 +122,13 @@ describe("CheckboxGroup disabled propagation", () => {
     { value: "c", label: "Option C", disabled: true },
   ];
 
+  /* Each box is a native button, so disabled lands on the element itself
+     rather than as `aria-disabled` — the same assertion RadioGroup makes. */
   it("disables every checkbox when the group is disabled", () => {
     render(<CheckboxGroup items={items} disabled />);
 
     for (const box of screen.getAllByRole("checkbox")) {
-      expect(box).toHaveAttribute("aria-disabled", "true");
+      expect(box).toBeDisabled();
     }
   });
 
@@ -134,9 +136,9 @@ describe("CheckboxGroup disabled propagation", () => {
     render(<CheckboxGroup items={items} />);
     const [a, b, c] = screen.getAllByRole("checkbox");
 
-    expect(a).not.toHaveAttribute("aria-disabled", "true");
-    expect(b).not.toHaveAttribute("aria-disabled", "true");
-    expect(c).toHaveAttribute("aria-disabled", "true");
+    expect(a).not.toBeDisabled();
+    expect(b).not.toBeDisabled();
+    expect(c).toBeDisabled();
   });
 
   it("does not let CheckboxProps clobber a per-item value or label", () => {

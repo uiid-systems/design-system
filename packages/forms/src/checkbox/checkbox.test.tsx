@@ -116,6 +116,27 @@ describe("Checkbox surface", () => {
   });
 });
 
+describe("Checkbox native button", () => {
+  /* The root renders a real `<button>` through `Group`, so Base UI has to be
+     told it is native. Left at its default it layers non-native button
+     semantics over the real one and warns in development. */
+  it("renders a native button that cannot submit a form", () => {
+    render(<Checkbox />);
+    const box = screen.getByRole("checkbox");
+
+    expect(box.tagName).toBe("BUTTON");
+    expect(box).toHaveAttribute("type", "button");
+  });
+
+  it("disables natively rather than through aria-disabled", () => {
+    render(<Checkbox disabled />);
+    const box = screen.getByRole("checkbox");
+
+    expect(box).toHaveAttribute("disabled");
+    expect(box).not.toHaveAttribute("aria-disabled");
+  });
+});
+
 describe("Checkbox size variant", () => {
   const rowClassName = (container: HTMLElement) =>
     container.querySelector("[data-slot='field-row']")?.className ?? "";
