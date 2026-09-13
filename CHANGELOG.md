@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1](https://github.com/uiid-systems/design-system/compare/v0.4.0...v0.4.1) (2026-09-13)
+
+
+### Features
+
+* **ui:** add fullwidth to toggle group ([#385](https://github.com/uiid-systems/design-system/issues/385)) ([f2e433a](https://github.com/uiid-systems/design-system/commit/f2e433a2884d70df4c0986c4a63bba0dce6ccb27))
+
+
+### Bug Fixes
+
+* **ui:** make unselected checkbox and radio visible ([#387](https://github.com/uiid-systems/design-system/issues/387)) ([47ad67b](https://github.com/uiid-systems/design-system/commit/47ad67b598d7b5c33fdd1cc424e9e16131e2ae4d))
+
 ## [0.4.0](https://github.com/uiid-systems/design-system/compare/v0.3.0...v0.4.0) (2026-09-07)
 
 
