@@ -1,9 +1,10 @@
 import type { ToggleGroup } from "@base-ui/react/toggle-group";
 import type { VariantProps } from "@uiid/utils";
 
-import { toggleVariants } from "./toggle-group.variants";
+import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
-export type ToggleGroupVariants = VariantProps<typeof toggleVariants>;
+export type ToggleGroupVariants = VariantProps<typeof toggleVariants> &
+  VariantProps<typeof toggleGroupVariants>;
 
 export type ToggleGroupProps = Omit<ToggleGroup.Props, "onValueChange"> & {
   /** Surface treatment — filled by default, `ghost` drops the container background and border. */

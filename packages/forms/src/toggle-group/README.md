@@ -9,9 +9,10 @@ Use ToggleGroup when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier sets the group's height and each toggle's inline padding, font size and icon size
 - Drop the container surface with `variant="ghost"`, leaving only the moving indicator
 - Stack the toggles with `orientation="vertical"` — arrow-key navigation follows the axis, so a vertical group walks with up and down
+- Stretch the group across its container with `fullwidth` — a horizontal group shares the width evenly between its toggles, however long their labels, and a vertical group stretches each toggle across it
 - Disable the whole group with `disabled`, or a single `Toggle` with its own `disabled`
 
-The group shrink-wraps its toggles rather than stretching to fill its container, so it can be dropped into a layout without being sized down.
+The group shrink-wraps its toggles rather than stretching to fill its container, so it can be dropped into a layout without being sized down. Pass `fullwidth` when it should fill the row instead.
 
 `value` is always an array, even in single-selection mode. Leave it unset and the group runs itself from `defaultValue`; pass `value` and `onValueChange` to drive it yourself.
 

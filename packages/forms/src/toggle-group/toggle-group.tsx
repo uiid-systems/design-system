@@ -9,13 +9,14 @@ import { Children, cloneElement, isValidElement, useState } from "react";
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
 import { useToggleIndicator } from "./toggle-group.hooks";
 import type { ToggleGroupProps } from "./toggle-group.types";
-import { toggleVariants } from "./toggle-group.variants";
+import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
 
 export const ToggleGroup = ({
   size = TOGGLE_GROUP_DEFAULT_SIZE,
   variant,
+  fullwidth,
   orientation,
   multiple,
   value,
@@ -71,7 +72,10 @@ export const ToggleGroup = ({
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={styles["toggle-group-panel"]}
+      className={cx(
+        styles["toggle-group-panel"],
+        toggleGroupVariants({ fullwidth }),
+      )}
       data-size={size}
       data-variant={variant}
       render={

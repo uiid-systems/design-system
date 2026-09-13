@@ -192,3 +192,29 @@ describe("ToggleGroup orientation", () => {
     expect(a).toHaveFocus();
   });
 });
+
+describe("ToggleGroup fullwidth", () => {
+  it.each(["horizontal", "vertical"] as const)(
+    "stretches a %s panel with the shared fullwidth composition",
+    (orientation) => {
+      const { container } = renderGroup({ fullwidth: true, orientation });
+      const panel = container.firstElementChild;
+      expect(panel).toHaveAttribute("data-orientation", orientation);
+      expect(panel?.className).toMatch(/composes-fullwidth/);
+    },
+  );
+
+  it("shrink-wraps its toggles by default", () => {
+    const { container } = renderGroup();
+    expect(container.firstElementChild?.className).not.toMatch(
+      /composes-fullwidth/,
+    );
+  });
+
+  it("stretches the panel, not the toggles inside it", () => {
+    renderGroup({ fullwidth: true });
+    for (const toggle of screen.getAllByRole("button")) {
+      expect(toggle.className).not.toMatch(/composes-fullwidth/);
+    }
+  });
+});

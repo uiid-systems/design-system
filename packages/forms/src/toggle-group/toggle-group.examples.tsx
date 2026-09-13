@@ -67,6 +67,37 @@ export const Vertical = () => (
 );
 
 /*
+ * `fullwidth` stretches the group across its container. A horizontal group
+ * shares that width evenly — the labels differ in length but the toggles do
+ * not — and a vertical one stretches each toggle across it.
+ */
+export const Fullwidth = () => (
+  <Stack gap={4} fullwidth>
+    <ToggleGroup fullwidth defaultValue={["monthly"]}>
+      <Toggle value="monthly">Monthly</Toggle>
+      <Toggle value="yearly">Yearly</Toggle>
+      <Toggle value="lifetime">Lifetime</Toggle>
+    </ToggleGroup>
+    <ToggleGroup fullwidth defaultValue={["system"]}>
+      <Toggle value="light" aria-label="Light theme">
+        <SunIcon />
+      </Toggle>
+      <Toggle value="dark" aria-label="Dark theme">
+        <MoonIcon />
+      </Toggle>
+      <Toggle value="system" aria-label="Match the system theme">
+        <MonitorSmartphoneIcon />
+      </Toggle>
+    </ToggleGroup>
+    <ToggleGroup fullwidth orientation="vertical" defaultValue={["left"]}>
+      <Toggle value="left">Left</Toggle>
+      <Toggle value="center">Center</Toggle>
+      <Toggle value="right">Right</Toggle>
+    </ToggleGroup>
+  </Stack>
+);
+
+/*
  * With `multiple`, toggles stop being mutually exclusive — several can be
  * pressed at once, and pressing one again releases it. Two start pressed so the
  * multi-selected treatment is visible without interacting.
