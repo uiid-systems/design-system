@@ -105,6 +105,17 @@ describe("Checkbox invalid treatment", () => {
   });
 });
 
+describe("Checkbox surface", () => {
+  /* The unchecked box paints the same fill, hover and focus ring as Input and
+     Select's trigger, rather than a private copy of them. */
+  it("wears the shared field surface, matching Input", () => {
+    render(<Checkbox />);
+    expect(screen.getByRole("checkbox").className).toMatch(
+      /composes-field-surface(\s|$)/,
+    );
+  });
+});
+
 describe("Checkbox size variant", () => {
   const rowClassName = (container: HTMLElement) =>
     container.querySelector("[data-slot='field-row']")?.className ?? "";
