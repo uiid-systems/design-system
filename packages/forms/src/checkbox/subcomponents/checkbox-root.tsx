@@ -23,9 +23,12 @@ export const CheckboxRoot = ({
   return (
     <BaseCheckbox.Root
       data-slot="checkbox"
-      /* A `Group` rendering the `<button>` Base UI expects, so centering the
-         indicator inside the box is props rather than a flex block in the
-         module. */
+      /* A `Group` rendering a real `<button>`, so centering the indicator
+         inside the box is props rather than a flex block in the module.
+         `nativeButton` tells Base UI so: without it the button carried no
+         `type`, defaulting to submit inside a form, and disabled only through
+         ARIA. */
+      nativeButton
       render={<Group render={<button />} ax="center" ay="center" />}
       className={cx(
         styles["checkbox"],

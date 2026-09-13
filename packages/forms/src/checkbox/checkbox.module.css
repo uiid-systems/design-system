@@ -1,6 +1,11 @@
 @import "@uiid/tokens/component/checkbox.tokens.css";
+@import "@uiid/tokens/semantic/forms.tokens.css";
 
 .checkbox {
+  /* The resting surface Input and Select's trigger paint — fill, hover and
+     focus ring — so an unchecked box reads as a control rather than a faint
+     outline on the page. */
+  composes: composes-field-surface from global;
   composes: composes-disabled from global;
   composes: composes-invalid from global;
 
@@ -10,26 +15,28 @@
   aspect-ratio: 1;
   flex-shrink: 0;
   border-radius: var(--checkbox-border-radius);
-  outline: 0;
   position: relative;
-  border: none;
   cursor: pointer;
 
-  &[data-unchecked] {
-    border: var(--globals-border-width) solid var(--forms-border-color);
-    background-color: var(--shade-background);
-    &:hover {
-      background-color: var(--forms-bg-hover);
-    }
-  }
+  /* The one deliberate departure from the field surface. Its edge matches its
+     fill, which works on a text field whose size carries the shape; on a box
+     this small the shape disappears into the page, so the edge steps up to
+     halftone, which clears the 3:1 non-text contrast minimum in both schemes.
 
-  &[data-checked] {
+     Declared in full rather than as a colour: the box renders through `Group`,
+     whose primitive layer sits above uiid.compositions and zeroes the border
+     the surface declares. */
+  border: var(--globals-border-width) solid var(--shade-halftone);
+
+  /* uiid.components sits above uiid.compositions, so this outranks the
+     surface's hover and focus fills outright — a checked box keeps its hue
+     under the pointer. Indeterminate is named alongside checked because Base UI
+     sets neither `data-checked` nor `data-unchecked` on it, and its glyph is
+     drawn in the fill's pairing colour. The edge takes the fill too, so a
+     coloured box is not traced by a neutral ring. */
+  &:is([data-checked], [data-indeterminate]) {
     background-color: var(--control-fill, var(--shade-foreground));
-  }
-
-  &:focus-visible {
-    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-    outline-offset: var(--globals-outline-offset);
+    border-color: var(--control-fill, var(--shade-foreground));
   }
 
   /* Transparent hit area: a one-unit outset past the box, floored at the WCAG

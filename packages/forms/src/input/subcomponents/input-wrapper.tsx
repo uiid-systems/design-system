@@ -27,6 +27,7 @@ export const InputWrapper = ({
       ay="center"
       className={cx(
         styles["input"],
+        styles["input-edge"],
         styles["input-wrapper"],
         inputVariants({ size, fullwidth, variant }),
         inputColorClassName(color),

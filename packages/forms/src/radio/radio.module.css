@@ -2,6 +2,11 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 .radio {
+  /* The resting surface Input and Select's trigger paint — fill, hover and
+     focus ring — so an unchecked radio reads as a control rather than a faint
+     ring on the page. What stays below is Radio's own: the round shape, the
+     stronger edge and the checked fill. */
+  composes: composes-field-surface from global;
   composes: composes-disabled from global;
   composes: composes-invalid from global;
 
@@ -11,29 +16,20 @@
 
   aspect-ratio: 1;
   border-radius: 100%;
-  outline: 0;
-  background-color: var(--forms-bg);
-  border: var(--globals-border-width) solid var(--forms-border-color);
 
-  &[data-unchecked] {
-    background-color: transparent;
-  }
+  /* Steps the edge up from the field surface's for the same reason `.checkbox`
+     does: at this size an edge that matches the fill loses the shape. Declared
+     in full because the ring also renders through `Group`, which zeroes the
+     surface's border from a higher layer. */
+  border: var(--globals-border-width) solid var(--shade-halftone);
 
+  /* uiid.components sits above uiid.compositions, so this outranks the
+     surface's hover and focus fills outright — a checked radio keeps its hue
+     under the pointer without scoping those states to unchecked. The edge takes
+     the fill too, so a coloured radio is not traced by a neutral ring. */
   &[data-checked] {
     background-color: var(--control-fill, var(--shade-foreground));
-  }
-
-  /* Scoped to the unchecked state on purpose. Unscoped, this rule matched a
-     checked radio too and, sitting later in the source at equal specificity,
-     repainted it with the resting hover fill — which also dropped the hue off a
-     coloured one. */
-  &[data-unchecked]:hover {
-    background-color: var(--forms-bg-hover);
-  }
-
-  &:focus-visible {
-    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-    outline-offset: var(--globals-outline-offset);
+    border-color: var(--control-fill, var(--shade-foreground));
   }
 }
 

@@ -164,6 +164,22 @@ describe("Input shared compositions", () => {
       container.querySelector("[data-slot='input-wrapper']")?.className,
     ).toMatch(/composes-disabled-within/);
   });
+
+  /* The wrapper renders through `Group`, whose Box reset outranks the
+     surface's edge, so it restates the edge or its border is zero wide. */
+  it("restates the edge on the wrapper the layout primitive would zero", () => {
+    const { container } = render(<Input before="$" />);
+    expect(
+      container.querySelector("[data-slot='input-wrapper']")?.className,
+    ).toMatch(/input-edge/);
+  });
+
+  /* A bare input has no primitive to fight, and restating its edge would tie
+     with rules that trim it from other modules (`.number-field-input`). */
+  it("keeps a bare input off the restated edge", () => {
+    render(<Input />);
+    expect(screen.getByRole("textbox").className).not.toMatch(/input-edge/);
+  });
 });
 
 describe("Input color", () => {

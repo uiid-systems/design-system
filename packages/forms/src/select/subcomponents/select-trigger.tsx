@@ -45,6 +45,7 @@ export const SelectTrigger = ({
       className={cx(
         hasSlots && styles["select-trigger-slots"],
         inputStyles["input"],
+        inputStyles["input-edge"],
         inputVariants({ size, variant, fullwidth }),
         inputColorClassName(color),
         className,

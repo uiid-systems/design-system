@@ -28,6 +28,27 @@
   }
 }
 
+/*
+ * The edge again, for the surfaces that render through a layout primitive —
+ * Select's trigger, the slotted-input wrapper and Slider's root are all `Group`.
+ * Box resets `border-width` and `border-color` from uiid.primitives, which
+ * outranks uiid.compositions, so the edge composes-field-surface declares never
+ * lands: the border is zero wide, which also swallows a tinted or invalid edge.
+ *
+ * Kept off `.input` itself so it cannot tie with a rule in another module that
+ * trims a plain input's edge, such as `.number-field-input`'s
+ * `border-inline: none`. Ghost clears the colour again for the same reason the
+ * edge is restated: its composition sits under the same reset.
+ */
+.input-edge {
+  border-width: var(--globals-border-width);
+  border-color: var(--forms-border-color);
+
+  &.variant-ghost {
+    border-color: transparent;
+  }
+}
+
 .size-xsmall {
   composes: composes-size-xsmall from global;
 }

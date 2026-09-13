@@ -129,6 +129,21 @@ describe("Radio field row", () => {
   });
 });
 
+describe("Radio surface", () => {
+  /* The unchecked ring paints the same fill, hover and focus ring as Input and
+     Select's trigger, rather than a private copy of them. */
+  it("wears the shared field surface, matching Input", () => {
+    const { container } = render(
+      <RadioGroupRoot>
+        <Radio value="a" label="Option A" />
+      </RadioGroupRoot>,
+    );
+    expect(container.querySelector("[data-slot='radio']")?.className).toMatch(
+      /composes-field-surface(\s|$)/,
+    );
+  });
+});
+
 describe("Radio size variant", () => {
   const radioClassName = (container: HTMLElement) =>
     container.querySelector("[data-slot='radio']")?.className ?? "";

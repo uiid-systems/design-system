@@ -34,6 +34,7 @@ export const SliderRoot = ({
       data-slot="slider-root"
       className={cx(
         inputStyles["input"],
+        inputStyles["input-edge"],
         sliderVariants({ variant, fullwidth, size }),
         colorClassName,
         className,
