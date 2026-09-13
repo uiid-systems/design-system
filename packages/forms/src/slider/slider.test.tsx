@@ -160,6 +160,17 @@ describe("Slider size variant", () => {
   });
 });
 
+describe("Slider control surface", () => {
+  /* The root renders through `Group`, whose Box reset outranks the surface's
+     edge, so it takes Input's restated one or its border is zero wide. */
+  it("restates the edge the layout primitive would otherwise zero", () => {
+    const { container } = render(<Slider />);
+    expect(
+      container.querySelector("[data-slot='slider-root']")?.className,
+    ).toMatch(/input-edge/);
+  });
+});
+
 describe("Slider color", () => {
   const rootClassName = (container: HTMLElement) =>
     container.querySelector("[data-slot='slider-root']")?.className ?? "";

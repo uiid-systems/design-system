@@ -331,6 +331,14 @@ describe("Select control surface", () => {
     render(<Select items={items} label="Pick" />);
     expect(screen.getByRole("combobox").tagName).toBe("BUTTON");
   });
+
+  /* The trigger renders through `Group`, whose Box reset outranks the
+     surface's edge, so it takes Input's restated one or its border is zero
+     wide — which also hid the invalid edge. */
+  it("restates the edge the layout primitive would otherwise zero", () => {
+    render(<Select items={items} label="Pick" />);
+    expect(screen.getByRole("combobox").className).toMatch(/input-edge/);
+  });
 });
 
 describe("Select color", () => {
