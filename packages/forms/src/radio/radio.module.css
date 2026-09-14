@@ -16,6 +16,9 @@
 
   aspect-ratio: 1;
   border-radius: 100%;
+  /* Positioned like `.checkbox`, so a `bordered` row can lift the ring above
+     the label overlay that makes the row's padding clickable. */
+  position: relative;
 
   /* Steps the edge up from the field surface's for the same reason `.checkbox`
      does: at this size an edge that matches the fill loses the shape. Declared
