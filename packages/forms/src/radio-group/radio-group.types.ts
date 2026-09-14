@@ -7,6 +7,8 @@ import type { FormItemProps } from "../types";
 
 export type RadioGroupRootProps = RadioGroup.Props & {
   direction?: "horizontal" | "vertical";
+  /** Stretch to fill the container width, sharing it evenly between the rows */
+  fullwidth?: boolean;
 };
 
 export type RadioGroupProps = RadioGroup.Props &

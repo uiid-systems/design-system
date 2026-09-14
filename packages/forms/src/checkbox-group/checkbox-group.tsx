@@ -19,6 +19,7 @@ export const CheckboxGroup = ({
   name,
   defaultValue,
   direction = "vertical",
+  fullwidth,
   hideIndicators,
   size,
   bordered,
@@ -33,16 +34,23 @@ export const CheckboxGroup = ({
   ...props
 }: CheckboxGroupProps) => {
   return (
+    /*
+     * `fullwidth` lands on the field as well as the group. A labelled field is
+     * an `inline-flex` Stack that shrink-wraps its content, so a stretched group
+     * inside it would only ever fill the width of its own label.
+     */
     <Field
       name={name}
       label={fieldLabel}
       description={description}
       required={required}
       disabled={disabled}
+      fullwidth={fullwidth}
       {...FieldProps}
     >
       <CheckboxGroupRoot
         direction={direction}
+        fullwidth={fullwidth}
         disabled={disabled}
         defaultValue={defaultValue ? [...defaultValue] : undefined}
         {...props}

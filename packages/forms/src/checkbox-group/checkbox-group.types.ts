@@ -10,6 +10,8 @@ import type { FormItemProps } from "../types";
 
 export type CheckboxGroupRootProps = BaseCheckboxGroup.Props & {
   direction?: "horizontal" | "vertical";
+  /** Stretch to fill the container width, sharing it evenly between the rows */
+  fullwidth?: boolean;
 };
 
 export type CheckboxGroupProps = {
