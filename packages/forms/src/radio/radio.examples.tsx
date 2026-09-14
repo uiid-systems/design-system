@@ -39,7 +39,7 @@ export const WithDescription = () => (
 export const Sizes = () => (
   <Stack gap={4}>
     {SIZES.map((size) => (
-      <RadioGroupRoot key={size} direction="horizontal" defaultValue="on">
+      <RadioGroupRoot key={size} orientation="horizontal" defaultValue="on">
         <Radio value="on" size={size} label={`${size}, selected`} />
         <Radio value="off" size={size} label={size} />
       </RadioGroupRoot>
@@ -54,7 +54,7 @@ export const Sizes = () => (
 export const Colors = () => (
   <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
-      <RadioGroupRoot key={color} direction="horizontal" defaultValue="on">
+      <RadioGroupRoot key={color} orientation="horizontal" defaultValue="on">
         <Radio value="on" color={color} label={color} />
         <Radio value="off" color={color} label="unselected" />
       </RadioGroupRoot>

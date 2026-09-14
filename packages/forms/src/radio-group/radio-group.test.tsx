@@ -88,8 +88,8 @@ describe("RadioGroup", () => {
     expect(handleChange).toHaveBeenCalledWith("b");
   });
 
-  it("supports horizontal direction", () => {
-    render(<RadioGroup items={defaultItems} direction="horizontal" />);
+  it("supports horizontal orientation", () => {
+    render(<RadioGroup items={defaultItems} orientation="horizontal" />);
     const radios = screen.getAllByRole("radio");
     expect(radios).toHaveLength(3);
   });
@@ -285,9 +285,9 @@ describe("RadioGroup fullwidth", () => {
 
   it.each(["vertical", "horizontal"] as const)(
     "stretches a %s group across its container",
-    (direction) => {
+    (orientation) => {
       const { container } = render(
-        <RadioGroup items={items} direction={direction} fullwidth />,
+        <RadioGroup items={items} orientation={orientation} fullwidth />,
       );
 
       expect(root(container)?.className).toMatch(/toggle-fullwidth/);
@@ -296,7 +296,7 @@ describe("RadioGroup fullwidth", () => {
 
   it("shares a horizontal group's width evenly between its rows", () => {
     const { container } = render(
-      <RadioGroup items={items} direction="horizontal" fullwidth />,
+      <RadioGroup items={items} orientation="horizontal" fullwidth />,
     );
 
     expect(root(container)?.className).toMatch(/field-rows-evenly/);
@@ -324,7 +324,7 @@ describe("RadioGroup fullwidth", () => {
 
   it("leaves the group sized by its rows without fullwidth", () => {
     const { container } = render(
-      <RadioGroup items={items} direction="horizontal" />,
+      <RadioGroup items={items} orientation="horizontal" />,
     );
 
     expect(root(container)?.className).not.toMatch(/toggle-fullwidth/);

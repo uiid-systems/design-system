@@ -87,8 +87,8 @@ describe("CheckboxGroup", () => {
     expect(handleChange).toHaveBeenCalledWith(["a"]);
   });
 
-  it("supports horizontal direction", () => {
-    render(<CheckboxGroup items={defaultItems} direction="horizontal" />);
+  it("supports horizontal orientation", () => {
+    render(<CheckboxGroup items={defaultItems} orientation="horizontal" />);
     const checkboxes = screen.getAllByRole("checkbox");
     expect(checkboxes).toHaveLength(3);
   });
@@ -352,9 +352,9 @@ describe("CheckboxGroup fullwidth", () => {
 
   it.each(["vertical", "horizontal"] as const)(
     "stretches a %s group across its container",
-    (direction) => {
+    (orientation) => {
       const { container } = render(
-        <CheckboxGroup items={items} direction={direction} fullwidth />,
+        <CheckboxGroup items={items} orientation={orientation} fullwidth />,
       );
 
       expect(root(container)?.className).toMatch(/toggle-fullwidth/);
@@ -363,7 +363,7 @@ describe("CheckboxGroup fullwidth", () => {
 
   it("shares a horizontal group's width evenly between its rows", () => {
     const { container } = render(
-      <CheckboxGroup items={items} direction="horizontal" fullwidth />,
+      <CheckboxGroup items={items} orientation="horizontal" fullwidth />,
     );
 
     expect(root(container)?.className).toMatch(/field-rows-evenly/);
@@ -391,7 +391,7 @@ describe("CheckboxGroup fullwidth", () => {
 
   it("leaves the group sized by its rows without fullwidth", () => {
     const { container } = render(
-      <CheckboxGroup items={items} direction="horizontal" />,
+      <CheckboxGroup items={items} orientation="horizontal" />,
     );
 
     expect(root(container)?.className).not.toMatch(/toggle-fullwidth/);

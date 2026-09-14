@@ -18,7 +18,7 @@ export const CheckboxGroup = ({
   description,
   name,
   defaultValue,
-  direction = "vertical",
+  orientation = "vertical",
   fullwidth,
   hideIndicators,
   size,
@@ -49,7 +49,7 @@ export const CheckboxGroup = ({
       {...FieldProps}
     >
       <CheckboxGroupRoot
-        direction={direction}
+        orientation={orientation}
         fullwidth={fullwidth}
         disabled={disabled}
         defaultValue={defaultValue ? [...defaultValue] : undefined}

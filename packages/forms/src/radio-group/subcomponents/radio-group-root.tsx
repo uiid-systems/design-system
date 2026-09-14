@@ -8,12 +8,12 @@ import type { RadioGroupRootProps } from "../radio-group.types";
 import fieldStyles from "../../field/field.module.css";
 
 export const RadioGroupRoot = ({
-  direction = "vertical",
+  orientation = "vertical",
   fullwidth,
   children,
   ...props
 }: RadioGroupRootProps) => {
-  const isHorizontal = direction === "horizontal";
+  const isHorizontal = orientation === "horizontal";
 
   /*
    * `fullwidth` stretches the root, then fills that width along the rows' own

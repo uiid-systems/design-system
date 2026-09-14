@@ -33,13 +33,13 @@ export const WithLabel = () => (
 );
 
 export const Horizontal = () => (
-  <RadioGroup direction="horizontal" items={ITEMS} />
+  <RadioGroup orientation="horizontal" items={ITEMS} />
 );
 
 export const Bordered = () => (
   <Stack gap={6} ax="stretch">
     <RadioGroup bordered items={ITEMS} />
-    <RadioGroup bordered reversed direction="horizontal" items={ITEMS} />
+    <RadioGroup bordered reversed orientation="horizontal" items={ITEMS} />
   </Stack>
 );
 
@@ -50,11 +50,11 @@ export const Bordered = () => (
  */
 export const Fullwidth = () => (
   <Stack gap={6} ax="stretch" fullwidth>
-    <RadioGroup fullwidth direction="horizontal" items={ITEMS} />
+    <RadioGroup fullwidth orientation="horizontal" items={ITEMS} />
     <RadioGroup
       fullwidth
       bordered
-      direction="horizontal"
+      orientation="horizontal"
       items={ITEMS}
       defaultValue="standard"
     />
@@ -70,7 +70,7 @@ export const Sizes = () => (
       <RadioGroup
         key={size}
         size={size}
-        direction="horizontal"
+        orientation="horizontal"
         items={ITEMS}
         defaultValue="standard"
       />
@@ -79,7 +79,7 @@ export const Sizes = () => (
 );
 
 export const HideIndicators = () => (
-  <RadioGroup bordered hideIndicators direction="horizontal" items={ITEMS} />
+  <RadioGroup bordered hideIndicators orientation="horizontal" items={ITEMS} />
 );
 
 export const Disabled = () => (

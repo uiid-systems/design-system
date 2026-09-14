@@ -6,7 +6,7 @@ Use CheckboxGroup when you want to:
 
 - Offer a set of independent options — pass `items` for the common case, each entry carrying `value`, `label`, and optionally `disabled`
 - Label the whole group with `label` and `description`
-- Lay the boxes out with `direction` (`vertical`, `horizontal`)
+- Lay the boxes out with `orientation` (`vertical`, `horizontal`)
 - Stretch the group across its container with `fullwidth` — a horizontal group shares the width evenly between its rows, and a vertical group stretches each row across it, `bordered` frame included
 - Scale every row at once with `size` (`xsmall`, `small`, `medium`, `large`), matching an Input or Button at the same tier
 - Apply `bordered` and `reversed` to every row at once

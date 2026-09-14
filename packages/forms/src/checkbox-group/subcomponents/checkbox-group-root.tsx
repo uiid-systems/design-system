@@ -8,12 +8,12 @@ import type { CheckboxGroupRootProps } from "../checkbox-group.types";
 import fieldStyles from "../../field/field.module.css";
 
 export const CheckboxGroupRoot = ({
-  direction = "vertical",
+  orientation = "vertical",
   fullwidth,
   children,
   ...props
 }: CheckboxGroupRootProps) => {
-  const isHorizontal = direction === "horizontal";
+  const isHorizontal = orientation === "horizontal";
 
   /*
    * `fullwidth` stretches the root, then fills that width along the rows' own
