@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.0](https://github.com/uiid-systems/design-system/compare/v0.4.1...v0.5.0) (2026-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** direction is removed; pass orientation instead
+
+### Features
+
+* **ui:** add size prop to checkbox and radio groups ([#388](https://github.com/uiid-systems/design-system/issues/388)) ([3d4d27b](https://github.com/uiid-systems/design-system/commit/3d4d27b716f7e8e163253db5f806968c627bbd06))
+* **ui:** rename group direction prop to orientation ([#392](https://github.com/uiid-systems/design-system/issues/392)) ([ab78c32](https://github.com/uiid-systems/design-system/commit/ab78c325b7056fd4f69a8b7230df0a5a8deac862))
+
+
+### Bug Fixes
+
+* **ui:** make bordered toggle rows clickable across their padding ([#389](https://github.com/uiid-systems/design-system/issues/389)) ([4963e9b](https://github.com/uiid-systems/design-system/commit/4963e9be66288fc31c63c12b8796f46da7894ed5))
+* **ui:** make fullwidth stretch checkbox and radio groups ([#391](https://github.com/uiid-systems/design-system/issues/391)) ([da3cd1d](https://github.com/uiid-systems/design-system/commit/da3cd1d2a0a35c240236cf23334589729734e3b2))
+
 ## [0.4.1](https://github.com/uiid-systems/design-system/compare/v0.4.0...v0.4.1) (2026-09-13)
 
 
