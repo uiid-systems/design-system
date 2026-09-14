@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/uiid-systems/design-system/compare/v0.5.0...v0.5.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* **release:** publish to npm with trusted publishing ([#393](https://github.com/uiid-systems/design-system/issues/393)) ([8b4cb48](https://github.com/uiid-systems/design-system/commit/8b4cb487d7e1648c2717cd459dc98a3a9c442e9e))
+
 ## [0.5.0](https://github.com/uiid-systems/design-system/compare/v0.4.1...v0.5.0) (2026-09-14)
 
 
