@@ -6,7 +6,7 @@ import type { RadioProps, RadioIndicatorProps } from "../radio/radio.types";
 import type { FormItemProps } from "../types";
 
 export type RadioGroupRootProps = RadioGroup.Props & {
-  direction?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical";
   /** Stretch to fill the container width, sharing it evenly between the rows */
   fullwidth?: boolean;
 };
@@ -21,7 +21,7 @@ export type RadioGroupProps = RadioGroup.Props &
      * compose `Radio` (or `RadioGroupRoot`) directly instead.
      */
     items?: FormItemProps[];
-    direction?: "horizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
     hideIndicators?: RadioProps["hideIndicator"];
     required?: boolean;
     RadioProps?: Partial<RadioProps>;

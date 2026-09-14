@@ -92,8 +92,8 @@ describe("Radio", () => {
     expect(handleChange).toHaveBeenCalledWith("b");
   });
 
-  it("supports horizontal direction", () => {
-    render(<RadioGroup items={defaultItems} direction="horizontal" />);
+  it("supports horizontal orientation", () => {
+    render(<RadioGroup items={defaultItems} orientation="horizontal" />);
     const radios = screen.getAllByRole("radio");
     expect(radios).toHaveLength(2);
   });

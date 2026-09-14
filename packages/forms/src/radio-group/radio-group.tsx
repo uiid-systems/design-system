@@ -10,7 +10,7 @@ export const RadioGroup = ({
   label,
   description,
   name,
-  direction = "vertical",
+  orientation = "vertical",
   fullwidth,
   size,
   bordered,
@@ -42,7 +42,7 @@ export const RadioGroup = ({
     >
       <RadioGroupRoot
         name={name}
-        direction={direction}
+        orientation={orientation}
         fullwidth={fullwidth}
         disabled={disabled}
         required={required}

@@ -165,10 +165,10 @@ export const AnyControl = () => (
       <Slider defaultValue={40} />
     </Field>
     <Field label="Radio group" description={DESCRIPTION}>
-      <RadioGroup bordered direction="horizontal" items={CHANNELS} />
+      <RadioGroup bordered orientation="horizontal" items={CHANNELS} />
     </Field>
     <Field label="Checkbox group" description={DESCRIPTION}>
-      <CheckboxGroup bordered direction="horizontal" items={CHANNELS} />
+      <CheckboxGroup bordered orientation="horizontal" items={CHANNELS} />
     </Field>
     <Field label="Switch" description={DESCRIPTION}>
       <Switch bordered label="Enabled" />

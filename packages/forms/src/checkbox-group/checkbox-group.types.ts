@@ -9,7 +9,7 @@ import type { FieldProps } from "../field/field.types";
 import type { FormItemProps } from "../types";
 
 export type CheckboxGroupRootProps = BaseCheckboxGroup.Props & {
-  direction?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical";
   /** Stretch to fill the container width, sharing it evenly between the rows */
   fullwidth?: boolean;
 };
@@ -20,7 +20,7 @@ export type CheckboxGroupProps = {
    * compose `Checkbox` (or `CheckboxGroupRoot`) directly instead.
    */
   items?: FormItemProps[];
-  direction?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical";
   hideIndicators?: CheckboxProps["hideIndicator"];
   CheckboxProps?: Partial<CheckboxProps>;
   IndicatorProps?: CheckboxIndicatorProps;

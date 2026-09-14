@@ -18,7 +18,7 @@ const meta = {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
 
-    direction: {
+    orientation: {
       control: "select",
       options: ["vertical", "horizontal"],
       table: { category: "Variants" },

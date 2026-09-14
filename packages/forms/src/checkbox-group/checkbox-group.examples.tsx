@@ -32,13 +32,13 @@ export const WithLabel = () => (
 );
 
 export const Horizontal = () => (
-  <CheckboxGroup direction="horizontal" items={ITEMS} />
+  <CheckboxGroup orientation="horizontal" items={ITEMS} />
 );
 
 export const Bordered = () => (
   <Stack gap={6} ax="stretch">
     <CheckboxGroup bordered items={ITEMS} />
-    <CheckboxGroup bordered reversed direction="horizontal" items={ITEMS} />
+    <CheckboxGroup bordered reversed orientation="horizontal" items={ITEMS} />
   </Stack>
 );
 
@@ -49,11 +49,11 @@ export const Bordered = () => (
  */
 export const Fullwidth = () => (
   <Stack gap={6} ax="stretch" fullwidth>
-    <CheckboxGroup fullwidth direction="horizontal" items={ITEMS} />
+    <CheckboxGroup fullwidth orientation="horizontal" items={ITEMS} />
     <CheckboxGroup
       fullwidth
       bordered
-      direction="horizontal"
+      orientation="horizontal"
       items={ITEMS}
       defaultValue={["email"]}
     />
@@ -69,7 +69,7 @@ export const Sizes = () => (
       <CheckboxGroup
         key={size}
         size={size}
-        direction="horizontal"
+        orientation="horizontal"
         items={ITEMS}
       />
     ))}
@@ -77,7 +77,12 @@ export const Sizes = () => (
 );
 
 export const HideIndicators = () => (
-  <CheckboxGroup bordered hideIndicators direction="horizontal" items={ITEMS} />
+  <CheckboxGroup
+    bordered
+    hideIndicators
+    orientation="horizontal"
+    items={ITEMS}
+  />
 );
 
 export const Disabled = () => (
