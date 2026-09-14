@@ -31,14 +31,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      # Trusted publishing: npm exchanges this job's OIDC token for a
+      # short-lived publish token, so there is no long-lived secret to expire.
+      # Each @uiid/* package must list this workflow as a trusted publisher.
+      id-token: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      # Trusted publishing needs npm CLI >= 11.5.1. pnpm 10 publishes by
+      # shelling out to the npm on PATH, and Node 24 bundles npm 11.
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: "https://registry.npmjs.org"
 
       - name: Setup pnpm
@@ -63,7 +69,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # Provenance is attached automatically when publishing via OIDC.
       - name: Publish
         run: pnpm -r publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
