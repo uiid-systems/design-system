@@ -5,9 +5,14 @@ import { Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { Checkbox } from "../checkbox/checkbox";
+import type { CheckboxVariants } from "../checkbox/checkbox.types";
 import { Form } from "../form/form";
 import type { FormItemProps } from "../types";
 import { CheckboxGroup } from "./checkbox-group";
+
+type Size = NonNullable<CheckboxVariants["size"]>;
+
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const ITEMS: FormItemProps[] = [
   { value: "email", label: "Email" },
@@ -37,25 +42,18 @@ export const Bordered = () => (
   </Stack>
 );
 
-/* Anything not covered by the group's own props reaches every box through
- * `CheckboxProps`. */
+/* `size` scales every box and its row together, on the same tiers as Input
+ * and Button. */
 export const Sizes = () => (
   <Stack gap={6} ax="stretch">
-    <CheckboxGroup
-      direction="horizontal"
-      items={ITEMS}
-      CheckboxProps={{ size: "small" }}
-    />
-    <CheckboxGroup
-      direction="horizontal"
-      items={ITEMS}
-      CheckboxProps={{ size: "medium" }}
-    />
-    <CheckboxGroup
-      direction="horizontal"
-      items={ITEMS}
-      CheckboxProps={{ size: "large" }}
-    />
+    {SIZES.map((size) => (
+      <CheckboxGroup
+        key={size}
+        size={size}
+        direction="horizontal"
+        items={ITEMS}
+      />
+    ))}
   </Stack>
 );
 

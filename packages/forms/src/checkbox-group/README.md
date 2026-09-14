@@ -7,10 +7,11 @@ Use CheckboxGroup when you want to:
 - Offer a set of independent options — pass `items` for the common case, each entry carrying `value`, `label`, and optionally `disabled`
 - Label the whole group with `label` and `description`
 - Lay the boxes out with `direction` (`vertical`, `horizontal`)
+- Scale every row at once with `size` (`xsmall`, `small`, `medium`, `large`), matching an Input or Button at the same tier
 - Apply `bordered` and `reversed` to every row at once
 - Hide the boxes with `hideIndicators` while they stay in the accessibility tree
 - Disable the whole group with `disabled` — it propagates to every box
-- Reach every box with anything the group doesn't surface itself through `CheckboxProps` (`size`, for instance)
+- Reach every box with anything the group doesn't surface itself through `CheckboxProps`
 
 Drop `items` and pass children to compose [`Checkbox`](../checkbox/README.md) directly instead — each one can then carry its own description, size, or slot content.
 

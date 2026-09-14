@@ -20,6 +20,7 @@ export const CheckboxGroup = ({
   defaultValue,
   direction = "vertical",
   hideIndicators,
+  size,
   bordered,
   reversed,
   color,
@@ -54,6 +55,7 @@ export const CheckboxGroup = ({
                   key={value}
                   name={name}
                   hideIndicator={hideIndicators}
+                  size={size}
                   bordered={bordered}
                   reversed={reversed}
                   color={color}
