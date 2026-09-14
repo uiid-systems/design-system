@@ -34,6 +34,16 @@
   display: contents;
 }
 
+/* Shares a horizontal checkbox or radio group's width evenly between its rows.
+   `Group`'s `evenly` cannot: it sizes direct children, and a row's direct
+   parent is its own `display: contents` `Field.Root` (see `FieldRow`), so the
+   flex sizing lands on a box that is never laid out. Growing from a zero basis
+   is what makes the rows equal however long their labels, while the automatic
+   `min-width` still keeps a long label from being clipped. */
+.field-rows-evenly > * > [data-slot="field-row"] {
+  flex: 1 1 0;
+}
+
 .field-error-tooltip {
   /* The icon inherits this through `currentColor` rather than taking a token
      through a JS `color` prop. The palette class is applied alongside. */

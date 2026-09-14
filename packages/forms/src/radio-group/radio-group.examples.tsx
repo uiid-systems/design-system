@@ -43,6 +43,25 @@ export const Bordered = () => (
   </Stack>
 );
 
+/*
+ * `fullwidth` stretches the group across its container. A horizontal group
+ * shares that width evenly between its rows, and a vertical one stretches each
+ * row across it — a `bordered` frame follows the row out to the edge.
+ */
+export const Fullwidth = () => (
+  <Stack gap={6} ax="stretch" fullwidth>
+    <RadioGroup fullwidth direction="horizontal" items={ITEMS} />
+    <RadioGroup
+      fullwidth
+      bordered
+      direction="horizontal"
+      items={ITEMS}
+      defaultValue="standard"
+    />
+    <RadioGroup fullwidth bordered items={ITEMS} defaultValue="standard" />
+  </Stack>
+);
+
 /* `size` scales every radio and its row together, on the same tiers as Input
  * and Button. */
 export const Sizes = () => (

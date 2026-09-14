@@ -42,6 +42,25 @@ export const Bordered = () => (
   </Stack>
 );
 
+/*
+ * `fullwidth` stretches the group across its container. A horizontal group
+ * shares that width evenly between its rows, and a vertical one stretches each
+ * row across it — a `bordered` frame follows the row out to the edge.
+ */
+export const Fullwidth = () => (
+  <Stack gap={6} ax="stretch" fullwidth>
+    <CheckboxGroup fullwidth direction="horizontal" items={ITEMS} />
+    <CheckboxGroup
+      fullwidth
+      bordered
+      direction="horizontal"
+      items={ITEMS}
+      defaultValue={["email"]}
+    />
+    <CheckboxGroup fullwidth bordered items={ITEMS} defaultValue={["email"]} />
+  </Stack>
+);
+
 /* `size` scales every box and its row together, on the same tiers as Input
  * and Button. */
 export const Sizes = () => (

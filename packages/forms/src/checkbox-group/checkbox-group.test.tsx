@@ -340,3 +340,61 @@ describe("CheckboxGroup size", () => {
     }
   });
 });
+
+describe("CheckboxGroup fullwidth", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const root = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>("[data-slot='checkbox-group-root']");
+
+  it.each(["vertical", "horizontal"] as const)(
+    "stretches a %s group across its container",
+    (direction) => {
+      const { container } = render(
+        <CheckboxGroup items={items} direction={direction} fullwidth />,
+      );
+
+      expect(root(container)?.className).toMatch(/toggle-fullwidth/);
+    },
+  );
+
+  it("shares a horizontal group's width evenly between its rows", () => {
+    const { container } = render(
+      <CheckboxGroup items={items} direction="horizontal" fullwidth />,
+    );
+
+    expect(root(container)?.className).toMatch(/field-rows-evenly/);
+  });
+
+  it("stretches each row of a vertical group across it", () => {
+    const { container } = render(<CheckboxGroup items={items} fullwidth />);
+
+    expect(root(container)).toHaveStyle({ alignItems: "stretch" });
+  });
+
+  /*
+   * A labelled field is an `inline-flex` Stack, so without its own `fullwidth`
+   * the stretched group inside it could only fill the width of the label.
+   */
+  it("stretches the field around a labelled group", () => {
+    const { container } = render(
+      <CheckboxGroup items={items} label="Pick some" fullwidth />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-root']")?.className,
+    ).toMatch(/toggle-fullwidth/);
+  });
+
+  it("leaves the group sized by its rows without fullwidth", () => {
+    const { container } = render(
+      <CheckboxGroup items={items} direction="horizontal" />,
+    );
+
+    expect(root(container)?.className).not.toMatch(/toggle-fullwidth/);
+    expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
+  });
+});

@@ -33,6 +33,7 @@ const meta = {
     value: { control: "object", table: { category: "Data" } },
     defaultValue: { control: "object", table: { category: "Data" } },
 
+    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
     hideIndicators: { control: "boolean", table: { category: "Toggles" } },
@@ -57,6 +58,7 @@ export const Playground: Story = {
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const Horizontal: Story = { render: () => <Examples.Horizontal /> };
 export const Bordered: Story = { render: () => <Examples.Bordered /> };
+export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const HideIndicators: Story = {
   render: () => <Examples.HideIndicators />,
