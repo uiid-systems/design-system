@@ -122,6 +122,25 @@
      bordered row the same padding as a small one. */
   padding: var(--field-row-padding-y) var(--field-row-padding-x);
   color: var(--shade-foreground);
+  position: relative;
+
+  /* A bordered row reads as one control, so the whole surface is the label:
+     the label's hit area stretches over the row, padding and gap included,
+     and a click anywhere on it reaches the control through the label's own
+     association. `::before` because the label spends `::after` on its
+     required marker. A disabled row is already `pointer-events: none`. */
+  & [data-slot="field-label"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  /* The overlay comes later in the tree than the control, so it would paint
+     over it and swallow its hover fill. Every control here is positioned, so a
+     z-index is enough to keep it the topmost hit. */
+  & :is([role="checkbox"], [role="radio"], [role="switch"]) {
+    z-index: 1;
+  }
 
   &:has(:focus-visible) {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
