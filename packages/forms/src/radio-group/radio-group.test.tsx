@@ -227,3 +227,49 @@ describe("RadioGroup color", () => {
     }
   });
 });
+
+describe("RadioGroup size", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const rings = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("[data-slot='radio']"));
+  const rows = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("[data-slot='field-row']"));
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto every radio and its row",
+    (size) => {
+      const { container } = render(<RadioGroup items={items} size={size} />);
+
+      expect(rings(container)).toHaveLength(2);
+      for (const ring of rings(container)) {
+        expect(ring.className).toContain(`size-${size}`);
+      }
+      for (const row of rows(container)) {
+        expect(row.className).toContain(`row-size-${size}`);
+      }
+    },
+  );
+
+  it("falls back to the medium tier", () => {
+    const { container } = render(<RadioGroup items={items} />);
+
+    for (const ring of rings(container)) {
+      expect(ring.className).toContain("size-medium");
+    }
+  });
+
+  it("lets RadioProps override the group's tier", () => {
+    const { container } = render(
+      <RadioGroup items={items} size="small" RadioProps={{ size: "large" }} />,
+    );
+
+    for (const ring of rings(container)) {
+      expect(ring.className).toContain("size-large");
+      expect(ring.className).not.toContain("size-small");
+    }
+  });
+});

@@ -11,6 +11,7 @@ export const RadioGroup = ({
   description,
   name,
   direction = "vertical",
+  size,
   bordered,
   reversed,
   color,
@@ -53,6 +54,7 @@ export const RadioGroup = ({
               <Radio
                 key={value}
                 hideIndicator={hideIndicators}
+                size={size}
                 bordered={bordered}
                 reversed={reversed}
                 color={color}

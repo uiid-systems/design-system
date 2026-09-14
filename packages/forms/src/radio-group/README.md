@@ -7,10 +7,11 @@ Use RadioGroup when you want to:
 - Offer a set of mutually exclusive options — pass `items` for the common case, each entry carrying `value`, `label`, and optionally `disabled`
 - Label the whole group with `label` and `description`
 - Lay the radios out with `direction` (`vertical`, `horizontal`)
+- Scale every row at once with `size` (`xsmall`, `small`, `medium`, `large`), matching an Input or Button at the same tier
 - Apply `bordered` and `reversed` to every row at once
 - Hide the dots with `hideIndicators` while they stay in the accessibility tree
 - Disable the whole group with `disabled` — it propagates to every radio
-- Reach every radio with anything the group doesn't surface itself through `RadioProps` (`size`, for instance)
+- Reach every radio with anything the group doesn't surface itself through `RadioProps`
 
 Drop `items` and pass children to compose [`Radio`](../radio/README.md) directly instead — each one can then carry its own description or variant.
 

@@ -6,8 +6,13 @@ import { useState } from "react";
 
 import { Form } from "../form/form";
 import { Radio } from "../radio/radio";
+import type { RadioVariants } from "../radio/radio.types";
 import type { FormItemProps } from "../types";
 import { RadioGroup } from "./radio-group";
+
+type Size = NonNullable<RadioVariants["size"]>;
+
+const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
 const ITEMS: FormItemProps[] = [
   { value: "standard", label: "Standard" },
@@ -38,25 +43,19 @@ export const Bordered = () => (
   </Stack>
 );
 
-/* Anything not covered by the group's own props reaches every radio through
- * `RadioProps`. */
+/* `size` scales every radio and its row together, on the same tiers as Input
+ * and Button. */
 export const Sizes = () => (
   <Stack gap={6} ax="stretch">
-    <RadioGroup
-      direction="horizontal"
-      items={ITEMS}
-      RadioProps={{ size: "small" }}
-    />
-    <RadioGroup
-      direction="horizontal"
-      items={ITEMS}
-      RadioProps={{ size: "medium" }}
-    />
-    <RadioGroup
-      direction="horizontal"
-      items={ITEMS}
-      RadioProps={{ size: "large" }}
-    />
+    {SIZES.map((size) => (
+      <RadioGroup
+        key={size}
+        size={size}
+        direction="horizontal"
+        items={ITEMS}
+        defaultValue="standard"
+      />
+    ))}
   </Stack>
 );
 

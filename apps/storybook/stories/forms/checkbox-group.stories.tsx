@@ -23,6 +23,11 @@ const meta = {
       options: ["vertical", "horizontal"],
       table: { category: "Variants" },
     },
+    size: {
+      control: "select",
+      options: ["xsmall", "small", "medium", "large"],
+      table: { category: "Variants" },
+    },
 
     items: { control: "object", table: { category: "Data" } },
     value: { control: "object", table: { category: "Data" } },

@@ -291,3 +291,52 @@ describe("CheckboxGroup color", () => {
     }
   });
 });
+
+describe("CheckboxGroup size", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const boxes = () => screen.getAllByRole("checkbox");
+  const rows = (container: HTMLElement) =>
+    Array.from(container.querySelectorAll("[data-slot='field-row']"));
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto every box and its row",
+    (size) => {
+      const { container } = render(<CheckboxGroup items={items} size={size} />);
+
+      expect(boxes()).toHaveLength(2);
+      for (const box of boxes()) {
+        expect(box.className).toContain(`size-${size}`);
+      }
+      for (const row of rows(container)) {
+        expect(row.className).toContain(`row-size-${size}`);
+      }
+    },
+  );
+
+  it("falls back to the medium tier", () => {
+    render(<CheckboxGroup items={items} />);
+
+    for (const box of boxes()) {
+      expect(box.className).toContain("size-medium");
+    }
+  });
+
+  it("lets CheckboxProps override the group's tier", () => {
+    render(
+      <CheckboxGroup
+        items={items}
+        size="small"
+        CheckboxProps={{ size: "large" }}
+      />,
+    );
+
+    for (const box of boxes()) {
+      expect(box.className).toContain("size-large");
+      expect(box.className).not.toContain("size-small");
+    }
+  });
+});

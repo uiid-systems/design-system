@@ -26,7 +26,7 @@ export type CheckboxGroupProps = {
 } & BaseCheckboxGroup.Props &
   Pick<
     CheckboxProps,
-    "bordered" | "reversed" | "required" | "disabled" | "color"
+    "size" | "bordered" | "reversed" | "required" | "disabled" | "color"
   > &
   Pick<FieldProps, "label" | "description" | "name"> &
   /* `color` is omitted alongside the layout axes because `StackProps` carries
