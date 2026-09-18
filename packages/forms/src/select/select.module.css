@@ -71,11 +71,16 @@
   width: var(--forms-icon-size);
 }
 
+/* The value renders as `Text` for truncation, and Text's type-scale step
+   (`size={0}` by default) sits in uiid.primitives above the forms tier in
+   uiid.compositions — pinning every tier to the step's font-size. Inheriting
+   from the trigger hands the tier back. */
 .select-value {
   min-width: 0;
   text-align: left;
   align-content: center;
   padding-inline-end: 0;
+  font-size: inherit;
 
   [data-placeholder] & {
     color: var(--globals-placeholder-color);
