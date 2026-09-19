@@ -8,6 +8,22 @@ export const clampPage = (page: number, totalPages: number) =>
   Math.min(Math.max(page, 1), Math.max(1, totalPages));
 
 /**
+ * Whether a click on a link opens it somewhere other than this tab: a modifier
+ * key is held, or the link has a `target` other than `_self`. The browser
+ * handles that navigation, so the page shown here shouldn't change with it.
+ */
+export const opensElsewhere = (event: React.MouseEvent<HTMLElement>) => {
+  const target = event.currentTarget.getAttribute("target");
+  return (
+    (!!target && target !== "_self") ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey
+  );
+};
+
+/**
  * The numbered window: the first and last pages, plus `spread` pages on each
  * side of the current one. A gap of two or more pages collapses to an
  * ellipsis; a gap of exactly one shows that page, since an ellipsis would take

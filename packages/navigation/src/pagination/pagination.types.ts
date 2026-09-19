@@ -18,4 +18,13 @@ export type PaginationProps = Omit<GroupProps, "children"> & {
    * are always shown, so there is no "Page X of Y" label and no First/Last.
    */
   spread?: number;
+  /**
+   * Renders each enabled control as a link to `page`. The element **must**
+   * carry an `href`: that's what makes Button keep it a real link instead of a
+   * `role="button"`. Disabled controls stay buttons and never call it, so it
+   * only sees pages in range.
+   *
+   * @example renderLink={(page) => <Link href={`?page=${page}`} />}
+   */
+  renderLink?: (page: number) => React.ReactElement;
 };

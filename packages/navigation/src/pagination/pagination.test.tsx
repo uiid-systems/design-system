@@ -8,6 +8,10 @@ import { clampPage, getPaginationItems } from "./pagination.utils";
 
 const getLabel = () => document.querySelector("[data-slot='pagination-label']");
 const getControl = (name: string) => screen.getByRole("button", { name });
+const getLink = (name: string) => screen.getByRole("link", { name });
+
+/** A `renderLink` whose hash hrefs jsdom can follow without navigating. */
+const linkTo = (page: number) => <a href={`#page-${page}`} />;
 const getEllipses = () =>
   document.querySelectorAll("[data-slot='pagination-ellipsis']");
 
@@ -346,5 +350,130 @@ describe("Pagination", () => {
     expect(getWindow()).toEqual(["1"]);
     expect(getControl("Previous page")).toBeDisabled();
     expect(getControl("Next page")).toBeDisabled();
+  });
+
+  // ============================================
+  // LINKS
+  // ============================================
+
+  it("renders every enabled control as a link to its target", () => {
+    render(<Pagination totalPages={31} defaultPage={5} renderLink={linkTo} />);
+
+    expect(getLink("First page")).toHaveAttribute("href", "#page-1");
+    expect(getLink("Previous page")).toHaveAttribute("href", "#page-4");
+    expect(getLink("Next page")).toHaveAttribute("href", "#page-6");
+    expect(getLink("Last page")).toHaveAttribute("href", "#page-31");
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+  });
+
+  it("keeps disabled controls as buttons with no href", () => {
+    const renderLink = vi.fn(linkTo);
+    render(<Pagination totalPages={31} renderLink={renderLink} />);
+
+    for (const name of ["First page", "Previous page"]) {
+      expect(getControl(name)).toBeDisabled();
+      expect(getControl(name)).not.toHaveAttribute("href");
+    }
+    expect(getLink("Next page")).toHaveAttribute("href", "#page-2");
+    expect(renderLink).not.toHaveBeenCalledWith(0);
+    expect(renderLink).not.toHaveBeenCalledWith(1);
+  });
+
+  it("links page numbers and keeps aria-current on the current one", () => {
+    render(
+      <Pagination
+        totalPages={31}
+        defaultPage={6}
+        spread={1}
+        renderLink={linkTo}
+      />,
+    );
+
+    expect(getWindow()).toEqual(["1", "…", "5", "6", "7", "…", "31"]);
+    expect(getLink("Page 6")).toHaveAttribute("href", "#page-6");
+    expect(getLink("Page 6")).toHaveAttribute("aria-current", "page");
+    expect(getLink("Page 7")).toHaveAttribute("href", "#page-7");
+    expect(getLink("Page 7")).not.toHaveAttribute("aria-current");
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+  });
+
+  it("keeps the link's own handlers alongside the page change", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const onMouseEnter = vi.fn();
+    const onPageChange = vi.fn();
+    render(
+      <Pagination
+        totalPages={31}
+        onPageChange={onPageChange}
+        renderLink={(page) => (
+          <a
+            href={`#page-${page}`}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+          />
+        )}
+      />,
+    );
+
+    await user.hover(getLink("Next page"));
+    await user.click(getLink("Next page"));
+
+    expect(onMouseEnter).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onPageChange).toHaveBeenCalledWith(2);
+    expect(getLabel()).toHaveTextContent("Page 2 of 31");
+  });
+
+  it.each(["Meta", "Control", "Shift", "Alt"])(
+    "stays on the page when %s is held, since the link opens elsewhere",
+    async (key) => {
+      const user = userEvent.setup();
+      const onClick = vi.fn();
+      const onPageChange = vi.fn();
+      render(
+        <Pagination
+          totalPages={31}
+          onPageChange={onPageChange}
+          renderLink={(page) => <a href={`#page-${page}`} onClick={onClick} />}
+        />,
+      );
+
+      await user.keyboard(`{${key}>}`);
+      await user.click(getLink("Next page"));
+      await user.keyboard(`{/${key}}`);
+
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onPageChange).not.toHaveBeenCalled();
+      expect(getLabel()).toHaveTextContent("Page 1 of 31");
+    },
+  );
+
+  it("stays on the page when the link opens in a new tab", async () => {
+    const user = userEvent.setup();
+    const onPageChange = vi.fn();
+    render(
+      <Pagination
+        totalPages={31}
+        onPageChange={onPageChange}
+        renderLink={(page) => <a href={`#page-${page}`} target="_blank" />}
+      />,
+    );
+
+    await user.click(getLink("Next page"));
+
+    expect(onPageChange).not.toHaveBeenCalled();
+    expect(getLabel()).toHaveTextContent("Page 1 of 31");
+  });
+
+  it("still changes page on a modified click without renderLink", async () => {
+    const user = userEvent.setup();
+    render(<Pagination totalPages={31} />);
+
+    await user.keyboard("{Shift>}");
+    await user.click(getControl("Next page"));
+    await user.keyboard("{/Shift}");
+
+    expect(getLabel()).toHaveTextContent("Page 2 of 31");
   });
 });
