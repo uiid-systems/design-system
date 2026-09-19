@@ -1,4 +1,5 @@
 import { Stack } from "@uiid/layout";
+import { cx } from "@uiid/utils";
 
 import { LIST_DEFAULT_MARKER } from "./list.constants";
 import type { ListProps } from "./list.types";
@@ -14,6 +15,7 @@ export const List = ({
   children,
   ItemProps,
   GroupProps,
+  className,
   ...props
 }: ListProps) => {
   const ListElement = marker === "decimal" ? <ol /> : <ul />;
@@ -23,7 +25,7 @@ export const List = ({
       data-slot="list"
       data-marker={marker}
       ax="stretch"
-      className={styles["list"]}
+      className={cx(styles["list"], className)}
       render={ListElement}
       {...props}
     >
