@@ -9,13 +9,7 @@ export const PaginationButton = ({
   ...props
 }: PaginationButtonProps) => {
   return (
-    <Button
-      tooltip={props["aria-label"]}
-      variant={active ? undefined : "subtle"}
-      size="small"
-      shape="square"
-      {...props}
-    />
+    <Button variant={active ? undefined : "subtle"} size="small" {...props} />
   );
 };
 PaginationButton.displayName = "PaginationButton";

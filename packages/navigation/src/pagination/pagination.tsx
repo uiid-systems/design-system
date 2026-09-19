@@ -10,14 +10,17 @@ import { useState } from "react";
 
 import { PAGINATION_DEFAULT_PAGE } from "./pagination.constants";
 import type { PaginationProps } from "./pagination.types";
-import { clampPage } from "./pagination.utils";
+import { clampPage, getPaginationItems } from "./pagination.utils";
 import { PaginationButton } from "./subcomponents";
+
+import styles from "./pagination.module.css";
 
 export const Pagination = ({
   totalPages,
   page: pageProp,
   defaultPage = PAGINATION_DEFAULT_PAGE,
   onPageChange,
+  spread,
   ...props
 }: PaginationProps) => {
   const lastPage = Math.max(1, totalPages);
@@ -33,12 +36,30 @@ export const Pagination = ({
     onPageChange?.(target);
   };
 
-  const controls = [
-    { label: "First page", icon: <ChevronsLeftIcon />, target: 1 },
-    { label: "Previous page", icon: <ChevronLeftIcon />, target: page - 1 },
-    { label: "Next page", icon: <ChevronRightIcon />, target: page + 1 },
-    { label: "Last page", icon: <ChevronsRightIcon />, target: lastPage },
-  ];
+  const controls = {
+    first: { label: "First page", icon: <ChevronsLeftIcon />, target: 1 },
+    previous: {
+      label: "Previous page",
+      icon: <ChevronLeftIcon />,
+      target: page - 1,
+    },
+    next: { label: "Next page", icon: <ChevronRightIcon />, target: page + 1 },
+    last: { label: "Last page", icon: <ChevronsRightIcon />, target: lastPage },
+  };
+
+  const renderControl = ({ label, icon, target }: typeof controls.first) => (
+    <PaginationButton
+      key={label}
+      aria-label={label}
+      tooltip={label}
+      shape="square"
+      // A control whose target clamps back to the current page has nowhere to go
+      disabled={clampPage(target, lastPage) === page}
+      onClick={() => goTo(target)}
+    >
+      {icon}
+    </PaginationButton>
+  );
 
   return (
     <Group
@@ -49,27 +70,49 @@ export const Pagination = ({
       ay="center"
       {...props}
     >
-      <Text
-        data-slot="pagination-label"
-        aria-live="polite"
-        size={0}
-        shade="muted"
-        mr={2}
-      >
-        Page {page} of {lastPage}
-      </Text>
-
-      {controls.map(({ label, icon, target }) => (
-        <PaginationButton
-          key={label}
-          aria-label={label}
-          // A control whose target clamps back to the current page has nowhere to go
-          disabled={clampPage(target, lastPage) === page}
-          onClick={() => goTo(target)}
-        >
-          {icon}
-        </PaginationButton>
-      ))}
+      {spread === undefined ? (
+        <>
+          <Text
+            data-slot="pagination-label"
+            aria-live="polite"
+            size={0}
+            shade="muted"
+            mr={2}
+          >
+            Page {page} of {lastPage}
+          </Text>
+          {Object.values(controls).map(renderControl)}
+        </>
+      ) : (
+        <>
+          {renderControl(controls.previous)}
+          {getPaginationItems(page, lastPage, spread).map((item, index) =>
+            item === "ellipsis" ? (
+              <Text
+                key={`ellipsis-${index}`}
+                data-slot="pagination-ellipsis"
+                aria-hidden
+                size={0}
+                shade="muted"
+              >
+                …
+              </Text>
+            ) : (
+              <PaginationButton
+                key={item}
+                aria-label={`Page ${item}`}
+                aria-current={item === page ? "page" : undefined}
+                active={item === page}
+                className={styles["pagination-item"]}
+                onClick={() => goTo(item)}
+              >
+                {item}
+              </PaginationButton>
+            ),
+          )}
+          {renderControl(controls.next)}
+        </>
+      )}
     </Group>
   );
 };
