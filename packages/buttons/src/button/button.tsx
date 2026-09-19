@@ -7,8 +7,10 @@ import { cx } from "@uiid/utils";
 
 import { BUTTON_DEFAULT_SIZE } from "./button.constants";
 import type { ButtonProps } from "./button.types";
+import { isLinkRender } from "./button.utils";
 import { buttonVariants } from "./button.variants";
 import {
+  ButtonLink,
   ButtonSpinner,
   ButtonTooltipWrapper,
   ButtonContentContainer,
@@ -30,34 +32,50 @@ export const Button = ({
 }: ButtonProps) => {
   const colorClassName = paletteClassName(color, styles["color"]);
 
+  const buttonClassName = cx(
+    styles["button"],
+    buttonVariants({
+      shape,
+      size,
+      variant,
+      fullwidth,
+    }),
+    colorClassName,
+    className,
+  );
+
+  const content = (
+    <Layer ay="center" ax="center">
+      <ButtonContentContainer loading={loading}>
+        {children}
+      </ButtonContentContainer>
+      <ButtonSpinner loading={loading} />
+    </Layer>
+  );
+
+  /*
+   * A `render` that navigates keeps link semantics instead of being treated as
+   * a button — see `isLinkRender`. Everything else still goes through Base UI.
+   */
   return (
     <ConditionalRender
       condition={!!tooltip}
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
-      <BaseButton
-        nativeButton={!props.render}
-        data-slot="button"
-        className={cx(
-          styles["button"],
-          buttonVariants({
-            shape,
-            size,
-            variant,
-            fullwidth,
-          }),
-          colorClassName,
-          className,
-        )}
-        {...props}
-      >
-        <Layer ay="center" ax="center">
-          <ButtonContentContainer loading={loading}>
-            {children}
-          </ButtonContentContainer>
-          <ButtonSpinner loading={loading} />
-        </Layer>
-      </BaseButton>
+      {isLinkRender(props.render) ? (
+        <ButtonLink className={buttonClassName} {...props}>
+          {content}
+        </ButtonLink>
+      ) : (
+        <BaseButton
+          nativeButton={!props.render}
+          data-slot="button"
+          className={buttonClassName}
+          {...props}
+        >
+          {content}
+        </BaseButton>
+      )}
     </ConditionalRender>
   );
 };

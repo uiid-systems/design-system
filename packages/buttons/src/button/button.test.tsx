@@ -113,7 +113,7 @@ describe("Button", () => {
       </Button>,
     );
 
-    const link = screen.getByRole("button");
+    const link = screen.getByRole("link");
     expect(link.tagName).toBe("A");
     expect(link).toHaveAttribute("href", "https://example.com");
     expect(link).toHaveAttribute("target", "_blank");
@@ -132,9 +132,87 @@ describe("Button", () => {
       </Button>,
     );
 
-    screen.getByRole("button").focus();
+    screen.getByRole("link").focus();
     await user.keyboard("{Enter}");
     expect(onClick).toHaveBeenCalled();
+  });
+
+  /*
+   * A button whose `render` navigates has to stay a link. Base UI's
+   * `useButton` adds `role="button"` to anything it renders in non-native
+   * mode, which announced these as buttons and hid them from a screen
+   * reader's list of links.
+   */
+  describe("link semantics", () => {
+    it("keeps link semantics instead of role=button", () => {
+      render(<Button render={<a href="/page" />}>Next</Button>);
+
+      const link = screen.getByRole("link", { name: "Next" });
+      expect(link).not.toHaveAttribute("role");
+      expect(link).not.toHaveAttribute("tabindex");
+      expect(screen.queryByRole("button")).toBeNull();
+    });
+
+    it("detects a router link that forwards href to an anchor", () => {
+      const RouterLink = ({
+        href,
+        ...props
+      }: React.ComponentProps<"a"> & { href: string }) => (
+        <a href={href} {...props} />
+      );
+
+      render(
+        <Button render={<RouterLink href="/page" />} variant="subtle">
+          Next
+        </Button>,
+      );
+
+      const link = screen.getByRole("link", { name: "Next" });
+      expect(link).not.toHaveAttribute("role");
+      expect(link).toHaveAttribute("href", "/page");
+      expect(link.className).toContain("variant-subtle");
+    });
+
+    it("still renders a button for a render prop with no href", () => {
+      render(<Button render={<span />}>Act</Button>);
+
+      const button = screen.getByRole("button", { name: "Act" });
+      expect(button.tagName).toBe("SPAN");
+    });
+
+    it("does not leave Base UI props on the anchor", () => {
+      render(
+        <Button
+          nativeButton={false}
+          focusableWhenDisabled
+          render={<a href="/page" />}
+        >
+          Next
+        </Button>,
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("nativeButton");
+      expect(link).not.toHaveAttribute("focusableWhenDisabled");
+    });
+
+    it("does not activate a disabled link", async () => {
+      const onClick = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Button disabled onClick={onClick} render={<a href="/page" />}>
+          Next
+        </Button>,
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("aria-disabled", "true");
+      expect(link).toHaveAttribute("tabindex", "-1");
+      expect(link).not.toHaveAttribute("disabled");
+
+      await user.click(link);
+      expect(onClick).not.toHaveBeenCalled();
+    });
   });
 
   /*

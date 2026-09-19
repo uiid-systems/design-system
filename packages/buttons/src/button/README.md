@@ -12,6 +12,26 @@ Use Button when you want to:
 - Show a spinner with `loading` without the button changing size
 - Wrap the trigger in a Tooltip via `tooltip` — no manual composition
 - Stretch to the container with `fullwidth`
-- Render as a different element (`<a>`, `<span>`, etc.) via the `render` prop with `nativeButton={false}` — useful for link buttons; the link keeps its `href`, `target`, and `rel`
+- Render as a different element via the `render` prop
 
 Additional props are forwarded to the underlying Base UI Button.
+
+## Links keep link semantics
+
+A `render` that carries an `href` — a plain `<a>` or a router link such as Next's `<Link>` — is treated as a link, not a button. It keeps its `href`, `target`, and `rel`, is announced as a link by screen readers, appears in their list of links, and needs no `nativeButton={false}`.
+
+```tsx
+<Button variant="subtle" render={<Link href="/next" />}>
+  Next
+</Button>
+```
+
+Base UI gives a non-native `render` `role="button"`, which is right for a `<span>` or `<div>` standing in for a button and wrong for something that navigates, so Button routes links around it. For a non-link element that really should act as a button, pass `nativeButton={false}` and it behaves exactly as before.
+
+```tsx
+<Button nativeButton={false} render={<span />}>
+  Acts as a button
+</Button>
+```
+
+A disabled link keeps its `href` — stripping it would break router links — and instead leaves the tab order and ignores activation.
