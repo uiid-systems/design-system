@@ -504,3 +504,116 @@ describe("Select item children", () => {
     expect(screen.getByTestId("composed-row")).toBeInTheDocument();
   });
 });
+
+/*
+ * Base UI resolves the trigger's text from Root's `items` alone, so a select
+ * composed from `SelectItem` children used to fall through to the raw value.
+ * The labels are right there on the children; Select reads them off.
+ */
+describe("Select composed label resolution", () => {
+  /* Shaped like a `SelectItem` and claiming the same value, to prove the walk
+     stops at the row rather than descending into what the row draws. */
+  const Decoy = ({ label }: { value: string; label: string }) => (
+    <span>{label}</span>
+  );
+
+  it("shows the child's label in the trigger, not the raw value", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="sans" label="Sans-serif" />
+        <SelectItem value="mono" label="Monospace" />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /monospace/i }));
+
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Monospace");
+    expect(trigger).not.toHaveTextContent("mono,");
+  });
+
+  /* Children arrive wrapped in fragments as often as not. */
+  it("reads labels through a fragment", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <>
+          <SelectItem value="sans" label="Sans-serif" />
+          <SelectItem value="mono" label="Monospace" />
+        </>
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /monospace/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Monospace");
+  });
+
+  it("joins resolved labels in multiple mode", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select multiple placeholder="Pick some">
+        <SelectItem value="sans" label="Sans-serif" />
+        <SelectItem value="mono" label="Monospace" />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /sans-serif/i }));
+    await user.click(screen.getByRole("option", { name: /monospace/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent(
+      "Sans-serif, Monospace",
+    );
+  });
+
+  /* A custom row's own markup must not be mistaken for an item. */
+  it("ignores value/label props inside a row's children", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="sans" label="Sans-serif">
+          <Decoy value="sans" label="Decoy" />
+        </SelectItem>
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /decoy/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Sans-serif");
+    expect(screen.getByRole("combobox")).not.toHaveTextContent("Decoy");
+  });
+
+  it("still opens empty rather than preselecting the first child", () => {
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="sans" label="Sans-serif" />
+      </Select>,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Pick one");
+  });
+});
+
+describe("Select item description", () => {
+  it("accepts a node, not just a string", async () => {
+    const user = userEvent.setup();
+    const items: SelectItemProps[] = [
+      {
+        value: "a",
+        label: "Option A",
+        description: <em data-testid="node-description">Rendered</em>,
+      },
+    ];
+
+    render(<Select items={items} placeholder="Pick one" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByTestId("node-description")).toBeInTheDocument();
+  });
+});

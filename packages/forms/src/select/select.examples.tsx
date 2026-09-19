@@ -240,9 +240,9 @@ export const Uncontrolled = () => (
 );
 
 /*
- * Drop `items` and pass children to compose the list yourself. Doing so also
- * takes over value-to-label resolution, so give the trigger a placeholder or a
- * `ValueProps` render function.
+ * Drop `items` and pass children to compose the list yourself. The trigger
+ * still reads each item's `label`, but a composed list never preselects its
+ * first option, so give it a placeholder.
  */
 export const Composed = () => (
   <Select placeholder="Select a typeface">

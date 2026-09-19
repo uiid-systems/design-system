@@ -17,9 +17,9 @@ Use Select when you want to:
 
 The trigger never grows past its container: a long value truncates instead.
 
-An item's `children` draw the row in place of its `icon` / `label` / `description` block, so a row can hold any node. `label` stays required either way — it is what the trigger shows and what typeahead matches, which is why it is a string rather than a node.
+An item's `children` draw the row in place of its `icon` / `label` / `description` block, so a row can hold any node. `label` stays required either way — it is what the trigger shows and what typeahead matches, which is why it is a string rather than a node. `description` takes a node too, for rows that only need a second line.
 
-Drop `items` and pass children to compose the list yourself with `SelectItem`. Doing so also takes over value-to-label resolution, so give the trigger a `placeholder` or a `ValueProps` render function.
+Drop `items` and pass children to compose the list yourself with `SelectItem`. The trigger still reads each item's `label` — Select harvests them off the children, since Base UI resolves that text from `items` alone — but a composed list never preselects its first option, so give it a `placeholder`.
 
 Leave `value` unset and the select runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 

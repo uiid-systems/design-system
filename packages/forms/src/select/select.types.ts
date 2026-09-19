@@ -17,7 +17,11 @@ export type SelectMultipleMode = true | false | undefined;
 export type SelectColor = PaletteColor;
 
 export type SelectItemProps = FormItemProps & {
-  description?: string;
+  /**
+   * Secondary line, stacked under the label. A node, matching the `ListItem`
+   * underneath — the string it used to be narrowed to bought nothing.
+   */
+  description?: React.ReactNode;
   icon?: Icon;
   /**
    * Draws the row in place of the `icon` / `label` / `description` block, for
