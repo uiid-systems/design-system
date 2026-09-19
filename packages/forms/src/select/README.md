@@ -5,6 +5,7 @@
 Use Select when you want to:
 
 - Pick from a fixed list — each entry in `items` carries `value` and `label`, and optionally an `icon`, a `description`, or `disabled`
+- Draw a row yourself with an item's `children` — a badge beside the name, a swatch, a two-column layout — when two strings aren't enough
 - Open empty rather than preselecting the first option by giving it a `placeholder`
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
@@ -15,6 +16,8 @@ Use Select when you want to:
 - Mark it `required`, `disabled`, or `readOnly`
 
 The trigger never grows past its container: a long value truncates instead.
+
+An item's `children` draw the row in place of its `icon` / `label` / `description` block, so a row can hold any node. `label` stays required either way — it is what the trigger shows and what typeahead matches, which is why it is a string rather than a node.
 
 Drop `items` and pass children to compose the list yourself with `SelectItem`. Doing so also takes over value-to-label resolution, so give the trigger a `placeholder` or a `ValueProps` render function.
 

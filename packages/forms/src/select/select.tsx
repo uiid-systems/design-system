@@ -130,6 +130,7 @@ export function Select<
                         disabled: itemDisabled,
                         description,
                         icon,
+                        children: itemChildren,
                       }) => (
                         <SelectItem
                           key={value}
@@ -138,7 +139,9 @@ export function Select<
                           disabled={itemDisabled || disabled}
                           description={description}
                           icon={icon}
-                        />
+                        >
+                          {itemChildren}
+                        </SelectItem>
                       ),
                     )}
               </SelectList>

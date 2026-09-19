@@ -4,6 +4,8 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Select } from "./select";
+import type { SelectItemProps } from "./select.types";
+import { SelectItem } from "./subcomponents";
 
 describe("Select", () => {
   const defaultItems = [
@@ -419,5 +421,86 @@ describe("Select color", () => {
     expect(document.querySelector("[data-slot='select-popup']")).toHaveClass(
       "palette-neutral",
     );
+  });
+});
+
+/*
+ * A row can draw an element instead of the `icon` / `label` / `description`
+ * block. `label` keeps its other two jobs — the trigger's text and the
+ * typeahead key — which is why it stays a required string rather than widening
+ * to a node.
+ */
+describe("Select item children", () => {
+  const items: SelectItemProps[] = [
+    {
+      value: "a",
+      label: "Option A",
+      children: <span data-testid="custom-row">Drawn by children</span>,
+    },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("draws the node inside the row", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} placeholder="Pick one" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByTestId("custom-row")).toBeInTheDocument();
+  });
+
+  /* The popup lays the indicator out against the row wrapper as a direct
+     child, so children must go through it rather than replace it. */
+  it("keeps the row wrapper the indicator is laid out against", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} placeholder="Pick one" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    const row = screen
+      .getByTestId("custom-row")
+      .closest("[data-slot='list-item']");
+
+    expect(row?.parentElement).toHaveAttribute("data-slot", "select-item");
+  });
+
+  it("shows the item's label in the trigger, not the node", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} placeholder="Pick one" />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(
+      screen.getByRole("option", { name: /drawn by children/i }),
+    );
+
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Option A");
+    expect(trigger).not.toHaveTextContent("Drawn by children");
+  });
+
+  it("leaves rows without children on the default label block", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} placeholder="Pick one" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(
+      screen.getByRole("option", { name: /option b/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders children passed to a composed SelectItem", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="a" label="Option A">
+          <span data-testid="composed-row">Drawn by children</span>
+        </SelectItem>
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByTestId("composed-row")).toBeInTheDocument();
   });
 });

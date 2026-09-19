@@ -19,6 +19,15 @@ export type SelectColor = PaletteColor;
 export type SelectItemProps = FormItemProps & {
   description?: string;
   icon?: Icon;
+  /**
+   * Draws the row in place of the `icon` / `label` / `description` block, for
+   * rows that need an element rather than two strings. `label` stays required
+   * and keeps its other two jobs — it is what the trigger shows and what
+   * typeahead matches — so a row can render anything without the closed select
+   * losing its text. Mirrors Base UI, which splits the same three jobs across
+   * `children`, `label`, and Root's `items`.
+   */
+  children?: React.ReactNode;
 };
 
 export type SelectRootProps<
