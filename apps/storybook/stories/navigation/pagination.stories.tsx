@@ -15,6 +15,7 @@ const meta = {
   argTypes: {
     totalPages: { control: { type: "number", min: 0 } },
     defaultPage: { control: { type: "number", min: 1 } },
+    spread: { control: { type: "number", min: 0 } },
   },
 } satisfies Meta<typeof Pagination>;
 
@@ -22,5 +23,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Compact: Story = { name: "Pagination" };
+
+export const Numbered: Story = { render: () => <Examples.Numbered /> };
+
+/** Three-digit pages grow past the square minimum instead of clipping. */
+export const NumberedManyPages: Story = {
+  args: { totalPages: 120, defaultPage: 100, spread: 1 },
+};
 
 export const Controlled: Story = { render: () => <Examples.Controlled /> };

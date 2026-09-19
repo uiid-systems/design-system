@@ -8,6 +8,10 @@ import { Pagination } from "./pagination";
 
 export const Compact = () => <Pagination totalPages={31} />;
 
+export const Numbered = () => (
+  <Pagination totalPages={31} defaultPage={6} spread={1} />
+);
+
 export const Controlled = () => {
   const [page, setPage] = useState(1);
 
