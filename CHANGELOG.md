@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/uiid-systems/design-system/compare/v0.5.2...v0.6.0) (2026-09-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** hint and HintProps are removed; pass action instead
+
+### Features
+
+* **ui:** let select items render a node ([#404](https://github.com/uiid-systems/design-system/issues/404)) ([9b10e8e](https://github.com/uiid-systems/design-system/commit/9b10e8e25f6b66d27b8d743b01089654c22ef561))
+* **ui:** replace Field's hint with a generic action slot ([#405](https://github.com/uiid-systems/design-system/issues/405)) ([a2f4ba4](https://github.com/uiid-systems/design-system/commit/a2f4ba40762977a98250b831b18e9bc6c51fe2f0))
+
 ## [0.5.2](https://github.com/uiid-systems/design-system/compare/v0.5.1...v0.5.2) (2026-09-19)
 
 
