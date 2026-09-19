@@ -341,6 +341,36 @@ describe("Select control surface", () => {
   });
 });
 
+/*
+ * Base UI hands Select.List's render element a `base-ui-disable-scrollbar`
+ * class. List used to let that replace its own `.list`, so the `marker="none"`
+ * rule stopped matching and every option drew a disc bullet — visible once
+ * `alignItemWithTrigger: false` drops the overflow that had clipped them.
+ */
+describe("Select list markers", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("keeps List's own class alongside the one Base UI passes", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        multiple
+        items={items}
+        PositionerProps={{ alignItemWithTrigger: false }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const list = document.querySelector("[data-slot='select-list']");
+    expect(list).toHaveAttribute("data-marker", "none");
+    expect(list?.className).toMatch(/(^|\s)_list_/);
+  });
+});
+
 describe("Select color", () => {
   const items = [
     { value: "a", label: "Option A" },

@@ -10,12 +10,27 @@ import { ListItem } from "./subcomponents";
 // builtin import fails to resolve. vite/client declares the suffix, and
 // vite-env.d.ts already references it.
 import listCss from "./list.module.css?raw";
+import styles from "./list.module.css";
 
 describe("List", () => {
   it("renders each item's label", () => {
     render(<List items={[{ label: "Feature" }, { label: "Fix" }]} />);
     expect(screen.getByText("Feature")).toBeInTheDocument();
     expect(screen.getByText("Fix")).toBeInTheDocument();
+  });
+
+  // A caller's className used to replace `.list` instead of joining it, which
+  // took `.list:where([data-marker="none"])` and its `list-style: none` with it.
+  // Base UI's Select.List passes `base-ui-disable-scrollbar` this way, so every
+  // Select option drew a disc bullet.
+  it("keeps its own class when given a className", () => {
+    const { container } = render(
+      <List className="caller" marker="none" items={[{ label: "Feature" }]} />,
+    );
+    expect(container.querySelector('[data-slot="list"]')).toHaveClass(
+      styles["list"],
+      "caller",
+    );
   });
 
   // ============================================
