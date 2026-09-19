@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.2](https://github.com/uiid-systems/design-system/compare/v0.5.1...v0.5.2) (2026-09-19)
+
+
+### Features
+
+* **ui:** add a numbered page window to pagination ([#401](https://github.com/uiid-systems/design-system/issues/401)) ([4fa15be](https://github.com/uiid-systems/design-system/commit/4fa15be33dcc6f77bcbe27142b9d3c47f880e91f))
+* **ui:** hook up pagination page state ([#400](https://github.com/uiid-systems/design-system/issues/400)) ([c832b5f](https://github.com/uiid-systems/design-system/commit/c832b5fe8705381a564812698a72fdcb53fcfb77))
+* **ui:** render pagination controls as links ([#403](https://github.com/uiid-systems/design-system/issues/403)) ([f543b62](https://github.com/uiid-systems/design-system/commit/f543b629db9863e0e4c57fa451131c5d21975ed1))
+
+
+### Bug Fixes
+
+* **ui:** keep link semantics for a button rendered as a link ([#399](https://github.com/uiid-systems/design-system/issues/399)) ([007e485](https://github.com/uiid-systems/design-system/commit/007e4854465fb872e9b5eac2345143c2b36f8b66))
+* **ui:** keep List's class when given a className ([#397](https://github.com/uiid-systems/design-system/issues/397)) ([d6d8471](https://github.com/uiid-systems/design-system/commit/d6d84718704d1b614fa3cc86ef6492551dbd9759))
+* **ui:** name icon-only buttons from their tooltip ([#398](https://github.com/uiid-systems/design-system/issues/398)) ([83075df](https://github.com/uiid-systems/design-system/commit/83075df091e1a7856b4d2f0c68fe6857672c9aa7))
+* **ui:** size select value text by its size tier ([#395](https://github.com/uiid-systems/design-system/issues/395)) ([b350511](https://github.com/uiid-systems/design-system/commit/b350511fc688fa18ad574266a0abd4d5182d8ecc))
+
 ## [0.5.1](https://github.com/uiid-systems/design-system/compare/v0.5.0...v0.5.1) (2026-09-14)
 
 
