@@ -12,6 +12,23 @@ export const Numbered = () => (
   <Pagination totalPages={31} defaultPage={6} spread={1} />
 );
 
+/** Hash hrefs so following a link doesn't reload the page. */
+export const Links = () => (
+  <Stack gap={4}>
+    <Pagination
+      totalPages={31}
+      defaultPage={6}
+      renderLink={(page) => <a href={`#page-${page}`} />}
+    />
+    <Pagination
+      totalPages={31}
+      defaultPage={6}
+      spread={1}
+      renderLink={(page) => <a href={`#page-${page}`} />}
+    />
+  </Stack>
+);
+
 export const Controlled = () => {
   const [page, setPage] = useState(1);
 

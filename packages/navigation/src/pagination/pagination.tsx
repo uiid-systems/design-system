@@ -21,6 +21,7 @@ export const Pagination = ({
   defaultPage = PAGINATION_DEFAULT_PAGE,
   onPageChange,
   spread,
+  renderLink,
   ...props
 }: PaginationProps) => {
   const lastPage = Math.max(1, totalPages);
@@ -47,19 +48,25 @@ export const Pagination = ({
     last: { label: "Last page", icon: <ChevronsRightIcon />, target: lastPage },
   };
 
-  const renderControl = ({ label, icon, target }: typeof controls.first) => (
-    <PaginationButton
-      key={label}
-      aria-label={label}
-      tooltip={label}
-      shape="square"
-      // A control whose target clamps back to the current page has nowhere to go
-      disabled={clampPage(target, lastPage) === page}
-      onClick={() => goTo(target)}
-    >
-      {icon}
-    </PaginationButton>
-  );
+  const renderControl = ({ label, icon, target }: typeof controls.first) => {
+    // A control whose target clamps back to the current page has nowhere to go
+    const disabled = clampPage(target, lastPage) === page;
+
+    return (
+      <PaginationButton
+        key={label}
+        aria-label={label}
+        tooltip={label}
+        shape="square"
+        disabled={disabled}
+        // A disabled control stays a button, so there's no link out of range
+        render={disabled ? undefined : renderLink?.(target)}
+        onClick={() => goTo(target)}
+      >
+        {icon}
+      </PaginationButton>
+    );
+  };
 
   return (
     <Group
@@ -104,6 +111,7 @@ export const Pagination = ({
                 aria-current={item === page ? "page" : undefined}
                 active={item === page}
                 className={styles["pagination-item"]}
+                render={renderLink?.(item)}
                 onClick={() => goTo(item)}
               >
                 {item}

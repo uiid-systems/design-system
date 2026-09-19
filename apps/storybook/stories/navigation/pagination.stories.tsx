@@ -31,4 +31,7 @@ export const NumberedManyPages: Story = {
   args: { totalPages: 120, defaultPage: 100, spread: 1 },
 };
 
+/** Every enabled control is a real `<a href>`: hover for the URL, or middle-click to open a page in a new tab. */
+export const Links: Story = { render: () => <Examples.Links /> };
+
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
