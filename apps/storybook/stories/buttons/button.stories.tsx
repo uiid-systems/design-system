@@ -74,3 +74,6 @@ export const Loading: Story = { render: () => <Examples.Loading /> };
 export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const WithTooltip: Story = { render: () => <Examples.WithTooltip /> };
 export const Polymorphic: Story = { render: () => <Examples.Polymorphic /> };
+export const NonNativeButton: Story = {
+  render: () => <Examples.NonNativeButton />,
+};

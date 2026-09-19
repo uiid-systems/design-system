@@ -166,16 +166,31 @@ export const WithTooltip = () => (
 
 export const Polymorphic = () => (
   <Button
-    nativeButton={false}
     render={<a href="https://example.com" target="_blank" rel="noopener" />}
     tooltip={
       <Text size={-1}>
-        Set <Text weight="bold">nativeButton={`{false}`}</Text> when rendering
-        as a link
+        A <Text weight="bold">render</Text> carrying an{" "}
+        <Text weight="bold">href</Text> stays a link
       </Text>
     }
   >
     example.com
     <ExternalLinkIcon />
+  </Button>
+);
+
+export const NonNativeButton = () => (
+  <Button
+    nativeButton={false}
+    render={<span />}
+    tooltip={
+      <Text size={-1}>
+        Set <Text weight="bold">nativeButton={`{false}`}</Text> for a non-link
+        element that still acts as a button
+      </Text>
+    }
+  >
+    <GlobeIcon />
+    Acts as a button
   </Button>
 );

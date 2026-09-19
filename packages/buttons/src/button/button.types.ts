@@ -32,3 +32,12 @@ export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
     /** Show a spinner without the button changing size */
     loading?: boolean;
   };
+
+/**
+ * What the link branch receives: the button's own props with the variant props
+ * already resolved into a plain `className`.
+ */
+export type ButtonLinkProps = Omit<
+  ButtonProps,
+  "tooltip" | "loading" | "color" | keyof ButtonVariants
+>;
