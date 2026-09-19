@@ -44,17 +44,18 @@ export type FieldRowProps = GroupProps &
 export type FieldErrorType = "inline" | "tooltip" | "absolute";
 export type FieldErrorProps = Field.Error.Props;
 export type FieldHintProps = React.ComponentPropsWithoutRef<"span">;
+export type FieldActionProps = GroupProps;
 
 export type FieldProps = React.PropsWithChildren &
   Field.Root.Props & {
     label?: string;
     description?: string;
-    hint?: FieldHintValue;
+    action?: React.ReactNode;
     errorType?: FieldErrorType;
     RootProps?: FieldRootProps;
     LabelProps?: FieldLabelProps;
     ErrorProps?: Field.Error.Props;
-    HintProps?: FieldHintProps;
+    ActionProps?: FieldActionProps;
     DescriptionProps?: FieldDescriptionProps;
   } & Pick<FieldLabelProps, "required"> &
   Pick<FieldRootProps, "fullwidth"> &

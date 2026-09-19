@@ -2,10 +2,20 @@
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
 /* Reserves the label row so a field carrying only a label lines up with one
-   that also carries a hint or error tooltip. Five units clears the 0.875rem
+   that also carries an action or error tooltip. Five units clears the 0.875rem
    icon those slots render. */
 .field-label-group {
   min-height: var(--field-label-group-min-height);
+}
+
+/* The action slot takes any node, so its tallest intended occupant — an
+   `xsmall` Button at 1.75rem — stands 0.5rem taller than the row reserves. A
+   negative block margin spends that difference on the margin box instead of the
+   row, keeping the label row one height whether the slot is empty, holds a
+   `FieldHint` icon, or holds a button. Without it, an action that only appears
+   once a value is picked would push the control down the moment it rendered. */
+.field-action {
+  margin-block: calc((var(--field-label-group-min-height) - var(--forms-size-xs-height)) / 2);
 }
 
 .field-label[data-required="true"] {
@@ -20,7 +30,7 @@
   position: relative;
 }
 
-/* A field with no label, hint, description, or out-of-flow error paints no
+/* A field with no label, action, description, or out-of-flow error paints no
    chrome. `display: contents` keeps the control laid out exactly as it would be
    without a Field around it, while still wiring it into the validation graph. */
 .field-root-bare {

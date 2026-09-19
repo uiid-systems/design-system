@@ -16,6 +16,7 @@ export const CheckboxGroup = ({
   items,
   label: fieldLabel,
   description,
+  action,
   name,
   defaultValue,
   orientation = "vertical",
@@ -43,6 +44,7 @@ export const CheckboxGroup = ({
       name={name}
       label={fieldLabel}
       description={description}
+      action={action}
       required={required}
       disabled={disabled}
       fullwidth={fullwidth}

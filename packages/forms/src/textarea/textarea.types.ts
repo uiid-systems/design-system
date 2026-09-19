@@ -39,5 +39,5 @@ export type TextareaProps = Omit<
      * Shadows the native `color` attribute, which is not meaningful here.
      */
     color?: TextareaColor;
-  } & Pick<FieldProps, "label" | "description"> &
+  } & Pick<FieldProps, "label" | "description" | "action"> &
   TextareaVariants;

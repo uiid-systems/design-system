@@ -56,4 +56,4 @@ export type InputProps = Omit<InputControlProps, "inner"> & {
   before?: React.ReactNode;
   after?: React.ReactNode;
   FieldProps?: FieldProps;
-} & Pick<FieldProps, "label" | "description">;
+} & Pick<FieldProps, "label" | "description" | "action">;

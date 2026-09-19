@@ -1,8 +1,10 @@
 "use client";
 
+import { Button } from "@uiid/buttons";
 import { CircleQuestionMarkIcon } from "@uiid/icons/circle-question-mark";
 import { InfoIcon } from "@uiid/icons/info";
 import { Group, Stack } from "@uiid/layout";
+import { useState } from "react";
 
 import { CheckboxGroup } from "../checkbox-group/checkbox-group";
 import { Form } from "../form/form";
@@ -17,6 +19,7 @@ import { Switch } from "../switch/switch";
 import { Textarea } from "../textarea/textarea";
 import { Field } from "./field";
 import type { FieldErrorType } from "./field.types";
+import { FieldHint } from "./subcomponents";
 
 const ERROR_TYPES: FieldErrorType[] = ["inline", "tooltip", "absolute"];
 
@@ -47,28 +50,62 @@ export const Required = () => (
 );
 
 /*
- * A hint sits at the end of the label row. Text alone reads as a quiet aside;
- * an icon plus `tooltip` keeps longer guidance out of the layout entirely.
+ * `FieldHint` is ready-made content for the `action` slot, and stays the way to
+ * write a static aside. Text alone reads as a quiet note; an icon plus
+ * `tooltip` keeps longer guidance out of the layout entirely.
  */
 export const WithHint = () => (
   <Stack gap={6} ax="stretch">
-    <Field label="Email" hint={{ text: "Optional" }}>
+    <Field label="Email" action={<FieldHint text="Optional" />}>
       <InputControl placeholder="you@example.com" />
     </Field>
-    <Field label="Email" hint={{ icon: InfoIcon, text: "Optional" }}>
+    <Field label="Email" action={<FieldHint icon={InfoIcon} text="Optional" />}>
       <InputControl placeholder="you@example.com" />
     </Field>
     <Field
       label="Email"
-      hint={{
-        icon: CircleQuestionMarkIcon,
-        tooltip: "Used for receipts and password resets only.",
-      }}
+      action={
+        <FieldHint
+          icon={CircleQuestionMarkIcon}
+          tooltip="Used for receipts and password resets only."
+        />
+      }
     >
       <InputControl placeholder="you@example.com" />
     </Field>
   </Stack>
 );
+
+/*
+ * `action` takes any node, so the label row can carry something interactive.
+ * The reset only renders once a channel is picked, and the row reserves the
+ * height of an `xsmall` button either way, so the control never shifts as it
+ * appears and disappears.
+ */
+export const WithAction = () => {
+  const [channel, setChannel] = useState<string | null>(null);
+
+  return (
+    <Select
+      label="Channel"
+      placeholder="Any"
+      items={CHANNELS}
+      value={channel}
+      onValueChange={(value) => setChannel(value)}
+      action={
+        channel && (
+          <Button
+            size="xsmall"
+            variant="ghost"
+            onClick={() => setChannel(null)}
+          >
+            Reset
+          </Button>
+        )
+      }
+    />
+  );
+};
 
 /*
  * `validate` runs against the control's value and returns the message, or
@@ -126,7 +163,7 @@ export const Disabled = () => (
 );
 
 /*
- * A field with no label, hint, description, or out-of-flow error paints no
+ * A field with no label, action, description, or out-of-flow error paints no
  * chrome and adds no layout — the control sits exactly where it would alone,
  * while still joining the field's validation graph.
  */

@@ -9,6 +9,7 @@ export const RadioGroup = ({
   items,
   label,
   description,
+  action,
   name,
   orientation = "vertical",
   fullwidth,
@@ -35,6 +36,7 @@ export const RadioGroup = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       required={required}
       disabled={disabled}
       fullwidth={fullwidth}

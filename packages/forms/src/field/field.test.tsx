@@ -9,6 +9,7 @@ import {
   FieldItem,
   FieldValidity,
   FieldHint,
+  FieldAction,
 } from "./subcomponents";
 
 describe("Field", () => {
@@ -187,6 +188,82 @@ describe("FieldValidity", () => {
 describe("field subcomponents barrel", () => {
   it("exports FieldHint", () => {
     expect(FieldHint).toBeDefined();
+  });
+
+  it("exports FieldAction", () => {
+    expect(FieldAction).toBeDefined();
+  });
+});
+
+describe("Field action slot", () => {
+  it("renders any node into the label row", () => {
+    const { container } = render(
+      <Field label="Severity" action={<button type="button">Reset</button>}>
+        <input />
+      </Field>,
+    );
+    const action = container.querySelector("[data-slot='field-action']");
+    expect(action).toBeInTheDocument();
+    expect(action?.querySelector("button")?.textContent).toBe("Reset");
+  });
+
+  it("renders a FieldHint as action content", () => {
+    render(
+      <Field label="Email" action={<FieldHint text="Optional" />}>
+        <input />
+      </Field>,
+    );
+    expect(screen.getByText("Optional")).toBeInTheDocument();
+  });
+
+  it("lets ActionProps.children win over action", () => {
+    render(
+      <Field
+        label="Email"
+        action={<span>from action</span>}
+        ActionProps={{ children: <span>from ActionProps</span> }}
+      >
+        <input />
+      </Field>,
+    );
+    expect(screen.getByText("from ActionProps")).toBeInTheDocument();
+    expect(screen.queryByText("from action")).not.toBeInTheDocument();
+  });
+
+  it("forwards ActionProps to the action wrapper", () => {
+    const { container } = render(
+      <Field
+        label="Email"
+        action="Optional"
+        ActionProps={{ className: "custom-action" }}
+      >
+        <input />
+      </Field>,
+    );
+    expect(container.querySelector("[data-slot='field-action']")).toHaveClass(
+      "custom-action",
+    );
+  });
+
+  it("renders no action wrapper when no action is passed", () => {
+    const { container } = render(
+      <Field label="Email">
+        <input />
+      </Field>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-action']"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("stops being bare once it has only an action", () => {
+    const { container } = render(
+      <Field action={<button type="button">Reset</button>}>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).not.toMatch(/field-root-bare/);
   });
 });
 

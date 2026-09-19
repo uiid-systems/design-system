@@ -41,6 +41,7 @@ export const MaskInput = (props: MaskInputProps) => {
     color,
     label,
     description,
+    action,
     FieldProps,
     // Standard input props
     onBlur,
@@ -112,6 +113,7 @@ export const MaskInput = (props: MaskInputProps) => {
       name={inputProps.name}
       label={label}
       description={description}
+      action={action}
       required={required}
       disabled={disabled}
       invalid={invalid}

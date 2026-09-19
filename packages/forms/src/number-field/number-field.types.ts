@@ -71,6 +71,6 @@ export type NumberFieldProps = {
   FieldProps?: FieldProps;
   InputProps?: NumberFieldInputProps;
 } & NumberFieldRootProps &
-  Pick<FieldProps, "label" | "description"> &
+  Pick<FieldProps, "label" | "description" | "action"> &
   Pick<NumberFieldInputProps, "placeholder"> &
   NumberFieldVariants;

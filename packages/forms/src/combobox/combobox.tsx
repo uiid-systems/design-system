@@ -21,6 +21,7 @@ export const Combobox = ({
   name,
   label,
   description,
+  action,
   placeholder,
   before,
   after,
@@ -47,6 +48,7 @@ export const Combobox = ({
           placeholder={placeholder}
           label={label}
           description={description}
+          action={action}
           before={before}
           after={
             /*

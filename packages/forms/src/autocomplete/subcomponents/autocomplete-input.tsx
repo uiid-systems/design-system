@@ -10,6 +10,7 @@ import type { AutocompleteInputProps } from "../autocomplete.types";
 export const AutocompleteInput = ({
   label,
   description,
+  action,
   name,
   onFocus,
   onBlur,
@@ -29,6 +30,7 @@ export const AutocompleteInput = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       fullwidth
       {...FieldProps}
     >

@@ -14,6 +14,7 @@ import {
 export const NumberField = ({
   label,
   description,
+  action,
   name,
   placeholder,
   disabled,
@@ -33,6 +34,7 @@ export const NumberField = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       disabled={disabled}
       required={required}
       {...FieldProps}

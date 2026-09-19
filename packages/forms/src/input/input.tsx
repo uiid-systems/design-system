@@ -7,6 +7,7 @@ import { InputControl, InputWrapper } from "./subcomponents";
 export const Input = ({
   label,
   description,
+  action,
   required,
   name,
   size,
@@ -27,6 +28,7 @@ export const Input = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       required={required}
       {...FieldProps}
     >

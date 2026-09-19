@@ -10,6 +10,7 @@ import type { ComboboxInputProps } from "../combobox.types";
 export const ComboboxInput = ({
   label,
   description,
+  action,
   name,
   placeholder,
   before,
@@ -27,6 +28,7 @@ export const ComboboxInput = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       fullwidth
       {...FieldProps}
     >
