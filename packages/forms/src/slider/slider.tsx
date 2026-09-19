@@ -14,6 +14,7 @@ import {
 export const Slider = ({
   label,
   description,
+  action,
   name,
   value,
   defaultValue,
@@ -34,7 +35,13 @@ export const Slider = ({
   const thumbCount = Array.isArray(resolvedValue) ? resolvedValue.length : 1;
 
   return (
-    <Field name={name} label={label} description={description} {...FieldProps}>
+    <Field
+      name={name}
+      label={label}
+      description={description}
+      action={action}
+      {...FieldProps}
+    >
       <SliderRoot
         name={name}
         value={value}

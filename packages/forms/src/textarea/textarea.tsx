@@ -14,6 +14,7 @@ import styles from "./textarea.module.css";
 export const Textarea = ({
   label,
   description,
+  action,
   required,
   name,
   size,
@@ -33,6 +34,7 @@ export const Textarea = ({
       name={name}
       label={label}
       description={description}
+      action={action}
       required={required}
       {...FieldProps}
     >

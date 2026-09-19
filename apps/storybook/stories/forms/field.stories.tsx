@@ -13,7 +13,6 @@ const meta = {
   argTypes: {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
-    hint: { control: "object", table: { category: "Text" } },
 
     errorType: {
       control: "select",
@@ -36,7 +35,7 @@ const meta = {
     RootProps: { control: "object", table: { category: "Subcomponents" } },
     LabelProps: { control: "object", table: { category: "Subcomponents" } },
     ErrorProps: { control: "object", table: { category: "Subcomponents" } },
-    HintProps: { control: "object", table: { category: "Subcomponents" } },
+    ActionProps: { control: "object", table: { category: "Subcomponents" } },
     DescriptionProps: {
       control: "object",
       table: { category: "Subcomponents" },
@@ -60,6 +59,7 @@ export const WithDescription: Story = {
 };
 export const Required: Story = { render: () => <Examples.Required /> };
 export const WithHint: Story = { render: () => <Examples.WithHint /> };
+export const WithAction: Story = { render: () => <Examples.WithAction /> };
 export const Validate: Story = { render: () => <Examples.Validate /> };
 export const ErrorTypes: Story = { render: () => <Examples.ErrorTypes /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };

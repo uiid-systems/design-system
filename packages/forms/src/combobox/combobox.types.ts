@@ -25,7 +25,7 @@ export type ComboboxRootProps<
  */
 export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
   Pick<InputProps, "FieldProps" | "before" | "after" | "size"> &
-  Pick<FieldProps, "label" | "description"> & {
+  Pick<FieldProps, "label" | "description" | "action"> & {
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment. The
      * input borrows Input's control surface, so it borrows Input's hue classes
@@ -81,4 +81,4 @@ export type ComboboxProps<
     ComboboxInputProps,
     "placeholder" | "onFocus" | "onBlur" | "before" | "after" | "size"
   > &
-  Pick<FieldProps, "label" | "description">;
+  Pick<FieldProps, "label" | "description" | "action">;

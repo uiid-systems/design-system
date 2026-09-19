@@ -34,6 +34,7 @@ export function Select<
   name,
   label,
   description,
+  action,
   placeholder,
   before,
   after,
@@ -89,6 +90,7 @@ export function Select<
       name={name}
       label={label}
       description={description}
+      action={action}
       required={required}
       {...FieldProps}
     >

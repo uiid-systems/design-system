@@ -17,6 +17,7 @@ export const Autocomplete = ({
   name,
   label,
   description,
+  action,
   placeholder,
   before,
   after,
@@ -47,6 +48,7 @@ export const Autocomplete = ({
         placeholder={placeholder}
         label={label}
         description={description}
+        action={action}
         before={before}
         after={after}
         size={size}

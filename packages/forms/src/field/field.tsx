@@ -10,31 +10,35 @@ import {
   FieldDescription,
   FieldError,
   FieldErrorTooltip,
-  FieldHint,
+  FieldAction,
 } from "./subcomponents";
 
 import styles from "./field.module.css";
 
 export const Field = ({
   label,
-  hint,
+  action,
   errorType = "inline",
   description,
   required,
   RootProps,
   LabelProps,
   ErrorProps,
-  HintProps,
+  ActionProps,
   DescriptionProps,
   className,
   children,
   ...props
 }: FieldProps) => {
   const isFloating = errorType === "absolute";
-  // No label, hint, description, or out-of-flow error means this field paints
+
+  const Action = ActionProps?.children || action;
+  const hasAction = Boolean(Action);
+
+  // No label, action, description, or out-of-flow error means this field paints
   // no chrome of its own, so the root should not participate in layout.
   const hasChrome =
-    Boolean(label || hint || description) || errorType !== "inline";
+    Boolean(label || hasAction || description) || errorType !== "inline";
 
   return (
     <FieldRoot
@@ -47,7 +51,7 @@ export const Field = ({
         RootProps?.className,
       )}
     >
-      {(label || hint || errorType === "tooltip") && (
+      {(label || hasAction || errorType === "tooltip") && (
         <Group
           className={styles["field-label-group"]}
           ax="space-between"
@@ -61,7 +65,7 @@ export const Field = ({
 
           <Group ay="center">
             {errorType === "tooltip" && <FieldErrorTooltip {...ErrorProps} />}
-            {hint && <FieldHint {...hint} {...HintProps} />}
+            {hasAction && <FieldAction {...ActionProps}>{Action}</FieldAction>}
           </Group>
         </Group>
       )}

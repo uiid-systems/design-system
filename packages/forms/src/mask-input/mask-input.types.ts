@@ -62,6 +62,8 @@ export interface MaskInputProps
   label?: string;
   /** Description text shown below the input */
   description?: string;
+  /** Node rendered at the end of the label row */
+  action?: React.ReactNode;
   /** The controlled value of the input */
   value?: string;
   /** The default value for uncontrolled usage */

@@ -40,12 +40,12 @@ Every control a form needs, plus the two components that hold them together. Eac
 
 ### Structure
 
-- **[Field](?path=/docs/forms-field--docs)** — the label, description, hint, and error layer. Every control above is built on it, and wrapping any control in one joins it to the validation graph.
+- **[Field](?path=/docs/forms-field--docs)** — the label, description, action, and error layer. Every control above is built on it, and wrapping any control in one joins it to the validation graph.
 - **[Form](?path=/docs/forms-form--docs)** — the submission boundary. Collects values by `name`, blocks submission while anything is invalid, and publishes server errors back onto the right fields.
 
 ## Shared conventions
 
-- **Labels are a prop, not a wrapper.** Pass `label` and `description` to any control and it builds its own `Field`. Compose a `Field` by hand only when one label covers several controls, or when you need `hint`, `validate`, or a bare field.
+- **Labels are a prop, not a wrapper.** Pass `label`, `description`, and `action` to any control and it builds its own `Field`. Compose a `Field` by hand only when one label covers several controls, or when you need `validate` or a bare field.
 - **Sizes match.** `size` is `small`, `medium`, `large` on every sized control, and lines up with `Button`'s scale so a control row is flush. Toggle Group is the exception — it still uses `sm`/`md`/`lg`.
 - **Colour is one prop, two treatments.** `color` takes a palette hue (`red`, `blue`, …) on every control, but what it paints depends on what the control is. A text field — Input, Textarea, Select, Combobox, Autocomplete, Number Field, Mask Input — takes a **tint**: the whole surface shifts, background, border, and text together, because the field is a surface you read _through_. A selection control — Checkbox, Radio, Switch, Slider — takes a **fill** on the selected state only, because there the surface _is_ the signal; unchecked and resting states stay neutral, so the hue marks the choice rather than the widget. Invalid always wins over colour: a tinted control keeps its tint and takes a red edge.
 - **Controlled or not.** Leave `value` (or `checked`) unset and the control runs itself from `defaultValue`. Pass the value plus its `on*Change` handler to drive it yourself.

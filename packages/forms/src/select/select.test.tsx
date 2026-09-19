@@ -116,6 +116,19 @@ describe("Select", () => {
     render(<Select items={defaultItems} description="Helper text" />);
     expect(screen.getByText("Helper text")).toBeInTheDocument();
   });
+
+  it("hands an action to its field's label row", () => {
+    const { container } = render(
+      <Select
+        items={defaultItems}
+        label="Choose option"
+        action={<button type="button">Reset</button>}
+      />,
+    );
+    const action = container.querySelector("[data-slot='field-action']");
+    expect(action).toBeInTheDocument();
+    expect(action?.querySelector("button")?.textContent).toBe("Reset");
+  });
 });
 
 describe("Select multiple", () => {

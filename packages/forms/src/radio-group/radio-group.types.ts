@@ -28,4 +28,4 @@ export type RadioGroupProps = RadioGroup.Props &
     IndicatorProps?: RadioIndicatorProps;
     FieldProps?: Partial<FieldProps>;
   } & Pick<RadioProps, "size" | "bordered" | "reversed" | "color"> &
-  Pick<FieldProps, "label" | "description">;
+  Pick<FieldProps, "label" | "description" | "action">;

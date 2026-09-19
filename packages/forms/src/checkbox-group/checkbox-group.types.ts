@@ -30,7 +30,7 @@ export type CheckboxGroupProps = {
     CheckboxProps,
     "size" | "bordered" | "reversed" | "required" | "disabled" | "color"
   > &
-  Pick<FieldProps, "label" | "description" | "name"> &
+  Pick<FieldProps, "label" | "description" | "action" | "name"> &
   /* `color` is omitted alongside the layout axes because `StackProps` carries
      React's native `color` attribute, which would otherwise intersect with the
      palette hue picked up from `CheckboxProps`. */

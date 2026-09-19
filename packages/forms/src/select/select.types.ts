@@ -75,5 +75,5 @@ export type SelectProps<
   IconProps?: SelectIconProps;
 }> &
   SelectRootProps<Value, Multiple> &
-  Pick<FieldProps, "label" | "description"> &
+  Pick<FieldProps, "label" | "description" | "action"> &
   InputVariants;

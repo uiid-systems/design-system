@@ -43,4 +43,4 @@ export type SliderProps = SliderRootProps & {
   IndicatorProps?: SliderIndicatorProps;
   ThumbProps?: SliderThumbProps;
   FieldProps?: FieldProps;
-} & Pick<FieldProps, "label" | "description">;
+} & Pick<FieldProps, "label" | "description" | "action">;
