@@ -5,7 +5,10 @@ import { ConditionalRender, Layer } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
-import { BUTTON_DEFAULT_SIZE } from "./button.constants";
+import {
+  BUTTON_DEFAULT_SIZE,
+  BUTTON_ICON_ONLY_SHAPES,
+} from "./button.constants";
 import type { ButtonProps } from "./button.types";
 import { isLinkRender } from "./button.utils";
 import { buttonVariants } from "./button.variants";
@@ -32,6 +35,17 @@ export const Button = ({
 }: ButtonProps) => {
   const colorClassName = paletteClassName(color, styles["color"]);
 
+  /**
+   * Base UI tooltips are visual only, so an icon-only button would have no
+   * accessible name. A string tooltip names it unless the caller already has.
+   */
+  const tooltipLabel =
+    typeof tooltip === "string" &&
+    BUTTON_ICON_ONLY_SHAPES.includes(shape) &&
+    !props["aria-labelledby"]
+      ? tooltip
+      : undefined;
+
   const buttonClassName = cx(
     styles["button"],
     buttonVariants({
@@ -56,6 +70,8 @@ export const Button = ({
   /*
    * A `render` that navigates keeps link semantics instead of being treated as
    * a button — see `isLinkRender`. Everything else still goes through Base UI.
+   * `ButtonLink` clones the caller's element, where an `undefined` label would
+   * erase one set on it, so the link only gets `aria-label` when there is one.
    */
   return (
     <ConditionalRender
@@ -63,11 +79,16 @@ export const Button = ({
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
       {isLinkRender(props.render) ? (
-        <ButtonLink className={buttonClassName} {...props}>
+        <ButtonLink
+          {...(tooltipLabel && { "aria-label": tooltipLabel })}
+          className={buttonClassName}
+          {...props}
+        >
           {content}
         </ButtonLink>
       ) : (
         <BaseButton
+          aria-label={tooltipLabel}
           nativeButton={!props.render}
           data-slot="button"
           className={buttonClassName}
