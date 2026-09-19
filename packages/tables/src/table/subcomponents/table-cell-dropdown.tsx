@@ -13,13 +13,7 @@ export const TableCellDropdown = ({
     <Menu
       align="end"
       trigger={
-        <Button
-          tooltip={tooltip}
-          aria-label={tooltip}
-          size="small"
-          variant="ghost"
-          shape="square"
-        >
+        <Button tooltip={tooltip} size="small" variant="ghost" shape="square">
           {Icon ? <Icon /> : <EllipsisVerticalIcon size={14} />}
         </Button>
       }

@@ -11,6 +11,12 @@ import type {
 export const BUTTON_DEFAULT_SIZE: ButtonVariants["size"] = "medium";
 export const BUTTON_DEFAULT_GAP: ButtonContentContainerProps["gap"] = 2;
 
+/** 1:1 shapes that hold an icon and no visible text */
+export const BUTTON_ICON_ONLY_SHAPES: ButtonVariants["shape"][] = [
+  "square",
+  "circle",
+];
+
 export const BUTTON_TOOLTIP_DELAY: TooltipProviderProps["delay"] = 300;
 export const BUTTON_TOOLTIP_SIDE_OFFSET: TooltipPositionerProps["sideOffset"] = 8;
 export const BUTTON_TOOLTIP_COLLISION_PADDING: TooltipPositionerProps["collisionPadding"] = 16;

@@ -118,4 +118,15 @@ describe("ToggleButton", () => {
       "Toggle notifications",
     );
   });
+
+  it("names an icon-only trigger after a string tooltip", () => {
+    render(
+      <ToggleButton
+        shape="square"
+        tooltip="Toggle line wrap"
+        icon={{ pressed: <svg />, unpressed: <svg /> }}
+      />,
+    );
+    expect(screen.getByRole("button")).toHaveAccessibleName("Toggle line wrap");
+  });
 });

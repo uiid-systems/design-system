@@ -4,7 +4,7 @@ import styles from "./button.module.css";
 
 export const buttonVariants = cva({
   variants: {
-    /** Footprint of the button — `square` and `circle` are 1:1 for icon-only buttons (pair with `aria-label`) */
+    /** Footprint of the button — `square` and `circle` are 1:1 for icon-only buttons, named by a string `tooltip` or `aria-label` */
     shape: {
       pill: styles["shape-pill"],
       square: styles["shape-square"],

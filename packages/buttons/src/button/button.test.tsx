@@ -243,5 +243,82 @@ describe("Button", () => {
 
       expect(await screen.findByText("Helpful hint")).toBeVisible();
     });
+
+    it.each(["square", "circle"] as const)(
+      "names a %s icon-only button after a string tooltip",
+      (shape) => {
+        render(
+          <Button shape={shape} tooltip="Reset filters">
+            <svg />
+          </Button>,
+        );
+
+        expect(screen.getByRole("button")).toHaveAccessibleName(
+          "Reset filters",
+        );
+      },
+    );
+
+    it("keeps the visible text as the name of a text button", () => {
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      expect(screen.getByRole("button")).toHaveAccessibleName("Save");
+      expect(screen.getByRole("button")).not.toHaveAttribute("aria-label");
+    });
+
+    it("lets an explicit aria-label win over the tooltip", () => {
+      render(
+        <Button shape="square" tooltip="Copy" aria-label="Copy code">
+          <svg />
+        </Button>,
+      );
+
+      expect(screen.getByRole("button")).toHaveAccessibleName("Copy code");
+    });
+
+    it("defers to aria-labelledby", () => {
+      render(
+        <>
+          <span id="label">Reset all filters</span>
+          <Button shape="square" tooltip="Reset" aria-labelledby="label">
+            <svg />
+          </Button>
+        </>,
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAccessibleName("Reset all filters");
+      expect(button).not.toHaveAttribute("aria-label");
+    });
+
+    it("does not derive a name from a non-string tooltip", () => {
+      render(
+        <Button shape="square" tooltip={<span>Rich</span>}>
+          <svg />
+        </Button>,
+      );
+
+      expect(screen.getByRole("button")).not.toHaveAttribute("aria-label");
+    });
+
+    it("names an icon-only link after a string tooltip", () => {
+      render(
+        <Button shape="square" tooltip="Home" render={<a href="/" />}>
+          <svg />
+        </Button>,
+      );
+
+      expect(screen.getByRole("link")).toHaveAccessibleName("Home");
+    });
+
+    it("keeps a label set on the link element when there is no tooltip label", () => {
+      render(
+        <Button shape="square" render={<a href="/" aria-label="Home" />}>
+          <svg />
+        </Button>,
+      );
+
+      expect(screen.getByRole("link")).toHaveAccessibleName("Home");
+    });
   });
 });
