@@ -37,6 +37,45 @@ const DESCRIBED_ITEMS: SelectItemProps[] = [
   },
 ];
 
+const SPECIMEN_ITEMS: SelectItemProps[] = [
+  {
+    value: "sans",
+    label: "Sans-serif",
+    children: (
+      <>
+        <Text>Sans-serif</Text>
+        <Text size={-1} shade="muted">
+          Grotesque
+        </Text>
+      </>
+    ),
+  },
+  {
+    value: "serif",
+    label: "Serif",
+    children: (
+      <>
+        <Text>Serif</Text>
+        <Text size={-1} shade="muted">
+          Transitional
+        </Text>
+      </>
+    ),
+  },
+  {
+    value: "mono",
+    label: "Monospace",
+    children: (
+      <>
+        <Text>Monospace</Text>
+        <Text size={-1} shade="muted">
+          Fixed width
+        </Text>
+      </>
+    ),
+  },
+];
+
 const LONG_ITEMS: SelectItemProps[] = [
   {
     value: "long",
@@ -111,6 +150,17 @@ export const ItemContent = () => (
     <Select label="With icons" items={MOCK_SELECT_ITEMS} />
     <Select label="With descriptions" items={DESCRIBED_ITEMS} />
   </Stack>
+);
+
+/*
+ * When two strings aren't enough — a badge beside the name, a swatch, a
+ * two-column row — give the item `children` and it draws the row itself. The
+ * row lays out as a `Group`, so a fragment of two nodes splits across it.
+ * `label` stays required and keeps its other two jobs — the trigger's text and
+ * the typeahead key — so the closed select reads "Serif", not the whole row.
+ */
+export const ItemNodes = () => (
+  <Select label="Typeface" items={SPECIMEN_ITEMS} />
 );
 
 export const Multiple = () => (
@@ -190,9 +240,9 @@ export const Uncontrolled = () => (
 );
 
 /*
- * Drop `items` and pass children to compose the list yourself. Doing so also
- * takes over value-to-label resolution, so give the trigger a placeholder or a
- * `ValueProps` render function.
+ * Drop `items` and pass children to compose the list yourself. The trigger
+ * still reads each item's `label`, but a composed list never preselects its
+ * first option, so give it a placeholder.
  */
 export const Composed = () => (
   <Select placeholder="Select a typeface">

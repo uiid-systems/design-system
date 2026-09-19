@@ -13,6 +13,7 @@ export const SelectItem = ({
   label,
   description,
   icon,
+  children,
   ...props
 }: SelectItemProps) => {
   return (
@@ -23,13 +24,18 @@ export const SelectItem = ({
       className={styles["select-item"]}
       {...props}
     >
+      {/* `children` goes through `ListItem`'s own escape hatch rather than
+          replacing it, so a custom row keeps the wrapper the popup lays out
+          against and the indicator stays pinned to the end. */}
       <ListItem
         render={<div />}
         fullwidth
         label={label}
         description={description}
         icon={icon}
-      />
+      >
+        {children}
+      </ListItem>
       <BaseSelect.ItemIndicator
         data-slot="select-item-indicator"
         className={styles["select-item-indicator"]}

@@ -85,6 +85,7 @@ export const BeforeAfterSlots: Story = {
   render: () => <Examples.BeforeAfterSlots />,
 };
 export const ItemContent: Story = { render: () => <Examples.ItemContent /> };
+export const ItemNodes: Story = { render: () => <Examples.ItemNodes /> };
 export const Multiple: Story = { render: () => <Examples.Multiple /> };
 export const Ghost: Story = { render: () => <Examples.Ghost /> };
 export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
