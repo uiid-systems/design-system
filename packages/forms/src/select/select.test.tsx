@@ -630,3 +630,52 @@ describe("Select item description", () => {
     expect(screen.getByTestId("node-description")).toBeInTheDocument();
   });
 });
+
+describe("Select DOM attributes reach the trigger", () => {
+  const defaultItems = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("names the trigger from a top-level aria-label", () => {
+    render(<Select items={defaultItems} aria-label="Die 1" />);
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Die 1");
+  });
+
+  it("tells two selects under one shared label apart", () => {
+    render(
+      <>
+        <Select items={defaultItems} aria-label="Die 1" />
+        <Select items={defaultItems} aria-label="Die 2" />
+      </>,
+    );
+
+    const [first, second] = screen.getAllByRole("combobox");
+    expect(first).toHaveAccessibleName("Die 1");
+    expect(second).toHaveAccessibleName("Die 2");
+  });
+
+  it("puts a data-* hook on the trigger", () => {
+    render(<Select items={defaultItems} data-testid="die-1" />);
+    expect(screen.getByTestId("die-1")).toHaveAttribute(
+      "data-slot",
+      "select-trigger",
+    );
+  });
+
+  it("lets TriggerProps win over a top-level attribute", () => {
+    render(
+      <Select
+        items={defaultItems}
+        aria-label="Outer"
+        TriggerProps={{ "aria-label": "Inner" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+  });
+
+  it("still routes Root's own props to Root", () => {
+    render(<Select items={defaultItems} defaultValue="b" aria-label="Die 1" />);
+    expect(screen.getByText("Option B")).toBeInTheDocument();
+  });
+});

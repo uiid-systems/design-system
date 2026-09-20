@@ -27,4 +27,4 @@ Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `PositionerProps`, `
 
 When the list is long enough to need filtering, reach for [`Combobox`](../combobox/README.md); when the typed value doesn't have to come from the list, [`Autocomplete`](../autocomplete/README.md).
 
-Additional props are forwarded to the underlying Base UI [Select](https://base-ui.com/react/components/select).
+Additional props are forwarded to the underlying Base UI [Select](https://base-ui.com/react/components/select), except DOM attributes — `aria-*` and `data-*` land on the trigger, which is the focusable element and the one carrying `role="combobox"`. That is where a name or a `data-*` hook belongs, and Base UI's `Root` renders no element to carry one.

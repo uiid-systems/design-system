@@ -17,4 +17,4 @@ For multiple selection, compose the parts: `ComboboxChips` replaces the plain in
 
 Combobox and [`Autocomplete`](../autocomplete/README.md) share their popup, list, item, and empty layer. Reach for Autocomplete when the typed value stands on its own, and [`Select`](../select/README.md) when the list is short enough not to need filtering.
 
-Additional props are forwarded to the underlying Base UI [Combobox](https://base-ui.com/react/components/combobox).
+Additional props are forwarded to the underlying Base UI [Combobox](https://base-ui.com/react/components/combobox), except DOM attributes — `aria-*` and `data-*` land on the input, which is the focusable element and the one carrying `role="combobox"`. That is where a name or a `data-*` hook belongs, and Base UI's `Root` renders no element to carry one.
