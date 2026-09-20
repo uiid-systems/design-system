@@ -13,7 +13,28 @@ export type NumberFieldVariants = VariantProps<typeof numberFieldVariants>;
  */
 export type NumberFieldColor = PaletteColor;
 
-export type NumberFieldRootProps = BaseNumberField.Root.Props;
+/**
+ * `onValueChange` and `onValueCommitted` are restated at their own types, not
+ * omitted and replaced. Intersecting appends our note to Base UI's, so the
+ * upstream `reason` list survives in the generated props table and the steer
+ * lands under it. Which of the two a caller picks is a cost decision the
+ * upstream docs do not make, and the props table is where it gets made.
+ */
+export type NumberFieldRootProps = BaseNumberField.Root.Props & {
+  /**
+   * Fires on every keystroke while typing and on every step of a scrub or
+   * wheel drag. Right for cheap per-step work — mirroring the value into local
+   * state, moving a preview. Anything that writes, fetches, or navigates
+   * belongs on `onValueCommitted` instead.
+   */
+  onValueChange?: BaseNumberField.Root.Props["onValueChange"];
+  /**
+   * Fires once the interaction settles — blur after typing, pointer release
+   * after a scrub or a stepper press. The handler to reach for when the work
+   * is expensive.
+   */
+  onValueCommitted?: BaseNumberField.Root.Props["onValueCommitted"];
+};
 export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
 export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;
 /**

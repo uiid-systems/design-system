@@ -276,3 +276,54 @@ describe("NumberField color", () => {
     );
   });
 });
+
+/* The monolithic NumberField destructures a fixed prop list and spreads the
+   rest, so both change signals reach Base UI only by falling through
+   `...props`. Adding either to that destructure would swallow it silently —
+   and a swallowed `onValueCommitted` sends callers back to the handler that
+   fires per keystroke and per scrub step. */
+describe("NumberField change signals", () => {
+  const stepUp = async (user: ReturnType<typeof userEvent.setup>) => {
+    await user.click(screen.getByRole("textbox"));
+    await user.keyboard("{ArrowUp}");
+  };
+
+  it("forwards onValueChange to the root", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    render(<NumberField defaultValue={1} onValueChange={onValueChange} />);
+    await stepUp(user);
+
+    expect(onValueChange).toHaveBeenCalled();
+  });
+
+  it("forwards onValueCommitted to the root", async () => {
+    const user = userEvent.setup();
+    const onValueCommitted = vi.fn();
+
+    render(
+      <NumberField defaultValue={1} onValueCommitted={onValueCommitted} />,
+    );
+    await stepUp(user);
+
+    expect(onValueCommitted).toHaveBeenCalled();
+  });
+
+  it("forwards both through RootProps as well", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const onValueCommitted = vi.fn();
+
+    render(
+      <NumberField
+        defaultValue={1}
+        RootProps={{ onValueChange, onValueCommitted }}
+      />,
+    );
+    await stepUp(user);
+
+    expect(onValueChange).toHaveBeenCalled();
+    expect(onValueCommitted).toHaveBeenCalled();
+  });
+});
