@@ -7,6 +7,7 @@ Use Field when you want to:
 - Put a `label` and `description` on a control that doesn't take them directly
 - Share one label across several controls — the inputs keep their own `name`s and the field supplies the heading
 - Put an `action` at the end of the label row — any node, including a button. `FieldHint` is ready-made content for it: `{ text }` for a quiet aside, or `{ icon, tooltip }` to keep longer guidance out of the layout. The row reserves the height of an `xsmall` button, so an action that comes and goes never shifts the control
+- Scale the chrome with `size` — the label, description, and error take the same `--forms-size-*-font-size` the control itself reads, so they can't drift from the text inside it, and the gap stacking them tightens to match. Every control forwards its own `size`, so `<Input size="small" label="Email" />` already reads as one piece
 - Choose where the error goes with `errorType` — `inline` reserves a line beneath the control, `tooltip` moves it to an icon beside the label, and `absolute` floats it so nothing below shifts
 - Validate with `validate` (return the message, or `null` when the value passes) and decide when it runs with `validationMode`
 - Mark the whole field `required` or `disabled` — both reach the control, not just the label

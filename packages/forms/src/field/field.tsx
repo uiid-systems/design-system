@@ -4,6 +4,7 @@ import { Group } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type { FieldProps } from "./field.types";
+import { fieldVariants } from "./field.variants";
 import {
   FieldRoot,
   FieldLabel,
@@ -21,6 +22,7 @@ export const Field = ({
   errorType = "inline",
   description,
   required,
+  size,
   RootProps,
   LabelProps,
   ErrorProps,
@@ -45,6 +47,7 @@ export const Field = ({
       {...props}
       {...RootProps}
       className={cx(
+        fieldVariants({ size }),
         isFloating && styles["field-root-floating"],
         !hasChrome && styles["field-root-bare"],
         className,

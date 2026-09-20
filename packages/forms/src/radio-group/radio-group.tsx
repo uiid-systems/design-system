@@ -40,6 +40,7 @@ export const RadioGroup = ({
       required={required}
       disabled={disabled}
       fullwidth={fullwidth}
+      size={size}
       {...FieldProps}
     >
       <RadioGroupRoot

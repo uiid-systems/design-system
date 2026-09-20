@@ -82,6 +82,12 @@ describe("Input field wiring", () => {
     const root = container.querySelector("[data-slot='field-root']");
     expect(root?.className).toMatch(/field-root-bare/);
   });
+
+  it("hands its size to the field so the chrome scales with the control", () => {
+    const { container } = render(<Input label="Email" size="small" />);
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/size-small/);
+  });
 });
 
 describe("Input invalid treatment", () => {

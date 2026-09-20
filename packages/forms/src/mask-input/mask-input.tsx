@@ -117,6 +117,7 @@ export const MaskInput = (props: MaskInputProps) => {
       required={required}
       disabled={disabled}
       invalid={invalid}
+      size={size}
       {...FieldProps}
     >
       <InputWrapper

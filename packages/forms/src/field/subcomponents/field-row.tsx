@@ -58,6 +58,7 @@ export const FieldRow = ({
       <FieldItem
         data-slot="field-row"
         className={cx(
+          styles["field-row"],
           fieldRowVariants({ size }),
           hasContent ? className : styles["field-row-bare"],
         )}

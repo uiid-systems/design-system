@@ -133,6 +133,7 @@ export function Select<
       description={description}
       action={action}
       required={required}
+      size={size}
       {...FieldProps}
     >
       <SelectRoot<Value, Multiple>

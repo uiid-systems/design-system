@@ -37,6 +37,7 @@ export const NumberField = ({
       action={action}
       disabled={disabled}
       required={required}
+      size={size}
       {...FieldProps}
     >
       <NumberFieldRoot name={name} {...RootProps} {...props}>

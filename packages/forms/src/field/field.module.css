@@ -1,6 +1,26 @@
 @import "@uiid/tokens/component/field.tokens.css";
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
+/* A field's chrome annotates the control it wraps, so it is sized against that
+   control rather than against the page — the tier publishes the same
+   `--forms-size-*-font-size` the control itself reads, and this applies it.
+
+   `Text` always paints a step (it defaults to `0`), so reaching the slot is
+   what outranks it: class plus attribute beats `.text-size-0`, and
+   `text.module.css` is unlayered so nothing else is competing.
+
+   Direct children only. A nested `FieldRow` carries its own tier and must keep
+   it — a small checkbox inside a large group is still a small checkbox. */
+.field-root {
+  gap: var(--field-gap, var(--field-gap-md));
+
+  & > [data-slot="field-description"],
+  & > [data-slot="field-error"],
+  & > .field-label-group [data-slot="field-label"] {
+    font-size: var(--field-font-size, var(--forms-size-md-font-size));
+  }
+}
+
 /* Reserves the label row so a field carrying only a label lines up with one
    that also carries an action or error tooltip. Five units clears the 0.875rem
    icon those slots render. */
@@ -50,6 +70,18 @@
    flex sizing lands on a box that is never laid out. Growing from a zero basis
    is what makes the rows equal however long their labels, while the automatic
    `min-width` still keeps a long label from being clipped. */
+/* The row's chrome scales the same way, off the row's own tier rather than any
+   enclosing field's. The gap between the control and its text is deliberately
+   not scaled: that one spaces two boxes apart rather than stacking annotation
+   under a control. */
+.field-row {
+  & [data-slot="field-label"],
+  & [data-slot="field-description"],
+  & [data-slot="field-error"] {
+    font-size: var(--field-font-size);
+  }
+}
+
 .field-rows-evenly > * > [data-slot="field-row"] {
   flex: 1 1 0;
 }
@@ -78,22 +110,48 @@
   left: 0;
 }
 
+/* Control-scale tiers for a field. These publish only — `.field-root` is what
+   applies them — so a tier class is safe to sit alongside anything else on the
+   root. The font size is the control's own token rather than a type step, so
+   the two can never drift. */
+.size-xsmall {
+  --field-gap: var(--field-gap-xs);
+  --field-font-size: var(--forms-size-xs-font-size);
+}
+.size-small {
+  --field-gap: var(--field-gap-sm);
+  --field-font-size: var(--forms-size-sm-font-size);
+}
+.size-medium {
+  --field-gap: var(--field-gap-md);
+  --field-font-size: var(--forms-size-md-font-size);
+}
+.size-large {
+  --field-gap: var(--field-gap-lg);
+  --field-font-size: var(--forms-size-lg-font-size);
+}
+
 /* Control-scale tiers for a field row. The row paints no size of its own — each
-   control sizes itself — so these only publish the inset `bordered` reads, and
-   are safe to sit on the same element as the control's own tier class. */
+   control sizes itself — so these publish the inset `bordered` reads and the
+   font size its own chrome takes, and are safe to sit on the same element as
+   the control's own tier class. */
 .row-size-xsmall {
   --field-row-padding-x: var(--field-row-padding-x-xs);
   --field-row-padding-y: var(--field-row-padding-y-xs);
+  --field-font-size: var(--forms-size-xs-font-size);
 }
 .row-size-small {
   --field-row-padding-x: var(--field-row-padding-x-sm);
   --field-row-padding-y: var(--field-row-padding-y-sm);
+  --field-font-size: var(--forms-size-sm-font-size);
 }
 .row-size-medium {
   --field-row-padding-x: var(--field-row-padding-x-md);
   --field-row-padding-y: var(--field-row-padding-y-md);
+  --field-font-size: var(--forms-size-md-font-size);
 }
 .row-size-large {
   --field-row-padding-x: var(--field-row-padding-x-lg);
   --field-row-padding-y: var(--field-row-padding-y-lg);
+  --field-font-size: var(--forms-size-lg-font-size);
 }

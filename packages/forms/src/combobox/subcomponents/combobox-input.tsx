@@ -30,6 +30,7 @@ export const ComboboxInput = ({
       description={description}
       action={action}
       fullwidth
+      size={size}
       {...FieldProps}
     >
       {/*

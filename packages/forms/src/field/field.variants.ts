@@ -1,6 +1,6 @@
 import { cva } from "@uiid/utils";
 
-import { FIELD_ROW_DEFAULT_SIZE } from "./field.constants";
+import { FIELD_DEFAULT_SIZE, FIELD_ROW_DEFAULT_SIZE } from "./field.constants";
 
 import styles from "./field.module.css";
 
@@ -26,5 +26,30 @@ export const fieldRowVariants = cva({
   },
   defaultVariants: {
     size: FIELD_ROW_DEFAULT_SIZE,
+  },
+});
+
+/**
+ * The control-scale axis for a field's own chrome — its label, description and
+ * error, and the gap stacking them against the control.
+ *
+ * Chrome annotates a control, so it is sized against that control rather than
+ * against the page. Each tier therefore publishes the same
+ * `--forms-size-*-font-size` the control itself reads, which is what keeps a
+ * label and the text inside its input from drifting apart. Nothing here paints
+ * a font size directly: the tier publishes, `.field-root` applies.
+ */
+export const fieldVariants = cva({
+  variants: {
+    /** Control scale, matching the control the field wraps */
+    size: {
+      xsmall: styles["size-xsmall"],
+      small: styles["size-small"],
+      medium: styles["size-medium"],
+      large: styles["size-large"],
+    },
+  },
+  defaultVariants: {
+    size: FIELD_DEFAULT_SIZE,
   },
 });
