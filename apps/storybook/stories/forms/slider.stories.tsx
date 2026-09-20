@@ -106,3 +106,4 @@ export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
+export const Committed: Story = { render: () => <Examples.Committed /> };

@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
@@ -77,6 +78,54 @@ describe("Slider", () => {
     expect(
       container.querySelector("[data-slot='slider-value']"),
     ).toBeInTheDocument();
+  });
+});
+
+/* The monolithic Slider destructures a fixed prop list and spreads the rest,
+   so both change signals reach Base UI only by falling through `...props`.
+   Adding either to that destructure would swallow it silently — and a
+   swallowed `onValueCommitted` sends callers back to the expensive handler. */
+describe("Slider change signals", () => {
+  const pressArrow = async (user: ReturnType<typeof userEvent.setup>) => {
+    screen.getByRole("slider").focus();
+    await user.keyboard("{ArrowRight}");
+  };
+
+  it("forwards onValueChange to the root", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    render(<Slider defaultValue={40} onValueChange={onValueChange} />);
+    await pressArrow(user);
+
+    expect(onValueChange).toHaveBeenCalled();
+  });
+
+  it("forwards onValueCommitted to the root", async () => {
+    const user = userEvent.setup();
+    const onValueCommitted = vi.fn();
+
+    render(<Slider defaultValue={40} onValueCommitted={onValueCommitted} />);
+    await pressArrow(user);
+
+    expect(onValueCommitted).toHaveBeenCalled();
+  });
+
+  it("forwards both through RootProps as well", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const onValueCommitted = vi.fn();
+
+    render(
+      <Slider
+        defaultValue={40}
+        RootProps={{ onValueChange, onValueCommitted }}
+      />,
+    );
+    await pressArrow(user);
+
+    expect(onValueChange).toHaveBeenCalled();
+    expect(onValueCommitted).toHaveBeenCalled();
   });
 });
 
