@@ -9,7 +9,61 @@
   }
 }
 
+/* The container clips and paints the edge shadows while `.table-scroller`
+   moves underneath it, so the shadows stay pinned to the viewport edges
+   instead of scrolling away with the table. Clipping also keeps table content
+   inside the Card's border radius, which `overflow` on this element used to
+   do. */
 .table-container {
+  --table-scroll-shadow-color: color-mix(in oklab, var(--shade-foreground) 20%, transparent);
+
+  position: relative;
+  overflow: clip;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    /* Above the sticky header and footer cells, which sit at z-index 1. */
+    z-index: 2;
+    width: var(--table-scroll-shadow-size);
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(var(--table-scroll-shadow-angle), var(--table-scroll-shadow-color), transparent);
+    transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);
+  }
+
+  &::before {
+    --table-scroll-shadow-angle: to right;
+
+    inset-inline-start: 0;
+  }
+
+  &::after {
+    --table-scroll-shadow-angle: to left;
+
+    inset-inline-end: 0;
+  }
+
+  /* The pseudo-elements sit on logical edges, but a gradient angle is
+     physical — flip both when the inline axis flips. */
+  &:where(:dir(rtl))::before {
+    --table-scroll-shadow-angle: to left;
+  }
+
+  &:where(:dir(rtl))::after {
+    --table-scroll-shadow-angle: to right;
+  }
+
+  /* Set by useScrollAffordance, so a table that fits shows no shadows. */
+  &:where([data-scroll-start])::before,
+  &:where([data-scroll-end])::after {
+    opacity: 1;
+  }
+}
+
+.table-scroller {
   overflow: auto;
 }
 

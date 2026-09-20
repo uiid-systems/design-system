@@ -10,6 +10,9 @@
       "min-height": { "$value": "3rem", "$type": "dimension" },
       "padding-x": { "$value": "0.75rem", "$type": "dimension" },
       "padding-y": { "$value": "0.5rem", "$type": "dimension" }
+    },
+    "scroll-shadow": {
+      "size": { "$value": "1.5rem", "$type": "dimension" }
     }
   }
 }
