@@ -57,9 +57,14 @@ describe("getPaginationItems", () => {
       spread: 1,
       expected: [1, E, 27, 28, 29, 30, 31],
     },
-    // Current page at either edge
-    { page: 1, totalPages: 31, spread: 1, expected: [1, 2, E, 31] },
-    { page: 31, totalPages: 31, spread: 1, expected: [1, E, 30, 31] },
+    // At either edge the window reaches further in, holding the item count
+    { page: 1, totalPages: 31, spread: 1, expected: [1, 2, 3, 4, 5, E, 31] },
+    {
+      page: 31,
+      totalPages: 31,
+      spread: 1,
+      expected: [1, E, 27, 28, 29, 30, 31],
+    },
     // Spread 0 shows only the current page between the ends
     { page: 6, totalPages: 31, spread: 0, expected: [1, E, 6, E, 31] },
     { page: 3, totalPages: 31, spread: 0, expected: [1, 2, 3, E, 31] },
@@ -83,12 +88,40 @@ describe("getPaginationItems", () => {
     { page: 1, totalPages: 1, spread: 1, expected: [1] },
     { page: 1, totalPages: 0, spread: 1, expected: [1] },
     // Out-of-range page is clamped; negative spread is treated as 0
-    { page: 99, totalPages: 31, spread: 1, expected: [1, E, 30, 31] },
+    {
+      page: 99,
+      totalPages: 31,
+      spread: 1,
+      expected: [1, E, 27, 28, 29, 30, 31],
+    },
     { page: 6, totalPages: 31, spread: -1, expected: [1, E, 6, E, 31] },
   ])(
     "page $page of $totalPages, spread $spread",
     ({ page, totalPages, spread, expected }) => {
       expect(getPaginationItems(page, totalPages, spread)).toEqual(expected);
+    },
+  );
+
+  // The window used to shrink near the ends, so the controls beside it slid
+  // along as you paged. Every page must render the same number of items.
+  it.each([
+    { totalPages: 31, spread: 0 },
+    { totalPages: 31, spread: 1 },
+    { totalPages: 31, spread: 2 },
+    { totalPages: 9, spread: 2 },
+    { totalPages: 8, spread: 1 },
+    { totalPages: 7, spread: 1 },
+    { totalPages: 5, spread: 1 },
+  ])(
+    "holds one item count across all $totalPages pages, spread $spread",
+    ({ totalPages, spread }) => {
+      const counts = Array.from(
+        { length: totalPages },
+        (_, index) => getPaginationItems(index + 1, totalPages, spread).length,
+      );
+
+      expect(new Set(counts).size).toBe(1);
+      expect(counts[0]).toBe(Math.min(totalPages, 2 * spread + 5));
     },
   );
 });
@@ -103,6 +136,25 @@ describe("Pagination", () => {
     expect(
       screen.getByRole("navigation", { name: "Pagination" }),
     ).toHaveAttribute("data-slot", "pagination");
+  });
+
+  it("marks which layout it is rendering", () => {
+    const { rerender } = render(<Pagination totalPages={31} />);
+    expect(screen.getByRole("navigation")).toHaveAttribute(
+      "data-layout",
+      "compact",
+    );
+
+    rerender(<Pagination totalPages={31} spread={1} />);
+    expect(screen.getByRole("navigation")).toHaveAttribute(
+      "data-layout",
+      "numbered",
+    );
+  });
+
+  it("keeps a consumer's className alongside the panel's own", () => {
+    render(<Pagination totalPages={31} className="custom" />);
+    expect(screen.getByRole("navigation")).toHaveClass("custom");
   });
 
   it("renders a polite live label", () => {

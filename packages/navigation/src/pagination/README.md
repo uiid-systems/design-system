@@ -38,17 +38,21 @@ Remaining props, including `Group` layout props and `aria-label`, are spread ont
 
 ## Layouts
 
-**Compact** (default): a "Page X of Y" label, then First / Previous / Next / Last icon buttons.
+The control is one surface. The `<nav>` is a panel — a bordered, filled row sized to its contents — and every control inside it is a cell butted against its neighbour with a hairline between them. Cells stay transparent until hovered; the current page is the only fill, so the panel reads as a single control with a selected cell rather than a row of loose buttons. `data-layout` on the root is `compact` or `numbered`.
+
+**Compact** (default): a "Page X of Y" label cell, then First / Previous / Next / Last icon cells.
 
 **Numbered** (`spread` set): Previous, a window of page numbers, then Next. There's no label and no First / Last, because the first and last pages are always in the window. Around them sit `spread` pages on each side of the current one. A gap of two or more pages collapses to an ellipsis, and a gap of exactly one shows that page instead, since an ellipsis would take the same space.
 
-| `spread` | Page 6 of 31           | Page 4 of 31         |
-| -------- | ---------------------- | -------------------- |
-| `0`      | `1 … [6] … 31`         | `1 … [4] … 31`       |
-| `1`      | `1 … 5 [6] 7 … 31`     | `1 2 3 [4] 5 … 31`   |
-| `2`      | `1 … 4 5 [6] 7 8 … 31` | `1 2 3 [4] 5 6 … 31` |
+The window holds one shape on every page — `2 × spread + 5` slots, or `totalPages` when that is fewer — so paging never moves the Previous and Next buttons. Near either end the gap on that side has no pages left to hide, so the window takes its slot back and reaches one page further into the middle:
 
-Page numbers keep a square minimum and grow for longer numbers, so page 100 doesn't clip.
+| `spread` | Page 1 of 31           | Page 6 of 31           | Page 31 of 31                |
+| -------- | ---------------------- | ---------------------- | ---------------------------- |
+| `0`      | `[1] 2 3 … 31`         | `1 … [6] … 31`         | `1 … 29 30 [31]`             |
+| `1`      | `[1] 2 3 4 5 … 31`     | `1 … 5 [6] 7 … 31`     | `1 … 27 28 29 30 [31]`       |
+| `2`      | `[1] 2 3 4 5 6 7 … 31` | `1 … 4 5 [6] 7 8 … 31` | `1 … 25 26 27 28 29 30 [31]` |
+
+Page numbers keep a square minimum and grow for longer numbers, so page 100 doesn't clip. An ellipsis takes that same square minimum, so a number trading places with a gap doesn't resize the row either.
 
 ## Links
 
@@ -86,10 +90,12 @@ const page = Number(useSearchParams().get("page") ?? 1);
 
 | Slot                  | Element                                     |
 | --------------------- | ------------------------------------------- |
-| `pagination`          | Root `<nav>`                                |
+| `pagination`          | Root `<nav>`, the panel                     |
 | `pagination-label`    | "Page X of Y" live region (compact only)    |
 | `pagination-ellipsis` | Collapsed gap in the window (numbered only) |
 | `button`              | Each icon control and page number           |
+
+The root also carries `data-layout`, `compact` or `numbered`, for styling the two shapes apart.
 
 ## Accessibility
 

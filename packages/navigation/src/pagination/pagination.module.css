@@ -1,11 +1,121 @@
 /*
+ * The control is one surface, not a row of loose buttons. The nav itself is
+ * the panel — the same treatment ToggleGroup gives a segmented picker — and
+ * every control inside it is a cell butted against its neighbour. Cells stay
+ * transparent so the panel is the only surface; the current page is the one
+ * that fills.
+ */
+.pagination-panel {
+  --pagination-height: var(--forms-size-sm-height);
+  /* The cell sits inside the panel's corner, so it takes a tighter one. */
+  --pagination-cell-radius: calc(var(--globals-border-radius) / 1.5);
+  /* The panel's own border is already drawn, so a cell only owns its divider. */
+  --pagination-cell-size: calc(var(--pagination-height) - var(--globals-border-width) * 2);
+  /*
+   * The width every cell settles on. It has to clear a small Button's own
+   * floor — inline padding either side of a content cell that is at least an
+   * icon wide — or a page number would come out wider than an ellipsis, and
+   * the row would resize as the window slid a number past a gap. The panel's
+   * height is that floor, and a square cell is what we want anyway.
+   */
+  --pagination-cell-min: var(--pagination-height);
+
+  background-color: var(--shade-surface);
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  block-size: var(--pagination-height);
+  /*
+   * A pagination is sized by its cells, not by whatever it is dropped into.
+   * The nav renders as a Group, which is block-level, so left alone it would
+   * stretch the panel across the full width of any unconstrained parent.
+   */
+  inline-size: fit-content;
+}
+
+/*
+ * Every control in the panel. The leading hairline is what makes the cells
+ * read as one run rather than as separate controls; the first one in the row
+ * drops it below. Specificity has to clear Button's own `.button` rule, which
+ * is unlayered, so these are written as descendants of the panel.
+ */
+.pagination-panel .pagination-cell {
+  block-size: var(--pagination-cell-size);
+  border-inline-start: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: 0;
+}
+
+/*
+ * The system focus ring is drawn outside the control it belongs to, and cells
+ * here butt against one another — so the neighbour, painting later, covered
+ * most of the ring and left a heavy sliver along one edge. Lifting the focused
+ * cell puts the whole ring back on top, which is what butting cells together
+ * costs and has to pay for.
+ */
+.pagination-panel .pagination-cell:focus-visible {
+  position: relative;
+  z-index: 1;
+  /* Square corners inside a rounded panel read as a stray box, so the ring
+     takes the same corner the current page does. */
+  border-radius: var(--pagination-cell-radius);
+}
+
+/*
+ * The cells at the ends of the run take the panel's inner corner, so a hover
+ * or focus fill never squares off the panel's rounded one. Written for both
+ * the cell itself and a wrapped cell, because Previous and Next carry
+ * tooltips and so sit inside a wrapper element.
+ */
+.pagination-panel > :first-child,
+.pagination-panel > :first-child > .pagination-cell {
+  border-inline-start: 0;
+  border-start-start-radius: var(--pagination-cell-radius);
+  border-end-start-radius: var(--pagination-cell-radius);
+}
+
+.pagination-panel > :last-child,
+.pagination-panel > :last-child > .pagination-cell {
+  border-start-end-radius: var(--pagination-cell-radius);
+  border-end-end-radius: var(--pagination-cell-radius);
+}
+
+/*
  * Page numbers keep Button's default shape rather than `shape="square"`, which
  * zeroes the inline padding and pins `aspect-ratio: 1` — a 3-digit page would
  * overflow it. The small tier's own padding would make even "1" wider than
  * tall, so it is tightened here: 1–2 digit pages settle on the minimum and
  * match the square icon controls beside them, and longer ones grow.
  */
-.pagination-item {
-  min-inline-size: var(--forms-size-sm-height);
+.pagination-panel .pagination-item {
+  min-inline-size: var(--pagination-cell-min);
   padding-inline: calc(var(--spacing-unit) * 2);
+}
+
+/*
+ * The current page is the only fill in the panel, so it reads as the selected
+ * cell of one control. It is never at either end of the run — Previous and
+ * Next are — so the inset corner is safe on all four.
+ */
+.pagination-panel .pagination-item[aria-current="page"] {
+  border-radius: var(--pagination-cell-radius);
+}
+
+/*
+ * An ellipsis stands in for a page button, so it occupies the same cell. Give
+ * it a narrower one and the row still resizes as the window slides and a
+ * number trades places with a gap — the thing the fixed item count is for.
+ */
+.pagination-panel .pagination-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--pagination-cell-min);
+  user-select: none;
+}
+
+/* The compact layout's label is a cell too, so it reads inside the panel. */
+.pagination-panel .pagination-label {
+  display: flex;
+  align-items: center;
+  padding-inline: calc(var(--spacing-unit) * 3);
+  white-space: nowrap;
 }
