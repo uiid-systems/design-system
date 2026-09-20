@@ -14,7 +14,9 @@ Use Slider when you want to:
 - Soften the surface with `variant="ghost"`, fill the container with `fullwidth`, or mark it `disabled`
 - Colour the filled track and thumb with a palette `color` (`red`, `blue`, …) — the unfilled track and the surrounding surface stay neutral
 
-Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueCommitted` fires once the drag ends.
+Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself.
+
+Pick the change handler by what it costs. `onValueChange` fires on every step of a drag, so it suits cheap per-step work — mirroring the value into local state, moving a preview. `onValueCommitted` fires once, when the pointer releases, a key lifts, or the track is pressed; wire anything that writes, fetches, or navigates to that one. Getting it wrong fails quietly and blames the wrong thing: if `value` is derived from the expensive work, the thumb cannot move until that work resolves, so it lags the pointer and rubber-bands, and the slider reads as broken rather than the handler. Track the thumb on local state and report on commit.
 
 Slider's root is a control surface like any other form control, so it paints with [`Input`](../input/README.md)'s styles rather than duplicating them — a slider lines up with a sibling input at the same `size`.
 

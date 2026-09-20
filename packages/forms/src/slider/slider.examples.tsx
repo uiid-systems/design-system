@@ -138,3 +138,34 @@ export const Controlled = () => {
 };
 
 export const Uncontrolled = () => <Slider label="Volume" defaultValue={65} />;
+
+/*
+ * The shape to copy when the handler is expensive. Local state takes every
+ * step, so the thumb keeps tracking the pointer; the write, fetch or
+ * navigation hangs off `onValueCommitted` and runs once per drag. Drag a thumb
+ * and the two counts diverge immediately — that gap is the cost of wiring the
+ * expensive work to `onValueChange` instead.
+ */
+export const Committed = () => {
+  const [value, setValue] = useState<number | readonly number[]>([25, 75]);
+  const [changes, setChanges] = useState(0);
+  const [commits, setCommits] = useState(0);
+
+  return (
+    <Stack gap={3} ax="stretch">
+      <Slider
+        label="Price range"
+        description="Local state moves the thumbs; only a commit would hit the server."
+        value={value}
+        onValueChange={(next) => {
+          setValue(next);
+          setChanges((count) => count + 1);
+        }}
+        onValueCommitted={() => setCommits((count) => count + 1)}
+      />
+      <Text size={-1} shade="muted" family="mono">
+        onValueChange ×{changes} · onValueCommitted ×{commits}
+      </Text>
+    </Stack>
+  );
+};
