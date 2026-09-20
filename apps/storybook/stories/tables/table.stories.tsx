@@ -73,3 +73,38 @@ export const StickyHeaderFooter = {
     </Stack>
   ),
 };
+
+/* The table has a 48rem min-width, so a narrower container forces the
+   horizontal overflow that the edge shadows respond to. */
+export const HorizontalScroll = {
+  name: "Horizontal Scroll",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={4} maxw={560} fullwidth>
+      <Table<TableMockData>
+        items={TABLE_MOCK_DATA}
+        striped
+        bordered
+        highlightOnHover
+      />
+    </Stack>
+  ),
+};
+
+export const HorizontalAndVerticalScroll = {
+  name: "Horizontal + Vertical Scroll",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={4} maxw={560} fullwidth>
+      <Table<TableMockData>
+        stickyHeader
+        maxHeight={220}
+        items={TABLE_MOCK_DATA}
+        striped
+        bordered
+        highlightOnHover
+        footer={`${TABLE_MOCK_DATA.length} users`}
+      />
+    </Stack>
+  ),
+};
