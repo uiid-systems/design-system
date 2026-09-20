@@ -91,3 +91,4 @@ export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const WithScrubArea: Story = {
   render: () => <Examples.WithScrubArea />,
 };
+export const Committed: Story = { render: () => <Examples.Committed /> };

@@ -186,3 +186,46 @@ export const WithScrubArea = () => (
     </Stack>
   </NumberFieldRoot>
 );
+
+/*
+ * The shape to copy when the handler is expensive. Local state takes every
+ * step — every keystroke, every pixel of a scrub — so the field keeps up with
+ * the interaction, while the write, fetch or navigation hangs off
+ * `onValueCommitted` and runs once, on blur or pointer release. Drag the label
+ * or type a few digits and the two counts diverge immediately.
+ */
+export const Committed = () => {
+  const [value, setValue] = useState<number | null>(50);
+  const [changes, setChanges] = useState(0);
+  const [commits, setCommits] = useState(0);
+
+  return (
+    <Stack gap={3} ax="start">
+      <NumberFieldRoot
+        min={0}
+        max={100}
+        value={value}
+        onValueChange={(next) => {
+          setValue(next);
+          setChanges((count) => count + 1);
+        }}
+        onValueCommitted={() => setCommits((count) => count + 1)}
+      >
+        <Stack gap={3} ax="start">
+          <NumberFieldScrubArea>
+            <Text size={-1}>Opacity</Text>
+            <NumberFieldScrubAreaCursor />
+          </NumberFieldScrubArea>
+          <NumberFieldGroup>
+            <NumberFieldDecrement />
+            <NumberFieldInput />
+            <NumberFieldIncrement />
+          </NumberFieldGroup>
+        </Stack>
+      </NumberFieldRoot>
+      <Text size={-1} shade="muted" family="mono">
+        onValueChange ×{changes} · onValueCommitted ×{commits}
+      </Text>
+    </Stack>
+  );
+};
