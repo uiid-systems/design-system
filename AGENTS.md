@@ -38,7 +38,7 @@ This repo documents itself through working code. Prefer reading a real component
 | Run tests            | `pnpm test:run`                           |
 | Run tests (watch)    | `pnpm test`                               |
 | Run tests (one pkg)  | `pnpm test:run packages/buttons`          |
-| Start Storybook      | `pnpm run storybook`                      |
+| Start Storybook      | `pnpm --filter @uiid/storybook dev`       |
 | Lint                 | `pnpm run lint`                           |
 | Lint and autofix     | `pnpm run lint:fix`                       |
 | Format               | `pnpm run format`                         |
