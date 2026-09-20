@@ -4,9 +4,10 @@ import type { GroupProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
 import type { SpacingProps, VariantProps } from "@uiid/utils";
 
-import type { fieldRowVariants } from "./field.variants";
+import type { fieldRowVariants, fieldVariants } from "./field.variants";
 
 export type FieldRowVariants = VariantProps<typeof fieldRowVariants>;
+export type FieldVariants = VariantProps<typeof fieldVariants>;
 
 export type FieldRootProps = Field.Root.Props &
   SpacingProps & {
@@ -47,7 +48,8 @@ export type FieldHintProps = React.ComponentPropsWithoutRef<"span">;
 export type FieldActionProps = GroupProps;
 
 export type FieldProps = React.PropsWithChildren &
-  Field.Root.Props & {
+  Field.Root.Props &
+  FieldVariants & {
     label?: string;
     description?: string;
     action?: React.ReactNode;

@@ -18,10 +18,16 @@ import { Slider } from "../slider/slider";
 import { Switch } from "../switch/switch";
 import { Textarea } from "../textarea/textarea";
 import { Field } from "./field";
-import type { FieldErrorType } from "./field.types";
+import type { FieldErrorType, FieldVariants } from "./field.types";
 import { FieldHint } from "./subcomponents";
 
 const ERROR_TYPES: FieldErrorType[] = ["inline", "tooltip", "absolute"];
+const SIZES: NonNullable<FieldVariants["size"]>[] = [
+  "xsmall",
+  "small",
+  "medium",
+  "large",
+];
 
 const CHANNELS = [
   { value: "email", label: "Email" },
@@ -41,6 +47,27 @@ export const WithDescription = () => (
   <Field label="Email" description={DESCRIPTION}>
     <InputControl placeholder="you@example.com" />
   </Field>
+);
+
+/*
+ * Chrome is sized against the control it wraps rather than against the page:
+ * each tier publishes the same `--forms-size-*-font-size` the control itself
+ * reads, so a label can never drift from the text inside its own input, and the
+ * gap stacking them tightens to match. Controls forward their `size`, so this
+ * is the field a bare `size` on an `Input` already produces.
+ */
+export const Sizes = () => (
+  <Stack gap={6} ax="stretch">
+    {SIZES.map((size) => (
+      <Input
+        key={size}
+        size={size}
+        label={size}
+        description={DESCRIPTION}
+        placeholder="you@example.com"
+      />
+    ))}
+  </Stack>
 );
 
 export const Required = () => (

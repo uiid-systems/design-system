@@ -32,6 +32,7 @@ export const AutocompleteInput = ({
       description={description}
       action={action}
       fullwidth
+      size={size}
       {...FieldProps}
     >
       {/*

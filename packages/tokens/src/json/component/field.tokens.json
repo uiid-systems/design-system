@@ -2,6 +2,12 @@
   "$description": "UIID Design System - Field Component Tokens",
   "field": {
     "$type": "dimension",
+    "gap": {
+      "xs": { "$value": "{spacing.unit}" },
+      "sm": { "$value": "{spacing.unit}" },
+      "md": { "$value": "0.5rem" },
+      "lg": { "$value": "0.75rem" }
+    },
     "label": {
       "required-gap": { "$value": "{spacing.unit}" }
     },

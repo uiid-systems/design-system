@@ -30,6 +30,7 @@ export const Input = ({
       description={description}
       action={action}
       required={required}
+      size={size}
       {...FieldProps}
     >
       <InputWrapper

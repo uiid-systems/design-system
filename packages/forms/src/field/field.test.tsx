@@ -7,6 +7,7 @@ import {
   FieldLabel,
   FieldControl,
   FieldItem,
+  FieldRow,
   FieldValidity,
   FieldHint,
   FieldAction,
@@ -340,5 +341,93 @@ describe("Field invalid language", () => {
       </Field>,
     );
     expect(screen.getByText("Email").className).not.toMatch(/palette-red/);
+  });
+});
+
+describe("Field chrome scale", () => {
+  it("carries the tier its size names", () => {
+    const { container } = render(
+      <Field label="Email" size="small">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/size-small/);
+  });
+
+  it("falls back to the medium tier when no size is given", () => {
+    const { container } = render(
+      <Field label="Email">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/size-medium/);
+  });
+
+  it("leaves the gap to the tier rather than pinning it inline", () => {
+    const { container } = render(
+      <Field label="Email" size="small">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector<HTMLElement>(
+      "[data-slot='field-root']",
+    );
+    // An inline gap would outrank the tier's `--field-gap` and freeze every
+    // field at one spacing, which is what the prop-driven version did.
+    expect(root?.style.gap).toBe("");
+  });
+
+  it("still lets a caller pin the gap themselves", () => {
+    const { container } = render(
+      <Field label="Email" size="small" gap={6}>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector<HTMLElement>(
+      "[data-slot='field-root']",
+    );
+    expect(root?.style.gap).toBe("calc(6 * var(--spacing-unit))");
+  });
+
+  it("keeps the base class on a bare root so it still resolves a gap", () => {
+    const { container } = render(
+      <FieldRoot>
+        <FieldLabel>Email</FieldLabel>
+      </FieldRoot>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).toMatch(/field-root/);
+    expect(root?.className).not.toMatch(/size-/);
+  });
+});
+
+describe("FieldRow chrome scale", () => {
+  it("scales the row's own text off the row's tier", () => {
+    const { container } = render(
+      <FieldRow size="small" label="Agree" description="Terms">
+        <input type="checkbox" />
+      </FieldRow>,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+    expect(row?.className).toMatch(/field-row/);
+    expect(row?.className).toMatch(/row-size-small/);
+  });
+
+  it("keeps a nested row on its own tier, not the enclosing field's", () => {
+    const { container } = render(
+      <Field label="Channels" size="large">
+        <FieldRow size="small" label="Email">
+          <input type="checkbox" />
+        </FieldRow>
+      </Field>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-root']")?.className,
+    ).toMatch(/size-large/);
+    expect(
+      container.querySelector("[data-slot='field-row']")?.className,
+    ).toMatch(/row-size-small/);
   });
 });

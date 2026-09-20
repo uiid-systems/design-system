@@ -48,6 +48,7 @@ export const CheckboxGroup = ({
       required={required}
       disabled={disabled}
       fullwidth={fullwidth}
+      size={size}
       {...FieldProps}
     >
       <CheckboxGroupRoot

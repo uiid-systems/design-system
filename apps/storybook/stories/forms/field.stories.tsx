@@ -14,6 +14,11 @@ const meta = {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
 
+    size: {
+      control: "select",
+      options: ["xsmall", "small", "medium", "large"],
+      table: { category: "Variants" },
+    },
     errorType: {
       control: "select",
       options: ["inline", "tooltip", "absolute"],
@@ -57,6 +62,7 @@ export const Playground: Story = {
 export const WithDescription: Story = {
   render: () => <Examples.WithDescription />,
 };
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const Required: Story = { render: () => <Examples.Required /> };
 export const WithHint: Story = { render: () => <Examples.WithHint /> };
 export const WithAction: Story = { render: () => <Examples.WithAction /> };

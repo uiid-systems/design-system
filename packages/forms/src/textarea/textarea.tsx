@@ -36,6 +36,7 @@ export const Textarea = ({
       description={description}
       action={action}
       required={required}
+      size={size}
       {...FieldProps}
     >
       <FieldControl
