@@ -1,6 +1,7 @@
 export * from "./select-root";
 export * from "./select-trigger";
 export * from "./select-portal";
+export * from "./select-backdrop";
 export * from "./select-positioner";
 export * from "./select-popup";
 export * from "./select-list";

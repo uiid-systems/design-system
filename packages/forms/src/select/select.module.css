@@ -18,6 +18,37 @@
   padding-inline-start: 0;
 }
 
+/*
+ * Dims the page behind the open popup so the menu is never lost in the content
+ * around it. Deliberately lighter than the overlays backdrop — a dialog owns
+ * the screen, where a select is still a field inside a form the user needs to
+ * keep reading — and deliberately on Select's own tokens rather than the
+ * overlays ones, so @uiid/forms stays standalone and carries no dependency on
+ * @uiid/overlays.
+ *
+ * Paint only. Base UI's Root is `modal` by default, so scroll lock and outside
+ * pointer blocking are already in place with or without this element.
+ */
+.select-backdrop {
+  position: fixed;
+  inset: 0;
+  min-height: 100dvh;
+  background-color: var(--shade-background);
+  opacity: var(--select-backdrop-opacity);
+  transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);
+  z-index: var(--select-backdrop-z-index);
+
+  /* iOS 26+: keep the backdrop over the whole visible viewport. */
+  @supports (-webkit-touch-callout: none) {
+    position: absolute;
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
 .select-positioner {
   composes: composes-popup-positioner from global;
 }

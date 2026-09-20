@@ -1,10 +1,6 @@
 {
-  "$description": "UIID Design System - Select Component Tokens",
-  "select": {
-    "$type": "dimension",
-    "item": {
-      "gap": { "$value": "0.5rem" }
-    },
+  "$description": "UIID Design System - Menu Component Tokens",
+  "menu": {
     "backdrop": {
       "opacity": { "$value": 0.6, "$type": "number" },
       "z-index": { "$value": "{globals.z-index.backdrop}", "$type": "number" }

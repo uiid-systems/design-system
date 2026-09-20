@@ -7,6 +7,7 @@ import {
   MenuRoot,
   MenuTrigger,
   MenuPortal,
+  MenuBackdrop,
   MenuPositioner,
   MenuPopup,
   MenuItem,
@@ -21,9 +22,11 @@ export const Menu = ({
   trigger,
   align,
   side,
+  backdrop = true,
   /** subcomponents */
   RootProps,
   TriggerProps,
+  BackdropProps,
   PopupProps,
   PositionerProps,
   ItemProps,
@@ -34,6 +37,7 @@ export const Menu = ({
     <MenuRoot {...RootProps}>
       <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
       <MenuPortal>
+        {backdrop && <MenuBackdrop {...BackdropProps} />}
         <MenuPositioner side={side} align={align} {...PositionerProps}>
           <MenuPopup {...PopupProps}>
             {items.map((item) => {

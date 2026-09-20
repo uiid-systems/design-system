@@ -5,6 +5,7 @@ import {
   MenuPopup,
   MenuTrigger,
   MenuPortal,
+  MenuBackdrop,
   MenuItem,
   SubmenuRoot,
   SubmenuTrigger,
@@ -19,7 +20,9 @@ const meta: Meta<typeof Menu> = {
   component: Menu,
   tags: ["beta"],
   args: {},
-  argTypes: {},
+  argTypes: {
+    backdrop: { control: "boolean", table: { category: "Toggles" } },
+  },
   render: (args) => (
     <Stack gap={4}>
       <Menu
@@ -33,6 +36,7 @@ const meta: Meta<typeof Menu> = {
           <button>This is a composed menu</button>
         </MenuTrigger>
         <MenuPortal>
+          <MenuBackdrop />
           <MenuPositioner>
             <MenuPopup>
               <MenuItem>Lorem</MenuItem>

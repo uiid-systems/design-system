@@ -50,6 +50,7 @@ export type SelectTriggerProps = BaseSelect.Trigger.Props &
     color?: SelectColor;
   };
 export type SelectPortalProps = BaseSelect.Portal.Props;
+export type SelectBackdropProps = BaseSelect.Backdrop.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
 export type SelectPopupProps = BaseSelect.Popup.Props & {
   /**
@@ -77,9 +78,20 @@ export type SelectProps<
    */
   color?: SelectColor;
   items?: SelectItemProps[];
+  /**
+   * Dims the page behind the open popup, the way a dialog or drawer does, so an
+   * open menu is never lost against the content around it.
+   *
+   * Visual only: Base UI's Root is already `modal` by default, so page scroll
+   * is locked and outside pointers are blocked whether or not this is drawn.
+   * Pass `false` for a select that should sit quietly in a dense form.
+   * @default true
+   */
+  backdrop?: boolean;
   RootProps?: SelectRootProps<Value, Multiple>;
   TriggerProps?: SelectTriggerProps;
   PortalProps?: SelectPortalProps;
+  BackdropProps?: SelectBackdropProps;
   PositionerProps?: SelectPositionerProps;
   PopupProps?: SelectPopupProps;
   ListProps?: SelectListProps;
