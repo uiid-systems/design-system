@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.6.1](https://github.com/uiid-systems/design-system/compare/v0.6.0...v0.6.1) (2026-09-20)
+
+
+### Features
+
+* **ui:** add hover states to bordered checkbox, radio and switch rows ([#407](https://github.com/uiid-systems/design-system/issues/407)) ([de120ae](https://github.com/uiid-systems/design-system/commit/de120ae96566c75d11ee743040cfa23ecfce791c))
+* **ui:** dim the page behind an open Select or Menu popup ([#416](https://github.com/uiid-systems/design-system/issues/416)) ([a1e7586](https://github.com/uiid-systems/design-system/commit/a1e758666c35c10ea7a374f8baa3ddc89e24bec2))
+* **ui:** fade in edge shadows when a table scrolls horizontally ([#413](https://github.com/uiid-systems/design-system/issues/413)) ([3775e1a](https://github.com/uiid-systems/design-system/commit/3775e1a0f5e73e77919353d071d5242ebcf6ab3f))
+* **ui:** scale field chrome with its control size ([#409](https://github.com/uiid-systems/design-system/issues/409)) ([f859524](https://github.com/uiid-systems/design-system/commit/f859524fc1278d7ce0f4888377b3dc670ab9c803))
+
+
+### Bug Fixes
+
+* **ui:** center button content narrower than its loading spinner ([#411](https://github.com/uiid-systems/design-system/issues/411)) ([03cd610](https://github.com/uiid-systems/design-system/commit/03cd6108afd50d3a504cb6a9cb94645d3fc76111))
+* **ui:** center number field stepper glyphs and give them their own surface ([#410](https://github.com/uiid-systems/design-system/issues/410)) ([c0ab5b1](https://github.com/uiid-systems/design-system/commit/c0ab5b1c787293b792e673b152f730d71082814d))
+* **ui:** hold one shape as the pagination window slides ([#417](https://github.com/uiid-systems/design-system/issues/417)) ([de36bc0](https://github.com/uiid-systems/design-system/commit/de36bc08f19e2fe9647b290b621f752b80eca52d))
+* **ui:** route DOM attributes to the control, not the headless root ([#412](https://github.com/uiid-systems/design-system/issues/412)) ([668d12e](https://github.com/uiid-systems/design-system/commit/668d12e6bd30a942b486b9f4e2ffe4948edc32ee))
+
 ## [0.6.0](https://github.com/uiid-systems/design-system/compare/v0.5.2...v0.6.0) (2026-09-19)
 
 
