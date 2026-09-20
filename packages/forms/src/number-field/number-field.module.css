@@ -50,6 +50,21 @@
 
 .number-field-decrement,
 .number-field-increment {
+  /* The stepper's own surface, one step further from the page than the input it
+     sits beside, so the clickable areas read as chrome rather than as more
+     field. Derived from `--forms-bg` rather than pinned to a shade token: the
+     hue the `color` prop puts on the group arrives through that same name, so a
+     tinted number field keeps its tint here and only the contrast shifts.
+
+     Mixing toward `--shade-foreground` is what makes that direction hold in both
+     themes — it darkens against a light page and lightens against a dark one,
+     which is the same way the surface/accent ramp is built. Note this reads
+     `--forms-bg` to define a *differently* named property; remapping
+     `--forms-bg` onto itself here would be a cycle and resolve to nothing. */
+  --number-field-stepper-bg: color-mix(in oklab, var(--forms-bg), var(--shade-foreground) 6%);
+  --number-field-stepper-bg-hover: color-mix(in oklab, var(--forms-bg), var(--shade-foreground) 12%);
+  --number-field-stepper-bg-active: color-mix(in oklab, var(--forms-bg), var(--shade-foreground) 18%);
+
   /* Square off the height the group stretches them to, the same way Button's
      `.shape-square` does. Deriving the width from the height is why there is no
      stepper-width token: the two can no longer drift apart. */
@@ -58,6 +73,15 @@
   margin: 0;
   padding: 0;
 
+  /* Centering is explicit, matching Button. Left to the UA the button lays out
+     as `display: block` and the glyph is an inline box on the text baseline, so
+     it sat 1.5px high at every tier — the descender space below it is not part
+     of the ink, but it is part of the line box. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--number-field-stepper-bg);
   color: var(--shade-muted);
   cursor: pointer;
   user-select: none;
@@ -67,14 +91,37 @@
   outline: 0;
 
   /* Height only, matching Button — `width: auto` keeps the glyph's own aspect
-     ratio instead of stretching it to the lucide default box. */
+     ratio instead of stretching it to the lucide default box. The tier's icon
+     size is the ceiling for form glyphs generally; a stepper's plus and minus
+     fill their whole box, with none of the internal detail a chevron or a check
+     has, so they read heavier than the chevron at the same measurement and are
+     stepped down from it. */
   svg {
-    height: var(--forms-icon-size);
+    flex-shrink: 0;
+    height: calc(var(--forms-icon-size) * 0.85);
     width: auto;
+
+    /* Lucide draws on a 24-unit viewBox, so its `stroke-width="2"` is in user
+       units and thins out as the glyph is scaled down — at medium it rendered
+       2 × 16/24 ≈ 1.33px, and shrinking the glyph would have thinned it
+       further still. `non-scaling-stroke` takes the stroke out of that scaling,
+       so the value below is the width actually painted and holds across all
+       four tiers. It is not an inherited property and does not apply to the
+       `<svg>` itself, hence the descendant selector; `stroke-width` does
+       inherit, so it is set once here. */
+    stroke-width: 1.5px;
+
+    & * {
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  &:hover {
+    background-color: var(--number-field-stepper-bg-hover);
   }
 
   &:active {
-    background-color: var(--forms-bg-focus);
+    background-color: var(--number-field-stepper-bg-active);
   }
 }
 
