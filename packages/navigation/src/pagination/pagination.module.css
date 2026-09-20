@@ -8,12 +8,4 @@
 .pagination-item {
   min-inline-size: var(--forms-size-sm-height);
   padding-inline: calc(var(--spacing-unit) * 2);
-
-  /*
-   * Button's hidden spinner shares the content's grid cell and can be wider
-   * than a short number, which would otherwise sit left of center.
-   */
-  * {
-    margin-inline: auto;
-  }
 }

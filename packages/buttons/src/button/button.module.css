@@ -89,7 +89,15 @@
   }
 }
 
+/*
+ * Content and spinner share one `Layer` cell, so the cell is as wide as the
+ * wider of the two. Auto inline margins opt a grid item out of the default
+ * `justify-self: stretch`, shrink-wrapping each layer and centering it — which
+ * is what keeps content narrower than the spinner (a single digit, say) from
+ * sitting at the cell's start. Both layers center the same way for that reason.
+ */
 .button-content-container {
+  margin-inline: auto;
   scale: 1;
   transition-property: opacity, scale;
   transition-duration: var(--globals-transition-duration);
