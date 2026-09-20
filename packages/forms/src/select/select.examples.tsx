@@ -261,3 +261,15 @@ export const Grouped = () => (
     </Group>
   </Field>
 );
+
+/*
+ * The open popup dims the page behind it so it can't be lost in surrounding
+ * content. Paint only — Base UI's Root is already `modal`, so `backdrop={false}`
+ * changes how the select looks, never how it behaves.
+ */
+export const Backdrop = () => (
+  <Stack gap={4} ax="stretch">
+    <Select label="Dims the page" items={MOCK_SELECT_ITEMS} />
+    <Select label="Sits quietly" backdrop={false} items={MOCK_SELECT_ITEMS} />
+  </Stack>
+);

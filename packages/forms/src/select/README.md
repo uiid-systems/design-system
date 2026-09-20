@@ -14,6 +14,7 @@ Use Select when you want to:
 - Soften the surface with `variant="ghost"` or fill the container with `fullwidth`
 - Tint it with a palette `color` (`red`, `blue`, …) — the hue paints the trigger and the popup together
 - Mark it `required`, `disabled`, or `readOnly`
+- Keep an open menu from getting lost in the page — it dims what's behind it, the way a dialog or drawer does. Pass `backdrop={false}` for a select that should sit quietly in a dense form
 
 The trigger never grows past its container: a long value truncates instead.
 
@@ -23,7 +24,9 @@ Drop `items` and pass children to compose the list yourself with `SelectItem`. T
 
 Leave `value` unset and the select runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 
-Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
+The open popup dims the page behind it so it can't be lost in surrounding content. That is paint only — Base UI's `Root` is `modal` by default, so page scroll is locked and outside pointers are blocked whether or not the dimming is drawn, and `backdrop={false}` changes how the select looks, never how it behaves. The dim is lighter than a dialog's: a dialog owns the screen, where a select is still a field in a form the reader needs to keep their place in. It rides Select's own `--select-backdrop-*` tokens, so `@uiid/forms` carries no dependency on `@uiid/overlays`.
+
+Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
 
 When the list is long enough to need filtering, reach for [`Combobox`](../combobox/README.md); when the typed value doesn't have to come from the list, [`Autocomplete`](../autocomplete/README.md).
 

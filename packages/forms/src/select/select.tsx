@@ -15,6 +15,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectPortal,
+  SelectBackdrop,
   SelectPositioner,
   SelectPopup,
   SelectList,
@@ -72,9 +73,11 @@ export function Select<
   items,
   multiple,
   defaultValue,
+  backdrop = true,
   RootProps,
   TriggerProps,
   PortalProps,
+  BackdropProps,
   PositionerProps,
   PopupProps,
   ListProps,
@@ -170,6 +173,7 @@ export function Select<
           <SelectIcon {...IconProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>
+          {backdrop && <SelectBackdrop {...BackdropProps} />}
           <SelectPositioner {...PositionerProps}>
             <SelectPopup color={color} {...PopupProps}>
               <SelectList {...ListProps}>

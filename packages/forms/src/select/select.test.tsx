@@ -679,3 +679,58 @@ describe("Select DOM attributes reach the trigger", () => {
     expect(screen.getByText("Option B")).toBeInTheDocument();
   });
 });
+
+describe("Select backdrop", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("renders no backdrop while closed", () => {
+    render(<Select items={items} />);
+    expect(
+      document.querySelector('[data-slot="select-backdrop"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("dims the page by default when opened", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(
+      document.querySelector('[data-slot="select-backdrop"]'),
+    ).toBeInTheDocument();
+  });
+
+  it("omits the backdrop when opted out", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} backdrop={false} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    // The popup still opens — only the dimming is gone.
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+    expect(
+      document.querySelector('[data-slot="select-backdrop"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("forwards BackdropProps to the backdrop element", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        BackdropProps={{ "data-testid": "dim" } as never}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByTestId("dim")).toHaveAttribute(
+      "data-slot",
+      "select-backdrop",
+    );
+  });
+});

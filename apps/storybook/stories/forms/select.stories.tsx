@@ -54,6 +54,7 @@ const meta = {
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
+    backdrop: { control: "boolean", table: { category: "Toggles" } },
 
     onValueChange: { table: { category: "Events" } },
     onOpenChange: { table: { category: "Events" } },
@@ -99,3 +100,4 @@ export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const Composed: Story = { render: () => <Examples.Composed /> };
 export const Grouped: Story = { render: () => <Examples.Grouped /> };
+export const Backdrop: Story = { render: () => <Examples.Backdrop /> };

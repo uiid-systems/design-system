@@ -8,6 +8,7 @@ describe("forms barrel", () => {
       "SelectRoot",
       "SelectTrigger",
       "SelectPortal",
+      "SelectBackdrop",
       "SelectPositioner",
       "SelectPopup",
       "SelectList",
