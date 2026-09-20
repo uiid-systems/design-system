@@ -1,5 +1,7 @@
 "use client";
 
+import { splitDomAttributes } from "@uiid/utils";
+
 import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
@@ -35,13 +37,19 @@ export const Autocomplete = ({
   children,
   ...props
 }: AutocompleteProps) => {
+  // `Root` renders no element, so a DOM attribute spread onto it lands
+  // nowhere. Route those to the input instead — it is the focusable element
+  // and the one carrying `role="combobox"`, so it is where a name or a
+  // `data-*` hook is meant to go.
+  const [domAttributes, rootProps] = splitDomAttributes(props);
+
   return (
     <AutocompleteRoot
       items={items}
       name={name}
       disabled={disabled}
       {...RootProps}
-      {...props}
+      {...rootProps}
     >
       <AutocompleteInput
         name={name}
@@ -55,6 +63,7 @@ export const Autocomplete = ({
         color={color}
         onFocus={onFocus}
         onBlur={onBlur}
+        {...domAttributes}
         {...InputProps}
       />
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { splitDomAttributes } from "@uiid/utils";
+
 import { InputGroupActions } from "../shared/input-group";
 import type { ComboboxProps } from "./combobox.types";
 import {
@@ -40,8 +42,14 @@ export const Combobox = ({
   children,
   ...props
 }: ComboboxProps) => {
+  // `Root` renders no element, so a DOM attribute spread onto it lands
+  // nowhere. Route those to the input instead — it is the focusable element
+  // and the one carrying `role="combobox"`, so it is where a name or a
+  // `data-*` hook is meant to go.
+  const [domAttributes, rootProps] = splitDomAttributes(props);
+
   return (
-    <ComboboxRoot items={items} name={name} {...RootProps} {...props}>
+    <ComboboxRoot items={items} name={name} {...RootProps} {...rootProps}>
       <ComboboxInputGroup size={size} {...InputGroupProps}>
         <ComboboxInput
           name={name}
@@ -68,6 +76,7 @@ export const Combobox = ({
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}
+          {...domAttributes}
           {...InputProps}
         />
       </ComboboxInputGroup>

@@ -1,5 +1,6 @@
 "use client";
 
+import { splitDomAttributes } from "@uiid/utils";
 import { Children, isValidElement, useMemo } from "react";
 
 import { Field } from "../field/field";
@@ -83,6 +84,12 @@ export function Select<
   children,
   ...props
 }: SelectProps<Value, Multiple>) {
+  // `Root` renders no element, so a DOM attribute spread onto it lands
+  // nowhere. Route those to the trigger instead — it is the focusable element
+  // and the one carrying `role="combobox"`, so it is where a name or a
+  // `data-*` hook is meant to go.
+  const [domAttributes, rootProps] = splitDomAttributes(props);
+
   // Multiple mode starts empty; single mode falls back to the first item
   // unless a placeholder should show instead.
   const resolvedDefaultValue = (defaultValue ??
@@ -143,7 +150,7 @@ export function Select<
         defaultValue={resolvedDefaultValue}
         items={items}
         itemToStringLabel={itemToStringLabel}
-        {...props}
+        {...rootProps}
         {...RootProps}
       >
         <SelectTrigger
@@ -154,6 +161,7 @@ export function Select<
           disabled={disabled}
           before={before}
           after={after}
+          {...domAttributes}
           {...TriggerProps}
         >
           <SelectValue size={size} {...ValueProps}>

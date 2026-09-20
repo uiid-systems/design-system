@@ -270,3 +270,31 @@ describe("Autocomplete color", () => {
     ).toHaveClass("palette-neutral");
   });
 });
+
+describe("Autocomplete DOM attributes reach the input", () => {
+  const defaultItems = ["apple", "banana", "cherry"];
+
+  it("names the input from a top-level aria-label", () => {
+    render(<Autocomplete items={defaultItems} aria-label="Fruit" />);
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Fruit");
+  });
+
+  it("puts a data-* hook on the input", () => {
+    render(<Autocomplete items={defaultItems} data-testid="fruit" />);
+    expect(screen.getByTestId("fruit")).toHaveAttribute(
+      "data-slot",
+      "autocomplete-input",
+    );
+  });
+
+  it("lets InputProps win over a top-level attribute", () => {
+    render(
+      <Autocomplete
+        items={defaultItems}
+        aria-label="Outer"
+        InputProps={{ "aria-label": "Inner" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+  });
+});
