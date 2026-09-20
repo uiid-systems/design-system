@@ -25,9 +25,15 @@ export const PaginationButton = ({
     if (!opensElsewhere(event)) onClick?.(event);
   };
 
+  /*
+   * Cells sit on the panel's own surface, so they stay transparent until
+   * hovered; only the current page takes the filled treatment. A `subtle` fill
+   * here would paint a second surface on top of the panel's, which is what
+   * made the row read as loose buttons.
+   */
   return (
     <Button
-      variant={active ? undefined : "subtle"}
+      variant={active ? undefined : "ghost"}
       size="small"
       render={render}
       onClick={render ? handleLinkClick : onClick}

@@ -6,6 +6,7 @@ import { ChevronsLeftIcon } from "@uiid/icons/chevrons-left";
 import { ChevronsRightIcon } from "@uiid/icons/chevrons-right";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 import { useState } from "react";
 
 import { PAGINATION_DEFAULT_PAGE } from "./pagination.constants";
@@ -22,6 +23,7 @@ export const Pagination = ({
   onPageChange,
   spread,
   renderLink,
+  className,
   ...props
 }: PaginationProps) => {
   const lastPage = Math.max(1, totalPages);
@@ -58,6 +60,7 @@ export const Pagination = ({
         aria-label={label}
         tooltip={label}
         shape="square"
+        className={styles["pagination-cell"]}
         disabled={disabled}
         // A disabled control stays a button, so there's no link out of range
         render={disabled ? undefined : renderLink?.(target)}
@@ -73,7 +76,9 @@ export const Pagination = ({
       render={<nav />}
       aria-label="Pagination"
       data-slot="pagination"
-      gap={2}
+      data-layout={spread === undefined ? "compact" : "numbered"}
+      className={cx(styles["pagination-panel"], className)}
+      gap={0}
       ay="center"
       {...props}
     >
@@ -82,9 +87,12 @@ export const Pagination = ({
           <Text
             data-slot="pagination-label"
             aria-live="polite"
+            className={cx(
+              styles["pagination-cell"],
+              styles["pagination-label"],
+            )}
             size={0}
             shade="muted"
-            mr={2}
           >
             Page {page} of {lastPage}
           </Text>
@@ -99,6 +107,10 @@ export const Pagination = ({
                 key={`ellipsis-${index}`}
                 data-slot="pagination-ellipsis"
                 aria-hidden
+                className={cx(
+                  styles["pagination-cell"],
+                  styles["pagination-ellipsis"],
+                )}
                 size={0}
                 shade="muted"
               >
@@ -110,7 +122,10 @@ export const Pagination = ({
                 aria-label={`Page ${item}`}
                 aria-current={item === page ? "page" : undefined}
                 active={item === page}
-                className={styles["pagination-item"]}
+                className={cx(
+                  styles["pagination-cell"],
+                  styles["pagination-item"],
+                )}
                 render={renderLink?.(item)}
                 onClick={() => goTo(item)}
               >
