@@ -124,6 +124,12 @@
   color: var(--shade-foreground);
   position: relative;
 
+  /* Named rather than `all`: the fill is the only property that moves here, and
+     the border doubles as the focus ring's neighbour. Half the global duration
+     matches `composes-field-surface`, so a bordered row and a sibling Input
+     settle together. */
+  transition: background-color calc(var(--globals-transition-duration) / 2) ease-in-out;
+
   /* A bordered row reads as one control, so the whole surface is the label:
      the label's hit area stretches over the row, padding and gap included,
      and a click anywhere on it reaches the control through the label's own
@@ -142,6 +148,22 @@
     z-index: 1;
   }
 
+  /* Rest is the page, hover is `--forms-bg-hover`, checked is `--forms-bg` —
+     one step per state, in the same direction in both schemes (light
+     #fefefa → #eaeae7 → #ddddd9, dark #0d0d0d → #1a1a1a → #242423). The row
+     painted nothing until it was checked, so an unchecked bordered box never
+     acknowledged the pointer despite its whole surface being clickable.
+
+     Declared before the checked rule deliberately. `:has()` takes its
+     argument's specificity, so `:has([data-checked])` ties with `:hover` at
+     (0,2,0) and source order decides: a checked row keeps its fill under the
+     pointer rather than stepping back down to the hover shade, which would
+     read as un-selecting. A disabled row is `pointer-events: none`
+     (`composes-disabled-within`), so it never matches this at all. */
+  &:hover {
+    background-color: var(--forms-bg-hover);
+  }
+
   &:has(:focus-visible) {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
@@ -149,6 +171,23 @@
 
   &:has([data-checked]) {
     background-color: var(--forms-bg);
+
+    /* The checked fill is the selection signal, so the pointer deepens it
+       rather than replacing it with the unchecked hover shade — that would
+       step back down the ladder and read as un-selecting.
+
+       The 12% mix is the system's hover step, the same expression
+       `--palette-tint-hover` is derived with and for the same reason:
+       `--shade-foreground` is itself a `light-dark()`, so one declaration
+       moves toward black on a light fill and toward white on a dark one,
+       landing in the visible band (ΔL* ~10.5) in both schemes.
+
+       Nested rather than declared alongside `:hover` above, so it wins on
+       specificity — (0,3,0) against their shared (0,2,0) — instead of relying
+       on source order the way those two do. */
+    &:hover {
+      background-color: color-mix(in oklab, var(--shade-foreground) 12%, var(--forms-bg));
+    }
   }
 }
 
