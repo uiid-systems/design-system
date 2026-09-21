@@ -2,7 +2,7 @@
 
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SelectIconProps } from "../select.types";
 
@@ -13,7 +13,7 @@ export const SelectIcon = ({ className, ...props }: SelectIconProps) => {
     <BaseSelect.Icon
       data-slot="select-icon"
       render={<ChevronsUpDownIcon />}
-      className={cx(styles["select-icon"], className)}
+      className={cxState(styles["select-icon"], className)}
       {...props}
     />
   );

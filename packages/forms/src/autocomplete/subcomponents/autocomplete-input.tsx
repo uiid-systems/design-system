@@ -1,6 +1,7 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
+import { cxState } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -57,13 +58,15 @@ export const AutocompleteInput = ({
         <BaseAutocomplete.Input
           data-slot="autocomplete-input"
           render={<input />}
-          className={inputControlClassName({
-            inner: hasSlots,
-            size,
-            fullwidth: true,
-            color,
+          className={cxState(
+            inputControlClassName({
+              inner: hasSlots,
+              size,
+              fullwidth: true,
+              color,
+            }),
             className,
-          })}
+          )}
           placeholder={placeholder}
           onFocus={onFocus}
           onBlur={onBlur}

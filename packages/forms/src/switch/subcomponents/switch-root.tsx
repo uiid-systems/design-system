@@ -2,7 +2,7 @@
 
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import { SWITCH_DEFAULT_SIZE } from "../switch.constants";
 import type { SwitchRootProps } from "../switch.types";
@@ -22,7 +22,7 @@ export const SwitchRoot = ({
   return (
     <BaseSwitch.Root
       data-slot="switch-root"
-      className={cx(
+      className={cxState(
         styles["switch-root"],
         switchVariants({ size }),
         colorClassName,

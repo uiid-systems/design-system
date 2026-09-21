@@ -4,7 +4,7 @@ import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
 import { ChevronsUpDownIcon } from "@uiid/icons/chevrons-up-down";
 import { ConditionalRender, Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { AccordionTriggerProps } from "../accordion.types";
 import { accordionTriggerVariants } from "../accordion.variants";
@@ -22,7 +22,7 @@ export const AccordionTrigger = ({
   return (
     <BaseAccordion.Trigger
       data-slot="accordion-trigger"
-      className={cx(
+      className={cxState(
         styles["accordion-trigger"],
         accordionTriggerVariants({ size }),
         className,

@@ -2,7 +2,7 @@
 
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Card } from "@uiid/cards";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SelectPopupProps } from "../select.types";
 
@@ -23,7 +23,7 @@ export const SelectPopup = ({
     <BaseSelect.Popup
       data-slot="select-popup"
       render={<Card color={color} p={2} gap={0} fullwidth />}
-      className={cx(styles["select-popup"], className)}
+      className={cxState(styles["select-popup"], className)}
       {...props}
     >
       {children}

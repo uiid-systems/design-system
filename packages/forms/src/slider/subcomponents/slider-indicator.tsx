@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SliderIndicatorProps } from "../slider.types";
 
@@ -14,7 +14,7 @@ export const SliderIndicator = ({
   return (
     <BaseSlider.Indicator
       data-slot="slider-indicator"
-      className={cx(styles["slider-indicator"], className)}
+      className={cxState(styles["slider-indicator"], className)}
       {...props}
     />
   );

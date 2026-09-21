@@ -3,7 +3,7 @@
 import { Slider as BaseSlider } from "@base-ui/react/slider";
 import { Group } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SliderRootProps } from "../slider.types";
 import { sliderVariants } from "../slider.variants";
@@ -32,7 +32,7 @@ export const SliderRoot = ({
   return (
     <BaseSlider.Root
       data-slot="slider-root"
-      className={cx(
+      className={cxState(
         inputStyles["input"],
         inputStyles["input-edge"],
         sliderVariants({ variant, fullwidth, size }),

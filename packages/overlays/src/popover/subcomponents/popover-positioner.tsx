@@ -1,5 +1,5 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { PopoverPositionerProps } from "../popover.types";
 
@@ -13,7 +13,7 @@ export const PopoverPositioner = ({
   return (
     <BasePopover.Positioner
       data-slot="popover-positioner"
-      className={cx(styles["popover-positioner"], className)}
+      className={cxState(styles["popover-positioner"], className)}
       {...props}
     >
       {children}

@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { MenuPositionerProps } from "../menu.types";
 
@@ -13,7 +13,7 @@ export const MenuPositioner = ({
   return (
     <BaseMenu.Positioner
       data-slot="menu-positioner"
-      className={cx(styles["positioner"], className)}
+      className={cxState(styles["positioner"], className)}
       sideOffset={4}
       collisionPadding={16}
       {...props}

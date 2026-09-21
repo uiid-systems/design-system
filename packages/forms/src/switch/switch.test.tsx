@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Switch } from "./switch";
 
+import styles from "./switch.module.css";
+
 describe("Switch", () => {
   it("renders a switch element", () => {
     render(<Switch />);
@@ -185,5 +187,32 @@ describe("Switch color", () => {
     expect(screen.getByRole("switch").className).not.toMatch(
       /composes-control-fill-color/,
     );
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. */
+describe("Switch state-function className", () => {
+  const onState = (state: { checked: boolean }) =>
+    state.checked ? "fn-checked" : "fn-unchecked";
+
+  it("resolves a state-function className on the root alongside its own class", () => {
+    const { container } = render(
+      <Switch defaultChecked RootProps={{ className: onState }} />,
+    );
+    const root = container.querySelector("[data-slot='switch-root']");
+
+    expect(root).toHaveClass("fn-checked");
+    expect(root).toHaveClass(styles["switch-root"]);
+  });
+
+  it("resolves a state-function className on the thumb alongside its own class", () => {
+    const { container } = render(
+      <Switch defaultChecked ThumbProps={{ className: onState }} />,
+    );
+    const thumb = container.querySelector("[data-slot='switch-thumb']");
+
+    expect(thumb).toHaveClass("fn-checked");
+    expect(thumb).toHaveClass(styles["switch-thumb"]);
   });
 });

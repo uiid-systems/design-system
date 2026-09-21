@@ -1,7 +1,7 @@
 "use client";
 
 import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { FieldProps } from "./field.types";
 import { fieldVariants } from "./field.variants";
@@ -46,7 +46,7 @@ export const Field = ({
     <FieldRoot
       {...props}
       {...RootProps}
-      className={cx(
+      className={cxState(
         fieldVariants({ size }),
         isFloating && styles["field-root-floating"],
         !hasChrome && styles["field-root-bare"],

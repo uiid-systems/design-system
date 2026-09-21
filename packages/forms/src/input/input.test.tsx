@@ -5,6 +5,8 @@ import { describe, it, expect } from "vitest";
 import { Input } from "./input";
 import { InputControl, InputWrapper } from "./subcomponents";
 
+import styles from "./input.module.css";
+
 describe("Input", () => {
   it("renders an input element", () => {
     render(<Input />);
@@ -220,5 +222,22 @@ describe("Input color", () => {
     expect(screen.getByRole("textbox").className).toMatch(
       /composes-field-surface-color/,
     );
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. */
+describe("Input state-function className", () => {
+  it("resolves a state-function className on the control alongside its own class", () => {
+    const { container } = render(
+      <Input
+        disabled
+        className={(state) => (state.disabled ? "fn-disabled" : "fn-enabled")}
+      />,
+    );
+    const input = container.querySelector("[data-slot='input']");
+
+    expect(input).toHaveClass("fn-disabled");
+    expect(input).toHaveClass(styles["input"]);
   });
 });

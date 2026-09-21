@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Popover } from "./popover";
 
+import styles from "./popover.module.css";
+
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
 const ButtonLike = (props: React.ComponentProps<"button">) => (
@@ -406,5 +408,47 @@ describe("Popover", () => {
     expect(screen.getByRole("button", { name: "Open popover" })).toHaveClass(
       "trigger-wrapper",
     );
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+  // Base UI accepts `className` as a function of the part's state. Each part
+  // must hand the caller's function that state and keep its own module class.
+
+  it("resolves a state-function className on the positioner alongside its own class", () => {
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        open={true}
+        PositionerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    const positioner = document.querySelector(
+      '[data-slot="popover-positioner"]',
+    );
+    expect(positioner).toHaveClass(styles["popover-positioner"], "fn-open");
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", () => {
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        open={true}
+        PopupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    const popup = document.querySelector('[data-slot="popover-popup"]');
+    expect(popup).toHaveClass(styles["popover-popup"], "fn-open");
   });
 });

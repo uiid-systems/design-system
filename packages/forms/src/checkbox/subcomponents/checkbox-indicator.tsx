@@ -4,7 +4,7 @@ import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { CheckIcon } from "@uiid/icons/check";
 import { MinusIcon } from "@uiid/icons/minus";
 import { SwitchRender } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { CheckboxIndicatorProps } from "../checkbox.types";
 
@@ -18,7 +18,7 @@ export const CheckboxIndicator = ({
   return (
     <BaseCheckbox.Indicator
       data-slot="checkbox-indicator"
-      className={cx(styles["checkbox-indicator"], className)}
+      className={cxState(styles["checkbox-indicator"], className)}
       {...props}
     >
       <SwitchRender

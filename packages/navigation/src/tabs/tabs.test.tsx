@@ -3,8 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
+import { TabsList, TabsPanel, TabsRoot, TabsTab } from "./subcomponents";
 import { Tabs } from "./tabs";
 import type { TabsProps } from "./tabs.types";
+
+import styles from "./tabs.module.css";
 
 const MOCK_ITEMS: TabsProps["items"] = [
   { label: "Tab 1", value: "tab-1", render: <div>Content 1</div> },
@@ -265,5 +268,82 @@ describe("Tabs", () => {
     expect(document.querySelector("[data-slot='tabs-root']")).toHaveClass(
       "orientation-horizontal",
     );
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+
+  // Base UI calls a function className with the part's state. `cx` used to
+  // drop it silently, leaving only the wrapper's own module class. TabProps
+  // and PanelProps require a `value`, so those parts are composed directly.
+
+  it("resolves a state-function className on the list alongside its own class", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        ListProps={{ className: (state) => `fn-${state.orientation}` }}
+      />,
+    );
+    expect(document.querySelector("[data-slot='tabs-list']")).toHaveClass(
+      "fn-horizontal",
+      styles["tabs-list"],
+    );
+  });
+
+  it("resolves a state-function className on the tab alongside its own class", () => {
+    render(
+      <TabsRoot defaultValue="tab-1">
+        <TabsList>
+          {["tab-1", "tab-2"].map((value) => (
+            <TabsTab
+              key={value}
+              value={value}
+              className={(state) => (state.active ? "fn-active" : "fn-idle")}
+            >
+              {value}
+            </TabsTab>
+          ))}
+        </TabsList>
+      </TabsRoot>,
+    );
+    const [active, idle] = document.querySelectorAll("[data-slot='tabs-tab']");
+    expect(active).toHaveClass("fn-active", styles["tab"]);
+    expect(idle).toHaveClass("fn-idle", styles["tab"]);
+  });
+
+  it("resolves a state-function className on the indicator alongside its own class", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        IndicatorProps={{ className: (state) => `fn-${state.orientation}` }}
+      />,
+    );
+    expect(document.querySelector("[data-slot='tabs-indicator']")).toHaveClass(
+      "fn-horizontal",
+      styles["tabs-indicator"],
+    );
+  });
+
+  it("resolves a state-function className on the panel alongside its own class", () => {
+    render(
+      <TabsRoot defaultValue="tab-1">
+        {["tab-1", "tab-2"].map((value) => (
+          <TabsPanel
+            key={value}
+            value={value}
+            keepMounted
+            className={(state) => (state.hidden ? "fn-hidden" : "fn-shown")}
+          >
+            {value}
+          </TabsPanel>
+        ))}
+      </TabsRoot>,
+    );
+    const [shown, hidden] = document.querySelectorAll(
+      "[data-slot='tabs-panel']",
+    );
+    expect(shown).toHaveClass("fn-shown", styles["tabs-panel"]);
+    expect(hidden).toHaveClass("fn-hidden", styles["tabs-panel"]);
   });
 });

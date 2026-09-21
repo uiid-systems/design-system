@@ -1,7 +1,7 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { NumberFieldScrubAreaCursorProps } from "../number-field.types";
 
@@ -15,7 +15,7 @@ export const NumberFieldScrubAreaCursor = ({
   return (
     <BaseNumberField.ScrubAreaCursor
       data-slot="number-field-scrub-area-cursor"
-      className={cx(styles["number-field-scrub-area-cursor"], className)}
+      className={cxState(styles["number-field-scrub-area-cursor"], className)}
       {...props}
     >
       {children}

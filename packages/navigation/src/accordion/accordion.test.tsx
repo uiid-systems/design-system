@@ -12,6 +12,8 @@ import {
   AccordionPanel,
 } from "./subcomponents";
 
+import styles from "./accordion.module.css";
+
 const sampleItems = [
   { value: "item-1", trigger: "First", content: "First content" },
   { value: "item-2", trigger: "Second", content: "Second content" },
@@ -206,5 +208,81 @@ describe("Accordion", () => {
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute("data-panel-open");
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+
+  // Base UI calls a function className with the part's state. `cx` used to
+  // drop it silently, leaving only the wrapper's own module class.
+
+  it("resolves a state-function className on the item alongside its own class", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        ItemProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+    const [open, closed] = document.querySelectorAll(
+      "[data-slot='accordion-item']",
+    );
+    expect(open).toHaveClass("fn-open", styles["accordion-item"]);
+    expect(closed).toHaveClass("fn-closed", styles["accordion-item"]);
+  });
+
+  it("resolves a state-function className on the header", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        HeaderProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+    const [open, closed] = document.querySelectorAll(
+      "[data-slot='accordion-header']",
+    );
+    expect(open).toHaveClass("fn-open");
+    expect(closed).toHaveClass("fn-closed");
+  });
+
+  it("resolves a state-function className on the trigger alongside its own class", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+    const [open, closed] = document.querySelectorAll(
+      "[data-slot='accordion-trigger']",
+    );
+    expect(open).toHaveClass("fn-open", styles["accordion-trigger"]);
+    expect(closed).toHaveClass("fn-closed", styles["accordion-trigger"]);
+  });
+
+  it("resolves a state-function className on the panel alongside its own class", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        PanelProps={{
+          keepMounted: true,
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+    const [open, closed] = document.querySelectorAll(
+      "[data-slot='accordion-panel']",
+    );
+    expect(open).toHaveClass("fn-open", styles["accordion-panel"]);
+    expect(closed).toHaveClass("fn-closed", styles["accordion-panel"]);
   });
 });

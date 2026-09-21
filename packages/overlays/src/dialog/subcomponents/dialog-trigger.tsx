@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cx, resolveTrigger } from "@uiid/utils";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { DialogTriggerProps } from "../dialog.types";
 
@@ -12,7 +12,7 @@ export const DialogTrigger = ({
 }: DialogTriggerProps) => (
   <BaseDialog.Trigger
     data-slot="dialog-trigger"
-    className={cx(styles["dialog-trigger"], className)}
+    className={cxState(styles["dialog-trigger"], className)}
     {...resolveTrigger(children, props.render)}
     {...props}
   />

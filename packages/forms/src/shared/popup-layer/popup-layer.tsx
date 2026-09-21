@@ -6,7 +6,7 @@ import { Card } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
 import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import styles from "./popup-layer.module.css";
 
@@ -54,7 +54,7 @@ export const PopupLayerPositioner = ({
   return (
     <BasePopupLayer.Positioner
       data-slot={slot}
-      className={cx(styles["popup-layer-positioner"], className)}
+      className={cxState(styles["popup-layer-positioner"], className)}
       sideOffset={sideOffset}
       {...props}
     >
@@ -83,7 +83,7 @@ export const PopupLayerPopup = ({
     <BasePopupLayer.Popup
       data-slot={slot}
       render={<Card color={color} p={2} gap={0} fullwidth />}
-      className={cx(styles["popup-layer-popup"], className)}
+      className={cxState(styles["popup-layer-popup"], className)}
       {...props}
     >
       {children}
@@ -121,7 +121,7 @@ export const PopupLayerItem = ({
     <BasePopupLayer.Item
       data-slot={slot}
       value={value}
-      className={cx(styles["popup-layer-item"], className)}
+      className={cxState(styles["popup-layer-item"], className)}
       {...props}
       // A consumer-supplied `render` wins; the ListItem treatment is only the
       // default. Previously this was spread last and silently discarded it.
@@ -152,7 +152,7 @@ export const PopupLayerEmpty = ({
   return (
     <BasePopupLayer.Empty
       data-slot={slot}
-      className={cx(styles["popup-layer-empty"], className)}
+      className={cxState(styles["popup-layer-empty"], className)}
       {...props}
     >
       {children ?? <Text>No results found.</Text>}

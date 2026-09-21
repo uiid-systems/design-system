@@ -216,3 +216,34 @@ describe("Radio color", () => {
     expect(ringClassName(container)).not.toMatch(/composes-control-fill-color/);
   });
 });
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. */
+describe("Radio state-function className", () => {
+  const onState = (state: { checked: boolean }) =>
+    state.checked ? "fn-checked" : "fn-unchecked";
+
+  it("resolves a state-function className on the root alongside its own class", () => {
+    const { container } = render(
+      <RadioGroupRoot defaultValue="a">
+        <Radio value="a" className={onState} />
+      </RadioGroupRoot>,
+    );
+    const radio = container.querySelector("[data-slot='radio']");
+
+    expect(radio).toHaveClass("fn-checked");
+    expect(radio).toHaveClass(styles["radio"]);
+  });
+
+  it("resolves a state-function className on the indicator alongside its own class", () => {
+    const { container } = render(
+      <RadioGroupRoot defaultValue="a">
+        <Radio value="a" IndicatorProps={{ className: onState }} />
+      </RadioGroupRoot>,
+    );
+    const indicator = container.querySelector("[data-slot='radio-indicator']");
+
+    expect(indicator).toHaveClass("fn-checked");
+    expect(indicator).toHaveClass(styles["indicator"]);
+  });
+});
