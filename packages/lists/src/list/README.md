@@ -16,7 +16,7 @@ Both shapes coexist: `items` is the fast path for data, JSX children is the esca
 - **`ListItem`** — a single row. Slots: `label`, `description`, `icon`. Pass `children` to take over the contents. Items render as `<li>` by default; pass `render={<a />}` or `render={<div onClick={...} />}` for interactive rows.
 - **`ListGroup`** — a labeled grouping. Slots: `category` (header text), `icon`, `items`. Nest groups to build trees.
 
-`ListGroup` is purely visual — no collapsible behavior. For collapsible lists, wrap a `List` in your own `Collapsible` from `@uiid/overlays`.
+`ListGroup` is purely visual — no collapsible behavior. For collapsible lists, wrap a `List` in your own `Collapsible` from `@uiid/interactive`.
 
 ## Forms integration
 

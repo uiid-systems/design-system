@@ -241,4 +241,29 @@ describe("Tabs", () => {
     expect(tablist).toHaveAttribute("data-size", "medium");
     expect(tablist.className).toMatch(/composes-size-medium/);
   });
+
+  // ============================================
+  // ROOT PROPS
+  // ============================================
+
+  it("forwards layout props from RootProps to the root Stack", () => {
+    render(<Tabs items={MOCK_ITEMS} RootProps={{ gap: 4, ax: "center" }} />);
+    const root = document.querySelector<HTMLElement>("[data-slot='tabs-root']");
+    expect(root?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+    expect(root).toHaveStyle({ alignItems: "center" });
+  });
+
+  it("accepts Base UI's state-function className on RootProps", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        RootProps={{
+          className: (state) => `orientation-${state.orientation}`,
+        }}
+      />,
+    );
+    expect(document.querySelector("[data-slot='tabs-root']")).toHaveClass(
+      "orientation-horizontal",
+    );
+  });
 });
