@@ -5,6 +5,13 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
 
+/* Stand-ins for `Button` and `Text`: a component that renders a real <button>
+   and one that renders a <span>. */
+const ButtonLike = (props: React.ComponentProps<"button">) => (
+  <button type="button" {...props} />
+);
+const TextLike = (props: React.ComponentProps<"span">) => <span {...props} />;
+
 describe("Drawer", () => {
   // ============================================
   // RENDERING
@@ -93,6 +100,75 @@ describe("Drawer", () => {
     await waitFor(() => {
       expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
     });
+  });
+
+  // ============================================
+  // TRIGGER
+  // ============================================
+
+  it("gives a non-button intrinsic trigger button semantics", async () => {
+    const user = userEvent.setup();
+    render(<Drawer trigger={<span>Open</span>}>Drawer content</Drawer>);
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Drawer content")).toBeInTheDocument();
+  });
+
+  it("keeps a component trigger native by default", async () => {
+    const user = userEvent.setup();
+    render(
+      <Drawer trigger={<ButtonLike>Open</ButtonLike>}>Drawer content</Drawer>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger).not.toHaveAttribute("role");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Drawer content")).toBeInTheDocument();
+  });
+
+  it("lets a non-button component opt out with nativeButton={false}", async () => {
+    const user = userEvent.setup();
+    render(
+      <Drawer
+        trigger={<TextLike>Open</TextLike>}
+        TriggerProps={{ nativeButton: false }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard(" ");
+    expect(await screen.findByText("Drawer content")).toBeInTheDocument();
+  });
+
+  it("passes the trigger state to a function trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Drawer
+        trigger={({ open }) => <TextLike>{open ? "Hide" : "Show"}</TextLike>}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Show" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Drawer content")).toBeInTheDocument();
+    expect(trigger).toHaveTextContent("Hide");
   });
 
   // ============================================

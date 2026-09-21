@@ -1,7 +1,7 @@
 import type { Menu as BaseMenu } from "@base-ui/react/menu";
 import type { Icon } from "@uiid/icons";
 import type { GroupProps } from "@uiid/layout";
-import type { WithLayoutProps } from "@uiid/utils";
+import type { WithLayoutProps, WithTriggerChildren } from "@uiid/utils";
 
 export type MenuItemType = {
   icon?: Icon;
@@ -14,7 +14,10 @@ export type MenuItemType = {
 };
 
 export type MenuRootProps = BaseMenu.Root.Props;
-export type MenuTriggerProps = BaseMenu.Trigger.Props;
+export type MenuTriggerProps = WithTriggerChildren<
+  BaseMenu.Trigger.Props,
+  BaseMenu.Trigger.State
+>;
 export type MenuPortalProps = BaseMenu.Portal.Props;
 export type MenuBackdropProps = BaseMenu.Backdrop.Props;
 export type MenuPositionerProps = BaseMenu.Positioner.Props;
@@ -27,7 +30,7 @@ export type SubmenuTriggerProps = WithLayoutProps<
 >;
 
 export type MenuProps = {
-  trigger: React.ReactNode;
+  trigger: MenuTriggerProps["children"];
   items: MenuItemType[];
   /**
    * Dims the page behind the open popup, the way a dialog or drawer does, so an
