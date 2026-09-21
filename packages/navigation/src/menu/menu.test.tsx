@@ -69,3 +69,38 @@ describe("Menu backdrop", () => {
     );
   });
 });
+
+describe("SubmenuTrigger layout props", () => {
+  const submenuTrigger = () =>
+    document.querySelector<HTMLElement>("[data-slot='submenu-trigger']");
+
+  it("keeps its own spacing and alignment by default", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
+
+    await user.click(screen.getByText("Open"));
+
+    expect(submenuTrigger()?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+    expect(submenuTrigger()).toHaveStyle({ justifyContent: "space-between" });
+  });
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Group` would beat these.
+   */
+  it("forwards layout props from SubmenuTriggerProps to its Group", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        SubmenuTriggerProps={{ gap: 2, ax: "start" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(submenuTrigger()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(submenuTrigger()).toHaveStyle({ justifyContent: "start" });
+  });
+});

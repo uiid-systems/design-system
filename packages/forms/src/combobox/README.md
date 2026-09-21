@@ -15,6 +15,8 @@ Leave `value` unset and the combobox runs itself; pass `value` and `onValueChang
 
 For multiple selection, compose the parts: `ComboboxChips` replaces the plain input row and `ComboboxValue` renders one chip per selected item. The full tree — `ComboboxRoot`, `ComboboxInput`, `ComboboxPortal`, `ComboboxPositioner`, `ComboboxPopup`, `ComboboxList`, `ComboboxItem`, `ComboboxEmpty`, and the chip parts — is exported, and slot overrides (`RootProps`, `InputProps`, `InputGroupProps`, `PortalProps`, `PositionerProps`, `PopupProps`, `ListProps`) reach them from the monolithic component.
 
+The popup renders a [`Card`](../../../cards/src/card/README.md) and `ComboboxChips` a `Group`, so `PopupProps` and the chips take their layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. The popup defaults to `p={2}`, `gap={0}`, and `fullwidth`, the chips to `gap={1}` and `ay="center"`; pass any of them to change it. A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes.
+
 Combobox and [`Autocomplete`](../autocomplete/README.md) share their popup, list, item, and empty layer. Reach for Autocomplete when the typed value stands on its own, and [`Select`](../select/README.md) when the list is short enough not to need filtering.
 
 Additional props are forwarded to the underlying Base UI [Combobox](https://base-ui.com/react/components/combobox), except DOM attributes — `aria-*` and `data-*` land on the input, which is the focusable element and the one carrying `role="combobox"`. That is where a name or a `data-*` hook belongs, and Base UI's `Root` renders no element to carry one.

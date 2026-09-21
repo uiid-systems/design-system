@@ -266,4 +266,40 @@ describe("Tabs", () => {
       "orientation-horizontal",
     );
   });
+
+  // ============================================
+  // LAYOUT PROPS
+  // ============================================
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Group` or `Stack` would beat these.
+   */
+  it("forwards layout props from ListProps to the list Group", () => {
+    render(<Tabs items={MOCK_ITEMS} ListProps={{ gap: 2, ay: "end" }} />);
+    const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");
+    expect(list?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(list).toHaveStyle({ alignItems: "end" });
+  });
+
+  it("keeps the list's own gap when ListProps sets none", () => {
+    render(<Tabs items={MOCK_ITEMS} />);
+    const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");
+    expect(list?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+  });
+
+  it("forwards layout props from PanelProps to the panel Stack", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        PanelProps={{ gap: 3, ax: "start", fullwidth: false }}
+      />,
+    );
+    const panel = document.querySelector<HTMLElement>(
+      "[data-slot='tabs-panel']",
+    );
+    expect(panel?.style.gap).toBe("calc(3 * var(--spacing-unit))");
+    expect(panel).toHaveStyle({ alignItems: "start" });
+    expect(panel?.className).not.toMatch(/toggle-fullwidth/);
+  });
 });

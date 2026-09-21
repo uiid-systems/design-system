@@ -327,3 +327,16 @@ describe("NumberField change signals", () => {
     expect(onValueCommitted).toHaveBeenCalled();
   });
 });
+
+describe("NumberField group layout props", () => {
+  it("forwards layout props from GroupProps to the group", () => {
+    const { container } = render(
+      <NumberField GroupProps={{ gap: 2, ay: "end" }} />,
+    );
+    const group = container.querySelector<HTMLElement>(
+      "[data-slot='number-field-group']",
+    );
+    expect(group?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(group).toHaveStyle({ alignItems: "end" });
+  });
+});

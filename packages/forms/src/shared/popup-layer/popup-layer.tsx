@@ -2,11 +2,11 @@
 
 import { Combobox as BasePopupLayer } from "@base-ui/react/combobox";
 import type { Combobox as BasePopupLayerTypes } from "@base-ui/react/combobox";
-import { Card } from "@uiid/cards";
+import { Card, type CardProps } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
 import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
-import { cx } from "@uiid/utils";
+import { cx, type WithLayoutProps } from "@uiid/utils";
 
 import styles from "./popup-layer.module.css";
 
@@ -73,16 +73,19 @@ export const PopupLayerPopup = ({
   slot,
   className,
   color,
+  p = 2,
+  gap = 0,
+  fullwidth = true,
   children,
   ...props
-}: WithSlot<BasePopupLayerTypes.Popup.Props> & {
+}: WithSlot<WithLayoutProps<BasePopupLayerTypes.Popup.Props, CardProps>> & {
   /** Palette hue for the popup surface, forwarded to the `Card` it renders as. */
   color?: PaletteColor;
 }) => {
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
-      render={<Card color={color} p={2} gap={0} fullwidth />}
+      render={<Card color={color} p={p} gap={gap} fullwidth={fullwidth} />}
       className={cx(styles["popup-layer-popup"], className)}
       {...props}
     >

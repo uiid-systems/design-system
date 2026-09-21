@@ -1,5 +1,8 @@
 import type { Combobox as BaseCombobox } from "@base-ui/react/combobox";
+import type { CardProps } from "@uiid/cards";
+import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
+import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputProps } from "../input/input.types";
@@ -35,7 +38,10 @@ export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
-export type ComboboxPopupProps = BaseCombobox.Popup.Props & {
+export type ComboboxPopupProps = WithLayoutProps<
+  BaseCombobox.Popup.Props,
+  CardProps
+> & {
   /**
    * Palette hue for the popup surface, forwarded to the `Card` the popup
    * renders as. Left undefined, `Card` falls back to its own neutral default.
@@ -54,7 +60,10 @@ export type ComboboxStatusProps = BaseCombobox.Status.Props;
 export type ComboboxGroupProps = BaseCombobox.Group.Props;
 export type ComboboxGroupLabelProps = BaseCombobox.GroupLabel.Props;
 export type ComboboxValueProps = BaseCombobox.Value.Props;
-export type ComboboxChipsProps = BaseCombobox.Chips.Props;
+export type ComboboxChipsProps = WithLayoutProps<
+  BaseCombobox.Chips.Props,
+  GroupProps
+>;
 export type ComboboxChipProps = BaseCombobox.Chip.Props;
 export type ComboboxChipRemoveProps = BaseCombobox.ChipRemove.Props;
 

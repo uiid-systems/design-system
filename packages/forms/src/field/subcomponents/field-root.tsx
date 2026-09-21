@@ -9,15 +9,15 @@ import type { FieldRootProps } from "../field.types";
 import styles from "../field.module.css";
 
 export const FieldRoot = ({
+  ax = "stretch",
   children,
-  fullwidth,
   className,
   ...props
 }: FieldRootProps) => {
   return (
     <BaseField.Root
       data-slot="field-root"
-      render={<Stack ax="stretch" fullwidth={fullwidth} />}
+      render={<Stack ax={ax} />}
       className={cx(styles["field-root"], className)}
       {...props}
     >

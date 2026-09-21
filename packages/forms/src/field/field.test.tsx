@@ -431,3 +431,31 @@ describe("FieldRow chrome scale", () => {
     ).toMatch(/row-size-small/);
   });
 });
+
+describe("FieldRoot layout props", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>("[data-slot='field-root']");
+
+  it("stretches its children across the field by default", () => {
+    const { container } = render(
+      <FieldRoot>
+        <FieldLabel>Email</FieldLabel>
+      </FieldRoot>,
+    );
+    expect(root(container)).toHaveStyle({ alignItems: "stretch" });
+  });
+
+  /*
+   * `ax` used to be a literal on the root's `Stack`. Base UI merges the render
+   * element's own props over the part's, so it beat the caller's.
+   */
+  it("forwards layout props to the root Stack", () => {
+    const { container } = render(
+      <FieldRoot ax="start" fullwidth>
+        <FieldLabel>Email</FieldLabel>
+      </FieldRoot>,
+    );
+    expect(root(container)).toHaveStyle({ alignItems: "start" });
+    expect(root(container)?.className).toMatch(/toggle-fullwidth/);
+  });
+});

@@ -5,6 +5,13 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Combobox } from "./combobox";
+import {
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxInput,
+  ComboboxRoot,
+  ComboboxValue,
+} from "./subcomponents";
 
 describe("Combobox", () => {
   const defaultItems = ["apple", "banana", "cherry", "date", "elderberry"];
@@ -393,5 +400,56 @@ describe("Combobox DOM attributes reach the input", () => {
       />,
     );
     expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+  });
+});
+
+describe("Combobox layout props", () => {
+  const items = ["apple", "banana"];
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Card` or `Group` would beat these.
+   */
+  it("forwards layout props from PopupProps to the popup Card", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={items} PopupProps={{ gap: 2 }} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(
+      document.querySelector<HTMLElement>("[data-slot='combobox-popup']")?.style
+        .gap,
+    ).toBe("calc(2 * var(--spacing-unit))");
+  });
+
+  const renderChips = (props?: React.ComponentProps<typeof ComboboxChips>) =>
+    render(
+      <ComboboxRoot multiple items={items} defaultValue={["apple"]}>
+        <ComboboxChips {...props}>
+          <ComboboxValue>
+            {(selected: string[]) =>
+              selected.map((item) => (
+                <ComboboxChip key={item}>{item}</ComboboxChip>
+              ))
+            }
+          </ComboboxValue>
+          <ComboboxInput />
+        </ComboboxChips>
+      </ComboboxRoot>,
+    );
+
+  const chips = () =>
+    document.querySelector<HTMLElement>("[data-slot='combobox-chips']");
+
+  it("keeps the chips' own spacing by default", () => {
+    renderChips();
+    expect(chips()?.style.gap).toBe("calc(1 * var(--spacing-unit))");
+    expect(chips()).toHaveStyle({ alignItems: "center" });
+  });
+
+  it("forwards layout props to the chips Group", () => {
+    renderChips({ gap: 3, ay: "start" });
+    expect(chips()?.style.gap).toBe("calc(3 * var(--spacing-unit))");
+    expect(chips()).toHaveStyle({ alignItems: "start" });
   });
 });

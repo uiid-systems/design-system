@@ -207,4 +207,49 @@ describe("Accordion", () => {
 
     expect(trigger).toHaveAttribute("data-panel-open");
   });
+
+  // ============================================
+  // LAYOUT PROPS
+  // ============================================
+
+  const root = () =>
+    document.querySelector<HTMLElement>("[data-slot='accordion-root']");
+
+  /*
+   * The root's flush `gap` and `p` used to be literals on its `Card`. Base UI
+   * merges the render element's own props over the part's, so they silently
+   * beat the caller's. Only `gap` is asserted: happy-dom drops a `padding`
+   * shorthand whose value holds `var()`, so `p` never reaches `style` here.
+   */
+  it("forwards gap from RootProps to the root Card", () => {
+    render(<Accordion items={sampleItems} RootProps={{ gap: 2 }} />);
+    expect(root()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+  });
+
+  it("keeps the root flush when RootProps sets no gap", () => {
+    render(<Accordion items={sampleItems} />);
+    expect(root()?.style.gap).toBe("calc(0 * var(--spacing-unit))");
+  });
+
+  it("stretches the root by default and releases it on fullwidth={false}", () => {
+    const { rerender } = render(<Accordion items={sampleItems} />);
+    expect(root()?.className).toMatch(/toggle-fullwidth/);
+
+    rerender(<Accordion items={sampleItems} fullwidth={false} />);
+    expect(root()?.className).not.toMatch(/toggle-fullwidth/);
+  });
+
+  it("forwards layout props from ItemProps to each item Stack", () => {
+    render(
+      <Accordion items={sampleItems} ItemProps={{ gap: 2, ax: "start" }} />,
+    );
+    const items = document.querySelectorAll<HTMLElement>(
+      "[data-slot='accordion-item']",
+    );
+    expect(items).toHaveLength(sampleItems.length);
+    items.forEach((item) => {
+      expect(item.style.gap).toBe("calc(2 * var(--spacing-unit))");
+      expect(item).toHaveStyle({ alignItems: "start" });
+    });
+  });
 });

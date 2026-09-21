@@ -16,6 +16,8 @@ export const SliderRoot = ({
   fullwidth,
   size,
   color,
+  gap = 2,
+  ay = "center",
   children,
   className,
   ...props
@@ -39,7 +41,7 @@ export const SliderRoot = ({
         colorClassName,
         className,
       )}
-      render={<Group gap={2} ay="center" />}
+      render={<Group gap={gap} ay={ay} />}
       {...props}
     >
       {children}

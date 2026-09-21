@@ -7,6 +7,9 @@ import type { SubmenuTriggerProps } from "../menu.types";
 import styles from "../menu.module.css";
 
 export const SubmenuTrigger = ({
+  gap = 4,
+  ay = "center",
+  ax = "space-between",
   className,
   children,
   ...props
@@ -14,7 +17,7 @@ export const SubmenuTrigger = ({
   return (
     <BaseMenu.SubmenuTrigger
       data-slot="submenu-trigger"
-      render={<Group gap={4} ay="center" ax="space-between" />}
+      render={<Group gap={gap} ay={ay} ax={ax} />}
       className={cx(styles["submenu-trigger"], className)}
       {...props}
     >

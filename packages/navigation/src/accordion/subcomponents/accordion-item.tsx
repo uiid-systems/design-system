@@ -9,6 +9,8 @@ import type { AccordionItemProps } from "../accordion.types";
 import styles from "../accordion.module.css";
 
 export const AccordionItem = ({
+  ax = "stretch",
+  fullwidth = true,
   children,
   className,
   ...props
@@ -17,7 +19,7 @@ export const AccordionItem = ({
     <BaseAccordion.Item
       data-slot="accordion-item"
       className={cx(styles["accordion-item"], className)}
-      render={<Stack ax="stretch" fullwidth />}
+      render={<Stack ax={ax} fullwidth={fullwidth} />}
       {...props}
     >
       {children}

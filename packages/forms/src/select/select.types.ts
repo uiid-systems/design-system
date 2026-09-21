@@ -1,6 +1,8 @@
 import type { Select as BaseSelect } from "@base-ui/react/select";
+import type { CardProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { PaletteColor } from "@uiid/tokens";
+import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
@@ -52,7 +54,10 @@ export type SelectTriggerProps = BaseSelect.Trigger.Props &
 export type SelectPortalProps = BaseSelect.Portal.Props;
 export type SelectBackdropProps = BaseSelect.Backdrop.Props;
 export type SelectPositionerProps = BaseSelect.Positioner.Props;
-export type SelectPopupProps = BaseSelect.Popup.Props & {
+export type SelectPopupProps = WithLayoutProps<
+  BaseSelect.Popup.Props,
+  CardProps
+> & {
   /**
    * Palette hue for the popup surface, forwarded to the `Card` the popup
    * renders as. Left undefined, `Card` falls back to its own neutral default.

@@ -18,4 +18,6 @@ Give the field a `name` and a surrounding [`Form`](../form/README.md) publishes 
 
 `FieldRoot`, `FieldControl`, `FieldItem`, `FieldValidity`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldAction`, and `FieldHint` are exported for composition, along with `FieldRow` — the shared label row that [`Checkbox`](../checkbox/README.md), [`Radio`](../radio/README.md), and [`Switch`](../switch/README.md) sit in.
 
+`FieldRoot` renders a `Stack`, so `RootProps` and a bare `FieldRoot` take its layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. It stretches its children across the field (`ax="stretch"`) unless you pass `ax`. It has no default `gap`: the field's `size` tier sets one, and a `gap` you pass pins it. A `render` of your own replaces the `Stack`, so layout props passed beside it reach your element as plain attributes.
+
 Additional props are forwarded to the underlying Base UI [Field](https://base-ui.com/react/components/field).

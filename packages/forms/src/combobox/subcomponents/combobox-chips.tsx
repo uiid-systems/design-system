@@ -5,11 +5,16 @@ import { Group } from "@uiid/layout";
 
 import type { ComboboxChipsProps } from "../combobox.types";
 
-export const ComboboxChips = ({ children, ...props }: ComboboxChipsProps) => {
+export const ComboboxChips = ({
+  gap = 1,
+  ay = "center",
+  children,
+  ...props
+}: ComboboxChipsProps) => {
   return (
     <BaseCombobox.Chips
       data-slot="combobox-chips"
-      render={<Group gap={1} ay="center" />}
+      render={<Group gap={gap} ay={ay} />}
       {...props}
     >
       {children}

@@ -1,5 +1,7 @@
 import type { Menu as BaseMenu } from "@base-ui/react/menu";
 import type { Icon } from "@uiid/icons";
+import type { GroupProps } from "@uiid/layout";
+import type { WithLayoutProps } from "@uiid/utils";
 
 export type MenuItemType = {
   icon?: Icon;
@@ -19,7 +21,10 @@ export type MenuPositionerProps = BaseMenu.Positioner.Props;
 export type MenuPopupProps = BaseMenu.Popup.Props;
 export type MenuItemProps = BaseMenu.Item.Props;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
-export type SubmenuTriggerProps = BaseMenu.SubmenuTrigger.Props;
+export type SubmenuTriggerProps = WithLayoutProps<
+  BaseMenu.SubmenuTrigger.Props,
+  GroupProps
+>;
 
 export type MenuProps = {
   trigger: React.ReactNode;

@@ -250,3 +250,39 @@ describe("Slider color", () => {
     expect(rootClassName(container)).not.toMatch(/composes-control-fill-color/);
   });
 });
+
+describe("Slider layout props", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>("[data-slot='slider-root']");
+  const control = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>("[data-slot='slider-control']");
+
+  it("keeps the root's and control's own layout by default", () => {
+    const { container } = render(<Slider />);
+    expect(root(container)?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(root(container)).toHaveStyle({ alignItems: "center" });
+    expect(control(container)?.style.paddingInline).toBe(
+      "calc(3 * var(--spacing-inline))",
+    );
+  });
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Group` would beat these.
+   */
+  it("forwards layout props to the root Group", () => {
+    const { container } = render(<Slider gap={4} ay="end" />);
+    expect(root(container)?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+    expect(root(container)).toHaveStyle({ alignItems: "end" });
+  });
+
+  it("forwards layout props from ControlProps to the control Group", () => {
+    const { container } = render(
+      <Slider ControlProps={{ px: 5, fullwidth: false }} />,
+    );
+    expect(control(container)?.style.paddingInline).toBe(
+      "calc(5 * var(--spacing-inline))",
+    );
+    expect(control(container)?.className).not.toMatch(/toggle-fullwidth/);
+  });
+});

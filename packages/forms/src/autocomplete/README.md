@@ -15,4 +15,6 @@ Leave `value` unset and the autocomplete runs itself; pass `value` and `onValueC
 
 The full tree — `AutocompleteRoot`, `AutocompleteInput`, `AutocompletePortal`, `AutocompletePositioner`, `AutocompletePopup`, `AutocompleteList`, `AutocompleteItem`, and `AutocompleteEmpty` — is exported for composition, and slot overrides (`RootProps`, `InputProps`, `InputGroupProps`, `PortalProps`, `PositionerProps`, `PopupProps`, `ListProps`) reach them from the monolithic component. Autocomplete and Combobox share their popup, list, item, and empty layer.
 
+The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes its layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. It defaults to `p={2}`, `gap={0}`, and `fullwidth`; pass any of them to change it. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
+
 Additional props are forwarded to the underlying Base UI [Autocomplete](https://base-ui.com/react/components/autocomplete), except DOM attributes — `aria-*` and `data-*` land on the input, which is the focusable element and the one carrying `role="combobox"`. That is where a name or a `data-*` hook belongs, and Base UI's `Root` renders no element to carry one.

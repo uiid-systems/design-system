@@ -734,3 +734,43 @@ describe("Select backdrop", () => {
     );
   });
 });
+
+describe("Select popup layout props", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const popup = () =>
+    document.querySelector<HTMLElement>("[data-slot='select-popup']");
+
+  it("keeps the popup's rows flush by default", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} label="Pick" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(popup()?.style.gap).toBe("calc(0 * var(--spacing-unit))");
+    expect(popup()?.className).toMatch(/toggle-fullwidth/);
+  });
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Card` would beat these.
+   */
+  it("forwards layout props from PopupProps to the popup Card", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        label="Pick"
+        PopupProps={{ gap: 2, fullwidth: false }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(popup()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(popup()?.className).not.toMatch(/toggle-fullwidth/);
+  });
+});
