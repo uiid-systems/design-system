@@ -4,7 +4,7 @@ Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts`, `.co
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 
-When the merged `className` goes to a Base UI part, use `cxState()` instead. A Base UI `className` may be a function of the part's state, which `cx` cannot call, so it rejects one at the type level and would drop it at runtime; `cxState` returns a function that resolves it with the part's state, then merges.
+When the merged `className` goes to a Base UI part, use `cxState()` instead. A Base UI `className` may be a function of the part's state, which `cx` cannot call, so it rejects one at the type level and would drop it at runtime. Given a function, `cxState` returns one that resolves it with the part's state, then merges; given none, it returns the plain string `cx` would. Keep that string case: a function prop cannot cross from a server component into a client one, so a part composed on the server must still receive a string.
 
 Prefer simple monolithic components for common cases, exporting subcomponents for advanced composition. Expose frequently-used props directly rather than forcing them through nested prop objects.
 
