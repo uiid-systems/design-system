@@ -2,7 +2,7 @@
 
 import { Combobox as BasePopupLayer } from "@base-ui/react/combobox";
 import type { Combobox as BasePopupLayerTypes } from "@base-ui/react/combobox";
-import { Card, type CardProps } from "@uiid/cards";
+import { Card, type CardContainerProps } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
 import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
@@ -78,7 +78,9 @@ export const PopupLayerPopup = ({
   fullwidth = true,
   children,
   ...props
-}: WithSlot<WithLayoutProps<BasePopupLayerTypes.Popup.Props, CardProps>> & {
+}: WithSlot<
+  WithLayoutProps<BasePopupLayerTypes.Popup.Props, CardContainerProps>
+> & {
   /** Palette hue for the popup surface, forwarded to the `Card` it renders as. */
   color?: PaletteColor;
 }) => {

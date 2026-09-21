@@ -28,7 +28,7 @@ The open popup dims the page behind it so it can't be lost in surrounding conten
 
 Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
 
-The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes its layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. It defaults to `p={2}`, `gap={0}`, and `fullwidth`; pass any of them to change it. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
+The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `fullwidth`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`. It defaults to `p={2}`, `gap={0}`, and `fullwidth`; pass any of them to change it. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
 
 When the list is long enough to need filtering, reach for [`Combobox`](../combobox/README.md); when the typed value doesn't have to come from the list, [`Autocomplete`](../autocomplete/README.md).
 

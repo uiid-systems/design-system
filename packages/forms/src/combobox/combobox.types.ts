@@ -1,5 +1,5 @@
 import type { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import type { CardProps } from "@uiid/cards";
+import type { CardContainerProps } from "@uiid/cards";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
 import type { WithLayoutProps } from "@uiid/utils";
@@ -38,9 +38,10 @@ export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
+/* Card's container layout props only, as on `SelectPopupProps`. */
 export type ComboboxPopupProps = WithLayoutProps<
   BaseCombobox.Popup.Props,
-  CardProps
+  CardContainerProps
 > & {
   /**
    * Palette hue for the popup surface, forwarded to the `Card` the popup
