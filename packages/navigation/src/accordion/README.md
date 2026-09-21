@@ -86,5 +86,5 @@ import { Accordion } from "@uiid/navigation";
 
 ## See Also
 
-- [Collapsible](../collapsible/README.md) - Single collapsible panel
+- [Collapsible](../../../interactive/src/collapsible/README.md) - Single collapsible panel
 - [Base UI Accordion](https://base-ui.com/react/components/accordion) - Underlying primitive

@@ -1,6 +1,6 @@
 import type { Tabs } from "@base-ui/react/tabs";
 import type { LayerProps, StackProps } from "@uiid/layout";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import { tabsListVariants } from "./tabs.variants";
 
@@ -12,7 +12,7 @@ export type TabProps = {
   render: React.ReactNode;
 };
 
-export type TabsRootProps = Tabs.Root.Props & StackProps;
+export type TabsRootProps = WithLayoutProps<Tabs.Root.Props, StackProps>;
 export type TabsListProps = Tabs.List.Props & {
   /** Surface treatment — filled by default, `ghost` drops the list background and border. */
   variant?: "ghost";

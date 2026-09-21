@@ -1,44 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Collapsible } from "@uiid/design-system";
-import {
-  CollapsibleRoot,
-  CollapsibleTrigger,
-  CollapsiblePanel,
-} from "@uiid/design-system";
+import { Button, Collapsible, Text } from "@uiid/design-system";
 
-const meta: Meta<typeof Collapsible> = {
+import * as Examples from "../../../../packages/interactive/src/collapsible/collapsible.examples";
+
+const meta = {
   title: "Interactive/Collapsible",
   component: Collapsible,
   tags: ["beta"],
-  args: {},
+  args: {
+    trigger: <Button>Show details</Button>,
+    children: <Text>Tucked away until the trigger opens it.</Text>,
+  },
   argTypes: {},
-  render: (args) => (
-    <Stack gap={4}>
-      <Collapsible
-        {...args}
-        trigger={<button>This is a simple collapsible</button>}
-      >
-        A simple component is a single component primarily configured via props.
-      </Collapsible>
-
-      <Collapsible {...args} trigger="this is a string trigger">
-        A simple component is a single component primarily configured via props.
-      </Collapsible>
-
-      <CollapsibleRoot>
-        <CollapsibleTrigger>
-          <button>This is a composed collapsible</button>
-        </CollapsibleTrigger>
-        <CollapsiblePanel>
-          A composed component is composed of multiple components (i.e. root,
-          trigger, panel).
-        </CollapsiblePanel>
-      </CollapsibleRoot>
-    </Stack>
-  ),
-};
+} satisfies Meta<typeof Collapsible>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = { name: "Collapsible" };
+export const Playground: Story = {};
+
+export const Triggers: Story = { render: () => <Examples.Triggers /> };
+
+export const Layout: Story = { render: () => <Examples.Layout /> };
+
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+
+export const Composed: Story = { render: () => <Examples.Composed /> };
