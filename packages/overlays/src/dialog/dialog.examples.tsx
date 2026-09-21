@@ -7,6 +7,7 @@ import { BellIcon } from "@uiid/icons/bell";
 import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 
 import { Dialog } from "./dialog";
 
@@ -84,13 +85,34 @@ export const Footer = () => (
   </Dialog>
 );
 
-/** A string trigger is wrapped in a focusable element; an element trigger is used as-is. */
+/**
+ * A string becomes a focusable `role="button"` span, and a `Button` keeps its
+ * native semantics. A function receives the trigger's state and is wrapped the
+ * same way as a string. A component element that renders anything other than
+ * a `<button>` can't be inspected before it renders, so a static `Text` needs
+ * `nativeButton={false}`.
+ */
 export const Triggers = () => (
   <Stack gap={2} ax="start">
     <Dialog trigger={<Button>Element trigger</Button>} title="Element trigger">
       {BODY}
     </Dialog>
     <Dialog trigger="String trigger" title="String trigger">
+      {BODY}
+    </Dialog>
+    <Dialog
+      trigger={({ open }) => (
+        <Text weight="bold">{open ? "Viewing" : "Open"} function trigger</Text>
+      )}
+      title="Function trigger"
+    >
+      {BODY}
+    </Dialog>
+    <Dialog
+      trigger={<Text weight="bold">Text trigger</Text>}
+      TriggerProps={{ nativeButton: false }}
+      title="Text trigger"
+    >
       {BODY}
     </Dialog>
   </Stack>

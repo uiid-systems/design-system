@@ -1,23 +1,13 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { isValidElement } from "react";
+import { resolveTrigger } from "@uiid/utils";
 
 import type { MenuTriggerProps } from "../menu.types";
 
-export const MenuTrigger = ({ children, ...props }: MenuTriggerProps) => {
-  const triggerIsEl = isValidElement(children);
-  const hasCustomRender = !!props.render;
-
-  return (
-    <BaseMenu.Trigger
-      data-slot="menu-trigger"
-      {...(!hasCustomRender && {
-        render: <div tabIndex={triggerIsEl ? -1 : 0} />,
-        nativeButton: false,
-      })}
-      {...props}
-    >
-      {children}
-    </BaseMenu.Trigger>
-  );
-};
+export const MenuTrigger = ({ children, ...props }: MenuTriggerProps) => (
+  <BaseMenu.Trigger
+    data-slot="menu-trigger"
+    {...resolveTrigger(children, props.render)}
+    {...props}
+  />
+);
 MenuTrigger.displayName = "MenuTrigger";

@@ -1,26 +1,13 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { isValidElement } from "react";
+import { resolveTrigger } from "@uiid/utils";
 
 import type { PopoverTriggerProps } from "../popover.types";
 
-export const PopoverTrigger = ({ children, ...props }: PopoverTriggerProps) => {
-  const triggerIsEl = isValidElement(children);
-
-  return (
-    <BasePopover.Trigger
-      data-slot="popover-trigger"
-      nativeButton={triggerIsEl}
-      render={
-        triggerIsEl ? (
-          children
-        ) : (
-          <span role="button" tabIndex={0}>
-            {children}
-          </span>
-        )
-      }
-      {...props}
-    />
-  );
-};
+export const PopoverTrigger = ({ children, ...props }: PopoverTriggerProps) => (
+  <BasePopover.Trigger
+    data-slot="popover-trigger"
+    {...resolveTrigger(children, props.render)}
+    {...props}
+  />
+);
 PopoverTrigger.displayName = "PopoverTrigger";

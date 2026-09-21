@@ -7,6 +7,13 @@ import { Popover } from "./popover";
 
 import styles from "./popover.module.css";
 
+/* Stand-ins for `Button` and `Text`: a component that renders a real <button>
+   and one that renders a <span>. */
+const ButtonLike = (props: React.ComponentProps<"button">) => (
+  <button type="button" {...props} />
+);
+const TextLike = (props: React.ComponentProps<"span">) => <span {...props} />;
+
 describe("Popover", () => {
   // ============================================
   // RENDERING
@@ -97,6 +104,87 @@ describe("Popover", () => {
     await waitFor(() => {
       expect(screen.queryByText("Popover content")).not.toBeInTheDocument();
     });
+  });
+
+  // ============================================
+  // TRIGGER
+  // ============================================
+
+  it("gives a non-button intrinsic trigger button semantics", async () => {
+    const user = userEvent.setup();
+    render(<Popover trigger={<span>Open</span>}>Popover content</Popover>);
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Popover content")).toBeInTheDocument();
+  });
+
+  it("keeps a component trigger native by default", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover trigger={<ButtonLike>Open</ButtonLike>}>
+        Popover content
+      </Popover>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger).not.toHaveAttribute("role");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Popover content")).toBeInTheDocument();
+  });
+
+  it("lets a non-button component opt out with nativeButton={false}", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={<TextLike>Open</TextLike>}
+        TriggerProps={{ nativeButton: false }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard(" ");
+    expect(await screen.findByText("Popover content")).toBeInTheDocument();
+  });
+
+  it("renders the trigger inside a caller's own render element", () => {
+    render(
+      <Popover trigger="Open" TriggerProps={{ render: <ButtonLike /> }}>
+        Popover content
+      </Popover>,
+    );
+
+    expect(screen.getByRole("button", { name: "Open" }).tagName).toBe("BUTTON");
+  });
+
+  it("passes the trigger state to a function trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={({ open }) => <TextLike>{open ? "Hide" : "Show"}</TextLike>}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Show" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Popover content")).toBeInTheDocument();
+    expect(trigger).toHaveTextContent("Hide");
   });
 
   // ============================================

@@ -7,6 +7,13 @@ import { MOCK_ITEMS } from "./menu.mocks";
 
 import styles from "./menu.module.css";
 
+/* Stand-ins for `Button` and `Text`: a component that renders a real <button>
+   and one that renders a <span>. */
+const ButtonLike = (props: React.ComponentProps<"button">) => (
+  <button type="button" {...props} />
+);
+const TextLike = (props: React.ComponentProps<"span">) => <span {...props} />;
+
 const backdrops = () =>
   document.querySelectorAll('[data-slot="menu-backdrop"]');
 
@@ -69,6 +76,82 @@ describe("Menu backdrop", () => {
       "data-slot",
       "menu-backdrop",
     );
+  });
+});
+
+describe("Menu trigger", () => {
+  it("gives a non-button intrinsic trigger button semantics", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger={<span>Open</span>} items={MOCK_ITEMS} />);
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+  });
+
+  it("makes a component trigger the button itself, not a wrapper", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger={<ButtonLike>Open</ButtonLike>} items={MOCK_ITEMS} />);
+
+    expect(screen.getAllByRole("button")).toHaveLength(1);
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("lets a non-button component opt out with nativeButton={false}", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger={<TextLike>Open</TextLike>}
+        items={MOCK_ITEMS}
+        TriggerProps={{ nativeButton: false }}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard(" ");
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+  });
+
+  it("passes the trigger state to a function trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger={({ open }) => <TextLike>{open ? "Hide" : "Show"}</TextLike>}
+        items={MOCK_ITEMS}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Show" });
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+    expect(trigger).toHaveTextContent("Hide");
+  });
+
+  it("renders the trigger inside a caller's own render element", () => {
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        TriggerProps={{ render: <ButtonLike /> }}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Open" }).tagName).toBe("BUTTON");
   });
 });
 

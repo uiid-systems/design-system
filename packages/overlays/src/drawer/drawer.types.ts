@@ -4,6 +4,7 @@
  */
 import type * as BaseDrawer from "@base-ui/react/drawer";
 import type { CardProps } from "@uiid/cards";
+import type { WithTriggerChildren } from "@uiid/utils";
 
 type DrawerCardProps = Pick<
   CardProps,
@@ -15,7 +16,10 @@ export type DrawerIndentProps = BaseDrawer.DrawerIndent.Props;
 export type DrawerIndentBackgroundProps =
   BaseDrawer.DrawerIndentBackground.Props;
 export type DrawerRootProps = BaseDrawer.DrawerRoot.Props;
-export type DrawerTriggerProps = BaseDrawer.DrawerTrigger.Props;
+export type DrawerTriggerProps = WithTriggerChildren<
+  BaseDrawer.DrawerTrigger.Props,
+  BaseDrawer.DrawerTrigger.State
+>;
 export type DrawerPortalProps = BaseDrawer.DrawerPortal.Props;
 export type DrawerBackdropProps = BaseDrawer.DrawerBackdrop.Props;
 export type DrawerViewportProps = BaseDrawer.DrawerViewport.Props;
@@ -32,7 +36,7 @@ export type DrawerPopupProps = Omit<BaseDrawer.DrawerPopup.Props, "title"> &
   DrawerCardProps;
 
 export type DrawerProps = React.PropsWithChildren<{
-  trigger?: React.ReactNode;
+  trigger?: DrawerTriggerProps["children"];
   RootProps?: DrawerRootProps;
   TriggerProps?: DrawerTriggerProps;
   PortalProps?: DrawerPortalProps;

@@ -1,8 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { cxState } from "@uiid/utils";
-import { isValidElement } from "react";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { DrawerTriggerProps } from "../drawer.types";
 
@@ -12,25 +11,12 @@ export const DrawerTrigger = ({
   children,
   className,
   ...props
-}: DrawerTriggerProps) => {
-  const triggerIsEl = isValidElement(children);
-
-  return (
-    <BaseDrawer.Trigger
-      data-slot="drawer-trigger"
-      className={cxState(styles["drawer-trigger"], className)}
-      nativeButton={triggerIsEl}
-      render={
-        triggerIsEl ? (
-          children
-        ) : (
-          <span role="button" tabIndex={0}>
-            {children}
-          </span>
-        )
-      }
-      {...props}
-    />
-  );
-};
+}: DrawerTriggerProps) => (
+  <BaseDrawer.Trigger
+    data-slot="drawer-trigger"
+    className={cxState(styles["drawer-trigger"], className)}
+    {...resolveTrigger(children, props.render)}
+    {...props}
+  />
+);
 DrawerTrigger.displayName = "DrawerTrigger";

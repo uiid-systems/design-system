@@ -1,6 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cxState } from "@uiid/utils";
-import { isValidElement } from "react";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { DialogTriggerProps } from "../dialog.types";
 
@@ -10,25 +9,12 @@ export const DialogTrigger = ({
   children,
   className,
   ...props
-}: DialogTriggerProps) => {
-  const triggerIsEl = isValidElement(children);
-
-  return (
-    <BaseDialog.Trigger
-      data-slot="dialog-trigger"
-      className={cxState(styles["dialog-trigger"], className)}
-      nativeButton={triggerIsEl}
-      render={
-        triggerIsEl ? (
-          children
-        ) : (
-          <span role="button" tabIndex={0}>
-            {children}
-          </span>
-        )
-      }
-      {...props}
-    />
-  );
-};
+}: DialogTriggerProps) => (
+  <BaseDialog.Trigger
+    data-slot="dialog-trigger"
+    className={cxState(styles["dialog-trigger"], className)}
+    {...resolveTrigger(children, props.render)}
+    {...props}
+  />
+);
 DialogTrigger.displayName = "DialogTrigger";
