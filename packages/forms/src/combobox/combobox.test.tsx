@@ -423,7 +423,8 @@ describe("Combobox DOM attributes reach the input", () => {
 describe("Combobox state-function className", () => {
   const items = ["apple", "banana"];
 
-  it("resolves a state-function className on the input alongside its own class", () => {
+  it("resolves a state-function className on the input alongside its own class", async () => {
+    const user = userEvent.setup();
     render(
       <Combobox
         items={items}
@@ -435,9 +436,13 @@ describe("Combobox state-function className", () => {
 
     const input = document.querySelector("[data-slot='combobox-input']");
     expect(input).toHaveClass("fn-closed", inputStyles["input"]);
+
+    await user.click(screen.getByRole("combobox"));
+    expect(input).toHaveClass("fn-open", inputStyles["input"]);
   });
 
-  it("resolves a state-function className on the input group alongside its own class", () => {
+  it("resolves a state-function className on the input group alongside its own class", async () => {
+    const user = userEvent.setup();
     render(
       <Combobox
         items={items}
@@ -452,9 +457,13 @@ describe("Combobox state-function className", () => {
       "fn-closed",
       inputGroupStyles["input-group-root"],
     );
+
+    await user.click(screen.getByRole("combobox"));
+    expect(group).toHaveClass("fn-open", inputGroupStyles["input-group-root"]);
   });
 
-  it("resolves a state-function className on the trigger alongside its own class", () => {
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
     render(
       <ComboboxRoot items={items}>
         <ComboboxInput />
@@ -464,9 +473,17 @@ describe("Combobox state-function className", () => {
       </ComboboxRoot>,
     );
 
-    const trigger = document.querySelector("[data-slot='combobox-trigger']");
+    const trigger = document.querySelector<HTMLElement>(
+      "[data-slot='combobox-trigger']",
+    );
     expect(trigger).toHaveClass(
       "fn-closed",
+      inputGroupStyles["input-group-action"],
+    );
+
+    await user.click(trigger!);
+    expect(trigger).toHaveClass(
+      "fn-open",
       inputGroupStyles["input-group-action"],
     );
   });

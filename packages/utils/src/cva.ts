@@ -38,10 +38,17 @@ function cx(...args: ClassValue[]): string | undefined {
  * of the part's state, which `cx` has no state to call, so this returns a
  * function for Base UI to call instead: it resolves any function argument with
  * the part's state, then merges everything in order as `cx` would.
+ *
+ * With no function among the arguments it returns the merged string, as `cx`
+ * would. A function prop cannot cross from a server component into a client
+ * one, so a part composed on the server must still receive a string.
  */
 function cxState<State>(
   ...args: (ClassValue | ((state: State) => string | undefined))[]
-): (state: State) => string | undefined {
+): string | ((state: State) => string | undefined) | undefined {
+  if (!args.some((arg) => typeof arg === "function")) {
+    return cx(...(args as ClassValue[]));
+  }
   return (state) =>
     cx(...args.map((arg) => (typeof arg === "function" ? arg(state) : arg)));
 }

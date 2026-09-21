@@ -749,7 +749,8 @@ describe("Select state-function className", () => {
     { value: "b", label: "Option B" },
   ];
 
-  it("resolves a state-function className on the trigger alongside its own class", () => {
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
     render(
       <Select
         items={items}
@@ -761,6 +762,9 @@ describe("Select state-function className", () => {
 
     const trigger = document.querySelector("[data-slot='select-trigger']");
     expect(trigger).toHaveClass("fn-closed", inputStyles["input"]);
+
+    await user.click(screen.getByRole("combobox"));
+    expect(trigger).toHaveClass("fn-open", inputStyles["input"]);
   });
 
   it("resolves a state-function className on the value alongside its own class", () => {
