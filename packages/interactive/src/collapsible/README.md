@@ -16,6 +16,8 @@ Collapsible wraps Base UI's [Collapsible](https://base-ui.com/react/components/c
 
 A string trigger renders as a focusable `<span role="button">`. An element becomes the trigger itself: a `<button>` or `Button` keeps its native button semantics, and any other tag (`<span>`, `<div>`) gets `role="button"` and keyboard handling from Base UI.
 
+A `render` of your own, through `TriggerProps`, replaces that element as it does in Base UI: the trigger renders inside it, and `nativeButton` is yours to set.
+
 Pass a function to follow the open state. It receives Base UI's trigger state (`open`, `disabled`, `transitionStatus`), the same object its `className` and `render` functions get, and its result is content: Collapsible renders it inside its own focusable trigger, the way it wraps a string, and re-renders it as the state changes.
 
 ```tsx
