@@ -6,6 +6,8 @@ import { describe, it, expect, vi } from "vitest";
 import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
 
+import styles from "./checkbox.module.css";
+
 describe("Checkbox", () => {
   it("renders a checkbox element", () => {
     render(<Checkbox />);
@@ -228,5 +230,34 @@ describe("Checkbox color", () => {
     expect(screen.getByRole("checkbox").className).not.toMatch(
       /composes-control-fill-color/,
     );
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. */
+describe("Checkbox state-function className", () => {
+  const onState = (state: { checked: boolean }) =>
+    state.checked ? "fn-checked" : "fn-unchecked";
+
+  it("resolves a state-function className on the root alongside its own class", () => {
+    const { container } = render(
+      <Checkbox defaultChecked className={onState} />,
+    );
+    const box = container.querySelector("[data-slot='checkbox']");
+
+    expect(box).toHaveClass("fn-checked");
+    expect(box).toHaveClass(styles["checkbox"]);
+  });
+
+  it("resolves a state-function className on the indicator alongside its own class", () => {
+    const { container } = render(
+      <Checkbox defaultChecked IndicatorProps={{ className: onState }} />,
+    );
+    const indicator = container.querySelector(
+      "[data-slot='checkbox-indicator']",
+    );
+
+    expect(indicator).toHaveClass("fn-checked");
+    expect(indicator).toHaveClass(styles["checkbox-indicator"]);
   });
 });

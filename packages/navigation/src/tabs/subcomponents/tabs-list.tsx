@@ -1,6 +1,6 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import { TABS_DEFAULT_SIZE } from "../tabs.constants";
 import type { TabsListProps } from "../tabs.types";
@@ -22,7 +22,11 @@ export const TabsList = ({
       data-size={size}
       data-variant={variant}
       render={<Group gap={4} ay="center" fullwidth={fullwidth} />}
-      className={cx(styles["tabs-list"], tabsListVariants({ size }), className)}
+      className={cxState(
+        styles["tabs-list"],
+        tabsListVariants({ size }),
+        className,
+      )}
       {...props}
     >
       {children}

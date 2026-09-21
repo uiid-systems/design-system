@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch as BaseSwitch } from "@base-ui/react/switch";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SwitchThumbProps } from "../switch.types";
 
@@ -11,7 +11,7 @@ export const SwitchThumb = ({ className, ...props }: SwitchThumbProps) => {
   return (
     <BaseSwitch.Thumb
       data-slot="switch-thumb"
-      className={cx(styles["switch-thumb"], className)}
+      className={cxState(styles["switch-thumb"], className)}
       {...props}
     />
   );

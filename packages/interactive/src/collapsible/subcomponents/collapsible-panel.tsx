@@ -2,7 +2,7 @@
 
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
 import { Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { CollapsiblePanelProps } from "../collapsible.types";
 
@@ -24,7 +24,7 @@ export const CollapsiblePanel = ({
        * literal `ay="end"` there would beat the caller's `ay` every time.
        */
       render={<Stack ay={ay} />}
-      className={cx(styles["collapsible-panel"], className)}
+      className={cxState(styles["collapsible-panel"], className)}
       data-instant={instant ? "" : undefined}
       {...props}
     >

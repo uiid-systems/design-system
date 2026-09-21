@@ -1,7 +1,7 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { NumberFieldScrubAreaProps } from "../number-field.types";
 
@@ -15,7 +15,7 @@ export const NumberFieldScrubArea = ({
   return (
     <BaseNumberField.ScrubArea
       data-slot="number-field-scrub-area"
-      className={cx(styles["number-field-scrub-area"], className)}
+      className={cxState(styles["number-field-scrub-area"], className)}
       {...props}
     >
       {children}

@@ -11,7 +11,10 @@ export type InputControlClassNameOptions = InputVariants & {
   inner?: boolean;
   /** Palette hue for the surface treatment. */
   color?: InputColor;
-  /** Accepts whatever `cx` does, so Base UI's `className` can pass straight through. */
+  /**
+   * Accepts whatever `cx` does, which excludes a function. A Base UI part's
+   * `className` can be one, so merge it with `cxState` at the part instead.
+   */
   className?: Parameters<typeof cx>[number];
 };
 

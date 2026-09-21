@@ -2,7 +2,7 @@
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { MinusIcon } from "@uiid/icons/minus";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { NumberFieldDecrementProps } from "../number-field.types";
 
@@ -15,7 +15,7 @@ export const NumberFieldDecrement = ({
   return (
     <BaseNumberField.Decrement
       data-slot="number-field-decrement"
-      className={cx(styles["number-field-decrement"], className)}
+      className={cxState(styles["number-field-decrement"], className)}
       {...props}
     >
       <MinusIcon />

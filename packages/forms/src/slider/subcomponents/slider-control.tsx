@@ -2,7 +2,7 @@
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
 import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SliderControlProps } from "../slider.types";
 
@@ -17,7 +17,7 @@ export const SliderControl = ({
     <BaseSlider.Control
       data-slot="slider-control"
       render={<Group ay="center" px={3} fullwidth />}
-      className={cx(styles["slider-control"], className)}
+      className={cxState(styles["slider-control"], className)}
       {...props}
     >
       {children}

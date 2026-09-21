@@ -2,7 +2,7 @@
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import { PlusIcon } from "@uiid/icons/plus";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { NumberFieldIncrementProps } from "../number-field.types";
 
@@ -15,7 +15,7 @@ export const NumberFieldIncrement = ({
   return (
     <BaseNumberField.Increment
       data-slot="number-field-increment"
-      className={cx(styles["number-field-increment"], className)}
+      className={cxState(styles["number-field-increment"], className)}
       {...props}
     >
       <PlusIcon />

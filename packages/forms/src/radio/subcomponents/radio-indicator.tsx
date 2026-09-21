@@ -2,7 +2,7 @@
 
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { RadioIndicatorProps } from "../radio.types";
 
@@ -16,7 +16,7 @@ export const RadioIndicator = ({
     <BaseRadio.Indicator
       data-slot="radio-indicator"
       render={<Group ax="center" ay="center" />}
-      className={cx(styles["indicator"], className)}
+      className={cxState(styles["indicator"], className)}
       {...props}
     />
   );

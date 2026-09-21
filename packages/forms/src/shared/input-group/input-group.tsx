@@ -4,7 +4,7 @@ import { Combobox as BaseInputGroup } from "@base-ui/react/combobox";
 import type { Combobox as BaseInputGroupTypes } from "@base-ui/react/combobox";
 import { Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { InputVariants } from "../../input/input.types";
 import { inputGroupVariants } from "./input-group.variants";
@@ -37,7 +37,7 @@ export const InputGroupRoot = ({
   return (
     <BaseInputGroup.InputGroup
       data-slot={slot}
-      className={cx(
+      className={cxState(
         styles["input-group-root"],
         inputGroupVariants({ size }),
         className,
@@ -95,7 +95,7 @@ export const InputGroupTrigger = ({
        * outranks `aria-label`, silently shadowed the trigger's own name.
        */
       aria-labelledby={undefined}
-      className={cx(styles["input-group-action"], className)}
+      className={cxState(styles["input-group-action"], className)}
       {...props}
     >
       {children}
@@ -113,7 +113,7 @@ export const InputGroupClear = ({
   return (
     <BaseInputGroup.Clear
       data-slot={slot}
-      className={cx(styles["input-group-action"], className)}
+      className={cxState(styles["input-group-action"], className)}
       {...props}
     >
       {children}

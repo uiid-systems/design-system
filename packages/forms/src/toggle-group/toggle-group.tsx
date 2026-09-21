@@ -3,7 +3,7 @@
 import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cx, cxState } from "@uiid/utils";
 import { Children, cloneElement, isValidElement, useState } from "react";
 
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
@@ -46,13 +46,12 @@ export const ToggleGroup = ({
   const enhancedChildren = Children.map(children, (child) => {
     if (isValidElement<BaseToggle.Props>(child)) {
       const toggleValue = child.props.value;
-      const originalClassName = child.props.className || "";
 
       return cloneElement<BaseToggle.Props & { ref?: unknown }>(child, {
-        className: cx(
+        className: cxState(
           styles["toggle-group-button"],
           toggleVariants({ size }),
-          originalClassName,
+          child.props.className,
         ),
         ref: (el: HTMLButtonElement | null) => {
           if (el && toggleValue) {

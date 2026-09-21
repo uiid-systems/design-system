@@ -2,7 +2,7 @@
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { Card } from "@uiid/cards";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { DrawerPopupProps } from "../drawer.types";
 
@@ -29,7 +29,7 @@ export const DrawerPopup = ({
   return (
     <BaseDrawer.Popup
       data-slot="drawer-popup"
-      className={cx(styles["drawer-popup"], className)}
+      className={cxState(styles["drawer-popup"], className)}
       render={
         <Card
           title={title}

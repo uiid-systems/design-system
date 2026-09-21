@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { MenuBackdropProps } from "../menu.types";
 
@@ -9,7 +9,7 @@ export const MenuBackdrop = ({ className, ...props }: MenuBackdropProps) => {
   return (
     <BaseMenu.Backdrop
       data-slot="menu-backdrop"
-      className={cx(styles["backdrop"], className)}
+      className={cxState(styles["backdrop"], className)}
       {...props}
     />
   );

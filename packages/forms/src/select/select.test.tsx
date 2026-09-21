@@ -7,6 +7,9 @@ import { Select } from "./select";
 import type { SelectItemProps } from "./select.types";
 import { SelectItem } from "./subcomponents";
 
+import inputStyles from "../input/input.module.css";
+import styles from "./select.module.css";
+
 describe("Select", () => {
   const defaultItems = [
     { value: "a", label: "Option A" },
@@ -732,5 +735,117 @@ describe("Select backdrop", () => {
       "data-slot",
       "select-backdrop",
     );
+  });
+});
+
+/*
+ * Base UI accepts `className` as a function of the part's state. Merging it
+ * with `cx` dropped the function, so the caller's class never reached the DOM;
+ * each part must resolve it with real state and keep its own class beside it.
+ */
+describe("Select state-function className", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("resolves a state-function className on the trigger alongside its own class", () => {
+    render(
+      <Select
+        items={items}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    const trigger = document.querySelector("[data-slot='select-trigger']");
+    expect(trigger).toHaveClass("fn-closed", inputStyles["input"]);
+  });
+
+  it("resolves a state-function className on the value alongside its own class", () => {
+    render(
+      <Select
+        items={items}
+        placeholder="Pick one"
+        ValueProps={{
+          className: (state) =>
+            state.placeholder ? "fn-placeholder" : "fn-value",
+        }}
+      />,
+    );
+
+    const value = document.querySelector("[data-slot='select-value']");
+    expect(value).toHaveClass("fn-placeholder", styles["select-value"]);
+  });
+
+  it("resolves a state-function className on the icon alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        IconProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const icon = document.querySelector("[data-slot='select-icon']");
+    expect(icon).toHaveClass("fn-open", styles["select-icon"]);
+  });
+
+  it("resolves a state-function className on the positioner alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        PositionerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const positioner = document.querySelector(
+      "[data-slot='select-positioner']",
+    );
+    expect(positioner).toHaveClass("fn-open", styles["select-positioner"]);
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        PopupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const popup = document.querySelector("[data-slot='select-popup']");
+    expect(popup).toHaveClass("fn-open", styles["select-popup"]);
+  });
+
+  it("resolves a state-function className on the backdrop alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        BackdropProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const backdrop = document.querySelector("[data-slot='select-backdrop']");
+    expect(backdrop).toHaveClass("fn-open", styles["select-backdrop"]);
   });
 });
