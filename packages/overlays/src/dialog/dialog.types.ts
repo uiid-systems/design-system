@@ -1,6 +1,6 @@
 import type { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import type { CardProps } from "@uiid/cards";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithTriggerChildren } from "@uiid/utils";
 
 import { dialogVariants } from "./dialog.variants";
 
@@ -12,7 +12,10 @@ type DialogCardProps = Pick<
 >;
 
 export type DialogRootProps = BaseDialog.Root.Props;
-export type DialogTriggerProps = BaseDialog.Trigger.Props;
+export type DialogTriggerProps = WithTriggerChildren<
+  BaseDialog.Trigger.Props,
+  BaseDialog.Trigger.State
+>;
 export type DialogPortalProps = BaseDialog.Portal.Props;
 export type DialogBackdropProps = BaseDialog.Backdrop.Props;
 export type DialogViewportProps = BaseDialog.Viewport.Props;
@@ -21,7 +24,7 @@ export type DialogPopupProps = VariantProps<typeof dialogVariants> &
   DialogCardProps;
 
 export type DialogProps = React.PropsWithChildren<{
-  trigger?: React.ReactNode;
+  trigger?: DialogTriggerProps["children"];
   RootProps?: DialogRootProps;
   TriggerProps?: DialogTriggerProps;
   PortalProps?: DialogPortalProps;
