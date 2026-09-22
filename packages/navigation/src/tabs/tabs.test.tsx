@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
-import { TabsList, TabsPanel, TabsRoot, TabsTab } from "./subcomponents";
 import { Tabs } from "./tabs";
 import type { TabsProps } from "./tabs.types";
 
@@ -271,12 +270,86 @@ describe("Tabs", () => {
   });
 
   // ============================================
+  // TAB PROPS / PANEL PROPS
+  // ============================================
+
+  it("applies TabProps to every tab while each keeps its own value", async () => {
+    const user = userEvent.setup();
+    render(<Tabs items={MOCK_ITEMS} TabProps={{ className: "mine" }} />);
+
+    for (const tab of screen.getAllByRole("tab")) {
+      expect(tab).toHaveClass("mine", styles["tab"]);
+    }
+
+    await user.click(screen.getByRole("tab", { name: "Tab 3" }));
+    expect(screen.getByRole("tab", { name: "Tab 3" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByText("Content 3")).toBeVisible();
+  });
+
+  it("applies PanelProps to every panel while each keeps its own value", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        keepMounted
+        PanelProps={{ className: "mine" }}
+      />,
+    );
+
+    const panels = document.querySelectorAll("[data-slot='tabs-panel']");
+    expect(panels).toHaveLength(MOCK_ITEMS.length);
+    for (const panel of panels) {
+      expect(panel).toHaveClass("mine", styles["tabs-panel"]);
+    }
+    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 1");
+  });
+
+  it("gives each tab and panel its item's value over one in the part props", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error each item owns its tab's value
+        TabProps={{ value: "shared" }}
+        // @ts-expect-error each item owns its panel's value
+        PanelProps={{ value: "shared" }}
+      />,
+    );
+
+    await user.click(screen.getByRole("tab", { name: "Tab 2" }));
+
+    expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
+      "aria-selected",
+      "false",
+    );
+    expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 2");
+  });
+
+  it("lets the top-level keepMounted win over one in PanelProps", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        keepMounted
+        // @ts-expect-error keepMounted is set once, at the top level
+        PanelProps={{ keepMounted: false }}
+      />,
+    );
+    expect(screen.getByText("Content 2")).toBeInTheDocument();
+    expect(screen.getByText("Content 3")).toBeInTheDocument();
+  });
+
+  // ============================================
   // STATE-FUNCTION CLASSNAME
   // ============================================
 
   // Base UI calls a function className with the part's state. `cx` used to
-  // drop it silently, leaving only the wrapper's own module class. TabProps
-  // and PanelProps require a `value`, so those parts are composed directly.
+  // drop it silently, leaving only the wrapper's own module class.
 
   it("resolves a state-function className on the list alongside its own class", () => {
     render(
@@ -293,19 +366,12 @@ describe("Tabs", () => {
 
   it("resolves a state-function className on the tab alongside its own class", () => {
     render(
-      <TabsRoot defaultValue="tab-1">
-        <TabsList>
-          {["tab-1", "tab-2"].map((value) => (
-            <TabsTab
-              key={value}
-              value={value}
-              className={(state) => (state.active ? "fn-active" : "fn-idle")}
-            >
-              {value}
-            </TabsTab>
-          ))}
-        </TabsList>
-      </TabsRoot>,
+      <Tabs
+        items={MOCK_ITEMS}
+        TabProps={{
+          className: (state) => (state.active ? "fn-active" : "fn-idle"),
+        }}
+      />,
     );
     const [active, idle] = document.querySelectorAll("[data-slot='tabs-tab']");
     expect(active).toHaveClass("fn-active", styles["tab"]);
@@ -327,18 +393,13 @@ describe("Tabs", () => {
 
   it("resolves a state-function className on the panel alongside its own class", () => {
     render(
-      <TabsRoot defaultValue="tab-1">
-        {["tab-1", "tab-2"].map((value) => (
-          <TabsPanel
-            key={value}
-            value={value}
-            keepMounted
-            className={(state) => (state.hidden ? "fn-hidden" : "fn-shown")}
-          >
-            {value}
-          </TabsPanel>
-        ))}
-      </TabsRoot>,
+      <Tabs
+        items={MOCK_ITEMS}
+        keepMounted
+        PanelProps={{
+          className: (state) => (state.hidden ? "fn-hidden" : "fn-shown"),
+        }}
+      />,
     );
     const [shown, hidden] = document.querySelectorAll(
       "[data-slot='tabs-panel']",

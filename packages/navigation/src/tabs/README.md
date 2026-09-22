@@ -32,19 +32,19 @@ import { Tabs } from "@uiid/navigation";
 
 ## Props
 
-| Prop             | Type                                       | Default            | Description                   |
-| ---------------- | ------------------------------------------ | ------------------ | ----------------------------- |
-| `items`          | `TabProps[]`                               | —                  | Array of tab items (required) |
-| `defaultValue`   | `string`                                   | First item's value | Initially selected tab        |
-| `value`          | `string`                                   | —                  | Controlled selected tab       |
-| `onValueChange`  | `(value: string, details: object) => void` | —                  | Callback when tab changes     |
-| `align`          | `"start" \| "center" \| "end"`             | `"start"`          | Horizontal alignment of tabs  |
-| `keepMounted`    | `boolean`                                  | `false`            | Keep inactive panels in DOM   |
-| `RootProps`      | `TabsRootProps`                            | —                  | Props for root element        |
-| `ListProps`      | `TabsListProps`                            | —                  | Props for tab list            |
-| `TabProps`       | `TabsTabProps`                             | —                  | Props for individual tabs     |
-| `IndicatorProps` | `TabsIndicatorProps`                       | —                  | Props for indicator           |
-| `PanelProps`     | `TabsPanelProps`                           | —                  | Props for panels              |
+| Prop             | Type                                             | Default            | Description                                               |
+| ---------------- | ------------------------------------------------ | ------------------ | --------------------------------------------------------- |
+| `items`          | `TabProps[]`                                     | —                  | Array of tab items (required)                             |
+| `defaultValue`   | `string`                                         | First item's value | Initially selected tab                                    |
+| `value`          | `string`                                         | —                  | Controlled selected tab                                   |
+| `onValueChange`  | `(value: string, details: object) => void`       | —                  | Callback when tab changes                                 |
+| `align`          | `"start" \| "center" \| "end"`                   | `"start"`          | Horizontal alignment of tabs                              |
+| `keepMounted`    | `boolean`                                        | `false`            | Keep inactive panels in DOM                               |
+| `RootProps`      | `TabsRootProps`                                  | —                  | Props for root element                                    |
+| `ListProps`      | `TabsListProps`                                  | —                  | Props for tab list                                        |
+| `TabProps`       | `Omit<TabsTabProps, "value">`                    | —                  | Props for every tab; each item keeps its own `value`      |
+| `IndicatorProps` | `TabsIndicatorProps`                             | —                  | Props for indicator                                       |
+| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">` | —                  | Props for every panel; set `keepMounted` at the top level |
 
 ### TabProps (items)
 

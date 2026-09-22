@@ -26,9 +26,9 @@ export type TabsProps = {
   items: TabProps[];
   RootProps?: TabsRootProps;
   ListProps?: TabsListProps;
-  TabProps?: TabsTabProps;
+  TabProps?: Omit<TabsTabProps, "value">;
   IndicatorProps?: TabsIndicatorProps;
-  PanelProps?: TabsPanelProps;
+  PanelProps?: Omit<TabsPanelProps, "value" | "keepMounted">;
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
