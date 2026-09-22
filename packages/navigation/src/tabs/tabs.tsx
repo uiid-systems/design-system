@@ -41,7 +41,7 @@ export const Tabs = ({
         {...ListProps}
       >
         {items.map((item) => (
-          <TabsTab key={item.value} value={item.value} {...TabProps}>
+          <TabsTab {...TabProps} key={item.value} value={item.value}>
             {item.label}
           </TabsTab>
         ))}
@@ -51,10 +51,10 @@ export const Tabs = ({
       <Layer data-slot="tabs-container" {...ContainerProps}>
         {items.map((item) => (
           <TabsPanel
+            {...PanelProps}
             key={item.value}
             value={item.value}
             keepMounted={keepMounted}
-            {...PanelProps}
           >
             {item.render}
           </TabsPanel>
