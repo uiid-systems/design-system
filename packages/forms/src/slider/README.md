@@ -22,4 +22,6 @@ Slider's root is a control surface like any other form control, so it paints wit
 
 `SliderRoot`, `SliderLabel`, `SliderValue`, `SliderControl`, `SliderTrack`, `SliderIndicator`, and `SliderThumb` are exported for composition, and slot overrides (`RootProps`, `ValueProps`, `ControlProps`, `TrackProps`, `IndicatorProps`, `ThumbProps`, `FieldProps`) reach them from the monolithic component.
 
+The root and `SliderControl` each render a `Group`, so the slider's own props, `RootProps`, and `ControlProps` take its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `ay="center"`, the control to `ay="center"`, `px={3}`, and `fullwidth`; pass any of them to change it. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
+
 Additional props are forwarded to the underlying Base UI [Slider](https://base-ui.com/react/components/slider).

@@ -79,6 +79,12 @@ import { Tabs } from "@uiid/navigation";
 └────────────────────────────────────────┘
 ```
 
+## Layout
+
+`TabsRoot` and `TabsPanel` render a `Stack` and `TabsList` a `Group`, so `RootProps`, `PanelProps`, and `ListProps` take their layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. The list spaces its tabs `gap={4}` apart and centres them on the cross axis (`ay="center"`); each panel centres its content (`ax="center"`, `ay="center"`) and fills the width. Pass any of them to change it.
+
+A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes: `<TabsRoot render={<section />} gap={4}>` renders `<section gap="4">`.
+
 ## Subcomponents
 
 For advanced customization, you can use the individual subcomponents:

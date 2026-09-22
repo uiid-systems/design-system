@@ -7,6 +7,9 @@ import type { TabsPanelProps } from "../tabs.types";
 import styles from "../tabs.module.css";
 
 export const TabsPanel = ({
+  ax = "center",
+  ay = "center",
+  fullwidth = true,
   className,
   children,
   ...props
@@ -14,7 +17,7 @@ export const TabsPanel = ({
   return (
     <BaseTabs.Panel
       data-slot="tabs-panel"
-      render={<Stack ay="center" ax="center" fullwidth />}
+      render={<Stack ax={ax} ay={ay} fullwidth={fullwidth} />}
       className={cxState(styles["tabs-panel"], className)}
       tabIndex={-1}
       {...props}

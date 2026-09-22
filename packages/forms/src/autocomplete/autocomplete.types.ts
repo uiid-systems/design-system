@@ -1,5 +1,7 @@
 import type { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
+import type { CardContainerProps } from "@uiid/cards";
 import type { PaletteColor } from "@uiid/tokens";
+import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputProps } from "../input/input.types";
@@ -34,7 +36,11 @@ export type AutocompleteInputProps = Omit<
   };
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;
-export type AutocompletePopupProps = BaseAutocomplete.Popup.Props & {
+/* Card's container layout props only, as on `SelectPopupProps`. */
+export type AutocompletePopupProps = WithLayoutProps<
+  BaseAutocomplete.Popup.Props,
+  CardContainerProps
+> & {
   /**
    * Palette hue for the popup surface, forwarded to the `Card` the popup
    * renders as. Left undefined, `Card` falls back to its own neutral default.

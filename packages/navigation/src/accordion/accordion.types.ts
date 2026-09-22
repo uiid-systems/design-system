@@ -2,7 +2,7 @@ import type { Accordion } from "@base-ui/react/accordion";
 import type { CardProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { StackProps } from "@uiid/layout";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import type {
   accordionRootVariants,
@@ -22,10 +22,18 @@ export type AccordionTriggerVariants = VariantProps<
   typeof accordionTriggerVariants
 >;
 
-export type AccordionRootProps = Accordion.Root.Props &
-  CardProps &
-  AccordionRootVariants;
-export type AccordionItemProps = Accordion.Item.Props;
+/*
+ * `variant` joins Base UI's props on the left so Accordion's own surface
+ * treatment wins over `Card`'s. The root consumes it and never passes it on.
+ */
+export type AccordionRootProps = WithLayoutProps<
+  Accordion.Root.Props & AccordionRootVariants,
+  CardProps
+>;
+export type AccordionItemProps = WithLayoutProps<
+  Accordion.Item.Props,
+  StackProps
+>;
 export type AccordionHeaderProps = Accordion.Header.Props;
 export type AccordionTriggerProps = Accordion.Trigger.Props &
   Pick<AccordionItemData, "icon"> &

@@ -336,6 +336,19 @@ describe("NumberField change signals", () => {
   });
 });
 
+describe("NumberField group layout props", () => {
+  it("forwards layout props from GroupProps to the group", () => {
+    const { container } = render(
+      <NumberField GroupProps={{ gap: 2, ay: "end" }} />,
+    );
+    const group = container.querySelector<HTMLElement>(
+      "[data-slot='number-field-group']",
+    );
+    expect(group?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(group).toHaveStyle({ alignItems: "end" });
+  });
+});
+
 /* Base UI calls a function `className` with the part's state. The wrapper's
    own classes have to merge with what it returns, not drop it. Every part
    shares the root's state, so each one reads the current value off it. */

@@ -11,6 +11,8 @@ import styles from "../tabs.module.css";
 export const TabsList = ({
   size = TABS_DEFAULT_SIZE,
   variant,
+  gap = 4,
+  ay = "center",
   fullwidth,
   className,
   children,
@@ -21,7 +23,7 @@ export const TabsList = ({
       data-slot="tabs-list"
       data-size={size}
       data-variant={variant}
-      render={<Group gap={4} ay="center" fullwidth={fullwidth} />}
+      render={<Group gap={gap} ay={ay} fullwidth={fullwidth} />}
       className={cxState(
         styles["tabs-list"],
         tabsListVariants({ size }),

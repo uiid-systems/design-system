@@ -17,12 +17,15 @@ export const SelectPopup = ({
   children,
   className,
   color,
+  p = 2,
+  gap = 0,
+  fullwidth = true,
   ...props
 }: SelectPopupProps) => {
   return (
     <BaseSelect.Popup
       data-slot="select-popup"
-      render={<Card color={color} p={2} gap={0} fullwidth />}
+      render={<Card color={color} p={p} gap={gap} fullwidth={fullwidth} />}
       className={cxState(styles["select-popup"], className)}
       {...props}
     >
