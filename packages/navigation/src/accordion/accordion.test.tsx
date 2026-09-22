@@ -262,6 +262,24 @@ describe("Accordion", () => {
   // Base UI calls a function className with the part's state. `cx` used to
   // drop it silently, leaving only the wrapper's own module class.
 
+  it("resolves a state-function className on the root alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        RootProps={{
+          className: (state) => (state.value.length ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+    const root = document.querySelector("[data-slot='accordion-root']");
+    expect(root).toHaveClass("fn-open", styles["accordion-root"]);
+
+    await user.click(screen.getByRole("button", { name: "First" }));
+    expect(root).toHaveClass("fn-closed", styles["accordion-root"]);
+  });
+
   it("resolves a state-function className on the item alongside its own class", () => {
     render(
       <Accordion
