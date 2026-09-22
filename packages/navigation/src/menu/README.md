@@ -12,6 +12,8 @@ The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed
 
 Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.
 
+`SubmenuTrigger` renders a `Group`, so `SubmenuTriggerProps` takes its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. It defaults to `gap={4}`, `ay="center"`, and `ax="space-between"`, which holds the submenu's chevron at the far edge; pass any of them to change it. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
+
 ## Triggers
 
 A string trigger renders as a focusable `<span role="button">`. An element becomes the trigger itself: a `<button>` or `Button` keeps its native button semantics and carries the menu's `aria-expanded`, and any other tag (`<span>`, `<div>`) gets `role="button"` and keyboard handling from Base UI. `MenuTrigger` treats its children the same way.

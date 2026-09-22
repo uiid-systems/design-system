@@ -2,7 +2,7 @@
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
 import { Card } from "@uiid/cards";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { AccordionRootProps } from "../accordion.types";
 import { accordionRootVariants } from "../accordion.variants";
@@ -13,14 +13,17 @@ export const AccordionRoot = ({
   children,
   className,
   variant,
+  gap = 0,
+  p = 0,
+  fullwidth = true,
   ...props
 }: AccordionRootProps) => {
   return (
     <BaseAccordion.Root
       data-slot="accordion-root"
       data-variant={variant}
-      render={<Card gap={0} p={0} fullwidth />}
-      className={cx(
+      render={<Card gap={gap} p={p} fullwidth={fullwidth} />}
+      className={cxState(
         styles["accordion-root"],
         accordionRootVariants({ variant }),
         className,

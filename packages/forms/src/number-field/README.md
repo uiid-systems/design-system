@@ -19,6 +19,8 @@ Pick the change handler by what it costs. `onValueChange` fires on every keystro
 
 Compose the parts to add a scrub area — dragging the label changes the value, which is faster than stepping for coarse adjustments. `NumberFieldRoot`, `NumberFieldGroup`, `NumberFieldDecrement`, `NumberFieldIncrement`, `NumberFieldInput`, `NumberFieldScrubArea`, and `NumberFieldScrubAreaCursor` are all exported, and slot overrides (`RootProps`, `GroupProps`, `DecrementProps`, `IncrementProps`, `InputProps`, `FieldProps`) reach them from the monolithic component.
 
+`NumberFieldGroup` renders a `Group`, so `GroupProps` takes its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
+
 Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 
 Additional props are forwarded to the underlying Base UI [Number Field](https://base-ui.com/react/components/number-field). `size` is the same deliberate exception as on [`Input`](../input/README.md): the system control scale, not the native character-width attribute.

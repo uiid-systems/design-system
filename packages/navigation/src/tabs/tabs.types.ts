@@ -1,5 +1,5 @@
 import type { Tabs } from "@base-ui/react/tabs";
-import type { LayerProps, StackProps } from "@uiid/layout";
+import type { GroupProps, LayerProps, StackProps } from "@uiid/layout";
 import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import { tabsListVariants } from "./tabs.variants";
@@ -13,14 +13,13 @@ export type TabProps = {
 };
 
 export type TabsRootProps = WithLayoutProps<Tabs.Root.Props, StackProps>;
-export type TabsListProps = Tabs.List.Props & {
+export type TabsListProps = WithLayoutProps<Tabs.List.Props, GroupProps> & {
   /** Surface treatment — filled by default, `ghost` drops the list background and border. */
   variant?: "ghost";
-  fullwidth?: boolean;
 } & TabsListVariants;
 export type TabsTabProps = Tabs.Tab.Props;
 export type TabsIndicatorProps = Tabs.Indicator.Props;
-export type TabsPanelProps = Tabs.Panel.Props;
+export type TabsPanelProps = WithLayoutProps<Tabs.Panel.Props, StackProps>;
 
 export type TabsProps = {
   items: TabProps[];

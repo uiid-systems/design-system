@@ -10,6 +10,7 @@ import fieldStyles from "../../field/field.module.css";
 export const CheckboxGroupRoot = ({
   orientation = "vertical",
   fullwidth,
+  gap = 2,
   children,
   ...props
 }: CheckboxGroupRootProps) => {
@@ -28,13 +29,13 @@ export const CheckboxGroupRoot = ({
       render={
         isHorizontal ? (
           <Group
-            gap={2}
+            gap={gap}
             fullwidth={fullwidth}
             className={fullwidth ? fieldStyles["field-rows-evenly"] : undefined}
           />
         ) : (
           <Stack
-            gap={2}
+            gap={gap}
             ax={fullwidth ? "stretch" : undefined}
             fullwidth={fullwidth}
           />

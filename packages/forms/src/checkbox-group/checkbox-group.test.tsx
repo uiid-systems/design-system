@@ -398,3 +398,47 @@ describe("CheckboxGroup fullwidth", () => {
     expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
   });
 });
+
+describe("CheckboxGroup layout props", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  const root = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>("[data-slot='checkbox-group-root']");
+
+  it.each(["vertical", "horizontal"] as const)(
+    "keeps a %s group's own gap by default",
+    (orientation) => {
+      const { container } = render(
+        <CheckboxGroup items={items} orientation={orientation} />,
+      );
+      expect(root(container)?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    },
+  );
+
+  /*
+   * The group always accepted `gap`, but the root wrote its own as a literal
+   * on the `Group` or `Stack`, and Base UI merges the render element's props
+   * over the part's, so the caller's was dropped.
+   */
+  it.each(["vertical", "horizontal"] as const)(
+    "forwards a caller's gap to a %s group's root",
+    (orientation) => {
+      const { container } = render(
+        <CheckboxGroup items={items} orientation={orientation} gap={4} />,
+      );
+      expect(root(container)?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+    },
+  );
+
+  it("accepts Base UI's state-function className on the root", () => {
+    const { container } = render(
+      <CheckboxGroupRoot className={(state) => `disabled-${state.disabled}`}>
+        <span />
+      </CheckboxGroupRoot>,
+    );
+    expect(root(container)).toHaveClass("disabled-false");
+  });
+});

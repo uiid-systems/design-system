@@ -58,6 +58,14 @@ import { Accordion } from "@uiid/navigation";
 </AccordionRoot>
 ```
 
+## Layout
+
+`AccordionRoot` renders a [`Card`](../../../cards/src/card/README.md) and each `AccordionItem` a `Stack`, so `RootProps` and `ItemProps` take their layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. The root is flush (`gap={0}`, `p={0}`) and fills its container, and `fullwidth={false}` releases it. Each item stretches its header and panel across the root (`ax="stretch"`).
+
+The items sit inside the Card's inner container, so a `gap` on the root spaces the Card's own regions — title, body, footer — rather than the items. Space the items with `InnerContainerProps`: `RootProps={{ InnerContainerProps: { gap: 2 } }}`.
+
+A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes.
+
 ## Subcomponents
 
 | Component          | Description                        |

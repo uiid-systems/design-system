@@ -301,6 +301,27 @@ describe("Autocomplete DOM attributes reach the input", () => {
   });
 });
 
+describe("Autocomplete popup layout props", () => {
+  const items = ["apple", "banana"];
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Card` would beat these.
+   */
+  it("forwards layout props from PopupProps to the popup Card", async () => {
+    const user = userEvent.setup();
+    render(<Autocomplete items={items} PopupProps={{ gap: 2 }} />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("a");
+
+    expect(
+      document.querySelector<HTMLElement>("[data-slot='autocomplete-popup']")
+        ?.style.gap,
+    ).toBe("calc(2 * var(--spacing-unit))");
+  });
+});
+
 /*
  * Base UI accepts `className` as a function of the part's state. Merging it
  * with `cx` dropped the function, so the caller's class never reached the DOM.

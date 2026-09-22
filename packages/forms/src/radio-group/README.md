@@ -20,4 +20,6 @@ A radio group starts with nothing selected unless you say otherwise. Leave `valu
 
 Give the group a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 
+The group lays its radios out in a `Stack`, or a `Group` when `orientation="horizontal"`, and takes their layout props (`gap`, `p`, `m`, ...) alongside Base UI's — all but the alignment axes and `direction`, which `orientation` and `fullwidth` decide. The radios sit `gap={2}` apart by default; pass `gap` to change it. A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes.
+
 Additional props are forwarded to the underlying Base UI [Radio Group](https://base-ui.com/react/components/radio-group).

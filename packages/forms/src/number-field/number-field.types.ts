@@ -1,6 +1,7 @@
 import type { NumberField as BaseNumberField } from "@base-ui/react/number-field";
+import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { numberFieldVariants } from "./number-field.variants";
@@ -41,7 +42,10 @@ export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;
  * The group is where `size` lands — it sizes the cluster as a whole, and the
  * stepper buttons square themselves off the height it gives them.
  */
-export type NumberFieldGroupProps = BaseNumberField.Group.Props &
+export type NumberFieldGroupProps = WithLayoutProps<
+  BaseNumberField.Group.Props,
+  GroupProps
+> &
   NumberFieldVariants & {
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment.

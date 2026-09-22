@@ -1,18 +1,19 @@
 import type { Field } from "@base-ui/react/field";
 import type { Icon } from "@uiid/icons";
-import type { GroupProps } from "@uiid/layout";
+import type { GroupProps, StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
-import type { SpacingProps, VariantProps } from "@uiid/utils";
+import type { SpacingProps, VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import type { fieldRowVariants, fieldVariants } from "./field.variants";
 
 export type FieldRowVariants = VariantProps<typeof fieldRowVariants>;
 export type FieldVariants = VariantProps<typeof fieldVariants>;
 
-export type FieldRootProps = Field.Root.Props &
-  SpacingProps & {
-    fullwidth?: boolean;
-  };
+/*
+ * No `gap` default rides along: the size tier owns the field's gap through
+ * `--field-gap`, so a gap only lands inline when a caller pins one.
+ */
+export type FieldRootProps = WithLayoutProps<Field.Root.Props, StackProps>;
 
 export type FieldItemProps = Field.Item.Props;
 

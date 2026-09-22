@@ -1,5 +1,6 @@
 import type { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox-group";
 import type { StackProps } from "@uiid/layout";
+import type { WithLayoutProps } from "@uiid/utils";
 
 import type {
   CheckboxProps,
@@ -8,7 +9,16 @@ import type {
 import type { FieldProps } from "../field/field.types";
 import type { FormItemProps } from "../types";
 
-export type CheckboxGroupRootProps = BaseCheckboxGroup.Props & {
+/**
+ * The root lays its rows out from `orientation` and `fullwidth`, so it takes
+ * no alignment axes of its own.
+ */
+type CheckboxGroupLayoutProps = Omit<StackProps, "ax" | "ay" | "direction">;
+
+export type CheckboxGroupRootProps = WithLayoutProps<
+  BaseCheckboxGroup.Props,
+  CheckboxGroupLayoutProps
+> & {
   orientation?: "horizontal" | "vertical";
   /** Stretch to fill the container width, sharing it evenly between the rows */
   fullwidth?: boolean;
@@ -25,13 +35,9 @@ export type CheckboxGroupProps = {
   CheckboxProps?: Partial<CheckboxProps>;
   IndicatorProps?: CheckboxIndicatorProps;
   FieldProps?: Partial<FieldProps>;
-} & BaseCheckboxGroup.Props &
+} & WithLayoutProps<BaseCheckboxGroup.Props, CheckboxGroupLayoutProps> &
   Pick<
     CheckboxProps,
     "size" | "bordered" | "reversed" | "required" | "disabled" | "color"
   > &
-  Pick<FieldProps, "label" | "description" | "action" | "name"> &
-  /* `color` is omitted alongside the layout axes because `StackProps` carries
-     React's native `color` attribute, which would otherwise intersect with the
-     palette hue picked up from `CheckboxProps`. */
-  Omit<StackProps, "ax" | "ay" | "direction" | "color">;
+  Pick<FieldProps, "label" | "description" | "action" | "name">;
