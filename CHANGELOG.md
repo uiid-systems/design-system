@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.2](https://github.com/uiid-systems/design-system/compare/v0.6.1...v0.6.2) (2026-09-22)
+
+
+### Features
+
+* **ui:** give Base UI parts the layout props of the primitive they render ([#422](https://github.com/uiid-systems/design-system/issues/422)) ([37a9e60](https://github.com/uiid-systems/design-system/commit/37a9e603720f9caa35acd6b8b630c15d2ef0b55b))
+* **ui:** give Collapsible Stack layout props and a state-aware trigger ([#418](https://github.com/uiid-systems/design-system/issues/418)) ([ce7c3b9](https://github.com/uiid-systems/design-system/commit/ce7c3b95fc72a6a89b1a7df92a1d9d4b23dd5663))
+
+
+### Bug Fixes
+
+* **ui:** give non-button overlay and Menu triggers button semantics ([#420](https://github.com/uiid-systems/design-system/issues/420)) ([6e30b52](https://github.com/uiid-systems/design-system/commit/6e30b525c53ccfa6f4641493aae13f86c75ff151))
+* **ui:** let Tabs' TabProps and PanelProps leave the value to each item ([#423](https://github.com/uiid-systems/design-system/issues/423)) ([29dc5c3](https://github.com/uiid-systems/design-system/commit/29dc5c3577ad62af3bcc4b5a01f6bd12cc740a6a))
+* **ui:** resolve a Base UI state-function className instead of dropping it ([#421](https://github.com/uiid-systems/design-system/issues/421)) ([161382f](https://github.com/uiid-systems/design-system/commit/161382f7b4ab9dabe13c2dc32ed68694eb1f8e5e))
+
 ## [0.6.1](https://github.com/uiid-systems/design-system/compare/v0.6.0...v0.6.1) (2026-09-20)
 
 
