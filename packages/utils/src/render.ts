@@ -16,9 +16,47 @@ export type RenderWithPropsOptions = {
   fallbackElement?: keyof React.JSX.IntrinsicElements;
 };
 
+type EventHandler = (...args: unknown[]) => unknown;
+
+/** Matches `onClick`, `onKeyDown`, … but not `on`, `once`, or `onward`. */
+const isEventHandlerKey = (key: string): boolean =>
+  key.length > 2 && key.startsWith("on") && key[2] >= "A" && key[2] <= "Z";
+
+/**
+ * Runs both handlers rather than letting one overwrite the other, the
+ * component's first so it can veto the render target's by calling
+ * `preventDefault()`. That ordering is what lets a component swallow an
+ * interaction it owns — a disabled element's activation, say — without having
+ * to strip a handler the caller put on the element they passed to `render`.
+ */
+const chainEventHandlers = (ours: unknown, theirs: unknown): unknown => {
+  if (typeof ours !== "function") return theirs;
+  if (typeof theirs !== "function") return ours;
+
+  return (...args: unknown[]) => {
+    (ours as EventHandler)(...args);
+
+    const event = args[0];
+    const vetoed =
+      typeof event === "object" &&
+      event !== null &&
+      "defaultPrevented" in event &&
+      (event as { defaultPrevented: unknown }).defaultPrevented === true;
+
+    if (vetoed) return undefined;
+
+    return (theirs as EventHandler)(...args);
+  };
+};
+
 /**
  * Utility function to handle render prop logic with prop merging, className merging, and style merging.
  * This abstracts the common pattern of cloning elements with merged props.
+ *
+ * Event handlers present on both sides are chained rather than overwritten —
+ * see {@link chainEventHandlers} — which is the behavior `@radix-ui/react-slot`
+ * provides upstream. Everything else follows `cloneElement`: `props` wins over
+ * the render element's own, with `className` concatenated and `style` merged.
  */
 export const renderWithProps = ({
   render,
@@ -27,8 +65,21 @@ export const renderWithProps = ({
   fallbackElement = "div",
 }: RenderWithPropsOptions): React.ReactElement => {
   if (isValidElement(render)) {
+    const theirProps = render.props as Record<string, unknown>;
+
+    // Only handler keys need special treatment. Keys the render element owns
+    // alone already survive `cloneElement`; keys we own alone come from the
+    // spread. This also stops an explicitly-undefined handler in `props` from
+    // clobbering a real one on the render element.
+    const mergedProps: Record<string, unknown> = { ...props };
+    for (const key of Object.keys(theirProps)) {
+      if (isEventHandlerKey(key)) {
+        mergedProps[key] = chainEventHandlers(props[key], theirProps[key]);
+      }
+    }
+
     return cloneElement(render, {
-      ...props,
+      ...mergedProps,
       children: children ?? render.props.children,
       className: cx(render.props.className, props.className as string),
       style: {
