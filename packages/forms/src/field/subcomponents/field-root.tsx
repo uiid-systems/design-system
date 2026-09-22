@@ -2,7 +2,7 @@
 
 import { Field as BaseField } from "@base-ui/react/field";
 import { Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { FieldRootProps } from "../field.types";
 
@@ -18,7 +18,7 @@ export const FieldRoot = ({
     <BaseField.Root
       data-slot="field-root"
       render={<Stack ax={ax} />}
-      className={cx(styles["field-root"], className)}
+      className={cxState(styles["field-root"], className)}
       {...props}
     >
       {children}

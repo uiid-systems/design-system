@@ -3,7 +3,7 @@
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { Group } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import { RADIO_DEFAULT_SIZE } from "../radio.constants";
 import type { RadioRootProps } from "../radio.types";
@@ -28,7 +28,7 @@ export const RadioRoot = ({
       value={value}
       nativeButton
       render={<Group render={<button />} ax="center" ay="center" p={0} m={0} />}
-      className={cx(
+      className={cxState(
         styles["radio"],
         radioVariants({ size }),
         colorClassName,

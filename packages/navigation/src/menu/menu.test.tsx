@@ -5,6 +5,8 @@ import { describe, it, expect } from "vitest";
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
 
+import styles from "./menu.module.css";
+
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
 const ButtonLike = (props: React.ComponentProps<"button">) => (
@@ -185,5 +187,107 @@ describe("SubmenuTrigger layout props", () => {
 
     expect(submenuTrigger()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
     expect(submenuTrigger()).toHaveStyle({ justifyContent: "start" });
+  });
+});
+
+/*
+ * Base UI calls a function className with the part's state. `cx` used to drop
+ * it silently, leaving only the wrapper's own module class.
+ */
+describe("Menu state-function className", () => {
+  const byOpen = (state: { open: boolean }) =>
+    state.open ? "fn-open" : "fn-closed";
+
+  it("resolves a state-function className on the item alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        ItemProps={{
+          className: (state) => (state.highlighted ? "fn-lit" : "fn-unlit"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const [first, second] = document.querySelectorAll(
+      "[data-slot='menu-item']",
+    );
+    await user.keyboard("{ArrowDown}");
+
+    expect(first).toHaveClass("fn-lit", styles["item"]);
+    expect(second).toHaveClass("fn-unlit", styles["item"]);
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        PopupProps={{ className: byOpen }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(document.querySelector("[data-slot='menu-popup']")).toHaveClass(
+      "fn-open",
+      styles["popup"],
+    );
+  });
+
+  it("resolves a state-function className on the positioner alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        PositionerProps={{ className: byOpen }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(document.querySelector("[data-slot='menu-positioner']")).toHaveClass(
+      "fn-open",
+      styles["positioner"],
+    );
+  });
+
+  it("resolves a state-function className on the backdrop alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        BackdropProps={{ className: byOpen }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(backdrops()[0]).toHaveClass("fn-open", styles["backdrop"]);
+  });
+
+  it("resolves a state-function className on the submenu trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        SubmenuTriggerProps={{ className: byOpen }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const trigger = document.querySelector("[data-slot='submenu-trigger']");
+    expect(trigger).toHaveClass("fn-closed", styles["submenu-trigger"]);
+
+    await user.click(screen.getByText("Lorem ipsum"));
+    await screen.findByText("Item 3.1");
+
+    expect(trigger).toHaveClass("fn-open", styles["submenu-trigger"]);
   });
 });

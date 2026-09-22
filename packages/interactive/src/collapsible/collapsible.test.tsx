@@ -10,6 +10,8 @@ import {
   CollapsiblePanel,
 } from "./subcomponents";
 
+import styles from "./collapsible.module.css";
+
 const getRoot = () =>
   document.querySelector<HTMLElement>("[data-slot='collapsible-root']");
 const getPanel = () =>
@@ -272,6 +274,21 @@ describe("Collapsible", () => {
     const panel = getPanel();
     expect(panel).toHaveClass("custom");
     expect(panel?.className).toContain("collapsible-panel");
+  });
+
+  it("resolves a state-function className on the panel alongside its own class", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(getPanel()).toHaveClass(styles["collapsible-panel"], "fn-open");
   });
 
   // ============================================

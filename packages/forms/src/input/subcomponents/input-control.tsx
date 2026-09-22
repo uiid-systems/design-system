@@ -1,6 +1,7 @@
 "use client";
 
 import { Input as BaseInput } from "@base-ui/react/input";
+import { cxState } from "@uiid/utils";
 
 import { inputControlClassName } from "../input.styles";
 import type { InputControlProps } from "../input.types";
@@ -30,14 +31,10 @@ export const InputControl = ({
     <BaseInput
       data-slot="input"
       ref={ref}
-      className={inputControlClassName({
-        inner,
-        size,
-        fullwidth,
-        variant,
-        color,
+      className={cxState(
+        inputControlClassName({ inner, size, fullwidth, variant, color }),
         className,
-      })}
+      )}
       {...props}
     />
   );

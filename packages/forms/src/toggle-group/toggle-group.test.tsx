@@ -4,6 +4,8 @@ import { describe, it, expect } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
 
+import styles from "./toggle-group.module.css";
+
 const SIZES = ["xsmall", "small", "medium", "large"] as const;
 
 const renderGroup = (props: React.ComponentProps<typeof ToggleGroup> = {}) =>
@@ -216,5 +218,27 @@ describe("ToggleGroup fullwidth", () => {
     for (const toggle of screen.getAllByRole("button")) {
       expect(toggle.className).not.toMatch(/composes-fullwidth/);
     }
+  });
+});
+
+/* The group clones each Toggle to add its own classes. Base UI calls a function
+   `className` with the toggle's state, so the clone has to merge with what the
+   child's function returns, not drop it. */
+describe("ToggleGroup state-function className", () => {
+  it("resolves a child Toggle's state-function className alongside its own class", () => {
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <Toggle
+          value="monthly"
+          className={(state) => (state.pressed ? "fn-pressed" : "fn-unpressed")}
+        >
+          Monthly
+        </Toggle>
+      </ToggleGroup>,
+    );
+    const toggle = screen.getByRole("button", { name: "Monthly" });
+
+    expect(toggle).toHaveClass("fn-pressed");
+    expect(toggle).toHaveClass(styles["toggle-group-button"]);
   });
 });

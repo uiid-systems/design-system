@@ -2,7 +2,7 @@
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
 import { Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { AccordionItemProps } from "../accordion.types";
 
@@ -18,7 +18,7 @@ export const AccordionItem = ({
   return (
     <BaseAccordion.Item
       data-slot="accordion-item"
-      className={cx(styles["accordion-item"], className)}
+      className={cxState(styles["accordion-item"], className)}
       render={<Stack ax={ax} fullwidth={fullwidth} />}
       {...props}
     >

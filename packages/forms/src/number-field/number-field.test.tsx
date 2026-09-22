@@ -4,6 +4,14 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { NumberField } from "./number-field";
+import {
+  NumberFieldGroup,
+  NumberFieldInput,
+  NumberFieldRoot,
+  NumberFieldScrubArea,
+} from "./subcomponents";
+
+import styles from "./number-field.module.css";
 
 describe("NumberField", () => {
   it("renders an input element", () => {
@@ -338,5 +346,72 @@ describe("NumberField group layout props", () => {
     );
     expect(group?.style.gap).toBe("calc(2 * var(--spacing-unit))");
     expect(group).toHaveStyle({ alignItems: "end" });
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. Every part
+   shares the root's state, so each one reads the current value off it. */
+describe("NumberField state-function className", () => {
+  const onState = (state: { value: number | null }) =>
+    `fn-value-${state.value}`;
+
+  const part = (container: HTMLElement, slot: string) =>
+    container.querySelector(`[data-slot='number-field-${slot}']`);
+
+  it("resolves a state-function className on the group alongside its own class", () => {
+    const { container } = render(
+      <NumberField defaultValue={7} GroupProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "group")).toHaveClass("fn-value-7");
+    expect(part(container, "group")).toHaveClass(styles["number-field"]);
+  });
+
+  it("resolves a state-function className on the input alongside its own class", () => {
+    const { container } = render(
+      <NumberField defaultValue={7} InputProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "input")).toHaveClass("fn-value-7");
+    expect(part(container, "input")).toHaveClass(styles["number-field-input"]);
+  });
+
+  it("resolves a state-function className on the increment alongside its own class", () => {
+    const { container } = render(
+      <NumberField defaultValue={7} IncrementProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "increment")).toHaveClass("fn-value-7");
+    expect(part(container, "increment")).toHaveClass(
+      styles["number-field-increment"],
+    );
+  });
+
+  it("resolves a state-function className on the decrement alongside its own class", () => {
+    const { container } = render(
+      <NumberField defaultValue={7} DecrementProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "decrement")).toHaveClass("fn-value-7");
+    expect(part(container, "decrement")).toHaveClass(
+      styles["number-field-decrement"],
+    );
+  });
+
+  it("resolves a state-function className on the scrub area alongside its own class", () => {
+    const { container } = render(
+      <NumberFieldRoot defaultValue={7}>
+        <NumberFieldScrubArea className={onState}>Amount</NumberFieldScrubArea>
+        <NumberFieldGroup>
+          <NumberFieldInput />
+        </NumberFieldGroup>
+      </NumberFieldRoot>,
+    );
+
+    expect(part(container, "scrub-area")).toHaveClass("fn-value-7");
+    expect(part(container, "scrub-area")).toHaveClass(
+      styles["number-field-scrub-area"],
+    );
   });
 });

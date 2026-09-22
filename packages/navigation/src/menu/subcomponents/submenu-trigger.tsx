@@ -1,6 +1,6 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 import { Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SubmenuTriggerProps } from "../menu.types";
 
@@ -18,7 +18,7 @@ export const SubmenuTrigger = ({
     <BaseMenu.SubmenuTrigger
       data-slot="submenu-trigger"
       render={<Group gap={gap} ay={ay} ax={ax} />}
-      className={cx(styles["submenu-trigger"], className)}
+      className={cxState(styles["submenu-trigger"], className)}
       {...props}
     >
       {children}

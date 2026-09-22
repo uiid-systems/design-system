@@ -13,6 +13,8 @@ import {
   FieldAction,
 } from "./subcomponents";
 
+import styles from "./field.module.css";
+
 describe("Field", () => {
   it("renders children", () => {
     render(
@@ -321,6 +323,42 @@ describe("Field className merging", () => {
     const root = container.querySelector("[data-slot='field-root']");
     expect(root).toHaveClass("direct-class");
     expect(root).toHaveClass("root-class");
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. */
+describe("Field state-function className", () => {
+  const onState = (prefix: string) => (state: { disabled: boolean }) =>
+    `${prefix}-${state.disabled ? "disabled" : "enabled"}`;
+
+  it("resolves a state-function className and RootProps.className on Field alongside its own class", () => {
+    const { container } = render(
+      <Field
+        disabled
+        className={onState("fn")}
+        RootProps={{ className: onState("fn-root") }}
+      >
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+
+    expect(root).toHaveClass("fn-disabled");
+    expect(root).toHaveClass("fn-root-disabled");
+    expect(root).toHaveClass(styles["size-medium"]);
+  });
+
+  it("resolves a state-function className on the root alongside its own class", () => {
+    const { container } = render(
+      <FieldRoot disabled className={onState("fn")}>
+        <input />
+      </FieldRoot>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+
+    expect(root).toHaveClass("fn-disabled");
+    expect(root).toHaveClass(styles["field-root"]);
   });
 });
 

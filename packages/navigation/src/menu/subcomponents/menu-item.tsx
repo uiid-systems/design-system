@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { MenuItemProps } from "../menu.types";
 
@@ -9,7 +9,7 @@ export const MenuItem = ({ className, children, ...props }: MenuItemProps) => {
   return (
     <BaseMenu.Item
       data-slot="menu-item"
-      className={cx(styles["item"], className)}
+      className={cxState(styles["item"], className)}
       {...props}
     >
       {children}

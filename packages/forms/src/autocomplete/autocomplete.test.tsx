@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
 
+import inputStyles from "../input/input.module.css";
+
 describe("Autocomplete", () => {
   const defaultItems = ["apple", "banana", "cherry", "date", "elderberry"];
 
@@ -317,5 +319,34 @@ describe("Autocomplete popup layout props", () => {
       document.querySelector<HTMLElement>("[data-slot='autocomplete-popup']")
         ?.style.gap,
     ).toBe("calc(2 * var(--spacing-unit))");
+  });
+});
+
+/*
+ * Base UI accepts `className` as a function of the part's state. Merging it
+ * with `cx` dropped the function, so the caller's class never reached the DOM.
+ * The popup layer and input group Autocomplete shares with Combobox are
+ * covered in Combobox's tests; the input is Autocomplete's own wrapper.
+ */
+describe("Autocomplete state-function className", () => {
+  const items = ["apple", "banana"];
+
+  it("resolves a state-function className on the input alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Autocomplete
+        items={items}
+        InputProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    const input = document.querySelector("[data-slot='autocomplete-input']");
+    expect(input).toHaveClass("fn-closed", inputStyles["input"]);
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(input).toHaveClass("fn-open", inputStyles["input"]);
   });
 });

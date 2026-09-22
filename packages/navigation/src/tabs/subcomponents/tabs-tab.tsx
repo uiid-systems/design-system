@@ -1,5 +1,5 @@
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { TabsTabProps } from "../tabs.types";
 
@@ -9,7 +9,7 @@ export const TabsTab = ({ className, children, ...props }: TabsTabProps) => {
   return (
     <BaseTabs.Tab
       data-slot="tabs-tab"
-      className={cx(styles["tab"], className)}
+      className={cxState(styles["tab"], className)}
       {...props}
     >
       {children}

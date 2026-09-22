@@ -1,7 +1,7 @@
 "use client";
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import { inputControlClassName } from "../../input/input.styles";
 import type { NumberFieldInputProps } from "../number-field.types";
@@ -24,11 +24,11 @@ export const NumberFieldInput = ({
     <BaseNumberField.Input
       data-slot="number-field-input"
       render={<input />}
-      className={inputControlClassName({
-        size,
-        color,
-        className: cx(styles["number-field-input"], className),
-      })}
+      className={cxState(
+        inputControlClassName({ size, color }),
+        styles["number-field-input"],
+        className,
+      )}
       {...props}
     />
   );

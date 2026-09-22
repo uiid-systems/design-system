@@ -1,7 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { DrawerBackdropProps } from "../drawer.types";
 
@@ -14,7 +14,7 @@ export const DrawerBackdrop = ({
   return (
     <BaseDrawer.Backdrop
       data-slot="drawer-backdrop"
-      className={cx(styles["drawer-backdrop"], className)}
+      className={cxState(styles["drawer-backdrop"], className)}
       {...props}
     />
   );

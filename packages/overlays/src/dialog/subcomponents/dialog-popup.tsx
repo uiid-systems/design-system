@@ -1,6 +1,6 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Card } from "@uiid/cards";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { DialogPopupProps } from "../dialog.types";
 import { dialogVariants } from "../dialog.variants";
@@ -29,7 +29,7 @@ export const DialogPopup = ({
   return (
     <BaseDialog.Popup
       data-slot="dialog-popup"
-      className={cx(
+      className={cxState(
         styles["dialog-popup"],
         dialogVariants({ size }),
         className,

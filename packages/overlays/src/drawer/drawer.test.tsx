@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
 
+import styles from "./drawer.module.css";
+
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
 const ButtonLike = (props: React.ComponentProps<"button">) => (
@@ -442,5 +444,86 @@ describe("Drawer", () => {
     expect(screen.getByRole("button", { name: "Open drawer" })).toHaveClass(
       "trigger-wrapper",
     );
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+  // Base UI accepts `className` as a function of the part's state. Each part
+  // must hand the caller's function that state and keep its own module class.
+
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Drawer
+        trigger={<button>Open drawer</button>}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const trigger = document.querySelector('[data-slot="drawer-trigger"]');
+    expect(trigger).toHaveClass(styles["drawer-trigger"], "fn-closed");
+
+    await user.click(screen.getByRole("button", { name: "Open drawer" }));
+
+    await waitFor(() => {
+      expect(trigger).toHaveClass(styles["drawer-trigger"], "fn-open");
+    });
+  });
+
+  it("resolves a state-function className on the backdrop alongside its own class", () => {
+    render(
+      <Drawer
+        trigger={<button>Open drawer</button>}
+        open={true}
+        BackdropProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const backdrop = document.querySelector('[data-slot="drawer-backdrop"]');
+    expect(backdrop).toHaveClass(styles["drawer-backdrop"], "fn-open");
+  });
+
+  it("resolves a state-function className on the viewport alongside its own class", () => {
+    render(
+      <Drawer
+        trigger={<button>Open drawer</button>}
+        open={true}
+        ViewportProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const viewport = document.querySelector('[data-slot="drawer-viewport"]');
+    expect(viewport).toHaveClass(styles["drawer-viewport"], "fn-open");
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", () => {
+    render(
+      <Drawer
+        trigger={<button>Open drawer</button>}
+        open={true}
+        PopupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const popup = document.querySelector('[data-slot="drawer-popup"]');
+    expect(popup).toHaveClass(styles["drawer-popup"], "fn-open");
   });
 });

@@ -8,10 +8,22 @@ import { Combobox } from "./combobox";
 import {
   ComboboxChip,
   ComboboxChips,
+  ComboboxClear,
+  ComboboxEmpty,
   ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxPopup,
+  ComboboxPortal,
+  ComboboxPositioner,
   ComboboxRoot,
+  ComboboxTrigger,
   ComboboxValue,
 } from "./subcomponents";
+
+import inputStyles from "../input/input.module.css";
+import inputGroupStyles from "../shared/input-group/input-group.module.css";
+import popupLayerStyles from "../shared/popup-layer/popup-layer.module.css";
 
 describe("Combobox", () => {
   const defaultItems = ["apple", "banana", "cherry", "date", "elderberry"];
@@ -451,5 +463,193 @@ describe("Combobox layout props", () => {
     renderChips({ gap: 3, ay: "start" });
     expect(chips()?.style.gap).toBe("calc(3 * var(--spacing-unit))");
     expect(chips()).toHaveStyle({ alignItems: "start" });
+  });
+});
+
+/*
+ * Base UI accepts `className` as a function of the part's state. Merging it
+ * with `cx` dropped the function, so the caller's class never reached the DOM;
+ * each part must resolve it with real state and keep its own class beside it.
+ * The popup layer and input group are shared with Autocomplete, so they are
+ * covered here once. Parts the monolith renders without a props object are
+ * reached by composing the subcomponents.
+ */
+describe("Combobox state-function className", () => {
+  const items = ["apple", "banana"];
+
+  it("resolves a state-function className on the input alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={items}
+        InputProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    const input = document.querySelector("[data-slot='combobox-input']");
+    expect(input).toHaveClass("fn-closed", inputStyles["input"]);
+
+    await user.click(screen.getByRole("combobox"));
+    expect(input).toHaveClass("fn-open", inputStyles["input"]);
+  });
+
+  it("resolves a state-function className on the input group alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={items}
+        InputGroupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveClass(
+      "fn-closed",
+      inputGroupStyles["input-group-root"],
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    expect(group).toHaveClass("fn-open", inputGroupStyles["input-group-root"]);
+  });
+
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput />
+        <ComboboxTrigger
+          className={(state) => (state.open ? "fn-open" : "fn-closed")}
+        />
+      </ComboboxRoot>,
+    );
+
+    const trigger = document.querySelector<HTMLElement>(
+      "[data-slot='combobox-trigger']",
+    );
+    expect(trigger).toHaveClass(
+      "fn-closed",
+      inputGroupStyles["input-group-action"],
+    );
+
+    await user.click(trigger!);
+    expect(trigger).toHaveClass(
+      "fn-open",
+      inputGroupStyles["input-group-action"],
+    );
+  });
+
+  it("resolves a state-function className on the clear button alongside its own class", () => {
+    render(
+      <ComboboxRoot items={items} defaultValue="banana">
+        <ComboboxInput />
+        <ComboboxClear
+          className={(state) => (state.visible ? "fn-visible" : "fn-hidden")}
+        />
+      </ComboboxRoot>,
+    );
+
+    const clear = document.querySelector("[data-slot='combobox-clear']");
+    expect(clear).toHaveClass(
+      "fn-visible",
+      inputGroupStyles["input-group-action"],
+    );
+  });
+
+  it("resolves a state-function className on the positioner alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={items}
+        PositionerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const positioner = document.querySelector(
+      "[data-slot='combobox-positioner']",
+    );
+    expect(positioner).toHaveClass(
+      "fn-open",
+      popupLayerStyles["popup-layer-positioner"],
+    );
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={items}
+        PopupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const popup = document.querySelector("[data-slot='combobox-popup']");
+    expect(popup).toHaveClass("fn-open", popupLayerStyles["popup-layer-popup"]);
+  });
+
+  it("resolves a state-function className on an item alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <ComboboxRoot items={["banana"]} defaultValue="banana">
+        <ComboboxInput />
+        <ComboboxPortal>
+          <ComboboxPositioner>
+            <ComboboxPopup>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem
+                    key={item}
+                    value={item}
+                    className={(state) =>
+                      state.selected ? "fn-selected" : "fn-unselected"
+                    }
+                  />
+                )}
+              </ComboboxList>
+            </ComboboxPopup>
+          </ComboboxPositioner>
+        </ComboboxPortal>
+      </ComboboxRoot>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const item = document.querySelector("[data-slot='combobox-item']");
+    expect(item).toHaveClass(
+      "fn-selected",
+      popupLayerStyles["popup-layer-item"],
+    );
+  });
+
+  it("resolves a state-function className on the empty state alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput />
+        <ComboboxPortal>
+          <ComboboxPositioner>
+            <ComboboxPopup>
+              <ComboboxEmpty className={() => "from-fn"} />
+            </ComboboxPopup>
+          </ComboboxPositioner>
+        </ComboboxPortal>
+      </ComboboxRoot>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const empty = document.querySelector("[data-slot='combobox-empty']");
+    expect(empty).toHaveClass("from-fn", popupLayerStyles["popup-layer-empty"]);
   });
 });

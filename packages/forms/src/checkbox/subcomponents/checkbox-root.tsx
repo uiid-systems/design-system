@@ -3,7 +3,7 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import { Group } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import { CHECKBOX_DEFAULT_SIZE } from "../checkbox.constants";
 import type { CheckboxRootProps } from "../checkbox.types";
@@ -30,7 +30,7 @@ export const CheckboxRoot = ({
          ARIA. */
       nativeButton
       render={<Group render={<button />} ax="center" ay="center" />}
-      className={cx(
+      className={cxState(
         styles["checkbox"],
         checkboxVariants({ size }),
         colorClassName,

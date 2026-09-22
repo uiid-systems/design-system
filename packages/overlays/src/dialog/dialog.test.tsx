@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 
+import styles from "./dialog.module.css";
+
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
 const ButtonLike = (props: React.ComponentProps<"button">) => (
@@ -503,5 +505,89 @@ describe("Dialog", () => {
 
     const backdrop = document.querySelector('[data-slot="dialog-backdrop"]');
     expect(backdrop).toHaveClass("custom-backdrop");
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+  // Base UI accepts `className` as a function of the part's state. Each part
+  // must hand the caller's function that state and keep its own module class.
+
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const trigger = document.querySelector('[data-slot="dialog-trigger"]');
+    expect(trigger).toHaveClass(styles["dialog-trigger"], "fn-closed");
+
+    await user.click(screen.getByRole("button", { name: "Open dialog" }));
+
+    await waitFor(() => {
+      expect(trigger).toHaveClass(styles["dialog-trigger"], "fn-open");
+    });
+  });
+
+  it("resolves a state-function className on the backdrop alongside its own class", () => {
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+        BackdropProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const backdrop = document.querySelector('[data-slot="dialog-backdrop"]');
+    expect(backdrop).toHaveClass(styles["dialog-backdrop"], "fn-open");
+  });
+
+  it("resolves a state-function className on the viewport alongside its own class", () => {
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+        ViewportProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const viewport = document.querySelector('[data-slot="dialog-viewport"]');
+    expect(viewport).toHaveClass(styles["dialog-viewport"], "fn-open");
+  });
+
+  it("resolves a state-function className on the popup alongside its own class", () => {
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+        PopupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const popup = document.querySelector('[data-slot="dialog-popup"]');
+    expect(popup).toHaveClass(styles["dialog-popup"], "fn-open");
   });
 });

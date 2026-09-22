@@ -1,7 +1,7 @@
 "use client";
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { SliderTrackProps } from "../slider.types";
 
@@ -15,7 +15,7 @@ export const SliderTrack = ({
   return (
     <BaseSlider.Track
       data-slot="slider-track"
-      className={cx(styles["slider-track"], className)}
+      className={cxState(styles["slider-track"], className)}
       {...props}
     >
       {children}

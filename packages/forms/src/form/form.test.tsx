@@ -6,6 +6,8 @@ import { Input } from "../input/input";
 import { Form } from "./form";
 import { useFormState } from "./hooks/use-form-state";
 
+import styles from "./form.module.css";
+
 // Helper component for testing form with native form submission
 // Uses a native form wrapper + Form for error context (the recommended pattern)
 const TestForm = ({
@@ -195,6 +197,20 @@ describe("Form", () => {
     const errorId = input.getAttribute("aria-describedby");
 
     expect(errorId).toBeTruthy();
+  });
+
+  // ============================================
+  // STATE-FUNCTION CLASSNAME
+  // ============================================
+
+  // Base UI calls a function `className` with the part's state; the form's own
+  // class has to merge with what it returns, not drop it.
+  it("resolves a state-function className on the form alongside its own class", () => {
+    const { container } = render(<Form className={() => "from-fn"} />);
+    const form = container.querySelector("[data-slot='form']");
+
+    expect(form).toHaveClass("from-fn");
+    expect(form).toHaveClass(styles["form"]);
   });
 });
 

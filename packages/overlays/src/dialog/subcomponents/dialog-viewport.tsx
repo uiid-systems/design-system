@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { DialogViewportProps } from "../dialog.types";
 
@@ -21,7 +21,7 @@ export const DialogViewport = ({
   return (
     <BaseDialog.Viewport
       data-slot="dialog-viewport"
-      className={cx(styles["dialog-viewport"], className)}
+      className={cxState(styles["dialog-viewport"], className)}
       {...props}
     >
       {children}

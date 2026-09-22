@@ -6,6 +6,9 @@ import { describe, it, expect, vi } from "vitest";
 import { Slider } from "./slider";
 import { SliderLabel, SliderRoot } from "./subcomponents";
 
+import inputStyles from "../input/input.module.css";
+import styles from "./slider.module.css";
+
 describe("Slider", () => {
   it("renders a slider element", () => {
     render(<Slider />);
@@ -284,5 +287,63 @@ describe("Slider layout props", () => {
       "calc(5 * var(--spacing-inline))",
     );
     expect(control(container)?.className).not.toMatch(/toggle-fullwidth/);
+  });
+});
+
+/* Base UI calls a function `className` with the part's state. The wrapper's
+   own classes have to merge with what it returns, not drop it. Every part
+   shares the root's state, so each one reads the current value off it. */
+describe("Slider state-function className", () => {
+  const onState = (state: { values: readonly number[] }) =>
+    `fn-value-${state.values[0]}`;
+
+  const part = (container: HTMLElement, slot: string) =>
+    container.querySelector(`[data-slot='slider-${slot}']`);
+
+  it("resolves a state-function className on the root alongside its own class", () => {
+    const { container } = render(
+      <Slider defaultValue={40} RootProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "root")).toHaveClass("fn-value-40");
+    expect(part(container, "root")).toHaveClass(inputStyles["input"]);
+  });
+
+  it("resolves a state-function className on the control alongside its own class", () => {
+    const { container } = render(
+      <Slider defaultValue={40} ControlProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "control")).toHaveClass("fn-value-40");
+    expect(part(container, "control")).toHaveClass(styles["slider-control"]);
+  });
+
+  it("resolves a state-function className on the track alongside its own class", () => {
+    const { container } = render(
+      <Slider defaultValue={40} TrackProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "track")).toHaveClass("fn-value-40");
+    expect(part(container, "track")).toHaveClass(styles["slider-track"]);
+  });
+
+  it("resolves a state-function className on the indicator alongside its own class", () => {
+    const { container } = render(
+      <Slider defaultValue={40} IndicatorProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "indicator")).toHaveClass("fn-value-40");
+    expect(part(container, "indicator")).toHaveClass(
+      styles["slider-indicator"],
+    );
+  });
+
+  it("resolves a state-function className on the thumb alongside its own class", () => {
+    const { container } = render(
+      <Slider defaultValue={40} ThumbProps={{ className: onState }} />,
+    );
+
+    expect(part(container, "thumb")).toHaveClass("fn-value-40");
+    expect(part(container, "thumb")).toHaveClass(styles["slider-thumb"]);
   });
 });

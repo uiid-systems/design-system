@@ -1,7 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { cx, resolveTrigger } from "@uiid/utils";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { DrawerTriggerProps } from "../drawer.types";
 
@@ -14,7 +14,7 @@ export const DrawerTrigger = ({
 }: DrawerTriggerProps) => (
   <BaseDrawer.Trigger
     data-slot="drawer-trigger"
-    className={cx(styles["drawer-trigger"], className)}
+    className={cxState(styles["drawer-trigger"], className)}
     {...resolveTrigger(children, props.render)}
     {...props}
   />

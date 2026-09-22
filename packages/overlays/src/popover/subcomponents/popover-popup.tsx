@@ -1,6 +1,6 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import { Card } from "@uiid/cards";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { PopoverPopupProps } from "../popover.types";
 
@@ -38,7 +38,7 @@ export const PopoverPopup = ({
           DescriptionProps={{ render: <BasePopover.Description /> }}
         />
       }
-      className={cx(styles["popover-popup"], className)}
+      className={cxState(styles["popover-popup"], className)}
       {...props}
     >
       {children}

@@ -1,7 +1,7 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-import { cx } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 
 import type { AccordionPanelProps } from "../accordion.types";
 import { accordionPanelVariants } from "../accordion.variants";
@@ -17,7 +17,7 @@ export const AccordionPanel = ({
   return (
     <BaseAccordion.Panel
       data-slot="accordion-panel"
-      className={cx(
+      className={cxState(
         styles["accordion-panel"],
         accordionPanelVariants({ size }),
         className,

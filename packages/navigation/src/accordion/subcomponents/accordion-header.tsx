@@ -1,7 +1,6 @@
 "use client";
 
 import { Accordion as BaseAccordion } from "@base-ui/react/accordion";
-import { cx } from "@uiid/utils";
 
 import type { AccordionHeaderProps } from "../accordion.types";
 
@@ -13,7 +12,7 @@ export const AccordionHeader = ({
   return (
     <BaseAccordion.Header
       data-slot="accordion-header"
-      className={cx(className)}
+      className={className}
       {...props}
     >
       {children}
