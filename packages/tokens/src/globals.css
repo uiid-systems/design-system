@@ -10,6 +10,7 @@
 
 @import "./palette.css";
 @import "./compositions.css";
+@import "./animations.css";
 
 @layer uiid.globals {
   :root {
