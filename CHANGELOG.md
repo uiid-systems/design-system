@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/uiid-systems/design-system/compare/v0.6.2...v0.6.3) (2026-09-23)
+
+
+### Bug Fixes
+
+* **ui:** chain renderWithProps handlers, swap the spinner's SMIL for pausable CSS ([#424](https://github.com/uiid-systems/design-system/issues/424)) ([d9464c6](https://github.com/uiid-systems/design-system/commit/d9464c6e713355862b5d1dcb5a94651ad780580d))
+
 ## [0.6.2](https://github.com/uiid-systems/design-system/compare/v0.6.1...v0.6.2) (2026-09-22)
 
 
