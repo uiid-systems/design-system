@@ -1,5 +1,4 @@
 import { Button, type ButtonProps } from "@uiid/buttons";
-import { isValidElement } from "react";
 
 import { opensElsewhere } from "../pagination.utils";
 
@@ -14,14 +13,11 @@ export const PaginationButton = ({
   ...props
 }: PaginationButtonProps) => {
   /*
-   * Button clones `render` with its own props, which would overwrite the
-   * link's `onClick`, so run that first and then change page — unless the
-   * click opens the link elsewhere, in which case this tab stays put.
+   * `renderWithProps` chains the link's own `onClick` after this one, so this
+   * only has to decide whether the page changes: a click that opens the link
+   * elsewhere leaves this tab where it is.
    */
   const handleLinkClick: ButtonProps["onClick"] = (event) => {
-    if (isValidElement<Pick<ButtonProps, "onClick">>(render)) {
-      render.props.onClick?.(event);
-    }
     if (!opensElsewhere(event)) onClick?.(event);
   };
 

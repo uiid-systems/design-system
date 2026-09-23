@@ -1,0 +1,41 @@
+/**
+ * Motion primitives.
+ *
+ * Keyframes live here rather than beside the component that uses them so a
+ * component package can stay CSS-free. `@uiid/icons` ships no stylesheet on
+ * purpose — it exists to keep lucide's per-icon tree-shaking intact through
+ * the re-export chain, and its build emits per-icon modules rather than a
+ * bundle — so the spinner's rotation belongs in tokens, which every consumer
+ * already loads through globals.css.
+ *
+ * Animations are applied by ATTRIBUTE, never by class. An icon spreads caller
+ * props onto its root `<svg>`, so a caller passing `className` would overwrite
+ * a class hook and silently stop the animation — no error, just a frozen
+ * spinner.
+ *
+ * Keyframe names are a single global namespace shared with whatever else the
+ * page loads, so they have to be specific. Tailwind ships its own `spin`.
+ */
+
+@keyframes rotate-360 {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@layer uiid.components {
+  /*
+   * Rotates the whole `<svg>`, not the arc inside it. The static ring is a
+   * symmetric annulus so the result is identical, and it has to be the root:
+   * Blink composites transform animations on a real CSS box but leaves SVG
+   * child elements on the main thread.
+   *
+   * A component overrides this from its own module by specificity, not by
+   * layer — `.button-spinner:not([data-loading="true"])` outranks the bare
+   * attribute selector here, which is how Button pauses the spinner it owns.
+   */
+  [data-animate="spin"] {
+    animation: rotate-360 0.75s linear infinite;
+    transform-origin: 50% 50%;
+  }
+}

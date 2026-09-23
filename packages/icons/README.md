@@ -39,6 +39,8 @@ Every icon is exposed only under its **`*Icon`** name (`GlobeIcon`, never `Globe
 
 - **~2,000 lucide icons** — the full set, single-named on the `*Icon` convention.
 - **`LoadingSpinnerIcon`** — a uiid spinner for loading states, reachable at `@uiid/icons/loading-spinner` like any other icon.
+  It spins via the `[data-animate="spin"]` rule in `@uiid/tokens`, so it needs `@uiid/tokens/globals.css` —
+  the same stylesheet every uiid component requires. This package ships no CSS of its own.
 - **`createLucideIcon`** — author a custom icon in the lucide style.
 - **`Icon`, `IconProps`** — the shared icon component and props types.
 

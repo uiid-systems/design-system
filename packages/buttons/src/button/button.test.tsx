@@ -85,6 +85,21 @@ describe("Button", () => {
     expect(spinner).toHaveAttribute("data-loading", "true");
   });
 
+  it("keeps the spinner mounted and idle when not loading", () => {
+    // The spinner is never conditionally rendered — `.button-spinner` pauses
+    // its CSS animation instead, which is what keeps an idle button from
+    // animating. Unmounting it again would take the exit transition with it.
+    render(<Button>Submit</Button>);
+    const content = document.querySelector(
+      '[data-slot="button-content-container"]',
+    );
+    const spinner = document.querySelector('[data-slot="button-spinner"]');
+
+    expect(spinner).not.toBeNull();
+    expect(spinner).not.toHaveAttribute("data-loading", "true");
+    expect(content).not.toHaveAttribute("aria-hidden", "true");
+  });
+
   it("supports aria-label for icon-only buttons", () => {
     render(<Button aria-label="Close">✕</Button>);
     expect(screen.getByRole("button")).toHaveAccessibleName("Close");

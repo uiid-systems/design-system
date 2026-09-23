@@ -121,6 +121,19 @@
     scale: 1;
     opacity: 1;
   }
+
+  /*
+   * The spinner stays mounted in both states, so without this every button on
+   * the page would rotate an invisible svg forever. A paused animation does
+   * not tick and does not request frames, so an idle button costs nothing.
+   *
+   * This outranks the `animation` shorthand `@uiid/tokens` applies to
+   * `[data-animate="spin"]` by specificity — both sit in uiid.components —
+   * which the shorthand would otherwise reset back to running.
+   */
+  &:not([data-loading="true"]) {
+    animation-play-state: paused;
+  }
 }
 
 .variant-subtle {

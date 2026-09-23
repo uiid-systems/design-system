@@ -35,6 +35,7 @@
     "./package.json": "./package.json",
     "./globals.css": "./src/globals.css",
     "./compositions.css": "./src/compositions.css",
+    "./animations.css": "./src/animations.css",
     "./palette.css": "./src/palette.css",
     "./json/*": "./src/json/*",
     "./*": "./src/css/*"
