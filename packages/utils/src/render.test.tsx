@@ -1,3 +1,4 @@
+import { createRef } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { renderWithProps } from "./render";
@@ -88,6 +89,53 @@ describe("renderWithProps", () => {
       });
 
       expect(propsOf(result).id).toBe("ours");
+    });
+  });
+
+  describe("ref merging", () => {
+    it("sets no ref when neither side has one", () => {
+      const result = renderWithProps({ render: <a />, props: {} });
+
+      expect(propsOf(result).ref).toBeUndefined();
+    });
+
+    it("passes our ref through verbatim when they have none", () => {
+      const ours = createRef<HTMLAnchorElement>();
+      const result = renderWithProps({ render: <a />, props: { ref: ours } });
+
+      expect(propsOf(result).ref).toBe(ours);
+    });
+
+    it("keeps their ref verbatim when we pass none", () => {
+      const theirs = createRef<HTMLAnchorElement>();
+      const result = renderWithProps({ render: <a ref={theirs} />, props: {} });
+
+      expect(propsOf(result).ref).toBe(theirs);
+    });
+
+    it("keeps their ref when ours is explicitly undefined", () => {
+      const theirs = createRef<HTMLAnchorElement>();
+      const result = renderWithProps({
+        render: <a ref={theirs} />,
+        props: { ref: undefined },
+      });
+
+      expect(propsOf(result).ref).toBe(theirs);
+    });
+
+    it("composes both refs rather than letting ours replace theirs", () => {
+      const ours = createRef<HTMLAnchorElement>();
+      const theirs = createRef<HTMLAnchorElement>();
+      const result = renderWithProps({
+        render: <a ref={theirs} />,
+        props: { ref: ours },
+      });
+      const node = {} as HTMLAnchorElement;
+
+      (propsOf(result).ref as (node: HTMLAnchorElement) => void)(node);
+
+      expect(ours.current).toBe(node);
+      expect(theirs.current).toBe(node);
     });
   });
 
