@@ -1,8 +1,6 @@
-import type { PropCategory } from "../categories";
-import { togglePropKeys } from "../categories";
-import { b, bx, bl, br, by, bt, bb, borderPropKeys } from "./border";
-import { ax, ay, direction, layoutPropKeys } from "./layout";
-import { w, minw, maxw, h, minh, maxh, sizingPropKeys } from "./sizing";
+import { b, bx, bl, br, by, bt, bb } from "./border";
+import { ax, ay, direction } from "./layout";
+import { w, minw, maxw, h, minh, maxh } from "./sizing";
 import {
   gap,
   m,
@@ -19,7 +17,6 @@ import {
   py,
   pt,
   pb,
-  spacingPropKeys,
 } from "./spacing";
 
 export const styleProps = {
@@ -63,14 +60,6 @@ export const styleProps = {
 export const stylePropKeys = Object.keys(
   styleProps,
 ) as (keyof typeof styleProps)[];
-
-export const stylePropCategories: Record<string, PropCategory> = {
-  ...Object.fromEntries(spacingPropKeys.map((k) => [k, "spacing"] as const)),
-  ...Object.fromEntries(layoutPropKeys.map((k) => [k, "layout"] as const)),
-  ...Object.fromEntries(sizingPropKeys.map((k) => [k, "sizing"] as const)),
-  ...Object.fromEntries(borderPropKeys.map((k) => [k, "border"] as const)),
-  ...Object.fromEntries(togglePropKeys.map((k) => [k, "toggle"] as const)),
-};
 
 export { borderPropKeys } from "./border";
 export { layoutPropKeys } from "./layout";

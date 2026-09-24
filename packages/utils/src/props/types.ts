@@ -22,6 +22,5 @@ export type StyleProp<K extends keyof React.CSSProperties> = {
     | Array<React.CSSProperties[K]>;
   unit?: {
     variable: `--${string}`;
-    suffix?: "px" | "em" | "rem" | "dvh" | "dvw" | "%";
   };
 };

@@ -10,7 +10,7 @@ import type { FormItemProps } from "../types";
  * The root lays its rows out from `orientation` and `fullwidth`, so it takes
  * no alignment axes of its own.
  */
-type RadioGroupLayoutProps = Omit<StackProps, "ax" | "ay" | "direction">;
+type RadioGroupLayoutProps = Omit<StackProps, "ax" | "ay">;
 
 export type RadioGroupRootProps = WithLayoutProps<
   RadioGroup.Props,

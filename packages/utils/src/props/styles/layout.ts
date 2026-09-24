@@ -5,13 +5,12 @@ export const layoutPropKeys = ["ax", "ay", "direction"] as const;
 export const ax = {
   property: "justifyContent",
   values: [
-    "space-around",
-    "baseline",
-    "space-between",
     "center",
     "end",
-    "evenly",
     "normal",
+    "space-around",
+    "space-between",
+    "space-evenly",
     "start",
     "stretch",
   ] as const,

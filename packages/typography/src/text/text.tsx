@@ -1,4 +1,10 @@
-import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
+import {
+  prepareComponentProps,
+  renderWithProps,
+  cx,
+  marginPropKeys,
+  paddingPropKeys,
+} from "@uiid/utils";
 
 import { TEXT_DEFAULT_SIZE, TEXT_DEFAULT_FAMILY } from "./text.constants";
 import type { TextProps } from "./text.types";
@@ -33,22 +39,7 @@ export const Text = ({
 
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    styleProps: [
-      "p",
-      "px",
-      "py",
-      "pl",
-      "pr",
-      "pt",
-      "pb",
-      "m",
-      "mx",
-      "my",
-      "ml",
-      "mr",
-      "mt",
-      "mb",
-    ],
+    styleProps: [...paddingPropKeys, ...marginPropKeys],
     props,
   });
 

@@ -18,29 +18,12 @@
  * at the bottom of this file instead.
  */
 @layer uiid.compositions {
-  /**
-   * Root text-rendering fundamentals, shared by anything that renders text
-   * (Text, Prose, textarea, separator label). Constant values only —
-   * size-coupled properties (font-size, letter-spacing, line-height) stay
-   * with each component's own size scale rather than being restated here.
-   */
   .composes-text {
     text-wrap: pretty;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern", "calt", "liga";
   }
 
-  /**
-   * Control sizing scale, shared by form controls and buttons.
-   * Compose these into a component's local size class rather than
-   * re-declaring height/padding/font-size per component.
-   *
-   * Each tier re-publishes --forms-icon-size for its own subtree, so anything
-   * that sizes an icon off that name scales with the control it sits in rather
-   * than pinning one value across every tier. It inherits, so a descendant
-   * (a field slot's svg) picks it up from the control element without the
-   * sizing rule needing to know which tier is active.
-   */
   .composes-size-xsmall {
     font-size: var(--forms-size-xs-font-size);
     height: var(--forms-size-xs-height);
@@ -66,22 +49,6 @@
     --forms-icon-size: var(--forms-size-lg-icon-size);
   }
 
-  /**
-   * The resting surface a form control paints: input, textarea, select trigger,
-   * and the number field's stepper buttons. Everything here is *surface* —
-   * fill, edge, and the states that repaint them. Size-coupled properties
-   * (height, inline padding, font-size) belong to composes-size-* and block
-   * padding to the component, so a control can wear this at any tier.
-   *
-   * Replaces the className-concatenation sharing this used to be done with,
-   * where Select borrowed Input's `.input` class and Input carried a
-   * `:not([data-slot="select-value"])` exclusion to keep the value from
-   * painting a second surface inside the trigger it already sits in.
-   *
-   * `outline` is declared without a style, so the ring is fully specified but
-   * invisible until focus turns it on — that is what lets it animate rather
-   * than snap, and why the focus rule below only adds `outline-style`.
-   */
   .composes-field-surface {
     background-color: var(--forms-bg);
     border: var(--globals-border-width) solid var(--forms-border-color);
@@ -95,17 +62,6 @@
       background-color: var(--forms-bg-hover);
     }
 
-    /*
-     * `:focus-visible` for a control that takes focus itself; `:has(:focus-visible)`
-     * for the wrappers that surround one (input wrapper, number field group) —
-     * those are not focusable, so they mirror the state of whichever control
-     * inside them holds focus. `:has()` takes its argument's specificity, so the
-     * wrapper form lands a class above `:hover` and wins when both apply.
-     *
-     * For text fields the UA matches `:focus-visible` on pointer focus too, so
-     * the ring still appears on click; a non-text control landing here follows
-     * the same rule as every other component in the system.
-     */
     &:focus-visible,
     &:has(:focus-visible) {
       background-color: var(--forms-bg-focus);
@@ -113,37 +69,6 @@
     }
   }
 
-  /**
-   * The palette hue on a field surface — the `color` prop's treatment for every
-   * control that wears `.composes-field-surface`. It remaps only the four names
-   * that surface already reads, so a control opts in by composing this next to
-   * it and inherits hover, focus and the whole size scale unchanged. That is
-   * the point: select, combobox, number-field and mask-input get the mechanism
-   * without a line of their own CSS.
-   *
-   * Tint, not fill. A text field is a surface you read *through*, so it takes
-   * the same treatment as a coloured Card or a subtle Button rather than the
-   * solid fill a Button wears. `--palette-on-tint` is the pairing measured
-   * against `--palette-tint`, which is why the foreground has to move with the
-   * background instead of staying on `--shade-foreground`.
-   *
-   * `--forms-bg-focus` resolves back to the resting tint on purpose. Focus is
-   * already carried by the outline, and repainting the fill as well made a
-   * focused control read as a different hue than the same control at rest.
-   *
-   * The focus ring is left alone. `--globals-outline-color` stays neutral so a
-   * coloured control focuses like every other control in the system, and so
-   * `.composes-invalid` — which recolours that ring from `@layer uiid.states`
-   * — still wins outright. A coloured invalid field keeps its tint and gets a
-   * red edge; invalid is the edge, not the surface.
-   *
-   * Source order is load-bearing in both directions. After
-   * `.composes-field-surface`, so `color` beats its `--shade-foreground` at
-   * equal specificity. Before `.composes-field-surface-ghost`, so a ghost
-   * control still drops its resting fill — a coloured ghost is then transparent
-   * until hover, where ghost's own rule reads the remapped `--forms-bg-hover`
-   * and lands on `--palette-tint-hover` with no extra rule for the pairing.
-   */
   .composes-field-surface-color {
     --forms-bg: var(--palette-tint);
     --forms-bg-hover: var(--palette-tint-hover);
@@ -153,41 +78,11 @@
     color: var(--palette-on-tint);
   }
 
-  /**
-   * The palette hue on a *selected* surface — the `color` prop's treatment for
-   * the selection controls (checkbox, radio, switch, slider).
-   *
-   * Fill, not tint. These controls have no content to read through: the surface
-   * itself is the signal that something is on, so it takes the solid treatment a
-   * filled Button wears rather than the tint a text field does. Only the
-   * selected state is coloured; unchecked and resting surfaces stay on shade
-   * tokens, so the hue marks the choice rather than the widget.
-   *
-   * The two names are deliberately generic. Each control reads them with its own
-   * shade fallback — `var(--control-fill, var(--shade-foreground))` — so an
-   * uncoloured control resolves exactly as it did before this class existed, and
-   * adopting the hue is one `composes:` line plus no default to keep in sync.
-   * That is why the mapping lives here once instead of four near-identical
-   * remaps of four differently-named component variables.
-   *
-   * `--control-on-fill` is the pairing measured against `--palette-fill`, and it
-   * inherits, so a checkmark or a switch thumb nested inside the control picks
-   * it up without the rule needing to know the hue.
-   */
   .composes-control-fill-color {
     --control-fill: var(--palette-fill);
     --control-on-fill: var(--palette-on-fill);
   }
 
-  /**
-   * Ghost drops the field surface's resting fill and edge, and nothing else.
-   *
-   * Declared after `.composes-field-surface` so it wins the tie at equal
-   * specificity, which is also why it must stay in this layer rather than
-   * moving up with a consumer. The focus ring is deliberately left alone:
-   * clearing `outline-color` here erased it outright rather than hiding it
-   * until focus.
-   */
   .composes-field-surface-ghost {
     background-color: transparent;
     border-color: transparent;
@@ -204,31 +99,12 @@
     }
   }
 
-  /**
-   * Fill the inline space the parent offers. Matches `Box`'s `fullwidth`
-   * toggle value-for-value, so a component that has no layout primitive to
-   * reach for (a bare `<input>`, a `<button>`) resolves to the same width as
-   * one that does. The fallback chain is deliberate: Firefox drops
-   * `-webkit-fill-available` and lands on `-moz-available`, Chrome and Safari
-   * drop `-moz-available` and keep `-webkit-fill-available`, and anything
-   * older keeps `100%`.
-   */
   .composes-fullwidth {
     width: 100%;
     width: -webkit-fill-available;
     width: -moz-available;
   }
 
-  /**
-   * Enter/exit animation for anchored floating popups (tooltip, popover,
-   * select, combobox, autocomplete). Base UI toggles [data-starting-style] and
-   * [data-ending-style] around open/close, and exposes --transform-origin on
-   * the positioner (pointing at the anchor) so the popup scales out of its
-   * trigger rather than its own center.
-   *
-   * Transitions (not keyframes) so an interrupted open animates back to closed
-   * from its current position instead of snapping.
-   */
   .composes-popup {
     transform-origin: var(--transform-origin, center);
     transition:
@@ -240,55 +116,16 @@
       transform: scale(var(--globals-transform-scale-down));
     }
 
-    /*
-     * Base UI sets [data-instant] with a reason, and only some of them should
-     * skip the animation. Matching the bare attribute broke the exit fade in
-     * the most ordinary case there is: a Dialog is a focus trap, so clicking
-     * anywhere inside it to dismiss a popup counts as "focus" and the popup
-     * vanished instead of fading. "dismiss" (Escape, outside click) reads the
-     * same way.
-     *
-     * Only the trigger-hopping reasons stay instant — moving between adjacent
-     * tooltips or menu items must not replay the open animation each time.
-     * Reasons, by component: popover/select/menu are
-     * click | dismiss | focus | trigger-change | group, tooltip is
-     * delay | dismiss | focus.
-     */
     &:where([data-instant="delay"], [data-instant="trigger-change"], [data-instant="group"]) {
       transition-duration: 0ms;
     }
   }
 
-  /**
-   * Positioner wrapping an anchored popup (select, combobox, autocomplete,
-   * popover, tooltip). Base UI renders the positioner — not the popup inside
-   * it — as the `position: fixed` element, so stacking order has to be set
-   * here; a z-index on the popup would resolve against the positioner instead
-   * of the page.
-   *
-   * Every portalled popup shares one level, matching Dialog's and Drawer's
-   * viewports. That is what keeps a Select opened inside a Dialog from
-   * rendering behind it: at an equal z-index, the later portal in DOM order
-   * paints on top, and a popup opened from within a dialog is always appended
-   * after it.
-   *
-   * outline: 0 because Base UI moves focus to the positioner on open for some
-   * keyboard flows, and the UA ring would otherwise trace the whole anchored
-   * box rather than the focused item inside it.
-   */
   .composes-popup-positioner {
     z-index: var(--globals-z-index-popup);
     outline: 0;
   }
 
-  /**
-   * Before/after slot inside a form control (input, select). Holds the slot's
-   * visual identity — muted color, non-shrinking, icon sizing, and pointer
-   * pass-through so a decorative icon doesn't swallow clicks meant for the
-   * control (interactive contents opt back in). Size-based edge padding is
-   * child-scoped to the control's size class so the same slot spacing applies
-   * whether the parent is an input wrapper or a select trigger.
-   */
   .composes-field-slot {
     flex-shrink: 0;
     color: var(--shade-muted);
@@ -316,35 +153,12 @@
     padding-inline: var(--forms-size-lg-padding-x);
   }
 
-  /**
-   * Selectable option item, shared by dropdown-style controls (select,
-   * combobox, autocomplete). Keyed off Base UI's data attributes so the same
-   * class covers highlight and disabled states across all of them.
-   */
   .composes-option {
     padding: var(--list-item-padding-y) var(--list-item-padding-x);
     border-radius: var(--globals-border-radius);
     transition: background-color var(--globals-transition-duration) ease-in-out;
     cursor: pointer;
 
-    /*
-     * The highlight follows the popup's hue. Every popup that hosts these is a
-     * Card, and Card always carries a palette class — `neutral` by default — so
-     * `--palette-tint-hover` resolves whether or not a `color` was passed; the
-     * `--shade-accent` fallback covers an option rendered outside one.
-     *
-     * On an uncoloured popup this is all but invisible: neutral tint-hover is
-     * #d9d8d6 against the #ddddd9 it replaces in light, and #2d2c2a against
-     * #242423 in dark. On a tinted popup it is the whole point — the previous
-     * flat `--shade-accent` painted a grey bar across a coloured surface, worst
-     * in dark mode, because the palette classes publish `--palette-*` and never
-     * remap `--shade-accent`.
-     *
-     * Only the highlight moves. The selected-item indicator, group labels and
-     * `@uiid/lists`' own treatment are still on shade tokens, and choosing
-     * their tokens — measured against a tinted surface rather than the page —
-     * is UI-194.
-     */
     &:where([data-highlighted], :focus-visible) {
       background-color: var(--palette-tint-hover, var(--shade-accent));
     }
@@ -357,59 +171,17 @@
   }
 }
 
-/**
- * Cross-cutting state treatments. `uiid.states` is declared LAST in globals.css,
- * so these outrank anything a component paints — a disabled control must read as
- * disabled regardless of the variant or surface it happens to be wearing.
- *
- * This layer is deliberately tiny. A rule belongs here only if a component
- * overriding it would be a bug; everything a consumer might reasonably want to
- * specialize goes in `uiid.compositions` above.
- */
 @layer uiid.states {
   .composes-disabled:where(:disabled, [disabled], [data-disabled], [aria-disabled="true"]) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
 
-  /**
-   * The same treatment for a wrapper that surrounds the real control — an input
-   * wrapper holding a disabled input, a checkbox row holding a disabled box.
-   * The wrapper never carries the disabled state itself, so it reads it off its
-   * subtree instead.
-   *
-   * Deliberately a second name rather than folding `:has()` into
-   * `.composes-disabled` above. Plenty of its consumers are containers whose
-   * children are legitimately disabled while the container is not — an
-   * accordion with one disabled item, a number field whose stepper disables at
-   * the range boundary — and every one of them would start dimming whole.
-   * Compose this only where a disabled descendant means the whole thing is out.
-   */
   .composes-disabled-within:where(:has(:disabled, [disabled], [data-disabled])) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
 
-  /**
-   * One invalid treatment for every control.
-   *
-   * Invalid is palette-red. The palette variable is redeclared inside the
-   * invalid selector rather than by pinning `.palette-red` on the control, so a
-   * `color` prop's palette is left untouched while the control is valid.
-   *
-   * red-700/red-400 measures 9.56:1 in light and 6.64:1 in dark against the
-   * page, clearing AA for text, and clears the 3:1 non-text threshold as a
-   * border on every surface in the system. The raw --color-red-500 it replaces
-   * measured 3.89:1 in light, and only 2.89:1 as a ring on --forms-bg.
-   *
-   * Only colour is set. Outline geometry stays with the component's
-   * :focus-visible rule, so a focused invalid control keeps its full focus ring
-   * and merely recolours it. The `outline: 1px solid` this replaces on checkbox
-   * and radio tied on specificity with :focus-visible and won on source order,
-   * replacing the ring outright.
-   *
-   * `:has([data-invalid])` covers wrappers that surround the real control.
-   */
   .composes-invalid:where([data-invalid], [aria-invalid="true"], :has([data-invalid])) {
     --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
 
