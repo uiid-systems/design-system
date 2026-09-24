@@ -1,4 +1,4 @@
-import { cloneElement } from "react";
+import { renderWithProps, type RenderProp } from "@uiid/utils";
 
 import type { SwitchRenderProps } from "./switch-render.types";
 
@@ -12,9 +12,10 @@ export const SwitchRender = ({
 
   if (!selectedWrapper) return <>{children}</>;
 
-  const contentToRender =
-    children ?? (selectedWrapper.props as React.PropsWithChildren).children;
-
-  return cloneElement(selectedWrapper, additionalProps, contentToRender);
+  return renderWithProps({
+    render: selectedWrapper as RenderProp,
+    children,
+    props: additionalProps,
+  });
 };
 SwitchRender.displayName = "SwitchRender";
