@@ -52,11 +52,15 @@ export const SortableItem = ({
     isDragging,
   } = useSortable({ id: value, disabled });
 
-  const composedRef = useComposedRefs(ref, (node: HTMLElement | null) => {
-    if (disabled) return;
-    setNodeRef(node);
-    if (asHandle) setActivatorNodeRef(node);
-  });
+  const sortableRef = React.useCallback(
+    (node: HTMLElement | null) => {
+      if (disabled) return;
+      setNodeRef(node);
+      if (asHandle) setActivatorNodeRef(node);
+    },
+    [disabled, asHandle, setNodeRef, setActivatorNodeRef],
+  );
+  const composedRef = useComposedRefs(ref, sortableRef);
 
   const composedStyle = React.useMemo<React.CSSProperties>(() => {
     return {
