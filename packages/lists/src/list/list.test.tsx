@@ -116,8 +116,9 @@ describe("list.module.css theming hooks", () => {
     );
   });
 
-  it("styles only the icon slot, not every svg in the item", () => {
-    expect(listCss).toContain('.list-item [data-slot="list-item-icon"] {');
+  it("styles only the icon prop's class, not every svg in the item", () => {
+    expect(listCss).toContain(".list-item-icon {");
+    expect(listCss).not.toMatch(/\[data-slot/);
     expect(listCss).not.toMatch(/\.list-item svg/);
   });
 
