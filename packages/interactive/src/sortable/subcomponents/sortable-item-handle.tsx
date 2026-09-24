@@ -1,6 +1,7 @@
 "use client";
 
 import { cx, useComposedRefs } from "@uiid/utils";
+import { useCallback } from "react";
 
 import { ITEM_HANDLE_NAME } from "../sortable.constants";
 import { useSortableItemContext } from "../sortable.context";
@@ -19,10 +20,15 @@ export const SortableItemHandle = ({
 
   const isDisabled = disabled ?? itemContext.disabled;
 
-  const composedRef = useComposedRefs(ref, (node: HTMLElement | null) => {
-    if (isDisabled) return;
-    itemContext.setActivatorNodeRef(node);
-  });
+  const { setActivatorNodeRef } = itemContext;
+  const activatorRef = useCallback(
+    (node: HTMLElement | null) => {
+      if (isDisabled) return;
+      setActivatorNodeRef(node);
+    },
+    [isDisabled, setActivatorNodeRef],
+  );
+  const composedRef = useComposedRefs(ref, activatorRef);
 
   return (
     <button
