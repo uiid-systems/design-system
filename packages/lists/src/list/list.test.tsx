@@ -116,6 +116,12 @@ describe("list.module.css theming hooks", () => {
     );
   });
 
+  it("styles only the icon prop's class, not every svg in the item", () => {
+    expect(listCss).toContain(".list-item-icon {");
+    expect(listCss).not.toMatch(/\[data-slot/);
+    expect(listCss).not.toMatch(/\.list-item svg/);
+  });
+
   it("falls back to --shade-muted for the description", () => {
     expect(listCss).toContain(
       "color: var(--list-description-color, var(--shade-muted))",

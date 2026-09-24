@@ -38,7 +38,13 @@ export const ListItem = ({
             />
           }
         >
-          {Icon && <Icon data-slot="list-item-icon" size={ICON_SIZE_LARGE} />}
+          {Icon && (
+            <Icon
+              data-slot="list-item-icon"
+              className={styles["list-item-icon"]}
+              size={ICON_SIZE_LARGE}
+            />
+          )}
           <ListTextBlock
             data-slot="list-item-text"
             label={label}

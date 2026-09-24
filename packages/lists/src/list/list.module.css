@@ -65,8 +65,11 @@
  * Deliberately not a `color` prop on List. A List is a structural component,
  * not inherently a themed surface; a prop would couple this package to the
  * palette for one consumer that already owns a themed boundary.
+ *
+ * Scoped to the `icon` prop's own class, not every svg in the row: children an
+ * item is given, like a Button's icon, keep their own sizing and alignment.
  */
-.list-item svg {
+.list-item-icon {
   transform: translateY(calc(var(--list-icon-size) * 0.25));
   width: var(--list-icon-size);
   color: var(--list-icon-color, var(--shade-foreground));
