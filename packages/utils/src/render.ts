@@ -1,4 +1,10 @@
-import { cloneElement, isValidElement, createElement, type Ref } from "react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  createElement,
+  type Ref,
+} from "react";
 
 import { composeRefs } from "./compose-refs";
 import { cx } from "./cva";
@@ -22,13 +28,7 @@ type EventHandler = (...args: unknown[]) => unknown;
 
 const REACT_LAZY_TYPE = Symbol.for("react.lazy");
 
-type LazyNode = {
-  $$typeof: symbol;
-  _payload: unknown;
-  _init: (payload: unknown) => unknown;
-};
-
-const isLazyNode = (node: unknown): node is LazyNode =>
+const isLazyNode = (node: unknown): boolean =>
   typeof node === "object" &&
   node !== null &&
   (node as { $$typeof?: unknown }).$$typeof === REACT_LAZY_TYPE;
@@ -42,15 +42,16 @@ const isLazyNode = (node: unknown): node is LazyNode =>
  * the server takes a fallback branch while the browser, which gets the plain
  * element, takes the real one, and the two disagree at hydration.
  *
- * Resolving it is what React does when it renders the lazy node itself: a
- * pending payload throws its thenable and suspends, and a rejected one throws
- * its error, so both behave as they would have without this.
+ * `Children.toArray` unwraps lazy nodes the way React does when it renders one:
+ * a pending payload throws its thenable and suspends, and a rejected one throws
+ * its error, so both behave as they would have without this. Base UI's
+ * `useRender` uses the same workaround. Delete it once
+ * https://github.com/facebook/react/issues/32392 is fixed.
  */
-export const resolveRender = <T>(render: T): T => {
-  let node: unknown = render;
-  while (isLazyNode(node)) node = node._init(node._payload);
-  return node as T;
-};
+export const resolveRender = <T>(render: T): T =>
+  isLazyNode(render)
+    ? (Children.toArray(render as React.ReactNode)[0] as T)
+    : render;
 
 /** Matches `onClick`, `onKeyDown`, … but not `on`, `once`, or `onward`. */
 const isEventHandlerKey = (key: string): boolean =>

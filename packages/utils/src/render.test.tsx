@@ -41,8 +41,9 @@ describe("resolveRender", () => {
   });
 
   it("unwraps a lazily wrapped element", () => {
-    const element = <a href="/x" />;
-    expect(resolveRender(lazyElement(element))).toBe(element);
+    const resolved = resolveRender(lazyElement(<a href="/x" />));
+    expect(resolved?.type).toBe("a");
+    expect(propsOf(resolved!).href).toBe("/x");
   });
 
   it("rethrows what a pending payload throws, so React can suspend", () => {
@@ -55,7 +56,7 @@ describe("resolveRender", () => {
       },
     };
 
-    expect(() => resolveRender(lazy)).toThrow();
+    expect.assertions(1);
     try {
       resolveRender(lazy);
     } catch (thrown) {
