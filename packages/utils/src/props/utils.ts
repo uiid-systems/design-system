@@ -28,9 +28,15 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
       stylePropKeys.includes(key as keyof typeof styleProps) &&
       value !== undefined
     ) {
-      if (value != null) {
-        dataAttrs[`data-ui-${key}`] = String(value);
-        (styleObj as Record<string, unknown>)[`--props-${key}`] = value;
+      // A responsive value writes one pair per breakpoint it sets; `base`
+      // keeps the unsuffixed name, so a plain value is just `{ base }`.
+      const values =
+        typeof value === "object" && value ? value : { base: value };
+      for (const [bp, v] of Object.entries(values)) {
+        if (v == null) continue;
+        const suffix = bp === "base" ? "" : `-${bp}`;
+        dataAttrs[`data-ui-${key}${suffix}`] = String(v);
+        (styleObj as Record<string, unknown>)[`--props-${key}${suffix}`] = v;
       }
     } else {
       restProps[key] = value;

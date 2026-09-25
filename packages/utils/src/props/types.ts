@@ -15,6 +15,17 @@ export type WithLayoutProps<BaseProps, LayoutProps> = BaseProps &
     keyof BaseProps | "color" | "defaultValue" | "defaultChecked"
   >;
 
+/**
+ * Breakpoints, smallest first. `@uiid/tokens` sets `--bp-{name}: true` on
+ * `:root` from each one up, so a later breakpoint's rules win.
+ */
+export const BREAKPOINTS = ["sm"] as const;
+
+export type Breakpoint = (typeof BREAKPOINTS)[number];
+
+/** A value, or one per breakpoint. A breakpoint left out keeps the one below. */
+export type Responsive<T> = T | ({ base: T } & Partial<Record<Breakpoint, T>>);
+
 export type StyleProp<K extends keyof React.CSSProperties> = {
   property: K;
   values?:
@@ -22,6 +33,8 @@ export type StyleProp<K extends keyof React.CSSProperties> = {
     | Array<React.CSSProperties[K]>;
   /** Keywords accepted alongside a number, each emitted as its own rule. */
   keywords?: readonly string[];
+  /** Accepts a value per breakpoint; see `Responsive`. */
+  responsive?: boolean;
   unit?: {
     variable: `--${string}`;
   };

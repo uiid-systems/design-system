@@ -158,4 +158,10 @@
   [data-ui-maxh] {
     max-height: calc(var(--props-maxh) * 1px);
   }
+
+  @container style(--bp-sm: true) {
+    [data-ui-gap-sm] {
+      gap: calc(var(--props-gap-sm) * var(--spacing-unit));
+    }
+  }
 }

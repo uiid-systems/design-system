@@ -1,42 +1,82 @@
 import { styleProps } from "./styles";
+import { BREAKPOINTS } from "./types";
+
+type AnyStyleProp = (typeof styleProps)[keyof typeof styleProps];
 
 const kebab = (property: string) =>
   property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
 
+const rule = (selector: string, declaration: string, indent: string) =>
+  `${indent}${selector} {\n${indent}  ${declaration};\n${indent}}`;
+
+/** The rules for one style prop, read from `data-ui-{key}{suffix}`. */
+function rulesFor(
+  key: string,
+  styleProp: AnyStyleProp,
+  suffix = "",
+  indent = "  ",
+) {
+  const property = kebab(styleProp.property);
+  const raw = `var(--props-${key}${suffix})`;
+
+  const value =
+    "unit" in styleProp
+      ? `calc(${raw} * var(${styleProp.unit.variable}))`
+      : "values" in styleProp
+        ? raw
+        : `calc(${raw} * 1px)`;
+
+  const rules = [
+    rule(`[data-ui-${key}${suffix}]`, `${property}: ${value}`, indent),
+  ];
+
+  if ("keywords" in styleProp) {
+    for (const keyword of styleProp.keywords) {
+      rules.push(
+        rule(
+          `[data-ui-${key}${suffix}="${keyword}"]`,
+          `${property}: ${keyword}`,
+          indent,
+        ),
+      );
+    }
+  }
+
+  return rules;
+}
+
 /**
  * The CSS that resolves style props. `prepareComponentProps` puts each value
  * on the element as `data-ui-{key}` and a raw `--props-{key}`; these rules turn
- * the raw value into a declaration.
+ * the raw value into a declaration. A responsive prop's breakpoint values use
+ * `data-ui-{key}-{bp}` and apply under `@container style(--bp-{bp}: true)`.
  *
  * Written to `@uiid/tokens/src/props.css` by `css.test.ts`, which fails when
  * the two drift apart.
  */
 export function stylePropsCss() {
-  const rules: string[] = [];
+  const entries = Object.entries(styleProps) as [string, AnyStyleProp][];
+  const blocks = entries.flatMap(([key, styleProp]) =>
+    rulesFor(key, styleProp),
+  );
 
-  for (const [key, styleProp] of Object.entries(styleProps)) {
-    const property = kebab(styleProp.property);
-    const raw = `var(--props-${key})`;
+  for (const bp of BREAKPOINTS) {
+    const rules = entries
+      .filter(
+        ([, styleProp]) => "responsive" in styleProp && styleProp.responsive,
+      )
+      .flatMap(([key, styleProp]) =>
+        rulesFor(key, styleProp, `-${bp}`, "    "),
+      );
 
-    const value =
-      "unit" in styleProp
-        ? `calc(${raw} * var(${styleProp.unit.variable}))`
-        : "values" in styleProp
-          ? raw
-          : `calc(${raw} * 1px)`;
-
-    rules.push(`  [data-ui-${key}] {\n    ${property}: ${value};\n  }`);
-
-    if ("keywords" in styleProp) {
-      for (const keyword of styleProp.keywords) {
-        rules.push(
-          `  [data-ui-${key}="${keyword}"] {\n    ${property}: ${keyword};\n  }`,
-        );
-      }
+    if (rules.length > 0) {
+      blocks.push(
+        `  @container style(--bp-${bp}: true) {\n${rules.join("\n\n")}\n  }`,
+      );
     }
   }
 
-  return `${HEADER}@layer uiid.props {\n${rules.join("\n\n")}\n}\n`;
+  return `${HEADER}@layer uiid.props {\n${blocks.join("\n\n")}\n}\n`;
 }
 
 const HEADER = `/**

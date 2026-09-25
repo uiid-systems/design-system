@@ -18,6 +18,13 @@
     color-scheme: light dark;
   }
 
+  /* Breakpoint flags, read with `@container style(--bp-sm: true)`. */
+  :root {
+    @media (width >= 40rem) {
+      --bp-sm: true;
+    }
+  }
+
   :root[data-theme="light"] {
     color-scheme: light;
   }

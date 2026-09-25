@@ -14,7 +14,7 @@ describe("Box", () => {
     expect(box).toHaveTextContent("Hello");
   });
 
-  it("puts attribute-backed spacing props on the element as data and a raw var", () => {
+  it("puts a style prop on the element as a data attribute and a raw var", () => {
     render(
       <Box p={4} data-testid="box">
         x
@@ -23,9 +23,10 @@ describe("Box", () => {
     const box = screen.getByTestId("box");
     expect(box).toHaveAttribute("data-ui-p", "4");
     expect(box.style.getPropertyValue("--props-p")).toBe("4");
+    expect(box.style.padding).toBe("");
   });
 
-  it("turns other numeric spacing props into a calc() inline style", () => {
+  it("writes each spacing prop under its own key", () => {
     render(
       <Box px={4} data-testid="box">
         x
@@ -34,7 +35,30 @@ describe("Box", () => {
     expect(screen.getByTestId("box")).toHaveAttribute("data-ui-px", "4");
   });
 
-  it("turns string alignment props into a plain inline style", () => {
+  it("writes a pair per breakpoint for a responsive value", () => {
+    render(
+      <Box gap={{ base: 2, sm: 6 }} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-gap", "2");
+    expect(box).toHaveAttribute("data-ui-gap-sm", "6");
+    expect(box.style.getPropertyValue("--props-gap-sm")).toBe("6");
+  });
+
+  it("writes nothing for a breakpoint a responsive value leaves out", () => {
+    render(
+      <Box gap={{ base: 2 }} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-gap", "2");
+    expect(box).not.toHaveAttribute("data-ui-gap-sm");
+  });
+
+  it("writes keyword props verbatim", () => {
     render(
       <Box ax="center" data-testid="box">
         x

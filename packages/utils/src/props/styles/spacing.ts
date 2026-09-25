@@ -1,4 +1,4 @@
-import type { StyleProp } from "../types";
+import type { Responsive, StyleProp } from "../types";
 
 export const marginPropKeys = [
   "m",
@@ -30,6 +30,7 @@ export const spacingPropKeys = [
 export const gap = {
   property: "gap",
   unit: { variable: "--spacing-unit" },
+  responsive: true,
 } satisfies StyleProp<"gap">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
@@ -125,7 +126,7 @@ export const pb = {
 
 export type SpacingProps = {
   /** Gap between children, in spacing units */
-  gap?: number;
+  gap?: Responsive<number>;
   /** Margin on all sides, in spacing units */
   m?: number | "auto";
   /** Margin on the left and right (inline) edges, in spacing units */
