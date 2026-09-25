@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.6.5](https://github.com/uiid-systems/design-system/compare/v0.6.4...v0.6.5) (2026-09-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** @uiid/utils no longer exports compose; use the composes key in a cva config instead.
+
+### Bug Fixes
+
+* **ui:** migrate to cva 1.0.0-beta.12 ([#439](https://github.com/uiid-systems/design-system/issues/439)) ([1aecb1e](https://github.com/uiid-systems/design-system/commit/1aecb1e0651fb84b5612eb5483665b371a5d887b))
+
+
+### Miscellaneous Chores
+
+* **docs:** remove stale SPEC.md ([#442](https://github.com/uiid-systems/design-system/issues/442)) ([e5e50af](https://github.com/uiid-systems/design-system/commit/e5e50afe41adf8441bd3ce207582a73f92d10678))
+
 ## [0.6.4](https://github.com/uiid-systems/design-system/compare/v0.6.3...v0.6.4) (2026-09-25)
 
 
