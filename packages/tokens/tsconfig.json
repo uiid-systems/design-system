@@ -3,7 +3,8 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["vitest/globals"]
   },
   /* The palette imports its ramps straight from the token JSON, and `composite`
      requires every file the program touches to be listed explicitly. */
