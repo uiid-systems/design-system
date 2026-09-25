@@ -8,8 +8,7 @@ type ExampleBoxProps = BoxProps & {
 export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
   <Box
     h={48}
-    bordered
-    rounded
+    b={1}
     style={{ backgroundColor: bg, ...props.style }}
     {...props}
   />

@@ -302,7 +302,7 @@ describe("Tabs", () => {
     );
     expect(panel).toHaveAttribute("data-ui-gap", "3");
     expect(panel).toHaveAttribute("data-ui-ay", "start");
-    expect(panel?.className).not.toMatch(/toggle-fullwidth/);
+    expect(panel).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   // ============================================

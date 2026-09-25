@@ -2,6 +2,7 @@ export * from "./styles/border";
 export * from "./styles/layout";
 export * from "./styles/spacing";
 export * from "./styles/sizing";
+export * from "./styles/toggles";
 export {
   styleProps,
   stylePropKeys,

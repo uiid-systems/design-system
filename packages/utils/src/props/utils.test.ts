@@ -49,6 +49,19 @@ describe("prepareComponentProps", () => {
     expect(result).not.toHaveProperty("style");
   });
 
+  it("writes a bare attribute for a toggle that is on, and nothing when off", () => {
+    const result = prepareComponentProps({
+      componentName: "box",
+      props: { fullwidth: true, evenly: false },
+      toggleProps: ["fullwidth", "evenly"],
+    });
+
+    expect(result).toHaveProperty("data-ui-fullwidth", "");
+    expect(result).not.toHaveProperty("data-ui-evenly");
+    expect(result).not.toHaveProperty("fullwidth");
+    expect(result).not.toHaveProperty("evenly");
+  });
+
   it("keeps the caller's style, which wins over style props", () => {
     const result = prepareComponentProps({
       componentName: "box",

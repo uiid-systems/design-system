@@ -11,8 +11,7 @@ export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
   <Box
     h={64}
     w={64}
-    bordered
-    rounded
+    b={1}
     style={{ backgroundColor: bg, ...props.style }}
     {...props}
   />

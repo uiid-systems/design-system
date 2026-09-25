@@ -43,13 +43,16 @@ describe("Box", () => {
     expect(screen.getByTestId("box")).toHaveAttribute("data-ui-ax", "center");
   });
 
-  it("applies a CSS module class for toggle props", () => {
+  it("writes a bare data attribute for a toggle that is on", () => {
     render(
-      <Box fullwidth data-testid="box">
+      <Box fullwidth evenly={false} data-testid="box">
         x
       </Box>,
     );
-    expect(screen.getByTestId("box")).toHaveClass(styles["toggle-fullwidth"]);
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-fullwidth", "");
+    expect(box).not.toHaveAttribute("data-ui-evenly");
+    expect(box).not.toHaveAttribute("fullwidth");
   });
 
   it("renders as a different element via the render prop", () => {

@@ -13,3 +13,5 @@ Use Box directly when:
 ## Style props
 
 Spacing (`gap`, `p*`, `m*`), sizing (`w`, `h`, `min*`, `max*`), border (`b*`) and alignment (`ax`, `ay`, `direction`) props render as `data-ui-*` attributes resolved by `@uiid/tokens` CSS, so load `@uiid/tokens/globals.css` (or `@uiid/design-system/globals.css`). Your own unlayered CSS overrides them from a class.
+
+Toggles `evenly`, `fullwidth`, `fullheight` and `fullscreen` are booleans. For a border, use `b={1}`; for rounded corners or a fixed aspect ratio, use a class.

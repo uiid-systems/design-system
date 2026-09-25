@@ -57,7 +57,7 @@ export const Layout = () => (
   <Collapsible
     trigger={<Button>Show details</Button>}
     RootProps={{ gap: 2, ax: "start" }}
-    PanelProps={{ gap: 2, p: 4, bordered: true, rounded: true }}
+    PanelProps={{ gap: 2, p: 4, b: 1 }}
   >
     <Text weight="bold">Shipping</Text>
     <Text shade="muted">{BODY}</Text>

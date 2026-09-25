@@ -4,13 +4,10 @@ import type { BoxProps } from "@uiid/design-system";
 export const EXAMPLE_LAYOUT_GAP: BoxProps["gap"] = 2;
 
 export const toggleControls: ArgTypes = {
-  bordered: { control: "boolean", table: { category: "Toggles" } },
   fullwidth: { control: "boolean", table: { category: "Toggles" } },
   fullheight: { control: "boolean", table: { category: "Toggles" } },
   fullscreen: { control: "boolean", table: { category: "Toggles" } },
   evenly: { control: "boolean", table: { category: "Toggles" } },
-  rounded: { control: "boolean", table: { category: "Toggles" } },
-  square: { control: "boolean", table: { category: "Toggles" } },
 };
 
 export const sizeControls: ArgTypes = {

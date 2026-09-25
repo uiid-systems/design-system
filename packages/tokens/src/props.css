@@ -341,4 +341,27 @@
   [data-ui-maxh] {
     max-height: calc(var(--props-maxh) * 1px);
   }
+
+  [data-ui-evenly] > * {
+    flex: 1;
+    flex-basis: auto;
+    width: -webkit-fill-available;
+    width: 100%;
+  }
+
+  [data-ui-fullwidth] {
+    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+  }
+
+  [data-ui-fullheight] {
+    height: 100%;
+    height: -webkit-fill-available;
+  }
+
+  [data-ui-fullscreen] {
+    width: 100dvw;
+    height: 100dvh;
+  }
 }

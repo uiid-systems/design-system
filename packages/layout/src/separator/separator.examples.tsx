@@ -9,12 +9,7 @@ type ExampleBoxProps = BoxProps & {
   bg?: React.CSSProperties["backgroundColor"];
 };
 export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
-  <Box
-    bordered
-    rounded
-    style={{ backgroundColor: bg, ...props.style }}
-    {...props}
-  />
+  <Box b={1} style={{ backgroundColor: bg, ...props.style }} {...props} />
 );
 
 const SHADES: NonNullable<SeparatorProps["shade"]>[] = [
