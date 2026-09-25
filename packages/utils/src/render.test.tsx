@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { createRef, useCallback, useRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
-import { renderWithProps } from "./render";
+import { renderWithProps, resolveRender, type RenderProp } from "./render";
 
 /** Reads the props off the element `renderWithProps` returns. */
 const propsOf = (element: React.ReactElement): Record<string, unknown> =>
@@ -18,6 +18,51 @@ const fakeEvent = () => {
   };
   return event;
 };
+
+/**
+ * The shape an element takes when it reaches development SSR lazily wrapped:
+ * a `react.lazy` node whose `_init` hands back the element.
+ */
+const lazyElement = (element: React.ReactElement): RenderProp =>
+  ({
+    $$typeof: Symbol.for("react.lazy"),
+    _payload: element,
+    _init: (payload: unknown) => payload,
+  }) as unknown as RenderProp;
+
+describe("resolveRender", () => {
+  it("returns an element unchanged", () => {
+    const element = <a href="/x" />;
+    expect(resolveRender(element)).toBe(element);
+  });
+
+  it("passes undefined through", () => {
+    expect(resolveRender(undefined)).toBeUndefined();
+  });
+
+  it("unwraps a lazily wrapped element", () => {
+    const element = <a href="/x" />;
+    expect(resolveRender(lazyElement(element))).toBe(element);
+  });
+
+  it("rethrows what a pending payload throws, so React can suspend", () => {
+    const pending = Promise.resolve();
+    const lazy = {
+      $$typeof: Symbol.for("react.lazy"),
+      _payload: null,
+      _init: () => {
+        throw pending;
+      },
+    };
+
+    expect(() => resolveRender(lazy)).toThrow();
+    try {
+      resolveRender(lazy);
+    } catch (thrown) {
+      expect(thrown).toBe(pending);
+    }
+  });
+});
 
 describe("renderWithProps", () => {
   describe("without a render element", () => {
@@ -90,6 +135,21 @@ describe("renderWithProps", () => {
       });
 
       expect(propsOf(result).id).toBe("ours");
+    });
+  });
+
+  describe("with a lazily wrapped render element", () => {
+    it("clones the element it resolves to instead of the fallback", () => {
+      const result = renderWithProps({
+        render: lazyElement(<a href="/x" className="theirs" />),
+        props: { className: "ours" },
+        children: "go",
+      });
+
+      expect(result.type).toBe("a");
+      expect(propsOf(result).href).toBe("/x");
+      expect(propsOf(result).className).toBe("theirs ours");
+      expect(propsOf(result).children).toBe("go");
     });
   });
 

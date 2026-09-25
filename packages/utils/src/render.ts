@@ -20,6 +20,38 @@ export type RenderWithPropsOptions = {
 
 type EventHandler = (...args: unknown[]) => unknown;
 
+const REACT_LAZY_TYPE = Symbol.for("react.lazy");
+
+type LazyNode = {
+  $$typeof: symbol;
+  _payload: unknown;
+  _init: (payload: unknown) => unknown;
+};
+
+const isLazyNode = (node: unknown): node is LazyNode =>
+  typeof node === "object" &&
+  node !== null &&
+  (node as { $$typeof?: unknown }).$$typeof === REACT_LAZY_TYPE;
+
+/**
+ * Unwraps a `render` element that arrives wrapped in a lazy node.
+ *
+ * An element a server component passes to a client one, such as
+ * `render={<Link href="/x" />}`, can reach server rendering in development as a
+ * lazy reference instead of an element. `isValidElement` rejects it there, so
+ * the server takes a fallback branch while the browser, which gets the plain
+ * element, takes the real one, and the two disagree at hydration.
+ *
+ * Resolving it is what React does when it renders the lazy node itself: a
+ * pending payload throws its thenable and suspends, and a rejected one throws
+ * its error, so both behave as they would have without this.
+ */
+export const resolveRender = <T>(render: T): T => {
+  let node: unknown = render;
+  while (isLazyNode(node)) node = node._init(node._payload);
+  return node as T;
+};
+
 /** Matches `onClick`, `onKeyDown`, … but not `on`, `once`, or `onward`. */
 const isEventHandlerKey = (key: string): boolean =>
   key.length > 2 && key.startsWith("on") && key[2] >= "A" && key[2] <= "Z";
@@ -104,8 +136,10 @@ export const renderWithProps = ({
   props,
   fallbackElement = "div",
 }: RenderWithPropsOptions): React.ReactElement => {
-  if (isValidElement(render)) {
-    const theirProps = render.props as Record<string, unknown>;
+  const element = resolveRender(render);
+
+  if (isValidElement(element)) {
+    const theirProps = element.props as Record<string, unknown>;
 
     // Only handler keys and `ref` need special treatment. Keys the render
     // element owns alone already survive `cloneElement`; keys we own alone come
@@ -120,12 +154,12 @@ export const renderWithProps = ({
       }
     }
 
-    return cloneElement(render, {
+    return cloneElement(element, {
       ...mergedProps,
-      children: children ?? render.props.children,
-      className: cx(render.props.className, props.className as string),
+      children: children ?? element.props.children,
+      className: cx(element.props.className, props.className as string),
       style: {
-        ...render.props.style,
+        ...element.props.style,
         ...(props.style as React.CSSProperties),
       },
     });
