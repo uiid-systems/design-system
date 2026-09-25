@@ -16,10 +16,11 @@ export type WithLayoutProps<BaseProps, LayoutProps> = BaseProps &
   >;
 
 /**
- * Breakpoints, smallest first. `@uiid/tokens` sets `--bp-{name}: true` on
+ * Breakpoints, smallest first. Their widths live in `@uiid/tokens`
+ * (`primitives/breakpoints.tokens.json`), which sets `--bp-{name}: true` on
  * `:root` from each one up, so a later breakpoint's rules win.
  */
-export const BREAKPOINTS = ["sm"] as const;
+export const BREAKPOINTS = ["sm", "md", "lg", "xl"] as const;
 
 export type Breakpoint = (typeof BREAKPOINTS)[number];
 

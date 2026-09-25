@@ -1,5 +1,6 @@
 @layer uiid.globals, uiid.tokens, uiid.compositions, uiid.primitives, uiid.components, uiid.props, uiid.states;
 
+@import "./css/primitives/breakpoints.tokens.css";
 @import "./css/primitives/colors.tokens.css";
 @import "./css/primitives/spacing.tokens.css";
 @import "./css/primitives/typography.tokens.css";
@@ -16,13 +17,6 @@
 @layer uiid.globals {
   :root {
     color-scheme: light dark;
-  }
-
-  /* Breakpoint flags, read with `@container style(--bp-sm: true)`. */
-  :root {
-    @media (width >= 40rem) {
-      --bp-sm: true;
-    }
   }
 
   :root[data-theme="light"] {

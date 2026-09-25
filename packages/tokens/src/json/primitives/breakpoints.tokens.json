@@ -1,0 +1,10 @@
+{
+  "$description": "UIID Design System - Viewport Breakpoints. Each also sets --bp-{name}: true on :root from that width up, read with @container style(--bp-{name}: true).",
+  "breakpoint": {
+    "$type": "dimension",
+    "sm": { "$value": "40rem" },
+    "md": { "$value": "48rem" },
+    "lg": { "$value": "64rem" },
+    "xl": { "$value": "80rem" }
+  }
+}

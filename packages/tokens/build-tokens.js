@@ -161,7 +161,21 @@ StyleDictionary.registerFormat({
       )
       .filter(Boolean)
       .join("\n");
-    return `${header}\n\n@layer ${LAYER} {\n  :root {\n${vars.trimEnd()}\n  }\n}\n`;
+    // A custom property cannot be read in a media condition, so each
+    // breakpoint also publishes a flag from its width up. Components read the
+    // flag with `@container style(--bp-{name}: true)`; later ones win, so the
+    // flags stack mobile-first.
+    const flags = dictionary.allTokens
+      .filter(
+        (token) =>
+          token.filePath === sourcePath && token.path[0] === "breakpoint",
+      )
+      .map(
+        (token) =>
+          `\n\n    @media (width >= ${token.$value}) {\n      --bp-${token.path[1]}: true;\n    }`,
+      )
+      .join("");
+    return `${header}\n\n@layer ${LAYER} {\n  :root {\n${vars.trimEnd()}${flags}\n  }\n}\n`;
   },
 });
 
