@@ -262,11 +262,9 @@ describe("Slider layout props", () => {
 
   it("keeps the root's and control's own layout by default", () => {
     const { container } = render(<Slider />);
-    expect(root(container)?.style.gap).toBe("calc(2 * var(--spacing-unit))");
-    expect(root(container)).toHaveStyle({ alignItems: "center" });
-    expect(control(container)?.style.paddingInline).toBe(
-      "calc(3 * var(--spacing-inline))",
-    );
+    expect(root(container)).toHaveAttribute("data-ui-gap", "2");
+    expect(root(container)).toHaveAttribute("data-ui-ay", "center");
+    expect(control(container)).toHaveAttribute("data-ui-px", "3");
   });
 
   /*
@@ -275,17 +273,15 @@ describe("Slider layout props", () => {
    */
   it("forwards layout props to the root Group", () => {
     const { container } = render(<Slider gap={4} ay="end" />);
-    expect(root(container)?.style.gap).toBe("calc(4 * var(--spacing-unit))");
-    expect(root(container)).toHaveStyle({ alignItems: "end" });
+    expect(root(container)).toHaveAttribute("data-ui-gap", "4");
+    expect(root(container)).toHaveAttribute("data-ui-ay", "end");
   });
 
   it("forwards layout props from ControlProps to the control Group", () => {
     const { container } = render(
       <Slider ControlProps={{ px: 5, fullwidth: false }} />,
     );
-    expect(control(container)?.style.paddingInline).toBe(
-      "calc(5 * var(--spacing-inline))",
-    );
+    expect(control(container)).toHaveAttribute("data-ui-px", "5");
     expect(control(container)?.className).not.toMatch(/toggle-fullwidth/);
   });
 });

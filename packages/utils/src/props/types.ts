@@ -20,6 +20,8 @@ export type StyleProp<K extends keyof React.CSSProperties> = {
   values?:
     | ReadonlyArray<React.CSSProperties[K]>
     | Array<React.CSSProperties[K]>;
+  /** Keywords accepted alongside a number, each emitted as its own rule. */
+  keywords?: readonly string[];
   unit?: {
     variable: `--${string}`;
   };

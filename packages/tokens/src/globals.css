@@ -1,4 +1,4 @@
-@layer uiid.globals, uiid.tokens, uiid.compositions, uiid.primitives, uiid.components, uiid.states;
+@layer uiid.globals, uiid.tokens, uiid.compositions, uiid.primitives, uiid.components, uiid.props, uiid.states;
 
 @import "./css/primitives/colors.tokens.css";
 @import "./css/primitives/spacing.tokens.css";
@@ -10,6 +10,7 @@
 
 @import "./palette.css";
 @import "./compositions.css";
+@import "./props.css";
 @import "./animations.css";
 
 @layer uiid.globals {

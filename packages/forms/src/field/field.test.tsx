@@ -414,7 +414,7 @@ describe("Field chrome scale", () => {
     );
     // An inline gap would outrank the tier's `--field-gap` and freeze every
     // field at one spacing, which is what the prop-driven version did.
-    expect(root?.style.gap).toBe("");
+    expect(root).not.toHaveAttribute("data-ui-gap");
   });
 
   it("still lets a caller pin the gap themselves", () => {
@@ -426,7 +426,7 @@ describe("Field chrome scale", () => {
     const root = container.querySelector<HTMLElement>(
       "[data-slot='field-root']",
     );
-    expect(root?.style.gap).toBe("calc(6 * var(--spacing-unit))");
+    expect(root).toHaveAttribute("data-ui-gap", "6");
   });
 
   it("keeps the base class on a bare root so it still resolves a gap", () => {
@@ -480,7 +480,7 @@ describe("FieldRoot layout props", () => {
         <FieldLabel>Email</FieldLabel>
       </FieldRoot>,
     );
-    expect(root(container)).toHaveStyle({ alignItems: "stretch" });
+    expect(root(container)).toHaveAttribute("data-ui-ay", "stretch");
   });
 
   /*
@@ -493,7 +493,7 @@ describe("FieldRoot layout props", () => {
         <FieldLabel>Email</FieldLabel>
       </FieldRoot>,
     );
-    expect(root(container)).toHaveStyle({ alignItems: "start" });
+    expect(root(container)).toHaveAttribute("data-ui-ay", "start");
     expect(root(container)?.className).toMatch(/toggle-fullwidth/);
   });
 });

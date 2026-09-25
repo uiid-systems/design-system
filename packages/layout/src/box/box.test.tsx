@@ -14,15 +14,24 @@ describe("Box", () => {
     expect(box).toHaveTextContent("Hello");
   });
 
-  it("turns numeric spacing props into a calc() inline style", () => {
+  it("puts attribute-backed spacing props on the element as data and a raw var", () => {
     render(
       <Box p={4} data-testid="box">
         x
       </Box>,
     );
-    expect(screen.getByTestId("box")).toHaveStyle({
-      padding: "calc(4 * var(--spacing-unit))",
-    });
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-p", "4");
+    expect(box.style.getPropertyValue("--props-p")).toBe("4");
+  });
+
+  it("turns other numeric spacing props into a calc() inline style", () => {
+    render(
+      <Box px={4} data-testid="box">
+        x
+      </Box>,
+    );
+    expect(screen.getByTestId("box")).toHaveAttribute("data-ui-px", "4");
   });
 
   it("turns string alignment props into a plain inline style", () => {
@@ -31,7 +40,7 @@ describe("Box", () => {
         x
       </Box>,
     );
-    expect(screen.getByTestId("box")).toHaveStyle({ justifyContent: "center" });
+    expect(screen.getByTestId("box")).toHaveAttribute("data-ui-ax", "center");
   });
 
   it("applies a CSS module class for toggle props", () => {
@@ -71,7 +80,7 @@ describe("Box", () => {
     );
     const box = screen.getByTestId("box");
     expect(box).toHaveStyle({ backgroundColor: "red" });
-    expect(box).toHaveStyle({ padding: "calc(4 * var(--spacing-unit))" });
+    expect(box).toHaveAttribute("data-ui-p", "4");
   });
 
   it("forwards standard HTML attributes and event handlers", () => {

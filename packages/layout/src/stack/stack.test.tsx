@@ -22,8 +22,8 @@ describe("Stack", () => {
     );
     const stack = screen.getByTestId("stack");
     // Stack swaps ax/ay: the user's `ax` maps to align-items (cross axis).
-    expect(stack).toHaveStyle({ alignItems: "center" });
+    expect(stack).toHaveAttribute("data-ui-ay", "center");
     // Spacing props forward through to the underlying Box.
-    expect(stack).toHaveStyle({ padding: "calc(4 * var(--spacing-unit))" });
+    expect(stack).toHaveAttribute("data-ui-p", "4");
   });
 });

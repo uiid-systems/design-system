@@ -35,42 +35,49 @@ export const gap = {
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
 export const m = {
   property: "margin",
+  keywords: ["auto"],
   unit: { variable: "--spacing-unit" },
 } satisfies StyleProp<"margin">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline */
 export const mx = {
   property: "marginInline",
+  keywords: ["auto"],
   unit: { variable: "--spacing-inline" },
 } satisfies StyleProp<"marginInline">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start */
 export const ml = {
   property: "marginInlineStart",
+  keywords: ["auto"],
   unit: { variable: "--spacing-inline" },
 } satisfies StyleProp<"marginInlineStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end */
 export const mr = {
   property: "marginInlineEnd",
+  keywords: ["auto"],
   unit: { variable: "--spacing-inline" },
 } satisfies StyleProp<"marginInlineEnd">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block */
 export const my = {
   property: "marginBlock",
+  keywords: ["auto"],
   unit: { variable: "--spacing-block" },
 } satisfies StyleProp<"marginBlock">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start */
 export const mt = {
   property: "marginBlockStart",
+  keywords: ["auto"],
   unit: { variable: "--spacing-block" },
 } satisfies StyleProp<"marginBlockStart">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end */
 export const mb = {
   property: "marginBlockEnd",
+  keywords: ["auto"],
   unit: { variable: "--spacing-block" },
 } satisfies StyleProp<"marginBlockEnd">;
 
