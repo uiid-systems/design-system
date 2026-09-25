@@ -1,14 +1,13 @@
-import { defineConfig, type VariantProps } from "cva";
+import { clsx, type ClassValue as ClsxClassValue } from "clsx";
+import type { VariantProps } from "cva";
+import { defineConfig } from "cva/config";
 import { twMerge } from "tailwind-merge";
 
 const config = defineConfig({
-  hooks: {
-    onComplete: (className: string) => twMerge(className),
-  },
+  cx: (...inputs: ClsxClassValue[]) => twMerge(clsx(inputs)),
 });
 
 const cva = config.cva;
-const compose = config.compose;
 
 /**
  * cva's `ClassDictionary` is `Record<string, any>`, which a function satisfies,
@@ -53,5 +52,5 @@ function cxState<State>(
     cx(...args.map((arg) => (typeof arg === "function" ? arg(state) : arg)));
 }
 
-export { cva, compose, cx, cxState };
+export { cva, cx, cxState };
 export type { VariantProps };

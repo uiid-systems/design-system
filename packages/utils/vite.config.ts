@@ -25,7 +25,9 @@ export default defineConfig({
         "react-dom",
         "react/jsx-runtime",
         "react/jsx-dev-runtime",
+        "clsx",
         "cva",
+        "cva/config",
         "tailwind-merge",
       ],
       output: {
