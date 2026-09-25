@@ -4,12 +4,8 @@ import type {
   SpacingProps,
   SizingProps,
   RenderProp,
-  VariantProps,
+  ToggleProps,
 } from "@uiid/utils";
-
-import type { boxVariants } from "./box.variants";
-
-export type BoxVariants = VariantProps<typeof boxVariants>;
 
 type StyleProps = BorderProps & LayoutProps & SpacingProps & SizingProps;
 
@@ -23,4 +19,4 @@ export type BoxProps = React.HTMLAttributes<HTMLElement> & {
   /** Class names merged onto the element */
   className?: string;
 } & StyleProps &
-  BoxVariants;
+  ToggleProps;

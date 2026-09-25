@@ -1,7 +1,7 @@
 import { Box } from "./box";
 import type { BoxProps } from "./box.types";
 
-const commonProps: BoxProps = { bordered: true };
+const commonProps: BoxProps = { b: 1 };
 
 export const Centered = () => (
   <Box ax="center" ay="center" h={240} {...commonProps}>

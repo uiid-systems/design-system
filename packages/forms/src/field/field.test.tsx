@@ -494,6 +494,6 @@ describe("FieldRoot layout props", () => {
       </FieldRoot>,
     );
     expect(root(container)).toHaveAttribute("data-ui-ay", "start");
-    expect(root(container)?.className).toMatch(/toggle-fullwidth/);
+    expect(root(container)).toHaveAttribute("data-ui-fullwidth", "");
   });
 });

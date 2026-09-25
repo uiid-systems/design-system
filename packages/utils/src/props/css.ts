@@ -1,4 +1,5 @@
 import { styleProps } from "./styles";
+import { toggleProps } from "./styles/toggles";
 import { BREAKPOINTS } from "./types";
 
 type AnyStyleProp = (typeof styleProps)[keyof typeof styleProps];
@@ -48,7 +49,8 @@ function rulesFor(
 /**
  * The CSS that resolves style props. `prepareComponentProps` puts each value
  * on the element as `data-ui-{key}` and a raw `--props-{key}`; these rules turn
- * the raw value into a declaration. A responsive prop's breakpoint values use
+ * the raw value into a declaration. Toggles are bare `data-ui-{key}`
+ * attributes with fixed declarations. A responsive prop's breakpoint values use
  * `data-ui-{key}-{bp}` and apply under `@container style(--bp-{bp}: true)`.
  *
  * Written to `@uiid/tokens/src/props.css` by `css.test.ts`, which fails when
@@ -59,6 +61,12 @@ export function stylePropsCss() {
   const blocks = entries.flatMap(([key, styleProp]) =>
     rulesFor(key, styleProp),
   );
+
+  for (const [key, toggle] of Object.entries(toggleProps)) {
+    const selector = `[data-ui-${key}]${"selector" in toggle ? toggle.selector : ""}`;
+    const body = toggle.declarations.map((d) => `    ${d};`).join("\n");
+    blocks.push(`  ${selector} {\n${body}\n  }`);
+  }
 
   for (const bp of BREAKPOINTS) {
     const rules = entries

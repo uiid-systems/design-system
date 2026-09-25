@@ -357,7 +357,7 @@ describe("CheckboxGroup fullwidth", () => {
         <CheckboxGroup items={items} orientation={orientation} fullwidth />,
       );
 
-      expect(root(container)?.className).toMatch(/toggle-fullwidth/);
+      expect(root(container)).toHaveAttribute("data-ui-fullwidth");
     },
   );
 
@@ -384,9 +384,9 @@ describe("CheckboxGroup fullwidth", () => {
       <CheckboxGroup items={items} label="Pick some" fullwidth />,
     );
 
-    expect(
-      container.querySelector("[data-slot='field-root']")?.className,
-    ).toMatch(/toggle-fullwidth/);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-fullwidth",
+    );
   });
 
   it("leaves the group sized by its rows without fullwidth", () => {
@@ -394,7 +394,7 @@ describe("CheckboxGroup fullwidth", () => {
       <CheckboxGroup items={items} orientation="horizontal" />,
     );
 
-    expect(root(container)?.className).not.toMatch(/toggle-fullwidth/);
+    expect(root(container)).not.toHaveAttribute("data-ui-fullwidth");
     expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
   });
 });

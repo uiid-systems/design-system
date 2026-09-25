@@ -2,13 +2,13 @@ import { Box } from "../box/box";
 import { ConditionalRender } from "./conditional-render";
 
 export const Wrapped = () => (
-  <ConditionalRender condition={true} render={<Box bordered p={2} rounded />}>
+  <ConditionalRender condition={true} render={<Box b={1} p={2} />}>
     Wrapped in a bordered Box because condition is true
   </ConditionalRender>
 );
 
 export const Unwrapped = () => (
-  <ConditionalRender condition={false} render={<Box bordered p={2} rounded />}>
+  <ConditionalRender condition={false} render={<Box b={1} p={2} />}>
     Rendered as plain text because condition is false
   </ConditionalRender>
 );
