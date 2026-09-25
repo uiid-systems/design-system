@@ -12,6 +12,15 @@ Tailwind is acceptable only when no UIID component or prop covers the case.
 
 Dogfood the design system everywhere, including docs, MDX, and examples. If a system component exists for the UI you are rendering, use it rather than hand-styled markup.
 
+## Style props
+
+Style props (spacing, sizing, border, `ax`/`ay`/`direction`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
+
+- **`packages/tokens/src/props.css` is generated** from the `styleProps` map in `packages/utils/src/props/`. Never edit it by hand. After changing a definition, run `pnpm generate:props`; CI runs it with `--check` and fails until you do.
+- **Every `StyleProp` declares a `unit`**: a token variable (`{ variable: "--spacing-unit" }`), `"px"`, or `"none"` for keyword values.
+- **`--props-*` vars are registered with `inherits: false`**, so a child never reads its parent's style prop. Numeric ones are typed `<number>`; a non-number resolves to 0.
+- **Test the attribute, not the style**: `expect(el).toHaveAttribute("data-ui-gap", "2")`. The test DOM does not load `props.css`, so `toHaveStyle` on a style prop fails.
+
 ## CSS variable naming
 
 ```

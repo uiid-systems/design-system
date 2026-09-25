@@ -316,9 +316,8 @@ describe("Autocomplete popup layout props", () => {
     await user.keyboard("a");
 
     expect(
-      document.querySelector<HTMLElement>("[data-slot='autocomplete-popup']")
-        ?.style.gap,
-    ).toBe("calc(2 * var(--spacing-unit))");
+      document.querySelector<HTMLElement>("[data-slot='autocomplete-popup']"),
+    ).toHaveAttribute("data-ui-gap", "2");
   });
 });
 

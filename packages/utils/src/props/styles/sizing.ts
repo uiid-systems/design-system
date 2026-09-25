@@ -11,26 +11,32 @@ export const sizingPropKeys = [
 
 export const w = {
   property: "width",
+  unit: "px",
 } satisfies StyleProp<"width">;
 
 export const minw = {
   property: "minWidth",
+  unit: "px",
 } satisfies StyleProp<"minWidth">;
 
 export const maxw = {
   property: "maxWidth",
+  unit: "px",
 } satisfies StyleProp<"maxWidth">;
 
 export const h = {
   property: "height",
+  unit: "px",
 } satisfies StyleProp<"height">;
 
 export const minh = {
   property: "minHeight",
+  unit: "px",
 } satisfies StyleProp<"minHeight">;
 
 export const maxh = {
   property: "maxHeight",
+  unit: "px",
 } satisfies StyleProp<"maxHeight">;
 
 export type SizingProps = {

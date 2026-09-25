@@ -19,8 +19,8 @@ describe("Group", () => {
     );
     const group = screen.getByTestId("group");
     // Group does not swap ax/ay: `ax` maps to justify-content (main axis).
-    expect(group).toHaveStyle({ justifyContent: "center" });
+    expect(group).toHaveAttribute("data-ui-ax", "center");
     // Spacing props forward through to the underlying Box.
-    expect(group).toHaveStyle({ padding: "calc(4 * var(--spacing-unit))" });
+    expect(group).toHaveAttribute("data-ui-p", "4");
   });
 });

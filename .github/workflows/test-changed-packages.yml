@@ -49,6 +49,9 @@ jobs:
       - name: Generate tokens
         run: node packages/tokens/build-tokens.js
 
+      - name: Check generated props.css
+        run: pnpm generate:props --check
+
       - name: Run tests
         run: pnpm test:run
 

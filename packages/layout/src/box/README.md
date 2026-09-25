@@ -9,3 +9,7 @@ Use Box directly when:
 - You need full flex control without an opinion about direction
 - You need to render as a non-div semantic element (`<section>`, `<form>`, etc.) via the `render` prop
 - You're composing a new layout primitive
+
+## Style props
+
+Spacing (`gap`, `p*`, `m*`), sizing (`w`, `h`, `min*`, `max*`), border (`b*`) and alignment (`ax`, `ay`, `direction`) props render as `data-ui-*` attributes resolved by `@uiid/tokens` CSS, so load `@uiid/tokens/globals.css` (or `@uiid/design-system/globals.css`). Your own unlayered CSS overrides them from a class.

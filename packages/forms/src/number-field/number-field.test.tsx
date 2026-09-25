@@ -344,8 +344,8 @@ describe("NumberField group layout props", () => {
     const group = container.querySelector<HTMLElement>(
       "[data-slot='number-field-group']",
     );
-    expect(group?.style.gap).toBe("calc(2 * var(--spacing-unit))");
-    expect(group).toHaveStyle({ alignItems: "end" });
+    expect(group).toHaveAttribute("data-ui-gap", "2");
+    expect(group).toHaveAttribute("data-ui-ay", "end");
   });
 });
 

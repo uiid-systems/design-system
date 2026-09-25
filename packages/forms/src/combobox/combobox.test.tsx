@@ -429,9 +429,8 @@ describe("Combobox layout props", () => {
     await user.click(screen.getByRole("combobox"));
 
     expect(
-      document.querySelector<HTMLElement>("[data-slot='combobox-popup']")?.style
-        .gap,
-    ).toBe("calc(2 * var(--spacing-unit))");
+      document.querySelector<HTMLElement>("[data-slot='combobox-popup']"),
+    ).toHaveAttribute("data-ui-gap", "2");
   });
 
   const renderChips = (props?: React.ComponentProps<typeof ComboboxChips>) =>
@@ -455,14 +454,14 @@ describe("Combobox layout props", () => {
 
   it("keeps the chips' own spacing by default", () => {
     renderChips();
-    expect(chips()?.style.gap).toBe("calc(1 * var(--spacing-unit))");
-    expect(chips()).toHaveStyle({ alignItems: "center" });
+    expect(chips()).toHaveAttribute("data-ui-gap", "1");
+    expect(chips()).toHaveAttribute("data-ui-ay", "center");
   });
 
   it("forwards layout props to the chips Group", () => {
     renderChips({ gap: 3, ay: "start" });
-    expect(chips()?.style.gap).toBe("calc(3 * var(--spacing-unit))");
-    expect(chips()).toHaveStyle({ alignItems: "start" });
+    expect(chips()).toHaveAttribute("data-ui-gap", "3");
+    expect(chips()).toHaveAttribute("data-ui-ay", "start");
   });
 });
 

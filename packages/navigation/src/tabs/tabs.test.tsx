@@ -251,8 +251,8 @@ describe("Tabs", () => {
   it("forwards layout props from RootProps to the root Stack", () => {
     render(<Tabs items={MOCK_ITEMS} RootProps={{ gap: 4, ax: "center" }} />);
     const root = document.querySelector<HTMLElement>("[data-slot='tabs-root']");
-    expect(root?.style.gap).toBe("calc(4 * var(--spacing-unit))");
-    expect(root).toHaveStyle({ alignItems: "center" });
+    expect(root).toHaveAttribute("data-ui-gap", "4");
+    expect(root).toHaveAttribute("data-ui-ay", "center");
   });
 
   it("accepts Base UI's state-function className on RootProps", () => {
@@ -280,14 +280,14 @@ describe("Tabs", () => {
   it("forwards layout props from ListProps to the list Group", () => {
     render(<Tabs items={MOCK_ITEMS} ListProps={{ gap: 2, ay: "end" }} />);
     const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");
-    expect(list?.style.gap).toBe("calc(2 * var(--spacing-unit))");
-    expect(list).toHaveStyle({ alignItems: "end" });
+    expect(list).toHaveAttribute("data-ui-gap", "2");
+    expect(list).toHaveAttribute("data-ui-ay", "end");
   });
 
   it("keeps the list's own gap when ListProps sets none", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");
-    expect(list?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+    expect(list).toHaveAttribute("data-ui-gap", "4");
   });
 
   it("forwards layout props from PanelProps to the panel Stack", () => {
@@ -300,8 +300,8 @@ describe("Tabs", () => {
     const panel = document.querySelector<HTMLElement>(
       "[data-slot='tabs-panel']",
     );
-    expect(panel?.style.gap).toBe("calc(3 * var(--spacing-unit))");
-    expect(panel).toHaveStyle({ alignItems: "start" });
+    expect(panel).toHaveAttribute("data-ui-gap", "3");
+    expect(panel).toHaveAttribute("data-ui-ay", "start");
     expect(panel?.className).not.toMatch(/toggle-fullwidth/);
   });
 

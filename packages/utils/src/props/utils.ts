@@ -1,4 +1,4 @@
-import { styleProps } from "./styles";
+import type { styleProps } from "./styles";
 
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
@@ -7,8 +7,9 @@ export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
 };
 
 /**
- * Stamps `data-slot`, turns the listed style props into inline styles, and
- * passes everything else through. A caller's own `style` wins over style props.
+ * Stamps `data-slot`, and puts each listed style prop on the element as
+ * `data-ui-{key}` plus a raw `--props-{key}` for the rules in
+ * `@uiid/tokens/props.css` to resolve. A caller's own `style` still wins.
  */
 export function prepareComponentProps<T extends Record<string, unknown>>({
   componentName,
@@ -27,21 +28,9 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
       stylePropKeys.includes(key as keyof typeof styleProps) &&
       value !== undefined
     ) {
-      const styleProp = styleProps[key as keyof typeof styleProps];
-      if (styleProp && value != null) {
-        if (
-          "unit" in styleProp &&
-          styleProp.unit &&
-          typeof value === "number"
-        ) {
-          const calcValue = `calc(${value} * var(${styleProp.unit.variable}))`;
-          (styleObj as Record<string, unknown>)[styleProp.property] = calcValue;
-        } else if (typeof value === "number") {
-          (styleObj as Record<string, unknown>)[styleProp.property] =
-            `${value}px`;
-        } else {
-          (styleObj as Record<string, unknown>)[styleProp.property] = value;
-        }
+      if (value != null) {
+        dataAttrs[`data-ui-${key}`] = String(value);
+        (styleObj as Record<string, unknown>)[`--props-${key}`] = value;
       }
     } else {
       restProps[key] = value;

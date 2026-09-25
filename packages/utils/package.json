@@ -34,7 +34,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -b && vite build"
+    "build": "tsc -b && vite build",
+    "generate:props": "node scripts/generate-props.mjs"
   },
   "dependencies": {
     "cva": "^1.0.0-beta.4",

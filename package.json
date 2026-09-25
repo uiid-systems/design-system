@@ -20,7 +20,8 @@
     "generate-readmes": "node scripts/generate-readmes.mjs",
     "postinstall": "node scripts/postinstall.mjs",
     "lint:fix": "oxlint --fix",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "generate:props": "pnpm --filter @uiid/utils generate:props"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.0",
