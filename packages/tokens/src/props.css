@@ -1,6 +1,6 @@
 /**
  * Generated from `@uiid/utils` style props — do not edit by hand.
- * Regenerate with `pnpm test:run packages/utils -u`.
+ * Regenerate with `pnpm generate:props`.
  *
  * `uiid.props` sits after `uiid.components`, so a style prop beats a
  * component's own styles, and before `uiid.states`. Unlayered consumer CSS
@@ -8,43 +8,43 @@
  */
 @layer uiid.props {
   [data-ui-b] {
-    border-width: calc(var(--props-b) * 1px);
+    border-width: calc(var(--props-b) * var(undefined));
   }
 
   [data-ui-bx] {
-    border-inline-width: calc(var(--props-bx) * 1px);
+    border-inline-width: calc(var(--props-bx) * var(undefined));
   }
 
   [data-ui-bl] {
-    border-inline-start-width: calc(var(--props-bl) * 1px);
+    border-inline-start-width: calc(var(--props-bl) * var(undefined));
   }
 
   [data-ui-br] {
-    border-inline-end-width: calc(var(--props-br) * 1px);
+    border-inline-end-width: calc(var(--props-br) * var(undefined));
   }
 
   [data-ui-by] {
-    border-block-width: calc(var(--props-by) * 1px);
+    border-block-width: calc(var(--props-by) * var(undefined));
   }
 
   [data-ui-bt] {
-    border-block-start-width: calc(var(--props-bt) * 1px);
+    border-block-start-width: calc(var(--props-bt) * var(undefined));
   }
 
   [data-ui-bb] {
-    border-block-end-width: calc(var(--props-bb) * 1px);
+    border-block-end-width: calc(var(--props-bb) * var(undefined));
   }
 
   [data-ui-ax] {
-    justify-content: var(--props-ax);
+    justify-content: calc(var(--props-ax) * var(undefined));
   }
 
   [data-ui-ay] {
-    align-items: var(--props-ay);
+    align-items: calc(var(--props-ay) * var(undefined));
   }
 
   [data-ui-direction] {
-    flex-direction: var(--props-direction);
+    flex-direction: calc(var(--props-direction) * var(undefined));
   }
 
   [data-ui-gap] {
@@ -136,26 +136,26 @@
   }
 
   [data-ui-w] {
-    width: calc(var(--props-w) * 1px);
+    width: calc(var(--props-w) * var(undefined));
   }
 
   [data-ui-minw] {
-    min-width: calc(var(--props-minw) * 1px);
+    min-width: calc(var(--props-minw) * var(undefined));
   }
 
   [data-ui-maxw] {
-    max-width: calc(var(--props-maxw) * 1px);
+    max-width: calc(var(--props-maxw) * var(undefined));
   }
 
   [data-ui-h] {
-    height: calc(var(--props-h) * 1px);
+    height: calc(var(--props-h) * var(undefined));
   }
 
   [data-ui-minh] {
-    min-height: calc(var(--props-minh) * 1px);
+    min-height: calc(var(--props-minh) * var(undefined));
   }
 
   [data-ui-maxh] {
-    max-height: calc(var(--props-maxh) * 1px);
+    max-height: calc(var(--props-maxh) * var(undefined));
   }
 }

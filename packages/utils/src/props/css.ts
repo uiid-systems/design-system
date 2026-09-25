@@ -8,8 +8,8 @@ const kebab = (property: string) =>
  * on the element as `data-ui-{key}` and a raw `--props-{key}`; these rules turn
  * the raw value into a declaration.
  *
- * Written to `@uiid/tokens/src/props.css` by `css.test.ts`, which fails when
- * the two drift apart.
+ * Written to `@uiid/tokens/src/props.css` by `pnpm generate:props`. CI runs it
+ * with `--check`, which fails when the two drift apart.
  */
 export function stylePropsCss() {
   const rules: string[] = [];
@@ -41,7 +41,7 @@ export function stylePropsCss() {
 
 const HEADER = `/**
  * Generated from \`@uiid/utils\` style props — do not edit by hand.
- * Regenerate with \`pnpm test:run packages/utils -u\`.
+ * Regenerate with \`pnpm generate:props\`.
  *
  * \`uiid.props\` sits after \`uiid.components\`, so a style prop beats a
  * component's own styles, and before \`uiid.states\`. Unlayered consumer CSS
