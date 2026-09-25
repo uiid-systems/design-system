@@ -1,5 +1,7 @@
 import { isValidElement } from "react";
 
+import { resolveRender } from "./render";
+
 export type TriggerChildren<State> =
   | React.ReactNode
   | ((state: State) => React.ReactNode);
@@ -50,6 +52,10 @@ export const resolveTrigger = <State,>(
   if (render) {
     return { children: children as React.ReactNode };
   }
+
+  // An element trigger from a server component can arrive lazily wrapped
+  // during development SSR — see `resolveRender`.
+  children = resolveRender(children);
 
   if (typeof children === "function") {
     return {
