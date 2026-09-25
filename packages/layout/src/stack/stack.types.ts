@@ -5,4 +5,4 @@ export type StackProps = {
   ax?: BoxProps["ay"];
   /** Vertical alignment of children (main axis of the column) */
   ay?: BoxProps["ax"];
-} & Omit<BoxProps, "ax" | "ay">;
+} & Omit<BoxProps, "ax" | "ay" | "direction">;

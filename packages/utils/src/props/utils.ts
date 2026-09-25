@@ -7,8 +7,8 @@ export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
 };
 
 /**
- * Utility function to prepare props for components with toggles, style props, and data attributes.
- * Automatically handles toggle props (creates data attributes) and style props (creates inline styles).
+ * Stamps `data-slot`, turns the listed style props into inline styles, and
+ * passes everything else through. A caller's own `style` wins over style props.
  */
 export function prepareComponentProps<T extends Record<string, unknown>>({
   componentName,
@@ -34,9 +34,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
           styleProp.unit &&
           typeof value === "number"
         ) {
-          const suffix =
-            "suffix" in styleProp.unit ? styleProp.unit.suffix || "" : "";
-          const calcValue = `calc(${value} * var(${styleProp.unit.variable}))${suffix}`;
+          const calcValue = `calc(${value} * var(${styleProp.unit.variable}))`;
           (styleObj as Record<string, unknown>)[styleProp.property] = calcValue;
         } else if (typeof value === "number") {
           (styleObj as Record<string, unknown>)[styleProp.property] =

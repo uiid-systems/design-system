@@ -13,7 +13,7 @@ import type { FormItemProps } from "../types";
  * The root lays its rows out from `orientation` and `fullwidth`, so it takes
  * no alignment axes of its own.
  */
-type CheckboxGroupLayoutProps = Omit<StackProps, "ax" | "ay" | "direction">;
+type CheckboxGroupLayoutProps = Omit<StackProps, "ax" | "ay">;
 
 export type CheckboxGroupRootProps = WithLayoutProps<
   BaseCheckboxGroup.Props,

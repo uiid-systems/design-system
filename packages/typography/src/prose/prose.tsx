@@ -1,4 +1,10 @@
-import { prepareComponentProps, renderWithProps, cx } from "@uiid/utils";
+import {
+  prepareComponentProps,
+  renderWithProps,
+  cx,
+  marginPropKeys,
+  paddingPropKeys,
+} from "@uiid/utils";
 
 import type { ProseProps } from "./prose.types";
 
@@ -12,22 +18,7 @@ export const Prose = ({
 }: ProseProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "prose",
-    styleProps: [
-      "p",
-      "px",
-      "py",
-      "pl",
-      "pr",
-      "pt",
-      "pb",
-      "m",
-      "mx",
-      "my",
-      "ml",
-      "mr",
-      "mt",
-      "mb",
-    ],
+    styleProps: [...paddingPropKeys, ...marginPropKeys],
     props,
   });
 
