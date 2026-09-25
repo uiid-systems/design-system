@@ -18,9 +18,9 @@ This file is tool-agnostic and holds only what every session needs. Deeper conve
 
 ## Never Guess a Component API
 
-Before using any UIID component, read its `packages/{pkg}/src/{component}/{component}.types.ts` and `.variants.ts`. Props, variants, and sizes change often — do not rely on memorized lists or on what a similar component accepts.
+Before using any UIID component, read its `packages/{pkg}/src/{component}/{component}.types.ts`, and its `.variants.ts` where one exists. Props, variants, and sizes change often — do not rely on memorized lists or on what a similar component accepts.
 
-This repo documents itself through working code. Prefer reading a real component over prose: `packages/typography/src/text/` is the complete exemplar (types, variants, CSS module, examples, tests, README). Usage lives in `packages/*/src/*/*.examples.tsx`, docs in `packages/*/src/*/README.md`, stories in `apps/storybook/stories/`, and decisions in `docs/architecture/`.
+This repo documents itself through working code. Prefer reading a real component over prose: `packages/typography/src/text/` is the complete exemplar (types, constants, CSS module, examples, tests, README). Usage lives in `packages/*/src/*/*.examples.tsx`, docs in `packages/*/src/*/README.md`, stories in `apps/storybook/stories/`, and decisions in `docs/architecture/`.
 
 ## Attribution Policy
 

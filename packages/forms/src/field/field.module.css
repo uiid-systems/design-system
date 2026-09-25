@@ -6,8 +6,10 @@
    `--forms-size-*-font-size` the control itself reads, and this applies it.
 
    `Text` always paints a step (it defaults to `0`), so reaching the slot is
-   what outranks it: class plus attribute beats `[data-ui-size="0"]`, and
-   `text.module.css` is unlayered so nothing else is competing.
+   what outranks it: class plus attribute beats `:where(.text)[data-ui-size="0"]`,
+   which weighs one attribute. That settles it in source, where
+   `text.module.css` is unlayered; in the build it also sits in
+   `uiid.primitives`, below this file's layer.
 
    Direct children only. A nested `FieldRow` carries its own tier and must keep
    it — a small checkbox inside a large group is still a small checkbox. */

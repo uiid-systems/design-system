@@ -58,10 +58,15 @@ describe("Text", () => {
     });
 
     it("writes nothing for a toggle that is off", () => {
-      render(<Text strikethrough={false}>Off</Text>);
-      expect(screen.getByText("Off")).not.toHaveAttribute(
-        "data-ui-strikethrough",
+      render(
+        <Text strikethrough={false} balance={false} truncate={false}>
+          Off
+        </Text>,
       );
+      const el = screen.getByText("Off");
+      for (const key of ["strikethrough", "balance", "truncate", "underline"]) {
+        expect(el).not.toHaveAttribute(`data-ui-${key}`);
+      }
     });
 
     it("writes underline={false} as an explicit value", () => {

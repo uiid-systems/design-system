@@ -6,7 +6,7 @@
 2. **CSS Modules** — only for visual styling (colors, borders, shadows, animations), `data-*` state styling, pseudo-elements, and complex positioning
 3. **Stop and ask** — if no prop exists for what you need. Do not fall back to inline styles.
 
-Use `Stack` / `Group` / `Box` from `@uiid/layout` instead of raw flex or grid CSS, and `Text` from `@uiid/typography` instead of raw text elements. Read their `.types.ts` and `.variants.ts` for current prop values — these change, so do not rely on memorized lists.
+Use `Stack` / `Group` / `Box` from `@uiid/layout` instead of raw flex or grid CSS, and `Text` from `@uiid/typography` instead of raw text elements. Read their `.types.ts` (and `.variants.ts`, where one exists) for current prop values — these change, so do not rely on memorized lists.
 
 Tailwind is acceptable only when no UIID component or prop covers the case.
 
@@ -21,6 +21,13 @@ Style props (spacing, sizing, border, `ax`/`ay`/`direction`) and toggles (`evenl
 - **Every `StyleProp` declares a `unit`**: a token variable (`{ variable: "--spacing-unit" }`), `"px"`, or `"none"` for keyword values.
 - **`--props-*` vars are registered with `inherits: false`**, so a child never reads its parent's style prop. Numeric ones are typed `<number>`; a non-number resolves to 0.
 - **Test the attribute, not the style**: `expect(el).toHaveAttribute("data-ui-gap", "2")`. The test DOM does not load `props.css`, so `toHaveStyle` on a style prop fails.
+
+## Component-local data attributes
+
+A component whose props are always written, like Text's default `size` and `family`, keeps its `data-ui-*` rules in its own CSS module rather than `props.css`. That leaves them in the package's layer (`uiid.primitives` for Text), where component CSS can still restyle them. See `packages/typography/src/text/`.
+
+- **Select with `:where(.{local})[data-ui-{key}]`.** The `apps/docs` Turbopack build compiles CSS modules in pure mode, so a bare `[data-ui-*]` selector fails there, even though Vite, tests and lint accept it. `:where()` adds the local class without adding specificity.
+- **A prop that can be forced off writes its value.** `underline={false}` writes `data-ui-underline="false"`, whose rule comes after the bare `[data-ui-underline]` one.
 
 ## CSS variable naming
 

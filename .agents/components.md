@@ -1,6 +1,6 @@
 # Component Conventions
 
-Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts`, `.constants.ts`, `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.
+Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts` (when it uses `cva`), `.constants.ts`, `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 
