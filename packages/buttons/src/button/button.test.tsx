@@ -237,6 +237,27 @@ describe("Button", () => {
       expect(button.tagName).toBe("SPAN");
     });
 
+    /*
+     * A server component's `render={<Link />}` can reach development SSR as a
+     * lazy node rather than an element. The server has to pick the link branch
+     * too, or it renders `role="button"` and hydration disagrees with the
+     * browser.
+     */
+    it("keeps link semantics for a lazily wrapped render element", () => {
+      const lazyLink = {
+        $$typeof: Symbol.for("react.lazy"),
+        _payload: <a href="/page" />,
+        _init: (payload: unknown) => payload,
+      } as unknown as React.ReactElement;
+
+      render(<Button render={lazyLink}>Next</Button>);
+
+      const link = screen.getByRole("link", { name: "Next" });
+      expect(link).toHaveAttribute("href", "/page");
+      expect(link).not.toHaveAttribute("role");
+      expect(link).not.toHaveAttribute("tabindex");
+    });
+
     it("does not leave Base UI props on the anchor", () => {
       render(
         <Button
