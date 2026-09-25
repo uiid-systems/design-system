@@ -10,6 +10,75 @@ describe("Text", () => {
   });
 
   // ============================================
+  // DATA ATTRIBUTES
+  // ============================================
+  // Text's props resolve from data-ui-* attributes in text.module.css, so the
+  // attribute is what a prop is tested by.
+
+  describe("data attributes", () => {
+    it("writes the default size and family", () => {
+      render(<Text>Defaults</Text>);
+      const el = screen.getByText("Defaults");
+      expect(el).toHaveAttribute("data-ui-size", "0");
+      expect(el).toHaveAttribute("data-ui-family", "sans");
+      expect(el).not.toHaveAttribute("data-ui-weight");
+      expect(el).not.toHaveAttribute("data-ui-shade");
+    });
+
+    it("writes each enumerated prop as its value", () => {
+      render(
+        <Text size={-1} weight="bold" family="mono" shade="muted">
+          Props
+        </Text>,
+      );
+      const el = screen.getByText("Props");
+      expect(el).toHaveAttribute("data-ui-size", "-1");
+      expect(el).toHaveAttribute("data-ui-weight", "bold");
+      expect(el).toHaveAttribute("data-ui-family", "mono");
+      expect(el).toHaveAttribute("data-ui-shade", "muted");
+    });
+
+    it("pairs a color with its palette class", () => {
+      render(<Text color="red">Red</Text>);
+      const el = screen.getByText("Red");
+      expect(el).toHaveAttribute("data-ui-color", "red");
+      expect(el).toHaveClass("palette-red");
+    });
+
+    it("writes a bare attribute for a toggle that is on", () => {
+      render(
+        <Text strikethrough balance truncate underline>
+          Toggles
+        </Text>,
+      );
+      const el = screen.getByText("Toggles");
+      for (const key of ["strikethrough", "balance", "truncate", "underline"]) {
+        expect(el).toHaveAttribute(`data-ui-${key}`, "");
+      }
+    });
+
+    it("writes nothing for a toggle that is off", () => {
+      render(
+        <Text strikethrough={false} balance={false} truncate={false}>
+          Off
+        </Text>,
+      );
+      const el = screen.getByText("Off");
+      for (const key of ["strikethrough", "balance", "truncate", "underline"]) {
+        expect(el).not.toHaveAttribute(`data-ui-${key}`);
+      }
+    });
+
+    it("writes underline={false} as an explicit value", () => {
+      render(<Text underline={false}>No underline</Text>);
+      expect(screen.getByText("No underline")).toHaveAttribute(
+        "data-ui-underline",
+        "false",
+      );
+    });
+  });
+
+  // ============================================
   // TRUNCATE TITLE
   // ============================================
   // When truncated, the full text is exposed as a native `title` tooltip so
