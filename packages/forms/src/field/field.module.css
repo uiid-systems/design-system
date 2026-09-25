@@ -6,7 +6,7 @@
    `--forms-size-*-font-size` the control itself reads, and this applies it.
 
    `Text` always paints a step (it defaults to `0`), so reaching the slot is
-   what outranks it: class plus attribute beats `.text-size-0`, and
+   what outranks it: class plus attribute beats `[data-ui-size="0"]`, and
    `text.module.css` is unlayered so nothing else is competing.
 
    Direct children only. A nested `FieldRow` carries its own tier and must keep

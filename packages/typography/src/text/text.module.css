@@ -21,25 +21,31 @@
   }
 }
 
-.text-size--1 {
+/*
+ * Text's props are data-ui-* attributes on the element, selected bare so each
+ * rule stays at single-class specificity: a component that reaches a Text
+ * through its own class plus a slot outranks them, as it did the old classes.
+ */
+
+[data-ui-size="-1"] {
   font-size: var(--text--1-font-size);
   font-weight: var(--text--1-font-weight);
   line-height: var(--text--1-line-height);
   letter-spacing: var(--text--1-letter-spacing);
 }
-.text-size-0 {
+[data-ui-size="0"] {
   font-size: var(--text-0-font-size);
   font-weight: var(--text-0-font-weight);
   line-height: var(--text-0-line-height);
   letter-spacing: var(--text-0-letter-spacing);
 }
-.text-size-1 {
+[data-ui-size="1"] {
   font-size: var(--text-1-font-size);
   font-weight: var(--text-1-font-weight);
   line-height: var(--text-1-line-height);
   letter-spacing: var(--text-1-letter-spacing);
 }
-.text-size-2 {
+[data-ui-size="2"] {
   font-size: var(--text-2-font-size);
   font-weight: var(--text-2-font-weight);
   line-height: var(--text-2-line-height);
@@ -47,7 +53,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-.text-size-3 {
+[data-ui-size="3"] {
   font-size: var(--text-3-font-size);
   font-weight: var(--text-3-font-weight);
   line-height: var(--text-3-line-height);
@@ -55,7 +61,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-.text-size-4 {
+[data-ui-size="4"] {
   font-size: var(--text-4-font-size);
   font-weight: var(--text-4-font-weight);
   line-height: var(--text-4-line-height);
@@ -63,7 +69,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-.text-size-5 {
+[data-ui-size="5"] {
   font-size: var(--text-5-font-size);
   font-weight: var(--text-5-font-weight);
   line-height: var(--text-5-line-height);
@@ -71,7 +77,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-.text-size-6 {
+[data-ui-size="6"] {
   font-size: var(--text-6-font-size);
   font-weight: var(--text-6-font-weight);
   line-height: var(--text-6-line-height);
@@ -80,57 +86,57 @@
   text-box-edge: cap alphabetic;
 }
 
-.shade-background {
+[data-ui-shade="background"] {
   color: var(--shade-background);
 }
-.shade-surface {
+[data-ui-shade="surface"] {
   color: var(--shade-surface);
 }
-.shade-accent {
+[data-ui-shade="accent"] {
   color: var(--shade-accent);
 }
-.shade-halftone {
+[data-ui-shade="halftone"] {
   color: var(--shade-halftone);
 }
-.shade-muted {
+[data-ui-shade="muted"] {
   color: var(--shade-muted);
 }
-.shade-foreground {
+[data-ui-shade="foreground"] {
   color: var(--shade-foreground);
 }
 
 /*
  * Palette color. Every hue renders identically, so the hue itself travels on the
- * @uiid/tokens palette class applied alongside this one and a single rule covers
- * all of them.
+ * @uiid/tokens palette class applied alongside this attribute and a single rule
+ * covers all of them.
  *
  * --palette-text is legible against the page background. Colored text on a
  * tinted surface wants --palette-on-tint instead.
  */
-.palette-text {
+[data-ui-color] {
   color: var(--palette-text);
 }
 
-.toggle-underline {
+[data-ui-underline] {
   text-decoration-line: underline;
 }
 
-.toggle-no-underline {
+[data-ui-underline="false"] {
   text-decoration-line: none;
 }
 
-.toggle-strikethrough {
+[data-ui-strikethrough] {
   text-decoration-line: line-through;
 }
 
 /* Both resolve the same text-wrap-mode longhand as .composes-text's
    `text-wrap: pretty`, and win by sitting in uiid.primitives above
    uiid.compositions. */
-.toggle-balance {
+[data-ui-balance] {
   text-wrap: balance;
 }
 
-.toggle-truncate {
+[data-ui-truncate] {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -138,33 +144,33 @@
   max-width: 100%;
 }
 
-.family-mono {
+[data-ui-family="mono"] {
   font-family: var(--font-mono);
 }
 
-.family-serif {
+[data-ui-family="serif"] {
   font-family: var(--font-serif);
 }
 
-.family-sans {
+[data-ui-family="sans"] {
   font-family: var(--font-sans);
 }
 
-.weight-thin {
+[data-ui-weight="thin"] {
   font-weight: 100;
 }
-.weight-light {
+[data-ui-weight="light"] {
   font-weight: 300;
 }
-.weight-normal {
+[data-ui-weight="normal"] {
   font-weight: 400;
 }
-.weight-medium {
+[data-ui-weight="medium"] {
   font-weight: 500;
 }
-.weight-semibold {
+[data-ui-weight="semibold"] {
   font-weight: 600;
 }
-.weight-bold {
+[data-ui-weight="bold"] {
   font-weight: 700;
 }
