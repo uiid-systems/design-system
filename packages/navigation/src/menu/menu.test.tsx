@@ -165,8 +165,8 @@ describe("SubmenuTrigger layout props", () => {
 
     await user.click(screen.getByText("Open"));
 
-    expect(submenuTrigger()?.style.gap).toBe("calc(4 * var(--spacing-unit))");
-    expect(submenuTrigger()).toHaveStyle({ justifyContent: "space-between" });
+    expect(submenuTrigger()).toHaveAttribute("data-ui-gap", "4");
+    expect(submenuTrigger()).toHaveAttribute("data-ui-ax", "space-between");
   });
 
   /*
@@ -185,8 +185,8 @@ describe("SubmenuTrigger layout props", () => {
 
     await user.click(screen.getByText("Open"));
 
-    expect(submenuTrigger()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
-    expect(submenuTrigger()).toHaveStyle({ justifyContent: "start" });
+    expect(submenuTrigger()).toHaveAttribute("data-ui-gap", "2");
+    expect(submenuTrigger()).toHaveAttribute("data-ui-ax", "start");
   });
 });
 

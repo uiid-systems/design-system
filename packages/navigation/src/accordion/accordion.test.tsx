@@ -225,12 +225,12 @@ describe("Accordion", () => {
    */
   it("forwards gap from RootProps to the root Card", () => {
     render(<Accordion items={sampleItems} RootProps={{ gap: 2 }} />);
-    expect(root()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(root()).toHaveAttribute("data-ui-gap", "2");
   });
 
   it("keeps the root flush when RootProps sets no gap", () => {
     render(<Accordion items={sampleItems} />);
-    expect(root()?.style.gap).toBe("calc(0 * var(--spacing-unit))");
+    expect(root()).toHaveAttribute("data-ui-gap", "0");
   });
 
   it("stretches the root by default and releases it on fullwidth={false}", () => {
@@ -250,8 +250,8 @@ describe("Accordion", () => {
     );
     expect(items).toHaveLength(sampleItems.length);
     items.forEach((item) => {
-      expect(item.style.gap).toBe("calc(2 * var(--spacing-unit))");
-      expect(item).toHaveStyle({ alignItems: "start" });
+      expect(item).toHaveAttribute("data-ui-gap", "2");
+      expect(item).toHaveAttribute("data-ui-ay", "start");
     });
   });
 

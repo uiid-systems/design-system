@@ -753,7 +753,7 @@ describe("Select popup layout props", () => {
 
     await user.click(screen.getByRole("combobox"));
 
-    expect(popup()?.style.gap).toBe("calc(0 * var(--spacing-unit))");
+    expect(popup()).toHaveAttribute("data-ui-gap", "0");
     expect(popup()?.className).toMatch(/toggle-fullwidth/);
   });
 
@@ -773,7 +773,7 @@ describe("Select popup layout props", () => {
 
     await user.click(screen.getByRole("combobox"));
 
-    expect(popup()?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(popup()).toHaveAttribute("data-ui-gap", "2");
     expect(popup()?.className).not.toMatch(/toggle-fullwidth/);
   });
 });

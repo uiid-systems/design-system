@@ -217,8 +217,8 @@ describe("Collapsible", () => {
       </Collapsible>,
     );
     const root = getRoot();
-    expect(root?.style.gap).toBe("calc(4 * var(--spacing-unit))");
-    expect(root).toHaveStyle({ alignItems: "center" });
+    expect(root).toHaveAttribute("data-ui-gap", "4");
+    expect(root).toHaveAttribute("data-ui-ay", "center");
     expect(root?.className).toContain("toggle-fullwidth");
   });
 
@@ -228,7 +228,7 @@ describe("Collapsible", () => {
         Content
       </Collapsible>,
     );
-    expect(getPanel()).toHaveStyle({ justifyContent: "end" });
+    expect(getPanel()).toHaveAttribute("data-ui-ax", "end");
   });
 
   it("lets PanelProps override the default alignment", () => {
@@ -242,8 +242,8 @@ describe("Collapsible", () => {
       </Collapsible>,
     );
     const panel = getPanel();
-    expect(panel).toHaveStyle({ justifyContent: "start" });
-    expect(panel?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+    expect(panel).toHaveAttribute("data-ui-ax", "start");
+    expect(panel).toHaveAttribute("data-ui-gap", "2");
   });
 
   it("accepts layout props on the composed subcomponents", () => {
@@ -253,8 +253,8 @@ describe("Collapsible", () => {
         <CollapsiblePanel ay="center">Content</CollapsiblePanel>
       </CollapsibleRoot>,
     );
-    expect(getRoot()).toHaveStyle({ padding: "calc(2 * var(--spacing-unit))" });
-    expect(getPanel()).toHaveStyle({ justifyContent: "center" });
+    expect(getRoot()).toHaveAttribute("data-ui-p", "2");
+    expect(getPanel()).toHaveAttribute("data-ui-ax", "center");
   });
 
   // ============================================

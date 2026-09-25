@@ -305,7 +305,7 @@ describe("RadioGroup fullwidth", () => {
   it("stretches each row of a vertical group across it", () => {
     const { container } = render(<RadioGroup items={items} fullwidth />);
 
-    expect(root(container)).toHaveStyle({ alignItems: "stretch" });
+    expect(root(container)).toHaveAttribute("data-ui-ay", "stretch");
   });
 
   /*
@@ -347,7 +347,7 @@ describe("RadioGroup layout props", () => {
       const { container } = render(
         <RadioGroup items={items} orientation={orientation} />,
       );
-      expect(root(container)?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+      expect(root(container)).toHaveAttribute("data-ui-gap", "2");
     },
   );
 
@@ -362,7 +362,7 @@ describe("RadioGroup layout props", () => {
       const { container } = render(
         <RadioGroup items={items} orientation={orientation} gap={4} />,
       );
-      expect(root(container)?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+      expect(root(container)).toHaveAttribute("data-ui-gap", "4");
     },
   );
 

@@ -1,0 +1,161 @@
+/**
+ * Generated from `@uiid/utils` style props — do not edit by hand.
+ * Regenerate with `pnpm test:run packages/utils -u`.
+ *
+ * `uiid.props` sits after `uiid.components`, so a style prop beats a
+ * component's own styles, and before `uiid.states`. Unlayered consumer CSS
+ * beats every layer, so a consumer can override a style prop from a class.
+ */
+@layer uiid.props {
+  [data-ui-b] {
+    border-width: calc(var(--props-b) * 1px);
+  }
+
+  [data-ui-bx] {
+    border-inline-width: calc(var(--props-bx) * 1px);
+  }
+
+  [data-ui-bl] {
+    border-inline-start-width: calc(var(--props-bl) * 1px);
+  }
+
+  [data-ui-br] {
+    border-inline-end-width: calc(var(--props-br) * 1px);
+  }
+
+  [data-ui-by] {
+    border-block-width: calc(var(--props-by) * 1px);
+  }
+
+  [data-ui-bt] {
+    border-block-start-width: calc(var(--props-bt) * 1px);
+  }
+
+  [data-ui-bb] {
+    border-block-end-width: calc(var(--props-bb) * 1px);
+  }
+
+  [data-ui-ax] {
+    justify-content: var(--props-ax);
+  }
+
+  [data-ui-ay] {
+    align-items: var(--props-ay);
+  }
+
+  [data-ui-direction] {
+    flex-direction: var(--props-direction);
+  }
+
+  [data-ui-gap] {
+    gap: calc(var(--props-gap) * var(--spacing-unit));
+  }
+
+  [data-ui-m] {
+    margin: calc(var(--props-m) * var(--spacing-unit));
+  }
+
+  [data-ui-m="auto"] {
+    margin: auto;
+  }
+
+  [data-ui-mx] {
+    margin-inline: calc(var(--props-mx) * var(--spacing-inline));
+  }
+
+  [data-ui-mx="auto"] {
+    margin-inline: auto;
+  }
+
+  [data-ui-ml] {
+    margin-inline-start: calc(var(--props-ml) * var(--spacing-inline));
+  }
+
+  [data-ui-ml="auto"] {
+    margin-inline-start: auto;
+  }
+
+  [data-ui-mr] {
+    margin-inline-end: calc(var(--props-mr) * var(--spacing-inline));
+  }
+
+  [data-ui-mr="auto"] {
+    margin-inline-end: auto;
+  }
+
+  [data-ui-my] {
+    margin-block: calc(var(--props-my) * var(--spacing-block));
+  }
+
+  [data-ui-my="auto"] {
+    margin-block: auto;
+  }
+
+  [data-ui-mt] {
+    margin-block-start: calc(var(--props-mt) * var(--spacing-block));
+  }
+
+  [data-ui-mt="auto"] {
+    margin-block-start: auto;
+  }
+
+  [data-ui-mb] {
+    margin-block-end: calc(var(--props-mb) * var(--spacing-block));
+  }
+
+  [data-ui-mb="auto"] {
+    margin-block-end: auto;
+  }
+
+  [data-ui-p] {
+    padding: calc(var(--props-p) * var(--spacing-unit));
+  }
+
+  [data-ui-px] {
+    padding-inline: calc(var(--props-px) * var(--spacing-inline));
+  }
+
+  [data-ui-pl] {
+    padding-inline-start: calc(var(--props-pl) * var(--spacing-inline));
+  }
+
+  [data-ui-pr] {
+    padding-inline-end: calc(var(--props-pr) * var(--spacing-inline));
+  }
+
+  [data-ui-py] {
+    padding-block: calc(var(--props-py) * var(--spacing-block));
+  }
+
+  [data-ui-pt] {
+    padding-block-start: calc(var(--props-pt) * var(--spacing-block));
+  }
+
+  [data-ui-pb] {
+    padding-block-end: calc(var(--props-pb) * var(--spacing-block));
+  }
+
+  [data-ui-w] {
+    width: calc(var(--props-w) * 1px);
+  }
+
+  [data-ui-minw] {
+    min-width: calc(var(--props-minw) * 1px);
+  }
+
+  [data-ui-maxw] {
+    max-width: calc(var(--props-maxw) * 1px);
+  }
+
+  [data-ui-h] {
+    height: calc(var(--props-h) * 1px);
+  }
+
+  [data-ui-minh] {
+    min-height: calc(var(--props-minh) * 1px);
+  }
+
+  [data-ui-maxh] {
+    max-height: calc(var(--props-maxh) * 1px);
+  }
+}

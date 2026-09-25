@@ -372,7 +372,7 @@ describe("CheckboxGroup fullwidth", () => {
   it("stretches each row of a vertical group across it", () => {
     const { container } = render(<CheckboxGroup items={items} fullwidth />);
 
-    expect(root(container)).toHaveStyle({ alignItems: "stretch" });
+    expect(root(container)).toHaveAttribute("data-ui-ay", "stretch");
   });
 
   /*
@@ -414,7 +414,7 @@ describe("CheckboxGroup layout props", () => {
       const { container } = render(
         <CheckboxGroup items={items} orientation={orientation} />,
       );
-      expect(root(container)?.style.gap).toBe("calc(2 * var(--spacing-unit))");
+      expect(root(container)).toHaveAttribute("data-ui-gap", "2");
     },
   );
 
@@ -429,7 +429,7 @@ describe("CheckboxGroup layout props", () => {
       const { container } = render(
         <CheckboxGroup items={items} orientation={orientation} gap={4} />,
       );
-      expect(root(container)?.style.gap).toBe("calc(4 * var(--spacing-unit))");
+      expect(root(container)).toHaveAttribute("data-ui-gap", "4");
     },
   );
 
