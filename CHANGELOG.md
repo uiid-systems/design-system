@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.6](https://github.com/uiid-systems/design-system/compare/v0.6.5...v0.6.6) (2026-09-25)
+
+
+### Bug Fixes
+
+* **ui:** resolve a lazily wrapped render element before checking it ([#443](https://github.com/uiid-systems/design-system/issues/443)) ([5c51fcc](https://github.com/uiid-systems/design-system/commit/5c51fcc1acd33b9eb713d407a8f4fd9b1a23a188))
+
 ## [0.6.5](https://github.com/uiid-systems/design-system/compare/v0.6.4...v0.6.5) (2026-09-25)
 
 
