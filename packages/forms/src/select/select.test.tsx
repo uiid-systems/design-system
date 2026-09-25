@@ -754,7 +754,7 @@ describe("Select popup layout props", () => {
     await user.click(screen.getByRole("combobox"));
 
     expect(popup()).toHaveAttribute("data-ui-gap", "0");
-    expect(popup()?.className).toMatch(/toggle-fullwidth/);
+    expect(popup()).toHaveAttribute("data-ui-fullwidth");
   });
 
   /*
@@ -774,7 +774,7 @@ describe("Select popup layout props", () => {
     await user.click(screen.getByRole("combobox"));
 
     expect(popup()).toHaveAttribute("data-ui-gap", "2");
-    expect(popup()?.className).not.toMatch(/toggle-fullwidth/);
+    expect(popup()).not.toHaveAttribute("data-ui-fullwidth");
   });
 });
 

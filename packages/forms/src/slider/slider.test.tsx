@@ -282,7 +282,7 @@ describe("Slider layout props", () => {
       <Slider ControlProps={{ px: 5, fullwidth: false }} />,
     );
     expect(control(container)).toHaveAttribute("data-ui-px", "5");
-    expect(control(container)?.className).not.toMatch(/toggle-fullwidth/);
+    expect(control(container)).not.toHaveAttribute("data-ui-fullwidth");
   });
 });
 

@@ -1,4 +1,5 @@
 import { styleProps } from "./styles";
+import { toggleProps } from "./styles/toggles";
 import type { StyleProp } from "./types";
 
 type AnyStyleProp = StyleProp<keyof React.CSSProperties>;
@@ -36,7 +37,9 @@ function registration(key: string, unit: AnyStyleProp["unit"]) {
 /**
  * The CSS that resolves style props. `prepareComponentProps` puts each value
  * on the element as `data-ui-{key}` and a raw `--props-{key}`; these rules turn
- * the raw value into a declaration.
+ * the raw value into a declaration. Toggles are bare `data-ui-{key}`
+ * attributes with fixed declarations, written after the style props so a
+ * toggle wins over a style prop it conflicts with.
  *
  * Written to `@uiid/tokens/src/props.css` by `pnpm generate:props`. CI runs it
  * with `--check`, which fails when the two drift apart.
@@ -59,6 +62,12 @@ export function stylePropsCss() {
         `  [data-ui-${key}="${keyword}"] {\n    ${property}: ${keyword};\n  }`,
       );
     }
+  }
+
+  for (const [key, toggle] of Object.entries(toggleProps)) {
+    const selector = `[data-ui-${key}]${"selector" in toggle ? toggle.selector : ""}`;
+    const body = toggle.declarations.map((d) => `    ${d};`).join("\n");
+    rules.push(`  ${selector} {\n${body}\n  }`);
   }
 
   return `${HEADER}${registrations.join("\n\n")}\n\n@layer uiid.props {\n${rules.join("\n\n")}\n}\n`;

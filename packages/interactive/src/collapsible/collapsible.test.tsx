@@ -219,7 +219,7 @@ describe("Collapsible", () => {
     const root = getRoot();
     expect(root).toHaveAttribute("data-ui-gap", "4");
     expect(root).toHaveAttribute("data-ui-ay", "center");
-    expect(root?.className).toContain("toggle-fullwidth");
+    expect(root).toHaveAttribute("data-ui-fullwidth");
   });
 
   it("aligns panel content to the end by default", () => {

@@ -1,20 +1,24 @@
 import type { styleProps } from "./styles";
+import type { togglePropKeys } from "./styles/toggles";
 
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
   props: T;
   styleProps?: (keyof typeof styleProps)[];
+  toggleProps?: (typeof togglePropKeys)[number][];
 };
 
 /**
  * Stamps `data-slot`, and puts each listed style prop on the element as
  * `data-ui-{key}` plus a raw `--props-{key}` for the rules in
- * `@uiid/tokens/props.css` to resolve. A caller's own `style` still wins.
+ * `@uiid/tokens/props.css` to resolve. A toggle that is on writes a bare
+ * `data-ui-{key}`. A caller's own `style` still wins.
  */
 export function prepareComponentProps<T extends Record<string, unknown>>({
   componentName,
   props,
   styleProps: stylePropKeys = [],
+  toggleProps: togglePropKeys = [],
 }: PrepareComponentPropsOptions<T>) {
   const dataAttrs: Record<string, string> = {
     "data-slot": componentName,
@@ -24,7 +28,9 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
   const styleObj: React.CSSProperties = {};
 
   for (const [key, value] of Object.entries(props)) {
-    if (
+    if (togglePropKeys.includes(key as (typeof togglePropKeys)[number])) {
+      if (value) dataAttrs[`data-ui-${key}`] = "";
+    } else if (
       stylePropKeys.includes(key as keyof typeof styleProps) &&
       value !== undefined
     ) {

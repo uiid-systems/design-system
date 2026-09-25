@@ -11,8 +11,7 @@ const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
   <Box
     h={64}
     w={64}
-    bordered
-    rounded
+    b={1}
     style={{ backgroundColor: bg, ...props.style }}
     {...props}
   />
@@ -23,18 +22,12 @@ export const TrueBranch = () => (
     condition={true}
     render={{
       true: (
-        <Box
-          bordered
-          p={2}
-          rounded
-          style={{ backgroundColor: "rgba(0, 200, 0, 0.12)" }}
-        />
+        <Box b={1} p={2} style={{ backgroundColor: "rgba(0, 200, 0, 0.12)" }} />
       ),
       false: (
         <Box
-          bordered
+          b={1}
           p={2}
-          rounded
           style={{ backgroundColor: "rgba(220, 50, 50, 0.12)" }}
         />
       ),
@@ -49,18 +42,12 @@ export const FalseBranch = () => (
     condition={false}
     render={{
       true: (
-        <Box
-          bordered
-          p={2}
-          rounded
-          style={{ backgroundColor: "rgba(0, 200, 0, 0.12)" }}
-        />
+        <Box b={1} p={2} style={{ backgroundColor: "rgba(0, 200, 0, 0.12)" }} />
       ),
       false: (
         <Box
-          bordered
+          b={1}
           p={2}
-          rounded
           style={{ backgroundColor: "rgba(220, 50, 50, 0.12)" }}
         />
       ),

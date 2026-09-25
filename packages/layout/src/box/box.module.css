@@ -4,38 +4,3 @@
   border-style: solid;
   border-width: 0;
 }
-
-.toggle-evenly > * {
-  flex: 1;
-  flex-basis: auto;
-  width: -webkit-fill-available;
-  width: 100%;
-}
-
-.toggle-fullheight {
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
-.toggle-fullwidth {
-  width: 100%;
-  width: -webkit-fill-available;
-  width: -moz-available;
-}
-
-.toggle-fullscreen {
-  width: 100dvw;
-  height: 100dvh;
-}
-
-.toggle-rounded {
-  border-radius: var(--globals-border-radius);
-}
-
-.toggle-square {
-  aspect-ratio: 1;
-}
-
-.toggle-bordered {
-  border-width: var(--globals-border-width);
-}

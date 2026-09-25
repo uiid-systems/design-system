@@ -235,10 +235,10 @@ describe("Accordion", () => {
 
   it("stretches the root by default and releases it on fullwidth={false}", () => {
     const { rerender } = render(<Accordion items={sampleItems} />);
-    expect(root()?.className).toMatch(/toggle-fullwidth/);
+    expect(root()).toHaveAttribute("data-ui-fullwidth");
 
     rerender(<Accordion items={sampleItems} fullwidth={false} />);
-    expect(root()?.className).not.toMatch(/toggle-fullwidth/);
+    expect(root()).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it("forwards layout props from ItemProps to each item Stack", () => {

@@ -3,29 +3,18 @@ import {
   renderWithProps,
   cx,
   stylePropKeys,
+  togglePropKeys,
 } from "@uiid/utils";
 
 import type { BoxProps } from "./box.types";
-import { boxVariants } from "./box.variants";
 
 import styles from "./box.module.css";
 
-export const Box = ({
-  bordered,
-  evenly,
-  fullwidth,
-  fullheight,
-  fullscreen,
-  rounded,
-  square,
-  render,
-  className,
-  children,
-  ...props
-}: BoxProps) => {
+export const Box = ({ render, className, children, ...props }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
     styleProps: stylePropKeys,
+    toggleProps: [...togglePropKeys],
     props,
   });
 
@@ -33,19 +22,7 @@ export const Box = ({
     fallbackElement: "div",
     props: {
       ...preparedProps,
-      className: cx(
-        styles["box"],
-        boxVariants({
-          bordered,
-          evenly,
-          fullwidth,
-          fullheight,
-          fullscreen,
-          rounded,
-          square,
-        }),
-        className,
-      ),
+      className: cx(styles["box"], className),
     },
     render,
     children,
