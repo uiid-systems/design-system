@@ -37,6 +37,17 @@ describe("prepareComponentProps", () => {
     expect(result.style).toEqual({ "--props-gap": 2, "--props-gap-sm": 6 });
   });
 
+  it("accepts a keyword at a breakpoint", () => {
+    const result = prepareComponentProps({
+      componentName: "box",
+      props: { m: { base: 2, sm: "auto" } },
+      styleProps: ["m"],
+    });
+
+    expect(result).toHaveProperty("data-ui-m", "2");
+    expect(result).toHaveProperty("data-ui-m-sm", "auto");
+  });
+
   it("only converts the style props it is given", () => {
     const result = prepareComponentProps({
       componentName: "text",

@@ -33,8 +33,6 @@ export type StyleProp<K extends keyof React.CSSProperties> = {
     | Array<React.CSSProperties[K]>;
   /** Keywords accepted alongside a number, each emitted as its own rule. */
   keywords?: readonly string[];
-  /** Accepts a value per breakpoint; see `Responsive`. */
-  responsive?: boolean;
   unit?: {
     variable: `--${string}`;
   };

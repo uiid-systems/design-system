@@ -1,4 +1,4 @@
-import type { StyleProp } from "../types";
+import type { Responsive, StyleProp } from "../types";
 
 export const layoutPropKeys = ["ax", "ay", "direction"] as const;
 
@@ -28,9 +28,9 @@ export const direction = {
 
 export type LayoutProps = {
   /** Alignment of children along the main axis (justify-content) */
-  ax?: (typeof ax.values)[number];
+  ax?: Responsive<(typeof ax.values)[number]>;
   /** Alignment of children along the cross axis (align-items) */
-  ay?: (typeof ay.values)[number];
+  ay?: Responsive<(typeof ay.values)[number]>;
   /** Flex direction of children */
-  direction?: (typeof direction.values)[number];
+  direction?: Responsive<(typeof direction.values)[number]>;
 };

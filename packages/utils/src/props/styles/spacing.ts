@@ -30,7 +30,6 @@ export const spacingPropKeys = [
 export const gap = {
   property: "gap",
   unit: { variable: "--spacing-unit" },
-  responsive: true,
 } satisfies StyleProp<"gap">;
 
 /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
@@ -128,31 +127,31 @@ export type SpacingProps = {
   /** Gap between children, in spacing units */
   gap?: Responsive<number>;
   /** Margin on all sides, in spacing units */
-  m?: number | "auto";
+  m?: Responsive<number | "auto">;
   /** Margin on the left and right (inline) edges, in spacing units */
-  mx?: number | "auto";
+  mx?: Responsive<number | "auto">;
   /** Margin on the top and bottom (block) edges, in spacing units */
-  my?: number | "auto";
+  my?: Responsive<number | "auto">;
   /** Margin on the left (inline-start) edge, in spacing units */
-  ml?: number | "auto";
+  ml?: Responsive<number | "auto">;
   /** Margin on the right (inline-end) edge, in spacing units */
-  mr?: number | "auto";
+  mr?: Responsive<number | "auto">;
   /** Margin on the top (block-start) edge, in spacing units */
-  mt?: number | "auto";
+  mt?: Responsive<number | "auto">;
   /** Margin on the bottom (block-end) edge, in spacing units */
-  mb?: number | "auto";
+  mb?: Responsive<number | "auto">;
   /** Padding on all sides, in spacing units */
-  p?: number;
+  p?: Responsive<number>;
   /** Padding on the left and right (inline) edges, in spacing units */
-  px?: number;
+  px?: Responsive<number>;
   /** Padding on the top and bottom (block) edges, in spacing units */
-  py?: number;
+  py?: Responsive<number>;
   /** Padding on the left (inline-start) edge, in spacing units */
-  pl?: number;
+  pl?: Responsive<number>;
   /** Padding on the right (inline-end) edge, in spacing units */
-  pr?: number;
+  pr?: Responsive<number>;
   /** Padding on the top (block-start) edge, in spacing units */
-  pt?: number;
+  pt?: Responsive<number>;
   /** Padding on the bottom (block-end) edge, in spacing units */
-  pb?: number;
+  pb?: Responsive<number>;
 };

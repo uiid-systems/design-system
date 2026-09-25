@@ -49,9 +49,9 @@ function rulesFor(
 /**
  * The CSS that resolves style props. `prepareComponentProps` puts each value
  * on the element as `data-ui-{key}` and a raw `--props-{key}`; these rules turn
- * the raw value into a declaration. Toggles are bare `data-ui-{key}`
- * attributes with fixed declarations. A responsive prop's breakpoint values use
- * `data-ui-{key}-{bp}` and apply under `@container style(--bp-{bp}: true)`.
+ * the raw value into a declaration. A breakpoint value uses
+ * `data-ui-{key}-{bp}` and applies under `@container style(--bp-{bp}: true)`.
+ * Toggles are bare `data-ui-{key}` attributes with fixed declarations.
  *
  * Written to `@uiid/tokens/src/props.css` by `css.test.ts`, which fails when
  * the two drift apart.
@@ -69,13 +69,9 @@ export function stylePropsCss() {
   }
 
   for (const bp of BREAKPOINTS) {
-    const rules = entries
-      .filter(
-        ([, styleProp]) => "responsive" in styleProp && styleProp.responsive,
-      )
-      .flatMap(([key, styleProp]) =>
-        rulesFor(key, styleProp, `-${bp}`, "    "),
-      );
+    const rules = entries.flatMap(([key, styleProp]) =>
+      rulesFor(key, styleProp, `-${bp}`, "    "),
+    );
 
     if (rules.length > 0) {
       blocks.push(

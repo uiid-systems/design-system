@@ -183,8 +183,156 @@
   }
 
   @container style(--bp-sm: true) {
+    [data-ui-b-sm] {
+      border-width: calc(var(--props-b-sm) * 1px);
+    }
+
+    [data-ui-bx-sm] {
+      border-inline-width: calc(var(--props-bx-sm) * 1px);
+    }
+
+    [data-ui-bl-sm] {
+      border-inline-start-width: calc(var(--props-bl-sm) * 1px);
+    }
+
+    [data-ui-br-sm] {
+      border-inline-end-width: calc(var(--props-br-sm) * 1px);
+    }
+
+    [data-ui-by-sm] {
+      border-block-width: calc(var(--props-by-sm) * 1px);
+    }
+
+    [data-ui-bt-sm] {
+      border-block-start-width: calc(var(--props-bt-sm) * 1px);
+    }
+
+    [data-ui-bb-sm] {
+      border-block-end-width: calc(var(--props-bb-sm) * 1px);
+    }
+
+    [data-ui-ax-sm] {
+      justify-content: var(--props-ax-sm);
+    }
+
+    [data-ui-ay-sm] {
+      align-items: var(--props-ay-sm);
+    }
+
+    [data-ui-direction-sm] {
+      flex-direction: var(--props-direction-sm);
+    }
+
     [data-ui-gap-sm] {
       gap: calc(var(--props-gap-sm) * var(--spacing-unit));
+    }
+
+    [data-ui-m-sm] {
+      margin: calc(var(--props-m-sm) * var(--spacing-unit));
+    }
+
+    [data-ui-m-sm="auto"] {
+      margin: auto;
+    }
+
+    [data-ui-mx-sm] {
+      margin-inline: calc(var(--props-mx-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-mx-sm="auto"] {
+      margin-inline: auto;
+    }
+
+    [data-ui-ml-sm] {
+      margin-inline-start: calc(var(--props-ml-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-ml-sm="auto"] {
+      margin-inline-start: auto;
+    }
+
+    [data-ui-mr-sm] {
+      margin-inline-end: calc(var(--props-mr-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-mr-sm="auto"] {
+      margin-inline-end: auto;
+    }
+
+    [data-ui-my-sm] {
+      margin-block: calc(var(--props-my-sm) * var(--spacing-block));
+    }
+
+    [data-ui-my-sm="auto"] {
+      margin-block: auto;
+    }
+
+    [data-ui-mt-sm] {
+      margin-block-start: calc(var(--props-mt-sm) * var(--spacing-block));
+    }
+
+    [data-ui-mt-sm="auto"] {
+      margin-block-start: auto;
+    }
+
+    [data-ui-mb-sm] {
+      margin-block-end: calc(var(--props-mb-sm) * var(--spacing-block));
+    }
+
+    [data-ui-mb-sm="auto"] {
+      margin-block-end: auto;
+    }
+
+    [data-ui-p-sm] {
+      padding: calc(var(--props-p-sm) * var(--spacing-unit));
+    }
+
+    [data-ui-px-sm] {
+      padding-inline: calc(var(--props-px-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-pl-sm] {
+      padding-inline-start: calc(var(--props-pl-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-pr-sm] {
+      padding-inline-end: calc(var(--props-pr-sm) * var(--spacing-inline));
+    }
+
+    [data-ui-py-sm] {
+      padding-block: calc(var(--props-py-sm) * var(--spacing-block));
+    }
+
+    [data-ui-pt-sm] {
+      padding-block-start: calc(var(--props-pt-sm) * var(--spacing-block));
+    }
+
+    [data-ui-pb-sm] {
+      padding-block-end: calc(var(--props-pb-sm) * var(--spacing-block));
+    }
+
+    [data-ui-w-sm] {
+      width: calc(var(--props-w-sm) * 1px);
+    }
+
+    [data-ui-minw-sm] {
+      min-width: calc(var(--props-minw-sm) * 1px);
+    }
+
+    [data-ui-maxw-sm] {
+      max-width: calc(var(--props-maxw-sm) * 1px);
+    }
+
+    [data-ui-h-sm] {
+      height: calc(var(--props-h-sm) * 1px);
+    }
+
+    [data-ui-minh-sm] {
+      min-height: calc(var(--props-minh-sm) * 1px);
+    }
+
+    [data-ui-maxh-sm] {
+      max-height: calc(var(--props-maxh-sm) * 1px);
     }
   }
 }

@@ -1,4 +1,4 @@
-import type { StyleProp } from "../types";
+import type { Responsive, StyleProp } from "../types";
 
 export const sizingPropKeys = [
   "w",
@@ -35,15 +35,15 @@ export const maxh = {
 
 export type SizingProps = {
   /** Width, in px */
-  w?: number;
+  w?: Responsive<number>;
   /** Minimum width, in px */
-  minw?: number;
+  minw?: Responsive<number>;
   /** Maximum width, in px */
-  maxw?: number;
+  maxw?: Responsive<number>;
   /** Height, in px */
-  h?: number;
+  h?: Responsive<number>;
   /** Minimum height, in px */
-  minh?: number;
+  minh?: Responsive<number>;
   /** Maximum height, in px */
-  maxh?: number;
+  maxh?: Responsive<number>;
 };

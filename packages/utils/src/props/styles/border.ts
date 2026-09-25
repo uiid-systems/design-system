@@ -1,4 +1,4 @@
-import type { StyleProp } from "../types";
+import type { Responsive, StyleProp } from "../types";
 
 export const borderPropKeys = [
   "b",
@@ -40,17 +40,17 @@ export const bb = {
 
 export type BorderProps = {
   /** Border width on all sides, in px */
-  b?: number;
+  b?: Responsive<number>;
   /** Border width on the left and right (inline) edges, in px */
-  bx?: number;
+  bx?: Responsive<number>;
   /** Border width on the top and bottom (block) edges, in px */
-  by?: number;
+  by?: Responsive<number>;
   /** Border width on the left (inline-start) edge, in px */
-  bl?: number;
+  bl?: Responsive<number>;
   /** Border width on the right (inline-end) edge, in px */
-  br?: number;
+  br?: Responsive<number>;
   /** Border width on the top (block-start) edge, in px */
-  bt?: number;
+  bt?: Responsive<number>;
   /** Border width on the bottom (block-end) edge, in px */
-  bb?: number;
+  bb?: Responsive<number>;
 };
