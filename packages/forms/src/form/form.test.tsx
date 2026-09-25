@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
@@ -118,7 +118,7 @@ describe("Form", () => {
     expect(screen.getByText("Invalid email")).toBeInTheDocument();
   });
 
-  it("clears errors when errors prop becomes empty", () => {
+  it("clears errors when errors prop becomes empty", async () => {
     const { rerender } = render(
       <Form errors={{ email: "Invalid email" }}>
         <Input name="email" label="Email" />
@@ -133,7 +133,9 @@ describe("Form", () => {
       </Form>,
     );
 
-    expect(screen.queryByText("Invalid email")).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByText("Invalid email")).not.toBeInTheDocument(),
+    );
   });
 
   // ============================================
