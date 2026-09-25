@@ -1,6 +1,6 @@
 {
   "name": "@uiid/overlays",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Overlay components — Dialog, Drawer, Popover, Tooltip, Toaster",
   "license": "MIT",
   "author": "Adam Fratino",

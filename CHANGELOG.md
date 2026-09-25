@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.4](https://github.com/uiid-systems/design-system/compare/v0.6.3...v0.6.4) (2026-09-25)
+
+
+### Features
+
+* **ui:** resolve Box toggles from data attributes and retire three ([#434](https://github.com/uiid-systems/design-system/issues/434)) ([d4595fd](https://github.com/uiid-systems/design-system/commit/d4595fd5c4efe35cdf39d19e47f74bc7e0dad33b))
+* **ui:** resolve style props from data attributes in a props layer ([#433](https://github.com/uiid-systems/design-system/issues/433)) ([ae58c2c](https://github.com/uiid-systems/design-system/commit/ae58c2ca84ca9dffcc6ef319179561f7c7e52034))
+* **ui:** resolve Text props from data attributes ([#437](https://github.com/uiid-systems/design-system/issues/437)) ([1505d0b](https://github.com/uiid-systems/design-system/commit/1505d0bb8156a1a1061762a57c562b817340adb3))
+* **ui:** scale slider readout, thumb and track with the size tier ([#436](https://github.com/uiid-systems/design-system/issues/436)) ([5df66f9](https://github.com/uiid-systems/design-system/commit/5df66f9ee45cf64f0095d2f201686d82946cbfe5))
+
+
+### Bug Fixes
+
+* **ui:** correct style prop values and drop unused prop metadata ([#431](https://github.com/uiid-systems/design-system/issues/431)) ([f8c0559](https://github.com/uiid-systems/design-system/commit/f8c05594e2be26895ec9b10189ecc426d164acf1))
+* **ui:** keep renderWithProps' composed ref stable across renders ([#427](https://github.com/uiid-systems/design-system/issues/427)) ([939653d](https://github.com/uiid-systems/design-system/commit/939653df6693866d9f72eae15ad1eb354b1ef79c))
+* **ui:** keep sortable item and handle refs stable across renders ([#430](https://github.com/uiid-systems/design-system/issues/430)) ([e8ad74b](https://github.com/uiid-systems/design-system/commit/e8ad74bcdc75eb3c17e2a0c73212867664ba244e))
+* **ui:** mount Button's loading spinner only while it is loading ([#435](https://github.com/uiid-systems/design-system/issues/435)) ([52b50e0](https://github.com/uiid-systems/design-system/commit/52b50e0110d136658d47b0c4f5713e0e1a5553b1))
+* **ui:** scope ListItem's icon rule to the icon it renders ([#426](https://github.com/uiid-systems/design-system/issues/426)) ([e6c0612](https://github.com/uiid-systems/design-system/commit/e6c0612ccca2f930bda462f80513f03d857d3ad9))
+
 ## [0.6.3](https://github.com/uiid-systems/design-system/compare/v0.6.2...v0.6.3) (2026-09-23)
 
 
