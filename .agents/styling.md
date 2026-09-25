@@ -2,7 +2,7 @@
 
 **Never use `style={{}}` for layout, spacing, sizing, or text styling.** Resolution order:
 
-1. **Component props** — `gap`, `p`, `ax`, `ay`, `evenly`, `fullwidth`, `size`, `shade`, etc.
+1. **Component props** — `gap`, `p`, `ax`, `ay`, `evenly`, `fullwidth`, `size`, `shade`, etc. Style props take a value per breakpoint too: `gap={{ base: 2, md: 4 }}`.
 2. **CSS Modules** — only for visual styling (colors, borders, shadows, animations), `data-*` state styling, pseudo-elements, and complex positioning
 3. **Stop and ask** — if no prop exists for what you need. Do not fall back to inline styles.
 
@@ -11,6 +11,28 @@ Use `Stack` / `Group` / `Box` from `@uiid/layout` instead of raw flex or grid CS
 Tailwind is acceptable only when no UIID component or prop covers the case.
 
 Dogfood the design system everywhere, including docs, MDX, and examples. If a system component exists for the UI you are rendering, use it rather than hand-styled markup.
+
+## Style props
+
+Style props (spacing, sizing, border, `ax`/`ay`/`direction`) and toggles (`evenly`, `fullwidth`, `fullheight`, `fullscreen`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
+
+- **`packages/tokens/src/props.css` is generated** from the `styleProps` and `toggleProps` maps in `packages/utils/src/props/`. Never edit it by hand. After changing a definition, run `pnpm test:run packages/utils -u`; `css.test.ts` fails in CI until you do.
+- **Responsive values** write `data-ui-{key}-{bp}` for each breakpoint set, applied under `@container style(--bp-{bp}: true)`. A breakpoint left out keeps the value below it. Toggles are boolean only.
+- **Test the attribute, not the style**: `expect(el).toHaveAttribute("data-ui-gap", "2")`. The test DOM does not load `props.css`, so `toHaveStyle` on a style prop fails.
+
+## Breakpoints
+
+`sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem, defined in `packages/tokens/src/json/primitives/breakpoints.tokens.json`. The token build sets `--bp-{name}: true` on `:root` from each width up. In a CSS module, query the flag rather than repeating a width:
+
+```css
+@container style(--bp-md: true) {
+  .panel {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+```
+
+Never write `@media (width >= 48rem)` in a component. Adding or renaming a breakpoint means editing the token file and `BREAKPOINTS` in `packages/utils/src/props/types.ts` together; `css.test.ts` fails if they disagree.
 
 ## CSS variable naming
 

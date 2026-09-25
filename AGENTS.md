@@ -67,8 +67,8 @@ Versioning and changelogs are automated by **release-please**:
 
 Find the row matching the files you are touching and read that chapter before editing.
 
-| Chapter                   | Covers                                                               | Read when                     |
-| ------------------------- | -------------------------------------------------------------------- | ----------------------------- |
-| `.agents/architecture.md` | Monorepo layout, root config files                                   | Touching root configs         |
-| `.agents/components.md`   | Component conventions, upstream substitutions, new-package checklist | Touching `packages/**` source |
-| `.agents/styling.md`      | Inline-style ban, layout primitives, CSS vars, spacing               | Touching `.tsx` / `.css`      |
+| Chapter                   | Covers                                                                  | Read when                     |
+| ------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
+| `.agents/architecture.md` | Monorepo layout, root config files                                      | Touching root configs         |
+| `.agents/components.md`   | Component conventions, upstream substitutions, new-package checklist    | Touching `packages/**` source |
+| `.agents/styling.md`      | Inline-style ban, layout primitives, style props, breakpoints, CSS vars | Touching `.tsx` / `.css`      |
