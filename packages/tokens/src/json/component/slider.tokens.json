@@ -3,15 +3,31 @@
   "slider": {
     "$type": "dimension",
     "control": {
-      "min-width": { "$value": "12rem" },
-      "min-height": { "$value": "{slider.thumb.size}" }
+      "min-width": { "$value": "12rem" }
     },
     "track": {
-      "height": { "$value": "{spacing.unit}" },
-      "border-radius": { "$value": "{slider.track.height}" }
+      "height": { "$value": "{slider.size.md.track-height}" }
     },
     "thumb": {
-      "size": { "$value": "1rem" }
+      "size": { "$value": "{slider.size.md.thumb-size}" }
+    },
+    "size": {
+      "xs": {
+        "thumb-size": { "$value": "0.75rem" },
+        "track-height": { "$value": "0.125rem" }
+      },
+      "sm": {
+        "thumb-size": { "$value": "0.875rem" },
+        "track-height": { "$value": "0.1875rem" }
+      },
+      "md": {
+        "thumb-size": { "$value": "1rem" },
+        "track-height": { "$value": "{spacing.unit}" }
+      },
+      "lg": {
+        "thumb-size": { "$value": "1.25rem" },
+        "track-height": { "$value": "0.3125rem" }
+      }
     }
   }
 }

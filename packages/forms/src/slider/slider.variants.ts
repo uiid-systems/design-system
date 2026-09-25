@@ -3,6 +3,7 @@ import { cva } from "@uiid/utils";
 import { SLIDER_DEFAULT_SIZE } from "./slider.constants";
 
 import inputStyles from "../input/input.module.css";
+import styles from "./slider.module.css";
 
 /**
  * Slider's root is a control surface like any other form control, so it paints
@@ -16,9 +17,9 @@ import inputStyles from "../input/input.module.css";
  * tier with no way to ask for another one. Declaring the axis here makes that
  * behavior explicit and gives the tier a prop.
  *
- * Only the row height, inline padding and readout scale with the tier. The
- * track and thumb are a fixed scale, which is what keeps a small slider's grab
- * target usable.
+ * The size classes are Slider's own. Each composes the same tier Input does,
+ * so the row height, inline padding and readout still match a sibling Input,
+ * and adds the thumb and track dimensions for that tier.
  */
 export const sliderVariants = cva({
   variants: {
@@ -30,10 +31,10 @@ export const sliderVariants = cva({
     },
     /** Control scale, matching a sibling Input at the same size */
     size: {
-      xsmall: inputStyles["size-xsmall"],
-      small: inputStyles["size-small"],
-      medium: inputStyles["size-medium"],
-      large: inputStyles["size-large"],
+      xsmall: styles["size-xsmall"],
+      small: styles["size-small"],
+      medium: styles["size-medium"],
+      large: styles["size-large"],
     },
   },
   defaultVariants: {

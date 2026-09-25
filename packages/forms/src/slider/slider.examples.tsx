@@ -23,8 +23,8 @@ export const WithLabel = () => (
 );
 
 /*
- * The tier sets the control row's height, inset and readout. Track and thumb
- * stay a fixed scale so a small slider keeps a usable grab target.
+ * The tier sets the control row's height, inset and readout, and scales the
+ * thumb and track with them.
  */
 export const Sizes = () => (
   <Stack gap={4} ax="stretch">

@@ -24,10 +24,39 @@
   flex: 1;
   min-width: var(--slider-control-min-width);
   /* Clears the thumb, so a control with no other content still reserves the
-     thumb's diameter rather than collapsing onto the track. */
-  min-height: var(--slider-control-min-height);
+     thumb's diameter rather than collapsing onto the track. Reads the thumb
+     var directly: a derived token would resolve once at :root and miss the
+     tier's override. */
+  min-height: var(--slider-thumb-size);
   touch-action: none;
   user-select: none;
+}
+
+/*
+ * Control scale. Each tier composes the same row height, inset and font size a
+ * sibling Input gets, then re-points the thumb and track at the tier's own
+ * tokens. The tier lands on the root, an ancestor of every part, so the vars
+ * cascade down and the leaf subcomponents stay size-unaware.
+ */
+.size-xsmall {
+  composes: composes-size-xsmall from global;
+  --slider-thumb-size: var(--slider-size-xs-thumb-size);
+  --slider-track-height: var(--slider-size-xs-track-height);
+}
+.size-small {
+  composes: composes-size-small from global;
+  --slider-thumb-size: var(--slider-size-sm-thumb-size);
+  --slider-track-height: var(--slider-size-sm-track-height);
+}
+.size-medium {
+  composes: composes-size-medium from global;
+  --slider-thumb-size: var(--slider-size-md-thumb-size);
+  --slider-track-height: var(--slider-size-md-track-height);
+}
+.size-large {
+  composes: composes-size-large from global;
+  --slider-thumb-size: var(--slider-size-lg-thumb-size);
+  --slider-track-height: var(--slider-size-lg-track-height);
 }
 
 /* The unfilled track. It is the groove the value is measured against, not the
@@ -37,7 +66,7 @@
   height: var(--slider-track-height);
   background-color: var(--shade-halftone);
   box-shadow: inset 0 0 0 var(--globals-border-width) var(--shade-accent);
-  border-radius: var(--slider-track-border-radius);
+  border-radius: var(--slider-track-height);
   user-select: none;
 }
 
@@ -45,7 +74,7 @@
    colours. Base UI sizes it; the shade fallback keeps an uncoloured slider
    exactly as it was. */
 .slider-indicator {
-  border-radius: var(--slider-track-border-radius);
+  border-radius: var(--slider-track-height);
   background-color: var(--control-fill, var(--shade-muted));
   user-select: none;
 }
@@ -66,4 +95,10 @@
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
   }
+}
+
+/* The readout renders through Text, whose default size pins a font-size of its
+   own. Inheriting hands it back to the root, where the tier set it. */
+.slider-value {
+  font-size: inherit;
 }

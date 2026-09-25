@@ -210,6 +210,17 @@ describe("Slider size variant", () => {
     expect(rootClassName(container)).not.toContain("size-small");
     expect(rootClassName(container)).not.toContain("size-medium");
   });
+
+  it("paints Slider's own tier, which carries the thumb and track scale", () => {
+    const { container } = render(<Slider size="small" />);
+    expect(rootClassName(container)).toContain(styles["size-small"]);
+  });
+
+  it("lets the readout inherit the tier's font size", () => {
+    const { container } = render(<Slider defaultValue={40} />);
+    const value = container.querySelector("[data-slot='slider-value']");
+    expect(value).toHaveClass(styles["slider-value"]);
+  });
 });
 
 describe("Slider control surface", () => {
