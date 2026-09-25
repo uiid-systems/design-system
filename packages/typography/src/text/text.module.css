@@ -22,30 +22,31 @@
 }
 
 /*
- * Text's props are data-ui-* attributes on the element, selected bare so each
- * rule stays at single-class specificity: a component that reaches a Text
- * through its own class plus a slot outranks them, as it did the old classes.
+ * Text's props are data-ui-* attributes on the element. `:where(.text)` keeps
+ * each selector pure for CSS modules without adding specificity, so a rule
+ * weighs one attribute, as the old classes did, and a component that reaches a
+ * Text through its own class plus a slot still outranks it.
  */
 
-[data-ui-size="-1"] {
+:where(.text)[data-ui-size="-1"] {
   font-size: var(--text--1-font-size);
   font-weight: var(--text--1-font-weight);
   line-height: var(--text--1-line-height);
   letter-spacing: var(--text--1-letter-spacing);
 }
-[data-ui-size="0"] {
+:where(.text)[data-ui-size="0"] {
   font-size: var(--text-0-font-size);
   font-weight: var(--text-0-font-weight);
   line-height: var(--text-0-line-height);
   letter-spacing: var(--text-0-letter-spacing);
 }
-[data-ui-size="1"] {
+:where(.text)[data-ui-size="1"] {
   font-size: var(--text-1-font-size);
   font-weight: var(--text-1-font-weight);
   line-height: var(--text-1-line-height);
   letter-spacing: var(--text-1-letter-spacing);
 }
-[data-ui-size="2"] {
+:where(.text)[data-ui-size="2"] {
   font-size: var(--text-2-font-size);
   font-weight: var(--text-2-font-weight);
   line-height: var(--text-2-line-height);
@@ -53,7 +54,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-[data-ui-size="3"] {
+:where(.text)[data-ui-size="3"] {
   font-size: var(--text-3-font-size);
   font-weight: var(--text-3-font-weight);
   line-height: var(--text-3-line-height);
@@ -61,7 +62,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-[data-ui-size="4"] {
+:where(.text)[data-ui-size="4"] {
   font-size: var(--text-4-font-size);
   font-weight: var(--text-4-font-weight);
   line-height: var(--text-4-line-height);
@@ -69,7 +70,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-[data-ui-size="5"] {
+:where(.text)[data-ui-size="5"] {
   font-size: var(--text-5-font-size);
   font-weight: var(--text-5-font-weight);
   line-height: var(--text-5-line-height);
@@ -77,7 +78,7 @@
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
-[data-ui-size="6"] {
+:where(.text)[data-ui-size="6"] {
   font-size: var(--text-6-font-size);
   font-weight: var(--text-6-font-weight);
   line-height: var(--text-6-line-height);
@@ -86,22 +87,22 @@
   text-box-edge: cap alphabetic;
 }
 
-[data-ui-shade="background"] {
+:where(.text)[data-ui-shade="background"] {
   color: var(--shade-background);
 }
-[data-ui-shade="surface"] {
+:where(.text)[data-ui-shade="surface"] {
   color: var(--shade-surface);
 }
-[data-ui-shade="accent"] {
+:where(.text)[data-ui-shade="accent"] {
   color: var(--shade-accent);
 }
-[data-ui-shade="halftone"] {
+:where(.text)[data-ui-shade="halftone"] {
   color: var(--shade-halftone);
 }
-[data-ui-shade="muted"] {
+:where(.text)[data-ui-shade="muted"] {
   color: var(--shade-muted);
 }
-[data-ui-shade="foreground"] {
+:where(.text)[data-ui-shade="foreground"] {
   color: var(--shade-foreground);
 }
 
@@ -113,30 +114,30 @@
  * --palette-text is legible against the page background. Colored text on a
  * tinted surface wants --palette-on-tint instead.
  */
-[data-ui-color] {
+:where(.text)[data-ui-color] {
   color: var(--palette-text);
 }
 
-[data-ui-underline] {
+:where(.text)[data-ui-underline] {
   text-decoration-line: underline;
 }
 
-[data-ui-underline="false"] {
+:where(.text)[data-ui-underline="false"] {
   text-decoration-line: none;
 }
 
-[data-ui-strikethrough] {
+:where(.text)[data-ui-strikethrough] {
   text-decoration-line: line-through;
 }
 
 /* Both resolve the same text-wrap-mode longhand as .composes-text's
    `text-wrap: pretty`, and win by sitting in uiid.primitives above
    uiid.compositions. */
-[data-ui-balance] {
+:where(.text)[data-ui-balance] {
   text-wrap: balance;
 }
 
-[data-ui-truncate] {
+:where(.text)[data-ui-truncate] {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -144,33 +145,33 @@
   max-width: 100%;
 }
 
-[data-ui-family="mono"] {
+:where(.text)[data-ui-family="mono"] {
   font-family: var(--font-mono);
 }
 
-[data-ui-family="serif"] {
+:where(.text)[data-ui-family="serif"] {
   font-family: var(--font-serif);
 }
 
-[data-ui-family="sans"] {
+:where(.text)[data-ui-family="sans"] {
   font-family: var(--font-sans);
 }
 
-[data-ui-weight="thin"] {
+:where(.text)[data-ui-weight="thin"] {
   font-weight: 100;
 }
-[data-ui-weight="light"] {
+:where(.text)[data-ui-weight="light"] {
   font-weight: 300;
 }
-[data-ui-weight="normal"] {
+:where(.text)[data-ui-weight="normal"] {
   font-weight: 400;
 }
-[data-ui-weight="medium"] {
+:where(.text)[data-ui-weight="medium"] {
   font-weight: 500;
 }
-[data-ui-weight="semibold"] {
+:where(.text)[data-ui-weight="semibold"] {
   font-weight: 600;
 }
-[data-ui-weight="bold"] {
+:where(.text)[data-ui-weight="bold"] {
   font-weight: 700;
 }
