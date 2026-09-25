@@ -16,6 +16,7 @@ export const ButtonContentContainer = ({
       className={styles["button-content-container"]}
       data-loading={loading}
       aria-hidden={loading}
+      ax="center"
       ay="center"
       gap={BUTTON_DEFAULT_GAP}
       {...props}

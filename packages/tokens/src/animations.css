@@ -31,8 +31,7 @@
    * child elements on the main thread.
    *
    * A component overrides this from its own module by specificity, not by
-   * layer — `.button-spinner:not([data-loading="true"])` outranks the bare
-   * attribute selector here, which is how Button pauses the spinner it owns.
+   * layer — any class selector outranks the bare attribute selector here.
    */
   [data-animate="spin"] {
     animation: rotate-360 0.75s linear infinite;

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
@@ -85,19 +85,61 @@ describe("Button", () => {
     expect(spinner).toHaveAttribute("data-loading", "true");
   });
 
-  it("keeps the spinner mounted and idle when not loading", () => {
-    // The spinner is never conditionally rendered — `.button-spinner` pauses
-    // its CSS animation instead, which is what keeps an idle button from
-    // animating. Unmounting it again would take the exit transition with it.
+  it("renders no spinner when not loading", () => {
     render(<Button>Submit</Button>);
     const content = document.querySelector(
       '[data-slot="button-content-container"]',
     );
-    const spinner = document.querySelector('[data-slot="button-spinner"]');
 
-    expect(spinner).not.toBeNull();
-    expect(spinner).not.toHaveAttribute("data-loading", "true");
+    expect(
+      document.querySelector('[data-slot="button-spinner"]'),
+    ).not.toBeInTheDocument();
     expect(content).not.toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("mounts the spinner when loading starts and unmounts it once loading ends", async () => {
+    const { rerender } = render(<Button>Submit</Button>);
+    const spinner = () =>
+      document.querySelector('[data-slot="button-spinner"]');
+
+    rerender(<Button loading>Submit</Button>);
+    expect(spinner()).toHaveAttribute("data-loading", "true");
+
+    // Stays mounted with loading off until its fade-out is over; the test DOM
+    // runs no transitions, so that is the next frame.
+    rerender(<Button>Submit</Button>);
+    expect(spinner()).not.toHaveAttribute("data-loading", "true");
+    expect(spinner()).toHaveAttribute("aria-hidden", "true");
+    await waitFor(() => expect(spinner()).not.toBeInTheDocument());
+  });
+
+  it("keeps the spinner if loading resumes before it unmounts", async () => {
+    const { rerender } = render(<Button loading>Submit</Button>);
+    rerender(<Button>Submit</Button>);
+    rerender(<Button loading>Submit</Button>);
+
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(
+      document.querySelector('[data-slot="button-spinner"]'),
+    ).toHaveAttribute("data-loading", "true");
+  });
+
+  it("unmounts the spinner of a loading link once loading ends", async () => {
+    const { rerender } = render(
+      <Button loading render={<a href="/next" />}>
+        Next
+      </Button>,
+    );
+    expect(
+      document.querySelector('[data-slot="button-spinner"]'),
+    ).toBeInTheDocument();
+
+    rerender(<Button render={<a href="/next" />}>Next</Button>);
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-slot="button-spinner"]'),
+      ).not.toBeInTheDocument(),
+    );
   });
 
   it("supports aria-label for icon-only buttons", () => {
