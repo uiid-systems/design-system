@@ -51,18 +51,40 @@ const chainEventHandlers = (ours: unknown, theirs: unknown): unknown => {
   };
 };
 
+/** Composed callbacks, keyed by our ref and then theirs. */
+const composedRefCache = new WeakMap<object, WeakMap<object, Ref<unknown>>>();
+
+/** Refs are objects or callbacks, both of which can key a `WeakMap`. */
+const isRefKey = (ref: unknown): ref is object =>
+  (typeof ref === "object" && ref !== null) || typeof ref === "function";
+
 /**
- * Composes only when both sides carry a ref. Passing a lone ref through
- * verbatim keeps its identity stable across renders, so React doesn't detach
- * and reattach it every time; a genuine collision accepts a fresh callback per
- * render. `composeRefs` rather than a hook keeps `renderWithProps` callable
- * from server components.
+ * Composes only when both sides carry a ref, and hands back the same callback
+ * for the same pair of refs. React treats a new ref identity as a detach plus
+ * an attach, so a fresh callback per render would call both refs with `null`
+ * and then the node on every render — and a callback ref that stores a new
+ * object each call would re-render forever. A `WeakMap` rather than a hook
+ * keeps `renderWithProps` callable from server components, and lets the pair
+ * be collected once neither ref is referenced elsewhere.
  */
 const mergeRefs = (ours: unknown, theirs: unknown): unknown => {
   if (ours == null) return theirs;
   if (theirs == null) return ours;
+  if (!isRefKey(ours) || !isRefKey(theirs)) return theirs;
 
-  return composeRefs(ours as Ref<unknown>, theirs as Ref<unknown>);
+  let byTheirs = composedRefCache.get(ours);
+  if (!byTheirs) {
+    byTheirs = new WeakMap();
+    composedRefCache.set(ours, byTheirs);
+  }
+
+  let composed = byTheirs.get(theirs);
+  if (!composed) {
+    composed = composeRefs(ours as Ref<unknown>, theirs as Ref<unknown>);
+    byTheirs.set(theirs, composed);
+  }
+
+  return composed;
 };
 
 /**

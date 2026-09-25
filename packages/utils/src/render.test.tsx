@@ -1,4 +1,5 @@
-import { createRef } from "react";
+import { render } from "@testing-library/react";
+import { createRef, useCallback, useRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { renderWithProps } from "./render";
@@ -136,6 +137,45 @@ describe("renderWithProps", () => {
 
       expect(ours.current).toBe(node);
       expect(theirs.current).toBe(node);
+    });
+
+    it("keeps the composed ref's identity for the same pair of refs", () => {
+      const ours = createRef<HTMLAnchorElement>();
+      const theirs = createRef<HTMLAnchorElement>();
+      const compose = () =>
+        propsOf(
+          renderWithProps({ render: <a ref={theirs} />, props: { ref: ours } }),
+        ).ref;
+
+      expect(compose()).toBe(compose());
+    });
+
+    it("composes a fresh ref when either side of the pair changes", () => {
+      const ours = createRef<HTMLAnchorElement>();
+      const compose = (theirs: React.Ref<HTMLAnchorElement>) =>
+        propsOf(
+          renderWithProps({ render: <a ref={theirs} />, props: { ref: ours } }),
+        ).ref;
+
+      expect(compose(createRef())).not.toBe(compose(createRef()));
+    });
+
+    it("does not loop when their callback ref stores a new object per call", () => {
+      const Measured = () => {
+        const [, setRect] = useState<object>();
+        const ours = useRef<HTMLDivElement>(null);
+        const theirs = useCallback(
+          (node: HTMLDivElement | null) => setRect(node ? {} : undefined),
+          [],
+        );
+
+        return renderWithProps({
+          render: <div ref={theirs} />,
+          props: { ref: ours },
+        });
+      };
+
+      expect(() => render(<Measured />)).not.toThrow();
     });
   });
 

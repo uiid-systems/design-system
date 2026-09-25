@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { SwitchRender } from "./switch-render";
@@ -51,5 +51,58 @@ describe("SwitchRender", () => {
       </SwitchRender>,
     );
     expect(screen.getByTestId("passed-through")).toBeInTheDocument();
+  });
+
+  it("merges className with the selected wrapper's rather than replacing it", () => {
+    render(
+      <SwitchRender
+        condition
+        className="ours"
+        render={{
+          true: <div data-testid="t" className="theirs" />,
+          false: <div />,
+        }}
+      >
+        <span>x</span>
+      </SwitchRender>,
+    );
+    expect(screen.getByTestId("t")).toHaveClass("ours", "theirs");
+  });
+
+  it("merges style with the selected wrapper's rather than replacing it", () => {
+    render(
+      <SwitchRender
+        condition
+        style={{ color: "red" }}
+        render={{
+          true: <div data-testid="t" style={{ opacity: 0.5 }} />,
+          false: <div />,
+        }}
+      >
+        <span>x</span>
+      </SwitchRender>,
+    );
+    expect(screen.getByTestId("t")).toHaveStyle({
+      color: "red",
+      opacity: "0.5",
+    });
+  });
+
+  it("runs both click handlers rather than dropping the wrapper's", () => {
+    const calls: string[] = [];
+    render(
+      <SwitchRender
+        condition
+        onClick={() => calls.push("ours")}
+        render={{
+          true: <button data-testid="t" onClick={() => calls.push("theirs")} />,
+          false: <div />,
+        }}
+      >
+        x
+      </SwitchRender>,
+    );
+    fireEvent.click(screen.getByTestId("t"));
+    expect(calls).toEqual(["ours", "theirs"]);
   });
 });
