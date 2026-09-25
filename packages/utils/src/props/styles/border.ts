@@ -12,30 +12,37 @@ export const borderPropKeys = [
 
 export const b = {
   property: "borderWidth",
+  unit: "px",
 } satisfies StyleProp<"borderWidth">;
 
 export const bx = {
   property: "borderInlineWidth",
+  unit: "px",
 } satisfies StyleProp<"borderInlineWidth">;
 
 export const bl = {
   property: "borderInlineStartWidth",
+  unit: "px",
 } satisfies StyleProp<"borderInlineStartWidth">;
 
 export const br = {
   property: "borderInlineEndWidth",
+  unit: "px",
 } satisfies StyleProp<"borderInlineEndWidth">;
 
 export const by = {
   property: "borderBlockWidth",
+  unit: "px",
 } satisfies StyleProp<"borderBlockWidth">;
 
 export const bt = {
   property: "borderBlockStartWidth",
+  unit: "px",
 } satisfies StyleProp<"borderBlockStartWidth">;
 
 export const bb = {
   property: "borderBlockEndWidth",
+  unit: "px",
 } satisfies StyleProp<"borderBlockEndWidth">;
 
 export type BorderProps = {

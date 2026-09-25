@@ -14,16 +14,19 @@ export const ax = {
     "start",
     "stretch",
   ] as const,
+  unit: "none",
 } satisfies StyleProp<"justifyContent">;
 
 export const ay = {
   property: "alignItems",
   values: ["baseline", "center", "end", "start", "stretch"] as const,
+  unit: "none",
 } satisfies StyleProp<"alignItems">;
 
 export const direction = {
   property: "flexDirection",
   values: ["column", "row"],
+  unit: "none",
 } satisfies StyleProp<"flexDirection">;
 
 export type LayoutProps = {

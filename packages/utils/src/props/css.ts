@@ -1,7 +1,37 @@
 import { styleProps } from "./styles";
+import type { StyleProp } from "./types";
+
+type AnyStyleProp = StyleProp<keyof React.CSSProperties>;
 
 const kebab = (property: string) =>
   property.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+
+/** The declaration value that turns a raw `--props-{key}` into CSS. */
+function resolve(raw: string, unit: AnyStyleProp["unit"]) {
+  if (unit === "none") return raw;
+  if (unit === "px") return `calc(${raw} * 1px)`;
+  return `calc(${raw} * var(${unit.variable}))`;
+}
+
+/**
+ * Registers `--props-{key}` so it never inherits: a child without the prop
+ * reads the initial value rather than its parent's, and the browser doesn't
+ * copy every ancestor's style props down the tree. Numeric props are typed,
+ * so a non-number is dropped instead of reaching the declaration.
+ */
+function registration(key: string, unit: AnyStyleProp["unit"]) {
+  const typed =
+    unit === "none"
+      ? [`syntax: "*";`]
+      : [`syntax: "<number>";`, `initial-value: 0;`];
+
+  return [
+    `@property --props-${key} {`,
+    ...typed.map((line) => `  ${line}`),
+    `  inherits: false;`,
+    `}`,
+  ].join("\n");
+}
 
 /**
  * The CSS that resolves style props. `prepareComponentProps` puts each value
@@ -12,31 +42,26 @@ const kebab = (property: string) =>
  * with `--check`, which fails when the two drift apart.
  */
 export function stylePropsCss() {
+  const entries = Object.entries(styleProps) as [string, AnyStyleProp][];
+  const registrations: string[] = [];
   const rules: string[] = [];
 
-  for (const [key, styleProp] of Object.entries(styleProps)) {
+  for (const [key, styleProp] of entries) {
     const property = kebab(styleProp.property);
-    const raw = `var(--props-${key})`;
 
-    const value =
-      "unit" in styleProp
-        ? `calc(${raw} * var(${styleProp.unit.variable}))`
-        : "values" in styleProp
-          ? raw
-          : `calc(${raw} * 1px)`;
+    registrations.push(registration(key, styleProp.unit));
+    rules.push(
+      `  [data-ui-${key}] {\n    ${property}: ${resolve(`var(--props-${key})`, styleProp.unit)};\n  }`,
+    );
 
-    rules.push(`  [data-ui-${key}] {\n    ${property}: ${value};\n  }`);
-
-    if ("keywords" in styleProp) {
-      for (const keyword of styleProp.keywords) {
-        rules.push(
-          `  [data-ui-${key}="${keyword}"] {\n    ${property}: ${keyword};\n  }`,
-        );
-      }
+    for (const keyword of styleProp.keywords ?? []) {
+      rules.push(
+        `  [data-ui-${key}="${keyword}"] {\n    ${property}: ${keyword};\n  }`,
+      );
     }
   }
 
-  return `${HEADER}@layer uiid.props {\n${rules.join("\n\n")}\n}\n`;
+  return `${HEADER}${registrations.join("\n\n")}\n\n@layer uiid.props {\n${rules.join("\n\n")}\n}\n`;
 }
 
 const HEADER = `/**

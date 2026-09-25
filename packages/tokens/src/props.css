@@ -6,45 +6,228 @@
  * component's own styles, and before `uiid.states`. Unlayered consumer CSS
  * beats every layer, so a consumer can override a style prop from a class.
  */
+@property --props-b {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-bx {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-bl {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-br {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-by {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-bt {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-bb {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-ax {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --props-ay {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --props-direction {
+  syntax: "*";
+  inherits: false;
+}
+
+@property --props-gap {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-m {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-mx {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-ml {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-mr {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-my {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-mt {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-mb {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-p {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-px {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-pl {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-pr {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-py {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-pt {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-pb {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-w {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-minw {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-maxw {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-h {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-minh {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --props-maxh {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
 @layer uiid.props {
   [data-ui-b] {
-    border-width: calc(var(--props-b) * var(undefined));
+    border-width: calc(var(--props-b) * 1px);
   }
 
   [data-ui-bx] {
-    border-inline-width: calc(var(--props-bx) * var(undefined));
+    border-inline-width: calc(var(--props-bx) * 1px);
   }
 
   [data-ui-bl] {
-    border-inline-start-width: calc(var(--props-bl) * var(undefined));
+    border-inline-start-width: calc(var(--props-bl) * 1px);
   }
 
   [data-ui-br] {
-    border-inline-end-width: calc(var(--props-br) * var(undefined));
+    border-inline-end-width: calc(var(--props-br) * 1px);
   }
 
   [data-ui-by] {
-    border-block-width: calc(var(--props-by) * var(undefined));
+    border-block-width: calc(var(--props-by) * 1px);
   }
 
   [data-ui-bt] {
-    border-block-start-width: calc(var(--props-bt) * var(undefined));
+    border-block-start-width: calc(var(--props-bt) * 1px);
   }
 
   [data-ui-bb] {
-    border-block-end-width: calc(var(--props-bb) * var(undefined));
+    border-block-end-width: calc(var(--props-bb) * 1px);
   }
 
   [data-ui-ax] {
-    justify-content: calc(var(--props-ax) * var(undefined));
+    justify-content: var(--props-ax);
   }
 
   [data-ui-ay] {
-    align-items: calc(var(--props-ay) * var(undefined));
+    align-items: var(--props-ay);
   }
 
   [data-ui-direction] {
-    flex-direction: calc(var(--props-direction) * var(undefined));
+    flex-direction: var(--props-direction);
   }
 
   [data-ui-gap] {
@@ -136,26 +319,26 @@
   }
 
   [data-ui-w] {
-    width: calc(var(--props-w) * var(undefined));
+    width: calc(var(--props-w) * 1px);
   }
 
   [data-ui-minw] {
-    min-width: calc(var(--props-minw) * var(undefined));
+    min-width: calc(var(--props-minw) * 1px);
   }
 
   [data-ui-maxw] {
-    max-width: calc(var(--props-maxw) * var(undefined));
+    max-width: calc(var(--props-maxw) * 1px);
   }
 
   [data-ui-h] {
-    height: calc(var(--props-h) * var(undefined));
+    height: calc(var(--props-h) * 1px);
   }
 
   [data-ui-minh] {
-    min-height: calc(var(--props-minh) * var(undefined));
+    min-height: calc(var(--props-minh) * 1px);
   }
 
   [data-ui-maxh] {
-    max-height: calc(var(--props-maxh) * var(undefined));
+    max-height: calc(var(--props-maxh) * 1px);
   }
 }

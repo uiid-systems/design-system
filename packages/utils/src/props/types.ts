@@ -22,7 +22,9 @@ export type StyleProp<K extends keyof React.CSSProperties> = {
     | Array<React.CSSProperties[K]>;
   /** Keywords accepted alongside a number, each emitted as its own rule. */
   keywords?: readonly string[];
-  unit?: {
-    variable: `--${string}`;
-  };
+  /**
+   * How the raw value becomes a length: multiplied by a token variable,
+   * multiplied by `1px`, or used as-is (`"none"`, for keyword values).
+   */
+  unit: { variable: `--${string}` } | "px" | "none";
 };
