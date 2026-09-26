@@ -1,32 +1,19 @@
 .progress {
   --progress-track-height: 0.25rem;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  row-gap: 0.5rem;
-  width: 100%;
 }
 
 .progress-label {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
   color: var(--shade-foreground);
 }
 
+/* Pushes the readout to the end of the row whether or not a label precedes it. */
 .progress-value {
-  grid-column-start: 2;
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: var(--shade-muted);
-  text-align: right;
+  margin-inline-start: auto;
 }
 
 .progress-track {
-  grid-column: 1 / 3;
   overflow: hidden;
+  width: 100%;
   background-color: var(--badge-bg, var(--shade-accent));
   border-radius: var(--globals-border-radius);
   height: var(--progress-track-height);

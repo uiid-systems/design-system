@@ -1,62 +1,36 @@
 "use client";
 
-import { Progress as BaseProgress } from "@base-ui/react/progress";
-import { cx } from "@uiid/utils";
-
 import type { ProgressProps } from "./progress.types";
-import { progressVariants } from "./progress.variants";
-
-import styles from "./progress.module.css";
+import {
+  ProgressRoot,
+  ProgressHeader,
+  ProgressLabel,
+  ProgressValue,
+  ProgressTrack,
+  ProgressIndicator,
+} from "./subcomponents";
 
 export const Progress = ({
   value = 0,
   label,
-  size,
-  color,
-  className,
   RootProps,
+  HeaderProps,
+  LabelProps,
+  ValueProps,
   TrackProps,
   IndicatorProps,
-  ValueProps,
-  LabelProps,
+  ...props
 }: ProgressProps) => {
   return (
-    <BaseProgress.Root
-      data-slot="progress"
-      className={cx(
-        styles["progress"],
-        progressVariants({ size, color }),
-        className,
-      )}
-      value={value}
-      {...RootProps}
-    >
-      {label && (
-        <BaseProgress.Label
-          data-slot="progress-label"
-          className={styles["progress-label"]}
-          {...LabelProps}
-        >
-          {label}
-        </BaseProgress.Label>
-      )}
-      <BaseProgress.Value
-        data-slot="progress-value"
-        className={styles["progress-value"]}
-        {...ValueProps}
-      />
-      <BaseProgress.Track
-        data-slot="progress-track"
-        className={styles["progress-track"]}
-        {...TrackProps}
-      >
-        <BaseProgress.Indicator
-          data-slot="progress-indicator"
-          className={styles["progress-indicator"]}
-          {...IndicatorProps}
-        />
-      </BaseProgress.Track>
-    </BaseProgress.Root>
+    <ProgressRoot value={value} {...props} {...RootProps}>
+      <ProgressHeader {...HeaderProps}>
+        {label && <ProgressLabel {...LabelProps}>{label}</ProgressLabel>}
+        <ProgressValue {...ValueProps} />
+      </ProgressHeader>
+      <ProgressTrack {...TrackProps}>
+        <ProgressIndicator {...IndicatorProps} />
+      </ProgressTrack>
+    </ProgressRoot>
   );
 };
 Progress.displayName = "Progress";
