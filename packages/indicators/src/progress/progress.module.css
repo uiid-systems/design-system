@@ -1,51 +1,111 @@
-.progress {
-  --progress-track-height: 0.25rem;
+@import "@uiid/tokens/component/progress.tokens.css";
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  row-gap: 0.5rem;
-  width: 100%;
+/*
+ * Every colour and dimension reads a --progress-* variable, so a consumer can
+ * retune one bar without reaching into the parts. The indicator falls back to
+ * the shade scale until the `color` prop publishes --control-fill.
+ */
+.progress {
+  --progress-track-color: var(--shade-accent);
+  --progress-indicator-color: var(--control-fill, var(--shade-foreground));
+  --progress-radius: var(--globals-border-radius);
+  --progress-indeterminate-width: 40%;
+  --progress-indeterminate-duration: 1.5s;
+
+  /* The track has no intrinsic width, so in a shrink-to-fit parent a bar with
+     no label or readout would collapse to nothing. The floor keeps it visible. */
+  min-inline-size: var(--progress-min-width);
+}
+
+/*
+ * The `color` prop's treatment, shared with Slider through the global
+ * composition. It lands on the root, an ancestor of track and indicator, so
+ * the leaf parts stay hue-unaware; the track stays on the shade scale.
+ */
+.color {
+  composes: composes-control-fill-color from global;
 }
 
 .progress-label {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
   color: var(--shade-foreground);
 }
 
+/* Pushes the readout to the end of the row whether or not a label precedes it. */
 .progress-value {
-  grid-column-start: 2;
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: var(--shade-muted);
-  text-align: right;
+  margin-inline-start: auto;
 }
 
 .progress-track {
-  grid-column: 1 / 3;
+  position: relative;
   overflow: hidden;
-  background-color: var(--badge-bg, var(--shade-accent));
-  border-radius: var(--globals-border-radius);
+  width: 100%;
   height: var(--progress-track-height);
+  background-color: var(--progress-track-color);
+  border-radius: var(--progress-radius);
 }
 
 .progress-indicator {
   display: block;
   height: 100%;
-  background-color: var(--badge-fg, var(--shade-foreground));
-  border-radius: var(--globals-border-radius);
+  background-color: var(--progress-indicator-color);
+  border-radius: var(--progress-radius);
   transition: width var(--globals-transition-duration-slow);
 }
 
+/*
+ * Indeterminate: Base UI sets no inline width when `value` is null, so the
+ * indicator becomes a segment sweeping across the track. It animates
+ * `inset-inline-start` rather than a transform so the sweep follows the
+ * writing direction; the segment is small enough that the layout cost is
+ * negligible.
+ */
+.progress-indicator[data-indeterminate] {
+  position: absolute;
+  inset-block: 0;
+  width: var(--progress-indeterminate-width);
+  animation: progress-indeterminate var(--progress-indeterminate-duration) ease-in-out infinite;
+}
+
+@keyframes progress-indeterminate {
+  from {
+    inset-inline-start: calc(var(--progress-indeterminate-width) * -1);
+  }
+  to {
+    inset-inline-start: 100%;
+  }
+}
+
+/*
+ * With reduced motion nothing moves: the indeterminate bar holds as a dimmed
+ * full-width fill, still distinct from a determinate bar at 100%, and the
+ * fill width snaps instead of easing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .progress-indicator {
+    transition: none;
+  }
+
+  .progress-indicator[data-indeterminate] {
+    inset-inline-start: 0;
+    width: 100%;
+    opacity: 0.4;
+    animation: none;
+  }
+}
+
+/*
+ * Track scale. The tier lands on the root and re-points the track height at
+ * its own token, so the vars cascade down to the track.
+ */
+.size-xsmall {
+  --progress-track-height: var(--progress-size-xs-track-height);
+}
 .size-small {
-  --progress-track-height: 0.125rem;
+  --progress-track-height: var(--progress-size-sm-track-height);
 }
 .size-medium {
-  --progress-track-height: 0.25rem;
+  --progress-track-height: var(--progress-size-md-track-height);
 }
 .size-large {
-  --progress-track-height: 0.5rem;
+  --progress-track-height: var(--progress-size-lg-track-height);
 }

@@ -1,62 +1,51 @@
 "use client";
 
-import { Progress as BaseProgress } from "@base-ui/react/progress";
-import { cx } from "@uiid/utils";
-
 import type { ProgressProps } from "./progress.types";
-import { progressVariants } from "./progress.variants";
-
-import styles from "./progress.module.css";
+import {
+  ProgressRoot,
+  ProgressHeader,
+  ProgressLabel,
+  ProgressValue,
+  ProgressTrack,
+  ProgressIndicator,
+} from "./subcomponents";
 
 export const Progress = ({
-  value = 0,
   label,
-  size,
-  color,
-  className,
+  hideValue = false,
   RootProps,
+  HeaderProps,
+  LabelProps,
+  ValueProps,
   TrackProps,
   IndicatorProps,
-  ValueProps,
-  LabelProps,
+  ...props
 }: ProgressProps) => {
+  const hasLabel = label != null && label !== false && label !== "";
+  // Base UI prints nothing while indeterminate, unless a render function
+  // supplies its own readout.
+  const indeterminate = props.value == null || !Number.isFinite(props.value);
+  const hasReadout = !hideValue && (!indeterminate || !!ValueProps?.children);
+  const hasHeader = hasLabel || hasReadout;
+
+  /*
+   * `value` passes through untouched, as Base UI requires it: `null` is the
+   * indeterminate state, so defaulting it would make that state unreachable.
+   * The header row only renders when it holds something, so a bare bar (the
+   * compact toast case, or an unlabelled indeterminate one) is just the track.
+   */
   return (
-    <BaseProgress.Root
-      data-slot="progress"
-      className={cx(
-        styles["progress"],
-        progressVariants({ size, color }),
-        className,
+    <ProgressRoot {...props} {...RootProps}>
+      {hasHeader && (
+        <ProgressHeader {...HeaderProps}>
+          {hasLabel && <ProgressLabel {...LabelProps}>{label}</ProgressLabel>}
+          {hasReadout && <ProgressValue {...ValueProps} />}
+        </ProgressHeader>
       )}
-      value={value}
-      {...RootProps}
-    >
-      {label && (
-        <BaseProgress.Label
-          data-slot="progress-label"
-          className={styles["progress-label"]}
-          {...LabelProps}
-        >
-          {label}
-        </BaseProgress.Label>
-      )}
-      <BaseProgress.Value
-        data-slot="progress-value"
-        className={styles["progress-value"]}
-        {...ValueProps}
-      />
-      <BaseProgress.Track
-        data-slot="progress-track"
-        className={styles["progress-track"]}
-        {...TrackProps}
-      >
-        <BaseProgress.Indicator
-          data-slot="progress-indicator"
-          className={styles["progress-indicator"]}
-          {...IndicatorProps}
-        />
-      </BaseProgress.Track>
-    </BaseProgress.Root>
+      <ProgressTrack {...TrackProps}>
+        <ProgressIndicator {...IndicatorProps} />
+      </ProgressTrack>
+    </ProgressRoot>
   );
 };
 Progress.displayName = "Progress";
