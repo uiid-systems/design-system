@@ -251,3 +251,50 @@ describe("Progress color", () => {
     expect(rootClassName(container)).not.toMatch(/palette-/);
   });
 });
+
+/* The animation and its reduced-motion fallback live in CSS, which jsdom does
+   not apply; these pin the state the stylesheet keys on. */
+describe("Progress indeterminate", () => {
+  it("marks the root and indicator indeterminate for a null value", () => {
+    const { container } = render(<Progress value={null} />);
+    expect(part(container, "progress")).toHaveAttribute("data-indeterminate");
+    expect(part(container, "progress-indicator")).toHaveAttribute(
+      "data-indeterminate",
+    );
+  });
+
+  it("reports no current value", () => {
+    render(<Progress value={null} />);
+    const bar = screen.getByRole("progressbar");
+    expect(bar).not.toHaveAttribute("aria-valuenow");
+    expect(bar).toHaveAttribute("aria-valuetext", "indeterminate progress");
+  });
+
+  it("leaves the readout empty", () => {
+    const { container } = render(<Progress value={null} />);
+    expect(part(container, "progress-value")).toBeEmptyDOMElement();
+  });
+
+  it("sets no inline width on the indicator, leaving it to the stylesheet", () => {
+    const { container } = render(<Progress value={null} />);
+    expect(
+      (part(container, "progress-indicator") as HTMLElement).style.width,
+    ).toBe("");
+  });
+
+  it("renders the compact toast case as a bare track", () => {
+    const { container } = render(
+      <Progress value={null} size="xsmall" hideValue />,
+    );
+    expect(part(container, "progress-header")).not.toBeInTheDocument();
+    expect(part(container, "progress")).toHaveClass(styles["size-xsmall"]);
+    expect(part(container, "progress-indicator")).toHaveAttribute(
+      "data-indeterminate",
+    );
+  });
+
+  it("marks a full bar complete", () => {
+    const { container } = render(<Progress value={100} />);
+    expect(part(container, "progress")).toHaveAttribute("data-complete");
+  });
+});
