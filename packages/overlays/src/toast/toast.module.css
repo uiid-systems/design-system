@@ -6,9 +6,8 @@
   /* Above popups and dialog viewports: a toast confirming an action taken
      inside a Dialog has to be visible over it. */
   z-index: var(--globals-z-index-toast);
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
+  /* Narrow screens keep the same gutter on both sides. */
+  width: min(22.5rem, 100vw - 2 * var(--globals-padding-x));
   bottom: var(--globals-padding-y);
   right: var(--globals-padding-x);
 
@@ -36,7 +35,8 @@
   left: 0;
   right: 0;
   width: 100%;
-  box-shadow: var(--globals-shadow-md);
+  padding: calc(var(--globals-padding-y) * 0.75) var(--globals-padding-x);
+  box-shadow: var(--globals-shadow-lg);
   background-clip: padding-box;
   transform-origin: bottom center;
   margin-inline: auto;
@@ -131,9 +131,24 @@
   min-width: 0;
 }
 
-/* One line tall, so the spinner centers on the first line of text however
-   many lines follow. */
+/* Muted against whatever hue the surface takes, not only the neutral one. */
+.toast-description {
+  color: color-mix(in oklab, var(--palette-on-tint), transparent 30%);
+}
+
 .toast-spinner {
   flex-shrink: 0;
-  block-size: 1lh;
+}
+
+/* Ghost Button reads its colour from --button-bg, so this mutes the icon and
+   its hover tint together. Negative margin keeps the hit area from padding
+   out a one-line toast. */
+.toast-close {
+  --button-bg: color-mix(in oklab, var(--palette-on-tint), transparent 40%);
+  flex-shrink: 0;
+  margin-block: calc(var(--spacing-unit) * -1);
+
+  &:hover {
+    --button-bg: var(--palette-on-tint);
+  }
 }

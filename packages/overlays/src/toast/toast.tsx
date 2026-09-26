@@ -27,25 +27,21 @@ const ToastItem = ({ toast }: { toast: ToastObject }) => {
   return (
     <ToastRoot toast={toast} color={color}>
       <ToastContent>
-        <Group ay="start" gap={2} fullwidth>
+        <Group ay="center" gap={3} fullwidth>
           {loading && (
             <LoadingSpinnerIcon
               data-slot="toast-spinner"
               className={styles["toast-spinner"]}
             />
           )}
-          <Stack gap={1} className={styles["toast-lockup"]}>
+          <Stack gap={0.5} className={styles["toast-lockup"]}>
             {toast.title && <ToastTitle />}
             {toast.description && <ToastDescription />}
           </Stack>
+          {toast.actionProps && <ToastAction />}
           {showClose && <ToastClose />}
         </Group>
         {children}
-        {toast.actionProps && (
-          <Group ax="end" fullwidth>
-            <ToastAction />
-          </Group>
-        )}
       </ToastContent>
     </ToastRoot>
   );

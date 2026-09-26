@@ -12,7 +12,7 @@ import type { ToastActionProps } from "../toast.types";
 export const ToastAction = (props: ToastActionProps) => (
   <BaseToast.Action
     data-slot="toast-action"
-    render={<Button size="small" variant="subtle" />}
+    render={<Button size="xsmall" />}
     {...props}
   />
 );
