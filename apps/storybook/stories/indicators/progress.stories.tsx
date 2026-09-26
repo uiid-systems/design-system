@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Progress } from "@uiid/design-system";
+import { PALETTE_HUES, Progress } from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/indicators/src/progress/progress.examples";
 
@@ -20,16 +20,7 @@ const meta = {
     },
     color: {
       control: "select",
-      options: [
-        "red",
-        "orange",
-        "yellow",
-        "green",
-        "blue",
-        "indigo",
-        "purple",
-        "neutral",
-      ],
+      options: PALETTE_HUES,
       table: { category: "Variants" },
     },
 

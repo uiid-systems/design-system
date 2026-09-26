@@ -271,8 +271,18 @@ describe("Progress indeterminate", () => {
     expect(bar).toHaveAttribute("aria-valuetext", "indeterminate progress");
   });
 
-  it("leaves the readout empty", () => {
-    const { container } = render(<Progress value={null} />);
+  it("omits the empty readout beside a label", () => {
+    const { container } = render(<Progress value={null} label="Checking" />);
+    expect(part(container, "progress-label")).toBeInTheDocument();
+    expect(part(container, "progress-value")).not.toBeInTheDocument();
+  });
+
+  it("leaves a composed readout empty", () => {
+    const { container } = render(
+      <ProgressRoot value={null}>
+        <ProgressValue />
+      </ProgressRoot>,
+    );
     expect(part(container, "progress-value")).toBeEmptyDOMElement();
   });
 
@@ -308,4 +318,71 @@ describe("Progress examples", () => {
       expect(screen.getAllByRole("progressbar").length).toBeGreaterThan(0);
     },
   );
+});
+
+/* Base UI only wires `aria-labelledby` when a label part renders, so a bare
+   bar needs a name from the caller. */
+describe("Progress accessible name", () => {
+  it("names a bare bar from aria-label", () => {
+    render(<Progress value={40} hideValue aria-label="Syncing blunders" />);
+    expect(
+      screen.getByRole("progressbar", { name: "Syncing blunders" }),
+    ).toBeInTheDocument();
+  });
+
+  it("ships every example with a named progressbar", () => {
+    for (const Example of Object.values(Examples)) {
+      const { unmount } = render(<Example />);
+      for (const bar of screen.getAllByRole("progressbar")) {
+        expect(bar).toHaveAccessibleName();
+      }
+      unmount();
+    }
+  });
+});
+
+describe("Progress header row", () => {
+  /* An indeterminate readout is empty, so without a label the row would hold
+     nothing but still push the track down by its gap. */
+  it("skips the row for an unlabelled indeterminate bar", () => {
+    const { container } = render(<Progress value={null} aria-label="Sync" />);
+    expect(part(container, "progress-header")).not.toBeInTheDocument();
+  });
+
+  it("keeps the row for an indeterminate bar with a label", () => {
+    const { container } = render(<Progress value={null} label="Checking" />);
+    expect(part(container, "progress-header")).toBeInTheDocument();
+  });
+
+  it("keeps the row when a custom readout can render while indeterminate", () => {
+    const { container } = render(
+      <Progress
+        value={null}
+        aria-label="Sync"
+        ValueProps={{ children: () => "Starting…" }}
+      />,
+    );
+    expect(part(container, "progress-value")).toHaveTextContent("Starting…");
+  });
+});
+
+describe("Progress layout props", () => {
+  it("lets a caller's gap and fullwidth reach the root", () => {
+    const { container } = render(
+      <Progress value={40} gap={4} fullwidth={false} />,
+    );
+    const root = part(container, "progress");
+    expect(root).toHaveAttribute("data-ui-gap", "4");
+    expect(root).not.toHaveAttribute("data-ui-fullwidth");
+  });
+
+  it("lets HeaderProps override the header's defaults", () => {
+    const { container } = render(
+      <Progress value={40} label="Upload" HeaderProps={{ gap: 6 }} />,
+    );
+    expect(part(container, "progress-header")).toHaveAttribute(
+      "data-ui-gap",
+      "6",
+    );
+  });
 });

@@ -19,7 +19,7 @@ type Size = NonNullable<ProgressVariants["size"]>;
 
 const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
-export const Default = () => <Progress value={40} />;
+export const Default = () => <Progress value={40} aria-label="Upload" />;
 
 export const WithLabel = () => <Progress value={40} label="Uploading files" />;
 
@@ -54,7 +54,7 @@ export const Indeterminate = () => (
 export const HideValue = () => (
   <Stack gap={4} ax="stretch" fullwidth>
     <Progress value={60} label="Syncing" hideValue />
-    <Progress value={60} size="xsmall" hideValue />
+    <Progress value={60} size="xsmall" hideValue aria-label="Syncing" />
   </Stack>
 );
 
