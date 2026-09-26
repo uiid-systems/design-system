@@ -1,42 +1,62 @@
 "use client";
 
-import { Toast as BaseToast } from "@base-ui/react/toast";
-import { Card } from "@uiid/cards";
-import { Text } from "@uiid/typography";
+import { LoadingSpinnerIcon } from "@uiid/icons/loading-spinner";
+import { Group, Stack } from "@uiid/layout";
 
+import {
+  ToastPortal,
+  ToastViewport,
+  ToastRoot,
+  ToastContent,
+  ToastTitle,
+  ToastDescription,
+  ToastAction,
+  ToastClose,
+} from "./subcomponents";
+import { TOAST_LOADING_TYPE } from "./toast.constants";
 import { useToastManager } from "./toast.hooks";
-import type { ToasterProps } from "./toast.types";
+import type { ToastObject, ToasterProps } from "./toast.types";
 
 import styles from "./toast.module.css";
 
-const ToastList = () => {
-  const { toasts } = useToastManager();
+const ToastItem = ({ toast }: { toast: ToastObject }) => {
+  const { children, color, closable } = toast.data ?? {};
+  const loading = toast.type === TOAST_LOADING_TYPE;
+  const showClose = closable ?? !loading;
 
-  return toasts.map((toast) => (
-    <BaseToast.Root
-      key={toast.id}
-      toast={toast}
-      className={styles["toast"]}
-      render={
-        <Card data-slot="toast">
-          <Text size={0} shade="muted" render={<BaseToast.Description />} />
-        </Card>
-      }
-    />
-  ));
-};
-ToastList.displayName = "ToastList";
-
-export const Toaster = ({ position = "bottom" }: ToasterProps) => {
   return (
-    <BaseToast.Portal>
-      <BaseToast.Viewport
-        className={styles["toast-viewport"]}
-        data-position={position}
-      >
-        <ToastList />
-      </BaseToast.Viewport>
-    </BaseToast.Portal>
+    <ToastRoot toast={toast} color={color}>
+      <ToastContent>
+        <Group ay="center" gap={3} fullwidth>
+          {loading && (
+            <LoadingSpinnerIcon
+              data-slot="toast-spinner"
+              className={styles["toast-spinner"]}
+            />
+          )}
+          <Stack gap={0.5} className={styles["toast-lockup"]}>
+            {toast.title && <ToastTitle />}
+            {toast.description && <ToastDescription />}
+          </Stack>
+          {toast.actionProps && <ToastAction />}
+          {showClose && <ToastClose />}
+        </Group>
+        {children}
+      </ToastContent>
+    </ToastRoot>
   );
 };
+
+const ToastList = () => {
+  const { toasts } = useToastManager();
+  return toasts.map((toast) => <ToastItem key={toast.id} toast={toast} />);
+};
+
+export const Toaster = ({ position, ViewportProps }: ToasterProps) => (
+  <ToastPortal>
+    <ToastViewport position={position} {...ViewportProps}>
+      <ToastList />
+    </ToastViewport>
+  </ToastPortal>
+);
 Toaster.displayName = "Toaster";

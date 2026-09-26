@@ -11,6 +11,7 @@ export * from "./drawer/subcomponents";
 export * from "./toast/toast";
 export * from "./toast/toast.hooks";
 export * from "./toast/toast.types";
+export * from "./toast/subcomponents";
 
 export * from "./tooltip/tooltip";
 export * from "./tooltip/tooltip.types";

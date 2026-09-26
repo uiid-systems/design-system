@@ -786,6 +786,9 @@ importers:
 
   packages/overlays:
     dependencies:
+      '@uiid/buttons':
+        specifier: workspace:*
+        version: link:../buttons
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
@@ -814,9 +817,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/buttons':
+      '@uiid/indicators':
         specifier: workspace:*
-        version: link:../buttons
+        version: link:../indicators
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.6(@types/node@26.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
