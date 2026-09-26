@@ -42,6 +42,7 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
+    "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
@@ -58,7 +59,7 @@
     "@base-ui/react": "1.7.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@uiid/buttons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

@@ -1,229 +1,279 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { Toaster } from "./toast";
 import { ToastProvider, useToastManager } from "./toast.hooks";
+import type { ToasterProps } from "./toast.types";
 
-// Helper component to trigger toasts
-const ToastTrigger = ({ message }: { message: string }) => {
-  const toastManager = useToastManager();
+type Manager = ReturnType<typeof useToastManager>;
 
-  return (
-    <button
-      onClick={() => toastManager.add({ description: message })}
-      data-testid="trigger-toast"
-    >
-      Show toast
-    </button>
-  );
-};
-
-// Wrapper to provide toast context
-const ToastTestWrapper = ({
-  children,
-  position,
-}: {
-  children: React.ReactNode;
-  position?: "top" | "bottom";
-}) => {
-  return (
+/** Captures the manager so a test can drive toasts without a trigger button. */
+const renderToaster = (props: ToasterProps = {}) => {
+  let manager!: Manager;
+  const Capture = () => {
+    manager = useToastManager();
+    return null;
+  };
+  const result = render(
     <ToastProvider>
-      {children}
-      <Toaster position={position} />
-    </ToastProvider>
+      <Capture />
+      <Toaster {...props} />
+    </ToastProvider>,
   );
+  return { ...result, manager: () => manager };
 };
 
-describe("Toast", () => {
+const toastEl = () => document.querySelector('[data-slot="toast"]');
+const viewport = () => document.querySelector('[data-slot="toast-viewport"]');
+
+describe("Toaster", () => {
   // ============================================
   // RENDERING
   // ============================================
 
-  it("renders toaster viewport", () => {
-    render(
-      <ToastTestWrapper>
-        <div>App content</div>
-      </ToastTestWrapper>,
-    );
+  it("renders no toast initially", () => {
+    renderToaster();
+    expect(toastEl()).not.toBeInTheDocument();
+  });
 
-    // Viewport should exist even with no toasts
+  it("renders the viewport in a portal", () => {
+    const { container } = renderToaster();
+    expect(viewport()).toBeInTheDocument();
+    expect(container.querySelector('[data-slot="toast-viewport"]')).toBeNull();
+  });
+
+  it("anchors to the bottom by default", () => {
+    renderToaster();
+    expect(viewport()).toHaveAttribute("data-position", "bottom");
+  });
+
+  it("anchors to the top", () => {
+    renderToaster({ position: "top" });
+    expect(viewport()).toHaveAttribute("data-position", "top");
+  });
+
+  // ============================================
+  // CONTENT
+  // ============================================
+
+  it("renders the title and description", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved", description: "Changes saved." });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("Saved")).toHaveAttribute(
+        "data-slot",
+        "toast-title",
+      );
+    });
+    expect(screen.getByText("Changes saved.")).toHaveAttribute(
+      "data-slot",
+      "toast-description",
+    );
+  });
+
+  it("omits the title when the toast has none", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ description: "Only a description" });
+    });
+
+    await screen.findByText("Only a description");
     expect(
-      document.querySelector('[data-slot="toast"]'),
+      document.querySelector('[data-slot="toast-title"]'),
     ).not.toBeInTheDocument();
   });
 
-  it("does not show toast initially", () => {
-    render(
-      <ToastTestWrapper>
-        <ToastTrigger message="Hello world" />
-      </ToastTestWrapper>,
-    );
+  it("labels and describes the toast from its title and description", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved", description: "Changes saved." });
+    });
 
-    expect(screen.queryByText("Hello world")).not.toBeInTheDocument();
+    const title = await screen.findByText("Saved");
+    const description = screen.getByText("Changes saved.");
+    expect(toastEl()).toHaveAttribute("aria-labelledby", title.id);
+    expect(toastEl()).toHaveAttribute("aria-describedby", description.id);
+  });
+
+  it("renders data.children below the text", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({
+        title: "Syncing",
+        data: { children: <div data-testid="custom">Custom</div> },
+      });
+    });
+
+    const custom = await screen.findByTestId("custom");
+    expect(custom.closest('[data-slot="toast-content"]')).toBeInTheDocument();
   });
 
   // ============================================
-  // TOAST CREATION
+  // TYPE
   // ============================================
 
-  it("shows toast when triggered via useToastManager", async () => {
+  it("exposes the type as data-type", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Failed", type: "error" });
+    });
+
+    await screen.findByText("Failed");
+    expect(toastEl()).toHaveAttribute("data-type", "error");
+  });
+
+  it("shows a spinner only while loading", async () => {
+    const { manager } = renderToaster();
+    let id = "";
+    act(() => {
+      id = manager().add({ title: "Syncing", type: "loading", timeout: 0 });
+    });
+
+    await screen.findByText("Syncing");
+    expect(
+      document.querySelector('[data-slot="toast-spinner"]'),
+    ).toBeInTheDocument();
+
+    act(() => {
+      manager().update(id, { title: "Synced", type: "success" });
+    });
+
+    await screen.findByText("Synced");
+    expect(
+      document.querySelector('[data-slot="toast-spinner"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  // ============================================
+  // COLOR
+  // ============================================
+
+  it("applies data.color to the surface", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Failed", data: { color: "red" } });
+    });
+
+    await screen.findByText("Failed");
+    expect(toastEl()).toHaveClass("palette-red");
+  });
+
+  // ============================================
+  // CLOSE
+  // ============================================
+
+  /*
+   * Base UI hides Close from assistive tech until the viewport is expanded or
+   * focused, so a collapsed stack doesn't announce a close button per toast.
+   * It has no accessible name while hidden, so these tests find it by slot.
+   */
+  const closeButtons = () =>
+    document.querySelectorAll('[data-slot="toast-close"]');
+
+  it("closes from the close button", async () => {
     const user = userEvent.setup();
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved" });
+    });
 
-    render(
-      <ToastTestWrapper>
-        <ToastTrigger message="Hello world" />
-      </ToastTestWrapper>,
-    );
-
-    await user.click(screen.getByTestId("trigger-toast"));
-
+    await screen.findByText("Saved");
+    await user.click(closeButtons()[0]!);
     await waitFor(() => {
-      expect(screen.getByText("Hello world")).toBeInTheDocument();
+      expect(manager().toasts).toHaveLength(0);
     });
   });
 
-  it("shows multiple toasts", async () => {
-    const user = userEvent.setup();
-
-    const MultiToastTrigger = () => {
-      const toastManager = useToastManager();
-      return (
-        <>
-          <button
-            onClick={() => toastManager.add({ description: "First toast" })}
-          >
-            First
-          </button>
-          <button
-            onClick={() => toastManager.add({ description: "Second toast" })}
-          >
-            Second
-          </button>
-        </>
-      );
-    };
-
-    render(
-      <ToastTestWrapper>
-        <MultiToastTrigger />
-      </ToastTestWrapper>,
-    );
-
-    await user.click(screen.getByRole("button", { name: "First" }));
-    await user.click(screen.getByRole("button", { name: "Second" }));
-
-    await waitFor(() => {
-      expect(screen.getByText("First toast")).toBeInTheDocument();
-      expect(screen.getByText("Second toast")).toBeInTheDocument();
+  it("hides the close button on a loading toast", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Syncing", type: "loading", timeout: 0 });
     });
+
+    await screen.findByText("Syncing");
+    expect(closeButtons()).toHaveLength(0);
   });
 
-  // ============================================
-  // POSITION VARIANTS
-  // ============================================
-
-  it("renders with bottom position by default", () => {
-    render(
-      <ToastTestWrapper>
-        <div>App</div>
-      </ToastTestWrapper>,
-    );
-
-    const viewport = document.querySelector('[class*="toast-viewport"]');
-    expect(viewport).toHaveAttribute("data-position", "bottom");
-  });
-
-  it("renders with top position", () => {
-    render(
-      <ToastTestWrapper position="top">
-        <div>App</div>
-      </ToastTestWrapper>,
-    );
-
-    const viewport = document.querySelector('[class*="toast-viewport"]');
-    expect(viewport).toHaveAttribute("data-position", "top");
-  });
-
-  // ============================================
-  // TOAST STRUCTURE
-  // ============================================
-
-  it("renders toast with data-slot attribute", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <ToastTestWrapper>
-        <ToastTrigger message="Hello world" />
-      </ToastTestWrapper>,
-    );
-
-    await user.click(screen.getByTestId("trigger-toast"));
-
-    await waitFor(() => {
-      expect(document.querySelector('[data-slot="toast"]')).toBeInTheDocument();
+  it("lets data.closable override the default", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Sticky", data: { closable: false } });
+      manager().add({
+        title: "Cancelable",
+        type: "loading",
+        timeout: 0,
+        data: { closable: true },
+      });
     });
+
+    await screen.findByText("Cancelable");
+    expect(closeButtons()).toHaveLength(1);
   });
 
   // ============================================
-  // TOAST MANAGER API
+  // ACTION
   // ============================================
 
-  it("exposes toasts array via useToastManager", async () => {
+  it("renders an action from actionProps", async () => {
     const user = userEvent.setup();
-
-    const ToastCounter = () => {
-      const { toasts } = useToastManager();
-      return <div data-testid="toast-count">{toasts.length}</div>;
-    };
-
-    render(
-      <ToastTestWrapper>
-        <ToastTrigger message="Hello world" />
-        <ToastCounter />
-      </ToastTestWrapper>,
-    );
-
-    expect(screen.getByTestId("toast-count")).toHaveTextContent("0");
-
-    await user.click(screen.getByTestId("trigger-toast"));
-
-    await waitFor(() => {
-      expect(screen.getByTestId("toast-count")).toHaveTextContent("1");
+    const onClick = vi.fn();
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({
+        title: "Deleted",
+        actionProps: { children: "Undo", onClick },
+      });
     });
+
+    await user.click(await screen.findByRole("button", { name: "Undo" }));
+    expect(onClick).toHaveBeenCalledOnce();
+  });
+
+  it("renders no action without actionProps", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved" });
+    });
+
+    await screen.findByText("Saved");
+    expect(
+      document.querySelector('[data-slot="toast-action"]'),
+    ).not.toBeInTheDocument();
   });
 
   // ============================================
-  // ACCESSIBILITY
+  // MANAGER
   // ============================================
 
-  it("toast viewport is a landmark region", () => {
-    render(
-      <ToastTestWrapper>
-        <div>App</div>
-      </ToastTestWrapper>,
-    );
+  it("stacks multiple toasts", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ description: "First" });
+      manager().add({ description: "Second" });
+    });
 
-    // Base UI Toast viewport should be accessible
-    const viewport = document.querySelector('[class*="toast-viewport"]');
-    expect(viewport).toBeInTheDocument();
+    await screen.findByText("Second");
+    expect(screen.getByText("First")).toBeInTheDocument();
+    expect(document.querySelectorAll('[data-slot="toast"]')).toHaveLength(2);
   });
 
-  // ============================================
-  // PORTAL RENDERING
-  // ============================================
+  it("updates a toast in place", async () => {
+    const { manager } = renderToaster();
+    let id = "";
+    act(() => {
+      id = manager().add({ title: "Step 1 of 3", timeout: 0 });
+    });
 
-  it("toaster is rendered in a portal", () => {
-    const { container } = render(
-      <ToastTestWrapper>
-        <div>App</div>
-      </ToastTestWrapper>,
-    );
+    await screen.findByText("Step 1 of 3");
+    act(() => {
+      manager().update(id, { title: "Step 2 of 3" });
+    });
 
-    // Viewport should not be inside the container (it's portaled)
-    const viewportInContainer = container.querySelector(
-      '[class*="toast-viewport"]',
-    );
-    expect(viewportInContainer).toBeNull();
+    await screen.findByText("Step 2 of 3");
+    expect(document.querySelectorAll('[data-slot="toast"]')).toHaveLength(1);
   });
 });

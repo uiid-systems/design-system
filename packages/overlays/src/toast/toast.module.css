@@ -113,3 +113,27 @@
     bottom: 100%;
   }
 }
+
+.toast-content {
+  transition: opacity var(--globals-transition-duration);
+
+  &[data-behind] {
+    opacity: 0;
+  }
+
+  &[data-expanded] {
+    opacity: 1;
+  }
+}
+
+.toast-lockup {
+  flex: 1;
+  min-width: 0;
+}
+
+/* One line tall, so the spinner centers on the first line of text however
+   many lines follow. */
+.toast-spinner {
+  flex-shrink: 0;
+  block-size: 1lh;
+}
