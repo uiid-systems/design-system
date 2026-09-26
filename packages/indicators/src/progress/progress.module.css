@@ -11,6 +11,10 @@
   --progress-radius: var(--globals-border-radius);
   --progress-indeterminate-width: 40%;
   --progress-indeterminate-duration: 1.5s;
+
+  /* The track has no intrinsic width, so in a shrink-to-fit parent a bar with
+     no label or readout would collapse to nothing. The floor keeps it visible. */
+  min-inline-size: var(--progress-min-width);
 }
 
 /*

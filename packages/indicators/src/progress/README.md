@@ -21,8 +21,8 @@ When a readout replaces the number with words, pass `getAriaValueText` too, so s
 
 `ProgressRoot`, `ProgressHeader`, `ProgressLabel`, `ProgressValue`, `ProgressTrack`, and `ProgressIndicator` are exported for composition, and slot overrides (`RootProps`, `HeaderProps`, `LabelProps`, `ValueProps`, `TrackProps`, `IndicatorProps`) reach them from the monolithic component.
 
-The root renders a `Stack` and the header a `Group`, so they take layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `fullwidth`, the header to `gap={2}`, `ay="center"`, and `fullwidth`; pass any of them to change it.
+The root renders a `Stack` and the header a `Group`, so they take layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `fullwidth`, and never shrinks below `--progress-min-width` (8rem), so a bare bar stays visible in a shrink-to-fit container; the header to `gap={2}`, `ay="center"`, and `fullwidth`; pass any of them to change it.
 
-Every colour and dimension reads a `--progress-*` variable (`--progress-track-color`, `--progress-indicator-color`, `--progress-track-height`, `--progress-radius`, `--progress-indeterminate-width`, `--progress-indeterminate-duration`), so a single bar can be retuned from CSS without reaching into its parts.
+Every colour and dimension reads a `--progress-*` variable (`--progress-min-width`, `--progress-track-color`, `--progress-indicator-color`, `--progress-track-height`, `--progress-radius`, `--progress-indeterminate-width`, `--progress-indeterminate-duration`), so a single bar can be retuned from CSS without reaching into its parts.
 
 Additional props are forwarded to the underlying Base UI [Progress](https://base-ui.com/react/components/progress).

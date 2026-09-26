@@ -2,6 +2,7 @@
   "$description": "UIID Design System - Progress Component Tokens",
   "progress": {
     "$type": "dimension",
+    "min-width": { "$value": "8rem" },
     "track": {
       "height": { "$value": "{progress.size.md.track-height}" }
     },

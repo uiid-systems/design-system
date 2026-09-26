@@ -25,7 +25,7 @@ export const WithLabel = () => <Progress value={40} label="Uploading files" />;
 
 /* The tier sets the track's thickness; the label row keeps its type size. */
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4} ax="stretch" fullwidth>
     {SIZES.map((size) => (
       <Progress key={size} size={size} label={size} value={40} />
     ))}
@@ -34,7 +34,7 @@ export const Sizes = () => (
 
 /* The hue fills the indicator; the track stays neutral. */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4} ax="stretch" fullwidth>
     {PALETTE_HUES.map((color) => (
       <Progress key={color} color={color} label={color} value={40} />
     ))}
@@ -52,7 +52,7 @@ export const Indeterminate = () => (
 
 /* The readout goes; assistive tech still hears the value. */
 export const HideValue = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4} ax="stretch" fullwidth>
     <Progress value={60} label="Syncing" hideValue />
     <Progress value={60} size="xsmall" hideValue />
   </Stack>
