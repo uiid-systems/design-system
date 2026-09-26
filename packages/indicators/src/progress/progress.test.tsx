@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Progress } from "./progress";
+import * as Examples from "./progress.examples";
 import {
   ProgressRoot,
   ProgressLabel,
@@ -297,4 +298,14 @@ describe("Progress indeterminate", () => {
     const { container } = render(<Progress value={100} />);
     expect(part(container, "progress")).toHaveAttribute("data-complete");
   });
+});
+
+describe("Progress examples", () => {
+  it.each(Object.entries(Examples))(
+    "%s renders a progressbar",
+    (_, Example) => {
+      render(<Example />);
+      expect(screen.getAllByRole("progressbar").length).toBeGreaterThan(0);
+    },
+  );
 });
