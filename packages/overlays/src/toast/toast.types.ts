@@ -22,7 +22,7 @@ export type ToastData = {
   closable?: boolean;
 };
 
-export type ToastObject<Data extends ToastData = ToastData> =
+export type ToastObject<Data extends object = ToastData> =
   BaseToast.Root.ToastObject<Data>;
 
 export type ToastPortalProps = BaseToast.Portal.Props;

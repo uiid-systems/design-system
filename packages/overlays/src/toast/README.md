@@ -47,11 +47,11 @@ const id = toastManager.add({
   title: "Syncing",
   type: "loading",
   timeout: 0,
-  data: { children: <Progress value={null} hideValue /> },
+  data: { children: <Progress value={null} /> },
 });
 
 toastManager.update(id, {
-  title: "3 new blunders",
+  title: "Sync complete",
   type: "success",
   timeout: 5000,
   data: { color: "green" },

@@ -172,7 +172,7 @@ describe("Toaster", () => {
    * It has no accessible name while hidden, so these tests find it by slot.
    */
   const closeButtons = () =>
-    document.querySelectorAll('[data-slot="toast-close"]');
+    document.querySelectorAll<HTMLElement>('[data-slot="toast-close"]');
 
   it("closes from the close button", async () => {
     const user = userEvent.setup();
@@ -210,8 +210,15 @@ describe("Toaster", () => {
       });
     });
 
+    const toastOf = (title: string) =>
+      screen.getByText(title).closest('[data-slot="toast"]')!;
+
     await screen.findByText("Cancelable");
     expect(closeButtons()).toHaveLength(1);
+    expect(toastOf("Cancelable")).toContainElement(closeButtons()[0]!);
+    expect(
+      toastOf("Sticky").querySelector('[data-slot="toast-close"]'),
+    ).toBeNull();
   });
 
   // ============================================

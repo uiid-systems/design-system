@@ -7,8 +7,10 @@ import type { ToastData } from "./toast.types";
 export const ToastProvider = BaseToast.Provider;
 
 /**
- * Base UI's hook, with `data` typed as the fields Toaster renders. Still
- * generic, so an app can extend `ToastData` with its own fields.
+ * Base UI's hook. By default `data` types the fields Toaster renders and
+ * still accepts any other key, as Base UI's `any` default did; pass a type
+ * argument to narrow it.
  */
-export const useToastManager = <Data extends ToastData = ToastData>() =>
-  BaseToast.useToastManager<Data>();
+export const useToastManager = <
+  Data extends object = ToastData & Record<string, unknown>,
+>() => BaseToast.useToastManager<Data>();
