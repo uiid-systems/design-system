@@ -24,8 +24,13 @@ export type ProgressTrackProps = Progress.Track.Props;
 export type ProgressIndicatorProps = Progress.Indicator.Props;
 
 export type ProgressProps = Omit<ProgressRootProps, "children"> & {
-  /** Label text displayed above the track */
-  label?: string;
+  /** Names the progress bar; rendered above the track, start-aligned */
+  label?: React.ReactNode;
+  /**
+   * Hide the numeric readout. The value still reaches assistive tech through
+   * `aria-valuenow` and `aria-valuetext`, so this is a visual choice only.
+   */
+  hideValue?: boolean;
   /** Props forwarded to the root */
   RootProps?: Omit<ProgressRootProps, "value">;
   /** Props forwarded to the row holding the label and value */

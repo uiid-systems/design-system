@@ -116,3 +116,95 @@ describe("Progress state-function className", () => {
     },
   );
 });
+
+describe("Progress API", () => {
+  it("takes min and max at the top level", () => {
+    const { container } = render(<Progress value={5} min={0} max={10} />);
+    const bar = screen.getByRole("progressbar");
+    expect(bar).toHaveAttribute("aria-valuenow", "5");
+    expect(bar).toHaveAttribute("aria-valuemax", "10");
+    expect(part(container, "progress-value")).toHaveTextContent("50%");
+  });
+
+  it("formats the readout with format and locale", () => {
+    const { container } = render(
+      <Progress
+        value={1234}
+        max={5000}
+        format={{ style: "decimal" }}
+        locale="en-US"
+      />,
+    );
+    expect(part(container, "progress-value")).toHaveTextContent("1,234");
+  });
+
+  it("derives aria-valuetext from getAriaValueText", () => {
+    render(
+      <Progress
+        value={3}
+        max={5}
+        getAriaValueText={(_, value) => `${value} of 5 categories`}
+      />,
+    );
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuetext",
+      "3 of 5 categories",
+    );
+  });
+
+  it("accepts a node as the label", () => {
+    render(
+      <Progress
+        value={40}
+        label={
+          <>
+            Syncing <strong>blitz</strong>
+          </>
+        }
+      />,
+    );
+    expect(screen.getByText("blitz").tagName).toBe("STRONG");
+    expect(
+      screen.getByRole("progressbar", { name: "Syncing blitz" }),
+    ).toBeInTheDocument();
+  });
+
+  it("honours a render function passed as ValueProps.children", () => {
+    const { container } = render(
+      <Progress
+        value={3}
+        max={5}
+        ValueProps={{ children: (_, value) => `${value} / 5` }}
+      />,
+    );
+    expect(part(container, "progress-value")).toHaveTextContent("3 / 5");
+  });
+});
+
+describe("Progress hideValue", () => {
+  it("drops the readout", () => {
+    const { container } = render(
+      <Progress value={40} label="Upload" hideValue />,
+    );
+    expect(part(container, "progress-value")).not.toBeInTheDocument();
+    expect(part(container, "progress-label")).toBeInTheDocument();
+  });
+
+  it("keeps the value available to assistive tech", () => {
+    render(<Progress value={40} hideValue />);
+    const bar = screen.getByRole("progressbar");
+    expect(bar).toHaveAttribute("aria-valuenow", "40");
+    expect(bar).toHaveAttribute("aria-valuetext", "40%");
+  });
+
+  it("drops the header row when there is no label either", () => {
+    const { container } = render(<Progress value={40} hideValue />);
+    expect(part(container, "progress-header")).not.toBeInTheDocument();
+    expect(part(container, "progress-track")).toBeInTheDocument();
+  });
+
+  it("shows the readout by default", () => {
+    const { container } = render(<Progress value={40} />);
+    expect(part(container, "progress-value")).toBeInTheDocument();
+  });
+});
