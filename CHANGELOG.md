@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.7](https://github.com/uiid-systems/design-system/compare/v0.6.6...v0.6.7) (2026-09-26)
+
+
+### Features
+
+* **ui:** productionize Progress ([#447](https://github.com/uiid-systems/design-system/issues/447)) ([204d34f](https://github.com/uiid-systems/design-system/commit/204d34f776ddb48d486d1aaa0b94e338f251b2bc))
+* **ui:** render title, type, close, action and custom content in Toaster ([#446](https://github.com/uiid-systems/design-system/issues/446)) ([a9ab57a](https://github.com/uiid-systems/design-system/commit/a9ab57a84840c7bf1496ec71c6edc022bf54f4cf))
+
 ## [0.6.6](https://github.com/uiid-systems/design-system/compare/v0.6.5...v0.6.6) (2026-09-25)
 
 
