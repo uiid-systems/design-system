@@ -208,3 +208,46 @@ describe("Progress hideValue", () => {
     expect(part(container, "progress-value")).toBeInTheDocument();
   });
 });
+
+describe("Progress size", () => {
+  const rootClassName = (container: HTMLElement) =>
+    part(container, "progress")?.className ?? "";
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "paints the %s tier on the root",
+    (size) => {
+      const { container } = render(<Progress value={40} size={size} />);
+      expect(rootClassName(container)).toContain(styles[`size-${size}`]);
+    },
+  );
+
+  it("falls back to the medium tier", () => {
+    const { container } = render(<Progress value={40} />);
+    expect(rootClassName(container)).toContain(styles["size-medium"]);
+  });
+
+  it("applies one tier at a time", () => {
+    const { container } = render(<Progress value={40} size="large" />);
+    expect(rootClassName(container)).not.toContain(styles["size-small"]);
+    expect(rootClassName(container)).not.toContain(styles["size-medium"]);
+  });
+});
+
+describe("Progress color", () => {
+  const rootClassName = (container: HTMLElement) =>
+    part(container, "progress")?.className ?? "";
+
+  /* The root is an ancestor of track and indicator, so one class cascades to
+     both and the leaf parts stay hue-unaware. */
+  it("carries the palette hue and the fill treatment on the root", () => {
+    const { container } = render(<Progress value={40} color="blue" />);
+    expect(part(container, "progress")).toHaveClass("palette-blue");
+    expect(rootClassName(container)).toMatch(/composes-control-fill-color/);
+  });
+
+  it("leaves the root on the shade scale with no color", () => {
+    const { container } = render(<Progress value={40} />);
+    expect(rootClassName(container)).not.toMatch(/composes-control-fill-color/);
+    expect(rootClassName(container)).not.toMatch(/palette-/);
+  });
+});

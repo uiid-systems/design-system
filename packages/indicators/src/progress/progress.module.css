@@ -1,5 +1,23 @@
+@import "@uiid/tokens/component/progress.tokens.css";
+
+/*
+ * Every colour and dimension reads a --progress-* variable, so a consumer can
+ * retune one bar without reaching into the parts. The indicator falls back to
+ * the shade scale until the `color` prop publishes --control-fill.
+ */
 .progress {
-  --progress-track-height: 0.25rem;
+  --progress-track-color: var(--shade-accent);
+  --progress-indicator-color: var(--control-fill, var(--shade-foreground));
+  --progress-radius: var(--globals-border-radius);
+}
+
+/*
+ * The `color` prop's treatment, shared with Slider through the global
+ * composition. It lands on the root, an ancestor of track and indicator, so
+ * the leaf parts stay hue-unaware; the track stays on the shade scale.
+ */
+.color {
+  composes: composes-control-fill-color from global;
 }
 
 .progress-label {
@@ -12,27 +30,35 @@
 }
 
 .progress-track {
+  position: relative;
   overflow: hidden;
   width: 100%;
-  background-color: var(--badge-bg, var(--shade-accent));
-  border-radius: var(--globals-border-radius);
   height: var(--progress-track-height);
+  background-color: var(--progress-track-color);
+  border-radius: var(--progress-radius);
 }
 
 .progress-indicator {
   display: block;
   height: 100%;
-  background-color: var(--badge-fg, var(--shade-foreground));
-  border-radius: var(--globals-border-radius);
+  background-color: var(--progress-indicator-color);
+  border-radius: var(--progress-radius);
   transition: width var(--globals-transition-duration-slow);
 }
 
+/*
+ * Track scale. The tier lands on the root and re-points the track height at
+ * its own token, so the vars cascade down to the track.
+ */
+.size-xsmall {
+  --progress-track-height: var(--progress-size-xs-track-height);
+}
 .size-small {
-  --progress-track-height: 0.125rem;
+  --progress-track-height: var(--progress-size-sm-track-height);
 }
 .size-medium {
-  --progress-track-height: 0.25rem;
+  --progress-track-height: var(--progress-size-md-track-height);
 }
 .size-large {
-  --progress-track-height: 0.5rem;
+  --progress-track-height: var(--progress-size-lg-track-height);
 }

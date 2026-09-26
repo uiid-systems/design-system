@@ -1,5 +1,6 @@
 import type { Progress } from "@base-ui/react/progress";
 import type { GroupProps, StackProps } from "@uiid/layout";
+import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
 import type { progressVariants } from "./progress.variants";
@@ -7,15 +8,24 @@ import type { progressVariants } from "./progress.variants";
 export type ProgressVariants = VariantProps<typeof progressVariants>;
 
 /**
+ * Palette hue for the indicator. The track and the label row stay on the
+ * shade scale.
+ */
+export type ProgressColor = PaletteColor;
+
+/**
  * The root renders a `Stack`, so it takes layout props alongside Base UI's.
  * No `Omit<…, "color">`: `BaseUIComponentProps` already drops `color`, so the
- * variant's `color` is declared additively.
+ * hue is declared additively.
  */
 export type ProgressRootProps = WithLayoutProps<
   Progress.Root.Props,
   StackProps
 > &
-  ProgressVariants;
+  ProgressVariants & {
+    /** Palette hue applied as a solid fill on the indicator */
+    color?: ProgressColor;
+  };
 /** The row holding the label and the value readout. Renders a `Group`. */
 export type ProgressHeaderProps = GroupProps;
 export type ProgressLabelProps = Progress.Label.Props;
