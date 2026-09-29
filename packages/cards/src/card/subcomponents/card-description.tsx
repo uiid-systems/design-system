@@ -13,6 +13,7 @@ export const CardDescription = ({
   return (
     <Text
       data-slot="card-description"
+      render={<p />}
       className={cx(styles["card-description"], className)}
       {...props}
     >

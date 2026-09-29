@@ -33,8 +33,12 @@ export const Pager = () => {
       {prev ? (
         <Card
           render={<Link href={prev.value} />}
-          icon={ArrowLeftIcon}
-          title={prev.label}
+          title={
+            <Group render={<span />} gap={2} ay="center">
+              <ArrowLeftIcon size={16} />
+              {prev.label}
+            </Group>
+          }
           // description={prev.category}
         />
       ) : (
@@ -43,11 +47,13 @@ export const Pager = () => {
       {next ? (
         <Card
           render={<Link href={next.value} />}
-          icon={ArrowRightIcon}
-          title={next.label}
+          title={
+            <Group render={<span />} gap={2} ax="end" ay="center" fullwidth>
+              {next.label}
+              <ArrowRightIcon size={16} />
+            </Group>
+          }
           // description={next.category}
-          /** @todo create reverse prop? */
-          HeaderProps={{ className: "flex-row-reverse" }}
         />
       ) : (
         <Box aria-hidden />

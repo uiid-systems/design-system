@@ -16,7 +16,6 @@ export const Popover = ({
   onOpenChange,
   title,
   description,
-  icon,
   action,
   footer,
   RootProps,
@@ -39,7 +38,6 @@ export const Popover = ({
           <PopoverPopup
             title={title}
             description={description}
-            icon={icon}
             action={action}
             footer={footer}
             {...PopupProps}

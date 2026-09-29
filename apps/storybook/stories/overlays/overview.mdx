@@ -20,7 +20,7 @@ Surfaces that render above the page. Each one wraps a [Base UI](https://base-ui.
 
 ## Shared conventions
 
-- **Content slots.** Dialog, Drawer, and Popover render their popup as a `Card`, so `icon`, `title`, `description`, `action`, and `footer` mean the same thing in all three, and `children` is the body.
+- **Content slots.** Dialog, Drawer, and Popover render their popup as a `Card`, so `title`, `description`, `action`, and `footer` mean the same thing in all three, and `children` is the body.
 - **Triggers.** Pass an element as `trigger` and it is used as-is; pass a string and it is wrapped in a focusable element.
 - **Controlled or not.** Leave `open` unset and the overlay runs itself from its trigger. Pass `open` and `onOpenChange` to drive it.
 - **Escape hatches.** `RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `ViewportProps`, `PopupProps`, and `ContentProps` forward to the individual Base UI parts when a slot prop isn't enough. Positioning always lives on `PositionerProps`.

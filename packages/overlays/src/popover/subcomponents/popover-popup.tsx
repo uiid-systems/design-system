@@ -17,7 +17,6 @@ import styles from "../popover.module.css";
 export const PopoverPopup = ({
   title,
   description,
-  icon,
   action,
   footer,
   children,
@@ -31,7 +30,6 @@ export const PopoverPopup = ({
         <Card
           title={title}
           description={description}
-          icon={icon}
           action={action}
           footer={footer}
           TitleProps={{ render: <BasePopover.Title /> }}

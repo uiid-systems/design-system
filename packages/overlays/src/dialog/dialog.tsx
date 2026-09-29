@@ -16,7 +16,6 @@ export const Dialog = ({
   size,
   title,
   description,
-  icon,
   action,
   footer,
   RootProps,
@@ -38,7 +37,6 @@ export const Dialog = ({
             size={size}
             title={title}
             description={description}
-            icon={icon}
             action={action}
             footer={footer}
             {...PopupProps}

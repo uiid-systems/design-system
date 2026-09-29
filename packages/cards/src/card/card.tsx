@@ -1,4 +1,4 @@
-import { Group, Stack, type StackProps } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
 import { cx } from "@uiid/utils";
 
@@ -6,8 +6,6 @@ import { CARD_DEFAULT_COLOR } from "./card.constants";
 import type { CardProps } from "./card.types";
 import {
   CardContainer,
-  CardHeader,
-  CardIcon,
   CardTitle,
   CardDescription,
   CardAction,
@@ -21,7 +19,6 @@ export const Card = ({
   title,
   description,
   thumbnail,
-  icon,
   action,
   footer,
   variant,
@@ -31,7 +28,6 @@ export const Card = ({
   HeaderProps,
   TitleProps,
   DescriptionProps,
-  IconProps,
   ActionProps,
   FooterProps,
   ThumbnailProps,
@@ -41,19 +37,16 @@ export const Card = ({
 }: CardProps) => {
   const { className: containerClassName, ...containerProps } =
     ContainerProps ?? {};
+  const { className: headerClassName, ...headerProps } = HeaderProps ?? {};
 
   const Description = DescriptionProps?.children || description;
   const Title = TitleProps?.children || title;
   const Action = ActionProps?.children || action;
-  const Icon = IconProps?.icon || icon;
 
-  const hasIcon = Boolean(Icon);
   const hasTitle = Boolean(Title);
   const hasAction = Boolean(Action);
   const hasDescription = Boolean(Description);
-  const hasHeading = hasIcon || hasTitle;
-  const hasLockup = hasHeading || hasDescription;
-  const hasHeader = hasLockup || hasAction;
+  const hasHeader = hasTitle || hasDescription || hasAction;
 
   return (
     <CardContainer
@@ -74,34 +67,20 @@ export const Card = ({
       )}
 
       {hasHeader && (
-        <Group data-slot="card-header-region" ay="start" gap={3} fullwidth>
-          {hasLockup && (
-            <Stack className={styles["card-lockup"]} gap={1}>
-              {hasHeading && (
-                <CardHeader {...HeaderProps}>
-                  {hasIcon && (
-                    <Container>
-                      <CardIcon icon={Icon} {...IconProps} />
-                    </Container>
-                  )}
-                  {hasTitle && (
-                    <Container>
-                      <CardTitle {...TitleProps}>{Title}</CardTitle>
-                    </Container>
-                  )}
-                </CardHeader>
-              )}
-              {hasDescription && (
-                <CardDescription {...DescriptionProps}>
-                  {Description}
-                </CardDescription>
-              )}
-            </Stack>
-          )}
-          {hasAction && (
-            <Container ml="auto" className={styles["card-action-cell"]}>
-              <CardAction {...ActionProps}>{Action}</CardAction>
-            </Container>
+        <Group
+          data-slot="card-header"
+          ay="center"
+          gap={3}
+          fullwidth
+          {...headerProps}
+          className={cx(styles["card-header"], headerClassName)}
+        >
+          {hasAction && <CardAction {...ActionProps}>{Action}</CardAction>}
+          {hasTitle && <CardTitle {...TitleProps}>{Title}</CardTitle>}
+          {hasDescription && (
+            <CardDescription {...DescriptionProps}>
+              {Description}
+            </CardDescription>
           )}
         </Group>
       )}
@@ -121,13 +100,3 @@ export const Card = ({
   );
 };
 Card.displayName = "Card";
-
-const Container = ({ children, className, ...props }: StackProps) => (
-  <Stack
-    className={cx(styles["card-header-cell"], className)}
-    ay="center"
-    {...props}
-  >
-    {children}
-  </Stack>
-);

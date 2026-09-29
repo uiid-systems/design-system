@@ -1,18 +1,11 @@
-import type { Icon } from "@uiid/icons";
 import type { GroupProps, StackProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
 import type { TextProps } from "@uiid/typography";
-import type { RenderProp } from "@uiid/utils";
 
 export type CardContainerProps = StackProps;
-export type CardHeaderProps = GroupProps;
+export type CardHeaderProps = Omit<GroupProps, "children">;
 export type CardTitleProps = TextProps;
 export type CardDescriptionProps = TextProps;
-export type CardIconProps = {
-  icon?: Icon;
-  className?: string;
-  render?: RenderProp;
-};
 export type CardActionProps = GroupProps;
 export type CardFooterProps = GroupProps;
 export type CardThumbnailProps = StackProps;
@@ -32,9 +25,8 @@ export type CardProps = Omit<StackProps, "title" | "color"> & {
   HeaderProps?: CardHeaderProps;
   TitleProps?: CardTitleProps;
   DescriptionProps?: CardDescriptionProps;
-  IconProps?: CardIconProps;
   ActionProps?: CardActionProps;
   FooterProps?: CardFooterProps;
   ThumbnailProps?: CardThumbnailProps;
   InnerContainerProps?: InnerContainerProps;
-} & Pick<CardIconProps, "icon">;
+};

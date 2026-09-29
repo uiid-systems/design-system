@@ -1,6 +1,4 @@
 import { Button } from "@uiid/buttons";
-import { BellIcon } from "@uiid/icons/bell";
-import { GlobeIcon } from "@uiid/icons/globe";
 import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
 import { PALETTE_HUES } from "@uiid/tokens";
@@ -54,16 +52,13 @@ export const HeaderVariants = () => (
     <Card title="Title only">{BODY}</Card>
     <Card description="Description only" />
     <Card title="Title" description="And a supporting description" />
-    <Card icon={GlobeIcon} title="Icon and title" />
     <Card
-      icon={SettingsIcon}
-      title="Icon, title, and action"
+      title="Title and action"
       action={<Button size="xsmall">Action</Button>}
     />
     <Card
-      icon={BellIcon}
       title="Full header"
-      description="Icon, title, description, and action."
+      description="Title, description, and action."
       action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
@@ -113,7 +108,6 @@ export const Trimmed = () => (
 const HueCard = ({ color }: { color: (typeof PALETTE_HUES)[number] }) => (
   <Card
     color={color}
-    icon={GlobeIcon}
     title={color.charAt(0).toUpperCase() + color.slice(1)}
     maxw={320}
     description="bg, fg, and border derive from one palette hue."
@@ -157,7 +151,6 @@ export const Polymorphic = () => (
   <Card
     render={<a href="#" />}
     maxw={420}
-    icon={GlobeIcon}
     title="Linkable card"
     description="Rendered as <a>; gains the scale-on-hover affordance automatically."
   >

@@ -19,7 +19,6 @@ export const DialogPopup = ({
   size,
   title,
   description,
-  icon,
   action,
   footer,
   className,
@@ -38,7 +37,6 @@ export const DialogPopup = ({
         <Card
           title={title}
           description={description}
-          icon={icon}
           action={action}
           footer={footer}
           TitleProps={{ render: <BaseDialog.Title /> }}

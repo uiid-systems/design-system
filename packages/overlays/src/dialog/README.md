@@ -1,11 +1,11 @@
 # Dialog
 
-> A centered modal dialog. Title, description, icon, action, and footer are slot props; the children prop fills the body.
+> A centered modal dialog. Title, description, action, and footer are slot props; the children prop fills the body.
 
 Use Dialog when you want to:
 
 - Interrupt the page for a decision or a focused task — focus is trapped and everything behind it is inert
-- Compose the header from any combination of `icon`, `title`, `description`, and `action`, with a `footer` below the body for a row of actions
+- Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body for a row of actions
 - Constrain the width with `size` (`small`, `medium`, `large`, `xlarge`) — the dialog stays centered and only the max width changes
 - Open from anything: pass an element as `trigger` and it's used as-is, or a string or a function of the open state and it's wrapped in a focusable element — see [Triggers](#triggers)
 

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button, Drawer } from "@uiid/design-system";
-import { GlobeIcon } from "@uiid/icons/globe";
 
 import * as Examples from "../../../../packages/overlays/src/drawer/drawer.examples";
 
@@ -10,7 +9,6 @@ const meta = {
   args: {
     title: "Drawer Title",
     description: "Drawer Description",
-    icon: GlobeIcon,
     action: <Button size="xsmall">Action</Button>,
     footer: "Drawer Footer",
     children:
