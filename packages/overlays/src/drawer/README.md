@@ -1,6 +1,6 @@
 # Drawer
 
-> An edge-anchored panel with swipe-to-dismiss and snap points. Title, description, icon, action, and footer are slot props; the children prop fills the body.
+> An edge-anchored panel with swipe-to-dismiss and snap points. Title, description, action, and footer are slot props; the children prop fills the body.
 
 Use Drawer when you want to:
 
@@ -8,7 +8,7 @@ Use Drawer when you want to:
 - Let touch users drag the panel away instead of hunting for a close button
 - Build a bottom sheet that rests partway open — `snapPoints` takes viewport fractions (`0.3`), pixel values (`400`), or CSS lengths (`"30rem"`)
 - Keep the page live behind the panel with `modal={false}`, or trap focus without locking scroll with `modal="trap-focus"`
-- Compose the header from any combination of `icon`, `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
+- Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 
 Leave `open` unset and the drawer runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself.
 

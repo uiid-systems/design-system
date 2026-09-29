@@ -8,7 +8,7 @@ export type DialogVariants = VariantProps<typeof dialogVariants>;
 
 type DialogCardProps = Pick<
   CardProps,
-  "title" | "description" | "action" | "icon" | "footer"
+  "title" | "description" | "action" | "footer"
 >;
 
 export type DialogRootProps = BaseDialog.Root.Props;

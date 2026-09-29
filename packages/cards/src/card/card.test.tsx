@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { GlobeIcon } from "@uiid/icons/globe";
 
 import { Card } from "./card";
 import { CARD_DEFAULT_COLOR } from "./card.constants";
@@ -22,12 +21,6 @@ describe("Card", () => {
     render(<Card title="Title" footer={<span>Footer content</span>} />);
 
     expect(screen.getByText("Footer content")).toBeVisible();
-  });
-
-  it("renders a passed icon component", () => {
-    render(<Card icon={GlobeIcon} title="Title" />);
-
-    expect(document.querySelector("svg")).toBeInTheDocument();
   });
 
   /*

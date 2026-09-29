@@ -4,7 +4,7 @@ import type { WithTriggerChildren } from "@uiid/utils";
 
 type PopoverCardProps = Pick<
   CardProps,
-  "title" | "description" | "action" | "icon" | "footer"
+  "title" | "description" | "action" | "footer"
 >;
 
 export type PopoverRootProps = BasePopover.Root.Props;

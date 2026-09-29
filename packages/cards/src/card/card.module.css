@@ -59,23 +59,31 @@
   }
 }
 
-.card-lockup {
-  flex: 1;
-  min-width: 0;
-}
+.card-header {
+  & > [data-slot="card-title"] {
+    flex: 1;
+    min-width: 0;
+  }
 
-.card-header-cell {
-  min-height: calc(var(--card-icon-size) * 1.5);
-}
+  & > [data-slot="card-action"] {
+    order: 1;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
 
-.card-action-cell {
-  flex-shrink: 0;
-}
+  &:has(> [data-slot="card-description"]) {
+    display: flow-root;
 
-.card-icon {
-  width: var(--card-icon-size);
-  height: auto;
-  flex-shrink: 0;
+    & > [data-slot="card-action"] {
+      float: inline-end;
+      margin-inline-start: calc(3 * var(--spacing-unit));
+      margin-block-end: var(--spacing-unit);
+    }
+  }
+
+  & > [data-slot="card-title"] + [data-slot="card-description"] {
+    margin-block-start: var(--spacing-unit);
+  }
 }
 
 .card-action {

@@ -19,7 +19,6 @@ import styles from "../drawer.module.css";
 export const DrawerPopup = ({
   title,
   description,
-  icon,
   action,
   footer,
   className,
@@ -34,7 +33,6 @@ export const DrawerPopup = ({
         <Card
           title={title}
           description={description}
-          icon={icon}
           action={action}
           footer={footer}
           TitleProps={{ render: <BaseDrawer.Title /> }}

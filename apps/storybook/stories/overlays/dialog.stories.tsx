@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button, Dialog } from "@uiid/design-system";
-import { GlobeIcon } from "@uiid/icons/globe";
 
 import * as Examples from "../../../../packages/overlays/src/dialog/dialog.examples";
 
@@ -10,7 +9,6 @@ const meta = {
   args: {
     title: "Dialog Title",
     description: "Dialog Description",
-    icon: GlobeIcon,
     action: <Button size="xsmall">Action</Button>,
     footer: "Footer",
     children:

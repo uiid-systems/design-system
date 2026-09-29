@@ -36,10 +36,11 @@ function VerticalDemo() {
               <Card
                 title={item.title}
                 fullwidth
-                IconProps={{
-                  icon: GripVerticalIcon,
-                  render: <SortableItemHandle />,
-                }}
+                action={
+                  <SortableItemHandle aria-label="Drag to reorder">
+                    <GripVerticalIcon />
+                  </SortableItemHandle>
+                }
               />
             </SortableItem>
           ))}
@@ -49,7 +50,7 @@ function VerticalDemo() {
         {({ value }) => {
           const item = items.find((i) => i.id === value);
           return item ? (
-            <Card title={item.title} icon={GripVerticalIcon} fullwidth />
+            <Card title={item.title} action={<GripVerticalIcon />} fullwidth />
           ) : null;
         }}
       </SortableOverlay>
@@ -73,11 +74,11 @@ function HorizontalDemo() {
             <SortableItem key={item.id} value={item.id} asHandle>
               <Card
                 title={item.title}
-                icon={GripVerticalIcon}
-                IconProps={{
-                  icon: GripVerticalIcon,
-                  render: <SortableItemHandle />,
-                }}
+                action={
+                  <SortableItemHandle aria-label="Drag to reorder">
+                    <GripVerticalIcon />
+                  </SortableItemHandle>
+                }
               />
             </SortableItem>
           ))}
@@ -87,7 +88,7 @@ function HorizontalDemo() {
         {({ value }) => {
           const item = items.find((i) => i.id === value);
           return item ? (
-            <Card title={item.title} icon={GripVerticalIcon} />
+            <Card title={item.title} action={<GripVerticalIcon />} />
           ) : null;
         }}
       </SortableOverlay>
@@ -111,11 +112,11 @@ function MixedDemo() {
             <SortableItem key={item.id} value={item.id} asHandle>
               <Card
                 title={item.title}
-                icon={GripVerticalIcon}
-                IconProps={{
-                  icon: GripVerticalIcon,
-                  render: <SortableItemHandle />,
-                }}
+                action={
+                  <SortableItemHandle aria-label="Drag to reorder">
+                    <GripVerticalIcon />
+                  </SortableItemHandle>
+                }
               />
             </SortableItem>
           ))}
@@ -125,7 +126,7 @@ function MixedDemo() {
         {({ value }) => {
           const item = items.find((i) => i.id === value);
           return item ? (
-            <Card title={item.title} icon={GripVerticalIcon} />
+            <Card title={item.title} action={<GripVerticalIcon />} />
           ) : null;
         }}
       </SortableOverlay>

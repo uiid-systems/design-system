@@ -24,7 +24,6 @@ export const Drawer = ({
   onSnapPointChange,
   title,
   description,
-  icon,
   action,
   footer,
   RootProps,
@@ -56,7 +55,6 @@ export const Drawer = ({
           <DrawerPopup
             title={title}
             description={description}
-            icon={icon}
             action={action}
             footer={footer}
             {...PopupProps}

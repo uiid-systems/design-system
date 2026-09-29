@@ -1,11 +1,7 @@
-// Overlays are client components, so their examples cross that boundary too —
-// icon props are function components and cannot be passed from a server module.
+// Overlays are client components, so their examples cross that boundary too.
 "use client";
 
 import { Button } from "@uiid/buttons";
-import { BellIcon } from "@uiid/icons/bell";
-import { GlobeIcon } from "@uiid/icons/globe";
-import { SettingsIcon } from "@uiid/icons/settings";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
@@ -81,17 +77,9 @@ export const HeaderVariants = () => (
       {BODY}
     </Drawer>
     <Drawer
-      trigger={<Button>Icon and title</Button>}
-      icon={GlobeIcon}
-      title="Icon and title"
-    >
-      {BODY}
-    </Drawer>
-    <Drawer
       trigger={<Button>Full header</Button>}
-      icon={BellIcon}
       title="Full header"
-      description="Icon, title, description, and action."
+      description="Title, description, and action."
       action={<Button size="xsmall">Action</Button>}
     >
       {BODY}
@@ -103,7 +91,6 @@ export const Footer = () => (
   <Drawer
     swipeDirection="right"
     trigger={<Button>Edit preferences</Button>}
-    icon={SettingsIcon}
     title="Preferences"
     description="The footer sits below the body, separated by a divider."
     footer={

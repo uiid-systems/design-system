@@ -8,7 +8,7 @@ import type { WithTriggerChildren } from "@uiid/utils";
 
 type DrawerCardProps = Pick<
   CardProps,
-  "title" | "description" | "action" | "icon" | "footer"
+  "title" | "description" | "action" | "footer"
 >;
 
 export type DrawerProviderProps = BaseDrawer.DrawerProvider.Props;
