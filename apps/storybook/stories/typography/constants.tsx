@@ -11,6 +11,7 @@ const TEXT_SHADES = [
   "muted",
   "foreground",
 ];
+const TEXT_EMPHASES = ["default", "muted", "subtle"];
 const TEXT_COLORS = [
   "red",
   "orange",
@@ -46,6 +47,11 @@ export const variantControls: ArgTypes = {
   color: {
     control: "select",
     options: TEXT_COLORS,
+    table: { category: "Variants" },
+  },
+  emphasis: {
+    control: "select",
+    options: TEXT_EMPHASES,
     table: { category: "Variants" },
   },
 };

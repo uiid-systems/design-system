@@ -18,6 +18,7 @@ const toggle = (on: boolean | undefined) => (on ? "" : undefined);
 export const Text = ({
   shade,
   color,
+  emphasis,
   weight,
   underline,
   strikethrough,
@@ -40,6 +41,10 @@ export const Text = ({
       ? String(children)
       : undefined);
 
+  // An emphasis reads the --palette-* names, so it needs a hue to read them
+  // from even when no color is set.
+  const palette = color ?? (emphasis ? "neutral" : undefined);
+
   const preparedProps = prepareComponentProps({
     componentName: "text",
     styleProps: [...paddingPropKeys, ...marginPropKeys],
@@ -57,6 +62,7 @@ export const Text = ({
       // The hue's `--palette-*` names ride on the tokens class; the attribute
       // is what paints from them.
       "data-ui-color": color,
+      "data-ui-emphasis": emphasis,
       "data-ui-underline": underline === false ? "false" : toggle(underline),
       "data-ui-strikethrough": toggle(strikethrough),
       "data-ui-balance": toggle(balance),
@@ -64,7 +70,7 @@ export const Text = ({
       title: resolvedTitle,
       className: cx(
         styles["text"],
-        color && paletteColorStyles[color],
+        palette && paletteColorStyles[palette],
         className,
       ),
     },

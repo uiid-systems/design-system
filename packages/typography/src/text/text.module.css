@@ -118,6 +118,21 @@
   color: var(--palette-text);
 }
 
+/*
+ * Emphasis reads the same --palette-* names, from the hue's class or, with no
+ * color set, from .palette-neutral. These come after the color rule so an
+ * emphasis wins over it.
+ */
+:where(.text)[data-ui-emphasis="default"] {
+  color: var(--palette-text);
+}
+:where(.text)[data-ui-emphasis="muted"] {
+  color: var(--palette-on-fill);
+}
+:where(.text)[data-ui-emphasis="subtle"] {
+  color: var(--palette-on-tint);
+}
+
 :where(.text)[data-ui-underline] {
   text-decoration-line: underline;
 }

@@ -8,7 +8,10 @@ export type TextVariants = {
   weight?: "thin" | "light" | "normal" | "medium" | "semibold" | "bold";
   /** Typeface family */
   family?: "sans" | "serif" | "mono";
-  /** Foreground color from the shade scale */
+  /**
+   * Foreground color from the shade scale
+   * @deprecated Use `emphasis`, with `color` for a hue.
+   */
   shade?:
     | "background"
     | "surface"
@@ -18,6 +21,8 @@ export type TextVariants = {
     | "foreground";
   /** Palette color for the text */
   color?: PaletteColor;
+  /** Emphasis within the palette color — `neutral` when no `color` is set */
+  emphasis?: "default" | "muted" | "subtle";
   /** Underline the text — `false` forces no underline */
   underline?: boolean;
   /** Strike through the text */
