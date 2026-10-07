@@ -20,3 +20,26 @@ export const isLinkRender = (render: unknown): render is RenderProp => {
     isValidElement<{ href?: unknown }>(element) && element.props.href != null
   );
 };
+
+const hasAccessibleName = (props: unknown): boolean => {
+  const labels = props as
+    | { "aria-label"?: unknown; "aria-labelledby"?: unknown }
+    | undefined;
+  return !!labels?.["aria-label"] || !!labels?.["aria-labelledby"];
+};
+
+/**
+ * Whether the caller already named the button — on the Button itself or on
+ * the element it renders. A tooltip only names an icon-only button that has
+ * no name of its own, so neither place may already carry one.
+ */
+export const isNamedByCaller = (
+  props: Record<string, unknown>,
+  render: unknown,
+): boolean => {
+  const element = resolveRender(render);
+  return (
+    hasAccessibleName(props) ||
+    (isValidElement(element) && hasAccessibleName(element.props))
+  );
+};

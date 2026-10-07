@@ -27,7 +27,11 @@ export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
   ButtonVariants & {
     /** Palette hue applied as a full bg/fg/border/hover surface treatment. */
     color?: ButtonColor;
-    /** Wraps the button in a Tooltip with this content — no manual composition */
+    /**
+     * Wraps the button in a Tooltip with this content — no manual composition.
+     * On a `square` or `circle` button, a string tooltip also becomes the
+     * `aria-label` unless the Button or its `render` element is already named.
+     */
     tooltip?: React.ReactNode;
     /** Show a spinner without the button changing size */
     loading?: boolean;

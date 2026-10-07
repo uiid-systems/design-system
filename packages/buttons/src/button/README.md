@@ -8,7 +8,7 @@ Use Button when you want to:
 - Match a form-control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Soften the surface with `variant`: `subtle` (low-contrast fill), `ghost` (transparent)
 - Tint the button with a palette `color` (`red`, `blue`, …) — solid fill by default, or a soft surface when paired with `variant="subtle"`
-- Reshape the footprint with `shape`: `pill` (rounded), `square` (1:1, no padding), `circle` (round, 1:1) — an icon-only `square` or `circle` button takes its accessible name from a string `tooltip`, or from `aria-label`
+- Reshape the footprint with `shape`: `pill` (rounded), `square` (1:1, no padding), `circle` (round, 1:1) — an icon-only `square` or `circle` button takes its accessible name from a string `tooltip`, unless `aria-label` or `aria-labelledby` is already set on the Button or its `render` element
 - Show a spinner with `loading` without the button changing size
 - Wrap the trigger in a Tooltip via `tooltip` — no manual composition. The tooltip itself is visual only, so on a text button the visible text stays the accessible name
 - Stretch to the container with `fullwidth`
