@@ -1,7 +1,7 @@
 import { isValidElement } from "react";
 import { describe, it, expect } from "vitest";
 
-import { resolveTrigger } from "./trigger";
+import { hasTrigger, resolveTrigger } from "./trigger";
 
 /**
  * The shape an element takes when it reaches development SSR lazily wrapped:
@@ -46,5 +46,34 @@ describe("resolveTrigger", () => {
   it("leaves children to the caller's own render", () => {
     const children = lazyElement(<span />);
     expect(resolveTrigger(children, <a href="/x" />)).toEqual({ children });
+  });
+});
+
+describe("hasTrigger", () => {
+  it("is true for an element, a string, or a function", () => {
+    expect(hasTrigger(<button type="button" />)).toBe(true);
+    expect(hasTrigger("Open")).toBe(true);
+    expect(hasTrigger(() => "Open")).toBe(true);
+  });
+
+  it("is true for a lazily wrapped element", () => {
+    expect(hasTrigger(lazyElement(<button type="button" />))).toBe(true);
+  });
+
+  /*
+   * What React renders as nothing is no trigger either. `cond && <Button />`
+   * is the common way one goes missing, and it arrives as `false`.
+   */
+  it("is false for what React renders as nothing", () => {
+    expect(hasTrigger(undefined)).toBe(false);
+    expect(hasTrigger(null)).toBe(false);
+    expect(hasTrigger(false)).toBe(false);
+    expect(hasTrigger(true)).toBe(false);
+    expect(hasTrigger("")).toBe(false);
+  });
+
+  it("is true whenever the caller brings a render, children or not", () => {
+    expect(hasTrigger(undefined, <button type="button" />)).toBe(true);
+    expect(hasTrigger(false, () => <span />)).toBe(true);
   });
 });

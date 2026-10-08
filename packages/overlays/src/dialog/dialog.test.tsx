@@ -76,8 +76,21 @@ describe("Dialog", () => {
       </Dialog>,
     );
 
+    // The trigger renders inline, never in the portal, so the container is the
+    // whole place to look; the popup is unmounted while closed anyway.
     expect(container.querySelector('[data-slot="dialog-trigger"]')).toBeNull();
     expect(container.querySelector("[tabindex], [role]")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders no trigger element for a conditional that came out false", () => {
+    const { container } = render(
+      <Dialog trigger={false} open={false} onOpenChange={() => {}}>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(container.querySelector('[data-slot="dialog-trigger"]')).toBeNull();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 

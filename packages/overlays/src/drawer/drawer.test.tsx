@@ -60,8 +60,21 @@ describe("Drawer", () => {
       </Drawer>,
     );
 
+    // The trigger renders inline, never in the portal, so the container is the
+    // whole place to look; the popup is unmounted while closed anyway.
     expect(container.querySelector('[data-slot="drawer-trigger"]')).toBeNull();
     expect(container.querySelector("[tabindex], [role]")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders no trigger element for a conditional that came out false", () => {
+    const { container } = render(
+      <Drawer trigger={false} open={false} onOpenChange={() => {}}>
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(container.querySelector('[data-slot="drawer-trigger"]')).toBeNull();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
