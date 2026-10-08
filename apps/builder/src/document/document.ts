@@ -34,6 +34,14 @@ function parentOf(doc: BuilderDocument, id: NodeId): BuilderNode | undefined {
   return Object.values(doc.nodes).find((node) => node.children.includes(id));
 }
 
+/** The id of the node holding `id`, or `undefined` for the root and unknown ids. */
+export function parentIdOf(
+  doc: BuilderDocument,
+  id: NodeId,
+): NodeId | undefined {
+  return parentOf(doc, id)?.id;
+}
+
 function withChildren(
   doc: BuilderDocument,
   id: NodeId,

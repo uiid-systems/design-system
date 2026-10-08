@@ -2,6 +2,7 @@ import {
   createDocument,
   insertNode,
   moveNode,
+  parentIdOf,
   removeNode,
   setProp,
 } from "../document";
@@ -184,5 +185,16 @@ describe("setProp", () => {
     expect(next).not.toBe(doc);
     expect(next.nodes.a1).not.toBe(doc.nodes.a1);
     expect(doc).toEqual(before);
+  });
+});
+
+describe("parentIdOf", () => {
+  it("returns the holding container, and undefined for the root or unknown ids", () => {
+    const doc = fixture();
+
+    expect(parentIdOf(doc, "a1")).toBe("a");
+    expect(parentIdOf(doc, "a")).toBe(doc.root);
+    expect(parentIdOf(doc, doc.root)).toBeUndefined();
+    expect(parentIdOf(doc, "missing")).toBeUndefined();
   });
 });
