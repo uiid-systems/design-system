@@ -39,3 +39,8 @@ export const HeaderVariants: Story = {
 export const Footer: Story = { render: () => <Examples.Footer /> };
 
 export const Triggers: Story = { render: () => <Examples.Triggers /> };
+
+/** No `trigger`: a controlled dialog opened from each row, with focus returned there on close. */
+export const OpenedFromElsewhere: Story = {
+  render: () => <Examples.OpenedFromElsewhere />,
+};

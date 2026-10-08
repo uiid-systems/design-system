@@ -1,5 +1,7 @@
 "use client";
 
+import { hasTrigger } from "@uiid/utils";
+
 import type { DrawerProps } from "./drawer.types";
 import {
   DrawerRoot,
@@ -48,7 +50,9 @@ export const Drawer = ({
       onSnapPointChange={onSnapPointChange}
       {...RootProps}
     >
-      <DrawerTrigger {...TriggerProps}>{trigger}</DrawerTrigger>
+      {hasTrigger(trigger, TriggerProps?.render) && (
+        <DrawerTrigger {...TriggerProps}>{trigger}</DrawerTrigger>
+      )}
       <DrawerPortal {...PortalProps}>
         <DrawerBackdrop {...BackdropProps} />
         <DrawerViewport {...ViewportProps}>

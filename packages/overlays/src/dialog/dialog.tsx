@@ -1,5 +1,7 @@
 "use client";
 
+import { hasTrigger } from "@uiid/utils";
+
 import type { DialogProps } from "./dialog.types";
 import {
   DialogRoot,
@@ -29,7 +31,9 @@ export const Dialog = ({
 }: DialogProps) => {
   return (
     <DialogRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
-      <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
+      {hasTrigger(trigger, TriggerProps?.render) && (
+        <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
+      )}
       <DialogPortal {...PortalProps}>
         <DialogBackdrop {...BackdropProps} />
         <DialogViewport {...ViewportProps}>

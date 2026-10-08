@@ -4,8 +4,11 @@
 import { Button } from "@uiid/buttons";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
+import { useRef, useState } from "react";
 
 import { Drawer } from "./drawer";
+
+const ITEMS = ["Opening", "Middlegame", "Bear-off"];
 
 const BODY =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -111,3 +114,44 @@ export const Footer = () => (
     </Stack>
   </Drawer>
 );
+
+/*
+ * One drawer for a whole list: each row's button opens it, and `finalFocus`
+ * returns focus to the button that did. No `trigger`, so no trigger renders.
+ */
+export const OpenedFromElsewhere = () => {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(ITEMS[0]);
+  const returnTo = useRef<HTMLElement | null>(null);
+
+  return (
+    <Stack gap={2} ax="start">
+      {ITEMS.map((item) => (
+        <Group key={item} gap={2} ay="center">
+          <Text>{item}</Text>
+          <Button
+            size="small"
+            variant="subtle"
+            onClick={(event) => {
+              returnTo.current = event.currentTarget;
+              setSelected(item);
+              setOpen(true);
+            }}
+          >
+            View
+          </Button>
+        </Group>
+      ))}
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+        swipeDirection="right"
+        PopupProps={{ finalFocus: returnTo }}
+        title={selected}
+        description="One drawer shared by every row. Close it and focus returns to the button that opened it."
+      >
+        {BODY}
+      </Drawer>
+    </Stack>
+  );
+};

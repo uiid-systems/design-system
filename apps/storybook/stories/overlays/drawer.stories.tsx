@@ -45,3 +45,8 @@ export const HeaderVariants: Story = {
 };
 
 export const Footer: Story = { render: () => <Examples.Footer /> };
+
+/** No `trigger`: a controlled drawer opened from each row, with focus returned there on close. */
+export const OpenedFromElsewhere: Story = {
+  render: () => <Examples.OpenedFromElsewhere />,
+};

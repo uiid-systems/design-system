@@ -21,6 +21,23 @@ export type WithTriggerChildren<Props, State> = Omit<Props, "children"> & {
   children?: TriggerChildren<State>;
 };
 
+/**
+ * Whether these children, or a caller's own `render`, amount to a trigger.
+ * A composed component skips its Trigger part when this is false, so nothing
+ * stands in for a trigger nobody passed: a controlled dialog opened from
+ * elsewhere would otherwise get an empty focusable span as a tab stop.
+ *
+ * What React renders as nothing is no trigger either: `null`, `undefined`,
+ * booleans, and the empty string. `trigger={cond && <Button />}` is the
+ * common way one goes missing, and it arrives as `false`.
+ */
+export const hasTrigger = <State,>(
+  children: TriggerChildren<State>,
+  render?: unknown,
+): boolean =>
+  Boolean(render) ||
+  !(children == null || typeof children === "boolean" || children === "");
+
 type ResolvedTrigger<State> = {
   nativeButton?: boolean;
   render?:

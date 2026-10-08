@@ -43,3 +43,32 @@ A component element can't be inspected before it renders, so it is taken to be a
   …
 </Dialog>
 ```
+
+## Opening from elsewhere
+
+Leave `trigger` out and no trigger is rendered at all — not a placeholder, not an empty tab stop. That is the shape for one dialog shared by many openers, such as a list of rows that each open the same detail view. Control `open`, set it from whichever control was pressed, and point `PopupProps.finalFocus` at that control. Base UI returns focus to whatever was focused before the open on its own, but Safari doesn't focus a clicked button, so the ref makes the return explicit.
+
+```tsx
+const [open, setOpen] = useState(false);
+const returnTo = useRef<HTMLElement | null>(null);
+
+<Button
+  onClick={(event) => {
+    returnTo.current = event.currentTarget;
+    setOpen(true);
+  }}
+>
+  View
+</Button>
+
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  PopupProps={{ finalFocus: returnTo }}
+  title="Details"
+>
+  …
+</Dialog>
+```
+
+A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
