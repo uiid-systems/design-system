@@ -893,3 +893,87 @@ describe("Select state-function className", () => {
     expect(backdrop).toHaveClass("fn-open", styles["select-backdrop"]);
   });
 });
+
+/*
+ * Base UI's `itemToStringLabel` formats the trigger's text from the value and
+ * wins over the item labels. The trigger used to format its own text from a
+ * label map, so the prop reached Root but never the trigger.
+ */
+describe("Select itemToStringLabel", () => {
+  const items: SelectItemProps[] = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+  const itemToStringLabel = (value: string) => `Code ${value.toUpperCase()}`;
+
+  it("formats the trigger's text from the value", () => {
+    render(
+      <Select
+        items={items}
+        defaultValue="a"
+        itemToStringLabel={itemToStringLabel}
+      />,
+    );
+
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Code A");
+    expect(trigger).not.toHaveTextContent("Option A");
+  });
+
+  it("formats each value of a multiple selection", () => {
+    render(
+      <Select
+        multiple
+        items={items}
+        defaultValue={["a", "b"]}
+        itemToStringLabel={itemToStringLabel}
+      />,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Code A, Code B");
+  });
+
+  it("formats a composed select's trigger too", () => {
+    render(
+      <Select
+        placeholder="Pick one"
+        defaultValue="b"
+        itemToStringLabel={itemToStringLabel}
+      >
+        <SelectItem value="a" label="Option A" />
+        <SelectItem value="b" label="Option B" />
+      </Select>,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Code B");
+  });
+
+  it("leaves the rows on their own labels", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        placeholder="Pick one"
+        itemToStringLabel={itemToStringLabel}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(
+      screen.getByRole("option", { name: /option a/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("still shows the placeholder with nothing selected", () => {
+    render(
+      <Select
+        items={items}
+        placeholder="Pick one"
+        itemToStringLabel={itemToStringLabel}
+      />,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Pick one");
+  });
+});

@@ -99,5 +99,8 @@ export const Invalid: Story = { render: () => <Examples.Invalid /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const Composed: Story = { render: () => <Examples.Composed /> };
+export const TriggerText: Story = {
+  render: () => <Examples.TriggerText />,
+};
 export const Grouped: Story = { render: () => <Examples.Grouped /> };
 export const Backdrop: Story = { render: () => <Examples.Backdrop /> };

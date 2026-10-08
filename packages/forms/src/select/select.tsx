@@ -27,11 +27,13 @@ import {
 /**
  * Harvests `value`/`label` pairs off composed `SelectItem` children.
  *
- * Base UI resolves the trigger's text from Root's `items` and nothing else —
- * it keeps no registry of the `label` each `Select.Item` already declares — so
- * without this a composed select falls through to the raw value and the
- * trigger reads "mono" instead of "Monospace". Recurses, because children
- * arrive wrapped in fragments as often as not, and stops at the first element
+ * Base UI resolves the trigger's text from Root's `items` and
+ * `itemToStringLabel`, nothing else — it keeps no registry of the `label` each
+ * `Select.Item` already declares — so without this a composed select falls
+ * through to the raw value and the trigger reads "mono" instead of
+ * "Monospace". The pairs go to Root as its `items` so Base UI resolves them
+ * the same way it resolves a caller's own. Recurses, because children arrive
+ * wrapped in fragments as often as not, and stops at the first element
  * carrying both props so a custom row's own markup is never mistaken for one.
  */
 function collectItemLabels(
@@ -105,36 +107,18 @@ export function Select<
     Multiple
   >["defaultValue"];
 
-  // Create a lookup function to resolve labels from values. Composed selects
-  // have no `items` to read, so their labels come off the children instead —
-  // the trigger shouldn't lose its text just because the list was composed by
-  // hand. Deliberately not fed back into `resolvedDefaultValue` above: a
-  // composed select still opens empty unless told otherwise.
-  const itemLabels = useMemo(
-    () => items ?? collectItemLabels(children),
-    [items, children],
-  );
-
-  const itemToStringLabel = useMemo(() => {
-    if (itemLabels.length === 0) return undefined;
-    const labelMap = new Map(
-      itemLabels.map((item) => [item.value, item.label]),
-    );
-    return (value: Value) => labelMap.get(value as string) ?? String(value);
-  }, [itemLabels]);
-
-  const renderValue = (value: Value | Value[]) => {
-    if (multiple) {
-      const values = Array.isArray(value) ? value : [];
-      return values.length > 0
-        ? values.map((v) => itemToStringLabel?.(v) ?? String(v)).join(", ")
-        : (placeholder ?? null);
-    }
-
-    return value != null
-      ? (itemToStringLabel?.(value as Value) ?? String(value))
-      : (placeholder ?? null);
-  };
+  // Composed selects have no `items` to hand Root, so their labels come off
+  // the children instead — the trigger shouldn't lose its text just because
+  // the list was composed by hand. Root does the rest: `Value` reads these
+  // labels and, ahead of them, any `itemToStringLabel` the caller passed,
+  // which is why the trigger's text is not formatted here. Deliberately not
+  // fed back into `resolvedDefaultValue` above: a composed select still opens
+  // empty unless told otherwise.
+  const itemLabels = useMemo(() => {
+    if (items) return items;
+    const collected = collectItemLabels(children);
+    return collected.length > 0 ? collected : undefined;
+  }, [items, children]);
 
   return (
     <Field
@@ -151,8 +135,7 @@ export function Select<
         required={required}
         multiple={multiple}
         defaultValue={resolvedDefaultValue}
-        items={items}
-        itemToStringLabel={itemToStringLabel}
+        items={itemLabels}
         {...rootProps}
         {...RootProps}
       >
@@ -167,9 +150,7 @@ export function Select<
           {...domAttributes}
           {...TriggerProps}
         >
-          <SelectValue size={size} {...ValueProps}>
-            {renderValue}
-          </SelectValue>
+          <SelectValue size={size} placeholder={placeholder} {...ValueProps} />
           <SelectIcon {...IconProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>

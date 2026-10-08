@@ -22,6 +22,8 @@ An item's `children` draw the row in place of its `icon` / `label` / `descriptio
 
 Drop `items` and pass children to compose the list yourself with `SelectItem`. The trigger still reads each item's `label` — Select harvests them off the children, since Base UI resolves that text from `items` alone — but a composed list never preselects its first option, so give it a `placeholder`.
 
+When the trigger should read differently from the rows — a currency code where the row spells the currency out — pass `itemToStringLabel`. It formats the trigger's text from the selected value, each value in turn under `multiple`, and takes precedence over the item labels, exactly as it does in Base UI. The rows keep their own `label`.
+
 Leave `value` unset and the select runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 
 The open popup dims the page behind it so it can't be lost in surrounding content. That is paint only — Base UI's `Root` is `modal` by default, so page scroll is locked and outside pointers are blocked whether or not the dimming is drawn, and `backdrop={false}` changes how the select looks, never how it behaves. The dim is lighter than a dialog's: a dialog owns the screen, where a select is still a field in a form the reader needs to keep their place in. It rides Select's own `--select-backdrop-*` tokens, so `@uiid/forms` carries no dependency on `@uiid/overlays`.
