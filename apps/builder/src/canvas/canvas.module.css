@@ -1,0 +1,19 @@
+.canvas {
+  overflow: auto;
+}
+
+.node {
+  cursor: default;
+}
+
+/* A container with nothing in it has no box of its own to click or drop on,
+   so it shows a dashed hint until something lands inside. */
+.node[data-empty] {
+  outline: var(--globals-border-width) dashed var(--globals-border-color);
+  outline-offset: calc(-1 * var(--globals-border-width));
+}
+
+.node[data-selected] {
+  outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
+}

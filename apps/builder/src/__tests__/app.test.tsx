@@ -1,12 +1,18 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import { App } from "../app";
+import { useDocumentStore } from "../document/document.store";
 
 describe("App", () => {
-  it("renders the builder heading with the UIID Text component", () => {
+  it("renders the canvas with the root Stack", () => {
     render(<App />);
 
-    const heading = screen.getByText("Builder");
-    expect(heading).toHaveAttribute("data-slot", "text");
+    const root = useDocumentStore.getState().document.root;
+    const rootEl = document.querySelector(`[data-canvas-node="${root}"]`);
+
+    expect(document.querySelector('[data-slot="canvas"]')).toContainElement(
+      rootEl as HTMLElement,
+    );
+    expect(rootEl).toHaveAttribute("data-slot", "stack");
   });
 });

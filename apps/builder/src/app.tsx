@@ -1,5 +1,5 @@
-import { Text } from "@uiid/design-system";
+import { Canvas } from "./canvas/canvas";
 
 export function App() {
-  return <Text>Builder</Text>;
+  return <Canvas />;
 }
