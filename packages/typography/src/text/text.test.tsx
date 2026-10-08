@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Text } from "./text";
+import * as Examples from "./text.examples";
 
 describe("Text", () => {
   it("renders children in a span by default", () => {
@@ -16,13 +17,54 @@ describe("Text", () => {
   // attribute is what a prop is tested by.
 
   describe("data attributes", () => {
-    it("writes the default size and family", () => {
+    // Size and family have no JavaScript default. A Text with no Text ancestor
+    // paints step 0 sans from a zero-specificity baseline in text.module.css,
+    // and a nested Text inherits its parent's run, so "unset" must stay
+    // distinguishable from `size={0}` at the attribute level.
+    it("writes no size or family when neither is set", () => {
       render(<Text>Defaults</Text>);
       const el = screen.getByText("Defaults");
-      expect(el).toHaveAttribute("data-ui-size", "0");
-      expect(el).toHaveAttribute("data-ui-family", "sans");
+      expect(el).not.toHaveAttribute("data-ui-size");
+      expect(el).not.toHaveAttribute("data-ui-family");
       expect(el).not.toHaveAttribute("data-ui-weight");
       expect(el).not.toHaveAttribute("data-ui-shade");
+    });
+
+    it("writes an explicit baseline size and family", () => {
+      render(
+        <Text size={0} family="sans">
+          Explicit
+        </Text>,
+      );
+      const el = screen.getByText("Explicit");
+      expect(el).toHaveAttribute("data-ui-size", "0");
+      expect(el).toHaveAttribute("data-ui-family", "sans");
+    });
+
+    it("writes no size or family on a nested Text that names neither", () => {
+      render(
+        <Text size={-1} family="mono">
+          Outer <Text weight="bold">inner</Text>
+        </Text>,
+      );
+      const el = screen.getByText("inner");
+      expect(el).not.toHaveAttribute("data-ui-size");
+      expect(el).not.toHaveAttribute("data-ui-family");
+      expect(el).toHaveAttribute("data-ui-weight", "bold");
+    });
+
+    it("writes exactly the size and family a nested Text names", () => {
+      render(
+        <Text size={2}>
+          Outer{" "}
+          <Text size={-1} family="mono">
+            inner
+          </Text>
+        </Text>,
+      );
+      const el = screen.getByText("inner");
+      expect(el).toHaveAttribute("data-ui-size", "-1");
+      expect(el).toHaveAttribute("data-ui-family", "mono");
     });
 
     it("writes each enumerated prop as its value", () => {
@@ -148,6 +190,39 @@ describe("Text", () => {
         </Text>,
       );
       expect(screen.getByTestId("rich")).not.toHaveAttribute("title");
+    });
+  });
+
+  // ============================================
+  // NESTED EXAMPLE
+  // ============================================
+  // The Nested example is the visual proof that a nested Text inherits. The
+  // attribute half is pinned here: each inner span names only the prop it
+  // demonstrates, so the CSS has nothing but inheritance to paint from.
+
+  describe("Nested example", () => {
+    it("names only the prop each inner span demonstrates", () => {
+      render(<Examples.Nested />);
+      for (const word of ["bold", "mono", "colored"]) {
+        expect(screen.getByText(word)).not.toHaveAttribute("data-ui-size");
+      }
+      const bold = screen.getByText("bold");
+      expect(bold).toHaveAttribute("data-ui-weight", "bold");
+      expect(bold).not.toHaveAttribute("data-ui-family");
+      expect(screen.getByText("mono")).toHaveAttribute(
+        "data-ui-family",
+        "mono",
+      );
+      const colored = screen.getByText("colored");
+      expect(colored).toHaveAttribute("data-ui-color");
+      expect(colored).not.toHaveAttribute("data-ui-family");
+    });
+
+    it("writes the explicit size that resets inside a larger sentence", () => {
+      render(<Examples.Nested />);
+      const el = screen.getByText("resets");
+      expect(el).toHaveAttribute("data-ui-size", "0");
+      expect(el).not.toHaveAttribute("data-ui-family");
     });
   });
 });

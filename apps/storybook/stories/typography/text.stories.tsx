@@ -57,6 +57,10 @@ export const InlineCode: Story = {
   render: () => <Examples.InlineCode />,
 };
 
+export const Nested: Story = {
+  render: () => <Examples.Nested />,
+};
+
 export const Polymorphic: Story = {
   render: () => <Examples.Polymorphic />,
 };

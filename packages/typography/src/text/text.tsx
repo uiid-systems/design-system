@@ -7,7 +7,6 @@ import {
   paddingPropKeys,
 } from "@uiid/utils";
 
-import { TEXT_DEFAULT_SIZE, TEXT_DEFAULT_FAMILY } from "./text.constants";
 import type { TextProps } from "./text.types";
 
 import styles from "./text.module.css";
@@ -25,8 +24,8 @@ export const Text = ({
   balance,
   truncate,
   title,
-  size = TEXT_DEFAULT_SIZE,
-  family = TEXT_DEFAULT_FAMILY,
+  size,
+  family,
   render,
   className,
   children,

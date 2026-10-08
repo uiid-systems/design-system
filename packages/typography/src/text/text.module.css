@@ -22,6 +22,23 @@
 }
 
 /*
+ * A Text that no Text encloses paints the baseline: step 0 in the sans family.
+ * `size` and `family` have no JavaScript default, so this rule is the only
+ * place the baseline lives. It weighs nothing, so every explicit
+ * data-ui-size and data-ui-family rule below outranks it at any depth, and so
+ * does any component that reaches a Text through its own class plus a slot.
+ * A nested Text does not match it at all, so one that names no size or family
+ * carries no font declarations and inherits its parent's run.
+ */
+:where(.text):not(:where(.text) *) {
+  font-family: var(--font-sans);
+  font-size: var(--text-0-font-size);
+  font-weight: var(--text-0-font-weight);
+  line-height: var(--text-0-line-height);
+  letter-spacing: var(--text-0-letter-spacing);
+}
+
+/*
  * Text's props are data-ui-* attributes on the element. `:where(.text)` keeps
  * each selector pure for CSS modules without adding specificity, so a rule
  * weighs one attribute, as the old classes did, and a component that reaches a
