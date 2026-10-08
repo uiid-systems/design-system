@@ -16,13 +16,54 @@ describe("Text", () => {
   // attribute is what a prop is tested by.
 
   describe("data attributes", () => {
-    it("writes the default size and family", () => {
+    // Size and family have no JavaScript default. A Text with no Text ancestor
+    // paints step 0 sans from a zero-specificity baseline in text.module.css,
+    // and a nested Text inherits its parent's run, so "unset" must stay
+    // distinguishable from `size={0}` at the attribute level.
+    it("writes no size or family when neither is set", () => {
       render(<Text>Defaults</Text>);
       const el = screen.getByText("Defaults");
-      expect(el).toHaveAttribute("data-ui-size", "0");
-      expect(el).toHaveAttribute("data-ui-family", "sans");
+      expect(el).not.toHaveAttribute("data-ui-size");
+      expect(el).not.toHaveAttribute("data-ui-family");
       expect(el).not.toHaveAttribute("data-ui-weight");
       expect(el).not.toHaveAttribute("data-ui-shade");
+    });
+
+    it("writes an explicit baseline size and family", () => {
+      render(
+        <Text size={0} family="sans">
+          Explicit
+        </Text>,
+      );
+      const el = screen.getByText("Explicit");
+      expect(el).toHaveAttribute("data-ui-size", "0");
+      expect(el).toHaveAttribute("data-ui-family", "sans");
+    });
+
+    it("writes no size or family on a nested Text that names neither", () => {
+      render(
+        <Text size={-1} family="mono">
+          Outer <Text weight="bold">inner</Text>
+        </Text>,
+      );
+      const el = screen.getByText("inner");
+      expect(el).not.toHaveAttribute("data-ui-size");
+      expect(el).not.toHaveAttribute("data-ui-family");
+      expect(el).toHaveAttribute("data-ui-weight", "bold");
+    });
+
+    it("writes exactly the size and family a nested Text names", () => {
+      render(
+        <Text size={2}>
+          Outer{" "}
+          <Text size={-1} family="mono">
+            inner
+          </Text>
+        </Text>,
+      );
+      const el = screen.getByText("inner");
+      expect(el).toHaveAttribute("data-ui-size", "-1");
+      expect(el).toHaveAttribute("data-ui-family", "mono");
     });
 
     it("writes each enumerated prop as its value", () => {
