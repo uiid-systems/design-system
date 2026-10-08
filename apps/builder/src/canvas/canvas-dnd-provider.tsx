@@ -9,8 +9,9 @@ import type { DragStartEvent } from "@dnd-kit/core";
 import { Button } from "@uiid/design-system";
 import { useState } from "react";
 
+import { useDocumentStore } from "../document/document.store";
 import type { ManifestKey } from "../manifest/manifest";
-import { deepestContainer, handleDragEnd } from "./canvas-dnd";
+import { deepestTarget, handleDragEnd } from "./canvas-dnd";
 import type { DragData } from "./canvas-dnd";
 
 /** Pixels the pointer must travel before a drag starts, so clicks stay clicks. */
@@ -19,6 +20,7 @@ const ACTIVATION_DISTANCE = 4;
 /**
  * One drag-and-drop boundary around the palette and the canvas. Keyboard
  * dragging is out of scope for the POC, so only the pointer sensor is wired.
+ * The overlay shows the dragged thing's type, from the palette or the canvas.
  */
 export function CanvasDndProvider({ children }: React.PropsWithChildren) {
   const [activeType, setActiveType] = useState<ManifestKey | null>(null);
@@ -30,13 +32,17 @@ export function CanvasDndProvider({ children }: React.PropsWithChildren) {
 
   const onDragStart = ({ active }: DragStartEvent) => {
     const data = active.data.current as DragData | undefined;
-    setActiveType(data?.kind === "palette" ? data.type : null);
+    if (data?.kind === "palette") setActiveType(data.type);
+    else if (data?.kind === "node") {
+      const node = useDocumentStore.getState().document.nodes[data.nodeId];
+      setActiveType((node?.type as ManifestKey) ?? null);
+    } else setActiveType(null);
   };
 
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={deepestContainer}
+      collisionDetection={deepestTarget}
       onDragStart={onDragStart}
       onDragEnd={(event) => {
         setActiveType(null);

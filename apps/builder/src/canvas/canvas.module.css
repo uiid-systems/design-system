@@ -4,6 +4,11 @@
 
 .node {
   cursor: default;
+  touch-action: none;
+}
+
+.node[data-dragging] {
+  opacity: var(--globals-disabled-opacity);
 }
 
 /* A container with nothing in it has no box of its own to click or drop on,
