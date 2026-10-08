@@ -17,3 +17,8 @@
   outline: var(--globals-outline-width) var(--globals-outline-style) var(--globals-outline-color);
   outline-offset: var(--globals-outline-offset);
 }
+
+.node[data-over] {
+  outline: var(--globals-outline-width) dashed var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
+}

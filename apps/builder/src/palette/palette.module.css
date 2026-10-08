@@ -1,0 +1,8 @@
+.item {
+  cursor: grab;
+  touch-action: none;
+}
+
+.item[data-dragging] {
+  opacity: var(--globals-disabled-opacity);
+}
