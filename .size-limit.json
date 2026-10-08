@@ -12,7 +12,7 @@
   {
     "name": "@uiid/cards",
     "path": "packages/cards/dist/index.js",
-    "limit": "25 kB"
+    "limit": "60 kB"
   },
   {
     "name": "@uiid/code",

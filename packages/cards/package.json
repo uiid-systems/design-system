@@ -39,20 +39,22 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
+    "@uiid/buttons": "workspace:*",
+    "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*"
   },
   "peerDependencies": {
+    "@base-ui/react": "^1.7.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@base-ui/react": "1.7.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@uiid/buttons": "workspace:*",
-    "@uiid/icons": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

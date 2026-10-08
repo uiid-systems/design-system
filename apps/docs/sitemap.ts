@@ -52,7 +52,10 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
   },
   {
     category: "Cards",
-    items: [{ label: "Card", value: "/cards/card" }],
+    items: [
+      { label: "Card", value: "/cards/card" },
+      { label: "Collapsible Card", value: "/cards/collapsible-card" },
+    ],
   },
   {
     category: "Indicators",
