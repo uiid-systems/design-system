@@ -64,6 +64,47 @@ describe("Dialog", () => {
   });
 
   // ============================================
+  // NO TRIGGER
+  // ============================================
+  // A controlled dialog opened from elsewhere has no trigger of its own, and
+  // nothing may stand in for one: not even an empty focusable span.
+
+  it("renders no trigger element when none is given", () => {
+    const { container } = render(
+      <Dialog open={false} onOpenChange={() => {}}>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(container.querySelector('[data-slot="dialog-trigger"]')).toBeNull();
+    expect(container.querySelector("[tabindex], [role]")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("opens when controlled without a trigger", () => {
+    render(
+      <Dialog open={true} onOpenChange={() => {}}>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(screen.getByRole("dialog")).toHaveTextContent("Dialog content");
+  });
+
+  it("renders a trigger from TriggerProps.render without a trigger prop", () => {
+    render(
+      <Dialog TriggerProps={{ render: <button>Open dialog</button> }}>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(screen.getByRole("button", { name: "Open dialog" })).toHaveAttribute(
+      "data-slot",
+      "dialog-trigger",
+    );
+  });
+
+  // ============================================
   // CLICK INTERACTION
   // ============================================
 

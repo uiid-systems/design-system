@@ -48,6 +48,47 @@ describe("Drawer", () => {
   });
 
   // ============================================
+  // NO TRIGGER
+  // ============================================
+  // A controlled drawer opened from elsewhere has no trigger of its own, and
+  // nothing may stand in for one: not even an empty focusable span.
+
+  it("renders no trigger element when none is given", () => {
+    const { container } = render(
+      <Drawer open={false} onOpenChange={() => {}}>
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(container.querySelector('[data-slot="drawer-trigger"]')).toBeNull();
+    expect(container.querySelector("[tabindex], [role]")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("opens when controlled without a trigger", () => {
+    render(
+      <Drawer open={true} onOpenChange={() => {}}>
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(screen.getByRole("dialog")).toHaveTextContent("Drawer content");
+  });
+
+  it("renders a trigger from TriggerProps.render without a trigger prop", () => {
+    render(
+      <Drawer TriggerProps={{ render: <button>Open drawer</button> }}>
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(screen.getByRole("button", { name: "Open drawer" })).toHaveAttribute(
+      "data-slot",
+      "drawer-trigger",
+    );
+  });
+
+  // ============================================
   // CLICK INTERACTION
   // ============================================
 

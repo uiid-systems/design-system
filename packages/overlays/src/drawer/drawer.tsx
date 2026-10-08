@@ -35,6 +35,10 @@ export const Drawer = ({
   ContentProps,
   children,
 }: DrawerProps) => {
+  // A drawer opened from elsewhere has no trigger. Without one, render no
+  // Trigger part at all: Base UI's controlled Root doesn't need it, and the
+  // empty focusable span the part would otherwise plant is a tab stop nobody
+  // asked for. A caller's own `render` still counts as a trigger.
   return (
     <DrawerRoot
       open={open}
@@ -48,7 +52,9 @@ export const Drawer = ({
       onSnapPointChange={onSnapPointChange}
       {...RootProps}
     >
-      <DrawerTrigger {...TriggerProps}>{trigger}</DrawerTrigger>
+      {(trigger != null || TriggerProps?.render) && (
+        <DrawerTrigger {...TriggerProps}>{trigger}</DrawerTrigger>
+      )}
       <DrawerPortal {...PortalProps}>
         <DrawerBackdrop {...BackdropProps} />
         <DrawerViewport {...ViewportProps}>

@@ -27,9 +27,15 @@ export const Dialog = ({
   trigger,
   children,
 }: DialogProps) => {
+  // A dialog opened from elsewhere has no trigger. Without one, render no
+  // Trigger part at all: Base UI's controlled Root doesn't need it, and the
+  // empty focusable span the part would otherwise plant is a tab stop nobody
+  // asked for. A caller's own `render` still counts as a trigger.
   return (
     <DialogRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
-      <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
+      {(trigger != null || TriggerProps?.render) && (
+        <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
+      )}
       <DialogPortal {...PortalProps}>
         <DialogBackdrop {...BackdropProps} />
         <DialogViewport {...ViewportProps}>
