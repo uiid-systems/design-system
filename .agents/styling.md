@@ -24,7 +24,7 @@ Style props (spacing, sizing, border, `ax`/`ay`/`direction`) and toggles (`evenl
 
 ## Component-local data attributes
 
-A component whose props are always written, like Text's default `size` and `family`, keeps its `data-ui-*` rules in its own CSS module rather than `props.css`. That leaves them in the package's layer (`uiid.primitives` for Text), where component CSS can still restyle them. See `packages/typography/src/text/`.
+A component whose props are its own vocabulary, like Text's `size` and `family`, keeps its `data-ui-*` rules in its own CSS module rather than `props.css`. That leaves them in the package's layer (`uiid.primitives` for Text), where component CSS can still restyle them. A default that must not reach nested instances also lives there, as a zero-specificity rule: Text paints step 0 sans only on a `Text` with no `Text` ancestor, so a nested `Text` writes no attribute and inherits until a prop names a value. See `packages/typography/src/text/`.
 
 - **Select with `:where(.{local})[data-ui-{key}]`.** The `apps/docs` Turbopack build compiles CSS modules in pure mode, so a bare `[data-ui-*]` selector fails there, even though Vite, tests and lint accept it. `:where()` adds the local class without adding specificity.
 - **A prop that can be forced off writes its value.** `underline={false}` writes `data-ui-underline="false"`, whose rule comes after the bare `[data-ui-underline]` one.
