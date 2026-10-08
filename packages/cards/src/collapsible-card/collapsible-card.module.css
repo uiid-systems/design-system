@@ -1,0 +1,14 @@
+/* The chevron points at the title while closed and turns down to the body once open. */
+.collapsible-card-trigger {
+  flex-shrink: 0;
+
+  svg {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: rotate var(--globals-transition-duration) var(--globals-transition-easing);
+    }
+  }
+
+  &[data-panel-open] svg {
+    rotate: 90deg;
+  }
+}
