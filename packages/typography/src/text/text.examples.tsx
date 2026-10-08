@@ -201,6 +201,28 @@ export const InlineCode = () => (
   </Text>
 );
 
+/**
+ * A nested Text paints only the props it names and inherits the rest from the
+ * sentence around it. An explicit size still wins at any depth.
+ */
+export const Nested = () => (
+  <Stack>
+    <Row label="size -1">
+      <Text size={-1}>
+        Inside a small sentence, a <Text weight="bold">bold</Text> word, a{" "}
+        <Text family="mono">mono</Text> token, and a{" "}
+        <Text color="blue">colored</Text> span all keep the sentence's size.
+      </Text>
+    </Row>
+    <Row label="size 2">
+      <Text size={2}>
+        Inside a larger sentence, a span that names its own size{" "}
+        <Text size={0}>resets</Text> to that step.
+      </Text>
+    </Row>
+  </Stack>
+);
+
 export const Polymorphic = () => (
   <Text render={<h2 />} size={5} weight="bold">
     Rendered as &lt;h2&gt; via the render prop

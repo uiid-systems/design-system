@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { Text } from "./text";
+import * as Examples from "./text.examples";
 
 describe("Text", () => {
   it("renders children in a span by default", () => {
@@ -189,6 +190,39 @@ describe("Text", () => {
         </Text>,
       );
       expect(screen.getByTestId("rich")).not.toHaveAttribute("title");
+    });
+  });
+
+  // ============================================
+  // NESTED EXAMPLE
+  // ============================================
+  // The Nested example is the visual proof that a nested Text inherits. The
+  // attribute half is pinned here: each inner span names only the prop it
+  // demonstrates, so the CSS has nothing but inheritance to paint from.
+
+  describe("Nested example", () => {
+    it("names only the prop each inner span demonstrates", () => {
+      render(<Examples.Nested />);
+      for (const word of ["bold", "mono", "colored"]) {
+        expect(screen.getByText(word)).not.toHaveAttribute("data-ui-size");
+      }
+      const bold = screen.getByText("bold");
+      expect(bold).toHaveAttribute("data-ui-weight", "bold");
+      expect(bold).not.toHaveAttribute("data-ui-family");
+      expect(screen.getByText("mono")).toHaveAttribute(
+        "data-ui-family",
+        "mono",
+      );
+      const colored = screen.getByText("colored");
+      expect(colored).toHaveAttribute("data-ui-color");
+      expect(colored).not.toHaveAttribute("data-ui-family");
+    });
+
+    it("writes the explicit size that resets inside a larger sentence", () => {
+      render(<Examples.Nested />);
+      const el = screen.getByText("resets");
+      expect(el).toHaveAttribute("data-ui-size", "0");
+      expect(el).not.toHaveAttribute("data-ui-family");
     });
   });
 });
