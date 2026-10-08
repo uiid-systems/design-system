@@ -45,6 +45,33 @@ describe("Text", () => {
       expect(el).toHaveClass("palette-red");
     });
 
+    it("writes emphasis with the color's palette class", () => {
+      render(
+        <Text color="blue" emphasis="muted">
+          Blue muted
+        </Text>,
+      );
+      const el = screen.getByText("Blue muted");
+      expect(el).toHaveAttribute("data-ui-emphasis", "muted");
+      expect(el).toHaveClass("palette-blue");
+      expect(el).not.toHaveClass("palette-neutral");
+    });
+
+    it("falls back to the neutral palette for emphasis without a color", () => {
+      render(<Text emphasis="subtle">Subtle</Text>);
+      const el = screen.getByText("Subtle");
+      expect(el).toHaveAttribute("data-ui-emphasis", "subtle");
+      expect(el).not.toHaveAttribute("data-ui-color");
+      expect(el).toHaveClass("palette-neutral");
+    });
+
+    it("applies no palette class without a color or emphasis", () => {
+      render(<Text>Plain</Text>);
+      const el = screen.getByText("Plain");
+      expect(el).not.toHaveAttribute("data-ui-emphasis");
+      expect(el.className).not.toMatch(/palette-/);
+    });
+
     it("writes a bare attribute for a toggle that is on", () => {
       render(
         <Text strikethrough balance truncate underline>

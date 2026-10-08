@@ -1,3 +1,5 @@
+import { paletteColorStyles } from "@uiid/tokens";
+
 import { Text } from "./text";
 import type { TextProps } from "./text.types";
 
@@ -8,6 +10,7 @@ type Weight = NonNullable<TextProps["weight"]>;
 type Family = NonNullable<TextProps["family"]>;
 type Shade = NonNullable<TextProps["shade"]>;
 type Color = NonNullable<TextProps["color"]>;
+type Emphasis = NonNullable<TextProps["emphasis"]>;
 
 const SIZES: Size[] = [-1, 0, 1, 2, 3, 4, 5, 6];
 const WEIGHTS: Weight[] = [
@@ -37,6 +40,8 @@ const COLORS: Color[] = [
   "purple",
   "neutral",
 ];
+
+const EMPHASES: Emphasis[] = ["default", "muted", "subtle"];
 
 const ROW_GAP = 24;
 
@@ -121,6 +126,51 @@ export const Colors = () => (
         <Text size={1} color={color}>
           {SAMPLE}
         </Text>
+      </Row>
+    ))}
+  </Stack>
+);
+
+/** The surface each emphasis is read against: muted on fill, subtle on tint. */
+const SURFACE: Record<Emphasis, React.CSSProperties> = {
+  default: {},
+  muted: { backgroundColor: "var(--palette-fill)" },
+  subtle: {
+    backgroundColor: "var(--palette-tint)",
+    border: "1px solid var(--palette-tint-border)",
+  },
+};
+
+const Surface = ({
+  color = "neutral",
+  emphasis,
+  children,
+}: {
+  color?: Color;
+  emphasis: Emphasis;
+  children: React.ReactNode;
+}) => (
+  <div
+    className={paletteColorStyles[color]}
+    style={{ ...SURFACE[emphasis], padding: "8px 12px", borderRadius: 6 }}
+  >
+    {children}
+  </div>
+);
+
+export const Emphases = () => (
+  <Stack>
+    {COLORS.map((color) => (
+      <Row key={color} label={color}>
+        <div style={{ display: "flex", gap: ROW_GAP }}>
+          {EMPHASES.map((emphasis) => (
+            <Surface key={emphasis} color={color} emphasis={emphasis}>
+              <Text size={1} color={color} emphasis={emphasis}>
+                {emphasis}
+              </Text>
+            </Surface>
+          ))}
+        </div>
       </Row>
     ))}
   </Stack>

@@ -41,6 +41,10 @@ export const Colors: Story = {
   render: () => <Examples.Colors />,
 };
 
+export const Emphases: Story = {
+  render: () => <Examples.Emphases />,
+};
+
 export const Truncate: Story = {
   render: () => <Examples.Truncate />,
 };
