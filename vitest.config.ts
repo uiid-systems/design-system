@@ -54,6 +54,27 @@ export default defineConfig({
         find: /^@uiid\/icons\/(.+)$/,
         replacement: path.resolve(__dirname, "packages/icons/icons") + "/$1.js",
       },
+      // The design-system barrel re-exports every package above, so it resolves
+      // to source the same way. Its `exports` map points at dist, which CI never
+      // builds, so without this rule a consumer-side test only passes against a
+      // stale local build.
+      {
+        find: /^@uiid\/design-system$/,
+        replacement: path.resolve(
+          __dirname,
+          "packages/design-system/src/index.ts",
+        ),
+      },
+      // That barrel's stylesheet imports every package's built `globals.css`.
+      // Components already load their CSS modules from source, so under test
+      // each built sheet stands in as an empty file. Tokens are excluded: they
+      // have hand-written source CSS, matched by the rule further down. This
+      // must precede the string aliases, which would otherwise prefix-match
+      // `@uiid/buttons/globals.css` onto `src/index.ts/globals.css`.
+      {
+        find: /^@uiid\/(?!tokens\/)[\w-]+\/globals\.css$/,
+        replacement: path.resolve(__dirname, "vitest.empty.css"),
+      },
       ...uiidAliases,
       // Hand-written CSS at the package root (src/css/ is gitignored and holds
       // only generated token files).
