@@ -398,5 +398,55 @@ describe("Button", () => {
 
       expect(screen.getByRole("link")).toHaveAccessibleName("Home");
     });
+
+    it.each([
+      ["aria-label", { "aria-label": "Go home" }, "Go home"],
+      ["aria-labelledby", { "aria-labelledby": "home-label" }, "Home page"],
+    ])(
+      "lets %s on the link element win over the tooltip",
+      (_, labelProps, name) => {
+        render(
+          <>
+            <span id="home-label">Home page</span>
+            <Button
+              shape="square"
+              tooltip="Home"
+              render={<a href="/" {...labelProps} />}
+            >
+              <svg />
+            </Button>
+          </>,
+        );
+
+        const link = screen.getByRole("link");
+        expect(link).toHaveAccessibleName(name);
+        if (!("aria-label" in labelProps)) {
+          expect(link).not.toHaveAttribute("aria-label");
+        }
+      },
+    );
+
+    it.each([
+      ["button", undefined, "button"],
+      ["link", <a href="/" />, "link"],
+    ] as const)(
+      "keeps the tooltip name on a %s when a wrapper forwards aria-label={undefined}",
+      (_, renderElement, role) => {
+        const IconButton = ({ label }: { label?: string }) => (
+          <Button
+            shape="square"
+            tooltip="Reset"
+            aria-label={label}
+            render={renderElement}
+          >
+            <svg />
+          </Button>
+        );
+
+        render(<IconButton />);
+
+        expect(screen.getByRole(role)).toHaveAccessibleName("Reset");
+      },
+    );
   });
 });

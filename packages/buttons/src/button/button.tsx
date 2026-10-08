@@ -10,7 +10,7 @@ import {
   BUTTON_ICON_ONLY_SHAPES,
 } from "./button.constants";
 import type { ButtonProps } from "./button.types";
-import { isLinkRender } from "./button.utils";
+import { isLinkRender, isNamedByCaller } from "./button.utils";
 import { buttonVariants } from "./button.variants";
 import {
   ButtonLink,
@@ -37,13 +37,15 @@ export const Button = ({
 
   /**
    * Base UI tooltips are visual only, so an icon-only button would have no
-   * accessible name. A string tooltip names it unless the caller already has.
+   * accessible name. A string tooltip names it unless the caller already has,
+   * on the Button or on its `render` element. It is spread after the caller's
+   * props, so a wrapper forwarding `aria-label={undefined}` cannot erase it.
    */
-  const tooltipLabel =
+  const tooltipName =
     typeof tooltip === "string" &&
     BUTTON_ICON_ONLY_SHAPES.includes(shape) &&
-    !props["aria-labelledby"]
-      ? tooltip
+    !isNamedByCaller(props, props.render)
+      ? { "aria-label": tooltip }
       : undefined;
 
   const buttonClassName = cx(
@@ -79,20 +81,16 @@ export const Button = ({
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
       {isLinkRender(props.render) ? (
-        <ButtonLink
-          {...(tooltipLabel && { "aria-label": tooltipLabel })}
-          className={buttonClassName}
-          {...props}
-        >
+        <ButtonLink className={buttonClassName} {...props} {...tooltipName}>
           {content}
         </ButtonLink>
       ) : (
         <BaseButton
-          aria-label={tooltipLabel}
           nativeButton={!props.render}
           data-slot="button"
           className={buttonClassName}
           {...props}
+          {...tooltipName}
         >
           {content}
         </BaseButton>
