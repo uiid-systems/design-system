@@ -50,7 +50,11 @@ const insertAt = <T>(list: T[], item: T, index?: number): T[] => {
   return [...list.slice(0, at), item, ...list.slice(at)];
 };
 
-/** Adds `node` under `parentId`, appending when `index` is omitted. */
+/**
+ * Adds `node` under `parentId`, appending when `index` is omitted. A node whose
+ * id already exists is rejected as a no-op: overwriting it would leave the id
+ * listed under two parents.
+ */
 export function insertNode(
   doc: BuilderDocument,
   parentId: NodeId,
@@ -58,7 +62,7 @@ export function insertNode(
   index?: number,
 ): BuilderDocument {
   const parent = doc.nodes[parentId];
-  if (!parent) return doc;
+  if (!parent || doc.nodes[node.id]) return doc;
 
   return {
     ...doc,

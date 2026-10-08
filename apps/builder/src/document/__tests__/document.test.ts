@@ -59,6 +59,13 @@ describe("insertNode", () => {
     expect(next).toBe(doc);
   });
 
+  it("is a no-op when a node with that id already exists", () => {
+    const doc = fixture();
+    const next = insertNode(doc, doc.root, node("a1"));
+
+    expect(next).toBe(doc);
+  });
+
   it("returns a new document and leaves the input untouched", () => {
     const doc = fixture();
     const before = structuredClone(doc);
