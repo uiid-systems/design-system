@@ -85,6 +85,12 @@ const LONG_ITEMS: SelectItemProps[] = [
   { value: "short", label: "Short option" },
 ];
 
+const CURRENCY_ITEMS: SelectItemProps[] = [
+  { value: "usd", label: "US Dollar" },
+  { value: "eur", label: "Euro" },
+  { value: "jpy", label: "Japanese Yen" },
+];
+
 const DESCRIPTION = "Applies to every surface in the workspace.";
 const ERROR = "Choose a typeface";
 
@@ -250,6 +256,20 @@ export const Composed = () => (
     <SelectItem value="serif" label="Serif" />
     <SelectItem value="mono" label="Monospace" />
   </Select>
+);
+
+/*
+ * `itemToStringLabel` formats the trigger's text from the selected value and
+ * wins over the item labels, so the closed select can read differently from
+ * the open list. The rows keep their own `label`.
+ */
+export const TriggerText = () => (
+  <Select
+    label="Currency"
+    items={CURRENCY_ITEMS}
+    defaultValue="eur"
+    itemToStringLabel={(value) => value.toUpperCase()}
+  />
 );
 
 /* One label over several controls. */
