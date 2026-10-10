@@ -13,6 +13,7 @@ import {
   TableCellCheckbox,
 } from "./subcomponents";
 import { TableSelectionProvider } from "./table-selection";
+import { TABLE_DEFAULT_SIZE } from "./table.constants";
 import type { TableProps } from "./table.types";
 import { defaultFormatHeader } from "./table.utils";
 
@@ -22,6 +23,7 @@ export function Table<T extends Record<string, unknown>>({
   columns,
   formatHeader = defaultFormatHeader,
   selectable,
+  size = TABLE_DEFAULT_SIZE,
   striped,
   bordered,
   stickyHeader,
@@ -41,10 +43,10 @@ export function Table<T extends Record<string, unknown>>({
 
   const table = (
     <TableContainer maxHeight={maxHeight}>
-      <TableRoot striped={striped} bordered={bordered} {...props}>
+      <TableRoot size={size} striped={striped} bordered={bordered} {...props}>
         <TableHeader data-sticky={stickyHeader || undefined}>
           <TableRow>
-            {selectable && <TableCellCheckbox head />}
+            {selectable && <TableCellCheckbox head size={size} />}
             {displayColumns.map((column) => (
               <TableHead key={String(column)}>{formatHeader(column)}</TableHead>
             ))}
@@ -59,7 +61,7 @@ export function Table<T extends Record<string, unknown>>({
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
-              {selectable && <TableCellCheckbox index={index} />}
+              {selectable && <TableCellCheckbox index={index} size={size} />}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {isValidElement(item[column])
@@ -67,7 +69,9 @@ export function Table<T extends Record<string, unknown>>({
                     : String(item[column])}
                 </TableCell>
               ))}
-              {actions && <TableCellActions actions={actions} item={item} />}
+              {actions && (
+                <TableCellActions actions={actions} item={item} size={size} />
+              )}
             </TableRow>
           ))}
         </TableBody>

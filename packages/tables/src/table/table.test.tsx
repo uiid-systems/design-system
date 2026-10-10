@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it } from "vitest";
 
 import { Table } from "./table";
@@ -58,6 +59,24 @@ describe("Table", () => {
       expect(screen.getByRole("table").className).toContain(`size-${size}`);
     },
   );
+
+  it("passes its size to the built-in controls", () => {
+    render(
+      <Table
+        items={TABLE_MOCK_DATA}
+        size="large"
+        selectable
+        actions={{ primary: [{ icon: EllipsisVerticalIcon, tooltip: "Edit" }] }}
+      />,
+    );
+    expect(
+      screen.getAllByRole("checkbox")[0].closest('[data-slot="checkbox"]')
+        ?.className,
+    ).toContain("size-large");
+    expect(
+      screen.getAllByRole("button", { name: "Edit" })[0].className,
+    ).toContain("size-large");
+  });
 
   it("marks the scroll container with a data-slot", () => {
     const { scroller } = renderTable();

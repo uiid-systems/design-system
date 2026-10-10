@@ -4,17 +4,21 @@ import { Checkbox, type CheckboxProps } from "@uiid/forms";
 import { SwitchRender } from "@uiid/layout";
 
 import { useTableSelection } from "../table-selection.context";
+import type { TableVariants } from "../table.types";
 import { TableCell } from "./table-cell";
 import { TableHead } from "./table-head";
 
 type TableCellCheckboxProps = {
   head?: boolean;
   index?: number;
+  /** Control tier of the checkbox; `Table` passes its own `size`. */
+  size?: TableVariants["size"];
 };
 
 export const TableCellCheckbox = ({
   head = false,
   index,
+  size,
 }: TableCellCheckboxProps) => {
   const selection = useTableSelection();
 
@@ -40,7 +44,7 @@ export const TableCellCheckbox = ({
         false: <TableCell collapse />,
       }}
     >
-      <Checkbox {...checkboxProps} />
+      <Checkbox size={size} {...checkboxProps} />
     </SwitchRender>
   );
 };

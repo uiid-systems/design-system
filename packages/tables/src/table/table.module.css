@@ -80,6 +80,7 @@
 
   &:where([data-collapse]) {
     width: 0;
+    padding-block: 0;
   }
 }
 

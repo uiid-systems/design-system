@@ -17,6 +17,8 @@ export type TableCellDropdownProps = {
   icon?: Icon;
   tooltip?: string;
   items: MenuItemType[];
+  /** Control tier of the trigger button; `Table` passes its own `size`. */
+  size?: TableVariants["size"];
 };
 
 export type TableRootProps = React.ComponentProps<"table"> &

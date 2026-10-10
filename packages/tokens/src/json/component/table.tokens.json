@@ -65,7 +65,7 @@
           "$value": "{forms.size.lg.padding-x}",
           "$type": "dimension"
         },
-        "cell-padding-y": { "$value": "0.75rem", "$type": "dimension" }
+        "cell-padding-y": { "$value": "0.5rem", "$type": "dimension" }
       }
     },
     "scroll-shadow": {
