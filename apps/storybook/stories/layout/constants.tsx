@@ -18,6 +18,11 @@ export const sizeControls: ArgTypes = {
   h: { control: "number", table: { category: "Size" } },
   minh: { control: "number", table: { category: "Size" } },
   maxh: { control: "number", table: { category: "Size" } },
+  flex: {
+    control: "select",
+    options: [1, 2, 3, "auto", "none"],
+    table: { category: "Size" },
+  },
 };
 
 export const borderControls: ArgTypes = {
@@ -57,11 +62,6 @@ export const alignmentControls: ArgTypes = {
     table: { category: "Alignment" },
   },
   gap: { control: "number", table: { category: "Alignment" } },
-  flex: {
-    control: "select",
-    options: [1, 2, 3, "auto", "none"],
-    table: { category: "Alignment" },
-  },
   ax: {
     control: "select",
     options: ["stretch", "center", "start", "end"],
