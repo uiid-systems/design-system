@@ -23,4 +23,24 @@ describe("Group", () => {
     // Spacing props forward through to the underlying Box.
     expect(group).toHaveAttribute("data-ui-p", "4");
   });
+
+  it("wraps children with the wrap toggle", () => {
+    render(
+      <Group wrap data-testid="group">
+        x
+      </Group>,
+    );
+    expect(screen.getByTestId("group")).toHaveAttribute("data-ui-wrap", "");
+  });
+
+  it("lets a child size itself against its siblings with flex", () => {
+    render(
+      <Group>
+        <Group flex={1} data-testid="one" />
+        <Group flex={2} data-testid="two" />
+      </Group>,
+    );
+    expect(screen.getByTestId("one")).toHaveAttribute("data-ui-flex", "1");
+    expect(screen.getByTestId("two")).toHaveAttribute("data-ui-flex", "2");
+  });
 });

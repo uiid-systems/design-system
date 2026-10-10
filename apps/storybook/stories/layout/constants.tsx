@@ -8,6 +8,7 @@ export const toggleControls: ArgTypes = {
   fullheight: { control: "boolean", table: { category: "Toggles" } },
   fullscreen: { control: "boolean", table: { category: "Toggles" } },
   evenly: { control: "boolean", table: { category: "Toggles" } },
+  wrap: { control: "boolean", table: { category: "Toggles" } },
 };
 
 export const sizeControls: ArgTypes = {
@@ -17,6 +18,11 @@ export const sizeControls: ArgTypes = {
   h: { control: "number", table: { category: "Size" } },
   minh: { control: "number", table: { category: "Size" } },
   maxh: { control: "number", table: { category: "Size" } },
+  flex: {
+    control: "select",
+    options: [1, 2, 3, "auto", "none"],
+    table: { category: "Size" },
+  },
 };
 
 export const borderControls: ArgTypes = {

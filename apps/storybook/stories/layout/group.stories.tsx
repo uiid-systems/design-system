@@ -33,6 +33,14 @@ export const Evenly: Story = {
   render: () => <Examples.Evenly />,
 };
 
+export const Proportional: Story = {
+  render: () => <Examples.Proportional />,
+};
+
+export const Wrapped: Story = {
+  render: () => <Examples.Wrapped />,
+};
+
 export const Polymorphic: Story = {
   render: () => <Examples.Polymorphic />,
 };

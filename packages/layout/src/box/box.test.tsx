@@ -43,16 +43,37 @@ describe("Box", () => {
     expect(screen.getByTestId("box")).toHaveAttribute("data-ui-ax", "center");
   });
 
+  it("puts flex on the element as data and a raw var, keywords included", () => {
+    const { rerender } = render(
+      <Box flex={2} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-flex", "2");
+    expect(box.style.getPropertyValue("--props-flex")).toBe("2");
+
+    rerender(
+      <Box flex="none" data-testid="box">
+        x
+      </Box>,
+    );
+    expect(box).toHaveAttribute("data-ui-flex", "none");
+    expect(box.style.getPropertyValue("--props-flex")).toBe("none");
+  });
+
   it("writes a bare data attribute for a toggle that is on", () => {
     render(
-      <Box fullwidth evenly={false} data-testid="box">
+      <Box fullwidth wrap evenly={false} data-testid="box">
         x
       </Box>,
     );
     const box = screen.getByTestId("box");
     expect(box).toHaveAttribute("data-ui-fullwidth", "");
+    expect(box).toHaveAttribute("data-ui-wrap", "");
     expect(box).not.toHaveAttribute("data-ui-evenly");
     expect(box).not.toHaveAttribute("fullwidth");
+    expect(box).not.toHaveAttribute("wrap");
   });
 
   it("renders as a different element via the render prop", () => {

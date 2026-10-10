@@ -107,7 +107,7 @@ function MixedDemo() {
       orientation="mixed"
     >
       <SortableContent>
-        <Group gap={2} style={{ flexWrap: "wrap", maxWidth: 400 }}>
+        <Group gap={2} wrap maxw={400}>
           {items.map((item) => (
             <SortableItem key={item.id} value={item.id} asHandle>
               <Card

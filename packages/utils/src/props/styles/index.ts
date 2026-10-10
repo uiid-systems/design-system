@@ -1,5 +1,5 @@
 import { b, bx, bl, br, by, bt, bb } from "./border";
-import { ax, ay, direction } from "./layout";
+import { ax, ay, direction, flex } from "./layout";
 import { w, minw, maxw, h, minh, maxh } from "./sizing";
 import {
   gap,
@@ -32,6 +32,7 @@ export const styleProps = {
   ax,
   ay,
   direction,
+  flex,
   // spacing
   gap,
   m,
