@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.7.0](https://github.com/uiid-systems/design-system/compare/v0.6.7...v0.7.0) (2026-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** Card drops the `icon` prop, `IconProps`, `CardIcon`, `CardIconProps`, and `CardHeader`. Dialog, Drawer, and Popover drop the `icon` prop they forwarded to Card. `HeaderProps` now targets the whole header region.
+
+### Features
+
+* **ui:** add CollapsibleCard ([#459](https://github.com/uiid-systems/design-system/issues/459)) ([a1c6c8f](https://github.com/uiid-systems/design-system/commit/a1c6c8f688e758de4985be9410e043ce0d984d93))
+* **ui:** add emphasis prop to Text ([#451](https://github.com/uiid-systems/design-system/issues/451)) ([49e7ec3](https://github.com/uiid-systems/design-system/commit/49e7ec3e3eccbe7334946ebc9c2c743d0c3097c7))
+* **ui:** add uppercase prop to Text ([#462](https://github.com/uiid-systems/design-system/issues/462)) ([ee2dccf](https://github.com/uiid-systems/design-system/commit/ee2dccffbc12ba89cc7de40ba08bc0196d3f0656))
+* **ui:** add wrap and flex props to layout components ([#460](https://github.com/uiid-systems/design-system/issues/460)) ([d095714](https://github.com/uiid-systems/design-system/commit/d0957144dc981630f1a0a08009173e8e6376f7a0))
+* **ui:** flow card header text around a top-right action ([#449](https://github.com/uiid-systems/design-system/issues/449)) ([bff6409](https://github.com/uiid-systems/design-system/commit/bff6409ddbd5ee1675ed9ff1e3dcc07a53a63262))
+
+
+### Bug Fixes
+
+* **ui:** honor itemToStringLabel on Select ([#457](https://github.com/uiid-systems/design-system/issues/457)) ([ebbb1a7](https://github.com/uiid-systems/design-system/commit/ebbb1a7bdb42b36b1578407b8916ccefc27b82e6))
+* **ui:** inherit size and family in a nested Text ([#455](https://github.com/uiid-systems/design-system/issues/455)) ([2230104](https://github.com/uiid-systems/design-system/commit/223010445ddc10cc593848940ba7b4491db2b612))
+* **ui:** keep an icon-only button's tooltip name when the caller forwards an empty label ([#453](https://github.com/uiid-systems/design-system/issues/453)) ([8522d0e](https://github.com/uiid-systems/design-system/commit/8522d0eb034c26717177ec25058808d3227591bb))
+* **ui:** make Table min-width opt-in and add size tiers ([#461](https://github.com/uiid-systems/design-system/issues/461)) ([e2f1ec5](https://github.com/uiid-systems/design-system/commit/e2f1ec5a8f2b7628cd29648ba852cdd3d92049f4))
+* **ui:** render composed Card titles as a row, not inside a heading ([#458](https://github.com/uiid-systems/design-system/issues/458)) ([7356df3](https://github.com/uiid-systems/design-system/commit/7356df3aba4f021003b9fdfb1e8e3cc1d846518a))
+* **ui:** render no trigger in Dialog and Drawer when none is given ([#456](https://github.com/uiid-systems/design-system/issues/456)) ([b28be13](https://github.com/uiid-systems/design-system/commit/b28be131be8a617ce2c0623e6aa4a54dd78636ff))
+
 ## [0.6.7](https://github.com/uiid-systems/design-system/compare/v0.6.6...v0.6.7) (2026-09-26)
 
 
