@@ -36,6 +36,26 @@ export const Default = {
   ),
 };
 
+/* Row height, font size and cell padding follow the form-control tiers. */
+export const Sizes = {
+  name: "Sizes",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={8} fullwidth>
+      {(["xsmall", "small", "medium", "large"] as const).map((size) => (
+        <Table<TableMockData>
+          key={size}
+          size={size}
+          items={TABLE_MOCK_DATA}
+          columns={["name", "email", "status"]}
+          bordered
+          footer={size}
+        />
+      ))}
+    </Stack>
+  ),
+};
+
 export const StickyHeader = {
   name: "Sticky Header",
   tags: ["new"],
@@ -74,14 +94,32 @@ export const StickyHeaderFooter = {
   ),
 };
 
-/* The table has a 48rem min-width, so a narrower container forces the
-   horizontal overflow that the edge shadows respond to. */
+/* No minimum width by default, so a short table fits a narrow column
+   without scrolling. */
+export const Narrow = {
+  name: "Narrow Column",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={4} maxw={320} fullwidth>
+      <Table<TableMockData>
+        items={TABLE_MOCK_DATA}
+        columns={["name", "balance"]}
+        bordered
+      />
+    </Stack>
+  ),
+};
+
+/* A table is as wide as its container by default. `minw` floors it, so a
+   narrower container forces the horizontal overflow that the edge shadows
+   respond to. */
 export const HorizontalScroll = {
   name: "Horizontal Scroll",
   tags: ["new"],
   render: () => (
     <Stack gap={4} maxw={560} fullwidth>
       <Table<TableMockData>
+        minw={768}
         items={TABLE_MOCK_DATA}
         striped
         bordered
@@ -97,6 +135,7 @@ export const HorizontalAndVerticalScroll = {
   render: () => (
     <Stack gap={4} maxw={560} fullwidth>
       <Table<TableMockData>
+        minw={768}
         stickyHeader
         maxHeight={220}
         items={TABLE_MOCK_DATA}

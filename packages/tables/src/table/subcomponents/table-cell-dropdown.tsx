@@ -8,12 +8,13 @@ export const TableCellDropdown = ({
   icon: Icon,
   tooltip = "More options",
   items,
+  size = "small",
 }: TableCellDropdownProps) => {
   return (
     <Menu
       align="end"
       trigger={
-        <Button tooltip={tooltip} size="small" variant="ghost" shape="square">
+        <Button tooltip={tooltip} size={size} variant="ghost" shape="square">
           {Icon ? <Icon /> : <EllipsisVerticalIcon size={14} />}
         </Button>
       }

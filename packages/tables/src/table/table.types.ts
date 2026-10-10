@@ -1,5 +1,10 @@
 import type { Icon } from "@uiid/icons";
 import type { MenuItemType } from "@uiid/navigation";
+import type { VariantProps } from "@uiid/utils";
+
+import type { tableVariants } from "./table.variants";
+
+export type TableVariants = VariantProps<typeof tableVariants>;
 
 export type TableActionsProps<T = Record<string, unknown>> = {
   icon: Icon;
@@ -12,15 +17,22 @@ export type TableCellDropdownProps = {
   icon?: Icon;
   tooltip?: string;
   items: MenuItemType[];
+  /** Control tier of the trigger button; `Table` passes its own `size`. */
+  size?: TableVariants["size"];
 };
 
-export type TableRootProps = React.ComponentProps<"table"> & {
-  selectable?: boolean;
-  striped?: boolean;
-  bordered?: boolean;
-  /** Highlight rows on hover. */
-  highlightOnHover?: boolean;
-};
+export type TableRootProps = React.ComponentProps<"table"> &
+  TableVariants & {
+    /** Minimum width, in px. Floors the table so a narrower container scrolls
+     * it horizontally instead of squashing the columns. Off by default: the
+     * table is as wide as its container. */
+    minw?: number;
+    selectable?: boolean;
+    striped?: boolean;
+    bordered?: boolean;
+    /** Highlight rows on hover. */
+    highlightOnHover?: boolean;
+  };
 
 export type TableProps<
   T extends Record<string, unknown> = Record<string, unknown>,

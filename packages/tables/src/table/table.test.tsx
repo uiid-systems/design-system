@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it } from "vitest";
 
 import { Table } from "./table";
@@ -34,6 +35,47 @@ describe("Table", () => {
   it("renders its rows", () => {
     renderTable();
     expect(screen.getByText("Alex Thompson")).toBeInTheDocument();
+  });
+
+  it("sets no minimum width by default", () => {
+    renderTable();
+    expect(screen.getByRole("table")).not.toHaveAttribute("data-ui-minw");
+  });
+
+  it("floors the table width when minw is given", () => {
+    render(<Table items={TABLE_MOCK_DATA} minw={768} />);
+    expect(screen.getByRole("table")).toHaveAttribute("data-ui-minw", "768");
+  });
+
+  it("defaults to the medium size", () => {
+    renderTable();
+    expect(screen.getByRole("table").className).toContain("size-medium");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "applies size=%s",
+    (size) => {
+      render(<Table items={TABLE_MOCK_DATA} size={size} />);
+      expect(screen.getByRole("table").className).toContain(`size-${size}`);
+    },
+  );
+
+  it("passes its size to the built-in controls", () => {
+    render(
+      <Table
+        items={TABLE_MOCK_DATA}
+        size="large"
+        selectable
+        actions={{ primary: [{ icon: EllipsisVerticalIcon, tooltip: "Edit" }] }}
+      />,
+    );
+    expect(
+      screen.getAllByRole("checkbox")[0].closest('[data-slot="checkbox"]')
+        ?.className,
+    ).toContain("size-large");
+    expect(
+      screen.getAllByRole("button", { name: "Edit" })[0].className,
+    ).toContain("size-large");
   });
 
   it("marks the scroll container with a data-slot", () => {
