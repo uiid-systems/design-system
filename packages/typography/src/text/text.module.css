@@ -162,6 +162,10 @@
   text-decoration-line: line-through;
 }
 
+:where(.text)[data-ui-uppercase] {
+  text-transform: uppercase;
+}
+
 /* Both resolve the same text-wrap-mode longhand as .composes-text's
    `text-wrap: pretty`, and win by sitting in uiid.primitives above
    uiid.compositions. */

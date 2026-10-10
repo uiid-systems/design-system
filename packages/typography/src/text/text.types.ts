@@ -27,6 +27,8 @@ export type TextVariants = {
   underline?: boolean;
   /** Strike through the text */
   strikethrough?: boolean;
+  /** Render the text in capitals */
+  uppercase?: boolean;
   /** Balance line lengths across wrapped lines */
   balance?: boolean;
   /** Truncate overflowing text with an ellipsis */

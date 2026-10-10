@@ -61,6 +61,7 @@ export const toggleControls: ArgTypes = {
   truncate: { control: "boolean", table: { category: "Toggles" } },
   underline: { control: "boolean", table: { category: "Toggles" } },
   strikethrough: { control: "boolean", table: { category: "Toggles" } },
+  uppercase: { control: "boolean", table: { category: "Toggles" } },
 };
 
 export const spacingControls: ArgTypes = {

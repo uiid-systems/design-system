@@ -116,24 +116,41 @@ describe("Text", () => {
 
     it("writes a bare attribute for a toggle that is on", () => {
       render(
-        <Text strikethrough balance truncate underline>
+        <Text strikethrough uppercase balance truncate underline>
           Toggles
         </Text>,
       );
       const el = screen.getByText("Toggles");
-      for (const key of ["strikethrough", "balance", "truncate", "underline"]) {
+      for (const key of [
+        "strikethrough",
+        "uppercase",
+        "balance",
+        "truncate",
+        "underline",
+      ]) {
         expect(el).toHaveAttribute(`data-ui-${key}`, "");
       }
     });
 
     it("writes nothing for a toggle that is off", () => {
       render(
-        <Text strikethrough={false} balance={false} truncate={false}>
+        <Text
+          strikethrough={false}
+          uppercase={false}
+          balance={false}
+          truncate={false}
+        >
           Off
         </Text>,
       );
       const el = screen.getByText("Off");
-      for (const key of ["strikethrough", "balance", "truncate", "underline"]) {
+      for (const key of [
+        "strikethrough",
+        "uppercase",
+        "balance",
+        "truncate",
+        "underline",
+      ]) {
         expect(el).not.toHaveAttribute(`data-ui-${key}`);
       }
     });
