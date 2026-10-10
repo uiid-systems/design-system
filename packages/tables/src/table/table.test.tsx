@@ -36,6 +36,29 @@ describe("Table", () => {
     expect(screen.getByText("Alex Thompson")).toBeInTheDocument();
   });
 
+  it("sets no minimum width by default", () => {
+    renderTable();
+    expect(screen.getByRole("table")).not.toHaveAttribute("data-ui-minw");
+  });
+
+  it("floors the table width when minw is given", () => {
+    render(<Table items={TABLE_MOCK_DATA} minw={768} />);
+    expect(screen.getByRole("table")).toHaveAttribute("data-ui-minw", "768");
+  });
+
+  it("defaults to the medium size", () => {
+    renderTable();
+    expect(screen.getByRole("table").className).toContain("size-medium");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "applies size=%s",
+    (size) => {
+      render(<Table items={TABLE_MOCK_DATA} size={size} />);
+      expect(screen.getByRole("table").className).toContain(`size-${size}`);
+    },
+  );
+
   it("marks the scroll container with a data-slot", () => {
     const { scroller } = renderTable();
     expect(scroller).toHaveAttribute("data-slot", "table-scroller");
