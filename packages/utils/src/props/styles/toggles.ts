@@ -1,5 +1,6 @@
 export const togglePropKeys = [
   "evenly",
+  "wrap",
   "fullwidth",
   "fullheight",
   "fullscreen",
@@ -12,14 +13,18 @@ export type ToggleProp = {
 };
 
 export const toggleProps = {
+  /** A child that names its own `flex` keeps it; `evenly` fills in the rest. */
   evenly: {
-    selector: " > *",
+    selector: " > :not([data-ui-flex])",
     declarations: [
       "flex: 1",
       "flex-basis: auto",
       "width: -webkit-fill-available",
       "width: 100%",
     ],
+  },
+  wrap: {
+    declarations: ["flex-wrap: wrap"],
   },
   fullwidth: {
     declarations: [
@@ -39,6 +44,8 @@ export const toggleProps = {
 export type ToggleProps = {
   /** Distribute children evenly along the main axis */
   evenly?: boolean;
+  /** Let children wrap onto new lines instead of shrinking */
+  wrap?: boolean;
   /** Stretch to fill the container width */
   fullwidth?: boolean;
   /** Stretch to fill the container height */

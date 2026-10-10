@@ -63,6 +63,11 @@
   inherits: false;
 }
 
+@property --props-flex {
+  syntax: "*";
+  inherits: false;
+}
+
 @property --props-gap {
   syntax: "<number>";
   initial-value: 0;
@@ -230,6 +235,10 @@
     flex-direction: var(--props-direction);
   }
 
+  [data-ui-flex] {
+    flex: var(--props-flex);
+  }
+
   [data-ui-gap] {
     gap: calc(var(--props-gap) * var(--spacing-unit));
   }
@@ -342,11 +351,15 @@
     max-height: calc(var(--props-maxh) * 1px);
   }
 
-  [data-ui-evenly] > * {
+  [data-ui-evenly] > :not([data-ui-flex]) {
     flex: 1;
     flex-basis: auto;
     width: -webkit-fill-available;
     width: 100%;
+  }
+
+  [data-ui-wrap] {
+    flex-wrap: wrap;
   }
 
   [data-ui-fullwidth] {

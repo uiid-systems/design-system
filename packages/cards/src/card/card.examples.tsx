@@ -140,7 +140,7 @@ const HueCard = ({ color }: { color: (typeof PALETTE_HUES)[number] }) => (
 );
 
 export const ColorSurfaces = () => (
-  <Group gap={3} style={{ flexWrap: "wrap" }}>
+  <Group gap={3} wrap>
     {PALETTE_HUES.map((color) => (
       <HueCard key={color} color={color} />
     ))}

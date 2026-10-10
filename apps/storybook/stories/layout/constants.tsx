@@ -8,6 +8,7 @@ export const toggleControls: ArgTypes = {
   fullheight: { control: "boolean", table: { category: "Toggles" } },
   fullscreen: { control: "boolean", table: { category: "Toggles" } },
   evenly: { control: "boolean", table: { category: "Toggles" } },
+  wrap: { control: "boolean", table: { category: "Toggles" } },
 };
 
 export const sizeControls: ArgTypes = {
@@ -56,6 +57,11 @@ export const alignmentControls: ArgTypes = {
     table: { category: "Alignment" },
   },
   gap: { control: "number", table: { category: "Alignment" } },
+  flex: {
+    control: "select",
+    options: [1, 2, 3, "auto", "none"],
+    table: { category: "Alignment" },
+  },
   ax: {
     control: "select",
     options: ["stretch", "center", "start", "end"],

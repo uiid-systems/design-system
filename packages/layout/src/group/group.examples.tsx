@@ -33,6 +33,28 @@ export const Evenly = () => (
   </Group>
 );
 
+export const Proportional = () => (
+  <Group gap={GAP} fullwidth>
+    <ExampleBox bg="tomato" flex={1}>
+      1
+    </ExampleBox>
+    <ExampleBox bg="gold" flex={2}>
+      2
+    </ExampleBox>
+    <ExampleBox bg="dodgerblue" flex="none">
+      none
+    </ExampleBox>
+  </Group>
+);
+
+export const Wrapped = () => (
+  <Group gap={GAP} wrap maxw={240}>
+    {["tomato", "gold", "dodgerblue", "mediumseagreen", "orchid"].map((bg) => (
+      <ExampleBox key={bg} bg={bg} />
+    ))}
+  </Group>
+);
+
 export const Polymorphic = () => (
   <Group render={<header />} p={GAP} gap={GAP}>
     Parent element rendered as &lt;header&gt; instead of &lt;div&gt;
