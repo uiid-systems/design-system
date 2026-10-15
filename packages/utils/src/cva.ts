@@ -1,13 +1,9 @@
-import { clsx, type ClassValue as ClsxClassValue } from "clsx";
-import type { VariantProps } from "cva";
-import { defineConfig } from "cva/config";
-import { twMerge } from "tailwind-merge";
+import { cva, cx as cvaCx, type VariantProps } from "cva";
 
-const config = defineConfig({
-  cx: (...inputs: ClsxClassValue[]) => twMerge(clsx(inputs)),
-});
-
-const cva = config.cva;
+/*
+ * Plain concatenation, no Tailwind merging: every class a component passes is
+ * a hashed CSS-module name, which never conflicts with a caller's class.
+ */
 
 /**
  * cva's `ClassDictionary` is `Record<string, any>`, which a function satisfies,
@@ -28,7 +24,7 @@ type ClassValue =
   | undefined;
 
 function cx(...args: ClassValue[]): string | undefined {
-  const merged = config.cx(...args);
+  const merged = cvaCx(...(args as Parameters<typeof cvaCx>));
   return merged.trim() ? merged : undefined;
 }
 
