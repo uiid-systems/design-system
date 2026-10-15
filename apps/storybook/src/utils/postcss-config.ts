@@ -1,23 +1,7 @@
 // @ts-expect-error - CJS module without type declarations
+import cssLayers from "../../../../scripts/css-layers.cjs";
+// @ts-expect-error - CJS module without type declarations
 import postcssLayerWrapper from "../../../../scripts/postcss-layer-wrapper.cjs";
-
-/**
- * Component packages that should be wrapped in the uiid.components layer
- */
-const COMPONENT_PACKAGES = [
-  "buttons",
-  "cards",
-  "code",
-  "forms",
-  "indicators",
-  "interactive",
-  "layout",
-  "lists",
-  "navigation",
-  "overlays",
-  "tables",
-  "typography",
-];
 
 /**
  * The subset of Vite's config this helper reads and mutates. Declared
@@ -30,9 +14,9 @@ type ConfigWithCss = {
 };
 
 /**
- * Applies PostCSS layer wrapper to component packages in the Vite config.
- * This ensures component CSS is wrapped in @layer uiid.components,
- * while tokens and utilities remain in their own layers.
+ * Applies the PostCSS layer wrapper to package CSS in the Vite config, each
+ * package in the layer its build uses (`scripts/css-layers.cjs`), while tokens and
+ * utilities remain in their own layers.
  */
 export function applyPostCSSLayers<T extends ConfigWithCss>(config: T): T {
   const css = (config.css ??= {});
@@ -47,17 +31,14 @@ export function applyPostCSSLayers<T extends ConfigWithCss>(config: T): T {
     ? postcss.plugins
     : (postcss.plugins = []);
 
-  // Add layer wrapper for component CSS only
-  plugins.push(
-    postcssLayerWrapper("uiid.components", {
-      shouldWrap: (filePath: string) => {
-        // Only wrap CSS from component packages, not tokens or utils
-        return COMPONENT_PACKAGES.some((pkg) =>
-          filePath.includes(`packages/${pkg}/`),
-        );
-      },
-    }),
-  );
+  // Wrap package CSS only; tokens and utilities keep their own layers
+  for (const [pkg, layer] of Object.entries<string>(cssLayers)) {
+    plugins.push(
+      postcssLayerWrapper(layer, {
+        shouldWrap: (filePath: string) => filePath.includes(`packages/${pkg}/`),
+      }),
+    );
+  }
 
   return config;
 }

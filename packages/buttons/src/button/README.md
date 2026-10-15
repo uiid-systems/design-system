@@ -34,4 +34,13 @@ Base UI gives a non-native `render` `role="button"`, which is right for a `<span
 </Button>
 ```
 
+A `render={<button />}` stays a native button, with real `disabled` and its own `type`. A component that renders a `<button>` can't be inspected before it renders, so pass `nativeButton` for one.
+
 A disabled link keeps its `href` — stripping it would break router links — and instead leaves the tab order and ignores activation.
+
+## Gotchas
+
+- A plain Button is `type="button"`, so inside a `<form>` it doesn't submit. Pass `type="submit"` for the one that should.
+- `loading` doesn't disable the button: clicks still fire, so guard the handler or pass `disabled` too. While loading, the label is hidden from assistive tech and the button is announced as "Loading".
+- With a `tooltip`, the Button sits inside an inline-block wrapper, so `fullwidth` and flex-item props size it within that wrapper rather than the surrounding row.
+- A string `tooltip` only names a `square` or `circle` button, and a non-string tooltip never names one. Any other icon-only button needs its own `aria-label`.

@@ -57,23 +57,57 @@ export const HeaderVariants = () => (
   </Group>
 );
 
-export const Footer = () => (
-  <Dialog
-    trigger={<Button>Notification preferences</Button>}
-    title="Notification preferences"
-    description="Choose how and when you'd like to be notified."
-    footer={
-      <Group gap={2} ax="end" fullwidth>
-        <Button size="small" variant="subtle">
-          Cancel
-        </Button>
-        <Button size="small">Save</Button>
-      </Group>
-    }
-  >
-    {BODY}
-  </Dialog>
-);
+export const Footer = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      trigger={<Button>Notification preferences</Button>}
+      title="Notification preferences"
+      description="Choose how and when you'd like to be notified."
+      footer={
+        <Group gap={2} ax="end" fullwidth>
+          <Button size="small" variant="subtle" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button size="small" onClick={() => setOpen(false)}>
+            Save
+          </Button>
+        </Group>
+      }
+    >
+      {BODY}
+    </Dialog>
+  );
+};
+
+export const LongContent = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      trigger={<Button>Terms of service</Button>}
+      title="Terms of service"
+      footer={
+        <Group gap={2} ax="end" fullwidth>
+          <Button size="small" onClick={() => setOpen(false)}>
+            Accept
+          </Button>
+        </Group>
+      }
+    >
+      <Stack gap={4}>
+        {Array.from({ length: 16 }, (_, index) => (
+          <Text key={index}>{BODY}</Text>
+        ))}
+      </Stack>
+    </Dialog>
+  );
+};
 
 /**
  * A string becomes a focusable `role="button"` span, and a `Button` keeps its

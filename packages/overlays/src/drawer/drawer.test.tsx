@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
+import { Footer } from "./drawer.examples";
 
 import styles from "./drawer.module.css";
 
@@ -580,4 +581,20 @@ describe("Drawer", () => {
     const popup = document.querySelector('[data-slot="drawer-popup"]');
     expect(popup).toHaveClass(styles["drawer-popup"], "fn-open");
   });
+
+  it.each(["Cancel", "Save"])(
+    "closes from the Footer example's %s button",
+    async (name) => {
+      const user = userEvent.setup();
+      render(<Footer />);
+
+      await user.click(
+        screen.getByRole("button", { name: "Edit preferences" }),
+      );
+      await user.click(await screen.findByRole("button", { name }));
+      await waitFor(() =>
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+      );
+    },
+  );
 });
