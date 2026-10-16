@@ -1,73 +1,25 @@
-import { b, bx, bl, br, by, bt, bb } from "./border";
-import { ax, ay, direction, flex } from "./layout";
-import { w, minw, maxw, h, minh, maxh } from "./sizing";
-import {
-  gap,
-  m,
-  mx,
-  ml,
-  mr,
-  my,
-  mt,
-  mb,
-  p,
-  px,
-  pl,
-  pr,
-  py,
-  pt,
-  pb,
-} from "./spacing";
+import { keysOf } from "../utils";
+import { borderProps } from "./border";
+import { layoutProps } from "./layout";
+import { sizingProps } from "./sizing";
+import { spacingProps } from "./spacing";
 
 export const styleProps = {
-  // border
-  b,
-  bx,
-  bl,
-  br,
-  by,
-  bt,
-  bb,
-  // layout
-  ax,
-  ay,
-  direction,
-  flex,
-  // spacing
-  gap,
-  m,
-  mx,
-  ml,
-  mr,
-  my,
-  mt,
-  mb,
-  p,
-  px,
-  pl,
-  pr,
-  py,
-  pt,
-  pb,
-  // sizing
-  w,
-  minw,
-  maxw,
-  h,
-  minh,
-  maxh,
+  ...borderProps,
+  ...layoutProps,
+  ...spacingProps,
+  ...sizingProps,
 };
 
-export const stylePropKeys = Object.keys(
-  styleProps,
-) as (keyof typeof styleProps)[];
+export const stylePropKeys = keysOf(styleProps);
 
-export { borderPropKeys } from "./border";
-export { layoutPropKeys } from "./layout";
-export { spacingPropKeys } from "./spacing";
-export { sizingPropKeys } from "./sizing";
-
-export type { BorderProps } from "./border";
-export type { LayoutProps } from "./layout";
-export type { SpacingProps } from "./spacing";
-export type { SizingProps } from "./sizing";
+export { borderPropKeys, type BorderProps } from "./border";
+export { layoutPropKeys, type LayoutProps } from "./layout";
+export { spacingPropKeys, type SpacingProps } from "./spacing";
+export { sizingPropKeys, type SizingProps } from "./sizing";
+export {
+  toggleProps,
+  togglePropKeys,
+  type ToggleProp,
+  type ToggleProps,
+} from "./toggles";

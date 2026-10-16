@@ -1,11 +1,15 @@
 import type { styleProps } from "./styles";
-import type { togglePropKeys } from "./styles/toggles";
+import type { ToggleProps } from "./styles/toggles";
+
+/** An object's own keys, typed as its keys rather than `string[]`. */
+export const keysOf = <T extends object>(object: T) =>
+  Object.keys(object) as (keyof T)[];
 
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
   props: T;
-  styleProps?: (keyof typeof styleProps)[];
-  toggleProps?: (typeof togglePropKeys)[number][];
+  styleProps?: readonly (keyof typeof styleProps)[];
+  toggleProps?: readonly (keyof ToggleProps)[];
 };
 
 /**
@@ -28,12 +32,9 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
   const styleObj: React.CSSProperties = {};
 
   for (const [key, value] of Object.entries(props)) {
-    if (togglePropKeys.includes(key as (typeof togglePropKeys)[number])) {
+    if (togglePropKeys.includes(key as keyof ToggleProps)) {
       if (value) dataAttrs[`data-ui-${key}`] = "";
-    } else if (
-      stylePropKeys.includes(key as keyof typeof styleProps) &&
-      value !== undefined
-    ) {
+    } else if (stylePropKeys.includes(key as keyof typeof styleProps)) {
       if (value != null) {
         dataAttrs[`data-ui-${key}`] = String(value);
         (styleObj as Record<string, unknown>)[`--props-${key}`] = value;
@@ -45,7 +46,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
 
   const finalStyle =
     Object.keys(styleObj).length > 0
-      ? { ...styleObj, ...((restProps.style as React.CSSProperties) || {}) }
+      ? { ...styleObj, ...(restProps.style as React.CSSProperties) }
       : (restProps.style as React.CSSProperties);
 
   return {

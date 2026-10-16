@@ -47,6 +47,8 @@ describe("prepareComponentProps", () => {
     expect(result).not.toHaveProperty("data-ui-p");
     expect(result).not.toHaveProperty("data-ui-m");
     expect(result).not.toHaveProperty("style");
+    expect(result).not.toHaveProperty("p");
+    expect(result).not.toHaveProperty("m");
   });
 
   it("writes a bare attribute for a toggle that is on, and nothing when off", () => {

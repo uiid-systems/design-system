@@ -1,10 +1,4 @@
-export const togglePropKeys = [
-  "evenly",
-  "wrap",
-  "fullwidth",
-  "fullheight",
-  "fullscreen",
-] as const;
+import { keysOf } from "../utils";
 
 export type ToggleProp = {
   /** Appended to `[data-ui-{key}]`, e.g. `" > *"` to style the children. */
@@ -39,7 +33,9 @@ export const toggleProps = {
   fullscreen: {
     declarations: ["width: 100dvw", "height: 100dvh"],
   },
-} satisfies Record<(typeof togglePropKeys)[number], ToggleProp>;
+} satisfies Record<keyof ToggleProps, ToggleProp>;
+
+export const togglePropKeys = keysOf(toggleProps);
 
 export type ToggleProps = {
   /** Distribute children evenly along the main axis */
