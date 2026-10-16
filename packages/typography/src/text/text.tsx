@@ -3,8 +3,7 @@ import {
   prepareComponentProps,
   renderWithProps,
   cx,
-  marginPropKeys,
-  paddingPropKeys,
+  spacingPropKeys,
 } from "@uiid/utils";
 
 import type { TextProps } from "./text.types";
@@ -47,7 +46,7 @@ export const Text = ({
 
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    styleProps: [...paddingPropKeys, ...marginPropKeys],
+    styleProps: spacingPropKeys,
     props,
   });
 

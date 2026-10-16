@@ -1,42 +1,6 @@
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { createViteConfig } from "../../vite.config";
 
-import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    tsconfigPaths(),
-    dts({
-      insertTypesEntry: true,
-    }),
-  ],
-  build: {
-    lib: {
-      entry: "src/index.ts",
-      formats: ["es"],
-    },
-    rollupOptions: {
-      external: [
-        "react",
-        "react-dom",
-        "react/jsx-runtime",
-        "react/jsx-dev-runtime",
-        "clsx",
-        "cva",
-        "cva/config",
-        "tailwind-merge",
-      ],
-      output: {
-        preserveModules: true,
-        preserveModulesRoot: "src",
-        entryFileNames: "[name].js",
-        sanitizeFileName,
-      },
-    },
-    cssCodeSplit: false,
-  },
+export default createViteConfig({
+  preserveDirectives: false,
+  external: ["cva"],
 });

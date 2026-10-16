@@ -1,43 +1,34 @@
 import type { StyleProp } from "../types";
+import { keysOf } from "./keys";
 
-export const sizingPropKeys = [
-  "w",
-  "minw",
-  "maxw",
-  "h",
-  "minh",
-  "maxh",
-] as const;
+export const sizingProps = {
+  w: {
+    property: "width",
+    unit: "px",
+  } satisfies StyleProp<"width">,
+  minw: {
+    property: "minWidth",
+    unit: "px",
+  } satisfies StyleProp<"minWidth">,
+  maxw: {
+    property: "maxWidth",
+    unit: "px",
+  } satisfies StyleProp<"maxWidth">,
+  h: {
+    property: "height",
+    unit: "px",
+  } satisfies StyleProp<"height">,
+  minh: {
+    property: "minHeight",
+    unit: "px",
+  } satisfies StyleProp<"minHeight">,
+  maxh: {
+    property: "maxHeight",
+    unit: "px",
+  } satisfies StyleProp<"maxHeight">,
+} satisfies Record<keyof SizingProps, unknown>;
 
-export const w = {
-  property: "width",
-  unit: "px",
-} satisfies StyleProp<"width">;
-
-export const minw = {
-  property: "minWidth",
-  unit: "px",
-} satisfies StyleProp<"minWidth">;
-
-export const maxw = {
-  property: "maxWidth",
-  unit: "px",
-} satisfies StyleProp<"maxWidth">;
-
-export const h = {
-  property: "height",
-  unit: "px",
-} satisfies StyleProp<"height">;
-
-export const minh = {
-  property: "minHeight",
-  unit: "px",
-} satisfies StyleProp<"minHeight">;
-
-export const maxh = {
-  property: "maxHeight",
-  unit: "px",
-} satisfies StyleProp<"maxHeight">;
+export const sizingPropKeys = keysOf(sizingProps);
 
 export type SizingProps = {
   /** Width, in px */

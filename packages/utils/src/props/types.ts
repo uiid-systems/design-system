@@ -17,9 +17,7 @@ export type WithLayoutProps<BaseProps, LayoutProps> = BaseProps &
 
 export type StyleProp<K extends keyof React.CSSProperties> = {
   property: K;
-  values?:
-    | ReadonlyArray<React.CSSProperties[K]>
-    | Array<React.CSSProperties[K]>;
+  values?: ReadonlyArray<React.CSSProperties[K]>;
   /** Keywords accepted alongside a number, each emitted as its own rule. */
   keywords?: readonly string[];
   /**
