@@ -1,6 +1,10 @@
 import type { styleProps } from "./styles";
 import type { ToggleProps } from "./styles/toggles";
 
+/** An object's own keys, typed as its keys rather than `string[]`. */
+export const keysOf = <T extends object>(object: T) =>
+  Object.keys(object) as (keyof T)[];
+
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
   props: T;

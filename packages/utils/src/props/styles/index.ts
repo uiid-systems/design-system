@@ -1,5 +1,5 @@
+import { keysOf } from "../utils";
 import { borderProps } from "./border";
-import { keysOf } from "./keys";
 import { layoutProps } from "./layout";
 import { sizingProps } from "./sizing";
 import { spacingProps } from "./spacing";

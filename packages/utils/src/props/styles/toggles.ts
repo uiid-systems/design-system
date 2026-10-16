@@ -1,4 +1,4 @@
-import { keysOf } from "./keys";
+import { keysOf } from "../utils";
 
 export type ToggleProp = {
   /** Appended to `[data-ui-{key}]`, e.g. `" > *"` to style the children. */

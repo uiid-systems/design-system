@@ -1,5 +1,5 @@
 import type { StyleProp } from "../types";
-import { keysOf } from "./keys";
+import { keysOf } from "../utils";
 
 export const spacingProps = {
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/gap */

@@ -1,3 +1,8 @@
 export * from "./styles";
 export * from "./types";
-export * from "./utils";
+export {
+  prepareComponentProps,
+  splitDomAttributes,
+  type DomAttributes,
+  type PrepareComponentPropsOptions,
+} from "./utils";
