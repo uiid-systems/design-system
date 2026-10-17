@@ -22,10 +22,10 @@ const textDataPropKeys = [
   "uppercase",
   "balance",
   "truncate",
+  "underline",
 ] as const;
 
 export const Text = ({
-  underline,
   title,
   render,
   className,
@@ -60,11 +60,6 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
-      // The one prop that can be forced off: `false` writes its value so the
-      // `[data-ui-underline="false"]` rule can remove an underline the element
-      // would otherwise have, such as a UA one on `render={<a />}`.
-      "data-ui-underline":
-        underline === false ? "false" : underline ? "" : undefined,
       title: resolvedTitle,
       className: cx(
         styles["text"],

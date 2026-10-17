@@ -152,6 +152,7 @@ describe("Text", () => {
           uppercase={false}
           balance={false}
           truncate={false}
+          underline={false}
         >
           Off
         </Text>,
@@ -166,14 +167,6 @@ describe("Text", () => {
       ]) {
         expect(el).not.toHaveAttribute(`data-ui-${key}`);
       }
-    });
-
-    it("writes underline={false} as an explicit value", () => {
-      render(<Text underline={false}>No underline</Text>);
-      expect(screen.getByText("No underline")).toHaveAttribute(
-        "data-ui-underline",
-        "false",
-      );
     });
   });
 

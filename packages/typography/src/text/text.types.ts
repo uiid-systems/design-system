@@ -23,7 +23,7 @@ export type TextVariants = {
   color?: PaletteColor;
   /** Emphasis within the palette color — `neutral` when no `color` is set */
   emphasis?: "default" | "muted" | "subtle";
-  /** Underline the text — `false` forces no underline */
+  /** Underline the text */
   underline?: boolean;
   /** Strike through the text */
   strikethrough?: boolean;

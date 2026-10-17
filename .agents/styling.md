@@ -29,7 +29,6 @@ A component whose props are its own vocabulary, like Text's `size` and `family`,
 List these keys under `dataProps` in `prepareComponentProps` rather than hand-writing each attribute. It writes `data-ui-{key}` only, with no `--props-{key}` var: a value as itself, `true` as a bare attribute, and `false` or nothing as no attribute. The keys are typed against the component's own props, so a typo fails `tsc`. This covers attributes a component's own module selects as `data-ui-*`; the bare `data-*` attributes other components hand-write (`data-variant`, `data-striped`) are the older state-attribute convention shared with Base UI and migrate as a separate sweep, not inside unrelated PRs.
 
 - **Select with `:where(.{local})[data-ui-{key}]`.** The `apps/docs` Turbopack build compiles CSS modules in pure mode, so a bare `[data-ui-*]` selector fails there, even though Vite, tests and lint accept it. `:where()` adds the local class without adding specificity.
-- **A prop that can be forced off writes its value.** `underline={false}` writes `data-ui-underline="false"`, whose rule comes after the bare `[data-ui-underline]` one.
 
 ## CSS variable naming
 
