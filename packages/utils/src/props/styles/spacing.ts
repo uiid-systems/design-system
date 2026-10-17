@@ -1,127 +1,106 @@
 import type { StyleProp } from "../types";
+import { keysOf } from "../utils";
 
-export const marginPropKeys = [
-  "m",
-  "mx",
-  "ml",
-  "mr",
-  "my",
-  "mt",
-  "mb",
-] as const;
+export const spacingProps = {
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/gap */
+  gap: {
+    property: "gap",
+    unit: { variable: "--spacing-unit" },
+  } satisfies StyleProp<"gap">,
 
-export const paddingPropKeys = [
-  "p",
-  "px",
-  "pl",
-  "pr",
-  "py",
-  "pt",
-  "pb",
-] as const;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
+  m: {
+    property: "margin",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-unit" },
+  } satisfies StyleProp<"margin">,
 
-export const spacingPropKeys = [
-  "gap",
-  ...marginPropKeys,
-  ...paddingPropKeys,
-] as const;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline */
+  mx: {
+    property: "marginInline",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"marginInline">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/gap */
-export const gap = {
-  property: "gap",
-  unit: { variable: "--spacing-unit" },
-} satisfies StyleProp<"gap">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start */
+  ml: {
+    property: "marginInlineStart",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"marginInlineStart">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
-export const m = {
-  property: "margin",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-unit" },
-} satisfies StyleProp<"margin">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end */
+  mr: {
+    property: "marginInlineEnd",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"marginInlineEnd">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline */
-export const mx = {
-  property: "marginInline",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"marginInline">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block */
+  my: {
+    property: "marginBlock",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"marginBlock">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start */
-export const ml = {
-  property: "marginInlineStart",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"marginInlineStart">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start */
+  mt: {
+    property: "marginBlockStart",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"marginBlockStart">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end */
-export const mr = {
-  property: "marginInlineEnd",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"marginInlineEnd">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end */
+  mb: {
+    property: "marginBlockEnd",
+    keywords: ["auto"],
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"marginBlockEnd">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block */
-export const my = {
-  property: "marginBlock",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"marginBlock">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding */
+  p: {
+    property: "padding",
+    unit: { variable: "--spacing-unit" },
+  } satisfies StyleProp<"padding">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start */
-export const mt = {
-  property: "marginBlockStart",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"marginBlockStart">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline */
+  px: {
+    property: "paddingInline",
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"paddingInline">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end */
-export const mb = {
-  property: "marginBlockEnd",
-  keywords: ["auto"],
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"marginBlockEnd">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-start */
+  pl: {
+    property: "paddingInlineStart",
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"paddingInlineStart">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding */
-export const p = {
-  property: "padding",
-  unit: { variable: "--spacing-unit" },
-} satisfies StyleProp<"padding">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-end */
+  pr: {
+    property: "paddingInlineEnd",
+    unit: { variable: "--spacing-inline" },
+  } satisfies StyleProp<"paddingInlineEnd">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline */
-export const px = {
-  property: "paddingInline",
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"paddingInline">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block */
+  py: {
+    property: "paddingBlock",
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"paddingBlock">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-start */
-export const pl = {
-  property: "paddingInlineStart",
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"paddingInlineStart">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-start */
+  pt: {
+    property: "paddingBlockStart",
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"paddingBlockStart">,
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-end */
-export const pr = {
-  property: "paddingInlineEnd",
-  unit: { variable: "--spacing-inline" },
-} satisfies StyleProp<"paddingInlineEnd">;
+  /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-end */
+  pb: {
+    property: "paddingBlockEnd",
+    unit: { variable: "--spacing-block" },
+  } satisfies StyleProp<"paddingBlockEnd">,
+} satisfies Record<keyof SpacingProps, unknown>;
 
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block */
-export const py = {
-  property: "paddingBlock",
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"paddingBlock">;
-
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-start */
-export const pt = {
-  property: "paddingBlockStart",
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"paddingBlockStart">;
-
-/** @see https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-end */
-export const pb = {
-  property: "paddingBlockEnd",
-  unit: { variable: "--spacing-block" },
-} satisfies StyleProp<"paddingBlockEnd">;
+export const spacingPropKeys = keysOf(spacingProps);
 
 export type SpacingProps = {
   /** Gap between children, in spacing units */

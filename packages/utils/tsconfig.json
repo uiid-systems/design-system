@@ -11,6 +11,6 @@
     "allowImportingTsExtensions": false,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*", "src/vite-env.d.ts"],
+  "include": ["src/**/*"],
   "exclude": ["dist", "node_modules"]
 }

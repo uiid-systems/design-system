@@ -2,8 +2,7 @@ import {
   prepareComponentProps,
   renderWithProps,
   cx,
-  marginPropKeys,
-  paddingPropKeys,
+  spacingPropKeys,
 } from "@uiid/utils";
 
 import type { ProseProps } from "./prose.types";
@@ -18,7 +17,7 @@ export const Prose = ({
 }: ProseProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "prose",
-    styleProps: [...paddingPropKeys, ...marginPropKeys],
+    styleProps: spacingPropKeys,
     props,
   });
 

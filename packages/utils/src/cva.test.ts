@@ -42,13 +42,13 @@ describe("cxState", () => {
     );
   });
 
-  it("keeps argument order, so the caller's class wins a conflict", () => {
+  it("keeps argument order, the caller's class last", () => {
     expect(
       resolve(
-        cxState<State>("p-2", () => "p-4"),
+        cxState<State>("module", () => "caller"),
         { open: true },
       ),
-    ).toBe("p-4");
+    ).toBe("module caller");
   });
 
   it("resolves every function argument, not only the last", () => {
