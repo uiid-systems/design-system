@@ -38,6 +38,8 @@ export const HeaderVariants: Story = {
 
 export const Footer: Story = { render: () => <Examples.Footer /> };
 
+export const LongContent: Story = { render: () => <Examples.LongContent /> };
+
 export const Triggers: Story = { render: () => <Examples.Triggers /> };
 
 /** No `trigger`: a controlled dialog opened from each row, with focus returned there on close. */

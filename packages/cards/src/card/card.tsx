@@ -1,6 +1,7 @@
+import { mergeProps } from "@base-ui/react/merge-props";
 import { Group, Stack } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cx, isRenderable } from "@uiid/utils";
 
 import { CARD_DEFAULT_COLOR } from "./card.constants";
 import type { CardProps } from "./card.types";
@@ -39,20 +40,25 @@ export const Card = ({
     ContainerProps ?? {};
   const { className: headerClassName, ...headerProps } = HeaderProps ?? {};
 
-  const Description = DescriptionProps?.children || description;
-  const Title = TitleProps?.children || title;
-  const Action = ActionProps?.children || action;
+  // A slot's own `children` win when they render anything — see `isRenderable`.
+  const slot = (own: React.ReactNode, fallback: React.ReactNode) =>
+    isRenderable(own) ? own : fallback;
 
-  const hasTitle = Boolean(Title);
-  const hasAction = Boolean(Action);
-  const hasDescription = Boolean(Description);
+  const Description = slot(DescriptionProps?.children, description);
+  const Title = slot(TitleProps?.children, title);
+  const Action = slot(ActionProps?.children, action);
+
+  const hasTitle = isRenderable(Title);
+  const hasAction = isRenderable(Action);
+  const hasDescription = isRenderable(Description);
   const hasHeader = hasTitle || hasDescription || hasAction;
 
   return (
     <CardContainer
       data-variant={variant}
-      {...props}
-      {...containerProps}
+      // ContainerProps lands on the same element, so its style and handlers
+      // merge with the root's rather than replacing them.
+      {...mergeProps<"div">(props, containerProps)}
       className={cx(
         variant && styles[`variant-${variant}`],
         paletteColorStyles[color],
@@ -60,7 +66,7 @@ export const Card = ({
         containerClassName,
       )}
     >
-      {thumbnail && (
+      {isRenderable(thumbnail) && (
         <CardThumbnail mb={2} {...ThumbnailProps}>
           {thumbnail}
         </CardThumbnail>
@@ -85,7 +91,7 @@ export const Card = ({
         </Group>
       )}
 
-      {children && (
+      {isRenderable(children) && (
         <Stack
           data-slot="card-inner-container"
           fullwidth
@@ -95,7 +101,9 @@ export const Card = ({
         </Stack>
       )}
 
-      {footer && <CardFooter {...FooterProps}>{footer}</CardFooter>}
+      {isRenderable(footer) && (
+        <CardFooter {...FooterProps}>{footer}</CardFooter>
+      )}
     </CardContainer>
   );
 };

@@ -21,6 +21,19 @@ export const isLinkRender = (render: unknown): render is RenderProp => {
   );
 };
 
+/**
+ * Whether `render` is a plain `<button>` element. Base UI assumes any `render`
+ * is non-native and adds `role="button"` and `aria-disabled`, which a real
+ * button has no need for — it would also lose native `disabled`. A component
+ * can't be inspected before it renders, so only the tag counts; pass
+ * `nativeButton` for a component that renders a `<button>`. `resolveTrigger`
+ * defaults the other way on purpose: a trigger component is usually a Button.
+ */
+export const isNativeButtonRender = (render: unknown): boolean => {
+  const element = resolveRender(render);
+  return isValidElement(element) && element.type === "button";
+};
+
 const hasAccessibleName = (props: unknown): boolean => {
   const labels = props as
     | { "aria-label"?: unknown; "aria-labelledby"?: unknown }

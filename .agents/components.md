@@ -36,7 +36,7 @@ The test is whether the thing could stand on its own as a documented component. 
 ## Creating a new package
 
 1. Create the package directory under `packages/`
-2. Add `package.json`, `tsconfig.json`, and `vite.config.ts` (using `createViteConfig`)
+2. Add `package.json`, `tsconfig.json`, and `vite.config.ts` (using `createViteConfig`, with `cssLayer` read from `scripts/css-layers.cjs` — add the package there, or its CSS ships unlayered)
 3. Create `src/index.ts` barrel export
 4. Add `src/vite-env.d.ts` for CSS module types
 5. **Register the stories path in `apps/storybook/.storybook/main.ts`**

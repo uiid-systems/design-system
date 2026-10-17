@@ -237,6 +237,19 @@ describe("Button", () => {
       expect(button.tagName).toBe("SPAN");
     });
 
+    it("keeps a <button> render native, with native disabled", () => {
+      render(
+        <Button disabled render={<button type="submit" />}>
+          Save
+        </Button>,
+      );
+
+      const button = screen.getByRole("button", { name: "Save" });
+      expect(button).toHaveAttribute("type", "submit");
+      expect(button).not.toHaveAttribute("role");
+      expect(button).toBeDisabled();
+    });
+
     /*
      * A server component's `render={<Link />}` can reach development SSR as a
      * lazy node rather than an element. The server has to pick the link branch

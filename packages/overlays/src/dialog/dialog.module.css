@@ -1,9 +1,11 @@
 @import "@uiid/tokens/component/overlays.tokens.css";
 @import "@uiid/tokens/component/dialog.tokens.css";
 
-/* Disable browser's default focus ring on the trigger — child components handle their own focus styles */
+/* A string or function trigger is a focusable span with no focus style of its
+   own; a Button trigger's ring still wins over this one-class rule. */
 .dialog-trigger:where(:focus-visible) {
-  outline: none;
+  outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
 }
 
 .dialog-backdrop {
@@ -30,6 +32,8 @@
  * Positioning container. Centering lives here so the popup — which renders as a
  * Card — never competes with Card's own `position` in the cascade. The extra
  * bottom padding raises the popup ~2rem above true center, an optical offset.
+ * A taller popup scrolls the viewport: the grid row grows with it, so it
+ * starts at the top rather than centring off-screen.
  */
 .dialog-viewport {
   position: fixed;
@@ -38,6 +42,7 @@
   display: grid;
   place-items: center;
   padding: 1.5rem 1.5rem 5.5rem;
+  overflow-y: auto;
   pointer-events: none;
 }
 

@@ -3,6 +3,7 @@
 
 import { Button } from "@uiid/buttons";
 import { Group } from "@uiid/layout";
+import { useState } from "react";
 
 import { Popover } from "./popover";
 
@@ -53,20 +54,32 @@ export const HeaderVariants = () => (
   </Group>
 );
 
-export const Footer = () => (
-  <Popover
-    trigger={<Button>Filters</Button>}
-    title="Filters"
-    description="Narrow the results."
-    footer={
-      <Group gap={2} ax="end" fullwidth>
-        <Button size="small" variant="subtle">
-          Reset
-        </Button>
-        <Button size="small">Apply</Button>
-      </Group>
-    }
-  >
-    {BODY}
-  </Popover>
-);
+/*
+ * Apply closes the popover by controlling it; Reset leaves it open, the way a
+ * filter panel usually behaves.
+ */
+export const Footer = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      trigger={<Button>Filters</Button>}
+      title="Filters"
+      description="Narrow the results."
+      footer={
+        <Group gap={2} ax="end" fullwidth>
+          <Button size="small" variant="subtle">
+            Reset
+          </Button>
+          <Button size="small" onClick={() => setOpen(false)}>
+            Apply
+          </Button>
+        </Group>
+      }
+    >
+      {BODY}
+    </Popover>
+  );
+};

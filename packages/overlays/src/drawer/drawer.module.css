@@ -11,8 +11,11 @@
  * placement uses inset properties instead, never a transform.
  */
 
+/* A string or function trigger is a focusable span with no focus style of its
+   own; a Button trigger's ring still wins over this one-class rule. */
 .drawer-trigger:where(:focus-visible) {
-  outline: none;
+  outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
 }
 
 .drawer-backdrop {
