@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.1](https://github.com/uiid-systems/design-system/compare/v0.7.0...v0.7.1) (2026-10-17)
+
+
+### Bug Fixes
+
+* **ui:** derive style-prop keys from one source and apply gap on Text ([#466](https://github.com/uiid-systems/design-system/issues/466)) ([970f55f](https://github.com/uiid-systems/design-system/commit/970f55fc02a4ca4eef9ad6f905f402d5da4bdb8f))
+* **ui:** drop tailwind-merge from cx ([#464](https://github.com/uiid-systems/design-system/issues/464)) ([ed2081f](https://github.com/uiid-systems/design-system/commit/ed2081fc9f27c19512e2ea7f4a42f0a8dbd974c9))
+* **ui:** harden cards, buttons, overlays, and CSS layering ([#463](https://github.com/uiid-systems/design-system/issues/463)) ([37f5f98](https://github.com/uiid-systems/design-system/commit/37f5f984f09f1feccce1321975cfdc913cd53acc))
+* **ui:** type data-* and aria-* attributes on layout primitives ([#467](https://github.com/uiid-systems/design-system/issues/467)) ([3238843](https://github.com/uiid-systems/design-system/commit/3238843dca76ac0fc99be9f0dc44a959adac3934))
+
 ## [0.7.0](https://github.com/uiid-systems/design-system/compare/v0.6.7...v0.7.0) (2026-10-10)
 
 
