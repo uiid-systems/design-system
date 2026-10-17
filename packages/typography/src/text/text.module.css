@@ -154,10 +154,6 @@
   text-decoration-line: underline;
 }
 
-:where(.text)[data-ui-underline="false"] {
-  text-decoration-line: none;
-}
-
 :where(.text)[data-ui-strikethrough] {
   text-decoration-line: line-through;
 }

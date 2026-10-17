@@ -51,11 +51,27 @@ describe("prepareComponentProps", () => {
     expect(result).not.toHaveProperty("m");
   });
 
-  it("writes a bare attribute for a toggle that is on, and nothing when off", () => {
+  it("writes a data prop as an attribute only, with no raw var", () => {
+    const result = prepareComponentProps({
+      componentName: "text",
+      props: { size: 2, family: "mono", weight: undefined, shade: null },
+      dataProps: ["size", "family", "weight", "shade"],
+    });
+
+    expect(result).toHaveProperty("data-ui-size", "2");
+    expect(result).toHaveProperty("data-ui-family", "mono");
+    expect(result).not.toHaveProperty("data-ui-weight");
+    expect(result).not.toHaveProperty("data-ui-shade");
+    expect(result).not.toHaveProperty("style");
+    expect(result).not.toHaveProperty("size");
+    expect(result).not.toHaveProperty("family");
+  });
+
+  it("writes a bare attribute for a data prop that is on, and nothing when off", () => {
     const result = prepareComponentProps({
       componentName: "box",
       props: { fullwidth: true, evenly: false },
-      toggleProps: ["fullwidth", "evenly"],
+      dataProps: ["fullwidth", "evenly"],
     });
 
     expect(result).toHaveProperty("data-ui-fullwidth", "");
