@@ -351,29 +351,29 @@
     max-height: calc(var(--props-maxh) * 1px);
   }
 
-  [data-ui-evenly] > :not([data-ui-flex]) {
+  [data-ui-evenly]:where(:not([data-ui-evenly="false"])) > :not([data-ui-flex]) {
     flex: 1;
     flex-basis: auto;
     width: -webkit-fill-available;
     width: 100%;
   }
 
-  [data-ui-wrap] {
+  [data-ui-wrap]:where(:not([data-ui-wrap="false"])) {
     flex-wrap: wrap;
   }
 
-  [data-ui-fullwidth] {
+  [data-ui-fullwidth]:where(:not([data-ui-fullwidth="false"])) {
     width: 100%;
     width: -webkit-fill-available;
     width: -moz-available;
   }
 
-  [data-ui-fullheight] {
+  [data-ui-fullheight]:where(:not([data-ui-fullheight="false"])) {
     height: 100%;
     height: -webkit-fill-available;
   }
 
-  [data-ui-fullscreen] {
+  [data-ui-fullscreen]:where(:not([data-ui-fullscreen="false"])) {
     width: 100dvw;
     height: 100dvh;
   }

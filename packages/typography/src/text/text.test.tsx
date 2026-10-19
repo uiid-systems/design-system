@@ -116,7 +116,7 @@ describe("Text", () => {
 
     it("writes a bare attribute for a toggle that is on", () => {
       render(
-        <Text strikethrough uppercase balance truncate underline>
+        <Text strikethrough uppercase balance wrap truncate underline>
           Toggles
         </Text>,
       );
@@ -125,6 +125,7 @@ describe("Text", () => {
         "strikethrough",
         "uppercase",
         "balance",
+        "wrap",
         "truncate",
         "underline",
       ]) {
@@ -155,12 +156,15 @@ describe("Text", () => {
       }
     });
 
-    it("writes underline={false} as an explicit value", () => {
-      render(<Text underline={false}>No underline</Text>);
-      expect(screen.getByText("No underline")).toHaveAttribute(
-        "data-ui-underline",
-        "false",
+    it("writes underline={false} and wrap={false} as explicit values", () => {
+      render(
+        <Text underline={false} wrap={false}>
+          Forced off
+        </Text>,
       );
+      const el = screen.getByText("Forced off");
+      expect(el).toHaveAttribute("data-ui-underline", "false");
+      expect(el).toHaveAttribute("data-ui-wrap", "false");
     });
   });
 

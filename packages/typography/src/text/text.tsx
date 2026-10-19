@@ -23,6 +23,7 @@ export const Text = ({
   strikethrough,
   uppercase,
   balance,
+  wrap,
   truncate,
   title,
   size,
@@ -67,6 +68,7 @@ export const Text = ({
       "data-ui-strikethrough": toggle(strikethrough),
       "data-ui-uppercase": toggle(uppercase),
       "data-ui-balance": toggle(balance),
+      "data-ui-wrap": wrap === false ? "false" : toggle(wrap),
       "data-ui-truncate": toggle(truncate),
       title: resolvedTitle,
       className: cx(

@@ -31,6 +31,8 @@ export type TextVariants = {
   uppercase?: boolean;
   /** Balance line lengths across wrapped lines */
   balance?: boolean;
+  /** `false` keeps the text on one line; `true` restores wrapping inherited off */
+  wrap?: boolean;
   /** Truncate overflowing text with an ellipsis */
   truncate?: boolean;
 };

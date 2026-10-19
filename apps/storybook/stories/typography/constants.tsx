@@ -58,6 +58,7 @@ export const variantControls: ArgTypes = {
 
 export const toggleControls: ArgTypes = {
   balance: { control: "boolean", table: { category: "Toggles" } },
+  wrap: { control: "boolean", table: { category: "Toggles" } },
   truncate: { control: "boolean", table: { category: "Toggles" } },
   underline: { control: "boolean", table: { category: "Toggles" } },
   strikethrough: { control: "boolean", table: { category: "Toggles" } },
