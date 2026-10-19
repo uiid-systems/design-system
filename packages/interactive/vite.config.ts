@@ -1,3 +1,4 @@
+import cssLayers from "../../scripts/css-layers.cjs";
 import { createViteConfig } from "../../vite.config";
 
 export default createViteConfig({
@@ -6,5 +7,5 @@ export default createViteConfig({
   // (not peers) — unlike `@base-ui/react`, nothing here holds React context
   // shared across packages, so a single resolved instance is not required.
   external: [/^@dnd-kit\//, /^react-resizable-panels(\/|$)/],
-  cssLayer: "uiid.components",
+  cssLayer: cssLayers.interactive,
 });

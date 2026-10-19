@@ -7,6 +7,7 @@ import { Text } from "@uiid/typography";
 import { useRef, useState } from "react";
 
 import { Drawer } from "./drawer";
+import { DrawerClose } from "./subcomponents";
 
 const ITEMS = ["Opening", "Middlegame", "Bear-off"];
 
@@ -98,10 +99,10 @@ export const Footer = () => (
     description="The footer sits below the body, separated by a divider."
     footer={
       <Group gap={2} ax="end" fullwidth>
-        <Button size="small" variant="subtle">
+        <DrawerClose render={<Button size="small" variant="subtle" />}>
           Cancel
-        </Button>
-        <Button size="small">Save</Button>
+        </DrawerClose>
+        <DrawerClose render={<Button size="small" />}>Save</DrawerClose>
       </Group>
     }
   >

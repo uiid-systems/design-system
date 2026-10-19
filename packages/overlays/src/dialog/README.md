@@ -72,3 +72,13 @@ const returnTo = useRef<HTMLElement | null>(null);
 ```
 
 A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
+
+## Closing from the footer
+
+Dialog has no close part. Escape and a backdrop click close it on their own; to close it from a footer button, control `open` and set it to `false` in the button's handler — see the `Footer` example.
+
+## Naming and long content
+
+A `title` names the dialog: it renders as an `<h2>` that labels the popup, and a composed title — an icon beside the text — stays that heading, laid out as a row. Without a `title` the dialog has no accessible name, so give it one through `PopupProps={{ "aria-label": "…" }}`.
+
+Content taller than the screen scrolls the viewport rather than running off it, so the header and the footer's actions both stay reachable.

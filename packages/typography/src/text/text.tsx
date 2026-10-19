@@ -3,36 +3,39 @@ import {
   prepareComponentProps,
   renderWithProps,
   cx,
-  marginPropKeys,
-  paddingPropKeys,
+  spacingPropKeys,
 } from "@uiid/utils";
 
 import type { TextProps } from "./text.types";
 
 import styles from "./text.module.css";
 
-/** A toggle that is on writes a bare attribute; off writes nothing. */
-const toggle = (on: boolean | undefined) => (on ? "" : undefined);
+/** Text's own vocabulary, each written as `data-ui-{key}` for text.module.css. */
+const textDataPropKeys = [
+  "size",
+  "weight",
+  "family",
+  "shade",
+  "color",
+  "emphasis",
+  "strikethrough",
+  "uppercase",
+  "balance",
+  "nowrap",
+  "truncate",
+  "underline",
+] as const;
 
 export const Text = ({
-  shade,
-  color,
-  emphasis,
-  weight,
-  underline,
-  strikethrough,
-  uppercase,
-  balance,
-  wrap,
-  truncate,
   title,
-  size,
-  family,
   render,
   className,
   children,
   ...props
 }: TextProps) => {
+  // Read here, but left in `props` so they also reach `dataProps`.
+  const { color, emphasis, truncate } = props;
+
   // When truncated, expose the full text as a native tooltip so clipped content
   // stays readable on hover. Only derivable from string/number children; an
   // explicit title always wins.
@@ -43,12 +46,14 @@ export const Text = ({
       : undefined);
 
   // An emphasis reads the --palette-* names, so it needs a hue to read them
-  // from even when no color is set.
+  // from even when no color is set. The hue's `--palette-*` names ride on the
+  // tokens class; the data-ui-color attribute is what paints from them.
   const palette = color ?? (emphasis ? "neutral" : undefined);
 
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    styleProps: [...paddingPropKeys, ...marginPropKeys],
+    styleProps: spacingPropKeys,
+    dataProps: textDataPropKeys,
     props,
   });
 
@@ -56,20 +61,6 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
-      "data-ui-size": size,
-      "data-ui-weight": weight,
-      "data-ui-family": family,
-      "data-ui-shade": shade,
-      // The hue's `--palette-*` names ride on the tokens class; the attribute
-      // is what paints from them.
-      "data-ui-color": color,
-      "data-ui-emphasis": emphasis,
-      "data-ui-underline": underline === false ? "false" : toggle(underline),
-      "data-ui-strikethrough": toggle(strikethrough),
-      "data-ui-uppercase": toggle(uppercase),
-      "data-ui-balance": toggle(balance),
-      "data-ui-wrap": wrap === false ? "false" : toggle(wrap),
-      "data-ui-truncate": toggle(truncate),
       title: resolvedTitle,
       className: cx(
         styles["text"],

@@ -9,15 +9,11 @@ describe("stylePropsCss", () => {
     expect(css).toContain("[data-ui-flex] {\n    flex: var(--props-flex);");
   });
 
-  it("writes wrap as a bare toggle that skips an explicit false", () => {
-    expect(css).toContain(
-      '[data-ui-wrap]:where(:not([data-ui-wrap="false"])) {\n    flex-wrap: wrap;',
-    );
+  it("writes wrap as a bare toggle", () => {
+    expect(css).toContain("[data-ui-wrap] {\n    flex-wrap: wrap;");
   });
 
   it("keeps a child's own flex under an evenly parent", () => {
-    expect(css).toContain(
-      '[data-ui-evenly]:where(:not([data-ui-evenly="false"])) > :not([data-ui-flex]) {',
-    );
+    expect(css).toContain("[data-ui-evenly] > :not([data-ui-flex]) {");
   });
 });

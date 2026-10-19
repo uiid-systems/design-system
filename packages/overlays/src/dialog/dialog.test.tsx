@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
+import { Footer } from "./dialog.examples";
 
 import styles from "./dialog.module.css";
 
@@ -441,6 +442,45 @@ describe("Dialog", () => {
       screen.getByRole("button", { name: "Primary action" }),
     ).toBeInTheDocument();
   });
+
+  /*
+   * The popup passes Base UI's Title to Card, which still lays a composed
+   * title out as a row, on the dialog's own <h2> labelling it.
+   */
+  it("keeps a composed title a labelling heading laid out as a row", () => {
+    render(
+      <Dialog
+        open
+        onOpenChange={() => {}}
+        title={
+          <>
+            <svg />
+            Billing
+          </>
+        }
+      />,
+    );
+
+    const heading = screen.getByRole("heading", { level: 2, name: "Billing" });
+    expect(heading).toHaveAttribute("data-ui-ay", "center");
+    expect(screen.getByRole("dialog")).toHaveAccessibleName("Billing");
+  });
+
+  it.each(["Cancel", "Save"])(
+    "closes from the Footer example's %s button",
+    async (name) => {
+      const user = userEvent.setup();
+      render(<Footer />);
+
+      await user.click(
+        screen.getByRole("button", { name: "Notification preferences" }),
+      );
+      await user.click(await screen.findByRole("button", { name }));
+      await waitFor(() =>
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+      );
+    },
+  );
 
   // ============================================
   // ACCESSIBILITY

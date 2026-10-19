@@ -1,6 +1,7 @@
+import cssLayers from "../../scripts/css-layers.cjs";
 import { createViteConfig } from "../../vite.config";
 
 export default createViteConfig({
   external: [/^shiki/, /^@shikijs\//],
-  cssLayer: "uiid.components",
+  cssLayer: cssLayers.code,
 });

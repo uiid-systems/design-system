@@ -23,7 +23,7 @@ export type TextVariants = {
   color?: PaletteColor;
   /** Emphasis within the palette color — `neutral` when no `color` is set */
   emphasis?: "default" | "muted" | "subtle";
-  /** Underline the text — `false` forces no underline */
+  /** Underline the text */
   underline?: boolean;
   /** Strike through the text */
   strikethrough?: boolean;
@@ -31,8 +31,8 @@ export type TextVariants = {
   uppercase?: boolean;
   /** Balance line lengths across wrapped lines */
   balance?: boolean;
-  /** `false` keeps the text on one line; `true` restores wrapping inherited off */
-  wrap?: boolean;
+  /** Keep the text on one line, without truncate's ellipsis */
+  nowrap?: boolean;
   /** Truncate overflowing text with an ellipsis */
   truncate?: boolean;
 };

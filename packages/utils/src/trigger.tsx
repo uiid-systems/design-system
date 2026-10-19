@@ -1,6 +1,7 @@
 import { isValidElement } from "react";
 
 import { resolveRender } from "./render";
+import { isRenderable } from "./renderable";
 
 export type TriggerChildren<State> =
   | React.ReactNode
@@ -27,16 +28,14 @@ export type WithTriggerChildren<Props, State> = Omit<Props, "children"> & {
  * stands in for a trigger nobody passed: a controlled dialog opened from
  * elsewhere would otherwise get an empty focusable span as a tab stop.
  *
- * What React renders as nothing is no trigger either: `null`, `undefined`,
- * booleans, and the empty string. `trigger={cond && <Button />}` is the
- * common way one goes missing, and it arrives as `false`.
+ * What React renders as nothing is no trigger either — see `isRenderable`.
+ * `trigger={cond && <Button />}` is the common way one goes missing, and it
+ * arrives as `false`.
  */
 export const hasTrigger = <State,>(
   children: TriggerChildren<State>,
   render?: unknown,
-): boolean =>
-  Boolean(render) ||
-  !(children == null || typeof children === "boolean" || children === "");
+): boolean => Boolean(render) || isRenderable(children);
 
 type ResolvedTrigger<State> = {
   nativeButton?: boolean;

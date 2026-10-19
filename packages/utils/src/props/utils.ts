@@ -1,24 +1,32 @@
 import type { styleProps } from "./styles";
-import type { togglePropKeys } from "./styles/toggles";
+
+/** An object's own keys, typed as its keys rather than `string[]`. */
+export const keysOf = <T extends object>(object: T) =>
+  Object.keys(object) as (keyof T)[];
 
 export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
   componentName: string;
   props: T;
-  styleProps?: (keyof typeof styleProps)[];
-  toggleProps?: (typeof togglePropKeys)[number][];
+  styleProps?: readonly (keyof typeof styleProps)[];
+  dataProps?: readonly (keyof T & string)[];
 };
 
 /**
  * Stamps `data-slot`, and puts each listed style prop on the element as
  * `data-ui-{key}` plus a raw `--props-{key}` for the rules in
- * `@uiid/tokens/props.css` to resolve. A toggle that is on writes a bare
- * `data-ui-{key}`. A caller's own `style` still wins.
+ * `@uiid/tokens/props.css` to resolve. A caller's own `style` still wins.
+ *
+ * A data prop writes `data-ui-{key}` only, for a rule that lives elsewhere: a
+ * toggle's in `props.css`, a component's own vocabulary's (Text's `size`) in
+ * its CSS module. A value is written as itself, `true` as a bare attribute,
+ * and `false` or nothing as no attribute at all, so a presence selector never
+ * matches an off prop.
  */
 export function prepareComponentProps<T extends Record<string, unknown>>({
   componentName,
   props,
   styleProps: stylePropKeys = [],
-  toggleProps: togglePropKeys = [],
+  dataProps: dataPropKeys = [],
 }: PrepareComponentPropsOptions<T>) {
   const dataAttrs: Record<string, string> = {
     "data-slot": componentName,
@@ -28,15 +36,14 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
   const styleObj: React.CSSProperties = {};
 
   for (const [key, value] of Object.entries(props)) {
-    if (togglePropKeys.includes(key as (typeof togglePropKeys)[number])) {
-      if (value) dataAttrs[`data-ui-${key}`] = "";
-    } else if (
-      stylePropKeys.includes(key as keyof typeof styleProps) &&
-      value !== undefined
-    ) {
+    if (stylePropKeys.includes(key as keyof typeof styleProps)) {
       if (value != null) {
         dataAttrs[`data-ui-${key}`] = String(value);
         (styleObj as Record<string, unknown>)[`--props-${key}`] = value;
+      }
+    } else if (dataPropKeys.includes(key as keyof T & string)) {
+      if (value != null && value !== false) {
+        dataAttrs[`data-ui-${key}`] = value === true ? "" : String(value);
       }
     } else {
       restProps[key] = value;
@@ -45,7 +52,7 @@ export function prepareComponentProps<T extends Record<string, unknown>>({
 
   const finalStyle =
     Object.keys(styleObj).length > 0
-      ? { ...styleObj, ...((restProps.style as React.CSSProperties) || {}) }
+      ? { ...styleObj, ...(restProps.style as React.CSSProperties) }
       : (restProps.style as React.CSSProperties);
 
   return {

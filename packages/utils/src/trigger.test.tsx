@@ -70,6 +70,7 @@ describe("hasTrigger", () => {
     expect(hasTrigger(false)).toBe(false);
     expect(hasTrigger(true)).toBe(false);
     expect(hasTrigger("")).toBe(false);
+    expect(hasTrigger([false, null])).toBe(false);
   });
 
   it("is true whenever the caller brings a render, children or not", () => {

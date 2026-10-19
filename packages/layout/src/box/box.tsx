@@ -14,7 +14,7 @@ export const Box = ({ render, className, children, ...props }: BoxProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "box",
     styleProps: stylePropKeys,
-    toggleProps: [...togglePropKeys],
+    dataProps: togglePropKeys,
     props,
   });
 

@@ -154,10 +154,6 @@
   text-decoration-line: underline;
 }
 
-:where(.text)[data-ui-underline="false"] {
-  text-decoration-line: none;
-}
-
 :where(.text)[data-ui-strikethrough] {
   text-decoration-line: line-through;
 }
@@ -173,13 +169,8 @@
   text-wrap: balance;
 }
 
-/* After balance, whose `text-wrap` shorthand would reset the mode to wrap, and
-   before truncate, which needs nowrap to clip. */
-:where(.text)[data-ui-wrap] {
-  text-wrap-mode: wrap;
-}
-
-:where(.text)[data-ui-wrap="false"] {
+/* After balance, whose `text-wrap` shorthand would reset the mode to wrap. */
+:where(.text)[data-ui-nowrap] {
   text-wrap-mode: nowrap;
 }
 

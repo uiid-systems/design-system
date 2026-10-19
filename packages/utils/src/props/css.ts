@@ -64,11 +64,8 @@ export function stylePropsCss() {
     }
   }
 
-  // A component may write `="false"` to force a toggle off (Text's
-  // `wrap={false}`), so the rules skip that value. `:where()` keeps the
-  // exclusion from adding specificity.
   for (const [key, toggle] of Object.entries(toggleProps)) {
-    const selector = `[data-ui-${key}]:where(:not([data-ui-${key}="false"]))${"selector" in toggle ? toggle.selector : ""}`;
+    const selector = `[data-ui-${key}]${"selector" in toggle ? toggle.selector : ""}`;
     const body = toggle.declarations.map((d) => `    ${d};`).join("\n");
     rules.push(`  ${selector} {\n${body}\n  }`);
   }

@@ -30,6 +30,19 @@ describe("Text", () => {
       expect(el).not.toHaveAttribute("data-ui-shade");
     });
 
+    it("resolves every spacing prop its type accepts", () => {
+      render(
+        <Text gap={2} p={1} mx="auto">
+          Spaced
+        </Text>,
+      );
+      const el = screen.getByText("Spaced");
+      expect(el).toHaveAttribute("data-ui-gap", "2");
+      expect(el).toHaveAttribute("data-ui-p", "1");
+      expect(el).toHaveAttribute("data-ui-mx", "auto");
+      expect(el).not.toHaveAttribute("gap");
+    });
+
     it("writes an explicit baseline size and family", () => {
       render(
         <Text size={0} family="sans">
@@ -116,7 +129,7 @@ describe("Text", () => {
 
     it("writes a bare attribute for a toggle that is on", () => {
       render(
-        <Text strikethrough uppercase balance wrap truncate underline>
+        <Text strikethrough uppercase balance nowrap truncate underline>
           Toggles
         </Text>,
       );
@@ -125,7 +138,7 @@ describe("Text", () => {
         "strikethrough",
         "uppercase",
         "balance",
-        "wrap",
+        "nowrap",
         "truncate",
         "underline",
       ]) {
@@ -139,7 +152,9 @@ describe("Text", () => {
           strikethrough={false}
           uppercase={false}
           balance={false}
+          nowrap={false}
           truncate={false}
+          underline={false}
         >
           Off
         </Text>,
@@ -149,22 +164,12 @@ describe("Text", () => {
         "strikethrough",
         "uppercase",
         "balance",
+        "nowrap",
         "truncate",
         "underline",
       ]) {
         expect(el).not.toHaveAttribute(`data-ui-${key}`);
       }
-    });
-
-    it("writes underline={false} and wrap={false} as explicit values", () => {
-      render(
-        <Text underline={false} wrap={false}>
-          Forced off
-        </Text>,
-      );
-      const el = screen.getByText("Forced off");
-      expect(el).toHaveAttribute("data-ui-underline", "false");
-      expect(el).toHaveAttribute("data-ui-wrap", "false");
     });
   });
 

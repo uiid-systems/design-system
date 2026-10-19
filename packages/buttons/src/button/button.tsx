@@ -10,7 +10,11 @@ import {
   BUTTON_ICON_ONLY_SHAPES,
 } from "./button.constants";
 import type { ButtonProps } from "./button.types";
-import { isLinkRender, isNamedByCaller } from "./button.utils";
+import {
+  isLinkRender,
+  isNamedByCaller,
+  isNativeButtonRender,
+} from "./button.utils";
 import { buttonVariants } from "./button.variants";
 import {
   ButtonLink,
@@ -86,7 +90,7 @@ export const Button = ({
         </ButtonLink>
       ) : (
         <BaseButton
-          nativeButton={!props.render}
+          nativeButton={!props.render || isNativeButtonRender(props.render)}
           data-slot="button"
           className={buttonClassName}
           {...props}

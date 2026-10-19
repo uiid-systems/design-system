@@ -35,6 +35,7 @@ export const Separator = ({
           false: <Stack ax="center" gap={2} fullheight />,
         }}
         role="separator"
+        aria-orientation={orientation}
         data-slot="separator"
         data-orientation={orientation}
         className={className}
@@ -61,7 +62,7 @@ export const Separator = ({
         separatorVariants({ shade, orientation }),
         className,
       )}
-      data-orientation={orientation}
+      orientation={orientation}
       {...props}
     />
   );

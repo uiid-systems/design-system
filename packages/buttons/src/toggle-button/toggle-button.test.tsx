@@ -21,6 +21,7 @@ describe("ToggleButton", () => {
 
     await user.click(button);
     expect(button).toHaveAttribute("aria-pressed", "true");
+    expect(button).toHaveAttribute("data-pressed");
 
     button.focus();
     await user.keyboard("{Enter}");
@@ -128,5 +129,27 @@ describe("ToggleButton", () => {
       />,
     );
     expect(screen.getByRole("button")).toHaveAccessibleName("Toggle line wrap");
+  });
+
+  /*
+   * ToggleButton owns its element: a caller's `render` was overridden and
+   * Base UI drops `type`, so both are rejected rather than silently ignored.
+   */
+  it("rejects render, nativeButton and type at the type level", () => {
+    render(
+      <>
+        {/* @ts-expect-error ToggleButton renders its own Button */}
+        <ToggleButton render={<a href="/x" />}>Render</ToggleButton>
+        {/* @ts-expect-error nor can it be made non-native */}
+        <ToggleButton nativeButton={false}>Native</ToggleButton>
+        {/* @ts-expect-error Base UI's Toggle is always type="button" */}
+        <ToggleButton type="submit">Type</ToggleButton>
+      </>,
+    );
+
+    expect(screen.getByRole("button", { name: "Type" })).toHaveAttribute(
+      "type",
+      "button",
+    );
   });
 });
