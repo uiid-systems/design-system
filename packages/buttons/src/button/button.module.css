@@ -78,14 +78,14 @@
  * A colored ghost is a tint surface that stays transparent until hover, so it
  * takes the tint's foreground. Inheriting `--button-bg` (as the uncolored ghost
  * does) would paint the text at fill strength, which is only measured against
- * the page background — once hover paints `--palette-tint` underneath it, the
- * guaranteed pairing is `--palette-on-tint`.
+ * the page background — once hover paints the subtle hover tint underneath it,
+ * the guaranteed pairing is `--palette-on-tint`.
  */
 .color.variant-ghost {
   color: var(--palette-on-tint);
 
   &:where(:hover, :active) {
-    background-color: var(--palette-tint);
+    background-color: var(--palette-tint-hover);
   }
 }
 
@@ -150,7 +150,7 @@
   border-color: transparent;
   color: var(--button-bg);
   &:where(:hover, :active) {
-    background-color: color-mix(in oklab, var(--button-bg), transparent 90%);
+    background-color: var(--button-variant-subtle-bg-hover);
     border-color: transparent;
   }
 }
