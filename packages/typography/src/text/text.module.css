@@ -169,6 +169,11 @@
   text-wrap: balance;
 }
 
+/* After balance, whose `text-wrap` shorthand would reset the mode to wrap. */
+:where(.text)[data-ui-nowrap] {
+  text-wrap-mode: nowrap;
+}
+
 :where(.text)[data-ui-truncate] {
   display: block;
   overflow: hidden;

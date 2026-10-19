@@ -21,6 +21,7 @@ const textDataPropKeys = [
   "strikethrough",
   "uppercase",
   "balance",
+  "nowrap",
   "truncate",
   "underline",
 ] as const;

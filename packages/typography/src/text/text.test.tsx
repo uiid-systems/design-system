@@ -129,7 +129,7 @@ describe("Text", () => {
 
     it("writes a bare attribute for a toggle that is on", () => {
       render(
-        <Text strikethrough uppercase balance truncate underline>
+        <Text strikethrough uppercase balance nowrap truncate underline>
           Toggles
         </Text>,
       );
@@ -138,6 +138,7 @@ describe("Text", () => {
         "strikethrough",
         "uppercase",
         "balance",
+        "nowrap",
         "truncate",
         "underline",
       ]) {
@@ -151,6 +152,7 @@ describe("Text", () => {
           strikethrough={false}
           uppercase={false}
           balance={false}
+          nowrap={false}
           truncate={false}
           underline={false}
         >
@@ -162,6 +164,7 @@ describe("Text", () => {
         "strikethrough",
         "uppercase",
         "balance",
+        "nowrap",
         "truncate",
         "underline",
       ]) {
