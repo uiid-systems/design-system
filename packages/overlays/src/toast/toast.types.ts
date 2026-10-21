@@ -10,7 +10,8 @@ export type ToastData = {
   /**
    * Rendered below the title and description. For content Base UI has no field
    * for — a `Progress` bar on a loading toast, a short list. Pass a new node
-   * through `update()` to change it.
+   * through `update()` to change it, along with any other `data` field to
+   * keep: `update()` replaces `data` whole.
    */
   children?: React.ReactNode;
   /** Palette hue for the toast surface */

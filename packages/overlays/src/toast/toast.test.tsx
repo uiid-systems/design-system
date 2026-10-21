@@ -1,22 +1,40 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
 import { Toaster } from "./toast";
-import { ToastProvider, useToastManager } from "./toast.hooks";
+import {
+  ToastProvider,
+  createToastManager,
+  useToastManager,
+} from "./toast.hooks";
 import type { ToasterProps } from "./toast.types";
+
+type ProviderProps = Omit<
+  React.ComponentProps<typeof ToastProvider>,
+  "children"
+>;
 
 type Manager = ReturnType<typeof useToastManager>;
 
 /** Captures the manager so a test can drive toasts without a trigger button. */
-const renderToaster = (props: ToasterProps = {}) => {
+const renderToaster = (
+  props: ToasterProps = {},
+  providerProps: ProviderProps = {},
+) => {
   let manager!: Manager;
   const Capture = () => {
     manager = useToastManager();
     return null;
   };
   const result = render(
-    <ToastProvider>
+    <ToastProvider {...providerProps}>
       <Capture />
       <Toaster {...props} />
     </ToastProvider>,
@@ -87,6 +105,22 @@ describe("Toaster", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("renders a zero title and description", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: 0, description: 0 });
+    });
+
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="toast-title"]'),
+      ).toHaveTextContent("0");
+    });
+    expect(
+      document.querySelector('[data-slot="toast-description"]'),
+    ).toHaveTextContent("0");
+  });
+
   it("labels and describes the toast from its title and description", async () => {
     const { manager } = renderToaster();
     act(() => {
@@ -130,13 +164,13 @@ describe("Toaster", () => {
     const { manager } = renderToaster();
     let id = "";
     act(() => {
-      id = manager().add({ title: "Syncing", type: "loading", timeout: 0 });
+      id = manager().add({ title: "Syncing", type: "loading" });
     });
 
     await screen.findByText("Syncing");
     expect(
       document.querySelector('[data-slot="toast-spinner"]'),
-    ).toBeInTheDocument();
+    ).toHaveAttribute("aria-hidden", "true");
 
     act(() => {
       manager().update(id, { title: "Synced", type: "success" });
@@ -191,7 +225,7 @@ describe("Toaster", () => {
   it("hides the close button on a loading toast", async () => {
     const { manager } = renderToaster();
     act(() => {
-      manager().add({ title: "Syncing", type: "loading", timeout: 0 });
+      manager().add({ title: "Syncing", type: "loading" });
     });
 
     await screen.findByText("Syncing");
@@ -205,7 +239,6 @@ describe("Toaster", () => {
       manager().add({
         title: "Cancelable",
         type: "loading",
-        timeout: 0,
         data: { closable: true },
       });
     });
@@ -220,6 +253,45 @@ describe("Toaster", () => {
       toastOf("Sticky").querySelector('[data-slot="toast-close"]'),
     ).toBeNull();
   });
+
+  // ============================================
+  // SWIPE
+  // ============================================
+
+  const swipe = (element: Element, dy: number) => {
+    fireEvent.pointerDown(element, { button: 0, pointerId: 1, clientY: 0 });
+    for (let step = 1; step <= 5; step++) {
+      fireEvent.pointerMove(element, {
+        pointerId: 1,
+        clientY: (dy * step) / 5,
+        movementY: dy / 5,
+      });
+    }
+    fireEvent.pointerUp(element, { pointerId: 1, clientY: dy });
+  };
+
+  it.each([
+    { position: "top", toward: -100, away: 100 },
+    { position: "bottom", toward: 100, away: -100 },
+  ] as const)(
+    "swipes a $position toast away toward its edge, not into the page",
+    async ({ position, toward, away }) => {
+      const { manager } = renderToaster({ position });
+      act(() => {
+        manager().add({ title: "Saved" });
+      });
+
+      await screen.findByText("Saved");
+      swipe(toastEl()!, away);
+      await act(() => new Promise((resolve) => setTimeout(resolve, 100)));
+      expect(manager().toasts).toHaveLength(1);
+
+      swipe(toastEl()!, toward);
+      await waitFor(() => {
+        expect(manager().toasts).toHaveLength(0);
+      });
+    },
+  );
 
   // ============================================
   // ACTION
@@ -282,5 +354,72 @@ describe("Toaster", () => {
 
     await screen.findByText("Step 2 of 3");
     expect(document.querySelectorAll('[data-slot="toast"]')).toHaveLength(1);
+  });
+
+  it("keeps a loading toast open, then times it out once it settles", async () => {
+    const { manager } = renderToaster({}, { timeout: 50 });
+    let id = "";
+    act(() => {
+      id = manager().add({ title: "Syncing", type: "loading" });
+    });
+
+    await screen.findByText("Syncing");
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)));
+    expect(manager().toasts).toHaveLength(1);
+
+    act(() => {
+      manager().update(id, { title: "Synced", type: "success" });
+    });
+    await waitFor(() => {
+      expect(manager().toasts).toHaveLength(0);
+    });
+  });
+
+  it("settles a promise() toast from loading to success", async () => {
+    const { manager } = renderToaster();
+    let resolve!: (value: string) => void;
+    act(() => {
+      void manager().promise(
+        new Promise<string>((r) => {
+          resolve = r;
+        }),
+        { loading: "Uploading…", success: "Uploaded", error: "Upload failed" },
+      );
+    });
+
+    await screen.findByText("Uploading…");
+    expect(toastEl()).toHaveAttribute("data-type", "loading");
+    expect(closeButtons()).toHaveLength(0);
+
+    await act(async () => {
+      resolve("done");
+    });
+
+    await screen.findByText("Uploaded");
+    expect(toastEl()).toHaveAttribute("data-type", "success");
+    expect(closeButtons()).toHaveLength(1);
+  });
+
+  it("adds, updates and closes toasts from a manager made outside React", async () => {
+    const toastManager = createToastManager();
+    renderToaster({}, { toastManager });
+
+    let id = "";
+    act(() => {
+      id = toastManager.add({ title: "Saved", timeout: 0 });
+    });
+    await screen.findByText("Saved");
+
+    act(() => {
+      toastManager.update(id, { title: "Saved twice" });
+    });
+    await screen.findByText("Saved twice");
+
+    act(() => {
+      toastManager.close(id);
+    });
+    await waitFor(() => {
+      expect(toastEl()).not.toBeInTheDocument();
+    });
   });
 });

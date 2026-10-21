@@ -40,7 +40,6 @@
   background-clip: padding-box;
   transform-origin: bottom center;
   margin-inline: auto;
-  user-select: none;
 
   .toast-viewport[data-position="top"] & {
     top: 0;
@@ -65,6 +64,11 @@
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.5s,
     height var(--globals-transition-duration);
+  /* Base UI measures a toast by setting `height: auto` and reading it back.
+     The globals' `interpolate-size: allow-keywords` would start a transition
+     to `auto` instead, so the read returns the old height and the toast never
+     resizes when its content changes. */
+  interpolate-size: numeric-only;
 
   &[data-expanded] {
     transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--offset-y));
