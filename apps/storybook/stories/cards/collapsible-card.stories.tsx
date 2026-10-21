@@ -11,6 +11,8 @@ const meta = {
     description: "The header stays in view while the body collapses.",
     defaultOpen: true,
     disabled: false,
+    keepMounted: false,
+    clickableHeader: false,
     children:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
@@ -21,6 +23,8 @@ const meta = {
     defaultOpen: { control: "boolean", table: { category: "State" } },
     open: { control: "boolean", table: { category: "State" } },
     disabled: { control: "boolean", table: { category: "State" } },
+    keepMounted: { control: "boolean", table: { category: "Behavior" } },
+    clickableHeader: { control: "boolean", table: { category: "Behavior" } },
     onOpenChange: { table: { category: "State" } },
     HeaderProps: { table: { category: "Subcomponents" } },
     TitleProps: { table: { category: "Subcomponents" } },
@@ -47,10 +51,22 @@ export const FullHeader: Story = {
   render: () => <Examples.FullHeader />,
 };
 
+export const ClickableHeader: Story = {
+  render: () => <Examples.ClickableHeader />,
+};
+
 export const Controlled: Story = {
   render: () => <Examples.Controlled />,
 };
 
 export const Stacked: Story = {
   render: () => <Examples.Stacked />,
+};
+
+export const KeepMounted: Story = {
+  render: () => <Examples.KeepMounted />,
+};
+
+export const Colors: Story = {
+  render: () => <Examples.Colors />,
 };
