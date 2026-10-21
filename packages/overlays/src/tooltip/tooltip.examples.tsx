@@ -14,14 +14,17 @@ export const Default = () => (
   <Tooltip trigger={<Button>Hover me</Button>}>Helpful information</Tooltip>
 );
 
-/** Positioning is forwarded to the Base UI positioner via `PositionerProps`. */
+/**
+ * Positioning is forwarded to the Base UI positioner via `PositionerProps`.
+ * `sideOffset` and `collisionPadding` keep their defaults when only `side` is set.
+ */
 export const Positioning = () => (
   <Group gap={2}>
     {SIDES.map((side) => (
       <Tooltip
         key={side}
         trigger={<Button>{side}</Button>}
-        PositionerProps={{ side, sideOffset: 8, collisionPadding: 16 }}
+        PositionerProps={{ side }}
       >
         Positioned {side}
       </Tooltip>

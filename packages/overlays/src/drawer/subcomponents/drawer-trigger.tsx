@@ -10,13 +10,22 @@ import styles from "../drawer.module.css";
 export const DrawerTrigger = ({
   children,
   className,
+  render,
+  nativeButton,
   ...props
-}: DrawerTriggerProps) => (
-  <BaseDrawer.Trigger
-    data-slot="drawer-trigger"
-    className={cxState(styles["drawer-trigger"], className)}
-    {...resolveTrigger(children, props.render)}
-    {...props}
-  />
-);
+}: DrawerTriggerProps) => {
+  const resolved = resolveTrigger(children, render);
+
+  return (
+    <BaseDrawer.Trigger
+      data-slot="drawer-trigger"
+      className={cxState(styles["drawer-trigger"], className)}
+      {...props}
+      render={render ?? resolved.render}
+      nativeButton={nativeButton ?? resolved.nativeButton}
+    >
+      {resolved.children}
+    </BaseDrawer.Trigger>
+  );
+};
 DrawerTrigger.displayName = "DrawerTrigger";

@@ -8,13 +8,22 @@ import styles from "../dialog.module.css";
 export const DialogTrigger = ({
   children,
   className,
+  render,
+  nativeButton,
   ...props
-}: DialogTriggerProps) => (
-  <BaseDialog.Trigger
-    data-slot="dialog-trigger"
-    className={cxState(styles["dialog-trigger"], className)}
-    {...resolveTrigger(children, props.render)}
-    {...props}
-  />
-);
+}: DialogTriggerProps) => {
+  const resolved = resolveTrigger(children, render);
+
+  return (
+    <BaseDialog.Trigger
+      data-slot="dialog-trigger"
+      className={cxState(styles["dialog-trigger"], className)}
+      {...props}
+      render={render ?? resolved.render}
+      nativeButton={nativeButton ?? resolved.nativeButton}
+    >
+      {resolved.children}
+    </BaseDialog.Trigger>
+  );
+};
 DialogTrigger.displayName = "DialogTrigger";

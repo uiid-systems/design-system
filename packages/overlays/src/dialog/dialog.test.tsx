@@ -193,6 +193,25 @@ describe("Dialog", () => {
     expect(await screen.findByText("Dialog content")).toBeInTheDocument();
   });
 
+  it("keeps a string trigger when TriggerProps leaves render and nativeButton undefined", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog
+        trigger="Open"
+        TriggerProps={{ render: undefined, nativeButton: undefined }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open" });
+    expect(trigger.tagName).toBe("SPAN");
+
+    trigger.focus();
+    await user.keyboard("{Enter}");
+    expect(await screen.findByText("Dialog content")).toBeInTheDocument();
+  });
+
   it("keeps a component trigger native by default", async () => {
     const user = userEvent.setup();
     render(

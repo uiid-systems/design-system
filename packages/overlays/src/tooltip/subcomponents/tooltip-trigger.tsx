@@ -1,28 +1,28 @@
 "use client";
 
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import { isValidElement } from "react";
+import { resolveTrigger } from "@uiid/utils";
 
 import type { TooltipTriggerProps } from "../tooltip.types";
 
-export const TooltipTrigger = ({ children, ...props }: TooltipTriggerProps) => {
-  const triggerIsEl = isValidElement(children);
+/**
+ * Unlike Dialog's, Base UI's tooltip trigger takes no `nativeButton`, so only
+ * the resolved `render` and children are passed on.
+ */
+export const TooltipTrigger = ({
+  children,
+  render,
+  ...props
+}: TooltipTriggerProps) => {
+  const resolved = resolveTrigger(children, render);
 
   return (
     <BaseTooltip.Trigger
       data-slot="tooltip-trigger"
-      render={
-        triggerIsEl ? (
-          children
-        ) : (
-          <span role="button" tabIndex={0}>
-            {children}
-          </span>
-        )
-      }
       {...props}
+      render={render ?? resolved.render}
     >
-      {children}
+      {resolved.children}
     </BaseTooltip.Trigger>
   );
 };
