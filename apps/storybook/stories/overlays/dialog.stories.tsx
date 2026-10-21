@@ -17,7 +17,7 @@ const meta = {
   argTypes: {
     size: {
       control: "select",
-      options: ["small", "medium", "large", "xlarge"],
+      options: ["small", "medium", "large", "xlarge", "full"],
       table: { category: "Variants" },
     },
   },
@@ -37,6 +37,11 @@ export const HeaderVariants: Story = {
 };
 
 export const Footer: Story = { render: () => <Examples.Footer /> };
+
+export const Full: Story = { render: () => <Examples.Full /> };
+
+/** `hideCloseButton` leaves the footer as the only way out. */
+export const RevealOnce: Story = { render: () => <Examples.RevealOnce /> };
 
 export const LongContent: Story = { render: () => <Examples.LongContent /> };
 

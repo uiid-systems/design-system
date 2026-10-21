@@ -9,6 +9,7 @@ export const dialogVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
       xlarge: styles["size-xlarge"],
+      full: styles["size-full"],
     },
   },
   defaultVariants: {

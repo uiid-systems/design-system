@@ -1,4 +1,5 @@
 import type { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import type { ButtonProps } from "@uiid/buttons";
 import type { CardProps } from "@uiid/cards";
 import type { VariantProps, WithTriggerChildren } from "@uiid/utils";
 
@@ -21,7 +22,10 @@ export type DialogBackdropProps = BaseDialog.Backdrop.Props;
 export type DialogViewportProps = BaseDialog.Viewport.Props;
 export type DialogPopupProps = VariantProps<typeof dialogVariants> &
   Omit<BaseDialog.Popup.Props, "title"> &
-  DialogCardProps;
+  DialogCardProps & {
+    /** Leave out the header close button, for a dialog the user must act on before leaving */
+    hideCloseButton?: boolean;
+  };
 
 export type DialogProps = React.PropsWithChildren<{
   trigger?: DialogTriggerProps["children"];
@@ -34,4 +38,8 @@ export type DialogProps = React.PropsWithChildren<{
 }> &
   DialogVariants &
   Pick<DialogRootProps, "open" | "onOpenChange"> &
+  Pick<DialogPopupProps, "hideCloseButton"> &
   DialogCardProps;
+
+/** A footer button that closes the dialog; Base UI's Close owns `render`. */
+export type DialogCloseProps = Omit<ButtonProps, "render">;

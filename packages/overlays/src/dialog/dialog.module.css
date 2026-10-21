@@ -44,6 +44,11 @@
   padding: 1.5rem 1.5rem 5.5rem;
   overflow-y: auto;
   pointer-events: none;
+
+  /* A full popup is a frame, not a dialog to lift, so its inset is even. */
+  &:has(> .size-full) {
+    padding-block-end: 1.5rem;
+  }
 }
 
 /*
@@ -68,4 +73,13 @@
 }
 .size-xlarge {
   max-width: var(--dialog-size-xl);
+}
+
+/* Fills the viewport whatever its content; the body grows to keep the footer at the bottom. */
+.size-full {
+  height: 100%;
+
+  & > [data-slot="card-inner-container"] {
+    flex-grow: 1;
+  }
 }

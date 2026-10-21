@@ -6,7 +6,7 @@ Use Dialog when you want to:
 
 - Interrupt the page for a decision or a focused task — focus is trapped and everything behind it is inert
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body for a row of actions
-- Constrain the width with `size` (`small`, `medium`, `large`, `xlarge`) — the dialog stays centered and only the max width changes
+- Constrain the width with `size` (`small`, `medium`, `large`, `xlarge`) — the dialog stays centered and only the max width changes. `full` instead fills the viewport in both directions, for viewers and inspectors
 - Open from anything: pass an element as `trigger` and it's used as-is, or a string or a function of the open state and it's wrapped in a focusable element — see [Triggers](#triggers)
 
 Leave `open` unset and the dialog runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself.
@@ -14,6 +14,12 @@ Leave `open` unset and the dialog runs itself from the trigger; pass `open` and 
 Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog) and takes its props unchanged — anything not listed above is forwarded. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough.
 
 The popup renders as a `Card`, so its content slots match Drawer and Popover. For a panel anchored to an edge, use `Drawer`; for something attached to a control without blocking the page, use `Popover`.
+
+## Close button
+
+Every dialog has a close button in its header, after any `action`: an icon-only ghost `Button` named "Close". Don't build your own, and don't put one in `action`.
+
+`hideCloseButton` leaves it out. Use it only when the user must act before leaving, such as a secret shown once, and give the footer the button that closes it. Escape and a backdrop click still close the dialog either way.
 
 ## Triggers
 
@@ -75,7 +81,26 @@ A `render` of your own through `TriggerProps` still counts as a trigger, with or
 
 ## Closing from the footer
 
-Dialog has no close part. Escape and a backdrop click close it on their own; to close it from a footer button, control `open` and set it to `false` in the button's handler — see the `Footer` example.
+A footer button that only dismisses, such as Cancel, is `DialogClose`: a subtle `Button` that closes the dialog itself, so the dialog can stay uncontrolled. It takes `Button`'s props, and runs its own `onClick` before closing.
+
+```tsx
+<Dialog
+  trigger={<Button>Archive</Button>}
+  title="Archive this game?"
+  footer={
+    <>
+      <DialogClose>Cancel</DialogClose>
+      <Button color="red" onClick={onArchive}>
+        Archive
+      </Button>
+    </>
+  }
+>
+  …
+</Dialog>
+```
+
+A button that does work before closing, like a submit that can fail, controls `open` instead — see the `Footer` example.
 
 ## Naming and long content
 
