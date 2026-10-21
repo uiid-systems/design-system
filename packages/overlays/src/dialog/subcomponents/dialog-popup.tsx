@@ -4,6 +4,7 @@ import { cxState } from "@uiid/utils";
 
 import type { DialogPopupProps } from "../dialog.types";
 import { dialogVariants } from "../dialog.variants";
+import { DialogCloseButton } from "./dialog-close-button";
 
 import styles from "../dialog.module.css";
 
@@ -14,6 +15,9 @@ import styles from "../dialog.module.css";
  *
  * `children` is passed to the popup only, never duplicated into the render
  * element: Base UI forwards it into the Card.
+ *
+ * The close button rides in Card's action slot, after any `action` of the
+ * caller's.
  */
 export const DialogPopup = ({
   size,
@@ -21,6 +25,7 @@ export const DialogPopup = ({
   description,
   action,
   footer,
+  hideCloseButton,
   className,
   children,
   ...props
@@ -37,7 +42,16 @@ export const DialogPopup = ({
         <Card
           title={title}
           description={description}
-          action={action}
+          action={
+            hideCloseButton ? (
+              action
+            ) : (
+              <>
+                {action}
+                <DialogCloseButton />
+              </>
+            )
+          }
           footer={footer}
           TitleProps={{ render: <BaseDialog.Title /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}

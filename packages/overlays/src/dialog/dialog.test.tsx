@@ -1,10 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 import { Footer } from "./dialog.examples";
+import { DialogClose } from "./subcomponents";
 
 import styles from "./dialog.module.css";
 
@@ -412,6 +413,177 @@ describe("Dialog", () => {
 
     const popup = document.querySelector('[data-slot="dialog-popup"]');
     expect(popup?.className).toContain("size-xlarge");
+  });
+
+  it("renders with full size", () => {
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        open={true}
+        onOpenChange={() => {}}
+        size="full"
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const popup = document.querySelector('[data-slot="dialog-popup"]');
+    expect(popup?.className).toContain("size-full");
+  });
+
+  // ============================================
+  // CLOSE BUTTON
+  // ============================================
+
+  it("renders an icon-only ghost close button named Close in the header", () => {
+    render(
+      <Dialog open={true} onOpenChange={() => {}} title="Title">
+        Dialog content
+      </Dialog>,
+    );
+
+    const close = screen.getByRole("button", { name: "Close" });
+    expect(close).toHaveAttribute("data-slot", "dialog-close-button");
+    expect(close).toHaveAttribute("type", "button");
+    expect(close.closest('[data-slot="card-action"]')).toBeInTheDocument();
+    expect(close.className).toMatch(/variant-ghost/);
+    expect(close.className).toMatch(/shape-square/);
+    expect(close.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("closes an uncontrolled dialog from the close button", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog trigger={<button>Open dialog</button>} title="Title">
+        Dialog content
+      </Dialog>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open dialog" }));
+    await user.click(await screen.findByRole("button", { name: "Close" }));
+
+    await waitFor(() => {
+      expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+    });
+  });
+
+  it("calls onOpenChange with false from the close button", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Dialog open={true} onOpenChange={onOpenChange} title="Title">
+        Dialog content
+      </Dialog>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything());
+  });
+
+  it("places the close button after the caller's action", () => {
+    render(
+      <Dialog
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        action={<button>Action</button>}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const slot = document.querySelector('[data-slot="card-action"]');
+    const buttons = within(slot as HTMLElement).getAllByRole("button");
+    expect(
+      buttons.map(
+        (button) => button.textContent || button.getAttribute("aria-label"),
+      ),
+    ).toEqual(["Action", "Close"]);
+  });
+
+  it("leaves the close button out with hideCloseButton", () => {
+    render(
+      <Dialog
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        action={<button>Action</button>}
+        hideCloseButton
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Close" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Action" })).toBeInTheDocument();
+  });
+
+  // ============================================
+  // CLOSE PART
+  // ============================================
+
+  it("renders DialogClose as a subtle Button", () => {
+    render(
+      <Dialog
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        footer={<DialogClose>Cancel</DialogClose>}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const cancel = screen.getByRole("button", { name: "Cancel" });
+    expect(cancel).toHaveAttribute("data-slot", "dialog-close");
+    expect(cancel).toHaveAttribute("type", "button");
+    expect(cancel.closest('[data-slot="card-footer"]')).toBeInTheDocument();
+    expect(cancel.className).toMatch(/variant-subtle/);
+  });
+
+  it("lets DialogClose take another Button variant", () => {
+    render(
+      <Dialog
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        footer={<DialogClose variant="ghost">Done</DialogClose>}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const done = screen.getByRole("button", { name: "Done" });
+    expect(done.className).toMatch(/variant-ghost/);
+    expect(done.className).not.toMatch(/variant-subtle/);
+  });
+
+  it("closes an uncontrolled dialog from DialogClose, after its own onClick", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const onOpenChange = vi.fn();
+    render(
+      <Dialog
+        trigger={<button>Open dialog</button>}
+        title="Title"
+        onOpenChange={onOpenChange}
+        footer={<DialogClose onClick={onClick}>Cancel</DialogClose>}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open dialog" }));
+    await user.click(await screen.findByRole("button", { name: "Cancel" }));
+
+    expect(onClick).toHaveBeenCalled();
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
+    await waitFor(() => {
+      expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+    });
   });
 
   // ============================================

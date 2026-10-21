@@ -20,6 +20,7 @@ export const Dialog = ({
   description,
   action,
   footer,
+  hideCloseButton,
   RootProps,
   TriggerProps,
   PortalProps,
@@ -43,6 +44,7 @@ export const Dialog = ({
             description={description}
             action={action}
             footer={footer}
+            hideCloseButton={hideCloseButton}
             {...PopupProps}
           >
             {children}

@@ -7,6 +7,7 @@ import { Text } from "@uiid/typography";
 import { useRef, useState } from "react";
 
 import { Dialog } from "./dialog";
+import { DialogClose } from "./subcomponents";
 
 const ITEMS = ["Opening", "Middlegame", "Bear-off"];
 
@@ -57,6 +58,10 @@ export const HeaderVariants = () => (
   </Group>
 );
 
+/**
+ * A footer Cancel is `DialogClose`, which closes the dialog on its own. A
+ * button that does work first, like Save, closes it by controlling `open`.
+ */
 export const Footer = () => {
   const [open, setOpen] = useState(false);
 
@@ -69,9 +74,7 @@ export const Footer = () => {
       description="Choose how and when you'd like to be notified."
       footer={
         <Group gap={2} ax="end" fullwidth>
-          <Button size="small" variant="subtle" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
+          <DialogClose size="small">Cancel</DialogClose>
           <Button size="small" onClick={() => setOpen(false)}>
             Save
           </Button>
@@ -79,6 +82,54 @@ export const Footer = () => {
       }
     >
       {BODY}
+    </Dialog>
+  );
+};
+
+/**
+ * `full` fills the viewport whatever its content, for a document viewer or an
+ * inspector; the footer stays at the bottom.
+ */
+export const Full = () => (
+  <Dialog
+    size="full"
+    trigger={<Button>Open viewer</Button>}
+    title="Contract.pdf"
+    footer={
+      <Group gap={2} ax="end" fullwidth>
+        <DialogClose size="small">Close</DialogClose>
+        <Button size="small">Download</Button>
+      </Group>
+    }
+  >
+    {BODY}
+  </Dialog>
+);
+
+/**
+ * A secret shown once hides the header close button, so the footer's
+ * acknowledgement is the deliberate way out.
+ */
+export const RevealOnce = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      hideCloseButton
+      trigger={<Button>Create API key</Button>}
+      title="Save your new API key"
+      description="You won't be able to see it again."
+      footer={
+        <Group gap={2} ax="end" fullwidth>
+          <Button size="small" onClick={() => setOpen(false)}>
+            I've saved my key!
+          </Button>
+        </Group>
+      }
+    >
+      <Text family="mono">sk_live_51H8xQ2eZvKYlo2C</Text>
     </Dialog>
   );
 };

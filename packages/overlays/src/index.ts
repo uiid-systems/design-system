@@ -1,5 +1,6 @@
 export * from "./dialog/dialog";
 export * from "./dialog/dialog.types";
+export { DialogClose } from "./dialog/subcomponents/dialog-close";
 
 export * from "./popover/popover";
 export * from "./popover/popover.types";
