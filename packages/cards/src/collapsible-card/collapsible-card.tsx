@@ -4,6 +4,7 @@ import { Collapsible } from "@base-ui/react/collapsible";
 import { Button } from "@uiid/buttons";
 import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 import { Text } from "@uiid/typography";
+import { cx } from "@uiid/utils";
 import { useId } from "react";
 
 import { Card } from "../card/card";
@@ -13,12 +14,17 @@ import styles from "./collapsible-card.module.css";
 
 export const CollapsibleCard = ({
   title,
-  footer,
+  color,
   open,
   defaultOpen,
   onOpenChange,
   disabled,
+  keepMounted,
+  clickableHeader,
+  className,
+  HeaderProps,
   TitleProps,
+  ActionProps,
   InnerContainerProps,
   children,
   ref,
@@ -37,6 +43,7 @@ export const CollapsibleCard = ({
         render={({ color: _htmlColor, ...triggerProps }) => (
           <Button
             {...triggerProps}
+            color={color}
             shape="square"
             size="xsmall"
             variant="ghost"
@@ -70,17 +77,36 @@ export const CollapsibleCard = ({
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
       disabled={disabled}
-      render={({ color: _htmlColor, ...rootProps }, state) => (
+      render={({ color: _htmlColor, ...rootProps }) => (
         <Card
           {...props}
           {...rootProps}
+          // Base UI doesn't document `data-disabled` on the root, so the card
+          // sets it from its own prop for the disabled dim to key off.
+          data-disabled={disabled ? "" : undefined}
+          className={cx(styles["collapsible-card"], className)}
+          color={color}
           title={lockup}
+          HeaderProps={{
+            ...HeaderProps,
+            className: cx(
+              clickableHeader && styles["clickable-header"],
+              HeaderProps?.className,
+            ),
+          }}
           TitleProps={TitleProps}
+          // `inert` because the action is the caller's content: the card can't
+          // disable each control in it, only take the whole slot out of reach.
+          ActionProps={disabled ? { ...ActionProps, inert: true } : ActionProps}
           InnerContainerProps={{
             ...InnerContainerProps,
-            render: <Collapsible.Panel />,
+            render: (
+              <Collapsible.Panel
+                keepMounted={keepMounted}
+                className={styles["collapsible-card-panel"]}
+              />
+            ),
           }}
-          footer={state.open ? footer : undefined}
         >
           {children}
         </Card>

@@ -12,3 +12,43 @@
     rotate: 90deg;
   }
 }
+
+/*
+ * The chevron stays the only trigger; its hit area stretches over the header so the rest of the
+ * header toggles too, and hovering anywhere in it shows the chevron's hover. Interactive content
+ * sits above the stretch and keeps its own click.
+ */
+.clickable-header {
+  position: relative;
+
+  .collapsible-card-trigger {
+    /* A pressed button's scale makes it the containing block, which would shrink the stretch back
+       to the chevron between mousedown and mouseup, so a click on the title would never land. */
+    scale: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  & :is(a[href], button, input, label, select, textarea, summary, [tabindex]):not(.collapsible-card-trigger) {
+    z-index: 1;
+  }
+}
+
+/* Zero specificity, so a control's own positioning (an absolutely placed calendar button) still wins. */
+:where(.clickable-header :is(a[href], button, input, label, select, textarea, summary, [tabindex]):not(.collapsible-card-trigger)) {
+  position: relative;
+}
+
+/* The chevron's own disabled opacity compounds with this; the two live in different cascade layers. */
+.collapsible-card[data-disabled] {
+  opacity: var(--globals-disabled-opacity);
+}
+
+/* A kept-mounted panel closes with `hidden`, which the body's own `display` would otherwise override. */
+.collapsible-card-panel[hidden] {
+  display: none;
+}

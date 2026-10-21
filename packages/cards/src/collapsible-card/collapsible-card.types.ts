@@ -25,4 +25,14 @@ export type CollapsibleCardProps = Omit<
     TitleProps?: Omit<CardTitleProps, "children">;
     /** The body is the collapsible panel, so its `render` target is fixed. */
     InnerContainerProps?: Omit<InnerContainerProps, "render">;
+    /**
+     * Hide the body while closed instead of unmounting it, so its state (a
+     * form's inputs, say) survives collapsing.
+     */
+    keepMounted?: Collapsible.Panel.Props["keepMounted"];
+    /**
+     * Toggle the card from anywhere in the header, not just the chevron.
+     * Buttons, links and inputs in the header keep their own click.
+     */
+    clickableHeader?: boolean;
   };
