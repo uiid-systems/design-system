@@ -57,14 +57,13 @@ const LoadingButton = ({ fail }: { fail?: boolean }) => {
     const id = toastManager.add({
       title: "Saving…",
       type: "loading",
-      timeout: 0,
     });
     await wait(1500);
     toastManager.update(
       id,
       fail
-        ? { title: "Couldn't save", type: "error", timeout: 5000 }
-        : { title: "Saved", type: "success", timeout: 5000 },
+        ? { title: "Couldn't save", type: "error" }
+        : { title: "Saved", type: "success" },
     );
   };
   return (
@@ -93,7 +92,7 @@ const PromiseButton = () => {
 
 /**
  * `type` lands on the toast as `data-type`. A `loading` toast shows a spinner
- * and no close button — give it `timeout: 0` and `update()` it when the work
+ * and no close button, and stays until you `update()` it when the work
  * settles. Base UI's `promise()` does all of this for you.
  */
 export const Types = () => (
@@ -166,7 +165,6 @@ const SyncButton = () => {
       title: "Syncing",
       description: `0 of ${SYNC_STEPS} sources`,
       type: "loading",
-      timeout: 0,
       data: { children: syncProgress(0) },
     });
     for (let done = 1; done <= SYNC_STEPS; done++) {
@@ -180,7 +178,6 @@ const SyncButton = () => {
       title: "3 new items",
       description: undefined,
       type: "success",
-      timeout: 5000,
       data: {},
       actionProps: {
         children: "View",
