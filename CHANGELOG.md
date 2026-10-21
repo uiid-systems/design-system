@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.7.1](https://github.com/uiid-systems/design-system/compare/v0.7.0...v0.7.1) (2026-10-21)
+
+
+### Features
+
+* **ui:** add Dialog close button, DialogClose part, and full size ([#474](https://github.com/uiid-systems/design-system/issues/474)) ([0c6b02b](https://github.com/uiid-systems/design-system/commit/0c6b02b6e4cc20607502b5916dc62a6eb7da07f1))
+* **ui:** add keepMounted and clickableHeader to CollapsibleCard ([#475](https://github.com/uiid-systems/design-system/issues/475)) ([eec449f](https://github.com/uiid-systems/design-system/commit/eec449f3283aee044aa9b9b2d800667b2ab132f5))
+* **ui:** add wrap prop to Text ([#471](https://github.com/uiid-systems/design-system/issues/471)) ([df522e7](https://github.com/uiid-systems/design-system/commit/df522e7bb74a1fe80d5c0222db5fc4a109a716a9))
+
+
+### Bug Fixes
+
+* **ui:** derive style-prop keys from one source and apply gap on Text ([#466](https://github.com/uiid-systems/design-system/issues/466)) ([970f55f](https://github.com/uiid-systems/design-system/commit/970f55fc02a4ca4eef9ad6f905f402d5da4bdb8f))
+* **ui:** drop tailwind-merge from cx ([#464](https://github.com/uiid-systems/design-system/issues/464)) ([ed2081f](https://github.com/uiid-systems/design-system/commit/ed2081fc9f27c19512e2ea7f4a42f0a8dbd974c9))
+* **ui:** harden cards, buttons, overlays, and CSS layering ([#463](https://github.com/uiid-systems/design-system/issues/463)) ([37f5f98](https://github.com/uiid-systems/design-system/commit/37f5f984f09f1feccce1321975cfdc913cd53acc))
+* **ui:** keep resolved triggers and tooltip defaults when props are undefined ([#473](https://github.com/uiid-systems/design-system/issues/473)) ([42442df](https://github.com/uiid-systems/design-system/commit/42442df0b0a06c91f30766ce0325674165c7593c))
+* **ui:** match ghost button hover to subtle hover ([#470](https://github.com/uiid-systems/design-system/issues/470)) ([517370e](https://github.com/uiid-systems/design-system/commit/517370e91d674c30e0b0d770b47b392cef7bf3b8))
+* **ui:** swipe toasts toward their edge, resize on update, and tidy loading toasts ([#472](https://github.com/uiid-systems/design-system/issues/472)) ([66c3978](https://github.com/uiid-systems/design-system/commit/66c3978620a983ee11c4464a6821623fdb394e0d))
+* **ui:** type data-* and aria-* attributes on layout primitives ([#467](https://github.com/uiid-systems/design-system/issues/467)) ([3238843](https://github.com/uiid-systems/design-system/commit/3238843dca76ac0fc99be9f0dc44a959adac3934))
+
 ## [0.7.0](https://github.com/uiid-systems/design-system/compare/v0.6.7...v0.7.0) (2026-10-10)
 
 
