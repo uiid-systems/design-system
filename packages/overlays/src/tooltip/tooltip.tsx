@@ -1,5 +1,7 @@
 "use client";
 
+import { hasTrigger } from "@uiid/utils";
+
 import {
   TooltipProvider,
   TooltipRoot,
@@ -8,6 +10,7 @@ import {
   TooltipPositioner,
   TooltipPopup,
 } from "./subcomponents";
+import { useHasTooltipProvider } from "./tooltip.context";
 import type { TooltipProps } from "./tooltip.types";
 
 export const Tooltip = ({
@@ -19,24 +22,33 @@ export const Tooltip = ({
   RootProps,
   TriggerProps,
   PortalProps,
-  PositionerProps = {
-    sideOffset: 8,
-    collisionPadding: 16,
-  },
+  PositionerProps,
   PopupProps,
   children,
 }: TooltipProps) => {
-  return (
-    <TooltipProvider delay={delay} {...ProviderProps}>
-      <TooltipRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
-        <TooltipTrigger {...TriggerProps}>{trigger}</TooltipTrigger>
-        <TooltipPortal {...PortalProps}>
-          <TooltipPositioner {...PositionerProps}>
-            <TooltipPopup {...PopupProps}>{children}</TooltipPopup>
-          </TooltipPositioner>
-        </TooltipPortal>
-      </TooltipRoot>
-    </TooltipProvider>
+  const hasProvider = useHasTooltipProvider();
+
+  const tooltip = (
+    <TooltipRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
+      {hasTrigger(trigger, TriggerProps?.render) && (
+        <TooltipTrigger delay={delay} {...TriggerProps}>
+          {trigger}
+        </TooltipTrigger>
+      )}
+      <TooltipPortal {...PortalProps}>
+        <TooltipPositioner {...PositionerProps}>
+          <TooltipPopup {...PopupProps}>{children}</TooltipPopup>
+        </TooltipPositioner>
+      </TooltipPortal>
+    </TooltipRoot>
+  );
+
+  // A provider of its own would shadow a surrounding one and break its
+  // grouping, so only a Tooltip outside any TooltipProvider mounts one.
+  return hasProvider ? (
+    tooltip
+  ) : (
+    <TooltipProvider {...ProviderProps}>{tooltip}</TooltipProvider>
   );
 };
 Tooltip.displayName = "Tooltip";

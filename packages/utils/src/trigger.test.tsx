@@ -31,6 +31,30 @@ describe("resolveTrigger", () => {
     expect(result.nativeButton).toBe(false);
   });
 
+  it("makes a function trigger a focusable span the part can still override", () => {
+    const result = resolveTrigger<{ open: boolean }>(({ open }) =>
+      open ? "Hide" : "Show",
+    );
+    const renderSpan = result.render as (
+      props: React.ComponentProps<"span">,
+      state: { open: boolean },
+    ) => React.ReactElement<React.ComponentProps<"span">>;
+
+    expect(result.nativeButton).toBe(false);
+
+    // Focusable on its own, for parts that don't make it a button themselves.
+    expect(renderSpan({}, { open: true }).props).toMatchObject({
+      role: "button",
+      tabIndex: 0,
+      children: "Hide",
+    });
+
+    // The part's own props still win, as a disabled Dialog trigger's tabIndex={-1} must.
+    expect(renderSpan({ tabIndex: -1 }, { open: false }).props.tabIndex).toBe(
+      -1,
+    );
+  });
+
   /*
    * Left wrapped, the server would take the lazy node for content and put it
    * inside a `role="button"` span, while the browser, which gets the plain

@@ -50,8 +50,9 @@ type ResolvedTrigger<State> = {
 
 /**
  * The `nativeButton` and `render` a Base UI trigger part needs for the given
- * children. Spread it before the caller's props, so an explicit
- * `nativeButton` still wins.
+ * children. Let the caller's own values win with `??` rather than by
+ * spreading their props after it: a spread `render: undefined` or
+ * `nativeButton: undefined` would clear the resolved value.
  *
  * The trigger travels only through `render`, never as the part's children:
  * Base UI falls back to the part's children when the render element has none,
@@ -76,7 +77,11 @@ export const resolveTrigger = <State,>(
   if (typeof children === "function") {
     return {
       nativeButton: false,
-      render: (props, state) => <span {...props}>{children(state)}</span>,
+      render: (props, state) => (
+        <span role="button" tabIndex={0} {...props}>
+          {children(state)}
+        </span>
+      ),
     };
   }
 
