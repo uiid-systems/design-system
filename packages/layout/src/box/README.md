@@ -14,6 +14,8 @@ Use Box directly when:
 
 Spacing (`gap`, `p*`, `m*`), sizing (`w`, `h`, `min*`, `max*`), border (`b*`), alignment (`ax`, `ay`, `direction`) and `flex` props render as `data-ui-*` attributes resolved by `@uiid/tokens` CSS, so load `@uiid/tokens/globals.css` (or `@uiid/design-system/globals.css`). Your own unlayered CSS overrides them from a class.
 
-Toggles `evenly`, `wrap`, `fullwidth`, `fullheight` and `fullscreen` are booleans. For a border, use `b={1}`; for rounded corners or a fixed aspect ratio, use a class.
+Toggles `evenly`, `wrap`, `fullwidth`, `fullheight`, `fullscreen` and `grow` are booleans. For a border, use `b={1}`; for rounded corners or a fixed aspect ratio, use a class.
+
+`grow` takes the leftover space in its flex parent (`flex: 1`) and zeroes its minimum size, so it can shrink below its content and a scrolling child scrolls inside it. It needs a parent with a bounded size along its axis; fill the space under a fixed header with it rather than `calc(100dvh - …)`. It overrides a `flex` prop on the same Box.
 
 `flex` sizes the Box against its siblings: a number is a grow ratio from a zero basis, so `flex={2}` takes twice the space of a `flex={1}` sibling; `"auto"` sizes from content and flexes; `"none"` sizes from content and does not flex. A child that names its own `flex` keeps it inside an `evenly` parent.

@@ -159,3 +159,18 @@ export const Polymorphic = () => (
     </Text>
   </Card>
 );
+
+export const Grow = () => (
+  <Stack gap={2} h={320} p={2} b={1} maxw={420}>
+    <Text size={0} shade="muted">
+      A bounded 320px column
+    </Text>
+    <Card
+      grow
+      title="Fills what's left"
+      description="The body takes the space under the header."
+    >
+      {BODY}
+    </Card>
+  </Stack>
+);

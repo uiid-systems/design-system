@@ -76,6 +76,18 @@ describe("Box", () => {
     expect(box).not.toHaveAttribute("wrap");
   });
 
+  it("grows to fill its flex parent with grow", () => {
+    const { rerender } = render(<Box data-testid="box">x</Box>);
+    expect(screen.getByTestId("box")).not.toHaveAttribute("data-ui-grow");
+
+    rerender(
+      <Box grow data-testid="box">
+        x
+      </Box>,
+    );
+    expect(screen.getByTestId("box")).toHaveAttribute("data-ui-grow", "");
+  });
+
   it("renders as a different element via the render prop", () => {
     render(
       <Box render={<section />} data-testid="box">

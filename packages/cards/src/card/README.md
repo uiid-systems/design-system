@@ -9,6 +9,7 @@ Use Card when you want to:
 - Add a flush `thumbnail` above the header (image, illustration, chart)
 - Place a `footer` separated by a divider — typically a row of actions
 - Strip the chrome for inline placements — remove the padding with `p={0}` and the border with `b={0}` (style the background directly if you need it transparent)
+- Fill the height left in its parent with `grow`: the card takes the parent's leftover space and the body takes what's left under the header, so a full-height page body (a split view, a document viewer) needs no `calc(100dvh - …)`. The parent has to bound its height. `InnerContainerProps={{ grow: false }}` keeps the body at its content height
 - Render as a different element (`<a>`, `<article>`, `<button>`) via the `render` prop — links and buttons gain a scale-on-hover affordance automatically
 
 Slot overrides (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, `FooterProps`, `ThumbnailProps`, `InnerContainerProps`) forward props through to the subcomponent when the slot prop isn't expressive enough.

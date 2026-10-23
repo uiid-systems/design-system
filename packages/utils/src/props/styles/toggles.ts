@@ -33,6 +33,10 @@ export const toggleProps = {
   fullscreen: {
     declarations: ["width: 100dvw", "height: 100dvh"],
   },
+  /** The zero minimums let a scrolling descendant scroll instead of stretching the page. */
+  grow: {
+    declarations: ["flex: 1", "min-width: 0", "min-height: 0"],
+  },
 } satisfies Record<keyof ToggleProps, ToggleProp>;
 
 export const togglePropKeys = keysOf(toggleProps);
@@ -48,4 +52,6 @@ export type ToggleProps = {
   fullheight?: boolean;
   /** Fill the viewport */
   fullscreen?: boolean;
+  /** Take the flex parent's leftover space, shrinking below its content if needed */
+  grow?: boolean;
 };

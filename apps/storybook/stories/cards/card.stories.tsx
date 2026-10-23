@@ -56,3 +56,7 @@ export const ColorSurfaces: Story = {
 export const Polymorphic: Story = {
   render: () => <Examples.Polymorphic />,
 };
+
+export const Grow: Story = {
+  render: () => <Examples.Grow />,
+};

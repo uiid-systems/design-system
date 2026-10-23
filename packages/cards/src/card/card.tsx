@@ -95,6 +95,7 @@ export const Card = ({
         <Stack
           data-slot="card-inner-container"
           fullwidth
+          grow={props.grow}
           {...InnerContainerProps}
         >
           {children}

@@ -14,7 +14,7 @@ Dogfood the design system everywhere, including docs, MDX, and examples. If a sy
 
 ## Style props
 
-Style props (spacing, sizing, border, `ax`/`ay`/`direction`, `flex`) and toggles (`evenly`, `wrap`, `fullwidth`, `fullheight`, `fullscreen`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
+Style props (spacing, sizing, border, `ax`/`ay`/`direction`, `flex`) and toggles (`evenly`, `wrap`, `fullwidth`, `fullheight`, `fullscreen`, `grow`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
 
 - **`packages/tokens/src/props.css` is generated** from the `styleProps` and `toggleProps` maps in `packages/utils/src/props/`. Never edit it by hand. After changing a definition, run `pnpm generate:props`; CI runs it with `--check` and fails until you do.
 - **Toggles write a bare `data-ui-{key}`** and are boolean only; a component lists them under `dataProps`. Their rules come after the style props, so a toggle wins a conflict (`fullwidth` beats `w`), and `evenly` sizes its direct children over their own style props, except a child that names its own `flex`, which keeps it.

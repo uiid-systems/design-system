@@ -7,6 +7,7 @@ export const toggleControls: ArgTypes = {
   fullwidth: { control: "boolean", table: { category: "Toggles" } },
   fullheight: { control: "boolean", table: { category: "Toggles" } },
   fullscreen: { control: "boolean", table: { category: "Toggles" } },
+  grow: { control: "boolean", table: { category: "Toggles" } },
   evenly: { control: "boolean", table: { category: "Toggles" } },
   wrap: { control: "boolean", table: { category: "Toggles" } },
 };
