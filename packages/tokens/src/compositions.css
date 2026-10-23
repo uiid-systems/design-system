@@ -121,6 +121,29 @@
     }
   }
 
+  /*
+   * Full-viewport scrim behind a blocking overlay, faded in and out on Base UI's
+   * [data-starting-style] / [data-ending-style]. Stacking is left out: each
+   * overlay sets its own z-index from its component tokens.
+   */
+  .composes-backdrop {
+    position: fixed;
+    min-height: 100dvh;
+    inset: 0;
+    background-color: var(--globals-backdrop-color);
+    opacity: var(--globals-backdrop-opacity);
+    transition: opacity var(--globals-transition-duration) cubic-bezier(0.45, 1.005, 0, 1.005);
+
+    /* iOS 26+: Ensure the backdrop covers the entire visible viewport. */
+    @supports (-webkit-touch-callout: none) {
+      position: absolute;
+    }
+
+    &:where([data-starting-style], [data-ending-style]) {
+      opacity: 0;
+    }
+  }
+
   .composes-popup-positioner {
     z-index: var(--globals-z-index-popup);
     outline: 0;

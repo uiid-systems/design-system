@@ -76,6 +76,10 @@
     "disabled": {
       "opacity": { "$value": 0.5, "$type": "number" }
     },
+    "backdrop": {
+      "color": { "$value": "{color.neutral.950}", "$type": "color" },
+      "opacity": { "$value": 0.5, "$type": "number" }
+    },
     "icon": {
       "size": { "$value": "0.875rem", "$type": "dimension" }
     },

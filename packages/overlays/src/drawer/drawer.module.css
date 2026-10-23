@@ -18,19 +18,12 @@
   outline-offset: var(--globals-outline-offset);
 }
 
+/* Fades with the drag, so it scales the shared scrim's opacity. */
 .drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  min-height: 100dvh;
-  background-color: var(--shade-background);
-  opacity: calc(var(--overlays-backdrop-opacity) * (1 - var(--drawer-swipe-progress, 0)));
+  composes: composes-backdrop from global;
+  opacity: calc(var(--globals-backdrop-opacity) * (1 - var(--drawer-swipe-progress, 0)));
   transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);
   z-index: var(--overlays-backdrop-z-index);
-
-  /* iOS 26+: keep the backdrop over the whole visible viewport. */
-  @supports (-webkit-touch-callout: none) {
-    position: absolute;
-  }
 
   &[data-starting-style],
   &[data-ending-style] {

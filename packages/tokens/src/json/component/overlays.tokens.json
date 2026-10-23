@@ -2,7 +2,6 @@
   "$description": "UIID Design System - Overlays Component Tokens",
   "overlays": {
     "backdrop": {
-      "opacity": { "$value": 0.9, "$type": "number" },
       "z-index": { "$value": "{globals.z-index.backdrop}", "$type": "number" }
     },
     "popup": {
