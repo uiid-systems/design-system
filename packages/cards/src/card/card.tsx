@@ -3,8 +3,14 @@ import { Group, Stack } from "@uiid/layout";
 import { paletteColorStyles } from "@uiid/tokens";
 import { cx, isRenderable } from "@uiid/utils";
 
-import { CARD_DEFAULT_COLOR } from "./card.constants";
+import {
+  CARD_DEFAULT_COLOR,
+  SHELL_CONTAINER_PROPS,
+  SHELL_GAP,
+  SHELL_TITLE_PROPS,
+} from "./card.constants";
 import type { CardProps } from "./card.types";
+import { isTextContent } from "./card.utils";
 import {
   CardContainer,
   CardTitle,
@@ -23,7 +29,7 @@ export const Card = ({
   action,
   footer,
   variant,
-  color = CARD_DEFAULT_COLOR,
+  color,
   className,
   ContainerProps,
   HeaderProps,
@@ -53,15 +59,27 @@ export const Card = ({
   const hasDescription = isRenderable(Description);
   const hasHeader = hasTitle || hasDescription || hasAction;
 
+  const isShell = variant === "shell";
+  const surfaceColor = isShell ? color : (color ?? CARD_DEFAULT_COLOR);
+
+  // A composed (non-text) title keeps CardTitle's row render.
+  const shellTitleProps = isShell
+    ? {
+        ...SHELL_TITLE_PROPS,
+        ...(isTextContent(Title) && { render: <h2 /> }),
+      }
+    : undefined;
+
   return (
     <CardContainer
       data-variant={variant}
       // ContainerProps lands on the same element, so its style and handlers
       // merge with the root's rather than replacing them.
+      {...(isShell && SHELL_CONTAINER_PROPS)}
       {...mergeProps<"div">(props, containerProps)}
       className={cx(
         variant && styles[`variant-${variant}`],
-        paletteColorStyles[color],
+        surfaceColor ? paletteColorStyles[surfaceColor] : styles["uncolored"],
         className,
         containerClassName,
       )}
@@ -82,7 +100,11 @@ export const Card = ({
           className={cx(styles["card-header"], headerClassName)}
         >
           {hasAction && <CardAction {...ActionProps}>{Action}</CardAction>}
-          {hasTitle && <CardTitle {...TitleProps}>{Title}</CardTitle>}
+          {hasTitle && (
+            <CardTitle {...shellTitleProps} {...TitleProps}>
+              {Title}
+            </CardTitle>
+          )}
           {hasDescription && (
             <CardDescription {...DescriptionProps}>
               {Description}
@@ -95,6 +117,7 @@ export const Card = ({
         <Stack
           data-slot="card-inner-container"
           fullwidth
+          gap={isShell ? SHELL_GAP : undefined}
           {...InnerContainerProps}
         >
           {children}

@@ -43,6 +43,31 @@
   box-shadow: none;
 }
 
+/*
+ * A page's main content area rather than an object on it. Only a shell with a
+ * `color` wears a palette; without one it must still clear the tint, since
+ * `.card` reads `--palette-tint` from whatever palette an ancestor set.
+ */
+.variant-shell {
+  border-width: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  &.uncolored {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  & > .card-header > :is([data-slot="card-title"], [data-slot="card-description"]) {
+    max-inline-size: var(--card-shell-lockup-max-width);
+  }
+
+  /* Half the shell's gap={6}, so the lockup reads as one group above the body. */
+  & > .card-header > [data-slot="card-title"] + [data-slot="card-description"] {
+    margin-block-start: calc(3 * var(--spacing-unit));
+  }
+}
+
 .card-description {
   color: var(--palette-on-tint);
 }
