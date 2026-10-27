@@ -60,3 +60,8 @@ export const Polymorphic: Story = {
 export const Grow: Story = {
   render: () => <Examples.Grow />,
 };
+
+export const Shell: Story = {
+  parameters: { layout: "fullscreen" },
+  render: () => <Examples.Shell />,
+};

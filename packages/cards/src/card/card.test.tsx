@@ -156,4 +156,94 @@ describe("Card", () => {
 
     expect(container.firstElementChild).toHaveClass("palette-blue");
   });
+
+  describe('variant="shell"', () => {
+    it("defaults to a full-width, p={6} / gap={6} page area", () => {
+      const { container } = render(
+        <Card variant="shell" title="Overview">
+          <div>One</div>
+          <div>Two</div>
+        </Card>,
+      );
+      const root = container.firstElementChild;
+
+      expect(root).toHaveAttribute("data-variant", "shell");
+      expect(root).toHaveAttribute("data-ui-fullwidth", "");
+      expect(root).toHaveAttribute("data-ui-p", "6");
+      expect(root).toHaveAttribute("data-ui-gap", "6");
+      expect(
+        container.querySelector('[data-slot="card-inner-container"]'),
+      ).toHaveAttribute("data-ui-gap", "6");
+    });
+
+    it("lets p, gap, fullwidth and the body gap override the defaults", () => {
+      const { container } = render(
+        <Card
+          variant="shell"
+          p={2}
+          gap={3}
+          fullwidth={false}
+          InnerContainerProps={{ gap: 1 }}
+        >
+          Body
+        </Card>,
+      );
+      const root = container.firstElementChild;
+
+      expect(root).toHaveAttribute("data-ui-p", "2");
+      expect(root).toHaveAttribute("data-ui-gap", "3");
+      expect(root).not.toHaveAttribute("data-ui-fullwidth");
+      expect(
+        container.querySelector('[data-slot="card-inner-container"]'),
+      ).toHaveAttribute("data-ui-gap", "1");
+    });
+
+    it("renders a plain-text title as an <h2> page heading", () => {
+      render(<Card variant="shell" title="Overview" />);
+      const title = screen.getByRole("heading", { level: 2, name: "Overview" });
+
+      expect(title).toHaveAttribute("data-ui-size", "4");
+      expect(title).toHaveAttribute("data-ui-weight", "medium");
+    });
+
+    it("lets TitleProps override the heading level and ramp", () => {
+      render(
+        <Card
+          variant="shell"
+          title="Overview"
+          TitleProps={{ render: <h1 />, size: 3 }}
+        />,
+      );
+      const title = screen.getByRole("heading", { level: 1 });
+
+      expect(title).toHaveAttribute("data-ui-size", "3");
+      expect(title).toHaveAttribute("data-ui-weight", "medium");
+    });
+
+    it("keeps a composed title a row", () => {
+      render(
+        <Card
+          variant="shell"
+          title={
+            <>
+              <svg />
+              Overview
+            </>
+          }
+        />,
+      );
+
+      expect(screen.queryByRole("heading")).toBeNull();
+    });
+
+    it("stays transparent until color is set", () => {
+      const { container, rerender } = render(
+        <Card variant="shell" title="Overview" />,
+      );
+      expect(container.firstElementChild?.className).not.toMatch(/palette-/);
+
+      rerender(<Card variant="shell" title="Overview" color="blue" />);
+      expect(container.firstElementChild).toHaveClass("palette-blue");
+    });
+  });
 });

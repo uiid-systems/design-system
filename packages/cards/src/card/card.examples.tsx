@@ -174,3 +174,19 @@ export const Grow = () => (
     </Card>
   </Stack>
 );
+
+export const Shell = () => (
+  <Card
+    variant="shell"
+    title="Overview"
+    description="Everything billed, collected, and outstanding this period."
+    action={<Button size="small">Export</Button>}
+  >
+    <Group gap={4} evenly>
+      <Card title="Billed">$128,400</Card>
+      <Card title="Collected">$96,250</Card>
+      <Card title="Outstanding">$32,150</Card>
+    </Group>
+    <Card title="Recent activity">{BODY}</Card>
+  </Card>
+);

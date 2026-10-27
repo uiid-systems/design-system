@@ -3,6 +3,7 @@
   "card": {
     "icon-size": { "$value": "1rem", "$type": "dimension" },
     "scale-up": { "$value": 1.02, "$type": "number" },
-    "scale-down": { "$value": 0.99, "$type": "number" }
+    "scale-down": { "$value": 0.99, "$type": "number" },
+    "shell-lockup-max-width": { "$value": "720px", "$type": "dimension" }
   }
 }

@@ -15,7 +15,19 @@ export type CardColor = PaletteColor;
 
 export type CardProps = Omit<StackProps, "title" | "color"> & {
   title?: React.ReactNode;
-  variant?: "ghost";
+  /**
+   * Surface treatment.
+   * - `"ghost"` removes the background, border, shadow. Keeps layout properties.
+   * - `"shell"` is a page's main content area: `fullwidth`, `p={6}`, no border,
+   *   radius or shadow, transparent until `color` is set, a page-heading title
+   *   (`<h2>`, size 4, medium) with the title and description capped at 720px,
+   *   and `gap={6}` between the header and body and between the body's children.
+   */
+  variant?: "ghost" | "shell";
+  /**
+   * Palette hue applied as a full bg/fg/border surface treatment. Defaults to
+   * `"neutral"`, except on the "shell" variant, which stays transparent until set.
+   */
   color?: CardColor;
   description?: React.ReactNode;
   thumbnail?: React.ReactNode;
