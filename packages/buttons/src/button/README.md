@@ -43,4 +43,6 @@ A disabled link keeps its `href` — stripping it would break router links — a
 - A plain Button is `type="button"`, so inside a `<form>` it doesn't submit. Pass `type="submit"` for the one that should.
 - `loading` doesn't disable the button: clicks still fire, so guard the handler or pass `disabled` too. While loading, the label is hidden from assistive tech and the button is announced as "Loading".
 - With a `tooltip`, the Button sits inside an inline-block wrapper, so `fullwidth` and flex-item props size it within that wrapper rather than the surrounding row.
+- On a colored surface, give a ghost button that surface's `color`. A colored ghost hovers one shade deeper than its palette's tint; an uncolored one hovers the neutral `--shade-accent`, which reads as grey on a red card.
+- Icons size themselves from the button's `size`: height from `--forms-icon-size`, width auto, with `size="large"` stepping up to `--button-icon-size-large`. Don't size them with a class.
 - A string `tooltip` only names a `square` or `circle` button, and a non-string tooltip never names one. Any other icon-only button needs its own `aria-label`.

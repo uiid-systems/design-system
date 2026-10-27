@@ -166,6 +166,7 @@
 }
 .size-large {
   composes: composes-size-large from global;
+  --forms-icon-size: var(--button-icon-size-large);
 }
 
 .shape-pill {
