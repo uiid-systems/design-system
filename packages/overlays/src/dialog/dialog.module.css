@@ -9,23 +9,8 @@
 }
 
 .dialog-backdrop {
-  position: fixed;
-  min-height: 100dvh;
-  inset: 0;
-  background-color: var(--shade-background);
-  opacity: var(--overlays-backdrop-opacity);
-  transition: opacity var(--globals-transition-duration) cubic-bezier(0.45, 1.005, 0, 1.005);
+  composes: composes-backdrop from global;
   z-index: var(--overlays-backdrop-z-index);
-
-  /* iOS 26+: Ensure the backdrop covers the entire visible viewport. */
-  @supports (-webkit-touch-callout: none) {
-    position: absolute;
-  }
-
-  &[data-starting-style],
-  &[data-ending-style] {
-    opacity: 0;
-  }
 }
 
 /*
