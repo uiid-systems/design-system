@@ -377,4 +377,10 @@
     width: 100dvw;
     height: 100dvh;
   }
+
+  [data-ui-grow] {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
 }

@@ -93,6 +93,26 @@ describe("Card", () => {
     expect(screen.queryByRole("separator")).toBeNull();
   });
 
+  it("grows its body with the card, unless InnerContainerProps opts out", () => {
+    const body = (el: HTMLElement) =>
+      el.querySelector('[data-slot="card-inner-container"]');
+
+    const { container, rerender } = render(
+      <Card grow title="Title">
+        Body
+      </Card>,
+    );
+    expect(container.firstElementChild).toHaveAttribute("data-ui-grow", "");
+    expect(body(container)).toHaveAttribute("data-ui-grow", "");
+
+    rerender(
+      <Card grow title="Title" InnerContainerProps={{ grow: false }}>
+        Body
+      </Card>,
+    );
+    expect(body(container)).not.toHaveAttribute("data-ui-grow");
+  });
+
   it("renders the footer slot", () => {
     render(<Card title="Title" footer={<span>Footer content</span>} />);
 

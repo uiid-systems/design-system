@@ -20,3 +20,14 @@ export const Polymorphic = () => (
     Rendered as &lt;section&gt; instead of &lt;div&gt;
   </Box>
 );
+
+export const Grow = () => (
+  <Box direction="column" gap={2} h={240} p={2} {...commonProps}>
+    <Box p={3} {...commonProps}>
+      Header at its content height
+    </Box>
+    <Box grow p={3} {...commonProps}>
+      grow takes the rest of the 240px column
+    </Box>
+  </Box>
+);
