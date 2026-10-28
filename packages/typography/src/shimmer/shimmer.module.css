@@ -25,6 +25,15 @@
   animation: shimmer var(--shimmer-duration) linear infinite;
 }
 
+/*
+ * Text trims sizes 2 and up to cap height and baseline. A background paints
+ * only inside the box, so on a trimmed box the clipped glyphs lose their
+ * descenders and accents. Keep the whole line box wherever Text set a step.
+ */
+.shimmer[data-ui-size] {
+  text-box-trim: none;
+}
+
 @keyframes shimmer {
   from {
     background-position: 100% center;
