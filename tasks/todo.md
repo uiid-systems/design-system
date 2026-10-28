@@ -80,15 +80,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Renders the text with `data-slot="shimmer"`. Custom properties reflect the props and the defaults (2000 ms; spread `2` × `children.length` px)
-- [ ] A caller's `style` is merged in. `Text` props come through as `data-ui-*` attributes, and `render` swaps the element
-- [ ] No `"use client"`, no hooks, no new tokens and no new dependencies
+- [x] Renders the text with `data-slot="shimmer"`. Custom properties reflect the props and the defaults (2000 ms; spread `2` × `children.length` px)
+- [x] A caller's `style` is merged in. `Text` props come through as `data-ui-*` attributes, and `render` swaps the element
+- [x] No `"use client"`, no hooks, no new tokens and no new dependencies
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/typography`
-- [ ] `pnpm run build --filter=@uiid/typography`
-- [ ] `pnpm size`: `@uiid/typography` stays at or under 25 kB
+- [x] `pnpm test:run packages/typography`
+- [x] `pnpm run build --filter=@uiid/typography`
+- [x] `pnpm size`: `@uiid/typography` stays at or under 25 kB
 
 **Dependencies:** None
 
@@ -102,13 +102,13 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] The story renders in Storybook, backed by the README
-- [ ] The typography overview lists Shimmer
+- [x] The story renders in Storybook, backed by the README
+- [x] The typography overview lists Shimmer
 
 **Verification:**
 
-- [ ] Manual check in Storybook: the sweep in light and dark, a palette `color`, and reduced motion (emulated in DevTools). Note whether `--shade-background` reads well, which is the spec's open question
-- [ ] `pnpm run lint && pnpm run format:check`
+- [x] Manual check in Storybook: the sweep in light and dark, a palette `color`, and reduced motion (emulated in DevTools). Note whether `--shade-background` reads well, which is the spec's open question
+- [x] `pnpm run lint && pnpm run format:check`
 
 **Dependencies:** Task 4
 
@@ -118,7 +118,7 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 ### Checkpoint B
 
-- [ ] The typography tests, build and `pnpm size` pass
+- [x] The typography tests, build and `pnpm size` pass
 - [ ] Human review: the shimmer highlight decision, after which PR 2 is ready
 
 ## Phase C: `ai-scaffold`
