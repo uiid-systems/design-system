@@ -5,6 +5,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Textarea } from "./textarea";
 
+import styles from "./textarea.module.css";
+
 describe("Textarea", () => {
   // ============================================
   // RENDERING
@@ -315,5 +317,127 @@ describe("Textarea color", () => {
     render(<Textarea color="blue" variant="ghost" />);
     expect(className()).toMatch(/composes-field-surface-color/);
     expect(className()).toMatch(/composes-field-surface-ghost/);
+  });
+});
+
+describe("Textarea before/after slots", () => {
+  const wrapper = (container: HTMLElement) =>
+    container.querySelector("[data-slot='input-wrapper']");
+
+  it("renders no wrapper and keeps its own surface when neither slot is set", () => {
+    const { container } = render(<Textarea variant="ghost" color="blue" />);
+    const textarea = screen.getByRole("textbox");
+
+    expect(wrapper(container)).toBeNull();
+    expect(textarea.className).not.toMatch(/textarea-inner/);
+    expect(textarea.className).toMatch(/composes-field-surface-ghost/);
+    expect(textarea).toHaveClass("palette-blue");
+  });
+
+  it("wraps the control in a vertical InputWrapper when before is set", () => {
+    const { container } = render(<Textarea before="top" />);
+    expect(wrapper(container)).toHaveAttribute("data-orientation", "vertical");
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveTextContent("top");
+    expect(container.querySelector("[data-slot='input-after']")).toBeNull();
+  });
+
+  it("wraps the control in a vertical InputWrapper when after is set", () => {
+    const { container } = render(<Textarea after="bottom" />);
+    expect(wrapper(container)).toHaveAttribute("data-orientation", "vertical");
+    expect(container.querySelector("[data-slot='input-before']")).toBeNull();
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveTextContent("bottom");
+  });
+
+  it("orders the parts as before, textarea, after", () => {
+    const { container } = render(<Textarea before="top" after="bottom" />);
+    const slots = Array.from(wrapper(container)?.children ?? []).map((el) =>
+      el.getAttribute("data-slot"),
+    );
+    expect(slots).toEqual(["input-before", "textarea", "input-after"]);
+  });
+
+  it("moves variant, fullwidth and color to the wrapper", () => {
+    const { container } = render(
+      <Textarea before="top" variant="ghost" fullwidth color="blue" />,
+    );
+    const surface = wrapper(container);
+    const textarea = screen.getByRole("textbox");
+
+    expect(surface?.className).toMatch(/composes-field-surface-ghost/);
+    expect(surface?.className).toMatch(/composes-fullwidth/);
+    expect(surface).toHaveClass("palette-blue");
+    expect(surface?.className).toMatch(/composes-field-surface-color/);
+
+    expect(textarea.className).not.toMatch(/composes-field-surface-ghost/);
+    expect(textarea.className).not.toMatch(/composes-fullwidth/);
+    expect(textarea).not.toHaveClass("palette-blue");
+    expect(textarea.className).not.toMatch(/composes-field-surface-color/);
+  });
+
+  it("keeps size and resize on the inner textarea and hands size to the wrapper too", () => {
+    const { container } = render(
+      <Textarea before="top" size="large" resize="none" />,
+    );
+    const textarea = screen.getByRole("textbox");
+
+    expect(textarea).toHaveClass(styles["textarea"]);
+    expect(textarea).toHaveClass(styles["textarea-inner"]);
+    expect(textarea).toHaveClass(styles["size-large"]);
+    expect(textarea).toHaveClass(styles["resize-none"]);
+    expect(wrapper(container)?.className).toMatch(/composes-size-large/);
+  });
+
+  it("still lands ref, rows, name and className on the textarea", () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    render(
+      <Textarea
+        before="top"
+        ref={ref}
+        rows={6}
+        name="bio"
+        className="custom"
+      />,
+    );
+    const textarea = screen.getByRole("textbox");
+
+    expect(ref.current).toBe(textarea);
+    expect(textarea).toHaveAttribute("rows", "6");
+    expect(textarea).toHaveAttribute("name", "bio");
+    expect(textarea).toHaveClass("custom");
+  });
+
+  it("still reports onValueChange from the slotted textarea", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<Textarea after="bottom" onValueChange={onValueChange} />);
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(onValueChange).toHaveBeenCalled();
+  });
+
+  it("lets a button in the after slot take a click and follow the textarea in tab order", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Textarea
+        after={
+          <button type="button" onClick={onClick}>
+            Send
+          </button>
+        }
+      />,
+    );
+    const textarea = screen.getByRole("textbox");
+    const button = screen.getByRole("button", { name: "Send" });
+
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1);
+
+    textarea.focus();
+    await user.tab();
+    expect(button).toHaveFocus();
   });
 });

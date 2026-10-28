@@ -31,15 +31,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Every existing `textarea.test.tsx` case passes unchanged, and the no-slot output is identical
-- [ ] With slots, the DOM order is `input-before`, `textarea`, `input-after`; variant, fullwidth and color sit on the wrapper, while size and resize stay on the textarea
-- [ ] `ref`, `rows`, `name` and `onValueChange` reach the `<textarea>`; a `<button>` in `after` is clickable and comes after the textarea in tab order
+- [x] Every existing `textarea.test.tsx` case passes unchanged, and the no-slot output is identical
+- [x] With slots, the DOM order is `input-before`, `textarea`, `input-after`; variant, fullwidth and color sit on the wrapper, while size and resize stay on the textarea
+- [x] `ref`, `rows`, `name` and `onValueChange` reach the `<textarea>`; a `<button>` in `after` is clickable and comes after the textarea in tab order
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/forms`
-- [ ] `pnpm run build --filter=@uiid/forms`
-- [ ] Compiled CSS check: `.textarea-inner` sits in `uiid.components`, and its border and outline rules outrank `composes-invalid`
+- [x] `pnpm test:run packages/forms`
+- [x] `pnpm run build --filter=@uiid/forms`
+- [x] Compiled CSS check: `.textarea-inner` sits in `uiid.components`, and its border and outline rules outrank `composes-invalid`
 
 **Dependencies:** Task 1
 
