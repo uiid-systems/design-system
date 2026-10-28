@@ -1,8 +1,9 @@
 "use client";
 
-import { Group } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
+import { INPUT_DEFAULT_ORIENTATION } from "../input.constants";
 import { inputColorClassName } from "../input.styles";
 import type { InputWrapperProps } from "../input.types";
 import { inputVariants } from "../input.variants";
@@ -12,6 +13,7 @@ import styles from "../input.module.css";
 export const InputWrapper = ({
   before,
   after,
+  orientation = INPUT_DEFAULT_ORIENTATION,
   size,
   fullwidth,
   variant,
@@ -21,19 +23,16 @@ export const InputWrapper = ({
 }: InputWrapperProps) => {
   if (!before && !after) return <>{children}</>;
 
-  return (
-    <Group
-      data-slot="input-wrapper"
-      ay="center"
-      className={cx(
-        styles["input"],
-        styles["input-edge"],
-        styles["input-wrapper"],
-        inputVariants({ size, fullwidth, variant }),
-        inputColorClassName(color),
-        className,
-      )}
-    >
+  const wrapperClassName = cx(
+    styles["input"],
+    styles["input-edge"],
+    styles["input-wrapper"],
+    inputVariants({ size, fullwidth, variant }),
+    inputColorClassName(color),
+    className,
+  );
+  const slots = (
+    <>
       {before && (
         <span data-slot="input-before" className={styles["input-slot"]}>
           {before}
@@ -45,6 +44,28 @@ export const InputWrapper = ({
           {after}
         </span>
       )}
+    </>
+  );
+
+  /* Horizontal centers the slots beside the control. Vertical stretches them
+     across it, so a slot row spans the surface the same way the control does. */
+  return orientation === "vertical" ? (
+    <Stack
+      data-slot="input-wrapper"
+      data-orientation="vertical"
+      ax="stretch"
+      className={wrapperClassName}
+    >
+      {slots}
+    </Stack>
+  ) : (
+    <Group
+      data-slot="input-wrapper"
+      data-orientation="horizontal"
+      ay="center"
+      className={wrapperClassName}
+    >
+      {slots}
     </Group>
   );
 };

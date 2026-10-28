@@ -10,14 +10,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Every existing `input.test.tsx` case passes unchanged
-- [ ] The default renders `data-orientation="horizontal"` with the same classes as before
-- [ ] `orientation="vertical"` renders `data-orientation="vertical"` and keeps the surface, edge, color and slot `data-slot`s
+- [x] Every existing `input.test.tsx` case passes unchanged
+- [x] The default renders `data-orientation="horizontal"` with the same classes as before
+- [x] `orientation="vertical"` renders `data-orientation="vertical"` and keeps the surface, edge, color and slot `data-slot`s
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/forms/src/input`
-- [ ] `pnpm run build --filter=@uiid/forms`
+- [x] `pnpm test:run packages/forms/src/input`
+- [x] `pnpm run build --filter=@uiid/forms`
 
 **Dependencies:** None
 

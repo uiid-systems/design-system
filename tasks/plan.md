@@ -38,7 +38,7 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 ### Phase A: `forms-input-group` (PR 1)
 
-- [ ] Task 1: `InputWrapper` `orientation`
+- [x] Task 1: `InputWrapper` `orientation`
 - [ ] Task 2: Textarea `before`/`after`
 - [ ] Task 3: Textarea and InputWrapper docs and story
 

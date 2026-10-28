@@ -129,6 +129,73 @@ describe("InputWrapper composition", () => {
   });
 });
 
+describe("InputWrapper orientation", () => {
+  it("defaults to horizontal and keeps the classes it had before orientation existed", () => {
+    const { container } = render(
+      <InputWrapper before="$">
+        <InputControl inner />
+      </InputWrapper>,
+    );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveAttribute("data-orientation", "horizontal");
+    expect(wrapper).toHaveAttribute("data-ui-ay", "center");
+    expect(wrapper).toHaveClass(styles["input"]);
+    expect(wrapper).toHaveClass(styles["input-edge"]);
+    expect(wrapper).toHaveClass(styles["input-wrapper"]);
+    expect(wrapper?.className).toMatch(/composes-size-medium/);
+  });
+
+  it("stamps horizontal on the wrapper Input renders", () => {
+    const { container } = render(<Input before="$" />);
+    expect(
+      container.querySelector("[data-slot='input-wrapper']"),
+    ).toHaveAttribute("data-orientation", "horizontal");
+  });
+
+  it("stacks the slots when vertical and keeps the surface, edge and color", () => {
+    const { container } = render(
+      <InputWrapper
+        orientation="vertical"
+        before={<span>top</span>}
+        after={<span>bottom</span>}
+        color="blue"
+      >
+        <InputControl inner />
+      </InputWrapper>,
+    );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+
+    expect(wrapper).toHaveAttribute("data-orientation", "vertical");
+    expect(wrapper).toHaveAttribute("data-ui-ay", "stretch");
+    expect(wrapper).toHaveClass(styles["input"]);
+    expect(wrapper).toHaveClass(styles["input-edge"]);
+    expect(wrapper).toHaveClass(styles["input-wrapper"]);
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+    expect(container.querySelector("[data-slot='input-before']")).toHaveClass(
+      styles["input-slot"],
+    );
+    expect(container.querySelector("[data-slot='input-after']")).toHaveClass(
+      styles["input-slot"],
+    );
+  });
+
+  it("orders a vertical wrapper as before, control, after", () => {
+    const { container } = render(
+      <InputWrapper orientation="vertical" before="top" after="bottom">
+        <InputControl inner />
+      </InputWrapper>,
+    );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    const slots = Array.from(wrapper?.children ?? []).map((el) =>
+      el.getAttribute("data-slot"),
+    );
+
+    expect(slots).toEqual(["input-before", "input", "input-after"]);
+  });
+});
+
 describe("Input required reaches the control", () => {
   it("marks the input itself required, not just the label", () => {
     render(<Input label="Email" required />);

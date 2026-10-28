@@ -16,6 +16,8 @@ export type InputColor = PaletteColor;
 export type InputWrapperProps = {
   before?: React.ReactNode;
   after?: React.ReactNode;
+  /** Slot placement: beside the control, or above and below it. */
+  orientation?: "horizontal" | "vertical";
   className?: string;
   children: React.ReactNode;
   /** Palette hue applied as a tinted surface treatment. */
