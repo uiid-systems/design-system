@@ -410,6 +410,20 @@ describe("Textarea before/after slots", () => {
     expect(textarea).toHaveClass("custom");
   });
 
+  /* The wrapper reads disabled and invalid off the textarea through `:has()`,
+     so both have to land on the slotted `<textarea>` itself. */
+  it("keeps disabled and invalid on the slotted textarea for the wrapper to read", () => {
+    const { container } = render(
+      <Textarea before="top" disabled aria-invalid="true" />,
+    );
+    const textarea = screen.getByRole("textbox");
+
+    expect(textarea).toBeDisabled();
+    expect(textarea).toHaveAttribute("aria-invalid", "true");
+    expect(wrapper(container)?.contains(textarea)).toBe(true);
+    expect(wrapper(container)?.className).toMatch(/composes-disabled-within/);
+  });
+
   it("still reports onValueChange from the slotted textarea", async () => {
     const user = userEvent.setup();
     const onValueChange = vi.fn();
