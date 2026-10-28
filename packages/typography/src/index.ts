@@ -9,3 +9,6 @@ export * from "./prose/prose.types";
 
 export * from "./reveal/reveal";
 export * from "./reveal/reveal.types";
+
+export * from "./shimmer/shimmer";
+export * from "./shimmer/shimmer.types";

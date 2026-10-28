@@ -1,0 +1,44 @@
+/*
+ * Two background layers clipped to the glyphs: a band of the page background
+ * on top, the text's own color underneath. The band's layer is 2.5x the box,
+ * so sliding it from 100% to 0% carries the band in from the left edge and
+ * out past the right.
+ *
+ * The glyphs are hidden with `-webkit-text-fill-color`, not `color`, so
+ * `color` keeps holding Text's resolved hue and `currentColor` in the bottom
+ * layer paints with it. A palette `color` or an `emphasis` shimmers as itself.
+ */
+.shimmer {
+  /* Size the box to the text so the sweep covers the label, not its container.
+     Inline renders ignore this; a block `render` shrinks to fit. */
+  width: fit-content;
+  background-image:
+    linear-gradient(90deg, transparent calc(50% - var(--shimmer-spread)), var(--shade-background), transparent calc(50% + var(--shimmer-spread))),
+    linear-gradient(currentColor, currentColor);
+  background-size:
+    250% 100%,
+    auto;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% center;
+  }
+  to {
+    background-position: 0% center;
+  }
+}
+
+/* Static text in its own color: no sweep, and no dependence on text clipping. */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
