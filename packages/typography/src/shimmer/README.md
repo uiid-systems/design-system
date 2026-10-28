@@ -42,6 +42,6 @@ The base color is whatever `Text` resolves — the default foreground, a palette
 
 ## Notes
 
-- `children` must be a string. The highlight is `children.length × spread` px wide, so a longer label gets a proportionally wider band.
-- The element sizes itself to its text (`width: fit-content`), so a block `render` such as `<p />` shrinks to the label and the sweep covers the text rather than the container.
+- `children` must be a string. The highlight fades in and out over `children.length × spread` px on each side of its center, so a longer label gets a proportionally wider band.
+- The element sizes itself to its text (`width: fit-content`), so a block `render` such as `<p />` shrinks to the label and the sweep covers the text rather than the container. A parent's `text-align: center` therefore no longer centers it; use the parent's layout props instead.
 - Each Shimmer runs on its own clock, so several mounted at different times will not be in phase.

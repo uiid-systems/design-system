@@ -46,6 +46,13 @@ describe("Shimmer", () => {
     ).toBe("22px");
   });
 
+  it("sets a zero spread for an empty string", () => {
+    const { container } = render(<Shimmer>{""}</Shimmer>);
+    expect(getRoot(container).style.getPropertyValue("--shimmer-spread")).toBe(
+      "0px",
+    );
+  });
+
   it("merges a caller's style with the custom properties", () => {
     const { container } = render(
       <Shimmer style={{ opacity: 0.5 }}>hello</Shimmer>,
