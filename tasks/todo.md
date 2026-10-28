@@ -53,13 +53,13 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] The `BeforeAfterSlots` example and story render in Storybook
-- [ ] Both READMEs describe the new props, and the MDX pages pick them up
+- [x] The `BeforeAfterSlots` example and story render in Storybook
+- [x] Both READMEs describe the new props, and the MDX pages pick them up
 
 **Verification:**
 
-- [ ] `pnpm --filter @uiid/storybook dev` and a manual check: focus ring, the four sizes, ghost and color in both themes, invalid, the resize handle
-- [ ] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev` and a manual check: focus ring, the four sizes, ghost and color in both themes, invalid, the resize handle
+- [x] `pnpm run lint && pnpm run format:check`
 
 **Dependencies:** Task 2
 
@@ -69,7 +69,7 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 ### Checkpoint A
 
-- [ ] `pnpm test:run packages/forms`, the forms build and `pnpm size` all pass
+- [x] `pnpm test:run packages/forms`, the forms build and `pnpm size` all pass
 - [ ] Human review, after which PR 1 is ready
 
 ## Phase B: `typography-shimmer`
