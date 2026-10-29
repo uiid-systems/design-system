@@ -129,14 +129,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] `pnpm run build --filter=@uiid/ai` emits `dist/index.js` and `dist/index.d.ts`
-- [ ] `pnpm test:run packages/ai` discovers the package (a placeholder test passes, and Task 7 replaces it)
-- [ ] Storybook resolves `@uiid/ai` from source with no configuration change
+- [x] `pnpm run build --filter=@uiid/ai` emits `dist/index.js` and `dist/index.d.ts`
+- [x] `pnpm test:run packages/ai` discovers the package (a placeholder test passes, and Task 7 replaces it)
+- [x] Storybook resolves `@uiid/ai` from source with no configuration change
 
 **Verification:**
 
-- [ ] `pnpm install && pnpm run build --filter=@uiid/ai`
-- [ ] `pnpm test:run packages/ai`
+- [x] `pnpm install && pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai`
 
 **Dependencies:** None
 
@@ -150,14 +150,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] The unions match the spec, and the drift assertions pass against the installed `ai`
-- [ ] No file in `dist/*.d.ts` mentions `ai`
-- [ ] The lockfile diff touches only `ai` and its dependencies
+- [x] The unions match the spec, and the drift assertions pass against the installed `ai`
+- [x] No file in `dist/*.d.ts` mentions `ai`
+- [x] The lockfile diff touches only `ai` and its dependencies
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
 
 **Dependencies:** Task 6
 
@@ -171,15 +171,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] `pnpm size` measures `@uiid/ai`
-- [ ] `@uiid/design-system` builds and re-exports the shared types
-- [ ] `pnpm -r publish --dry-run` skips `@uiid/ai`
+- [x] `pnpm size` measures `@uiid/ai`
+- [x] `@uiid/design-system` does not depend on `@uiid/ai` while it is private; the umbrella re-export is deferred to the POC's final step (review finding, see spec row 10)
+- [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
 
 **Verification:**
 
-- [ ] `pnpm run build`
-- [ ] `pnpm size`
-- [ ] `pnpm -r publish --dry-run 2>&1 | grep -c '@uiid/ai'` prints `0`
+- [x] `pnpm run build`
+- [x] `pnpm size`
+- [x] `pnpm -r publish --dry-run 2>&1 | grep -c '@uiid/ai'` prints `0`
 
 **Dependencies:** Task 7
 
@@ -196,12 +196,12 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Each touchpoint Tasks 6–8 changed is listed in the checklist
-- [ ] Nothing in the checklist contradicts the repo
+- [x] Each touchpoint Tasks 6–8 changed is listed in the checklist
+- [x] Nothing in the checklist contradicts the repo
 
 **Verification:**
 
-- [ ] Walk the checklist against the Phase C diff
+- [x] Walk the checklist against the Phase C diff
 
 **Dependencies:** Task 8
 
@@ -211,5 +211,5 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 ### Checkpoint C (wave complete)
 
-- [ ] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
+- [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 3 is ready and the `markdown` spec can start

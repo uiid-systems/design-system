@@ -34,6 +34,7 @@ export default function App() {
 
 ### Components
 
+- `@uiid/ai` — AI chat components (private while the POC is in progress)
 - `@uiid/buttons` — Button, ToggleButton
 - `@uiid/cards` — Card components
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting

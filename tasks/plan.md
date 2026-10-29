@@ -62,16 +62,16 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 ### Phase C: `ai-scaffold` (PR 3)
 
-- [ ] Task 6: Package skeleton that builds and tests
-- [ ] Task 7: Shared types and drift test
-- [ ] Task 8: Release, size and umbrella registration
-- [ ] Task 9: Fix the new-package checklist in `.agents/components.md`
+- [x] Task 6: Package skeleton that builds and tests
+- [x] Task 7: Shared types and drift test
+- [x] Task 8: Release, size and umbrella registration
+- [x] Task 9: Fix the new-package checklist in `.agents/components.md`
 
 ### Checkpoint C (wave complete)
 
-- [ ] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
-- [ ] `grep -r '"ai"' packages/ai/dist` returns nothing
-- [ ] `pnpm -r publish --dry-run` skips `@uiid/ai`
+- [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
+- [x] `grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
 - [ ] Human review, then specs for wave 2 (`markdown`)
 
 ## Risks and mitigations

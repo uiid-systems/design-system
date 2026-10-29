@@ -23,6 +23,7 @@
   },
   "files": [],
   "references": [
+    { "path": "./packages/ai" },
     { "path": "./packages/buttons" },
     { "path": "./packages/cards" },
     { "path": "./packages/code" },

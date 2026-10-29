@@ -12,6 +12,11 @@
       "extra-files": [
         {
           "type": "json",
+          "path": "packages/ai/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
           "path": "packages/buttons/package.json",
           "jsonpath": "$.version"
         },

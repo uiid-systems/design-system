@@ -9,6 +9,7 @@
 module.exports = {
   layout: "uiid.primitives",
   typography: "uiid.primitives",
+  ai: "uiid.components",
   buttons: "uiid.components",
   cards: "uiid.components",
   code: "uiid.components",
