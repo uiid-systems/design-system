@@ -235,6 +235,10 @@ describe("PromptInput", () => {
       fireEvent.keyDown(textarea, { key: "Enter", isComposing: true });
       expect(onSubmit).not.toHaveBeenCalled();
 
+      // Safari reports the committing Enter with the legacy composition keyCode
+      fireEvent.keyDown(textarea, { key: "Enter", keyCode: 229 });
+      expect(onSubmit).not.toHaveBeenCalled();
+
       fireEvent.keyDown(textarea, { key: "Enter" });
       expect(onSubmit).toHaveBeenCalledTimes(1);
     });
