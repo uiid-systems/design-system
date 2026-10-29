@@ -54,9 +54,9 @@ export type ConversationScrollButtonProps = ButtonProps;
 
 export type UseStickToBottomReturn = {
   /** Attach to the element that scrolls. */
-  scrollRef: React.RefCallback<HTMLDivElement>;
+  scrollRef: (node: HTMLDivElement | null) => void;
   /** Attach to the element whose size changes as content arrives. */
-  contentRef: React.RefCallback<HTMLDivElement>;
+  contentRef: (node: HTMLDivElement | null) => void;
   /** Whether the container is pinned to its newest content. */
   isAtBottom: boolean;
   /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */
@@ -145,7 +145,9 @@ Scaffold row 11, the `@import "@uiid/ai/globals.css"` in `packages/design-system
 
 ### Dependencies
 
-`packages/ai/package.json` adds `@uiid/buttons`, `@uiid/icons`, `@uiid/layout` and `@uiid/utils` as `workspace:*` dependencies. All `@uiid/*` imports are external in the package build, so none of them reach `dist` or the `pnpm size` number; the module adds its own few kilobytes to the measured `@uiid/ai` figure, which stays well under `40 kB`.
+`packages/ai/package.json` adds `@uiid/buttons`, `@uiid/icons`, `@uiid/layout` and `@uiid/utils` as `workspace:*` dependencies. All `@uiid/*` imports are external in the package build, so none of them reach `dist`. `pnpm size` is a different measure: it bundles `dist/index.js` with everything it imports, workspace packages included, so `Button` brings its `Tooltip` and the Base UI and Floating UI code behind it. Measured after this module, `@uiid/ai` is 65.85 kB brotli, of which `@uiid/buttons` alone accounts for about 40 kB. The scaffold's `40 kB` entry was set for a types-only package and was already expected to move as modules landed; it rises in `.size-limit.json` to the figure settled in open question 4.
+
+One wrinkle found at build time: the package's lockfile entries for `@types/react` and `@types/react-dom` had resolved to newer versions than every sibling package uses, because `@uiid/ai` was scaffolded later. The built `.d.ts` files of `@uiid/utils` and `@uiid/layout` resolve `react` from their own `node_modules`, so a ref type from one copy was unrelated to the same type from the other and `tsc` refused to compose them. The entries are pinned to the siblings' versions in `pnpm-lock.yaml`, with the declared `^` ranges unchanged.
 
 ## Files
 
@@ -207,13 +209,13 @@ Checked by hand in Storybook: the `Streaming` story opens at the bottom with no 
 ## Boundaries
 
 - **Always:** keep `"use client"` on the component and hook files only; keep the button a sibling of the content; set `data-slot` on every part; route reduced motion through CSS `scroll-behavior`; compose consumer refs with `useComposedRefs` rather than dropping them.
-- **Ask first:** adding `use-stick-to-bottom` or any scroll library; any animation beyond the browser's smooth scroll; an options object on the hook; raising the `40 kB` limit; the design-system `globals.css` import before row 10 lands.
+- **Ask first:** adding `use-stick-to-bottom` or any scroll library; any animation beyond the browser's smooth scroll; an options object on the hook; raising the size limit again; the design-system `globals.css` import before row 10 lands.
 - **Never:** inline styles for position or spacing; a `MutationObserver` in place of the `ResizeObserver`; porting `ConversationDownload`; `overflow-anchor` as the mechanism, which Safari does not support.
 
 ## Success criteria
 
 - Every acceptance criterion above holds.
-- `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass.
+- `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass, the last against the raised entry.
 - `packages/ai/dist/ai.css` exists and `grep -r '"ai"' packages/ai/dist` returns nothing.
 - The four parts and both hooks are exported from `@uiid/ai`, with `Basic`, `Streaming` and `EmptyState` stories and a README-backed MDX page under `apps/storybook/stories/ai/`.
 
@@ -230,3 +232,4 @@ All three were settled at approval on 2026-10-28, each as recommended:
 1. **Resize follow is an instant jump.** Upstream glides to the new bottom with a spring on each token. This spec jumps, which is what most chat UIs do and what keeps the hook to a few dozen lines. If the Streaming story looks harsh, the fix is a CSS transition on the content, not a JS animation.
 2. **The button's default look** is `shape="circle"`, `variant="subtle"`, `size="small"`, centered 1 rem above the bottom edge. Every value is overridable by props.
 3. **Both hooks are exported.** The ticket names `useStickToBottom` as a deliverable and the follow-ups above have a use for it; `useConversation` is the context accessor.
+4. **The `@uiid/ai` size limit.** `Button` is a required reuse and costs about 40 kB in the measurement, so the `40 kB` entry cannot hold. Recommendation: raise it to `70 kB`, tight against the measured 65.85 kB, and let `ai-message`, `ai-reasoning-tool` and `ai-prompt-input` each revisit it with their own numbers, which is the pattern the scaffold spec set.

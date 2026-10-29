@@ -297,18 +297,18 @@ Each task reads [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conv
 
 **Acceptance criteria:**
 
-- [ ] The root is `role="log"` with `data-slot="conversation"`; the viewport, content, empty state and button carry their slots
-- [ ] Firing the fake `ResizeObserver` while pinned scrolls to the bottom instantly; after a release it does nothing
-- [ ] A scroll up past the threshold shows the button; a scroll down past the threshold, or a shrink that lands at the bottom, does not; a scroll back within the threshold hides it
-- [ ] The button scrolls to the bottom with no `behavior` and re-pins; its label, variant and children are overridable
-- [ ] `ConversationContent` and `ConversationEmptyState` pass Stack props through, with the spec's defaults in place
-- [ ] `useConversation` throws its named error outside `Conversation`
-- [ ] The barrel's runtime exports are the four parts, both hooks and `Markdown`
+- [x] The root is `role="log"` with `data-slot="conversation"`; the viewport, content, empty state and button carry their slots
+- [x] Firing the fake `ResizeObserver` while pinned scrolls to the bottom instantly; after a release it does nothing
+- [x] A scroll up past the threshold shows the button; a scroll down past the threshold, or a shrink that lands at the bottom, does not; a scroll back within the threshold hides it
+- [x] The button scrolls to the bottom with no `behavior` and re-pins; its label, variant and children are overridable
+- [x] `ConversationContent` and `ConversationEmptyState` pass Stack props through, with the spec's defaults in place
+- [x] `useConversation` throws its named error outside `Conversation`
+- [x] The barrel's runtime exports are the four parts, both hooks and `Markdown`
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && ls packages/ai/dist/ai.css && grep -r '"ai"' packages/ai/dist` returns the CSS file and nothing else
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && ls packages/ai/dist/ai.css && grep -r '"ai"' packages/ai/dist` returns the CSS file and nothing else
 - [ ] `pnpm size`: `@uiid/ai` stays under 40 kB
 
 **Dependencies:** Task 12

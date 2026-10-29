@@ -121,7 +121,7 @@ Spec: [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conversation.m
 ### Phase E: `ai-conversation` (PR 5)
 
 - [x] Task 12: Spec approved and linked from the capability map
-- [ ] Task 13: `useStickToBottom` hook, the four parts, context, CSS, tests and barrel export
+- [x] Task 13: `useStickToBottom` hook, the four parts, context, CSS, tests and barrel export
 - [ ] Task 14: Conversation examples, README and stories
 
 ### Checkpoint E

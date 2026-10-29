@@ -1,0 +1,39 @@
+/* The region. Positioned so the scroll button anchors to it, and allowed to
+   shrink so `grow` works inside a Stack. */
+.conversation {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* The element that scrolls. `scrollToBottom` passes no behavior, so the smooth
+   scroll lives here, where reduced motion can turn it off. */
+.viewport {
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+}
+
+/* Fills the viewport so an empty state can center; a short transcript still
+   starts at the top because the column justifies to start. */
+.content {
+  min-height: 100%;
+}
+
+.empty-state {
+  text-align: center;
+}
+
+.scroll-button {
+  position: absolute;
+  bottom: calc(var(--spacing-unit) * 4);
+  left: 50%;
+  translate: -50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    scroll-behavior: auto;
+  }
+}
