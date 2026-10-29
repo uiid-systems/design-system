@@ -224,17 +224,17 @@ Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) a
 
 **Acceptance criteria:**
 
-- [ ] A complete document renders the expected elements as direct children of the root, and a one-line string renders as a `p`
-- [ ] With `streaming`, every cut case in the spec renders without throwing, without raw delimiters in `textContent`, and without a key warning; an open fence renders as `pre > code`
-- [ ] Without `streaming`, finished text with a stray backtick keeps every word
-- [ ] A `javascript:` href is dropped; `Prose` props, `render` and `className` pass through
-- [ ] The barrel exports `Markdown` and nothing else at runtime
+- [x] A complete document renders the expected elements as direct children of the root, and a one-line string renders as a `p`
+- [x] With `streaming`, every cut case in the spec renders without throwing, without raw delimiters in `textContent`, and without a key warning; an open fence renders as `pre > code`
+- [x] Without `streaming`, finished text with a stray backtick keeps every word
+- [x] A `javascript:` href is dropped; `Prose` props, `render` and `className` pass through
+- [x] The barrel exports `Markdown` and nothing else at runtime
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
-- [ ] `pnpm size`: `@uiid/ai` stays under 40 kB
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] `pnpm size`: `@uiid/ai` stays under 40 kB
 
 **Dependencies:** None (spec approved)
 

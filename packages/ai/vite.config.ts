@@ -3,4 +3,5 @@ import { createViteConfig } from "../../vite.config";
 
 export default createViteConfig({
   cssLayer: cssLayers.ai,
+  external: [/^markdown-to-jsx(\/|$)/],
 });

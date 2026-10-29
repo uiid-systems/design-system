@@ -104,7 +104,7 @@ Spec: [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md), approved 2
 
 ### Phase D: `markdown` (PR 4)
 
-- [ ] Task 10: `Markdown` component, tests and barrel export
+- [x] Task 10: `Markdown` component, tests and barrel export
 - [ ] Task 11: Markdown examples, README and story
 
 ### Checkpoint D
