@@ -56,8 +56,11 @@ jobs:
         run: pnpm test:run
 
       # Vitest runs expectTypeOf as a no-op, so a drifted AI SDK union passes the
-      # suite above. tsc is what fails. @uiid/ai imports no sibling @uiid/* types,
-      # so it typechecks without a build, unlike the other packages.
+      # suite above. tsc is what fails. @uiid/ai resolves sibling @uiid/* types
+      # from their built dist, so build its dependencies (and nothing else) first.
+      - name: Build @uiid/ai dependencies
+        run: pnpm run build --filter=@uiid/ai^...
+
       - name: Typecheck @uiid/ai against the AI SDK
         run: pnpm exec tsc --noEmit -p packages/ai/tsconfig.json
 

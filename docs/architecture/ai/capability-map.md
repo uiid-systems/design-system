@@ -16,7 +16,7 @@ This map covers a POC subset. Out of scope: everything that needs `@xyflow/react
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Vercel `ai` SDK types     | Not a dependency. `@uiid/ai` defines its own types, structurally compatible with the SDK's message, tool-part and chat-status shapes.                                                                                   |
 | Markdown                  | `markdown-to-jsx`, which has zero dependencies and renders React elements styled by `Prose`. Placement rule: a dependency-bearing renderer lives in `@uiid/ai`; a dependency-free one would live in `@uiid/typography`. |
-| Streaming markdown repair | Written locally, not `remend`.                                                                                                                                                                                          |
+| Streaming markdown repair | `markdown-to-jsx`'s own `optimizeForStreaming` option, exposed as a `streaming` prop. No local repair pass and not `remend`. See `SPEC-markdown.md`.                                                                    |
 | `use-stick-to-bottom`     | Not a dependency. Recreated locally as a hook.                                                                                                                                                                          |
 | `motion`                  | Not a dependency. Shimmer is pure CSS.                                                                                                                                                                                  |
 | Shimmer                   | Lives in `@uiid/typography` next to `Reveal`. It is a text effect with nothing AI-specific about it.                                                                                                                    |
@@ -48,3 +48,4 @@ Each module has its own spec in this directory, named `SPEC-<module-id>.md`. Thi
 | [`SPEC-typography-shimmer.md`](./SPEC-typography-shimmer.md) | Approved |
 | [`SPEC-ai-scaffold.md`](./SPEC-ai-scaffold.md)               | Approved |
 | [`SPEC-forms-input-group.md`](./SPEC-forms-input-group.md)   | Approved |
+| [`SPEC-markdown.md`](./SPEC-markdown.md)                     | Approved |

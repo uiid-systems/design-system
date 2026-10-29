@@ -56,5 +56,9 @@
     "vite": "^7.3.7",
     "vite-plugin-dts": "^4.3.0",
     "vite-tsconfig-paths": "^6.1.1"
+  },
+  "dependencies": {
+    "@uiid/typography": "workspace:*",
+    "markdown-to-jsx": "^9.10.4"
   }
 }
