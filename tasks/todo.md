@@ -8,14 +8,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-prompt-input.md
 
 **Acceptance criteria:**
 
-- [ ] `ready`, `error` and no status render a `type="submit"` button named "Send"; `error` renders a different icon from `ready`
-- [ ] `submitted` and `streaming` render a `type="button"` button named "Stop"; only `submitted` has a `data-loading` content container
-- [ ] Pressing Stop calls `onStop` once; a caller's `onClick` that prevents default vetoes it
-- [ ] `children` replaces the icon; `aria-label` replaces the label; `variant` and `size` pass through
+- [x] `ready`, `error` and no status render a `type="submit"` button named "Send"; `error` renders a different icon from `ready`
+- [x] `submitted` and `streaming` render a `type="button"` button named "Stop"; only `submitted` has a `data-loading` content container
+- [x] Pressing Stop calls `onStop` once; a caller's `onClick` that prevents default vetoes it
+- [x] `children` replaces the icon; `aria-label` replaces the label; `variant` and `size` pass through
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai/src/prompt-input`
+- [x] `pnpm test:run packages/ai/src/prompt-input`
 
 **Dependencies:** None
 

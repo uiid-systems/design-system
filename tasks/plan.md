@@ -28,7 +28,7 @@ One PR, three commits.
 
 See [`todo.md`](./todo.md) for each task's acceptance criteria and verification steps.
 
-- [ ] Task 1: `PromptInputSubmit` and the module's types
+- [x] Task 1: `PromptInputSubmit` and the module's types
 - [ ] Task 2: `PromptInput`
 - [ ] Task 3: Examples, README, stories and exports
 

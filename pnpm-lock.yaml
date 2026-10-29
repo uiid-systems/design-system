@@ -205,6 +205,9 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
+      '@uiid/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
