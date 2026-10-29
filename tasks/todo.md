@@ -29,16 +29,16 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-prompt-input.md
 
 **Acceptance criteria:**
 
-- [ ] DOM order is `input-before` > `prompt-input-header` (only with `header`), `textarea`, `input-after` > `prompt-input-footer` > `prompt-input-tools` then `prompt-input-submit`
-- [ ] `className` lands on the form; `ref` on the `<textarea>`; a caller's `aria-label`, `label` and `placeholder` win over the defaults
-- [ ] Send and Enter call `onSubmit` with `{ text }` and a default-prevented event, then empty an uncontrolled textarea and leave a controlled `value` alone
-- [ ] Shift+Enter, a composing Enter, Enter while `streaming`, and blank text all call nothing
-- [ ] `disabled` disables the textarea and the submit button; a plain `Button` in `tools` does not submit the form
+- [x] DOM order is `input-before` > `prompt-input-header` (only with `header`), `textarea`, `input-after` > `prompt-input-footer` > `prompt-input-tools` then `prompt-input-submit`
+- [x] `className` lands on the form; `ref` on the `<textarea>`; a caller's `aria-label`, `label` and `placeholder` win over the defaults
+- [x] Send and Enter call `onSubmit` with `{ text }` and a default-prevented event, then empty an uncontrolled textarea and leave a controlled `value` alone
+- [x] Shift+Enter, a composing Enter, Enter while `streaming`, and blank text all call nothing
+- [x] `disabled` disables the textarea and the submit button; a plain `Button` in `tools` does not submit the form
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai`
 
 **Dependencies:** Task 1
 

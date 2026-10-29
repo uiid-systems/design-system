@@ -1,0 +1,18 @@
+/* The root. The cap lives here so a consumer can override it in one place. */
+.prompt-input {
+  --prompt-input-max-height: calc(var(--spacing-unit) * 48);
+
+  display: block;
+}
+
+/*
+ * The textarea grows with its text and stops at the cap, then scrolls. The
+ * floor is the `min-height` the Textarea size tier already sets. Without
+ * `field-sizing` support the textarea keeps its `rows` height and scrolls,
+ * which is what Textarea does today.
+ */
+.textarea {
+  field-sizing: content;
+  max-height: var(--prompt-input-max-height);
+  overflow-y: auto;
+}
