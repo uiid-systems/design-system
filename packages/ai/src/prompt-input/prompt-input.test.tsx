@@ -4,6 +4,7 @@ import { Button } from "@uiid/buttons";
 import { describe, expect, it, vi } from "vitest";
 
 import { PromptInput } from "./prompt-input";
+import * as Examples from "./prompt-input.examples";
 import type { PromptInputProps } from "./prompt-input.types";
 import { PromptInputSubmit } from "./subcomponents";
 
@@ -327,5 +328,23 @@ describe("PromptInput", () => {
       expect(onStop).toHaveBeenCalledTimes(1);
       expect(onSubmit).not.toHaveBeenCalled();
     });
+  });
+
+  it("renders the examples", () => {
+    render(<Examples.Basic />);
+    expect(screen.getByText("Nothing sent yet")).toBeInTheDocument();
+
+    render(<Examples.Statuses />);
+    expect(screen.getAllByRole("button", { name: "Stop" })).toHaveLength(2);
+
+    for (const Example of [
+      Examples.WithHeader,
+      Examples.WithTools,
+      Examples.Controlled,
+      Examples.Disabled,
+      Examples.WithConversation,
+    ]) {
+      expect(() => render(<Example />)).not.toThrow();
+    }
   });
 });

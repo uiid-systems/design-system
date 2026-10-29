@@ -6,13 +6,15 @@
 }
 
 /*
- * The textarea grows with its text and stops at the cap, then scrolls. The
- * floor is the `min-height` the Textarea size tier already sets. Without
- * `field-sizing` support the textarea keeps its `rows` height and scrolls,
- * which is what Textarea does today.
+ * The textarea starts at one line, grows with its text and stops at the cap,
+ * then scrolls. The size tier pins a three-row `min-height` meant for a form
+ * field; the descendant selector outranks that single class so a composer can
+ * start compact. Without `field-sizing` support the textarea keeps its `rows`
+ * height and scrolls, which is what Textarea does today.
  */
-.textarea {
+.prompt-input .textarea {
   field-sizing: content;
+  min-height: auto;
   max-height: var(--prompt-input-max-height);
   overflow-y: auto;
 }

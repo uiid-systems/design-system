@@ -160,8 +160,9 @@ Tools are plain `Button`s. Base UI's `Button` already renders `type="button"` un
 ### Auto-grow
 
 ```css
-.textarea {
+.prompt-input .textarea {
   field-sizing: content;
+  min-height: auto;
   max-height: var(--prompt-input-max-height);
   overflow-y: auto;
 }
@@ -171,7 +172,7 @@ Tools are plain `Button`s. Base UI's `Button` already renders `type="button"` un
 }
 ```
 
-`field-sizing: content` is Baseline Newly available: Chrome and Edge 123, Safari 26.2 and Firefox 152 (June 2026). The floor is the `min-height` the size tier already sets on every Textarea, so a one-line composer is as tall as a `medium` control and grows from there. The cap is `12rem`, the same `max-h-48` upstream uses, and once reached the textarea scrolls. In a browser without `field-sizing`, the textarea is as tall as `rows={1}` and the tier's `min-height`, and scrolls past that, which is what Textarea does today. No JS measuring, no hidden mirror element.
+`field-sizing: content` is Baseline Newly available: Chrome and Edge 123, Safari 26.2 and Firefox 152 (June 2026). The floor is one line: the size tier pins a three-row `min-height` meant for a form field, and the descendant selector outranks that single class so the composer starts compact. The cap is `12rem`, the same `max-h-48` upstream uses, and once reached the textarea scrolls. In a browser without `field-sizing`, the textarea is as tall as `rows={1}` and the tier's `min-height`, and scrolls past that, which is what Textarea does today. No JS measuring, no hidden mirror element.
 
 The cap is a module-local custom property set on the root, in the style of `conversation.module.css`'s `bottom: calc(var(--spacing-unit) * 4)`. It is not a token: no other component reads it, and a consumer who wants a different cap overrides the property on the root.
 
@@ -288,4 +289,4 @@ Vitest with happy-dom and `@testing-library/user-event`. `textarea.test.tsx`'s s
 
 ## Open questions
 
-None blocking. The Storybook pass decides whether `rows={1}` with the `medium` tier's `min-height` reads as a one-line composer or whether the default should be `rows={2}` for browsers without `field-sizing`.
+None. The Storybook pass found the tier's three-row `min-height` left an 80px blank composer, which is why the auto-grow rule also sets `min-height: auto`.

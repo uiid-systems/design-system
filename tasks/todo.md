@@ -52,16 +52,16 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-prompt-input.md
 
 **Acceptance criteria:**
 
-- [ ] Every example renders without throwing in the test
-- [ ] `PromptInput`, `PromptInputSubmit` and the three types export from `@uiid/ai`
-- [ ] Stories render in Storybook and the MDX page shows the README and the Playground controls
+- [x] Every example renders without throwing in the test
+- [x] `PromptInput`, `PromptInputSubmit` and the three types export from `@uiid/ai`
+- [x] Stories render in Storybook and the MDX page shows the README and the Playground controls
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && pnpm size`
-- [ ] `pnpm run lint && pnpm run format:check`
-- [ ] `pnpm --filter @uiid/storybook dev`, then the checkpoint list in `plan.md`
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && pnpm size`
+- [x] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev`, then the checkpoint list in `plan.md`
 
 **Dependencies:** Task 2
 

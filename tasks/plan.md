@@ -30,13 +30,14 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 - [x] Task 1: `PromptInputSubmit` and the module's types
 - [x] Task 2: `PromptInput`
-- [ ] Task 3: Examples, README, stories and exports
+- [x] Task 3: Examples, README, stories and exports
 
 ### Checkpoint
 
-- [ ] `pnpm test:run packages/ai` passes, with the existing conversation and markdown tests unchanged
-- [ ] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [ ] Checked in Storybook: auto-grow to the cap, the focus ring around all three rows, the four sizes, ghost and a palette color in both themes, the `submitted` spinner, Shift+Enter in Safari
+- [x] `pnpm test:run packages/ai` passes, with the existing conversation and markdown tests unchanged
+- [x] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [x] Checked headless in Chromium: auto-grow from one line to the cap, the focus ring around all three rows, the `submitted` spinner, Enter and Shift+Enter
+- [ ] Checked by hand: the four sizes, ghost and a palette color in both themes, Shift+Enter in Safari
 - [ ] Human review
 
 ## Risks and mitigations
