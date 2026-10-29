@@ -114,6 +114,17 @@ describe("Markdown", () => {
     expect(link.getAttribute("href") ?? "").not.toMatch(/javascript:/i);
   });
 
+  it("renders raw HTML as text", () => {
+    const { container } = render(
+      <Markdown>
+        {'Go <meta http-equiv="refresh" content="0;url=https://evil.example">'}
+      </Markdown>,
+    );
+
+    expect(container.querySelector("meta")).toBeNull();
+    expect(container.textContent).toContain('<meta http-equiv="refresh"');
+  });
+
   it("drops inline event handlers", () => {
     const { container } = render(
       <Markdown>

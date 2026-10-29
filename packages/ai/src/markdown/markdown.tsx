@@ -12,6 +12,7 @@ export const Markdown = ({
     {compiler(children, {
       wrapper: null,
       forceBlock: true,
+      disableParsingRawHTML: true,
       optimizeForStreaming: streaming,
     })}
   </Prose>

@@ -10,7 +10,7 @@
 
 `Markdown` renders a markdown string as plain HTML elements inside `Prose`, and keeps rendering cleanly when that string is cut off anywhere: mid-word, mid-emphasis, mid-link, mid-fence. It is the renderer behind `MessageResponse`, `Reasoning` and `Tool` output, all of which receive text token by token.
 
-Parsing is `markdown-to-jsx`, imported from its `markdown-to-jsx/react` entry. Streaming safety is the parser's own `optimizeForStreaming` option, exposed as a `streaming` prop. There is no local repair pass. All styling comes from `Prose`. This module adds no CSS.
+Parsing is `markdown-to-jsx`, imported from its `markdown-to-jsx/react` entry. Streaming safety is the parser's own `optimizeForStreaming` option, exposed as a `streaming` prop. There is no local repair pass. Raw HTML in the source renders as text. All styling comes from `Prose`. This module adds no CSS.
 
 Upstream is sixteen runtime dependencies: a remark/rehype pipeline, `remend`, shiki, math, mermaid, copy and download buttons, and Tailwind classes. None of that is ported. The component is one element around one compiler call.
 
@@ -23,7 +23,7 @@ Upstream is sixteen runtime dependencies: a remark/rehype pipeline, `remend`, sh
 - With `streaming`, a string cut mid-emphasis, mid-code-span, mid-strikethrough, mid-link, mid-image or mid-fence renders without throwing, and its text content contains none of the raw delimiters `**`, `*`, `_`, `` ` ``, `~~`, `[`, `](`.
 - With `streaming`, a string cut mid-fence renders the open fence as a code block that grows as tokens land.
 - Without `streaming`, finished text renders every character, including a stray delimiter the model never closed.
-- `javascript:` hrefs and inline event handlers never reach the DOM. This is `markdown-to-jsx`'s built-in sanitizer, which is always on and is covered by a test so a future option change cannot silently turn it off.
+- Raw HTML in the source renders as literal text, so a `<meta>`, `<form>` or `onerror` handler written by a model never reaches the DOM. A `javascript:` href on a markdown link is dropped by `markdown-to-jsx`'s URL sanitizer. Both are covered by tests so a future option change cannot silently turn them off.
 - It renders on the server: no `"use client"`, no hooks, no state.
 - `grep -r '"ai"' packages/ai/dist` still returns nothing.
 - `pnpm size` passes with the existing `40 kB` entry for `@uiid/ai`.
@@ -67,6 +67,7 @@ export const Markdown = ({
     {compiler(children, {
       wrapper: null,
       forceBlock: true,
+      disableParsingRawHTML: true,
       optimizeForStreaming: streaming,
     })}
   </Prose>
@@ -76,7 +77,7 @@ export const Markdown = ({
 - `wrapper: null` makes the compiler return its children without a wrapper element, which is what keeps the blocks as direct children of `Prose`. With one block it returns that element; with several it returns a keyed array.
 - `forceBlock: true` makes a single line render as `<p>` instead of inline text, so `Prose`'s `& > p` rules apply to the shortest message.
 - `data-slot="markdown"` is written inline in JSX, where hyphenated attributes are exempt from excess-property checks. `prepareComponentProps` spreads the caller's props after its own `data-slot`, so it wins over `Prose`'s `prose`.
-- Every other option stays at its default. Raw HTML is parsed, with the library's always-on attribute sanitizer and the default `tagfilter`, which escapes `script`, `iframe`, `style` and kin.
+- `disableParsingRawHTML: true` renders any HTML in the source as text. The library's own sanitizer blocks script execution, `on*` attributes and `javascript:` URLs, but its tag filter covers nine tags, and review found that a `<meta http-equiv="refresh">` redirect, a `<form>` posting to another origin, a `<base href>`, a `<link rel="stylesheet">` and a `style` attribute painting a full-viewport overlay all rendered as real DOM. Model output is untrusted, so the whole class is closed with one option rather than a list. The cost is that an occasional `<br>` or `<sub>` from a model shows literally. Every other option stays at its default.
 - No `memo`, no `useMemo`. The compile is linear in the text and runs once per render. `ai-message` memoizes `MessageResponse` on `children` the way upstream does, which is the right level for it.
 - Headings get an `id` from the library's slugifier. A transcript with many messages may therefore repeat ids. Left alone for the POC; revisit if it shows up in an accessibility check.
 
@@ -93,7 +94,7 @@ export const Markdown = ({
 | `![alt](https://exa`                      | brackets shown, the partial URL autolinked | held back                                       |
 | `\| a \| b \|` before its divider row     | a paragraph with pipes                     | held back until the table has a data row        |
 | `- one\n-`                                | one empty `li`                             | the empty item held back                        |
-| `<div class="x`                           | escaped as text                            | held back                                       |
+| `<div class="x`                           | shown as text                              | held back                                       |
 | ` ```ts\nconst a ` (open fence)           | a code block that grows                    | same                                            |
 | `- one\n- tw`, `## Sec`, `> quoted wor`   | list, heading, blockquote                  | same                                            |
 
@@ -154,7 +155,7 @@ Vitest with happy-dom. `markdown-to-jsx` is pure and runs there unchanged. All i
 - With `streaming`, each cut case from the table renders without throwing, with no raw delimiter in `textContent`, and with no React key warning (spy on `console.error`).
 - With `streaming`, an open fence renders a `pre > code` containing the partial code.
 - Without `streaming`, `text with a stray `backtick`keeps the word`backtick`.
-- `[x](javascript:alert(1))` renders an `a` with no `javascript:` href.
+- `[x](javascript:alert(1))` renders an `a` with no `javascript:` href, a `<meta http-equiv="refresh">` renders as text with no `meta` element, and no element carries an `onerror` or `onclick` attribute.
 - Spacing props show up as `data-ui-*` attributes; `render={<article />}` swaps the element; `className` merges.
 - The barrel exports `Markdown`, and nothing else at runtime.
 
@@ -163,8 +164,8 @@ Checked by hand in Storybook: the `Streaming` story replays a fixture token by t
 ## Boundaries
 
 - **Always:** style through `Prose` only; keep blocks as direct children of the root; import from `markdown-to-jsx/react`; keep the component server-renderable.
-- **Ask first:** raising the size limit above `40 kB`; adding a local repair pass; exposing `overrides` or any other parser option as a prop; disabling raw HTML or autolinks; any CSS in `@uiid/ai`, which also triggers scaffold row 11 and the `./globals.css` export.
-- **Never:** add `remend`, `streamdown`, `react-markdown` or a remark/rehype chain; use `dangerouslySetInnerHTML`; enable `evalUnserializableExpressions`; add typography styles that parallel `Prose`.
+- **Ask first:** raising the size limit above `40 kB`; adding a local repair pass; exposing `overrides` or any other parser option as a prop; disabling autolinks; any CSS in `@uiid/ai`, which also triggers scaffold row 11 and the `./globals.css` export.
+- **Never:** add `remend`, `streamdown`, `react-markdown` or a remark/rehype chain; use `dangerouslySetInnerHTML`; enable `evalUnserializableExpressions`; turn raw HTML parsing back on without a sanitizer that covers `meta`, `base`, `form`, `link` and `style` attributes; add typography styles that parallel `Prose`.
 
 ## Success criteria
 

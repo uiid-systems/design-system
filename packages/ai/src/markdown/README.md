@@ -6,7 +6,7 @@ Use Markdown when you want to:
 
 - Show a model's response as it streams, without a half-typed `**` or `[link](` flashing on screen
 - Get `Prose`'s typography scale and rhythm for headings, lists, code and quotes without wrapping anything yourself
-- Render markdown you did not write safely: inline event handlers and `javascript:` URLs never reach the DOM
+- Render markdown you did not write: raw HTML in the source shows as text, and a `javascript:` link loses its href
 
 Reach for `Prose` directly when you already have HTML or JSX.
 
@@ -46,7 +46,7 @@ Turn `streaming` off once the message is complete. On finished text the same opt
 
 ## Security
 
-Markdown from a model is untrusted input. `markdown-to-jsx` sanitizes on every render, independent of any option: `on*` attributes are dropped, `javascript:` and `vbscript:` URLs are removed from `href`, `src` and the other URL attributes, and `script`, `iframe`, `style` and similar tags are escaped as text. Nothing is injected with `dangerouslySetInnerHTML`.
+Markdown from a model is untrusted input, so raw HTML parsing is off: any tag in the source renders as literal text, which means a `<meta>` refresh, a `<form>`, a `<base>`, a stylesheet `<link>` or an `onerror` handler never reaches the DOM. Markdown links still go through `markdown-to-jsx`'s URL sanitizer, which drops `javascript:` and `vbscript:` hrefs. Nothing is injected with `dangerouslySetInnerHTML`. The trade is that an occasional `<br>` or `<sub>` a model writes shows as text rather than rendering.
 
 ## Notes
 
