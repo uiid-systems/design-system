@@ -150,14 +150,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] The unions match the spec, and the drift assertions pass against the installed `ai`
-- [ ] No file in `dist/*.d.ts` mentions `ai`
-- [ ] The lockfile diff touches only `ai` and its dependencies
+- [x] The unions match the spec, and the drift assertions pass against the installed `ai`
+- [x] No file in `dist/*.d.ts` mentions `ai`
+- [x] The lockfile diff touches only `ai` and its dependencies
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
 
 **Dependencies:** Task 6
 

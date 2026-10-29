@@ -52,6 +52,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^4.2.2",
+    "ai": "7.0.156",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~5.9.3",
