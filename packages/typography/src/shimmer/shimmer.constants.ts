@@ -1,0 +1,2 @@
+export const SHIMMER_DEFAULT_DURATION = 2000;
+export const SHIMMER_DEFAULT_SPREAD = 2;
