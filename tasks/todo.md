@@ -248,14 +248,14 @@ Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) a
 
 **Acceptance criteria:**
 
-- [ ] Both examples render in Storybook, imported from `@uiid/ai`
-- [ ] The README documents `children` and `streaming`, what streaming mode holds back, and its cost on finished text
-- [ ] The MDX page renders the README and the Playground controls
+- [x] Both examples render in Storybook, imported from `@uiid/ai`
+- [x] The README documents `children` and `streaming`, what streaming mode holds back, and its cost on finished text
+- [x] The MDX page renders the README and the Playground controls
 
 **Verification:**
 
-- [ ] `pnpm run lint && pnpm run format:check`
-- [ ] `pnpm --filter @uiid/storybook dev` and a manual check of the Streaming story in both themes
+- [x] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev` and a manual check of the Streaming story in both themes
 
 **Dependencies:** Task 10
 
@@ -265,5 +265,5 @@ Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) a
 
 ### Checkpoint D
 
-- [ ] Tests, build, lint, format and `pnpm size` pass from the repo root
+- [x] Tests, build, lint, format and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 4 is ready

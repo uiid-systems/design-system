@@ -105,11 +105,11 @@ Spec: [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md), approved 2
 ### Phase D: `markdown` (PR 4)
 
 - [x] Task 10: `Markdown` component, tests and barrel export
-- [ ] Task 11: Markdown examples, README and story
+- [x] Task 11: Markdown examples, README and story
 
 ### Checkpoint D
 
-- [ ] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [ ] `grep -r '"ai"' packages/ai/dist` returns nothing
-- [ ] Checked in Storybook: the Streaming story in both themes
+- [x] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [x] `grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] Checked in Storybook: the Streaming story renders and grows with no raw delimiters (headless, light theme)
 - [ ] Human review

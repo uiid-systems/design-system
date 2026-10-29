@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Markdown } from "./markdown";
+import * as Examples from "./markdown.examples";
 
 const document = `# Title
 
@@ -115,5 +116,13 @@ describe("Markdown", () => {
     expect(root.tagName).toBe("ARTICLE");
     expect(root).toHaveAttribute("data-ui-p", "4");
     expect(root).toHaveClass("custom");
+  });
+  it("renders the examples", () => {
+    render(<Examples.Basic />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Streaming markdown" }),
+    ).toBeInTheDocument();
+
+    expect(() => render(<Examples.Streaming />)).not.toThrow();
   });
 });

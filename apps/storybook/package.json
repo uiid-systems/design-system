@@ -9,6 +9,7 @@
     "preview": "serve storybook-static"
   },
   "dependencies": {
+    "@uiid/ai": "workspace:*",
     "@uiid/design-system": "workspace:*",
     "@uiid/icons": "workspace:*"
   },
