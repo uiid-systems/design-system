@@ -3,9 +3,9 @@ import { describe, expectTypeOf, it } from "vitest";
 
 import type { ChatRole, ChatStatus, ToolState } from "./ai.types";
 
-/* These assertions are type-level. Vitest runs them as no-ops; `tsc -b` in the
-   package build is what fails when a union drifts, so a drift breaks the build
-   rather than passing silently. */
+/* These assertions are type-level. Vitest runs them as no-ops. tsc is what fails
+   when a union drifts: the Test workflow typechecks this package on every PR, and
+   `tsc -b` in the package build does the same at release. */
 describe("ai shared types", () => {
   it("pins ChatRole to the three message authors", () => {
     expectTypeOf<ChatRole>().toEqualTypeOf<"system" | "user" | "assistant">();
