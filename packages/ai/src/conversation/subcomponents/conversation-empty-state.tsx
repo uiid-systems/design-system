@@ -24,18 +24,18 @@ export const ConversationEmptyState = ({
     ay="center"
     gap={3}
     p={8}
-    fullheight
+    grow
     className={cx(styles["empty-state"], className)}
     {...props}
   >
     {children ?? (
       <>
-        {icon && <Text emphasis="muted">{icon}</Text>}
+        {icon && <Text color="neutral">{icon}</Text>}
         <Stack gap={1} ax="center">
           <Text weight="medium" render={<h3 />}>
             {title}
           </Text>
-          {description && <Text emphasis="muted">{description}</Text>}
+          {description && <Text color="neutral">{description}</Text>}
         </Stack>
       </>
     )}

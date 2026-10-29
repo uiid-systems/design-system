@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Conversation } from "./conversation";
 import { useConversation } from "./conversation.context";
+import * as Examples from "./conversation.examples";
 import {
   ConversationContent,
   ConversationEmptyState,
@@ -290,12 +291,14 @@ describe("Conversation", () => {
   });
 
   describe("ConversationContent", () => {
-    it("applies the default gap and padding", () => {
+    it("applies the default gap, padding and full-width stretch", () => {
       const { viewport } = renderConversation();
 
       const content = viewport.firstElementChild!;
       expect(content).toHaveAttribute("data-ui-gap", "8");
       expect(content).toHaveAttribute("data-ui-p", "4");
+      expect(content).toHaveAttribute("data-ui-ay", "stretch");
+      expect(content).toHaveAttribute("data-ui-fullwidth");
     });
 
     it("passes Stack props through", () => {
@@ -364,9 +367,23 @@ describe("Conversation", () => {
 
       const root = container.firstElementChild!;
       expect(root).toHaveAttribute("data-ui-gap", "1");
-      expect(root).toHaveAttribute("data-ui-fullheight");
+      expect(root).toHaveAttribute("data-ui-grow");
       expect(root).toHaveClass("custom");
     });
+  });
+
+  it("renders the examples", () => {
+    render(<Examples.Basic />);
+    expect(
+      screen.getByText("What does the scroll button do?"),
+    ).toBeInTheDocument();
+
+    render(<Examples.EmptyState />);
+    expect(
+      screen.getByRole("heading", { level: 3, name: "No messages yet" }),
+    ).toBeInTheDocument();
+
+    expect(() => render(<Examples.Streaming />)).not.toThrow();
   });
 
   describe("useConversation", () => {

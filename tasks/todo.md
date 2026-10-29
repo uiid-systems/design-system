@@ -323,14 +323,14 @@ Each task reads [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conv
 
 **Acceptance criteria:**
 
-- [ ] All three examples render in Storybook, imported from `@uiid/ai`
-- [ ] The README documents the four parts, both hooks, the release threshold, reduced motion and where the button goes in the tree
-- [ ] The MDX page renders the README and the Playground controls
+- [x] All three examples render in Storybook, imported from `@uiid/ai`
+- [x] The README documents the four parts, both hooks, the release threshold, reduced motion and where the button goes in the tree
+- [x] The MDX page renders the README and the Playground controls
 
 **Verification:**
 
-- [ ] `pnpm run lint && pnpm run format:check`
-- [ ] `pnpm --filter @uiid/storybook dev` and the manual checks listed in the spec's testing strategy
+- [x] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev` and the manual checks listed in the spec's testing strategy, run headlessly with Playwright: opens at the bottom on first observation, follows the stream, releases on wheel up with content growing underneath, re-pins on press, reduced motion scrolls instantly, the empty state centers on both axes with gray text in both themes
 
 **Dependencies:** Task 13
 
@@ -340,5 +340,5 @@ Each task reads [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conv
 
 ### Checkpoint E
 
-- [ ] Tests, build, lint, format and `pnpm size` pass from the repo root
+- [x] Tests, build, lint, format and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 5 is ready

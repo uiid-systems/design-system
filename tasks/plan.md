@@ -122,11 +122,11 @@ Spec: [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conversation.m
 
 - [x] Task 12: Spec approved and linked from the capability map
 - [x] Task 13: `useStickToBottom` hook, the four parts, context, CSS, tests and barrel export
-- [ ] Task 14: Conversation examples, README and stories
+- [x] Task 14: Conversation examples, README and stories
 
 ### Checkpoint E
 
-- [ ] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [ ] `packages/ai/dist/ai.css` exists and `grep -r '"ai"' packages/ai/dist` returns nothing
-- [ ] Checked in Storybook: opens at the bottom with no flash, follows the stream, releases on scroll up, the button re-pins smoothly, reduced motion scrolls instantly, the empty state's muted text reads as gray
+- [x] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [x] `packages/ai/dist/ai.css` exists and `grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] Checked in Storybook: opens at the bottom with no flash, follows the stream, releases on scroll up, the button re-pins smoothly, reduced motion scrolls instantly, the empty state's muted text reads as gray
 - [ ] Human review

@@ -10,6 +10,8 @@ import styles from "../conversation.module.css";
 
 export const ConversationContent = ({
   ref,
+  ax = "stretch",
+  fullwidth = true,
   gap = 8,
   p = 4,
   className,
@@ -27,6 +29,8 @@ export const ConversationContent = ({
       <Stack
         data-slot="conversation-content"
         ref={composedRef}
+        ax={ax}
+        fullwidth={fullwidth}
         gap={gap}
         p={p}
         className={cx(styles["content"], className)}

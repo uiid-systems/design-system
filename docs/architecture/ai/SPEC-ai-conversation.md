@@ -23,7 +23,7 @@ This is the first module to ship CSS from `@uiid/ai`, so it also adds the packag
 - A smooth scroll to the bottom in progress does not unpin itself, and content that shrinks while pinned does not unpin either.
 - Scrolling honors `prefers-reduced-motion`: the button's scroll is smooth by default and instant under reduced motion. Resize follow is always instant.
 - `Conversation` has `role="log"` and `data-slot="conversation"`. The parts write `data-slot="conversation-content"`, `data-slot="conversation-empty-state"` and `data-slot="conversation-scroll-button"`. The scroller `ConversationContent` owns writes `data-slot="conversation-viewport"`.
-- `ConversationScrollButton` is a `Button`. `ConversationEmptyState` is a `Stack` of `Text`. Every part passes its host component's props through, including `ref`, `className` and `render` where the host has one.
+- `ConversationScrollButton` is a `Button`. `ConversationEmptyState` is a `Stack` of `Text`, filling and centered in the region. Every part passes its host component's props through, including `ref`, `className` and `render` where the host has one.
 - `useConversation()` exposes `isAtBottom` and `scrollToBottom` to anything inside `Conversation`, and throws a named error outside it.
 - `"use client"` sits on the component and hook files, not the barrel. The server render is the pinned state, so the button is absent from server HTML.
 - No new runtime dependency outside the workspace. `pnpm size` passes with the existing `40 kB` entry.
@@ -94,16 +94,16 @@ Three nested elements, which is what upstream renders once `StickToBottom` and `
 
 ```
 [data-slot=conversation]            Box, role="log", position: relative, overflow: hidden
-  [data-slot=conversation-viewport]   div, height: 100%, overflow-y: auto, scroll-behavior: smooth   ← scrollRef
-    [data-slot=conversation-content]  Stack, gap 8, p 4, min-height: 100%                            ← contentRef
+  [data-slot=conversation-viewport]   div, width and height 100%, overflow-y: auto, scroll-behavior: smooth   ← scrollRef
+    [data-slot=conversation-content]  Stack, stretch, fullwidth, gap 8, p 4, min-height: 100%        ← contentRef
   [data-slot=conversation-scroll-button]  Button, position: absolute, bottom center
 ```
 
 `Conversation` calls `useStickToBottom()` once, provides the result through `ConversationContext`, and renders a `Box` around its children. It does not size itself. Upstream's `flex-1` assumption is dropped: the consumer passes `h`, `fullheight` or `grow`, and the root's `min-height: 0` lets `grow` shrink inside a `Stack`.
 
-`ConversationContent` renders the viewport `div` with `scrollRef` and, inside it, a `Stack` with `contentRef`. The viewport is internal and takes no props. The `Stack` takes all of them, with `gap = 8` and `p = 4` destructured as defaults so a caller's values win (see the render merge-order note in `.agents/components.md`). Its `min-height: 100%` is what lets an empty state center vertically; a short transcript still starts at the top because the column justifies to start. The viewport sets `scrollbar-gutter: stable both-edges`, as upstream does, so the first overflow does not shift the column.
+`ConversationContent` renders the viewport `div` with `scrollRef` and, inside it, a `Stack` with `contentRef`. The viewport is internal and takes no props. The `Stack` takes all of them, with `ax = "stretch"`, `fullwidth`, `gap = 8` and `p = 4` destructured as defaults so a caller's values win (see the render merge-order note in `.agents/components.md`). The first two are needed because `Stack` is `inline-flex` with `align-items: flex-start`: without them the column shrinks to its content and nothing inside spans the region. Its `min-height: 100%` is what lets an empty state center vertically; a short transcript still starts at the top because the column justifies to start. The viewport sets `scrollbar-gutter: stable both-edges`, as upstream does, so the first overflow does not shift the column.
 
-`ConversationEmptyState` is `Stack ax="center" ay="center" gap={3} p={8} fullheight` with `text-align: center` from the module. Its default children are the icon inside a muted `Text`, then a `Text weight="medium" render={<h3 />}` title and a muted `Text` description. Passing `children` replaces all of that, as upstream does. Centered text comes from the module because `Text` has no alignment prop, and the chapter's rule is a module rule over an inline style.
+`ConversationEmptyState` is `Stack ax="center" ay="center" gap={3} p={8} grow` with `text-align: center` from the module. It is `grow`, not `fullheight`, because a percentage height against the content's `min-height` resolves to auto, while `flex: 1` fills the column. Its default children are the icon inside a `Text color="neutral"`, then a `Text weight="medium" render={<h3 />}` title and a `Text color="neutral"` description. `color="neutral"` is the secondary gray in both themes; `emphasis="muted"` is the on-fill color and is near invisible on the page background, which the headless check confirmed at rgb(236, 235, 233) on rgb(254, 254, 250). Passing `children` replaces all of that, as upstream does. Centered text comes from the module because `Text` has no alignment prop, and the chapter's rule is a module rule over an inline style.
 
 `ConversationScrollButton` reads `isAtBottom` and `scrollToBottom` from context and returns `null` while pinned. Otherwise it renders `Button` with `shape="circle"`, `variant="subtle"`, `size="small"`, `type="button"`, `aria-label` from a constant, an `ArrowDownIcon` from `@uiid/icons/arrow-down` as default children, and the module's position class merged into `className`. Every prop passes through after the defaults, so a caller can change the icon, the label or the variant. The position is `left: 50%` with `translate: -50%`, which is symmetric and so correct in both writing directions, and `calc(var(--spacing-unit) * 4)` from the bottom.
 
@@ -137,7 +137,7 @@ The hook takes no options. The threshold is a constant in `conversation.constant
 
 ### CSS and the `globals.css` export
 
-`conversation.module.css` holds four rules plus the reduced-motion override: the root's `position`, `overflow` and `min-height`, the viewport's `height`, `overflow-y`, `scroll-behavior` and `scrollbar-gutter`, the content's `min-height`, the empty state's `text-align`, and the button's position. Layout and spacing stay on `Stack` props. Nothing here varies, so there is no `.variants.ts`.
+`conversation.module.css` holds four rules plus the reduced-motion override: the root's `position`, `overflow` and `min-height`, the viewport's `width` and `height` (it is a flex item of the root and would otherwise shrink to its content), `overflow-y`, `scroll-behavior` and `scrollbar-gutter`, the content's `min-height`, the empty state's `text-align`, and the button's position. Layout and spacing stay on `Stack` props. Nothing here varies, so there is no `.variants.ts`.
 
 This is `@uiid/ai`'s first stylesheet, so `packages/ai/package.json` gains `"./globals.css": "./dist/ai.css"` in `exports`, matching `packages/interactive`. The file name is the one Vite derives from the package name, confirmed at build. `sideEffects: ["*.css"]` is already set.
 
@@ -204,7 +204,7 @@ Vitest with happy-dom, which has `ResizeObserver` and `scrollTo` but no layout, 
 - `useConversation` throws its named error outside `Conversation`.
 - The barrel's runtime exports are exactly `Conversation`, `ConversationContent`, `ConversationEmptyState`, `ConversationScrollButton`, `Markdown`, `useConversation` and `useStickToBottom`.
 
-Checked by hand in Storybook: the `Streaming` story opens at the bottom with no flash, follows the stream, releases on a scroll up, shows the button, re-pins on press with a smooth scroll, and re-pins on a manual scroll back down. Reduced motion is emulated in DevTools to confirm the instant scroll. The `EmptyState` story is checked for the muted `Text` reading as gray on the page background, which the typography examples note flags as a trap on filled surfaces.
+Checked by hand in Storybook: the `Streaming` story opens at the bottom with no flash, follows the stream, releases on a scroll up, shows the button, re-pins on press with a smooth scroll, and re-pins on a manual scroll back down. Reduced motion is emulated to confirm the instant scroll. The `EmptyState` story is checked for centering in both axes and for its secondary text reading as gray on the page background in both themes.
 
 ## Boundaries
 
