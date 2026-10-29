@@ -1,6 +1,6 @@
 # Shimmer
 
-> A soft highlight that sweeps across a line of text in a loop, built on [`Text`](../text/README.md). It is the pending-state pattern from AI chat UIs ("Thinking…"), done with one CSS keyframe: a band of the page background slides over the text's own color, both clipped to the glyphs. No JavaScript, no dependencies, and it renders on the server.
+> A soft highlight that sweeps across a line of text in a loop, built on [`Text`](../text/README.md). It is the pending-state pattern from AI chat UIs ("Thinking…"), done with one CSS keyframe: a soft band in the text's own hue slides over its color, both clipped to the glyphs. No JavaScript, no dependencies, and it renders on the server.
 
 Use Shimmer when you want to:
 
@@ -28,7 +28,7 @@ All [`Text`](../text/README.md) props, plus:
 
 ## Color
 
-The base color is whatever `Text` resolves — the default foreground, a palette `color`, or an `emphasis` — so a blue label shimmers in blue. The highlight is `--shade-background`, so the glint reads as the page showing through in both themes. Shimmer adds no color props of its own.
+The base color is whatever `Text` resolves — the default foreground, a palette `color`, or an `emphasis` — so a blue label shimmers in blue. The highlight is the hue's `--palette-tint-border`, a soft wash a few steps toward the page, so the glyphs stay legible under the band in both themes. A label with no `color` or `emphasis` falls back to `--shade-accent`, a light gray wash. Shimmer adds no color props of its own.
 
 ```tsx
 <Shimmer color="blue">Searching the web…</Shimmer>
