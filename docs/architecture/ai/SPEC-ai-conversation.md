@@ -26,7 +26,7 @@ This is the first module to ship CSS from `@uiid/ai`, so it also adds the packag
 - `ConversationScrollButton` is a `Button`. `ConversationEmptyState` is a `Stack` of `Text`, filling and centered in the region. Every part passes its host component's props through, including `ref`, `className` and `render` where the host has one.
 - `useConversation()` exposes `isAtBottom` and `scrollToBottom` to anything inside `Conversation`, and throws a named error outside it.
 - `"use client"` sits on the component and hook files, not the barrel. The server render is the pinned state, so the button is absent from server HTML.
-- No new runtime dependency outside the workspace. `pnpm size` passes with the existing `40 kB` entry.
+- No new runtime dependency outside the workspace. `pnpm size` passes against the entry raised to `80 kB` (see open question 4).
 
 ## API
 
@@ -54,9 +54,9 @@ export type ConversationScrollButtonProps = ButtonProps;
 
 export type UseStickToBottomReturn = {
   /** Attach to the element that scrolls. */
-  scrollRef: (node: HTMLDivElement | null) => void;
+  scrollRef: (node: HTMLElement | null) => void;
   /** Attach to the element whose size changes as content arrives. */
-  contentRef: (node: HTMLDivElement | null) => void;
+  contentRef: (node: HTMLElement | null) => void;
   /** Whether the container is pinned to its newest content. */
   isAtBottom: boolean;
   /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */

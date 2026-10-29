@@ -276,6 +276,21 @@ describe("Conversation", () => {
       expect(button.querySelector("svg")).toBeInTheDocument();
     });
 
+    it("lets a caller's onClick veto the scroll with preventDefault", () => {
+      const { viewport, scrollTo } = renderConversation(
+        <ConversationScrollButton
+          onClick={(event) => event.preventDefault()}
+        />,
+      );
+      release(viewport);
+      scrollTo.mockClear();
+
+      fireEvent.click(scrollButton()!);
+
+      expect(scrollTo).not.toHaveBeenCalled();
+      expect(scrollButton()).toBeInTheDocument();
+    });
+
     it("lets a caller replace the label, variant and children", () => {
       const { viewport } = renderConversation(
         <ConversationScrollButton aria-label="Jump down" variant="ghost">

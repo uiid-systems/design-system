@@ -22,8 +22,8 @@ import type { UseStickToBottomReturn } from "../conversation.types";
 export const useStickToBottom = (): UseStickToBottomReturn => {
   /* Callback refs into state, so the effect re-runs if the content mounts
      after the container does. */
-  const [scroll, setScroll] = useState<HTMLDivElement | null>(null);
-  const [content, setContent] = useState<HTMLDivElement | null>(null);
+  const [scroll, setScroll] = useState<HTMLElement | null>(null);
+  const [content, setContent] = useState<HTMLElement | null>(null);
 
   /* The ref is what the listeners read; the state is what renders. */
   const pinned = useRef(true);

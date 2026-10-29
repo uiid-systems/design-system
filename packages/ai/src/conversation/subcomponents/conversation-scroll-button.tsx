@@ -31,7 +31,7 @@ export const ConversationScrollButton = ({
       className={cx(styles["scroll-button"], className)}
       onClick={(event) => {
         onClick?.(event);
-        scrollToBottom();
+        if (!event.defaultPrevented) scrollToBottom();
       }}
       {...props}
     >

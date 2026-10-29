@@ -24,9 +24,9 @@ export type ConversationScrollButtonProps = ButtonProps;
 
 export type UseStickToBottomReturn = {
   /** Attach to the element that scrolls. */
-  scrollRef: (node: HTMLDivElement | null) => void;
+  scrollRef: (node: HTMLElement | null) => void;
   /** Attach to the element whose size changes as content arrives. */
-  contentRef: (node: HTMLDivElement | null) => void;
+  contentRef: (node: HTMLElement | null) => void;
   /** Whether the container is pinned to its newest content. */
   isAtBottom: boolean;
   /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */
