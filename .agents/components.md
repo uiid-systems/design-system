@@ -35,12 +35,19 @@ The test is whether the thing could stand on its own as a documented component. 
 
 ## Creating a new package
 
-1. Create the package directory under `packages/`
-2. Add `package.json`, `tsconfig.json`, and `vite.config.ts` (using `createViteConfig`, with `cssLayer` read from `scripts/css-layers.cjs` — add the package there, or its CSS ships unlayered)
-3. Create `src/index.ts` barrel export
-4. Add `src/vite-env.d.ts` for CSS module types
-5. **Register the stories path in `apps/storybook/.storybook/main.ts`**
-6. **Register the package alias in `vitest.config.ts`**
-7. Run `pnpm install` to link the workspace package
+Copy an existing package's config rather than writing it fresh — `packages/interactive` is the plainest exemplar. Then register the package at every point below. Most of these fail silently when skipped: the package still builds, but it is never tested, versioned, measured, or re-exported.
 
-Steps 5 and 6 fail silently — skip them and the package's stories and tests simply never run, with no error.
+1. `packages/{name}/package.json` — the version matches every other `@uiid/*` package (one shared version). Add `"private": true` while the package is unreleased: `pnpm -r publish` skips private packages, and npm needs a trusted publisher for the name before its first publish (see `.github/workflows/release.yml`)
+2. `packages/{name}/tsconfig.json` and `vite.config.ts`, using `createViteConfig({ cssLayer: cssLayers.{name} })`
+3. `src/index.ts` barrel and `src/vite-env.d.ts` for CSS module types. `"use client"` stays out of the barrel
+4. `scripts/css-layers.cjs` — add the package, or its CSS ships unlayered
+5. `vitest.config.ts` — add the package to `uiidPackages`, or `@uiid/{name}` does not resolve from source and its tests never run
+6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
+7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
+8. `.size-limit.json` — add an entry for `packages/{name}/dist/index.js`
+9. `packages/design-system/package.json` and `src/index.ts` — add the `workspace:*` dependency and `export * from "@uiid/{name}"`
+10. `packages/design-system/src/globals.css` — `@import "@uiid/{name}/globals.css"` once the package ships CSS. This is also how component CSS reaches Storybook, whose preview imports only tokens. A types-only package emits no stylesheet, so skip this until it does
+11. `README.md` — add the package to the package list
+12. `pnpm install` to link the workspace package
+
+Storybook needs no registration. `apps/storybook/.storybook/main.ts` aliases every `packages/*/package.json` named `@uiid/*` with a `src/index.ts` to source, and stories are globbed from `apps/storybook/stories/**`.

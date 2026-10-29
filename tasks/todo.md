@@ -196,12 +196,12 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Each touchpoint Tasks 6–8 changed is listed in the checklist
-- [ ] Nothing in the checklist contradicts the repo
+- [x] Each touchpoint Tasks 6–8 changed is listed in the checklist
+- [x] Nothing in the checklist contradicts the repo
 
 **Verification:**
 
-- [ ] Walk the checklist against the Phase C diff
+- [x] Walk the checklist against the Phase C diff
 
 **Dependencies:** Task 8
 
