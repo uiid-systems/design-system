@@ -69,9 +69,9 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 ### Checkpoint C (wave complete)
 
-- [ ] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
-- [ ] `grep -r '"ai"' packages/ai/dist` returns nothing
-- [ ] `pnpm -r publish --dry-run` skips `@uiid/ai`
+- [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
+- [x] `grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
 - [ ] Human review, then specs for wave 2 (`markdown`)
 
 ## Risks and mitigations

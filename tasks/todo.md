@@ -211,5 +211,5 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 ### Checkpoint C (wave complete)
 
-- [ ] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
+- [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 3 is ready and the `markdown` spec can start
