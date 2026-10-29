@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Markdown } from "./markdown";
 import * as Examples from "./markdown.examples";
 
-const document = `# Title
+const source = `# Title
 
 Some **bold** and *em* with \`code\` and a [link](https://example.com).
 
@@ -17,8 +17,19 @@ const a = 1;
 `;
 
 describe("Markdown", () => {
+  let error: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    error = vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    expect(error).not.toHaveBeenCalled();
+    vi.restoreAllMocks();
+  });
+
   it("renders a complete document inside a Prose root", () => {
-    const { container } = render(<Markdown>{document}</Markdown>);
+    const { container } = render(<Markdown>{source}</Markdown>);
 
     const root = container.firstElementChild!;
     expect(root).toHaveAttribute("data-slot", "markdown");
@@ -37,7 +48,7 @@ describe("Markdown", () => {
   });
 
   it("renders blocks as direct children of the root", () => {
-    const { container } = render(<Markdown>{document}</Markdown>);
+    const { container } = render(<Markdown>{source}</Markdown>);
 
     const tags = Array.from(container.firstElementChild!.children).map(
       (el) => el.tagName,
@@ -53,29 +64,26 @@ describe("Markdown", () => {
 
   describe("streaming", () => {
     const cut = [
-      ["emphasis", "Hello **bold wor"],
-      ["italic", "Hello *ital wor"],
-      ["underscore italic", "Hello _ital wor"],
-      ["code span", "Run `pnpm bui"],
-      ["strikethrough", "Not ~~this wor"],
-      ["link text", "See [the docs"],
-      ["link url", "See [the docs](https://exa"],
-      ["image", "Look ![alt text](https://exa"],
+      ["emphasis", "Hello **bold wor", "Hello bold wor"],
+      ["italic", "Hello *ital wor", "Hello ital wor"],
+      ["underscore italic", "Hello _ital wor", "Hello ital wor"],
+      ["code span", "Run `pnpm bui", "Run"],
+      ["strikethrough", "Not ~~this wor", "Not this wor"],
+      ["link text", "See [the docs", "See the docs"],
+      ["link url", "See [the docs](https://exa", "See the docs"],
+      ["image", "Look ![alt text](https://exa", "Look"],
     ] as const;
 
     it.each(cut)(
-      "renders a string cut mid-%s without raw delimiters",
-      (_name, source) => {
-        const error = vi.spyOn(console, "error").mockImplementation(() => {});
-
-        const { container } = render(<Markdown streaming>{source}</Markdown>);
+      "renders a string cut mid-%s as plain text without raw delimiters",
+      (_name, markdown, visible) => {
+        const { container } = render(<Markdown streaming>{markdown}</Markdown>);
 
         const text = container.textContent ?? "";
+        expect(text).toContain(visible);
         for (const delimiter of ["**", "*", "_", "`", "~~", "[", "]("]) {
           expect(text).not.toContain(delimiter);
         }
-        expect(error).not.toHaveBeenCalled();
-        error.mockRestore();
       },
     );
 
@@ -98,16 +106,37 @@ describe("Markdown", () => {
     });
   });
 
-  it("drops javascript: hrefs", () => {
+  it("renders a javascript: link as an anchor without the href", () => {
     render(<Markdown>{"[x](javascript:alert(1))"}</Markdown>);
 
     const link = screen.getByText("x");
+    expect(link.tagName).toBe("A");
     expect(link.getAttribute("href") ?? "").not.toMatch(/javascript:/i);
   });
 
-  it("passes Prose props through", () => {
+  it("drops inline event handlers", () => {
     const { container } = render(
-      <Markdown p={4} className="custom" render={<article />}>
+      <Markdown>
+        {
+          '<img src="x" onerror="alert(1)"> and <a href="https://a" onclick="alert(1)">a</a>'
+        }
+      </Markdown>,
+    );
+
+    expect(container.querySelector("[onerror], [onclick]")).toBeNull();
+  });
+
+  it("passes Prose props through", () => {
+    const ref = { current: null as HTMLElement | null };
+    const { container } = render(
+      <Markdown
+        p={4}
+        className="custom"
+        style={{ color: "red" }}
+        data-testid="md"
+        ref={ref}
+        render={<article />}
+      >
         Hello
       </Markdown>,
     );
@@ -116,7 +145,11 @@ describe("Markdown", () => {
     expect(root.tagName).toBe("ARTICLE");
     expect(root).toHaveAttribute("data-ui-p", "4");
     expect(root).toHaveClass("custom");
+    expect(root).toHaveStyle({ color: "red" });
+    expect(root).toHaveAttribute("data-testid", "md");
+    expect(ref.current).toBe(root);
   });
+
   it("renders the examples", () => {
     render(<Examples.Basic />);
     expect(

@@ -244,7 +244,7 @@ Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) a
 
 ### Task 11: Markdown examples, README and story
 
-**Description:** Add `Basic` and `Streaming` examples (the latter replays a fixture token by token with `streaming` on, then flips it off), a README in the shape of Shimmer's, and `apps/storybook/stories/ai/markdown.stories.tsx` plus `markdown.mdx`. Add `@uiid/ai` as a Storybook devDependency so the story typechecks.
+**Description:** Add `Basic` and `Streaming` examples (the latter replays a fixture token by token with `streaming` on, then flips it off), a README in the shape of Shimmer's, and `apps/storybook/stories/ai/markdown.stories.tsx` plus `markdown.mdx`. Add `@uiid/ai` to the Storybook app's dependencies so the story typechecks.
 
 **Acceptance criteria:**
 

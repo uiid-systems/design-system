@@ -109,7 +109,7 @@ The capability map said "streaming markdown repair is written locally, not `reme
 
 - `markdown-to-jsx` `^9.10.4` goes in `dependencies`, with `@uiid/typography` as `workspace:*`. The entry is `markdown-to-jsx/react`; the `/^markdown-to-jsx(\/|$)/` external the scaffold spec reserved matches that subpath, so it stays out of `dist`.
 - Measured cost: `dist/react.js` is 78.5 kB minified and 25.3 kB brotli. `pnpm size` bundles it into the `@uiid/ai` number, which lands near 26 kB. The `40 kB` entry stays as it is.
-- Storybook resolves `@uiid/ai` from source already. `apps/storybook/package.json` gains `"@uiid/ai": "workspace:*"` as a devDependency so the story typechecks; it is a private app depending on a private package, which is fine. The story imports from `@uiid/ai` directly because the umbrella re-export is deferred to the POC's last step (scaffold spec row 10).
+- Storybook resolves `@uiid/ai` from source already. `apps/storybook/package.json` gains `"@uiid/ai": "workspace:*"` next to its other `@uiid/*` dependencies so the story typechecks; it is a private app depending on a private package, which is fine. The story imports from `@uiid/ai` directly because the umbrella re-export is deferred to the POC's last step (scaffold spec row 10).
 
 ## Files
 
@@ -125,7 +125,7 @@ packages/ai/src/index.test.ts    (the barrel now has a runtime export)
 packages/ai/package.json         (markdown-to-jsx, @uiid/typography)
 packages/ai/vite.config.ts       (external)
 pnpm-lock.yaml
-apps/storybook/package.json      (@uiid/ai devDependency)
+apps/storybook/package.json      (@uiid/ai dependency)
 apps/storybook/stories/ai/markdown.stories.tsx
 apps/storybook/stories/ai/markdown.mdx
 docs/architecture/ai/capability-map.md   (decision row, spec table row)
