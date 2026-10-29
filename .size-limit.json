@@ -5,6 +5,11 @@
     "limit": "500 kB"
   },
   {
+    "name": "@uiid/ai",
+    "path": "packages/ai/dist/index.js",
+    "limit": "40 kB"
+  },
+  {
     "name": "@uiid/buttons",
     "path": "packages/buttons/dist/index.js",
     "limit": "60 kB"

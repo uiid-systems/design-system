@@ -171,15 +171,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] `pnpm size` measures `@uiid/ai`
-- [ ] `@uiid/design-system` builds and re-exports the shared types
-- [ ] `pnpm -r publish --dry-run` skips `@uiid/ai`
+- [x] `pnpm size` measures `@uiid/ai`
+- [x] `@uiid/design-system` builds and re-exports the shared types
+- [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
 
 **Verification:**
 
-- [ ] `pnpm run build`
-- [ ] `pnpm size`
-- [ ] `pnpm -r publish --dry-run 2>&1 | grep -c '@uiid/ai'` prints `0`
+- [x] `pnpm run build`
+- [x] `pnpm size`
+- [x] `pnpm -r publish --dry-run 2>&1 | grep -c '@uiid/ai'` prints `0`
 
 **Dependencies:** Task 7
 

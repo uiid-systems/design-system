@@ -1,5 +1,6 @@
 import "./globals.css";
 
+export * from "@uiid/ai";
 export * from "@uiid/buttons";
 export * from "@uiid/cards";
 export * from "@uiid/code";
