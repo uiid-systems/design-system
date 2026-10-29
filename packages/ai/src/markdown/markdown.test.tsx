@@ -138,7 +138,7 @@ describe("Markdown", () => {
   });
 
   it("passes Prose props through", () => {
-    const ref = { current: null as HTMLElement | null };
+    const ref = { current: null as HTMLDivElement | null };
     const { container } = render(
       <Markdown
         p={4}
