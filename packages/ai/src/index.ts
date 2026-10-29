@@ -6,3 +6,6 @@ export * from "./conversation/hooks/use-stick-to-bottom";
 export * from "./conversation/subcomponents";
 export * from "./markdown/markdown";
 export type * from "./markdown/markdown.types";
+export * from "./prompt-input/prompt-input";
+export type * from "./prompt-input/prompt-input.types";
+export * from "./prompt-input/subcomponents";
