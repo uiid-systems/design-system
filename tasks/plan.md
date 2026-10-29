@@ -97,3 +97,19 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
    PR 3 uses `chore` so that a package nobody can install doesn't trigger a release.
 
 3. **Does `tasks/` belong in git?** It doesn't exist in the repo yet. It could stay local and untracked, or move next to the specs.
+
+## Wave 2: `markdown`
+
+Spec: [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md), approved 2026-10-28. One PR off `main`, branch `ui-263`.
+
+### Phase D: `markdown` (PR 4)
+
+- [ ] Task 10: `Markdown` component, tests and barrel export
+- [ ] Task 11: Markdown examples, README and story
+
+### Checkpoint D
+
+- [ ] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [ ] `grep -r '"ai"' packages/ai/dist` returns nothing
+- [ ] Checked in Storybook: the Streaming story in both themes
+- [ ] Human review

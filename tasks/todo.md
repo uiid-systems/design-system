@@ -213,3 +213,57 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 - [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 3 is ready and the `markdown` spec can start
+
+## Wave 2: `markdown`
+
+Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) and `.agents/components.md` before starting.
+
+### Task 10: `Markdown` component, tests and barrel export
+
+**Description:** Add `markdown-to-jsx` and `@uiid/typography` to `packages/ai`, externalize `/^markdown-to-jsx(\/|$)/` in its Vite config, and build `Markdown` in `packages/ai/src/markdown/`: `Prose` with `data-slot="markdown"` around `compiler(children, { wrapper: null, forceBlock: true, optimizeForStreaming: streaming })`. Export it from the barrel and update the barrel test.
+
+**Acceptance criteria:**
+
+- [ ] A complete document renders the expected elements as direct children of the root, and a one-line string renders as a `p`
+- [ ] With `streaming`, every cut case in the spec renders without throwing, without raw delimiters in `textContent`, and without a key warning; an open fence renders as `pre > code`
+- [ ] Without `streaming`, finished text with a stray backtick keeps every word
+- [ ] A `javascript:` href is dropped; `Prose` props, `render` and `className` pass through
+- [ ] The barrel exports `Markdown` and nothing else at runtime
+
+**Verification:**
+
+- [ ] `pnpm test:run packages/ai`
+- [ ] `pnpm run build --filter=@uiid/ai && grep -r '"ai"' packages/ai/dist` returns nothing
+- [ ] `pnpm size`: `@uiid/ai` stays under 40 kB
+
+**Dependencies:** None (spec approved)
+
+**Files:** `packages/ai/package.json`, `pnpm-lock.yaml`, `packages/ai/vite.config.ts`, `markdown/markdown.tsx`, `markdown/markdown.types.ts`, `markdown/markdown.test.tsx`, `packages/ai/src/index.ts`, `packages/ai/src/index.test.ts`
+
+**Size:** M
+
+### Task 11: Markdown examples, README and story
+
+**Description:** Add `Basic` and `Streaming` examples (the latter replays a fixture token by token with `streaming` on, then flips it off), a README in the shape of Shimmer's, and `apps/storybook/stories/ai/markdown.stories.tsx` plus `markdown.mdx`. Add `@uiid/ai` as a Storybook devDependency so the story typechecks.
+
+**Acceptance criteria:**
+
+- [ ] Both examples render in Storybook, imported from `@uiid/ai`
+- [ ] The README documents `children` and `streaming`, what streaming mode holds back, and its cost on finished text
+- [ ] The MDX page renders the README and the Playground controls
+
+**Verification:**
+
+- [ ] `pnpm run lint && pnpm run format:check`
+- [ ] `pnpm --filter @uiid/storybook dev` and a manual check of the Streaming story in both themes
+
+**Dependencies:** Task 10
+
+**Files:** `markdown/markdown.examples.tsx`, `markdown/README.md`, `apps/storybook/package.json`, `apps/storybook/stories/ai/markdown.stories.tsx`, `apps/storybook/stories/ai/markdown.mdx`
+
+**Size:** S
+
+### Checkpoint D
+
+- [ ] Tests, build, lint, format and `pnpm size` pass from the repo root
+- [ ] Human review, after which PR 4 is ready
