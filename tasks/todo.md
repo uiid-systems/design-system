@@ -267,3 +267,78 @@ Each task reads [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md) a
 
 - [x] Tests, build, lint, format and `pnpm size` pass from the repo root
 - [ ] Human review, after which PR 4 is ready
+
+## Wave 3: `ai-conversation`
+
+Each task reads [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conversation.md), `.agents/components.md` and `.agents/styling.md` before starting.
+
+### Task 12: Spec approved
+
+**Description:** Review `SPEC-ai-conversation.md`, settle its three open questions, flip its status and the capability-map row to Approved, and commit the docs.
+
+**Acceptance criteria:**
+
+- [x] The three open questions have answers recorded in the spec
+- [x] The capability map's spec table lists the spec as Approved
+
+**Verification:**
+
+- [x] `pnpm run format:check`
+
+**Dependencies:** None
+
+**Files:** `docs/architecture/ai/SPEC-ai-conversation.md`, `docs/architecture/ai/capability-map.md`
+
+**Size:** XS
+
+### Task 13: Hook, parts, tests and barrel export
+
+**Description:** Add the workspace dependencies and the `./globals.css` export to `packages/ai`. Build `useStickToBottom` in `conversation/hooks/`, `Conversation` with its context, and the three subcomponents, with the module CSS from the spec. Export the parts and both hooks from the barrel and update the barrel test.
+
+**Acceptance criteria:**
+
+- [ ] The root is `role="log"` with `data-slot="conversation"`; the viewport, content, empty state and button carry their slots
+- [ ] Firing the fake `ResizeObserver` while pinned scrolls to the bottom instantly; after a release it does nothing
+- [ ] A scroll up past the threshold shows the button; a scroll down past the threshold, or a shrink that lands at the bottom, does not; a scroll back within the threshold hides it
+- [ ] The button scrolls to the bottom with no `behavior` and re-pins; its label, variant and children are overridable
+- [ ] `ConversationContent` and `ConversationEmptyState` pass Stack props through, with the spec's defaults in place
+- [ ] `useConversation` throws its named error outside `Conversation`
+- [ ] The barrel's runtime exports are the four parts, both hooks and `Markdown`
+
+**Verification:**
+
+- [ ] `pnpm test:run packages/ai`
+- [ ] `pnpm run build --filter=@uiid/ai && ls packages/ai/dist/ai.css && grep -r '"ai"' packages/ai/dist` returns the CSS file and nothing else
+- [ ] `pnpm size`: `@uiid/ai` stays under 40 kB
+
+**Dependencies:** Task 12
+
+**Files:** `packages/ai/package.json`, `pnpm-lock.yaml`, `conversation/conversation.tsx`, `conversation/conversation.context.ts`, `conversation/conversation.types.ts`, `conversation/conversation.constants.ts`, `conversation/conversation.module.css`, `conversation/conversation.test.tsx`, `conversation/hooks/use-stick-to-bottom.ts`, `conversation/subcomponents/*.tsx`, `packages/ai/src/index.ts`, `packages/ai/src/index.test.ts`
+
+**Size:** M
+
+### Task 14: Examples, README and stories
+
+**Description:** Add `Basic`, `Streaming` and `EmptyState` examples using `Text` and `Markdown` for messages, a README in the shape of Markdown's, and `apps/storybook/stories/ai/conversation.stories.tsx` plus `conversation.mdx`.
+
+**Acceptance criteria:**
+
+- [ ] All three examples render in Storybook, imported from `@uiid/ai`
+- [ ] The README documents the four parts, both hooks, the release threshold, reduced motion and where the button goes in the tree
+- [ ] The MDX page renders the README and the Playground controls
+
+**Verification:**
+
+- [ ] `pnpm run lint && pnpm run format:check`
+- [ ] `pnpm --filter @uiid/storybook dev` and the manual checks listed in the spec's testing strategy
+
+**Dependencies:** Task 13
+
+**Files:** `conversation/conversation.examples.tsx`, `conversation/README.md`, `apps/storybook/stories/ai/conversation.stories.tsx`, `apps/storybook/stories/ai/conversation.mdx`
+
+**Size:** S
+
+### Checkpoint E
+
+- [ ] Tests, build, lint, format and `pnpm size` pass from the repo root
+- [ ] Human review, after which PR 5 is ready
