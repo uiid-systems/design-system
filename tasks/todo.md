@@ -10,14 +10,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Every existing `input.test.tsx` case passes unchanged
-- [ ] The default renders `data-orientation="horizontal"` with the same classes as before
-- [ ] `orientation="vertical"` renders `data-orientation="vertical"` and keeps the surface, edge, color and slot `data-slot`s
+- [x] Every existing `input.test.tsx` case passes unchanged
+- [x] The default renders `data-orientation="horizontal"` with the same classes as before
+- [x] `orientation="vertical"` renders `data-orientation="vertical"` and keeps the surface, edge, color and slot `data-slot`s
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/forms/src/input`
-- [ ] `pnpm run build --filter=@uiid/forms`
+- [x] `pnpm test:run packages/forms/src/input`
+- [x] `pnpm run build --filter=@uiid/forms`
 
 **Dependencies:** None
 
@@ -31,15 +31,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] Every existing `textarea.test.tsx` case passes unchanged, and the no-slot output is identical
-- [ ] With slots, the DOM order is `input-before`, `textarea`, `input-after`; variant, fullwidth and color sit on the wrapper, while size and resize stay on the textarea
-- [ ] `ref`, `rows`, `name` and `onValueChange` reach the `<textarea>`; a `<button>` in `after` is clickable and comes after the textarea in tab order
+- [x] Every existing `textarea.test.tsx` case passes unchanged, and the no-slot output is identical
+- [x] With slots, the DOM order is `input-before`, `textarea`, `input-after`; variant, fullwidth and color sit on the wrapper, while size and resize stay on the textarea
+- [x] `ref`, `rows`, `name` and `onValueChange` reach the `<textarea>`; a `<button>` in `after` is clickable and comes after the textarea in tab order
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/forms`
-- [ ] `pnpm run build --filter=@uiid/forms`
-- [ ] Compiled CSS check: `.textarea-inner` sits in `uiid.components`, and its border and outline rules outrank `composes-invalid`
+- [x] `pnpm test:run packages/forms`
+- [x] `pnpm run build --filter=@uiid/forms`
+- [x] Compiled CSS check: `.textarea-inner` sits in `uiid.components`, and its border and outline rules outrank `composes-invalid`
 
 **Dependencies:** Task 1
 
@@ -53,13 +53,13 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] The `BeforeAfterSlots` example and story render in Storybook
-- [ ] Both READMEs describe the new props, and the MDX pages pick them up
+- [x] The `BeforeAfterSlots` example and story render in Storybook
+- [x] Both READMEs describe the new props, and the MDX pages pick them up
 
 **Verification:**
 
-- [ ] `pnpm --filter @uiid/storybook dev` and a manual check: focus ring, the four sizes, ghost and color in both themes, invalid, the resize handle
-- [ ] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev` and a manual check: focus ring, the four sizes, ghost and color in both themes, invalid, the resize handle
+- [x] `pnpm run lint && pnpm run format:check`
 
 **Dependencies:** Task 2
 
@@ -69,7 +69,7 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 ### Checkpoint A
 
-- [ ] `pnpm test:run packages/forms`, the forms build and `pnpm size` all pass
+- [x] `pnpm test:run packages/forms`, the forms build and `pnpm size` all pass
 - [ ] Human review, after which PR 1 is ready
 
 ## Phase B: `typography-shimmer`

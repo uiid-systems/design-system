@@ -17,6 +17,38 @@
   height: auto;
 }
 
+/*
+ * Inside an `InputWrapper` the wrapper paints the surface once, so the textarea
+ * drops its own edge, background and ring. These mirror `.input-wrapper >
+ * .input-inner`. The invalid composition still lands on this element and sets
+ * `border-color` and `outline-color`; with no border or outline to colour,
+ * only the wrapper's copy shows. Next to a slot the block padding goes, or the
+ * gap between the text and the slot row doubles.
+ */
+.textarea-inner {
+  border: none;
+  background: transparent;
+  outline: none;
+  min-width: 0;
+
+  &:hover {
+    background: transparent;
+  }
+
+  &:focus-visible {
+    background: transparent;
+    outline: none;
+  }
+
+  [data-slot="input-before"] + & {
+    padding-block-start: 0;
+  }
+
+  &:has(+ [data-slot="input-after"]) {
+    padding-block-end: 0;
+  }
+}
+
 /* Size variants */
 .size-xsmall {
   composes: composes-size-xsmall from global;

@@ -34,6 +34,10 @@ export type TextareaProps = Omit<
     FieldProps?: FieldProps;
     ref?: React.Ref<HTMLTextAreaElement>;
     resize?: TextareaResize;
+    /** Rendered above the text, inside the field surface. */
+    before?: React.ReactNode;
+    /** Rendered below the text, inside the field surface. */
+    after?: React.ReactNode;
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment.
      * Shadows the native `color` attribute, which is not meaningful here.

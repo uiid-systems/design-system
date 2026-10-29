@@ -1,5 +1,11 @@
 "use client";
 
+import { Button } from "@uiid/buttons";
+import { ArrowUpIcon } from "@uiid/icons/arrow-up";
+import { GlobeIcon } from "@uiid/icons/globe";
+import { MicIcon } from "@uiid/icons/mic";
+import { PaperclipIcon } from "@uiid/icons/paperclip";
+import { SparklesIcon } from "@uiid/icons/sparkles";
 import { Group, Stack } from "@uiid/layout";
 import { PALETTE_HUES } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
@@ -51,6 +57,67 @@ export const Colors = () => (
       <Textarea key={color} color={color} label={color} rows={2} />
     ))}
   </Stack>
+);
+
+/*
+ * `before` and `after` stack above and below the text inside one field surface,
+ * so a composer's chips, tools and submit button share the textarea's edge,
+ * focus ring and tint. Buttons in a slot stay clickable; plain text and icons
+ * let clicks pass through, as in Input's slots.
+ */
+export const BeforeAfterSlots = () => (
+  <Textarea
+    aria-label="Message"
+    placeholder="Ask anything"
+    rows={3}
+    resize="none"
+    fullwidth
+    before={
+      <Group gap={1}>
+        <Button size="xsmall" variant="subtle" shape="pill">
+          <PaperclipIcon />
+          brief.pdf
+        </Button>
+        <Button size="xsmall" variant="subtle" shape="pill">
+          <SparklesIcon />
+          Concise
+        </Button>
+      </Group>
+    }
+    after={
+      <Group ax="space-between" ay="center" fullwidth>
+        <Group gap={1}>
+          <Button
+            size="xsmall"
+            variant="ghost"
+            shape="square"
+            tooltip="Attach a file"
+          >
+            <PaperclipIcon />
+          </Button>
+          <Button
+            size="xsmall"
+            variant="ghost"
+            shape="square"
+            tooltip="Search the web"
+          >
+            <GlobeIcon />
+          </Button>
+          <Button
+            size="xsmall"
+            variant="ghost"
+            shape="square"
+            tooltip="Dictate"
+          >
+            <MicIcon />
+          </Button>
+        </Group>
+        <Button size="xsmall" shape="circle" tooltip="Send">
+          <ArrowUpIcon />
+        </Button>
+      </Group>
+    }
+  />
 );
 
 /* `rows` sets the starting height; `size` sets the type scale and padding. */

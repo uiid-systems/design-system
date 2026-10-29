@@ -91,6 +91,17 @@
   padding: 0;
 }
 
+/* The size tier pins a control `height`. A stacked surface grows with its
+   content instead, and its slots need padding on the block axis the side slots
+   already get on the inline axis from composes-field-slot. */
+.input-wrapper[data-orientation="vertical"] {
+  height: auto;
+
+  & > .input-slot {
+    padding-block: var(--forms-padding-y);
+  }
+}
+
 /** Input inside wrapper becomes transparent */
 .input-wrapper > .input-inner {
   border: none;
