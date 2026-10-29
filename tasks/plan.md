@@ -1,132 +1,48 @@
-# Implementation Plan: `@uiid/ai` POC, wave 1
+# Implementation Plan: `ai-prompt-input` (UI-265)
 
 ## Overview
 
-This plan builds the three modules with no dependencies in the [capability map](../docs/architecture/ai/capability-map.md):
+This plan builds the last module in the [capability map](../docs/architecture/ai/capability-map.md): `PromptInput`, a trimmed composer on `Textarea`'s `before`/`after` slots. The wave 1 plan that used to live here is complete and in git history (`70c73158`).
 
-- `forms-input-group`: `InputWrapper` gains `orientation`, and Textarea gains `before`/`after`
-- `typography-shimmer`: the `Shimmer` component
-- `ai-scaffold`: a private `@uiid/ai` package with its shared types
-
-None of the three depends on another, so each can land as its own PR off `main`. Later waves (`markdown`, then message, conversation, reasoning and tool, then prompt-input) get their own specs and plans once these land.
-
-Specs:
-
-- [`SPEC-forms-input-group.md`](../docs/architecture/ai/SPEC-forms-input-group.md)
-- [`SPEC-typography-shimmer.md`](../docs/architecture/ai/SPEC-typography-shimmer.md)
-- [`SPEC-ai-scaffold.md`](../docs/architecture/ai/SPEC-ai-scaffold.md)
+Spec: [`SPEC-ai-prompt-input.md`](../docs/architecture/ai/SPEC-ai-prompt-input.md), approved 2026-10-29.
 
 ## Architecture decisions
 
-All of these are settled in the specs:
+All settled in the spec:
 
-- Textarea's slots reuse `InputWrapper` with `orientation="vertical"`. There is no `TextareaWrapper` and no InputGroup.
-- `Shimmer` is a CSS keyframe on `Text`. It doesn't use `motion` and needs no client boundary.
-- `@uiid/ai` is `"private": true` until the POC's last step. `ai` is a devDependency used only by the type-drift test.
+- One component plus one button part. `header` and `tools` are props that land in Textarea's `before` and `after` slots. There is no `PromptInputButton`; tools are plain `Button`s.
+- `PromptInput` holds no state. Text lives in the `<textarea>` or the caller's `value`; composition is read off the keyboard event.
+- Auto-grow is CSS `field-sizing: content` with a `12rem` cap. No JS measuring.
+- The root is a plain `<form>`; Enter calls `requestSubmit()`.
+- `@uiid/forms` is the only new dependency.
 
 ## Order and rationale
 
-1. **`forms-input-group` first.** It is the only module that changes an existing public component (Input), so it carries the most risk and should fail fast. It also blocks `ai-prompt-input` at the end of the chain.
-2. **`typography-shimmer` next.** It is low risk and self-contained, and it blocks `ai-reasoning-tool`.
-3. **`ai-scaffold` last in this wave.** It has the most touchpoints but no runtime behavior. It blocks every remaining module, so it has to land before wave 2 starts.
+1. **`PromptInputSubmit` first.** It is self-contained, has the status mapping the ticket's acceptance criteria name, and is what `PromptInput` renders in its footer.
+2. **`PromptInput` next.** Structure, submit, Enter, stop and auto-grow, tested against the submit part.
+3. **Docs and stories last.** Examples, README, barrel exports, stories and MDX, once the API is proven.
 
-The three PRs are independent, not stacked, so they can merge in any order. Each phase below is a single PR.
+One PR, three commits.
 
 ## Task list
 
 See [`todo.md`](./todo.md) for each task's acceptance criteria and verification steps.
 
-### Phase A: `forms-input-group` (PR 1)
+- [ ] Task 1: `PromptInputSubmit` and the module's types
+- [ ] Task 2: `PromptInput`
+- [ ] Task 3: Examples, README, stories and exports
 
-- [x] Task 1: `InputWrapper` `orientation`
-- [x] Task 2: Textarea `before`/`after`
-- [x] Task 3: Textarea and InputWrapper docs and story
+### Checkpoint
 
-### Checkpoint A
-
-- [x] `pnpm test:run packages/forms` passes, with every existing Input and Textarea test unchanged
-- [x] `pnpm run build --filter=@uiid/forms` and `pnpm size` pass
-- [x] Checked in Storybook: focus ring, the four sizes, ghost and color in both themes, invalid, the resize handle
+- [ ] `pnpm test:run packages/ai` passes, with the existing conversation and markdown tests unchanged
+- [ ] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [ ] Checked in Storybook: auto-grow to the cap, the focus ring around all three rows, the four sizes, ghost and a palette color in both themes, the `submitted` spinner, Shift+Enter in Safari
 - [ ] Human review
-
-### Phase B: `typography-shimmer` (PR 2)
-
-- [ ] Task 4: `Shimmer` component and tests
-- [ ] Task 5: Shimmer docs and story
-
-### Checkpoint B
-
-- [ ] `pnpm test:run packages/typography`, build and `pnpm size` pass
-- [ ] Checked in Storybook: the sweep in light and dark, a palette `color`, reduced motion, and the open question on whether `--shade-background` reads well
-- [ ] Human review
-
-### Phase C: `ai-scaffold` (PR 3)
-
-- [x] Task 6: Package skeleton that builds and tests
-- [x] Task 7: Shared types and drift test
-- [x] Task 8: Release, size and umbrella registration
-- [x] Task 9: Fix the new-package checklist in `.agents/components.md`
-
-### Checkpoint C (wave complete)
-
-- [x] `pnpm run build`, `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass from the repo root
-- [x] `grep -r '"ai"' packages/ai/dist` returns nothing
-- [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
-- [ ] Human review, then specs for wave 2 (`markdown`)
 
 ## Risks and mitigations
 
-| Risk                                                                                                                  | Impact | Mitigation                                                                                                                                      |
-| --------------------------------------------------------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| The `orientation` change alters Input's existing output                                                               | High   | Every existing `input.test.tsx` case must pass unchanged, and a new test pins the horizontal default's class list                               |
-| `Stack` in the vertical wrapper picks up Box resets the horizontal `Group` path never hit                             | Med    | Same `.input-edge` restatement. Checked in Storybook, since happy-dom does no layout                                                            |
-| The inner textarea still gets `composes-invalid`/`composes-disabled` from `.textarea` and paints its own edge or ring | Med    | `.textarea-inner` clears border and outline in `uiid.components`, which outranks compositions. Verify in the compiled CSS, not the source order |
-| `background-clip: text` with `-webkit-text-fill-color` behaves differently across browsers                            | Low    | Checked by hand in Storybook. Under reduced motion it falls back to plain `currentColor` text                                                   |
-| The installed `ai` version's types differ from the unions the spec copied                                             | Med    | The drift test exists to catch exactly this. If it fails, update the spec's unions first, then the code                                         |
-| Adding `ai` changes `pnpm-lock.yaml` broadly                                                                          | Low    | Pin an exact version and confirm the lockfile diff touches only `ai` and its dependencies                                                       |
-| A types-only `@uiid/ai` produces an empty JS bundle, which trips `size-limit` or the design-system barrel             | Low    | Task 6 runs the build and `pnpm size` before any registration lands                                                                             |
-
-## Open questions
-
-1. **Where should the specs be committed?** I recommend shipping `docs/architecture/ai/` in PR 1 (or as a separate `docs(docs)` PR), so the decisions are in `main` before any code that depends on them.
-2. **PR titles.** I recommend:
-   - PR 1: `feat(ui): add InputWrapper orientation and Textarea before/after slots`
-   - PR 2: `feat(ui): add Shimmer text effect`
-   - PR 3: `chore(repo): scaffold private @uiid/ai package`
-
-   PR 3 uses `chore` so that a package nobody can install doesn't trigger a release.
-
-3. **Does `tasks/` belong in git?** It doesn't exist in the repo yet. It could stay local and untracked, or move next to the specs.
-
-## Wave 2: `markdown`
-
-Spec: [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md), approved 2026-10-28. One PR off `main`, branch `ui-263`.
-
-### Phase D: `markdown` (PR 4)
-
-- [x] Task 10: `Markdown` component, tests and barrel export
-- [x] Task 11: Markdown examples, README and story
-
-### Checkpoint D
-
-- [x] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [x] `grep -r '"ai"' packages/ai/dist` returns nothing
-- [x] Checked in Storybook: the Streaming story renders and grows with no raw delimiters (headless, light theme)
-- [ ] Human review
-
-## Wave 3: `ai-conversation`
-
-Spec: [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conversation.md), approved 2026-10-28. One PR off `main`, branch `ui-264`. `ai-message` and `ai-reasoning-tool` are parallel modules with their own specs and are not tracked here yet.
-
-### Phase E: `ai-conversation` (PR 5)
-
-- [x] Task 12: Spec approved and linked from the capability map
-- [x] Task 13: `useStickToBottom` hook, the four parts, context, CSS, tests and barrel export
-- [x] Task 14: Conversation examples, README and stories
-
-### Checkpoint E
-
-- [x] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [x] `packages/ai/dist/ai.css` exists and `grep -r '"ai"' packages/ai/dist` returns nothing
-- [x] Checked in Storybook: opens at the bottom with no flash, follows the stream, releases on scroll up, the button re-pins smoothly, reduced motion scrolls instantly, the empty state's muted text reads as gray
-- [ ] Human review
+| Risk                                                                                            | Impact | Mitigation                                                                                                            |
+| ----------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| `@types/react` drift makes `TextareaProps["ref"]` "unrelated" in `tsc` against `forms`'s dist   | Build  | Pin the `packages/ai` lockfile importer to the siblings' versions; never cast                                         |
+| `field-sizing: content` and `rows={1}` read too short or too tall against the tier `min-height` | Visual | Decide `rows` in the Storybook pass; it is one default                                                                |
+| `user-event`'s Enter in happy-dom does not call `requestSubmit` on the form                     | Tests  | Assert the form's `submit` event or stub `requestSubmit` on the form element, as the conversation test stubs scrollTo |
