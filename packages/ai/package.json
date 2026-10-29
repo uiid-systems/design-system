@@ -31,7 +31,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./globals.css": "./dist/ai.css"
   },
   "files": [
     "dist"
@@ -58,7 +59,11 @@
     "vite-tsconfig-paths": "^6.1.1"
   },
   "dependencies": {
+    "@uiid/buttons": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "@uiid/layout": "workspace:*",
     "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*",
     "markdown-to-jsx": "^9.10.4"
   }
 }

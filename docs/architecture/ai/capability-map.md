@@ -49,3 +49,4 @@ Each module has its own spec in this directory, named `SPEC-<module-id>.md`. Thi
 | [`SPEC-ai-scaffold.md`](./SPEC-ai-scaffold.md)               | Approved |
 | [`SPEC-forms-input-group.md`](./SPEC-forms-input-group.md)   | Approved |
 | [`SPEC-markdown.md`](./SPEC-markdown.md)                     | Approved |
+| [`SPEC-ai-conversation.md`](./SPEC-ai-conversation.md)       | Approved |

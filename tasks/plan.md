@@ -113,3 +113,20 @@ Spec: [`SPEC-markdown.md`](../docs/architecture/ai/SPEC-markdown.md), approved 2
 - [x] `grep -r '"ai"' packages/ai/dist` returns nothing
 - [x] Checked in Storybook: the Streaming story renders and grows with no raw delimiters (headless, light theme)
 - [ ] Human review
+
+## Wave 3: `ai-conversation`
+
+Spec: [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conversation.md), approved 2026-10-28. One PR off `main`, branch `ui-264`. `ai-message` and `ai-reasoning-tool` are parallel modules with their own specs and are not tracked here yet.
+
+### Phase E: `ai-conversation` (PR 5)
+
+- [x] Task 12: Spec approved and linked from the capability map
+- [x] Task 13: `useStickToBottom` hook, the four parts, context, CSS, tests and barrel export
+- [x] Task 14: Conversation examples, README and stories
+
+### Checkpoint E
+
+- [x] `pnpm test:run packages/ai`, `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [x] `packages/ai/dist/ai.css` exists and `grep -r '"ai"' packages/ai/dist` returns nothing
+- [x] Checked in Storybook: opens at the bottom with no flash, follows the stream, releases on scroll up, the button re-pins smoothly, reduced motion scrolls instantly, the empty state's muted text reads as gray
+- [ ] Human review
