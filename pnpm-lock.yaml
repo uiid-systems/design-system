@@ -404,9 +404,6 @@ importers:
 
   packages/design-system:
     dependencies:
-      '@uiid/ai':
-        specifier: workspace:*
-        version: link:../ai
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons

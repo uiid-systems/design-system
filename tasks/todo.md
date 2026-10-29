@@ -172,7 +172,7 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 **Acceptance criteria:**
 
 - [x] `pnpm size` measures `@uiid/ai`
-- [x] `@uiid/design-system` builds and re-exports the shared types
+- [x] `@uiid/design-system` does not depend on `@uiid/ai` while it is private; the umbrella re-export is deferred to the POC's final step (review finding, see spec row 10)
 - [x] `pnpm -r publish --dry-run` skips `@uiid/ai`
 
 **Verification:**

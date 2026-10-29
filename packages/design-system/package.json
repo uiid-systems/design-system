@@ -48,7 +48,6 @@
     "dev": "node scripts/emit-icon-forwarders.mjs && vite build --watch"
   },
   "dependencies": {
-    "@uiid/ai": "workspace:*",
     "@uiid/buttons": "workspace:*",
     "@uiid/cards": "workspace:*",
     "@uiid/code": "workspace:*",
