@@ -62,7 +62,7 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 ### Phase C: `ai-scaffold` (PR 3)
 
-- [ ] Task 6: Package skeleton that builds and tests
+- [x] Task 6: Package skeleton that builds and tests
 - [ ] Task 7: Shared types and drift test
 - [ ] Task 8: Release, size and umbrella registration
 - [ ] Task 9: Fix the new-package checklist in `.agents/components.md`

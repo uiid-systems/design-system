@@ -1,0 +1,62 @@
+{
+  "name": "@uiid/ai",
+  "version": "0.7.1",
+  "private": true,
+  "description": "AI chat components — shared types for AI SDK data",
+  "license": "MIT",
+  "author": "Adam Fratino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uiid-systems/design-system",
+    "directory": "packages/ai"
+  },
+  "homepage": "https://github.com/uiid-systems/design-system/tree/main/packages/ai",
+  "bugs": "https://github.com/uiid-systems/design-system/issues",
+  "keywords": [
+    "uiid",
+    "react",
+    "components",
+    "design-system",
+    "ai",
+    "chat"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "@uiid/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "@base-ui/react": "^1.7.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@base-ui/react": "1.7.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.7",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-tsconfig-paths": "^6.1.1"
+  }
+}

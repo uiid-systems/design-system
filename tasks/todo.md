@@ -129,14 +129,14 @@ The plan is in [`plan.md`](./plan.md). Each task reads its module's spec in `doc
 
 **Acceptance criteria:**
 
-- [ ] `pnpm run build --filter=@uiid/ai` emits `dist/index.js` and `dist/index.d.ts`
-- [ ] `pnpm test:run packages/ai` discovers the package (a placeholder test passes, and Task 7 replaces it)
-- [ ] Storybook resolves `@uiid/ai` from source with no configuration change
+- [x] `pnpm run build --filter=@uiid/ai` emits `dist/index.js` and `dist/index.d.ts`
+- [x] `pnpm test:run packages/ai` discovers the package (a placeholder test passes, and Task 7 replaces it)
+- [x] Storybook resolves `@uiid/ai` from source with no configuration change
 
 **Verification:**
 
-- [ ] `pnpm install && pnpm run build --filter=@uiid/ai`
-- [ ] `pnpm test:run packages/ai`
+- [x] `pnpm install && pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai`
 
 **Dependencies:** None
 
