@@ -39,9 +39,6 @@
   "scripts": {
     "build": "tsc -b && vite build"
   },
-  "dependencies": {
-    "@uiid/utils": "workspace:*"
-  },
   "peerDependencies": {
     "@base-ui/react": "^1.7.0",
     "react": "^19.1.1",
