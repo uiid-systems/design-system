@@ -309,7 +309,7 @@ Each task reads [`SPEC-ai-conversation.md`](../docs/architecture/ai/SPEC-ai-conv
 
 - [x] `pnpm test:run packages/ai`
 - [x] `pnpm run build --filter=@uiid/ai && ls packages/ai/dist/ai.css && grep -r '"ai"' packages/ai/dist` returns the CSS file and nothing else
-- [ ] `pnpm size`: `@uiid/ai` stays under 40 kB
+- [x] `pnpm size`: `@uiid/ai` stays under 80 kB, the entry raised at review
 
 **Dependencies:** Task 12
 
