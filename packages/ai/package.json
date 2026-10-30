@@ -2,7 +2,7 @@
   "name": "@uiid/ai",
   "version": "0.7.1",
   "private": true,
-  "description": "AI chat components \u2014 shared types for AI SDK data",
+  "description": "AI chat components — shared types for AI SDK data",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
