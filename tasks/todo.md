@@ -52,17 +52,17 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-reasoning-tool.
 
 **Acceptance criteria:**
 
-- [ ] `Reasoning` and `Tool` export from `@uiid/ai` and both SDK tool part types satisfy `ToolPart`
-- [ ] Every example renders without throwing; the states example renders all seven labels
-- [ ] Stories render in Storybook and each MDX page shows its README and Playground controls
-- [ ] The checkpoint list in `plan.md`
+- [x] `Reasoning` and `Tool` export from `@uiid/ai` and both SDK tool part types satisfy `ToolPart`
+- [x] Every example renders without throwing; the states example renders all seven labels
+- [x] Stories render in Storybook and each MDX page shows its README and Playground controls
+- [x] The checkpoint list in `plan.md`
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && pnpm size`
-- [ ] `pnpm run lint && pnpm run format:check`
-- [ ] `pnpm --filter @uiid/storybook dev`
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && pnpm size`
+- [x] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook build-storybook`, then the stories read headless with Playwright against the static build
 
 **Dependencies:** Task 2
 

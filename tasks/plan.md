@@ -30,13 +30,13 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 - [x] Task 1: `Tool` with its state table
 - [x] Task 2: `Reasoning` with its timing
-- [ ] Task 3: Barrel, type test, examples, READMEs and stories
+- [x] Task 3: Barrel, type test, examples, READMEs and stories
 
 ### Checkpoint
 
-- [ ] `pnpm test:run packages/ai` passes, with the markdown, conversation, message and prompt-input tests unchanged
-- [ ] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass, the last at `80 kB`
-- [ ] Checked by hand in Storybook: the shimmer sweeps and stops under reduced motion; the panel does not clip while text streams in; the chevron turns; the tool card's border, radius and hover surface; seven badges distinct in both themes; a wide JSON input scrolls inside the card; the running icon spins
+- [x] `pnpm test:run packages/ai` passes, with the markdown, conversation, message and prompt-input tests unchanged
+- [x] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass, the last at `80 kB` (`78.94 kB`)
+- [x] Checked headless against the static Storybook build with Playwright, 2026-10-29: the shimmer animates and is `none` under reduced motion; the chevron turns 180°; the tool card has a 1px border, 8px radius and a hover surface; seven badge fills distinct in light and dark; a 300-character JSON line scrolls inside the `pre` (634px client, 2339px scroll) with the card at its own width; the running icon animates `spin`. Not measured: the panel while text streams in, which happy-dom and a static build cannot show
 - [ ] Human review
 
 ## Risks and mitigations

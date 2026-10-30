@@ -22,6 +22,7 @@ const toolName = (part: ToolPart) =>
 export const Tool = ({
   part,
   fullwidth = true,
+  ax = "stretch",
   b = 1,
   className,
   children,
@@ -35,6 +36,7 @@ export const Tool = ({
       data-slot="tool"
       data-state={part.state}
       fullwidth={fullwidth}
+      ax={ax}
       b={b}
       className={cxState(styles["tool"], className)}
       {...props}

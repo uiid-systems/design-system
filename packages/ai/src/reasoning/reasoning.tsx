@@ -98,6 +98,7 @@ export const Reasoning = ({
       </CollapsibleTrigger>
       <CollapsiblePanel
         data-slot="reasoning-panel"
+        fullwidth
         instant={false}
         ax="stretch"
       >

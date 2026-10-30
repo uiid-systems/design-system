@@ -144,12 +144,12 @@ The file carries `"use client"`: it holds the open state and runs effects.
 
 **Trigger.** `CollapsibleTrigger` with `nativeButton={false}` and `render={<Group gap={2} ay="center" />}`, so Base UI gives the `Group` `role="button"`, `tabIndex`, `aria-expanded` and Enter and Space, the way the Collapsible README prescribes for a non-button element. It is not a `Button`: upstream's trigger is a muted text row that turns to the foreground color on hover, with no surface or padding, and a `Button` would bring both and then have them turned off. The children are `BrainIcon` from `@uiid/icons/brain`, the label, and `ChevronDownIcon` from `@uiid/icons/chevron-down`. The trigger's module class sets `color: var(--shade-muted)` and lifts it to `--shade-foreground` on hover, so the icon, the label and the chevron all inherit one color; the `Text` and `Shimmer` labels take no `color` prop, and the shimmer's band falls back to the accent shade over that base.
 
-**Panel.** `CollapsiblePanel` with `instant={false}` and `ax="stretch"`, holding `<Markdown streaming={streaming}>{children}</Markdown>`. Base UI sets `--collapsible-panel-height` to `auto` once the panel is open and idle, so markdown growing while it streams is not clipped by the height transition; the transition runs only on open and close. `ax="stretch"` so the `Prose` spans the panel instead of shrinking to its longest line.
+**Panel.** `CollapsiblePanel` with `instant={false}` and `ax="stretch"`, holding `<Markdown streaming={streaming}>{children}</Markdown>`. Base UI sets `--collapsible-panel-height` to `auto` once the panel is open and idle, so markdown growing while it streams is not clipped by the height transition; the transition runs only on open and close. `ax="stretch"` so the `Prose` spans the panel instead of shrinking to its longest line, and `fullwidth` because the root aligns its children to the start, so the trigger hugs its label while the panel spans the root. Measured headless 2026-10-29: without it a long line widened the panel past the root.
 
 ### Tool structure
 
 ```
-[data-slot=tool][data-state=output-available]   CollapsibleRoot, Stack, fullwidth, b 1, radius
+[data-slot=tool][data-state=output-available]   CollapsibleRoot, Stack, fullwidth, ax stretch, b 1, radius
   [data-slot=tool-trigger]                      CollapsibleTrigger, render Group fullwidth space-between ay center p 3, role button
     Group gap 2 ay center
       WrenchIcon
@@ -164,7 +164,7 @@ The file carries `"use client"`: it holds the open state and runs effects.
 
 `Tool` holds no state and runs no effect; the collapsible parts are client components already, so the file needs no `"use client"`.
 
-**Root.** `CollapsibleRoot` with `fullwidth` and `b={1}` as defaults and `data-state={part.state}`. The module adds `border-radius: var(--globals-border-radius)` and `overflow: hidden`, so the trigger's hover surface clips to the corners. Not `Card`: a card's title, description, action and footer slots do not map onto a trigger, and the one thing wanted from it, a bordered rounded surface, is a style prop and one rule.
+**Root.** `CollapsibleRoot` with `fullwidth`, `ax="stretch"` and `b={1}` as defaults and `data-state={part.state}`. The stretch is what lets a wide JSON input scroll inside the panel: with the Stack's start alignment the panel shrinks to its longest line and the card clips it, measured headless 2026-10-29 at 2339px of `pre` inside a 666px card. The module adds `border-radius: var(--globals-border-radius)` and `overflow: hidden`, so the trigger's hover surface clips to the corners. Not `Card`: a card's title, description, action and footer slots do not map onto a trigger, and the one thing wanted from it, a bordered rounded surface, is a style prop and one rule.
 
 **Header.** The trigger is `CollapsibleTrigger` with `nativeButton={false}` and `render={<Group fullwidth ax="space-between" ay="center" gap={2} p={3} />}`, the same pattern as `Reasoning`'s. The left `Group` holds `WrenchIcon` from `@uiid/icons/wrench`, the name in a `Text` with `weight="medium"`, and the badge. The chevron sits at the end.
 
@@ -274,7 +274,7 @@ Vitest with happy-dom. `collapsible.test.tsx` is the template for the open state
 
 **Tool:**
 
-- The root is `data-slot="tool"` with `data-state` equal to the part's state, `data-ui-fullwidth` and `data-ui-b="1"`. A caller's `b`, `className` and `ref` reach it.
+- The root is `data-slot="tool"` with `data-state` equal to the part's state, `data-ui-fullwidth`, `data-ui-ay="stretch"` and `data-ui-b="1"`. A caller's `b`, `className` and `ref` reach it.
 - The name: `type: "tool-search"` reads "search"; `type: "dynamic-tool", toolName: "lookup"` reads "lookup"; a `title` wins over both.
 - `it.each` over the seven states: the badge is `[data-slot="tool-status"]`, contains the state's label, and carries that hue's palette class from `paletteColorStyles`.
 - Closed by default; clicking the trigger opens it. Open, with `input: { q: "weather" }`, the input section's heading reads "Parameters" and its `pre` contains `"q": "weather"` on its own line, which pins the pretty-print.

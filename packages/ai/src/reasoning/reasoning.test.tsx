@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Reasoning } from "./reasoning";
+import * as Examples from "./reasoning.examples";
 
 const getRoot = () =>
   document.querySelector<HTMLElement>("[data-slot='reasoning']");
@@ -23,6 +24,7 @@ describe("Reasoning", () => {
     const root = getRoot()!;
     expect(root).toHaveAttribute("data-ui-gap", "2");
     expect(root).not.toHaveAttribute("data-streaming");
+    expect(root).toHaveAttribute("data-ui-ay", "start");
   });
 
   it("writes data-streaming while streaming", () => {
@@ -83,6 +85,9 @@ describe("Reasoning", () => {
     render(<Reasoning streaming>{TEXT}</Reasoning>);
 
     expect(getPanel()!.querySelector("strong")).toHaveTextContent("bold");
+    // Full width under a start-aligned root, so long lines wrap or scroll
+    // inside the panel instead of widening it.
+    expect(getPanel()).toHaveAttribute("data-ui-fullwidth");
   });
 
   it("forwards streaming to Markdown", () => {
@@ -210,5 +215,25 @@ describe("Reasoning", () => {
 
       expect(getTrigger()).toHaveAttribute("aria-expanded", "true");
     });
+  });
+});
+
+describe("examples", () => {
+  it("renders a finished block that reads its duration", () => {
+    render(<Examples.Basic />);
+
+    expect(
+      screen.getByRole("button", { name: "Thought for 4 seconds" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the reasoning above the reply inside a turn", () => {
+    render(<Examples.InMessage />);
+
+    const message = document.querySelector("[data-slot='message']")!;
+    expect(message.querySelector("[data-slot='reasoning']")).not.toBeNull();
+    expect(
+      message.querySelector("[data-slot='message-response']"),
+    ).not.toBeNull();
   });
 });

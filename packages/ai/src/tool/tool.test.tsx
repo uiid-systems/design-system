@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import type { ToolState } from "../ai.types";
 import { Tool } from "./tool";
 import { TOOL_STATES } from "./tool.constants";
+import * as Examples from "./tool.examples";
 import type { ToolPart } from "./tool.types";
 
 import styles from "./tool.module.css";
@@ -37,6 +38,8 @@ describe("Tool", () => {
     expect(root).toHaveAttribute("data-state", "output-available");
     expect(root).toHaveAttribute("data-ui-fullwidth");
     expect(root).toHaveAttribute("data-ui-b", "1");
+    // Stretch, so a wide input scrolls inside the panel instead of widening it.
+    expect(root).toHaveAttribute("data-ui-ay", "stretch");
     expect(root).toHaveClass(styles["tool"]);
   });
 
@@ -211,5 +214,29 @@ describe("Tool", () => {
     expect(screen.getByTestId("custom-body")).toBeInTheDocument();
     expect(getInput()).not.toBeInTheDocument();
     expect(getOutput()).not.toBeInTheDocument();
+  });
+});
+
+describe("examples", () => {
+  it("renders one card per state", () => {
+    render(<Examples.States />);
+
+    const labels = Object.values(TOOL_STATES).map((state) => state.label);
+    const statuses = document.querySelectorAll("[data-slot='tool-status']");
+    expect(Array.from(statuses, (el) => el.textContent)).toEqual(labels);
+  });
+
+  it("renders a tool call between the reasoning and the reply", () => {
+    render(<Examples.InMessage />);
+
+    expect(
+      screen.getByRole("button", { name: /Thought for/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Completed/ }),
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector("[data-slot='message-response']"),
+    ).not.toBeNull();
   });
 });
