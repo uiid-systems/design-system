@@ -44,7 +44,7 @@ describe("Suggestion", () => {
 
 describe("Suggestion render and ref", () => {
   it("passes color, ref and a link render through", () => {
-    const ref = { current: null as HTMLElement | null };
+    const ref = { current: null as HTMLButtonElement | null };
     render(
       <Suggestion ref={ref} color="blue" render={<a href="/prompt" />}>
         Go
