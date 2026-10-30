@@ -30,15 +30,15 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-reasoning-tool.
 
 **Acceptance criteria:**
 
-- [ ] The root writes `data-slot="reasoning"`, `data-ui-gap="2"` and `data-streaming` while streaming; a caller's `gap`, `className` and `ref` reach it
-- [ ] The trigger has `role="button"` and `aria-expanded`; streaming reads "Thinking…" in a `[data-slot="shimmer"]`; `duration={4}` reads "Thought for 4 seconds", `duration={1}` "Thought for 1 second", neither reads "Reasoning"
-- [ ] Mounted streaming the panel is open and `**bold**` renders a `strong`; mounted idle it is closed and the trigger opens it; `false` to `true` opens it unless `defaultOpen={false}`
-- [ ] With fake timers, four seconds of streaming then off reads "Thought for 4 seconds" at once and closes one second later, once; a controlled `open` stays open and `onOpenChange` receives `false`
+- [x] The root writes `data-slot="reasoning"`, `data-ui-gap="2"` and `data-streaming` while streaming; a caller's `gap`, `className` and `ref` reach it
+- [x] The trigger has `role="button"` and `aria-expanded`; streaming reads "Thinking…" in a `[data-slot="shimmer"]`; `duration={4}` reads "Thought for 4 seconds", `duration={1}` "Thought for 1 second", neither reads "Reasoning"
+- [x] Mounted streaming the panel is open and `**bold**` renders a `strong`; mounted idle it is closed and the trigger opens it; `false` to `true` opens it unless `defaultOpen={false}`
+- [x] With fake timers, four seconds of streaming then off reads "Thought for 4 seconds" at once and closes one second later, once; a controlled `open` stays open and `onOpenChange` is not called
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai/src/reasoning`
-- [ ] `pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai/src/reasoning`
+- [x] `pnpm run build --filter=@uiid/ai`
 
 **Dependencies:** Task 1
 
