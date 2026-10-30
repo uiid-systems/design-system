@@ -52,4 +52,4 @@ Each module has its own spec in this directory, named `SPEC-<module-id>.md`. Thi
 | [`SPEC-ai-conversation.md`](./SPEC-ai-conversation.md)       | Approved |
 | [`SPEC-ai-message.md`](./SPEC-ai-message.md)                 | Approved |
 | [`SPEC-ai-prompt-input.md`](./SPEC-ai-prompt-input.md)       | Approved |
-| [`SPEC-ai-reasoning-tool.md`](./SPEC-ai-reasoning-tool.md)   | Draft    |
+| [`SPEC-ai-reasoning-tool.md`](./SPEC-ai-reasoning-tool.md)   | Approved |

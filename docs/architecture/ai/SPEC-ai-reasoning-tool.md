@@ -2,7 +2,7 @@
 
 **Module:** `ai-reasoning-tool` (see [capability map](./capability-map.md))
 **Package:** `@uiid/ai`
-**Status:** Draft, pending the size decision in open question 1
+**Status:** Approved
 **Upstream:** `ai-elements/packages/elements/src/reasoning.tsx` and `tool.tsx` at `ca8be60`
 **Depends on:** `ai-scaffold`, `markdown`, `typography-shimmer`
 
@@ -24,7 +24,7 @@ Collapsing is `@uiid/interactive`'s `CollapsibleRoot`, `CollapsibleTrigger` and 
 - `Tool` is closed by default and opens from its trigger. Every Base UI Collapsible prop and `Stack` layout prop passes to the root.
 - Every element writes a `data-slot`: `reasoning`, `reasoning-trigger`, `reasoning-panel`, `tool`, `tool-trigger`, `tool-status`, `tool-panel`, `tool-input`, `tool-output`. `Reasoning` writes `data-streaming` while streaming and `Tool` writes `data-state` with the part's state, so a consumer can style either by state.
 - `ToolPart` is defined in this module and the AI SDK's `ToolUIPart` and `DynamicToolUIPart` both satisfy it, pinned by a type test. `ToolState` is imported from `ai.types.ts`. No `ai` SDK import outside the test.
-- `packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators`. `pnpm size` passes for `@uiid/ai` at the limit open question 1 settles.
+- `packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators`. `pnpm size` passes for `@uiid/ai` at its existing `80 kB` limit.
 
 ## API
 
@@ -184,7 +184,7 @@ Seven states, seven hues, so no two states share a color. Each icon is imported 
 
 **Body.** `CollapsiblePanel` with `instant={false}`, `ax="stretch"`, `gap={4}` and `p={4}`. When `children` is given it is the body. Otherwise two local pieces, `ToolInput` and `ToolOutput` in `subcomponents/`, not exported: each is a `Stack` with `gap={2}`, a heading `Text` with `size={-1}`, `color="neutral"`, `uppercase` and `weight="medium"`, and the content. `ToolInput` renders when `part.input !== undefined` and pretty-prints it with `JSON.stringify(input, null, 2)`. `ToolOutput` renders when `part.output !== undefined` or `part.errorText` is set; its heading is "Error" when there is error text, which renders as a `Text` with `color="red"` above any output. A string output renders as code, a React element as itself, and anything else as pretty-printed JSON.
 
-**Code.** How the JSON and string code render is open question 1. The recommended path is a local `ToolCode` piece: `Prose` from `@uiid/typography` around `<pre><code>{text}</code></pre>`. `Prose` already styles a `pre` with the surface fill, the mono face and horizontal scroll, which is what `Markdown` produces for a fence, so the tool body matches a fenced block in the reply above it. It adds nothing to the bundle. The alternative is `CodeBlock` from `@uiid/code` with `language="json"`, which highlights and brings a copy button, and brings shiki's core with it. A product that wants highlighting under the recommended path passes `children` with its own `CodeBlock`.
+**Code.** The JSON and string code render through a local `ToolCode` piece: `Prose` from `@uiid/typography` around `<pre><code>{text}</code></pre>`. `Prose` already styles a `pre` with the surface fill, the mono face and horizontal scroll, which is what `Markdown` produces for a fence, so the tool body matches a fenced block in the reply above it. It adds nothing to the bundle. Not `CodeBlock` from `@uiid/code`: resolved decision 10. A product that wants highlighting passes `children` with its own `CodeBlock`.
 
 ### CSS
 
@@ -196,7 +196,7 @@ The design-system `globals.css` import stays deferred with scaffold rows 10 and 
 
 ### Package
 
-`packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators` as `workspace:*` dependencies, and `@uiid/code` only if open question 1 chooses it. `packages/ai/tsconfig.json` gains the matching project references.
+`packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators` as `workspace:*` dependencies. `packages/ai/tsconfig.json` gains the matching project references. The `@uiid/ai` entry in `.size-limit.json` stays at `80 kB`.
 
 Measured on 2026-10-29 against the dist of `92d0f18b` by bundling the barrel with each addition through esbuild and brotli, the way `pnpm size` does. The barrel alone is `74.69 kB` under `pnpm size`.
 
@@ -242,7 +242,6 @@ apps/storybook/stories/ai/
   reasoning.mdx
   tool.stories.tsx
   tool.mdx
-.size-limit.json                                    (only if open question 1 raises it)
 docs/architecture/ai/capability-map.md              (spec table row)
 ```
 
@@ -294,16 +293,16 @@ Vitest with happy-dom. `collapsible.test.tsx` is the template for the open state
 ## Boundaries
 
 - **Always:** `CollapsibleRoot`, `CollapsibleTrigger` and `CollapsiblePanel` from `@uiid/interactive`; `Shimmer` for the pending label; `Markdown` for the reasoning text; `Badge` for the state; `ToolState` from `ai.types.ts`; `data-slot` on every element; `data-streaming` and `data-state` on the roots; icons from their `@uiid/icons` subpaths; `:where(.local)` around any attribute selector in a module.
-- **Ask first:** raising the `@uiid/ai` size limit, which is open question 1; a `ReasoningTrigger`, `ReasoningContent`, `ToolHeader`, `ToolInput` or `ToolOutput` as an exported part; a `label` or `getThinkingMessage` override; an approval-response button row inside `Tool`; a context between the parts; any new token; any change to `Collapsible`, `Badge`, `Shimmer` or `Markdown`.
-- **Never:** `streamdown` or any markdown plugin; a `ReasoningContext` or `useReasoning`; `isStreaming` as the prop name; `Card` for the tool surface; `Button` as the trigger; a spread of the SDK part onto the root; inline styles; an `ai` SDK import outside the type test.
+- **Ask first:** raising the `@uiid/ai` size limit above `80 kB`; a `ReasoningTrigger`, `ReasoningContent`, `ToolHeader`, `ToolInput` or `ToolOutput` as an exported part; a `label` or `getThinkingMessage` override; an approval-response button row inside `Tool`; a context between the parts; any new token; any change to `Collapsible`, `Badge`, `Shimmer` or `Markdown`.
+- **Never:** `@uiid/code` in the default body; `streamdown` or any markdown plugin; a `ReasoningContext` or `useReasoning`; `isStreaming` as the prop name; `Card` for the tool surface; `Button` as the trigger; a spread of the SDK part onto the root; inline styles; an `ai` SDK import outside the type test.
 
 ## Success criteria
 
 - Every acceptance criterion above holds.
 - `pnpm test:run packages/ai` passes, with the markdown, conversation, message and prompt-input tests unchanged.
-- `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass, the last at the agreed limit.
+- `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass, the last at `80 kB`.
 - Storybook has `AI/Reasoning` stories covering a finished block, a streaming block that opens, finishes and closes, and a block above a `MessageResponse` inside `MessageContent`, and `AI/Tool` stories covering a completed call, all seven states, a call cycling through its lifecycle, and a message with reasoning, a tool and a response in order, each backed by its README.
-- The spec table in `capability-map.md` lists this spec, and the agreed size limit is recorded in open question 1's resolution.
+- The spec table in `capability-map.md` lists this spec.
 
 ## Follow-ups, not in this module
 
@@ -324,7 +323,8 @@ Vitest with happy-dom. `collapsible.test.tsx` is the template for the open state
 7. **`ToolPart` lives in `tool.types.ts`.** Locked by the ticket: only `Tool` reads it, so it is not a shared type.
 8. **Seven states, seven hues.** `approval-responded` takes `indigo` rather than upstream's second blue so no two badges share a color.
 9. **Not `Card`.** The bordered rounded surface is `b={1}` and one radius rule, as the message bubble is a surface on a `Stack`.
+10. **Tool code is `Prose` around a `pre`, and the `@uiid/ai` limit stays at `80 kB`.** Decided 2026-10-29. The ticket named `@uiid/code` and said to ask before raising the limit. Measured, `CodeBlock` adds about `110 kB` to the barrel because shiki's core and regex engine load at module scope, and the entry would have moved from `80 kB` to `190 kB` for every consumer whether or not they render a `Tool`. `Prose` around a `pre` adds nothing, matches how a fence in the reply already renders, and a product that wants highlighting passes `children` with its own `CodeBlock`.
 
 ## Open questions
 
-1. **How the tool's JSON and code render, and so the `@uiid/ai` size limit.** The ticket's locked decision names `@uiid/code` and says to ask before raising the limit. Measured, `CodeBlock` adds about `110 kB` and the entry would move from `80 kB` to `190 kB`; `Prose` around a `pre` adds nothing and the entry stays at `80 kB`. The recommendation is the `Prose` path: it matches how a fence in the reply already renders, keeps the barrel's cost where `ai-conversation` settled it, and a product that wants highlighting passes `children` with its own `CodeBlock`. The alternative gives highlighted JSON and a copy button in the default body at the cost of every consumer of the barrel. The chosen path and the resulting limit are recorded here once decided.
+None.
