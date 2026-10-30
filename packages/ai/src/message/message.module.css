@@ -23,3 +23,9 @@
   border-radius: var(--globals-border-radius);
   padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
 }
+
+/* Prose paints block code with the bubble's own fill, so a pasted fence would
+   vanish into it. One shade darker keeps it a block inside the bubble. */
+:where(.message)[data-from="user"] .content pre {
+  background-color: var(--shade-accent);
+}

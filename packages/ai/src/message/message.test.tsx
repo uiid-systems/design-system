@@ -6,6 +6,8 @@ import { Message } from "./message";
 import * as Examples from "./message.examples";
 import { MessageContent, MessageResponse } from "./subcomponents";
 
+import styles from "./message.module.css";
+
 /** The real compiler behind a spy, so `MessageResponse`'s memo is observable. */
 const compiler = vi.hoisted(() => vi.fn());
 vi.mock("markdown-to-jsx/react", async (importOriginal) => {
@@ -23,6 +25,7 @@ describe("Message", () => {
     expect(root).toHaveAttribute("data-from", "assistant");
     expect(root).toHaveAttribute("data-ui-gap", "2");
     expect(root).toHaveAttribute("data-ui-fullwidth");
+    expect(root).toHaveClass(styles["message"]);
     expect(root).toHaveTextContent("hello");
   });
 
@@ -71,6 +74,7 @@ describe("MessageContent", () => {
     const root = container.firstElementChild!;
     expect(root).toHaveAttribute("data-slot", "message-content");
     expect(root).toHaveAttribute("data-ui-gap", "2");
+    expect(root).toHaveClass(styles["content"]);
     expect(root).toHaveTextContent("body");
   });
 

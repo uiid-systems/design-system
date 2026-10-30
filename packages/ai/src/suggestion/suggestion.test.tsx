@@ -42,6 +42,23 @@ describe("Suggestion", () => {
   });
 });
 
+describe("Suggestion render and ref", () => {
+  it("passes color, ref and a link render through", () => {
+    const ref = { current: null as HTMLElement | null };
+    render(
+      <Suggestion ref={ref} color="blue" render={<a href="/prompt" />}>
+        Go
+      </Suggestion>,
+    );
+
+    const link = screen.getByRole("link", { name: "Go" });
+    expect(link).toHaveAttribute("href", "/prompt");
+    expect(link.className).toContain("shape-pill");
+    expect(link.className).toContain("variant-subtle");
+    expect(ref.current).toBe(link);
+  });
+});
+
 describe("examples", () => {
   it("renders a row of pills that report the one picked", () => {
     render(<Examples.Basic />);
