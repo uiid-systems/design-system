@@ -1,0 +1,11 @@
+import { Meta, Markdown, Controls } from "@storybook/addon-docs/blocks";
+import readme from "../../../../packages/ai/src/suggestion/README.md?raw";
+import * as Stories from "./suggestion.stories";
+
+<Meta of={Stories} />
+
+<Markdown>{readme}</Markdown>
+
+# Props
+
+<Controls of={Stories.Playground} />
