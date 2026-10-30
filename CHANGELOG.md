@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.2](https://github.com/uiid-systems/design-system/compare/v0.7.1...v0.7.2) (2026-10-30)
+
+
+### Features
+
+* **ui:** add a grow toggle to Box and grow a Card's body with it ([#480](https://github.com/uiid-systems/design-system/issues/480)) ([a53c18e](https://github.com/uiid-systems/design-system/commit/a53c18ef2fd70639a26d5eb8521cc9334926f1a2))
+* **ui:** add a shell Card variant for page-level content areas ([#481](https://github.com/uiid-systems/design-system/issues/481)) ([50af402](https://github.com/uiid-systems/design-system/commit/50af402adb212f6b7efec9d684985adf555fcead))
+* **ui:** add InputWrapper orientation and Textarea before/after slots ([#487](https://github.com/uiid-systems/design-system/issues/487)) ([ba753a4](https://github.com/uiid-systems/design-system/commit/ba753a4eb7edbf44d876cc1af49d25594e644610))
+* **ui:** add Shimmer text effect ([#488](https://github.com/uiid-systems/design-system/issues/488)) ([f553e4c](https://github.com/uiid-systems/design-system/commit/f553e4c709966975c37fd04915eeee68a8257591))
+* **ui:** step up the icon size in large buttons ([#482](https://github.com/uiid-systems/design-system/issues/482)) ([09ca451](https://github.com/uiid-systems/design-system/commit/09ca45102e5e3e4a48940c26ad544e6fe3f21536))
+
+
+### Bug Fixes
+
+* **ui:** give Dialog and Drawer backdrops a dark scrim from global tokens ([#479](https://github.com/uiid-systems/design-system/issues/479)) ([aeb6803](https://github.com/uiid-systems/design-system/commit/aeb68032c7a4bf503e77a95f9325da2483af9e50))
+
 ## [0.7.1](https://github.com/uiid-systems/design-system/compare/v0.7.0...v0.7.1) (2026-10-21)
 
 
