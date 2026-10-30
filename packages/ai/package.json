@@ -1,6 +1,6 @@
 {
   "name": "@uiid/ai",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": true,
   "description": "AI chat components — shared types for AI SDK data",
   "license": "MIT",
