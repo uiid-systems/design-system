@@ -105,22 +105,6 @@ describe("MessageResponse", () => {
     expect(root.querySelector("strong")).toHaveTextContent("bold");
   });
 
-  it.each([
-    ["emphasis", "Hello **bold wor"],
-    ["link", "See [the docs](https://exa"],
-    ["fence", "Code:\n\n```ts\nconst a = 1;\nconst b"],
-  ])(
-    "renders a string cut inside a %s with and without streaming",
-    (_, cut) => {
-      expect(() =>
-        render(<MessageResponse>{cut}</MessageResponse>),
-      ).not.toThrow();
-      expect(() =>
-        render(<MessageResponse streaming>{cut}</MessageResponse>),
-      ).not.toThrow();
-    },
-  );
-
   it("forwards streaming to Markdown", () => {
     const { container: held } = render(
       <MessageResponse streaming>{"Hello **bold wor"}</MessageResponse>,

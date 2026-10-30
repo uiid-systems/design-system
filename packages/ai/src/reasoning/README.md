@@ -45,7 +45,7 @@ Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel i
 
 **Label.** While `streaming` the trigger reads "Thinking…" in a `Shimmer`. Once finished it reads "Thought for N seconds", where N is `duration` when passed, or else the seconds measured between `streaming` turning on and off. With no duration from either source it reads "Reasoning", not "Thought for a few seconds", so a transcript loaded from storage never claims a time nobody measured.
 
-**Open state.** An uncontrolled block opens when `streaming` turns on, whether it mounts that way or changes later, and closes one second after it turns off. It closes once: if the user reopens it, a later stream does not fold it again. Pass `defaultOpen={false}` to keep it closed while it streams. A block that never streamed never auto-closes, so a finished transcript rendered with `defaultOpen` stays open.
+**Open state.** An uncontrolled block opens when `streaming` turns on, whether it mounts that way or changes later, and closes one second after it turns off. Pass `defaultOpen={false}` to keep it closed while it streams. A block that never streamed never auto-closes, so a finished transcript rendered with `defaultOpen` stays open.
 
 **Controlled.** With `open` the block does none of this. It stays where the prop says, and `onOpenChange` fires only when the trigger is pressed. A controlled caller owns the timing, which is also why Base UI's event details are only ever real ones.
 

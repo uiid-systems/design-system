@@ -10,7 +10,6 @@ export const Suggestion = ({
   variant = "subtle",
   shape = "pill",
   size = "small",
-  type = "button",
   ...props
 }: SuggestionProps) => (
   <Button
@@ -18,7 +17,6 @@ export const Suggestion = ({
     variant={variant}
     shape={shape}
     size={size}
-    type={type}
     {...props}
   />
 );

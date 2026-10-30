@@ -5,10 +5,6 @@ import { Group } from "@uiid/layout";
 import { cx, useComposedRefs } from "@uiid/utils";
 import { useRef } from "react";
 
-import {
-  PROMPT_INPUT_LABEL,
-  PROMPT_INPUT_PLACEHOLDER,
-} from "./prompt-input.constants";
 import type { PromptInputProps } from "./prompt-input.types";
 import { PromptInputSubmit } from "./subcomponents";
 
@@ -71,8 +67,8 @@ export const PromptInput = ({
     >
       <Textarea
         ref={composedRef}
-        aria-label={label ? undefined : PROMPT_INPUT_LABEL}
-        placeholder={PROMPT_INPUT_PLACEHOLDER}
+        aria-label={label ? undefined : "Message"}
+        placeholder="Ask anything"
         rows={1}
         resize="none"
         fullwidth
