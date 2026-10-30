@@ -4,23 +4,23 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-reasoning-tool.
 
 ### Task 1: `Tool` with its state table
 
-**Description:** Add `@uiid/interactive` and `@uiid/indicators` to `packages/ai/package.json` and the tsconfig references. Create `packages/ai/src/tool/` with `tool.types.ts` (`ToolPart`, `ToolProps`), `tool.constants.ts` (the seven-state table of label, icon and hue), `tool.tsx` (`CollapsibleRoot` with `fullwidth`, `b={1}`, `data-slot="tool"`, `data-state`; a `CollapsibleTrigger` rendered as a `Group` with `nativeButton={false}` holding `WrenchIcon`, the name, the `Badge` and the chevron; a `CollapsiblePanel` holding `children` or the default body), `tool.module.css` (radius and overflow, trigger cursor and hover, chevron rotation, badge icon size, the spin keyframe with its reduced-motion override), and `subcomponents/` with `tool-input.tsx`, `tool-output.tsx` and `tool-code.tsx` (`Prose` around a `pre`).
+**Description:** Add `@uiid/interactive` and `@uiid/indicators` to `packages/ai/package.json`. Create `packages/ai/src/tool/` with `tool.types.ts` (`ToolPart`, `ToolProps`), `tool.constants.ts` (the seven-state table of label, icon and hue), `tool.tsx` (`CollapsibleRoot` with `fullwidth`, `b={1}`, `data-slot="tool"`, `data-state`; a `CollapsibleTrigger` rendered as a `Group` with `nativeButton={false}` holding `WrenchIcon`, the name, the `Badge` and the chevron; a `CollapsiblePanel` holding `children` or the default body), `tool.module.css` (radius and overflow, trigger cursor and hover, chevron rotation, badge icon size, the spin keyframe with its reduced-motion override), and `subcomponents/` with `tool-input.tsx`, `tool-output.tsx` and `tool-code.tsx` (`Prose` around a `pre`).
 
 **Acceptance criteria:**
 
-- [ ] The root writes `data-slot="tool"`, `data-state` from the part, `data-ui-fullwidth` and `data-ui-b="1"`; a caller's `b`, `className` and `ref` reach it
-- [ ] The name is `title`, else `toolName`, else `type` without its `tool-` prefix
-- [ ] Each of the seven states renders `[data-slot="tool-status"]` with its label and its hue's palette class
-- [ ] Closed by default; the trigger has `role="button"` and opens it; the input section reads "Parameters" and pretty-prints the input; a string output sits in a `pre`, an object is pretty-printed, an element renders as itself under "Result"; `errorText` turns the heading to "Error" and renders the text; with neither there is no output section; `children` replaces the body
+- [x] The root writes `data-slot="tool"`, `data-state` from the part, `data-ui-fullwidth` and `data-ui-b="1"`; a caller's `b`, `className` and `ref` reach it
+- [x] The name is `title`, else `toolName`, else `type` without its `tool-` prefix
+- [x] Each of the seven states renders `[data-slot="tool-status"]` with its label and its hue's palette class
+- [x] Closed by default; the trigger has `role="button"` and opens it; the input section reads "Parameters" and pretty-prints the input; a string output sits in a `pre`, an object is pretty-printed, an element renders as itself under "Result"; `errorText` turns the heading to "Error" and renders the text; with neither there is no output section; `children` replaces the body
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai/src/tool`
-- [ ] `pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai/src/tool`
+- [x] `pnpm run build --filter=@uiid/ai`
 
 **Dependencies:** None
 
-**Files:** `packages/ai/package.json`, `packages/ai/tsconfig.json`, `pnpm-lock.yaml`, `tool.types.ts`, `tool.constants.ts`, `tool.tsx`, `tool.module.css`, `tool.test.tsx`, `subcomponents/index.ts`, `subcomponents/tool-input.tsx`, `subcomponents/tool-output.tsx`, `subcomponents/tool-code.tsx`
+**Files:** `packages/ai/package.json`, `pnpm-lock.yaml`, `tool.types.ts`, `tool.constants.ts`, `tool.tsx`, `tool.module.css`, `tool.test.tsx`, `subcomponents/index.ts`, `subcomponents/tool-input.tsx`, `subcomponents/tool-output.tsx`, `subcomponents/tool-code.tsx`, `subcomponents/tool-heading.tsx`
 
 **Size:** M
 

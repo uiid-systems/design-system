@@ -2,7 +2,7 @@
   "name": "@uiid/ai",
   "version": "0.7.1",
   "private": true,
-  "description": "AI chat components — shared types for AI SDK data",
+  "description": "AI chat components \u2014 shared types for AI SDK data",
   "license": "MIT",
   "author": "Adam Fratino",
   "repository": {
@@ -62,6 +62,8 @@
     "@uiid/buttons": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/indicators": "workspace:*",
+    "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",

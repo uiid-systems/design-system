@@ -28,7 +28,7 @@ One PR, three commits after the spec.
 
 See [`todo.md`](./todo.md) for each task's acceptance criteria and verification steps.
 
-- [ ] Task 1: `Tool` with its state table
+- [x] Task 1: `Tool` with its state table
 - [ ] Task 2: `Reasoning` with its timing
 - [ ] Task 3: Barrel, type test, examples, READMEs and stories
 

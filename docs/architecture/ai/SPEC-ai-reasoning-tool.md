@@ -67,13 +67,13 @@ export type ToolPart = {
   errorText?: string;
 };
 
-export type ToolProps = CollapsibleRootProps & {
+export type ToolProps = Omit<CollapsibleRootProps, "part"> & {
   /** The tool call to show. */
   part: ToolPart;
 };
 ```
 
-`CollapsibleRootProps` is `WithLayoutProps<Collapsible.Root.Props, StackProps>`, so both roots take `open`, `defaultOpen`, `onOpenChange`, `disabled`, `className`, `render`, `ref` and the `Stack` layout props. `ReasoningProps` omits `children` only to narrow it to a string, as `MarkdownProps` and `ShimmerProps` do. `ToolProps` keeps `children` as a node: when given, it replaces the default input and output body.
+`CollapsibleRootProps` is `WithLayoutProps<Collapsible.Root.Props, StackProps>`, so both roots take `open`, `defaultOpen`, `onOpenChange`, `disabled`, `className`, `render`, `ref` and the `Stack` layout props. `ReasoningProps` omits `children` only to narrow it to a string, as `MarkdownProps` and `ShimmerProps` do. `ToolProps` keeps `children` as a node: when given, it replaces the default input and output body. It omits the root's own `part` because HTML's `part` attribute already types it as a string, and the SDK's object has to win.
 
 The prop is `streaming`, not upstream's `isStreaming`. `Markdown` and `MessageResponse` already call it `streaming`, and one name across the package beats parity with upstream's.
 
@@ -196,7 +196,7 @@ The design-system `globals.css` import stays deferred with scaffold rows 10 and 
 
 ### Package
 
-`packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators` as `workspace:*` dependencies. `packages/ai/tsconfig.json` gains the matching project references. The `@uiid/ai` entry in `.size-limit.json` stays at `80 kB`.
+`packages/ai/package.json` adds `@uiid/interactive` and `@uiid/indicators` as `workspace:*` dependencies. The `@uiid/ai` entry in `.size-limit.json` stays at `80 kB`.
 
 Measured on 2026-10-29 against the dist of `92d0f18b` by bundling the barrel with each addition through esbuild and brotli, the way `pnpm size` does. The barrel alone is `74.69 kB` under `pnpm size`.
 
@@ -212,7 +212,6 @@ The `+110 kB` is shiki's core and its JavaScript regex engine, which `CodeBlock`
 ```
 packages/ai/
   package.json                                      (@uiid/interactive, @uiid/indicators)
-  tsconfig.json                                     (references)
   src/index.ts                                      (Reasoning, Tool exports)
   src/index.test.ts                                 (the barrel's runtime export list)
   src/ai.types.test.ts                              (ToolPart satisfied by both SDK parts)
@@ -237,6 +236,7 @@ packages/ai/
       tool-input.tsx
       tool-output.tsx
       tool-code.tsx
+      tool-heading.tsx
 apps/storybook/stories/ai/
   reasoning.stories.tsx
   reasoning.mdx

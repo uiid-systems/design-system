@@ -211,6 +211,12 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
+      '@uiid/indicators':
+        specifier: workspace:*
+        version: link:../indicators
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
