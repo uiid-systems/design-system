@@ -53,4 +53,4 @@ Markdown from a model is untrusted input, so raw HTML parsing is off: any tag in
 - Block elements render as direct children of the `Prose` root, with no wrapper in between, so `Prose`'s sibling spacing applies. A one-line string renders as a paragraph.
 - Styling comes from `Prose`. It currently has no rules for tables, `del` or images, which render with browser defaults.
 - Headings get an `id` from their text. A transcript with many messages may repeat ids.
-- The component has no state and no hooks, so it renders on the server. During a stream it recompiles on every render; memoize at the message level if that shows up in a profile.
+- The component has no state and no hooks, so it renders on the server. It is wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders and only the message whose text is changing recompiles. Pass a stable `render` element or none, or the memo never hits.

@@ -2,17 +2,13 @@ import { Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
-import {
-  CONVERSATION_EMPTY_DESCRIPTION,
-  CONVERSATION_EMPTY_TITLE,
-} from "../conversation.constants";
 import type { ConversationEmptyStateProps } from "../conversation.types";
 
 import styles from "../conversation.module.css";
 
 export const ConversationEmptyState = ({
-  title = CONVERSATION_EMPTY_TITLE,
-  description = CONVERSATION_EMPTY_DESCRIPTION,
+  title = "No messages yet",
+  description = "Start a conversation to see messages here",
   icon,
   className,
   children,

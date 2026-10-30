@@ -51,9 +51,3 @@ export const TOOL_STATES: Record<ToolState, ToolStateEntry> = {
   "output-error": { label: "Error", icon: CircleXIcon, color: "red" },
   "output-denied": { label: "Denied", icon: BanIcon, color: "orange" },
 };
-
-export const TOOL_LABELS = {
-  input: "Parameters",
-  output: "Result",
-  error: "Error",
-} as const;

@@ -11,5 +11,5 @@ export type MessageProps = StackProps & {
 /** The body of a turn. A user turn's content is the bubble. */
 export type MessageContentProps = StackProps;
 
-/** A streaming markdown reply. `Markdown`, memoized per message. */
+/** A streaming markdown reply. `Markdown` under the message's own slot. */
 export type MessageResponseProps = MarkdownProps;

@@ -5,10 +5,6 @@ import { ArrowUpIcon } from "@uiid/icons/arrow-up";
 import { SquareIcon } from "@uiid/icons/square";
 import { XIcon } from "@uiid/icons/x";
 
-import {
-  PROMPT_INPUT_STOP_LABEL,
-  PROMPT_INPUT_SUBMIT_LABEL,
-} from "../prompt-input.constants";
 import type { PromptInputSubmitProps } from "../prompt-input.types";
 
 /**
@@ -33,9 +29,7 @@ export const PromptInputSubmit = ({
     <Button
       data-slot="prompt-input-submit"
       type={isGenerating ? "button" : "submit"}
-      aria-label={
-        isGenerating ? PROMPT_INPUT_STOP_LABEL : PROMPT_INPUT_SUBMIT_LABEL
-      }
+      aria-label={isGenerating ? "Stop" : "Send"}
       shape="circle"
       size="xsmall"
       loading={status === "submitted"}

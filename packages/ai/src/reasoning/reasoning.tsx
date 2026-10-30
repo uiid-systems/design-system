@@ -9,17 +9,20 @@ import {
 } from "@uiid/interactive";
 import { Group } from "@uiid/layout";
 import { Shimmer, Text } from "@uiid/typography";
-import { useEffect, useRef, useState } from "react";
+import { cx } from "@uiid/utils";
+import { useEffect, useState } from "react";
 
 import { Markdown } from "../markdown/markdown";
-import {
-  REASONING_AUTO_CLOSE_DELAY,
-  REASONING_LABELS,
-  reasoningLabel,
-} from "./reasoning.constants";
+import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
 import type { ReasoningProps } from "./reasoning.types";
 
+import shared from "../shared/collapsible-trigger.module.css";
 import styles from "./reasoning.module.css";
+
+const reasoningLabel = (seconds?: number) => {
+  if (!seconds) return "Reasoning";
+  return `Thought for ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+};
 
 export const Reasoning = ({
   children,
@@ -35,10 +38,7 @@ export const Reasoning = ({
   const controlled = openProp !== undefined;
   const [localOpen, setLocalOpen] = useState(defaultOpen ?? streaming);
   const open = controlled ? openProp : localOpen;
-
   const [measured, setMeasured] = useState<number>();
-  const startedAt = useRef<number | null>(null);
-  const autoClosed = useRef(false);
 
   // An uncontrolled block opens when a stream starts, unless the caller asked
   // for it closed. A controlled `open` is the caller's alone.
@@ -47,25 +47,23 @@ export const Reasoning = ({
     if (streaming && autoOpen) setLocalOpen(true);
   }, [streaming, autoOpen]);
 
-  // Time the stream. When it ends, read the duration and close once, a beat
-  // later, so the finished text is seen before it folds away.
+  // Time the stream: the cleanup runs when `streaming` turns off.
   useEffect(() => {
-    if (streaming) {
-      startedAt.current = Date.now();
-      return;
-    }
-    if (startedAt.current === null) return;
+    if (!streaming) return;
+    const start = Date.now();
+    return () => setMeasured(Math.ceil((Date.now() - start) / 1000));
+  }, [streaming]);
 
-    setMeasured(Math.ceil((Date.now() - startedAt.current) / 1000));
-    startedAt.current = null;
-    if (controlled || autoClosed.current) return;
-
-    const id = setTimeout(() => {
-      autoClosed.current = true;
-      setLocalOpen(false);
-    }, REASONING_AUTO_CLOSE_DELAY);
+  // Once a stream has ended, close a beat later, so the finished text is seen
+  // before it folds away.
+  useEffect(() => {
+    if (streaming || controlled || measured === undefined) return;
+    const id = setTimeout(
+      () => setLocalOpen(false),
+      REASONING_AUTO_CLOSE_DELAY,
+    );
     return () => clearTimeout(id);
-  }, [streaming, controlled]);
+  }, [streaming, controlled, measured]);
 
   const label = reasoningLabel(duration ?? measured);
 
@@ -85,16 +83,12 @@ export const Reasoning = ({
       <CollapsibleTrigger
         data-slot="reasoning-trigger"
         nativeButton={false}
-        className={styles["trigger"]}
+        className={cx(shared["trigger"], styles["trigger"])}
         render={<Group gap={2} ay="center" />}
       >
         <BrainIcon />
-        {streaming ? (
-          <Shimmer>{REASONING_LABELS.thinking}</Shimmer>
-        ) : (
-          <Text>{label}</Text>
-        )}
-        <ChevronDownIcon className={styles["chevron"]} />
+        {streaming ? <Shimmer>Thinking…</Shimmer> : <Text>{label}</Text>}
+        <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
       <CollapsiblePanel
         data-slot="reasoning-panel"

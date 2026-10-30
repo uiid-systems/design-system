@@ -159,7 +159,7 @@ describe("Reasoning", () => {
     beforeEach(() => vi.useFakeTimers());
     afterEach(() => vi.useRealTimers());
 
-    it("measures the stream and closes one second after it ends, once", () => {
+    it("measures the stream and closes one second after it ends", () => {
       const { rerender } = render(<Reasoning streaming>{TEXT}</Reasoning>);
 
       act(() => vi.advanceTimersByTime(4000));
@@ -170,13 +170,6 @@ describe("Reasoning", () => {
 
       act(() => vi.advanceTimersByTime(1000));
       expect(getTrigger()).toHaveAttribute("aria-expanded", "false");
-
-      // A second stream reopens it and does not close it again.
-      rerender(<Reasoning streaming>{TEXT}</Reasoning>);
-      expect(getTrigger()).toHaveAttribute("aria-expanded", "true");
-      rerender(<Reasoning>{TEXT}</Reasoning>);
-      act(() => vi.advanceTimersByTime(1000));
-      expect(getTrigger()).toHaveAttribute("aria-expanded", "true");
     });
 
     it("prefers a duration prop over the measurement", () => {

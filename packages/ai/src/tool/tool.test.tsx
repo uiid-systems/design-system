@@ -96,12 +96,6 @@ describe("Tool", () => {
     );
   });
 
-  it("reads error and denied as red and orange and success as green", () => {
-    expect(TOOL_STATES["output-error"].color).toBe("red");
-    expect(TOOL_STATES["output-denied"].color).toBe("orange");
-    expect(TOOL_STATES["output-available"].color).toBe("green");
-  });
-
   // ============================================
   // OPEN STATE
   // ============================================

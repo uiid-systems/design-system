@@ -1,0 +1,23 @@
+/* The disclosure row Reasoning and Tool share: icons at the global icon size
+   and a chevron that turns while the panel is open. Each component adds its
+   own hover surface on top. */
+.trigger {
+  cursor: pointer;
+}
+
+/* Zero specificity, so a component rule such as Tool's badge icon wins
+   whatever order the modules bundle in. */
+:where(.trigger) svg {
+  width: var(--globals-icon-size);
+  height: var(--globals-icon-size);
+  flex-shrink: 0;
+}
+
+.chevron {
+  transition: transform var(--globals-transition-duration) var(--globals-transition-easing);
+}
+
+/* Base UI writes `data-panel-open` on the trigger while the panel is open. */
+:where(.trigger)[data-panel-open] .chevron {
+  transform: rotate(180deg);
+}

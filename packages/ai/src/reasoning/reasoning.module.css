@@ -2,26 +2,10 @@
    lifting to the foreground on hover. The Shimmer label inherits this color
    as its base and sweeps the accent shade over it. */
 .trigger {
-  cursor: pointer;
   color: var(--shade-muted);
   transition: color var(--globals-transition-duration) var(--globals-transition-easing);
 
   &:hover {
     color: var(--shade-foreground);
   }
-
-  & svg {
-    width: var(--globals-icon-size);
-    height: var(--globals-icon-size);
-    flex-shrink: 0;
-  }
-}
-
-.chevron {
-  transition: transform var(--globals-transition-duration) var(--globals-transition-easing);
-}
-
-/* Base UI writes `data-panel-open` on the trigger while the panel is open. */
-:where(.trigger)[data-panel-open] .chevron {
-  transform: rotate(180deg);
 }

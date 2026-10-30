@@ -6,27 +6,11 @@
 }
 
 .trigger {
-  cursor: pointer;
   transition: background-color var(--globals-transition-duration) var(--globals-transition-easing);
 
   &:hover {
     background-color: var(--shade-surface);
   }
-
-  & svg {
-    width: var(--globals-icon-size);
-    height: var(--globals-icon-size);
-    flex-shrink: 0;
-  }
-}
-
-.chevron {
-  transition: transform var(--globals-transition-duration) var(--globals-transition-easing);
-}
-
-/* Base UI writes `data-panel-open` on the trigger while the panel is open. */
-:where(.trigger)[data-panel-open] .chevron {
-  transform: rotate(180deg);
 }
 
 /* The state icon rides inline inside the badge's own Text, so it sizes to the
@@ -36,20 +20,4 @@
   height: 1em;
   vertical-align: -0.125em;
   margin-inline-end: 0.25em;
-}
-
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spin {
-    animation: none;
-  }
 }

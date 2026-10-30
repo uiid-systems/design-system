@@ -4,7 +4,6 @@ import { Button } from "@uiid/buttons";
 import { ArrowDownIcon } from "@uiid/icons/arrow-down";
 import { cx } from "@uiid/utils";
 
-import { CONVERSATION_SCROLL_LABEL } from "../conversation.constants";
 import { useConversation } from "../conversation.context";
 import type { ConversationScrollButtonProps } from "../conversation.types";
 
@@ -23,11 +22,10 @@ export const ConversationScrollButton = ({
   return (
     <Button
       data-slot="conversation-scroll-button"
-      type="button"
       shape="circle"
       variant="subtle"
       size="small"
-      aria-label={CONVERSATION_SCROLL_LABEL}
+      aria-label="Scroll to bottom"
       className={cx(styles["scroll-button"], className)}
       onClick={(event) => {
         onClick?.(event);

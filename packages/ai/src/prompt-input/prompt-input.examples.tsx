@@ -16,7 +16,8 @@ import {
   ConversationEmptyState,
   ConversationScrollButton,
 } from "../conversation/subcomponents";
-import { Markdown } from "../markdown/markdown";
+import { Message } from "../message/message";
+import { MessageContent, MessageResponse } from "../message/subcomponents";
 import { PromptInput } from "./prompt-input";
 import type { PromptInputProps } from "./prompt-input.types";
 
@@ -160,25 +161,19 @@ export const WithConversation = () => {
             <ConversationEmptyState description="Send a message to see the composer cycle through its states" />
           ) : (
             turns.map((turn, index) => (
-              <Stack key={index} gap={1}>
-                <Text size={-1} color="neutral" uppercase>
-                  {turn.role}
-                </Text>
-                {turn.role === "user" ? (
-                  <Text render={<p />}>{turn.text}</Text>
-                ) : (
-                  <Markdown>{turn.text}</Markdown>
-                )}
-              </Stack>
+              <Message key={index} from={turn.role}>
+                <MessageContent>
+                  <MessageResponse>{turn.text}</MessageResponse>
+                </MessageContent>
+              </Message>
             ))
           )}
           {status === "streaming" && (
-            <Stack gap={1}>
-              <Text size={-1} color="neutral" uppercase>
-                assistant
-              </Text>
-              <Markdown streaming>{draft}</Markdown>
-            </Stack>
+            <Message from="assistant">
+              <MessageContent>
+                <MessageResponse streaming>{draft}</MessageResponse>
+              </MessageContent>
+            </Message>
           )}
         </ConversationContent>
         <ConversationScrollButton />

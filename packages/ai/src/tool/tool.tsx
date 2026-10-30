@@ -6,18 +6,47 @@ import {
   CollapsibleRoot,
   CollapsibleTrigger,
 } from "@uiid/interactive";
-import { Group } from "@uiid/layout";
-import { Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { Group, Stack } from "@uiid/layout";
+import { Prose, Text } from "@uiid/typography";
+import { cx, cxState } from "@uiid/utils";
+import { isValidElement } from "react";
 
-import { ToolInput, ToolOutput } from "./subcomponents";
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
 
+import shared from "../shared/collapsible-trigger.module.css";
 import styles from "./tool.module.css";
 
 const toolName = (part: ToolPart) =>
   part.title ?? part.toolName ?? part.type.replace(/^tool-/, "");
+
+/* Prose already styles a `pre` the way Markdown renders a fence: the surface
+   fill, the mono face and horizontal scroll. So the tool body matches a fenced
+   block in the reply above it, at no bundle cost. */
+const ToolCode = ({ children }: { children: string }) => (
+  <Prose data-slot="tool-code">
+    <pre>
+      <code>{children}</code>
+    </pre>
+  </Prose>
+);
+
+const ToolSection = ({
+  slot,
+  heading,
+  children,
+}: {
+  slot: string;
+  heading: string;
+  children: React.ReactNode;
+}) => (
+  <Stack data-slot={slot} gap={2} ax="stretch">
+    <Text size={-1} weight="medium" color="neutral" uppercase>
+      {heading}
+    </Text>
+    {children}
+  </Stack>
+);
 
 export const Tool = ({
   part,
@@ -30,6 +59,7 @@ export const Tool = ({
 }: ToolProps) => {
   const status = TOOL_STATES[part.state];
   const StatusIcon = status.icon;
+  const { input, output, errorText } = part;
 
   return (
     <CollapsibleRoot
@@ -44,7 +74,7 @@ export const Tool = ({
       <CollapsibleTrigger
         data-slot="tool-trigger"
         nativeButton={false}
-        className={styles["trigger"]}
+        className={cx(shared["trigger"], styles["trigger"])}
         render={
           <Group fullwidth ax="space-between" ay="center" gap={2} p={3} />
         }
@@ -58,11 +88,11 @@ export const Tool = ({
             color={status.color}
             className={styles["status"]}
           >
-            <StatusIcon className={status.spin ? styles["spin"] : undefined} />
+            <StatusIcon data-animate={status.spin ? "spin" : undefined} />
             {status.label}
           </Badge>
         </Group>
-        <ChevronDownIcon className={styles["chevron"]} />
+        <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
       <CollapsiblePanel
         data-slot="tool-panel"
@@ -73,8 +103,28 @@ export const Tool = ({
       >
         {children ?? (
           <>
-            <ToolInput input={part.input} />
-            <ToolOutput output={part.output} errorText={part.errorText} />
+            {input !== undefined && (
+              <ToolSection slot="tool-input" heading="Parameters">
+                <ToolCode>{JSON.stringify(input, null, 2)}</ToolCode>
+              </ToolSection>
+            )}
+            {(output !== undefined || errorText) && (
+              <ToolSection
+                slot="tool-output"
+                heading={errorText ? "Error" : "Result"}
+              >
+                {errorText && <Text color="red">{errorText}</Text>}
+                {isValidElement(output)
+                  ? output
+                  : output !== undefined && (
+                      <ToolCode>
+                        {typeof output === "string"
+                          ? output
+                          : JSON.stringify(output, null, 2)}
+                      </ToolCode>
+                    )}
+              </ToolSection>
+            )}
           </>
         )}
       </CollapsiblePanel>

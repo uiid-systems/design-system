@@ -50,7 +50,7 @@ The body. All `Stack` props, with `gap={2}` as the default. On a user turn it is
 
 ### MessageResponse
 
-A markdown reply. All [`Markdown`](../markdown/README.md) props, including `streaming`. It is `Markdown` wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders, and only the message whose text is changing recompiles. Renders `data-slot="message-response"`.
+A markdown reply. All [`Markdown`](../markdown/README.md) props, including `streaming`. Renders `data-slot="message-response"`.
 
 ## Actions
 
@@ -86,5 +86,5 @@ A toolbar with metadata on the other side is the same `Group` with `ax="space-be
 - `from="system"` renders like `assistant`. A chat column needs two alignments, not three.
 - The user margin and bubble are two CSS rules keyed on `data-from`; `MessageContent` does not take `from` and there is no context between the parts.
 - A turn is capped at 95% of the column, so a bubble never touches the far edge. Override `max-width` on `[data-slot="message"]` to change it.
-- `MessageResponse` is memoized on all of its props. Pass a stable `render` element or none, or the memo never hits.
+- `MessageResponse` is `Markdown`, which is memoized on all of its props. Pass a stable `render` element or none, or the memo never hits.
 - No part holds state or uses a hook, so all three render on the server.

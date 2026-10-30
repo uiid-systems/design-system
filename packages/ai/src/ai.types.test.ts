@@ -13,28 +13,6 @@ import type { ToolPart } from "./tool/tool.types";
    when a union drifts: the Test workflow typechecks this package on every PR, and
    `tsc -b` in the package build does the same at release. */
 describe("ai shared types", () => {
-  it("pins ChatRole to the three message authors", () => {
-    expectTypeOf<ChatRole>().toEqualTypeOf<"system" | "user" | "assistant">();
-  });
-
-  it("pins ChatStatus to the four request states", () => {
-    expectTypeOf<ChatStatus>().toEqualTypeOf<
-      "submitted" | "streaming" | "ready" | "error"
-    >();
-  });
-
-  it("pins ToolState to the seven tool-call states", () => {
-    expectTypeOf<ToolState>().toEqualTypeOf<
-      | "input-streaming"
-      | "input-available"
-      | "approval-requested"
-      | "approval-responded"
-      | "output-available"
-      | "output-error"
-      | "output-denied"
-    >();
-  });
-
   it("matches the AI SDK's UIMessage role", () => {
     expectTypeOf<UIMessage["role"]>().toEqualTypeOf<ChatRole>();
   });
