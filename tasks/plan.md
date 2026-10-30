@@ -29,7 +29,7 @@ One PR, three commits after the spec.
 See [`todo.md`](./todo.md) for each task's acceptance criteria and verification steps.
 
 - [x] Task 1: `Message`, `MessageContent` and `MessageResponse`
-- [ ] Task 2: `Suggestion` and the barrel
+- [x] Task 2: `Suggestion` and the barrel
 - [ ] Task 3: Examples, READMEs, stories and the conversation swap
 
 ### Checkpoint

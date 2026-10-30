@@ -28,13 +28,13 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-message.md`](..
 
 **Acceptance criteria:**
 
-- [ ] `Suggestion` is a `type="button"` with the slot and the `variant-subtle`, `shape-pill` and `size-small` classes, with `children` as its text; `onClick` receives the event; `variant`, `size` and `disabled` pass through
-- [ ] `Message`, `MessageContent`, `MessageResponse` and `Suggestion` export from `@uiid/ai`
+- [x] `Suggestion` is a `type="button"` with the slot and the `variant-subtle`, `shape-pill` and `size-small` classes, with `children` as its text; `onClick` receives the event; `variant`, `size` and `disabled` pass through
+- [x] `Message`, `MessageContent`, `MessageResponse` and `Suggestion` export from `@uiid/ai`
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai`
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai`
 
 **Dependencies:** Task 1
 
