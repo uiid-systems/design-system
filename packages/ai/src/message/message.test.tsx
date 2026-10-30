@@ -3,6 +3,7 @@ import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Message } from "./message";
+import * as Examples from "./message.examples";
 import { MessageContent, MessageResponse } from "./subcomponents";
 
 /** The real compiler behind a spy, so `MessageResponse`'s memo is observable. */
@@ -163,5 +164,33 @@ describe("MessageResponse", () => {
 
     rerender(<Parent text="second" />);
     expect(compiler).toHaveBeenCalledTimes(compiled + 1);
+  });
+});
+
+describe("examples", () => {
+  it("renders a user and an assistant turn", () => {
+    render(<Examples.UserAndAssistant />);
+
+    expect(
+      screen.getByText("What changes between a user and an assistant turn?"),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("strong").map((el) => el.textContent)).toEqual([
+      "user",
+      "assistant",
+    ]);
+  });
+
+  it("renders an actions row of buttons named by their tooltips", () => {
+    render(<Examples.WithActions />);
+
+    for (const name of ["Copy", "Retry", "Good response"]) {
+      expect(screen.getByRole("button", { name })).toBeInTheDocument();
+    }
+  });
+
+  it("renders the rest without throwing", () => {
+    expect(() => render(<Examples.Basic />)).not.toThrow();
+    expect(() => render(<Examples.Streaming />)).not.toThrow();
+    expect(() => render(<Examples.WithConversation />)).not.toThrow();
   });
 });

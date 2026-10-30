@@ -48,16 +48,16 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-message.md`](..
 
 **Acceptance criteria:**
 
-- [ ] Every example renders without throwing; the actions example renders buttons named by their tooltips; the conversation test still finds its text
-- [ ] Stories render in Storybook and each MDX page shows its README and Playground controls
+- [x] Every example renders without throwing; the actions example renders buttons named by their tooltips; the conversation test still finds its text
+- [x] Stories render in Storybook and each MDX page shows its README and Playground controls
 - [ ] The checkpoint list in `plan.md`
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai`
-- [ ] `pnpm run build --filter=@uiid/ai && pnpm size`
-- [ ] `pnpm run lint && pnpm run format:check`
-- [ ] `pnpm --filter @uiid/storybook dev`
+- [x] `pnpm test:run packages/ai`
+- [x] `pnpm run build --filter=@uiid/ai && pnpm size`
+- [x] `pnpm run lint && pnpm run format:check`
+- [x] `pnpm --filter @uiid/storybook dev`
 
 **Dependencies:** Task 2
 

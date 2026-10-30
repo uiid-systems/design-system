@@ -1,11 +1,10 @@
 "use client";
 
 import { MessageSquareIcon } from "@uiid/icons/message-square";
-import { Stack } from "@uiid/layout";
-import { Text } from "@uiid/typography";
 import { useEffect, useState } from "react";
 
-import { Markdown } from "../markdown/markdown";
+import { Message } from "../message/message";
+import { MessageContent, MessageResponse } from "../message/subcomponents";
 import { Conversation } from "./conversation";
 import type { ConversationProps } from "./conversation.types";
 import {
@@ -40,29 +39,23 @@ const TRANSCRIPT: Turn[] = EXCHANGES.flatMap(([user, assistant]) => [
   { role: "assistant", text: assistant },
 ]);
 
-/** A labeled turn. `ai-message` replaces this once it exists. */
-const Message = ({
+const MessageTurn = ({
   role,
   text,
   streaming = false,
 }: Turn & { streaming?: boolean }) => (
-  <Stack gap={1}>
-    <Text size={-1} color="neutral" uppercase>
-      {role}
-    </Text>
-    {role === "user" ? (
-      <Text render={<p />}>{text}</Text>
-    ) : (
-      <Markdown streaming={streaming}>{text}</Markdown>
-    )}
-  </Stack>
+  <Message from={role}>
+    <MessageContent>
+      <MessageResponse streaming={streaming}>{text}</MessageResponse>
+    </MessageContent>
+  </Message>
 );
 
 export const Basic = (props: ConversationProps) => (
   <Conversation h={360} {...props}>
     <ConversationContent>
       {TRANSCRIPT.map((turn, index) => (
-        <Message key={index} {...turn} />
+        <MessageTurn key={index} {...turn} />
       ))}
     </ConversationContent>
     <ConversationScrollButton />
@@ -104,10 +97,10 @@ export const Streaming = () => {
     <Conversation h={360}>
       <ConversationContent>
         {turns.map((turn, index) => (
-          <Message key={index} {...turn} />
+          <MessageTurn key={index} {...turn} />
         ))}
-        <Message role="user" text={exchange[0]} />
-        <Message role="assistant" text={draft} streaming />
+        <MessageTurn role="user" text={exchange[0]} />
+        <MessageTurn role="assistant" text={draft} streaming />
       </ConversationContent>
       <ConversationScrollButton />
     </Conversation>

@@ -30,13 +30,14 @@ See [`todo.md`](./todo.md) for each task's acceptance criteria and verification 
 
 - [x] Task 1: `Message`, `MessageContent` and `MessageResponse`
 - [x] Task 2: `Suggestion` and the barrel
-- [ ] Task 3: Examples, READMEs, stories and the conversation swap
+- [x] Task 3: Examples, READMEs, stories and the conversation swap
 
 ### Checkpoint
 
-- [ ] `pnpm test:run packages/ai` passes, with the markdown, conversation and prompt-input tests unchanged apart from the conversation examples swap
-- [ ] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
-- [ ] Checked by hand in Storybook: user bubble at the end with the gutter, assistant prose at the start, both themes; long line wraps and wide code scrolls inside the turn; no layout jump while streaming; tooltips on the actions row; pills wrap
+- [x] `pnpm test:run packages/ai` passes, with the markdown, conversation and prompt-input tests unchanged apart from the conversation examples swap
+- [x] `pnpm run build --filter=@uiid/ai`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
+- [x] Checked headless in Chromium: user bubble at the end with the 5% gutter, surface fill, 8px radius and 12px/16px padding; assistant prose at the start with no surface; the actions row flush with the content; the Copy tooltip on hover; pills below the empty-state heading
+- [ ] Checked by hand: dark theme; a long user line wrapping and a wide code block scrolling inside the turn; no layout jump in the Streaming story
 - [ ] Human review
 
 ## Risks and mitigations

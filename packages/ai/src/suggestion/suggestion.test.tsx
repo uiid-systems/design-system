@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Suggestion } from "./suggestion";
+import * as Examples from "./suggestion.examples";
 
 describe("Suggestion", () => {
   it("is a subtle pill button with the slot and its text", () => {
@@ -38,5 +39,26 @@ describe("Suggestion", () => {
     expect(button.className).not.toContain("variant-subtle");
     expect(button).toBeDisabled();
     expect(button).toHaveClass("custom");
+  });
+});
+
+describe("examples", () => {
+  it("renders a row of pills that report the one picked", () => {
+    render(<Examples.Basic />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Draft a reply" }));
+
+    expect(screen.getByText("Sent: Draft a reply")).toBeInTheDocument();
+  });
+
+  it("renders pills under an empty state", () => {
+    render(<Examples.WithEmptyState />);
+
+    expect(
+      screen.getByRole("heading", { level: 3, name: "No messages yet" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Summarize this page" }),
+    ).toBeInTheDocument();
   });
 });
