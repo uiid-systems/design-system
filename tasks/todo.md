@@ -1,70 +1,66 @@
-# Tasks: `ai-prompt-input` (UI-265)
+# Tasks: `ai-message` (UI-266)
 
-The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-prompt-input.md`](../docs/architecture/ai/SPEC-ai-prompt-input.md) before starting, along with `.agents/components.md` and `.agents/styling.md`.
+The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-message.md`](../docs/architecture/ai/SPEC-ai-message.md) before starting, along with `.agents/components.md` and `.agents/styling.md`.
 
-### Task 1: `PromptInputSubmit` and the module's types
+### Task 1: `Message`, `MessageContent` and `MessageResponse`
 
-**Description:** Create `packages/ai/src/prompt-input/` with `prompt-input.types.ts` (all three types from the spec), `prompt-input.constants.ts` (label and placeholder) and `subcomponents/prompt-input-submit.tsx`. The button is a `Button` with `shape="circle"` and `size="xsmall"`. For `submitted` and `streaming` it renders `type="button"`, `aria-label="Stop"` and calls `onStop` from `onClick` unless the caller's `onClick` prevented default. Otherwise it renders `type="submit"` and `aria-label="Send"`. Icons: `ArrowUpIcon` for `ready`, `XIcon` for `error`, `SquareIcon` for `streaming`, and the square with `loading` for `submitted`. Stamp `data-slot="prompt-input-submit"`. Add `@uiid/forms` to `packages/ai/package.json`.
+**Description:** Create `packages/ai/src/message/` with `message.types.ts` (the three message types from the spec), `message.tsx` (`Message`: a `Stack` with `gap = 2`, `fullwidth`, `ax` from `from`, `data-slot="message"`, `data-from`, the module's `message` class), `message.module.css` (the three rules), and `subcomponents/message-content.tsx` (a `Stack` with `gap = 2`, `data-slot="message-content"`, the `content` class) and `subcomponents/message-response.tsx` (`memo` around `Markdown` with `data-slot="message-response"`).
 
 **Acceptance criteria:**
 
-- [x] `ready`, `error` and no status render a `type="submit"` button named "Send"; `error` renders a different icon from `ready`
-- [x] `submitted` and `streaming` render a `type="button"` button named "Stop"; only `submitted` has a `data-loading` content container
-- [x] Pressing Stop calls `onStop` once; a caller's `onClick` that prevents default vetoes it
-- [x] `children` replaces the icon; `aria-label` replaces the label; `variant` and `size` pass through
+- [ ] `Message` writes `data-slot`, `data-from`, `data-ui-gap="2"` and `data-ui-fullwidth`; `user` writes `data-ui-ay="end"`, `assistant` and `system` write `start`; a caller's `ax`, `gap`, `className`, `ref` and `render` win
+- [ ] `MessageContent` writes its slot and `data-ui-gap="2"`, and passes `className`, `ref` and `render` through
+- [ ] `MessageResponse` renders markdown under its slot, survives a string cut off inside `**`, a link and a fence with and without `streaming`, forwards `streaming`, and does not recompile when a parent re-renders with the same props
 
 **Verification:**
 
-- [x] `pnpm test:run packages/ai/src/prompt-input`
+- [ ] `pnpm test:run packages/ai/src/message`
 
 **Dependencies:** None
 
-**Files:** `prompt-input.types.ts`, `prompt-input.constants.ts`, `subcomponents/prompt-input-submit.tsx`, `subcomponents/index.ts`, `prompt-input.test.tsx`, `packages/ai/package.json`
-
-**Size:** S
-
-### Task 2: `PromptInput`
-
-**Description:** `prompt-input.tsx` renders a `<form data-slot="prompt-input" data-status>` around `Textarea` with the defaults from the spec (`aria-label`, `placeholder`, `rows={1}`, `resize="none"`, `fullwidth`), `header` in a `Group` in `before` only when set, and `after` always holding the footer `Group` with the tools `Group` and `PromptInputSubmit`. `handleSubmit` prevents default, no-ops on blank text or a generating status, calls `onSubmit({ text }, event)` and clears an uncontrolled textarea. `handleKeyDown` forwards to the caller first, then on plain Enter outside a composition prevents default and calls `form.requestSubmit()`. `prompt-input.module.css` holds the two rules: the root's `--prompt-input-max-height` and `display: block`, and the textarea's `field-sizing: content`, `max-height` and `overflow-y: auto`.
-
-**Acceptance criteria:**
-
-- [x] DOM order is `input-before` > `prompt-input-header` (only with `header`), `textarea`, `input-after` > `prompt-input-footer` > `prompt-input-tools` then `prompt-input-submit`
-- [x] `className` lands on the form; `ref` on the `<textarea>`; a caller's `aria-label`, `label` and `placeholder` win over the defaults
-- [x] Send and Enter call `onSubmit` with `{ text }` and a default-prevented event, then empty an uncontrolled textarea and leave a controlled `value` alone
-- [x] Shift+Enter, a composing Enter, Enter while `streaming`, and blank text all call nothing
-- [x] `disabled` disables the textarea and the submit button; a plain `Button` in `tools` does not submit the form
-
-**Verification:**
-
-- [x] `pnpm test:run packages/ai`
-- [x] `pnpm run build --filter=@uiid/ai`
-
-**Dependencies:** Task 1
-
-**Files:** `prompt-input.tsx`, `prompt-input.module.css`, `prompt-input.test.tsx`
+**Files:** `message.types.ts`, `message.tsx`, `message.module.css`, `message.test.tsx`, `subcomponents/index.ts`, `subcomponents/message-content.tsx`, `subcomponents/message-response.tsx`
 
 **Size:** M
 
-### Task 3: Examples, README, stories and exports
+### Task 2: `Suggestion` and the barrel
 
-**Description:** `prompt-input.examples.tsx` with `Basic`, `WithHeader`, `WithTools`, `Statuses` (one composer per `ChatStatus`), `Controlled`, `Disabled` and `WithConversation`. A README in the shape of `conversation/README.md`. Barrel exports in `src/index.ts`. `apps/storybook/stories/ai/prompt-input.stories.tsx` and `prompt-input.mdx` in the shape of the conversation pair. An examples render test.
+**Description:** Create `packages/ai/src/suggestion/` with `suggestion.types.ts` and `suggestion.tsx`: a `Button` with `variant = "subtle"`, `shape = "pill"`, `size = "small"`, `type = "button"` and `data-slot="suggestion"`. Export the four parts and four types from `src/index.ts`; update the barrel test's export list.
 
 **Acceptance criteria:**
 
-- [x] Every example renders without throwing in the test
-- [x] `PromptInput`, `PromptInputSubmit` and the three types export from `@uiid/ai`
-- [x] Stories render in Storybook and the MDX page shows the README and the Playground controls
+- [ ] `Suggestion` is a `type="button"` with the slot and the `variant-subtle`, `shape-pill` and `size-small` classes, with `children` as its text; `onClick` receives the event; `variant`, `size` and `disabled` pass through
+- [ ] `Message`, `MessageContent`, `MessageResponse` and `Suggestion` export from `@uiid/ai`
 
 **Verification:**
 
-- [x] `pnpm test:run packages/ai`
-- [x] `pnpm run build --filter=@uiid/ai && pnpm size`
-- [x] `pnpm run lint && pnpm run format:check`
-- [x] `pnpm --filter @uiid/storybook dev`, then the checkpoint list in `plan.md`
+- [ ] `pnpm test:run packages/ai`
+- [ ] `pnpm run build --filter=@uiid/ai`
+
+**Dependencies:** Task 1
+
+**Files:** `suggestion.types.ts`, `suggestion.tsx`, `suggestion.test.tsx`, `packages/ai/src/index.ts`, `packages/ai/src/index.test.ts`
+
+**Size:** S
+
+### Task 3: Examples, READMEs, stories and the conversation swap
+
+**Description:** `message.examples.tsx` with `UserAndAssistant`, `Streaming`, `WithActions` (a `Group` of ghost square `Button`s with tooltips) and `WithConversation`. `suggestion.examples.tsx` with `Basic` (a wrapping `Group` of pills) and `WithEmptyState`. READMEs in the shape of `conversation/README.md`. `apps/storybook/stories/ai/message.stories.tsx`, `message.mdx`, `suggestion.stories.tsx` and `suggestion.mdx` in the shape of the prompt-input pair. Replace the placeholder `Message` in `conversation.examples.tsx` with the real parts. Examples render tests in both test files.
+
+**Acceptance criteria:**
+
+- [ ] Every example renders without throwing; the actions example renders buttons named by their tooltips; the conversation test still finds its text
+- [ ] Stories render in Storybook and each MDX page shows its README and Playground controls
+- [ ] The checkpoint list in `plan.md`
+
+**Verification:**
+
+- [ ] `pnpm test:run packages/ai`
+- [ ] `pnpm run build --filter=@uiid/ai && pnpm size`
+- [ ] `pnpm run lint && pnpm run format:check`
+- [ ] `pnpm --filter @uiid/storybook dev`
 
 **Dependencies:** Task 2
 
-**Files:** `prompt-input.examples.tsx`, `README.md`, `packages/ai/src/index.ts`, `apps/storybook/stories/ai/prompt-input.stories.tsx`, `apps/storybook/stories/ai/prompt-input.mdx`, `prompt-input.test.tsx`
+**Files:** `message.examples.tsx`, `message/README.md`, `suggestion.examples.tsx`, `suggestion/README.md`, `conversation.examples.tsx`, `message.test.tsx`, `suggestion.test.tsx`, the four story files
 
 **Size:** M
