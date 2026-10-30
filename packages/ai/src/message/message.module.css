@@ -1,0 +1,25 @@
+/* One turn. Upstream's gutter, so a bubble never touches the far edge. */
+.message {
+  max-width: 95%;
+}
+
+/* A user turn sits at the end of the column. Logical, so it flips in RTL. */
+:where(.message)[data-from="user"] {
+  margin-inline-start: auto;
+}
+
+/* The body shrinks to fit inside the turn and never widens it; a wide code
+   block scrolls inside `Prose` instead. */
+.content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* The bubble. Only a user turn has a surface; assistant prose sits on the
+   page. The root's attribute carries the role so the content needs no prop. */
+:where(.message)[data-from="user"] .content {
+  background-color: var(--shade-surface);
+  color: var(--shade-foreground);
+  border-radius: var(--globals-border-radius);
+  padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+}

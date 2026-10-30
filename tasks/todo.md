@@ -8,13 +8,13 @@ The plan is in [`plan.md`](./plan.md). Each task reads [`SPEC-ai-message.md`](..
 
 **Acceptance criteria:**
 
-- [ ] `Message` writes `data-slot`, `data-from`, `data-ui-gap="2"` and `data-ui-fullwidth`; `user` writes `data-ui-ay="end"`, `assistant` and `system` write `start`; a caller's `ax`, `gap`, `className`, `ref` and `render` win
-- [ ] `MessageContent` writes its slot and `data-ui-gap="2"`, and passes `className`, `ref` and `render` through
-- [ ] `MessageResponse` renders markdown under its slot, survives a string cut off inside `**`, a link and a fence with and without `streaming`, forwards `streaming`, and does not recompile when a parent re-renders with the same props
+- [x] `Message` writes `data-slot`, `data-from`, `data-ui-gap="2"` and `data-ui-fullwidth`; `user` writes `data-ui-ay="end"`, `assistant` and `system` write `start`; a caller's `ax`, `gap`, `className`, `ref` and `render` win
+- [x] `MessageContent` writes its slot and `data-ui-gap="2"`, and passes `className`, `ref` and `render` through
+- [x] `MessageResponse` renders markdown under its slot, survives a string cut off inside `**`, a link and a fence with and without `streaming`, forwards `streaming`, and does not recompile when a parent re-renders with the same props
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/ai/src/message`
+- [x] `pnpm test:run packages/ai/src/message`
 
 **Dependencies:** None
 
