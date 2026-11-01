@@ -4,7 +4,7 @@
 **Package:** `@uiid/interactive`
 **Status:** Proposed
 **Upstream:** shadcn/ui `trace` at the `base-nova` registry (`https://ui.shadcn.com/r/styles/base-nova/trace.json`, fetched 2026-11-01), documented at `https://ui.shadcn.com/docs/components/base/trace`
-**Depends on:** nothing in the map. `Collapsible` from this package, `Text` and `Shimmer` from `@uiid/typography`
+**Depends on:** `typography-shimmer`. Also `Collapsible` from this package and `Text` from `@uiid/typography`, both shipped
 
 ## Objective
 
@@ -18,10 +18,10 @@ It lives in `@uiid/interactive` next to `Collapsible`, which it is built on, by 
 
 - `<Trace>` renders a column of rows. `<TraceLine>` is one row, a `Group` of its children with `gap={2}` and `ay="center"`, rendered as a `span` so it is valid inside a `button` or an `a`. It takes `status`: `"running"`, `"error"` or `"pending"`, and unset means done. The status is written as `data-status`.
 - `<TraceTitle>` is a `Text` that truncates to one line. Inside a line whose status is `running`, a string title renders through `Shimmer`; otherwise it renders as `Text`. `<TraceDescription>` is a `Text` that never truncates or wraps and never shimmers. `<TraceIcon>` is a `span` hidden from assistive technology that sizes an `svg` to the global icon size and never shrinks.
-- `<TraceCollapsible>` is `CollapsibleRoot`, `<TraceCollapsibleTrigger>` is `CollapsibleTrigger` rendered as a `TraceLine` with a chevron appended, and `<TraceCollapsiblePanel>` is `CollapsiblePanel` indented under the icon with a rule down its start edge. Every Base UI Collapsible prop passes through unchanged: `open`, `defaultOpen`, `onOpenChange` and `disabled` on the root, `keepMounted` and `hiddenUntilFound` on the panel. The trigger takes `status` and hands it to its line.
+- `<TraceCollapsible>` is `CollapsibleRoot`, `<TraceCollapsibleTrigger>` is `CollapsibleTrigger` rendered as a `TraceLine` with a chevron appended, and `<TraceCollapsiblePanel>` is `CollapsiblePanel` indented under the icon with a rule down its start edge. Every Base UI Collapsible prop passes through unchanged: `open`, `defaultOpen`, `onOpenChange` and `disabled` on the root, `keepMounted` and `hiddenUntilFound` on the panel, `render` on the trigger, where it is forwarded to the line. The one prop the trigger pins is `nativeButton`, which is `false` because the line is a `span`. The trigger takes `status` and hands it to its line.
 - The trigger is a `role="button"` with `aria-expanded`, toggled by click, Enter and Space, with the chevron turned a quarter while open. A panel with `keepMounted` keeps a nested `TraceCollapsible`'s open state while its parent is closed.
 - A row reads in the muted shade and lifts to the foreground shade when it is, or is inside, a hovered anchor, button or `role="button"`. An `error` row reads in the red palette, on hover too. A `pending` row is dimmed. A `running` row's title shimmers, and stays still under `prefers-reduced-motion`.
-- Every part writes a `data-slot`: `trace`, `trace-line`, `trace-icon`, `trace-title`, `trace-description`, `trace-collapsible`, `trace-collapsible-trigger`, `trace-collapsible-panel`. Every part forwards `className`, `ref` and its base component's props.
+- Every part writes a `data-slot`: `trace`, `trace-line`, `trace-icon`, `trace-title`, `trace-description`, `trace-collapsible`, `trace-collapsible-trigger`, `trace-collapsible-panel`. Every part forwards `className`, `ref` and its base component's props. The three collapsible parts merge `className` with `cxState`, since Base UI accepts a function of the part's state there; the other five use `cx`.
 - `packages/interactive/package.json` moves `@uiid/typography` from `devDependencies` to `dependencies`. `pnpm size` passes for `@uiid/interactive` at its existing `60 kB` limit.
 
 ## API
@@ -62,11 +62,12 @@ export type TraceCollapsibleProps = CollapsibleRootProps;
 
 /**
  * The row that toggles it. It is the `TraceLine`, so it takes the line's
- * `status` and the trigger's remaining props; the element is the line.
+ * `status` and the trigger's remaining props. `render` is forwarded to the
+ * line and replaces its `span`; `nativeButton` is pinned to `false`.
  */
 export type TraceCollapsibleTriggerProps = Omit<
   CollapsibleTriggerProps,
-  "children" | "render" | "nativeButton"
+  "children" | "nativeButton"
 > & {
   status?: TraceStatus;
   children?: React.ReactNode;
@@ -176,7 +177,7 @@ Exports from the barrel: the eight parts and their props types, and `TraceStatus
 
 **Icon.** `TraceIcon` is a plain `span` with `aria-hidden="true"` and the module class: `display: inline-flex`, centered, `flex-shrink: 0`, and an `svg` sized to `var(--globals-icon-size)`. Placed before the title it names the step; placed after, it is an indicator. The accessible name of a row is its title text, so the icon is decoration by design.
 
-**Collapsible.** `TraceCollapsible` is `CollapsibleRoot` with `ax="start"` and `fullwidth`, the same shape as the `Trace` root, so the trigger hugs its text while the panel spans the row. `TraceCollapsibleTrigger` is `CollapsibleTrigger` with `nativeButton={false}` and `render={<TraceLine status={status} />}`: the line is the button, so Base UI gives it `role="button"`, `tabIndex`, `aria-expanded` and the keys, exactly the pattern `Reasoning` and `Tool` use with a `Group`. Its `children` are the line's content, and it appends `<TraceIcon><ChevronRightIcon /></TraceIcon>` from `@uiid/icons/chevron-right`, with a module class that turns it 90 degrees under `[data-panel-open]`, which Base UI writes on the trigger while the panel is open. `render` and `nativeButton` are omitted from its props because the element is the line by definition; a row that opens something other than a panel wraps a plain `TraceLine` in its own trigger instead. Not a `Button`: a trace row is text that happens to be pressable, and a `Button` brings a surface, padding and a height that would all be turned off. The module adds `cursor: pointer`, and on `:focus-visible` the global outline tokens with the global radius, so the ring has corners around the text.
+**Collapsible.** `TraceCollapsible` is `CollapsibleRoot` with `ax="start"` and `fullwidth`, the same shape as the `Trace` root, so the trigger hugs its text while the panel spans the row. `TraceCollapsibleTrigger` is `CollapsibleTrigger` with `nativeButton={false}` and `render={<TraceLine status={status} render={render} />}`: the line is the button, so Base UI gives it `role="button"`, `tabIndex`, `aria-expanded` and the keys, exactly the pattern `Reasoning` and `Tool` use with a `Group`. Its `children` are the line's content, and it appends `<TraceIcon><ChevronRightIcon /></TraceIcon>` from `@uiid/icons/chevron-right`, with a module class that turns it 90 degrees under `[data-panel-open]`, which Base UI writes on the trigger while the panel is open. A caller's `render` goes to the line, where `GroupProps` already takes it, so `render={<a />}` makes the row an anchor that is also the trigger. `nativeButton` is the one prop not forwarded, since the line is never a `button` element. A row that opens something other than a panel wraps a plain `TraceLine` in its own trigger instead. Not a `Button`: a trace row is text that happens to be pressable, and a `Button` brings a surface, padding and a height that would all be turned off. The module adds `cursor: pointer`, and on `:focus-visible` the global outline tokens with the global radius, so the ring has corners around the text.
 
 **Panel.** `TraceCollapsiblePanel` is `CollapsiblePanel` with `instant={false}`, `ax="stretch"`, `fullwidth`, `pl={4}`, `pt={2}` and `pb={1}` as defaults, and the module class drawing the rule: `border-inline-start: var(--globals-border-width) solid var(--globals-border-color)` with `margin-inline-start: calc(var(--globals-icon-size) / 2 - var(--globals-border-width) / 2)`, so the rule runs down from the center of the icon above it. The spacing is style props and the arithmetic is in the module, by the token rule. `ax="stretch"` so a nested `Trace` or a `Prose` block spans the panel instead of shrinking to its longest line, which the Reasoning spec measured. The panel's content is any node; `keepMounted` passes through from Base UI and is what a nested collapsible needs to remember its open state while the parent is closed.
 
@@ -190,7 +191,7 @@ Exports from the barrel: the eight parts and their props types, and `TraceStatus
 - Hover: `:where(a, button, [role="button"]):hover :where(.line), :where(.line):is(a, button, [role="button"]):hover` to `--shade-foreground`. Both forms, because the line is the trigger in a collapsible and a child in a link.
 - `:where(.line)[data-status="error"]`: `color: var(--palette-text)`, hovered too.
 - `:where(.line)[data-status="pending"]`: `opacity: 0.6`.
-- `.icon`: the inline-flex box and the `svg` size. `.chevron`: a transform transition, and `:where([data-panel-open]) .chevron` rotated 90 degrees.
+- `.icon`: the inline-flex box and the `svg` size. `.chevron`: a transform transition, and `:where(.trigger)[data-panel-open] .chevron` rotated 90 degrees, the same selector `packages/ai/src/shared/collapsible-trigger.module.css` uses.
 - `.trigger`: `cursor: pointer`, and the `:focus-visible` outline from `--globals-outline-*` with `--globals-border-radius`.
 - `.description`: the shrink, the numerals and the opacity.
 - `.panel`: the rule and its margin.
@@ -199,7 +200,7 @@ Every attribute selector is wrapped in `:where(.local)`, for the docs app's pure
 
 ### Package
 
-`packages/interactive/package.json` moves `@uiid/typography` from `devDependencies` to `dependencies`. `@uiid/typography` depends only on `@uiid/tokens` and `@uiid/utils`, so there is no cycle. `@uiid/icons` and `@uiid/layout` are dependencies already. The `@uiid/interactive` entry in `.size-limit.json` stays at `60 kB`; the barrel measured `44.97 kB` on 2026-11-01 and the Reasoning spec measured the Collapsible parts, `Badge` and `Shimmer` together at `+2.4 kB`, so the eight parts should land near `48 kB`.
+`packages/interactive/package.json` moves `@uiid/typography` from `devDependencies` to `dependencies`. `@uiid/typography` depends on `@uiid/tokens`, `@uiid/utils` and `@number-flow/react`, none of which depend on this package, so there is no cycle. `@uiid/icons` and `@uiid/layout` are dependencies already. The `@uiid/interactive` entry in `.size-limit.json` stays at `60 kB`; a fresh build measured the barrel at `39.34 kB` on 2026-11-01 and the Reasoning spec measured the Collapsible parts, `Badge` and `Shimmer` together at `+2.4 kB`, so the eight parts should land well under `45 kB`.
 
 ## Files
 
@@ -249,7 +250,7 @@ The first build is needed once in a fresh worktree so Storybook and the tests ca
 
 Vitest with happy-dom. `collapsible.test.tsx` is the template for the trigger's role and the open state, `message.test.tsx` for structure through `data-slot` and style props through `data-ui-*`.
 
-- `Trace` is `data-slot="trace"` with `data-ui-gap="2"`, `data-ui-ax="start"` and `data-ui-fullwidth`; a caller's `gap`, `className` and `ref` reach it.
+- `Trace` is `data-slot="trace"` with `data-ui-gap="2"`, `data-ui-ay="start"` and `data-ui-fullwidth`, since `Stack` swaps its axes onto `Box` and so its `ax` lands as `data-ui-ay`; a caller's `gap`, `className` and `ref` reach it.
 - `TraceLine` is a `span` with `data-slot="trace-line"`, `data-ui-gap="2"` and `data-ui-ay="center"`; `render={<div />}` changes the element; `status="error"` writes `data-status="error"` and the `palette-red` class; no status writes no attribute.
 - `TraceIcon` has `aria-hidden="true"` and contains its child `svg`.
 - `TraceTitle` writes `data-ui-truncate`; `truncate={false}` does not. In a `running` line a string title is `[data-slot="shimmer"]`; in a done line it is `[data-slot="text"]`; in a running line an element title is `[data-slot="text"]`. Outside any line it renders as `Text`.

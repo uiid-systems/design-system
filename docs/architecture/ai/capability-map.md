@@ -58,7 +58,7 @@ Wave 1 is the chat core: a conversation of messages with markdown, reasoning, to
 | `overlays-preview-card` | `PreviewCard` wrapping Base UI's part, for hover detail                                               | `@uiid/overlays`    | —                                          |
 | `ai-context`            | Token usage and cost on hover, with `Progress`                                                        | `@uiid/ai`          | `overlays-preview-card`                    |
 | `ai-inline-citation`    | A numbered marker in prose that previews its source on hover                                          | `@uiid/ai`          | `overlays-preview-card`, `ai-sources`      |
-| `ai-code-output`        | Terminal, TestResults and StackTrace, once a code block for `@uiid/ai` is decided                     | `@uiid/ai`          | `interactive-trace`, a code-block decision |
+| `ai-code-output`        | Terminal, TestResults and StackTrace, once a code block for `@uiid/ai` is decided                     | `@uiid/ai`          | `interactive-trace`                        |
 
 Deferred, with no module: Model Selector, which is a dropdown with search and belongs to the app, and File Tree, which is a tree view with nothing AI-specific and would be its own `@uiid/interactive` proposal.
 
