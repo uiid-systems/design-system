@@ -563,6 +563,20 @@ describe("Dialog", () => {
     expect(cancel.className).toMatch(/variant-subtle/);
   });
 
+  /* Card is flat with no footer divider by default, so the dialog's lift and
+     its footer rule rest on DialogPopup turning both on. */
+  it("keeps the popup's shadow and footer divider", () => {
+    render(
+      <Dialog open={true} onOpenChange={() => {}} title="Title" footer="Footer">
+        Dialog content
+      </Dialog>,
+    );
+
+    const popup = screen.getByRole("dialog");
+    expect(popup.className).toMatch(/shadow/);
+    expect(within(popup).getByRole("separator")).toBeInTheDocument();
+  });
+
   it("lets DialogClose take another Button variant", () => {
     render(
       <Dialog

@@ -32,6 +32,8 @@ export const PopoverPopup = ({
           description={description}
           action={action}
           footer={footer}
+          shadow
+          FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BasePopover.Title /> }}
           DescriptionProps={{ render: <BasePopover.Description /> }}
         />

@@ -35,6 +35,8 @@ export const DrawerPopup = ({
           description={description}
           action={action}
           footer={footer}
+          shadow
+          FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BaseDrawer.Title /> }}
           DescriptionProps={{ render: <BaseDrawer.Description /> }}
         />

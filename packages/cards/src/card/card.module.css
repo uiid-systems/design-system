@@ -7,7 +7,6 @@
   border-radius: var(--globals-border-radius);
   border: var(--globals-border-width) solid var(--palette-tint-border);
   padding: var(--globals-padding-y) var(--globals-padding-x);
-  box-shadow: var(--globals-shadow-sm);
 
   /** @todo compose this */
   font-size: var(--text-0-font-size);
@@ -35,6 +34,14 @@
       scale: var(--card-scale-down);
     }
   }
+}
+
+/*
+ * Opt-in with `shadow`. Ghost and shell are shadowless on their own account and
+ * declared below, so they win when both are set.
+ */
+.shadow {
+  box-shadow: var(--globals-shadow-sm);
 }
 
 .variant-ghost {

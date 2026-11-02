@@ -16,6 +16,7 @@ const meta = {
     title: { control: "text", table: { category: "Content" } },
     description: { control: "text", table: { category: "Content" } },
     children: { control: "text", table: { category: "Content" } },
+    shadow: { control: "boolean" },
     HeaderProps: { table: { category: "Subcomponents" } },
     TitleProps: { table: { category: "Subcomponents" } },
     DescriptionProps: { table: { category: "Subcomponents" } },

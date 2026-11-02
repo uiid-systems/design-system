@@ -53,6 +53,8 @@ export const DialogPopup = ({
             )
           }
           footer={footer}
+          shadow
+          FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BaseDialog.Title /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}
         />
