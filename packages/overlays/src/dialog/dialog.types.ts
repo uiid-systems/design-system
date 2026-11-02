@@ -28,6 +28,12 @@ export type DialogPopupProps = VariantProps<typeof dialogVariants> &
   };
 
 export type DialogProps = React.PropsWithChildren<{
+  /**
+   * Work started from the dialog is in flight. Escape, a backdrop click, the
+   * header close button and `DialogClose` can't close it, and the close controls
+   * render disabled. Setting `open` to false still closes it.
+   */
+  pending?: boolean;
   trigger?: DialogTriggerProps["children"];
   RootProps?: DialogRootProps;
   TriggerProps?: DialogTriggerProps;

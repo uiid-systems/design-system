@@ -102,6 +102,35 @@ A footer button that only dismisses, such as Cancel, is `DialogClose`: a subtle 
 
 A button that does work before closing, like a submit that can fail, controls `open` instead — see the `Footer` example.
 
+## While work is pending
+
+Set `pending` while a request started from the dialog is in flight. Escape, a backdrop click, the header close button and every `DialogClose` then can't close the dialog, and the close controls render disabled. Setting `open` to false still closes it, so a submit can close on success without clearing `pending` first.
+
+`pending` doesn't touch the submit button. `loading` only shows the spinner, so give the submit `disabled` as well, or it can be clicked twice:
+
+```tsx
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  pending={saving}
+  title="Rename game"
+  footer={
+    <>
+      <DialogClose>Cancel</DialogClose>
+      <Button onClick={save} loading={saving} disabled={saving}>
+        Save
+      </Button>
+    </>
+  }
+>
+  …
+</Dialog>
+```
+
+Clear the flag when the request fails, in `catch` or `finally`. A flag left on after a throw leaves the user unable to close the dialog.
+
+Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to `DialogClose` for it. `pending` covers every way of closing, the header close button included, and works whether or not `open` is controlled.
+
 ## Naming and long content
 
 A `title` names the dialog: it renders as an `<h2>` that labels the popup, and a composed title — an icon beside the text — stays that heading, laid out as a row. Without a `title` the dialog has no accessible name, so give it one through `PopupProps={{ "aria-label": "…" }}`.

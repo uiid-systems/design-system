@@ -40,6 +40,9 @@ export const Footer: Story = { render: () => <Examples.Footer /> };
 
 export const Full: Story = { render: () => <Examples.Full /> };
 
+/** `pending` keeps the dialog open and its close controls disabled while Save runs. */
+export const Pending: Story = { render: () => <Examples.Pending /> };
+
 /** `hideCloseButton` leaves the footer as the only way out. */
 export const RevealOnce: Story = { render: () => <Examples.RevealOnce /> };
 

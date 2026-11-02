@@ -1,5 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, {
+  PointerEventsCheckLevel,
+} from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
@@ -616,6 +618,191 @@ describe("Dialog", () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
     await waitFor(() => {
       expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+    });
+  });
+
+  // ============================================
+  // PENDING
+  // ============================================
+
+  describe("pending", () => {
+    const PendingDialog = ({
+      onOpenChange,
+    }: {
+      onOpenChange: (open: boolean) => void;
+    }) => (
+      <Dialog
+        open={true}
+        onOpenChange={onOpenChange}
+        pending
+        title="Saving"
+        footer={<DialogClose>Cancel</DialogClose>}
+      >
+        Dialog content
+      </Dialog>
+    );
+
+    it("disables the close button and DialogClose", () => {
+      render(<PendingDialog onOpenChange={() => {}} />);
+
+      expect(screen.getByRole("button", { name: "Close" })).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+    });
+
+    it("keeps DialogClose's own disabled when the dialog isn't pending", () => {
+      render(
+        <Dialog
+          open={true}
+          onOpenChange={() => {}}
+          title="Title"
+          footer={<DialogClose disabled>Cancel</DialogClose>}
+        >
+          Dialog content
+        </Dialog>,
+      );
+
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Close" })).toBeEnabled();
+    });
+
+    it.each([
+      [
+        "Escape",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.keyboard("{Escape}"),
+      ],
+      [
+        "a backdrop click",
+        async (user: ReturnType<typeof userEvent.setup>) => {
+          const backdrop = document.querySelector(
+            '[data-slot="dialog-backdrop"]',
+          );
+          if (backdrop) await user.click(backdrop);
+        },
+      ],
+      [
+        "the close button",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.click(screen.getByRole("button", { name: "Close" })),
+      ],
+      [
+        "DialogClose",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.click(screen.getByRole("button", { name: "Cancel" })),
+      ],
+    ])("is not closed by %s", async (_, close) => {
+      const user = userEvent.setup({
+        pointerEventsCheck: PointerEventsCheckLevel.Never,
+      });
+      const onOpenChange = vi.fn();
+      render(<PendingDialog onOpenChange={onOpenChange} />);
+
+      await close(user);
+
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(screen.getByText("Dialog content")).toBeInTheDocument();
+    });
+
+    it("blocks an uncontrolled dialog too", async () => {
+      const user = userEvent.setup();
+      render(
+        <Dialog trigger={<button>Open dialog</button>} title="Saving" pending>
+          Dialog content
+        </Dialog>,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Open dialog" }));
+      expect(await screen.findByText("Dialog content")).toBeInTheDocument();
+
+      await user.keyboard("{Escape}");
+
+      expect(screen.getByText("Dialog content")).toBeInTheDocument();
+    });
+
+    it("still closes when open turns false", async () => {
+      const { rerender } = render(
+        <Dialog open={true} onOpenChange={() => {}} pending title="Saving">
+          Dialog content
+        </Dialog>,
+      );
+
+      rerender(
+        <Dialog open={false} onOpenChange={() => {}} pending title="Saving">
+          Dialog content
+        </Dialog>,
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+      });
+    });
+
+    it("closes again once pending clears", async () => {
+      const user = userEvent.setup();
+      const DialogWrapper = () => {
+        const [open, setOpen] = useState(true);
+        const [pending, setPending] = useState(true);
+        return (
+          <Dialog
+            open={open}
+            onOpenChange={setOpen}
+            pending={pending}
+            title="Saving"
+            action={<button onClick={() => setPending(false)}>Finish</button>}
+          >
+            Dialog content
+          </Dialog>
+        );
+      };
+      render(<DialogWrapper />);
+
+      expect(screen.getByRole("button", { name: "Close" })).toBeDisabled();
+      await user.click(screen.getByRole("button", { name: "Finish" }));
+      expect(screen.getByRole("button", { name: "Close" })).toBeEnabled();
+
+      await user.keyboard("{Escape}");
+
+      await waitFor(() => {
+        expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+      });
+    });
+
+    it("still calls RootProps.onOpenChange when not pending", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      const rootOnOpenChange = vi.fn();
+      render(
+        <Dialog
+          open={true}
+          onOpenChange={onOpenChange}
+          RootProps={{ onOpenChange: rootOnOpenChange }}
+        >
+          Dialog content
+        </Dialog>,
+      );
+
+      await user.keyboard("{Escape}");
+
+      expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything());
+      expect(rootOnOpenChange).toHaveBeenCalledWith(false, expect.anything());
+    });
+
+    it("lets RootProps.onOpenChange cancel a controlled close", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      render(
+        <Dialog
+          open={true}
+          onOpenChange={onOpenChange}
+          RootProps={{ onOpenChange: (_, details) => details.cancel() }}
+        >
+          Dialog content
+        </Dialog>,
+      );
+
+      await user.keyboard("{Escape}");
+
+      expect(onOpenChange).not.toHaveBeenCalled();
     });
   });
 
