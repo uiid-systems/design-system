@@ -11,4 +11,5 @@ export type ProseProps = React.HTMLAttributes<HTMLDivElement> &
     /** Class names merged onto the element */
     className?: string;
   }> &
-  SpacingProps;
+  /** No `gap`: Prose spaces its children with margins, not as a flex or grid container. */
+  Omit<SpacingProps, "gap">;

@@ -49,4 +49,8 @@ export type TextProps = Omit<React.HTMLAttributes<HTMLSpanElement>, "color"> &
     className?: string;
   }> &
   TextVariants &
-  SpacingProps;
+  /**
+   * No `gap`: to space children, put it on a Group or Stack `render` target,
+   * which is what lays them out.
+   */
+  Omit<SpacingProps, "gap">;

@@ -8,4 +8,6 @@ Use Prose when you want to:
 - Get vertical rhythm between headings and body for free — siblings space themselves
 - Style inline `<code>` with a subtle chip, block `<pre>` with a tinted background, and `<blockquote>` with a left rule, without writing any markup yourself
 
+Prose takes padding and margin props but no `gap`: its children space themselves with margins, not as a flex or grid container.
+
 Reach for [`Text`](../text/README.md) instead when you're composing UI directly and want explicit control over each element.
