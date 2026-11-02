@@ -14,11 +14,12 @@ Dogfood the design system everywhere, including docs, MDX, and examples. If a sy
 
 ## Style props
 
-Style props (spacing, sizing, border, `ax`/`ay`/`direction`, `flex`) and toggles (`evenly`, `wrap`, `fullwidth`, `fullheight`, `fullscreen`, `grow`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
+Style props (spacing, sizing, border, `ax`/`ay`/`direction`, `flex`) and toggles (`evenly`, `wrap`, `fullwidth`, `grow`) never become inline declarations. `prepareComponentProps` writes `data-ui-{key}` plus a raw `--props-{key}`, and rules in `@layer uiid.props` resolve them. That layer sits after `uiid.components`, so a style prop beats a component's own CSS, and unlayered consumer CSS beats a style prop.
 
 - **`packages/tokens/src/props.css` is generated** from the `styleProps` and `toggleProps` maps in `packages/utils/src/props/`. Never edit it by hand. After changing a definition, run `pnpm generate:props`; CI runs it with `--check` and fails until you do.
 - **Toggles write a bare `data-ui-{key}`** and are boolean only; a component lists them under `dataProps`. Their rules come after the style props, so a toggle wins a conflict (`fullwidth` beats `w`), and `evenly` sizes its direct children over their own style props, except a child that names its own `flex`, which keeps it.
 - **Every `StyleProp` declares a `unit`**: a token variable (`{ variable: "--spacing-unit" }`), `"px"`, or `"none"` for keyword values.
+- **`keywords` map a keyword to the values it declares**, in order, so one keyword can carry a fallback chain. Sizing props take `"full"` (`100%`, then `-webkit-fill-available`) and `"screen"` (`100svw`/`100svh`); margins take `"auto"`. Reach for `w="full"` / `h="full"` rather than the deprecated `fullwidth` toggle, which has no height or min/max counterpart.
 - **`--props-*` vars are registered with `inherits: false`**, so a child never reads its parent's style prop. Numeric ones are typed `<number>`; a non-number resolves to 0.
 - **Test the attribute, not the style**: `expect(el).toHaveAttribute("data-ui-gap", "2")`. The test DOM does not load `props.css`, so `toHaveStyle` on a style prop fails.
 

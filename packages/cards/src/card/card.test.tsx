@@ -168,7 +168,7 @@ describe("Card", () => {
       const root = container.firstElementChild;
 
       expect(root).toHaveAttribute("data-variant", "shell");
-      expect(root).toHaveAttribute("data-ui-fullwidth", "");
+      expect(root).toHaveAttribute("data-ui-w", "full");
       expect(root).toHaveAttribute("data-ui-p", "6");
       expect(root).toHaveAttribute("data-ui-gap", "6");
       expect(
@@ -176,13 +176,13 @@ describe("Card", () => {
       ).toHaveAttribute("data-ui-gap", "6");
     });
 
-    it("lets p, gap, fullwidth and the body gap override the defaults", () => {
+    it("lets p, gap, w and the body gap override the defaults", () => {
       const { container } = render(
         <Card
           variant="shell"
           p={2}
           gap={3}
-          fullwidth={false}
+          w={480}
           InnerContainerProps={{ gap: 1 }}
         >
           Body
@@ -192,7 +192,7 @@ describe("Card", () => {
 
       expect(root).toHaveAttribute("data-ui-p", "2");
       expect(root).toHaveAttribute("data-ui-gap", "3");
-      expect(root).not.toHaveAttribute("data-ui-fullwidth");
+      expect(root).toHaveAttribute("data-ui-w", "480");
       expect(
         container.querySelector('[data-slot="card-inner-container"]'),
       ).toHaveAttribute("data-ui-gap", "1");

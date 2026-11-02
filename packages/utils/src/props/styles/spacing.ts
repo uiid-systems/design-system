@@ -11,49 +11,49 @@ export const spacingProps = {
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin */
   m: {
     property: "margin",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-unit" },
   } satisfies StyleProp<"margin">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline */
   mx: {
     property: "marginInline",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-inline" },
   } satisfies StyleProp<"marginInline">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start */
   ml: {
     property: "marginInlineStart",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-inline" },
   } satisfies StyleProp<"marginInlineStart">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end */
   mr: {
     property: "marginInlineEnd",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-inline" },
   } satisfies StyleProp<"marginInlineEnd">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block */
   my: {
     property: "marginBlock",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-block" },
   } satisfies StyleProp<"marginBlock">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start */
   mt: {
     property: "marginBlockStart",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-block" },
   } satisfies StyleProp<"marginBlockStart">,
 
   /** @see https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end */
   mb: {
     property: "marginBlockEnd",
-    keywords: ["auto"],
+    keywords: { auto: ["auto"] },
     unit: { variable: "--spacing-block" },
   } satisfies StyleProp<"marginBlockEnd">,
 

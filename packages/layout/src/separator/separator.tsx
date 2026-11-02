@@ -31,8 +31,8 @@ export const Separator = ({
       <SwitchRender
         condition={orientation === "horizontal"}
         render={{
-          true: <Group ay="center" gap={2} fullwidth />,
-          false: <Stack ax="center" gap={2} fullheight />,
+          true: <Group ay="center" gap={2} w="full" />,
+          false: <Stack ax="center" gap={2} h="full" />,
         }}
         role="separator"
         aria-orientation={orientation}

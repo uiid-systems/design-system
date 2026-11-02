@@ -25,8 +25,8 @@ function PanelContent({
 }) {
   return (
     <Box
-      fullwidth
-      fullheight
+      w="full"
+      h="full"
       ax="center"
       ay="center"
       p={4}

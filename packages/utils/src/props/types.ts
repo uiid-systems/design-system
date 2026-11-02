@@ -18,8 +18,12 @@ export type WithLayoutProps<BaseProps, LayoutProps> = BaseProps &
 export type StyleProp<K extends keyof React.CSSProperties> = {
   property: K;
   values?: ReadonlyArray<React.CSSProperties[K]>;
-  /** Keywords accepted alongside a number, each emitted as its own rule. */
-  keywords?: readonly string[];
+  /**
+   * Keywords accepted alongside a number, each emitted as its own rule. A
+   * keyword maps to the values it declares, in order, so it can carry a
+   * fallback chain (`100%`, then `-webkit-fill-available`).
+   */
+  keywords?: Readonly<Record<string, readonly string[]>>;
   /**
    * How the raw value becomes a length: multiplied by a token variable,
    * multiplied by `1px`, or used as-is (`"none"`, for keyword values).

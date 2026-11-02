@@ -27,12 +27,6 @@ export const toggleProps = {
       "width: -moz-available",
     ],
   },
-  fullheight: {
-    declarations: ["height: 100%", "height: -webkit-fill-available"],
-  },
-  fullscreen: {
-    declarations: ["width: 100dvw", "height: 100dvh"],
-  },
   /** The zero minimums let a scrolling descendant scroll instead of stretching the page. */
   grow: {
     declarations: ["flex: 1", "min-width: 0", "min-height: 0"],
@@ -46,12 +40,11 @@ export type ToggleProps = {
   evenly?: boolean;
   /** Let children wrap onto new lines instead of shrinking */
   wrap?: boolean;
-  /** Stretch to fill the container width */
+  /**
+   * Stretch to fill the container width
+   * @deprecated Use `w="full"`.
+   */
   fullwidth?: boolean;
-  /** Stretch to fill the container height */
-  fullheight?: boolean;
-  /** Fill the viewport */
-  fullscreen?: boolean;
   /** Take the flex parent's leftover space, shrinking below its content if needed */
   grow?: boolean;
 };

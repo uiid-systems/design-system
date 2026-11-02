@@ -6,7 +6,7 @@ export const CardFooter = ({ children, ...props }: CardFooterProps) => {
   return (
     <>
       <Separator />
-      <Group data-slot="card-footer" gap={2} fullwidth {...props}>
+      <Group data-slot="card-footer" gap={2} w="full" {...props}>
         {children}
       </Group>
     </>
