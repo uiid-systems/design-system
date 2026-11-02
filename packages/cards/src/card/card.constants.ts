@@ -10,7 +10,7 @@ export const CARD_DEFAULT_COLOR: CardColor = "neutral";
 export const SHELL_GAP: CardContainerProps["gap"] = 6;
 
 export const SHELL_CONTAINER_PROPS = {
-  fullwidth: true,
+  w: "full",
   p: 6,
   gap: SHELL_GAP,
 } satisfies CardContainerProps;

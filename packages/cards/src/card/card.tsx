@@ -95,7 +95,7 @@ export const Card = ({
           data-slot="card-header"
           ay="center"
           gap={3}
-          fullwidth
+          w="full"
           {...headerProps}
           className={cx(styles["card-header"], headerClassName)}
         >
@@ -116,7 +116,7 @@ export const Card = ({
       {isRenderable(children) && (
         <Stack
           data-slot="card-inner-container"
-          fullwidth
+          w="full"
           grow={props.grow}
           gap={isShell ? SHELL_GAP : undefined}
           {...InnerContainerProps}

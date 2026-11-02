@@ -76,6 +76,18 @@ describe("Box", () => {
     expect(box).not.toHaveAttribute("wrap");
   });
 
+  it("writes a sizing keyword as its data attribute", () => {
+    render(
+      <Box w="full" maxh="screen" minw={120} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).toHaveAttribute("data-ui-w", "full");
+    expect(box).toHaveAttribute("data-ui-maxh", "screen");
+    expect(box).toHaveAttribute("data-ui-minw", "120");
+  });
+
   it("grows to fill its flex parent with grow", () => {
     const { rerender } = render(<Box data-testid="box">x</Box>);
     expect(screen.getByTestId("box")).not.toHaveAttribute("data-ui-grow");

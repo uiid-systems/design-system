@@ -57,10 +57,11 @@ export function stylePropsCss() {
       `  [data-ui-${key}] {\n    ${property}: ${resolve(`var(--props-${key})`, styleProp.unit)};\n  }`,
     );
 
-    for (const keyword of styleProp.keywords ?? []) {
-      rules.push(
-        `  [data-ui-${key}="${keyword}"] {\n    ${property}: ${keyword};\n  }`,
-      );
+    for (const [keyword, values] of Object.entries(styleProp.keywords ?? {})) {
+      const body = values
+        .map((value) => `    ${property}: ${value};`)
+        .join("\n");
+      rules.push(`  [data-ui-${key}="${keyword}"] {\n${body}\n  }`);
     }
   }
 

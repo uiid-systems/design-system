@@ -60,8 +60,8 @@ export const Main = ({ children }: React.PropsWithChildren) => {
       maxw={CONTENT_MAX_WIDTH}
       br={SHELL_BORDER_WIDTH}
       p={SHELL_SPACING * 2}
-      fullwidth
-      fullheight
+      w="full"
+      h="full"
     >
       {children}
     </Stack>

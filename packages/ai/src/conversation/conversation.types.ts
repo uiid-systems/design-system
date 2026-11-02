@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@uiid/buttons";
 import type { BoxProps, StackProps } from "@uiid/layout";
 
-/** The scroll region. Size it from outside with `h`, `fullheight` or `grow`. */
+/** The scroll region. Size it from outside with `h` (a number or `"full"`) or `grow`. */
 export type ConversationProps = BoxProps;
 
 /** The column of messages. Props go to the inner `Stack`; the scroller is internal. */

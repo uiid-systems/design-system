@@ -34,7 +34,7 @@ import {
 
 `ConversationScrollButton` is a sibling of `ConversationContent`, not a child, so it anchors to the region instead of scrolling away with the messages. `ConversationEmptyState` goes inside `ConversationContent`, where it centers in the region's full height.
 
-`Conversation` does not size itself. Give it a height with `h`, `fullheight`, or `grow` inside a `Stack`.
+`Conversation` does not size itself. Give it a height with `h` (a number or `"full"`) or `grow` inside a `Stack`.
 
 ## Parts
 
