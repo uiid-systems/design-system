@@ -107,6 +107,49 @@ export const Full = () => (
 );
 
 /**
+ * While Save runs, `pending` keeps the dialog open: Escape, the backdrop, the
+ * header close button and Cancel can't close it, and the close controls are
+ * disabled. Save shows its own `loading` and `disabled`.
+ */
+export const Pending = () => {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const save = async () => {
+    setSaving(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setOpen(false);
+    setSaving(false);
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      pending={saving}
+      trigger={<Button>Rename game</Button>}
+      title="Rename game"
+      description="Saving takes a couple of seconds."
+      footer={
+        <Group gap={2} ax="end" fullwidth>
+          <DialogClose size="small">Cancel</DialogClose>
+          <Button
+            size="small"
+            onClick={save}
+            loading={saving}
+            disabled={saving}
+          >
+            Save
+          </Button>
+        </Group>
+      }
+    >
+      {BODY}
+    </Dialog>
+  );
+};
+
+/**
  * A secret shown once hides the header close button, so the footer's
  * acknowledgement is the deliberate way out.
  */
