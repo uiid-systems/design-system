@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { Card } from "./card";
 import { CARD_DEFAULT_COLOR } from "./card.constants";
 
+import styles from "./card.module.css";
+
 describe("Card", () => {
   it("renders the title and description slots", () => {
     render(<Card title="Card title" description="Supporting copy" />);
@@ -117,6 +119,31 @@ describe("Card", () => {
     render(<Card title="Title" footer={<span>Footer content</span>} />);
 
     expect(screen.getByText("Footer content")).toBeVisible();
+  });
+
+  it("leaves out the footer divider unless FooterProps turns it on", () => {
+    const { rerender } = render(<Card title="Title" footer="Footer" />);
+    expect(screen.queryByRole("separator")).toBeNull();
+
+    rerender(
+      <Card
+        title="Title"
+        footer="Footer"
+        FooterProps={{ hideSeparator: false }}
+      />,
+    );
+    expect(screen.getByRole("separator")).toBeInTheDocument();
+  });
+
+  it("renders flat by default and adds the shadow for shadow", () => {
+    const { container, rerender } = render(<Card title="Title" />);
+    const card = () => container.firstElementChild;
+
+    expect(card()).not.toHaveClass(styles.shadow);
+    expect(card()).not.toHaveAttribute("shadow");
+
+    rerender(<Card title="Title" shadow />);
+    expect(card()).toHaveClass(styles.shadow);
   });
 
   it("merges ContainerProps' style and handlers with the root's", async () => {

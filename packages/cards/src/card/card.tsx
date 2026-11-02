@@ -30,6 +30,7 @@ export const Card = ({
   footer,
   variant,
   color,
+  shadow = false,
   className,
   ContainerProps,
   HeaderProps,
@@ -78,6 +79,7 @@ export const Card = ({
       {...(isShell && SHELL_CONTAINER_PROPS)}
       {...mergeProps<"div">(props, containerProps)}
       className={cx(
+        shadow && styles.shadow,
         variant && styles[`variant-${variant}`],
         surfaceColor ? paletteColorStyles[surfaceColor] : styles["uncolored"],
         className,

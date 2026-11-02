@@ -87,7 +87,9 @@ export const PopupLayerPopup = ({
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
-      render={<Card color={color} p={p} gap={gap} fullwidth={fullwidth} />}
+      render={
+        <Card shadow color={color} p={p} gap={gap} fullwidth={fullwidth} />
+      }
       className={cxState(styles["popup-layer-popup"], className)}
       {...props}
     >

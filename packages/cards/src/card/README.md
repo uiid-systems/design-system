@@ -4,10 +4,11 @@
 
 Use Card when you want to:
 
-- Group related content behind a single surface with consistent padding, border, and shadow
+- Group related content behind a single surface with consistent padding and border
+- Lift the card off the page with `shadow`. Cards are flat by default; Dialog, Drawer, Popover, Tooltip and the Select and Combobox popups set it for their floating surfaces
 - Compose a header from any combination of `title`, `description`, and `action` — pass only the props you need
 - Add a flush `thumbnail` above the header (image, illustration, chart)
-- Place a `footer` separated by a divider — typically a row of actions
+- Place a `footer` below the body — typically a row of actions. No divider by default; opt in with `FooterProps={{ hideSeparator: false }}`. Dialog, Drawer and Popover turn it on for their footers
 - Strip the chrome for inline placements — remove the padding with `p={0}` and the border with `b={0}` (style the background directly if you need it transparent)
 - Fill the height left in its parent with `grow`: the card takes the parent's leftover space and the body takes what's left under the header, so a full-height page body (a split view, a document viewer) needs no `calc(100dvh - …)`. The parent has to bound its height. `InnerContainerProps={{ grow: false }}` keeps the body at its content height
 - Fill a page's main content area with `variant="shell"`: the header is the page header (title, description, actions) and `children` is the page body. It's `w="full"` (pass another `w` to size it yourself), pads at `p={6}`, has no border, radius or shadow, and stays transparent until you pass `color`. A plain-text title renders as an `<h2>` at `size={4}` `weight="medium"`, the description sits 3 units below it (half the shell's gap), and the title and description each cap at 720px. It spaces the header from the body, and the body's children from each other, at `gap={6}`; `p` and `gap` override the container, `InnerContainerProps={{ gap }}` the body. Breadcrumbs and the sidebar sit outside the shell. See the `Shell` example

@@ -19,6 +19,7 @@ export const TooltipPopup = ({
       data-slot="tooltip-popup"
       render={
         <Card
+          shadow
           py={2}
           px={2}
           style={{

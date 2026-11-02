@@ -25,7 +25,9 @@ export const SelectPopup = ({
   return (
     <BaseSelect.Popup
       data-slot="select-popup"
-      render={<Card color={color} p={p} gap={gap} fullwidth={fullwidth} />}
+      render={
+        <Card shadow color={color} p={p} gap={gap} fullwidth={fullwidth} />
+      }
       className={cxState(styles["select-popup"], className)}
       {...props}
     >
