@@ -5,7 +5,7 @@
 
 /* Delay is set per word when its node mounts; see reveal.hooks. */
 .reveal-stream {
-  animation: reveal var(--reveal-duration) ease-out backwards;
+  animation: reveal var(--reveal-duration) ease-in-out backwards;
 }
 
 @keyframes reveal {

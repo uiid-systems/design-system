@@ -37,13 +37,17 @@ Words are keyed by index, so when `children` grows (streamed chunks), already-mo
 <Reveal stagger={0}>{streamedText}</Reveal>
 ```
 
-A word split across two chunks only animates its first piece, because the rest arrives in a span that has already played. Pass the text through `holdBackPartialWord` while it streams to keep the unfinished last word back until it is complete:
+Streamed text arrives in bursts, several words in one chunk and then nothing for a while, and revealed as it arrives it looks choppy. `useStreamPace` evens it out. It shows the text a whole word at a time, spaced so that whatever has arrived but not been shown yet clears in about 250ms: a burst speeds it up, so it never falls far behind. The unfinished last word waits until it is complete, so a word split across two chunks reveals whole. A token with no letter or digit in it, like a dash or a list marker, goes out with the word after it.
 
 ```tsx
-import { Reveal, holdBackPartialWord } from "@uiid/typography";
+import { Reveal, useStreamPace } from "@uiid/typography";
 
-<Reveal stagger={0}>{streaming ? holdBackPartialWord(text) : text}</Reveal>;
+const paced = useStreamPace(text, streaming);
+
+<Reveal stagger={0}>{paced.text}</Reveal>;
 ```
+
+It returns the `text` to show and its own `streaming`, which stays true after yours turns off until the last words have gone out. Text that gets shorter while streaming, like a regenerated message, starts over from nothing.
 
 For markdown, use [`Markdown`](../../../ai/src/markdown/README.md) with `reveal`, which does this for you.
 

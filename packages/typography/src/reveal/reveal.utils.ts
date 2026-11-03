@@ -1,12 +1,38 @@
 /** Split keeping trailing whitespace attached so spans wrap like words. */
 export const splitWords = (text: string) => (text ? text.split(/(?<=\s)/) : []);
 
-/**
- * Drop the unfinished word at the end of text that is still arriving, so every
- * word reveals whole. A word cut across two chunks would otherwise fade in as
- * its first piece, and the rest would appear without animating.
- */
-export const holdBackPartialWord = (text: string) => {
+/** Length of text up to its last complete word, one the whitespace after it has reached. */
+export const completeLength = (text: string) => {
   const tail = text.search(/\S+$/);
-  return tail === -1 ? text : text.slice(0, tail);
+  return tail === -1 ? text.length : tail;
+};
+
+/**
+ * A word, with any tokens before it that have no letter or digit in them (a list marker, a
+ * quote's `>`, a dash) and the whitespace after it. Those tokens show nothing worth a beat of
+ * their own, so they go out with the word that follows.
+ */
+const WORD = /\s*(?:[^\s\p{L}\p{N}]+\s+)*\S+\s*/uy;
+
+export const countWords = (text: string) =>
+  text.match(/\S*[\p{L}\p{N}]\S*/gu)?.length ?? 0;
+
+/** The position `count` words on from `from`, never past `limit`. */
+export const advanceWords = (
+  text: string,
+  from: number,
+  limit: number,
+  count: number,
+) => {
+  const word = new RegExp(WORD);
+  word.lastIndex = from;
+  let end = from;
+  for (
+    let i = 0;
+    i < count && word.exec(text) && word.lastIndex <= limit;
+    i++
+  ) {
+    end = word.lastIndex;
+  }
+  return end;
 };

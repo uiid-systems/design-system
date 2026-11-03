@@ -1,6 +1,6 @@
 "use client";
 
-import { Prose, holdBackPartialWord, useStreamReveal } from "@uiid/typography";
+import { Prose, useStreamPace, useStreamReveal } from "@uiid/typography";
 import type { StreamRevealPass } from "@uiid/typography";
 import { RuleType } from "markdown-to-jsx/react";
 import type { MarkdownToJSX } from "markdown-to-jsx/react";
@@ -35,13 +35,14 @@ export const MarkdownReveal = ({
   style,
   ...props
 }: MarkdownRevealProps) => {
-  const words = useStreamReveal({ streaming });
+  const paced = useStreamPace(children, streaming);
+  const words = useStreamReveal({ streaming: paced.streaming });
 
   return (
     <Prose data-slot="markdown" style={{ ...words.style, ...style }} {...props}>
       {compileMarkdown(
-        streaming ? holdBackPartialWord(children) : children,
-        streaming,
+        paced.text,
+        paced.streaming,
         // The pass would hand the text back as it is; skipping the rule saves the per-node calls.
         words.active ? revealRule(words.pass()) : undefined,
       )}

@@ -6,10 +6,72 @@ import type { CSSProperties, Key, ReactNode } from "react";
 import {
   REVEAL_DEFAULT_BLUR,
   REVEAL_DEFAULT_DURATION,
+  REVEAL_STREAM_CATCH_UP,
+  REVEAL_STREAM_EASE,
 } from "./reveal.constants";
-import { splitWords } from "./reveal.utils";
+import {
+  advanceWords,
+  completeLength,
+  countWords,
+  splitWords,
+} from "./reveal.utils";
 
 import styles from "./reveal.module.css";
+
+/**
+ * Shows streamed text a whole word at a time, at an even pace, instead of in
+ * the bursts it arrives in. The interval between words is set so that what has
+ * arrived but not been shown clears in about `REVEAL_STREAM_CATCH_UP` ms: it
+ * speeds up as a burst lands and slows as the backlog drains. While streaming,
+ * the unfinished last word is never shown. Once streaming stops the rest drains
+ * at the same pace, and the returned `streaming` stays true until it has.
+ *
+ * Text that gets shorter while streaming is a new stream, like a regenerated
+ * message, and starts over from nothing.
+ */
+export const useStreamPace = (text: string, streaming: boolean) => {
+  const [shown, setShown] = useState(() => (streaming ? 0 : text.length));
+  if (text.length < shown) setShown(streaming ? 0 : text.length);
+
+  const limit = streaming ? completeLength(text) : text.length;
+  const from = Math.min(shown, limit);
+  const backlog = countWords(text.slice(from, limit));
+  // Whitespace, or a dash or list marker, with no word after it yet shows straight away.
+  const end = backlog ? from : limit;
+
+  // When the last word went out, and the pace it went out at, in words per ms.
+  const last = useRef<{ at: number; rate: number } | null>(null);
+
+  useEffect(() => {
+    if (!backlog) return;
+
+    const now = performance.now();
+    const target = backlog / REVEAL_STREAM_CATCH_UP;
+    // Ease toward the pace the backlog asks for. Jumping to it would swing the gap between words
+    // as the backlog moves between one word and a few.
+    const rate = last.current
+      ? last.current.rate + (target - last.current.rate) * REVEAL_STREAM_EASE
+      : target;
+    const interval = 1 / rate;
+    // A word that arrives after a lull goes out at once if a whole interval has already passed.
+    const due = Math.max((last.current?.at ?? now) + interval, now);
+
+    const timer = setTimeout(() => {
+      const fired = performance.now();
+      // Only a timer that fires late (a throttled tab) releases more than one word.
+      const count = 1 + Math.floor(Math.max(0, fired - due) / interval);
+      last.current = { at: fired, rate };
+      setShown(advanceWords(text, from, limit, count));
+    }, due - now);
+
+    return () => clearTimeout(timer);
+  }, [text, from, limit, backlog]);
+
+  return {
+    text: text.slice(0, end),
+    streaming: streaming || end < text.length,
+  };
+};
 
 export type StreamRevealOptions = {
   /** Whether text is still arriving. Words keep animating for `duration` after it stops. */

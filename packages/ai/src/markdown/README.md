@@ -55,11 +55,10 @@ Add `reveal` and each word fades and un-blurs in as it arrives, with the same mo
 </Markdown>
 ```
 
-- The unfinished word at the end of the text is held back until it is complete, so a word split across two chunks reveals whole.
-- Words appear as fast as they arrive, with no stagger.
+- Words are shown a whole word at a time at an even pace, not in the bursts they arrive in, about 250ms behind the stream. A burst speeds the pace up, so it never falls far behind. The unfinished word at the end waits until it is complete, so a word split across two chunks reveals whole.
 - A word animates once. When its closing `**` or `)` lands and the word moves into a `<strong>` or link, it does not fade in again, and one that was still fading carries on from where it was.
 - Inline code reveals as one piece. Code blocks are not animated.
-- Words animate only while `streaming` is on. When it turns off, the held-back last word appears and fades in like the rest. Once the last fade has finished, the per-word spans are dropped and the text renders as it would without `reveal`.
+- Words animate only while text is arriving. When `streaming` turns off, the words not shown yet go out at the same pace and fade in like the rest. Once the last fade has finished, the per-word spans are dropped and the text renders as it would without `reveal`.
 - `reveal` makes `Markdown` a client component. Without it, `Markdown` has no hooks and renders in a server component.
 - Text with no spaces between words, like Chinese or Japanese, or a long URL, reveals as one piece.
 
