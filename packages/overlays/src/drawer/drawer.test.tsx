@@ -1,10 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, {
+  PointerEventsCheckLevel,
+} from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
 import { Footer } from "./drawer.examples";
+import { DrawerClose } from "./subcomponents";
 
 import styles from "./drawer.module.css";
 
@@ -327,6 +330,192 @@ describe("Drawer", () => {
     await user.keyboard("{Escape}");
 
     expect(handleOpenChange).toHaveBeenCalledWith(false, expect.anything());
+  });
+
+  // ============================================
+  // PENDING
+  // ============================================
+  // A swipe dismiss goes through the same cancelable onOpenChange as Escape;
+  // jsdom can't drive the gesture, so it's covered by the Escape case.
+
+  describe("pending", () => {
+    const PendingDrawer = ({
+      onOpenChange,
+    }: {
+      onOpenChange: (open: boolean) => void;
+    }) => (
+      <Drawer
+        open={true}
+        onOpenChange={onOpenChange}
+        pending
+        title="Saving"
+        footer={<DrawerClose>Cancel</DrawerClose>}
+      >
+        Drawer content
+      </Drawer>
+    );
+
+    it("disables DrawerClose", () => {
+      render(<PendingDrawer onOpenChange={() => {}} />);
+
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+    });
+
+    it("keeps DrawerClose's own disabled when the drawer isn't pending", () => {
+      render(
+        <Drawer
+          open={true}
+          onOpenChange={() => {}}
+          footer={
+            <>
+              <DrawerClose disabled>Cancel</DrawerClose>
+              <DrawerClose>Done</DrawerClose>
+            </>
+          }
+        >
+          Drawer content
+        </Drawer>,
+      );
+
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+    });
+
+    it.each([
+      [
+        "Escape",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.keyboard("{Escape}"),
+      ],
+      [
+        "a backdrop click",
+        async (user: ReturnType<typeof userEvent.setup>) => {
+          const backdrop = document.querySelector(
+            '[data-slot="drawer-backdrop"]',
+          );
+          if (backdrop) await user.click(backdrop);
+        },
+      ],
+      [
+        "DrawerClose",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.click(screen.getByRole("button", { name: "Cancel" })),
+      ],
+    ])("is not closed by %s", async (_, close) => {
+      const user = userEvent.setup({
+        pointerEventsCheck: PointerEventsCheckLevel.Never,
+      });
+      const onOpenChange = vi.fn();
+      render(<PendingDrawer onOpenChange={onOpenChange} />);
+
+      await close(user);
+
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(screen.getByText("Drawer content")).toBeInTheDocument();
+    });
+
+    it("blocks an uncontrolled drawer too", async () => {
+      const user = userEvent.setup();
+      render(
+        <Drawer trigger={<button>Open drawer</button>} pending>
+          Drawer content
+        </Drawer>,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Open drawer" }));
+      expect(await screen.findByText("Drawer content")).toBeInTheDocument();
+
+      await user.keyboard("{Escape}");
+
+      expect(screen.getByText("Drawer content")).toBeInTheDocument();
+    });
+
+    it("still closes when open turns false", async () => {
+      const { rerender } = render(
+        <Drawer open={true} onOpenChange={() => {}} pending>
+          Drawer content
+        </Drawer>,
+      );
+
+      rerender(
+        <Drawer open={false} onOpenChange={() => {}} pending>
+          Drawer content
+        </Drawer>,
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+      });
+    });
+
+    it("closes again once pending clears", async () => {
+      const user = userEvent.setup();
+      const DrawerWrapper = () => {
+        const [open, setOpen] = useState(true);
+        const [pending, setPending] = useState(true);
+        return (
+          <Drawer
+            open={open}
+            onOpenChange={setOpen}
+            pending={pending}
+            action={<button onClick={() => setPending(false)}>Finish</button>}
+            footer={<DrawerClose>Cancel</DrawerClose>}
+          >
+            Drawer content
+          </Drawer>
+        );
+      };
+      render(<DrawerWrapper />);
+
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      await user.click(screen.getByRole("button", { name: "Finish" }));
+      expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+
+      await user.keyboard("{Escape}");
+
+      await waitFor(() => {
+        expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+      });
+    });
+
+    it("calls RootProps.onOpenChange alongside onOpenChange", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      const rootOnOpenChange = vi.fn();
+      render(
+        <Drawer
+          open={true}
+          onOpenChange={onOpenChange}
+          RootProps={{ onOpenChange: rootOnOpenChange }}
+        >
+          Drawer content
+        </Drawer>,
+      );
+
+      await user.keyboard("{Escape}");
+
+      expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything());
+      expect(rootOnOpenChange).toHaveBeenCalledWith(false, expect.anything());
+    });
+
+    it("lets RootProps.onOpenChange cancel a controlled close", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      render(
+        <Drawer
+          open={true}
+          onOpenChange={onOpenChange}
+          RootProps={{ onOpenChange: (_, details) => details.cancel() }}
+        >
+          Drawer content
+        </Drawer>,
+      );
+
+      await user.keyboard("{Escape}");
+
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(screen.getByText("Drawer content")).toBeInTheDocument();
+    });
   });
 
   // ============================================

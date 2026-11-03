@@ -27,6 +27,52 @@ export const Default = () => (
 );
 
 /**
+ * `pending` holds the drawer open while Save runs: Escape, the backdrop, a
+ * swipe and Cancel are all blocked, and Cancel renders disabled. Save closes
+ * it by setting `open` to false.
+ */
+export const Pending = () => {
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const save = async () => {
+    setSaving(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setOpen(false);
+    setSaving(false);
+  };
+
+  return (
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      pending={saving}
+      swipeDirection="right"
+      trigger={<Button>Edit preferences</Button>}
+      title="Preferences"
+      description="Saving takes a couple of seconds."
+      footer={
+        <Group gap={2} ax="end" w="full">
+          <DrawerClose render={<Button size="small" variant="subtle" />}>
+            Cancel
+          </DrawerClose>
+          <Button
+            size="small"
+            onClick={save}
+            loading={saving}
+            disabled={saving}
+          >
+            Save
+          </Button>
+        </Group>
+      }
+    >
+      {BODY}
+    </Drawer>
+  );
+};
+
+/**
  * `swipeDirection` is both the edge the drawer is anchored to and the direction
  * a swipe dismisses it. It defaults to `down` — a bottom sheet.
  */

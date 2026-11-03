@@ -68,6 +68,33 @@ const returnTo = useRef<HTMLElement | null>(null);
 
 A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
 
+## While work is pending
+
+Set `pending` while a request started from the drawer is in flight. Escape, a backdrop click, a swipe toward the edge and every `DrawerClose` then can't close the drawer, and `DrawerClose` renders disabled. A canceled swipe springs back to where it started. Setting `open` to false still closes it, so a submit can close on success without clearing `pending` first.
+
+`pending` doesn't touch the submit button. `loading` only shows the spinner, so give the submit `disabled` as well, or it can be clicked twice:
+
+```tsx
+<Drawer
+  open={open}
+  onOpenChange={setOpen}
+  pending={saving}
+  title="Preferences"
+  footer={
+    <>
+      <DrawerClose render={<Button variant="subtle" />}>Cancel</DrawerClose>
+      <Button onClick={save} loading={saving} disabled={saving}>
+        Save
+      </Button>
+    </>
+  }
+>
+  …
+</Drawer>
+```
+
+Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to `DrawerClose` for it. `pending` covers every way of closing, swipe included, and works whether or not `open` is controlled.
+
 ## Parts
 
 Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the gesture system needs:

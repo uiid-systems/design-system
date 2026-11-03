@@ -36,6 +36,12 @@ export type DrawerPopupProps = Omit<BaseDrawer.DrawerPopup.Props, "title"> &
   DrawerCardProps;
 
 export type DrawerProps = React.PropsWithChildren<{
+  /**
+   * Work started from the drawer is in flight. Escape, a backdrop click, a
+   * swipe and `DrawerClose` can't close it, and `DrawerClose` renders disabled.
+   * Setting `open` to false still closes it.
+   */
+  pending?: boolean;
   trigger?: DrawerTriggerProps["children"];
   RootProps?: DrawerRootProps;
   TriggerProps?: DrawerTriggerProps;
