@@ -22,12 +22,6 @@ Before using any UIID component, read its `packages/{pkg}/src/{component}/{compo
 
 This repo documents itself through working code. Prefer reading a real component over prose: `packages/typography/src/text/` is the complete exemplar (types, CSS module, examples, tests, README). Usage lives in `packages/*/src/*/*.examples.tsx`, docs in `packages/*/src/*/README.md`, stories in `apps/storybook/stories/`, and decisions in `docs/architecture/`.
 
-## Attribution Policy
-
-- **Never add yourself as co-author.** Do not include `Co-Authored-By` trailers in commit messages.
-- **Never add AI attribution.** Do not include "Generated with Claude Code", "Built by AI", or any similar credit in PR descriptions, code comments, changelogs, or any output.
-- The repo owner maintains sole authorship of all commits and artifacts.
-
 ## Quick Reference
 
 | Task                 | Command                                   |
