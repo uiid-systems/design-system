@@ -9,10 +9,12 @@ const meta = {
   args: {
     children: "Some **bold**, `inline code` and a [link](https://example.com).",
     streaming: false,
+    reveal: false,
   },
   argTypes: {
     children: { control: "text", table: { category: "Content" } },
     streaming: { control: "boolean", table: { category: "Streaming" } },
+    reveal: { control: "boolean", table: { category: "Streaming" } },
     render: { table: { disable: true } },
     ref: { table: { disable: true } },
     style: { table: { disable: true } },
@@ -31,4 +33,8 @@ export const Basic: Story = {
 
 export const Streaming: Story = {
   render: () => <Examples.Streaming />,
+};
+
+export const StreamingReveal: Story = {
+  render: () => <Examples.StreamingReveal />,
 };

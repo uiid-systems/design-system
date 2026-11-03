@@ -106,6 +106,103 @@ describe("Markdown", () => {
     });
   });
 
+  describe("reveal", () => {
+    let clock = 0;
+    const animated = (root: HTMLElement) =>
+      Array.from(root.querySelectorAll<HTMLElement>("[data-reveal-offset]"));
+
+    beforeEach(() => {
+      clock = 0;
+      vi.spyOn(performance, "now").mockImplementation(() => clock);
+    });
+
+    it("wraps each arriving word in an animated span while streaming", () => {
+      const { container } = render(
+        <Markdown streaming reveal>
+          {"Hello there "}
+        </Markdown>,
+      );
+
+      expect(animated(container).map((w) => w.textContent)).toEqual([
+        "Hello ",
+        "there",
+      ]);
+    });
+
+    it("holds back the unfinished last word", () => {
+      const { container } = render(
+        <Markdown streaming reveal>
+          {"Hello the"}
+        </Markdown>,
+      );
+
+      expect(container.textContent).toContain("Hello");
+      expect(container.textContent).not.toContain("the");
+    });
+
+    it("does not replay words already shown when they move into bold", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"Hello **bold "}
+        </Markdown>,
+      );
+      clock = 1000;
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello **bold word** next "}
+        </Markdown>,
+      );
+
+      expect(container.querySelector("strong")).toHaveTextContent("bold word");
+      const words = animated(container).map((w) => w.textContent);
+      expect(words).not.toContain("Hello ");
+      expect(words).not.toContain("bold ");
+      expect(words).toContain("word");
+    });
+
+    it("resumes a remounted word partway through its animation", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"Hello **bold "}
+        </Markdown>,
+      );
+      clock = 100;
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello **bold word** "}
+        </Markdown>,
+      );
+
+      const bold = animated(container).find((w) => w.textContent === "bold ");
+      expect(bold?.closest("strong")).not.toBeNull();
+      expect(bold?.style.animationDelay).toBe("-100ms");
+    });
+
+    it("reveals inline code whole and leaves code blocks unwrapped", () => {
+      const { container } = render(
+        <Markdown streaming reveal>
+          {"Run `pnpm build` now\n\n```ts\nconst a = 1;\n```\n\nafter "}
+        </Markdown>,
+      );
+
+      expect(container.querySelector("p > code")).toBeNull();
+      expect(container.querySelector("p code")?.parentElement).toHaveAttribute(
+        "data-reveal-offset",
+      );
+      expect(container.querySelector("pre span")).toBeNull();
+      expect(container.querySelector("pre > code")).toHaveTextContent(
+        "const a = 1;",
+      );
+    });
+
+    it("renders finished text without word spans", () => {
+      const { container } = render(<Markdown reveal>{"Hello there"}</Markdown>);
+
+      expect(container.querySelector("p span")).toBeNull();
+      expect(container).toHaveTextContent("Hello there");
+    });
+  });
+
   it("renders a javascript: link as an anchor without the href", () => {
     render(<Markdown>{"[x](javascript:alert(1))"}</Markdown>);
 
@@ -168,5 +265,6 @@ describe("Markdown", () => {
     ).toBeInTheDocument();
 
     expect(() => render(<Examples.Streaming />)).not.toThrow();
+    expect(() => render(<Examples.StreamingReveal />)).not.toThrow();
   });
 });

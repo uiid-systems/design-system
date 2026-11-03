@@ -3,6 +3,11 @@
   animation-delay: calc(var(--reveal-index) * var(--reveal-stagger));
 }
 
+/* Delay is set per word when its node mounts; see use-stream-reveal. */
+.reveal-stream {
+  animation: reveal var(--reveal-duration) ease-out backwards;
+}
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -15,7 +20,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal-word {
+  .reveal-word,
+  .reveal-stream {
     animation: none;
   }
 }

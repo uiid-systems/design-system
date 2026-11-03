@@ -10,4 +10,10 @@ export type MarkdownProps = Omit<ProseProps, "children"> & {
    * delimiter the model never closed.
    */
   streaming?: boolean;
+  /**
+   * Fade each word in as it arrives, while `streaming` is on. The unfinished
+   * word at the end is held back until it is complete. Finished text renders
+   * without the per-word spans.
+   */
+  reveal?: boolean;
 };
