@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.3](https://github.com/uiid-systems/design-system/compare/v0.7.2...v0.7.3) (2026-11-03)
+
+
+### Features
+
+* **ui:** add full and screen sizing keywords ([#497](https://github.com/uiid-systems/design-system/issues/497)) ([22520ab](https://github.com/uiid-systems/design-system/commit/22520ab380782147702a679d058d89bf0e1d29a6))
+* **ui:** add pending to Dialog ([#499](https://github.com/uiid-systems/design-system/issues/499)) ([13d6bc7](https://github.com/uiid-systems/design-system/commit/13d6bc7976c7e370314387ce0a11fcd228ea625f))
+* **ui:** add pending to Drawer ([#503](https://github.com/uiid-systems/design-system/issues/503)) ([7f13314](https://github.com/uiid-systems/design-system/commit/7f1331441dad5ced78ff6933167973b853ac69a0))
+* **ui:** add streaming word reveal to Markdown ([#504](https://github.com/uiid-systems/design-system/issues/504)) ([fe8d368](https://github.com/uiid-systems/design-system/commit/fe8d368d75af78a968e120039abf7283f039d74d))
+* **ui:** make the Card shadow and footer divider opt-in ([#498](https://github.com/uiid-systems/design-system/issues/498)) ([691e716](https://github.com/uiid-systems/design-system/commit/691e71658ca540601a750356d48d9202d5722334))
+
+
+### Bug Fixes
+
+* **ui:** remove gap from Text and Prose ([#502](https://github.com/uiid-systems/design-system/issues/502)) ([c65511e](https://github.com/uiid-systems/design-system/commit/c65511e117c5ec769d9c3f4ac05696f84229221a))
+
 ## [0.7.2](https://github.com/uiid-systems/design-system/compare/v0.7.1...v0.7.2) (2026-10-30)
 
 
