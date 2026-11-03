@@ -20,7 +20,10 @@ export type StreamRevealOptions = {
   blur?: number;
 };
 
-/** Renders one pass over the visible text, in document order. Make a new one per render. */
+/**
+ * Renders one pass over the visible text, in document order. Make a new one per render.
+ * While the reveal is inactive, every method hands its content back unchanged.
+ */
 export type StreamRevealPass = {
   /** One span per word of a plain text run. */
   text: (text: string, key?: Key) => ReactNode;
@@ -28,6 +31,13 @@ export type StreamRevealPass = {
   unit: (children: ReactNode, length: number, key?: Key) => ReactNode;
   /** Text that shows without animating, like a code block, so later words keep their offsets. */
   skip: (length: number) => void;
+};
+
+/** The pass used while the reveal is inactive: text renders as it is. */
+const plainPass: StreamRevealPass = {
+  text: (text) => text,
+  unit: (children) => children,
+  skip: () => {},
 };
 
 /**
@@ -85,6 +95,8 @@ export const useStreamReveal = ({
   }, []);
 
   const pass = (): StreamRevealPass => {
+    if (!active) return plainPass;
+
     let cursor = 0;
     const now = performance.now();
 
@@ -124,10 +136,12 @@ export const useStreamReveal = ({
     };
   };
 
-  const style = {
-    "--reveal-duration": `${duration}ms`,
-    "--reveal-blur": `${blur}px`,
-  } as CSSProperties;
+  const style = active
+    ? ({
+        "--reveal-duration": `${duration}ms`,
+        "--reveal-blur": `${blur}px`,
+      } as CSSProperties)
+    : undefined;
 
   return { active, pass, style };
 };

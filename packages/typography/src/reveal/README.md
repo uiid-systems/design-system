@@ -59,11 +59,11 @@ The word reveal behind `Markdown`'s `reveal` prop, for renderers that rebuild th
 
 ```tsx
 const words = useStreamReveal({ streaming });
-const pass = words.active ? words.pass() : undefined; // a fresh pass on every render
+const pass = words.pass(); // a fresh pass on every render
 
-<div style={words.active ? words.style : undefined}>
-  {pass ? pass.text("Hello ") : "Hello "}
-  <strong>{pass ? pass.text("world") : "world"}</strong>
+<div style={words.style}>
+  {pass.text("Hello ")}
+  <strong>{pass.text("world")}</strong>
 </div>;
 ```
 
@@ -75,9 +75,9 @@ const pass = words.active ? words.pass() : undefined; // a fresh pass on every r
 
 It returns:
 
-- `active`: true while text is arriving and for one `duration` after it stops, so the last word and any still fading can finish. Render the spans only while it is true. When it turns false every word is forgotten, so text streamed again into the same instance, like a regenerated message, animates from the start.
-- `style`: the duration and blur custom properties to put on the root element.
-- `pass()`: walks the visible text in document order.
+- `active`: true while text is arriving and for one `duration` after it stops, so the last word and any still fading can finish. When it turns false every word is forgotten, so text streamed again into the same instance, like a regenerated message, animates from the start.
+- `style`: the duration and blur custom properties to put on the root element. `undefined` while inactive.
+- `pass()`: walks the visible text in document order. While inactive, each method hands its content back unchanged, so you can call them on every render without checking `active`. Check it only to skip the work, as `Markdown` does.
   - `text(text, key?)` renders one span per word.
   - `unit(children, length, key?)` reveals something that can't be split, like inline code, as one piece. `length` is how much visible text it holds.
   - `skip(length)` counts text that is shown without animating, like a code block, so the words after it keep their offsets.

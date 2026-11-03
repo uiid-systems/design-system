@@ -38,14 +38,11 @@ export const MarkdownReveal = ({
   const words = useStreamReveal({ streaming });
 
   return (
-    <Prose
-      data-slot="markdown"
-      style={words.active ? { ...words.style, ...style } : style}
-      {...props}
-    >
+    <Prose data-slot="markdown" style={{ ...words.style, ...style }} {...props}>
       {compileMarkdown(
         streaming ? holdBackPartialWord(children) : children,
         streaming,
+        // The pass would hand the text back as it is; skipping the rule saves the per-node calls.
         words.active ? revealRule(words.pass()) : undefined,
       )}
     </Prose>
