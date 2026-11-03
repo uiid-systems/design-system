@@ -5,11 +5,9 @@ import {
   REVEAL_DEFAULT_BLUR,
 } from "./reveal.constants";
 import type { RevealProps } from "./reveal.types";
+import { splitWords } from "./reveal.utils";
 
 import styles from "./reveal.module.css";
-
-/** Split keeping trailing whitespace attached so spans wrap like words. */
-const splitWords = (text: string) => (text ? text.split(/(?<=\s)/) : []);
 
 export const Reveal = ({
   stagger = REVEAL_DEFAULT_STAGGER,

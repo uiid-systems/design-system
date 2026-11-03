@@ -20,7 +20,7 @@ const answer = 42;
 export const Basic = () => <Markdown>{RESPONSE}</Markdown>;
 
 /** Replays the response a few characters at a time, then pauses and restarts. */
-export const Streaming = () => {
+export const Streaming = ({ reveal = false }: { reveal?: boolean }) => {
   const [length, setLength] = useState(0);
   const done = length >= RESPONSE.length;
 
@@ -32,5 +32,11 @@ export const Streaming = () => {
     return () => clearTimeout(id);
   }, [length, done]);
 
-  return <Markdown streaming={!done}>{RESPONSE.slice(0, length)}</Markdown>;
+  return (
+    <Markdown streaming={!done} reveal={reveal}>
+      {RESPONSE.slice(0, length)}
+    </Markdown>
+  );
 };
+
+export const StreamingReveal = () => <Streaming reveal />;

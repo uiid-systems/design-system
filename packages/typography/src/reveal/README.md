@@ -37,11 +37,56 @@ Words are keyed by index, so when `children` grows (streamed chunks), already-mo
 <Reveal stagger={0}>{streamedText}</Reveal>
 ```
 
+Streamed text arrives in bursts, several words in one chunk and then nothing for a while, and revealed as it arrives it looks choppy. `useStreamPace` evens it out. It shows the text a whole word at a time, spaced so that whatever has arrived but not been shown yet clears in about 250ms: a burst speeds it up, so it never falls far behind. The unfinished last word waits until it is complete, so a word split across two chunks reveals whole. A token with no letter or digit in it, like a dash or a list marker, goes out with the word after it.
+
+```tsx
+import { Reveal, useStreamPace } from "@uiid/typography";
+
+const paced = useStreamPace(text, streaming);
+
+<Reveal stagger={0}>{paced.text}</Reveal>;
+```
+
+It returns the `text` to show and its own `streaming`, which stays true after yours turns off until the last words have gone out. Text that gets shorter while streaming, like a regenerated message, starts over from nothing.
+
+For markdown, use [`Markdown`](../../../ai/src/markdown/README.md) with `reveal`, which does this for you.
+
 To replay the animation, remount with a `key`:
 
 ```tsx
 <Reveal key={run}>{text}</Reveal>
 ```
+
+## useStreamReveal
+
+The word reveal behind `Markdown`'s `reveal` prop, for renderers that rebuild their element tree as text streams in. A run of text that becomes bold, for example, is a new element wrapping words the reader has already seen. `Reveal` relies on React keeping each word's span, so it would fade those words in again. This hook identifies a word by its offset in the visible text and records when it first appeared, so a rebuilt word does not animate twice.
+
+```tsx
+const words = useStreamReveal({ streaming });
+const pass = words.pass(); // a fresh pass on every render
+
+<div style={words.style}>
+  {pass.text("Hello ")}
+  <strong>{pass.text("world")}</strong>
+</div>;
+```
+
+| Option      | Type      | Default | Description                                                                        |
+| ----------- | --------- | ------- | ---------------------------------------------------------------------------------- |
+| `streaming` | `boolean` | —       | Whether text is still arriving. Words keep animating for `duration` after it stops |
+| `duration`  | `number`  | `400`   | Duration of each word's fade/blur-in, in ms                                        |
+| `blur`      | `number`  | `6`     | Blur radius each word starts from, in px                                           |
+
+It returns:
+
+- `active`: true while text is arriving and for one `duration` after it stops, so the last word and any still fading can finish. When it turns false every word is forgotten, so text streamed again into the same instance, like a regenerated message, animates from the start.
+- `style`: the duration and blur custom properties to put on the root element. `undefined` while inactive.
+- `pass()`: walks the visible text in document order. While inactive, each method hands its content back unchanged, so you can call them on every render without checking `active`. Check it only to skip the work, as `Markdown` does.
+  - `text(text, key?)` renders one span per word.
+  - `unit(children, length, key?)` reveals something that can't be split, like inline code, as one piece. `length` is how much visible text it holds.
+  - `skip(length)` counts text that is shown without animating, like a code block, so the words after it keep their offsets.
+
+Call the pass's methods for every piece of visible text, in reading order, on every render. If text the reader has already seen changes length partway through, every word after it gets a new offset and fades in again.
 
 ## Accessibility
 
@@ -50,4 +95,4 @@ To replay the animation, remount with a `key`:
 
 ## Notes
 
-- `children` must be a string. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.
+- `children` must be a string. To reveal formatted text, use `useStreamReveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.

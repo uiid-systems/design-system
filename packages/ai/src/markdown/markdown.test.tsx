@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Markdown } from "./markdown";
@@ -106,6 +106,160 @@ describe("Markdown", () => {
     });
   });
 
+  describe("reveal", () => {
+    const animated = (root: HTMLElement) =>
+      Array.from(root.querySelectorAll<HTMLElement>("[data-reveal-offset]"));
+    const words = (root: HTMLElement) =>
+      animated(root).map((w) => w.textContent?.trim());
+    // A word's release commits, and schedules the next, only when its act ends, so step through.
+    const wait = (ms: number) => {
+      for (let t = 0; t < ms; t += 10) act(() => vi.advanceTimersByTime(10));
+    };
+
+    beforeEach(() => {
+      vi.useFakeTimers({
+        toFake: ["setTimeout", "clearTimeout", "performance"],
+      });
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("paces a burst of words out one at a time, each in an animated span", () => {
+      const { container } = render(
+        <Markdown streaming reveal>
+          {"one two — three four "}
+        </Markdown>,
+      );
+
+      expect(container).toHaveTextContent("");
+      wait(70);
+      expect(words(container)).toEqual(["one"]);
+      wait(100);
+      expect(words(container)).toEqual(["one", "two"]);
+      // The dash has no letters, so it waits and goes out with the word after it.
+      wait(60);
+      expect(words(container)).toEqual(["one", "two", "—", "three"]);
+      wait(400);
+      expect(container).toHaveTextContent("one two — three four");
+    });
+
+    it("holds back the unfinished last word, then animates it when streaming stops", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"Hello the"}
+        </Markdown>,
+      );
+      wait(1000);
+
+      expect(container.textContent).toContain("Hello");
+      expect(container.textContent).not.toContain("the");
+
+      rerender(<Markdown reveal>{"Hello there"}</Markdown>);
+      wait(300);
+
+      expect(words(container)).toContain("there");
+    });
+
+    it("does not replay words already shown when they move into bold", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"Hello **bold "}
+        </Markdown>,
+      );
+      wait(1000);
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello **bold word** next "}
+        </Markdown>,
+      );
+      // Nothing has gone out for a while, so the next word goes out as soon as it arrives.
+      wait(10);
+
+      expect(container.querySelector("strong")).toHaveTextContent("bold word");
+      expect(words(container)).not.toContain("Hello");
+      expect(words(container)).not.toContain("bold");
+      expect(words(container)).toContain("word");
+    });
+
+    it("resumes a remounted word partway through its animation", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"Hello **bold "}
+        </Markdown>,
+      );
+      wait(400);
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello **bold word** "}
+        </Markdown>,
+      );
+      wait(300);
+
+      const bold = animated(container).find((w) => w.textContent === "bold ");
+      expect(bold?.closest("strong")).not.toBeNull();
+      const delay = parseFloat(bold?.style.animationDelay ?? "");
+      expect(delay).toBeLessThan(0);
+      expect(delay).toBeGreaterThan(-400);
+    });
+
+    it("reveals inline code whole and leaves code blocks unwrapped", () => {
+      const { container } = render(
+        <Markdown streaming reveal>
+          {"Run `pnpm build` now\n\n```ts\nconst a = 1;\n```\n\nafter "}
+        </Markdown>,
+      );
+      wait(100);
+
+      expect(container.querySelector("p > code")).toBeNull();
+      expect(container.querySelector("p code")?.parentElement).toHaveAttribute(
+        "data-reveal-offset",
+      );
+
+      wait(1000);
+      expect(container.querySelector("pre span")).toBeNull();
+      expect(container.querySelector("pre > code")).toHaveTextContent(
+        "const a = 1;",
+      );
+    });
+
+    it("renders finished text without word spans, and starts over when a new stream replaces it", () => {
+      const { container, rerender } = render(
+        <Markdown reveal>{"Hello there"}</Markdown>,
+      );
+
+      expect(container.querySelector("p span")).toBeNull();
+      expect(container).toHaveTextContent("Hello there");
+
+      rerender(
+        <Markdown streaming reveal>
+          {""}
+        </Markdown>,
+      );
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello again "}
+        </Markdown>,
+      );
+      wait(130);
+      expect(words(container)).toEqual(["Hello"]);
+
+      rerender(<Markdown reveal>{"Hello again"}</Markdown>);
+      wait(1000);
+      expect(container).toHaveTextContent("Hello again");
+      expect(container.querySelector("p span")).toBeNull();
+
+      rerender(
+        <Markdown streaming reveal>
+          {"New one "}
+        </Markdown>,
+      );
+      wait(130);
+      expect(words(container)).toEqual(["New"]);
+    });
+  });
+
   it("renders a javascript: link as an anchor without the href", () => {
     render(<Markdown>{"[x](javascript:alert(1))"}</Markdown>);
 
@@ -168,5 +322,6 @@ describe("Markdown", () => {
     ).toBeInTheDocument();
 
     expect(() => render(<Examples.Streaming />)).not.toThrow();
+    expect(() => render(<Examples.StreamingReveal />)).not.toThrow();
   });
 });
