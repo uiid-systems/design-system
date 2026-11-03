@@ -59,7 +59,8 @@ Add `reveal` and each word fades and un-blurs in as it arrives, with the same mo
 - Words appear as fast as they arrive, with no stagger.
 - A word animates once. When its closing `**` or `)` lands and the word moves into a `<strong>` or link, it does not fade in again, and one that was still fading carries on from where it was.
 - Inline code reveals as one piece. Code blocks are not animated.
-- `reveal` has no effect unless `streaming` is on. Once the message is complete it renders exactly as without `reveal`, with no per-word spans.
+- Words animate only while `streaming` is on. When it turns off, the held-back last word appears and fades in like the rest. Once the last fade has finished, the per-word spans are dropped and the text renders as it would without `reveal`.
+- `reveal` makes `Markdown` a client component. Without it, `Markdown` has no hooks and renders in a server component.
 - Text with no spaces between words, like Chinese or Japanese, or a long URL, reveals as one piece.
 
 ## Security
@@ -71,4 +72,4 @@ Markdown from a model is untrusted input, so raw HTML parsing is off: any tag in
 - Block elements render as direct children of the `Prose` root, with no wrapper in between, so `Prose`'s sibling spacing applies. A one-line string renders as a paragraph.
 - Styling comes from `Prose`. It currently has no rules for tables, `del` or images, which render with browser defaults.
 - Headings get an `id` from their text. A transcript with many messages may repeat ids.
-- It renders on the server. Its only state is the `reveal` timing, which is used only while streaming. It is wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders and only the message whose text is changing recompiles. Pass a stable `render` element or none, or the memo never hits.
+- Without `reveal` it has no hooks, so it renders in a server component. With `reveal` it renders a client component that records when each word first appeared. It is wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders and only the message whose text is changing recompiles. Pass a stable `render` element or none, or the memo never hits.

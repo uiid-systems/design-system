@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Markdown } from "./markdown";
@@ -129,8 +129,8 @@ describe("Markdown", () => {
       ]);
     });
 
-    it("holds back the unfinished last word", () => {
-      const { container } = render(
+    it("holds back the unfinished last word, then animates it when streaming stops", () => {
+      const { container, rerender } = render(
         <Markdown streaming reveal>
           {"Hello the"}
         </Markdown>,
@@ -138,6 +138,10 @@ describe("Markdown", () => {
 
       expect(container.textContent).toContain("Hello");
       expect(container.textContent).not.toContain("the");
+
+      rerender(<Markdown reveal>{"Hello there"}</Markdown>);
+
+      expect(animated(container).map((w) => w.textContent)).toContain("there");
     });
 
     it("does not replay words already shown when they move into bold", () => {
@@ -195,11 +199,34 @@ describe("Markdown", () => {
       );
     });
 
-    it("renders finished text without word spans", () => {
-      const { container } = render(<Markdown reveal>{"Hello there"}</Markdown>);
+    it("renders finished text without word spans, and starts over when streamed again", () => {
+      vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+      const { container, rerender } = render(
+        <Markdown reveal>{"Hello there"}</Markdown>,
+      );
 
       expect(container.querySelector("p span")).toBeNull();
       expect(container).toHaveTextContent("Hello there");
+
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello there "}
+        </Markdown>,
+      );
+      rerender(<Markdown reveal>{"Hello there"}</Markdown>);
+      expect(animated(container)).not.toHaveLength(0);
+
+      act(() => vi.advanceTimersByTime(400));
+      expect(container.querySelector("p span")).toBeNull();
+
+      clock = 1000;
+      rerender(
+        <Markdown streaming reveal>
+          {"Hello again "}
+        </Markdown>,
+      );
+      expect(animated(container).map((w) => w.textContent)).toContain("Hello ");
+      vi.useRealTimers();
     });
   });
 

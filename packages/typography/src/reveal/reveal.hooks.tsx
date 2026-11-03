@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef } from "react";
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, Key, ReactNode } from "react";
 
 import {
@@ -10,8 +12,8 @@ import { splitWords } from "./reveal.utils";
 import styles from "./reveal.module.css";
 
 export type StreamRevealOptions = {
-  /** Animate words as they arrive. Off once the text is complete, which also forgets every word. */
-  enabled: boolean;
+  /** Whether text is still arriving. Words keep animating for `duration` after it stops. */
+  streaming: boolean;
   /** Duration of each word's fade/blur-in, in ms */
   duration?: number;
   /** Blur radius each word starts from, in px */
@@ -39,15 +41,34 @@ export type StreamRevealPass = {
  * whose animation is over renders plain.
  */
 export const useStreamReveal = ({
-  enabled,
+  streaming,
   duration = REVEAL_DEFAULT_DURATION,
   blur = REVEAL_DEFAULT_BLUR,
 }: StreamRevealOptions) => {
   const seen = useRef(new Map<number, number>());
 
+  // When streaming stops, the last word has only just appeared and earlier ones may still be
+  // fading, so stay active for one more duration before dropping the spans.
+  const [wasStreaming, setWasStreaming] = useState(streaming);
+  const [settling, setSettling] = useState(false);
+  if (streaming !== wasStreaming) {
+    setWasStreaming(streaming);
+    setSettling(!streaming);
+  }
+
   useEffect(() => {
-    if (!enabled) seen.current.clear();
-  }, [enabled]);
+    if (!settling) return;
+    const timer = setTimeout(() => setSettling(false), duration);
+    return () => clearTimeout(timer);
+  }, [settling, duration]);
+
+  const active = streaming || settling;
+
+  // Forget every word once the reveal is over, so text streamed again into the same instance
+  // (a regenerated message) animates from scratch.
+  useEffect(() => {
+    if (!active) seen.current.clear();
+  }, [active]);
 
   // One stable callback for every span, so React calls it only when a span's DOM node mounts,
   // never on a re-render. Commit runs before paint, so the delay lands before the first frame.
@@ -108,5 +129,5 @@ export const useStreamReveal = ({
     "--reveal-blur": `${blur}px`,
   } as CSSProperties;
 
-  return { pass, style };
+  return { active, pass, style };
 };
