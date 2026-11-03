@@ -11,6 +11,8 @@ Use Text when you want to:
 - Keep text on one line without an ellipsis with `nowrap`
 - Render as a different element (`<h1>`, `<label>`, `<p>`) via the `render` prop while keeping the typography props
 
+Text takes padding and margin props but no `gap`. To space its children, `render` a Stack or Group and put `gap` on that: `<Text render={<Stack gap={1} />}>`.
+
 A `Text` that no `Text` encloses is step `0` in the `sans` family. A `Text` nested inside another `Text` inherits the size and family around it until its own `size` or `family` says otherwise, so a bold word or a mono token inside a sentence stays on the sentence's step. That is why the props table shows no default for either prop: an unset prop writes no attribute, and the baseline is a zero-specificity rule in the CSS module that only a top-level `Text` matches.
 
 For rendering markdown or arbitrary HTML content with vertical rhythm and default element styling, reach for [`Prose`](../prose/README.md) instead.

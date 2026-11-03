@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, expectTypeOf } from "vitest";
 
 import { Text } from "./text";
 import * as Examples from "./text.examples";
+import type { TextProps } from "./text.types";
 
 describe("Text", () => {
   it("renders children in a span by default", () => {
@@ -30,17 +31,16 @@ describe("Text", () => {
       expect(el).not.toHaveAttribute("data-ui-shade");
     });
 
-    it("resolves every spacing prop its type accepts", () => {
+    it("resolves padding and margin but takes no gap", () => {
+      expectTypeOf<TextProps>().not.toHaveProperty("gap");
       render(
-        <Text gap={2} p={1} mx="auto">
+        <Text p={1} mx="auto">
           Spaced
         </Text>,
       );
       const el = screen.getByText("Spaced");
-      expect(el).toHaveAttribute("data-ui-gap", "2");
       expect(el).toHaveAttribute("data-ui-p", "1");
       expect(el).toHaveAttribute("data-ui-mx", "auto");
-      expect(el).not.toHaveAttribute("gap");
     });
 
     it("writes an explicit baseline size and family", () => {

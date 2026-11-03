@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, expectTypeOf } from "vitest";
 
 import { Prose } from "./prose";
 import * as Examples from "./prose.examples";
+import type { ProseProps } from "./prose.types";
 
 describe("Prose", () => {
   it("renders children in a div with its slot and class", () => {
@@ -46,5 +47,17 @@ describe("Prose", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "UIID Design System" }),
     ).toBeInTheDocument();
+  });
+
+  it("takes padding and margin but no gap", () => {
+    expectTypeOf<ProseProps>().not.toHaveProperty("gap");
+    render(
+      <Prose p={2} mt={1}>
+        <p>Body</p>
+      </Prose>,
+    );
+    const prose = screen.getByText("Body").parentElement;
+    expect(prose).toHaveAttribute("data-ui-p", "2");
+    expect(prose).toHaveAttribute("data-ui-mt", "1");
   });
 });

@@ -10,6 +10,9 @@ import type { TextProps } from "./text.types";
 
 import styles from "./text.module.css";
 
+/** Every spacing prop but `gap`, which belongs on a Group or Stack `render` target. */
+const spacingKeys = spacingPropKeys.filter((key) => key !== "gap");
+
 /** Text's own vocabulary, each written as `data-ui-{key}` for text.module.css. */
 const textDataPropKeys = [
   "size",
@@ -52,7 +55,7 @@ export const Text = ({
 
   const preparedProps = prepareComponentProps({
     componentName: "text",
-    styleProps: spacingPropKeys,
+    styleProps: spacingKeys,
     dataProps: textDataPropKeys,
     props,
   });
