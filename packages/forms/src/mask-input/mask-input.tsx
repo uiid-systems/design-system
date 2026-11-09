@@ -59,6 +59,7 @@ export const MaskInput = (props: MaskInputProps) => {
     readOnly = false,
     required = false,
     className,
+    id,
     ref,
     ...inputProps
   } = props;
@@ -69,7 +70,9 @@ export const MaskInput = (props: MaskInputProps) => {
     focused,
     inputMode: calculatedInputMode,
     maxLength: calculatedMaxLength,
-    inputProps: maskInputProps,
+    // The hook's `value` is `displayValue`; it goes to FieldControl below, so
+    // only the handlers ride the render `<input>`.
+    inputProps: { value: _maskValue, ...maskInputProps },
   } = useMask({
     mask,
     value,
@@ -128,8 +131,16 @@ export const MaskInput = (props: MaskInputProps) => {
         variant={variant}
         color={color}
       >
+        {/*
+          `id` and `value` must reach FieldControl itself, not the render
+          element: it reads them to wire the label and track filled state.
+          `disabled` reaches it through Field. Anything left in `inputProps`
+          is DOM-only and rides the render `<input>`.
+        */}
         <FieldControl
           data-slot="mask-input"
+          id={id}
+          value={displayValue}
           {...{
             // Base UI's Field emits data-disabled/valid/invalid/touched/dirty/
             // filled/focused, but models neither readonly nor required on the
@@ -154,7 +165,6 @@ export const MaskInput = (props: MaskInputProps) => {
               {...maskInputProps}
               placeholder={placeholderValue}
               ref={composedRef}
-              value={displayValue}
               disabled={disabled}
               maxLength={calculatedMaxLength}
               readOnly={readOnly}
