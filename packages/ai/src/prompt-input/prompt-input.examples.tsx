@@ -96,6 +96,24 @@ export const Statuses = () => (
   </Stack>
 );
 
+/* Without `onStop` there is nothing to stop, so a reply in flight shows Send disabled instead. */
+export const WithoutStop = () => (
+  <Stack gap={4} ax="stretch" fullwidth>
+    {(["submitted", "streaming"] as const).map((status) => (
+      <Stack key={status} gap={1} ax="stretch">
+        <Text size={-1} color="neutral" uppercase>
+          {status}
+        </Text>
+        <PromptInput
+          status={status}
+          onSubmit={() => {}}
+          defaultValue="A message waiting to go"
+        />
+      </Stack>
+    ))}
+  </Stack>
+);
+
 /* With `value` set, the composer leaves clearing to its owner. */
 export const Controlled = () => {
   const [value, setValue] = useState("");

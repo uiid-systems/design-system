@@ -1,17 +1,33 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, expectTypeOf, it, vi } from "vitest";
 
 import { PromptInput } from "./prompt-input";
 import * as Examples from "./prompt-input.examples";
-import type { PromptInputProps } from "./prompt-input.types";
+import type {
+  PromptInputMessage,
+  PromptInputProps,
+} from "./prompt-input.types";
 import { PromptInputSubmit } from "./subcomponents";
 
 const button = (name: "Send" | "Stop") => screen.getByRole("button", { name });
+const icon = (element: HTMLElement) =>
+  element.querySelector("svg")?.getAttribute("class") ?? "";
+const loading = (element: HTMLElement) =>
+  element
+    .querySelector('[data-slot="button-content-container"]')
+    ?.getAttribute("data-loading") === "true";
+const tooltipWrapper = () =>
+  document.querySelector('[data-slot="button-tooltip-wrapper"]');
+/* Disabled through aria-disabled, so the element stays focusable. */
+const expectWaiting = (element: HTMLElement) => {
+  expect(element).toHaveAttribute("aria-disabled", "true");
+  expect(element).not.toHaveAttribute("disabled");
+};
 
 describe("PromptInputSubmit", () => {
-  it("is a submit button named Send by default", () => {
+  it("is a small circular submit button named Send, with an up arrow", () => {
     render(<PromptInputSubmit />);
 
     const send = button("Send");
@@ -19,37 +35,134 @@ describe("PromptInputSubmit", () => {
     expect(send).toHaveAttribute("data-slot", "prompt-input-submit");
     expect(send.className).toContain("shape-circle");
     expect(send.className).toContain("size-xsmall");
-    expect(send.querySelector("svg")).toBeInTheDocument();
+    expect(icon(send)).toContain("lucide-arrow-up");
   });
 
-  it("stays a submit button named Send for ready and error, with different icons", () => {
-    const { rerender } = render(<PromptInputSubmit status="ready" />);
-    const readyIcon = button("Send").querySelector("svg")!.innerHTML;
-    expect(button("Send")).toHaveAttribute("type", "submit");
+  it("stays a submit button named Send on error, with an X", () => {
+    render(<PromptInputSubmit status="error" />);
 
-    rerender(<PromptInputSubmit status="error" />);
     expect(button("Send")).toHaveAttribute("type", "submit");
-    expect(button("Send").querySelector("svg")!.innerHTML).not.toBe(readyIcon);
+    expect(icon(button("Send"))).toContain("lucide-x");
   });
 
-  it("is a plain button named Stop while submitted, with a spinner", () => {
+  it("is a plain button named Stop while submitted, loading over a square", () => {
+    render(<PromptInputSubmit status="submitted" onStop={vi.fn()} />);
+
+    const stop = button("Stop");
+    expect(stop).toHaveAttribute("type", "button");
+    expect(loading(stop)).toBe(true);
+    expect(icon(stop)).toContain("lucide-square");
+  });
+
+  it("is a plain button named Stop while streaming, not loading", () => {
+    render(<PromptInputSubmit status="streaming" onStop={vi.fn()} />);
+
+    const stop = button("Stop");
+    expect(stop).toHaveAttribute("type", "button");
+    expect(loading(stop)).toBe(false);
+    expect(icon(stop)).toContain("lucide-square");
+  });
+
+  it.each(["submitted", "streaming"] as const)(
+    "is a disabled plain button named Send while %s without onStop, with an up arrow",
+    (status) => {
+      render(<PromptInputSubmit status={status} />);
+
+      const send = button("Send");
+      expect(send).toHaveAttribute("type", "button");
+      expectWaiting(send);
+      expect(icon(send)).toContain("lucide-arrow-up");
+      expect(
+        screen.queryByRole("button", { name: "Stop" }),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  it("keeps the spinner on the disabled Send while submitted without onStop", () => {
     render(<PromptInputSubmit status="submitted" />);
 
-    const stop = button("Stop");
-    expect(stop).toHaveAttribute("type", "button");
-    expect(
-      stop.querySelector('[data-slot="button-content-container"]'),
-    ).toHaveAttribute("data-loading", "true");
+    expect(loading(button("Send"))).toBe(true);
   });
 
-  it("is a plain button named Stop while streaming, without a spinner", () => {
-    render(<PromptInputSubmit status="streaming" />);
+  it("stays disabled while generating without onStop even if a caller passes disabled={false}", () => {
+    render(<PromptInputSubmit status="streaming" disabled={false} />);
 
-    const stop = button("Stop");
-    expect(stop).toHaveAttribute("type", "button");
-    expect(
-      stop.querySelector('[data-slot="button-content-container"]'),
-    ).not.toHaveAttribute("data-loading", "true");
+    expectWaiting(button("Send"));
+  });
+
+  it("is natively disabled, not merely aria-disabled, when the caller disables it while ready", () => {
+    render(<PromptInputSubmit disabled />);
+
+    expect(button("Send")).toBeDisabled();
+  });
+
+  /* The waiting Send is disabled through aria-disabled rather than the native
+     attribute: a natively disabled element loses focus to the body under the
+     HTML focus fixup rule, which jsdom does not model, so the attribute is
+     what this test can pin. */
+  it("keeps Send focusable and focused as the status changes without onStop", () => {
+    const { rerender } = render(<PromptInputSubmit status="ready" />);
+    const send = button("Send");
+    send.focus();
+    expect(send).toHaveFocus();
+
+    for (const status of ["submitted", "streaming"] as const) {
+      rerender(<PromptInputSubmit status={status} />);
+      expect(button("Send")).toBe(send);
+      expectWaiting(send);
+      expect(send).toHaveFocus();
+    }
+
+    rerender(<PromptInputSubmit status="ready" />);
+    expect(button("Send")).toBe(send);
+    expect(send).not.toHaveAttribute("aria-disabled");
+    expect(send).toBeEnabled();
+    expect(send).toHaveFocus();
+  });
+
+  it("does not activate while waiting, even though it is focusable", () => {
+    const onClick = vi.fn();
+    render(<PromptInputSubmit status="streaming" onClick={onClick} />);
+
+    fireEvent.click(button("Send"));
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("wraps itself in a tooltip only when the caller passes one", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<PromptInputSubmit />);
+    expect(tooltipWrapper()).toBeNull();
+
+    rerender(<PromptInputSubmit tooltip="Send it (Enter)" />);
+    expect(tooltipWrapper()).toContainElement(button("Send"));
+    expect(button("Send")).toHaveAttribute("aria-label", "Send");
+    await user.hover(button("Send"));
+    expect(await screen.findByText("Send it (Enter)")).toBeVisible();
+  });
+
+  it.each([
+    ["ready", undefined, "Send"],
+    ["error", undefined, "Send"],
+    ["submitted", vi.fn(), "Stop"],
+    ["streaming", vi.fn(), "Stop"],
+  ] as const)(
+    "names itself on aria-label while %s, in any shape",
+    (status, onStop, name) => {
+      render(
+        <PromptInputSubmit shape="pill" status={status} onStop={onStop} />,
+      );
+
+      const live = button(name);
+      expect(live).toHaveAttribute("aria-label", name);
+      expect(live.className).toContain("shape-pill");
+    },
+  );
+
+  it("stays a circle when a caller passes shape={undefined}", () => {
+    render(<PromptInputSubmit shape={undefined} />);
+
+    expect(button("Send").className).toContain("shape-circle");
   });
 
   it("calls onStop when pressed while generating", () => {
@@ -206,6 +319,34 @@ describe("PromptInput", () => {
       expect(textarea).toHaveValue("");
     });
 
+    it("hands a two-argument handler the form as the event's currentTarget", () => {
+      let target: EventTarget | null = null;
+      const { container } = render(
+        <PromptInput
+          defaultValue="hello"
+          onSubmit={(_message, event) => {
+            target = event.currentTarget;
+          }}
+        />,
+      );
+
+      fireEvent.click(button("Send"));
+
+      expect(target).toBe(container.querySelector("form"));
+    });
+
+    /* Type-level, so tsc is what fails it: Textarea's native onSubmit must
+       not intersect with PromptInput's own, or a handler that reads the form
+       event is rejected. */
+    it("types onSubmit as the message handler alone", () => {
+      expectTypeOf<PromptInputProps["onSubmit"]>().toEqualTypeOf<
+        (
+          message: PromptInputMessage,
+          event: React.FormEvent<HTMLFormElement>,
+        ) => void | Promise<void>
+      >();
+    });
+
     it("submits on Enter", async () => {
       const user = userEvent.setup();
       const { onSubmit, textarea } = renderPromptInput();
@@ -332,6 +473,25 @@ describe("PromptInput", () => {
       expect(onStop).toHaveBeenCalledTimes(1);
       expect(onSubmit).not.toHaveBeenCalled();
     });
+
+    it.each(["submitted", "streaming"] as const)(
+      "renders a disabled Send while %s without onStop, and pressing it does nothing",
+      (status) => {
+        const { onSubmit } = renderPromptInput({
+          status,
+          defaultValue: "hello",
+        });
+
+        expect(
+          screen.queryByRole("button", { name: "Stop" }),
+        ).not.toBeInTheDocument();
+        expectWaiting(button("Send"));
+
+        fireEvent.click(button("Send"));
+
+        expect(onSubmit).not.toHaveBeenCalled();
+      },
+    );
   });
 
   it("renders the examples", () => {
@@ -340,6 +500,12 @@ describe("PromptInput", () => {
 
     render(<Examples.Statuses />);
     expect(screen.getAllByRole("button", { name: "Stop" })).toHaveLength(2);
+
+    render(<Examples.WithoutStop />);
+    const waitingSends = screen
+      .getAllByRole("button", { name: "Send" })
+      .filter((send) => send.getAttribute("aria-disabled") === "true");
+    expect(waitingSends).toHaveLength(2);
 
     for (const Example of [
       Examples.WithHeader,
