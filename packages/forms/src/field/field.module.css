@@ -41,6 +41,14 @@
   margin-block: calc((var(--field-label-group-min-height) - var(--forms-size-xs-height)) / 2);
 }
 
+/* Base UI stamps `data-disabled` on the label and description from the root,
+   and the shared state reads it, so the chrome dims with the control. These
+   are the control's siblings, not its ancestors, so nothing dims twice. */
+.field-label,
+.field-description {
+  composes: composes-disabled from global;
+}
+
 .field-label[data-required="true"] {
   &::after {
     content: "*";
