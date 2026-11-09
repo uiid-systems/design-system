@@ -1,11 +1,11 @@
 # PromptInput
 
-> The composer at the bottom of a chat. A textarea that grows with its text, a send button that turns into stop while a reply is in flight, and room for a header row above the text and a row of tools below it. All of it sits inside one field surface, which is [`Textarea`](../../../forms/src/textarea/README.md)'s `before` and `after` slots.
+> The composer at the bottom of a chat. A textarea that grows with its text, a send button that turns into stop while a reply is in flight when you can stop it, and room for a header row above the text and a row of tools below it. All of it sits inside one field surface, which is [`Textarea`](../../../forms/src/textarea/README.md)'s `before` and `after` slots.
 
 Use PromptInput when you want to:
 
 - Send on Enter and add a line on Shift+Enter, with IME compositions left alone
-- Show stop instead of send while a request is `submitted` or `streaming`, driven by the same `ChatStatus` the AI SDK's `useChat` returns
+- Show stop instead of send while a request is `submitted` or `streaming` and you pass `onStop`, driven by the same `ChatStatus` the AI SDK's `useChat` returns
 - Put chips or a mode label above the text and tool buttons below it, inside the same edge, focus ring and tint as the text
 - Let the textarea grow line by line to a cap, with no resize handle and no measuring script
 
@@ -38,13 +38,13 @@ Leave `value` unset and the composer clears itself after each send. Pass `value`
 
 All [`Textarea`](../../../forms/src/textarea/README.md) props except `before`, `after` and `resize`, plus:
 
-| Prop       | Type                                               | Default   | Description                                                                      |
-| ---------- | -------------------------------------------------- | --------- | -------------------------------------------------------------------------------- |
-| `onSubmit` | `(message: { text }, event: FormEvent) => void`    | —         | Called on Enter or Send, with the text and the already-prevented form event      |
-| `status`   | `"ready" \| "submitted" \| "streaming" \| "error"` | `"ready"` | Where the request is. `submitted` and `streaming` turn the send button into stop |
-| `onStop`   | `() => void`                                       | —         | Called when stop is pressed                                                      |
-| `header`   | `ReactNode`                                        | —         | Row above the text, inside the surface                                           |
-| `tools`    | `ReactNode`                                        | —         | Buttons at the start of the footer row, before the send button                   |
+| Prop       | Type                                               | Default   | Description                                                                                                                 |
+| ---------- | -------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `onSubmit` | `(message: { text }, event: FormEvent) => void`    | —         | Called on Enter or Send, with the text and the already-prevented form event                                                 |
+| `status`   | `"ready" \| "submitted" \| "streaming" \| "error"` | `"ready"` | Where the request is. `submitted` and `streaming` turn send into stop, given `onStop`                                       |
+| `onStop`   | `() => void`                                       | —         | Called when stop is pressed. Without it, a generating request shows Send disabled, with the tooltip "Waiting for the reply" |
+| `header`   | `ReactNode`                                        | —         | Row above the text, inside the surface                                                                                      |
+| `tools`    | `ReactNode`                                        | —         | Buttons at the start of the footer row, before the send button                                                              |
 
 Defaults that differ from Textarea: `placeholder` is "Ask anything", the textarea is named "Message" unless you pass `label` or your own `aria-label`, `rows` is `1`, and `fullwidth` is on. `className` goes to the root `<form>`; `ref` goes to the `<textarea>`.
 
@@ -52,7 +52,7 @@ Defaults that differ from Textarea: `placeholder` is "Ask anything", the textare
 
 ### PromptInputSubmit
 
-The send button, rendered by PromptInput and exported for a footer of your own. All [`Button`](../../../buttons/src/button/README.md) props, plus `status` and `onStop`. It is a small circle: an up arrow named "Send" for `ready`, an X for `error`, and a square named "Stop" for `submitted` and `streaming`, with `Button`'s spinner over it while `submitted`. For `ready` and `error` it is `type="submit"`; otherwise it is `type="button"` and calls `onStop`. `children` replaces the icon and `aria-label` replaces the name.
+The send button, rendered by PromptInput and exported for a footer of your own. All [`Button`](../../../buttons/src/button/README.md) props, plus `status` and `onStop`. It is a small circle: an up arrow named "Send" for `ready`, an X for `error`, and a square named "Stop" for `submitted` and `streaming`, with `Button`'s spinner over it while `submitted`. For `ready` and `error` it is `type="submit"`; otherwise it is `type="button"` and calls `onStop`. Without `onStop` there is nothing to stop, so while `submitted` or `streaming` it stays the up arrow named "Send", `type="button"` and disabled, rather than a Stop button that does nothing; the spinner still shows over it while `submitted`. Its tooltip is its name ("Send", "Stop" or your `aria-label`), or "Waiting for the reply" on that disabled Send. Because it always has a tooltip, it stays the same element as the status changes and keeps focus. The name always goes on `aria-label`, so the button is named in every `shape`. `children` replaces the icon, `aria-label` replaces the name (and the tooltip wherever the tooltip is the name), and `tooltip` replaces the tooltip alone, in every status. With `aria-labelledby`, pass a `tooltip` that matches the label: it is taken as the name and the tooltip, and while Send waits it gives way to "Waiting for the reply". An empty `aria-label`, or an empty or `false` `tooltip`, counts as unset.
 
 Tools are plain `Button`s. `variant="ghost" shape="square" size="xsmall"` with a string `tooltip` is the footer's register, and the tooltip also names an icon-only button. A `Button` inside the form is `type="button"` already, so a tool cannot submit by accident.
 

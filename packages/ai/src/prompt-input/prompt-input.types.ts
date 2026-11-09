@@ -12,13 +12,13 @@ export type PromptInputMessage = {
 };
 
 /**
- * `Textarea` props, minus the three PromptInput owns: `before` and `after`
- * are the header and footer, and `resize` is `none` because the textarea
- * sizes itself.
+ * `Textarea` props, minus the ones PromptInput owns: `before` and `after`
+ * are the header and footer, `resize` is `none` because the textarea sizes
+ * itself, and the native `onSubmit` would intersect with the one below.
  */
 export type PromptInputProps = Omit<
   TextareaProps,
-  "before" | "after" | "resize"
+  "before" | "after" | "resize" | "onSubmit"
 > & {
   /** Where the chat request is. Drives submit versus stop. Defaults to `"ready"`. */
   status?: ChatStatus;
@@ -27,7 +27,7 @@ export type PromptInputProps = Omit<
     message: PromptInputMessage,
     event: React.FormEvent<HTMLFormElement>,
   ) => void | Promise<void>;
-  /** Called when the stop button is pressed while `submitted` or `streaming`. */
+  /** Called when the stop button is pressed while `submitted` or `streaming`. Without it, the button is a disabled Send instead of Stop. */
   onStop?: () => void;
   /** Row above the text, inside the surface. Chips, an attachment list, a mode label. */
   header?: React.ReactNode;
@@ -36,8 +36,8 @@ export type PromptInputProps = Omit<
 };
 
 export type PromptInputSubmitProps = ButtonProps & {
-  /** Submit for `ready` and `error`; stop for `submitted` and `streaming`. Defaults to `"ready"`. */
+  /** Submit for `ready` and `error`; stop for `submitted` and `streaming`, or disabled Send without `onStop`. Defaults to `"ready"`. */
   status?: ChatStatus;
-  /** Called instead of submitting while `submitted` or `streaming`. */
+  /** Called instead of submitting while `submitted` or `streaming`. Without it, the button is a disabled Send instead of Stop. */
   onStop?: () => void;
 };
