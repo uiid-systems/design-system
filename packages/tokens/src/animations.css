@@ -37,4 +37,14 @@
     animation: rotate-360 0.75s linear infinite;
     transform-origin: 50% 50%;
   }
+
+  /*
+   * A spinner that never stops is exactly the motion the preference asks to
+   * remove. The icon still reads as "working" from its ring alone.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate="spin"] {
+      animation: none;
+    }
+  }
 }
