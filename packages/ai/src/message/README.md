@@ -1,6 +1,6 @@
 # Message
 
-> One turn of a chat. A user turn sits at the end of the column in a filled bubble; an assistant turn sits at the start as plain prose. `MessageContent` holds the body and `MessageResponse` renders a streaming markdown reply through [`Markdown`](../markdown/README.md). All three are a [`Stack`](../../../layout/src/stack/README.md) or `Markdown` with defaults and a `data-slot`.
+> One turn of a chat. A user turn sits at the end of the column in a filled bubble; an assistant turn sits at the start as plain prose. `MessageContent` holds the body and `MessageResponse` renders a streaming markdown reply through [`Markdown`](../../../markdown/src/markdown/README.md). All three are a [`Stack`](../../../layout/src/stack/README.md) or `Markdown` with defaults and a `data-slot`.
 
 Use Message when you want to:
 
@@ -50,7 +50,7 @@ The body. All `Stack` props, with `gap={2}` as the default. On a user turn it is
 
 ### MessageResponse
 
-A markdown reply. All [`Markdown`](../markdown/README.md) props, including `streaming`. Renders `data-slot="message-response"`.
+A markdown reply. All [`Markdown`](../../../markdown/src/markdown/README.md) props, including `streaming`. Renders `data-slot="message-response"`.
 
 ## Actions
 

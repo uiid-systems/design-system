@@ -1,6 +1,6 @@
 # Reasoning
 
-> The collapsible "Thinking…" block above a model's reply. While the reasoning streams, the label shimmers and the panel is open so the reader can watch; when it finishes, the label says how long it took, the panel closes on its own a moment later, and the text stays behind the trigger as rendered markdown. It is one component on the [`Collapsible`](../../../interactive/src/collapsible/README.md) parts, with a [`Shimmer`](../../../typography/src/shimmer/README.md) label and [`Markdown`](../markdown/README.md) inside.
+> The collapsible "Thinking…" block above a model's reply. While the reasoning streams, the label shimmers and the panel is open so the reader can watch; when it finishes, the label says how long it took, the panel closes on its own a moment later, and the text stays behind the trigger as rendered markdown. It is one component on the [`Collapsible`](../../../interactive/src/collapsible/README.md) parts, with a [`Shimmer`](../../../typography/src/shimmer/README.md) label and [`Markdown`](../../../markdown/src/markdown/README.md) inside.
 
 Use Reasoning when you want to:
 

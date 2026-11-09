@@ -67,6 +67,11 @@
         },
         {
           "type": "json",
+          "path": "packages/markdown/package.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
           "path": "packages/navigation/package.json",
           "jsonpath": "$.version"
         },

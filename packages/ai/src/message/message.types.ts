@@ -1,7 +1,7 @@
 import type { StackProps } from "@uiid/layout";
+import type { MarkdownProps } from "@uiid/markdown";
 
 import type { ChatRole } from "../ai.types";
-import type { MarkdownProps } from "../markdown/markdown.types";
 
 export type MessageProps = StackProps & {
   /** Who sent the turn. Drives alignment and the content surface. */

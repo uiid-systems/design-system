@@ -4,8 +4,6 @@ export { useConversation } from "./conversation/conversation.context";
 export type * from "./conversation/conversation.types";
 export * from "./conversation/hooks/use-stick-to-bottom";
 export * from "./conversation/subcomponents";
-export * from "./markdown/markdown";
-export type * from "./markdown/markdown.types";
 export * from "./message/message";
 export type * from "./message/message.types";
 export * from "./message/subcomponents";

@@ -51,6 +51,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "ai": "7.0.156",
+    "markdown-to-jsx": "^9.10.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~5.9.3",
@@ -65,8 +66,8 @@
     "@uiid/indicators": "workspace:*",
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
+    "@uiid/markdown": "workspace:*",
     "@uiid/typography": "workspace:*",
-    "@uiid/utils": "workspace:*",
-    "markdown-to-jsx": "^9.10.4"
+    "@uiid/utils": "workspace:*"
   }
 }

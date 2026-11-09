@@ -1,4 +1,5 @@
-import { Markdown } from "../../markdown/markdown";
+import { Markdown } from "@uiid/markdown";
+
 import type { MessageResponseProps } from "../message.types";
 
 export const MessageResponse = (props: MessageResponseProps) => (

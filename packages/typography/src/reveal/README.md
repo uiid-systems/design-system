@@ -49,7 +49,7 @@ const paced = useStreamPace(text, streaming);
 
 It returns the `text` to show and its own `streaming`, which stays true after yours turns off until the last words have gone out. Text that gets shorter while streaming, like a regenerated message, starts over from nothing.
 
-For markdown, use [`Markdown`](../../../ai/src/markdown/README.md) with `reveal`, which does this for you.
+For markdown, use [`Markdown`](../../../markdown/src/markdown/README.md) with `reveal`, which does this for you.
 
 To replay the animation, remount with a `key`:
 
