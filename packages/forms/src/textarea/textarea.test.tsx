@@ -253,6 +253,35 @@ describe("Textarea Field.Control surface", () => {
     await user.type(screen.getByRole("textbox"), "hi");
     expect(onValueChange).toHaveBeenCalled();
   });
+
+  /* FieldControl reads id, value, defaultValue, autoFocus and disabled off its
+     own props, not the render element. Spreading them onto the slotted
+     `<textarea>` leaves the label on a generated id and filled state stuck. */
+  it("keeps a caller's id wired to the label", async () => {
+    const user = userEvent.setup();
+    render(<Textarea id="notes" label="Notes" />);
+
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveAttribute("id", "notes");
+    expect(screen.getByText("Notes")).toHaveAttribute("for", "notes");
+    await user.click(screen.getByText("Notes"));
+    expect(textarea).toHaveFocus();
+  });
+
+  it("drops data-filled when a controlled value is cleared from outside", () => {
+    const { rerender } = render(<Textarea value="hi" onChange={() => {}} />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-filled");
+
+    rerender(<Textarea value="" onChange={() => {}} />);
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("data-filled");
+  });
+
+  it("marks a disabled textarea with the control's data-disabled state", () => {
+    render(<Textarea disabled />);
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toBeDisabled();
+    expect(textarea).toHaveAttribute("data-disabled");
+  });
 });
 
 describe("Textarea invalid treatment", () => {

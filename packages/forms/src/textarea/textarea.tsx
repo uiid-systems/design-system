@@ -26,6 +26,11 @@ export const Textarea = ({
   rows = TEXTAREA_DEFAULT_ROWS,
   before,
   after,
+  id,
+  value,
+  defaultValue,
+  autoFocus,
+  disabled,
   onValueChange,
   FieldProps,
   className,
@@ -55,9 +60,21 @@ export const Textarea = ({
         variant={variant}
         color={color}
       >
+        {/*
+          `id`, `value`, `defaultValue`, `autoFocus` and `disabled` must reach
+          FieldControl itself, not the render element: it reads them to wire the
+          label, track filled and focused state, and register the value for
+          validation. Anything left in `props` is DOM-only and rides the render
+          `<textarea>`.
+        */}
         <FieldControl
           data-slot="textarea"
+          id={id}
           name={name}
+          value={value}
+          defaultValue={defaultValue}
+          autoFocus={autoFocus}
+          disabled={disabled}
           required={required}
           onValueChange={onValueChange}
           className={cx(
