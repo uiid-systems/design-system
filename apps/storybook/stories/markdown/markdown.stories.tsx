@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Markdown } from "@uiid/design-system";
+import { Markdown } from "@uiid/markdown";
 
 import * as Examples from "../../../../packages/markdown/src/markdown/markdown.examples";
 

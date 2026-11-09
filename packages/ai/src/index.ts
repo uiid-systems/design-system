@@ -4,10 +4,6 @@ export { useConversation } from "./conversation/conversation.context";
 export type * from "./conversation/conversation.types";
 export * from "./conversation/hooks/use-stick-to-bottom";
 export * from "./conversation/subcomponents";
-/* Bridge: Markdown moved to `@uiid/markdown` (UI-288). Re-exported here so
-   existing `@uiid/ai` consumers keep working; remove once they import it from
-   `@uiid/markdown` or the design-system barrel. */
-export * from "@uiid/markdown";
 export * from "./message/message";
 export type * from "./message/message.types";
 export * from "./message/subcomponents";

@@ -12,7 +12,6 @@ export * from "@uiid/indicators";
 export * from "@uiid/interactive";
 export * from "@uiid/layout";
 export * from "@uiid/lists";
-export * from "@uiid/markdown";
 export * from "@uiid/navigation";
 export * from "@uiid/overlays";
 export * from "@uiid/tables";

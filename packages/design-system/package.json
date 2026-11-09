@@ -57,7 +57,6 @@
     "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/lists": "workspace:*",
-    "@uiid/markdown": "workspace:*",
     "@uiid/navigation": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tables": "workspace:*",

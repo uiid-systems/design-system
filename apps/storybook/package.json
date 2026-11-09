@@ -11,7 +11,8 @@
   "dependencies": {
     "@uiid/ai": "workspace:*",
     "@uiid/design-system": "workspace:*",
-    "@uiid/icons": "workspace:*"
+    "@uiid/icons": "workspace:*",
+    "@uiid/markdown": "workspace:*"
   },
   "devDependencies": {
     "@github-ui/storybook-addon-performance-panel": "^1.3.0",

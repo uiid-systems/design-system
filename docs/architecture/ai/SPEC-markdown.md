@@ -114,8 +114,10 @@ The capability map said "streaming markdown repair is written locally, not `reme
 
 ## Files
 
+Since UI-288 the component lives in its own package, `packages/markdown/src/markdown/`, published as `@uiid/markdown`; `@uiid/ai` depends on it. The list below records where it was first built.
+
 ```
-packages/ai/src/markdown/
+packages/markdown/src/markdown/  (originally packages/ai/src/markdown/)
   markdown.tsx
   markdown.types.ts
   markdown.test.tsx
