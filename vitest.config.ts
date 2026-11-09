@@ -57,10 +57,11 @@ export default defineConfig({
       },
       ...uiidAliases,
       // Hand-written CSS at the package root (src/css/ is gitignored and holds
-      // only generated token files).
+      // only generated token files). The optional query keeps `?raw` imports
+      // on the same file, so a test can read a composition's selector text.
       {
-        find: /^@uiid\/tokens\/(compositions\.module|globals|palette)\.css$/,
-        replacement: path.resolve(__dirname, "packages/tokens/src/$1.css"),
+        find: /^@uiid\/tokens\/(compositions|globals|palette)\.css(\?.*)?$/,
+        replacement: path.resolve(__dirname, "packages/tokens/src/$1.css$2"),
       },
       // The palette ships as TS from the package root, not as a token CSS file.
       {
