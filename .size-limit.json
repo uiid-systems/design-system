@@ -55,6 +55,11 @@
     "limit": "35 kB"
   },
   {
+    "name": "@uiid/markdown",
+    "path": "packages/markdown/dist/index.js",
+    "limit": "40 kB"
+  },
+  {
     "name": "@uiid/navigation",
     "path": "packages/navigation/dist/index.js",
     "limit": "100 kB"

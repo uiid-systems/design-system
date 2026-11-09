@@ -1,6 +1,6 @@
 # Markdown
 
-> Renders a markdown string as plain HTML elements inside [`Prose`](../../../typography/src/prose/README.md), and keeps rendering cleanly while that string is still arriving. It is the renderer behind message responses, reasoning and tool output. Parsing is [`markdown-to-jsx`](https://github.com/quantizor/markdown-to-jsx); styling is all `Prose`, so it ships no CSS of its own.
+> Renders a markdown string as plain HTML elements inside [`Prose`](../../../typography/src/prose/README.md), and keeps rendering cleanly while that string is still arriving. It is the renderer behind `@uiid/ai`'s message responses, reasoning and tool output, and stands on its own for any markdown you need to show. Parsing is [`markdown-to-jsx`](https://github.com/quantizor/markdown-to-jsx); styling is all `Prose`, so it ships no CSS of its own.
 
 Use Markdown when you want to:
 
@@ -13,7 +13,7 @@ Reach for `Prose` directly when you already have HTML or JSX.
 ## Usage
 
 ```tsx
-import { Markdown } from "@uiid/ai";
+import { Markdown } from "@uiid/markdown";
 
 <Markdown streaming={status === "streaming"}>{message.text}</Markdown>;
 ```

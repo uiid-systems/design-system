@@ -1,0 +1,25 @@
+import { Separator } from "@uiid/design-system";
+import { Readme, Example, PropsTable } from "@/components/docs";
+import * as Examples from "../../../../../../packages/markdown/src/markdown/markdown.examples";
+
+<Readme of="markdown/markdown" />
+
+<Separator />
+## Props
+
+<PropsTable of="markdown/markdown" />
+
+<Separator />
+## Examples
+
+<Example title="Basic" of="markdown/markdown" name="Basic">
+  <Examples.Basic />
+</Example>
+
+<Example title="Streaming" of="markdown/markdown" name="Streaming">
+  <Examples.Streaming />
+</Example>
+
+<Example title="Streaming Reveal" of="markdown/markdown" name="StreamingReveal">
+  <Examples.StreamingReveal />
+</Example>

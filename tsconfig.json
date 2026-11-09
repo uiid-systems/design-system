@@ -34,6 +34,7 @@
     { "path": "./packages/interactive" },
     { "path": "./packages/layout" },
     { "path": "./packages/lists" },
+    { "path": "./packages/markdown" },
     { "path": "./packages/navigation" },
     { "path": "./packages/overlays" },
     { "path": "./packages/tables" },

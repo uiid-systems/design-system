@@ -41,6 +41,10 @@ export const COMPONENTS_SITEMAP: SitemapEntry[] = [
     ],
   },
   {
+    category: "Markdown",
+    items: [{ label: "Markdown", value: "/markdown/markdown" }],
+  },
+  {
     category: "Buttons",
     items: [
       { label: "Button", value: "/buttons/button" },

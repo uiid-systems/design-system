@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Markdown } from "@uiid/ai";
+import { Markdown } from "@uiid/design-system";
 
-import * as Examples from "../../../../packages/ai/src/markdown/markdown.examples";
+import * as Examples from "../../../../packages/markdown/src/markdown/markdown.examples";
 
 const meta = {
-  title: "AI/Markdown",
+  title: "Markdown/Markdown",
   component: Markdown,
   args: {
     children: "Some **bold**, `inline code` and a [link](https://example.com).",

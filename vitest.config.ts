@@ -17,6 +17,7 @@ const uiidPackages = [
   "interactive",
   "layout",
   "lists",
+  "markdown",
   "navigation",
   "overlays",
   "tables",

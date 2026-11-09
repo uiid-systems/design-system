@@ -8,11 +8,11 @@ import {
   CollapsibleTrigger,
 } from "@uiid/interactive";
 import { Group } from "@uiid/layout";
+import { Markdown } from "@uiid/markdown";
 import { Shimmer, Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 import { useEffect, useState } from "react";
 
-import { Markdown } from "../markdown/markdown";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
 import type { ReasoningProps } from "./reasoning.types";
 
