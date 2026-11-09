@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Button } from "@uiid/buttons";
 import { describe, it, expect } from "vitest";
 
+import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
 import { InputControl, InputWrapper } from "./subcomponents";
 
@@ -254,6 +256,65 @@ describe("Input shared compositions", () => {
   it("keeps a bare input off the restated edge", () => {
     render(<Input />);
     expect(screen.getByRole("textbox").className).not.toMatch(/input-edge/);
+  });
+});
+
+/* The wrapper reads disabled and invalid off its direct children only — the
+   control it holds — so a disabled or invalid element inside a slot leaves
+   the surface alone. */
+describe("Input wrapper states", () => {
+  const wrapper = (container: HTMLElement) =>
+    container.querySelector("[data-slot='input-wrapper']");
+
+  it("dims the wrapper while the input is disabled", () => {
+    const { container } = render(<Input before="$" disabled />);
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      true,
+    );
+  });
+
+  it("dims the wrapper while the input is aria-disabled, as it does a bare one", () => {
+    const { container } = render(<Input before="$" aria-disabled="true" />);
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      true,
+    );
+  });
+
+  it("leaves the wrapper undimmed and typeable while a button in a slot is disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Input
+        after={
+          <Button disabled data-disabled="" aria-disabled="true">
+            Send
+          </Button>
+        }
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeDisabled();
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      false,
+    );
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(screen.getByRole("textbox")).toHaveValue("hi");
+  });
+
+  it.each([
+    ["data-invalid", { "data-invalid": "" }],
+    ["aria-invalid", { "aria-invalid": "true" as const }],
+  ])("reddens the wrapper when the input carries %s", (_, invalidProps) => {
+    const { container } = render(<Input before="$" {...invalidProps} />);
+    expect(matchesComposition(wrapper(container), "invalid")).toBe(true);
+  });
+
+  it("leaves the wrapper's edge alone when a control in a slot is invalid", () => {
+    const { container } = render(
+      <Input
+        before={<input aria-label="Tag" aria-invalid="true" data-invalid="" />}
+      />,
+    );
+    expect(matchesComposition(wrapper(container), "invalid")).toBe(false);
   });
 });
 

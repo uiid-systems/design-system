@@ -200,12 +200,17 @@
     pointer-events: none;
   }
 
-  .composes-disabled-within:where(:has(:disabled, [disabled], [data-disabled])) {
+  /* A wrapper reads these states off its direct children only: the control it
+     holds, not a button or input nested in one of its slots. A disabled Send
+     button in a Textarea's `after` slot would otherwise dim the whole field
+     and lock the control behind `pointer-events: none`. The `:has()` arms
+     name the same states a bare control reacts to, aria included. */
+  .composes-disabled-within:where(:has(> :disabled, > [disabled], > [data-disabled], > [aria-disabled="true"])) {
     opacity: var(--globals-disabled-opacity);
     pointer-events: none;
   }
 
-  .composes-invalid:where([data-invalid], [aria-invalid="true"], :has([data-invalid])) {
+  .composes-invalid:where([data-invalid], [aria-invalid="true"], :has(> [data-invalid], > [aria-invalid="true"])) {
     --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
 
     border-color: var(--palette-text);

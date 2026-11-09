@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Button } from "@uiid/buttons";
 import React from "react";
 import { describe, it, expect, vi } from "vitest";
 
+import { matchesComposition } from "../shared/matches-composition";
 import { Textarea } from "./textarea";
 
 import styles from "./textarea.module.css";
@@ -439,8 +441,8 @@ describe("Textarea before/after slots", () => {
     expect(textarea).toHaveClass("custom");
   });
 
-  /* The wrapper reads disabled and invalid off the textarea through `:has()`,
-     so both have to land on the slotted `<textarea>` itself. */
+  /* The wrapper reads disabled and invalid off its direct children through
+     `:has(> …)`, so both have to land on the slotted `<textarea>` itself. */
   it("keeps disabled and invalid on the slotted textarea for the wrapper to read", () => {
     const { container } = render(
       <Textarea before="top" disabled aria-invalid="true" />,
@@ -449,8 +451,63 @@ describe("Textarea before/after slots", () => {
 
     expect(textarea).toBeDisabled();
     expect(textarea).toHaveAttribute("aria-invalid", "true");
-    expect(wrapper(container)?.contains(textarea)).toBe(true);
+    expect(textarea.parentElement).toBe(wrapper(container));
     expect(wrapper(container)?.className).toMatch(/composes-disabled-within/);
+  });
+
+  it("dims the wrapper while the textarea is disabled", () => {
+    const { container } = render(<Textarea before="top" disabled />);
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      true,
+    );
+  });
+
+  it("dims the wrapper while the textarea is aria-disabled, as it does a bare one", () => {
+    const { container } = render(
+      <Textarea before="top" aria-disabled="true" />,
+    );
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      true,
+    );
+  });
+
+  /* PromptInput puts its submit Button in `after`; disabling that button must
+     not dim the field or lock the textarea behind `pointer-events: none`. */
+  it("leaves the wrapper undimmed and typeable while a button in a slot is disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Textarea
+        after={
+          <Button disabled data-disabled="" aria-disabled="true">
+            Send
+          </Button>
+        }
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Send" })).toBeDisabled();
+    expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
+      false,
+    );
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(screen.getByRole("textbox")).toHaveValue("hi");
+  });
+
+  it.each([
+    ["data-invalid", { "data-invalid": "" }],
+    ["aria-invalid", { "aria-invalid": "true" as const }],
+  ])("reddens the wrapper when the textarea carries %s", (_, invalidProps) => {
+    const { container } = render(<Textarea before="top" {...invalidProps} />);
+    expect(matchesComposition(wrapper(container), "invalid")).toBe(true);
+  });
+
+  it("leaves the wrapper's edge alone when a control in a slot is invalid", () => {
+    const { container } = render(
+      <Textarea
+        before={<input aria-label="Tag" aria-invalid="true" data-invalid="" />}
+      />,
+    );
+    expect(matchesComposition(wrapper(container), "invalid")).toBe(false);
   });
 
   it("still reports onValueChange from the slotted textarea", async () => {
