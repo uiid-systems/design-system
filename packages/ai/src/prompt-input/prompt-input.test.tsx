@@ -19,7 +19,12 @@ const loading = (element: HTMLElement) =>
     .querySelector('[data-slot="button-content-container"]')
     ?.getAttribute("data-loading") === "true";
 const tooltipWrapper = () =>
-  document.querySelector<HTMLElement>('[data-slot="button-tooltip-wrapper"]')!;
+  document.querySelector('[data-slot="button-tooltip-wrapper"]');
+/* Disabled through aria-disabled, so the element stays focusable. */
+const expectWaiting = (element: HTMLElement) => {
+  expect(element).toHaveAttribute("aria-disabled", "true");
+  expect(element).not.toHaveAttribute("disabled");
+};
 
 describe("PromptInputSubmit", () => {
   it("is a small circular submit button named Send, with an up arrow", () => {
@@ -65,7 +70,7 @@ describe("PromptInputSubmit", () => {
 
       const send = button("Send");
       expect(send).toHaveAttribute("type", "button");
-      expect(send).toBeDisabled();
+      expectWaiting(send);
       expect(icon(send)).toContain("lucide-arrow-up");
       expect(
         screen.queryByRole("button", { name: "Stop" }),
@@ -82,42 +87,58 @@ describe("PromptInputSubmit", () => {
   it("stays disabled while generating without onStop even if a caller passes disabled={false}", () => {
     render(<PromptInputSubmit status="streaming" disabled={false} />);
 
+    expectWaiting(button("Send"));
+  });
+
+  it("is natively disabled, not merely aria-disabled, when the caller disables it while ready", () => {
+    render(<PromptInputSubmit disabled />);
+
     expect(button("Send")).toBeDisabled();
   });
 
-  it("says why Send is disabled while waiting, unless the caller passes its own tooltip", async () => {
-    const user = userEvent.setup();
-    const { rerender } = render(<PromptInputSubmit status="streaming" />);
-
-    await user.hover(tooltipWrapper());
-    expect(await screen.findByText("Waiting for the reply")).toBeVisible();
-    await user.unhover(tooltipWrapper());
-
-    rerender(<PromptInputSubmit status="streaming" tooltip="Hold on" />);
-    await user.hover(tooltipWrapper());
-    expect(await screen.findByText("Hold on")).toBeVisible();
-    expect(screen.queryByText("Waiting for the reply")).not.toBeInTheDocument();
-  });
-
-  it("keeps Send focused as the status changes without onStop", () => {
+  /* The waiting Send is disabled through aria-disabled rather than the native
+     attribute: a natively disabled element loses focus to the body under the
+     HTML focus fixup rule, which jsdom does not model, so the attribute is
+     what this test can pin. */
+  it("keeps Send focusable and focused as the status changes without onStop", () => {
     const { rerender } = render(<PromptInputSubmit status="ready" />);
     const send = button("Send");
     send.focus();
     expect(send).toHaveFocus();
 
-    for (const status of ["submitted", "streaming", "ready"] as const) {
+    for (const status of ["submitted", "streaming"] as const) {
       rerender(<PromptInputSubmit status={status} />);
       expect(button("Send")).toBe(send);
+      expectWaiting(send);
       expect(send).toHaveFocus();
     }
+
+    rerender(<PromptInputSubmit status="ready" />);
+    expect(button("Send")).toBe(send);
+    expect(send).not.toHaveAttribute("aria-disabled");
+    expect(send).toBeEnabled();
+    expect(send).toHaveFocus();
   });
 
-  it("always has a tooltip, so the button is never remounted", () => {
-    const { rerender } = render(<PromptInputSubmit status="ready" />);
-    expect(tooltipWrapper()).toContainElement(button("Send"));
+  it("does not activate while waiting, even though it is focusable", () => {
+    const onClick = vi.fn();
+    render(<PromptInputSubmit status="streaming" onClick={onClick} />);
 
-    rerender(<PromptInputSubmit status="streaming" onStop={vi.fn()} />);
-    expect(tooltipWrapper()).toContainElement(button("Stop"));
+    fireEvent.click(button("Send"));
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("wraps itself in a tooltip only when the caller passes one", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<PromptInputSubmit />);
+    expect(tooltipWrapper()).toBeNull();
+
+    rerender(<PromptInputSubmit tooltip="Send it (Enter)" />);
+    expect(tooltipWrapper()).toContainElement(button("Send"));
+    expect(button("Send")).toHaveAttribute("aria-label", "Send");
+    await user.hover(button("Send"));
+    expect(await screen.findByText("Send it (Enter)")).toBeVisible();
   });
 
   it.each([
@@ -135,78 +156,6 @@ describe("PromptInputSubmit", () => {
       const live = button(name);
       expect(live).toHaveAttribute("aria-label", name);
       expect(live.className).toContain("shape-pill");
-    },
-  );
-
-  it.each([
-    ["ready", undefined, "Send"],
-    ["streaming", undefined, "Send"],
-    ["ready", "Send message", "Send message"],
-    ["streaming", "Send message", "Send message"],
-  ] as const)(
-    "takes its name from aria-labelledby while %s with tooltip %p",
-    (status, tooltip, ariaLabel) => {
-      render(
-        <>
-          <span id="send-label">Send message</span>
-          <PromptInputSubmit
-            status={status}
-            aria-labelledby="send-label"
-            tooltip={tooltip}
-          />
-        </>,
-      );
-
-      const send = screen.getByRole("button", { name: "Send message" });
-      expect(send).toHaveAttribute("aria-label", ariaLabel);
-    },
-  );
-
-  it("gives a labelledby tooltip way to the waiting reason", async () => {
-    const user = userEvent.setup();
-    render(
-      <>
-        <span id="send-label">Send message</span>
-        <PromptInputSubmit
-          status="streaming"
-          aria-labelledby="send-label"
-          tooltip="Send message"
-        />
-      </>,
-    );
-
-    await user.hover(tooltipWrapper());
-
-    expect(await screen.findByText("Waiting for the reply")).toBeVisible();
-  });
-
-  it("lets aria-label win over a labelledby tooltip, and keeps a rich tooltip off aria-label", () => {
-    const { rerender } = render(
-      <PromptInputSubmit aria-label="Go" aria-labelledby="x" tooltip="Hint" />,
-    );
-    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "Go");
-
-    rerender(
-      <PromptInputSubmit aria-labelledby="x" tooltip={<b>Send it</b>} />,
-    );
-    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "Send");
-  });
-
-  it.each([
-    ["an empty aria-label", { "aria-label": "" }],
-    ["an empty tooltip", { tooltip: "" }],
-    ["a false tooltip", { tooltip: false }],
-  ] as const)(
-    "falls back from %s to a named Send that keeps its tooltip in every status",
-    (_, props) => {
-      const { rerender } = render(<PromptInputSubmit {...props} />);
-      expect(button("Send")).toHaveAttribute("aria-label", "Send");
-      expect(tooltipWrapper()).toContainElement(button("Send"));
-
-      rerender(<PromptInputSubmit {...props} status="streaming" />);
-      expect(button("Send")).toHaveAttribute("aria-label", "Send");
-      expect(button("Send")).toBeDisabled();
-      expect(tooltipWrapper()).toContainElement(button("Send"));
     },
   );
 
@@ -300,9 +249,8 @@ describe("PromptInput", () => {
       const parts = Array.from(footer.children).map((element) =>
         element.getAttribute("data-slot"),
       );
-      expect(parts).toEqual(["prompt-input-tools", "button-tooltip-wrapper"]);
+      expect(parts).toEqual(["prompt-input-tools", "prompt-input-submit"]);
       expect(footer.firstElementChild).toHaveTextContent("tool");
-      expect(footer.lastElementChild).toContainElement(button("Send"));
     });
 
     it("renders no header row without header", () => {
@@ -537,7 +485,7 @@ describe("PromptInput", () => {
         expect(
           screen.queryByRole("button", { name: "Stop" }),
         ).not.toBeInTheDocument();
-        expect(button("Send")).toBeDisabled();
+        expectWaiting(button("Send"));
 
         fireEvent.click(button("Send"));
 
@@ -554,10 +502,10 @@ describe("PromptInput", () => {
     expect(screen.getAllByRole("button", { name: "Stop" })).toHaveLength(2);
 
     render(<Examples.WithoutStop />);
-    const disabledSends = screen
+    const waitingSends = screen
       .getAllByRole("button", { name: "Send" })
-      .filter((send) => (send as HTMLButtonElement).disabled);
-    expect(disabledSends).toHaveLength(2);
+      .filter((send) => send.getAttribute("aria-disabled") === "true");
+    expect(waitingSends).toHaveLength(2);
 
     for (const Example of [
       Examples.WithHeader,
