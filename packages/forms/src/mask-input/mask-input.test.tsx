@@ -471,6 +471,32 @@ describe("MaskInput Field.Control integration", () => {
     expect(input).toHaveAttribute("data-invalid");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
+
+  /* FieldControl reads id and value off its own props, not the render element.
+     Spreading them onto the slotted `<input>` leaves the label on a generated
+     id and filled state stuck. */
+  it("keeps a caller's id wired to the label", async () => {
+    const user = userEvent.setup();
+    render(<MaskInput id="phone" label="Phone" mask="phone" />);
+
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveAttribute("id", "phone");
+    expect(screen.getByText("Phone")).toHaveAttribute("for", "phone");
+    await user.click(screen.getByText("Phone"));
+    expect(input).toHaveFocus();
+  });
+
+  it("tracks data-filled against the masked value", () => {
+    const { rerender } = render(
+      <MaskInput mask="phone" value="1234567890" onValueChange={() => {}} />,
+    );
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveValue("(123) 456-7890");
+    expect(input).toHaveAttribute("data-filled");
+
+    rerender(<MaskInput mask="phone" value="" onValueChange={() => {}} />);
+    expect(input).not.toHaveAttribute("data-filled");
+  });
 });
 
 describe("MaskInput color", () => {
