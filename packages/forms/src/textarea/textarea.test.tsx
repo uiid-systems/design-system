@@ -541,3 +541,54 @@ describe("Textarea before/after slots", () => {
     expect(button).toHaveFocus();
   });
 });
+
+/* Field reads `disabled` off its root, not the control, so the label and
+   description only dim when Textarea hands it up. `fullwidth` reaches the
+   root as `w="full"` so the field stretches with the control it holds. */
+describe("Textarea hands disabled and fullwidth to Field", () => {
+  it("dims the label and description with a disabled textarea", () => {
+    render(<Textarea label="Notes" description="Optional" disabled />);
+    expect(screen.getByText("Notes")).toHaveAttribute("data-disabled");
+    expect(screen.getByText("Optional")).toHaveAttribute("data-disabled");
+  });
+
+  it("leaves the label and description undimmed while enabled", () => {
+    render(<Textarea label="Notes" description="Optional" />);
+    expect(screen.getByText("Notes")).not.toHaveAttribute("data-disabled");
+    expect(screen.getByText("Optional")).not.toHaveAttribute("data-disabled");
+  });
+
+  it("stretches the field root with fullwidth", () => {
+    const { container } = render(<Textarea fullwidth />);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "full",
+    );
+  });
+
+  it("leaves the field root at its own width without fullwidth", () => {
+    const { container } = render(<Textarea />);
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).not.toHaveAttribute("data-ui-w");
+  });
+
+  /* One excess key per literal: TypeScript reports only the first. */
+  it("rejects FieldProps the control owns", () => {
+    render(
+      <Textarea
+        label="Notes"
+        // @ts-expect-error label is owned by Textarea
+        FieldProps={{ errorType: "tooltip", label: "Other" }}
+      />,
+    );
+    render(
+      <Textarea
+        label="Notes"
+        // @ts-expect-error disabled is owned by Textarea
+        FieldProps={{ errorType: "tooltip", disabled: true }}
+      />,
+    );
+    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+  });
+});
