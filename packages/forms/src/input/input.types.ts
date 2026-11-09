@@ -57,5 +57,20 @@ export type InputControlProps = Omit<Input.Props, "size"> & {
 export type InputProps = Omit<InputControlProps, "inner"> & {
   before?: React.ReactNode;
   after?: React.ReactNode;
-  FieldProps?: FieldProps;
+  /**
+   * Reaches the Field around the control. Input owns `label`, `description`,
+   * `action`, `name`, `required`, `disabled`, `size` and `children` and hands
+   * them to Field itself, so they are not accepted here a second time.
+   */
+  FieldProps?: Omit<
+    FieldProps,
+    | "label"
+    | "description"
+    | "action"
+    | "name"
+    | "required"
+    | "disabled"
+    | "size"
+    | "children"
+  >;
 } & Pick<FieldProps, "label" | "description" | "action">;

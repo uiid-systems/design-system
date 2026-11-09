@@ -14,6 +14,7 @@ export const Input = ({
   fullwidth,
   variant,
   color,
+  disabled,
   before,
   after,
   FieldProps,
@@ -30,7 +31,9 @@ export const Input = ({
       description={description}
       action={action}
       required={required}
+      disabled={disabled}
       size={size}
+      w={fullwidth ? "full" : undefined}
       {...FieldProps}
     >
       <InputWrapper
@@ -44,6 +47,7 @@ export const Input = ({
         <InputControl
           name={name}
           required={required}
+          disabled={disabled}
           inner={hasSlots}
           size={size}
           fullwidth={fullwidth}

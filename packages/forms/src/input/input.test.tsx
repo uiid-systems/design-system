@@ -369,3 +369,56 @@ describe("Input state-function className", () => {
     expect(input).toHaveClass(styles["input"]);
   });
 });
+
+/* Field reads `disabled` off its root, not the control, so the label and
+   description only dim when Input hands it up. `fullwidth` reaches the root
+   as `w="full"` so the field stretches with the control it holds. */
+describe("Input hands disabled and fullwidth to Field", () => {
+  it("dims the label and description with a disabled input", () => {
+    render(<Input label="Email" description="Work address" disabled />);
+    expect(screen.getByText("Email")).toHaveAttribute("data-disabled");
+    expect(screen.getByText("Work address")).toHaveAttribute("data-disabled");
+  });
+
+  it("leaves the label and description undimmed while enabled", () => {
+    render(<Input label="Email" description="Work address" />);
+    expect(screen.getByText("Email")).not.toHaveAttribute("data-disabled");
+    expect(screen.getByText("Work address")).not.toHaveAttribute(
+      "data-disabled",
+    );
+  });
+
+  it("stretches the field root with fullwidth", () => {
+    const { container } = render(<Input fullwidth />);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "full",
+    );
+  });
+
+  it("leaves the field root at its own width without fullwidth", () => {
+    const { container } = render(<Input />);
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).not.toHaveAttribute("data-ui-w");
+  });
+
+  /* One excess key per literal: TypeScript reports only the first. */
+  it("rejects FieldProps the control owns", () => {
+    render(
+      <Input
+        label="Email"
+        // @ts-expect-error label is owned by Input
+        FieldProps={{ errorType: "tooltip", label: "Other" }}
+      />,
+    );
+    render(
+      <Input
+        label="Email"
+        // @ts-expect-error disabled is owned by Input
+        FieldProps={{ errorType: "tooltip", disabled: true }}
+      />,
+    );
+    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+  });
+});

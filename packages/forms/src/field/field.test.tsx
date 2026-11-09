@@ -497,3 +497,16 @@ describe("FieldRoot layout props", () => {
     expect(root(container)).toHaveAttribute("data-ui-fullwidth", "");
   });
 });
+
+/* Base UI stamps `data-disabled` on the label and description from the root,
+   and the shared `composes-disabled` state reads that attribute, so a Field's
+   chrome dims together with the control it annotates. */
+describe("Field disabled chrome", () => {
+  it("composes the shared disabled state on the label and description", () => {
+    render(<Field label="Email" description="Work address" disabled />);
+    expect(screen.getByText("Email").className).toMatch(/composes-disabled/);
+    expect(screen.getByText("Work address").className).toMatch(
+      /composes-disabled/,
+    );
+  });
+});

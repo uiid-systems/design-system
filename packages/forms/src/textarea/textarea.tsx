@@ -48,7 +48,9 @@ export const Textarea = ({
       description={description}
       action={action}
       required={required}
+      disabled={disabled}
       size={size}
+      w={fullwidth ? "full" : undefined}
       {...FieldProps}
     >
       <InputWrapper
