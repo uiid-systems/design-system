@@ -179,7 +179,23 @@
     color: var(--shade-muted);
     pointer-events: none;
 
-    &:where(:has(button, a, [role="button"])) {
+    /* Interactive content takes its own press; everything else passes through
+       to the wrapper, which focuses the control. Keep in step with
+       INPUT_SLOT_INTERACTIVE in @uiid/forms. */
+    &:where(
+      :has(
+        a[href],
+        button,
+        input,
+        select,
+        textarea,
+        label,
+        [tabindex],
+        [contenteditable]:not([contenteditable="false"]),
+        [role="button"],
+        [role="link"]
+      )
+    ) {
       pointer-events: auto;
     }
 

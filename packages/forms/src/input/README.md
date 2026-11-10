@@ -20,4 +20,6 @@ For a shared label over several controls, wrap them in a `Field` and let each ke
 
 `before` and `after` render through `InputWrapper`, which is exported on its own for composing the same slotted surface around another control. Its `orientation` prop (`horizontal` by default) places the slots beside the control; `vertical` stacks them above and below it, which is how [`Textarea`](../textarea/README.md) gets its slots. The wrapper carries `size`, `fullwidth`, `variant`, and `color` in both orientations. It does not strip anything from the control it wraps: pass `inner` to `InputControl`, as Input does, so the control paints no surface of its own.
 
+Pressing plain slot content or the wrapper's padding focuses the control, as a press on a bare input would. A press on a real control in a slot (a button, link, input, or anything with `tabindex`) stays with that control. Pass `disabled` to the wrapper, as Input does, to make the slots `inert` so their content leaves the tab order with the field.
+
 Additional props are forwarded to the underlying Base UI [Input](https://base-ui.com/react/components/input). `size` is the one deliberate exception: it is the system-wide control scale, not the native character-width attribute.

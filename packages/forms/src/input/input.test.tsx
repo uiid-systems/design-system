@@ -1,13 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
-import { describe, it, expect } from "vitest";
+import { createPortal } from "react-dom";
+import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
+import { INPUT_SLOT_INTERACTIVE } from "./input.constants";
 import { InputControl, InputWrapper } from "./subcomponents";
 
 import styles from "./input.module.css";
+import compositionsCss from "@uiid/tokens/compositions.css?raw";
 
 describe("Input", () => {
   it("renders an input element", () => {
@@ -420,5 +423,110 @@ describe("Input hands disabled and fullwidth to Field", () => {
       />,
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
+  });
+});
+
+describe("Input slot click-to-focus", () => {
+  it("focuses the input when plain slot content is pressed", async () => {
+    const user = userEvent.setup();
+    render(<Input before={<span>https://</span>} />);
+
+    await user.click(screen.getByText("https://"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("focuses the input when the wrapper's own padding is pressed", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Input before="$" />);
+
+    await user.click(
+      container.querySelector<HTMLElement>("[data-slot='input-wrapper']")!,
+    );
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("leaves a press on a button in a slot to the button", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Input
+        after={
+          <button type="button" onClick={onClick}>
+            Action
+          </button>
+        }
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Action" }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("textbox")).not.toHaveFocus();
+  });
+
+  /* A dialog popup carries `tabindex="-1"`, which an unscoped `closest` would
+     mistake for interactive slot content. */
+  it("focuses the input from slot content inside a tabindex ancestor", async () => {
+    const user = userEvent.setup();
+    render(
+      <div role="dialog" tabIndex={-1}>
+        <Input before={<span>https://</span>} />
+      </div>,
+    );
+
+    await user.click(screen.getByText("https://"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("leaves a press in a slot's portal to the portal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Input
+        aria-label="Query"
+        after={createPortal(<span>No results</span>, document.body)}
+      />,
+    );
+
+    await user.click(screen.getByText("No results"));
+    expect(screen.getByRole("textbox", { name: "Query" })).not.toHaveFocus();
+  });
+});
+
+describe("Input inert slots", () => {
+  it("makes the slots inert while the input is disabled", () => {
+    const { container } = render(
+      <Input before="$" after={<button type="button">Go</button>} disabled />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves the slots interactive while the input is enabled", () => {
+    const { container } = render(<Input before="$" after="USD" />);
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).not.toHaveAttribute("inert");
+  });
+});
+
+describe("Input slot pointer events", () => {
+  /* The slot turns pointer events off and back on only for interactive
+     content. A selector missing from that list never receives the press, so
+     it falls through to the wrapper and focuses the control instead. */
+  it("re-enables pointer events for every selector the wrapper leaves alone", () => {
+    const rule = compositionsCss.match(
+      /\.composes-field-slot\s*\{[\s\S]*?&:where\(\s*:has\(([\s\S]*?)\)\s*\)\s*\{/,
+    );
+    expect(rule).not.toBeNull();
+    const reEnabled = rule![1].split(/,\s*/).map((selector) => selector.trim());
+    expect(reEnabled).toEqual(expect.arrayContaining(INPUT_SLOT_INTERACTIVE));
   });
 });

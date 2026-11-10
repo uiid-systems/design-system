@@ -130,6 +130,7 @@ export const MaskInput = (props: MaskInputProps) => {
         fullwidth={fullwidth}
         variant={variant}
         color={color}
+        disabled={disabled}
       >
         {/*
           `id` and `value` must reach FieldControl itself, not the render

@@ -22,6 +22,12 @@ export type InputWrapperProps = {
   children: React.ReactNode;
   /** Palette hue applied as a tinted surface treatment. */
   color?: InputColor;
+  /**
+   * Whether the control is disabled. Makes the slots inert, so their content
+   * leaves the tab order with the field while the dimmed surface blocks the
+   * pointer.
+   */
+  disabled?: boolean;
 } & InputVariants;
 
 /**

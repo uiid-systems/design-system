@@ -592,3 +592,61 @@ describe("Textarea hands disabled and fullwidth to Field", () => {
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
   });
 });
+
+describe("Textarea slot click-to-focus", () => {
+  it("focuses the textarea when plain slot content is pressed", async () => {
+    const user = userEvent.setup();
+    render(<Textarea before={<span>3 files attached</span>} />);
+
+    await user.click(screen.getByText("3 files attached"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("leaves a press on a button in a slot to the button", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Textarea
+        after={
+          <button type="button" onClick={onClick}>
+            Send
+          </button>
+        }
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("textbox")).not.toHaveFocus();
+  });
+});
+
+describe("Textarea inert slots", () => {
+  it("makes the slots inert while the textarea is disabled", () => {
+    const { container } = render(
+      <Textarea
+        before="top"
+        after={<button type="button">Send</button>}
+        disabled
+      />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves the slots interactive while the textarea is enabled", () => {
+    const { container } = render(<Textarea before="top" after="bottom" />);
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).not.toHaveAttribute("inert");
+  });
+});
