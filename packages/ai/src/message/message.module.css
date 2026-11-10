@@ -28,8 +28,8 @@
   background-color: var(--shade-accent);
 }
 
-/* The neutral bubble now fills with the accent too, so block and inline code would vanish into it. They sit one shade step further out. */
+/* The neutral bubble fills with the accent too, so block and inline code would vanish into it. They sit on the page background instead, which keeps an edge and keeps the bubble's text color legible in both schemes. */
 :where(.message)[data-from="user"] .content pre,
 :where(.message)[data-from="user"] .content :not(pre) > code {
-  background-color: var(--shade-halftone);
+  background-color: var(--shade-background);
 }

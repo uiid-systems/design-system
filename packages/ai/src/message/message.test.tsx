@@ -78,6 +78,19 @@ describe("Message", () => {
     else expect(root).not.toHaveAttribute("data-ui-ml");
   });
 
+  it.each([
+    ["m", { m: 0 }],
+    ["mx", { mx: 4 }],
+  ] as const)("leaves ml unset when a caller passes %s", (_, margin) => {
+    const { container } = render(
+      <Message from="user" {...margin}>
+        x
+      </Message>,
+    );
+
+    expect(container.firstElementChild).not.toHaveAttribute("data-ui-ml");
+  });
+
   it("lets a caller's ml win", () => {
     const { container } = render(
       <Message from="user" ml={4}>

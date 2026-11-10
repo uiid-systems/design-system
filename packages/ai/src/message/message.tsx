@@ -18,7 +18,13 @@ export const Message = ({
   role = "group",
   "aria-label": ariaLabel = `Message from ${from}`,
   ax = from === "user" ? "end" : "start",
-  ml = from === "user" ? "auto" : undefined,
+  m,
+  mx,
+  // Only when no broader margin is passed: `ml` comes last in the props
+  // layer, so a default here would override a caller's `m` or `mx`.
+  ml = from === "user" && m === undefined && mx === undefined
+    ? "auto"
+    : undefined,
   gap = 2,
   fullwidth = true,
   maxw,
@@ -31,6 +37,8 @@ export const Message = ({
     role={role}
     aria-label={ariaLabel}
     ax={ax}
+    m={m}
+    mx={mx}
     ml={ml}
     gap={gap}
     fullwidth={fullwidth}
