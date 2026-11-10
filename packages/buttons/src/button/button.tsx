@@ -14,6 +14,7 @@ import {
   isLinkRender,
   isNamedByCaller,
   isNativeButtonRender,
+  swallowDisabledActivation,
 } from "./button.utils";
 import { buttonVariants } from "./button.variants";
 import {
@@ -25,6 +26,19 @@ import {
 
 import styles from "./button.module.css";
 
+/*
+ * Base UI skips the caller's handlers while disabled but lets the click
+ * bubble. A click dispatched straight at the element, as assistive technology
+ * does, would otherwise reach ancestor handlers that a natively disabled
+ * button never signals. Capture phase, so it also runs ahead of any caller
+ * `onClickCapture`, which a disabled button must not call either. It has to
+ * cancel the default too: stopping propagation here keeps Base UI's own
+ * handler, which is what blocks a submit, from ever running.
+ */
+const DISABLED_BUTTON_PROPS = {
+  onClickCapture: swallowDisabledActivation,
+};
+
 export const Button = ({
   tooltip,
   shape,
@@ -35,6 +49,12 @@ export const Button = ({
   size = BUTTON_DEFAULT_SIZE,
   className,
   children,
+  /*
+   * Disabled buttons stay in the tab order by default: the `tooltip` is
+   * usually the reason the button is disabled, and keyboard users only reach
+   * it by focusing the button.
+   */
+  focusableWhenDisabled = true,
   ...props
 }: ButtonProps) => {
   const colorClassName = paletteClassName(color, styles["color"]);
@@ -85,16 +105,25 @@ export const Button = ({
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
       {isLinkRender(props.render) ? (
-        <ButtonLink className={buttonClassName} {...props} {...tooltipName}>
+        <ButtonLink
+          className={buttonClassName}
+          focusableWhenDisabled={focusableWhenDisabled}
+          {...props}
+          {...tooltipName}
+        >
           {content}
         </ButtonLink>
       ) : (
         <BaseButton
           nativeButton={!props.render || isNativeButtonRender(props.render)}
+          focusableWhenDisabled={focusableWhenDisabled}
           data-slot="button"
           className={buttonClassName}
           {...props}
           {...tooltipName}
+          {...(props.disabled && focusableWhenDisabled
+            ? DISABLED_BUTTON_PROPS
+            : {})}
         >
           {content}
         </BaseButton>

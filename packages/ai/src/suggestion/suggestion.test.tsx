@@ -37,7 +37,7 @@ describe("Suggestion", () => {
     expect(button.className).toContain("variant-ghost");
     expect(button.className).toContain("size-medium");
     expect(button.className).not.toContain("variant-subtle");
-    expect(button).toBeDisabled();
+    expect(button).toBeDisabledForUser();
     expect(button).toHaveClass("custom");
   });
 });

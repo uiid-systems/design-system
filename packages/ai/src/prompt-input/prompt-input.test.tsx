@@ -90,16 +90,22 @@ describe("PromptInputSubmit", () => {
     expectWaiting(button("Send"));
   });
 
-  it("is natively disabled, not merely aria-disabled, when the caller disables it while ready", () => {
+  it("is disabled like any Button, through aria-disabled, when the caller disables it while ready", () => {
     render(<PromptInputSubmit disabled />);
+
+    expect(button("Send")).toBeDisabledForUser();
+    expect(button("Send")).not.toHaveAttribute("disabled");
+  });
+
+  it("is natively disabled when the caller passes focusableWhenDisabled={false}", () => {
+    render(<PromptInputSubmit disabled focusableWhenDisabled={false} />);
 
     expect(button("Send")).toBeDisabled();
   });
 
-  /* The waiting Send is disabled through aria-disabled rather than the native
-     attribute: a natively disabled element loses focus to the body under the
-     HTML focus fixup rule, which jsdom does not model, so the attribute is
-     what this test can pin. */
+  /* A natively disabled element loses focus to the body under the HTML focus
+     fixup rule, which the test DOM does not model, so the attribute is what
+     this test can pin. */
   it("keeps Send focusable and focused as the status changes without onStop", () => {
     const { rerender } = render(<PromptInputSubmit status="ready" />);
     const send = button("Send");
@@ -115,8 +121,7 @@ describe("PromptInputSubmit", () => {
 
     rerender(<PromptInputSubmit status="ready" />);
     expect(button("Send")).toBe(send);
-    expect(send).not.toHaveAttribute("aria-disabled");
-    expect(send).toBeEnabled();
+    expect(send).not.toBeDisabledForUser();
     expect(send).toHaveFocus();
   });
 
@@ -440,7 +445,7 @@ describe("PromptInput", () => {
       const { textarea } = renderPromptInput({ disabled: true });
 
       expect(textarea).toBeDisabled();
-      expect(button("Send")).toBeDisabled();
+      expect(button("Send")).toBeDisabledForUser();
     });
 
     it("does not submit when a plain Button in tools is pressed", async () => {

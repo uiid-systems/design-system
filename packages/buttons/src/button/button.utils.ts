@@ -56,3 +56,22 @@ export const isNamedByCaller = (
     (isValidElement(element) && hasAccessibleName(element.props))
   );
 };
+
+/**
+ * Swallows the activation of a disabled control.
+ *
+ * `preventDefault()` does double duty: it blocks an anchor's navigation and a
+ * submit button's submit, and it is the signal `renderWithProps` reads to skip
+ * a handler the caller put on the element they passed to `render`.
+ * `stopPropagation()` matches a natively disabled button, which dispatches no
+ * click for an ancestor to see.
+ *
+ * None of this is redundant with the `pointer-events: none` that
+ * `composes-disabled` applies: that only blocks hit-testing, so it cannot stop
+ * a keyboard Enter or a click an assistive technology dispatches straight at
+ * the element.
+ */
+export const swallowDisabledActivation = (event: React.SyntheticEvent) => {
+  event.preventDefault();
+  event.stopPropagation();
+};

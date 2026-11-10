@@ -23,10 +23,20 @@ export type ButtonSpinnerProps = LoadingSpinnerIconProps & {
 };
 
 export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
-  Omit<BaseButton.Props, "onClick" | "color"> &
+  Omit<BaseButton.Props, "onClick" | "color" | "focusableWhenDisabled"> &
   ButtonVariants & {
     /** Palette hue applied as a full bg/fg/border/hover surface treatment. */
     color?: ButtonColor;
+    /**
+     * Keeps a `disabled` button in the tab order. Defaults to `true`, unlike
+     * Base UI's `false`, so keyboard and screen-reader users can reach the
+     * button and its `tooltip`. The button renders `aria-disabled="true"`
+     * instead of `disabled`; click, Enter, Space and form submit stay blocked.
+     *
+     * Pass `false` for native `disabled` — on a link, `tabIndex={-1}` — when
+     * a disabled control shouldn't be a tab stop at all.
+     */
+    focusableWhenDisabled?: boolean;
     /**
      * Wraps the button in a Tooltip with this content — no manual composition.
      * On a `square` or `circle` button, a string tooltip also becomes the

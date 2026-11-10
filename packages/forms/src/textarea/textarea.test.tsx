@@ -485,7 +485,7 @@ describe("Textarea before/after slots", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Send" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Send" })).toBeDisabledForUser();
     expect(matchesComposition(wrapper(container), "disabled-within")).toBe(
       false,
     );
