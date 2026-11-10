@@ -247,3 +247,16 @@ describe("Radio state-function className", () => {
     expect(indicator).toHaveClass(styles["indicator"]);
   });
 });
+
+describe("Radio reversed", () => {
+  it("shares the reversed row class with Checkbox", () => {
+    const { container } = render(
+      <RadioGroup>
+        <Radio reversed value="a" label="A" />
+      </RadioGroup>,
+    );
+    expect(container.querySelector("[data-slot='field-row']")).toHaveClass(
+      checkboxStyles["toggle-reversed"],
+    );
+  });
+});

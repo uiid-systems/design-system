@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Switch } from "./switch";
 
+import checkboxStyles from "../checkbox/checkbox.module.css";
 import styles from "./switch.module.css";
 
 describe("Switch", () => {
@@ -214,5 +215,14 @@ describe("Switch state-function className", () => {
 
     expect(thumb).toHaveClass("fn-checked");
     expect(thumb).toHaveClass(styles["switch-thumb"]);
+  });
+});
+
+describe("Switch reversed", () => {
+  it("shares the reversed row class with Checkbox", () => {
+    const { container } = render(<Switch reversed label="Dark mode" />);
+    expect(container.querySelector("[data-slot='field-row']")).toHaveClass(
+      checkboxStyles["toggle-reversed"],
+    );
   });
 });

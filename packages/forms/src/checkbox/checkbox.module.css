@@ -193,10 +193,17 @@
 
 /* `row-reverse` makes the right edge main-start, so the default `flex-start`
    packs label and control together on the right of a row wider than its
-   content — a stretched column of bordered options, say. `space-between` holds
-   the label at the start and the control at the end. A caller's `ax` still
-   wins: style props sit in a later layer. */
+   content — a stretched column of bordered options, say. An auto margin on the
+   control takes the free space between it and the text, so the control sits at
+   the end and the text packs at the start. Not `space-between`: a row with a
+   label but no description has no text Stack, so a shown error is a third flex
+   item and would leave the label floating mid-row. The cost is that `ax` no
+   longer moves a reversed row's items; the auto margin consumes the space
+   first. */
 .toggle-reversed {
   flex-direction: row-reverse;
-  justify-content: space-between;
+
+  & > :is([role="checkbox"], [role="radio"], [role="switch"]) {
+    margin-inline-start: auto;
+  }
 }

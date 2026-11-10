@@ -276,8 +276,26 @@ describe("Checkbox reversed", () => {
   });
 
   it("keeps the label at the start of a row wider than its content", () => {
-    const rule = css.match(/\.toggle-reversed\s*\{([^}]*)\}/)?.[1];
+    const rule = css.match(/\.toggle-reversed\s*\{([\s\S]*?)\}\s*\}/)?.[1];
     expect(rule).toMatch(/flex-direction: row-reverse;/);
-    expect(rule).toMatch(/justify-content: space-between;/);
+    expect(rule).toMatch(
+      /& > :is\(\[role="checkbox"\], \[role="radio"\], \[role="switch"\]\) \{\s*margin-inline-start: auto;/,
+    );
+    /* An error beside a lone label is a third flex item, which `space-between`
+       would spread the label away from. */
+    expect(rule).not.toMatch(/justify-content/);
+  });
+
+  it("renders the control as a direct child of the row, which the rule targets", () => {
+    const { container } = render(
+      <Form errors={{ terms: "Required" }}>
+        <Checkbox reversed name="terms" label="Accept terms" />
+      </Form>,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+    expect(row?.querySelector(":scope > [role='checkbox']")).not.toBeNull();
+    expect(
+      row?.querySelector(":scope > [data-slot='field-label']"),
+    ).not.toBeNull();
   });
 });
