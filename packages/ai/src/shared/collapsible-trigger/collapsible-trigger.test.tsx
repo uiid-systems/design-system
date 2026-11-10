@@ -83,6 +83,22 @@ describe("CollapsibleTrigger", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "true");
   });
 
+  it("marks the trigger of a disabled root, which keeps the panel closed", async () => {
+    const user = userEvent.setup();
+    render(
+      <CollapsibleRoot disabled>
+        <CollapsibleTrigger>Details</CollapsibleTrigger>
+        <CollapsiblePanel data-testid="panel">Body</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+
+    const trigger = screen.getByRole("button");
+    expect(trigger).toHaveAttribute("data-disabled");
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByTestId("panel")).not.toBeInTheDocument();
+  });
+
   it("turns the chevron without a transition under reduced motion", () => {
     expect(css).toMatch(
       /@media \(prefers-reduced-motion: no-preference\) \{\s*\.chevron \{\s*transition: transform/,
