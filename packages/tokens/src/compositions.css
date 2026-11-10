@@ -123,14 +123,17 @@
 
   /*
    * An inverted floating label: foreground surface, background text, capped at
-   * --tooltip-max-width with long unbroken strings wrapped rather than
-   * overflowing. The surface is set through the --palette-tint pair rather than
-   * background-color/color so that a Card rendering the popup paints it: Card
-   * reads those vars in uiid.components, above this layer, and the palette
-   * classes that also set them live in uiid.tokens, below it.
+   * --tooltip-max-width (a tooltip token, loaded by globals.css) with long
+   * unbroken strings wrapped rather than overflowing. Button's tooltip and
+   * Tooltip both compose it.
+   *
+   * The background-color/color pair paints a plain popup. A popup rendered as
+   * a Card is painted by Card instead, from the --palette-tint pair set here:
+   * Card reads those vars in uiid.components, above this layer, and the palette
+   * classes that also set them live in uiid.tokens, below it. Children inherit
+   * the inverted pair, so --palette-tint-hover inside a tooltip is the surface.
    */
   .composes-tooltip {
-    --tooltip-max-width: 15rem;
     --palette-tint: var(--shade-foreground);
     --palette-on-tint: var(--shade-background);
 
