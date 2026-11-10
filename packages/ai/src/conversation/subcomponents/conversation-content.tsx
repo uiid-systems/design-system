@@ -27,6 +27,8 @@ export const ConversationContent = ({
       data-slot="conversation-viewport"
       ref={scrollRef}
       tabIndex={0}
+      role="group"
+      aria-label="Messages"
       className={styles["viewport"]}
     >
       <Stack

@@ -31,9 +31,10 @@ export const ConversationScrollButton = ({
         onClick?.(event);
         if (event.defaultPrevented) return;
         /* The button unmounts once pinned, which would drop focus to the
-           body. `preventScroll` leaves the scroll to `scrollToBottom`. */
-        const button = event.currentTarget;
-        if (button === button.ownerDocument.activeElement) {
+           body. `preventScroll` keeps the page itself from scrolling to bring
+           the viewport into view. `:focus` also matches inside a shadow root,
+           where `document.activeElement` is the host. */
+        if (event.currentTarget.matches(":focus")) {
           scrollElement?.focus({ preventScroll: true });
         }
         scrollToBottom();

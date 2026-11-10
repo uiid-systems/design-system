@@ -131,6 +131,14 @@ describe("Conversation", () => {
       ).toHaveTextContent("first");
     });
 
+    it("makes the viewport a focusable group named Messages", () => {
+      renderConversation();
+
+      const viewport = screen.getByRole("group", { name: "Messages" });
+      expect(viewport).toHaveAttribute("data-slot", "conversation-viewport");
+      expect(viewport).toHaveAttribute("tabindex", "0");
+    });
+
     it("passes Box props through to the root", () => {
       const ref = { current: null as HTMLDivElement | null };
       const { container } = render(
@@ -422,6 +430,18 @@ describe("Conversation", () => {
 
       expect(scrollButton()).not.toBeInTheDocument();
       expect(viewport).toHaveFocus();
+    });
+
+    it("moves focus without scrolling the page", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+      const focus = vi.spyOn(viewport, "focus");
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
     });
 
     it("leaves focus alone when the button was not focused", () => {
