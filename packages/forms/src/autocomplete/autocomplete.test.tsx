@@ -4,6 +4,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
+import { AutocompleteInput, AutocompleteRoot } from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
 
@@ -347,5 +348,71 @@ describe("Autocomplete state-function className", () => {
     await user.type(screen.getByRole("combobox"), "a");
 
     expect(input).toHaveClass("fn-open", inputStyles["input"]);
+  });
+});
+
+/* Field reads `disabled` off its root, not the control, so the label and
+   description only dim when the input hands it up. */
+describe("Autocomplete hands disabled to Field", () => {
+  const items = ["apple", "banana"];
+
+  it("makes caller slot content inert while disabled", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+        disabled
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves slot content interactive while enabled", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+  });
+
+  it("dims the label and description with a disabled autocomplete", () => {
+    render(
+      <Autocomplete
+        items={items}
+        label="Fruit"
+        description="Pick one"
+        disabled
+      />,
+    );
+    expect(screen.getByText("Fruit")).toHaveAttribute("data-disabled");
+    expect(screen.getByText("Pick one")).toHaveAttribute("data-disabled");
+    expect(screen.getByRole("combobox")).toBeDisabled();
+  });
+
+  it("dims the label of a composed disabled AutocompleteInput", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput label="Fruit" disabled />
+      </AutocompleteRoot>,
+    );
+    expect(screen.getByText("Fruit")).toHaveAttribute("data-disabled");
+    expect(screen.getByRole("combobox")).toBeDisabled();
+  });
+
+  it("leaves the label and description undimmed while enabled", () => {
+    render(<Autocomplete items={items} label="Fruit" description="Pick one" />);
+    expect(screen.getByText("Fruit")).not.toHaveAttribute("data-disabled");
+    expect(screen.getByText("Pick one")).not.toHaveAttribute("data-disabled");
   });
 });
