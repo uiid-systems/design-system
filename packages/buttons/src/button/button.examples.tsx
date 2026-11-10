@@ -112,6 +112,15 @@ export const Disabled = () => (
   </Group>
 );
 
+export const DisabledWithReason = () => (
+  <Group gap={2}>
+    <Button variant="subtle">Save draft</Button>
+    <Button tooltip="Add a customer before publishing" disabled>
+      Publish
+    </Button>
+  </Group>
+);
+
 export const Loading = () => (
   <Group gap={2}>
     <Button loading>Submitting</Button>

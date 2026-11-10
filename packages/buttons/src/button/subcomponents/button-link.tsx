@@ -3,9 +3,24 @@
 import { renderWithProps } from "@uiid/utils";
 
 import type { ButtonLinkProps } from "../button.types";
-import { isLinkRender } from "../button.utils";
+import { isLinkRender, swallowDisabledActivation } from "../button.utils";
 
-const preventNavigation = (event: React.MouseEvent) => event.preventDefault();
+/*
+ * A disabled link keeps its `href`. Stripping it would break the router links
+ * this branch exists for — Next's `<Link>` requires the prop — so parity with
+ * a disabled button comes from the ARIA state and a swallowed activation
+ * instead. `composes-disabled` already matches `[aria-disabled="true"]` and
+ * kills pointer events, and an anchor dispatches a click for Enter, so the one
+ * handler covers both. A focused anchor still opens its keyboard context menu
+ * (Shift+F10), whose "Open link in new tab" entry navigates without ever
+ * firing a click, so that is cancelled too.
+ */
+const DISABLED_LINK_PROPS = {
+  "aria-disabled": true,
+  "data-disabled": "",
+  onClick: swallowDisabledActivation,
+  onContextMenu: (event: React.SyntheticEvent) => event.preventDefault(),
+};
 
 /**
  * The link branch of `Button`: the button's styling on an element that keeps
@@ -20,7 +35,7 @@ export const ButtonLink = ({
   disabled,
   onClick,
   nativeButton: _nativeButton,
-  focusableWhenDisabled: _focusableWhenDisabled,
+  focusableWhenDisabled,
   ...props
 }: ButtonLinkProps) => {
   return renderWithProps({
@@ -31,22 +46,10 @@ export const ButtonLink = ({
       ...props,
       "data-slot": "button",
       className,
-      /*
-       * A disabled link keeps its `href`. Stripping it would break the router
-       * links this branch exists for — Next's `<Link>` requires the prop — so
-       * parity with a disabled button comes from leaving the tab order and
-       * swallowing activation instead. `composes-disabled` already matches
-       * `[aria-disabled="true"]` and kills pointer events, and an anchor
-       * dispatches a click for Enter, so the one handler covers both.
-       */
-      ...(disabled
-        ? {
-            "aria-disabled": true,
-            "data-disabled": "",
-            tabIndex: -1,
-            onClick: preventNavigation,
-          }
-        : { onClick }),
+      // Like a disabled button, a disabled link stays a tab stop unless the
+      // caller opts out with `focusableWhenDisabled={false}`.
+      ...(disabled ? DISABLED_LINK_PROPS : { onClick }),
+      ...(disabled && focusableWhenDisabled === false ? { tabIndex: -1 } : {}),
     },
   });
 };

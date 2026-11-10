@@ -70,6 +70,9 @@ export const Sizes: Story = { render: () => <Examples.Sizes /> };
 export const Shapes: Story = { render: () => <Examples.Shapes /> };
 export const WithIcon: Story = { render: () => <Examples.WithIcon /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
+export const DisabledWithReason: Story = {
+  render: () => <Examples.DisabledWithReason />,
+};
 export const Loading: Story = { render: () => <Examples.Loading /> };
 export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const WithTooltip: Story = { render: () => <Examples.WithTooltip /> };

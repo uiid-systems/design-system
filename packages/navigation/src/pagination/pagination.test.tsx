@@ -226,24 +226,24 @@ describe("Pagination", () => {
 
   it("disables First and Previous on the first page", () => {
     render(<Pagination totalPages={31} />);
-    expect(getControl("First page")).toBeDisabled();
-    expect(getControl("Previous page")).toBeDisabled();
-    expect(getControl("Next page")).toBeEnabled();
-    expect(getControl("Last page")).toBeEnabled();
+    expect(getControl("First page")).toBeDisabledForUser();
+    expect(getControl("Previous page")).toBeDisabledForUser();
+    expect(getControl("Next page")).not.toBeDisabledForUser();
+    expect(getControl("Last page")).not.toBeDisabledForUser();
   });
 
   it("disables Next and Last on the last page", () => {
     render(<Pagination totalPages={31} defaultPage={31} />);
-    expect(getControl("First page")).toBeEnabled();
-    expect(getControl("Previous page")).toBeEnabled();
-    expect(getControl("Next page")).toBeDisabled();
-    expect(getControl("Last page")).toBeDisabled();
+    expect(getControl("First page")).not.toBeDisabledForUser();
+    expect(getControl("Previous page")).not.toBeDisabledForUser();
+    expect(getControl("Next page")).toBeDisabledForUser();
+    expect(getControl("Last page")).toBeDisabledForUser();
   });
 
   it("enables every control on a middle page", () => {
     render(<Pagination totalPages={31} defaultPage={15} />);
     for (const name of CONTROLS) {
-      expect(getControl(name)).toBeEnabled();
+      expect(getControl(name)).not.toBeDisabledForUser();
     }
   });
 
@@ -297,7 +297,7 @@ describe("Pagination", () => {
     render(<Pagination totalPages={0} />);
     expect(getLabel()).toHaveTextContent("Page 1 of 1");
     for (const name of CONTROLS) {
-      expect(getControl(name)).toBeDisabled();
+      expect(getControl(name)).toBeDisabledForUser();
     }
   });
 
@@ -335,8 +335,8 @@ describe("Pagination", () => {
     expect(
       screen.queryByRole("button", { name: "Last page" }),
     ).not.toBeInTheDocument();
-    expect(getControl("Previous page")).toBeEnabled();
-    expect(getControl("Next page")).toBeEnabled();
+    expect(getControl("Previous page")).not.toBeDisabledForUser();
+    expect(getControl("Next page")).not.toBeDisabledForUser();
   });
 
   it("gives tooltips to Previous/Next but not to page numbers", () => {
@@ -389,19 +389,19 @@ describe("Pagination", () => {
     const { rerender } = render(
       <Pagination totalPages={31} page={1} spread={1} />,
     );
-    expect(getControl("Previous page")).toBeDisabled();
-    expect(getControl("Next page")).toBeEnabled();
+    expect(getControl("Previous page")).toBeDisabledForUser();
+    expect(getControl("Next page")).not.toBeDisabledForUser();
 
     rerender(<Pagination totalPages={31} page={31} spread={1} />);
-    expect(getControl("Previous page")).toBeEnabled();
-    expect(getControl("Next page")).toBeDisabled();
+    expect(getControl("Previous page")).not.toBeDisabledForUser();
+    expect(getControl("Next page")).toBeDisabledForUser();
   });
 
   it("renders a single page with both controls disabled", () => {
     render(<Pagination totalPages={1} spread={1} />);
     expect(getWindow()).toEqual(["1"]);
-    expect(getControl("Previous page")).toBeDisabled();
-    expect(getControl("Next page")).toBeDisabled();
+    expect(getControl("Previous page")).toBeDisabledForUser();
+    expect(getControl("Next page")).toBeDisabledForUser();
   });
 
   // ============================================
@@ -423,7 +423,7 @@ describe("Pagination", () => {
     render(<Pagination totalPages={31} renderLink={renderLink} />);
 
     for (const name of ["First page", "Previous page"]) {
-      expect(getControl(name)).toBeDisabled();
+      expect(getControl(name)).toBeDisabledForUser();
       expect(getControl(name)).not.toHaveAttribute("href");
     }
     expect(getLink("Next page")).toHaveAttribute("href", "#page-2");

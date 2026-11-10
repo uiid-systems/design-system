@@ -19,7 +19,6 @@ export const PromptInputSubmit = ({
   onStop,
   onClick,
   disabled,
-  focusableWhenDisabled,
   children,
   shape = "circle",
   "aria-label": ariaLabel,
@@ -41,12 +40,11 @@ export const PromptInputSubmit = ({
       shape={shape}
       size="xsmall"
       loading={status === "submitted"}
+      /* Button disables through aria-disabled by default, so the waiting Send
+         keeps focus: the native disabled attribute would drop a focused
+         button's focus to the body (the HTML focus fixup rule) and a keyboard
+         user who pressed Send would lose their place for the whole reply. */
       disabled={disabled || isWaiting}
-      /* The native disabled attribute drops a focused button's focus to the
-         body (the HTML focus fixup rule), so a keyboard user who pressed Send
-         would lose their place for the length of the reply. While waiting,
-         the button is disabled through aria-disabled and stays focusable. */
-      focusableWhenDisabled={focusableWhenDisabled || isWaiting}
       onClick={(event) => {
         onClick?.(event);
         if (canStop && !event.defaultPrevented) onStop();

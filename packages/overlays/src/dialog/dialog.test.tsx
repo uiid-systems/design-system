@@ -645,8 +645,12 @@ describe("Dialog", () => {
     it("disables the close button and DialogClose", () => {
       render(<PendingDialog onOpenChange={() => {}} />);
 
-      expect(screen.getByRole("button", { name: "Close" })).toBeDisabled();
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).toBeDisabledForUser();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).toBeDisabledForUser();
     });
 
     it("keeps DialogClose's own disabled when the dialog isn't pending", () => {
@@ -661,8 +665,12 @@ describe("Dialog", () => {
         </Dialog>,
       );
 
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
-      expect(screen.getByRole("button", { name: "Close" })).toBeEnabled();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).toBeDisabledForUser();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).not.toBeDisabledForUser();
     });
 
     it.each([
@@ -756,9 +764,13 @@ describe("Dialog", () => {
       };
       render(<DialogWrapper />);
 
-      expect(screen.getByRole("button", { name: "Close" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).toBeDisabledForUser();
       await user.click(screen.getByRole("button", { name: "Finish" }));
-      expect(screen.getByRole("button", { name: "Close" })).toBeEnabled();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).not.toBeDisabledForUser();
 
       await user.keyboard("{Escape}");
 
