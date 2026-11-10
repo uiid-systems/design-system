@@ -7,6 +7,7 @@ import { CollapsibleTrigger } from "./collapsible-trigger";
 import type { CollapsibleTriggerProps } from "./collapsible-trigger.types";
 
 import styles from "./collapsible-trigger.module.css";
+import css from "./collapsible-trigger.module.css?raw";
 
 const renderTrigger = (props: Partial<CollapsibleTriggerProps> = {}) =>
   render(
@@ -80,5 +81,11 @@ describe("CollapsibleTrigger", () => {
 
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("turns the chevron without a transition under reduced motion", () => {
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: no-preference\) \{\s*\.chevron \{\s*transition: transform/,
+    );
   });
 });

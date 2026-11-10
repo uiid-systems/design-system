@@ -19,8 +19,11 @@
   flex-shrink: 0;
 }
 
-.chevron {
-  transition: transform var(--globals-transition-duration) var(--globals-transition-easing);
+/* The chevron still turns under reduced motion; it just snaps there. */
+@media (prefers-reduced-motion: no-preference) {
+  .chevron {
+    transition: transform var(--globals-transition-duration) var(--globals-transition-easing);
+  }
 }
 
 /* Base UI writes `data-panel-open` on the trigger while the panel is open. */

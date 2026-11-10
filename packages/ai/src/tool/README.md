@@ -59,7 +59,7 @@ The header's name is `title`, else `toolName`, else `type` without its `tool-` p
 | `output-error`       | Failed            | `red`     |
 | `output-denied`      | Skipped           | `orange`  |
 
-The running state's icon spins, and stops under `prefers-reduced-motion`.
+The running state's icon spins, and stops under `prefers-reduced-motion`. The chevron then turns without animating.
 
 ## Body
 

@@ -52,7 +52,7 @@ Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel i
 ## Accessibility
 
 - The trigger is a `Group` that Base UI gives `role="button"`, `tabIndex`, `aria-expanded` and the Enter and Space keys.
-- The shimmer stops under `prefers-reduced-motion` and the label stays plain text.
+- The shimmer stops under `prefers-reduced-motion` and the label stays plain text, and the chevron turns without animating.
 - The panel unmounts when closed, so a closed block adds nothing to the reading order.
 
 ## Notes
