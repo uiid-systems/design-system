@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished, vi } from "vitest";
 
 import type { ToolState } from "../ai.types";
 import { Tool } from "./tool";
@@ -17,6 +17,15 @@ const part = (overrides: Partial<ToolPart> = {}): ToolPart => ({
   output: { temperature: 21 },
   ...overrides,
 });
+
+/* `JSON.stringify` rethrows from `toJSON`; with no prototype, `String` then
+   throws too, for want of a `toString`. */
+const throwing = (proto: object | null) =>
+  Object.assign(Object.create(proto) as Record<string, unknown>, {
+    toJSON() {
+      throw new Error("no");
+    },
+  });
 
 const getRoot = () => document.querySelector<HTMLElement>("[data-slot='tool']");
 const getStatus = () =>
@@ -123,6 +132,28 @@ describe("Tool", () => {
   // BODY
   // ============================================
 
+  it("pads an inner stack, so the panel itself can close to zero height", () => {
+    render(<Tool part={part()} ax="start" defaultOpen />);
+
+    const panel = document.querySelector("[data-slot='tool-panel']")!;
+    expect(panel).not.toHaveAttribute("data-ui-p");
+    // Full width whatever `ax` the root takes.
+    expect(panel).toHaveAttribute("data-ui-w", "full");
+    expect(panel.firstElementChild).toHaveAttribute("data-slot", "tool-body");
+    expect(panel.firstElementChild).toHaveAttribute("data-ui-p", "4");
+    expect(panel.firstElementChild).toContainElement(getInput());
+  });
+
+  it("marks a disabled trigger, which keeps the card closed", async () => {
+    const user = userEvent.setup();
+    render(<Tool part={part()} disabled />);
+
+    const trigger = screen.getByRole("button");
+    expect(trigger).toHaveAttribute("data-disabled");
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("pretty-prints the input under a Parameters heading", () => {
     render(<Tool part={part()} defaultOpen />);
 
@@ -147,6 +178,95 @@ describe("Tool", () => {
     expect(getOutput()!.querySelector("pre")!.textContent).toContain(
       '\n  "temperature": 21\n',
     );
+  });
+
+  it("prints a BigInt as its digits and keeps the fields around it", () => {
+    const value = { id: 10n, name: "acct", rows: [1n, 2] };
+    render(<Tool part={part({ input: value, output: 10n })} defaultOpen />);
+
+    expect(getInput()!.querySelector("pre")!.textContent).toBe(
+      JSON.stringify({ id: "10", name: "acct", rows: ["1", 2] }, null, 2),
+    );
+    expect(getOutput()!.querySelector("pre")!.textContent).toBe('"10"');
+  });
+
+  it("marks a cycle and keeps the fields around it, printing a shared value twice", () => {
+    const shared = { unit: "celsius" };
+    const value: Record<string, unknown> = {
+      name: "acct",
+      a: shared,
+      b: shared,
+      list: [] as unknown[],
+    };
+    value.self = value;
+    (value.list as unknown[]).push({ parent: value });
+    render(<Tool part={part({ input: value })} defaultOpen />);
+
+    expect(JSON.parse(getInput()!.querySelector("pre")!.textContent)).toEqual({
+      name: "acct",
+      a: shared,
+      b: shared,
+      list: [{ parent: "[Circular]" }],
+      self: "[Circular]",
+    });
+  });
+
+  it.each([
+    ["a function", function lookup() {}, "function lookup() {}"],
+    [
+      "an object whose toJSON throws",
+      throwing(Object.prototype),
+      "[object Object]",
+    ],
+    ["one with no prototype besides", throwing(null), "[object Object]"],
+  ])(
+    "falls back to a string for %s, which JSON cannot hold",
+    (_, value, text) => {
+      render(<Tool part={part({ input: value, output: value })} defaultOpen />);
+
+      expect(getInput()!.querySelector("pre")!.textContent).toBe(text);
+      expect(getOutput()!.querySelector("pre")!.textContent).toBe(text);
+    },
+  );
+
+  it("puts each code block in the tab order, so a long line scrolls from the keyboard", async () => {
+    const user = userEvent.setup();
+    render(<Tool part={part()} defaultOpen />);
+
+    const [input, output] = document.querySelectorAll("pre");
+    await user.tab();
+    expect(screen.getByRole("button")).toHaveFocus();
+    await user.tab();
+    expect(input).toHaveFocus();
+    await user.tab();
+    expect(output).toHaveFocus();
+  });
+
+  it("builds the JSON only while the panel is open, and once per input and output", async () => {
+    const user = userEvent.setup();
+    const stringify = vi.spyOn(JSON, "stringify");
+    onTestFinished(() => stringify.mockRestore());
+    // Other code stringifies too, so count the calls on this part's values.
+    const built = (target: unknown) =>
+      stringify.mock.calls.filter(([arg]) => arg === target).length;
+    const value = part();
+    const { rerender } = render(<Tool part={value} />);
+    expect(built(value.input)).toBe(0);
+    expect(built(value.output)).toBe(0);
+
+    await user.click(screen.getByRole("button"));
+    expect(built(value.input)).toBe(1);
+    expect(built(value.output)).toBe(1);
+
+    // A new part object around the same input and output, as a stream sends.
+    rerender(<Tool part={{ ...value, title: "Search" }} />);
+    expect(built(value.input)).toBe(1);
+    expect(built(value.output)).toBe(1);
+
+    const next = { temperature: 22 };
+    rerender(<Tool part={{ ...value, output: next }} />);
+    expect(built(value.input)).toBe(1);
+    expect(built(next)).toBe(1);
   });
 
   it("renders an element output as itself", () => {
@@ -209,6 +329,47 @@ describe("Tool", () => {
     expect(getInput()).not.toBeInTheDocument();
     expect(getOutput()).not.toBeInTheDocument();
   });
+
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+    ["a list of false conditions", [false, null, undefined]],
+    ["an empty fragment", <></>],
+    [
+      "a fragment of false conditions",
+      <>
+        {false}
+        <>{null}</>
+      </>,
+    ],
+  ])("keeps the default body when children are %s", (_, children) => {
+    render(
+      <Tool part={part()} defaultOpen>
+        {children}
+      </Tool>,
+    );
+
+    expect(getInput()).toBeInTheDocument();
+    expect(getOutput()).toBeInTheDocument();
+  });
+
+  it("lets a zero or a component that renders nothing replace the body", () => {
+    const Nothing = () => null;
+    const { rerender } = render(
+      <Tool part={part()} defaultOpen>
+        {0}
+      </Tool>,
+    );
+    expect(getInput()).not.toBeInTheDocument();
+
+    rerender(
+      <Tool part={part()} defaultOpen>
+        <Nothing />
+      </Tool>,
+    );
+    expect(getInput()).not.toBeInTheDocument();
+  });
 });
 
 describe("examples", () => {
@@ -218,6 +379,19 @@ describe("examples", () => {
     const labels = Object.values(TOOL_STATES).map((state) => state.label);
     const statuses = document.querySelectorAll("[data-slot='tool-status']");
     expect(Array.from(statuses, (el) => el.textContent)).toEqual(labels);
+  });
+
+  it("renders a long name, URL and error in a narrow card", () => {
+    render(<Examples.LongContent />);
+
+    // The wrapping itself is CSS; these are the hooks it hangs on.
+    const trigger = screen.getByRole("button");
+    expect(trigger.querySelector(`.${styles["name"]}`)).toHaveTextContent(
+      "fetch_customer_subscription_invoice_history_by_account_identifier",
+    );
+    expect(getStatus()).toHaveClass(styles["status"]);
+    expect(screen.getByText(/returned 429/)).toHaveClass(styles["error"]);
+    expect(getRoot()!.parentElement).toHaveAttribute("data-ui-w", "320");
   });
 
   it("renders a tool call between the reasoning and the reply", () => {

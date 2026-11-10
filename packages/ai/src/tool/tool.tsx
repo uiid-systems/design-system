@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { WrenchIcon } from "@uiid/icons/wrench";
 import { Badge } from "@uiid/indicators";
@@ -9,7 +11,7 @@ import {
 import { Group, Stack } from "@uiid/layout";
 import { Prose, Text } from "@uiid/typography";
 import { cx, cxState } from "@uiid/utils";
-import { isValidElement } from "react";
+import { Children, Fragment, isValidElement, useMemo } from "react";
 
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
@@ -20,12 +22,63 @@ import styles from "./tool.module.css";
 const toolName = (part: ToolPart) =>
   part.title ?? part.toolName ?? part.type.replace(/^tool-/, "");
 
+/* Total: `String` throws on an object with no prototype, which has no
+   `toString`. */
+const toText = (value: unknown) => {
+  try {
+    return String(value);
+  } catch {
+    return "[object Object]";
+  }
+};
+
+/* `JSON.stringify` throws on a BigInt or a cycle, either of which a hand-built
+   part can carry, often as one field among many. The replacer writes a BigInt
+   as its digits and a reference back to an ancestor as "[Circular]", so the
+   rest of the value still prints. `this` is the object holding `value`, which
+   tells how far up the ancestors the walk has come back; a value that merely
+   appears twice is printed twice. */
+const toJson = (value: unknown) => {
+  const ancestors: unknown[] = [];
+  function replacer(this: unknown, _key: string, value: unknown) {
+    if (typeof value === "bigint") return value.toString();
+    if (typeof value !== "object" || value === null) return value;
+    while (ancestors.length > 0 && ancestors.at(-1) !== this) ancestors.pop();
+    if (ancestors.includes(value)) return "[Circular]";
+    ancestors.push(value);
+    return value;
+  }
+
+  /* `undefined` for a function or a symbol; a `toJSON` can still throw. */
+  try {
+    return JSON.stringify(value, replacer, 2) ?? toText(value);
+  } catch {
+    return toText(value);
+  }
+};
+
+/* Children whose value holds nothing to render keep the default body, so
+   `{state === "x" && <Controls />}` doesn't empty the panel. `toArray` drops
+   null, undefined and booleans and flattens arrays, but keeps fragments, so
+   those are checked through. A component that renders null can't be seen
+   without rendering it, so it still replaces the body. */
+const isEmpty = (node: React.ReactNode): boolean =>
+  Children.toArray(node).every(
+    (child) =>
+      child === "" ||
+      (isValidElement<{ children?: React.ReactNode }>(child) &&
+        child.type === Fragment &&
+        isEmpty(child.props.children)),
+  );
+
 /* Prose already styles a `pre` the way Markdown renders a fence: the surface
    fill, the mono face and horizontal scroll. So the tool body matches a fenced
-   block in the reply above it, at no bundle cost. */
+   block in the reply above it, at no bundle cost. `tabIndex` lets keyboard
+   users reach the `pre` and scroll a long line in Safari, which does not make
+   a scroll container focusable on its own. */
 const ToolCode = ({ children }: { children: string }) => (
   <Prose data-slot="tool-code">
-    <pre>
+    <pre tabIndex={0}>
       <code>{children}</code>
     </pre>
   </Prose>
@@ -48,6 +101,48 @@ const ToolSection = ({
   </Stack>
 );
 
+/* Its own component so the JSON is only built while the panel is mounted, and
+   only again when the part's input or output changes. An element output has no
+   text: it renders as itself. */
+const ToolBody = ({
+  input,
+  output,
+  errorText,
+}: Pick<ToolPart, "input" | "output" | "errorText">) => {
+  const inputText = useMemo(
+    () => (input === undefined ? undefined : toJson(input)),
+    [input],
+  );
+  const outputText = useMemo(() => {
+    if (output === undefined || isValidElement(output)) return undefined;
+    return typeof output === "string" ? output : toJson(output);
+  }, [output]);
+
+  return (
+    <>
+      {inputText !== undefined && (
+        <ToolSection slot="tool-input" heading="Parameters">
+          <ToolCode>{inputText}</ToolCode>
+        </ToolSection>
+      )}
+      {(output !== undefined || errorText) && (
+        <ToolSection
+          slot="tool-output"
+          heading={errorText ? "Error" : "Result"}
+        >
+          {errorText && (
+            <Text color="red" className={styles["error"]}>
+              {errorText}
+            </Text>
+          )}
+          {isValidElement(output) && output}
+          {outputText !== undefined && <ToolCode>{outputText}</ToolCode>}
+        </ToolSection>
+      )}
+    </>
+  );
+};
+
 export const Tool = ({
   part,
   fullwidth = true,
@@ -59,7 +154,6 @@ export const Tool = ({
 }: ToolProps) => {
   const status = TOOL_STATES[part.state];
   const StatusIcon = status.icon;
-  const { input, output, errorText } = part;
 
   return (
     <CollapsibleRoot
@@ -79,9 +173,13 @@ export const Tool = ({
           <Group fullwidth ax="space-between" ay="center" gap={2} p={3} />
         }
       >
-        <Group gap={2} ay="center">
+        {/* `minw={0}` lets the row shrink below a long name, so the name wraps
+            instead of pushing the badge and chevron out of the card. */}
+        <Group gap={2} ay="center" minw={0}>
           <WrenchIcon />
-          <Text weight="medium">{toolName(part)}</Text>
+          <Text weight="medium" className={styles["name"]}>
+            {toolName(part)}
+          </Text>
           <Badge
             data-slot="tool-status"
             size="small"
@@ -94,39 +192,27 @@ export const Tool = ({
         </Group>
         <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
+      {/* `w="full"` keeps the panel the card's width whatever `ax` the root
+          takes, so its code blocks scroll rather than overflow the card. */}
       <CollapsiblePanel
         data-slot="tool-panel"
+        w="full"
         instant={false}
         ax="stretch"
-        gap={4}
-        p={4}
       >
-        {children ?? (
-          <>
-            {input !== undefined && (
-              <ToolSection slot="tool-input" heading="Parameters">
-                <ToolCode>{JSON.stringify(input, null, 2)}</ToolCode>
-              </ToolSection>
-            )}
-            {(output !== undefined || errorText) && (
-              <ToolSection
-                slot="tool-output"
-                heading={errorText ? "Error" : "Result"}
-              >
-                {errorText && <Text color="red">{errorText}</Text>}
-                {isValidElement(output)
-                  ? output
-                  : output !== undefined && (
-                      <ToolCode>
-                        {typeof output === "string"
-                          ? output
-                          : JSON.stringify(output, null, 2)}
-                      </ToolCode>
-                    )}
-              </ToolSection>
-            )}
-          </>
-        )}
+        {/* The padding sits here rather than on the panel, where `border-box`
+            would stop the closing height at the padding instead of zero. */}
+        <Stack data-slot="tool-body" ax="stretch" gap={4} p={4}>
+          {isEmpty(children) ? (
+            <ToolBody
+              input={part.input}
+              output={part.output}
+              errorText={part.errorText}
+            />
+          ) : (
+            children
+          )}
+        </Stack>
       </CollapsiblePanel>
     </CollapsibleRoot>
   );

@@ -29,9 +29,9 @@ All `Collapsible` root props, which are Base UI's `open`, `defaultOpen`, `onOpen
 | Prop       | Type        | Default | Description                                                 |
 | ---------- | ----------- | ------- | ----------------------------------------------------------- |
 | `part`     | `ToolPart`  | —       | The tool call. Both of the SDK's tool part types satisfy it |
-| `children` | `ReactNode` | —       | Replaces the default parameters and result body when given  |
+| `children` | `ReactNode` | —       | Replaces the default body when it renders something         |
 
-Defaults: `fullwidth`, `ax="stretch"` and `b={1}`, so the card is a bordered `Stack` with the global radius whose panel spans it, and a wide input scrolls inside the card. Closed by default; pass `defaultOpen` to start it open. Renders `data-slot="tool"` and `data-state` set to the part's state on the root, `data-slot="tool-trigger"` and `data-slot="tool-status"` in the header, and `data-slot="tool-panel"`, `data-slot="tool-input"` and `data-slot="tool-output"` inside.
+Defaults: `fullwidth`, `ax="stretch"` and `b={1}`, so the card is a bordered `Stack` with the global radius whose panel spans it, and a wide input scrolls inside the card. Closed by default; pass `defaultOpen` to start it open. Renders `data-slot="tool"` and `data-state` set to the part's state on the root, `data-slot="tool-trigger"` and `data-slot="tool-status"` in the header, and `data-slot="tool-panel"`, `data-slot="tool-body"` (the padded stack that holds the default body or `children`), `data-slot="tool-input"`, `data-slot="tool-output"` and `data-slot="tool-code"` inside. A long tool name wraps beside a badge that keeps its width, so the badge and chevron stay in view in a narrow card. The trigger's focus ring is inset, since the card clips at its radius, and a `disabled` card's trigger drops its hover fill and pointer. The panel spans the card whatever `ax` the root takes.
 
 ### ToolPart
 
@@ -63,13 +63,19 @@ The running state's icon spins, and stops under `prefers-reduced-motion`.
 
 ## Body
 
-The panel is a `Stack` of two sections. "Parameters" pretty-prints `input` as JSON in a `pre`, and is left out when there is no input. "Result" shows `output`, or becomes "Error" and shows `errorText` in red; with neither, there is no second section. Code renders through [`Prose`](../../../typography/src/prose/README.md), the same way a fence in the reply does. A product that wants syntax highlighting, or a chart, or anything else, passes `children` and the default body steps aside:
+The panel is a `Stack` of two sections. "Parameters" pretty-prints `input` as JSON in a `pre`, and is left out when there is no input. "Result" shows `output`, or becomes "Error" and shows `errorText` in red, wrapped inside the card however long its URL or ID; with neither, there is no second section. An `output` that is a React element renders as itself, with no `pre` around it.
+
+Code renders through [`Prose`](../../../typography/src/prose/README.md), the same way a fence in the reply does. A long line scrolls sideways in its `pre`, which takes focus so keyboard users can scroll it too. A BigInt prints as its digits in a string and a reference back to an ancestor as `"[Circular]"`, so one such field does not cost the rest of the value. A value JSON has no form for at all, such as a function, falls back to its `String` form, or to `[object Object]` when even that throws. The JSON is only built while the panel is open, and only again when `input` or `output` is a new value, so replace them rather than mutating them in place.
+
+A product that wants syntax highlighting, or a chart, or anything else, passes `children` and the default body steps aside. Children whose value holds nothing to render (`null`, `undefined`, a boolean, `""`, or a list or fragment of these) leave the default body in place, so a condition that is false shows the parameters rather than an empty panel:
 
 ```tsx
 <Tool part={part}>
-  <WeatherCard {...part.output} />
+  {part.state === "output-available" && <WeatherCard {...part.output} />}
 </Tool>
 ```
+
+A component that renders `null` still replaces the body. Tool can't see what a component renders, so make the condition decide whether it is passed, not what it returns.
 
 ## Notes
 

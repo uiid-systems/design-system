@@ -8,9 +8,36 @@
 .trigger {
   transition: background-color var(--globals-transition-duration) var(--globals-transition-easing);
 
-  &:hover {
+  &:hover:not([data-disabled]) {
     background-color: var(--shade-surface);
   }
+
+  /* A disabled trigger opens nothing, so it drops the shared pointer too. */
+  &[data-disabled] {
+    cursor: default;
+  }
+
+  /* Inset, because the card's `overflow: hidden` clips an outer ring, and a
+     closed card's trigger touches every edge. */
+  &:focus-visible {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: calc(var(--globals-outline-width) * -1);
+  }
+}
+
+/* A tool name is often one unbroken snake_case word, and an error often holds a
+   URL or an ID. Breaking either anywhere keeps it, and the badge and chevron
+   beside the name, inside a narrow card, where the card's `overflow: hidden`
+   would otherwise clip them. */
+.name,
+.error {
+  overflow-wrap: anywhere;
+}
+
+/* The badge keeps its width and its one line while a long name wraps. */
+.status {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* The state icon rides inline inside the badge's own Text, so it sizes to the

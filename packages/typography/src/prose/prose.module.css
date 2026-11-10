@@ -92,6 +92,12 @@
     margin-block-start: 0;
   }
 
+  /* The last child has no bottom margin, so a bubble or card doesn't end
+     with stray space (a trailing pre, blockquote, div, or hr) */
+  & > :last-child {
+    margin-block-end: 0;
+  }
+
   /* After a heading: tighter than default rhythm */
   /* & > :is(h1, h2, h3, h4, h5, h6) + * {
     margin-block-start: 0.75em;
