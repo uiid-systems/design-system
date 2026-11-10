@@ -7,7 +7,7 @@ import type { TabsPanelProps } from "../tabs.types";
 import styles from "../tabs.module.css";
 
 export const TabsPanel = ({
-  ax = "center",
+  ax,
   ay = "center",
   fullwidth = true,
   className,
