@@ -41,7 +41,8 @@ export const Field = ({
   const hasDescription = isRenderable(description);
 
   // No label, action, description, or out-of-flow error means this field paints
-  // no chrome of its own, so the root should not participate in layout.
+  // no chrome of its own, so the root should not participate in layout until
+  // an inline error renders.
   const hasChrome =
     hasLabel || hasAction || hasDescription || errorType !== "inline";
 
