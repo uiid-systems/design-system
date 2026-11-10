@@ -59,23 +59,17 @@ const rows = [...new Set([...head.keys(), ...base.keys()])].map((name) => {
 // about. The entry names come from .size-limit.js.
 const GROUPS = [
   {
-    title: "Packages",
     column: "Package",
-    note: "Each package's whole barrel, without React or Base UI.",
     match: (name) => !name.startsWith("import {") && !name.endsWith(" (css)"),
     label: (name) => name,
   },
   {
-    title: "Components",
     column: "Component",
-    note: "One import from `@uiid/design-system`, without React. Includes the Base UI code that import pulls in.",
     match: (name) => name.startsWith("import {"),
     label: (name) => name.replace(/^import \{ (.+) \}$/, "$1"),
   },
   {
-    title: "Styles",
     column: "Stylesheet",
-    note: "Each package's built stylesheet.",
     match: (name) => name.endsWith(" (css)"),
     label: (name) => name.replace(/ \(css\)$/, ""),
   },
@@ -104,15 +98,12 @@ const line = (row, label) => {
   return `| ${icon} | ${name} | ${kB(row.before)} | ${kB(row.after)} | ${change} |`;
 };
 
-// One titled table per group that has rows; empty groups are left out.
-const sections = (list, { notes = false } = {}) =>
+// One table per group that has rows; empty groups are left out.
+const sections = (list) =>
   GROUPS.flatMap((group) => {
     const members = list.filter((row) => group.match(row.name));
     if (members.length === 0) return [];
     return [
-      `**${group.title}**`,
-      "",
-      ...(notes ? [group.note, ""] : []),
       `| | ${group.column} | Base | PR | Change |`,
       "|---|---|---|---|---|",
       ...members.map((row) => line(row, group.label)),
@@ -135,10 +126,8 @@ else out.push("No size changes against the base branch.", "");
 out.push(
   `<details><summary>All ${rows.length} entries</summary>`,
   "",
-  ...sections(rows, { notes: true }),
+  ...sections(rows),
   "</details>",
-  "",
-  "_Sizes are minified and brotlied._",
 );
 
 const markdown = out.join("\n");
