@@ -12,7 +12,7 @@ import {
 import styles from "./palette.stories.module.css";
 
 /*
- * The semantic palette: eight treatments per hue, each a plain light-dark() pair
+ * The semantic palette: nine treatments per hue, each a plain light-dark() pair
  * of primitive references. Components choose a treatment and never name a hue or
  * a step, which is why a tinted Card and a subtle Button cannot drift apart.
  *
@@ -53,6 +53,10 @@ const HueStack = ({
         </Text>
       )}
 
+      <Text size={-1} className={styles.onTintMuted}>
+        {annotated ? "--palette-on-tint-muted" : "Secondary text"}
+      </Text>
+
       <Stack className={styles.fill} px={3} py={2} gap={1}>
         <Text size={-1} weight="medium">
           Filled
@@ -83,7 +87,8 @@ export const Palette: Story = {
         </Text>
         <Text size={-1} shade="muted">
           Hover a surface to see its hover treatment. Every pairing clears WCAG
-          AA against the surface it is named for; the tightest is 5.10:1.
+          AA against the surface it is named for. --palette-on-tint-muted is for
+          resting tints only; on the hover tint it dips below 4.5:1.
         </Text>
       </Stack>
 

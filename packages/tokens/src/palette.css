@@ -12,6 +12,7 @@
  *
  *   --palette-tint          tinted surface (coloured Card, subtle Button, Badge)
  *   --palette-on-tint       text/icon sitting on --palette-tint
+ *   --palette-on-tint-muted secondary text on a resting --palette-tint (see below)
  *   --palette-tint-hover    --palette-tint on hover and press
  *   --palette-tint-border   border around a --palette-tint surface
  *
@@ -19,9 +20,11 @@
  *
  * Every pairing clears WCAG AA (4.5:1) against the surface it is named for,
  * measured from the authored hex in json/primitives/colors.tokens.json. The
- * tightest is 6.08:1. --palette-text is measured against --shade-background; on
+ * tightest is 5.14:1 (purple text on the dark page). --palette-text is measured against --shade-background; on
  * a tinted surface read --palette-on-tint instead, which is also what the
  * transparent (ghost) treatment uses.
+ *
+ * --palette-on-tint-muted is secondary text (timestamps, captions) on a resting --palette-tint, quieter than --palette-on-tint. Every hue reads the neutral ramp, 600 light / 400 dark, not its own: the hue's own 600 on its 50 tint fails AA on orange, green and yellow. Against --palette-tint it measures 5.46-6.58:1 light and 5.15-5.83:1 dark. It is for resting surfaces only: on --palette-tint-hover it dips below AA at most hues (3.78-4.89:1), which the contrast script reports without gating.
  *
  * These are global class names rather than CSS-module ones on purpose: modules
  * hash per build, so a module here could not be reached from globals.css and
@@ -40,6 +43,7 @@
     --palette-fill-hover: light-dark(var(--color-red-800), var(--color-red-300));
     --palette-tint: light-dark(var(--color-red-50), var(--color-red-900));
     --palette-on-tint: light-dark(var(--color-red-800), var(--color-red-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-red-200), var(--color-red-700));
     --palette-text: light-dark(var(--color-red-700), var(--color-red-400));
   }
@@ -50,6 +54,7 @@
     --palette-fill-hover: light-dark(var(--color-orange-800), var(--color-orange-300));
     --palette-tint: light-dark(var(--color-orange-50), var(--color-orange-900));
     --palette-on-tint: light-dark(var(--color-orange-800), var(--color-orange-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-orange-200), var(--color-orange-700));
     --palette-text: light-dark(var(--color-orange-700), var(--color-orange-400));
   }
@@ -60,6 +65,7 @@
     --palette-fill-hover: light-dark(var(--color-yellow-800), var(--color-yellow-300));
     --palette-tint: light-dark(var(--color-yellow-50), var(--color-yellow-900));
     --palette-on-tint: light-dark(var(--color-yellow-800), var(--color-yellow-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-yellow-200), var(--color-yellow-700));
     --palette-text: light-dark(var(--color-yellow-700), var(--color-yellow-400));
   }
@@ -70,6 +76,7 @@
     --palette-fill-hover: light-dark(var(--color-green-800), var(--color-green-300));
     --palette-tint: light-dark(var(--color-green-50), var(--color-green-900));
     --palette-on-tint: light-dark(var(--color-green-800), var(--color-green-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-green-200), var(--color-green-700));
     --palette-text: light-dark(var(--color-green-700), var(--color-green-400));
   }
@@ -80,6 +87,7 @@
     --palette-fill-hover: light-dark(var(--color-blue-800), var(--color-blue-300));
     --palette-tint: light-dark(var(--color-blue-50), var(--color-blue-900));
     --palette-on-tint: light-dark(var(--color-blue-800), var(--color-blue-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-blue-200), var(--color-blue-700));
     --palette-text: light-dark(var(--color-blue-700), var(--color-blue-400));
   }
@@ -90,6 +98,7 @@
     --palette-fill-hover: light-dark(var(--color-indigo-800), var(--color-indigo-300));
     --palette-tint: light-dark(var(--color-indigo-50), var(--color-indigo-900));
     --palette-on-tint: light-dark(var(--color-indigo-800), var(--color-indigo-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-indigo-200), var(--color-indigo-700));
     --palette-text: light-dark(var(--color-indigo-700), var(--color-indigo-400));
   }
@@ -100,6 +109,7 @@
     --palette-fill-hover: light-dark(var(--color-purple-800), var(--color-purple-300));
     --palette-tint: light-dark(var(--color-purple-50), var(--color-purple-900));
     --palette-on-tint: light-dark(var(--color-purple-800), var(--color-purple-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-purple-200), var(--color-purple-700));
     --palette-text: light-dark(var(--color-purple-700), var(--color-purple-400));
   }
@@ -110,6 +120,7 @@
     --palette-fill-hover: light-dark(var(--color-neutral-800), var(--color-neutral-300));
     --palette-tint: light-dark(#ffffff, var(--color-neutral-900));
     --palette-on-tint: light-dark(var(--color-neutral-800), var(--color-neutral-200));
+    --palette-on-tint-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
     --palette-tint-border: light-dark(var(--color-neutral-200), var(--color-neutral-700));
     --palette-text: light-dark(var(--color-neutral-700), var(--color-neutral-400));
   }
