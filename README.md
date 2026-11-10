@@ -43,7 +43,7 @@ export default function App() {
 - `@uiid/interactive` — Collapsible, Resizable, Sortable
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator, utility wrappers
 - `@uiid/lists` — List components
-- `@uiid/markdown` — Markdown renderer with streaming support (private until the npm name is bootstrapped)
+- `@uiid/markdown` — Markdown renderer with streaming support
 - `@uiid/navigation` — Accordion, Breadcrumbs, Menu, Pagination, Tabs
 - `@uiid/overlays` — Dialog, Drawer, Popover, Toast, Tooltip
 - `@uiid/tables` — Table components
