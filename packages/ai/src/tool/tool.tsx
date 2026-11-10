@@ -20,6 +20,25 @@ import styles from "./tool.module.css";
 const toolName = (part: ToolPart) =>
   part.title ?? part.toolName ?? part.type.replace(/^tool-/, "");
 
+/* `String` throws on an object with no prototype, which has no `toString`. */
+const toText = (value: unknown) => {
+  try {
+    return String(value);
+  } catch {
+    return Object.prototype.toString.call(value);
+  }
+};
+
+/* `JSON.stringify` throws on a BigInt or a cycle and returns `undefined` for a
+   function or a symbol, any of which a hand-built part can carry. */
+const toJson = (value: unknown) => {
+  try {
+    return JSON.stringify(value, null, 2) ?? toText(value);
+  } catch {
+    return toText(value);
+  }
+};
+
 /* Prose already styles a `pre` the way Markdown renders a fence: the surface
    fill, the mono face and horizontal scroll. So the tool body matches a fenced
    block in the reply above it, at no bundle cost. */
@@ -105,7 +124,7 @@ export const Tool = ({
           <>
             {input !== undefined && (
               <ToolSection slot="tool-input" heading="Parameters">
-                <ToolCode>{JSON.stringify(input, null, 2)}</ToolCode>
+                <ToolCode>{toJson(input)}</ToolCode>
               </ToolSection>
             )}
             {(output !== undefined || errorText) && (
@@ -118,9 +137,7 @@ export const Tool = ({
                   ? output
                   : output !== undefined && (
                       <ToolCode>
-                        {typeof output === "string"
-                          ? output
-                          : JSON.stringify(output, null, 2)}
+                        {typeof output === "string" ? output : toJson(output)}
                       </ToolCode>
                     )}
               </ToolSection>

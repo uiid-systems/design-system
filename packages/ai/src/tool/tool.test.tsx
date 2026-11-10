@@ -18,6 +18,11 @@ const part = (overrides: Partial<ToolPart> = {}): ToolPart => ({
   ...overrides,
 });
 
+/* `JSON.stringify` throws on the BigInt, then `String` throws for want of a
+   `toString`. */
+const nullProto = () =>
+  Object.assign(Object.create(null) as Record<string, unknown>, { id: 10n });
+
 const getRoot = () => document.querySelector<HTMLElement>("[data-slot='tool']");
 const getStatus = () =>
   document.querySelector<HTMLElement>("[data-slot='tool-status']");
@@ -148,6 +153,33 @@ describe("Tool", () => {
       '\n  "temperature": 21\n',
     );
   });
+
+  it.each([
+    ["a BigInt", 10n, "10"],
+    [
+      "a cycle",
+      (() => {
+        const cycle: Record<string, unknown> = {};
+        cycle.self = cycle;
+        return cycle;
+      })(),
+      "[object Object]",
+    ],
+    ["a function", function lookup() {}, "function lookup() {}"],
+    [
+      "an object with no prototype holding a BigInt",
+      nullProto(),
+      "[object Object]",
+    ],
+  ])(
+    "falls back to a string for %s, which JSON cannot hold",
+    (_, value, text) => {
+      render(<Tool part={part({ input: value, output: value })} defaultOpen />);
+
+      expect(getInput()!.querySelector("pre")).toHaveTextContent(text);
+      expect(getOutput()!.querySelector("pre")).toHaveTextContent(text);
+    },
+  );
 
   it("renders an element output as itself", () => {
     render(
