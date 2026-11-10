@@ -14,6 +14,13 @@ describe("Stack", () => {
     });
   });
 
+  it("stretches children across the column by default", () => {
+    render(<Stack data-testid="stack">x</Stack>);
+    const stack = screen.getByTestId("stack");
+    expect(stack).toHaveStyle({ alignItems: "stretch" });
+    expect(stack).not.toHaveAttribute("data-ui-ay");
+  });
+
   it("forwards Box props and swaps ax/ay for column layout", () => {
     render(
       <Stack ax="center" p={4} data-testid="stack">
