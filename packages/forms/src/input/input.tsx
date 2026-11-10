@@ -2,6 +2,7 @@
 
 import { Field } from "../field/field";
 import type { InputProps } from "./input.types";
+import { hasInputSlots } from "./input.utils";
 import { InputControl, InputWrapper } from "./subcomponents";
 
 export const Input = ({
@@ -22,7 +23,10 @@ export const Input = ({
   ref,
   ...props
 }: InputProps) => {
-  const hasSlots = Boolean(before || after);
+  /* With a slot, the wrapper paints the surface and takes the props that shape
+     it; the input fills the wrapper. Without one, the wrapper renders as
+     `display: contents` and the input paints its own surface. */
+  const inner = hasInputSlots({ before, after });
 
   return (
     <Field
@@ -49,7 +53,7 @@ export const Input = ({
           name={name}
           required={required}
           disabled={disabled}
-          inner={hasSlots}
+          inner={inner}
           size={size}
           fullwidth={fullwidth}
           variant={variant}

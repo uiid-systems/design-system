@@ -1,12 +1,12 @@
 "use client";
 
-import { cx, useComposedRefs } from "@uiid/utils";
+import { useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
-import { inputColorClassName } from "../input/input.styles";
-import { inputVariants } from "../input/input.variants";
+import { inputControlClassName } from "../input/input.styles";
+import { hasInputSlots } from "../input/input.utils";
 import { InputWrapper } from "../input/subcomponents";
 import { useMask } from "./hooks";
 import {
@@ -14,8 +14,6 @@ import {
   MASK_INPUT_DEFAULT_LOCALE,
 } from "./mask-input.constants";
 import type { MaskInputProps } from "./mask-input.types";
-
-import inputStyles from "../input/input.module.css";
 
 export const MaskInput = (props: MaskInputProps) => {
   const {
@@ -149,17 +147,14 @@ export const MaskInput = (props: MaskInputProps) => {
             "data-readonly": readOnly ? "" : undefined,
             "data-required": required ? "" : undefined,
           }}
-          className={cx(
-            inputStyles["input"],
-            before || after
-              ? inputStyles["input-inner"]
-              : inputVariants({ size, fullwidth, variant }),
-            // Which element wears the control surface flips on the slots, so
-            // the hue goes to both: to the wrapper above when it is the
-            // surface, and here for the foreground pairing either way.
-            inputColorClassName(color),
+          className={inputControlClassName({
+            inner: hasInputSlots({ before, after }),
+            size,
+            fullwidth,
+            variant,
+            color,
             className,
-          )}
+          })}
           render={
             <input
               {...inputProps}

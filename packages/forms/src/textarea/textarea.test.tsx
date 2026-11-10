@@ -355,11 +355,12 @@ describe("Textarea before/after slots", () => {
   const wrapper = (container: HTMLElement) =>
     container.querySelector("[data-slot='input-wrapper']");
 
-  it("renders no wrapper and keeps its own surface when neither slot is set", () => {
+  it("leaves the wrapper box-less and keeps its own surface when neither slot is set", () => {
     const { container } = render(<Textarea variant="ghost" color="blue" />);
     const textarea = screen.getByRole("textbox");
 
-    expect(wrapper(container)).toBeNull();
+    expect(wrapper(container)?.className).toMatch(/input-wrapper-bare/);
+    expect(wrapper(container)).not.toHaveAttribute("data-orientation");
     expect(textarea.className).not.toMatch(/textarea-inner/);
     expect(textarea.className).toMatch(/composes-field-surface-ghost/);
     expect(textarea).toHaveClass("palette-blue");
@@ -419,7 +420,8 @@ describe("Textarea before/after slots", () => {
     expect(textarea).toHaveClass(styles["textarea-inner"]);
     expect(textarea).toHaveClass(styles["size-large"]);
     expect(textarea).toHaveClass(styles["resize-none"]);
-    expect(wrapper(container)?.className).toMatch(/composes-size-large/);
+    expect(wrapper(container)?.className).toMatch(/size-large/);
+    expect(wrapper(container)?.className).not.toMatch(/composes-size-/);
   });
 
   it("still lands ref, rows, name and className on the textarea", () => {

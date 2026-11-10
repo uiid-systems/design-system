@@ -28,7 +28,9 @@ export const inputColorClassName = (color?: InputColor) =>
   paletteClassName(color, styles["color"]);
 
 /**
- * The control surface an `<input>` needs, without the element itself.
+ * The control surface an `<input>` needs, without the element itself. With
+ * `inner`, the `InputWrapper` around it paints the surface and takes the size,
+ * variant and hue, so the input gets only its inner treatment.
  *
  * `InputControl` is Base UI's `Input`, which is a `Field.Control`: it registers
  * itself with the surrounding field and takes its `name` from that field. That
@@ -49,8 +51,12 @@ export const inputControlClassName = ({
   className,
 }: InputControlClassNameOptions = {}) =>
   cx(
-    styles["input"],
-    inner ? styles["input-inner"] : inputVariants({ size, fullwidth, variant }),
-    inputColorClassName(color),
+    inner
+      ? styles["input-inner"]
+      : cx(
+          styles["input"],
+          inputVariants({ size, fullwidth, variant }),
+          inputColorClassName(color),
+        ),
     className,
   );

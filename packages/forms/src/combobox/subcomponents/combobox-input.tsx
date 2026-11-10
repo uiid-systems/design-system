@@ -5,6 +5,7 @@ import { cxState } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
+import { hasInputSlots } from "../../input/input.utils";
 import { InputWrapper } from "../../input/subcomponents";
 import type { ComboboxInputProps } from "../combobox.types";
 
@@ -23,7 +24,7 @@ export const ComboboxInput = ({
   className,
   ...props
 }: ComboboxInputProps) => {
-  const hasSlots = Boolean(before || after);
+  const hasSlots = hasInputSlots({ before, after });
 
   return (
     <Field
@@ -37,10 +38,10 @@ export const ComboboxInput = ({
       {...FieldProps}
     >
       {/*
-       * The hue goes to both the wrapper and the control because either can be
-       * the element wearing the surface. Combobox's monolith always renders an
-       * `after`, so the wrapper carries it there; a bare `ComboboxInput` with no
-       * slots has no wrapper at all and the `<input>` carries it instead.
+       * The hue goes to whichever element wears the surface. Combobox's
+       * monolith always renders an `after`, so the wrapper carries it there; a
+       * bare `ComboboxInput` with no slots leaves the wrapper as a box-less
+       * `display: contents` and the `<input>` carries it instead.
        */}
       <InputWrapper
         before={before}

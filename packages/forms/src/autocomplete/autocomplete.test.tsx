@@ -218,10 +218,12 @@ describe("Autocomplete color", () => {
    * Autocomplete renders no slots by default, so `InputWrapper` collapses to a
    * fragment and the `<input>` is the element wearing the surface.
    */
-  it("tints the bare input when there is no wrapper", () => {
+  it("tints the bare input when the wrapper paints nothing", () => {
     const { container } = render(<Autocomplete items={items} color="blue" />);
 
-    expect(container.querySelector("[data-slot='input-wrapper']")).toBeNull();
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    expect(wrapper).toHaveClass(inputStyles["input-wrapper-bare"]);
+    expect(wrapper).not.toHaveClass("palette-blue");
     expect(screen.getByRole("combobox")).toHaveClass("palette-blue");
     expect(screen.getByRole("combobox").className).toMatch(
       /composes-field-surface-color/,

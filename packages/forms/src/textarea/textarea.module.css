@@ -19,8 +19,8 @@
 
 /*
  * Inside an `InputWrapper` the wrapper paints the surface once, so the textarea
- * drops its own edge, background and ring. These mirror `.input-wrapper >
- * .input-inner`. The invalid composition still lands on this element and sets
+ * drops its own edge, background and ring, as `.input-inner` does for Input.
+ * The invalid composition still lands on this element and sets
  * `border-color` and `outline-color`; with no border or outline to colour,
  * only the wrapper's copy shows. Next to a slot the block padding goes, or the
  * gap between the text and the slot row doubles.

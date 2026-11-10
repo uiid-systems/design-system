@@ -342,14 +342,16 @@ describe("Combobox color", () => {
    * shared surface sets `color` on the element itself, which an inherited
    * value could never outrank.
    */
-  it("tints the wrapper and the inner input", () => {
+  /* The monolith always renders an `after`, so the wrapper wears the surface
+     and the hue; the inner input inherits its text colour. */
+  it("tints the wrapper, not the inner input", () => {
     const { container } = render(<Combobox items={items} color="blue" />);
 
     const wrapper = container.querySelector("[data-slot='input-wrapper']");
 
     expect(wrapper).toHaveClass("palette-blue");
     expect(wrapper?.className).toMatch(/composes-field-surface-color/);
-    expect(screen.getByRole("combobox").className).toMatch(
+    expect(screen.getByRole("combobox").className).not.toMatch(
       /composes-field-surface-color/,
     );
   });
@@ -488,10 +490,10 @@ describe("Combobox state-function className", () => {
     );
 
     const input = document.querySelector("[data-slot='combobox-input']");
-    expect(input).toHaveClass("fn-closed", inputStyles["input"]);
+    expect(input).toHaveClass("fn-closed", inputStyles["input-inner"]);
 
     await user.click(screen.getByRole("combobox"));
-    expect(input).toHaveClass("fn-open", inputStyles["input"]);
+    expect(input).toHaveClass("fn-open", inputStyles["input-inner"]);
   });
 
   it("resolves a state-function className on the input group alongside its own class", async () => {
