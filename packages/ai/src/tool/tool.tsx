@@ -55,10 +55,12 @@ const isEmpty = (node: React.ReactNode): boolean =>
 
 /* Prose already styles a `pre` the way Markdown renders a fence: the surface
    fill, the mono face and horizontal scroll. So the tool body matches a fenced
-   block in the reply above it, at no bundle cost. */
+   block in the reply above it, at no bundle cost. `tabIndex` lets keyboard
+   users reach the `pre` and scroll a long line in Safari, which does not make
+   a scroll container focusable on its own. */
 const ToolCode = ({ children }: { children: string }) => (
   <Prose data-slot="tool-code">
-    <pre>
+    <pre tabIndex={0}>
       <code>{children}</code>
     </pre>
   </Prose>

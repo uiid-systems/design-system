@@ -181,6 +181,19 @@ describe("Tool", () => {
     },
   );
 
+  it("puts each code block in the tab order, so a long line scrolls from the keyboard", async () => {
+    const user = userEvent.setup();
+    render(<Tool part={part()} defaultOpen />);
+
+    const [input, output] = document.querySelectorAll("pre");
+    await user.tab();
+    expect(screen.getByRole("button")).toHaveFocus();
+    await user.tab();
+    expect(input).toHaveFocus();
+    await user.tab();
+    expect(output).toHaveFocus();
+  });
+
   it("renders an element output as itself", () => {
     render(
       <Tool
