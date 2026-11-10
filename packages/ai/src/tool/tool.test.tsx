@@ -18,10 +18,14 @@ const part = (overrides: Partial<ToolPart> = {}): ToolPart => ({
   ...overrides,
 });
 
-/* `JSON.stringify` throws on the BigInt, then `String` throws for want of a
-   `toString`. */
-const nullProto = () =>
-  Object.assign(Object.create(null) as Record<string, unknown>, { id: 10n });
+/* `JSON.stringify` rethrows from `toJSON`; with no prototype, `String` then
+   throws too, for want of a `toString`. */
+const throwing = (proto: object | null) =>
+  Object.assign(Object.create(proto) as Record<string, unknown>, {
+    toJSON() {
+      throw new Error("no");
+    },
+  });
 
 const getRoot = () => document.querySelector<HTMLElement>("[data-slot='tool']");
 const getStatus = () =>
@@ -175,30 +179,52 @@ describe("Tool", () => {
     );
   });
 
+  it("prints a BigInt as its digits and keeps the fields around it", () => {
+    const value = { id: 10n, name: "acct", rows: [1n, 2] };
+    render(<Tool part={part({ input: value, output: 10n })} defaultOpen />);
+
+    expect(getInput()!.querySelector("pre")!.textContent).toBe(
+      JSON.stringify({ id: "10", name: "acct", rows: ["1", 2] }, null, 2),
+    );
+    expect(getOutput()!.querySelector("pre")!.textContent).toBe('"10"');
+  });
+
+  it("marks a cycle and keeps the fields around it, printing a shared value twice", () => {
+    const shared = { unit: "celsius" };
+    const value: Record<string, unknown> = {
+      name: "acct",
+      a: shared,
+      b: shared,
+      list: [] as unknown[],
+    };
+    value.self = value;
+    (value.list as unknown[]).push({ parent: value });
+    render(<Tool part={part({ input: value })} defaultOpen />);
+
+    expect(JSON.parse(getInput()!.querySelector("pre")!.textContent)).toEqual({
+      name: "acct",
+      a: shared,
+      b: shared,
+      list: [{ parent: "[Circular]" }],
+      self: "[Circular]",
+    });
+  });
+
   it.each([
-    ["a BigInt", 10n, "10"],
-    [
-      "a cycle",
-      (() => {
-        const cycle: Record<string, unknown> = {};
-        cycle.self = cycle;
-        return cycle;
-      })(),
-      "[object Object]",
-    ],
     ["a function", function lookup() {}, "function lookup() {}"],
     [
-      "an object with no prototype holding a BigInt",
-      nullProto(),
+      "an object whose toJSON throws",
+      throwing(Object.prototype),
       "[object Object]",
     ],
+    ["one with no prototype besides", throwing(null), "[object Object]"],
   ])(
     "falls back to a string for %s, which JSON cannot hold",
     (_, value, text) => {
       render(<Tool part={part({ input: value, output: value })} defaultOpen />);
 
-      expect(getInput()!.querySelector("pre")).toHaveTextContent(text);
-      expect(getOutput()!.querySelector("pre")).toHaveTextContent(text);
+      expect(getInput()!.querySelector("pre")!.textContent).toBe(text);
+      expect(getOutput()!.querySelector("pre")!.textContent).toBe(text);
     },
   );
 

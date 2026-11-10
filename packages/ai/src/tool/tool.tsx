@@ -22,20 +22,36 @@ import styles from "./tool.module.css";
 const toolName = (part: ToolPart) =>
   part.title ?? part.toolName ?? part.type.replace(/^tool-/, "");
 
-/* `String` throws on an object with no prototype, which has no `toString`. */
+/* Total: `String` throws on an object with no prototype, which has no
+   `toString`. */
 const toText = (value: unknown) => {
   try {
     return String(value);
   } catch {
-    return Object.prototype.toString.call(value);
+    return "[object Object]";
   }
 };
 
-/* `JSON.stringify` throws on a BigInt or a cycle and returns `undefined` for a
-   function or a symbol, any of which a hand-built part can carry. */
+/* `JSON.stringify` throws on a BigInt or a cycle, either of which a hand-built
+   part can carry, often as one field among many. The replacer writes a BigInt
+   as its digits and a reference back to an ancestor as "[Circular]", so the
+   rest of the value still prints. `this` is the object holding `value`, which
+   tells how far up the ancestors the walk has come back; a value that merely
+   appears twice is printed twice. */
 const toJson = (value: unknown) => {
+  const ancestors: unknown[] = [];
+  function replacer(this: unknown, _key: string, value: unknown) {
+    if (typeof value === "bigint") return value.toString();
+    if (typeof value !== "object" || value === null) return value;
+    while (ancestors.length > 0 && ancestors.at(-1) !== this) ancestors.pop();
+    if (ancestors.includes(value)) return "[Circular]";
+    ancestors.push(value);
+    return value;
+  }
+
+  /* `undefined` for a function or a symbol; a `toJSON` can still throw. */
   try {
-    return JSON.stringify(value, null, 2) ?? toText(value);
+    return JSON.stringify(value, replacer, 2) ?? toText(value);
   } catch {
     return toText(value);
   }
