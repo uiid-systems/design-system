@@ -1088,4 +1088,65 @@ describe("Dialog", () => {
     const popup = document.querySelector('[data-slot="dialog-popup"]');
     expect(popup).toHaveClass(styles["dialog-popup"], "fn-open");
   });
+
+  describe("nested dialogs", () => {
+    it("leaves out a nested dialog's backdrop by default", () => {
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Outer">
+          <Dialog open={true} onOpenChange={() => {}} title="Inner">
+            Inner content
+          </Dialog>
+        </Dialog>,
+      );
+
+      expect(
+        document.querySelectorAll('[data-slot="dialog-backdrop"]'),
+      ).toHaveLength(1);
+    });
+
+    it("renders a nested dialog's backdrop with BackdropProps forceRender", () => {
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Outer">
+          <Dialog
+            open={true}
+            onOpenChange={() => {}}
+            title="Inner"
+            BackdropProps={{ forceRender: true }}
+          >
+            Inner content
+          </Dialog>
+        </Dialog>,
+      );
+
+      expect(
+        document.querySelectorAll('[data-slot="dialog-backdrop"]'),
+      ).toHaveLength(2);
+    });
+
+    // `.dialog-viewport ~ * > .dialog-backdrop` lifts a nested backdrop over the outer viewport.
+    // happy-dom can't paint, and its `matches()` mishandles that compound selector, so this checks
+    // the structure the rule relies on, arm by arm; the stacking itself was proven in Chromium.
+    it("portals only a nested backdrop after a dialog viewport", () => {
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Outer">
+          <Dialog
+            open={true}
+            onOpenChange={() => {}}
+            title="Inner"
+            BackdropProps={{ forceRender: true }}
+          >
+            Inner content
+          </Dialog>
+        </Dialog>,
+      );
+
+      const afterViewport = `.${styles["dialog-viewport"]} ~ *`;
+      const [outerBackdrop, innerBackdrop] = document.querySelectorAll(
+        '[data-slot="dialog-backdrop"]',
+      );
+      expect(innerBackdrop).toHaveClass(styles["dialog-backdrop"]);
+      expect(innerBackdrop?.parentElement?.matches(afterViewport)).toBe(true);
+      expect(outerBackdrop?.parentElement?.matches(afterViewport)).toBe(false);
+    });
+  });
 });

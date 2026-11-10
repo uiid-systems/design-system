@@ -122,6 +122,31 @@
   }
 
   /*
+   * An inverted floating label: foreground surface, background text, capped at
+   * --tooltip-max-width (a tooltip token, loaded by globals.css) with long
+   * unbroken strings wrapped rather than overflowing. Button's tooltip and
+   * Tooltip both compose it.
+   *
+   * The background-color/color pair paints a plain popup. A popup rendered as
+   * a Card is painted by Card instead, from the --palette-tint vars set here:
+   * Card reads those vars in uiid.components, above this layer, and the palette
+   * classes that also set them live in uiid.tokens, below it. The border var
+   * matches the surface so a Card's border doesn't ring it in a light tint.
+   * Children inherit the inverted vars, so --palette-tint-hover inside a
+   * tooltip is the surface.
+   */
+  .composes-tooltip {
+    --palette-tint: var(--shade-foreground);
+    --palette-on-tint: var(--shade-background);
+    --palette-tint-border: var(--shade-foreground);
+
+    max-width: var(--tooltip-max-width);
+    overflow-wrap: anywhere;
+    background-color: var(--palette-tint);
+    color: var(--palette-on-tint);
+  }
+
+  /*
    * Full-viewport scrim behind a blocking overlay, faded in and out on Base UI's
    * [data-starting-style] / [data-ending-style]. Stacking is left out: each
    * overlay sets its own z-index from its component tokens.

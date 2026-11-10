@@ -15,7 +15,7 @@ export const ConversationScrollButton = ({
   onClick,
   ...props
 }: ConversationScrollButtonProps) => {
-  const { isAtBottom, scrollToBottom } = useConversation();
+  const { isAtBottom, scrollToBottom, scrollElement } = useConversation();
 
   if (isAtBottom) return null;
 
@@ -29,7 +29,15 @@ export const ConversationScrollButton = ({
       className={cx(styles["scroll-button"], className)}
       onClick={(event) => {
         onClick?.(event);
-        if (!event.defaultPrevented) scrollToBottom();
+        if (event.defaultPrevented) return;
+        /* The button unmounts once pinned, which would drop focus to the
+           body. `preventScroll` keeps the page itself from scrolling to bring
+           the viewport into view. `:focus` also matches inside a shadow root,
+           where `document.activeElement` is the host. */
+        if (event.currentTarget.matches(":focus")) {
+          scrollElement?.focus({ preventScroll: true });
+        }
+        scrollToBottom();
       }}
       {...props}
     >

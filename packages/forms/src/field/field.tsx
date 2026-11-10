@@ -1,8 +1,9 @@
 "use client";
 
 import { Group } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cxState, isRenderable } from "@uiid/utils";
 
+import { FieldRequiredProvider } from "./field-required-context";
 import type { FieldProps } from "./field.types";
 import { fieldVariants } from "./field.variants";
 import {
@@ -34,16 +35,19 @@ export const Field = ({
 }: FieldProps) => {
   const isFloating = errorType === "absolute";
 
-  const Action = ActionProps?.children || action;
-  const hasAction = Boolean(Action);
+  const Action = ActionProps?.children ?? action;
+  const hasLabel = isRenderable(label);
+  const hasAction = isRenderable(Action);
+  const hasDescription = isRenderable(description);
 
   // No label, action, description, or out-of-flow error means this field paints
   // no chrome of its own, so the root should not participate in layout.
   const hasChrome =
-    Boolean(label || hasAction || description) || errorType !== "inline";
+    hasLabel || hasAction || hasDescription || errorType !== "inline";
 
   return (
     <FieldRoot
+      data-required={required || undefined}
       {...props}
       {...RootProps}
       className={cxState(
@@ -54,14 +58,14 @@ export const Field = ({
         RootProps?.className,
       )}
     >
-      {(label || hasAction || errorType === "tooltip") && (
+      {(hasLabel || hasAction || errorType === "tooltip") && (
         <Group
           className={styles["field-label-group"]}
           ax="space-between"
           ay="center"
         >
-          {label && (
-            <FieldLabel required={required} {...LabelProps}>
+          {hasLabel && (
+            <FieldLabel {...LabelProps} required={required}>
               {label}
             </FieldLabel>
           )}
@@ -73,7 +77,9 @@ export const Field = ({
         </Group>
       )}
 
-      {children}
+      <FieldRequiredProvider value={Boolean(required)}>
+        {children}
+      </FieldRequiredProvider>
 
       {errorType === "absolute" && (
         <FieldError
@@ -83,7 +89,7 @@ export const Field = ({
       )}
       {errorType === "inline" && <FieldError {...ErrorProps} />}
 
-      {description && (
+      {hasDescription && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
       )}
     </FieldRoot>

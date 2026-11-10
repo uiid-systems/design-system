@@ -3,7 +3,7 @@
  * Palette contrast + perceptual-separation check.
  *
  * `palette.css` claims in prose that "every pairing clears WCAG AA (4.5:1)
- * against the surface it is named for" and that "the tightest is 5.10:1".
+ * against the surface it is named for" and that "the tightest is 5.14:1".
  * Nothing checked that. This does, from the authored hex in the token JSON, so
  * a retune that breaks the claim fails here instead of in review.
  *
@@ -193,6 +193,11 @@ const treatment = (hue, m) => {
     tint,
     onTint: step(hue, m === 0 ? "800" : "200"),
     /*
+     * The neutral ramp in every hue, not the hue's own: the hue's own 600 on
+     * its 50 tint measures below AA on orange, green and yellow.
+     */
+    onTintMuted: step("neutral", m === 0 ? "600" : "400"),
+    /*
      * Derived, matching the color-mix() in palette.css rather than a ramp
      * step. Keep TINT_HOVER_MIX and that rule's percentage in step — this is
      * the only place the two can drift.
@@ -248,6 +253,14 @@ for (let m = 0; m < 2; m++) {
       scheme,
       hue,
       kind: "aa",
+      name: "on-tint-muted / tint",
+      v: contrast(t.onTintMuted, t.tint),
+      min: AA,
+    });
+    record({
+      scheme,
+      hue,
+      kind: "aa",
       name: "text / page",
       v: contrast(t.text, SHADE.background[m]),
       min: AA,
@@ -269,6 +282,18 @@ for (let m = 0; m < 2; m++) {
       kind: "aa",
       name: "on-tint / tint-hover",
       v: contrast(t.onTint, t.tintHover),
+      min: AA,
+    });
+
+    // Informational, not a gate. --palette-on-tint-muted is for resting
+    // tinted surfaces and dips below AA on the hover tint at most hues.
+    // Reported so the dip stays a known figure rather than a surprise.
+    record({
+      scheme,
+      hue,
+      kind: "info",
+      name: "on-tint-muted / tint-hover",
+      v: contrast(t.onTintMuted, t.tintHover),
       min: AA,
     });
 
@@ -374,7 +399,7 @@ if (VERBOSE) {
 /*
  * Only the AA text pairings gate the run. That is the claim palette.css makes
  * in prose — "every pairing clears WCAG AA (4.5:1) against the surface it is
- * named for ... the tightest is 5.10:1" — and the one thing a retune must not
+ * named for ... the tightest is 5.14:1" — and the one thing a retune must not
  * silently break. Borders and perceptual bands are reported as advisory: both
  * involve a judgement (does 1.4.11 apply to this border; is this band visible
  * enough) that a threshold in a script should inform rather than decide.
@@ -388,6 +413,20 @@ for (const scheme of SCHEMES) {
   const worst = rows.reduce((a, b) => (b.v < a.v ? b : a));
   console.log(
     `  ${scheme.padEnd(6)} ${rows.length} pairings, tightest ${fmt(worst.v)}  (${worst.name}, ${worst.hue})`,
+  );
+}
+
+console.log(
+  "\nInformational — on-tint-muted on the hover tint (does not gate this run)",
+);
+for (const scheme of SCHEMES) {
+  const rows = results.filter((r) => r.scheme === scheme && r.kind === "info");
+  const lo = rows.reduce((a, b) => (b.v < a.v ? b : a));
+  const hi = rows.reduce((a, b) => (b.v > a.v ? b : a));
+  const under = rows.filter((r) => r.v < r.min).length;
+  console.log(
+    `  ${scheme.padEnd(6)} ${fmt(lo.v)} (${lo.hue}) .. ${fmt(hi.v)} (${hi.hue})` +
+      `  ${under}/${rows.length} below ${AA}:1`,
   );
 }
 

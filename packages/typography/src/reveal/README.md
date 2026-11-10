@@ -6,7 +6,7 @@ Use Reveal when you want to:
 
 - Fade a paragraph or heading in word-by-word on mount
 - Render streamed text (LLM responses, live transcripts) where each arriving word animates once and settles
-- Style the reveal with any `Text` prop — `size`, `weight`, `family`, `shade`, `color`, spacing, and `render` all pass through
+- Style the reveal with any `Text` prop except `balance`, `nowrap` and `truncate` — `size`, `weight`, `family`, `shade`, `color`, spacing, and `render` all pass through
 
 ## Usage
 
@@ -31,10 +31,10 @@ All [`Text`](../text/README.md) props, plus:
 
 ## Streaming
 
-Words are keyed by index, so when `children` grows (streamed chunks), already-mounted words never re-animate — only new words play the animation. Set `stagger={0}` for streaming: the stagger delay is relative to each word's own mount, so a late-arriving word would otherwise wait `index × stagger` before appearing.
+Words are keyed by index, so when `children` grows (streamed chunks), already-mounted words never re-animate — only new words play the animation. The stagger counts from the first new word, so each streamed chunk staggers on its own and the default `stagger` works for streams too.
 
 ```tsx
-<Reveal stagger={0}>{streamedText}</Reveal>
+<Reveal>{streamedText}</Reveal>
 ```
 
 Streamed text arrives in bursts, several words in one chunk and then nothing for a while, and revealed as it arrives it looks choppy. `useStreamPace` evens it out. It shows the text a whole word at a time, spaced so that whatever has arrived but not been shown yet clears in about 250ms: a burst speeds it up, so it never falls far behind. The unfinished last word waits until it is complete, so a word split across two chunks reveals whole. A token with no letter or digit in it, like a dash or a list marker, goes out with the word after it.
@@ -44,7 +44,7 @@ import { Reveal, useStreamPace } from "@uiid/typography";
 
 const paced = useStreamPace(text, streaming);
 
-<Reveal stagger={0}>{paced.text}</Reveal>;
+<Reveal>{paced.text}</Reveal>;
 ```
 
 It returns the `text` to show and its own `streaming`, which stays true after yours turns off until the last words have gone out. Text that gets shorter while streaming, like a regenerated message, starts over from nothing.
@@ -95,4 +95,6 @@ Call the pass's methods for every piece of visible text, in reading order, on ev
 
 ## Notes
 
+- `stagger` and `duration` apply to words as they mount. Changing either later only affects words added after the change; words already on screen keep their timing.
+- Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. It always wraps, so it has no `nowrap` or `truncate` prop either.
 - `children` must be a string. To reveal formatted text, use `useStreamReveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.

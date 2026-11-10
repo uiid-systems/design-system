@@ -14,6 +14,16 @@
 }
 
 /*
+ * A nested dialog portals inside its parent's portal, after the parent's
+ * viewport and in the same stacking context, so a backdrop it renders with
+ * `forceRender` would sit under that viewport. Lifting it to the popup layer
+ * lets source order paint it over the outer dialog and under its own viewport.
+ */
+.dialog-viewport ~ * > .dialog-backdrop {
+  z-index: var(--overlays-popup-z-index);
+}
+
+/*
  * Positioning container. Centering lives here so the popup — which renders as a
  * Card — never competes with Card's own `position` in the cascade. The extra
  * bottom padding raises the popup ~2rem above true center, an optical offset.

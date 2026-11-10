@@ -465,6 +465,22 @@ describe("MaskInput Field.Control integration", () => {
     );
   });
 
+  it("takes a node as its label and description, like the other inputs", () => {
+    render(
+      <MaskInput
+        mask="phone"
+        label={<span>Phone</span>}
+        description={<em>Mobile only</em>}
+      />,
+    );
+    expect(screen.getByLabelText("Phone")).toBe(screen.getByRole("textbox"));
+    expect(
+      screen
+        .getByText("Mobile only")
+        .closest("[data-slot='field-description']"),
+    ).toBeInTheDocument();
+  });
+
   it("takes its invalid state from Field rather than hand-rolled attributes", () => {
     render(<MaskInput mask="phone" label="Phone" invalid />);
     const input = screen.getByRole("textbox");

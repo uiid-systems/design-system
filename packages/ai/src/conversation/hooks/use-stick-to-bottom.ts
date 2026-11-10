@@ -108,9 +108,10 @@ export const useStickToBottom = (): UseStickToBottomReturn => {
     () => ({
       scrollRef: setScroll,
       contentRef: setContent,
+      scrollElement: scroll,
       isAtBottom,
       scrollToBottom,
     }),
-    [isAtBottom, scrollToBottom],
+    [scroll, isAtBottom, scrollToBottom],
   );
 };

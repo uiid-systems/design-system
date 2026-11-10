@@ -1,7 +1,9 @@
 /*
  * Two background layers clipped to the glyphs: a soft band on top, the text's
- * own color underneath. The band's layer is 2.5x the box, so sliding it from
- * 100% to 0% carries the band in from the left edge and out past the right.
+ * own color underneath. The band's layer is twice the box plus twice the
+ * spread, so at 100% the band's trailing edge sits on the box's left edge and
+ * at 0% its leading edge sits on the right: the sweep enters and exits fully
+ * clear of the text at any spread.
  *
  * The band is the hue's tint border, which the palette class defines next to
  * the --palette-text the glyphs wear, so a colored label washes in its own hue
@@ -25,7 +27,7 @@
     ),
     linear-gradient(currentColor, currentColor);
   background-size:
-    250% 100%,
+    calc(200% + 2 * var(--shimmer-spread)) 100%,
     auto;
   background-repeat: no-repeat;
   -webkit-background-clip: text;
@@ -52,8 +54,13 @@
   }
 }
 
-/* Static text in its own color: no sweep, and no dependence on text clipping. */
-@media (prefers-reduced-motion: reduce) {
+/*
+ * Static text in its own color: no sweep, and no dependence on text clipping.
+ * Print skips background graphics by default, which would leave the
+ * transparent glyphs invisible on paper, and forced colors removes gradient
+ * backgrounds, so neither can rely on the band to paint the text.
+ */
+@media (prefers-reduced-motion: reduce), print, (forced-colors: active) {
   .shimmer {
     animation: none;
     background-image: none;
