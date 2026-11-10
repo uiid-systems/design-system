@@ -1,11 +1,14 @@
 /*
- * `clip-path` rather than hidden overflow: it clips the panel to its
- * animating height but reaches 100vw past either side, so a child's focus
- * ring or shadow is not cut off at the panel's left and right edges.
+ * Clip vertically only: the panel hides what lies past its animating height,
+ * while a child's focus ring or shadow can still bleed past its sides.
+ * `overflow-y: clip` rather than `clip-path`, which clips paint only, so the
+ * hidden content would still stretch the scroll container, and it would hide
+ * fixed and absolutely positioned children.
  */
 .collapsible-panel {
   height: var(--collapsible-panel-height);
-  clip-path: inset(0 -100vw);
+  overflow-x: visible;
+  overflow-y: clip;
 
   &[data-starting-style],
   &[data-ending-style] {
@@ -16,7 +19,7 @@
 /* Under reduced motion the panel snaps open and shut. */
 @media (prefers-reduced-motion: no-preference) {
   .collapsible-panel {
-    transition: all var(--globals-transition-duration) ease-out;
+    transition: height var(--globals-transition-duration) ease-out;
 
     &[data-instant] {
       transition: none;

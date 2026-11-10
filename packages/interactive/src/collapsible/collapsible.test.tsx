@@ -341,13 +341,14 @@ describe("Collapsible", () => {
   // ============================================
 
   it("clips the panel vertically only, so focus rings and shadows survive", () => {
-    expect(css).toMatch(/clip-path: inset\(0 -100vw\)/);
+    expect(css).toMatch(/overflow-x: visible;/);
+    expect(css).toMatch(/overflow-y: clip;/);
     expect(css).not.toMatch(/overflow: hidden/);
   });
 
   it("animates the panel only when motion is allowed", () => {
     expect(css).toMatch(
-      /@media \(prefers-reduced-motion: no-preference\) \{\s*\.collapsible-panel \{\s*transition:/,
+      /@media \(prefers-reduced-motion: no-preference\) \{\s*\.collapsible-panel \{\s*transition: height /,
     );
   });
 });
