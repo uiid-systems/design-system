@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
 import { InputControl } from "../input/subcomponents";
@@ -306,6 +306,38 @@ describe("Field bare mode", () => {
     );
     const root = container.querySelector("[data-slot='field-root']");
     expect(root?.className).not.toMatch(/field-root-bare/);
+  });
+
+  it("adds no layout box until an inline error renders", async () => {
+    const { container, rerender } = render(
+      <Field>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']")!;
+    expect(getComputedStyle(root).display).toBe("contents");
+
+    rerender(
+      <Field ErrorProps={{ match: true, children: "Required" }}>
+        <input />
+      </Field>,
+    );
+    expect(
+      root.querySelector(":scope > [data-slot='field-error']"),
+    ).toBeInTheDocument();
+    expect(getComputedStyle(root).display).not.toBe("contents");
+
+    rerender(
+      <Field ErrorProps={{ match: false, children: "Required" }}>
+        <input />
+      </Field>,
+    );
+    await waitFor(() =>
+      expect(
+        root.querySelector(":scope > [data-slot='field-error']"),
+      ).not.toBeInTheDocument(),
+    );
+    expect(getComputedStyle(root).display).toBe("contents");
   });
 
   it("stops being bare when the error renders out of flow", () => {
