@@ -356,6 +356,36 @@ describe("Autocomplete state-function className", () => {
 describe("Autocomplete hands disabled to Field", () => {
   const items = ["apple", "banana"];
 
+  it("makes caller slot content inert while disabled", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+        disabled
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves slot content interactive while enabled", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+  });
+
   it("dims the label and description with a disabled autocomplete", () => {
     render(
       <Autocomplete

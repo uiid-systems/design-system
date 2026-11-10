@@ -49,7 +49,13 @@ export const Combobox = ({
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
   return (
-    <ComboboxRoot items={items} name={name} {...RootProps} {...rootProps}>
+    <ComboboxRoot
+      items={items}
+      name={name}
+      disabled={disabled}
+      {...RootProps}
+      {...rootProps}
+    >
       <ComboboxInputGroup size={size} {...InputGroupProps}>
         <ComboboxInput
           name={name}

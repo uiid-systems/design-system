@@ -47,6 +47,7 @@ export const ComboboxInput = ({
         after={after}
         size={size}
         color={color}
+        disabled={disabled}
         fullwidth
       >
         {/*

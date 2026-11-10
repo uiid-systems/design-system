@@ -658,6 +658,66 @@ describe("Combobox state-function className", () => {
 describe("Combobox hands disabled to Field", () => {
   const items = ["apple", "banana"];
 
+  it("makes caller slot content inert while disabled", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+        disabled
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves slot content interactive while enabled", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        before="$"
+        after={<button type="button">Go</button>}
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+  });
+
+  it("disables the trigger and clear buttons", () => {
+    render(<Combobox items={items} defaultValue="apple" disabled />);
+    expect(
+      screen.getByRole("button", { name: "Toggle dropdown", hidden: true }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Clear selection", hidden: true }),
+    ).toBeDisabled();
+  });
+
+  it("leaves a disabled combobox out of form submission", () => {
+    const { container } = render(
+      <form>
+        <Combobox items={items} name="fruit" defaultValue="apple" disabled />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(new FormData(form).getAll("fruit")).toEqual([]);
+  });
+
+  it("submits an enabled combobox's value", () => {
+    const { container } = render(
+      <form>
+        <Combobox items={items} name="fruit" defaultValue="apple" />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(new FormData(form).getAll("fruit")).toEqual(["apple"]);
+  });
+
   it("dims the label and description with a disabled combobox", () => {
     render(
       <Combobox items={items} label="Fruit" description="Pick one" disabled />,
