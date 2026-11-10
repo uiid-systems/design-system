@@ -3,7 +3,7 @@
  * Palette contrast + perceptual-separation check.
  *
  * `palette.css` claims in prose that "every pairing clears WCAG AA (4.5:1)
- * against the surface it is named for" and that "the tightest is 5.10:1".
+ * against the surface it is named for" and that "the tightest is 5.14:1".
  * Nothing checked that. This does, from the authored hex in the token JSON, so
  * a retune that breaks the claim fails here instead of in review.
  *
@@ -399,7 +399,7 @@ if (VERBOSE) {
 /*
  * Only the AA text pairings gate the run. That is the claim palette.css makes
  * in prose — "every pairing clears WCAG AA (4.5:1) against the surface it is
- * named for ... the tightest is 5.10:1" — and the one thing a retune must not
+ * named for ... the tightest is 5.14:1" — and the one thing a retune must not
  * silently break. Borders and perceptual bands are reported as advisory: both
  * involve a judgement (does 1.4.11 apply to this border; is this band visible
  * enough) that a threshold in a script should inform rather than decide.
