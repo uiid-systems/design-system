@@ -9,7 +9,7 @@ import {
 import { Group, Stack } from "@uiid/layout";
 import { Prose, Text } from "@uiid/typography";
 import { cx, cxState } from "@uiid/utils";
-import { isValidElement } from "react";
+import { Children, Fragment, isValidElement } from "react";
 
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
@@ -38,6 +38,20 @@ const toJson = (value: unknown) => {
     return toText(value);
   }
 };
+
+/* Children whose value holds nothing to render keep the default body, so
+   `{state === "x" && <Controls />}` doesn't empty the panel. `toArray` drops
+   null, undefined and booleans and flattens arrays, but keeps fragments, so
+   those are checked through. A component that renders null can't be seen
+   without rendering it, so it still replaces the body. */
+const isEmpty = (node: React.ReactNode): boolean =>
+  Children.toArray(node).every(
+    (child) =>
+      child === "" ||
+      (isValidElement<{ children?: React.ReactNode }>(child) &&
+        child.type === Fragment &&
+        isEmpty(child.props.children)),
+  );
 
 /* Prose already styles a `pre` the way Markdown renders a fence: the surface
    fill, the mono face and horizontal scroll. So the tool body matches a fenced
@@ -120,7 +134,7 @@ export const Tool = ({
         gap={4}
         p={4}
       >
-        {children ?? (
+        {isEmpty(children) ? (
           <>
             {input !== undefined && (
               <ToolSection slot="tool-input" heading="Parameters">
@@ -143,6 +157,8 @@ export const Tool = ({
               </ToolSection>
             )}
           </>
+        ) : (
+          children
         )}
       </CollapsiblePanel>
     </CollapsibleRoot>

@@ -241,6 +241,47 @@ describe("Tool", () => {
     expect(getInput()).not.toBeInTheDocument();
     expect(getOutput()).not.toBeInTheDocument();
   });
+
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+    ["a list of false conditions", [false, null, undefined]],
+    ["an empty fragment", <></>],
+    [
+      "a fragment of false conditions",
+      <>
+        {false}
+        <>{null}</>
+      </>,
+    ],
+  ])("keeps the default body when children are %s", (_, children) => {
+    render(
+      <Tool part={part()} defaultOpen>
+        {children}
+      </Tool>,
+    );
+
+    expect(getInput()).toBeInTheDocument();
+    expect(getOutput()).toBeInTheDocument();
+  });
+
+  it("lets a zero or a component that renders nothing replace the body", () => {
+    const Nothing = () => null;
+    const { rerender } = render(
+      <Tool part={part()} defaultOpen>
+        {0}
+      </Tool>,
+    );
+    expect(getInput()).not.toBeInTheDocument();
+
+    rerender(
+      <Tool part={part()} defaultOpen>
+        <Nothing />
+      </Tool>,
+    );
+    expect(getInput()).not.toBeInTheDocument();
+  });
 });
 
 describe("examples", () => {
