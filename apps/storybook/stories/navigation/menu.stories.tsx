@@ -24,7 +24,7 @@ const meta: Meta<typeof Menu> = {
     backdrop: { control: "boolean", table: { category: "Toggles" } },
   },
   render: (args) => (
-    <Stack gap={4}>
+    <Stack gap={4} ax="start">
       <Menu
         {...args}
         trigger={<button>This is a simple menu</button>}
