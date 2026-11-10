@@ -122,6 +122,25 @@
   }
 
   /*
+   * An inverted floating label: foreground surface, background text, capped at
+   * --tooltip-max-width with long unbroken strings wrapped rather than
+   * overflowing. The surface is set through the --palette-tint pair rather than
+   * background-color/color so that a Card rendering the popup paints it: Card
+   * reads those vars in uiid.components, above this layer, and the palette
+   * classes that also set them live in uiid.tokens, below it.
+   */
+  .composes-tooltip {
+    --tooltip-max-width: 15rem;
+    --palette-tint: var(--shade-foreground);
+    --palette-on-tint: var(--shade-background);
+
+    max-width: var(--tooltip-max-width);
+    overflow-wrap: anywhere;
+    background-color: var(--palette-tint);
+    color: var(--palette-on-tint);
+  }
+
+  /*
    * Full-viewport scrim behind a blocking overlay, faded in and out on Base UI's
    * [data-starting-style] / [data-ending-style]. Stacking is left out: each
    * overlay sets its own z-index from its component tokens.

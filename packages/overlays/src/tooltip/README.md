@@ -25,4 +25,4 @@ that provider, and their `ProviderProps` go unused. Button's own `tooltip`
 mounts its own provider, so Buttons don't group.
 
 The popup inverts its surface — foreground background, background text — which is
-what separates it visually from `Popover`.
+what separates it visually from `Popover`. It caps its width at `--tooltip-max-width` (15rem) and wraps long unbroken strings, such as URLs, instead of overflowing. Both come from the global `composes-tooltip` composition, which another floating surface can compose to share the treatment.

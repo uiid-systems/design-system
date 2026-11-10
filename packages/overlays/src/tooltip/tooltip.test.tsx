@@ -187,6 +187,26 @@ describe("Tooltip", () => {
     });
   });
 
+  it("inverts the popup surface through the composes-tooltip composition, not inline styles", async () => {
+    const user = userEvent.setup();
+
+    render(<Tooltip trigger={<button>Hover me</button>}>Helpful info</Tooltip>);
+
+    await user.hover(screen.getByRole("button"));
+
+    const popup = await waitFor(() => {
+      const el = document.querySelector<HTMLElement>(
+        '[data-slot="tooltip-popup"]',
+      );
+      expect(el).toBeInTheDocument();
+      return el!;
+    });
+
+    expect(popup.className).toMatch(/composes-tooltip(\s|$)/);
+    expect(popup.style.backgroundColor).toBe("");
+    expect(popup.style.color).toBe("");
+  });
+
   it("tooltip content is visible when shown", async () => {
     const user = userEvent.setup();
 
