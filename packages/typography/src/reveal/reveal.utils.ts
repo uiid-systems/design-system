@@ -1,5 +1,9 @@
-/** Split keeping trailing whitespace attached so spans wrap like words. */
-export const splitWords = (text: string) => (text ? text.split(/(?<=\s)/) : []);
+/**
+ * Split before each word, so a whole whitespace run stays on the word before it and spans wrap
+ * like words. Only leading whitespace gets a piece of its own.
+ */
+export const splitWords = (text: string) =>
+  text ? text.split(/(?<=\s)(?=\S)/) : [];
 
 /** Length of text up to its last complete word, one the whitespace after it has reached. */
 export const completeLength = (text: string) => {

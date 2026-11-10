@@ -1,6 +1,8 @@
+/* Delay and duration are set per word when it mounts; see RevealWord. */
 .reveal-word {
-  animation: reveal var(--reveal-duration) ease-out both;
-  animation-delay: calc(var(--reveal-index) * var(--reveal-stagger));
+  /* backwards, not both: a held `filter: blur(0)` would keep every finished word its own stacking context. */
+  animation: reveal var(--reveal-duration) ease-out backwards;
+  animation-delay: var(--reveal-delay);
 }
 
 /* Delay is set per word when its node mounts; see reveal.hooks. */

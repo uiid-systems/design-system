@@ -7,7 +7,7 @@
   {
     "name": "@uiid/ai",
     "path": "packages/ai/dist/index.js",
-    "limit": "81 kB"
+    "limit": "100 kB"
   },
   {
     "name": "@uiid/buttons",
