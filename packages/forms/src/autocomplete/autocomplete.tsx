@@ -61,6 +61,7 @@ export const Autocomplete = ({
         after={after}
         size={size}
         color={color}
+        disabled={disabled}
         onFocus={onFocus}
         onBlur={onBlur}
         {...domAttributes}

@@ -652,3 +652,34 @@ describe("Combobox state-function className", () => {
     expect(empty).toHaveClass("from-fn", popupLayerStyles["popup-layer-empty"]);
   });
 });
+
+/* Field reads `disabled` off its root, not the control, so the label and
+   description only dim when the input hands it up. */
+describe("Combobox hands disabled to Field", () => {
+  const items = ["apple", "banana"];
+
+  it("dims the label and description with a disabled combobox", () => {
+    render(
+      <Combobox items={items} label="Fruit" description="Pick one" disabled />,
+    );
+    expect(screen.getByText("Fruit")).toHaveAttribute("data-disabled");
+    expect(screen.getByText("Pick one")).toHaveAttribute("data-disabled");
+    expect(screen.getByRole("combobox")).toBeDisabled();
+  });
+
+  it("dims the label of a composed disabled ComboboxInput", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput label="Fruit" disabled />
+      </ComboboxRoot>,
+    );
+    expect(screen.getByText("Fruit")).toHaveAttribute("data-disabled");
+    expect(screen.getByRole("combobox")).toBeDisabled();
+  });
+
+  it("leaves the label and description undimmed while enabled", () => {
+    render(<Combobox items={items} label="Fruit" description="Pick one" />);
+    expect(screen.getByText("Fruit")).not.toHaveAttribute("data-disabled");
+    expect(screen.getByText("Pick one")).not.toHaveAttribute("data-disabled");
+  });
+});
