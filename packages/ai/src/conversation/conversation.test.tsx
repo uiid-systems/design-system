@@ -187,9 +187,129 @@ describe("Conversation", () => {
 
       expect(scrollTo).not.toHaveBeenCalled();
     });
+
+    it("re-pins when the viewport grows until a released reader is at the bottom", () => {
+      const { viewport, scrollTo, observer } = renderConversation();
+      release(viewport);
+      scrollTo.mockClear();
+
+      // scrollTop is unchanged, so no scroll event follows the resize.
+      setMetrics(viewport, {
+        scrollTop: 500,
+        scrollHeight: 1000,
+        clientHeight: 500,
+      });
+      act(() => observer.fire());
+
+      expect(scrollButton()).not.toBeInTheDocument();
+      expect(scrollTo).toHaveBeenCalledWith({ top: 1000, behavior: "instant" });
+    });
+
+    it("re-pins when content shrinks until it fits a released reader's viewport", () => {
+      const { viewport, observer } = renderConversation();
+      scroll(viewport, AT_BOTTOM);
+      scroll(viewport, { scrollTop: 0, scrollHeight: 1000, clientHeight: 300 });
+
+      setMetrics(viewport, {
+        scrollTop: 0,
+        scrollHeight: 300,
+        clientHeight: 300,
+      });
+      act(() => observer.fire());
+
+      expect(scrollButton()).not.toBeInTheDocument();
+    });
+
+    it("measures a scroll up from where the resize jump landed, not from before it", () => {
+      const { viewport, scrollTo, observer } = renderConversation();
+      scroll(viewport, AT_BOTTOM);
+      scrollTo.mockImplementation(() =>
+        setMetrics(viewport, {
+          scrollTop: 740,
+          scrollHeight: 1040,
+          clientHeight: 300,
+        }),
+      );
+
+      act(() => observer.fire());
+      // Above where the jump landed, but still below where it started.
+      scroll(viewport, {
+        scrollTop: 720,
+        scrollHeight: 1040,
+        clientHeight: 300,
+      });
+
+      expect(scrollButton()).toBeInTheDocument();
+    });
   });
 
   describe("releasing and re-pinning", () => {
+    it("releases on a small scroll up that stays within the threshold", () => {
+      const { viewport, scrollTo, observer } = renderConversation();
+      scroll(viewport, AT_BOTTOM);
+
+      // One arrow key's worth: 40px from the bottom, well inside the 70px band.
+      scroll(viewport, {
+        scrollTop: 660,
+        scrollHeight: 1000,
+        clientHeight: 300,
+      });
+      scrollTo.mockClear();
+      act(() => observer.fire());
+
+      expect(scrollButton()).toBeInTheDocument();
+      expect(scrollTo).not.toHaveBeenCalled();
+    });
+
+    it("re-pins on a scroll down after a small release", () => {
+      const { viewport } = renderConversation();
+      scroll(viewport, AT_BOTTOM);
+      scroll(viewport, {
+        scrollTop: 660,
+        scrollHeight: 1000,
+        clientHeight: 300,
+      });
+
+      scroll(viewport, {
+        scrollTop: 680,
+        scrollHeight: 1000,
+        clientHeight: 300,
+      });
+
+      expect(scrollButton()).not.toBeInTheDocument();
+    });
+
+    it("stays pinned when a clamp lands a fraction of a pixel short of the bottom", () => {
+      const { viewport } = renderConversation();
+      scroll(viewport, AT_BOTTOM);
+
+      // A zoomed or high-DPI page reports a fractional scrollTop.
+      scroll(viewport, {
+        scrollTop: 299.5,
+        scrollHeight: 600,
+        clientHeight: 300,
+      });
+
+      expect(scrollButton()).not.toBeInTheDocument();
+    });
+
+    it("measures a scroll up from where scrollToBottom landed when the jump is instant", () => {
+      const { viewport, scrollTo } = renderConversation();
+      release(viewport);
+      // Reduced motion: the jump lands at once, with its scroll event queued.
+      scrollTo.mockImplementation(() => setMetrics(viewport, AT_BOTTOM));
+
+      fireEvent.click(scrollButton()!);
+      // Above where the jump landed, but still below where it started.
+      scroll(viewport, {
+        scrollTop: 650,
+        scrollHeight: 1000,
+        clientHeight: 300,
+      });
+
+      expect(scrollButton()).toBeInTheDocument();
+    });
+
     it("shows the scroll button after scrolling up past the threshold", () => {
       const { viewport } = renderConversation();
 
