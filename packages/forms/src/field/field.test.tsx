@@ -221,6 +221,21 @@ describe("Field action slot", () => {
     expect(screen.getByText("Optional")).toBeInTheDocument();
   });
 
+  it("renders an ActionProps.children of 0 rather than falling back to action", () => {
+    const { container } = render(
+      <Field
+        label="Count"
+        action={<span>from action</span>}
+        ActionProps={{ children: 0 }}
+      >
+        <input />
+      </Field>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-action']")?.textContent,
+    ).toBe("0");
+  });
+
   it("lets ActionProps.children win over action", () => {
     render(
       <Field

@@ -35,7 +35,7 @@ export const Field = ({
 }: FieldProps) => {
   const isFloating = errorType === "absolute";
 
-  const Action = ActionProps?.children || action;
+  const Action = ActionProps?.children ?? action;
   const hasLabel = isRenderable(label);
   const hasAction = isRenderable(Action);
   const hasDescription = isRenderable(description);
