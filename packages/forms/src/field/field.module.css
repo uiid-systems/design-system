@@ -63,8 +63,10 @@
 
 /* A field with no label, action, description, or out-of-flow error paints no
    chrome. `display: contents` keeps the control laid out exactly as it would be
-   without a Field around it, while still wiring it into the validation graph. */
-.field-root-bare {
+   without a Field around it, while still wiring it into the validation graph.
+   Once the inline error renders, the root takes its box back, so the error
+   stacks under the control instead of landing beside it in the parent's flow. */
+.field-root-bare:not(:has(> [data-slot="field-error"])) {
   display: contents;
 }
 

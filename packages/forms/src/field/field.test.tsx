@@ -308,6 +308,26 @@ describe("Field bare mode", () => {
     expect(root?.className).not.toMatch(/field-root-bare/);
   });
 
+  it("adds no layout box until an inline error renders", () => {
+    const { container, rerender } = render(
+      <Field>
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']")!;
+    expect(getComputedStyle(root).display).toBe("contents");
+
+    rerender(
+      <Field ErrorProps={{ match: true, children: "Required" }}>
+        <input />
+      </Field>,
+    );
+    expect(
+      root.querySelector(":scope > [data-slot='field-error']"),
+    ).toBeInTheDocument();
+    expect(getComputedStyle(root).display).not.toBe("contents");
+  });
+
   it("stops being bare when the error renders out of flow", () => {
     const { container } = render(
       <Field errorType="absolute">
