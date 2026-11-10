@@ -1,7 +1,7 @@
 # Capability Map: `@uiid/ai` POC
 
 **Date:** 2026-10-27
-**Status:** Map approved; module specs in progress
+**Status:** Map approved
 **Source:** [vercel/ai-elements](https://github.com/vercel/ai-elements) `packages/elements/src` at `ca8be60` (2026-10-14)
 
 ## Why
@@ -16,7 +16,7 @@ This map covers a POC subset. Out of scope: everything that needs `@xyflow/react
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Vercel `ai` SDK types     | Not a dependency. `@uiid/ai` defines its own types, structurally compatible with the SDK's message, tool-part and chat-status shapes.                                                                                   |
 | Markdown                  | `markdown-to-jsx`, which has zero dependencies and renders React elements styled by `Prose`. Placement rule: a dependency-bearing renderer lives in `@uiid/ai`; a dependency-free one would live in `@uiid/typography`. |
-| Streaming markdown repair | `markdown-to-jsx`'s own `optimizeForStreaming` option, exposed as a `streaming` prop. No local repair pass and not `remend`. See `SPEC-markdown.md`.                                                                    |
+| Streaming markdown repair | `markdown-to-jsx`'s own `optimizeForStreaming` option, exposed as a `streaming` prop. No local repair pass and not `remend`.                                                                                            |
 | `use-stick-to-bottom`     | Not a dependency. Recreated locally as a hook.                                                                                                                                                                          |
 | `motion`                  | Not a dependency. Shimmer is pure CSS.                                                                                                                                                                                  |
 | Shimmer                   | Lives in `@uiid/typography` next to `Reveal`. It is a text effect with nothing AI-specific about it.                                                                                                                    |
@@ -40,16 +40,3 @@ This map covers a POC subset. Out of scope: everything that needs `@xyflow/react
 2. `markdown`
 3. `ai-message`, `ai-conversation` and `ai-reasoning-tool`, in parallel
 4. `ai-prompt-input`
-
-Each module has its own spec in this directory, named `SPEC-<module-id>.md`. This map is the index of what exists.
-
-| Spec                                                         | Status   |
-| ------------------------------------------------------------ | -------- |
-| [`SPEC-typography-shimmer.md`](./SPEC-typography-shimmer.md) | Approved |
-| [`SPEC-ai-scaffold.md`](./SPEC-ai-scaffold.md)               | Approved |
-| [`SPEC-forms-input-group.md`](./SPEC-forms-input-group.md)   | Approved |
-| [`SPEC-markdown.md`](./SPEC-markdown.md)                     | Approved |
-| [`SPEC-ai-conversation.md`](./SPEC-ai-conversation.md)       | Approved |
-| [`SPEC-ai-message.md`](./SPEC-ai-message.md)                 | Approved |
-| [`SPEC-ai-prompt-input.md`](./SPEC-ai-prompt-input.md)       | Approved |
-| [`SPEC-ai-reasoning-tool.md`](./SPEC-ai-reasoning-tool.md)   | Approved |
