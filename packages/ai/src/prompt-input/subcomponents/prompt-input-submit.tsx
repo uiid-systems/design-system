@@ -13,6 +13,11 @@ import type { PromptInputSubmitProps } from "../prompt-input.types";
  * a generating request shows Send disabled instead. `submitted` shows
  * `Button`'s own spinner over the icon, so the button never changes size
  * between states.
+ *
+ * It always has a tooltip: its name, or the reason while that Send waits,
+ * which `Button` also hands to screen readers as the description. A tooltip
+ * that came and went with the status would wrap and unwrap the button,
+ * remounting it and dropping its focus.
  */
 export const PromptInputSubmit = ({
   status = "ready",
@@ -22,12 +27,14 @@ export const PromptInputSubmit = ({
   focusableWhenDisabled,
   children,
   shape = "circle",
+  tooltip,
   "aria-label": ariaLabel,
   ...props
 }: PromptInputSubmitProps) => {
   const isGenerating = status === "submitted" || status === "streaming";
   const canStop = isGenerating && onStop !== undefined;
   const isWaiting = isGenerating && !canStop;
+  const name = ariaLabel ?? (canStop ? "Stop" : "Send");
 
   let icon = <ArrowUpIcon />;
   if (canStop) icon = <SquareIcon />;
@@ -37,7 +44,8 @@ export const PromptInputSubmit = ({
     <Button
       data-slot="prompt-input-submit"
       type={isGenerating ? "button" : "submit"}
-      aria-label={ariaLabel ?? (canStop ? "Stop" : "Send")}
+      aria-label={name}
+      tooltip={tooltip || (isWaiting ? "Waiting for the reply" : name)}
       shape={shape}
       size="xsmall"
       loading={status === "submitted"}
