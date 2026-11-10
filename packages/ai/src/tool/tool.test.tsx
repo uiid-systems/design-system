@@ -139,6 +139,7 @@ describe("Tool", () => {
     expect(panel).not.toHaveAttribute("data-ui-p");
     // Full width whatever `ax` the root takes.
     expect(panel).toHaveAttribute("data-ui-w", "full");
+    expect(panel.firstElementChild).toHaveAttribute("data-slot", "tool-body");
     expect(panel.firstElementChild).toHaveAttribute("data-ui-p", "4");
     expect(panel.firstElementChild).toContainElement(getInput());
   });

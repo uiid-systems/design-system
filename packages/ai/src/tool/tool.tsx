@@ -202,7 +202,7 @@ export const Tool = ({
       >
         {/* The padding sits here rather than on the panel, where `border-box`
             would stop the closing height at the padding instead of zero. */}
-        <Stack ax="stretch" gap={4} p={4}>
+        <Stack data-slot="tool-body" ax="stretch" gap={4} p={4}>
           {isEmpty(children) ? (
             <ToolBody
               input={part.input}
