@@ -51,19 +51,31 @@ export type InputElement = React.ComponentRef<"input">;
 export type MaskInputColor = PaletteColor;
 
 export interface MaskInputProps
-  extends Omit<React.ComponentProps<"input">, "size" | "color">, InputVariants {
+  extends
+    Omit<React.ComponentProps<"input">, "size" | "color">,
+    InputVariants,
+    Pick<FieldProps, "label" | "description" | "action"> {
   /** Content rendered before the input */
   before?: React.ReactNode;
   /** Content rendered after the input */
   after?: React.ReactNode;
-  /** Field wrapper props when using label/description */
-  FieldProps?: FieldProps;
-  /** Label text for the input field */
-  label?: string;
-  /** Description text shown below the input */
-  description?: string;
-  /** Node rendered at the end of the label row */
-  action?: React.ReactNode;
+  /**
+   * Reaches the Field around the control. MaskInput owns `label`,
+   * `description`, `action`, `name`, `required`, `disabled`, `size` and
+   * `children` and hands them to Field itself, so they are not accepted here a
+   * second time.
+   */
+  FieldProps?: Omit<
+    FieldProps,
+    | "label"
+    | "description"
+    | "action"
+    | "name"
+    | "required"
+    | "disabled"
+    | "size"
+    | "children"
+  >;
   /** The controlled value of the input */
   value?: string;
   /** The default value for uncontrolled usage */

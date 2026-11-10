@@ -19,7 +19,7 @@ export const FieldLabel = ({
   return (
     <BaseField.Label
       data-slot="field-label"
-      data-required={required ?? undefined}
+      data-required={required || undefined}
       render={<Text render={<label />} weight={weight} />}
       className={cx(
         styles["field-label"],

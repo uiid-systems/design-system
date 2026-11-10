@@ -3,6 +3,7 @@
 import { Input as BaseInput } from "@base-ui/react/input";
 import { cxState } from "@uiid/utils";
 
+import { useFieldRequired } from "../../field/field-required-context";
 import { inputControlClassName } from "../input.styles";
 import type { InputControlProps } from "../input.types";
 
@@ -13,8 +14,9 @@ import type { InputControlProps } from "../input.types";
  * control surface itself.
  *
  * This is a `Field.Control`, so it registers itself with the surrounding field
- * and takes its `name` from it. A composite whose Base UI root already does
- * both must not hand this to `render` — reach for `inputControlClassName` on a
+ * and takes its `name` from it. It falls back to the field's `required` when it
+ * sets none of its own. A composite whose Base UI root already registers and
+ * names itself must not hand this to `render` — reach for `inputControlClassName` on a
  * plain `<input>` instead, or the value submits twice.
  */
 export const InputControl = ({
@@ -23,14 +25,18 @@ export const InputControl = ({
   variant,
   color,
   inner,
+  required,
   className,
   ref,
   ...props
 }: InputControlProps) => {
+  const fieldRequired = useFieldRequired();
+
   return (
     <BaseInput
       data-slot="input"
       ref={ref}
+      required={required ?? fieldRequired}
       className={cxState(
         inputControlClassName({ inner, size, fullwidth, variant, color }),
         className,
