@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { ToolState } from "../ai.types";
 import { Tool } from "./tool";
@@ -192,6 +192,34 @@ describe("Tool", () => {
     expect(input).toHaveFocus();
     await user.tab();
     expect(output).toHaveFocus();
+  });
+
+  it("builds the JSON only while the panel is open, and once per input and output", async () => {
+    const user = userEvent.setup();
+    const stringify = vi.spyOn(JSON, "stringify");
+    // Other code stringifies too, so count the calls on this part's values.
+    const built = (target: unknown) =>
+      stringify.mock.calls.filter(([arg]) => arg === target).length;
+    const value = part();
+    const { rerender } = render(<Tool part={value} />);
+    expect(built(value.input)).toBe(0);
+    expect(built(value.output)).toBe(0);
+
+    await user.click(screen.getByRole("button"));
+    expect(built(value.input)).toBe(1);
+    expect(built(value.output)).toBe(1);
+
+    // A new part object around the same input and output, as a stream sends.
+    rerender(<Tool part={{ ...value, title: "Search" }} />);
+    expect(built(value.input)).toBe(1);
+    expect(built(value.output)).toBe(1);
+
+    const next = { temperature: 22 };
+    rerender(<Tool part={{ ...value, output: next }} />);
+    expect(built(value.input)).toBe(1);
+    expect(built(next)).toBe(1);
+
+    stringify.mockRestore();
   });
 
   it("renders an element output as itself", () => {

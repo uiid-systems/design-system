@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { WrenchIcon } from "@uiid/icons/wrench";
 import { Badge } from "@uiid/indicators";
@@ -9,7 +11,7 @@ import {
 import { Group, Stack } from "@uiid/layout";
 import { Prose, Text } from "@uiid/typography";
 import { cx, cxState } from "@uiid/utils";
-import { Children, Fragment, isValidElement } from "react";
+import { Children, Fragment, isValidElement, useMemo } from "react";
 
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
@@ -83,6 +85,44 @@ const ToolSection = ({
   </Stack>
 );
 
+/* Its own component so the JSON is only built while the panel is mounted, and
+   only again when the part's input or output changes. An element output has no
+   text: it renders as itself. */
+const ToolBody = ({
+  input,
+  output,
+  errorText,
+}: Pick<ToolPart, "input" | "output" | "errorText">) => {
+  const inputText = useMemo(
+    () => (input === undefined ? undefined : toJson(input)),
+    [input],
+  );
+  const outputText = useMemo(() => {
+    if (output === undefined || isValidElement(output)) return undefined;
+    return typeof output === "string" ? output : toJson(output);
+  }, [output]);
+
+  return (
+    <>
+      {inputText !== undefined && (
+        <ToolSection slot="tool-input" heading="Parameters">
+          <ToolCode>{inputText}</ToolCode>
+        </ToolSection>
+      )}
+      {(output !== undefined || errorText) && (
+        <ToolSection
+          slot="tool-output"
+          heading={errorText ? "Error" : "Result"}
+        >
+          {errorText && <Text color="red">{errorText}</Text>}
+          {isValidElement(output) && output}
+          {outputText !== undefined && <ToolCode>{outputText}</ToolCode>}
+        </ToolSection>
+      )}
+    </>
+  );
+};
+
 export const Tool = ({
   part,
   fullwidth = true,
@@ -94,7 +134,6 @@ export const Tool = ({
 }: ToolProps) => {
   const status = TOOL_STATES[part.state];
   const StatusIcon = status.icon;
-  const { input, output, errorText } = part;
 
   return (
     <CollapsibleRoot
@@ -137,28 +176,11 @@ export const Tool = ({
         p={4}
       >
         {isEmpty(children) ? (
-          <>
-            {input !== undefined && (
-              <ToolSection slot="tool-input" heading="Parameters">
-                <ToolCode>{toJson(input)}</ToolCode>
-              </ToolSection>
-            )}
-            {(output !== undefined || errorText) && (
-              <ToolSection
-                slot="tool-output"
-                heading={errorText ? "Error" : "Result"}
-              >
-                {errorText && <Text color="red">{errorText}</Text>}
-                {isValidElement(output)
-                  ? output
-                  : output !== undefined && (
-                      <ToolCode>
-                        {typeof output === "string" ? output : toJson(output)}
-                      </ToolCode>
-                    )}
-              </ToolSection>
-            )}
-          </>
+          <ToolBody
+            input={part.input}
+            output={part.output}
+            errorText={part.errorText}
+          />
         ) : (
           children
         )}
