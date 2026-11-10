@@ -65,6 +65,70 @@ describe("Message", () => {
     expect(root).toHaveClass("custom");
     expect(ref.current).toBe(root);
   });
+
+  it.each([
+    ["user", "auto"],
+    ["assistant", null],
+    ["system", null],
+  ] as const)("gives a %s turn ml=%s", (from, ml) => {
+    const { container } = render(<Message from={from}>x</Message>);
+
+    const root = container.firstElementChild!;
+    if (ml) expect(root).toHaveAttribute("data-ui-ml", ml);
+    else expect(root).not.toHaveAttribute("data-ui-ml");
+  });
+
+  it("lets a caller's ml win", () => {
+    const { container } = render(
+      <Message from="user" ml={4}>
+        x
+      </Message>,
+    );
+
+    expect(container.firstElementChild).toHaveAttribute("data-ui-ml", "4");
+  });
+
+  it.each(["user", "assistant", "system"] as const)(
+    "names a %s turn as a group for assistive tech",
+    (from) => {
+      render(<Message from={from}>x</Message>);
+
+      expect(
+        screen.getByRole("group", { name: `Message from ${from}` }),
+      ).toHaveAttribute("data-from", from);
+    },
+  );
+
+  it("lets a caller's role and aria-label win", () => {
+    const { container } = render(
+      <Message from="assistant" role="listitem" aria-label="UIID said">
+        x
+      </Message>,
+    );
+
+    const root = container.firstElementChild!;
+    expect(root).toHaveAttribute("role", "listitem");
+    expect(root).toHaveAttribute("aria-label", "UIID said");
+  });
+
+  it("caps the turn only when no maxw is passed", () => {
+    const { container: capped } = render(<Message from="user">x</Message>);
+    expect(capped.firstElementChild).toHaveClass(styles["capped"]);
+    expect(capped.firstElementChild).not.toHaveAttribute("data-ui-maxw");
+
+    for (const maxw of [480, "full"] as const) {
+      const { container } = render(
+        <Message from="user" maxw={maxw}>
+          x
+        </Message>,
+      );
+      expect(container.firstElementChild).not.toHaveClass(styles["capped"]);
+      expect(container.firstElementChild).toHaveAttribute(
+        "data-ui-maxw",
+        String(maxw),
+      );
+    }
+  });
 });
 
 describe("MessageContent", () => {
