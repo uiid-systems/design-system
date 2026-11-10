@@ -10,6 +10,7 @@ import styles from "../collapsible.module.css";
 
 export const CollapsiblePanel = ({
   ay = "end",
+  minh = 0,
   instant = true,
   className,
   children,
@@ -19,11 +20,13 @@ export const CollapsiblePanel = ({
     <BaseCollapsible.Panel
       data-slot="collapsible-panel"
       /*
-       * `ay` is destructured rather than written on the `Stack` as a literal:
-       * Base UI merges the render element's own props over the part's, so a
-       * literal `ay="end"` there would beat the caller's `ay` every time.
+       * `ay` and `minh` are destructured rather than written on the `Stack` as
+       * literals: Base UI merges the render element's own props over the
+       * part's, so a literal there would beat the caller's value every time.
+       * `minh` is 0 because the panel is a flex item of the root, whose
+       * `min-height: auto` would stop it shrinking to 0 as it closes.
        */
-      render={<Stack ay={ay} />}
+      render={<Stack ay={ay} minh={minh} />}
       className={cxState(styles["collapsible-panel"], className)}
       data-instant={instant ? "" : undefined}
       {...props}

@@ -11,6 +11,7 @@ import {
 } from "./subcomponents";
 
 import styles from "./collapsible.module.css";
+import css from "./collapsible.module.css?raw";
 
 const getRoot = () =>
   document.querySelector<HTMLElement>("[data-slot='collapsible-root']");
@@ -257,6 +258,28 @@ describe("Collapsible", () => {
     expect(getPanel()).toHaveAttribute("data-ui-ax", "center");
   });
 
+  it("lets the panel shrink below its content while it animates", () => {
+    render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
+    expect(getPanel()).toHaveAttribute("data-ui-minh", "0");
+  });
+
+  it("lets PanelProps override the panel's minh", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{ minh: 40 }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(getPanel()).toHaveAttribute("data-ui-minh", "40");
+  });
+
   // ============================================
   // CLASSNAME
   // ============================================
@@ -311,5 +334,21 @@ describe("Collapsible", () => {
       </Collapsible>,
     );
     expect(getPanel()).toHaveAttribute("data-instant", "");
+  });
+
+  // ============================================
+  // CSS
+  // ============================================
+
+  it("clips the panel vertically only, so focus rings and shadows survive", () => {
+    expect(css).toMatch(/overflow-x: visible;/);
+    expect(css).toMatch(/overflow-y: clip;/);
+    expect(css).not.toMatch(/overflow: hidden/);
+  });
+
+  it("animates the panel only when motion is allowed", () => {
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: no-preference\) \{\s*\.collapsible-panel \{\s*transition: height /,
+    );
   });
 });
