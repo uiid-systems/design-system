@@ -4,7 +4,7 @@
 
 Use Tool when you want to:
 
-- Show each tool call in a transcript with its state at a glance: pending, running, awaiting approval, done, failed or denied
+- Show each tool call in a transcript with its state at a glance: pending, running, awaiting approval, done, failed or skipped
 - Let the reader open the call to see what the model asked for and what came back
 - Render an SDK part as it is, without picking fields out of it first
 
@@ -55,9 +55,9 @@ The header's name is `title`, else `toolName`, else `type` without its `tool-` p
 | `input-available`    | Running           | `blue`    |
 | `approval-requested` | Awaiting approval | `yellow`  |
 | `approval-responded` | Responded         | `indigo`  |
-| `output-available`   | Completed         | `green`   |
-| `output-error`       | Error             | `red`     |
-| `output-denied`      | Denied            | `orange`  |
+| `output-available`   | Done              | `green`   |
+| `output-error`       | Failed            | `red`     |
+| `output-denied`      | Skipped           | `orange`  |
 
 The running state's icon spins, and stops under `prefers-reduced-motion`.
 
