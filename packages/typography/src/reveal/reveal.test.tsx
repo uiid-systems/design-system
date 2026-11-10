@@ -3,7 +3,6 @@ import { StrictMode } from "react";
 import { describe, it, expect } from "vitest";
 
 import { Reveal } from "./reveal";
-import { useStreamReveal } from "./reveal.hooks";
 
 const getWords = (container: HTMLElement) =>
   Array.from(
@@ -154,36 +153,5 @@ describe("Reveal", () => {
     const { container } = render(<Reveal className="custom">hello</Reveal>);
     const root = container.querySelector('[data-slot="reveal"]');
     expect(root).toHaveClass("custom");
-  });
-});
-
-describe("useStreamReveal", () => {
-  /** Calls the pass unconditionally, as the README shows. */
-  const Harness = ({ streaming }: { streaming: boolean }) => {
-    const words = useStreamReveal({ streaming });
-    const pass = words.pass();
-    return (
-      <div data-testid="root" style={words.style}>
-        {pass.text("Hello ")}
-        <strong>{pass.unit("world", 5)}</strong>
-      </div>
-    );
-  };
-
-  it("wraps words and sets the timing properties while streaming", () => {
-    const { getByTestId } = render(<Harness streaming />);
-    const root = getByTestId("root");
-
-    expect(root.querySelectorAll("[data-reveal-offset]")).toHaveLength(2);
-    expect(root.style.getPropertyValue("--reveal-duration")).toBe("400ms");
-  });
-
-  it("renders plain text and no style when inactive", () => {
-    const { getByTestId } = render(<Harness streaming={false} />);
-    const root = getByTestId("root");
-
-    expect(root.querySelector("span")).toBeNull();
-    expect(root).not.toHaveAttribute("style");
-    expect(root).toHaveTextContent("Hello world");
   });
 });

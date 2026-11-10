@@ -26,50 +26,66 @@ import styles from "./reveal.module.css";
  * the unfinished last word is never shown. Once streaming stops the rest drains
  * at the same pace, and the returned `streaming` stays true until it has.
  *
- * Text that gets shorter while streaming is a new stream, like a regenerated
- * message, and starts over from nothing.
+ * Text that no longer starts with what has been shown is a new stream, like a
+ * regenerated message, and starts over from nothing. Each new stream increments
+ * the returned `streamId`; hand it to `useStreamReveal` so the new words animate.
  */
 export const useStreamPace = (text: string, streaming: boolean) => {
-  const [shown, setShown] = useState(() => (streaming ? 0 : text.length));
-  if (text.length < shown) setShown(streaming ? 0 : text.length);
+  // The text released so far, kept as text so a growing stream changes no state during render:
+  // only a new stream does, and each render-phase update makes React render the caller twice.
+  const [shown, setShown] = useState(() => (streaming ? "" : text));
+  const [streamId, setStreamId] = useState(0);
+  if (!text.startsWith(shown)) {
+    setShown(streaming ? "" : text);
+    setStreamId(streamId + 1);
+  }
 
   const limit = streaming ? completeLength(text) : text.length;
-  const from = Math.min(shown, limit);
-  const backlog = countWords(text.slice(from, limit));
-  // Whitespace, or a dash or list marker, with no word after it yet shows straight away.
-  const end = backlog ? from : limit;
+  const from = Math.min(shown.length, limit);
+  const backlog = countWords(text, from, limit);
+  // While streaming, a list marker, `##` or `>` with no word after it yet waits for that word:
+  // shown alone it renders an empty block that unmounts again once the word arrives. When
+  // streaming stops nothing more is coming, so it shows.
+  const end = backlog || streaming ? from : limit;
 
-  // When the last word went out, and the pace it went out at, in words per ms.
-  const last = useRef<{ at: number; rate: number } | null>(null);
+  // When this stream's last word went out, and the pace it went out at, in words per ms.
+  const last = useRef<{ streamId: number; at: number; rate: number } | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!backlog) return;
 
+    const lastRelease =
+      last.current?.streamId === streamId ? last.current : null;
     const now = performance.now();
     const target = backlog / REVEAL_STREAM_CATCH_UP;
     // Ease toward the pace the backlog asks for. Jumping to it would swing the gap between words
     // as the backlog moves between one word and a few.
-    const rate = last.current
-      ? last.current.rate + (target - last.current.rate) * REVEAL_STREAM_EASE
+    const rate = lastRelease
+      ? lastRelease.rate + (target - lastRelease.rate) * REVEAL_STREAM_EASE
       : target;
     const interval = 1 / rate;
-    // A word that arrives after a lull goes out at once if a whole interval has already passed.
-    const due = Math.max((last.current?.at ?? now) + interval, now);
+    // The first word goes out at once, as does one arriving after a lull longer than an interval.
+    // Every chunk re-runs this effect, so a later word's deadline counts from the last release:
+    // counted from `now`, chunks arriving faster than the interval would keep pushing it back.
+    const due = lastRelease ? Math.max(lastRelease.at + interval, now) : now;
 
     const timer = setTimeout(() => {
       const fired = performance.now();
       // Only a timer that fires late (a throttled tab) releases more than one word.
       const count = 1 + Math.floor(Math.max(0, fired - due) / interval);
-      last.current = { at: fired, rate };
-      setShown(advanceWords(text, from, limit, count));
+      last.current = { streamId, at: fired, rate };
+      setShown(text.slice(0, advanceWords(text, from, limit, count)));
     }, due - now);
 
     return () => clearTimeout(timer);
-  }, [text, from, limit, backlog]);
+  }, [text, from, limit, backlog, streamId]);
 
   return {
     text: text.slice(0, end),
     streaming: streaming || end < text.length,
+    streamId,
   };
 };
 
@@ -80,6 +96,12 @@ export type StreamRevealOptions = {
   duration?: number;
   /** Blur radius each word starts from, in px */
   blur?: number;
+  /**
+   * Identifies the stream the text belongs to, like `useStreamPace`'s `streamId`. When it
+   * changes every word is forgotten, so a new stream that replaces one still animating fades
+   * in from the start.
+   */
+  streamId?: number;
 };
 
 /**
@@ -116,8 +138,17 @@ export const useStreamReveal = ({
   streaming,
   duration = REVEAL_DEFAULT_DURATION,
   blur = REVEAL_DEFAULT_BLUR,
+  streamId = 0,
 }: StreamRevealOptions) => {
-  const seen = useRef(new Map<number, number>());
+  // Each word's first appearance by offset. Mutated in place as words mount; replaced whole when
+  // a new stream starts, since its offsets name different words.
+  const [seen, setSeen] = useState(() => ({
+    streamId,
+    words: new Map<number, number>(),
+  }));
+  if (seen.streamId !== streamId) {
+    setSeen({ streamId, words: new Map() });
+  }
 
   // When streaming stops, the last word has only just appeared and earlier ones may still be
   // fading, so stay active for one more duration before dropping the spans.
@@ -139,22 +170,26 @@ export const useStreamReveal = ({
   // Forget every word once the reveal is over, so text streamed again into the same instance
   // (a regenerated message) animates from scratch.
   useEffect(() => {
-    if (!active) seen.current.clear();
-  }, [active]);
+    if (!active) seen.words.clear();
+  }, [active, seen]);
 
-  // One stable callback for every span, so React calls it only when a span's DOM node mounts,
-  // never on a re-render. Commit runs before paint, so the delay lands before the first frame.
-  const onMount = useCallback((el: HTMLSpanElement | null) => {
-    const offset = el?.dataset.revealOffset;
-    if (!el || offset === undefined) return;
+  // One stable callback for every span in a stream, so React calls it only when a span's DOM
+  // node mounts, never on a re-render. Commit runs before paint, so the delay lands before the
+  // first frame.
+  const onMount = useCallback(
+    (el: HTMLSpanElement | null) => {
+      const offset = el?.dataset.revealOffset;
+      if (!el || offset === undefined) return;
 
-    const now = performance.now();
-    const key = Number(offset);
-    const first = seen.current.get(key) ?? now;
-    seen.current.set(key, first);
-    // Negative: a remounted word starts partway through, where its first node had got to.
-    el.style.animationDelay = `${first - now}ms`;
-  }, []);
+      const now = performance.now();
+      const key = Number(offset);
+      const first = seen.words.get(key) ?? now;
+      seen.words.set(key, first);
+      // Negative: a remounted word starts partway through, where its first node had got to.
+      el.style.animationDelay = `${first - now}ms`;
+    },
+    [seen],
+  );
 
   const pass = (): StreamRevealPass => {
     if (!active) return plainPass;
@@ -165,7 +200,7 @@ export const useStreamReveal = ({
     const span = (children: ReactNode, length: number, key?: Key) => {
       const offset = cursor;
       cursor += length;
-      const first = seen.current.get(offset);
+      const first = seen.words.get(offset);
       const settled = first !== undefined && now - first >= duration;
 
       return settled ? (

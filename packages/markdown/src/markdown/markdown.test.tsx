@@ -129,20 +129,23 @@ describe("Markdown", () => {
     it("paces a burst of words out one at a time, each in an animated span", () => {
       const { container } = render(
         <Markdown streaming reveal>
-          {"one two — three four "}
+          {"one two - three four "}
         </Markdown>,
       );
 
       expect(container).toHaveTextContent("");
-      wait(70);
+      // The first word goes out at once, the rest one interval apart.
+      wait(10);
       expect(words(container)).toEqual(["one"]);
-      wait(100);
+      wait(40);
+      expect(words(container)).toEqual(["one"]);
+      wait(50);
       expect(words(container)).toEqual(["one", "two"]);
-      // The dash has no letters, so it waits and goes out with the word after it.
-      wait(60);
-      expect(words(container)).toEqual(["one", "two", "—", "three"]);
+      // The dash is a marker, so it waits and goes out with the word after it.
+      wait(70);
+      expect(words(container)).toEqual(["one", "two", "-", "three"]);
       wait(400);
-      expect(container).toHaveTextContent("one two — three four");
+      expect(container).toHaveTextContent("one two - three four");
     });
 
     it("holds back the unfinished last word, then animates it when streaming stops", () => {
@@ -222,6 +225,24 @@ describe("Markdown", () => {
       expect(container.querySelector("pre > code")).toHaveTextContent(
         "const a = 1;",
       );
+    });
+
+    it("animates a regenerated reply that replaces one without stopping", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal>
+          {"First answer here "}
+        </Markdown>,
+      );
+      // Long enough that the first answer's words have settled, so offset 0 is taken.
+      wait(1500);
+
+      rerender(
+        <Markdown streaming reveal>
+          {"New reply "}
+        </Markdown>,
+      );
+      wait(10);
+      expect(words(container)).toEqual(["New"]);
     });
 
     it("renders finished text without word spans, and starts over when a new stream replaces it", () => {

@@ -36,7 +36,10 @@ export const MarkdownReveal = ({
   ...props
 }: MarkdownRevealProps) => {
   const paced = useStreamPace(children, streaming);
-  const words = useStreamReveal({ streaming: paced.streaming });
+  const words = useStreamReveal({
+    streaming: paced.streaming,
+    streamId: paced.streamId,
+  });
 
   return (
     <Prose data-slot="markdown" style={{ ...words.style, ...style }} {...props}>
