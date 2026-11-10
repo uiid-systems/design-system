@@ -37,6 +37,10 @@
     "./icons/*": {
       "types": "./icons/*.d.ts",
       "import": "./icons/*.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.js"
     }
   },
   "files": [

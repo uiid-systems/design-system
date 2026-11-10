@@ -11,8 +11,9 @@ type ViteConfigOptions = {
   /**
    * Library entry point(s). Defaults to a single `src/index.ts`. Pass an array to
    * emit additional entries alongside the barrel — `@uiid/design-system` uses
-   * this for its `./icons` subpath, which must stay out of the root barrel so
-   * importing a component never pulls the icon set in.
+   * this for its `./icons` and `./utils` subpaths. Icons must stay out of the
+   * root barrel so importing a component never pulls the icon set in, and the
+   * helpers must be reachable without loading every component.
    */
   entry?: string | string[];
   /**
