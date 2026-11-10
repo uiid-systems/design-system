@@ -133,7 +133,7 @@ Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to 
 
 ## Nested dialogs
 
-A dialog opened from inside another leaves its backdrop out, as Base UI does by default, so the outer dialog stays undimmed behind it. Pass Base UI's `forceRender` through `BackdropProps` and the inner dialog draws its backdrop over the outer dialog, dimming it while the inner one sits on top. Only the inner backdrop is raised; a dialog that isn't nested layers as before.
+A dialog opened from inside another leaves its backdrop out, as Base UI does by default, so the outer dialog stays undimmed behind it. Pass Base UI's `forceRender` through `BackdropProps` and the inner dialog draws its backdrop over the outer dialog, dimming it while the inner one sits on top. Only the inner backdrop is raised; a dialog that isn't nested layers as before. This covers a Dialog inside a Dialog; a Dialog opened from a Drawer or another overlay isn't lifted.
 
 ```tsx
 <Dialog trigger={<Button>Settings</Button>} title="Settings">
