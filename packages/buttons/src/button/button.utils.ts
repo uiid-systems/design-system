@@ -56,3 +56,26 @@ export const isNamedByCaller = (
     (isValidElement(element) && hasAccessibleName(element.props))
   );
 };
+
+/**
+ * Whether a string tooltip should also be the button's `aria-description`.
+ * It is skipped when the caller described the button themselves, and when it
+ * would only repeat an `aria-label`, on the Button or on the element it
+ * renders. Screen readers would otherwise read the same words twice.
+ */
+export const isTooltipDescription = (
+  tooltip: string,
+  props: Record<string, unknown>,
+  render: unknown,
+): boolean => {
+  const element = resolveRender(render);
+  const renderProps = isValidElement(element)
+    ? (element.props as Record<string, unknown>)
+    : undefined;
+  return [props, renderProps].every(
+    (aria) =>
+      !aria?.["aria-description"] &&
+      !aria?.["aria-describedby"] &&
+      aria?.["aria-label"] !== tooltip,
+  );
+};

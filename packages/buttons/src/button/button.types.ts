@@ -31,6 +31,8 @@ export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
      * Wraps the button in a Tooltip with this content — no manual composition.
      * On a `square` or `circle` button, a string tooltip also becomes the
      * `aria-label` unless the Button or its `render` element is already named.
+     * Otherwise a string tooltip becomes the `aria-description`, unless it
+     * repeats the name or the caller already described the button.
      */
     tooltip?: React.ReactNode;
     /** Show a spinner without the button changing size */

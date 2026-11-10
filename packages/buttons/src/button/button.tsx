@@ -14,6 +14,7 @@ import {
   isLinkRender,
   isNamedByCaller,
   isNativeButtonRender,
+  isTooltipDescription,
 } from "./button.utils";
 import { buttonVariants } from "./button.variants";
 import {
@@ -52,6 +53,21 @@ export const Button = ({
       ? { "aria-label": tooltip }
       : undefined;
 
+  /**
+   * The tooltip sits on a wrapper the button does not point at, so a screen
+   * reader never reads it. A string tooltip therefore describes the button
+   * too, which is how a disabled one says why. It is skipped when it would
+   * repeat the name: the tooltip's own, the visible text, or an `aria-label`.
+   */
+  const tooltipDescription =
+    typeof tooltip === "string" &&
+    tooltip !== "" &&
+    !tooltipName &&
+    tooltip !== children &&
+    isTooltipDescription(tooltip, props, props.render)
+      ? { "aria-description": tooltip }
+      : undefined;
+
   const buttonClassName = cx(
     styles["button"],
     buttonVariants({
@@ -77,7 +93,8 @@ export const Button = ({
    * A `render` that navigates keeps link semantics instead of being treated as
    * a button — see `isLinkRender`. Everything else still goes through Base UI.
    * `ButtonLink` clones the caller's element, where an `undefined` label would
-   * erase one set on it, so the link only gets `aria-label` when there is one.
+   * erase one set on it, so the link only gets `aria-label` or
+   * `aria-description` when there is one.
    */
   return (
     <ConditionalRender
@@ -85,16 +102,25 @@ export const Button = ({
       render={<ButtonTooltipWrapper tooltip={tooltip} />}
     >
       {isLinkRender(props.render) ? (
-        <ButtonLink className={buttonClassName} {...props} {...tooltipName}>
+        <ButtonLink
+          className={buttonClassName}
+          {...props}
+          {...tooltipName}
+          {...tooltipDescription}
+        >
           {content}
         </ButtonLink>
       ) : (
         <BaseButton
-          nativeButton={!props.render || isNativeButtonRender(props.render)}
           data-slot="button"
           className={buttonClassName}
           {...props}
+          nativeButton={
+            props.nativeButton ??
+            (!props.render || isNativeButtonRender(props.render))
+          }
           {...tooltipName}
+          {...tooltipDescription}
         >
           {content}
         </BaseButton>
