@@ -1,22 +1,17 @@
 "use client";
 
-import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { WrenchIcon } from "@uiid/icons/wrench";
 import { Badge } from "@uiid/indicators";
-import {
-  CollapsiblePanel,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-} from "@uiid/interactive";
+import { CollapsiblePanel, CollapsibleRoot } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
 import { Prose, Text } from "@uiid/typography";
-import { cx, cxState } from "@uiid/utils";
+import { cxState } from "@uiid/utils";
 import { Children, Fragment, isValidElement, useMemo } from "react";
 
+import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
 
-import shared from "../shared/collapsible-trigger/collapsible-trigger.module.css";
 import styles from "./tool.module.css";
 
 const toolName = (part: ToolPart) =>
@@ -167,11 +162,10 @@ export const Tool = ({
     >
       <CollapsibleTrigger
         data-slot="tool-trigger"
-        nativeButton={false}
-        className={cx(shared["trigger"], styles["trigger"])}
-        render={
-          <Group fullwidth ax="space-between" ay="center" gap={2} p={3} />
-        }
+        fullwidth
+        ax="space-between"
+        p={3}
+        className={styles["trigger"]}
       >
         {/* `minw={0}` lets the row shrink below a long name, so the name wraps
             instead of pushing the badge and chevron out of the card. */}
@@ -190,7 +184,6 @@ export const Tool = ({
             {status.label}
           </Badge>
         </Group>
-        <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
       {/* `w="full"` keeps the panel the card's width whatever `ax` the root
           takes, so its code blocks scroll rather than overflow the card. */}

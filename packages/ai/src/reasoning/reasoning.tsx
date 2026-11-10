@@ -1,22 +1,15 @@
 "use client";
 
 import { BrainIcon } from "@uiid/icons/brain";
-import { ChevronDownIcon } from "@uiid/icons/chevron-down";
-import {
-  CollapsiblePanel,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-} from "@uiid/interactive";
-import { Group } from "@uiid/layout";
+import { CollapsiblePanel, CollapsibleRoot } from "@uiid/interactive";
 import { Markdown } from "@uiid/markdown";
 import { Shimmer, Text } from "@uiid/typography";
-import { cx } from "@uiid/utils";
 import { useEffect, useState } from "react";
 
+import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
 import type { ReasoningProps } from "./reasoning.types";
 
-import shared from "../shared/collapsible-trigger/collapsible-trigger.module.css";
 import styles from "./reasoning.module.css";
 
 const reasoningLabel = (seconds?: number) => {
@@ -82,13 +75,10 @@ export const Reasoning = ({
     >
       <CollapsibleTrigger
         data-slot="reasoning-trigger"
-        nativeButton={false}
-        className={cx(shared["trigger"], styles["trigger"])}
-        render={<Group gap={2} ay="center" />}
+        className={styles["trigger"]}
       >
         <BrainIcon />
         {streaming ? <Shimmer>Thinking…</Shimmer> : <Text>{label}</Text>}
-        <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
       <CollapsiblePanel
         data-slot="reasoning-panel"

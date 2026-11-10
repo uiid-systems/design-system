@@ -3,6 +3,12 @@
    own hover surface on top. */
 .trigger {
   cursor: pointer;
+
+  /* Base UI writes `data-disabled` on the trigger of a disabled Collapsible,
+     which opens nothing, so it drops the pointer. */
+  &[data-disabled] {
+    cursor: default;
+  }
 }
 
 /* Zero specificity, so a component rule such as Tool's badge icon wins
