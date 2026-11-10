@@ -99,3 +99,21 @@ export const InMessage = () => (
     </MessageContent>
   </Message>
 );
+
+const LONG: ToolPart = {
+  type: "tool-fetch_customer_subscription_invoice_history_by_account_identifier",
+  state: "output-error",
+  input: {
+    url: "https://api.example.com/v2/accounts/acct_1Qk3vR2eZvKYlo2C8xYz7AbC/invoices?expand=lines&limit=100",
+  },
+  errorText:
+    "GET https://api.example.com/v2/accounts/acct_1Qk3vR2eZvKYlo2C8xYz7AbC/invoices returned 429",
+};
+
+/* A narrow card with an unbroken tool name, URL and error: the name and error
+   wrap, the badge and chevron stay in view, and the long line scrolls. */
+export const LongContent = () => (
+  <Stack w={320} ax="stretch">
+    <Tool part={LONG} defaultOpen />
+  </Stack>
+);
