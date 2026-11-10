@@ -22,7 +22,7 @@ The `Size Limit` workflow runs on every non-draft PR, including stacked PRs that
 
 1. Builds the PR (merged into its base) and runs `size-limit --json`.
 2. Checks out the base commit as a second worktree, builds it, and measures it with the PR's config by pointing `SIZE_ROOT` at that worktree. Both builds share one Turbo cache, so the base build is mostly cache hits.
-3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment.
+3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table each for packages, components and styles, showing only the entries that changed, with every entry in a collapsed section below.
 
 An entry that exists on only one side is reported as new or removed and never fails the check.
 

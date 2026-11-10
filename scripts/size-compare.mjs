@@ -55,8 +55,34 @@ const rows = [...new Set([...head.keys(), ...base.keys()])].map((name) => {
   return { name, before, after, delta, percent, status };
 });
 
-const line = (row) => {
-  const name = `\`${row.name}\``;
+// The report is split by what an entry measures, in the order a reader cares
+// about. The entry names come from .size-limit.js.
+const GROUPS = [
+  {
+    title: "Packages",
+    column: "Package",
+    note: "Each package's whole barrel, without React or Base UI.",
+    match: (name) => !name.startsWith("import {") && !name.endsWith(" (css)"),
+    label: (name) => name,
+  },
+  {
+    title: "Components",
+    column: "Component",
+    note: "One import from `@uiid/design-system`, without React. Includes the Base UI code that import pulls in.",
+    match: (name) => name.startsWith("import {"),
+    label: (name) => name.replace(/^import \{ (.+) \}$/, "$1"),
+  },
+  {
+    title: "Styles",
+    column: "Stylesheet",
+    note: "Each package's built stylesheet.",
+    match: (name) => name.endsWith(" (css)"),
+    label: (name) => name.replace(/ \(css\)$/, ""),
+  },
+];
+
+const line = (row, label) => {
+  const name = `\`${label(row.name)}\``;
   if (row.status === "new")
     return `| :new: | ${name} | — | ${kB(row.after)} | new |`;
   if (row.status === "removed")
@@ -77,11 +103,22 @@ const line = (row) => {
         : signed(row.delta);
   return `| ${icon} | ${name} | ${kB(row.before)} | ${kB(row.after)} | ${change} |`;
 };
-const table = (list) => [
-  "| | Entry | Base | PR | Change |",
-  "|---|---|---|---|---|",
-  ...list.map(line),
-];
+
+// One titled table per group that has rows; empty groups are left out.
+const sections = (list, { notes = false } = {}) =>
+  GROUPS.flatMap((group) => {
+    const members = list.filter((row) => group.match(row.name));
+    if (members.length === 0) return [];
+    return [
+      `**${group.title}**`,
+      "",
+      ...(notes ? [group.note, ""] : []),
+      `| | ${group.column} | Base | PR | Change |`,
+      "|---|---|---|---|---|",
+      ...members.map((row) => line(row, group.label)),
+      "",
+    ];
+  });
 
 const changed = rows.filter((row) => row.status !== "same");
 const failed = rows.filter((row) => row.status === "failed");
@@ -93,16 +130,15 @@ if (failed.length > 0) {
     "",
   );
 }
-if (changed.length > 0) out.push(...table(changed), "");
+if (changed.length > 0) out.push(...sections(changed));
 else out.push("No size changes against the base branch.", "");
 out.push(
   `<details><summary>All ${rows.length} entries</summary>`,
   "",
-  ...table(rows),
-  "",
+  ...sections(rows, { notes: true }),
   "</details>",
   "",
-  "_Sizes are minified and brotlied, without peer dependencies. Packages leave out React and Base UI. `import { X }` entries are one import from `@uiid/design-system` and leave out only React, so they include the Base UI code that import pulls in._",
+  "_Sizes are minified and brotlied._",
 );
 
 const markdown = out.join("\n");
