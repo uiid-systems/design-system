@@ -26,6 +26,19 @@ describe("Reveal", () => {
     expect(container.textContent).toBe("one two");
   });
 
+  it("keeps a whitespace run on the word before it", () => {
+    const { container } = render(<Reveal>{"Intro.\n\nNext  word"}</Reveal>);
+    const words = Array.from(
+      container.querySelector('[data-slot="reveal"]')?.children ?? [],
+    );
+    expect(words.map((word) => word.textContent)).toEqual([
+      "Intro.\n\n",
+      "Next  ",
+      "word",
+    ]);
+    expect(container.textContent).toBe("Intro.\n\nNext  word");
+  });
+
   it("indexes each word for the stagger delay", () => {
     const { container } = render(<Reveal>one two three</Reveal>);
     const words = Array.from(
