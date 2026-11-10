@@ -72,7 +72,7 @@ export const Sizes = () => (
 
 export const Required = () => (
   <Field label="Email" required>
-    <InputControl placeholder="you@example.com" required />
+    <InputControl placeholder="you@example.com" />
   </Field>
 );
 

@@ -16,6 +16,7 @@ export * from "./combobox/subcomponents";
 
 export * from "./field/field";
 export * from "./field/field.types";
+export * from "./field/field-required-context";
 export * from "./field/subcomponents";
 
 export * from "./form/form";

@@ -1,7 +1,7 @@
 "use client";
 
 import { ConditionalRender, Group, Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cx, isRenderable } from "@uiid/utils";
 
 import type { FieldRowProps } from "../field.types";
 import { fieldRowVariants } from "../field.variants";
@@ -50,8 +50,10 @@ export const FieldRow = ({
   children,
   ...props
 }: FieldRowProps) => {
-  const hasContent = Boolean(label || description);
-  const needsTextContainer = Boolean(label) && Boolean(description);
+  const hasLabel = isRenderable(label);
+  const hasDescription = isRenderable(description);
+  const hasContent = hasLabel || hasDescription;
+  const needsTextContainer = hasLabel && hasDescription;
 
   return (
     <FieldRoot className={styles["field-root-bare"]}>
@@ -76,12 +78,12 @@ export const FieldRow = ({
             condition={needsTextContainer}
             render={<Stack gap={3} />}
           >
-            {label && (
+            {hasLabel && (
               <FieldLabel weight="normal" {...LabelProps}>
                 {label}
               </FieldLabel>
             )}
-            {description && (
+            {hasDescription && (
               <FieldDescription {...DescriptionProps}>
                 {description}
               </FieldDescription>

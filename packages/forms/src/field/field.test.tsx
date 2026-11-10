@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
+import { InputControl } from "../input/subcomponents";
 import { Field } from "./field";
 import {
   FieldRoot,
@@ -11,6 +12,7 @@ import {
   FieldValidity,
   FieldHint,
   FieldAction,
+  FieldDescription,
 } from "./subcomponents";
 
 import styles from "./field.module.css";
@@ -507,6 +509,160 @@ describe("Field disabled chrome", () => {
     expect(screen.getByText("Email").className).toMatch(/composes-disabled/);
     expect(screen.getByText("Work address").className).toMatch(
       /composes-disabled/,
+    );
+  });
+});
+
+describe("Field ReactNode chrome", () => {
+  it("renders a node as its label and description", () => {
+    render(
+      <Field
+        label={<span data-testid="label-node">Email</span>}
+        description={<em data-testid="description-node">Work only</em>}
+      >
+        <input />
+      </Field>,
+    );
+    expect(
+      screen.getByTestId("label-node").closest("[data-slot='field-label']"),
+    ).toBeInTheDocument();
+    expect(
+      screen
+        .getByTestId("description-node")
+        .closest("[data-slot='field-description']"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a zero label rather than dropping it", () => {
+    const { container } = render(
+      <Field label={0}>
+        <input />
+      </Field>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label']")?.textContent,
+    ).toBe("0");
+  });
+
+  it("paints no chrome for unrenderable label and description", () => {
+    const { container } = render(
+      <Field label={false} description={[null, ""]}>
+        <input />
+      </Field>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label']"),
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot='field-description']"),
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot='field-root']")?.className,
+    ).toMatch(/field-root-bare/);
+  });
+
+  it("renders a node label on a FieldRow", () => {
+    render(
+      <FieldRow label={<strong data-testid="row-label">Email</strong>}>
+        <input type="checkbox" />
+      </FieldRow>,
+    );
+    expect(
+      screen.getByTestId("row-label").closest("[data-slot='field-label']"),
+    ).toBeInTheDocument();
+  });
+});
+
+describe("Field required", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector("[data-slot='field-root']");
+
+  it("marks the root when required", () => {
+    const { container } = render(
+      <Field label="Email" required>
+        <input />
+      </Field>,
+    );
+    expect(root(container)).toHaveAttribute("data-required", "true");
+  });
+
+  it("leaves data-required off when required is false", () => {
+    const { container } = render(
+      <Field label="Email" required={false}>
+        <input />
+      </Field>,
+    );
+    expect(root(container)).not.toHaveAttribute("data-required");
+    expect(screen.getByText("Email")).not.toHaveAttribute("data-required");
+  });
+
+  it("hands required to a FieldControl inside it", () => {
+    render(
+      <Field label="Email" required>
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByLabelText("Email")).toBeRequired();
+  });
+
+  it("hands required to an InputControl inside it", () => {
+    render(
+      <Field label="Email" required>
+        <InputControl />
+      </Field>,
+    );
+    expect(screen.getByLabelText("Email")).toBeRequired();
+  });
+
+  it("lets the control's own required win", () => {
+    render(
+      <Field label="Email" required>
+        <FieldControl required={false} />
+      </Field>,
+    );
+    expect(screen.getByLabelText("Email")).not.toBeRequired();
+  });
+
+  it("does not leak required into a nested field", () => {
+    render(
+      <Field label="Outer" required>
+        <Field label="Inner">
+          <FieldControl />
+        </Field>
+      </Field>,
+    );
+    expect(screen.getByLabelText("Inner")).not.toBeRequired();
+  });
+
+  it("forwards LabelProps to the label", () => {
+    render(
+      <Field label="Email" LabelProps={{ className: "custom-label" }}>
+        <input />
+      </Field>,
+    );
+    expect(screen.getByText("Email")).toHaveClass("custom-label");
+  });
+});
+
+describe("FieldDescription shade", () => {
+  it("defaults to the muted shade", () => {
+    render(
+      <FieldRoot>
+        <FieldDescription>Help</FieldDescription>
+      </FieldRoot>,
+    );
+    expect(screen.getByText("Help")).toHaveAttribute("data-ui-shade", "muted");
+  });
+
+  it("takes a caller's shade", () => {
+    render(
+      <FieldRoot>
+        <FieldDescription shade="foreground">Help</FieldDescription>
+      </FieldRoot>,
+    );
+    expect(screen.getByText("Help")).toHaveAttribute(
+      "data-ui-shade",
+      "foreground",
     );
   });
 });

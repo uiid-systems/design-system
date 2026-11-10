@@ -36,8 +36,8 @@ export type FieldHintValue =
 export type FieldRowProps = GroupProps &
   FieldRowVariants &
   React.PropsWithChildren<{
-    label?: string;
-    description?: string;
+    label?: React.ReactNode;
+    description?: React.ReactNode;
     LabelProps?: FieldLabelProps;
     DescriptionProps?: FieldDescriptionProps;
     ErrorProps?: FieldErrorProps;
@@ -51,12 +51,13 @@ export type FieldActionProps = GroupProps;
 export type FieldProps = React.PropsWithChildren &
   Field.Root.Props &
   FieldVariants & {
-    label?: string;
-    description?: string;
+    label?: React.ReactNode;
+    description?: React.ReactNode;
     action?: React.ReactNode;
     errorType?: FieldErrorType;
     RootProps?: FieldRootProps;
-    LabelProps?: FieldLabelProps;
+    /** `required` is Field's own, so the label and the control can't disagree. */
+    LabelProps?: Omit<FieldLabelProps, "required">;
     ErrorProps?: Field.Error.Props;
     ActionProps?: FieldActionProps;
     DescriptionProps?: FieldDescriptionProps;
