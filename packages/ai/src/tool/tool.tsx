@@ -16,7 +16,7 @@ import { Children, Fragment, isValidElement, useMemo } from "react";
 import { TOOL_STATES } from "./tool.constants";
 import type { ToolPart, ToolProps } from "./tool.types";
 
-import shared from "../shared/collapsible-trigger.module.css";
+import shared from "../shared/collapsible-trigger/collapsible-trigger.module.css";
 import styles from "./tool.module.css";
 
 const toolName = (part: ToolPart) =>

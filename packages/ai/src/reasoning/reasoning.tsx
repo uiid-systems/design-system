@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
 import type { ReasoningProps } from "./reasoning.types";
 
-import shared from "../shared/collapsible-trigger.module.css";
+import shared from "../shared/collapsible-trigger/collapsible-trigger.module.css";
 import styles from "./reasoning.module.css";
 
 const reasoningLabel = (seconds?: number) => {
