@@ -215,8 +215,8 @@ describe("Autocomplete color", () => {
   const items = ["apple", "banana"];
 
   /*
-   * Autocomplete renders no slots by default, so `InputWrapper` collapses to a
-   * fragment and the `<input>` is the element wearing the surface.
+   * Autocomplete renders no slots by default, so `InputWrapper` is a box-less
+   * `display: contents` and the `<input>` is the element wearing the surface.
    */
   it("tints the bare input when the wrapper paints nothing", () => {
     const { container } = render(<Autocomplete items={items} color="blue" />);

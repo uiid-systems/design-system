@@ -76,7 +76,7 @@ export const InputWrapper = ({
         inputColorClassName(color),
         className,
       )
-    : styles["input-wrapper-bare"];
+    : cx(styles["input-wrapper-bare"], className);
   const slots = (
     <>
       {isRenderable(before) && (

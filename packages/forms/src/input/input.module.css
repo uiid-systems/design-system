@@ -15,6 +15,7 @@
   composes: composes-field-surface from global;
   composes: composes-disabled from global;
   composes: composes-invalid from global;
+  composes: composes-text from global;
 
   padding-block: var(--forms-padding-y);
   line-height: 1;
@@ -134,7 +135,7 @@
 .input-slot {
   composes: composes-field-slot from global;
 
-  padding-inline: var(--input-wrapper-padding-x);
+  padding-inline: var(--input-wrapper-padding-x, var(--forms-size-md-padding-x));
 }
 
 .input-wrapper[data-orientation="horizontal"] {
@@ -150,7 +151,8 @@
 /*
  * Inside an `InputWrapper`, which paints the surface once for the whole field
  * and holds the size tier. Composing `disabled` here too would compound the
- * two opacities.
+ * two opacities. The padding falls back to the medium tier so an `inner`
+ * control outside a sized wrapper is not left flush against its edge.
  */
 .input-inner {
   composes: composes-text from global;
@@ -159,7 +161,7 @@
   min-width: 0;
   height: 100%;
   padding-block: 0;
-  padding-inline: var(--input-wrapper-padding-x);
+  padding-inline: var(--input-wrapper-padding-x, var(--forms-size-md-padding-x));
   border: none;
   background: transparent;
   color: inherit;

@@ -12,8 +12,8 @@
 
 .number-field {
   border-radius: var(--globals-border-radius);
-  /* The group delegates its edges to the controls inside it, exactly as the
-     input wrapper does, so it drops the inset it takes from composes-size-*.
+  /* The group delegates its edges to the controls inside it, so it drops the
+     inset it takes from composes-size-*.
      It keeps the tier's `height`: that gives the steppers a definite height to
      stretch to, which is what their `aspect-ratio` squares off. */
   padding-inline: 0;

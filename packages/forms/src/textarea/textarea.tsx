@@ -39,7 +39,8 @@ export const Textarea = ({
   ...props
 }: TextareaProps) => {
   /* With a slot, the wrapper paints the surface and takes the props that shape
-     it. The textarea keeps its tier for font-size and padding, and its resize. */
+     it. The textarea drops its own surface but keeps its tier for font-size and
+     padding, and its resize. */
   const hasSlots = hasInputSlots({ before, after });
 
   return (
@@ -82,10 +83,10 @@ export const Textarea = ({
           required={required}
           onValueChange={onValueChange}
           className={cx(
-            styles["textarea"],
             hasSlots
               ? cx(styles["textarea-inner"], textareaVariants({ size, resize }))
               : cx(
+                  styles["textarea"],
                   textareaVariants({ size, resize, fullwidth, variant }),
                   paletteClassName(color, styles["color"]),
                 ),

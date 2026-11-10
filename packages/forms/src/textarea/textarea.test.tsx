@@ -410,13 +410,26 @@ describe("Textarea before/after slots", () => {
     expect(textarea.className).not.toMatch(/composes-field-surface-color/);
   });
 
+  /* The wrapper dims, reddens and rings once for the whole surface. A second
+     copy on the textarea would compound the disabled opacity, and its own
+     `color` would outrank the hue's text colour it should inherit. */
+  it("drops every surface composition from the inner textarea", () => {
+    render(<Textarea before="top" disabled />);
+    const textarea = screen.getByRole("textbox");
+
+    expect(textarea).not.toHaveClass(styles["textarea"]);
+    expect(textarea.className).not.toMatch(
+      /composes-(field-surface|invalid|disabled)/,
+    );
+    expect(textarea.className).toMatch(/composes-text/);
+  });
+
   it("keeps size and resize on the inner textarea and hands size to the wrapper too", () => {
     const { container } = render(
       <Textarea before="top" size="large" resize="none" />,
     );
     const textarea = screen.getByRole("textbox");
 
-    expect(textarea).toHaveClass(styles["textarea"]);
     expect(textarea).toHaveClass(styles["textarea-inner"]);
     expect(textarea).toHaveClass(styles["size-large"]);
     expect(textarea).toHaveClass(styles["resize-none"]);

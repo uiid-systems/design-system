@@ -336,12 +336,6 @@ describe("Combobox actions", () => {
 describe("Combobox color", () => {
   const items = ["apple", "banana"];
 
-  /*
-   * The monolith always renders an `after`, so the wrapper exists and is the
-   * element wearing the surface. The inner input still takes the hue: the
-   * shared surface sets `color` on the element itself, which an inherited
-   * value could never outrank.
-   */
   /* The monolith always renders an `after`, so the wrapper wears the surface
      and the hue; the inner input inherits its text colour. */
   it("tints the wrapper, not the inner input", () => {

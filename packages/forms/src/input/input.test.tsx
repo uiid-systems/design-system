@@ -140,6 +140,18 @@ describe("InputWrapper composition", () => {
     expect(wrapper).toContainElement(screen.getByRole("textbox"));
   });
 
+  it("keeps a caller's className on the bare wrapper", () => {
+    const { container } = render(
+      <InputWrapper className="caller">
+        <InputControl />
+      </InputWrapper>,
+    );
+    expect(container.querySelector("[data-slot='input-wrapper']")).toHaveClass(
+      "caller",
+      styles["input-wrapper-bare"],
+    );
+  });
+
   it.each([null, false, ""])("treats a %j slot as no slot", (empty) => {
     const { container } = render(
       <InputWrapper before={empty} after={empty}>
@@ -223,12 +235,15 @@ describe("inputWrapperVariants", () => {
     );
   });
 
+  /* The fallback keeps an `inner` control padded outside a sized wrapper. */
   it("pads the slots and the inner control from the published var", () => {
     for (const selector of ["input-slot", "input-inner"]) {
       const rule = inputCss.match(
         new RegExp(`\\.${selector}\\s*\\{([^}]*)\\}`),
       )?.[1];
-      expect(rule).toContain("padding-inline: var(--input-wrapper-padding-x)");
+      expect(rule).toContain(
+        "padding-inline: var(--input-wrapper-padding-x, var(--forms-size-md-padding-x))",
+      );
     }
   });
 });
@@ -359,6 +374,25 @@ describe("Input shared compositions", () => {
     render(<Input />);
     expect(screen.getByRole("textbox").className).not.toMatch(/input-edge/);
   });
+  it("renders text the same way with and without slots", () => {
+    const { rerender } = render(<Input />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-text/);
+    rerender(<Input before="$" />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-text/);
+  });
+
+  /* The control's node persists across a slot toggle, so its classes swap in
+     place. A layout property in the transition would animate the swap. */
+  it("transitions only paint properties on the shared surface", () => {
+    const rule = compositionsCss.match(
+      /\.composes-field-surface\s*\{([^}]*?)&/,
+    )?.[1];
+    expect(rule).toMatch(
+      /transition-property:\s*background-color,\s*border-color,\s*outline-color,\s*color;/,
+    );
+    expect(rule).not.toMatch(/transition:\s*all/);
+  });
+
   it("paints the surface, invalid edge and focus ring on the wrapper", () => {
     const { container } = render(<Input before="$" />);
     const className = container.querySelector(
