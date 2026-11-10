@@ -114,7 +114,11 @@ const ToolBody = ({
           slot="tool-output"
           heading={errorText ? "Error" : "Result"}
         >
-          {errorText && <Text color="red">{errorText}</Text>}
+          {errorText && (
+            <Text color="red" className={styles["error"]}>
+              {errorText}
+            </Text>
+          )}
           {isValidElement(output) && output}
           {outputText !== undefined && <ToolCode>{outputText}</ToolCode>}
         </ToolSection>
@@ -153,9 +157,13 @@ export const Tool = ({
           <Group fullwidth ax="space-between" ay="center" gap={2} p={3} />
         }
       >
-        <Group gap={2} ay="center">
+        {/* `minw={0}` lets the row shrink below a long name, so the name wraps
+            instead of pushing the badge and chevron out of the card. */}
+        <Group gap={2} ay="center" minw={0}>
           <WrenchIcon />
-          <Text weight="medium">{toolName(part)}</Text>
+          <Text weight="medium" className={styles["name"]}>
+            {toolName(part)}
+          </Text>
           <Badge
             data-slot="tool-status"
             size="small"

@@ -13,6 +13,21 @@
   }
 }
 
+/* A tool name is often one unbroken snake_case word, and an error often holds a
+   URL or an ID. Breaking either anywhere keeps it, and the badge and chevron
+   beside the name, inside a narrow card, where the card's `overflow: hidden`
+   would otherwise clip them. */
+.name,
+.error {
+  overflow-wrap: anywhere;
+}
+
+/* The badge keeps its width and its one line while a long name wraps. */
+.status {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 /* The state icon rides inline inside the badge's own Text, so it sizes to the
    label and sits on its baseline. */
 .status svg {

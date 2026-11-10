@@ -334,6 +334,19 @@ describe("examples", () => {
     expect(Array.from(statuses, (el) => el.textContent)).toEqual(labels);
   });
 
+  it("renders a long name, URL and error in a narrow card", () => {
+    render(<Examples.LongContent />);
+
+    // The wrapping itself is CSS; these are the hooks it hangs on.
+    const trigger = screen.getByRole("button");
+    expect(trigger.querySelector(`.${styles["name"]}`)).toHaveTextContent(
+      "fetch_customer_subscription_invoice_history_by_account_identifier",
+    );
+    expect(getStatus()).toHaveClass(styles["status"]);
+    expect(screen.getByText(/returned 429/)).toHaveClass(styles["error"]);
+    expect(getRoot()!.parentElement).toHaveAttribute("data-ui-w", "320");
+  });
+
   it("renders a tool call between the reasoning and the reply", () => {
     render(<Examples.InMessage />);
 

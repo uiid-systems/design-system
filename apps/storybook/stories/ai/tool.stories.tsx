@@ -53,3 +53,7 @@ export const Lifecycle: Story = {
 export const InMessage: Story = {
   render: () => <Examples.InMessage />,
 };
+
+export const LongContent: Story = {
+  render: () => <Examples.LongContent />,
+};
