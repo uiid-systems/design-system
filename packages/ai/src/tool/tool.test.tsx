@@ -27,6 +27,16 @@ const throwing = (proto: object | null) =>
     },
   });
 
+const LABELS = {
+  "input-streaming": "Pending",
+  "input-available": "Running",
+  "approval-requested": "Awaiting approval",
+  "approval-responded": "Responded",
+  "output-available": "Done",
+  "output-error": "Failed",
+  "output-denied": "Skipped",
+} satisfies Record<ToolState, string>;
+
 const getRoot = () => document.querySelector<HTMLElement>("[data-slot='tool']");
 const getStatus = () =>
   document.querySelector<HTMLElement>("[data-slot='tool-status']");
@@ -84,16 +94,18 @@ describe("Tool", () => {
     expect(screen.getByRole("button")).toHaveTextContent(name);
   });
 
-  it.each(Object.keys(TOOL_STATES) as ToolState[])(
-    "labels and colors the %s state",
-    (state) => {
-      render(<Tool part={part({ state })} />);
+  it.each(
+    (Object.keys(TOOL_STATES) as ToolState[]).map((state) => [
+      state,
+      LABELS[state],
+    ]),
+  )("labels the %s state %s and colors it", (state, label) => {
+    render(<Tool part={part({ state })} />);
 
-      const status = getStatus()!;
-      expect(status).toHaveTextContent(TOOL_STATES[state].label);
-      expect(status).toHaveClass(`palette-${TOOL_STATES[state].color}`);
-    },
-  );
+    const status = getStatus()!;
+    expect(status).toHaveTextContent(label);
+    expect(status).toHaveClass(`palette-${TOOL_STATES[state].color}`);
+  });
 
   it("gives every state its own label and hue", () => {
     const entries = Object.values(TOOL_STATES);
@@ -400,9 +412,7 @@ describe("examples", () => {
     expect(
       screen.getByRole("button", { name: /Thought for/ }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Completed/ }),
-    ).toBeInTheDocument();
+    expect(getStatus()).toHaveTextContent("Done");
     expect(
       document.querySelector("[data-slot='message-response']"),
     ).not.toBeNull();

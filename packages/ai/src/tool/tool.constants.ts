@@ -44,10 +44,10 @@ export const TOOL_STATES: Record<ToolState, ToolStateEntry> = {
     color: "indigo",
   },
   "output-available": {
-    label: "Completed",
+    label: "Done",
     icon: CircleCheckIcon,
     color: "green",
   },
-  "output-error": { label: "Error", icon: CircleXIcon, color: "red" },
-  "output-denied": { label: "Denied", icon: BanIcon, color: "orange" },
+  "output-error": { label: "Failed", icon: CircleXIcon, color: "red" },
+  "output-denied": { label: "Skipped", icon: BanIcon, color: "orange" },
 };
