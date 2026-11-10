@@ -128,6 +128,27 @@ describe("Tool", () => {
   // BODY
   // ============================================
 
+  it("pads an inner stack, so the panel itself can close to zero height", () => {
+    render(<Tool part={part()} ax="start" defaultOpen />);
+
+    const panel = document.querySelector("[data-slot='tool-panel']")!;
+    expect(panel).not.toHaveAttribute("data-ui-p");
+    // Full width whatever `ax` the root takes.
+    expect(panel).toHaveAttribute("data-ui-fullwidth");
+    expect(panel.firstElementChild).toHaveAttribute("data-ui-p", "4");
+    expect(panel.firstElementChild).toContainElement(getInput());
+  });
+
+  it("marks a disabled trigger, which keeps the card closed", async () => {
+    const user = userEvent.setup();
+    render(<Tool part={part()} disabled />);
+
+    const trigger = screen.getByRole("button");
+    expect(trigger).toHaveAttribute("data-disabled");
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("pretty-prints the input under a Parameters heading", () => {
     render(<Tool part={part()} defaultOpen />);
 
