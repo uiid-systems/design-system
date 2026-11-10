@@ -36,8 +36,16 @@ describe("countWords", () => {
     expect(countWords("one 2 three")).toBe(3);
   });
 
-  it("does not count markers and dashes on their own", () => {
-    expect(countWords("- > — item")).toBe(1);
+  it("does not count block markers on their own", () => {
+    expect(countWords("- > * + # ## --- item")).toBe(1);
+  });
+
+  it("counts emoji and other punctuation as words", () => {
+    expect(countWords("— 🎉 } …")).toBe(4);
+  });
+
+  it("does not count an ordered-list number after a CRLF line break", () => {
+    expect(countWords("Intro\r\n1. ")).toBe(1);
   });
 
   it("counts words in any script", () => {

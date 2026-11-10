@@ -198,6 +198,89 @@ describe("useStreamPace", () => {
       streamId: 0,
     });
   });
+
+  it.each(["# ", "## ", "* ", "+ ", "> ", "  - ", "- 1. "])(
+    "holds back a trailing %j marker until its word arrives",
+    (marker) => {
+      const { result, rerender } = renderHook(usePace, {
+        initialProps: { text: "Intro\n\n", streaming: true },
+      });
+      advance(1000);
+
+      rerender({ text: `Intro\n\n${marker}`, streaming: true });
+      advance(1000);
+      expect(result.current.text).toBe("Intro\n\n");
+
+      rerender({ text: `Intro\n\n${marker}word `, streaming: true });
+      advance(1000);
+      expect(result.current.text).toBe(`Intro\n\n${marker}word `);
+    },
+  );
+
+  it.each(["🎉 ", "— ", "} "])(
+    "shows a trailing %j while streaming, without waiting for another word",
+    (token) => {
+      const { result } = renderHook(usePace, {
+        initialProps: { text: `Done ${token}`, streaming: true },
+      });
+      advance(1000);
+      expect(result.current.text).toBe(`Done ${token}`);
+    },
+  );
+
+  it("shows the first word of a new stream straight away", () => {
+    const { result, rerender } = renderHook(usePace, {
+      initialProps: {
+        text: "Hello world again more words here ",
+        streaming: true,
+      },
+    });
+    advance(25);
+
+    rerender({ text: "New response ", streaming: true });
+    advance(10, 10);
+    expect(result.current.text).toBe("New ");
+  });
+
+  it("counts every new stream, not just the first", () => {
+    const { result, rerender } = renderHook(usePace, {
+      initialProps: { text: "a b ", streaming: true },
+    });
+    advance(1000);
+    rerender({ text: "c d ", streaming: true });
+    advance(1000);
+    rerender({ text: "e f ", streaming: true });
+    expect(result.current.streamId).toBe(2);
+  });
+
+  it("shows finished text that replaces finished text straight away", () => {
+    const { result, rerender } = renderHook(usePace, {
+      initialProps: { text: "a b", streaming: false },
+    });
+
+    rerender({ text: "c d", streaming: false });
+    expect(result.current).toEqual({
+      text: "c d",
+      streaming: false,
+      streamId: 1,
+    });
+  });
+
+  it("renders once per streamed chunk", () => {
+    let renders = 0;
+    const { rerender } = renderHook(
+      (props: { text: string; streaming: boolean }) => {
+        renders++;
+        return usePace(props);
+      },
+      { initialProps: { text: "Hello ", streaming: true } },
+    );
+    advance(1000);
+
+    renders = 0;
+    rerender({ text: "Hello world", streaming: true });
+    expect(renders).toBe(1);
+  });
 });
 
 describe("useStreamReveal", () => {

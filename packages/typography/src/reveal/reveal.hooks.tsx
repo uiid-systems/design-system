@@ -31,19 +31,17 @@ import styles from "./reveal.module.css";
  * the returned `streamId`; hand it to `useStreamReveal` so the new words animate.
  */
 export const useStreamPace = (text: string, streaming: boolean) => {
-  const [shown, setShown] = useState(() => (streaming ? 0 : text.length));
+  // The text released so far, kept as text so a growing stream changes no state during render:
+  // only a new stream does, and each render-phase update makes React render the caller twice.
+  const [shown, setShown] = useState(() => (streaming ? "" : text));
   const [streamId, setStreamId] = useState(0);
-  const [previous, setPrevious] = useState(text);
-  if (text !== previous) {
-    setPrevious(text);
-    if (!text.startsWith(previous.slice(0, shown))) {
-      setShown(streaming ? 0 : text.length);
-      setStreamId(streamId + 1);
-    }
+  if (!text.startsWith(shown)) {
+    setShown(streaming ? "" : text);
+    setStreamId(streamId + 1);
   }
 
   const limit = streaming ? completeLength(text) : text.length;
-  const from = Math.min(shown, limit);
+  const from = Math.min(shown.length, limit);
   const backlog = countWords(text, from, limit);
   // While streaming, a list marker, `##` or `>` with no word after it yet waits for that word:
   // shown alone it renders an empty block that unmounts again once the word arrives. When
@@ -58,26 +56,27 @@ export const useStreamPace = (text: string, streaming: boolean) => {
   useEffect(() => {
     if (!backlog) return;
 
-    const previous = last.current?.streamId === streamId ? last.current : null;
+    const lastRelease =
+      last.current?.streamId === streamId ? last.current : null;
     const now = performance.now();
     const target = backlog / REVEAL_STREAM_CATCH_UP;
     // Ease toward the pace the backlog asks for. Jumping to it would swing the gap between words
     // as the backlog moves between one word and a few.
-    const rate = previous
-      ? previous.rate + (target - previous.rate) * REVEAL_STREAM_EASE
+    const rate = lastRelease
+      ? lastRelease.rate + (target - lastRelease.rate) * REVEAL_STREAM_EASE
       : target;
     const interval = 1 / rate;
     // The first word goes out at once, as does one arriving after a lull longer than an interval.
     // Every chunk re-runs this effect, so a later word's deadline counts from the last release:
     // counted from `now`, chunks arriving faster than the interval would keep pushing it back.
-    const due = previous ? Math.max(previous.at + interval, now) : now;
+    const due = lastRelease ? Math.max(lastRelease.at + interval, now) : now;
 
     const timer = setTimeout(() => {
       const fired = performance.now();
       // Only a timer that fires late (a throttled tab) releases more than one word.
       const count = 1 + Math.floor(Math.max(0, fired - due) / interval);
       last.current = { streamId, at: fired, rate };
-      setShown(advanceWords(text, from, limit, count));
+      setShown(text.slice(0, advanceWords(text, from, limit, count)));
     }, due - now);
 
     return () => clearTimeout(timer);
