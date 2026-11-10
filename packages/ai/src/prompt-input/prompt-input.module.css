@@ -3,6 +3,7 @@
   --prompt-input-max-height: calc(var(--spacing-unit) * 48);
 
   display: block;
+  width: 100%;
 }
 
 /*

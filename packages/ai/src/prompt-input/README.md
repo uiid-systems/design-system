@@ -66,8 +66,8 @@ The textarea starts at one line and grows with its content through CSS `field-si
 
 ## Notes
 
-- The root is a `<form>` with `data-slot="prompt-input"` and `data-status` set to the current status, for styling any state.
+- The root is a full-width `<form>` with `data-slot="prompt-input"` and `data-status` set to the current status, for styling any state.
 - The header and footer are `Group`s with `data-slot="prompt-input-header"`, `prompt-input-footer` and `prompt-input-tools`. The header renders only when `header` is set.
 - Clicking empty space in a row does nothing, the same as Textarea's slots. Click the text to focus it.
-- PromptInput holds no state. The text lives in the textarea or in your `value`; the status lives with your chat.
+- Uncontrolled text lives in PromptInput's state, so a send clears it through Textarea and `data-filled` follows. Controlled text lives in your `value`; the status lives with your chat.
 - Attachments, drag-and-drop and a command menu are out of scope. `onSubmit`'s message is an object so attachments can join it later without a breaking change.
