@@ -134,12 +134,15 @@ describe("Markdown", () => {
       );
 
       expect(container).toHaveTextContent("");
-      wait(70);
+      // The first word goes out at once, the rest one interval apart.
+      wait(10);
       expect(words(container)).toEqual(["one"]);
-      wait(100);
+      wait(40);
+      expect(words(container)).toEqual(["one"]);
+      wait(50);
       expect(words(container)).toEqual(["one", "two"]);
       // The dash has no letters, so it waits and goes out with the word after it.
-      wait(60);
+      wait(70);
       expect(words(container)).toEqual(["one", "two", "—", "three"]);
       wait(400);
       expect(container).toHaveTextContent("one two — three four");
