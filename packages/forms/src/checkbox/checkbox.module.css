@@ -191,6 +191,12 @@
   }
 }
 
+/* `row-reverse` makes the right edge main-start, so the default `flex-start`
+   packs label and control together on the right of a row wider than its
+   content — a stretched column of bordered options, say. `space-between` holds
+   the label at the start and the control at the end. A caller's `ax` still
+   wins: style props sit in a later layer. */
 .toggle-reversed {
   flex-direction: row-reverse;
+  justify-content: space-between;
 }

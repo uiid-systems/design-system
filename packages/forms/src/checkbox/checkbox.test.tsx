@@ -7,6 +7,7 @@ import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
 
 import styles from "./checkbox.module.css";
+import css from "./checkbox.module.css?raw";
 
 describe("Checkbox", () => {
   it("renders a checkbox element", () => {
@@ -259,5 +260,24 @@ describe("Checkbox state-function className", () => {
 
     expect(indicator).toHaveClass("fn-checked");
     expect(indicator).toHaveClass(styles["checkbox-indicator"]);
+  });
+});
+
+/* `row-reverse` moves main-start to the right edge, so the default
+   `justify-content` packs label and box together on the right of any row wider
+   than its content (UI-321). The test DOM loads no CSS, so the rule is read
+   off the module source. */
+describe("Checkbox reversed", () => {
+  it("puts the reversed class on the row", () => {
+    const { container } = render(<Checkbox reversed label="Accept terms" />);
+    expect(container.querySelector("[data-slot='field-row']")).toHaveClass(
+      styles["toggle-reversed"],
+    );
+  });
+
+  it("keeps the label at the start of a row wider than its content", () => {
+    const rule = css.match(/\.toggle-reversed\s*\{([^}]*)\}/)?.[1];
+    expect(rule).toMatch(/flex-direction: row-reverse;/);
+    expect(rule).toMatch(/justify-content: space-between;/);
   });
 });
