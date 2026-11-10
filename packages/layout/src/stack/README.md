@@ -7,7 +7,7 @@ For horizontal layouts, reach for [`Group`](../group/README.md). Both wrap [`Box
 Use Stack when you want to:
 
 - Arrange items in a column (form fields, content blocks, lists)
-- Stretch children to fill the column's width with `ax="stretch"` — the standard form-layout pattern
+- Fill the column's width with each child — `ax` defaults to `stretch`, the standard form-layout pattern; pass `ax="start"` to let children shrink to their content
 - Center content along either axis with `ax` and `ay`
 - Size a Stack against its siblings with `flex`, e.g. a `flex={1}` column beside a fixed sidebar
 

@@ -305,6 +305,16 @@ describe("Tabs", () => {
     expect(panel).not.toHaveAttribute("data-ui-fullwidth");
   });
 
+  it("leaves the panel's cross axis to Stack's stretch default", () => {
+    render(<Tabs items={MOCK_ITEMS} />);
+    const panel = document.querySelector<HTMLElement>(
+      "[data-slot='tabs-panel']",
+    );
+    // Stack maps the panel's `ax` onto data-ui-ay; no value means stretch.
+    expect(panel).not.toHaveAttribute("data-ui-ay");
+    expect(panel).toHaveAttribute("data-ui-ax", "center");
+  });
+
   // ============================================
   // TAB PROPS / PANEL PROPS
   // ============================================

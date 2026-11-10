@@ -17,6 +17,10 @@
   border-radius: var(--globals-border-radius);
   padding-inline: 0;
 
+  /* The root Stack stretches its children; the list keeps its content width
+     unless `fullwidth` asks it to fill. */
+  align-self: flex-start;
+
   /* The tier's height measures the list; a tab sits inside its two borders. */
   --tabs-tab-inner-height: calc(var(--tabs-tab-height) - var(--globals-border-width) * 2);
 
