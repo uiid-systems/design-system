@@ -36,7 +36,11 @@ Base UI gives a non-native `render` `role="button"`, which is right for a `<span
 
 A `render={<button />}` stays a native button, with real `disabled` and its own `type`. A component that renders a `<button>` can't be inspected before it renders, so pass `nativeButton` for one.
 
-A disabled link keeps its `href` — stripping it would break router links — and instead leaves the tab order and ignores activation.
+A disabled Button stays in the tab order. It is `aria-disabled="true"` rather than natively `disabled`, so a keyboard user can still reach it and read its `tooltip`, and a focused button keeps focus when it becomes disabled. Clicks, Enter and Space do nothing and never reach ancestors or a form. Pass `focusableWhenDisabled={false}` for the native `disabled` attribute and no tab stop.
+
+A disabled link keeps its `href` — stripping it would break router links — and instead ignores activation and its context menu. It stays in the tab order like a disabled button; `focusableWhenDisabled={false}` gives it `tabIndex={-1}`.
+
+In tests, assert `toBeDisabledForUser()` (registered in the root `vitest.setup.ts`), which accepts either native `disabled` or `aria-disabled="true"`. jest-dom's `toBeDisabled()` only sees the native attribute.
 
 ## Gotchas
 

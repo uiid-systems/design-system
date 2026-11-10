@@ -109,8 +109,19 @@ describe("ToggleButton", () => {
     const button = screen.getByRole("button");
 
     await user.click(button);
-    expect(button).toBeDisabled();
+    expect(button).toBeDisabledForUser();
+    expect(button).not.toHaveAttribute("disabled");
     expect(button).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("is natively disabled with focusableWhenDisabled={false}", () => {
+    render(
+      <ToggleButton disabled focusableWhenDisabled={false}>
+        Toggle
+      </ToggleButton>,
+    );
+
+    expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("supports aria-label for icon-only triggers", () => {

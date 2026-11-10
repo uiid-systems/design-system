@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
@@ -59,18 +59,148 @@ describe("Button", () => {
     expect(onClick).toHaveBeenCalledTimes(3);
   });
 
-  it("does not fire onClick when disabled", async () => {
-    const onClick = vi.fn();
-    const user = userEvent.setup();
-    render(
-      <Button disabled onClick={onClick}>
-        Disabled
-      </Button>,
-    );
+  /*
+   * A disabled button stays in the tab order by default: its tooltip is
+   * usually the reason it is disabled, and keyboard users only reach the
+   * tooltip by focusing the button. The state is carried as `aria-disabled`,
+   * which jest-dom's `toBeDisabled()` misses — hence `toBeDisabledForUser()`.
+   */
+  describe("disabled", () => {
+    it("stays a tab stop, carrying the state as aria-disabled", async () => {
+      const user = userEvent.setup();
+      render(<Button disabled>Disabled</Button>);
 
-    await user.click(screen.getByRole("button"));
-    expect(screen.getByRole("button")).toBeDisabled();
-    expect(onClick).not.toHaveBeenCalled();
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("aria-disabled", "true");
+      expect(button).not.toHaveAttribute("disabled");
+      expect(button).toBeDisabledForUser();
+
+      await user.tab();
+      expect(button).toHaveFocus();
+    });
+
+    it("does not fire onClick on click, Enter or Space", async () => {
+      const onClick = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Button disabled onClick={onClick}>
+          Disabled
+        </Button>,
+      );
+
+      const button = screen.getByRole("button");
+      await user.click(button);
+      button.focus();
+      await user.keyboard("{Enter}");
+      await user.keyboard(" ");
+
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it("does not submit its form", async () => {
+      const onSubmit = vi.fn((event: React.FormEvent) =>
+        event.preventDefault(),
+      );
+      const user = userEvent.setup();
+      render(
+        <form onSubmit={onSubmit}>
+          <Button type="submit" disabled>
+            Save
+          </Button>
+        </form>,
+      );
+
+      const button = screen.getByRole("button");
+      await user.click(button);
+      button.focus();
+      await user.keyboard("{Enter}");
+      await user.keyboard(" ");
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it("stays a tab stop as an emulated button", async () => {
+      const onClick = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Button disabled render={<span />} onClick={onClick}>
+          Disabled
+        </Button>,
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("aria-disabled", "true");
+
+      await user.tab();
+      expect(button).toHaveFocus();
+      await user.keyboard("{Enter}");
+      await user.keyboard(" ");
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    /*
+     * Base UI skips the caller's handlers while disabled but lets the click
+     * bubble. A click dispatched straight at the element, as assistive
+     * technology does, must not reach ancestors a natively disabled button
+     * never signals — nor the caller's own `onClickCapture`.
+     */
+    it("keeps clicks from reaching ancestors or onClickCapture", async () => {
+      const onAncestorClick = vi.fn();
+      const onClickCapture = vi.fn();
+      const user = userEvent.setup({ pointerEventsCheck: 0 });
+      render(
+        <div onClick={onAncestorClick}>
+          <Button disabled onClickCapture={onClickCapture}>
+            Disabled
+          </Button>
+          <Button disabled render={<span />}>
+            Emulated
+          </Button>
+        </div>,
+      );
+
+      for (const button of screen.getAllByRole("button")) {
+        await user.click(button);
+        fireEvent.click(button);
+        button.focus();
+        await user.keyboard("{Enter}");
+        await user.keyboard(" ");
+      }
+      expect(onAncestorClick).not.toHaveBeenCalled();
+      expect(onClickCapture).not.toHaveBeenCalled();
+    });
+
+    it("renders native disabled and leaves the tab order with focusableWhenDisabled={false}", async () => {
+      const user = userEvent.setup();
+      render(
+        <Button disabled focusableWhenDisabled={false}>
+          Disabled
+        </Button>,
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toBeDisabled();
+      expect(button).toBeDisabledForUser();
+      expect(button).not.toHaveAttribute("aria-disabled");
+
+      await user.tab();
+      expect(button).not.toHaveFocus();
+    });
+
+    it("reveals the tooltip on keyboard focus", async () => {
+      const user = userEvent.setup();
+      render(
+        <Button tooltip="Add a customer before publishing" disabled>
+          Publish
+        </Button>,
+      );
+
+      await user.tab();
+      expect(screen.getByRole("button")).toHaveFocus();
+      expect(
+        await screen.findByText("Add a customer before publishing"),
+      ).toBeInTheDocument();
+    });
   });
 
   it("hides content and shows spinner when loading", () => {
@@ -237,7 +367,7 @@ describe("Button", () => {
       expect(button.tagName).toBe("SPAN");
     });
 
-    it("keeps a <button> render native, with native disabled", () => {
+    it("keeps a <button> render native, disabled through aria-disabled", () => {
       render(
         <Button disabled render={<button type="submit" />}>
           Save
@@ -247,7 +377,8 @@ describe("Button", () => {
       const button = screen.getByRole("button", { name: "Save" });
       expect(button).toHaveAttribute("type", "submit");
       expect(button).not.toHaveAttribute("role");
-      expect(button).toBeDisabled();
+      expect(button).toBeDisabledForUser();
+      expect(button).not.toHaveAttribute("disabled");
     });
 
     /*
@@ -287,22 +418,86 @@ describe("Button", () => {
       expect(link).not.toHaveAttribute("focusableWhenDisabled");
     });
 
-    it("does not activate a disabled link", async () => {
-      const onClick = vi.fn();
-      const user = userEvent.setup();
-      render(
-        <Button disabled onClick={onClick} render={<a href="/page" />}>
-          Next
-        </Button>,
-      );
+    /*
+     * A disabled link keeps its `href` — stripping it would break router
+     * links — so parity with a disabled button comes from the ARIA state and
+     * a swallowed activation. Like a disabled button, it stays a tab stop.
+     */
+    describe("disabled link", () => {
+      it("does not activate, and stays a tab stop", async () => {
+        const onClick = vi.fn();
+        const user = userEvent.setup();
+        render(
+          <Button disabled onClick={onClick} render={<a href="/page" />}>
+            Next
+          </Button>,
+        );
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("aria-disabled", "true");
-      expect(link).toHaveAttribute("tabindex", "-1");
-      expect(link).not.toHaveAttribute("disabled");
+        const link = screen.getByRole("link");
+        expect(link).toHaveAttribute("href", "/page");
+        expect(link).toHaveAttribute("aria-disabled", "true");
+        expect(link).toHaveAttribute("data-disabled");
+        expect(link).toBeDisabledForUser();
+        expect(link).not.toHaveAttribute("disabled");
+        expect(link).not.toHaveAttribute("tabindex");
 
-      await user.click(link);
-      expect(onClick).not.toHaveBeenCalled();
+        await user.tab();
+        expect(link).toHaveFocus();
+        await user.click(link);
+        await user.keyboard("{Enter}");
+        expect(onClick).not.toHaveBeenCalled();
+      });
+
+      it("keeps clicks from reaching ancestors", () => {
+        const onAncestorClick = vi.fn();
+        render(
+          <div onClick={onAncestorClick}>
+            <Button disabled render={<a href="/page" />}>
+              Next
+            </Button>
+          </div>,
+        );
+
+        fireEvent.click(screen.getByRole("link"));
+        expect(onAncestorClick).not.toHaveBeenCalled();
+      });
+
+      // A focused anchor still opens its keyboard context menu (Shift+F10),
+      // whose "Open link in new tab" entry navigates without a click.
+      it("cancels its context menu", () => {
+        render(
+          <>
+            <Button disabled render={<a href="/off" />}>
+              Off
+            </Button>
+            <Button render={<a href="/on" />}>On</Button>
+          </>,
+        );
+
+        const [off, on] = screen.getAllByRole("link");
+        expect(fireEvent.contextMenu(off)).toBe(false);
+        expect(fireEvent.contextMenu(on)).toBe(true);
+      });
+
+      it("leaves the tab order with focusableWhenDisabled={false}", async () => {
+        const user = userEvent.setup();
+        render(
+          <Button
+            disabled
+            focusableWhenDisabled={false}
+            render={<a href="/page" />}
+          >
+            Next
+          </Button>,
+        );
+
+        const link = screen.getByRole("link");
+        expect(link).toHaveAttribute("tabindex", "-1");
+        expect(link).toBeDisabledForUser();
+
+        await user.tab();
+        expect(link).not.toHaveFocus();
+      });
     });
   });
 
@@ -585,7 +780,7 @@ describe("Button", () => {
 
       const button = screen.getByRole("button", { name: "Save" });
       expect(button).not.toHaveAttribute("role");
-      expect(button).toBeDisabled();
+      expect(button).toHaveAttribute("aria-disabled", "true");
     });
 
     it.each([
@@ -605,13 +800,53 @@ describe("Button", () => {
 
         const button = screen.getByRole("button", { name: "Act" });
         expect(button.tagName).toBe(tagName);
+        expect(button).toHaveAttribute("aria-disabled", "true");
         if (tagName === "SPAN") {
-          expect(button).toHaveAttribute("aria-disabled", "true");
+          expect(button).toHaveAttribute("role", "button");
         } else {
           expect(button).not.toHaveAttribute("role");
-          expect(button).toBeDisabled();
         }
       },
     );
+  });
+});
+
+describe("toBeDisabledForUser", () => {
+  it("passes for native disabled, aria-disabled and an aria-disabled ancestor", () => {
+    render(
+      <>
+        <button disabled>Native</button>
+        <button aria-disabled="true">Aria</button>
+        <div role="group" aria-disabled="true">
+          <button>Nested</button>
+        </div>
+      </>,
+    );
+
+    for (const button of screen.getAllByRole("button")) {
+      expect(button).toBeDisabledForUser();
+    }
+    expect(screen.getByRole("button", { name: "Aria" })).not.toBeDisabled();
+  });
+
+  it("fails for an enabled element, so .not stands in for toBeEnabled", () => {
+    render(
+      <>
+        <button>Save</button>
+        <button aria-disabled="false">Cancel</button>
+      </>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Save" }),
+    ).not.toBeDisabledForUser();
+    expect(
+      screen.getByRole("button", { name: "Cancel" }),
+    ).not.toBeDisabledForUser();
+    expect(() =>
+      expect(
+        screen.getByRole("button", { name: "Save" }),
+      ).toBeDisabledForUser(),
+    ).toThrow(/is not disabled for the user[\s\S]*Save/);
   });
 });
