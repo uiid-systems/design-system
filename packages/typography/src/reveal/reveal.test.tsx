@@ -1,8 +1,19 @@
 import { render } from "@testing-library/react";
+import { StrictMode } from "react";
 import { describe, it, expect } from "vitest";
 
 import { Reveal } from "./reveal";
 import { useStreamReveal } from "./reveal.hooks";
+
+const getWords = (container: HTMLElement) =>
+  Array.from(
+    container.querySelector('[data-slot="reveal"]')?.children ?? [],
+  ) as HTMLElement[];
+
+const delays = (container: HTMLElement) =>
+  getWords(container).map((word) =>
+    word.style.getPropertyValue("--reveal-delay"),
+  );
 
 describe("Reveal", () => {
   it("renders the full text content", () => {
@@ -39,28 +50,73 @@ describe("Reveal", () => {
     expect(container.textContent).toBe("Intro.\n\nNext  word");
   });
 
-  it("indexes each word for the stagger delay", () => {
+  it("staggers each word on mount", () => {
     const { container } = render(<Reveal>one two three</Reveal>);
-    const words = Array.from(
-      container.querySelector('[data-slot="reveal"]')?.children ?? [],
-    );
-    expect(
-      words.map((word) =>
-        (word as HTMLElement).style.getPropertyValue("--reveal-index"),
-      ),
-    ).toEqual(["0", "1", "2"]);
+    expect(delays(container)).toEqual(["0ms", "30ms", "60ms"]);
   });
 
-  it("exposes timing props as custom properties on the root", () => {
+  it("only appends spans for newly streamed words", () => {
+    const { container, rerender } = render(<Reveal>one two</Reveal>);
+    const [first, second] = getWords(container);
+
+    rerender(<Reveal>one two three</Reveal>);
+    const words = getWords(container);
+    expect(words).toHaveLength(3);
+    expect(words[0]).toBe(first);
+    expect(words[1]).toBe(second);
+  });
+
+  it("staggers each streamed chunk from its own first word", () => {
+    const { container, rerender } = render(<Reveal>one two</Reveal>);
+    rerender(<Reveal>one two three four</Reveal>);
+    rerender(<Reveal>one two three four five</Reveal>);
+    expect(delays(container)).toEqual(["0ms", "30ms", "0ms", "30ms", "0ms"]);
+  });
+
+  it("staggers streamed chunks the same under StrictMode", () => {
+    const { container, rerender } = render(
+      <StrictMode>
+        <Reveal>one two</Reveal>
+      </StrictMode>,
+    );
+    rerender(
+      <StrictMode>
+        <Reveal>one two three four</Reveal>
+      </StrictMode>,
+    );
+    expect(delays(container)).toEqual(["0ms", "30ms", "0ms", "30ms"]);
+  });
+
+  it("keeps mounted words' timing when timing props change", () => {
+    const { container, rerender } = render(
+      <Reveal stagger={30} duration={400}>
+        one two
+      </Reveal>,
+    );
+    rerender(
+      <Reveal stagger={100} duration={800}>
+        one two three four
+      </Reveal>,
+    );
+    expect(delays(container)).toEqual(["0ms", "30ms", "0ms", "100ms"]);
+    expect(
+      getWords(container).map((word) =>
+        word.style.getPropertyValue("--reveal-duration"),
+      ),
+    ).toEqual(["400ms", "400ms", "800ms", "800ms"]);
+  });
+
+  it("exposes timing props as custom properties", () => {
     const { container } = render(
       <Reveal stagger={50} duration={600} blur={10}>
-        hello
+        hello world
       </Reveal>,
     );
     const root = container.querySelector('[data-slot="reveal"]') as HTMLElement;
-    expect(root.style.getPropertyValue("--reveal-stagger")).toBe("50ms");
-    expect(root.style.getPropertyValue("--reveal-duration")).toBe("600ms");
+    const [, second] = getWords(container);
     expect(root.style.getPropertyValue("--reveal-blur")).toBe("10px");
+    expect(second.style.getPropertyValue("--reveal-delay")).toBe("50ms");
+    expect(second.style.getPropertyValue("--reveal-duration")).toBe("600ms");
   });
 
   it("renders nothing inside for an empty string", () => {
