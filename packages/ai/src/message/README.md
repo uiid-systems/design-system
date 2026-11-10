@@ -42,11 +42,11 @@ All `Stack` props, plus:
 | ------ | ----------------------------------- | ------- | --------------------------------------------------- |
 | `from` | `"user" \| "assistant" \| "system"` | —       | Who sent the turn. Drives alignment and the surface |
 
-Defaults: `gap={2}`, `fullwidth`, and `ax="end"` for a user turn or `ax="start"` otherwise, so what follows the content lines up with it. Renders `data-slot="message"` and `data-from` set to `from`, for styling either kind of turn.
+Defaults: `gap={2}`, `fullwidth`, and for a user turn `ax="end"` and `ml="auto"` (unless you pass `m` or `mx`), otherwise `ax="start"`, so what follows the content lines up with it. Since alignment and the bubble only show the author visually, the root is `role="group"` with `aria-label` set to `` `Message from ${from}` ``; pass either to replace it, such as a product name for the assistant. Renders `data-slot="message"` and `data-from` set to `from`, for styling either kind of turn.
 
 ### MessageContent
 
-The body. All `Stack` props, with `gap={2}` as the default. On a user turn it is the bubble: a `--shade-surface` fill, the global border radius, and `0.75rem` by `1rem` of padding. On any other turn it has no surface. Renders `data-slot="message-content"`.
+The body. All `Stack` props, with `gap={2}` as the default. It never widens the turn, and a long unbroken token in its text, such as a URL, breaks onto the next line instead of overflowing. On a user turn it is the bubble: a `--palette-tint-hover` fill (the neutral palette's when no ancestor sets one), so it stays visible on a `Card`, the palette's `--palette-on-tint` text color, which a `MessageResponse` inside takes too, the global border radius, and `0.75rem` by `1rem` of padding. Inline and block code inside the bubble sit on the page background so they don't vanish into the fill. On any other turn it has no surface, and a code block in it takes the accent shade, so it shows on a white page. Renders `data-slot="message-content"`.
 
 ### MessageResponse
 
@@ -84,7 +84,7 @@ A toolbar with metadata on the other side is the same `Group` with `ax="space-be
 ## Notes
 
 - `from="system"` renders like `assistant`. A chat column needs two alignments, not three.
-- The user margin and bubble are two CSS rules keyed on `data-from`; `MessageContent` does not take `from` and there is no context between the parts.
-- A turn is capped at 95% of the column, so a bubble never touches the far edge. Override `max-width` on `[data-slot="message"]` to change it.
+- The bubble is a CSS rule keyed on the root's `data-from`; `MessageContent` does not take `from` and there is no context between the parts.
+- A turn is capped at 95% of the column, so a bubble never touches the far edge. Any `maxw`, a pixel width or `"full"`, replaces the cap.
 - `MessageResponse` is `Markdown`, which is memoized on all of its props. Pass a stable `render` element or none, or the memo never hits.
 - No part holds state or uses a hook, so all three render on the server.
