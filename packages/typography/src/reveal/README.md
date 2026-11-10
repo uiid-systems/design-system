@@ -6,7 +6,7 @@ Use Reveal when you want to:
 
 - Fade a paragraph or heading in word-by-word on mount
 - Render streamed text (LLM responses, live transcripts) where each arriving word animates once and settles
-- Style the reveal with any `Text` prop except `balance` — `size`, `weight`, `family`, `shade`, `color`, spacing, and `render` all pass through
+- Style the reveal with any `Text` prop except `balance`, `nowrap` and `truncate` — `size`, `weight`, `family`, `shade`, `color`, spacing, and `render` all pass through
 
 ## Usage
 
@@ -96,5 +96,5 @@ Call the pass's methods for every piece of visible text, in reading order, on ev
 ## Notes
 
 - `stagger` and `duration` apply to words as they mount. Changing either later only affects words added after the change; words already on screen keep their timing.
-- Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. The inline `text-wrap` also overrides `nowrap` and `truncate`.
+- Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. It always wraps, so it has no `nowrap` or `truncate` prop either.
 - `children` must be a string. To reveal formatted text, use `useStreamReveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.

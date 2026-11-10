@@ -125,9 +125,13 @@ describe("Reveal", () => {
     expect(root.style.getPropertyValue("text-wrap")).toBe("wrap");
   });
 
-  it("has no balance prop", () => {
+  it("has no balance, nowrap or truncate prop", () => {
     // @ts-expect-error balance re-breaks lines as words arrive, so Reveal does not take it
     render(<Reveal balance>hello</Reveal>);
+    // @ts-expect-error Reveal always wraps, so it does not take nowrap
+    render(<Reveal nowrap>hello</Reveal>);
+    // @ts-expect-error Reveal always wraps, so it does not take truncate
+    render(<Reveal truncate>hello</Reveal>);
   });
 
   it("renders nothing inside for an empty string", () => {
