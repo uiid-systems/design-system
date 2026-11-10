@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
-import { describe, it, expect } from "vitest";
+import { createPortal } from "react-dom";
+import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
@@ -420,5 +421,96 @@ describe("Input hands disabled and fullwidth to Field", () => {
       />,
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
+  });
+});
+
+describe("Input slot click-to-focus", () => {
+  it("focuses the input when plain slot content is pressed", async () => {
+    const user = userEvent.setup();
+    render(<Input before={<span>https://</span>} />);
+
+    await user.click(screen.getByText("https://"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("focuses the input when the wrapper's own padding is pressed", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Input before="$" />);
+
+    await user.click(
+      container.querySelector<HTMLElement>("[data-slot='input-wrapper']")!,
+    );
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("leaves a press on a button in a slot to the button", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Input
+        after={
+          <button type="button" onClick={onClick}>
+            Action
+          </button>
+        }
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Action" }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("textbox")).not.toHaveFocus();
+  });
+
+  /* A dialog popup carries `tabindex="-1"`, which an unscoped `closest` would
+     mistake for interactive slot content. */
+  it("focuses the input from slot content inside a tabindex ancestor", async () => {
+    const user = userEvent.setup();
+    render(
+      <div role="dialog" tabIndex={-1}>
+        <Input before={<span>https://</span>} />
+      </div>,
+    );
+
+    await user.click(screen.getByText("https://"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("leaves a press in a slot's portal to the portal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Input
+        aria-label="Query"
+        after={createPortal(<span>No results</span>, document.body)}
+      />,
+    );
+
+    await user.click(screen.getByText("No results"));
+    expect(screen.getByRole("textbox", { name: "Query" })).not.toHaveFocus();
+  });
+});
+
+describe("Input inert slots", () => {
+  it("makes the slots inert while the input is disabled", () => {
+    const { container } = render(
+      <Input before="$" after={<button type="button">Go</button>} disabled />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveAttribute("inert");
+  });
+
+  it("leaves the slots interactive while the input is enabled", () => {
+    const { container } = render(<Input before="$" after="USD" />);
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).not.toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).not.toHaveAttribute("inert");
   });
 });

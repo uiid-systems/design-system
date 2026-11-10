@@ -43,6 +43,7 @@ export const Input = ({
         fullwidth={fullwidth}
         variant={variant}
         color={color}
+        disabled={disabled}
       >
         <InputControl
           name={name}

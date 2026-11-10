@@ -61,6 +61,7 @@ export const Textarea = ({
         fullwidth={fullwidth}
         variant={variant}
         color={color}
+        disabled={disabled}
       >
         {/*
           `id`, `value`, `defaultValue`, `autoFocus` and `disabled` must reach

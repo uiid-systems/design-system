@@ -10,6 +10,49 @@ import { inputVariants } from "../input.variants";
 
 import styles from "../input.module.css";
 
+const SLOT_BEFORE = "input-before";
+const SLOT_AFTER = "input-after";
+
+/* Content in a slot that takes a press itself, so the press stays there
+   instead of moving focus to the control. */
+const INTERACTIVE = [
+  "a[href]",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "label",
+  "[tabindex]",
+  '[contenteditable]:not([contenteditable="false"])',
+  '[role="button"]',
+  '[role="link"]',
+].join(", ");
+
+/*
+ * A press on plain slot content, or on the surface's own padding, focuses the
+ * control, as it would on a bare one. `preventDefault` keeps a control that
+ * already has focus from blurring first.
+ */
+const focusControl = (event: React.MouseEvent<HTMLElement>) => {
+  if (event.button !== 0 || !(event.target instanceof Element)) return;
+  // React bubbles a press in a portal (a slot's popup) through here although
+  // its DOM sits outside the wrapper; that press is the popup's own.
+  if (!event.currentTarget.contains(event.target)) return;
+  // Only an interactive element inside the wrapper counts: `closest` also
+  // reaches ancestors, and a dialog popup carries `tabindex="-1"`.
+  const interactive = event.target.closest(INTERACTIVE);
+  if (interactive && event.currentTarget.contains(interactive)) return;
+
+  const control = Array.from(event.currentTarget.children).find((child) => {
+    const slot = child.getAttribute("data-slot");
+    return slot !== SLOT_BEFORE && slot !== SLOT_AFTER;
+  });
+  if (!(control instanceof HTMLElement)) return;
+
+  event.preventDefault();
+  control.focus();
+};
+
 export const InputWrapper = ({
   before,
   after,
@@ -18,6 +61,7 @@ export const InputWrapper = ({
   fullwidth,
   variant,
   color,
+  disabled,
   className,
   children,
 }: InputWrapperProps) => {
@@ -34,13 +78,21 @@ export const InputWrapper = ({
   const slots = (
     <>
       {before && (
-        <span data-slot="input-before" className={styles["input-slot"]}>
+        <span
+          data-slot={SLOT_BEFORE}
+          inert={disabled}
+          className={styles["input-slot"]}
+        >
           {before}
         </span>
       )}
       {children}
       {after && (
-        <span data-slot="input-after" className={styles["input-slot"]}>
+        <span
+          data-slot={SLOT_AFTER}
+          inert={disabled}
+          className={styles["input-slot"]}
+        >
           {after}
         </span>
       )}
@@ -54,6 +106,7 @@ export const InputWrapper = ({
       data-slot="input-wrapper"
       data-orientation="vertical"
       ax="stretch"
+      onMouseDown={focusControl}
       className={wrapperClassName}
     >
       {slots}
@@ -63,6 +116,7 @@ export const InputWrapper = ({
       data-slot="input-wrapper"
       data-orientation="horizontal"
       ay="center"
+      onMouseDown={focusControl}
       className={wrapperClassName}
     >
       {slots}
