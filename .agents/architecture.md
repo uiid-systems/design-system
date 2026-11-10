@@ -26,6 +26,7 @@ design-system/
 | `vitest.setup.ts`  | Test setup (jest-dom matchers)                 |
 | `tsconfig.json`    | Base TypeScript config (packages extend it)    |
 | `turbo.json`       | Turbo task orchestration                       |
+| `.size-limit.js`   | Size entries, generated from `packages/*`      |
 | `.oxlintrc.json`   | oxlint configuration (whole repo)              |
 | `.oxfmtrc.json`    | oxfmt formatter configuration                  |
 | `lefthook.yml`     | Git hooks (pre-commit format+lint, commit-msg) |

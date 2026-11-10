@@ -65,7 +65,7 @@ pnpm run lint          # Lint all packages
 pnpm test:run          # Run tests
 ```
 
-Bundle sizes are budgeted with [size-limit](https://github.com/ai/size-limit) — `pnpm size` checks every package against `.size-limit.json`.
+Bundle sizes are measured with [size-limit](https://github.com/ai/size-limit) — `pnpm size` reports every package, and each PR is compared against its base branch. See [the size guide](docs/guides/size-limit.md).
 
 ## Architecture
 

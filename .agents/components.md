@@ -44,7 +44,7 @@ Copy an existing package's config rather than writing it fresh — `packages/int
 5. `vitest.config.ts` — add the package to `uiidPackages`, or `@uiid/{name}` resolves through `node_modules` to `dist` instead of source, so tests run against stale output or fail when dist is missing
 6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
 7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
-8. `.size-limit.json` — add an entry for `packages/{name}/dist/index.js`. Its `name` must equal the package name exactly, or the size workflow drops the entry silently
+8. `.size-limit.js` — nothing to register: size entries are generated from every `packages/*` with a `dist/index.js`. Add a component to `SINGLE_IMPORTS` there only when the cost of importing it alone is worth tracking
 9. `packages/design-system/package.json` and `src/index.ts` — add the `workspace:*` dependency and `export * from "@uiid/{name}"`, but only once the package is published. `pnpm -r publish` skips a private package and still publishes the umbrella, which would then depend on a version npm cannot serve. Do this in the same PR that removes `"private": true`
 10. `packages/design-system/src/globals.css` — `@import "@uiid/{name}/globals.css"` once the package ships CSS. This is also how component CSS reaches Storybook, whose preview imports only tokens. A types-only package emits no stylesheet, so skip this until it does, and add `"./globals.css": "./dist/{name}.css"` to the package's `exports` at the same time
 11. `README.md` — add the package to the package list
