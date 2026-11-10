@@ -131,6 +131,22 @@ Clear the flag when the request fails, in `catch` or `finally`. A flag left on a
 
 Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to `DialogClose` for it. `pending` covers every way of closing, the header close button included, and works whether or not `open` is controlled.
 
+## Nested dialogs
+
+A dialog opened from inside another leaves its backdrop out, as Base UI does by default, so the outer dialog stays undimmed behind it. Pass Base UI's `forceRender` through `BackdropProps` and the inner dialog draws its backdrop over the outer dialog, dimming it while the inner one sits on top. Only the inner backdrop is raised; a dialog that isn't nested layers as before.
+
+```tsx
+<Dialog trigger={<Button>Settings</Button>} title="Settings">
+  <Dialog
+    trigger={<Button>Reset</Button>}
+    title="Reset all settings?"
+    BackdropProps={{ forceRender: true }}
+  >
+    …
+  </Dialog>
+</Dialog>
+```
+
 ## Naming and long content
 
 A `title` names the dialog: it renders as an `<h2>` that labels the popup, and a composed title — an icon beside the text — stays that heading, laid out as a row. Without a `title` the dialog has no accessible name, so give it one through `PopupProps={{ "aria-label": "…" }}`.

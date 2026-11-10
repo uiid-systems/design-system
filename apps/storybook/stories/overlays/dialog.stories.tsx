@@ -54,3 +54,6 @@ export const Triggers: Story = { render: () => <Examples.Triggers /> };
 export const OpenedFromElsewhere: Story = {
   render: () => <Examples.OpenedFromElsewhere />,
 };
+
+/** A dialog opened from another; `BackdropProps.forceRender` dims the outer one behind it. */
+export const Nested: Story = { render: () => <Examples.Nested /> };

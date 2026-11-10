@@ -275,3 +275,24 @@ export const OpenedFromElsewhere = () => {
     </Stack>
   );
 };
+
+/**
+ * A confirmation opened from inside another dialog. `forceRender` keeps the
+ * inner dialog's backdrop, which dims the outer dialog behind it.
+ */
+export const Nested = () => (
+  <Dialog trigger={<Button>Settings</Button>} title="Settings">
+    <Stack gap={4} ax="start">
+      <Text>{BODY}</Text>
+      <Dialog
+        trigger={<Button color="red">Reset</Button>}
+        size="small"
+        title="Reset all settings?"
+        BackdropProps={{ forceRender: true }}
+        footer={<DialogClose>Cancel</DialogClose>}
+      >
+        This can't be undone.
+      </Dialog>
+    </Stack>
+  </Dialog>
+);
