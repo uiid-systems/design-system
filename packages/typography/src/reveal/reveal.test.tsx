@@ -5,6 +5,8 @@ import { describe, it, expect } from "vitest";
 import { Reveal } from "./reveal";
 import { useStreamReveal } from "./reveal.hooks";
 
+import styles from "./reveal.module.css";
+
 const getWords = (container: HTMLElement) =>
   Array.from(
     container.querySelector('[data-slot="reveal"]')?.children ?? [],
@@ -117,6 +119,18 @@ describe("Reveal", () => {
     expect(root.style.getPropertyValue("--reveal-blur")).toBe("10px");
     expect(second.style.getPropertyValue("--reveal-delay")).toBe("50ms");
     expect(second.style.getPropertyValue("--reveal-duration")).toBe("600ms");
+  });
+
+  it("carries the class that wraps plainly", () => {
+    const { container } = render(<Reveal>hello</Reveal>);
+    expect(container.querySelector('[data-slot="reveal"]')).toHaveClass(
+      styles["reveal"],
+    );
+  });
+
+  it("has no balance prop", () => {
+    // @ts-expect-error balance re-breaks lines as words arrive, so Reveal does not take it
+    render(<Reveal balance>hello</Reveal>);
   });
 
   it("renders nothing inside for an empty string", () => {
