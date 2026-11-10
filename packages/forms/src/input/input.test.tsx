@@ -6,9 +6,11 @@ import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
+import { INPUT_SLOT_INTERACTIVE } from "./input.constants";
 import { InputControl, InputWrapper } from "./subcomponents";
 
 import styles from "./input.module.css";
+import compositionsCss from "@uiid/tokens/compositions.css?raw";
 
 describe("Input", () => {
   it("renders an input element", () => {
@@ -512,5 +514,19 @@ describe("Input inert slots", () => {
     expect(
       container.querySelector("[data-slot='input-after']"),
     ).not.toHaveAttribute("inert");
+  });
+});
+
+describe("Input slot pointer events", () => {
+  /* The slot turns pointer events off and back on only for interactive
+     content. A selector missing from that list never receives the press, so
+     it falls through to the wrapper and focuses the control instead. */
+  it("re-enables pointer events for every selector the wrapper leaves alone", () => {
+    const rule = compositionsCss.match(
+      /\.composes-field-slot\s*\{[\s\S]*?&:where\(\s*:has\(([\s\S]*?)\)\s*\)\s*\{/,
+    );
+    expect(rule).not.toBeNull();
+    const reEnabled = rule![1].split(/,\s*/).map((selector) => selector.trim());
+    expect(reEnabled).toEqual(expect.arrayContaining(INPUT_SLOT_INTERACTIVE));
   });
 });

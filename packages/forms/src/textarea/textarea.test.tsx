@@ -645,5 +645,8 @@ describe("Textarea inert slots", () => {
     expect(
       container.querySelector("[data-slot='input-before']"),
     ).not.toHaveAttribute("inert");
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).not.toHaveAttribute("inert");
   });
 });

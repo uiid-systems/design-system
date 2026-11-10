@@ -3,7 +3,10 @@
 import { Group, Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
-import { INPUT_DEFAULT_ORIENTATION } from "../input.constants";
+import {
+  INPUT_DEFAULT_ORIENTATION,
+  INPUT_SLOT_INTERACTIVE,
+} from "../input.constants";
 import { inputColorClassName } from "../input.styles";
 import type { InputWrapperProps } from "../input.types";
 import { inputVariants } from "../input.variants";
@@ -13,20 +16,7 @@ import styles from "../input.module.css";
 const SLOT_BEFORE = "input-before";
 const SLOT_AFTER = "input-after";
 
-/* Content in a slot that takes a press itself, so the press stays there
-   instead of moving focus to the control. */
-const INTERACTIVE = [
-  "a[href]",
-  "button",
-  "input",
-  "select",
-  "textarea",
-  "label",
-  "[tabindex]",
-  '[contenteditable]:not([contenteditable="false"])',
-  '[role="button"]',
-  '[role="link"]',
-].join(", ");
+const INTERACTIVE = INPUT_SLOT_INTERACTIVE.join(", ");
 
 /*
  * A press on plain slot content, or on the surface's own padding, focuses the
