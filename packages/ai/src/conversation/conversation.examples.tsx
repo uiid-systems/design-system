@@ -26,7 +26,7 @@ const EXCHANGES: [string, string][] = [
   ],
   [
     "How far do I have to scroll to release it?",
-    "Past `70px` from the bottom. Scrolling back within that band pins it again without pressing anything.",
+    "Any scroll up lets go. Scrolling back down within `70px` of the bottom pins it again without pressing anything.",
   ],
   [
     "Does it respect reduced motion?",

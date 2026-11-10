@@ -65,9 +65,9 @@ All [`Button`](../../../buttons/src/button/README.md) props. Renders only while 
 
 The region starts pinned and opens at its newest message. While pinned, content growing or the region shrinking keeps the bottom in view with an instant jump.
 
-Scrolling up past 70 px from the bottom releases the pin. The button appears, and content that arrives afterwards does not move the reader. Scrolling back within that band re-pins without pressing anything. The button scrolls to the bottom and re-pins; its scroll is smooth by default and instant under `prefers-reduced-motion: reduce`, through the scroller's CSS `scroll-behavior`.
+Any scroll up releases the pin, however small, so an arrow key or a slow trackpad lets go even while tokens arrive. The button appears, and content that arrives afterwards does not move the reader. Scrolling back down within 70 px of the bottom re-pins without pressing anything. The button scrolls to the bottom and re-pins; its scroll is smooth by default and instant under `prefers-reduced-motion: reduce`, through the scroller's CSS `scroll-behavior`.
 
-A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region is always pinned, so the button never shows for it.
+A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region has nowhere to scroll, so the button never shows for it. If the region grows, or content shrinks, until a scrolled-up reader is at the bottom, the region re-pins.
 
 ## Hooks
 
