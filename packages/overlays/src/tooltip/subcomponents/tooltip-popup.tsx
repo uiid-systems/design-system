@@ -17,17 +17,7 @@ export const TooltipPopup = ({
   return (
     <BaseTooltip.Popup
       data-slot="tooltip-popup"
-      render={
-        <Card
-          shadow
-          py={2}
-          px={2}
-          style={{
-            backgroundColor: "var(--shade-foreground)",
-            color: "var(--shade-background)",
-          }}
-        />
-      }
+      render={<Card shadow py={2} px={2} />}
       className={cxState(styles["tooltip-popup"], className)}
       {...props}
     >

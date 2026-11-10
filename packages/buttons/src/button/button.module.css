@@ -193,10 +193,8 @@
 }
 
 .button-tooltip-popup {
-  composes: composes-popup from global;
+  composes: composes-popup composes-tooltip from global;
 
-  background-color: var(--shade-foreground);
-  color: var(--shade-background);
   border-radius: var(--globals-border-radius);
   padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
 }

@@ -530,6 +530,18 @@ describe("Button", () => {
       expect(await screen.findByText("Helpful hint")).toBeVisible();
     });
 
+    it("shares Tooltip's composes-tooltip surface and width cap", async () => {
+      const user = userEvent.setup();
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      await user.hover(screen.getByText("Save"));
+
+      const popup = (await screen.findByText("Helpful hint")).closest(
+        '[role="tooltip"], [data-open]',
+      );
+      expect(popup?.className).toMatch(/composes-tooltip(\s|$)/);
+    });
+
     it.each(["square", "circle"] as const)(
       "names a %s icon-only button after a string tooltip",
       (shape) => {

@@ -6,6 +6,7 @@
 @import "./css/semantic/globals.tokens.css";
 @import "./css/semantic/shade.tokens.css";
 @import "./css/semantic/forms.tokens.css";
+@import "./css/component/tooltip.tokens.css";
 @import "./css/theme/theme.tokens.css";
 
 @import "./palette.css";

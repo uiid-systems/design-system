@@ -3,5 +3,5 @@
 }
 
 .tooltip-popup {
-  composes: composes-popup from global;
+  composes: composes-popup composes-tooltip from global;
 }
