@@ -99,7 +99,7 @@ describe("Tool", () => {
       state,
       LABELS[state],
     ]),
-  )("labels the %s state %p and colors it", (state, label) => {
+  )("labels the %s state %s and colors it", (state, label) => {
     render(<Tool part={part({ state })} />);
 
     const status = getStatus()!;
@@ -412,7 +412,7 @@ describe("examples", () => {
     expect(
       screen.getByRole("button", { name: /Thought for/ }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Done/ })).toBeInTheDocument();
+    expect(getStatus()).toHaveTextContent("Done");
     expect(
       document.querySelector("[data-slot='message-response']"),
     ).not.toBeNull();
