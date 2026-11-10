@@ -37,7 +37,7 @@ The base color is whatever `Text` resolves — the default foreground, a palette
 
 ## Accessibility
 
-- Renders statically in its own color under `prefers-reduced-motion`, in print, and in forced colors mode — no sweep, no text clipping.
+- Renders statically as plain text under `prefers-reduced-motion`, in print, and in forced colors mode — no sweep, no text clipping.
 - Content stays a plain text node: selection, find-in-page, and screen readers see ordinary text. The animation itself announces nothing; if the pending state needs announcing, put `aria-busy` or a live region on the surrounding status.
 
 ## Notes

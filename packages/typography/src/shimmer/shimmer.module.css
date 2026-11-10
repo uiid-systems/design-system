@@ -56,8 +56,9 @@
 
 /*
  * Static text in its own color: no sweep, and no dependence on text clipping.
- * Print freezes the animation mid-sweep, and forced colors drops gradient
- * images, which would leave the transparent fill with nothing to show.
+ * Print skips background graphics by default, which would leave the
+ * transparent glyphs invisible on paper, and forced colors removes gradient
+ * backgrounds, so neither can rely on the band to paint the text.
  */
 @media (prefers-reduced-motion: reduce), print, (forced-colors: active) {
   .shimmer {

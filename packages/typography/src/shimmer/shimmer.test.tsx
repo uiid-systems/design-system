@@ -95,9 +95,13 @@ describe("Shimmer", () => {
   });
 
   it("renders static text under reduced motion, print and forced colors", () => {
-    expect(shimmerCss).toMatch(
-      /@media \(prefers-reduced-motion: reduce\),\s*print,\s*\(forced-colors: active\)\s*\{/,
-    );
+    const block = shimmerCss.match(
+      /@media \(prefers-reduced-motion: reduce\),\s*print,\s*\(forced-colors: active\)\s*\{[^}]*\}/,
+    )?.[0];
+    expect(block).toBeDefined();
+    expect(block).toContain("animation: none");
+    expect(block).toContain("background-image: none");
+    expect(block).toContain("-webkit-text-fill-color: currentColor");
   });
 
   it("sizes the band layer so the highlight clears both edges at any spread", () => {
