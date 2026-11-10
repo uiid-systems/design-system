@@ -412,6 +412,42 @@ describe("Conversation", () => {
       expect(scrollButton()).toBeInTheDocument();
     });
 
+    it("hands focus to the viewport when pressing it unmounts it", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(scrollButton()).not.toBeInTheDocument();
+      expect(viewport).toHaveFocus();
+    });
+
+    it("leaves focus alone when the button was not focused", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+
+      fireEvent.click(scrollButton()!);
+
+      expect(viewport).not.toHaveFocus();
+    });
+
+    it("keeps focus on the button when a caller vetoes the scroll", () => {
+      const { viewport } = renderConversation(
+        <ConversationScrollButton
+          onClick={(event) => event.preventDefault()}
+        />,
+      );
+      release(viewport);
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(button).toHaveFocus();
+    });
+
     it("lets a caller replace the label, variant and children", () => {
       const { viewport } = renderConversation(
         <ConversationScrollButton aria-label="Jump down" variant="ghost">
