@@ -18,6 +18,10 @@
   background-color: var(--palette-tint-hover);
 }
 
+.onTintMuted {
+  color: var(--palette-on-tint-muted);
+}
+
 .fill {
   background-color: var(--palette-fill);
   color: var(--palette-on-fill);

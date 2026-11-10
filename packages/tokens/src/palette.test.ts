@@ -43,6 +43,7 @@ const AUTHORED = [
   "--palette-fill-hover",
   "--palette-tint",
   "--palette-on-tint",
+  "--palette-on-tint-muted",
   "--palette-tint-border",
   "--palette-text",
 ];
@@ -107,5 +108,22 @@ describe("palette.css derived --palette-tint-hover", () => {
       declares(blockFor(hue)?.body ?? "", "--palette-tint-hover"),
     );
     expect(authored).toEqual([]);
+  });
+});
+
+describe("palette.css --palette-on-tint-muted", () => {
+  /*
+   * Every hue reads the neutral ramp, not its own: the hue's own 600 on its 50
+   * tint fails AA on orange, green and yellow. Asserted so a tidy-up that
+   * "matches" it to the other per-hue lines cannot quietly revert it.
+   */
+  it("reads neutral 600 / 400 in every hue block", () => {
+    const expected =
+      "--palette-on-tint-muted:light-dark(var(--color-neutral-600),var(--color-neutral-400))";
+    const off = PALETTE_HUES.filter(
+      (hue) =>
+        !(blockFor(hue)?.body ?? "").replace(/\s+/g, "").includes(expected),
+    );
+    expect(off).toEqual([]);
   });
 });
