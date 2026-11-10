@@ -1,5 +1,59 @@
 # Changelog
 
+## [0.8.0](https://github.com/uiid-systems/design-system/compare/v0.7.2...v0.8.0) (2026-11-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** Stack children with no explicit width now stretch across the column.
+* **ui:** Reveal no longer accepts the balance prop.
+* **ui:** a disabled Button no longer carries the native disabled attribute by default. Pass focusableWhenDisabled={false} for the old behavior.
+
+### Features
+
+* **tokens:** add --palette-on-tint-muted ([#525](https://github.com/uiid-systems/design-system/issues/525)) ([c6b86ee](https://github.com/uiid-systems/design-system/commit/c6b86ee1114198a657744f033fa037469c2427c9))
+* **ui:** add full and screen sizing keywords ([#497](https://github.com/uiid-systems/design-system/issues/497)) ([22520ab](https://github.com/uiid-systems/design-system/commit/22520ab380782147702a679d058d89bf0e1d29a6))
+* **ui:** add pending to Dialog ([#499](https://github.com/uiid-systems/design-system/issues/499)) ([13d6bc7](https://github.com/uiid-systems/design-system/commit/13d6bc7976c7e370314387ce0a11fcd228ea625f))
+* **ui:** add pending to Drawer ([#503](https://github.com/uiid-systems/design-system/issues/503)) ([7f13314](https://github.com/uiid-systems/design-system/commit/7f1331441dad5ced78ff6933167973b853ac69a0))
+* **ui:** add streaming word reveal to Markdown ([#504](https://github.com/uiid-systems/design-system/issues/504)) ([fe8d368](https://github.com/uiid-systems/design-system/commit/fe8d368d75af78a968e120039abf7283f039d74d))
+* **ui:** default Stack ax to stretch ([#534](https://github.com/uiid-systems/design-system/issues/534)) ([9971940](https://github.com/uiid-systems/design-system/commit/9971940f16afdc85bc9f6dac128e2b8a65cf8130))
+* **ui:** expose @uiid/design-system/utils subpath ([#532](https://github.com/uiid-systems/design-system/issues/532)) ([68cbb70](https://github.com/uiid-systems/design-system/commit/68cbb706bb9b909b996680691da2047f2dd94f3f))
+* **ui:** extract @uiid/markdown from @uiid/ai ([#510](https://github.com/uiid-systems/design-system/issues/510)) ([09dda64](https://github.com/uiid-systems/design-system/commit/09dda646e089f107ed3abe40f12bea821d4f5709))
+* **ui:** focus the control from slot padding and make slots inert when disabled ([#533](https://github.com/uiid-systems/design-system/issues/533)) ([88a3375](https://github.com/uiid-systems/design-system/commit/88a337549ba4b10b3d90e2998e0a7e8f29ca1ab3))
+* **ui:** keep a disabled Button focusable by default ([#514](https://github.com/uiid-systems/design-system/issues/514)) ([4fbe845](https://github.com/uiid-systems/design-system/commit/4fbe84595df38edeff7bbb372b28800a10d4bb73))
+* **ui:** keep InputWrapper mounted and size it from its own variants ([#539](https://github.com/uiid-systems/design-system/issues/539)) ([1e5ca61](https://github.com/uiid-systems/design-system/commit/1e5ca610bdaedbdaaacbed739e38e7d2c7e5f7d6))
+* **ui:** make the Card shadow and footer divider opt-in ([#498](https://github.com/uiid-systems/design-system/issues/498)) ([691e716](https://github.com/uiid-systems/design-system/commit/691e71658ca540601a750356d48d9202d5722334))
+* **ui:** name Message turns as groups and take ml/maxw style props ([#531](https://github.com/uiid-systems/design-system/issues/531)) ([8dea179](https://github.com/uiid-systems/design-system/commit/8dea179d0700b70a00dbee25b9822cbb76a0c3b9))
+* **ui:** publish @uiid/markdown and re-export it from @uiid/design-system ([#537](https://github.com/uiid-systems/design-system/issues/537)) ([4edc71c](https://github.com/uiid-systems/design-system/commit/4edc71c001f1f5bce3b5273086f9b3a94861bd6b))
+* **ui:** stagger Reveal per chunk, freeze word timing, drop balance ([#517](https://github.com/uiid-systems/design-system/issues/517)) ([aee920d](https://github.com/uiid-systems/design-system/commit/aee920db125f3580fde7ffc8ad8ad5d917ef9ea3))
+* **ui:** take ReactNode label and description on Field and carry required to its control ([#520](https://github.com/uiid-systems/design-system/issues/520)) ([4dc1a0f](https://github.com/uiid-systems/design-system/commit/4dc1a0f8cd92a6ef4532d33157564ca1ab5dc964))
+
+
+### Bug Fixes
+
+* **tokens:** read only direct children for disabled-within and invalid ([#508](https://github.com/uiid-systems/design-system/issues/508)) ([0dce526](https://github.com/uiid-systems/design-system/commit/0dce5260ee2ed289f408542eb545c97aaed3cfaf))
+* **tokens:** stop the spin animation under prefers-reduced-motion ([#506](https://github.com/uiid-systems/design-system/issues/506)) ([4f071aa](https://github.com/uiid-systems/design-system/commit/4f071aa9c0b3fe27bdb69e046e71d4699b9078b1))
+* **ui:** clip the Collapsible panel vertically and respect reduced motion ([#530](https://github.com/uiid-systems/design-system/issues/530)) ([657817a](https://github.com/uiid-systems/design-system/commit/657817a8829191c4aaaa3605ffbdd3e18d4774e4))
+* **ui:** describe Button with its string tooltip and keep an inferred nativeButton ([#515](https://github.com/uiid-systems/design-system/issues/515)) ([a6580e9](https://github.com/uiid-systems/design-system/commit/a6580e965bda38b8c7ea457f2faa589aaf681972))
+* **ui:** dim the outer dialog under a nested dialog's forced backdrop ([#524](https://github.com/uiid-systems/design-system/issues/524)) ([d2bda86](https://github.com/uiid-systems/design-system/commit/d2bda86b5ac8e665f867e9a305ed505721e3e92d))
+* **ui:** give a bare Field its box back once an inline error renders ([#527](https://github.com/uiid-systems/design-system/issues/527)) ([131c7b8](https://github.com/uiid-systems/design-system/commit/131c7b8db7d8d9d3555cfdafa7b99d8633d70e4e))
+* **ui:** give Tooltip a composes-tooltip composition with a max width ([#522](https://github.com/uiid-systems/design-system/issues/522)) ([a053716](https://github.com/uiid-systems/design-system/commit/a0537167eea70c9d1f8f1c66e30a73cf8bbefbb3))
+* **ui:** hand Combobox and Autocomplete's disabled to Field ([#535](https://github.com/uiid-systems/design-system/issues/535)) ([587ded8](https://github.com/uiid-systems/design-system/commit/587ded8f15e016a8fb91a416c33c5e44a5041743))
+* **ui:** hand Conversation's scroll button focus to the viewport ([#519](https://github.com/uiid-systems/design-system/issues/519)) ([79ae970](https://github.com/uiid-systems/design-system/commit/79ae970cc5931a89de20a0d9c18db74360323429))
+* **ui:** hand Input and Textarea's disabled and fullwidth to Field ([#512](https://github.com/uiid-systems/design-system/issues/512)) ([3518986](https://github.com/uiid-systems/design-system/commit/3518986908732b9fef63d325fa0ee3b320a70b44))
+* **ui:** hand MaskInput's id and value to FieldControl ([#511](https://github.com/uiid-systems/design-system/issues/511)) ([5621540](https://github.com/uiid-systems/design-system/commit/562154084db64ab4d5491728421305ff1d245e87))
+* **ui:** hand Textarea's id and value to FieldControl ([#507](https://github.com/uiid-systems/design-system/issues/507)) ([aef9cc9](https://github.com/uiid-systems/design-system/commit/aef9cc9cd4e09ebfc524b10fc2806f0288a18c6f))
+* **ui:** harden Tool against unserializable values, empty children and long content ([#516](https://github.com/uiid-systems/design-system/issues/516)) ([f6fad01](https://github.com/uiid-systems/design-system/commit/f6fad0193b51a2ccede90bcfae1de46115047736))
+* **ui:** hold PromptInput's uncontrolled draft in state ([#529](https://github.com/uiid-systems/design-system/issues/529)) ([5c22164](https://github.com/uiid-systems/design-system/commit/5c22164664260d080d900bd625311dc7c0f3056b))
+* **ui:** hold trailing markers and restart the pace per stream in useStreamPace ([#538](https://github.com/uiid-systems/design-system/issues/538)) ([bf4f426](https://github.com/uiid-systems/design-system/commit/bf4f426adb5b01c5cd76958e21fb3174ece06497))
+* **ui:** keep Shimmer static in print and forced colors ([#521](https://github.com/uiid-systems/design-system/issues/521)) ([cc28a5f](https://github.com/uiid-systems/design-system/commit/cc28a5f55ce92928a185ec4a2ba41264eb40189f))
+* **ui:** keep the label at the start of a reversed Checkbox or Radio row ([#536](https://github.com/uiid-systems/design-system/issues/536)) ([fe1cf5d](https://github.com/uiid-systems/design-system/commit/fe1cf5dcf409d81bb948fc67ad0677a39547036d))
+* **ui:** label Tool's finished states Done, Failed and Skipped ([#523](https://github.com/uiid-systems/design-system/issues/523)) ([1509017](https://github.com/uiid-systems/design-system/commit/1509017c463733953eb768aa0885ab27ccce178c))
+* **ui:** release Conversation's pin on any scroll up and re-pin on resize ([#513](https://github.com/uiid-systems/design-system/issues/513)) ([c00b938](https://github.com/uiid-systems/design-system/commit/c00b938b972864cff250652d9666ffb09efc9069))
+* **ui:** remove gap from Text and Prose ([#502](https://github.com/uiid-systems/design-system/issues/502)) ([c65511e](https://github.com/uiid-systems/design-system/commit/c65511e117c5ec769d9c3f4ac05696f84229221a))
+* **ui:** show a disabled Send when PromptInput has no onStop ([#509](https://github.com/uiid-systems/design-system/issues/509)) ([ef18461](https://github.com/uiid-systems/design-system/commit/ef184618d17189dbd9f086ae41a9d75fbdb64155))
+* **ui:** trim Prose's last-child block-end margin ([#518](https://github.com/uiid-systems/design-system/issues/518)) ([eca74ae](https://github.com/uiid-systems/design-system/commit/eca74ae129386c66f50e220b58e46c660e9c0f22))
+
 ## [0.7.2](https://github.com/uiid-systems/design-system/compare/v0.7.1...v0.7.2) (2026-10-30)
 
 
