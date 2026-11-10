@@ -3,6 +3,10 @@ import { describe, it, expect } from "vitest";
 
 import { Shimmer } from "./shimmer";
 
+// Imported with `?raw`: the test DOM loads no CSS, so the media queries and
+// background geometry are only checkable in the module's source.
+import shimmerCss from "./shimmer.module.css?raw";
+
 const getRoot = (container: HTMLElement) =>
   container.querySelector('[data-slot="shimmer"]') as HTMLElement;
 
@@ -88,5 +92,16 @@ describe("Shimmer", () => {
   it("merges className", () => {
     const { container } = render(<Shimmer className="custom">hello</Shimmer>);
     expect(getRoot(container)).toHaveClass("custom");
+  });
+
+  it("renders static text under reduced motion, print and forced colors", () => {
+    expect(shimmerCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\),\s*print,\s*\(forced-colors: active\)\s*\{/,
+    );
+  });
+
+  it("sizes the band layer so the highlight clears both edges at any spread", () => {
+    expect(shimmerCss).toContain("calc(200% + 2 * var(--shimmer-spread)) 100%");
+    expect(shimmerCss).not.toContain("250% 100%");
   });
 });
