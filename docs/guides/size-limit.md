@@ -1,69 +1,53 @@
 # Size Limit
 
-Every PR runs a per-package bundle-size check. Only packages whose source (or whose dependencies' source) changed vs `main` are built and measured — the rest are skipped. Results show up as a comment on the PR.
+Every PR is measured against its base branch. There are no fixed budgets: the check reports how much each entry changed and fails only when one grows sharply. Results show up as a comment on the PR.
 
 ---
 
-## Triggers
+## What is measured
 
-The `Size Limit` workflow runs on every non-draft PR to `main` (open, reopen, push).
+`.size-limit.js` generates the entries from `packages/*`, so a new package is measured without registration. Every size is minified and brotlied, and leaves out the peer dependencies of the package it is measured from.
 
-It does **not** run on `main` itself — gating is enforced at PR time.
+| Entry                | What it is                                                              |
+| -------------------- | ----------------------------------------------------------------------- |
+| `@uiid/{name}`       | The package's whole barrel, `dist/index.js`, without React or Base UI   |
+| `@uiid/{name} (css)` | The package's built stylesheet (its `./globals.css` export), as shipped |
+| `import { Button }`  | One component imported from `@uiid/design-system`, without React        |
 
-## How affected packages are detected
+The package entries leave out Base UI so that a package's own growth is not buried under it: `@uiid/buttons` is about 6 kB of its own code and 40 kB with Base UI and React bundled. The umbrella declares only React as a peer, so the single-import entries keep the Base UI code that import pulls in. That makes them the ones closest to what a consumer pays, and they are how a lost tree-shake shows up: the barrel total stays the same while `import { Stack }` jumps. They are listed by hand in `SINGLE_IMPORTS` in `.size-limit.js`. Keep that list short and representative.
 
-The workflow uses pnpm's `[origin/main]` filter, which expands to "packages whose own source changed, plus packages that depend on those." That means:
+## How the comparison works
 
-- Editing `packages/buttons/src/index.ts` → checks `@uiid/buttons` and `@uiid/design-system` (since the umbrella re-exports it).
-- Editing `packages/utils/src/index.ts` → checks `@uiid/utils` and everything that depends on it.
-- Editing `apps/storybook/...` → checks nothing in `packages/`.
+The `Size Limit` workflow runs on every non-draft PR, including stacked PRs that target another branch. It:
 
-If no `packages/*` changes are detected, the workflow exits cleanly with no comment.
+1. Builds the PR (merged into its base) and runs `size-limit --json`.
+2. Checks out the base commit as a second worktree, builds it, and measures it with the PR's config by pointing `SIZE_ROOT` at that worktree. Both builds share one Turbo cache, so the base build is mostly cache hits.
+3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table each for packages, components and styles, showing only the entries that changed, with every entry in a collapsed section below.
 
-## Configuring limits
+An entry that exists on only one side is reported as new or removed and never fails the check.
 
-All limits live in `.size-limit.json` at the repo root. Each entry maps a workspace package name to a measured `dist/index.js` and a hard limit:
+The workflow does not re-run when a PR's base branch is changed without a push. After retargeting a stacked PR, push or re-run the workflow to compare against the new base.
 
-```json
-{
-  "name": "@uiid/buttons",
-  "path": "packages/buttons/dist/index.js",
-  "limit": "60 kB"
-}
-```
+## When the check fails
 
-The `limit` value is the **brotlied, minified, dependency-inlined** size — the same number a real consumer would pay.
+The check fails when any entry grows by more than **5% and 2 kB**. Growth has to clear both, so a small package can gain a component and a large one is not failed by a small change. Both thresholds are constants at the top of `scripts/size-compare.mjs`.
 
-### Tightening or relaxing a limit
+1. **Unintentional growth** → investigate (new dependency? lost tree-shake? barrel re-export of a heavy library?) and fix.
+2. **Intentional growth** → add the `size-increase-ok` label to the PR. The check re-runs and passes, and the comment still records the increase.
 
-Run locally to see the current measured size for any package:
+## Running it locally
 
 ```bash
-pnpm build
-pnpm size-limit
+pnpm run build --filter='./packages/*'
+pnpm size
 ```
 
-Then edit `.size-limit.json` and adjust `limit:`. Conventions:
+`pnpm size` prints the current size of every entry. A package without a built `dist/index.js` is skipped rather than failing the run, so build first.
 
-- **Tightening** (`90 kB` → `75 kB`): always OK, do it whenever the actual size drops meaningfully.
-- **Relaxing**: justify in the PR description. The limit is a contract — raising it means consumers will pay for the new bytes.
+To compare two checkouts the way CI does:
 
-## When the gate fails
-
-The PR comment will show which package(s) exceeded their limit. From there:
-
-1. **Unintentional bloat** → investigate (new dep? lost tree-shake? barrel re-export of a heavy lib?) and fix.
-2. **Intentional growth** → tighten the change to the smallest reasonable surface, then bump the limit in the same PR with a one-line rationale.
-3. **Wrong limit** → if the existing limit was set too tightly during initial calibration, bump it. Note it as calibration, not bloat.
-
-Running `pnpm size-limit --why` locally produces a webpack-style bundle analyzer report — useful for figuring out what's pulling weight.
-
-## Packages not gated
-
-One package is intentionally excluded:
-
-| Package        | Reason                                                                                                                                         |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@uiid/tokens` | Primarily source — ships CSS and TS schema. It does build a small `dist/index.js` (the token JSON as JS), but has no `.size-limit.json` entry. |
-
-Tokens still contribute to consumer bundle size; their impact shows up indirectly inside whichever consumer package imports them.
+```bash
+pnpm size-limit --json > head.json
+SIZE_ROOT=../other-checkout pnpm size-limit --json > base.json
+node scripts/size-compare.mjs base.json head.json
+```

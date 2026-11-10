@@ -2,8 +2,14 @@ name: Size Limit
 
 on:
   # No `branches` filter: stacked PRs target an intermediate branch, not main.
+  # `labeled`/`unlabeled` re-evaluate the `size-increase-ok` override, and
+  # `ready_for_review` runs the check that a draft skipped.
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+concurrency:
+  group: size-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -13,11 +19,13 @@ jobs:
   size:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
+      # Checks out the PR merged into its base, so the difference from the
+      # base commit is exactly what this PR adds.
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # need history for [origin/main] filter
+          fetch-depth: 0 # the base commit is checked out as a worktree below
 
       - uses: pnpm/action-setup@v4
 
@@ -28,7 +36,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Cache turbo outputs across runs so unchanged packages skip rebuild.
+      # Both builds share this cache, so the base build is mostly cache hits.
       - uses: actions/cache@v4
         with:
           path: .turbo
@@ -36,62 +44,46 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Build affected size-limit config
-        id: affected
+      - name: Measure PR
         run: |
-          # Names of packages changed vs origin/main, including their dependents.
-          NAMES=$(pnpm m ls --filter '...[origin/main]' --depth=-1 --json \
-            | jq -r '.[].name' \
-            | grep -v '^@uiid/design-system$' || true)
-          # Keep only entries that exist in .size-limit.json (tokens, apps are skipped).
-          jq --argjson names "$(echo "$NAMES" | jq -R . | jq -s .)" \
-            '[.[] | select(.name as $n | $names | index($n))]' \
-            .size-limit.json > .size-limit.filtered.json
-          COUNT=$(jq 'length' .size-limit.filtered.json)
-          if [ "$COUNT" -eq 0 ]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "No measured packages affected — size check skipped."
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "Measuring $COUNT package(s):"
-            jq -r '.[].name' .size-limit.filtered.json
+          pnpm turbo build --filter='./packages/*'
+          pnpm size-limit --json > size-head.json
+
+      # The base is measured with the PR's config (via SIZE_ROOT), so both
+      # sides are measured the same way even when the config itself changes.
+      # HEAD is the merge commit, so its first parent is the base it merged onto.
+      - name: Measure base
+        run: |
+          git worktree add --detach ../size-base "$(git rev-parse HEAD^1)"
+          (cd ../size-base \
+            && pnpm install --frozen-lockfile \
+            && pnpm turbo build --filter='./packages/*' --cache-dir="$GITHUB_WORKSPACE/.turbo/cache")
+          SIZE_ROOT=../size-base pnpm size-limit --json > size-base.json
+
+      - name: Compare
+        id: compare
+        run: |
+          set +e
+          node scripts/size-compare.mjs size-base.json size-head.json --out size-report.md
+          code=$?
+          if [ "$code" -eq 1 ]; then
+            echo "grew=true" >> "$GITHUB_OUTPUT"
+          elif [ "$code" -ne 0 ]; then
+            exit "$code"
           fi
 
-      - name: Build affected packages
-        if: steps.affected.outputs.skip != 'true'
-        run: pnpm turbo build --filter='...[origin/main]'
-
-      - name: Run size-limit for affected packages
-        if: steps.affected.outputs.skip != 'true'
-        run: pnpm size-limit --config .size-limit.filtered.json --json > size-report.json && cat size-report.json
-
       - name: Comment results on PR
-        if: steps.affected.outputs.skip != 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const results = JSON.parse(fs.readFileSync('size-report.json', 'utf8'));
-            const fmt = (b) => `${(b / 1024).toFixed(2)} kB`;
-            const rows = results.map(r => {
-              const status = r.passed === false ? ':red_circle:' : ':white_check_mark:';
-              return `| ${status} | \`${r.name}\` | ${fmt(r.size)} | ${r.limit ?? '—'} |`;
-            });
-            const body = [
-              '### Size report (affected packages)',
-              '',
-              '| | Package | Size | Limit |',
-              '|---|---|---|---|',
-              ...rows,
-              '',
-              `_Checked ${results.length} affected package(s). Unchanged packages were not rebuilt._`,
-            ].join('\n');
-            const { data: comments } = await github.rest.issues.listComments({
+            const body = fs.readFileSync('size-report.md', 'utf8');
+            const marker = '### Size report';
+            const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            const marker = '### Size report (affected packages)';
             const existing = comments.find(c => c.body?.startsWith(marker));
             if (existing) {
               await github.rest.issues.updateComment({
@@ -108,3 +100,9 @@ jobs:
                 body,
               });
             }
+
+      - name: Fail on unapproved growth
+        if: steps.compare.outputs.grew == 'true' && !contains(github.event.pull_request.labels.*.name, 'size-increase-ok')
+        run: |
+          echo "::error::An entry grew past the threshold. See the size report comment, or add the size-increase-ok label if the growth is intended."
+          exit 1
