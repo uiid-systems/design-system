@@ -131,6 +131,14 @@ describe("Conversation", () => {
       ).toHaveTextContent("first");
     });
 
+    it("makes the viewport a focusable group named Messages", () => {
+      renderConversation();
+
+      const viewport = screen.getByRole("group", { name: "Messages" });
+      expect(viewport).toHaveAttribute("data-slot", "conversation-viewport");
+      expect(viewport).toHaveAttribute("tabindex", "0");
+    });
+
     it("passes Box props through to the root", () => {
       const ref = { current: null as HTMLDivElement | null };
       const { container } = render(
@@ -410,6 +418,54 @@ describe("Conversation", () => {
 
       expect(scrollTo).not.toHaveBeenCalled();
       expect(scrollButton()).toBeInTheDocument();
+    });
+
+    it("hands focus to the viewport when pressing it unmounts it", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(scrollButton()).not.toBeInTheDocument();
+      expect(viewport).toHaveFocus();
+    });
+
+    it("moves focus without scrolling the page", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+      const focus = vi.spyOn(viewport, "focus");
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it("leaves focus alone when the button was not focused", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
+
+      fireEvent.click(scrollButton()!);
+
+      expect(viewport).not.toHaveFocus();
+    });
+
+    it("keeps focus on the button when a caller vetoes the scroll", () => {
+      const { viewport } = renderConversation(
+        <ConversationScrollButton
+          onClick={(event) => event.preventDefault()}
+        />,
+      );
+      release(viewport);
+      const button = scrollButton()!;
+      button.focus();
+
+      fireEvent.click(button);
+
+      expect(button).toHaveFocus();
     });
 
     it("lets a caller replace the label, variant and children", () => {

@@ -67,13 +67,15 @@ The region starts pinned and opens at its newest message. While pinned, content 
 
 Any scroll up releases the pin, however small, so an arrow key or a slow trackpad lets go even while tokens arrive. The button appears, and content that arrives afterwards does not move the reader. Scrolling back down within 70 px of the bottom re-pins without pressing anything. The button scrolls to the bottom and re-pins; its scroll is smooth by default and instant under `prefers-reduced-motion: reduce`, through the scroller's CSS `scroll-behavior`.
 
+The viewport is focusable, so the keyboard can scroll it, and is announced as a group named "Messages". Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
+
 A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region has nowhere to scroll, so the button never shows for it. If the region grows, or content shrinks, until a scrolled-up reader is at the bottom, the region re-pins.
 
 ## Hooks
 
-`useConversation()` returns the region's `isAtBottom` and `scrollToBottom` to anything rendered inside `Conversation`, and throws outside it. A prompt input can call `scrollToBottom()` on submit.
+`useConversation()` returns the region's `isAtBottom`, `scrollToBottom` and `scrollElement` to anything rendered inside `Conversation`, and throws outside it. A prompt input can call `scrollToBottom()` on submit.
 
-`useStickToBottom()` is the hook behind `Conversation`, exported for a scroller of your own. Attach `scrollRef` to the element that scrolls and `contentRef` to the element that grows, and it returns the same `isAtBottom` and `scrollToBottom`.
+`useStickToBottom()` is the hook behind `Conversation`, exported for a scroller of your own. Attach `scrollRef` to the element that scrolls and `contentRef` to the element that grows, and it returns the same `isAtBottom` and `scrollToBottom`, plus `scrollElement`, the mounted scroller.
 
 ## Notes
 

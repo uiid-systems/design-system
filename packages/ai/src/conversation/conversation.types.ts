@@ -19,6 +19,8 @@ export type ConversationEmptyStateProps = StackProps & {
 /**
  * A `Button` that appears while the reader is scrolled up. Defaults to a
  * small, subtle circle with an arrow and the label "Scroll to bottom".
+ * Pressing it while focused moves focus to the viewport, since the button
+ * unmounts once the conversation is back at the bottom.
  */
 export type ConversationScrollButtonProps = ButtonProps;
 
@@ -27,6 +29,8 @@ export type UseStickToBottomReturn = {
   scrollRef: (node: HTMLElement | null) => void;
   /** Attach to the element whose size changes as content arrives. */
   contentRef: (node: HTMLElement | null) => void;
+  /** The element attached to `scrollRef`, once it has mounted. */
+  scrollElement: HTMLElement | null;
   /** Whether the container is pinned to its newest content. */
   isAtBottom: boolean;
   /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */

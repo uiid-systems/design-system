@@ -21,9 +21,14 @@ export const ConversationContent = ({
   const composedRef = useComposedRefs(contentRef, ref);
 
   return (
+    /* Focusable so the keyboard can scroll it, and so the scroll button has
+       somewhere to hand focus when it unmounts. */
     <div
       data-slot="conversation-viewport"
       ref={scrollRef}
+      tabIndex={0}
+      role="group"
+      aria-label="Messages"
       className={styles["viewport"]}
     >
       <Stack

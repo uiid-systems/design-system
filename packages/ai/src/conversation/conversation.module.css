@@ -16,6 +16,12 @@
   overflow-y: auto;
   scroll-behavior: smooth;
   scrollbar-gutter: stable both-edges;
+
+  /* Inset, because the root's `overflow: hidden` clips an outer ring. */
+  &:focus-visible {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: calc(var(--globals-outline-width) * -1);
+  }
 }
 
 /* Fills the viewport so an empty state can center; a short transcript still
