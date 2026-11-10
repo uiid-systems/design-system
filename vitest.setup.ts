@@ -3,7 +3,7 @@
 
 import "@testing-library/jest-dom/vitest";
 import { toBeDisabled } from "@testing-library/jest-dom/matchers";
-import type { MatcherState } from "@vitest/expect";
+import type { MatcherState } from "vitest";
 
 /**
  * Passes when the user can't operate the element: it is natively disabled
