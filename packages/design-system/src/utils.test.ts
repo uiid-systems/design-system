@@ -5,9 +5,9 @@ import { fileURLToPath } from "node:url";
 import * as source from "@uiid/utils";
 import { describe, expect, it } from "vitest";
 
-// An app that depends only on @uiid/design-system cannot import @uiid/utils
-// directly: package managers isolate a transitive dependency. This subpath is
-// how it reaches the helpers without a second dependency.
+// The root barrel already re-exports @uiid/utils. This subpath adds a way to
+// reach the helpers without loading the component barrel's module graph, and
+// without depending on @uiid/utils directly.
 
 const PKG_DIR = fileURLToPath(new URL("..", import.meta.url));
 const pkg = JSON.parse(readFileSync(`${PKG_DIR}package.json`, "utf8"));
