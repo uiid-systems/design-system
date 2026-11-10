@@ -1,4 +1,4 @@
-/** Distance from the bottom, in px, within which the container counts as pinned. */
+/** Distance from the bottom, in px, within which a scroll down re-pins the container. */
 export const CONVERSATION_SCROLL_THRESHOLD = 70;
 
 /**

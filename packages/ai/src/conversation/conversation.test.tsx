@@ -269,6 +269,7 @@ describe("Conversation", () => {
         scrollHeight: 1000,
         clientHeight: 300,
       });
+      expect(scrollButton()).toBeInTheDocument();
 
       scroll(viewport, {
         scrollTop: 680,
