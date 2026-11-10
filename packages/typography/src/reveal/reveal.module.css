@@ -1,9 +1,3 @@
-/* Text wraps `pretty`, which re-breaks lines as words arrive and moves words already shown.
-   The style longhand, not the `text-wrap` shorthand, so `nowrap` and `truncate` keep their mode. */
-.reveal {
-  text-wrap-style: auto;
-}
-
 /* Delay and duration are set per word when it mounts; see RevealWord. */
 .reveal-word {
   /* backwards, not both: a held `filter: blur(0)` would keep every finished word its own stacking context. */

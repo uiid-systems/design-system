@@ -1,6 +1,5 @@
 "use client";
 
-import { cx } from "@uiid/utils";
 import { memo, useState } from "react";
 
 import { Text } from "../text/text";
@@ -47,7 +46,6 @@ export const Reveal = ({
   stagger = REVEAL_DEFAULT_STAGGER,
   duration = REVEAL_DEFAULT_DURATION,
   blur = REVEAL_DEFAULT_BLUR,
-  className,
   style,
   children,
   ...props
@@ -67,8 +65,13 @@ export const Reveal = ({
   return (
     <Text
       data-slot="reveal"
-      className={cx(styles["reveal"], className)}
-      style={{ "--reveal-blur": `${blur}px`, ...style } as React.CSSProperties}
+      style={
+        {
+          textWrap: "wrap",
+          "--reveal-blur": `${blur}px`,
+          ...style,
+        } as React.CSSProperties
+      }
       {...props}
     >
       {words.map((word, index) => (

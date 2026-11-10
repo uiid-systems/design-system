@@ -5,8 +5,6 @@ import { describe, it, expect } from "vitest";
 import { Reveal } from "./reveal";
 import { useStreamReveal } from "./reveal.hooks";
 
-import styles from "./reveal.module.css";
-
 const getWords = (container: HTMLElement) =>
   Array.from(
     container.querySelector('[data-slot="reveal"]')?.children ?? [],
@@ -121,11 +119,10 @@ describe("Reveal", () => {
     expect(second.style.getPropertyValue("--reveal-duration")).toBe("600ms");
   });
 
-  it("carries the class that wraps plainly", () => {
+  it("wraps plainly so streamed words don't re-break shown lines", () => {
     const { container } = render(<Reveal>hello</Reveal>);
-    expect(container.querySelector('[data-slot="reveal"]')).toHaveClass(
-      styles["reveal"],
-    );
+    const root = container.querySelector('[data-slot="reveal"]') as HTMLElement;
+    expect(root.style.getPropertyValue("text-wrap")).toBe("wrap");
   });
 
   it("has no balance prop", () => {

@@ -1,7 +1,7 @@
 import type { TextProps } from "../text/text.types";
 
 /**
- * No `balance`: Reveal wraps plainly, because `pretty` and `balance` re-break lines as words
+ * No `balance`: Reveal wraps with `text-wrap: wrap`, because `pretty` and `balance` re-break lines as words
  * arrive and move words already shown.
  */
 export type RevealProps = Omit<TextProps, "children" | "balance"> & {

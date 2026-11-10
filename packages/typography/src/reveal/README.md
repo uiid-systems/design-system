@@ -96,5 +96,5 @@ Call the pass's methods for every piece of visible text, in reading order, on ev
 ## Notes
 
 - `stagger` and `duration` apply to words as they mount. Changing either later only affects words added after the change; words already on screen keep their timing.
-- Reveal wraps plainly, not with `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop.
+- Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. The inline `text-wrap` also overrides `nowrap` and `truncate`.
 - `children` must be a string. To reveal formatted text, use `useStreamReveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.
