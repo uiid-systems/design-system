@@ -134,16 +134,55 @@ describe("PromptInputSubmit", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it("wraps itself in a tooltip only when the caller passes one", async () => {
+  it("always sits in a tooltip, showing its name unless the caller passes one", async () => {
     const user = userEvent.setup();
     const { rerender } = render(<PromptInputSubmit />);
-    expect(tooltipWrapper()).toBeNull();
+    expect(tooltipWrapper()).toContainElement(button("Send"));
+    expect(button("Send")).not.toHaveAttribute("aria-description");
 
     rerender(<PromptInputSubmit tooltip="Send it (Enter)" />);
     expect(tooltipWrapper()).toContainElement(button("Send"));
     expect(button("Send")).toHaveAttribute("aria-label", "Send");
+    expect(button("Send")).toHaveAttribute(
+      "aria-description",
+      "Send it (Enter)",
+    );
     await user.hover(button("Send"));
     expect(await screen.findByText("Send it (Enter)")).toBeVisible();
+  });
+
+  it.each(["submitted", "streaming"] as const)(
+    "says why Send is disabled while %s without onStop",
+    async (status) => {
+      const user = userEvent.setup();
+      render(<PromptInputSubmit status={status} />);
+
+      expect(button("Send")).toHaveAttribute(
+        "aria-description",
+        "Waiting for the reply",
+      );
+      await user.tab();
+      expect(button("Send")).toHaveFocus();
+      expect(await screen.findByText("Waiting for the reply")).toBeVisible();
+    },
+  );
+
+  it("does not describe Stop, or Send while ready, with its own name", () => {
+    const { rerender } = render(
+      <PromptInputSubmit status="streaming" onStop={vi.fn()} />,
+    );
+    expect(button("Stop")).not.toHaveAttribute("aria-description");
+
+    rerender(<PromptInputSubmit aria-label="Send message" />);
+    expect(
+      screen.getByRole("button", { name: "Send message" }),
+    ).not.toHaveAttribute("aria-description");
+  });
+
+  it("lets a caller's tooltip replace the waiting reason", () => {
+    render(<PromptInputSubmit status="streaming" tooltip="Thinking" />);
+
+    expect(button("Send")).toHaveAttribute("aria-description", "Thinking");
   });
 
   it.each([
@@ -254,7 +293,9 @@ describe("PromptInput", () => {
       const parts = Array.from(footer.children).map((element) =>
         element.getAttribute("data-slot"),
       );
-      expect(parts).toEqual(["prompt-input-tools", "prompt-input-submit"]);
+      /* The submit button always sits in its tooltip's wrapper. */
+      expect(parts).toEqual(["prompt-input-tools", "button-tooltip-wrapper"]);
+      expect(footer.lastElementChild).toContainElement(button("Send"));
       expect(footer.firstElementChild).toHaveTextContent("tool");
     });
 

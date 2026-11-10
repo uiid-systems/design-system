@@ -656,6 +656,158 @@ describe("Button", () => {
         expect(screen.getByRole(role)).toHaveAccessibleName("Reset");
       },
     );
+
+    it("describes a text button with its string tooltip", () => {
+      render(<Button tooltip="Opens in a new tab">Docs</Button>);
+
+      const button = screen.getByRole("button", { name: "Docs" });
+      expect(button).toHaveAttribute("aria-description", "Opens in a new tab");
+    });
+
+    it("describes a disabled button with its string tooltip", () => {
+      render(
+        <Button tooltip="Waiting for the reply" disabled>
+          Send
+        </Button>,
+      );
+
+      expect(screen.getByRole("button")).toHaveAttribute(
+        "aria-description",
+        "Waiting for the reply",
+      );
+    });
+
+    it("describes a link with its string tooltip", () => {
+      render(
+        <Button tooltip="Opens in a new tab" render={<a href="/docs" />}>
+          Docs
+        </Button>,
+      );
+
+      expect(screen.getByRole("link")).toHaveAttribute(
+        "aria-description",
+        "Opens in a new tab",
+      );
+    });
+
+    it("describes an icon-only button the caller named differently", () => {
+      render(
+        <Button shape="square" tooltip="Copies to clipboard" aria-label="Copy">
+          <svg />
+        </Button>,
+      );
+
+      const button = screen.getByRole("button", { name: "Copy" });
+      expect(button).toHaveAttribute("aria-description", "Copies to clipboard");
+    });
+
+    it("does not describe a button with a tooltip that repeats its name", () => {
+      render(
+        <>
+          <Button shape="square" tooltip="Copy">
+            <svg />
+          </Button>
+          <Button tooltip="Send" aria-label="Send">
+            <svg />
+          </Button>
+          <Button tooltip="Save">Save</Button>
+          <Button tooltip="Open" render={<a href="/docs" aria-label="Open" />}>
+            <svg />
+          </Button>
+        </>,
+      );
+
+      for (const role of ["button", "link"]) {
+        for (const element of screen.getAllByRole(role)) {
+          expect(element).not.toHaveAttribute("aria-description");
+        }
+      }
+    });
+
+    it("does not describe a button with a non-string or empty tooltip", () => {
+      render(
+        <>
+          <Button tooltip={<span>Rich</span>}>Rich</Button>
+          <Button tooltip="">Empty</Button>
+        </>,
+      );
+
+      for (const button of screen.getAllByRole("button")) {
+        expect(button).not.toHaveAttribute("aria-description");
+      }
+    });
+
+    it("keeps a description the caller set", () => {
+      render(
+        <>
+          <Button tooltip="Tooltip" aria-description="Caller reason">
+            A
+          </Button>
+          <span id="why">Because</span>
+          <Button tooltip="Tooltip" aria-describedby="why">
+            B
+          </Button>
+          <Button
+            tooltip="Tooltip"
+            render={<a href="/c" aria-description="Link reason" />}
+          >
+            C
+          </Button>
+        </>,
+      );
+
+      const [a, b] = screen.getAllByRole("button");
+      expect(a).toHaveAttribute("aria-description", "Caller reason");
+      expect(b).not.toHaveAttribute("aria-description");
+      expect(screen.getByRole("link")).toHaveAttribute(
+        "aria-description",
+        "Link reason",
+      );
+    });
+  });
+
+  describe("nativeButton", () => {
+    it("treats a component render as a native button when told to", () => {
+      const Native = (props: React.ComponentProps<"button">) => (
+        <button {...props} />
+      );
+
+      render(
+        <Button nativeButton disabled render={<Native />}>
+          Save
+        </Button>,
+      );
+
+      const button = screen.getByRole("button", { name: "Save" });
+      expect(button).not.toHaveAttribute("role");
+      expect(button).toHaveAttribute("aria-disabled", "true");
+    });
+
+    it.each([
+      ["a <span>", <span />, "SPAN"],
+      ["a <button>", <button />, "BUTTON"],
+      ["no", undefined, "BUTTON"],
+    ] as const)(
+      "still infers from %s render when a wrapper forwards nativeButton={undefined}",
+      (_, renderElement, tagName) => {
+        const Wrapper = ({ nativeButton }: { nativeButton?: boolean }) => (
+          <Button nativeButton={nativeButton} disabled render={renderElement}>
+            Act
+          </Button>
+        );
+
+        render(<Wrapper />);
+
+        const button = screen.getByRole("button", { name: "Act" });
+        expect(button.tagName).toBe(tagName);
+        expect(button).toHaveAttribute("aria-disabled", "true");
+        if (tagName === "SPAN") {
+          expect(button).toHaveAttribute("role", "button");
+        } else {
+          expect(button).not.toHaveAttribute("role");
+        }
+      },
+    );
   });
 });
 
