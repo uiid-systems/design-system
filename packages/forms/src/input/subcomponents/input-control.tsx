@@ -14,8 +14,9 @@ import type { InputControlProps } from "../input.types";
  * control surface itself.
  *
  * This is a `Field.Control`, so it registers itself with the surrounding field
- * and takes its `name` from it, falling back to its `required`. A composite whose Base UI root already does
- * both must not hand this to `render` — reach for `inputControlClassName` on a
+ * and takes its `name` from it. It falls back to the field's `required` when it
+ * sets none of its own. A composite whose Base UI root already registers and
+ * names itself must not hand this to `render` — reach for `inputControlClassName` on a
  * plain `<input>` instead, or the value submits twice.
  */
 export const InputControl = ({

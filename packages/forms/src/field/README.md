@@ -4,13 +4,13 @@
 
 Use Field when you want to:
 
-- Put a `label` and `description` on a control that doesn't take them directly — either takes any node, and one that renders nothing (`false`, `null`, `""`) paints no chrome
-- Share one label across several controls — the inputs keep their own `name`s and the field supplies the heading
+- Put a `label` and `description` on a control that doesn't take them directly — either takes any node, and one that renders nothing (`false`, `null`, `""`) paints no chrome. They render inside a `<label>` and a `<span>`, so stick to inline content
+- Share one label across several controls — the inputs keep their own `name`s and the field supplies the heading. A `required` field makes every `FieldControl` or `InputControl` inside it required, so pass `required={false}` on any that are optional
 - Put an `action` at the end of the label row — any node, including a button. `FieldHint` is ready-made content for it: `{ text }` for a quiet aside, or `{ icon, tooltip }` to keep longer guidance out of the layout. The row reserves the height of an `xsmall` button, so an action that comes and goes never shifts the control
 - Scale the chrome with `size` — the label, description, and error take the same `--forms-size-*-font-size` the control itself reads, so they can't drift from the text inside it, and the gap stacking them tightens to match. Every control forwards its own `size`, so `<Input size="small" label="Email" />` already reads as one piece
 - Choose where the error goes with `errorType` — `inline` reserves a line beneath the control, `tooltip` moves it to an icon beside the label, and `absolute` floats it so nothing below shifts
 - Validate with `validate` (return the message, or `null` when the value passes) and decide when it runs with `validationMode`
-- Mark the whole field `required` or `disabled` — both reach the control, not just the label. `required` stamps `data-required` on the root, and a `FieldControl` or `InputControl` inside falls back to it unless it sets its own; a nested field starts unrequired. Custom controls read it with `useFieldRequired()`
+- Mark the whole field `required` or `disabled` — both reach the control, not just the label. `required` stamps `data-required` on the root, and a `FieldControl` or `InputControl` inside falls back to it unless it sets its own; a nested field starts unrequired. Custom controls read it with `useFieldRequired()`. Other composed parts, such as `NumberFieldInput` or `SelectRoot`, don't read it, so pass `required` to them directly
 
 A field with no label, action, description, or out-of-flow error paints no chrome and adds no layout: the control sits exactly where it would alone while still joining the field's validation graph.
 

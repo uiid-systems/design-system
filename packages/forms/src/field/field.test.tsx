@@ -614,6 +614,11 @@ describe("Field required", () => {
     expect(screen.getByLabelText("Email")).toBeRequired();
   });
 
+  it("leaves a control outside any Field unrequired", () => {
+    render(<FieldControl aria-label="Email" />);
+    expect(screen.getByLabelText("Email")).not.toBeRequired();
+  });
+
   it("lets the control's own required win", () => {
     render(
       <Field label="Email" required>
