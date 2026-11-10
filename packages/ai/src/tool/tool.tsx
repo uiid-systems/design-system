@@ -176,17 +176,17 @@ export const Tool = ({
         </Group>
         <ChevronDownIcon className={shared["chevron"]} />
       </CollapsibleTrigger>
-      {/* `fullwidth` keeps the panel the card's width whatever `ax` the root
+      {/* `w="full"` keeps the panel the card's width whatever `ax` the root
           takes, so its code blocks scroll rather than overflow the card. */}
       <CollapsiblePanel
         data-slot="tool-panel"
-        fullwidth
+        w="full"
         instant={false}
         ax="stretch"
       >
         {/* The padding sits here rather than on the panel, where `border-box`
             would stop the closing height at the padding instead of zero. */}
-        <Stack fullwidth ax="stretch" gap={4} p={4}>
+        <Stack ax="stretch" gap={4} p={4}>
           {isEmpty(children) ? (
             <ToolBody
               input={part.input}

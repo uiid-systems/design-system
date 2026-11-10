@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, onTestFinished, vi } from "vitest";
 
 import type { ToolState } from "../ai.types";
 import { Tool } from "./tool";
@@ -134,7 +134,7 @@ describe("Tool", () => {
     const panel = document.querySelector("[data-slot='tool-panel']")!;
     expect(panel).not.toHaveAttribute("data-ui-p");
     // Full width whatever `ax` the root takes.
-    expect(panel).toHaveAttribute("data-ui-fullwidth");
+    expect(panel).toHaveAttribute("data-ui-w", "full");
     expect(panel.firstElementChild).toHaveAttribute("data-ui-p", "4");
     expect(panel.firstElementChild).toContainElement(getInput());
   });
@@ -218,6 +218,7 @@ describe("Tool", () => {
   it("builds the JSON only while the panel is open, and once per input and output", async () => {
     const user = userEvent.setup();
     const stringify = vi.spyOn(JSON, "stringify");
+    onTestFinished(() => stringify.mockRestore());
     // Other code stringifies too, so count the calls on this part's values.
     const built = (target: unknown) =>
       stringify.mock.calls.filter(([arg]) => arg === target).length;
@@ -239,8 +240,6 @@ describe("Tool", () => {
     rerender(<Tool part={{ ...value, output: next }} />);
     expect(built(value.input)).toBe(1);
     expect(built(next)).toBe(1);
-
-    stringify.mockRestore();
   });
 
   it("renders an element output as itself", () => {
