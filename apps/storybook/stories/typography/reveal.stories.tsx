@@ -66,13 +66,11 @@ export const Styled: Story = {
 };
 
 /**
- * Simulated LLM stream: words arrive in random 1–3 word chunks. Words are
- * keyed by index, so streamed text never re-animates — only new words play
- * the animation. `stagger={0}` because each word's delay is relative to its
- * own mount (see the Reveal README).
+ * Simulated LLM stream: words arrive in random 1–3 word chunks, and only the
+ * new words animate, staggered from the first word of each chunk.
  */
 const StreamDemo = (args: RevealProps) => {
-  const words = args.children.split(/(?<=\s)/);
+  const words = args.children.split(/(?<=\s)(?=\S)/);
   const [count, setCount] = useState(0);
   const [run, setRun] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval>>(null);
@@ -95,7 +93,7 @@ const StreamDemo = (args: RevealProps) => {
 
   return (
     <Stack gap={4} ax="start">
-      <Reveal {...args} render={<p />} stagger={0}>
+      <Reveal {...args} render={<p />}>
         {words.slice(0, count).join("")}
       </Reveal>
       <Button
