@@ -1,9 +1,9 @@
 "use client";
 
-import { Textarea } from "@uiid/forms";
+import { Textarea, type TextareaProps } from "@uiid/forms";
 import { Group } from "@uiid/layout";
 import { cx, useComposedRefs } from "@uiid/utils";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import type { PromptInputProps } from "./prompt-input.types";
 import { PromptInputSubmit } from "./subcomponents";
@@ -26,6 +26,8 @@ export const PromptInput = ({
   label,
   disabled,
   value,
+  defaultValue,
+  onValueChange,
   onKeyDown,
   className,
   ref,
@@ -34,6 +36,20 @@ export const PromptInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composedRef = useComposedRefs(ref, textareaRef);
   const isGenerating = status === "submitted" || status === "streaming";
+
+  /* Uncontrolled text still runs through state, so clearing it after a send
+     reaches FieldControl and drops its filled state. Writing the DOM value
+     directly would leave `data-filled` stale. */
+  const isControlled = value !== undefined;
+  const [draft, setDraft] = useState(() => String(defaultValue ?? ""));
+
+  const handleValueChange: NonNullable<TextareaProps["onValueChange"]> = (
+    next,
+    details,
+  ) => {
+    if (!isControlled) setDraft(next);
+    onValueChange?.(next, details);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,7 +62,7 @@ export const PromptInput = ({
     onSubmit({ text }, event);
     /* Uncontrolled text is the composer's to clear. Controlled text is the
        caller's, and they clear it when their send has gone through. */
-    if (value === undefined) textarea.value = "";
+    if (!isControlled) setDraft("");
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -74,7 +90,8 @@ export const PromptInput = ({
         fullwidth
         label={label}
         disabled={disabled}
-        value={value}
+        value={isControlled ? value : draft}
+        onValueChange={handleValueChange}
         className={styles["textarea"]}
         onKeyDown={handleKeyDown}
         before={

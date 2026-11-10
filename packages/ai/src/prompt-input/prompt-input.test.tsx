@@ -365,6 +365,45 @@ describe("PromptInput", () => {
       expect(textarea).toHaveValue("");
     });
 
+    /* Clearing the DOM value directly would skip FieldControl, leaving its
+       filled state stale after a send. */
+    it("drops the filled state when an uncontrolled send clears the text", async () => {
+      const user = userEvent.setup();
+      const { textarea } = renderPromptInput();
+
+      await user.type(textarea, "hello");
+      expect(textarea).toHaveAttribute("data-filled");
+
+      await user.click(button("Send"));
+
+      expect(textarea).toHaveValue("");
+      expect(textarea).not.toHaveAttribute("data-filled");
+    });
+
+    it("starts filled from a defaultValue and sends it", async () => {
+      const user = userEvent.setup();
+      const { onSubmit, textarea } = renderPromptInput({
+        defaultValue: "hello",
+      });
+      expect(textarea).toHaveAttribute("data-filled");
+
+      await user.click(button("Send"));
+
+      expect(onSubmit.mock.calls[0][0]).toEqual({ text: "hello" });
+      expect(textarea).not.toHaveAttribute("data-filled");
+    });
+
+    it("forwards onValueChange while uncontrolled", async () => {
+      const user = userEvent.setup();
+      const onValueChange = vi.fn();
+      const { textarea } = renderPromptInput({ onValueChange });
+
+      await user.type(textarea, "hi");
+
+      expect(onValueChange).toHaveBeenLastCalledWith("hi", expect.anything());
+      expect(textarea).toHaveValue("hi");
+    });
+
     it("hands a two-argument handler the form as the event's currentTarget", () => {
       let target: EventTarget | null = null;
       const { container } = render(
