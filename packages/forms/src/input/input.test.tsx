@@ -7,9 +7,12 @@ import { describe, it, expect, vi } from "vitest";
 import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
 import { INPUT_SLOT_INTERACTIVE } from "./input.constants";
+import { hasInputSlots } from "./input.utils";
+import { inputWrapperVariants } from "./input.variants";
 import { InputControl, InputWrapper } from "./subcomponents";
 
 import styles from "./input.module.css";
+import inputCss from "./input.module.css?raw";
 import compositionsCss from "@uiid/tokens/compositions.css?raw";
 
 describe("Input", () => {
@@ -122,20 +125,131 @@ describe("InputWrapper composition", () => {
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
-  it("renders children bare when neither slot is passed", () => {
+  it("stays mounted as a bare box when neither slot is passed", () => {
     const { container } = render(
       <InputWrapper>
         <InputControl />
       </InputWrapper>,
     );
+    const wrapper = container.querySelector("[data-slot='input-wrapper']");
 
-    expect(container.querySelector("[data-slot='input-wrapper']")).toBeNull();
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(wrapper).toHaveClass(styles["input-wrapper-bare"]);
+    expect(wrapper).not.toHaveClass(styles["input-wrapper"]);
+    expect(wrapper).not.toHaveAttribute("data-orientation");
+    expect(wrapper?.className).not.toMatch(/composes-field-surface/);
+    expect(wrapper).toContainElement(screen.getByRole("textbox"));
+  });
+
+  it("keeps a caller's className on the bare wrapper", () => {
+    const { container } = render(
+      <InputWrapper className="caller">
+        <InputControl />
+      </InputWrapper>,
+    );
+    expect(container.querySelector("[data-slot='input-wrapper']")).toHaveClass(
+      "caller",
+      styles["input-wrapper-bare"],
+    );
+  });
+
+  it.each([null, false, ""])("treats a %j slot as no slot", (empty) => {
+    const { container } = render(
+      <InputWrapper before={empty} after={empty}>
+        <InputControl />
+      </InputWrapper>,
+    );
+
+    expect(container.querySelector("[data-slot='input-wrapper']")).toHaveClass(
+      styles["input-wrapper-bare"],
+    );
+    expect(container.querySelector("[data-slot='input-before']")).toBeNull();
+  });
+
+  /* One element and child shape in both states, so a slot coming or going
+     keeps the control's node, and with it its focus and typed text. */
+  it("keeps the control mounted and focused when a slot comes and goes", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Input aria-label="Amount" />);
+    const input = screen.getByRole("textbox");
+
+    await user.type(input, "12");
+    rerender(<Input aria-label="Amount" before="$" />);
+
+    expect(screen.getByRole("textbox")).toBe(input);
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue("12");
+
+    rerender(<Input aria-label="Amount" />);
+    expect(screen.getByRole("textbox")).toBe(input);
+    expect(input).toHaveFocus();
+  });
+});
+
+describe("hasInputSlots", () => {
+  it.each([
+    [{}, false],
+    [{ before: null, after: undefined }, false],
+    [{ before: false, after: "" }, false],
+    [{ before: "$" }, true],
+    [{ after: 0 }, true],
+    [{ after: <span /> }, true],
+  ])("reads %j as %s", (slots, expected) => {
+    expect(hasInputSlots(slots)).toBe(expected);
+  });
+});
+
+describe("inputWrapperVariants", () => {
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "sizes the wrapper by its own %s tier, not the shared composition",
+    (size) => {
+      const className = inputWrapperVariants({ size });
+      expect(className).toContain(styles[`size-${size}`]);
+      expect(className).not.toMatch(/composes-size-/);
+    },
+  );
+
+  it("defaults to the medium tier", () => {
+    expect(inputWrapperVariants()).toContain(styles["size-medium"]);
+  });
+
+  /* The slots and the inner control read the tier's height and inline padding
+     off the wrapper, so all three share one size source. */
+  it.each([
+    ["xsmall", "xs"],
+    ["small", "sm"],
+    ["medium", "md"],
+    ["large", "lg"],
+  ])("publishes the %s height, inline padding and icon size", (size, tier) => {
+    const rule = inputCss.match(
+      new RegExp(`\\.size-${size}\\s*\\{([^}]*)\\}`),
+    )?.[1];
+
+    expect(rule).toContain(
+      `--input-wrapper-height: var(--forms-size-${tier}-height)`,
+    );
+    expect(rule).toContain(
+      `--input-wrapper-padding-x: var(--forms-size-${tier}-padding-x)`,
+    );
+    expect(rule).toContain(
+      `--forms-icon-size: var(--forms-size-${tier}-icon-size)`,
+    );
+  });
+
+  /* The fallback keeps an `inner` control padded outside a sized wrapper. */
+  it("pads the slots and the inner control from the published var", () => {
+    for (const selector of ["input-slot", "input-inner"]) {
+      const rule = inputCss.match(
+        new RegExp(`\\.${selector}\\s*\\{([^}]*)\\}`),
+      )?.[1];
+      expect(rule).toContain(
+        "padding-inline: var(--input-wrapper-padding-x, var(--forms-size-md-padding-x))",
+      );
+    }
   });
 });
 
 describe("InputWrapper orientation", () => {
-  it("defaults to horizontal and keeps the classes it had before orientation existed", () => {
+  it("defaults to horizontal and paints the surface itself", () => {
     const { container } = render(
       <InputWrapper before="$">
         <InputControl inner />
@@ -145,10 +259,11 @@ describe("InputWrapper orientation", () => {
 
     expect(wrapper).toHaveAttribute("data-orientation", "horizontal");
     expect(wrapper).toHaveAttribute("data-ui-ay", "center");
-    expect(wrapper).toHaveClass(styles["input"]);
     expect(wrapper).toHaveClass(styles["input-edge"]);
     expect(wrapper).toHaveClass(styles["input-wrapper"]);
-    expect(wrapper?.className).toMatch(/composes-size-medium/);
+    expect(wrapper).toHaveClass(styles["size-medium"]);
+    expect(wrapper).not.toHaveClass(styles["input"]);
+    expect(wrapper?.className).not.toMatch(/composes-size-/);
   });
 
   it("stamps horizontal on the wrapper Input renders", () => {
@@ -173,7 +288,6 @@ describe("InputWrapper orientation", () => {
 
     expect(wrapper).toHaveAttribute("data-orientation", "vertical");
     expect(wrapper).toHaveAttribute("data-ui-ay", "stretch");
-    expect(wrapper).toHaveClass(styles["input"]);
     expect(wrapper).toHaveClass(styles["input-edge"]);
     expect(wrapper).toHaveClass(styles["input-wrapper"]);
     expect(wrapper).toHaveClass("palette-blue");
@@ -260,6 +374,47 @@ describe("Input shared compositions", () => {
     render(<Input />);
     expect(screen.getByRole("textbox").className).not.toMatch(/input-edge/);
   });
+  it("renders text the same way with and without slots", () => {
+    const { rerender } = render(<Input />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-text/);
+    rerender(<Input before="$" />);
+    expect(screen.getByRole("textbox").className).toMatch(/composes-text/);
+  });
+
+  /* The control's node persists across a slot toggle, so its classes swap in
+     place. A layout property in the transition would animate the swap. */
+  it("transitions only paint properties on the shared surface", () => {
+    const rule = compositionsCss.match(
+      /\.composes-field-surface\s*\{([^}]*?)&/,
+    )?.[1];
+    expect(rule).toMatch(
+      /transition-property:\s*background-color,\s*border-color,\s*outline-color,\s*color;/,
+    );
+    expect(rule).not.toMatch(/transition:\s*all/);
+  });
+
+  it("paints the surface, invalid edge and focus ring on the wrapper", () => {
+    const { container } = render(<Input before="$" />);
+    const className = container.querySelector(
+      "[data-slot='input-wrapper']",
+    )?.className;
+
+    expect(className).toMatch(/composes-field-surface(?!-)/);
+    expect(className).toMatch(/composes-invalid/);
+  });
+
+  /* The wrapper paints every surface treatment once; a second copy on the
+     inner control would compound the disabled opacity and double the edge. */
+  it("drops every surface composition from the inner control", () => {
+    render(<Input before="$" />);
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveClass(styles["input-inner"]);
+    expect(input).not.toHaveClass(styles["input"]);
+    expect(input.className).not.toMatch(
+      /composes-(field-surface|invalid|disabled|size)/,
+    );
+  });
 });
 
 /* The wrapper reads disabled and invalid off its direct children only — the
@@ -338,21 +493,26 @@ describe("Input color", () => {
     );
   });
 
-  /*
-   * With slots the wrapper is the element wearing the surface, so it takes the
-   * hue. The inner input still needs its own copy: the shared surface sets
-   * `color` on the element directly, which an inherited value could not outrank.
-   */
-  it("tints the wrapper and the inner control when slots are present", () => {
+  /* With slots the wrapper wears the surface and takes the hue. The inner
+     control paints no surface, so it inherits the wrapper's text colour. */
+  it("tints only the wrapper when slots are present", () => {
     const { container } = render(<Input before="$" color="blue" />);
 
     const wrapper = container.querySelector("[data-slot='input-wrapper']");
+    const input = screen.getByRole("textbox");
 
     expect(wrapper).toHaveClass("palette-blue");
     expect(wrapper?.className).toMatch(/composes-field-surface-color/);
-    expect(screen.getByRole("textbox").className).toMatch(
-      /composes-field-surface-color/,
-    );
+    expect(input).not.toHaveClass("palette-blue");
+    expect(input.className).not.toMatch(/composes-field-surface-color/);
+  });
+
+  it("leaves the bare wrapper untinted, so the input alone wears the hue", () => {
+    const { container } = render(<Input color="blue" />);
+    expect(
+      container.querySelector("[data-slot='input-wrapper']"),
+    ).not.toHaveClass("palette-blue");
+    expect(screen.getByRole("textbox")).toHaveClass("palette-blue");
   });
 });
 

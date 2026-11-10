@@ -5,6 +5,7 @@ import { cxState } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
+import { hasInputSlots } from "../../input/input.utils";
 import { InputWrapper } from "../../input/subcomponents";
 import type { AutocompleteInputProps } from "../autocomplete.types";
 
@@ -25,7 +26,7 @@ export const AutocompleteInput = ({
   className,
   ...props
 }: AutocompleteInputProps) => {
-  const hasSlots = Boolean(before || after);
+  const hasSlots = hasInputSlots({ before, after });
 
   return (
     <Field
@@ -39,10 +40,10 @@ export const AutocompleteInput = ({
       {...FieldProps}
     >
       {/*
-       * The hue goes to both the wrapper and the control because either can be
-       * the element wearing the surface. Autocomplete renders no slots by
-       * default, so there is usually no wrapper and the `<input>` carries it;
-       * pass `before` or `after` and the wrapper appears and carries it instead.
+       * The hue goes to whichever element wears the surface. Autocomplete
+       * renders no slots by default, so the wrapper is usually a box-less
+       * `display: contents` and the `<input>` carries it; pass `before` or
+       * `after` and the wrapper paints the surface and carries it instead.
        */}
       <InputWrapper
         before={before}

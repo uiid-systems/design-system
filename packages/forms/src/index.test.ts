@@ -30,6 +30,7 @@ describe("forms barrel", () => {
   it("exports the input compound API", () => {
     expect(forms).toHaveProperty("InputControl");
     expect(forms).toHaveProperty("InputWrapper");
+    expect(forms).toHaveProperty("hasInputSlots");
   });
 
   it("exports the combobox part coverage", () => {

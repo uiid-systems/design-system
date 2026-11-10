@@ -56,7 +56,12 @@
     color: var(--shade-foreground);
     outline: var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
-    transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+    /* Paint-only properties. A control keeps its node as a slot comes or goes,
+       so its classes swap in place, and a layout property here would animate
+       the border, padding and height across that swap. */
+    transition-property: background-color, border-color, outline-color, color;
+    transition-duration: calc(var(--globals-transition-duration) / 2);
+    transition-timing-function: ease-in-out;
 
     &:hover {
       background-color: var(--forms-bg-hover);

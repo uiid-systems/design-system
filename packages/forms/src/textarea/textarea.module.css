@@ -1,10 +1,7 @@
 @import "@uiid/tokens/component/textarea.tokens.css";
 @import "@uiid/tokens/semantic/forms.tokens.css";
 
-.textarea {
-  composes: composes-field-surface from global;
-  composes: composes-disabled from global;
-  composes: composes-invalid from global;
+.textarea-base {
   composes: composes-text from global;
 
   font-family: inherit;
@@ -18,27 +15,31 @@
 }
 
 /*
- * Inside an `InputWrapper` the wrapper paints the surface once, so the textarea
- * drops its own edge, background and ring. These mirror `.input-wrapper >
- * .input-inner`. The invalid composition still lands on this element and sets
- * `border-color` and `outline-color`; with no border or outline to colour,
- * only the wrapper's copy shows. Next to a slot the block padding goes, or the
- * gap between the text and the slot row doubles.
+ * The textarea's own surface, for a textarea no wrapper paints around. The
+ * metrics both forms share live in `.textarea-base`.
+ */
+.textarea {
+  composes: textarea-base;
+  composes: composes-field-surface from global;
+  composes: composes-disabled from global;
+  composes: composes-invalid from global;
+}
+
+/*
+ * Inside an `InputWrapper`, which paints the surface, the invalid edge and the
+ * disabled dimming once for the whole field, as `.input-inner` does for Input.
+ * Composing `disabled` here too would compound the two opacities. Next to a
+ * slot the block padding goes, or the gap between the text and the slot row
+ * doubles.
  */
 .textarea-inner {
+  composes: textarea-base;
+
+  min-width: 0;
   border: none;
   background: transparent;
+  color: inherit;
   outline: none;
-  min-width: 0;
-
-  &:hover {
-    background: transparent;
-  }
-
-  &:focus-visible {
-    background: transparent;
-    outline: none;
-  }
 
   [data-slot="input-before"] + & {
     padding-block-start: 0;

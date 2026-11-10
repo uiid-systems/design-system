@@ -5,6 +5,7 @@ import { cx } from "@uiid/utils";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
+import { hasInputSlots } from "../input/input.utils";
 import { InputWrapper } from "../input/subcomponents";
 import { TEXTAREA_DEFAULT_ROWS } from "./textarea.constants";
 import type { TextareaProps } from "./textarea.types";
@@ -38,8 +39,9 @@ export const Textarea = ({
   ...props
 }: TextareaProps) => {
   /* With a slot, the wrapper paints the surface and takes the props that shape
-     it. The textarea keeps its tier for font-size and padding, and its resize. */
-  const hasSlots = Boolean(before || after);
+     it. The textarea drops its own surface but keeps its tier for font-size and
+     padding, and its resize. */
+  const hasSlots = hasInputSlots({ before, after });
 
   return (
     <Field
@@ -81,10 +83,10 @@ export const Textarea = ({
           required={required}
           onValueChange={onValueChange}
           className={cx(
-            styles["textarea"],
             hasSlots
               ? cx(styles["textarea-inner"], textareaVariants({ size, resize }))
               : cx(
+                  styles["textarea"],
                   textareaVariants({ size, resize, fullwidth, variant }),
                   paletteClassName(color, styles["color"]),
                 ),

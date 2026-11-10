@@ -3,9 +3,11 @@ import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
-import { inputVariants } from "./input.variants";
+import type { inputVariants, inputWrapperVariants } from "./input.variants";
 
 export type InputVariants = VariantProps<typeof inputVariants>;
+
+export type InputWrapperVariants = VariantProps<typeof inputWrapperVariants>;
 
 /**
  * Palette hue for the field surface. One hue resolves the control's background,
@@ -28,7 +30,7 @@ export type InputWrapperProps = {
    * pointer.
    */
   disabled?: boolean;
-} & InputVariants;
+} & InputWrapperVariants;
 
 /**
  * Omitting Base UI's `size` and re-adding it as a variant is the one sanctioned
