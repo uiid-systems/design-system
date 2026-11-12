@@ -19,3 +19,9 @@ Slot overrides (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, 
 A plain-text `title` renders as an `<h3>`. A title with elements in it, such as an icon or badge beside the text, renders as a `div` row at `gap={2}`, centred vertically. Pass the pieces as a fragment rather than wrapping them in your own `Group`. That row is not a heading, so when a composed title should be one, wrap its text in `<Text render={<h3 />} size={1} weight="semibold">`. `TitleProps.render` overrides the element in either case.
 
 A shell's plain-text title is an `<h2>` because the page's `<h1>` belongs to the page chrome outside it. Override with `TitleProps={{ render: <h1 /> }}` (or `<h3 />` for a nested sub-page shell); a `size` or `weight` in `TitleProps` overrides the page-heading ramp the same way.
+
+## Gotchas
+
+- Every slot is optional, and a slot mounts on what React paints, not on truthiness. `0` fills it; `false`, `""` and a list with nothing renderable in it leave no element behind, so `description={isDraft && "Draft"}` is safe.
+- `children` on `TitleProps`, `DescriptionProps` or `ActionProps` replaces that slot's content.
+- `shadow` never needs combining with `variant="ghost"` or `variant="shell"`. Both are shadowless and ignore it.
