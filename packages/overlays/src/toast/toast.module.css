@@ -25,6 +25,11 @@
 /*
  * Placement and stacking only. The surface is the Card inside, so nothing here
  * competes with Card's own styles.
+ *
+ * Base UI sets these --toast-* names inline on each toast, so no token in
+ * toast.tokens.json may take them: --toast-index, --toast-height,
+ * --toast-offset-y, --toast-frontmost-height, --toast-swipe-movement-x and
+ * --toast-swipe-movement-y.
  */
 .toast {
   --scale: calc(max(0, 1 - (var(--toast-index) * 0.1)));
@@ -41,6 +46,15 @@
   right: 0;
   width: 100%;
   margin-inline: auto;
+  /* Base UI focuses the root, so its outline has to follow the Card's corners. */
+  border-radius: var(--globals-border-radius);
+
+  &:focus-visible {
+    outline-width: var(--globals-outline-width);
+    outline-color: var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    outline-style: var(--globals-outline-style);
+  }
   transform-origin: bottom center;
 
   .toast-viewport[data-position="top"] & {
@@ -161,9 +175,11 @@
   }
 }
 
-/* Muted against whatever hue the surface takes, not only the neutral one. */
-.toast-description {
-  color: color-mix(in oklab, var(--palette-on-tint), transparent 30%);
+/* Secondary text that clears AA on every hue's tint. Two classes, because
+   CardDescription sets its own colour at equal specificity in the same layer,
+   and which stylesheet loads last differs between builds. */
+.toast-surface .toast-description {
+  color: var(--palette-on-tint-muted);
 }
 
 /* Ghost Button reads its colour from --button-bg, so this mutes the icon and

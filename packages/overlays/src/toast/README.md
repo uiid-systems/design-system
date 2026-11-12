@@ -47,7 +47,7 @@ A manager does nothing until a `ToastProvider` subscribes to it, so a toast adde
 Base UI's [Toast](https://base-ui.com/react/components/toast) is the underlying primitive, and its options pass through `add()` and `update()` unchanged. Toaster renders these fields:
 
 - **`title`** and **`description`** — either can stand alone; they label and describe the toast for assistive tech
-- **`type`** — any string, exposed as `data-type`. `success`, `error`, `warning`, and `info` show an icon on the title's first line and color the surface green, red, yellow, and blue. `loading` shows a spinner on a neutral surface and hides the close button. Any other string shows no icon on a neutral surface. Base UI's `promise()` sets `loading`, `success`, and `error` for you
+- **`type`** — any string, exposed as `data-type`. `success`, `error`, `warning`, and `info` show an icon on the title's first line and color the surface green, red, yellow, and blue. `loading` shows a spinner on a neutral surface and hides the close button. Any other string shows no icon on a neutral surface. Base UI's `promise()` sets `loading`, `success`, and `error` for you. The icon is hidden from assistive tech and the hue is visual only, so the title has to say what happened on its own: "Couldn't save", not a bare "Save"
 - **`actionProps`** — renders a button; its `children` is the label
 - **`timeout`** — milliseconds until the toast closes itself, the provider's default when left out; `0` keeps it open. A `loading` toast never times out, and its timer starts once `update()` changes its type. Leave `timeout` off a `loading` toast: it carries over into the update, so a `0` there leaves the settled toast open for good
 
