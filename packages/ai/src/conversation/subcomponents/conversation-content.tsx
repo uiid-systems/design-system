@@ -10,6 +10,7 @@ import styles from "../conversation.module.css";
 
 export const ConversationContent = ({
   ref,
+  viewportRef,
   ax = "stretch",
   fullwidth = true,
   gap = 8,
@@ -19,6 +20,7 @@ export const ConversationContent = ({
 }: ConversationContentProps) => {
   const { scrollRef, contentRef } = useConversation();
   const composedRef = useComposedRefs(contentRef, ref);
+  const composedViewportRef = useComposedRefs(scrollRef, viewportRef);
 
   return (
     /* Focusable so the keyboard can scroll it (Safari does not make a scroll
@@ -27,7 +29,7 @@ export const ConversationContent = ({
        region, so the scroll button appearing is not announced as a message. */
     <div
       data-slot="conversation-viewport"
-      ref={scrollRef}
+      ref={composedViewportRef}
       tabIndex={0}
       className={styles["viewport"]}
     >
