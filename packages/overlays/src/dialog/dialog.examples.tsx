@@ -177,6 +177,11 @@ export const RevealOnce = () => {
   );
 };
 
+/**
+ * Long content scrolls in the body while the header and footer stay in view.
+ * Tab through the buttons at the body's edges to check their focus rings
+ * aren't cut off.
+ */
 export const LongContent = () => {
   const [open, setOpen] = useState(false);
 
@@ -195,9 +200,19 @@ export const LongContent = () => {
       }
     >
       <Stack gap={4}>
+        <Group>
+          <Button size="small" variant="subtle">
+            Read the summary
+          </Button>
+        </Group>
         {Array.from({ length: 16 }, (_, index) => (
           <Text key={index}>{BODY}</Text>
         ))}
+        <Group>
+          <Button size="small" variant="subtle">
+            Download a copy
+          </Button>
+        </Group>
       </Stack>
     </Dialog>
   );
