@@ -40,11 +40,13 @@ import {
 
 ### Conversation
 
-The region. All [`Box`](../../../layout/src/box/README.md) props. Renders with `role="log"` and `data-slot="conversation"`.
+The region. All [`Box`](../../../layout/src/box/README.md) props. Renders `data-slot="conversation"`.
 
 ### ConversationContent
 
-The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `fullwidth`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` inside an internal scroller, `data-slot="conversation-viewport"`.
+The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `fullwidth`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` with `role="log"` and the label "Conversation" (pass `aria-label`, or `aria-labelledby` to name it after a visible heading), inside an internal scroller, `data-slot="conversation-viewport"`, which takes keyboard focus so arrow keys scroll it.
+
+The log is a polite live region, so a screen reader may read a reply out in fragments as it streams. Pass `aria-busy` while a reply is in flight to hold announcements until it settles. The log is the column rather than the region, so the scroll button appearing and disappearing is not announced as a new message.
 
 ### ConversationEmptyState
 
@@ -67,7 +69,7 @@ The region starts pinned and opens at its newest message. While pinned, content 
 
 Any scroll up releases the pin, however small, so an arrow key or a slow trackpad lets go even while tokens arrive. The button appears, and content that arrives afterwards does not move the reader. Scrolling back down within 70 px of the bottom re-pins without pressing anything. The button scrolls to the bottom and re-pins; its scroll is smooth by default and instant under `prefers-reduced-motion: reduce`, through the scroller's CSS `scroll-behavior`.
 
-The viewport is focusable, so the keyboard can scroll it, and is announced as a group named "Messages". Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
+The viewport is in the tab order, so the keyboard can scroll it in every browser, including Safari, which does not make a scroll container focusable on its own. It draws an inset focus ring, since the region clips anything outside it. Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
 
 A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region has nowhere to scroll, so the button never shows for it. If the region grows, or content shrinks, until a scrolled-up reader is at the bottom, the region re-pins.
 

@@ -95,7 +95,8 @@ export const Streaming = () => {
 
   return (
     <Conversation h={360}>
-      <ConversationContent>
+      {/* Holds the log's announcements until the reply settles. */}
+      <ConversationContent aria-busy={!done}>
         {turns.map((turn, index) => (
           <MessageTurn key={index} {...turn} />
         ))}
