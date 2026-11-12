@@ -15,6 +15,8 @@ export type ConversationContentProps = StackProps & {
    * grows rather than scrolls; listen here to load older history or to keep
    * the reader's place after prepending. Pass a `useRef` or a stable
    * callback: a new callback each render detaches and reattaches it.
+   * Inside `Conversation`, `useConversation().scrollElement` is the same
+   * element; use `viewportRef` from the component that owns the history.
    */
   viewportRef?: React.Ref<HTMLDivElement>;
 };

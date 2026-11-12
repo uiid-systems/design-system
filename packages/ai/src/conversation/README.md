@@ -48,7 +48,7 @@ The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props
 
 The log is a polite live region, so a screen reader may read a reply out in fragments as it streams. Pass `aria-busy` while a reply is in flight to hold announcements until it settles. The log is the column rather than the region, so the scroll button appearing and disappearing is not announced as a new message.
 
-`ref` reaches the column, which grows; `viewportRef` reaches the scroller, which scrolls. Use `viewportRef` to read scroll state or listen to scroll, for example to load older history near the top. To keep the reader's place when you prepend, note `scrollHeight - scrollTop` just before the update, once the older page has arrived rather than when you asked for it, and restore it in a layout effect with `scrollTo({ top: scrollHeight - saved, behavior: "instant" })`. A bare `scrollTop` assignment animates, because the scroller is `scroll-behavior: smooth`. Pass a `useRef` or a stable callback as `viewportRef`: a new callback on each render detaches and reattaches it, so a listener added there without a cleanup piles up.
+`ref` reaches the column, which grows; `viewportRef` reaches the scroller, which scrolls. Use `viewportRef` to read scroll state or listen to scroll, for example to load older history near the top. To keep the reader's place when you prepend, note `scrollHeight - scrollTop` just before the update, once the older page has arrived rather than when you asked for it, and restore it in a layout effect in the component that prepends, keyed on the messages, with `scrollTo({ top: scrollHeight - saved, behavior: "instant" })`. A bare `scrollTop` assignment animates, because the scroller is `scroll-behavior: smooth`. Pass a `useRef` or a stable callback as `viewportRef`: a new callback on each render detaches and reattaches it, so a listener added there without a cleanup piles up. Inside `Conversation`, `useConversation().scrollElement` is the same element; use `viewportRef` from the component that owns the history.
 
 | Prop          | Type                  | Default | Description                                  |
 | ------------- | --------------------- | ------- | -------------------------------------------- |
@@ -82,7 +82,7 @@ A smooth scroll in progress never releases itself, and content that shrinks whil
 
 ## Hooks
 
-`useConversation()` returns the region's `isAtBottom`, `scrollToBottom` and `scrollElement` to anything rendered inside `Conversation`, and throws outside it. A prompt input can call `scrollToBottom()` on submit.
+`useConversation()` returns the region's `isAtBottom`, `scrollToBottom` and `scrollElement` to anything rendered inside `Conversation`, and throws outside it. `scrollElement` is the same element `viewportRef` receives; use `viewportRef` from the component that owns the history. A prompt input can call `scrollToBottom()` on submit.
 
 `useStickToBottom()` is the hook behind `Conversation`, exported for a scroller of your own. Attach `scrollRef` to the element that scrolls and `contentRef` to the element that grows, and it returns the same `isAtBottom` and `scrollToBottom`, plus `scrollElement`, the mounted scroller.
 
