@@ -1,11 +1,18 @@
 /* The card. The border is the root's `b` prop; the radius and clip are here so
-   the trigger's hover surface stops at the corners. */
+   the trigger's hover surface stops at the corners. `--props-b` is the raw
+   number the `b` prop writes on this element; as a length here, the trigger
+   inherits it. */
 .tool {
+  --tool-border-width: calc(var(--props-b, 0) * 1px);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
 }
 
+/* Rounded to the card's inner radius, its radius less its border, so the inset
+   focus ring and hover surface follow the corners instead of being clipped by
+   them, whatever `b` the card takes. */
 .trigger {
+  border-radius: max(0px, calc(var(--globals-border-radius) - var(--tool-border-width)));
   transition: background-color var(--globals-transition-duration) var(--globals-transition-easing);
 
   &:hover:not([data-disabled]) {
@@ -18,6 +25,15 @@
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: calc(var(--globals-outline-width) * -1);
   }
+}
+
+/* While the panel is mounted, opening and closing too, it sits below the
+   trigger, so only the trigger's top corners touch the card's edge. Squaring
+   the bottom ones until the panel unmounts keeps trigger and panel one
+   surface through the close transition. */
+:where(.tool):has(> [data-slot="tool-panel"]) > .trigger {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
 /* A tool name is often one unbroken snake_case word, and an error often holds a
