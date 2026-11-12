@@ -1,3 +1,5 @@
+import { resolveStyleProp } from "@uiid/utils";
+
 import type { CardProps } from "./card.types";
 
 /**
@@ -38,6 +40,22 @@ export const resolveCardPadding = (...sources: (CardPadding | undefined)[]) => {
   };
 };
 
-/** A side's padding as the value the `pl` and `pr` style props resolve to. */
-export const inlinePadding = (steps: number | undefined) =>
-  steps === undefined ? undefined : `calc(${steps} * var(--spacing-inline))`;
+/**
+ * The inline sides as `--card-padding-inline-start/-end`, painted the way the
+ * `pl` and `pr` style props paint them. Only the sides a source set, so an
+ * unset side keeps the stylesheet's default; undefined when neither is set.
+ */
+export const inlinePaddingStyle = ({
+  start,
+  end,
+}: ReturnType<typeof resolveCardPadding>) =>
+  start === undefined && end === undefined
+    ? undefined
+    : ({
+        ...(start !== undefined && {
+          "--card-padding-inline-start": resolveStyleProp("pl", start),
+        }),
+        ...(end !== undefined && {
+          "--card-padding-inline-end": resolveStyleProp("pr", end),
+        }),
+      } as React.CSSProperties);

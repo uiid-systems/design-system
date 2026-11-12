@@ -223,6 +223,12 @@ describe("Card", () => {
       expect(vars(container)).toEqual({ start: "", end: "" });
     });
 
+    it("publishes only the inline sides a source set", () => {
+      const { container } = render(<Card pl={2}>Body</Card>);
+
+      expect(vars(container)).toEqual({ start: inline(2), end: "" });
+    });
+
     it("publishes p, px, pl and pr as the inline padding variables", () => {
       const { container, rerender } = render(<Card p={6}>Body</Card>);
       expect(vars(container)).toEqual({ start: inline(6), end: inline(6) });

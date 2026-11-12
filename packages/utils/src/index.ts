@@ -23,6 +23,7 @@ export {
   type ToggleProps,
 } from "./props/styles";
 export type { StyleProp, WithLayoutProps } from "./props/types";
+export { resolveStyleProp } from "./props/css";
 export {
   prepareComponentProps,
   splitDomAttributes,
