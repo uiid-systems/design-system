@@ -1,8 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
 import { describe, it, expect, vi } from "vitest";
 
 import { Button } from "./button";
+
+import styles from "./button.module.css";
 
 describe("Button", () => {
   it("renders children inside a button", () => {
@@ -44,6 +47,24 @@ describe("Button", () => {
       expect(screen.getByRole("button").className).toContain(`shape-${shape}`);
     },
   );
+
+  // Driven off the palette itself, so a new hue is covered automatically.
+  it.each(PALETTE_HUES)("applies the palette surface for color=%s", (color) => {
+    render(<Button color={color}>x</Button>);
+
+    expect(screen.getByRole("button")).toHaveClass(
+      paletteColorStyles[color],
+      styles["color"],
+    );
+  });
+
+  it("leaves the palette surface off when color is unset", () => {
+    render(<Button>x</Button>);
+
+    const button = screen.getByRole("button");
+    expect(button).not.toHaveClass(styles["color"]);
+    expect(button.className).not.toMatch(/palette-/);
+  });
 
   it("fires onClick on click and keyboard", async () => {
     const onClick = vi.fn();
@@ -367,6 +388,44 @@ describe("Button", () => {
       expect(button.tagName).toBe("SPAN");
     });
 
+    it("treats href={undefined} as an emulated button, not a destination-less link", () => {
+      render(<Button render={<a href={undefined} />}>Go</Button>);
+
+      expect(screen.queryByRole("link")).toBeNull();
+      const button = screen.getByRole("button", { name: "Go" });
+      expect(button.tagName).toBe("A");
+      expect(button).toHaveAttribute("role", "button");
+    });
+
+    it("ignores nativeButton={false} on a link — href decides", () => {
+      render(
+        <Button nativeButton={false} render={<a href="/page" />}>
+          Next
+        </Button>,
+      );
+
+      expect(screen.getByRole("link", { name: "Next" })).not.toHaveAttribute(
+        "role",
+      );
+    });
+
+    it("chains a handler on the link element after the button's own", async () => {
+      const calls: string[] = [];
+      const user = userEvent.setup();
+      render(
+        <Button
+          onClick={() => calls.push("button")}
+          render={<a href="#" onClick={() => calls.push("link")} />}
+        >
+          Go
+        </Button>,
+      );
+
+      await user.click(screen.getByRole("link"));
+
+      expect(calls).toEqual(["button", "link"]);
+    });
+
     it("keeps a <button> render native, disabled through aria-disabled", () => {
       render(
         <Button disabled render={<button type="submit" />}>
@@ -400,6 +459,20 @@ describe("Button", () => {
       expect(link).toHaveAttribute("href", "/page");
       expect(link).not.toHaveAttribute("role");
       expect(link).not.toHaveAttribute("tabindex");
+    });
+
+    it("does not overlay role=button on a lazily wrapped <button>", () => {
+      const lazyButton = {
+        $$typeof: Symbol.for("react.lazy"),
+        _payload: <button type="submit" />,
+        _init: (payload: unknown) => payload,
+      } as unknown as React.ReactElement;
+
+      render(<Button render={lazyButton}>Save</Button>);
+
+      const button = screen.getByRole("button", { name: "Save" });
+      expect(button.tagName).toBe("BUTTON");
+      expect(button).not.toHaveAttribute("role");
     });
 
     it("does not leave Base UI props on the anchor", () => {
@@ -445,6 +518,26 @@ describe("Button", () => {
         expect(link).toHaveFocus();
         await user.click(link);
         await user.keyboard("{Enter}");
+        expect(onClick).not.toHaveBeenCalled();
+      });
+
+      // The swallowed activation prevents default, which skips a handler the
+      // caller set on the link element itself — see `swallowDisabledActivation`.
+      it("does not call a handler set on the link element", async () => {
+        const onClick = vi.fn();
+        const user = userEvent.setup();
+        render(
+          <Button disabled render={<a href="/page" onClick={onClick} />}>
+            Next
+          </Button>,
+        );
+
+        const link = screen.getByRole("link");
+        await user.click(link);
+        link.focus();
+        await user.keyboard("{Enter}");
+        fireEvent.click(link);
+
         expect(onClick).not.toHaveBeenCalled();
       });
 
@@ -511,6 +604,17 @@ describe("Button", () => {
       render(<Button>Plain</Button>);
 
       expect(screen.getByRole("button")).toHaveTextContent("Plain");
+      expect(
+        document.querySelector('[data-slot="button-tooltip-wrapper"]'),
+      ).toBeNull();
+    });
+
+    it("wraps the button in a tooltip trigger when a tooltip is passed", () => {
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      expect(
+        document.querySelector('[data-slot="button-tooltip-wrapper"]'),
+      ).toContainElement(screen.getByRole("button"));
     });
 
     it("still renders its children when wrapped in a tooltip", () => {
@@ -540,6 +644,98 @@ describe("Button", () => {
         '[role="tooltip"], [data-open]',
       );
       expect(popup?.className).toMatch(/composes-tooltip(\s|$)/);
+    });
+
+    it("reveals the tooltip content on keyboard focus", async () => {
+      const user = userEvent.setup();
+      render(<Button tooltip="Helpful hint">Save</Button>);
+
+      await user.tab();
+      expect(screen.getByRole("button")).toHaveFocus();
+      expect(await screen.findByText("Helpful hint")).toBeInTheDocument();
+    });
+
+    it("accepts rich tooltip content, not just a string", async () => {
+      const user = userEvent.setup();
+      render(
+        <Button tooltip={<span data-testid="rich-tooltip">Rich</span>}>
+          Save
+        </Button>,
+      );
+
+      await user.hover(screen.getByRole("button"));
+      expect(await screen.findByTestId("rich-tooltip")).toBeInTheDocument();
+    });
+
+    // The wrapper sits between the caller and the button, so what the bare
+    // button guarantees has to survive being wrapped.
+    it("still fires onClick when wrapped", async () => {
+      const onClick = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Button tooltip="Helpful hint" onClick={onClick}>
+          Save
+        </Button>,
+      );
+
+      await user.click(screen.getByRole("button"));
+      expect(onClick).toHaveBeenCalledOnce();
+    });
+
+    it("still blocks onClick when disabled and wrapped", async () => {
+      const onClick = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Button tooltip="Unavailable right now" disabled onClick={onClick}>
+          Save
+        </Button>,
+      );
+
+      const button = screen.getByRole("button");
+      await user.click(button);
+      button.focus();
+      await user.keyboard("{Enter}");
+      await user.keyboard(" ");
+
+      expect(button).toBeDisabledForUser();
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it("keeps the button's slot, className and variants when wrapped", () => {
+      render(
+        <Button
+          tooltip="Helpful hint"
+          size="large"
+          variant="subtle"
+          className="extra"
+        >
+          Save
+        </Button>,
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-slot", "button");
+      expect(button).toHaveClass("extra");
+      expect(button.className).toContain("size-large");
+      expect(button.className).toContain("variant-subtle");
+    });
+
+    it("still renders a link when wrapped", () => {
+      render(
+        <Button
+          tooltip="Opens example.com"
+          render={<a href="https://example.com" />}
+        >
+          Visit
+        </Button>,
+      );
+
+      const link = screen.getByRole("link", { name: "Visit" });
+      expect(link).toHaveAttribute("href", "https://example.com");
+      expect(link).toHaveAttribute("data-slot", "button");
+      expect(
+        document.querySelector('[data-slot="button-tooltip-wrapper"]'),
+      ).toContainElement(link);
     });
 
     it.each(["square", "circle"] as const)(

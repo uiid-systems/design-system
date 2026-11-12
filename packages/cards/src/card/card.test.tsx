@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
 
 import { Card } from "./card";
 import { CARD_DEFAULT_COLOR } from "./card.constants";
@@ -112,6 +113,83 @@ describe("Card", () => {
     expect(screen.queryByRole("separator")).toBeNull();
   });
 
+  it("builds a header for a description of 0 on its own", () => {
+    const { container } = render(<Card description={0} />);
+
+    expect(container.querySelector('[data-slot="card-header"]')).not.toBeNull();
+    expect(
+      container.querySelector('[data-slot="card-description"]'),
+    ).toHaveTextContent("0");
+  });
+
+  it("keeps a 0 passed through a slot override", () => {
+    const { container } = render(
+      <Card title="Title" DescriptionProps={{ children: 0 }} />,
+    );
+
+    expect(
+      container.querySelector('[data-slot="card-description"]'),
+    ).toHaveTextContent("0");
+  });
+
+  it("lets a slot override's children replace the slot prop", () => {
+    const { container } = render(
+      <Card
+        title="Title"
+        description="From the prop"
+        DescriptionProps={{ children: "From the override" }}
+      />,
+    );
+
+    expect(
+      container.querySelector('[data-slot="card-description"]'),
+    ).toHaveTextContent(/^From the override$/);
+  });
+
+  it("collapses a slot holding a spent short-circuit or an empty string", () => {
+    const { container } = render(
+      <Card title="Title" description={false} action="" />,
+    );
+
+    expect(
+      container.querySelector('[data-slot="card-description"]'),
+    ).toBeNull();
+    expect(container.querySelector('[data-slot="card-action"]')).toBeNull();
+  });
+
+  it("collapses a slot holding a list with nothing renderable in it", () => {
+    const show = false as boolean;
+    const { container } = render(
+      <Card
+        title="Title"
+        action={[]}
+        description={[show && <span key="a" />]}
+      />,
+    );
+
+    expect(container.querySelector('[data-slot="card-action"]')).toBeNull();
+    expect(
+      container.querySelector('[data-slot="card-description"]'),
+    ).toBeNull();
+  });
+
+  it("fills a slot from a list holding one renderable entry", () => {
+    const show = false as boolean;
+    const { container } = render(
+      <Card
+        title="Title"
+        footer={[
+          show && <span key="a">Skipped</span>,
+          <span key="b">Kept</span>,
+        ]}
+      />,
+    );
+
+    expect(
+      container.querySelector('[data-slot="card-footer"]'),
+    ).toHaveTextContent(/^Kept$/);
+  });
+
   it("grows its body with the card, unless InnerContainerProps opts out", () => {
     const body = (el: HTMLElement) =>
       el.querySelector('[data-slot="card-inner-container"]');
@@ -195,10 +273,11 @@ describe("Card", () => {
     );
   });
 
-  it("applies an explicit palette hue", () => {
-    const { container } = render(<Card title="Title" color="blue" />);
+  // Driven off the palette itself, so a new hue is covered automatically.
+  it.each(PALETTE_HUES)("applies the palette surface for color=%s", (color) => {
+    const { container } = render(<Card title="Title" color={color} />);
 
-    expect(container.firstElementChild).toHaveClass("palette-blue");
+    expect(container.firstElementChild).toHaveClass(paletteColorStyles[color]);
   });
 
   /*

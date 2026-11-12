@@ -30,6 +30,31 @@ describe("Tooltip", () => {
     expect(screen.queryByText("Tooltip content")).not.toBeInTheDocument();
   });
 
+  it("renders the popup in a portal, outside the trigger's container", () => {
+    const { container } = render(
+      <Tooltip trigger={<button>Hover me</button>} open>
+        Tooltip content
+      </Tooltip>,
+    );
+
+    const popup = document.querySelector('[data-slot="tooltip-popup"]');
+    expect(popup).toBeInTheDocument();
+    expect(container).not.toContainElement(popup as HTMLElement);
+  });
+
+  it("sets the content in a size -1 Text span", () => {
+    render(
+      <Tooltip trigger={<button>Hover me</button>} open>
+        Tooltip content
+      </Tooltip>,
+    );
+
+    const content = screen.getByText("Tooltip content");
+    expect(content.tagName).toBe("SPAN");
+    expect(content).toHaveAttribute("data-ui-size", "-1");
+    expect(content.closest('[data-slot="tooltip-popup"]')).not.toBeNull();
+  });
+
   // ============================================
   // HOVER INTERACTION
   // ============================================
@@ -406,8 +431,84 @@ describe("Tooltip", () => {
   });
 
   // ============================================
+  // ROOT AND CONTROLLED STATE
+  // ============================================
+
+  it("doesn't open when RootProps disables it", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        RootProps={{ disabled: true }}
+        delay={0}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(screen.queryByText("Tooltip content")).not.toBeInTheDocument();
+  });
+
+  it("follows a controlled open and reports hover through onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        open={false}
+        onOpenChange={onOpenChange}
+        delay={0}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+    // Well under the 300ms default, so `delay` reached the trigger.
+    await waitFor(
+      () => {
+        expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything());
+      },
+      { timeout: 100 },
+    );
+    expect(screen.queryByText("Tooltip content")).not.toBeInTheDocument();
+
+    rerender(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        open
+        onOpenChange={onOpenChange}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+    expect(screen.getByText("Tooltip content")).toBeInTheDocument();
+  });
+
+  // ============================================
   // POSITIONING
   // ============================================
+
+  it("forwards PositionerProps side and align to Base UI", () => {
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        open
+        PositionerProps={{ side: "bottom", align: "start" }}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    const positioner = document.querySelector(
+      '[data-slot="tooltip-positioner"]',
+    );
+    expect(positioner).toHaveAttribute("data-side", "bottom");
+    expect(positioner).toHaveAttribute("data-align", "start");
+  });
 
   it("keeps its default offsets when PositionerProps sets only a side", async () => {
     const user = userEvent.setup();

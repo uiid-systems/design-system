@@ -2,6 +2,7 @@ import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
+import { Button } from "@uiid/buttons";
 import { useState } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
@@ -98,6 +99,17 @@ describe("Dialog", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
+  it("renders no trigger element for an empty string", () => {
+    const { container } = render(
+      <Dialog trigger="" open={false} onOpenChange={() => {}}>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(container.querySelector('[data-slot="dialog-trigger"]')).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
   it("opens when controlled without a trigger", () => {
     render(
       <Dialog open={true} onOpenChange={() => {}}>
@@ -182,6 +194,26 @@ describe("Dialog", () => {
   // ============================================
   // TRIGGER
   // ============================================
+
+  it("doesn't open from a disabled Button trigger, which stays a tab stop", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog trigger={<Button disabled>Open dialog</Button>} title="Title">
+        Dialog content
+      </Dialog>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open dialog" });
+    expect(trigger).toBeDisabledForUser();
+
+    await user.click(trigger);
+    await user.tab();
+    expect(trigger).toHaveFocus();
+    await user.keyboard("{Enter}");
+    await user.keyboard(" ");
+
+    expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+  });
 
   it("gives a non-button intrinsic trigger button semantics", async () => {
     const user = userEvent.setup();
@@ -1023,6 +1055,39 @@ describe("Dialog", () => {
     );
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("is named by its title and described by its description", () => {
+    render(
+      <Dialog
+        open
+        onOpenChange={() => {}}
+        title="Preferences"
+        description="Choose how you're notified."
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Preferences" }),
+    ).toHaveAccessibleDescription("Choose how you're notified.");
+  });
+
+  it("takes its name from PopupProps when there is no title", () => {
+    render(
+      <Dialog
+        open
+        onOpenChange={() => {}}
+        PopupProps={{ "aria-label": "Preferences" }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Preferences" }),
+    ).toBeInTheDocument();
   });
 
   it("trigger has aria-haspopup attribute", () => {
