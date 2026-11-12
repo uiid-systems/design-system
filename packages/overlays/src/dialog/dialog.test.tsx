@@ -579,6 +579,25 @@ describe("Dialog", () => {
     expect(within(popup).getByRole("separator")).toBeInTheDocument();
   });
 
+  /*
+   * The body scrolls and reaches the popup's side edges (dialog.module.css),
+   * so it must not carry Card's `w="full"`, which would hold it to the content
+   * box. The test DOM has no layout; Storybook covers the scrolling itself.
+   */
+  it("leaves the body free to stretch to the popup's edges", () => {
+    render(
+      <Dialog open={true} onOpenChange={() => {}} title="Title" footer="Footer">
+        Dialog content
+      </Dialog>,
+    );
+
+    const body = screen
+      .getByRole("dialog")
+      .querySelector(':scope > [data-slot="card-inner-container"]');
+    expect(body).toHaveTextContent("Dialog content");
+    expect(body).not.toHaveAttribute("data-ui-w");
+  });
+
   it("lets DialogClose take another Button variant", () => {
     render(
       <Dialog

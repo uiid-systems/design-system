@@ -27,17 +27,16 @@
  * Positioning container. Centering lives here so the popup — which renders as a
  * Card — never competes with Card's own `position` in the cascade. The extra
  * bottom padding raises the popup ~2rem above true center, an optical offset.
- * A taller popup scrolls the viewport: the grid row grows with it, so it
- * starts at the top rather than centring off-screen.
  */
 .dialog-viewport {
   position: fixed;
   inset: 0;
   z-index: var(--overlays-popup-z-index);
   display: grid;
+  /* A definite row height, so the popup's max-height can cap it at the viewport. */
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
   padding: 1.5rem 1.5rem 5.5rem;
-  overflow-y: auto;
   pointer-events: none;
 
   /* A full popup is a frame, not a dialog to lift, so its inset is even. */
@@ -54,7 +53,30 @@
 .dialog-popup {
   composes: composes-popup from global;
   width: 100%;
+  max-height: 100%;
   pointer-events: auto;
+
+  /*
+   * Content taller than the viewport scrolls in the body while the header and
+   * footer stay put. The popup is a Card, a flex column, so the body needs
+   * `min-height: 0` to shrink below its content. It reaches the card's inline
+   * edges and pads itself back in, so the scrollbar sits at the surface edge,
+   * and the block padding leaves a focus ring room at the clip edge.
+   */
+  & > [data-slot="card-inner-container"] {
+    --dialog-focus-ring-room: calc(var(--globals-outline-width) + var(--globals-outline-offset));
+
+    min-height: 0;
+    overflow-y: auto;
+    margin-inline: calc(-1 * var(--card-padding-inline-start)) calc(-1 * var(--card-padding-inline-end));
+    padding-inline: var(--card-padding-inline-start) var(--card-padding-inline-end);
+    padding-block: var(--dialog-focus-ring-room);
+    scroll-padding-block: var(--dialog-focus-ring-room);
+  }
+
+  & > :not([data-slot="card-inner-container"]) {
+    flex-shrink: 0;
+  }
 }
 
 .size-small {

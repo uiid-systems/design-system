@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Card } from "@uiid/cards";
+import { Card, type CardProps } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
 import type { DialogPopupProps } from "../dialog.types";
@@ -7,6 +7,8 @@ import { dialogVariants } from "../dialog.variants";
 import { DialogCloseButton } from "./dialog-close-button";
 
 import styles from "../dialog.module.css";
+
+const BODY_PROPS = { w: undefined } satisfies CardProps["InnerContainerProps"];
 
 /**
  * The dialog surface. Rendered as a Card so the content slots match Drawer and
@@ -57,6 +59,9 @@ export const DialogPopup = ({
           FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BaseDialog.Title /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}
+          // The body stretches past the card's padding to its edges, which
+          // a `w="full"` of the content box would stop short of.
+          InnerContainerProps={BODY_PROPS}
         />
       }
       {...props}
