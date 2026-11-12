@@ -44,20 +44,27 @@ The region. All [`Box`](../../../layout/src/box/README.md) props. Renders `data-
 
 ### ConversationContent
 
-The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `fullwidth`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` with `role="log"` and the label "Conversation" (pass `aria-label`, or `aria-labelledby` to name it after a visible heading), inside an internal scroller, `data-slot="conversation-viewport"`, which takes keyboard focus so arrow keys scroll it.
+The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `fullwidth`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` with `role="log"` and the label "Conversation" (pass `aria-label`, or `aria-labelledby` to name it after a visible heading), inside a scroller, `data-slot="conversation-viewport"` (reach it with `viewportRef`), which takes keyboard focus so arrow keys scroll it.
 
 The log is a polite live region, so a screen reader may read a reply out in fragments as it streams. Pass `aria-busy` while a reply is in flight to hold announcements until it settles. The log is the column rather than the region, so the scroll button appearing and disappearing is not announced as a new message.
+
+`ref` reaches the column, which grows; `viewportRef` reaches the scroller, which scrolls. Use `viewportRef` to read scroll state or listen to scroll, for example to load older history near the top. To keep the reader's place when you prepend, note `scrollHeight - scrollTop` just before the update, once the older page has arrived rather than when you asked for it, and restore it in a layout effect with `scrollTo({ top: scrollHeight - saved, behavior: "instant" })`. A bare `scrollTop` assignment animates, because the scroller is `scroll-behavior: smooth`. Pass a `useRef` or a stable callback as `viewportRef`: a new callback on each render detaches and reattaches it, so a listener added there without a cleanup piles up.
+
+| Prop          | Type                  | Default | Description                                  |
+| ------------- | --------------------- | ------- | -------------------------------------------- |
+| `viewportRef` | `Ref<HTMLDivElement>` | —       | The scroller, for scroll state and listeners |
 
 ### ConversationEmptyState
 
 All `Stack` props, plus:
 
-| Prop          | Type        | Default                                       | Description                              |
-| ------------- | ----------- | --------------------------------------------- | ---------------------------------------- |
-| `title`       | `string`    | `"No messages yet"`                           | Heading                                  |
-| `description` | `string`    | `"Start a conversation to see messages here"` | Supporting line under the heading        |
-| `icon`        | `ReactNode` | —                                             | Icon rendered above the heading          |
-| `children`    | `ReactNode` | —                                             | Replaces the icon, title and description |
+| Prop           | Type                    | Default                                       | Description                                             |
+| -------------- | ----------------------- | --------------------------------------------- | ------------------------------------------------------- |
+| `title`        | `string`                | `"No messages yet"`                           | Heading                                                 |
+| `headingLevel` | `2 \| 3 \| 4 \| 5 \| 6` | `3`                                           | Level of the heading element, to fit the page's outline |
+| `description`  | `string`                | `"Start a conversation to see messages here"` | Supporting line under the heading                       |
+| `icon`         | `ReactNode`             | —                                             | Icon rendered above the heading                         |
+| `children`     | `ReactNode`             | —                                             | Replaces the icon, title and description                |
 
 ### ConversationScrollButton
 

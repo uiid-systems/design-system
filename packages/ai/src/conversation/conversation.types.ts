@@ -6,14 +6,24 @@ export type ConversationProps = BoxProps;
 
 /**
  * The column of messages, a `role="log"` named "Conversation". Props go to the
- * inner `Stack`; pass `aria-label` or `aria-labelledby` to rename the log. The
- * scroller is internal.
+ * inner `Stack`; pass `aria-label` or `aria-labelledby` to rename the log.
+ * `viewportRef` reaches the scroller around it.
  */
-export type ConversationContentProps = StackProps;
+export type ConversationContentProps = StackProps & {
+  /**
+   * The element that scrolls. `ref` is the message column inside it, which
+   * grows rather than scrolls; listen here to load older history or to keep
+   * the reader's place after prepending. Pass a `useRef` or a stable
+   * callback: a new callback each render detaches and reattaches it.
+   */
+  viewportRef?: React.Ref<HTMLDivElement>;
+};
 
 export type ConversationEmptyStateProps = StackProps & {
   /** Heading. Defaults to "No messages yet". */
   title?: string;
+  /** Level of the heading element, to fit the page's outline. Defaults to 3. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   /** Supporting line under the heading. Defaults to "Start a conversation to see messages here". */
   description?: string;
   /** Icon rendered above the heading. */

@@ -548,6 +548,50 @@ describe("Conversation", () => {
       expect(content).toHaveClass("custom");
       expect(ref.current).toBe(content);
     });
+    it("hands the scrolling viewport to viewportRef, where a caller can listen while the pin keeps working", () => {
+      const viewportRef = { current: null as HTMLDivElement | null };
+      const { container } = render(
+        <Conversation>
+          <ConversationContent viewportRef={viewportRef}>x</ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>,
+      );
+
+      const viewport = container.querySelector<HTMLDivElement>(
+        '[data-slot="conversation-viewport"]',
+      )!;
+      expect(viewportRef.current).toBe(viewport);
+      expect(FakeResizeObserver.instances.at(-1)!.observed.has(viewport)).toBe(
+        true,
+      );
+      expect(
+        container
+          .querySelector('[data-slot="conversation-content"]')!
+          .getAttributeNames(),
+      ).not.toContain("viewportref");
+
+      const onScroll = vi.fn();
+      viewportRef.current!.addEventListener("scroll", onScroll);
+      release(viewport);
+
+      expect(onScroll).toHaveBeenCalledTimes(2);
+      expect(scrollButton()).toBeInTheDocument();
+    });
+
+    it("hands viewportRef a callback ref too, and clears it on unmount", () => {
+      const viewportRef = vi.fn();
+      const { container, unmount } = render(
+        <Conversation>
+          <ConversationContent viewportRef={viewportRef}>x</ConversationContent>
+        </Conversation>,
+      );
+
+      expect(viewportRef).toHaveBeenLastCalledWith(
+        container.querySelector('[data-slot="conversation-viewport"]'),
+      );
+      unmount();
+      expect(viewportRef).toHaveBeenLastCalledWith(null);
+    });
   });
 
   describe("ConversationEmptyState", () => {
@@ -580,6 +624,17 @@ describe("Conversation", () => {
       ).toBeInTheDocument();
       expect(screen.getByText("Say hello")).toBeInTheDocument();
       expect(screen.getByTestId("icon")).toBeInTheDocument();
+    });
+
+    it("renders the heading at the given level", () => {
+      render(<ConversationEmptyState headingLevel={2} />);
+
+      expect(
+        screen.getByRole("heading", { level: 2, name: "No messages yet" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", { level: 3 }),
+      ).not.toBeInTheDocument();
     });
 
     it("renders children in place of the defaults", () => {
