@@ -34,7 +34,7 @@ export const CollapsibleTrigger = ({
     }
   >
     {children}
-    <ChevronDownIcon className={styles["chevron"]} />
+    <ChevronDownIcon aria-hidden className={styles["chevron"]} />
   </Trigger>
 );
 CollapsibleTrigger.displayName = "CollapsibleTrigger";

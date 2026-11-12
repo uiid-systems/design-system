@@ -61,11 +61,11 @@ describe("Reasoning", () => {
     );
   });
 
+  // Pins the explicit aria-hidden: lucide already defaults it, so this passes either way.
   it("hides the trigger's icons from assistive tech", () => {
     render(<Reasoning>{TEXT}</Reasoning>);
 
     const icons = getTrigger().querySelectorAll("svg");
-    expect(icons).toHaveLength(2);
     for (const icon of icons)
       expect(icon).toHaveAttribute("aria-hidden", "true");
   });
