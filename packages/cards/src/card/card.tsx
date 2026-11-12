@@ -11,7 +11,11 @@ import {
   SHELL_TITLE_PROPS,
 } from "./card.constants";
 import type { CardProps } from "./card.types";
-import { inlinePadding, isTextContent, resolveCardPadding } from "./card.utils";
+import {
+  inlinePaddingStyle,
+  isTextContent,
+  resolveCardPadding,
+} from "./card.utils";
 import {
   CardContainer,
   CardTitle,
@@ -98,10 +102,7 @@ export const Card = ({
 
   // Published so children can reach the card's edge, e.g. a full-bleed
   // separator or a scrolling body, without re-deriving the padding.
-  const paddingStyle = {
-    "--card-padding-inline-start": inlinePadding(padding.start),
-    "--card-padding-inline-end": inlinePadding(padding.end),
-  } as React.CSSProperties;
+  const paddingStyle = inlinePaddingStyle(padding);
 
   // A composed (non-text) title keeps CardTitle's row render.
   const shellTitleProps = isShell
@@ -117,7 +118,11 @@ export const Card = ({
       // ContainerProps lands on the same element, so its style and handlers
       // merge with the root's rather than replacing them.
       {...(isShell && SHELL_CONTAINER_PROPS)}
-      {...mergeProps<"div">({ style: paddingStyle }, props, containerProps)}
+      {...mergeProps<"div">(
+        paddingStyle && { style: paddingStyle },
+        props,
+        containerProps,
+      )}
       pt={padding.top}
       pb={padding.bottom}
       pl={padding.start}

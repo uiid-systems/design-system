@@ -15,6 +15,18 @@ function resolve(raw: string, unit: AnyStyleProp["unit"]) {
 }
 
 /**
+ * The CSS value a style prop paints for `value`, the same one `props.css`
+ * resolves from `--props-{key}`. For a component that publishes a style prop's
+ * length as its own custom property.
+ */
+export function resolveStyleProp(
+  key: keyof typeof styleProps,
+  value: number | string,
+) {
+  return resolve(String(value), (styleProps[key] as AnyStyleProp).unit);
+}
+
+/**
  * Registers `--props-{key}` so it never inherits: a child without the prop
  * reads the initial value rather than its parent's, and the browser doesn't
  * copy every ancestor's style props down the tree. Numeric props are typed,
