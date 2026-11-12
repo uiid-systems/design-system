@@ -48,20 +48,7 @@
   margin-inline: auto;
   /* Base UI focuses the root, so its outline has to follow the Card's corners. */
   border-radius: var(--globals-border-radius);
-
-  &:focus-visible {
-    outline-width: var(--globals-outline-width);
-    outline-color: var(--globals-outline-color);
-    outline-offset: var(--globals-outline-offset);
-    outline-style: var(--globals-outline-style);
-  }
   transform-origin: bottom center;
-
-  .toast-viewport[data-position="top"] & {
-    top: 0;
-    bottom: auto;
-    transform-origin: top center;
-  }
 
   /* Ordering among stacked toasts only — the viewport above is a stacking
      context, so this never competes with anything outside it. */
@@ -85,6 +72,19 @@
      to `auto` instead, so the read returns the old height and the toast never
      resizes when its content changes. */
   interpolate-size: numeric-only;
+
+  .toast-viewport[data-position="top"] & {
+    top: 0;
+    bottom: auto;
+    transform-origin: top center;
+  }
+
+  &:focus-visible {
+    outline-width: var(--globals-outline-width);
+    outline-color: var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    outline-style: var(--globals-outline-style);
+  }
 
   &[data-expanded] {
     transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--offset-y));
