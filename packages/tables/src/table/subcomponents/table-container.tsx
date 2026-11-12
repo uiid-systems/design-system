@@ -30,7 +30,6 @@ export const TableContainer = ({
     <Card
       data-slot="table-container"
       className={cx(styles["table-container"], className)}
-      ax="stretch"
       p={0}
       fullwidth
       {...scrollState}

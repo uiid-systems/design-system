@@ -76,7 +76,7 @@ export const OnThisPage = () => {
   );
 
   return (
-    <Stack data-slot="on-this-page" gap={2} ax="stretch">
+    <Stack data-slot="on-this-page" gap={2}>
       <Text weight="bold" size={0}>
         On this page
       </Text>

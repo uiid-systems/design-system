@@ -22,7 +22,7 @@ const SHADES: NonNullable<SeparatorProps["shade"]>[] = [
 ];
 
 export const Horizontal = () => (
-  <Stack ax="stretch" gap={4} fullwidth maxw={400}>
+  <Stack gap={4} fullwidth maxw={400}>
     <ExampleBox bg="tomato" h={48} />
     <Separator shade="halftone" />
     <ExampleBox bg="gold" h={48} />
@@ -38,7 +38,7 @@ export const Vertical = () => (
 );
 
 export const WithChildren = () => (
-  <Stack ax="stretch" gap={4} fullwidth maxw={400}>
+  <Stack gap={4} fullwidth maxw={400}>
     <ExampleBox bg="dodgerblue" h={48} />
     <Separator shade="halftone">
       <Box px={2}>
@@ -50,9 +50,9 @@ export const WithChildren = () => (
 );
 
 export const Shades = () => (
-  <Stack ax="stretch" gap={4} fullwidth maxw={400}>
+  <Stack gap={4} fullwidth maxw={400}>
     {SHADES.map((shade) => (
-      <Stack key={shade} ax="stretch" gap={1} fullwidth>
+      <Stack key={shade} gap={1} fullwidth>
         <Box>{shade}</Box>
         <Separator shade={shade} />
       </Stack>

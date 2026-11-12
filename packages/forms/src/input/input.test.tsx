@@ -287,7 +287,8 @@ describe("InputWrapper orientation", () => {
     const wrapper = container.querySelector("[data-slot='input-wrapper']");
 
     expect(wrapper).toHaveAttribute("data-orientation", "vertical");
-    expect(wrapper).toHaveAttribute("data-ui-ay", "stretch");
+    expect(wrapper).toHaveStyle({ alignItems: "stretch" });
+    expect(wrapper).not.toHaveAttribute("data-ui-ay");
     expect(wrapper).toHaveClass(styles["input-edge"]);
     expect(wrapper).toHaveClass(styles["input-wrapper"]);
     expect(wrapper).toHaveClass("palette-blue");

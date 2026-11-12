@@ -52,7 +52,7 @@ export const WithLabel = () => (
 /* Every built-in pattern. Pass a `MaskPattern` object instead of a key to
  * define your own. */
 export const Patterns = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PATTERNS.map(({ mask, label }) => (
       <MaskInput key={mask} mask={mask} label={label} />
     ))}
@@ -75,7 +75,7 @@ export const MaskPlaceholder = () => (
 /* The currency mask formats through Intl, so it follows `currency` and
  * `locale`. */
 export const Currency = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <MaskInput mask="currency" label="USD" currency="USD" locale="en-US" />
     <MaskInput mask="currency" label="EUR" currency="EUR" locale="de-DE" />
     <MaskInput mask="currency" label="JPY" currency="JPY" locale="ja-JP" />
@@ -83,7 +83,7 @@ export const Currency = () => (
 );
 
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <MaskInput key={size} mask="phone" size={size} label={size} />
     ))}
@@ -96,7 +96,7 @@ export const Sizes = () => (
  * than a neutral one with an accent.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <MaskInput key={color} mask="phone" color={color} label={color} />
     ))}
@@ -104,7 +104,7 @@ export const Colors = () => (
 );
 
 export const BeforeAfterSlots = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <MaskInput mask="phone" before={<PhoneIcon />} placeholder="Phone number" />
     <MaskInput
       mask="creditCard"
@@ -120,14 +120,14 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     <MaskInput mask="phone" fullwidth placeholder="Fullwidth" />
     <MaskInput mask="phone" placeholder="Not fullwidth" />
   </Stack>
 );
 
 export const Disabled = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <MaskInput mask="phone" label="Disabled" disabled />
     <MaskInput
       mask="phone"
@@ -157,7 +157,7 @@ export const Validation = () => {
   const [valid, setValid] = useState<boolean | null>(null);
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <MaskInput
         mask="creditCard"
         label="Card number"
@@ -191,7 +191,7 @@ export const Controlled = () => {
   const [unmasked, setUnmasked] = useState("");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <MaskInput
         mask="phone"
         label="Phone number"

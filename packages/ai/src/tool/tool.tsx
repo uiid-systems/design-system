@@ -88,7 +88,7 @@ const ToolSection = ({
   heading: string;
   children: React.ReactNode;
 }) => (
-  <Stack data-slot={slot} gap={2} ax="stretch">
+  <Stack data-slot={slot} gap={2}>
     <Text size={-1} weight="medium" color="neutral" uppercase>
       {heading}
     </Text>
@@ -187,15 +187,10 @@ export const Tool = ({
       </CollapsibleTrigger>
       {/* `w="full"` keeps the panel the card's width whatever `ax` the root
           takes, so its code blocks scroll rather than overflow the card. */}
-      <CollapsiblePanel
-        data-slot="tool-panel"
-        w="full"
-        instant={false}
-        ax="stretch"
-      >
+      <CollapsiblePanel data-slot="tool-panel" w="full" instant={false}>
         {/* The padding sits here rather than on the panel, where `border-box`
             would stop the closing height at the padding instead of zero. */}
-        <Stack data-slot="tool-body" ax="stretch" gap={4} p={4}>
+        <Stack data-slot="tool-body" gap={4} p={4}>
           {isEmpty(children) ? (
             <ToolBody
               input={part.input}

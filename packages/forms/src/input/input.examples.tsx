@@ -31,7 +31,7 @@ export const WithLabel = () => (
 );
 
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <Input
         key={size}
@@ -49,7 +49,7 @@ export const Sizes = () => (
  * than a neutral one with an accent.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <Input
         key={color}
@@ -62,7 +62,7 @@ export const Colors = () => (
 );
 
 export const BeforeAfterSlots = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Input before={<SearchIcon />} placeholder="Search" />
     <Input after={<AtSignIcon />} placeholder="Email" />
     <Input
@@ -80,7 +80,7 @@ export const BeforeAfterSlots = () => (
 );
 
 export const Ghost = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Input variant="ghost" placeholder="Ghost" />
     <Input
       variant="ghost"
@@ -91,7 +91,7 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     <Input fullwidth placeholder="Fullwidth" />
     <Input placeholder="Not fullwidth" />
   </Stack>
@@ -102,7 +102,7 @@ export const Required = () => (
 );
 
 export const Disabled = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Input label="Disabled" disabled placeholder="you@example.com" />
     <Input label="Read only" readOnly defaultValue="you@example.com" />
   </Stack>
@@ -125,7 +125,7 @@ export const Invalid = () => (
  */
 export const ErrorTypes = () => (
   <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8} ax="stretch">
+    <Stack gap={8}>
       <Input
         name="inline"
         label="Inline"
@@ -152,7 +152,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Input
         label="Search"
         before={<SearchIcon />}

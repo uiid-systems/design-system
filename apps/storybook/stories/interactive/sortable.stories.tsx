@@ -30,7 +30,7 @@ function VerticalDemo() {
       orientation="vertical"
     >
       <SortableContent>
-        <Stack gap={2} ax="stretch">
+        <Stack gap={2}>
           {items.map((item) => (
             <SortableItem key={item.id} value={item.id}>
               <Card

@@ -22,7 +22,7 @@ const meta: Meta<typeof Tabs> = {
     },
   },
   render: (args) => (
-    <Stack fullwidth ax="stretch" gap={4}>
+    <Stack fullwidth gap={4}>
       <Tabs {...args} />
     </Stack>
   ),

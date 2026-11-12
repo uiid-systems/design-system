@@ -109,7 +109,6 @@ export const InputWrapper = ({
     <Stack
       data-slot="input-wrapper"
       data-orientation={slotted ? "vertical" : undefined}
-      ax="stretch"
       onMouseDown={slotted ? focusControl : undefined}
       className={wrapperClassName}
     >

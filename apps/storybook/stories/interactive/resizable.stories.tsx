@@ -125,7 +125,7 @@ function ThreePanelDemo() {
 export const Default: Story = {
   name: "Resizable",
   render: () => (
-    <Stack gap={8} ax="stretch" fullwidth>
+    <Stack gap={8} fullwidth>
       <Stack gap={2}>
         <Text size={1} weight="bold">
           Horizontal

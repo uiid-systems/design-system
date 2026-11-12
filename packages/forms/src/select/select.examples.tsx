@@ -111,7 +111,7 @@ export const Placeholder = () => (
 );
 
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <Select key={size} size={size} label={size} items={MOCK_SELECT_ITEMS} />
     ))}
@@ -125,7 +125,7 @@ export const Sizes = () => (
  * popup, which is a `Card`, so it is visible on open.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <Select
         key={color}
@@ -138,7 +138,7 @@ export const Colors = () => (
 );
 
 export const BeforeAfterSlots = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Select before={<SearchIcon />} items={MOCK_SELECT_ITEMS} />
     <Select after={<AtSignIcon />} items={MOCK_SELECT_ITEMS} />
     <Select
@@ -152,7 +152,7 @@ export const BeforeAfterSlots = () => (
 /* Items carry their own icon and description; the trigger still shows only the
  * label. */
 export const ItemContent = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Select label="With icons" items={MOCK_SELECT_ITEMS} />
     <Select label="With descriptions" items={DESCRIBED_ITEMS} />
   </Stack>
@@ -182,7 +182,7 @@ export const Multiple = () => (
 export const Ghost = () => <Select variant="ghost" items={MOCK_SELECT_ITEMS} />;
 
 export const Fullwidth = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     <Select fullwidth items={MOCK_SELECT_ITEMS} />
     <Select items={MOCK_SELECT_ITEMS} />
   </Stack>
@@ -190,7 +190,7 @@ export const Fullwidth = () => (
 
 /* The trigger never grows past its container — a long value truncates instead. */
 export const TruncatedValue = () => (
-  <Stack gap={4} ax="stretch" maxw={280}>
+  <Stack gap={4} maxw={280}>
     <Select fullwidth items={LONG_ITEMS} defaultValue="long" />
     <Select
       fullwidth
@@ -202,7 +202,7 @@ export const TruncatedValue = () => (
 );
 
 export const Disabled = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Select disabled label="Disabled" items={MOCK_SELECT_ITEMS} />
     <Select readOnly label="Read only" items={MOCK_SELECT_ITEMS} />
   </Stack>
@@ -227,7 +227,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("sans");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Select
         label="Typeface"
         items={MOCK_SELECT_ITEMS}
@@ -288,7 +288,7 @@ export const Grouped = () => (
  * changes how the select looks, never how it behaves.
  */
 export const Backdrop = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Select label="Dims the page" items={MOCK_SELECT_ITEMS} />
     <Select label="Sits quietly" backdrop={false} items={MOCK_SELECT_ITEMS} />
   </Stack>
