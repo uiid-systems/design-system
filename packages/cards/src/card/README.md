@@ -23,5 +23,5 @@ A shell's plain-text title is an `<h2>` because the page's `<h1>` belongs to the
 ## Gotchas
 
 - Every slot is optional, and a slot mounts on what React paints, not on truthiness. `0` fills it; `false`, `""` and a list with nothing renderable in it leave no element behind, so `description={isDraft && "Draft"}` is safe.
-- `children` on `TitleProps`, `DescriptionProps` or `ActionProps` replaces that slot's content.
+- `children` on `TitleProps`, `DescriptionProps` or `ActionProps` replaces that slot's content only when it renders something; `false`, `""` or an empty list falls back to the slot prop.
 - `shadow` never needs combining with `variant="ghost"` or `variant="shell"`. Both are shadowless and ignore it.

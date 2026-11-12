@@ -26,7 +26,7 @@ A `render` that carries an `href` — a plain `<a>` or a router link such as Nex
 </Button>
 ```
 
-Base UI gives a non-native `render` `role="button"`, which is right for a `<span>` or `<div>` standing in for a button and wrong for something that navigates, so Button routes links around it. `href` decides: `nativeButton` is ignored on a link, an `href={undefined}` is no link at all, and a function `render` never takes the link branch. Any other element is emulated as a button without being told to.
+Base UI gives a non-native `render` `role="button"`, which is right for a `<span>` or `<div>` standing in for a button and wrong for something that navigates, so Button routes links around it. `href` decides: `nativeButton` is ignored on a link, an `href={undefined}` is no link at all, and a function `render` never takes the link branch. Any other element except a plain `<button>` is emulated as a button without being told to.
 
 ```tsx
 <Button render={<span />}>Acts as a button</Button>
