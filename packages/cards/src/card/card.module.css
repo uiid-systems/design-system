@@ -1,6 +1,13 @@
 @import "@uiid/tokens/component/card.tokens.css";
 
 .card {
+  /*
+   * The inline padding, for children that reach the card's edge. Card
+   * overrides these from its padding props; these match the default padding.
+   */
+  --card-padding-inline-start: var(--globals-padding-x);
+  --card-padding-inline-end: var(--globals-padding-x);
+
   position: relative;
   background-color: var(--palette-tint);
   color: var(--palette-on-tint);

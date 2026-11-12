@@ -89,7 +89,6 @@ export function PropsTable({ of }: PropsTableProps) {
     <Stack
       data-slot="props-table"
       className="overflow-auto"
-      ax="stretch"
       fullwidth
       maxh={640}
     >

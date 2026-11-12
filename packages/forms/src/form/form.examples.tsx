@@ -122,7 +122,7 @@ const Actions = ({
  */
 export const Default = () => (
   <Form>
-    <Stack gap={4} ax="stretch" w={FORM_WIDTH}>
+    <Stack gap={4} w={FORM_WIDTH}>
       <Input
         label="Email"
         name="email"
@@ -145,7 +145,7 @@ export const UsernamePassword = () => {
 
   return (
     <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={4} ax="stretch" w={FORM_WIDTH}>
+      <Stack gap={4} w={FORM_WIDTH}>
         <Credentials />
         <Actions loading={loading} onReset={onReset} submitLabel="Sign up" />
         {succeeded && (
@@ -165,7 +165,7 @@ export const TooltipErrors = () => {
 
   return (
     <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={4} ax="stretch" w={FORM_WIDTH}>
+      <Stack gap={4} w={FORM_WIDTH}>
         <Credentials errorType="tooltip" />
         <Actions loading={loading} onReset={onReset} submitLabel="Sign up" />
       </Stack>
@@ -180,7 +180,7 @@ export const AbsoluteErrors = () => {
 
   return (
     <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={8} ax="stretch" w={FORM_WIDTH}>
+      <Stack gap={8} w={FORM_WIDTH}>
         <Credentials errorType="absolute" />
         <Actions loading={loading} onReset={onReset} submitLabel="Sign up" />
       </Stack>
@@ -196,7 +196,7 @@ export const SelectAndConfirm = () => {
 
   return (
     <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={4} ax="stretch" w={FORM_WIDTH}>
+      <Stack gap={4} w={FORM_WIDTH}>
         <Select
           label="Typeface"
           name="font"
@@ -227,7 +227,7 @@ export const SelectAndConfirm = () => {
 export const ValidationMode = () => (
   <Group gap={8} ay="start">
     <Form validationMode="onSubmit">
-      <Stack gap={4} ax="stretch" w={220}>
+      <Stack gap={4} w={220}>
         <Input label="On submit" name="a" type="email" required />
         <Button type="submit" size="small">
           Submit
@@ -235,7 +235,7 @@ export const ValidationMode = () => (
       </Stack>
     </Form>
     <Form validationMode="onBlur">
-      <Stack gap={4} ax="stretch" w={220}>
+      <Stack gap={4} w={220}>
         <Input label="On blur" name="b" type="email" required />
         <Button type="submit" size="small">
           Submit
@@ -243,7 +243,7 @@ export const ValidationMode = () => (
       </Stack>
     </Form>
     <Form validationMode="onChange">
-      <Stack gap={4} ax="stretch" w={220}>
+      <Stack gap={4} w={220}>
         <Input label="On change" name="c" type="email" required />
         <Button type="submit" size="small">
           Submit

@@ -29,7 +29,7 @@ export const Default = () => (
 
 /* The tier reaches the input, so an autocomplete lines up with a sibling Input. */
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <Autocomplete
         key={size}
@@ -49,7 +49,7 @@ export const Sizes = () => (
  * popup, which is a `Card`, so it is visible on open.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <Autocomplete
         key={color}
@@ -81,7 +81,7 @@ export const BeforeAfterSlots = () => (
 );
 
 export const Disabled = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Autocomplete label="Disabled" disabled items={MOCK_AUTOCOMPLETE_ITEMS} />
     <Autocomplete
       label="Read only"
@@ -106,7 +106,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("apple");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Autocomplete
         label="Fruit"
         items={MOCK_AUTOCOMPLETE_ITEMS}

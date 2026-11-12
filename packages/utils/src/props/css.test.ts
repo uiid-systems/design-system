@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { stylePropsCss } from "./css";
+import { resolveStyleProp, stylePropsCss } from "./css";
 
 describe("stylePropsCss", () => {
   const css = stylePropsCss();
@@ -37,5 +37,23 @@ describe("stylePropsCss", () => {
 
   it("keeps margin auto", () => {
     expect(css).toContain('[data-ui-mx="auto"] {\n    margin-inline: auto;');
+  });
+});
+
+describe("resolveStyleProp", () => {
+  it("paints the same value props.css resolves from --props-{key}", () => {
+    const css = stylePropsCss();
+
+    for (const key of ["p", "pl", "pr", "pt", "pb", "w", "flex"] as const) {
+      const declared = css.match(
+        new RegExp(`\\[data-ui-${key}\\] \\{\\n\\s+[a-z-]+: (.+);`),
+      )?.[1];
+      expect(declared).toBe(resolveStyleProp(key, `var(--props-${key})`));
+    }
+  });
+
+  it("multiplies a number by the prop's unit variable", () => {
+    expect(resolveStyleProp("pl", 4)).toBe("calc(4 * var(--spacing-inline))");
+    expect(resolveStyleProp("w", 480)).toBe("calc(480 * 1px)");
   });
 });

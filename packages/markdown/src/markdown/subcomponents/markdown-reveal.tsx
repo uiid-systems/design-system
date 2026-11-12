@@ -32,6 +32,7 @@ const revealRule =
 export const MarkdownReveal = ({
   children,
   streaming,
+  overrides,
   style,
   ...props
 }: MarkdownRevealProps) => {
@@ -43,12 +44,12 @@ export const MarkdownReveal = ({
 
   return (
     <Prose data-slot="markdown" style={{ ...words.style, ...style }} {...props}>
-      {compileMarkdown(
-        paced.text,
-        paced.streaming,
+      {compileMarkdown(paced.text, {
+        streaming: paced.streaming,
+        overrides,
         // The pass would hand the text back as it is; skipping the rule saves the per-node calls.
-        words.active ? revealRule(words.pass()) : undefined,
-      )}
+        renderRule: words.active ? revealRule(words.pass()) : undefined,
+      })}
     </Prose>
   );
 };

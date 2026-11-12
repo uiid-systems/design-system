@@ -47,14 +47,14 @@ A manager does nothing until a `ToastProvider` subscribes to it, so a toast adde
 Base UI's [Toast](https://base-ui.com/react/components/toast) is the underlying primitive, and its options pass through `add()` and `update()` unchanged. Toaster renders these fields:
 
 - **`title`** and **`description`** — either can stand alone; they label and describe the toast for assistive tech
-- **`type`** — any string, exposed as `data-type`. `loading` shows a spinner and hides the close button; Base UI's `promise()` sets `loading`, `success`, and `error` for you
+- **`type`** — any string, exposed as `data-type`. `success`, `error`, `warning`, and `info` show an icon on the title's first line and color the surface green, red, yellow, and blue. `loading` shows a spinner on a neutral surface and hides the close button. Any other string shows no icon on a neutral surface. Base UI's `promise()` sets `loading`, `success`, and `error` for you. The icon is hidden from assistive tech and the hue is visual only, so the title has to say what happened on its own: "Couldn't save", not a bare "Save"
 - **`actionProps`** — renders a button; its `children` is the label
 - **`timeout`** — milliseconds until the toast closes itself, the provider's default when left out; `0` keeps it open. A `loading` toast never times out, and its timer starts once `update()` changes its type. Leave `timeout` off a `loading` toast: it carries over into the update, so a `0` there leaves the settled toast open for good
 
 Three more live on `data`, because Base UI has no field for them:
 
 - **`data.children`** — rendered below the text, for content like a `Progress` bar. Pass a new node through `update()` to change it
-- **`data.color`** — a palette hue for the surface. No type maps to a hue on its own; the app decides what an error looks like
+- **`data.color`** — a palette hue for the surface, overriding the type's
 - **`data.closable`** — show the close button. Defaults to `true`, except on `loading` toasts
 
 ```tsx
@@ -69,18 +69,19 @@ const id = toastManager.add({
 toastManager.update(id, {
   title: "Sync complete",
   type: "success",
-  data: { color: "green" },
+  data: {},
 });
 ```
 
 ## Custom layouts
 
-`Toaster` is built from exported parts, each a Base UI part under its own name: `ToastPortal`, `ToastViewport`, `ToastRoot`, `ToastContent`, `ToastTitle`, `ToastDescription`, `ToastAction`, and `ToastClose`. Compose them when the default layout doesn't fit. Keep the body inside `ToastContent` — collapsed toasts take the frontmost toast's height, and `ToastContent` fades out the body of any toast stacked behind it.
+`Toaster` is built from exported parts, each a Base UI part under its own name: `ToastProvider`, `ToastPortal`, `ToastViewport`, `ToastRoot`, `ToastContent`, `ToastTitle`, `ToastDescription`, `ToastAction`, and `ToastClose`. Compose them when the default layout doesn't fit. Keep the body inside `ToastContent` — collapsed toasts take the frontmost toast's height, and `ToastContent` fades out the body of any toast stacked behind it.
 
-`Toaster` points each toast's `swipeDirection` at the edge its stack is anchored to; a custom layout passes its own, or gets Base UI's `down` and `right`.
+`ToastRoot` places and animates the toast, and renders a `Card` inside itself as the surface; its `color` goes to that Card. It doesn't read `type`, so a custom layout picks its own hue and icon. A `className` on `ToastRoot` reaches the positioned element, not the surface. `Toaster` points each toast's `swipeDirection` at the edge its stack is anchored to; a custom layout passes its own, or gets Base UI's `down` and `right`.
 
 ## Gotchas
 
 - **The close button is hidden from assistive tech until the stack is expanded or focused**, as in Base UI, so a collapsed stack doesn't announce one close button per toast.
 - **`update()` replaces `data` whole.** It merges a toast's top-level fields, not the keys inside `data`, so `update(id, { data: { children } })` drops the toast's `color` and `closable`. Pass every `data` field the toast should keep; `data: {}` clears them all.
 - **`update()` does nothing once a toast is closing or closed**, so the result of slow work is lost if the user swiped its toast away first — when the outcome must be seen, check `toasts` for the id and `add()` a new toast instead.
+- **Toasts sit above dialogs.** The viewport reads `--overlays-toast-z-index`, above the backdrop and popup level, so a toast fired from inside a `Dialog` shows over it.

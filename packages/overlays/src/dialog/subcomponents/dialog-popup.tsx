@@ -1,7 +1,10 @@
+"use client";
+
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { Card } from "@uiid/cards";
+import { Card, type CardProps } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
+import { useBodyOverflow } from "../dialog.hooks";
 import type { DialogPopupProps } from "../dialog.types";
 import { dialogVariants } from "../dialog.variants";
 import { DialogCloseButton } from "./dialog-close-button";
@@ -18,6 +21,9 @@ import styles from "../dialog.module.css";
  *
  * The close button rides in Card's action slot, after any `action` of the
  * caller's.
+ *
+ * The body scrolls on its own (dialog.module.css). While it overflows it is a
+ * tab stop, so the keyboard can scroll it.
  */
 export const DialogPopup = ({
   size,
@@ -30,6 +36,16 @@ export const DialogPopup = ({
   children,
   ...props
 }: DialogPopupProps) => {
+  const { ref: bodyRef, overflows } = useBodyOverflow();
+
+  const bodyProps: CardProps["InnerContainerProps"] = {
+    // The body stretches past the card's padding to its edges, which Card's
+    // `w="full"` of the content box would stop short of.
+    w: undefined,
+    ref: bodyRef,
+    ...(overflows && { tabIndex: 0 }),
+  };
+
   return (
     <BaseDialog.Popup
       data-slot="dialog-popup"
@@ -57,6 +73,7 @@ export const DialogPopup = ({
           FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BaseDialog.Title /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}
+          InnerContainerProps={bodyProps}
         />
       }
       {...props}

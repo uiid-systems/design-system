@@ -27,7 +27,7 @@ export const WithLabel = () => (
  * thumb and track with them.
  */
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <Slider key={size} size={size} label={size} defaultValue={40} />
     ))}
@@ -39,7 +39,7 @@ export const Sizes = () => (
  * remainder stays neutral, so each slider carries a default value to show both.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <Slider key={color} color={color} label={color} defaultValue={40} />
     ))}
@@ -52,7 +52,7 @@ export const Range = () => (
 );
 
 export const MinMaxStep = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     <Slider label="0 to 100, step 1" defaultValue={40} />
     <Slider
       label="0 to 10, step 0.5"
@@ -72,7 +72,7 @@ export const MinMaxStep = () => (
 
 /* `format` takes Intl.NumberFormat options and reaches the readout. */
 export const Format = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     <Slider
       label="Budget"
       format={{ style: "currency", currency: "USD" }}
@@ -128,7 +128,7 @@ export const Controlled = () => {
   const [value, setValue] = useState<number | readonly number[]>(40);
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Slider label="Volume" value={value} onValueChange={setValue} />
       <Text size={-1} shade="muted">
         Value: {String(value)}
@@ -152,7 +152,7 @@ export const Committed = () => {
   const [commits, setCommits] = useState(0);
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Slider
         label="Price range"
         description="Local state moves the thumbs; only a commit would hit the server."

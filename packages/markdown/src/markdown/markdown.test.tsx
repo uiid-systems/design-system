@@ -1,8 +1,19 @@
 import { act, render, screen } from "@testing-library/react";
+import type { ComponentPropsWithoutRef } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Markdown } from "./markdown";
 import * as Examples from "./markdown.examples";
+import type { MarkdownOverrides } from "./markdown.types";
+
+const overrides: MarkdownOverrides = {
+  a: (props: ComponentPropsWithoutRef<"a">) => (
+    <a data-override="a" {...props} />
+  ),
+  img: (props: ComponentPropsWithoutRef<"img">) => (
+    <img data-override="img" {...props} />
+  ),
+};
 
 const source = `# Title
 
@@ -245,6 +256,32 @@ describe("Markdown", () => {
       expect(words(container)).toEqual(["New"]);
     });
 
+    it("renders link overrides while words reveal inside them", () => {
+      const { container, rerender } = render(
+        <Markdown streaming reveal overrides={overrides}>
+          {"See [the docs](https://example.com) now "}
+        </Markdown>,
+      );
+      wait(1000);
+
+      const link = container.querySelector("a");
+      expect(link).toHaveAttribute("data-override", "a");
+      expect(link).toHaveAttribute("href", "https://example.com");
+      expect(link?.querySelector("[data-reveal-offset]")).not.toBeNull();
+
+      rerender(
+        <Markdown reveal overrides={overrides}>
+          {"See [the docs](https://example.com) now"}
+        </Markdown>,
+      );
+      wait(1000);
+      expect(container.querySelector("a")).toHaveAttribute(
+        "data-override",
+        "a",
+      );
+      expect(container.querySelector("p span")).toBeNull();
+    });
+
     it("renders finished text without word spans, and starts over when a new stream replaces it", () => {
       const { container, rerender } = render(
         <Markdown reveal>{"Hello there"}</Markdown>,
@@ -278,6 +315,107 @@ describe("Markdown", () => {
       );
       wait(130);
       expect(words(container)).toEqual(["New"]);
+    });
+  });
+
+  describe("overrides", () => {
+    it("renders links and images with the given components", () => {
+      const { container } = render(
+        <Markdown overrides={overrides}>
+          {
+            "See [the docs](https://example.com) ![a cat](https://example.com/cat.png)"
+          }
+        </Markdown>,
+      );
+
+      const link = screen.getByRole("link", { name: "the docs" });
+      expect(link).toHaveAttribute("data-override", "a");
+      expect(link).toHaveAttribute("href", "https://example.com");
+      const img = container.querySelector("img");
+      expect(img).toHaveAttribute("data-override", "img");
+      expect(img).toHaveAttribute("src", "https://example.com/cat.png");
+      expect(img).toHaveAttribute("alt", "a cat");
+    });
+
+    it("applies to autolinks and reference links too", () => {
+      const { container } = render(
+        <Markdown overrides={overrides}>
+          {"<https://a.example>, see https://x.example now, [ref][r] and Hi[^1]\n\n" +
+            "[r]: https://b.example\n\n[^1]: the note"}
+        </Markdown>,
+      );
+
+      const links = container.querySelectorAll("a");
+      expect(links).toHaveLength(4);
+      for (const link of links) {
+        expect(link).toHaveAttribute("data-override", "a");
+      }
+    });
+
+    it.each([
+      ["javascript: link", "[x](javascript:alert(1))", "a", "href"],
+      ["uppercase JAVASCRIPT: link", "[x](JAVASCRIPT:alert(1))", "a", "href"],
+      ["entity-encoded link", "[x](&#106;avascript:alert(1))", "a", "href"],
+      ["vbscript: link", "[x](vbscript:msgbox(1))", "a", "href"],
+      ["data: link", "[x](data:text/html,hi)", "a", "href"],
+      ["reference link", "[x][r]\n\n[r]: javascript:alert(1)", "a", "href"],
+      ["javascript: image", "![x](javascript:alert(1))", "img", "src"],
+      ["non-image data: image", "![x](data:text/html,hi)", "img", "src"],
+      ["tab-entity image", "![x](java&#9;script:alert(1))", "img", "src"],
+      ["newline-entity image", "![x](java&#10;script:alert(1))", "img", "src"],
+      [
+        "reference image",
+        "![x][r]\n\n[r]: java&#9;script:alert(1)",
+        "img",
+        "src",
+      ],
+      ["tab-entity link", "[x](java&#9;script:alert(1))", "a", "href"],
+    ])(
+      "still sanitizes a %s before the override sees it",
+      (_name, markdown, tag, attribute) => {
+        const seen: (string | undefined)[] = [];
+        const spy: MarkdownOverrides = {
+          a: (props) => {
+            seen.push(props.href);
+            return <a {...props} />;
+          },
+          img: (props) => {
+            seen.push(props.src);
+            return <img {...props} />;
+          },
+        };
+        const { container } = render(
+          <Markdown overrides={spy}>{markdown}</Markdown>,
+        );
+
+        expect(seen).toEqual([undefined]);
+        expect(container.querySelector(tag)).not.toHaveAttribute(attribute);
+      },
+    );
+
+    it("ignores keys other than a and img", () => {
+      const wide = {
+        ...overrides,
+        h1: () => <h1 data-override="h1" />,
+      } as MarkdownOverrides;
+      const { container } = render(
+        <Markdown overrides={wide}>{"# Title"}</Markdown>,
+      );
+
+      expect(container.querySelector("h1")).not.toHaveAttribute(
+        "data-override",
+      );
+      expect(container.querySelector("h1")).toHaveTextContent("Title");
+    });
+
+    it("leaves every other element to Prose", () => {
+      const { container } = render(
+        <Markdown overrides={overrides}>{"# Title\n\n**bold**"}</Markdown>,
+      );
+
+      expect(container.querySelector("[data-override]")).toBeNull();
+      expect(container.querySelector("h1")).toHaveTextContent("Title");
+      expect(container.querySelector("strong")).toHaveTextContent("bold");
     });
   });
 
@@ -344,5 +482,11 @@ describe("Markdown", () => {
 
     expect(() => render(<Examples.Streaming />)).not.toThrow();
     expect(() => render(<Examples.StreamingReveal />)).not.toThrow();
+
+    render(<Examples.ExternalLinks />);
+    expect(screen.getByRole("link", { name: "the docs" })).toHaveAttribute(
+      "target",
+      "_blank",
+    );
   });
 });

@@ -63,7 +63,7 @@ export const Colors = () => (
 );
 
 export const Bordered = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <RadioGroupRoot defaultValue="monthly">
       <Radio bordered value="monthly" label="Monthly" />
       <Radio bordered value="yearly" label="Yearly" />

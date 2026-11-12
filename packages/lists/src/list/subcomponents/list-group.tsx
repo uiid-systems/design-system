@@ -11,7 +11,6 @@ export const ListGroup = ({ category, icon, items }: ListGroupProps) => {
     <Stack
       data-slot="list-group"
       render={<li />}
-      ax="stretch"
       fullwidth
       className={styles["list-group"]}
     >

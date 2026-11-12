@@ -23,7 +23,6 @@ export const SidebarContainer = ({ children }: React.PropsWithChildren) => {
       render={<aside />}
       maxw={SIDEBAR_WIDTH}
       br={SHELL_BORDER_WIDTH}
-      ax="stretch"
       fullwidth
     >
       {children}
@@ -39,7 +38,6 @@ export const SidebarScrollContainer = ({
     <Stack
       data-slot="sidebar-scroll-container"
       className="sticky top-0 overflow-y-auto h-screen"
-      ax="stretch"
       gap={SIDEBAR_SPACING}
       p={SIDEBAR_SPACING}
     >

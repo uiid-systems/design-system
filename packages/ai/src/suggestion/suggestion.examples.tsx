@@ -25,7 +25,7 @@ export const Basic = (props: Partial<SuggestionProps>) => {
   const [picked, setPicked] = useState<string | null>(null);
 
   return (
-    <Stack gap={3} ax="stretch" fullwidth>
+    <Stack gap={3} fullwidth>
       <Group gap={2} wrap>
         {SUGGESTIONS.map((text) => (
           <Suggestion key={text} onClick={() => setPicked(text)} {...props}>

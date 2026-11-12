@@ -34,7 +34,7 @@ export const WithLabel = () => (
 );
 
 export const Sizes = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {SIZES.map((size) => (
       <Textarea
         key={size}
@@ -52,7 +52,7 @@ export const Sizes = () => (
  * than a neutral one with an accent.
  */
 export const Colors = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {PALETTE_HUES.map((color) => (
       <Textarea key={color} color={color} label={color} rows={2} />
     ))}
@@ -130,7 +130,7 @@ export const Rows = () => (
 );
 
 export const Resize = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     {RESIZE.map((resize) => (
       <Textarea key={resize} resize={resize} label={resize} rows={2} />
     ))}
@@ -142,7 +142,7 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     <Textarea fullwidth placeholder="Fullwidth" rows={2} />
     <Textarea placeholder="Not fullwidth" rows={2} />
   </Stack>
@@ -153,7 +153,7 @@ export const Required = () => (
 );
 
 export const Disabled = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Textarea label="Disabled" disabled placeholder="What changed?" />
     <Textarea
       label="Read only"
@@ -171,7 +171,7 @@ export const Invalid = () => (
 
 export const ErrorTypes = () => (
   <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8} ax="stretch">
+    <Stack gap={8}>
       <Textarea
         name="inline"
         label="Inline"
@@ -198,7 +198,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <Textarea
         label="Bio"
         rows={3}

@@ -8,25 +8,26 @@ import {
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
-import { Toaster } from "./toast";
 import {
+  ToastContent,
+  ToastPortal,
   ToastProvider,
-  createToastManager,
-  useToastManager,
-} from "./toast.hooks";
-import type { ToasterProps } from "./toast.types";
+  ToastRoot,
+  ToastTitle,
+  ToastViewport,
+} from "./subcomponents";
+import { Toaster } from "./toast";
+import { createToastManager, useToastManager } from "./toast.hooks";
+import type { ToastProviderProps, ToasterProps } from "./toast.types";
 
-type ProviderProps = Omit<
-  React.ComponentProps<typeof ToastProvider>,
-  "children"
->;
+import styles from "./toast.module.css";
 
 type Manager = ReturnType<typeof useToastManager>;
 
 /** Captures the manager so a test can drive toasts without a trigger button. */
 const renderToaster = (
   props: ToasterProps = {},
-  providerProps: ProviderProps = {},
+  providerProps: Omit<ToastProviderProps, "children"> = {},
 ) => {
   let manager!: Manager;
   const Capture = () => {
@@ -43,6 +44,8 @@ const renderToaster = (
 };
 
 const toastEl = () => document.querySelector('[data-slot="toast"]');
+const surface = () =>
+  toastEl()?.querySelector(':scope > [data-slot="card-container"]');
 const viewport = () => document.querySelector('[data-slot="toast-viewport"]');
 
 describe("Toaster", () => {
@@ -69,6 +72,14 @@ describe("Toaster", () => {
   it("anchors to the top", () => {
     renderToaster({ position: "top" });
     expect(viewport()).toHaveAttribute("data-position", "top");
+  });
+
+  it("forwards ViewportProps to the viewport", () => {
+    renderToaster({ ViewportProps: { className: "custom-viewport" } });
+    expect(viewport()).toHaveClass(
+      styles["toast-viewport"]!,
+      "custom-viewport",
+    );
   });
 
   // ============================================
@@ -160,7 +171,40 @@ describe("Toaster", () => {
     expect(toastEl()).toHaveAttribute("data-type", "error");
   });
 
-  it("shows a spinner only while loading", async () => {
+  const icon = () => document.querySelector('[data-slot="toast-icon"]');
+
+  it.each([
+    { type: "success", svg: ".lucide-circle-check" },
+    { type: "error", svg: ".lucide-circle-alert" },
+    { type: "warning", svg: ".lucide-triangle-alert" },
+    { type: "info", svg: ".lucide-info" },
+    { type: "loading", svg: '[data-animate="spin"]' },
+  ])(
+    "shows the $type icon, hidden from assistive tech",
+    async ({ type, svg }) => {
+      const { manager } = renderToaster();
+      act(() => {
+        manager().add({ title: "Status", type });
+      });
+
+      await screen.findByText("Status");
+      expect(icon()).toHaveAttribute("aria-hidden", "true");
+      expect(icon()?.querySelectorAll("svg")).toHaveLength(1);
+      expect(icon()?.querySelector(svg)).toBeInTheDocument();
+    },
+  );
+
+  it.each([undefined, "custom"])("shows no icon for type %s", async (type) => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Plain", type });
+    });
+
+    await screen.findByText("Plain");
+    expect(icon()).not.toBeInTheDocument();
+  });
+
+  it("swaps the icon when update() changes the type", async () => {
     const { manager } = renderToaster();
     let id = "";
     act(() => {
@@ -168,32 +212,82 @@ describe("Toaster", () => {
     });
 
     await screen.findByText("Syncing");
-    expect(
-      document.querySelector('[data-slot="toast-spinner"]'),
-    ).toHaveAttribute("aria-hidden", "true");
+    expect(icon()?.querySelector('[data-animate="spin"]')).toBeInTheDocument();
 
     act(() => {
       manager().update(id, { title: "Synced", type: "success" });
     });
 
     await screen.findByText("Synced");
-    expect(
-      document.querySelector('[data-slot="toast-spinner"]'),
-    ).not.toBeInTheDocument();
+    expect(icon()?.querySelector('[data-animate="spin"]')).toBeNull();
+    expect(icon()?.querySelector(".lucide-circle-check")).toBeInTheDocument();
   });
 
   // ============================================
-  // COLOR
+  // SURFACE
   // ============================================
 
-  it("applies data.color to the surface", async () => {
+  it("renders the surface as a Card inside the root", async () => {
     const { manager } = renderToaster();
     act(() => {
-      manager().add({ title: "Failed", data: { color: "red" } });
+      manager().add({ title: "Saved" });
+    });
+
+    await screen.findByText("Saved");
+    expect(toastEl()).toHaveClass(styles["toast"]!);
+    expect(surface()).toHaveClass(styles["toast-surface"]!, "palette-neutral");
+    expect(surface()).toContainElement(
+      document.querySelector('[data-slot="toast-content"]') as HTMLElement,
+    );
+  });
+
+  it.each([
+    ["success", "palette-green"],
+    ["error", "palette-red"],
+    ["warning", "palette-yellow"],
+    ["info", "palette-blue"],
+    ["loading", "palette-neutral"],
+    [undefined, "palette-neutral"],
+  ])("colors a %s toast's surface %s", async (type, hue) => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Hello", type });
+    });
+
+    await screen.findByText("Hello");
+    expect(surface()).toHaveClass(hue);
+    expect(toastEl()).not.toHaveClass(hue);
+  });
+
+  it("lets data.color override the type's hue", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({
+        title: "Failed",
+        type: "error",
+        data: { color: "orange" },
+      });
     });
 
     await screen.findByText("Failed");
-    expect(toastEl()).toHaveClass("palette-red");
+    expect(surface()).toHaveClass("palette-orange");
+    expect(surface()).not.toHaveClass("palette-red");
+  });
+
+  it("recolors the surface when update() changes the type", async () => {
+    const { manager } = renderToaster();
+    let id = "";
+    act(() => {
+      id = manager().add({ title: "Syncing", type: "loading" });
+    });
+    await screen.findByText("Syncing");
+    expect(surface()).toHaveClass("palette-neutral");
+
+    act(() => {
+      manager().update(id, { title: "Synced", type: "success" });
+    });
+    await screen.findByText("Synced");
+    expect(surface()).toHaveClass("palette-green");
   });
 
   // ============================================
@@ -220,6 +314,21 @@ describe("Toaster", () => {
     await waitFor(() => {
       expect(manager().toasts).toHaveLength(0);
     });
+  });
+
+  it("renders the close button as an icon-only ghost Button", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved" });
+    });
+
+    await screen.findByText("Saved");
+    const close = closeButtons()[0]!;
+    expect(close.tagName).toBe("BUTTON");
+    expect(close).toHaveAttribute("type", "button");
+    expect(close).toHaveAttribute("aria-label", "Close");
+    expect(close).toHaveClass(styles["toast-close"]!);
+    expect(close.querySelector("svg")).toBeInTheDocument();
   });
 
   it("hides the close button on a loading toast", async () => {
@@ -308,7 +417,9 @@ describe("Toaster", () => {
       });
     });
 
-    await user.click(await screen.findByRole("button", { name: "Undo" }));
+    const action = await screen.findByRole("button", { name: "Undo" });
+    expect(action).toHaveAttribute("data-slot", "toast-action");
+    await user.click(action);
     expect(onClick).toHaveBeenCalledOnce();
   });
 
@@ -421,5 +532,69 @@ describe("Toaster", () => {
     await waitFor(() => {
       expect(toastEl()).not.toBeInTheDocument();
     });
+  });
+});
+
+describe("ToastRoot", () => {
+  /** A custom layout: the parts, without Toaster's type map. */
+  const CustomList = () => {
+    const { toasts } = useToastManager();
+    return toasts.map((toast) => (
+      <ToastRoot
+        key={toast.id}
+        toast={toast}
+        color="purple"
+        className="custom-root"
+      >
+        <ToastContent>
+          <ToastTitle />
+        </ToastContent>
+      </ToastRoot>
+    ));
+  };
+
+  const renderCustom = () => {
+    let manager!: Manager;
+    const Capture = () => {
+      manager = useToastManager();
+      return null;
+    };
+    render(
+      <ToastProvider>
+        <Capture />
+        <ToastPortal>
+          <ToastViewport>
+            <CustomList />
+          </ToastViewport>
+        </ToastPortal>
+      </ToastProvider>,
+    );
+    return () => manager;
+  };
+
+  it("puts className on the positioned root and color on the surface", async () => {
+    const manager = renderCustom();
+    act(() => {
+      manager().add({ title: "Custom", type: "error" });
+    });
+
+    await screen.findByText("Custom");
+    expect(toastEl()).toHaveClass(styles["toast"]!, "custom-root");
+    expect(toastEl()).not.toHaveClass("palette-purple");
+    expect(surface()).toHaveClass(styles["toast-surface"]!, "palette-purple");
+    expect(surface()).not.toHaveClass("custom-root");
+  });
+
+  it("leaves the type's icon and hue to Toaster", async () => {
+    const manager = renderCustom();
+    act(() => {
+      manager().add({ title: "Custom", type: "error" });
+    });
+
+    await screen.findByText("Custom");
+    expect(surface()).not.toHaveClass("palette-red");
+    expect(
+      document.querySelector('[data-slot="toast-icon"]'),
+    ).not.toBeInTheDocument();
   });
 });
