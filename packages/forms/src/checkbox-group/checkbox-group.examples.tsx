@@ -36,7 +36,7 @@ export const Horizontal = () => (
 );
 
 export const Bordered = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     <CheckboxGroup bordered items={ITEMS} />
     <CheckboxGroup bordered reversed orientation="horizontal" items={ITEMS} />
   </Stack>
@@ -48,7 +48,7 @@ export const Bordered = () => (
  * row across it — a `bordered` frame follows the row out to the edge.
  */
 export const Fullwidth = () => (
-  <Stack gap={6} ax="stretch" fullwidth>
+  <Stack gap={6} fullwidth>
     <CheckboxGroup fullwidth orientation="horizontal" items={ITEMS} />
     <CheckboxGroup
       fullwidth
@@ -64,7 +64,7 @@ export const Fullwidth = () => (
 /* `size` scales every box and its row together, on the same tiers as Input
  * and Button. */
 export const Sizes = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     {SIZES.map((size) => (
       <CheckboxGroup
         key={size}
@@ -111,7 +111,7 @@ export const Controlled = () => {
   const [value, setValue] = useState<string[]>(["email"]);
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <CheckboxGroup
         label={LABEL}
         items={ITEMS}

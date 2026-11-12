@@ -17,9 +17,9 @@ export const CheckboxGroupRoot = ({
   const isHorizontal = orientation === "horizontal";
 
   /*
-   * `fullwidth` stretches the root, then fills that width along the rows' own
-   * axis: a vertical group stretches each row across it, a horizontal one
-   * shares it evenly between them. The horizontal half cannot use `Group`'s
+   * `fullwidth` stretches the root. A vertical group's rows stretch across it
+   * at any width, as a Stack's do by default; a horizontal one shares the
+   * width evenly between its rows. The horizontal half cannot use `Group`'s
    * `evenly` — see `.field-rows-evenly`. A `bordered` frame belongs to the row,
    * so it follows the row out to the edge.
    */
@@ -34,11 +34,7 @@ export const CheckboxGroupRoot = ({
             className={fullwidth ? fieldStyles["field-rows-evenly"] : undefined}
           />
         ) : (
-          <Stack
-            gap={gap}
-            ax={fullwidth ? "stretch" : undefined}
-            fullwidth={fullwidth}
-          />
+          <Stack gap={gap} fullwidth={fullwidth} />
         )
       }
       {...props}

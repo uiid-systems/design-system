@@ -10,7 +10,6 @@ export const AsideContainer = ({ children }: React.PropsWithChildren) => {
       maxw={ASIDE_WIDTH}
       gap={SIDEBAR_SPACING}
       px={SIDEBAR_SPACING}
-      ax="stretch"
       w="full"
       h="full"
       className="sticky top-20 overflow-y-auto max-h-screen"

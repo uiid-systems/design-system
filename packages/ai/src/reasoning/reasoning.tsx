@@ -84,12 +84,7 @@ export const Reasoning = ({
         <BrainIcon aria-hidden />
         {streaming ? <Shimmer>Thinking…</Shimmer> : <Text>{label}</Text>}
       </CollapsibleTrigger>
-      <CollapsiblePanel
-        data-slot="reasoning-panel"
-        fullwidth
-        instant={false}
-        ax="stretch"
-      >
+      <CollapsiblePanel data-slot="reasoning-panel" fullwidth instant={false}>
         <Markdown streaming={streaming}>{children}</Markdown>
       </CollapsiblePanel>
     </CollapsibleRoot>

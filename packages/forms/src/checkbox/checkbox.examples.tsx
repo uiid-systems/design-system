@@ -45,7 +45,7 @@ export const Colors = () => (
 
 /* `bordered` draws the row as a control surface; `reversed` flips the order. */
 export const Bordered = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Checkbox bordered label={LABEL} />
     <Checkbox bordered reversed label={LABEL} />
     <Checkbox bordered label={LABEL} description={DESCRIPTION} />

@@ -57,7 +57,7 @@ export const Basic = (props: Partial<MessageProps>) => (
 );
 
 export const UserAndAssistant = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     {EXCHANGE.map((turn) => (
       <Message key={turn.role} from={turn.role}>
         <MessageContent>
@@ -82,7 +82,7 @@ export const Streaming = () => {
   }, [draft, done]);
 
   return (
-    <Stack gap={4} ax="stretch" fullwidth>
+    <Stack gap={4} fullwidth>
       <Message from="user">
         <MessageContent>
           <MessageResponse>{QUESTION}</MessageResponse>
@@ -127,7 +127,7 @@ const Actions = ({ text }: { text: string }) => (
 );
 
 export const WithActions = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     {EXCHANGE.map((turn) => (
       <Message key={turn.role} from={turn.role}>
         <MessageContent>
