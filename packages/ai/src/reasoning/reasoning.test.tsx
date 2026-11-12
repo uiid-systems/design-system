@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { flushSync } from "react-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Reasoning } from "./reasoning";
@@ -58,6 +59,15 @@ describe("Reasoning", () => {
     expect(trigger.querySelector("[data-slot='shimmer']")).toHaveTextContent(
       "Thinking…",
     );
+  });
+
+  // Pins the explicit aria-hidden: lucide already defaults it, so this passes either way.
+  it("hides the trigger's icons from assistive tech", () => {
+    render(<Reasoning>{TEXT}</Reasoning>);
+
+    const icons = getTrigger().querySelectorAll("svg");
+    for (const icon of icons)
+      expect(icon).toHaveAttribute("aria-hidden", "true");
   });
 
   it.each([
@@ -151,6 +161,32 @@ describe("Reasoning", () => {
     expect(getTrigger()).toHaveAttribute("aria-expanded", "true");
   });
 
+  it.each([
+    ["opening", false],
+    ["closing", true],
+  ])(
+    "keeps an uncontrolled block where it is when onOpenChange cancels its %s",
+    async (_, defaultOpen) => {
+      const user = userEvent.setup();
+      render(
+        <Reasoning
+          defaultOpen={defaultOpen}
+          onOpenChange={(_next, details) => details.cancel()}
+        >
+          {TEXT}
+        </Reasoning>,
+      );
+
+      await user.click(getTrigger());
+
+      expect(getTrigger()).toHaveAttribute(
+        "aria-expanded",
+        String(defaultOpen),
+      );
+      expect(getPanel() !== null).toBe(defaultOpen);
+    },
+  );
+
   // ============================================
   // TIMING
   // ============================================
@@ -170,6 +206,22 @@ describe("Reasoning", () => {
 
       act(() => vi.advanceTimersByTime(1000));
       expect(getTrigger()).toHaveAttribute("aria-expanded", "false");
+    });
+
+    // `flushSync` commits the end of the stream inside the outer `act`, which
+    // holds back passive effects' re-renders until it exits. So the label
+    // read in between is the one the browser would paint first.
+    it("reads the measured duration in the same commit the stream ends", () => {
+      const { rerender } = render(<Reasoning streaming>{TEXT}</Reasoning>);
+      act(() => vi.advanceTimersByTime(4000));
+
+      let painted: string | null = null;
+      act(() => {
+        flushSync(() => rerender(<Reasoning>{TEXT}</Reasoning>));
+        painted = getTrigger().textContent;
+      });
+
+      expect(painted).toBe("Thought for 4 seconds");
     });
 
     it("prefers a duration prop over the measurement", () => {
