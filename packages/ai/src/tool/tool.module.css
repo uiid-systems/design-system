@@ -1,10 +1,14 @@
 /* The card. The border is the root's `b` prop; the radius and clip are here so
-   the trigger's hover surface stops at the corners. `--props-b` is the raw
-   number the `b` prop writes on this element; as a length here, the trigger
-   inherits it. */
+   the trigger's hover surface stops at the corners. Set `--tool-radius` to
+   change the card's radius; the trigger follows it. */
 .tool {
+  --tool-radius: var(--globals-border-radius);
+  /* `--props-b` is the raw number the `b` prop writes on this element; as a
+     length here, the trigger inherits it. The `1px` mirrors the `b` unit in
+     `packages/tokens/src/props.css`. Only `b` counts: side-specific border
+     props such as `bt` or `bx` are not read. */
   --tool-border-width: calc(var(--props-b, 0) * 1px);
-  border-radius: var(--globals-border-radius);
+  border-radius: var(--tool-radius);
   overflow: hidden;
 }
 
@@ -12,7 +16,7 @@
    focus ring and hover surface follow the corners instead of being clipped by
    them, whatever `b` the card takes. */
 .trigger {
-  border-radius: max(0px, calc(var(--globals-border-radius) - var(--tool-border-width)));
+  border-radius: max(0px, var(--tool-radius) - var(--tool-border-width));
   transition: background-color var(--globals-transition-duration) var(--globals-transition-easing);
 
   &:hover:not([data-disabled]) {
@@ -30,7 +34,9 @@
 /* While the panel is mounted, opening and closing too, it sits below the
    trigger, so only the trigger's top corners touch the card's edge. Squaring
    the bottom ones until the panel unmounts keeps trigger and panel one
-   surface through the close transition. */
+   surface through the close transition. This assumes the panel unmounts once
+   closed, as it does without `keepMounted`; a kept-mounted panel would leave
+   the corners square while closed. */
 :where(.tool):has(> [data-slot="tool-panel"]) > .trigger {
   border-end-start-radius: 0;
   border-end-end-radius: 0;
