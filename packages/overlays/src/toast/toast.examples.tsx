@@ -6,8 +6,9 @@ import { Button } from "@uiid/buttons";
 import { Progress } from "@uiid/indicators";
 import { Group } from "@uiid/layout";
 
+import { ToastProvider } from "./subcomponents";
 import { Toaster } from "./toast";
-import { ToastProvider, useToastManager } from "./toast.hooks";
+import { useToastManager } from "./toast.hooks";
 import type { ToastObject, ToasterProps } from "./toast.types";
 
 /** Each example is self-contained: a provider, a viewport, and something to fire from. */
@@ -90,12 +91,33 @@ const PromiseButton = () => {
   );
 };
 
+const TYPES = ["success", "error", "warning", "info"] as const;
+
 /**
- * `type` lands on the toast as `data-type`. A `loading` toast shows a spinner
- * and no close button, and stays until you `update()` it when the work
- * settles. Base UI's `promise()` does all of this for you.
+ * `type` lands on the toast as `data-type`. `success`, `error`, `warning` and
+ * `info` each show an icon on the title's line and color the surface green,
+ * red, yellow and blue. Any other type shows no icon on a neutral surface.
  */
 export const Types = () => (
+  <Demo>
+    {TYPES.map((type) => (
+      <AddButton
+        key={type}
+        label={type}
+        type={type}
+        title={`A ${type} toast`}
+        description="The icon and close button stay on the title's line however long this runs."
+      />
+    ))}
+  </Demo>
+);
+
+/**
+ * A `loading` toast shows a spinner on a neutral surface and no close button,
+ * and stays until you `update()` it when the work settles. Base UI's
+ * `promise()` does all of this for you.
+ */
+export const Loading = () => (
   <Demo>
     <LoadingButton />
     <LoadingButton fail />
@@ -104,24 +126,23 @@ export const Types = () => (
 );
 
 /**
- * `data.color` sets the surface hue. The design system maps no type to a hue —
- * the app decides what an error looks like.
+ * `data.color` overrides the hue a type gives the surface, or colors a toast
+ * whose type has none.
  */
 export const Color = () => (
   <Demo>
     <AddButton
-      label="Red"
+      label="Orange error"
       title="Sync failed"
       description="Your session expired. Sign in again to keep syncing."
       type="error"
-      data={{ color: "red" }}
+      data={{ color: "orange" }}
     />
     <AddButton
-      label="Green"
-      title="Sync complete"
-      description="3 new items."
-      type="success"
-      data={{ color: "green" }}
+      label="Indigo, no type"
+      title="New feature"
+      description="Schedules can now repeat weekly."
+      data={{ color: "indigo" }}
     />
   </Demo>
 );

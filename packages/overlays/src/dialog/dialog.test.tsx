@@ -1,10 +1,10 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
 import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 import { Footer } from "./dialog.examples";
@@ -609,6 +609,127 @@ describe("Dialog", () => {
     const popup = screen.getByRole("dialog");
     expect(popup.className).toMatch(/shadow/);
     expect(within(popup).getByRole("separator")).toBeInTheDocument();
+  });
+
+  /*
+   * The body scrolls and reaches the popup's side edges (dialog.module.css),
+   * so it must not carry Card's `w="full"`, which would hold it to the content
+   * box. The test DOM has no layout; Storybook covers the scrolling itself.
+   */
+  it("leaves the body free to stretch to the popup's edges", () => {
+    render(
+      <Dialog open={true} onOpenChange={() => {}} title="Title" footer="Footer">
+        Dialog content
+      </Dialog>,
+    );
+
+    const body = screen
+      .getByRole("dialog")
+      .querySelector(':scope > [data-slot="card-inner-container"]');
+    expect(body).toHaveTextContent("Dialog content");
+    expect(body).not.toHaveAttribute("data-ui-w");
+  });
+
+  /*
+   * happy-dom has no layout, so these stub the body's scroll and client
+   * heights. A body that overflows is the only way to scroll by keyboard when
+   * focus sits on the close button or the popup, so it becomes a tab stop.
+   */
+  describe("scrolling body", () => {
+    const stubHeights = (scrollHeight: number, clientHeight: number) => {
+      vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockReturnValue(
+        scrollHeight,
+      );
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(
+        clientHeight,
+      );
+    };
+    const body = () =>
+      screen
+        .getByRole("dialog")
+        .querySelector<HTMLElement>(
+          ':scope > [data-slot="card-inner-container"]',
+        );
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    });
+
+    it("makes a long body a tab stop, with no role of its own", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(body()).not.toHaveAttribute("role");
+      expect(body()).not.toHaveAttribute("aria-labelledby");
+    });
+
+    it("reaches a long body by Tab from the close button", async () => {
+      stubHeights(1000, 400);
+      const user = userEvent.setup();
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+
+      screen.getByRole("button", { name: "Close" }).focus();
+      await user.tab();
+      expect(body()).toHaveFocus();
+    });
+
+    it("leaves a short body out of the tab order", async () => {
+      stubHeights(400, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Short content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("tabindex");
+    });
+
+    /*
+     * Dropping the tab stop under focus would send focus to the document, so a
+     * focused body keeps it until focus leaves. ResizeObserver is captured so
+     * the test can report the resize happy-dom never would.
+     */
+    it("keeps a focused body's tab stop when it stops overflowing, until blur", async () => {
+      const resizes: (() => void)[] = [];
+      vi.stubGlobal(
+        "ResizeObserver",
+        class {
+          constructor(callback: () => void) {
+            resizes.push(callback);
+          }
+          observe() {}
+          disconnect() {}
+        },
+      );
+      stubHeights(1000, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      body()!.focus();
+
+      stubHeights(400, 400);
+      act(() => resizes.forEach((resize) => resize()));
+      expect(body()).toHaveAttribute("tabindex", "0");
+      expect(body()).toHaveFocus();
+
+      act(() => screen.getByRole("button", { name: "Close" }).focus());
+      await waitFor(() => expect(body()).not.toHaveAttribute("tabindex"));
+    });
   });
 
   it("lets DialogClose take another Button variant", () => {

@@ -37,7 +37,7 @@ export const Horizontal = () => (
 );
 
 export const Bordered = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     <RadioGroup bordered items={ITEMS} />
     <RadioGroup bordered reversed orientation="horizontal" items={ITEMS} />
   </Stack>
@@ -49,7 +49,7 @@ export const Bordered = () => (
  * row across it — a `bordered` frame follows the row out to the edge.
  */
 export const Fullwidth = () => (
-  <Stack gap={6} ax="stretch" fullwidth>
+  <Stack gap={6} fullwidth>
     <RadioGroup fullwidth orientation="horizontal" items={ITEMS} />
     <RadioGroup
       fullwidth
@@ -65,7 +65,7 @@ export const Fullwidth = () => (
 /* `size` scales every radio and its row together, on the same tiers as Input
  * and Button. */
 export const Sizes = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     {SIZES.map((size) => (
       <RadioGroup
         key={size}
@@ -100,7 +100,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("standard");
 
   return (
-    <Stack gap={3} ax="stretch">
+    <Stack gap={3}>
       <RadioGroup
         label={LABEL}
         items={ITEMS}

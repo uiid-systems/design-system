@@ -49,7 +49,7 @@ export const Colors = () => (
 
 /* `bordered` draws the row as a control surface; `reversed` flips the order. */
 export const Bordered = () => (
-  <Stack gap={4} ax="stretch">
+  <Stack gap={4}>
     <Switch bordered label={LABEL} />
     <Switch bordered reversed label={LABEL} />
     <Switch bordered label={LABEL} description={DESCRIPTION} />

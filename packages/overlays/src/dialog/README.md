@@ -159,4 +159,8 @@ A dialog opened from inside another leaves its backdrop out, as Base UI does by 
 
 A `title` names the dialog: it renders as an `<h2>` that labels the popup, and a composed title — an icon beside the text — stays that heading, laid out as a row. Without a `title` the dialog has no accessible name, so give it one through `PopupProps={{ "aria-label": "…" }}`.
 
-Content taller than the screen scrolls the viewport rather than running off it, so the header and the footer's actions both stay reachable.
+Content taller than the screen scrolls inside the body. The header, with its close button, and the footer's actions stay in view. The body reaches the popup's side edges and pads itself back in with Card's `--card-padding-inline-start` and `--card-padding-inline-end`, so its scrollbar sits at the surface edge rather than inside the padding. It also leaves a focus ring's reach above and below its content, so don't pad the content to stop a ring being cut off; if one still is, the control is inside its own scrolling wrapper, and that wrapper needs the room.
+
+While the body overflows it is a tab stop, so the keyboard can scroll it. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
+
+On a screen shorter than 30rem, where a pinned header and footer would leave the body almost no room, the whole popup scrolls in the viewport instead.

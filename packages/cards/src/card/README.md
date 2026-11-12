@@ -20,6 +20,12 @@ A plain-text `title` renders as an `<h3>`. A title with elements in it, such as 
 
 A shell's plain-text title is an `<h2>` because the page's `<h1>` belongs to the page chrome outside it. Override with `TitleProps={{ render: <h1 /> }}` (or `<h3 />` for a nested sub-page shell); a `size` or `weight` in `TitleProps` overrides the page-heading ramp the same way.
 
+## Padding
+
+`p`, `px`, `py`, `pl`, `pr`, `pt` and `pb` work as on any layout primitive, on the root or through `ContainerProps`. Each side takes the first source that sets it: `ContainerProps`, then the root's props, then the shell's `p={6}`. An `undefined` value falls through to the next source rather than clearing the side. Card writes the resolved sides as `pt`, `pb`, `pl` and `pr`, so `p` paints through `--spacing-block` and `--spacing-inline` per side rather than `--spacing-unit`. All three are equal by default.
+
+The card publishes its inline padding as `--card-padding-inline-start` and `--card-padding-inline-end`, so a child can reach the card's edge without re-deriving the padding. A full-bleed rule, for example, sets `margin-inline: calc(-1 * var(--card-padding-inline-start)) calc(-1 * var(--card-padding-inline-end))`. Padding set through a `className` instead of the props isn't reflected in them.
+
 ## Gotchas
 
 - Every slot is optional, and a slot mounts on what React paints, not on truthiness. `0` fills it; `false`, `""` and a list with nothing renderable in it leave no element behind, so `description={isDraft && "Draft"}` is safe.

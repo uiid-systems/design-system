@@ -50,7 +50,6 @@ export async function Example({ title, of, name, children }: ExampleProps) {
       data-title={title}
       className="scroll-mt-20"
       gap={2}
-      ax="stretch"
     >
       {title && !code ? (
         <Text render={<h3 />} size={2} weight="semibold">

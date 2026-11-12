@@ -61,7 +61,7 @@ export const Basic = ({ part = SEARCH, ...props }: Partial<ToolProps>) => (
 );
 
 export const States = () => (
-  <Stack gap={3} ax="stretch" fullwidth>
+  <Stack gap={3} fullwidth>
     {Object.values(PARTS).map((part) => (
       <Tool key={part.state} part={part} />
     ))}
@@ -113,7 +113,7 @@ const LONG: ToolPart = {
 /* A narrow card with an unbroken tool name, URL and error: the name and error
    wrap, the badge and chevron stay in view, and the long line scrolls. */
 export const LongContent = () => (
-  <Stack w={320} ax="stretch">
+  <Stack w={320}>
     <Tool part={LONG} defaultOpen />
   </Stack>
 );

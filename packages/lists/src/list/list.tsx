@@ -24,7 +24,6 @@ export const List = ({
     <Stack
       data-slot="list"
       data-marker={marker}
-      ax="stretch"
       className={cx(styles["list"], className)}
       render={ListElement}
       {...props}
@@ -48,7 +47,7 @@ export const List = ({
   if (!category) return list;
 
   return (
-    <Stack data-slot="list-section" ax="stretch" fullwidth>
+    <Stack data-slot="list-section" fullwidth>
       <ListGroupHeader category={category} icon={icon} />
       {list}
     </Stack>

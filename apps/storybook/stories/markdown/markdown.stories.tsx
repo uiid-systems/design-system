@@ -15,6 +15,7 @@ const meta = {
     children: { control: "text", table: { category: "Content" } },
     streaming: { control: "boolean", table: { category: "Streaming" } },
     reveal: { control: "boolean", table: { category: "Streaming" } },
+    overrides: { control: false, table: { category: "Content" } },
     render: { table: { disable: true } },
     ref: { table: { disable: true } },
     style: { table: { disable: true } },
@@ -37,4 +38,8 @@ export const Streaming: Story = {
 
 export const StreamingReveal: Story = {
   render: () => <Examples.StreamingReveal />,
+};
+
+export const ExternalLinks: Story = {
+  render: () => <Examples.ExternalLinks />,
 };

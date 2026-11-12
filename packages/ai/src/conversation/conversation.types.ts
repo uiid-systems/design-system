@@ -4,7 +4,11 @@ import type { BoxProps, StackProps } from "@uiid/layout";
 /** The scroll region. Size it from outside with `h` (a number or `"full"`) or `grow`. */
 export type ConversationProps = BoxProps;
 
-/** The column of messages. Props go to the inner `Stack`; the scroller is internal. */
+/**
+ * The column of messages, a `role="log"` named "Conversation". Props go to the
+ * inner `Stack`; pass `aria-label` or `aria-labelledby` to rename the log. The
+ * scroller is internal.
+ */
 export type ConversationContentProps = StackProps;
 
 export type ConversationEmptyStateProps = StackProps & {

@@ -21,18 +21,20 @@ export const ConversationContent = ({
   const composedRef = useComposedRefs(contentRef, ref);
 
   return (
-    /* Focusable so the keyboard can scroll it, and so the scroll button has
-       somewhere to hand focus when it unmounts. */
+    /* Focusable so the keyboard can scroll it (Safari does not make a scroll
+       container focusable on its own), and so the scroll button has somewhere
+       to hand focus when it unmounts. The log role sits on the column, not the
+       region, so the scroll button appearing is not announced as a message. */
     <div
       data-slot="conversation-viewport"
       ref={scrollRef}
       tabIndex={0}
-      role="group"
-      aria-label="Messages"
       className={styles["viewport"]}
     >
       <Stack
         data-slot="conversation-content"
+        role="log"
+        aria-label="Conversation"
         ref={composedRef}
         ax={ax}
         fullwidth={fullwidth}

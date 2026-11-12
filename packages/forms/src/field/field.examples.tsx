@@ -57,7 +57,7 @@ export const WithDescription = () => (
  * is the field a bare `size` on an `Input` already produces.
  */
 export const Sizes = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     {SIZES.map((size) => (
       <Input
         key={size}
@@ -82,7 +82,7 @@ export const Required = () => (
  * `tooltip` keeps longer guidance out of the layout entirely.
  */
 export const WithHint = () => (
-  <Stack gap={6} ax="stretch">
+  <Stack gap={6}>
     <Field label="Email" action={<FieldHint text="Optional" />}>
       <InputControl placeholder="you@example.com" />
     </Field>
@@ -105,9 +105,10 @@ export const WithHint = () => (
 
 /*
  * `action` takes any node, so the label row can carry something interactive.
- * The reset only renders once a channel is picked, and the row reserves the
- * height of an `xsmall` button either way, so the control never shifts as it
- * appears and disappears.
+ * An `xsmall` button stands taller than the label row, so the row grows to
+ * hold it. The reset therefore stays rendered and is only disabled until a
+ * channel is picked: rendering it on pick would grow the row and move the
+ * control under the pointer.
  */
 export const WithAction = () => {
   const [channel, setChannel] = useState<string | null>(null);
@@ -120,15 +121,14 @@ export const WithAction = () => {
       value={channel}
       onValueChange={(value) => setChannel(value)}
       action={
-        channel && (
-          <Button
-            size="xsmall"
-            variant="ghost"
-            onClick={() => setChannel(null)}
-          >
-            Reset
-          </Button>
-        )
+        <Button
+          size="xsmall"
+          variant="ghost"
+          disabled={!channel}
+          onClick={() => setChannel(null)}
+        >
+          Reset
+        </Button>
       }
     />
   );
@@ -159,7 +159,7 @@ export const Validate = () => (
  */
 export const ErrorTypes = () => (
   <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8} ax="stretch">
+    <Stack gap={8}>
       {ERROR_TYPES.map((errorType) => (
         <Field
           key={errorType}
@@ -215,7 +215,7 @@ export const Grouped = () => (
  * description, and error treatment stay identical across control types.
  */
 export const AnyControl = () => (
-  <Stack gap={8} ax="stretch">
+  <Stack gap={8}>
     <Field label="Text" description={DESCRIPTION}>
       <Input placeholder="Type something" />
     </Field>

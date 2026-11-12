@@ -29,7 +29,7 @@ const meta: Meta<typeof Accordion> = {
     },
   },
   render: (args) => (
-    <Stack gap={4} fullwidth maxw={640} ax="stretch">
+    <Stack gap={4} fullwidth maxw={640}>
       <Accordion {...args} />
       <Accordion {...args} defaultValue={["item-1"]} multiple />
       <Accordion {...args} disabled />
@@ -50,7 +50,7 @@ export const Ghost: Story = {
 export const Sizes: Story = {
   name: "Sizes",
   render: (args) => (
-    <Stack gap={4} fullwidth maxw={640} ax="stretch">
+    <Stack gap={4} fullwidth maxw={640}>
       <Accordion {...args} size="small" />
       <Accordion {...args} size="medium" />
       <Accordion {...args} size="large" />

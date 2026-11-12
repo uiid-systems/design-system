@@ -23,7 +23,6 @@ export const TimelineContent = ({
       className={cx(styles["timeline-content"], className)}
       gap={2}
       fullwidth
-      ax="stretch"
       {...props}
     >
       {children}

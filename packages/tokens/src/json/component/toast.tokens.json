@@ -1,0 +1,18 @@
+{
+  "$description": "UIID Design System - Toast Component Tokens",
+  "toast": {
+    "$type": "dimension",
+    "width": {
+      "$value": "22.5rem",
+      "$description": "Width of the stack, before a narrow screen clamps it to its gutters"
+    },
+    "gap": {
+      "$value": "0.75rem",
+      "$description": "Space between expanded toasts"
+    },
+    "peek": {
+      "$value": "0.75rem",
+      "$description": "How far each collapsed toast shows past the one in front of it"
+    }
+  }
+}

@@ -20,7 +20,6 @@ export const Conversation = ({
     <ConversationContext.Provider value={value}>
       <Box
         data-slot="conversation"
-        role="log"
         className={cx(styles["conversation"], className)}
         {...props}
       >

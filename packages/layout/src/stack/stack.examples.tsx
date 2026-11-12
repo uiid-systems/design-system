@@ -15,7 +15,7 @@ export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
 );
 
 export const Stretched = () => (
-  <Stack ax="stretch" gap={2} fullwidth>
+  <Stack gap={2} fullwidth>
     <ExampleBox bg="tomato" />
     <ExampleBox bg="gold" />
     <ExampleBox bg="dodgerblue" />

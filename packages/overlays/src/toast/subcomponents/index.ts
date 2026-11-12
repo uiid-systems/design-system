@@ -1,3 +1,4 @@
+export * from "./toast-provider";
 export * from "./toast-portal";
 export * from "./toast-viewport";
 export * from "./toast-root";

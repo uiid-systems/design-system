@@ -24,21 +24,47 @@
   }
 }
 
-/* Reserves the label row so a field carrying only a label lines up with one
-   that also carries an action or error tooltip. Five units clears the 0.875rem
-   icon those slots render. */
+/* Reserves the label row for the icon-sized occupants of its end, a
+   `FieldHint` or the error tooltip, so a field with one lines up with a field
+   that has only a label. Five units clears their 0.875rem icon. A taller
+   action, such as an `xsmall` Button, grows the row.
+
+   The row wraps, so when the label and the end group cannot share a line the
+   end group drops to its own, still at the inline end, rather than
+   overflowing a narrow field. The label grows from a zero basis, which keeps
+   its automatic `min-width` (its longest word) as the size the row breaks on:
+   a long label wraps beside the action and only a label whose longest word
+   cannot fit beside it sends the action down. `max-inline-size` stops it
+   growing past its text, so the empty row beside a short label isn't part of
+   the label and a press there doesn't reach the control. */
 .field-label-group {
   min-height: var(--field-label-group-min-height);
+  flex-wrap: wrap;
+  column-gap: calc(var(--spacing-unit) * 2);
+
+  & > .field-label {
+    flex: 1 1 0;
+    max-inline-size: max-content;
+  }
 }
 
-/* The action slot takes any node, so its tallest intended occupant — an
-   `xsmall` Button at 1.75rem — stands 0.5rem taller than the row reserves. A
-   negative block margin spends that difference on the margin box instead of the
-   row, keeping the label row one height whether the slot is empty, holds a
-   `FieldHint` icon, or holds a button. Without it, an action that only appears
-   once a value is picked would push the control down the moment it rendered. */
+/* The end of the label row, holding the error tooltip and the action. The auto
+   start margin keeps it on the right when there is no label to push it there,
+   or when it wraps to a line of its own, and it holds its width so a long
+   label wraps instead of squeezing it. It and the label share their first
+   baseline, so beside a wrapped label it sits on the first line rather than
+   floating at the middle of the block. `FieldAction` takes the same rules so
+   it sits the same way when composed straight into a row. */
+.field-label-group > .field-label,
+.field-label-end {
+  align-self: first baseline;
+}
+
+.field-label-end,
 .field-action {
-  margin-block: calc((var(--field-label-group-min-height) - var(--forms-size-xs-height)) / 2);
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Base UI stamps `data-disabled` on the label and description from the root,

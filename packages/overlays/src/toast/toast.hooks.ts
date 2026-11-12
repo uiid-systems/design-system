@@ -6,8 +6,6 @@ import type { ToastData } from "./toast.types";
 
 type DefaultToastData = ToastData & Record<string, unknown>;
 
-export const ToastProvider = BaseToast.Provider;
-
 /**
  * Base UI's hook. By default `data` types the fields Toaster renders and
  * still accepts any other key, as Base UI's `any` default did; pass a type

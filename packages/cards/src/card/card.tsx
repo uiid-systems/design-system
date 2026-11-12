@@ -7,10 +7,15 @@ import {
   CARD_DEFAULT_COLOR,
   SHELL_CONTAINER_PROPS,
   SHELL_GAP,
+  SHELL_PADDING,
   SHELL_TITLE_PROPS,
 } from "./card.constants";
 import type { CardProps } from "./card.types";
-import { isTextContent } from "./card.utils";
+import {
+  inlinePaddingStyle,
+  isTextContent,
+  resolveCardPadding,
+} from "./card.utils";
 import {
   CardContainer,
   CardTitle,
@@ -41,10 +46,26 @@ export const Card = ({
   ThumbnailProps,
   InnerContainerProps,
   children,
+  p,
+  px,
+  py,
+  pl,
+  pr,
+  pt,
+  pb,
   ...props
 }: CardProps) => {
-  const { className: containerClassName, ...containerProps } =
-    ContainerProps ?? {};
+  const {
+    className: containerClassName,
+    p: containerP,
+    px: containerPx,
+    py: containerPy,
+    pl: containerPl,
+    pr: containerPr,
+    pt: containerPt,
+    pb: containerPb,
+    ...containerProps
+  } = ContainerProps ?? {};
   const { className: headerClassName, ...headerProps } = HeaderProps ?? {};
 
   // A slot's own `children` win when they render anything — see `isRenderable`.
@@ -63,6 +84,26 @@ export const Card = ({
   const isShell = variant === "shell";
   const surfaceColor = isShell ? color : (color ?? CARD_DEFAULT_COLOR);
 
+  // ContainerProps lands on the same element, so its padding wins, then the
+  // root's, then the shell's default. Unset sides keep the stylesheet's.
+  const padding = resolveCardPadding(
+    {
+      p: containerP,
+      px: containerPx,
+      py: containerPy,
+      pl: containerPl,
+      pr: containerPr,
+      pt: containerPt,
+      pb: containerPb,
+    },
+    { p, px, py, pl, pr, pt, pb },
+    isShell ? { p: SHELL_PADDING } : undefined,
+  );
+
+  // Published so children can reach the card's edge, e.g. a full-bleed
+  // separator or a scrolling body, without re-deriving the padding.
+  const paddingStyle = inlinePaddingStyle(padding);
+
   // A composed (non-text) title keeps CardTitle's row render.
   const shellTitleProps = isShell
     ? {
@@ -77,7 +118,15 @@ export const Card = ({
       // ContainerProps lands on the same element, so its style and handlers
       // merge with the root's rather than replacing them.
       {...(isShell && SHELL_CONTAINER_PROPS)}
-      {...mergeProps<"div">(props, containerProps)}
+      {...mergeProps<"div">(
+        paddingStyle && { style: paddingStyle },
+        props,
+        containerProps,
+      )}
+      pt={padding.top}
+      pb={padding.bottom}
+      pl={padding.start}
+      pr={padding.end}
       className={cx(
         shadow && styles.shadow,
         variant && styles[`variant-${variant}`],

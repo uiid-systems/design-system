@@ -14,14 +14,20 @@ import { MarkdownReveal } from "./subcomponents/markdown-reveal";
  * when streaming ends and the last words can finish animating.
  */
 export const Markdown = memo(
-  ({ children, streaming = false, reveal = false, ...props }: MarkdownProps) =>
+  ({
+    children,
+    streaming = false,
+    reveal = false,
+    overrides,
+    ...props
+  }: MarkdownProps) =>
     reveal ? (
-      <MarkdownReveal streaming={streaming} {...props}>
+      <MarkdownReveal streaming={streaming} overrides={overrides} {...props}>
         {children}
       </MarkdownReveal>
     ) : (
       <Prose data-slot="markdown" {...props}>
-        {compileMarkdown(children, streaming)}
+        {compileMarkdown(children, { streaming, overrides })}
       </Prose>
     ),
 );

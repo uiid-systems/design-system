@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
 import { Markdown } from "./markdown";
+import type { MarkdownOverrides } from "./markdown.types";
 
 const RESPONSE = `## Streaming markdown
 
@@ -40,3 +42,16 @@ export const Streaming = ({ reveal = false }: { reveal?: boolean }) => {
 };
 
 export const StreamingReveal = () => <Streaming reveal />;
+
+const ExternalLink = (props: ComponentPropsWithoutRef<"a">) => (
+  <a {...props} target="_blank" rel="noopener noreferrer" />
+);
+
+const externalLinks: MarkdownOverrides = { a: ExternalLink };
+
+/** Opens every link in a new tab, through a link override defined once outside render. */
+export const ExternalLinks = () => (
+  <Markdown overrides={externalLinks}>
+    {"Read [the docs](https://example.com) before you start."}
+  </Markdown>
+);

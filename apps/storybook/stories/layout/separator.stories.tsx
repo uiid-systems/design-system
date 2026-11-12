@@ -44,7 +44,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
   render: (args) => (
-    <Stack ax="stretch" gap={4} fullwidth maxw={400}>
+    <Stack gap={4} fullwidth maxw={400}>
       <Examples.ExampleBox bg="tomato" h={48} />
       <Separator {...args} />
       <Examples.ExampleBox bg="gold" h={48} />

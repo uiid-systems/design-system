@@ -4,7 +4,7 @@ import { BrainIcon } from "@uiid/icons/brain";
 import { CollapsiblePanel, CollapsibleRoot } from "@uiid/interactive";
 import { Markdown } from "@uiid/markdown";
 import { Shimmer, Text } from "@uiid/typography";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
@@ -40,8 +40,10 @@ export const Reasoning = ({
     if (streaming && autoOpen) setLocalOpen(true);
   }, [streaming, autoOpen]);
 
-  // Time the stream: the cleanup runs when `streaming` turns off.
-  useEffect(() => {
+  // Time the stream: the cleanup runs when `streaming` turns off. A layout
+  // effect, so the measured label lands before paint instead of a frame of
+  // "Reasoning" between "Thinking…" and "Thought for N seconds".
+  useLayoutEffect(() => {
     if (!streaming) return;
     const start = Date.now();
     return () => setMeasured(Math.ceil((Date.now() - start) / 1000));
@@ -65,9 +67,11 @@ export const Reasoning = ({
       data-slot="reasoning"
       data-streaming={streaming ? "" : undefined}
       open={open}
+      // The root is always controlled from here, so Base UI's own skip on
+      // `details.cancel()` never reaches `localOpen`; honor it by hand.
       onOpenChange={(next, details) => {
         onOpenChange?.(next, details);
-        if (!controlled) setLocalOpen(next);
+        if (!controlled && !details.isCanceled) setLocalOpen(next);
       }}
       gap={gap}
       ax={ax}
@@ -77,15 +81,10 @@ export const Reasoning = ({
         data-slot="reasoning-trigger"
         className={styles["trigger"]}
       >
-        <BrainIcon />
+        <BrainIcon aria-hidden />
         {streaming ? <Shimmer>Thinking…</Shimmer> : <Text>{label}</Text>}
       </CollapsibleTrigger>
-      <CollapsiblePanel
-        data-slot="reasoning-panel"
-        fullwidth
-        instant={false}
-        ax="stretch"
-      >
+      <CollapsiblePanel data-slot="reasoning-panel" fullwidth instant={false}>
         <Markdown streaming={streaming}>{children}</Markdown>
       </CollapsiblePanel>
     </CollapsibleRoot>

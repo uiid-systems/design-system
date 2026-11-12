@@ -44,7 +44,7 @@ export const Basic = (props: Partial<PromptInputProps>) => {
   const [sent, setSent] = useState<string | null>(null);
 
   return (
-    <Stack gap={3} ax="stretch" fullwidth>
+    <Stack gap={3} fullwidth>
       <PromptInput onSubmit={({ text }) => setSent(text)} {...props} />
       <Text size={-1} color="neutral">
         {sent ? `Sent: ${sent}` : "Nothing sent yet"}
@@ -79,9 +79,9 @@ export const WithTools = () => (
 
 /* One composer per ChatStatus, so the submit button's four faces sit side by side. */
 export const Statuses = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     {STATUSES.map((status) => (
-      <Stack key={status} gap={1} ax="stretch">
+      <Stack key={status} gap={1}>
         <Text size={-1} color="neutral" uppercase>
           {status}
         </Text>
@@ -98,9 +98,9 @@ export const Statuses = () => (
 
 /* Without `onStop` there is nothing to stop, so a reply in flight shows Send disabled instead. */
 export const WithoutStop = () => (
-  <Stack gap={4} ax="stretch" fullwidth>
+  <Stack gap={4} fullwidth>
     {(["submitted", "streaming"] as const).map((status) => (
-      <Stack key={status} gap={1} ax="stretch">
+      <Stack key={status} gap={1}>
         <Text size={-1} color="neutral" uppercase>
           {status}
         </Text>
@@ -119,7 +119,7 @@ export const Controlled = () => {
   const [value, setValue] = useState("");
 
   return (
-    <Stack gap={3} ax="stretch" fullwidth>
+    <Stack gap={3} fullwidth>
       <PromptInput
         value={value}
         onValueChange={setValue}
@@ -172,7 +172,7 @@ export const WithConversation = () => {
   }, [status, draft]);
 
   return (
-    <Stack gap={3} ax="stretch" fullwidth>
+    <Stack gap={3} fullwidth>
       <Conversation h={280}>
         <ConversationContent>
           {turns.length === 0 && status === "ready" ? (

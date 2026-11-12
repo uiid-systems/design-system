@@ -2,11 +2,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
 import React from "react";
+import { createPortal } from "react-dom";
 import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Textarea } from "./textarea";
 
+import inputStyles from "../input/input.module.css";
 import styles from "./textarea.module.css";
 
 describe("Textarea", () => {
@@ -29,6 +31,13 @@ describe("Textarea", () => {
   it("renders with a label", () => {
     render(<Textarea label="Message" />);
     expect(screen.getByLabelText("Message")).toBeInTheDocument();
+  });
+
+  it("renders with a description that describes the textarea", () => {
+    render(<Textarea label="Message" description="Markdown is supported." />);
+    expect(screen.getByRole("textbox")).toHaveAccessibleDescription(
+      "Markdown is supported.",
+    );
   });
 
   it("renders with a description", () => {
@@ -71,7 +80,7 @@ describe("Textarea", () => {
   });
 
   // ============================================
-  // DISABLED STATE
+  // DISABLED AND READ-ONLY STATE
   // ============================================
 
   it("can be disabled", () => {
@@ -87,6 +96,16 @@ describe("Textarea", () => {
     await user.type(textarea, "Hello");
 
     expect(textarea).toHaveValue("");
+  });
+
+  it("can be read only", async () => {
+    const user = userEvent.setup();
+    render(<Textarea readOnly defaultValue="Fixed" />);
+
+    await user.type(screen.getByRole("textbox"), "!");
+
+    expect(screen.getByRole("textbox")).toHaveAttribute("readonly");
+    expect(screen.getByRole("textbox")).toHaveValue("Fixed");
   });
 
   // ============================================
@@ -164,6 +183,18 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox")).toHaveValue("Controlled content");
   });
 
+  it("drives a controlled value through onValueChange", async () => {
+    const user = userEvent.setup();
+    const Controlled = () => {
+      const [value, setValue] = React.useState("");
+      return <Textarea value={value} onValueChange={setValue} />;
+    };
+    render(<Controlled />);
+
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(screen.getByRole("textbox")).toHaveValue("hi");
+  });
+
   // ============================================
   // REF FORWARDING
   // ============================================
@@ -188,43 +219,40 @@ describe("Textarea", () => {
   // VARIANTS
   // ============================================
 
-  it("applies size variant classes", () => {
-    const { rerender } = render(<Textarea size="xsmall" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier",
+    (size) => {
+      render(<Textarea size={size} />);
+      expect(screen.getByRole("textbox")).toHaveClass(styles[`size-${size}`]);
+    },
+  );
 
-    rerender(<Textarea size="small" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-
-    rerender(<Textarea size="medium" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-
-    rerender(<Textarea size="large" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  it("falls back to the medium tier", () => {
+    render(<Textarea />);
+    expect(screen.getByRole("textbox")).toHaveClass(styles["size-medium"]);
   });
 
-  it("applies resize variant", () => {
-    const { rerender } = render(<Textarea resize="none" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-
-    rerender(<Textarea resize="vertical" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-
-    rerender(<Textarea resize="horizontal" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-
-    rerender(<Textarea resize="both" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  it("sizes the field chrome to the same tier", () => {
+    const { container } = render(<Textarea label="Notes" size="small" />);
+    expect(
+      container.querySelector("[data-slot='field-root']")?.className,
+    ).toMatch(/size-small/);
   });
 
-  it("applies fullwidth variant", () => {
-    render(<Textarea fullwidth />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  it("resizes vertically by default", () => {
+    render(<Textarea />);
+    expect(screen.getByRole("textbox")).toHaveClass(styles["resize-vertical"]);
   });
 
-  it("applies ghost variant", () => {
-    render(<Textarea variant="ghost" />);
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-  });
+  it.each(["none", "vertical", "horizontal", "both"] as const)(
+    "carries the %s resize axis",
+    (resize) => {
+      render(<Textarea resize={resize} />);
+      expect(screen.getByRole("textbox")).toHaveClass(
+        styles[`resize-${resize}`],
+      );
+    },
+  );
 });
 
 describe("Textarea single render path", () => {
@@ -253,7 +281,7 @@ describe("Textarea Field.Control surface", () => {
     const onValueChange = vi.fn();
     render(<Textarea onValueChange={onValueChange} />);
     await user.type(screen.getByRole("textbox"), "hi");
-    expect(onValueChange).toHaveBeenCalled();
+    expect(onValueChange).toHaveBeenLastCalledWith("hi", expect.anything());
   });
 
   /* FieldControl reads id, value, defaultValue, autoFocus and disabled off its
@@ -278,6 +306,15 @@ describe("Textarea Field.Control surface", () => {
     expect(screen.getByRole("textbox")).not.toHaveAttribute("data-filled");
   });
 
+  it("reaches the field around it through FieldProps", () => {
+    const { container } = render(
+      <Textarea FieldProps={{ className: "outer" }} />,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "outer",
+    );
+  });
+
   it("marks a disabled textarea with the control's data-disabled state", () => {
     render(<Textarea disabled />);
     const textarea = screen.getByRole("textbox");
@@ -290,6 +327,58 @@ describe("Textarea invalid treatment", () => {
   it("adopts the shared invalid composition", () => {
     render(<Textarea />);
     expect(screen.getByRole("textbox").className).toMatch(/composes-invalid/);
+  });
+});
+
+describe("Textarea validity", () => {
+  it("is marked invalid, with the error shown, when the field is driven invalid", () => {
+    render(
+      <Textarea
+        label="Notes"
+        FieldProps={{
+          invalid: true,
+          ErrorProps: { match: true, children: "Too short" },
+        }}
+      />,
+    );
+    const textarea = screen.getByRole("textbox");
+
+    expect(textarea).toHaveAttribute("aria-invalid", "true");
+    expect(textarea).toHaveAttribute("data-invalid");
+    expect(screen.getByText("Too short")).toHaveAttribute(
+      "data-slot",
+      "field-error",
+    );
+  });
+});
+
+/*
+ * react-hook-form's `register` hands back `name`, `onChange`, `onBlur` and a
+ * callback `ref`, spread straight onto the control.
+ */
+describe("Textarea with a register-shaped spread", () => {
+  it("lands name, ref and the change and blur handlers on the textarea", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const onBlur = vi.fn();
+    let registered: HTMLTextAreaElement | null = null;
+    const ref = (element: HTMLTextAreaElement | null) => {
+      registered = element;
+    };
+
+    render(
+      <Textarea label="Notes" {...{ name: "notes", onChange, onBlur, ref }} />,
+    );
+    const textarea = screen.getByRole("textbox");
+    await user.type(textarea, "hi");
+    await user.tab();
+
+    expect(registered).toBe(textarea);
+    expect(textarea).toHaveAttribute("name", "notes");
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ target: textarea }),
+    );
+    expect(onBlur).toHaveBeenCalled();
   });
 });
 
@@ -340,6 +429,11 @@ describe("Textarea color", () => {
   it("leaves the control on the plain surface with no color", () => {
     render(<Textarea />);
     expect(className()).not.toMatch(/composes-field-surface-color/);
+  });
+
+  it("keeps the hue off the native color attribute", () => {
+    render(<Textarea color="blue" />);
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("color");
   });
 
   /* The hue rides the same shared composition Input wears, so the two cannot
@@ -530,7 +624,7 @@ describe("Textarea before/after slots", () => {
     const onValueChange = vi.fn();
     render(<Textarea after="bottom" onValueChange={onValueChange} />);
     await user.type(screen.getByRole("textbox"), "hi");
-    expect(onValueChange).toHaveBeenCalled();
+    expect(onValueChange).toHaveBeenLastCalledWith("hi", expect.anything());
   });
 
   it("lets a button in the after slot take a click and follow the textarea in tab order", async () => {
@@ -663,5 +757,131 @@ describe("Textarea inert slots", () => {
     expect(
       container.querySelector("[data-slot='input-after']"),
     ).not.toHaveAttribute("inert");
+  });
+});
+
+describe("Textarea slot wiring", () => {
+  const wrapper = (container: HTMLElement) =>
+    container.querySelector("[data-slot='input-wrapper']");
+
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+    ["an empty list", []],
+    ["a list of empty nodes", [null, false]],
+  ])("treats %s as no slot", (_, empty) => {
+    const { container } = render(<Textarea before={empty} after={empty} />);
+
+    expect(wrapper(container)).toHaveClass(inputStyles["input-wrapper-bare"]);
+    expect(container.querySelector("[data-slot='input-before']")).toBeNull();
+  });
+
+  it("renders 0 inside the slot rather than beside it", () => {
+    const { container } = render(<Textarea before={0} />);
+
+    expect(
+      container.querySelector("[data-slot='input-before']"),
+    ).toHaveTextContent("0");
+    expect(wrapper(container)).toHaveAttribute("data-orientation", "vertical");
+  });
+
+  it("keeps the textarea mounted, focused and filled as a slot comes and goes", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Textarea aria-label="Message" />);
+    const textarea = screen.getByRole("textbox");
+
+    await user.type(textarea, "draft");
+    rerender(<Textarea aria-label="Message" after="bottom" />);
+
+    expect(screen.getByRole("textbox")).toBe(textarea);
+    expect(textarea).toHaveFocus();
+    expect(textarea).toHaveValue("draft");
+    expect(textarea).toHaveClass(styles["textarea-inner"]);
+
+    rerender(<Textarea aria-label="Message" />);
+    expect(screen.getByRole("textbox")).toBe(textarea);
+    expect(textarea).toHaveFocus();
+    expect(textarea).toHaveClass(styles["textarea"]);
+  });
+
+  it("composes the shared slot treatment on each slot", () => {
+    const { container } = render(<Textarea before="top" after="bottom" />);
+
+    for (const slot of ["input-before", "input-after"]) {
+      const element = container.querySelector(`[data-slot='${slot}']`);
+      expect(element).toHaveClass(inputStyles["input-slot"]);
+      expect(element?.className).toMatch(/composes-field-slot/);
+    }
+  });
+
+  it("falls back to the medium tier on the wrapper", () => {
+    const { container } = render(<Textarea before="top" />);
+    expect(wrapper(container)).toHaveClass(inputStyles["size-medium"]);
+  });
+
+  it("keeps the label and description wired to the slotted textarea", () => {
+    render(
+      <Textarea
+        before="top"
+        after="bottom"
+        label="Message"
+        description="Markdown is supported."
+      />,
+    );
+
+    expect(screen.getByLabelText("Message")).toBe(screen.getByRole("textbox"));
+    expect(screen.getByRole("textbox")).toHaveAccessibleDescription(
+      "Markdown is supported.",
+    );
+  });
+});
+
+describe("Textarea slot press guards", () => {
+  /* A dialog popup carries `tabindex="-1"`, which an unscoped `closest` would
+     mistake for interactive slot content. */
+  it("focuses the textarea from plain slot content inside a tabindex ancestor", async () => {
+    const user = userEvent.setup();
+    render(
+      <div role="dialog" tabIndex={-1}>
+        <Textarea aria-label="Message" before={<span>3 files attached</span>} />
+      </div>,
+    );
+
+    await user.click(screen.getByText("3 files attached"));
+    expect(screen.getByRole("textbox", { name: "Message" })).toHaveFocus();
+  });
+
+  it("leaves a press in a slot's portal to the portal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Textarea
+        aria-label="Message"
+        after={createPortal(
+          <div>
+            <input aria-label="Search" />
+            <span>No results</span>
+          </div>,
+          document.body,
+        )}
+      />,
+    );
+
+    await user.click(screen.getByLabelText("Search"));
+    expect(screen.getByLabelText("Search")).toHaveFocus();
+
+    await user.click(screen.getByText("No results"));
+    expect(screen.getByLabelText("Message")).not.toHaveFocus();
+  });
+
+  it("leaves focus alone on a right-click on slot content", async () => {
+    const user = userEvent.setup();
+    render(<Textarea before={<span>3 files attached</span>} />);
+
+    await user.pointer({
+      keys: "[MouseRight]",
+      target: screen.getByText("3 files attached"),
+    });
+    expect(screen.getByRole("textbox")).not.toHaveFocus();
   });
 });

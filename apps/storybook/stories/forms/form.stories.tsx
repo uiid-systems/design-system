@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   render: (args) => (
     <Form {...args}>
-      <Stack gap={4} ax="stretch" w={320}>
+      <Stack gap={4} w={320}>
         <Input
           label="Email"
           name="email"
