@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Conversation } from "./conversation";
@@ -115,12 +116,12 @@ describe("Conversation", () => {
   });
 
   describe("structure", () => {
-    it("renders a log region with the viewport and content slots inside it", () => {
+    it("renders the region with the viewport and content slots inside it", () => {
       const { container } = renderConversation();
 
       const root = container.firstElementChild!;
       expect(root).toHaveAttribute("data-slot", "conversation");
-      expect(root).toHaveAttribute("role", "log");
+      expect(root).not.toHaveAttribute("role");
       expect(
         root.querySelector('[data-slot="conversation-viewport"]'),
       ).toBeInTheDocument();
@@ -131,12 +132,50 @@ describe("Conversation", () => {
       ).toHaveTextContent("first");
     });
 
-    it("makes the viewport a focusable group named Messages", () => {
-      renderConversation();
+    it("puts the log role on the message column, so the scroll button sits outside it", () => {
+      const { viewport } = renderConversation();
+      release(viewport);
 
-      const viewport = screen.getByRole("group", { name: "Messages" });
-      expect(viewport).toHaveAttribute("data-slot", "conversation-viewport");
-      expect(viewport).toHaveAttribute("tabindex", "0");
+      const log = screen.getByRole("log", { name: "Conversation" });
+      expect(log).toHaveAttribute("data-slot", "conversation-content");
+      expect(log).toHaveTextContent("first");
+      const button = scrollButton();
+      expect(button).toBeInTheDocument();
+      expect(log).not.toContainElement(button);
+      expect(viewport).not.toContainElement(button);
+    });
+
+    it("lets a caller rename the log with aria-label or aria-labelledby", () => {
+      const { rerender } = render(
+        <Conversation>
+          <ConversationContent aria-label="Chat with UIID">
+            x
+          </ConversationContent>
+        </Conversation>,
+      );
+      expect(
+        screen.getByRole("log", { name: "Chat with UIID" }),
+      ).toBeInTheDocument();
+
+      rerender(
+        <Conversation>
+          <h2 id="chat-heading">Support chat</h2>
+          <ConversationContent aria-labelledby="chat-heading">
+            x
+          </ConversationContent>
+        </Conversation>,
+      );
+      expect(
+        screen.getByRole("log", { name: "Support chat" }),
+      ).toBeInTheDocument();
+    });
+
+    it("puts the viewport in the tab order, so the keyboard can scroll it", async () => {
+      const user = userEvent.setup();
+      const { viewport } = renderConversation();
+
+      await user.tab();
+      expect(viewport).toHaveFocus();
     });
 
     it("passes Box props through to the root", () => {
