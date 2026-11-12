@@ -213,6 +213,21 @@ describe("Field action slot", () => {
     expect(action?.querySelector("button")?.textContent).toBe("Reset");
   });
 
+  /* The end group carries the auto start margin that keeps an action on the
+     right when no label pushes it there. */
+  it("puts the action inside the label row's end group when there is no label", () => {
+    const { container } = render(
+      <Field action={<button type="button">Reset</button>}>
+        <input />
+      </Field>,
+    );
+    const action = container.querySelector("[data-slot='field-action']");
+    expect(action?.parentElement).toHaveClass(styles["field-label-end"]);
+    expect(
+      container.querySelector("[data-slot='field-label']"),
+    ).not.toBeInTheDocument();
+  });
+
   it("renders a FieldHint as action content", () => {
     render(
       <Field label="Email" action={<FieldHint text="Optional" />}>

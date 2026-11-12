@@ -105,9 +105,10 @@ export const WithHint = () => (
 
 /*
  * `action` takes any node, so the label row can carry something interactive.
- * The reset only renders once a channel is picked. An `xsmall` button stands
- * taller than the label row, so the row grows to hold it rather than letting
- * it overlap the label or the control.
+ * An `xsmall` button stands taller than the label row, so the row grows to
+ * hold it. The reset therefore stays rendered and is only disabled until a
+ * channel is picked: rendering it on pick would grow the row and move the
+ * control under the pointer.
  */
 export const WithAction = () => {
   const [channel, setChannel] = useState<string | null>(null);
@@ -120,15 +121,14 @@ export const WithAction = () => {
       value={channel}
       onValueChange={(value) => setChannel(value)}
       action={
-        channel && (
-          <Button
-            size="xsmall"
-            variant="ghost"
-            onClick={() => setChannel(null)}
-          >
-            Reset
-          </Button>
-        )
+        <Button
+          size="xsmall"
+          variant="ghost"
+          disabled={!channel}
+          onClick={() => setChannel(null)}
+        >
+          Reset
+        </Button>
       }
     />
   );
