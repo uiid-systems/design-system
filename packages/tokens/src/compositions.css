@@ -88,14 +88,26 @@
     --control-on-fill: var(--palette-on-fill);
   }
 
+  /*
+   * Drops the resting fill and edge so the control reads as text until it is
+   * hovered or focused. The placeholder takes the foreground while the control
+   * is idle. On a wrapper painting the surface around a slotted control, that
+   * is the control among its direct children, idle while it lacks focus
+   * itself: a focused button in a slot leaves the placeholder alone, and an
+   * input nested inside slot content is not reached, the same direct-child
+   * reading `composes-disabled-within` and `composes-invalid` use. The
+   * transition names `color`, the one property that changes.
+   */
   .composes-field-surface-ghost {
     background-color: transparent;
     border-color: transparent;
 
-    &::placeholder {
-      transition: all calc(var(--globals-transition-duration) / 2) ease-in-out;
+    &::placeholder,
+    & > ::placeholder {
+      transition: color calc(var(--globals-transition-duration) / 2) ease-in-out;
     }
-    &:not(:focus)::placeholder {
+    &:not(:focus)::placeholder,
+    &:not(:has(> :focus)) > ::placeholder {
       color: var(--shade-foreground);
     }
 
