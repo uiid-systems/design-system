@@ -43,6 +43,21 @@
   &:has(> .size-full) {
     padding-block-end: 1.5rem;
   }
+
+  /*
+   * Too short for a pinned header and footer to leave the body any room, so
+   * the whole popup scrolls in the viewport instead. The row grows with the
+   * popup, so it starts at the top rather than centring off-screen.
+   */
+  @media (max-height: 30rem) {
+    grid-template-rows: none;
+    padding: 0.75rem;
+    overflow-y: auto;
+
+    &:has(> .size-full) {
+      padding-block-end: 0.75rem;
+    }
+  }
 }
 
 /*
@@ -55,6 +70,10 @@
   width: 100%;
   max-height: 100%;
   pointer-events: auto;
+
+  @media (max-height: 30rem) {
+    max-height: none;
+  }
 
   /*
    * Content taller than the viewport scrolls in the body while the header and
@@ -72,6 +91,16 @@
     padding-inline: var(--card-padding-inline-start) var(--card-padding-inline-end);
     padding-block: var(--dialog-focus-ring-room);
     scroll-padding-block: var(--dialog-focus-ring-room);
+
+    /* A scrolling body is a tab stop; its ring sits inside, since it clips. */
+    &:focus-visible {
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: calc(-1 * var(--globals-outline-width));
+    }
+
+    @media (max-height: 30rem) {
+      overflow: visible;
+    }
   }
 
   & > :not([data-slot="card-inner-container"]) {

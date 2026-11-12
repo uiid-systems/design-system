@@ -3,7 +3,7 @@ import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 import { Footer } from "./dialog.examples";
@@ -596,6 +596,91 @@ describe("Dialog", () => {
       .querySelector(':scope > [data-slot="card-inner-container"]');
     expect(body).toHaveTextContent("Dialog content");
     expect(body).not.toHaveAttribute("data-ui-w");
+  });
+
+  /*
+   * happy-dom has no layout, so these stub the body's scroll and client
+   * heights. A body that overflows is the only way to scroll by keyboard when
+   * focus sits on the close button or the popup, so it becomes a tab stop.
+   */
+  describe("scrolling body", () => {
+    const stubHeights = (scrollHeight: number, clientHeight: number) => {
+      vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockReturnValue(
+        scrollHeight,
+      );
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(
+        clientHeight,
+      );
+    };
+    const body = () =>
+      screen
+        .getByRole("dialog")
+        .querySelector<HTMLElement>(
+          ':scope > [data-slot="card-inner-container"]',
+        );
+
+    afterEach(() => vi.restoreAllMocks());
+
+    it("makes a long body a tab stop and a region named by the title", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(
+        within(screen.getByRole("dialog")).getByRole("region", {
+          name: "Terms",
+        }),
+      ).toBe(body());
+    });
+
+    it("reaches a long body by Tab from the close button", async () => {
+      stubHeights(1000, 400);
+      const user = userEvent.setup();
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+
+      screen.getByRole("button", { name: "Close" }).focus();
+      await user.tab();
+      expect(body()).toHaveFocus();
+    });
+
+    it("leaves a short body out of the tab order", async () => {
+      stubHeights(400, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Short content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("tabindex");
+      expect(body()).not.toHaveAttribute("role");
+    });
+
+    it("leaves the region role off a long body without a title", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Dialog
+          open={true}
+          onOpenChange={() => {}}
+          PopupProps={{ "aria-label": "Terms" }}
+        >
+          Long content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(body()).not.toHaveAttribute("role");
+      expect(body()).not.toHaveAttribute("aria-labelledby");
+    });
   });
 
   it("lets DialogClose take another Button variant", () => {
