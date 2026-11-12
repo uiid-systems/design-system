@@ -340,12 +340,13 @@ describe("Markdown", () => {
     it("applies to autolinks and reference links too", () => {
       const { container } = render(
         <Markdown overrides={overrides}>
-          {"<https://a.example> and [ref][r]\n\n[r]: https://b.example"}
+          {"<https://a.example>, see https://x.example now, [ref][r] and Hi[^1]\n\n" +
+            "[r]: https://b.example\n\n[^1]: the note"}
         </Markdown>,
       );
 
       const links = container.querySelectorAll("a");
-      expect(links).toHaveLength(2);
+      expect(links).toHaveLength(4);
       for (const link of links) {
         expect(link).toHaveAttribute("data-override", "a");
       }
@@ -360,6 +361,15 @@ describe("Markdown", () => {
       ["reference link", "[x][r]\n\n[r]: javascript:alert(1)", "a", "href"],
       ["javascript: image", "![x](javascript:alert(1))", "img", "src"],
       ["non-image data: image", "![x](data:text/html,hi)", "img", "src"],
+      ["tab-entity image", "![x](java&#9;script:alert(1))", "img", "src"],
+      ["newline-entity image", "![x](java&#10;script:alert(1))", "img", "src"],
+      [
+        "reference image",
+        "![x][r]\n\n[r]: java&#9;script:alert(1)",
+        "img",
+        "src",
+      ],
+      ["tab-entity link", "[x](java&#9;script:alert(1))", "a", "href"],
     ])(
       "still sanitizes a %s before the override sees it",
       (_name, markdown, tag, attribute) => {
@@ -370,7 +380,7 @@ describe("Markdown", () => {
             return <a {...props} />;
           },
           img: (props) => {
-            seen.push(typeof props.src === "string" ? props.src : undefined);
+            seen.push(props.src);
             return <img {...props} />;
           },
         };
@@ -382,6 +392,21 @@ describe("Markdown", () => {
         expect(container.querySelector(tag)).not.toHaveAttribute(attribute);
       },
     );
+
+    it("ignores keys other than a and img", () => {
+      const wide = {
+        ...overrides,
+        h1: () => <h1 data-override="h1" />,
+      } as MarkdownOverrides;
+      const { container } = render(
+        <Markdown overrides={wide}>{"# Title"}</Markdown>,
+      );
+
+      expect(container.querySelector("h1")).not.toHaveAttribute(
+        "data-override",
+      );
+      expect(container.querySelector("h1")).toHaveTextContent("Title");
+    });
 
     it("leaves every other element to Prose", () => {
       const { container } = render(

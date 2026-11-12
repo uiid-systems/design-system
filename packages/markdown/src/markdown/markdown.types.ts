@@ -3,12 +3,18 @@ import type { ComponentPropsWithoutRef, ComponentType } from "react";
 
 /**
  * Components that render markdown's links and images in place of `<a>` and
- * `<img>`. Each gets the element's props, with URLs already through
- * markdown-to-jsx's sanitizer.
+ * `<img>`. Each gets the element's props. `Markdown` drops `javascript:`,
+ * `vbscript:` and non-image `data:` URLs, including forms split by tabs or
+ * newlines, but that is a blocklist: before reusing a URL anywhere a browser
+ * navigates (an `href`, `window.open`), allowlist its scheme, for example
+ * `new URL(url, location.href).protocol` in `http:`/`https:` (plus `mailto:`
+ * for links).
  */
 export type MarkdownOverrides = {
   a?: ComponentType<ComponentPropsWithoutRef<"a">>;
-  img?: ComponentType<ComponentPropsWithoutRef<"img">>;
+  img?: ComponentType<
+    Omit<ComponentPropsWithoutRef<"img">, "src"> & { src?: string }
+  >;
 };
 
 export type MarkdownProps = Omit<ProseProps, "children"> & {
@@ -31,8 +37,8 @@ export type MarkdownProps = Omit<ProseProps, "children"> & {
   reveal?: boolean;
   /**
    * Render links and images with your own components, such as a link policy
-   * for untrusted text. Define the object once, outside render: a new object
-   * each render defeats `Markdown`'s memo.
+   * for untrusted text. Define the object and its components once, outside
+   * render: a new component each render remounts every link and image.
    */
   overrides?: MarkdownOverrides;
 };

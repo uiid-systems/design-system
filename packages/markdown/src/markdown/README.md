@@ -22,7 +22,7 @@ Read these before you swap it in for another renderer:
 - **`streaming` must be off on finished text.** Left on, a stray backtick or `[` the model never closed hides everything after it.
 - **A code span appears whole** on its closing backtick, and a table appears once its first data row arrives, rather than character by character.
 - **`reveal` makes it a client component.** Plain `Markdown` has no hooks and renders in a server component.
-- **The memo needs stable props.** A new `overrides` object or `render` element each render means `Markdown` recompiles every time; define them once, outside render.
+- **The memo needs stable props.** A new `overrides` object or `render` element each render means `Markdown` recompiles every time. Define the object and its components once, outside render: a new component each render remounts every link and image.
 
 ## Usage
 
@@ -78,7 +78,7 @@ Add `reveal` and each word fades and un-blurs in as it arrives, with the same mo
 
 ## Links and images
 
-Markdown from a model is untrusted, so the app decides which links stay clickable and whether images load. Pass components for `a` and `img`; each gets the element's props, with the URL already through `markdown-to-jsx`'s sanitizer. The `a` override renders every link, including autolinks, reference links and footnote links.
+Markdown from a model is untrusted, so the app decides which links stay clickable and whether images load. Pass components for `a` and `img`; each gets the element's props, with dangerous schemes already dropped (see [Security](#security)). That is a blocklist, so before an override reuses a URL anywhere a browser navigates, such as an `href` built from an image's `src` or a `window.open` call, allowlist the scheme: check that `new URL(url, location.href).protocol` is `http:` or `https:`, plus `mailto:` for links. The `a` override renders every link, including autolinks, reference links and footnote links.
 
 ```tsx
 import type { ComponentPropsWithoutRef } from "react";
@@ -88,7 +88,7 @@ const ExternalLink = (props: ComponentPropsWithoutRef<"a">) => (
   <a {...props} target="_blank" rel="noopener noreferrer" />
 );
 
-// Once, outside render, so Markdown's memo holds.
+// The object and its components once, outside render, so links don't remount.
 const overrides: MarkdownOverrides = { a: ExternalLink };
 
 <Markdown overrides={overrides}>{message.text}</Markdown>;
@@ -98,9 +98,9 @@ Overrides work with `streaming` and `reveal`: words inside a link fade in as the
 
 ## Security
 
-Raw HTML parsing is always off: any tag in the source renders as literal text, so a `<meta>` refresh, a `<form>`, a `<base>`, a stylesheet `<link>` or an `onerror` handler never reaches the DOM. Links and images go through `markdown-to-jsx`'s URL sanitizer, which drops `javascript:`, `vbscript:` and non-image `data:` URLs, including entity-encoded and uppercase forms, before your overrides see them: a dropped URL arrives as no `href` or `src` at all. The sanitizer cannot be replaced through `Markdown`. Nothing is injected with `dangerouslySetInnerHTML`.
+Raw HTML parsing is always off: any tag in the source renders as literal text, so a `<meta>` refresh, a `<form>`, a `<base>`, a stylesheet `<link>` or an `onerror` handler never reaches the DOM. Links and images go through `markdown-to-jsx`'s URL sanitizer, which drops `javascript:`, `vbscript:` and non-image `data:` URLs, including entity-encoded and uppercase forms. `Markdown` also runs it on the URL with control characters and spaces removed, because browsers strip tabs and newlines before reading a scheme: `![x](java&#9;script:alert(1))` decodes to `java<tab>script:`, which the default check misses. A dropped URL arrives at your override as no `href` or `src` at all. The sanitizer cannot be replaced through `Markdown`. Nothing is injected with `dangerouslySetInnerHTML`.
 
-An override can still undo this by what it renders, for example by reading the URL from somewhere other than its props. Treat an override as part of your link policy, not a way around it.
+This is a blocklist, not proof a URL is safe to reuse. An override that moves a URL somewhere a browser navigates should allowlist its scheme first, as above, and one that reads a URL from anywhere other than its props bypasses all of this.
 
 ## Notes
 
