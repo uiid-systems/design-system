@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import { InputControl } from "../input/subcomponents";
@@ -301,6 +302,16 @@ describe("Field bare mode", () => {
   it("stops being bare once it has a label", () => {
     const { container } = render(
       <Field label="Email">
+        <input />
+      </Field>,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+    expect(root?.className).not.toMatch(/field-root-bare/);
+  });
+
+  it("stops being bare once it has only a description", () => {
+    const { container } = render(
+      <Field description="Optional">
         <input />
       </Field>,
     );
@@ -715,6 +726,137 @@ describe("FieldDescription shade", () => {
     expect(screen.getByText("Help")).toHaveAttribute(
       "data-ui-shade",
       "foreground",
+    );
+  });
+});
+
+describe("Field wiring", () => {
+  it("labels the control it wraps, with a string or a node label", () => {
+    render(
+      <>
+        <Field label="Email">
+          <FieldControl />
+        </Field>
+        <Field label={<span>Phone</span>}>
+          <FieldControl />
+        </Field>
+      </>,
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "data-slot",
+      "field-control",
+    );
+    expect(screen.getByLabelText("Phone")).toHaveAttribute(
+      "data-slot",
+      "field-control",
+    );
+  });
+
+  it("describes the control it wraps", () => {
+    render(
+      <Field label="Email" description="We'll never share your email.">
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByLabelText("Email")).toHaveAccessibleDescription(
+      "We'll never share your email.",
+    );
+  });
+
+  it("disables an InputControl it wraps and hands it the field's name", () => {
+    render(
+      <Field label="Email" name="email" disabled>
+        <InputControl />
+      </Field>,
+    );
+    expect(screen.getByLabelText("Email")).toBeDisabled();
+    expect(screen.getByLabelText("Email")).toHaveAttribute("name", "email");
+  });
+
+  it("leaves a root nested in a required field unrequired", () => {
+    render(
+      <Field label="Address" required>
+        <FieldControl />
+        <FieldRoot>
+          <FieldLabel>Line 2</FieldLabel>
+          <FieldControl />
+        </FieldRoot>
+      </Field>,
+    );
+    expect(screen.getByLabelText("Address")).toBeRequired();
+    expect(screen.getByLabelText("Line 2")).not.toBeRequired();
+  });
+
+  it("keeps the label's required in step with the field's", () => {
+    render(
+      <Field
+        label="Email"
+        // @ts-expect-error `required` belongs to Field, not its label
+        LabelProps={{ required: true }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByText("Email")).not.toHaveAttribute("data-required");
+    expect(screen.getByLabelText("Email")).not.toBeRequired();
+  });
+
+  it("lets DescriptionProps override the description's muted shade", () => {
+    render(
+      <Field description="Help" DescriptionProps={{ shade: "foreground" }}>
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByText("Help")).toHaveAttribute(
+      "data-ui-shade",
+      "foreground",
+    );
+  });
+});
+
+describe("Field validation", () => {
+  it("shows the validate message inline once the value fails", async () => {
+    const user = userEvent.setup();
+    render(
+      <Field
+        label="Username"
+        validationMode="onChange"
+        validate={(value) => (value === "admin" ? "That name is taken" : null)}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.queryByText("That name is taken")).not.toBeInTheDocument();
+
+    await user.type(screen.getByLabelText("Username"), "admin");
+
+    expect(screen.getByText("That name is taken")).toHaveAttribute(
+      "data-slot",
+      "field-error",
+    );
+    expect(screen.getByLabelText("Username")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+  });
+
+  it("shows an externally driven error through invalid and match", () => {
+    render(
+      <Field
+        label="Email"
+        invalid
+        ErrorProps={{ match: true, children: "Email is required" }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByText("Email is required")).toHaveAttribute(
+      "data-slot",
+      "field-error",
+    );
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-invalid",
+      "true",
     );
   });
 });

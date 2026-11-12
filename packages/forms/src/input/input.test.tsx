@@ -1,12 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "@uiid/buttons";
+import React from "react";
 import { createPortal } from "react-dom";
 import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Input } from "./input";
 import { INPUT_SLOT_INTERACTIVE } from "./input.constants";
+import { inputControlClassName } from "./input.styles";
 import { hasInputSlots } from "./input.utils";
 import { inputWrapperVariants } from "./input.variants";
 import { InputControl, InputWrapper } from "./subcomponents";
@@ -688,5 +690,297 @@ describe("Input slot pointer events", () => {
     expect(rule).not.toBeNull();
     const reEnabled = rule![1].split(/,\s*/).map((selector) => selector.trim());
     expect(reEnabled).toEqual(expect.arrayContaining(INPUT_SLOT_INTERACTIVE));
+  });
+});
+
+describe("InputControl", () => {
+  it("renders an input carrying the input slot", () => {
+    render(<InputControl />);
+    expect(screen.getByRole("textbox").tagName).toBe("INPUT");
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-slot", "input");
+  });
+
+  it("forwards its ref to the input", () => {
+    const ref = React.createRef<HTMLInputElement>();
+    render(<InputControl ref={ref} />);
+    expect(ref.current).toBe(screen.getByRole("textbox"));
+  });
+
+  it("reports onValueChange as the user types", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<InputControl onValueChange={onValueChange} />);
+
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(onValueChange).toHaveBeenLastCalledWith("hi", expect.anything());
+  });
+
+  it("keeps a string className alongside its own", () => {
+    render(<InputControl className="extra" />);
+    expect(screen.getByRole("textbox")).toHaveClass(styles["input"], "extra");
+  });
+
+  it("keeps the hue off the native color attribute", () => {
+    render(<InputControl color="blue" />);
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("color");
+  });
+});
+
+describe("inputControlClassName", () => {
+  it("returns the bare surface at the medium tier by default", () => {
+    // Composed modules resolve to several space-separated names, so match substrings.
+    const classes = inputControlClassName();
+    expect(classes).toContain(styles["input"]);
+    expect(classes).toContain(styles["input-size-medium"]);
+  });
+
+  it("returns only the inner treatment, plus a className, when inner", () => {
+    expect(
+      inputControlClassName({
+        inner: true,
+        size: "large",
+        color: "blue",
+        className: "extra",
+      }),
+    ).toBe(`${styles["input-inner"]} extra`);
+  });
+});
+
+describe("Input props and state", () => {
+  it("forwards additional props to the input", () => {
+    render(<Input type="email" maxLength={20} autoComplete="email" />);
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveAttribute("type", "email");
+    expect(input).toHaveAttribute("maxlength", "20");
+    expect(input).toHaveAttribute("autocomplete", "email");
+  });
+
+  it("forwards its ref to the input, with or without a label", () => {
+    const bare = React.createRef<HTMLInputElement>();
+    const labelled = React.createRef<HTMLInputElement>();
+    render(
+      <>
+        <Input ref={bare} aria-label="Bare" />
+        <Input ref={labelled} label="Labelled" />
+      </>,
+    );
+    expect(bare.current).toBe(screen.getByLabelText("Bare"));
+    expect(labelled.current).toBe(screen.getByLabelText("Labelled"));
+  });
+
+  it("is reached by keyboard", async () => {
+    const user = userEvent.setup();
+    render(<Input />);
+
+    await user.tab();
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("renders with defaultValue", () => {
+    render(<Input defaultValue="Initial" />);
+    expect(screen.getByRole("textbox")).toHaveValue("Initial");
+  });
+
+  it("drives a controlled value through onValueChange", async () => {
+    const user = userEvent.setup();
+    const Controlled = () => {
+      const [value, setValue] = React.useState("");
+      return <Input value={value} onValueChange={setValue} />;
+    };
+    render(<Controlled />);
+
+    await user.type(screen.getByRole("textbox"), "hi");
+    expect(screen.getByRole("textbox")).toHaveValue("hi");
+  });
+
+  it("drops data-filled when a controlled value is cleared from outside", () => {
+    const { rerender } = render(<Input value="hi" onChange={() => {}} />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-filled");
+
+    rerender(<Input value="" onChange={() => {}} />);
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("data-filled");
+  });
+
+  it("takes no typing while disabled, and disables the field around it", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Input label="Email" disabled />);
+
+    await user.type(screen.getByRole("textbox"), "hi");
+
+    expect(screen.getByRole("textbox")).toHaveValue("");
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-disabled",
+    );
+  });
+
+  it("can be read only", async () => {
+    const user = userEvent.setup();
+    render(<Input readOnly defaultValue="Fixed" />);
+
+    await user.type(screen.getByRole("textbox"), "!");
+    expect(screen.getByRole("textbox")).toHaveValue("Fixed");
+  });
+});
+
+describe("Input field chrome", () => {
+  it("describes the input with its description", () => {
+    render(<Input label="Email" description="We never share it." />);
+    expect(screen.getByRole("textbox")).toHaveAccessibleDescription(
+      "We never share it.",
+    );
+  });
+
+  it("renders an action beside the label", () => {
+    render(<Input label="Password" action={<a href="#reset">Forgot?</a>} />);
+    expect(
+      screen
+        .getByRole("link", { name: "Forgot?" })
+        .closest("[data-slot='field-action']"),
+    ).not.toBeNull();
+  });
+
+  it("keeps a caller's id wired to the label", async () => {
+    const user = userEvent.setup();
+    render(<Input id="email" label="Email" />);
+
+    expect(screen.getByRole("textbox")).toHaveAttribute("id", "email");
+    await user.click(screen.getByText("Email"));
+    expect(screen.getByRole("textbox")).toHaveFocus();
+  });
+
+  it("reaches the field around it through FieldProps", () => {
+    const { container } = render(<Input FieldProps={{ className: "outer" }} />);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
+      "outer",
+    );
+  });
+
+  it("is marked invalid, with the error shown, when the field is driven invalid", () => {
+    render(
+      <Input
+        label="Email"
+        FieldProps={{
+          invalid: true,
+          ErrorProps: { match: true, children: "Enter an email" },
+        }}
+      />,
+    );
+    const input = screen.getByRole("textbox");
+
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("data-invalid");
+    expect(screen.getByText("Enter an email")).toHaveAttribute(
+      "data-slot",
+      "field-error",
+    );
+  });
+
+  it("reads invalid and disabled states off the bare input", () => {
+    render(<Input disabled aria-invalid="true" />);
+    const input = screen.getByRole("textbox");
+
+    expect(matchesComposition(input, "invalid")).toBe(true);
+    expect(matchesComposition(input, "disabled")).toBe(true);
+  });
+});
+
+/*
+ * react-hook-form's `register` hands back `name`, `onChange`, `onBlur` and a
+ * callback `ref`, spread straight onto the control.
+ */
+describe("Input with a register-shaped spread", () => {
+  it.each([
+    ["Input", Input],
+    ["InputControl", InputControl],
+  ])(
+    "lands name, ref and the change and blur handlers on %s",
+    async (_, Component) => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      const onBlur = vi.fn();
+      let registered: HTMLInputElement | null = null;
+      const ref = (element: HTMLInputElement | null) => {
+        registered = element;
+      };
+
+      render(<Component {...{ name: "email", onChange, onBlur, ref }} />);
+      const input = screen.getByRole("textbox");
+      await user.type(input, "hi");
+      await user.tab();
+
+      expect(registered).toBe(input);
+      expect(input).toHaveAttribute("name", "email");
+      expect(onChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({ target: input }),
+      );
+      expect(onBlur).toHaveBeenCalled();
+    },
+  );
+});
+
+describe("Input before/after slots", () => {
+  it("treats an empty list as no slot", () => {
+    const { container } = render(<Input before={[]} after={[null, false]} />);
+
+    expect(container.querySelector("[data-slot='input-wrapper']")).toHaveClass(
+      styles["input-wrapper-bare"],
+    );
+    expect(screen.getByRole("textbox")).not.toHaveClass(styles["input-inner"]);
+  });
+
+  it("renders 0 inside the slot rather than beside it", () => {
+    const { container } = render(<Input after={0} />);
+    expect(
+      container.querySelector("[data-slot='input-after']"),
+    ).toHaveTextContent("0");
+  });
+
+  it("orders the parts as before, input, after", () => {
+    const { container } = render(<Input before="$" after="USD" />);
+    const parts = Array.from(
+      container.querySelector("[data-slot='input-wrapper']")?.children ?? [],
+    ).map((el) => el.getAttribute("data-slot"));
+
+    expect(parts).toEqual(["input-before", "input", "input-after"]);
+  });
+
+  it("still lands ref, name and className on the input", () => {
+    const ref = React.createRef<HTMLInputElement>();
+    render(<Input before="$" ref={ref} name="amount" className="custom" />);
+    const input = screen.getByRole("textbox");
+
+    expect(ref.current).toBe(input);
+    expect(input).toHaveAttribute("name", "amount");
+    expect(input).toHaveClass("custom");
+  });
+
+  it("keeps the label and description wired to the slotted input", () => {
+    render(
+      <Input before="$" after="USD" label="Amount" description="Before tax." />,
+    );
+
+    expect(screen.getByLabelText("Amount")).toBe(screen.getByRole("textbox"));
+    expect(screen.getByRole("textbox")).toHaveAccessibleDescription(
+      "Before tax.",
+    );
+  });
+
+  it("still reports onValueChange from the slotted input", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<Input after="USD" onValueChange={onValueChange} />);
+
+    await user.type(screen.getByRole("textbox"), "12");
+    expect(onValueChange).toHaveBeenLastCalledWith("12", expect.anything());
+  });
+
+  it("puts a button in the after slot next in tab order", async () => {
+    const user = userEvent.setup();
+    render(<Input after={<button type="button">Action</button>} />);
+
+    screen.getByRole("textbox").focus();
+    await user.tab();
+    expect(screen.getByRole("button", { name: "Action" })).toHaveFocus();
   });
 });
