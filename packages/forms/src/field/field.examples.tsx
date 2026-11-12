@@ -105,9 +105,9 @@ export const WithHint = () => (
 
 /*
  * `action` takes any node, so the label row can carry something interactive.
- * The reset only renders once a channel is picked, and the row reserves the
- * height of an `xsmall` button either way, so the control never shifts as it
- * appears and disappears.
+ * The reset only renders once a channel is picked. An `xsmall` button stands
+ * taller than the label row, so the row grows to hold it rather than letting
+ * it overlap the label or the control.
  */
 export const WithAction = () => {
   const [channel, setChannel] = useState<string | null>(null);

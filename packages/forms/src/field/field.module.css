@@ -31,14 +31,17 @@
   min-height: var(--field-label-group-min-height);
 }
 
-/* The action slot takes any node, so its tallest intended occupant — an
-   `xsmall` Button at 1.75rem — stands 0.5rem taller than the row reserves. A
-   negative block margin spends that difference on the margin box instead of the
-   row, keeping the label row one height whether the slot is empty, holds a
-   `FieldHint` icon, or holds a button. Without it, an action that only appears
-   once a value is picked would push the control down the moment it rendered. */
+/* The end of the label row, holding the error tooltip and the action. The auto
+   start margin keeps it on the right when there is no label to push it there,
+   and it holds its width so a long label wraps instead of squeezing it. An
+   action taller than the row, such as an `xsmall` Button, grows the row rather
+   than bleeding into the label or the control. `FieldAction` takes the same
+   rules so it sits the same way when composed straight into a row. */
+.field-label-end,
 .field-action {
-  margin-block: calc((var(--field-label-group-min-height) - var(--forms-size-xs-height)) / 2);
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Base UI stamps `data-disabled` on the label and description from the root,

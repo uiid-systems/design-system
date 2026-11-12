@@ -71,7 +71,7 @@ export const Field = ({
             </FieldLabel>
           )}
 
-          <Group ay="center">
+          <Group className={styles["field-label-end"]} ay="center">
             {errorType === "tooltip" && <FieldErrorTooltip {...ErrorProps} />}
             {hasAction && <FieldAction {...ActionProps}>{Action}</FieldAction>}
           </Group>
