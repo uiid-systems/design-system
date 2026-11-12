@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.9.0](https://github.com/uiid-systems/design-system/compare/v0.8.0...v0.9.0) (2026-11-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** Conversation's root no longer has role="log". The log is now the ConversationContent column, named "Conversation". Queries for the "Messages" group on the viewport no longer match.
+* **ui:** typed toasts are colored by default; data.color now only overrides. The spinner slot `toast-spinner` is now `toast-icon`. ToastRoot no longer renders as a Card, so its className reaches the positioned element, not the surface.
+* **ui:** Conversation's root no longer has role="log". The log is now the ConversationContent column, named "Conversation". Queries for the "Messages" group on the viewport no longer match.
+
+### Features
+
+* **ui:** add link and image overrides to Markdown ([#544](https://github.com/uiid-systems/design-system/issues/544)) ([7b7f24e](https://github.com/uiid-systems/design-system/commit/7b7f24eeec745cf7f55ee51ef89caa0cae909068))
+* **ui:** add viewportRef to ConversationContent and headingLevel to its empty state ([#543](https://github.com/uiid-systems/design-system/issues/543)) ([847272b](https://github.com/uiid-systems/design-system/commit/847272bc59dd44b129b2d67ef3097d41c7c34822))
+* **ui:** give each toast type an icon and hue, and split ToastRoot from its surface ([#548](https://github.com/uiid-systems/design-system/issues/548)) ([55f2d64](https://github.com/uiid-systems/design-system/commit/55f2d64669f1ed8ef631d0a3a9a8324c7e6c40ff))
+* **ui:** move Conversation's log role to the message column ([#540](https://github.com/uiid-systems/design-system/issues/540)) ([ca2773c](https://github.com/uiid-systems/design-system/commit/ca2773cd80a3139508691698bfecad34e0fa1df6))
+* **ui:** publish Card's inline padding as custom properties ([#546](https://github.com/uiid-systems/design-system/issues/546)) ([bea22d3](https://github.com/uiid-systems/design-system/commit/bea22d38f8ade329706d2e0f8b6e016d6bca257d))
+* **ui:** scroll only the Dialog body, keeping the header and footer in view ([#547](https://github.com/uiid-systems/design-system/issues/547)) ([c8fac64](https://github.com/uiid-systems/design-system/commit/c8fac64430a43c6c62fc986dec39fdefe2cf3d9c))
+
+
+### Bug Fixes
+
+* **tokens:** give a slotted ghost Input or Textarea the ghost placeholder ([#549](https://github.com/uiid-systems/design-system/issues/549)) ([8e07bfa](https://github.com/uiid-systems/design-system/commit/8e07bfa5e21daad168a068905e1e50bddec60281))
+* **ui:** honor cancel in Reasoning's onOpenChange and measure before paint ([#541](https://github.com/uiid-systems/design-system/issues/541)) ([dd18aa4](https://github.com/uiid-systems/design-system/commit/dd18aa465250e800aeea4a1a5d71321ebd7d0a83))
+* **ui:** keep Field's action at the label row's end without overlap ([#542](https://github.com/uiid-systems/design-system/issues/542)) ([6954dfd](https://github.com/uiid-systems/design-system/commit/6954dfd0b6fcd888a0a311086930ea950d78fc39))
+* **ui:** round Tool's trigger to the card's inner radius ([#545](https://github.com/uiid-systems/design-system/issues/545)) ([131498a](https://github.com/uiid-systems/design-system/commit/131498a69d5de2ab89eaf83b7d1cb4b07eb1f8a9))
+
 ## [0.8.0](https://github.com/uiid-systems/design-system/compare/v0.7.2...v0.8.0) (2026-11-10)
 
 
