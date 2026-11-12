@@ -1,6 +1,5 @@
 "use client";
 
-import { LoadingSpinnerIcon } from "@uiid/icons/loading-spinner";
 import { Group, Stack } from "@uiid/layout";
 import { isRenderable } from "@uiid/utils";
 
@@ -18,6 +17,8 @@ import {
   TOAST_DEFAULT_POSITION,
   TOAST_LOADING_TYPE,
   TOAST_SWIPE_DIRECTIONS,
+  TOAST_TYPES,
+  isToastType,
 } from "./toast.constants";
 import { useToastManager } from "./toast.hooks";
 import type { ToastObject, ToastRootProps, ToasterProps } from "./toast.types";
@@ -31,26 +32,43 @@ type ToastItemProps = {
 
 const ToastItem = ({ toast, swipeDirection }: ToastItemProps) => {
   const { children, color, closable } = toast.data ?? {};
-  const loading = toast.type === TOAST_LOADING_TYPE;
-  const showClose = closable ?? !loading;
+  const { icon: Icon, color: typeColor } = isToastType(toast.type)
+    ? TOAST_TYPES[toast.type]
+    : {};
+  const showClose = closable ?? toast.type !== TOAST_LOADING_TYPE;
 
   return (
-    <ToastRoot toast={toast} color={color} swipeDirection={swipeDirection}>
+    <ToastRoot
+      toast={toast}
+      color={color ?? typeColor}
+      swipeDirection={swipeDirection}
+    >
       <ToastContent>
-        <Group ay="center" gap={3} fullwidth>
-          {loading && (
-            <LoadingSpinnerIcon
+        <Group ay="start" gap={3} w="full">
+          {Icon && (
+            <Group
               aria-hidden
-              data-slot="toast-spinner"
-              className={styles["toast-spinner"]}
-            />
+              data-slot="toast-icon"
+              ay="center"
+              className={styles["toast-first-line"]}
+            >
+              <Icon />
+            </Group>
           )}
           <Stack gap={0.5} className={styles["toast-lockup"]}>
             {isRenderable(toast.title) && <ToastTitle />}
             {isRenderable(toast.description) && <ToastDescription />}
           </Stack>
-          {toast.actionProps && <ToastAction />}
-          {showClose && <ToastClose />}
+          {toast.actionProps && (
+            <Group ay="center" className={styles["toast-first-line"]}>
+              <ToastAction />
+            </Group>
+          )}
+          {showClose && (
+            <Group ay="center" className={styles["toast-first-line"]}>
+              <ToastClose />
+            </Group>
+          )}
         </Group>
         {children}
       </ToastContent>

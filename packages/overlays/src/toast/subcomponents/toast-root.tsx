@@ -9,15 +9,25 @@ import type { ToastRootProps } from "../toast.types";
 import styles from "../toast.module.css";
 
 /**
- * The toast surface, rendered as a Card so it matches the other overlays. The
- * hue goes to Card, which owns the palette class; everything else is Base UI's.
+ * The root places and animates the toast; the `Card` inside it is the surface
+ * and takes the hue. Keeping them on separate elements means Card's own
+ * `position` and padding never compete with the stacking styles in the
+ * cascade.
  */
-export const ToastRoot = ({ color, className, ...props }: ToastRootProps) => (
+export const ToastRoot = ({
+  color,
+  className,
+  children,
+  ...props
+}: ToastRootProps) => (
   <BaseToast.Root
     data-slot="toast"
     className={cxState(styles["toast"], className)}
-    render={<Card color={color} />}
     {...props}
-  />
+  >
+    <Card color={color} w="full" py={3} className={styles["toast-surface"]}>
+      {children}
+    </Card>
+  </BaseToast.Root>
 );
 ToastRoot.displayName = "ToastRoot";

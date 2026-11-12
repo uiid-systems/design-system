@@ -20,8 +20,13 @@ export const TitleAndDescription: Story = {
   render: () => <Examples.TitleAndDescription />,
 };
 
+/** One button per type: each shows its icon and hue. */
 export const Types: Story = { render: () => <Examples.Types /> };
 
+/** A loading toast settling into a success or an error, by hand and through `promise()`. */
+export const Loading: Story = { render: () => <Examples.Loading /> };
+
+/** `data.color` overriding the hue a type gives the surface. */
 export const Color: Story = { render: () => <Examples.Color /> };
 
 export const Action: Story = { render: () => <Examples.Action /> };
