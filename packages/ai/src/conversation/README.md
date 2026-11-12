@@ -69,7 +69,7 @@ The region starts pinned and opens at its newest message. While pinned, content 
 
 Any scroll up releases the pin, however small, so an arrow key or a slow trackpad lets go even while tokens arrive. The button appears, and content that arrives afterwards does not move the reader. Scrolling back down within 70 px of the bottom re-pins without pressing anything. The button scrolls to the bottom and re-pins; its scroll is smooth by default and instant under `prefers-reduced-motion: reduce`, through the scroller's CSS `scroll-behavior`.
 
-The viewport is in the tab order, so the keyboard can scroll it in every browser, including Safari, which does not make a scroll container focusable on its own. It draws an inset focus ring, since the region clips anything outside it. Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
+The viewport is in the tab order, so the keyboard can scroll it in every browser, including Safari, which does not make a scroll container focusable on its own. It is an unnamed scroll container: its content is announced through the log inside it. It draws an inset focus ring, since the region clips anything outside it. Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
 
 A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region has nowhere to scroll, so the button never shows for it. If the region grows, or content shrinks, until a scrolled-up reader is at the bottom, the region re-pins.
 

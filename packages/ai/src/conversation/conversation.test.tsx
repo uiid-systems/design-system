@@ -139,7 +139,10 @@ describe("Conversation", () => {
       const log = screen.getByRole("log", { name: "Conversation" });
       expect(log).toHaveAttribute("data-slot", "conversation-content");
       expect(log).toHaveTextContent("first");
-      expect(log).not.toContainElement(scrollButton());
+      const button = scrollButton();
+      expect(button).toBeInTheDocument();
+      expect(log).not.toContainElement(button);
+      expect(viewport).not.toContainElement(button);
     });
 
     it("lets a caller rename the log with aria-label or aria-labelledby", () => {
@@ -171,7 +174,6 @@ describe("Conversation", () => {
       const user = userEvent.setup();
       const { viewport } = renderConversation();
 
-      expect(viewport).toHaveAttribute("tabindex", "0");
       await user.tab();
       expect(viewport).toHaveFocus();
     });
