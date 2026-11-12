@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
@@ -619,9 +619,12 @@ describe("Dialog", () => {
           ':scope > [data-slot="card-inner-container"]',
         );
 
-    afterEach(() => vi.restoreAllMocks());
+    afterEach(() => {
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    });
 
-    it("makes a long body a tab stop and a region named by the title", async () => {
+    it("makes a long body a tab stop, with no role of its own", async () => {
       stubHeights(1000, 400);
       render(
         <Dialog open={true} onOpenChange={() => {}} title="Terms">
@@ -630,11 +633,8 @@ describe("Dialog", () => {
       );
 
       await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
-      expect(
-        within(screen.getByRole("dialog")).getByRole("region", {
-          name: "Terms",
-        }),
-      ).toBe(body());
+      expect(body()).not.toHaveAttribute("role");
+      expect(body()).not.toHaveAttribute("aria-labelledby");
     });
 
     it("reaches a long body by Tab from the close button", async () => {
@@ -662,24 +662,41 @@ describe("Dialog", () => {
 
       await waitFor(() => expect(body()).toBeInTheDocument());
       expect(body()).not.toHaveAttribute("tabindex");
-      expect(body()).not.toHaveAttribute("role");
     });
 
-    it("leaves the region role off a long body without a title", async () => {
+    /*
+     * Dropping the tab stop under focus would send focus to the document, so a
+     * focused body keeps it until focus leaves. ResizeObserver is captured so
+     * the test can report the resize happy-dom never would.
+     */
+    it("keeps a focused body's tab stop when it stops overflowing, until blur", async () => {
+      const resizes: (() => void)[] = [];
+      vi.stubGlobal(
+        "ResizeObserver",
+        class {
+          constructor(callback: () => void) {
+            resizes.push(callback);
+          }
+          observe() {}
+          disconnect() {}
+        },
+      );
       stubHeights(1000, 400);
       render(
-        <Dialog
-          open={true}
-          onOpenChange={() => {}}
-          PopupProps={{ "aria-label": "Terms" }}
-        >
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
           Long content
         </Dialog>,
       );
-
       await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
-      expect(body()).not.toHaveAttribute("role");
-      expect(body()).not.toHaveAttribute("aria-labelledby");
+      body()!.focus();
+
+      stubHeights(400, 400);
+      act(() => resizes.forEach((resize) => resize()));
+      expect(body()).toHaveAttribute("tabindex", "0");
+      expect(body()).toHaveFocus();
+
+      act(() => screen.getByRole("button", { name: "Close" }).focus());
+      await waitFor(() => expect(body()).not.toHaveAttribute("tabindex"));
     });
   });
 

@@ -2,8 +2,7 @@
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Card, type CardProps } from "@uiid/cards";
-import { cxState, isRenderable } from "@uiid/utils";
-import { useId } from "react";
+import { cxState } from "@uiid/utils";
 
 import { useBodyOverflow } from "../dialog.hooks";
 import type { DialogPopupProps } from "../dialog.types";
@@ -24,7 +23,7 @@ import styles from "../dialog.module.css";
  * caller's.
  *
  * The body scrolls on its own (dialog.module.css). While it overflows it is a
- * tab stop, so the keyboard can scroll it, and a region named by the title.
+ * tab stop, so the keyboard can scroll it.
  */
 export const DialogPopup = ({
   size,
@@ -37,19 +36,14 @@ export const DialogPopup = ({
   children,
   ...props
 }: DialogPopupProps) => {
-  const titleId = useId();
   const { ref: bodyRef, overflows } = useBodyOverflow();
-  const hasTitle = isRenderable(title);
 
   const bodyProps: CardProps["InnerContainerProps"] = {
     // The body stretches past the card's padding to its edges, which Card's
     // `w="full"` of the content box would stop short of.
     w: undefined,
     ref: bodyRef,
-    ...(overflows && {
-      tabIndex: 0,
-      ...(hasTitle && { role: "region", "aria-labelledby": titleId }),
-    }),
+    ...(overflows && { tabIndex: 0 }),
   };
 
   return (
@@ -77,7 +71,7 @@ export const DialogPopup = ({
           footer={footer}
           shadow
           FooterProps={{ hideSeparator: false }}
-          TitleProps={{ render: <BaseDialog.Title id={titleId} /> }}
+          TitleProps={{ render: <BaseDialog.Title /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}
           InnerContainerProps={bodyProps}
         />
