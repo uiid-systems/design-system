@@ -6,6 +6,23 @@ import { CARD_DEFAULT_COLOR } from "./card.constants";
 
 import styles from "./card.module.css";
 
+const PADDING_KEYS = ["pt", "pb", "pl", "pr", "p", "px", "py"] as const;
+
+/** The padding style props on `el`, by key. */
+const padding = (el: Element | null) =>
+  Object.fromEntries(
+    PADDING_KEYS.flatMap((key) => {
+      const value = el?.getAttribute(`data-ui-${key}`);
+      return value == null ? [] : [[key, value]];
+    }),
+  );
+
+/** All four sides at `n`, as Card writes them. */
+const sides = (n: number) => {
+  const value = String(n);
+  return { pt: value, pb: value, pl: value, pr: value };
+};
+
 describe("Card", () => {
   it("renders the title and description slots", () => {
     render(<Card title="Card title" description="Supporting copy" />);
@@ -184,6 +201,133 @@ describe("Card", () => {
     expect(container.firstElementChild).toHaveClass("palette-blue");
   });
 
+  /*
+   * Card resolves its padding per side so it can publish the inline sides as
+   * --card-padding-inline-start/-end for children that reach its edge.
+   */
+  describe("padding", () => {
+    const root = (container: HTMLElement) =>
+      container.firstElementChild as HTMLElement;
+    const vars = (container: HTMLElement) => ({
+      start: root(container).style.getPropertyValue(
+        "--card-padding-inline-start",
+      ),
+      end: root(container).style.getPropertyValue("--card-padding-inline-end"),
+    });
+    const inline = (n: number) => `calc(${n} * var(--spacing-inline))`;
+
+    it("leaves the default padding and its variables to the stylesheet", () => {
+      const { container } = render(<Card title="Title">Body</Card>);
+
+      expect(padding(root(container))).toEqual({});
+      expect(vars(container)).toEqual({ start: "", end: "" });
+    });
+
+    it("publishes p, px, pl and pr as the inline padding variables", () => {
+      const { container, rerender } = render(<Card p={6}>Body</Card>);
+      expect(vars(container)).toEqual({ start: inline(6), end: inline(6) });
+
+      rerender(<Card p={0}>Body</Card>);
+      expect(vars(container)).toEqual({ start: inline(0), end: inline(0) });
+
+      rerender(
+        <Card p={6} px={2}>
+          Body
+        </Card>,
+      );
+      expect(vars(container)).toEqual({ start: inline(2), end: inline(2) });
+
+      rerender(
+        <Card px={3} pl={2} pr={4}>
+          Body
+        </Card>,
+      );
+      expect(vars(container)).toEqual({ start: inline(2), end: inline(4) });
+      expect(padding(root(container))).toEqual({ pl: "2", pr: "4" });
+    });
+
+    it("resolves each side, so a side prop beats its axis and the axis beats p", () => {
+      const { container } = render(
+        <Card p={6} py={2} pl={1}>
+          Body
+        </Card>,
+      );
+
+      expect(padding(root(container))).toEqual({
+        pt: "2",
+        pb: "2",
+        pl: "1",
+        pr: "6",
+      });
+    });
+
+    it("lets props override the shell's padding, and ContainerProps override props", () => {
+      const { container, rerender } = render(<Card variant="shell">Body</Card>);
+      expect(vars(container)).toEqual({ start: inline(6), end: inline(6) });
+
+      rerender(
+        <Card variant="shell" p={2}>
+          Body
+        </Card>,
+      );
+      expect(vars(container)).toEqual({ start: inline(2), end: inline(2) });
+
+      rerender(
+        <Card variant="shell" p={2} ContainerProps={{ px: 1 }}>
+          Body
+        </Card>,
+      );
+      expect(vars(container)).toEqual({ start: inline(1), end: inline(1) });
+      expect(padding(root(container))).toEqual({
+        ...sides(2),
+        pl: "1",
+        pr: "1",
+      });
+    });
+
+    /*
+     * A spread mergeProps would let `pl` on the root beat `px` on
+     * ContainerProps, since `pl` outranks `px` in the stylesheet. Resolving per
+     * source keeps the variables and the painted padding in step.
+     */
+    it("lets ContainerProps' px beat the root's pl", () => {
+      const { container } = render(
+        <Card pl={4} ContainerProps={{ px: 1 }}>
+          Body
+        </Card>,
+      );
+
+      expect(padding(root(container))).toEqual({ pl: "1", pr: "1" });
+      expect(vars(container)).toEqual({ start: inline(1), end: inline(1) });
+    });
+
+    it("treats an undefined value as unset, so the next source applies", () => {
+      const { container } = render(
+        <Card variant="shell" p={undefined} ContainerProps={{ px: undefined }}>
+          Body
+        </Card>,
+      );
+
+      expect(padding(root(container))).toEqual(sides(6));
+      expect(vars(container)).toEqual({ start: inline(6), end: inline(6) });
+    });
+
+    it("lets a caller's style override the variables", () => {
+      const { container } = render(
+        <Card
+          p={2}
+          style={
+            { "--card-padding-inline-start": "0px" } as React.CSSProperties
+          }
+        >
+          Body
+        </Card>,
+      );
+
+      expect(vars(container)).toEqual({ start: "0px", end: inline(2) });
+    });
+  });
+
   describe('variant="shell"', () => {
     it("defaults to a full-width, p={6} / gap={6} page area", () => {
       const { container } = render(
@@ -196,7 +340,7 @@ describe("Card", () => {
 
       expect(root).toHaveAttribute("data-variant", "shell");
       expect(root).toHaveAttribute("data-ui-w", "full");
-      expect(root).toHaveAttribute("data-ui-p", "6");
+      expect(padding(root)).toEqual(sides(6));
       expect(root).toHaveAttribute("data-ui-gap", "6");
       expect(
         container.querySelector('[data-slot="card-inner-container"]'),
@@ -217,7 +361,7 @@ describe("Card", () => {
       );
       const root = container.firstElementChild;
 
-      expect(root).toHaveAttribute("data-ui-p", "2");
+      expect(padding(root)).toEqual(sides(2));
       expect(root).toHaveAttribute("data-ui-gap", "3");
       expect(root).toHaveAttribute("data-ui-w", "480");
       expect(
