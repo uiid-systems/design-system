@@ -10,6 +10,20 @@ Use Markdown when you want to:
 
 Reach for `Prose` directly when you already have HTML or JSX.
 
+## Limitations
+
+Read these before you swap it in for another renderer:
+
+- **Raw HTML always renders as text**, with no prop to turn that off. An occasional `<br>` or `<sub>` a model writes shows up literally. A line ending in two spaces still breaks, since that is markdown, not HTML.
+- **Markdown is CommonMark plus GFM.** Pipe tables, `~~strikethrough~~`, task lists, bare-URL autolinks and footnotes parse; anything beyond that, such as math, grid tables or custom containers, renders as text.
+- **Tables, strikethrough, task lists, footnotes and images are unstyled.** `Prose` has no rules for them yet, so they render with browser defaults.
+- **Only links and images can be overridden** (`overrides.a`, `overrides.img`). Headings, code and every other element are `Prose`'s.
+- **Ids repeat.** Each heading gets an `id` from its text, and each footnote one from its label (`[^1]` becomes `id="1"`), so a transcript of many messages can hold duplicates.
+- **`streaming` must be off on finished text.** Left on, a stray backtick or `[` the model never closed hides everything after it.
+- **A code span appears whole** on its closing backtick, and a table appears once its first data row arrives, rather than character by character.
+- **`reveal` makes it a client component.** Plain `Markdown` has no hooks and renders in a server component.
+- **The memo needs stable props.** A new `overrides` object or `render` element each render means `Markdown` recompiles every time; define them once, outside render.
+
 ## Usage
 
 ```tsx
@@ -22,11 +36,12 @@ import { Markdown } from "@uiid/markdown";
 
 All [`Prose`](../../../typography/src/prose/README.md) props, plus:
 
-| Prop        | Type      | Default | Description                                                                 |
-| ----------- | --------- | ------- | --------------------------------------------------------------------------- |
-| `children`  | `string`  | —       | Markdown source. It may be cut off anywhere while it streams                |
-| `streaming` | `boolean` | `false` | Hold back unfinished syntax until its closing delimiter arrives (see below) |
-| `reveal`    | `boolean` | `false` | While `streaming`, fade each word in as it arrives (see below)              |
+| Prop        | Type                | Default | Description                                                                 |
+| ----------- | ------------------- | ------- | --------------------------------------------------------------------------- |
+| `children`  | `string`            | —       | Markdown source. It may be cut off anywhere while it streams                |
+| `streaming` | `boolean`           | `false` | Hold back unfinished syntax until its closing delimiter arrives (see below) |
+| `reveal`    | `boolean`           | `false` | While `streaming`, fade each word in as it arrives (see below)              |
+| `overrides` | `MarkdownOverrides` | —       | Your own components for links (`a`) and images (`img`) (see below)          |
 
 ## Streaming
 
@@ -41,9 +56,9 @@ With `streaming`, syntax whose closer has not arrived yet is held back rather th
 | An open code fence                    | A code block that grows as the code arrives |
 | A partial list item, heading or quote | The element, with the text so far           |
 
-Nothing the reader has already seen disappears, because held-back syntax was never shown. The one visible cost is that a code span's text appears all at once on its closing backtick rather than character by character.
+Nothing the reader has already seen disappears, because held-back syntax was never shown.
 
-Turn `streaming` off once the message is complete. On finished text the same option would hide everything after a stray backtick or `[` the model never closed, and finished text should render character for character. Set it from the status you already have: `status === "streaming"` for a chat message, or the in-progress flag of a reasoning step or tool call.
+Turn `streaming` off once the message is complete (see [Limitations](#limitations)). Set it from the status you already have: `status === "streaming"` for a chat message, or the in-progress flag of a reasoning step or tool call.
 
 ### Word reveal
 
@@ -59,16 +74,35 @@ Add `reveal` and each word fades and un-blurs in as it arrives, with the same mo
 - A word animates once. When its closing `**` or `)` lands and the word moves into a `<strong>` or link, it does not fade in again, and one that was still fading carries on from where it was.
 - Inline code reveals as one piece. Code blocks are not animated.
 - Words animate only while text is arriving. When `streaming` turns off, the words not shown yet go out at the same pace and fade in like the rest. Once the last fade has finished, the per-word spans are dropped and the text renders as it would without `reveal`.
-- `reveal` makes `Markdown` a client component. Without it, `Markdown` has no hooks and renders in a server component.
 - Text with no spaces between words, like Chinese or Japanese, or a long URL, reveals as one piece.
+
+## Links and images
+
+Markdown from a model is untrusted, so the app decides which links stay clickable and whether images load. Pass components for `a` and `img`; each gets the element's props, with the URL already through `markdown-to-jsx`'s sanitizer. The `a` override renders every link, including autolinks, reference links and footnote links.
+
+```tsx
+import type { ComponentPropsWithoutRef } from "react";
+import { Markdown, type MarkdownOverrides } from "@uiid/markdown";
+
+const ExternalLink = (props: ComponentPropsWithoutRef<"a">) => (
+  <a {...props} target="_blank" rel="noopener noreferrer" />
+);
+
+// Once, outside render, so Markdown's memo holds.
+const overrides: MarkdownOverrides = { a: ExternalLink };
+
+<Markdown overrides={overrides}>{message.text}</Markdown>;
+```
+
+Overrides work with `streaming` and `reveal`: words inside a link fade in as they would anywhere else.
 
 ## Security
 
-Markdown from a model is untrusted input, so raw HTML parsing is off: any tag in the source renders as literal text, which means a `<meta>` refresh, a `<form>`, a `<base>`, a stylesheet `<link>` or an `onerror` handler never reaches the DOM. Markdown links still go through `markdown-to-jsx`'s URL sanitizer, which drops `javascript:` and `vbscript:` hrefs. Nothing is injected with `dangerouslySetInnerHTML`. The trade is that an occasional `<br>` or `<sub>` a model writes shows as text rather than rendering.
+Raw HTML parsing is always off: any tag in the source renders as literal text, so a `<meta>` refresh, a `<form>`, a `<base>`, a stylesheet `<link>` or an `onerror` handler never reaches the DOM. Links and images go through `markdown-to-jsx`'s URL sanitizer, which drops `javascript:`, `vbscript:` and non-image `data:` URLs, including entity-encoded and uppercase forms, before your overrides see them: a dropped URL arrives as no `href` or `src` at all. The sanitizer cannot be replaced through `Markdown`. Nothing is injected with `dangerouslySetInnerHTML`.
+
+An override can still undo this by what it renders, for example by reading the URL from somewhere other than its props. Treat an override as part of your link policy, not a way around it.
 
 ## Notes
 
 - Block elements render as direct children of the `Prose` root, with no wrapper in between, so `Prose`'s sibling spacing applies. A one-line string renders as a paragraph.
-- Styling comes from `Prose`. It currently has no rules for tables, `del` or images, which render with browser defaults.
-- Headings get an `id` from their text. A transcript with many messages may repeat ids.
-- Without `reveal` it has no hooks, so it renders in a server component. With `reveal` it renders a client component that records when each word first appeared. It is wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders and only the message whose text is changing recompiles. Pass a stable `render` element or none, or the memo never hits.
+- `Markdown` is wrapped in `memo`, so a finished message keeps its compiled output while the transcript around it re-renders, and only the message whose text is changing recompiles. With `reveal` it renders a client component that records when each word first appeared.

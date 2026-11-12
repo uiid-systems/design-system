@@ -1,4 +1,15 @@
 import type { ProseProps } from "@uiid/typography";
+import type { ComponentPropsWithoutRef, ComponentType } from "react";
+
+/**
+ * Components that render markdown's links and images in place of `<a>` and
+ * `<img>`. Each gets the element's props, with URLs already through
+ * markdown-to-jsx's sanitizer.
+ */
+export type MarkdownOverrides = {
+  a?: ComponentType<ComponentPropsWithoutRef<"a">>;
+  img?: ComponentType<ComponentPropsWithoutRef<"img">>;
+};
 
 export type MarkdownProps = Omit<ProseProps, "children"> & {
   /** Markdown source. It may be cut off anywhere while it streams. */
@@ -18,4 +29,10 @@ export type MarkdownProps = Omit<ProseProps, "children"> & {
    * client component.
    */
   reveal?: boolean;
+  /**
+   * Render links and images with your own components, such as a link policy
+   * for untrusted text. Define the object once, outside render: a new object
+   * each render defeats `Markdown`'s memo.
+   */
+  overrides?: MarkdownOverrides;
 };
