@@ -1,3 +1,7 @@
+@import "@uiid/tokens/component/card.tokens.css";
+@import "@uiid/tokens/component/overlays.tokens.css";
+@import "@uiid/tokens/component/toast.tokens.css";
+
 .toast-viewport {
   /* Direction multiplier: -1 for bottom (stack up), 1 for top (stack down) */
   --direction-multiplier: -1;
@@ -5,9 +9,9 @@
   position: fixed;
   /* Above popups and dialog viewports: a toast confirming an action taken
      inside a Dialog has to be visible over it. */
-  z-index: var(--globals-z-index-toast);
+  z-index: var(--overlays-toast-z-index);
   /* Narrow screens keep the same gutter on both sides. */
-  width: min(22.5rem, 100vw - 2 * var(--globals-padding-x));
+  width: min(var(--toast-width), 100vw - 2 * var(--globals-padding-x));
   bottom: var(--globals-padding-y);
   right: var(--globals-padding-x);
 
@@ -18,34 +22,33 @@
   }
 }
 
+/*
+ * Placement and stacking only. The surface is the Card inside, so nothing here
+ * competes with Card's own styles.
+ *
+ * Base UI sets these --toast-* names inline on each toast, so no token in
+ * toast.tokens.json may take them: --toast-index, --toast-height,
+ * --toast-offset-y, --toast-frontmost-height, --toast-swipe-movement-x and
+ * --toast-swipe-movement-y.
+ */
 .toast {
-  --gap: 0.75rem;
-  --peek: 0.75rem;
   --scale: calc(max(0, 1 - (var(--toast-index) * 0.1)));
   --shrink: calc(1 - var(--scale));
   --height: var(--toast-frontmost-height, var(--toast-height));
   --offset-y: calc(
-    var(--direction-multiplier) * var(--toast-offset-y) + var(--direction-multiplier) * (var(--toast-index) * var(--gap)) +
+    var(--direction-multiplier) * var(--toast-offset-y) + var(--direction-multiplier) * (var(--toast-index) * var(--toast-gap)) +
       var(--toast-swipe-movement-y)
   );
 
   position: absolute;
-  margin: 0 auto;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  padding: calc(var(--globals-padding-y) * 0.75) var(--globals-padding-x);
-  box-shadow: var(--globals-shadow-lg);
-  background-clip: padding-box;
-  transform-origin: bottom center;
   margin-inline: auto;
-
-  .toast-viewport[data-position="top"] & {
-    top: 0;
-    bottom: auto;
-    transform-origin: top center;
-  }
+  /* Base UI focuses the root, so its outline has to follow the Card's corners. */
+  border-radius: var(--globals-border-radius);
+  transform-origin: bottom center;
 
   /* Ordering among stacked toasts only — the viewport above is a stacking
      context, so this never competes with anything outside it. */
@@ -54,7 +57,7 @@
   transform: translateX(var(--toast-swipe-movement-x))
     translateY(
       calc(
-        var(--toast-swipe-movement-y) + var(--direction-multiplier) * (var(--toast-index) * var(--peek)) + var(--direction-multiplier) *
+        var(--toast-swipe-movement-y) + var(--direction-multiplier) * (var(--toast-index) * var(--toast-peek)) + var(--direction-multiplier) *
           (var(--shrink) * var(--height))
       )
     )
@@ -69,6 +72,19 @@
      to `auto` instead, so the read returns the old height and the toast never
      resizes when its content changes. */
   interpolate-size: numeric-only;
+
+  .toast-viewport[data-position="top"] & {
+    top: 0;
+    bottom: auto;
+    transform-origin: top center;
+  }
+
+  &:focus-visible {
+    outline-width: var(--globals-outline-width);
+    outline-color: var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+    outline-style: var(--globals-outline-style);
+  }
 
   &[data-expanded] {
     transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--offset-y));
@@ -101,12 +117,14 @@
     }
   }
 
+  /* Bridges the gap between expanded toasts, so moving the pointer from one to
+     the next doesn't collapse the stack. */
   &::after {
     content: "";
     position: absolute;
     width: 100%;
     left: 0;
-    height: calc(var(--gap) + 1px);
+    height: calc(var(--toast-gap) + 1px);
   }
 
   .toast-viewport[data-position="bottom"] &::after {
@@ -116,6 +134,13 @@
   .toast-viewport[data-position="top"] &::after {
     bottom: 100%;
   }
+}
+
+/* The visual layer: Card owns the hue, border and padding; this fills the
+   root's animated height and lifts the toast off the page. */
+.toast-surface {
+  height: 100%;
+  box-shadow: var(--globals-shadow-lg);
 }
 
 .toast-content {
@@ -135,22 +160,32 @@
   min-width: 0;
 }
 
-/* Muted against whatever hue the surface takes, not only the neutral one. */
-.toast-description {
-  color: color-mix(in oklab, var(--palette-on-tint), transparent 30%);
+/*
+ * One line of text tall, so the icon, action and close button center on the
+ * title's first line however many lines follow. A taller child, like the close
+ * button, overflows evenly instead of padding out a one-line toast.
+ */
+.toast-first-line {
+  flex-shrink: 0;
+  height: 1lh;
+
+  & > svg {
+    width: var(--card-icon-size);
+    height: var(--card-icon-size);
+  }
 }
 
-.toast-spinner {
-  flex-shrink: 0;
+/* Secondary text that clears AA on every hue's tint. Two classes, because
+   CardDescription sets its own colour at equal specificity in the same layer,
+   and which stylesheet loads last differs between builds. */
+.toast-surface .toast-description {
+  color: var(--palette-on-tint-muted);
 }
 
 /* Ghost Button reads its colour from --button-bg, so this mutes the icon and
-   its hover tint together. Negative margin keeps the hit area from padding
-   out a one-line toast. */
+   its hover tint together. */
 .toast-close {
   --button-bg: color-mix(in oklab, var(--palette-on-tint), transparent 40%);
-  flex-shrink: 0;
-  margin-block: calc(var(--spacing-unit) * -1);
 
   &:hover {
     --button-bg: var(--palette-on-tint);

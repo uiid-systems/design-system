@@ -6,6 +6,9 @@
     },
     "popup": {
       "z-index": { "$value": "{globals.z-index.popup}", "$type": "number" }
+    },
+    "toast": {
+      "z-index": { "$value": "{globals.z-index.toast}", "$type": "number" }
     }
   }
 }
