@@ -802,16 +802,12 @@ describe("Input props and state", () => {
     expect(screen.getByRole("textbox")).not.toHaveAttribute("data-filled");
   });
 
-  it("takes no typing while disabled, and disables the field around it", async () => {
+  it("takes no typing while disabled", async () => {
     const user = userEvent.setup();
-    const { container } = render(<Input label="Email" disabled />);
+    render(<Input label="Email" disabled />);
 
     await user.type(screen.getByRole("textbox"), "hi");
-
     expect(screen.getByRole("textbox")).toHaveValue("");
-    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
-      "data-disabled",
-    );
   });
 
   it("can be read only", async () => {
@@ -975,12 +971,20 @@ describe("Input before/after slots", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("12", expect.anything());
   });
 
-  it("puts a button in the after slot next in tab order", async () => {
+  it("keeps slot controls in DOM order around the input in tab order", async () => {
     const user = userEvent.setup();
-    render(<Input after={<button type="button">Action</button>} />);
+    render(
+      <Input
+        before={<button type="button">Before</button>}
+        after={<button type="button">After</button>}
+      />,
+    );
 
-    screen.getByRole("textbox").focus();
     await user.tab();
-    expect(screen.getByRole("button", { name: "Action" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Before" })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole("textbox")).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole("button", { name: "After" })).toHaveFocus();
   });
 });

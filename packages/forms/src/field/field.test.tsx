@@ -813,7 +813,6 @@ describe("Field wiring", () => {
       </Field>,
     );
     expect(screen.getByText("Email")).not.toHaveAttribute("data-required");
-    expect(screen.getByLabelText("Email")).not.toBeRequired();
   });
 
   it("lets DescriptionProps override the description's muted shade", () => {

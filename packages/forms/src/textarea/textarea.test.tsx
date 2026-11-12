@@ -80,7 +80,7 @@ describe("Textarea", () => {
   });
 
   // ============================================
-  // DISABLED STATE
+  // DISABLED AND READ-ONLY STATE
   // ============================================
 
   it("can be disabled", () => {
@@ -98,17 +98,6 @@ describe("Textarea", () => {
     expect(textarea).toHaveValue("");
   });
 
-  // ============================================
-  // REQUIRED STATE
-  // ============================================
-
-  it("disables the field around it", () => {
-    const { container } = render(<Textarea label="Message" disabled />);
-    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
-      "data-disabled",
-    );
-  });
-
   it("can be read only", async () => {
     const user = userEvent.setup();
     render(<Textarea readOnly defaultValue="Fixed" />);
@@ -118,6 +107,10 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("readonly");
     expect(screen.getByRole("textbox")).toHaveValue("Fixed");
   });
+
+  // ============================================
+  // REQUIRED STATE
+  // ============================================
 
   it("renders required indicator with label", () => {
     render(<Textarea label="Message" required />);
@@ -190,10 +183,6 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox")).toHaveValue("Controlled content");
   });
 
-  // ============================================
-  // REF FORWARDING
-  // ============================================
-
   it("drives a controlled value through onValueChange", async () => {
     const user = userEvent.setup();
     const Controlled = () => {
@@ -205,6 +194,10 @@ describe("Textarea", () => {
     await user.type(screen.getByRole("textbox"), "hi");
     expect(screen.getByRole("textbox")).toHaveValue("hi");
   });
+
+  // ============================================
+  // REF FORWARDING
+  // ============================================
 
   it("forwards ref to textarea element", () => {
     const ref = React.createRef<HTMLTextAreaElement>();

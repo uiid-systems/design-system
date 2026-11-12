@@ -13,7 +13,7 @@ Use Textarea when you want to:
 - Tint the surface with a palette `color` (`red`, `blue`, …) — the same treatment Input wears, so a tinted pair cannot drift apart
 - Mark it `required`, `disabled`, or `readOnly`
 
-Leave `value` unset and the textarea runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueChange` hands back the string alone.
+Leave `value` unset and the textarea runs itself; pass `value` and `onValueChange` to drive it yourself. `onValueChange` receives the string first, not an event, with Base UI's change details second.
 
 Native `<textarea>` props (`name`, `value`, `defaultValue`, `onChange`, `onBlur`, `maxLength`, `readOnly`, …) and `ref` land on the element itself, with or without slots, so react-hook-form's `register` spreads straight on: `<Textarea label="Notes" {...register("notes")} />`.
 
@@ -23,7 +23,7 @@ Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../
 
 `before` and `after` are the same slots Input has, stacked instead of placed beside the control. With either set, the surface moves to an [`InputWrapper`](../input/README.md) in its vertical orientation, which takes `fullwidth`, `variant`, and `color`; the textarea keeps `size` and `resize`, and `ref`, `className`, `rows`, and the native props still land on the `<textarea>`. With neither slot set, nothing changes, and a slot coming or going keeps the textarea mounted with its focus and text.
 
-The wrapper reads disabled and invalid off the textarea and nothing deeper, so a disabled Send button or an invalid input in a slot leaves the field alone. A `Button` or other control in a slot takes its own press and comes after the text in tab order; pressing plain text, an icon, or empty space in a slot row focuses the textarea, the same as Input. While the textarea is `disabled`, the slots are `inert`, so their buttons leave the tab order with it.
+The wrapper reads disabled and invalid off the textarea and nothing deeper, so a disabled Send button or an invalid input in a slot leaves the field alone. A `Button` or other control in a slot takes its own press, and slot controls keep their DOM order: a control in `before` precedes the textarea in tab order, one in `after` follows it. Pressing plain text, an icon, or empty space in a slot row focuses the textarea, the same as Input. While the textarea is `disabled`, the slots are `inert`, so their buttons leave the tab order with it.
 
 `resize` drags the textarea, not the wrapper around it, so a composer with a toolbar usually wants `resize="none"`.
 
