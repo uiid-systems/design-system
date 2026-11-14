@@ -55,14 +55,31 @@ jobs:
       - name: Run tests
         run: pnpm test:run
 
-      # Vitest runs expectTypeOf as a no-op, so a drifted AI SDK union passes the
-      # suite above. tsc is what fails. @uiid/ai resolves sibling @uiid/* types
-      # from their built dist, so build its dependencies (and nothing else) first.
-      - name: Build @uiid/ai dependencies
-        run: pnpm run build --filter=@uiid/ai^...
+      # Both the build and the typecheck below reuse this cache.
+      - name: Restore turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
-      - name: Typecheck @uiid/ai against the AI SDK
-        run: pnpm exec tsc --noEmit -p packages/ai/tsconfig.json
+      # Each package builds with `tsc -b`, and its tsconfig includes its tests,
+      # so this build is the typecheck for every package. Turbo builds siblings
+      # first, which is what lets tsc resolve @uiid/* types from their dist.
+      # It also covers what Vitest cannot: expectTypeOf is a no-op at runtime,
+      # so a drifted AI SDK union in @uiid/ai fails here and nowhere else.
+      - name: Build and typecheck packages
+        run: pnpm turbo run build --filter='./packages/*'
+
+      # @uiid/tokens builds without tsc.
+      - name: Typecheck @uiid/tokens
+        run: pnpm exec tsc --noEmit -p packages/tokens
+
+      # Tests and Storybook alias @uiid/* to source. This is the only step
+      # that loads the built packages.
+      - name: Check built packages
+        run: node scripts/check-dist.mjs
 
   lint:
     name: Lint
