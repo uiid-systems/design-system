@@ -55,17 +55,19 @@ jobs:
       - name: Run tests
         run: pnpm test:run
 
-      # Both the build and the typecheck below reuse this cache.
+      # The build below reuses this cache. Its key is separate from the Size
+      # job's, so the two never race to save the same entry.
       - name: Restore turbo cache
         uses: actions/cache@v4
         with:
           path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: ${{ runner.os }}-turbo-test-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
+            ${{ runner.os }}-turbo-test-
 
-      # Each package builds with `tsc -b`, and its tsconfig includes its tests,
-      # so this build is the typecheck for every package. Turbo builds siblings
+      # Each package builds with `tsc -b`, and its tsconfig includes its tests
+      # (icons and design-system exclude theirs), so this build is the
+      # typecheck for every package. Turbo builds siblings
       # first, which is what lets tsc resolve @uiid/* types from their dist.
       # It also covers what Vitest cannot: expectTypeOf is a no-op at runtime,
       # so a drifted AI SDK union in @uiid/ai fails here and nowhere else.

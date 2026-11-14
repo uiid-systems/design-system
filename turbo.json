@@ -1,5 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "tsconfig.json",
+    "vite.config.ts",
+    "vitest.matchers.d.ts",
+    "scripts/css-layers.cjs",
+    "scripts/postcss-layer-wrapper.cjs",
+    "scripts/rollup-sanitize-file-name.mjs",
+    "scripts/vite-plugin-preserve-directives.mjs"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
