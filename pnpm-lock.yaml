@@ -284,6 +284,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -400,6 +403,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
       shiki:
         specifier: ^3.22.0
         version: 3.22.0
@@ -540,6 +546,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -620,6 +629,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -727,6 +739,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -868,6 +883,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -923,6 +941,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
@@ -990,6 +1011,9 @@ importers:
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils
+      cva:
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
       '@base-ui/react':
         specifier: 1.7.0
