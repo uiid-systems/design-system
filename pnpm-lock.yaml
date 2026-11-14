@@ -397,6 +397,9 @@ importers:
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
+      '@uiid/utils':
+        specifier: workspace:*
+        version: link:../utils
       shiki:
         specifier: ^3.22.0
         version: 3.22.0
@@ -407,9 +410,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@uiid/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
@@ -608,6 +608,9 @@ importers:
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
+      '@uiid/layout':
+        specifier: workspace:*
+        version: link:../layout
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -630,9 +633,6 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
-      '@uiid/layout':
-        specifier: workspace:*
-        version: link:../layout
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))

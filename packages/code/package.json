@@ -50,6 +50,7 @@
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*",
     "shiki": "^3.22.0"
   },
   "peerDependencies": {
@@ -63,7 +64,6 @@
     "@uiid/icons": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
-    "@uiid/utils": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
