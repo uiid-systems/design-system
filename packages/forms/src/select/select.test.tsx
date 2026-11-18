@@ -5,7 +5,12 @@ import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Select } from "./select";
 import type { SelectItemProps, SelectProps } from "./select.types";
-import { SelectItem } from "./subcomponents";
+import {
+  SelectGroup,
+  SelectGroupLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
 import styles from "./select.module.css";
@@ -756,6 +761,54 @@ describe("Select composed label resolution", () => {
     );
 
     expect(screen.getByRole("combobox")).toHaveTextContent("Pick one");
+  });
+});
+
+describe("Select groups", () => {
+  const renderGrouped = () =>
+    render(
+      <Select placeholder="Pick one">
+        <SelectGroup>
+          <SelectGroupLabel>Sans</SelectGroupLabel>
+          <SelectItem value="inter" label="Inter" />
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectGroupLabel>Serif</SelectGroupLabel>
+          <SelectItem value="lora" label="Lora" />
+        </SelectGroup>
+      </Select>,
+    );
+
+  it("resolves the trigger label from an item inside a group", async () => {
+    const user = userEvent.setup();
+    renderGrouped();
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /lora/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Lora");
+  });
+
+  it("renders the group, label and separator parts with their slots", async () => {
+    const user = userEvent.setup();
+    renderGrouped();
+
+    await user.click(screen.getByRole("combobox"));
+
+    const groups = screen.getAllByRole("group");
+    expect(groups).toHaveLength(2);
+    expect(groups[0]).toHaveAttribute("data-slot", "select-group");
+    expect(groups[0]).toHaveAccessibleName("Sans");
+    expect(screen.getByText("Sans")).toHaveAttribute(
+      "data-slot",
+      "select-group-label",
+    );
+    /* A listbox owns only options and groups, so Base UI keeps the line out
+       of the accessibility tree rather than giving it `role="separator"`. */
+    expect(
+      document.querySelector("[data-slot='select-separator']"),
+    ).toHaveAttribute("role", "presentation");
   });
 });
 

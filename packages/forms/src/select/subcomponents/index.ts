@@ -6,5 +6,8 @@ export * from "./select-positioner";
 export * from "./select-popup";
 export * from "./select-list";
 export * from "./select-item";
+export * from "./select-group";
+export * from "./select-group-label";
+export * from "./select-separator";
 export * from "./select-value";
 export * from "./select-icon";
