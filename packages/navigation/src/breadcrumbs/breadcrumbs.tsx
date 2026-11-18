@@ -31,7 +31,7 @@ const Breadcrumbs = ({
           );
           return (
             <Fragment key={item.value}>
-              <BreadcrumbsItem>
+              <BreadcrumbsItem aria-current={isLast ? "page" : undefined}>
                 {isLast ? content : <Link href={item.value}>{content}</Link>}
               </BreadcrumbsItem>
               {!isLast && <BreadcrumbsSeparator />}
