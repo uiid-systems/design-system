@@ -55,6 +55,22 @@
   transition: opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
 }
 
+/*
+ * Opts out of the shared short-screen fallback: a scrolling popup would be
+ * Base UI's scroll target for a header drag, so a snap-point sheet could not
+ * be dragged open. The body keeps scrolling, with the header and footer pinned.
+ */
+@media (max-height: 30rem) {
+  .drawer-popup {
+    overflow-y: visible;
+  }
+
+  .drawer-popup > [data-slot="card-inner-container"] {
+    flex-shrink: 1;
+    overflow-y: auto;
+  }
+}
+
 /* --- Edge placement ------------------------------------------------------ */
 
 .drawer-popup[data-swipe-direction="left"],
