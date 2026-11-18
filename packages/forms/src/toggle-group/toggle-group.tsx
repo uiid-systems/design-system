@@ -3,8 +3,15 @@
 import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
-import { cx, cxState } from "@uiid/utils";
-import { Children, cloneElement, isValidElement, useState } from "react";
+import { cxState, useComposedRefs } from "@uiid/utils";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useState,
+} from "react";
+import type { ReactElement, RefObject } from "react";
 
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
 import { useToggleIndicator } from "./toggle-group.hooks";
@@ -12,6 +19,56 @@ import type { ToggleGroupProps } from "./toggle-group.types";
 import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
+
+type ToggleGroupItemProps = {
+  child: ReactElement<BaseToggle.Props>;
+  size: ToggleGroupProps["size"];
+  buttonsRef: RefObject<Map<string, HTMLButtonElement>>;
+};
+
+/**
+ * Clones one consumer-authored Toggle to inject the group's ref and className,
+ * and renders nothing of its own. The size tier is injected here rather than
+ * selected for in CSS because `composes` only applies to the class that
+ * declares it.
+ *
+ * It is a component, rather than a clone inside the group's `Children.map`, so
+ * the ref it hands the Toggle can be memoized. React detaches and re-attaches
+ * a ref whose identity changes, so a ref rebuilt on every render would run the
+ * caller's own ref again each time the selection moved.
+ */
+const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
+  const toggleValue = child.props.value;
+
+  // Registers the button for the indicator to measure, and takes it back out
+  // when the Toggle unmounts or changes value, so a removed element is never
+  // measured.
+  const measureRef = useCallback(
+    (el: HTMLButtonElement | null) => {
+      if (!el || !toggleValue) return;
+
+      const buttons = buttonsRef.current;
+      buttons.set(toggleValue, el);
+
+      return () => {
+        if (buttons.get(toggleValue) === el) buttons.delete(toggleValue);
+      };
+    },
+    [toggleValue, buttonsRef],
+  );
+  // The clone's `ref` replaces the child's, so the caller's own ref is
+  // composed back in alongside the measuring one.
+  const composedRef = useComposedRefs(child.props.ref, measureRef);
+
+  return cloneElement(child, {
+    className: cxState(
+      styles["toggle-group-button"],
+      toggleVariants({ size }),
+      child.props.className,
+    ),
+    ref: composedRef,
+  });
+};
 
 export const ToggleGroup = ({
   size = TOGGLE_GROUP_DEFAULT_SIZE,
@@ -22,6 +79,8 @@ export const ToggleGroup = ({
   value,
   defaultValue,
   onValueChange,
+  className,
+  ref,
   children,
   ...props
 }: ToggleGroupProps) => {
@@ -34,46 +93,36 @@ export const ToggleGroup = ({
     orientation,
     multiple,
   );
+  // The indicator measures through `panelRef`, so a consumer's ref joins it
+  // rather than taking its place.
+  const composedRef = useComposedRefs(ref, panelRef);
 
   const handleValueChange = (newValue: string[]) => {
     setActiveValue(newValue);
     onValueChange?.(newValue);
   };
 
-  // Clone children and inject ref and className. The size tier is injected
-  // here rather than selected for in CSS because `composes` only applies to the
-  // class that declares it, and the toggles are consumer-authored elements.
-  const enhancedChildren = Children.map(children, (child) => {
-    if (isValidElement<BaseToggle.Props>(child)) {
-      const toggleValue = child.props.value;
-
-      return cloneElement<BaseToggle.Props & { ref?: unknown }>(child, {
-        className: cxState(
-          styles["toggle-group-button"],
-          toggleVariants({ size }),
-          child.props.className,
-        ),
-        ref: (el: HTMLButtonElement | null) => {
-          if (el && toggleValue) {
-            buttonsRef.current.set(toggleValue, el);
-          }
-        },
-      });
-    }
-    return child;
-  });
+  const enhancedChildren = Children.map(children, (child) =>
+    isValidElement<BaseToggle.Props>(child) ? (
+      <ToggleGroupItem child={child} size={size} buttonsRef={buttonsRef} />
+    ) : (
+      child
+    ),
+  );
 
   return (
     <BaseToggleGroup
-      ref={panelRef}
+      data-slot="toggle-group"
+      ref={composedRef}
       multiple={multiple}
       orientation={orientation}
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={cx(
+      className={cxState(
         styles["toggle-group-panel"],
         toggleGroupVariants({ fullwidth }),
+        className,
       )}
       data-size={size}
       data-variant={variant}
