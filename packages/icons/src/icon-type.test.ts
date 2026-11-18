@@ -17,15 +17,38 @@ import { ICON_TYPE_DTS } from "../scripts/emit-per-icon-modules.mjs";
 // the per-icon subpath modules use. The mirror is taken from the emit script
 // rather than from icons/ on disk, so a stale build cannot pass, and the
 // fixture asserts the two are the same type, so one cannot change alone.
+//
+// The barrel's declarations are checked the same way, in a separate program
+// with no lucide declarations in scope, which is how a consumer compiles it.
 
 const require = createRequire(import.meta.url);
 const TSC = require.resolve("typescript/bin/tsc");
 
 const PKG_DIR = fileURLToPath(new URL("..", import.meta.url));
-// Inside node_modules, which is already gitignored, so the fixture leaves no
-// repo residue and still resolves `react` and `lucide-react` as this package
-// does. A fresh directory per run, so concurrent runs cannot collide.
-const FIXTURE_DIR = `${mkdtempSync(`${PKG_DIR}node_modules/.icon-type-test-`)}/`;
+// Fixtures live inside node_modules, which is already gitignored, so they leave
+// no repo residue and still resolve `react` and `lucide-react` as this package
+// does. A fresh directory per program, so concurrent runs cannot collide.
+const fixtureDirs: string[] = [];
+const fixtureDir = () => {
+  const dir = `${mkdtempSync(`${PKG_DIR}node_modules/.icon-type-test-`)}/`;
+  fixtureDirs.push(dir);
+  return dir;
+};
+
+// lucide ships no .d.ts beside its per-icon modules, and nothing in src imports
+// them from TypeScript any more. The fixtures that compare our declarations
+// with lucide's real types reach them through this ambient module instead.
+const LUCIDE_DEEP_IMPORTS_DTS = `
+declare module "lucide-react/dist/esm/icons/*" {
+  const icon: import("lucide-react").LucideIcon;
+  export default icon;
+}
+
+declare module "lucide-react/dist/esm/createLucideIcon.mjs" {
+  const createLucideIcon: typeof import("lucide-react").createLucideIcon;
+  export default createLucideIcon;
+}
+`;
 
 const assignments = (iconTypeModule: string) => `
 import { createRef, type SVGProps } from "react";
@@ -81,13 +104,49 @@ export const sameIcon: Equal<Source, Mirror> = true;
 export const sameProps: Equal<IconProps, ComponentProps<Mirror>> = true;
 `;
 
-function typeErrors(): string {
-  writeFileSync(`${FIXTURE_DIR}icon-type.d.ts`, ICON_TYPE_DTS);
-  writeFileSync(`${FIXTURE_DIR}source.tsx`, assignments("../../src/icon-type"));
-  writeFileSync(`${FIXTURE_DIR}mirror.tsx`, assignments("./icon-type"));
-  writeFileSync(`${FIXTURE_DIR}drift.ts`, drift);
+// createLucideIcon's local declaration must accept lucide's real function, so
+// the type a consumer sees cannot drift from what it calls at runtime.
+const createLucideIconParity = `
+import lucideCreateLucideIcon from "lucide-react/dist/esm/createLucideIcon.mjs";
+
+import type createLucideIcon from "../../src/create-lucide-icon";
+
+export const sameCreate: typeof createLucideIcon = lucideCreateLucideIcon;
+`;
+
+// The barrel as a consumer meets it: no ambient lucide declarations in scope.
+// Every icon used to be typed `any` here, because tsc emitted lucide's deep
+// specifiers into dist and nothing declared them, so each assignment below
+// that should fail compiled cleanly.
+const barrel = `
+import { createLucideIcon, GlobeIcon, type Icon } from "../../src/index";
+
+export const icon: Icon = GlobeIcon;
+export const rendered = <GlobeIcon size={16} className="icon" />;
+export const created: Icon = createLucideIcon("custom", [
+  ["path", { d: "M0 0h24", key: "a" }],
+]);
+
+// @ts-expect-error: an icon is a component, not \`any\`
+export const iconIsNotAny: number = GlobeIcon;
+// @ts-expect-error: \`size\` takes a string or number
+export const wrongProp = <GlobeIcon size={true} />;
+// @ts-expect-error: createLucideIcon is a function, not \`any\`
+export const createIsNotAny: number = createLucideIcon;
+// @ts-expect-error: lucide icon nodes only take its SVG element names
+export const wrongNode = createLucideIcon("custom", [["div", {}]]);
+`;
+
+function typeErrors(
+  files: Record<string, string>,
+  include: string[] = [],
+): string {
+  const dir = fixtureDir();
+  for (const [name, source] of Object.entries(files)) {
+    writeFileSync(`${dir}${name}`, source);
+  }
   writeFileSync(
-    `${FIXTURE_DIR}tsconfig.json`,
+    `${dir}tsconfig.json`,
     JSON.stringify({
       extends: "../../tsconfig.json",
       compilerOptions: {
@@ -105,17 +164,17 @@ function typeErrors(): string {
           "react/*": ["../@types/react/*"],
         },
       },
-      include: ["*.ts", "*.tsx", "../../src/lucide-deep-imports.d.ts"],
+      include: ["*.ts", "*.tsx", ...include],
       exclude: [],
     }),
   );
 
   try {
-    execFileSync(
-      process.execPath,
-      [TSC, "-p", FIXTURE_DIR, "--pretty", "false"],
-      { cwd: PKG_DIR, encoding: "utf8", stdio: "pipe" },
-    );
+    execFileSync(process.execPath, [TSC, "-p", dir, "--pretty", "false"], {
+      cwd: PKG_DIR,
+      encoding: "utf8",
+      stdio: "pipe",
+    });
     return "";
   } catch (error) {
     return (error as { stdout: string }).stdout;
@@ -123,11 +182,24 @@ function typeErrors(): string {
 }
 
 afterAll(() => {
-  rmSync(FIXTURE_DIR, { recursive: true, force: true });
+  for (const dir of fixtureDirs) rmSync(dir, { recursive: true, force: true });
 });
 
 describe("Icon type", () => {
   it("accepts lucide icons, the spinner and a plain React 19 component", () => {
-    expect(typeErrors()).toBe("");
+    expect(
+      typeErrors({
+        "icon-type.d.ts": ICON_TYPE_DTS,
+        "lucide-deep-imports.d.ts": LUCIDE_DEEP_IMPORTS_DTS,
+        "source.tsx": assignments("../../src/icon-type"),
+        "mirror.tsx": assignments("./icon-type"),
+        "drift.ts": drift,
+        "create-lucide-icon.ts": createLucideIconParity,
+      }),
+    ).toBe("");
+  }, 120_000);
+
+  it("types every barrel export without lucide's deep-import declarations", () => {
+    expect(typeErrors({ "barrel.tsx": barrel })).toBe("");
   }, 120_000);
 });

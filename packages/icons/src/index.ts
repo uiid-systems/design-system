@@ -11,10 +11,8 @@
 // Inside this repo, prefer the subpath — see README.md.
 export * from "./lucide-icons.generated";
 
-// Utility for authoring a custom icon in the lucide style. Reached through
-// lucide's own module rather than its root, for the same module-graph reason as
-// the icons above.
-export { default as createLucideIcon } from "lucide-react/dist/esm/createLucideIcon.mjs";
+// Utility for authoring a custom icon in the lucide style.
+export { default as createLucideIcon } from "./create-lucide-icon";
 
 export type { Icon, IconProps } from "./icon-type";
 

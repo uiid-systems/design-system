@@ -59,7 +59,7 @@ Measured module graphs for reaching a single icon, and for importing one compone
 
 Two things follow. Both barrels produce a comparable module count, so module count is not what hurt — lucide's root module itself is. Everything here therefore goes straight to `lucide-react/dist/esm/icons/<name>.mjs`, and the generated barrel must never import from `"lucide-react"`. And icons stay out of the `@uiid/design-system` root barrel entirely: importing a component now reaches only the icons that component actually uses.
 
-Deep-importing lucide's internals is safe because its `package.json` has no `exports` field, so those paths are legitimately reachable. It ships no `.d.ts` beside them, so `src/lucide-deep-imports.d.ts` declares their types. Both are worth re-checking on a major `lucide-react` bump.
+Deep-importing lucide's internals is safe because its `package.json` has no `exports` field, so those paths are legitimately reachable. It ships no `.d.ts` beside them, so every module that re-exports one is a `.js` file with a `.d.ts` beside it: `src/lucide-icons.generated.{js,d.ts}` and `src/create-lucide-icon.{js,d.ts}`. A `.ts` re-export would make `tsc` emit lucide's deep specifier into `dist`, where a consumer has no declaration for it and the export is typed `any`. `vite.config.ts` copies those declarations into `dist`. Both facts are worth re-checking on a major `lucide-react` bump.
 
 The icon type is declared structurally in `src/icon-type.ts` rather than re-exported from lucide. Packages that consume this one do not depend on `lucide-react`, so a published `.d.ts` naming lucide's types is unresolvable for them (TS2742) the moment they annotate or re-export an icon.
 
@@ -71,7 +71,7 @@ Bump `lucide-react`, then regenerate:
 pnpm --filter @uiid/icons generate
 ```
 
-`scripts/generate-icon-exports.mjs` rewrites the committed barrel (`src/lucide-icons.generated.ts`). The per-icon subpath modules are emitted into `icons/` by `build`, `dev`, and the repo `postinstall`, and are not committed — they sit outside `dist` on purpose, because `vite build --watch` empties `dist` on every rebuild and would delete them.
+`scripts/generate-icon-exports.mjs` rewrites the committed barrel and its declarations (`src/lucide-icons.generated.js` and `.d.ts`), typing each icon as `Icon`. The per-icon subpath modules are emitted into `icons/` by `build`, `dev`, and the repo `postinstall`, and are not committed — they sit outside `dist` on purpose, because `vite build --watch` empties `dist` on every rebuild and would delete them.
 
 Both read their icon list from `scripts/lucide-icon-map.mjs`, which parses `lucide-react`'s own root module for the authoritative export-name → file mapping. It parses rather than derives, because the two do not always correspond, and it throws if it parses implausibly few icons, hits a name lucide doesn't export, or points at a missing file — so a future lucide layout change fails the generate step instead of silently shipping a partial set.
 
@@ -82,6 +82,9 @@ Both read their icon list from `scripts/lucide-icon-map.mjs`, which parses `luci
 - a subpath import parses exactly one lucide module and never lucide's root;
 - the barrel reaches every icon without lucide's root, at a cost equal to the number of distinct icon modules;
 - the barrel exposes the full set, single-named on `*Icon`, with nothing gated behind a manual step;
-- every barrel export is reachable as a built subpath module, with types, through the package's `exports` map.
+- every barrel export is reachable as a built subpath module, with types, through the package's `exports` map;
+- the barrel declares exactly the icons it exports.
+
+`src/icon-type.test.ts` compiles the barrel the way a consumer does, with no lucide declarations in scope, and asserts that an icon and `createLucideIcon` are real types rather than `any`. `scripts/check-dist.mjs` repeats that against the built `@uiid/icons` and `@uiid/design-system/icons`.
 
 `packages/design-system/src/icons.test.ts` guards the facade: that icons stay out of the root barrel, and that both `./icons` and `./icons/*` are declared and forwarded.

@@ -17,7 +17,7 @@
     "storybook-static/**",
     ".claude/worktrees/**",
     "packages/*/icons/**",
-    "**/*.generated.ts"
+    "**/*.generated.*"
   ],
   "overrides": [
     {
