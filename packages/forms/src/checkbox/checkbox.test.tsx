@@ -299,3 +299,37 @@ describe("Checkbox reversed", () => {
     ).not.toBeNull();
   });
 });
+
+/* A row with no label or description paints no frame, so the frame classes stay
+   off it. The caller's class is not part of that frame and stays on. */
+describe("Checkbox FieldProps className", () => {
+  it("merges a FieldProps className with the row's own classes", () => {
+    const { container } = render(
+      <Checkbox
+        bordered
+        reversed
+        label="Accept terms"
+        FieldProps={{ className: "custom-row" }}
+      />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row).toHaveClass(styles["checkbox-label"]);
+    expect(row).toHaveClass(styles["toggle-bordered"]);
+    expect(row).toHaveClass(styles["toggle-reversed"]);
+  });
+
+  it("keeps a FieldProps className on a row with no label or description", () => {
+    const { container } = render(
+      <Checkbox bordered reversed FieldProps={{ className: "custom-row" }} />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row?.className).toMatch(/field-row-bare/);
+    expect(row).not.toHaveClass(styles["checkbox-label"]);
+    expect(row).not.toHaveClass(styles["toggle-bordered"]);
+    expect(row).not.toHaveClass(styles["toggle-reversed"]);
+  });
+});

@@ -41,6 +41,13 @@ export type FieldRowProps = GroupProps &
     LabelProps?: FieldLabelProps;
     DescriptionProps?: FieldDescriptionProps;
     ErrorProps?: FieldErrorProps;
+    /**
+     * The frame the wrapping component paints around the row: its bordered and
+     * reversed treatments and its disabled dimming. Kept apart from `className`
+     * because a row with no label or description has no frame to paint, so it
+     * drops these and keeps the caller's `className`.
+     */
+    frameClassName?: string;
   }>;
 
 export type FieldErrorType = "inline" | "tooltip" | "absolute";
