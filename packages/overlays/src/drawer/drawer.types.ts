@@ -3,6 +3,7 @@
  * collide with our own part names, so they're reached through one namespace import.
  */
 import type * as BaseDrawer from "@base-ui/react/drawer";
+import type { ButtonProps } from "@uiid/buttons";
 import type { CardProps } from "@uiid/cards";
 import type { WithTriggerChildren } from "@uiid/utils";
 
@@ -25,7 +26,6 @@ export type DrawerPortalProps = BaseDrawer.DrawerPortal.Props;
 export type DrawerBackdropProps = BaseDrawer.DrawerBackdrop.Props;
 export type DrawerViewportProps = BaseDrawer.DrawerViewport.Props;
 export type DrawerContentProps = BaseDrawer.DrawerContent.Props;
-export type DrawerCloseProps = BaseDrawer.DrawerClose.Props;
 export type DrawerTitleProps = BaseDrawer.DrawerTitle.Props;
 export type DrawerDescriptionProps = BaseDrawer.DrawerDescription.Props;
 
@@ -34,13 +34,16 @@ export type DrawerSwipeDirection =
 export type DrawerSnapPoint = BaseDrawer.DrawerRoot.SnapPoint;
 
 export type DrawerPopupProps = Omit<BaseDrawer.DrawerPopup.Props, "title"> &
-  DrawerCardProps;
+  DrawerCardProps & {
+    /** Leave out the header close button, for a drawer the user must act on before leaving */
+    hideCloseButton?: boolean;
+  };
 
 export type DrawerProps = React.PropsWithChildren<{
   /**
    * Work started from the drawer is in flight. Escape, a backdrop click, a
-   * swipe and `DrawerClose` can't close it, and `DrawerClose` renders disabled.
-   * Setting `open` to false still closes it.
+   * swipe, the header close button and `DrawerClose` can't close it, and the
+   * close controls render disabled. Setting `open` to false still closes it.
    */
   pending?: boolean;
   trigger?: DrawerTriggerProps["children"];
@@ -64,4 +67,8 @@ export type DrawerProps = React.PropsWithChildren<{
     | "defaultSnapPoint"
     | "onSnapPointChange"
   > &
+  Pick<DrawerPopupProps, "hideCloseButton"> &
   DrawerCardProps;
+
+/** A footer button that closes the drawer; Base UI's Close owns `render`. */
+export type DrawerCloseProps = Omit<ButtonProps, "render">;

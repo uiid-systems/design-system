@@ -48,7 +48,12 @@ export const Footer: Story = { render: () => <Examples.Footer /> };
 
 export const LongContent: Story = { render: () => <Examples.LongContent /> };
 
-/** `pending` keeps the drawer open and DrawerClose disabled while Save runs. */
+/** No header close: the footer is the only button that closes the drawer. */
+export const HideCloseButton: Story = {
+  render: () => <Examples.HideCloseButton />,
+};
+
+/** `pending` keeps the drawer open and its close controls disabled while Save runs. */
 export const Pending: Story = { render: () => <Examples.Pending /> };
 
 /** No `trigger`: a controlled drawer opened from each row, with focus returned there on close. */
