@@ -6,6 +6,7 @@ import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
   AutocompleteInput,
+  AutocompleteInputGroup,
   AutocompletePortal,
   AutocompletePositioner,
   AutocompletePopup,
@@ -31,6 +32,7 @@ export const Autocomplete = ({
   onBlur,
   RootProps,
   InputProps,
+  InputGroupProps,
   PortalProps,
   PositionerProps,
   PopupProps,
@@ -53,23 +55,25 @@ export const Autocomplete = ({
       {...RootProps}
       {...rootProps}
     >
-      <AutocompleteInput
-        name={name}
-        placeholder={placeholder}
-        label={label}
-        description={description}
-        action={action}
-        before={before}
-        after={after}
-        size={size}
-        color={color}
-        disabled={disabled}
-        required={required}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        {...domAttributes}
-        {...InputProps}
-      />
+      <AutocompleteInputGroup size={size} {...InputGroupProps}>
+        <AutocompleteInput
+          name={name}
+          placeholder={placeholder}
+          label={label}
+          description={description}
+          action={action}
+          before={before}
+          after={after}
+          size={size}
+          color={color}
+          disabled={disabled}
+          required={required}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          {...domAttributes}
+          {...InputProps}
+        />
+      </AutocompleteInputGroup>
 
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
