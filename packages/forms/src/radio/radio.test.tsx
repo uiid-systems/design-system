@@ -8,6 +8,7 @@ import { RadioGroupRoot } from "../radio-group/subcomponents";
 import { Radio } from "./radio";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
+import fieldStyles from "../field/field.module.css";
 import styles from "./radio.module.css";
 
 describe("Radio", () => {
@@ -283,5 +284,27 @@ describe("Radio FieldProps className", () => {
     expect(row).toHaveClass(checkboxStyles["checkbox-label"]);
     expect(row).toHaveClass(checkboxStyles["toggle-bordered"]);
     expect(row).toHaveClass(checkboxStyles["toggle-reversed"]);
+  });
+
+  /* A row with no label or description paints no frame, so the frame classes
+     stay off it. The caller's class is not part of that frame and stays on. */
+  it("keeps a FieldProps className on a row with no label or description", () => {
+    const { container } = render(
+      <RadioGroupRoot>
+        <Radio
+          bordered
+          reversed
+          value="a"
+          FieldProps={{ className: "custom-row" }}
+        />
+      </RadioGroupRoot>,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row).toHaveClass(fieldStyles["field-row-bare"]);
+    expect(row).not.toHaveClass(checkboxStyles["checkbox-label"]);
+    expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
+    expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
   });
 });

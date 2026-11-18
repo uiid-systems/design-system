@@ -6,6 +6,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Switch } from "./switch";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
+import fieldStyles from "../field/field.module.css";
 import styles from "./switch.module.css";
 
 describe("Switch", () => {
@@ -278,5 +279,39 @@ describe("Switch reversed", () => {
     expect(container.querySelector("[data-slot='field-row']")).toHaveClass(
       checkboxStyles["toggle-reversed"],
     );
+  });
+});
+
+/* A row with no label or description paints no frame, so the frame classes stay
+   off it. The caller's class is not part of that frame and stays on. */
+describe("Switch FieldProps className", () => {
+  it("merges a FieldProps className with the row's own classes", () => {
+    const { container } = render(
+      <Switch
+        bordered
+        reversed
+        label="Dark mode"
+        FieldProps={{ className: "custom-row" }}
+      />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row).toHaveClass(styles["switch-label"]);
+    expect(row).toHaveClass(checkboxStyles["toggle-bordered"]);
+    expect(row).toHaveClass(checkboxStyles["toggle-reversed"]);
+  });
+
+  it("keeps a FieldProps className on a row with no label or description", () => {
+    const { container } = render(
+      <Switch bordered reversed FieldProps={{ className: "custom-row" }} />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row).toHaveClass(fieldStyles["field-row-bare"]);
+    expect(row).not.toHaveClass(styles["switch-label"]);
+    expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
+    expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
   });
 });

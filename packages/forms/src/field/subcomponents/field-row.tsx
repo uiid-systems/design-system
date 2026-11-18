@@ -46,6 +46,7 @@ export const FieldRow = ({
   LabelProps,
   DescriptionProps,
   ErrorProps,
+  frameClassName,
   className,
   children,
   ...props
@@ -62,7 +63,8 @@ export const FieldRow = ({
         className={cx(
           styles["field-row"],
           fieldRowVariants({ size }),
-          hasContent ? className : styles["field-row-bare"],
+          hasContent ? frameClassName : styles["field-row-bare"],
+          className,
         )}
         render={
           <Group
