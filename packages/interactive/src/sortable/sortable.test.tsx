@@ -6,6 +6,7 @@ import {
   SortableContent,
   SortableItem,
   SortableItemHandle,
+  SortableOverlay,
 } from "./subcomponents";
 
 type Refs = {
@@ -51,7 +52,7 @@ describe("Sortable", () => {
       vi.restoreAllMocks();
     });
 
-    it("moves an item with Space, ArrowDown, Space", async () => {
+    const renderList = () => {
       stubLayout();
       const onValueChange = vi.fn();
 
@@ -64,20 +65,42 @@ describe("Sortable", () => {
               </SortableItem>
             ))}
           </SortableContent>
+          <SortableOverlay>{({ value }) => `overlay ${value}`}</SortableOverlay>
         </Sortable>,
       );
 
       const handle = screen.getByRole("button", { name: "drag a" });
       handle.focus();
 
-      fireEvent.keyDown(handle, { code: "Space", key: " " });
-      await flushSensor();
-      fireEvent.keyDown(handle, { code: "ArrowDown", key: "ArrowDown" });
-      await flushSensor();
-      fireEvent.keyDown(handle, { code: "Space", key: " " });
-      await flushSensor();
+      const press = async (code: string, key: string) => {
+        fireEvent.keyDown(handle, { code, key });
+        await flushSensor();
+      };
 
-      expect(onValueChange).toHaveBeenCalledWith(["b", "a", "c"]);
+      return { onValueChange, press };
+    };
+
+    it("moves an item with Space, ArrowDown, Space", async () => {
+      const { onValueChange, press } = renderList();
+
+      await press("Space", " ");
+      expect(screen.getByText("overlay a")).toBeInTheDocument();
+
+      await press("ArrowDown", "ArrowDown");
+      await press("Space", " ");
+
+      expect(onValueChange).toHaveBeenCalledExactlyOnceWith(["b", "a", "c"]);
+    });
+
+    it("keeps the order when the drag is cancelled with Escape", async () => {
+      const { onValueChange, press } = renderList();
+
+      await press("Space", " ");
+      await press("ArrowDown", "ArrowDown");
+      await press("Escape", "Escape");
+
+      expect(onValueChange).not.toHaveBeenCalled();
+      expect(screen.queryByText("overlay a")).not.toBeInTheDocument();
     });
   });
 
