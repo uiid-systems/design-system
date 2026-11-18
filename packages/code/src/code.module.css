@@ -10,7 +10,7 @@
   tab-size: var(--code-tab-size);
 }
 
-/* Dual theme via light-dark() — resolves against :root color-scheme set by [data-theme] */
+/* Dual theme via light-dark() — resolves against the color-scheme of the nearest [data-theme] */
 .shiki-theme :global(.shiki),
 .shiki-theme :global(.shiki span) {
   color: light-dark(var(--shiki-light), var(--shiki-dark)) !important;
