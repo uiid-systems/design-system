@@ -85,14 +85,19 @@ export const CodeBlock = ({
     : undefined;
 
   React.useEffect(() => {
-    if (!rows || !contentWrapperRef.current || !displayHtml) {
+    if (!collapsedMaxHeight || !contentWrapperRef.current || !displayHtml) {
       return;
     }
+    // Measure against the collapsed height even while expanded, so a block
+    // whose code fits in its rows never offers a toggle that does nothing.
     const el = contentWrapperRef.current;
+    const { maxHeight } = el.style;
+    el.style.maxHeight = collapsedMaxHeight;
     setOverflows(el.scrollHeight > el.clientHeight + 1);
-  }, [displayHtml, rows, wrap, expanded]);
+    el.style.maxHeight = maxHeight;
+  }, [displayHtml, collapsedMaxHeight, wrap, expanded]);
 
-  const showToggle = rows != null && (overflows || expanded);
+  const showToggle = rows != null && overflows;
 
   // The header, code and error are shared by the inline block and the
   // fullscreen dialog. The inline block stays mounted while the dialog is open,
