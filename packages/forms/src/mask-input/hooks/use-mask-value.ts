@@ -58,7 +58,9 @@ export function useMaskValue(options: UseMaskValueOptions): UseMaskValueReturn {
   const value = isControlled ? valueProp : internalValue;
 
   const displayValue = React.useMemo(() => {
-    if (withoutMask || !maskPattern || !value) return value ?? "";
+    // Composing text is shown as typed: masking it would rewrite the input
+    // under the IME. Composition end applies the mask.
+    if (withoutMask || !maskPattern || !value || composing) return value ?? "";
     const unmasked = getUnmaskedValue({
       value,
       transform: maskPattern.transform,
@@ -70,7 +72,7 @@ export function useMaskValue(options: UseMaskValueOptions): UseMaskValueReturn {
       ...transformOpts,
       mask,
     });
-  }, [value, maskPattern, withoutMask, transformOpts, mask]);
+  }, [value, maskPattern, withoutMask, transformOpts, mask, composing]);
 
   return {
     value,

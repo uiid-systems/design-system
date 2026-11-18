@@ -15,6 +15,8 @@ Everything [`Input`](../input/README.md) offers is here too: `label`, `descripti
 
 Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 
-A native `onChange` works too, so the props a form library's `register()` returns can be spread straight on. It runs on each change event, just before `onValueChange`, and `event.target.value` is the masked string on display. It follows the native event, so it does not run where the mask cancels the browser's default and writes the value itself: a paste into a pattern mask, a single-character Backspace or Delete in a pattern mask, and the commit at the end of an IME composition. `onValueChange` reports all of those.
+MaskInput owns the value of its `<input>`, so a value written onto the element through `ref` is overwritten on the next render. react-hook-form applies `defaultValues`, `reset()` and `setValue()` that way, so hand those values to MaskInput's own `defaultValue` or `value` instead.
+
+With that caveat, a native `onChange` reports the value too: spread the `name`, `ref`, `onBlur` and `onChange` a form library's `register()` returns and it tracks what the input shows. It is called once per edit that changes the value, just before `onValueChange`, and `event.target.value` is already the masked string; typing, deleting, cut and paste are all covered. While an IME composition is open the mask is suspended and `onChange` carries the text as composed, then runs once more with the masked value when the composition ends.
 
 Additional props are forwarded to the underlying `<input>` element.
