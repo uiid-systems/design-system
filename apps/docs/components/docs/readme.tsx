@@ -1,8 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { CodeBlock, CodeInline, Prose } from "@uiid/design-system";
+import { CodeInline, Prose } from "@uiid/design-system";
 import ReactMarkdown, { type Components } from "react-markdown";
+
+import { HighlightedCodeBlock } from "./highlighted-code-block";
 
 const ROOT = path.resolve(process.cwd(), "../..");
 
@@ -13,7 +15,7 @@ const markdownComponents: Components = {
     const language = /language-(\w+)/.exec(className ?? "")?.[1];
 
     if (language || code.includes("\n")) {
-      return <CodeBlock code={code} language={language} />;
+      return <HighlightedCodeBlock code={code} language={language} />;
     }
 
     return <CodeInline>{code}</CodeInline>;
