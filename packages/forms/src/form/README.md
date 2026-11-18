@@ -12,6 +12,6 @@ Use Form when you want to:
 
 Every control in the package reports its value the same way: a text input contributes its string, a select its value, a checkbox its checked state. An error lands in the field's description slot, replacing the description while it shows.
 
-`useFormState` and `useFormSubmit` are exported alongside it for the loading/errors/success cycle a real submit handler needs — `useFormSubmit` wraps an async submit function and drives that state for you.
+`useFormState` and `useFormSubmit` are exported alongside it for the loading/errors/success cycle a real submit handler needs. With `useFormState` you report the outcome yourself through `setErrors` or `setResult`; `useFormSubmit` wraps an async submit function and drives that state for you. When submits overlap, only the latest one updates state and calls `onSuccess` or `onError`, and a manual `setErrors`, `setResult` or `reset` supersedes a pending submit.
 
 Additional props are forwarded to the underlying Base UI [Form](https://base-ui.com/react/components/form).
