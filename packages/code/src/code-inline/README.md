@@ -8,9 +8,9 @@ Use CodeInline when you want to:
 - Color a short expression with `language`, which takes the same names and aliases as [CodeBlock](../code-block/README.md)
 - Pass pre-highlighted Shiki output as `html` for server rendering
 
-Without `language`, CodeInline renders its children as they are. With one, `children` must be a plain string, since that string is what gets highlighted; the plain text shows until the highlighted markup is ready.
+Without `language`, CodeInline renders its children as they are and never loads Shiki. With one, `children` must be a plain string, since that string is what gets highlighted; the plain text shows until the highlighted markup is ready.
 
-`html` is only read when `language` is set. It takes Shiki's full `<pre><code>` output and keeps only the inner markup.
+`html` is only read when `language` is set. It takes Shiki's full `<pre><code>` output and keeps only the inner markup, and skips the client highlighter, so Shiki is never loaded in the browser.
 
 ## Data Slots
 
