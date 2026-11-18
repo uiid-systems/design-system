@@ -15,6 +15,8 @@ import { TABLE_DEFAULT_SIZE } from "./table.constants";
 import type { TableProps } from "./table.types";
 import { defaultFormatCell, defaultFormatHeader } from "./table.utils";
 
+const indexRowId = (_item: unknown, index: number) => index;
+
 export function Table<T extends Record<string, unknown>>({
   items,
   actions,
@@ -29,11 +31,15 @@ export function Table<T extends Record<string, unknown>>({
   stickyFooter,
   maxHeight,
   footer,
+  getRowId = indexRowId,
+  getRowLabel,
   selectedRows,
   defaultSelectedRows,
   onSelectedRowsChange,
   ...props
 }: TableProps<T>): React.ReactElement {
+  const rowIds = items.map(getRowId);
+
   const displayColumns =
     columns || (items.length > 0 ? Object.keys(items[0]) : []);
 
@@ -59,8 +65,15 @@ export function Table<T extends Record<string, unknown>>({
 
         <TableBody>
           {items.map((item, index) => (
-            <TableRow key={index}>
-              {selectable && <TableCellCheckbox index={index} size={size} />}
+            <TableRow key={rowIds[index]}>
+              {selectable && (
+                <TableCellCheckbox
+                  index={index}
+                  rowId={rowIds[index]}
+                  label={getRowLabel?.(item, index)}
+                  size={size}
+                />
+              )}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
                   {formatCell(item[column], column, item)}
@@ -86,7 +99,7 @@ export function Table<T extends Record<string, unknown>>({
 
   return selectable ? (
     <TableSelectionProvider
-      count={items.length}
+      rowIds={rowIds}
       selectedRows={selectedRows}
       defaultSelectedRows={defaultSelectedRows}
       onSelectedRowsChange={onSelectedRowsChange}

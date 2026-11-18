@@ -2,18 +2,22 @@
 
 import { createContext, useContext } from "react";
 
+import type { TableRowId } from "./table.types";
+
 /** Selection state and actions shared by a `TableSelectionProvider`. */
 export type TableSelectionContextValue = {
-  /** True when the number of selected indices equals `count` and `count` is above 0. */
+  /** True when there is at least one row and every row is selected. */
   allSelected: boolean;
-  /** True when at least one index is selected and `allSelected` is false. */
+  /** True when at least one row is selected and `allSelected` is false. */
   someSelected: boolean;
-  /** Whether the row at this index is selected. */
-  isSelected: (index: number) => boolean;
-  /** Selects every row index from 0 to `count - 1`, or clears the selection. */
+  /** Whether the row with this id (its index, when keyed by `count`) is
+   * selected. */
+  isSelected: (id: TableRowId) => boolean;
+  /** Selects or deselects every current row. Selected ids that match no
+   * current row are left as they are. */
   toggleAll: (checked: boolean) => void;
-  /** Selects or deselects the row at this index. */
-  toggleRow: (index: number, checked: boolean) => void;
+  /** Selects or deselects the row with this id. */
+  toggleRow: (id: TableRowId, checked: boolean) => void;
 };
 
 export const TableSelectionContext =
@@ -21,10 +25,11 @@ export const TableSelectionContext =
 
 /**
  * Reads the row selection of the nearest `TableSelectionProvider`: whether all
- * or some rows are selected, whether a given row index is, and the actions that
+ * or some rows are selected, whether a given row is, and the actions that
  * toggle one row or all of them. `TableCellCheckbox` is built on it; call it
  * directly for selection-aware UI such as a bulk-action bar. Rows are identified
- * by index. Throws when no `TableSelectionProvider` is above the caller.
+ * by the provider's row ids, or by index when it is given a `count`. Throws
+ * when no `TableSelectionProvider` is above the caller.
  */
 export const useTableSelection = () => {
   const context = useContext(TableSelectionContext);

@@ -14,6 +14,7 @@ import {
   TableRow,
   TableSelectionProvider,
   useTableSelection,
+  type TableRowId,
 } from "../index";
 
 const NAMES = ["Ada", "Grace", "Linus"];
@@ -26,7 +27,7 @@ const SelectionSummary = () => {
 };
 
 const renderComposedTable = (
-  onSelectedRowsChange?: (selectedRows: number[]) => void,
+  onSelectedRowsChange?: (selectedRows: TableRowId[]) => void,
 ) =>
   render(
     <TableSelectionProvider
@@ -56,7 +57,7 @@ const renderComposedTable = (
 const selectAll = () =>
   screen.getByRole("checkbox", { name: "Select all rows" });
 const rowCheckboxes = () =>
-  screen.getAllByRole("checkbox", { name: "Select row" });
+  screen.getAllByRole("checkbox", { name: /^Select row \d+$/ });
 
 describe("Table composed from its exported parts", () => {
   it("toggles a single row", async () => {
@@ -107,5 +108,38 @@ describe("Table composed from its exported parts", () => {
 
     await user.click(selectAll());
     expect(screen.getByRole("status")).toHaveTextContent("all");
+  });
+
+  it("keys the selection by rowIds when given", async () => {
+    const user = userEvent.setup();
+    const onSelectedRowsChange = vi.fn();
+    render(
+      <TableSelectionProvider
+        rowIds={NAMES}
+        onSelectedRowsChange={onSelectedRowsChange}
+      >
+        <TableRoot>
+          <TableHeader>
+            <TableRow>
+              <TableCellCheckbox head />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {NAMES.map((name) => (
+              <TableRow key={name}>
+                <TableCellCheckbox rowId={name} label={`Select ${name}`} />
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableRoot>
+      </TableSelectionProvider>,
+    );
+
+    await user.click(screen.getByRole("checkbox", { name: "Select Linus" }));
+    expect(onSelectedRowsChange).toHaveBeenLastCalledWith(["Linus"]);
+    expect(selectAll()).toBePartiallyChecked();
+
+    await user.click(selectAll());
+    expect(onSelectedRowsChange).toHaveBeenLastCalledWith(NAMES);
   });
 });

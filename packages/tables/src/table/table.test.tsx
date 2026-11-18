@@ -322,7 +322,7 @@ describe("Table", () => {
     const selectAll = () =>
       screen.getByRole("checkbox", { name: "Select all rows" });
     const rowCheckboxes = () =>
-      screen.getAllByRole("checkbox", { name: "Select row" });
+      screen.getAllByRole("checkbox", { name: /^Select row \d+$/ });
 
     it("renders no checkboxes unless selectable is set", () => {
       render(<Table items={ITEMS} />);
@@ -528,6 +528,197 @@ describe("Table", () => {
       expect(rowCheckboxes()[0]).toBeChecked();
       expect(rowCheckboxes()[1]).not.toBeChecked();
       expect(rowCheckboxes()[2]).not.toBeChecked();
+    });
+
+    it("labels each row checkbox with its row number by default", () => {
+      render(<Table items={ITEMS} selectable />);
+      expect(
+        rowCheckboxes().map((checkbox) => checkbox.getAttribute("aria-label")),
+      ).toEqual(["Select row 1", "Select row 2", "Select row 3"]);
+    });
+
+    it("labels each row checkbox with getRowLabel", () => {
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          getRowLabel={(item) => `Select ${item.name}`}
+        />,
+      );
+      expect(
+        screen.getByRole("checkbox", { name: "Select Grace" }),
+      ).toBeInTheDocument();
+    });
+
+    it("does not count a selected index outside the rows as a selected row", () => {
+      render(<Table items={ITEMS} selectable selectedRows={[0, 1, 7]} />);
+
+      expect(selectAll()).not.toBeChecked();
+      expect(selectAll()).toBePartiallyChecked();
+      expect(rowCheckboxes()[2]).not.toBeChecked();
+    });
+
+    it("keeps selected indices outside the rows in the next report", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[0, 1, 7]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(rowCheckboxes()[2]);
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2, 7]);
+    });
+
+    it("leaves selected ids outside the rows alone when toggling all", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      const { rerender } = render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[1, 7]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2, 7]);
+
+      rerender(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[0, 1, 2, 7]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+      expect(selectAll()).toBeChecked();
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([7]);
+    });
+
+    it("checks the header checkbox when items shrink under a full selection", () => {
+      const { rerender } = render(
+        <Table items={ITEMS} selectable selectedRows={[0, 1, 2]} />,
+      );
+
+      rerender(
+        <Table items={ITEMS.slice(0, 2)} selectable selectedRows={[0, 1, 2]} />,
+      );
+
+      expect(selectAll()).toBeChecked();
+      expect(selectAll()).not.toBePartiallyChecked();
+    });
+
+    describe("with getRowId", () => {
+      const getRowId = (item: { name: string }) => item.name.toLowerCase();
+
+      it("reports the selected row ids in row order", async () => {
+        const user = userEvent.setup();
+        const onSelectedRowsChange = vi.fn();
+        render(
+          <Table
+            items={ITEMS}
+            selectable
+            getRowId={getRowId}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />,
+        );
+
+        await user.click(rowCheckboxes()[2]);
+        await user.click(rowCheckboxes()[0]);
+        expect(onSelectedRowsChange).toHaveBeenLastCalledWith(["ada", "linus"]);
+
+        await user.click(selectAll());
+        expect(onSelectedRowsChange).toHaveBeenLastCalledWith([
+          "ada",
+          "grace",
+          "linus",
+        ]);
+      });
+
+      it("checks the rows whose ids are in selectedRows", () => {
+        render(
+          <Table
+            items={ITEMS}
+            selectable
+            getRowId={getRowId}
+            selectedRows={["grace"]}
+          />,
+        );
+
+        expect(rowCheckboxes()[0]).not.toBeChecked();
+        expect(rowCheckboxes()[1]).toBeChecked();
+        expect(rowCheckboxes()[2]).not.toBeChecked();
+      });
+
+      it("keeps the selection on the same record when the items are re-sorted", async () => {
+        const user = userEvent.setup();
+        const { rerender } = render(
+          <Table items={ITEMS} selectable getRowId={getRowId} />,
+        );
+
+        await user.click(rowCheckboxes()[0]);
+        const adaCheckbox = rowCheckboxes()[0];
+
+        rerender(
+          <Table items={[...ITEMS].reverse()} selectable getRowId={getRowId} />,
+        );
+
+        expect(rowCheckboxes()[0]).not.toBeChecked();
+        expect(rowCheckboxes()[2]).toBeChecked();
+        expect(rowCheckboxes()[2]).toBe(adaCheckbox);
+      });
+
+      it("keeps the selection on the same record when a row is removed", async () => {
+        const user = userEvent.setup();
+        const { rerender } = render(
+          <Table items={ITEMS} selectable getRowId={getRowId} />,
+        );
+
+        await user.click(rowCheckboxes()[2]);
+
+        rerender(
+          <Table items={ITEMS.slice(1)} selectable getRowId={getRowId} />,
+        );
+
+        expect(rowCheckboxes()[0]).not.toBeChecked();
+        expect(rowCheckboxes()[1]).toBeChecked();
+      });
+
+      it("keeps a selection on another page when toggling a row", async () => {
+        const user = userEvent.setup();
+        const onSelectedRowsChange = vi.fn();
+        const { rerender } = render(
+          <Table
+            items={ITEMS.slice(0, 2)}
+            selectable
+            getRowId={getRowId}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />,
+        );
+
+        await user.click(rowCheckboxes()[0]);
+
+        rerender(
+          <Table
+            items={ITEMS.slice(2)}
+            selectable
+            getRowId={getRowId}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />,
+        );
+        expect(selectAll()).not.toBePartiallyChecked();
+
+        await user.click(rowCheckboxes()[0]);
+        expect(onSelectedRowsChange).toHaveBeenLastCalledWith(["linus", "ada"]);
+      });
     });
   });
 
