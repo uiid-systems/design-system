@@ -2,7 +2,7 @@
 
 import { splitDomAttributes } from "@uiid/utils";
 
-import { InputGroupActions } from "../shared/input-group";
+import { InputGroupActions, mergeInputGroupProps } from "../shared/input-group";
 import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxRoot,
@@ -99,9 +99,12 @@ export const Combobox = ({
         disabled={disabled}
         onFocus={onFocus}
         onBlur={onBlur}
-        InputGroupProps={InputGroupProps}
         {...domAttributes}
         {...InputProps}
+        InputGroupProps={mergeInputGroupProps(
+          InputGroupProps,
+          InputProps?.InputGroupProps,
+        )}
         FieldProps={fieldProps}
       />
 

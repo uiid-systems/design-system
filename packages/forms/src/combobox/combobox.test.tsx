@@ -318,6 +318,24 @@ describe("Combobox size variant", () => {
     ).toHaveAttribute("data-ui-w", "full");
   });
 
+  /* Both props reach the one group the Input part renders, so neither may
+     drop the other: the nested value wins a conflict, and classes join. */
+  it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
+    render(
+      <Combobox
+        items={items}
+        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputProps={{
+          InputGroupProps: { className: "inner", id: "inner-id" },
+        }}
+      />,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveClass("outer", "inner");
+    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("title", "kept");
+  });
+
   it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,

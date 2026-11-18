@@ -2,6 +2,7 @@
 
 import { splitDomAttributes } from "@uiid/utils";
 
+import { mergeInputGroupProps } from "../shared/input-group";
 import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
@@ -68,9 +69,12 @@ export const Autocomplete = ({
         required={required}
         onFocus={onFocus}
         onBlur={onBlur}
-        InputGroupProps={InputGroupProps}
         {...domAttributes}
         {...InputProps}
+        InputGroupProps={mergeInputGroupProps(
+          InputGroupProps,
+          InputProps?.InputGroupProps,
+        )}
       />
 
       <AutocompletePortal {...PortalProps}>
