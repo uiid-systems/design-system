@@ -44,9 +44,10 @@ export const AutocompleteInput = ({
       {...FieldProps}
     >
       {/*
-       * Base UI anchors the popup to the input group, so it wraps the control
-       * row alone. Around the whole Field it took in the label, description
-       * and error, and the popup opened below them.
+       * Base UI anchors the popup to the input group, so the group wraps the
+       * control row alone and the popup opens against the control. The
+       * label, description and error stay outside it, which also keeps them
+       * out of the group's press handler and its `role="group"`.
        */}
       <AutocompleteInputGroup size={size} {...InputGroupProps}>
         {/*

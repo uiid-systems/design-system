@@ -38,10 +38,11 @@ export const InputGroupRoot = ({
     <BaseInputGroup.InputGroup
       data-slot={slot}
       /*
-       * The group wraps the control row inside the Field, so it stands where
-       * the input wrapper stood and spans the row the way that `fullwidth`
-       * wrapper did. Without it, a group in a flex row (`ComboboxChips`)
-       * shrinks to the input's intrinsic width, and the popup with it.
+       * The group wraps the input wrapper directly, so it takes that wrapper's
+       * place in whatever lays it out: a Field's column, or the parent's flow
+       * when a bare Field is `display: contents`. Spanning the row keeps the
+       * wrapper's `fullwidth`; without it, a group in a flex row
+       * (`ComboboxChips`) shrinks to the input's width, and the popup with it.
        */
       render={<Box w="full" />}
       className={cxState(
