@@ -162,6 +162,34 @@ export const Footer = () => (
   </Drawer>
 );
 
+/**
+ * Content taller than the panel scrolls inside the body, while the header and
+ * footer stay in view. A side panel and a bottom sheet scroll the same way.
+ */
+export const LongContent = () => (
+  <Group gap={2}>
+    {(["right", "down"] as const).map((swipeDirection) => (
+      <Drawer
+        key={swipeDirection}
+        swipeDirection={swipeDirection}
+        trigger={<Button>{swipeDirection}</Button>}
+        title="Terms of service"
+        footer={
+          <Group gap={2} ax="end" fullwidth>
+            <DrawerClose render={<Button size="small" />}>Accept</DrawerClose>
+          </Group>
+        }
+      >
+        <Stack gap={4}>
+          {Array.from({ length: 16 }, (_, index) => (
+            <Text key={index}>{BODY}</Text>
+          ))}
+        </Stack>
+      </Drawer>
+    ))}
+  </Group>
+);
+
 /*
  * One drawer for a whole list: each row's button opens it, and `finalFocus`
  * returns focus to the button that did. No `trigger`, so no trigger renders.

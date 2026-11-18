@@ -155,7 +155,8 @@
    * sits at the surface edge, and its block padding leaves a focus ring room
    * at the clip edge. Drop Card's `w="full"` on the body, which would hold it
    * to the content box, and pair this with @uiid/overlays' useBodyOverflow,
-   * which makes an overflowing body a tab stop. Dialog and Popover compose it.
+   * which makes an overflowing body a tab stop. Dialog, Popover and Drawer
+   * compose it.
    */
   .composes-popup-scroll-body {
     & > [data-slot="card-inner-container"] {

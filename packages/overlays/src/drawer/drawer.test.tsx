@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
 import { Footer } from "./drawer.examples";
@@ -788,6 +788,122 @@ describe("Drawer", () => {
       );
     },
   );
+
+  // ============================================
+  // SCROLLING BODY
+  // ============================================
+  // A panel caps its height at the viewport, so a long body scrolls inside it
+  // while the header and footer stay in view, as Dialog's does. The test DOM
+  // has no layout; Storybook covers the scrolling itself. These stub the
+  // body's scroll and client heights to stand in for an overflowing body.
+
+  describe("scrolling body", () => {
+    const stubHeights = (scrollHeight: number, clientHeight: number) => {
+      vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockReturnValue(
+        scrollHeight,
+      );
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(
+        clientHeight,
+      );
+    };
+    const body = () =>
+      screen
+        .getByRole("dialog")
+        .querySelector<HTMLElement>(
+          ':scope > [data-slot="card-inner-container"]',
+        );
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+      vi.unstubAllGlobals();
+    });
+
+    it("makes the body the scroll container, free to reach the panel's edges", () => {
+      render(
+        <Drawer open={true} title="Title" footer="Footer">
+          Drawer content
+        </Drawer>,
+      );
+
+      expect(screen.getByRole("dialog")).toHaveClass(
+        "composes-popup-scroll-body",
+      );
+      expect(body()).toHaveTextContent("Drawer content");
+      expect(body()).not.toHaveAttribute("data-ui-w");
+    });
+
+    it.each(["down", "right"] as const)(
+      "makes a long %s drawer's body a tab stop, reached by Tab",
+      async (swipeDirection) => {
+        stubHeights(1000, 400);
+        const user = userEvent.setup();
+        render(
+          <Drawer
+            open={true}
+            swipeDirection={swipeDirection}
+            title="Terms"
+            action={<button type="button">Close</button>}
+          >
+            Long content
+          </Drawer>,
+        );
+        await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+        expect(body()).not.toHaveAttribute("role");
+
+        screen.getByRole("button", { name: "Close" }).focus();
+        await user.tab();
+        expect(body()).toHaveFocus();
+      },
+    );
+
+    it("leaves a short body out of the tab order", async () => {
+      stubHeights(400, 400);
+      render(
+        <Drawer open={true} title="Terms">
+          Short content
+        </Drawer>,
+      );
+
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("tabindex");
+    });
+
+    // Dropping the tab stop under focus would send focus to the document, so
+    // a focused body keeps it until focus leaves. ResizeObserver is captured
+    // so the test can report the resize happy-dom never would.
+    it("keeps a focused body's tab stop when it stops overflowing, until blur", async () => {
+      const resizes: (() => void)[] = [];
+      vi.stubGlobal(
+        "ResizeObserver",
+        class {
+          constructor(callback: () => void) {
+            resizes.push(callback);
+          }
+          observe() {}
+          disconnect() {}
+        },
+      );
+      stubHeights(1000, 400);
+      render(
+        <Drawer
+          open={true}
+          title="Terms"
+          action={<button type="button">Close</button>}
+        >
+          Long content
+        </Drawer>,
+      );
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      body()!.focus();
+
+      stubHeights(400, 400);
+      act(() => resizes.forEach((resize) => resize()));
+      expect(body()).toHaveAttribute("tabindex", "0");
+
+      act(() => screen.getByRole("button", { name: "Close" }).focus());
+      await waitFor(() => expect(body()).not.toHaveAttribute("tabindex"));
+    });
+  });
 });
 
 // happy-dom evaluates no media queries, so the stylesheet text is the only
