@@ -6,7 +6,7 @@ Use Select when you want to:
 
 - Pick from a fixed list — each entry in `items` carries `value` and `label`, and optionally an `icon`, a `description`, or `disabled`
 - Draw a row yourself with an item's `children` — a badge beside the name, a swatch, a two-column layout — when two strings aren't enough
-- Open empty rather than preselecting the first option by giving it a `placeholder`
+- Open empty rather than preselecting the first enabled option by giving it a `placeholder`
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon or a hint inside the trigger with `before` and `after`

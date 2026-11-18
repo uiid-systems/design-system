@@ -96,14 +96,15 @@ export function Select<
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
-  // Multiple mode starts empty; single mode falls back to the first item
-  // unless a placeholder should show instead.
+  // Multiple mode starts empty; single mode falls back to the first enabled
+  // item unless a placeholder should show instead. A disabled row is one the
+  // user could not pick, so it is never picked for them.
   const resolvedDefaultValue = (defaultValue ??
     (multiple
       ? []
       : placeholder
         ? undefined
-        : items?.[0]?.value)) as SelectRootProps<
+        : items?.find((item) => !item.disabled)?.value)) as SelectRootProps<
     Value,
     Multiple
   >["defaultValue"];

@@ -454,6 +454,19 @@ describe("Select disabled items", () => {
 
     expect(screen.getByRole("combobox")).toHaveTextContent("Option A");
   });
+
+  it("skips a disabled first row when it picks the default", () => {
+    render(
+      <Select
+        items={[
+          { value: "a", label: "Option A", disabled: true },
+          { value: "b", label: "Option B" },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Option B");
+  });
 });
 
 describe("Select control surface", () => {
