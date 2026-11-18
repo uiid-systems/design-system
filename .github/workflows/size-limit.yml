@@ -34,7 +34,9 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      # The repo postinstall only sets up git hooks, Playwright and the per-icon
+      # modules. The icons build emits those modules itself, so skip it here.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
 
       # Both builds share this cache, so the base build is mostly cache hits.
       - uses: actions/cache@v4
@@ -56,7 +58,7 @@ jobs:
         run: |
           git worktree add --detach ../size-base "$(git rev-parse HEAD^1)"
           (cd ../size-base \
-            && pnpm install --frozen-lockfile \
+            && pnpm install --frozen-lockfile --ignore-scripts \
             && pnpm turbo build --filter='./packages/*' --cache-dir="$GITHUB_WORKSPACE/.turbo/cache")
           SIZE_ROOT=../size-base pnpm size-limit --json > size-base.json
 
