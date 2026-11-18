@@ -3,6 +3,7 @@ export * from "./accordion/accordion.types";
 export * from "./accordion/subcomponents";
 
 export * from "./breadcrumbs/breadcrumbs";
+export * from "./breadcrumbs/breadcrumbs.types";
 
 export * from "./menu/menu";
 export * from "./menu/menu.types";

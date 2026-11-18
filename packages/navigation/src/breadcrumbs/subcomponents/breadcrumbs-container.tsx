@@ -1,8 +1,6 @@
 import { Box } from "@uiid/layout";
 
-import type { BreadcrumbsProps } from "../breadcrumbs.types";
-
-export type BreadcrumbsContainerProps = Omit<BreadcrumbsProps, "items">;
+import type { BreadcrumbsContainerProps } from "../breadcrumbs.types";
 
 export const BreadcrumbsContainer = ({
   children,
