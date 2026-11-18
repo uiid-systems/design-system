@@ -65,12 +65,6 @@
   padding-inline: var(--accordion-panel-padding-x);
 }
 
-.toggle-fullwidth {
-  width: 100%;
-  width: -webkit-fill-available;
-  width: -moz-available;
-}
-
 /* Ghost variant */
 .variant-ghost {
   background-color: transparent;
@@ -107,22 +101,19 @@
   }
 }
 
-/* Panel sizes */
+/* Panel sizes: each tier sets the padding vars `.accordion-content` reads.
+   Inline padding matches the trigger's at that size, so content lines up with
+   the trigger label. Block padding is twice the trigger's, the ratio medium
+   already had (0.75rem trigger, 1.5rem panel). */
 .panel-size-small {
-  .accordion-panel-content {
-    padding-inline: var(--accordion-size-sm-padding-x);
-    padding-block: var(--accordion-size-sm-padding-y);
-  }
+  --accordion-panel-padding-x: var(--accordion-size-sm-padding-x);
+  --accordion-panel-padding-y: calc(var(--accordion-size-sm-padding-y) * 2);
 }
 .panel-size-medium {
-  .accordion-panel-content {
-    padding-inline: var(--accordion-size-md-padding-x);
-    padding-block: var(--accordion-size-md-padding-y);
-  }
+  --accordion-panel-padding-x: var(--accordion-size-md-padding-x);
+  --accordion-panel-padding-y: calc(var(--accordion-size-md-padding-y) * 2);
 }
 .panel-size-large {
-  .accordion-panel-content {
-    padding-inline: var(--accordion-size-lg-padding-x);
-    padding-block: var(--accordion-size-lg-padding-y);
-  }
+  --accordion-panel-padding-x: var(--accordion-size-lg-padding-x);
+  --accordion-panel-padding-y: calc(var(--accordion-size-lg-padding-y) * 2);
 }

@@ -13,6 +13,7 @@ import {
 } from "./subcomponents";
 
 import styles from "./accordion.module.css";
+import css from "./accordion.module.css?raw";
 
 const sampleItems = [
   { value: "item-1", trigger: "First", content: "First content" },
@@ -208,6 +209,67 @@ describe("Accordion", () => {
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute("data-panel-open");
+  });
+
+  // ============================================
+  // SIZE
+  // ============================================
+
+  /*
+   * happy-dom applies no stylesheet, so nothing here measures padding. The
+   * first test proves the DOM half: `size` puts a tier class on the panel. The
+   * rest read the module source for the CSS half: each tier sets the two vars,
+   * and the content element is what reads them. The tiers used to target
+   * `.accordion-panel-content`, a class no element carries, so they did nothing.
+   */
+  const SIZES = ["small", "medium", "large"] as const;
+
+  /** The declarations of a top-level rule, up to its first closing brace. */
+  const ruleBody = (selector: string) =>
+    css.match(new RegExp(`^\\.${selector}\\s*\\{([^}]*)\\}`, "m"))?.[1] ?? "";
+
+  it.each(SIZES)("puts the %s tier class on the panel", (size) => {
+    render(
+      <Accordion items={sampleItems} size={size} defaultValue={["item-1"]} />,
+    );
+    const panel = document.querySelector("[data-slot='accordion-panel']");
+    const others = SIZES.filter((other) => other !== size);
+
+    expect(panel).toHaveClass(styles[`panel-size-${size}`]);
+    others.forEach((other) => {
+      expect(panel).not.toHaveClass(styles[`panel-size-${other}`]);
+    });
+  });
+
+  it("defaults the panel to the medium tier", () => {
+    render(<Accordion items={sampleItems} defaultValue={["item-1"]} />);
+    expect(document.querySelector("[data-slot='accordion-panel']")).toHaveClass(
+      styles["panel-size-medium"],
+    );
+  });
+
+  it.each(SIZES)("sets both panel padding vars in the %s tier", (size) => {
+    const body = ruleBody(`panel-size-${size}`);
+    expect(body).toMatch(/--accordion-panel-padding-x:/);
+    expect(body).toMatch(/--accordion-panel-padding-y:/);
+  });
+
+  it("reads the panel padding vars on the content element", () => {
+    const body = ruleBody("accordion-content");
+    expect(body).toMatch(
+      /padding-inline:\s*var\(--accordion-panel-padding-x\)/,
+    );
+    expect(body).toMatch(/padding-block:\s*var\(--accordion-panel-padding-y\)/);
+
+    render(<Accordion items={sampleItems} defaultValue={["item-1"]} />);
+    const content = document.querySelector("[data-slot='accordion-content']");
+    expect(content).toHaveClass(styles["accordion-content"]);
+    expect(content?.closest("[data-slot='accordion-panel']")).not.toBeNull();
+  });
+
+  it("targets no class the accordion never renders", () => {
+    expect(css).not.toMatch(/\.accordion-panel-content\b/);
+    expect(css).not.toMatch(/\.toggle-fullwidth\b/);
   });
 
   // ============================================
