@@ -1,5 +1,5 @@
 import { render, waitFor } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { CodeBlock } from "../code-block/code-block";
 import { LanguageIcon } from "../code-block/language-icons";
@@ -11,15 +11,14 @@ import {
   loadLanguage,
   resolveLanguage,
 } from "./highlighter";
+import { TOKENIZE_MAX_LINE_LENGTH } from "./highlighter.constants";
 import type { CodeLanguage } from "./highlighter.types";
 
 const TS_CODE = "const x: number = 1;";
 
 /**
  * A grammar gives every token span a theme color; the plain language gives
- * none. Only the presence of colors is asserted, never which ones: Shiki stops
- * tokenizing a line after 500ms, so a cold first highlight on a busy machine
- * can color a line's tail differently from a warm one.
+ * none.
  */
 const COLORED_TOKEN = "span[style*='--shiki-light']";
 const hasColoredTokens = (html: string) =>
@@ -135,6 +134,32 @@ describe("highlight", () => {
     });
 
     expect(html.match(/class="line highlighted"/g)).toHaveLength(1);
+  });
+
+  it("colors a line fully even when tokenizing it exceeds Shiki's time limit", async () => {
+    const code = "const message: string = `hello ${name}`; // done";
+    const fast = await highlight(code, "typescript");
+
+    // Each clock read jumps a second, so every line looks slower than any
+    // per-line tokenize time limit Shiki could apply
+    let now = Date.now();
+    const clock = vi.spyOn(Date, "now").mockImplementation(() => (now += 1000));
+    try {
+      const slow = await highlight(code, "typescript");
+      expect(slow).toBe(fast);
+    } finally {
+      clock.mockRestore();
+    }
+  });
+
+  it("renders a line past the length cap plain", async () => {
+    const long = `const x = [${"1, ".repeat(TOKENIZE_MAX_LINE_LENGTH / 3)}];`;
+    const html = await highlight(`${long}\n${TS_CODE}`, "typescript");
+    const [longLine, shortLine] = html.split('<span class="line">').slice(1);
+
+    expect(textOf(html)).toBe(`${long}\n${TS_CODE}`);
+    expect(hasColoredTokens(longLine)).toBe(false);
+    expect(hasColoredTokens(shortLine)).toBe(true);
   });
 });
 

@@ -12,6 +12,7 @@ import {
   DEFAULT_THEME_LIGHT,
   LANGUAGE_ALIASES,
   PLAIN_LANGUAGE,
+  TOKENIZE_MAX_LINE_LENGTH,
 } from "./highlighter.constants";
 import type {
   BundledLanguage,
@@ -43,7 +44,8 @@ let highlighterPromise: Promise<HighlighterCore> | null = null;
 const loadedLanguages = new Set<BundledLanguage>();
 
 /**
- * Get or create the shared highlighter instance
+ * Get or create the shared highlighter instance. Only `highlight()` applies
+ * the tokenize limits; calling this instance directly gets Shiki's defaults.
  */
 export async function getHighlighter(): Promise<HighlighterCore> {
   if (highlighterInstance) {
@@ -138,6 +140,13 @@ export async function highlight(
       dark: DEFAULT_THEME_DARK,
     },
     defaultColor: false,
+    // Shiki stops tokenizing a line after 500ms by default and leaves the rest
+    // of it one color. A first highlight on a slow device can cross that, and
+    // the block never re-highlights, so 0 turns the limit off. The trade-off:
+    // nothing then bounds the time for one line, so a length cap does instead,
+    // and a line at or past it renders plain every time.
+    tokenizeTimeLimit: 0,
+    tokenizeMaxLineLength: TOKENIZE_MAX_LINE_LENGTH,
     ...(meta && { meta }),
     transformers: [
       transformerNotationDiff(),
