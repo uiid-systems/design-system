@@ -101,6 +101,8 @@ Content taller than the panel scrolls inside the body. The header and the footer
 
 While the body overflows it is a tab stop, so the keyboard can scroll it. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
 
+With `snapPoints` and an overflowing body, an upward drag on the body scrolls it rather than expanding the sheet, following Base UI's scroll-edge rule. Drag the header to expand the sheet.
+
 ## Parts
 
 Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the gesture system needs:
