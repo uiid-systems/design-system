@@ -389,6 +389,21 @@ describe("Autocomplete input group", () => {
     expect(group).toContainElement(screen.getByRole("combobox"));
   });
 
+  /* Base UI anchors the popup to the group, so the group must hold the
+     control row alone: wrapping the Field put the label, description and
+     error inside the anchor and the group's press handler. */
+  it("wraps the control row only, leaving the label and description outside", () => {
+    render(<Autocomplete items={items} label="Fruit" description="Pick one" />);
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toContainElement(
+      document.querySelector<HTMLElement>("[data-slot='input-wrapper']"),
+    );
+    expect(group).not.toContainElement(screen.getByText("Fruit"));
+    expect(group).not.toContainElement(screen.getByText("Pick one"));
+  });
+
   it("forwards InputGroupProps to the input group", () => {
     render(
       <Autocomplete items={items} InputGroupProps={{ className: "mine" }} />,

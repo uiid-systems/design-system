@@ -295,6 +295,29 @@ describe("Combobox size variant", () => {
     },
   );
 
+  /* Base UI anchors the popup to the group, so the group must hold the
+     control row alone: wrapping the Field put the label, description and
+     error inside the anchor and the group's press handler. */
+  it("wraps the control row only, leaving the label and description outside", () => {
+    render(<Combobox items={items} label="Fruit" description="Pick one" />);
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toContainElement(
+      document.querySelector<HTMLElement>("[data-slot='input-wrapper']"),
+    );
+    expect(group).not.toContainElement(screen.getByText("Fruit"));
+    expect(group).not.toContainElement(screen.getByText("Pick one"));
+  });
+
+  /* The group stands where the `fullwidth` wrapper stood, so in a flex row
+     like `ComboboxChips` it must still span the row, or the input and the
+     popup shrink to the input's intrinsic width. */
+  it("spans the row it sits in", () => {
+    render(<Combobox items={items} />);
+    expect(
+      document.querySelector("[data-slot='combobox-input-group']"),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,

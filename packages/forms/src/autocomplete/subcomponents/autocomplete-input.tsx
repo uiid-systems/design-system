@@ -8,6 +8,7 @@ import { inputControlClassName } from "../../input/input.styles";
 import { hasInputSlots } from "../../input/input.utils";
 import { InputWrapper } from "../../input/subcomponents";
 import type { AutocompleteInputProps } from "../autocomplete.types";
+import { AutocompleteInputGroup } from "./autocomplete-input-group";
 
 export const AutocompleteInput = ({
   label,
@@ -24,6 +25,7 @@ export const AutocompleteInput = ({
   disabled,
   required,
   FieldProps,
+  InputGroupProps,
   className,
   ...props
 }: AutocompleteInputProps) => {
@@ -42,45 +44,52 @@ export const AutocompleteInput = ({
       {...FieldProps}
     >
       {/*
-       * The hue goes to whichever element wears the surface. Autocomplete
-       * renders no slots by default, so the wrapper is usually a box-less
-       * `display: contents` and the `<input>` carries it; pass `before` or
-       * `after` and the wrapper paints the surface and carries it instead.
+       * Base UI anchors the popup to the input group, so it wraps the control
+       * row alone. Around the whole Field it took in the label, description
+       * and error, and the popup opened below them.
        */}
-      <InputWrapper
-        before={before}
-        after={after}
-        size={size}
-        color={color}
-        disabled={disabled}
-        fullwidth
-      >
+      <AutocompleteInputGroup size={size} {...InputGroupProps}>
         {/*
-         * `name` stops at the Field, which needs it to match a `Form` error.
-         * The root already registers this input as the field's control, so
-         * rendering a plain `<input>` rather than `InputControl` leaves Base UI
-         * to decide whether the input carries the name for submission.
+         * The hue goes to whichever element wears the surface. Autocomplete
+         * renders no slots by default, so the wrapper is usually a box-less
+         * `display: contents` and the `<input>` carries it; pass `before` or
+         * `after` and the wrapper paints the surface and carries it instead.
          */}
-        <BaseAutocomplete.Input
-          data-slot="autocomplete-input"
-          render={<input />}
-          className={cxState(
-            inputControlClassName({
-              inner: hasSlots,
-              size,
-              fullwidth: true,
-              color,
-            }),
-            className,
-          )}
-          placeholder={placeholder}
+        <InputWrapper
+          before={before}
+          after={after}
+          size={size}
+          color={color}
           disabled={disabled}
-          required={required}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          {...props}
-        />
-      </InputWrapper>
+          fullwidth
+        >
+          {/*
+           * `name` stops at the Field, which needs it to match a `Form` error.
+           * The root already registers this input as the field's control, so
+           * rendering a plain `<input>` rather than `InputControl` leaves Base UI
+           * to decide whether the input carries the name for submission.
+           */}
+          <BaseAutocomplete.Input
+            data-slot="autocomplete-input"
+            render={<input />}
+            className={cxState(
+              inputControlClassName({
+                inner: hasSlots,
+                size,
+                fullwidth: true,
+                color,
+              }),
+              className,
+            )}
+            placeholder={placeholder}
+            disabled={disabled}
+            required={required}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            {...props}
+          />
+        </InputWrapper>
+      </AutocompleteInputGroup>
     </Field>
   );
 };

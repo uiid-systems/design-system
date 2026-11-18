@@ -7,7 +7,6 @@ import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxRoot,
   ComboboxInput,
-  ComboboxInputGroup,
   ComboboxClear,
   ComboboxTrigger,
   ComboboxPortal,
@@ -75,37 +74,36 @@ export const Combobox = ({
       {...RootProps}
       {...rootProps}
     >
-      <ComboboxInputGroup size={size} {...InputGroupProps}>
-        <ComboboxInput
-          name={name}
-          placeholder={placeholder}
-          label={label}
-          description={description}
-          action={action}
-          before={before}
-          after={
-            /*
-             * Clear and Trigger ride the input's trailing slot rather than
-             * overlaying it, so they take their inset and their icon sizing
-             * from the size tier the way any other slotted content does.
-             * Anything the caller passed as `after` leads the row.
-             */
-            <InputGroupActions slot="combobox-actions">
-              {after}
-              <ComboboxClear />
-              <ComboboxTrigger />
-            </InputGroupActions>
-          }
-          size={size}
-          color={color}
-          disabled={disabled}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          {...domAttributes}
-          {...InputProps}
-          FieldProps={fieldProps}
-        />
-      </ComboboxInputGroup>
+      <ComboboxInput
+        name={name}
+        placeholder={placeholder}
+        label={label}
+        description={description}
+        action={action}
+        before={before}
+        after={
+          /*
+           * Clear and Trigger ride the input's trailing slot rather than
+           * overlaying it, so they take their inset and their icon sizing
+           * from the size tier the way any other slotted content does.
+           * Anything the caller passed as `after` leads the row.
+           */
+          <InputGroupActions slot="combobox-actions">
+            {after}
+            <ComboboxClear />
+            <ComboboxTrigger />
+          </InputGroupActions>
+        }
+        size={size}
+        color={color}
+        disabled={disabled}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        InputGroupProps={InputGroupProps}
+        {...domAttributes}
+        {...InputProps}
+        FieldProps={fieldProps}
+      />
 
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>
