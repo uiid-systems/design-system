@@ -436,6 +436,44 @@ describe("Autocomplete input group", () => {
     );
   });
 
+  it("forwards InputGroupProps passed to AutocompleteInput", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          InputGroupProps={{ className: "mine", size: "large" }}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toHaveClass("mine");
+    expect(group?.className).toContain("size-large");
+  });
+
+  it("leaves the inline error outside the group", () => {
+    render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Autocomplete name="fruit" label="Fruit" items={items} />
+      </Form>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    const error = document.querySelector<HTMLElement>(
+      "[data-slot='field-error']",
+    );
+    expect(error).toHaveTextContent("Pick a fruit");
+    expect(group).not.toContainElement(error);
+  });
+
+  it("spans the row it sits in", () => {
+    render(<Autocomplete items={items} />);
+    expect(
+      document.querySelector("[data-slot='autocomplete-input-group']"),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("forwards InputGroupProps to the input group", () => {
     render(
       <Autocomplete items={items} InputGroupProps={{ className: "mine" }} />,

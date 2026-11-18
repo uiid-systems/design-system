@@ -359,6 +359,31 @@ describe("Combobox size variant", () => {
     );
   });
 
+  it("forwards InputGroupProps passed to ComboboxInput", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput InputGroupProps={{ className: "mine", size: "large" }} />
+      </ComboboxRoot>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveClass("mine");
+    expect(group?.className).toContain("size-large");
+  });
+
+  it("leaves the inline error outside the group", () => {
+    render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Combobox name="fruit" label="Fruit" items={items} />
+      </Form>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    const error = document.querySelector<HTMLElement>(
+      "[data-slot='field-error']",
+    );
+    expect(error).toHaveTextContent("Pick a fruit");
+    expect(group).not.toContainElement(error);
+  });
+
   it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,
