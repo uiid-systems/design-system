@@ -32,6 +32,19 @@ type ViteConfigOptions = {
   preserveDirectives?: boolean;
 };
 
+/**
+ * Files the published declarations leave out. Tests and examples are compiled by
+ * `tsc -b` (that build is the typecheck), but their `.d.ts` are noise in a
+ * tarball. Setting `exclude` replaces the tsconfig's, so its entries are repeated.
+ */
+const dtsExclude = [
+  "node_modules/**",
+  "dist/**",
+  "**/*.test.*",
+  "**/*.examples.*",
+  "**/*.stories.*",
+];
+
 const baseExternal = [
   "react",
   "react-dom",
@@ -49,7 +62,17 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     preserveDirectives: usePreserveDirectives = true,
   } = options;
 
-  const plugins = [react(), tsconfigPaths(), dts({ insertTypesEntry: true })];
+  const plugins = [
+    react(),
+    tsconfigPaths(),
+    dts({
+      insertTypesEntry: true,
+      exclude: dtsExclude,
+      // `files` ships dist only, so a map would point at source that is not in
+      // the tarball. The `tsc -b` build keeps its maps for local editing.
+      compilerOptions: { declarationMap: false },
+    }),
+  ];
 
   if (usePreserveDirectives) {
     plugins.push(preserveDirectives());

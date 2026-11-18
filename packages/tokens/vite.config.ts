@@ -14,7 +14,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
  * directive handling, neither of which applies here.
  */
 export default defineConfig({
-  plugins: [tsconfigPaths(), dts({ insertTypesEntry: true })],
+  plugins: [
+    tsconfigPaths(),
+    dts({
+      insertTypesEntry: true,
+      // Same exclusions as `createViteConfig`. Setting `exclude` replaces the
+      // tsconfig's, so its entries are repeated.
+      exclude: ["node_modules/**", "dist/**", "**/*.test.*"],
+    }),
+  ],
   build: {
     lib: {
       entry: "src/index.ts",
