@@ -1,10 +1,16 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 
 import { Input } from "../input/input";
 import { Form } from "./form";
-import { useFormState } from "./hooks/use-form-state";
+import { useFormState, useFormSubmit } from "./hooks/use-form-state";
 
 import styles from "./form.module.css";
 
@@ -283,5 +289,170 @@ describe("useFormState", () => {
 
     expect(screen.getByTestId("errors")).toHaveTextContent("{}");
     expect(screen.getByTestId("loading")).toHaveTextContent("false");
+  });
+});
+
+describe("useFormSubmit", () => {
+  it("sets success and result when the submit returns a result", async () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onSuccess }));
+
+    await act(() =>
+      result.current.handleSubmit(async () => ({ result: { id: 1 } })),
+    );
+
+    expect(result.current.success).toBe(true);
+    expect(result.current.result).toEqual({ id: 1 });
+    expect(onSuccess).toHaveBeenCalledExactlyOnceWith({ id: 1 });
+  });
+
+  it("calls onSuccess for a falsy result", async () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useFormSubmit<number>({ onSuccess }));
+
+    await act(() => result.current.handleSubmit(async () => ({ result: 0 })));
+
+    expect(result.current.success).toBe(true);
+    expect(result.current.result).toBe(0);
+    expect(onSuccess).toHaveBeenCalledExactlyOnceWith(0);
+  });
+
+  it("sets errors and calls onError only with the returned errors", async () => {
+    const onError = vi.fn();
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onError, onSuccess }));
+
+    await act(() =>
+      result.current.handleSubmit(async () => ({
+        errors: { email: "Required" },
+      })),
+    );
+
+    expect(result.current.errors).toEqual({ email: "Required" });
+    expect(result.current.success).toBe(false);
+    expect(result.current.result).toBeNull();
+    expect(onError).toHaveBeenCalledExactlyOnceWith({ email: "Required" });
+    expect(onSuccess).not.toHaveBeenCalled();
+  });
+
+  it("does not call onError on a successful submit", async () => {
+    const onError = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onError }));
+
+    await act(() => result.current.handleSubmit(async () => ({ result: {} })));
+
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it("clears previous errors and success when a new submit starts", async () => {
+    const { result } = renderHook(() => useFormSubmit());
+
+    await act(() => result.current.handleSubmit(async () => ({ result: {} })));
+    expect(result.current.success).toBe(true);
+
+    let resolve!: (value: { errors: Record<string, string> }) => void;
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.handleSubmit(
+        () => new Promise((r) => (resolve = r)),
+      );
+    });
+
+    expect(result.current.success).toBe(false);
+    expect(result.current.loading).toBe(true);
+
+    await act(async () => {
+      resolve({ errors: { name: "Taken" } });
+      await pending;
+    });
+
+    expect(result.current.errors).toEqual({ name: "Taken" });
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("is loading until the submit settles, with no delay by default", async () => {
+    const { result } = renderHook(() => useFormSubmit());
+    const submitFn = vi.fn(async () => ({ result: {} }));
+
+    let resolve!: () => void;
+    const gate = new Promise<void>((r) => (resolve = r));
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.handleSubmit(async () => {
+        await gate;
+        return submitFn();
+      });
+    });
+
+    expect(result.current.loading).toBe(true);
+
+    await act(async () => {
+      resolve();
+      await pending;
+    });
+
+    expect(submitFn).toHaveBeenCalledOnce();
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("calls the submit immediately when no delay is set", async () => {
+    vi.useFakeTimers();
+    try {
+      const submitFn = vi.fn(async () => ({ result: {} }));
+      const { result } = renderHook(() => useFormSubmit());
+
+      await act(async () => {
+        void result.current.handleSubmit(submitFn);
+      });
+
+      expect(submitFn).toHaveBeenCalledOnce();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("waits for an explicit delay before calling the submit", async () => {
+    vi.useFakeTimers();
+    try {
+      const submitFn = vi.fn(async () => ({ result: {} }));
+      const { result } = renderHook(() => useFormSubmit({ delay: 300 }));
+
+      await act(async () => {
+        void result.current.handleSubmit(submitFn);
+      });
+      expect(submitFn).not.toHaveBeenCalled();
+
+      await act(() => vi.advanceTimersByTimeAsync(300));
+      expect(submitFn).toHaveBeenCalledOnce();
+      expect(result.current.success).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("keeps handleSubmit stable across renders with inline options", () => {
+    const { result, rerender } = renderHook(() =>
+      useFormSubmit({ onSuccess: () => {} }),
+    );
+    const first = result.current.handleSubmit;
+
+    rerender();
+
+    expect(result.current.handleSubmit).toBe(first);
+  });
+
+  it("calls the latest onSuccess after a rerender", async () => {
+    const first = vi.fn();
+    const second = vi.fn();
+    const { result, rerender } = renderHook(
+      ({ onSuccess }) => useFormSubmit({ onSuccess }),
+      { initialProps: { onSuccess: first } },
+    );
+
+    rerender({ onSuccess: second });
+    await act(() => result.current.handleSubmit(async () => ({ result: {} })));
+
+    expect(first).not.toHaveBeenCalled();
+    expect(second).toHaveBeenCalledOnce();
   });
 });

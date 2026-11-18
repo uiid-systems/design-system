@@ -24,29 +24,26 @@ const FORM_WIDTH = 320;
  * the only thing an example passes in.
  */
 const useSubmission = (validate: (values: FormValues) => FormErrors) => {
-  const [succeeded, setSucceeded] = useState(false);
   const [formKey, setFormKey] = useState(0);
-  const { errors, loading, handleSubmit, reset } = useFormSubmit({
-    onSuccess: () => setSucceeded(true),
+  // `delay` stands in for a network round trip so the loading state is visible.
+  const { errors, loading, success, handleSubmit, reset } = useFormSubmit({
+    delay: 500,
   });
 
   return {
     formKey,
     errors,
     loading,
-    succeeded,
-    onFormSubmit: (values: FormValues) => {
-      setSucceeded(false);
-      return handleSubmit(async () => {
+    succeeded: success,
+    onFormSubmit: (values: FormValues) =>
+      handleSubmit(async () => {
         const nextErrors = validate(values);
         return Object.keys(nextErrors).length > 0
           ? { errors: nextErrors }
           : { result: values };
-      });
-    },
+      }),
     onReset: () => {
       reset();
-      setSucceeded(false);
       setFormKey((current) => current + 1);
     },
   };

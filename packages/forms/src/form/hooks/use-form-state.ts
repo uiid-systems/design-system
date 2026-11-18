@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 
 export type FormErrors = Record<string, string | string[]>;
 
@@ -10,11 +10,12 @@ export type UseFormStateOptions<T = Record<string, unknown>> = {
    */
   onSuccess?: (result: T) => void;
   /**
-   * Callback when form submission fails
+   * Callback when form submission returns errors. Not called when errors are cleared.
    */
   onError?: (errors: FormErrors) => void;
   /**
-   * Simulated delay in ms for demo purposes (default: 500)
+   * Delay in ms before `useFormSubmit` calls the submit function. Ignored by `useFormState`.
+   * @default 0
    */
   delay?: number;
 };
@@ -29,6 +30,61 @@ export type FormState<T = Record<string, unknown>> = {
   reset: () => void;
 };
 
+const hasErrors = (errors: FormErrors) => Object.keys(errors).length > 0;
+
+/** Keeps the latest options without making the callbacks that read them unstable. */
+const useLatest = <V>(value: V) => {
+  const ref = useRef(value);
+  ref.current = value;
+  return ref;
+};
+
+const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
+  const optionsRef = useLatest(options);
+  const [errors, setErrorsState] = useState<FormErrors>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [result, setResult] = useState<T | null>(null);
+
+  const reset = useCallback(() => {
+    setErrorsState({});
+    setLoading(false);
+    setSuccess(false);
+    setResult(null);
+  }, []);
+
+  const setErrors = useCallback(
+    (newErrors: FormErrors) => {
+      setErrorsState(newErrors);
+      setSuccess(false);
+      if (hasErrors(newErrors)) optionsRef.current.onError?.(newErrors);
+    },
+    [optionsRef],
+  );
+
+  const succeed = useCallback(
+    (newResult: T | undefined) => {
+      setErrorsState({});
+      setSuccess(true);
+      setResult(newResult === undefined ? null : newResult);
+      if (newResult !== undefined) optionsRef.current.onSuccess?.(newResult);
+    },
+    [optionsRef],
+  );
+
+  const state: FormState<T> = {
+    errors,
+    loading,
+    success,
+    result,
+    setErrors,
+    setLoading,
+    reset,
+  };
+
+  return { state, optionsRef, succeed };
+};
+
 /**
  * Hook to manage common form state patterns (errors, loading, success).
  * Useful for stories and real-world form implementations.
@@ -36,36 +92,7 @@ export type FormState<T = Record<string, unknown>> = {
 export function useFormState<T = Record<string, unknown>>(
   options: UseFormStateOptions<T> = {},
 ): FormState<T> {
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [result, setResult] = useState<T | null>(null);
-
-  const reset = useCallback(() => {
-    setErrors({});
-    setLoading(false);
-    setSuccess(false);
-    setResult(null);
-  }, []);
-
-  const handleSetErrors = useCallback(
-    (newErrors: FormErrors) => {
-      setErrors(newErrors);
-      setSuccess(false);
-      options.onError?.(newErrors);
-    },
-    [options],
-  );
-
-  return {
-    errors,
-    loading,
-    success,
-    result,
-    setErrors: handleSetErrors,
-    setLoading,
-    reset,
-  };
+  return useFormStateInternal(options).state;
 }
 
 export type SubmitHandler<T = Record<string, unknown>> = {
@@ -80,27 +107,30 @@ export type SubmitHandler<T = Record<string, unknown>> = {
 export type UseFormSubmitOptions<T = Record<string, unknown>> =
   UseFormStateOptions<T> & {
     /**
-     * Simulated delay in ms for demo purposes (default: 500)
+     * Delay in ms before the submit function is called, e.g. to show the loading state in a demo.
+     * @default 0
      */
     delay?: number;
   };
 
 /**
  * Hook that combines form state with submit handling.
- * Automatically manages loading state and error/success transitions.
+ * Automatically manages loading state and error/success transitions: a response
+ * with errors sets `errors` and calls `onError`; any other response sets
+ * `success`, stores `result`, and calls `onSuccess` when a result was returned.
  */
 export function useFormSubmit<T = Record<string, unknown>>(
   options: UseFormSubmitOptions<T> = {},
 ): FormState<T> & SubmitHandler<T> {
-  const { delay = 500, ...stateOptions } = options;
-  const state = useFormState<T>(stateOptions);
+  const { state, optionsRef, succeed } = useFormStateInternal<T>(options);
+  const { setErrors, setLoading } = state;
 
   const handleSubmit = useCallback(
     async (submitFn: () => Promise<{ errors?: FormErrors; result?: T }>) => {
-      state.setLoading(true);
-      state.setErrors({});
+      const { delay = 0 } = optionsRef.current;
+      setLoading(true);
+      setErrors({});
 
-      // Optional delay for demos
       if (delay > 0) {
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
@@ -108,18 +138,16 @@ export function useFormSubmit<T = Record<string, unknown>>(
       try {
         const response = await submitFn();
 
-        if (response.errors && Object.keys(response.errors).length > 0) {
-          state.setErrors(response.errors);
-        } else if (response.result) {
-          // We need to set success state directly
-          state.setErrors({});
-          stateOptions.onSuccess?.(response.result);
+        if (response.errors && hasErrors(response.errors)) {
+          setErrors(response.errors);
+        } else {
+          succeed(response.result);
         }
       } finally {
-        state.setLoading(false);
+        setLoading(false);
       }
     },
-    [delay, state, stateOptions],
+    [optionsRef, setErrors, setLoading, succeed],
   );
 
   return {
