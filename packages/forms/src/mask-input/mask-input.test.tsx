@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { MaskInput } from "./mask-input";
+import type { MaskInputProps } from "./mask-input.types";
 
 describe("MaskInput", () => {
   // ============================================
@@ -543,5 +544,763 @@ describe("MaskInput color", () => {
 
     expect(wrapper).toHaveClass("palette-blue");
     expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+  });
+});
+
+describe("MaskInput onChange", () => {
+  /** Records what a consumer reads off the event at the moment it is called. */
+  const recordChanges = () => {
+    const seen: string[] = [];
+    const handleChange = vi.fn((event: React.ChangeEvent<HTMLInputElement>) => {
+      seen.push(event.target.value);
+    });
+    return { seen, handleChange };
+  };
+
+  it("calls a consumer onChange with the masked value on every keystroke", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["(1", "(12", "(123", "(123) 4"]);
+    expect(input).toHaveValue("(123) 4");
+
+    const event = handleChange.mock.calls.at(-1)?.[0];
+    expect(event?.type).toBe("change");
+    expect(event?.target).toBe(input);
+  });
+
+  it("hands onChange the masked value when characters are stripped", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "1a2");
+
+    // The "a" keystroke is a real change event whose raw value is "(1a"; the
+    // consumer reads the value the input goes on to display.
+    expect(seen).toEqual(["(1", "(1", "(12"]);
+  });
+
+  it("calls onChange before onValueChange, once each per keystroke", async () => {
+    const calls: string[] = [];
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        onChange={(event) => calls.push(`onChange:${event.target.value}`)}
+        onValueChange={(masked, unmasked) =>
+          calls.push(`onValueChange:${masked}|${unmasked}`)
+        }
+      />,
+    );
+
+    await user.type(screen.getByRole("textbox"), "12");
+
+    expect(calls).toEqual([
+      "onChange:(1",
+      "onValueChange:(1|1",
+      "onChange:(12",
+      "onValueChange:(12|12",
+    ]);
+  });
+
+  it("reports the masked value to a controlled consumer", async () => {
+    const { seen, handleChange } = recordChanges();
+
+    const ControlledMaskInput = () => {
+      const [value, setValue] = useState("");
+      return (
+        <MaskInput
+          mask="phone"
+          value={value}
+          onValueChange={setValue}
+          onChange={handleChange}
+        />
+      );
+    };
+
+    const user = userEvent.setup();
+    render(<ControlledMaskInput />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["(1", "(12", "(123", "(123) 4"]);
+    expect(input).toHaveValue("(123) 4");
+  });
+
+  it("calls onChange with the formatted value in currency mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="currency" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["$1", "$12", "$123", "$1,234"]);
+    expect(input).toHaveValue("$1,234");
+  });
+
+  it("calls onChange with the formatted value in percentage mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="percentage" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "12");
+
+    expect(seen).toEqual(["1%", "12%"]);
+    expect(input).toHaveValue("12%");
+  });
+
+  it("calls onChange with the raw value when withoutMask is set", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" withoutMask onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "12a");
+
+    expect(seen).toEqual(["1", "12", "12a"]);
+  });
+
+  it("keeps a register()-shaped consumer in step through typing, deleting and paste", async () => {
+    // What react-hook-form's `register("phone")` hands back: it reads the
+    // field's value and name off the change event, and keeps the element.
+    const values: Record<string, string> = {};
+    const fields: Record<string, HTMLInputElement | null> = {};
+    const handleBlur = vi.fn();
+    const register = (name: string) => ({
+      name,
+      ref: (element: HTMLInputElement | null) => {
+        fields[name] = element;
+      },
+      onBlur: handleBlur,
+      onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+        values[event.target.name] = event.target.value;
+      },
+    });
+
+    const user = userEvent.setup();
+    render(<MaskInput mask="phone" {...register("phone")} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234567890");
+    expect(values).toEqual({ phone: "(123) 456-7890" });
+    expect(fields.phone).toBe(input);
+
+    await user.keyboard("{Backspace}{Backspace}{Backspace}");
+    expect(input).toHaveValue("(123) 456-7");
+    expect(values).toEqual({ phone: "(123) 456-7" });
+
+    await user.keyboard("{Backspace>7/}");
+    expect(input).toHaveValue("");
+    expect(values).toEqual({ phone: "" });
+
+    await user.paste("5551234567");
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(values).toEqual({ phone: "(555) 123-4567" });
+
+    await user.tab();
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
+  // ============================================
+  // WHERE A NATIVE CHANGE EVENT FIRES
+  // ============================================
+  // onChange follows the native event. These paths leave the default action
+  // alone, so the browser's own change event reaches the handler.
+
+  it("calls onChange when Backspace removes a selection", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        defaultValue="(123) 456-7890"
+        onChange={handleChange}
+      />,
+    );
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+    input.setSelectionRange(0, input.value.length);
+    await user.keyboard("{Backspace}");
+
+    expect(seen).toEqual([""]);
+    expect(input).toHaveValue("");
+  });
+
+  it("calls onChange on Backspace in currency mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput mask="currency" defaultValue="$123" onChange={handleChange} />,
+    );
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+    await user.keyboard("{Backspace}");
+
+    expect(seen).toEqual(["$12"]);
+    expect(input).toHaveValue("$12");
+  });
+
+  it("calls onChange on paste when withoutMask is set", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" withoutMask onChange={handleChange} />);
+
+    await user.click(screen.getByRole("textbox"));
+    await user.paste("1234567890");
+
+    expect(seen).toEqual(["1234567890"]);
+  });
+
+  it("calls onChange when a selection is cut", async () => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        defaultValue="(123) 456-7890"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+      />,
+    );
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+    input.setSelectionRange(0, input.value.length);
+    await user.cut();
+
+    expect(seen).toEqual([""]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("", "");
+  });
+
+  // ============================================
+  // WHERE THE MASK WRITES THE VALUE ITSELF
+  // ============================================
+  // These paths cancel the browser's default action and write the masked
+  // value themselves. They report it as an input event, so each user action
+  // still reaches onChange and onValueChange exactly once.
+
+  /** Renders a focused phone MaskInput with onChange and onValueChange spies. */
+  const setup = async (props: Partial<MaskInputProps> = {}) => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+        {...props}
+      />,
+    );
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+
+    return { seen, handleChange, handleValueChange, user, input };
+  };
+
+  it("calls onChange once when Backspace deletes a single character", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+    });
+
+    await user.keyboard("{Backspace}");
+
+    expect(input).toHaveValue("(123) 456-789");
+    expect(seen).toEqual(["(123) 456-789"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith(
+      "(123) 456-789",
+      "123456789",
+    );
+    expect(input.selectionStart).toBe(13);
+    expect(input.selectionEnd).toBe(13);
+  });
+
+  it("keeps the caret in place when Backspace deletes mid-value", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+    });
+
+    input.setSelectionRange(9, 9);
+    await user.keyboard("{Backspace}");
+
+    expect(input).toHaveValue("(123) 457-890");
+    expect(seen).toEqual(["(123) 457-890"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith(
+      "(123) 457-890",
+      "123457890",
+    );
+    expect(input.selectionStart).toBe(8);
+    expect(input.selectionEnd).toBe(8);
+  });
+
+  it("calls onChange once when Delete removes a single character", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+    });
+
+    input.setSelectionRange(9, 9);
+    await user.keyboard("{Delete}");
+
+    expect(input).toHaveValue("(123) 456-890");
+    expect(seen).toEqual(["(123) 456-890"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith(
+      "(123) 456-890",
+      "123456890",
+    );
+    expect(input.selectionStart).toBe(9);
+    expect(input.selectionEnd).toBe(9);
+  });
+
+  it("calls nothing when Backspace has no character to delete", async () => {
+    const { handleChange, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+    });
+
+    input.setSelectionRange(1, 1);
+    await user.keyboard("{Backspace}");
+
+    expect(input).toHaveValue("(123) 456-7890");
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(handleValueChange).not.toHaveBeenCalled();
+  });
+
+  it("calls onChange once when a masked paste is committed", async () => {
+    const { seen, handleValueChange, user, input } = await setup();
+
+    await user.paste("5551234567");
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["(555) 123-4567"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith(
+      "(555) 123-4567",
+      "5551234567",
+    );
+    expect(input.selectionStart).toBe(14);
+    expect(input.selectionEnd).toBe(14);
+  });
+
+  it("places the caret after the last digit when pasting mid-value", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 4",
+    });
+
+    input.setSelectionRange(2, 2);
+    await user.paste("99");
+
+    expect(input).toHaveValue("(199) 234");
+    expect(seen).toEqual(["(199) 234"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("(199) 234", "199234");
+    expect(input.selectionStart).toBe(9);
+    expect(input.selectionEnd).toBe(9);
+  });
+
+  it("still reports a paste that leaves the value unchanged to onValueChange", async () => {
+    const { handleChange, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+    });
+
+    await user.paste("9");
+
+    // The mask is full, so nothing on display changes and there is no change
+    // event to report; onValueChange keeps the call it has always made.
+    expect(input).toHaveValue("(123) 456-7890");
+    expect(handleChange).not.toHaveBeenCalled();
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith(
+      "(123) 456-7890",
+      "12345678909",
+    );
+  });
+
+  it("validates once on a single-character Backspace and on paste", async () => {
+    const handleValidate = vi.fn();
+    const { user } = await setup({
+      defaultValue: "(123) 456-7890",
+      onValidate: handleValidate,
+    });
+
+    await user.keyboard("{Backspace}");
+
+    expect(handleValidate).toHaveBeenCalledTimes(1);
+    expect(handleValidate).toHaveBeenLastCalledWith(false, "123456789");
+
+    await user.paste("0");
+
+    expect(handleValidate).toHaveBeenCalledTimes(2);
+    expect(handleValidate).toHaveBeenLastCalledWith(true, "1234567890");
+  });
+
+  it("reports Backspace and paste once each to a controlled consumer", async () => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+
+    const ControlledMaskInput = () => {
+      const [value, setValue] = useState("(123) 456-7890");
+      return (
+        <MaskInput
+          mask="phone"
+          value={value}
+          onChange={handleChange}
+          onValueChange={(masked, unmasked) => {
+            setValue(masked);
+            handleValueChange(masked, unmasked);
+          }}
+        />
+      );
+    };
+
+    const user = userEvent.setup();
+    render(<ControlledMaskInput />);
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+    await user.keyboard("{Backspace}");
+
+    expect(input).toHaveValue("(123) 456-789");
+    expect(input.selectionStart).toBe(13);
+    expect(seen).toEqual(["(123) 456-789"]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(123) 456-789", "123456789"],
+    ]);
+
+    await user.paste("5");
+
+    expect(input).toHaveValue("(123) 456-7895");
+    expect(input.selectionStart).toBe(14);
+    expect(seen).toEqual(["(123) 456-789", "(123) 456-7895"]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(123) 456-789", "123456789"],
+      ["(123) 456-7895", "1234567895"],
+    ]);
+  });
+
+  it("leaves a controlled value alone when the parent does not take the change", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      value: "(123) 456-7890",
+    });
+
+    await user.keyboard("{Backspace}");
+
+    // Reported once, then React restores the value the parent still passes,
+    // the same as it does for a keystroke.
+    expect(seen).toEqual(["(123) 456-789"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(input).toHaveValue("(123) 456-7890");
+  });
+
+  it("commits a paste in currency mode", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      mask: "currency",
+    });
+
+    await user.paste("1234.5");
+
+    expect(input).toHaveValue("$1,234.5");
+    expect(seen).toEqual(["$1,234.5"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("$1,234.5", "1234.5");
+    expect(input.selectionStart).toBe(8);
+
+    // The pasted value is held in state, so it survives the next render.
+    await user.tab();
+    expect(input).toHaveValue("$1,234.5");
+  });
+
+  it("commits a paste in percentage mode", async () => {
+    const { seen, handleValueChange, user, input } = await setup({
+      mask: "percentage",
+    });
+
+    await user.paste("12");
+
+    expect(input).toHaveValue("12%");
+    expect(seen).toEqual(["12%"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("12%", "12");
+    expect(input.selectionStart).toBe(2);
+
+    await user.tab();
+    expect(input).toHaveValue("12%");
+  });
+
+  it("calls onChange once with the masked value when composition ends", async () => {
+    const { seen, handleValueChange, input } = await setup();
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "12" } });
+
+    // Masking is suspended while composing, so the change event carries the
+    // raw text, which is also what the input displays at that moment.
+    expect(input).toHaveValue("12");
+    expect(seen).toEqual(["12"]);
+    expect(handleValueChange).not.toHaveBeenCalled();
+
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(12");
+    expect(seen).toEqual(["12", "(12"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("(12", "12");
+  });
+
+  it("reports composition end to onValueChange when masking changes nothing", async () => {
+    const { seen, handleValueChange, input } = await setup({
+      withoutMask: true,
+    });
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "12" } });
+    fireEvent.compositionEnd(input);
+
+    // The consumer already holds the displayed value from the change event.
+    expect(input).toHaveValue("12");
+    expect(seen).toEqual(["12"]);
+    expect(handleValueChange).toHaveBeenCalledTimes(1);
+    expect(handleValueChange).toHaveBeenCalledWith("12", "12");
+  });
+
+  it("shows composing text in a controlled input and reports it once at the end", async () => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+
+    const ControlledMaskInput = () => {
+      const [value, setValue] = useState("");
+      return (
+        <MaskInput
+          mask="phone"
+          value={value}
+          onChange={handleChange}
+          onValueChange={(masked, unmasked) => {
+            setValue(masked);
+            handleValueChange(masked, unmasked);
+          }}
+        />
+      );
+    };
+
+    render(<ControlledMaskInput />);
+
+    const input = screen.getByRole("textbox");
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "12" } });
+
+    expect(input).toHaveValue("12");
+
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(12");
+    expect(seen).toEqual(["12", "(12"]);
+    expect(handleValueChange.mock.calls).toEqual([["(12", "12"]]);
+  });
+
+  // ============================================
+  // COMPOSITION START LEAVES THE DISPLAY ALONE
+  // ============================================
+  // The stored value is often not the masked string. Starting a composition
+  // must keep showing the masked reading of it until composing text arrives.
+
+  it("keeps an unmasked defaultValue masked when composition starts", async () => {
+    const { input } = await setup({ defaultValue: "5551234567" });
+
+    expect(input).toHaveValue("(555) 123-4567");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("(555) 123-4567");
+  });
+
+  it("keeps a controlled unmasked value masked when composition starts", async () => {
+    const { input } = await setup({ value: "1234567" });
+
+    expect(input).toHaveValue("(123) 456-7");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("(123) 456-7");
+  });
+
+  it("keeps a currency value formatted when composition starts", async () => {
+    const { input } = await setup({ mask: "currency", defaultValue: "1234" });
+
+    expect(input).toHaveValue("$1,234");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("$1,234");
+  });
+
+  // ============================================
+  // INPUT LONGER THAN THE MASK
+  // ============================================
+  // The mask drops what does not fit, but onValueChange and onValidate are
+  // handed the unmasked text as it was entered. The expected values are what
+  // these paths reported before they were routed through the change handler.
+
+  it("reports the full unmasked text of an over-long paste", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    await user.paste("55512345679999");
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "55512345679999"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "55512345679999"],
+    ]);
+  });
+
+  it("reports the full unmasked text of an over-long credit card paste", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      mask: "creditCard",
+      onValidate: handleValidate,
+    });
+
+    await user.paste("41111111111111119999");
+
+    expect(input).toHaveValue("4111 1111 1111 1111");
+    expect(seen).toEqual(["4111 1111 1111 1111"]);
+    expect(handleValidate.mock.calls).toEqual([
+      [false, "41111111111111119999"],
+    ]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["4111 1111 1111 1111", "41111111111111119999"],
+    ]);
+  });
+
+  it("reports the full unmasked text when a mid-value paste overflows", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+      onValidate: handleValidate,
+    });
+
+    input.setSelectionRange(2, 2);
+    await user.paste("99");
+
+    expect(input).toHaveValue("(199) 234-5678");
+    expect(seen).toEqual(["(199) 234-5678"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "199234567890"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(199) 234-5678", "199234567890"],
+    ]);
+    expect(input.selectionStart).toBe(14);
+  });
+
+  it("reports what the mask kept when over-long text was composed", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "55512345679999" } });
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["55512345679999", "(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[true, "5551234567"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "5551234567"],
+    ]);
+  });
+
+  it("reports the full text when composition ends on a value no change event announced", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    fireEvent.compositionStart(input);
+    // Written past React, the way fireEvent.change writes, with no event.
+    Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      "value",
+    )?.set?.call(input, "55512345679999");
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "55512345679999"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "55512345679999"],
+    ]);
+  });
+
+  it("labels the change events it dispatches with their inputType", async () => {
+    const inputTypes: (string | undefined)[] = [];
+    const { user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+      onChange: (event) => {
+        inputTypes.push((event.nativeEvent as InputEvent).inputType);
+      },
+    });
+
+    await user.keyboard("{Backspace}");
+    input.setSelectionRange(1, 1);
+    await user.keyboard("{Delete}");
+    await user.paste("1");
+
+    expect(inputTypes).toEqual([
+      "deleteContentBackward",
+      "deleteContentForward",
+      "insertFromPaste",
+    ]);
+  });
+});
+
+describe("MaskInput and values written through the ref", () => {
+  it("overwrites a value written to the element on its next render", async () => {
+    const ref = createRef<HTMLInputElement>();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" ref={ref} />);
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    expect(ref.current).toBe(input);
+
+    // How a form library applies a value it owns: straight onto the element.
+    input.value = "(555) 123-4567";
+    expect(input).toHaveValue("(555) 123-4567");
+
+    // Focusing re-renders MaskInput, and React restores the value it controls.
+    await user.click(input);
+    expect(input).toHaveValue("");
+  });
+
+  it("keeps a value handed to defaultValue across renders", async () => {
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" defaultValue="5551234567" />);
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+
+    expect(input).toHaveValue("(555) 123-4567");
   });
 });

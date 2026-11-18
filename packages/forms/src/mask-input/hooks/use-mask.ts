@@ -37,6 +37,11 @@ export interface UseMaskOptions {
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   /** Override the calculated maxLength */
   maxLength?: number;
+  /**
+   * External change handler. Called on each native change event once the
+   * masked value is in the input, so `event.target.value` is what is displayed.
+   */
+  onChange?: React.ChangeEventHandler<InputElement>;
   /** External focus handler */
   onFocus?: React.FocusEventHandler<InputElement>;
   /** External blur handler */
@@ -110,6 +115,7 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     max,
     inputMode,
     maxLength,
+    onChange,
     onFocus,
     onBlur,
     onKeyDown,
@@ -140,6 +146,7 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     composing,
     setInternalValue,
     setComposing,
+    setComposingText,
   } = useMaskValue({
     value: valueProp,
     defaultValue,
@@ -178,12 +185,14 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     setInternalValue,
     composing,
     setComposing,
+    setComposingText,
     touched,
     setTouched,
     shouldValidate,
     onInputValidate,
     onValueChange,
     onValidate,
+    onChange,
     onFocus,
     onBlur,
     onKeyDown,

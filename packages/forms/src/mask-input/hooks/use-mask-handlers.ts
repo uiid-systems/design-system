@@ -35,10 +35,18 @@ export interface UseMaskHandlersOptions {
   isControlled: boolean;
   /** Set internal value (uncontrolled mode) */
   setInternalValue: React.Dispatch<React.SetStateAction<string>>;
-  /** Whether IME composition is in progress */
-  composing: boolean;
+  /**
+   * Whether IME composition is in progress. The handlers keep their own
+   * mirror of it, so this is accepted for compatibility and not read.
+   */
+  composing?: boolean;
   /** Set composition state */
   setComposing: React.Dispatch<React.SetStateAction<boolean>>;
+  /**
+   * Set the text an open composition has produced, shown unmasked while it
+   * lasts. Without it the input keeps showing the masked value.
+   */
+  setComposingText?: React.Dispatch<React.SetStateAction<string | undefined>>;
   /** Whether input has been touched */
   touched: boolean;
   /** Set touched state */
@@ -51,6 +59,11 @@ export interface UseMaskHandlersOptions {
   onValueChange?: (maskedValue: string, unmaskedValue: string) => void;
   /** Callback for validation */
   onValidate?: (isValid: boolean, unmaskedValue: string) => void;
+  /**
+   * External change handler. Called on each native change event once the
+   * masked value is in the input, so `event.target.value` is what is displayed.
+   */
+  onChange?: React.ChangeEventHandler<InputElement>;
   /** External focus handler */
   onFocus?: React.FocusEventHandler<InputElement>;
   /** External blur handler */
@@ -85,6 +98,42 @@ export interface UseMaskHandlersReturn {
 }
 
 /**
+ * Writes `next` into the input and reports it as an input event, so React
+ * routes it through the change handler like a keystroke. The paths that cancel
+ * the browser's default action use it to keep one commit path: state,
+ * validation, `onValueChange` and a consumer's `onChange` all run from there.
+ *
+ * The write goes through the prototype setter because React tracks the last
+ * value it saw through a setter on the element itself, and drops an input event
+ * whose value it already knows.
+ *
+ * Returns whether the event was dispatched, which is to say whether the change
+ * handler has committed the value.
+ */
+function emitInputValue(
+  target: HTMLInputElement,
+  next: string,
+  inputType: string,
+): boolean {
+  // React would drop an event for a value it already holds, so nothing on
+  // display changes and nothing is reported. Paste and composition end go on to
+  // commit by hand, keeping the `onValueChange` call they have always made;
+  // Backspace and Delete always shorten the value and never land here.
+  if (target.value === next) return false;
+
+  const setValue = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(target),
+    "value",
+  )?.set;
+  // No DOM lacks this setter; the guard only satisfies the type.
+  if (!setValue) return false;
+
+  setValue.call(target, next);
+  target.dispatchEvent(new InputEvent("input", { bubbles: true, inputType }));
+  return true;
+}
+
+/**
  * Provides all event handlers for a masked input, including
  * change, focus, blur, keydown, paste, and IME composition handling.
  */
@@ -100,14 +149,15 @@ export function useMaskHandlers(
     value,
     isControlled,
     setInternalValue,
-    composing,
     setComposing,
+    setComposingText,
     touched,
     setTouched,
     shouldValidate,
     onInputValidate,
     onValueChange,
     onValidate,
+    onChange: onChangeProp,
     onFocus: onFocusProp,
     onBlur: onBlurProp,
     onKeyDown: onKeyDownProp,
@@ -118,18 +168,54 @@ export function useMaskHandlers(
 
   const [focused, setFocused] = React.useState(false);
 
+  // Mirrors the `composing` state for the change handler. Composition end
+  // reports its value as an input event in the same tick it clears the state,
+  // before a render could hand the change handler the new value.
+  const composingRef = React.useRef(false);
+  // Whether the open composition has produced a change event yet.
+  const composedRef = React.useRef(false);
+
+  // The unmasked text behind a value `commitValue` is dispatching. The change
+  // handler would otherwise unmask the masked string it is handed, and lose
+  // whatever the mask dropped: an over-long paste reports all of its digits.
+  const pendingUnmaskedRef = React.useRef<string | undefined>(undefined);
+
+  const commitValue = React.useCallback(
+    (
+      target: HTMLInputElement,
+      masked: string,
+      unmasked: string,
+      inputType: string,
+    ) => {
+      pendingUnmaskedRef.current = unmasked;
+      try {
+        return emitInputValue(target, masked, inputType);
+      } finally {
+        pendingUnmaskedRef.current = undefined;
+      }
+    },
+    [],
+  );
+
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<InputElement>) => {
       const inputValue = event.target.value;
       let newValue = inputValue;
       let unmaskedValue = inputValue;
 
-      if (composing) {
+      // A consumer's `onChange` is called on every exit below, and without the
+      // `defaultPrevented` check focus and blur make: a change has already
+      // happened, so there is nothing for the consumer to cancel.
+      if (composingRef.current) {
+        onChangeProp?.(event);
+        composedRef.current = true;
+        setComposingText?.(inputValue);
         if (!isControlled) setInternalValue(inputValue);
         return;
       }
 
       if (withoutMask || !maskPattern) {
+        onChangeProp?.(event);
         if (!isControlled) setInternalValue(inputValue);
         if (shouldValidate("change")) onValidate?.(true, inputValue);
         onValueChange?.(inputValue, inputValue);
@@ -137,11 +223,13 @@ export function useMaskHandlers(
       }
 
       if (maskPattern) {
-        unmaskedValue = getUnmaskedValue({
-          value: inputValue,
-          transform: maskPattern.transform,
-          ...transformOpts,
-        });
+        unmaskedValue =
+          pendingUnmaskedRef.current ??
+          getUnmaskedValue({
+            value: inputValue,
+            transform: maskPattern.transform,
+            ...transformOpts,
+          });
         newValue = applyMask({
           value: unmaskedValue,
           pattern: maskPattern.pattern,
@@ -215,6 +303,12 @@ export function useMaskHandlers(
         }
       }
 
+      // The mask is in the DOM by now, so a consumer reading
+      // `event.target.value` (a form library's `register()`) gets the value on
+      // display rather than the raw keystroke. It runs ahead of `onValueChange`:
+      // the native event first, then the reading derived from it.
+      onChangeProp?.(event);
+
       if (!isControlled) {
         setInternalValue(newValue);
       }
@@ -228,10 +322,10 @@ export function useMaskHandlers(
     [
       maskPattern,
       isControlled,
+      onChangeProp,
       onValueChange,
       onValidate,
       onInputValidate,
-      composing,
       shouldValidate,
       withoutMask,
       transformOpts,
@@ -239,6 +333,7 @@ export function useMaskHandlers(
       value,
       inputRef,
       setInternalValue,
+      setComposingText,
     ],
   );
 
@@ -291,9 +386,12 @@ export function useMaskHandlers(
       onCompositionStartProp?.(event);
       if (event.defaultPrevented) return;
 
+      composingRef.current = true;
+      composedRef.current = false;
       setComposing(true);
+      setComposingText?.(undefined);
     },
-    [onCompositionStartProp, setComposing],
+    [onCompositionStartProp, setComposing, setComposingText],
   );
 
   const handleCompositionEnd = React.useCallback(
@@ -301,7 +399,11 @@ export function useMaskHandlers(
       onCompositionEndProp?.(event);
       if (event.defaultPrevented) return;
 
+      const composed = composedRef.current;
+      composingRef.current = false;
+      composedRef.current = false;
       setComposing(false);
+      setComposingText?.(undefined);
 
       const inputElement = inputRef.current;
       if (!inputElement) return;
@@ -327,9 +429,29 @@ export function useMaskHandlers(
         mask,
       });
 
+      // Composed text is reported as the mask kept it, the reading this path
+      // gave when the input was re-masked on every composing change. A value
+      // that arrived with no change event is reported in full.
+      const reported = composed
+        ? getUnmaskedValue({
+            value: masked,
+            transform: maskPattern.transform,
+            ...transformOpts,
+          })
+        : unmasked;
+
+      // Masking the composed text changes what is on display, so report it as
+      // a change. When it changes nothing the consumer already holds the value
+      // from the last change event, and only the commit is left to do.
+      if (
+        commitValue(inputElement, masked, reported, "insertCompositionText")
+      ) {
+        return;
+      }
+
       if (!isControlled) setInternalValue(masked);
-      if (shouldValidate("change")) onInputValidate(unmasked);
-      onValueChange?.(masked, unmasked);
+      if (shouldValidate("change")) onInputValidate(reported);
+      onValueChange?.(masked, reported);
     },
     [
       onCompositionEndProp,
@@ -344,7 +466,9 @@ export function useMaskHandlers(
       onInputValidate,
       inputRef,
       setComposing,
+      setComposingText,
       setInternalValue,
+      commitValue,
     ],
   );
 
@@ -385,7 +509,12 @@ export function useMaskHandlers(
         mask,
       });
 
-      target.value = newMaskedValue;
+      const emitted = commitValue(
+        target,
+        newMaskedValue,
+        unmasked,
+        "insertFromPaste",
+      );
 
       if (isCurrencyMask({ mask, pattern: maskPattern.pattern })) {
         const currencyAtEnd = isCurrencyAtEnd(transformOpts);
@@ -429,6 +558,9 @@ export function useMaskHandlers(
 
       target.setSelectionRange(newCursorPosition, newCursorPosition);
 
+      // A paste that leaves the value as it was has no change to report.
+      if (emitted) return;
+
       if (!isControlled) setInternalValue(newMaskedValue);
       if (shouldValidate("change")) onInputValidate(unmasked);
       onValueChange?.(newMaskedValue, unmasked);
@@ -444,6 +576,7 @@ export function useMaskHandlers(
       onInputValidate,
       onValueChange,
       setInternalValue,
+      commitValue,
     ],
   );
 
@@ -505,7 +638,12 @@ export function useMaskHandlers(
                 mask,
               });
 
-              target.value = nextMasked;
+              commitValue(
+                target,
+                nextMasked,
+                nextUnmasked,
+                "deleteContentBackward",
+              );
               const nextCaret = fromUnmaskedIndex({
                 masked: nextMasked,
                 pattern: maskPattern.pattern,
@@ -513,9 +651,6 @@ export function useMaskHandlers(
               });
 
               target.setSelectionRange(nextCaret, nextCaret);
-
-              if (!isControlled) setInternalValue(nextMasked);
-              onValueChange?.(nextMasked, nextUnmasked);
             }
             return;
           }
@@ -572,7 +707,12 @@ export function useMaskHandlers(
                 mask,
               });
 
-              target.value = nextMasked;
+              commitValue(
+                target,
+                nextMasked,
+                nextUnmasked,
+                "deleteContentForward",
+              );
               const nextCaret = fromUnmaskedIndex({
                 masked: nextMasked,
                 pattern: maskPattern.pattern,
@@ -580,25 +720,13 @@ export function useMaskHandlers(
               });
 
               target.setSelectionRange(nextCaret, nextCaret);
-
-              if (!isControlled) setInternalValue(nextMasked);
-              onValueChange?.(nextMasked, nextUnmasked);
             }
             return;
           }
         }
       }
     },
-    [
-      maskPattern,
-      onKeyDownProp,
-      onValueChange,
-      transformOpts,
-      mask,
-      withoutMask,
-      isControlled,
-      setInternalValue,
-    ],
+    [maskPattern, onKeyDownProp, transformOpts, mask, withoutMask, commitValue],
   );
 
   return {

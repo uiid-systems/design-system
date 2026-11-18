@@ -15,4 +15,10 @@ Everything [`Input`](../input/README.md) offers is here too: `label`, `descripti
 
 Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 
+MaskInput owns the value of its `<input>`, so a value written onto the element through `ref` is overwritten on the next render. react-hook-form applies `defaultValues`, `reset()` and `setValue()` that way, so hand those values to MaskInput's own `defaultValue` or `value` instead.
+
+With that caveat, a native `onChange` reports the value too: spread the `name`, `ref`, `onBlur` and `onChange` a form library's `register()` returns and it tracks what the input shows. It is called for each change event, including a keystroke the mask rejects, and `event.target.value` is the string on display; typing, deleting, cut and a paste that changes the value all raise one. When `onChange` and `onValueChange` both fire, `onChange` goes first.
+
+The two do not always fire together. While an IME composition is open the mask is suspended, the text shows as composed, and only `onChange` fires; when the composition ends `onValueChange` fires, and `onChange` fires again only if masking rewrote the text. In a pattern mask, a paste that leaves the value as it was fires `onValueChange` alone; in `currency` and `percentage` such a paste fires neither.
+
 Additional props are forwarded to the underlying `<input>` element.
