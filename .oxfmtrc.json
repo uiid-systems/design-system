@@ -9,7 +9,7 @@
   "ignorePatterns": [
     ".claude/worktrees/**",
     "packages/*/icons/**",
-    "**/*.generated.ts",
+    "**/*.generated.*",
     "**/CHANGELOG.md"
   ],
   "overrides": [

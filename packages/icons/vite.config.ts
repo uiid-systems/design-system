@@ -1,11 +1,36 @@
+import { readFileSync } from "node:fs";
+
 import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 
 import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
 
+// Hand-written (or generated) declarations for the src/*.js modules that
+// re-export lucide's deep paths. tsc emits no .d.ts for a .js module and does
+// not copy a .d.ts input, so they are shipped into dist here, beside the .js
+// vite emits for them. Without them dist/index.d.ts re-exports a module with
+// no types.
+const JS_MODULE_DECLARATIONS = [
+  "lucide-icons.generated.d.ts",
+  "create-lucide-icon.d.ts",
+];
+
+const shipJsModuleDeclarations = (): Plugin => ({
+  name: "ship-js-module-declarations",
+  generateBundle() {
+    for (const fileName of JS_MODULE_DECLARATIONS) {
+      this.emitFile({
+        type: "asset",
+        fileName,
+        source: readFileSync(new URL(`src/${fileName}`, import.meta.url)),
+      });
+    }
+  },
+});
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), shipJsModuleDeclarations()],
   build: {
     lib: {
       entry: "src/index.ts",

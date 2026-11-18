@@ -2,16 +2,29 @@
 // Checks the built packages the way a consumer meets them. Tests and Storybook
 // alias every @uiid/* import to source, so nothing else in CI loads dist.
 //
-// Run after `pnpm turbo run build --filter='./packages/*'`. Three checks:
+// Run after `pnpm turbo run build --filter='./packages/*'`. Four checks:
 //   1. Every bare import in a package's published files, type declarations
 //      included, is one of its dependencies or peerDependencies. The workspace
 //      symlinks devDependencies, so an undeclared import works here and breaks
 //      for a strict install.
 //   2. Every `exports` target exists on disk.
 //   3. The umbrella's entry points import in Node and render on the server.
+//   4. The icon barrels type-check from outside the repo, with real types.
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { createRequire, isBuiltin } from "node:module";
+import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -141,6 +154,74 @@ for (const [name, [component, ...rest]] of Object.entries(renders)) {
   } catch (error) {
     fail(`${name}: failed to render on the server. ${error.message}`);
   }
+}
+
+// The icon barrels re-export lucide modules that ship no types, so a barrel
+// whose declarations still name them gives a consumer `any` for every icon,
+// and skipLibCheck hides it. Compile a consumer outside the repo, linked to the
+// built packages, and require real types: each @ts-expect-error below must be
+// used, and nothing else may error.
+const consumer = mkdtempSync(join(tmpdir(), "uiid-dist-types-"));
+try {
+  const link = (name, target) => {
+    mkdirSync(dirname(join(consumer, "node_modules", name)), {
+      recursive: true,
+    });
+    symlinkSync(target, join(consumer, "node_modules", name), "dir");
+  };
+  link("@uiid/icons", join(packagesDir, "icons"));
+  link("@uiid/design-system", umbrella);
+  link("@types/react", dirname(require.resolve("@types/react/package.json")));
+
+  const iconChecks = ["@uiid/icons", "@uiid/design-system/icons"]
+    .map(
+      (specifier, index) => `
+import { createLucideIcon as create${index}, GlobeIcon as Globe${index}, type Icon as Icon${index} } from "${specifier}";
+export const icon${index}: Icon${index} = Globe${index};
+export const created${index}: Icon${index} = create${index}("x", [["path", { d: "M0 0" }]]);
+// @ts-expect-error: an icon is a component, not \`any\`
+export const notAny${index}: number = Globe${index};
+// @ts-expect-error: \`size\` takes a string or number
+export const wrongProp${index} = <Globe${index} size={true} />;
+// @ts-expect-error: createLucideIcon is a function, not \`any\`
+export const createNotAny${index}: number = create${index};
+`,
+    )
+    .join("");
+  writeFileSync(join(consumer, "consumer.tsx"), iconChecks);
+  writeFileSync(
+    join(consumer, "tsconfig.json"),
+    JSON.stringify({
+      compilerOptions: {
+        strict: true,
+        noEmit: true,
+        jsx: "react-jsx",
+        module: "ESNext",
+        moduleResolution: "bundler",
+        target: "ES2022",
+        skipLibCheck: true,
+        types: [],
+      },
+      include: ["consumer.tsx"],
+    }),
+  );
+  execFileSync(
+    process.execPath,
+    [
+      createRequire(import.meta.url).resolve("typescript/bin/tsc"),
+      "-p",
+      consumer,
+      "--pretty",
+      "false",
+    ],
+    { encoding: "utf8", stdio: "pipe" },
+  );
+} catch (error) {
+  fail(
+    `icon barrels: a consumer type-check against the built packages failed.\n${error.stdout ?? error.message}`,
+  );
+} finally {
+  rmSync(consumer, { recursive: true, force: true });
 }
 
 if (failures.length) {

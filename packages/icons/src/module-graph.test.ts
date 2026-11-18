@@ -78,7 +78,11 @@ async function moduleGraphFor(source: string): Promise<ModuleGraph> {
 }
 
 const barrelSource = readFileSync(
-  `${PKG_DIR}src/lucide-icons.generated.ts`,
+  `${PKG_DIR}src/lucide-icons.generated.js`,
+  "utf8",
+);
+const barrelDeclarations = readFileSync(
+  `${PKG_DIR}src/lucide-icons.generated.d.ts`,
   "utf8",
 );
 const barrelSpecifiers = [...barrelSource.matchAll(/from "([^"]+)"/g)].map(
@@ -160,6 +164,19 @@ describe("@uiid/icons surface", () => {
 
     expect(names.length).toBe(barrelSpecifiers.length);
     expect(names.filter((name) => !name.endsWith("Icon"))).toEqual([]);
+  });
+
+  // The runtime barrel and its declarations are written separately, so an icon
+  // could exist in one and not the other.
+  it("declares exactly the icons the barrel exports", () => {
+    const exported = [...barrelSource.matchAll(/default as (\w+)/g)].map(
+      (match) => match[1],
+    );
+    const declared = [
+      ...barrelDeclarations.matchAll(/export declare const (\w+): Icon;/g),
+    ].map((match) => match[1]);
+
+    expect(declared).toEqual(exported);
   });
 
   // File existence is not the contract — resolution through the exports map is.
