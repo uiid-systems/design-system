@@ -290,6 +290,7 @@ describe("useFormState", () => {
     expect(screen.getByTestId("errors")).toHaveTextContent("{}");
     expect(screen.getByTestId("loading")).toHaveTextContent("false");
   });
+
   it("sets success and result and calls onSuccess when setResult is called", () => {
     const onSuccess = vi.fn();
     const { result } = renderHook(() => useFormState({ onSuccess }));
@@ -400,6 +401,55 @@ describe("useFormSubmit", () => {
     expect(result.current.result).toBeNull();
     expect(onSuccess).not.toHaveBeenCalled();
   });
+
+  it("keeps a manual setResult when a pending submit settles later", async () => {
+    const onError = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onError }));
+    const pendingResponse = deferred();
+
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.handleSubmit(() => pendingResponse.promise);
+    });
+    act(() => result.current.setResult({ id: 1 }));
+
+    expect(result.current.loading).toBe(false);
+
+    await act(async () => {
+      pendingResponse.resolve({ errors: { name: "Taken" } });
+      await pending;
+    });
+
+    expect(result.current.success).toBe(true);
+    expect(result.current.result).toEqual({ id: 1 });
+    expect(result.current.errors).toEqual({});
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it("skips the submit of a call superseded during its delay", async () => {
+    vi.useFakeTimers();
+    try {
+      const first = vi.fn(async () => ({ result: { id: 1 } }));
+      const second = vi.fn(async () => ({ result: { id: 2 } }));
+      const { result } = renderHook(() => useFormSubmit({ delay: 300 }));
+
+      await act(async () => {
+        void result.current.handleSubmit(first);
+      });
+      await act(async () => {
+        void result.current.handleSubmit(second);
+      });
+      await act(() => vi.advanceTimersByTimeAsync(300));
+
+      expect(first).not.toHaveBeenCalled();
+      expect(second).toHaveBeenCalledOnce();
+      expect(result.current.result).toEqual({ id: 2 });
+      expect(result.current.loading).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("sets success and result when the submit returns a result", async () => {
     const onSuccess = vi.fn();
     const { result } = renderHook(() => useFormSubmit({ onSuccess }));

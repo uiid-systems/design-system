@@ -29,8 +29,8 @@ export type FormState<T = Record<string, unknown>> = {
   setLoading: (loading: boolean) => void;
   /**
    * Mark the form as submitted: clears errors, sets `success`, stores `result`, and calls `onSuccess`.
-   * Method syntax keeps `FormState<T>` assignable to `FormState<unknown>`.
    */
+  // Method syntax keeps `FormState<T>` assignable to `FormState<unknown>`.
   setResult(result: T): void;
   /**
    * Clear all state. A submit still pending in `useFormSubmit` is ignored when it settles.
@@ -55,18 +55,28 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [result, setResultState] = useState<T | null>(null);
-  /** Incremented per submit and on reset, so only the latest submit writes state. */
+  /** Incremented per submit and by every manual update, so only the latest writes state. */
   const requestRef = useRef(0);
+  const pendingRef = useRef(false);
+
+  /** Invalidates a pending submit and ends its loading, since it will no longer do so itself. */
+  const supersede = useCallback(() => {
+    requestRef.current++;
+    if (pendingRef.current) {
+      pendingRef.current = false;
+      setLoading(false);
+    }
+  }, []);
 
   const reset = useCallback(() => {
-    requestRef.current++;
+    supersede();
     setErrorsState({});
     setLoading(false);
     setSuccess(false);
     setResultState(null);
-  }, []);
+  }, [supersede]);
 
-  const setErrors = useCallback(
+  const applyErrors = useCallback(
     (newErrors: FormErrors) => {
       setErrorsState(newErrors);
       setSuccess(false);
@@ -85,6 +95,22 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     [optionsRef],
   );
 
+  const setErrors = useCallback(
+    (newErrors: FormErrors) => {
+      supersede();
+      applyErrors(newErrors);
+    },
+    [supersede, applyErrors],
+  );
+
+  const setResult = useCallback(
+    (newResult: T) => {
+      supersede();
+      succeed(newResult);
+    },
+    [supersede, succeed],
+  );
+
   const state: FormState<T> = {
     errors,
     loading,
@@ -92,11 +118,19 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     result,
     setErrors,
     setLoading,
-    setResult: succeed,
+    setResult,
     reset,
   };
 
-  return { state, optionsRef, requestRef, succeed, setResultState };
+  return {
+    state,
+    optionsRef,
+    requestRef,
+    pendingRef,
+    applyErrors,
+    succeed,
+    setResultState,
+  };
 };
 
 /**
@@ -132,42 +166,63 @@ export type UseFormSubmitOptions<T = Record<string, unknown>> =
  * Automatically manages loading state and error/success transitions: a response
  * with errors sets `errors` and calls `onError`; any other response sets
  * `success`, stores `result`, and calls `onSuccess` when a result was returned.
- * When submits overlap, only the latest one updates state and calls callbacks.
+ * When submits overlap, only the latest one updates state and calls callbacks; a manual
+ * `setErrors`, `setResult` or `reset` also supersedes a pending submit.
  */
 export function useFormSubmit<T = Record<string, unknown>>(
   options: UseFormSubmitOptions<T> = {},
 ): FormState<T> & SubmitHandler<T> {
-  const { state, optionsRef, requestRef, succeed, setResultState } =
-    useFormStateInternal<T>(options);
-  const { setErrors, setLoading } = state;
+  const {
+    state,
+    optionsRef,
+    requestRef,
+    pendingRef,
+    applyErrors,
+    succeed,
+    setResultState,
+  } = useFormStateInternal<T>(options);
+  const { setLoading } = state;
 
   const handleSubmit = useCallback(
     async (submitFn: () => Promise<{ errors?: FormErrors; result?: T }>) => {
       const request = ++requestRef.current;
       const isLatest = () => request === requestRef.current;
       const { delay = 0 } = optionsRef.current;
+      pendingRef.current = true;
       setLoading(true);
       setResultState(null);
-      setErrors({});
+      applyErrors({});
 
       if (delay > 0) {
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
+      if (!isLatest()) return;
 
       try {
         const response = await submitFn();
         if (!isLatest()) return;
 
         if (response.errors && hasErrors(response.errors)) {
-          setErrors(response.errors);
+          applyErrors(response.errors);
         } else {
           succeed(response.result);
         }
       } finally {
-        if (isLatest()) setLoading(false);
+        if (isLatest()) {
+          pendingRef.current = false;
+          setLoading(false);
+        }
       }
     },
-    [optionsRef, requestRef, setErrors, setLoading, setResultState, succeed],
+    [
+      optionsRef,
+      requestRef,
+      pendingRef,
+      applyErrors,
+      setLoading,
+      setResultState,
+      succeed,
+    ],
   );
 
   return {
