@@ -1212,6 +1212,7 @@ describe("Dialog", () => {
     );
 
     const trigger = document.querySelector('[data-slot="dialog-trigger"]');
+    expect(styles["dialog-trigger"]).toContain("composes-trigger");
     expect(trigger).toHaveClass(styles["dialog-trigger"], "fn-closed");
 
     await user.click(screen.getByRole("button", { name: "Open dialog" }));

@@ -1,8 +1,8 @@
 @import "@uiid/tokens/component/overlays.tokens.css";
 @import "@uiid/tokens/component/dialog.tokens.css";
 
-/* The focus ring a string or function trigger needs; Popover, Tooltip and
-   Drawer compose the same one. */
+/* The focus ring a string or function trigger needs. Shared with the other
+   overlay triggers; see `composes-trigger` in @uiid/tokens compositions.css. */
 .dialog-trigger {
   composes: composes-trigger from global;
 }
