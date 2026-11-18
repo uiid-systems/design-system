@@ -1,7 +1,10 @@
+"use client";
+
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { Card } from "@uiid/cards";
+import { Card, type CardProps } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
+import { useBodyOverflow } from "../../shared/use-body-overflow";
 import type { PopoverPopupProps } from "../popover.types";
 
 import styles from "../popover.module.css";
@@ -13,6 +16,10 @@ import styles from "../popover.module.css";
  *
  * `children` is passed to the popup only, never duplicated into the render
  * element: Base UI forwards it into the Card.
+ *
+ * The popup is capped at the height beside the trigger and the body scrolls
+ * on its own (popover.module.css). While it overflows it is a tab stop, so the
+ * keyboard can scroll it.
  */
 export const PopoverPopup = ({
   title,
@@ -23,6 +30,16 @@ export const PopoverPopup = ({
   className,
   ...props
 }: PopoverPopupProps) => {
+  const { ref: bodyRef, overflows } = useBodyOverflow();
+
+  const bodyProps: CardProps["InnerContainerProps"] = {
+    // The body stretches past the card's padding to its edges, which Card's
+    // `w="full"` of the content box would stop short of.
+    w: undefined,
+    ref: bodyRef,
+    ...(overflows && { tabIndex: 0 }),
+  };
+
   return (
     <BasePopover.Popup
       data-slot="popover-popup"
@@ -36,6 +53,7 @@ export const PopoverPopup = ({
           FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BasePopover.Title /> }}
           DescriptionProps={{ render: <BasePopover.Description /> }}
+          InnerContainerProps={bodyProps}
         />
       }
       className={cxState(styles["popover-popup"], className)}

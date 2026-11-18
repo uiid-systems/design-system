@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 const THRESHOLD = 1;
 
 /**
- * Whether the dialog body's content is taller than the body, so it scrolls.
+ * Whether a popup body's content is taller than the body, so it scrolls. Pair
+ * it with `composes-popup-scroll-body` (@uiid/tokens compositions.css), and
+ * make the body a tab stop while it overflows, so the keyboard can scroll it.
  * One ResizeObserver watches the body, for viewport changes, and its children,
  * for content that grows or shrinks without resizing the body.
  *

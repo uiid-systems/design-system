@@ -4,7 +4,7 @@ import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Card, type CardProps } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
-import { useBodyOverflow } from "../dialog.hooks";
+import { useBodyOverflow } from "../../shared/use-body-overflow";
 import type { DialogPopupProps } from "../dialog.types";
 import { dialogVariants } from "../dialog.variants";
 import { DialogCloseButton } from "./dialog-close-button";

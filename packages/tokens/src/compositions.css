@@ -148,6 +148,39 @@
   }
 
   /*
+   * A popup rendered as a Card whose body scrolls while the header and footer
+   * stay put. The consumer caps the popup's height; Card is a flex column, so
+   * the body needs `min-height: 0` to shrink below its content. The body
+   * reaches the card's inline edges and pads itself back in, so the scrollbar
+   * sits at the surface edge, and its block padding leaves a focus ring room
+   * at the clip edge. Drop Card's `w="full"` on the body, which would hold it
+   * to the content box, and pair this with @uiid/overlays' useBodyOverflow,
+   * which makes an overflowing body a tab stop. Dialog and Popover compose it.
+   */
+  .composes-popup-scroll-body {
+    & > [data-slot="card-inner-container"] {
+      --popup-focus-ring-room: calc(var(--globals-outline-width) + var(--globals-outline-offset));
+
+      min-height: 0;
+      overflow-y: auto;
+      margin-inline: calc(-1 * var(--card-padding-inline-start)) calc(-1 * var(--card-padding-inline-end));
+      padding-inline: var(--card-padding-inline-start) var(--card-padding-inline-end);
+      padding-block: var(--popup-focus-ring-room);
+      scroll-padding-block: var(--popup-focus-ring-room);
+
+      /* A scrolling body is a tab stop; its ring sits inside, since it clips. */
+      &:focus-visible {
+        outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+        outline-offset: calc(-1 * var(--globals-outline-width));
+      }
+    }
+
+    & > :not([data-slot="card-inner-container"]) {
+      flex-shrink: 0;
+    }
+  }
+
+  /*
    * An inverted floating label: foreground surface, background text, capped at
    * --tooltip-max-width (a tooltip token, loaded by globals.css) with long
    * unbroken strings wrapped rather than overflowing. Button's tooltip and

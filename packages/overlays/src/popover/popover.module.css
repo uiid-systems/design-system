@@ -10,7 +10,14 @@
   composes: composes-popup-positioner from global;
 }
 
+/*
+ * Capped at the space Base UI's positioner leaves beside the trigger, so tall
+ * content scrolls in the body, with the header and footer in view, rather than
+ * running off screen. The body scroll is shared with Dialog; see
+ * `composes-popup-scroll-body` in @uiid/tokens compositions.css.
+ */
 .popover-popup {
-  composes: composes-popup from global;
+  composes: composes-popup composes-popup-scroll-body from global;
   max-width: var(--popover-max-width);
+  max-height: var(--available-height);
 }

@@ -2,7 +2,8 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
-import { Group } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
+import { Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { Popover } from "./popover";
@@ -83,3 +84,37 @@ export const Footer = () => {
     </Popover>
   );
 };
+
+/**
+ * Content taller than the space beside the trigger scrolls in the body, with
+ * the header and footer in view. Tab through the buttons at the body's edges
+ * to check their focus rings aren't cut off.
+ */
+export const LongContent = () => (
+  <Popover
+    trigger={<Button>Filters</Button>}
+    title="Filters"
+    description="Narrow the results."
+    footer={
+      <Group gap={2} ax="end" fullwidth>
+        <Button size="small">Apply</Button>
+      </Group>
+    }
+  >
+    <Stack gap={3}>
+      <Group>
+        <Button size="small" variant="subtle">
+          Select all
+        </Button>
+      </Group>
+      {Array.from({ length: 24 }, (_, index) => (
+        <Text key={index}>Filter option {index + 1}</Text>
+      ))}
+      <Group>
+        <Button size="small" variant="subtle">
+          Clear all
+        </Button>
+      </Group>
+    </Stack>
+  </Popover>
+);
