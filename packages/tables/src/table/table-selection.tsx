@@ -14,7 +14,10 @@ export type TableSelectionProviderProps = React.PropsWithChildren<{
   selectedRows?: number[];
   /** Initially selected row indices, for uncontrolled use. */
   defaultSelectedRows?: number[];
-  /** Called with the selected row indices, in ascending order, on every change. */
+  /**
+   * Called with the selected row indices, in ascending order, whenever a row or
+   * all rows are toggled.
+   */
   onSelectedRowsChange?: (selectedRows: number[]) => void;
 }>;
 

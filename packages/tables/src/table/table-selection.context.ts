@@ -4,9 +4,9 @@ import { createContext, useContext } from "react";
 
 /** Selection state and actions shared by a `TableSelectionProvider`. */
 export type TableSelectionContextValue = {
-  /** True when every one of the provider's `count` rows is selected. */
+  /** True when the number of selected indices equals `count` and `count` is above 0. */
   allSelected: boolean;
-  /** True when at least one row is selected, but not all of them. */
+  /** True when at least one index is selected and `allSelected` is false. */
   someSelected: boolean;
   /** Whether the row at this index is selected. */
   isSelected: (index: number) => boolean;
