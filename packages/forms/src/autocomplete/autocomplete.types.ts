@@ -54,7 +54,20 @@ export type AutocompletePopupProps = WithLayoutProps<
   color?: AutocompleteColor;
 };
 export type AutocompleteListProps = BaseAutocomplete.List.Props;
-export type AutocompleteItemProps = BaseAutocomplete.Item.Props;
+/**
+ * Base UI's Item props, with `value` typed by the autocomplete's `Value`, plus
+ * the row's `label`. Base UI's item renders no text of its own; the label falls
+ * back to a `label` on an object value, then to a primitive value itself.
+ */
+export type AutocompleteItemProps<Value = unknown> = Omit<
+  BaseAutocomplete.Item.Props,
+  "value"
+> & {
+  /** The item's value, typed by the autocomplete's `Value`. */
+  value?: Value;
+  /** The row's text, for a value that is not its own label. */
+  label?: React.ReactNode;
+};
 export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
 export type AutocompleteInputGroupProps = BaseAutocomplete.InputGroup.Props &
   Pick<InputProps, "size">;
@@ -80,7 +93,14 @@ export type AutocompleteProps<Value = string> = {
   PositionerProps?: AutocompletePositionerProps;
   PopupProps?: AutocompletePopupProps;
   ListProps?: AutocompleteListProps;
-} & AutocompleteRootProps<Value> &
+  /**
+   * The items to filter and render, typed by the autocomplete's `Value` so it
+   * can be inferred from them. Readonly, so an `as const` list works. An object
+   * value takes `itemToStringValue` for its text, as in Base UI, unless it has
+   * a `label` of its own. Grouped items need the composed parts.
+   */
+  items?: readonly Value[];
+} & Omit<AutocompleteRootProps<Value>, "items"> &
   Pick<
     AutocompleteInputProps,
     "placeholder" | "onFocus" | "onBlur" | "before" | "after" | "size"

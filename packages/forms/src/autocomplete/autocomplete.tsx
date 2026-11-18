@@ -3,6 +3,7 @@
 import { splitDomAttributes } from "@uiid/utils";
 
 import { mergeInputGroupProps } from "../shared/input-group";
+import { resolveItemKey, resolveItemLabel } from "../shared/popup-layer";
 import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
@@ -15,7 +16,7 @@ import {
   AutocompleteEmpty,
 } from "./subcomponents";
 
-export const Autocomplete = ({
+export function Autocomplete<Value = string>({
   items,
   name,
   label,
@@ -39,15 +40,21 @@ export const Autocomplete = ({
   ListProps,
   children,
   ...props
-}: AutocompleteProps) => {
+}: AutocompleteProps<Value>) {
   // `Root` renders no element, so a DOM attribute spread onto it lands
   // nowhere. Route those to the input instead — it is the focusable element
   // and the one carrying `role="combobox"`, so it is where a name or a
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
+  // Autocomplete's Root has no `itemToStringLabel`: `itemToStringValue` is
+  // the text Base UI fills the input with, so the default row shows the same.
+  // `rootProps` spreads last onto Root, so its function is the one Root uses.
+  const itemToStringValue =
+    rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
+
   return (
-    <AutocompleteRoot
+    <AutocompleteRoot<Value>
       items={items}
       name={name}
       disabled={disabled}
@@ -82,10 +89,11 @@ export const Autocomplete = ({
           <AutocompletePopup color={color} {...PopupProps}>
             <AutocompleteList {...ListProps}>
               {children ??
-                ((item: string) => (
-                  <AutocompleteItem
-                    key={item}
+                ((item: Value, index: number) => (
+                  <AutocompleteItem<Value>
+                    key={resolveItemKey(item, index, itemToStringValue)}
                     value={item}
+                    label={resolveItemLabel(item, itemToStringValue)}
                     disabled={disabled}
                   />
                 ))}
@@ -96,5 +104,5 @@ export const Autocomplete = ({
       </AutocompletePortal>
     </AutocompleteRoot>
   );
-};
+}
 Autocomplete.displayName = "Autocomplete";

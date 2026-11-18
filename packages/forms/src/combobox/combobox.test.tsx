@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Combobox } from "./combobox";
+import type { ComboboxItemProps, ComboboxProps } from "./combobox.types";
 import {
   ComboboxChip,
   ComboboxChips,
@@ -928,5 +929,164 @@ describe("Combobox required reaches the label and the control", () => {
       container.querySelector("[data-slot='field-label'][data-required]"),
     ).not.toBeNull();
     expect(screen.getByRole("combobox")).toHaveAttribute("required");
+  });
+});
+
+/* Base UI types Root by `Value` and `Multiple`; the monolith must carry both
+   through rather than pinning them to `string` and `false`. */
+describe("Combobox generics", () => {
+  type User = { id: number; name: string };
+  const users: User[] = [
+    { id: 1, name: "Ada Lovelace" },
+    { id: 2, name: "Grace Hopper" },
+  ];
+
+  it("renders an object value's label from itemToStringLabel", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={users}
+        itemToStringLabel={(item) => item.name}
+        itemToStringValue={(item) => String(item.id)}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+
+    expect(
+      screen.getByRole("option", { name: "Ada Lovelace" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("[object Object]")).not.toBeInTheDocument();
+  });
+
+  it("renders a { value, label } item's label without itemToStringLabel", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={[
+          { value: "ada", label: "Ada Lovelace" },
+          { value: "grace", label: "Grace Hopper" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+
+    expect(
+      screen.getByRole("option", { name: "Grace Hopper" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("[object Object]")).not.toBeInTheDocument();
+  });
+
+  it("selects an object value", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={users}
+        itemToStringLabel={(item) => item.name}
+        onValueChange={onValueChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+    await user.click(screen.getByRole("option", { name: "Grace Hopper" }));
+
+    expect(onValueChange).toHaveBeenCalledWith(users[1], expect.anything());
+    expect(screen.getByRole("combobox")).toHaveValue("Grace Hopper");
+  });
+
+  it("labels a composed ComboboxItem from its label prop", async () => {
+    const user = userEvent.setup();
+    render(
+      <ComboboxRoot items={users}>
+        <ComboboxInput />
+        <ComboboxPortal>
+          <ComboboxPositioner>
+            <ComboboxPopup>
+              <ComboboxList>
+                {(item: User) => (
+                  <ComboboxItem key={item.id} value={item} label={item.name} />
+                )}
+              </ComboboxList>
+            </ComboboxPopup>
+          </ComboboxPositioner>
+        </ComboboxPortal>
+      </ComboboxRoot>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+
+    expect(
+      screen.getByRole("option", { name: "Ada Lovelace" }),
+    ).toBeInTheDocument();
+  });
+
+  it("takes an array value in Multiple mode", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        multiple
+        items={["apple", "banana"]}
+        defaultValue={["apple"]}
+        onValueChange={onValueChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+    await user.click(screen.getByRole("option", { name: /banana/i }));
+
+    expect(onValueChange).toHaveBeenCalledWith(
+      ["apple", "banana"],
+      expect.anything(),
+    );
+  });
+
+  it("types items, value and Multiple by the combobox's generics", () => {
+    expectTypeOf<ComboboxProps<User>["items"]>().toEqualTypeOf<
+      readonly User[] | undefined
+    >();
+    expectTypeOf<ComboboxProps["items"]>().toEqualTypeOf<
+      readonly string[] | undefined
+    >();
+    expectTypeOf<ComboboxProps<User, true>["value"]>().toEqualTypeOf<
+      User[] | null | undefined
+    >();
+    expectTypeOf<ComboboxProps<User>["value"]>().toEqualTypeOf<
+      User | null | undefined
+    >();
+    expectTypeOf<ComboboxItemProps<User>["value"]>().toEqualTypeOf<
+      User | undefined
+    >();
+
+    // @ts-expect-error a string is not a `Combobox<User>` item
+    const wrong: ComboboxProps<User>["items"] = ["Ada"];
+    void wrong;
+
+    // The monolith infers `Value` from `items`, so `itemToStringLabel` is
+    // typed by the record.
+    void (<Combobox items={users} itemToStringLabel={(item) => item.name} />);
+    void (
+      <Combobox
+        items={users}
+        // @ts-expect-error `Value` is `User`, which has no `title`
+        itemToStringLabel={(item) => item.title}
+      />
+    );
+    void (
+      <Combobox
+        multiple
+        items={users}
+        onValueChange={(value) => {
+          expectTypeOf(value).toEqualTypeOf<User[]>();
+        }}
+      />
+    );
   });
 });

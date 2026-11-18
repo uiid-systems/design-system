@@ -56,7 +56,20 @@ export type ComboboxPopupProps = WithLayoutProps<
   color?: ComboboxColor;
 };
 export type ComboboxListProps = BaseCombobox.List.Props;
-export type ComboboxItemProps = BaseCombobox.Item.Props;
+/**
+ * Base UI's Item props, with `value` typed by the combobox's `Value`, plus the
+ * row's `label`. Base UI's item renders no text of its own; the label falls
+ * back to a `label` on an object value, then to a primitive value itself.
+ */
+export type ComboboxItemProps<Value = unknown> = Omit<
+  BaseCombobox.Item.Props,
+  "value"
+> & {
+  /** The value this item selects, typed by the combobox's `Value`. */
+  value?: Value;
+  /** The row's text, for a value that is not its own label. */
+  label?: React.ReactNode;
+};
 export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 export type ComboboxInputGroupProps = BaseCombobox.InputGroup.Props &
   Pick<InputProps, "size">;
@@ -91,8 +104,15 @@ export type ComboboxProps<
   PositionerProps?: ComboboxPositionerProps;
   PopupProps?: ComboboxPopupProps;
   ListProps?: ComboboxListProps;
+  /**
+   * The items to filter and render, typed by the combobox's `Value` so it can
+   * be inferred from them. Readonly, so an `as const` list works. An object
+   * value takes `itemToStringLabel` for its text, as in Base UI, unless it has
+   * a `label` of its own. Grouped items need the composed parts.
+   */
+  items?: readonly Value[];
 }> &
-  ComboboxRootProps<Value, Multiple> &
+  Omit<ComboboxRootProps<Value, Multiple>, "items"> &
   Pick<
     ComboboxInputProps,
     "placeholder" | "onFocus" | "onBlur" | "before" | "after" | "size"
