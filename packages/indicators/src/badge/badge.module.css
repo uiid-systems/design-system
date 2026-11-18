@@ -7,20 +7,13 @@
 
   background-color: var(--badge-bg);
   color: var(--badge-fg);
-  display: inline-flex !important;
+  display: inline-flex;
   border-radius: var(--badge-border-radius);
   line-height: var(--badge-line-height);
 }
 
 .badge-text {
   line-height: var(--badge-line-height);
-}
-
-.badge-indicator {
-  background-color: var(--badge-border);
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
 }
 
 .size-small {
