@@ -1,6 +1,6 @@
 import { act, fireEvent, render } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { Kbd } from "./kbd";
 import * as Examples from "./kbd.examples";
@@ -99,12 +99,26 @@ describe("Kbd", () => {
     expect(getKbd(container)).toHaveAttribute("data-active");
   });
 
-  it("stops listening once unmounted", () => {
-    const { container, unmount } = render(<Kbd hotkey={["k"]} />);
-    const kbd = getKbd(container);
-    unmount();
+  it("drops the old hotkey's listener when the hotkey changes", () => {
+    const { container, rerender } = render(<Kbd hotkey={["k"]} />);
+    rerender(<Kbd hotkey={["j"]} />);
+
     fireEvent.keyDown(window, { key: "k" });
-    expect(kbd).not.toHaveAttribute("data-active");
+    expect(getKbd(container)).not.toHaveAttribute("data-active");
+
+    fireEvent.keyDown(window, { key: "j" });
+    expect(getKbd(container)).toHaveAttribute("data-active");
+  });
+
+  it("removes its window listeners on unmount", () => {
+    const remove = vi.spyOn(window, "removeEventListener");
+    const { unmount } = render(<Kbd hotkey={["k"]} />);
+    unmount();
+    const events = remove.mock.calls.map(([type]) => type);
+    expect(events).toEqual(
+      expect.arrayContaining(["keydown", "keyup", "blur"]),
+    );
+    remove.mockRestore();
   });
 });
 
@@ -163,7 +177,7 @@ describe("Kbd utils", () => {
       );
     });
 
-    // BUG: `space` is a named key in KEY_SYMBOLS, but the space bar's
+    // BUG (UI-400): `space` is a named key in KEY_SYMBOLS, but the space bar's
     // `event.key` is " ", so the "space" hotkey can never match.
     it.fails("matches the space bar for the space key", () => {
       expect(
@@ -171,7 +185,7 @@ describe("Kbd utils", () => {
       ).toBe(true);
     });
 
-    // BUG: on macOS, Option changes `event.key` (Option+B gives "∫"), so an
+    // BUG (UI-400): on macOS, Option changes `event.key` (Option+B gives "∫"), so an
     // alt + letter hotkey never matches there. Matching on `event.code`
     // would fix it.
     it.fails("matches alt + letter when Option changes the key", () => {

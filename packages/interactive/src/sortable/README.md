@@ -31,7 +31,7 @@ Use Sortable when you want to:
 
 `value` can hold strings or numbers, which serve as their own ids, or objects, which need `getItemValue` to return each one's id. Each `SortableItem`'s `value` is that id, and must not be an empty string.
 
-Every `SortableItem` sits inside `SortableContent`, which can wrap any layout, such as a `Stack` or a wrapping `Group`. `orientation` picks the axis the drag is held to, the sorting strategy and the collision detection; `strategy`, `modifiers` and `collisionDetection` override each one.
+Every `SortableItem` sits inside `SortableContent`, which can wrap any layout, such as a `Stack` or a wrapping `Group`, or inside `SortableOverlay`, to render the dragged copy as an item too. `orientation` picks the axis the drag is held to, the sorting strategy and the collision detection; `strategy`, `modifiers` and `collisionDetection` override each one.
 
 Each part writes `data-slot`, and an item and its handle write `data-dragging` while held and `data-disabled` when locked. A held item dims; pass `flatCursor` to keep the default cursor on the overlay instead of `grabbing`.
 

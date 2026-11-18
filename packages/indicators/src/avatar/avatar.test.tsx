@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { Box, Group, Stack } from "@uiid/layout";
 import { createRef } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
@@ -112,13 +113,33 @@ describe("Avatar", () => {
   });
 
   it("lays out in a row by default and a column when vertical", () => {
+    /* The class Group or Stack adds over Box, read from the real component
+       rather than guessed from its hashed module name. */
+    const classesOf = (element: React.ReactElement) => {
+      const { container, unmount } = render(element);
+      const list = [...(container.firstElementChild?.classList ?? [])];
+      unmount();
+      return list;
+    };
+    const boxClasses = classesOf(<Box />);
+    const ownClass = (element: React.ReactElement) => {
+      const [own] = classesOf(element).filter((c) => !boxClasses.includes(c));
+      expect(own).toBeDefined();
+      return own as string;
+    };
+    const groupClass = ownClass(<Group />);
+    const stackClass = ownClass(<Stack />);
+
     const { container, rerender } = render(
       <Avatar initials="AF" name="Adam" />,
     );
-    expect(part(container, "avatar-container")?.className).toMatch(/group/);
+    const root = () => part(container, "avatar-container");
+    expect(root()).toHaveClass(groupClass);
+    expect(root()).not.toHaveClass(stackClass);
 
     rerender(<Avatar initials="AF" name="Adam" orientation="vertical" />);
-    expect(part(container, "avatar-container")?.className).toMatch(/stack/);
+    expect(root()).toHaveClass(stackClass);
+    expect(root()).not.toHaveClass(groupClass);
   });
 
   // ============================================
