@@ -3,6 +3,7 @@ import { createRef } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Status } from "./status";
+import * as Examples from "./status.examples";
 
 import styles from "./status.module.css";
 
@@ -111,5 +112,12 @@ describe("Status", () => {
   it("leaves the dot uncolored by default", () => {
     const { container } = render(<Status />);
     expect(part(container, "status-dot")).not.toHaveAttribute("data-colored");
+  });
+});
+
+describe("Status examples", () => {
+  it.each(Object.entries(Examples))("%s renders a status", (_, Example) => {
+    const { container } = render(<Example />);
+    expect(part(container, "status-dot")).toBeInTheDocument();
   });
 });
