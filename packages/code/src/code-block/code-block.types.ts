@@ -77,6 +77,12 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   showLineNumbers?: boolean;
   /** Lines to highlight (1-indexed) */
   highlightLines?: number[];
+  /** Render the copy button in the header */
+  copyable?: boolean;
+  /** Render the line-wrap toggle in the header */
+  wrappable?: boolean;
+  /** Render the fullscreen toggle in the header */
+  fullscreenable?: boolean;
   /** Maximum visible rows before content collapses behind a "Show more" toggle */
   rows?: number;
   /** Initial expanded state when `rows` is set */

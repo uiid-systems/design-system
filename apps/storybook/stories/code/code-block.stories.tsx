@@ -25,6 +25,9 @@ const meta = {
       ],
     },
     showLineNumbers: { control: "boolean" },
+    copyable: { control: "boolean" },
+    wrappable: { control: "boolean" },
+    fullscreenable: { control: "boolean" },
     defaultExpanded: { control: "boolean" },
     defaultWrap: { control: "boolean" },
     rows: { control: { type: "number", min: 1, max: 30 } },
@@ -156,6 +159,17 @@ export const Fullscreen: Story = {
     code: sampleLong,
     language: "typescript",
     filename: "long-file.ts",
+  },
+};
+
+export const NoHeaderActions: Story = {
+  args: {
+    code: sampleTypeScript,
+    language: "typescript",
+    filename: "counter.tsx",
+    copyable: false,
+    wrappable: false,
+    fullscreenable: false,
   },
 };
 
