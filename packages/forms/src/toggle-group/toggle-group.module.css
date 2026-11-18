@@ -205,16 +205,6 @@
   }
 
   /*
-   * A single-selection group is meant to always hold a value, so blocking the
-   * pressed toggle keeps a click from emptying it. `multiple` has no such
-   * invariant — un-pressing is the point of it — so the pressed toggle stays
-   * clickable there.
-   */
-  .toggle-group-panel:not([data-multiple]) &[data-pressed] {
-    pointer-events: none;
-  }
-
-  /*
    * A `multiple` group renders no indicator, because one pill cannot sit behind
    * several pressed toggles at once. Each pressed toggle paints the background
    * the indicator would have given it, so the `--shade-background` label above
