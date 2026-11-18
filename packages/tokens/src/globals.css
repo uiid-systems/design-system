@@ -40,7 +40,7 @@
   body {
     background-color: var(--shade-background);
     color: var(--shade-foreground);
-    font-family: sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

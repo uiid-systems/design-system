@@ -15,7 +15,7 @@
   font-weight: 500;
   user-select: none;
   pointer-events: none;
-  font-family: sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.75rem;
   transition: color var(--globals-transition-duration) ease-in-out;
 
