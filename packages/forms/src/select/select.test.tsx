@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { createRef, useState } from "react";
+import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Select } from "./select";
-import type { SelectItemProps } from "./select.types";
+import type { SelectItemProps, SelectProps } from "./select.types";
 import { SelectItem } from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
@@ -1106,5 +1106,204 @@ describe("Select itemToStringLabel", () => {
     );
 
     expect(screen.getByRole("combobox")).toHaveTextContent("Pick one");
+  });
+});
+
+/*
+ * `SelectItem` used to take only `value`/`label`/`disabled` plus its own
+ * additions, so Base UI's Item props were rejected or dropped, and `value` was
+ * a string whatever `Select`'s `Value` was.
+ */
+describe("SelectItem mirrors Base UI's Item", () => {
+  it("merges a className with its own", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="a" label="Option A" className="custom" />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const option = screen.getByRole("option", { name: /option a/i });
+    expect(option).toHaveClass("custom");
+    expect(option).toHaveClass(styles["select-item"]);
+  });
+
+  it("resolves a state-function className", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem
+          value="a"
+          label="Option A"
+          className={(state) => (state.disabled ? "off" : "on")}
+        />
+        <SelectItem
+          value="b"
+          label="Option B"
+          disabled
+          className={(state) => (state.disabled ? "off" : "on")}
+        />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const option = screen.getByRole("option", { name: /option a/i });
+    expect(option).toHaveClass("on");
+    expect(option).toHaveClass(styles["select-item"]);
+
+    const disabled = screen.getByRole("option", { name: /option b/i });
+    expect(disabled).toHaveClass("off");
+    expect(disabled).not.toHaveClass("on");
+    expect(disabled).toHaveClass(styles["select-item"]);
+  });
+
+  it("forwards a ref to the item element", async () => {
+    const user = userEvent.setup();
+    const ref = createRef<HTMLDivElement>();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="a" label="Option A" ref={ref} />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(ref.current).toBe(screen.getByRole("option", { name: /option a/i }));
+  });
+
+  it("calls an onClick handler", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="a" label="Option A" onClick={onClick} />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /option a/i }));
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("passes data attributes through", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select placeholder="Pick one">
+        <SelectItem value="a" label="Option A" data-testid="row-a" />
+      </Select>,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByTestId("row-a")).toHaveAttribute(
+      "data-slot",
+      "select-item",
+    );
+  });
+
+  it("forwards Base UI props set on an items entry", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        placeholder="Pick one"
+        items={[{ value: "a", label: "Option A", className: "from-items" }]}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByRole("option", { name: /option a/i })).toHaveClass(
+      "from-items",
+    );
+  });
+});
+
+describe("Select with a non-string Value", () => {
+  const items: SelectItemProps<number>[] = [
+    { value: 1, label: "One" },
+    { value: 2, label: "Two" },
+  ];
+
+  it("selects a number and reports it unchanged", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <Select<number>
+        items={items}
+        placeholder="Pick one"
+        onValueChange={onValueChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /two/i }));
+
+    expect(onValueChange).toHaveBeenCalledWith(2, expect.anything());
+    expect(screen.getByRole("combobox")).toHaveTextContent("Two");
+  });
+
+  it("resolves the trigger's label from a composed number item", () => {
+    render(
+      <Select<number> defaultValue={2}>
+        <SelectItem value={1} label="One" />
+        <SelectItem value={2} label="Two" />
+      </Select>,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Two");
+  });
+
+  /* Base UI resolves an object value's trigger text from the value itself, not
+     by finding it in `items`, so it takes `itemToStringLabel`, as in Base UI. */
+  it("selects an object value", async () => {
+    type Currency = { code: string; name: string };
+    const usd: Currency = { code: "USD", name: "US Dollar" };
+    const eur: Currency = { code: "EUR", name: "Euro" };
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Select<Currency>
+        placeholder="Pick one"
+        items={[
+          { value: usd, label: "US Dollar" },
+          { value: eur, label: "Euro" },
+        ]}
+        onValueChange={onValueChange}
+        itemToStringLabel={(currency) => currency.name}
+        itemToStringValue={(currency) => currency.code}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /euro/i }));
+
+    expect(onValueChange).toHaveBeenCalledWith(eur, expect.anything());
+    expect(screen.getByRole("combobox")).toHaveTextContent("Euro");
+  });
+
+  it("accepts a readonly items list", () => {
+    const constItems = [
+      { value: "a", label: "Option A" },
+      { value: "b", label: "Option B" },
+    ] as const;
+    render(<Select items={constItems} defaultValue="b" />);
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Option B");
+  });
+
+  it("types items and SelectItem by the select's Value", () => {
+    expectTypeOf<SelectProps<number>["items"]>().toEqualTypeOf<
+      readonly Omit<SelectItemProps<number>, "key">[] | undefined
+    >();
+    expectTypeOf<SelectItemProps<number>["value"]>().toEqualTypeOf<number>();
+    expectTypeOf<SelectItemProps["value"]>().toEqualTypeOf<string>();
+
+    // @ts-expect-error a string value is not a `Select<number>` item
+    const wrong: SelectProps<number>["items"] = [{ value: "1", label: "One" }];
+    void wrong;
   });
 });
