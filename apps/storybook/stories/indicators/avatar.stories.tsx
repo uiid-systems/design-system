@@ -87,3 +87,27 @@ export const Colors: Story = {
     </Stack>
   ),
 };
+
+const AVATAR_SRC = "https://avatars.githubusercontent.com/u/9919?v=4";
+
+export const Image: Story = {
+  render: (args) => (
+    <Stack gap={4}>
+      <Avatar {...args} initials="GH" src={AVATAR_SRC} />
+      <Avatar
+        {...args}
+        initials="GH"
+        src={AVATAR_SRC}
+        name="GitHub"
+        description="Loaded image"
+      />
+      <Avatar
+        {...args}
+        initials="GH"
+        src="/missing-avatar.png"
+        name="GitHub"
+        description="Failed image keeps the initials"
+      />
+    </Stack>
+  ),
+};

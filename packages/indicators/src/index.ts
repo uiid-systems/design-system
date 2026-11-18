@@ -1,5 +1,6 @@
 export * from "./avatar/avatar";
 export * from "./avatar/avatar.types";
+export * from "./avatar/subcomponents";
 
 export * from "./badge/badge";
 export * from "./badge/badge.types";
