@@ -29,6 +29,10 @@ const ALWAYS_ALLOWED = new Set([
   "cva",
 ]);
 
+// The umbrella is the one package an app installs, so it repeats the peers its
+// packages need. Nothing else would tell the app to install them.
+const UMBRELLA = "@uiid/design-system";
+
 // CSS modules that `composes: … from global` rely on the token compositions
 // in @uiid/tokens' globals, which no import statement names.
 const COMPOSES_FROM_GLOBAL = /composes:[^;]*\bfrom\s+global\b/;
@@ -94,9 +98,21 @@ const packages = readdirSync(PACKAGES_DIR)
     return { dir, pkg, imported, declared, composesFromGlobal };
   });
 
+const umbrella = packages.find((p) => p.pkg.name === UMBRELLA)!;
+const forwardedPeers = new Set(
+  packages
+    .filter((p) => p.pkg.name in (umbrella.pkg.dependencies ?? {}))
+    .flatMap((p) => Object.keys(p.pkg.peerDependencies ?? {})),
+);
+
 describe("package dependencies", () => {
   it("finds the packages", () => {
     expect(packages.length).toBeGreaterThan(10);
+  });
+
+  it("the umbrella repeats every peer its packages declare", () => {
+    const peers = Object.keys(umbrella.pkg.peerDependencies ?? {});
+    expect(peers).toEqual(expect.arrayContaining([...forwardedPeers]));
   });
 
   it.each(packages.map((p) => [p.pkg.name, p] as const))(
@@ -109,12 +125,13 @@ describe("package dependencies", () => {
 
   it.each(packages.map((p) => [p.pkg.name, p] as const))(
     "%s declares no package its source never imports",
-    (_, { imported, declared, composesFromGlobal }) => {
+    (_, { pkg, imported, declared, composesFromGlobal }) => {
       const unused = [...declared].filter(
         (name) =>
           !imported.has(name) &&
           !ALWAYS_ALLOWED.has(name) &&
-          !(name === "@uiid/tokens" && composesFromGlobal),
+          !(name === "@uiid/tokens" && composesFromGlobal) &&
+          !(pkg.name === UMBRELLA && forwardedPeers.has(name)),
       );
       expect(unused).toEqual([]);
     },
