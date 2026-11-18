@@ -11,9 +11,10 @@ export function defaultFormatHeader<T extends Record<string, unknown>>(
     .trim();
 }
 
-/** Renders a React element as itself and a string, number, bigint or boolean
- * as text. Everything else is an empty cell: `null`, `undefined`, and the
- * objects, arrays, functions and symbols that have no meaningful text form. */
+/** The default `formatCell`. Renders a React element as itself and a string,
+ * number, bigint or boolean as text. An object renders its string form when it
+ * defines one of its own (a `Date`, a `URL`, an array). Everything else renders
+ * nothing: `null`, `undefined`, a plain object, a function, a symbol. */
 export function defaultFormatCell(value: unknown): React.ReactNode {
   if (isValidElement(value)) return value;
 
@@ -23,7 +24,19 @@ export function defaultFormatCell(value: unknown): React.ReactNode {
     case "bigint":
     case "boolean":
       return String(value);
+    case "object":
+      return hasOwnStringForm(value) ? String(value) : null;
     default:
-      return "";
+      return null;
   }
+}
+
+/** False for `null` and for an object whose string form would be the inherited
+ * `[object Object]`, or that has no `toString` at all (a null prototype). */
+function hasOwnStringForm(value: object | null): value is object {
+  return (
+    value !== null &&
+    typeof value.toString === "function" &&
+    value.toString !== Object.prototype.toString
+  );
 }

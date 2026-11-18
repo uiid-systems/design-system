@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it, vi } from "vitest";
 
-import { Table } from "./table";
+import { defaultFormatCell, Table } from "../index";
 import { TABLE_MOCK_DATA } from "./table.mocks";
 
 /** happy-dom reports every box as zero-sized, so the scroll metrics the
@@ -202,9 +202,21 @@ describe("Table", () => {
       expect(cells()).toEqual(["Ada", ""]);
     });
 
-    it("renders an array as an empty cell", () => {
-      render(<Table items={[{ name: "Ada", tags: ["a", "b"] }]} />);
+    it("renders an object with no string form of its own as an empty cell", () => {
+      const bare = Object.create(null) as Record<string, unknown>;
+      render(<Table items={[{ name: "Ada", meta: bare }]} />);
       expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of strings as its joined text", () => {
+      render(<Table items={[{ name: "Ada", tags: ["a", "b"] }]} />);
+      expect(cells()).toEqual(["Ada", "a,b"]);
+    });
+
+    it("renders a Date as its string form", () => {
+      const joined = new Date(2024, 0, 15);
+      render(<Table items={[{ name: "Ada", joined }]} />);
+      expect(cells()).toEqual(["Ada", String(joined)]);
     });
 
     it("renders a boolean as text", () => {
@@ -222,6 +234,21 @@ describe("Table", () => {
         />,
       );
       expect(cells()).toEqual(["Ada", "a, b", "—"]);
+    });
+
+    it("lets formatCell fall back to defaultFormatCell", () => {
+      const joined = new Date(2024, 0, 15);
+      render(
+        <Table
+          items={[{ name: "Ada", joined, email: null }]}
+          formatCell={(value, column) =>
+            column === "joined" && value instanceof Date
+              ? String(value.getFullYear())
+              : defaultFormatCell(value)
+          }
+        />,
+      );
+      expect(cells()).toEqual(["Ada", "2024", ""]);
     });
 
     it("calls formatCell with the value, the column and the row", () => {
