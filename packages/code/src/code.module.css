@@ -8,6 +8,10 @@
   line-height: var(--code-line-height);
   letter-spacing: var(--code-letter-spacing);
   tab-size: var(--code-tab-size);
+
+  /* Line-number gutter, shared by CodeBlock and CodeEditor: the number column, then the gap */
+  --code-gutter-number: 2rem;
+  --code-gutter-gap: 1rem;
 }
 
 /* Dual theme via light-dark() — resolves against :root color-scheme set by [data-theme] */
@@ -61,8 +65,8 @@
     counter-increment: line;
     content: counter(line);
     display: inline-block;
-    width: 2rem;
-    margin-right: 1rem;
+    width: var(--code-gutter-number);
+    margin-right: var(--code-gutter-gap);
     text-align: right;
     color: var(--shade-muted, #666);
     flex-shrink: 0;

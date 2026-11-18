@@ -116,6 +116,7 @@ export const WithLineNumbers: Story = {
 
 const longLineSample = `const greeting = "hello";
 const message = \`\${greeting}, this line is long enough to wrap inside the editor, so the caret, the selection and the colors must wrap at the same point\`;
+const docs = "https://example.com/${"averylongpathsegmentwithnobreakpoints/".repeat(8)}end";
 
 console.log(message);`;
 

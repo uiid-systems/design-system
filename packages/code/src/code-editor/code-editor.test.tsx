@@ -181,8 +181,7 @@ describe("CodeEditor", () => {
     expect(pre).not.toHaveFocus();
   });
 
-  // Alignment itself is CSS, measured in a real browser on the LongLines story;
-  // this pins the attribute that gives both layers the same gutter.
+  // The CSS keys the shared gutter off this attribute; check alignment by eye in the LongLines story
   it("marks the layer holding both the highlight and the textarea for line numbers", () => {
     const { rerender } = render(<CodeEditor defaultValue="const x = 1;" />);
     const layer = screen.getByRole("textbox").parentElement!;

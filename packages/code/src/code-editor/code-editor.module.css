@@ -1,9 +1,6 @@
 .code-editor {
   composes: composes-disabled from global;
 
-  /* Inline-start space the line-number column takes: a 2rem number and a 1rem gap */
-  --code-editor-gutter: 3rem;
-
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
@@ -23,6 +20,10 @@
 /* Highlighted code backdrop */
 .code-editor-highlight {
   pointer-events: none;
+
+  /* A long unbreakable token (a URL) would otherwise widen the shared grid column to its
+     min-content width, and then no line wraps at the editor's edge */
+  min-width: 0;
 
   /* Ensure Shiki elements inherit typography */
   & :global(pre),
@@ -47,6 +48,8 @@
    The editor draws its own rather than the shared flex-column rules, whose per-token flex items
    cannot wrap like textarea text. */
 .code-editor-layer[data-line-numbers] {
+  --code-editor-gutter: calc(var(--code-gutter-number) + var(--code-gutter-gap));
+
   & .code-editor-highlight :global(pre) {
     counter-reset: line;
     padding-inline-start: calc(var(--code-padding) + var(--code-editor-gutter));
@@ -56,9 +59,10 @@
     counter-increment: line;
     content: counter(line);
     position: absolute;
-    width: calc(var(--code-editor-gutter) - 1rem);
+    width: var(--code-gutter-number);
     margin-inline-start: calc(-1 * var(--code-editor-gutter));
     text-align: end;
+    white-space: nowrap;
     color: var(--shade-muted, #666);
     user-select: none;
   }
