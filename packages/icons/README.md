@@ -38,11 +38,9 @@ Every icon is exposed only under its **`*Icon`** name (`GlobeIcon`, never `Globe
 ## What's exported
 
 - **~2,000 lucide icons** — the full set, single-named on the `*Icon` convention.
-- **`LoadingSpinnerIcon`** — a uiid spinner for loading states, reachable at `@uiid/icons/loading-spinner` like any other icon.
-  It spins via the `[data-animate="spin"]` rule in `@uiid/tokens`, so it needs `@uiid/tokens/globals.css` —
-  the same stylesheet every uiid component requires. This package ships no CSS of its own.
+- **`LoadingSpinnerIcon`** — a uiid spinner for loading states, reachable at `@uiid/icons/loading-spinner` like any other icon. It spins via the `[data-animate="spin"]` rule in `@uiid/tokens`, so it needs `@uiid/tokens/globals.css` — the same stylesheet every uiid component requires. This package ships no CSS of its own. Like lucide's icons, it renders `aria-hidden="true"` unless you pass an `aria-*` attribute, a `role` or a `title`.
 - **`createLucideIcon`** — author a custom icon in the lucide style.
-- **`Icon`, `IconProps`** — the shared icon component and props types.
+- **`Icon`, `IconProps`** — the shared icon component and props types. `Icon` is `ComponentType<IconProps>`, so an `icon` prop takes a lucide icon, `LoadingSpinnerIcon`, or your own component that renders an `<svg>` from `IconProps`.
 
 ## Why icons are reached per-module
 
