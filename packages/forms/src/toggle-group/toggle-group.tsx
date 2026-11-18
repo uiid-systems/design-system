@@ -3,7 +3,7 @@
 import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
-import { cx, cxState } from "@uiid/utils";
+import { composeRefs, cxState, useComposedRefs } from "@uiid/utils";
 import { Children, cloneElement, isValidElement, useState } from "react";
 
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
@@ -22,6 +22,8 @@ export const ToggleGroup = ({
   value,
   defaultValue,
   onValueChange,
+  className,
+  ref,
   children,
   ...props
 }: ToggleGroupProps) => {
@@ -34,6 +36,9 @@ export const ToggleGroup = ({
     orientation,
     multiple,
   );
+  // The indicator measures through `panelRef`, so a consumer's ref joins it
+  // rather than taking its place.
+  const composedRef = useComposedRefs(ref, panelRef);
 
   const handleValueChange = (newValue: string[]) => {
     setActiveValue(newValue);
@@ -53,11 +58,13 @@ export const ToggleGroup = ({
           toggleVariants({ size }),
           child.props.className,
         ),
-        ref: (el: HTMLButtonElement | null) => {
+        // The clone's `ref` replaces the child's, so the caller's own ref is
+        // composed back in alongside the measuring one.
+        ref: composeRefs(child.props.ref, (el: HTMLButtonElement | null) => {
           if (el && toggleValue) {
             buttonsRef.current.set(toggleValue, el);
           }
-        },
+        }),
       });
     }
     return child;
@@ -65,15 +72,17 @@ export const ToggleGroup = ({
 
   return (
     <BaseToggleGroup
-      ref={panelRef}
+      data-slot="toggle-group"
+      ref={composedRef}
       multiple={multiple}
       orientation={orientation}
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={cx(
+      className={cxState(
         styles["toggle-group-panel"],
         toggleGroupVariants({ fullwidth }),
+        className,
       )}
       data-size={size}
       data-variant={variant}

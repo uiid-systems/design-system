@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { createRef } from "react";
+import { describe, it, expect, vi } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
 
@@ -240,5 +241,74 @@ describe("ToggleGroup state-function className", () => {
 
     expect(toggle).toHaveClass("fn-pressed");
     expect(toggle).toHaveClass(styles["toggle-group-button"]);
+  });
+});
+
+/* The root owns a class, a ref and a slot of its own. A consumer's `className`
+   and `ref` arrive with the rest of the props, so they have to merge with the
+   group's rather than replace them. */
+describe("ToggleGroup root", () => {
+  it("marks the root with its data-slot", () => {
+    const { container } = renderGroup();
+    expect(container.firstElementChild).toHaveAttribute(
+      "data-slot",
+      "toggle-group",
+    );
+  });
+
+  it("keeps the panel and variant classes alongside a consumer className", () => {
+    const { container } = renderGroup({ className: "custom", fullwidth: true });
+    const panel = container.firstElementChild;
+
+    expect(panel).toHaveClass("custom");
+    expect(panel).toHaveClass(styles["toggle-group-panel"]);
+    expect(panel?.className).toMatch(/composes-fullwidth/);
+  });
+
+  it("resolves a state-function className alongside the panel and variant classes", () => {
+    const { container } = renderGroup({
+      className: (state) => (state.disabled ? "fn-disabled" : "fn-enabled"),
+      disabled: true,
+      fullwidth: true,
+    });
+    const panel = container.firstElementChild;
+
+    expect(panel).toHaveClass("fn-disabled");
+    expect(panel).toHaveClass(styles["toggle-group-panel"]);
+    expect(panel?.className).toMatch(/composes-fullwidth/);
+  });
+
+  /* happy-dom has no layout, so every measured rect is zero. What this can
+     show is that the indicator still wrote its geometry onto the panel, which
+     it only does while its own ref holds the element. */
+  it("hands the root element to a consumer ref and still measures the indicator", () => {
+    const ref = createRef<HTMLDivElement>();
+    const { container } = renderGroup({ ref, defaultValue: ["monthly"] });
+    const panel = container.firstElementChild as HTMLElement;
+
+    expect(ref.current).toBe(panel);
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("0px");
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("-1px");
+  });
+
+  it("hands each Toggle to its own ref and still measures the pressed one", () => {
+    const objectRef = createRef<HTMLButtonElement>();
+    const callbackRef = vi.fn();
+    const { container } = render(
+      <ToggleGroup defaultValue={["yearly"]}>
+        <Toggle value="monthly" ref={objectRef}>
+          Monthly
+        </Toggle>
+        <Toggle value="yearly" ref={callbackRef}>
+          Yearly
+        </Toggle>
+      </ToggleGroup>,
+    );
+    const [monthly, yearly] = screen.getAllByRole("button");
+    const panel = container.firstElementChild as HTMLElement;
+
+    expect(objectRef.current).toBe(monthly);
+    expect(callbackRef).toHaveBeenCalledWith(yearly);
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("0px");
   });
 });
