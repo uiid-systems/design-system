@@ -309,6 +309,80 @@ describe("ToggleGroup root", () => {
 
     expect(objectRef.current).toBe(monthly);
     expect(callbackRef).toHaveBeenCalledWith(yearly);
+    // Sanity check only: the group measured before it kept a Toggle's own ref
+    // too, so this shows the two coexist, not that anything was fixed.
     expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("0px");
+  });
+
+  /* React detaches and re-attaches a ref whose identity changes, so the ref
+     the group composes for a Toggle has to stay the same function between
+     renders for as long as the caller's own ref does. */
+  it("attaches a Toggle's stable callback ref once, across re-renders", async () => {
+    const user = userEvent.setup();
+    const callbackRef = vi.fn();
+    const { unmount } = render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <Toggle value="monthly" ref={callbackRef}>
+          Monthly
+        </Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const [monthly, yearly] = screen.getAllByRole("button");
+
+    await user.click(yearly);
+    expect(yearly).toHaveAttribute("data-pressed");
+
+    expect(callbackRef).toHaveBeenCalledTimes(1);
+    expect(callbackRef).toHaveBeenCalledWith(monthly);
+
+    unmount();
+    expect(callbackRef).toHaveBeenCalledTimes(2);
+    expect(callbackRef).toHaveBeenLastCalledWith(null);
+  });
+
+  it("runs a Toggle ref's cleanup only on unmount, not on re-render", async () => {
+    const user = userEvent.setup();
+    const cleanup = vi.fn();
+    const callbackRef = vi.fn(() => cleanup);
+    const { unmount } = render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <Toggle value="monthly" ref={callbackRef}>
+          Monthly
+        </Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Yearly" }));
+
+    expect(callbackRef).toHaveBeenCalledTimes(1);
+    expect(cleanup).not.toHaveBeenCalled();
+
+    unmount();
+    expect(callbackRef).toHaveBeenCalledTimes(1);
+    expect(cleanup).toHaveBeenCalledTimes(1);
+  });
+
+  /* happy-dom measures nothing, but it can show which elements the indicator
+     asks: a Toggle that has left the group must not be measured again. */
+  it("stops measuring a Toggle once it unmounts", () => {
+    const { rerender } = render(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const yearly = screen.getByRole("button", { name: "Yearly" });
+    const measure = vi.spyOn(yearly, "getBoundingClientRect");
+
+    rerender(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    expect(yearly).not.toBeInTheDocument();
+    expect(measure).not.toHaveBeenCalled();
   });
 });
