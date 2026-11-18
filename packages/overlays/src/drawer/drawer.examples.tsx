@@ -7,7 +7,19 @@ import { Text } from "@uiid/typography";
 import { useRef, useState } from "react";
 
 import { Drawer } from "./drawer";
-import { DrawerClose } from "./subcomponents";
+import {
+  DrawerBackdrop,
+  DrawerClose,
+  DrawerContent,
+  DrawerPopup,
+  DrawerPortal,
+  DrawerRoot,
+  DrawerSwipeArea,
+  DrawerTrigger,
+  DrawerViewport,
+} from "./subcomponents";
+
+import styles from "./drawer.examples.module.css";
 
 const ITEMS = ["Opening", "Middlegame", "Bear-off"];
 
@@ -230,3 +242,28 @@ export const OpenedFromElsewhere = () => {
     </Stack>
   );
 };
+
+/**
+ * `DrawerSwipeArea` opens the drawer with a swipe in from the edge it enters
+ * from. `Drawer` renders none, so compose the parts and place the area
+ * yourself: here an invisible strip fixed to the right edge.
+ */
+export const SwipeArea = () => (
+  <DrawerRoot swipeDirection="right">
+    <DrawerSwipeArea className={styles["swipe-area"]} />
+    <DrawerTrigger>
+      <Button>Open drawer</Button>
+    </DrawerTrigger>
+    <DrawerPortal>
+      <DrawerBackdrop />
+      <DrawerViewport>
+        <DrawerPopup
+          title="Swipe to open"
+          description="Swipe left from the right edge of the screen to open this drawer again."
+        >
+          <DrawerContent>{BODY}</DrawerContent>
+        </DrawerPopup>
+      </DrawerViewport>
+    </DrawerPortal>
+  </DrawerRoot>
+);

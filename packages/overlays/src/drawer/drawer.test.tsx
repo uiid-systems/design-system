@@ -6,7 +6,7 @@ import { useState } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
-import { Footer } from "./drawer.examples";
+import { Footer, SwipeArea } from "./drawer.examples";
 import { DrawerClose, DrawerRoot, DrawerSwipeArea } from "./subcomponents";
 
 import styles from "./drawer.module.css";
@@ -948,5 +948,16 @@ describe("DrawerSwipeArea", () => {
     expect(area).toBeInTheDocument();
     expect(area).toHaveClass("edge");
     expect(area).toHaveAttribute("data-swipe-direction", "left");
+  });
+
+  it("renders in the composed example beside its trigger", () => {
+    render(<SwipeArea />);
+
+    expect(
+      document.querySelector('[data-slot="drawer-swipe-area"]'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Open drawer" }),
+    ).toBeInTheDocument();
   });
 });

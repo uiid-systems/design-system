@@ -164,3 +164,7 @@ Content taller than the screen scrolls inside the body. The header, with its clo
 While the body overflows it is a tab stop, so the keyboard can scroll it, and a region named by the title, so a screen reader announces where focus landed. An untitled dialog's body stays a plain tab stop, since a region needs a name. Content added to the body later, such as options that load after the dialog opens, is measured too. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
 
 On a screen shorter than 30rem, where a pinned header and footer would leave the body almost no room, the whole popup scrolls in the viewport instead.
+
+## Composing the parts
+
+When a slot override isn't enough, build the dialog from its exported parts: `DialogRoot`, `DialogTrigger`, `DialogPortal`, `DialogBackdrop`, `DialogViewport`, `DialogPopup` and `DialogClose`, each a Base UI part under its own name. Nest them in that order, as `Dialog` does. `pending` is a `Dialog` prop, not a part's, so a composed dialog has none: `DialogClose` and the header close stay enabled, and guarding the close is up to your own `onOpenChange` on `DialogRoot`.

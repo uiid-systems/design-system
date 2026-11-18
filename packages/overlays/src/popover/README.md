@@ -74,3 +74,7 @@ const opener = useRef<HTMLElement | null>(null);
 ```
 
 A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
+
+## Composing the parts
+
+When a slot override isn't enough, build the popover from its exported parts: `PopoverRoot`, `PopoverTrigger`, `PopoverPortal`, `PopoverBackdrop`, `PopoverPositioner` and `PopoverPopup`, each a Base UI part under its own name. Nest them in that order, as `Popover` does. `PopoverPositioner` keeps Popover's default `sideOffset` and `collisionPadding`, and `PopoverPopup` takes the same `title`, `description`, `action` and `footer` as `Popover`.

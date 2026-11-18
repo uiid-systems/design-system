@@ -1,0 +1,8 @@
+/* A strip along the right edge, where a `swipeDirection="right"` drawer enters. */
+.swipe-area {
+  position: fixed;
+  inset-block: 0;
+  right: 0;
+  z-index: var(--overlays-popup-z-index);
+  width: calc(var(--spacing-unit) * 6);
+}
