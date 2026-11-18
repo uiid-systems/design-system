@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it, vi } from "vitest";
 
+/* Imported from the barrel on purpose, to cover the defaultFormatCell export. */
 import { defaultFormatCell, Table } from "../index";
 import { TABLE_MOCK_DATA } from "./table.mocks";
 
@@ -227,6 +228,33 @@ describe("Table", () => {
     it("renders an array holding a nested array as an empty cell", () => {
       render(<Table items={[{ name: "Ada", grid: [1, [2, 3]] }]} />);
       expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of Dates as an empty cell", () => {
+      const dates = [new Date(2024, 0, 15), new Date(2025, 5, 2)];
+      render(<Table items={[{ name: "Ada", dates }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a symbol as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", token: Symbol("token") }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a function as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", onSelect: () => "picked" }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a bigint as text", () => {
+      render(<Table items={[{ name: "Ada", visits: 9007199254740993n }]} />);
+      expect(cells()).toEqual(["Ada", "9007199254740993"]);
+    });
+
+    it("renders a URL as its string form", () => {
+      const site = new URL("https://example.com/ada");
+      render(<Table items={[{ name: "Ada", site }]} />);
+      expect(cells()).toEqual(["Ada", "https://example.com/ada"]);
     });
 
     it("renders a Date as its string form", () => {
