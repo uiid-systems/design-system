@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 
 import { getHighlighter, loadLanguage, highlight } from "./highlighter";
 import type {
-  BundledLanguage,
+  CodeLanguage,
   HighlightOptions,
   HighlightResult,
 } from "./highlighter.types";
@@ -37,7 +37,7 @@ export function useHighlighter() {
     };
   }, []);
 
-  const loadLang = useCallback(async (language: BundledLanguage) => {
+  const loadLang = useCallback(async (language: CodeLanguage) => {
     await loadLanguage(language);
   }, []);
 
@@ -49,7 +49,7 @@ export function useHighlighter() {
  */
 export function useHighlight(
   code: string,
-  language: BundledLanguage = "typescript",
+  language: CodeLanguage = "typescript",
   options: Pick<HighlightOptions, "highlightLines"> = {},
 ): HighlightResult {
   const [html, setHtml] = useState("");

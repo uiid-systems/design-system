@@ -10,8 +10,14 @@ import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import {
   DEFAULT_THEME_DARK,
   DEFAULT_THEME_LIGHT,
+  LANGUAGE_ALIASES,
+  PLAIN_LANGUAGE,
 } from "./highlighter.constants";
-import type { BundledLanguage, HighlightOptions } from "./highlighter.types";
+import type {
+  BundledLanguage,
+  CodeLanguage,
+  HighlightOptions,
+} from "./highlighter.types";
 
 // Lazy-loaded bundled languages
 const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
@@ -59,37 +65,55 @@ export async function getHighlighter(): Promise<HighlighterCore> {
 }
 
 /**
- * Load a language into the highlighter
+ * Resolve a language name to the bundled language that highlights it: the name
+ * itself, or the target of an alias such as `ts` or `sh`. Case is ignored.
+ * Returns `undefined` for any other name, which renders as plain code.
  */
-export async function loadLanguage(language: BundledLanguage): Promise<void> {
-  if (loadedLanguages.has(language)) {
-    return;
+export function resolveLanguage(
+  language: CodeLanguage,
+): BundledLanguage | undefined {
+  const name = language.toLowerCase();
+  if (isSupportedLanguage(name)) {
+    return name;
   }
-
-  const langLoader = BUNDLED_LANGS[language];
-  if (!langLoader) {
-    throw new Error(`Unknown language: ${language}`);
-  }
-
-  const highlighter = await getHighlighter();
-  const langModule = await langLoader();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await highlighter.loadLanguage(langModule as any);
-  loadedLanguages.add(language);
+  return Object.hasOwn(LANGUAGE_ALIASES, name)
+    ? LANGUAGE_ALIASES[name]
+    : undefined;
 }
 
 /**
- * Highlight code with the given language.
+ * Load a language into the highlighter. Aliases load the language they resolve
+ * to; a name with no bundled grammar loads nothing.
+ */
+export async function loadLanguage(language: CodeLanguage): Promise<void> {
+  const resolved = resolveLanguage(language);
+  if (!resolved || loadedLanguages.has(resolved)) {
+    return;
+  }
+
+  const highlighter = await getHighlighter();
+  const langModule = await BUNDLED_LANGS[resolved]();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await highlighter.loadLanguage(langModule as any);
+  loadedLanguages.add(resolved);
+}
+
+/**
+ * Highlight code with the given language. A language with no bundled grammar
+ * falls back to plain, uncolored code rather than failing.
  * Uses dual themes for automatic light/dark switching via CSS variables.
  * Transformers enable diff/highlight notations (`// [!code ++]`, etc.) and
  * meta-string line highlighting (built from options.highlightLines).
  */
 export async function highlight(
   code: string,
-  language: BundledLanguage = "typescript",
+  language: CodeLanguage = "typescript",
   options: HighlightOptions = {},
 ): Promise<string> {
-  await loadLanguage(language);
+  const resolved = resolveLanguage(language);
+  if (resolved) {
+    await loadLanguage(resolved);
+  }
   const highlighter = await getHighlighter();
 
   const { highlightLines } = options;
@@ -98,7 +122,7 @@ export async function highlight(
     : undefined;
 
   return highlighter.codeToHtml(code, {
-    lang: language,
+    lang: resolved ?? PLAIN_LANGUAGE,
     themes: {
       light: DEFAULT_THEME_LIGHT,
       dark: DEFAULT_THEME_DARK,
@@ -114,12 +138,13 @@ export async function highlight(
 }
 
 /**
- * Check if a language is supported
+ * Check if a language is bundled. Aliases are not: use `resolveLanguage` to
+ * find the bundled language an alias maps to.
  */
 export function isSupportedLanguage(
   language: string,
 ): language is BundledLanguage {
-  return language in BUNDLED_LANGS;
+  return Object.hasOwn(BUNDLED_LANGS, language);
 }
 
 /**

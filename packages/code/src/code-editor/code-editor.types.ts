@@ -4,7 +4,7 @@ import type {
   CodeBlockHeaderProps,
   CodeBlockCopyButtonProps,
 } from "../code-block/code-block.types";
-import type { BundledLanguage } from "../highlighter/highlighter.types";
+import type { CodeLanguage } from "../highlighter/highlighter.types";
 
 export type CodeEditorTextareaProps = Omit<
   React.ComponentProps<"textarea">,
@@ -19,7 +19,7 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /** Callback when code changes */
   onValueChange?: (value: string) => void;
   /** Programming language for syntax highlighting */
-  language?: BundledLanguage;
+  language?: CodeLanguage;
 
   /** Show line numbers */
   showLineNumbers?: boolean;
