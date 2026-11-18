@@ -135,12 +135,10 @@ describe("CodeBlock rows", () => {
   it("starts expanded with defaultExpanded", async () => {
     contentHeight = 300;
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);
-    await waitForHighlight();
 
-    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
-      "aria-expanded",
-      "true",
-    );
+    expect(
+      await screen.findByRole("button", { name: "Show less" }),
+    ).toHaveAttribute("aria-expanded", "true");
     expect(block()).toHaveAttribute("data-expanded");
     expect(scrollArea()?.style.maxHeight).toBe("");
   });
@@ -150,9 +148,7 @@ describe("CodeBlock rows", () => {
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);
     await waitForHighlight();
 
-    expect(
-      screen.queryByRole("button", { name: "Show less", expanded: true }),
-    ).not.toBeInTheDocument();
+    expect(toggle()).not.toBeInTheDocument();
   });
 
   it("re-measures when the code grows past its rows", async () => {

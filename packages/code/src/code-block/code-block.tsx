@@ -84,18 +84,29 @@ export const CodeBlock = ({
       }
     : undefined;
 
-  React.useEffect(() => {
-    if (!collapsedMaxHeight || !contentWrapperRef.current || !displayHtml) {
+  // A layout effect decides the toggle before paint. Measure against the
+  // collapsed height even while expanded, so a block whose code fits in its
+  // rows never offers a toggle that does nothing.
+  React.useLayoutEffect(() => {
+    const el = contentWrapperRef.current;
+    if (!collapsedMaxHeight || !el || !displayHtml) {
       return;
     }
-    // Measure against the collapsed height even while expanded, so a block
-    // whose code fits in its rows never offers a toggle that does nothing.
-    const el = contentWrapperRef.current;
-    const { maxHeight } = el.style;
-    el.style.maxHeight = collapsedMaxHeight;
-    setOverflows(el.scrollHeight > el.clientHeight + 1);
-    el.style.maxHeight = maxHeight;
-  }, [displayHtml, collapsedMaxHeight, wrap, expanded]);
+    const measure = () => {
+      const { maxHeight } = el.style;
+      el.style.maxHeight = collapsedMaxHeight;
+      setOverflows(el.scrollHeight > el.clientHeight + 1);
+      el.style.maxHeight = maxHeight;
+    };
+    measure();
+
+    // Re-measure when the block or its code resizes: a container resize, a
+    // wrap reflow, or a block that was hidden when first measured.
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    if (el.firstElementChild) observer.observe(el.firstElementChild);
+    return () => observer.disconnect();
+  }, [displayHtml, collapsedMaxHeight, wrap]);
 
   const showToggle = rows != null && overflows;
 
