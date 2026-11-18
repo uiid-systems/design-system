@@ -67,11 +67,15 @@ export async function getHighlighter(): Promise<HighlighterCore> {
 /**
  * Resolve a language name to the bundled language that highlights it: the name
  * itself, or the target of an alias such as `ts` or `sh`. Case is ignored.
- * Returns `undefined` for any other name, which renders as plain code.
+ * Returns `undefined` for any other name, and for no name at all, both of
+ * which render as plain code.
  */
 export function resolveLanguage(
-  language: CodeLanguage,
+  language: CodeLanguage | null | undefined,
 ): BundledLanguage | undefined {
+  if (typeof language !== "string") {
+    return undefined;
+  }
   const name = language.toLowerCase();
   if (isSupportedLanguage(name)) {
     return name;
