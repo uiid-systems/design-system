@@ -13,3 +13,5 @@ The modifiers are `meta`, `ctrl`, `alt` and `shift`. They render as `⌘`, `⌃`
 The keycap only reflects the shortcut. It does not run it, so bind the action itself elsewhere.
 
 Kbd renders a `<kbd>` and takes its props, apart from `children`: the keys come from `hotkey`. It ignores the pointer and cannot be selected, so it never steals a click from the control it labels.
+
+Known limitation: a `space` hotkey never lights up, because the space bar's `event.key` is `" "`, and on macOS an `alt` + letter hotkey never lights up, because Option changes `event.key` (Option+B gives `∫`). See UI-400.

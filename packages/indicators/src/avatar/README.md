@@ -10,7 +10,15 @@ Use Avatar when you want to:
 - Stack the name under the avatar with `orientation="vertical"`; the default is `horizontal`
 - Tint the square with a palette `color` (`red`, `blue`, …), the same treatment a [Badge](../badge/README.md) gets
 
-The image is built on Base UI's [Avatar](https://base-ui.com/react/components/avatar): `AvatarLayers` renders `Avatar.Root`, which tracks whether the image has loaded, `AvatarImage` is `Avatar.Image`, mounted only once it has, and `AvatarInitials` is `Avatar.Fallback`, shown until then. Pass `delay` through `InitialsProps` to hold the initials back for a fast-loading image, and `onLoadingStatusChange` through `ImageProps` to follow the load.
+The image is built on Base UI's [Avatar](https://base-ui.com/react/components/avatar): `AvatarLayers` renders `Avatar.Root`, which tracks whether the image has loaded, `AvatarImage` is `Avatar.Image`, mounted only once it has, and `AvatarInitials` is `Avatar.Fallback`, shown until then. Pass `delay` through `InitialsProps` to hold the initials back for a fast-loading image, and `onLoadingStatusChange` through `ImageProps` to follow the load. `InitialsProps` requires `initials` of its own, so repeat them:
+
+```tsx
+<Avatar
+  initials="AF"
+  src={src}
+  InitialsProps={{ initials: "AF", delay: 300 }}
+/>
+```
 
 The image's `alt` is the initials when Avatar stands alone. When a `name` renders beside it the `alt` is empty, since the name already says who it is. Pass `ImageProps={{ alt }}` to name it yourself.
 
