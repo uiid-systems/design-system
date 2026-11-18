@@ -34,6 +34,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packagesDir = join(root, "packages");
 const failures = [];
 const fail = (message) => failures.push(message);
+const tscBin = createRequire(import.meta.url).resolve("typescript/bin/tsc");
 
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
@@ -209,13 +210,7 @@ export const createNotAny${index}: number = create${index};
   );
   execFileSync(
     process.execPath,
-    [
-      createRequire(import.meta.url).resolve("typescript/bin/tsc"),
-      "-p",
-      consumer,
-      "--pretty",
-      "false",
-    ],
+    [tscBin, "-p", consumer, "--pretty", "false"],
     { encoding: "utf8", stdio: "pipe" },
   );
 } catch (error) {
@@ -231,7 +226,12 @@ export const createNotAny${index}: number = create${index};
 // types behind it are lost. skipLibCheck would hide that, so this consumer
 // checks libraries too and reports only errors in our own files: third-party
 // declarations are not ours to fix. Every published entry point is imported,
-// and a wildcard subpath is sampled with a lucide icon and one of our own.
+// and a wildcard subpath is sampled with the names listed for its package: a
+// lucide icon and one of our own.
+const wildcardSamples = {
+  "@uiid/icons": ["globe", "loading-spinner"],
+  "@uiid/design-system": ["globe", "loading-spinner"],
+};
 const nodenext = mkdtempSync(join(tmpdir(), "uiid-dist-nodenext-"));
 try {
   const published = packages.filter(({ manifest }) => !manifest.private);
@@ -242,8 +242,15 @@ try {
     for (const [key, target] of Object.entries(manifest.exports ?? {})) {
       if (!target?.types) continue;
       const subpath = key.replace(/^\.\/?/, "");
+      const samples = wildcardSamples[manifest.name];
+      if (subpath.includes("*") && !samples) {
+        fail(
+          `${manifest.name}: add sample names for its "${key}" export to wildcardSamples in check-dist.`,
+        );
+        continue;
+      }
       const names = subpath.includes("*")
-        ? ["globe", "loading-spinner"].map((icon) => subpath.replace("*", icon))
+        ? samples.map((sample) => subpath.replace("*", sample))
         : [subpath];
       for (const name of names) {
         specifiers.push(name ? `${manifest.name}/${name}` : manifest.name);
@@ -283,27 +290,27 @@ try {
       include: ["consumer.ts"],
     }),
   );
+  let exited = false;
   let output = "";
   try {
     execFileSync(
       process.execPath,
-      [
-        createRequire(import.meta.url).resolve("typescript/bin/tsc"),
-        "-p",
-        nodenext,
-        "--pretty",
-        "false",
-      ],
+      [tscBin, "-p", nodenext, "--pretty", "false"],
       { cwd: root, encoding: "utf8", stdio: "pipe" },
     );
   } catch (error) {
-    output = error.stdout ?? error.message;
+    exited = true;
+    output = `${error.stdout ?? ""}${error.stderr ?? ""}` || error.message;
   }
-  const ours = output
-    .split("\n")
-    .filter(
-      (line) => /error TS\d+/.test(line) && !line.includes("node_modules/"),
+  const errors = output.split("\n").filter((line) => /error TS\d+/.test(line));
+  const ours = errors.filter((line) => !line.includes("node_modules/"));
+  // tsc failing without a single diagnostic means it crashed or never ran, which
+  // must not pass as "no errors in our files".
+  if (exited && !errors.length) {
+    fail(
+      `nodenext consumer: tsc exited non-zero without reporting a type error.\n${output}`,
     );
+  }
   if (ours.length) {
     fail(
       `nodenext consumer: ${ours.length} type errors resolving ${specifiers.length} entry points.\n${ours.join("\n")}`,

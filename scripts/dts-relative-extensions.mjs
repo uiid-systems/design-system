@@ -1,6 +1,8 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
+import ts from "typescript";
+
 // tsc copies relative specifiers into declarations as written, and our source
 // writes them extensionless (`./button/button`), which `bundler` resolution
 // accepts. Under `node16`/`nodenext` a relative import in an ES module must
@@ -19,21 +21,34 @@ import { dirname, join } from "node:path";
 // imports as they are; vite already writes `.js` specifiers into the JS it
 // emits, so only the declarations ever carried the problem.
 
-// Static imports and re-exports, side-effect imports, and `import("...")` types.
-const SPECIFIER_RE =
-  /(\bfrom\s*|\bimport\s*\(?\s*)(["'])(\.{1,2}\/[^"'\n]*)\2/g;
+// TypeScript's own scanner finds the specifiers, so text that only looks like
+// an import, in a string or a JSDoc comment, is left alone. With both flags it
+// covers static imports and re-exports, side-effect imports, `import("...")`
+// types and `require`. Each entry's `pos` is its opening quote.
+const resolvedSpecifier = (dir, specifier) => {
+  if (!/^\.{1,2}\//.test(specifier)) return null;
+  const base = join(dir, specifier);
+  if (existsSync(`${base}.d.ts`)) return `${specifier}.js`;
+  if (existsSync(join(base, "index.d.ts"))) {
+    return `${specifier.replace(/\/$/, "")}/index.js`;
+  }
+  return null;
+};
 
 function addRelativeExtensions(content, file) {
   const dir = dirname(file);
-  return content.replace(SPECIFIER_RE, (match, lead, quote, specifier) => {
-    const base = join(dir, specifier);
-    const rewritten = existsSync(`${base}.d.ts`)
-      ? `${specifier}.js`
-      : existsSync(join(base, "index.d.ts"))
-        ? `${specifier.replace(/\/$/, "")}/index.js`
-        : null;
-    return rewritten ? `${lead}${quote}${rewritten}${quote}` : match;
-  });
+  const { importedFiles } = ts.preProcessFile(content, true, true);
+  let next = content;
+  // Back to front, so each edit leaves the earlier positions valid.
+  for (const { fileName, pos } of importedFiles.toReversed()) {
+    const start = pos + 1;
+    const end = start + fileName.length;
+    // An escaped specifier is spelled differently in the text; none of ours are.
+    if (content.slice(start, end) !== fileName) continue;
+    const rewritten = resolvedSpecifier(dir, fileName);
+    if (rewritten) next = next.slice(0, start) + rewritten + next.slice(end);
+  }
+  return next;
 }
 
 const rewrite = (files) => {
