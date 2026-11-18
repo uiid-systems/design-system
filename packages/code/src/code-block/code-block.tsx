@@ -4,7 +4,13 @@ import { cx } from "@uiid/utils";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
-import { DEFAULT_LANGUAGE, DEFAULT_WRAP } from "../code.constants";
+import {
+  DEFAULT_COPYABLE,
+  DEFAULT_FULLSCREENABLE,
+  DEFAULT_LANGUAGE,
+  DEFAULT_WRAP,
+  DEFAULT_WRAPPABLE,
+} from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeBlockProps } from "./code-block.types";
 import { CodeBlockHeader, CodeBlockContent } from "./subcomponents";
@@ -17,6 +23,9 @@ export const CodeBlock = ({
   filename,
   showLineNumbers,
   highlightLines,
+  copyable = DEFAULT_COPYABLE,
+  wrappable = DEFAULT_WRAPPABLE,
+  fullscreenable = DEFAULT_FULLSCREENABLE,
   rows,
   defaultExpanded = false,
   defaultWrap = DEFAULT_WRAP,
@@ -113,12 +122,12 @@ export const CodeBlock = ({
       <CodeBlockHeader
         filename={filename}
         language={languageProp}
-        copyable
+        copyable={copyable}
         code={code}
-        wrappable
+        wrappable={wrappable}
         wrap={wrap}
         onWrapChange={handleWrapChange}
-        fullscreenable
+        fullscreenable={fullscreenable}
         fullscreen={fullscreen}
         onFullscreenChange={handleFullscreenChange}
         LanguageIconProps={LanguageIconProps}

@@ -10,46 +10,23 @@ pnpm add @uiid/code
 
 ## Usage
 
-### CodeBlock
+Each component documents its own props and behavior:
 
-Display code blocks with syntax highlighting:
+- [CodeBlock](./src/code-block/README.md) - Read-only code with copy, wrap and fullscreen buttons
+- [CodeInline](./src/code-inline/README.md) - Inline code inside text
+- [CodeEditor](./src/code-editor/README.md) - Editable code with live highlighting
 
 ```tsx
-import { CodeBlock } from "@uiid/code";
+import { CodeBlock, CodeInline } from "@uiid/code";
 
-// Basic usage
-<CodeBlock code={myCode} language="typescript" />
-
-// With features
 <CodeBlock
   code={myCode}
   language="typescript"
   filename="example.ts"
   showLineNumbers
-  copyable
 />
 
-// With pre-rendered HTML (SSR)
-<CodeBlock code={myCode} html={prerenderedHtml} />
-```
-
-### CodeInline
-
-Display inline code with optional syntax highlighting:
-
-```tsx
-import { CodeInline } from "@uiid/code";
-
-// Plain inline code
 <CodeInline>npm install</CodeInline>
-
-// With syntax highlighting
-<CodeInline language="typescript">const x: number = 42;</CodeInline>
-
-// In text
-<p>
-  Run <CodeInline>npm install</CodeInline> to install dependencies.
-</p>
 ```
 
 ### Highlighter Utilities
@@ -108,27 +85,6 @@ function MyComponent() {
 | `md`                 | `markdown`   |
 
 Any other name, such as `text` or `mermaid`, renders as plain, uncolored code with the same line markup. Nothing throws and no error is shown, so a markdown fence's language can be passed straight through. `resolveLanguage(name)` returns the bundled language a name maps to, or `undefined` when it will render plain.
-
-## Props
-
-### CodeBlock
-
-| Prop              | Type           | Default        | Description                    |
-| ----------------- | -------------- | -------------- | ------------------------------ |
-| `code`            | `string`       | Required       | The code to display            |
-| `language`        | `CodeLanguage` | `"typescript"` | Language, alias, or any name   |
-| `filename`        | `string`       | -              | Filename to display in header  |
-| `showLineNumbers` | `boolean`      | `false`        | Show line numbers              |
-| `copyable`        | `boolean`      | `true`         | Show copy button               |
-| `highlightLines`  | `number[]`     | -              | Lines to highlight (1-indexed) |
-| `html`            | `string`       | -              | Pre-highlighted HTML for SSR   |
-
-### CodeInline
-
-| Prop       | Type           | Default | Description                     |
-| ---------- | -------------- | ------- | ------------------------------- |
-| `language` | `CodeLanguage` | -       | Programming language (optional) |
-| `html`     | `string`       | -       | Pre-highlighted HTML for SSR    |
 
 ## SSR Support
 

@@ -64,16 +64,51 @@ describe("CodeBlock", () => {
     expect(screen.getByText("example.ts")).toBeInTheDocument();
   });
 
-  it("always renders the copy button", () => {
+  it("renders the copy button by default", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
   });
 
-  it("always renders the wrap toggle", () => {
+  it("renders the wrap toggle by default", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(
       document.querySelector('[data-slot="code-block-wrap-button"]'),
     ).toBeInTheDocument();
+  });
+
+  it("hides the copy button when copyable is false", () => {
+    render(<CodeBlock code="const x = 1;" copyable={false} />);
+    expect(
+      document.querySelector('[data-slot="code-block-copy-button"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the wrap toggle when wrappable is false", () => {
+    render(<CodeBlock code="const x = 1;" wrappable={false} />);
+    expect(
+      document.querySelector('[data-slot="code-block-wrap-button"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the fullscreen toggle when fullscreenable is false", () => {
+    render(<CodeBlock code="const x = 1;" fullscreenable={false} />);
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen-button"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps the filename when every header action is off", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        filename="example.ts"
+        copyable={false}
+        wrappable={false}
+        fullscreenable={false}
+      />,
+    );
+    expect(screen.getByText("example.ts")).toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   // ============================================
@@ -195,7 +230,7 @@ describe("CodeBlock", () => {
   // FULLSCREEN
   // ============================================
 
-  it("always renders the fullscreen toggle", () => {
+  it("renders the fullscreen toggle by default", () => {
     render(<CodeBlock code="const x = 1;" />);
     expect(
       document.querySelector('[data-slot="code-block-fullscreen-button"]'),

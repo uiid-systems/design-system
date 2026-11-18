@@ -35,6 +35,7 @@ import { CodeEditor } from "@uiid/code";
 | `readOnly`        | `boolean`                  | `false`        | Make editor read-only        |
 | `disabled`        | `boolean`                  | `false`        | Disable the editor           |
 | `placeholder`     | `string`                   | —              | Placeholder when empty       |
+| `rows`            | `number`                   | —              | Maximum visible rows         |
 | `filename`        | `string`                   | —              | Filename for header          |
 | `copyable`        | `boolean`                  | `true`         | Show copy button             |
 | `HeaderProps`     | `CodeBlockHeaderProps`     | —              | Props for header             |
