@@ -8,9 +8,16 @@ import {
 } from "./table-selection.context";
 
 export type TableSelectionProviderProps = React.PropsWithChildren<{
+  /** Number of selectable rows. Select-all covers indices 0 to `count - 1`. */
   count: number;
+  /** Selected row indices, for controlled use with `onSelectedRowsChange`. */
   selectedRows?: number[];
+  /** Initially selected row indices, for uncontrolled use. */
   defaultSelectedRows?: number[];
+  /**
+   * Called with the selected row indices, in ascending order, whenever a row or
+   * all rows are toggled.
+   */
   onSelectedRowsChange?: (selectedRows: number[]) => void;
 }>;
 
@@ -20,6 +27,11 @@ export type TableSelectionProviderProps = React.PropsWithChildren<{
  * table markup (rows, cells, data) can stay server-rendered. Selection is keyed
  * by row index. Supports both controlled (`selectedRows` + `onSelectedRowsChange`)
  * and uncontrolled (`defaultSelectedRows`) usage.
+ *
+ * `Table` renders one itself when `selectable` is set. Render it directly when
+ * composing a table from `TableRoot`, `TableRow` and `TableCellCheckbox`: wrap
+ * the table in it, pass the row count, and give each row's `TableCellCheckbox`
+ * the row's `index`. `TableCellCheckbox` and `useTableSelection` throw without it.
  */
 export const TableSelectionProvider = ({
   count,

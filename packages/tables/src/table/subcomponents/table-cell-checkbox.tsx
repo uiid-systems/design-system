@@ -8,7 +8,7 @@ import type { TableVariants } from "../table.types";
 import { TableCell } from "./table-cell";
 import { TableHead } from "./table-head";
 
-type TableCellCheckboxProps = {
+export type TableCellCheckboxProps = {
   head?: boolean;
   index?: number;
   /** Control tier of the checkbox; `Table` passes its own `size`. */
