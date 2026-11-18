@@ -6,7 +6,7 @@ Use CodeBlock when you want to:
 
 - Show a snippet or a whole file with highlighting, with `language` taking a bundled language, an alias (`ts`, `sh`, `py`) or any other name, which renders as plain code. It defaults to `typescript`; pass `text` for plain code
 - Label it with a `filename`, number its lines with `showLineNumbers`, or mark lines with `highlightLines` (1-indexed)
-- Cap a long file at a number of `rows`, with a "Show more" toggle to expand it (`defaultExpanded` starts it open)
+- Cap a long file at a number of `rows`, with a "Show more" toggle to expand it (`defaultExpanded` starts it open). The toggle appears only when the code overflows its rows; `expandLabel` and `collapseLabel` replace its English text. The cap is written as one `--code-rows` custom property, and the scroll area carries `data-collapsed` while it is capped
 - Let readers copy the code, soft-wrap long lines, or open it fullscreen; Escape or the backdrop closes fullscreen
 
 The copy, wrap and fullscreen buttons all render by default. Turn any of them off with `copyable={false}`, `wrappable={false}` or `fullscreenable={false}`. The header row renders even with all three off, so pass a `filename` or `language` to give it something to show.

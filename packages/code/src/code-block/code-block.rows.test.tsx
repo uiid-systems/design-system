@@ -135,6 +135,26 @@ describe("CodeBlock rows", () => {
     expect(scrollArea()).toHaveAttribute("data-collapsed");
   });
 
+  it("names the toggle with expandLabel and collapseLabel", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        expandLabel="Mehr anzeigen"
+        collapseLabel="Weniger anzeigen"
+      />,
+    );
+
+    await user.click(
+      await screen.findByRole("button", { name: "Mehr anzeigen" }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Weniger anzeigen" }),
+    ).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("starts expanded with defaultExpanded", async () => {
     contentHeight = 300;
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);

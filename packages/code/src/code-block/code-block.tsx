@@ -28,6 +28,8 @@ export const CodeBlock = ({
   fullscreenable = DEFAULT_FULLSCREENABLE,
   rows,
   defaultExpanded = false,
+  expandLabel = "Show more",
+  collapseLabel = "Show less",
   defaultWrap = DEFAULT_WRAP,
   onWrapChange,
   onFullscreenChange,
@@ -178,7 +180,7 @@ export const CodeBlock = ({
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
           >
-            {expanded ? "Show less" : "Show more"}
+            {expanded ? collapseLabel : expandLabel}
           </button>
         )}
       </div>
