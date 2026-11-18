@@ -11,6 +11,11 @@ import { describe, expect, it } from "vitest";
 // shipped source imports. A missing entry breaks a consumer's install; an
 // unused one adds install weight. This umbrella re-exports every package, so
 // it is where the whole set is checked.
+//
+// Peers are the exception. A package also peers every peer of its @uiid
+// dependencies, even one it never imports: a peer is never installed for a
+// dependent, so declaring it is what tells the app to install it. It also
+// keeps the package's size entry from bundling it.
 
 const PACKAGES_DIR = fileURLToPath(new URL("../../", import.meta.url));
 
@@ -28,10 +33,6 @@ const ALWAYS_ALLOWED = new Set([
   // types, so a consumer's type checker needs it installed.
   "cva",
 ]);
-
-// The umbrella is the one package an app installs, so it repeats the peers its
-// packages need. Nothing else would tell the app to install them.
-const UMBRELLA = "@uiid/design-system";
 
 // CSS modules that `composes: … from global` rely on the token compositions
 // in @uiid/tokens' globals, which no import statement names.
@@ -98,22 +99,32 @@ const packages = readdirSync(PACKAGES_DIR)
     return { dir, pkg, imported, declared, composesFromGlobal };
   });
 
-const umbrella = packages.find((p) => p.pkg.name === UMBRELLA)!;
-const forwardedPeers = new Set(
-  packages
-    .filter((p) => p.pkg.name in (umbrella.pkg.dependencies ?? {}))
-    .flatMap((p) => Object.keys(p.pkg.peerDependencies ?? {})),
-);
+const byName = new Map(packages.map((p) => [p.pkg.name as string, p]));
+
+// The peers of a package's @uiid dependencies, which it must repeat.
+function inheritedPeers(pkg: { dependencies?: Record<string, string> }) {
+  return new Set(
+    Object.keys(pkg.dependencies ?? {}).flatMap((name) =>
+      Object.keys(byName.get(name)?.pkg.peerDependencies ?? {}),
+    ),
+  );
+}
 
 describe("package dependencies", () => {
   it("finds the packages", () => {
     expect(packages.length).toBeGreaterThan(10);
   });
 
-  it("the umbrella repeats every peer its packages declare", () => {
-    const peers = Object.keys(umbrella.pkg.peerDependencies ?? {});
-    expect(peers).toEqual(expect.arrayContaining([...forwardedPeers]));
-  });
+  it.each(packages.map((p) => [p.pkg.name, p] as const))(
+    "%s peers every peer of its @uiid dependencies",
+    (_, { pkg }) => {
+      const peers = new Set(Object.keys(pkg.peerDependencies ?? {}));
+      const missing = [...inheritedPeers(pkg)].filter(
+        (name) => !peers.has(name),
+      );
+      expect(missing).toEqual([]);
+    },
+  );
 
   it.each(packages.map((p) => [p.pkg.name, p] as const))(
     "%s declares every package its source imports",
@@ -131,7 +142,10 @@ describe("package dependencies", () => {
           !imported.has(name) &&
           !ALWAYS_ALLOWED.has(name) &&
           !(name === "@uiid/tokens" && composesFromGlobal) &&
-          !(pkg.name === UMBRELLA && forwardedPeers.has(name)),
+          !(
+            name in (pkg.peerDependencies ?? {}) &&
+            inheritedPeers(pkg).has(name)
+          ),
       );
       expect(unused).toEqual([]);
     },
