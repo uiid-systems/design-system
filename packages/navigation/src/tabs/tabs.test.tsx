@@ -9,9 +9,9 @@ import type { TabsProps } from "./tabs.types";
 import styles from "./tabs.module.css";
 
 const MOCK_ITEMS: TabsProps["items"] = [
-  { label: "Tab 1", value: "tab-1", render: <div>Content 1</div> },
-  { label: "Tab 2", value: "tab-2", render: <div>Content 2</div> },
-  { label: "Tab 3", value: "tab-3", render: <div>Content 3</div> },
+  { label: "Tab 1", value: "tab-1", content: <div>Content 1</div> },
+  { label: "Tab 2", value: "tab-2", content: <div>Content 2</div> },
+  { label: "Tab 3", value: "tab-3", content: <div>Content 3</div> },
 ];
 
 describe("Tabs", () => {
@@ -24,6 +24,22 @@ describe("Tabs", () => {
     expect(screen.getByRole("tab", { name: "Tab 1" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Tab 2" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Tab 3" })).toBeInTheDocument();
+  });
+
+  it("renders each item's content in its panel", () => {
+    render(<Tabs items={MOCK_ITEMS} />);
+    expect(screen.getByText("Content 1")).toBeInTheDocument();
+  });
+
+  // `render` was the content field before `content` matched Accordion's. It
+  // stays as a deprecated alias for one release.
+  it("still renders an item's deprecated render field", () => {
+    render(
+      <Tabs
+        items={[{ label: "Old", value: "old", render: <div>Old content</div> }]}
+      />,
+    );
+    expect(screen.getByText("Old content")).toBeInTheDocument();
   });
 
   it("renders with data-slot attributes", () => {
@@ -180,8 +196,8 @@ describe("Tabs", () => {
     render(
       <Tabs
         items={[
-          { label: "First", value: "first", render: <div>First content</div> },
-          { label: "Blank", value: "", render: <div>Blank content</div> },
+          { label: "First", value: "first", content: <div>First content</div> },
+          { label: "Blank", value: "", content: <div>Blank content</div> },
         ]}
         defaultValue=""
       />,

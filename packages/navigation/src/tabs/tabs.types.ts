@@ -2,15 +2,25 @@ import type { Tabs } from "@base-ui/react/tabs";
 import type { GroupProps, LayerProps, StackProps } from "@uiid/layout";
 import type { VariantProps, WithLayoutProps } from "@uiid/utils";
 
-import { tabsListVariants } from "./tabs.variants";
+import type { tabsListVariants } from "./tabs.variants";
 
 export type TabsListVariants = VariantProps<typeof tabsListVariants>;
 
-export type TabProps = {
+/** One entry in `Tabs`' `items`: its tab's label and value, and its panel's content. */
+export type TabsItemData = {
   label: string;
   value: string;
-  render: React.ReactNode;
-};
+} & (
+  | { content: React.ReactNode; render?: never }
+  | {
+      /** @deprecated Use `content`. Removed in the next release. */
+      render: React.ReactNode;
+      content?: never;
+    }
+);
+
+/** @deprecated Use `TabsItemData`. Removed in the next release. */
+export type TabProps = TabsItemData;
 
 export type TabsRootProps = WithLayoutProps<Tabs.Root.Props, StackProps>;
 export type TabsListProps = WithLayoutProps<Tabs.List.Props, GroupProps> & {
@@ -22,7 +32,7 @@ export type TabsIndicatorProps = Tabs.Indicator.Props;
 export type TabsPanelProps = WithLayoutProps<Tabs.Panel.Props, StackProps>;
 
 export type TabsProps = {
-  items: TabProps[];
+  items: TabsItemData[];
   RootProps?: TabsRootProps;
   ListProps?: TabsListProps;
   TabProps?: Omit<TabsTabProps, "value">;

@@ -67,7 +67,7 @@ export const Tabs = ({
             value={item.value}
             keepMounted={keepMounted}
           >
-            {item.render}
+            {item.content ?? item.render}
           </TabsPanel>
         ))}
       </Layer>
