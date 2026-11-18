@@ -43,12 +43,11 @@ const config: StorybookConfig = {
       ...existingAliases,
     ];
 
-    // Workspace packages now point at source — don't let Vite pre-bundle them.
-    if (!config.optimizeDeps) config.optimizeDeps = {};
-    config.optimizeDeps.exclude = [
-      ...(config.optimizeDeps.exclude ?? []),
-      ...sourcePackages.map(({ name }) => name),
-    ];
+    // Do not add `@uiid/*` to `optimizeDeps.exclude`. They resolve to files outside
+    // node_modules, so Vite never pre-bundles them anyway, and Vite's dep scanner
+    // stops at any excluded id (and its subpaths). Excluding them hid every third-party
+    // import behind them, such as the lucide modules behind `@uiid/icons/<icon>`, so
+    // a cold cache discovered them mid-run and reloaded the browser tests (UI-403).
 
     // `@uiid/*` resolve to source above, so Rollup bundles the 185 files that
     // carry "use client" for downstream Next.js consumers — plus Base UI's own
