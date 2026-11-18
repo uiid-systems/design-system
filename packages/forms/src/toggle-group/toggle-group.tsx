@@ -15,14 +15,17 @@ import type { ReactElement, RefObject } from "react";
 
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
 import { useToggleIndicator } from "./toggle-group.hooks";
-import type { ToggleGroupProps } from "./toggle-group.types";
+import type {
+  ToggleGroupProps,
+  ToggleGroupVariants,
+} from "./toggle-group.types";
 import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
 
 type ToggleGroupItemProps = {
   child: ReactElement<BaseToggle.Props>;
-  size: ToggleGroupProps["size"];
+  size: ToggleGroupVariants["size"];
   buttonsRef: RefObject<Map<string, HTMLButtonElement>>;
 };
 
@@ -70,7 +73,7 @@ const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
   });
 };
 
-export const ToggleGroup = ({
+export const ToggleGroup = <Value extends string = string>({
   size = TOGGLE_GROUP_DEFAULT_SIZE,
   variant,
   fullwidth,
@@ -83,9 +86,9 @@ export const ToggleGroup = ({
   ref,
   children,
   ...props
-}: ToggleGroupProps) => {
-  const [activeValue, setActiveValue] = useState<string[]>(
-    defaultValue ? [...defaultValue] : [],
+}: ToggleGroupProps<Value>) => {
+  const [activeValue, setActiveValue] = useState<readonly Value[]>(
+    defaultValue ?? [],
   );
   const { panelRef, buttonsRef } = useToggleIndicator(
     value,
@@ -97,9 +100,15 @@ export const ToggleGroup = ({
   // rather than taking its place.
   const composedRef = useComposedRefs(ref, panelRef);
 
-  const handleValueChange = (newValue: string[]) => {
-    setActiveValue(newValue);
-    onValueChange?.(newValue);
+  // The handler runs first so it can cancel: Base UI drops a cancelled change,
+  // and the indicator's mirror of the uncontrolled value has to drop it too.
+  const handleValueChange: NonNullable<
+    ToggleGroupProps<Value>["onValueChange"]
+  > = (groupValue, eventDetails) => {
+    onValueChange?.(groupValue, eventDetails);
+    if (eventDetails.isCanceled) return;
+
+    setActiveValue(groupValue);
   };
 
   const enhancedChildren = Children.map(children, (child) =>

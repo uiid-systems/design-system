@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
@@ -384,5 +384,93 @@ describe("ToggleGroup root", () => {
 
     expect(yearly).not.toBeInTheDocument();
     expect(measure).not.toHaveBeenCalled();
+  });
+});
+
+describe("ToggleGroup onValueChange", () => {
+  it("hands the handler Base UI's event details alongside the value", async () => {
+    const onValueChange = vi.fn();
+    renderGroup({ defaultValue: ["monthly"], onValueChange });
+
+    await userEvent.click(screen.getByRole("button", { name: "Yearly" }));
+
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    const [value, details] = onValueChange.mock.calls[0];
+    expect(value).toEqual(["yearly"]);
+    expect(details.reason).toBe("none");
+    expect(details.event).toBeInstanceOf(Event);
+    expect(details.cancel).toBeTypeOf("function");
+  });
+
+  it("leaves the pressed toggle alone when the handler cancels the change", async () => {
+    renderGroup({
+      defaultValue: ["monthly"],
+      onValueChange: (_value, details) => details.cancel(),
+    });
+    const monthly = screen.getByRole("button", { name: "Monthly" });
+    const yearly = screen.getByRole("button", { name: "Yearly" });
+
+    await userEvent.click(yearly);
+
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(yearly).toHaveAttribute("aria-pressed", "false");
+  });
+
+  /* happy-dom measures nothing, but it can show which toggle the indicator
+     asks: a cancelled change must not send it to the toggle that was refused. */
+  it("keeps the indicator on the pressed toggle when the change is cancelled", async () => {
+    renderGroup({
+      defaultValue: ["monthly"],
+      onValueChange: (_value, details) => details.cancel(),
+    });
+    const yearly = screen.getByRole("button", { name: "Yearly" });
+    const measure = vi.spyOn(yearly, "getBoundingClientRect");
+
+    await userEvent.click(yearly);
+
+    expect(measure).not.toHaveBeenCalled();
+  });
+
+  /* A parent that holds `value` and ignores the change is the controlled way
+     to refuse one: the handler still hears about it, and `value` still wins. */
+  it("stays on a controlled value the parent does not update", async () => {
+    const onValueChange = vi.fn();
+    renderGroup({ value: ["monthly"], onValueChange });
+    const monthly = screen.getByRole("button", { name: "Monthly" });
+    const yearly = screen.getByRole("button", { name: "Yearly" });
+    const measure = vi.spyOn(yearly, "getBoundingClientRect");
+
+    await userEvent.click(yearly);
+
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(yearly).toHaveAttribute("aria-pressed", "false");
+    expect(measure).not.toHaveBeenCalled();
+  });
+
+  /* The assertion a type error would break is the build's, which typechecks
+     this file: a narrowed value has to reach the handler as that union, so a
+     typed state setter can be passed straight in. */
+  it("carries a narrowed value type through to the handler", async () => {
+    type Plan = "monthly" | "yearly";
+
+    const Billing = () => {
+      const [plan, setPlan] = useState<Plan[]>(["monthly"]);
+
+      return (
+        <ToggleGroup value={plan} onValueChange={setPlan}>
+          <Toggle value="monthly">Monthly</Toggle>
+          <Toggle value="yearly">Yearly</Toggle>
+        </ToggleGroup>
+      );
+    };
+    render(<Billing />);
+
+    await userEvent.click(screen.getByRole("button", { name: "Yearly" }));
+
+    expect(screen.getByRole("button", { name: "Yearly" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
   });
 });
