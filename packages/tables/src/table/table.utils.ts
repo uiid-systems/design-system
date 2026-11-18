@@ -13,10 +13,10 @@ export function defaultFormatHeader<T extends Record<string, unknown>>(
 
 /** The default `formatCell`. Renders a React element as itself and a string,
  * number, bigint or boolean as text. An object renders its string form when it
- * defines one of its own (a `Date`, a `URL`, an array). An array holding
- * anything but strings, numbers, bigints, booleans, `null` or `undefined`
- * renders nothing. So does everything else: `null`, `undefined`, a plain
- * object, a function, a symbol. */
+ * defines one of its own (a `Date`, a `URL`). An array prints only when every
+ * entry is a primitive; anything richer is what `formatCell` is for.
+ * Everything else renders nothing: `null`, `undefined`, a plain object, a
+ * function, a symbol. */
 export function defaultFormatCell(value: unknown): React.ReactNode {
   if (isValidElement(value)) return value;
 

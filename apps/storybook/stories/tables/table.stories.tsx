@@ -154,8 +154,15 @@ const CELL_VALUES_DATA: Record<string, unknown>[] = [
     email: "alex.t@company.com",
     joined: new Date(2024, 0, 15),
     teams: ["Design", "Platform"],
+    address: { city: "London" },
   },
-  { name: "Sarah Chen", email: null, joined: new Date(2025, 5, 2), teams: [] },
+  {
+    name: "Sarah Chen",
+    email: null,
+    joined: new Date(2025, 5, 2),
+    teams: [],
+    address: { city: "Singapore" },
+  },
   { name: "James Wilson", joined: new Date(2023, 10, 28) },
 ];
 

@@ -44,12 +44,8 @@ export type TableProps<
     secondary?: TableCellDropdownProps;
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
-  /** Render a cell from its value, column key and row. Replaces the default,
-   * `defaultFormatCell`, which renders an element as itself, a primitive as
-   * text, an object by its own string form (a `Date`, an array), and nothing
-   * for `null`, `undefined` or a plain object. An array holding an object, an
-   * element or another array also renders nothing. To change some cells only,
-   * return `defaultFormatCell(value)` for the rest. */
+  /** Render a cell from its value, column key and row. Defaults to
+   * `defaultFormatCell`; call it for cells you don't handle. */
   formatCell?: (value: unknown, column: string, item: T) => React.ReactNode;
   /** Pin the header to the top of the scroll container while the body scrolls.
    * Requires a bounded height — pass `maxHeight` (or constrain the container). */
