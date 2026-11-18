@@ -42,6 +42,16 @@ describe("LoadingSpinnerIcon", () => {
     expect(svg).toHaveAttribute("height", "1em");
   });
 
+  // `Icon` slots may pass any of `IconProps`; this one means nothing to a
+  // filled spinner and is not an SVG attribute.
+  it("does not pass absoluteStrokeWidth through to the svg", () => {
+    const { container } = render(<LoadingSpinnerIcon absoluteStrokeWidth />);
+    const svg = spinner(container);
+
+    expect(svg).not.toHaveAttribute("absoluteStrokeWidth");
+    expect(svg).not.toHaveAttribute("absolutestrokewidth");
+  });
+
   // The same rule lucide's icons follow, so a spinner in an `icon` slot is
   // decorative by default like any other icon.
   it("is hidden from assistive technology when it has no accessible name", () => {

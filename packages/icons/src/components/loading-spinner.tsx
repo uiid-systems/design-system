@@ -1,12 +1,17 @@
-export type LoadingSpinnerIconProps = React.SVGProps<SVGSVGElement> & {
-  /** Width and height. A string or a number, as on every other icon. */
-  size?: string | number;
-};
+import type { IconProps } from "../icon-type";
+
+/**
+ * The props every icon takes, so the spinner fits any `icon` slot.
+ * `absoluteStrokeWidth` is accepted and ignored: the spinner is filled, not
+ * stroked.
+ */
+export type LoadingSpinnerIconProps = IconProps;
 
 /**
  * Whether the caller gave the icon a role or an accessible name. The same test
- * as lucide's `hasA11yProp`, so the spinner is hidden by default on exactly the
- * terms lucide's icons are.
+ * as lucide's `hasA11yProp`. Lucide also keeps an icon exposed when it is
+ * given children; the spinner draws its own paths and takes none, so that
+ * half of lucide's condition has no counterpart here.
  */
 const hasA11yProp = (props: Record<string, unknown>) =>
   Object.keys(props).some(
@@ -32,6 +37,8 @@ const hasA11yProp = (props: Record<string, unknown>) =>
 export const LoadingSpinnerIcon = ({
   size = 14,
   fill = "currentColor",
+  // Pulled out so it is never spread onto the <svg> as an unknown attribute.
+  absoluteStrokeWidth: _absoluteStrokeWidth,
   ...props
 }: LoadingSpinnerIconProps) => (
   <svg

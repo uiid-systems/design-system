@@ -10,7 +10,9 @@ export type IconProps = Partial<SVGProps<SVGSVGElement>> & {
  * An icon component: anything that renders from `IconProps`. That covers
  * lucide's icons, `LoadingSpinnerIcon` and a consumer's own SVG component.
  * `ref` is part of `IconProps` because React 19 passes it as an ordinary prop,
- * so the type does not require a `forwardRef` component.
+ * so the type does not require a `forwardRef` component. A component used as
+ * an `Icon` should spread the `IconProps` it does not handle onto its `<svg>`,
+ * since `icon` slots size, class and hide icons through those props.
  *
  * Declared locally rather than re-exported from lucide's own types on purpose:
  * packages that consume `@uiid/icons` do not depend on `lucide-react`, so a
