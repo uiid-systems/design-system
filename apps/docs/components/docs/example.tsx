@@ -1,8 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { CodeBlock, Stack, Text } from "@uiid/design-system";
+import { Stack, Text } from "@uiid/design-system";
 
+import { HighlightedCodeBlock } from "./highlighted-code-block";
 import { slugify } from "./slugify";
 
 const PACKAGES_DIR = path.resolve(process.cwd(), "../../packages");
@@ -60,7 +61,12 @@ export async function Example({ title, of, name, children }: ExampleProps) {
         {children}
       </Stack>
       {code ? (
-        <CodeBlock code={code} language="tsx" filename={title} rows={8} />
+        <HighlightedCodeBlock
+          code={code}
+          language="tsx"
+          filename={title}
+          rows={8}
+        />
       ) : null}
     </Stack>
   );
