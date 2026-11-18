@@ -1,5 +1,4 @@
 @import "@uiid/tokens/component/radio.tokens.css";
-@import "@uiid/tokens/semantic/forms.tokens.css";
 
 .radio {
   /* The resting surface Input and Select's trigger paint — fill, hover and

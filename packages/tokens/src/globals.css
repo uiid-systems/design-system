@@ -19,11 +19,26 @@
     color-scheme: light dark;
   }
 
-  :root[data-theme="light"] {
+  /*
+   * Any element can set a theme, not only the root. Shade and palette tokens
+   * are unregistered custom properties, so their light-dark() values resolve
+   * where they are used and follow the nearest [data-theme].
+   */
+  [data-theme="light"] {
     color-scheme: light;
   }
-  :root[data-theme="dark"] {
+  [data-theme="dark"] {
     color-scheme: dark;
+  }
+
+  /*
+   * Body resolves its text and background colors once, and descendants
+   * inherit the resolved values. A themed section repaints both so bare text
+   * inside it follows its own scheme.
+   */
+  :where([data-theme="light"], [data-theme="dark"]):not(:root) {
+    background-color: var(--shade-background);
+    color: var(--shade-foreground);
   }
 
   * {

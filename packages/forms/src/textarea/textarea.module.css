@@ -1,5 +1,4 @@
 @import "@uiid/tokens/component/textarea.tokens.css";
-@import "@uiid/tokens/semantic/forms.tokens.css";
 
 .textarea-base {
   composes: composes-text from global;

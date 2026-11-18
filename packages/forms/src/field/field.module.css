@@ -1,5 +1,4 @@
 @import "@uiid/tokens/component/field.tokens.css";
-@import "@uiid/tokens/semantic/forms.tokens.css";
 
 /* A field's chrome annotates the control it wraps, so it is sized against that
    control rather than against the page — the tier publishes the same

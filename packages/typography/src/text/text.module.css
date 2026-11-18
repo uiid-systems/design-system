@@ -1,5 +1,3 @@
-@import "@uiid/tokens/primitives/typography.tokens.css";
-
 .text {
   composes: composes-text from global;
 

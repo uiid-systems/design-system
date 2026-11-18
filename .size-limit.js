@@ -54,9 +54,6 @@ const packages = readdirSync(packagesDir, { withFileTypes: true })
   .filter(Boolean)
   .sort((a, b) => a.pkg.name.localeCompare(b.pkg.name));
 
-const umbrellaPkg =
-  packages.find(({ folder }) => folder === "design-system")?.pkg ?? {};
-
 const entries = [];
 
 for (const { dir, folder, pkg } of packages) {
@@ -79,8 +76,8 @@ for (const { dir, folder, pkg } of packages) {
 
   // An export that this checkout does not have yet is skipped, so a base
   // branch that predates it still measures. It then reports as a new entry.
-  // The umbrella's peers are React only, so these include the Base UI code
-  // the import pulls in, which is what a consumer's bundle gains.
+  // Only React is left out, not the umbrella's peers, so these include the
+  // Base UI code the import pulls in, which is what a consumer's bundle gains.
   const barrel = readFileSync(js, "utf8");
   for (const name of SINGLE_IMPORTS[folder] ?? []) {
     if (!existsSync(umbrella) || !new RegExp(`\\b${name}\\b`).test(barrel))
@@ -89,7 +86,7 @@ for (const { dir, folder, pkg } of packages) {
       name: `import { ${name} }`,
       path: umbrella,
       import: `{ ${name} }`,
-      ignore: peers(umbrellaPkg),
+      ignore: ["react", "react-dom"],
     });
   }
 }

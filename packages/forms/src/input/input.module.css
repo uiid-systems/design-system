@@ -1,5 +1,3 @@
-@import "@uiid/tokens/semantic/forms.tokens.css";
-
 /*
  * Surface, disabled and invalid all come from the shared compositions, so
  * Select's trigger can wear the same control surface by composing it rather
