@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
 import { Resizable } from "./resizable";
+import * as Examples from "./resizable.examples";
 import type { ResizableHandleProps } from "./resizable.types";
 import { ResizableHandle, ResizablePanel } from "./subcomponents";
 
@@ -129,5 +130,12 @@ describe("Resizable", () => {
 
     renderResizable({ disabled: true });
     expect(getHandle().matches(selector)).toBe(false);
+  });
+});
+
+describe("Resizable examples", () => {
+  it.each(Object.entries(Examples))("%s renders a handle", (_, Example) => {
+    render(<Example />);
+    expect(screen.getAllByRole("separator").length).toBeGreaterThan(0);
   });
 });
