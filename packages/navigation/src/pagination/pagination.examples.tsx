@@ -35,7 +35,7 @@ export const Controlled = () => {
   return (
     <Stack gap={3}>
       <Pagination totalPages={31} page={page} onPageChange={setPage} />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Page in parent state: {page}
       </Text>
     </Stack>

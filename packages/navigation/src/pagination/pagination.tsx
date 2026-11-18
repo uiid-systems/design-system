@@ -92,7 +92,7 @@ export const Pagination = ({
               styles["pagination-label"],
             )}
             size={0}
-            shade="muted"
+            emphasis="muted"
           >
             Page {page} of {lastPage}
           </Text>
@@ -112,7 +112,7 @@ export const Pagination = ({
                   styles["pagination-ellipsis"],
                 )}
                 size={0}
-                shade="muted"
+                emphasis="muted"
               >
                 …
               </Text>

@@ -34,7 +34,7 @@ export const AccordionTrigger = ({
         render={<Group ay="center" gap={1} />}
       >
         {Icon && <Icon />}
-        <Text shade="muted" size={0} weight="bold">
+        <Text emphasis="muted" size={0} weight="bold">
           {children}
         </Text>
       </ConditionalRender>

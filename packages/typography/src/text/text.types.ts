@@ -10,7 +10,7 @@ export type TextVariants = {
   family?: "sans" | "serif" | "mono";
   /**
    * Foreground color from the shade scale
-   * @deprecated Use `emphasis`, with `color` for a hue.
+   * @deprecated Use `emphasis`, with `color` for a hue. `shade="muted"` is `emphasis="muted"`.
    */
   shade?:
     | "background"
@@ -21,7 +21,9 @@ export type TextVariants = {
     | "foreground";
   /** Palette color for the text */
   color?: PaletteColor;
-  /** Emphasis within the palette color — `neutral` when no `color` is set */
+  /**
+   * Emphasis within the palette color — `neutral` when no `color` is set. `default` reads on the page and `subtle` on the hue's tint. `muted` reads on the hue's fill, or with no `color`, as muted grey text on the page.
+   */
   emphasis?: "default" | "muted" | "subtle";
   /** Underline the text */
   underline?: boolean;
