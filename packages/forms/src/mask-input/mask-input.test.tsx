@@ -1086,6 +1086,192 @@ describe("MaskInput onChange", () => {
     expect(handleValueChange).toHaveBeenCalledTimes(1);
     expect(handleValueChange).toHaveBeenCalledWith("12", "12");
   });
+
+  it("shows composing text in a controlled input and reports it once at the end", async () => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+
+    const ControlledMaskInput = () => {
+      const [value, setValue] = useState("");
+      return (
+        <MaskInput
+          mask="phone"
+          value={value}
+          onChange={handleChange}
+          onValueChange={(masked, unmasked) => {
+            setValue(masked);
+            handleValueChange(masked, unmasked);
+          }}
+        />
+      );
+    };
+
+    render(<ControlledMaskInput />);
+
+    const input = screen.getByRole("textbox");
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "12" } });
+
+    expect(input).toHaveValue("12");
+
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(12");
+    expect(seen).toEqual(["12", "(12"]);
+    expect(handleValueChange.mock.calls).toEqual([["(12", "12"]]);
+  });
+
+  // ============================================
+  // COMPOSITION START LEAVES THE DISPLAY ALONE
+  // ============================================
+  // The stored value is often not the masked string. Starting a composition
+  // must keep showing the masked reading of it until composing text arrives.
+
+  it("keeps an unmasked defaultValue masked when composition starts", async () => {
+    const { input } = await setup({ defaultValue: "5551234567" });
+
+    expect(input).toHaveValue("(555) 123-4567");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("(555) 123-4567");
+  });
+
+  it("keeps a controlled unmasked value masked when composition starts", async () => {
+    const { input } = await setup({ value: "1234567" });
+
+    expect(input).toHaveValue("(123) 456-7");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("(123) 456-7");
+  });
+
+  it("keeps a currency value formatted when composition starts", async () => {
+    const { input } = await setup({ mask: "currency", defaultValue: "1234" });
+
+    expect(input).toHaveValue("$1,234");
+    fireEvent.compositionStart(input);
+    expect(input).toHaveValue("$1,234");
+  });
+
+  // ============================================
+  // INPUT LONGER THAN THE MASK
+  // ============================================
+  // The mask drops what does not fit, but onValueChange and onValidate are
+  // handed the unmasked text as it was entered. The expected values are what
+  // these paths reported before they were routed through the change handler.
+
+  it("reports the full unmasked text of an over-long paste", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    await user.paste("55512345679999");
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "55512345679999"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "55512345679999"],
+    ]);
+  });
+
+  it("reports the full unmasked text of an over-long credit card paste", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      mask: "creditCard",
+      onValidate: handleValidate,
+    });
+
+    await user.paste("41111111111111119999");
+
+    expect(input).toHaveValue("4111 1111 1111 1111");
+    expect(seen).toEqual(["4111 1111 1111 1111"]);
+    expect(handleValidate.mock.calls).toEqual([
+      [false, "41111111111111119999"],
+    ]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["4111 1111 1111 1111", "41111111111111119999"],
+    ]);
+  });
+
+  it("reports the full unmasked text when a mid-value paste overflows", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+      onValidate: handleValidate,
+    });
+
+    input.setSelectionRange(2, 2);
+    await user.paste("99");
+
+    expect(input).toHaveValue("(199) 234-5678");
+    expect(seen).toEqual(["(199) 234-5678"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "199234567890"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(199) 234-5678", "199234567890"],
+    ]);
+    expect(input.selectionStart).toBe(14);
+  });
+
+  it("reports what the mask kept when over-long text was composed", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "55512345679999" } });
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["55512345679999", "(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[true, "5551234567"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "5551234567"],
+    ]);
+  });
+
+  it("reports the full text when composition ends on a value no change event announced", async () => {
+    const handleValidate = vi.fn();
+    const { seen, handleValueChange, input } = await setup({
+      onValidate: handleValidate,
+    });
+
+    fireEvent.compositionStart(input);
+    // Written past React, the way fireEvent.change writes, with no event.
+    Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      "value",
+    )?.set?.call(input, "55512345679999");
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(555) 123-4567");
+    expect(seen).toEqual(["(555) 123-4567"]);
+    expect(handleValidate.mock.calls).toEqual([[false, "55512345679999"]]);
+    expect(handleValueChange.mock.calls).toEqual([
+      ["(555) 123-4567", "55512345679999"],
+    ]);
+  });
+
+  it("labels the change events it dispatches with their inputType", async () => {
+    const inputTypes: (string | undefined)[] = [];
+    const { user, input } = await setup({
+      defaultValue: "(123) 456-7890",
+      onChange: (event) => {
+        inputTypes.push((event.nativeEvent as InputEvent).inputType);
+      },
+    });
+
+    await user.keyboard("{Backspace}");
+    input.setSelectionRange(1, 1);
+    await user.keyboard("{Delete}");
+    await user.paste("1");
+
+    expect(inputTypes).toEqual([
+      "deleteContentBackward",
+      "deleteContentForward",
+      "insertFromPaste",
+    ]);
+  });
 });
 
 describe("MaskInput and values written through the ref", () => {

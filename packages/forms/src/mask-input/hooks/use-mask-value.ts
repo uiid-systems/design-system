@@ -35,6 +35,11 @@ export interface UseMaskValueReturn {
   setInternalValue: React.Dispatch<React.SetStateAction<string>>;
   /** Set composition state */
   setComposing: React.Dispatch<React.SetStateAction<boolean>>;
+  /**
+   * Set the text an open IME composition has produced so far, shown as typed
+   * in place of the masked value. `undefined` clears it.
+   */
+  setComposingText: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 /**
@@ -53,14 +58,13 @@ export function useMaskValue(options: UseMaskValueOptions): UseMaskValueReturn {
 
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? "");
   const [composing, setComposing] = React.useState(false);
+  const [composingText, setComposingText] = React.useState<string>();
 
   const isControlled = valueProp !== undefined;
   const value = isControlled ? valueProp : internalValue;
 
-  const displayValue = React.useMemo(() => {
-    // Composing text is shown as typed: masking it would rewrite the input
-    // under the IME. Composition end applies the mask.
-    if (withoutMask || !maskPattern || !value || composing) return value ?? "";
+  const maskedValue = React.useMemo(() => {
+    if (withoutMask || !maskPattern || !value) return value ?? "";
     const unmasked = getUnmaskedValue({
       value,
       transform: maskPattern.transform,
@@ -72,7 +76,13 @@ export function useMaskValue(options: UseMaskValueOptions): UseMaskValueReturn {
       ...transformOpts,
       mask,
     });
-  }, [value, maskPattern, withoutMask, transformOpts, mask, composing]);
+  }, [value, maskPattern, withoutMask, transformOpts, mask]);
+
+  // Composing text is shown as typed: masking it would rewrite the input under
+  // the IME. Until the composition produces text, the masked value stays up, so
+  // starting one changes nothing on display. Composition end applies the mask.
+  const displayValue =
+    composing && composingText !== undefined ? composingText : maskedValue;
 
   return {
     value,
@@ -81,5 +91,6 @@ export function useMaskValue(options: UseMaskValueOptions): UseMaskValueReturn {
     composing,
     setInternalValue,
     setComposing,
+    setComposingText,
   };
 }

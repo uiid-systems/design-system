@@ -146,6 +146,7 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     composing,
     setInternalValue,
     setComposing,
+    setComposingText,
   } = useMaskValue({
     value: valueProp,
     defaultValue,
@@ -184,6 +185,7 @@ export function useMask(options: UseMaskOptions): UseMaskReturn {
     setInternalValue,
     composing,
     setComposing,
+    setComposingText,
     touched,
     setTouched,
     shouldValidate,

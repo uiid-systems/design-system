@@ -17,6 +17,8 @@ Leave `value` unset and the input runs itself; pass `value` and `onValueChange` 
 
 MaskInput owns the value of its `<input>`, so a value written onto the element through `ref` is overwritten on the next render. react-hook-form applies `defaultValues`, `reset()` and `setValue()` that way, so hand those values to MaskInput's own `defaultValue` or `value` instead.
 
-With that caveat, a native `onChange` reports the value too: spread the `name`, `ref`, `onBlur` and `onChange` a form library's `register()` returns and it tracks what the input shows. It is called once per edit that changes the value, just before `onValueChange`, and `event.target.value` is already the masked string; typing, deleting, cut and paste are all covered. While an IME composition is open the mask is suspended and `onChange` carries the text as composed, then runs once more with the masked value when the composition ends.
+With that caveat, a native `onChange` reports the value too: spread the `name`, `ref`, `onBlur` and `onChange` a form library's `register()` returns and it tracks what the input shows. It is called for each change event, including a keystroke the mask rejects, and `event.target.value` is the string on display; typing, deleting, cut and a paste that changes the value all raise one. When `onChange` and `onValueChange` both fire, `onChange` goes first.
+
+The two do not always fire together. While an IME composition is open the mask is suspended, the text shows as composed, and only `onChange` fires; when the composition ends `onValueChange` fires, and `onChange` fires again only if masking rewrote the text. A paste that leaves the value as it was fires `onValueChange` alone.
 
 Additional props are forwarded to the underlying `<input>` element.
