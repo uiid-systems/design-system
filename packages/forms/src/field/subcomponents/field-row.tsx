@@ -58,8 +58,9 @@ export const FieldRow = ({
   const hasLabel = isRenderable(label);
   const hasDescription = isRenderable(description);
   const hasContent = hasLabel || hasDescription;
-  const needsTextContainer = hasLabel && hasDescription;
-  const { hasError, errorRef } = useFieldErrorSlot(ErrorProps?.ref);
+  const { hasError, errorProps } = useFieldErrorSlot(ErrorProps);
+  // A label stacks over whatever text sits under it, description or error.
+  const needsTextContainer = hasLabel && (hasDescription || hasError);
 
   return (
     <FieldRoot className={styles["field-root-bare"]}>
@@ -95,7 +96,7 @@ export const FieldRow = ({
                 {description}
               </FieldDescription>
             )}
-            <FieldError {...ErrorProps} ref={errorRef} />
+            <FieldError {...errorProps} />
           </ConditionalRender>
         )}
       </FieldItem>

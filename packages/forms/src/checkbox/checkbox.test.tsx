@@ -308,8 +308,8 @@ describe("Checkbox reversed", () => {
     expect(rule).toMatch(
       /& > :is\(\[role="checkbox"\], \[role="radio"\], \[role="switch"\]\) \{\s*margin-inline-start: auto;/,
     );
-    /* An error beside a lone label is a third flex item, which `space-between`
-       would spread the label away from. */
+    /* In server-rendered markup an error beside a lone label is a third flex
+       item, which `space-between` would spread the label away from. */
     expect(rule).not.toMatch(/justify-content/);
   });
 
@@ -321,9 +321,11 @@ describe("Checkbox reversed", () => {
     );
     const row = container.querySelector("[data-slot='field-row']");
     expect(row?.querySelector(":scope > [role='checkbox']")).not.toBeNull();
-    expect(
-      row?.querySelector(":scope > [data-slot='field-label']"),
-    ).not.toBeNull();
+    /* The label and the error stack together beside the control. */
+    const label = row?.querySelector(":scope > * > [data-slot='field-label']");
+    expect(label?.parentElement).toContainElement(
+      row?.querySelector("[data-slot='field-error']") as HTMLElement,
+    );
   });
 });
 

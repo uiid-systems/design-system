@@ -42,7 +42,7 @@ export const Field = ({
   const hasChrome = hasLabel || hasAction || hasDescription;
 
   // While the error shows, it takes the description's place.
-  const { hasError, errorRef } = useFieldErrorSlot(ErrorProps?.ref);
+  const { hasError, errorProps } = useFieldErrorSlot(ErrorProps);
 
   return (
     <FieldRoot
@@ -80,7 +80,7 @@ export const Field = ({
         {children}
       </FieldRequiredProvider>
 
-      <FieldError {...ErrorProps} ref={errorRef} />
+      <FieldError {...errorProps} />
       {hasDescription && !hasError && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
       )}

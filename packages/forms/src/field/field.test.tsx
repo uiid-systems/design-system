@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { renderToString } from "react-dom/server";
 import { describe, it, expect } from "vitest";
 
 import { Checkbox } from "../checkbox/checkbox";
@@ -223,12 +224,50 @@ describe("Field error and description", () => {
     expect(screen.queryByText("Enter an email")).not.toBeInTheDocument();
   });
 
+  it("keeps the description when match is forced with no message", () => {
+    const { container } = render(
+      <Field
+        label="Email"
+        description={DESCRIPTION}
+        ErrorProps={{ match: true, children: undefined }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).not.toBeInTheDocument();
+    expect(describedText(screen.getByRole("textbox"))).toEqual([DESCRIPTION]);
+  });
+
+  it("hides the description in server markup that already holds the error", () => {
+    const host = document.createElement("div");
+    host.innerHTML = renderToString(
+      <Form errors={{ email: "Enter an email" }}>
+        <Field name="email" label="Email" description={DESCRIPTION}>
+          <FieldControl />
+        </Field>
+      </Form>,
+    );
+    document.body.append(host);
+
+    const description = host.querySelector("[data-slot='field-description']");
+    expect(host.querySelector("[data-slot='field-error']")).toHaveTextContent(
+      "Enter an email",
+    );
+    expect(description).toBeInTheDocument();
+    expect(getComputedStyle(description as Element).display).toBe("none");
+    host.remove();
+  });
+
   it("passes ErrorProps to the error element", () => {
     const { container } = render(
       <Field
         label="Email"
         ErrorProps={{
           match: true,
+          children: "Enter an email",
           id: "email-error",
           className: "custom-error",
           title: "Error",
@@ -251,7 +290,10 @@ describe("Field error and description", () => {
   it("forwards a ref to the error element", () => {
     const ref = { current: null as HTMLDivElement | null };
     render(
-      <Field label="Email" ErrorProps={{ match: true, ref }}>
+      <Field
+        label="Email"
+        ErrorProps={{ match: true, children: "Required", ref }}
+      >
         <FieldControl />
       </Field>,
     );
@@ -722,10 +764,60 @@ describe("FieldRow error and description", () => {
     expect(describedText(screen.getByRole("checkbox"))).toEqual([DESCRIPTION]);
   });
 
+  it("keeps the description when match is forced with no message", () => {
+    render(
+      <Checkbox
+        label="Terms"
+        description={DESCRIPTION}
+        FieldProps={{ ErrorProps: { match: true, children: undefined } }}
+      />,
+    );
+
+    expect(describedText(screen.getByRole("checkbox"))).toEqual([DESCRIPTION]);
+  });
+
+  it("stacks the error under a label that has no description", () => {
+    const { container } = render(
+      <Checkbox
+        label="Terms"
+        FieldProps={{ ErrorProps: { match: true, children: "Required" } }}
+      />,
+    );
+    const label = container.querySelector("[data-slot='field-label']");
+
+    expect(label?.parentElement).not.toHaveAttribute("data-slot", "field-row");
+    expect(label?.nextElementSibling).toHaveAttribute(
+      "data-slot",
+      "field-error",
+    );
+  });
+
+  it("hides the description in server markup that already holds the error", () => {
+    const host = document.createElement("div");
+    host.innerHTML = renderToString(
+      <Checkbox
+        label="Terms"
+        description={DESCRIPTION}
+        FieldProps={{
+          ErrorProps: { match: true, children: "Accept the terms" },
+        }}
+      />,
+    );
+    document.body.append(host);
+
+    const description = host.querySelector("[data-slot='field-description']");
+    expect(host.querySelector("[data-slot='field-error']")).toBeInTheDocument();
+    expect(getComputedStyle(description as Element).display).toBe("none");
+    host.remove();
+  });
+
   it("forwards a ref to the error element", () => {
     const ref = { current: null as HTMLDivElement | null };
     render(
-      <FieldRow label="Terms" ErrorProps={{ match: true, ref }}>
+      <FieldRow
+        label="Terms"
+        ErrorProps={{ match: true, children: "Required", ref }}
+      >
         <FieldControl />
       </FieldRow>,
     );

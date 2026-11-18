@@ -83,12 +83,24 @@
   }
 }
 
-/* A field with no label, action, or description paints no chrome. `display: contents` keeps the control laid out exactly as it would be
+/* A field with no label, action, or description paints no chrome.
+   `display: contents` keeps the control laid out exactly as it would be
    without a Field around it, while still wiring it into the validation graph.
-   Once the error renders, the root takes its box back, so the error
-   stacks under the control instead of landing beside it in the parent's flow. */
+   Once the error renders, the root takes its box back, so the error stacks
+   under the control instead of landing beside it in the parent's flow. */
 .field-root-bare:not(:has(> [data-slot="field-error"])) {
   display: contents;
+}
+
+/* The error takes the description's place. `useFieldErrorSlot` unmounts the
+   description once the error mounts, which is what keeps `aria-describedby`
+   honest; this covers server-rendered markup, where the error is already
+   there and the description has not been unmounted yet. A row is scoped to
+   its own item, and a field only to its direct children, so a nested row's
+   description is left to that row. */
+:where(.field-root):has(> [data-slot="field-error"]) > [data-slot="field-description"],
+:where(.field-row):has([data-slot="field-error"]) [data-slot="field-description"] {
+  display: none;
 }
 
 /* A row with no label or description carries no presentation either: the

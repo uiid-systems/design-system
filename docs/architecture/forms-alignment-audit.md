@@ -232,7 +232,7 @@ Systemic root causes, then the notable instances:
 6. **Raw palette steps** (`--color-red-500`) in checkbox/radio/field — components must
    never name a hue or step (use `--palette-*` under `.palette-<hue>`).
 7. **Seven inline-style violations** in `.tsx` (form, select-list, number-field,
-   combobox, field-error-tooltip ×2, plus an icon `color=` prop pipe).
+   combobox, field-error-tooltip ×2 (removed in UI-399), plus an icon `color=` prop pipe).
 8. **NumberField's +/− buttons re-implement Button's surface** (border/bg/radius/hover/
    transition/sizing, ~30 lines) instead of composing shared styles. **Resolved
    (UI-175):** the steppers compose `composes-field-surface` — the surface their own
