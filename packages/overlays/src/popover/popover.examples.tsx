@@ -29,7 +29,7 @@ export const Positioning = () => (
       <Popover
         key={side}
         trigger={<Button>{side}</Button>}
-        PositionerProps={{ side, sideOffset: 8, collisionPadding: 16 }}
+        PositionerProps={{ side }}
         title={`Side: ${side}`}
       >
         Flips to the opposite side when there isn&apos;t room.

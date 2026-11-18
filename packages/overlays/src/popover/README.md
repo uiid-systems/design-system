@@ -5,7 +5,7 @@
 Use Popover when you want to:
 
 - Attach rich content to a control without taking over the page — the rest stays visible and usable
-- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen
+- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen. `sideOffset` (4) and `collisionPadding` (16) keep their defaults when you set only `side` or `align`
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 - Hold things a user interacts with: filters, a short form, a set of links
 
@@ -45,8 +45,6 @@ A component element can't be inspected before it renders, so it is taken to be a
 
 Leave `trigger` out and no trigger is rendered at all — not a placeholder, not an empty tab stop. That is the shape for one popover shared by many openers, such as a list of rows that each open the same details. Control `open`, set it from whichever control was pressed, and anchor the popup to that control with `PositionerProps.anchor`: Base UI positions the popup against the trigger by default, and here there is none. Point `PopupProps.finalFocus` at the same control so focus returns to it on close.
 
-Passing `PositionerProps` replaces Popover's defaults rather than merging with them, so restate `sideOffset: 4` and `collisionPadding: 16` alongside `anchor`.
-
 ```tsx
 const [open, setOpen] = useState(false);
 const opener = useRef<HTMLElement | null>(null);
@@ -63,7 +61,7 @@ const opener = useRef<HTMLElement | null>(null);
 <Popover
   open={open}
   onOpenChange={setOpen}
-  PositionerProps={{ anchor: opener, sideOffset: 4, collisionPadding: 16 }}
+  PositionerProps={{ anchor: opener }}
   PopupProps={{ finalFocus: opener }}
   title="Details"
 >
