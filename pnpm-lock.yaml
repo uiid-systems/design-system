@@ -999,15 +999,9 @@ importers:
       '@uiid/navigation':
         specifier: workspace:*
         version: link:../navigation
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../overlays
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@uiid/typography':
-        specifier: workspace:*
-        version: link:../typography
       '@uiid/utils':
         specifier: workspace:*
         version: link:../utils

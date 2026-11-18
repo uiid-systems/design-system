@@ -1,13 +1,13 @@
 import { Button } from "@uiid/buttons";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { Group } from "@uiid/layout";
-import { TableCell } from "@uiid/tables";
 
 import type {
   TableProps,
   TableActionsProps,
   TableVariants,
 } from "../table.types";
+import { TableCell } from "./table-cell";
 import { TableCellDropdown } from "./table-cell-dropdown";
 
 type TableCellActionsProps<T extends Record<string, unknown>> = {
