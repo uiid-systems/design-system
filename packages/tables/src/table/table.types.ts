@@ -13,10 +13,12 @@ export type TableActionsProps<T = Record<string, unknown>> = {
   wrapper?: (button: React.ReactElement, item: T) => React.ReactElement;
 };
 
-export type TableCellDropdownProps = {
+export type TableCellDropdownProps<T = Record<string, unknown>> = {
   icon?: Icon;
   tooltip?: string;
-  items: MenuItemType[];
+  /** The menu's entries, or a function of the row's `item` returning them, so
+   * each entry's `onClick` knows which row opened it. */
+  items: MenuItemType[] | ((item: T) => MenuItemType[]);
   /** Control tier of the trigger button; `Table` passes its own `size`. */
   size?: TableVariants["size"];
 };
@@ -41,7 +43,7 @@ export type TableProps<
   columns?: string[];
   actions?: {
     primary?: TableActionsProps<T>[];
-    secondary?: TableCellDropdownProps;
+    secondary?: TableCellDropdownProps<T>;
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
   /** Render a cell from its value, column key and row. Defaults to

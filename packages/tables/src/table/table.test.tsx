@@ -625,6 +625,36 @@ describe("Table", () => {
         screen.getByRole("menuitem", { name: "Delete" }),
       ).toBeInTheDocument();
     });
+
+    it("passes the row's item to a secondary items function", async () => {
+      const user = userEvent.setup();
+      const onDelete = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          actions={{
+            secondary: {
+              tooltip: "Settings",
+              items: (item) => [
+                {
+                  label: `Delete ${item.name}`,
+                  value: "delete",
+                  onClick: () => onDelete(item),
+                },
+              ],
+            },
+          }}
+        />,
+      );
+
+      await user.click(screen.getAllByRole("button", { name: "Settings" })[1]);
+      await user.click(
+        await screen.findByRole("menuitem", { name: "Delete Grace" }),
+      );
+
+      expect(onDelete).toHaveBeenCalledTimes(1);
+      expect(onDelete).toHaveBeenCalledWith(ITEMS[1]);
+    });
   });
 
   describe("footer", () => {

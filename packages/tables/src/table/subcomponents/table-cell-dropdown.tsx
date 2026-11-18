@@ -4,12 +4,18 @@ import { Menu } from "@uiid/navigation";
 
 import type { TableCellDropdownProps } from "../table.types";
 
-export const TableCellDropdown = ({
+type TableCellDropdownComponentProps<T> = TableCellDropdownProps<T> & {
+  /** The row the menu acts on, passed to an `items` function. */
+  item?: T;
+};
+
+export function TableCellDropdown<T = Record<string, unknown>>({
   icon: Icon,
   tooltip = "More options",
   items,
+  item,
   size = "small",
-}: TableCellDropdownProps) => {
+}: TableCellDropdownComponentProps<T>): React.ReactElement {
   return (
     <Menu
       align="end"
@@ -18,8 +24,8 @@ export const TableCellDropdown = ({
           {Icon ? <Icon /> : <EllipsisVerticalIcon size={14} />}
         </Button>
       }
-      items={items}
+      items={typeof items === "function" ? items(item as T) : items}
     />
   );
-};
+}
 TableCellDropdown.displayName = "TableCellDropdown";

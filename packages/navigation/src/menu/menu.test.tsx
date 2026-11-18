@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { StarIcon } from "@uiid/icons/star";
+import { describe, it, expect, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
@@ -75,6 +76,149 @@ describe("Menu backdrop", () => {
     expect(screen.getByTestId("dim")).toHaveAttribute(
       "data-slot",
       "menu-backdrop",
+    );
+  });
+});
+
+describe("Menu items", () => {
+  it("calls the clicked item's own onClick", async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit", onClick: onEdit },
+          { label: "Delete", value: "delete", onClick: onDelete },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Delete" }));
+
+    expect(onDelete).toHaveBeenCalledTimes(1);
+    expect(onEdit).not.toHaveBeenCalled();
+  });
+
+  it("calls ItemProps.onClick as well as the item's own onClick", async () => {
+    const user = userEvent.setup();
+    const onItem = vi.fn();
+    const onAny = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Edit", value: "edit", onClick: onItem }]}
+        ItemProps={{ onClick: onAny }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Edit" }));
+
+    expect(onAny).toHaveBeenCalledTimes(1);
+    expect(onItem).toHaveBeenCalledTimes(1);
+  });
+
+  it("makes a disabled item inert", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Edit", value: "edit", disabled: true, onClick }]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const item = screen.getByRole("menuitem", { name: "Edit" });
+    await user.click(item);
+
+    expect(item).toHaveAttribute("aria-disabled", "true");
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("renders an item's icon beside its label", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Star", value: "star", icon: StarIcon },
+          { label: "Plain", value: "plain" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(
+      screen.getByRole("menuitem", { name: "Star" }).querySelector("svg"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: "Plain" }).querySelector("svg"),
+    ).toBeNull();
+  });
+
+  it("wires submenu items the same way, including ItemProps", async () => {
+    const user = userEvent.setup();
+    const onSub = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "More",
+            value: "more",
+            items: [
+              { label: "Archive", value: "archive", onClick: onSub },
+              { label: "Locked", value: "locked", disabled: true },
+            ],
+          },
+        ]}
+        ItemProps={{ "data-testid": "item" } as never}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("More"));
+    const archive = await screen.findByRole("menuitem", { name: "Archive" });
+
+    expect(archive).toHaveAttribute("data-testid", "item");
+    expect(screen.getByRole("menuitem", { name: "Locked" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+
+    /* A pointer can't reach the submenu while it is still entering, which
+       happy-dom reports as pointer-events: none, so choose it by keyboard. */
+    archive.focus();
+    await user.keyboard("{Enter}");
+    expect(onSub).toHaveBeenCalledTimes(1);
+  });
+
+  it("disables a submenu trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "More",
+            value: "more",
+            disabled: true,
+            items: [{ label: "Archive", value: "archive" }],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menuitem", { name: "More" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
     );
   });
 });

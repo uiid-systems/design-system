@@ -64,7 +64,7 @@ export function TableCellActions<T extends Record<string, unknown>>({
           />
         ))}
         {actions.secondary && (
-          <TableCellDropdown size={size} {...actions.secondary} />
+          <TableCellDropdown item={item} size={size} {...actions.secondary} />
         )}
       </Group>
     </TableCell>
