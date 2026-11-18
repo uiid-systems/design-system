@@ -1,3 +1,4 @@
+import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
@@ -644,6 +645,29 @@ describe("Button", () => {
         '[role="tooltip"], [data-open]',
       );
       expect(popup?.className).toMatch(/composes-tooltip(\s|$)/);
+    });
+
+    /*
+     * Each tooltip Button once mounted its own Provider, which cut it off from
+     * an ancestor's delay group: the next tooltip waited out the full delay
+     * instead of opening at once.
+     */
+    it("joins an ancestor Tooltip.Provider's delay group", async () => {
+      const user = userEvent.setup();
+      render(
+        <BaseTooltip.Provider>
+          <Button tooltip="First hint">One</Button>
+          <Button tooltip="Second hint">Two</Button>
+        </BaseTooltip.Provider>,
+      );
+
+      await user.hover(screen.getByText("One"));
+      expect(await screen.findByText("First hint")).toBeVisible();
+
+      await user.hover(screen.getByText("Two"));
+      expect(
+        await screen.findByText("Second hint", {}, { timeout: 150 }),
+      ).toBeVisible();
     });
 
     it("reveals the tooltip content on keyboard focus", async () => {

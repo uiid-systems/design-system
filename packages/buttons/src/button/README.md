@@ -46,6 +46,7 @@ In tests, assert `toBeDisabledForUser()` (registered in the root `vitest.setup.t
 
 - A plain Button is `type="button"`, so inside a `<form>` it doesn't submit. Pass `type="submit"` for the one that should.
 - `loading` doesn't disable the button: clicks still fire, so guard the handler or pass `disabled` too. While loading, the label is hidden from assistive tech and the button is announced as "Loading".
+- A `tooltip` opens after 300ms. Under a Base UI `Tooltip.Provider`, the next tooltip in the row opens at once, but the 300ms still applies to the first one, since the button sets it on its own trigger.
 - With a `tooltip`, the Button sits inside an inline-block wrapper, so `fullwidth` and flex-item props size it within that wrapper rather than the surrounding row.
 - Color comes from `color`, never a background or border class. One palette hue sets the background, foreground, border and hover together.
 - Geometry comes from `size` and `shape`. `square` and `circle` zero the inline padding and force a 1:1 ratio, and `h-*`, `px-*` or `min-w-*` classes fight the size step.
