@@ -19,11 +19,6 @@ const meta = {
       options: ["xsmall", "small", "medium", "large"],
       table: { category: "Variants" },
     },
-    errorType: {
-      control: "select",
-      options: ["inline", "tooltip", "absolute"],
-      table: { category: "Variants" },
-    },
     validationMode: {
       control: "select",
       options: ["onSubmit", "onBlur", "onChange"],
@@ -67,7 +62,9 @@ export const Required: Story = { render: () => <Examples.Required /> };
 export const WithHint: Story = { render: () => <Examples.WithHint /> };
 export const WithAction: Story = { render: () => <Examples.WithAction /> };
 export const Validate: Story = { render: () => <Examples.Validate /> };
-export const ErrorTypes: Story = { render: () => <Examples.ErrorTypes /> };
+export const ErrorReplacesDescription: Story = {
+  render: () => <Examples.ErrorReplacesDescription />,
+};
 export const Invalid: Story = { render: () => <Examples.Invalid /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Bare: Story = { render: () => <Examples.Bare /> };

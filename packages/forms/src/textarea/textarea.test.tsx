@@ -688,14 +688,14 @@ describe("Textarea hands disabled and fullwidth to Field", () => {
       <Textarea
         label="Notes"
         // @ts-expect-error label is owned by Textarea
-        FieldProps={{ errorType: "tooltip", label: "Other" }}
+        FieldProps={{ validationMode: "onChange", label: "Other" }}
       />,
     );
     render(
       <Textarea
         label="Notes"
         // @ts-expect-error disabled is owned by Textarea
-        FieldProps={{ errorType: "tooltip", disabled: true }}
+        FieldProps={{ validationMode: "onChange", disabled: true }}
       />,
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);

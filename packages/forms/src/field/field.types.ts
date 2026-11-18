@@ -51,7 +51,6 @@ export type FieldRowProps = GroupProps &
     frameClassName?: string;
   }>;
 
-export type FieldErrorType = "inline" | "tooltip" | "absolute";
 export type FieldErrorProps = Field.Error.Props;
 export type FieldHintProps = React.ComponentPropsWithoutRef<"span">;
 export type FieldActionProps = GroupProps;
@@ -62,7 +61,6 @@ export type FieldProps = React.PropsWithChildren &
     label?: React.ReactNode;
     description?: React.ReactNode;
     action?: React.ReactNode;
-    errorType?: FieldErrorType;
     RootProps?: FieldRootProps;
     /** `required` is Field's own, so the label and the control can't disagree. */
     LabelProps?: Omit<FieldLabelProps, "required">;

@@ -119,35 +119,6 @@ export const Invalid = () => (
   </Form>
 );
 
-/*
- * `inline` reserves a line beneath the control, `tooltip` moves the message to
- * an icon beside the label, and `absolute` floats it so nothing below shifts.
- */
-export const ErrorTypes = () => (
-  <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8}>
-      <Input
-        name="inline"
-        label="Inline"
-        defaultValue="not-an-email"
-        FieldProps={{ errorType: "inline" }}
-      />
-      <Input
-        name="tooltip"
-        label="Tooltip"
-        defaultValue="not-an-email"
-        FieldProps={{ errorType: "tooltip" }}
-      />
-      <Input
-        name="absolute"
-        label="Absolute"
-        defaultValue="not-an-email"
-        FieldProps={{ errorType: "absolute" }}
-      />
-    </Stack>
-  </Form>
-);
-
 export const Controlled = () => {
   const [value, setValue] = useState("");
 

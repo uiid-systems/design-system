@@ -575,14 +575,14 @@ describe("Input hands disabled and fullwidth to Field", () => {
       <Input
         label="Email"
         // @ts-expect-error label is owned by Input
-        FieldProps={{ errorType: "tooltip", label: "Other" }}
+        FieldProps={{ validationMode: "onChange", label: "Other" }}
       />,
     );
     render(
       <Input
         label="Email"
         // @ts-expect-error disabled is owned by Input
-        FieldProps={{ errorType: "tooltip", disabled: true }}
+        FieldProps={{ validationMode: "onChange", disabled: true }}
       />,
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);

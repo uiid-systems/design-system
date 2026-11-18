@@ -13,7 +13,7 @@ Use MaskInput when you want to:
 
 Everything [`Input`](../input/README.md) offers is here too: `label`, `description`, `before`/`after` slots, `size`, `variant`, `fullwidth`, the palette `color` tint, and the `required`/`disabled`/`readOnly` states.
 
-Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
+Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it, and the error replaces the `description` while it shows.
 
 MaskInput owns the value of its `<input>`, so a value written onto the element through `ref` is overwritten on the next render. react-hook-form applies `defaultValues`, `reset()` and `setValue()` that way, so hand those values to MaskInput's own `defaultValue` or `value` instead.
 

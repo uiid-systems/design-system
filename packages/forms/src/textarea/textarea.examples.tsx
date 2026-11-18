@@ -169,31 +169,6 @@ export const Invalid = () => (
   </Form>
 );
 
-export const ErrorTypes = () => (
-  <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8}>
-      <Textarea
-        name="inline"
-        label="Inline"
-        rows={2}
-        FieldProps={{ errorType: "inline" }}
-      />
-      <Textarea
-        name="tooltip"
-        label="Tooltip"
-        rows={2}
-        FieldProps={{ errorType: "tooltip" }}
-      />
-      <Textarea
-        name="absolute"
-        label="Absolute"
-        rows={2}
-        FieldProps={{ errorType: "absolute" }}
-      />
-    </Stack>
-  </Form>
-);
-
 export const Controlled = () => {
   const [value, setValue] = useState("");
 

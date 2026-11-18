@@ -73,7 +73,6 @@ export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const Required: Story = { render: () => <Examples.Required /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };
-export const ErrorTypes: Story = { render: () => <Examples.ErrorTypes /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const Grouped: Story = { render: () => <Examples.Grouped /> };

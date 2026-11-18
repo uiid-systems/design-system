@@ -41,12 +41,6 @@ export const Playground: Story = {
 export const UsernamePassword: Story = {
   render: () => <Examples.UsernamePassword />,
 };
-export const TooltipErrors: Story = {
-  render: () => <Examples.TooltipErrors />,
-};
-export const AbsoluteErrors: Story = {
-  render: () => <Examples.AbsoluteErrors />,
-};
 export const SelectAndConfirm: Story = {
   render: () => <Examples.SelectAndConfirm />,
 };

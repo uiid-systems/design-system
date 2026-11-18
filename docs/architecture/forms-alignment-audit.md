@@ -264,7 +264,7 @@ multi-story 3/16 · README 16/16 but stale-format.
    instance; no isolated `Playground`. Inverse of the button/text pattern.
 4. **`form` has no story file at all** — the only component with zero direct coverage.
 5. **State coverage gaps:** invalid/error absent from 14/16 component stories;
-   `errorType` (inline/tooltip/absolute) undemonstrated; controlled-vs-uncontrolled
+   the inline/tooltip/absolute error modes undemonstrated (removed in UI-399); controlled-vs-uncontrolled
    unstoried; checkbox/radio never exercise `size`.
 6. **Composition stories** (`username-password`, `select-and-confirm`) create a phantom
    `Forms/Form` sidebar folder, contain the package's only hand-styled markup, and

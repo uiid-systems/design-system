@@ -128,28 +128,6 @@ export const Invalid = () => (
   </Form>
 );
 
-export const ErrorTypes = () => (
-  <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
-    <Stack gap={8} ax="start">
-      <NumberField
-        name="inline"
-        label="Inline"
-        FieldProps={{ errorType: "inline" }}
-      />
-      <NumberField
-        name="tooltip"
-        label="Tooltip"
-        FieldProps={{ errorType: "tooltip" }}
-      />
-      <NumberField
-        name="absolute"
-        label="Absolute"
-        FieldProps={{ errorType: "absolute" }}
-      />
-    </Stack>
-  </Form>
-);
-
 export const Controlled = () => {
   const [value, setValue] = useState<number | null>(2);
 
