@@ -1,6 +1,7 @@
 "use client";
 
 import { Field as BaseField } from "@base-ui/react/field";
+import { Popover as BasePopover } from "@base-ui/react/popover";
 import { Card } from "@uiid/cards";
 import { TriangleAlertIcon } from "@uiid/icons/triangle-alert";
 import { Popover } from "@uiid/overlays";
@@ -22,8 +23,9 @@ import styles from "../field.module.css";
  * The icon is a Popover trigger opened on hover rather than a Tooltip, as Base
  * UI advises for an infotip: a tooltip opens only on hover or focus, so it
  * cannot be opened by touch or pressed from the keyboard. The Popover's Card
- * is swapped for a tooltip-sized one, and its text renders as a `div` so a
- * list of errors is not nested in a `span`.
+ * is swapped for a tooltip-sized one, which drops its Title and Description,
+ * so the popup is named "Error" and described by the message. The message
+ * renders as a `div` so a list of errors is not nested in a `span`.
  */
 export const FieldErrorTooltip = (props: FieldErrorProps) => {
   return (
@@ -35,6 +37,7 @@ export const FieldErrorTooltip = (props: FieldErrorProps) => {
             TriggerProps={{ openOnHover: true, delay: FIELD_TOOLTIP_DELAY }}
             PositionerProps={{ align: "end" }}
             PopupProps={{
+              "aria-label": "Error",
               render: <Card shadow py={2} px={2} />,
               className: styles["field-error-popup"],
             }}
@@ -50,9 +53,11 @@ export const FieldErrorTooltip = (props: FieldErrorProps) => {
               </span>
             }
           >
-            <Text size={-1} render={<div />}>
+            <BasePopover.Description
+              render={<Text size={-1} render={<div />} />}
+            >
               {children}
-            </Text>
+            </BasePopover.Description>
           </Popover>
           <div className="sr-only">{children}</div>
         </div>

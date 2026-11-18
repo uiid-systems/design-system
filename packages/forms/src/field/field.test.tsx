@@ -246,6 +246,11 @@ describe("Field errorType", () => {
       ).toHaveTextContent("Enter an email"),
     );
     expect(trigger).toHaveAttribute("aria-expanded", "true");
+    const popup = document.querySelector(
+      "[data-slot='popover-popup']",
+    ) as HTMLElement;
+    expect(popup).toHaveAccessibleName("Error");
+    expect(popup).toHaveAccessibleDescription("Enter an email");
 
     await user.keyboard("{Escape}");
     await waitFor(() =>
@@ -268,15 +273,20 @@ describe("Field errorType", () => {
       </Field>,
     );
 
-    await user.pointer({
-      keys: "[TouchA]",
-      target: screen.getByRole("button", { name: "Show error" }),
-    });
+    const trigger = screen.getByRole("button", { name: "Show error" });
 
+    await user.pointer({ keys: "[TouchA]", target: trigger });
     await waitFor(() =>
       expect(
         document.querySelector("[data-slot='popover-popup']"),
       ).toHaveTextContent("Enter an email"),
+    );
+
+    await user.pointer({ keys: "[TouchA]", target: trigger });
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='popover-popup']"),
+      ).not.toBeInTheDocument(),
     );
   });
 
