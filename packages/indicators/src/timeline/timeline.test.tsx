@@ -290,20 +290,6 @@ describe("Timeline", () => {
     ).toBeNull();
   });
 
-  it("warns when a child is not a TimelineItem", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const Wrapped = () => <TimelineItem title="Wrapped" />;
-    render(
-      <Timeline>
-        <Wrapped />
-      </Timeline>,
-    );
-    expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining("direct children"),
-    );
-    warn.mockRestore();
-  });
-
   it("does not warn for TimelineItem children", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     render(
@@ -313,6 +299,25 @@ describe("Timeline", () => {
       </Timeline>,
     );
     expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  // Runs after the test above: the warning fires once per page load.
+  it("warns once when a child is not a TimelineItem", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const Wrapped = () => <TimelineItem title="Wrapped" />;
+    const tree = (
+      <Timeline>
+        <Wrapped />
+      </Timeline>
+    );
+    const { rerender } = render(tree);
+    rerender(tree);
+    render(tree);
+    expect(warn).toHaveBeenCalledOnce();
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("direct children"),
+    );
     warn.mockRestore();
   });
 

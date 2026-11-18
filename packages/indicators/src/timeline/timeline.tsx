@@ -34,13 +34,16 @@ function flattenFragments(nodes: React.ReactNode): React.ReactNode[] {
   );
 }
 
+let warnedNonItemChild = false;
+
 function warnOnNonItemChildren(children: React.ReactNode[]) {
-  if (process.env.NODE_ENV === "production") return;
+  if (process.env.NODE_ENV === "production" || warnedNonItemChild) return;
   if (
     children.some(
       (child) => React.isValidElement(child) && child.type !== TimelineItem,
     )
   ) {
+    warnedNonItemChild = true;
     console.warn(
       "Timeline: items must be direct children of type TimelineItem. A wrapper " +
         "component hides the item's status, media and marker from the timeline.",
