@@ -39,7 +39,7 @@ describe("List", () => {
   // ItemProps and GroupProps are defaults. They used to be spread after each
   // entry, so a shared value replaced the entry's own, and GroupProps (then
   // typed as ListGroupProps) could wipe every group's heading or items. Nor
-  // did they reach nested groups, whose items also lacked `fullwidth`.
+  // did they reach nested groups, whose items also lacked a full width.
 
   describe("ItemProps and GroupProps", () => {
     const itemByLabel = (label: string) =>
@@ -67,7 +67,7 @@ describe("List", () => {
       expect(itemByLabel("Own")).toHaveClass("shared", "own");
     });
 
-    it("applies ItemProps and fullwidth to items in nested groups", () => {
+    it("applies ItemProps and a full width to items in nested groups", () => {
       render(
         <List
           ItemProps={{ className: "shared" }}
@@ -84,7 +84,7 @@ describe("List", () => {
       );
       for (const label of ["Child", "Grandchild"]) {
         expect(itemByLabel(label)).toHaveClass("shared");
-        expect(itemByLabel(label)).toHaveAttribute("data-ui-fullwidth");
+        expect(itemByLabel(label)).toHaveAttribute("data-ui-w", "full");
       }
     });
 
@@ -97,8 +97,52 @@ describe("List", () => {
           ]}
         />,
       );
-      expect(itemByLabel("Nested")).toHaveAttribute("data-ui-fullwidth");
-      expect(itemByLabel("Top")).toHaveAttribute("data-ui-fullwidth");
+      expect(itemByLabel("Nested")).toHaveAttribute("data-ui-w", "full");
+      expect(itemByLabel("Top")).toHaveAttribute("data-ui-w", "full");
+    });
+
+    // Internal layout reads `w="full"`, not the deprecated `fullwidth` toggle,
+    // so a caller's own `w` in ItemProps or GroupProps can narrow a row.
+    it("fills the width with w, not the deprecated fullwidth toggle", () => {
+      const { container } = render(
+        <List
+          category="Section"
+          items={[
+            { label: "Top", icon: StarIcon },
+            { category: "Group", items: [{ label: "Nested" }] },
+          ]}
+        />,
+      );
+      expect(container.querySelector("[data-ui-fullwidth]")).toBeNull();
+      for (const slot of [
+        "list-section",
+        "list-group",
+        "list-group-header",
+        "list-item",
+      ]) {
+        expect(
+          container.querySelector(`[data-slot="${slot}"]`),
+        ).toHaveAttribute("data-ui-w", "full");
+      }
+    });
+
+    it("lets ItemProps narrow an item's width", () => {
+      render(<List ItemProps={{ w: 200 }} items={[{ label: "Narrow" }]} />);
+      expect(itemByLabel("Narrow")).toHaveAttribute("data-ui-w", "200");
+      // A toggle wins over a style prop, so `fullwidth` would still fill it.
+      expect(itemByLabel("Narrow")).not.toHaveAttribute("data-ui-fullwidth");
+    });
+
+    it("lets GroupProps narrow a group's width", () => {
+      const { container } = render(
+        <List
+          GroupProps={{ w: 200 }}
+          items={[{ category: "Group", items: [{ label: "Leaf" }] }]}
+        />,
+      );
+      const group = container.querySelector('[data-slot="list-group"]');
+      expect(group).toHaveAttribute("data-ui-w", "200");
+      expect(group).not.toHaveAttribute("data-ui-fullwidth");
     });
 
     it("applies GroupProps to every group's root without touching its content", () => {
@@ -116,7 +160,7 @@ describe("List", () => {
       const groups = container.querySelectorAll('[data-slot="list-group"]');
       expect(groups).toHaveLength(2);
       for (const group of groups) {
-        expect(group).toHaveClass(styles["list-group"], "shared-group");
+        expect(group).toHaveClass("shared-group");
         expect(group).toHaveAttribute("data-ui-gap", "2");
       }
       expect(screen.getByText("Outer")).toBeInTheDocument();

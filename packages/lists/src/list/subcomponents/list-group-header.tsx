@@ -25,7 +25,7 @@ export const ListGroupHeader = ({
       ax="start"
       gap={2}
       py={1}
-      fullwidth
+      w="full"
     >
       {Icon && (
         <Icon className={styles["list-group-icon"]} size={ICON_SIZE_LARGE} />

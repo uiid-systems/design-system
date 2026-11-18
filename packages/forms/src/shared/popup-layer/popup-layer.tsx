@@ -107,11 +107,7 @@ export const PopupLayerList = ({
   ...props
 }: WithSlot<BasePopupLayerTypes.List.Props>) => {
   return (
-    <BasePopupLayer.List
-      data-slot={slot}
-      render={<List fullwidth />}
-      {...props}
-    >
+    <BasePopupLayer.List data-slot={slot} render={<List w="full" />} {...props}>
       {children}
     </BasePopupLayer.List>
   );
@@ -146,7 +142,7 @@ export const PopupLayerItem = ({
         ((renderProps) => (
           <ListItem
             render={<div />}
-            fullwidth
+            w="full"
             label={label ?? resolveItemLabel(value)}
             {...renderProps}
           />

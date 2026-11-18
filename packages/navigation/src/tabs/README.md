@@ -10,8 +10,8 @@ import { Tabs } from "@uiid/navigation";
 // Basic usage
 <Tabs
   items={[
-    { label: "Tab 1", value: "tab-1", render: <div>Content 1</div> },
-    { label: "Tab 2", value: "tab-2", render: <div>Content 2</div> },
+    { label: "Tab 1", value: "tab-1", content: <div>Content 1</div> },
+    { label: "Tab 2", value: "tab-2", content: <div>Content 2</div> },
   ]}
 />
 
@@ -34,7 +34,7 @@ import { Tabs } from "@uiid/navigation";
 
 | Prop             | Type                                             | Default            | Description                                               |
 | ---------------- | ------------------------------------------------ | ------------------ | --------------------------------------------------------- |
-| `items`          | `TabProps[]`                                     | —                  | Array of tab items (required)                             |
+| `items`          | `TabsItemData[]`                                 | —                  | Array of tab items (required)                             |
 | `defaultValue`   | `string`                                         | First item's value | Initially selected tab                                    |
 | `value`          | `string`                                         | —                  | Controlled selected tab                                   |
 | `onValueChange`  | `(value: string, details: object) => void`       | —                  | Callback when tab changes                                 |
@@ -48,13 +48,15 @@ import { Tabs } from "@uiid/navigation";
 
 `defaultValue` falls back to the first item's value only when it is `undefined`, and there is no default when `items` is empty. Pass `defaultValue={null}` for no active tab. The default is read once, on mount: when `items` starts empty and loads later, the first tab is selected and `onValueChange` fires once with the reason `"initial"`.
 
-### TabProps (items)
+### TabsItemData (items)
 
-| Prop     | Type        | Description       |
-| -------- | ----------- | ----------------- |
-| `label`  | `string`    | Tab button label  |
-| `value`  | `string`    | Unique identifier |
-| `render` | `ReactNode` | Panel content     |
+| Prop      | Type        | Description       |
+| --------- | ----------- | ----------------- |
+| `label`   | `string`    | Tab button label  |
+| `value`   | `string`    | Unique identifier |
+| `content` | `ReactNode` | Panel content     |
+
+`TabsItemData` was `TabProps`, and `content` was `render`. Both old names still work for one release and are deprecated.
 
 ## Data Slots
 

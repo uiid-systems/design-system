@@ -43,7 +43,6 @@ export type TableRootProps = React.ComponentProps<"table"> &
      * it horizontally instead of squashing the columns. Off by default: the
      * table is as wide as its container. */
     minw?: number;
-    selectable?: boolean;
     striped?: boolean;
     bordered?: boolean;
     /** Highlight rows on hover. */
@@ -54,6 +53,8 @@ export type TableProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = Omit<TableRootProps, "children"> & {
   items: T[];
+  /** Add a checkbox column for selecting rows. */
+  selectable?: boolean;
   columns?: string[];
   actions?: {
     primary?: TableActionsProps<T>[];

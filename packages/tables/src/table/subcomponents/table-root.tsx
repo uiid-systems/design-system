@@ -13,7 +13,7 @@ export const TableRoot = ({
   className,
   children,
   ...props
-}: Omit<TableRootProps, "selectable">) => {
+}: TableRootProps) => {
   const preparedProps = prepareComponentProps({
     componentName: "table-root",
     styleProps: ["minw"],

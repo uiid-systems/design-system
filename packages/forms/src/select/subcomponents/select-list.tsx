@@ -9,7 +9,7 @@ export const SelectList = ({ children, ...props }: SelectListProps) => {
   return (
     <BaseSelect.List
       data-slot="select-list"
-      render={<List fullwidth marker="none" />}
+      render={<List w="full" marker="none" />}
       {...props}
     >
       {children}

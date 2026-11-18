@@ -58,6 +58,22 @@ describe("Combobox", () => {
     expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
 
+  // The popup list and its rows fill with `w`, not the deprecated `fullwidth`.
+  it("fills the list and its rows with w", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={defaultItems} />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("{ArrowDown}");
+
+    const list = screen.getByRole("listbox");
+    expect(list).toHaveAttribute("data-ui-w", "full");
+    expect(list).not.toHaveAttribute("data-ui-fullwidth");
+    const row = screen.getByRole("option", { name: /apple/i });
+    expect(row).toHaveAttribute("data-ui-w", "full");
+    expect(row).not.toHaveAttribute("data-ui-fullwidth");
+  });
+
   it("displays all items when opened", async () => {
     const user = userEvent.setup();
     render(<Combobox items={defaultItems} />);

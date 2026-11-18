@@ -1,5 +1,4 @@
 import { ConditionalRender, Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
 
 import { ICON_SIZE_LARGE } from "../list.constants";
 import type { ListItemProps } from "../list.types";
@@ -23,7 +22,7 @@ export const ListItem = ({
       ay="start"
       ax="space-between"
       gap={8}
-      className={cx(styles["list-item"], className)}
+      className={className}
       {...props}
     >
       {children || (
@@ -33,7 +32,7 @@ export const ListItem = ({
             <Group
               gap={2}
               ay="start"
-              fullwidth
+              w="full"
               className={styles["list-item-content"]}
             />
           }

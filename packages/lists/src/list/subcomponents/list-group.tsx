@@ -56,7 +56,7 @@ export const ListEntries = ({
     ) : (
       <ListItem
         key={index}
-        fullwidth
+        w="full"
         {...ItemProps}
         {...item}
         className={cx(ItemProps?.className, item.className)}
@@ -75,9 +75,9 @@ export const ListGroup = ({
     <Stack
       data-slot="list-group"
       render={<li />}
-      fullwidth
+      w="full"
       {...GroupProps}
-      className={cx(styles["list-group"], GroupProps?.className)}
+      className={GroupProps?.className}
     >
       <ListGroupHeader category={category} icon={icon} />
 
