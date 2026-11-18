@@ -344,10 +344,12 @@ describe("useFormSubmit", () => {
     expect(onError).not.toHaveBeenCalled();
   });
 
-  it("clears previous errors and success when a new submit starts", async () => {
+  it("clears previous errors, success and result when a new submit starts", async () => {
     const { result } = renderHook(() => useFormSubmit());
 
-    await act(() => result.current.handleSubmit(async () => ({ result: {} })));
+    await act(() =>
+      result.current.handleSubmit(async () => ({ result: { id: 1 } })),
+    );
     expect(result.current.success).toBe(true);
 
     let resolve!: (value: { errors: Record<string, string> }) => void;
@@ -359,6 +361,7 @@ describe("useFormSubmit", () => {
     });
 
     expect(result.current.success).toBe(false);
+    expect(result.current.result).toBeNull();
     expect(result.current.loading).toBe(true);
 
     await act(async () => {
@@ -367,10 +370,37 @@ describe("useFormSubmit", () => {
     });
 
     expect(result.current.errors).toEqual({ name: "Taken" });
+    expect(result.current.result).toBeNull();
     expect(result.current.loading).toBe(false);
   });
 
-  it("is loading until the submit settles, with no delay by default", async () => {
+  it("rejects and resets loading, success and result when the submit throws", async () => {
+    const onSuccess = vi.fn();
+    const onError = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onSuccess, onError }));
+
+    await act(() =>
+      result.current.handleSubmit(async () => ({ result: { id: 1 } })),
+    );
+    onSuccess.mockClear();
+
+    const failure = new Error("Network down");
+    await act(async () => {
+      await expect(
+        result.current.handleSubmit(async () => {
+          throw failure;
+        }),
+      ).rejects.toBe(failure);
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.success).toBe(false);
+    expect(result.current.result).toBeNull();
+    expect(onSuccess).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it("is loading until the submit settles", async () => {
     const { result } = renderHook(() => useFormSubmit());
     const submitFn = vi.fn(async () => ({ result: {} }));
 

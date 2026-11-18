@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useLayoutEffect, useRef } from "react";
 
 export type FormErrors = Record<string, string | string[]>;
 
@@ -35,7 +35,9 @@ const hasErrors = (errors: FormErrors) => Object.keys(errors).length > 0;
 /** Keeps the latest options without making the callbacks that read them unstable. */
 const useLatest = <V>(value: V) => {
   const ref = useRef(value);
-  ref.current = value;
+  useLayoutEffect(() => {
+    ref.current = value;
+  });
   return ref;
 };
 
@@ -82,7 +84,7 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     reset,
   };
 
-  return { state, optionsRef, succeed };
+  return { state, optionsRef, succeed, setResult };
 };
 
 /**
@@ -122,13 +124,15 @@ export type UseFormSubmitOptions<T = Record<string, unknown>> =
 export function useFormSubmit<T = Record<string, unknown>>(
   options: UseFormSubmitOptions<T> = {},
 ): FormState<T> & SubmitHandler<T> {
-  const { state, optionsRef, succeed } = useFormStateInternal<T>(options);
+  const { state, optionsRef, succeed, setResult } =
+    useFormStateInternal<T>(options);
   const { setErrors, setLoading } = state;
 
   const handleSubmit = useCallback(
     async (submitFn: () => Promise<{ errors?: FormErrors; result?: T }>) => {
       const { delay = 0 } = optionsRef.current;
       setLoading(true);
+      setResult(null);
       setErrors({});
 
       if (delay > 0) {
@@ -147,7 +151,7 @@ export function useFormSubmit<T = Record<string, unknown>>(
         setLoading(false);
       }
     },
-    [optionsRef, setErrors, setLoading, succeed],
+    [optionsRef, setErrors, setLoading, setResult, succeed],
   );
 
   return {
