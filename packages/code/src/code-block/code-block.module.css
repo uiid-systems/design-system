@@ -166,7 +166,7 @@
 
   &:hover {
     color: var(--shade-foreground);
-    background-color: var(--shade-halftone, var(--shade-surface));
+    background-color: var(--shade-halftone);
   }
 
   &:focus-visible {

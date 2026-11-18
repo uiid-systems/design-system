@@ -63,7 +63,7 @@
     margin-inline-start: calc(-1 * var(--code-editor-gutter));
     text-align: end;
     white-space: nowrap;
-    color: var(--shade-muted, #666);
+    color: var(--shade-muted);
     user-select: none;
   }
 
@@ -112,7 +112,7 @@
   }
 
   &::selection {
-    background-color: rgba(var(--shade-muted-rgb, 128, 128, 128), 0.3);
+    background-color: color-mix(in oklch, var(--shade-muted) 30%, transparent);
   }
 }
 
