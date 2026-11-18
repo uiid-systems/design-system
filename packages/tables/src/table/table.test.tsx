@@ -381,14 +381,18 @@ describe("Table", () => {
       expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2]);
       expect(selectAll()).toBeChecked();
       expect(selectAll()).not.toBePartiallyChecked();
-      for (const checkbox of rowCheckboxes()) expect(checkbox).toBeChecked();
+      for (const checkbox of rowCheckboxes()) {
+        expect(checkbox).toBeChecked();
+      }
     });
 
     it("checks the header checkbox once every row is selected one by one", async () => {
       const user = userEvent.setup();
       render(<Table items={ITEMS} selectable />);
 
-      for (const checkbox of rowCheckboxes()) await user.click(checkbox);
+      for (const checkbox of rowCheckboxes()) {
+        await user.click(checkbox);
+      }
 
       expect(selectAll()).toBeChecked();
     });
@@ -455,6 +459,60 @@ describe("Table", () => {
 
       await user.click(rowCheckboxes()[2]);
       expect(onSelectedRowsChange).toHaveBeenLastCalledWith([]);
+    });
+
+    it("clears every row when the checked header checkbox is clicked", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2]);
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([]);
+      expect(selectAll()).not.toBeChecked();
+      for (const checkbox of rowCheckboxes()) {
+        expect(checkbox).not.toBeChecked();
+      }
+    });
+
+    it("reports select-all without changing a controlled selection", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      const { rerender } = render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[1]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(selectAll());
+
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2]);
+      expect(selectAll()).toBePartiallyChecked();
+
+      rerender(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[0, 1, 2]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      expect(selectAll()).toBeChecked();
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([]);
+      expect(selectAll()).toBeChecked();
     });
 
     it("ignores defaultSelectedRows when selectedRows is set", () => {
@@ -571,10 +629,12 @@ describe("Table", () => {
 
   describe("footer", () => {
     const ITEMS = [{ name: "Ada", email: "ada@example.com" }];
+    const cellTexts = () =>
+      screen.getAllByRole("cell").map((cell) => cell.textContent);
 
     it("renders no footer by default", () => {
       render(<Table items={ITEMS} />);
-      expect(screen.getAllByRole("rowgroup")).toHaveLength(2);
+      expect(cellTexts()).toEqual(["Ada", "ada@example.com"]);
     });
 
     it("renders footer content in a cell spanning every column", () => {
@@ -589,9 +649,7 @@ describe("Table", () => {
         />,
       );
 
-      const footer = screen.getAllByRole("rowgroup")[2];
-      const cell = within(footer).getByRole("cell");
-      expect(cell).toHaveTextContent("1 member");
+      const cell = screen.getByRole("cell", { name: "1 member" });
       /* Two data columns, plus the checkbox and actions columns. */
       expect(cell).toHaveAttribute("colspan", "4");
     });
