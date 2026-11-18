@@ -100,11 +100,25 @@ export const ToggleGroup = <Value extends string = string>({
   // rather than taking its place.
   const composedRef = useComposedRefs(ref, panelRef);
 
+  // A group that starts with no value has nothing for the indicator to sit
+  // behind, and a controlled parent can still hand back an empty one.
+  const hasValue = (value ?? activeValue).length > 0;
+
   // The handler runs first so it can cancel: Base UI drops a cancelled change,
   // and the indicator's mirror of the uncontrolled value has to drop it too.
   const handleValueChange: NonNullable<
     ToggleGroupProps<Value>["onValueChange"]
   > = (groupValue, eventDetails) => {
+    // A single-selection group that holds a value keeps one. Base UI empties
+    // it when the pressed toggle is pressed again, so that change is refused
+    // here, for the keyboard as well as the pointer. The consumer's handler
+    // never hears of it: a controlled parent that stores what it is handed
+    // would empty the group itself, and cancelling cannot stop that.
+    if (!multiple && groupValue.length === 0) {
+      eventDetails.cancel();
+      return;
+    }
+
     onValueChange?.(groupValue, eventDetails);
     if (eventDetails.isCanceled) return;
 
@@ -146,7 +160,7 @@ export const ToggleGroup = <Value extends string = string>({
        * being painted as if it had. Multi-select drops it and lets each pressed
        * toggle carry its own background instead.
        */}
-      {!multiple && (
+      {!multiple && hasValue && (
         <div
           data-slot="toggle-group-indicator"
           className={styles["toggle-group-indicator"]}

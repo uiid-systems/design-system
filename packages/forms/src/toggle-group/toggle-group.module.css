@@ -205,13 +205,12 @@
   }
 
   /*
-   * A single-selection group is meant to always hold a value, so blocking the
-   * pressed toggle keeps a click from emptying it. `multiple` has no such
-   * invariant — un-pressing is the point of it — so the pressed toggle stays
-   * clickable there.
+   * A single-selection group refuses to release its pressed toggle, so that
+   * toggle does not offer the pointer. In a `multiple` group pressing it again
+   * releases it, so it keeps the pointer there.
    */
   .toggle-group-panel:not([data-multiple]) &[data-pressed] {
-    pointer-events: none;
+    cursor: default;
   }
 
   /*

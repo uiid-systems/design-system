@@ -107,7 +107,7 @@ describe("ToggleGroup multiple", () => {
   });
 
   it("keeps the indicator for a single-selection group", () => {
-    const { container } = renderGroup();
+    const { container } = renderGroup({ defaultValue: ["monthly"] });
     expect(
       container.querySelector('[data-slot="toggle-group-indicator"]'),
     ).toBeInTheDocument();
@@ -137,6 +137,147 @@ describe("ToggleGroup multiple", () => {
     await user.click(bold);
 
     expect(bold).not.toHaveAttribute("data-pressed");
+  });
+});
+
+/* A single-selection group that holds a value keeps one. Base UI releases the
+   pressed toggle when it is pressed again, so the group refuses that change
+   itself, for the keyboard as well as the pointer. */
+describe("ToggleGroup single selection", () => {
+  const indicator = (container: HTMLElement) =>
+    container.querySelector('[data-slot="toggle-group-indicator"]');
+
+  it.each([
+    ["Space", " "],
+    ["Enter", "{Enter}"],
+  ])("keeps the pressed toggle pressed on %s", async (_name, key) => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const { container } = renderGroup({
+      defaultValue: ["monthly"],
+      onValueChange,
+    });
+    const [monthly, yearly] = screen.getAllByRole("button");
+
+    monthly.focus();
+    await user.keyboard(key);
+
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(yearly).toHaveAttribute("aria-pressed", "false");
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(indicator(container)).toBeInTheDocument();
+  });
+
+  it("keeps the pressed toggle pressed when it is clicked", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    renderGroup({ defaultValue: ["monthly"], onValueChange });
+    const monthly = screen.getByRole("button", { name: "Monthly" });
+
+    await user.click(monthly);
+
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  /* A controlled parent that stores whatever it is handed would empty the
+     group itself, so the refused change must never reach its handler. */
+  it("keeps a controlled value when its pressed toggle is pressed again", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+
+    const Billing = () => {
+      const [plan, setPlan] = useState(["monthly"]);
+
+      return (
+        <ToggleGroup
+          value={plan}
+          onValueChange={(next, details) => {
+            onValueChange(next, details);
+            setPlan(next);
+          }}
+        >
+          <Toggle value="monthly">Monthly</Toggle>
+          <Toggle value="yearly">Yearly</Toggle>
+        </ToggleGroup>
+      );
+    };
+    render(<Billing />);
+    const monthly = screen.getByRole("button", { name: "Monthly" });
+
+    monthly.focus();
+    await user.keyboard(" ");
+
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["Space", " "],
+    ["Enter", "{Enter}"],
+  ])("still switches to a different toggle on %s", async (_name, key) => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    renderGroup({ defaultValue: ["monthly"], onValueChange });
+    const [monthly, yearly] = screen.getAllByRole("button");
+
+    yearly.focus();
+    await user.keyboard(key);
+
+    expect(monthly).toHaveAttribute("aria-pressed", "false");
+    expect(yearly).toHaveAttribute("aria-pressed", "true");
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    expect(onValueChange.mock.calls[0][0]).toEqual(["yearly"]);
+  });
+
+  it("lets a multiple group be emptied from the keyboard", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <ToggleGroup
+        multiple
+        defaultValue={["bold"]}
+        onValueChange={onValueChange}
+      >
+        <Toggle value="bold">Bold</Toggle>
+        <Toggle value="italic">Italic</Toggle>
+      </ToggleGroup>,
+    );
+    const bold = screen.getByRole("button", { name: "Bold" });
+
+    bold.focus();
+    await user.keyboard(" ");
+
+    expect(bold).toHaveAttribute("aria-pressed", "false");
+    expect(onValueChange.mock.calls[0][0]).toEqual([]);
+  });
+
+  it("shows no indicator while a group that starts empty has no value", async () => {
+    const user = userEvent.setup();
+    const { container } = renderGroup();
+
+    expect(indicator(container)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Yearly" }));
+
+    expect(indicator(container)).toBeInTheDocument();
+  });
+
+  it("shows no indicator for a controlled group with an empty value", () => {
+    const { container, rerender } = render(
+      <ToggleGroup value={["monthly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+    expect(indicator(container)).toBeInTheDocument();
+
+    rerender(
+      <ToggleGroup value={[]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    expect(indicator(container)).not.toBeInTheDocument();
   });
 });
 
