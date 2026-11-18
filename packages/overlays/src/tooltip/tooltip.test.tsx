@@ -311,6 +311,57 @@ describe("Tooltip", () => {
   // Base UI accepts `className` as a function of the part's state. Each part
   // must hand the caller's function that state and keep its own module class.
 
+  it("gives a string trigger the shared focus-ring class", () => {
+    render(<Tooltip trigger="Hover me">Tooltip content</Tooltip>);
+
+    expect(styles["tooltip-trigger"]).toContain("composes-trigger");
+    expect(screen.getByRole("button", { name: "Hover me" })).toHaveClass(
+      styles["tooltip-trigger"],
+    );
+  });
+
+  it("merges a consumer className on the trigger with its own class", () => {
+    render(
+      <Tooltip
+        trigger="Hover me"
+        TriggerProps={{ className: "custom-trigger" }}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    expect(styles["tooltip-trigger"]).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Hover me" })).toHaveClass(
+      styles["tooltip-trigger"],
+      "custom-trigger",
+    );
+  });
+
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Hover me" });
+    expect(styles["tooltip-trigger"]).toBeTruthy();
+    expect(trigger).toHaveClass(styles["tooltip-trigger"], "fn-closed");
+
+    await user.hover(trigger);
+
+    await waitFor(() => {
+      expect(trigger).toHaveClass(styles["tooltip-trigger"], "fn-open");
+    });
+  });
+
   it("resolves a state-function className on the positioner alongside its own class", async () => {
     const user = userEvent.setup();
 

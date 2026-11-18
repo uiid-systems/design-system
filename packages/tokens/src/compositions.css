@@ -259,6 +259,17 @@
       pointer-events: none;
     }
   }
+
+  /*
+   * The focus ring for an overlay's trigger part. A string or function trigger
+   * is a focusable span with no focus style of its own. An element trigger
+   * that paints its own ring keeps it: `:where()` holds this to one class, and
+   * this layer sits below every component's, so Button's ring wins either way.
+   */
+  .composes-trigger:where(:focus-visible) {
+    outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+    outline-offset: var(--globals-outline-offset);
+  }
 }
 
 @layer uiid.states {

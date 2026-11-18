@@ -1,9 +1,11 @@
 "use client";
 
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import { resolveTrigger } from "@uiid/utils";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { TooltipTriggerProps } from "../tooltip.types";
+
+import styles from "../tooltip.module.css";
 
 /**
  * Unlike Dialog's, Base UI's tooltip trigger takes no `nativeButton`, so only
@@ -11,6 +13,7 @@ import type { TooltipTriggerProps } from "../tooltip.types";
  */
 export const TooltipTrigger = ({
   children,
+  className,
   render,
   ...props
 }: TooltipTriggerProps) => {
@@ -19,6 +22,7 @@ export const TooltipTrigger = ({
   return (
     <BaseTooltip.Trigger
       data-slot="tooltip-trigger"
+      className={cxState(styles["tooltip-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
     >

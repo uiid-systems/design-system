@@ -1,10 +1,13 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { resolveTrigger } from "@uiid/utils";
+import { cxState, resolveTrigger } from "@uiid/utils";
 
 import type { PopoverTriggerProps } from "../popover.types";
 
+import styles from "../popover.module.css";
+
 export const PopoverTrigger = ({
   children,
+  className,
   render,
   nativeButton,
   ...props
@@ -14,6 +17,7 @@ export const PopoverTrigger = ({
   return (
     <BasePopover.Trigger
       data-slot="popover-trigger"
+      className={cxState(styles["popover-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
       nativeButton={nativeButton ?? resolved.nativeButton}

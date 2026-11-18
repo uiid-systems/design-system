@@ -712,6 +712,7 @@ describe("Drawer", () => {
     );
 
     const trigger = document.querySelector('[data-slot="drawer-trigger"]');
+    expect(styles["drawer-trigger"]).toContain("composes-trigger");
     expect(trigger).toHaveClass(styles["drawer-trigger"], "fn-closed");
 
     await user.click(screen.getByRole("button", { name: "Open drawer" }));

@@ -546,6 +546,57 @@ describe("Popover", () => {
   // Base UI accepts `className` as a function of the part's state. Each part
   // must hand the caller's function that state and keep its own module class.
 
+  it("gives a string trigger the shared focus-ring class", () => {
+    render(<Popover trigger="Open popover">Popover content</Popover>);
+
+    expect(styles["popover-trigger"]).toContain("composes-trigger");
+    expect(screen.getByRole("button", { name: "Open popover" })).toHaveClass(
+      styles["popover-trigger"],
+    );
+  });
+
+  it("merges a consumer className on the trigger with its own class", () => {
+    render(
+      <Popover
+        trigger="Open popover"
+        TriggerProps={{ className: "custom-trigger" }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    expect(styles["popover-trigger"]).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Open popover" })).toHaveClass(
+      styles["popover-trigger"],
+      "custom-trigger",
+    );
+  });
+
+  it("resolves a state-function className on the trigger alongside its own class", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        TriggerProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Open popover" });
+    expect(styles["popover-trigger"]).toBeTruthy();
+    expect(trigger).toHaveClass(styles["popover-trigger"], "fn-closed");
+
+    await user.click(trigger);
+
+    await waitFor(() => {
+      expect(trigger).toHaveClass(styles["popover-trigger"], "fn-open");
+    });
+  });
+
   it("resolves a state-function className on the positioner alongside its own class", () => {
     render(
       <Popover
