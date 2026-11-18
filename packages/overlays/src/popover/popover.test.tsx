@@ -370,6 +370,45 @@ describe("Popover", () => {
     });
   });
 
+  it("calls RootProps.onOpenChange alongside onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const rootOnOpenChange = vi.fn();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        onOpenChange={onOpenChange}
+        RootProps={{ onOpenChange: rootOnOpenChange }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+
+    expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything());
+    expect(rootOnOpenChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("lets RootProps.onOpenChange cancel an open", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        onOpenChange={onOpenChange}
+        RootProps={{ onOpenChange: (_, details) => details.cancel() }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.queryByText("Popover content")).not.toBeInTheDocument();
+  });
+
   it("can be opened programmatically via controlled state", () => {
     render(
       <Popover trigger={<button>Open popover</button>} open={true}>

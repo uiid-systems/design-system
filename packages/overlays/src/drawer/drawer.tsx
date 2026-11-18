@@ -2,6 +2,7 @@
 
 import { hasTrigger } from "@uiid/utils";
 
+import { composeOpenChange } from "../shared/compose-open-change";
 import { DrawerPendingProvider } from "./drawer-pending-context";
 import type { DrawerProps, DrawerRootProps } from "./drawer.types";
 import {
@@ -47,9 +48,10 @@ export const Drawer = ({
       eventDetails.cancel();
       return;
     }
-    RootProps?.onOpenChange?.(nextOpen, eventDetails);
-    if (eventDetails.isCanceled) return;
-    onOpenChange?.(nextOpen, eventDetails);
+    composeOpenChange(RootProps?.onOpenChange, onOpenChange)(
+      nextOpen,
+      eventDetails,
+    );
   };
 
   return (

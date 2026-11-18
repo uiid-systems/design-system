@@ -2,6 +2,7 @@
 
 import { hasTrigger } from "@uiid/utils";
 
+import { composeOpenChange } from "../shared/compose-open-change";
 import {
   TooltipProvider,
   TooltipRoot,
@@ -29,7 +30,11 @@ export const Tooltip = ({
   const hasProvider = useHasTooltipProvider();
 
   const tooltip = (
-    <TooltipRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
+    <TooltipRoot
+      open={open}
+      {...RootProps}
+      onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
+    >
       {hasTrigger(trigger, TriggerProps?.render) && (
         <TooltipTrigger delay={delay} {...TriggerProps}>
           {trigger}

@@ -2,6 +2,7 @@
 
 import { hasTrigger } from "@uiid/utils";
 
+import { composeOpenChange } from "../shared/compose-open-change";
 import { DialogPendingProvider } from "./dialog-pending-context";
 import type { DialogProps, DialogRootProps } from "./dialog.types";
 import {
@@ -40,9 +41,10 @@ export const Dialog = ({
       eventDetails.cancel();
       return;
     }
-    RootProps?.onOpenChange?.(nextOpen, eventDetails);
-    if (eventDetails.isCanceled) return;
-    onOpenChange?.(nextOpen, eventDetails);
+    composeOpenChange(RootProps?.onOpenChange, onOpenChange)(
+      nextOpen,
+      eventDetails,
+    );
   };
 
   return (
