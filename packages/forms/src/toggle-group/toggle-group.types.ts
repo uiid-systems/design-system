@@ -6,9 +6,8 @@ import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 export type ToggleGroupVariants = VariantProps<typeof toggleVariants> &
   VariantProps<typeof toggleGroupVariants>;
 
-export type ToggleGroupProps = Omit<ToggleGroup.Props, "onValueChange"> & {
-  /** Surface treatment — filled by default, `ghost` drops the container background and border. */
-  variant?: "ghost";
-  /** Callback when the selected values change. */
-  onValueChange?: (value: string[]) => void;
-} & ToggleGroupVariants;
+export type ToggleGroupProps<Value extends string = string> =
+  ToggleGroup.Props<Value> & {
+    /** Surface treatment — filled by default, `ghost` drops the container background and border. */
+    variant?: "ghost";
+  } & ToggleGroupVariants;

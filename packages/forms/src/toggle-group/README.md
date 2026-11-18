@@ -14,7 +14,7 @@ Use ToggleGroup when you want to:
 
 The group shrink-wraps its toggles rather than stretching to fill its container, so it can be dropped into a layout without being sized down. Pass `fullwidth` when it should fill the row instead.
 
-`value` is always an array, even in single-selection mode. Leave it unset and the group runs itself from `defaultValue`; pass `value` and `onValueChange` to drive it yourself.
+`value` is always an array, even in single-selection mode. Leave it unset and the group runs itself from `defaultValue`; pass `value` and `onValueChange` to drive it yourself. The handler is Base UI's own: it receives the new array and the event details, so calling `eventDetails.cancel()` refuses the change, and a group whose values are a string union hands that union back.
 
 Children are `Toggle` elements, each carrying its `value`. An icon-only group needs an `aria-label` on every toggle.
 
