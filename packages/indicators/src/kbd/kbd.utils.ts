@@ -26,16 +26,18 @@ export function matchesHotkey(e: KeyboardEvent, keys: string[]) {
   return modifiers.has(e.key);
 }
 
-/** Named keys whose `KeyboardEvent.key` differs from the hotkey name. */
-const EVENT_KEYS: Record<string, string> = { space: " " };
-
 function matchesKey(e: KeyboardEvent, key: string) {
-  if (e.key.toLowerCase() === (EVENT_KEYS[key] ?? key)) return true;
+  // The space bar's `event.key` is " ", and macOS Option+Space types U+00A0.
+  if (key === "space") return e.key === " " || e.code === "Space";
+  if (e.key.toLowerCase() === key) return true;
 
   // A held modifier can change `event.key` (macOS Option+B gives "∫"), so match
-  // letters and digits on the physical key as well.
+  // letters and digits on the physical key. Skip this when `event.key` is itself
+  // a letter or digit, so a remapped layout (Dvorak Cmd+T is code KeyK) can't
+  // light the key at its QWERTY position.
   const modified = e.metaKey || e.ctrlKey || e.altKey || e.shiftKey;
   if (!modified) return false;
+  if (/^[a-z0-9]$/i.test(e.key)) return false;
   if (/^[a-z]$/.test(key)) return e.code === `Key${key.toUpperCase()}`;
   if (/^[0-9]$/.test(key)) return e.code === `Digit${key}`;
   return false;

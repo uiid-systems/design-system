@@ -8,7 +8,7 @@ Use Kbd when you want to:
 - Have the keycap light up while that shortcut is held, so users can try it in place — Kbd listens on `window` whenever `hotkey` is set
 - Drive the lit state yourself with `active`, which turns the listener off — for a key the app presses on the user's behalf, or a still frame in documentation
 
-The modifiers are `meta`, `ctrl`, `alt` and `shift`. They render as `⌘`, `⌃`, `⌥` and `⇧`, and a hotkey matches only when exactly those modifiers are held. Named keys (`enter`, `backspace`, `delete`, `escape`, `tab`, `space`, `arrowup`, `arrowdown`, `arrowleft`, `arrowright`) render as symbols; any other key is uppercased. Keys are case-insensitive. A hotkey of modifiers alone matches when the last of them goes down.
+The modifiers are `meta`, `ctrl`, `alt` and `shift`. They render as `⌘`, `⌃`, `⌥` and `⇧`, and a hotkey matches only when exactly those modifiers are held. Named keys (`enter`, `backspace`, `delete`, `escape`, `tab`, `space`, `arrowup`, `arrowdown`, `arrowleft`, `arrowright`) render as symbols; any other key is uppercased. Keys are case-insensitive. A hotkey of modifiers alone matches when the last of them goes down. When a modifier changes the typed character (macOS Option+B types `∫`), a letter or digit matches on its physical key instead, so on macOS with a remapped layout such as Dvorak an `alt` + letter hotkey follows the QWERTY position of the key.
 
 The keycap only reflects the shortcut. It does not run it, so bind the action itself elsewhere.
 

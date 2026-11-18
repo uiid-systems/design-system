@@ -206,6 +206,48 @@ describe("Kbd utils", () => {
         ]),
       ).toBe(false);
     });
+
+    it("matches space by its physical key when a modifier changes the key", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: " ", code: "Space", shiftKey: true }), [
+          "shift",
+          "space",
+        ]),
+      ).toBe(true);
+      expect(
+        matchesHotkey(
+          keyEvent({ key: "\u00a0", code: "Space", altKey: true }),
+          ["alt", "space"],
+        ),
+      ).toBe(true);
+    });
+
+    it("matches a letter by its physical key when the key is not a letter", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: "л", code: "KeyK", ctrlKey: true }), [
+          "ctrl",
+          "k",
+        ]),
+      ).toBe(true);
+      expect(
+        matchesHotkey(keyEvent({ key: "∫", code: "KeyN", altKey: true }), [
+          "alt",
+          "b",
+        ]),
+      ).toBe(false);
+    });
+
+    it("does not match the QWERTY position of a remapped letter", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: "t", code: "KeyK", metaKey: true }), [
+          "meta",
+          "k",
+        ]),
+      ).toBe(false);
+      expect(matchesHotkey(keyEvent({ key: "t", code: "KeyK" }), ["k"])).toBe(
+        false,
+      );
+    });
   });
 });
 
