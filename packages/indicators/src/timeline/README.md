@@ -13,7 +13,9 @@ Use Timeline when you want to:
 - Give an event prominence with `media` — an `<Avatar>`, icon, or any node in a dedicated column to the left of the rail
 - Tune the rhythm with `gap` — a spacing token for the space between items, like `Stack`
 
-Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. They render the same output.
+Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. They render the same output as long as each `TimelineItem` is a direct child of `Timeline`. Arrays (`events.map(...)`) and fragments are fine, but a wrapper component hides the item's `status`, `media` and `marker` from the timeline, so it reads as one pending item; Timeline warns about this in development.
+
+Give each data-mode entry a stable `id` when the list can reorder or change. Items are keyed by `id`, falling back to their index, and the `id` also lands on the item's `<li>`.
 
 ## Anatomy
 

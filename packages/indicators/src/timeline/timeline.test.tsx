@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { TimelineItem } from "./subcomponents";
 import { Timeline } from "./timeline";
@@ -264,5 +264,85 @@ describe("Timeline", () => {
       <Timeline items={ITEMS} ItemProps={{ className: "event-row" }} />,
     );
     expect(container.querySelectorAll("li.event-row")).toHaveLength(3);
+  });
+
+  // ============================================
+  // CHILDREN SHAPES
+  // ============================================
+
+  it("reads items inside a fragment as separate items", () => {
+    const { container } = render(
+      <Timeline activeIndex={1}>
+        <>
+          <TimelineItem title="Draft" />
+          <TimelineItem title="Review" status="completed" />
+        </>
+        <TimelineItem title="Published" />
+      </Timeline>,
+    );
+    const items = getItems(container);
+    expect(items).toHaveLength(3);
+    expect(items[0]).toHaveAttribute("data-status", "completed");
+    expect(items[1]).toHaveAttribute("data-status", "completed");
+    expect(items[2]).toHaveAttribute("data-status", "pending");
+    expect(
+      items[2].querySelector('[data-slot="timeline-connector"]'),
+    ).toBeNull();
+  });
+
+  it("warns when a child is not a TimelineItem", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const Wrapped = () => <TimelineItem title="Wrapped" />;
+    render(
+      <Timeline>
+        <Wrapped />
+      </Timeline>,
+    );
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("direct children"),
+    );
+    warn.mockRestore();
+  });
+
+  it("does not warn for TimelineItem children", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <Timeline>
+        <TimelineItem title="One" />
+        <TimelineItem title="Two" />
+      </Timeline>,
+    );
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  // ============================================
+  // KEYS
+  // ============================================
+
+  it("keys data-mode items by id, so reordering keeps each item's node", () => {
+    const { rerender } = render(
+      <Timeline
+        items={[
+          { id: "a", title: "Alpha" },
+          { id: "b", title: "Beta" },
+        ]}
+      />,
+    );
+    const alpha = screen.getByText("Alpha").closest("li");
+    rerender(
+      <Timeline
+        items={[
+          { id: "b", title: "Beta" },
+          { id: "a", title: "Alpha" },
+        ]}
+      />,
+    );
+    expect(screen.getByText("Alpha").closest("li")).toBe(alpha);
+  });
+
+  it("accepts the native dir values, including auto", () => {
+    render(<Timeline items={ITEMS} dir="auto" />);
+    expect(screen.getByRole("list")).toHaveAttribute("dir", "auto");
   });
 });
