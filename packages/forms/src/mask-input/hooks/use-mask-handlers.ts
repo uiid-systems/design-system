@@ -51,6 +51,11 @@ export interface UseMaskHandlersOptions {
   onValueChange?: (maskedValue: string, unmaskedValue: string) => void;
   /** Callback for validation */
   onValidate?: (isValid: boolean, unmaskedValue: string) => void;
+  /**
+   * External change handler. Called on each native change event once the
+   * masked value is in the input, so `event.target.value` is what is displayed.
+   */
+  onChange?: React.ChangeEventHandler<InputElement>;
   /** External focus handler */
   onFocus?: React.FocusEventHandler<InputElement>;
   /** External blur handler */
@@ -108,6 +113,7 @@ export function useMaskHandlers(
     onInputValidate,
     onValueChange,
     onValidate,
+    onChange: onChangeProp,
     onFocus: onFocusProp,
     onBlur: onBlurProp,
     onKeyDown: onKeyDownProp,
@@ -125,11 +131,13 @@ export function useMaskHandlers(
       let unmaskedValue = inputValue;
 
       if (composing) {
+        onChangeProp?.(event);
         if (!isControlled) setInternalValue(inputValue);
         return;
       }
 
       if (withoutMask || !maskPattern) {
+        onChangeProp?.(event);
         if (!isControlled) setInternalValue(inputValue);
         if (shouldValidate("change")) onValidate?.(true, inputValue);
         onValueChange?.(inputValue, inputValue);
@@ -215,6 +223,12 @@ export function useMaskHandlers(
         }
       }
 
+      // The mask is in the DOM by now, so a consumer reading
+      // `event.target.value` (a form library's `register()`) gets the value on
+      // display rather than the raw keystroke. It runs ahead of `onValueChange`:
+      // the native event first, then the reading derived from it.
+      onChangeProp?.(event);
+
       if (!isControlled) {
         setInternalValue(newValue);
       }
@@ -228,6 +242,7 @@ export function useMaskHandlers(
     [
       maskPattern,
       isControlled,
+      onChangeProp,
       onValueChange,
       onValidate,
       onInputValidate,

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
@@ -543,5 +543,329 @@ describe("MaskInput color", () => {
 
     expect(wrapper).toHaveClass("palette-blue");
     expect(wrapper?.className).toMatch(/composes-field-surface-color/);
+  });
+});
+
+describe("MaskInput onChange", () => {
+  /** Records what a consumer reads off the event at the moment it is called. */
+  const recordChanges = () => {
+    const seen: string[] = [];
+    const handleChange = vi.fn((event: React.ChangeEvent<HTMLInputElement>) => {
+      seen.push(event.target.value);
+    });
+    return { seen, handleChange };
+  };
+
+  it("calls a consumer onChange with the masked value on every keystroke", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["(1", "(12", "(123", "(123) 4"]);
+    expect(input).toHaveValue("(123) 4");
+
+    const event = handleChange.mock.calls.at(-1)?.[0];
+    expect(event?.type).toBe("change");
+    expect(event?.target).toBe(input);
+  });
+
+  it("hands onChange the masked value when characters are stripped", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "1a2");
+
+    // The "a" keystroke is a real change event whose raw value is "(1a"; the
+    // consumer reads the value the input goes on to display.
+    expect(seen).toEqual(["(1", "(1", "(12"]);
+  });
+
+  it("calls onChange before onValueChange, once each per keystroke", async () => {
+    const calls: string[] = [];
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        onChange={(event) => calls.push(`onChange:${event.target.value}`)}
+        onValueChange={(masked, unmasked) =>
+          calls.push(`onValueChange:${masked}|${unmasked}`)
+        }
+      />,
+    );
+
+    await user.type(screen.getByRole("textbox"), "12");
+
+    expect(calls).toEqual([
+      "onChange:(1",
+      "onValueChange:(1|1",
+      "onChange:(12",
+      "onValueChange:(12|12",
+    ]);
+  });
+
+  it("reports the masked value to a controlled consumer", async () => {
+    const { seen, handleChange } = recordChanges();
+
+    const ControlledMaskInput = () => {
+      const [value, setValue] = useState("");
+      return (
+        <MaskInput
+          mask="phone"
+          value={value}
+          onValueChange={setValue}
+          onChange={handleChange}
+        />
+      );
+    };
+
+    const user = userEvent.setup();
+    render(<ControlledMaskInput />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["(1", "(12", "(123", "(123) 4"]);
+    expect(input).toHaveValue("(123) 4");
+  });
+
+  it("calls onChange with the formatted value in currency mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="currency" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234");
+
+    expect(seen).toEqual(["$1", "$12", "$123", "$1,234"]);
+    expect(input).toHaveValue("$1,234");
+  });
+
+  it("calls onChange with the formatted value in percentage mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="percentage" onChange={handleChange} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "12");
+
+    expect(seen).toEqual(["1%", "12%"]);
+    expect(input).toHaveValue("12%");
+  });
+
+  it("calls onChange with the raw value when withoutMask is set", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" withoutMask onChange={handleChange} />);
+
+    await user.type(screen.getByRole("textbox"), "12a");
+
+    expect(seen).toEqual(["1", "12", "12a"]);
+  });
+
+  it("reports values through the props a form library's register() returns", async () => {
+    // What react-hook-form's `register("phone")` hands back: it reads the
+    // field's value and name off the change event, and keeps the element.
+    const values: Record<string, string> = {};
+    const fields: Record<string, HTMLInputElement | null> = {};
+    const handleBlur = vi.fn();
+    const register = (name: string) => ({
+      name,
+      ref: (element: HTMLInputElement | null) => {
+        fields[name] = element;
+      },
+      onBlur: handleBlur,
+      onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+        values[event.target.name] = event.target.value;
+      },
+    });
+
+    const user = userEvent.setup();
+    render(<MaskInput mask="phone" {...register("phone")} />);
+
+    const input = screen.getByRole("textbox");
+    await user.type(input, "1234567890");
+    await user.tab();
+
+    expect(values).toEqual({ phone: "(123) 456-7890" });
+    expect(fields.phone).toBe(input);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
+  // ============================================
+  // WHERE A NATIVE CHANGE EVENT FIRES
+  // ============================================
+  // onChange follows the native event. These paths leave the default action
+  // alone, so the browser's own change event reaches the handler.
+
+  it("calls onChange when Backspace removes a selection", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        defaultValue="(123) 456-7890"
+        onChange={handleChange}
+      />,
+    );
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+    input.setSelectionRange(0, input.value.length);
+    await user.keyboard("{Backspace}");
+
+    expect(seen).toEqual([""]);
+    expect(input).toHaveValue("");
+  });
+
+  it("calls onChange on Backspace in currency mode", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput mask="currency" defaultValue="$123" onChange={handleChange} />,
+    );
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+    await user.keyboard("{Backspace}");
+
+    expect(seen).toEqual(["$12"]);
+    expect(input).toHaveValue("$12");
+  });
+
+  it("calls onChange on paste when withoutMask is set", async () => {
+    const { seen, handleChange } = recordChanges();
+    const user = userEvent.setup();
+
+    render(<MaskInput mask="phone" withoutMask onChange={handleChange} />);
+
+    await user.click(screen.getByRole("textbox"));
+    await user.paste("1234567890");
+
+    expect(seen).toEqual(["1234567890"]);
+  });
+
+  // ============================================
+  // KNOWN GAPS
+  // ============================================
+  // These paths cancel the default action and write the value themselves, so
+  // no native change event fires and a consumer onChange is not called. Each
+  // test pins today's behavior; flip it when the path learns to report.
+
+  it("does not call onChange when a masked paste is committed", async () => {
+    const handleChange = vi.fn();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+      />,
+    );
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+    await user.paste("1234567890");
+
+    expect(input).toHaveValue("(123) 456-7890");
+    expect(handleValueChange).toHaveBeenLastCalledWith(
+      "(123) 456-7890",
+      "1234567890",
+    );
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
+  it("does not call onChange when Backspace deletes a single character", async () => {
+    const handleChange = vi.fn();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        defaultValue="(123) 456-7890"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+      />,
+    );
+
+    const input = screen.getByRole("textbox");
+    await user.click(input);
+    await user.keyboard("{Backspace}");
+
+    expect(input).toHaveValue("(123) 456-789");
+    expect(handleValueChange).toHaveBeenLastCalledWith(
+      "(123) 456-789",
+      "123456789",
+    );
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
+  it("does not call onChange when Delete removes a single character", async () => {
+    const handleChange = vi.fn();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <MaskInput
+        mask="phone"
+        defaultValue="(123) 456-7890"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+      />,
+    );
+
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+    await user.click(input);
+    input.setSelectionRange(1, 1);
+    await user.keyboard("{Delete}");
+
+    expect(input).toHaveValue("(234) 567-890");
+    expect(handleValueChange).toHaveBeenLastCalledWith(
+      "(234) 567-890",
+      "234567890",
+    );
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
+  it("does not call onChange when composition end commits the masked value", () => {
+    const { seen, handleChange } = recordChanges();
+    const handleValueChange = vi.fn();
+
+    render(
+      <MaskInput
+        mask="phone"
+        onChange={handleChange}
+        onValueChange={handleValueChange}
+      />,
+    );
+
+    const input = screen.getByRole("textbox");
+    fireEvent.compositionStart(input);
+    fireEvent.change(input, { target: { value: "12" } });
+
+    // Masking is suspended while composing, so the change event carries the
+    // raw text, which is also what the input displays at that moment.
+    expect(seen).toEqual(["12"]);
+    expect(handleValueChange).not.toHaveBeenCalled();
+
+    fireEvent.compositionEnd(input);
+
+    expect(input).toHaveValue("(12");
+    expect(handleValueChange).toHaveBeenLastCalledWith("(12", "12");
+    expect(handleChange).toHaveBeenCalledTimes(1);
   });
 });

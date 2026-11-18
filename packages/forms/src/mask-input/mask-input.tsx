@@ -42,6 +42,7 @@ export const MaskInput = (props: MaskInputProps) => {
     action,
     FieldProps,
     // Standard input props
+    onChange,
     onBlur,
     onFocus,
     onKeyDown,
@@ -85,6 +86,7 @@ export const MaskInput = (props: MaskInputProps) => {
     max,
     inputMode,
     maxLength,
+    onChange,
     onFocus,
     onBlur,
     onKeyDown,

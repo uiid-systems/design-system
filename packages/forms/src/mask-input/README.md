@@ -15,4 +15,6 @@ Everything [`Input`](../input/README.md) offers is here too: `label`, `descripti
 
 Leave `value` unset and the input runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it; `FieldProps` is where `errorType` lives.
 
+A native `onChange` works too, so the props a form library's `register()` returns can be spread straight on. It runs on each change event, just before `onValueChange`, and `event.target.value` is the masked string on display. It follows the native event, so it does not run where the mask cancels the browser's default and writes the value itself: a paste into a pattern mask, a single-character Backspace or Delete in a pattern mask, and the commit at the end of an IME composition. `onValueChange` reports all of those.
+
 Additional props are forwarded to the underlying `<input>` element.
