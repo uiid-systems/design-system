@@ -3,7 +3,7 @@ import { StarIcon } from "@uiid/icons/star";
 import { describe, it, expect } from "vitest";
 
 import { List } from "./list";
-import { ListItem } from "./subcomponents";
+import { ListGroup, ListItem } from "./subcomponents";
 
 // Imported with the `?raw` suffix rather than read from disk: this package
 // builds with `tsc -b` and pins its `types` to vitest and jest-dom, so a
@@ -31,6 +31,111 @@ describe("List", () => {
       styles["list"],
       "caller",
     );
+  });
+
+  // ============================================
+  // SHARED ITEM AND GROUP PROPS
+  // ============================================
+  // ItemProps and GroupProps are defaults. They used to be spread after each
+  // entry, so a shared value replaced the entry's own, and GroupProps (then
+  // typed as ListGroupProps) could wipe every group's heading or items. Nor
+  // did they reach nested groups, whose items also lacked `fullwidth`.
+
+  describe("ItemProps and GroupProps", () => {
+    const itemByLabel = (label: string) =>
+      screen.getByText(label).closest('[data-slot="list-item"]');
+
+    it("lets an item's own value win over ItemProps", () => {
+      render(
+        <List
+          ItemProps={{ label: "Shared", id: "shared" }}
+          items={[{ label: "Own", id: "own" }]}
+        />,
+      );
+      expect(screen.getByText("Own")).toBeInTheDocument();
+      expect(screen.queryByText("Shared")).not.toBeInTheDocument();
+      expect(itemByLabel("Own")).toHaveAttribute("id", "own");
+    });
+
+    it("joins the shared className with the item's own", () => {
+      render(
+        <List
+          ItemProps={{ className: "shared" }}
+          items={[{ label: "Own", className: "own" }]}
+        />,
+      );
+      expect(itemByLabel("Own")).toHaveClass("shared", "own");
+    });
+
+    it("applies ItemProps and fullwidth to items in nested groups", () => {
+      render(
+        <List
+          ItemProps={{ className: "shared" }}
+          items={[
+            {
+              category: "Outer",
+              items: [
+                { label: "Child" },
+                { category: "Inner", items: [{ label: "Grandchild" }] },
+              ],
+            },
+          ]}
+        />,
+      );
+      for (const label of ["Child", "Grandchild"]) {
+        expect(itemByLabel(label)).toHaveClass("shared");
+        expect(itemByLabel(label)).toHaveAttribute("data-ui-fullwidth");
+      }
+    });
+
+    it("renders grouped items like top-level ones", () => {
+      render(
+        <List
+          items={[
+            { label: "Top" },
+            { category: "Group", items: [{ label: "Nested" }] },
+          ]}
+        />,
+      );
+      expect(itemByLabel("Nested")).toHaveAttribute("data-ui-fullwidth");
+      expect(itemByLabel("Top")).toHaveAttribute("data-ui-fullwidth");
+    });
+
+    it("applies GroupProps to every group's root without touching its content", () => {
+      const { container } = render(
+        <List
+          GroupProps={{ className: "shared-group", gap: 2 }}
+          items={[
+            {
+              category: "Outer",
+              items: [{ category: "Inner", items: [{ label: "Leaf" }] }],
+            },
+          ]}
+        />,
+      );
+      const groups = container.querySelectorAll('[data-slot="list-group"]');
+      expect(groups).toHaveLength(2);
+      for (const group of groups) {
+        expect(group).toHaveClass(styles["list-group"], "shared-group");
+        expect(group).toHaveAttribute("data-ui-gap", "2");
+      }
+      expect(screen.getByText("Outer")).toBeInTheDocument();
+      expect(screen.getByText("Inner")).toBeInTheDocument();
+      expect(screen.getByText("Leaf")).toBeInTheDocument();
+    });
+
+    it("takes ItemProps on a hand-composed ListGroup", () => {
+      render(
+        <List>
+          <ListGroup
+            category="Group"
+            ItemProps={{ className: "shared" }}
+            items={[{ label: "Nested" }]}
+          />
+        </List>,
+      );
+      expect(itemByLabel("Nested")).toHaveClass("shared");
+    });
   });
 
   // ============================================

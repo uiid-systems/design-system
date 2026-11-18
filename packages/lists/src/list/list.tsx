@@ -3,7 +3,7 @@ import { cx } from "@uiid/utils";
 
 import { LIST_DEFAULT_MARKER } from "./list.constants";
 import type { ListProps } from "./list.types";
-import { ListItem, ListGroup, ListGroupHeader } from "./subcomponents";
+import { ListGroupHeader, ListEntries } from "./subcomponents";
 
 import styles from "./list.module.css";
 
@@ -28,19 +28,15 @@ export const List = ({
       render={ListElement}
       {...props}
     >
-      {items
-        ? items.map((item, index) =>
-            "items" in item ? (
-              <ListGroup
-                key={item.category ?? index}
-                {...item}
-                {...GroupProps}
-              />
-            ) : (
-              <ListItem key={index} fullwidth {...item} {...ItemProps} />
-            ),
-          )
-        : children}
+      {items ? (
+        <ListEntries
+          items={items}
+          ItemProps={ItemProps}
+          GroupProps={GroupProps}
+        />
+      ) : (
+        children
+      )}
     </Stack>
   );
 
