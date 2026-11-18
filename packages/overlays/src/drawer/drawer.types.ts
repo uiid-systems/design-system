@@ -20,6 +20,7 @@ export type DrawerTriggerProps = WithTriggerChildren<
   BaseDrawer.DrawerTrigger.Props,
   BaseDrawer.DrawerTrigger.State
 >;
+export type DrawerSwipeAreaProps = BaseDrawer.DrawerSwipeArea.Props;
 export type DrawerPortalProps = BaseDrawer.DrawerPortal.Props;
 export type DrawerBackdropProps = BaseDrawer.DrawerBackdrop.Props;
 export type DrawerViewportProps = BaseDrawer.DrawerViewport.Props;

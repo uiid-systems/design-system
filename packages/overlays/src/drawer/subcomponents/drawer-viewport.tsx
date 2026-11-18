@@ -8,8 +8,9 @@ import type { DrawerViewportProps } from "../drawer.types";
 import styles from "../drawer.module.css";
 
 /**
- * Positioning container for the popup. The edge placement lives here rather
- * than on the popup, whose `transform` is owned by the gesture system.
+ * Fixed full-screen layer the popup is inset against. Placing the popup with
+ * insets rather than a transform frees the popup's own `transform` for the
+ * drag, which the gesture system writes to.
  */
 export const DrawerViewport = ({
   className,

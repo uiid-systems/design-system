@@ -107,11 +107,13 @@ With `snapPoints` and an overflowing body, an upward drag on the body scrolls it
 
 Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the gesture system needs:
 
-- **`DrawerViewport`** — positions the popup, which frees the popup's own `transform` for the drag.
+- **`DrawerViewport`** — a fixed full-screen layer the popup is inset against, which frees the popup's own `transform` for the drag.
 - **`DrawerContent`** — wraps the body so a mouse user can select text inside without the drag becoming a swipe.
+
+`DrawerSwipeArea` is opt-in too. It's an invisible area that opens the drawer on a swipe from the edge it enters from. Render it inside `DrawerRoot`, outside the portal, and place and size it yourself, such as a narrow strip fixed to that edge. `Drawer` renders none, so compose the parts to use it.
 
 `DrawerProvider`, `DrawerIndent`, and `DrawerIndentBackground` are opt-in. Wrap the app in them to get the indent effect, where the page scales down behind any open drawer. A standalone drawer needs none of them.
 
 ## Caveats
 
-Built on Base UI's `DrawerPreview` namespace — a preview API. `@base-ui/react` is pinned exactly, so treat any version bump as a review point rather than a routine update. `Drawer.SwipeArea` (swipe from the edge to _open_) is documented upstream but is not exported in `1.2.0`, so it isn't surfaced here yet.
+Built on Base UI's `Drawer`, stable since 1.3, when it left the `DrawerPreview` namespace. `@base-ui/react` is a peer dependency at `^1.7.0`, so an app's own 1.x install is the one Drawer runs on; the package is developed and tested against 1.7.0.
