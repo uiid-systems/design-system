@@ -157,7 +157,7 @@ describe("CodeEditor", () => {
   // HIGHLIGHT BACKDROP
   // ============================================
 
-  it("keeps the highlight backdrop out of the tab order and the accessibility tree", async () => {
+  it("keeps the highlight backdrop inert so its pre can't take focus", async () => {
     render(<CodeEditor defaultValue="const x = 1;" />);
 
     const highlight = screen
@@ -166,13 +166,19 @@ describe("CodeEditor", () => {
       .querySelector<HTMLElement>("[data-slot='code-editor-highlight']")!;
 
     // Shiki renders a focusable `<pre tabindex="0">`; wait for the real output
-    const pre = await waitFor(() => {
-      const element = highlight.querySelector("pre");
-      expect(element).not.toBeNull();
-      return element!;
-    });
+    const pre = await waitFor(
+      () => {
+        const element = highlight.querySelector("pre");
+        expect(element).not.toBeNull();
+        return element!;
+      },
+      { timeout: 5000 },
+    );
 
     expect(pre.closest("[inert]")).toBe(highlight);
+
+    act(() => pre.focus());
+    expect(pre).not.toHaveFocus();
   });
 
   // ============================================
