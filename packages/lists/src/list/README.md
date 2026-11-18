@@ -9,7 +9,7 @@ Use List when you want to:
 - Pick a bullet style with `marker`: `"none"` (default, unstyled), `"disc"` / `"square"` (renders `<ul>`), or `"decimal"` (renders `<ol>`)
 - Set shared defaults for every item via `ItemProps`, and for every group's root `Stack` via `GroupProps` (layout props like `gap` or `className`). Both reach nested groups, an entry's own props win, and `className` joins rather than replaces
 
-Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. The `marker` is drawn on an item's `label`, so a `ListItem` given `children` instead shows no bullet or number.
+Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. The `marker` is drawn only on the `label` of an item with no `icon` and no `children`, so a `ListItem` with an `icon` or given `children` shows no bullet or number.
 
 ## Subcomponents
 

@@ -133,6 +133,18 @@ describe("List", () => {
       expect(itemByLabel("Narrow")).not.toHaveAttribute("data-ui-fullwidth");
     });
 
+    it("lets GroupProps narrow a group's width", () => {
+      const { container } = render(
+        <List
+          GroupProps={{ w: 200 }}
+          items={[{ category: "Group", items: [{ label: "Leaf" }] }]}
+        />,
+      );
+      const group = container.querySelector('[data-slot="list-group"]');
+      expect(group).toHaveAttribute("data-ui-w", "200");
+      expect(group).not.toHaveAttribute("data-ui-fullwidth");
+    });
+
     it("applies GroupProps to every group's root without touching its content", () => {
       const { container } = render(
         <List

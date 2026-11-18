@@ -42,6 +42,18 @@ describe("Tabs", () => {
     expect(screen.getByText("Old content")).toBeInTheDocument();
   });
 
+  it("rejects an item with both content and the deprecated render", () => {
+    render(
+      <Tabs
+        items={[
+          // @ts-expect-error an item takes `content` or `render`, not both
+          { label: "Both", value: "both", content: "New", render: "Old" },
+        ]}
+      />,
+    );
+    expect(screen.getByText("New")).toBeInTheDocument();
+  });
+
   it("renders with data-slot attributes", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     expect(
