@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
+import { Form } from "../form/form";
 import { InputControl } from "../input/subcomponents";
 import { Field } from "./field";
 import {
@@ -147,13 +148,42 @@ describe("Field errorType", () => {
         <FieldControl />
       </Field>,
     );
-    const error = container.querySelector("[data-slot='field-error-tooltip']");
+    const [id] = describedBy(screen.getByRole("textbox"));
+    const error = document.getElementById(id);
 
-    expect(error).toHaveTextContent(/^Enter an email$/);
-    expect(error?.querySelector(".sr-only")).toHaveTextContent(
-      "Enter an email",
+    expect(error).toBe(
+      container.querySelector("[data-slot='field-error-tooltip']"),
     );
+    expect(error).toHaveTextContent(/^Enter an email$/);
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("describes a control by the tooltip error a Form publishes", () => {
+    render(
+      <Form errors={{ email: "Enter an email" }}>
+        <Field name="email" label="Email" errorType="tooltip">
+          <FieldControl />
+        </Field>
+      </Form>,
+    );
+    const [id] = describedBy(screen.getByRole("textbox"));
+
+    expect(document.getElementById(id)).toHaveTextContent(/^Enter an email$/);
+  });
+
+  it("describes a control by every tooltip error a Form publishes", () => {
+    render(
+      <Form errors={{ email: ["Enter an email", "Use a work address"] }}>
+        <Field name="email" label="Email" errorType="tooltip">
+          <FieldControl />
+        </Field>
+      </Form>,
+    );
+    const [id] = describedBy(screen.getByRole("textbox"));
+    const error = document.getElementById(id);
+
+    expect(error).toHaveTextContent("Enter an email");
+    expect(error).toHaveTextContent("Use a work address");
   });
 
   it("keeps the tooltip error's icon as the tooltip trigger", () => {
@@ -191,6 +221,8 @@ describe("Field errorType", () => {
         document.querySelector("[data-slot='tooltip-popup']"),
       ).toHaveTextContent("Enter an email"),
     );
+    const [id] = describedBy(screen.getByRole("textbox"));
+    expect(document.getElementById(id)).toHaveTextContent(/^Enter an email$/);
   });
 
   it("passes ErrorProps to the tooltip error element", () => {
