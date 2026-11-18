@@ -44,7 +44,8 @@
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",
     "@uiid/typography": "workspace:*",
-    "@uiid/utils": "workspace:*"
+    "@uiid/utils": "workspace:*",
+    "cva": "1.0.0-beta.12"
   },
   "peerDependencies": {
     "@base-ui/react": "^1.7.0",
