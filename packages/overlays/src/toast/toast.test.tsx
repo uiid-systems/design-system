@@ -250,6 +250,18 @@ describe("Toaster", () => {
     );
   });
 
+  it("spans the content full width with w, not the deprecated fullwidth toggle", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved" });
+    });
+
+    await screen.findByText("Saved");
+    const content = document.querySelector('[data-slot="toast-content"]');
+    expect(content).toHaveAttribute("data-ui-w", "full");
+    expect(content).not.toHaveAttribute("data-ui-fullwidth");
+  });
+
   it.each([
     ["success", "palette-green"],
     ["error", "palette-red"],

@@ -70,7 +70,7 @@ export const Footer = () => {
       title="Filters"
       description="Narrow the results."
       footer={
-        <Group gap={2} ax="end" fullwidth>
+        <Group gap={2} ax="end" w="full">
           <Button size="small" variant="subtle">
             Reset
           </Button>
@@ -96,7 +96,7 @@ export const LongContent = () => (
     title="Filters"
     description="Narrow the results."
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <Group gap={2} ax="end" w="full">
         <Button size="small">Apply</Button>
       </Group>
     }

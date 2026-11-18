@@ -144,7 +144,7 @@ export const Footer = () => (
     title="Preferences"
     description="The footer sits below the body, separated by a divider."
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <Group gap={2} ax="end" w="full">
         <DrawerClose render={<Button size="small" variant="subtle" />}>
           Cancel
         </DrawerClose>
@@ -175,7 +175,7 @@ export const LongContent = () => (
         trigger={<Button>{swipeDirection}</Button>}
         title="Terms of service"
         footer={
-          <Group gap={2} ax="end" fullwidth>
+          <Group gap={2} ax="end" w="full">
             <DrawerClose render={<Button size="small" />}>Accept</DrawerClose>
           </Group>
         }

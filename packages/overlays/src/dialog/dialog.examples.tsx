@@ -73,7 +73,7 @@ export const Footer = () => {
       title="Notification preferences"
       description="Choose how and when you'd like to be notified."
       footer={
-        <Group gap={2} ax="end" fullwidth>
+        <Group gap={2} ax="end" w="full">
           <DialogClose size="small">Cancel</DialogClose>
           <Button size="small" onClick={() => setOpen(false)}>
             Save
@@ -96,7 +96,7 @@ export const Full = () => (
     trigger={<Button>Open viewer</Button>}
     title="Contract.pdf"
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <Group gap={2} ax="end" w="full">
         <DialogClose size="small">Close</DialogClose>
         <Button size="small">Download</Button>
       </Group>
@@ -131,7 +131,7 @@ export const Pending = () => {
       title="Rename game"
       description="Saving takes a couple of seconds."
       footer={
-        <Group gap={2} ax="end" fullwidth>
+        <Group gap={2} ax="end" w="full">
           <DialogClose size="small">Cancel</DialogClose>
           <Button
             size="small"
@@ -165,7 +165,7 @@ export const RevealOnce = () => {
       title="Save your new API key"
       description="You won't be able to see it again."
       footer={
-        <Group gap={2} ax="end" fullwidth>
+        <Group gap={2} ax="end" w="full">
           <Button size="small" onClick={() => setOpen(false)}>
             I've saved my key!
           </Button>
@@ -192,7 +192,7 @@ export const LongContent = () => {
       trigger={<Button>Terms of service</Button>}
       title="Terms of service"
       footer={
-        <Group gap={2} ax="end" fullwidth>
+        <Group gap={2} ax="end" w="full">
           <Button size="small" onClick={() => setOpen(false)}>
             Accept
           </Button>
