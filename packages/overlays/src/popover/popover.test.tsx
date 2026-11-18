@@ -504,6 +504,79 @@ describe("Popover", () => {
     });
   });
 
+  it("keeps its default offsets when PositionerProps sets only a side", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        PositionerProps={{ side: "bottom" }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+
+    const positioner = document.querySelector<HTMLElement>(
+      '[data-slot="popover-positioner"]',
+    );
+    expect(positioner).toHaveAttribute("data-side", "bottom");
+    // Base UI offsets the floating element by sideOffset from the trigger, and
+    // happy-dom's zero-sized viewport leaves minus twice the collisionPadding.
+    expect(positioner?.style.transform).toBe("translate(0px, 4px)");
+    expect(positioner?.style.getPropertyValue("--available-height")).toBe(
+      "-32px",
+    );
+  });
+
+  it("lets an explicit sideOffset and collisionPadding win over the defaults", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        PositionerProps={{
+          side: "bottom",
+          sideOffset: 12,
+          collisionPadding: 40,
+        }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+
+    const positioner = document.querySelector<HTMLElement>(
+      '[data-slot="popover-positioner"]',
+    );
+    expect(positioner?.style.transform).toBe("translate(0px, 12px)");
+    expect(positioner?.style.getPropertyValue("--available-height")).toBe(
+      "-80px",
+    );
+  });
+
+  it("keeps an explicit sideOffset of 0 rather than falling back to the default", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        PositionerProps={{ side: "bottom", sideOffset: 0 }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+
+    const positioner = document.querySelector<HTMLElement>(
+      '[data-slot="popover-positioner"]',
+    );
+    expect(positioner?.style.transform).toBe("translate(0px, 0px)");
+  });
+
   it("passes PopupProps to popup element", async () => {
     const user = userEvent.setup();
 

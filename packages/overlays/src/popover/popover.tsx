@@ -25,10 +25,7 @@ export const Popover = ({
   TriggerProps,
   PortalProps,
   BackdropProps,
-  PositionerProps = {
-    sideOffset: 4,
-    collisionPadding: 16,
-  },
+  PositionerProps,
   PopupProps,
   children,
 }: PopoverProps) => {
