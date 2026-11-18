@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react-vite";
-import { Stack, Table } from "@uiid/design-system";
+import { defaultFormatCell, Stack, Table } from "@uiid/design-system";
 
 import {
   TABLE_MOCK_DATA,
@@ -143,6 +143,46 @@ export const HorizontalAndVerticalScroll = {
         bordered
         highlightOnHover
         footer={`${TABLE_MOCK_DATA.length} users`}
+      />
+    </Stack>
+  ),
+};
+
+const CELL_VALUES_DATA: Record<string, unknown>[] = [
+  {
+    name: "Alex Thompson",
+    email: "alex.t@company.com",
+    joined: new Date(2024, 0, 15),
+    teams: ["Design", "Platform"],
+    address: { city: "London" },
+  },
+  {
+    name: "Sarah Chen",
+    email: null,
+    joined: new Date(2025, 5, 2),
+    teams: [],
+    address: { city: "Singapore" },
+  },
+  { name: "James Wilson", joined: new Date(2023, 10, 28) },
+];
+
+/* A missing key, `null` and a plain object leave the cell empty. `formatCell`
+   takes over the cells it names and hands the rest to `defaultFormatCell`. */
+export const CellValues = {
+  name: "Cell Values",
+  tags: ["new"],
+  render: () => (
+    <Stack gap={8} fullwidth>
+      <Table items={CELL_VALUES_DATA} bordered footer="Default" />
+      <Table
+        items={CELL_VALUES_DATA}
+        formatCell={(value, column) =>
+          column === "joined" && value instanceof Date
+            ? value.toLocaleDateString("en-US", { dateStyle: "medium" })
+            : defaultFormatCell(value)
+        }
+        bordered
+        footer="formatCell"
       />
     </Stack>
   ),

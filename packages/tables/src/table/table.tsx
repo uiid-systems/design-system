@@ -1,5 +1,3 @@
-import { isValidElement } from "react";
-
 import {
   TableContainer,
   TableRoot,
@@ -15,13 +13,14 @@ import {
 import { TableSelectionProvider } from "./table-selection";
 import { TABLE_DEFAULT_SIZE } from "./table.constants";
 import type { TableProps } from "./table.types";
-import { defaultFormatHeader } from "./table.utils";
+import { defaultFormatCell, defaultFormatHeader } from "./table.utils";
 
 export function Table<T extends Record<string, unknown>>({
   items,
   actions,
   columns,
   formatHeader = defaultFormatHeader,
+  formatCell = defaultFormatCell,
   selectable,
   size = TABLE_DEFAULT_SIZE,
   striped,
@@ -64,9 +63,7 @@ export function Table<T extends Record<string, unknown>>({
               {selectable && <TableCellCheckbox index={index} size={size} />}
               {displayColumns.map((column) => (
                 <TableCell key={String(column)}>
-                  {isValidElement(item[column])
-                    ? item[column]
-                    : String(item[column])}
+                  {formatCell(item[column], column, item)}
                 </TableCell>
               ))}
               {actions && (

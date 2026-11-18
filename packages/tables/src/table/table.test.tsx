@@ -1,8 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { Table } from "./table";
+/* Imported from the barrel on purpose, to cover the defaultFormatCell export. */
+import { defaultFormatCell, Table } from "../index";
 import { TABLE_MOCK_DATA } from "./table.mocks";
 
 /** happy-dom reports every box as zero-sized, so the scroll metrics the
@@ -161,6 +162,156 @@ describe("Table", () => {
     await waitFor(() => {
       expect(container).toHaveAttribute("data-scroll-start");
       expect(container).toHaveAttribute("data-scroll-end");
+    });
+  });
+
+  describe("cell values", () => {
+    const cells = () =>
+      screen.getAllByRole("cell").map((cell) => cell.textContent);
+
+    it("renders strings and numbers as text", () => {
+      render(<Table items={[{ name: "Ada", age: 36, score: 0 }]} />);
+      expect(cells()).toEqual(["Ada", "36", "0"]);
+    });
+
+    it("renders a React element as itself", () => {
+      render(<Table items={[{ name: <strong>Ada</strong> }]} />);
+      expect(screen.getByText("Ada").tagName).toBe("STRONG");
+    });
+
+    it("renders null as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", email: null }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders undefined as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", email: undefined }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an empty cell for a key a later row is missing", () => {
+      const items: Record<string, unknown>[] = [
+        { name: "Ada", email: "ada@example.com" },
+        { name: "Grace" },
+      ];
+      render(<Table items={items} />);
+      expect(cells()).toEqual(["Ada", "ada@example.com", "Grace", ""]);
+    });
+
+    it("renders an object as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", address: { city: "London" } }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an object with no string form of its own as an empty cell", () => {
+      const bare = Object.create(null) as Record<string, unknown>;
+      render(<Table items={[{ name: "Ada", meta: bare }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of strings as its joined text", () => {
+      render(<Table items={[{ name: "Ada", tags: ["a", "b"] }]} />);
+      expect(cells()).toEqual(["Ada", "a,b"]);
+    });
+
+    it("renders an array holding a plain object as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", homes: [{ city: "London" }] }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of React elements as an empty cell", () => {
+      const tags = [<em key="a">a</em>, <em key="b">b</em>];
+      render(<Table items={[{ name: "Ada", tags }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array holding a nested array as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", grid: [1, [2, 3]] }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of Dates as an empty cell", () => {
+      const dates = [new Date(2024, 0, 15), new Date(2025, 5, 2)];
+      render(<Table items={[{ name: "Ada", dates }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a symbol as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", token: Symbol("token") }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a function as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", onSelect: () => "picked" }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a bigint as text", () => {
+      render(<Table items={[{ name: "Ada", visits: 9007199254740993n }]} />);
+      expect(cells()).toEqual(["Ada", "9007199254740993"]);
+    });
+
+    it("renders a URL as its string form", () => {
+      const site = new URL("https://example.com/ada");
+      render(<Table items={[{ name: "Ada", site }]} />);
+      expect(cells()).toEqual(["Ada", "https://example.com/ada"]);
+    });
+
+    it("renders a Date as its string form", () => {
+      const joined = new Date(2024, 0, 15);
+      render(<Table items={[{ name: "Ada", joined }]} />);
+      expect(cells()).toEqual(["Ada", String(joined)]);
+    });
+
+    it("renders a boolean as text", () => {
+      render(<Table items={[{ name: "Ada", active: false }]} />);
+      expect(cells()).toEqual(["Ada", "false"]);
+    });
+
+    it("renders what formatCell returns", () => {
+      render(
+        <Table
+          items={[{ name: "Ada", tags: ["a", "b"], email: null }]}
+          formatCell={(value) =>
+            Array.isArray(value) ? value.join(", ") : String(value ?? "—")
+          }
+        />,
+      );
+      expect(cells()).toEqual(["Ada", "a, b", "—"]);
+    });
+
+    it("lets formatCell fall back to defaultFormatCell", () => {
+      const joined = new Date(2024, 0, 15);
+      render(
+        <Table
+          items={[{ name: "Ada", joined, email: null }]}
+          formatCell={(value, column) =>
+            column === "joined" && value instanceof Date
+              ? String(value.getFullYear())
+              : defaultFormatCell(value)
+          }
+        />,
+      );
+      expect(cells()).toEqual(["Ada", "2024", ""]);
+    });
+
+    it("calls formatCell with the value, the column and the row", () => {
+      const item = { name: "Ada", address: { city: "London" } };
+      const formatCell = vi.fn(() => "x");
+      render(<Table items={[item]} formatCell={formatCell} />);
+
+      expect(formatCell).toHaveBeenCalledWith("Ada", "name", item);
+      expect(formatCell).toHaveBeenCalledWith(item.address, "address", item);
+    });
+
+    it("lets formatCell render an element", () => {
+      render(
+        <Table
+          items={[{ name: "Ada" }]}
+          formatCell={(value) => <em>{String(value)}</em>}
+        />,
+      );
+      expect(screen.getByText("Ada").tagName).toBe("EM");
     });
   });
 });

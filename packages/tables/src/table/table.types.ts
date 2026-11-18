@@ -44,6 +44,9 @@ export type TableProps<
     secondary?: TableCellDropdownProps;
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
+  /** Render a cell from its value, column key and row. Defaults to
+   * `defaultFormatCell`; call it for cells you don't handle. */
+  formatCell?: (value: unknown, column: string, item: T) => React.ReactNode;
   /** Pin the header to the top of the scroll container while the body scrolls.
    * Requires a bounded height — pass `maxHeight` (or constrain the container). */
   stickyHeader?: boolean;
