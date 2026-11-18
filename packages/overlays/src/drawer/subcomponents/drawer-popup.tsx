@@ -1,8 +1,9 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { Card, type CardProps } from "@uiid/cards";
-import { cxState } from "@uiid/utils";
+import { Card } from "@uiid/cards";
+import { cxState, isRenderable } from "@uiid/utils";
+import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
 import type { DrawerPopupProps } from "../drawer.types";
@@ -18,7 +19,7 @@ import styles from "../drawer.module.css";
  * element: Base UI forwards it into the Card.
  *
  * The body scrolls on its own (drawer.module.css). While it overflows it is a
- * tab stop, so the keyboard can scroll it.
+ * tab stop, so the keyboard can scroll it, and a region named by the title.
  */
 export const DrawerPopup = ({
   title,
@@ -29,15 +30,9 @@ export const DrawerPopup = ({
   children,
   ...props
 }: DrawerPopupProps) => {
-  const { ref: bodyRef, overflows } = useBodyOverflow();
-
-  const bodyProps: CardProps["InnerContainerProps"] = {
-    // The body stretches past the card's padding to its edges, which Card's
-    // `w="full"` of the content box would stop short of.
-    w: undefined,
-    ref: bodyRef,
-    ...(overflows && { tabIndex: 0 }),
-  };
+  // Base UI's Title takes this id, so the body can name itself after it.
+  const titleId = useId();
+  const bodyProps = useBodyOverflow(isRenderable(title) ? titleId : undefined);
 
   return (
     <BaseDrawer.Popup
@@ -51,7 +46,7 @@ export const DrawerPopup = ({
           footer={footer}
           shadow
           FooterProps={{ hideSeparator: false }}
-          TitleProps={{ render: <BaseDrawer.Title /> }}
+          TitleProps={{ render: <BaseDrawer.Title id={titleId} /> }}
           DescriptionProps={{ render: <BaseDrawer.Description /> }}
           InnerContainerProps={bodyProps}
         />

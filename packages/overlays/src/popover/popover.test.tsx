@@ -768,5 +768,69 @@ describe("Popover", () => {
       await waitFor(() => expect(body()).toBeInTheDocument());
       expect(body()).not.toHaveAttribute("tabindex");
     });
+
+    it("names a long body by the title", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Popover
+          trigger={<button>Open popover</button>}
+          open={true}
+          title="Filters"
+        >
+          Long content
+        </Popover>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(screen.getByRole("region", { name: "Filters" })).toBe(body());
+    });
+
+    it("gives an untitled long body no role, since it has no name", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Popover trigger={<button>Open popover</button>} open={true}>
+          Long content
+        </Popover>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(body()).not.toHaveAttribute("role");
+    });
+
+    /*
+     * Content added after the body reaches its cap leaves the body's own size
+     * unchanged, and happy-dom's ResizeObserver never fires, so only the
+     * MutationObserver can notice it. Focus starts on the Load button, outside
+     * the body: a body holding focus keeps reporting overflow on purpose, so a
+     * focused body would never prove the re-measure happened.
+     */
+    it("re-measures when children are added later", async () => {
+      stubHeights(400, 400);
+      const Late = () => {
+        const [items, setItems] = useState<string[]>([]);
+        return (
+          <>
+            <button type="button" onClick={() => setItems(["a", "b", "c"])}>
+              Load
+            </button>
+            <Popover trigger={<button>Open popover</button>} open={true}>
+              <span>First</span>
+              {items.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </Popover>
+          </>
+        );
+      };
+      const user = userEvent.setup();
+      render(<Late />);
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("tabindex");
+
+      stubHeights(1000, 400);
+      await user.click(screen.getByRole("button", { name: "Load" }));
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+    });
   });
 });
