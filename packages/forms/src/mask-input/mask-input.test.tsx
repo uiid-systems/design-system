@@ -958,6 +958,28 @@ describe("MaskInput onChange", () => {
     expect(handleValidate).toHaveBeenLastCalledWith(true, "1234567890");
   });
 
+  // A deletion must replace the last onValidate(true), not leave it standing.
+  it.each([
+    ["Backspace", 14],
+    ["Delete", 13],
+  ])("revokes a valid result when %s removes a digit", async (key, caret) => {
+    const handleValidate = vi.fn();
+    const { user, input } = await setup({
+      onValidate: handleValidate,
+      validationMode: "onChange",
+    });
+
+    await user.type(input, "1234567890");
+    expect(handleValidate).toHaveBeenLastCalledWith(true, "1234567890");
+    const callsBefore = handleValidate.mock.calls.length;
+
+    input.setSelectionRange(caret, caret);
+    await user.keyboard(`{${key}}`);
+
+    expect(handleValidate).toHaveBeenCalledTimes(callsBefore + 1);
+    expect(handleValidate).toHaveBeenLastCalledWith(false, "123456789");
+  });
+
   it("reports Backspace and paste once each to a controlled consumer", async () => {
     const { seen, handleChange } = recordChanges();
     const handleValueChange = vi.fn();
