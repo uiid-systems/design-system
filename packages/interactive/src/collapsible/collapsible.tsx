@@ -8,16 +8,31 @@ import {
 export const Collapsible = ({
   trigger,
   instant = false,
+  open,
+  defaultOpen,
+  onOpenChange,
+  disabled,
+  keepMounted,
   RootProps,
   TriggerProps,
   PanelProps,
   children,
 }: CollapsibleProps) => {
   return (
-    <CollapsibleRoot {...RootProps}>
+    <CollapsibleRoot
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      disabled={disabled}
+      {...RootProps}
+    >
       <CollapsibleTrigger {...TriggerProps}>{trigger}</CollapsibleTrigger>
 
-      <CollapsiblePanel instant={instant} {...PanelProps}>
+      <CollapsiblePanel
+        instant={instant}
+        keepMounted={keepMounted}
+        {...PanelProps}
+      >
         {children}
       </CollapsiblePanel>
     </CollapsibleRoot>

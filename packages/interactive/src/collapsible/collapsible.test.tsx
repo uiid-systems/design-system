@@ -204,6 +204,75 @@ describe("Collapsible", () => {
     expect(screen.getByText("Content")).toBeVisible();
   });
 
+  it("takes open state directly, as CollapsibleCard does", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    const Controlled = () => {
+      const [open, setOpen] = useState(false);
+      return (
+        <Collapsible
+          trigger="Toggle"
+          open={open}
+          onOpenChange={(next) => {
+            onOpenChange(next);
+            setOpen(next);
+          }}
+        >
+          Content
+        </Collapsible>
+      );
+    };
+
+    render(<Controlled />);
+    await user.click(screen.getByRole("button", { name: "Toggle" }));
+
+    expect(onOpenChange.mock.calls[0][0]).toBe(true);
+    expect(screen.getByText("Content")).toBeVisible();
+  });
+
+  it("takes defaultOpen and keepMounted directly", () => {
+    const { unmount } = render(
+      <Collapsible trigger="Toggle" defaultOpen>
+        Content
+      </Collapsible>,
+    );
+    expect(screen.getByText("Content")).toBeVisible();
+    unmount();
+
+    render(
+      <Collapsible trigger="Toggle" keepMounted>
+        Kept
+      </Collapsible>,
+    );
+    expect(screen.getByText("Kept")).toBeInTheDocument();
+    expect(screen.getByText("Kept")).not.toBeVisible();
+  });
+
+  it("takes disabled directly", async () => {
+    const user = userEvent.setup();
+    render(
+      <Collapsible trigger="Toggle" disabled>
+        Content
+      </Collapsible>,
+    );
+    await user.click(screen.getByRole("button", { name: "Toggle" }));
+    expect(screen.queryByText("Content")).not.toBeInTheDocument();
+  });
+
+  it("lets RootProps win over the direct open props", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(screen.getByText("Content")).toBeVisible();
+  });
+
   // ============================================
   // LAYOUT PROPS
   // ============================================
