@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 
+import { Checkbox } from "../checkbox/checkbox";
 import { Form } from "../form/form";
 import { InputControl } from "../input/subcomponents";
 import { Field } from "./field";
@@ -670,6 +671,66 @@ describe("Field chrome scale", () => {
     const root = container.querySelector("[data-slot='field-root']");
     expect(root?.className).toMatch(/field-root/);
     expect(root?.className).not.toMatch(/size-/);
+  });
+});
+
+describe("FieldRow error and description", () => {
+  const DESCRIPTION = "Read them first.";
+  const describedText = (control: HTMLElement) =>
+    (control.getAttribute("aria-describedby") ?? "")
+      .split(" ")
+      .filter(Boolean)
+      .map((id) => document.getElementById(id)?.textContent);
+  // Checkbox is a real FieldRow consumer: its control reads the row's item,
+  // which a bare FieldControl does not.
+  const row = (match: boolean) => (
+    <Checkbox
+      label="Terms"
+      description={DESCRIPTION}
+      FieldProps={{ ErrorProps: { match, children: "Accept the terms" } }}
+    />
+  );
+
+  it("shows the description and describes the control by it while valid", () => {
+    render(row(false));
+
+    expect(screen.getByText(DESCRIPTION)).toBeInTheDocument();
+    expect(describedText(screen.getByRole("checkbox"))).toEqual([DESCRIPTION]);
+  });
+
+  it("replaces the description with the error while invalid", () => {
+    const { container } = render(row(true));
+
+    expect(
+      container.querySelector("[data-slot='field-description']"),
+    ).not.toBeInTheDocument();
+    expect(describedText(screen.getByRole("checkbox"))).toEqual([
+      "Accept the terms",
+    ]);
+  });
+
+  it("brings the description back once the error clears", async () => {
+    const { rerender } = render(row(true));
+    expect(screen.queryByText(DESCRIPTION)).not.toBeInTheDocument();
+
+    rerender(row(false));
+
+    await waitFor(() =>
+      expect(screen.getByText(DESCRIPTION)).toBeInTheDocument(),
+    );
+    expect(screen.queryByText("Accept the terms")).not.toBeInTheDocument();
+    expect(describedText(screen.getByRole("checkbox"))).toEqual([DESCRIPTION]);
+  });
+
+  it("forwards a ref to the error element", () => {
+    const ref = { current: null as HTMLDivElement | null };
+    render(
+      <FieldRow label="Terms" ErrorProps={{ match: true, ref }}>
+        <FieldControl />
+      </FieldRow>,
+    );
+
+    expect(ref.current).toHaveAttribute("data-slot", "field-error");
   });
 });
 

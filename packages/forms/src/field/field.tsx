@@ -1,8 +1,7 @@
 "use client";
 
 import { Group } from "@uiid/layout";
-import { cxState, isRenderable, useComposedRefs } from "@uiid/utils";
-import { useState } from "react";
+import { cxState, isRenderable } from "@uiid/utils";
 
 import { FieldRequiredProvider } from "./field-required-context";
 import type { FieldProps } from "./field.types";
@@ -14,6 +13,7 @@ import {
   FieldError,
   FieldAction,
 } from "./subcomponents";
+import { useFieldErrorSlot } from "./use-field-error-slot";
 
 import styles from "./field.module.css";
 
@@ -41,12 +41,8 @@ export const Field = ({
   // own, so the root should not participate in layout until an error renders.
   const hasChrome = hasLabel || hasAction || hasDescription;
 
-  // The error and the description share one slot: while Base UI has the error
-  // mounted, the description unmounts. Unmounting matters, not just hiding:
-  // each part adds its id to the control's `aria-describedby` on mount and
-  // removes it on unmount, so the control is described by what is on screen.
-  const [errorNode, setErrorNode] = useState<HTMLDivElement | null>(null);
-  const errorRef = useComposedRefs(ErrorProps?.ref, setErrorNode);
+  // While the error shows, it takes the description's place.
+  const { hasError, errorRef } = useFieldErrorSlot(ErrorProps?.ref);
 
   return (
     <FieldRoot
@@ -85,7 +81,7 @@ export const Field = ({
       </FieldRequiredProvider>
 
       <FieldError {...ErrorProps} ref={errorRef} />
-      {hasDescription && !errorNode && (
+      {hasDescription && !hasError && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
       )}
     </FieldRoot>

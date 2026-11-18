@@ -15,6 +15,6 @@ Use Checkbox when you want to:
 
 Leave `checked` unset and the box runs itself; pass `checked` and `onCheckedChange` to drive it yourself.
 
-Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. `FieldProps` and `IndicatorProps` reach the row and the box when a top-level prop isn't expressive enough.
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. The error takes the `description`'s place in the row while it shows, and the description comes back once it clears. `FieldProps` and `IndicatorProps` reach the row and the box when a top-level prop isn't expressive enough.
 
 Additional props are forwarded to the underlying Base UI [Checkbox](https://base-ui.com/react/components/checkbox).

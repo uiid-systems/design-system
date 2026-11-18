@@ -13,6 +13,6 @@ Use Radio when you want to:
 
 `value` identifies the radio within its group; selection state lives on the group, not here.
 
-Radio and [`Checkbox`](../checkbox/README.md) share one control surface — Radio paints with the checkbox styles rather than duplicating them — and both sit in the same shared field row. `FieldProps` and `IndicatorProps` reach the row and the dot when a top-level prop isn't expressive enough.
+Radio and [`Checkbox`](../checkbox/README.md) share one control surface — Radio paints with the checkbox styles rather than duplicating them — and both sit in the same shared field row, where an error takes the `description`'s place while it shows. `FieldProps` and `IndicatorProps` reach the row and the dot when a top-level prop isn't expressive enough.
 
 Additional props are forwarded to the underlying Base UI [Radio](https://base-ui.com/react/components/radio).

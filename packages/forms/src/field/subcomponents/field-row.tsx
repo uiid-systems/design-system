@@ -5,6 +5,7 @@ import { cx, isRenderable } from "@uiid/utils";
 
 import type { FieldRowProps } from "../field.types";
 import { fieldRowVariants } from "../field.variants";
+import { useFieldErrorSlot } from "../use-field-error-slot";
 import { FieldDescription } from "./field-description";
 import { FieldError } from "./field-error";
 import { FieldItem } from "./field-item";
@@ -35,6 +36,9 @@ import styles from "../field.module.css";
  * group's field. Naming the root here instead would match the group's name on
  * every row and paint the same error once per item (UI-190).
  *
+ * The error takes the description's place while it shows, the same slot
+ * `Field` uses, so the control is described only by the visible one.
+ *
  * `size` paints no dimension here — the control inside carries its own tier —
  * it only publishes the inset a `bordered` row reads, so the treatment scales
  * with the control it wraps.
@@ -55,6 +59,7 @@ export const FieldRow = ({
   const hasDescription = isRenderable(description);
   const hasContent = hasLabel || hasDescription;
   const needsTextContainer = hasLabel && hasDescription;
+  const { hasError, errorRef } = useFieldErrorSlot(ErrorProps?.ref);
 
   return (
     <FieldRoot className={styles["field-root-bare"]}>
@@ -85,12 +90,12 @@ export const FieldRow = ({
                 {label}
               </FieldLabel>
             )}
-            {hasDescription && (
+            {hasDescription && !hasError && (
               <FieldDescription {...DescriptionProps}>
                 {description}
               </FieldDescription>
             )}
-            <FieldError {...ErrorProps} />
+            <FieldError {...ErrorProps} ref={errorRef} />
           </ConditionalRender>
         )}
       </FieldItem>
