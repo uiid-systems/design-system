@@ -26,8 +26,6 @@ export interface ResizablePanelProps extends PanelProps {
 export interface ResizableHandleProps extends Omit<SeparatorProps, "children"> {
   /** Show a visible grip indicator */
   withHandle?: boolean;
-  /** Disable the handle */
-  disabled?: boolean;
   /** Additional CSS class name */
   className?: string;
   /** Handle content (overrides withHandle) */
