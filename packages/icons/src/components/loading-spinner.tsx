@@ -1,6 +1,17 @@
 export type LoadingSpinnerIconProps = React.SVGProps<SVGSVGElement> & {
-  size?: number;
+  /** Width and height. A string or a number, as on every other icon. */
+  size?: string | number;
 };
+
+/**
+ * Whether the caller gave the icon a role or an accessible name. The same test
+ * as lucide's `hasA11yProp`, so the spinner is hidden by default on exactly the
+ * terms lucide's icons are.
+ */
+const hasA11yProp = (props: Record<string, unknown>) =>
+  Object.keys(props).some(
+    (prop) => prop.startsWith("aria-") || prop === "role" || prop === "title",
+  );
 
 /**
  * Spins via the `[data-animate="spin"]` rule in `@uiid/tokens`, so it needs
@@ -12,6 +23,9 @@ export type LoadingSpinnerIconProps = React.SVGProps<SVGSVGElement> & {
  * animation on a real CSS box but leaves SVG child elements on the main
  * thread. The hook is an attribute rather than a class because `className` is
  * spread straight through and would silently overwrite one.
+ *
+ * Decorative by default: it renders `aria-hidden="true"` unless the caller
+ * passes an `aria-*` attribute, a `role` or a `title`.
  *
  * @see https://magecdn.com/tools/svg-loaders/270-ring-with-bg/
  */
@@ -27,6 +41,7 @@ export const LoadingSpinnerIcon = ({
     width={size}
     height={size}
     data-animate="spin"
+    aria-hidden={hasA11yProp(props) ? undefined : "true"}
     {...props}
   >
     <path

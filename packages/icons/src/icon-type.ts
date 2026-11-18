@@ -1,4 +1,4 @@
-import type { ForwardRefExoticComponent, RefAttributes, SVGProps } from "react";
+import type { ComponentType, SVGProps } from "react";
 
 /** Props shared by every icon — structurally lucide's `LucideProps`. */
 export type IconProps = Partial<SVGProps<SVGSVGElement>> & {
@@ -7,16 +7,18 @@ export type IconProps = Partial<SVGProps<SVGSVGElement>> & {
 };
 
 /**
- * An icon component. Structurally lucide's `LucideIcon`, declared locally rather
- * than re-exported from lucide's own types on purpose: packages that consume
- * `@uiid/icons` do not depend on `lucide-react`, so a published `.d.ts` naming
- * lucide's types is unresolvable for them (TS2742) the moment they annotate or
- * re-export an icon.
+ * An icon component: anything that renders from `IconProps`. That covers
+ * lucide's icons, `LoadingSpinnerIcon` and a consumer's own SVG component.
+ * `ref` is part of `IconProps` because React 19 passes it as an ordinary prop,
+ * so the type does not require a `forwardRef` component.
+ *
+ * Declared locally rather than re-exported from lucide's own types on purpose:
+ * packages that consume `@uiid/icons` do not depend on `lucide-react`, so a
+ * published `.d.ts` naming lucide's types is unresolvable for them (TS2742) the
+ * moment they annotate or re-export an icon.
  *
  * Mirrored by `icons/icon-type.d.ts`, which the per-icon subpath modules use.
  * The duplication is deliberate — it keeps subpath types resolvable before this
- * package has been built.
+ * package has been built. `icon-type.test.ts` compiles both.
  */
-export type Icon = ForwardRefExoticComponent<
-  IconProps & RefAttributes<SVGSVGElement>
->;
+export type Icon = ComponentType<IconProps>;

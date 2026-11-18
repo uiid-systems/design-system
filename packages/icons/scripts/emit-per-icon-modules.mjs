@@ -20,6 +20,24 @@ import { PKG_DIR, readIconMap, specifierFor } from "./lucide-icon-map.mjs";
 // and the module-graph tests, which run this themselves so they never depend on
 // build order.
 
+// The icon type is declared locally rather than as import("lucide-react"):
+// consumers depend on @uiid/icons but not on lucide-react, so a d.ts that
+// names lucide's types is unresolvable for them (TS2742) the moment they
+// re-export or annotate an icon.
+//
+// Mirrors `Icon` in src/icon-type.ts. Exported so icon-type.test.ts compiles
+// this exact text beside the source declaration, and the two cannot drift.
+export const ICON_TYPE_DTS = `import type { ComponentType, SVGProps } from "react";
+
+/** Takes lucide's LucideProps, without referencing lucide's own types. */
+export type Icon = ComponentType<
+  Partial<SVGProps<SVGSVGElement>> & {
+    size?: string | number;
+    absoluteStrokeWidth?: boolean;
+  }
+>;
+`;
+
 // `clean` wipes the directory first, which only `build` should do: this output is
 // what consumers and the editor resolve `@uiid/icons/<icon>` against, so a wipe
 // that is interrupted leaves them with a partial icon set and TS2307. The tests
@@ -31,23 +49,7 @@ export function emitPerIconModules({ clean = true } = {}) {
   if (clean) rmSync(outDir, { recursive: true, force: true });
   mkdirSync(outDir, { recursive: true });
 
-  // The icon type is declared locally rather than as import("lucide-react"):
-  // consumers depend on @uiid/icons but not on lucide-react, so a d.ts that
-  // names lucide's types is unresolvable for them (TS2742) the moment they
-  // re-export or annotate an icon.
-  writeFileSync(
-    `${outDir}/icon-type.d.ts`,
-    `import type { ForwardRefExoticComponent, RefAttributes, SVGProps } from "react";
-
-/** Structurally lucide's LucideIcon, without referencing lucide's own types. */
-export type Icon = ForwardRefExoticComponent<
-  Partial<SVGProps<SVGSVGElement>> & {
-    size?: string | number;
-    absoluteStrokeWidth?: boolean;
-  } & RefAttributes<SVGSVGElement>
->;
-`,
-  );
+  writeFileSync(`${outDir}/icon-type.d.ts`, ICON_TYPE_DTS);
 
   // Several canonical names can share one lucide module (`FingerprintIcon` and
   // `FingerprintPatternIcon` both live in fingerprint-pattern.mjs), so the

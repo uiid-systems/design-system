@@ -33,4 +33,37 @@ describe("LoadingSpinnerIcon", () => {
     expect(svg).toHaveAttribute("height", "20");
     expect(svg).toHaveAttribute("aria-label", "Loading");
   });
+
+  it("takes a string size, as lucide's icons do", () => {
+    const { container } = render(<LoadingSpinnerIcon size="1em" />);
+    const svg = spinner(container);
+
+    expect(svg).toHaveAttribute("width", "1em");
+    expect(svg).toHaveAttribute("height", "1em");
+  });
+
+  // The same rule lucide's icons follow, so a spinner in an `icon` slot is
+  // decorative by default like any other icon.
+  it("is hidden from assistive technology when it has no accessible name", () => {
+    const { container } = render(<LoadingSpinnerIcon className="theirs" />);
+
+    expect(spinner(container)).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it.each([
+    ["aria-label", { "aria-label": "Loading" }],
+    ["aria-labelledby", { "aria-labelledby": "status" }],
+    ["title", { title: "Loading" }],
+    ["role", { role: "status" }],
+  ])("is exposed when the caller passes %s", (_name, props) => {
+    const { container } = render(<LoadingSpinnerIcon {...props} />);
+
+    expect(spinner(container)).not.toHaveAttribute("aria-hidden");
+  });
+
+  it("lets the caller set aria-hidden itself", () => {
+    const { container } = render(<LoadingSpinnerIcon aria-hidden={false} />);
+
+    expect(spinner(container)).toHaveAttribute("aria-hidden", "false");
+  });
 });
