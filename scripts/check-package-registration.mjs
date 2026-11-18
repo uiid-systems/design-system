@@ -46,14 +46,19 @@ const extraFiles = new Set(
   ),
 );
 // tsconfig.json allows comments, so its references are matched, not parsed.
+// Comments are stripped first, so a commented-out reference does not count.
+const tsconfig = read("tsconfig.json")
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/(^|\s)\/\/.*$/gm, "$1");
 const references = new Set(
-  [...read("tsconfig.json").matchAll(/"path":\s*"([^"]+)"/g)].map(
-    ([, path]) => path,
-  ),
+  [...tsconfig.matchAll(/"path":\s*"([^"]+)"/g)].map(([, path]) => path),
 );
 const cssLayers = createRequire(import.meta.url)("./css-layers.cjs");
 const umbrellaDeps = readJson(`packages/${UMBRELLA}/package.json`).dependencies;
 const barrel = read(`packages/${UMBRELLA}/src/index.ts`);
+const privateNames = new Set(
+  packages.filter(({ pkg }) => pkg.private).map(({ pkg }) => pkg.name),
+);
 
 for (const { folder, pkg } of packages) {
   const { name } = pkg;
@@ -71,17 +76,19 @@ for (const { folder, pkg } of packages) {
     fail(`${name}: has CSS modules but no entry in scripts/css-layers.cjs`);
   }
 
-  if (folder === UMBRELLA) continue;
+  if (pkg.private) continue;
 
-  // A private package must stay out of the umbrella: `pnpm -r publish` skips
-  // it but still publishes the umbrella, which would then depend on a version
-  // npm cannot serve.
-  if (pkg.private) {
-    if (umbrellaDeps?.[name]) {
-      fail(`${name}: private, but the umbrella depends on it`);
+  // `pnpm -r publish` skips a private package but still publishes everything
+  // that depends on it, which then needs a version npm cannot serve.
+  for (const field of ["dependencies", "peerDependencies"]) {
+    for (const dep of Object.keys(pkg[field] ?? {})) {
+      if (privateNames.has(dep)) {
+        fail(`${name}: public, but its ${field} include private ${dep}`);
+      }
     }
-    continue;
   }
+
+  if (folder === UMBRELLA) continue;
 
   if (!umbrellaDeps?.[name]) {
     fail(`${name}: missing from the umbrella's dependencies`);
