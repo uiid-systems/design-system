@@ -46,9 +46,7 @@
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/navigation": "workspace:*",
-    "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
     "cva": "1.0.0-beta.12"
   },
