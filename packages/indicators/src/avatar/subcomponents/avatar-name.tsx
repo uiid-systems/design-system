@@ -11,7 +11,7 @@ export const AvatarName = ({ name, className, ...props }: AvatarNameProps) => {
       data-slot="avatar-name"
       className={cx(styles["avatar-name"], className)}
       size={1}
-      weight="bold"
+      weight="semibold"
       {...props}
     >
       {name}
