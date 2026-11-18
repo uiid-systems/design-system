@@ -83,6 +83,14 @@ describe("Toaster", () => {
     );
   });
 
+  it("portals into the container given by PortalProps", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    renderToaster({ PortalProps: { container } });
+    expect(container).toContainElement(viewport() as HTMLElement);
+    container.remove();
+  });
+
   // ============================================
   // CONTENT
   // ============================================
