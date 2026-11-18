@@ -33,17 +33,20 @@ const { messages, status } = useChat();
 
 All `Collapsible` root props, which are Base UI's `open`, `defaultOpen`, `onOpenChange` and `disabled` plus the [`Stack`](../../../layout/src/stack/README.md) layout props, and:
 
-| Prop        | Type      | Default | Description                                                                |
-| ----------- | --------- | ------- | -------------------------------------------------------------------------- |
-| `children`  | `string`  | —       | The reasoning text, as markdown. It may be cut off while it streams        |
-| `streaming` | `boolean` | `false` | Whether the text is still arriving. Shimmers the label and opens the panel |
-| `duration`  | `number`  | —       | How long the model thought, in whole seconds. Overrides the measured time  |
+| Prop        | Type                                | Default | Description                                                                |
+| ----------- | ----------------------------------- | ------- | -------------------------------------------------------------------------- |
+| `children`  | `string`                            | —       | The reasoning text, as markdown. It may be cut off while it streams        |
+| `streaming` | `boolean`                           | `false` | Whether the text is still arriving. Shimmers the label and opens the panel |
+| `duration`  | `number`                            | —       | How long the model thought, in whole seconds. Overrides the measured time  |
+| `label`     | `ReactNode \| (state) => ReactNode` | English | The trigger's text. A function gets `{ streaming, duration }`              |
 
 Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel is `fullwidth` so the text spans the block. Renders `data-slot="reasoning"` on the root, with `data-streaming` while `streaming`, `data-slot="reasoning-trigger"` on the trigger and `data-slot="reasoning-panel"` on the panel.
 
 ## Behavior
 
 **Label.** While `streaming` the trigger reads "Thinking…" in a `Shimmer`. Once finished it reads "Thought for N seconds", where N is `duration` when passed, or else the seconds measured between `streaming` turning on and off. With no duration from either source it reads "Reasoning", not "Thought for a few seconds", so a transcript loaded from storage never claims a time nobody measured.
+
+Pass `label` to replace the English, as a string or as a function of `{ streaming, duration }`, where `duration` is the prop or else the measured seconds. A string label shimmers while streaming, like the default; any other node renders as itself, since `Shimmer` sizes its sweep from a string.
 
 **Open state.** An uncontrolled block opens when `streaming` turns on, whether it mounts that way or changes later, and closes one second after it turns off. Pass `defaultOpen={false}` to keep it closed while it streams. A block that never streamed never auto-closes, so a finished transcript rendered with `defaultOpen` stays open. Calling `details.cancel()` in `onOpenChange` keeps an uncontrolled block where it is, as it would on a bare Base UI `Collapsible`.
 

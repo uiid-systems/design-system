@@ -8,13 +8,14 @@ import { useEffect, useLayoutEffect, useState } from "react";
 
 import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
-import type { ReasoningProps } from "./reasoning.types";
+import type { ReasoningLabelState, ReasoningProps } from "./reasoning.types";
 
 import styles from "./reasoning.module.css";
 
-const reasoningLabel = (seconds?: number) => {
-  if (!seconds) return "Reasoning";
-  return `Thought for ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+const defaultLabel = ({ streaming, duration }: ReasoningLabelState) => {
+  if (streaming) return "Thinking…";
+  if (!duration) return "Reasoning";
+  return `Thought for ${duration} ${duration === 1 ? "second" : "seconds"}`;
 };
 
 export const Reasoning = ({
@@ -24,6 +25,7 @@ export const Reasoning = ({
   open: openProp,
   defaultOpen,
   onOpenChange,
+  label: labelProp = defaultLabel,
   gap = 2,
   ax = "start",
   ...props
@@ -60,7 +62,10 @@ export const Reasoning = ({
     return () => clearTimeout(id);
   }, [streaming, controlled, measured]);
 
-  const label = reasoningLabel(duration ?? measured);
+  const label =
+    typeof labelProp === "function"
+      ? labelProp({ streaming, duration: duration ?? measured })
+      : labelProp;
 
   return (
     <CollapsibleRoot
@@ -82,7 +87,14 @@ export const Reasoning = ({
         className={styles["trigger"]}
       >
         <BrainIcon aria-hidden />
-        {streaming ? <Shimmer>Thinking…</Shimmer> : <Text>{label}</Text>}
+        {/* Shimmer sizes its sweep from a string, so only text shimmers. */}
+        {typeof label !== "string" ? (
+          label
+        ) : streaming ? (
+          <Shimmer>{label}</Shimmer>
+        ) : (
+          <Text>{label}</Text>
+        )}
       </CollapsibleTrigger>
       <CollapsiblePanel data-slot="reasoning-panel" fullwidth instant={false}>
         <Markdown streaming={streaming}>{children}</Markdown>
