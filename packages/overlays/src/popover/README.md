@@ -9,7 +9,7 @@ Use Popover when you want to:
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 - Hold things a user interacts with: filters, a short form, a set of links
 
-Leave `open` unset and the popover runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself.
+Leave `open` unset and the popover runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
 Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover) and takes its props unchanged — anything not listed above is forwarded.
 
