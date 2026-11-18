@@ -2,7 +2,9 @@
 
 import { splitDomAttributes } from "@uiid/utils";
 
+import type { SelectMultipleMode } from "../select/select.types";
 import { InputGroupActions, mergeInputGroupProps } from "../shared/input-group";
+import { resolveItemKey, resolveItemLabel } from "../shared/item-utils";
 import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxRoot,
@@ -17,7 +19,10 @@ import {
   ComboboxEmpty,
 } from "./subcomponents";
 
-export const Combobox = ({
+export function Combobox<
+  Value = string,
+  Multiple extends SelectMultipleMode = false,
+>({
   items,
   name,
   label,
@@ -41,7 +46,7 @@ export const Combobox = ({
   ListProps,
   children,
   ...props
-}: ComboboxProps) => {
+}: ComboboxProps<Value, Multiple>) {
   // `Root` renders no element, so a DOM attribute spread onto it lands
   // nowhere. Route those to the input instead — it is the focusable element
   // and the one carrying `role="combobox"`, so it is where a name or a
@@ -60,13 +65,22 @@ export const Combobox = ({
   // through: TypeScript only runs the excess-property check on an object
   // literal passed directly, so inlining this into the `FieldProps` attribute
   // below fails `tsc`.
+  // Base UI's item renders no text of its own, so the default row resolves
+  // its label the way Root resolves the input's text: `itemToStringLabel`,
+  // then an object's `label`, then a primitive value. `rootProps` spreads
+  // last onto Root, so its functions are the ones Root uses too.
+  const itemToStringLabel =
+    rootProps.itemToStringLabel ?? RootProps?.itemToStringLabel;
+  const itemToStringValue =
+    rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
+
   const fieldProps =
     required === undefined
       ? InputProps?.FieldProps
       : { ...InputProps?.FieldProps, required };
 
   return (
-    <ComboboxRoot
+    <ComboboxRoot<Value, Multiple>
       items={items}
       name={name}
       disabled={disabled}
@@ -113,8 +127,16 @@ export const Combobox = ({
           <ComboboxPopup color={color} {...PopupProps}>
             <ComboboxList {...ListProps}>
               {children ??
-                ((item: string) => (
-                  <ComboboxItem key={item} value={item} disabled={disabled} />
+                ((item: Value, index: number) => (
+                  <ComboboxItem<Value>
+                    key={resolveItemKey(item, index, {
+                      itemToStringValue,
+                      itemToStringLabel,
+                    })}
+                    value={item}
+                    label={resolveItemLabel(item, itemToStringLabel)}
+                    disabled={disabled}
+                  />
                 ))}
             </ComboboxList>
             <ComboboxEmpty />
@@ -123,5 +145,5 @@ export const Combobox = ({
       </ComboboxPortal>
     </ComboboxRoot>
   );
-};
+}
 Combobox.displayName = "Combobox";

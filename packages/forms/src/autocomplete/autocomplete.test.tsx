@@ -1,9 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
+import type {
+  AutocompleteItemProps,
+  AutocompleteProps,
+} from "./autocomplete.types";
 import { AutocompleteInput, AutocompleteRoot } from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
@@ -608,5 +612,92 @@ describe("Autocomplete required reaches the label and the control", () => {
       container.querySelector("[data-slot='field-label'][data-required]"),
     ).not.toBeNull();
     expect(screen.getByRole("combobox")).toHaveAttribute("required");
+  });
+});
+
+/* Base UI types Autocomplete's Root by its item value; the monolith must carry
+   it through rather than pinning it to `string`. Autocomplete's Root has no
+   `itemToStringLabel`: its `itemToStringValue` is the text a row shows and
+   fills the input with. */
+describe("Autocomplete generics", () => {
+  type User = { id: number; name: string };
+  const users: User[] = [
+    { id: 1, name: "Ada Lovelace" },
+    { id: 2, name: "Grace Hopper" },
+  ];
+
+  it("renders an object item's text from itemToStringValue", async () => {
+    const user = userEvent.setup();
+    render(
+      <Autocomplete items={users} itemToStringValue={(item) => item.name} />,
+    );
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(
+      screen.getByRole("option", { name: "Ada Lovelace" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("[object Object]")).not.toBeInTheDocument();
+  });
+
+  it("fills the input with an object item's text on press", async () => {
+    const user = userEvent.setup();
+    render(
+      <Autocomplete items={users} itemToStringValue={(item) => item.name} />,
+    );
+
+    await user.type(screen.getByRole("combobox"), "grace");
+    await user.click(screen.getByRole("option", { name: "Grace Hopper" }));
+
+    expect(screen.getByRole("combobox")).toHaveValue("Grace Hopper");
+  });
+
+  it("renders a { value, label } item's label without itemToStringValue", async () => {
+    const user = userEvent.setup();
+    render(
+      <Autocomplete
+        items={[
+          { value: "ada", label: "Ada Lovelace" },
+          { value: "grace", label: "Grace Hopper" },
+        ]}
+      />,
+    );
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(
+      screen.getByRole("option", { name: "Ada Lovelace" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("[object Object]")).not.toBeInTheDocument();
+  });
+
+  it("types items by the autocomplete's Value", () => {
+    expectTypeOf<AutocompleteProps<User>["items"]>().toEqualTypeOf<
+      readonly User[] | undefined
+    >();
+    expectTypeOf<AutocompleteProps["items"]>().toEqualTypeOf<
+      readonly string[] | undefined
+    >();
+    expectTypeOf<AutocompleteItemProps<User>["value"]>().toEqualTypeOf<
+      User | undefined
+    >();
+    expectTypeOf<AutocompleteItemProps["value"]>().toEqualTypeOf<
+      string | undefined
+    >();
+
+    // @ts-expect-error a string is not an `Autocomplete<User>` item
+    const wrong: AutocompleteProps<User>["items"] = ["Ada"];
+    void wrong;
+
+    void (
+      <Autocomplete items={users} itemToStringValue={(item) => item.name} />
+    );
+    void (
+      <Autocomplete
+        items={users}
+        // @ts-expect-error `Value` is `User`, which has no `title`
+        itemToStringValue={(item) => item.title}
+      />
+    );
   });
 });

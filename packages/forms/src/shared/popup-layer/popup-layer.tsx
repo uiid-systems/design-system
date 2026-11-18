@@ -8,6 +8,8 @@ import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { cxState, type WithLayoutProps } from "@uiid/utils";
 
+import { resolveItemLabel } from "../item-utils";
+
 import styles from "./popup-layer.module.css";
 
 /**
@@ -119,11 +121,18 @@ PopupLayerList.displayName = "PopupLayerList";
 export const PopupLayerItem = ({
   slot,
   value,
+  label,
   className,
   children,
   render,
   ...props
-}: WithSlot<BasePopupLayerTypes.Item.Props>) => {
+}: WithSlot<BasePopupLayerTypes.Item.Props> & {
+  /**
+   * The row's text. Falls back to a `label` on an object value, then to the
+   * value itself when it is a primitive, never to `String(object)`.
+   */
+  label?: React.ReactNode;
+}) => {
   return (
     <BasePopupLayer.Item
       data-slot={slot}
@@ -138,7 +147,7 @@ export const PopupLayerItem = ({
           <ListItem
             render={<div />}
             fullwidth
-            label={value as string}
+            label={label ?? resolveItemLabel(value)}
             {...renderProps}
           />
         ))
