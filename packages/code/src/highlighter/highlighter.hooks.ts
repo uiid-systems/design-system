@@ -46,8 +46,8 @@ export function useHighlighter() {
 
 export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
   /**
-   * Set to `false` to skip highlighting: no theme or grammar is fetched, no
-   * highlighter is created and nothing is highlighted on the client. Use it
+   * Set to `false` to skip highlighting: Shiki is never loaded, no theme or
+   * grammar is fetched and nothing is highlighted on the client. Use it
    * when there is nothing to highlight, such as plain code or pre-rendered
    * `html`.
    * @default true
