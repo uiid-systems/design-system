@@ -114,6 +114,22 @@ export const WithLineNumbers: Story = {
   },
 };
 
+const longLineSample = `const greeting = "hello";
+const message = \`\${greeting}, this line is long enough to wrap inside the editor, so the caret, the selection and the colors must wrap at the same point\`;
+
+console.log(message);`;
+
+/** A line wider than the editor soft-wraps, and the caret stays on the colored text beside the line numbers. */
+export const LongLines: Story = {
+  args: {
+    defaultValue: longLineSample,
+    language: "tsx",
+    filename: "greeting.tsx",
+    showLineNumbers: true,
+    copyable: true,
+  },
+};
+
 export const ReadOnly: Story = {
   args: {
     defaultValue: sampleTypeScript,

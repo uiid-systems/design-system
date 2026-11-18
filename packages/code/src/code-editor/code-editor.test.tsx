@@ -181,6 +181,21 @@ describe("CodeEditor", () => {
     expect(pre).not.toHaveFocus();
   });
 
+  // Alignment itself is CSS, measured in a real browser on the LongLines story;
+  // this pins the attribute that gives both layers the same gutter.
+  it("marks the layer holding both the highlight and the textarea for line numbers", () => {
+    const { rerender } = render(<CodeEditor defaultValue="const x = 1;" />);
+    const layer = screen.getByRole("textbox").parentElement!;
+
+    expect(layer).not.toHaveAttribute("data-line-numbers");
+    expect(
+      layer.querySelector("[data-slot='code-editor-highlight']"),
+    ).toBeInTheDocument();
+
+    rerender(<CodeEditor defaultValue="const x = 1;" showLineNumbers />);
+    expect(layer).toHaveAttribute("data-line-numbers");
+  });
+
   // ============================================
   // TEXTAREA PROPS
   // ============================================

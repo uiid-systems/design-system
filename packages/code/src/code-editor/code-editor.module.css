@@ -1,6 +1,9 @@
 .code-editor {
   composes: composes-disabled from global;
 
+  /* Inline-start space the line-number column takes: a 2rem number and a 1rem gap */
+  --code-editor-gutter: 3rem;
+
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   overflow: hidden;
@@ -30,6 +33,38 @@
     font-weight: inherit;
     line-height: inherit;
     letter-spacing: inherit;
+  }
+
+  /* Wrap long lines exactly as the textarea does, so both layers break at the same point */
+  & :global(pre) {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Line numbers sit in the gutter, out of the text flow, so the code wraps as the textarea's does.
+   The editor draws its own rather than the shared flex-column rules, whose per-token flex items
+   cannot wrap like textarea text. */
+.code-editor-layer[data-line-numbers] {
+  & .code-editor-highlight :global(pre) {
+    counter-reset: line;
+    padding-inline-start: calc(var(--code-padding) + var(--code-editor-gutter));
+  }
+
+  & .code-editor-highlight :global(.line)::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    width: calc(var(--code-editor-gutter) - 1rem);
+    margin-inline-start: calc(-1 * var(--code-editor-gutter));
+    text-align: end;
+    color: var(--shade-muted, #666);
+    user-select: none;
+  }
+
+  & .code-editor-textarea {
+    padding-inline-start: calc(var(--code-padding) + var(--code-editor-gutter));
   }
 }
 
