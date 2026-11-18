@@ -21,7 +21,15 @@ const renderResizable = (handleProps?: ResizableHandleProps) =>
 const getHandle = () => screen.getByRole("separator");
 
 /* The selector of the rule that paints a hovered or dragged handle, with the
-   module's local class swapped for the one the test DOM renders. */
+   module's local class swapped for the one the test DOM renders. The regex
+   reads this rule from `resizable.module.css`, capturing its second arm:
+
+     .resizable-handle:hover,
+     .resizable-handle[data-separator]:not(…) {
+       background-color: var(--shade-accent);
+     }
+
+   If that rule is reformatted, reordered or repainted, update the regex. */
 const getActiveSelector = () => {
   const selector = css.match(
     /\.resizable-handle:hover,\s*([^{]+?)\s*\{\s*background-color: var\(--shade-accent\)/,
