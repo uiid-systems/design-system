@@ -27,11 +27,6 @@
       "persistent": true,
       "dependsOn": ["@uiid/tokens#tokens"]
     },
-    "storybook": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["@uiid/tokens#tokens"]
-    },
     "build-storybook": {
       "dependsOn": ["^build"],
       "inputs": [
