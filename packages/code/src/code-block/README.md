@@ -33,7 +33,7 @@ The inline block stays mounted underneath, so its copy state and "Show more" sta
 
 ## Slot props
 
-`HeaderProps`, `LanguageIconProps`, `WrapButtonProps`, `CopyButtonProps` and `FullscreenButtonProps` reach the header and its parts. `HeaderProps` spreads last, so it overrides any header prop CodeBlock sets, including the three toggles above. A `CopyButtonProps` passed inside `HeaderProps` replaces the merged one, which drops the top-level `onCopy`.
+`HeaderProps`, `LanguageIconProps`, `WrapButtonProps`, `CopyButtonProps` and `FullscreenButtonProps` reach the header and its parts. `HeaderProps` spreads last, so it overrides any header prop CodeBlock sets, including the three toggles above. A `CopyButtonProps` passed inside `HeaderProps` replaces the merged one, which drops the top-level `onCopy`. A `CopyButtonProps.onClick` runs before the copy; call `event.preventDefault()` in it to skip copying.
 
 ## Data Slots
 

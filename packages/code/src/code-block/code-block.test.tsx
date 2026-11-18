@@ -142,6 +142,73 @@ describe("CodeBlock", () => {
     });
   });
 
+  it("calls a CopyButtonProps onClick and still copies", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const onCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={onCopy}
+        CopyButtonProps={{ onClick }}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
+  });
+
+  it("skips the copy when a CopyButtonProps onClick prevents default", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={onCopy}
+        CopyButtonProps={{ onClick: (event) => event.preventDefault() }}
+      />,
+    );
+
+    const copyButton = screen.getByRole("button", { name: /copy/i });
+    await user.click(copyButton);
+
+    expect(onCopy).not.toHaveBeenCalled();
+    expect(copyButton).toHaveAttribute("data-copied", "false");
+  });
+
+  it("restarts the copied timer on each copy and clears it on unmount", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const { unmount } = render(<CodeBlock code="const x = 1;" />);
+      const copyButton = screen.getByRole("button", { name: /copy/i });
+
+      await user.click(copyButton);
+      await waitFor(() =>
+        expect(copyButton).toHaveAttribute("data-copied", "true"),
+      );
+      await React.act(() => vi.advanceTimersByTime(1500));
+      await user.click(copyButton);
+      await React.act(() => vi.advanceTimersByTime(1500));
+      // The first copy's timer would have reset it by now.
+      expect(copyButton).toHaveAttribute("data-copied", "true");
+
+      await React.act(() => vi.advanceTimersByTime(600));
+      expect(copyButton).toHaveAttribute("data-copied", "false");
+
+      await user.click(copyButton);
+      await waitFor(() =>
+        expect(copyButton).toHaveAttribute("data-copied", "true"),
+      );
+      unmount();
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   // ============================================
   // LINE NUMBERS
   // ============================================
