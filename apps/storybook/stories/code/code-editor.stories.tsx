@@ -124,6 +124,16 @@ export const ReadOnly: Story = {
   },
 };
 
+/** Keyboard focus on the textarea draws the form-control focus ring around the editor. */
+export const Focused: Story = {
+  args: {
+    defaultValue: sampleTypeScript,
+    language: "tsx",
+    filename: "counter.tsx",
+    TextareaProps: { autoFocus: true },
+  },
+};
+
 export const WithPlaceholder: Story = {
   args: {
     placeholder: "// Start typing your code here...",
