@@ -45,6 +45,17 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /*
+   * Native form controls take their font from the browser, not their parent,
+   * so the body font never reaches them. Family only: the `font` shorthand
+   * would also reset size, weight and line height, and controls that set no
+   * size of their own (Tabs, Checkbox, Radio) would grow to the body size.
+   */
+  :is(button, input, select, textarea),
+  ::file-selector-button {
+    font-family: inherit;
+  }
+
   :is(h1, h2, h3, h4, h5, h6, p, ul, ol) {
     margin: 0;
     padding: 0;
