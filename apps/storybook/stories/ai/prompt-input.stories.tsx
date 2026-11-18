@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PromptInput } from "@uiid/ai";
+import { fn } from "storybook/test";
 
 import * as Examples from "../../../../packages/ai/src/prompt-input/prompt-input.examples";
 
@@ -13,6 +14,7 @@ const meta = {
     status: "ready",
     placeholder: "Ask anything",
     disabled: false,
+    onSubmit: fn(),
   },
   argTypes: {
     status: {

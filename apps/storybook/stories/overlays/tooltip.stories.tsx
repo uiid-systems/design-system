@@ -8,15 +8,18 @@ const meta = {
   component: Tooltip,
   args: {
     children: "This is a tooltip",
+    trigger: <Button>Hover me</Button>,
   },
-  argTypes: {},
+  argTypes: {
+    trigger: { table: { disable: true } },
+  },
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  render: (args) => <Tooltip {...args} trigger={<Button>Hover me</Button>} />,
+  render: (args) => <Tooltip {...args} />,
 };
 
 export const Positioning: Story = { render: () => <Examples.Positioning /> };
