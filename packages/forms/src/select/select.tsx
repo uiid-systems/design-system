@@ -120,6 +120,10 @@ export function Select<
     return collected.length > 0 ? collected : undefined;
   }, [items, children]);
 
+  // `disabled` goes to Root and to Field, not the trigger. Root owns the
+  // hidden input, the field registration and the validation props, and its
+  // context is where the trigger and every item read it back from; Field
+  // reads its own root to dim the label and description.
   return (
     <Field
       name={name}
@@ -127,12 +131,14 @@ export function Select<
       description={description}
       action={action}
       required={required}
+      disabled={disabled}
       size={size}
       {...FieldProps}
     >
       <SelectRoot<Value, Multiple>
         name={name}
         required={required}
+        disabled={disabled}
         multiple={multiple}
         defaultValue={resolvedDefaultValue}
         items={itemLabels}
@@ -144,7 +150,6 @@ export function Select<
           fullwidth={fullwidth}
           variant={variant}
           color={color}
-          disabled={disabled}
           before={before}
           after={after}
           {...domAttributes}
@@ -173,7 +178,7 @@ export function Select<
                           key={value}
                           label={label}
                           value={value}
-                          disabled={itemDisabled || disabled}
+                          disabled={itemDisabled}
                           description={description}
                           icon={icon}
                         >
