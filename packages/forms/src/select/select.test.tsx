@@ -13,6 +13,7 @@ import {
 } from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
+import popupLayerStyles from "../shared/popup-layer/popup-layer.module.css";
 import styles from "./select.module.css";
 
 describe("Select", () => {
@@ -1087,7 +1088,7 @@ describe("Select state-function className", () => {
     await user.click(screen.getByRole("combobox"));
 
     const popup = document.querySelector("[data-slot='select-popup']");
-    expect(popup).toHaveClass("fn-open", styles["select-popup"]);
+    expect(popup).toHaveClass("fn-open", popupLayerStyles["popup-layer-popup"]);
   });
 
   it("resolves a state-function className on the backdrop alongside its own class", async () => {

@@ -53,14 +53,6 @@
   composes: composes-popup-positioner from global;
 }
 
-.select-popup {
-  composes: composes-popup from global;
-  min-width: var(--anchor-width);
-
-  --list-description-color: var(--palette-on-tint);
-  --list-icon-color: var(--palette-on-tint);
-}
-
 .select-item {
   composes: composes-option from global;
   display: flex;

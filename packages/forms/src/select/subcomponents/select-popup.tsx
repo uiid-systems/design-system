@@ -1,34 +1,32 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { Card } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
+import {
+  popupLayerCard,
+  popupLayerPopupClassName,
+} from "../../shared/popup-layer";
 import type { SelectPopupProps } from "../select.types";
 
-import styles from "../select.module.css";
-
 /**
- * The popup is portalled, so no class on the trigger can reach it — the hue has
- * to arrive as a prop. `Card` already paints the palette, so the treatment is a
- * pass-through; leaving `color` undefined lands on `Card`'s neutral default.
+ * Wears the same surface as the Combobox and Autocomplete popups, from
+ * `popupLayerCard`. Only the Base UI part differs.
  */
 export const SelectPopup = ({
   children,
   className,
   color,
-  p = 2,
-  gap = 0,
-  fullwidth = true,
+  p,
+  gap,
+  fullwidth,
   ...props
 }: SelectPopupProps) => {
   return (
     <BaseSelect.Popup
       data-slot="select-popup"
-      render={
-        <Card shadow color={color} p={p} gap={gap} fullwidth={fullwidth} />
-      }
-      className={cxState(styles["select-popup"], className)}
+      render={popupLayerCard({ color, p, gap, fullwidth })}
+      className={cxState(popupLayerPopupClassName, className)}
       {...props}
     >
       {children}
