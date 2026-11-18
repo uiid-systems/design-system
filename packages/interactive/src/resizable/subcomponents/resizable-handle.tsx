@@ -12,13 +12,11 @@ export const ResizableHandle = ({
   withHandle,
   className,
   children,
-  disabled,
   ...props
 }: ResizableHandleProps) => {
   return (
     <Separator
       data-slot="resizable-handle"
-      data-disabled={disabled ? "" : undefined}
       className={cx(styles["resizable-handle"], className)}
       {...props}
     >

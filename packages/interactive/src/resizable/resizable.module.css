@@ -38,7 +38,7 @@
 }
 
 .resizable-handle:hover,
-.resizable-handle[data-separator]:not([data-separator="inactive"]) {
+.resizable-handle[data-separator]:not([data-separator="inactive"], [data-separator="disabled"]) {
   background-color: var(--shade-accent);
 }
 
