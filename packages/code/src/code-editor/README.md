@@ -41,7 +41,21 @@ import { CodeEditor } from "@uiid/code";
 | `CopyButtonProps` | `CodeBlockCopyButtonProps` | —              | Props for copy button        |
 | `TextareaProps`   | `CodeEditorTextareaProps`  | —              | Props for the textarea       |
 
-`TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. When a `<label htmlFor>` names it instead, pass `"aria-label": undefined` so the default does not outrank the label. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
+`TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
+
+The default name applies whenever the caller supplies neither `aria-label` nor `aria-labelledby`, including when a native `<label htmlFor>` or a `Field` label is present, because `aria-label` outranks both. A `Field` label also points at a generated id the textarea never receives, so wrapping the editor in `<Field label>` does not name it on its own. To hand naming to a visible label, point the textarea at the label's id:
+
+```tsx
+<label id="body-label">Request body</label>
+<CodeEditor TextareaProps={{ "aria-labelledby": "body-label" }} />
+
+// Inside a Field, give its label the id
+<Field label="Request body" LabelProps={{ id: "body-label" }}>
+  <CodeEditor TextareaProps={{ "aria-labelledby": "body-label" }} />
+</Field>
+```
+
+To name it with `<label htmlFor>` instead, pass the matching `id` and drop the default: `TextareaProps={{ id: "body", "aria-label": undefined }}`.
 
 > `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`
 

@@ -195,17 +195,46 @@ describe("CodeEditor", () => {
     expect(textarea).toHaveAttribute("aria-labelledby", "editor-label");
   });
 
+  it("is named by a visible label through aria-labelledby", () => {
+    render(
+      <>
+        <label id="editor-label">Request body</label>
+        <CodeEditor
+          defaultValue="test"
+          filename="app.tsx"
+          TextareaProps={{ "aria-labelledby": "editor-label" }}
+        />
+      </>,
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Request body" }),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the default name over a label element unless the caller opts out", () => {
+    render(
+      <>
+        <label htmlFor="source-id">Request body</label>
+        <CodeEditor defaultValue="test" TextareaProps={{ id: "source-id" }} />
+      </>,
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Code editor" }),
+    ).toBeInTheDocument();
+  });
+
   it("drops the default aria-label so a label element can name the textbox", () => {
     render(
       <>
-        <label htmlFor="source-id">Source</label>
+        <label htmlFor="source-id">Request body</label>
         <CodeEditor
           defaultValue="test"
           TextareaProps={{ id: "source-id", "aria-label": undefined }}
         />
       </>,
     );
-    expect(screen.getByLabelText("Source")).not.toHaveAttribute("aria-label");
+    const textarea = screen.getByRole("textbox", { name: "Request body" });
+    expect(textarea).not.toHaveAttribute("aria-label");
   });
 
   it("keeps a wrapper aria-label on the wrapper", () => {

@@ -79,6 +79,7 @@ export const CodeEditor = ({
   // Handle text changes
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      // Intentional: a read-only editor skips `TextareaProps.onChange` too
       if (readOnly) return;
       const newValue = e.target.value;
       if (!isControlled) {
