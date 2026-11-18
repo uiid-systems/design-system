@@ -71,8 +71,6 @@ export function useSortableHandlers<T>(
     (event: DragStartEvent) => {
       onDragStart?.(event);
 
-      if (event.activatorEvent.defaultPrevented) return;
-
       setActiveId(event.active.id);
     },
     [onDragStart],
@@ -81,8 +79,6 @@ export function useSortableHandlers<T>(
   const handleDragEnd = React.useCallback(
     (event: DragEndEvent) => {
       onDragEnd?.(event);
-
-      if (event.activatorEvent.defaultPrevented) return;
 
       const { active, over } = event;
       if (over && active.id !== over?.id) {
@@ -107,8 +103,6 @@ export function useSortableHandlers<T>(
   const handleDragCancel = React.useCallback(
     (event: DragEndEvent) => {
       onDragCancel?.(event);
-
-      if (event.activatorEvent.defaultPrevented) return;
 
       setActiveId(null);
     },
