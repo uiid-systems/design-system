@@ -71,14 +71,6 @@ export const CodeBlock = ({
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
   const popupRef = React.useRef<HTMLDivElement>(null);
-  // Land on the exit toggle, the control that replaces the one just pressed.
-  const focusExitButton = React.useCallback(
-    () =>
-      popupRef.current?.querySelector<HTMLElement>(
-        '[data-slot="code-block-fullscreen-button"]',
-      ) ?? true,
-    [],
-  );
 
   const collapsedMaxHeight = rows
     ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
@@ -105,50 +97,55 @@ export const CodeBlock = ({
   // The header, code and error are shared by the inline block and the
   // fullscreen dialog. The inline block stays mounted while the dialog is open,
   // so its toggle can take focus back and its copy state survives.
-  const renderParts = (inFullscreen: boolean) => (
-    <>
-      <CodeBlockHeader
-        filename={filename}
-        language={languageProp}
-        copyable={copyable}
-        code={code}
-        wrappable={wrappable}
-        wrap={wrap}
-        onWrapChange={handleWrapChange}
-        fullscreenable={fullscreenable}
-        fullscreen={fullscreen}
-        onFullscreenChange={handleFullscreenChange}
-        LanguageIconProps={LanguageIconProps}
-        WrapButtonProps={WrapButtonProps}
-        CopyButtonProps={{ onCopy, ...CopyButtonProps }}
-        FullscreenButtonProps={FullscreenButtonProps}
-        {...HeaderProps}
-      />
-
-      <div
-        ref={inFullscreen ? undefined : contentWrapperRef}
-        data-slot="code-block-scroll"
-        className={styles["code-block-scroll"]}
-        style={inFullscreen ? undefined : wrapperStyle}
-      >
-        <CodeBlockContent
-          html={displayHtml}
+  const renderParts = (inFullscreen: boolean) => {
+    const slot = inFullscreen
+      ? withoutIdentity
+      : <T,>(slotProps: T) => slotProps;
+    return (
+      <>
+        <CodeBlockHeader
+          filename={filename}
+          language={languageProp}
+          copyable={copyable}
           code={code}
-          showLineNumbers={showLineNumbers}
+          wrappable={wrappable}
           wrap={wrap}
+          onWrapChange={handleWrapChange}
+          fullscreenable={fullscreenable}
+          fullscreen={fullscreen}
+          onFullscreenChange={handleFullscreenChange}
+          LanguageIconProps={slot(LanguageIconProps)}
+          WrapButtonProps={slot(WrapButtonProps)}
+          CopyButtonProps={{ onCopy, ...slot(CopyButtonProps) }}
+          FullscreenButtonProps={slot(FullscreenButtonProps)}
+          {...slot(HeaderProps)}
         />
-      </div>
 
-      {error && !prerenderedHtml && (
         <div
-          data-slot="code-block-error"
-          className={styles["code-block-error"]}
+          ref={inFullscreen ? undefined : contentWrapperRef}
+          data-slot="code-block-scroll"
+          className={styles["code-block-scroll"]}
+          style={inFullscreen ? undefined : wrapperStyle}
         >
-          [Error: {error.message}]
+          <CodeBlockContent
+            html={displayHtml}
+            code={code}
+            showLineNumbers={showLineNumbers}
+            wrap={wrap}
+          />
         </div>
-      )}
-    </>
-  );
+
+        {error && !prerenderedHtml && (
+          <div
+            data-slot="code-block-error"
+            className={styles["code-block-error"]}
+          >
+            [Error: {error.message}]
+          </div>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -180,7 +177,9 @@ export const CodeBlock = ({
           onOpenChange={handleFullscreenChange}
         >
           <BaseDialog.Portal data-slot="code-block-fullscreen">
+            {/* forceRender keeps the scrim when nested in another Dialog. */}
             <BaseDialog.Backdrop
+              forceRender
               data-slot="code-block-backdrop"
               className={styles["code-block-backdrop"]}
             />
@@ -189,10 +188,11 @@ export const CodeBlock = ({
               data-slot="code-block"
               data-wrap={wrap || undefined}
               data-fullscreen
+              // Base UI 1.7 makes the page inert but does not emit aria-modal.
               aria-modal="true"
               aria-label={filename ?? "Code block"}
               className={cxState(styles["code-block"], className)}
-              initialFocus={focusExitButton}
+              initialFocus={popupRef}
             >
               {renderParts(true)}
             </BaseDialog.Popup>
@@ -203,3 +203,15 @@ export const CodeBlock = ({
   );
 };
 CodeBlock.displayName = "CodeBlock";
+
+type WithIdentity = { id?: unknown; ref?: unknown };
+
+/**
+ * The fullscreen copy renders the same slot props as the inline block. Leave
+ * out `id` and `ref` so neither is duplicated or repointed at the copy.
+ */
+const withoutIdentity = <T,>(slotProps: T): T => {
+  if (!slotProps) return slotProps;
+  const { id: _id, ref: _ref, ...rest } = slotProps as T & WithIdentity;
+  return rest as T;
+};

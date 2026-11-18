@@ -27,9 +27,9 @@ With `html`, CodeBlock skips the client highlighter: Shiki is never loaded, no t
 
 ## Fullscreen
 
-Fullscreen opens a modal Base UI Dialog holding a second copy of the block, named by `filename` (or "Code block"). Focus moves to its exit button and stays trapped inside, the page behind is inert and its scroll is locked, and closing returns focus to the toggle that opened it. Escape dismisses one layer at a time, so a CodeBlock inside a Dialog closes only its fullscreen view.
+Fullscreen opens a modal Base UI Dialog holding a second copy of the block, named by `filename` (or "Code block"). Focus moves to the dialog, Tab reaches its controls and stays trapped inside, the page behind is inert and its scroll is locked, and closing returns focus to the toggle that opened it. Escape dismisses one layer at a time, so a CodeBlock inside a Dialog closes only its fullscreen view.
 
-The inline block stays mounted underneath, so its copy state and "Show more" state are kept. Wrap is shared between the two. The copy gets `className` but not the other root props, so an `id`, `ref` or handler is not duplicated.
+The inline block stays mounted underneath, so its copy state and "Show more" state are kept. Wrap is shared between the two. The copy gets `className` but no other root props, so a root `id`, `ref` or handler is not duplicated. It gets the slot props (`HeaderProps`, `CopyButtonProps` and the rest) without their `id` and `ref`.
 
 ## Slot props
 
