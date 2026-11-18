@@ -114,6 +114,7 @@ export const CodeEditor = ({
 
       {/* Typography on parent so both children inherit */}
       <Layer
+        data-line-numbers={showLineNumbers || undefined}
         className={cx(styles["code-editor-layer"], codeTypographyVariant())}
         style={
           rows
@@ -132,7 +133,8 @@ export const CodeEditor = ({
           data-slot="code-editor-highlight"
           className={cx(
             styles["code-editor-highlight"],
-            shikiVariants({ showLineNumbers }),
+            // The editor draws its own line numbers in its gutter (see the CSS module)
+            shikiVariants({ showLineNumbers: false }),
           )}
           dangerouslySetInnerHTML={{ __html: html || "" }}
         />

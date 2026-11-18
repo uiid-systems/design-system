@@ -21,6 +21,10 @@
 .code-editor-highlight {
   pointer-events: none;
 
+  /* A long unbreakable token (a URL) would otherwise widen the shared grid column to its
+     min-content width, and then no line wraps at the editor's edge */
+  min-width: 0;
+
   /* Ensure Shiki elements inherit typography */
   & :global(pre),
   & :global(code),
@@ -30,6 +34,41 @@
     font-weight: inherit;
     line-height: inherit;
     letter-spacing: inherit;
+  }
+
+  /* Wrap long lines exactly as the textarea does, so both layers break at the same point */
+  & :global(pre) {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Line numbers sit in the gutter, out of the text flow, so the code wraps as the textarea's does.
+   The editor draws its own rather than the shared flex-column rules, whose per-token flex items
+   cannot wrap like textarea text. */
+.code-editor-layer[data-line-numbers] {
+  --code-editor-gutter: calc(var(--code-gutter-number) + var(--code-gutter-gap));
+
+  & .code-editor-highlight :global(pre) {
+    counter-reset: line;
+    padding-inline-start: calc(var(--code-padding) + var(--code-editor-gutter));
+  }
+
+  & .code-editor-highlight :global(.line)::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    width: var(--code-gutter-number);
+    margin-inline-start: calc(-1 * var(--code-editor-gutter));
+    text-align: end;
+    white-space: nowrap;
+    color: var(--shade-muted, #666);
+    user-select: none;
+  }
+
+  & .code-editor-textarea {
+    padding-inline-start: calc(var(--code-padding) + var(--code-editor-gutter));
   }
 }
 
