@@ -40,6 +40,12 @@ rediscovering:
 There is no colour maths at render time. `light-dark()` is the only derive
 method; every palette value is a plain `var()` reference to a primitive.
 
+## Theming
+
+Colors follow the system preference by default. Set `data-theme="light"` or `data-theme="dark"` on `<html>` to force a scheme for the whole page, or on any element to theme just that section; a themed section also repaints its own text and background.
+
+Portalled overlays such as Dialog, Popover, Menu and Tooltip render at the end of `<body>`, outside any themed section, so they take the root scheme.
+
 ## TypeScript exports
 
 `src/palette.ts` derives its types from the token JSON, so the union cannot drift

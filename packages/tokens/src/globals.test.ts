@@ -44,4 +44,34 @@ describe("globals.css", () => {
     // font-size of their own (Tabs, Checkbox, Radio) would grow to body size.
     expect(globalsLayer).not.toMatch(/(^|[\s;{])font:/);
   });
+
+  describe("theming", () => {
+    const rule = (pattern: RegExp) =>
+      rules.find(({ selector }) => pattern.test(selector.trim()));
+
+    it.each(["light", "dark"])(
+      "lets any element, not only the root, set data-theme=%s",
+      (scheme) => {
+        const themed = rule(new RegExp(`^\\[data-theme="${scheme}"\\]$`));
+        expect(themed?.declarations).toMatch(
+          new RegExp(`color-scheme:\\s*${scheme}`),
+        );
+        expect(globalsLayer).not.toMatch(/:root\[data-theme/);
+      },
+    );
+
+    // Body's colors are inherited as resolved values, so a nested themed
+    // section has to resolve them again in its own scheme.
+    it("repaints a nested themed section's text and background", () => {
+      const nested = rule(/\[data-theme[^\]]*\][^{]*:not\(:root\)$/);
+      expect(nested?.selector).toMatch(/data-theme="light"/);
+      expect(nested?.selector).toMatch(/data-theme="dark"/);
+      expect(nested?.declarations).toMatch(
+        /background-color:\s*var\(--shade-background\)/,
+      );
+      expect(nested?.declarations).toMatch(
+        /(^|[\s;])color:\s*var\(--shade-foreground\)/,
+      );
+    });
+  });
 });

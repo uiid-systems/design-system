@@ -7,7 +7,7 @@
 `@base-ui/react`, `react` and `react-dom` are peer dependencies, so install them alongside the package.
 
 ```bash
-pnpm add @uiid/design-system @base-ui/react
+pnpm add @uiid/design-system @base-ui/react react react-dom
 ```
 
 ## Usage
