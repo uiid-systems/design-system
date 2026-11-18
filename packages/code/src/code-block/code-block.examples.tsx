@@ -22,7 +22,7 @@ const LONG_SAMPLE = Array.from(
 
 const LONG_LINE = `const message = "this is an intentionally long string that runs past the width of most containers, to show horizontal scroll against soft wrap";`;
 
-export const Default = () => <CodeBlock code={SAMPLE} />;
+export const Default = () => <CodeBlock code={SAMPLE} language="tsx" />;
 
 export const WithFilename = () => (
   <CodeBlock code={SAMPLE} language="tsx" filename="counter.tsx" />
