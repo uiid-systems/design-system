@@ -15,13 +15,48 @@ import { timelineVariants } from "./timeline.variants";
 
 import styles from "./timeline.module.css";
 
+/**
+ * Timeline reads each item's position and props from its own children, so
+ * items must be direct `TimelineItem` children. Arrays (`events.map(...)`) and
+ * fragments are unwrapped; any other wrapper hides the item's props.
+ */
+function flattenFragments(nodes: React.ReactNode): React.ReactNode[] {
+  return React.Children.toArray(nodes).flatMap((child) =>
+    React.isValidElement<{ children?: React.ReactNode }>(child) &&
+    child.type === React.Fragment
+      ? // Prefix nested keys with the fragment's so siblings never collide.
+        flattenFragments(child.props.children).map((nested) =>
+          React.isValidElement(nested)
+            ? React.cloneElement(nested, { key: `${child.key}${nested.key}` })
+            : nested,
+        )
+      : [child],
+  );
+}
+
+let warnedNonItemChild = false;
+
+function warnOnNonItemChildren(children: React.ReactNode[]) {
+  if (process.env.NODE_ENV === "production" || warnedNonItemChild) return;
+  if (
+    children.some(
+      (child) => React.isValidElement(child) && child.type !== TimelineItem,
+    )
+  ) {
+    warnedNonItemChild = true;
+    console.warn(
+      "Timeline: items must be direct children of type TimelineItem. A wrapper " +
+        "component hides the item's status, media and marker from the timeline.",
+    );
+  }
+}
+
 export function Timeline({
   items,
   activeIndex,
   defaultStatus,
   color,
   gap,
-  dir,
   className,
   style,
   children,
@@ -52,14 +87,15 @@ export function Timeline({
   const nodes = items
     ? items.map((item, i) => (
         <TimelineItem
-          key={i}
+          key={item.id ?? i}
           {...ItemProps}
           {...mergeItemProps(slotProps, item)}
         />
       ))
     : children;
 
-  const itemArray = React.Children.toArray(nodes);
+  const itemArray = flattenFragments(nodes);
+  warnOnNonItemChildren(itemArray);
   const count = itemArray.length;
 
   const itemContent = (child: React.ReactNode): TimelineItemContent =>
@@ -90,7 +126,6 @@ export function Timeline({
       data-has-media={hasMedia ? "" : undefined}
       data-has-markers={hasMarkers ? "" : undefined}
       className={cx(styles["timeline"], timelineVariants({ color }), className)}
-      dir={dir}
       style={
         gap !== undefined
           ? ({
@@ -102,7 +137,10 @@ export function Timeline({
       {...props}
     >
       {itemArray.map((child, index) => (
-        <TimelineItemContext.Provider key={index} value={contextValues[index]}>
+        <TimelineItemContext.Provider
+          key={React.isValidElement(child) ? (child.key ?? index) : index}
+          value={contextValues[index]}
+        >
           {child}
         </TimelineItemContext.Provider>
       ))}

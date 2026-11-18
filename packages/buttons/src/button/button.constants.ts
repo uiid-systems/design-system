@@ -1,6 +1,6 @@
 import type {
   TooltipPositionerProps,
-  TooltipProviderProps,
+  TooltipTriggerProps,
 } from "@base-ui/react/tooltip";
 
 import type {
@@ -17,6 +17,6 @@ export const BUTTON_ICON_ONLY_SHAPES: ButtonVariants["shape"][] = [
   "circle",
 ];
 
-export const BUTTON_TOOLTIP_DELAY: TooltipProviderProps["delay"] = 300;
+export const BUTTON_TOOLTIP_DELAY: TooltipTriggerProps["delay"] = 300;
 export const BUTTON_TOOLTIP_SIDE_OFFSET: TooltipPositionerProps["sideOffset"] = 8;
 export const BUTTON_TOOLTIP_COLLISION_PADDING: TooltipPositionerProps["collisionPadding"] = 16;

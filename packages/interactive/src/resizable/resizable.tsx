@@ -8,16 +8,18 @@ import type { ResizableProps } from "./resizable.types";
 import styles from "./resizable.module.css";
 
 export const Resizable = ({
+  orientation,
   direction,
   className,
   children,
   ...props
 }: ResizableProps) => {
+  const resolved = orientation ?? direction ?? "horizontal";
   return (
     <Group
       data-slot="resizable"
-      data-direction={direction}
-      orientation={direction}
+      data-direction={resolved}
+      orientation={resolved}
       className={cx(styles["resizable"], className)}
       {...props}
     >

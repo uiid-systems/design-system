@@ -42,12 +42,12 @@ function PanelContent({
 
 function HorizontalDemo() {
   return (
-    <Resizable direction="horizontal">
-      <ResizablePanel defaultSize={50}>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="50%">
         <PanelContent label="One" />
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={50}>
+      <ResizablePanel defaultSize="50%">
         <PanelContent label="Two" shade="background" />
       </ResizablePanel>
     </Resizable>
@@ -56,12 +56,12 @@ function HorizontalDemo() {
 
 function VerticalDemo() {
   return (
-    <Resizable direction="vertical">
-      <ResizablePanel defaultSize={25}>
+    <Resizable orientation="vertical">
+      <ResizablePanel defaultSize="25%">
         <PanelContent label="Header" />
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={75}>
+      <ResizablePanel defaultSize="75%">
         <PanelContent label="Content" shade="background" />
       </ResizablePanel>
     </Resizable>
@@ -70,12 +70,12 @@ function VerticalDemo() {
 
 function WithHandleDemo() {
   return (
-    <Resizable direction="horizontal">
-      <ResizablePanel defaultSize={25} minSize={15}>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="25%" minSize="15%">
         <PanelContent label="Sidebar" />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={75}>
+      <ResizablePanel defaultSize="75%">
         <PanelContent label="Content" shade="background" />
       </ResizablePanel>
     </Resizable>
@@ -84,18 +84,18 @@ function WithHandleDemo() {
 
 function NestedDemo() {
   return (
-    <Resizable direction="horizontal">
-      <ResizablePanel defaultSize={25} minSize={15}>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="25%" minSize="15%">
         <PanelContent label="Sidebar" />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={75}>
-        <Resizable direction="vertical">
-          <ResizablePanel defaultSize={60}>
+      <ResizablePanel defaultSize="75%">
+        <Resizable orientation="vertical">
+          <ResizablePanel defaultSize="60%">
             <PanelContent label="Main Content" shade="background" />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize={40}>
+          <ResizablePanel defaultSize="40%">
             <PanelContent label="Footer" />
           </ResizablePanel>
         </Resizable>
@@ -106,16 +106,16 @@ function NestedDemo() {
 
 function ThreePanelDemo() {
   return (
-    <Resizable direction="horizontal">
-      <ResizablePanel defaultSize={33}>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="33%">
         <PanelContent label="One" />
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={34}>
+      <ResizablePanel defaultSize="34%">
         <PanelContent label="Two" shade="background" />
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={33}>
+      <ResizablePanel defaultSize="33%">
         <PanelContent label="Three" />
       </ResizablePanel>
     </Resizable>
@@ -124,16 +124,16 @@ function ThreePanelDemo() {
 
 function DisabledDemo() {
   return (
-    <Resizable direction="horizontal">
-      <ResizablePanel defaultSize={33}>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="33%">
         <PanelContent label="One" />
       </ResizablePanel>
       <ResizableHandle withHandle disabled />
-      <ResizablePanel defaultSize={34}>
+      <ResizablePanel defaultSize="34%">
         <PanelContent label="Two" shade="background" />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={33}>
+      <ResizablePanel defaultSize="33%">
         <PanelContent label="Three" />
       </ResizablePanel>
     </Resizable>

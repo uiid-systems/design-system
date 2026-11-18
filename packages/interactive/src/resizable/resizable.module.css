@@ -1,16 +1,6 @@
-.resizable {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.resizable[data-direction="horizontal"] {
-  flex-direction: row;
-}
-
-.resizable[data-direction="vertical"] {
-  flex-direction: column;
-}
+/* The library's Group sets display, flex-direction and size inline, so
+   `.resizable` needs no layout rules of its own. data-direction mirrors the
+   resolved orientation and only scopes the handle rules below. */
 
 .resizable-panel {
   overflow: auto;

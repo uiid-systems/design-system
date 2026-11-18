@@ -5,7 +5,6 @@ import type { VariantProps } from "@uiid/utils";
 
 import type { timelineVariants } from "./timeline.variants";
 
-export type Direction = "ltr" | "rtl";
 export type TimelineStatus = "completed" | "active" | "pending";
 
 export type TimelineColor = VariantProps<typeof timelineVariants>["color"];
@@ -117,8 +116,6 @@ export type TimelineProps = Omit<
     defaultStatus?: TimelineStatus;
     /** Space between items as a spacing token (like `Stack`'s `gap`). */
     gap?: number;
-    /** Text direction; RTL flips the rail to the opposite edge. */
-    dir?: Direction;
     /** `<li>` props forwarded to every `TimelineItem` in data mode. */
     ItemProps?: Omit<React.ComponentProps<"li">, "color" | "content" | "title">;
   };

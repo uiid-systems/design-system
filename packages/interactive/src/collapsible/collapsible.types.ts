@@ -19,8 +19,13 @@ export type CollapsiblePanelProps = WithLayoutProps<
 
 export type CollapsibleProps = React.PropsWithChildren<{
   trigger: CollapsibleTriggerProps["children"];
+  /** Everything else on the root. Its open-state props win over the direct ones. */
   RootProps?: CollapsibleRootProps;
   TriggerProps?: CollapsibleTriggerProps;
   PanelProps?: CollapsiblePanelProps;
 }> &
-  Pick<CollapsiblePanelProps, "instant">;
+  Pick<
+    Collapsible.Root.Props,
+    "open" | "defaultOpen" | "onOpenChange" | "disabled"
+  > &
+  Pick<CollapsiblePanelProps, "instant" | "keepMounted">;

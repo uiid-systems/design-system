@@ -13,7 +13,9 @@ Use Timeline when you want to:
 - Give an event prominence with `media` — an `<Avatar>`, icon, or any node in a dedicated column to the left of the rail
 - Tune the rhythm with `gap` — a spacing token for the space between items, like `Stack`
 
-Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. They render the same output.
+Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. They render the same output as long as each `TimelineItem` is a direct child of `Timeline`. Arrays (`events.map(...)`) and fragments are fine, but a wrapper component hides the item's `status`, `media` and `marker` from the timeline, so it reads as one pending item; Timeline warns about this once in development.
+
+Give each data-mode entry a stable `id` when the list can reorder or change. Items are keyed by `id`, falling back to their index, and the `id` also lands on the item's `<li>`.
 
 ## Anatomy
 
@@ -105,4 +107,4 @@ All geometry derives from CSS variables on the root — override them to retheme
 | `--timeline-row-gap`             | `2.5rem`                   | Vertical space between items                    |
 | `--timeline-marker-bg`           | `var(--shade-background)`  | Fill that masks the line behind a marker        |
 
-Set `dir="rtl"` to flip the rail (and media column) to the opposite edge — positioning uses logical properties.
+Set `dir="rtl"` to flip the rail (and media column) to the opposite edge — positioning uses logical properties. `dir` is the native attribute, so it takes `"ltr"`, `"rtl"` or `"auto"`; the old `Direction` type is gone, so type a variable with `React.ComponentProps<"ol">["dir"]` instead.

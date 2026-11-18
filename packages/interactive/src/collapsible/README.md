@@ -8,7 +8,7 @@ Use Collapsible when you want to:
 - Lay out the root and the panel with the same props as `Stack` (`gap`, `p`, `ax`, `ay`, `fullwidth`, `bordered`, ...) through `RootProps` and `PanelProps`
 - Animate the panel's height open and closed, or switch the animation off with `instant`
 
-Leave `open` unset and the collapsible runs itself from the trigger; pass `open` and `onOpenChange` through `RootProps` to drive it yourself, or `defaultOpen` to start it open.
+Leave `open` unset and the collapsible runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself, or `defaultOpen` to start it open. `disabled` and `keepMounted` sit on the component too, as on `CollapsibleCard`. The same props still work through `RootProps` (and `keepMounted` through `PanelProps`), which win when both are set.
 
 Collapsible wraps Base UI's [Collapsible](https://base-ui.com/react/components/collapsible) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, and `PanelProps`.
 
@@ -28,7 +28,7 @@ Pass a function to follow the open state. It receives Base UI's trigger state (`
 </Collapsible>
 ```
 
-Because Collapsible owns that element, a function trigger is a button whatever it returns. Don't return a `Button` from one — that nests a button inside a button. For a `Button` whose label follows the state, control `open` through `RootProps` instead.
+Because Collapsible owns that element, a function trigger is a button whatever it returns. Don't return a `Button` from one — that nests a button inside a button. For a `Button` whose label follows the state, control `open` instead.
 
 A component element can't be inspected before it renders, so it is taken to be a button. Pass `nativeButton={false}` for one that isn't, such as a static `Text` — otherwise Base UI warns, and the trigger is neither announced as a button nor toggled by Enter and Space.
 

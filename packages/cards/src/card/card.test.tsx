@@ -221,6 +221,13 @@ describe("Card", () => {
     expect(screen.queryByRole("separator")).toBeNull();
 
     rerender(
+      <Card title="Title" footer="Footer" FooterProps={{ separator: true }} />,
+    );
+    expect(screen.getByRole("separator")).toBeInTheDocument();
+  });
+
+  it("still honors the deprecated hideSeparator, with separator winning", () => {
+    const { rerender } = render(
       <Card
         title="Title"
         footer="Footer"
@@ -228,6 +235,15 @@ describe("Card", () => {
       />,
     );
     expect(screen.getByRole("separator")).toBeInTheDocument();
+
+    rerender(
+      <Card
+        title="Title"
+        footer="Footer"
+        FooterProps={{ hideSeparator: false, separator: false }}
+      />,
+    );
+    expect(screen.queryByRole("separator")).toBeNull();
   });
 
   it("renders flat by default and adds the shadow for shadow", () => {
