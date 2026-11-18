@@ -66,8 +66,13 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # Packages only. The tag already exists by now, so a failure in an app
+      # that is never published must not stop the publish.
       - name: Build
-        run: pnpm run build
+        run: pnpm turbo run build --filter='./packages/*'
+
+      - name: Check built packages
+        run: node scripts/check-dist.mjs
 
       # Provenance is attached automatically when publishing via OIDC.
       - name: Publish
