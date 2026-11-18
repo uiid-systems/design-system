@@ -135,30 +135,20 @@ describe("CodeBlock rows", () => {
   it("starts expanded with defaultExpanded", async () => {
     contentHeight = 300;
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);
-    await waitForHighlight();
 
-    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
-      "aria-expanded",
-      "true",
-    );
+    expect(
+      await screen.findByRole("button", { name: "Show less" }),
+    ).toHaveAttribute("aria-expanded", "true");
     expect(block()).toHaveAttribute("data-expanded");
     expect(scrollArea()?.style.maxHeight).toBe("");
   });
 
-  // Known bug, tracked in UI-404: overflow is measured with the max-height
-  // already lifted, so an expanded block can never tell its code fits. A
-  // short block shows a Show less toggle that collapses nothing, then
-  // vanishes once pressed. Asserts that exact symptom, so this only passes
-  // as an expected failure while the stray toggle renders; drop `.fails`
-  // once UI-404 lands.
-  it.fails("shows no toggle for short code that starts expanded", async () => {
+  it("shows no toggle for short code that starts expanded", async () => {
     contentHeight = 50;
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);
     await waitForHighlight();
 
-    expect(
-      screen.queryByRole("button", { name: "Show less", expanded: true }),
-    ).not.toBeInTheDocument();
+    expect(toggle()).not.toBeInTheDocument();
   });
 
   it("re-measures when the code grows past its rows", async () => {
