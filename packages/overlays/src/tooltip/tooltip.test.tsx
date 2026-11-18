@@ -488,6 +488,53 @@ describe("Tooltip", () => {
     expect(screen.getByText("Tooltip content")).toBeInTheDocument();
   });
 
+  it("calls RootProps.onOpenChange alongside onOpenChange", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const rootOnOpenChange = vi.fn();
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        onOpenChange={onOpenChange}
+        RootProps={{ onOpenChange: rootOnOpenChange }}
+        delay={0}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+
+    await waitFor(() => {
+      expect(rootOnOpenChange).toHaveBeenCalledWith(true, expect.anything());
+    });
+    expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything());
+  });
+
+  it("lets RootProps.onOpenChange cancel an open", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const rootOnOpenChange = vi.fn((_, details) => details.cancel());
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        onOpenChange={onOpenChange}
+        RootProps={{ onOpenChange: rootOnOpenChange }}
+        delay={0}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+
+    await waitFor(() => {
+      expect(rootOnOpenChange).toHaveBeenCalled();
+    });
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.queryByText("Tooltip content")).not.toBeInTheDocument();
+  });
+
   // ============================================
   // POSITIONING
   // ============================================

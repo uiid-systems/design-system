@@ -2,6 +2,7 @@
 
 import { hasTrigger } from "@uiid/utils";
 
+import { composeOpenChange } from "../shared/compose-open-change";
 import type { PopoverProps } from "./popover.types";
 import {
   PopoverRoot,
@@ -32,7 +33,11 @@ export const Popover = ({
   children,
 }: PopoverProps) => {
   return (
-    <PopoverRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
+    <PopoverRoot
+      open={open}
+      {...RootProps}
+      onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
+    >
       {hasTrigger(trigger, TriggerProps?.render) && (
         <PopoverTrigger {...TriggerProps}>{trigger}</PopoverTrigger>
       )}
