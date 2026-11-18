@@ -193,6 +193,32 @@ describe("Checkbox form errors", () => {
     expect(errors[0]).toHaveTextContent("You must accept the terms");
   });
 
+  it("shows a form error in place of its description", () => {
+    const { container } = render(
+      <Form errors={{ terms: "You must accept the terms" }}>
+        <Checkbox
+          name="terms"
+          label="I accept the terms"
+          description="Read them first."
+        />
+      </Form>,
+    );
+    const [id] = (
+      screen.getByRole("checkbox").getAttribute("aria-describedby") ?? ""
+    ).split(" ");
+
+    expect(screen.queryByText("Read them first.")).not.toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot='field-description']"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("checkbox").getAttribute("aria-describedby")).toBe(
+      id,
+    );
+    expect(document.getElementById(id)).toHaveTextContent(
+      "You must accept the terms",
+    );
+  });
+
   it("leaves a box named for another field alone", () => {
     const { container } = render(
       <Form errors={{ other: "Something else went wrong" }}>
@@ -282,8 +308,8 @@ describe("Checkbox reversed", () => {
     expect(rule).toMatch(
       /& > :is\(\[role="checkbox"\], \[role="radio"\], \[role="switch"\]\) \{\s*margin-inline-start: auto;/,
     );
-    /* An error beside a lone label is a third flex item, which `space-between`
-       would spread the label away from. */
+    /* In server-rendered markup an error beside a lone label is a third flex
+       item, which `space-between` would spread the label away from. */
     expect(rule).not.toMatch(/justify-content/);
   });
 
@@ -295,9 +321,11 @@ describe("Checkbox reversed", () => {
     );
     const row = container.querySelector("[data-slot='field-row']");
     expect(row?.querySelector(":scope > [role='checkbox']")).not.toBeNull();
-    expect(
-      row?.querySelector(":scope > [data-slot='field-label']"),
-    ).not.toBeNull();
+    /* The label and the error stack together beside the control. */
+    const label = row?.querySelector(":scope > * > [data-slot='field-label']");
+    expect(label?.parentElement).toContainElement(
+      row?.querySelector("[data-slot='field-error']") as HTMLElement,
+    );
   });
 });
 

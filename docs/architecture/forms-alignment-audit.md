@@ -232,7 +232,7 @@ Systemic root causes, then the notable instances:
 6. **Raw palette steps** (`--color-red-500`) in checkbox/radio/field — components must
    never name a hue or step (use `--palette-*` under `.palette-<hue>`).
 7. **Seven inline-style violations** in `.tsx` (form, select-list, number-field,
-   combobox, field-error-tooltip ×2, plus an icon `color=` prop pipe).
+   combobox, field-error-tooltip ×2 (removed in UI-399), plus an icon `color=` prop pipe).
 8. **NumberField's +/− buttons re-implement Button's surface** (border/bg/radius/hover/
    transition/sizing, ~30 lines) instead of composing shared styles. **Resolved
    (UI-175):** the steppers compose `composes-field-surface` — the surface their own
@@ -264,7 +264,7 @@ multi-story 3/16 · README 16/16 but stale-format.
    instance; no isolated `Playground`. Inverse of the button/text pattern.
 4. **`form` has no story file at all** — the only component with zero direct coverage.
 5. **State coverage gaps:** invalid/error absent from 14/16 component stories;
-   `errorType` (inline/tooltip/absolute) undemonstrated; controlled-vs-uncontrolled
+   the inline/tooltip/absolute error modes undemonstrated (removed in UI-399); controlled-vs-uncontrolled
    unstoried; checkbox/radio never exercise `size`.
 6. **Composition stories** (`username-password`, `select-and-confirm`) create a phantom
    `Forms/Form` sidebar folder, contain the package's only hand-styled markup, and

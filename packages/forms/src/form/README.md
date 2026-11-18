@@ -10,7 +10,7 @@ Use Form when you want to:
 
 `Form` renders a `<form>` that is `display: contents`, so it is a submission boundary rather than a layout box. Put a `Stack` or `Group` inside it to own the spacing.
 
-Every control in the package reports its value the same way: a text input contributes its string, a select its value, a checkbox its checked state. Errors land through whichever `errorType` the field is using.
+Every control in the package reports its value the same way: a text input contributes its string, a select its value, a checkbox its checked state. An error lands in the field's description slot, replacing the description while it shows.
 
 `useFormState` and `useFormSubmit` are exported alongside it for the loading/errors/success cycle a real submit handler needs — `useFormSubmit` wraps an async submit function and drives that state for you.
 

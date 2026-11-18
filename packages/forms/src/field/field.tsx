@@ -11,16 +11,15 @@ import {
   FieldLabel,
   FieldDescription,
   FieldError,
-  FieldErrorTooltip,
   FieldAction,
 } from "./subcomponents";
+import { useFieldErrorSlot } from "./use-field-error-slot";
 
 import styles from "./field.module.css";
 
 export const Field = ({
   label,
   action,
-  errorType = "inline",
   description,
   required,
   size,
@@ -33,18 +32,17 @@ export const Field = ({
   children,
   ...props
 }: FieldProps) => {
-  const isFloating = errorType === "absolute";
-
   const Action = ActionProps?.children ?? action;
   const hasLabel = isRenderable(label);
   const hasAction = isRenderable(Action);
   const hasDescription = isRenderable(description);
 
-  // No label, action, description, or out-of-flow error means this field paints
-  // no chrome of its own, so the root should not participate in layout until
-  // an inline error renders.
-  const hasChrome =
-    hasLabel || hasAction || hasDescription || errorType !== "inline";
+  // No label, action, or description means this field paints no chrome of its
+  // own, so the root should not participate in layout until an error renders.
+  const hasChrome = hasLabel || hasAction || hasDescription;
+
+  // While the error shows, it takes the description's place.
+  const { hasError, errorProps } = useFieldErrorSlot(ErrorProps);
 
   return (
     <FieldRoot
@@ -53,13 +51,12 @@ export const Field = ({
       {...RootProps}
       className={cxState(
         fieldVariants({ size }),
-        isFloating && styles["field-root-floating"],
         !hasChrome && styles["field-root-bare"],
         className,
         RootProps?.className,
       )}
     >
-      {(hasLabel || hasAction || errorType === "tooltip") && (
+      {(hasLabel || hasAction) && (
         <Group
           className={styles["field-label-group"]}
           ax="space-between"
@@ -71,10 +68,11 @@ export const Field = ({
             </FieldLabel>
           )}
 
-          <Group className={styles["field-label-end"]} ay="center">
-            {errorType === "tooltip" && <FieldErrorTooltip {...ErrorProps} />}
-            {hasAction && <FieldAction {...ActionProps}>{Action}</FieldAction>}
-          </Group>
+          {hasAction && (
+            <Group className={styles["field-label-end"]} ay="center">
+              <FieldAction {...ActionProps}>{Action}</FieldAction>
+            </Group>
+          )}
         </Group>
       )}
 
@@ -82,15 +80,8 @@ export const Field = ({
         {children}
       </FieldRequiredProvider>
 
-      {errorType === "absolute" && (
-        <FieldError
-          className={styles["field-error-absolute"]}
-          {...ErrorProps}
-        />
-      )}
-      {errorType === "inline" && <FieldError {...ErrorProps} />}
-
-      {hasDescription && (
+      <FieldError {...errorProps} />
+      {hasDescription && !hasError && (
         <FieldDescription {...DescriptionProps}>{description}</FieldDescription>
       )}
     </FieldRoot>

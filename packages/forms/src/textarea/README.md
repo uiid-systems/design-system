@@ -19,7 +19,7 @@ Native `<textarea>` props (`name`, `value`, `defaultValue`, `onChange`, `onBlur`
 
 `required` marks the label and the textarea itself. `disabled` reaches the field around it too, so the label and description dim with the control.
 
-Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. Reach the field around it through `FieldProps`, which is where `errorType`, `validate`, and `validationMode` live. An error owned somewhere else arrives the same way: `FieldProps={{ invalid: true, ErrorProps: { match: true, children: message } }}` turns the textarea red and shows the message beneath it.
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. Reach the field around it through `FieldProps`, which is where `validate` and `validationMode` live. The error replaces the `description` while it shows. An error owned somewhere else arrives the same way: `FieldProps={{ invalid: true, ErrorProps: { match: true, children: message } }}` turns the textarea red and shows the message in the description's place.
 
 `before` and `after` are the same slots Input has, stacked instead of placed beside the control. With either set, the surface moves to an [`InputWrapper`](../input/README.md) in its vertical orientation, which takes `fullwidth`, `variant`, and `color`; the textarea keeps `size` and `resize`, and `ref`, `className`, `rows`, and the native props still land on the `<textarea>`. With neither slot set, nothing changes, and a slot coming or going keeps the textarea mounted with its focus and text.
 

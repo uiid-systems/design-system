@@ -18,10 +18,9 @@ import { Slider } from "../slider/slider";
 import { Switch } from "../switch/switch";
 import { Textarea } from "../textarea/textarea";
 import { Field } from "./field";
-import type { FieldErrorType, FieldVariants } from "./field.types";
+import type { FieldVariants } from "./field.types";
 import { FieldHint } from "./subcomponents";
 
-const ERROR_TYPES: FieldErrorType[] = ["inline", "tooltip", "absolute"];
 const SIZES: NonNullable<FieldVariants["size"]>[] = [
   "xsmall",
   "small",
@@ -154,22 +153,18 @@ export const Validate = () => (
 );
 
 /*
- * `inline` reserves a line beneath the control, `tooltip` moves the message to
- * an icon beside the label, and `absolute` floats it so nothing below shifts.
+ * The error takes the description's place while it shows, and the description
+ * comes back once the error clears.
  */
-export const ErrorTypes = () => (
-  <Form errors={{ inline: ERROR, tooltip: ERROR, absolute: ERROR }}>
+export const ErrorReplacesDescription = () => (
+  <Form errors={{ invalid: ERROR }}>
     <Stack gap={8}>
-      {ERROR_TYPES.map((errorType) => (
-        <Field
-          key={errorType}
-          name={errorType}
-          label={errorType}
-          errorType={errorType}
-        >
-          <InputControl defaultValue="not-an-email" />
-        </Field>
-      ))}
+      <Field name="valid" label="Valid" description="We never share it.">
+        <InputControl defaultValue="you@example.com" />
+      </Field>
+      <Field name="invalid" label="Invalid" description="We never share it.">
+        <InputControl defaultValue="not-an-email" />
+      </Field>
     </Stack>
   </Form>
 );

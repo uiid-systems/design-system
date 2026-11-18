@@ -24,9 +24,9 @@
   }
 }
 
-/* Reserves the label row for the icon-sized occupants of its end, a
-   `FieldHint` or the error tooltip, so a field with one lines up with a field
-   that has only a label. Five units clears their 0.875rem icon. A taller
+/* Reserves the label row for an icon-sized occupant of its end, such as a
+   `FieldHint`, so a field with one lines up with a field that has only a
+   label. Five units clears its 0.875rem icon. A taller
    action, such as an `xsmall` Button, grows the row.
 
    The row wraps, so when the label and the end group cannot share a line the
@@ -48,7 +48,7 @@
   }
 }
 
-/* The end of the label row, holding the error tooltip and the action. The auto
+/* The end of the label row, holding the action. The auto
    start margin keeps it on the right when there is no label to push it there,
    or when it wraps to a line of its own, and it holds its width so a long
    label wraps instead of squeezing it. It and the label share their first
@@ -83,17 +83,24 @@
   }
 }
 
-.field-root-floating {
-  position: relative;
-}
-
-/* A field with no label, action, description, or out-of-flow error paints no
-   chrome. `display: contents` keeps the control laid out exactly as it would be
+/* A field with no label, action, or description paints no chrome.
+   `display: contents` keeps the control laid out exactly as it would be
    without a Field around it, while still wiring it into the validation graph.
-   Once the inline error renders, the root takes its box back, so the error
-   stacks under the control instead of landing beside it in the parent's flow. */
+   Once the error renders, the root takes its box back, so the error stacks
+   under the control instead of landing beside it in the parent's flow. */
 .field-root-bare:not(:has(> [data-slot="field-error"])) {
   display: contents;
+}
+
+/* The error takes the description's place. `useFieldErrorSlot` unmounts the
+   description once the error mounts, which is what keeps `aria-describedby`
+   honest; this covers server-rendered markup, where the error is already
+   there and the description has not been unmounted yet. A row is scoped to
+   its own item, and a field only to its direct children, so a nested row's
+   description is left to that row. */
+:where(.field-root):has(> [data-slot="field-error"]) > [data-slot="field-description"],
+:where(.field-row):has([data-slot="field-error"]) [data-slot="field-description"] {
+  display: none;
 }
 
 /* A row with no label or description carries no presentation either: the
@@ -125,14 +132,7 @@
   flex: 1 1 0;
 }
 
-.field-error-tooltip {
-  /* The icon inherits this through `currentColor` rather than taking a token
-     through a JS `color` prop. The palette class is applied alongside. */
-  color: var(--palette-text);
-}
-
-.field-hint svg,
-.field-error-tooltip svg {
+.field-hint svg {
   display: inline-block;
   height: var(--forms-icon-size);
   opacity: 1;
@@ -141,12 +141,6 @@
   @starting-style {
     opacity: 0;
   }
-}
-
-.field-error-absolute {
-  position: absolute;
-  top: calc(100% + var(--globals-padding-y));
-  left: 0;
 }
 
 /* Control-scale tiers for a field. These publish only — `.field-root` is what

@@ -6,7 +6,6 @@ import { Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { Checkbox } from "../checkbox/checkbox";
-import type { FieldErrorType } from "../field/field.types";
 import { Input } from "../input/input";
 import { Select } from "../select/select";
 import { MOCK_SELECT_ITEMS } from "../select/select.mocks";
@@ -72,7 +71,7 @@ const validateSelection = (values: FormValues): FormErrors => {
   return errors;
 };
 
-const Credentials = ({ errorType }: { errorType?: FieldErrorType }) => (
+const Credentials = () => (
   <>
     <Input
       label="Username"
@@ -80,7 +79,6 @@ const Credentials = ({ errorType }: { errorType?: FieldErrorType }) => (
       placeholder="Enter a username"
       autoComplete="username"
       required
-      FieldProps={{ errorType }}
     />
     <Input
       label="Password"
@@ -89,7 +87,6 @@ const Credentials = ({ errorType }: { errorType?: FieldErrorType }) => (
       placeholder="••••••••"
       autoComplete="new-password"
       required
-      FieldProps={{ errorType }}
     />
   </>
 );
@@ -150,36 +147,6 @@ export const UsernamePassword = () => {
             Account created.
           </Text>
         )}
-      </Stack>
-    </Form>
-  );
-};
-
-/* Errors surfaced beside each label, so nothing below the control moves. */
-export const TooltipErrors = () => {
-  const { formKey, errors, loading, onFormSubmit, onReset } =
-    useSubmission(validateCredentials);
-
-  return (
-    <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={4} w={FORM_WIDTH}>
-        <Credentials errorType="tooltip" />
-        <Actions loading={loading} onReset={onReset} submitLabel="Sign up" />
-      </Stack>
-    </Form>
-  );
-};
-
-/* Errors floated out of flow, which also keeps the layout from shifting. */
-export const AbsoluteErrors = () => {
-  const { formKey, errors, loading, onFormSubmit, onReset } =
-    useSubmission(validateCredentials);
-
-  return (
-    <Form key={formKey} errors={errors} onFormSubmit={onFormSubmit}>
-      <Stack gap={8} w={FORM_WIDTH}>
-        <Credentials errorType="absolute" />
-        <Actions loading={loading} onReset={onReset} submitLabel="Sign up" />
       </Stack>
     </Form>
   );

@@ -85,7 +85,6 @@ export const Placeholder: Story = { render: () => <Examples.Placeholder /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const Required: Story = { render: () => <Examples.Required /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };
-export const ErrorTypes: Story = { render: () => <Examples.ErrorTypes /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const WithScrubArea: Story = {
