@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "path";
 
 import react from "@vitejs/plugin-react-swc";
@@ -10,19 +10,18 @@ import { defineConfig } from "vitest/config";
 // serves a TS entry point and several CSS subpaths from different directories,
 // so one prefix cannot cover it, and the design-system barrel must match
 // exactly, or its string alias would also catch its `./icons` subpaths.
-const SEPARATE_ALIASES = new Set(["tokens", "design-system"]);
+const SEPARATE_ALIASES = new Set(["@uiid/tokens", "@uiid/design-system"]);
 
-const uiidPackages = readdirSync(path.resolve(__dirname, "packages")).filter(
-  (folder) =>
-    !SEPARATE_ALIASES.has(folder) &&
-    existsSync(path.resolve(__dirname, `packages/${folder}/package.json`)) &&
-    existsSync(path.resolve(__dirname, `packages/${folder}/src/index.ts`)),
+const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
+  (folder) => {
+    const manifest = path.resolve(__dirname, `packages/${folder}/package.json`);
+    const entry = path.resolve(__dirname, `packages/${folder}/src/index.ts`);
+    if (!existsSync(manifest) || !existsSync(entry)) return [];
+    const { name } = JSON.parse(readFileSync(manifest, "utf8"));
+    if (!name?.startsWith("@uiid/") || SEPARATE_ALIASES.has(name)) return [];
+    return [{ find: name, replacement: entry }];
+  },
 );
-
-const uiidAliases = uiidPackages.map((pkg) => ({
-  find: `@uiid/${pkg}`,
-  replacement: path.resolve(__dirname, `packages/${pkg}/src/index.ts`),
-}));
 
 export default defineConfig({
   plugins: [react()],

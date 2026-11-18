@@ -35,13 +35,13 @@ The test is whether the thing could stand on its own as a documented component. 
 
 ## Creating a new package
 
-Copy an existing package's config rather than writing it fresh — `packages/interactive` is the plainest exemplar. Then register the package at every point below. Most of these fail silently when skipped: the package still builds, but it is never versioned, layered, or re-exported. `scripts/check-package-registration.mjs` runs in CI and fails on a missed step 4, 6, 7 or 9.
+Copy an existing package's config rather than writing it fresh — `packages/interactive` is the plainest exemplar. Then register the package at every point below. Most of these fail silently when skipped: the package still builds, but it is never versioned, layered, or re-exported. `scripts/check-package-registration.mjs` runs in CI and fails on a missed step 4, 6, 7 or 9, and on any public package that depends on a private one.
 
 1. `packages/{name}/package.json` — the version matches every other `@uiid/*` package (one shared version). Add `"private": true` while the package is unreleased: `pnpm -r publish` skips private packages, and npm needs a trusted publisher for the name before its first publish (see `.github/workflows/release.yml`). While it is private, nothing publishable may depend on it (see step 9)
 2. `packages/{name}/tsconfig.json` and `vite.config.ts`, using `createViteConfig({ cssLayer: cssLayers.{name} })`
 3. `src/index.ts` barrel and `src/vite-env.d.ts` for CSS module types. `"use client"` stays out of the barrel
 4. `scripts/css-layers.cjs` — add the package, or its CSS ships unlayered
-5. `vitest.config.ts` — nothing to register: `uiidPackages` is derived from every `packages/*` with a `src/index.ts`, so `@uiid/{name}` resolves to source in tests
+5. `vitest.config.ts` — nothing to register: the source aliases are derived from every `packages/*` with a `src/index.ts`, keyed by its `package.json` name, so `@uiid/{name}` resolves to source in tests
 6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
 7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
 8. `.size-limit.js` — nothing to register: size entries are generated from every `packages/*` with a `dist/index.js`. Add a component to `SINGLE_IMPORTS` there only when the cost of importing it alone is worth tracking
