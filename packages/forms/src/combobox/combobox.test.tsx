@@ -789,6 +789,45 @@ describe("Combobox required reaches the label and the control", () => {
     ).toBeNull();
   });
 
+  /* The marker rides `FieldProps`, so it has to merge with the caller's rather
+     than replace them. */
+  it("keeps the caller's other FieldProps beside the marker", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        label="Fruit"
+        required
+        InputProps={{ FieldProps: { className: "custom-field" } }}
+      />,
+    );
+    const root = container.querySelector("[data-slot='field-root']");
+
+    expect(root).toHaveClass("custom-field");
+    expect(root).toHaveAttribute("data-required");
+  });
+
+  /* Slot props win over the top-level ones, as they do for `name` and
+     `disabled`. The marker follows the top-level prop, so the two disagree. */
+  it("lets RootProps.required decide the control", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        label="Fruit"
+        name="fruit"
+        required
+        RootProps={{ required: false }}
+      />,
+    );
+
+    expect(container.querySelector("input[name='fruit']")).not.toHaveAttribute(
+      "required",
+    );
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("aria-required");
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
   it("marks the label from a composed ComboboxInput", () => {
     const { container } = render(
       <ComboboxRoot items={items}>

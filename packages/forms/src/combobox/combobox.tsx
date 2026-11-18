@@ -53,6 +53,14 @@ export const Combobox = ({
   // passing through the input part's own `required`, which is also the native
   // attribute. Root already marks the hidden input that carries the value; the
   // text input holds only the filter query, so it stays `aria-required` alone.
+  //
+  // This deliberately bypasses a type restriction. `InputProps["FieldProps"]`
+  // omits `required` (see `input.types.ts`) because the input part owns it and
+  // hands it to Field itself, which is the route that would also add the
+  // native attribute. Building the object in a variable is what lets it
+  // through: TypeScript only runs the excess-property check on an object
+  // literal passed directly, so inlining this into the `FieldProps` attribute
+  // below fails `tsc`.
   const fieldProps =
     required === undefined
       ? InputProps?.FieldProps
