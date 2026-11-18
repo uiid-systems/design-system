@@ -5,7 +5,7 @@
 Use Popover when you want to:
 
 - Attach rich content to a control without taking over the page — the rest stays visible and usable
-- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen. `sideOffset` (4) and `collisionPadding` (16) keep their defaults when you set only `side` or `align`
+- Position it with `PositionerProps` (`side`, `align`, `sideOffset`, `collisionPadding`) — it flips and shifts on its own to stay on screen. `sideOffset` (4) and `collisionPadding` (16) are defaulted one by one, so each applies whenever `PositionerProps` doesn't set it
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 - Hold things a user interacts with: filters, a short form, a set of links
 

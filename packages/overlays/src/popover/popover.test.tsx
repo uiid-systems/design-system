@@ -557,6 +557,26 @@ describe("Popover", () => {
     );
   });
 
+  it("keeps an explicit sideOffset of 0 rather than falling back to the default", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover
+        trigger={<button>Open popover</button>}
+        PositionerProps={{ side: "bottom", sideOffset: 0 }}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+
+    const positioner = document.querySelector<HTMLElement>(
+      '[data-slot="popover-positioner"]',
+    );
+    expect(positioner?.style.transform).toBe("translate(0px, 0px)");
+  });
+
   it("passes PopupProps to popup element", async () => {
     const user = userEvent.setup();
 
