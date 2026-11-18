@@ -107,4 +107,4 @@ All geometry derives from CSS variables on the root — override them to retheme
 | `--timeline-row-gap`             | `2.5rem`                   | Vertical space between items                    |
 | `--timeline-marker-bg`           | `var(--shade-background)`  | Fill that masks the line behind a marker        |
 
-Set `dir="rtl"` to flip the rail (and media column) to the opposite edge — positioning uses logical properties.
+Set `dir="rtl"` to flip the rail (and media column) to the opposite edge — positioning uses logical properties. `dir` is the native attribute, so it takes `"ltr"`, `"rtl"` or `"auto"`; the old `Direction` type is gone, so type a variable with `React.ComponentProps<"ol">["dir"]` instead.
