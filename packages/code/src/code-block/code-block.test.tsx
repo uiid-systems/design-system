@@ -178,6 +178,31 @@ describe("CodeBlock", () => {
     expect(copyButton).toHaveAttribute("data-copied", "false");
   });
 
+  it("sets no state or timer when it unmounts while the copy is pending", async () => {
+    let resolveCopy = () => {};
+    const user = userEvent.setup();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const { unmount } = render(<CodeBlock code="const x = 1;" />);
+      // user-event installs its own clipboard on setup, so stub it after.
+      const writeText = vi.spyOn(navigator.clipboard, "writeText");
+      writeText.mockReturnValue(
+        new Promise<void>((resolve) => {
+          resolveCopy = resolve;
+        }),
+      );
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      await user.click(screen.getByRole("button", { name: /copy/i }));
+      unmount();
+      await React.act(async () => resolveCopy());
+      expect(vi.getTimerCount()).toBe(0);
+      expect(errors).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+      errors.mockRestore();
+    }
+  });
+
   it("restarts the copied timer on each copy and clears it on unmount", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     try {

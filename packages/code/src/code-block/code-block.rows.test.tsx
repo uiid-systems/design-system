@@ -203,6 +203,35 @@ describe("CodeBlock rows", () => {
     ).toBeInTheDocument();
   });
 
+  it("treats rows={0} as no cap", async () => {
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} rows={0} />);
+    await waitForHighlight();
+
+    expect(toggle()).not.toBeInTheDocument();
+    expect(scrollArea()).not.toHaveAttribute("data-rows");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("collapses only the inline copy, not the fullscreen one", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} rows={4} />);
+    await screen.findByRole("button", { name: "Show more" });
+
+    await user.click(screen.getByRole("button", { name: /fullscreen/i }));
+
+    const areas = await waitFor(() => {
+      const found = document.querySelectorAll(
+        '[data-slot="code-block-scroll"]',
+      );
+      expect(found).toHaveLength(2);
+      return found;
+    });
+    expect(areas[0]).toHaveAttribute("data-collapsed");
+    expect(areas[1]).not.toHaveAttribute("data-collapsed");
+  });
+
   it("neither collapses nor toggles without rows", async () => {
     contentHeight = 300;
     render(<CodeBlock code={CODE} />);

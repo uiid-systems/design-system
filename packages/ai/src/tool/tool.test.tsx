@@ -147,6 +147,12 @@ describe("Tool", () => {
     expect(getStatus()).toHaveTextContent("Failed");
   });
 
+  it("ignores inherited keys on labels.status", () => {
+    const status = Object.create({ "output-available": "Inherited" });
+    render(<Tool part={part()} labels={{ status }} />);
+    expect(getStatus()).toHaveTextContent("Done");
+  });
+
   it("replaces the section headings", () => {
     const labels = {
       parameters: "Parameter",

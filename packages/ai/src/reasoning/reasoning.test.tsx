@@ -132,6 +132,17 @@ describe("Reasoning", () => {
     ).toBeInTheDocument();
   });
 
+  it("falls back to the default name for a null label", () => {
+    render(
+      <Reasoning duration={2} label={null}>
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(
+      screen.getByRole("button", { name: "Thought for 2 seconds" }),
+    ).toBeInTheDocument();
+  });
+
   it("renders an element label as itself, without the shimmer", () => {
     render(
       <Reasoning streaming label={<span data-testid="custom">Busy</span>}>

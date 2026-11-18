@@ -165,7 +165,9 @@ export const Tool = ({
     ? TOOL_STATES[part.state]
     : TOOL_STATES["input-streaming"];
   const statusLabel =
-    labels?.status?.[part.state] ?? (known ? status.label : part.state);
+    (labels?.status && Object.hasOwn(labels.status, part.state)
+      ? labels.status[part.state]
+      : undefined) ?? (known ? status.label : part.state);
   const StatusIcon = status.icon;
 
   return (

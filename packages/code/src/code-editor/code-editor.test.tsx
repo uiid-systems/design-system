@@ -207,6 +207,10 @@ describe("CodeEditor", () => {
     expect(layer.style.getPropertyValue("--code-rows")).toBe("4");
     expect(layer.style.maxHeight).toBe("");
     expect(layer.style.overflow).toBe("");
+
+    rerender(<CodeEditor defaultValue="const x = 1;" rows={0} />);
+    expect(layer).not.toHaveAttribute("data-rows");
+    expect(layer.getAttribute("style")).toBeFalsy();
   });
 
   // ============================================

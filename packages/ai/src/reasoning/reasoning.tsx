@@ -25,7 +25,7 @@ export const Reasoning = ({
   open: openProp,
   defaultOpen,
   onOpenChange,
-  label: labelProp = defaultLabel,
+  label: labelProp,
   gap = 2,
   ax = "start",
   ...props
@@ -62,10 +62,12 @@ export const Reasoning = ({
     return () => clearTimeout(id);
   }, [streaming, controlled, measured]);
 
+  // `null`, like no label at all, keeps the default name.
+  const labelSource = labelProp ?? defaultLabel;
   const label =
-    typeof labelProp === "function"
-      ? labelProp({ streaming, duration: duration ?? measured })
-      : labelProp;
+    typeof labelSource === "function"
+      ? labelSource({ streaming, duration: duration ?? measured })
+      : labelSource;
 
   return (
     <CollapsibleRoot

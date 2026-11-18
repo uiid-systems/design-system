@@ -9,13 +9,6 @@ export type ReasoningLabelState = {
    * the time measured for the last stream, else `undefined`.
    */
   duration?: number;
-  /**
-   * The trigger's text, in place of the English default ("Thinking…", then
-   * "Thought for N seconds", or "Reasoning" with no duration). A function is
-   * called with the streaming state and duration. A string shimmers while
-   * streaming; any other node renders as itself.
-   */
-  label?: React.ReactNode | ((state: ReasoningLabelState) => React.ReactNode);
 };
 
 export type ReasoningProps = Omit<CollapsibleRootProps, "children"> & {
@@ -36,7 +29,7 @@ export type ReasoningProps = Omit<CollapsibleRootProps, "children"> & {
    * The trigger's text, in place of the English default ("Thinking…", then
    * "Thought for N seconds", or "Reasoning" with no duration). A function is
    * called with the streaming state and duration. A string shimmers while
-   * streaming; any other node renders as itself.
+   * streaming; any other node renders as itself. `null` keeps the default.
    */
   label?: React.ReactNode | ((state: ReasoningLabelState) => React.ReactNode);
 };

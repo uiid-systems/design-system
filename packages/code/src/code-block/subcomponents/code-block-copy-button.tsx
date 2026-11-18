@@ -21,8 +21,16 @@ export const CodeBlockCopyButton = ({
   const [copied, setCopied] = React.useState(false);
   const resetRef = React.useRef<ReturnType<typeof setTimeout>>(undefined);
 
+  const mountedRef = React.useRef(false);
+
   // Drop a pending reset on unmount, so it never sets state afterwards.
-  React.useEffect(() => () => clearTimeout(resetRef.current), []);
+  React.useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      clearTimeout(resetRef.current);
+    };
+  }, []);
 
   const handleClick = React.useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,8 +38,10 @@ export const CodeBlockCopyButton = ({
       if (event.defaultPrevented) return;
       try {
         await navigator.clipboard.writeText(code);
-        setCopied(true);
         onCopy?.(code);
+        // Unmounted during the copy: no state to show, and no timer to start.
+        if (!mountedRef.current) return;
+        setCopied(true);
         // Each copy restarts the "Copied" window rather than stacking timers.
         clearTimeout(resetRef.current);
         resetRef.current = setTimeout(() => setCopied(false), 2000);
