@@ -14,7 +14,7 @@ export async function HighlightedCodeBlock({
   language,
   highlightLines,
   ...props
-}: CodeBlockProps) {
+}: Omit<CodeBlockProps, "html">) {
   const html = await highlight(code, language ?? DEFAULT_LANGUAGE, {
     highlightLines,
   });
