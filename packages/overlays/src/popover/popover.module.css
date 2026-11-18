@@ -1,5 +1,11 @@
 @import "@uiid/tokens/component/popover.tokens.css";
 
+/* The focus ring a string or function trigger needs; Dialog, Drawer and
+   Tooltip compose the same one. */
+.popover-trigger {
+  composes: composes-trigger from global;
+}
+
 .popover-positioner {
   composes: composes-popup-positioner from global;
 }

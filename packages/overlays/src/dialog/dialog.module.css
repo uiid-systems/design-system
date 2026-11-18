@@ -1,11 +1,10 @@
 @import "@uiid/tokens/component/overlays.tokens.css";
 @import "@uiid/tokens/component/dialog.tokens.css";
 
-/* A string or function trigger is a focusable span with no focus style of its
-   own; a Button trigger's ring still wins over this one-class rule. */
-.dialog-trigger:where(:focus-visible) {
-  outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
-  outline-offset: var(--globals-outline-offset);
+/* The focus ring a string or function trigger needs; Popover, Tooltip and
+   Drawer compose the same one. */
+.dialog-trigger {
+  composes: composes-trigger from global;
 }
 
 .dialog-backdrop {
