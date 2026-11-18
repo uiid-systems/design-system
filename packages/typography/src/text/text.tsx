@@ -64,7 +64,9 @@ export const Text = ({
     fallbackElement: "span",
     props: {
       ...preparedProps,
-      title: resolvedTitle,
+      // Only when there is one: an undefined `title` would still overwrite the
+      // render element's own through `cloneElement`.
+      ...(resolvedTitle !== undefined && { title: resolvedTitle }),
       className: cx(
         styles["text"],
         palette && paletteColorStyles[palette],
