@@ -27,7 +27,6 @@ export const Switch = ({
       {...FieldProps}
     >
       <SwitchRoot
-        id={name}
         name={name}
         size={size}
         color={color}

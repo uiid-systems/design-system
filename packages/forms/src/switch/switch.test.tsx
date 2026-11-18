@@ -130,6 +130,60 @@ describe("Switch field row scoping", () => {
   });
 });
 
+/* The id lands on the hidden input, which is the element a label targets. A
+   form `name` is not unique per page, so it must never double as that id. */
+describe("Switch id", () => {
+  const inputOf = (switchEl: HTMLElement) =>
+    switchEl.parentElement?.querySelector("input[type='checkbox']");
+
+  it("gives two switches sharing a name distinct ids", () => {
+    render(
+      <>
+        <Switch name="enabled" label="First" />
+        <Switch name="enabled" label="Second" />
+      </>,
+    );
+    const [first, second] = screen.getAllByRole("switch").map(inputOf);
+
+    expect(first?.id).toBeTruthy();
+    expect(second?.id).toBeTruthy();
+    expect(first?.id).not.toBe(second?.id);
+    expect(first?.id).not.toBe("enabled");
+  });
+
+  it("toggles only its own switch when a label is clicked", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <Switch name="enabled" label="First" />
+        <Switch name="enabled" label="Second" />
+      </>,
+    );
+    const [first, second] = screen.getAllByRole("switch");
+
+    await user.click(screen.getByText("Second"));
+    expect(second).toHaveAttribute("data-checked");
+    expect(first).not.toHaveAttribute("data-checked");
+
+    await user.click(screen.getByText("First"));
+    expect(first).toHaveAttribute("data-checked");
+    expect(second).toHaveAttribute("data-checked");
+  });
+
+  it("honors an explicit id", () => {
+    render(<Switch id="notifications" name="enabled" label="Notify me" />);
+
+    expect(inputOf(screen.getByRole("switch"))).toHaveAttribute(
+      "id",
+      "notifications",
+    );
+    expect(screen.getByText("Notify me")).toHaveAttribute(
+      "for",
+      "notifications",
+    );
+  });
+});
+
 describe("Switch invalid treatment", () => {
   it("adopts the shared invalid composition", () => {
     render(<Switch />);
