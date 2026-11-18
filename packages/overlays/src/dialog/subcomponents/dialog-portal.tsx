@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 
 import type { DialogPortalProps } from "../dialog.types";

@@ -1,9 +1,10 @@
 export * from "./dialog/dialog";
 export * from "./dialog/dialog.types";
-export { DialogClose } from "./dialog/subcomponents/dialog-close";
+export * from "./dialog/subcomponents";
 
 export * from "./popover/popover";
 export * from "./popover/popover.types";
+export * from "./popover/subcomponents";
 
 export * from "./drawer/drawer";
 export * from "./drawer/drawer.types";
