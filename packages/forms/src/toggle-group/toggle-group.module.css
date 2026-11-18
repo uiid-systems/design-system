@@ -190,7 +190,7 @@
     aspect-ratio: auto;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
     outline-offset: var(--globals-outline-offset);
     border-radius: var(--toggle-radius);

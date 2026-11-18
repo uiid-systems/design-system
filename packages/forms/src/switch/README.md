@@ -13,6 +13,6 @@ Use Switch when you want to:
 
 Leave `checked` unset and the switch runs itself; pass `checked` and `onCheckedChange` to drive it yourself.
 
-Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. The error takes the `description`'s place in the row while it shows, and the description comes back once it clears. Slot overrides (`RootProps`, `ThumbProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
+Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. The error takes the `description`'s place in the row while it shows, and the description comes back once it clears. Slot overrides (`RootProps`, `ThumbProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough. When a top-level prop and `RootProps` set the same key, the top-level prop wins.
 
 Additional props are forwarded to the underlying Base UI [Switch](https://base-ui.com/react/components/switch).

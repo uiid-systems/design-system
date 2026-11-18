@@ -6,10 +6,6 @@ import type { SwitchProps } from "./switch.types";
 export const Switch = ({
   label,
   description,
-  name,
-  disabled,
-  size,
-  color,
   bordered,
   reversed,
   RootProps,
@@ -17,23 +13,20 @@ export const Switch = ({
   FieldProps,
   ...props
 }: SwitchProps) => {
+  // Top-level props win over the same key in RootProps, as in Slider and
+  // NumberField. The field row reads size from the merged props.
+  const rootProps = { ...RootProps, ...props };
+
   return (
     <SwitchField
       label={label}
       description={description}
-      size={size}
+      size={rootProps.size}
       reversed={reversed}
       bordered={bordered}
       {...FieldProps}
     >
-      <SwitchRoot
-        name={name}
-        size={size}
-        color={color}
-        disabled={disabled}
-        {...props}
-        {...RootProps}
-      >
+      <SwitchRoot {...rootProps}>
         <SwitchThumb {...ThumbProps} />
       </SwitchRoot>
     </SwitchField>

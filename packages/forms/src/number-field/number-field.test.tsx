@@ -415,3 +415,28 @@ describe("NumberField state-function className", () => {
     );
   });
 });
+
+describe("NumberField RootProps precedence", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector("[data-slot='number-field-root']");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <NumberField aria-label="top" RootProps={{ "aria-label": "slot" }} />,
+    );
+    expect(root(container)).toHaveAttribute("aria-label", "top");
+  });
+
+  it("lets a top-level name win over RootProps.name", () => {
+    const { container } = render(
+      <NumberField name="top" RootProps={{ name: "slot" }} />,
+    );
+    expect(container.querySelector("input[name='top']")).toBeInTheDocument();
+    expect(container.querySelector("input[name='slot']")).toBeNull();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(<NumberField RootProps={{ name: "slot" }} />);
+    expect(container.querySelector("input[name='slot']")).toBeInTheDocument();
+  });
+});

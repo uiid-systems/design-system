@@ -1,11 +1,9 @@
 "use client";
 
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
-import { Group, Stack } from "@uiid/layout";
 
+import { fieldRowsRender } from "../../field/subcomponents/field-rows-render";
 import type { RadioGroupRootProps } from "../radio-group.types";
-
-import fieldStyles from "../../field/field.module.css";
 
 export const RadioGroupRoot = ({
   orientation = "vertical",
@@ -14,29 +12,10 @@ export const RadioGroupRoot = ({
   children,
   ...props
 }: RadioGroupRootProps) => {
-  const isHorizontal = orientation === "horizontal";
-
-  /*
-   * `fullwidth` stretches the root. A vertical group's rows stretch across it
-   * at any width, as a Stack's do by default; a horizontal one shares the
-   * width evenly between its rows. The horizontal half cannot use `Group`'s
-   * `evenly` — see `.field-rows-evenly`. A `bordered` frame belongs to the row,
-   * so it follows the row out to the edge.
-   */
   return (
     <BaseRadioGroup
       data-slot="radio-group-root"
-      render={
-        isHorizontal ? (
-          <Group
-            gap={gap}
-            fullwidth={fullwidth}
-            className={fullwidth ? fieldStyles["field-rows-evenly"] : undefined}
-          />
-        ) : (
-          <Stack gap={gap} fullwidth={fullwidth} />
-        )
-      }
+      render={fieldRowsRender({ orientation, fullwidth, gap })}
       {...props}
     >
       {children}

@@ -20,7 +20,7 @@ Pick the change handler by what it costs. `onValueChange` fires on every step of
 
 Slider's root is a control surface like any other form control, so it paints with [`Input`](../input/README.md)'s styles rather than duplicating them — a slider lines up with a sibling input at the same `size`.
 
-`SliderRoot`, `SliderLabel`, `SliderValue`, `SliderControl`, `SliderTrack`, `SliderIndicator`, and `SliderThumb` are exported for composition, and slot overrides (`RootProps`, `ValueProps`, `ControlProps`, `TrackProps`, `IndicatorProps`, `ThumbProps`, `FieldProps`) reach them from the monolithic component.
+`SliderRoot`, `SliderLabel`, `SliderValue`, `SliderControl`, `SliderTrack`, `SliderIndicator`, and `SliderThumb` are exported for composition, and slot overrides (`RootProps`, `ValueProps`, `ControlProps`, `TrackProps`, `IndicatorProps`, `ThumbProps`, `FieldProps`) reach them from the monolithic component. When a top-level prop and `RootProps` set the same key, the top-level prop wins.
 
 The root and `SliderControl` each render a `Group`, so the slider's own props, `RootProps`, and `ControlProps` take its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `ay="center"`, the control to `ay="center"`, `px={3}`, and `fullwidth`; pass any of them to change it. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
 

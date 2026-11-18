@@ -15,7 +15,6 @@ export const NumberField = ({
   label,
   description,
   action,
-  name,
   placeholder,
   disabled,
   required,
@@ -29,9 +28,13 @@ export const NumberField = ({
   InputProps,
   ...props
 }: NumberFieldProps) => {
+  // Top-level props win over the same key in RootProps, as in Slider and
+  // Switch. The Field reads name from the merged props.
+  const rootProps = { ...RootProps, ...props };
+
   return (
     <Field
-      name={name}
+      name={rootProps.name}
       label={label}
       description={description}
       action={action}
@@ -40,7 +43,7 @@ export const NumberField = ({
       size={size}
       {...FieldProps}
     >
-      <NumberFieldRoot name={name} {...RootProps} {...props}>
+      <NumberFieldRoot {...rootProps}>
         <NumberFieldGroup size={size} color={color} {...GroupProps}>
           <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
 

@@ -15,10 +15,6 @@ export const Slider = ({
   label,
   description,
   action,
-  name,
-  value,
-  defaultValue,
-  color,
   RootProps,
   ValueProps,
   ControlProps,
@@ -28,10 +24,15 @@ export const Slider = ({
   FieldProps,
   ...props
 }: SliderProps) => {
+  // Top-level props win over the same key in RootProps, as in Switch and
+  // NumberField. The Field reads name and size from the merged root props so
+  // its chrome matches the control.
+  const rootProps = { ...RootProps, ...props };
+  const { name, size } = rootProps;
+
   // One thumb per value. Base UI takes a number for a single slider and an
   // array for a range; `index` is what lets a range render server-side.
-  const resolvedValue =
-    value ?? defaultValue ?? RootProps?.value ?? RootProps?.defaultValue;
+  const resolvedValue = rootProps.value ?? rootProps.defaultValue;
   const thumbCount = Array.isArray(resolvedValue) ? resolvedValue.length : 1;
 
   return (
@@ -40,16 +41,10 @@ export const Slider = ({
       label={label}
       description={description}
       action={action}
+      size={size}
       {...FieldProps}
     >
-      <SliderRoot
-        name={name}
-        value={value}
-        defaultValue={defaultValue}
-        color={color}
-        {...props}
-        {...RootProps}
-      >
+      <SliderRoot {...rootProps}>
         <SliderControl {...ControlProps}>
           <SliderTrack {...TrackProps}>
             <SliderIndicator {...IndicatorProps} />

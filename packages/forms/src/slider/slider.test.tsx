@@ -6,6 +6,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Slider } from "./slider";
 import { SliderLabel, SliderRoot } from "./subcomponents";
 
+import fieldStyles from "../field/field.module.css";
 import inputStyles from "../input/input.module.css";
 import styles from "./slider.module.css";
 
@@ -216,6 +217,13 @@ describe("Slider size variant", () => {
     expect(rootClassName(container)).toContain(styles["size-small"]);
   });
 
+  it("sizes the field chrome from the same prop, so the label scales too", () => {
+    const { container } = render(<Slider label="Volume" size="large" />);
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass(fieldStyles["size-large"]);
+    expect(field).not.toHaveClass(fieldStyles["size-medium"]);
+  });
+
   it("lets the readout inherit the tier's font size", () => {
     const { container } = render(<Slider defaultValue={40} />);
     const value = container.querySelector("[data-slot='slider-value']");
@@ -352,5 +360,30 @@ describe("Slider state-function className", () => {
 
     expect(part(container, "thumb")).toHaveClass("fn-value-40");
     expect(part(container, "thumb")).toHaveClass(styles["slider-thumb"]);
+  });
+});
+
+describe("Slider RootProps precedence", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector("[data-slot='slider-root']");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <Slider aria-label="top" RootProps={{ "aria-label": "slot" }} />,
+    );
+    expect(root(container)).toHaveAttribute("aria-label", "top");
+  });
+
+  it("lets a top-level size win over RootProps.size", () => {
+    const { container } = render(
+      <Slider size="large" RootProps={{ size: "small" }} />,
+    );
+    expect(root(container)?.className).toContain("size-large");
+    expect(root(container)?.className).not.toContain("size-small");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(<Slider RootProps={{ size: "small" }} />);
+    expect(root(container)?.className).toContain("size-small");
   });
 });
