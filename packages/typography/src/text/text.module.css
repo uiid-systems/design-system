@@ -144,6 +144,12 @@
 :where(.text)[data-ui-emphasis="muted"] {
   color: var(--palette-on-fill);
 }
+/*
+ * With no color, muted is secondary text on the page background, the --shade-muted grey, because the neutral on-fill is near-white on a light page. Name a `color` to read muted on that hue's fill. `:where()` keeps the weight at one attribute, so this wins over the rule above by coming after it.
+ */
+:where(.text)[data-ui-emphasis="muted"]:where(:not([data-ui-color])) {
+  color: var(--shade-muted);
+}
 :where(.text)[data-ui-emphasis="subtle"] {
   color: var(--palette-on-tint);
 }

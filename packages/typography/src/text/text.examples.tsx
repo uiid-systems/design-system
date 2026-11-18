@@ -66,7 +66,7 @@ const Row = ({
       gap: 24,
     }}
   >
-    <Text size={-1} family="mono" shade="muted">
+    <Text size={-1} family="mono" emphasis="muted">
       {label}
     </Text>
     <div>{children}</div>

@@ -5,6 +5,17 @@ import { Text } from "./text";
 import * as Examples from "./text.examples";
 import type { TextProps } from "./text.types";
 
+import styles from "./text.module.css";
+import css from "./text.module.css?raw";
+
+/** The selector of every text.module.css rule that sets `color` to `value`. */
+const selectorsPainting = (value: string) =>
+  [...css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, , body]) => body.includes(`color: ${value};`))
+    .map(([, selector]) =>
+      selector.trim().replace(/\.text\b/g, `.${styles["text"]}`),
+    );
+
 describe("Text", () => {
   it("renders children in a span by default", () => {
     render(<Text>Hello</Text>);
@@ -118,6 +129,23 @@ describe("Text", () => {
       expect(el).toHaveAttribute("data-ui-emphasis", "subtle");
       expect(el).not.toHaveAttribute("data-ui-color");
       expect(el).toHaveClass("palette-neutral");
+    });
+
+    it("paints muted emphasis without a color as the page's muted shade", () => {
+      render(
+        <>
+          <Text emphasis="muted">Page muted</Text>
+          <Text color="neutral" emphasis="muted">
+            Fill muted
+          </Text>
+        </>,
+      );
+      const selector = selectorsPainting("var(--shade-muted)").find((rule) =>
+        rule.includes("data-ui-emphasis"),
+      );
+      if (!selector) throw new Error("no emphasis rule reads --shade-muted");
+      expect(screen.getByText("Page muted").matches(selector)).toBe(true);
+      expect(screen.getByText("Fill muted").matches(selector)).toBe(false);
     });
 
     it("applies no palette class without a color or emphasis", () => {

@@ -6,7 +6,7 @@ Use Text when you want to:
 
 - Apply the size scale (`-1`..`6`) — small/body sizes through display
 - Pair size with weight (`thin`..`bold` including `medium` and `semibold`) and family (`sans`, `serif`, `mono`)
-- Color text from the palette (`red`, `blue`, etc.) and set its `emphasis` (`default`, `muted`, `subtle`) — emphasis without a `color` uses `neutral`
+- Color text from the palette (`red`, `blue`, etc.) and set its `emphasis` (`default`, `muted`, `subtle`) — emphasis without a `color` uses `neutral`, and `emphasis="muted"` without a `color` is the muted grey for secondary text on the page background
 - Truncate to a single line, balance a heading, set capitals, or decorate with `truncate`, `balance`, `uppercase`, `underline`, etc.
 - Keep text on one line without an ellipsis with `nowrap`
 - Render as a different element (`<h1>`, `<label>`, `<p>`) via the `render` prop while keeping the typography props
