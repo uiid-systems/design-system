@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 
-import { TimelineItem } from "./subcomponents";
+import { TimelineItem, TimelineTime } from "./subcomponents";
 import { Timeline } from "./timeline";
 import type { TimelineItemType } from "./timeline.types";
 
@@ -349,5 +349,21 @@ describe("Timeline", () => {
   it("accepts the native dir values, including auto", () => {
     render(<Timeline items={ITEMS} dir="auto" />);
     expect(screen.getByRole("list")).toHaveAttribute("dir", "auto");
+  });
+
+  it("mutes the time, unless a color is set", () => {
+    render(
+      <>
+        <TimelineTime>plain</TimelineTime>
+        <TimelineTime color="blue">blue</TimelineTime>
+      </>,
+    );
+    expect(screen.getByText("plain")).toHaveAttribute(
+      "data-ui-emphasis",
+      "muted",
+    );
+    const blue = screen.getByText("blue");
+    expect(blue).toHaveAttribute("data-ui-color", "blue");
+    expect(blue).not.toHaveAttribute("data-ui-emphasis");
   });
 });

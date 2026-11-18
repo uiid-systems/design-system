@@ -21,7 +21,7 @@ export const ProgressValue = ({
   return (
     <BaseProgress.Value
       data-slot="progress-value"
-      render={<Text shade="muted" />}
+      render={<Text emphasis="muted" />}
       className={cxState(styles["progress-value"], className)}
       {...props}
     >

@@ -8,13 +8,21 @@ import type { TextProps } from "./text.types";
 import styles from "./text.module.css";
 import css from "./text.module.css?raw";
 
-/** The selector of every text.module.css rule that sets `color` to `value`. */
+/**
+ * The selector of every text.module.css rule that sets `color` to `value`, in source order.
+ * Only flat top-level `selector { declarations }` rules are seen: a rule nested inside another (like `.text`'s `code`) is skipped, which is fine for the data-ui-* rules this reads.
+ */
 const selectorsPainting = (value: string) =>
-  [...css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+  [
+    ...css
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .matchAll(/(?<=^|\})\s*([^{}]+)\{([^{}]*)\}/g),
+  ]
     .filter(([, , body]) => body.includes(`color: ${value};`))
-    .map(([, selector]) =>
-      selector.trim().replace(/\.text\b/g, `.${styles["text"]}`),
-    );
+    .map(([, selector]) => ({
+      selector: selector.trim().replace(/\.text\b/g, `.${styles["text"]}`),
+      at: css.indexOf(selector.trim()),
+    }));
 
 describe("Text", () => {
   it("renders children in a span by default", () => {
@@ -140,12 +148,15 @@ describe("Text", () => {
           </Text>
         </>,
       );
-      const selector = selectorsPainting("var(--shade-muted)").find((rule) =>
-        rule.includes("data-ui-emphasis"),
-      );
-      if (!selector) throw new Error("no emphasis rule reads --shade-muted");
-      expect(screen.getByText("Page muted").matches(selector)).toBe(true);
-      expect(screen.getByText("Fill muted").matches(selector)).toBe(false);
+      const isMuted = ({ selector }: { selector: string }) =>
+        selector.includes('[data-ui-emphasis="muted"]');
+      const page = selectorsPainting("var(--shade-muted)").find(isMuted);
+      const fill = selectorsPainting("var(--palette-on-fill)").find(isMuted);
+      if (!page || !fill) throw new Error("missing a muted emphasis rule");
+      expect(screen.getByText("Page muted").matches(page.selector)).toBe(true);
+      expect(screen.getByText("Fill muted").matches(page.selector)).toBe(false);
+      // Both weigh one attribute, so the page rule wins only by coming later.
+      expect(page.at).toBeGreaterThan(fill.at);
     });
 
     it("applies no palette class without a color or emphasis", () => {
