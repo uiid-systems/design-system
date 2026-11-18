@@ -59,7 +59,7 @@ export type AutocompleteListProps = BaseAutocomplete.List.Props;
  * the row's `label`. Base UI's item renders no text of its own; the label falls
  * back to a `label` on an object value, then to a primitive value itself.
  */
-export type AutocompleteItemProps<Value = unknown> = Omit<
+export type AutocompleteItemProps<Value = string> = Omit<
   BaseAutocomplete.Item.Props,
   "value"
 > & {

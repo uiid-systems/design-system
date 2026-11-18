@@ -1064,6 +1064,9 @@ describe("Combobox generics", () => {
     expectTypeOf<ComboboxItemProps<User>["value"]>().toEqualTypeOf<
       User | undefined
     >();
+    expectTypeOf<ComboboxItemProps["value"]>().toEqualTypeOf<
+      string | undefined
+    >();
 
     // @ts-expect-error a string is not a `Combobox<User>` item
     const wrong: ComboboxProps<User>["items"] = ["Ada"];

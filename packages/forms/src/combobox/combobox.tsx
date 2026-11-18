@@ -4,7 +4,7 @@ import { splitDomAttributes } from "@uiid/utils";
 
 import type { SelectMultipleMode } from "../select/select.types";
 import { InputGroupActions, mergeInputGroupProps } from "../shared/input-group";
-import { resolveItemKey, resolveItemLabel } from "../shared/popup-layer";
+import { resolveItemKey, resolveItemLabel } from "../shared/item-utils";
 import type { ComboboxProps } from "./combobox.types";
 import {
   ComboboxRoot,
@@ -129,7 +129,10 @@ export function Combobox<
               {children ??
                 ((item: Value, index: number) => (
                   <ComboboxItem<Value>
-                    key={resolveItemKey(item, index, itemToStringValue)}
+                    key={resolveItemKey(item, index, {
+                      itemToStringValue,
+                      itemToStringLabel,
+                    })}
                     value={item}
                     label={resolveItemLabel(item, itemToStringLabel)}
                     disabled={disabled}

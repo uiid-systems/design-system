@@ -4,6 +4,7 @@ import { splitDomAttributes } from "@uiid/utils";
 import { Children, isValidElement, useMemo } from "react";
 
 import { Field } from "../field/field";
+import { resolveItemKey } from "../shared/item-utils";
 import { SELECT_DEFAULT_SIZE } from "./select.constants";
 import type {
   SelectItemProps,
@@ -53,10 +54,6 @@ function collectItemLabels(
   });
 
   return collected;
-}
-
-function isKeyable(value: unknown): value is string | number {
-  return typeof value === "string" || typeof value === "number";
 }
 
 export function Select<
@@ -118,14 +115,15 @@ export function Select<
   // which is why the trigger's text is not formatted here. Deliberately not
   // fed back into `resolvedDefaultValue` above: a composed select still opens
   // empty unless told otherwise.
-  // A primitive value is a stable key. An object one is only an identity, so
-  // the caller's `itemToStringValue` stands in when there is one, and the
-  // row's position when there is not. `RootProps` spreads last onto Root, so
-  // its function is the one Root uses too.
-  const itemToStringValue =
-    RootProps?.itemToStringValue ?? rootProps.itemToStringValue;
-  const itemKey = (value: Value, index: number) =>
-    isKeyable(value) ? value : (itemToStringValue?.(value) ?? index);
+  // Rows key the way Combobox and Autocomplete rows do (see `resolveItemKey`).
+  // `RootProps` spreads last onto Root, so its functions are the ones Root
+  // uses too.
+  const itemToString = {
+    itemToStringValue:
+      RootProps?.itemToStringValue ?? rootProps.itemToStringValue,
+    itemToStringLabel:
+      RootProps?.itemToStringLabel ?? rootProps.itemToStringLabel,
+  };
 
   const itemLabels = useMemo(() => {
     if (items) return items;
@@ -180,7 +178,7 @@ export function Select<
                   ? children
                   : items.map(({ value, ...item }, index) => (
                       <SelectItem<Value>
-                        key={itemKey(value, index)}
+                        key={resolveItemKey(value, index, itemToString)}
                         value={value}
                         {...item}
                       />

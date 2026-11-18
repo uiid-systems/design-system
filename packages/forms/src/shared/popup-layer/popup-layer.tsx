@@ -8,7 +8,7 @@ import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { cxState, type WithLayoutProps } from "@uiid/utils";
 
-import { resolveItemLabel } from "./popup-layer.utils";
+import { resolveItemLabel } from "../item-utils";
 
 import styles from "./popup-layer.module.css";
 

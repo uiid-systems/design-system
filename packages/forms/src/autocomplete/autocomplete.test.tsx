@@ -681,6 +681,9 @@ describe("Autocomplete generics", () => {
     expectTypeOf<AutocompleteItemProps<User>["value"]>().toEqualTypeOf<
       User | undefined
     >();
+    expectTypeOf<AutocompleteItemProps["value"]>().toEqualTypeOf<
+      string | undefined
+    >();
 
     // @ts-expect-error a string is not an `Autocomplete<User>` item
     const wrong: AutocompleteProps<User>["items"] = ["Ada"];

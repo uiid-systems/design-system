@@ -3,7 +3,7 @@
 import { splitDomAttributes } from "@uiid/utils";
 
 import { mergeInputGroupProps } from "../shared/input-group";
-import { resolveItemKey, resolveItemLabel } from "../shared/popup-layer";
+import { resolveItemKey, resolveItemLabel } from "../shared/item-utils";
 import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
@@ -91,7 +91,7 @@ export function Autocomplete<Value = string>({
               {children ??
                 ((item: Value, index: number) => (
                   <AutocompleteItem<Value>
-                    key={resolveItemKey(item, index, itemToStringValue)}
+                    key={resolveItemKey(item, index, { itemToStringValue })}
                     value={item}
                     label={resolveItemLabel(item, itemToStringValue)}
                     disabled={disabled}
