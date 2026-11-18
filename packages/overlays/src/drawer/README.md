@@ -97,9 +97,9 @@ Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to 
 
 ## Long content
 
-Content taller than the panel scrolls inside the body. The header and the footer's actions stay in view. A left or right panel is as tall as the screen less its inset, and an up or down panel caps there. The body reaches the panel's side edges and pads itself back in with Card's `--card-padding-inline-start` and `--card-padding-inline-end`, so its scrollbar sits at the surface edge, and it leaves a focus ring's reach above and below its content. Dialog's body scrolls the same way, from the same shared rules.
+Content taller than the panel scrolls inside the body. The header and the footer's actions stay in view. A left or right panel is as tall as the screen less its inset, and an up or down panel caps there. The body reaches the panel's side edges and pads itself back in with Card's `--card-padding-inline-start` and `--card-padding-inline-end`, so its scrollbar sits at the surface edge, and it leaves a focus ring's reach above and below its content. Dialog's body scrolls the same way, from the same shared rules. On a screen shorter than 30rem, where a pinned header and footer would leave the body almost no room, the whole panel scrolls instead.
 
-While the body overflows it is a tab stop, so the keyboard can scroll it. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
+While the body overflows it is a tab stop, so the keyboard can scroll it, and a region named by the title, so a screen reader announces where focus landed. An untitled drawer's body stays a plain tab stop, since a region needs a name. Content added to the body later, such as options that load after the drawer opens, is measured too. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
 
 With `snapPoints` and an overflowing body, an upward drag on the body scrolls it rather than expanding the sheet, following Base UI's scroll-edge rule. Drag the header to expand the sheet.
 

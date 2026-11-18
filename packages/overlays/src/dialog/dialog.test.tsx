@@ -656,7 +656,7 @@ describe("Dialog", () => {
       vi.unstubAllGlobals();
     });
 
-    it("makes a long body a tab stop, with no role of its own", async () => {
+    it("makes a long body a tab stop, named by the title", async () => {
       stubHeights(1000, 400);
       render(
         <Dialog open={true} onOpenChange={() => {}} title="Terms">
@@ -665,8 +665,36 @@ describe("Dialog", () => {
       );
 
       await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(screen.getByRole("region", { name: "Terms" })).toBe(body());
+      expect(body()).toHaveAttribute(
+        "aria-labelledby",
+        screen.getByRole("dialog").getAttribute("aria-labelledby"),
+      );
+    });
+
+    it("gives an untitled long body no role, since it has no name", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}}>
+          Long content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
       expect(body()).not.toHaveAttribute("role");
       expect(body()).not.toHaveAttribute("aria-labelledby");
+    });
+
+    it("leaves a short body unnamed", async () => {
+      stubHeights(400, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Short content
+        </Dialog>,
+      );
+
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("role");
     });
 
     it("reaches a long body by Tab from the close button", async () => {

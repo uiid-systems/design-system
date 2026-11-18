@@ -74,12 +74,9 @@
   max-height: 100%;
   pointer-events: auto;
 
+  /* The shared short-screen fallback scrolls the popup; here the viewport does. */
   @media (max-height: 30rem) {
     max-height: none;
-
-    & > [data-slot="card-inner-container"] {
-      overflow: visible;
-    }
   }
 }
 

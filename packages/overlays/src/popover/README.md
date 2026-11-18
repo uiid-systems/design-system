@@ -19,7 +19,7 @@ The popup shares the floating-surface motion used by Select, Combobox, and Toolt
 
 ## Long content
 
-The popup is capped at the height Base UI's positioner leaves beside the trigger (`--available-height`, less `collisionPadding`), so a filter list taller than that scrolls inside the body instead of running off screen. The header and footer stay in view. The body scrolls the same way Dialog's does: it reaches the popup's side edges so its scrollbar sits at the surface edge, leaves a focus ring's reach above and below its content, and is a tab stop while it overflows, so the keyboard can scroll it. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body.
+The popup is capped at the height Base UI's positioner leaves beside the trigger (`--available-height`, less `collisionPadding`), so a filter list taller than that scrolls inside the body instead of running off screen. The header and footer stay in view. The body scrolls the same way Dialog's does: it reaches the popup's side edges so its scrollbar sits at the surface edge, leaves a focus ring's reach above and below its content, and is a tab stop while it overflows, so the keyboard can scroll it. While it overflows it is also a region named by the title; an untitled popover's body stays a plain tab stop. Content added to the body later, such as options that load after the popover opens, is measured too. On a screen shorter than 30rem, where a pinned header and footer would leave the body almost no room, the whole popup scrolls within its cap instead. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body.
 
 ## Triggers
 

@@ -179,6 +179,20 @@
     & > :not([data-slot="card-inner-container"]) {
       flex-shrink: 0;
     }
+
+    /*
+     * Too short for a pinned header and footer to leave the body any room, so
+     * the whole popup scrolls within its cap instead, and the body keeps its
+     * content height. Dialog lifts its cap here too, and scrolls its viewport.
+     */
+    @media (max-height: 30rem) {
+      overflow-y: auto;
+
+      & > [data-slot="card-inner-container"] {
+        flex-shrink: 0;
+        overflow: visible;
+      }
+    }
   }
 
   /*

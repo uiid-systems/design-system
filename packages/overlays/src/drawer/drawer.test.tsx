@@ -848,13 +848,21 @@ describe("Drawer", () => {
           </Drawer>,
         );
         await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
-        expect(body()).not.toHaveAttribute("role");
+        expect(screen.getByRole("region", { name: "Terms" })).toBe(body());
 
         screen.getByRole("button", { name: "Close" }).focus();
         await user.tab();
         expect(body()).toHaveFocus();
       },
     );
+
+    it("gives an untitled long body no role, since it has no name", async () => {
+      stubHeights(1000, 400);
+      render(<Drawer open={true}>Long content</Drawer>);
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+      expect(body()).not.toHaveAttribute("role");
+    });
 
     it("leaves a short body out of the tab order", async () => {
       stubHeights(400, 400);
