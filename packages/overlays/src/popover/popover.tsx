@@ -1,5 +1,7 @@
 "use client";
 
+import { hasTrigger } from "@uiid/utils";
+
 import type { PopoverProps } from "./popover.types";
 import {
   PopoverRoot,
@@ -31,7 +33,9 @@ export const Popover = ({
 }: PopoverProps) => {
   return (
     <PopoverRoot open={open} onOpenChange={onOpenChange} {...RootProps}>
-      <PopoverTrigger {...TriggerProps}>{trigger}</PopoverTrigger>
+      {hasTrigger(trigger, TriggerProps?.render) && (
+        <PopoverTrigger {...TriggerProps}>{trigger}</PopoverTrigger>
+      )}
       <PopoverPortal {...PortalProps}>
         <PopoverBackdrop {...BackdropProps} />
         <PopoverPositioner {...PositionerProps}>
