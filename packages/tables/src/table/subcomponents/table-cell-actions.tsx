@@ -1,5 +1,4 @@
 import { Button } from "@uiid/buttons";
-import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { Group } from "@uiid/layout";
 
 import type {
@@ -29,18 +28,18 @@ function ActionButton<T extends Record<string, unknown>>({
   onClick,
   item,
   size = "small",
-  ...action
+  icon: Icon,
+  tooltip,
 }: ActionButtonProps<T>): React.ReactElement {
   const button = (
     <Button
-      key={action.tooltip}
-      tooltip={action.tooltip}
+      tooltip={tooltip}
       size={size}
       variant="ghost"
       shape="square"
       onClick={onClick ? () => onClick(item) : undefined}
     >
-      {action.icon ? <action.icon /> : <EllipsisVerticalIcon size={14} />}
+      <Icon />
     </Button>
   );
 

@@ -116,7 +116,7 @@ describe("List", () => {
       const groups = container.querySelectorAll('[data-slot="list-group"]');
       expect(groups).toHaveLength(2);
       for (const group of groups) {
-        expect(group).toHaveClass(styles["list-group"], "shared-group");
+        expect(group).toHaveClass("shared-group");
         expect(group).toHaveAttribute("data-ui-gap", "2");
       }
       expect(screen.getByText("Outer")).toBeInTheDocument();

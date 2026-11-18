@@ -77,7 +77,7 @@ export const ListGroup = ({
       render={<li />}
       fullwidth
       {...GroupProps}
-      className={cx(styles["list-group"], GroupProps?.className)}
+      className={GroupProps?.className}
     >
       <ListGroupHeader category={category} icon={icon} />
 

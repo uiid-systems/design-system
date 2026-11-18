@@ -96,11 +96,6 @@
     margin-block-end: 0;
   }
 
-  /* After a heading: tighter than default rhythm */
-  /* & > :is(h1, h2, h3, h4, h5, h6) + * {
-    margin-block-start: 0.75em;
-  } */
-
   /* Heading immediately followed by another heading: minimal gap */
   & > :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
     margin-block-start: 1em;
