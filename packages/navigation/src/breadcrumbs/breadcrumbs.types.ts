@@ -18,4 +18,8 @@ export type BreadcrumbsProps = BoxProps & {
   linkAs?: LinkComponent;
 };
 
-export type BreadcrumbsListProps = GroupProps;
+export type BreadcrumbsContainerProps = Omit<BreadcrumbsProps, "items">;
+
+/** Group layout props, plus the `<ol>` attributes the list renders. */
+export type BreadcrumbsListProps = GroupProps &
+  Pick<React.OlHTMLAttributes<HTMLOListElement>, "start" | "reversed" | "type">;

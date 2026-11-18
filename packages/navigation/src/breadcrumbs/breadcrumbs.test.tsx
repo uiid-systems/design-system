@@ -3,7 +3,7 @@ import { HomeIcon } from "@uiid/icons/house";
 import { describe, it, expect, expectTypeOf } from "vitest";
 
 import * as Navigation from "../index";
-import { Breadcrumbs } from "./breadcrumbs";
+import { Breadcrumbs, BreadcrumbsItem, BreadcrumbsList } from "./breadcrumbs";
 import * as Examples from "./breadcrumbs.examples";
 import { MOCK_ITEMS } from "./breadcrumbs.mocks";
 import type {
@@ -89,6 +89,19 @@ describe("Breadcrumbs", () => {
     expect(list).toHaveAttribute("data-ui-ay", "center");
   });
 
+  it("passes ol attributes through BreadcrumbsList", () => {
+    render(
+      <BreadcrumbsList start={3} reversed type="i">
+        <BreadcrumbsItem>Crumb</BreadcrumbsItem>
+      </BreadcrumbsList>,
+    );
+    const list = screen.getByRole("list");
+    expect(list.tagName).toBe("OL");
+    expect(list).toHaveAttribute("start", "3");
+    expect(list).toHaveAttribute("reversed");
+    expect(list).toHaveAttribute("type", "i");
+  });
+
   it("renders an item's icon alongside its label", () => {
     render(
       <Breadcrumbs
@@ -144,6 +157,9 @@ describe("Breadcrumbs", () => {
       BreadcrumbsItemData[]
     >();
     expectTypeOf<Navigation.BreadcrumbsItemData>().toEqualTypeOf<BreadcrumbsItemData>();
+    expectTypeOf<Navigation.BreadcrumbsContainerProps>().toEqualTypeOf<
+      Omit<BreadcrumbsProps, "items">
+    >();
     expectTypeOf<Navigation.BreadcrumbsProps>().toEqualTypeOf<BreadcrumbsProps>();
   });
 

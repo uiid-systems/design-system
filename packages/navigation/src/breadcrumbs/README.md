@@ -39,7 +39,9 @@ Each `BreadcrumbsItemData` is `{ label: string; value: string; icon?: Icon }`. `
 
 ## Composition
 
-`BreadcrumbsContainer`, `BreadcrumbsList`, `BreadcrumbsItem` and `BreadcrumbsSeparator` build the same markup by hand. `BreadcrumbsList` is a wrapping `Group` rendered as an `<ol>`, so it takes Group's layout props. A hand-built trail must set `aria-current="page"` on its last item itself; `BreadcrumbsSeparator` renders `/` unless given children.
+`BreadcrumbsContainer`, `BreadcrumbsList`, `BreadcrumbsItem` and `BreadcrumbsSeparator` build the same markup by hand. `BreadcrumbsList` is a wrapping `Group` rendered as an `<ol>`, so it takes Group's layout props. A hand-built trail must set `aria-current="page"` on its last item itself.
+
+`BreadcrumbsSeparator` renders `/` unless given children.
 
 ## Data Slots
 
