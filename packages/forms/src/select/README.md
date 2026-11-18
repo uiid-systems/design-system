@@ -24,6 +24,10 @@ Drop `items` and pass children to compose the list yourself with `SelectItem`. T
 
 When the trigger should read differently from the rows — a currency code where the row spells the currency out — pass `itemToStringLabel`. It formats the trigger's text from the selected value, each value in turn under `multiple`, and takes precedence over the item labels, exactly as it does in Base UI. The rows keep their own `label`.
 
+`value` is not limited to strings. `Select<number>` (or any object type) types `items` and `SelectItem` by the same `Value`, so a numeric or object value reaches `onValueChange` unchanged. An object value needs `isItemEqualToValue` when the selection is not the same reference as the item, exactly as in Base UI.
+
+`SelectItem` takes Base UI's Item props — `className` (merged with its own, and a state function works), `ref`, event handlers, `data-*` — and so does each entry in `items`.
+
 Leave `value` unset and the select runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 
 The open popup dims the page behind it so it can't be lost in surrounding content. That is paint only — Base UI's `Root` is `modal` by default, so page scroll is locked and outside pointers are blocked whether or not the dimming is drawn, and `backdrop={false}` changes how the select looks, never how it behaves. The dim is lighter than a dialog's: a dialog owns the screen, where a select is still a field in a form the reader needs to keep their place in. It rides Select's own `--select-backdrop-*` tokens, so `@uiid/forms` carries no dependency on `@uiid/overlays`.

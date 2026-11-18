@@ -38,10 +38,10 @@ import {
  */
 function collectItemLabels(
   children: React.ReactNode,
-  collected: Pick<SelectItemProps, "value" | "label">[] = [],
+  collected: Pick<SelectItemProps<unknown>, "value" | "label">[] = [],
 ) {
   Children.forEach(children, (child) => {
-    if (!isValidElement<Partial<SelectItemProps>>(child)) return;
+    if (!isValidElement<Partial<SelectItemProps<unknown>>>(child)) return;
 
     const { value, label, children: nested } = child.props;
 
@@ -53,6 +53,10 @@ function collectItemLabels(
   });
 
   return collected;
+}
+
+function isKeyable(value: unknown): value is string | number {
+  return typeof value === "string" || typeof value === "number";
 }
 
 export function Select<
@@ -165,27 +169,15 @@ export function Select<
               <SelectList {...ListProps}>
                 {!items
                   ? children
-                  : items.map(
-                      ({
-                        label,
-                        value,
-                        disabled: itemDisabled,
-                        description,
-                        icon,
-                        children: itemChildren,
-                      }) => (
-                        <SelectItem
-                          key={value}
-                          label={label}
-                          value={value}
-                          disabled={itemDisabled}
-                          description={description}
-                          icon={icon}
-                        >
-                          {itemChildren}
-                        </SelectItem>
-                      ),
-                    )}
+                  : items.map(({ value, ...item }, index) => (
+                      // A primitive value is a stable key; an object one is
+                      // only an identity, so its position stands in.
+                      <SelectItem<Value>
+                        key={isKeyable(value) ? value : index}
+                        value={value}
+                        {...item}
+                      />
+                    ))}
               </SelectList>
             </SelectPopup>
           </SelectPositioner>

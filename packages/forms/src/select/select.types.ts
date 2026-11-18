@@ -6,7 +6,6 @@ import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
-import type { FormItemProps } from "../types";
 
 /** Shared type for single/multiple select mode. Used by Combobox. */
 export type SelectMultipleMode = true | false | undefined;
@@ -18,7 +17,19 @@ export type SelectMultipleMode = true | false | undefined;
  */
 export type SelectColor = PaletteColor;
 
-export type SelectItemProps = FormItemProps & {
+/**
+ * Base UI's Item props, with `value` typed by the select's `Value` and `label`
+ * required. `label` is what the trigger shows and what typeahead matches, so a
+ * row always has text even when `children` draws something else.
+ */
+export type SelectItemProps<Value = string> = Omit<
+  BaseSelect.Item.Props,
+  "value" | "label" | "children"
+> & {
+  /** A unique value that identifies this item, typed by the select's `Value`. */
+  value: Value;
+  /** The row's text, shown in the trigger once the item is selected. */
+  label: string;
   /**
    * Secondary line, stacked under the label. A node, matching the `ListItem`
    * underneath — the string it used to be narrowed to bought nothing.
@@ -86,7 +97,8 @@ export type SelectProps<
    * subtree and cannot inherit the hue through the DOM.
    */
   color?: SelectColor;
-  items?: SelectItemProps[];
+  /** The rows to render, typed by the select's `Value`. */
+  items?: SelectItemProps<Value>[];
   /**
    * Dims the page behind the open popup, the way a dialog or drawer does, so an
    * open menu is never lost against the content around it.
@@ -108,6 +120,11 @@ export type SelectProps<
   FieldProps?: FieldProps;
   IconProps?: SelectIconProps;
 }> &
-  SelectRootProps<Value, Multiple> &
+  /*
+   * Root's own `items` also takes a record or groups, which this list does not
+   * render; the monolith's `items` above replaces it. `RootProps.items` still
+   * reaches Root untouched.
+   */
+  Omit<SelectRootProps<Value, Multiple>, "items"> &
   Pick<FieldProps, "label" | "description" | "action"> &
   InputVariants;
