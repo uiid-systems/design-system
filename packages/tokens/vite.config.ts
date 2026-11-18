@@ -18,8 +18,9 @@ export default defineConfig({
     tsconfigPaths(),
     dts({
       insertTypesEntry: true,
-      // Same exclusions as `createViteConfig`. Setting `exclude` replaces the
-      // tsconfig's, so its entries are repeated.
+      // A subset of `createViteConfig`'s exclusions: tokens has tests but no
+      // examples or stories. Setting `exclude` replaces the tsconfig's, so its
+      // entries are repeated.
       exclude: ["node_modules/**", "dist/**", "**/*.test.*"],
     }),
   ],

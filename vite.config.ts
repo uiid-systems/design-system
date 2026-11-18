@@ -69,7 +69,9 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
       insertTypesEntry: true,
       exclude: dtsExclude,
       // `files` ships dist only, so a map would point at source that is not in
-      // the tarball. The `tsc -b` build keeps its maps for local editing.
+      // the tarball. Vite empties dist before writing, so `tsc -b`'s own maps do
+      // not survive either. The cost is that go-to-definition into a built
+      // sibling package lands in its .d.ts rather than its source.
       compilerOptions: { declarationMap: false },
     }),
   ];
