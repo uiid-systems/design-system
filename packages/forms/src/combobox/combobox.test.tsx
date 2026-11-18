@@ -295,6 +295,95 @@ describe("Combobox size variant", () => {
     },
   );
 
+  /* Base UI anchors the popup to the group, so the group must hold the
+     control row alone: wrapping the Field put the label, description and
+     error inside the anchor and the group's press handler. */
+  it("wraps the control row only, leaving the label and description outside", () => {
+    render(<Combobox items={items} label="Fruit" description="Pick one" />);
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toContainElement(
+      document.querySelector<HTMLElement>("[data-slot='input-wrapper']"),
+    );
+    expect(group).not.toContainElement(screen.getByText("Fruit"));
+    expect(group).not.toContainElement(screen.getByText("Pick one"));
+  });
+
+  /* The group stands where the `fullwidth` wrapper stood, so in a flex row
+     like `ComboboxChips` it must still span the row, or the input and the
+     popup shrink to the input's intrinsic width. */
+  it("spans the row it sits in", () => {
+    render(<Combobox items={items} />);
+    expect(
+      document.querySelector("[data-slot='combobox-input-group']"),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* Both props reach the one group the Input part renders, so neither may
+     drop the other: the nested value wins a conflict, and classes join. */
+  it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
+    render(
+      <Combobox
+        items={items}
+        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputProps={{
+          InputGroupProps: { className: "inner", id: "inner-id" },
+        }}
+      />,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveClass("outer", "inner");
+    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("title", "kept");
+  });
+
+  /* `ComboboxInput` renders its own group, so composing it straight into
+     `ComboboxChips`, as the Multiple example does, must not add a second. */
+  it("renders a single group in a chips composition", () => {
+    render(
+      <ComboboxRoot multiple items={items}>
+        <ComboboxChips>
+          <ComboboxValue>
+            {(selected: string[]) =>
+              selected.map((item) => (
+                <ComboboxChip key={item}>{item}</ComboboxChip>
+              ))
+            }
+          </ComboboxValue>
+          <ComboboxInput placeholder="Add fruit" />
+        </ComboboxChips>
+      </ComboboxRoot>,
+    );
+    expect(screen.getAllByRole("group")).toHaveLength(1);
+    expect(screen.getByRole("group")).toContainElement(
+      screen.getByRole("combobox"),
+    );
+  });
+
+  it("forwards InputGroupProps passed to ComboboxInput", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput InputGroupProps={{ className: "mine", size: "large" }} />
+      </ComboboxRoot>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveClass("mine");
+    expect(group?.className).toContain("size-large");
+  });
+
+  it("leaves the inline error outside the group", () => {
+    render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Combobox name="fruit" label="Fruit" items={items} />
+      </Form>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    const error = document.querySelector<HTMLElement>(
+      "[data-slot='field-error']",
+    );
+    expect(error).toHaveTextContent("Pick a fruit");
+    expect(group).not.toContainElement(error);
+  });
+
   it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,

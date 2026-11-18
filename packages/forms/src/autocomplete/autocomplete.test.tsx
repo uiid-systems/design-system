@@ -389,6 +389,91 @@ describe("Autocomplete input group", () => {
     expect(group).toContainElement(screen.getByRole("combobox"));
   });
 
+  /* Base UI anchors the popup to the group, so the group must hold the
+     control row alone: wrapping the Field put the label, description and
+     error inside the anchor and the group's press handler. */
+  it("wraps the control row only, leaving the label and description outside", () => {
+    render(<Autocomplete items={items} label="Fruit" description="Pick one" />);
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toContainElement(
+      document.querySelector<HTMLElement>("[data-slot='input-wrapper']"),
+    );
+    expect(group).not.toContainElement(screen.getByText("Fruit"));
+    expect(group).not.toContainElement(screen.getByText("Pick one"));
+  });
+
+  /* Both props reach the one group the Input part renders, so neither may
+     drop the other: the nested value wins a conflict, and classes join. */
+  it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
+    render(
+      <Autocomplete
+        items={items}
+        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputProps={{
+          InputGroupProps: { className: "inner", id: "inner-id" },
+        }}
+      />,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toHaveClass("outer", "inner");
+    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("title", "kept");
+  });
+
+  it("renders a single group around a composed input", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput label="Fruit" />
+      </AutocompleteRoot>,
+    );
+    expect(screen.getAllByRole("group")).toHaveLength(1);
+    expect(screen.getByRole("group")).toContainElement(
+      screen.getByRole("combobox"),
+    );
+  });
+
+  it("forwards InputGroupProps passed to AutocompleteInput", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          InputGroupProps={{ className: "mine", size: "large" }}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toHaveClass("mine");
+    expect(group?.className).toContain("size-large");
+  });
+
+  it("leaves the inline error outside the group", () => {
+    render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Autocomplete name="fruit" label="Fruit" items={items} />
+      </Form>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    const error = document.querySelector<HTMLElement>(
+      "[data-slot='field-error']",
+    );
+    expect(error).toHaveTextContent("Pick a fruit");
+    expect(group).not.toContainElement(error);
+  });
+
+  it("spans the row it sits in", () => {
+    render(<Autocomplete items={items} />);
+    expect(
+      document.querySelector("[data-slot='autocomplete-input-group']"),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("forwards InputGroupProps to the input group", () => {
     render(
       <Autocomplete items={items} InputGroupProps={{ className: "mine" }} />,

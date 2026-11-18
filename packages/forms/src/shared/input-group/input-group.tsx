@@ -2,7 +2,7 @@
 
 import { Combobox as BaseInputGroup } from "@base-ui/react/combobox";
 import type { Combobox as BaseInputGroupTypes } from "@base-ui/react/combobox";
-import { Group } from "@uiid/layout";
+import { Box, Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
 import { cxState } from "@uiid/utils";
 
@@ -37,6 +37,14 @@ export const InputGroupRoot = ({
   return (
     <BaseInputGroup.InputGroup
       data-slot={slot}
+      /*
+       * The group wraps the input wrapper directly, so it takes that wrapper's
+       * place in whatever lays it out: a Field's column, or the parent's flow
+       * when a bare Field is `display: contents`. Spanning the row keeps the
+       * wrapper's `fullwidth`; without it, a group in a flex row
+       * (`ComboboxChips`) shrinks to the input's width, and the popup with it.
+       */
+      render={<Box w="full" />}
       className={cxState(
         styles["input-group-root"],
         inputGroupVariants({ size }),

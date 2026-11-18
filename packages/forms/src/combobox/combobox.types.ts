@@ -35,6 +35,12 @@ export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
      * too rather than declaring its own.
      */
     color?: ComboboxColor;
+    /**
+     * Props for the input group the part renders around its control row. The
+     * group wraps the row alone, not the label, description or error, since
+     * Base UI positions the popup against it.
+     */
+    InputGroupProps?: ComboboxInputGroupProps;
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;

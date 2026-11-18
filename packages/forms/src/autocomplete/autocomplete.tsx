@@ -2,11 +2,11 @@
 
 import { splitDomAttributes } from "@uiid/utils";
 
+import { mergeInputGroupProps } from "../shared/input-group";
 import type { AutocompleteProps } from "./autocomplete.types";
 import {
   AutocompleteRoot,
   AutocompleteInput,
-  AutocompleteInputGroup,
   AutocompletePortal,
   AutocompletePositioner,
   AutocompletePopup,
@@ -55,25 +55,27 @@ export const Autocomplete = ({
       {...RootProps}
       {...rootProps}
     >
-      <AutocompleteInputGroup size={size} {...InputGroupProps}>
-        <AutocompleteInput
-          name={name}
-          placeholder={placeholder}
-          label={label}
-          description={description}
-          action={action}
-          before={before}
-          after={after}
-          size={size}
-          color={color}
-          disabled={disabled}
-          required={required}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          {...domAttributes}
-          {...InputProps}
-        />
-      </AutocompleteInputGroup>
+      <AutocompleteInput
+        name={name}
+        placeholder={placeholder}
+        label={label}
+        description={description}
+        action={action}
+        before={before}
+        after={after}
+        size={size}
+        color={color}
+        disabled={disabled}
+        required={required}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        {...domAttributes}
+        {...InputProps}
+        InputGroupProps={mergeInputGroupProps(
+          InputGroupProps,
+          InputProps?.InputGroupProps,
+        )}
+      />
 
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
