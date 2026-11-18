@@ -18,6 +18,7 @@ export const Slider = ({
   name,
   value,
   defaultValue,
+  size,
   color,
   RootProps,
   ValueProps,
@@ -40,12 +41,14 @@ export const Slider = ({
       label={label}
       description={description}
       action={action}
+      size={size}
       {...FieldProps}
     >
       <SliderRoot
         name={name}
         value={value}
         defaultValue={defaultValue}
+        size={size}
         color={color}
         {...props}
         {...RootProps}

@@ -6,6 +6,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Slider } from "./slider";
 import { SliderLabel, SliderRoot } from "./subcomponents";
 
+import fieldStyles from "../field/field.module.css";
 import inputStyles from "../input/input.module.css";
 import styles from "./slider.module.css";
 
@@ -214,6 +215,13 @@ describe("Slider size variant", () => {
   it("paints Slider's own tier, which carries the thumb and track scale", () => {
     const { container } = render(<Slider size="small" />);
     expect(rootClassName(container)).toContain(styles["size-small"]);
+  });
+
+  it("sizes the field chrome from the same prop, so the label scales too", () => {
+    const { container } = render(<Slider label="Volume" size="large" />);
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass(fieldStyles["size-large"]);
+    expect(field).not.toHaveClass(fieldStyles["size-medium"]);
   });
 
   it("lets the readout inherit the tier's font size", () => {
