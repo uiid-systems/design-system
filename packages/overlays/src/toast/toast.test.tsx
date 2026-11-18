@@ -21,6 +21,7 @@ import { createToastManager, useToastManager } from "./toast.hooks";
 import type { ToastProviderProps, ToasterProps } from "./toast.types";
 
 import styles from "./toast.module.css";
+import css from "./toast.module.css?raw";
 
 type Manager = ReturnType<typeof useToastManager>;
 
@@ -596,5 +597,34 @@ describe("ToastRoot", () => {
     expect(
       document.querySelector('[data-slot="toast-icon"]'),
     ).not.toBeInTheDocument();
+  });
+});
+
+// happy-dom evaluates no media queries, so the stylesheet text is the only
+// place a unit test can hold the reduced-motion guard.
+describe("toast.module.css", () => {
+  const [base, motion = ""] = css.split(
+    "@media (prefers-reduced-motion: no-preference)",
+  );
+
+  it("slides and restacks only when motion is allowed", () => {
+    expect(base).not.toMatch(/150%/);
+    expect(base).not.toMatch(/transition:\s*transform/);
+    expect(motion).toMatch(/^ \{\s*\.toast \{\s*transition:\s*transform /);
+    expect(motion).toMatch(/&\[data-starting-style\] \{\s*transform: /);
+    expect(motion).toMatch(/&\[data-ending-style\] \{\s*transform: /);
+  });
+
+  it("keeps the opacity fade and the stacking transforms under reduced motion", () => {
+    expect(base).toMatch(/transition: opacity 0\.5s;/);
+    expect(base).toMatch(/&\[data-ending-style\] \{\s*opacity: 0;\s*\}/);
+    expect(base).toMatch(/scale\(var\(--scale\)\)/);
+    expect(base).toMatch(/translateY\(var\(--offset-y\)\)/);
+  });
+
+  it("fades a toast in under reduced motion instead of sliding it", () => {
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: reduce\) \{\s*\.toast\[data-starting-style\] \{\s*opacity: 0;\s*\}\s*\}/,
+    );
   });
 });

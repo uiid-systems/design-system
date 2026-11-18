@@ -45,9 +45,9 @@
 
   position: absolute;
   pointer-events: auto;
-  transition:
-    transform var(--globals-transition-duration-slow) var(--globals-transition-easing),
-    opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
+  /* The fade is the only transition that survives reduced motion; the slide is
+     added back under "Enter / exit" when motion is allowed. */
+  transition: opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
 }
 
 /* --- Edge placement ------------------------------------------------------ */
@@ -95,17 +95,27 @@
   opacity: 0;
 }
 
-.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="left"] {
-  transform: translateX(calc(-100% - var(--drawer-inset)));
-}
-.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="right"] {
-  transform: translateX(calc(100% + var(--drawer-inset)));
-}
-.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="up"] {
-  transform: translateY(calc(-100% - var(--drawer-inset)));
-}
-.drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="down"] {
-  transform: translateY(calc(100% + var(--drawer-inset)));
+/* Under reduced motion the popup fades in place: it keeps the gesture
+   transform above, so a drag still follows the finger, but nothing travels. */
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-popup {
+    transition:
+      transform var(--globals-transition-duration-slow) var(--globals-transition-easing),
+      opacity var(--globals-transition-duration-slow) var(--globals-transition-easing);
+  }
+
+  .drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="left"] {
+    transform: translateX(calc(-100% - var(--drawer-inset)));
+  }
+  .drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="right"] {
+    transform: translateX(calc(100% + var(--drawer-inset)));
+  }
+  .drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="up"] {
+    transform: translateY(calc(-100% - var(--drawer-inset)));
+  }
+  .drawer-popup:where([data-starting-style], [data-ending-style])[data-swipe-direction="down"] {
+    transform: translateY(calc(100% + var(--drawer-inset)));
+  }
 }
 
 /* Never animate mid-drag; scale the release by how hard it was flung. */

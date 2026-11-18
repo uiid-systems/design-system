@@ -10,6 +10,7 @@ import { Footer } from "./drawer.examples";
 import { DrawerClose } from "./subcomponents";
 
 import styles from "./drawer.module.css";
+import css from "./drawer.module.css?raw";
 
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
@@ -786,4 +787,26 @@ describe("Drawer", () => {
       );
     },
   );
+});
+
+// happy-dom evaluates no media queries, so the stylesheet text is the only
+// place a unit test can hold the reduced-motion guard.
+describe("drawer.module.css", () => {
+  const [base, motion = ""] = css.split(
+    "@media (prefers-reduced-motion: no-preference)",
+  );
+
+  it("slides the popup in and out only when motion is allowed", () => {
+    expect(base).not.toMatch(/translate[XY]\(calc\(-?100%/);
+    expect(base).not.toMatch(/transition:\s*transform/);
+    expect(motion).toMatch(/\.drawer-popup \{\s*transition:\s*transform /);
+    expect(motion.match(/translate[XY]\(calc\(-?100%/g)).toHaveLength(4);
+  });
+
+  it("keeps the opacity fade and the gesture transform under reduced motion", () => {
+    expect(base).toMatch(
+      /\.drawer-popup \{[^}]*transition: opacity var\(--globals-transition-duration-slow\)/,
+    );
+    expect(base).toMatch(/translateX\(var\(--drawer-swipe-movement-x, 0px\)\)/);
+  });
 });

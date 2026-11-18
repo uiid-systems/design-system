@@ -124,13 +124,22 @@
 
   .composes-popup {
     transform-origin: var(--transform-origin, center);
-    transition:
-      transform var(--globals-transition-duration) var(--globals-transition-easing),
-      opacity var(--globals-transition-duration) var(--globals-transition-easing);
+    transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);
 
     &:where([data-starting-style], [data-ending-style]) {
       opacity: 0;
-      transform: scale(var(--globals-transform-scale-down));
+    }
+
+    /* Under reduced motion a popup only fades. This sits before the
+       [data-instant] rule so that rule can still zero the duration. */
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        transform var(--globals-transition-duration) var(--globals-transition-easing),
+        opacity var(--globals-transition-duration) var(--globals-transition-easing);
+
+      &:where([data-starting-style], [data-ending-style]) {
+        transform: scale(var(--globals-transform-scale-down));
+      }
     }
 
     &:where([data-instant="delay"], [data-instant="trigger-change"], [data-instant="group"]) {
