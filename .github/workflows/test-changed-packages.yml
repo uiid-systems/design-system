@@ -56,6 +56,10 @@ jobs:
       - name: Check palette contrast
         run: node scripts/check-palette-contrast.mjs
 
+      # The new-package checklist steps that fail silently when skipped.
+      - name: Check package registration
+        run: node scripts/check-package-registration.mjs
+
       - name: Run tests
         run: pnpm test:run
 
