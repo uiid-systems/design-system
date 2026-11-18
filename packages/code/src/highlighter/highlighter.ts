@@ -1,8 +1,6 @@
 import type { HighlighterCore } from "shiki/core";
 
 import {
-  DEFAULT_THEME_DARK,
-  DEFAULT_THEME_LIGHT,
   LANGUAGE_ALIASES,
   PLAIN_LANGUAGE,
   TOKENIZE_MAX_LINE_LENGTH,
@@ -27,9 +25,12 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
   python: () => import("@shikijs/langs/python"),
 };
 
-// Themes - Vitesse for light/dark mode support
-const THEME_DARK = () => import("@shikijs/themes/vitesse-black");
-const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
+// Vitesse for light and dark. This is the only place a theme is named: the
+// names `highlight()` asks Shiki for are read from the loaded themes.
+const THEMES = {
+  light: () => import("@shikijs/themes/vitesse-light"),
+  dark: () => import("@shikijs/themes/vitesse-black"),
+};
 
 // Every call after the first load resolves to the same module, so this is
 // cheap to call wherever the runtime is needed.
@@ -38,6 +39,7 @@ const loadRuntime = () => import("./highlighter.runtime");
 // Singleton state
 let highlighterInstance: HighlighterCore | null = null;
 let highlighterPromise: Promise<HighlighterCore> | null = null;
+let themeNames: { light: string; dark: string } | null = null;
 const loadedLanguages = new Set<BundledLanguage>();
 
 /**
@@ -57,15 +59,22 @@ export async function getHighlighter(): Promise<HighlighterCore> {
   // never downloads it. The themes are fetched alongside it, not after it.
   const promise = Promise.all([
     loadRuntime(),
-    THEME_DARK(),
-    THEME_LIGHT(),
+    THEMES.dark(),
+    THEMES.light(),
   ]).then(
-    ([{ createHighlighterCore, createJavaScriptRegexEngine }, dark, light]) =>
-      createHighlighterCore({
+    async ([
+      { createHighlighterCore, createJavaScriptRegexEngine },
+      dark,
+      light,
+    ]) => {
+      const highlighter = await createHighlighterCore({
         themes: [dark, light],
         langs: [],
         engine: createJavaScriptRegexEngine(),
-      }),
+      });
+      themeNames = { light: light.default.name!, dark: dark.default.name! };
+      return highlighter;
+    },
   );
   highlighterPromise = promise;
 
@@ -159,10 +168,8 @@ export async function highlight(
 
   return highlighter.codeToHtml(code, {
     lang: resolved ?? PLAIN_LANGUAGE,
-    themes: {
-      light: DEFAULT_THEME_LIGHT,
-      dark: DEFAULT_THEME_DARK,
-    },
+    // Set once the highlighter above has loaded the themes.
+    themes: themeNames!,
     defaultColor: false,
     // Shiki stops tokenizing a line after 500ms by default and leaves the rest
     // of it one color. A first highlight on a slow device can cross that, and
@@ -189,11 +196,4 @@ export function isSupportedLanguage(
   language: string,
 ): language is BundledLanguage {
   return Object.hasOwn(BUNDLED_LANGS, language);
-}
-
-/**
- * Get list of supported languages
- */
-export function getSupportedLanguages(): BundledLanguage[] {
-  return Object.keys(BUNDLED_LANGS) as BundledLanguage[];
 }

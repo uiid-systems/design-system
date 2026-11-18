@@ -7,16 +7,3 @@ export const DEFAULT_CODE = "";
 export const DEFAULT_WRAP = false;
 export const DEFAULT_WRAPPABLE = true;
 export const DEFAULT_FULLSCREENABLE = true;
-
-export const LANGUAGE_DISPLAY_NAMES: Record<BundledLanguage, string> = {
-  javascript: "JavaScript",
-  typescript: "TypeScript",
-  jsx: "JSX",
-  tsx: "TSX",
-  json: "JSON",
-  css: "CSS",
-  html: "HTML",
-  bash: "Bash",
-  markdown: "Markdown",
-  python: "Python",
-};

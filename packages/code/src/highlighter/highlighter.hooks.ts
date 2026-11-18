@@ -11,6 +11,9 @@ import type {
 
 /**
  * Hook to access the shared highlighter instance
+ * @deprecated Nothing in `@uiid/code` uses it, and it will be removed in a
+ * later release. Call `getHighlighter()` or `loadLanguage()` directly, or use
+ * `useHighlight` to highlight code.
  */
 export function useHighlighter() {
   const [loading, setLoading] = useState(true);
