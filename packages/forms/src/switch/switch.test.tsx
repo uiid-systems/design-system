@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
+import { matchesComposition } from "../shared/matches-composition";
 import { Switch } from "./switch";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
@@ -331,5 +332,25 @@ describe("Switch RootProps precedence", () => {
   it("still applies a RootProps key the top level leaves unset", () => {
     render(<Switch RootProps={{ size: "small" }} />);
     expect(screen.getByRole("switch").className).toContain("size-small");
+  });
+});
+
+describe("Switch row disabled treatment", () => {
+  const row = (container: HTMLElement) =>
+    container.querySelector("[data-slot='field-row']");
+
+  it("reads disabled off the switch, using the shared container composition", () => {
+    const { container } = render(<Switch label="Dark mode" />);
+    expect(row(container)?.className).toMatch(/composes-disabled-within/);
+  });
+
+  it("dims the row while the switch is disabled", () => {
+    const { container } = render(<Switch label="Dark mode" disabled />);
+    expect(matchesComposition(row(container), "disabled-within")).toBe(true);
+  });
+
+  it("leaves the row undimmed while the switch is enabled", () => {
+    const { container } = render(<Switch label="Dark mode" />);
+    expect(matchesComposition(row(container), "disabled-within")).toBe(false);
   });
 });
