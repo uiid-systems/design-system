@@ -431,6 +431,23 @@ describe("ToggleGroup onValueChange", () => {
     expect(measure).not.toHaveBeenCalled();
   });
 
+  /* A parent that holds `value` and ignores the change is the controlled way
+     to refuse one: the handler still hears about it, and `value` still wins. */
+  it("stays on a controlled value the parent does not update", async () => {
+    const onValueChange = vi.fn();
+    renderGroup({ value: ["monthly"], onValueChange });
+    const monthly = screen.getByRole("button", { name: "Monthly" });
+    const yearly = screen.getByRole("button", { name: "Yearly" });
+    const measure = vi.spyOn(yearly, "getBoundingClientRect");
+
+    await userEvent.click(yearly);
+
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    expect(monthly).toHaveAttribute("aria-pressed", "true");
+    expect(yearly).toHaveAttribute("aria-pressed", "false");
+    expect(measure).not.toHaveBeenCalled();
+  });
+
   /* The assertion a type error would break is the build's, which typechecks
      this file: a narrowed value has to reach the handler as that union, so a
      typed state setter can be passed straight in. */

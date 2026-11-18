@@ -102,10 +102,9 @@ export const ToggleGroup = <Value extends string = string>({
 
   // The handler runs first so it can cancel: Base UI drops a cancelled change,
   // and the indicator's mirror of the uncontrolled value has to drop it too.
-  const handleValueChange: ToggleGroupProps<Value>["onValueChange"] = (
-    groupValue,
-    eventDetails,
-  ) => {
+  const handleValueChange: NonNullable<
+    ToggleGroupProps<Value>["onValueChange"]
+  > = (groupValue, eventDetails) => {
     onValueChange?.(groupValue, eventDetails);
     if (eventDetails.isCanceled) return;
 
