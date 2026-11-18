@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
 
@@ -525,6 +525,121 @@ describe("ToggleGroup root", () => {
 
     expect(yearly).not.toBeInTheDocument();
     expect(measure).not.toHaveBeenCalled();
+  });
+});
+
+describe("ToggleGroup indicator with changing toggles", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  /* happy-dom has no layout, so each button is given a rect of its own, keyed
+     off its label, and the panel keeps happy-dom's zero one. */
+  const BUTTON_RECTS: Record<string, Partial<DOMRect>> = {
+    Monthly: { top: 4, left: 10, width: 80, height: 24 },
+    Yearly: { top: 40, left: 100, width: 120, height: 32 },
+  };
+  const stubButtonRects = () =>
+    vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockImplementation(function (this: HTMLElement) {
+        const rect = (this.tagName === "BUTTON" &&
+          BUTTON_RECTS[this.textContent ?? ""]) || {
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0,
+        };
+        return rect as DOMRect;
+      });
+
+  it("measures a pressed toggle that mounts after the group", async () => {
+    stubButtonRects();
+    const Pricing = ({ showYearly }: { showYearly: boolean }) => (
+      <ToggleGroup defaultValue={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        {showYearly && <Toggle value="yearly">Yearly</Toggle>}
+      </ToggleGroup>
+    );
+    const { container, rerender } = render(<Pricing showYearly={false} />);
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("");
+
+    rerender(<Pricing showYearly />);
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(
+        "120px",
+      ),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("99px");
+  });
+
+  it("clears the indicator when the pressed toggle unmounts", async () => {
+    stubButtonRects();
+    const { container, rerender } = render(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("120px");
+
+    rerender(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(""),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("");
+  });
+
+  it("clears a vertical indicator when the pressed toggle unmounts", async () => {
+    stubButtonRects();
+    const { container, rerender } = render(
+      <ToggleGroup orientation="vertical" value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-top")).toBe("39px");
+    expect(panel.style.getPropertyValue("--active-toggle-height")).toBe("32px");
+
+    rerender(
+      <ToggleGroup orientation="vertical" value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-height")).toBe(""),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-top")).toBe("");
+  });
+});
+
+describe("ToggleGroup Fragment children", () => {
+  it("styles toggles inside a Fragment without a React warning", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <>
+          <Toggle value="monthly">Monthly</Toggle>
+          <Toggle value="yearly">Yearly</Toggle>
+        </>
+      </ToggleGroup>,
+    );
+
+    for (const button of screen.getAllByRole("button")) {
+      expect(button).toHaveClass(styles["toggle-group-button"]);
+    }
+    expect(error).not.toHaveBeenCalled();
+    error.mockRestore();
   });
 });
 
