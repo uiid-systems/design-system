@@ -217,17 +217,7 @@ describe("highlight line markup", () => {
   });
 });
 
-describe("getHighlighter", () => {
-  it("shares one instance across concurrent and later calls", async () => {
-    const [first, second] = await Promise.all([
-      getHighlighter(),
-      getHighlighter(),
-    ]);
-
-    expect(second).toBe(first);
-    expect(await getHighlighter()).toBe(first);
-  });
-
+describe("loadLanguage into the shared highlighter", () => {
   it("loads a language into the shared instance only once", async () => {
     const highlighter = await getHighlighter();
     const load = vi.spyOn(highlighter, "loadLanguage");

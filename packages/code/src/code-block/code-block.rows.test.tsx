@@ -13,18 +13,33 @@ let contentHeight = 0;
 const isScrollArea = (el: HTMLElement) =>
   el.dataset.slot === "code-block-scroll";
 
+const LAYOUT_PROPS = ["scrollHeight", "clientHeight"] as const;
+type LayoutProp = (typeof LAYOUT_PROPS)[number];
+
+/** happy-dom's own descriptors, restored after each test. */
+let originalDescriptors: Partial<
+  Record<LayoutProp, PropertyDescriptor | undefined>
+> = {};
+
 /**
  * happy-dom does no layout, so model the scroll area: its content is
  * `contentHeight` tall, and a collapsed max-height clips its visible height.
  */
 const stubLayout = () => {
-  Object.defineProperty(HTMLElement.prototype, "scrollHeight", {
+  const proto = HTMLElement.prototype;
+  originalDescriptors = Object.fromEntries(
+    LAYOUT_PROPS.map((prop) => [
+      prop,
+      Object.getOwnPropertyDescriptor(proto, prop),
+    ]),
+  );
+  Object.defineProperty(proto, "scrollHeight", {
     configurable: true,
     get(this: HTMLElement) {
       return isScrollArea(this) ? contentHeight : 0;
     },
   });
-  Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+  Object.defineProperty(proto, "clientHeight", {
     configurable: true,
     get(this: HTMLElement) {
       if (!isScrollArea(this)) return 0;
@@ -33,6 +48,18 @@ const stubLayout = () => {
         : contentHeight;
     },
   });
+};
+
+const restoreLayout = () => {
+  const proto = HTMLElement.prototype;
+  for (const prop of LAYOUT_PROPS) {
+    const descriptor = originalDescriptors[prop];
+    if (descriptor) {
+      Object.defineProperty(proto, prop, descriptor);
+    } else {
+      Reflect.deleteProperty(proto, prop);
+    }
+  }
 };
 
 const scrollArea = () =>
@@ -54,9 +81,7 @@ describe("CodeBlock rows", () => {
   });
 
   afterEach(() => {
-    // Drop the stubs so the inherited happy-dom getters apply again
-    Reflect.deleteProperty(HTMLElement.prototype, "scrollHeight");
-    Reflect.deleteProperty(HTMLElement.prototype, "clientHeight");
+    restoreLayout();
   });
 
   it("shows no toggle when the code fits in its rows", async () => {
@@ -120,15 +145,20 @@ describe("CodeBlock rows", () => {
     expect(scrollArea()?.style.maxHeight).toBe("");
   });
 
-  // Bug: overflow is measured with the max-height already lifted, so an
-  // expanded block can never tell its code fits. A short block shows a
-  // Show less toggle that collapses nothing, then vanishes once pressed.
+  // Known bug, tracked in UI-404: overflow is measured with the max-height
+  // already lifted, so an expanded block can never tell its code fits. A
+  // short block shows a Show less toggle that collapses nothing, then
+  // vanishes once pressed. Asserts that exact symptom, so this only passes
+  // as an expected failure while the stray toggle renders; drop `.fails`
+  // once UI-404 lands.
   it.fails("shows no toggle for short code that starts expanded", async () => {
     contentHeight = 50;
     render(<CodeBlock code={CODE} rows={4} defaultExpanded />);
     await waitForHighlight();
 
-    expect(toggle()).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Show less", expanded: true }),
+    ).not.toBeInTheDocument();
   });
 
   it("re-measures when the code grows past its rows", async () => {
