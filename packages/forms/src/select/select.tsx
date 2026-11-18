@@ -118,6 +118,15 @@ export function Select<
   // which is why the trigger's text is not formatted here. Deliberately not
   // fed back into `resolvedDefaultValue` above: a composed select still opens
   // empty unless told otherwise.
+  // A primitive value is a stable key. An object one is only an identity, so
+  // the caller's `itemToStringValue` stands in when there is one, and the
+  // row's position when there is not. `RootProps` spreads last onto Root, so
+  // its function is the one Root uses too.
+  const itemToStringValue =
+    RootProps?.itemToStringValue ?? rootProps.itemToStringValue;
+  const itemKey = (value: Value, index: number) =>
+    isKeyable(value) ? value : (itemToStringValue?.(value) ?? index);
+
   const itemLabels = useMemo(() => {
     if (items) return items;
     const collected = collectItemLabels(children);
@@ -170,10 +179,8 @@ export function Select<
                 {!items
                   ? children
                   : items.map(({ value, ...item }, index) => (
-                      // A primitive value is a stable key; an object one is
-                      // only an identity, so its position stands in.
                       <SelectItem<Value>
-                        key={isKeyable(value) ? value : index}
+                        key={itemKey(value, index)}
                         value={value}
                         {...item}
                       />

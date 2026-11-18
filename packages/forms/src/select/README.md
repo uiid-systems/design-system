@@ -24,7 +24,7 @@ Drop `items` and pass children to compose the list yourself with `SelectItem`. T
 
 When the trigger should read differently from the rows — a currency code where the row spells the currency out — pass `itemToStringLabel`. It formats the trigger's text from the selected value, each value in turn under `multiple`, and takes precedence over the item labels, exactly as it does in Base UI. The rows keep their own `label`.
 
-`value` is not limited to strings. `Select<number>` (or any object type) types `items` and `SelectItem` by the same `Value`, so a numeric or object value reaches `onValueChange` unchanged. An object value needs `isItemEqualToValue` when the selection is not the same reference as the item, exactly as in Base UI.
+`value` is not limited to strings. `Select<number>` (or any object type) types `items` and `SelectItem` by the same `Value`, so a numeric or object value reaches `onValueChange` unchanged. An object value needs `isItemEqualToValue` when the selection is not the same reference as the item, exactly as in Base UI. Base UI reads an object value's trigger text from the value itself, not from its `items` entry, so pass `itemToStringLabel` too unless the object carries its own `label`. Give an object-valued select a `name` and it also needs `itemToStringValue`, so the hidden input holds a useful value rather than serialized JSON; Select keys the rows by it too.
 
 `SelectItem` takes Base UI's Item props — `className` (merged with its own, and a state function works), `ref`, event handlers, `data-*` — and so does each entry in `items`.
 

@@ -97,8 +97,11 @@ export type SelectProps<
    * subtree and cannot inherit the hue through the DOM.
    */
   color?: SelectColor;
-  /** The rows to render, typed by the select's `Value`. */
-  items?: SelectItemProps<Value>[];
+  /**
+   * The rows to render, typed by the select's `Value`. Readonly, so an
+   * `as const` list works. `key` is left out: Select keys the rows itself.
+   */
+  items?: readonly Omit<SelectItemProps<Value>, "key">[];
   /**
    * Dims the page behind the open popup, the way a dialog or drawer does, so an
    * open menu is never lost against the content around it.

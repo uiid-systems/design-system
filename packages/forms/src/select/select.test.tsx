@@ -1139,6 +1139,12 @@ describe("SelectItem mirrors Base UI's Item", () => {
           label="Option A"
           className={(state) => (state.disabled ? "off" : "on")}
         />
+        <SelectItem
+          value="b"
+          label="Option B"
+          disabled
+          className={(state) => (state.disabled ? "off" : "on")}
+        />
       </Select>,
     );
 
@@ -1147,6 +1153,11 @@ describe("SelectItem mirrors Base UI's Item", () => {
     const option = screen.getByRole("option", { name: /option a/i });
     expect(option).toHaveClass("on");
     expect(option).toHaveClass(styles["select-item"]);
+
+    const disabled = screen.getByRole("option", { name: /option b/i });
+    expect(disabled).toHaveClass("off");
+    expect(disabled).not.toHaveClass("on");
+    expect(disabled).toHaveClass(styles["select-item"]);
   });
 
   it("forwards a ref to the item element", async () => {
@@ -1246,10 +1257,12 @@ describe("Select with a non-string Value", () => {
     expect(screen.getByRole("combobox")).toHaveTextContent("Two");
   });
 
+  /* Base UI resolves an object value's trigger text from the value itself, not
+     by finding it in `items`, so it takes `itemToStringLabel`, as in Base UI. */
   it("selects an object value", async () => {
-    type Currency = { code: string };
-    const usd: Currency = { code: "USD" };
-    const eur: Currency = { code: "EUR" };
+    type Currency = { code: string; name: string };
+    const usd: Currency = { code: "USD", name: "US Dollar" };
+    const eur: Currency = { code: "EUR", name: "Euro" };
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(
@@ -1260,6 +1273,8 @@ describe("Select with a non-string Value", () => {
           { value: eur, label: "Euro" },
         ]}
         onValueChange={onValueChange}
+        itemToStringLabel={(currency) => currency.name}
+        itemToStringValue={(currency) => currency.code}
       />,
     );
 
@@ -1267,11 +1282,22 @@ describe("Select with a non-string Value", () => {
     await user.click(screen.getByRole("option", { name: /euro/i }));
 
     expect(onValueChange).toHaveBeenCalledWith(eur, expect.anything());
+    expect(screen.getByRole("combobox")).toHaveTextContent("Euro");
+  });
+
+  it("accepts a readonly items list", () => {
+    const constItems = [
+      { value: "a", label: "Option A" },
+      { value: "b", label: "Option B" },
+    ] as const;
+    render(<Select items={constItems} defaultValue="b" />);
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Option B");
   });
 
   it("types items and SelectItem by the select's Value", () => {
     expectTypeOf<SelectProps<number>["items"]>().toEqualTypeOf<
-      SelectItemProps<number>[] | undefined
+      readonly Omit<SelectItemProps<number>, "key">[] | undefined
     >();
     expectTypeOf<SelectItemProps<number>["value"]>().toEqualTypeOf<number>();
     expectTypeOf<SelectItemProps["value"]>().toEqualTypeOf<string>();
