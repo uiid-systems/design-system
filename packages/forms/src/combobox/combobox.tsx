@@ -30,6 +30,7 @@ export const Combobox = ({
   size,
   color,
   disabled,
+  required,
   onFocus,
   onBlur,
   RootProps,
@@ -48,11 +49,21 @@ export const Combobox = ({
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
+  // `required` reaches the Field, which paints the label's marker, without
+  // passing through the input part's own `required`, which is also the native
+  // attribute. Root already marks the hidden input that carries the value; the
+  // text input holds only the filter query, so it stays `aria-required` alone.
+  const fieldProps =
+    required === undefined
+      ? InputProps?.FieldProps
+      : { ...InputProps?.FieldProps, required };
+
   return (
     <ComboboxRoot
       items={items}
       name={name}
       disabled={disabled}
+      required={required}
       {...RootProps}
       {...rootProps}
     >
@@ -84,6 +95,7 @@ export const Combobox = ({
           onBlur={onBlur}
           {...domAttributes}
           {...InputProps}
+          FieldProps={fieldProps}
         />
       </ComboboxInputGroup>
 

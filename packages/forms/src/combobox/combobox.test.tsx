@@ -739,3 +739,66 @@ describe("Combobox hands disabled to Field", () => {
     expect(screen.getByText("Pick one")).not.toHaveAttribute("data-disabled");
   });
 });
+
+/* Field paints the label's marker, Root marks the submitted control. `required`
+   has to reach both, and the monolith used to hand it to Root alone. */
+describe("Combobox required reaches the label and the control", () => {
+  const items = ["apple", "banana"];
+
+  it("renders the label's required marker", () => {
+    const { container } = render(
+      <Combobox items={items} label="Fruit" required />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-required",
+    );
+  });
+
+  it("still marks the submitted control required", () => {
+    const { container } = render(
+      <Combobox items={items} label="Fruit" name="fruit" required />,
+    );
+
+    expect(container.querySelector("input[name='fruit']")).toHaveAttribute(
+      "required",
+    );
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-required",
+      "true",
+    );
+  });
+
+  /* The text input holds the filter query, not the value. Root marks the
+     hidden input that carries the value, and that stays the only natively
+     required one. */
+  it("keeps native required off the text input", () => {
+    render(<Combobox items={items} label="Fruit" required />);
+
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("required");
+  });
+
+  it("renders no marker when not required", () => {
+    const { container } = render(<Combobox items={items} label="Fruit" />);
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).toBeNull();
+  });
+
+  it("marks the label from a composed ComboboxInput", () => {
+    const { container } = render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput label="Fruit" required />
+      </ComboboxRoot>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute("required");
+  });
+});

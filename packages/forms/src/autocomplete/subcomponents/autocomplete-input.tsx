@@ -22,6 +22,7 @@ export const AutocompleteInput = ({
   size,
   color,
   disabled,
+  required,
   FieldProps,
   className,
   ...props
@@ -35,6 +36,7 @@ export const AutocompleteInput = ({
       description={description}
       action={action}
       disabled={disabled}
+      required={required}
       fullwidth
       size={size}
       {...FieldProps}
@@ -73,6 +75,7 @@ export const AutocompleteInput = ({
           )}
           placeholder={placeholder}
           disabled={disabled}
+          required={required}
           onFocus={onFocus}
           onBlur={onBlur}
           {...props}
