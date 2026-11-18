@@ -1,8 +1,8 @@
 "use client";
 
-import { cx } from "@uiid/utils";
+import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import { cx, cxState } from "@uiid/utils";
 import * as React from "react";
-import { createPortal } from "react-dom";
 
 import {
   DEFAULT_COPYABLE,
@@ -61,21 +61,6 @@ export const CodeBlock = ({
     [onFullscreenChange],
   );
 
-  // While fullscreen: close on Escape and lock body scroll behind the overlay.
-  React.useEffect(() => {
-    if (!fullscreen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleFullscreenChange(false);
-    };
-    document.addEventListener("keydown", onKeyDown);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [fullscreen, handleFullscreenChange]);
-
   const { html, error } = useHighlight(code, language, {
     highlightLines,
     enabled: !prerenderedHtml,
@@ -85,21 +70,19 @@ export const CodeBlock = ({
   const [expanded, setExpanded] = React.useState(defaultExpanded);
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
   const collapsedMaxHeight = rows
     ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
     : undefined;
 
-  const isCollapsed = rows != null && !expanded && !fullscreen;
-  // In fullscreen the scroll area flex-fills the overlay (see CSS); skip the
-  // collapsed max-height so the inline style doesn't fight the layout.
-  const wrapperStyle =
-    !fullscreen && collapsedMaxHeight
-      ? {
-          maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
-          overflowY: "auto" as const,
-        }
-      : undefined;
+  const isCollapsed = rows != null && !expanded;
+  const wrapperStyle = collapsedMaxHeight
+    ? {
+        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
+        overflowY: "auto" as const,
+      }
+    : undefined;
 
   React.useEffect(() => {
     if (!rows || !contentWrapperRef.current || !displayHtml) {
@@ -109,89 +92,126 @@ export const CodeBlock = ({
     setOverflows(el.scrollHeight > el.clientHeight + 1);
   }, [displayHtml, rows, wrap, expanded]);
 
-  const showToggle = rows != null && (overflows || expanded) && !fullscreen;
+  const showToggle = rows != null && (overflows || expanded);
 
-  const block = (
-    <div
-      data-slot="code-block"
-      data-expanded={rows != null ? expanded || undefined : undefined}
-      data-wrap={wrap || undefined}
-      data-fullscreen={fullscreen || undefined}
-      className={cx(styles["code-block"], className)}
-      {...props}
-    >
-      <CodeBlockHeader
-        filename={filename}
-        language={languageProp}
-        copyable={copyable}
-        code={code}
-        wrappable={wrappable}
-        wrap={wrap}
-        onWrapChange={handleWrapChange}
-        fullscreenable={fullscreenable}
-        fullscreen={fullscreen}
-        onFullscreenChange={handleFullscreenChange}
-        LanguageIconProps={LanguageIconProps}
-        WrapButtonProps={WrapButtonProps}
-        CopyButtonProps={{ onCopy, ...CopyButtonProps }}
-        FullscreenButtonProps={FullscreenButtonProps}
-        {...HeaderProps}
-      />
-
-      <div
-        ref={contentWrapperRef}
-        data-slot="code-block-scroll"
-        className={styles["code-block-scroll"]}
-        style={wrapperStyle}
-      >
-        <CodeBlockContent
-          html={displayHtml}
+  // The header, code and error are shared by the inline block and the
+  // fullscreen dialog. The inline block stays mounted while the dialog is open,
+  // so its toggle can take focus back and its copy state survives.
+  const renderParts = (inFullscreen: boolean) => {
+    const slot = inFullscreen
+      ? withoutIdentity
+      : <T,>(slotProps: T) => slotProps;
+    return (
+      <>
+        <CodeBlockHeader
+          filename={filename}
+          language={languageProp}
+          copyable={copyable}
           code={code}
-          showLineNumbers={showLineNumbers}
+          wrappable={wrappable}
           wrap={wrap}
+          onWrapChange={handleWrapChange}
+          fullscreenable={fullscreenable}
+          fullscreen={fullscreen}
+          onFullscreenChange={handleFullscreenChange}
+          LanguageIconProps={slot(LanguageIconProps)}
+          WrapButtonProps={slot(WrapButtonProps)}
+          CopyButtonProps={{ onCopy, ...slot(CopyButtonProps) }}
+          FullscreenButtonProps={slot(FullscreenButtonProps)}
+          {...slot(HeaderProps)}
         />
+
+        <div
+          ref={inFullscreen ? undefined : contentWrapperRef}
+          data-slot="code-block-scroll"
+          className={styles["code-block-scroll"]}
+          style={inFullscreen ? undefined : wrapperStyle}
+        >
+          <CodeBlockContent
+            html={displayHtml}
+            code={code}
+            showLineNumbers={showLineNumbers}
+            wrap={wrap}
+          />
+        </div>
+
+        {error && !prerenderedHtml && (
+          <div
+            data-slot="code-block-error"
+            className={styles["code-block-error"]}
+          >
+            [Error: {error.message}]
+          </div>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <div
+        data-slot="code-block"
+        data-expanded={rows != null ? expanded || undefined : undefined}
+        data-wrap={wrap || undefined}
+        className={cx(styles["code-block"], className)}
+        {...props}
+      >
+        {renderParts(false)}
+
+        {showToggle && (
+          <button
+            type="button"
+            data-slot="code-block-expand-toggle"
+            className={styles["code-block-expand-toggle"]}
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+          >
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        )}
       </div>
 
-      {error && !prerenderedHtml && (
-        <div
-          data-slot="code-block-error"
-          className={styles["code-block-error"]}
+      {fullscreenable && (
+        <BaseDialog.Root
+          open={fullscreen}
+          onOpenChange={handleFullscreenChange}
         >
-          [Error: {error.message}]
-        </div>
+          <BaseDialog.Portal data-slot="code-block-fullscreen">
+            {/* forceRender keeps the scrim when nested in another Dialog. */}
+            <BaseDialog.Backdrop
+              forceRender
+              data-slot="code-block-backdrop"
+              className={styles["code-block-backdrop"]}
+            />
+            <BaseDialog.Popup
+              ref={popupRef}
+              data-slot="code-block"
+              data-wrap={wrap || undefined}
+              data-fullscreen
+              // Base UI 1.7 makes the page inert but does not emit aria-modal.
+              aria-modal="true"
+              aria-label={filename ?? "Code block"}
+              className={cxState(styles["code-block"], className)}
+              initialFocus={popupRef}
+            >
+              {renderParts(true)}
+            </BaseDialog.Popup>
+          </BaseDialog.Portal>
+        </BaseDialog.Root>
       )}
-
-      {showToggle && (
-        <button
-          type="button"
-          data-slot="code-block-expand-toggle"
-          className={styles["code-block-expand-toggle"]}
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-        >
-          {expanded ? "Show less" : "Show more"}
-        </button>
-      )}
-    </div>
-  );
-
-  if (!fullscreen) return block;
-
-  // Portal to the body so the overlay escapes any ancestor stacking/overflow
-  // context. `fullscreen` is always false on the server, so SSR renders `block`.
-  return createPortal(
-    <div
-      data-slot="code-block-fullscreen"
-      className={styles["code-block-fullscreen"]}
-    >
-      <div
-        data-slot="code-block-backdrop"
-        className={styles["code-block-backdrop"]}
-        onClick={() => handleFullscreenChange(false)}
-      />
-      {block}
-    </div>,
-    document.body,
+    </>
   );
 };
 CodeBlock.displayName = "CodeBlock";
+
+type WithIdentity = { id?: unknown; ref?: unknown };
+
+/**
+ * The fullscreen copy renders the same slot props as the inline block. Leave
+ * out `id` and `ref` so neither is duplicated or repointed at the copy.
+ */
+const withoutIdentity = <T,>(slotProps: T): T => {
+  if (!slotProps) return slotProps;
+  const { id: _id, ref: _ref, ...rest } = slotProps as T & WithIdentity;
+  return rest as T;
+};

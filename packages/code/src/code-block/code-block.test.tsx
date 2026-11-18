@@ -1,5 +1,7 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
@@ -247,9 +249,10 @@ describe("CodeBlock", () => {
       expect(
         document.querySelector('[data-slot="code-block-fullscreen"]'),
       ).toBeInTheDocument();
-      expect(
-        document.querySelector('[data-slot="code-block"]'),
-      ).toHaveAttribute("data-fullscreen", "true");
+      expect(screen.getByRole("dialog")).toHaveAttribute(
+        "data-fullscreen",
+        "true",
+      );
     });
   });
 
@@ -267,9 +270,12 @@ describe("CodeBlock", () => {
     await user.keyboard("{Escape}");
     await waitFor(() => {
       expect(
-        document.querySelector('[data-slot="code-block-fullscreen"]'),
+        document.querySelector('[data-slot="code-block"][data-fullscreen]'),
       ).not.toBeInTheDocument();
     });
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen"]'),
+    ).not.toBeInTheDocument();
   });
 
   it("fires onFullscreenChange when toggled", async () => {
@@ -284,6 +290,181 @@ describe("CodeBlock", () => {
     await waitFor(() => {
       expect(onFullscreenChange).toHaveBeenCalledWith(true);
     });
+  });
+
+  it("renders fullscreen as a modal dialog named by the filename", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" filename="example.ts" />);
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog).toHaveAccessibleName("example.ts");
+    expect(dialog).toHaveAttribute("data-slot", "code-block");
+  });
+
+  it("moves focus into the dialog and returns it to the toggle on Escape", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+    const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
+
+    await user.click(toggle);
+    const dialog = await screen.findByRole("dialog");
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    // One Escape is enough: no focused control has opened a tooltip.
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    // The same element, not a remounted copy, gets focus back.
+    expect(toggle).toBeInTheDocument();
+    await waitFor(() => expect(toggle).toHaveFocus());
+  });
+
+  it("closes on one Escape after a keyboard open", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+    const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
+
+    toggle.focus();
+    await user.keyboard("{Enter}");
+    const dialog = await screen.findByRole("dialog");
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    await waitFor(() => expect(toggle).toHaveFocus());
+  });
+
+  it("reaches the exit button with Tab", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    const dialog = await screen.findByRole("dialog");
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    const exit = within(dialog).getByRole("button", {
+      name: /exit fullscreen/i,
+    });
+    for (let i = 0; i < 4 && document.activeElement !== exit; i++) {
+      await user.tab();
+    }
+    expect(exit).toHaveFocus();
+  });
+
+  it("leaves id and ref off the fullscreen copy's slot props", async () => {
+    const user = userEvent.setup();
+    const ref = React.createRef<HTMLButtonElement>();
+    render(
+      <CodeBlock code="const x = 1;" CopyButtonProps={{ id: "copy", ref }} />,
+    );
+    const inlineCopy = screen.getByRole("button", { name: /copy code/i });
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    const dialog = await screen.findByRole("dialog");
+
+    expect(document.querySelectorAll("#copy")).toHaveLength(1);
+    expect(
+      within(dialog).getByRole("button", { name: /copy code/i }),
+    ).not.toHaveAttribute("id");
+    expect(ref.current).toBe(inlineCopy);
+  });
+
+  it("renders the backdrop when nested in another dialog", async () => {
+    const user = userEvent.setup();
+    render(
+      <BaseDialog.Root open>
+        <BaseDialog.Portal>
+          <BaseDialog.Popup aria-label="Outer">
+            <CodeBlock code="const x = 1;" />
+          </BaseDialog.Popup>
+        </BaseDialog.Portal>
+      </BaseDialog.Root>,
+    );
+    const outer = await screen.findByRole("dialog", { name: "Outer" });
+
+    await user.click(
+      within(outer).getByRole("button", { name: /enter fullscreen/i }),
+    );
+    await screen.findByRole("dialog", { name: "Code block" });
+
+    expect(
+      document.querySelector('[data-slot="code-block-backdrop"]'),
+    ).toBeInTheDocument();
+  });
+
+  it("closes from the exit button and returns focus to the toggle", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />,
+    );
+    const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
+
+    await user.click(toggle);
+    const dialog = await screen.findByRole("dialog");
+    await user.click(
+      within(dialog).getByRole("button", { name: /exit fullscreen/i }),
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(onFullscreenChange).toHaveBeenLastCalledWith(false);
+    await waitFor(() => expect(toggle).toHaveFocus());
+  });
+
+  it("keeps the inline block mounted, so copy state survives fullscreen", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" />);
+    const copy = screen.getByRole("button", { name: /copy code/i });
+
+    await user.click(copy);
+    await waitFor(() => expect(copy).toHaveAttribute("data-copied", "true"));
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    await screen.findByRole("dialog");
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="code-block"][data-fullscreen]'),
+      ).not.toBeInTheDocument();
+    });
+
+    expect(copy).toBeInTheDocument();
+    expect(copy).toHaveAttribute("data-copied", "true");
+  });
+
+  it("closes only the fullscreen dialog on Escape inside another dialog", async () => {
+    const user = userEvent.setup();
+    render(
+      <BaseDialog.Root open>
+        <BaseDialog.Portal>
+          <BaseDialog.Popup aria-label="Outer">
+            <CodeBlock code="const x = 1;" />
+          </BaseDialog.Popup>
+        </BaseDialog.Portal>
+      </BaseDialog.Root>,
+    );
+    const outer = await screen.findByRole("dialog", { name: "Outer" });
+
+    await user.click(
+      within(outer).getByRole("button", { name: /enter fullscreen/i }),
+    );
+    await screen.findByRole("dialog", { name: "Code block" });
+
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-slot="code-block"][data-fullscreen]'),
+      ).not.toBeInTheDocument();
+    });
+    expect(screen.getByRole("dialog", { name: "Outer" })).toBeInTheDocument();
   });
 
   // ============================================
