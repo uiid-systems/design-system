@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { Status } from "./status";
 
@@ -27,6 +27,11 @@ describe("Status", () => {
       );
     });
 
+    it("renders a span root, so it is valid in running text", () => {
+      const { container } = render(<Status>{children}</Status>);
+      expect(part(container, "status")?.tagName).toBe("SPAN");
+    });
+
     it("merges className onto the root", () => {
       const { container } = render(
         <Status className="custom">{children}</Status>,
@@ -39,6 +44,7 @@ describe("Status", () => {
     it("forwards ref to the root", () => {
       const ref = createRef<HTMLDivElement>();
       const { container } = render(<Status ref={ref}>{children}</Status>);
+      expect(ref.current).toBeInstanceOf(HTMLElement);
       expect(ref.current).toBe(part(container, "status"));
     });
 
@@ -64,6 +70,22 @@ describe("Status", () => {
       expect(root).toHaveAttribute("id", "server");
       expect(root).toHaveAttribute("data-ui-p", "2");
     });
+  });
+
+  it("nests in a paragraph without a React nesting error", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <p>
+        Server <Status color="green" /> online
+      </p>,
+    );
+    expect(error).not.toHaveBeenCalled();
+    error.mockRestore();
+  });
+
+  it("renders a zero as the label", () => {
+    const { container } = render(<Status>{0}</Status>);
+    expect(part(container, "status-text")).toHaveTextContent("0");
   });
 
   it("renders no text part without children", () => {
