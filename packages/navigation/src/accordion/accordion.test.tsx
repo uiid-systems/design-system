@@ -248,11 +248,26 @@ describe("Accordion", () => {
     );
   });
 
-  it.each(SIZES)("sets both panel padding vars in the %s tier", (size) => {
-    const body = ruleBody(`panel-size-${size}`);
-    expect(body).toMatch(/--accordion-panel-padding-x:/);
-    expect(body).toMatch(/--accordion-panel-padding-y:/);
-  });
+  // Inline is the trigger's inline padding at that size; block is twice its
+  // block padding. Exact, so a tier carrying another size's tokens fails.
+  it.each([
+    ["small", "sm"],
+    ["medium", "md"],
+    ["large", "lg"],
+  ] as const)(
+    "sets the %s tier's padding vars from the %s size tokens",
+    (size, key) => {
+      const declarations = ruleBody(`panel-size-${size}`)
+        .split(";")
+        .map((declaration) => declaration.trim().replace(/\s+/g, " "))
+        .filter(Boolean);
+
+      expect(declarations).toEqual([
+        `--accordion-panel-padding-x: var(--accordion-size-${key}-padding-x)`,
+        `--accordion-panel-padding-y: calc(var(--accordion-size-${key}-padding-y) * 2)`,
+      ]);
+    },
+  );
 
   it("reads the panel padding vars on the content element", () => {
     const body = ruleBody("accordion-content");
@@ -267,7 +282,7 @@ describe("Accordion", () => {
     expect(content?.closest("[data-slot='accordion-panel']")).not.toBeNull();
   });
 
-  it("targets no class the accordion never renders", () => {
+  it("has no .accordion-panel-content or .toggle-fullwidth selector in the module", () => {
     expect(css).not.toMatch(/\.accordion-panel-content\b/);
     expect(css).not.toMatch(/\.toggle-fullwidth\b/);
   });

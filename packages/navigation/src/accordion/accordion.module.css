@@ -103,7 +103,7 @@
 
 /* Panel sizes: each tier sets the padding vars `.accordion-content` reads.
    Inline padding matches the trigger's at that size, so content lines up with
-   the trigger label. Block padding is twice the trigger's, the ratio medium
+   the trigger's content edge. Block padding is twice the trigger's, the ratio medium
    already had (0.75rem trigger, 1.5rem panel). */
 .panel-size-small {
   --accordion-panel-padding-x: var(--accordion-size-sm-padding-x);
