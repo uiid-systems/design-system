@@ -105,6 +105,149 @@ describe("Field", () => {
   });
 });
 
+describe("Field errorType", () => {
+  const describedBy = (control: HTMLElement) =>
+    (control.getAttribute("aria-describedby") ?? "").split(" ").filter(Boolean);
+
+  it.each(["inline", "absolute", "tooltip"] as const)(
+    "describes an invalid control by its %s error message",
+    async (errorType) => {
+      render(
+        <Field
+          label="Email"
+          errorType={errorType}
+          ErrorProps={{ match: true, children: "Enter an email" }}
+        >
+          <FieldControl />
+        </Field>,
+      );
+      const control = screen.getByRole("textbox");
+
+      await waitFor(() => expect(describedBy(control)).not.toHaveLength(0));
+      const described = describedBy(control).map((id) =>
+        document.getElementById(id),
+      );
+
+      for (const element of described) expect(element).toBeInTheDocument();
+      expect(
+        described.some((element) =>
+          element?.textContent?.includes("Enter an email"),
+        ),
+      ).toBe(true);
+    },
+  );
+
+  it("holds the tooltip error's message once, outside the closed popup", () => {
+    const { container } = render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{ match: true, children: "Enter an email" }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    const error = container.querySelector("[data-slot='field-error-tooltip']");
+
+    expect(error).toHaveTextContent(/^Enter an email$/);
+    expect(error?.querySelector(".sr-only")).toHaveTextContent(
+      "Enter an email",
+    );
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("keeps the tooltip error's icon as the tooltip trigger", () => {
+    const { container } = render(
+      <Field label="Email" errorType="tooltip" ErrorProps={{ match: true }}>
+        <FieldControl />
+      </Field>,
+    );
+    const trigger = container.querySelector(
+      "[data-slot='field-error-tooltip'] [data-slot='tooltip-trigger']",
+    );
+
+    expect(trigger?.className).toMatch(/field-error-tooltip/);
+    expect(trigger?.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("shows the tooltip error's message in the popup on hover", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{ match: true, children: "Enter an email" }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+
+    await user.hover(
+      container.querySelector("[data-slot='tooltip-trigger']") as HTMLElement,
+    );
+
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='tooltip-popup']"),
+      ).toHaveTextContent("Enter an email"),
+    );
+  });
+
+  it("passes ErrorProps to the tooltip error element", () => {
+    const { container } = render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{
+          match: true,
+          id: "email-error",
+          className: "custom-error",
+          title: "Error",
+        }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    const error = container.querySelector("[data-slot='field-error-tooltip']");
+
+    expect(error).toHaveAttribute("id", "email-error");
+    expect(error).toHaveClass("custom-error");
+    expect(error).toHaveAttribute("title", "Error");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "aria-describedby",
+      "email-error",
+    );
+  });
+
+  it("forwards a ref to the tooltip error element", () => {
+    const ref = { current: null as HTMLDivElement | null };
+    render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{ match: true, ref }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+
+    expect(ref.current).toHaveAttribute("data-slot", "field-error-tooltip");
+  });
+
+  it("renders no tooltip error while the field is valid", () => {
+    const { container } = render(
+      <Field label="Email" errorType="tooltip">
+        <FieldControl />
+      </Field>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-error-tooltip']"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("aria-describedby");
+  });
+});
+
 describe("FieldControl", () => {
   it("renders an input carrying its data-slot", () => {
     const { container } = render(
