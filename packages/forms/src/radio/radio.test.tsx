@@ -260,3 +260,28 @@ describe("Radio reversed", () => {
     );
   });
 });
+
+/* `FieldProps` is typed as the row's own props, which include `className`. A
+   caller's class has to join the row's classes rather than replace them, or the
+   bordered frame, the reversed layout and the disabled dimming all drop off. */
+describe("Radio FieldProps className", () => {
+  it("merges a FieldProps className with the row's own classes", () => {
+    const { container } = render(
+      <RadioGroupRoot>
+        <Radio
+          bordered
+          reversed
+          value="a"
+          label="A"
+          FieldProps={{ className: "custom-row" }}
+        />
+      </RadioGroupRoot>,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(row).toHaveClass("custom-row");
+    expect(row).toHaveClass(checkboxStyles["checkbox-label"]);
+    expect(row).toHaveClass(checkboxStyles["toggle-bordered"]);
+    expect(row).toHaveClass(checkboxStyles["toggle-reversed"]);
+  });
+});
