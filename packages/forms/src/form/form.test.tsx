@@ -290,9 +290,116 @@ describe("useFormState", () => {
     expect(screen.getByTestId("errors")).toHaveTextContent("{}");
     expect(screen.getByTestId("loading")).toHaveTextContent("false");
   });
+  it("sets success and result and calls onSuccess when setResult is called", () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useFormState({ onSuccess }));
+
+    act(() => result.current.setErrors({ name: "Taken" }));
+    act(() => result.current.setResult({ id: 1 }));
+
+    expect(result.current.success).toBe(true);
+    expect(result.current.result).toEqual({ id: 1 });
+    expect(result.current.errors).toEqual({});
+    expect(onSuccess).toHaveBeenCalledExactlyOnceWith({ id: 1 });
+  });
 });
 
 describe("useFormSubmit", () => {
+  type Response = { errors?: Record<string, string>; result?: { id: number } };
+  const deferred = () => {
+    let resolve!: (value: Response) => void;
+    const promise = new Promise<Response>((r) => (resolve = r));
+    return { promise, resolve };
+  };
+
+  it("stays loading when an earlier submit settles before the latest one", async () => {
+    const onSuccess = vi.fn();
+    const onError = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onSuccess, onError }));
+    const first = deferred();
+    const second = deferred();
+
+    let firstPending!: Promise<void>;
+    let secondPending!: Promise<void>;
+    act(() => {
+      firstPending = result.current.handleSubmit(() => first.promise);
+    });
+    act(() => {
+      secondPending = result.current.handleSubmit(() => second.promise);
+    });
+
+    await act(async () => {
+      first.resolve({ errors: { name: "Taken" } });
+      await firstPending;
+    });
+
+    expect(result.current.loading).toBe(true);
+    expect(result.current.errors).toEqual({});
+    expect(onError).not.toHaveBeenCalled();
+
+    await act(async () => {
+      second.resolve({ result: { id: 2 } });
+      await secondPending;
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.result).toEqual({ id: 2 });
+    expect(onSuccess).toHaveBeenCalledExactlyOnceWith({ id: 2 });
+  });
+
+  it("ignores an earlier submit that settles after the latest one", async () => {
+    const onSuccess = vi.fn();
+    const onError = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onSuccess, onError }));
+    const first = deferred();
+    const second = deferred();
+
+    let firstPending!: Promise<void>;
+    let secondPending!: Promise<void>;
+    act(() => {
+      firstPending = result.current.handleSubmit(() => first.promise);
+    });
+    act(() => {
+      secondPending = result.current.handleSubmit(() => second.promise);
+    });
+
+    await act(async () => {
+      second.resolve({ result: { id: 2 } });
+      await secondPending;
+    });
+    await act(async () => {
+      first.resolve({ errors: { name: "Taken" } });
+      await firstPending;
+    });
+
+    expect(result.current.success).toBe(true);
+    expect(result.current.result).toEqual({ id: 2 });
+    expect(result.current.errors).toEqual({});
+    expect(onSuccess).toHaveBeenCalledOnce();
+    expect(onError).not.toHaveBeenCalled();
+  });
+
+  it("ignores a pending submit that settles after reset", async () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useFormSubmit({ onSuccess }));
+    const pendingResponse = deferred();
+
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.handleSubmit(() => pendingResponse.promise);
+    });
+    act(() => result.current.reset());
+
+    await act(async () => {
+      pendingResponse.resolve({ result: { id: 1 } });
+      await pending;
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.success).toBe(false);
+    expect(result.current.result).toBeNull();
+    expect(onSuccess).not.toHaveBeenCalled();
+  });
   it("sets success and result when the submit returns a result", async () => {
     const onSuccess = vi.fn();
     const { result } = renderHook(() => useFormSubmit({ onSuccess }));

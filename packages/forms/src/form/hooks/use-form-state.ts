@@ -27,6 +27,14 @@ export type FormState<T = Record<string, unknown>> = {
   result: T | null;
   setErrors: (errors: FormErrors) => void;
   setLoading: (loading: boolean) => void;
+  /**
+   * Mark the form as submitted: clears errors, sets `success`, stores `result`, and calls `onSuccess`.
+   * Method syntax keeps `FormState<T>` assignable to `FormState<unknown>`.
+   */
+  setResult(result: T): void;
+  /**
+   * Clear all state. A submit still pending in `useFormSubmit` is ignored when it settles.
+   */
   reset: () => void;
 };
 
@@ -46,13 +54,16 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
   const [errors, setErrorsState] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [result, setResult] = useState<T | null>(null);
+  const [result, setResultState] = useState<T | null>(null);
+  /** Incremented per submit and on reset, so only the latest submit writes state. */
+  const requestRef = useRef(0);
 
   const reset = useCallback(() => {
+    requestRef.current++;
     setErrorsState({});
     setLoading(false);
     setSuccess(false);
-    setResult(null);
+    setResultState(null);
   }, []);
 
   const setErrors = useCallback(
@@ -68,7 +79,7 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     (newResult: T | undefined) => {
       setErrorsState({});
       setSuccess(true);
-      setResult(newResult === undefined ? null : newResult);
+      setResultState(newResult === undefined ? null : newResult);
       if (newResult !== undefined) optionsRef.current.onSuccess?.(newResult);
     },
     [optionsRef],
@@ -81,15 +92,16 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     result,
     setErrors,
     setLoading,
+    setResult: succeed,
     reset,
   };
 
-  return { state, optionsRef, succeed, setResult };
+  return { state, optionsRef, requestRef, succeed, setResultState };
 };
 
 /**
  * Hook to manage common form state patterns (errors, loading, success).
- * Useful for stories and real-world form implementations.
+ * Call `setErrors` or `setResult` with the outcome of your own submit; `useFormSubmit` does it for you.
  */
 export function useFormState<T = Record<string, unknown>>(
   options: UseFormStateOptions<T> = {},
@@ -120,19 +132,22 @@ export type UseFormSubmitOptions<T = Record<string, unknown>> =
  * Automatically manages loading state and error/success transitions: a response
  * with errors sets `errors` and calls `onError`; any other response sets
  * `success`, stores `result`, and calls `onSuccess` when a result was returned.
+ * When submits overlap, only the latest one updates state and calls callbacks.
  */
 export function useFormSubmit<T = Record<string, unknown>>(
   options: UseFormSubmitOptions<T> = {},
 ): FormState<T> & SubmitHandler<T> {
-  const { state, optionsRef, succeed, setResult } =
+  const { state, optionsRef, requestRef, succeed, setResultState } =
     useFormStateInternal<T>(options);
   const { setErrors, setLoading } = state;
 
   const handleSubmit = useCallback(
     async (submitFn: () => Promise<{ errors?: FormErrors; result?: T }>) => {
+      const request = ++requestRef.current;
+      const isLatest = () => request === requestRef.current;
       const { delay = 0 } = optionsRef.current;
       setLoading(true);
-      setResult(null);
+      setResultState(null);
       setErrors({});
 
       if (delay > 0) {
@@ -141,6 +156,7 @@ export function useFormSubmit<T = Record<string, unknown>>(
 
       try {
         const response = await submitFn();
+        if (!isLatest()) return;
 
         if (response.errors && hasErrors(response.errors)) {
           setErrors(response.errors);
@@ -148,10 +164,10 @@ export function useFormSubmit<T = Record<string, unknown>>(
           succeed(response.result);
         }
       } finally {
-        setLoading(false);
+        if (isLatest()) setLoading(false);
       }
     },
-    [optionsRef, setErrors, setLoading, setResult, succeed],
+    [optionsRef, requestRef, setErrors, setLoading, setResultState, succeed],
   );
 
   return {
