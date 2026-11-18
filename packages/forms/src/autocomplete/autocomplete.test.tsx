@@ -7,6 +7,7 @@ import { Autocomplete } from "./autocomplete";
 import { AutocompleteInput, AutocompleteRoot } from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
+import inputGroupStyles from "../shared/input-group/input-group.module.css";
 
 describe("Autocomplete", () => {
   const defaultItems = ["apple", "banana", "cherry", "date", "elderberry"];
@@ -327,8 +328,8 @@ describe("Autocomplete popup layout props", () => {
 /*
  * Base UI accepts `className` as a function of the part's state. Merging it
  * with `cx` dropped the function, so the caller's class never reached the DOM.
- * The popup layer and input group Autocomplete shares with Combobox are
- * covered in Combobox's tests; the input is Autocomplete's own wrapper.
+ * The popup layer Autocomplete shares with Combobox is covered in Combobox's
+ * tests; the input and input group carry Autocomplete's own slots.
  */
 describe("Autocomplete state-function className", () => {
   const items = ["apple", "banana"];
@@ -351,6 +352,62 @@ describe("Autocomplete state-function className", () => {
 
     expect(input).toHaveClass("fn-open", inputStyles["input"]);
   });
+
+  it("resolves a state-function className on the input group alongside its own class", async () => {
+    const user = userEvent.setup();
+    render(
+      <Autocomplete
+        items={items}
+        InputGroupProps={{
+          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+        }}
+      />,
+    );
+
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toHaveClass(
+      "fn-closed",
+      inputGroupStyles["input-group-root"],
+    );
+
+    await user.type(screen.getByRole("combobox"), "a");
+
+    expect(group).toHaveClass("fn-open", inputGroupStyles["input-group-root"]);
+  });
+});
+
+describe("Autocomplete input group", () => {
+  const items = ["apple", "banana"];
+
+  it("wraps the input in an input group", () => {
+    render(<Autocomplete items={items} />);
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group).toContainElement(screen.getByRole("combobox"));
+  });
+
+  it("forwards InputGroupProps to the input group", () => {
+    render(
+      <Autocomplete items={items} InputGroupProps={{ className: "mine" }} />,
+    );
+    expect(
+      document.querySelector("[data-slot='autocomplete-input-group']"),
+    ).toHaveClass("mine");
+  });
+
+  it.each(["xsmall", "small", "medium", "large"] as const)(
+    "carries the %s tier onto the input group",
+    (size) => {
+      render(<Autocomplete items={items} size={size} />);
+      const group = document.querySelector(
+        "[data-slot='autocomplete-input-group']",
+      );
+      expect(group?.className).toContain(`size-${size}`);
+    },
+  );
 });
 
 /* Field reads `disabled` off its root, not the control, so the label and
