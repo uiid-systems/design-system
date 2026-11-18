@@ -1109,3 +1109,47 @@ describe("Combobox generics", () => {
     );
   });
 });
+
+/* Matches Select: `variant` and `fullwidth` shape the control surface. The
+   control spans its row unless told otherwise, as it always has. */
+describe("Combobox variant and fullwidth", () => {
+  const items = ["apple", "banana", "cherry"];
+  const field = () =>
+    screen.getByRole("combobox").closest("[data-slot='field-root']");
+  const group = () =>
+    document.querySelector("[data-slot='combobox-input-group']");
+  const wrapper = () => document.querySelector("[data-slot='input-wrapper']");
+
+  it("spans its row by default", () => {
+    render(<Combobox items={items} after="kg" />);
+    expect(field()).toHaveAttribute("data-ui-fullwidth");
+    expect(group()).toHaveAttribute("data-ui-w", "full");
+    expect(wrapper()).toHaveClass(inputStyles["toggle-fullwidth"]);
+  });
+
+  it("sizes to its content with fullwidth={false}", () => {
+    render(<Combobox items={items} after="kg" fullwidth={false} />);
+    expect(field()).not.toHaveAttribute("data-ui-fullwidth");
+    expect(group()).not.toHaveAttribute("data-ui-w");
+    expect(wrapper()).not.toHaveClass(inputStyles["toggle-fullwidth"]);
+    expect(screen.getByRole("combobox")).not.toHaveClass(
+      inputStyles["toggle-fullwidth"],
+    );
+  });
+
+  it("paints the ghost variant on the slotted wrapper", () => {
+    render(<Combobox items={items} after="kg" variant="ghost" />);
+    expect(wrapper()).toHaveClass(inputStyles["variant-ghost"]);
+  });
+
+  it("paints the ghost variant on a bare input part", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput variant="ghost" fullwidth={false} />
+      </ComboboxRoot>,
+    );
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveClass(inputStyles["variant-ghost"]);
+    expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
+  });
+});

@@ -32,6 +32,8 @@ export function Combobox<
   before,
   after,
   size,
+  variant,
+  fullwidth,
   color,
   disabled,
   required,
@@ -109,6 +111,8 @@ export function Combobox<
           </InputGroupActions>
         }
         size={size}
+        variant={variant}
+        fullwidth={fullwidth}
         color={color}
         disabled={disabled}
         onFocus={onFocus}

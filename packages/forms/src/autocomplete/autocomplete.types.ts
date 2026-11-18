@@ -25,7 +25,10 @@ export type AutocompleteInputProps = Omit<
   BaseAutocomplete.Input.Props,
   "size"
 > &
-  Pick<InputProps, "FieldProps" | "before" | "after" | "size"> &
+  Pick<
+    InputProps,
+    "FieldProps" | "before" | "after" | "size" | "variant" | "fullwidth"
+  > &
   Pick<FieldProps, "label" | "description" | "action"> & {
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment. The
@@ -70,7 +73,7 @@ export type AutocompleteItemProps<Value = string> = Omit<
 };
 export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
 export type AutocompleteInputGroupProps = BaseAutocomplete.InputGroup.Props &
-  Pick<InputProps, "size">;
+  Pick<InputProps, "size" | "fullwidth">;
 export type AutocompleteTriggerProps = BaseAutocomplete.Trigger.Props;
 export type AutocompleteClearProps = BaseAutocomplete.Clear.Props;
 export type AutocompleteIconProps = BaseAutocomplete.Icon.Props;
@@ -103,6 +106,13 @@ export type AutocompleteProps<Value = string> = {
 } & Omit<AutocompleteRootProps<Value>, "items"> &
   Pick<
     AutocompleteInputProps,
-    "placeholder" | "onFocus" | "onBlur" | "before" | "after" | "size"
+    | "placeholder"
+    | "onFocus"
+    | "onBlur"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
   > &
   Pick<FieldProps, "label" | "description" | "action">;

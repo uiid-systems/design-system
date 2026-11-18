@@ -26,6 +26,8 @@ export function Autocomplete<Value = string>({
   before,
   after,
   size,
+  variant,
+  fullwidth,
   color,
   disabled,
   required,
@@ -71,6 +73,8 @@ export function Autocomplete<Value = string>({
         before={before}
         after={after}
         size={size}
+        variant={variant}
+        fullwidth={fullwidth}
         color={color}
         disabled={disabled}
         required={required}
