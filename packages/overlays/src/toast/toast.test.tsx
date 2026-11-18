@@ -83,6 +83,14 @@ describe("Toaster", () => {
     );
   });
 
+  it("portals into the container given by PortalProps", () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    renderToaster({ PortalProps: { container } });
+    expect(container).toContainElement(viewport() as HTMLElement);
+    container.remove();
+  });
+
   // ============================================
   // CONTENT
   // ============================================
@@ -240,6 +248,18 @@ describe("Toaster", () => {
     expect(surface()).toContainElement(
       document.querySelector('[data-slot="toast-content"]') as HTMLElement,
     );
+  });
+
+  it("spans the content full width with w, not the deprecated fullwidth toggle", async () => {
+    const { manager } = renderToaster();
+    act(() => {
+      manager().add({ title: "Saved" });
+    });
+
+    await screen.findByText("Saved");
+    const content = document.querySelector('[data-slot="toast-content"]');
+    expect(content).toHaveAttribute("data-ui-w", "full");
+    expect(content).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it.each([

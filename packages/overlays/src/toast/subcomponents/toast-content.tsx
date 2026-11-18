@@ -17,7 +17,7 @@ export const ToastContent = ({ className, ...props }: ToastContentProps) => (
   <BaseToast.Content
     data-slot="toast-content"
     className={cxState(styles["toast-content"], className)}
-    render={<Stack gap={3} fullwidth />}
+    render={<Stack gap={3} w="full" />}
     {...props}
   />
 );

@@ -73,6 +73,8 @@ toastManager.update(id, {
 });
 ```
 
+`PortalProps` and `ViewportProps` reach the portal and the viewport, the same slot-override pattern as the other overlays. Pass `PortalProps={{ container }}` to render the stack somewhere other than `document.body`.
+
 ## Custom layouts
 
 `Toaster` is built from exported parts, each a Base UI part under its own name: `ToastProvider`, `ToastPortal`, `ToastViewport`, `ToastRoot`, `ToastContent`, `ToastTitle`, `ToastDescription`, `ToastAction`, and `ToastClose`. Compose them when the default layout doesn't fit. Keep the body inside `ToastContent` — collapsed toasts take the frontmost toast's height, and `ToastContent` fades out the body of any toast stacked behind it.

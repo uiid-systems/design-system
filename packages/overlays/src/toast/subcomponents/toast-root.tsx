@@ -13,6 +13,10 @@ import styles from "../toast.module.css";
  * and takes the hue. Keeping them on separate elements means Card's own
  * `position` and padding never compete with the stacking styles in the
  * cascade.
+ *
+ * Its slot is `toast`, not `toast-root`. Unlike the Dialog, Popover and Tooltip
+ * roots, which render no element and carry no slot, Base UI's toast root is the
+ * toast element itself, so the slot names the thing a selector targets.
  */
 export const ToastRoot = ({
   color,

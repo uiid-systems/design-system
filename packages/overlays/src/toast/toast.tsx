@@ -87,9 +87,10 @@ const ToastList = ({
 
 export const Toaster = ({
   position = TOAST_DEFAULT_POSITION,
+  PortalProps,
   ViewportProps,
 }: ToasterProps) => (
-  <ToastPortal>
+  <ToastPortal {...PortalProps}>
     <ToastViewport position={position} {...ViewportProps}>
       <ToastList swipeDirection={TOAST_SWIPE_DIRECTIONS[position]} />
     </ToastViewport>

@@ -834,3 +834,44 @@ describe("Popover", () => {
     });
   });
 });
+
+describe("Popover top-level root props", () => {
+  it("opens on mount with defaultOpen", () => {
+    render(
+      <Popover trigger={<button>Open popover</button>} defaultOpen>
+        Popover content
+      </Popover>,
+    );
+
+    expect(screen.getByText("Popover content")).toBeInTheDocument();
+  });
+
+  // A modal popover locks page scroll and blocks the page with Base UI's own
+  // backdrop. happy-dom doesn't hide or disable the page behind a popover, so
+  // the scroll lock is the behavior these tests can observe. Base UI applies it
+  // only when a user opens the popover, so each test opens it from the trigger.
+  const openFromTrigger = async (modal?: boolean) => {
+    const user = userEvent.setup();
+    render(
+      <Popover trigger={<button>Open popover</button>} modal={modal}>
+        Popover content
+      </Popover>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+  };
+
+  it("leaves the page scrollable by default", async () => {
+    await openFromTrigger();
+
+    expect(document.body.style.overflowY).not.toBe("hidden");
+  });
+
+  it("locks page scroll with modal", async () => {
+    await openFromTrigger(true);
+
+    await waitFor(() => {
+      expect(document.body.style.overflowY).toBe("hidden");
+    });
+  });
+});

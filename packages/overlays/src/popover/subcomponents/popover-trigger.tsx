@@ -1,3 +1,5 @@
+"use client";
+
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import { cxState, resolveTrigger } from "@uiid/utils";
 

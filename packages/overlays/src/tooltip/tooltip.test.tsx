@@ -657,3 +657,15 @@ describe("Tooltip", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("Tooltip top-level root props", () => {
+  it("opens on mount with defaultOpen", () => {
+    render(
+      <Tooltip trigger={<button>Hover me</button>} defaultOpen>
+        Tooltip content
+      </Tooltip>,
+    );
+
+    expect(screen.getByText("Tooltip content")).toBeInTheDocument();
+  });
+});

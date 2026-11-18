@@ -9,9 +9,9 @@ Use Popover when you want to:
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 - Hold things a user interacts with: filters, a short form, a set of links
 
-Leave `open` unset and the popover runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
+Leave `open` unset and the popover runs itself from the trigger, opening on mount with `defaultOpen`; pass `open` and `onOpenChange` to drive it yourself. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
-Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover) and takes its props unchanged — anything not listed above is forwarded.
+Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Dialog and Drawer; Popover's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`) reach the individual parts.
 
 **Popover or Tooltip?** Popover is click-triggered, focusable, and can contain controls. Tooltip is hover-triggered, holds plain text, and is unreachable by touch — so anything a user must read or act on belongs here, not there.
 
@@ -74,3 +74,7 @@ const opener = useRef<HTMLElement | null>(null);
 ```
 
 A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
+
+## Composing the parts
+
+When a slot override isn't enough, build the popover from its exported parts: `PopoverRoot`, `PopoverTrigger`, `PopoverPortal`, `PopoverBackdrop`, `PopoverPositioner` and `PopoverPopup`, each a Base UI part under its own name. Nest them in that order, as `Popover` does. `PopoverPositioner` keeps Popover's default `sideOffset` and `collisionPadding`, and `PopoverPopup` takes the same `title`, `description`, `action` and `footer` as `Popover`.

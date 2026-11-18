@@ -19,7 +19,7 @@ import type { DialogProps } from "@uiid/design-system";
 type ConfirmDialogProps = Required<Pick<DialogProps, "open" | "onOpenChange">> & { … };
 ```
 
-Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog). Its top-level props are the ones on this page; Dialog's other root props (`defaultOpen`, `modal`, …) go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
+Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Popover and Drawer; Dialog's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
 The popup renders as a `Card`, so its content slots match Drawer and Popover. For a panel anchored to an edge, use `Drawer`; for something attached to a control without blocking the page, use `Popover`.
 
@@ -164,3 +164,7 @@ Content taller than the screen scrolls inside the body. The header, with its clo
 While the body overflows it is a tab stop, so the keyboard can scroll it, and a region named by the title, so a screen reader announces where focus landed. An untitled dialog's body stays a plain tab stop, since a region needs a name. Content added to the body later, such as options that load after the dialog opens, is measured too. A focused body keeps its tab stop until focus leaves, even if it stops overflowing. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body rather than the viewport.
 
 On a screen shorter than 30rem, where a pinned header and footer would leave the body almost no room, the whole popup scrolls in the viewport instead.
+
+## Composing the parts
+
+When a slot override isn't enough, build the dialog from its exported parts: `DialogRoot`, `DialogTrigger`, `DialogPortal`, `DialogBackdrop`, `DialogViewport`, `DialogPopup` and `DialogClose`, each a Base UI part under its own name. Nest them in that order, as `Dialog` does. `pending` is a `Dialog` prop, not a part's, so a composed dialog has none: `DialogClose` and the header close stay enabled, and guarding the close is up to your own `onOpenChange` on `DialogRoot`.

@@ -6,8 +6,8 @@ import { useState } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
-import { Footer } from "./drawer.examples";
-import { DrawerClose } from "./subcomponents";
+import { Footer, SwipeArea } from "./drawer.examples";
+import { DrawerClose, DrawerRoot, DrawerSwipeArea } from "./subcomponents";
 
 import styles from "./drawer.module.css";
 import css from "./drawer.module.css?raw";
@@ -933,5 +933,31 @@ describe("drawer.module.css", () => {
       /\.drawer-popup \{[^}]*transition: opacity var\(--globals-transition-duration-slow\)/,
     );
     expect(base).toMatch(/translateX\(var\(--drawer-swipe-movement-x, 0px\)\)/);
+  });
+});
+
+describe("DrawerSwipeArea", () => {
+  it("renders Base UI's swipe area inside a DrawerRoot", () => {
+    render(
+      <DrawerRoot swipeDirection="right">
+        <DrawerSwipeArea className="edge" />
+      </DrawerRoot>,
+    );
+
+    const area = document.querySelector('[data-slot="drawer-swipe-area"]');
+    expect(area).toBeInTheDocument();
+    expect(area).toHaveClass("edge");
+    expect(area).toHaveAttribute("data-swipe-direction", "left");
+  });
+
+  it("renders in the composed example beside its trigger", () => {
+    render(<SwipeArea />);
+
+    expect(
+      document.querySelector('[data-slot="drawer-swipe-area"]'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Open drawer" }),
+    ).toBeInTheDocument();
   });
 });

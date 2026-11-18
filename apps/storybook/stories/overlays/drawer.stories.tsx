@@ -55,3 +55,6 @@ export const Pending: Story = { render: () => <Examples.Pending /> };
 export const OpenedFromElsewhere: Story = {
   render: () => <Examples.OpenedFromElsewhere />,
 };
+
+/** A swipe in from the right edge opens the drawer. */
+export const SwipeArea: Story = { render: () => <Examples.SwipeArea /> };

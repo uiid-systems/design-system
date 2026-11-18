@@ -3,6 +3,7 @@ export * from "./drawer-indent";
 export * from "./drawer-indent-background";
 export * from "./drawer-root";
 export * from "./drawer-trigger";
+export * from "./drawer-swipe-area";
 export * from "./drawer-portal";
 export * from "./drawer-backdrop";
 export * from "./drawer-viewport";

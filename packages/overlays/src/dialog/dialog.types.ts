@@ -43,7 +43,7 @@ export type DialogProps = React.PropsWithChildren<{
   PopupProps?: DialogPopupProps;
 }> &
   DialogVariants &
-  Pick<DialogRootProps, "open" | "onOpenChange"> &
+  Pick<DialogRootProps, "open" | "defaultOpen" | "onOpenChange" | "modal"> &
   Pick<DialogPopupProps, "hideCloseButton"> &
   DialogCardProps;
 

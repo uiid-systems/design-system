@@ -16,7 +16,9 @@ import {
 export const Popover = ({
   trigger,
   open,
+  defaultOpen,
   onOpenChange,
+  modal,
   title,
   description,
   action,
@@ -32,6 +34,8 @@ export const Popover = ({
   return (
     <PopoverRoot
       open={open}
+      defaultOpen={defaultOpen}
+      modal={modal}
       {...RootProps}
       onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
     >

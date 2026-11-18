@@ -53,6 +53,8 @@ export type ToastActionProps = BaseToast.Action.Props;
 export type ToastCloseProps = BaseToast.Close.Props;
 
 export type ToasterProps = Pick<ToastViewportProps, "position"> & {
+  /** Props forwarded to the portal, such as the `container` it renders into */
+  PortalProps?: ToastPortalProps;
   /** Props forwarded to the viewport */
   ViewportProps?: Omit<ToastViewportProps, "position">;
 };
