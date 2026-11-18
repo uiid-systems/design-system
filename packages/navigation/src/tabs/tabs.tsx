@@ -29,7 +29,9 @@ export const Tabs = ({
 }: TabsProps) => {
   return (
     <TabsRoot
-      defaultValue={defaultValue || items[0].value}
+      defaultValue={
+        value === undefined ? (defaultValue ?? items[0]?.value) : undefined
+      }
       value={value}
       onValueChange={onValueChange}
       {...RootProps}

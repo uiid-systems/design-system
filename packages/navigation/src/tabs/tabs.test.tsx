@@ -74,6 +74,38 @@ describe("Tabs", () => {
     expect(screen.getByText("Content 1")).toBeVisible();
   });
 
+  it("renders an empty tablist when items is empty", () => {
+    expect(() => render(<Tabs items={[]} />)).not.toThrow();
+    expect(screen.getByRole("tablist")).toBeInTheDocument();
+    expect(screen.queryByRole("tab")).not.toBeInTheDocument();
+    expect(screen.queryByRole("tabpanel")).not.toBeInTheDocument();
+  });
+
+  it("renders with empty items while controlled", () => {
+    expect(() => render(<Tabs items={[]} value="tab-1" />)).not.toThrow();
+    expect(screen.getByRole("tablist")).toBeInTheDocument();
+  });
+
+  it("selects the tab matching an empty-string defaultValue", () => {
+    render(
+      <Tabs
+        items={[
+          { label: "First", value: "first", render: <div>First content</div> },
+          { label: "Blank", value: "", render: <div>Blank content</div> },
+        ]}
+        defaultValue=""
+      />,
+    );
+    expect(screen.getByRole("tab", { name: "Blank" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByRole("tab", { name: "First" })).toHaveAttribute(
+      "aria-selected",
+      "false",
+    );
+  });
+
   // ============================================
   // TAB SWITCHING
   // ============================================
