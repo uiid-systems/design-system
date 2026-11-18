@@ -22,16 +22,19 @@ export const Radio = ({
   FieldProps,
   ...props
 }: RadioProps) => {
+  const { className: fieldClassName, ...fieldProps } = FieldProps ?? {};
+
   return (
     <FieldRow
       label={label}
       description={description}
       size={size}
+      {...fieldProps}
       className={cx(
         checkboxStyles["checkbox-label"],
         radioVariants({ reversed, bordered }),
+        fieldClassName,
       )}
-      {...FieldProps}
     >
       <RadioRoot
         value={value}
