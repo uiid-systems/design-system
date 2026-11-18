@@ -122,6 +122,24 @@ function ThreePanelDemo() {
   );
 }
 
+function DisabledDemo() {
+  return (
+    <Resizable direction="horizontal">
+      <ResizablePanel defaultSize={33}>
+        <PanelContent label="One" />
+      </ResizablePanel>
+      <ResizableHandle withHandle disabled />
+      <ResizablePanel defaultSize={34}>
+        <PanelContent label="Two" shade="background" />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={33}>
+        <PanelContent label="Three" />
+      </ResizablePanel>
+    </Resizable>
+  );
+}
+
 export const Default: Story = {
   name: "Resizable",
   render: () => (
@@ -175,6 +193,21 @@ export const Default: Story = {
         </Text>
         <ThreePanelDemo />
       </Stack>
+    </Stack>
+  ),
+};
+
+export const Disabled: Story = {
+  render: () => (
+    <Stack gap={2} fullwidth>
+      <Text size={1} weight="bold">
+        Disabled handle
+      </Text>
+      <Text size={0} shade="muted" mb={2}>
+        The first handle is disabled: it cannot be dragged and Tab skips it. The
+        second handle still resizes with the pointer and the arrow keys.
+      </Text>
+      <DisabledDemo />
     </Stack>
   ),
 };
