@@ -1,11 +1,4 @@
-import {
-  transformerNotationDiff,
-  transformerNotationHighlight,
-  transformerMetaHighlight,
-} from "@shikijs/transformers";
-import { createHighlighterCore } from "shiki/core";
 import type { HighlighterCore } from "shiki/core";
-import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 import {
   DEFAULT_THEME_DARK,
@@ -38,6 +31,9 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
 const THEME_DARK = () => import("@shikijs/themes/vitesse-black");
 const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
 
+// The runtime loads once: `import()` caches the module after the first call.
+const loadRuntime = () => import("./highlighter.runtime");
+
 // Singleton state
 let highlighterInstance: HighlighterCore | null = null;
 let highlighterPromise: Promise<HighlighterCore> | null = null;
@@ -56,11 +52,16 @@ export async function getHighlighter(): Promise<HighlighterCore> {
     return highlighterPromise;
   }
 
-  highlighterPromise = createHighlighterCore({
-    themes: [THEME_DARK, THEME_LIGHT],
-    langs: [],
-    engine: createJavaScriptRegexEngine(),
-  });
+  // The Shiki runtime loads on first use, so a page that never highlights
+  // never downloads it.
+  highlighterPromise = loadRuntime().then(
+    ({ createHighlighterCore, createJavaScriptRegexEngine }) =>
+      createHighlighterCore({
+        themes: [THEME_DARK, THEME_LIGHT],
+        langs: [],
+        engine: createJavaScriptRegexEngine(),
+      }),
+  );
 
   highlighterInstance = await highlighterPromise;
   return highlighterInstance;
@@ -127,6 +128,11 @@ export async function highlight(
     await loadBundledLanguage(resolved);
   }
   const highlighter = await getHighlighter();
+  const {
+    transformerNotationDiff,
+    transformerNotationHighlight,
+    transformerMetaHighlight,
+  } = await loadRuntime();
 
   const { highlightLines } = options;
   const meta = highlightLines?.length

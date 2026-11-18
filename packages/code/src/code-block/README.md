@@ -23,7 +23,7 @@ const html = await highlight(code, "typescript");
 <CodeBlock code={code} html={html} />;
 ```
 
-With `html`, CodeBlock skips the client highlighter: no theme or grammar is fetched and nothing is highlighted in the browser. `code` is still required alongside `html`, because the copy button copies it.
+With `html`, CodeBlock skips the client highlighter: Shiki is never loaded, no theme or grammar is fetched and nothing is highlighted in the browser. `code` is still required alongside `html`, because the copy button copies it.
 
 ## Slot props
 
