@@ -27,5 +27,5 @@ export type PopoverProps = React.PropsWithChildren<{
   PositionerProps?: BasePopover.Positioner.Props;
   PopupProps?: PopoverPopupProps;
 }> &
-  Partial<Pick<PopoverRootProps, "open" | "onOpenChange">> &
+  Pick<PopoverRootProps, "open" | "defaultOpen" | "onOpenChange" | "modal"> &
   PopoverCardProps;

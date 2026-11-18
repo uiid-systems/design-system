@@ -1395,3 +1395,43 @@ describe("Dialog", () => {
     });
   });
 });
+
+describe("Dialog top-level root props", () => {
+  it("opens on mount with defaultOpen", () => {
+    render(
+      <Dialog title="Settings" defaultOpen>
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(screen.getByText("Dialog content")).toBeInTheDocument();
+  });
+
+  it("hides the page behind it by default", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Dialog title="Settings" open>
+          Dialog content
+        </Dialog>
+      </>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Outside" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("leaves the page reachable with modal={false}", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Dialog title="Settings" open modal={false}>
+          Dialog content
+        </Dialog>
+      </>,
+    );
+
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
+});

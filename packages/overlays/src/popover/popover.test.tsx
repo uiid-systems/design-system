@@ -834,3 +834,42 @@ describe("Popover", () => {
     });
   });
 });
+
+describe("Popover top-level root props", () => {
+  it("opens on mount with defaultOpen", () => {
+    render(
+      <Popover trigger={<button>Open popover</button>} defaultOpen>
+        Popover content
+      </Popover>,
+    );
+
+    expect(screen.getByText("Popover content")).toBeInTheDocument();
+  });
+
+  // A modal popover adds Base UI's own unnamed backdrop, which blocks pointer
+  // interaction with the page; a non-modal one renders only ours.
+  const internalBackdrop = () =>
+    document.querySelector(
+      '[data-slot="popover-portal"] > [role="presentation"]:not([data-slot])',
+    );
+
+  it("renders no internal backdrop by default", () => {
+    render(
+      <Popover trigger={<button>Open popover</button>} open>
+        Popover content
+      </Popover>,
+    );
+
+    expect(internalBackdrop()).not.toBeInTheDocument();
+  });
+
+  it("blocks the page behind it with modal", () => {
+    render(
+      <Popover trigger={<button>Open popover</button>} open modal>
+        Popover content
+      </Popover>,
+    );
+
+    expect(internalBackdrop()).toBeInTheDocument();
+  });
+});

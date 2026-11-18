@@ -19,7 +19,7 @@ import type { DialogProps } from "@uiid/design-system";
 type ConfirmDialogProps = Required<Pick<DialogProps, "open" | "onOpenChange">> & { … };
 ```
 
-Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog). Its top-level props are the ones on this page; Dialog's other root props (`defaultOpen`, `modal`, …) go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
+Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Popover and Drawer; Dialog's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
 The popup renders as a `Card`, so its content slots match Drawer and Popover. For a panel anchored to an edge, use `Drawer`; for something attached to a control without blocking the page, use `Popover`.
 

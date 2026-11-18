@@ -16,7 +16,9 @@ import {
 
 export const Dialog = ({
   open,
+  defaultOpen,
   onOpenChange,
+  modal,
   pending = false,
   size,
   title,
@@ -49,7 +51,13 @@ export const Dialog = ({
 
   return (
     <DialogPendingProvider value={pending}>
-      <DialogRoot open={open} {...RootProps} onOpenChange={handleOpenChange}>
+      <DialogRoot
+        open={open}
+        defaultOpen={defaultOpen}
+        modal={modal}
+        {...RootProps}
+        onOpenChange={handleOpenChange}
+      >
         {hasTrigger(trigger, TriggerProps?.render) && (
           <DialogTrigger {...TriggerProps}>{trigger}</DialogTrigger>
         )}

@@ -18,6 +18,7 @@ export const Tooltip = ({
   trigger,
   delay,
   open,
+  defaultOpen,
   onOpenChange,
   ProviderProps,
   RootProps,
@@ -32,6 +33,7 @@ export const Tooltip = ({
   const tooltip = (
     <TooltipRoot
       open={open}
+      defaultOpen={defaultOpen}
       {...RootProps}
       onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
     >
