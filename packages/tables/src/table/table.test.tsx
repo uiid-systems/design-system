@@ -213,6 +213,22 @@ describe("Table", () => {
       expect(cells()).toEqual(["Ada", "a,b"]);
     });
 
+    it("renders an array holding a plain object as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", homes: [{ city: "London" }] }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array of React elements as an empty cell", () => {
+      const tags = [<em key="a">a</em>, <em key="b">b</em>];
+      render(<Table items={[{ name: "Ada", tags }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array holding a nested array as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", grid: [1, [2, 3]] }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
     it("renders a Date as its string form", () => {
       const joined = new Date(2024, 0, 15);
       render(<Table items={[{ name: "Ada", joined }]} />);

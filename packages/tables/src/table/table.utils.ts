@@ -13,8 +13,10 @@ export function defaultFormatHeader<T extends Record<string, unknown>>(
 
 /** The default `formatCell`. Renders a React element as itself and a string,
  * number, bigint or boolean as text. An object renders its string form when it
- * defines one of its own (a `Date`, a `URL`, an array). Everything else renders
- * nothing: `null`, `undefined`, a plain object, a function, a symbol. */
+ * defines one of its own (a `Date`, a `URL`, an array). An array holding
+ * anything but strings, numbers, bigints, booleans, `null` or `undefined`
+ * renders nothing. So does everything else: `null`, `undefined`, a plain
+ * object, a function, a symbol. */
 export function defaultFormatCell(value: unknown): React.ReactNode {
   if (isValidElement(value)) return value;
 
@@ -31,12 +33,29 @@ export function defaultFormatCell(value: unknown): React.ReactNode {
   }
 }
 
-/** False for `null` and for an object whose string form would be the inherited
- * `[object Object]`, or that has no `toString` at all (a null prototype). */
+/** False for `null`, for an object whose string form would be the inherited
+ * `[object Object]` or that has no `toString` at all (a null prototype), and
+ * for an array whose joined form would print an entry that way. */
 function hasOwnStringForm(value: object | null): value is object {
+  if (value === null) return false;
+  if (Array.isArray(value)) return value.every(isPrintablePrimitive);
+
   return (
-    value !== null &&
     typeof value.toString === "function" &&
     value.toString !== Object.prototype.toString
   );
+}
+
+function isPrintablePrimitive(value: unknown): boolean {
+  if (value == null) return true;
+
+  switch (typeof value) {
+    case "string":
+    case "number":
+    case "bigint":
+    case "boolean":
+      return true;
+    default:
+      return false;
+  }
 }

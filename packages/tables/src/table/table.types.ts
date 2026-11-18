@@ -47,7 +47,8 @@ export type TableProps<
   /** Render a cell from its value, column key and row. Replaces the default,
    * `defaultFormatCell`, which renders an element as itself, a primitive as
    * text, an object by its own string form (a `Date`, an array), and nothing
-   * for `null`, `undefined` or a plain object. To change some cells only,
+   * for `null`, `undefined` or a plain object. An array holding an object, an
+   * element or another array also renders nothing. To change some cells only,
    * return `defaultFormatCell(value)` for the rest. */
   formatCell?: (value: unknown, column: string, item: T) => React.ReactNode;
   /** Pin the header to the top of the scroll container while the body scrolls.
