@@ -217,6 +217,36 @@ describe("Text", () => {
       );
       expect(screen.getByTestId("rich")).not.toHaveAttribute("title");
     });
+
+    it("keeps the render element's own title when Text has none", () => {
+      render(
+        <Text render={<abbr title="HyperText Markup Language" />}>HTML</Text>,
+      );
+      const el = screen.getByText("HTML");
+      expect(el.tagName).toBe("ABBR");
+      expect(el).toHaveAttribute("title", "HyperText Markup Language");
+    });
+
+    it("lets Text's title win over the render element's", () => {
+      render(
+        <Text title="From Text" render={<abbr title="From render" />}>
+          Explicit
+        </Text>,
+      );
+      expect(screen.getByText("Explicit")).toHaveAttribute(
+        "title",
+        "From Text",
+      );
+    });
+
+    it("lets a derived truncate title win over the render element's", () => {
+      render(
+        <Text truncate render={<abbr title="From render" />}>
+          Clipped
+        </Text>,
+      );
+      expect(screen.getByText("Clipped")).toHaveAttribute("title", "Clipped");
+    });
   });
 
   // ============================================
