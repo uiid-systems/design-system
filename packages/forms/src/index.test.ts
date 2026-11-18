@@ -99,6 +99,18 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("SliderLabel");
   });
 
+  it("exports useMask but keeps its sub-hooks internal", () => {
+    expect(forms).toHaveProperty("useMask");
+    for (const hook of [
+      "useMaskPattern",
+      "useMaskValue",
+      "useMaskValidation",
+      "useMaskHandlers",
+    ]) {
+      expect(forms, `${hook} should stay internal`).not.toHaveProperty(hook);
+    }
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");
