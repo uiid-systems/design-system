@@ -12,7 +12,7 @@ export type ListItemProps = {
 export type ListItemOrGroup = ListItemProps | ListGroupProps;
 
 /** Props for a group's root `Stack`. Its heading and items come from the entry. */
-export type ListGroupRootProps = Omit<StackProps, "children">;
+export type ListGroupRootProps = Omit<StackProps, "children" | "render">;
 
 export type ListGroupProps = {
   category?: string;
@@ -20,7 +20,7 @@ export type ListGroupProps = {
   items: ListItemOrGroup[];
   /** Defaults for every item in this group and its nested groups. An item's own props win. */
   ItemProps?: Partial<ListItemProps>;
-  /** Props for the root of this group's nested groups, e.g. `className` or `gap`. */
+  /** Props for this group's root and every nested group's root, e.g. `className` or `gap`. */
   GroupProps?: ListGroupRootProps;
 };
 

@@ -13,6 +13,24 @@ import { ListItem } from "./list-item";
 import styles from "../list.module.css";
 
 /**
+ * Shallow-merge inherited defaults with an entry's own: the entry's values win
+ * and the two `className`s join.
+ */
+const mergeDefaults = <T extends { className?: string }>(
+  inherited?: T,
+  own?: T,
+): T | undefined =>
+  inherited && own
+    ? {
+        ...inherited,
+        ...own,
+        className: cx(inherited.className, own.className),
+      }
+    : (own ?? inherited);
+
+/**
+ * @internal Not exported from the package; `List` and `ListGroup` share it.
+ *
  * Renders `items` entries as `ListItem`s and nested `ListGroup`s. The shared
  * `ItemProps` and `GroupProps` are defaults: they pass down to every level, and
  * an entry's own props win. Used by both `List` and `ListGroup` so top-level and
@@ -30,10 +48,10 @@ export const ListEntries = ({
   items.map((item, index) =>
     "items" in item ? (
       <ListGroup
-        key={item.category ?? index}
-        ItemProps={ItemProps}
-        GroupProps={GroupProps}
+        key={`group-${item.category ?? index}`}
         {...item}
+        ItemProps={mergeDefaults(ItemProps, item.ItemProps)}
+        GroupProps={mergeDefaults(GroupProps, item.GroupProps)}
       />
     ) : (
       <ListItem

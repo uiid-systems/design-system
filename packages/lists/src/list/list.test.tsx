@@ -124,6 +124,28 @@ describe("List", () => {
       expect(screen.getByText("Leaf")).toBeInTheDocument();
     });
 
+    it("merges a group entry's own ItemProps and GroupProps with the inherited ones", () => {
+      const { container } = render(
+        <List
+          ItemProps={{ className: "shared", id: "shared-id" }}
+          GroupProps={{ className: "shared-group", gap: 2 }}
+          items={[
+            {
+              category: "Group",
+              ItemProps: { className: "own", id: "own-id" },
+              GroupProps: { className: "own-group" },
+              items: [{ label: "Nested" }],
+            },
+          ]}
+        />,
+      );
+      expect(itemByLabel("Nested")).toHaveClass("shared", "own");
+      expect(itemByLabel("Nested")).toHaveAttribute("id", "own-id");
+      const group = container.querySelector('[data-slot="list-group"]');
+      expect(group).toHaveClass("shared-group", "own-group");
+      expect(group).toHaveAttribute("data-ui-gap", "2");
+    });
+
     it("takes ItemProps on a hand-composed ListGroup", () => {
       render(
         <List>
