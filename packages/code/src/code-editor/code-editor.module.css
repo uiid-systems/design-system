@@ -5,6 +5,16 @@
   border-radius: var(--globals-border-radius);
   overflow: hidden;
   position: relative;
+
+  /* The focus ring form controls draw (composes-field-surface), on the editor
+     because the textarea resets its own outline. Scoped to the textarea so a
+     focused copy button keeps its own ring only. */
+  outline: var(--globals-outline-width) var(--globals-outline-color);
+  outline-offset: var(--globals-outline-offset);
+
+  &:has(.code-editor-textarea:focus-visible) {
+    outline-style: var(--globals-outline-style);
+  }
 }
 
 /* Highlighted code backdrop */
