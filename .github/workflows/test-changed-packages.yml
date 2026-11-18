@@ -14,7 +14,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     concurrency:
       group: test-${{ github.sha }}
       cancel-in-progress: false
@@ -105,6 +105,9 @@ jobs:
       # cache is deliberately not cached, so a cold-cache regression (UI-403)
       # fails here instead of hiding behind a warm cache.
       - name: Run Storybook play and a11y tests
+        timeout-minutes: 10
+        env:
+          STORYBOOK_DISABLE_TELEMETRY: 1
         run: pnpm --filter @uiid/storybook exec vitest run
 
   lint:
