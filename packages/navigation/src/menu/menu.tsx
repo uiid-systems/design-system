@@ -19,7 +19,7 @@ import {
 const ItemLabel = ({ icon: Icon, label }: MenuItemType) =>
   Icon ? (
     <Group gap={2} ay="center">
-      <Icon size={14} />
+      <Icon size={14} aria-hidden />
       {label}
     </Group>
   ) : (

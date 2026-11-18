@@ -4,7 +4,7 @@ import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it, vi } from "vitest";
 
 /* Imported from the barrel on purpose, to cover the defaultFormatCell export. */
-import { defaultFormatCell, Table } from "../index";
+import { defaultFormatCell, Table, TableCellDropdown } from "../index";
 import { TABLE_MOCK_DATA } from "./table.mocks";
 
 /** happy-dom reports every box as zero-sized, so the scroll metrics the
@@ -624,6 +624,23 @@ describe("Table", () => {
       expect(
         screen.getByRole("menuitem", { name: "Delete" }),
       ).toBeInTheDocument();
+    });
+
+    it("calls a standalone TableCellDropdown's items function with its item", async () => {
+      const user = userEvent.setup();
+      const items = vi.fn((row: { name: string }) => [
+        { label: `Delete ${row.name}`, value: "delete" },
+      ]);
+      render(
+        <TableCellDropdown tooltip="Settings" item={ITEMS[0]} items={items} />,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Settings" }));
+
+      expect(
+        await screen.findByRole("menuitem", { name: "Delete Ada" }),
+      ).toBeInTheDocument();
+      expect(items).toHaveBeenCalledWith(ITEMS[0]);
     });
 
     it("passes the row's item to a secondary items function", async () => {

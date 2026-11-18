@@ -139,7 +139,7 @@ describe("Menu items", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it("renders an item's icon beside its label", async () => {
+  it("renders an item's icon before its label", async () => {
     const user = userEvent.setup();
     render(
       <Menu
@@ -153,15 +153,19 @@ describe("Menu items", () => {
 
     await user.click(screen.getByText("Open"));
 
-    expect(
-      screen.getByRole("menuitem", { name: "Star" }).querySelector("svg"),
-    ).toBeInTheDocument();
+    const star = screen.getByRole("menuitem", { name: "Star" });
+    const icon = star.querySelector("svg");
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+    // The icon leads, and the label is the text right after it.
+    expect(icon!.parentElement!.firstChild).toBe(icon);
+    expect(icon!.nextSibling?.textContent).toBe("Star");
     expect(
       screen.getByRole("menuitem", { name: "Plain" }).querySelector("svg"),
     ).toBeNull();
   });
 
   it("wires submenu items the same way, including ItemProps", async () => {
+    const itemProps = { className: "from-item-props" };
     const user = userEvent.setup();
     const onSub = vi.fn();
     render(
@@ -177,7 +181,7 @@ describe("Menu items", () => {
             ],
           },
         ]}
-        ItemProps={{ "data-testid": "item" } as never}
+        ItemProps={itemProps}
       />,
     );
 
@@ -185,7 +189,7 @@ describe("Menu items", () => {
     await user.click(screen.getByText("More"));
     const archive = await screen.findByRole("menuitem", { name: "Archive" });
 
-    expect(archive).toHaveAttribute("data-testid", "item");
+    expect(archive).toHaveClass("from-item-props");
     expect(screen.getByRole("menuitem", { name: "Locked" })).toHaveAttribute(
       "aria-disabled",
       "true",

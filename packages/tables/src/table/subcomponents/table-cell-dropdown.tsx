@@ -4,18 +4,20 @@ import { Menu } from "@uiid/navigation";
 
 import type { TableCellDropdownProps } from "../table.types";
 
-type TableCellDropdownComponentProps<T> = TableCellDropdownProps<T> & {
-  /** The row the menu acts on, passed to an `items` function. */
-  item?: T;
-};
+type ItemsFunctionProps<T> = Extract<
+  TableCellDropdownProps<T>,
+  { items: (item: T) => unknown }
+>;
 
-export function TableCellDropdown<T = Record<string, unknown>>({
-  icon: Icon,
-  tooltip = "More options",
-  items,
-  item,
-  size = "small",
-}: TableCellDropdownComponentProps<T>): React.ReactElement {
+const hasItemsFunction = <T,>(
+  props: TableCellDropdownProps<T>,
+): props is ItemsFunctionProps<T> => typeof props.items === "function";
+
+export function TableCellDropdown<T = Record<string, unknown>>(
+  props: TableCellDropdownProps<T>,
+): React.ReactElement {
+  const { icon: Icon, tooltip = "More options", size = "small" } = props;
+
   return (
     <Menu
       align="end"
@@ -24,7 +26,7 @@ export function TableCellDropdown<T = Record<string, unknown>>({
           {Icon ? <Icon /> : <EllipsisVerticalIcon size={14} />}
         </Button>
       }
-      items={typeof items === "function" ? items(item as T) : items}
+      items={hasItemsFunction(props) ? props.items(props.item) : props.items}
     />
   );
 }
