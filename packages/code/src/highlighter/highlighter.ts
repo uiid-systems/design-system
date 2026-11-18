@@ -31,7 +31,8 @@ const BUNDLED_LANGS: Record<BundledLanguage, () => Promise<unknown>> = {
 const THEME_DARK = () => import("@shikijs/themes/vitesse-black");
 const THEME_LIGHT = () => import("@shikijs/themes/vitesse-light");
 
-// The runtime loads once: `import()` caches the module after the first call.
+// Every call after the first load resolves to the same module, so this is
+// cheap to call wherever the runtime is needed.
 const loadRuntime = () => import("./highlighter.runtime");
 
 // Singleton state
@@ -53,17 +54,31 @@ export async function getHighlighter(): Promise<HighlighterCore> {
   }
 
   // The Shiki runtime loads on first use, so a page that never highlights
-  // never downloads it.
-  highlighterPromise = loadRuntime().then(
-    ({ createHighlighterCore, createJavaScriptRegexEngine }) =>
+  // never downloads it. The themes are fetched alongside it, not after it.
+  const promise = Promise.all([
+    loadRuntime(),
+    THEME_DARK(),
+    THEME_LIGHT(),
+  ]).then(
+    ([{ createHighlighterCore, createJavaScriptRegexEngine }, dark, light]) =>
       createHighlighterCore({
-        themes: [THEME_DARK, THEME_LIGHT],
+        themes: [dark, light],
         langs: [],
         engine: createJavaScriptRegexEngine(),
       }),
   );
+  highlighterPromise = promise;
 
-  highlighterInstance = await highlighterPromise;
+  try {
+    highlighterInstance = await promise;
+  } catch (error) {
+    // Forget the failed load so the next call tries again, rather than every
+    // later highlight failing with it.
+    if (highlighterPromise === promise) {
+      highlighterPromise = null;
+    }
+    throw error;
+  }
   return highlighterInstance;
 }
 
@@ -104,8 +119,11 @@ async function loadBundledLanguage(language: BundledLanguage): Promise<void> {
     return;
   }
 
-  const highlighter = await getHighlighter();
-  const langModule = await BUNDLED_LANGS[language]();
+  // Fetch the grammar alongside the highlighter, not after it.
+  const [highlighter, langModule] = await Promise.all([
+    getHighlighter(),
+    BUNDLED_LANGS[language](),
+  ]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await highlighter.loadLanguage(langModule as any);
   loadedLanguages.add(language);
