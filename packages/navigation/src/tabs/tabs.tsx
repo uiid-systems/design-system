@@ -1,6 +1,7 @@
 "use client";
 
 import { Layer } from "@uiid/layout";
+import { useState } from "react";
 
 import {
   TabsRoot,
@@ -27,9 +28,19 @@ export const Tabs = ({
   PanelProps,
   ContainerProps,
 }: TabsProps) => {
+  /*
+   * Resolved once, on mount. Base UI warns when an uncontrolled root's
+   * default changes, which a fallback read on every render would do as soon
+   * as items arrive after an empty first render. `null` is Base UI's "no tab
+   * active", so only `undefined` falls back to the first item.
+   */
+  const [initialValue] = useState(() =>
+    defaultValue !== undefined ? defaultValue : items[0]?.value,
+  );
+
   return (
     <TabsRoot
-      defaultValue={defaultValue || items[0].value}
+      defaultValue={value === undefined ? initialValue : undefined}
       value={value}
       onValueChange={onValueChange}
       {...RootProps}

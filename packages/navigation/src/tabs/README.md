@@ -46,6 +46,8 @@ import { Tabs } from "@uiid/navigation";
 | `IndicatorProps` | `TabsIndicatorProps`                             | —                  | Props for indicator                                       |
 | `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">` | —                  | Props for every panel; set `keepMounted` at the top level |
 
+`defaultValue` falls back to the first item's value only when it is `undefined`, and there is no default when `items` is empty. Pass `defaultValue={null}` for no active tab. The default is read once, on mount: when `items` starts empty and loads later, the first tab is selected and `onValueChange` fires once with the reason `"initial"`.
+
 ### TabProps (items)
 
 | Prop     | Type        | Description       |
