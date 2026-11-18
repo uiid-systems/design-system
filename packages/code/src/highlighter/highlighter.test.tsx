@@ -6,6 +6,7 @@ import { LanguageIcon } from "../code-block/language-icons";
 import { CodeEditor } from "../code-editor/code-editor";
 import { CodeInline } from "../code-inline/code-inline";
 import {
+  getHighlighter,
   highlight,
   isSupportedLanguage,
   loadLanguage,
@@ -160,6 +161,87 @@ describe("highlight", () => {
     expect(textOf(html)).toBe(`${long}\n${TS_CODE}`);
     expect(hasColoredTokens(longLine)).toBe(false);
     expect(hasColoredTokens(shortLine)).toBe(true);
+  });
+});
+
+/** The class list of each `.line` span, in order. */
+const lineClasses = (html: string) =>
+  [...html.matchAll(/<span class="(line[^"]*)"/g)].map(([, name]) => name);
+
+describe("highlight line markup", () => {
+  it("marks each line in highlightLines", async () => {
+    const html = await highlight("a\nb\nc\nd", "typescript", {
+      highlightLines: [1, 3],
+    });
+
+    expect(lineClasses(html)).toEqual([
+      "line highlighted",
+      "line",
+      "line highlighted",
+      "line",
+    ]);
+  });
+
+  it("marks no line for an empty highlightLines", async () => {
+    const html = await highlight("a\nb", "typescript", { highlightLines: [] });
+
+    expect(lineClasses(html)).toEqual(["line", "line"]);
+  });
+
+  it("marks added, removed and highlighted notation lines", async () => {
+    const code = [
+      "const a = 1; // [!code ++]",
+      "const b = 2; // [!code --]",
+      "const c = 3; // [!code highlight]",
+      "const d = 4;",
+    ].join("\n");
+    const html = await highlight(code, "typescript");
+
+    expect(lineClasses(html)).toEqual([
+      "line diff add",
+      "line diff remove",
+      "line highlighted",
+      "line",
+    ]);
+    expect(html).toMatch(/<pre class="[^"]*\bhas-diff\b/);
+    expect(html).toMatch(/<pre class="[^"]*\bhas-highlighted\b/);
+  });
+
+  it("strips the notation comments from the output", async () => {
+    const html = await highlight(
+      "const a = 1; // [!code ++]\nconst b = 2; // [!code highlight]",
+      "typescript",
+    );
+
+    expect(textOf(html)).toBe("const a = 1;\nconst b = 2;");
+  });
+});
+
+describe("getHighlighter", () => {
+  it("shares one instance across concurrent and later calls", async () => {
+    const [first, second] = await Promise.all([
+      getHighlighter(),
+      getHighlighter(),
+    ]);
+
+    expect(second).toBe(first);
+    expect(await getHighlighter()).toBe(first);
+  });
+
+  it("loads a language into the shared instance only once", async () => {
+    const highlighter = await getHighlighter();
+    const load = vi.spyOn(highlighter, "loadLanguage");
+    try {
+      // Python and its alias load nowhere else in this file
+      await loadLanguage("python");
+      await loadLanguage("py");
+      await highlight("x = 1", "python");
+
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(highlighter.getLoadedLanguages()).toContain("python");
+    } finally {
+      load.mockRestore();
+    }
   });
 });
 

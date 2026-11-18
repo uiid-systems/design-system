@@ -87,6 +87,91 @@ describe("useHighlight", () => {
   });
 });
 
+/** A highlight call the test settles by hand. */
+const deferHighlight = () => {
+  let resolve!: (html: string) => void;
+  let reject!: (error: Error) => void;
+  vi.mocked(highlight).mockImplementationOnce(
+    () =>
+      new Promise<string>((res, rej) => {
+        resolve = res;
+        reject = rej;
+      }),
+  );
+  return {
+    resolve: (html: string) => act(async () => resolve(html)),
+    reject: (error: Error) => act(async () => reject(error)),
+  };
+};
+
+describe("useHighlight request race", () => {
+  beforeEach(() => {
+    vi.mocked(highlight).mockClear();
+  });
+
+  const renderCode = (code: string) =>
+    renderHook(({ code }) => useHighlight(code), { initialProps: { code } });
+
+  it("keeps the latest result when an earlier one settles after it", async () => {
+    const first = deferHighlight();
+    const second = deferHighlight();
+    const { result, rerender } = renderCode("first");
+    rerender({ code: "second" });
+
+    await second.resolve("<pre>second</pre>");
+    await first.resolve("<pre>first</pre>");
+
+    expect(result.current).toEqual({
+      html: "<pre>second</pre>",
+      loading: false,
+      error: null,
+    });
+  });
+
+  it("ignores a stale request's error", async () => {
+    const first = deferHighlight();
+    const second = deferHighlight();
+    const { result, rerender } = renderCode("first");
+    rerender({ code: "second" });
+
+    await second.resolve("<pre>second</pre>");
+    await first.reject(new Error("stale"));
+
+    expect(result.current.error).toBeNull();
+    expect(result.current.html).toBe("<pre>second</pre>");
+  });
+
+  it("stays loading while only a stale request has settled", async () => {
+    const first = deferHighlight();
+    deferHighlight();
+    const { result, rerender } = renderCode("first");
+    rerender({ code: "second" });
+
+    await first.resolve("<pre>first</pre>");
+
+    expect(result.current.html).toBe("");
+    expect(result.current.loading).toBe(true);
+  });
+
+  it("re-highlights when highlightLines changes, keyed by value", async () => {
+    const { result, rerender } = renderHook(
+      ({ lines }) => useHighlight("a", "typescript", { highlightLines: lines }),
+      { initialProps: { lines: [1] } },
+    );
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    // A new array with the same lines is not a new request
+    rerender({ lines: [1] });
+    expect(highlight).toHaveBeenCalledTimes(1);
+
+    rerender({ lines: [1, 3] });
+    await waitFor(() => expect(highlight).toHaveBeenCalledTimes(2));
+    expect(highlight).toHaveBeenLastCalledWith("a", "typescript", {
+      highlightLines: [1, 3],
+    });
+  });
+});
+
 describe("components skip the highlighter when there is nothing to do", () => {
   beforeEach(() => {
     vi.mocked(highlight).mockClear();
