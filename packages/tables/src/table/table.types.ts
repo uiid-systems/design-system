@@ -6,6 +6,9 @@ import type { tableVariants } from "./table.variants";
 
 export type TableVariants = VariantProps<typeof tableVariants>;
 
+/** Identifies a row for selection: a stable id from `getRowId`, or its index. */
+export type TableRowId = string | number;
+
 export type TableActionsProps<T = Record<string, unknown>> = {
   icon: Icon;
   tooltip: string;
@@ -36,6 +39,7 @@ export type TableRootProps = React.ComponentProps<"table"> &
 
 export type TableProps<
   T extends Record<string, unknown> = Record<string, unknown>,
+  Id extends TableRowId = number,
 > = Omit<TableRootProps, "children"> & {
   items: T[];
   columns?: string[];
@@ -57,10 +61,18 @@ export type TableProps<
   maxHeight?: React.CSSProperties["maxHeight"];
   /** Footer content, rendered in a <tfoot> cell spanning all columns. */
   footer?: React.ReactNode;
-  /** Controlled selected row indices. Pair with `onSelectedRowsChange`. */
-  selectedRows?: number[];
-  /** Initial selected row indices when uncontrolled. */
-  defaultSelectedRows?: number[];
-  /** Called with the selected row indices whenever selection changes. */
-  onSelectedRowsChange?: (selectedRows: number[]) => void;
+  /** Stable id of a row, keying its selection and its React key, so a
+   * selection follows its record when `items` are sorted, filtered or paged.
+   * Defaults to the row index. */
+  getRowId?: (item: T, index: number) => Id;
+  /** Accessible name of a row's checkbox. Defaults to "Select row N". */
+  getRowLabel?: (item: T, index: number) => string;
+  /** Controlled selected row ids (indices without `getRowId`). Pair with
+   * `onSelectedRowsChange`. Ids that match no row are ignored. */
+  selectedRows?: readonly Id[];
+  /** Initial selected row ids (indices without `getRowId`) when uncontrolled. */
+  defaultSelectedRows?: readonly Id[];
+  /** Called with the selected row ids, in row order, whenever selection
+   * changes. Ids that match no current row are left out. */
+  onSelectedRowsChange?: (selectedRows: Id[]) => void;
 };
