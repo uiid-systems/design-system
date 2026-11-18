@@ -29,6 +29,15 @@
   position: relative;
 }
 
+/* `rows` writes --code-rows; collapsed, the area is that many lines tall. */
+.code-block-scroll[data-rows] {
+  overflow-y: auto;
+}
+
+.code-block-scroll[data-collapsed] {
+  max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
+}
+
 .code-block-content {
   overflow-x: auto;
 
@@ -129,6 +138,8 @@
 .code-block[data-fullscreen] .code-block-scroll {
   flex: 1 1 auto;
   min-height: 0;
+  /* The fullscreen copy shows every row. */
+  max-height: none;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

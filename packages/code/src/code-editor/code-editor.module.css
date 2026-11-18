@@ -17,6 +17,12 @@
   }
 }
 
+/* `rows` writes --code-rows and caps the editor at that many lines */
+.code-editor-layer[data-rows] {
+  max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
+  overflow: auto;
+}
+
 /* Highlighted code backdrop */
 .code-editor-highlight {
   pointer-events: none;

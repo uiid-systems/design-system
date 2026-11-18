@@ -72,31 +72,25 @@ export const CodeBlock = ({
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
   const popupRef = React.useRef<HTMLDivElement>(null);
 
-  const collapsedMaxHeight = rows
-    ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
-    : undefined;
-
   const isCollapsed = rows != null && !expanded;
-  const wrapperStyle = collapsedMaxHeight
-    ? {
-        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
-        overflowY: "auto" as const,
-      }
-    : undefined;
+  // The row count is the only value written inline; the CSS module turns it
+  // into the collapsed height while `data-collapsed` is set.
+  const scrollStyle =
+    rows != null ? ({ "--code-rows": rows } as React.CSSProperties) : undefined;
 
   // A layout effect decides the toggle before paint. Measure against the
   // collapsed height even while expanded, so a block whose code fits in its
   // rows never offers a toggle that does nothing.
   React.useLayoutEffect(() => {
     const el = contentWrapperRef.current;
-    if (!collapsedMaxHeight || !el || !displayHtml) {
+    if (rows == null || !el || !displayHtml) {
       return;
     }
     const measure = () => {
-      const { maxHeight } = el.style;
-      el.style.maxHeight = collapsedMaxHeight;
+      const collapsed = el.hasAttribute("data-collapsed");
+      el.setAttribute("data-collapsed", "");
       setOverflows(el.scrollHeight > el.clientHeight + 1);
-      el.style.maxHeight = maxHeight;
+      if (!collapsed) el.removeAttribute("data-collapsed");
     };
     measure();
 
@@ -106,7 +100,7 @@ export const CodeBlock = ({
     observer.observe(el);
     if (el.firstElementChild) observer.observe(el.firstElementChild);
     return () => observer.disconnect();
-  }, [displayHtml, collapsedMaxHeight, wrap]);
+  }, [displayHtml, rows, wrap]);
 
   const showToggle = rows != null && overflows;
 
@@ -140,8 +134,10 @@ export const CodeBlock = ({
         <div
           ref={inFullscreen ? undefined : contentWrapperRef}
           data-slot="code-block-scroll"
+          data-rows={rows != null || undefined}
+          data-collapsed={isCollapsed || undefined}
           className={styles["code-block-scroll"]}
-          style={inFullscreen ? undefined : wrapperStyle}
+          style={scrollStyle}
         >
           <CodeBlockContent
             html={displayHtml}
