@@ -52,6 +52,8 @@ export function TableCellActions<T extends Record<string, unknown>>({
   item,
   size,
 }: TableCellActionsProps<T>): React.ReactElement {
+  const { secondary } = actions;
+
   return (
     <TableCell collapse>
       <Group ax="end">
@@ -63,8 +65,16 @@ export function TableCellActions<T extends Record<string, unknown>>({
             {...action}
           />
         ))}
-        {actions.secondary && (
-          <TableCellDropdown size={size} {...actions.secondary} />
+        {secondary && (
+          <TableCellDropdown
+            size={size}
+            {...secondary}
+            items={
+              typeof secondary.items === "function"
+                ? secondary.items(item)
+                : secondary.items
+            }
+          />
         )}
       </Group>
     </TableCell>

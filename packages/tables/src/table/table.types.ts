@@ -16,13 +16,26 @@ export type TableActionsProps<T = Record<string, unknown>> = {
   wrapper?: (button: React.ReactElement, item: T) => React.ReactElement;
 };
 
-export type TableCellDropdownProps = {
+type TableCellDropdownBaseProps = {
   icon?: Icon;
   tooltip?: string;
-  items: MenuItemType[];
   /** Control tier of the trigger button; `Table` passes its own `size`. */
   size?: TableVariants["size"];
 };
+
+/** The menu's entries, or a function of the row's `item` returning them, so
+ * each entry's `onClick` knows which row opened it. */
+export type TableCellDropdownItems<T = Record<string, unknown>> =
+  | MenuItemType[]
+  | ((item: T) => MenuItemType[]);
+
+export type TableCellDropdownProps<T = Record<string, unknown>> =
+  TableCellDropdownBaseProps &
+    (
+      | { items: MenuItemType[]; item?: T }
+      /** An `items` function needs the row it is called with. */
+      | { items: (item: T) => MenuItemType[]; item: T }
+    );
 
 export type TableRootProps = React.ComponentProps<"table"> &
   TableVariants & {
@@ -44,7 +57,10 @@ export type TableProps<
   columns?: string[];
   actions?: {
     primary?: TableActionsProps<T>[];
-    secondary?: TableCellDropdownProps;
+    /** The row's overflow menu. `Table` supplies each row's `item`. */
+    secondary?: TableCellDropdownBaseProps & {
+      items: TableCellDropdownItems<T>;
+    };
   };
   formatHeader?: (key: keyof T | string) => React.ReactNode;
   /** Render a cell from its value, column key and row. Defaults to

@@ -8,6 +8,23 @@ Use Menu when you want to:
 - Nest related actions a level deeper: an entry with `items` opens a submenu beside it
 - Place the popup with `side` and `align`
 
+Each entry takes a `label` and a `value` (its key), plus an optional `icon` drawn before the label, `disabled`, and `onClick`. `disabled` and `onClick` are Base UI's Item props; an entry's own `onClick` runs after `ItemProps.onClick`, which applies to every item, submenu items included. On an entry with `items`, `disabled` applies to the submenu's trigger and `onClick` is ignored.
+
+```tsx
+<Menu
+  trigger="Actions"
+  items={[
+    { label: "Edit", value: "edit", icon: PencilIcon, onClick: onEdit },
+    {
+      label: "Delete",
+      value: "delete",
+      disabled: !canDelete,
+      onClick: onDelete,
+    },
+  ]}
+/>
+```
+
 The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal either way, so page scroll is locked and outside pointers are blocked.
 
 Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.

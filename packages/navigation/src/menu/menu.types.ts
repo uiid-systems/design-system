@@ -4,12 +4,16 @@ import type { GroupProps } from "@uiid/layout";
 import type { WithLayoutProps, WithTriggerChildren } from "@uiid/utils";
 
 export type MenuItemType = {
+  /** Drawn before the label. */
   icon?: Icon;
   label: string;
   value: string;
-  description?: string;
+  /** Base UI's `disabled`: the item, or a submenu's trigger, ignores
+   * interaction. */
   disabled?: boolean;
-  selected?: boolean;
+  /** Base UI's `onClick` for this item, called after `ItemProps.onClick`.
+   * Ignored on an entry with `items`, whose trigger opens the submenu. */
+  onClick?: MenuItemProps["onClick"];
   items?: MenuItemType[];
 };
 

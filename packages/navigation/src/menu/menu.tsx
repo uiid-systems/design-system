@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronRightIcon } from "@uiid/icons/chevron-right";
+import { Group } from "@uiid/layout";
 
-import type { MenuProps } from "./menu.types";
+import type { MenuItemProps, MenuItemType, MenuProps } from "./menu.types";
 import {
   MenuRoot,
   MenuTrigger,
@@ -14,6 +15,30 @@ import {
   SubmenuRoot,
   SubmenuTrigger,
 } from "./subcomponents";
+
+const ItemLabel = ({ icon: Icon, label }: MenuItemType) =>
+  Icon ? (
+    <Group gap={2} ay="center">
+      <Icon size={14} aria-hidden />
+      {label}
+    </Group>
+  ) : (
+    label
+  );
+
+const renderItem = (item: MenuItemType, ItemProps?: MenuItemProps) => (
+  <MenuItem
+    key={item.value}
+    {...ItemProps}
+    disabled={item.disabled ?? ItemProps?.disabled}
+    onClick={(event) => {
+      ItemProps?.onClick?.(event);
+      item.onClick?.(event);
+    }}
+  >
+    <ItemLabel {...item} />
+  </MenuItem>
+);
 
 export const Menu = ({
   /** data */
@@ -46,18 +71,19 @@ export const Menu = ({
               if (submenu) {
                 return (
                   <SubmenuRoot key={item.value} {...SubmenuRootProps}>
-                    <SubmenuTrigger {...SubmenuTriggerProps}>
-                      {item.label}
+                    <SubmenuTrigger
+                      {...SubmenuTriggerProps}
+                      disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
+                    >
+                      <ItemLabel {...item} />
                       <ChevronRightIcon size={12} />
                     </SubmenuTrigger>
                     <MenuPortal>
                       <MenuPositioner>
                         <MenuPopup>
-                          {submenu.map((subitem) => (
-                            <MenuItem key={subitem.value}>
-                              {subitem.label}
-                            </MenuItem>
-                          ))}
+                          {submenu.map((subitem) =>
+                            renderItem(subitem, ItemProps),
+                          )}
                         </MenuPopup>
                       </MenuPositioner>
                     </MenuPortal>
@@ -65,11 +91,7 @@ export const Menu = ({
                 );
               }
 
-              return (
-                <MenuItem key={item.value} {...ItemProps}>
-                  {item.label}
-                </MenuItem>
-              );
+              return renderItem(item, ItemProps);
             })}
           </MenuPopup>
         </MenuPositioner>
