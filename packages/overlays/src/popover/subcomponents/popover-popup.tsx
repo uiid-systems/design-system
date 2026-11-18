@@ -2,7 +2,7 @@
 
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import { Card } from "@uiid/cards";
-import { cxState } from "@uiid/utils";
+import { cxState, isRenderable } from "@uiid/utils";
 import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
@@ -33,7 +33,7 @@ export const PopoverPopup = ({
 }: PopoverPopupProps) => {
   // Base UI's Title takes this id, so the body can name itself after it.
   const titleId = useId();
-  const bodyProps = useBodyOverflow(title ? titleId : undefined);
+  const bodyProps = useBodyOverflow(isRenderable(title) ? titleId : undefined);
 
   return (
     <BasePopover.Popup

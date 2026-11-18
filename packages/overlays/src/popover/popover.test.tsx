@@ -800,7 +800,9 @@ describe("Popover", () => {
     /*
      * Content added after the body reaches its cap leaves the body's own size
      * unchanged, and happy-dom's ResizeObserver never fires, so only the
-     * MutationObserver can notice it.
+     * MutationObserver can notice it. Focus starts on the Load button, outside
+     * the body: a body holding focus keeps reporting overflow on purpose, so a
+     * focused body would never prove the re-measure happened.
      */
     it("re-measures when children are added later", async () => {
       stubHeights(400, 400);

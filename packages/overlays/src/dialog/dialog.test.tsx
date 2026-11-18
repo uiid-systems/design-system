@@ -758,6 +758,36 @@ describe("Dialog", () => {
       act(() => screen.getByRole("button", { name: "Close" }).focus());
       await waitFor(() => expect(body()).not.toHaveAttribute("tabindex"));
     });
+
+    it("drops an unfocused body's region and tab stop once it stops overflowing", async () => {
+      const resizes: (() => void)[] = [];
+      vi.stubGlobal(
+        "ResizeObserver",
+        class {
+          constructor(callback: () => void) {
+            resizes.push(callback);
+          }
+          observe() {}
+          unobserve() {}
+          disconnect() {}
+        },
+      );
+      stubHeights(1000, 400);
+      render(
+        <Dialog open={true} onOpenChange={() => {}} title="Terms">
+          Long content
+        </Dialog>,
+      );
+      await waitFor(() => expect(body()).toHaveAttribute("role", "region"));
+      expect(body()).not.toHaveFocus();
+
+      stubHeights(400, 400);
+      act(() => resizes.forEach((resize) => resize()));
+
+      expect(body()).not.toHaveAttribute("role");
+      expect(body()).not.toHaveAttribute("aria-labelledby");
+      expect(body()).not.toHaveAttribute("tabindex");
+    });
   });
 
   it("lets DialogClose take another Button variant", () => {
