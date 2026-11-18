@@ -14,9 +14,11 @@ export const CodeInline = ({
   children,
   ...props
 }: CodeInlineProps) => {
-  // Only use highlighting if language is provided
+  // Highlight only when there is a language and no pre-rendered markup
   const code = typeof children === "string" ? children : "";
-  const { html } = useHighlight(code, language || "typescript");
+  const { html } = useHighlight(code, language, {
+    enabled: !!language && !prerenderedHtml,
+  });
 
   // If no language provided, render as plain code
   if (!language) {

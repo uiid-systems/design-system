@@ -78,6 +78,7 @@ export const CodeBlock = ({
 
   const { html, error } = useHighlight(code, language, {
     highlightLines,
+    enabled: !prerenderedHtml,
   });
   const displayHtml = prerenderedHtml || html || undefined;
 

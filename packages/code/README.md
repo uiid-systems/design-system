@@ -61,6 +61,8 @@ function MyComponent() {
 }
 ```
 
+Pass `{ enabled: false }` as the third argument to skip highlighting when there is nothing to do, such as plain code or pre-rendered `html`. No theme or grammar is fetched, and the hook returns empty `html` with `loading` false.
+
 ## Supported Languages
 
 - JavaScript (`javascript`)
