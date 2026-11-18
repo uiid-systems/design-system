@@ -32,7 +32,7 @@ export const ListItem = ({
             <Group
               gap={2}
               ay="start"
-              fullwidth
+              w="full"
               className={styles["list-item-content"]}
             />
           }

@@ -43,7 +43,7 @@ export const List = ({
   if (!category) return list;
 
   return (
-    <Stack data-slot="list-section" fullwidth>
+    <Stack data-slot="list-section" w="full">
       <ListGroupHeader category={category} icon={icon} />
       {list}
     </Stack>
