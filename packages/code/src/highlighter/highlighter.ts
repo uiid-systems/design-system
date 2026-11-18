@@ -91,15 +91,21 @@ export function resolveLanguage(
  */
 export async function loadLanguage(language: CodeLanguage): Promise<void> {
   const resolved = resolveLanguage(language);
-  if (!resolved || loadedLanguages.has(resolved)) {
+  if (resolved) {
+    await loadBundledLanguage(resolved);
+  }
+}
+
+async function loadBundledLanguage(language: BundledLanguage): Promise<void> {
+  if (loadedLanguages.has(language)) {
     return;
   }
 
   const highlighter = await getHighlighter();
-  const langModule = await BUNDLED_LANGS[resolved]();
+  const langModule = await BUNDLED_LANGS[language]();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await highlighter.loadLanguage(langModule as any);
-  loadedLanguages.add(resolved);
+  loadedLanguages.add(language);
 }
 
 /**
@@ -116,7 +122,7 @@ export async function highlight(
 ): Promise<string> {
   const resolved = resolveLanguage(language);
   if (resolved) {
-    await loadLanguage(resolved);
+    await loadBundledLanguage(resolved);
   }
   const highlighter = await getHighlighter();
 
@@ -144,6 +150,7 @@ export async function highlight(
 /**
  * Check if a language is bundled. Aliases are not: use `resolveLanguage` to
  * find the bundled language an alias maps to.
+ * Case-sensitive, unlike `resolveLanguage`: `"TypeScript"` is not supported.
  */
 export function isSupportedLanguage(
   language: string,
