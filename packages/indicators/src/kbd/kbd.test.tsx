@@ -177,24 +177,76 @@ describe("Kbd utils", () => {
       );
     });
 
-    // BUG (UI-400): `space` is a named key in KEY_SYMBOLS, but the space bar's
-    // `event.key` is " ", so the "space" hotkey can never match.
-    it.fails("matches the space bar for the space key", () => {
+    it("matches the space bar for the space key", () => {
       expect(
         matchesHotkey(keyEvent({ key: " ", code: "Space" }), ["space"]),
       ).toBe(true);
     });
 
-    // BUG (UI-400): on macOS, Option changes `event.key` (Option+B gives "∫"), so an
-    // alt + letter hotkey never matches there. Matching on `event.code`
-    // would fix it.
-    it.fails("matches alt + letter when Option changes the key", () => {
+    it("matches alt + letter when Option changes the key", () => {
       expect(
         matchesHotkey(keyEvent({ key: "∫", code: "KeyB", altKey: true }), [
           "alt",
           "b",
         ]),
       ).toBe(true);
+    });
+
+    it("matches a digit by its physical key when a modifier changes the key", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: "!", code: "Digit1", shiftKey: true }), [
+          "shift",
+          "1",
+        ]),
+      ).toBe(true);
+      expect(
+        matchesHotkey(keyEvent({ key: "!", code: "Digit2", shiftKey: true }), [
+          "shift",
+          "1",
+        ]),
+      ).toBe(false);
+    });
+
+    it("matches space by its physical key when a modifier changes the key", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: " ", code: "Space", shiftKey: true }), [
+          "shift",
+          "space",
+        ]),
+      ).toBe(true);
+      expect(
+        matchesHotkey(
+          keyEvent({ key: "\u00a0", code: "Space", altKey: true }),
+          ["alt", "space"],
+        ),
+      ).toBe(true);
+    });
+
+    it("matches a letter by its physical key when the key is not a letter", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: "л", code: "KeyK", ctrlKey: true }), [
+          "ctrl",
+          "k",
+        ]),
+      ).toBe(true);
+      expect(
+        matchesHotkey(keyEvent({ key: "∫", code: "KeyN", altKey: true }), [
+          "alt",
+          "b",
+        ]),
+      ).toBe(false);
+    });
+
+    it("does not match the QWERTY position of a remapped letter", () => {
+      expect(
+        matchesHotkey(keyEvent({ key: "t", code: "KeyK", metaKey: true }), [
+          "meta",
+          "k",
+        ]),
+      ).toBe(false);
+      expect(matchesHotkey(keyEvent({ key: "t", code: "KeyK" }), ["k"])).toBe(
+        false,
+      );
     });
   });
 });
