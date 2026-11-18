@@ -125,9 +125,10 @@ export const CodeEditor = ({
         }
         fullwidth
       >
-        {/* Highlighted code backdrop */}
+        {/* Highlighted code backdrop: a duplicate of the textarea's text, so `inert` keeps Shiki's focusable `<pre>` out of the tab order and the accessibility tree */}
         <div
           ref={highlightRef}
+          inert
           data-slot="code-editor-highlight"
           className={cx(
             styles["code-editor-highlight"],
