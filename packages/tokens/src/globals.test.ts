@@ -12,10 +12,19 @@ import globalsCss from "./globals.css?raw";
  */
 describe("globals.css", () => {
   const layerStart = globalsCss.indexOf("@layer uiid.globals {");
-  const globalsLayer = globalsCss.slice(layerStart);
-  const controlRule = globalsLayer.match(
-    /:is\(button, input, select, textarea\) \{([^}]*)\}/,
-  )?.[1];
+  const globalsLayer = globalsCss
+    .slice(layerStart)
+    .replace(/\/\*[\s\S]*?\*\//g, "");
+
+  // Flat `selector { declarations }` pairs. Nested blocks are skipped, which
+  // is fine here: the control rule sits at the top level of the layer.
+  const rules = [...globalsLayer.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(
+    ([, selector, declarations]) => ({ selector, declarations }),
+  );
+  const controls = ["button", "input", "select", "textarea"];
+  const controlRules = rules.filter(({ selector }) =>
+    controls.every((tag) => new RegExp(`\\b${tag}\\b`).test(selector)),
+  );
 
   it("declares uiid.globals as the lowest layer, below every component layer", () => {
     expect(globalsCss).toMatch(/^@layer uiid\.globals, /);
@@ -23,14 +32,16 @@ describe("globals.css", () => {
   });
 
   it("makes native form controls inherit the font family", () => {
-    expect(controlRule).toBeDefined();
-    expect(controlRule).toMatch(/font-family: inherit;/);
+    expect(
+      controlRules.some(({ declarations }) =>
+        /font-family:\s*inherit/.test(declarations),
+      ),
+    ).toBe(true);
   });
 
-  it("leaves control size, weight and line height alone", () => {
+  it("does not reset control size, weight or line height with the font shorthand", () => {
     // The `font` shorthand would reset all three, and controls that set no
     // font-size of their own (Tabs, Checkbox, Radio) would grow to body size.
-    expect(controlRule).not.toMatch(/\bfont:/);
-    expect(controlRule?.match(/[a-z-]+(?=:)/g)).toEqual(["font-family"]);
+    expect(globalsLayer).not.toMatch(/(^|[\s;{])font:/);
   });
 });

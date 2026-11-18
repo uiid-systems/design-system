@@ -51,7 +51,8 @@
    * would also reset size, weight and line height, and controls that set no
    * size of their own (Tabs, Checkbox, Radio) would grow to the body size.
    */
-  :is(button, input, select, textarea) {
+  :is(button, input, select, textarea),
+  ::file-selector-button {
     font-family: inherit;
   }
 
