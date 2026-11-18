@@ -96,6 +96,20 @@ jobs:
       - name: Check built packages
         run: node scripts/check-dist.mjs
 
+      # The Storybook tests need the build above: install skips scripts, so the
+      # per-icon modules and the dist CSS Storybook loads only exist after it.
+      - name: Install Playwright Chromium
+        run: pnpm --filter @uiid/storybook exec playwright install --with-deps chromium
+
+      # Runs every story's play function and a11y check in Chromium. Its Vite
+      # cache is deliberately not cached, so a cold-cache regression (UI-403)
+      # fails here instead of hiding behind a warm cache.
+      - name: Run Storybook play and a11y tests
+        timeout-minutes: 10
+        env:
+          STORYBOOK_DISABLE_TELEMETRY: 1
+        run: pnpm --filter @uiid/storybook exec vitest run
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
