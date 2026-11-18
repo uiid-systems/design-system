@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Popover } from "./popover";
@@ -227,6 +227,42 @@ describe("Popover", () => {
     );
 
     expect(container.querySelector('[data-slot="popover-trigger"]')).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("opens when controlled without a trigger", () => {
+    render(
+      <Popover open={true} onOpenChange={() => {}}>
+        Popover content
+      </Popover>,
+    );
+
+    expect(screen.getByRole("dialog")).toHaveTextContent("Popover content");
+    expect(document.querySelector('[data-slot="popover-trigger"]')).toBeNull();
+  });
+
+  it("opens against a PositionerProps.anchor without a trigger", () => {
+    const AnchoredPopover = () => {
+      const anchor = useRef<HTMLDivElement>(null);
+      return (
+        <>
+          <div ref={anchor}>Anchor</div>
+          <Popover
+            open={true}
+            onOpenChange={() => {}}
+            PositionerProps={{ anchor }}
+          >
+            Popover content
+          </Popover>
+        </>
+      );
+    };
+    render(<AnchoredPopover />);
+
+    // happy-dom has no layout, so placement is not asserted: only that the
+    // popup opens with nothing standing in for a trigger.
+    expect(screen.getByRole("dialog")).toHaveTextContent("Popover content");
+    expect(document.querySelector('[data-slot="popover-trigger"]')).toBeNull();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 

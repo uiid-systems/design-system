@@ -40,3 +40,35 @@ A component element can't be inspected before it renders, so it is taken to be a
   …
 </Popover>
 ```
+
+## Opening from elsewhere
+
+Leave `trigger` out and no trigger is rendered at all — not a placeholder, not an empty tab stop. That is the shape for one popover shared by many openers, such as a list of rows that each open the same details. Control `open`, set it from whichever control was pressed, and anchor the popup to that control with `PositionerProps.anchor`: Base UI positions the popup against the trigger by default, and here there is none. Point `PopupProps.finalFocus` at the same control so focus returns to it on close.
+
+Passing `PositionerProps` replaces Popover's defaults rather than merging with them, so restate `sideOffset: 4` and `collisionPadding: 16` alongside `anchor`.
+
+```tsx
+const [open, setOpen] = useState(false);
+const opener = useRef<HTMLElement | null>(null);
+
+<Button
+  onClick={(event) => {
+    opener.current = event.currentTarget;
+    setOpen(true);
+  }}
+>
+  View
+</Button>
+
+<Popover
+  open={open}
+  onOpenChange={setOpen}
+  PositionerProps={{ anchor: opener, sideOffset: 4, collisionPadding: 16 }}
+  PopupProps={{ finalFocus: opener }}
+  title="Details"
+>
+  …
+</Popover>
+```
+
+A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
