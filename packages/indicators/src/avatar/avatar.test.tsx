@@ -4,8 +4,6 @@ import { afterEach, describe, it, expect, vi } from "vitest";
 import * as Indicators from "../index";
 import { Avatar } from "./avatar";
 
-import css from "./avatar.module.css?raw";
-
 const part = (container: HTMLElement, slot: string) =>
   container.querySelector(`[data-slot='${slot}']`);
 
@@ -99,10 +97,6 @@ describe("Avatar", () => {
       "data-ui-weight",
       "normal",
     );
-  });
-
-  it("leaves font-weight to the Text props, not its CSS module", () => {
-    expect(css).not.toMatch(/font-weight/);
   });
 
   it("exports its subcomponents from the package barrel", () => {

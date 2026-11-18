@@ -13,12 +13,16 @@
 
 .avatar-initials {
   color: var(--badge-fg, var(--shade-background));
-  padding-inline: 0.5rem;
   user-select: none;
 }
 
-/* Out of the Layer grid, so the image's intrinsic size cannot widen it. */
+/*
+ * Out of the Layer grid, so the image's intrinsic size cannot widen it.
+ * `grid-area: auto` undoes Layer's `grid-area: 1 / 1`, which would otherwise
+ * make the grid area (zero-width once the initials unmount) its box.
+ */
 .avatar-image {
+  grid-area: auto;
   position: absolute;
   inset: 0;
   width: 100%;
