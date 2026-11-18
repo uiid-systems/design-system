@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { describe, expect, it, vi } from "vitest";
 
@@ -312,6 +313,287 @@ describe("Table", () => {
         />,
       );
       expect(screen.getByText("Ada").tagName).toBe("EM");
+    });
+  });
+
+  describe("selection", () => {
+    const ITEMS = [{ name: "Ada" }, { name: "Grace" }, { name: "Linus" }];
+
+    const selectAll = () =>
+      screen.getByRole("checkbox", { name: "Select all rows" });
+    const rowCheckboxes = () =>
+      screen.getAllByRole("checkbox", { name: "Select row" });
+
+    it("renders no checkboxes unless selectable is set", () => {
+      render(<Table items={ITEMS} />);
+      expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    });
+
+    it("renders a header checkbox and one checkbox per row", () => {
+      render(<Table items={ITEMS} selectable />);
+      expect(selectAll()).not.toBeChecked();
+      expect(rowCheckboxes()).toHaveLength(ITEMS.length);
+    });
+
+    it("reports the selected rows in ascending order", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(rowCheckboxes()[2]);
+      await user.click(rowCheckboxes()[0]);
+
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 2]);
+      expect(rowCheckboxes()[0]).toBeChecked();
+      expect(rowCheckboxes()[1]).not.toBeChecked();
+      expect(rowCheckboxes()[2]).toBeChecked();
+    });
+
+    it("marks the header checkbox mixed while only some rows are selected", async () => {
+      const user = userEvent.setup();
+      render(<Table items={ITEMS} selectable />);
+
+      await user.click(rowCheckboxes()[1]);
+
+      expect(selectAll()).toBePartiallyChecked();
+    });
+
+    it("selects every row when the mixed header checkbox is clicked", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          defaultSelectedRows={[1]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(selectAll());
+
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2]);
+      expect(selectAll()).toBeChecked();
+      expect(selectAll()).not.toBePartiallyChecked();
+      for (const checkbox of rowCheckboxes()) expect(checkbox).toBeChecked();
+    });
+
+    it("checks the header checkbox once every row is selected one by one", async () => {
+      const user = userEvent.setup();
+      render(<Table items={ITEMS} selectable />);
+
+      for (const checkbox of rowCheckboxes()) await user.click(checkbox);
+
+      expect(selectAll()).toBeChecked();
+    });
+
+    it("leaves the header checkbox unchecked for an empty table", () => {
+      render(<Table items={[]} columns={["name"]} selectable />);
+      expect(selectAll()).not.toBeChecked();
+      expect(selectAll()).not.toBePartiallyChecked();
+    });
+
+    it("starts from defaultSelectedRows when uncontrolled", () => {
+      render(<Table items={ITEMS} selectable defaultSelectedRows={[0, 2]} />);
+
+      expect(rowCheckboxes()[0]).toBeChecked();
+      expect(rowCheckboxes()[1]).not.toBeChecked();
+      expect(rowCheckboxes()[2]).toBeChecked();
+      expect(selectAll()).toBePartiallyChecked();
+    });
+
+    it("waits for the parent to update selectedRows when controlled", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      const { rerender } = render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(rowCheckboxes()[1]);
+
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([1]);
+      expect(rowCheckboxes()[1]).not.toBeChecked();
+
+      rerender(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[1]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      expect(rowCheckboxes()[1]).toBeChecked();
+      expect(selectAll()).toBePartiallyChecked();
+    });
+
+    it("builds the next selection from the controlled selectedRows", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[2]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(rowCheckboxes()[0]);
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 2]);
+
+      await user.click(rowCheckboxes()[2]);
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([]);
+    });
+
+    it("ignores defaultSelectedRows when selectedRows is set", () => {
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[0]}
+          defaultSelectedRows={[1, 2]}
+        />,
+      );
+
+      expect(rowCheckboxes()[0]).toBeChecked();
+      expect(rowCheckboxes()[1]).not.toBeChecked();
+      expect(rowCheckboxes()[2]).not.toBeChecked();
+    });
+  });
+
+  describe("actions", () => {
+    const ITEMS = [{ name: "Ada" }, { name: "Grace" }];
+
+    it("labels the actions column for assistive technology", () => {
+      render(
+        <Table
+          items={ITEMS}
+          actions={{
+            primary: [{ icon: EllipsisVerticalIcon, tooltip: "Edit" }],
+          }}
+        />,
+      );
+      expect(
+        screen.getByRole("columnheader", { name: "Row actions" }),
+      ).toBeInTheDocument();
+    });
+
+    it("renders no actions column without actions", () => {
+      render(<Table items={ITEMS} />);
+      expect(
+        screen.queryByRole("columnheader", { name: "Row actions" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("calls a primary action with its row's item", async () => {
+      const user = userEvent.setup();
+      const onClick = vi.fn();
+      render(
+        <Table
+          items={ITEMS}
+          actions={{
+            primary: [{ icon: EllipsisVerticalIcon, tooltip: "Edit", onClick }],
+          }}
+        />,
+      );
+
+      await user.click(screen.getAllByRole("button", { name: "Edit" })[1]);
+
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onClick).toHaveBeenCalledWith(ITEMS[1]);
+    });
+
+    it("passes each action button and its row's item to wrapper", () => {
+      render(
+        <Table
+          items={ITEMS}
+          actions={{
+            primary: [
+              {
+                icon: EllipsisVerticalIcon,
+                tooltip: "Edit",
+                wrapper: (button, item) => (
+                  <div role="group" aria-label={`Edit ${item.name}`}>
+                    {button}
+                  </div>
+                ),
+              },
+            ],
+          }}
+        />,
+      );
+
+      const group = screen.getByRole("group", { name: "Edit Grace" });
+      expect(
+        within(group).getByRole("button", { name: "Edit" }),
+      ).toBeInTheDocument();
+    });
+
+    it("opens the secondary menu with its items", async () => {
+      const user = userEvent.setup();
+      render(
+        <Table
+          items={ITEMS}
+          actions={{
+            secondary: {
+              tooltip: "Settings",
+              items: [
+                { label: "Rename", value: "rename" },
+                { label: "Delete", value: "delete" },
+              ],
+            },
+          }}
+        />,
+      );
+
+      await user.click(screen.getAllByRole("button", { name: "Settings" })[0]);
+
+      expect(
+        await screen.findByRole("menuitem", { name: "Rename" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("menuitem", { name: "Delete" }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("footer", () => {
+    const ITEMS = [{ name: "Ada", email: "ada@example.com" }];
+
+    it("renders no footer by default", () => {
+      render(<Table items={ITEMS} />);
+      expect(screen.getAllByRole("rowgroup")).toHaveLength(2);
+    });
+
+    it("renders footer content in a cell spanning every column", () => {
+      render(
+        <Table
+          items={ITEMS}
+          selectable
+          actions={{
+            primary: [{ icon: EllipsisVerticalIcon, tooltip: "Edit" }],
+          }}
+          footer="1 member"
+        />,
+      );
+
+      const footer = screen.getAllByRole("rowgroup")[2];
+      const cell = within(footer).getByRole("cell");
+      expect(cell).toHaveTextContent("1 member");
+      /* Two data columns, plus the checkbox and actions columns. */
+      expect(cell).toHaveAttribute("colspan", "4");
     });
   });
 });
