@@ -1,6 +1,6 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { CodeEditor } from "./code-editor";
@@ -145,5 +145,186 @@ describe("CodeEditor", () => {
     );
     await act(async () => {});
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  // ============================================
+  // TEXTAREA PROPS
+  // ============================================
+
+  it("names the textbox generically when there is no filename", () => {
+    render(<CodeEditor defaultValue="test" />);
+    expect(
+      screen.getByRole("textbox", { name: "Code editor" }),
+    ).toBeInTheDocument();
+  });
+
+  it("names the textbox after the filename", () => {
+    render(<CodeEditor defaultValue="test" filename="app.tsx" />);
+    expect(
+      screen.getByRole("textbox", { name: "app.tsx code editor" }),
+    ).toBeInTheDocument();
+  });
+
+  it("lets a caller's aria-label win over the default", () => {
+    render(
+      <CodeEditor
+        defaultValue="test"
+        filename="app.tsx"
+        TextareaProps={{ "aria-label": "Snippet" }}
+      />,
+    );
+    expect(screen.getByRole("textbox", { name: "Snippet" })).toHaveAttribute(
+      "aria-label",
+      "Snippet",
+    );
+  });
+
+  it("emits no default aria-label when the caller supplies aria-labelledby", () => {
+    render(
+      <>
+        <span id="editor-label">Request body</span>
+        <CodeEditor
+          defaultValue="test"
+          filename="app.tsx"
+          TextareaProps={{ "aria-labelledby": "editor-label" }}
+        />
+      </>,
+    );
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).not.toHaveAttribute("aria-label");
+    expect(textarea).toHaveAttribute("aria-labelledby", "editor-label");
+  });
+
+  it("drops the default aria-label so a label element can name the textbox", () => {
+    render(
+      <>
+        <label htmlFor="source-id">Source</label>
+        <CodeEditor
+          defaultValue="test"
+          TextareaProps={{ id: "source-id", "aria-label": undefined }}
+        />
+      </>,
+    );
+    expect(screen.getByLabelText("Source")).not.toHaveAttribute("aria-label");
+  });
+
+  it("keeps a wrapper aria-label on the wrapper", () => {
+    render(<CodeEditor defaultValue="test" aria-label="Wrapper" />);
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveAttribute("aria-label", "Code editor");
+    expect(textarea.closest("[data-slot='code-editor']")).toHaveAttribute(
+      "aria-label",
+      "Wrapper",
+    );
+  });
+
+  it("passes name, id and onBlur to the textarea", async () => {
+    const handleBlur = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <CodeEditor
+        defaultValue="test"
+        TextareaProps={{ name: "source", id: "source-id", onBlur: handleBlur }}
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveAttribute("name", "source");
+    expect(textarea).toHaveAttribute("id", "source-id");
+
+    await user.click(textarea);
+    await user.tab();
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
+  it("merges a TextareaProps className and keeps the textarea data-slot", () => {
+    render(
+      <CodeEditor
+        defaultValue="test"
+        TextareaProps={{ className: "custom-textarea" }}
+      />,
+    );
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveClass("custom-textarea");
+    expect(textarea).toHaveAttribute("data-slot", "code-editor-textarea");
+  });
+
+  it("forwards TextareaProps.ref to the textarea element", () => {
+    const ref = createRef<HTMLTextAreaElement>();
+    render(<CodeEditor defaultValue="test" TextareaProps={{ ref }} />);
+    expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
+    expect(ref.current).toBe(screen.getByRole("textbox"));
+  });
+
+  it("keeps the top-level ref on the wrapper", () => {
+    const ref = createRef<HTMLDivElement>();
+    render(<CodeEditor defaultValue="test" ref={ref} />);
+    expect(ref.current).toHaveAttribute("data-slot", "code-editor");
+  });
+
+  it("chains TextareaProps.onChange with the editor's own change handling", async () => {
+    const handleChange = vi.fn();
+    const handleValueChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <CodeEditor
+        defaultValue=""
+        onValueChange={handleValueChange}
+        TextareaProps={{ onChange: handleChange }}
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox");
+    await user.type(textarea, "hi");
+
+    expect(textarea).toHaveValue("hi");
+    expect(handleValueChange).toHaveBeenLastCalledWith("hi");
+    expect(handleChange).toHaveBeenCalledTimes(2);
+  });
+
+  it("chains TextareaProps.onScroll with the highlight scroll sync", () => {
+    const handleScroll = vi.fn();
+    render(
+      <CodeEditor
+        defaultValue="test"
+        TextareaProps={{ onScroll: handleScroll }}
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox");
+    const highlight = textarea
+      .closest("[data-slot='code-editor']")!
+      .querySelector<HTMLElement>("[data-slot='code-editor-highlight']")!;
+
+    textarea.scrollTop = 40;
+    fireEvent.scroll(textarea);
+
+    expect(highlight.scrollTop).toBe(40);
+    expect(handleScroll).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not let TextareaProps override the editor's own textarea props", () => {
+    const unsafe = {
+      value: "hijacked",
+      readOnly: true,
+      disabled: true,
+      placeholder: "hijacked",
+    } as React.ComponentProps<"textarea">;
+
+    render(
+      <CodeEditor
+        value="real"
+        placeholder="Enter code..."
+        TextareaProps={unsafe}
+      />,
+    );
+
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).toHaveValue("real");
+    expect(textarea).toHaveAttribute("placeholder", "Enter code...");
+    expect(textarea).not.toHaveAttribute("readonly");
+    expect(textarea).not.toBeDisabled();
   });
 });

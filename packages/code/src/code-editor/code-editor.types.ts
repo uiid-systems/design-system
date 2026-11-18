@@ -6,6 +6,11 @@ import type {
 } from "../code-block/code-block.types";
 import type { BundledLanguage } from "../highlighter/highlighter.types";
 
+export type CodeEditorTextareaProps = Omit<
+  React.ComponentProps<"textarea">,
+  "value" | "defaultValue" | "readOnly" | "disabled" | "placeholder"
+>;
+
 export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /** The code content (controlled) */
   value?: string;
@@ -36,4 +41,6 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   HeaderProps?: CodeBlockHeaderProps;
   /** Props for the copy button */
   CopyButtonProps?: CodeBlockCopyButtonProps;
+  /** Props for the textarea, including `ref`, `name`, `id` and `aria-*` */
+  TextareaProps?: CodeEditorTextareaProps;
 };

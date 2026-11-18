@@ -1,7 +1,7 @@
 "use client";
 
 import { Stack, Layer } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cx, useComposedRefs } from "@uiid/utils";
 import { useState, useCallback, useRef } from "react";
 
 import { CodeBlockHeader } from "../code-block/subcomponents";
@@ -31,6 +31,7 @@ export const CodeEditor = ({
   copyable = DEFAULT_COPYABLE,
   HeaderProps,
   CopyButtonProps,
+  TextareaProps,
   className,
   ...props
 }: CodeEditorProps) => {
@@ -42,16 +43,38 @@ export const CodeEditor = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
 
+  // The props the editor also sets are pulled out of the slot, so they are
+  // composed or chained below rather than replaced by the caller's.
+  const {
+    ref: textareaRefProp,
+    className: textareaClassName,
+    onChange: onTextareaChange,
+    onScroll: onTextareaScroll,
+    ...textareaProps
+  } = TextareaProps ?? {};
+  const composedTextareaRef = useComposedRefs(textareaRefProp, textareaRef);
+
+  // `aria-labelledby` outranks `aria-label`, so no default is emitted beside it
+  const defaultLabel = textareaProps["aria-labelledby"]
+    ? undefined
+    : filename
+      ? `${filename} code editor`
+      : "Code editor";
+
   // Syntax highlighting
   const { html, loading } = useHighlight(value || " ", language);
 
   // Sync scroll between textarea and highlight layer
-  const handleScroll = useCallback(() => {
-    if (textareaRef.current && highlightRef.current) {
-      highlightRef.current.scrollTop = textareaRef.current.scrollTop;
-      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
-    }
-  }, []);
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLTextAreaElement>) => {
+      if (textareaRef.current && highlightRef.current) {
+        highlightRef.current.scrollTop = textareaRef.current.scrollTop;
+        highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
+      }
+      onTextareaScroll?.(e);
+    },
+    [onTextareaScroll],
+  );
 
   // Handle text changes
   const handleChange = useCallback(
@@ -62,8 +85,9 @@ export const CodeEditor = ({
         setInternalValue(newValue);
       }
       onValueChange?.(newValue);
+      onTextareaChange?.(e);
     },
-    [readOnly, isControlled, onValueChange],
+    [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
   // Show header if filename or copyable
@@ -111,23 +135,25 @@ export const CodeEditor = ({
           dangerouslySetInnerHTML={{ __html: html || "" }}
         />
 
-        {/* Transparent textarea overlay */}
+        {/* Transparent textarea overlay: defaults, then the caller's props, then the props the editor owns */}
         <textarea
-          ref={textareaRef}
+          aria-label={defaultLabel}
+          spellCheck={false}
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
+          data-gramm="false"
+          {...textareaProps}
+          ref={composedTextareaRef}
           data-slot="code-editor-textarea"
           data-readonly={readOnly || undefined}
-          className={styles["code-editor-textarea"]}
+          className={cx(styles["code-editor-textarea"], textareaClassName)}
           value={value}
           onChange={handleChange}
           onScroll={handleScroll}
           placeholder={placeholder}
           readOnly={readOnly}
           disabled={disabled}
-          spellCheck={false}
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          data-gramm="false"
         />
       </Layer>
 

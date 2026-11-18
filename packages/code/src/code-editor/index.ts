@@ -1,2 +1,5 @@
 export { CodeEditor } from "./code-editor";
-export type { CodeEditorProps } from "./code-editor.types";
+export type {
+  CodeEditorProps,
+  CodeEditorTextareaProps,
+} from "./code-editor.types";

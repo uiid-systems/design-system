@@ -18,6 +18,9 @@ import { CodeEditor } from "@uiid/code";
 
 // Options
 <CodeEditor showLineNumbers readOnly disabled />
+
+// Label, name or ref the textarea
+<CodeEditor TextareaProps={{ "aria-label": "Request body", name: "body", ref }} />
 ```
 
 ## Props
@@ -36,6 +39,9 @@ import { CodeEditor } from "@uiid/code";
 | `copyable`        | `boolean`                  | `true`         | Show copy button             |
 | `HeaderProps`     | `CodeBlockHeaderProps`     | —              | Props for header             |
 | `CopyButtonProps` | `CodeBlockCopyButtonProps` | —              | Props for copy button        |
+| `TextareaProps`   | `CodeEditorTextareaProps`  | —              | Props for the textarea       |
+
+`TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. When a `<label htmlFor>` names it instead, pass `"aria-label": undefined` so the default does not outrank the label. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
 
 > `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`
 
