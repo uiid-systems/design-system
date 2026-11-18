@@ -558,7 +558,7 @@ describe("Table", () => {
       expect(rowCheckboxes()[2]).not.toBeChecked();
     });
 
-    it("drops selected indices outside the rows from the next report", async () => {
+    it("keeps selected indices outside the rows in the next report", async () => {
       const user = userEvent.setup();
       const onSelectedRowsChange = vi.fn();
       render(
@@ -571,8 +571,36 @@ describe("Table", () => {
       );
 
       await user.click(rowCheckboxes()[2]);
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2, 7]);
+    });
 
-      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2]);
+    it("leaves selected ids outside the rows alone when toggling all", async () => {
+      const user = userEvent.setup();
+      const onSelectedRowsChange = vi.fn();
+      const { rerender } = render(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[1, 7]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([0, 1, 2, 7]);
+
+      rerender(
+        <Table
+          items={ITEMS}
+          selectable
+          selectedRows={[0, 1, 2, 7]}
+          onSelectedRowsChange={onSelectedRowsChange}
+        />,
+      );
+      expect(selectAll()).toBeChecked();
+
+      await user.click(selectAll());
+      expect(onSelectedRowsChange).toHaveBeenLastCalledWith([7]);
     });
 
     it("checks the header checkbox when items shrink under a full selection", () => {
@@ -662,6 +690,34 @@ describe("Table", () => {
 
         expect(rowCheckboxes()[0]).not.toBeChecked();
         expect(rowCheckboxes()[1]).toBeChecked();
+      });
+
+      it("keeps a selection on another page when toggling a row", async () => {
+        const user = userEvent.setup();
+        const onSelectedRowsChange = vi.fn();
+        const { rerender } = render(
+          <Table
+            items={ITEMS.slice(0, 2)}
+            selectable
+            getRowId={getRowId}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />,
+        );
+
+        await user.click(rowCheckboxes()[0]);
+
+        rerender(
+          <Table
+            items={ITEMS.slice(2)}
+            selectable
+            getRowId={getRowId}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />,
+        );
+        expect(selectAll()).not.toBePartiallyChecked();
+
+        await user.click(rowCheckboxes()[0]);
+        expect(onSelectedRowsChange).toHaveBeenLastCalledWith(["linus", "ada"]);
       });
     });
   });

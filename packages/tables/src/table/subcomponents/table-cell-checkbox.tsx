@@ -14,7 +14,8 @@ export type TableCellCheckboxProps = {
    * default label. */
   index?: number;
   /** Row id, matching one of the provider's `rowIds`. Takes precedence over
-   * `index` as the selection key. */
+   * `index` as the selection key. Pass `label` or `index` too, or every row
+   * checkbox is named "Select row". */
   rowId?: TableRowId;
   /** Accessible name of a row checkbox. Defaults to "Select row N" from
    * `index`, or "Select row" without one. */

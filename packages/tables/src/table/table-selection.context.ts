@@ -10,9 +10,11 @@ export type TableSelectionContextValue = {
   allSelected: boolean;
   /** True when at least one row is selected and `allSelected` is false. */
   someSelected: boolean;
-  /** Whether the row with this id (its index, when keyed by `count`) is selected. */
+  /** Whether the row with this id (its index, when keyed by `count`) is
+   * selected. */
   isSelected: (id: TableRowId) => boolean;
-  /** Selects every row, or clears the selection. */
+  /** Selects or deselects every current row. Selected ids that match no
+   * current row are left as they are. */
   toggleAll: (checked: boolean) => void;
   /** Selects or deselects the row with this id. */
   toggleRow: (id: TableRowId, checked: boolean) => void;
@@ -26,7 +28,8 @@ export const TableSelectionContext =
  * or some rows are selected, whether a given row is, and the actions that
  * toggle one row or all of them. `TableCellCheckbox` is built on it; call it
  * directly for selection-aware UI such as a bulk-action bar. Rows are identified
- * by the provider's row ids, or by index when it is given a `count`. Throws when no `TableSelectionProvider` is above the caller.
+ * by the provider's row ids, or by index when it is given a `count`. Throws
+ * when no `TableSelectionProvider` is above the caller.
  */
 export const useTableSelection = () => {
   const context = useContext(TableSelectionContext);

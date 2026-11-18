@@ -39,7 +39,6 @@ export type TableRootProps = React.ComponentProps<"table"> &
 
 export type TableProps<
   T extends Record<string, unknown> = Record<string, unknown>,
-  Id extends TableRowId = number,
 > = Omit<TableRootProps, "children"> & {
   items: T[];
   columns?: string[];
@@ -63,16 +62,18 @@ export type TableProps<
   footer?: React.ReactNode;
   /** Stable id of a row, keying its selection and its React key, so a
    * selection follows its record when `items` are sorted, filtered or paged.
-   * Defaults to the row index. */
-  getRowId?: (item: T, index: number) => Id;
+   * Ids must be unique among `items`. Defaults to the row index. */
+  getRowId?: (item: T, index: number) => TableRowId;
   /** Accessible name of a row's checkbox. Defaults to "Select row N". */
   getRowLabel?: (item: T, index: number) => string;
   /** Controlled selected row ids (indices without `getRowId`). Pair with
-   * `onSelectedRowsChange`. Ids that match no row are ignored. */
-  selectedRows?: readonly Id[];
+   * `onSelectedRowsChange`. Ids that match no current row stay selected but
+   * don't count toward the header checkbox. */
+  selectedRows?: TableRowId[];
   /** Initial selected row ids (indices without `getRowId`) when uncontrolled. */
-  defaultSelectedRows?: readonly Id[];
-  /** Called with the selected row ids, in row order, whenever selection
-   * changes. Ids that match no current row are left out. */
-  onSelectedRowsChange?: (selectedRows: Id[]) => void;
+  defaultSelectedRows?: TableRowId[];
+  /** Called with the selected row ids whenever selection changes: the current
+   * rows' ids in row order, then ids that match no current row (an off-screen
+   * page, a filtered-out record) in the order they were selected. */
+  onSelectedRowsChange?: (selectedRows: TableRowId[]) => void;
 };

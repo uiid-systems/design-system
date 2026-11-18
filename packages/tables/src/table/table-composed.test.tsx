@@ -14,6 +14,7 @@ import {
   TableRow,
   TableSelectionProvider,
   useTableSelection,
+  type TableRowId,
 } from "../index";
 
 const NAMES = ["Ada", "Grace", "Linus"];
@@ -26,7 +27,7 @@ const SelectionSummary = () => {
 };
 
 const renderComposedTable = (
-  onSelectedRowsChange?: (selectedRows: number[]) => void,
+  onSelectedRowsChange?: (selectedRows: TableRowId[]) => void,
 ) =>
   render(
     <TableSelectionProvider

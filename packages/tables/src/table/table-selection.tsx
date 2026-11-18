@@ -10,39 +10,42 @@ import type { TableRowId } from "./table.types";
 
 /** The rows a `TableSelectionProvider` selects from: their ids in row order,
  * or a row count, which keys each row by its index. */
-type TableSelectionRows<Id extends TableRowId> =
+type TableSelectionRows =
   | {
-      /** Id of every selectable row, in row order. Select-all covers these. */
-      rowIds: readonly Id[];
+      /** Id of every current row, in row order. Select-all covers these. */
+      rowIds: TableRowId[];
       count?: never;
     }
   | {
-      /** Number of selectable rows, keyed by index from 0 to `count - 1`. */
+      /** Number of current rows, keyed by index from 0 to `count - 1`. */
       count: number;
       rowIds?: never;
     };
 
-export type TableSelectionProviderProps<Id extends TableRowId = number> =
-  React.PropsWithChildren<
-    TableSelectionRows<Id> & {
-      /** Selected row ids, for controlled use with `onSelectedRowsChange`. */
-      selectedRows?: readonly Id[];
-      /** Initially selected row ids, for uncontrolled use. */
-      defaultSelectedRows?: readonly Id[];
-      /**
-       * Called with the selected row ids, in row order, whenever a row or all
-       * rows are toggled. Ids that match no current row are left out.
-       */
-      onSelectedRowsChange?: (selectedRows: Id[]) => void;
-    }
-  >;
+export type TableSelectionProviderProps = React.PropsWithChildren<
+  TableSelectionRows & {
+    /** Selected row ids, for controlled use with `onSelectedRowsChange`. */
+    selectedRows?: TableRowId[];
+    /** Initially selected row ids, for uncontrolled use. */
+    defaultSelectedRows?: TableRowId[];
+    /**
+     * Called with the selected row ids whenever a row or all rows are toggled:
+     * the current rows' ids in row order, then any selected ids that match no
+     * current row (an off-screen page, a filtered-out record) in the order
+     * they were selected.
+     */
+    onSelectedRowsChange?: (selectedRows: TableRowId[]) => void;
+  }
+>;
 
 /**
  * Client boundary for row selection. Holds (or proxies) selection state and
  * shares it with the header and row checkboxes via context, so the surrounding
  * table markup (rows, cells, data) can stay server-rendered. Selection is keyed
- * by row id: pass `rowIds`, or `count` to key rows by index. Only ids among the
- * current rows count toward the header checkbox state. Supports both controlled
+ * by row id: pass `rowIds`, or `count` to key rows by index. Selected ids that
+ * match no current row are kept, so a selection survives paging and filtering,
+ * but only the current rows count toward the header checkbox state, and
+ * select-all adds or removes only the current rows. Supports both controlled
  * (`selectedRows` + `onSelectedRowsChange`) and uncontrolled
  * (`defaultSelectedRows`) usage.
  *
@@ -52,16 +55,16 @@ export type TableSelectionProviderProps<Id extends TableRowId = number> =
  * `TableCellCheckbox` its `rowId` (or `index`). `TableCellCheckbox` and
  * `useTableSelection` throw without it.
  */
-export const TableSelectionProvider = <Id extends TableRowId = number>({
+export const TableSelectionProvider = ({
   rowIds,
   count = 0,
   selectedRows,
   defaultSelectedRows,
   onSelectedRowsChange,
   children,
-}: TableSelectionProviderProps<Id>) => {
-  const ids: readonly Id[] =
-    rowIds ?? (Array.from({ length: count }, (_, i) => i) as Id[]);
+}: TableSelectionProviderProps) => {
+  const ids: TableRowId[] =
+    rowIds ?? Array.from({ length: count }, (_, i) => i);
 
   const isControlled = selectedRows !== undefined;
   const [internal, setInternal] = useState<ReadonlySet<TableRowId>>(
@@ -72,22 +75,30 @@ export const TableSelectionProvider = <Id extends TableRowId = number>({
     ? new Set(selectedRows)
     : internal;
 
-  /* Ids outside the current rows (a stale index, a filtered-out record) are
-     ignored, so the header state always describes the rows on screen. */
   const selectedCount = ids.filter((id) => selected.has(id)).length;
   const allSelected = ids.length > 0 && selectedCount === ids.length;
 
-  const commit = (next: ReadonlySet<TableRowId>) => {
-    const rows = ids.filter((id) => next.has(id));
-    if (!isControlled) setInternal(new Set(rows));
-    onSelectedRowsChange?.(rows);
+  const commit = (next: Set<TableRowId>) => {
+    if (!isControlled) setInternal(next);
+    const current = new Set(ids);
+    onSelectedRowsChange?.([
+      ...ids.filter((id) => next.has(id)),
+      ...Array.from(next).filter((id) => !current.has(id)),
+    ]);
   };
 
   const value: TableSelectionContextValue = {
     allSelected,
     someSelected: selectedCount > 0 && !allSelected,
     isSelected: (id) => selected.has(id),
-    toggleAll: (checked) => commit(new Set(checked ? ids : [])),
+    toggleAll: (checked) => {
+      const next = new Set(selected);
+      for (const id of ids) {
+        if (checked) next.add(id);
+        else next.delete(id);
+      }
+      commit(next);
+    },
     toggleRow: (id, checked) => {
       const next = new Set(selected);
       if (checked) next.add(id);

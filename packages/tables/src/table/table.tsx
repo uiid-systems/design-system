@@ -12,15 +12,12 @@ import {
 } from "./subcomponents";
 import { TableSelectionProvider } from "./table-selection";
 import { TABLE_DEFAULT_SIZE } from "./table.constants";
-import type { TableProps, TableRowId } from "./table.types";
+import type { TableProps } from "./table.types";
 import { defaultFormatCell, defaultFormatHeader } from "./table.utils";
 
 const indexRowId = (_item: unknown, index: number) => index;
 
-export function Table<
-  T extends Record<string, unknown>,
-  Id extends TableRowId = number,
->({
+export function Table<T extends Record<string, unknown>>({
   items,
   actions,
   columns,
@@ -34,13 +31,13 @@ export function Table<
   stickyFooter,
   maxHeight,
   footer,
-  getRowId = indexRowId as (item: T, index: number) => Id,
+  getRowId = indexRowId,
   getRowLabel,
   selectedRows,
   defaultSelectedRows,
   onSelectedRowsChange,
   ...props
-}: TableProps<T, Id>): React.ReactElement {
+}: TableProps<T>): React.ReactElement {
   const rowIds = items.map(getRowId);
 
   const displayColumns =
