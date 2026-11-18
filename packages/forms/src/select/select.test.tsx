@@ -888,6 +888,23 @@ describe("Select popup layout props", () => {
     expect(popup()).toHaveAttribute("data-ui-fullwidth");
   });
 
+  // The list and its rows fill with `w`, not the deprecated `fullwidth` toggle.
+  it("fills the list and its rows with w", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} label="Pick" />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    const list = document.querySelector("[data-slot='select-list']");
+    expect(list).toHaveAttribute("data-ui-w", "full");
+    expect(list).not.toHaveAttribute("data-ui-fullwidth");
+    const row = screen
+      .getByRole("option", { name: "Option A" })
+      .querySelector("[data-slot='list-item']");
+    expect(row).toHaveAttribute("data-ui-w", "full");
+    expect(row).not.toHaveAttribute("data-ui-fullwidth");
+  });
+
   /*
    * Base UI merges the render element's own props over the part's, so a
    * default written as a literal on the `Card` would beat these.

@@ -31,7 +31,7 @@ export const SelectItem = <Value = string,>({
           against and the indicator stays pinned to the end. */}
       <ListItem
         render={<div />}
-        fullwidth
+        w="full"
         label={label}
         description={description}
         icon={icon}
