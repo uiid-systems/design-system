@@ -424,6 +424,18 @@ describe("Autocomplete input group", () => {
     expect(group).toHaveAttribute("title", "kept");
   });
 
+  it("renders a single group around a composed input", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput label="Fruit" />
+      </AutocompleteRoot>,
+    );
+    expect(screen.getAllByRole("group")).toHaveLength(1);
+    expect(screen.getByRole("group")).toContainElement(
+      screen.getByRole("combobox"),
+    );
+  });
+
   it("forwards InputGroupProps to the input group", () => {
     render(
       <Autocomplete items={items} InputGroupProps={{ className: "mine" }} />,

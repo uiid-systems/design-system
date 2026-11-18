@@ -336,6 +336,29 @@ describe("Combobox size variant", () => {
     expect(group).toHaveAttribute("title", "kept");
   });
 
+  /* `ComboboxInput` renders its own group, so composing it straight into
+     `ComboboxChips`, as the Multiple example does, must not add a second. */
+  it("renders a single group in a chips composition", () => {
+    render(
+      <ComboboxRoot multiple items={items}>
+        <ComboboxChips>
+          <ComboboxValue>
+            {(selected: string[]) =>
+              selected.map((item) => (
+                <ComboboxChip key={item}>{item}</ComboboxChip>
+              ))
+            }
+          </ComboboxValue>
+          <ComboboxInput placeholder="Add fruit" />
+        </ComboboxChips>
+      </ComboboxRoot>,
+    );
+    expect(screen.getAllByRole("group")).toHaveLength(1);
+    expect(screen.getByRole("group")).toContainElement(
+      screen.getByRole("combobox"),
+    );
+  });
+
   it("keeps the tier on the wrapper when a caller slot is present too", () => {
     const { container } = render(
       <Combobox items={items} size="large" before="$" />,
