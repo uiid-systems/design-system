@@ -325,6 +325,137 @@ describe("Select required reaches the control", () => {
   });
 });
 
+/* Base UI's Root owns the hidden input, the field registration and the
+   validation props, and Field dims the label off its own root, so `disabled`
+   has to reach both rather than the trigger alone. */
+describe("Select hands disabled to Root and Field", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("leaves a disabled select out of form submission", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" defaultValue="b" disabled />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(new FormData(form).getAll("pick")).toEqual([]);
+  });
+
+  it("leaves a disabled multiple select out of form submission", () => {
+    const { container } = render(
+      <form>
+        <Select
+          multiple
+          items={items}
+          name="pick"
+          defaultValue={["a", "b"]}
+          disabled
+        />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(new FormData(form).getAll("pick")).toEqual([]);
+  });
+
+  it("submits an enabled select's value", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" defaultValue="b" />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(new FormData(form).getAll("pick")).toEqual(["b"]);
+  });
+
+  it("dims the label and description with a disabled select", () => {
+    render(
+      <Select items={items} label="Pick" description="One only" disabled />,
+    );
+    expect(screen.getByText("Pick")).toHaveAttribute("data-disabled");
+    expect(screen.getByText("One only")).toHaveAttribute("data-disabled");
+  });
+
+  it("leaves the label and description undimmed while enabled", () => {
+    render(<Select items={items} label="Pick" description="One only" />);
+    expect(screen.getByText("Pick")).not.toHaveAttribute("data-disabled");
+    expect(screen.getByText("One only")).not.toHaveAttribute("data-disabled");
+  });
+
+  it("makes the trigger inert while disabled", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} disabled />);
+
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toBeDisabled();
+    expect(trigger).toHaveAttribute("data-disabled");
+
+    await user.click(trigger);
+
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  });
+
+  it("keeps a required disabled select out of validation", () => {
+    const { container } = render(
+      <form>
+        <Select
+          items={items}
+          name="pick"
+          placeholder="Pick one"
+          required
+          disabled
+        />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it("still validates a required select while enabled", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" placeholder="Pick one" required />
+      </form>,
+    );
+    const form = container.querySelector("form") as HTMLFormElement;
+    expect(form.checkValidity()).toBe(false);
+  });
+});
+
+describe("Select disabled items", () => {
+  const items: SelectItemProps[] = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B", disabled: true },
+  ];
+
+  it("disables only the flagged row in an enabled select", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(screen.getByRole("option", { name: /option b/i })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    expect(
+      screen.getByRole("option", { name: /option a/i }),
+    ).not.toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("does not select a disabled row", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /option b/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Option A");
+  });
+});
+
 describe("Select control surface", () => {
   const items = [
     { value: "a", label: "Option A" },
