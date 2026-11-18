@@ -362,3 +362,28 @@ describe("Slider state-function className", () => {
     expect(part(container, "thumb")).toHaveClass(styles["slider-thumb"]);
   });
 });
+
+describe("Slider RootProps precedence", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector("[data-slot='slider-root']");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <Slider aria-label="top" RootProps={{ "aria-label": "slot" }} />,
+    );
+    expect(root(container)).toHaveAttribute("aria-label", "top");
+  });
+
+  it("lets a top-level size win over RootProps.size", () => {
+    const { container } = render(
+      <Slider size="large" RootProps={{ size: "small" }} />,
+    );
+    expect(root(container)?.className).toContain("size-large");
+    expect(root(container)?.className).not.toContain("size-small");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(<Slider RootProps={{ size: "small" }} />);
+    expect(root(container)?.className).toContain("size-small");
+  });
+});

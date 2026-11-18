@@ -315,3 +315,21 @@ describe("Switch FieldProps className", () => {
     expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
   });
 });
+
+describe("Switch RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(<Switch aria-label="top" RootProps={{ "aria-label": "slot" }} />);
+    expect(screen.getByRole("switch")).toHaveAttribute("aria-label", "top");
+  });
+
+  it("lets a top-level size win over RootProps.size", () => {
+    render(<Switch size="large" RootProps={{ size: "small" }} />);
+    expect(screen.getByRole("switch").className).toContain("size-large");
+    expect(screen.getByRole("switch").className).not.toContain("size-small");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(<Switch RootProps={{ size: "small" }} />);
+    expect(screen.getByRole("switch").className).toContain("size-small");
+  });
+});
