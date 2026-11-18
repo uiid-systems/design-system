@@ -1,5 +1,5 @@
 import { render, waitFor } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { CodeBlock } from "../code-block/code-block";
 import { LanguageIcon } from "../code-block/language-icons";
@@ -17,9 +17,7 @@ const TS_CODE = "const x: number = 1;";
 
 /**
  * A grammar gives every token span a theme color; the plain language gives
- * none. Only the presence of colors is asserted, never which ones: Shiki stops
- * tokenizing a line after 500ms, so a cold first highlight on a busy machine
- * can color a line's tail differently from a warm one.
+ * none.
  */
 const COLORED_TOKEN = "span[style*='--shiki-light']";
 const hasColoredTokens = (html: string) =>
@@ -135,6 +133,22 @@ describe("highlight", () => {
     });
 
     expect(html.match(/class="line highlighted"/g)).toHaveLength(1);
+  });
+
+  it("colors a slow first highlight the same as a fast one", async () => {
+    const code = "const message: string = `hello ${name}`; // done";
+    const fast = await highlight(code, "typescript");
+
+    // Each clock read jumps a second, so every line looks slower than any
+    // per-line tokenize time limit Shiki could apply
+    let now = Date.now();
+    const clock = vi.spyOn(Date, "now").mockImplementation(() => (now += 1000));
+    try {
+      const slow = await highlight(code, "typescript");
+      expect(slow).toBe(fast);
+    } finally {
+      clock.mockRestore();
+    }
   });
 });
 

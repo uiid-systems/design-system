@@ -138,6 +138,10 @@ export async function highlight(
       dark: DEFAULT_THEME_DARK,
     },
     defaultColor: false,
+    // Shiki stops tokenizing a line after 500ms by default and leaves the rest
+    // of it one color. A first highlight on a slow device can cross that, and
+    // the block never re-highlights, so 0 turns the limit off.
+    tokenizeTimeLimit: 0,
     ...(meta && { meta }),
     transformers: [
       transformerNotationDiff(),
