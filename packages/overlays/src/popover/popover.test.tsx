@@ -188,6 +188,61 @@ describe("Popover", () => {
   });
 
   // ============================================
+  // NO TRIGGER
+  // ============================================
+  // A controlled popover anchored through `PositionerProps.anchor` has no
+  // trigger of its own, and nothing may stand in for one: not even an empty
+  // focusable span.
+
+  it("renders no trigger element when none is given", () => {
+    const { container } = render(
+      <Popover open={false} onOpenChange={() => {}}>
+        Popover content
+      </Popover>,
+    );
+
+    // The trigger renders inline, never in the portal, so the container is the
+    // whole place to look; the popup is unmounted while closed anyway.
+    expect(container.querySelector('[data-slot="popover-trigger"]')).toBeNull();
+    expect(container.querySelector("[tabindex], [role]")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders no trigger element for a conditional that came out false", () => {
+    const { container } = render(
+      <Popover trigger={false} open={false} onOpenChange={() => {}}>
+        Popover content
+      </Popover>,
+    );
+
+    expect(container.querySelector('[data-slot="popover-trigger"]')).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders no trigger element for an empty string", () => {
+    const { container } = render(
+      <Popover trigger="" open={false} onOpenChange={() => {}}>
+        Popover content
+      </Popover>,
+    );
+
+    expect(container.querySelector('[data-slot="popover-trigger"]')).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders a trigger from TriggerProps.render without a trigger prop", () => {
+    render(
+      <Popover TriggerProps={{ render: <button>Open popover</button> }}>
+        Popover content
+      </Popover>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Open popover" }),
+    ).toHaveAttribute("data-slot", "popover-trigger");
+  });
+
+  // ============================================
   // KEYBOARD INTERACTION
   // ============================================
 
