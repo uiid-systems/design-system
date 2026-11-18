@@ -7,11 +7,12 @@ import { cxState, useComposedRefs } from "@uiid/utils";
 import {
   Children,
   cloneElement,
+  Fragment,
   isValidElement,
   useCallback,
   useState,
 } from "react";
-import type { ReactElement, RefObject } from "react";
+import type { ReactElement, ReactNode, RefObject } from "react";
 
 import { TOGGLE_GROUP_DEFAULT_SIZE } from "./toggle-group.constants";
 import { useToggleIndicator } from "./toggle-group.hooks";
@@ -125,13 +126,17 @@ export const ToggleGroup = <Value extends string = string>({
     setActiveValue(groupValue);
   };
 
-  const enhancedChildren = Children.map(children, (child) =>
-    isValidElement<BaseToggle.Props>(child) ? (
-      <ToggleGroupItem child={child} size={size} buttonsRef={buttonsRef} />
-    ) : (
-      child
-    ),
-  );
+  // A Fragment takes no className or ref, so its own children are wrapped in
+  // its place.
+  const enhanceChildren = (nodes: ReactNode): ReactNode =>
+    Children.map(nodes, (child) => {
+      if (!isValidElement<BaseToggle.Props>(child)) return child;
+      if (child.type === Fragment) return enhanceChildren(child.props.children);
+      return (
+        <ToggleGroupItem child={child} size={size} buttonsRef={buttonsRef} />
+      );
+    });
+  const enhancedChildren = enhanceChildren(children);
 
   return (
     <BaseToggleGroup

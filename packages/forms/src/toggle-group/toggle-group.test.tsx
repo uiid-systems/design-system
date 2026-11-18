@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Toggle, ToggleGroup } from "./toggle-group";
 
@@ -525,6 +525,92 @@ describe("ToggleGroup root", () => {
 
     expect(yearly).not.toBeInTheDocument();
     expect(measure).not.toHaveBeenCalled();
+  });
+});
+
+describe("ToggleGroup indicator with changing toggles", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  /* happy-dom has no layout, so buttons are given a rect of their own and the
+     panel keeps happy-dom's zero one. */
+  const stubButtonRects = () =>
+    vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockImplementation(function (this: HTMLElement) {
+        const isButton = this.tagName === "BUTTON";
+        return {
+          top: isButton ? 4 : 0,
+          left: isButton ? 10 : 0,
+          width: isButton ? 80 : 0,
+          height: isButton ? 24 : 0,
+        } as DOMRect;
+      });
+
+  it("measures a pressed toggle that mounts after the group", async () => {
+    stubButtonRects();
+    const Pricing = ({ showYearly }: { showYearly: boolean }) => (
+      <ToggleGroup defaultValue={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        {showYearly && <Toggle value="yearly">Yearly</Toggle>}
+      </ToggleGroup>
+    );
+    const { container, rerender } = render(<Pricing showYearly={false} />);
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("");
+
+    rerender(<Pricing showYearly />);
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(
+        "80px",
+      ),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("9px");
+  });
+
+  it("clears the indicator when the pressed toggle unmounts", async () => {
+    stubButtonRects();
+    const { container, rerender } = render(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("80px");
+
+    rerender(
+      <ToggleGroup value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(""),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("");
+  });
+});
+
+describe("ToggleGroup Fragment children", () => {
+  it("styles toggles inside a Fragment without a React warning", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <>
+          <Toggle value="monthly">Monthly</Toggle>
+          <Toggle value="yearly">Yearly</Toggle>
+        </>
+      </ToggleGroup>,
+    );
+
+    for (const button of screen.getAllByRole("button")) {
+      expect(button).toHaveClass(styles["toggle-group-button"]);
+    }
+    expect(error).not.toHaveBeenCalled();
+    error.mockRestore();
   });
 });
 
