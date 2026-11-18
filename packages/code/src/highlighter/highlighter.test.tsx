@@ -11,6 +11,7 @@ import {
   loadLanguage,
   resolveLanguage,
 } from "./highlighter";
+import { TOKENIZE_MAX_LINE_LENGTH } from "./highlighter.constants";
 import type { CodeLanguage } from "./highlighter.types";
 
 const TS_CODE = "const x: number = 1;";
@@ -135,7 +136,7 @@ describe("highlight", () => {
     expect(html.match(/class="line highlighted"/g)).toHaveLength(1);
   });
 
-  it("colors a slow first highlight the same as a fast one", async () => {
+  it("colors a line fully even when tokenizing it exceeds Shiki's time limit", async () => {
     const code = "const message: string = `hello ${name}`; // done";
     const fast = await highlight(code, "typescript");
 
@@ -149,6 +150,16 @@ describe("highlight", () => {
     } finally {
       clock.mockRestore();
     }
+  });
+
+  it("renders a line past the length cap plain", async () => {
+    const long = `const x = [${"1, ".repeat(TOKENIZE_MAX_LINE_LENGTH / 3)}];`;
+    const html = await highlight(`${long}\n${TS_CODE}`, "typescript");
+    const [longLine, shortLine] = html.split('<span class="line">').slice(1);
+
+    expect(textOf(html)).toBe(`${long}\n${TS_CODE}`);
+    expect(hasColoredTokens(longLine)).toBe(false);
+    expect(hasColoredTokens(shortLine)).toBe(true);
   });
 });
 
