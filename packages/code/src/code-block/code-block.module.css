@@ -100,33 +100,24 @@
   }
 }
 
-/* Fullscreen overlay — centers the maximized block over a scrim.
-   Rendered in a portal on document.body (see code-block.tsx). */
-.code-block-fullscreen {
-  position: fixed;
-  inset: 0;
-  z-index: var(--globals-z-index-backdrop);
-  display: grid;
-  place-items: center;
-  padding: clamp(1rem, 4vw, 3rem);
-}
-
+/* Fullscreen dialog. Base UI portals the backdrop and popup to the body;
+   the popup is a second `.code-block` carrying [data-fullscreen]. */
 .code-block-backdrop {
-  position: absolute;
-  inset: 0;
-  /* MVP scrim — dims the page regardless of theme. */
-  background-color: rgb(0 0 0 / 50%);
+  composes: composes-backdrop from global;
+  z-index: var(--globals-z-index-backdrop);
 }
 
-/* Maximized block sits above the scrim and fills the available space. */
 .code-block[data-fullscreen] {
-  position: relative;
-  z-index: 1;
+  --code-block-fullscreen-inset: clamp(1rem, 4vw, 3rem);
+
+  position: fixed;
+  z-index: var(--globals-z-index-popup);
+  inset: var(--code-block-fullscreen-inset);
+  /* Fills the inset box up to 1100px, then centers in it. */
+  max-width: 1100px;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
-  width: min(1100px, 100%);
-  height: 100%;
-  max-height: 100%;
   box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
 }
 

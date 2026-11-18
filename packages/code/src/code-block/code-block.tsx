@@ -1,8 +1,8 @@
 "use client";
 
-import { cx } from "@uiid/utils";
+import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import { cx, cxState } from "@uiid/utils";
 import * as React from "react";
-import { createPortal } from "react-dom";
 
 import {
   DEFAULT_COPYABLE,
@@ -61,21 +61,6 @@ export const CodeBlock = ({
     [onFullscreenChange],
   );
 
-  // While fullscreen: close on Escape and lock body scroll behind the overlay.
-  React.useEffect(() => {
-    if (!fullscreen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleFullscreenChange(false);
-    };
-    document.addEventListener("keydown", onKeyDown);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [fullscreen, handleFullscreenChange]);
-
   const { html, error } = useHighlight(code, language, {
     highlightLines,
     enabled: !prerenderedHtml,
@@ -85,21 +70,27 @@ export const CodeBlock = ({
   const [expanded, setExpanded] = React.useState(defaultExpanded);
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
+  const popupRef = React.useRef<HTMLDivElement>(null);
+  // Land on the exit toggle, the control that replaces the one just pressed.
+  const focusExitButton = React.useCallback(
+    () =>
+      popupRef.current?.querySelector<HTMLElement>(
+        '[data-slot="code-block-fullscreen-button"]',
+      ) ?? true,
+    [],
+  );
 
   const collapsedMaxHeight = rows
     ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
     : undefined;
 
-  const isCollapsed = rows != null && !expanded && !fullscreen;
-  // In fullscreen the scroll area flex-fills the overlay (see CSS); skip the
-  // collapsed max-height so the inline style doesn't fight the layout.
-  const wrapperStyle =
-    !fullscreen && collapsedMaxHeight
-      ? {
-          maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
-          overflowY: "auto" as const,
-        }
-      : undefined;
+  const isCollapsed = rows != null && !expanded;
+  const wrapperStyle = collapsedMaxHeight
+    ? {
+        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
+        overflowY: "auto" as const,
+      }
+    : undefined;
 
   React.useEffect(() => {
     if (!rows || !contentWrapperRef.current || !displayHtml) {
@@ -109,17 +100,13 @@ export const CodeBlock = ({
     setOverflows(el.scrollHeight > el.clientHeight + 1);
   }, [displayHtml, rows, wrap, expanded]);
 
-  const showToggle = rows != null && (overflows || expanded) && !fullscreen;
+  const showToggle = rows != null && (overflows || expanded);
 
-  const block = (
-    <div
-      data-slot="code-block"
-      data-expanded={rows != null ? expanded || undefined : undefined}
-      data-wrap={wrap || undefined}
-      data-fullscreen={fullscreen || undefined}
-      className={cx(styles["code-block"], className)}
-      {...props}
-    >
+  // The header, code and error are shared by the inline block and the
+  // fullscreen dialog. The inline block stays mounted while the dialog is open,
+  // so its toggle can take focus back and its copy state survives.
+  const renderParts = (inFullscreen: boolean) => (
+    <>
       <CodeBlockHeader
         filename={filename}
         language={languageProp}
@@ -139,10 +126,10 @@ export const CodeBlock = ({
       />
 
       <div
-        ref={contentWrapperRef}
+        ref={inFullscreen ? undefined : contentWrapperRef}
         data-slot="code-block-scroll"
         className={styles["code-block-scroll"]}
-        style={wrapperStyle}
+        style={inFullscreen ? undefined : wrapperStyle}
       >
         <CodeBlockContent
           html={displayHtml}
@@ -160,38 +147,59 @@ export const CodeBlock = ({
           [Error: {error.message}]
         </div>
       )}
-
-      {showToggle && (
-        <button
-          type="button"
-          data-slot="code-block-expand-toggle"
-          className={styles["code-block-expand-toggle"]}
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-        >
-          {expanded ? "Show less" : "Show more"}
-        </button>
-      )}
-    </div>
+    </>
   );
 
-  if (!fullscreen) return block;
-
-  // Portal to the body so the overlay escapes any ancestor stacking/overflow
-  // context. `fullscreen` is always false on the server, so SSR renders `block`.
-  return createPortal(
-    <div
-      data-slot="code-block-fullscreen"
-      className={styles["code-block-fullscreen"]}
-    >
+  return (
+    <>
       <div
-        data-slot="code-block-backdrop"
-        className={styles["code-block-backdrop"]}
-        onClick={() => handleFullscreenChange(false)}
-      />
-      {block}
-    </div>,
-    document.body,
+        data-slot="code-block"
+        data-expanded={rows != null ? expanded || undefined : undefined}
+        data-wrap={wrap || undefined}
+        className={cx(styles["code-block"], className)}
+        {...props}
+      >
+        {renderParts(false)}
+
+        {showToggle && (
+          <button
+            type="button"
+            data-slot="code-block-expand-toggle"
+            className={styles["code-block-expand-toggle"]}
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+          >
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        )}
+      </div>
+
+      {fullscreenable && (
+        <BaseDialog.Root
+          open={fullscreen}
+          onOpenChange={handleFullscreenChange}
+        >
+          <BaseDialog.Portal data-slot="code-block-fullscreen">
+            <BaseDialog.Backdrop
+              data-slot="code-block-backdrop"
+              className={styles["code-block-backdrop"]}
+            />
+            <BaseDialog.Popup
+              ref={popupRef}
+              data-slot="code-block"
+              data-wrap={wrap || undefined}
+              data-fullscreen
+              aria-modal="true"
+              aria-label={filename ?? "Code block"}
+              className={cxState(styles["code-block"], className)}
+              initialFocus={focusExitButton}
+            >
+              {renderParts(true)}
+            </BaseDialog.Popup>
+          </BaseDialog.Portal>
+        </BaseDialog.Root>
+      )}
+    </>
   );
 };
 CodeBlock.displayName = "CodeBlock";
