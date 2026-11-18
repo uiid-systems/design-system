@@ -32,6 +32,13 @@
   animation: pulse 1.5s infinite;
 }
 
+/* With reduced motion the dot holds still at full opacity. */
+@media (prefers-reduced-motion: reduce) {
+  .toggle-pulse {
+    animation: none;
+  }
+}
+
 /* When a color is applied, the dot is a small filled surface, so it takes the
    fill treatment published by the `.palette-<hue>` class from @uiid/tokens. */
 .status-dot[data-colored] {
