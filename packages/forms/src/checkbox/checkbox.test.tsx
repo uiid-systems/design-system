@@ -6,6 +6,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
 
+import fieldStyles from "../field/field.module.css";
 import styles from "./checkbox.module.css";
 import css from "./checkbox.module.css?raw";
 
@@ -327,7 +328,7 @@ describe("Checkbox FieldProps className", () => {
     const row = container.querySelector("[data-slot='field-row']");
 
     expect(row).toHaveClass("custom-row");
-    expect(row?.className).toMatch(/field-row-bare/);
+    expect(row).toHaveClass(fieldStyles["field-row-bare"]);
     expect(row).not.toHaveClass(styles["checkbox-label"]);
     expect(row).not.toHaveClass(styles["toggle-bordered"]);
     expect(row).not.toHaveClass(styles["toggle-reversed"]);

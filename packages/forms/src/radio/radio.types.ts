@@ -27,6 +27,6 @@ export type RadioIndicatorProps = BaseRadio.Indicator.Props;
 
 export type RadioProps = RadioRootProps &
   Pick<FieldRowProps, "label" | "description"> & {
-    FieldProps?: FieldRowProps;
+    FieldProps?: Omit<FieldRowProps, "frameClassName">;
     IndicatorProps?: RadioIndicatorProps;
   };

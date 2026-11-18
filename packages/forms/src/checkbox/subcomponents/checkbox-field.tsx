@@ -18,11 +18,11 @@ export const CheckboxField = ({
   return (
     <FieldRow
       size={size}
+      {...props}
       frameClassName={cx(
         styles["checkbox-label"],
         checkboxVariants({ reversed, bordered }),
       )}
-      {...props}
     >
       {children}
     </FieldRow>

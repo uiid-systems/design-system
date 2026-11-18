@@ -42,10 +42,11 @@ export type FieldRowProps = GroupProps &
     DescriptionProps?: FieldDescriptionProps;
     ErrorProps?: FieldErrorProps;
     /**
-     * The frame the wrapping component paints around the row: its bordered and
-     * reversed treatments and its disabled dimming. Kept apart from `className`
-     * because a row with no label or description has no frame to paint, so it
-     * drops these and keeps the caller's `className`.
+     * The frame the wrapping component paints around the row, such as its
+     * bordered and reversed treatments. Kept apart from `className` because a
+     * row with no label or description has no frame to paint, so it drops these
+     * and keeps the caller's `className`. This is for wrapper components (Radio,
+     * Checkbox, Switch), not app code, and it is dropped on a bare row.
      */
     frameClassName?: string;
   }>;

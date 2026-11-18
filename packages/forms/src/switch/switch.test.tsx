@@ -6,6 +6,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Switch } from "./switch";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
+import fieldStyles from "../field/field.module.css";
 import styles from "./switch.module.css";
 
 describe("Switch", () => {
@@ -308,7 +309,7 @@ describe("Switch FieldProps className", () => {
     const row = container.querySelector("[data-slot='field-row']");
 
     expect(row).toHaveClass("custom-row");
-    expect(row?.className).toMatch(/field-row-bare/);
+    expect(row).toHaveClass(fieldStyles["field-row-bare"]);
     expect(row).not.toHaveClass(styles["switch-label"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);

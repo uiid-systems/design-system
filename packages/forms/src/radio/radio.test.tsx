@@ -8,6 +8,7 @@ import { RadioGroupRoot } from "../radio-group/subcomponents";
 import { Radio } from "./radio";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
+import fieldStyles from "../field/field.module.css";
 import styles from "./radio.module.css";
 
 describe("Radio", () => {
@@ -301,7 +302,7 @@ describe("Radio FieldProps className", () => {
     const row = container.querySelector("[data-slot='field-row']");
 
     expect(row).toHaveClass("custom-row");
-    expect(row?.className).toMatch(/field-row-bare/);
+    expect(row).toHaveClass(fieldStyles["field-row-bare"]);
     expect(row).not.toHaveClass(checkboxStyles["checkbox-label"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);

@@ -18,11 +18,11 @@ export const SwitchField = ({
   return (
     <FieldRow
       size={size}
+      {...props}
       frameClassName={cx(
         styles["switch-label"],
         checkboxVariants({ reversed, bordered }),
       )}
-      {...props}
     >
       {children}
     </FieldRow>
