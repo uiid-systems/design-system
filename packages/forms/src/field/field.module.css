@@ -131,6 +131,13 @@
   color: var(--palette-text);
 }
 
+/* The error popup is a Popover painted as a tooltip; see field-error-tooltip.tsx.
+   Popover sets its own max-width from this variable, so it takes the tooltip's. */
+.field-error-popup {
+  composes: composes-tooltip from global;
+  --popover-max-width: var(--tooltip-max-width);
+}
+
 .field-hint svg,
 .field-error-tooltip svg {
   display: inline-block;

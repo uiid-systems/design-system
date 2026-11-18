@@ -186,23 +186,21 @@ describe("Field errorType", () => {
     expect(error).toHaveTextContent("Use a work address");
   });
 
-  it("keeps the tooltip error's icon as the tooltip trigger", () => {
-    const { container } = render(
+  it("keeps the tooltip error's icon as the trigger", () => {
+    render(
       <Field label="Email" errorType="tooltip" ErrorProps={{ match: true }}>
         <FieldControl />
       </Field>,
     );
-    const trigger = container.querySelector(
-      "[data-slot='field-error-tooltip'] [data-slot='tooltip-trigger']",
-    );
+    const trigger = screen.getByRole("button", { name: "Show error" });
 
-    expect(trigger?.className).toMatch(/field-error-tooltip/);
-    expect(trigger?.querySelector("svg")).toBeInTheDocument();
+    expect(trigger.className).toMatch(/field-error-tooltip/);
+    expect(trigger.querySelector("svg")).toBeInTheDocument();
   });
 
   it("shows the tooltip error's message in the popup on hover", async () => {
     const user = userEvent.setup();
-    const { container } = render(
+    render(
       <Field
         label="Email"
         errorType="tooltip"
@@ -212,17 +210,95 @@ describe("Field errorType", () => {
       </Field>,
     );
 
-    await user.hover(
-      container.querySelector("[data-slot='tooltip-trigger']") as HTMLElement,
-    );
+    await user.hover(screen.getByRole("button", { name: "Show error" }));
 
     await waitFor(() =>
       expect(
-        document.querySelector("[data-slot='tooltip-popup']"),
+        document.querySelector("[data-slot='popover-popup']"),
       ).toHaveTextContent("Enter an email"),
     );
     const [id] = describedBy(screen.getByRole("textbox"));
     expect(document.getElementById(id)).toHaveTextContent(/^Enter an email$/);
+  });
+
+  it("opens the tooltip error from the keyboard", async () => {
+    const user = userEvent.setup();
+    render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{ match: true, children: "Enter an email" }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+
+    // The icon sits in the label row, so it is the tab stop before the control.
+    await user.click(screen.getByRole("textbox"));
+    await user.tab({ shift: true });
+    const trigger = screen.getByRole("button", { name: "Show error" });
+    expect(trigger).toHaveFocus();
+
+    await user.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='popover-popup']"),
+      ).toHaveTextContent("Enter an email"),
+    );
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    await user.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='popover-popup']"),
+      ).not.toBeInTheDocument(),
+    );
+    expect(trigger).toHaveFocus();
+  });
+
+  it("opens the tooltip error on a touch press", async () => {
+    const user = userEvent.setup();
+    render(
+      <Field
+        label="Email"
+        errorType="tooltip"
+        ErrorProps={{ match: true, children: "Enter an email" }}
+      >
+        <FieldControl />
+      </Field>,
+    );
+
+    await user.pointer({
+      keys: "[TouchA]",
+      target: screen.getByRole("button", { name: "Show error" }),
+    });
+
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='popover-popup']"),
+      ).toHaveTextContent("Enter an email"),
+    );
+  });
+
+  it("keeps every tooltip error in a block popup, not inside a span", async () => {
+    const user = userEvent.setup();
+    render(
+      <Form errors={{ email: ["Enter an email", "Use a work address"] }}>
+        <Field name="email" label="Email" errorType="tooltip">
+          <FieldControl />
+        </Field>
+      </Form>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show error" }));
+
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='popover-popup'] ul"),
+      ).toBeInTheDocument(),
+    );
+    const list = document.querySelector("[data-slot='popover-popup'] ul");
+    expect(list?.closest("span")).toBeNull();
   });
 
   it("passes ErrorProps to the tooltip error element", () => {
