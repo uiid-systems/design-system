@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 
 import { Resizable } from "./resizable";
 import * as Examples from "./resizable.examples";
-import type { ResizableHandleProps } from "./resizable.types";
+import type { ResizableHandleProps, ResizableProps } from "./resizable.types";
 import { ResizableHandle, ResizablePanel } from "./subcomponents";
 
 import styles from "./resizable.module.css";
@@ -12,7 +12,7 @@ import css from "./resizable.module.css?raw";
 
 const renderResizable = (handleProps?: ResizableHandleProps) =>
   render(
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel defaultSize="50%">One</ResizablePanel>
       <ResizableHandle {...handleProps} />
       <ResizablePanel defaultSize="50%">Two</ResizablePanel>
@@ -63,6 +63,43 @@ describe("Resizable", () => {
       "data-direction",
       "horizontal",
     );
+    expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
+  });
+
+  const renderGroup = (props: Omit<ResizableProps, "children"> = {}) =>
+    render(
+      <Resizable {...props}>
+        <ResizablePanel>One</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel>Two</ResizablePanel>
+      </Resizable>,
+    );
+  const getRoot = () => document.querySelector("[data-slot='resizable']");
+
+  it("lays the panels out vertically with orientation", () => {
+    renderGroup({ orientation: "vertical" });
+    expect(getRoot()).toHaveAttribute("data-direction", "vertical");
+    expect(getHandle()).toHaveAttribute("aria-orientation", "horizontal");
+  });
+
+  it("defaults to a horizontal group", () => {
+    renderGroup();
+    expect(getRoot()).toHaveAttribute("data-direction", "horizontal");
+    expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
+  });
+
+  it("still takes the deprecated direction on its own", () => {
+    renderGroup({ direction: "vertical" });
+    expect(getRoot()).toHaveAttribute("data-direction", "vertical");
+    expect(getHandle()).toHaveAttribute("aria-orientation", "horizontal");
+  });
+
+  it("lets orientation win over direction", () => {
+    renderGroup({
+      orientation: "horizontal",
+      direction: "vertical",
+    });
+    expect(getRoot()).toHaveAttribute("data-direction", "horizontal");
     expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
   });
 

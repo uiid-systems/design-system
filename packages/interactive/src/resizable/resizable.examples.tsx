@@ -22,7 +22,7 @@ const Pane = ({ children }: { children: React.ReactNode }) => (
 
 export const Default = () => (
   <Frame>
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel defaultSize="50%">
         <Pane>One</Pane>
       </ResizablePanel>
@@ -36,7 +36,7 @@ export const Default = () => (
 
 export const Vertical = () => (
   <Frame>
-    <Resizable direction="vertical">
+    <Resizable orientation="vertical">
       <ResizablePanel defaultSize="30%">
         <Pane>Header</Pane>
       </ResizablePanel>
@@ -54,7 +54,7 @@ export const Vertical = () => (
  */
 export const Constraints = () => (
   <Frame>
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel defaultSize="25%" minSize="15%" maxSize="40%">
         <Pane>Sidebar</Pane>
       </ResizablePanel>
@@ -69,13 +69,13 @@ export const Constraints = () => (
 /* Nest a group in a panel for a split in both directions. */
 export const Nested = () => (
   <Frame>
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel defaultSize="30%">
         <Pane>Sidebar</Pane>
       </ResizablePanel>
       <ResizableHandle />
       <ResizablePanel>
-        <Resizable direction="vertical">
+        <Resizable orientation="vertical">
           <ResizablePanel defaultSize="60%">
             <Pane>Editor</Pane>
           </ResizablePanel>
@@ -92,7 +92,7 @@ export const Nested = () => (
 /* `withHandle={false}` drops the grip and leaves the line. */
 export const WithoutGrip = () => (
   <Frame>
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel>
         <Pane>One</Pane>
       </ResizablePanel>
@@ -110,7 +110,7 @@ export const WithoutGrip = () => (
  */
 export const Disabled = () => (
   <Frame>
-    <Resizable direction="horizontal">
+    <Resizable orientation="horizontal">
       <ResizablePanel defaultSize="40%" disabled>
         <Pane>Locked</Pane>
       </ResizablePanel>
@@ -129,7 +129,7 @@ export const Layout = () => {
   return (
     <Stack gap={2} fullwidth>
       <Frame>
-        <Resizable direction="horizontal" onLayoutChanged={setLayout}>
+        <Resizable orientation="horizontal" onLayoutChanged={setLayout}>
           <ResizablePanel id="left" defaultSize="50%">
             <Pane>Left</Pane>
           </ResizablePanel>
