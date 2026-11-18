@@ -205,6 +205,15 @@
   }
 
   /*
+   * A single-selection group refuses to release its pressed toggle, so that
+   * toggle does not offer the pointer. In a `multiple` group pressing it again
+   * releases it, so it keeps the pointer there.
+   */
+  .toggle-group-panel:not([data-multiple]) &[data-pressed] {
+    cursor: default;
+  }
+
+  /*
    * A `multiple` group renders no indicator, because one pill cannot sit behind
    * several pressed toggles at once. Each pressed toggle paints the background
    * the indicator would have given it, so the `--shade-background` label above

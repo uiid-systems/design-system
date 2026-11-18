@@ -16,7 +16,7 @@ The group shrink-wraps its toggles rather than stretching to fill its container,
 
 `value` is always an array, even in single-selection mode. Leave it unset and the group runs itself from `defaultValue`; pass `value` and `onValueChange` to drive it yourself. The handler is Base UI's own: it receives the new array and the event details, so calling `eventDetails.cancel()` refuses the change, and a group whose values are a string union hands that union back.
 
-A single-selection group that holds a value keeps one. Pressing the pressed toggle again, by pointer or by keyboard, changes nothing and does not call `onValueChange`. A group can still start empty, by leaving out `defaultValue` or passing `value={[]}`, and it shows no indicator until a toggle is pressed.
+A single-selection group that holds a value keeps one. Pressing the pressed toggle again, by pointer or by keyboard, changes nothing and does not call `onValueChange`. A `Toggle`'s own `onPressedChange` still receives `false` for that refused press, because Base UI calls it before the group's handler; the toggle stays pressed. A group can still start empty, by leaving out `defaultValue` or passing `value={[]}`, and it shows no indicator until a toggle is pressed.
 
 Children are `Toggle` elements, each carrying its `value`. An icon-only group needs an `aria-label` on every toggle.
 
