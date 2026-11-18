@@ -418,3 +418,53 @@ describe("Autocomplete hands disabled to Field", () => {
     expect(screen.getByText("Pick one")).not.toHaveAttribute("data-disabled");
   });
 });
+
+/* Field paints the label's marker, Root marks the input. `required` has to
+   reach both, and the monolith used to hand it to Root alone. */
+describe("Autocomplete required reaches the label and the control", () => {
+  const items = ["apple", "banana"];
+
+  it("renders the label's required marker", () => {
+    const { container } = render(
+      <Autocomplete items={items} label="Fruit" required />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-required",
+    );
+  });
+
+  it("still marks the submitted control required", () => {
+    render(<Autocomplete items={items} label="Fruit" name="fruit" required />);
+
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("name", "fruit");
+    expect(input).toHaveAttribute("required");
+    expect(input).toHaveAttribute("aria-required", "true");
+  });
+
+  it("renders no marker when not required", () => {
+    const { container } = render(<Autocomplete items={items} label="Fruit" />);
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).toBeNull();
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("required");
+  });
+
+  it("marks the label from a composed AutocompleteInput", () => {
+    const { container } = render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput label="Fruit" required />
+      </AutocompleteRoot>,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute("required");
+  });
+});

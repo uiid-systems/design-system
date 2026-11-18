@@ -26,6 +26,7 @@ export const Autocomplete = ({
   size,
   color,
   disabled,
+  required,
   onFocus,
   onBlur,
   RootProps,
@@ -48,6 +49,7 @@ export const Autocomplete = ({
       items={items}
       name={name}
       disabled={disabled}
+      required={required}
       {...RootProps}
       {...rootProps}
     >
@@ -62,6 +64,7 @@ export const Autocomplete = ({
         size={size}
         color={color}
         disabled={disabled}
+        required={required}
         onFocus={onFocus}
         onBlur={onBlur}
         {...domAttributes}

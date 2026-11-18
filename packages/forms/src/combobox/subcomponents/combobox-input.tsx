@@ -20,6 +20,7 @@ export const ComboboxInput = ({
   size,
   color,
   disabled,
+  required,
   FieldProps,
   className,
   ...props
@@ -33,6 +34,7 @@ export const ComboboxInput = ({
       description={description}
       action={action}
       disabled={disabled}
+      required={required}
       fullwidth
       size={size}
       {...FieldProps}
@@ -71,6 +73,7 @@ export const ComboboxInput = ({
           )}
           placeholder={placeholder}
           disabled={disabled}
+          required={required}
           {...props}
         />
       </InputWrapper>
