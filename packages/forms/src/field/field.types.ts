@@ -29,7 +29,7 @@ export type FieldLabelProps = Field.Label.Props &
 export type FieldDescriptionProps = Field.Description.Props &
   Omit<TextProps, "ref">;
 
-export type FieldHintValue = { icon?: Icon; text?: string };
+export type FieldHintValue = { icon?: Icon; text: string };
 
 export type FieldRowProps = GroupProps &
   FieldRowVariants &

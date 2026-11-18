@@ -463,13 +463,13 @@ describe("Field action slot", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("does not accept a tooltip on FieldHint", () => {
+  /* Type-level only: the package's tsc fails if either directive goes unused. */
+  it("types FieldHint as a static hint that always has text", () => {
     const Icon = () => <svg />;
     // @ts-expect-error -- the `{ icon, tooltip }` form was removed (UI-398)
-    render(<FieldHint icon={Icon} tooltip="Used for receipts only." />);
-    expect(
-      screen.queryByText("Used for receipts only."),
-    ).not.toBeInTheDocument();
+    void (<FieldHint icon={Icon} text="Optional" tooltip="Receipts only." />);
+    // @ts-expect-error -- a hint always says something
+    void (<FieldHint icon={Icon} />);
   });
 
   it("renders an ActionProps.children of 0 rather than falling back to action", () => {

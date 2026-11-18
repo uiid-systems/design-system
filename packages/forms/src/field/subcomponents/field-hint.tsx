@@ -19,7 +19,7 @@ export const FieldHint = ({
     {...props}
   >
     {Icon && <Icon />}
-    {text && <Text size={-1}>{text}</Text>}
+    <Text size={-1}>{text}</Text>
   </span>
 );
 FieldHint.displayName = "FieldHint";
