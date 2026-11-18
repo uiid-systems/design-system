@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { Table } from "./table";
 import { TABLE_MOCK_DATA } from "./table.mocks";
@@ -161,6 +161,86 @@ describe("Table", () => {
     await waitFor(() => {
       expect(container).toHaveAttribute("data-scroll-start");
       expect(container).toHaveAttribute("data-scroll-end");
+    });
+  });
+
+  describe("cell values", () => {
+    const cells = () =>
+      screen.getAllByRole("cell").map((cell) => cell.textContent);
+
+    it("renders strings and numbers as text", () => {
+      render(<Table items={[{ name: "Ada", age: 36, score: 0 }]} />);
+      expect(cells()).toEqual(["Ada", "36", "0"]);
+    });
+
+    it("renders a React element as itself", () => {
+      render(<Table items={[{ name: <strong>Ada</strong> }]} />);
+      expect(screen.getByText("Ada").tagName).toBe("STRONG");
+    });
+
+    it("renders null as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", email: null }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders undefined as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", email: undefined }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an empty cell for a key a later row is missing", () => {
+      const items: Record<string, unknown>[] = [
+        { name: "Ada", email: "ada@example.com" },
+        { name: "Grace" },
+      ];
+      render(<Table items={items} />);
+      expect(cells()).toEqual(["Ada", "ada@example.com", "Grace", ""]);
+    });
+
+    it("renders an object as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", address: { city: "London" } }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders an array as an empty cell", () => {
+      render(<Table items={[{ name: "Ada", tags: ["a", "b"] }]} />);
+      expect(cells()).toEqual(["Ada", ""]);
+    });
+
+    it("renders a boolean as text", () => {
+      render(<Table items={[{ name: "Ada", active: false }]} />);
+      expect(cells()).toEqual(["Ada", "false"]);
+    });
+
+    it("renders what formatCell returns", () => {
+      render(
+        <Table
+          items={[{ name: "Ada", tags: ["a", "b"], email: null }]}
+          formatCell={(value) =>
+            Array.isArray(value) ? value.join(", ") : String(value ?? "—")
+          }
+        />,
+      );
+      expect(cells()).toEqual(["Ada", "a, b", "—"]);
+    });
+
+    it("calls formatCell with the value, the column and the row", () => {
+      const item = { name: "Ada", address: { city: "London" } };
+      const formatCell = vi.fn(() => "x");
+      render(<Table items={[item]} formatCell={formatCell} />);
+
+      expect(formatCell).toHaveBeenCalledWith("Ada", "name", item);
+      expect(formatCell).toHaveBeenCalledWith(item.address, "address", item);
+    });
+
+    it("lets formatCell render an element", () => {
+      render(
+        <Table
+          items={[{ name: "Ada" }]}
+          formatCell={(value) => <em>{String(value)}</em>}
+        />,
+      );
+      expect(screen.getByText("Ada").tagName).toBe("EM");
     });
   });
 });
