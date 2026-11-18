@@ -98,75 +98,82 @@ describe("Tabs", () => {
   // ITEMS ARRIVING AFTER MOUNT
   // ============================================
 
-  // Base UI dedupes its dev warnings, so each case gets its own test.
+  describe("items arriving after mount", () => {
+    /*
+     * Base UI dedupes its dev warnings per module, so each case gets its own
+     * test. The "no warning" assertions also rely on no earlier test in this
+     * file triggering the same Base UI warning; one that had would leave these
+     * passing with nothing logged.
+     */
 
-  let consoleError: ReturnType<typeof vi.spyOn>;
+    let consoleError: ReturnType<typeof vi.spyOn>;
 
-  beforeEach(() => {
-    consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-  });
+    beforeEach(() => {
+      consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
 
-  afterEach(() => {
-    consoleError.mockRestore();
-  });
+    afterEach(() => {
+      consoleError.mockRestore();
+    });
 
-  it("selects the first tab without a dev warning when items load after an empty mount", () => {
-    const handleChange = vi.fn();
+    it("selects the first tab without a dev warning when items load after an empty mount", () => {
+      const handleChange = vi.fn();
 
-    const { rerender } = render(
-      <Tabs items={[]} onValueChange={handleChange} />,
-    );
-    rerender(<Tabs items={MOCK_ITEMS} onValueChange={handleChange} />);
+      const { rerender } = render(
+        <Tabs items={[]} onValueChange={handleChange} />,
+      );
+      rerender(<Tabs items={MOCK_ITEMS} onValueChange={handleChange} />);
 
-    expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
-    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 1");
-    expect(consoleError).not.toHaveBeenCalled();
-    // Base UI reports the first automatic selection once the tabs exist.
-    expect(handleChange).toHaveBeenCalledTimes(1);
-    expect(handleChange.mock.calls[0][0]).toBe("tab-1");
-    expect(handleChange.mock.calls[0][1].reason).toBe("initial");
-  });
+      expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 1");
+      expect(consoleError).not.toHaveBeenCalled();
+      // Base UI reports the first automatic selection once the tabs exist.
+      expect(handleChange).toHaveBeenCalledTimes(1);
+      expect(handleChange.mock.calls[0][0]).toBe("tab-1");
+      expect(handleChange.mock.calls[0][1].reason).toBe("initial");
+    });
 
-  it("selects an explicit defaultValue without a dev warning when items load after an empty mount", () => {
-    const handleChange = vi.fn();
+    it("selects an explicit defaultValue without a dev warning when items load after an empty mount", () => {
+      const handleChange = vi.fn();
 
-    const { rerender } = render(
-      <Tabs items={[]} defaultValue="tab-2" onValueChange={handleChange} />,
-    );
-    rerender(
-      <Tabs
-        items={MOCK_ITEMS}
-        defaultValue="tab-2"
-        onValueChange={handleChange}
-      />,
-    );
+      const { rerender } = render(
+        <Tabs items={[]} defaultValue="tab-2" onValueChange={handleChange} />,
+      );
+      rerender(
+        <Tabs
+          items={MOCK_ITEMS}
+          defaultValue="tab-2"
+          onValueChange={handleChange}
+        />,
+      );
 
-    expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
-    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 2");
-    expect(consoleError).not.toHaveBeenCalled();
-    expect(handleChange).not.toHaveBeenCalled();
-  });
+      expect(screen.getByRole("tab", { name: "Tab 2" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 2");
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(handleChange).not.toHaveBeenCalled();
+    });
 
-  it("does not call onValueChange or warn when items are present on mount", () => {
-    const handleChange = vi.fn();
+    it("does not call onValueChange or warn when items are present on mount", () => {
+      const handleChange = vi.fn();
 
-    const { rerender } = render(
-      <Tabs items={MOCK_ITEMS} onValueChange={handleChange} />,
-    );
-    rerender(<Tabs items={MOCK_ITEMS} onValueChange={handleChange} />);
+      const { rerender } = render(
+        <Tabs items={MOCK_ITEMS} onValueChange={handleChange} />,
+      );
+      rerender(<Tabs items={MOCK_ITEMS} onValueChange={handleChange} />);
 
-    expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
-    expect(consoleError).not.toHaveBeenCalled();
-    expect(handleChange).not.toHaveBeenCalled();
+      expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(handleChange).not.toHaveBeenCalled();
+    });
   });
 
   it("selects the tab matching an empty-string defaultValue", () => {
