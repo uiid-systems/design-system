@@ -23,21 +23,24 @@ jobs:
     steps:
       # Checks out the PR merged into its base, so the difference from the
       # base commit is exactly what this PR adds.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           fetch-depth: 0 # the base commit is checked out as a worktree below
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      # The repo postinstall only sets up git hooks, Playwright and the per-icon
+      # modules. The icons build emits those modules itself, so skip it here.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
 
       # Both builds share this cache, so the base build is mostly cache hits.
-      - uses: actions/cache@v4
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo
           key: ${{ runner.os }}-turbo-${{ github.sha }}
@@ -56,7 +59,7 @@ jobs:
         run: |
           git worktree add --detach ../size-base "$(git rev-parse HEAD^1)"
           (cd ../size-base \
-            && pnpm install --frozen-lockfile \
+            && pnpm install --frozen-lockfile --ignore-scripts \
             && pnpm turbo build --filter='./packages/*' --cache-dir="$GITHUB_WORKSPACE/.turbo/cache")
           SIZE_ROOT=../size-base pnpm size-limit --json > size-base.json
 
@@ -73,7 +76,7 @@ jobs:
           fi
 
       - name: Comment results on PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const fs = require('fs');

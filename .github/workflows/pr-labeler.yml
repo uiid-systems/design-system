@@ -13,15 +13,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Detect changed files and packages
         id: detect-changes
+        # Passed through env rather than interpolated, so a branch name can
+        # never be spliced into the script as code.
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
           # Get all changed files
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          CHANGED_FILES=$(git diff --name-only "origin/$BASE_REF...HEAD")
 
           echo "Changed files:"
           echo "$CHANGED_FILES"
@@ -78,10 +82,12 @@ jobs:
           echo "changed_packages=$COMPACT_JSON" >> $GITHUB_OUTPUT
 
       - name: Add labels dynamically
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          CHANGED_PACKAGES: ${{ steps.detect-changes.outputs.changed_packages }}
         with:
           script: |
-            const changedPackages = JSON.parse('${{ steps.detect-changes.outputs.changed_packages }}');
+            const changedPackages = JSON.parse(process.env.CHANGED_PACKAGES);
 
             if (changedPackages.length === 0) {
               console.log('No package changes detected - skipping labels');

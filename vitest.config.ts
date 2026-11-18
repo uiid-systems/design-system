@@ -1,34 +1,27 @@
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "path";
 
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
-// Resolve @uiid/* packages to source files for testing without building
-// Note: tokens is handled separately below — it serves a TS entry point and
-// several CSS subpaths from different directories, so one prefix cannot cover it
-const uiidPackages = [
-  "ai",
-  "buttons",
-  "cards",
-  "code",
-  "forms",
-  "icons",
-  "indicators",
-  "interactive",
-  "layout",
-  "lists",
-  "markdown",
-  "navigation",
-  "overlays",
-  "tables",
-  "typography",
-  "utils",
-];
+// Resolve @uiid/* packages to source files for testing without building. The
+// list is derived from packages/*, so a new package needs no registration here.
+// Two are left out on purpose and handled by their own rules below: tokens
+// serves a TS entry point and several CSS subpaths from different directories,
+// so one prefix cannot cover it, and the design-system barrel must match
+// exactly, or its string alias would also catch its `./icons` subpaths.
+const SEPARATE_ALIASES = new Set(["@uiid/tokens", "@uiid/design-system"]);
 
-const uiidAliases = uiidPackages.map((pkg) => ({
-  find: `@uiid/${pkg}`,
-  replacement: path.resolve(__dirname, `packages/${pkg}/src/index.ts`),
-}));
+const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
+  (folder) => {
+    const manifest = path.resolve(__dirname, `packages/${folder}/package.json`);
+    const entry = path.resolve(__dirname, `packages/${folder}/src/index.ts`);
+    if (!existsSync(manifest) || !existsSync(entry)) return [];
+    const { name } = JSON.parse(readFileSync(manifest, "utf8"));
+    if (!name?.startsWith("@uiid/") || SEPARATE_ALIASES.has(name)) return [];
+    return [{ find: name, replacement: entry }];
+  },
+);
 
 export default defineConfig({
   plugins: [react()],
