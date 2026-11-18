@@ -17,6 +17,10 @@ Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover) 
 
 The popup shares the floating-surface motion used by Select, Combobox, and Tooltip: it scales out of its anchor rather than its own centre.
 
+## Long content
+
+The popup is capped at the height Base UI's positioner leaves beside the trigger (`--available-height`, less `collisionPadding`), so a filter list taller than that scrolls inside the body instead of running off screen. The header and footer stay in view. The body scrolls the same way Dialog's does: it reaches the popup's side edges so its scrollbar sits at the surface edge, leaves a focus ring's reach above and below its content, and is a tab stop while it overflows, so the keyboard can scroll it. Because the body is the scroll container, `position: sticky` inside it sticks to the body, and a scroll listener belongs on the body.
+
 ## Triggers
 
 A string trigger renders as a focusable `<span role="button">`. An element becomes the trigger itself: a `<button>` or `Button` keeps its native button semantics, and any other tag (`<span>`, `<div>`) gets `role="button"` and keyboard handling from Base UI. `PopoverTrigger` treats its children the same way.

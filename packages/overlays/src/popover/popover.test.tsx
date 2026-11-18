@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useRef, useState } from "react";
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Popover } from "./popover";
 
@@ -704,5 +704,69 @@ describe("Popover", () => {
 
     const popup = document.querySelector('[data-slot="popover-popup"]');
     expect(popup).toHaveClass(styles["popover-popup"], "fn-open");
+  });
+
+  // ============================================
+  // SCROLLING BODY
+  // ============================================
+  // The popup caps at Base UI's --available-height and its body scrolls, the
+  // same treatment Dialog uses (composes-popup-scroll-body). happy-dom has no
+  // layout, so these check the wiring; Storybook covers the scrolling itself.
+
+  describe("scrolling body", () => {
+    const stubHeights = (scrollHeight: number, clientHeight: number) => {
+      vi.spyOn(HTMLElement.prototype, "scrollHeight", "get").mockReturnValue(
+        scrollHeight,
+      );
+      vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(
+        clientHeight,
+      );
+    };
+    const body = () =>
+      document.querySelector<HTMLElement>(
+        '[data-slot="popover-popup"] > [data-slot="card-inner-container"]',
+      );
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("composes the shared scrolling-body treatment", () => {
+      expect(styles["popover-popup"]).toContain("composes-popup-scroll-body");
+    });
+
+    it("leaves the body free to stretch to the popup's edges", () => {
+      render(
+        <Popover trigger={<button>Open popover</button>} open={true}>
+          Popover content
+        </Popover>,
+      );
+
+      expect(body()).toHaveTextContent("Popover content");
+      expect(body()).not.toHaveAttribute("data-ui-w");
+    });
+
+    it("makes a long body a tab stop", async () => {
+      stubHeights(1000, 400);
+      render(
+        <Popover trigger={<button>Open popover</button>} open={true}>
+          Long content
+        </Popover>,
+      );
+
+      await waitFor(() => expect(body()).toHaveAttribute("tabindex", "0"));
+    });
+
+    it("leaves a short body out of the tab order", async () => {
+      stubHeights(400, 400);
+      render(
+        <Popover trigger={<button>Open popover</button>} open={true}>
+          Short content
+        </Popover>,
+      );
+
+      await waitFor(() => expect(body()).toBeInTheDocument());
+      expect(body()).not.toHaveAttribute("tabindex");
+    });
   });
 });

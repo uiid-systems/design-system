@@ -33,3 +33,5 @@ export const HeaderVariants: Story = {
 };
 
 export const Footer: Story = { render: () => <Examples.Footer /> };
+
+export const LongContent: Story = { render: () => <Examples.LongContent /> };
