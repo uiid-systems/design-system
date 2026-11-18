@@ -20,9 +20,23 @@ export type ToolPart = {
   errorText?: string;
 };
 
+/** Text that replaces Tool's English. Anything left out keeps its default. */
+export type ToolLabels = {
+  /** The status badge's text, per state. */
+  status?: Partial<Record<ToolState, React.ReactNode>>;
+  /** The input section's heading. @default "Parameters" */
+  parameters?: React.ReactNode;
+  /** The output section's heading. @default "Result" */
+  result?: React.ReactNode;
+  /** The output section's heading when the part has `errorText`. @default "Error" */
+  error?: React.ReactNode;
+};
+
 /* `part` is omitted from the root props because HTML's own `part` attribute
    already types it as a string. */
 export type ToolProps = Omit<CollapsibleRootProps, "part"> & {
   /** The tool call to show. */
   part: ToolPart;
+  /** Text in place of the English status labels and section headings. */
+  labels?: ToolLabels;
 };

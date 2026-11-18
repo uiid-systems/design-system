@@ -117,6 +117,59 @@ describe("Tool", () => {
     );
   });
 
+  it.each(["tool-paused", "constructor"])(
+    "falls back to a neutral badge labelled with an unknown state %s",
+    (state) => {
+      render(<Tool part={part({ state: state as ToolState })} />);
+
+      const status = getStatus()!;
+      expect(status).toHaveTextContent(state);
+      expect(status).toHaveClass("palette-neutral");
+      expect(getRoot()).toHaveAttribute("data-state", state);
+    },
+  );
+
+  it("replaces status labels per state, keeping the English for the rest", () => {
+    const { rerender } = render(
+      <Tool
+        part={part({ state: "output-available" })}
+        labels={{ status: { "output-available": "Fertig" } }}
+      />,
+    );
+    expect(getStatus()).toHaveTextContent("Fertig");
+
+    rerender(
+      <Tool
+        part={part({ state: "output-error" })}
+        labels={{ status: { "output-available": "Fertig" } }}
+      />,
+    );
+    expect(getStatus()).toHaveTextContent("Failed");
+  });
+
+  it("replaces the section headings", () => {
+    const labels = {
+      parameters: "Parameter",
+      result: "Ergebnis",
+      error: "Fehler",
+    };
+    const { rerender } = render(
+      <Tool part={part()} labels={labels} defaultOpen />,
+    );
+    expect(getInput()).toHaveTextContent("Parameter");
+    expect(getOutput()).toHaveTextContent("Ergebnis");
+
+    rerender(
+      <Tool
+        part={part({ state: "output-error", errorText: "Rate limited" })}
+        labels={labels}
+        defaultOpen
+      />,
+    );
+    expect(getOutput()).toHaveTextContent("Fehler");
+    expect(getOutput()).not.toHaveTextContent("Error");
+  });
+
   // ============================================
   // OPEN STATE
   // ============================================
