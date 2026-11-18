@@ -4,12 +4,14 @@ import type { CardFooterProps } from "../card.types";
 
 export const CardFooter = ({
   children,
-  hideSeparator = true,
+  separator,
+  hideSeparator,
   ...props
 }: CardFooterProps) => {
+  const showSeparator = separator ?? hideSeparator === false;
   return (
     <>
-      {!hideSeparator && <Separator />}
+      {showSeparator && <Separator />}
       <Group data-slot="card-footer" gap={2} w="full" {...props}>
         {children}
       </Group>

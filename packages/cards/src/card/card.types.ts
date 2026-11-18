@@ -8,7 +8,9 @@ export type CardTitleProps = TextProps;
 export type CardDescriptionProps = TextProps;
 export type CardActionProps = GroupProps;
 export type CardFooterProps = GroupProps & {
-  /** Leave out the divider above the footer. On by default; overlays turn the divider back on. */
+  /** Draw a divider above the footer. Off by default; Dialog, Drawer and Popover turn it on. */
+  separator?: boolean;
+  /** @deprecated Use `separator` instead. `separator` wins when both are set. */
   hideSeparator?: boolean;
 };
 export type CardThumbnailProps = StackProps;

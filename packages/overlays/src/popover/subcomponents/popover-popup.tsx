@@ -45,7 +45,7 @@ export const PopoverPopup = ({
           action={action}
           footer={footer}
           shadow
-          FooterProps={{ hideSeparator: false }}
+          FooterProps={{ separator: true }}
           TitleProps={{ render: <BasePopover.Title id={titleId} /> }}
           DescriptionProps={{ render: <BasePopover.Description /> }}
           InnerContainerProps={bodyProps}

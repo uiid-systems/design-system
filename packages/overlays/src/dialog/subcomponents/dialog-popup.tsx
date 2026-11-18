@@ -65,7 +65,7 @@ export const DialogPopup = ({
           }
           footer={footer}
           shadow
-          FooterProps={{ hideSeparator: false }}
+          FooterProps={{ separator: true }}
           TitleProps={{ render: <BaseDialog.Title id={titleId} /> }}
           DescriptionProps={{ render: <BaseDialog.Description /> }}
           InnerContainerProps={bodyProps}
