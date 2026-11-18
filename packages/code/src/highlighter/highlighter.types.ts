@@ -12,6 +12,13 @@ export type BundledLanguage =
   | "markdown"
   | "python";
 
+/**
+ * A language name as written by a caller, such as a markdown fence. Bundled
+ * languages autocomplete; aliases resolve to one, and any other name renders
+ * as plain, uncolored code.
+ */
+export type CodeLanguage = BundledLanguage | (string & {});
+
 export type HighlighterState = {
   highlighter: HighlighterCore | null;
   loading: boolean;
@@ -20,7 +27,7 @@ export type HighlighterState = {
 };
 
 export type HighlightOptions = {
-  language?: BundledLanguage;
+  language?: CodeLanguage;
   highlightLines?: number[];
 };
 

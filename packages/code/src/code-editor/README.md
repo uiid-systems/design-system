@@ -30,7 +30,7 @@ import { CodeEditor } from "@uiid/code";
 | `value`           | `string`                   | —              | Controlled value             |
 | `defaultValue`    | `string`                   | `""`           | Initial value (uncontrolled) |
 | `onValueChange`   | `(value: string) => void`  | —              | Callback when value changes  |
-| `language`        | `BundledLanguage`          | `"typescript"` | Syntax highlighting language |
+| `language`        | `CodeLanguage`             | `"typescript"` | Syntax highlighting language |
 | `showLineNumbers` | `boolean`                  | `false`        | Show line numbers            |
 | `readOnly`        | `boolean`                  | `false`        | Make editor read-only        |
 | `disabled`        | `boolean`                  | `false`        | Disable the editor           |
@@ -57,7 +57,7 @@ The default name applies whenever the caller supplies neither `aria-label` nor `
 
 To name it with `<label htmlFor>` instead, pass the matching `id` and drop the default: `TextareaProps={{ id: "body", "aria-label": undefined }}`.
 
-> `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`
+> `CodeLanguage` = `BundledLanguage | (string & {})`, where `BundledLanguage` = `"javascript" | "typescript" | "jsx" | "tsx" | "json" | "css" | "html" | "bash" | "markdown" | "python"`. Aliases (`js`, `ts`, `sh`, `shell`, `zsh`, `py`, `md`) resolve to a bundled language; any other name renders as plain, uncolored code.
 
 ## Data Slots
 

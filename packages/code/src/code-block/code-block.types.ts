@@ -1,7 +1,7 @@
 import type { ButtonProps, ToggleButtonProps } from "@uiid/buttons";
 import type { GroupProps, StackProps } from "@uiid/layout";
 
-import type { BundledLanguage } from "../highlighter/highlighter.types";
+import type { CodeLanguage } from "../highlighter/highlighter.types";
 import type { LanguageIconProps } from "./language-icons";
 
 export type CodeBlockCopyButtonProps = Omit<ButtonProps, "onCopy"> & {
@@ -22,7 +22,7 @@ export type CodeBlockHeaderProps = GroupProps & {
   /** Filename to display */
   filename?: string;
   /** Language icon to display before the filename */
-  language?: BundledLanguage;
+  language?: CodeLanguage;
   /** Show copy button */
   copyable?: boolean;
   /** Code to copy */
@@ -65,8 +65,12 @@ export type CodeBlockContentProps = StackProps & {
 export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   /** The code to display */
   code: string;
-  /** Programming language for syntax highlighting */
-  language?: BundledLanguage;
+  /**
+   * Programming language for syntax highlighting. Accepts a bundled language
+   * or an alias (`ts`, `js`, `sh`, `shell`, `zsh`, `py`, `md`); any other name
+   * renders as plain code.
+   */
+  language?: CodeLanguage;
   /** Filename to display in header */
   filename?: string;
   /** Show line numbers */

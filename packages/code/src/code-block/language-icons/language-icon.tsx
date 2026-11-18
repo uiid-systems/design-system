@@ -1,4 +1,8 @@
-import type { BundledLanguage } from "../../highlighter/highlighter.types";
+import { resolveLanguage } from "../../highlighter/highlighter";
+import type {
+  BundledLanguage,
+  CodeLanguage,
+} from "../../highlighter/highlighter.types";
 import bashSvg from "./bash-original.svg?raw";
 import css3Svg from "./css3-original.svg?raw";
 import html5Svg from "./html5-original.svg?raw";
@@ -34,16 +38,18 @@ export type LanguageIconProps = Omit<
   React.SVGProps<SVGSVGElement>,
   "dangerouslySetInnerHTML"
 > & {
-  language: BundledLanguage;
+  /** A bundled language or an alias of one; other names render no icon */
+  language: CodeLanguage;
   size?: number | string;
 };
 
 export const LanguageIcon = ({
-  language,
+  language: languageProp,
   size = 16,
   ...props
 }: LanguageIconProps) => {
-  const icon = LANGUAGE_ICONS[language];
+  const language = resolveLanguage(languageProp);
+  const icon = language && LANGUAGE_ICONS[language];
   if (!icon) return null;
   return (
     <svg
