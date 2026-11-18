@@ -533,19 +533,24 @@ describe("ToggleGroup indicator with changing toggles", () => {
     vi.restoreAllMocks();
   });
 
-  /* happy-dom has no layout, so buttons are given a rect of their own and the
-     panel keeps happy-dom's zero one. */
+  /* happy-dom has no layout, so each button is given a rect of its own, keyed
+     off its label, and the panel keeps happy-dom's zero one. */
+  const BUTTON_RECTS: Record<string, Partial<DOMRect>> = {
+    Monthly: { top: 4, left: 10, width: 80, height: 24 },
+    Yearly: { top: 40, left: 100, width: 120, height: 32 },
+  };
   const stubButtonRects = () =>
     vi
       .spyOn(HTMLElement.prototype, "getBoundingClientRect")
       .mockImplementation(function (this: HTMLElement) {
-        const isButton = this.tagName === "BUTTON";
-        return {
-          top: isButton ? 4 : 0,
-          left: isButton ? 10 : 0,
-          width: isButton ? 80 : 0,
-          height: isButton ? 24 : 0,
-        } as DOMRect;
+        const rect = (this.tagName === "BUTTON" &&
+          BUTTON_RECTS[this.textContent ?? ""]) || {
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0,
+        };
+        return rect as DOMRect;
       });
 
   it("measures a pressed toggle that mounts after the group", async () => {
@@ -564,10 +569,10 @@ describe("ToggleGroup indicator with changing toggles", () => {
 
     await waitFor(() =>
       expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(
-        "80px",
+        "120px",
       ),
     );
-    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("9px");
+    expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("99px");
   });
 
   it("clears the indicator when the pressed toggle unmounts", async () => {
@@ -579,7 +584,7 @@ describe("ToggleGroup indicator with changing toggles", () => {
       </ToggleGroup>,
     );
     const panel = container.firstElementChild as HTMLElement;
-    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("80px");
+    expect(panel.style.getPropertyValue("--active-toggle-width")).toBe("120px");
 
     rerender(
       <ToggleGroup value={["yearly"]}>
@@ -591,6 +596,30 @@ describe("ToggleGroup indicator with changing toggles", () => {
       expect(panel.style.getPropertyValue("--active-toggle-width")).toBe(""),
     );
     expect(panel.style.getPropertyValue("--active-toggle-left")).toBe("");
+  });
+
+  it("clears a vertical indicator when the pressed toggle unmounts", async () => {
+    stubButtonRects();
+    const { container, rerender } = render(
+      <ToggleGroup orientation="vertical" value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+        <Toggle value="yearly">Yearly</Toggle>
+      </ToggleGroup>,
+    );
+    const panel = container.firstElementChild as HTMLElement;
+    expect(panel.style.getPropertyValue("--active-toggle-top")).toBe("39px");
+    expect(panel.style.getPropertyValue("--active-toggle-height")).toBe("32px");
+
+    rerender(
+      <ToggleGroup orientation="vertical" value={["yearly"]}>
+        <Toggle value="monthly">Monthly</Toggle>
+      </ToggleGroup>,
+    );
+
+    await waitFor(() =>
+      expect(panel.style.getPropertyValue("--active-toggle-height")).toBe(""),
+    );
+    expect(panel.style.getPropertyValue("--active-toggle-top")).toBe("");
   });
 });
 

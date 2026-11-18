@@ -79,11 +79,15 @@ export const useToggleIndicator = (
       updateIndicatorPosition();
     });
 
-    // Measures, then watches the pressed toggle for size changes. Observing an
-    // element already observed is a no-op, so this can run on every change.
+    // Measures, then watches the pressed toggle for size changes. The toggle
+    // watched before is let go, so removed buttons don't pile up.
+    let observedButton: HTMLButtonElement | undefined;
     const update = () => {
       const activeButton = updateIndicatorPosition();
+      if (activeButton === observedButton) return;
+      if (observedButton) resizeObserver.unobserve(observedButton);
       if (activeButton) resizeObserver.observe(activeButton);
+      observedButton = activeButton;
     };
 
     update();
