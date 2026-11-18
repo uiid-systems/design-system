@@ -1,4 +1,4 @@
-import { ConditionalRender, Group } from "@uiid/layout";
+import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
@@ -16,17 +16,12 @@ export const Status = ({
   ...props
 }: StatusProps) => {
   return (
-    <ConditionalRender
-      condition={!!children}
-      render={
-        <Group
-          data-slot="status"
-          className={cx(styles["status"], className)}
-          ay="center"
-          gap={2}
-          {...props}
-        />
-      }
+    <Group
+      data-slot="status"
+      className={cx(styles["status"], className)}
+      ay="center"
+      gap={2}
+      {...props}
     >
       <span
         data-slot="status-dot"
@@ -41,7 +36,7 @@ export const Status = ({
           {children}
         </Text>
       )}
-    </ConditionalRender>
+    </Group>
   );
 };
 Status.displayName = "Status";
