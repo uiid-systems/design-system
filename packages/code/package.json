@@ -45,7 +45,6 @@
     "@shikijs/themes": "^3.22.0",
     "@shikijs/transformers": "^3.23.0",
     "@uiid/buttons": "workspace:*",
-    "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/tokens": "workspace:*",

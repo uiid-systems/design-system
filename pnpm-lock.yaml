@@ -230,9 +230,6 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
-      '@base-ui/react':
-        specifier: 1.7.0
-        version: 1.7.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react':
         specifier: ^19.1.8
         version: 19.1.10
@@ -385,9 +382,6 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../cards
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
@@ -522,9 +516,6 @@ importers:
 
   packages/forms:
     dependencies:
-      '@uiid/buttons':
-        specifier: workspace:*
-        version: link:../buttons
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
@@ -559,6 +550,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
+      '@uiid/buttons':
+        specifier: workspace:*
+        version: link:../buttons
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
         version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
@@ -792,9 +786,6 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
-      '@base-ui/react':
-        specifier: 1.7.0
-        version: 1.7.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react':
         specifier: ^19.1.8
         version: 19.1.10
@@ -1009,9 +1000,6 @@ importers:
         specifier: 1.0.0-beta.12
         version: 1.0.0-beta.12(typescript@5.9.3)
     devDependencies:
-      '@base-ui/react':
-        specifier: 1.7.0
-        version: 1.7.0(@types/react@19.1.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@types/react':
         specifier: ^19.1.8
         version: 19.1.10
