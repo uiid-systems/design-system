@@ -3,6 +3,7 @@ import { defineConfig, type UserConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+import { rewriteEmittedDeclarations } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
 import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
 import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
@@ -73,6 +74,9 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
       // not survive either. The cost is that go-to-definition into a built
       // sibling package lands in its .d.ts rather than its source.
       compilerOptions: { declarationMap: false },
+      // Gives relative specifiers a `.js` extension, so the declarations resolve
+      // under `nodenext` as well as `bundler`.
+      afterBuild: rewriteEmittedDeclarations,
     }),
   ];
 

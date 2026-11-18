@@ -5,6 +5,7 @@
     "vite.config.ts",
     "vitest.matchers.d.ts",
     "scripts/css-layers.cjs",
+    "scripts/dts-relative-extensions.mjs",
     "scripts/postcss-layer-wrapper.cjs",
     "scripts/rollup-sanitize-file-name.mjs",
     "scripts/vite-plugin-preserve-directives.mjs"

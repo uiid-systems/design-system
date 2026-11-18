@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+import { rewriteEmittedDeclarations } from "../../scripts/dts-relative-extensions.mjs";
+
 /*
  * Tokens are mostly generated CSS, but the palette ships as a tiny ES module
  * alongside it so consumers can read the hue set at build time. It is compiled
@@ -22,6 +24,8 @@ export default defineConfig({
       // examples or stories. Setting `exclude` replaces the tsconfig's, so its
       // entries are repeated.
       exclude: ["node_modules/**", "dist/**", "**/*.test.*"],
+      // As in `createViteConfig`: `.js` on relative specifiers for `nodenext`.
+      afterBuild: rewriteEmittedDeclarations,
     }),
   ],
   build: {
