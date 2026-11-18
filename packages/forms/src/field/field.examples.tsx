@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
-import { CircleQuestionMarkIcon } from "@uiid/icons/circle-question-mark";
 import { InfoIcon } from "@uiid/icons/info";
 import { Group, Stack } from "@uiid/layout";
 import { useState } from "react";
@@ -76,9 +75,8 @@ export const Required = () => (
 );
 
 /*
- * `FieldHint` is ready-made content for the `action` slot, and stays the way to
- * write a static aside. Text alone reads as a quiet note; an icon plus
- * `tooltip` keeps longer guidance out of the layout entirely.
+ * `FieldHint` is ready-made content for the `action` slot: a static aside of
+ * text, with an optional icon before it. Longer guidance goes in `description`.
  */
 export const WithHint = () => (
   <Stack gap={6}>
@@ -86,17 +84,6 @@ export const WithHint = () => (
       <InputControl placeholder="you@example.com" />
     </Field>
     <Field label="Email" action={<FieldHint icon={InfoIcon} text="Optional" />}>
-      <InputControl placeholder="you@example.com" />
-    </Field>
-    <Field
-      label="Email"
-      action={
-        <FieldHint
-          icon={CircleQuestionMarkIcon}
-          tooltip="Used for receipts and password resets only."
-        />
-      }
-    >
       <InputControl placeholder="you@example.com" />
     </Field>
   </Stack>

@@ -447,6 +447,31 @@ describe("Field action slot", () => {
     expect(screen.getByText("Optional")).toBeInTheDocument();
   });
 
+  /* A hint is static: an icon and text, with nothing to open. Guidance too
+     long for the label row belongs in `description`. */
+  it("renders a FieldHint icon as static content, not a trigger", () => {
+    const Icon = () => <svg data-testid="hint-icon" />;
+    const { container } = render(
+      <Field label="Email" action={<FieldHint icon={Icon} text="Optional" />}>
+        <input />
+      </Field>,
+    );
+    expect(screen.getByTestId("hint-icon")).toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot='field-hint'] [tabindex]"),
+    ).not.toBeInTheDocument();
+  });
+
+  /* Type-level only: the package's tsc fails if either directive goes unused. */
+  it("types FieldHint as a static hint that always has text", () => {
+    const Icon = () => <svg />;
+    // @ts-expect-error -- the `{ icon, tooltip }` form was removed (UI-398)
+    void (<FieldHint icon={Icon} text="Optional" tooltip="Receipts only." />);
+    // @ts-expect-error -- a hint always says something
+    void (<FieldHint icon={Icon} />);
+  });
+
   it("renders an ActionProps.children of 0 rather than falling back to action", () => {
     const { container } = render(
       <Field

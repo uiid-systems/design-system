@@ -534,9 +534,6 @@ importers:
       '@uiid/lists':
         specifier: workspace:*
         version: link:../lists
-      '@uiid/overlays':
-        specifier: workspace:*
-        version: link:../overlays
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
