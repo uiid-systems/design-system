@@ -1,4 +1,10 @@
-import { render, screen, act, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  act,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
@@ -145,6 +151,28 @@ describe("CodeEditor", () => {
     );
     await act(async () => {});
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  // ============================================
+  // HIGHLIGHT BACKDROP
+  // ============================================
+
+  it("keeps the highlight backdrop out of the tab order and the accessibility tree", async () => {
+    render(<CodeEditor defaultValue="const x = 1;" />);
+
+    const highlight = screen
+      .getByRole("textbox")
+      .closest("[data-slot='code-editor']")!
+      .querySelector<HTMLElement>("[data-slot='code-editor-highlight']")!;
+
+    // Shiki renders a focusable `<pre tabindex="0">`; wait for the real output
+    const pre = await waitFor(() => {
+      const element = highlight.querySelector("pre");
+      expect(element).not.toBeNull();
+      return element!;
+    });
+
+    expect(pre.closest("[inert]")).toBe(highlight);
   });
 
   // ============================================
