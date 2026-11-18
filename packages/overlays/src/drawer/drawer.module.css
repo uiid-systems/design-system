@@ -39,7 +39,13 @@
   pointer-events: none;
 }
 
+/*
+ * Content taller than the panel scrolls in the body while the header and
+ * footer stay put (`composes-popup-scroll-body`). Left and right panels get a
+ * definite height from their block insets, up and down panels a max-height.
+ */
 .drawer-popup {
+  composes: composes-popup-scroll-body from global;
   --drawer-inset: calc(var(--spacing-unit) * 4);
 
   position: absolute;

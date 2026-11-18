@@ -1,9 +1,10 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { Card } from "@uiid/cards";
+import { Card, type CardProps } from "@uiid/cards";
 import { cxState } from "@uiid/utils";
 
+import { useBodyOverflow } from "../../shared/use-body-overflow";
 import type { DrawerPopupProps } from "../drawer.types";
 
 import styles from "../drawer.module.css";
@@ -15,6 +16,9 @@ import styles from "../drawer.module.css";
  *
  * `children` is passed to the popup only, never duplicated into the render
  * element: Base UI forwards it into the Card.
+ *
+ * The body scrolls on its own (drawer.module.css). While it overflows it is a
+ * tab stop, so the keyboard can scroll it.
  */
 export const DrawerPopup = ({
   title,
@@ -25,6 +29,16 @@ export const DrawerPopup = ({
   children,
   ...props
 }: DrawerPopupProps) => {
+  const { ref: bodyRef, overflows } = useBodyOverflow();
+
+  const bodyProps: CardProps["InnerContainerProps"] = {
+    // The body stretches past the card's padding to its edges, which Card's
+    // `w="full"` of the content box would stop short of.
+    w: undefined,
+    ref: bodyRef,
+    ...(overflows && { tabIndex: 0 }),
+  };
+
   return (
     <BaseDrawer.Popup
       data-slot="drawer-popup"
@@ -39,6 +53,7 @@ export const DrawerPopup = ({
           FooterProps={{ hideSeparator: false }}
           TitleProps={{ render: <BaseDrawer.Title /> }}
           DescriptionProps={{ render: <BaseDrawer.Description /> }}
+          InnerContainerProps={bodyProps}
         />
       }
       {...props}

@@ -46,6 +46,8 @@ export const HeaderVariants: Story = {
 
 export const Footer: Story = { render: () => <Examples.Footer /> };
 
+export const LongContent: Story = { render: () => <Examples.LongContent /> };
+
 /** `pending` keeps the drawer open and DrawerClose disabled while Save runs. */
 export const Pending: Story = { render: () => <Examples.Pending /> };
 
