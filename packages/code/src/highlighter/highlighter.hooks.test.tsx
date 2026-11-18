@@ -1,4 +1,4 @@
-import { render, renderHook, waitFor } from "@testing-library/react";
+import { act, render, renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "../code-block/code-block";
@@ -33,6 +33,45 @@ describe("useHighlight", () => {
     );
     expect(highlight).not.toHaveBeenCalled();
     expect(result.current).toEqual({ html: "", loading: false, error: null });
+  });
+
+  it("drops an in-flight result when enabled turns false", async () => {
+    let resolveFirst!: (html: string) => void;
+    vi.mocked(highlight)
+      .mockImplementationOnce(
+        () => new Promise<string>((resolve) => (resolveFirst = resolve)),
+      )
+      .mockImplementationOnce(() => new Promise<string>(() => {}));
+
+    const { result, rerender } = renderHook(
+      ({ code, enabled }) => useHighlight(code, "typescript", { enabled }),
+      { initialProps: { code: "old", enabled: true } },
+    );
+    expect(highlight).toHaveBeenCalledTimes(1);
+
+    rerender({ code: "old", enabled: false });
+    await act(async () => resolveFirst("<pre>stale</pre>"));
+
+    // Re-enable with new code while its highlight is still pending
+    rerender({ code: "new", enabled: true });
+    expect(result.current.html).toBe("");
+    expect(result.current.loading).toBe(true);
+  });
+
+  it("clears the last result when enabled turns false", async () => {
+    const { result, rerender } = renderHook(
+      ({ code, enabled }) => useHighlight(code, "typescript", { enabled }),
+      { initialProps: { code: "old", enabled: true } },
+    );
+    await waitFor(() => expect(result.current.html).toContain("old"));
+
+    vi.mocked(highlight).mockImplementationOnce(
+      () => new Promise<string>(() => {}),
+    );
+    rerender({ code: "old", enabled: false });
+    rerender({ code: "new", enabled: true });
+    expect(result.current.html).toBe("");
+    expect(result.current.loading).toBe(true);
   });
 
   it("highlights once enabled turns true", async () => {

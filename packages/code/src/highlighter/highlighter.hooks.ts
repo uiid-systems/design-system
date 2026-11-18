@@ -46,8 +46,10 @@ export function useHighlighter() {
 
 export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
   /**
-   * Set to `false` to skip highlighting, so Shiki is never loaded. Use it when
-   * there is nothing to highlight, such as plain code or pre-rendered `html`.
+   * Set to `false` to skip highlighting: no theme or grammar is fetched, no
+   * highlighter is created and nothing is highlighted on the client. Use it
+   * when there is nothing to highlight, such as plain code or pre-rendered
+   * `html`.
    * @default true
    */
   enabled?: boolean;
@@ -73,7 +75,13 @@ export function useHighlight(
   useEffect(() => {
     // Bumping the id also drops any in-flight result from an earlier run.
     const requestId = ++requestRef.current;
-    if (!enabled) return;
+    if (!enabled) {
+      // Clear the last result so re-enabling never shows stale markup.
+      setHtml("");
+      setLoading(true);
+      setError(null);
+      return;
+    }
 
     highlight(code, language, { highlightLines: options.highlightLines })
       .then((result) => {
