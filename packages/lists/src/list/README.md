@@ -6,10 +6,10 @@ Use List when you want to:
 
 - Render an array of items with `items` — each entry is a `ListItem` (`{ label, description, icon }`) or a `ListGroup` (`{ category, icon, items }`) for nesting
 - Compose by hand instead — pass `<ListItem>` and `<ListGroup>` as children
-- Pick a bullet style with `marker`: `"none"` (default, unstyled), `"disc"` / `"square"` (renders `<ul>`), or `"decimal"` (renders `<ol>`)
+- Pick a bullet style with `marker`: `"none"` (default, unstyled), `"disc"` / `"square"` (renders `<ul>`), or `"decimal"` (renders `<ol>`, and an `<ol>` for each nested group too)
 - Set shared defaults for every item via `ItemProps`, and for every group's root `Stack` via `GroupProps` (layout props like `gap` or `className`). Both reach nested groups, an entry's own props win, and `className` joins rather than replaces
 
-Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. With a `marker`, every row is a native list item, so the browser draws and counts it the same for a `label`, an `icon` row (the marker sits beside the icon) or composed `children`, and a nested `ListGroup`'s items restart at 1. A list item can't also be a flex container, so in a marked list a row's own layout props (`ax`, `ay`, `gap`) don't apply and composed children flow as blocks; wrap them in a `Group` for a row layout. Unmarked lists keep their flex rows.
+Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. With a `marker`, every row's `<li>` is a native list item, so the browser draws and counts the marker the same for a `label`, an `icon` row (the marker sits beside the icon), composed `children` and a `ListGroup`, whose own items restart at 1. The row's layout props (`ax`, `ay`, `gap`, spacing and sizing) move to an inner flex element so the row keeps its layout, while `className`, `render` and DOM attributes stay on the `<li>`. A `List` nested inside a row follows its own `marker`, so an unmarked one stays unmarked.
 
 ## Subcomponents
 

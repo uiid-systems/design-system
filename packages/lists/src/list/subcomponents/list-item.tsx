@@ -1,8 +1,8 @@
 import { ConditionalRender, Group } from "@uiid/layout";
-import { cx } from "@uiid/utils";
 
 import { ICON_SIZE_LARGE } from "../list.constants";
 import type { ListItemProps } from "../list.types";
+import { ListRow } from "./list-row";
 import { ListTextBlock } from "./list-text-block";
 
 import styles from "../list.module.css";
@@ -17,13 +17,13 @@ export const ListItem = ({
   ...props
 }: ListItemProps) => {
   return (
-    <Group
-      data-slot="list-item"
-      render={render ?? <li />}
+    <ListRow
+      kind="item"
+      render={render}
       ay="start"
       ax="space-between"
       gap={8}
-      className={cx(styles["list-item"], className)}
+      className={className}
       {...props}
     >
       {children || (
@@ -45,7 +45,7 @@ export const ListItem = ({
           />
         </ConditionalRender>
       )}
-    </Group>
+    </ListRow>
   );
 };
 ListItem.displayName = "ListItem";

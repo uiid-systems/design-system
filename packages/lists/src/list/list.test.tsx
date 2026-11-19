@@ -265,15 +265,20 @@ describe("List", () => {
 // The marker used to be drawn by `display: list-item` on the label, so only a
 // label-only row got one: an icon row suppressed it and composed children had
 // no label to carry it. A `::before` counter for composed rows read 1, 1, 2 in
-// a mixed decimal list. Now every `<li>` of a marked list is the list item, so
-// the browser numbers all row shapes with one count.
+// a mixed decimal list. Now every row of a marked List stamps its List's marker
+// on its own `<li>`, the stylesheet makes that `<li>` a native list item, and
+// the row's flex layout moves to an inner element.
 //
-// happy-dom resolves neither `display: list-item` nor `::marker`, so the rule
-// is asserted in the stylesheet and the markup it targets in the DOM. The
-// numbering and baseline are verified in Storybook.
+// happy-dom resolves neither `display: list-item` nor `::marker`, so these
+// assert the markup the rule targets. Numbering and baseline are verified in
+// Storybook.
 
 describe("List markers", () => {
-  it("gives every row shape the class the marker rule targets", () => {
+  const rowsOf = (root: ParentNode) => [
+    ...root.querySelectorAll<HTMLElement>("li"),
+  ];
+
+  it("stamps the marker on every row shape of a marked list", () => {
     const { container } = render(
       <List marker="decimal">
         <ListItem label="Label" />
@@ -284,25 +289,89 @@ describe("List markers", () => {
         <ListGroup category="Group" items={[{ label: "Nested" }]} />
       </List>,
     );
-    const rows = [...container.querySelectorAll("li")];
+    const rows = rowsOf(container);
     expect(rows).toHaveLength(5);
     for (const row of rows) {
-      expect(
-        row.classList.contains(styles["list-item"]) ||
-          row.classList.contains(styles["list-group"]),
-      ).toBe(true);
+      expect(row).toHaveAttribute("data-list-marker", "decimal");
     }
   });
 
-  it("makes item and group rows the list items of a marked list", () => {
-    expect(listCss).toMatch(
-      /\[data-marker="square"\]\)\s*:is\(\.list-item, \.list-group\) \{\s*display: list-item;/,
+  it("stamps nothing on the rows of an unmarked list", () => {
+    const { container } = render(<List items={[{ label: "Feature" }]} />);
+    expect(rowsOf(container)[0]).not.toHaveAttribute("data-list-marker");
+  });
+
+  it("keeps a marked row's layout props on an inner flex element", () => {
+    render(
+      <List marker="disc">
+        <ListItem gap={2} className="row">
+          <span>Children</span>
+        </ListItem>
+      </List>,
+    );
+    const row = screen.getByText("Children").closest("li");
+    expect(row).toHaveClass("row");
+    expect(row).not.toHaveAttribute("data-ui-gap");
+    expect(
+      row?.querySelector('[data-slot="list-item-layout"]'),
+    ).toHaveAttribute("data-ui-gap", "2");
+  });
+
+  it("leaves an unmarked list's row as its own flex layout", () => {
+    render(
+      <List>
+        <ListItem gap={2} label="Feature" />
+      </List>,
+    );
+    const row = screen.getByText("Feature").closest("li");
+    expect(row).toHaveAttribute("data-ui-gap", "2");
+    expect(row?.querySelector('[data-slot="list-item-layout"]')).toBeNull();
+  });
+
+  it("does not mark the rows of an unmarked list nested in a marked row", () => {
+    render(
+      <List marker="decimal">
+        <ListItem>
+          <List items={[{ label: "Inner" }]} />
+        </ListItem>
+      </List>,
+    );
+    const inner = screen.getByText("Inner").closest("li");
+    expect(inner).not.toHaveAttribute("data-list-marker");
+    expect(inner?.parentElement?.closest("li")).toHaveAttribute(
+      "data-list-marker",
+      "decimal",
     );
   });
 
-  it("draws no marker on the label or suppresses one on the icon row", () => {
-    expect(listCss).not.toMatch(/\.list-text-label \{[^}]*display: list-item/);
-    expect(listCss).not.toContain(".list-item-content");
+  it("renders a nested group's panel as an ol under a decimal marker", () => {
+    const { container } = render(
+      <List
+        marker="decimal"
+        items={[{ category: "Group", items: [{ label: "Nested" }] }]}
+      />,
+    );
+    expect(
+      container.querySelector('[data-slot="list-group-panel"]')?.tagName,
+    ).toBe("OL");
+  });
+
+  it("keeps a nested group's panel a ul under a bullet marker", () => {
+    const { container } = render(
+      <List
+        marker="disc"
+        items={[{ category: "Group", items: [{ label: "Nested" }] }]}
+      />,
+    );
+    expect(
+      container.querySelector('[data-slot="list-group-panel"]')?.tagName,
+    ).toBe("UL");
+  });
+
+  it("makes the stamped row, not the label, the list item", () => {
+    expect(listCss).toContain("[data-list-marker]");
+    expect(listCss).toContain("display: list-item");
+    expect(listCss).not.toMatch(/\.list-text-label \{[^}]*display/);
   });
 });
 

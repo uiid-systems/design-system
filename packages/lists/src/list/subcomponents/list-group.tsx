@@ -1,4 +1,3 @@
-import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
 
 import type {
@@ -9,8 +8,7 @@ import type {
 } from "../list.types";
 import { ListGroupHeader } from "./list-group-header";
 import { ListItem } from "./list-item";
-
-import styles from "../list.module.css";
+import { ListGroupPanel, ListRow } from "./list-row";
 
 /**
  * Shallow-merge inherited defaults with an entry's own: the entry's values win
@@ -72,23 +70,17 @@ export const ListGroup = ({
   GroupProps,
 }: ListGroupProps) => {
   return (
-    <Stack
-      data-slot="list-group"
-      render={<li />}
-      w="full"
-      {...GroupProps}
-      className={cx(styles["list-group"], GroupProps?.className)}
-    >
+    <ListRow kind="group" w="full" {...GroupProps}>
       <ListGroupHeader category={category} icon={icon} />
 
-      <ul data-slot="list-group-panel" className={styles["list-group-panel"]}>
+      <ListGroupPanel>
         <ListEntries
           items={items}
           ItemProps={ItemProps}
           GroupProps={GroupProps}
         />
-      </ul>
-    </Stack>
+      </ListGroupPanel>
+    </ListRow>
   );
 };
 ListGroup.displayName = "ListGroup";

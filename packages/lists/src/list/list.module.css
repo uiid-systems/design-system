@@ -24,31 +24,28 @@
   &:where([data-marker="square"]) {
     list-style-type: square;
   }
+}
 
-  /*
-   * One marker mechanism for every row shape. Each `<li>` the list owns, an
-   * item or a group, becomes a native list item, so the browser draws and
-   * counts the marker whatever the row holds: a label, an icon row or composed
-   * children. The marker sits outside on the row's first text baseline, and an
-   * icon row shows it beside the icon.
-   *
-   * `list-item` can't combine with `flex`, so here the row drops the flex
-   * layout `Group`/`Stack` give it and its children flow as blocks. The rows
-   * this package builds already wrap their own layout; composed children that
-   * want one bring a `Group`. Unmarked lists keep the flex rows.
-   */
-  &:where([data-marker="decimal"], [data-marker="disc"], [data-marker="square"]) :is(.list-item, .list-group) {
-    display: list-item;
+/*
+ * One marker mechanism for every row shape. In a marked List each row's `<li>`
+ * (an item or a group) is a native list item, so the browser draws and counts
+ * its marker whatever the row holds: a label, an icon row (the marker sits
+ * beside the icon) or composed children. A row stamps `data-list-marker` only
+ * when its own List has a marker, so an unmarked List nested in a marked row
+ * is untouched. The row's flex layout lives on an inner element, since a list
+ * item can't also be a flex container.
+ */
+:is(.list-item, .list-group):where([data-list-marker]) {
+  display: list-item;
 
-    &::marker {
-      font-size: var(--text-0-font-size);
-    }
+  &::marker {
+    font-size: var(--text-0-font-size);
   }
+}
 
-  &:where([data-marker="decimal"]) :is(.list-item, .list-group)::marker {
-    font-size: 0.625rem;
-    font-weight: 700;
-  }
+:is(.list-item, .list-group):where([data-list-marker="decimal"])::marker {
+  font-size: 0.625rem;
+  font-weight: 700;
 }
 
 .list-group-header + *:is(ul, ol) {
@@ -66,8 +63,8 @@
 
 /*
  * A nested group's items take the list's marker. The panel inherits it rather
- * than keeping the UA's `disc`/`circle`, and like any `<ul>` it resets the
- * count, so a nested decimal group restarts at 1.
+ * than keeping the UA's `disc`/`circle`. It is an `<ol>` under a decimal
+ * marker, and like any list it resets the count, so a nested group restarts at 1.
  */
 .list-group-panel {
   list-style-type: inherit;
