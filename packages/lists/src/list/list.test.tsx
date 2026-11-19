@@ -256,14 +256,53 @@ describe("List", () => {
         document.querySelector('[data-slot="list-item-icon"]'),
       ).not.toHaveAttribute("style");
     });
+  });
+});
 
-    it("moves the icon row's list-style suppression onto a class", () => {
-      render(<ListItem label="Feature" icon={StarIcon} />);
-      const row = screen
-        .getByText("Feature")
-        .closest("[class*='list-item-content']");
-      expect(row).not.toBeNull();
-    });
+// ============================================
+// MARKERS
+// ============================================
+// The marker used to be drawn by `display: list-item` on the label, so only a
+// label-only row got one: an icon row suppressed it and composed children had
+// no label to carry it. A `::before` counter for composed rows read 1, 1, 2 in
+// a mixed decimal list. Now every `<li>` of a marked list is the list item, so
+// the browser numbers all row shapes with one count.
+//
+// happy-dom resolves neither `display: list-item` nor `::marker`, so the rule
+// is asserted in the stylesheet and the markup it targets in the DOM. The
+// numbering and baseline are verified in Storybook.
+
+describe("List markers", () => {
+  it("gives every row shape the class the marker rule targets", () => {
+    const { container } = render(
+      <List marker="decimal">
+        <ListItem label="Label" />
+        <ListItem label="Icon" icon={StarIcon} />
+        <ListItem>
+          <span>Children</span>
+        </ListItem>
+        <ListGroup category="Group" items={[{ label: "Nested" }]} />
+      </List>,
+    );
+    const rows = [...container.querySelectorAll("li")];
+    expect(rows).toHaveLength(5);
+    for (const row of rows) {
+      expect(
+        row.classList.contains(styles["list-item"]) ||
+          row.classList.contains(styles["list-group"]),
+      ).toBe(true);
+    }
+  });
+
+  it("makes item and group rows the list items of a marked list", () => {
+    expect(listCss).toMatch(
+      /\[data-marker="square"\]\)\s*:is\(\.list-item, \.list-group\) \{\s*display: list-item;/,
+    );
+  });
+
+  it("draws no marker on the label or suppresses one on the icon row", () => {
+    expect(listCss).not.toMatch(/\.list-text-label \{[^}]*display: list-item/);
+    expect(listCss).not.toContain(".list-item-content");
   });
 });
 

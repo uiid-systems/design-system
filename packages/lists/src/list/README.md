@@ -9,7 +9,7 @@ Use List when you want to:
 - Pick a bullet style with `marker`: `"none"` (default, unstyled), `"disc"` / `"square"` (renders `<ul>`), or `"decimal"` (renders `<ol>`)
 - Set shared defaults for every item via `ItemProps`, and for every group's root `Stack` via `GroupProps` (layout props like `gap` or `className`). Both reach nested groups, an entry's own props win, and `className` joins rather than replaces
 
-Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. The `marker` is drawn only on the `label` of an item with no `icon` and no `children`, so a `ListItem` with an `icon` or given `children` shows no bullet or number.
+Both shapes coexist: `items` is the fast path for data, JSX children is the escape hatch for custom layouts. With a `marker`, every row is a native list item, so the browser draws and counts it the same for a `label`, an `icon` row (the marker sits beside the icon) or composed `children`, and a nested `ListGroup`'s items restart at 1. A list item can't also be a flex container, so in a marked list a row's own layout props (`ax`, `ay`, `gap`) don't apply and composed children flow as blocks; wrap them in a `Group` for a row layout. Unmarked lists keep their flex rows.
 
 ## Subcomponents
 

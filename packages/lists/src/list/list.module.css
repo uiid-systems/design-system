@@ -24,6 +24,31 @@
   &:where([data-marker="square"]) {
     list-style-type: square;
   }
+
+  /*
+   * One marker mechanism for every row shape. Each `<li>` the list owns, an
+   * item or a group, becomes a native list item, so the browser draws and
+   * counts the marker whatever the row holds: a label, an icon row or composed
+   * children. The marker sits outside on the row's first text baseline, and an
+   * icon row shows it beside the icon.
+   *
+   * `list-item` can't combine with `flex`, so here the row drops the flex
+   * layout `Group`/`Stack` give it and its children flow as blocks. The rows
+   * this package builds already wrap their own layout; composed children that
+   * want one bring a `Group`. Unmarked lists keep the flex rows.
+   */
+  &:where([data-marker="decimal"], [data-marker="disc"], [data-marker="square"]) :is(.list-item, .list-group) {
+    display: list-item;
+
+    &::marker {
+      font-size: var(--text-0-font-size);
+    }
+  }
+
+  &:where([data-marker="decimal"]) :is(.list-item, .list-group)::marker {
+    font-size: 0.625rem;
+    font-weight: 700;
+  }
 }
 
 .list-group-header + *:is(ul, ol) {
@@ -39,20 +64,14 @@
   align-content: center;
 }
 
-.list-group-panel {
-  list-style: none;
-  margin-block-end: 0.5rem;
-}
-
 /*
- * The row an item builds when it renders from `icon`/`label`/`description`
- * rather than children. `list-style-type` is set here, not on the item, so it
- * inherits down to `.list-text-label` — that label is a `display: list-item`,
- * so inside an `<ol>` it would draw a number beside the icon that has already
- * taken the marker's job.
+ * A nested group's items take the list's marker. The panel inherits it rather
+ * than keeping the UA's `disc`/`circle`, and like any `<ul>` it resets the
+ * count, so a nested decimal group restarts at 1.
  */
-.list-item-content {
-  list-style-type: none;
+.list-group-panel {
+  list-style-type: inherit;
+  margin-block-end: 0.5rem;
 }
 
 /*
@@ -76,13 +95,7 @@
 }
 
 .list-text-label {
-  display: list-item;
   align-content: center;
-
-  :is(ol) &::marker {
-    font-size: 0.625rem;
-    font-weight: 700;
-  }
 }
 
 .list-text-description {

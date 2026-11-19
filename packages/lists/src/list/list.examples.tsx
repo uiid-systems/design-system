@@ -83,37 +83,34 @@ export const NestedGroups = () => (
   />
 );
 
-export const Markers = () => {
-  const items = [{ label: "First" }, { label: "Second" }, { label: "Third" }];
-  return (
-    <Group gap={8} ay="start">
-      <Stack gap={2}>
+const MARKERS = ["none", "disc", "decimal", "square"] as const;
+
+/**
+ * Every row shape in one list, so the numbering reads across all of them: a
+ * label, an icon row, composed `children`, and a group whose items restart.
+ */
+export const Markers = () => (
+  <Group gap={8} ay="start">
+    {MARKERS.map((marker) => (
+      <Stack key={marker} gap={2}>
         <Text size={0} weight="bold">
-          none
+          {marker}
         </Text>
-        <List marker="none" items={items} />
+        <List marker={marker}>
+          <ListItem label="Label" />
+          <ListItem label="Icon" icon={StarIcon} />
+          <ListItem>
+            <Text size={0}>Children</Text>
+          </ListItem>
+          <ListGroup
+            category="Group"
+            items={[{ label: "Nested" }, { label: "Nested" }]}
+          />
+        </List>
       </Stack>
-      <Stack gap={2}>
-        <Text size={0} weight="bold">
-          disc
-        </Text>
-        <List marker="disc" items={items} />
-      </Stack>
-      <Stack gap={2}>
-        <Text size={0} weight="bold">
-          decimal
-        </Text>
-        <List marker="decimal" items={items} />
-      </Stack>
-      <Stack gap={2}>
-        <Text size={0} weight="bold">
-          square
-        </Text>
-        <List marker="square" items={items} />
-      </Stack>
-    </Group>
-  );
-};
+    ))}
+  </Group>
+);
 
 export const Composable = () => (
   <List>
