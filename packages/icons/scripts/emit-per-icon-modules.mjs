@@ -71,7 +71,7 @@ export function emitPerIconModules({ clean = true } = {}) {
     );
     writeFileSync(
       `${outDir}/${file}.d.ts`,
-      `import type { Icon } from "./icon-type";\n${names
+      `import type { Icon } from "./icon-type.js";\n${names
         .map((name) => `export declare const ${name}: Icon;`)
         .join("\n")}\n`,
     );
@@ -86,7 +86,7 @@ export function emitPerIconModules({ clean = true } = {}) {
   );
   writeFileSync(
     `${outDir}/loading-spinner.d.ts`,
-    `export {\n  LoadingSpinnerIcon,\n  type LoadingSpinnerIconProps,\n} from "../dist/components/loading-spinner";\n`,
+    `export {\n  LoadingSpinnerIcon,\n  type LoadingSpinnerIconProps,\n} from "../dist/components/loading-spinner.js";\n`,
   );
 
   return {

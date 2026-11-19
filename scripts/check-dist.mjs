@@ -2,7 +2,7 @@
 // Checks the built packages the way a consumer meets them. Tests and Storybook
 // alias every @uiid/* import to source, so nothing else in CI loads dist.
 //
-// Run after `pnpm turbo run build --filter='./packages/*'`. Four checks:
+// Run after `pnpm turbo run build --filter='./packages/*'`. Five checks:
 //   1. Every bare import in a package's published files, type declarations
 //      included, is one of its dependencies or peerDependencies. The workspace
 //      symlinks devDependencies, so an undeclared import works here and breaks
@@ -10,6 +10,8 @@
 //   2. Every `exports` target exists on disk.
 //   3. The umbrella's entry points import in Node and render on the server.
 //   4. The icon barrels type-check from outside the repo, with real types.
+//   5. Every published entry point type-checks under `moduleResolution:
+//      "nodenext"`, whose relative imports must name their files.
 
 import { execFileSync } from "node:child_process";
 import {
@@ -32,6 +34,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packagesDir = join(root, "packages");
 const failures = [];
 const fail = (message) => failures.push(message);
+const tscBin = createRequire(import.meta.url).resolve("typescript/bin/tsc");
 
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
@@ -207,13 +210,7 @@ export const createNotAny${index}: number = create${index};
   );
   execFileSync(
     process.execPath,
-    [
-      createRequire(import.meta.url).resolve("typescript/bin/tsc"),
-      "-p",
-      consumer,
-      "--pretty",
-      "false",
-    ],
+    [tscBin, "-p", consumer, "--pretty", "false"],
     { encoding: "utf8", stdio: "pipe" },
   );
 } catch (error) {
@@ -222,6 +219,105 @@ export const createNotAny${index}: number = create${index};
   );
 } finally {
   rmSync(consumer, { recursive: true, force: true });
+}
+
+// Under `moduleResolution: "nodenext"`, a relative import in a declaration file
+// must name its file (`./button.js`), so an extensionless one is TS2307 and the
+// types behind it are lost. skipLibCheck would hide that, so this consumer
+// checks libraries too and reports only errors in our own files: third-party
+// declarations are not ours to fix. Every published entry point is imported,
+// and a wildcard subpath is sampled with the names listed for its package: a
+// lucide icon and one of our own.
+const wildcardSamples = {
+  "@uiid/icons": ["globe", "loading-spinner"],
+  "@uiid/design-system": ["globe", "loading-spinner"],
+};
+const nodenext = mkdtempSync(join(tmpdir(), "uiid-dist-nodenext-"));
+try {
+  const published = packages.filter(({ manifest }) => !manifest.private);
+  const specifiers = [];
+  for (const { dir, manifest } of published) {
+    mkdirSync(join(nodenext, "node_modules", "@uiid"), { recursive: true });
+    symlinkSync(dir, join(nodenext, "node_modules", manifest.name), "dir");
+    for (const [key, target] of Object.entries(manifest.exports ?? {})) {
+      if (!target?.types) continue;
+      const subpath = key.replace(/^\.\/?/, "");
+      const samples = wildcardSamples[manifest.name];
+      if (subpath.includes("*") && !samples) {
+        fail(
+          `${manifest.name}: add sample names for its "${key}" export to wildcardSamples in check-dist.`,
+        );
+        continue;
+      }
+      const names = subpath.includes("*")
+        ? samples.map((sample) => subpath.replace("*", sample))
+        : [subpath];
+      for (const name of names) {
+        specifiers.push(name ? `${manifest.name}/${name}` : manifest.name);
+      }
+    }
+  }
+  mkdirSync(join(nodenext, "node_modules", "@types"), { recursive: true });
+  symlinkSync(
+    dirname(require.resolve("@types/react/package.json")),
+    join(nodenext, "node_modules", "@types", "react"),
+    "dir",
+  );
+
+  writeFileSync(
+    join(nodenext, "package.json"),
+    JSON.stringify({ type: "module" }),
+  );
+  writeFileSync(
+    join(nodenext, "consumer.ts"),
+    specifiers
+      .map((specifier, index) => `import * as m${index} from "${specifier}";`)
+      .concat(`export { ${specifiers.map((_, i) => `m${i}`).join(", ")} };`)
+      .join("\n"),
+  );
+  writeFileSync(
+    join(nodenext, "tsconfig.json"),
+    JSON.stringify({
+      compilerOptions: {
+        strict: true,
+        noEmit: true,
+        module: "NodeNext",
+        moduleResolution: "NodeNext",
+        target: "ES2022",
+        skipLibCheck: false,
+        types: [],
+      },
+      include: ["consumer.ts"],
+    }),
+  );
+  let exited = false;
+  let output = "";
+  try {
+    execFileSync(
+      process.execPath,
+      [tscBin, "-p", nodenext, "--pretty", "false"],
+      { cwd: root, encoding: "utf8", stdio: "pipe" },
+    );
+  } catch (error) {
+    exited = true;
+    output = `${error.stdout ?? ""}${error.stderr ?? ""}` || error.message;
+  }
+  const errors = output.split("\n").filter((line) => /error TS\d+/.test(line));
+  const ours = errors.filter((line) => !line.includes("node_modules/"));
+  // tsc failing without a single diagnostic means it crashed or never ran, which
+  // must not pass as "no errors in our files".
+  if (exited && !errors.length) {
+    fail(
+      `nodenext consumer: tsc exited non-zero without reporting a type error.\n${output}`,
+    );
+  }
+  if (ours.length) {
+    fail(
+      `nodenext consumer: ${ours.length} type errors resolving ${specifiers.length} entry points.\n${ours.join("\n")}`,
+    );
+  }
+} finally {
+  rmSync(nodenext, { recursive: true, force: true });
 }
 
 if (failures.length) {

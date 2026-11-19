@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin } from "vite";
 
+import { rewriteDeclarationsIn } from "../../scripts/dts-relative-extensions.mjs";
 import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
 
 // Declarations for the src/*.js modules that re-export lucide's deep paths.
@@ -31,6 +32,13 @@ const shipJsModuleDeclarations = (): Plugin => ({
         source: readFileSync(`${SRC_DIR}${fileName}`),
       });
     }
+  },
+  // `tsc -p tsconfig.build.json` writes the rest of dist's declarations, so this
+  // package cannot use vite-plugin-dts's hook. Once the bundle and the shipped
+  // declarations are on disk, give every relative specifier in dist a `.js`
+  // extension, as `createViteConfig` does, so they resolve under `nodenext`.
+  closeBundle() {
+    rewriteDeclarationsIn(fileURLToPath(new URL("dist/", import.meta.url)));
   },
 });
 

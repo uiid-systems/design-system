@@ -1,0 +1,69 @@
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+
+import ts from "typescript";
+
+// tsc copies relative specifiers into declarations as written, and our source
+// writes them extensionless (`./button/button`), which `bundler` resolution
+// accepts. Under `node16`/`nodenext` a relative import in an ES module must
+// name its file, so a consumer on either gets TS2307 and loses the types behind
+// it. This rewrites each relative specifier in the emitted declarations to the
+// form both resolutions accept: `./button/button.js` for a file, and
+// `./button/index.js` for a directory.
+//
+// A JSON import is the same case: the plugin emits `colors.tokens.json.d.ts`
+// but not the JSON, so `./colors.tokens.json` only resolves under `bundler`
+// (which appends `.d.ts`). `./colors.tokens.json.js` reaches that declaration
+// under both. A specifier that already names a file matches neither rule and
+// is left alone.
+//
+// Fixing the declarations rather than the source keeps the ~1,400 source
+// imports as they are; vite already writes `.js` specifiers into the JS it
+// emits, so only the declarations ever carried the problem.
+
+// TypeScript's own scanner finds the specifiers, so text that only looks like
+// an import, in a string or a JSDoc comment, is left alone. With both flags it
+// covers static imports and re-exports, side-effect imports, `import("...")`
+// types and `require`. Each entry's `pos` is its opening quote.
+const resolvedSpecifier = (dir, specifier) => {
+  if (!/^\.{1,2}\//.test(specifier)) return null;
+  const base = join(dir, specifier);
+  if (existsSync(`${base}.d.ts`)) return `${specifier}.js`;
+  if (existsSync(join(base, "index.d.ts"))) {
+    return `${specifier.replace(/\/$/, "")}/index.js`;
+  }
+  return null;
+};
+
+function addRelativeExtensions(content, file) {
+  const dir = dirname(file);
+  const { importedFiles } = ts.preProcessFile(content, true, true);
+  let next = content;
+  // Back to front, so each edit leaves the earlier positions valid.
+  for (const { fileName, pos } of importedFiles.toReversed()) {
+    const start = pos + 1;
+    const end = start + fileName.length;
+    // An escaped specifier is spelled differently in the text; none of ours are.
+    if (content.slice(start, end) !== fileName) continue;
+    const rewritten = resolvedSpecifier(dir, fileName);
+    if (rewritten) next = next.slice(0, start) + rewritten + next.slice(end);
+  }
+  return next;
+}
+
+const rewrite = (files) => {
+  for (const file of files) {
+    if (!file.endsWith(".d.ts")) continue;
+    const content = readFileSync(file, "utf8");
+    const next = addRelativeExtensions(content, file);
+    if (next !== content) writeFileSync(file, next);
+  }
+};
+
+/** vite-plugin-dts `afterBuild` hook: runs once every declaration is on disk. */
+export const rewriteEmittedDeclarations = (emittedFiles) =>
+  rewrite(emittedFiles.keys());
+
+/** For declarations emitted outside vite-plugin-dts, as `@uiid/icons`'s are. */
+export const rewriteDeclarationsIn = (dir) =>
+  rewrite(readdirSync(dir, { recursive: true }).map((file) => join(dir, file)));
