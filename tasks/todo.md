@@ -6,7 +6,7 @@ Every task also clears the standing bar: `pnpm test:run`, `pnpm run lint` and `p
 
 Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" touch more files than that because they repeat one change; they are still one reviewable idea.
 
-## Phase 1: Zero-risk deletions
+## Phase 1: Low-risk deletions
 
 ### Task 1: Delete finished-work docs and fix the references to them
 
@@ -20,7 +20,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Verification:**
 
-- [ ] `grep -rn "forms-alignment-audit\|token-staleness-audit\|ui-194-list" --exclude-dir=node_modules .` returns nothing
+- [ ] `git grep -n "forms-alignment-audit\|token-staleness-audit\|ui-194-list" -- . ':!tasks' ':!docs/architecture/hardening-spec.md'` returns nothing
 - [ ] Storybook build passes
 
 **Dependencies:** None
@@ -58,7 +58,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 - [ ] `cva` is declared only in `@uiid/utils`; `vite-tsconfig-paths` is removed from the root config and every manifest; `react-dom` is no longer a peer of utils or icons; tokens no longer declares `react`, `@types/react` or `nodemon`, and its `watch` script is gone
 - [ ] Duplicate or unused entries are removed: indicators' dev `@uiid/icons`, code's four packages listed in both dependency blocks, Storybook's `@vitest/coverage-v8`, and `@mdx-js/react` in the docs app if the docs build passes without it
-- [ ] Dead config is removed: the `preserveDirectives` options that restate the default, ai's `markdown-to-jsx` external, Turbo's `build/**` output, Vitest's `apps/**/__tests__` include, the commented-out Storybook addon, and the husky migration in `scripts/postinstall.mjs`
+- [ ] Dead config is removed: the `preserveDirectives: true` in tables' Vite config, which restates the default (layout and utils set `false`, which is not the default, and keep it), ai's `markdown-to-jsx` external, Turbo's `build/**` output, Vitest's `apps/**/__tests__` include, the commented-out Storybook addon, and the husky migration in `scripts/postinstall.mjs`
 
 **Verification:**
 
@@ -67,51 +67,54 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Dependencies:** None
 
-**Files likely touched:** package manifests (mechanical), `vite.config.ts`, `turbo.json`, `vitest.config.ts`, `apps/storybook/.storybook/main.ts`, `scripts/postinstall.mjs`
+**Files likely touched:** package manifests (mechanical), `vite.config.ts`, `packages/tokens/vite.config.ts`, `packages/tables/vite.config.ts`, `turbo.json`, `vitest.config.ts`, `apps/storybook/.storybook/main.ts`, `scripts/postinstall.mjs`
 
 **Estimated scope:** L, mechanical
 
-### Task 4: Delete dead tokens and dead code in the base and middle layers
+### Task 4: Delete internal dead code
 
-**Description:** Remove code and tokens with no reader in utils, tokens, icons, layout, interactive, indicators and navigation.
-
-**Acceptance criteria:**
-
-- [ ] The eight unread tokens are removed from the token JSON (`--globals-header-height`, `-transform-origin`, `-transform-scale-up`, `-transition-duration-fast`, `-transition-easing-spring`, `-shadow-md`, `--forms-font-size`, `--forms-padding-x`)
-- [ ] Icons no longer ships `createLucideIcon`, and `LoadingSpinnerIcon` is exported once
-- [ ] Dead branches and members are gone: the unreachable guards in `ConditionalRender` and `SwitchRender`, `.group { display: flex }`, Sortable's three unread context fields, `flatCursor` and its `:disabled` selector, Timeline's status variants, base-only cva and two unread constants, and Avatar's reference to a class that does not exist
-
-**Verification:**
-
-- [ ] `pnpm run build --filter=@uiid/tokens` then `pnpm test:run packages/{utils,tokens,icons,layout,interactive,indicators,navigation}` pass
-- [ ] Storybook build passes; a search for each removed token name finds nothing outside build output
-
-**Dependencies:** None
-
-**Files likely touched:** token JSON under `packages/tokens/src/json/`, `packages/icons/src/`, the components named above
-
-**Estimated scope:** L, split by package if the diff grows past review size
-
-### Task 5: Delete dead code in the upper layers and the apps
-
-**Description:** Remove code with no reader in forms, overlays, code, tables and the docs app.
+**Description:** Remove code that nothing reads and that is not part of any public API. Every item below was re-checked against the source on 2026-11-19.
 
 **Acceptance criteria:**
 
-- [ ] Removed: the unused `composing` option in the mask handlers, CodeEditor's unstyled `Loading...` div, `DrawerTitleProps` and `DrawerDescriptionProps`, the Table `formatHeader` prop, the docs `SITEMAP` constant and `SidebarSearch`, the commented-out rule in `toggle-group.module.css`
-- [ ] Single-use cva wrappers with only a base class in `code.variants.ts` are replaced by plain class names, and `CodeInline` renders through one return
-- [ ] `DrawerProvider`, `DrawerIndent` and `DrawerIndentBackground` are deleted, with the README section that describes the page scaling down
+- [ ] Timeline: the `status` axis of `timelineMarkerVariants` (it maps to classes that do not exist; the CSS keys on `data-status`), the base-only `timelineItemVariants` wrapper, and the unread `ROOT_NAME` and `TIME_NAME` constants are removed
+- [ ] `.group { display: flex }` is removed (Box already declares it), Avatar no longer references the non-existent `avatar-container` class, and the commented-out rule in `toggle-group.module.css` is gone
+- [ ] The docs app's unused `SITEMAP` constant and `SidebarSearch` component are removed
 
 **Verification:**
 
-- [ ] `pnpm test:run packages/{forms,overlays,code,tables}` passes
-- [ ] Docs and Storybook builds pass
+- [ ] `pnpm test:run packages/{layout,indicators,forms}` passes with no test edited
+- [ ] Storybook and docs builds pass; Timeline, Avatar and Group stories look unchanged
 
 **Dependencies:** None
 
-**Files likely touched:** the components named above, `apps/docs/sitemap.ts`, `apps/docs/components/shell/sidebar.tsx`
+**Files likely touched:** `packages/indicators/src/timeline/timeline.{variants,constants}.ts` and its callers, `packages/layout/src/group/group.module.css`, `packages/indicators/src/avatar/subcomponents/avatar-container.tsx`, `packages/forms/src/toggle-group/toggle-group.module.css`, `apps/docs/sitemap.ts`, `apps/docs/components/shell/sidebar.tsx`
 
-**Estimated scope:** L, split by package if needed
+**Estimated scope:** L, small edits in each
+
+### Task 5: Remove unused public API
+
+**Description:** Remove exported things that have no reader and no working behaviour behind them. Unlike Tasks 1 to 4 this is a breaking change, so the PR title carries `!`.
+
+`flatCursor` on Sortable and `formatHeader` on Table are **not** part of this task. Nothing in the repo passes them, but both are documented public props that work, and they stay.
+
+**Acceptance criteria:**
+
+- [ ] `DrawerProvider`, `DrawerIndent` and `DrawerIndentBackground` are deleted, with the README section that describes the page scaling down; `DrawerTitleProps` and `DrawerDescriptionProps`, which have no matching component, are deleted
+- [ ] The three tokens nothing reads are removed from the token JSON: `--globals-shadow-md`, `--forms-font-size` and `--forms-padding-x`
+- [ ] CodeEditor no longer renders an unstyled `Loading...` div while the highlighter starts
+
+**Verification:**
+
+- [ ] `pnpm run build --filter=@uiid/tokens` then `pnpm test:run packages/{tokens,overlays,code}` passes
+- [ ] `git grep -n "shadow-md\|forms-font-size\|forms-padding-x\|DrawerIndent\|DrawerProvider" -- packages apps` finds nothing in source
+- [ ] Storybook and docs builds pass
+
+**Dependencies:** None
+
+**Files likely touched:** `packages/overlays/src/drawer/` (three subcomponents, types, index, README), `packages/tokens/src/json/` (two files), `packages/code/src/code-editor/code-editor.tsx`
+
+**Estimated scope:** L
 
 ### Task 6: Correct the always-loaded agent docs
 
@@ -125,7 +128,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Verification:**
 
-- [ ] Paste the README example into a scratch story and confirm it typechecks
+- [ ] After a full package build, a scratch story containing the README example passes Storybook's typecheck; delete the scratch story afterwards
 - [ ] Storybook build passes
 
 **Dependencies:** None
@@ -225,13 +228,13 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 **Acceptance criteria:**
 
 - [ ] `vite-plugin-dts` is not a dependency anywhere
-- [ ] The 15 identical package tsconfigs extend one shared file
+- [ ] The emit settings the 15 identical package tsconfigs repeat (`outDir`, declaration-only emit, test exclusion) move into one shared file they extend
 - [ ] No test declarations or declaration maps are published
 
 **Verification:**
 
 - [ ] For every package, `npm pack --dry-run` lists the same `.d.ts` files as before, minus intended removals
-- [ ] A forced full build is timed and compared with the 15.0 s baseline; the figure goes in the PR
+- [ ] `pnpm turbo run build --filter='./packages/*' --force` is timed before and after on the same machine; both figures go in the PR
 
 **Dependencies:** Task 10
 
@@ -331,7 +334,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 **Acceptance criteria:**
 
 - [ ] Every package declares the same `@base-ui/react` 1.9.x in the same form
-- [ ] The hand-added `aria-modal` on CodeBlock and the skipped Radio test are each removed or kept with a stated reason; Dialog, Drawer and CodeBlock agree on `aria-modal`
+- [ ] The hand-added `aria-modal` on CodeBlock and the two skipped Radio tests are each removed or kept with a stated reason; Dialog, Drawer and CodeBlock agree on `aria-modal`
 - [ ] The PR lists the behaviour changes found in the 1.8 and 1.9 changelogs
 
 **Verification:**
@@ -347,7 +350,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 ## Phase 4: Input masks
 
-The tested prototype sits beside this repo on the owner's machine, in a sibling folder named `mask-proof` (`src/masks.final.ts`, `src/input.final.tsx`, `tests/`). It is not in version control; run `npm install` there before `sh run-all.sh`.
+The tested prototype is on the owner's machine in a folder named `mask-proof` next to the main checkout of this repo (not next to a worktree) (`src/masks.final.ts`, `src/input.final.tsx`, `tests/`). It is not in version control; run `npm install` there before `sh run-all.sh`.
 
 ### Task 17: Add the `mask` prop and `InputMask` type to `Input`
 
@@ -398,7 +401,7 @@ The tested prototype sits beside this repo on the owner's machine, in a sibling 
 **Acceptance criteria:**
 
 - [ ] Tests cover typing with grouping, deletion across a separator, select-and-replace, real clipboard paste, blur padding, clearing to empty, and End and Backspace beside a trailing symbol
-- [ ] A browser test project runs them in Chromium on every PR
+- [ ] A browser test project runs them in Chromium on every PR, with `@vitest/browser-playwright` added at the root (today only Storybook declares it)
 - [ ] The same suite can be pointed at Firefox and WebKit locally when those binaries are installed
 
 **Verification:**
@@ -478,7 +481,7 @@ The tested prototype sits beside this repo on the owner's machine, in a sibling 
 
 ## Phase 5: Rules, layer by layer
 
-For every task in this phase: parts and their prop types are exported; constants, variant functions, internal hooks, mocks and plumbing are not. A slot type omits the keys its component owns. If that needs conditional types, use the runtime order for that component and add it to the fallback list in `.agents/components.md`. Each task updates the package's barrel test to the exact public list and builds Storybook and the docs app.
+For every task in this phase: parts and their prop types are exported; constants, variant functions, internal hooks, mocks and plumbing are not. A slot type omits the keys its component owns. If that needs conditional types, use the runtime order for that component and add it to the fallback list in `.agents/components.md`. Each task gives its packages a barrel test (`src/index.test.ts`) listing the exact public names, creating one where it is missing: only ai, design-system, forms and overlays have one today. Each task also builds Storybook and the docs app, and its PR title carries `!`.
 
 ### Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils
 
@@ -495,7 +498,7 @@ For every task in this phase: parts and their prop types are exported; constants
 - [ ] Storybook and docs builds pass
 - [ ] `scripts/check-package-registration.mjs` passes
 
-**Dependencies:** Phase 2 checkpoint
+**Dependencies:** Task 16
 
 **Files likely touched:** `.agents/components.md`, `packages/design-system/src/index.ts`, its utils entry, a few stories
 
@@ -507,9 +510,9 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Acceptance criteria:**
 
-- [ ] utils exports only what a consumer writes; the prop-key arrays, option types and `composeRefs` are internal
+- [ ] utils exports only what a consumer writes; the prop-key arrays, option types and `composeRefs` are internal; icons no longer exports `createLucideIcon`, which nothing outside the package uses
 - [ ] tokens' unused package export paths are removed and its published files exclude tests; `paletteAnchor` moves to Storybook
-- [ ] The PR records which alias names Lucide itself deprecates and how many alias names this repo uses, so the owner can decide whether icons emit canonical names only; no icon names change in this task
+- [ ] The PR records which alias names Lucide itself deprecates and how many alias names this repo uses, so the owner can decide whether icons emit canonical names only; no icon names change in this task, and if the answer is yes it becomes a new task
 
 **Verification:**
 
@@ -529,7 +532,7 @@ For every task in this phase: parts and their prop types are exported; constants
 **Acceptance criteria:**
 
 - [ ] The streaming hooks, their utilities and tests move from typography into `@uiid/markdown`, their only consumer
-- [ ] Button's internal types and Sortable's internal hooks are no longer exported
+- [ ] Button's internal types and Sortable's internal hooks are no longer exported; any field Sortable's root context provides that no part reads is removed; a disabled Sortable item is dimmed through `[data-disabled]`, replacing a `:disabled` selector that can never match a `div`
 - [ ] Sortable and Resizable stay in the barrel and export parts only
 
 **Verification:**
@@ -654,7 +657,6 @@ For every task in this phase: parts and their prop types are exported; constants
 
 - [ ] Table's composition parts stay exported, with `useTableSelection` public because a composed selectable table needs it
 - [ ] `@uiid/ai` exports its components, parts and types only
-- [ ] `striped`, `bordered` and `highlightOnHover` move into `tableVariants`
 
 **Verification:**
 
@@ -663,7 +665,28 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Dependencies:** Tasks 28 and 29
 
-**Files likely touched:** both barrels, `packages/tables/src/table/` variants and root subcomponent
+**Files likely touched:** both barrels and their barrel tests
+
+**Estimated scope:** M
+
+### Task 30b: Move Table's boolean style flags into `tableVariants`
+
+**Description:** `striped`, `bordered` and `highlightOnHover` are styled through hand-written data attributes. Move them to cva, as the styling rules require for every variant axis.
+
+**Acceptance criteria:**
+
+- [ ] The three flags are axes of `tableVariants`
+- [ ] The prop name and what it writes agree (`highlightOnHover` no longer becomes `data-hover`)
+- [ ] Story pixel diffs show no visual change
+
+**Verification:**
+
+- [ ] `pnpm test:run packages/tables` passes
+- [ ] The before-and-after story diff is attached to the PR
+
+**Dependencies:** Task 30
+
+**Files likely touched:** `packages/tables/src/table/table.variants.ts`, `table.module.css`, `subcomponents/table-root.tsx`
 
 **Estimated scope:** M
 
@@ -785,7 +808,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Verification:**
 
-- [ ] The examples meta-test passes for each package
+- [ ] Each new examples file is rendered by a story (only forms has an examples meta-test today)
 - [ ] Storybook build passes
 
 **Dependencies:** Phase 6

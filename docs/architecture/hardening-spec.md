@@ -112,23 +112,24 @@ Conventions that apply throughout: cva for every variant axis, no inline styles,
 
 - **Unit and component tests** stay in Vitest on happy-dom, beside each component. Every behaviour change in this work lands with its test in the same PR. A removal deletes the tests of the removed behaviour and nothing else.
 - **Rule changes** get one precedence or type test per component: a `// @ts-expect-error` line proving an owned key cannot be passed through a slot, or a runtime test where the fallback is used.
-- **Export changes** are covered by each package's barrel test, updated to list exactly the intended public names.
+- **Export changes** are covered by a barrel test per package (`src/index.test.ts`) listing exactly the intended public names. Only ai, design-system, forms and overlays have one today, so the others are created as their layer is reached.
 - **Masks** get unit tests for `format` and `parse` per locale (USD, EUR in de-DE, JPY, CHF in de-CH, CAD in fr-CA), a component test proving `Input` wiring with a fake mask, and real-browser tests for caret, paste and blur padding, since happy-dom cannot show them.
 - **Build changes** are verified by `scripts/check-dist.mjs`, a before-and-after listing of each package's `dist`, and the timing baseline below.
 - **Everything** passes `pnpm test:run`, `pnpm run lint`, `pnpm run format:check`, `pnpm size`, the Storybook build and the docs build before merge.
 
-Baseline measured 2026-11-18 on this machine: a forced full build through Turbo takes 15.0 s; the same work summed package by package is 48.5 s, of which `tsc -b` is 19.4 s, Vite 26.0 s, and declaration generation inside Vite 10.3 s.
+Baseline measured 2026-11-18 on this machine: a forced full build through Turbo (`pnpm turbo run build --filter='./packages/*' --force`) takes 15.0 s; the same work summed package by package is 48.5 s, of which `tsc -b` is 19.4 s, Vite 26.0 s, and declaration generation inside Vite 10.3 s.
 
 ## Boundaries
 
 - **Always:** read the matching `.agents/` chapter before editing; read a component's `.types.ts` before using it; run a repo-wide search before deleting anything called unused; keep each PR to one task; mark breaking PRs with `!`; open the PR before reviewing it.
 - **Ask first:** adding any dependency other than Maskito; changing a decision listed above; deleting a composition part or a whole component; changing CI workflows beyond what a task names; anything that changes what is published to npm.
+- **Already approved by this spec:** adding `@maskito/core` and `@maskito/kit` to forms and `@vitest/browser-playwright` at the root; the changes to exports, package manifests and published files that a task names; the CI changes that Tasks 10, 12 and 19 name.
 - **Never:** add a shim or deprecation path; hand-author a parallel prop schema or registry; rename a Base UI primitive or recast a prop it ships; rework the style-prop double write; propose merging packages; add AI attribution to commits or PRs.
 
 ## Success criteria
 
-1. **Deletions.** `tasks/` holds only this plan; the three finished-work docs are gone; no tracked build output outside `dist`; no declared dependency that nothing imports; no `@deprecated` marker anywhere in `packages/*/src`.
-2. **Build.** A fresh clone passes `pnpm install && pnpm test:run` and `pnpm typecheck` with no build step. Vitest and Storybook share one way of resolving `@uiid/*` to source. Each package generates declarations once. A forced full build is no slower than 15.0 s. TypeScript, Vite and Vitest are on their current majors, or a named breaking change is recorded as the reason not.
+1. **Deletions.** Until the close-out task removes it, `tasks/` holds only this plan; the three finished-work docs are gone; no tracked build output outside `dist`; no declared dependency that nothing imports; no `@deprecated` marker anywhere in `packages/*/src`.
+2. **Build.** A fresh clone passes `pnpm install && pnpm test:run` and `pnpm typecheck` with no build step. Vitest and Storybook share one way of resolving `@uiid/*` to source. Each package generates declarations once. A forced full build is no slower than the baseline when both are measured on the same machine. TypeScript, Vite and Vitest are on their current majors, or a named breaking change is recorded as the reason not.
 3. **Base UI.** Every package declares the same 1.9.x version in the same form, and each workaround written against 1.7 is removed or justified.
 4. **Masks.** `currencyMask`, `percentMask` and `numberMask` work on `Input` as you type, with correct decimals and symbol placement for the five test locales. A cleared field has an empty value. A bundle that renders `Input` with no mask contains no Maskito code. All 13 fixed patterns exist as masks. The old mask hooks and utilities are deleted. Chromium browser tests run in CI, and the README states which platforms are untested.
 5. **Rules.** Every component exports its parts and no internals, and `@uiid/design-system` no longer re-exports `@uiid/utils` from its root. No slot type accepts a key its component owns, or the component is listed as using the runtime fallback.

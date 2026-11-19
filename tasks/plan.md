@@ -2,7 +2,7 @@
 
 ## Overview
 
-Seven phases that make UIID smaller, settled and correct before 1.0, in the order agreed on 2026-11-18: zero-risk deletions, the build pipeline with toolchain upgrades, Base UI 1.9, masks on `Input`, the export and slot-prop rules applied layer by layer, deprecated APIs and `fullwidth`, and a docs truth pass. The spec is [`docs/architecture/hardening-spec.md`](../docs/architecture/hardening-spec.md). Each task's acceptance criteria and verification are in [`todo.md`](./todo.md).
+Seven phases that make UIID smaller, settled and correct before 1.0, in the order agreed on 2026-11-18: low-risk deletions, the build pipeline with toolchain upgrades, Base UI 1.9, masks on `Input`, the export and slot-prop rules applied layer by layer, deprecated APIs and `fullwidth`, and a docs truth pass. The spec is [`docs/architecture/hardening-spec.md`](../docs/architecture/hardening-spec.md). Each task's acceptance criteria and verification are in [`todo.md`](./todo.md).
 
 The previous contents of this file, the finished `ai-reasoning-tool` plan (UI-267), are in git history.
 
@@ -26,30 +26,31 @@ Phase 2  Build pipeline ──► Phase 3  Base UI 1.9 ──► Phase 4  Input 
                                   │                        (own track)
                                   ▼
 Phase 5  Rules, bottom-up:  utils/tokens/icons → layout/typography/buttons/interactive/markdown
-                            → cards/lists/indicators/navigation → forms → overlays/code → tables/ai/barrel
+                            → cards/lists/indicators/navigation → forms and overlays/code (side by side) → tables/ai
                                   │
                                   ▼
 Phase 6  Deprecated APIs and fullwidth ──► Phase 7  Docs truth pass
 ```
 
-Within Phase 5 a layer starts only after the layer below it has merged, because its types and exports are what the next layer imports.
+Within Phase 5 a task starts only after the tasks it names as dependencies have merged, because their types and exports are what it imports. Forms (Tasks 26 to 28) and overlays and code (Task 29) do not depend on each other and can run side by side. Phase 5 starts after Task 16.
 
 ## Task list
 
-### Phase 1: Zero-risk deletions
+### Phase 1: Low-risk deletions
 
 - [ ] Task 1: Delete finished-work docs and fix the references to them
 - [ ] Task 2: Delete tracked files that nothing imports
 - [ ] Task 3: Remove unused dependencies and dead config
-- [ ] Task 4: Delete dead tokens and dead code in the base and middle layers
-- [ ] Task 5: Delete dead code in the upper layers and the apps
+- [ ] Task 4: Delete internal dead code
+- [ ] Task 5: Remove unused public API (breaking)
 - [ ] Task 6: Correct the always-loaded agent docs
 
 ### Checkpoint: Deletions
 
 - [ ] `pnpm test:run`, `pnpm run lint`, `pnpm run format:check` and `pnpm size` pass
 - [ ] Storybook and docs builds pass
-- [ ] No behaviour change: no test was edited except to remove one for deleted code
+- [ ] Tasks 1 to 4 and 6 change no behaviour: no test was edited except to remove one for deleted code
+- [ ] Task 5 is the only breaking change in this phase, and its PR title carries `!`
 
 ### Phase 2: Build pipeline
 
@@ -101,6 +102,7 @@ Within Phase 5 a layer starts only after the layer below it has merged, because 
 - [ ] Task 28: Apply the export rule to forms
 - [ ] Task 29: Apply both rules to overlays and code
 - [ ] Task 30: Apply both rules to tables and ai
+- [ ] Task 30b: Move Table's boolean style flags into `tableVariants`
 
 ### Checkpoint: Rules
 
@@ -130,24 +132,24 @@ Within Phase 5 a layer starts only after the layer below it has merged, because 
 
 ## Parallelisation
 
-- **Safe in parallel:** Tasks 1 to 6 with each other; Phase 4 alongside Phase 5 once Task 16 has merged; Tasks 34 to 36 with each other.
-- **Must be sequential:** Tasks 8 to 14; the layers of Phase 5; Task 32 before Task 33.
+- **Safe in parallel:** Tasks 1 to 6 with each other; Phase 4 alongside Phase 5 once Task 16 has merged; Tasks 26 to 28 alongside Task 29; Tasks 34 to 36 with each other.
+- **Must be sequential:** Tasks 8 to 14; each Phase 5 task after its listed dependencies; Task 32 before Task 33.
 - **Needs coordination:** Task 27 and UI-411 touch the same picker files, so UI-411 waits for Task 27. Tasks 20a, 20b and 28 all edit the forms barrel.
 
 ## Risks and mitigations
 
-| Risk                                                                                          | Impact                    | Mitigation                                                                                                                      |
-| --------------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| The source export condition conflicts with `composite` and per-package `rootDir`              | High                      | Task 8 proves it on two packages first; if it fails, fall back to generated `paths` in one root tsconfig and keep going         |
-| TypeScript 7 changes emitted declarations or rejects existing code                            | High                      | Its own task, after the pipeline is stable; diff every package's `.d.ts` output; stay on 5.9 with the reason recorded if needed |
-| Dropping `vite-plugin-dts` changes what is published                                          | Medium                    | Compare `npm pack --dry-run` file lists before and after for every package                                                      |
-| The wrapper that makes Maskito's writes visible to React breaks on a React or Maskito upgrade | Medium                    | Give it a dedicated test that fails loudly; wrap Maskito and never re-export it                                                 |
-| Maskito has shipped two majors in 14 months                                                   | Medium                    | All engine use stays inside the mask factories, about 100 lines                                                                 |
-| Omit-based slot types turn conditional for generic components such as Select and Combobox     | Medium                    | The agreed exit: use the runtime order for that component and record it                                                         |
-| Unexporting internals breaks the docs app or Storybook, which import from the barrel          | Low                       | Each Phase 5 task builds both apps before merge                                                                                 |
-| The `fullwidth` replacement changes layout where the toggle and `w="full"` differ             | Medium                    | Before-and-after story pixel diff per package, as used for the Stack default change                                             |
-| Masks misbehave on a browser nobody tested                                                    | High for the owner's work | Task 21 is a named manual matrix; the spec lists the untested platforms                                                         |
+| Risk                                                                                          | Impact                    | Mitigation                                                                                                                              |
+| --------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| The source export condition conflicts with `composite` and per-package `rootDir`              | High                      | Task 8 proves it on two packages first; if it fails, fall back to generated `paths` in one root tsconfig and keep going                 |
+| TypeScript 7 changes emitted declarations or rejects existing code                            | High                      | Its own task, after the pipeline is stable; diff every package's `.d.ts` output; stay on 5.9 with the reason recorded if needed         |
+| Dropping `vite-plugin-dts` changes what is published                                          | Medium                    | Compare `npm pack --dry-run` file lists before and after for every package                                                              |
+| The wrapper that makes Maskito's writes visible to React breaks on a React or Maskito upgrade | Medium                    | Give it a dedicated test that fails loudly; wrap Maskito and never re-export it                                                         |
+| Maskito has shipped two majors in 14 months                                                   | Medium                    | All engine use stays inside the mask factories, about 100 lines                                                                         |
+| Omit-based slot types turn conditional for generic components such as Select and Combobox     | Medium                    | The agreed exit: use the runtime order for that component and record it                                                                 |
+| Unexporting internals breaks the docs app or Storybook, which import from the barrel          | Low                       | Each Phase 5 task builds both apps before merge                                                                                         |
+| The `fullwidth` replacement changes layout where the toggle and `w="full"` differ             | Medium                    | Before-and-after story pixel diff per package, as used for the Stack default change                                                     |
+| Masks misbehave on a browser nobody tested                                                    | High for the owner's work | Chromium runs in CI; Task 21 records a local Firefox and WebKit run and states in the README that mobile keyboards and IME are untested |
 
 ## Open questions
 
-One remains, on Lucide's alias icon names; Task 23 gathers the evidence for it. The other six were answered on 2026-11-18 and are recorded in the spec.
+One remains, on Lucide's alias icon names; Task 23 gathers the evidence for it, and a decision to change names becomes a new task. The other six were answered on 2026-11-18 and are recorded in the spec.
