@@ -1392,3 +1392,71 @@ describe("Select with a non-string Value", () => {
     void wrong;
   });
 });
+
+describe("Select RootProps precedence", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+  const submit = (container: HTMLElement, name: string) =>
+    new FormData(container.querySelector("form") as HTMLFormElement).getAll(
+      name,
+    );
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <form>
+        <Select
+          items={items}
+          name="pick"
+          defaultValue="a"
+          RootProps={{ defaultValue: "b" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "pick")).toEqual(["a"]);
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" RootProps={{ defaultValue: "b" }} />
+      </form>,
+    );
+    expect(submit(container, "pick")).toEqual(["b"]);
+  });
+
+  it("keeps RootProps.items over labels collected from composed children", () => {
+    render(
+      <Select
+        name="pick"
+        RootProps={{
+          defaultValue: "a",
+          items: [{ value: "a", label: "From RootProps" }],
+        }}
+      >
+        <SelectItem value="a" label="From children" />
+      </Select>,
+    );
+    expect(screen.getByRole("combobox")).toHaveTextContent("From RootProps");
+  });
+
+  it("reads RootProps.multiple when the top level leaves multiple unset", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" RootProps={{ multiple: true }} />
+      </form>,
+    );
+    // Multiple mode starts empty instead of picking the first item.
+    expect(submit(container, "pick")).toEqual([]);
+  });
+
+  it("marks the label from RootProps.required", () => {
+    const { container } = render(
+      <Select items={items} label="Pick" RootProps={{ required: true }} />,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+});

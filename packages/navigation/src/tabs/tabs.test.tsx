@@ -604,3 +604,41 @@ describe("Tabs", () => {
     expect(hidden).toHaveClass("fn-hidden", styles["tabs-panel"]);
   });
 });
+
+describe("Tabs RootProps precedence", () => {
+  const selected = (name: string) =>
+    screen.getByRole("tab", { name }).getAttribute("aria-selected");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        defaultValue="tab-2"
+        RootProps={{ defaultValue: "tab-3" }}
+      />,
+    );
+    expect(selected("Tab 2")).toBe("true");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(<Tabs items={MOCK_ITEMS} RootProps={{ defaultValue: "tab-3" }} />);
+    expect(selected("Tab 3")).toBe("true");
+  });
+
+  it("follows a controlled RootProps.value", () => {
+    const { rerender } = render(
+      <Tabs items={MOCK_ITEMS} RootProps={{ value: "tab-3" }} />,
+    );
+    expect(selected("Tab 3")).toBe("true");
+
+    rerender(<Tabs items={MOCK_ITEMS} RootProps={{ value: "tab-2" }} />);
+    expect(selected("Tab 2")).toBe("true");
+  });
+
+  it("lets a top-level value win over RootProps.value", () => {
+    render(
+      <Tabs items={MOCK_ITEMS} value="tab-1" RootProps={{ value: "tab-3" }} />,
+    );
+    expect(selected("Tab 1")).toBe("true");
+  });
+});

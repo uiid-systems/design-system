@@ -912,9 +912,8 @@ describe("Combobox required reaches the label and the control", () => {
     expect(root).toHaveAttribute("data-required");
   });
 
-  /* Slot props win over the top-level ones, as they do for `name` and
-     `disabled`. The marker follows the top-level prop, so the two disagree. */
-  it("lets RootProps.required decide the control", () => {
+  /* Top-level props win over RootProps, so the control and the marker agree. */
+  it("lets the top-level required win over RootProps.required", () => {
     const { container } = render(
       <Combobox
         items={items}
@@ -925,10 +924,13 @@ describe("Combobox required reaches the label and the control", () => {
       />,
     );
 
-    expect(container.querySelector("input[name='fruit']")).not.toHaveAttribute(
+    expect(container.querySelector("input[name='fruit']")).toHaveAttribute(
       "required",
     );
-    expect(screen.getByRole("combobox")).not.toHaveAttribute("aria-required");
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-required",
+      "true",
+    );
     expect(
       container.querySelector("[data-slot='field-label'][data-required]"),
     ).not.toBeNull();
@@ -1151,5 +1153,60 @@ describe("Combobox variant and fullwidth", () => {
     const input = screen.getByRole("combobox");
     expect(input).toHaveClass(inputStyles["variant-ghost"]);
     expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
+  });
+});
+
+describe("Combobox RootProps precedence", () => {
+  const items = ["apple", "banana"];
+  const submit = (container: HTMLElement, name: string) =>
+    new FormData(container.querySelector("form") as HTMLFormElement).getAll(
+      name,
+    );
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <form>
+        <Combobox
+          items={items}
+          name="top"
+          defaultValue="apple"
+          RootProps={{ name: "slot" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "top")).toContain("apple");
+    expect(submit(container, "slot")).toEqual([]);
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <form>
+        <Combobox
+          items={items}
+          RootProps={{ name: "slot", defaultValue: "apple" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "slot")).toContain("apple");
+  });
+
+  it("marks the label from RootProps.required", () => {
+    const { container } = render(
+      <Combobox items={items} label="Fruit" RootProps={{ required: true }} />,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
+  it("surfaces a Form error keyed to RootProps.name", () => {
+    const { container } = render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Combobox items={items} label="Fruit" RootProps={{ name: "fruit" }} />
+      </Form>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).toHaveTextContent("Pick a fruit");
   });
 });

@@ -32,7 +32,7 @@ Leave `value` unset and the select runs itself; pass `value` and `onValueChange`
 
 The open popup dims the page behind it so it can't be lost in surrounding content. That is paint only — Base UI's `Root` is `modal` by default, so page scroll is locked and outside pointers are blocked whether or not the dimming is drawn, and `backdrop={false}` changes how the select looks, never how it behaves. The dim is lighter than a dialog's: a dialog owns the screen, where a select is still a field in a form the reader needs to keep their place in. It rides Select's own `--select-backdrop-*` tokens, so `@uiid/forms` carries no dependency on `@uiid/overlays`.
 
-Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough.
+Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough. When a top-level prop and `RootProps` set the same key, the top-level prop wins.
 
 The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `fullwidth`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`. It defaults to `p={2}`, `gap={0}`, and `fullwidth`; pass any of them to change it. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
 

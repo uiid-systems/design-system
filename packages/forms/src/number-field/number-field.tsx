@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { Field } from "../field/field";
 import { NUMBER_FIELD_DEFAULT_SIZE } from "./number-field.constants";
 import type { NumberFieldProps } from "./number-field.types";
@@ -30,7 +32,7 @@ export const NumberField = ({
 }: NumberFieldProps) => {
   // Top-level props win over the same key in RootProps, as in Slider and
   // Switch. The Field reads name from the merged props.
-  const rootProps = { ...RootProps, ...props };
+  const rootProps = { ...RootProps, ...definedProps(props) };
 
   return (
     <Field

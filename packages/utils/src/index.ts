@@ -25,6 +25,7 @@ export {
 export type { StyleProp, WithLayoutProps } from "./props/types";
 export { resolveStyleProp } from "./props/css";
 export {
+  definedProps,
   prepareComponentProps,
   splitDomAttributes,
   type DomAttributes,

@@ -1,6 +1,6 @@
 "use client";
 
-import { splitDomAttributes } from "@uiid/utils";
+import { definedProps, splitDomAttributes } from "@uiid/utils";
 
 import { mergeInputGroupProps } from "../shared/input-group";
 import { resolveItemKey, resolveItemLabel } from "../shared/item-utils";
@@ -49,23 +49,27 @@ export function Autocomplete<Value = string>({
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
+  // Top-level props win over the same key in RootProps. The input and its
+  // Field read the resolved values, so the label marker, dimming and Form
+  // error lookup match the control.
+  const resolvedName = name ?? RootProps?.name;
+  const resolvedDisabled = disabled ?? RootProps?.disabled;
+  const resolvedRequired = required ?? RootProps?.required;
+
   // Autocomplete's Root has no `itemToStringLabel`: `itemToStringValue` is
   // the text Base UI fills the input with, so the default row shows the same.
-  // `rootProps` spreads last onto Root, so its function is the one Root uses.
+  // Top-level props spread last onto Root, so theirs is the one Root uses.
   const itemToStringValue =
     rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
 
   return (
     <AutocompleteRoot<Value>
-      items={items}
-      name={name}
-      disabled={disabled}
-      required={required}
       {...RootProps}
+      {...definedProps({ items, name, disabled, required })}
       {...rootProps}
     >
       <AutocompleteInput
-        name={name}
+        name={resolvedName}
         placeholder={placeholder}
         label={label}
         description={description}
@@ -76,8 +80,8 @@ export function Autocomplete<Value = string>({
         variant={variant}
         fullwidth={fullwidth}
         color={color}
-        disabled={disabled}
-        required={required}
+        disabled={resolvedDisabled}
+        required={resolvedRequired}
         onFocus={onFocus}
         onBlur={onBlur}
         {...domAttributes}

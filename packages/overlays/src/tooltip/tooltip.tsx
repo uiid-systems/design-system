@@ -1,6 +1,6 @@
 "use client";
 
-import { hasTrigger } from "@uiid/utils";
+import { definedProps, hasTrigger } from "@uiid/utils";
 
 import { composeOpenChange } from "../shared/compose-open-change";
 import {
@@ -32,9 +32,8 @@ export const Tooltip = ({
 
   const tooltip = (
     <TooltipRoot
-      open={open}
-      defaultOpen={defaultOpen}
       {...RootProps}
+      {...definedProps({ open, defaultOpen })}
       onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
     >
       {hasTrigger(trigger, TriggerProps?.render) && (

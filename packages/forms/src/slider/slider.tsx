@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { Field } from "../field/field";
 import type { SliderProps } from "./slider.types";
 import {
@@ -27,7 +29,7 @@ export const Slider = ({
   // Top-level props win over the same key in RootProps, as in Switch and
   // NumberField. The Field reads name and size from the merged root props so
   // its chrome matches the control.
-  const rootProps = { ...RootProps, ...props };
+  const rootProps = { ...RootProps, ...definedProps(props) };
   const { name, size } = rootProps;
 
   // One thumb per value. Base UI takes a number for a single slider and an

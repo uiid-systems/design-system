@@ -1153,3 +1153,51 @@ describe("DrawerSwipeArea", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("Drawer RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Drawer
+        title="Settings"
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+    expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Drawer title="Settings" RootProps={{ defaultOpen: true }}>
+        Drawer content
+      </Drawer>,
+    );
+    expect(screen.getByText("Drawer content")).toBeInTheDocument();
+  });
+
+  it("lets a top-level modal win over RootProps.modal", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open modal={false} RootProps={{ modal: true }}>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
+
+  it("still applies RootProps.modal when the top level leaves it unset", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open RootProps={{ modal: false }}>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
+});

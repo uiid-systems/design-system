@@ -260,7 +260,7 @@ describe("Collapsible", () => {
     expect(screen.queryByText("Content")).not.toBeInTheDocument();
   });
 
-  it("lets RootProps win over the direct open props", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
     render(
       <Collapsible
         trigger="Toggle"
@@ -270,7 +270,74 @@ describe("Collapsible", () => {
         Content
       </Collapsible>,
     );
+    expect(screen.queryByText("Content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
     expect(screen.getByText("Content")).toBeVisible();
+  });
+
+  it("lets a top-level keepMounted win over PanelProps.keepMounted", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        keepMounted={false}
+        PanelProps={{ keepMounted: true }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(screen.queryByText("Content")).not.toBeInTheDocument();
+  });
+
+  it("animates by default, and lets a top-level instant win over PanelProps", () => {
+    const panel = (container: HTMLElement) =>
+      container.querySelector("[data-slot='collapsible-panel']");
+    const { container, unmount } = render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
+    expect(panel(container)).not.toHaveAttribute("data-instant");
+    unmount();
+
+    const top = render(
+      <Collapsible
+        trigger="Toggle"
+        instant={false}
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{ instant: true }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(panel(top.container)).not.toHaveAttribute("data-instant");
+    top.unmount();
+
+    const slot = render(
+      <Collapsible
+        trigger="Toggle"
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{ instant: true }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(panel(slot.container)).toHaveAttribute("data-instant");
+  });
+
+  it("still applies PanelProps.keepMounted when the top level leaves it unset", () => {
+    render(
+      <Collapsible trigger="Toggle" PanelProps={{ keepMounted: true }}>
+        Content
+      </Collapsible>,
+    );
+    expect(screen.getByText("Content")).toBeInTheDocument();
   });
 
   // ============================================

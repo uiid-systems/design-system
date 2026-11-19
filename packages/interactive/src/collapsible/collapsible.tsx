@@ -1,3 +1,5 @@
+import { definedProps } from "@uiid/utils";
+
 import type { CollapsibleProps } from "./collapsible.types";
 import {
   CollapsibleRoot,
@@ -7,7 +9,7 @@ import {
 
 export const Collapsible = ({
   trigger,
-  instant = false,
+  instant,
   open,
   defaultOpen,
   onOpenChange,
@@ -20,18 +22,17 @@ export const Collapsible = ({
 }: CollapsibleProps) => {
   return (
     <CollapsibleRoot
-      open={open}
-      defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
-      disabled={disabled}
       {...RootProps}
+      {...definedProps({ open, defaultOpen, onOpenChange, disabled })}
     >
       <CollapsibleTrigger {...TriggerProps}>{trigger}</CollapsibleTrigger>
 
       <CollapsiblePanel
-        instant={instant}
-        keepMounted={keepMounted}
         {...PanelProps}
+        {...definedProps({ keepMounted })}
+        // A bare panel is instant; the monolithic component animates unless
+        // told otherwise.
+        instant={instant ?? PanelProps?.instant ?? false}
       >
         {children}
       </CollapsiblePanel>

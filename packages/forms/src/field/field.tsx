@@ -1,7 +1,7 @@
 "use client";
 
 import { Group } from "@uiid/layout";
-import { cxState, isRenderable } from "@uiid/utils";
+import { cxState, definedProps, isRenderable } from "@uiid/utils";
 
 import { FieldRequiredProvider } from "./field-required-context";
 import type { FieldProps } from "./field.types";
@@ -47,8 +47,8 @@ export const Field = ({
   return (
     <FieldRoot
       data-required={required || undefined}
-      {...props}
       {...RootProps}
+      {...definedProps(props)}
       className={cxState(
         fieldVariants({ size }),
         !hasChrome && styles["field-root-bare"],

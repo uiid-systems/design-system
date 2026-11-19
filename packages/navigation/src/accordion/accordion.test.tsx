@@ -426,3 +426,30 @@ describe("Accordion", () => {
     expect(closed).toHaveClass("fn-closed", styles["accordion-panel"]);
   });
 });
+
+describe("Accordion RootProps precedence", () => {
+  const expanded = (name: string) =>
+    screen.getByRole("button", { name }).getAttribute("aria-expanded");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-2"]}
+        RootProps={{ defaultValue: ["item-3"] }}
+      />,
+    );
+    expect(expanded("Second")).toBe("true");
+    expect(expanded("Third")).toBe("false");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        RootProps={{ defaultValue: ["item-3"] }}
+      />,
+    );
+    expect(expanded("Third")).toBe("true");
+  });
+});

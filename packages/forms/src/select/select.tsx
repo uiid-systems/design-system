@@ -1,6 +1,6 @@
 "use client";
 
-import { splitDomAttributes } from "@uiid/utils";
+import { definedProps, splitDomAttributes } from "@uiid/utils";
 import { Children, isValidElement, useMemo } from "react";
 
 import { Field } from "../field/field";
@@ -96,11 +96,21 @@ export function Select<
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
+  // Top-level props win over the same key in RootProps, so a value set only
+  // in RootProps is the one to read whenever the top level leaves it unset.
+  const isMultiple = multiple ?? RootProps?.multiple;
+  // The Field reads the same values, so its label marker, dimming and Form
+  // error lookup match the control.
+  const fieldName = name ?? RootProps?.name;
+  const fieldRequired = required ?? RootProps?.required;
+  const fieldDisabled = disabled ?? RootProps?.disabled;
+
   // Multiple mode starts empty; single mode falls back to the first enabled
   // item unless a placeholder should show instead. A disabled row is one the
   // user could not pick, so it is never picked for them.
   const resolvedDefaultValue = (defaultValue ??
-    (multiple
+    RootProps?.defaultValue ??
+    (isMultiple
       ? []
       : placeholder
         ? undefined
@@ -117,20 +127,23 @@ export function Select<
   // fed back into `resolvedDefaultValue` above: a composed select still opens
   // empty unless told otherwise.
   // Rows key the way Combobox and Autocomplete rows do (see `resolveItemKey`).
-  // `RootProps` spreads last onto Root, so its functions are the ones Root
-  // uses too.
+  // Top-level props spread last onto Root, so their functions are the ones
+  // Root uses too.
   const itemToString = {
     itemToStringValue:
-      RootProps?.itemToStringValue ?? rootProps.itemToStringValue,
+      rootProps.itemToStringValue ?? RootProps?.itemToStringValue,
     itemToStringLabel:
-      RootProps?.itemToStringLabel ?? rootProps.itemToStringLabel,
+      rootProps.itemToStringLabel ?? RootProps?.itemToStringLabel,
   };
 
+  // `RootProps.items` stands unless the top level passes its own.
+  const rootItems = RootProps?.items;
   const itemLabels = useMemo(() => {
     if (items) return items;
+    if (rootItems) return undefined;
     const collected = collectItemLabels(children);
     return collected.length > 0 ? collected : undefined;
-  }, [items, children]);
+  }, [items, rootItems, children]);
 
   // `disabled` goes to Root and to Field, not the trigger. Root owns the
   // hidden input, the field registration and the validation props, and its
@@ -138,24 +151,26 @@ export function Select<
   // reads its own root to dim the label and description.
   return (
     <Field
-      name={name}
+      name={fieldName}
       label={label}
       description={description}
       action={action}
-      required={required}
-      disabled={disabled}
+      required={fieldRequired}
+      disabled={fieldDisabled}
       size={size}
       {...FieldProps}
     >
       <SelectRoot<Value, Multiple>
-        name={name}
-        required={required}
-        disabled={disabled}
-        multiple={multiple}
-        defaultValue={resolvedDefaultValue}
-        items={itemLabels}
-        {...rootProps}
         {...RootProps}
+        {...definedProps({
+          name,
+          required,
+          disabled,
+          multiple,
+          defaultValue: resolvedDefaultValue,
+          items: itemLabels,
+        })}
+        {...rootProps}
       >
         <SelectTrigger
           size={size}

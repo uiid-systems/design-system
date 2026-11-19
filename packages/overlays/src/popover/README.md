@@ -9,7 +9,7 @@ Use Popover when you want to:
 - Compose the header from any combination of `title`, `description`, and `action`, with a `footer` below the body — the same content API as Dialog
 - Hold things a user interacts with: filters, a short form, a set of links
 
-Leave `open` unset and the popover runs itself from the trigger, opening on mount with `defaultOpen`; pass `open` and `onOpenChange` to drive it yourself. `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
+Leave `open` unset and the popover runs itself from the trigger, opening on mount with `defaultOpen`; pass `open` and `onOpenChange` to drive it yourself. When a top-level prop and `RootProps` set the same key, the top-level prop wins. `onOpenChange` is the one exception: `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
 Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Dialog and Drawer; Popover's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`) reach the individual parts.
 

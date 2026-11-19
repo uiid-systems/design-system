@@ -745,3 +745,66 @@ describe("Autocomplete variant and fullwidth", () => {
     expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
   });
 });
+
+describe("Autocomplete RootProps precedence", () => {
+  const items = ["apple", "banana"];
+  const submit = (container: HTMLElement, name: string) =>
+    new FormData(container.querySelector("form") as HTMLFormElement).getAll(
+      name,
+    );
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <form>
+        <Autocomplete
+          items={items}
+          name="top"
+          defaultValue="apple"
+          RootProps={{ name: "slot" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "top")).toContain("apple");
+    expect(submit(container, "slot")).toEqual([]);
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <form>
+        <Autocomplete
+          items={items}
+          RootProps={{ name: "slot", defaultValue: "apple" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "slot")).toContain("apple");
+  });
+
+  it("marks the label from RootProps.required", () => {
+    const { container } = render(
+      <Autocomplete
+        items={items}
+        label="Fruit"
+        RootProps={{ required: true }}
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
+  it("surfaces a Form error keyed to RootProps.name", () => {
+    const { container } = render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Autocomplete
+          items={items}
+          label="Fruit"
+          RootProps={{ name: "fruit" }}
+        />
+      </Form>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).toHaveTextContent("Pick a fruit");
+  });
+});

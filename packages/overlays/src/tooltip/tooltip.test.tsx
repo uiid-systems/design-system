@@ -669,3 +669,30 @@ describe("Tooltip top-level root props", () => {
     expect(screen.getByText("Tooltip content")).toBeInTheDocument();
   });
 });
+
+describe("Tooltip RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Tooltip
+        trigger={<button>Open</button>}
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+    expect(screen.queryByText("Tooltip content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Tooltip
+        trigger={<button>Open</button>}
+        RootProps={{ defaultOpen: true }}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+    expect(screen.getByText("Tooltip content")).toBeInTheDocument();
+  });
+});

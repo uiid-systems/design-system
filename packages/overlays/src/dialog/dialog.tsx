@@ -1,6 +1,6 @@
 "use client";
 
-import { hasTrigger } from "@uiid/utils";
+import { definedProps, hasTrigger } from "@uiid/utils";
 
 import { composeOpenChange } from "../shared/compose-open-change";
 import { DialogPendingProvider } from "./dialog-pending-context";
@@ -52,10 +52,8 @@ export const Dialog = ({
   return (
     <DialogPendingProvider value={pending}>
       <DialogRoot
-        open={open}
-        defaultOpen={defaultOpen}
-        modal={modal}
         {...RootProps}
+        {...definedProps({ open, defaultOpen, modal })}
         onOpenChange={handleOpenChange}
       >
         {hasTrigger(trigger, TriggerProps?.render) && (

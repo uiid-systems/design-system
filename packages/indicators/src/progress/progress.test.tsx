@@ -386,3 +386,29 @@ describe("Progress layout props", () => {
     );
   });
 });
+
+describe("Progress RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(<Progress value={25} max={50} RootProps={{ max: 100 }} />);
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuemax",
+      "50",
+    );
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(<Progress value={25} RootProps={{ max: 50 }} />);
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuemax",
+      "50",
+    );
+  });
+
+  it("keeps a RootProps value when the top level passes undefined", () => {
+    render(<Progress value={25} max={undefined} RootProps={{ max: 50 }} />);
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuemax",
+      "50",
+    );
+  });
+});

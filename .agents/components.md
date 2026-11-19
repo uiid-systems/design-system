@@ -8,6 +8,8 @@ When the merged `className` goes to a Base UI part, use `cxState()` instead. A B
 
 Prefer simple monolithic components for common cases, exporting subcomponents for advanced composition. Expose frequently-used props directly rather than forcing them through nested prop objects.
 
+A top-level prop wins over the same key in `RootProps`, and in Collapsible's `PanelProps` for `keepMounted` and `instant`. Spread `RootProps` first and the top-level values after, passing them through `definedProps()` from `@uiid/utils` so an unset or `undefined` one doesn't erase the `RootProps` value; it takes named props (`definedProps({ open, modal })`) and a rest object (`definedProps(props)`) alike. Only the overlays (Dialog, Drawer, Popover, Tooltip) compose a handler, running `RootProps.onOpenChange` and then the top-level `onOpenChange`; every other handler follows top-level-wins. `<Dialog modal={false} RootProps={{ modal: true }} />` is non-modal.
+
 Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive.
 
 ## Use UIID utilities, not the upstream libraries

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { prepareComponentProps } from "./utils";
+import { definedProps, prepareComponentProps } from "./utils";
 
 describe("prepareComponentProps", () => {
   it("stamps data-slot with the component name", () => {
@@ -101,5 +101,24 @@ describe("prepareComponentProps", () => {
     });
 
     expect(result).toMatchObject({ id: "a", "aria-label": "b" });
+  });
+});
+
+describe("definedProps", () => {
+  it("keeps set values, including null and false", () => {
+    expect(definedProps({ a: 1, b: null, c: false, d: "" })).toEqual({
+      a: 1,
+      b: null,
+      c: false,
+      d: "",
+    });
+  });
+
+  it("drops undefined values, so a spread after a slot leaves it standing", () => {
+    const merged = {
+      ...{ a: 1, b: 2 },
+      ...definedProps({ a: undefined, b: 3 }),
+    };
+    expect(merged).toEqual({ a: 1, b: 3 });
   });
 });
