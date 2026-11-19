@@ -105,18 +105,6 @@
 :where(.text)[data-ui-shade="background"] {
   color: var(--shade-background);
 }
-:where(.text)[data-ui-shade="surface"] {
-  color: var(--shade-surface);
-}
-:where(.text)[data-ui-shade="accent"] {
-  color: var(--shade-accent);
-}
-:where(.text)[data-ui-shade="halftone"] {
-  color: var(--shade-halftone);
-}
-:where(.text)[data-ui-shade="muted"] {
-  color: var(--shade-muted);
-}
 :where(.text)[data-ui-shade="foreground"] {
   color: var(--shade-foreground);
 }

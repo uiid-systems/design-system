@@ -15,10 +15,10 @@ export function Sidebar() {
       <SidebarScrollContainer>
         <SidebarHeader>uiid docs</SidebarHeader>
         <Stack>
-          <Text render={<Link href="/">Home</Link>} shade="muted" />
+          <Text render={<Link href="/">Home</Link>} emphasis="muted" />
           <Text
             render={<Link href="/changelog">Changelog</Link>}
-            shade="muted"
+            emphasis="muted"
           />
           <SidebarList items={COMPONENTS_SITEMAP} />
         </Stack>

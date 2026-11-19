@@ -65,7 +65,7 @@ const Swatch = ({
           : "1px solid var(--shade-accent)",
       }}
     />
-    <Text size={-1} shade="muted" style={{ textAlign: "center" }}>
+    <Text size={-1} emphasis="muted" style={{ textAlign: "center" }}>
       {label}
     </Text>
   </Stack>
@@ -78,7 +78,7 @@ export const Colors: Story = {
         <Text size={2} weight="semibold">
           Ramps
         </Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Eight hues, 50&ndash;950. The outlined step is the hue&rsquo;s
           authored anchor, which every ramp contains by construction.
         </Text>
@@ -93,7 +93,7 @@ export const Colors: Story = {
                 >
                   {hue}
                 </Text>
-                <Text size={-1} shade="muted">
+                <Text size={-1} emphasis="muted">
                   {(ramp["500"] as Step)?.$value}
                 </Text>
               </Group>
@@ -122,7 +122,7 @@ export const Colors: Story = {
         <Text size={2} weight="semibold">
           Base
         </Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Not palette hues. They are emitted because the shade aliases reference
           them, so tokens render even where no theme is loaded.
         </Text>

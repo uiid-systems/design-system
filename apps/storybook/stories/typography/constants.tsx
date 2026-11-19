@@ -3,14 +3,7 @@ import type { ArgTypes } from "@storybook/react-vite";
 const TEXT_SIZES = [-1, 0, 1, 2, 3, 4, 5, 6];
 const TEXT_WEIGHTS = ["thin", "light", "normal", "medium", "semibold", "bold"];
 const TEXT_FAMILIES = ["sans", "serif", "mono"];
-const TEXT_SHADES = [
-  "background",
-  "surface",
-  "accent",
-  "halftone",
-  "muted",
-  "foreground",
-];
+const TEXT_SHADES = ["background", "foreground"];
 const TEXT_EMPHASES = ["default", "muted", "subtle"];
 const TEXT_COLORS = [
   "red",

@@ -70,7 +70,7 @@ const HueStack = ({
         Text on the page background
       </Text>
       {annotated && (
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           --palette-text
         </Text>
       )}
@@ -85,7 +85,7 @@ export const Palette: Story = {
         <Text size={2} weight="semibold">
           Palette
         </Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Hover a surface to see its hover treatment. Every pairing clears WCAG
           AA against the surface it is named for. --palette-on-tint-muted is for
           resting tints only; on the hover tint it dips below 4.5:1.

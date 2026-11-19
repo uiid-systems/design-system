@@ -49,7 +49,7 @@ const SPECIMEN_ITEMS: SelectItemProps[] = [
     children: (
       <>
         <Text>Sans-serif</Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Grotesque
         </Text>
       </>
@@ -61,7 +61,7 @@ const SPECIMEN_ITEMS: SelectItemProps[] = [
     children: (
       <>
         <Text>Serif</Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Transitional
         </Text>
       </>
@@ -73,7 +73,7 @@ const SPECIMEN_ITEMS: SelectItemProps[] = [
     children: (
       <>
         <Text>Monospace</Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Fixed width
         </Text>
       </>
@@ -239,7 +239,7 @@ export const Controlled = () => {
         value={value}
         onValueChange={(next) => setValue(next ?? "")}
       />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Value: {value || "—"}
       </Text>
     </Stack>

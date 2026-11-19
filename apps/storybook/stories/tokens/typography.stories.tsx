@@ -47,7 +47,7 @@ type Story = StoryObj<typeof meta>;
 export const Scale: Story = {
   render: () => (
     <Stack gap={3} fullwidth>
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Eight steps, &minus;1 through 6. Size, weight, line height and letter
         spacing travel together in one composite token, so a step is a
         typographic decision rather than four loose values.
@@ -57,7 +57,7 @@ export const Scale: Story = {
           <Text
             size={-1}
             family="mono"
-            shade="muted"
+            emphasis="muted"
             style={{ minWidth: "2rem" }}
           >
             {step}
@@ -93,7 +93,7 @@ export const Values: Story = {
 export const Families: Story = {
   render: () => (
     <Stack gap={4} fullwidth>
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         System stacks. The design system embeds no typefaces of its own, so each
         family resolves against whatever the reader&rsquo;s OS provides.
       </Text>
@@ -103,14 +103,14 @@ export const Families: Story = {
             <Text size={0} weight="semibold">
               {name}
             </Text>
-            <Text size={-1} family="mono" shade="muted">
+            <Text size={-1} family="mono" emphasis="muted">
               --font-{name}
             </Text>
           </Group>
           <Text size={2} family={name}>
             {SPECIMEN}
           </Text>
-          <Text size={-1} family="mono" shade="muted">
+          <Text size={-1} family="mono" emphasis="muted">
             {token.$value.join(", ")}
           </Text>
         </Stack>

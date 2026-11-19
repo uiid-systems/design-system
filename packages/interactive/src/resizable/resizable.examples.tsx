@@ -139,7 +139,7 @@ export const Layout = () => {
           </ResizablePanel>
         </Resizable>
       </Frame>
-      <Text shade="muted" size={-1}>
+      <Text emphasis="muted" size={-1}>
         {Object.entries(layout)
           .map(([id, size]) => `${id} ${Math.round(size)}%`)
           .join(" · ") || "Drag the handle"}

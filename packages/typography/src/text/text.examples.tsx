@@ -22,14 +22,7 @@ const WEIGHTS: Weight[] = [
   "bold",
 ];
 const FAMILIES: Family[] = ["sans", "serif", "mono"];
-const SHADES: Shade[] = [
-  "background",
-  "surface",
-  "accent",
-  "halftone",
-  "muted",
-  "foreground",
-];
+const SHADES: Shade[] = ["background", "foreground"];
 const COLORS: Color[] = [
   "red",
   "orange",

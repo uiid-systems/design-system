@@ -74,7 +74,7 @@ const toListItems = (entries: SidebarListEntry[]): ListItemOrGroup[] =>
       ? { category: entry.category, items: toListItems(entry.items) }
       : {
           label: (
-            <Text render={<Link href={entry.value} />} shade="muted">
+            <Text render={<Link href={entry.value} />} emphasis="muted">
               {entry.label}
             </Text>
           ),

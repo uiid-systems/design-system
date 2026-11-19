@@ -165,7 +165,7 @@ export const Validation = () => {
         validationMode="onChange"
         onValidate={setValid}
       />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         {valid === null
           ? "Not checked yet"
           : valid
@@ -202,10 +202,10 @@ export const Controlled = () => {
         }}
       />
       <Group gap={4}>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Masked: {masked || "—"}
         </Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Unmasked: {unmasked || "—"}
         </Text>
       </Group>

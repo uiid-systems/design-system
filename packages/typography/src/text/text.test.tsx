@@ -101,7 +101,7 @@ describe("Text", () => {
 
     it("writes each enumerated prop as its value", () => {
       render(
-        <Text size={-1} weight="bold" family="mono" shade="muted">
+        <Text size={-1} weight="bold" family="mono" shade="foreground">
           Props
         </Text>,
       );
@@ -109,7 +109,7 @@ describe("Text", () => {
       expect(el).toHaveAttribute("data-ui-size", "-1");
       expect(el).toHaveAttribute("data-ui-weight", "bold");
       expect(el).toHaveAttribute("data-ui-family", "mono");
-      expect(el).toHaveAttribute("data-ui-shade", "muted");
+      expect(el).toHaveAttribute("data-ui-shade", "foreground");
     });
 
     it("pairs a color with its palette class", () => {
@@ -157,6 +157,16 @@ describe("Text", () => {
       expect(screen.getByText("Fill muted").matches(page.selector)).toBe(false);
       // Both weigh one attribute, so the page rule wins only by coming later.
       expect(page.at).toBeGreaterThan(fill.at);
+    });
+
+    it("paints only the foreground and background shades", () => {
+      const shades = [...css.matchAll(/\[data-ui-shade="([^"]+)"\]/g)].map(
+        ([, shade]) => shade,
+      );
+      expect(shades.sort()).toEqual(["background", "foreground"]);
+      expectTypeOf<NonNullable<TextProps["shade"]>>().toEqualTypeOf<
+        "foreground" | "background"
+      >();
     });
 
     it("applies no palette class without a color or emphasis", () => {

@@ -173,7 +173,7 @@ export const Footer = () => {
     >
       <Stack gap={2}>
         <Text>{BODY}</Text>
-        <Text size={0} shade="muted">
+        <Text size={0} emphasis="muted">
           Text inside the body stays selectable — dragging it won&apos;t start a
           swipe.
         </Text>

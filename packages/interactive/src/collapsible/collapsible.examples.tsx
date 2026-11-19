@@ -60,7 +60,7 @@ export const Layout = () => (
     PanelProps={{ gap: 2, p: 4, b: 1 }}
   >
     <Text weight="bold">Shipping</Text>
-    <Text shade="muted">{BODY}</Text>
+    <Text emphasis="muted">{BODY}</Text>
   </Collapsible>
 );
 
@@ -69,7 +69,7 @@ export const Controlled = () => {
 
   return (
     <Stack gap={2} ax="start">
-      <Text shade="muted">{open ? "Open" : "Closed"}</Text>
+      <Text emphasis="muted">{open ? "Open" : "Closed"}</Text>
       <Collapsible
         trigger={<Button>Toggle</Button>}
         RootProps={{ open, onOpenChange: setOpen }}

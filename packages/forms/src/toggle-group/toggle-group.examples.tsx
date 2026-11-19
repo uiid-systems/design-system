@@ -140,7 +140,7 @@ export const Controlled = () => {
         <Toggle value="monthly">Monthly</Toggle>
         <Toggle value="yearly">Yearly</Toggle>
       </ToggleGroup>
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Pressed: {value.length ? value.join(", ") : "none"}
       </Text>
     </Stack>

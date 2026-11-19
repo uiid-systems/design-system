@@ -43,7 +43,7 @@ export const popupLayerPopupClassName = styles["popup-layer-popup"];
 /**
  * The `render` for every picker's group label: Select's, Combobox's and
  * Autocomplete's. No `shade`, so the label inherits the popup `Card`'s
- * `--palette-on-tint` and tracks the hue, where a pinned `shade="muted"` stayed
+ * `--palette-on-tint` and tracks the hue, where a pinned muted shade stayed
  * grey on every tinted surface. Size and weight carry the hierarchy.
  */
 export const popupLayerGroupLabel = () => <Text size={-1} weight="medium" />;

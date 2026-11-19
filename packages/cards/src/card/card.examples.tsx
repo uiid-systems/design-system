@@ -154,7 +154,7 @@ export const Polymorphic = () => (
     title="Linkable card"
     description="Rendered as <a>; gains the scale-on-hover affordance automatically."
   >
-    <Text size={0} shade="muted">
+    <Text size={0} emphasis="muted">
       example.com / docs
     </Text>
   </Card>
@@ -162,7 +162,7 @@ export const Polymorphic = () => (
 
 export const Grow = () => (
   <Stack gap={2} h={320} p={2} b={1} maxw={420}>
-    <Text size={0} shade="muted">
+    <Text size={0} emphasis="muted">
       A bounded 320px column
     </Text>
     <Card

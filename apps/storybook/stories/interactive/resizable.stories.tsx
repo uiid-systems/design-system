@@ -148,7 +148,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Horizontal
         </Text>
-        <Text size={0} shade="muted" mb={2}>
+        <Text size={0} emphasis="muted" mb={2}>
           Drag the divider left and right
         </Text>
         <HorizontalDemo />
@@ -158,7 +158,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Vertical
         </Text>
-        <Text size={0} shade="muted" mb={2}>
+        <Text size={0} emphasis="muted" mb={2}>
           Drag the divider up and down
         </Text>
         <VerticalDemo />
@@ -168,7 +168,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           With Handle
         </Text>
-        <Text size={0} shade="muted" mb={2}>
+        <Text size={0} emphasis="muted" mb={2}>
           Visible grip indicator for better discoverability
         </Text>
         <WithHandleDemo />
@@ -178,7 +178,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Nested Panels
         </Text>
-        <Text size={0} shade="muted" mb={2}>
+        <Text size={0} emphasis="muted" mb={2}>
           Combine horizontal and vertical layouts
         </Text>
         <NestedDemo />
@@ -188,7 +188,7 @@ export const Default: Story = {
         <Text size={1} weight="bold">
           Three Panels
         </Text>
-        <Text size={0} shade="muted" mb={2}>
+        <Text size={0} emphasis="muted" mb={2}>
           Multiple panels in a single group
         </Text>
         <ThreePanelDemo />
@@ -203,7 +203,7 @@ export const Disabled: Story = {
       <Text size={1} weight="bold">
         Disabled handle
       </Text>
-      <Text size={0} shade="muted" mb={2}>
+      <Text size={0} emphasis="muted" mb={2}>
         The first handle is disabled: it cannot be dragged and Tab skips it. The
         second handle still resizes with the pointer and the arrow keys.
       </Text>
