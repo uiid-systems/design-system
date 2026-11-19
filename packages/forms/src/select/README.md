@@ -6,7 +6,7 @@ Use Select when you want to:
 
 - Pick from a fixed list — each entry in `items` carries `value` and `label`, and optionally an `icon`, a `description`, or `disabled`
 - Draw a row yourself with an item's `children` — a badge beside the name, a swatch, a two-column layout — when two strings aren't enough
-- Open empty rather than preselecting the first option by giving it a `placeholder`
+- Open empty rather than preselecting the first enabled option by giving it a `placeholder` — a disabled row is never preselected, so use `placeholder` rather than a disabled sentinel row
 - Label it inline with `label` and `description` instead of composing a `Field` by hand
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon or a hint inside the trigger with `before` and `after`
@@ -20,7 +20,7 @@ The trigger never grows past its container: a long value truncates instead.
 
 An item's `children` draw the row in place of its `icon` / `label` / `description` block, so a row can hold any node. `label` stays required either way — it is what the trigger shows and what typeahead matches, which is why it is a string rather than a node. `description` takes a node too, for rows that only need a second line.
 
-Drop `items` and pass children to compose the list yourself with `SelectItem`. The trigger still reads each item's `label` — Select harvests them off the children, since Base UI resolves that text from Root's `items` rather than from the rows — but a composed list never preselects its first option, so give it a `placeholder`.
+Drop `items` and pass children to compose the list yourself with `SelectItem`. The trigger still reads each item's `label` — Select harvests them off the children, since Base UI resolves that text from Root's `items` rather than from the rows — but a composed list never preselects its first option, so give it a `placeholder`. Wrap rows in `SelectGroup` with a `SelectGroupLabel` to label a run of them, and put a `SelectSeparator` between groups; labels still resolve from items inside a group.
 
 When the trigger should read differently from the rows — a currency code where the row spells the currency out — pass `itemToStringLabel`. It formats the trigger's text from the selected value, each value in turn under `multiple`, and takes precedence over the item labels, exactly as it does in Base UI. The rows keep their own `label`.
 

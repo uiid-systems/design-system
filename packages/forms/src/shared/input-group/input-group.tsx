@@ -29,11 +29,12 @@ type WithSlot<T> = T & {
 export const InputGroupRoot = ({
   slot,
   size,
+  fullwidth = true,
   className,
   children,
   ...props
 }: WithSlot<BaseInputGroupTypes.InputGroup.Props> &
-  Pick<InputVariants, "size">) => {
+  Pick<InputVariants, "size" | "fullwidth">) => {
   return (
     <BaseInputGroup.InputGroup
       data-slot={slot}
@@ -43,8 +44,9 @@ export const InputGroupRoot = ({
        * when a bare Field is `display: contents`. Spanning the row keeps the
        * wrapper's `fullwidth`; without it, a group in a flex row
        * (`ComboboxChips`) shrinks to the input's width, and the popup with it.
+       * `fullwidth={false}` lets the group shrink with a control that does.
        */
-      render={<Box w="full" />}
+      render={<Box w={fullwidth ? "full" : undefined} />}
       className={cxState(
         styles["input-group-root"],
         inputGroupVariants({ size }),

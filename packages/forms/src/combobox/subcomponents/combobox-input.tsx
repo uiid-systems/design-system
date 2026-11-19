@@ -19,6 +19,8 @@ export const ComboboxInput = ({
   before,
   after,
   size,
+  variant,
+  fullwidth = true,
   color,
   disabled,
   required,
@@ -37,7 +39,7 @@ export const ComboboxInput = ({
       action={action}
       disabled={disabled}
       required={required}
-      fullwidth
+      fullwidth={fullwidth}
       size={size}
       {...FieldProps}
     >
@@ -47,7 +49,11 @@ export const ComboboxInput = ({
        * label, description and error stay outside it, which also keeps them
        * out of the group's press handler and its `role="group"`.
        */}
-      <ComboboxInputGroup size={size} {...InputGroupProps}>
+      <ComboboxInputGroup
+        size={size}
+        fullwidth={fullwidth}
+        {...InputGroupProps}
+      >
         {/*
          * The hue goes to whichever element wears the surface. Combobox's
          * monolith always renders an `after`, so the wrapper carries it there; a
@@ -58,9 +64,10 @@ export const ComboboxInput = ({
           before={before}
           after={after}
           size={size}
+          variant={variant}
+          fullwidth={fullwidth}
           color={color}
           disabled={disabled}
-          fullwidth
         >
           {/*
            * `name` stops at the Field, which needs it to match a `Form` error.
@@ -75,7 +82,8 @@ export const ComboboxInput = ({
               inputControlClassName({
                 inner: hasSlots,
                 size,
-                fullwidth: true,
+                fullwidth,
+                variant,
                 color,
               }),
               className,

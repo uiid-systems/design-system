@@ -27,7 +27,10 @@ export type ComboboxRootProps<
  * the two would resolve to `never`.
  */
 export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
-  Pick<InputProps, "FieldProps" | "before" | "after" | "size"> &
+  Pick<
+    InputProps,
+    "FieldProps" | "before" | "after" | "size" | "variant" | "fullwidth"
+  > &
   Pick<FieldProps, "label" | "description" | "action"> & {
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment. The
@@ -72,7 +75,7 @@ export type ComboboxItemProps<Value = string> = Omit<
 };
 export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
 export type ComboboxInputGroupProps = BaseCombobox.InputGroup.Props &
-  Pick<InputProps, "size">;
+  Pick<InputProps, "size" | "fullwidth">;
 export type ComboboxTriggerProps = BaseCombobox.Trigger.Props;
 export type ComboboxClearProps = BaseCombobox.Clear.Props;
 export type ComboboxIconProps = BaseCombobox.Icon.Props;
@@ -115,6 +118,13 @@ export type ComboboxProps<
   Omit<ComboboxRootProps<Value, Multiple>, "items"> &
   Pick<
     ComboboxInputProps,
-    "placeholder" | "onFocus" | "onBlur" | "before" | "after" | "size"
+    | "placeholder"
+    | "onFocus"
+    | "onBlur"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
   > &
   Pick<FieldProps, "label" | "description" | "action">;

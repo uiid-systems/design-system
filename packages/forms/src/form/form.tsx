@@ -3,9 +3,9 @@
 import { Form as BaseForm } from "@base-ui/react/form";
 import { cxState } from "@uiid/utils";
 
-import styles from "./form.module.css";
+import type { FormProps } from "./form.types";
 
-export type FormProps = BaseForm.Props;
+import styles from "./form.module.css";
 
 export const Form = ({ children, className, ...props }: FormProps) => {
   return (

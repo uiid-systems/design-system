@@ -21,6 +21,8 @@ export const AutocompleteInput = ({
   before,
   after,
   size,
+  variant,
+  fullwidth = true,
   color,
   disabled,
   required,
@@ -39,7 +41,7 @@ export const AutocompleteInput = ({
       action={action}
       disabled={disabled}
       required={required}
-      fullwidth
+      fullwidth={fullwidth}
       size={size}
       {...FieldProps}
     >
@@ -49,7 +51,11 @@ export const AutocompleteInput = ({
        * label, description and error stay outside it, which also keeps them
        * out of the group's press handler and its `role="group"`.
        */}
-      <AutocompleteInputGroup size={size} {...InputGroupProps}>
+      <AutocompleteInputGroup
+        size={size}
+        fullwidth={fullwidth}
+        {...InputGroupProps}
+      >
         {/*
          * The hue goes to whichever element wears the surface. Autocomplete
          * renders no slots by default, so the wrapper is usually a box-less
@@ -60,9 +66,10 @@ export const AutocompleteInput = ({
           before={before}
           after={after}
           size={size}
+          variant={variant}
+          fullwidth={fullwidth}
           color={color}
           disabled={disabled}
-          fullwidth
         >
           {/*
            * `name` stops at the Field, which needs it to match a `Form` error.
@@ -77,7 +84,8 @@ export const AutocompleteInput = ({
               inputControlClassName({
                 inner: hasSlots,
                 size,
-                fullwidth: true,
+                fullwidth,
+                variant,
                 color,
               }),
               className,

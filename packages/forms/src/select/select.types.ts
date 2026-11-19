@@ -80,6 +80,9 @@ export type SelectPopupProps = WithLayoutProps<
   color?: SelectColor;
 };
 export type SelectListProps = BaseSelect.List.Props;
+export type SelectGroupProps = BaseSelect.Group.Props;
+export type SelectGroupLabelProps = BaseSelect.GroupLabel.Props;
+export type SelectSeparatorProps = BaseSelect.Separator.Props;
 export type SelectValueProps = BaseSelect.Value.Props &
   Pick<InputVariants, "size">;
 export type SelectIconProps = BaseSelect.Icon.Props;

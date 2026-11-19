@@ -58,7 +58,7 @@
 /*
  * Icon and description read a name this package does not own, falling back to
  * the shade token each used before. A themed surface publishes the name for its
- * subtree — see `.popup-layer-popup` / `.select-popup` in @uiid/forms — and an
+ * subtree — see `.popup-layer-popup` in @uiid/forms — and an
  * ordinary List resolves to the fallback, so the uncoloured path is unchanged
  * by construction.
  *

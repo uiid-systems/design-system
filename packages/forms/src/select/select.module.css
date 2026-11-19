@@ -53,14 +53,6 @@
   composes: composes-popup-positioner from global;
 }
 
-.select-popup {
-  composes: composes-popup from global;
-  min-width: var(--anchor-width);
-
-  --list-description-color: var(--palette-on-tint);
-  --list-icon-color: var(--palette-on-tint);
-}
-
 .select-item {
   composes: composes-option from global;
   display: flex;
@@ -75,6 +67,12 @@
 .select-item > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;
+}
+
+/* The layout Separator's horizontal line. */
+.select-separator {
+  height: 1px;
+  background-color: var(--globals-border-color);
 }
 
 .select-item-indicator {

@@ -2,13 +2,18 @@
 
 import { Combobox as BasePopupLayer } from "@base-ui/react/combobox";
 import type { Combobox as BasePopupLayerTypes } from "@base-ui/react/combobox";
-import { Card, type CardContainerProps } from "@uiid/cards";
+import type { CardContainerProps } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
-import type { PaletteColor } from "@uiid/tokens";
 import { Text } from "@uiid/typography";
 import { cxState, type WithLayoutProps } from "@uiid/utils";
 
 import { resolveItemLabel } from "../item-utils";
+import {
+  popupLayerCard,
+  popupLayerGroupLabel,
+  popupLayerPopupClassName,
+  type PopupLayerCardOptions,
+} from "./popup-layer-card";
 
 import styles from "./popup-layer.module.css";
 
@@ -66,33 +71,25 @@ export const PopupLayerPositioner = ({
 };
 PopupLayerPositioner.displayName = "PopupLayerPositioner";
 
-/**
- * The popup is portalled, so no class on the input can reach it — the hue has
- * to arrive as a prop. `Card` already paints the palette, so the treatment is a
- * pass-through; leaving `color` undefined lands on `Card`'s neutral default.
- */
+/** Renders the surface every picker popup shares (`popupLayerCard`). */
 export const PopupLayerPopup = ({
   slot,
   className,
   color,
-  p = 2,
-  gap = 0,
-  fullwidth = true,
+  p,
+  gap,
+  fullwidth,
   children,
   ...props
 }: WithSlot<
   WithLayoutProps<BasePopupLayerTypes.Popup.Props, CardContainerProps>
-> & {
-  /** Palette hue for the popup surface, forwarded to the `Card` it renders as. */
-  color?: PaletteColor;
-}) => {
+> &
+  Pick<PopupLayerCardOptions, "color">) => {
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
-      render={
-        <Card shadow color={color} p={p} gap={gap} fullwidth={fullwidth} />
-      }
-      className={cxState(styles["popup-layer-popup"], className)}
+      render={popupLayerCard({ color, p, gap, fullwidth })}
+      className={cxState(popupLayerPopupClassName, className)}
       {...props}
     >
       {children}
@@ -186,11 +183,7 @@ export const PopupLayerGroup = ({
 };
 PopupLayerGroup.displayName = "PopupLayerGroup";
 
-/**
- * No `shade` — the label inherits the popup `Card`'s `--palette-on-tint` so it
- * tracks the hue, where a pinned `shade="muted"` stayed grey on every tinted
- * surface. Size and weight still carry the hierarchy.
- */
+/** Wears the shared group-label treatment (`popupLayerGroupLabel`). */
 export const PopupLayerGroupLabel = ({
   slot,
   children,
@@ -199,7 +192,7 @@ export const PopupLayerGroupLabel = ({
   return (
     <BasePopupLayer.GroupLabel
       data-slot={slot}
-      render={<Text size={-1} weight="medium" />}
+      render={popupLayerGroupLabel()}
       {...props}
     >
       {children}

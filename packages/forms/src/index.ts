@@ -20,6 +20,7 @@ export * from "./field/field-required-context";
 export * from "./field/subcomponents";
 
 export * from "./form/form";
+export * from "./form/form.types";
 export * from "./form/hooks";
 
 export * from "./input/input";

@@ -13,7 +13,12 @@ import type { InputVariants } from "../input/input.types";
 import { Select } from "./select";
 import { MOCK_SELECT_ITEMS } from "./select.mocks";
 import type { SelectItemProps } from "./select.types";
-import { SelectItem } from "./subcomponents";
+import {
+  SelectGroup,
+  SelectGroupLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./subcomponents";
 
 type Size = NonNullable<InputVariants["size"]>;
 
@@ -255,6 +260,23 @@ export const Composed = () => (
     <SelectItem value="sans" label="Sans-serif" />
     <SelectItem value="serif" label="Serif" />
     <SelectItem value="mono" label="Monospace" />
+  </Select>
+);
+
+/* Composed rows can sit in labelled groups, with a separator between them. */
+export const ComposedGroups = () => (
+  <Select label="Typeface" placeholder="Select a typeface">
+    <SelectGroup>
+      <SelectGroupLabel>Sans-serif</SelectGroupLabel>
+      <SelectItem value="inter" label="Inter" />
+      <SelectItem value="geist" label="Geist" />
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectGroupLabel>Serif</SelectGroupLabel>
+      <SelectItem value="lora" label="Lora" />
+      <SelectItem value="merriweather" label="Merriweather" />
+    </SelectGroup>
   </Select>
 );
 

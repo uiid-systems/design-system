@@ -5,9 +5,15 @@ import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Select } from "./select";
 import type { SelectItemProps, SelectProps } from "./select.types";
-import { SelectItem } from "./subcomponents";
+import {
+  SelectGroup,
+  SelectGroupLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./subcomponents";
 
 import inputStyles from "../input/input.module.css";
+import popupLayerStyles from "../shared/popup-layer/popup-layer.module.css";
 import styles from "./select.module.css";
 
 describe("Select", () => {
@@ -454,6 +460,19 @@ describe("Select disabled items", () => {
 
     expect(screen.getByRole("combobox")).toHaveTextContent("Option A");
   });
+
+  it("skips a disabled first row when it picks the default", () => {
+    render(
+      <Select
+        items={[
+          { value: "a", label: "Option A", disabled: true },
+          { value: "b", label: "Option B" },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Option B");
+  });
 });
 
 describe("Select control surface", () => {
@@ -746,6 +765,55 @@ describe("Select composed label resolution", () => {
   });
 });
 
+describe("Select groups", () => {
+  const renderGrouped = () =>
+    render(
+      <Select placeholder="Pick one">
+        <SelectGroup>
+          <SelectGroupLabel>Sans</SelectGroupLabel>
+          <SelectItem value="inter" label="Inter" />
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+          <SelectGroupLabel>Serif</SelectGroupLabel>
+          <SelectItem value="lora" label="Lora" />
+        </SelectGroup>
+      </Select>,
+    );
+
+  it("resolves the trigger label from an item inside a group", async () => {
+    const user = userEvent.setup();
+    renderGrouped();
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: /lora/i }));
+
+    expect(screen.getByRole("combobox")).toHaveTextContent("Lora");
+  });
+
+  it("renders the group, label and separator parts with their slots", async () => {
+    const user = userEvent.setup();
+    renderGrouped();
+
+    await user.click(screen.getByRole("combobox"));
+
+    const groups = screen.getAllByRole("group");
+    expect(groups).toHaveLength(2);
+    expect(groups[0]).toHaveAttribute("data-slot", "select-group");
+    expect(groups[0]).toHaveAccessibleName("Sans");
+    expect(screen.getByText("Sans")).toHaveAttribute(
+      "data-slot",
+      "select-group-label",
+    );
+    /* A listbox owns only options and groups, so Base UI keeps the line out
+       of the accessibility tree rather than giving it `role="separator"`. */
+    const separator = document.querySelector("[data-slot='select-separator']");
+    expect(separator).toHaveAttribute("role", "presentation");
+    /* Not allowed on `role="presentation"`; axe reports it as critical. */
+    expect(separator).not.toHaveAttribute("aria-orientation");
+  });
+});
+
 describe("Select item description", () => {
   it("accepts a node, not just a string", async () => {
     const user = userEvent.setup();
@@ -1021,7 +1089,7 @@ describe("Select state-function className", () => {
     await user.click(screen.getByRole("combobox"));
 
     const popup = document.querySelector("[data-slot='select-popup']");
-    expect(popup).toHaveClass("fn-open", styles["select-popup"]);
+    expect(popup).toHaveClass("fn-open", popupLayerStyles["popup-layer-popup"]);
   });
 
   it("resolves a state-function className on the backdrop alongside its own class", async () => {
