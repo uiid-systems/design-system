@@ -1,5 +1,137 @@
 # Changelog
 
+## [0.9.0](https://github.com/uiid-systems/design-system/compare/v0.8.0...v0.9.0) (2026-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** in a List with a marker, rows are list items, not flex containers, so a ListItem's ax, ay and gap no longer apply there and composed children flow as blocks. Icon and children rows now show a marker.
+* **ui:** Text's shade no longer accepts "muted", "surface", "accent" or "halftone". Use emphasis="muted" for muted text. FieldDescription no longer takes shade; it defaults to emphasis="muted", and callers override it with emphasis.
+* **ui:** a top-level prop now wins over the same key in RootProps in Select, Field, Combobox, Autocomplete, Progress, Collapsible, Tabs, Accordion, Popover, Tooltip, Dialog and Drawer. Collapsible's keepMounted wins over PanelProps.keepMounted.
+* **ui:** a disabled first item is no longer auto-selected. That changes the trigger text and submitted value for a disabled sentinel row. Use placeholder instead of a disabled sentinel row.
+* **ui:** Drawer's close API changes.
+    - Every DrawerPopup now shows a header Close; a custom close in `action` duplicates it.
+    - Remove that custom close, or pass `hideCloseButton` to keep your own.
+    - DrawerClose takes Button's props without `render`, and defaults to variant="subtle".
+    - Replace `<DrawerClose render={<Button size="small" />}>` with `<DrawerClose size="small">`.
+    - A filled `render={<Button />}` close turns subtle.
+    - Make a primary action a plain Button that sets `open` to false.
+    - A bare `<DrawerClose>` changes from an unstyled button to a subtle Button.
+* **ui:** @uiid/code no longer exports the DEFAULT_* constants, LANGUAGE_DISPLAY_NAMES, codeTypographyVariant, codeContentVariants, shikiVariants, HighlighterState or getSupportedLanguages, and HighlightOptions has no language field.
+* **ui:** Combobox and Autocomplete type `items` as `readonly Value[]`. Grouped items no longer type-check on the monoliths; compose the parts for them. ComboboxItem and AutocompleteItem type `value` by `Value` (default `string`), not `any`.
+* **tokens:** these CSS custom properties no longer exist: --globals-header-height, --globals-transition-duration-fast, --globals-transition-easing-spring, --globals-transform-origin and --globals-transform-scale-up. Define them locally if you used them.
+* **ui:** when a key is set both at the top level and in RootProps, Slider and Switch now use the top-level value (RootProps used to win).
+* **ui:** Direction type removed; use React's dir attribute type
+* **ui:** ComboboxInput and AutocompleteInput now render their own input group. Wrapping either in ComboboxInputGroup or AutocompleteInputGroup nests a second group whose outer element takes the popup anchor. Drop the wrapper and pass InputGroupProps to the Input.
+* **ui:** MenuItemType drops description and selected, which Menu never rendered.
+* **ui:** FieldHint requires `text`; an icon-only hint no longer type-checks.
+* **ui:** selectedRows, defaultSelectedRows and onSelectedRowsChange are typed TableRowId[] (string | number), so a handler typed (rows: number[]) no longer type-checks. Row checkboxes are named "Select row N", not "Select row".
+* **ui:** the Field `errorType` prop and the `FieldErrorType` type are removed, along with the `FieldErrorTooltip` component. An error now always renders in the description's slot, replacing it.
+* **ui:** AvatarImageProps (and Avatar's ImageProps) is now Base UI's Avatar.Image props for an <img>, not HTMLAttributes<HTMLSpanElement>.
+* **ui:** List GroupProps no longer takes category, icon or items. It now takes Stack props for every group's root, e.g. className or gap.
+* **ui:** BreadcrumbsList renders through Group, so its ref is typed for HTMLDivElement instead of HTMLOListElement.
+* **ui:** Conversation's root no longer has role="log". The log is now the ConversationContent column, named "Conversation". Queries for the "Messages" group on the viewport no longer match.
+* **ui:** typed toasts are colored by default; data.color now only overrides. The spinner slot `toast-spinner` is now `toast-icon`. ToastRoot no longer renders as a Card, so its className reaches the positioned element, not the surface.
+* **ui:** Conversation's root no longer has role="log". The log is now the ConversationContent column, named "Conversation". Queries for the "Messages" group on the viewport no longer match.
+
+### Features
+
+* **ui:** add a header close to Drawer and render DrawerClose as a Button ([#633](https://github.com/uiid-systems/design-system/issues/633)) ([ce07b04](https://github.com/uiid-systems/design-system/commit/ce07b0432e2ec3979478491a80d243b72678f615))
+* **ui:** add copyable, wrappable and fullscreenable props to CodeBlock ([#587](https://github.com/uiid-systems/design-system/issues/587)) ([50b981f](https://github.com/uiid-systems/design-system/commit/50b981fadca745b2a5057f0d55ad727779fd1861))
+* **ui:** add link and image overrides to Markdown ([#544](https://github.com/uiid-systems/design-system/issues/544)) ([7b7f24e](https://github.com/uiid-systems/design-system/commit/7b7f24eeec745cf7f55ee51ef89caa0cae909068))
+* **ui:** add TextareaProps to CodeEditor and name its textbox ([#569](https://github.com/uiid-systems/design-system/issues/569)) ([636da5b](https://github.com/uiid-systems/design-system/commit/636da5b43f352e59b5eae12caf5a8ba062607cc2))
+* **ui:** add viewportRef to ConversationContent and headingLevel to its empty state ([#543](https://github.com/uiid-systems/design-system/issues/543)) ([847272b](https://github.com/uiid-systems/design-system/commit/847272bc59dd44b129b2d67ef3097d41c7c34822))
+* **ui:** build Avatar on Base UI Avatar so it can show an image ([#601](https://github.com/uiid-systems/design-system/issues/601)) ([3ca6e3c](https://github.com/uiid-systems/design-system/commit/3ca6e3c3ffafe831fccf73803107647e82f7e2ec))
+* **ui:** drop FieldHint's icon tooltip, so a hint is static text ([#604](https://github.com/uiid-systems/design-system/issues/604)) ([66fdda6](https://github.com/uiid-systems/design-system/commit/66fdda62fc355a6cdb8feb2a7b284d5c95d0e5b3))
+* **ui:** extend Base UI's Item props on SelectItem and type its value by Select's Value ([#611](https://github.com/uiid-systems/design-system/issues/611)) ([e4cb63e](https://github.com/uiid-systems/design-system/commit/e4cb63e191ce1dcac0168fa6900e543bee71866a))
+* **ui:** give each toast type an icon and hue, and split ToastRoot from its surface ([#548](https://github.com/uiid-systems/design-system/issues/548)) ([55f2d64](https://github.com/uiid-systems/design-system/commit/55f2d64669f1ed8ef631d0a3a9a8324c7e6c40ff))
+* **ui:** key Table selection by row id with getRowId ([#605](https://github.com/uiid-systems/design-system/issues/605)) ([e826997](https://github.com/uiid-systems/design-system/commit/e826997223c6f3f694fe238953f9939b62685c27))
+* **ui:** move Conversation's log role to the message column ([#540](https://github.com/uiid-systems/design-system/issues/540)) ([ca2773c](https://github.com/uiid-systems/design-system/commit/ca2773cd80a3139508691698bfecad34e0fa1df6))
+* **ui:** overlays audit cleanups ([#626](https://github.com/uiid-systems/design-system/issues/626)) ([1274718](https://github.com/uiid-systems/design-system/commit/1274718b5225aa316ff6664c9caab6998034edc0))
+* **ui:** publish Card's inline padding as custom properties ([#546](https://github.com/uiid-systems/design-system/issues/546)) ([bea22d3](https://github.com/uiid-systems/design-system/commit/bea22d38f8ade329706d2e0f8b6e016d6bca257d))
+* **ui:** scroll only the Dialog body, keeping the header and footer in view ([#547](https://github.com/uiid-systems/design-system/issues/547)) ([c8fac64](https://github.com/uiid-systems/design-system/commit/c8fac64430a43c6c62fc986dec39fdefe2cf3d9c))
+* **ui:** show one Field error, in place of the description ([#602](https://github.com/uiid-systems/design-system/issues/602)) ([d3f2164](https://github.com/uiid-systems/design-system/commit/d3f21641051850040a174ca8bfc98dd94a12c7a7))
+* **ui:** wire Menu item onClick, disabled and icon, and pass Table's row to secondary actions ([#607](https://github.com/uiid-systems/design-system/issues/607)) ([369c6a1](https://github.com/uiid-systems/design-system/commit/369c6a1e64e04b44fedb101035b6bb3700426fae))
+
+
+### Bug Fixes
+
+* **storybook:** let Vite's dep scanner crawl [@uiid](https://github.com/uiid) packages and run browser tests in CI ([#625](https://github.com/uiid-systems/design-system/issues/625)) ([93eeb05](https://github.com/uiid-systems/design-system/commit/93eeb05b8d468a1f2a9d065657cf5f9344801af6))
+* **tokens:** give a slotted ghost Input or Textarea the ghost placeholder ([#549](https://github.com/uiid-systems/design-system/issues/549)) ([8e07bfa](https://github.com/uiid-systems/design-system/commit/8e07bfa5e21daad168a068905e1e50bddec60281))
+* **tokens:** make native form controls inherit the font family ([#586](https://github.com/uiid-systems/design-system/issues/586)) ([df29899](https://github.com/uiid-systems/design-system/commit/df298991bca78340a22306e6c77129515f0e0324))
+* **tokens:** set the body and Kbd font from the --font-sans token ([#571](https://github.com/uiid-systems/design-system/issues/571)) ([83bd054](https://github.com/uiid-systems/design-system/commit/83bd05497cf3dddc9882eaf513c14cfb1239a9d3))
+* **ui:** anchor the Combobox and Autocomplete popup to the control row ([#612](https://github.com/uiid-systems/design-system/issues/612)) ([c8b1b15](https://github.com/uiid-systems/design-system/commit/c8b1b15a98f83a1660892d48764a4b72618912d7))
+* **ui:** buttons, cards, indicators and interactive audit cleanups ([#615](https://github.com/uiid-systems/design-system/issues/615)) ([4ee1fe2](https://github.com/uiid-systems/design-system/commit/4ee1fe295da73e6ff222b5aa7345ac75eb9eec7c))
+* **ui:** call a consumer onChange from MaskInput ([#570](https://github.com/uiid-systems/design-system/issues/570)) ([3038e58](https://github.com/uiid-systems/design-system/commit/3038e585a8a3c3a2225d29b69938a6e713eb63b7))
+* **ui:** cap the Popover popup's height so tall content scrolls in its body ([#593](https://github.com/uiid-systems/design-system/issues/593)) ([a9b501a](https://github.com/uiid-systems/design-system/commit/a9b501aae21e1594fe1de15349f7638898dc4daf))
+* **ui:** color a slow first code highlight fully ([#590](https://github.com/uiid-systems/design-system/issues/590)) ([e94a7a9](https://github.com/uiid-systems/design-system/commit/e94a7a92802e43dc5f6fe9d7ac38fa230682dfff))
+* **ui:** declare runtime sibling dependencies and cache generated icons ([#554](https://github.com/uiid-systems/design-system/issues/554)) ([252c7e1](https://github.com/uiid-systems/design-system/commit/252c7e174403ba75deb65b2443278aecc6062d7c))
+* **ui:** draw List markers natively on every row ([#637](https://github.com/uiid-systems/design-system/issues/637)) ([ede63e7](https://github.com/uiid-systems/design-system/commit/ede63e7c316e985b26147512d2ec61516eb436a6))
+* **ui:** export TableSelectionProvider and useTableSelection from tables ([#584](https://github.com/uiid-systems/design-system/issues/584)) ([a9b8d3b](https://github.com/uiid-systems/design-system/commit/a9b8d3b12a8009ab257f49ffaccc632abcec73a6))
+* **ui:** form controls audit cleanups ([#622](https://github.com/uiid-systems/design-system/issues/622)) ([b69011a](https://github.com/uiid-systems/design-system/commit/b69011a6130890011113f3711b41dbe1f0099a04))
+* **ui:** forward disabled from ResizableHandle to the separator ([#561](https://github.com/uiid-systems/design-system/issues/561)) ([1479a79](https://github.com/uiid-systems/design-system/commit/1479a792ab7d3d70498cb39fc7e00653e0620996))
+* **ui:** give emphasis="muted" without a color the page's muted grey ([#629](https://github.com/uiid-systems/design-system/issues/629)) ([7c7e37b](https://github.com/uiid-systems/design-system/commit/7c7e37bf09072c5f20c714168275198f787c989e))
+* **ui:** give every @uiid/icons barrel export a real type ([#608](https://github.com/uiid-systems/design-system/issues/608)) ([00bbb6f](https://github.com/uiid-systems/design-system/commit/00bbb6f005668d955a06892bfc482458fdf0600e))
+* **ui:** give Popover and Tooltip string triggers a focus ring ([#579](https://github.com/uiid-systems/design-system/issues/579)) ([6c03dfe](https://github.com/uiid-systems/design-system/commit/6c03dfe17d5f4fa731ebb1afce8eef5652df4bef))
+* **ui:** give relative specifiers in built declarations a .js extension ([#630](https://github.com/uiid-systems/design-system/issues/630)) ([cafa13f](https://github.com/uiid-systems/design-system/commit/cafa13f2bdae7068d6064eb535fdfe92988cd0f4))
+* **ui:** hide the CodeBlock rows toggle when expanded code fits ([#624](https://github.com/uiid-systems/design-system/issues/624)) ([2cad9bb](https://github.com/uiid-systems/design-system/commit/2cad9bbf3d922ae954cba1bc3c115c87ed632f27))
+* **ui:** honor cancel in Reasoning's onOpenChange and measure before paint ([#541](https://github.com/uiid-systems/design-system/issues/541)) ([dd18aa4](https://github.com/uiid-systems/design-system/commit/dd18aa465250e800aeea4a1a5d71321ebd7d0a83))
+* **ui:** keep a render element's own title on Text ([#557](https://github.com/uiid-systems/design-system/issues/557)) ([2a3c4e8](https://github.com/uiid-systems/design-system/commit/2a3c4e82d6298fc0f9cf62c45c7c1b8f8699985e))
+* **ui:** keep a single-select ToggleGroup from being emptied ([#585](https://github.com/uiid-systems/design-system/issues/585)) ([045e7d4](https://github.com/uiid-systems/design-system/commit/045e7d4c52ccf41865d8cf96d75c1f911e07eacf))
+* **ui:** keep CodeEditor's caret on the highlighted text with line numbers or long lines ([#619](https://github.com/uiid-systems/design-system/issues/619)) ([3c0ed9b](https://github.com/uiid-systems/design-system/commit/3c0ed9b00d98b884b6c030c098f9ab9c6b7b085a))
+* **ui:** keep Field's action at the label row's end without overlap ([#542](https://github.com/uiid-systems/design-system/issues/542)) ([6954dfd](https://github.com/uiid-systems/design-system/commit/6954dfd0b6fcd888a0a311086930ea950d78fc39))
+* **ui:** keep Popover's offset defaults when PositionerProps is set ([#583](https://github.com/uiid-systems/design-system/issues/583)) ([cef70ef](https://github.com/uiid-systems/design-system/commit/cef70efb773cb71cce1418465798bf5b7a0cc144))
+* **ui:** keep the caller's className on a FieldRow with no label ([#573](https://github.com/uiid-systems/design-system/issues/573)) ([d615d05](https://github.com/uiid-systems/design-system/commit/d615d05350360695c1286d4ddd5b159b7dfb0706))
+* **ui:** keep the Status root when it has no children ([#560](https://github.com/uiid-systems/design-system/issues/560)) ([c77aed4](https://github.com/uiid-systems/design-system/commit/c77aed4848186aaac5e454cc5523c84cfa2f53f8))
+* **ui:** keep the tooltip error in the DOM so the control is described ([#580](https://github.com/uiid-systems/design-system/issues/580)) ([3ee0754](https://github.com/uiid-systems/design-system/commit/3ee0754d1b776882367874d4824385857e210087))
+* **ui:** layout, typography, lists, tables and navigation audit cleanups ([#627](https://github.com/uiid-systems/design-system/issues/627)) ([4b771dc](https://github.com/uiid-systems/design-system/commit/4b771dc68c44cc981806c2e92f4ab8fa96fef155))
+* **ui:** let keyboard drags reorder Sortable items ([#603](https://github.com/uiid-systems/design-system/issues/603)) ([a77f9be](https://github.com/uiid-systems/design-system/commit/a77f9be54d356922f265a8f6cc4ef7f7b30d3ceb))
+* **ui:** let List entries win over ItemProps and pass both to nested groups ([#596](https://github.com/uiid-systems/design-system/issues/596)) ([34c1a8e](https://github.com/uiid-systems/design-system/commit/34c1a8ee0f56f78c70b2a22831b851a47003f7f9))
+* **ui:** let only the latest useFormSubmit call write state, add setResult ([#606](https://github.com/uiid-systems/design-system/issues/606)) ([4fa7183](https://github.com/uiid-systems/design-system/commit/4fa71833658c5dfa7673f388dd43919db9166414))
+* **ui:** let top-level props win over RootProps everywhere ([#635](https://github.com/uiid-systems/design-system/issues/635)) ([d02375e](https://github.com/uiid-systems/design-system/commit/d02375e3d9bcc3859328b6288e64faf6baa80213))
+* **ui:** make Accordion panel padding follow size ([#563](https://github.com/uiid-systems/design-system/issues/563)) ([a85ebd0](https://github.com/uiid-systems/design-system/commit/a85ebd06cd38b603409c40530bd0f0271a3ba867))
+* **ui:** make Combobox and Autocomplete generic and label object items ([#623](https://github.com/uiid-systems/design-system/issues/623)) ([cba82fa](https://github.com/uiid-systems/design-system/commit/cba82fa3ecf9ba7434c5d68b8e3176b523ef9f09))
+* **ui:** mark the current Breadcrumbs crumb and export its types ([#591](https://github.com/uiid-systems/design-system/issues/591)) ([fba2760](https://github.com/uiid-systems/design-system/commit/fba2760c05473fc3422f93f69d020c36dc72ccf9))
+* **ui:** match Kbd space and modified letter or digit hotkeys ([#613](https://github.com/uiid-systems/design-system/issues/613)) ([063a3ee](https://github.com/uiid-systems/design-system/commit/063a3ee97bfd6f6f9b11b4275b612851053b429b))
+* **ui:** merge consumer className and ref on ToggleGroup ([#566](https://github.com/uiid-systems/design-system/issues/566)) ([eafd237](https://github.com/uiid-systems/design-system/commit/eafd2378e7d3cd6b2a55a268b083c4093af12f8a))
+* **ui:** merge Radio's FieldProps className into the row classes ([#562](https://github.com/uiid-systems/design-system/issues/562)) ([2d8d514](https://github.com/uiid-systems/design-system/commit/2d8d514ab8bf47a50587a79d6c52d9048480ec19))
+* **ui:** name the popup scroll body, measure late children, and handle short screens ([#614](https://github.com/uiid-systems/design-system/issues/614)) ([37d45f2](https://github.com/uiid-systems/design-system/commit/37d45f2af6623781c73c415df429135323cfc886))
+* **ui:** open CodeBlock fullscreen as a modal Base UI Dialog ([#616](https://github.com/uiid-systems/design-system/issues/616)) ([f3f96e4](https://github.com/uiid-systems/design-system/commit/f3f96e4034358875b4f8de2c83deaadf3171fe13))
+* **ui:** pass Base UI's onValueChange through ToggleGroup ([#576](https://github.com/uiid-systems/design-system/issues/576)) ([fb126e2](https://github.com/uiid-systems/design-system/commit/fb126e2f7649c77bc5077c32d401beb17d4dcec5))
+* **ui:** pass Select disabled to Root and Field ([#567](https://github.com/uiid-systems/design-system/issues/567)) ([be6eee6](https://github.com/uiid-systems/design-system/commit/be6eee64ac55bcaac53837f761baa442a01908f0))
+* **ui:** remeasure the ToggleGroup indicator when toggles mount or unmount ([#600](https://github.com/uiid-systems/design-system/issues/600)) ([88390e6](https://github.com/uiid-systems/design-system/commit/88390e6f124722766ffec7c8037eb7e92bcf3ed2))
+* **ui:** render Autocomplete's input group so InputGroupProps applies ([#588](https://github.com/uiid-systems/design-system/issues/588)) ([199b0af](https://github.com/uiid-systems/design-system/commit/199b0afe6866fe6014914417ade17833bceedf42))
+* **ui:** render unsupported code languages as plain code ([#581](https://github.com/uiid-systems/design-system/issues/581)) ([0c4ded0](https://github.com/uiid-systems/design-system/commit/0c4ded0725b1122e7d86ea27dd7df6365872db88))
+* **ui:** respect reduced motion in Toast, Drawer and shared popups ([#575](https://github.com/uiid-systems/design-system/issues/575)) ([fab19c8](https://github.com/uiid-systems/design-system/commit/fab19c8d6ff056f620c78f6e38f053cad424e5e3))
+* **ui:** round Tool's trigger to the card's inner radius ([#545](https://github.com/uiid-systems/design-system/issues/545)) ([131498a](https://github.com/uiid-systems/design-system/commit/131498a69d5de2ab89eaf83b7d1cb4b07eb1f8a9))
+* **ui:** run RootProps.onOpenChange alongside onOpenChange in Popover and Tooltip ([#572](https://github.com/uiid-systems/design-system/issues/572)) ([8e64768](https://github.com/uiid-systems/design-system/commit/8e647681e98469d566347148382c5da1ec0a5913))
+* **ui:** scroll a tall Drawer's body, keeping the header and footer in view ([#594](https://github.com/uiid-systems/design-system/issues/594)) ([b498e61](https://github.com/uiid-systems/design-system/commit/b498e61342953404aba98abcfec4fb5227f19acc))
+* **ui:** Select, Combobox, Autocomplete, Field and Form audit cleanups ([#634](https://github.com/uiid-systems/design-system/issues/634)) ([c66c7bf](https://github.com/uiid-systems/design-system/commit/c66c7bfe5a3027f87e2a0ec0eb89508e12e8e0c5))
+* **ui:** set success and result from useFormSubmit and drop its default delay ([#598](https://github.com/uiid-systems/design-system/issues/598)) ([368293e](https://github.com/uiid-systems/design-system/commit/368293e610e68095f671ac4a9c19fde6e6e3c9b1))
+* **ui:** show a focus ring on CodeEditor when its textarea has focus ([#574](https://github.com/uiid-systems/design-system/issues/574)) ([b4f2493](https://github.com/uiid-systems/design-system/commit/b4f2493f03af78546be9130f4ecfe4196675d3ed))
+* **ui:** show the required marker on Combobox and Autocomplete labels ([#568](https://github.com/uiid-systems/design-system/issues/568)) ([5a6ccc6](https://github.com/uiid-systems/design-system/commit/5a6ccc6af852b8abdb528c41665105e8d1082e2e))
+* **ui:** skip the Popover trigger when none is passed ([#565](https://github.com/uiid-systems/design-system/issues/565)) ([5d67377](https://github.com/uiid-systems/design-system/commit/5d673771b330cc4b92842f19d7a4fcfea3051755))
+* **ui:** stop @uiid/tables importing itself by package name ([#564](https://github.com/uiid-systems/design-system/issues/564)) ([b05eb1e](https://github.com/uiid-systems/design-system/commit/b05eb1eb56a9ec90ed5f2259ea3ee4e017961de1))
+* **ui:** stop Switch from using its name as its id ([#559](https://github.com/uiid-systems/design-system/issues/559)) ([4e34b44](https://github.com/uiid-systems/design-system/commit/4e34b4420a472e3b38686bb3e9c4003445e645f6))
+* **ui:** stop Table cells printing null, undefined and [object Object] ([#577](https://github.com/uiid-systems/design-system/issues/577)) ([7b81730](https://github.com/uiid-systems/design-system/commit/7b8173093a0795c8732a611d8c07a5dcd736b51e))
+* **ui:** stop Tabs crashing on an empty items array ([#558](https://github.com/uiid-systems/design-system/issues/558)) ([107b32e](https://github.com/uiid-systems/design-system/commit/107b32eba14ba9da05a37220b11714e9bafaa621))
+* **ui:** take the CodeEditor highlight backdrop out of the tab order ([#582](https://github.com/uiid-systems/design-system/issues/582)) ([c7e1509](https://github.com/uiid-systems/design-system/commit/c7e1509617a2cdc9cf006c7716e35fa87b09566f))
+* **ui:** widen the Icon type to accept any component that takes IconProps ([#578](https://github.com/uiid-systems/design-system/issues/578)) ([09da570](https://github.com/uiid-systems/design-system/commit/09da570812d3ee5ab8657b553ef4d80eeacfff67))
+
+
+### Performance Improvements
+
+* **docs:** highlight docs code blocks on the server ([#628](https://github.com/uiid-systems/design-system/issues/628)) ([1a5a7a2](https://github.com/uiid-systems/design-system/commit/1a5a7a2a4c8a0070308e147251610a9b95b345b5))
+* **ui:** load the Shiki runtime only when CodeInline or CodeBlock highlights ([#610](https://github.com/uiid-systems/design-system/issues/610)) ([4460b33](https://github.com/uiid-systems/design-system/commit/4460b3385c37bcc45d8bf08cd764e8fd69e1971a))
+* **ui:** skip Shiki in CodeInline and CodeBlock when nothing needs highlighting ([#595](https://github.com/uiid-systems/design-system/issues/595)) ([9a4db26](https://github.com/uiid-systems/design-system/commit/9a4db26561a60a24feeb9004652acb46d037f9c3))
+
+
+### Code Refactoring
+
+* **tokens:** tokens, utils, icons and barrel audit cleanups ([#621](https://github.com/uiid-systems/design-system/issues/621)) ([90172bc](https://github.com/uiid-systems/design-system/commit/90172bc33184c6174693d250a298e8814feff03a))
+* **ui:** code and AI audit cleanups ([#631](https://github.com/uiid-systems/design-system/issues/631)) ([7af9a8f](https://github.com/uiid-systems/design-system/commit/7af9a8fb36d0960e495fe1154c20285d632f3fcc))
+* **ui:** narrow Text's shade to foreground and background ([#636](https://github.com/uiid-systems/design-system/issues/636)) ([69227c3](https://github.com/uiid-systems/design-system/commit/69227c3fc1354022cd9571c1620c3e227a1c8c5c))
+
 ## [0.8.0](https://github.com/uiid-systems/design-system/compare/v0.7.2...v0.8.0) (2026-11-10)
 
 
