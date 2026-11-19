@@ -260,7 +260,7 @@ describe("Collapsible", () => {
     expect(screen.queryByText("Content")).not.toBeInTheDocument();
   });
 
-  it("lets RootProps win over the direct open props", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
     render(
       <Collapsible
         trigger="Toggle"
@@ -270,7 +270,38 @@ describe("Collapsible", () => {
         Content
       </Collapsible>,
     );
+    expect(screen.queryByText("Content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
     expect(screen.getByText("Content")).toBeVisible();
+  });
+
+  it("lets a top-level keepMounted win over PanelProps.keepMounted", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        keepMounted={false}
+        PanelProps={{ keepMounted: true }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(screen.queryByText("Content")).not.toBeInTheDocument();
+  });
+
+  it("still applies PanelProps.keepMounted when the top level leaves it unset", () => {
+    render(
+      <Collapsible trigger="Toggle" PanelProps={{ keepMounted: true }}>
+        Content
+      </Collapsible>,
+    );
+    expect(screen.getByText("Content")).toBeInTheDocument();
   });
 
   // ============================================

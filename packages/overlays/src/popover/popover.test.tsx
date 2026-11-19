@@ -875,3 +875,30 @@ describe("Popover top-level root props", () => {
     });
   });
 });
+
+describe("Popover RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Popover
+        trigger={<button>Open</button>}
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Popover content
+      </Popover>,
+    );
+    expect(screen.queryByText("Popover content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Popover
+        trigger={<button>Open</button>}
+        RootProps={{ defaultOpen: true }}
+      >
+        Popover content
+      </Popover>,
+    );
+    expect(screen.getByText("Popover content")).toBeInTheDocument();
+  });
+});

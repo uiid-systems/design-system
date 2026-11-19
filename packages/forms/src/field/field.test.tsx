@@ -1209,3 +1209,26 @@ describe("Field validation", () => {
     );
   });
 });
+
+describe("Field RootProps precedence", () => {
+  const root = (container: HTMLElement) =>
+    container.querySelector("[data-slot='field-root']");
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <Field disabled={false} RootProps={{ disabled: true }}>
+        <input />
+      </Field>,
+    );
+    expect(root(container)).not.toHaveAttribute("data-disabled");
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <Field RootProps={{ disabled: true }}>
+        <input />
+      </Field>,
+    );
+    expect(root(container)).toHaveAttribute("data-disabled");
+  });
+});

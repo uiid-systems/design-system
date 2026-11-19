@@ -1435,3 +1435,27 @@ describe("Dialog top-level root props", () => {
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 });
+
+describe("Dialog RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Dialog
+        title="Settings"
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Dialog content
+      </Dialog>,
+    );
+    expect(screen.queryByText("Dialog content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Dialog title="Settings" RootProps={{ defaultOpen: true }}>
+        Dialog content
+      </Dialog>,
+    );
+    expect(screen.getByText("Dialog content")).toBeInTheDocument();
+  });
+});

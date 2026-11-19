@@ -1,6 +1,6 @@
 "use client";
 
-import { hasTrigger } from "@uiid/utils";
+import { definedProps, hasTrigger } from "@uiid/utils";
 
 import { composeOpenChange } from "../shared/compose-open-change";
 import type { PopoverProps } from "./popover.types";
@@ -33,10 +33,8 @@ export const Popover = ({
 }: PopoverProps) => {
   return (
     <PopoverRoot
-      open={open}
-      defaultOpen={defaultOpen}
-      modal={modal}
       {...RootProps}
+      {...definedProps({ open, defaultOpen, modal })}
       onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
     >
       {hasTrigger(trigger, TriggerProps?.render) && (

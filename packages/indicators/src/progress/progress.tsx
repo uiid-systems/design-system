@@ -35,7 +35,7 @@ export const Progress = ({
    * compact toast case, or an unlabelled indeterminate one) is just the track.
    */
   return (
-    <ProgressRoot {...props} {...RootProps}>
+    <ProgressRoot {...RootProps} {...props}>
       {hasHeader && (
         <ProgressHeader {...HeaderProps}>
           {hasLabel && <ProgressLabel {...LabelProps}>{label}</ProgressLabel>}

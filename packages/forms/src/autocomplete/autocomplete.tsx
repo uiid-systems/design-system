@@ -1,6 +1,6 @@
 "use client";
 
-import { splitDomAttributes } from "@uiid/utils";
+import { definedProps, splitDomAttributes } from "@uiid/utils";
 
 import { mergeInputGroupProps } from "../shared/input-group";
 import { resolveItemKey, resolveItemLabel } from "../shared/item-utils";
@@ -51,17 +51,14 @@ export function Autocomplete<Value = string>({
 
   // Autocomplete's Root has no `itemToStringLabel`: `itemToStringValue` is
   // the text Base UI fills the input with, so the default row shows the same.
-  // `rootProps` spreads last onto Root, so its function is the one Root uses.
+  // Top-level props spread last onto Root, so theirs is the one Root uses.
   const itemToStringValue =
     rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
 
   return (
     <AutocompleteRoot<Value>
-      items={items}
-      name={name}
-      disabled={disabled}
-      required={required}
       {...RootProps}
+      {...definedProps({ items, name, disabled, required })}
       {...rootProps}
     >
       <AutocompleteInput

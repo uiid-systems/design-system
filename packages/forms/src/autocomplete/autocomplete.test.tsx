@@ -745,3 +745,38 @@ describe("Autocomplete variant and fullwidth", () => {
     expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
   });
 });
+
+describe("Autocomplete RootProps precedence", () => {
+  const items = ["apple", "banana"];
+  const submit = (container: HTMLElement, name: string) =>
+    new FormData(container.querySelector("form") as HTMLFormElement).getAll(
+      name,
+    );
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <form>
+        <Autocomplete
+          items={items}
+          name="top"
+          defaultValue="apple"
+          RootProps={{ name: "slot" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "top")).toContain("apple");
+    expect(submit(container, "slot")).toEqual([]);
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <form>
+        <Autocomplete
+          items={items}
+          RootProps={{ name: "slot", defaultValue: "apple" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "slot")).toContain("apple");
+  });
+});

@@ -96,3 +96,22 @@ export function splitDomAttributes<T extends Record<string, unknown>>(
 
   return [domAttributes as DomAttributes, rest as T] as const;
 }
+
+/**
+ * Drops the keys whose value is `undefined`.
+ *
+ * A wrapper spreads its `RootProps` first and its top-level props after, so a
+ * top-level prop wins over the same key. A destructured prop the caller never
+ * set is still present as `undefined`, though, and spread last it would erase
+ * the `RootProps` value it was meant to defer to. Passing the top-level props
+ * through this keeps only the ones actually set.
+ */
+export function definedProps<T extends Record<string, unknown>>(props: T) {
+  const defined: Partial<T> = {};
+
+  for (const key of keysOf(props)) {
+    if (props[key] !== undefined) defined[key] = props[key];
+  }
+
+  return defined;
+}

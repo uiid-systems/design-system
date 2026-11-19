@@ -1392,3 +1392,37 @@ describe("Select with a non-string Value", () => {
     void wrong;
   });
 });
+
+describe("Select RootProps precedence", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+  const submit = (container: HTMLElement, name: string) =>
+    new FormData(container.querySelector("form") as HTMLFormElement).getAll(
+      name,
+    );
+
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    const { container } = render(
+      <form>
+        <Select
+          items={items}
+          name="pick"
+          defaultValue="a"
+          RootProps={{ defaultValue: "b" }}
+        />
+      </form>,
+    );
+    expect(submit(container, "pick")).toEqual(["a"]);
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" RootProps={{ defaultValue: "b" }} />
+      </form>,
+    );
+    expect(submit(container, "pick")).toEqual(["b"]);
+  });
+});

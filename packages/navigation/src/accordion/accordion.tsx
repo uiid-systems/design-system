@@ -1,3 +1,5 @@
+import { definedProps } from "@uiid/utils";
+
 import type { AccordionProps } from "./accordion.types";
 import {
   AccordionRoot,
@@ -28,15 +30,17 @@ export const Accordion = ({
 }: AccordionProps) => {
   return (
     <AccordionRoot
-      fullwidth={fullwidth}
-      variant={variant}
-      defaultValue={defaultValue}
-      value={value}
-      onValueChange={onValueChange}
-      disabled={disabled}
-      orientation={orientation}
-      multiple={multiple}
       {...RootProps}
+      {...definedProps({
+        fullwidth,
+        variant,
+        defaultValue,
+        value,
+        onValueChange,
+        disabled,
+        orientation,
+        multiple,
+      })}
     >
       {items.map((item) => (
         <AccordionItem

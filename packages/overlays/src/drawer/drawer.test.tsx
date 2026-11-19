@@ -1153,3 +1153,27 @@ describe("DrawerSwipeArea", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("Drawer RootProps precedence", () => {
+  it("lets a top-level prop win over the same key in RootProps", () => {
+    render(
+      <Drawer
+        title="Settings"
+        defaultOpen={false}
+        RootProps={{ defaultOpen: true }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+    expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+  });
+
+  it("still applies a RootProps key the top level leaves unset", () => {
+    render(
+      <Drawer title="Settings" RootProps={{ defaultOpen: true }}>
+        Drawer content
+      </Drawer>,
+    );
+    expect(screen.getByText("Drawer content")).toBeInTheDocument();
+  });
+});

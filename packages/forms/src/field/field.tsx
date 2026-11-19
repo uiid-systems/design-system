@@ -47,8 +47,8 @@ export const Field = ({
   return (
     <FieldRoot
       data-required={required || undefined}
-      {...props}
       {...RootProps}
+      {...props}
       className={cxState(
         fieldVariants({ size }),
         !hasChrome && styles["field-root-bare"],

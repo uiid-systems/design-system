@@ -1,6 +1,6 @@
 "use client";
 
-import { splitDomAttributes } from "@uiid/utils";
+import { definedProps, splitDomAttributes } from "@uiid/utils";
 
 import type { SelectMultipleMode } from "../select/select.types";
 import { InputGroupActions, mergeInputGroupProps } from "../shared/input-group";
@@ -69,8 +69,8 @@ export function Combobox<
   // below fails `tsc`.
   // Base UI's item renders no text of its own, so the default row resolves
   // its label the way Root resolves the input's text: `itemToStringLabel`,
-  // then an object's `label`, then a primitive value. `rootProps` spreads
-  // last onto Root, so its functions are the ones Root uses too.
+  // then an object's `label`, then a primitive value. Top-level props spread
+  // last onto Root, so their functions are the ones Root uses too.
   const itemToStringLabel =
     rootProps.itemToStringLabel ?? RootProps?.itemToStringLabel;
   const itemToStringValue =
@@ -83,11 +83,8 @@ export function Combobox<
 
   return (
     <ComboboxRoot<Value, Multiple>
-      items={items}
-      name={name}
-      disabled={disabled}
-      required={required}
       {...RootProps}
+      {...definedProps({ items, name, disabled, required })}
       {...rootProps}
     >
       <ComboboxInput

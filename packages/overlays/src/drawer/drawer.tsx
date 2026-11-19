@@ -1,6 +1,6 @@
 "use client";
 
-import { hasTrigger } from "@uiid/utils";
+import { definedProps, hasTrigger } from "@uiid/utils";
 
 import { composeOpenChange } from "../shared/compose-open-change";
 import { DrawerPendingProvider } from "./drawer-pending-context";
@@ -58,15 +58,17 @@ export const Drawer = ({
   return (
     <DrawerPendingProvider value={pending}>
       <DrawerRoot
-        open={open}
-        defaultOpen={defaultOpen}
-        modal={modal}
-        swipeDirection={swipeDirection}
-        snapPoints={snapPoints}
-        snapPoint={snapPoint}
-        defaultSnapPoint={defaultSnapPoint}
-        onSnapPointChange={onSnapPointChange}
         {...RootProps}
+        {...definedProps({
+          open,
+          defaultOpen,
+          modal,
+          swipeDirection,
+          snapPoints,
+          snapPoint,
+          defaultSnapPoint,
+          onSnapPointChange,
+        })}
         onOpenChange={handleOpenChange}
       >
         {hasTrigger(trigger, TriggerProps?.render) && (

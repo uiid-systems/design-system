@@ -1,3 +1,5 @@
+import { definedProps } from "@uiid/utils";
+
 import type { CollapsibleProps } from "./collapsible.types";
 import {
   CollapsibleRoot,
@@ -20,18 +22,15 @@ export const Collapsible = ({
 }: CollapsibleProps) => {
   return (
     <CollapsibleRoot
-      open={open}
-      defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
-      disabled={disabled}
       {...RootProps}
+      {...definedProps({ open, defaultOpen, onOpenChange, disabled })}
     >
       <CollapsibleTrigger {...TriggerProps}>{trigger}</CollapsibleTrigger>
 
       <CollapsiblePanel
         instant={instant}
-        keepMounted={keepMounted}
         {...PanelProps}
+        {...definedProps({ keepMounted })}
       >
         {children}
       </CollapsiblePanel>
