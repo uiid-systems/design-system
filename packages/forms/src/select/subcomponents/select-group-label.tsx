@@ -1,15 +1,11 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { Text } from "@uiid/typography";
 
+import { popupLayerGroupLabel } from "../../shared/popup-layer";
 import type { SelectGroupLabelProps } from "../select.types";
 
-/**
- * The same treatment as Combobox's and Autocomplete's group label: no `shade`,
- * so the label inherits the popup `Card`'s `--palette-on-tint` and tracks the
- * hue, with size and weight carrying the hierarchy.
- */
+/** Wears the same group-label treatment as Combobox and Autocomplete. */
 export const SelectGroupLabel = ({
   children,
   ...props
@@ -17,7 +13,7 @@ export const SelectGroupLabel = ({
   return (
     <BaseSelect.GroupLabel
       data-slot="select-group-label"
-      render={<Text size={-1} weight="medium" />}
+      render={popupLayerGroupLabel()}
       {...props}
     >
       {children}

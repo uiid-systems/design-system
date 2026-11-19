@@ -1,5 +1,6 @@
 import { Card, type CardContainerProps } from "@uiid/cards";
 import type { PaletteColor } from "@uiid/tokens";
+import { Text } from "@uiid/typography";
 
 import styles from "./popup-layer.module.css";
 
@@ -38,3 +39,11 @@ export const popupLayerCard = ({
 
 /** The class the popup surface wears beside `popupLayerCard`. */
 export const popupLayerPopupClassName = styles["popup-layer-popup"];
+
+/**
+ * The `render` for every picker's group label: Select's, Combobox's and
+ * Autocomplete's. No `shade`, so the label inherits the popup `Card`'s
+ * `--palette-on-tint` and tracks the hue, where a pinned `shade="muted"` stayed
+ * grey on every tinted surface. Size and weight carry the hierarchy.
+ */
+export const popupLayerGroupLabel = () => <Text size={-1} weight="medium" />;

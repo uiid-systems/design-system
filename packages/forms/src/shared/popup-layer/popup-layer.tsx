@@ -10,6 +10,7 @@ import { cxState, type WithLayoutProps } from "@uiid/utils";
 import { resolveItemLabel } from "../item-utils";
 import {
   popupLayerCard,
+  popupLayerGroupLabel,
   popupLayerPopupClassName,
   type PopupLayerCardOptions,
 } from "./popup-layer-card";
@@ -182,11 +183,7 @@ export const PopupLayerGroup = ({
 };
 PopupLayerGroup.displayName = "PopupLayerGroup";
 
-/**
- * No `shade` — the label inherits the popup `Card`'s `--palette-on-tint` so it
- * tracks the hue, where a pinned `shade="muted"` stayed grey on every tinted
- * surface. Size and weight still carry the hierarchy.
- */
+/** Wears the shared group-label treatment (`popupLayerGroupLabel`). */
 export const PopupLayerGroupLabel = ({
   slot,
   children,
@@ -195,7 +192,7 @@ export const PopupLayerGroupLabel = ({
   return (
     <BasePopupLayer.GroupLabel
       data-slot={slot}
-      render={<Text size={-1} weight="medium" />}
+      render={popupLayerGroupLabel()}
       {...props}
     >
       {children}
