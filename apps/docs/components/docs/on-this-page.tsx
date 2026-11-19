@@ -34,7 +34,7 @@ const scanToc = (): TocNode[] => {
 };
 
 const TocLink = ({ id, label }: { id: string; label: string }) => (
-  <Text render={<a href={`#${id}`} />} size={0} shade="muted">
+  <Text render={<a href={`#${id}`} />} size={0} emphasis="muted">
     {label}
   </Text>
 );

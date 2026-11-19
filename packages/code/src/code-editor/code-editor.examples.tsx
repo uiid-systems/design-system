@@ -33,7 +33,7 @@ export const Controlled = () => {
   return (
     <Stack gap={2}>
       <CodeEditor value={value} onValueChange={setValue} filename="greet.ts" />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         {value.length} characters
       </Text>
     </Stack>

@@ -8,17 +8,8 @@ export type TextVariants = {
   weight?: "thin" | "light" | "normal" | "medium" | "semibold" | "bold";
   /** Typeface family */
   family?: "sans" | "serif" | "mono";
-  /**
-   * Foreground color from the shade scale
-   * @deprecated Use `emphasis`, with `color` for a hue. `shade="muted"` is `emphasis="muted"`.
-   */
-  shade?:
-    | "background"
-    | "surface"
-    | "accent"
-    | "halftone"
-    | "muted"
-    | "foreground";
+  /** Paint the text in the page's foreground or background shade. For muted text, use `emphasis="muted"`. */
+  shade?: "foreground" | "background";
   /** Palette color for the text */
   color?: PaletteColor;
   /**

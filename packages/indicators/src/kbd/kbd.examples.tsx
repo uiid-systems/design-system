@@ -23,7 +23,7 @@ export const Symbols = () => (
 /* Press the shortcut: the key lights up while it is held. */
 export const Hotkey = () => (
   <Group gap={2} ay="center">
-    <Text shade="muted">Press</Text>
+    <Text emphasis="muted">Press</Text>
     <Kbd hotkey={["shift", "k"]} />
   </Group>
 );

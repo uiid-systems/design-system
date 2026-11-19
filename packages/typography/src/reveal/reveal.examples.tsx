@@ -16,7 +16,13 @@ export const Styled = () => (
     <Reveal render={<p />} size={4} weight="bold">
       Ship the same interface, everywhere.
     </Reveal>
-    <Reveal render={<p />} size={1} family="serif" shade="muted" stagger={60}>
+    <Reveal
+      render={<p />}
+      size={1}
+      family="serif"
+      emphasis="muted"
+      stagger={60}
+    >
       Tokens define the language. The registry describes it. Blocks compose it.
     </Reveal>
   </>

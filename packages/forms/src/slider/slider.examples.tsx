@@ -130,7 +130,7 @@ export const Controlled = () => {
   return (
     <Stack gap={3}>
       <Slider label="Volume" value={value} onValueChange={setValue} />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Value: {String(value)}
       </Text>
     </Stack>
@@ -163,7 +163,7 @@ export const Committed = () => {
         }}
         onValueCommitted={() => setCommits((count) => count + 1)}
       />
-      <Text size={-1} shade="muted" family="mono">
+      <Text size={-1} emphasis="muted" family="mono">
         onValueChange ×{changes} · onValueCommitted ×{commits}
       </Text>
     </Stack>

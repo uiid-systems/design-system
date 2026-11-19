@@ -76,7 +76,7 @@ export const Controlled = () => {
   return (
     <Stack gap={3}>
       <Switch label={LABEL} checked={checked} onCheckedChange={setChecked} />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Notifications are {checked ? "on" : "off"}
       </Text>
     </Stack>

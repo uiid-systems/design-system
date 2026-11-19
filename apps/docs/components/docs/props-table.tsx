@@ -33,14 +33,14 @@ const Mono = ({
   <Text
     family="mono"
     size={-1}
-    shade={muted ? "muted" : undefined}
+    emphasis={muted ? "muted" : undefined}
     color={primary ? "orange" : undefined}
   >
     {children}
   </Text>
 );
 
-const EMPTY = <Text shade="muted">—</Text>;
+const EMPTY = <Text emphasis="muted">—</Text>;
 
 const formatType = (prop: PropItem) =>
   (prop.type.raw ?? prop.type.name).replace(/ \| undefined$/, "");

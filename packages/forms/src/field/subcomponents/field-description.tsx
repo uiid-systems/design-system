@@ -9,7 +9,7 @@ import type { FieldDescriptionProps } from "../field.types";
 import styles from "../field.module.css";
 
 export const FieldDescription = ({
-  shade = "muted",
+  emphasis = "muted",
   className,
   children,
   ...props
@@ -17,7 +17,7 @@ export const FieldDescription = ({
   return (
     <BaseField.Description
       data-slot="field-description"
-      render={<Text shade={shade} />}
+      render={<Text emphasis={emphasis} />}
       className={cx(styles["field-description"], className)}
       {...props}
     >

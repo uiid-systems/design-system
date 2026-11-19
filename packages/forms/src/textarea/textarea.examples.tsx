@@ -181,7 +181,7 @@ export const Controlled = () => {
         value={value}
         onValueChange={setValue}
       />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         {value.length} characters
       </Text>
     </Stack>

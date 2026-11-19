@@ -123,7 +123,7 @@ export const Controlled = () => {
         value={value}
         onValueChange={(next) => setValue(next ?? "")}
       />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Value: {value || "—"}
       </Text>
     </Stack>

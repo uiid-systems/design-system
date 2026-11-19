@@ -32,7 +32,7 @@ export const Shades: Story = {
         <Text size={2} weight="semibold">
           Shades
         </Text>
-        <Text size={-1} shade="muted">
+        <Text size={-1} emphasis="muted">
           Six neutral aliases, background through foreground. Each resolves via
           light-dark(), so the pair below is what the alias holds in each
           scheme.
@@ -69,20 +69,20 @@ export const Shades: Story = {
                 <Text size={0} weight="semibold">
                   {name}
                 </Text>
-                <Text size={-1} shade="muted">
+                <Text size={-1} emphasis="muted">
                   --shade-{name}
                 </Text>
                 {derive ? (
                   <Group gap={2}>
-                    <Text size={-1} shade="muted">
+                    <Text size={-1} emphasis="muted">
                       {derive.light}
                     </Text>
-                    <Text size={-1} shade="muted">
+                    <Text size={-1} emphasis="muted">
                       {derive.dark}
                     </Text>
                   </Group>
                 ) : (
-                  <Text size={-1} shade="muted">
+                  <Text size={-1} emphasis="muted">
                     {token.$value}
                   </Text>
                 )}

@@ -26,8 +26,9 @@ export type FieldLabelProps = Field.Label.Props &
     required?: boolean;
   };
 
+/** Muted by default. Set `emphasis` to change that; there is no `shade`. */
 export type FieldDescriptionProps = Field.Description.Props &
-  Omit<TextProps, "ref">;
+  Omit<TextProps, "ref" | "shade">;
 
 export type FieldHintValue = { icon?: Icon; text: string };
 

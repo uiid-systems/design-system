@@ -1057,25 +1057,27 @@ describe("Field required", () => {
   });
 });
 
-describe("FieldDescription shade", () => {
-  it("defaults to the muted shade", () => {
+describe("FieldDescription emphasis", () => {
+  it("defaults to muted emphasis", () => {
     render(
       <FieldRoot>
         <FieldDescription>Help</FieldDescription>
       </FieldRoot>,
     );
-    expect(screen.getByText("Help")).toHaveAttribute("data-ui-shade", "muted");
+    const el = screen.getByText("Help");
+    expect(el).toHaveAttribute("data-ui-emphasis", "muted");
+    expect(el).not.toHaveAttribute("data-ui-shade");
   });
 
-  it("takes a caller's shade", () => {
+  it("takes a caller's emphasis", () => {
     render(
       <FieldRoot>
-        <FieldDescription shade="foreground">Help</FieldDescription>
+        <FieldDescription emphasis="default">Help</FieldDescription>
       </FieldRoot>,
     );
     expect(screen.getByText("Help")).toHaveAttribute(
-      "data-ui-shade",
-      "foreground",
+      "data-ui-emphasis",
+      "default",
     );
   });
 });
@@ -1150,15 +1152,15 @@ describe("Field wiring", () => {
     expect(screen.getByText("Email")).not.toHaveAttribute("data-required");
   });
 
-  it("lets DescriptionProps override the description's muted shade", () => {
+  it("lets DescriptionProps override the description's muted emphasis", () => {
     render(
-      <Field description="Help" DescriptionProps={{ shade: "foreground" }}>
+      <Field description="Help" DescriptionProps={{ emphasis: "default" }}>
         <FieldControl />
       </Field>,
     );
     expect(screen.getByText("Help")).toHaveAttribute(
-      "data-ui-shade",
-      "foreground",
+      "data-ui-emphasis",
+      "default",
     );
   });
 });

@@ -134,7 +134,7 @@ export const Controlled = () => {
   return (
     <Stack gap={3} ax="start">
       <NumberField label="Quantity" value={value} onValueChange={setValue} />
-      <Text size={-1} shade="muted">
+      <Text size={-1} emphasis="muted">
         Value: {value ?? "—"}
       </Text>
     </Stack>
@@ -201,7 +201,7 @@ export const Committed = () => {
           </NumberFieldGroup>
         </Stack>
       </NumberFieldRoot>
-      <Text size={-1} shade="muted" family="mono">
+      <Text size={-1} emphasis="muted" family="mono">
         onValueChange ×{changes} · onValueCommitted ×{commits}
       </Text>
     </Stack>
