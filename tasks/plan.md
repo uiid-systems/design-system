@@ -80,7 +80,7 @@ Within Phase 5 a layer starts only after the layer below it has merged, because 
 - [ ] Task 18: Add `currencyMask`, `percentMask` and `numberMask`
 - [ ] Task 19: Add real-browser tests for masks
 - [ ] Task 20a: Rebuild the 13 fixed patterns as masks
-- [ ] Task 20b: Retire the old `MaskInput` engine
+- [ ] Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper
 - [ ] Task 21: Document masks and state what is untested
 
 ### Checkpoint: Masks

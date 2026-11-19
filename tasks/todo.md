@@ -433,24 +433,25 @@ The tested prototype sits beside this repo on the owner's machine, in a sibling 
 
 **Estimated scope:** L, one idea repeated per pattern
 
-### Task 20b: Retire the old `MaskInput` engine
+### Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper
 
-**Description:** Delete the hand-written engine now that every pattern has a replacement.
+**Description:** Delete the hand-written engine now that every pattern has a replacement. `MaskInput` stays as a thin named component over `Input`, because a separate component reads more clearly at first glance, especially for product teams.
 
 **Acceptance criteria:**
 
-- [ ] `mask-input/hooks/`, `mask-input/utils/` and `mask-input/patterns/` are deleted, and the `MaskInput` component is removed in favour of `Input` with a `mask`
+- [ ] `mask-input/hooks/`, `mask-input/utils/` and `mask-input/patterns/` are deleted
+- [ ] `MaskInput` renders `Input` and adds nothing else: its `mask` prop is required and takes an `InputMask`, the string keys such as `mask="phone"` are gone, and every other prop is `Input`'s
 - [ ] `validationMode`, `onValidate` and the dual-argument `onValueChange` no longer exist
-- [ ] The story, examples, docs page and barrel use `Input` with masks
+- [ ] The story, examples, docs page and README show `MaskInput` with imported masks, and say that `Input` with a `mask` is the same thing
 
 **Verification:**
 
 - [ ] `pnpm test:run packages/forms` passes with no skipped tests
-- [ ] Storybook and docs builds pass; a search for `MaskInput` finds nothing outside the changelog
+- [ ] Storybook and docs builds pass; `mask-input.tsx` imports nothing from Maskito and holds no state or handlers
 
 **Dependencies:** Task 20a
 
-**Files likely touched:** `packages/forms/src/mask-input/` (deletions), the forms barrel, one story, one docs page
+**Files likely touched:** `packages/forms/src/mask-input/` (deletions and a rewritten `mask-input.tsx` and types), the forms barrel, one story, one docs page
 
 **Estimated scope:** L, mostly deletions
 
