@@ -69,6 +69,12 @@
   min-width: 0;
 }
 
+/* The layout Separator's horizontal line. */
+.select-separator {
+  height: 1px;
+  background-color: var(--globals-border-color);
+}
+
 .select-item-indicator {
   flex-shrink: 0;
   height: var(--list-icon-size);

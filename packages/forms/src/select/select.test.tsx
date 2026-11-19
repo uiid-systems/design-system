@@ -807,9 +807,10 @@ describe("Select groups", () => {
     );
     /* A listbox owns only options and groups, so Base UI keeps the line out
        of the accessibility tree rather than giving it `role="separator"`. */
-    expect(
-      document.querySelector("[data-slot='select-separator']"),
-    ).toHaveAttribute("role", "presentation");
+    const separator = document.querySelector("[data-slot='select-separator']");
+    expect(separator).toHaveAttribute("role", "presentation");
+    /* Not allowed on `role="presentation"`; axe reports it as critical. */
+    expect(separator).not.toHaveAttribute("aria-orientation");
   });
 });
 

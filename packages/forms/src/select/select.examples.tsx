@@ -265,7 +265,7 @@ export const Composed = () => (
 
 /* Composed rows can sit in labelled groups, with a separator between them. */
 export const ComposedGroups = () => (
-  <Select placeholder="Select a typeface">
+  <Select label="Typeface" placeholder="Select a typeface">
     <SelectGroup>
       <SelectGroupLabel>Sans-serif</SelectGroupLabel>
       <SelectItem value="inter" label="Inter" />
