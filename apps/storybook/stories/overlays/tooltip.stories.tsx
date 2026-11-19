@@ -18,9 +18,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {
-  render: (args) => <Tooltip {...args} />,
-};
+export const Playground: Story = {};
 
 export const Positioning: Story = { render: () => <Examples.Positioning /> };
 
