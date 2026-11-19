@@ -10,7 +10,7 @@ import { Children, Fragment, isValidElement, useMemo } from "react";
 
 import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { TOOL_STATES } from "./tool.constants";
-import type { ToolPart, ToolProps } from "./tool.types";
+import type { ToolLabels, ToolPart, ToolProps } from "./tool.types";
 
 import styles from "./tool.module.css";
 
@@ -85,7 +85,7 @@ const ToolSection = ({
   children,
 }: {
   slot: string;
-  heading: string;
+  heading: React.ReactNode;
   children: React.ReactNode;
 }) => (
   <Stack data-slot={slot} gap={2}>
@@ -103,7 +103,10 @@ const ToolBody = ({
   input,
   output,
   errorText,
-}: Pick<ToolPart, "input" | "output" | "errorText">) => {
+  labels,
+}: Pick<ToolPart, "input" | "output" | "errorText"> & {
+  labels?: ToolLabels;
+}) => {
   const inputText = useMemo(
     () => (input === undefined ? undefined : toJson(input)),
     [input],
@@ -116,14 +119,21 @@ const ToolBody = ({
   return (
     <>
       {inputText !== undefined && (
-        <ToolSection slot="tool-input" heading="Parameters">
+        <ToolSection
+          slot="tool-input"
+          heading={labels?.parameters ?? "Parameters"}
+        >
           <ToolCode>{inputText}</ToolCode>
         </ToolSection>
       )}
       {(output !== undefined || errorText) && (
         <ToolSection
           slot="tool-output"
-          heading={errorText ? "Error" : "Result"}
+          heading={
+            errorText
+              ? (labels?.error ?? "Error")
+              : (labels?.result ?? "Result")
+          }
         >
           {errorText && (
             <Text color="red" className={styles["error"]}>
@@ -143,11 +153,21 @@ export const Tool = ({
   fullwidth = true,
   ax = "stretch",
   b = 1,
+  labels,
   className,
   children,
   ...props
 }: ToolProps) => {
-  const status = TOOL_STATES[part.state];
+  // A state this version does not know, such as one a newer SDK adds, shows
+  // as itself on the neutral pending badge rather than crashing the card.
+  const known = Object.hasOwn(TOOL_STATES, part.state);
+  const status = known
+    ? TOOL_STATES[part.state]
+    : TOOL_STATES["input-streaming"];
+  const statusLabel =
+    (labels?.status && Object.hasOwn(labels.status, part.state)
+      ? labels.status[part.state]
+      : undefined) ?? (known ? status.label : part.state);
   const StatusIcon = status.icon;
 
   return (
@@ -181,7 +201,7 @@ export const Tool = ({
             className={styles["status"]}
           >
             <StatusIcon data-animate={status.spin ? "spin" : undefined} />
-            {status.label}
+            {statusLabel}
           </Badge>
         </Group>
       </CollapsibleTrigger>
@@ -196,6 +216,7 @@ export const Tool = ({
               input={part.input}
               output={part.output}
               errorText={part.errorText}
+              labels={labels}
             />
           ) : (
             children

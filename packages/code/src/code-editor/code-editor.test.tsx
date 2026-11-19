@@ -195,6 +195,24 @@ describe("CodeEditor", () => {
     expect(layer).toHaveAttribute("data-line-numbers");
   });
 
+  it("writes rows as one custom property, leaving the height to the CSS module", () => {
+    const { rerender } = render(<CodeEditor defaultValue="const x = 1;" />);
+    const layer = screen.getByRole("textbox").parentElement!;
+
+    expect(layer).not.toHaveAttribute("data-rows");
+    expect(layer.style.getPropertyValue("--code-rows")).toBe("");
+
+    rerender(<CodeEditor defaultValue="const x = 1;" rows={4} />);
+    expect(layer).toHaveAttribute("data-rows");
+    expect(layer.style.getPropertyValue("--code-rows")).toBe("4");
+    expect(layer.style.maxHeight).toBe("");
+    expect(layer.style.overflow).toBe("");
+
+    rerender(<CodeEditor defaultValue="const x = 1;" rows={0} />);
+    expect(layer).not.toHaveAttribute("data-rows");
+    expect(layer.getAttribute("style")).toBeFalsy();
+  });
+
   // ============================================
   // TEXTAREA PROPS
   // ============================================

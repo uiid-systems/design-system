@@ -23,7 +23,8 @@ let originalDescriptors: Partial<
 
 /**
  * happy-dom does no layout, so model the scroll area: its content is
- * `contentHeight` tall, and a collapsed max-height clips its visible height.
+ * `contentHeight` tall, and `data-collapsed` (whose CSS caps the height at the
+ * rows) clips its visible height.
  */
 const stubLayout = () => {
   const proto = HTMLElement.prototype;
@@ -43,7 +44,7 @@ const stubLayout = () => {
     configurable: true,
     get(this: HTMLElement) {
       if (!isScrollArea(this)) return 0;
-      return this.style.maxHeight
+      return this.hasAttribute("data-collapsed")
         ? Math.min(contentHeight, COLLAPSED_HEIGHT)
         : contentHeight;
     },
@@ -90,7 +91,9 @@ describe("CodeBlock rows", () => {
     await waitForHighlight();
 
     expect(toggle()).not.toBeInTheDocument();
-    expect(scrollArea()?.style.maxHeight).toContain("calc(4 *");
+    expect(scrollArea()?.style.getPropertyValue("--code-rows")).toBe("4");
+    expect(scrollArea()?.style.maxHeight).toBe("");
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
   });
 
   it("shows a collapsed Show more toggle when the code overflows", async () => {
@@ -101,7 +104,7 @@ describe("CodeBlock rows", () => {
     expect(button).toHaveAttribute("aria-expanded", "false");
     expect(button).toHaveAttribute("data-slot", "code-block-expand-toggle");
     expect(block()).not.toHaveAttribute("data-expanded");
-    expect(scrollArea()?.style.maxHeight).not.toBe("");
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
   });
 
   it("ignores an overflow within the 1px rounding tolerance", async () => {
@@ -122,14 +125,34 @@ describe("CodeBlock rows", () => {
     const less = screen.getByRole("button", { name: "Show less" });
     expect(less).toHaveAttribute("aria-expanded", "true");
     expect(block()).toHaveAttribute("data-expanded");
-    expect(scrollArea()?.style.maxHeight).toBe("");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
 
     await user.click(less);
 
     const more = screen.getByRole("button", { name: "Show more" });
     expect(more).toHaveAttribute("aria-expanded", "false");
     expect(block()).not.toHaveAttribute("data-expanded");
-    expect(scrollArea()?.style.maxHeight).not.toBe("");
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
+  });
+
+  it("names the toggle with expandLabel and collapseLabel", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        expandLabel="Mehr anzeigen"
+        collapseLabel="Weniger anzeigen"
+      />,
+    );
+
+    await user.click(
+      await screen.findByRole("button", { name: "Mehr anzeigen" }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Weniger anzeigen" }),
+    ).toHaveAttribute("aria-expanded", "true");
   });
 
   it("starts expanded with defaultExpanded", async () => {
@@ -140,7 +163,7 @@ describe("CodeBlock rows", () => {
       await screen.findByRole("button", { name: "Show less" }),
     ).toHaveAttribute("aria-expanded", "true");
     expect(block()).toHaveAttribute("data-expanded");
-    expect(scrollArea()?.style.maxHeight).toBe("");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
   });
 
   it("shows no toggle for short code that starts expanded", async () => {
@@ -180,6 +203,35 @@ describe("CodeBlock rows", () => {
     ).toBeInTheDocument();
   });
 
+  it("treats rows={0} as no cap", async () => {
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} rows={0} />);
+    await waitForHighlight();
+
+    expect(toggle()).not.toBeInTheDocument();
+    expect(scrollArea()).not.toHaveAttribute("data-rows");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("collapses only the inline copy, not the fullscreen one", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} rows={4} />);
+    await screen.findByRole("button", { name: "Show more" });
+
+    await user.click(screen.getByRole("button", { name: /fullscreen/i }));
+
+    const areas = await waitFor(() => {
+      const found = document.querySelectorAll(
+        '[data-slot="code-block-scroll"]',
+      );
+      expect(found).toHaveLength(2);
+      return found;
+    });
+    expect(areas[0]).toHaveAttribute("data-collapsed");
+    expect(areas[1]).not.toHaveAttribute("data-collapsed");
+  });
+
   it("neither collapses nor toggles without rows", async () => {
     contentHeight = 300;
     render(<CodeBlock code={CODE} />);
@@ -187,6 +239,7 @@ describe("CodeBlock rows", () => {
 
     expect(toggle()).not.toBeInTheDocument();
     expect(block()).not.toHaveAttribute("data-expanded");
-    expect(scrollArea()?.style.maxHeight).toBe("");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+    expect(scrollArea()?.getAttribute("style")).toBeNull();
   });
 });

@@ -28,6 +28,8 @@ export const CodeBlock = ({
   fullscreenable = DEFAULT_FULLSCREENABLE,
   rows,
   defaultExpanded = false,
+  expandLabel = "Show more",
+  collapseLabel = "Show less",
   defaultWrap = DEFAULT_WRAP,
   onWrapChange,
   onFullscreenChange,
@@ -72,16 +74,13 @@ export const CodeBlock = ({
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
   const popupRef = React.useRef<HTMLDivElement>(null);
 
-  const collapsedMaxHeight = rows
-    ? `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`
-    : undefined;
-
-  const isCollapsed = rows != null && !expanded;
-  const wrapperStyle = collapsedMaxHeight
-    ? {
-        maxHeight: isCollapsed ? collapsedMaxHeight : undefined,
-        overflowY: "auto" as const,
-      }
+  // Truthy, as in CodeEditor, so `rows={0}` means no cap.
+  const hasRows = !!rows;
+  const isCollapsed = hasRows && !expanded;
+  // The row count is the only value written inline; the CSS module turns it
+  // into the collapsed height while `data-collapsed` is set.
+  const scrollStyle = hasRows
+    ? ({ "--code-rows": rows } as React.CSSProperties)
     : undefined;
 
   // A layout effect decides the toggle before paint. Measure against the
@@ -89,14 +88,14 @@ export const CodeBlock = ({
   // rows never offers a toggle that does nothing.
   React.useLayoutEffect(() => {
     const el = contentWrapperRef.current;
-    if (!collapsedMaxHeight || !el || !displayHtml) {
+    if (!hasRows || !el || !displayHtml) {
       return;
     }
     const measure = () => {
-      const { maxHeight } = el.style;
-      el.style.maxHeight = collapsedMaxHeight;
+      const collapsed = el.hasAttribute("data-collapsed");
+      el.setAttribute("data-collapsed", "");
       setOverflows(el.scrollHeight > el.clientHeight + 1);
-      el.style.maxHeight = maxHeight;
+      if (!collapsed) el.removeAttribute("data-collapsed");
     };
     measure();
 
@@ -106,9 +105,9 @@ export const CodeBlock = ({
     observer.observe(el);
     if (el.firstElementChild) observer.observe(el.firstElementChild);
     return () => observer.disconnect();
-  }, [displayHtml, collapsedMaxHeight, wrap]);
+  }, [displayHtml, hasRows, rows, wrap]);
 
-  const showToggle = rows != null && overflows;
+  const showToggle = hasRows && overflows;
 
   // The header, code and error are shared by the inline block and the
   // fullscreen dialog. The inline block stays mounted while the dialog is open,
@@ -140,8 +139,11 @@ export const CodeBlock = ({
         <div
           ref={inFullscreen ? undefined : contentWrapperRef}
           data-slot="code-block-scroll"
+          data-rows={hasRows || undefined}
+          // Only the inline copy collapses; fullscreen shows every row.
+          data-collapsed={(!inFullscreen && isCollapsed) || undefined}
           className={styles["code-block-scroll"]}
-          style={inFullscreen ? undefined : wrapperStyle}
+          style={scrollStyle}
         >
           <CodeBlockContent
             html={displayHtml}
@@ -167,7 +169,7 @@ export const CodeBlock = ({
     <>
       <div
         data-slot="code-block"
-        data-expanded={rows != null ? expanded || undefined : undefined}
+        data-expanded={hasRows ? expanded || undefined : undefined}
         data-wrap={wrap || undefined}
         className={cx(styles["code-block"], className)}
         {...props}
@@ -182,7 +184,7 @@ export const CodeBlock = ({
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
           >
-            {expanded ? "Show less" : "Show more"}
+            {expanded ? collapseLabel : expandLabel}
           </button>
         )}
       </div>

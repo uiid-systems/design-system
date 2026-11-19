@@ -68,7 +68,7 @@
     width: var(--code-gutter-number);
     margin-right: var(--code-gutter-gap);
     text-align: right;
-    color: var(--shade-muted, #666);
+    color: var(--shade-muted);
     flex-shrink: 0;
     user-select: none;
   }

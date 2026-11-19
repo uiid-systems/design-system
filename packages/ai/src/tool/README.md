@@ -26,10 +26,11 @@ import { Tool } from "@uiid/ai";
 
 All `Collapsible` root props, which are Base UI's `open`, `defaultOpen`, `onOpenChange` and `disabled` plus the [`Stack`](../../../layout/src/stack/README.md) layout props, and:
 
-| Prop       | Type        | Default | Description                                                 |
-| ---------- | ----------- | ------- | ----------------------------------------------------------- |
-| `part`     | `ToolPart`  | —       | The tool call. Both of the SDK's tool part types satisfy it |
-| `children` | `ReactNode` | —       | Replaces the default body when it renders something         |
+| Prop       | Type         | Default | Description                                                 |
+| ---------- | ------------ | ------- | ----------------------------------------------------------- |
+| `part`     | `ToolPart`   | —       | The tool call. Both of the SDK's tool part types satisfy it |
+| `children` | `ReactNode`  | —       | Replaces the default body when it renders something         |
+| `labels`   | `ToolLabels` | —       | Text in place of the English status labels and headings     |
 
 Defaults: `fullwidth`, `ax="stretch"` and `b={1}`, so the card is a bordered `Stack` with the global radius whose panel spans it, and a wide input scrolls inside the card. Closed by default; pass `defaultOpen` to start it open. Renders `data-slot="tool"` and `data-state` set to the part's state on the root, `data-slot="tool-trigger"` and `data-slot="tool-status"` in the header, and `data-slot="tool-panel"`, `data-slot="tool-body"` (the padded stack that holds the default body or `children`), `data-slot="tool-input"`, `data-slot="tool-output"` and `data-slot="tool-code"` inside. A long tool name wraps beside a badge that keeps its width, so the badge and chevron stay in view in a narrow card. The trigger's focus ring is inset, since the card clips at its radius. The card's radius is `--tool-radius`, the global radius by default; set it to change the card's corners. The trigger takes the card's inner radius, `--tool-radius` less `b`, with square bottom corners while the panel is mounted, so trigger and panel read as one surface through the close. The inner radius follows `b` only: side-specific border props such as `bt` or `bx` are not accounted for. A `disabled` card's trigger drops its hover fill and pointer. The panel spans the card whatever `ax` the root takes.
 
@@ -58,6 +59,10 @@ The header's name is `title`, else `toolName`, else `type` without its `tool-` p
 | `output-available`   | Done              | `green`   |
 | `output-error`       | Failed            | `red`     |
 | `output-denied`      | Skipped           | `orange`  |
+
+Pass `labels={{ status: { "output-available": "Fertig" } }}` to replace a state's label; any state left out keeps the English. `labels.parameters`, `labels.result` and `labels.error` replace the body's section headings the same way.
+
+A state not in this table, such as one a newer AI SDK adds, shows as its own name on the neutral pending badge instead of failing to render.
 
 The running state's icon spins. Under `prefers-reduced-motion` the icon stops spinning and the chevron turns without animating.
 

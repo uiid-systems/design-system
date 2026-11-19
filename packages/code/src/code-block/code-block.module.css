@@ -29,6 +29,15 @@
   position: relative;
 }
 
+/* `rows` writes --code-rows; collapsed, the area is that many lines tall. */
+.code-block-scroll[data-rows] {
+  overflow-y: auto;
+}
+
+.code-block-scroll[data-collapsed] {
+  max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
+}
+
 .code-block-content {
   overflow-x: auto;
 
@@ -166,7 +175,7 @@
 
   &:hover {
     color: var(--shade-foreground);
-    background-color: var(--shade-halftone, var(--shade-surface));
+    background-color: var(--shade-halftone);
   }
 
   &:focus-visible {

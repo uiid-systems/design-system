@@ -87,6 +87,72 @@ describe("Reasoning", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows a string label in place of the English, shimmering while streaming", () => {
+    const { rerender } = render(
+      <Reasoning streaming label="Razonando">
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(document.querySelector("[data-slot='shimmer']")).toHaveTextContent(
+      "Razonando",
+    );
+
+    rerender(<Reasoning label="Razonando">{TEXT}</Reasoning>);
+    expect(
+      screen.getByRole("button", { name: "Razonando" }),
+    ).toBeInTheDocument();
+    expect(document.querySelector("[data-slot='shimmer']")).toBeNull();
+  });
+
+  it("calls a label function with the streaming state and duration", () => {
+    const label = vi.fn(({ streaming, duration }) =>
+      streaming ? "Pensando" : `Pensó ${duration ?? "?"} s`,
+    );
+    const { rerender } = render(
+      <Reasoning streaming label={label}>
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(label).toHaveBeenLastCalledWith({
+      streaming: true,
+      duration: undefined,
+    });
+    expect(document.querySelector("[data-slot='shimmer']")).toHaveTextContent(
+      "Pensando",
+    );
+
+    rerender(
+      <Reasoning duration={3} label={label}>
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(label).toHaveBeenLastCalledWith({ streaming: false, duration: 3 });
+    expect(
+      screen.getByRole("button", { name: "Pensó 3 s" }),
+    ).toBeInTheDocument();
+  });
+
+  it("falls back to the default name for a null label", () => {
+    render(
+      <Reasoning duration={2} label={null}>
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(
+      screen.getByRole("button", { name: "Thought for 2 seconds" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders an element label as itself, without the shimmer", () => {
+    render(
+      <Reasoning streaming label={<span data-testid="custom">Busy</span>}>
+        {TEXT}
+      </Reasoning>,
+    );
+    expect(screen.getByTestId("custom")).toHaveTextContent("Busy");
+    expect(document.querySelector("[data-slot='shimmer']")).toBeNull();
+  });
+
   // ============================================
   // OPEN STATE
   // ============================================

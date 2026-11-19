@@ -95,6 +95,12 @@ describe("loadLanguage", () => {
 });
 
 describe("highlight", () => {
+  it("renders with the light and dark Vitesse themes", async () => {
+    const html = await highlight(TS_CODE, "typescript");
+    expect(html).toContain("shiki-themes vitesse-light vitesse-black");
+    expect(html).toMatch(/--shiki-light:#[0-9a-f]+;--shiki-dark:#[0-9a-f]+/i);
+  });
+
   it("highlights an alias with its real language's grammar", async () => {
     const html = await highlight(TS_CODE, "ts");
 

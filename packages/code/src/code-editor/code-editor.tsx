@@ -116,13 +116,11 @@ export const CodeEditor = ({
       <Layer
         data-line-numbers={showLineNumbers || undefined}
         className={cx(styles["code-editor-layer"], codeTypographyVariant())}
+        data-rows={rows ? true : undefined}
+        // The row count is the only value written inline; the CSS module turns
+        // it into the max height.
         style={
-          rows
-            ? {
-                maxHeight: `calc(${rows} * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding))`,
-                overflow: "auto",
-              }
-            : undefined
+          rows ? ({ "--code-rows": rows } as React.CSSProperties) : undefined
         }
         fullwidth
       >

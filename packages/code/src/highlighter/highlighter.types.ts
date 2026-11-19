@@ -1,5 +1,3 @@
-import type { HighlighterCore } from "shiki/core";
-
 export type BundledLanguage =
   | "javascript"
   | "typescript"
@@ -19,15 +17,8 @@ export type BundledLanguage =
  */
 export type CodeLanguage = BundledLanguage | (string & {});
 
-export type HighlighterState = {
-  highlighter: HighlighterCore | null;
-  loading: boolean;
-  error: Error | null;
-  loadedLanguages: Set<BundledLanguage>;
-};
-
 export type HighlightOptions = {
-  language?: CodeLanguage;
+  /** Lines to highlight, 1-indexed */
   highlightLines?: number[];
 };
 

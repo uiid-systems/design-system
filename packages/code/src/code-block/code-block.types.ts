@@ -87,6 +87,16 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   rows?: number;
   /** Initial expanded state when `rows` is set */
   defaultExpanded?: boolean;
+  /**
+   * The toggle's text while the block is collapsed
+   * @default "Show more"
+   */
+  expandLabel?: React.ReactNode;
+  /**
+   * The toggle's text while the block is expanded
+   * @default "Show less"
+   */
+  collapseLabel?: React.ReactNode;
   /** Initial wrap state */
   defaultWrap?: boolean;
   /** Fires when the wrap toggle is pressed */

@@ -49,7 +49,7 @@ await loadLanguage("python");
 ### Hooks
 
 ```tsx
-import { useHighlight, useHighlighter } from "@uiid/code";
+import { useHighlight } from "@uiid/code";
 
 function MyComponent() {
   const { html, loading, error } = useHighlight(code, "typescript");
@@ -62,6 +62,8 @@ function MyComponent() {
 ```
 
 Pass `{ enabled: false }` as the third argument to skip highlighting when there is nothing to do, such as plain code or pre-rendered `html`. No theme or grammar is fetched, and the hook returns empty `html` with `loading` false.
+
+`useHighlighter` is deprecated and will be removed in a later release. Call `getHighlighter()` or `loadLanguage()` directly instead.
 
 ## Supported Languages
 

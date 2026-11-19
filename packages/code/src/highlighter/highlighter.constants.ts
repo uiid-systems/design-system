@@ -1,8 +1,5 @@
 import type { BundledLanguage } from "./highlighter.types";
 
-export const DEFAULT_THEME_DARK = "vitesse-black";
-export const DEFAULT_THEME_LIGHT = "vitesse-light";
-
 /**
  * Shiki's built-in plain language. It needs no grammar: the code keeps the
  * same line markup and transformers, with no token colors.
