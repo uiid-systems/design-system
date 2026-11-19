@@ -1,0 +1,32 @@
+name: Release Preflight
+
+# Runs only on release-please's PR, the last stop before a release merges.
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  npm-publishing:
+    name: Check npm publishing
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ startsWith(github.head_ref, 'release-please--') }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      # Node built-ins only, so no install. Fails when a public package is not
+      # on npm or has never been linked to release.yml as a trusted publisher.
+      - name: Check every public package can be published from CI
+        run: node scripts/check-npm-publishing.mjs

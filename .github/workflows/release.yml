@@ -65,6 +65,11 @@ jobs:
       - name: Check built packages
         run: node scripts/check-dist.mjs
 
+      # The same check as the release PR's preflight. A package CI cannot
+      # publish would 404 partway through and strand every package after it.
+      - name: Check npm publishing
+        run: node scripts/check-npm-publishing.mjs
+
       # Provenance is attached automatically when publishing via OIDC.
       - name: Publish
         run: pnpm -r publish --access public --no-git-checks

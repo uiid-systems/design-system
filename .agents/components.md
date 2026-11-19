@@ -39,7 +39,7 @@ The test is whether the thing could stand on its own as a documented component. 
 
 Copy an existing package's config rather than writing it fresh — `packages/interactive` is the plainest exemplar. Then register the package at every point below. Most of these fail silently when skipped: the package still builds, but it is never versioned, layered, or re-exported. `scripts/check-package-registration.mjs` runs in CI and fails on a missed step 4, 6, 7 or 9, and on any public package that depends on a private one.
 
-1. `packages/{name}/package.json` — the version matches every other `@uiid/*` package (one shared version). Add `"private": true` while the package is unreleased: `pnpm -r publish` skips private packages, and npm needs a trusted publisher for the name before its first publish (see `.github/workflows/release.yml`). While it is private, nothing publishable may depend on it (see step 9)
+1. `packages/{name}/package.json` — the version matches every other `@uiid/*` package (one shared version). Add `"private": true` while the package is unreleased: `pnpm -r publish` skips private packages, and npm needs a trusted publisher for the name before its first publish. When you remove `"private": true`, run `npm login` and `pnpm npm:bootstrap` to publish a placeholder and link the name to `release.yml`; the release PR's preflight fails until you do. While it is private, nothing publishable may depend on it (see step 9)
 2. `packages/{name}/tsconfig.json` and `vite.config.ts`, using `createViteConfig({ cssLayer: cssLayers.{name} })`
 3. `src/index.ts` barrel and `src/vite-env.d.ts` for CSS module types. `"use client"` stays out of the barrel
 4. `scripts/css-layers.cjs` — add the package, or its CSS ships unlayered
