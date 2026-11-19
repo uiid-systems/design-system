@@ -31,6 +31,7 @@ export const Drawer = ({
   description,
   action,
   footer,
+  hideCloseButton,
   RootProps,
   TriggerProps,
   PortalProps,
@@ -79,6 +80,7 @@ export const Drawer = ({
               description={description}
               action={action}
               footer={footer}
+              hideCloseButton={hideCloseButton}
               {...PopupProps}
             >
               <DrawerContent {...ContentProps}>{children}</DrawerContent>

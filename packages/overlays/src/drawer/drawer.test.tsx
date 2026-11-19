@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
@@ -334,6 +334,161 @@ describe("Drawer", () => {
   });
 
   // ============================================
+  // CLOSE BUTTON
+  // ============================================
+
+  it("renders an icon-only ghost close button named Close in the header", () => {
+    render(
+      <Drawer open={true} onOpenChange={() => {}} title="Title">
+        Drawer content
+      </Drawer>,
+    );
+
+    const close = screen.getByRole("button", { name: "Close" });
+    expect(close).toHaveAttribute("data-slot", "drawer-close-button");
+    expect(close).toHaveAttribute("type", "button");
+    expect(close.closest('[data-slot="card-action"]')).toBeInTheDocument();
+    expect(close.className).toMatch(/variant-ghost/);
+    expect(close.className).toMatch(/shape-square/);
+    expect(close.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("closes an uncontrolled drawer from the close button", async () => {
+    const user = userEvent.setup();
+    render(
+      <Drawer trigger={<button>Open drawer</button>} title="Title">
+        Drawer content
+      </Drawer>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open drawer" }));
+    await user.click(await screen.findByRole("button", { name: "Close" }));
+
+    await waitFor(() => {
+      expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+    });
+  });
+
+  it("calls onOpenChange with false from the close button", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Drawer open={true} onOpenChange={onOpenChange} title="Title">
+        Drawer content
+      </Drawer>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Close" }));
+
+    expect(onOpenChange).toHaveBeenCalledWith(false, expect.anything());
+  });
+
+  it("places the close button after the caller's action", () => {
+    render(
+      <Drawer
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        action={<button>Action</button>}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const slot = document.querySelector('[data-slot="card-action"]');
+    const buttons = within(slot as HTMLElement).getAllByRole("button");
+    expect(
+      buttons.map(
+        (button) => button.textContent || button.getAttribute("aria-label"),
+      ),
+    ).toEqual(["Action", "Close"]);
+  });
+
+  it("leaves the close button out with hideCloseButton", () => {
+    render(
+      <Drawer
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        action={<button>Action</button>}
+        hideCloseButton
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Close" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Action" })).toBeInTheDocument();
+  });
+
+  // ============================================
+  // CLOSE PART
+  // ============================================
+
+  it("renders DrawerClose as a subtle Button", () => {
+    render(
+      <Drawer
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        footer={<DrawerClose>Cancel</DrawerClose>}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const cancel = screen.getByRole("button", { name: "Cancel" });
+    expect(cancel).toHaveAttribute("data-slot", "drawer-close");
+    expect(cancel).toHaveAttribute("type", "button");
+    expect(cancel.closest('[data-slot="card-footer"]')).toBeInTheDocument();
+    expect(cancel.className).toMatch(/variant-subtle/);
+  });
+
+  it("lets DrawerClose take another Button variant", () => {
+    render(
+      <Drawer
+        open={true}
+        onOpenChange={() => {}}
+        title="Title"
+        footer={<DrawerClose variant="ghost">Done</DrawerClose>}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    const done = screen.getByRole("button", { name: "Done" });
+    expect(done.className).toMatch(/variant-ghost/);
+    expect(done.className).not.toMatch(/variant-subtle/);
+  });
+
+  it("closes an uncontrolled drawer from DrawerClose, after its own onClick", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const onOpenChange = vi.fn();
+    render(
+      <Drawer
+        trigger={<button>Open drawer</button>}
+        title="Title"
+        onOpenChange={onOpenChange}
+        footer={<DrawerClose onClick={onClick}>Cancel</DrawerClose>}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Open drawer" }));
+    await user.click(await screen.findByRole("button", { name: "Cancel" }));
+
+    expect(onClick).toHaveBeenCalled();
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
+    await waitFor(() => {
+      expect(screen.queryByText("Drawer content")).not.toBeInTheDocument();
+    });
+  });
+
+  // ============================================
   // PENDING
   // ============================================
   // A swipe dismiss goes through the same cancelable onOpenChange as Escape;
@@ -356,10 +511,15 @@ describe("Drawer", () => {
       </Drawer>
     );
 
-    it("disables DrawerClose", () => {
+    it("disables the close button and DrawerClose", () => {
       render(<PendingDrawer onOpenChange={() => {}} />);
 
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).toBeDisabledForUser();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).toBeDisabledForUser();
     });
 
     it("keeps DrawerClose's own disabled when the drawer isn't pending", () => {
@@ -378,8 +538,40 @@ describe("Drawer", () => {
         </Drawer>,
       );
 
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
-      expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).toBeDisabledForUser();
+      expect(
+        screen.getByRole("button", { name: "Done" }),
+      ).not.toBeDisabledForUser();
+      expect(
+        screen.getByRole("button", { name: "Close" }),
+      ).not.toBeDisabledForUser();
+    });
+
+    it("doesn't call a disabled DrawerClose's onClick or onOpenChange", async () => {
+      const user = userEvent.setup();
+      const onClick = vi.fn();
+      const onOpenChange = vi.fn();
+      render(
+        <Drawer
+          open={true}
+          onOpenChange={onOpenChange}
+          footer={
+            <DrawerClose disabled onClick={onClick}>
+              Cancel
+            </DrawerClose>
+          }
+        >
+          Drawer content
+        </Drawer>,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Cancel" }));
+
+      expect(onClick).not.toHaveBeenCalled();
+      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(screen.getByText("Drawer content")).toBeInTheDocument();
     });
 
     it.each([
@@ -396,6 +588,11 @@ describe("Drawer", () => {
           );
           if (backdrop) await user.click(backdrop);
         },
+      ],
+      [
+        "the close button",
+        async (user: ReturnType<typeof userEvent.setup>) =>
+          user.click(screen.getByRole("button", { name: "Close" })),
       ],
       [
         "DrawerClose",
@@ -468,9 +665,13 @@ describe("Drawer", () => {
       };
       render(<DrawerWrapper />);
 
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).toBeDisabledForUser();
       await user.click(screen.getByRole("button", { name: "Finish" }));
-      expect(screen.getByRole("button", { name: "Cancel" })).toBeEnabled();
+      expect(
+        screen.getByRole("button", { name: "Cancel" }),
+      ).not.toBeDisabledForUser();
 
       await user.keyboard("{Escape}");
 
@@ -838,12 +1039,7 @@ describe("Drawer", () => {
         stubHeights(1000, 400);
         const user = userEvent.setup();
         render(
-          <Drawer
-            open={true}
-            swipeDirection={swipeDirection}
-            title="Terms"
-            action={<button type="button">Close</button>}
-          >
+          <Drawer open={true} swipeDirection={swipeDirection} title="Terms">
             Long content
           </Drawer>,
         );
@@ -893,11 +1089,7 @@ describe("Drawer", () => {
       );
       stubHeights(1000, 400);
       render(
-        <Drawer
-          open={true}
-          title="Terms"
-          action={<button type="button">Close</button>}
-        >
+        <Drawer open={true} title="Terms">
           Long content
         </Drawer>,
       );

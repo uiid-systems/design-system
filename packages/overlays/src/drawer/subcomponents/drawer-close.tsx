@@ -1,6 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
+import { Button } from "@uiid/buttons";
 
 import { useDrawerPending } from "../drawer-pending-context";
 import type { DrawerCloseProps } from "../drawer.types";
@@ -15,8 +16,9 @@ export const DrawerClose = ({
   return (
     <BaseDrawer.Close
       data-slot="drawer-close"
-      disabled={pending || disabled}
-      {...props}
+      render={
+        <Button variant="subtle" {...props} disabled={pending || disabled} />
+      }
     >
       {children}
     </BaseDrawer.Close>

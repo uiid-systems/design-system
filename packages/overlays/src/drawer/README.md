@@ -14,6 +14,12 @@ Leave `open` unset and the drawer runs itself from the trigger; pass `open` and 
 
 Drawer wraps Base UI's [Drawer](https://base-ui.com/react/components/drawer) and takes its props unchanged — anything not listed above is forwarded. There is no `side` prop and no variant class: edge placement is styled from the `data-swipe-direction` attribute Base UI puts on the popup.
 
+## Close button
+
+Every drawer has a close button in its header, after any `action`: an icon-only ghost `Button` named "Close", the same as Dialog's. Don't build your own, and don't put one in `action`.
+
+`hideCloseButton` leaves it out. Use it only when the user must act before leaving, and give the footer the button that closes it. Escape, a backdrop click and a swipe still close the drawer either way.
+
 ## Triggers
 
 A string trigger renders as a focusable `<span role="button">`. An element becomes the trigger itself: a `<button>` or `Button` keeps its native button semantics, and any other tag (`<span>`, `<div>`) gets `role="button"` and keyboard handling from Base UI. `DrawerTrigger` treats its children the same way.
@@ -68,9 +74,23 @@ const returnTo = useRef<HTMLElement | null>(null);
 
 A `render` of your own through `TriggerProps` still counts as a trigger, with or without `trigger`.
 
+## Closing from the footer
+
+A footer button that only dismisses, such as Cancel, is `DrawerClose`: a subtle `Button` that closes the drawer itself, so the drawer can stay uncontrolled. It takes `Button`'s props, and runs its own `onClick` before closing. It is a `Button` already, so it takes no `render`: pass `size`, `variant` or `color` to it directly.
+
+```tsx
+<Drawer
+  trigger={<Button>Edit preferences</Button>}
+  title="Preferences"
+  footer={<DrawerClose>Cancel</DrawerClose>}
+>
+  …
+</Drawer>
+```
+
 ## While work is pending
 
-Set `pending` while a request started from the drawer is in flight. Escape, a backdrop click, a swipe toward the edge and every `DrawerClose` then can't close the drawer, and `DrawerClose` renders disabled. A canceled swipe springs back to where it started. Setting `open` to false still closes it, so a submit can close on success without clearing `pending` first.
+Set `pending` while a request started from the drawer is in flight. Escape, a backdrop click, a swipe toward the edge, the header close button and every `DrawerClose` then can't close the drawer, and the close controls render disabled. A canceled swipe springs back to where it started. Setting `open` to false still closes it, so a submit can close on success without clearing `pending` first.
 
 `pending` doesn't touch the submit button. `loading` only shows the spinner, so give the submit `disabled` as well, or it can be clicked twice:
 
@@ -82,7 +102,7 @@ Set `pending` while a request started from the drawer is in flight. Escape, a ba
   title="Preferences"
   footer={
     <>
-      <DrawerClose render={<Button variant="subtle" />}>Cancel</DrawerClose>
+      <DrawerClose>Cancel</DrawerClose>
       <Button onClick={save} loading={saving} disabled={saving}>
         Save
       </Button>
@@ -93,7 +113,7 @@ Set `pending` while a request started from the drawer is in flight. Escape, a ba
 </Drawer>
 ```
 
-Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to `DrawerClose` for it. `pending` covers every way of closing, swipe included, and works whether or not `open` is controlled.
+Don't build this guard yourself in `onOpenChange`, and don't pass `disabled` to `DrawerClose` for it. `pending` covers every way of closing, the header close button and swipe included, and works whether or not `open` is controlled.
 
 ## Long content
 

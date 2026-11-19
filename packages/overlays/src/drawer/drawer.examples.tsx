@@ -65,9 +65,7 @@ export const Pending = () => {
       description="Saving takes a couple of seconds."
       footer={
         <Group gap={2} ax="end" w="full">
-          <DrawerClose render={<Button size="small" variant="subtle" />}>
-            Cancel
-          </DrawerClose>
+          <DrawerClose size="small">Cancel</DrawerClose>
           <Button
             size="small"
             onClick={save}
@@ -149,58 +147,110 @@ export const HeaderVariants = () => (
   </Group>
 );
 
-export const Footer = () => (
-  <Drawer
-    swipeDirection="right"
-    trigger={<Button>Edit preferences</Button>}
-    title="Preferences"
-    description="The footer sits below the body, separated by a divider."
-    footer={
-      <Group gap={2} ax="end" w="full">
-        <DrawerClose render={<Button size="small" variant="subtle" />}>
-          Cancel
-        </DrawerClose>
-        <DrawerClose render={<Button size="small" />}>Save</DrawerClose>
-      </Group>
-    }
-  >
-    <Stack gap={2}>
-      <Text>{BODY}</Text>
-      <Text size={0} shade="muted">
-        Text inside the body stays selectable — dragging it won&apos;t start a
-        swipe.
-      </Text>
-    </Stack>
-  </Drawer>
-);
+/**
+ * A footer button that only dismisses is `DrawerClose`. Save does work first,
+ * so it's a `Button` that closes the drawer by setting `open` to false.
+ */
+export const Footer = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      swipeDirection="right"
+      trigger={<Button>Edit preferences</Button>}
+      title="Preferences"
+      description="The footer sits below the body, separated by a divider."
+      footer={
+        <Group gap={2} ax="end" w="full">
+          <DrawerClose size="small">Cancel</DrawerClose>
+          <Button size="small" onClick={() => setOpen(false)}>
+            Save
+          </Button>
+        </Group>
+      }
+    >
+      <Stack gap={2}>
+        <Text>{BODY}</Text>
+        <Text size={0} shade="muted">
+          Text inside the body stays selectable — dragging it won&apos;t start a
+          swipe.
+        </Text>
+      </Stack>
+    </Drawer>
+  );
+};
 
 /**
  * Content taller than the panel scrolls inside the body, while the header and
  * footer stay in view. A side panel and a bottom sheet scroll the same way.
  */
+const TermsDrawer = ({
+  swipeDirection,
+}: {
+  swipeDirection: "right" | "down";
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      swipeDirection={swipeDirection}
+      trigger={<Button>{swipeDirection}</Button>}
+      title="Terms of service"
+      footer={
+        <Group gap={2} ax="end" w="full">
+          <Button size="small" onClick={() => setOpen(false)}>
+            Accept
+          </Button>
+        </Group>
+      }
+    >
+      <Stack gap={4}>
+        {Array.from({ length: 16 }, (_, index) => (
+          <Text key={index}>{BODY}</Text>
+        ))}
+      </Stack>
+    </Drawer>
+  );
+};
+
 export const LongContent = () => (
   <Group gap={2}>
     {(["right", "down"] as const).map((swipeDirection) => (
-      <Drawer
-        key={swipeDirection}
-        swipeDirection={swipeDirection}
-        trigger={<Button>{swipeDirection}</Button>}
-        title="Terms of service"
-        footer={
-          <Group gap={2} ax="end" w="full">
-            <DrawerClose render={<Button size="small" />}>Accept</DrawerClose>
-          </Group>
-        }
-      >
-        <Stack gap={4}>
-          {Array.from({ length: 16 }, (_, index) => (
-            <Text key={index}>{BODY}</Text>
-          ))}
-        </Stack>
-      </Drawer>
+      <TermsDrawer key={swipeDirection} swipeDirection={swipeDirection} />
     ))}
   </Group>
 );
+
+/** `hideCloseButton` leaves out the header close, so the footer must close it. */
+export const HideCloseButton = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Drawer
+      open={open}
+      onOpenChange={setOpen}
+      swipeDirection="right"
+      hideCloseButton
+      trigger={<Button>Review changes</Button>}
+      title="Review changes"
+      description="No header close: confirm or discard from the footer."
+      footer={
+        <Group gap={2} ax="end" w="full">
+          <DrawerClose size="small">Discard</DrawerClose>
+          <Button size="small" onClick={() => setOpen(false)}>
+            Confirm
+          </Button>
+        </Group>
+      }
+    >
+      {BODY}
+    </Drawer>
+  );
+};
 
 /*
  * One drawer for a whole list: each row's button opens it, and `finalFocus`

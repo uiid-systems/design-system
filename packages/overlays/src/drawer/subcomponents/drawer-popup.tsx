@@ -7,6 +7,7 @@ import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
 import type { DrawerPopupProps } from "../drawer.types";
+import { DrawerCloseButton } from "./drawer-close-button";
 
 import styles from "../drawer.module.css";
 
@@ -18,6 +19,9 @@ import styles from "../drawer.module.css";
  * `children` is passed to the popup only, never duplicated into the render
  * element: Base UI forwards it into the Card.
  *
+ * The close button rides in Card's action slot, after any `action` of the
+ * caller's.
+ *
  * The body scrolls on its own (drawer.module.css). While it overflows it is a
  * tab stop, so the keyboard can scroll it, and a region named by the title.
  */
@@ -26,6 +30,7 @@ export const DrawerPopup = ({
   description,
   action,
   footer,
+  hideCloseButton,
   className,
   children,
   ...props
@@ -42,7 +47,16 @@ export const DrawerPopup = ({
         <Card
           title={title}
           description={description}
-          action={action}
+          action={
+            hideCloseButton ? (
+              action
+            ) : (
+              <>
+                {action}
+                <DrawerCloseButton />
+              </>
+            )
+          }
           footer={footer}
           shadow
           FooterProps={{ separator: true }}
