@@ -26,7 +26,7 @@ export type FieldLabelProps = Field.Label.Props &
     required?: boolean;
   };
 
-/** Muted by default. Set `emphasis` to change that; there is no `shade`. */
+/** Muted by default when no `color` is set. Set `emphasis` to change that; there is no `shade`. */
 export type FieldDescriptionProps = Field.Description.Props &
   Omit<TextProps, "ref" | "shade">;
 

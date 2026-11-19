@@ -1069,6 +1069,17 @@ describe("FieldDescription emphasis", () => {
     expect(el).not.toHaveAttribute("data-ui-shade");
   });
 
+  it("drops the muted default when a color is set", () => {
+    render(
+      <FieldRoot>
+        <FieldDescription color="red">Help</FieldDescription>
+      </FieldRoot>,
+    );
+    const el = screen.getByText("Help");
+    expect(el).toHaveAttribute("data-ui-color", "red");
+    expect(el).not.toHaveAttribute("data-ui-emphasis");
+  });
+
   it("takes a caller's emphasis", () => {
     render(
       <FieldRoot>
