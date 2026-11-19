@@ -2,6 +2,7 @@ import { ConditionalRender, Group } from "@uiid/layout";
 
 import { ICON_SIZE_LARGE } from "../list.constants";
 import type { ListItemProps } from "../list.types";
+import { ListRow } from "./list-row";
 import { ListTextBlock } from "./list-text-block";
 
 import styles from "../list.module.css";
@@ -16,9 +17,9 @@ export const ListItem = ({
   ...props
 }: ListItemProps) => {
   return (
-    <Group
-      data-slot="list-item"
-      render={render ?? <li />}
+    <ListRow
+      kind="item"
+      render={render}
       ay="start"
       ax="space-between"
       gap={8}
@@ -28,14 +29,7 @@ export const ListItem = ({
       {children || (
         <ConditionalRender
           condition={!!Icon}
-          render={
-            <Group
-              gap={2}
-              ay="start"
-              w="full"
-              className={styles["list-item-content"]}
-            />
-          }
+          render={<Group gap={2} ay="start" w="full" />}
         >
           {Icon && (
             <Icon
@@ -51,7 +45,7 @@ export const ListItem = ({
           />
         </ConditionalRender>
       )}
-    </Group>
+    </ListRow>
   );
 };
 ListItem.displayName = "ListItem";

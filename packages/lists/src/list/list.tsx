@@ -4,6 +4,7 @@ import { cx } from "@uiid/utils";
 import { LIST_DEFAULT_MARKER } from "./list.constants";
 import type { ListProps } from "./list.types";
 import { ListGroupHeader, ListEntries } from "./subcomponents";
+import { ListMarkerProvider } from "./subcomponents/list-marker-provider";
 
 import styles from "./list.module.css";
 
@@ -40,12 +41,14 @@ export const List = ({
     </Stack>
   );
 
-  if (!category) return list;
+  if (!category) {
+    return <ListMarkerProvider marker={marker}>{list}</ListMarkerProvider>;
+  }
 
   return (
     <Stack data-slot="list-section" w="full">
       <ListGroupHeader category={category} icon={icon} />
-      {list}
+      <ListMarkerProvider marker={marker}>{list}</ListMarkerProvider>
     </Stack>
   );
 };
