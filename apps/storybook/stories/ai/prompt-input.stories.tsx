@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PromptInput } from "@uiid/ai";
+import { fn } from "storybook/test";
 
 import * as Examples from "../../../../packages/ai/src/prompt-input/prompt-input.examples";
 
 const meta = {
   title: "AI/PromptInput",
   component: PromptInput,
-  parameters: {
-    actions: { argTypesRegex: "^on.*" },
-  },
   args: {
     status: "ready",
     placeholder: "Ask anything",
     disabled: false,
+    onSubmit: fn(),
+    onStop: fn(),
   },
   argTypes: {
     status: {

@@ -91,6 +91,11 @@ jobs:
       - name: Typecheck @uiid/tokens
         run: pnpm exec tsc --noEmit -p packages/tokens
 
+      # Vite does not typecheck, so nothing else checks the stories. They
+      # resolve @uiid/* types from the dist built above.
+      - name: Typecheck Storybook
+        run: pnpm exec tsc --noEmit -p apps/storybook
+
       # Tests and Storybook alias @uiid/* to source. This is the only step
       # that loads the built packages.
       - name: Check built packages
