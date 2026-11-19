@@ -8,6 +8,8 @@ When the merged `className` goes to a Base UI part, use `cxState()` instead. A B
 
 Prefer simple monolithic components for common cases, exporting subcomponents for advanced composition. Expose frequently-used props directly rather than forcing them through nested prop objects.
 
+A top-level prop wins over the same key in `RootProps`: spread `RootProps` first and the top-level values after, through `definedProps()` from `@uiid/utils` so an unset one doesn't erase the `RootProps` value. Handlers that compose, like the overlays' `onOpenChange`, still run both. `<Dialog modal={false} RootProps={{ modal: true }} />` is non-modal.
+
 Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive.
 
 ## Use UIID utilities, not the upstream libraries
