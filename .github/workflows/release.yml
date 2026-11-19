@@ -49,6 +49,12 @@ jobs:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
 
+      # The same check as the release PR's preflight. A package CI cannot
+      # publish would 404 partway through and strand every package after it.
+      # Node built-ins only, so it runs before the install and build.
+      - name: Check npm publishing
+        run: node scripts/check-npm-publishing.mjs
+
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
 
@@ -64,11 +70,6 @@ jobs:
 
       - name: Check built packages
         run: node scripts/check-dist.mjs
-
-      # The same check as the release PR's preflight. A package CI cannot
-      # publish would 404 partway through and strand every package after it.
-      - name: Check npm publishing
-        run: node scripts/check-npm-publishing.mjs
 
       # Provenance is attached automatically when publishing via OIDC.
       - name: Publish
