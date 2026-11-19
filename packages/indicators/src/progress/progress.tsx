@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import type { ProgressProps } from "./progress.types";
 import {
   ProgressRoot,
@@ -35,7 +37,7 @@ export const Progress = ({
    * compact toast case, or an unlabelled indeterminate one) is just the track.
    */
   return (
-    <ProgressRoot {...RootProps} {...props}>
+    <ProgressRoot {...RootProps} {...definedProps(props)} value={props.value}>
       {hasHeader && (
         <ProgressHeader {...HeaderProps}>
           {hasLabel && <ProgressLabel {...LabelProps}>{label}</ProgressLabel>}

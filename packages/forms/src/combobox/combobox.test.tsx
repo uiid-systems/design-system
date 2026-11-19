@@ -1189,4 +1189,24 @@ describe("Combobox RootProps precedence", () => {
     );
     expect(submit(container, "slot")).toContain("apple");
   });
+
+  it("marks the label from RootProps.required", () => {
+    const { container } = render(
+      <Combobox items={items} label="Fruit" RootProps={{ required: true }} />,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
+
+  it("surfaces a Form error keyed to RootProps.name", () => {
+    const { container } = render(
+      <Form errors={{ fruit: "Pick a fruit" }}>
+        <Combobox items={items} label="Fruit" RootProps={{ name: "fruit" }} />
+      </Form>,
+    );
+    expect(
+      container.querySelector("[data-slot='field-error']"),
+    ).toHaveTextContent("Pick a fruit");
+  });
 });

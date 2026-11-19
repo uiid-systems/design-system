@@ -1425,4 +1425,38 @@ describe("Select RootProps precedence", () => {
     );
     expect(submit(container, "pick")).toEqual(["b"]);
   });
+
+  it("keeps RootProps.items over labels collected from composed children", () => {
+    render(
+      <Select
+        name="pick"
+        RootProps={{
+          defaultValue: "a",
+          items: [{ value: "a", label: "From RootProps" }],
+        }}
+      >
+        <SelectItem value="a" label="From children" />
+      </Select>,
+    );
+    expect(screen.getByRole("combobox")).toHaveTextContent("From RootProps");
+  });
+
+  it("reads RootProps.multiple when the top level leaves multiple unset", () => {
+    const { container } = render(
+      <form>
+        <Select items={items} name="pick" RootProps={{ multiple: true }} />
+      </form>,
+    );
+    // Multiple mode starts empty instead of picking the first item.
+    expect(submit(container, "pick")).toEqual([]);
+  });
+
+  it("marks the label from RootProps.required", () => {
+    const { container } = render(
+      <Select items={items} label="Pick" RootProps={{ required: true }} />,
+    );
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+  });
 });

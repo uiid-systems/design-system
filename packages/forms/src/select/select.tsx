@@ -99,6 +99,11 @@ export function Select<
   // Top-level props win over the same key in RootProps, so a value set only
   // in RootProps is the one to read whenever the top level leaves it unset.
   const isMultiple = multiple ?? RootProps?.multiple;
+  // The Field reads the same values, so its label marker, dimming and Form
+  // error lookup match the control.
+  const fieldName = name ?? RootProps?.name;
+  const fieldRequired = required ?? RootProps?.required;
+  const fieldDisabled = disabled ?? RootProps?.disabled;
 
   // Multiple mode starts empty; single mode falls back to the first enabled
   // item unless a placeholder should show instead. A disabled row is one the
@@ -146,12 +151,12 @@ export function Select<
   // reads its own root to dim the label and description.
   return (
     <Field
-      name={name}
+      name={fieldName}
       label={label}
       description={description}
       action={action}
-      required={required}
-      disabled={disabled}
+      required={fieldRequired}
+      disabled={fieldDisabled}
       size={size}
       {...FieldProps}
     >

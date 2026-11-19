@@ -901,4 +901,32 @@ describe("Popover RootProps precedence", () => {
     );
     expect(screen.getByText("Popover content")).toBeInTheDocument();
   });
+
+  // Base UI applies the scroll lock only when a user opens the popover.
+  const openFromTrigger = async (
+    props: Pick<React.ComponentProps<typeof Popover>, "modal" | "RootProps">,
+  ) => {
+    const user = userEvent.setup();
+    render(
+      <Popover trigger={<button>Open popover</button>} {...props}>
+        Popover content
+      </Popover>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open popover" }));
+    await screen.findByText("Popover content");
+  };
+
+  it("lets a top-level modal win over RootProps.modal", async () => {
+    await openFromTrigger({ modal: true, RootProps: { modal: false } });
+    await waitFor(() => {
+      expect(document.body.style.overflowY).toBe("hidden");
+    });
+  });
+
+  it("still applies RootProps.modal when the top level leaves it unset", async () => {
+    await openFromTrigger({ RootProps: { modal: true } });
+    await waitFor(() => {
+      expect(document.body.style.overflowY).toBe("hidden");
+    });
+  });
 });

@@ -1176,4 +1176,28 @@ describe("Drawer RootProps precedence", () => {
     );
     expect(screen.getByText("Drawer content")).toBeInTheDocument();
   });
+
+  it("lets a top-level modal win over RootProps.modal", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open modal={false} RootProps={{ modal: true }}>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
+
+  it("still applies RootProps.modal when the top level leaves it unset", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open RootProps={{ modal: false }}>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
 });

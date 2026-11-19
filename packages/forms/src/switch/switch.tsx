@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { SwitchRoot, SwitchThumb, SwitchField } from "./subcomponents";
 import type { SwitchProps } from "./switch.types";
 
@@ -15,7 +17,7 @@ export const Switch = ({
 }: SwitchProps) => {
   // Top-level props win over the same key in RootProps, as in Slider and
   // NumberField. The field row reads size from the merged props.
-  const rootProps = { ...RootProps, ...props };
+  const rootProps = { ...RootProps, ...definedProps(props) };
 
   return (
     <SwitchField

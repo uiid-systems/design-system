@@ -403,4 +403,12 @@ describe("Progress RootProps precedence", () => {
       "50",
     );
   });
+
+  it("keeps a RootProps value when the top level passes undefined", () => {
+    render(<Progress value={25} max={undefined} RootProps={{ max: 50 }} />);
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuemax",
+      "50",
+    );
+  });
 });

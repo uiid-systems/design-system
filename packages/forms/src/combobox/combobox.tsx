@@ -55,6 +55,22 @@ export function Combobox<
   // `data-*` hook is meant to go.
   const [domAttributes, rootProps] = splitDomAttributes(props);
 
+  // Base UI's item renders no text of its own, so the default row resolves
+  // its label the way Root resolves the input's text: `itemToStringLabel`,
+  // then an object's `label`, then a primitive value. Top-level props spread
+  // last onto Root, so their functions are the ones Root uses too.
+  const itemToStringLabel =
+    rootProps.itemToStringLabel ?? RootProps?.itemToStringLabel;
+  const itemToStringValue =
+    rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
+
+  // Top-level props win over the same key in RootProps. The input and its
+  // Field read the resolved values, so the label marker, dimming and Form
+  // error lookup match the control.
+  const resolvedName = name ?? RootProps?.name;
+  const resolvedDisabled = disabled ?? RootProps?.disabled;
+  const resolvedRequired = required ?? RootProps?.required;
+
   // `required` reaches the Field, which paints the label's marker, without
   // passing through the input part's own `required`, which is also the native
   // attribute. Root already marks the hidden input that carries the value; the
@@ -67,19 +83,10 @@ export function Combobox<
   // through: TypeScript only runs the excess-property check on an object
   // literal passed directly, so inlining this into the `FieldProps` attribute
   // below fails `tsc`.
-  // Base UI's item renders no text of its own, so the default row resolves
-  // its label the way Root resolves the input's text: `itemToStringLabel`,
-  // then an object's `label`, then a primitive value. Top-level props spread
-  // last onto Root, so their functions are the ones Root uses too.
-  const itemToStringLabel =
-    rootProps.itemToStringLabel ?? RootProps?.itemToStringLabel;
-  const itemToStringValue =
-    rootProps.itemToStringValue ?? RootProps?.itemToStringValue;
-
   const fieldProps =
-    required === undefined
+    resolvedRequired === undefined
       ? InputProps?.FieldProps
-      : { ...InputProps?.FieldProps, required };
+      : { ...InputProps?.FieldProps, required: resolvedRequired };
 
   return (
     <ComboboxRoot<Value, Multiple>
@@ -88,7 +95,7 @@ export function Combobox<
       {...rootProps}
     >
       <ComboboxInput
-        name={name}
+        name={resolvedName}
         placeholder={placeholder}
         label={label}
         description={description}
@@ -111,7 +118,7 @@ export function Combobox<
         variant={variant}
         fullwidth={fullwidth}
         color={color}
-        disabled={disabled}
+        disabled={resolvedDisabled}
         onFocus={onFocus}
         onBlur={onBlur}
         {...domAttributes}

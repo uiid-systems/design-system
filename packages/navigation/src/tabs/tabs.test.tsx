@@ -624,4 +624,21 @@ describe("Tabs RootProps precedence", () => {
     render(<Tabs items={MOCK_ITEMS} RootProps={{ defaultValue: "tab-3" }} />);
     expect(selected("Tab 3")).toBe("true");
   });
+
+  it("follows a controlled RootProps.value", () => {
+    const { rerender } = render(
+      <Tabs items={MOCK_ITEMS} RootProps={{ value: "tab-3" }} />,
+    );
+    expect(selected("Tab 3")).toBe("true");
+
+    rerender(<Tabs items={MOCK_ITEMS} RootProps={{ value: "tab-2" }} />);
+    expect(selected("Tab 2")).toBe("true");
+  });
+
+  it("lets a top-level value win over RootProps.value", () => {
+    render(
+      <Tabs items={MOCK_ITEMS} value="tab-1" RootProps={{ value: "tab-3" }} />,
+    );
+    expect(selected("Tab 1")).toBe("true");
+  });
 });

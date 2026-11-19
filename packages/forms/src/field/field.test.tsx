@@ -1231,4 +1231,13 @@ describe("Field RootProps precedence", () => {
     );
     expect(root(container)).toHaveAttribute("data-disabled");
   });
+
+  it("keeps a RootProps value when the top level passes undefined", () => {
+    const { container } = render(
+      <Field disabled={undefined} RootProps={{ disabled: true }}>
+        <input />
+      </Field>,
+    );
+    expect(root(container)).toHaveAttribute("data-disabled");
+  });
 });

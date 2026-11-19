@@ -9,7 +9,7 @@ import {
 
 export const Collapsible = ({
   trigger,
-  instant = false,
+  instant,
   open,
   defaultOpen,
   onOpenChange,
@@ -28,9 +28,11 @@ export const Collapsible = ({
       <CollapsibleTrigger {...TriggerProps}>{trigger}</CollapsibleTrigger>
 
       <CollapsiblePanel
-        instant={instant}
         {...PanelProps}
         {...definedProps({ keepMounted })}
+        // A bare panel is instant; the monolithic component animates unless
+        // told otherwise.
+        instant={instant ?? PanelProps?.instant ?? false}
       >
         {children}
       </CollapsiblePanel>
