@@ -38,12 +38,12 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 1: Low-risk deletions
 
-- [ ] Task 1: Delete finished-work docs and fix the references to them
-- [ ] Task 2: Delete tracked files that nothing imports
-- [ ] Task 3: Remove unused dependencies and dead config
-- [ ] Task 4: Delete internal dead code
-- [ ] Task 5: Remove unused public API (breaking)
-- [ ] Task 6: Correct the always-loaded agent docs
+- [ ] Task 1: Delete finished-work docs and fix the references to them (UI-413)
+- [ ] Task 2: Delete tracked files that nothing imports (UI-414)
+- [ ] Task 3: Remove unused dependencies and dead config (UI-415)
+- [ ] Task 4: Delete internal dead code (UI-416)
+- [ ] Task 5: Remove unused public API (breaking) (UI-417)
+- [ ] Task 6: Correct the always-loaded agent docs (UI-418)
 
 ### Checkpoint: Deletions
 
@@ -54,15 +54,15 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 2: Build pipeline
 
-- [ ] Task 7: Read the toolchain changelogs and record what breaks
-- [ ] Task 8: Prove source resolution on two packages
-- [ ] Task 9: Roll source resolution out and delete the alias tables
-- [ ] Task 10: Add a build-free `pnpm typecheck` and run it in CI
-- [ ] Task 11: Generate declarations once per package
-- [ ] Task 12: Make a fresh worktree run tests and Storybook without a build
-- [ ] Task 13: Move the build toolchain to the root and upgrade Vite and Vitest
-- [ ] Task 14: Upgrade TypeScript to 7
-- [ ] Task 15: Upgrade the remaining majors
+- [ ] Task 7: Read the toolchain changelogs and record what breaks (UI-419)
+- [ ] Task 8: Prove source resolution on two packages (UI-420)
+- [ ] Task 9: Roll source resolution out and delete the alias tables (UI-421)
+- [ ] Task 10: Add a build-free `pnpm typecheck` and run it in CI (UI-422)
+- [ ] Task 11: Generate declarations once per package (UI-423)
+- [ ] Task 12: Make a fresh worktree run tests and Storybook without a build (UI-424)
+- [ ] Task 13: Move the build toolchain to the root and upgrade Vite and Vitest (UI-425)
+- [ ] Task 14: Upgrade TypeScript to 7 (UI-426)
+- [ ] Task 15: Upgrade the remaining majors (UI-427)
 
 ### Checkpoint: Build
 
@@ -77,12 +77,12 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 4: Input masks
 
-- [ ] Task 17: Add the `mask` prop and `InputMask` type to `Input`
-- [ ] Task 18: Add `currencyMask`, `percentMask` and `numberMask`
-- [ ] Task 19: Add real-browser tests for masks
-- [ ] Task 20a: Rebuild the 13 fixed patterns as masks
-- [ ] Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper
-- [ ] Task 21: Document masks and state what is untested
+- [ ] Task 17: Add the `mask` prop and `InputMask` type to `Input` (UI-428)
+- [ ] Task 18: Add `currencyMask`, `percentMask` and `numberMask` (UI-429)
+- [ ] Task 19: Add real-browser tests for masks (UI-430)
+- [ ] Task 20a: Rebuild the 13 fixed patterns as masks (UI-431)
+- [ ] Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper (UI-432)
+- [ ] Task 21: Document masks and state what is untested (UI-433)
 
 ### Checkpoint: Masks
 
@@ -93,16 +93,16 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 5: Rules, layer by layer
 
-- [ ] Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils
-- [ ] Task 23: Apply the export rule to utils, tokens and icons
-- [ ] Task 24: Apply both rules to layout, typography, buttons, interactive and markdown
-- [ ] Task 25: Apply both rules to cards, lists, indicators and navigation
-- [ ] Task 26: Give forms one `FieldSlotProps` type
-- [ ] Task 27: Apply the slot rule to the forms controls
-- [ ] Task 28: Apply the export rule to forms
-- [ ] Task 29: Apply both rules to overlays and code
-- [ ] Task 30: Apply both rules to tables and ai
-- [ ] Task 30b: Move Table's boolean style flags into `tableVariants`
+- [ ] Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils (UI-434)
+- [ ] Task 23: Apply the export rule to utils, tokens and icons (UI-435)
+- [ ] Task 24: Apply both rules to layout, typography, buttons, interactive and markdown (UI-436)
+- [ ] Task 25: Apply both rules to cards, lists, indicators and navigation (UI-437)
+- [ ] Task 26: Give forms one `FieldSlotProps` type (UI-438)
+- [ ] Task 27: Apply the slot rule to the forms controls (UI-439)
+- [ ] Task 28: Apply the export rule to forms (UI-440)
+- [ ] Task 29: Apply both rules to overlays and code (UI-441)
+- [ ] Task 30: Apply both rules to tables and ai (UI-442)
+- [ ] Task 30b: Move Table's boolean style flags into `tableVariants` (UI-443)
 
 ### Checkpoint: Rules
 
@@ -113,16 +113,16 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 6: Deprecated APIs and `fullwidth`
 
-- [ ] Task 31: Remove the remaining deprecated APIs
-- [ ] Task 32: Replace `fullwidth` with `w="full"` in the lower layers
-- [ ] Task 33: Replace `fullwidth` in the upper layers and delete the three mechanisms
+- [ ] Task 31: Remove the remaining deprecated APIs (UI-444)
+- [ ] Task 32: Replace `fullwidth` with `w="full"` in the lower layers (UI-445)
+- [ ] Task 33: Replace `fullwidth` in the upper layers and delete the three mechanisms (UI-446)
 
 ### Phase 7: Docs truth pass
 
-- [ ] Task 34: Correct the component READMEs against their types
-- [ ] Task 35: Correct the Storybook overviews and rebuild the token tables on library components
-- [ ] Task 36: Add the missing READMEs and examples
-- [ ] Task 37: Close out
+- [ ] Task 34: Correct the component READMEs against their types (UI-447)
+- [ ] Task 35: Correct the Storybook overviews and rebuild the token tables on library components (UI-448)
+- [ ] Task 36: Add the missing READMEs and examples (UI-449)
+- [ ] Task 37: Close out (UI-450)
 
 ### Checkpoint: Complete
 

@@ -2,13 +2,15 @@
 
 The plan is in [`plan.md`](./plan.md) and the spec in [`docs/architecture/hardening-spec.md`](../docs/architecture/hardening-spec.md). Before starting a task, read the spec's "Decisions already made" and "Boundaries", plus the `.agents/` chapter for the files you will touch.
 
+Each task is tracked as an issue in the Linear project "Pre-1.0 hardening"; its identifier follows the task title, and each phase is a milestone there.
+
 Every task also clears the standing bar: `pnpm test:run`, `pnpm run lint` and `pnpm run format:check` pass, and one PR carries one task. File lists come from the 2026-11-18 audit; rerun the search before deleting, since line numbers drift.
 
 Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" touch more files than that because they repeat one change; they are still one reviewable idea.
 
 ## Phase 1: Low-risk deletions
 
-### Task 1: Delete finished-work docs and fix the references to them
+### Task 1: Delete finished-work docs and fix the references to them (UI-413)
 
 **Description:** Remove the three architecture docs that record completed work, repoint the code comments that cite them, and correct the dependency-graph doc.
 
@@ -29,7 +31,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 2: Delete tracked files that nothing imports
+### Task 2: Delete tracked files that nothing imports (UI-414)
 
 **Description:** Remove files that are tracked in git but imported by nothing.
 
@@ -50,7 +52,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 3: Remove unused dependencies and dead config
+### Task 3: Remove unused dependencies and dead config (UI-415)
 
 **Description:** Drop declared dependencies that nothing imports and config entries that match nothing.
 
@@ -71,7 +73,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L, mechanical
 
-### Task 4: Delete internal dead code
+### Task 4: Delete internal dead code (UI-416)
 
 **Description:** Remove code that nothing reads and that is not part of any public API. Every item below was re-checked against the source on 2026-11-19.
 
@@ -92,7 +94,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L, small edits in each
 
-### Task 5: Remove unused public API
+### Task 5: Remove unused public API (UI-417)
 
 **Description:** Remove exported things that have no reader and no working behaviour behind them. Unlike Tasks 1 to 4 this is a breaking change, so the PR title carries `!`.
 
@@ -116,7 +118,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L
 
-### Task 6: Correct the always-loaded agent docs
+### Task 6: Correct the always-loaded agent docs (UI-418)
 
 **Description:** Fix the files every session reads, so later tasks start from true statements.
 
@@ -139,7 +141,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 ## Phase 2: Build pipeline
 
-### Task 7: Read the toolchain changelogs and record what breaks
+### Task 7: Read the toolchain changelogs and record what breaks (UI-419)
 
 **Description:** Read the release notes for TypeScript 7, Vite 8, Vitest 5 and `vite-plugin-dts` 5 from their official sources, and write down what affects this repo. No code changes.
 
@@ -159,7 +161,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** S
 
-### Task 8: Prove source resolution on two packages
+### Task 8: Prove source resolution on two packages (UI-420)
 
 **Description:** Add a custom export condition pointing at source to `@uiid/utils` and `@uiid/layout`, and make Vitest, Storybook and a root typecheck resolve those two through it. This is the high-risk step, done small first.
 
@@ -180,7 +182,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 9: Roll source resolution out and delete the alias tables
+### Task 9: Roll source resolution out and delete the alias tables (UI-421)
 
 **Description:** Apply the proven condition to every package and remove the hand-written alias tables.
 
@@ -201,7 +203,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L, mechanical
 
-### Task 10: Add a build-free `pnpm typecheck` and run it in CI
+### Task 10: Add a build-free `pnpm typecheck` and run it in CI (UI-422)
 
 **Description:** One root typecheck over packages, Storybook and the docs app, with no build first.
 
@@ -221,7 +223,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 11: Generate declarations once per package
+### Task 11: Generate declarations once per package (UI-423)
 
 **Description:** Follow the icons package: `tsc` emits declarations only, Vite stops emptying `dist`, and `vite-plugin-dts` is removed. Share one base tsconfig between packages.
 
@@ -242,7 +244,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L, mechanical
 
-### Task 12: Make a fresh worktree run tests and Storybook without a build
+### Task 12: Make a fresh worktree run tests and Storybook without a build (UI-424)
 
 **Description:** Remove the remaining reasons a new checkout needs `pnpm run build` first.
 
@@ -262,7 +264,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 13: Move the build toolchain to the root and upgrade Vite and Vitest
+### Task 13: Move the build toolchain to the root and upgrade Vite and Vitest (UI-425)
 
 **Description:** Declare Vite, the React plugin and Vitest once at the root, then take them to their current majors.
 
@@ -283,7 +285,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** L, mechanical
 
-### Task 14: Upgrade TypeScript to 7
+### Task 14: Upgrade TypeScript to 7 (UI-426)
 
 **Description:** Take the compiler to its current major on its own, so any change in emitted types is isolated.
 
@@ -304,7 +306,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Estimated scope:** M
 
-### Task 15: Upgrade the remaining majors
+### Task 15: Upgrade the remaining majors (UI-427)
 
 **Description:** Shiki 4, size-limit 14, `@testing-library/jest-dom` 8, commitlint 21 and `@types/node` 26.
 
@@ -327,7 +329,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 ## Phase 3: Base UI
 
-### Task 16: Bump Base UI to 1.9 and remove the 1.7 workarounds
+### Task 16: Bump Base UI to 1.9 and remove the 1.7 workarounds (UI-412)
 
 **Description:** UI-412. Unify how the version is declared and take it to 1.9.x, deleting what the newer version makes unnecessary.
 
@@ -352,7 +354,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 The tested prototype is on the owner's machine in a folder named `mask-proof` next to the main checkout of this repo (not next to a worktree) (`src/masks.final.ts`, `src/input.final.tsx`, `tests/`). It is not in version control; run `npm install` there before `sh run-all.sh`.
 
-### Task 17: Add the `mask` prop and `InputMask` type to `Input`
+### Task 17: Add the `mask` prop and `InputMask` type to `Input` (UI-428)
 
 **Description:** Give `Input` a `mask` prop that attaches a self-contained mask value from a ref callback. No engine code enters `Input`.
 
@@ -373,7 +375,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 **Estimated scope:** M
 
-### Task 18: Add `currencyMask`, `percentMask` and `numberMask`
+### Task 18: Add `currencyMask`, `percentMask` and `numberMask` (UI-429)
 
 **Description:** The three numeric mask factories on Maskito, with the four additions the browser proof found necessary.
 
@@ -394,7 +396,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 **Estimated scope:** M
 
-### Task 19: Add real-browser tests for masks
+### Task 19: Add real-browser tests for masks (UI-430)
 
 **Description:** Scripted browser checks for what happy-dom cannot show, ported from the prototype's Playwright scripts, running in Chromium in CI.
 
@@ -415,7 +417,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 **Estimated scope:** M
 
-### Task 20a: Rebuild the 13 fixed patterns as masks
+### Task 20a: Rebuild the 13 fixed patterns as masks (UI-431)
 
 **Description:** Port every fixed pattern from the old `MaskInput` to the `InputMask` shape, through one `patternMask` factory that teams can also use for their own masks. The patterns are phone, SSN, EIN, date, time, credit card, credit card expiry, zip code, extended zip code, licence plate, IPv4, MAC address and ISBN.
 
@@ -436,7 +438,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 **Estimated scope:** L, one idea repeated per pattern
 
-### Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper
+### Task 20b: Retire the old `MaskInput` engine and keep `MaskInput` as a wrapper (UI-432)
 
 **Description:** Delete the hand-written engine now that every pattern has a replacement. `MaskInput` stays as a thin named component over `Input`, because a separate component reads more clearly at first glance, especially for product teams.
 
@@ -458,7 +460,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 **Estimated scope:** L, mostly deletions
 
-### Task 21: Document masks and state what is untested
+### Task 21: Document masks and state what is untested (UI-433)
 
 **Description:** Write the README section a consumer needs, including how to author a mask, and say plainly which platforms have not been tested.
 
@@ -483,7 +485,7 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 For every task in this phase: parts and their prop types are exported; constants, variant functions, internal hooks, mocks and plumbing are not. A slot type omits the keys its component owns. If that needs conditional types, use the runtime order for that component and add it to the fallback list in `.agents/components.md`. Each task gives its packages a barrel test (`src/index.test.ts`) listing the exact public names, creating one where it is missing: only ai, design-system, forms and overlays have one today. Each task also builds Storybook and the docs app, and its PR title carries `!`.
 
-### Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils
+### Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils (UI-434)
 
 **Description:** Record the two rules where every session reads them, and remove `export * from "@uiid/utils"` from the root of `@uiid/design-system`.
 
@@ -504,7 +506,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** M
 
-### Task 23: Apply the export rule to utils, tokens and icons
+### Task 23: Apply the export rule to utils, tokens and icons (UI-435)
 
 **Description:** Curate the public surface of the base layer.
 
@@ -525,7 +527,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** M
 
-### Task 24: Apply both rules to layout, typography, buttons, interactive and markdown
+### Task 24: Apply both rules to layout, typography, buttons, interactive and markdown (UI-436)
 
 **Description:** Second and third layers.
 
@@ -546,7 +548,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, split typography-to-markdown into its own PR if large
 
-### Task 25: Apply both rules to cards, lists, indicators and navigation
+### Task 25: Apply both rules to cards, lists, indicators and navigation (UI-437)
 
 **Description:** Middle layer.
 
@@ -567,7 +569,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, one PR per package if needed
 
-### Task 26: Give forms one `FieldSlotProps` type
+### Task 26: Give forms one `FieldSlotProps` type (UI-438)
 
 **Description:** Replace the five shapes of `FieldProps` across the controls with one shared type that omits the keys a control owns.
 
@@ -587,7 +589,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, mechanical
 
-### Task 27: Apply the slot rule to the forms controls
+### Task 27: Apply the slot rule to the forms controls (UI-439)
 
 **Description:** Select, Combobox, Autocomplete, NumberField, Checkbox, Radio and the groups.
 
@@ -608,7 +610,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, one PR for the pickers and one for the rest
 
-### Task 28: Apply the export rule to forms
+### Task 28: Apply the export rule to forms (UI-440)
 
 **Description:** Trim the forms barrel from about 350 names to components, parts and their types.
 
@@ -628,7 +630,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** M
 
-### Task 29: Apply both rules to overlays and code
+### Task 29: Apply both rules to overlays and code (UI-441)
 
 **Description:** Upper layer.
 
@@ -649,7 +651,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, one PR per package
 
-### Task 30: Apply both rules to tables and ai
+### Task 30: Apply both rules to tables and ai (UI-442)
 
 **Description:** Top layer.
 
@@ -669,7 +671,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** M
 
-### Task 30b: Move Table's boolean style flags into `tableVariants`
+### Task 30b: Move Table's boolean style flags into `tableVariants` (UI-443)
 
 **Description:** `striped`, `bordered` and `highlightOnHover` are styled through hand-written data attributes. Move them to cva, as the styling rules require for every variant axis.
 
@@ -692,7 +694,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 ## Phase 6: Deprecated APIs and `fullwidth`
 
-### Task 31: Remove the remaining deprecated APIs
+### Task 31: Remove the remaining deprecated APIs (UI-444)
 
 **Description:** Delete every `@deprecated` member except `fullwidth`, with its tests and README lines.
 
@@ -712,7 +714,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L
 
-### Task 32: Replace `fullwidth` with `w="full"` in the lower layers
+### Task 32: Replace `fullwidth` with `w="full"` in the lower layers (UI-445)
 
 **Description:** Codemod the toggle to `w="full"` in utils through navigation, including defaults inside components.
 
@@ -733,7 +735,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, mechanical
 
-### Task 33: Replace `fullwidth` in the upper layers and delete the three mechanisms
+### Task 33: Replace `fullwidth` in the upper layers and delete the three mechanisms (UI-446)
 
 **Description:** Finish the codemod in forms, overlays, code, tables, ai, stories and apps, then delete the toggle, Button's `fullwidth` variant and `.composes-fullwidth`.
 
@@ -756,7 +758,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 ## Phase 7: Docs truth pass
 
-### Task 34: Correct the component READMEs against their types
+### Task 34: Correct the component READMEs against their types (UI-447)
 
 **Description:** Make every README describe only what exists.
 
@@ -776,7 +778,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L
 
-### Task 35: Correct the Storybook overviews and rebuild the token tables on library components
+### Task 35: Correct the Storybook overviews and rebuild the token tables on library components (UI-448)
 
 **Description:** Fix overview pages that describe removed things, and replace the hand-built token tables.
 
@@ -796,7 +798,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** M
 
-### Task 36: Add the missing READMEs and examples
+### Task 36: Add the missing READMEs and examples (UI-449)
 
 **Description:** Give every component the docs material its siblings have, since this is what outside agents will read.
 
@@ -817,7 +819,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Estimated scope:** L, one PR per package
 
-### Task 37: Close out
+### Task 37: Close out (UI-450)
 
 **Description:** Confirm the success criteria and remove the working documents.
 
