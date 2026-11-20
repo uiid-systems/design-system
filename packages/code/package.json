@@ -62,16 +62,11 @@
     "@base-ui/react": "1.7.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@uiid/buttons": "workspace:*",
-    "@uiid/icons": "workspace:*",
-    "@uiid/tokens": "workspace:*",
-    "@uiid/typography": "workspace:*",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.7",
-    "vite-plugin-dts": "^4.3.0",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-plugin-dts": "^4.3.0"
   }
 }

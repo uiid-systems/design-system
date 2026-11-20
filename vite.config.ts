@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type UserConfig } from "vite";
 import dts from "vite-plugin-dts";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 import { rewriteEmittedDeclarations } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
@@ -65,7 +64,6 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
 
   const plugins = [
     react(),
-    tsconfigPaths(),
     dts({
       insertTypesEntry: true,
       exclude: dtsExclude,

@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 import { rewriteEmittedDeclarations } from "../../scripts/dts-relative-extensions.mjs";
 
@@ -17,7 +16,6 @@ import { rewriteEmittedDeclarations } from "../../scripts/dts-relative-extension
  */
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
     dts({
       insertTypesEntry: true,
       // A subset of `createViteConfig`'s exclusions: tokens has tests but no
