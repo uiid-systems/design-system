@@ -33,6 +33,44 @@ These were settled on 2026-11-18 and are not open for redesign inside a task.
 
 React 19, TypeScript 5.9 (moving to 7), Vite 7 (moving to 8), Base UI `@base-ui/react` 1.7.0 (moving to 1.9), CSS Modules with design tokens, pnpm workspaces with Turbo, Vitest 4 on happy-dom, Storybook, oxlint and oxfmt. New dependency in step 4: `@maskito/core` and `@maskito/kit` 5.6.x in `@uiid/forms`.
 
+## Toolchain upgrades
+
+Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest 4.1.11 and `vite-plugin-dts` 4.5.4. All four target majors are stable on npm: `typescript` 7.0.2, `vite` 8.3.8, `vitest` 5.1.1 and `vite-plugin-dts` 5.1.2 are each the `latest` tag. Only changes that touch a file here are listed. "Probed" means it was run against this repo or a minimal copy of its config, not only read.
+
+### Vite 8: not clean, one config change
+
+- **Lightning CSS now minifies CSS and lowers `light-dark()`.** Lightning CSS is the default CSS minifier, and the default browser target rises to Chrome 111, Firefox 114 and Safari 16.4 ([migration guide](https://vite.dev/guide/migration)). Probed: a Vite 8.3.8 library build turns `color: light-dark(#000, #fff)` into `var(--lightningcss-light, #000) var(--lightningcss-dark, #fff)`, and Vite 7.3.7 leaves it alone. Lightning CSS sets those variables only where it also sees `color-scheme`, which lives in `packages/tokens/src/globals.css`. Today's dist has `light-dark()` in `buttons.css`, `code.css` and `design-system.css`, and only `design-system.css` also contains `color-scheme`. So the buttons and code stylesheets would lose their theme colors, and `design-system.css` needs checking after the build. Fix in `vite.config.ts`: set `build.cssTarget` to browsers that support `light-dark()` natively, or set `build.cssMinify: "esbuild"` and install `esbuild`, which Vite no longer depends on. `apps/storybook/.storybook/main.ts` builds through Vite too and needs the same check.
+- **`build.rollupOptions` is deprecated in favor of `build.rolldownOptions`** ([migration guide](https://vite.dev/guide/migration)). A compatibility layer converts it ([Vite 8 announcement](https://vite.dev/blog/announcing-vite8)), so this is a rename, not a break. Probed: `preserveModules`, `preserveModulesRoot`, the custom `sanitizeFileName` and the `preserveDirectives` plugin from `vite.config.ts` still give one file per module with `"use client"` on the first line, through either key. Rename in `vite.config.ts`, `packages/icons/vite.config.ts`, `packages/icons/src/module-graph.test.ts` and the `onwarn` hook in `apps/storybook/.storybook/main.ts`. Rolldown still reports `MODULE_LEVEL_DIRECTIVE` under that code, so the Storybook filter keeps matching it. Not confirmed: whether Rolldown still emits `SOURCEMAP_ERROR`.
+- **Peers allow the upgrade.** `@vitejs/plugin-react-swc` 4.3.x lists Vite 8 ([changelog](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc/CHANGELOG.md)). `@storybook/react-vite` and `@storybook/builder-vite` 10.6.8 accept `vite ^8.0.0`, and `vite-tsconfig-paths` 6.1.1 accepts any Vite (npm registry `peerDependencies`). Vite 8 also has built-in `resolve.tsconfigPaths` ([Vite 8 announcement](https://vite.dev/blog/announcing-vite8)), which could replace `vite-tsconfig-paths`, but that is optional.
+
+### Vitest 5: clean apart from matcher types
+
+- **`Assertion` now takes two type parameters** (`Assertion<void, string>`), and matchers augment `Matchers<R, T>` ([migration guide](https://vitest.dev/guide/migration)). `vitest.matchers.d.ts` declares `interface Assertion<T = any>`, and `@testing-library/jest-dom` 6 ships the same one-parameter shape. Probed with Vitest 5.1.1: both raise TS2428 ("All declarations of 'Assertion' must have identical type parameters"), but only with `skipLibCheck` off. The root `tsconfig.json` sets it on, so the build stays green and the error is silent. Fix: change `vitest.matchers.d.ts` to `Assertion<R, T>`, and take jest-dom 8 in the same PR. Its only breaking change is dropping Vitest below 5, and it peers `vitest >=5 <6` ([jest-dom v8.0.0](https://github.com/testing-library/jest-dom/releases/tag/v8.0.0)). jest-dom 7 made `@testing-library/dom` a required peer ([jest-dom v7.0.0](https://github.com/testing-library/jest-dom/releases/tag/v7.0.0)). It is already in the lockfile at 10.4.2 through `@testing-library/react`.
+- **Vite is a peer, no longer a dependency, and Vitest 5 needs Node 22.12 or later** ([migration guide](https://vitest.dev/guide/migration)). The root `package.json` declares `vitest` but not `vite`, so moving Vite to the root in UI-425 covers this. CI runs Node 24.
+- **Inline projects now extend the root config and share its Vite server by default** ([migration guide](https://vitest.dev/guide/migration)). `apps/storybook/vitest.config.ts` defines one inline project that already sets `extends: true` and carries the `storybookTest` plugin. Not confirmed: whether the shared server changes how that plugin loads. Run the Storybook Vitest suite to check; `sharedViteServer: false` restores v4 behavior. `@vitest/browser-playwright` in `apps/storybook/package.json` must move to exactly 5.1.1 with `vitest`, and `@storybook/addon-vitest` 10.6.8 accepts Vitest 5 (npm registry `peerDependencies`).
+
+### TypeScript 7: typecheck clean, tooling not
+
+- **No JavaScript API.** "TypeScript 7.0 … does not ship with an API"; one is expected in 7.1. The documented workaround is the `@typescript/typescript6` package aliased as `typescript`, with 7.0 installed beside it for `tsc` ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `require("typescript")` on 7.0.2 exports only `version` and `versionMajorMinor`. That breaks three things here:
+  - `scripts/dts-relative-extensions.mjs` calls `ts.preProcessFile`, and every package build runs it (`afterBuild` in `vite.config.ts` and `packages/tokens/vite.config.ts`, `closeBundle` in `packages/icons/vite.config.ts`).
+  - `packages/design-system/src/package-dependencies.test.ts` calls `ts.preProcessFile`.
+  - `apps/docs/components/docs/props-table.tsx` uses `react-docgen-typescript`, which needs the compiler API. Its latest release is still 2.4.0, peering `typescript >= 4.3.x`.
+- **`rootDir` now defaults to `./` and `types` to `[]`** ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `packages/icons/tsconfig.build.json` fails with TS5011 and would write declarations to `dist/src/`, so it needs `"rootDir": "src"`. The other package tsconfigs already set `rootDir`.
+- **Typecheck itself is clean.** Probed: `tsc` 7.0.2 with `--noEmit` reports zero errors for all 18 packages, `apps/storybook` and `apps/docs`, against a current build. Not probed: declaration emit through `tsc -b`, which UI-426 diffs anyway.
+- **Consumers that are fine.** Next 16.4.5 runs the project-local `tsc` for `next build` by default, which supports TypeScript 7 ([`useTypeScriptCli`](https://nextjs.org/docs/app/api-reference/config/next-config-js/useTypeScriptCli)). `apps/docs/next.config.ts` needs no change. Storybook uses `react-docgen` by default, not the TypeScript-based plugin, and `apps/storybook/.storybook/main.ts` does not change that. Not confirmed: a full Storybook run on TypeScript 7.
+
+### `vite-plugin-dts` 5: moot
+
+UI-423 removes the plugin before UI-425, so its v5 notes do not apply. For the record: v5 is a thin wrapper over `unplugin-dts`, and its breaking changes (`rollupTypes` to `bundleTypes`, `outDir` to `outDirs`, `logLevel` removed) touch none of the options `vite.config.ts` and `packages/tokens/vite.config.ts` pass ([migration guide](https://github.com/qmhc/unplugin-dts/blob/main/docs/en/migration-v4-to-v5.md)). It also falls back to `@typescript/typescript6` on TypeScript 7 ([unplugin-dts 1.0.0](https://github.com/qmhc/unplugin-dts/releases/tag/unplugin-dts%401.0.0)). Version 4.5.4 has no such fallback, which is one more reason to finish UI-423 first.
+
+### Order
+
+The planned order holds: UI-423, then UI-425 (Vite and Vitest), then UI-426 (TypeScript 7). Three changes to scope, none to order:
+
+- UI-425 sets the CSS target or minifier in `vite.config.ts` so `light-dark()` survives, and checks the Storybook build for the same.
+- UI-425 takes `@testing-library/jest-dom` 8 from UI-427 and fixes `vitest.matchers.d.ts`, because jest-dom 8 needs Vitest 5.
+- UI-426 replaces `ts.preProcessFile` in the two files above, sets `rootDir` for icons, and decides how the docs app keeps `react-docgen-typescript`: alias `typescript` to `@typescript/typescript6` for the docs app, or wait for the 7.1 API. If neither works for the docs app, UI-426 records that and stays on 5.9, as its acceptance criteria allow.
+
 ## Commands
 
 | Task               | Command                                         |
