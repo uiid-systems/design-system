@@ -12,6 +12,11 @@ import { defineConfig } from "vitest/config";
 // exactly, or its string alias would also catch its `./icons` subpaths.
 const SEPARATE_ALIASES = new Set(["@uiid/tokens", "@uiid/design-system"]);
 
+// These resolve to source through the `@uiid/source` export condition instead
+// of an alias (see `resolve.conditions` below). UI-420 proves the condition on
+// these two; the rest move over, and the alias tables go, in a follow-up.
+const SOURCE_CONDITION_PACKAGES = new Set(["@uiid/utils", "@uiid/layout"]);
+
 const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
   (folder) => {
     const manifest = path.resolve(__dirname, `packages/${folder}/package.json`);
@@ -19,6 +24,7 @@ const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
     if (!existsSync(manifest) || !existsSync(entry)) return [];
     const { name } = JSON.parse(readFileSync(manifest, "utf8"));
     if (!name?.startsWith("@uiid/") || SEPARATE_ALIASES.has(name)) return [];
+    if (SOURCE_CONDITION_PACKAGES.has(name)) return [];
     return [{ find: name, replacement: entry }];
   },
 );
@@ -26,6 +32,10 @@ const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    // happy-dom runs in Vite's client environment, so `resolve.conditions` (not
+    // `ssr.resolve.conditions`) applies. Setting it replaces Vite's defaults, so
+    // the rest of the list repeats `defaultClientConditions`.
+    conditions: ["@uiid/source", "module", "browser", "development|production"],
     // Array form, because tokens needs exact-match rules that a prefix map
     // cannot express. First match wins, so these run most-specific first.
     alias: [

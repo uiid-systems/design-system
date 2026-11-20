@@ -25,9 +25,23 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     const __dirname = dirname(fileURLToPath(import.meta.url));
     const packagesDir = resolve(__dirname, "../../../packages");
-    const sourcePackages = getUiidSourcePackages(packagesDir);
+    const sourcePackages = getUiidSourcePackages(packagesDir).filter(
+      ({ name }) => !SOURCE_CONDITION_PACKAGES.has(name),
+    );
 
     if (!config.resolve) config.resolve = {};
+
+    // Packages that export `src/index.ts` under the `@uiid/source` condition
+    // resolve through it instead of an alias. Setting `conditions` replaces
+    // Vite's defaults, so fall back to `defaultClientConditions` when unset.
+    config.resolve.conditions = [
+      "@uiid/source",
+      ...(config.resolve.conditions ?? [
+        "module",
+        "browser",
+        "development|production",
+      ]),
+    ];
 
     // Exact-match aliases so `@uiid/<pkg>` resolves to source while
     // subpath imports (e.g. `@uiid/<pkg>/globals.css`) keep using the
@@ -37,6 +51,15 @@ const config: StorybookConfig = {
       ...sourcePackages.map(({ name, entry }) => ({
         find: new RegExp(`^${escapeRegex(name)}$`),
         replacement: entry,
+      })),
+      // Vite's CSS `@import` resolver only matches `style` and
+      // `development|production`, never a custom condition, so the barrel's
+      // `@import "@uiid/layout/globals.css"` would still need a built dist.
+      // Source CSS modules already reach the page in the same layer, so the
+      // built sheet is a duplicate here; stub it as the Vitest config does.
+      ...[...SOURCE_CONDITION_PACKAGES].map((name) => ({
+        find: new RegExp(`^${escapeRegex(name)}/globals\\.css$`),
+        replacement: resolve(__dirname, "../../../vitest.empty.css"),
       })),
       { find: "@tokens", replacement: resolve(packagesDir, "tokens/src") },
       ...existingAliases,
@@ -81,6 +104,10 @@ function getAbsolutePath<T extends string>(value: T): T {
     fileURLToPath(import.meta.resolve(`${value}/package.json`)),
   ) as T;
 }
+
+// Resolved by the `@uiid/source` export condition rather than an alias (UI-420).
+// The remaining packages move over, and the alias goes, in a follow-up.
+const SOURCE_CONDITION_PACKAGES = new Set(["@uiid/utils", "@uiid/layout"]);
 
 type SourcePackage = { name: string; entry: string };
 

@@ -30,6 +30,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
@@ -38,6 +39,15 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./globals.css": "./dist/layout.css"
+    }
+  },
   "scripts": {
     "build": "tsc -b && vite build"
   },
