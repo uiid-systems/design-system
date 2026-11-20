@@ -38,8 +38,7 @@ export type InputWrapperProps = {
  * (`small | medium | large`) across every UIID component, and `inputVariants` is
  * shared by select, slider, number-field, mask-input, combobox and autocomplete.
  * Native `size` on an `<input>` is the rarely-used character-width attribute;
- * surfacing it here would desync Input from the rest of the system. Recorded in
- * `docs/architecture/forms-alignment-audit.md` (finding B5).
+ * surfacing it here would desync Input from the rest of the system.
  */
 export type InputControlProps = Omit<Input.Props, "size"> & {
   /**
