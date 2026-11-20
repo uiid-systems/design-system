@@ -11,24 +11,6 @@ export const timelineVariants = cva({
   },
 });
 
-export const timelineItemVariants = cva({
-  base: styles["timeline-item"],
-});
-
-export const timelineMarkerVariants = cva({
-  base: styles["timeline-marker"],
-  variants: {
-    status: {
-      completed: styles["status-completed"],
-      active: styles["status-active"],
-      pending: styles["status-pending"],
-    },
-  },
-  defaultVariants: {
-    status: "pending",
-  },
-});
-
 export const timelineConnectorVariants = cva({
   base: styles["timeline-connector"],
   variants: {

@@ -6,7 +6,7 @@ import { cx } from "@uiid/utils";
 import { ITEM_NAME } from "../timeline.constants";
 import { useTimelineItemContext } from "../timeline.context";
 import type { TimelineItemProps } from "../timeline.types";
-import { timelineItemVariants, timelineVariants } from "../timeline.variants";
+import { timelineVariants } from "../timeline.variants";
 import { TimelineConnector } from "./timeline-connector";
 import { TimelineContent } from "./timeline-content";
 import { TimelineMarker } from "./timeline-marker";
@@ -54,7 +54,7 @@ export const TimelineItem = ({
       data-slot="timeline-item"
       data-status={status}
       aria-current={status === "active" ? "step" : undefined}
-      className={cx(timelineItemVariants(), className)}
+      className={cx(styles["timeline-item"], className)}
       {...props}
     >
       {media != null && <TimelineMedia {...MediaProps}>{media}</TimelineMedia>}
