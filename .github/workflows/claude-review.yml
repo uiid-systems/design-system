@@ -12,11 +12,12 @@ jobs:
     name: Review
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # Same-repo branches only: pushing one needs write access, so a fork can
-    # never spend the Claude subscription or steer the reviewer. Drafts and
-    # release-please PRs are skipped.
+    # Only the maintainer's own PRs, and only from branches in this repo, so
+    # nobody else can spend the Claude subscription or steer the reviewer.
+    # Drafts and release-please PRs are skipped.
     if: >-
       ${{
+        github.event.pull_request.user.login == 'adamfratino' &&
         github.event.pull_request.head.repo.full_name == github.repository &&
         !github.event.pull_request.draft &&
         !startsWith(github.head_ref, 'release-please--')
