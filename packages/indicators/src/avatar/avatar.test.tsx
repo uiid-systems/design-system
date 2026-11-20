@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { Box, Group, Stack } from "@uiid/layout";
+import { Box, Stack } from "@uiid/layout";
 import { createRef } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
@@ -113,7 +113,8 @@ describe("Avatar", () => {
   });
 
   it("lays out in a row by default and a column when vertical", () => {
-    /* The class Group or Stack adds over Box, read from the real component
+    /* A row is Box's own direction, so Group adds no class for it. The column
+       comes from the class Stack adds over Box, read from the real component
        rather than guessed from its hashed module name. */
     const classesOf = (element: React.ReactElement) => {
       const { container, unmount } = render(element);
@@ -122,24 +123,19 @@ describe("Avatar", () => {
       return list;
     };
     const boxClasses = classesOf(<Box />);
-    const ownClass = (element: React.ReactElement) => {
-      const [own] = classesOf(element).filter((c) => !boxClasses.includes(c));
-      expect(own).toBeDefined();
-      return own as string;
-    };
-    const groupClass = ownClass(<Group />);
-    const stackClass = ownClass(<Stack />);
+    const [stackClass] = classesOf(<Stack />).filter(
+      (c) => !boxClasses.includes(c),
+    );
+    expect(stackClass).toBeDefined();
 
     const { container, rerender } = render(
       <Avatar initials="AF" name="Adam" />,
     );
     const root = () => part(container, "avatar-container");
-    expect(root()).toHaveClass(groupClass);
-    expect(root()).not.toHaveClass(stackClass);
+    expect(root()).not.toHaveClass(stackClass as string);
 
     rerender(<Avatar initials="AF" name="Adam" orientation="vertical" />);
-    expect(root()).toHaveClass(stackClass);
-    expect(root()).not.toHaveClass(groupClass);
+    expect(root()).toHaveClass(stackClass as string);
   });
 
   // ============================================

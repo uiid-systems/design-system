@@ -26,7 +26,6 @@
   &:not(.toggle-fullwidth) {
     width: fit-content;
   }
-  /* overflow: hidden; */
 
   &[data-orientation="vertical"] {
     height: auto;

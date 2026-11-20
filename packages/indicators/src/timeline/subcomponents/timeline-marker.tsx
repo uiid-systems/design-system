@@ -5,7 +5,9 @@ import { cx } from "@uiid/utils";
 import { MARKER_NAME } from "../timeline.constants";
 import { useTimelineItemContext } from "../timeline.context";
 import type { TimelineMarkerProps } from "../timeline.types";
-import { timelineMarkerVariants, timelineVariants } from "../timeline.variants";
+import { timelineVariants } from "../timeline.variants";
+
+import styles from "../timeline.module.css";
 
 export const TimelineMarker = ({
   color,
@@ -22,7 +24,7 @@ export const TimelineMarker = ({
       data-variant={variant}
       data-status={status}
       className={cx(
-        timelineMarkerVariants({ status }),
+        styles["timeline-marker"],
         timelineVariants({ color }),
         className,
       )}

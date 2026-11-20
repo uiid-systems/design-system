@@ -28,7 +28,6 @@
  * color-mix() instead of reading a ramp step — otherwise it would report on a
  * value that no longer ships. --palette-fill-hover is still hand-authored and
  * still uncalibrated (UI-196), which is what the fill row below shows.
- * See docs/architecture/ui-194-list-and-option-theming.md.
  *
  * Usage:
  *   node scripts/check-palette-contrast.mjs            # summary + failures

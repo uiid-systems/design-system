@@ -135,8 +135,7 @@
    * proportion of the foreground into the tint collapses that spread to 0.82
    * (light) / 1.34 (dark), landing every hue at ΔL* ~10.3-11.6 — the system's
    * own visible-band baseline, since --shade-accent on the page measures 11.54
-   * light / 10.53 dark. Measurements: scripts/check-palette-contrast.mjs and
-   * docs/architecture/ui-194-list-and-option-theming.md.
+   * light / 10.53 dark. Measurements: scripts/check-palette-contrast.mjs.
    *
    * Only tint is derived. The fill anchors are not lightness-matched across
    * hues, so the same mix produces a different ΔL* at each one and gains
