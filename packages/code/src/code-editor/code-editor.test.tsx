@@ -40,6 +40,11 @@ describe("CodeEditor", () => {
     expect(screen.getByPlaceholderText("Enter code...")).toBeInTheDocument();
   });
 
+  it("renders no loading text while the highlighter starts", () => {
+    render(<CodeEditor defaultValue="" />);
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+  });
+
   it("renders header with filename", () => {
     render(<CodeEditor defaultValue="test" filename="test.ts" />);
     expect(screen.getByText("test.ts")).toBeInTheDocument();
