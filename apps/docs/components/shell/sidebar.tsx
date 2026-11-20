@@ -1,12 +1,4 @@
-import {
-  List,
-  Stack,
-  Text,
-  Input,
-  Kbd,
-  type ListItemOrGroup,
-} from "@uiid/design-system";
-import { SearchIcon } from "@uiid/icons/search";
+import { List, Stack, Text, type ListItemOrGroup } from "@uiid/design-system";
 import Link from "next/link";
 
 import {
@@ -98,16 +90,3 @@ export const SidebarList = ({ items, category }: SidebarListProps) => {
   );
 };
 SidebarList.displayName = "SidebarList";
-
-export const SidebarSearch = () => {
-  return (
-    <Input
-      data-slot="header-search"
-      placeholder="Search"
-      before={<SearchIcon />}
-      after={<Kbd hotkey={["meta", "k"]} />}
-      size="small"
-    />
-  );
-};
-SidebarSearch.displayName = "SidebarSearch";

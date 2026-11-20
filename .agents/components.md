@@ -1,6 +1,6 @@
 # Component Conventions
 
-Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts` (when it uses `cva`), `.constants.ts`, `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.
+Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts` (when it uses `cva`), `.constants.ts` (when it has constants), `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 
@@ -29,7 +29,7 @@ Use regular elements for domain components. Only use `renderWithProps` for low-l
 
 Never duplicate. How you share depends on what the shared thing _is_.
 
-**Standalone components may be imported directly**, including from a sibling directory. A component that renders another component is ordinary composition — Badge renders Status, and a composite form control may render Input and Checkbox. Those stay where they live; do not hoist them into a shared directory. The same applies to importing a component's _variant styles_ from its source rather than copying them (Input → Select).
+**Standalone components may be imported directly**, including from a sibling directory. A component that renders another component is ordinary composition — ToggleButton renders Button, and a composite form control may render Input and Checkbox. Those stay where they live; do not hoist them into a shared directory. The same applies to importing a component's _variant styles_ from its source rather than copying them (Input → Select).
 
 **Fragments get abstracted.** When the shared thing is not a component in its own right — a popup tree, a label row, a control surface — put it in a neutral shared module instead of having one component reach into a sibling for it. See `packages/forms/src/shared/` (the combobox/autocomplete popup layer and input group) and `packages/forms/src/field/subcomponents/field-row.tsx`, shared by checkbox, switch and radio.
 

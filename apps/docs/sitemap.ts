@@ -10,12 +10,6 @@ export type SitemapGroup = {
 
 export type SitemapEntry = SitemapItem | SitemapGroup;
 
-export const SITEMAP: SitemapItem[] = [
-  { label: "Home", value: "/" },
-  { label: "About", value: "/about" },
-  { label: "Contact", value: "/contact" },
-];
-
 /** Manual order — drives the sidebar nav and the pager sequence */
 export const COMPONENTS_SITEMAP: SitemapEntry[] = [
   {

@@ -33,7 +33,7 @@ graph TD
   overlays --> buttons & cards & icons & layout & typography
   indicators --> cards & layout & typography
 
-  forms --> cards & icons & layout & lists & overlays & typography
+  forms --> cards & icons & layout & lists & typography
 
   interactive --> icons & layout
 
@@ -55,15 +55,15 @@ graph TD
 - `layout`, `typography`, and `icons` are leaves — they rely on no other UI package. (`layout` composes shared text styles from `@uiid/tokens`, so it does not depend on `typography`.)
 - `markdown` is the lightest non-leaf, reaching only `typography`. `interactive` reaches only `icons` and `layout`.
 - `ai` is private and not re-exported from the barrel, so it is drawn with a dashed border.
-- To regenerate, run this from the repo root. It lists each package's `@uiid/*` imports in shipped source, skipping the `design-system`, `tokens`, and `utils` packages and dropping `tokens`, `utils`, and the package itself from each row:
+- To regenerate, run this from the repo root. It lists each package's `@uiid/*` imports in shipped source, reading only import and export statements so a package named in a CSS or code comment is not counted, and skipping the `design-system`, `tokens`, and `utils` packages and dropping `tokens`, `utils`, and the package itself from each row:
 
   ```sh
   for p in packages/*/src; do
     pkg=$(basename "$(dirname "$p")")
     case "$pkg" in design-system | tokens | utils) continue ;; esac
-    echo "$pkg: $(grep -rhoE "[\"']@uiid/[a-z-]+" "$p" \
+    echo "$pkg: $(grep -rhE "^[[:space:]]*(@?import|export|\})[^;]*[\"']@uiid/[a-z-]+" "$p" \
       --include='*.ts' --include='*.tsx' --include='*.css' \
       --exclude='*.test.*' --exclude='*.examples.*' --exclude='*.stories.*' --exclude='*.mocks.*' \
-      | sed -E "s/.*@uiid\///" | sort -u | grep -vxE "tokens|utils|$pkg" | tr '\n' ' ')"
+      | grep -oE "[\"']@uiid/[a-z-]+" | sed -E "s/.*@uiid\///" | sort -u | grep -vxE "tokens|utils|$pkg" | tr '\n' ' ')"
   done
   ```

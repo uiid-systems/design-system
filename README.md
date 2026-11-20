@@ -9,17 +9,18 @@ pnpm add @uiid/design-system @base-ui/react
 ```
 
 ```tsx
-import { Button, Stack, Text } from "@uiid/design-system";
+import { Button, Group, Stack, Text } from "@uiid/design-system";
 import "@uiid/design-system/globals.css";
 
 export default function App() {
   return (
     <Stack gap={4}>
       <Text render={<h1 />} size={1}>
-        Would you like proceed?
+        Would you like to proceed?
       </Text>
-      <Button variant="subtle">Cancel</Button>
-      <Button>Save changes</Button>
+      <Group gap={2}>
+        <Button variant="subtle">Cancel</Button>
+        <Button>Save changes</Button>
       </Group>
     </Stack>
   );
@@ -59,7 +60,7 @@ export default function App() {
 
 ```bash
 pnpm install
-pnpm run dev           # Start all packages in dev mode
+pnpm run dev           # Start Storybook and the docs site, and rebuild design-system and icons on change
 pnpm run build         # Build all packages
 pnpm run lint          # Lint all packages
 pnpm test:run          # Run tests
