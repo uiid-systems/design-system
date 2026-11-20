@@ -13,7 +13,7 @@ import { defineConfig } from "vitest/config";
 const SEPARATE_ALIASES = new Set(["@uiid/tokens", "@uiid/design-system"]);
 
 // These resolve to source through the `@uiid/source` export condition instead
-// of an alias (see `resolve.conditions` below). UI-420 proves the condition on
+// of an alias (see `conditions` below). UI-420 proves the condition on
 // these two; the rest move over, and the alias tables go, in a follow-up.
 const SOURCE_CONDITION_PACKAGES = new Set(["@uiid/utils", "@uiid/layout"]);
 
@@ -32,9 +32,13 @@ const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    // happy-dom runs in Vite's client environment, so `resolve.conditions` (not
-    // `ssr.resolve.conditions`) applies. Setting it replaces Vite's defaults, so
-    // the rest of the list repeats `defaultClientConditions`.
+    // happy-dom tests run in Vite's client environment and read these; tests
+    // marked `@vitest-environment node` run in `ssr` and read
+    // `ssr.resolve.conditions` below. Setting either list replaces Vite's
+    // defaults, so each repeats them, copied by hand from the installed Vite 7
+    // (`defaultClientConditions` here, `defaultServerConditions` below).
+    // The package's `exports` key order decides which target wins, not the
+    // order here, so `@uiid/source` must stay the first key in each entry.
     conditions: ["@uiid/source", "module", "browser", "development|production"],
     // Array form, because tokens needs exact-match rules that a prefix map
     // cannot express. First match wins, so these run most-specific first.
@@ -101,6 +105,11 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "packages/tokens/src/css") + "/",
       },
     ],
+  },
+  ssr: {
+    resolve: {
+      conditions: ["@uiid/source", "module", "node", "development|production"],
+    },
   },
   test: {
     environment: "happy-dom",

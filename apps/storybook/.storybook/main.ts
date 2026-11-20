@@ -33,7 +33,10 @@ const config: StorybookConfig = {
 
     // Packages that export `src/index.ts` under the `@uiid/source` condition
     // resolve through it instead of an alias. Setting `conditions` replaces
-    // Vite's defaults, so fall back to `defaultClientConditions` when unset.
+    // Vite's defaults, so fall back to `defaultClientConditions`, copied by hand
+    // from the installed Vite 7, when unset. The package's `exports` key order
+    // picks the target, not this array, so `@uiid/source` must stay the first
+    // key in each exports entry.
     config.resolve.conditions = [
       "@uiid/source",
       ...(config.resolve.conditions ?? [
