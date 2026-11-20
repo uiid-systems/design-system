@@ -6,7 +6,7 @@ import {
   type TableMockData,
   TABLE_MOCK_MORE_ACTIONS,
   TABLE_MOCK_ACTIONS,
-} from "./table.mocks";
+} from "../../../../packages/tables/src/table/table.mocks";
 
 const meta: Meta<typeof Table> = {
   title: "Tables/Table",

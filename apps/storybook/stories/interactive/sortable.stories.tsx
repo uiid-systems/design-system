@@ -9,7 +9,11 @@ import {
 import { GripVerticalIcon } from "@uiid/icons/grip-vertical";
 import { useState } from "react";
 
-import { VERTICAL_ITEMS, HORIZONTAL_ITEMS, GRID_ITEMS } from "./sortable.mocks";
+import {
+  VERTICAL_ITEMS,
+  HORIZONTAL_ITEMS,
+  GRID_ITEMS,
+} from "../../../../packages/interactive/src/sortable/sortable.mocks";
 
 const meta = {
   title: "Interactive/Sortable",
