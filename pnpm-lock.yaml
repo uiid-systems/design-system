@@ -47,6 +47,9 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^4.3.3
         version: 4.3.3(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
+      '@vitest/browser-playwright':
+        specifier: ^4.1.11
+        version: 4.1.11(playwright@1.63.0)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))(vitest@4.1.11)
       happy-dom:
         specifier: ^21.0.4
         version: 21.0.4
@@ -71,6 +74,9 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
+      vite:
+        specifier: ^7.3.7
+        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
       vitest:
         specifier: ^4.1.11
         version: 4.1.11(@opentelemetry/api@1.9.0)(@types/node@26.6.5)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@21.0.4)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
@@ -166,9 +172,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.7
         version: 19.1.7(@types/react@19.1.10)
-      '@vitest/browser-playwright':
-        specifier: ^4.1.11
-        version: 4.1.11(playwright@1.63.0)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))(vitest@4.1.11)
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
@@ -190,9 +193,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vitest:
-        specifier: ^4.1.11
-        version: 4.1.11(@opentelemetry/api@1.9.0)(@types/node@26.6.5)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@21.0.4)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
 
   packages/ai:
     dependencies:
@@ -233,9 +233,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.3.3(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       ai:
         specifier: 7.0.156
         version: 7.0.156(zod@4.6.7)
@@ -251,9 +248,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/buttons:
     dependencies:
@@ -285,9 +279,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -297,9 +288,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/cards:
     dependencies:
@@ -331,9 +319,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -343,9 +328,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/code:
     dependencies:
@@ -392,9 +374,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -404,9 +383,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/design-system:
     dependencies:
@@ -468,9 +444,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.2.3(@types/react@19.2.8)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -480,9 +453,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/forms:
     dependencies:
@@ -523,9 +493,6 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -535,9 +502,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/icons:
     dependencies:
@@ -551,9 +515,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -563,9 +524,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/indicators:
     dependencies:
@@ -594,9 +552,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -606,9 +561,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/interactive:
     dependencies:
@@ -652,9 +604,6 @@ importers:
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -664,9 +613,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/layout:
     dependencies:
@@ -689,9 +635,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -701,9 +644,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/lists:
     dependencies:
@@ -732,9 +672,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -744,9 +681,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/markdown:
     dependencies:
@@ -763,9 +697,6 @@ importers:
       '@types/react-dom':
         specifier: 19.1.7
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.3.3(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -775,9 +706,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/navigation:
     dependencies:
@@ -815,9 +743,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -827,9 +752,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/overlays:
     dependencies:
@@ -870,9 +792,6 @@ importers:
       '@uiid/indicators':
         specifier: workspace:*
         version: link:../indicators
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -882,9 +801,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/tables:
     dependencies:
@@ -925,9 +841,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -937,9 +850,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/tokens:
     devDependencies:
@@ -949,9 +859,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/typography:
     dependencies:
@@ -971,9 +878,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -983,9 +887,6 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
   packages/utils:
     dependencies:
@@ -1002,15 +903,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.6
         version: 19.1.7(@types/react@19.1.10)
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
 
 packages:
 
@@ -2349,9 +2244,6 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@rolldown/pluginutils@1.0.0-beta.47':
-    resolution: {integrity: sha512-8QagwMH3kNCuzD8EWL8R2YPW5e4OrHNSAHRFDdmFqEwEaD/KcNKjVoumo+gP2vW5eKB2UPbM6vTYiGZX0ixLnw==}
-
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
@@ -2641,22 +2533,10 @@ packages:
       typescript:
         optional: true
 
-  '@swc/core-darwin-arm64@1.15.11':
-    resolution: {integrity: sha512-QoIupRWVH8AF1TgxYyeA5nS18dtqMuxNwchjBIwJo3RdwLEFiJq6onOx9JAxHtuPwUkIVuU2Xbp+jCJ7Vzmgtg==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [darwin]
-
   '@swc/core-darwin-arm64@1.16.2':
     resolution: {integrity: sha512-i/j0HNbnn79qnTVPicvay92Nark8fW8NQqn1e2mGERjUXNpBV0+SwQxlRpk2zBhn6laJ8PDI6Kn1nHZhnz3LCA==}
     engines: {node: '>=10'}
     cpu: [arm64]
-    os: [darwin]
-
-  '@swc/core-darwin-x64@1.15.11':
-    resolution: {integrity: sha512-S52Gu1QtPSfBYDiejlcfp9GlN+NjTZBRRNsz8PNwBgSE626/FUf2PcllVUix7jqkoMC+t0rS8t+2/aSWlMuQtA==}
-    engines: {node: '>=10'}
-    cpu: [x64]
     os: [darwin]
 
   '@swc/core-darwin-x64@1.16.2':
@@ -2665,32 +2545,14 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@swc/core-linux-arm-gnueabihf@1.15.11':
-    resolution: {integrity: sha512-lXJs8oXo6Z4yCpimpQ8vPeCjkgoHu5NoMvmJZ8qxDyU99KVdg6KwU9H79vzrmB+HfH+dCZ7JGMqMF//f8Cfvdg==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux]
-
   '@swc/core-linux-arm-gnueabihf@1.16.2':
     resolution: {integrity: sha512-MdXi83Z/gGp1LIrg+h7HKxiul/z/Bty/ZJSvYAFqDl9zteC1XLSAZdScquKtXPp50rdyXqritTDCqQBhwVfZKA==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
 
-  '@swc/core-linux-arm64-gnu@1.15.11':
-    resolution: {integrity: sha512-chRsz1K52/vj8Mfq/QOugVphlKPWlMh10V99qfH41hbGvwAU6xSPd681upO4bKiOr9+mRIZZW+EfJqY42ZzRyA==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-
   '@swc/core-linux-arm64-gnu@1.16.2':
     resolution: {integrity: sha512-/jcTmK6Ktz3owM3YtiKvjofV6p3VpHnYzTIrOGwDIOsDigRAAVuZ8east33wYO/7UTdKYFlyHNnJNT0WJqOA3Q==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@swc/core-linux-arm64-musl@1.15.11':
-    resolution: {integrity: sha512-PYftgsTaGnfDK4m6/dty9ryK1FbLk+LosDJ/RJR2nkXGc8rd+WenXIlvHjWULiBVnS1RsjHHOXmTS4nDhe0v0w==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -2713,20 +2575,8 @@ packages:
     cpu: [s390x]
     os: [linux]
 
-  '@swc/core-linux-x64-gnu@1.15.11':
-    resolution: {integrity: sha512-DKtnJKIHiZdARyTKiX7zdRjiDS1KihkQWatQiCHMv+zc2sfwb4Glrodx2VLOX4rsa92NLR0Sw8WLcPEMFY1szQ==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-
   '@swc/core-linux-x64-gnu@1.16.2':
     resolution: {integrity: sha512-LyHJgxCA4Tje0ysBMbEb0tt/ie8kgUKoFE3JAKFhpevmTmhYEoC0H9s47WuDsqiFckF1ITUguZIXJG6K5e0dvg==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@swc/core-linux-x64-musl@1.15.11':
-    resolution: {integrity: sha512-mUjjntHj4+8WBaiDe5UwRNHuEzLjIWBTSGTw0JT9+C9/Yyuh4KQqlcEQ3ro6GkHmBGXBFpGIj/o5VMyRWfVfWw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -2737,22 +2587,10 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-win32-arm64-msvc@1.15.11':
-    resolution: {integrity: sha512-ZkNNG5zL49YpaFzfl6fskNOSxtcZ5uOYmWBkY4wVAvgbSAQzLRVBp+xArGWh2oXlY/WgL99zQSGTv7RI5E6nzA==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [win32]
-
   '@swc/core-win32-arm64-msvc@1.16.2':
     resolution: {integrity: sha512-StTOSefYBxemvNYYUI3UmO1a8y+hSPjjfHogC2TEHL+Z1PlEBim/XtLas5rS04jAzT9RrNmbtX911SZ42H9jSQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
-    os: [win32]
-
-  '@swc/core-win32-ia32-msvc@1.15.11':
-    resolution: {integrity: sha512-6XnzORkZCQzvTQ6cPrU7iaT9+i145oLwnin8JrfsLG41wl26+5cNQ2XV3zcbrnFEV6esjOceom9YO1w9mGJByw==}
-    engines: {node: '>=10'}
-    cpu: [ia32]
     os: [win32]
 
   '@swc/core-win32-ia32-msvc@1.16.2':
@@ -2761,26 +2599,11 @@ packages:
     cpu: [ia32]
     os: [win32]
 
-  '@swc/core-win32-x64-msvc@1.15.11':
-    resolution: {integrity: sha512-IQ2n6af7XKLL6P1gIeZACskSxK8jWtoKpJWLZmdXTDj1MGzktUy4i+FvpdtxFmJWNavRWH1VmTr6kAubRDHeKw==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [win32]
-
   '@swc/core-win32-x64-msvc@1.16.2':
     resolution: {integrity: sha512-cSd1z6ivSrJPVr+moVwOHWjeKy6TpO4/Shwcv5KCrKYXCccxwh4pRy1C3fDioNx2PF1jPZWHKZjtXt+Be9VbaQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
-
-  '@swc/core@1.15.11':
-    resolution: {integrity: sha512-iLmLTodbYxU39HhMPaMUooPwO/zqJWvsqkrXv1ZI38rMb048p6N7qtAtTp37sw9NzSrvH6oli8EdDygo09IZ/w==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      '@swc/helpers': '>=0.5.17'
-    peerDependenciesMeta:
-      '@swc/helpers':
-        optional: true
 
   '@swc/core@1.16.2':
     resolution: {integrity: sha512-95I4kiSMeveI/Mhi+tE4fiWcWLUMfzfKrk0jtr8LRMqHgOgq+xHS+zExkDqoO4b5OeeuXHMWVdD5MeP3X6sULw==}
@@ -2796,9 +2619,6 @@ packages:
 
   '@swc/helpers@0.5.23':
     resolution: {integrity: sha512-5lSsMOTXURePglDfvuAQUqkGek9Hg2kksOYay2m0+XR++b2NWYL/4sWyuvVBIs8oKnJaxkdi9whaL/sqN13afw==}
-
-  '@swc/types@0.1.25':
-    resolution: {integrity: sha512-iAoY/qRhNH8a/hBvm3zKj9qQ4oc2+3w1unPJa2XvTK3XjeLXtzcCingVPw/9e5mn1+0yPqxcBGp9Jf0pkfMb1g==}
 
   '@swc/types@0.1.28':
     resolution: {integrity: sha512-V6Mnml8v09QALx6K0elJ7o9K/MkVDtW3t6L+7Ou/JcWtb3xwId2AH4FeOceySd2JaO87IMw4+6vSZxLm34LPbw==}
@@ -3048,12 +2868,6 @@ packages:
   '@vercel/oidc@3.2.0':
     resolution: {integrity: sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==}
     engines: {node: '>= 20'}
-
-  '@vitejs/plugin-react-swc@4.2.2':
-    resolution: {integrity: sha512-x+rE6tsxq/gxrEJN3Nv3dIV60lFflPj94c90b+NNo6n1QV1QQUTLoL0MpaOVasUZ0zqVBn7ead1B5ecx1JAGfA==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    peerDependencies:
-      vite: ^4 || ^5 || ^6 || ^7
 
   '@vitejs/plugin-react-swc@4.3.3':
     resolution: {integrity: sha512-bti8ZAcvz4Lh6/e4Uk2k3aa1TiUXbbMsahuqOHvd3MveFTkKDZOA6wQVkpj7J/+tepX/wGfe+lsGh/t24HTXMQ==}
@@ -6365,8 +6179,6 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@rolldown/pluginutils@1.0.0-beta.47': {}
-
   '@rolldown/pluginutils@1.0.1': {}
 
   '@rollup/pluginutils@5.3.0(rollup@4.64.12)':
@@ -6624,31 +6436,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@swc/core-darwin-arm64@1.15.11':
-    optional: true
-
   '@swc/core-darwin-arm64@1.16.2':
-    optional: true
-
-  '@swc/core-darwin-x64@1.15.11':
     optional: true
 
   '@swc/core-darwin-x64@1.16.2':
     optional: true
 
-  '@swc/core-linux-arm-gnueabihf@1.15.11':
-    optional: true
-
   '@swc/core-linux-arm-gnueabihf@1.16.2':
     optional: true
 
-  '@swc/core-linux-arm64-gnu@1.15.11':
-    optional: true
-
   '@swc/core-linux-arm64-gnu@1.16.2':
-    optional: true
-
-  '@swc/core-linux-arm64-musl@1.15.11':
     optional: true
 
   '@swc/core-linux-arm64-musl@1.16.2':
@@ -6660,52 +6457,20 @@ snapshots:
   '@swc/core-linux-s390x-gnu@1.16.2':
     optional: true
 
-  '@swc/core-linux-x64-gnu@1.15.11':
-    optional: true
-
   '@swc/core-linux-x64-gnu@1.16.2':
-    optional: true
-
-  '@swc/core-linux-x64-musl@1.15.11':
     optional: true
 
   '@swc/core-linux-x64-musl@1.16.2':
     optional: true
 
-  '@swc/core-win32-arm64-msvc@1.15.11':
-    optional: true
-
   '@swc/core-win32-arm64-msvc@1.16.2':
-    optional: true
-
-  '@swc/core-win32-ia32-msvc@1.15.11':
     optional: true
 
   '@swc/core-win32-ia32-msvc@1.16.2':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.15.11':
-    optional: true
-
   '@swc/core-win32-x64-msvc@1.16.2':
     optional: true
-
-  '@swc/core@1.15.11(@swc/helpers@0.5.23)':
-    dependencies:
-      '@swc/counter': 0.1.3
-      '@swc/types': 0.1.25
-    optionalDependencies:
-      '@swc/core-darwin-arm64': 1.15.11
-      '@swc/core-darwin-x64': 1.15.11
-      '@swc/core-linux-arm-gnueabihf': 1.15.11
-      '@swc/core-linux-arm64-gnu': 1.15.11
-      '@swc/core-linux-arm64-musl': 1.15.11
-      '@swc/core-linux-x64-gnu': 1.15.11
-      '@swc/core-linux-x64-musl': 1.15.11
-      '@swc/core-win32-arm64-msvc': 1.15.11
-      '@swc/core-win32-ia32-msvc': 1.15.11
-      '@swc/core-win32-x64-msvc': 1.15.11
-      '@swc/helpers': 0.5.23
 
   '@swc/core@1.16.2(@swc/helpers@0.5.23)':
     dependencies:
@@ -6731,10 +6496,6 @@ snapshots:
   '@swc/helpers@0.5.23':
     dependencies:
       tslib: 2.9.1
-
-  '@swc/types@0.1.25':
-    dependencies:
-      '@swc/counter': 0.1.3
 
   '@swc/types@0.1.28':
     dependencies:
@@ -6963,14 +6724,6 @@ snapshots:
   '@ungap/structured-clone@1.3.0': {}
 
   '@vercel/oidc@3.2.0': {}
-
-  '@vitejs/plugin-react-swc@4.2.2(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))':
-    dependencies:
-      '@rolldown/pluginutils': 1.0.0-beta.47
-      '@swc/core': 1.15.11(@swc/helpers@0.5.23)
-      vite: 7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@vitejs/plugin-react-swc@4.3.3(@swc/helpers@0.5.23)(vite@7.3.7(@types/node@26.6.5)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.8.2))':
     dependencies:
