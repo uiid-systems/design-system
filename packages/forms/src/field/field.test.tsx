@@ -463,7 +463,7 @@ describe("Field action slot", () => {
     ).not.toBeInTheDocument();
   });
 
-  /* Type-level only: the package's tsc fails if either directive goes unused. */
+  /* Type-level only: `pnpm typecheck` fails if either directive goes unused. */
   it("types FieldHint as a static hint that always has text", () => {
     const Icon = () => <svg />;
     // @ts-expect-error -- the `{ icon, tooltip }` form was removed (UI-398)

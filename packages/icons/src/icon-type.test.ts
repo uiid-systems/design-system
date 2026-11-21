@@ -148,13 +148,11 @@ function typeErrors(
   writeFileSync(
     `${dir}tsconfig.json`,
     JSON.stringify({
-      extends: "../../tsconfig.json",
+      // The repo root's config, not the package's: that one is the composite
+      // build config, with a `rootDir` these fixtures sit outside.
+      extends: "../../../../tsconfig.json",
       compilerOptions: {
         noEmit: true,
-        emitDeclarationOnly: false,
-        declaration: false,
-        declarationMap: false,
-        incremental: false,
         // One @types/react for the whole program, as a consumer has. Inside
         // this repo lucide's own .d.ts otherwise resolves the hoisted copy, a
         // different version from this package's, and a real lucide icon then

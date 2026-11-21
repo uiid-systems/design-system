@@ -28,6 +28,8 @@ const GENERATED_EXPORTS = new Set([
   "@uiid/design-system ./icons/*",
 ]);
 
+const CLEAN_STEP = "node ../../scripts/clean-build-output.mjs && ";
+
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
     entry.isDirectory()
@@ -53,9 +55,9 @@ const extraFiles = new Set(
 );
 // tsconfig.json allows comments, so its references are matched, not parsed.
 // Comments are stripped first, so a commented-out reference does not count.
-const tsconfig = read("tsconfig.json")
-  .replace(/\/\*[\s\S]*?\*\//g, "")
-  .replace(/(^|\s)\/\/.*$/gm, "$1");
+const stripComments = (text) =>
+  text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/.*$/gm, "$1");
+const tsconfig = stripComments(read("tsconfig.json"));
 const references = new Set(
   [...tsconfig.matchAll(/"path":\s*"([^"]+)"/g)].map(([, path]) => path),
 );
@@ -75,6 +77,17 @@ for (const { folder, pkg } of packages) {
 
   if (!references.has(`./packages/${folder}`)) {
     fail(`${name}: missing from the root tsconfig.json references`);
+  }
+
+  // Without the shared build config a package compiles its tests into dist, and
+  // without the clean step a renamed file's old output ships. Both still build.
+  const tsconfigPath = `packages/${folder}/tsconfig.json`;
+  const { extends: base } = JSON.parse(stripComments(read(tsconfigPath)));
+  if (base !== "../../tsconfig.package.json") {
+    fail(`${name}: ${tsconfigPath} must extend ../../tsconfig.package.json`);
+  }
+  if (!pkg.scripts?.build?.startsWith(CLEAN_STEP)) {
+    fail(`${name}: its build script must start with \`${CLEAN_STEP}\``);
   }
 
   const src = join(packagesDir, folder, "src");

@@ -1,0 +1,30 @@
+{
+  // Build config every package's tsconfig.json extends. `tsc -b` typechecks the
+  // package's published source and writes its declarations to dist; Vite writes
+  // the JS and CSS beside them. `${configDir}` is the extending tsconfig's own
+  // directory, so each path below resolves inside the package, not here.
+  // Tests, examples and stories are left out: `pnpm typecheck` checks them, and
+  // their declarations do not belong in a tarball.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    // `files` ships dist only, so a map would point at source the tarball lacks.
+    "declarationMap": false,
+    "allowImportingTsExtensions": false,
+    "rootDir": "${configDir}/src",
+    "outDir": "${configDir}/dist",
+    // Out of dist, so it is never published. The build script deletes it with
+    // dist, so `tsc -b` cannot skip an emit whose output is gone.
+    "tsBuildInfoFile": "${configDir}/node_modules/.tmp/tsconfig.tsbuildinfo",
+    "types": []
+  },
+  "include": ["${configDir}/src"],
+  "exclude": [
+    "${configDir}/src/**/*.test.*",
+    "${configDir}/src/**/*.examples.*",
+    "${configDir}/src/**/*.stories.*"
+  ]
+}

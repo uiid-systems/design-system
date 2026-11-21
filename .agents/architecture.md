@@ -25,7 +25,8 @@ design-system/
 | `vitest.config.ts`      | Test configuration for all packages                                                                        |
 | `vitest.setup.ts`       | Test setup (jest-dom matchers)                                                                             |
 | `vitest.globalSetup.ts` | Generates token CSS and per-icon modules, so tests need no build; Storybook's `main.ts` does the same      |
-| `tsconfig.json`         | Base TypeScript config (packages extend it)                                                                |
+| `tsconfig.json`         | Base TypeScript config                                                                                     |
+| `tsconfig.package.json` | Package build config every `packages/*/tsconfig.json` extends: declaration-only emit to `dist`, no tests   |
 | `tsconfig.check.json`   | Build-free `pnpm typecheck` of packages and Storybook; `apps/docs/tsconfig.check.json` covers the docs app |
 | `turbo.json`            | Turbo task orchestration                                                                                   |
 | `.size-limit.js`        | Size entries, generated from `packages/*`                                                                  |

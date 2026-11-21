@@ -1,8 +1,9 @@
 {
   // Build-free typecheck for every package and Storybook, run by `pnpm typecheck`.
   // `@uiid/source` resolves each @uiid/* import to the package's src/ instead of
-  // dist/, so this passes with no build. Test files are included, as in the
-  // package builds, except the two icons tests below.
+  // dist/, so this passes with no build. It is the only typecheck of test files:
+  // package builds leave them out (tsconfig.package.json). The two icons tests
+  // below are excluded.
   // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -24,7 +25,8 @@
     "apps/storybook/.storybook/**/*",
     "vitest.matchers.d.ts"
   ],
-  // icons' own tsconfig leaves its tests out, and these two do not typecheck:
+  // The package builds leave all tests out, so nothing else checks these two,
+  // and they do not typecheck:
   "exclude": [
     // Passes `title` to an icon, which the public `Icon` type rejects (TS2322).
     "packages/icons/src/components/loading-spinner.test.tsx",
