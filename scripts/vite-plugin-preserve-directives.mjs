@@ -1,6 +1,18 @@
 import { readFileSync } from "fs";
 
 /**
+ * Whether `preserveDirectives` writes a module's directive back into its
+ * output: our own TypeScript sources, not dependencies.
+ *
+ * @param {string | undefined} moduleId
+ * @returns {boolean}
+ */
+export const restoresDirectivesOf = (moduleId) =>
+  Boolean(moduleId) &&
+  !moduleId.includes("node_modules") &&
+  (moduleId.includes(".tsx") || moduleId.includes(".ts"));
+
+/**
  * Vite plugin to preserve "use client" and "use server" directives in the built output.
  * These directives are required for Next.js App Router to properly handle client/server boundaries.
  *
@@ -15,11 +27,7 @@ export function preserveDirectives() {
         if (chunk.type === "chunk" && chunk.code && chunk.moduleIds) {
           // Check all source modules in this chunk for directives
           for (const moduleId of chunk.moduleIds) {
-            if (
-              moduleId &&
-              !moduleId.includes("node_modules") &&
-              (moduleId.includes(".tsx") || moduleId.includes(".ts"))
-            ) {
+            if (restoresDirectivesOf(moduleId)) {
               try {
                 const source = readFileSync(moduleId, "utf-8");
                 const directiveMatch = source.match(

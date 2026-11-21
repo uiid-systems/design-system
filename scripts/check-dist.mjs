@@ -3,7 +3,7 @@
 // resolve every @uiid/* import to source through the `@uiid/source` export
 // condition, so nothing else in CI loads dist.
 //
-// Run after `pnpm turbo run build --filter='./packages/*'`. Five checks:
+// Run after `pnpm turbo run build --filter='./packages/*'`. Six checks:
 //   1. Every bare import in a package's published files, type declarations
 //      included, is one of its dependencies or peerDependencies. The workspace
 //      symlinks devDependencies, so an undeclared import works here and breaks
@@ -13,6 +13,9 @@
 //   4. The icon barrels type-check from outside the repo, with real types.
 //   5. Every published entry point type-checks under `moduleResolution:
 //      "nodenext"`, whose relative imports must name their files.
+//   6. Published stylesheets carry no Lightning CSS artifacts: no
+//      `--lightningcss-*` fallbacks, no native nesting, and `light-dark()`
+//      still present where the packages use it (see scripts/css-target.ts).
 
 import { execFileSync } from "node:child_process";
 import {
@@ -56,6 +59,14 @@ const targets = (value) =>
     : value && typeof value === "object"
       ? Object.values(value).flatMap(targets)
       : [];
+
+// The stylesheets whose sources use `light-dark()` today. Add a sheet here when
+// another package's CSS starts to.
+const LIGHT_DARK_SHEETS = {
+  "@uiid/buttons": ["buttons.css"],
+  "@uiid/code": ["code.css"],
+  "@uiid/design-system": ["design-system.css"],
+};
 
 const packages = readdirSync(packagesDir)
   .map((name) => join(packagesDir, name))
@@ -103,6 +114,32 @@ for (const { dir, manifest } of packages) {
     fail(
       `${manifest.name}: published files import "${name}" (${file}), which is not in dependencies or peerDependencies.`,
     );
+  }
+
+  for (const file of walk(join(dir, "dist")).filter((f) =>
+    f.endsWith(".css"),
+  )) {
+    const css = readFileSync(file, "utf8");
+    const name = relative(root, file);
+    if (css.includes("--lightningcss-")) {
+      fail(
+        `${name}: has --lightningcss-* fallbacks, so light-dark() was lowered. Check cssTarget.`,
+      );
+    }
+    // Strings and url()s may hold a literal `&`; nowhere else may one appear.
+    if (css.replace(/"[^"]*"|'[^']*'|url\([^)]*\)/g, "").includes("&")) {
+      fail(
+        `${name}: ships native CSS nesting. Check the lightningcss options in scripts/css-target.ts.`,
+      );
+    }
+  }
+  for (const file of LIGHT_DARK_SHEETS[manifest.name] ?? []) {
+    const path = join(dir, "dist", file);
+    if (!existsSync(path)) {
+      fail(`${manifest.name}: dist/${file} does not exist.`);
+    } else if (!readFileSync(path, "utf8").includes("light-dark(")) {
+      fail(`${manifest.name}: dist/${file} lost its light-dark() colors.`);
+    }
   }
 
   for (const target of targets(manifest.exports)) {

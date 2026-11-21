@@ -10,8 +10,7 @@ import { rewriteDistDeclarations } from "../../vite.config.ts";
 // tsc emits no .d.ts for a .js module and does not copy a .d.ts input, and
 // the bundle emits those .js modules into dist without one. So every
 // src/*.d.ts ships into dist here, beside dist/index.d.ts, which re-exports
-// them. Without them
-// dist/index.d.ts re-exports modules with no types.
+// them. Without them dist/index.d.ts re-exports modules with no types.
 const SRC_DIR = fileURLToPath(new URL("src/", import.meta.url));
 const srcDeclarations = () =>
   readdirSync(SRC_DIR).filter((file) => file.endsWith(".d.ts"));

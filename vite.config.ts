@@ -2,11 +2,14 @@ import { resolve } from "node:path";
 
 import { defineConfig, type Plugin, type UserConfig } from "vite";
 
-import { cssTarget } from "./scripts/css-target.ts";
+import { cssTarget, lightningcss } from "./scripts/css-target.ts";
 import { rewriteDeclarationsIn } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
 import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
-import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
+import {
+  preserveDirectives,
+  restoresDirectivesOf,
+} from "./scripts/vite-plugin-preserve-directives.mjs";
 
 type ViteConfigOptions = {
   /**
@@ -53,15 +56,6 @@ export const rewriteDistDeclarations = (): Plugin => {
   };
 };
 
-/**
- * Every `cssTarget` browser supports native CSS nesting, so Lightning CSS would
- * ship the source's nested rules as they are. Vite 7's esbuild minifier
- * flattened them, and published stylesheets stay flat: `Features.Nesting` from
- * lightningcss, written as its value because lightningcss is only a dependency
- * of Vite here.
- */
-const LIGHTNINGCSS_NESTING = 1;
-
 const baseExternal = [
   "react",
   "react-dom",
@@ -88,7 +82,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
   return defineConfig({
     plugins,
     css: {
-      lightningcss: { include: LIGHTNINGCSS_NESTING },
+      lightningcss,
       ...(cssLayer && {
         postcss: {
           plugins: [postcssLayerWrapper(cssLayer)],
@@ -102,11 +96,16 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
       },
       rolldownOptions: {
         external: [...baseExternal, ...external],
-        // Rolldown warns once per module that starts with "use client", which
-        // `preserveDirectives` writes back onto the module's first line.
+        // Rolldown warns once per module that starts with "use client". Silence
+        // it only for modules `preserveDirectives` writes the directive back to.
         ...(usePreserveDirectives && {
           onwarn(warning, defaultHandler) {
-            if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+            if (
+              warning.code === "MODULE_LEVEL_DIRECTIVE" &&
+              restoresDirectivesOf(warning.id)
+            ) {
+              return;
+            }
             defaultHandler(warning);
           },
         }),
