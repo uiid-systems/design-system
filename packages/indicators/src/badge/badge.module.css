@@ -27,8 +27,8 @@
 }
 
 /* Color variant: a tinted surface, read from the `.palette-<hue>` class that
-   @uiid/tokens applies alongside this one. Avatar, Progress and Timeline reuse
-   these vars via `badgeColorStyles`, so they follow the same treatment. */
+   @uiid/tokens applies alongside this one. Avatar reuses these vars via
+   `badgeColorStyles`, so it follows the same treatment. */
 .colored {
   --badge-bg: var(--palette-tint);
   --badge-fg: var(--palette-on-tint);

@@ -39,7 +39,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 - [ ] `packages/forms/vitest.setup.{js,d.ts,d.ts.map}` are deleted
 - [ ] The four root copies in `apps/storybook/stories/tokens/` (`index.ts`, `SectionHeader.tsx`, `TokenTable.tsx`, `TokenVisual.tsx`) are deleted; `subcomponents/` stays
-- [ ] `resizable.constants.ts` and the package mocks nothing imports (`accordion.mocks.tsx`, `tabs.mocks.tsx`, `timeline.mocks.ts`) are deleted, and the Storybook copies of `sortable.mocks.ts` and `table.mocks.tsx` are replaced by imports of the package ones
+- [ ] `resizable.constants.ts` and the package mocks nothing imports (`accordion.mocks.tsx`, `tabs.mocks.tsx`) are deleted, and the Storybook copies of `sortable.mocks.ts` and `table.mocks.tsx` are replaced by imports of the package ones
 
 **Verification:**
 
@@ -79,18 +79,17 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Acceptance criteria:**
 
-- [ ] Timeline: the `status` axis of `timelineMarkerVariants` (it maps to classes that do not exist; the CSS keys on `data-status`), the base-only `timelineItemVariants` wrapper, and the unread `ROOT_NAME` and `TIME_NAME` constants are removed
 - [ ] `.group { display: flex }` is removed (Box already declares it), Avatar no longer references the non-existent `avatar-container` class, and the commented-out rule in `toggle-group.module.css` is gone
 - [ ] The docs app's unused `SITEMAP` constant and `SidebarSearch` component are removed
 
 **Verification:**
 
 - [ ] `pnpm test:run packages/{layout,indicators,forms}` passes with no test edited
-- [ ] Storybook and docs builds pass; Timeline, Avatar and Group stories look unchanged
+- [ ] Storybook and docs builds pass; Avatar and Group stories look unchanged
 
 **Dependencies:** None
 
-**Files likely touched:** `packages/indicators/src/timeline/timeline.{variants,constants}.ts` and its callers, `packages/layout/src/group/group.module.css`, `packages/indicators/src/avatar/subcomponents/avatar-container.tsx`, `packages/forms/src/toggle-group/toggle-group.module.css`, `apps/docs/sitemap.ts`, `apps/docs/components/shell/sidebar.tsx`
+**Files likely touched:** `packages/layout/src/group/group.module.css`, `packages/indicators/src/avatar/subcomponents/avatar-container.tsx`, `packages/forms/src/toggle-group/toggle-group.module.css`, `apps/docs/sitemap.ts`, `apps/docs/components/shell/sidebar.tsx`
 
 **Estimated scope:** L, small edits in each
 
@@ -811,7 +810,7 @@ For every task in this phase: parts and their prop types are exported; constants
 **Acceptance criteria:**
 
 - [ ] Table has a README and `table.examples.tsx` covering both the data-driven and the composed form
-- [ ] Timeline, Accordion, Menu and Tabs each have an `.examples.tsx`
+- [ ] Accordion, Menu and Tabs each have an `.examples.tsx`
 - [ ] Sortable and Resizable stories render their examples
 
 **Verification:**

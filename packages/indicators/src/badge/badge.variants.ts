@@ -4,9 +4,8 @@ import { cva } from "@uiid/utils";
 import styles from "./badge.module.css";
 
 /**
- * Every hue paired with Badge's own bg/fg/border derivation. Avatar, Timeline
- * and Progress import this rather than rebuilding the pairing, so the four wear
- * one treatment.
+ * Every hue paired with Badge's own bg/fg/border derivation. Avatar imports
+ * this rather than rebuilding the pairing, so the two wear one treatment.
  */
 export const badgeColorStyles = paletteVariantStyles(styles["colored"]);
 

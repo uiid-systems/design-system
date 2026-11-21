@@ -40,7 +40,7 @@ export default function App() {
 - `@uiid/cards` — Card components
 - `@uiid/code` — Code blocks, inline code, and syntax highlighting
 - `@uiid/forms` — Input, Select, Checkbox, Radio, Switch, Slider, ToggleGroup, and more
-- `@uiid/indicators` — Avatar, Badge, Progress, Status, Timeline
+- `@uiid/indicators` — Avatar, Badge, Progress, Status
 - `@uiid/interactive` — Collapsible, Resizable, Sortable
 - `@uiid/layout` — Box, Stack, Group, Layer, Separator, utility wrappers
 - `@uiid/lists` — List components
