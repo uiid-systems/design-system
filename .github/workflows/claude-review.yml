@@ -138,7 +138,7 @@ jobs:
             4. Verify every finding against the code yourself and drop any you cannot confirm.
             5. Write `.claude-review/review.md` in exactly this shape, with no headings, intro or footnotes:
 
-            🟢 **Approve** — one sentence on why.
+            🔴 **Request changes** — one sentence on why.
 
             **Code**
 
