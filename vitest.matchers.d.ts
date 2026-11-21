@@ -1,7 +1,7 @@
 /*
- * Types for the matchers `vitest.setup.ts` registers. Each package compiles
- * its tests with `tsc -b` from `src/`, where the setup file is out of reach,
- * so this declaration is listed in every package's `include` instead.
+ * Types for the matchers `vitest.setup.ts` registers. `pnpm typecheck` compiles
+ * the tests from each package's `src/`, where the setup file is out of reach,
+ * so this declaration is listed in tsconfig.check.json's `include` instead.
  */
 import "vitest";
 

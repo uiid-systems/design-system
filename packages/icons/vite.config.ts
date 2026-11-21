@@ -4,8 +4,8 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin } from "vite";
 
-import { rewriteDeclarationsIn } from "../../scripts/dts-relative-extensions.mjs";
 import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
+import { rewriteDistDeclarations } from "../../vite.config";
 
 // Declarations for the src/*.js modules that re-export lucide's deep paths.
 // tsc emits no .d.ts for a .js module and does not copy a .d.ts input, and
@@ -33,18 +33,13 @@ const shipJsModuleDeclarations = (): Plugin => ({
       });
     }
   },
-  // `tsc -p tsconfig.build.json` writes the rest of dist's declarations, so this
-  // package cannot use vite-plugin-dts's hook. Once the bundle and the shipped
-  // declarations are on disk, give every relative specifier in dist a `.js`
-  // extension, as `createViteConfig` does, so they resolve under `nodenext`.
-  closeBundle() {
-    rewriteDeclarationsIn(fileURLToPath(new URL("dist/", import.meta.url)));
-  },
 });
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), shipJsModuleDeclarations()],
+  // `tsc -b` writes the rest of dist's declarations. The shared rewrite runs
+  // after this plugin has written the shipped ones, so it covers both.
+  plugins: [react(), shipJsModuleDeclarations(), rewriteDistDeclarations()],
   build: {
     lib: {
       entry: "src/index.ts",
@@ -71,6 +66,8 @@ export default defineConfig({
         sanitizeFileName,
       },
     },
+    // dist already holds the declarations `tsc -b` wrote. The build script
+    // empties it first (scripts/clean-build-output.mjs).
     emptyOutDir: false,
   },
 });

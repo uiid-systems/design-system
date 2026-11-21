@@ -24,7 +24,7 @@ design-system/
 | `vite.config.ts`      | Shared Vite build config factory                                                                           |
 | `vitest.config.ts`    | Test configuration for all packages                                                                        |
 | `vitest.setup.ts`     | Test setup (jest-dom matchers)                                                                             |
-| `tsconfig.json`       | Base TypeScript config (packages extend it)                                                                |
+| `tsconfig.json`       | Base config; packages extend it through `tsconfig.package.json` (declaration-only emit, no tests)          |
 | `tsconfig.check.json` | Build-free `pnpm typecheck` of packages and Storybook; `apps/docs/tsconfig.check.json` covers the docs app |
 | `turbo.json`          | Turbo task orchestration                                                                                   |
 | `.size-limit.js`      | Size entries, generated from `packages/*`                                                                  |

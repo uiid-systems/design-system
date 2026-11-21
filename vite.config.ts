@@ -1,8 +1,9 @@
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig, type UserConfig } from "vite";
-import dts from "vite-plugin-dts";
+import { resolve } from "node:path";
 
-import { rewriteEmittedDeclarations } from "./scripts/dts-relative-extensions.mjs";
+import react from "@vitejs/plugin-react-swc";
+import { defineConfig, type Plugin, type UserConfig } from "vite";
+
+import { rewriteDeclarationsIn } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
 import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
 import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
@@ -33,17 +34,24 @@ type ViteConfigOptions = {
 };
 
 /**
- * Files the published declarations leave out. Tests and examples are compiled by
- * `tsc -b` (that build is the typecheck), but their `.d.ts` are noise in a
- * tarball. Setting `exclude` replaces the tsconfig's, so its entries are repeated.
+ * `tsc -b` writes the declarations into dist before Vite runs (see
+ * tsconfig.package.json). Once the bundle is on disk too, give every relative
+ * specifier in them a `.js` extension, so they resolve under `nodenext` as well
+ * as `bundler`.
  */
-const dtsExclude = [
-  "node_modules/**",
-  "dist/**",
-  "**/*.test.*",
-  "**/*.examples.*",
-  "**/*.stories.*",
-];
+export const rewriteDistDeclarations = (): Plugin => {
+  let outDir = "";
+  return {
+    name: "rewrite-dist-declarations",
+    apply: "build",
+    configResolved(config) {
+      outDir = resolve(config.root, config.build.outDir);
+    },
+    closeBundle() {
+      rewriteDeclarationsIn(outDir);
+    },
+  };
+};
 
 const baseExternal = [
   "react",
@@ -62,21 +70,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     preserveDirectives: usePreserveDirectives = true,
   } = options;
 
-  const plugins = [
-    react(),
-    dts({
-      insertTypesEntry: true,
-      exclude: dtsExclude,
-      // `files` ships dist only, so a map would point at source that is not in
-      // the tarball. Vite empties dist before writing, so `tsc -b`'s own maps do
-      // not survive either. The cost is that go-to-definition into a built
-      // sibling package lands in its .d.ts rather than its source.
-      compilerOptions: { declarationMap: false },
-      // Gives relative specifiers a `.js` extension, so the declarations resolve
-      // under `nodenext` as well as `bundler`.
-      afterBuild: rewriteEmittedDeclarations,
-    }),
-  ];
+  const plugins = [react(), rewriteDistDeclarations()];
 
   if (usePreserveDirectives) {
     plugins.push(preserveDirectives());
@@ -107,6 +101,9 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
         },
       },
       cssCodeSplit: false,
+      // dist already holds the declarations `tsc -b` wrote. The build script
+      // empties it first (scripts/clean-build-output.mjs).
+      emptyOutDir: false,
     },
   });
 }

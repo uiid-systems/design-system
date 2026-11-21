@@ -1,7 +1,44 @@
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { rewriteEmittedDeclarations } from "../../scripts/dts-relative-extensions.mjs";
+import { defineConfig, type Plugin } from "vite";
+
+import { rewriteDistDeclarations } from "../../vite.config";
+
+const SRC_DIR = fileURLToPath(new URL("src/", import.meta.url));
+const DIST_DIR = fileURLToPath(new URL("dist/", import.meta.url));
+
+// `tsc -b` writes the palette's declarations but none for the token JSON they
+// import, so `import colors from "./json/…/colors.tokens.json"` in
+// dist/palette.d.ts would point at nothing. This writes a declaration beside
+// it for each JSON file a declaration imports, typing the default export as the
+// JSON itself. It must run before the shared rewrite, which only gives a
+// specifier a `.js` extension once its declaration exists.
+const JSON_IMPORT = /from\s+"(\.{1,2}\/[^"]+\.json)"/g;
+
+const declareImportedJson = (): Plugin => ({
+  name: "declare-imported-json",
+  apply: "build",
+  closeBundle() {
+    const declarations = readdirSync(DIST_DIR, { recursive: true })
+      .map(String)
+      .filter((file) => file.endsWith(".d.ts"));
+    for (const file of declarations) {
+      const content = readFileSync(join(DIST_DIR, file), "utf8");
+      for (const [, specifier] of content.matchAll(JSON_IMPORT)) {
+        const json = join(dirname(file), specifier);
+        const value = JSON.parse(readFileSync(join(SRC_DIR, json), "utf8"));
+        const target = join(DIST_DIR, `${json}.d.ts`);
+        mkdirSync(dirname(target), { recursive: true });
+        writeFileSync(
+          target,
+          `declare const _default: ${JSON.stringify(value, null, 2)}\n;\n\nexport default _default;\n`,
+        );
+      }
+    }
+  },
+});
 
 /*
  * Tokens are mostly generated CSS, but the palette ships as a tiny ES module
@@ -15,17 +52,9 @@ import { rewriteEmittedDeclarations } from "../../scripts/dts-relative-extension
  * directive handling, neither of which applies here.
  */
 export default defineConfig({
-  plugins: [
-    dts({
-      insertTypesEntry: true,
-      // A subset of `createViteConfig`'s exclusions: tokens has tests but no
-      // examples or stories. Setting `exclude` replaces the tsconfig's, so its
-      // entries are repeated.
-      exclude: ["node_modules/**", "dist/**", "**/*.test.*"],
-      // As in `createViteConfig`: `.js` on relative specifiers for `nodenext`.
-      afterBuild: rewriteEmittedDeclarations,
-    }),
-  ],
+  // Both `closeBundle` hooks are synchronous, so they finish in plugin order and
+  // the JSON declarations exist before the rewrite looks for them.
+  plugins: [declareImportedJson(), rewriteDistDeclarations()],
   build: {
     lib: {
       entry: "src/index.ts",
@@ -34,5 +63,8 @@ export default defineConfig({
          and the "." export would not resolve. */
       fileName: "index",
     },
+    // dist already holds the declarations `tsc -b` wrote. The build script
+    // empties it first (scripts/clean-build-output.mjs).
+    emptyOutDir: false,
   },
 });

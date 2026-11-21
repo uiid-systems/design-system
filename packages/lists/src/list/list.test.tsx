@@ -5,9 +5,9 @@ import { describe, it, expect } from "vitest";
 import { List } from "./list";
 import { ListGroup, ListItem } from "./subcomponents";
 
-// Imported with the `?raw` suffix rather than read from disk: this package
-// builds with `tsc -b` and pins its `types` to vitest and jest-dom, so a
-// builtin import fails to resolve. vite/client declares the suffix, and
+// Imported with the `?raw` suffix rather than read from disk: `pnpm typecheck`
+// pins its `types` to vitest and jest-dom, so a builtin import fails to
+// resolve. vite/client declares the suffix, and
 // vite-env.d.ts already references it.
 import listCss from "./list.module.css?raw";
 import styles from "./list.module.css";

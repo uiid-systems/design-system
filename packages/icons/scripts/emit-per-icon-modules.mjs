@@ -12,9 +12,9 @@ import { PKG_DIR, readIconMap, specifierFor } from "./lucide-icon-map.mjs";
 // bundled: each is a one-line re-export of an external package, so routing them
 // through vite as ~1,750 lib entries would only slow this package's own build.
 //
-// They live in icons/ rather than dist/ deliberately: `vite build` (and
-// `vite build --watch`, which `dev` runs) empties dist, so anything written
-// there is deleted on the next rebuild.
+// They live in icons/ rather than dist/ deliberately: `build` empties dist
+// first (scripts/clean-build-output.mjs), so anything written there is deleted
+// on the next build.
 //
 // Generated, not committed. Emitted by `build`, `dev`, the repo `postinstall`,
 // and the module-graph tests, which run this themselves so they never depend on
