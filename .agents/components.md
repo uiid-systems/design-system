@@ -43,13 +43,13 @@ Copy an existing package's config rather than writing it fresh — `packages/int
 2. `packages/{name}/tsconfig.json` and `vite.config.ts`, using `createViteConfig({ cssLayer: cssLayers.{name} })`
 3. `src/index.ts` barrel and `src/vite-env.d.ts` for CSS module types. `"use client"` stays out of the barrel
 4. `scripts/css-layers.cjs` — add the package, or its CSS ships unlayered
-5. `vitest.config.ts` — nothing to register: the source aliases are derived from every `packages/*` with a `src/index.ts`, keyed by its `package.json` name, so `@uiid/{name}` resolves to source in tests
+5. `vitest.config.ts` — nothing to register, as long as step 1 gave each JS entry in `exports` an `"@uiid/source": "./src/index.ts"` key, first in the entry. Tests and Storybook resolve `@uiid/{name}` to source through that condition, so without it they need a built `dist`
 6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
 7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
 8. `.size-limit.js` — nothing to register: size entries are generated from every `packages/*` with a `dist/index.js`. Add a component to `SINGLE_IMPORTS` there only when the cost of importing it alone is worth tracking
 9. `packages/design-system/package.json` and `src/index.ts` — add the `workspace:*` dependency and `export * from "@uiid/{name}"`, but only once the package is published. `pnpm -r publish` skips a private package and still publishes the umbrella, which would then depend on a version npm cannot serve. Do this in the same PR that removes `"private": true`
-10. `packages/design-system/src/globals.css` — `@import "@uiid/{name}/globals.css"` once the package ships CSS. This is also how component CSS reaches Storybook, whose preview imports only tokens. A types-only package emits no stylesheet, so skip this until it does, and add `"./globals.css": "./dist/{name}.css"` to the package's `exports` at the same time
+10. `packages/design-system/src/globals.css` — `@import "@uiid/{name}/globals.css"` once the package ships CSS. Tests and Storybook stub these built sheets out, since component CSS modules already load from source. A types-only package emits no stylesheet, so skip this until it does, and add `"./globals.css": "./dist/{name}.css"` to the package's `exports` at the same time
 11. `README.md` — add the package to the package list
 12. `pnpm install` to link the workspace package
 
-Storybook needs no registration. `apps/storybook/.storybook/main.ts` aliases every `packages/*/package.json` named `@uiid/*` with a `src/index.ts` to source, and stories are globbed from `apps/storybook/stories/**`.
+Storybook needs no registration. `apps/storybook/.storybook/main.ts` resolves every `@uiid/*` package to source through the `@uiid/source` condition from step 5, and stories are globbed from `apps/storybook/stories/**`.
