@@ -50,7 +50,7 @@ Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest
 
   Lightning also adds rules that Vite 7 did not ship. These are kept:
   - a `-webkit-text-decoration` prefix beside the Shiki theme's `text-decoration`: once in `code.css`. In `design-system.css` the same rule carries it twice, because the umbrella re-minifies the already-prefixed code sheet;
-  - `design-system.css` re-minifies the Input autofill rule into `:-webkit-any(…):-webkit-autofill` and `:is(…):autofill` pairs.
+  - `design-system.css` rewrites the Input autofill rule's `:is(…):-webkit-autofill` selector into a `:-webkit-any(…):-webkit-autofill` and `:is(…):autofill` pair, which replaces the original rather than sitting beside it. It is equivalent on the floor: Chrome 123+ and Safari 17.5 match both rules identically, and Firefox 120 drops the `:-webkit-any` rule and matches `:is(…):autofill`.
 
 - **Peers allow the upgrade.** `@vitejs/plugin-react-swc` 4.3.x lists Vite 8 ([changelog](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc/CHANGELOG.md)). `@storybook/react-vite` and `@storybook/builder-vite` 10.6.8 accept `vite ^8.0.0` (npm registry `peerDependencies`).
 
