@@ -476,6 +476,75 @@ describe("Collapsible", () => {
   // CSS
   // ============================================
 
+  // ============================================
+  // ORIENTATION
+  // ============================================
+
+  it("is vertical by default", () => {
+    render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
+    const panel = getPanel();
+    expect(panel).toHaveAttribute("data-orientation", "vertical");
+    // A Stack's `ay` is its main axis, which Box writes as `ax`.
+    expect(panel).toHaveAttribute("data-ui-ax", "end");
+    expect(panel).toHaveAttribute("data-ui-minh", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ay");
+    expect(panel).not.toHaveAttribute("data-ui-minw");
+  });
+
+  it("pins and shrinks a horizontal panel along its width instead", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel orientation="horizontal">Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    const panel = getPanel();
+    expect(panel).toHaveAttribute("data-orientation", "horizontal");
+    // A Stack's `ax` is its cross axis, which Box writes as `ay`.
+    expect(panel).toHaveAttribute("data-ui-ay", "end");
+    expect(panel).toHaveAttribute("data-ui-minw", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ax");
+    expect(panel).not.toHaveAttribute("data-ui-minh");
+  });
+
+  it("lets a horizontal panel override its default alignment and minimum", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel orientation="horizontal" ax="start" minw={40}>
+          Content
+        </CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).toHaveAttribute("data-ui-ay", "start");
+    expect(getPanel()).toHaveAttribute("data-ui-minw", "40");
+  });
+
+  it("takes orientation through PanelProps", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{ orientation: "horizontal" }}
+      >
+        Content
+      </Collapsible>,
+    );
+    expect(getPanel()).toHaveAttribute("data-orientation", "horizontal");
+  });
+
+  it("animates and clips a horizontal panel's width", () => {
+    const horizontal = css.slice(
+      css.indexOf('.collapsible-panel[data-orientation="horizontal"]'),
+    );
+    expect(horizontal).toMatch(/width: var\(--collapsible-panel-width\);/);
+    expect(horizontal).toMatch(/overflow-x: clip;/);
+    expect(horizontal).toMatch(/overflow-y: visible;/);
+    expect(horizontal).toMatch(/transition-property: width;/);
+  });
+
   it("clips the panel vertically only, so focus rings and shadows survive", () => {
     expect(css).toMatch(/overflow-x: visible;/);
     expect(css).toMatch(/overflow-y: clip;/);

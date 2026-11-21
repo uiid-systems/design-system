@@ -16,10 +16,28 @@
   }
 }
 
+/* The same on the other axis: the width animates and clips, the height is free. */
+.collapsible-panel[data-orientation="horizontal"] {
+  width: var(--collapsible-panel-width);
+  height: auto;
+  overflow-x: clip;
+  overflow-y: visible;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    width: 0;
+    height: auto;
+  }
+}
+
 /* Under reduced motion the panel snaps open and shut. */
 @media (prefers-reduced-motion: no-preference) {
   .collapsible-panel {
     transition: height var(--globals-transition-duration) ease-out;
+
+    &[data-orientation="horizontal"] {
+      transition-property: width;
+    }
 
     &[data-instant] {
       transition: none;

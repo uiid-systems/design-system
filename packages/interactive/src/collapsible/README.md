@@ -45,6 +45,18 @@ A component element can't be inspected before it renders, so it is taken to be a
 
 The root and the panel each render a `Stack`, so `RootProps` and `PanelProps` take its layout props alongside Base UI's. The panel aligns its content to the end (`ay="end"`) by default; pass `ay` to change it.
 
+## Orientation
+
+A panel opens downward by default. Pass `orientation="horizontal"` to `CollapsiblePanel` (or through `PanelProps`) and it animates its width instead, for a panel that opens sideways, such as a sidebar. A horizontal panel pins its content to its trailing edge (`ax="end"`), so the content slides out rather than reflowing as the panel narrows. Give that content a width of its own; the panel opens to it.
+
+```tsx
+<CollapsibleRoot open={open}>
+  <CollapsiblePanel orientation="horizontal" instant={false} keepMounted>
+    <Stack w={240}>…</Stack>
+  </CollapsiblePanel>
+</CollapsibleRoot>
+```
+
 ## Composition
 
 `CollapsibleRoot`, `CollapsibleTrigger`, and `CollapsiblePanel` are exported for layouts the simple component can't express, and take the same props as `RootProps`, `TriggerProps`, and `PanelProps`. A bare `CollapsiblePanel` is instant; pass `instant={false}` to animate it.
