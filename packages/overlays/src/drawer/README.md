@@ -130,9 +130,7 @@ Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the g
 - **`DrawerViewport`** — a fixed full-screen layer the popup is inset against, which frees the popup's own `transform` for the drag.
 - **`DrawerContent`** — wraps the body so a mouse user can select text inside without the drag becoming a swipe.
 
-`DrawerSwipeArea` is opt-in too. It's an invisible area that opens the drawer on a swipe from the edge it enters from. Render it inside `DrawerRoot`, outside the portal, and place and size it yourself, such as a narrow strip fixed to that edge. `Drawer` renders none, so compose the parts to use it.
-
-`DrawerProvider`, `DrawerIndent`, and `DrawerIndentBackground` are opt-in. Wrap the app in them to get the indent effect, where the page scales down behind any open drawer. A standalone drawer needs none of them.
+`DrawerSwipeArea` is opt-in. It's an invisible area that opens the drawer on a swipe from the edge it enters from. Render it inside `DrawerRoot`, outside the portal, and place and size it yourself, such as a narrow strip fixed to that edge. `Drawer` renders none, so compose the parts to use it.
 
 ## Caveats
 

@@ -5,15 +5,10 @@
     "bg-hover": { "$value": "{shade.surface}", "$type": "color" },
     "bg-focus": { "$value": "{shade.accent}", "$type": "color" },
     "padding": {
-      "x": { "$value": "0.75rem", "$type": "dimension" },
       "y": { "$value": "0.75rem", "$type": "dimension" }
     },
     "border": {
       "color": { "$value": "{globals.border.color}", "$type": "color" }
-    },
-    "font-size": {
-      "$value": "{forms.size.md.font-size}",
-      "$type": "dimension"
     },
     "icon": {
       "size": { "$value": "{globals.icon.size}", "$type": "dimension" }
