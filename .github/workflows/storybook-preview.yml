@@ -16,28 +16,28 @@ concurrency:
   group: storybook-preview-${{ github.event.pull_request.number }}-${{ (github.event.action != 'labeled' || github.event.label.name == 'preview') && 'deploy' || github.run_id }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
-
-env:
-  VERCEL_CLI: vercel@66.6.0
+# Nothing by default; each job asks for what it needs.
+permissions: {}
 
 jobs:
-  deploy:
-    # Fork PRs get no secrets, so there is nothing to deploy with.
+  # Runs the PR's code, so it gets no secrets and a read-only token. All it
+  # hands on is the static Storybook output.
+  build:
+    # Fork PRs get no secrets, so there would be nothing to deploy with.
     if: >-
       contains(github.event.pull_request.labels.*.name, 'preview')
       && (github.event.action != 'labeled' || github.event.label.name == 'preview')
       && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STORYBOOK_PROJECT_ID }}
+    permissions:
+      contents: read
     steps:
+      # The PR head rather than the default merge commit, so the preview is
+      # exactly the commit named in the comment.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
 
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
@@ -47,24 +47,54 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      # Run from the repo root: the pulled project settings carry the Root
-      # Directory (apps/storybook), and `vercel build` installs and builds from
-      # there with the same commands a build on Vercel would use.
-      - name: Pull project settings
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: pnpm dlx "$VERCEL_CLI" pull --yes --environment=preview --token="$VERCEL_TOKEN"
+      # The repo postinstall only sets up git hooks, Playwright and the per-icon
+      # modules. The icons build emits those modules itself, so skip it here.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
 
-      # No token here: the build runs the PR's own code.
-      - name: Build
-        run: pnpm dlx "$VERCEL_CLI" build
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
+      # The same command Vercel runs for production (apps/storybook/vercel.json).
+      - run: pnpm turbo run build-storybook --filter=@uiid/storybook
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: storybook-static
+          path: apps/storybook/storybook-static
+          retention-days: 1
+          if-no-files-found: error
+
+  # Holds the Vercel token, so it never checks out or runs the PR's code: it
+  # only uploads the files the build job produced.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pull-requests: write
+    steps:
+      # Vercel's prebuilt layout (Build Output API v3): static files plus a
+      # config naming the version.
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: storybook-static
+          path: .vercel/output/static
+
+      - run: echo '{"version":3}' > .vercel/output/config.json
+
+      # The CLI reads the token and both IDs from the environment.
       - name: Deploy
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STORYBOOK_PROJECT_ID }}
         run: |
-          url=$(pnpm dlx "$VERCEL_CLI" deploy --prebuilt --token="$VERCEL_TOKEN")
+          url=$(npx --yes vercel@66.6.0 deploy --prebuilt)
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Comment preview URL
