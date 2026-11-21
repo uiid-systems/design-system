@@ -3,6 +3,7 @@
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { afterAll, describe, expect, it } from "vitest";
@@ -22,7 +23,11 @@ import { ICON_TYPE_DTS } from "../scripts/emit-per-icon-modules.mjs";
 // with no lucide declarations in scope, which is how a consumer compiles it.
 
 const require = createRequire(import.meta.url);
-const TSC = require.resolve("typescript/bin/tsc");
+// TypeScript 7 does not export `./bin/tsc`, so find it from the manifest.
+const TSC = join(
+  dirname(require.resolve("typescript/package.json")),
+  "bin/tsc",
+);
 
 const PKG_DIR = fileURLToPath(new URL("..", import.meta.url));
 // Fixtures live inside node_modules, which is already gitignored, so they leave
