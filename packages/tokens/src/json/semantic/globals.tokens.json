@@ -29,24 +29,6 @@
           "spread": "0px"
         }
       },
-      "md": {
-        "$value": [
-          {
-            "color": "#0000001a",
-            "offsetX": "0px",
-            "offsetY": "4px",
-            "blur": "6px",
-            "spread": "-1px"
-          },
-          {
-            "color": "#0000000d",
-            "offsetX": "0px",
-            "offsetY": "2px",
-            "blur": "4px",
-            "spread": "-2px"
-          }
-        ]
-      },
       "lg": {
         "$value": [
           {

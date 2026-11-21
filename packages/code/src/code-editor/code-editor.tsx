@@ -62,7 +62,7 @@ export const CodeEditor = ({
       : "Code editor";
 
   // Syntax highlighting
-  const { html, loading } = useHighlight(value || " ", language);
+  const { html } = useHighlight(value || " ", language);
 
   // Sync scroll between textarea and highlight layer
   const handleScroll = useCallback(
@@ -158,8 +158,6 @@ export const CodeEditor = ({
           disabled={disabled}
         />
       </Layer>
-
-      {loading && !value && <div>Loading...</div>}
     </Stack>
   );
 };
