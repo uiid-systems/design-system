@@ -145,26 +145,49 @@ jobs:
                - Also `agent-skills:web-performance-auditor` when it changes web UI, loading or rendering.
             3. Wait for every reviewer's report. This session ends for good the moment you stop, so never stop to wait: if a reviewer has not reported, do that review yourself.
             4. Verify every finding against the code yourself and drop any you cannot confirm.
-            5. Write `.claude-review/review.md` in exactly this shape, with no intro, footnotes or other headings:
+            5. Write `.claude-review/review.md` in exactly this shape, with no intro, footnotes, tables or other headings:
 
             ### 🔴 Request changes
 
             One sentence on why.
 
-            #### Code
+            <details>
+            <summary>⚠️ <b>Code</b> · Closed panel stays reachable by Tab · Open</summary>
 
-            | Severity | Finding | Location | Status |
-            | --- | --- | --- | --- |
-            | Important | What is wrong, in one line | `file.tsx` | Open |
+            What is wrong, why it matters and how to fix it, as long as it needs to be.
 
-            - The first line is a level-three heading with the status light and the verdict, and nothing else. The sentence follows as its own paragraph. The light follows the findings that are still open, never your overall impression:
+            `packages/example/src/file.tsx:42`
+
+            - [ ] Defer
+
+            </details>
+
+            <details>
+            <summary>💡 <b>Tests</b> · Hidden attribute is never asserted · ✅ <code>abc1234</code></summary>
+
+            What was wrong.
+
+            `packages/example/src/file.test.tsx:10`
+
+            </details>
+
+            Reviewers: Code, Tests
+
+            - The first line is a level-three heading with the status light and the verdict, and nothing else. The sentence follows as its own paragraph. The light follows the findings that are still open, never your overall impression, and a deferred finding is not open:
               - `### 🔴 Request changes` when any Critical or Important finding is open.
               - `### 🟡 Approve with suggestions` when only Suggestions or Nits are open.
               - `### 🟢 Approve` when no finding is open.
-            - Severity is one of Critical, Important, Suggestion or Nit.
-            - Status is "Open", "Fixed in `<sha>`" or "Won't fix". Carry findings over from the previous review; mark one "Fixed in" with the short HEAD SHA above when it was open before and the code no longer has the problem.
-            - One table per reviewer that ran, each under a level-four heading (`#### Code`, `#### Security`, `#### Tests`, `#### Performance`).
-            - Only verified findings go in. Leave out praise and the reviewers' own checks. A reviewer with no findings gets the line "No findings." instead of a table.
+            - Every finding is one `<details>` block, in a single list for all reviewers: open findings first, then deferred, then fixed, each group from most to least severe. Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line.
+            - The summary line is the severity icon, the reviewer in bold (Code, Security, Tests or Performance), a title and the status, joined by ` · `. It is HTML, not markdown: use `<code>` instead of backticks and write `&lt;` for `<`.
+              - Severity icon: 🛑 Critical, ⚠️ Important, 💡 Suggestion, ✏️ Nit.
+              - Title: under ten words, naming the problem. Never change the title of a finding carried over from the previous review.
+              - Status: `Open`, `⏸️ Deferred` or `✅ <code>sha</code>` for fixed.
+            - The body is the full explanation, then the location on its own line as `path:line` in backticks (or "PR description" when the finding is about the description), then, for open and deferred findings only, the Defer checkbox.
+            - Carry every finding over from the previous review, converting it if that review used the older table layout. The maintainer ticks a Defer box to say a finding will not be fixed in this pull request:
+              - Fixed: it was open or deferred before and the code no longer has the problem. Use the short HEAD SHA above, or keep the SHA it already had. No checkbox.
+              - Deferred: its box is ticked in the previous review. Keep `- [x] Defer`.
+              - Open: everything else, including a finding whose box was unticked again. Write `- [ ] Defer`.
+            - Only verified findings go in. Leave out praise and the reviewers' own checks. End with the `Reviewers:` line listing the reviewers that ran. When there are no findings at all, write "No findings." above it.
             - Never hard-wrap prose, and never include a token, key or other credential.
 
             6. If the description has a checklist, write `.claude-review/verified-checklist.md` with one line for each unchecked item you confirmed is true by reading the code: the item's text copied exactly, without the `- [ ]`. A later step ticks those boxes. Leave out any item you are unsure of or that can only be confirmed by running something, and skip the file when there is nothing to tick.
@@ -207,6 +230,36 @@ jobs:
           if [ "$current_head" != "$HEAD_SHA" ]; then
             echo "::notice::The pull request has newer commits, so this review was not posted"
             exit 0
+          fi
+
+          # A Defer box ticked or unticked while this review was running is not
+          # in the copy Claude read, so apply that change to the new review.
+          # Findings are matched by title. This is best effort: a failed lookup
+          # must not stop the review from being posted.
+          if [ -n "$COMMENT_ID" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
+            awk '
+              FNR == 1 { file++ }
+              FNR == 1 || /^<\/details>/ { finding = "" }
+              { sub(/\r$/, "") }
+              /^<summary>/ {
+                finding = $0
+                sub(/^.*<\/b> · /, "", finding)
+                sub(/ · (Open|⏸️ Deferred)<\/summary>.*$/, "", finding)
+              }
+              /^- \[[ xX]\] Defer/ && finding != "" {
+                box = ($0 ~ /^- \[ \]/) ? " " : "x"
+                if (file == 1) before[finding] = box
+                else if (file == 2) now[finding] = box
+                else if ((finding in before) && (finding in now) && before[finding] != now[finding]) {
+                  print "- [" now[finding] "] Defer"
+                  next
+                }
+              }
+              file == 3 { print }
+            ' "$RUNNER_TEMP/previous-comment.md" "$RUNNER_TEMP/current-comment.md" "$review" > "$RUNNER_TEMP/review-merged.md"
+            if [ -s "$RUNNER_TEMP/review-merged.md" ]; then
+              mv "$RUNNER_TEMP/review-merged.md" "$review"
+            fi
           fi
 
           # Below the review goes one line per round and the total review time.
