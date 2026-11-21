@@ -128,7 +128,7 @@ Baseline measured 2026-11-18 on this machine: a forced full build through Turbo 
 
 ## Success criteria
 
-1. **Deletions.** Until the close-out task removes it, `tasks/` holds only this plan; the three finished-work docs are gone; no tracked build output outside `dist`; no declared dependency that nothing imports; no `@deprecated` marker anywhere in `packages/*/src`.
+1. **Deletions.** Until the close-out task removes it, `tasks/` holds only this plan; the three finished-work docs are gone; no tracked build output outside `dist`; no declared dependency that nothing imports, where a package's emitted declarations count as importers, as `scripts/check-dist.mjs` enforces; no `@deprecated` marker anywhere in `packages/*/src`.
 2. **Build.** A fresh clone passes `pnpm install && pnpm test:run` and `pnpm typecheck` with no build step. Vitest and Storybook share one way of resolving `@uiid/*` to source. Each package generates declarations once. A forced full build is no slower than the baseline when both are measured on the same machine. TypeScript, Vite and Vitest are on their current majors, or a named breaking change is recorded as the reason not.
 3. **Base UI.** Every package declares the same 1.9.x version in the same form, and each workaround written against 1.7 is removed or justified.
 4. **Masks.** `currencyMask`, `percentMask` and `numberMask` work on `Input` as you type, with correct decimals and symbol placement for the five test locales. A cleared field has an empty value. A bundle that renders `Input` with no mask contains no Maskito code. All 13 fixed patterns exist as masks. The old mask hooks and utilities are deleted. Chromium browser tests run in CI, and the README states which platforms are untested.
@@ -146,6 +146,7 @@ Answered by the owner on 2026-11-18.
 4. **Sortable and Resizable: ship at 1.0, cleaned up.** Dead code removed, surface trimmed to parts, stories rendering real examples.
 5. **Mask browser tests: in CI, Chromium only.** Firefox and WebKit run locally when the binaries are present.
 6. **Untested platforms for masks: automated engines only.** Mobile keyboards and IME composition stay untested for now, and the README says so plainly.
+7. **`cva` stays a dependency of packages that emit variant types (UI-451).** Each published `*.variants.d.ts` is typed as `import('cva').CVAComponent<…>`, so without its own `cva` dependency that import does not resolve for a consumer under strict resolution, which is an error, or `any` under `skipLibCheck`. Re-exporting cva's types from `@uiid/utils` did not change what the declarations name, and making them name utils instead would need utils to re-declare cva's generic signatures or every variants file to carry an annotation.
 
 ## Open questions
 

@@ -58,7 +58,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Acceptance criteria:**
 
-- [ ] `cva` is declared only in `@uiid/utils`; `vite-tsconfig-paths` is removed from the root config and every manifest; `react-dom` is no longer a peer of utils or icons; tokens no longer declares `react`, `@types/react` or `nodemon`, and its `watch` script is gone
+- [ ] `cva` stays declared in every package that emits variant types, since their declarations name it and `scripts/check-dist.mjs` fails on an undeclared import (UI-451); `vite-tsconfig-paths` is removed from the root config and every manifest; `react-dom` is no longer a peer of utils or icons; tokens no longer declares `react`, `@types/react` or `nodemon`, and its `watch` script is gone
 - [ ] Duplicate or unused entries are removed: indicators' dev `@uiid/icons`, code's four packages listed in both dependency blocks, Storybook's `@vitest/coverage-v8`, and `@mdx-js/react` in the docs app if the docs build passes without it
 - [ ] Dead config is removed: the `preserveDirectives: true` in tables' Vite config, which restates the default (layout and utils set `false`, which is not the default, and keep it), ai's `markdown-to-jsx` external, Turbo's `build/**` output, Vitest's `apps/**/__tests__` include, the commented-out Storybook addon, and the husky migration in `scripts/postinstall.mjs`
 
@@ -513,6 +513,7 @@ For every task in this phase: parts and their prop types are exported; constants
 **Acceptance criteria:**
 
 - [ ] utils exports only what a consumer writes; the prop-key arrays, option types and `composeRefs` are internal; icons no longer exports `createLucideIcon`, which nothing outside the package uses
+- [ ] `VariantProps` stays public, because the published `*.types.d.ts` files import it
 - [ ] tokens' unused package export paths are removed and its published files exclude tests; `paletteAnchor` moves to Storybook
 - [ ] The PR records which alias names Lucide itself deprecates and how many alias names this repo uses, so the owner can decide whether icons emit canonical names only; no icon names change in this task, and if the answer is yes it becomes a new task
 
