@@ -266,22 +266,25 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 ### Task 13: Move the build toolchain to the root and upgrade Vite and Vitest (UI-425)
 
-**Description:** Declare Vite, the React plugin and Vitest once at the root, then take them to their current majors.
+**Description:** Declare Vite, the React plugin and Vitest once at the root, then take them to their current majors. `@testing-library/jest-dom` 8 comes with Vitest 5, because it is the release that supports it. The breaking changes are listed under "Toolchain upgrades" in the spec.
 
 **Acceptance criteria:**
 
 - [ ] The build toolchain is declared in the root manifest only
 - [ ] Vite and Vitest are on their current majors, or the spec records the specific breaking change that prevents it
 - [ ] The React SWC plugin is removed from library builds if the built output is unchanged without it
+- [ ] `build.cssTarget` is set so built CSS keeps `light-dark()`, in library builds and Storybook
+- [ ] `@testing-library/jest-dom` is on 8.x, tsconfig `types` lists `@testing-library/jest-dom/vitest`, and `vitest.matchers.d.ts` declares `Assertion<R, T>`
 
 **Verification:**
 
 - [ ] Full build, `pnpm test:run`, `pnpm size`, Storybook and docs builds pass
 - [ ] `node scripts/check-dist.mjs` passes; `"use client"` is still the first line of every module that had it
+- [ ] Every built package stylesheet that had `light-dark()` still has it, and none contains `--lightningcss-`
 
 **Dependencies:** Tasks 7 and 11
 
-**Files likely touched:** root and package manifests (mechanical), `vite.config.ts`, `vitest.config.ts`
+**Files likely touched:** root and package manifests (mechanical), `vite.config.ts`, `vitest.config.ts`, `vitest.matchers.d.ts`, package and Storybook tsconfigs, `apps/storybook/.storybook/main.ts`
 
 **Estimated scope:** L, mechanical
 
@@ -293,22 +296,25 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 - [ ] `typescript` is on 7.x everywhere, with one `@types/react` version across all workspace importers
 - [ ] `pnpm typecheck` and the full build pass
+- [ ] Nothing calls the TypeScript 5 JavaScript API: `ts.preProcessFile` is replaced in `scripts/dts-relative-extensions.mjs` and `packages/design-system/src/package-dependencies.test.ts`, or `typescript` is aliased to `@typescript/typescript6` with the native compiler alongside. The alias conflicts with "7.x everywhere", so the owner rules on it here
+- [ ] `packages/icons/tsconfig.build.json` sets `rootDir`
+- [ ] The docs props table (`react-docgen-typescript`) has a recorded decision: the alias, waiting for the 7.1 API, or staying on 5.9
 - [ ] If the upgrade is not viable, the spec records why and the repo stays on 5.9
 
 **Verification:**
 
 - [ ] Diff each package's emitted `.d.ts` against the previous build and explain every difference in the PR
-- [ ] Docs build passes against the new declarations
+- [ ] Docs build passes against the new declarations, and a docs page still renders its props table
 
 **Dependencies:** Tasks 7 and 13
 
-**Files likely touched:** manifests, lockfile, tsconfigs
+**Files likely touched:** manifests, lockfile, tsconfigs, `scripts/dts-relative-extensions.mjs`, `packages/design-system/src/package-dependencies.test.ts`, `apps/docs/components/docs/props-table.tsx`
 
 **Estimated scope:** M
 
 ### Task 15: Upgrade the remaining majors (UI-427)
 
-**Description:** Shiki 4, size-limit 14, `@testing-library/jest-dom` 8, commitlint 21 and `@types/node` 26.
+**Description:** Shiki 4, size-limit 14, commitlint 21 and `@types/node` 26. `@testing-library/jest-dom` 8 moved to Task 13.
 
 **Acceptance criteria:**
 
