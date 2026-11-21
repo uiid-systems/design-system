@@ -120,7 +120,7 @@ jobs:
             4. Verify every finding against the code yourself and drop any you cannot confirm.
             5. Write `.claude-review/review.md` in exactly this shape, with no headings, intro or footnotes:
 
-            **Approve** — one sentence on why.
+            🟢 **Approve** — one sentence on why.
 
             **Code**
 
@@ -128,7 +128,10 @@ jobs:
             | --- | --- | --- | --- |
             | Important | What is wrong, in one line | `file.tsx` | Open |
 
-            - The first line is the verdict: **Approve**, **Request changes** or **Comment**, then one sentence.
+            - The first line is the status light and verdict, then one sentence. The light follows the findings that are still open, never your overall impression:
+              - 🔴 **Request changes** when any Critical or Important finding is open.
+              - 🟡 **Comment** when only Suggestions or Nits are open.
+              - 🟢 **Approve** when no finding is open.
             - Severity is one of Critical, Important, Suggestion or Nit.
             - Status is "Open", "Fixed in `<sha>`" or "Won't fix". Carry findings over from the previous review; mark one "Fixed in" with the short HEAD SHA above when it was open before and the code no longer has the problem.
             - One table per reviewer that ran, each under its bold label (**Code**, **Security**, **Tests**, **Performance**).
@@ -174,8 +177,18 @@ jobs:
             exit 0
           fi
 
-          # Tick the checklist items Claude confirmed. This can only turn an
-          # existing "- [ ]" line into "- [x]", and never rewrites its text.
+          # The marker is how the next run finds this comment to update it.
+          { cat "$review"; printf '\n\n<!-- claude-review -->\n'; } > "$RUNNER_TEMP/review-body.md"
+
+          if [ -n "$COMMENT_ID" ]; then
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/review-body.md" --silent
+          else
+            gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/review-body.md"
+          fi
+
+          # Tick the checklist items Claude confirmed, after the review is posted
+          # so a failure here cannot lose it. This only turns an existing "- [ ]"
+          # line into "- [x]".
           verified=.claude-review/verified-checklist.md
           if [ -s "$verified" ]; then
             gh api "repos/$GH_REPO/pulls/$PR_NUMBER" --jq .body > "$RUNNER_TEMP/pr-body.md"
@@ -189,13 +202,4 @@ jobs:
             if [ -s "$RUNNER_TEMP/pr-body-ticked.md" ] && ! cmp -s "$RUNNER_TEMP/pr-body.md" "$RUNNER_TEMP/pr-body-ticked.md"; then
               gh api -X PATCH "repos/$GH_REPO/pulls/$PR_NUMBER" -F "body=@$RUNNER_TEMP/pr-body-ticked.md" --silent
             fi
-          fi
-
-          # The marker is how the next run finds this comment to update it.
-          { cat "$review"; printf '\n\n<!-- claude-review -->\n'; } > "$RUNNER_TEMP/review-body.md"
-
-          if [ -n "$COMMENT_ID" ]; then
-            gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/review-body.md" --silent
-          else
-            gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/review-body.md"
           fi
