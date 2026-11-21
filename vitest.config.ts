@@ -40,7 +40,7 @@ export default defineConfig({
     // Generates the token CSS and @uiid/icons' per-icon modules, which source
     // files import directly and which are generated rather than committed.
     globalSetup: ["./vitest.globalSetup.ts"],
-    include: ["packages/**/*.test.{ts,tsx}"],
+    include: ["packages/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
     css: true,
   },
 });

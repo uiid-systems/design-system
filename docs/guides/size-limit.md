@@ -22,7 +22,17 @@ The `Size Limit` workflow runs on every non-draft PR, including stacked PRs that
 
 1. Builds the PR (merged into its base) and runs `size-limit --json`.
 2. Checks out the base commit as a second worktree, builds it, and measures it with the PR's config by pointing `SIZE_ROOT` at that worktree. Both builds share one Turbo cache, so the base build is mostly cache hits.
-3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table each for packages, components and styles, showing only the entries that changed, with every entry in a collapsed section below.
+3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table for packages, with each package's script and stylesheet side by side on one row, and one for components. Both show only the rows that changed, with every entry in a collapsed section below.
+
+Each change carries a dot:
+
+| Dot | Meaning                        |
+| --- | ------------------------------ |
+| 🟢  | The entry got smaller          |
+| 🟡  | The entry grew by 5% or less   |
+| 🔴  | The entry grew by more than 5% |
+
+A red dot alone does not fail the check: a 0.5 kB stylesheet can grow 15% by gaining one rule. An entry that fails the check is red with its change in bold.
 
 An entry that exists on only one side is reported as new or removed and never fails the check.
 
@@ -30,7 +40,7 @@ The workflow does not re-run when a PR's base branch is changed without a push. 
 
 ## When the check fails
 
-The check fails when any entry grows by more than **5% and 2 kB**. Growth has to clear both, so a small package can gain a component and a large one is not failed by a small change. Both thresholds are constants at the top of `scripts/size-compare.mjs`.
+The check fails when any entry grows by more than **5% and 2 kB**. Growth has to clear both, so a small package can gain a component and a large one is not failed by a small change. Both thresholds are constants at the top of `scripts/size-compare.mjs`, and the percentage is also where a dot turns from yellow to red.
 
 1. **Unintentional growth** → investigate (new dependency? lost tree-shake? barrel re-export of a heavy library?) and fix.
 2. **Intentional growth** → add the `size-increase-ok` label to the PR. The check re-runs and passes, and the comment still records the increase.
