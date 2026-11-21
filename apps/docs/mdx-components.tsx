@@ -21,7 +21,7 @@ const components: MDXComponents = {
     <Text
       render={<h2 />}
       id={headingId(children)}
-      className="scroll-mt-20"
+      className="scroll-mt-4"
       size={4}
       weight="semibold"
     >
@@ -32,7 +32,7 @@ const components: MDXComponents = {
     <Text
       render={<h3 />}
       id={headingId(children)}
-      className="scroll-mt-20"
+      className="scroll-mt-4"
       size={2}
       weight="semibold"
     >

@@ -22,7 +22,7 @@
  * The selectors below are the contract with the parts: `SidebarContainer`
  * carries `data-shell-sidebar`, and each `SidebarGroup` carries
  * `data-shell-group` with its id, plus `data-active` when it holds the
- * current page. An active group is never hidden, because it opens on load
+ * current page. An active group is never hidden, because it is open on load
  * whatever was saved.
  */
 
@@ -50,7 +50,15 @@ const hideClosedBeforePaint = (
       rules.push("[data-shell-sidebar]{display:none}");
     }
 
-    const groups = JSON.parse(localStorage.getItem(groupsKey) ?? "{}");
+    // Parsed on its own, so a groups value that isn't ours can't take the
+    // sidebar rule down with it.
+    let groups: Record<string, unknown> = {};
+    try {
+      groups = JSON.parse(localStorage.getItem(groupsKey) ?? "{}") ?? {};
+    } catch {
+      // Not JSON. No groups are hidden.
+    }
+
     Object.keys(groups).forEach((id) => {
       if (groups[id] !== false) return;
       const group = `[data-shell-group=${JSON.stringify(id)}]:not([data-active])`;
@@ -78,10 +86,10 @@ type NoFlashKeys = {
   groupsKey: string;
 };
 
-/** The source of the inline script. */
+/** The source of the inline script. `<` is escaped so no key can close the tag. */
 export const noFlashScript = ({ sidebarKey, groupsKey }: NoFlashKeys) => {
   const args = [sidebarKey, groupsKey, STYLE_ID].map((arg) =>
-    JSON.stringify(arg),
+    JSON.stringify(arg).replace(/</g, "\\u003c"),
   );
 
   return `(${hideClosedBeforePaint.toString()})(${args.join(",")})`;

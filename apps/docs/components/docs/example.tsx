@@ -49,7 +49,7 @@ export async function Example({ title, of, name, children }: ExampleProps) {
       data-slot="example"
       id={title ? slugify(title) : undefined}
       data-title={title}
-      className="scroll-mt-20"
+      className="scroll-mt-4"
       gap={2}
     >
       {title && !code ? (

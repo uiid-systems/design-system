@@ -8,7 +8,7 @@
  * render, then pick up the saved value once mounted. `no-flash.ts` covers the
  * gap in between.
  */
-import { atom, getDefaultStore } from "jotai/vanilla";
+import { atom } from "jotai/vanilla";
 import { atomWithStorage } from "jotai/vanilla/utils";
 
 import { SIDEBAR_GROUPS_STORAGE_KEY, SIDEBAR_STORAGE_KEY } from "./constants";
@@ -40,18 +40,3 @@ export const sidebarGroupsAtom = atom(
     set(savedGroupsAtom, update(toGroups(get(savedGroupsAtom))));
   },
 );
-
-/**
- * Open a group that was saved closed, for the group holding the current page.
- * Call it from an effect. The empty subscription mounts the atom first, which
- * loads the saved value, so the write below can't replace it with the default.
- */
-export const openSidebarGroup = (id: string) => {
-  const store = getDefaultStore();
-  const unmount = store.sub(sidebarGroupsAtom, () => {});
-
-  store.set(sidebarGroupsAtom, (groups) =>
-    groups[id] === false ? { ...groups, [id]: true } : groups,
-  );
-  unmount();
-};
