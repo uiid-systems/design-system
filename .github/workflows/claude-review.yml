@@ -64,6 +64,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           echo "started_at=$(date +%s)" >> "$GITHUB_OUTPUT"
 
@@ -77,7 +78,6 @@ jobs:
           # The earlier review, if any: the newest comment this workflow posted.
           comment_id=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
             --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- claude-review"))) | .id' | tail -n 1)
-          echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
           # That comment ends with one line per earlier round and a marker that
           # carries the round count and the total review time so far.
@@ -93,14 +93,96 @@ jobs:
               seconds=${counters#*seconds=}
             fi
 
-            grep -E '^Round [0-9]+ · ' "$RUNNER_TEMP/previous-comment.md" > "$RUNNER_TEMP/review-rounds.md" || true
+            # While a run is going, or after one failed or was cancelled, the
+            # comment starts with a status header in place of the verdict
+            # heading (see below). Turn it back into the finished review: drop
+            # the header and restore the verdict it names as "Previous review".
+            # The header is only ever the first three lines, so a finding that
+            # quotes the marker is left alone. Bodies edited on GitHub can have
+            # CRLF line endings, so strip the CR first.
+            awk '
+              { sub(/\r$/, ""); line[NR] = $0 }
+              END {
+                status = "<!-- claude-review-status run=[0-9]+ -->$"
+                start = 1
+                if (line[1] ~ /^### / && line[3] ~ /^_/ && line[3] ~ status) {
+                  previous = line[3]
+                  if (sub(/^_\*\*Previous review:\*\* /, "", previous)) {
+                    sub(/ · .*$/, "", previous)
+                    print "### " previous
+                    print ""
+                  }
+                  start = (line[4] == "") ? 5 : 4
+                } else if (line[1] ~ status) {
+                  # The single status line that came before the header.
+                  start = (line[2] == "") ? 3 : 2
+                }
+                for (i = start; i <= NR; i++) print line[i]
+              }
+            ' "$RUNNER_TEMP/previous-comment.md" > "$RUNNER_TEMP/clean-comment.md"
+
+            # One line per round. Older comments wrote them as
+            # "Round 1 · 🔴 · …", so convert those to the current layout.
+            grep -E '^(Round [0-9]+|[^ ]+ \*\*Round [0-9]+\*\*) · ' "$RUNNER_TEMP/clean-comment.md" |
+              sed -E 's/^Round ([0-9]+) · ([^ ]+) · /\2 **Round \1** · /' > "$RUNNER_TEMP/review-rounds.md" || true
 
             # Claude gets the review without the lines this workflow adds.
-            grep -v -E '^(<!-- claude-review|<sub>Round |Round [0-9]+ · |Total review time · |---$)' \
-              "$RUNNER_TEMP/previous-comment.md" > .claude-review/previous-review.md || true
+            grep -v -E '^(<!-- claude-review|<sub>Round |Round [0-9]+ · |[^ ]+ \*\*Round [0-9]+\*\* · |(\*\*)?Total review time(\*\*)? · |---$)' \
+              "$RUNNER_TEMP/clean-comment.md" > .claude-review/previous-review.md || true
+            # A comment that only ever held a status header has no review in it.
+            if ! grep -q '[^[:space:]]' .claude-review/previous-review.md; then
+              rm .claude-review/previous-review.md
+            fi
           fi
           echo "round=$round" >> "$GITHUB_OUTPUT"
           echo "seconds=$seconds" >> "$GITHUB_OUTPUT"
+
+          # A re-run of an old job never posts its review (see Post review), so
+          # it must not put a status line on the newer review either: nothing
+          # would ever clear it.
+          current_head=$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)
+          if [ "$current_head" != "$HEAD_SHA" ]; then
+            echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # While the review runs, a status header takes the place of the
+          # verdict heading, so an old "Request changes" does not read as the
+          # current state. The earlier verdict moves to the italic line below
+          # it, which also carries a marker naming this run, so a cancelled run
+          # can tell whether the header is still its own before changing it.
+          run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
+          started="$(date -u +%H:%M) UTC"
+          {
+            printf '### 🔵 Running round %s\n\n' "$((round + 1))"
+            if [ -n "$comment_id" ]; then
+              previous=$(awk 'NR == 1 && sub(/^### /, "") { print }' "$RUNNER_TEMP/clean-comment.md")
+              if [ -n "$previous" ]; then
+                printf '_**Previous review:** %s · started %s · [watch the run](%s)_' "$previous" "$started" "$run_url"
+              else
+                printf '_Started %s · [watch the run](%s)_' "$started" "$run_url"
+              fi
+              printf ' <!-- claude-review-status run=%s -->\n\n' "$GITHUB_RUN_ID"
+              # The review without its verdict heading and the blank line after.
+              if [ -n "$previous" ]; then
+                tail -n +3 "$RUNNER_TEMP/clean-comment.md"
+              else
+                cat "$RUNNER_TEMP/clean-comment.md"
+              fi
+            else
+              # A first review starts with only the status header, plus the
+              # marker the next run uses to find this comment.
+              printf '_Started %s · [watch the run](%s)_ <!-- claude-review-status run=%s -->\n\n' "$started" "$run_url" "$GITHUB_RUN_ID"
+              printf '<!-- claude-review round=0 seconds=0 -->\n'
+            fi
+          } > "$RUNNER_TEMP/status-comment.md"
+
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$comment_id" -F "body=@$RUNNER_TEMP/status-comment.md" --silent
+          else
+            comment_id=$(gh api -X POST "repos/$GH_REPO/issues/$PR_NUMBER/comments" -F "body=@$RUNNER_TEMP/status-comment.md" --jq .id)
+          fi
+          echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
       - name: Review with Claude
         id: claude
@@ -151,8 +233,11 @@ jobs:
 
             One sentence on why.
 
+            ---
+
             <details>
             <summary>⚠️ <b>Code</b> · Closed panel stays reachable by Tab · Open</summary>
+            <br>
 
             What is wrong, why it matters and how to fix it, as long as it needs to be.
 
@@ -160,24 +245,31 @@ jobs:
 
             - [ ] Defer
 
+            ---
+
             </details>
 
             <details>
             <summary>💡 <b>Tests</b> · Hidden attribute is never asserted · ✅ <code>abc1234</code></summary>
+            <br>
 
             What was wrong.
 
             `packages/example/src/file.test.tsx:10`
 
+            ---
+
             </details>
 
-            Reviewers: Code, Tests
+            ---
+
+            **Reviewers:** Code, Tests
 
             - The first line is a level-three heading with the status light and the verdict, and nothing else. The sentence follows as its own paragraph. The light follows the findings that are still open, never your overall impression, and a deferred finding is not open:
               - `### 🔴 Request changes` when any Critical or Important finding is open.
               - `### 🟡 Approve with suggestions` when only Suggestions or Nits are open.
               - `### 🟢 Approve` when no finding is open.
-            - Every finding is one `<details>` block, in a single list for all reviewers: open findings first, then deferred, then fixed, each group from most to least severe. Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line.
+            - Every finding is one `<details>` block, in a single list for all reviewers: open findings first, then deferred, then fixed, each group from most to least severe. Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line. Put a `<br>` on the line right after each `<summary>`, with no blank line between them, and end each finding with a `---` line between blank lines just before its `</details>`. Put a `---` line, with a blank line on each side, above the first finding and below the last, and leave both out when there are no findings.
             - The summary line is the severity icon, the reviewer in bold (Code, Security, Tests or Performance), a title and the status, joined by ` · `. It is HTML, not markdown: use `<code>` instead of backticks and write `&lt;` for `<`.
               - Severity icon: 🛑 Critical, ⚠️ Important, 💡 Suggestion, ✏️ Nit.
               - Title: under ten words, naming the problem. Never change the title of a finding carried over from the previous review.
@@ -187,7 +279,7 @@ jobs:
               - Fixed: it was open or deferred before and the code no longer has the problem. Use the short HEAD SHA above, or keep the SHA it already had. No checkbox.
               - Deferred: its box is ticked in the previous review. Keep `- [x] Defer`.
               - Open: everything else, including a finding whose box was unticked again. Write `- [ ] Defer`.
-            - Only verified findings go in. Leave out praise and the reviewers' own checks. End with the `Reviewers:` line listing the reviewers that ran. When there are no findings at all, write "No findings." above it.
+            - Only verified findings go in. Leave out praise and the reviewers' own checks. End with the `**Reviewers:**` line listing the reviewers that ran. When there are no findings at all, write "No findings." above it.
             - Never hard-wrap prose, and never include a token, key or other credential.
 
             6. If the description has a checklist, write `.claude-review/verified-checklist.md` with one line for each unchecked item you confirmed is true by reading the code: the item's text copied exactly, without the `- [ ]`. A later step ticks those boxes. Leave out any item you are unsure of or that can only be confirmed by running something, and skip the file when there is nothing to tick.
@@ -236,7 +328,9 @@ jobs:
           # in the copy Claude read, so apply that change to the new review.
           # Findings are matched by title. This is best effort: a failed lookup
           # must not stop the review from being posted.
-          if [ -n "$COMMENT_ID" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
+          # On a first review the comment holds only the status header, so there
+          # is no earlier copy to compare against.
+          if [ -n "$COMMENT_ID" ] && [ -f "$RUNNER_TEMP/previous-comment.md" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
             awk '
               FNR == 1 { file++ }
               FNR == 1 || /^<\/details>/ { finding = "" }
@@ -262,6 +356,8 @@ jobs:
             fi
           fi
 
+          # The new body replaces the whole comment, which also replaces the
+          # status header with the new verdict heading.
           # Below the review goes one line per round and the total review time.
           # The marker at the end stores the counters, and is how the next run
           # finds this comment to update it.
@@ -272,22 +368,20 @@ jobs:
 
           rounds="$RUNNER_TEMP/review-rounds.md"
           light=$(awk 'NR == 1 { print $2 }' "$review")
-          printf 'Round %s · %s · %s · reviewed `%s`\n' \
-            "$round" "$light" "$(duration "$took")" "${HEAD_SHA:0:7}" >> "$rounds"
+          printf '%s **Round %s** · %s · reviewed `%s`\n' \
+            "$light" "$round" "$(duration "$took")" "${HEAD_SHA:0:7}" >> "$rounds"
 
           {
             cat "$review"
             printf '\n\n---\n\n'
             cat "$rounds"
-            printf 'Total review time · %s\n' "$(duration "$total")"
+            printf '\n**Total review time** · %s\n' "$(duration "$total")"
             printf '\n<!-- claude-review round=%s seconds=%s -->\n' "$round" "$total"
           } > "$RUNNER_TEMP/review-body.md"
 
-          if [ -n "$COMMENT_ID" ]; then
-            gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/review-body.md" --silent
-          else
-            gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/review-body.md"
-          fi
+          # The context step always leaves a comment to update: it found one or
+          # created one holding the status line.
+          gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/review-body.md" --silent
 
           # Tick the checklist items Claude confirmed, after the review is posted
           # so a failure here cannot lose it. This only turns an existing "- [ ]"
@@ -306,3 +400,48 @@ jobs:
               gh api -X PATCH "repos/$GH_REPO/pulls/$PR_NUMBER" -F "body=@$RUNNER_TEMP/pr-body-ticked.md" --silent
             fi
           fi
+
+      # A run that fails or is cancelled never posts a review, so the header
+      # would keep saying "Running". Change it to say the round stopped, unless
+      # a newer run has already put its own header there.
+      - name: Mark the review as stopped
+        if: failure() || cancelled()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          COMMENT_ID: ${{ steps.context.outputs.comment_id }}
+          PREVIOUS_ROUND: ${{ steps.context.outputs.round }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          [ -n "$COMMENT_ID" ] || exit 0
+          gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/stopped-comment.md"
+
+          run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
+          if [ "$JOB_STATUS" = "cancelled" ]; then
+            heading="### ⏹️ Round $((PREVIOUS_ROUND + 1)) cancelled"
+          else
+            heading="### ⚠️ Round $((PREVIOUS_ROUND + 1)) failed"
+          fi
+
+          # The header is the first three lines, and only this run's own header
+          # is changed. The italic line keeps the earlier verdict, if any.
+          HEADING="$heading" RUN_URL="$run_url" awk '
+            { sub(/\r$/, ""); line[NR] = $0 }
+            END {
+              marker = "<!-- claude-review-status run=" ENVIRON["GITHUB_RUN_ID"] " -->"
+              n = length(marker)
+              if (line[1] !~ /^### / || line[3] !~ /^_/ || substr(line[3], length(line[3]) - n + 1) != marker) exit 1
+              link = "[see the run](" ENVIRON["RUN_URL"] ")"
+              previous = line[3]
+              if (sub(/^_\*\*Previous review:\*\* /, "", previous)) {
+                sub(/ · .*$/, "", previous)
+                line[3] = "_**Previous review:** " previous " · " link "_ " marker
+              } else {
+                line[3] = "_[See the run](" ENVIRON["RUN_URL"] ")_ " marker
+              }
+              line[1] = ENVIRON["HEADING"]
+              for (i = 1; i <= NR; i++) print line[i]
+            }
+          ' "$RUNNER_TEMP/stopped-comment.md" > "$RUNNER_TEMP/stopped-body.md" || exit 0
+          gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/stopped-body.md" --silent
