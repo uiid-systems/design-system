@@ -1,6 +1,6 @@
 {
   "name": "@uiid/utils",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Utility functions for UIID components",
   "license": "MIT",
   "author": "Adam Fratino",
@@ -26,7 +26,6 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
