@@ -1,7 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin } from "vite";
 
 import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
@@ -39,7 +38,7 @@ const shipJsModuleDeclarations = (): Plugin => ({
 export default defineConfig({
   // `tsc -b` writes the rest of dist's declarations. The shared rewrite runs
   // after this plugin has written the shipped ones, so it covers both.
-  plugins: [react(), shipJsModuleDeclarations(), rewriteDistDeclarations()],
+  plugins: [shipJsModuleDeclarations(), rewriteDistDeclarations()],
   build: {
     lib: {
       entry: "src/index.ts",

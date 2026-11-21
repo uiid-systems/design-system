@@ -1,6 +1,5 @@
 import { resolve } from "node:path";
 
-import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin, type UserConfig } from "vite";
 
 import { rewriteDeclarationsIn } from "./scripts/dts-relative-extensions.mjs";
@@ -70,7 +69,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     preserveDirectives: usePreserveDirectives = true,
   } = options;
 
-  const plugins = [react(), rewriteDistDeclarations()];
+  const plugins = [rewriteDistDeclarations()];
 
   if (usePreserveDirectives) {
     plugins.push(preserveDirectives());
