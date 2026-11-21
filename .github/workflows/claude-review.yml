@@ -64,6 +64,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           echo "started_at=$(date +%s)" >> "$GITHUB_OUTPUT"
 
@@ -77,7 +78,6 @@ jobs:
           # The earlier review, if any: the newest comment this workflow posted.
           comment_id=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
             --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- claude-review"))) | .id' | tail -n 1)
-          echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
           # That comment ends with one line per earlier round and a marker that
           # carries the round count and the total review time so far.
@@ -96,11 +96,40 @@ jobs:
             grep -E '^Round [0-9]+ · ' "$RUNNER_TEMP/previous-comment.md" > "$RUNNER_TEMP/review-rounds.md" || true
 
             # Claude gets the review without the lines this workflow adds.
-            grep -v -E '^(<!-- claude-review|<sub>Round |Round [0-9]+ · |Total review time · |---$)' \
+            grep -v -E '^(<!-- claude-review|<sub>Round |Round [0-9]+ · |Total review time · |---$)|<!-- claude-review-status ' \
               "$RUNNER_TEMP/previous-comment.md" > .claude-review/previous-review.md || true
+            # A comment that only ever held a status line has no review in it.
+            if ! grep -q '[^[:space:]]' .claude-review/previous-review.md; then
+              rm .claude-review/previous-review.md
+            fi
           fi
           echo "round=$round" >> "$GITHUB_OUTPUT"
           echo "seconds=$seconds" >> "$GITHUB_OUTPUT"
+
+          # Put a status line at the top of the comment so the PR shows that a
+          # review is running. The marker names this run, so a cancelled run
+          # can tell whether the line is still its own before changing it.
+          run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
+          {
+            printf '<sub>⏳ Reviewing `%s` · started %s UTC · [watch the run](%s)</sub> <!-- claude-review-status run=%s -->\n\n' \
+              "${HEAD_SHA:0:7}" "$(date -u +%H:%M)" "$run_url" "$GITHUB_RUN_ID"
+            if [ -n "$comment_id" ]; then
+              # Drop the earlier status line and the blank line after it.
+              awk '/<!-- claude-review-status / { skip = 1; next } skip && /^$/ { skip = 0; next } { skip = 0; print }' \
+                "$RUNNER_TEMP/previous-comment.md"
+            else
+              # A first review starts with only the status line, plus the marker
+              # the next run uses to find this comment.
+              printf '<!-- claude-review round=0 seconds=0 -->\n'
+            fi
+          } > "$RUNNER_TEMP/status-comment.md"
+
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$comment_id" -F "body=@$RUNNER_TEMP/status-comment.md" --silent
+          else
+            comment_id=$(gh api -X POST "repos/$GH_REPO/issues/$PR_NUMBER/comments" -F "body=@$RUNNER_TEMP/status-comment.md" --jq .id)
+          fi
+          echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
       - name: Review with Claude
         id: claude
@@ -236,7 +265,9 @@ jobs:
           # in the copy Claude read, so apply that change to the new review.
           # Findings are matched by title. This is best effort: a failed lookup
           # must not stop the review from being posted.
-          if [ -n "$COMMENT_ID" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
+          # On a first review the comment holds only the status line, so there
+          # is no earlier copy to compare against.
+          if [ -n "$COMMENT_ID" ] && [ -f "$RUNNER_TEMP/previous-comment.md" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
             awk '
               FNR == 1 { file++ }
               FNR == 1 || /^<\/details>/ { finding = "" }
@@ -262,6 +293,8 @@ jobs:
             fi
           fi
 
+          # The new body replaces the whole comment, which also clears the
+          # status line: the verdict heading now says the review is done.
           # Below the review goes one line per round and the total review time.
           # The marker at the end stores the counters, and is how the next run
           # finds this comment to update it.
@@ -306,3 +339,32 @@ jobs:
               gh api -X PATCH "repos/$GH_REPO/pulls/$PR_NUMBER" -F "body=@$RUNNER_TEMP/pr-body-ticked.md" --silent
             fi
           fi
+
+      # A run that fails or is cancelled never posts a review, so the status
+      # line would keep saying "Reviewing". Change it to say the review stopped,
+      # unless a newer run has already put its own status line there.
+      - name: Mark the review as stopped
+        if: failure() || cancelled()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          COMMENT_ID: ${{ steps.context.outputs.comment_id }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          [ -n "$COMMENT_ID" ] || exit 0
+          gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/stopped-comment.md"
+          grep -q "<!-- claude-review-status run=$GITHUB_RUN_ID -->" "$RUNNER_TEMP/stopped-comment.md" || exit 0
+
+          run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
+          if [ "$JOB_STATUS" = "cancelled" ]; then
+            message="⏹️ Review of \`${HEAD_SHA:0:7}\` was cancelled"
+          else
+            message="⚠️ Review of \`${HEAD_SHA:0:7}\` failed · [see the run]($run_url)"
+          fi
+          line="<sub>$message</sub> <!-- claude-review-status run=$GITHUB_RUN_ID -->"
+
+          LINE="$line" awk '/<!-- claude-review-status / { print ENVIRON["LINE"]; next } { print }' \
+            "$RUNNER_TEMP/stopped-comment.md" > "$RUNNER_TEMP/stopped-body.md"
+          gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/stopped-body.md" --silent
