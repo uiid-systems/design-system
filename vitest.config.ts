@@ -1,10 +1,8 @@
 import path from "path";
 
-import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
   resolve: {
     // Every @uiid/* package exports its source under the `@uiid/source`
     // condition, so tests resolve sibling packages to `src/` without a build.
