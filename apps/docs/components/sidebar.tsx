@@ -46,10 +46,12 @@ export function Sidebar() {
 
   // The no-flash style spares whichever group was active on load, so it goes
   // stale as soon as the reader navigates. A layout effect, so it is gone
-  // before the new page paints.
+  // before the new page paints. Navigating also ends a close made by hand,
+  // so coming back to this page later finds its group open again.
   const loadedAt = useRef(pathname);
   useLayoutEffect(() => {
     if (pathname !== loadedAt.current) clearNoFlash();
+    setClosedAt(undefined);
   }, [pathname]);
 
   return (
@@ -73,7 +75,7 @@ export function Sidebar() {
             open={
               group.id === activeGroup
                 ? closedAt !== pathname
-                : (groups[group.id] ?? true)
+                : groups[group.id] !== false
             }
             onOpenChange={(next) => {
               clearNoFlash();
