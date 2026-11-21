@@ -73,8 +73,8 @@ jobs:
             --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- claude-review"))) | .id' | tail -n 1)
           echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
-          # The marker at the end of that comment carries the round count and
-          # the total review time so far.
+          # That comment ends with one line per earlier round and a marker that
+          # carries the round count and the total review time so far.
           round=0
           seconds=0
           if [ -n "$comment_id" ]; then
@@ -87,8 +87,11 @@ jobs:
               seconds=${counters#*seconds=}
             fi
 
+            grep -E '^Round [0-9]+ · ' "$RUNNER_TEMP/previous-comment.md" > "$RUNNER_TEMP/review-rounds.md" || true
+
             # Claude gets the review without the lines this workflow adds.
-            grep -v -e '^<!-- claude-review' -e '^<sub>Round ' "$RUNNER_TEMP/previous-comment.md" > .claude-review/previous-review.md || true
+            grep -v -E '^(<!-- claude-review|<sub>Round |Round [0-9]+ · |Total review time · |---$)' \
+              "$RUNNER_TEMP/previous-comment.md" > .claude-review/previous-review.md || true
           fi
           echo "round=$round" >> "$GITHUB_OUTPUT"
           echo "seconds=$seconds" >> "$GITHUB_OUTPUT"
@@ -136,23 +139,25 @@ jobs:
                - Also `agent-skills:web-performance-auditor` when it changes web UI, loading or rendering.
             3. Wait for every reviewer's report. This session ends for good the moment you stop, so never stop to wait: if a reviewer has not reported, do that review yourself.
             4. Verify every finding against the code yourself and drop any you cannot confirm.
-            5. Write `.claude-review/review.md` in exactly this shape, with no headings, intro or footnotes:
+            5. Write `.claude-review/review.md` in exactly this shape, with no intro, footnotes or other headings:
 
-            🔴 **Request changes** — one sentence on why.
+            ### 🔴 Request changes
 
-            **Code**
+            One sentence on why.
+
+            #### Code
 
             | Severity | Finding | Location | Status |
             | --- | --- | --- | --- |
             | Important | What is wrong, in one line | `file.tsx` | Open |
 
-            - The first line is the status light and verdict, then one sentence. The light follows the findings that are still open, never your overall impression:
-              - 🔴 **Request changes** when any Critical or Important finding is open.
-              - 🟡 **Comment** when only Suggestions or Nits are open.
-              - 🟢 **Approve** when no finding is open.
+            - The first line is a level-three heading with the status light and the verdict, and nothing else. The sentence follows as its own paragraph. The light follows the findings that are still open, never your overall impression:
+              - `### 🔴 Request changes` when any Critical or Important finding is open.
+              - `### 🟡 Approve with suggestions` when only Suggestions or Nits are open.
+              - `### 🟢 Approve` when no finding is open.
             - Severity is one of Critical, Important, Suggestion or Nit.
             - Status is "Open", "Fixed in `<sha>`" or "Won't fix". Carry findings over from the previous review; mark one "Fixed in" with the short HEAD SHA above when it was open before and the code no longer has the problem.
-            - One table per reviewer that ran, each under its bold label (**Code**, **Security**, **Tests**, **Performance**).
+            - One table per reviewer that ran, each under a level-four heading (`#### Code`, `#### Security`, `#### Tests`, `#### Performance`).
             - Only verified findings go in. Leave out praise and the reviewers' own checks. A reviewer with no findings gets the line "No findings." instead of a table.
             - Never hard-wrap prose, and never include a token, key or other credential.
 
@@ -198,20 +203,25 @@ jobs:
             exit 0
           fi
 
-          # Under the status line goes how many rounds this PR has had and how
-          # long they took. The marker at the end stores those numbers, and is
-          # how the next run finds this comment to update it.
+          # Below the review goes one line per round and the total review time.
+          # The marker at the end stores the counters, and is how the next run
+          # finds this comment to update it.
           round=$((PREVIOUS_ROUND + 1))
           took=$(($(date +%s) - STARTED_AT))
           total=$((PREVIOUS_SECONDS + took))
           duration() { printf '%dm %02ds' $(($1 / 60)) $(($1 % 60)); }
 
+          rounds="$RUNNER_TEMP/review-rounds.md"
+          light=$(awk 'NR == 1 { print $2 }' "$review")
+          printf 'Round %s · %s · %s · reviewed `%s`\n' \
+            "$round" "$light" "$(duration "$took")" "${HEAD_SHA:0:7}" >> "$rounds"
+
           {
-            sed -n '1p' "$review"
-            printf '\n<sub>Round %s · %s this round · %s in total · reviewed `%s`</sub>\n' \
-              "$round" "$(duration "$took")" "$(duration "$total")" "${HEAD_SHA:0:7}"
-            sed '1d' "$review"
-            printf '\n\n<!-- claude-review round=%s seconds=%s -->\n' "$round" "$total"
+            cat "$review"
+            printf '\n\n---\n\n'
+            cat "$rounds"
+            printf 'Total review time · %s\n' "$(duration "$total")"
+            printf '\n<!-- claude-review round=%s seconds=%s -->\n' "$round" "$total"
           } > "$RUNNER_TEMP/review-body.md"
 
           if [ -n "$COMMENT_ID" ]; then
