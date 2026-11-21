@@ -91,13 +91,15 @@ jobs:
       - name: Build packages
         run: pnpm turbo run build --filter='./packages/*'
 
-      # Tests, Storybook and the typecheck resolve @uiid/* to source. This is
-      # the only step that loads the built packages.
+      # Tests, Storybook and the typecheck resolve @uiid/* to source through the
+      # `@uiid/source` export condition. This is the only step that loads the
+      # built packages.
       - name: Check built packages
         run: node scripts/check-dist.mjs
 
-      # The Storybook tests need the build above: install skips scripts, so the
-      # per-icon modules and the dist CSS Storybook loads only exist after it.
+      # The Storybook tests need the steps above only for generated files:
+      # install skips scripts, so the per-icon modules and the token CSS only
+      # exist after the build.
       - name: Install Playwright Chromium
         run: pnpm --filter @uiid/storybook exec playwright install --with-deps chromium
 

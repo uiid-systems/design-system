@@ -3,9 +3,10 @@ import { themes, getPreferredColorScheme } from "storybook/theming";
 
 /*
  * Tokens only — layer order, custom properties, and the shared compositions.
- * Component CSS already reaches the preview through `@uiid/design-system`, whose
- * entry imports its own globals.css; importing the prebuilt bundle here as well
- * put a redundant third copy of every component rule on the page. Uses the
+ * Component CSS already reaches the preview through each component's source CSS
+ * module. The barrel's `globals.css` imports of the built sheets are stubbed in
+ * main.ts, so importing a prebuilt bundle here would only add a second copy of
+ * every component rule. Uses the
  * `@tokens` alias from main.ts because `@uiid/tokens` is not a dependency of
  * this app.
  */

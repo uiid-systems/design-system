@@ -22,6 +22,12 @@ const fail = (message) => failures.push(message);
 const UMBRELLA = "design-system";
 const NOT_IN_BARREL = new Set(["icons"]);
 
+/* Per-icon modules, generated with no source file behind them. */
+const GENERATED_EXPORTS = new Set([
+  "@uiid/icons ./*",
+  "@uiid/design-system ./icons/*",
+]);
+
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
     entry.isDirectory()
@@ -74,6 +80,17 @@ for (const { folder, pkg } of packages) {
   const src = join(packagesDir, folder, "src");
   if (existsSync(src) && hasCssModule(src) && !cssLayers[folder]) {
     fail(`${name}: has CSS modules but no entry in scripts/css-layers.cjs`);
+  }
+
+  // Tests and Storybook find source through this key, and resolution follows
+  // key order, so it must come first. With a built dist, a missing key still
+  // resolves, to stale output. Generated wildcards have no source to point at.
+  for (const [subpath, entry] of Object.entries(pkg.exports ?? {})) {
+    if (typeof entry !== "object" || !("import" in entry)) continue;
+    if (GENERATED_EXPORTS.has(`${name} ${subpath}`)) continue;
+    if (Object.keys(entry)[0] !== "@uiid/source") {
+      fail(`${name}: exports "${subpath}" must start with "@uiid/source"`);
+    }
   }
 
   if (pkg.private) continue;
