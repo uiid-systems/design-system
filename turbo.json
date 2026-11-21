@@ -7,6 +7,7 @@
     "vitest.matchers.d.ts",
     "scripts/clean-build-output.mjs",
     "scripts/css-layers.cjs",
+    "scripts/css-target.ts",
     "scripts/dts-relative-extensions.mjs",
     "scripts/postcss-layer-wrapper.cjs",
     "scripts/rollup-sanitize-file-name.mjs",

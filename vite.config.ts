@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 
 import { defineConfig, type Plugin, type UserConfig } from "vite";
 
+import { cssTarget } from "./scripts/css-target.ts";
 import { rewriteDeclarationsIn } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
 import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
@@ -52,6 +53,15 @@ export const rewriteDistDeclarations = (): Plugin => {
   };
 };
 
+/**
+ * Every `cssTarget` browser supports native CSS nesting, so Lightning CSS would
+ * ship the source's nested rules as they are. Vite 7's esbuild minifier
+ * flattened them, and published stylesheets stay flat: `Features.Nesting` from
+ * lightningcss, written as its value because lightningcss is only a dependency
+ * of Vite here.
+ */
+const LIGHTNINGCSS_NESTING = 1;
+
 const baseExternal = [
   "react",
   "react-dom",
@@ -77,20 +87,29 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
 
   return defineConfig({
     plugins,
-    ...(cssLayer && {
-      css: {
+    css: {
+      lightningcss: { include: LIGHTNINGCSS_NESTING },
+      ...(cssLayer && {
         postcss: {
           plugins: [postcssLayerWrapper(cssLayer)],
         },
-      },
-    }),
+      }),
+    },
     build: {
       lib: {
         entry,
         formats: ["es"],
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: [...baseExternal, ...external],
+        // Rolldown warns once per module that starts with "use client", which
+        // `preserveDirectives` writes back onto the module's first line.
+        ...(usePreserveDirectives && {
+          onwarn(warning, defaultHandler) {
+            if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+            defaultHandler(warning);
+          },
+        }),
         output: {
           preserveModules: true,
           preserveModulesRoot: "src",
@@ -99,6 +118,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
           sanitizeFileName,
         },
       },
+      cssTarget,
       cssCodeSplit: false,
       // dist already holds the declarations `tsc -b` wrote. The build script
       // empties it first (scripts/clean-build-output.mjs).

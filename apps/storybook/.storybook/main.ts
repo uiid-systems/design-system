@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import type { StorybookConfig } from "@storybook/react-vite";
 
+import { cssTarget } from "../../../scripts/css-target.ts";
 import { emitGeneratedSources } from "../../../scripts/emit-generated-sources.ts";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
@@ -81,9 +82,11 @@ const config: StorybookConfig = {
     // warning back through the SWC sourcemap. 653 of the build's 710 warning
     // lines are these two, which is enough to bury a real failure in a CI log.
     config.build ??= {};
-    config.build.rollupOptions ??= {};
-    const inheritedOnWarn = config.build.rollupOptions.onwarn;
-    config.build.rollupOptions.onwarn = (warning, defaultHandler) => {
+    // Keep `light-dark()` intact, as the library builds do.
+    config.build.cssTarget = cssTarget;
+    config.build.rolldownOptions ??= {};
+    const inheritedOnWarn = config.build.rolldownOptions.onwarn;
+    config.build.rolldownOptions.onwarn = (warning, defaultHandler) => {
       if (
         warning.code === "MODULE_LEVEL_DIRECTIVE" ||
         warning.code === "SOURCEMAP_ERROR"

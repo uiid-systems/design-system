@@ -4,12 +4,13 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
 
 import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
-import { rewriteDistDeclarations } from "../../vite.config";
+import { rewriteDistDeclarations } from "../../vite.config.ts";
 
 // Declarations for the src/*.js modules that re-export lucide's deep paths.
 // tsc emits no .d.ts for a .js module and does not copy a .d.ts input, and
-// Rollup folds those .js modules into dist/index.js. So every src/*.d.ts ships
-// into dist here, beside dist/index.d.ts, which re-exports them. Without them
+// the bundle emits those .js modules into dist without one. So every
+// src/*.d.ts ships into dist here, beside dist/index.d.ts, which re-exports
+// them. Without them
 // dist/index.d.ts re-exports modules with no types.
 const SRC_DIR = fileURLToPath(new URL("src/", import.meta.url));
 const srcDeclarations = () =>
@@ -44,7 +45,7 @@ export default defineConfig({
       entry: "src/index.ts",
       formats: ["es"],
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         "react",
         "react-dom",
