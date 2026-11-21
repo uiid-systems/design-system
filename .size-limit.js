@@ -70,7 +70,7 @@ for (const { dir, folder, pkg } of packages) {
     entries.push({
       name: `${pkg.name} (css)`,
       path: css,
-      disablePlugins: ["@size-limit/esbuild"],
+      disablePlugins: ["@size-limit/rolldown"],
     });
   }
 
