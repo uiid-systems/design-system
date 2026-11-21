@@ -59,6 +59,8 @@ jobs:
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          echo "started_at=$(date +%s)" >> "$GITHUB_OUTPUT"
+
           rm -rf .claude-review
           mkdir .claude-review
 
@@ -68,12 +70,28 @@ jobs:
 
           # The earlier review, if any: the newest comment this workflow posted.
           comment_id=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
-            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- claude-review -->"))) | .id' | tail -n 1)
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- claude-review"))) | .id' | tail -n 1)
           echo "comment_id=$comment_id" >> "$GITHUB_OUTPUT"
 
+          # The marker at the end of that comment carries the round count and
+          # the total review time so far.
+          round=0
+          seconds=0
           if [ -n "$comment_id" ]; then
-            gh api "repos/$GH_REPO/issues/comments/$comment_id" --jq .body > .claude-review/previous-review.md
+            gh api "repos/$GH_REPO/issues/comments/$comment_id" --jq .body > "$RUNNER_TEMP/previous-comment.md"
+
+            counters=$(grep -o 'claude-review round=[0-9]* seconds=[0-9]*' "$RUNNER_TEMP/previous-comment.md" | tail -n 1 || true)
+            if [ -n "$counters" ]; then
+              round=${counters#*round=}
+              round=${round%% *}
+              seconds=${counters#*seconds=}
+            fi
+
+            # Claude gets the review without the lines this workflow adds.
+            grep -v -e '^<!-- claude-review' -e '^<sub>Round ' "$RUNNER_TEMP/previous-comment.md" > .claude-review/previous-review.md || true
           fi
+          echo "round=$round" >> "$GITHUB_OUTPUT"
+          echo "seconds=$seconds" >> "$GITHUB_OUTPUT"
 
       - name: Review with Claude
         id: claude
@@ -148,6 +166,9 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           COMMENT_ID: ${{ steps.context.outputs.comment_id }}
+          STARTED_AT: ${{ steps.context.outputs.started_at }}
+          PREVIOUS_ROUND: ${{ steps.context.outputs.round }}
+          PREVIOUS_SECONDS: ${{ steps.context.outputs.seconds }}
           EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
         run: |
           review=.claude-review/review.md
@@ -177,8 +198,21 @@ jobs:
             exit 0
           fi
 
-          # The marker is how the next run finds this comment to update it.
-          { cat "$review"; printf '\n\n<!-- claude-review -->\n'; } > "$RUNNER_TEMP/review-body.md"
+          # Under the status line goes how many rounds this PR has had and how
+          # long they took. The marker at the end stores those numbers, and is
+          # how the next run finds this comment to update it.
+          round=$((PREVIOUS_ROUND + 1))
+          took=$(($(date +%s) - STARTED_AT))
+          total=$((PREVIOUS_SECONDS + took))
+          duration() { printf '%dm %02ds' $(($1 / 60)) $(($1 % 60)); }
+
+          {
+            sed -n '1p' "$review"
+            printf '\n<sub>Round %s · %s this round · %s in total · reviewed `%s`</sub>\n' \
+              "$round" "$(duration "$took")" "$(duration "$total")" "${HEAD_SHA:0:7}"
+            sed '1d' "$review"
+            printf '\n\n<!-- claude-review round=%s seconds=%s -->\n' "$round" "$total"
+          } > "$RUNNER_TEMP/review-body.md"
 
           if [ -n "$COMMENT_ID" ]; then
             gh api -X PATCH "repos/$GH_REPO/issues/comments/$COMMENT_ID" -F "body=@$RUNNER_TEMP/review-body.md" --silent
