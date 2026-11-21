@@ -7,9 +7,12 @@
   "compilerOptions": {
     "incremental": false,
     "customConditions": ["@uiid/source"],
-    // Replaces the base `paths`, so `@/*` is repeated. The packages and the docs
-    // app resolve different @types/react versions, and package source compiled
-    // here would mix the two; pin both to the docs app's copy.
+    // Replaces the base `paths`, so `@/*` is repeated. The lockfile gives the
+    // docs app and design-system @types/react 19.2.8 and the other packages
+    // 19.1.10. Package source compiled here would load both, and every forwarded
+    // `ref` fails with "Two different types with this name exist". This pins
+    // the program to the docs app's copy; aligning @types/react across the
+    // workspace would make it unnecessary.
     "paths": {
       "@/*": ["./*"],
       "react": ["./node_modules/@types/react"],
