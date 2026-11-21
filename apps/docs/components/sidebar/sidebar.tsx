@@ -1,40 +1,30 @@
 "use client";
 
-import { useAtom } from "jotai";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 
+import { SIDEBAR_GROUPS } from "./sidebar.constants";
+import { useSidebarGroups } from "./sidebar.hooks";
+import type { SidebarProps } from "./sidebar.types";
+import { clearNoFlash } from "./sidebar.utils";
 import {
-  clearNoFlash,
-  SidebarContainer,
   SidebarGroup,
   SidebarHeader,
   SidebarItem,
   SidebarItems,
-  SidebarScrollContainer,
-} from "@/components/shell";
-import { sidebarGroupsAtom } from "@/components/shell/store";
-import {
-  COMPONENTS_SITEMAP,
-  type SitemapGroup,
-  type SitemapItem,
-} from "@/sitemap";
+  SidebarNav,
+  SidebarRoot,
+} from "./subcomponents";
 
-/** The sitemap is one level deep: categories of pages. */
-const GROUPS = COMPONENTS_SITEMAP.filter(
-  (entry): entry is SitemapGroup => "category" in entry,
-).map((group) => ({
-  id: group.category,
-  items: group.items.filter(
-    (entry): entry is SitemapItem => !("category" in entry),
-  ),
-}));
-
-export function Sidebar() {
+/**
+ * The docs sidebar, filled from the sitemap and driven by the current route.
+ * Compose the parts in `subcomponents/` for a sidebar with other contents.
+ */
+export const Sidebar = ({ title, ...props }: SidebarProps) => {
   const pathname = usePathname();
-  const [groups, setGroups] = useAtom(sidebarGroupsAtom);
+  const [groups, setGroups] = useSidebarGroups();
 
-  const activeGroup = GROUPS.find((group) =>
+  const activeGroup = SIDEBAR_GROUPS.find((group) =>
     group.items.some((item) => item.value === pathname),
   )?.id;
 
@@ -55,9 +45,9 @@ export function Sidebar() {
   }, [pathname]);
 
   return (
-    <SidebarContainer>
-      <SidebarHeader>uiid docs</SidebarHeader>
-      <SidebarScrollContainer>
+    <SidebarRoot {...props}>
+      <SidebarHeader>{title}</SidebarHeader>
+      <SidebarNav>
         <SidebarItems>
           <SidebarItem href="/" active={pathname === "/"}>
             Home
@@ -66,7 +56,7 @@ export function Sidebar() {
             Changelog
           </SidebarItem>
         </SidebarItems>
-        {GROUPS.map((group) => (
+        {SIDEBAR_GROUPS.map((group) => (
           <SidebarGroup
             key={group.id}
             id={group.id}
@@ -96,7 +86,8 @@ export function Sidebar() {
             ))}
           </SidebarGroup>
         ))}
-      </SidebarScrollContainer>
-    </SidebarContainer>
+      </SidebarNav>
+    </SidebarRoot>
   );
-}
+};
+Sidebar.displayName = "Sidebar";

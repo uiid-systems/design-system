@@ -1,21 +1,11 @@
 "use client";
 
-import { List, ListItem, Text } from "@uiid/design-system";
+import { ListItem, Text } from "@uiid/design-system";
 import Link from "next/link";
 
-import { SIDEBAR_LIST_ITEM_SPACING } from "./constants";
+import type { SidebarItemProps } from "../sidebar.types";
 
-import styles from "./shell.module.css";
-
-/** A plain list of sidebar items, for links that sit outside any group. */
-export const SidebarItems = ({ children }: React.PropsWithChildren) => {
-  return (
-    <List data-slot="sidebar-items" gap={SIDEBAR_LIST_ITEM_SPACING}>
-      {children}
-    </List>
-  );
-};
-SidebarItems.displayName = "SidebarItems";
+import styles from "../sidebar.module.css";
 
 /**
  * Brings the current page's link into the sidebar's scroll track. As a ref it
@@ -27,20 +17,15 @@ const scrollIntoView = (link: HTMLAnchorElement | null) => {
   requestAnimationFrame(() => link?.scrollIntoView({ block: "nearest" }));
 };
 
-type SidebarItemProps = React.PropsWithChildren<{
-  href: string;
-  /** The link points at the current page. */
-  active?: boolean;
-}>;
-
 /** One link in the sidebar. Render it inside a `SidebarItems` or a `SidebarGroup`. */
 export const SidebarItem = ({
   href,
   active = false,
   children,
+  ...props
 }: SidebarItemProps) => {
   return (
-    <ListItem data-slot="sidebar-item">
+    <ListItem data-slot="sidebar-item" {...props}>
       <Text
         render={
           <Link
@@ -49,9 +34,9 @@ export const SidebarItem = ({
             ref={active ? scrollIntoView : undefined}
           />
         }
+        className={styles["sidebar-link"]}
         emphasis={active ? "default" : "muted"}
         weight={active ? "semibold" : "normal"}
-        className={styles.link}
       >
         {children}
       </Text>

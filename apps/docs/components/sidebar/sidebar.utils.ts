@@ -11,7 +11,7 @@
  * so it runs before the first paint. It handles the two differently:
  *
  * - The sidebar's state is an attribute on `<html>` that CSS reads (see
- *   store.ts). The script sets it, and that is the whole job: there is
+ *   sidebar.hooks.ts). The script sets it, and that is the whole job: there is
  *   nothing for React to catch up on.
  * - A group's state is React's. The script writes a small `<style>` that
  *   hides each group saved closed and points its chevron the right way, so
@@ -22,12 +22,12 @@
  *   is.
  *
  * The selectors below are the contract with `SidebarGroup`: each carries
- * `data-shell-group` with its id, plus `data-active` when it holds the
+ * `data-sidebar-group` with its id, plus `data-active` when it holds the
  * current page. An active group is never hidden, because it is open on load
  * whatever was saved.
  */
 
-const STYLE_ID = "shell-no-flash";
+const STYLE_ID = "sidebar-no-flash";
 
 /** Remove the `<style>` the inline script wrote. Safe to call more than once. */
 export const clearNoFlash = () => {
@@ -36,7 +36,7 @@ export const clearNoFlash = () => {
 
 /**
  * Runs as a plain inline script, outside React and outside this module, so it
- * can only use its arguments. The store saves both values as JSON: the
+ * can only use its arguments. sidebar.hooks.ts saves both values as JSON: the
  * sidebar as `true` or `false`, the groups as `{ [id]: boolean }`.
  */
 const hideClosedBeforePaint = (
@@ -61,7 +61,7 @@ const hideClosedBeforePaint = (
 
     Object.keys(groups).forEach((id) => {
       if (groups[id] !== false) return;
-      const group = `[data-shell-group=${JSON.stringify(id)}]:not([data-active])`;
+      const group = `[data-sidebar-group=${JSON.stringify(id)}]:not([data-active])`;
       rules.push(
         `${group} [data-slot="collapsible-panel"]{display:none}`,
         `${group} [data-slot="sidebar-group-chevron"]{rotate:none}`,

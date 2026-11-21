@@ -1,17 +1,18 @@
 /**
- * The shell's state.
+ * The sidebar's state.
  *
- * The sidebar's open state lives on `<html>`, as `data-shell-sidebar="closed"`,
+ * The sidebar's open state lives on `<html>`, as `data-sidebar="closed"`,
  * and in localStorage. CSS reads the attribute, so nothing has to render for
- * the sidebar to move, and the inline script in no-flash.ts can set it before
- * the first paint.
+ * the sidebar to move, and the inline script in sidebar.utils.ts can set it
+ * before the first paint.
  *
- * The groups' state is the one thing here that uses a state library. To use
- * something else, replace `sidebarGroupsAtom` and the place that reads it
- * (`components/sidebar.tsx`). It starts from its default on the server and on
- * the first client render, then picks up the saved value once mounted.
- * `no-flash.ts` covers the gap in between.
+ * The groups' state is the one thing in the sidebar that uses a state library,
+ * and this is the only file that imports it. To use something else, replace
+ * `useSidebarGroups`. It starts from its default on the server and on the
+ * first client render, then picks up the saved value once mounted.
+ * sidebar.utils.ts covers the gap in between.
  */
+import { useAtom } from "jotai";
 import { atom } from "jotai/vanilla";
 import { atomWithStorage } from "jotai/vanilla/utils";
 import { useSyncExternalStore } from "react";
@@ -20,7 +21,8 @@ import {
   SIDEBAR_ATTRIBUTE,
   SIDEBAR_GROUPS_STORAGE_KEY,
   SIDEBAR_STORAGE_KEY,
-} from "./constants";
+} from "./sidebar.constants";
+import type { SidebarGroups } from "./sidebar.types";
 
 const listeners = new Set<() => void>();
 
@@ -53,8 +55,6 @@ export const toggleSidebar = () => {
   listeners.forEach((listener) => listener());
 };
 
-type SidebarGroups = Record<string, boolean>;
-
 /** Whatever is in localStorage under the groups key, which may not be ours. */
 const savedGroupsAtom = atomWithStorage<unknown>(
   SIDEBAR_GROUPS_STORAGE_KEY,
@@ -67,13 +67,16 @@ const toGroups = (saved: unknown): SidebarGroups =>
     ? (saved as SidebarGroups)
     : {};
 
-/**
- * Which groups the reader has opened or closed, by group id, saved to
- * localStorage. A group that isn't listed has never been touched.
- */
-export const sidebarGroupsAtom = atom(
+const sidebarGroupsAtom = atom(
   (get) => toGroups(get(savedGroupsAtom)),
   (get, set, update: (groups: SidebarGroups) => SidebarGroups) => {
     set(savedGroupsAtom, update(toGroups(get(savedGroupsAtom))));
   },
 );
+
+/**
+ * Which groups the reader has opened or closed, saved to localStorage, and a
+ * setter that takes an updater. A group that isn't listed has never been
+ * touched.
+ */
+export const useSidebarGroups = () => useAtom(sidebarGroupsAtom);
