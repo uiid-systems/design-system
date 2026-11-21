@@ -73,6 +73,7 @@ jobs:
           fi
 
       - name: Review with Claude
+        id: claude
         uses: anthropics/claude-code-action@acfe7992852970efb4fee683d63d628e3e52df67 # v1.0.286
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -133,11 +134,19 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           COMMENT_ID: ${{ steps.context.outputs.comment_id }}
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
         run: |
           review=.claude-review/review.md
 
+          # The action hides Claude's output, so say what it did instead.
           if [ ! -s "$review" ]; then
             echo "::error::Claude did not write $review"
+            if [ -f "$EXECUTION_FILE" ]; then
+              echo "Tool calls:"
+              jq -r '.[] | select(.type == "assistant") | .message.content[]? | select(.type == "tool_use") | "  \(.name) \(.input | tostring | .[0:200])"' "$EXECUTION_FILE"
+              echo "Final message:"
+              jq -r '.[] | select(.type == "result") | .result // empty' "$EXECUTION_FILE"
+            fi
             exit 1
           fi
 
