@@ -91,10 +91,13 @@
   text-decoration-line: underline;
 }
 
-/* Sidebar links are never underlined, hovered or not. */
-.link,
+/* A sidebar link is underlined only while it is hovered. */
+.link {
+  text-decoration-line: none;
+}
+
 .link:hover {
-  text-decoration: none;
+  text-decoration-line: underline;
 }
 
 /* `:where()` keeps this below the no-flash style, which must win before hydration. */
