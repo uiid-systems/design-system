@@ -5,7 +5,7 @@ description: Build every ready ticket in a Linear project in parallel, each thro
 
 # UIID build tickets
 
-You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until the reviewer approves, and then have the build agent open a draft PR. You write no product code yourself. The owner hears from you three times: which tickets you picked and why, each PR as it becomes ready, and a closing summary.
+You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until the reviewer approves, and then have the build agent open a draft PR. You write no product code yourself. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it becomes ready, and a closing summary.
 
 The argument is a Linear project (name or `P-UI-n`) or a list of ticket ids. With no argument, ask which project.
 
@@ -18,10 +18,18 @@ A ticket is ready when all of these hold:
 - Every issue in `blockedBy` is Done. Check the status, not the title.
 - No phase or milestone gate stands in front of it. A milestone that says "starts after the Phase 2 checkpoint" or "review with the owner before" blocks its tickets even when no relation says so.
 - Its acceptance criteria can be checked by a command or by reading the diff.
-- It needs no ruling from the owner. "The owner rules on it here" or an undecided product question takes it out. A choice the ticket tells the agent how to make ("follow what Lucide does", "pick the simpler of these two") does not.
+- It needs no ruling from the owner, or only rulings that one round of questions can settle (below). A choice the ticket tells the agent how to make ("follow what Lucide does", "pick the simpler of these two") needs no ruling.
 - No open PR or existing branch already carries it. Check `gh pr list` and `git worktree list`.
 
-Tell the owner in a short list which tickets you picked and, in one line each, why the others were left. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
+### Questions for the owner
+
+A ticket that meets every other rule but leaves a decision or an unclear criterion open gets one set of questions, asked with `AskUserQuestion`: up to four questions in one call, each with options you take from the ticket and the code, your recommendation first, and `multiSelect: true` on every question. Ask about every such ticket before starting any agent, one call per ticket, so nothing is asked while agents run.
+
+If the answers settle the criteria, the ticket is ready. Paste the questions and answers into its build prompt and its reviewer prompts alongside the ticket text, so the reviewer judges against the decision and not against a guess.
+
+If the criteria are still unclear after that one round, do not ask again. Add the clarifying material to the ticket (the questions, the answers so far, and what is still open) with `save_comment`, and leave the ticket for another run. An undecided product direction, a milestone gate, or a question you cannot write options for is not a question to ask here; leave those tickets out from the start.
+
+Tell the owner in a short list which tickets you picked and, in one line each, why the others were left or deferred. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
 
 When nothing is ready, say so and show the owner the chain: which ticket everything hangs off, and which gates need them. Do not loosen the rules above to find work.
 
