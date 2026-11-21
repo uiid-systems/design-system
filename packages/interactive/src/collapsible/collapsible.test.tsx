@@ -483,7 +483,9 @@ describe("Collapsible", () => {
       </Collapsible>,
     );
     const panel = getPanel();
-    expect(panel).toHaveAttribute("data-orientation", "vertical");
+    // Only a horizontal panel names its orientation, so a vertical one can't
+    // be mistaken for the vertical ancestor of something inside it.
+    expect(panel).not.toHaveAttribute("data-orientation");
     // A Stack's `ay` is its main axis, which Box writes as `ax`.
     expect(panel).toHaveAttribute("data-ui-ax", "end");
     expect(panel).toHaveAttribute("data-ui-minh", "0");
@@ -556,6 +558,16 @@ describe("Collapsible", () => {
   // ============================================
   // CSS
   // ============================================
+
+  it("marks a closed kept-mounted panel hidden, which the rule below selects", () => {
+    render(
+      <CollapsibleRoot>
+        <CollapsiblePanel keepMounted>Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).toHaveAttribute("hidden");
+    expect(getPanel()).not.toHaveAttribute("hidden", "until-found");
+  });
 
   it("hides a kept-mounted panel once it has closed", () => {
     expect(css).toMatch(

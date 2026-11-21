@@ -42,7 +42,12 @@ export const CollapsiblePanel = ({
         />
       }
       className={cxState(styles["collapsible-panel"], className)}
-      data-orientation={orientation}
+      /*
+       * Written for a horizontal panel only. `data-orientation="vertical"` on
+       * every panel would be matched by descendants that style themselves
+       * from an ancestor's orientation, such as ToggleGroup.
+       */
+      data-orientation={horizontal ? "horizontal" : undefined}
       data-instant={instant ? "" : undefined}
       {...props}
     >
