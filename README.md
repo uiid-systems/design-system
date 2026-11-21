@@ -71,7 +71,7 @@ Bundle sizes are measured with [size-limit](https://github.com/ai/size-limit) �
 ## Architecture
 
 - **Monorepo** — pnpm workspaces + Turbo
-- **Build** — Vite 7
+- **Build** — Vite 8
 - **Styling** — CSS Modules, Style Dictionary
 - **Primitives** — Base UI
 - **Testing** — Vitest + Testing Library
