@@ -75,6 +75,10 @@ jobs:
       - name: Review with Claude
         id: claude
         uses: anthropics/claude-code-action@acfe7992852970efb4fee683d63d628e3e52df67 # v1.0.286
+        env:
+          # Subagents must finish inside the session. Left in the background,
+          # they outlive it: the run ends while Claude is still waiting on them.
+          CLAUDE_CODE_DISABLE_BACKGROUND_TASKS: "1"
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # The workflow token stands in for the Claude GitHub App, so nothing
@@ -88,7 +92,7 @@ jobs:
             --permission-mode default
             --plugin-dir .agent-skills
             --allowedTools "Agent,Skill,Read,Grep,Glob,Edit(./.claude-review/review.md)"
-            --disallowedTools "Bash,WebFetch,WebSearch,Read(./.git/**),Read(//proc/**)"
+            --disallowedTools "Bash,ScheduleWakeup,WebFetch,WebSearch,Read(./.git/**),Read(//proc/**)"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -109,8 +113,9 @@ jobs:
                - Also `agent-skills:security-auditor` when the change touches input handling, auth, secrets, CI or external integrations.
                - Also `agent-skills:test-engineer` when it adds or changes tests, or changes behavior without changing tests.
                - Also `agent-skills:web-performance-auditor` when it changes web UI, loading or rendering.
-            3. Verify every finding against the code yourself and drop any you cannot confirm.
-            4. Write `.claude-review/review.md` in exactly this shape, with no headings, intro or footnotes:
+            3. Wait for every reviewer's report. This session ends for good the moment you stop, so never stop to wait: if a reviewer has not reported, do that review yourself.
+            4. Verify every finding against the code yourself and drop any you cannot confirm.
+            5. Write `.claude-review/review.md` in exactly this shape, with no headings, intro or footnotes:
 
             **Approve** — one sentence on why.
 
