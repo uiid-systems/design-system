@@ -77,6 +77,13 @@ Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest
 
 UI-423 removes the plugin before UI-425, so its v5 notes do not apply. For the record: v5 is a thin wrapper over `unplugin-dts` ([migration guide](https://github.com/qmhc/unplugin-dts/blob/main/docs/en/migration-v4-to-v5.md)), and it falls back to `@typescript/typescript6` on TypeScript 7 ([unplugin-dts 1.0.0](https://github.com/qmhc/unplugin-dts/releases/tag/unplugin-dts%401.0.0)). Version 4.5.4 has no such fallback, which is one more reason to finish UI-423 first.
 
+### Done in UI-427: the remaining majors
+
+- **Shiki 4.6.0.** v4 only drops Node 18 and removes APIs this repo never used ([Shiki v4.0](https://github.com/shikijs/shiki/blob/main/docs/blog/v4.md)). Probed: highlighted HTML for every bundled language in both Vitesse themes is byte-identical except two CSS grammar changes from VS Code's `css.tmLanguage.json` via `tm-grammars` 1.32. A `@layer` name is now colored as a layer name, and a selector that starts on the same line as an inline `<style>` tag is no longer colored. Selectors on their own line are unchanged.
+- **size-limit 14.3.0.** The preset now bundles with rolldown instead of esbuild ([changelog](https://github.com/ai/size-limit/blob/main/CHANGELOG.md)), and rolldown cannot bundle CSS, so the CSS entries in `.size-limit.js` disable `@size-limit/rolldown`. The JSON output that `scripts/size-compare.mjs` reads is unchanged. Rolldown measures the same dist differently: most entries come out 3–14% smaller, and `@uiid/code` 27% and the umbrella 14% larger. The Size workflow measures base and head with the PR's own tooling, so this shift never shows as growth.
+- **commitlint 21.2.4.** v21 needs Node 22 and prints its input on a new line ([v21.0.0](https://github.com/conventional-changelog/commitlint/releases/tag/v21.0.0)). The effective rules are identical, and the hook still rejects a bad scope and a body line over 100 characters.
+- **`@types/node` 26.6.6.** Every importer and transitive user resolves this one version. Not matched: CI runs Node 24, so these types describe Node 26 APIs that Node 24 lacks. The repo declares no Node version in `engines` or `.nvmrc`.
+
 ### Order
 
 The planned order holds: UI-423, then UI-425 (Vite and Vitest), then UI-426 (TypeScript 7). The scope moves, and Tasks 13 to 15 in `tasks/todo.md` match:
