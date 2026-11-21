@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import type { StorybookConfig } from "@storybook/react-vite";
 
+import { emitGeneratedSources } from "../../../scripts/emit-generated-sources.ts";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {
@@ -22,6 +23,11 @@ const config: StorybookConfig = {
     options: {},
   },
   async viteFinal(config) {
+    // Token CSS and per-icon modules are generated, not committed. This hook runs
+    // for `dev`, `build-storybook` and the addon's Vitest project alike, so all
+    // three work on a checkout that has never been built.
+    emitGeneratedSources();
+
     const __dirname = dirname(fileURLToPath(import.meta.url));
     const packagesDir = resolve(__dirname, "../../../packages");
 
