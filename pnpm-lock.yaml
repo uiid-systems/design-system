@@ -92,6 +92,9 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../../packages/icons
+      jotai:
+        specifier: ^3.0.2
+        version: 3.0.2(@types/react@19.2.8)(react@19.2.3)
       next:
         specifier: ^16.4.5
         version: 16.4.5(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -3939,6 +3942,18 @@ packages:
   jiti@2.7.0:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
+
+  jotai@3.0.2:
+    resolution: {integrity: sha512-1h+H6BQN+D048zv8hRGVeNxghxRLFZCB+l2WhFe7RhRiF0JlC8516G2BtRUXhPvMQTGB9OHst2N/BW9aNpp5aA==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      react: ^19.2.3
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
 
   js-tokens@10.0.0:
     resolution: {integrity: sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==}
@@ -7894,6 +7909,11 @@ snapshots:
   jiti@2.6.1: {}
 
   jiti@2.7.0: {}
+
+  jotai@3.0.2(@types/react@19.2.8)(react@19.2.3):
+    optionalDependencies:
+      '@types/react': 19.2.8
+      react: 19.2.3
 
   js-tokens@10.0.0:
     optional: true

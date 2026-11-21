@@ -3,6 +3,8 @@ import path from "node:path";
 import { Stack, Table, Text } from "@uiid/design-system";
 import { withCustomConfig, type PropItem } from "react-docgen-typescript";
 
+import styles from "./props-table.module.css";
+
 const ROOT = path.resolve(process.cwd(), "../..");
 
 /**
@@ -88,7 +90,7 @@ export function PropsTable({ of }: PropsTableProps) {
   return (
     <Stack
       data-slot="props-table"
-      className="overflow-auto"
+      className={styles["props-table"]}
       fullwidth
       maxh={640}
     >

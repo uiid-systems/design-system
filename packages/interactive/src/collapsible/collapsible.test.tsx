@@ -473,8 +473,122 @@ describe("Collapsible", () => {
   });
 
   // ============================================
+  // ORIENTATION
+  // ============================================
+
+  it("is vertical by default", () => {
+    render(
+      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+        Content
+      </Collapsible>,
+    );
+    const panel = getPanel();
+    // Only a horizontal panel names its orientation, so a vertical one can't
+    // be mistaken for the vertical ancestor of something inside it.
+    expect(panel).not.toHaveAttribute("data-orientation");
+    // A Stack's `ay` is its main axis, which Box writes as `ax`.
+    expect(panel).toHaveAttribute("data-ui-ax", "end");
+    expect(panel).toHaveAttribute("data-ui-minh", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ay");
+    expect(panel).not.toHaveAttribute("data-ui-minw");
+  });
+
+  it("pins and shrinks a horizontal panel along its width instead", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel orientation="horizontal">Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    const panel = getPanel();
+    expect(panel).toHaveAttribute("data-orientation", "horizontal");
+    // A Stack's `ax` is its cross axis, which Box writes as `ay`.
+    expect(panel).toHaveAttribute("data-ui-ay", "end");
+    expect(panel).toHaveAttribute("data-ui-minw", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ax");
+    expect(panel).not.toHaveAttribute("data-ui-minh");
+  });
+
+  it("lets a horizontal panel override its default alignment and minimum", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel orientation="horizontal" ax="start" minw={40}>
+          Content
+        </CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).toHaveAttribute("data-ui-ay", "start");
+    expect(getPanel()).toHaveAttribute("data-ui-minw", "40");
+  });
+
+  it("takes orientation through PanelProps", () => {
+    render(
+      <Collapsible
+        trigger="Toggle"
+        RootProps={{ defaultOpen: true }}
+        PanelProps={{ orientation: "horizontal" }}
+      >
+        Content
+      </Collapsible>,
+    );
+    const panel = getPanel();
+    expect(panel).toHaveAttribute("data-orientation", "horizontal");
+    expect(panel).toHaveAttribute("data-ui-ay", "end");
+    expect(panel).toHaveAttribute("data-ui-minw", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ax");
+    expect(panel).not.toHaveAttribute("data-ui-minh");
+  });
+
+  it("animates and clips a horizontal panel's width", () => {
+    // The horizontal rule alone, up to the comment that opens the next one.
+    const start = css.indexOf(
+      '.collapsible-panel[data-orientation="horizontal"]',
+    );
+    const horizontal = css.slice(start, css.indexOf("/*", start));
+    expect(horizontal).toMatch(/width: var\(--collapsible-panel-width\);/);
+    // Frees the height the base rule pins to the panel's measured height.
+    expect(horizontal).toMatch(
+      /width: var\(--collapsible-panel-width\);\s*height: auto;/,
+    );
+    expect(horizontal).toMatch(/overflow-x: clip;/);
+    expect(horizontal).toMatch(/overflow-y: visible;/);
+    expect(horizontal).toMatch(
+      /&\[data-starting-style\],\s*&\[data-ending-style\] \{\s*width: 0;\s*height: auto;/,
+    );
+    expect(css).toMatch(
+      /&\[data-orientation="horizontal"\] \{\s*transition-property: width;/,
+    );
+  });
+
+  // ============================================
   // CSS
   // ============================================
+
+  it("marks a closed kept-mounted panel hidden, which the rule below selects", () => {
+    render(
+      <CollapsibleRoot>
+        <CollapsiblePanel keepMounted>Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).toHaveAttribute("hidden");
+    expect(getPanel()).not.toHaveAttribute("hidden", "until-found");
+    expect(getPanel()).toHaveStyle({ display: "none" });
+  });
+
+  it("leaves an open kept-mounted panel on screen", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel keepMounted>Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).not.toHaveAttribute("hidden");
+    expect(getPanel()).not.toHaveStyle({ display: "none" });
+  });
+
+  it("hides a kept-mounted panel once it has closed", () => {
+    expect(css).toMatch(
+      /\.collapsible-panel\[hidden\]:not\(\[hidden="until-found"\]\) \{\s*display: none;/,
+    );
+  });
 
   it("clips the panel vertically only, so focus rings and shadows survive", () => {
     expect(css).toMatch(/overflow-x: visible;/);

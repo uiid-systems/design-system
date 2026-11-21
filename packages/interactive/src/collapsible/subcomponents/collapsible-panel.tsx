@@ -9,25 +9,45 @@ import type { CollapsiblePanelProps } from "../collapsible.types";
 import styles from "../collapsible.module.css";
 
 export const CollapsiblePanel = ({
-  ay = "end",
-  minh = 0,
+  orientation = "vertical",
+  ax,
+  ay,
+  minw,
+  minh,
   instant = true,
   className,
   children,
   ...props
 }: CollapsiblePanelProps) => {
+  const horizontal = orientation === "horizontal";
+
   return (
     <BaseCollapsible.Panel
       data-slot="collapsible-panel"
       /*
-       * `ay` and `minh` are destructured rather than written on the `Stack` as
-       * literals: Base UI merges the render element's own props over the
+       * The layout props are destructured rather than written on the `Stack`
+       * as literals: Base UI merges the render element's own props over the
        * part's, so a literal there would beat the caller's value every time.
-       * `minh` is 0 because the panel is a flex item of the root, whose
-       * `min-height: auto` would stop it shrinking to 0 as it closes.
+       * Content is pinned to the edge the panel closes toward (`ay="end"`, or
+       * `ax="end"` when horizontal), so it slides out rather than reflowing.
+       * The minimum on the animating axis is 0 because the panel is a flex
+       * item, whose `auto` minimum would stop it shrinking to 0 as it closes.
        */
-      render={<Stack ay={ay} minh={minh} />}
+      render={
+        <Stack
+          ax={ax ?? (horizontal ? "end" : undefined)}
+          ay={ay ?? (horizontal ? undefined : "end")}
+          minw={minw ?? (horizontal ? 0 : undefined)}
+          minh={minh ?? (horizontal ? undefined : 0)}
+        />
+      }
       className={cxState(styles["collapsible-panel"], className)}
+      /*
+       * Written for a horizontal panel only. `data-orientation="vertical"` on
+       * every panel would be matched by descendants that style themselves
+       * from an ancestor's orientation, such as ToggleGroup.
+       */
+      data-orientation={horizontal ? "horizontal" : undefined}
       data-instant={instant ? "" : undefined}
       {...props}
     >

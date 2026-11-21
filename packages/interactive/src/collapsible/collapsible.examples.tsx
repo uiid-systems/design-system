@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
-import { Stack } from "@uiid/layout";
+import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
 
@@ -76,6 +76,32 @@ export const Controlled = () => {
       >
         <Text>{BODY}</Text>
       </Collapsible>
+    </Stack>
+  );
+};
+
+/** A panel that opens sideways. Give the content a width; the panel clips to it. */
+export const Horizontal = () => {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <Stack gap={2} ax="start">
+      <Button onClick={() => setOpen((value) => !value)}>Toggle panel</Button>
+      <Group gap={4} ay="start">
+        <CollapsibleRoot open={open}>
+          <CollapsiblePanel
+            orientation="horizontal"
+            instant={false}
+            keepMounted
+          >
+            <Stack w={240} p={4} b={1}>
+              <Text weight="bold">Shipping</Text>
+              <Text emphasis="muted">{BODY}</Text>
+            </Stack>
+          </CollapsiblePanel>
+        </CollapsibleRoot>
+        <Text>The content beside it takes the space it gives up.</Text>
+      </Group>
     </Stack>
   );
 };
