@@ -2,6 +2,7 @@ import { Stack, Text } from "@uiid/design-system";
 
 import { ShellBar } from "./bar";
 import {
+  SIDEBAR_ID,
   SIDEBAR_SPACING,
   SHELL_BORDER_WIDTH,
   SHELL_SPACING,
@@ -20,6 +21,7 @@ export const SidebarContainer = ({ children }: React.PropsWithChildren) => {
   return (
     <Stack
       data-slot="sidebar"
+      id={SIDEBAR_ID}
       render={<aside />}
       className={styles.sidebar}
       br={SHELL_BORDER_WIDTH}

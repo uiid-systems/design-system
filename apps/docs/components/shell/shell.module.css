@@ -50,6 +50,9 @@
  * links out of the tab order and away from screen readers.
  *
  * The state is `data-shell-sidebar="closed"` on `<html>`; see store.ts.
+ *
+ * The slide assumes a left-to-right page: `translateX` is physical, so a
+ * right-to-left shell would need its direction flipped.
  */
 .sidebar {
   position: absolute;
