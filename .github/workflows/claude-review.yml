@@ -232,20 +232,33 @@ jobs:
             exit 0
           fi
 
-          # A Defer box ticked while this review was running is not in the copy
-          # Claude read, so tick it in the new review too. Findings are matched
-          # by their summary line without the status.
-          if [ -n "$COMMENT_ID" ]; then
-            gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"
+          # A Defer box ticked or unticked while this review was running is not
+          # in the copy Claude read, so apply that change to the new review.
+          # Findings are matched by title. This is best effort: a failed lookup
+          # must not stop the review from being posted.
+          if [ -n "$COMMENT_ID" ] && gh api "repos/$GH_REPO/issues/comments/$COMMENT_ID" --jq .body > "$RUNNER_TEMP/current-comment.md"; then
             awk '
+              FNR == 1 { file++ }
+              FNR == 1 || /^<\/details>/ { finding = "" }
               { sub(/\r$/, "") }
-              /^<summary>/ { finding = $0; sub(/ · (Open|⏸️ Deferred)<\/summary>.*$/, "", finding) }
-              NR == FNR { if ($0 ~ /^- \[[xX]\] Defer/) ticked[finding] = 1; next }
-              /^- \[ \] Defer/ && (finding in ticked) { print "- [x] Defer"; next }
-              { print }
-            ' "$RUNNER_TEMP/current-comment.md" "$review" > "$RUNNER_TEMP/review-ticked.md"
-            if [ -s "$RUNNER_TEMP/review-ticked.md" ]; then
-              mv "$RUNNER_TEMP/review-ticked.md" "$review"
+              /^<summary>/ {
+                finding = $0
+                sub(/^.*<\/b> · /, "", finding)
+                sub(/ · (Open|⏸️ Deferred)<\/summary>.*$/, "", finding)
+              }
+              /^- \[[ xX]\] Defer/ && finding != "" {
+                box = ($0 ~ /^- \[ \]/) ? " " : "x"
+                if (file == 1) before[finding] = box
+                else if (file == 2) now[finding] = box
+                else if ((finding in before) && (finding in now) && before[finding] != now[finding]) {
+                  print "- [" now[finding] "] Defer"
+                  next
+                }
+              }
+              file == 3 { print }
+            ' "$RUNNER_TEMP/previous-comment.md" "$RUNNER_TEMP/current-comment.md" "$review" > "$RUNNER_TEMP/review-merged.md"
+            if [ -s "$RUNNER_TEMP/review-merged.md" ]; then
+              mv "$RUNNER_TEMP/review-merged.md" "$review"
             fi
           fi
 
