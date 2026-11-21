@@ -47,7 +47,7 @@ The root and the panel each render a `Stack`, so `RootProps` and `PanelProps` ta
 
 ## Orientation
 
-A panel opens downward by default. Pass `orientation="horizontal"` to `CollapsiblePanel` (or through `PanelProps`) and it animates its width instead, for a panel that opens sideways, such as a sidebar. A horizontal panel pins its content to its trailing edge (`ax="end"`), so the content slides out rather than reflowing as the panel narrows. Give that content a width of its own; the panel opens to it.
+A panel opens downward by default. Pass `orientation="horizontal"` to `CollapsiblePanel` (or through `PanelProps`) and it animates its width instead, for a small panel that opens sideways. Animating width lays out the panel and its siblings on every frame, so slide something as large as an app sidebar with a transform instead. A horizontal panel pins its content to its trailing edge (`ax="end"`), so the content slides out rather than reflowing as the panel narrows. Give that content a width of its own; the panel opens to it.
 
 ```tsx
 <CollapsibleRoot open={open}>

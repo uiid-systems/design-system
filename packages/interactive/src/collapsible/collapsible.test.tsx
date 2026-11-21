@@ -571,6 +571,17 @@ describe("Collapsible", () => {
     );
     expect(getPanel()).toHaveAttribute("hidden");
     expect(getPanel()).not.toHaveAttribute("hidden", "until-found");
+    expect(getPanel()).toHaveStyle({ display: "none" });
+  });
+
+  it("leaves an open kept-mounted panel on screen", () => {
+    render(
+      <CollapsibleRoot defaultOpen>
+        <CollapsiblePanel keepMounted>Content</CollapsiblePanel>
+      </CollapsibleRoot>,
+    );
+    expect(getPanel()).not.toHaveAttribute("hidden");
+    expect(getPanel()).not.toHaveStyle({ display: "none" });
   });
 
   it("hides a kept-mounted panel once it has closed", () => {
