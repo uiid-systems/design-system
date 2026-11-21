@@ -2,8 +2,7 @@
   // Build-free typecheck for every package and Storybook, run by `pnpm typecheck`.
   // `@uiid/source` resolves each @uiid/* import to the package's src/ instead of
   // dist/, so this passes with no build. It is the only typecheck of test files:
-  // package builds leave them out (tsconfig.package.json). The two icons tests
-  // below are excluded.
+  // package builds leave them out (tsconfig.package.json).
   // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -24,11 +23,5 @@
     // A bare dot-directory entry matches no files, so glob it.
     "apps/storybook/.storybook/**/*",
     "vitest.matchers.d.ts"
-  ],
-  // The package builds leave all tests out, so nothing else checks this one,
-  // and it does not typecheck:
-  "exclude": [
-    // Imports an untyped `.mjs` emit script (TS7016).
-    "packages/icons/src/icon-type.test.ts"
   ]
 }
