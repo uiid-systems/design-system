@@ -28,10 +28,16 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./package.json": "./package.json",
+    "./loading-spinner": {
+      "@uiid/source": "./src/components/loading-spinner.tsx",
+      "types": "./icons/loading-spinner.d.ts",
+      "import": "./icons/loading-spinner.js"
+    },
     "./*": {
       "types": "./icons/*.d.ts",
       "import": "./icons/*.js"
