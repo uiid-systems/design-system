@@ -12,10 +12,6 @@ type DrawerCardProps = Pick<
   "title" | "description" | "action" | "footer"
 >;
 
-export type DrawerProviderProps = BaseDrawer.DrawerProvider.Props;
-export type DrawerIndentProps = BaseDrawer.DrawerIndent.Props;
-export type DrawerIndentBackgroundProps =
-  BaseDrawer.DrawerIndentBackground.Props;
 export type DrawerRootProps = BaseDrawer.DrawerRoot.Props;
 export type DrawerTriggerProps = WithTriggerChildren<
   BaseDrawer.DrawerTrigger.Props,
@@ -26,8 +22,6 @@ export type DrawerPortalProps = BaseDrawer.DrawerPortal.Props;
 export type DrawerBackdropProps = BaseDrawer.DrawerBackdrop.Props;
 export type DrawerViewportProps = BaseDrawer.DrawerViewport.Props;
 export type DrawerContentProps = BaseDrawer.DrawerContent.Props;
-export type DrawerTitleProps = BaseDrawer.DrawerTitle.Props;
-export type DrawerDescriptionProps = BaseDrawer.DrawerDescription.Props;
 
 export type DrawerSwipeDirection =
   BaseDrawer.DrawerRoot.Props["swipeDirection"];
