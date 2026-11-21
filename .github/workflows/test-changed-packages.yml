@@ -98,8 +98,8 @@ jobs:
         run: node scripts/check-dist.mjs
 
       # The Storybook tests need the steps above only for generated files:
-      # install skips scripts, so the per-icon modules and the token CSS only
-      # exist after the build.
+      # install skips scripts, so the per-icon modules come from the Typecheck
+      # step and the token CSS from Generate tokens.
       - name: Install Playwright Chromium
         run: pnpm --filter @uiid/storybook exec playwright install --with-deps chromium
 
