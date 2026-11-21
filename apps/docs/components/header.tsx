@@ -3,6 +3,7 @@ import { Button } from "@uiid/design-system";
 
 import { HeaderBreadcrumbs } from "@/components/breadcrumbs";
 import { HeaderContainer, HeaderGroup } from "@/components/shell";
+import { HeaderSidebarToggle } from "@/components/sidebar-toggle";
 
 const REPO_URL = "https://github.com/uiid-systems/design-system";
 const NPM_URL = "https://www.npmjs.com/package/@uiid/design-system";
@@ -12,7 +13,8 @@ const STORYBOOK_URL = "#";
 export function Header() {
   return (
     <HeaderContainer>
-      <HeaderGroup>
+      <HeaderGroup ay="center">
+        <HeaderSidebarToggle />
         <HeaderBreadcrumbs />
       </HeaderGroup>
       <HeaderGroup gap={0}>

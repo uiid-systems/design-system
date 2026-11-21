@@ -1,92 +1,82 @@
-import { List, Stack, Text, type ListItemOrGroup } from "@uiid/design-system";
-import Link from "next/link";
+import {
+  CollapsiblePanel,
+  CollapsibleRoot,
+  Stack,
+  Text,
+} from "@uiid/design-system";
 
+import { ShellBar } from "./bar";
 import {
   SIDEBAR_WIDTH,
   SIDEBAR_SPACING,
   SHELL_BORDER_WIDTH,
-  SIDEBAR_LIST_ITEM_SPACING,
+  SHELL_SPACING,
 } from "./constants";
 
-export const SidebarContainer = ({ children }: React.PropsWithChildren) => {
+type SidebarContainerProps = React.PropsWithChildren<{
+  /** Closed hides the sidebar completely. Defaults to open. */
+  open?: boolean;
+}>;
+
+/**
+ * A horizontal Collapsible does the opening and closing: its panel animates
+ * between the sidebar's width and nothing. `keepMounted` holds on to the
+ * scroll position and any open groups while the sidebar is closed.
+ */
+export const SidebarContainer = ({
+  open = true,
+  children,
+}: SidebarContainerProps) => {
   return (
-    <Stack
-      data-slot="sidebar"
-      render={<aside />}
-      maxw={SIDEBAR_WIDTH}
-      br={SHELL_BORDER_WIDTH}
-      fullwidth
-    >
-      {children}
-    </Stack>
+    <CollapsibleRoot data-shell-sidebar open={open} className="shrink-0">
+      <CollapsiblePanel
+        orientation="horizontal"
+        instant={false}
+        keepMounted
+        grow
+      >
+        <Stack
+          data-slot="sidebar"
+          render={<aside />}
+          w={SIDEBAR_WIDTH}
+          br={SHELL_BORDER_WIDTH}
+          grow
+        >
+          {children}
+        </Stack>
+      </CollapsiblePanel>
+    </CollapsibleRoot>
   );
 };
 SidebarContainer.displayName = "SidebarContainer";
 
+/** Pinned above the scroll track. */
+export const SidebarHeader = ({ children }: React.PropsWithChildren) => {
+  return (
+    <ShellBar data-slot="sidebar-header" px={SIDEBAR_SPACING}>
+      <Text weight="bold" size={3}>
+        {children}
+      </Text>
+    </ShellBar>
+  );
+};
+SidebarHeader.displayName = "SidebarHeader";
+
+/** The scroll track: long navigation scrolls here, not on the page. */
 export const SidebarScrollContainer = ({
   children,
 }: React.PropsWithChildren) => {
   return (
     <Stack
       data-slot="sidebar-scroll-container"
-      className="sticky top-0 overflow-y-auto h-screen"
-      gap={SIDEBAR_SPACING}
+      render={<nav />}
+      className="overflow-y-auto"
+      gap={SHELL_SPACING}
       p={SIDEBAR_SPACING}
+      grow
     >
       {children}
     </Stack>
   );
 };
 SidebarScrollContainer.displayName = "SidebarScrollContainer";
-
-export const SidebarHeader = ({ children }: React.PropsWithChildren) => {
-  return (
-    <Text data-slot="sidebar-header" weight="bold" size={3}>
-      {children}
-    </Text>
-  );
-};
-SidebarHeader.displayName = "SidebarHeader";
-
-export type SidebarListItem = {
-  label: string;
-  value: string;
-};
-
-export type SidebarListGroup = {
-  category: string;
-  items: SidebarListEntry[];
-};
-
-export type SidebarListEntry = SidebarListItem | SidebarListGroup;
-
-const toListItems = (entries: SidebarListEntry[]): ListItemOrGroup[] =>
-  entries.map((entry) =>
-    "category" in entry
-      ? { category: entry.category, items: toListItems(entry.items) }
-      : {
-          label: (
-            <Text render={<Link href={entry.value} />} emphasis="muted">
-              {entry.label}
-            </Text>
-          ),
-        },
-  );
-
-type SidebarListProps = {
-  items: SidebarListEntry[];
-  category?: string;
-};
-
-export const SidebarList = ({ items, category }: SidebarListProps) => {
-  return (
-    <List
-      data-slot="sidebar-list"
-      gap={SIDEBAR_LIST_ITEM_SPACING}
-      category={category}
-      items={toListItems(items)}
-      mt={4}
-    />
-  );
-};
-SidebarList.displayName = "SidebarList";

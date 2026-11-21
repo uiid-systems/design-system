@@ -10,6 +10,9 @@ import {
   AsideContainer,
   ContentRow,
   Main,
+  noFlashScript,
+  SIDEBAR_GROUPS_STORAGE_KEY,
+  SIDEBAR_STORAGE_KEY,
 } from "@/components/shell";
 import { Sidebar } from "@/components/sidebar";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
@@ -36,6 +39,16 @@ export default function RootLayout({
 }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: noFlashScript({
+              sidebarKey: SIDEBAR_STORAGE_KEY,
+              groupsKey: SIDEBAR_GROUPS_STORAGE_KEY,
+            }),
+          }}
+        />
+      </head>
       <Body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppShellOuter>
           <Sidebar />

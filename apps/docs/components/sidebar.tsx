@@ -1,27 +1,103 @@
-import { Text, Stack } from "@uiid/design-system";
-import Link from "next/link";
+"use client";
+
+import { useAtom, useAtomValue } from "jotai";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import {
+  clearNoFlash,
   SidebarContainer,
-  SidebarScrollContainer,
+  SidebarGroup,
   SidebarHeader,
-  SidebarList,
+  SidebarItem,
+  SidebarItems,
+  SidebarScrollContainer,
 } from "@/components/shell";
-import { COMPONENTS_SITEMAP } from "@/sitemap";
+import {
+  openSidebarGroup,
+  sidebarGroupsAtom,
+  sidebarOpenAtom,
+} from "@/components/shell/store";
+import {
+  COMPONENTS_SITEMAP,
+  type SitemapGroup,
+  type SitemapItem,
+} from "@/sitemap";
+
+/** The sitemap is one level deep: categories of pages. */
+const GROUPS = COMPONENTS_SITEMAP.filter(
+  (entry): entry is SitemapGroup => "category" in entry,
+).map((group) => ({
+  id: group.category,
+  items: group.items.filter(
+    (entry): entry is SitemapItem => !("category" in entry),
+  ),
+}));
 
 export function Sidebar() {
+  const pathname = usePathname();
+  const open = useAtomValue(sidebarOpenAtom);
+  const [groups, setGroups] = useAtom(sidebarGroupsAtom);
+
+  const activeGroup = GROUPS.find((group) =>
+    group.items.some((item) => item.value === pathname),
+  )?.id;
+
+  // The current page's group opens on load and on navigation, even when it
+  // was saved closed. The reader can still close it afterwards.
+  useEffect(() => {
+    if (activeGroup) openSidebarGroup(activeGroup);
+  }, [activeGroup, pathname]);
+
+  // The no-flash style spares whichever group was active on load, so it goes
+  // stale as soon as the reader navigates.
+  const loadedAt = useRef(pathname);
+  useEffect(() => {
+    if (pathname !== loadedAt.current) clearNoFlash();
+  }, [pathname]);
+
+  // Bring the current page's link into the scroll track's view.
+  useEffect(() => {
+    document
+      .querySelector("[data-slot='sidebar'] [aria-current='page']")
+      ?.scrollIntoView({ block: "nearest" });
+  }, [pathname]);
+
   return (
-    <SidebarContainer>
+    <SidebarContainer open={open}>
+      <SidebarHeader>uiid docs</SidebarHeader>
       <SidebarScrollContainer>
-        <SidebarHeader>uiid docs</SidebarHeader>
-        <Stack>
-          <Text render={<Link href="/">Home</Link>} emphasis="muted" />
-          <Text
-            render={<Link href="/changelog">Changelog</Link>}
-            emphasis="muted"
-          />
-          <SidebarList items={COMPONENTS_SITEMAP} />
-        </Stack>
+        <SidebarItems>
+          <SidebarItem href="/" active={pathname === "/"}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="/changelog" active={pathname === "/changelog"}>
+            Changelog
+          </SidebarItem>
+        </SidebarItems>
+        {GROUPS.map((group) => (
+          <SidebarGroup
+            key={group.id}
+            id={group.id}
+            label={group.id}
+            active={group.id === activeGroup}
+            open={groups[group.id] ?? true}
+            onOpenChange={(next) => {
+              clearNoFlash();
+              setGroups((saved) => ({ ...saved, [group.id]: next }));
+            }}
+          >
+            {group.items.map((item) => (
+              <SidebarItem
+                key={item.value}
+                href={item.value}
+                active={item.value === pathname}
+              >
+                {item.label}
+              </SidebarItem>
+            ))}
+          </SidebarGroup>
+        ))}
       </SidebarScrollContainer>
     </SidebarContainer>
   );
