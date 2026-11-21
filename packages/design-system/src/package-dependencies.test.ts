@@ -4,8 +4,9 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import ts from "typescript";
 import { describe, expect, it } from "vitest";
+
+import { moduleSpecifiers } from "../../../scripts/module-specifiers.mjs";
 
 // Every package's dependencies and peerDependencies should match what its
 // shipped source imports. A missing entry breaks a consumer's install; an
@@ -59,11 +60,9 @@ function specifiers(file: string, text: string): string[] {
     const composes = text.matchAll(/composes:[^;]*\bfrom\s+["']([^"']+)["']/g);
     return [...imports, ...composes].map((match) => match[1]);
   }
-  // The TypeScript scanner skips strings and template literals, so code shown
-  // inside an example's <code> block is not mistaken for an import.
-  return ts
-    .preProcessFile(text, true, true)
-    .importedFiles.map((ref) => ref.fileName);
+  // The scanner skips strings and template literals, so code shown inside an
+  // example's <code> block is not mistaken for an import.
+  return moduleSpecifiers(text).map((found) => found.specifier);
 }
 
 const packages = readdirSync(PACKAGES_DIR)
