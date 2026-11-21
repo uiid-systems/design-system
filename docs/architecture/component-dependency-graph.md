@@ -31,7 +31,7 @@ graph TD
   cards --> buttons & icons & layout & typography
 
   overlays --> buttons & cards & icons & layout & typography
-  indicators --> cards & layout & typography
+  indicators --> layout & typography
 
   forms --> cards & icons & layout & lists & typography
 
