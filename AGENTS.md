@@ -65,5 +65,15 @@ Find the row matching the files you are touching and read that chapter before ed
 | Chapter                   | Covers                                                               | Read when                     |
 | ------------------------- | -------------------------------------------------------------------- | ----------------------------- |
 | `.agents/architecture.md` | Monorepo layout, root config files                                   | Touching root configs         |
-| `.agents/components.md`   | Component conventions, upstream substitutions, new-package checklist | Touching `packages/**` source |
+| `.agents/components.md`   | Component conventions, upstream substitutions, new-package checklist | Touching any component source |
 | `.agents/styling.md`      | Inline-style ban, layout primitives, style props, CSS vars           | Touching `.tsx` / `.css`      |
+
+"Any component source" means `packages/**` and `apps/*/components/**` alike. App components follow the same conventions as package components.
+
+## Skills
+
+Skills live in `.claude/skills/{name}/SKILL.md`. Tools that support skills load one when its description matches the task; with any other tool, read the file when its row applies.
+
+| Skill                   | Covers                                                                     | Read when                                                   |
+| ----------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `uiid-recipe-structure` | Structuring a recipe: several components composed into one piece of an app | Creating, moving or splitting files in `apps/*/components/` |
