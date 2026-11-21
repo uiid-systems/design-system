@@ -51,6 +51,9 @@ jobs:
       # and never sees comments that other people left on the PR.
       - name: Collect pull request context
         id: context
+        # `shell: bash` turns on pipefail, so a failed lookup fails the step
+        # instead of looking like "no earlier review".
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
