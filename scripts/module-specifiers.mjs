@@ -31,6 +31,8 @@
 //   fails loudly on the bogus package name rather than missing an import.
 // - A specifier with an escape sequence is returned as written, escapes and
 //   all; `preProcessFile` returned the cooked value.
+// - `from` used as a template tag (``from`./x` ``) makes the template a
+//   specifier. `preProcessFile` ignored it, and neither caller meets one.
 //
 // A template with no substitution is a specifier like a string
 // (``import(`./x`)``), and a leading `#!` line is skipped, as in TypeScript.
@@ -137,7 +139,9 @@ function tokenize(text) {
         text[i] !== ch &&
         !LINE_TERMINATOR.test(text[i])
       ) {
-        i += text[i] === "\\" ? 2 : 1;
+        // `\` then CRLF is one line continuation, so skip all three.
+        if (text[i] === "\\") i += text.startsWith("\r\n", i + 1) ? 3 : 2;
+        else i++;
       }
       const start = open + 1;
       const end = Math.min(i, text.length);

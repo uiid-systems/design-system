@@ -164,6 +164,16 @@ describe("moduleSpecifiers", () => {
     expect(names(text)).toEqual(["./after"]);
   });
 
+  it("continues a string over a backslash and CRLF", () => {
+    const text = `const s = "a\\\r\nimport 'x'"; import "./real";`;
+    expect(names(text)).toEqual(["./real"]);
+  });
+
+  it("reads a slash after a template literal as division", () => {
+    const text = 'const h = `${n}` / 2; import("./x"); 1 / 2;';
+    expect(names(text)).toEqual(["./x"]);
+  });
+
   it("skips escaped quotes inside a string", () => {
     expect(names(`const s = "a\\"b import 'x'";`)).toEqual([]);
   });
