@@ -30,6 +30,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },

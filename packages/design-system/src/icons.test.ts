@@ -40,6 +40,7 @@ describe("@uiid/design-system icon surface", () => {
 
   it("serves icons from ./icons and one module per icon from ./icons/*", () => {
     expect(pkg.exports["./icons"]).toEqual({
+      "@uiid/source": "./src/icons.ts",
       types: "./dist/icons.d.ts",
       import: "./dist/icons.js",
     });

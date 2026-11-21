@@ -26,11 +26,13 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./globals.css": "./dist/design-system.css",
     "./icons": {
+      "@uiid/source": "./src/icons.ts",
       "types": "./dist/icons.d.ts",
       "import": "./dist/icons.js"
     },
@@ -39,6 +41,7 @@
       "import": "./icons/*.js"
     },
     "./utils": {
+      "@uiid/source": "./src/utils.ts",
       "types": "./dist/utils.d.ts",
       "import": "./dist/utils.js"
     }
