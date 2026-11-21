@@ -55,7 +55,7 @@ Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest
 ### TypeScript 7: typecheck clean, tooling not
 
 - **No JavaScript API.** "TypeScript 7.0 … does not ship with an API"; one is expected in 7.1 ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `require("typescript")` on 7.0.2 exports only `version` and `versionMajorMinor`. Its `package.json` also exports `./unstable/*` entry points (ast, sync, async and others), which are not the 5.x API. That breaks three things here:
-  - `scripts/dts-relative-extensions.mjs` calls `ts.preProcessFile`, and every package build runs it (the `rewriteDistDeclarations` Vite plugin in `vite.config.ts`, which `packages/tokens` and `packages/icons` reuse).
+  - `scripts/dts-relative-extensions.mjs` calls `ts.preProcessFile`, and every package build runs it (the `rewriteDistDeclarations` Vite plugin in `vite.config.ts`, which `packages/icons` reuses, and the JSON declaration plugin in `packages/tokens/vite.config.ts`).
   - `packages/design-system/src/package-dependencies.test.ts` calls `ts.preProcessFile`.
   - `apps/docs/components/docs/props-table.tsx` uses `react-docgen-typescript`, which needs the compiler API. Its latest release is still 2.4.0, peering `typescript >= 4.3.x`.
 - **`rootDir` now defaults to `./` and `types` to `[]`** ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `packages/icons/tsconfig.build.json` failed with TS5011 and would have written declarations to `dist/src/`. UI-423 removed that file: every package tsconfig now extends `tsconfig.package.json`, which sets `rootDir` explicitly.

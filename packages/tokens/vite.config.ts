@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { defineConfig, type Plugin } from "vite";
 
-import { rewriteDistDeclarations } from "../../vite.config";
+import { rewriteDeclarationsIn } from "../../scripts/dts-relative-extensions.mjs";
 
 const SRC_DIR = fileURLToPath(new URL("src/", import.meta.url));
 const DIST_DIR = fileURLToPath(new URL("dist/", import.meta.url));
@@ -13,8 +13,8 @@ const DIST_DIR = fileURLToPath(new URL("dist/", import.meta.url));
 // import, so `import colors from "./json/…/colors.tokens.json"` in
 // dist/palette.d.ts would point at nothing. This writes a declaration beside
 // it for each JSON file a declaration imports, typing the default export as the
-// JSON itself. It must run before the shared rewrite, which only gives a
-// specifier a `.js` extension once its declaration exists.
+// JSON itself, then runs the shared `.js`-extension rewrite over dist, which
+// only rewrites a specifier once its declaration exists.
 const JSON_IMPORT = /from\s+"(\.{1,2}\/[^"]+\.json)"/g;
 
 const declareImportedJson = (): Plugin => ({
@@ -37,6 +37,7 @@ const declareImportedJson = (): Plugin => ({
         );
       }
     }
+    rewriteDeclarationsIn(DIST_DIR);
   },
 });
 
@@ -52,9 +53,7 @@ const declareImportedJson = (): Plugin => ({
  * directive handling, neither of which applies here.
  */
 export default defineConfig({
-  // Both `closeBundle` hooks are synchronous, so they finish in plugin order and
-  // the JSON declarations exist before the rewrite looks for them.
-  plugins: [declareImportedJson(), rewriteDistDeclarations()],
+  plugins: [declareImportedJson()],
   build: {
     lib: {
       entry: "src/index.ts",

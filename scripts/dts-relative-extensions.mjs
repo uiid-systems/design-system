@@ -72,7 +72,8 @@ const rewrite = (files) => {
 
 /**
  * Rewrites every declaration under `dir`. Run once every declaration is on
- * disk: `rewriteDistDeclarations` in vite.config.ts calls it after the bundle.
+ * disk: `rewriteDistDeclarations` in vite.config.ts and the tokens Vite config
+ * call it after the bundle.
  */
 export const rewriteDeclarationsIn = (dir) =>
   rewrite(readdirSync(dir, { recursive: true }).map((file) => join(dir, file)));
