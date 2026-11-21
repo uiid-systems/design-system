@@ -1,12 +1,34 @@
 {
-  // Build-free typecheck. `@uiid/source` makes every @uiid/* package resolve
-  // to its src/ instead of dist/, so this passes with no build.
-  // Only layout's source is included for now; the rest follow.
+  // Build-free typecheck for every package and Storybook, run by `pnpm typecheck`.
+  // `@uiid/source` resolves each @uiid/* import to the package's src/ instead of
+  // dist/, so this passes with no build. Test files are included, as in the
+  // package builds, except the two icons tests below.
+  // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
     "customConditions": ["@uiid/source"],
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    // packages/tokens imports its token JSON.
+    "resolveJsonModule": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    // Storybook's `@tokens` alias, from apps/storybook/tsconfig.json.
+    "paths": {
+      "@tokens/*": ["./packages/tokens/src/*"]
+    }
   },
-  "include": ["packages/layout/src", "vitest.matchers.d.ts"]
+  "include": [
+    "packages/*/src",
+    "apps/storybook/src",
+    "apps/storybook/stories",
+    // A bare dot-directory entry matches no files, so glob it.
+    "apps/storybook/.storybook/**/*",
+    "vitest.matchers.d.ts"
+  ],
+  // icons' own tsconfig leaves its tests out, and these two do not typecheck:
+  "exclude": [
+    // Passes `title` to an icon, which the public `Icon` type rejects (TS2322).
+    "packages/icons/src/components/loading-spinner.test.tsx",
+    // Imports an untyped `.mjs` emit script (TS7016).
+    "packages/icons/src/icon-type.test.ts"
+  ]
 }
