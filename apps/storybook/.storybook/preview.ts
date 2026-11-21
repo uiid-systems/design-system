@@ -6,9 +6,12 @@ import { themes, getPreferredColorScheme } from "storybook/theming";
  * Component CSS already reaches the preview through each component's source CSS
  * module. The barrel's `globals.css` imports of the built sheets are stubbed in
  * main.ts, so importing a prebuilt bundle here would only add a second copy of
- * every component rule. Uses the
- * `@tokens` alias from main.ts because `@uiid/tokens` is not a dependency of
- * this app.
+ * every component rule. Uses the `@tokens` alias from main.ts because
+ * `@uiid/tokens` is not a dependency of this app.
+ *
+ * This is the only token source in Storybook: main.ts stubs the barrel's
+ * `@uiid/tokens/globals.css` too, so removing this line strips tokens and layer
+ * order from every story, MDX page and addon browser test.
  */
 import "@tokens/globals.css";
 import "./styles.css";

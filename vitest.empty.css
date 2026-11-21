@@ -1,1 +1,1 @@
-/* Empty stand-in for each package's built globals.css under test; see vitest.config.ts. */
+/* Empty stand-in for the barrel's per-package globals.css imports (and, in Storybook, tokens); see vitest.config.ts and apps/storybook/.storybook/main.ts. */
