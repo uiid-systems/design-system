@@ -57,10 +57,11 @@ const config: StorybookConfig = {
       // `@import "@uiid/<pkg>/globals.css"` lines would pull each package's
       // built sheet. Source CSS modules already reach the page in the same
       // layer, so that sheet is a second copy of every rule; stub it as the
-      // Vitest config does. Tokens are excluded: their CSS exports already
-      // point at source and generated files.
+      // Vitest config does. Unlike Vitest, tokens are stubbed too: preview.ts
+      // loads them through `@tokens/globals.css` on every page, MDX included,
+      // so the barrel's copy would define every token a second time.
       {
-        find: /^@uiid\/(?!tokens\/)[\w-]+\/globals\.css$/,
+        find: /^@uiid\/[\w-]+\/globals\.css$/,
         replacement: resolve(__dirname, "../../../vitest.empty.css"),
       },
       { find: "@tokens", replacement: resolve(packagesDir, "tokens/src") },
