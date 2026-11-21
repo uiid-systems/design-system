@@ -17,8 +17,9 @@ import { PKG_DIR, readIconMap, specifierFor } from "./lucide-icon-map.mjs";
 // on the next build.
 //
 // Generated, not committed. Emitted by `build`, `dev`, the repo `postinstall`,
-// and the module-graph tests, which run this themselves so they never depend on
-// build order.
+// `pnpm typecheck`, Vitest's global setup and Storybook's config (both through
+// scripts/emit-generated-sources.ts), and the module-graph tests, which run this
+// themselves so they never depend on build order.
 
 // The icon type is declared locally rather than as import("lucide-react"):
 // consumers depend on @uiid/icons but not on lucide-react, so a d.ts that

@@ -108,7 +108,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Verification:**
 
-- [ ] `pnpm run build --filter=@uiid/tokens` then `pnpm test:run packages/{tokens,overlays,code}` passes
+- [ ] `pnpm test:run packages/{tokens,overlays,code}` passes
 - [ ] `git grep -n "shadow-md\|forms-font-size\|forms-padding-x\|DrawerIndent\|DrawerProvider" -- packages apps` finds nothing in source
 - [ ] Storybook and docs builds pass
 
