@@ -1,7 +1,7 @@
 {
-  // Build-free typecheck. `@uiid/source` makes @uiid/utils and @uiid/layout
-  // resolve to their src/ instead of dist/, so this passes with no build.
-  // Only layout is covered for now (UI-420); the rest follow.
+  // Build-free typecheck. `@uiid/source` makes every @uiid/* package resolve
+  // to its src/ instead of dist/, so this passes with no build.
+  // Only layout's source is included for now; the rest follow.
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
