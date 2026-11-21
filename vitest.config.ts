@@ -24,7 +24,7 @@ export default defineConfig({
       // excluded: their CSS exports already point at source and generated files.
       {
         find: /^@uiid\/(?!tokens\/)[\w-]+\/globals\.css$/,
-        replacement: path.resolve(__dirname, "vitest.empty.css"),
+        replacement: path.resolve(import.meta.dirname, "vitest.empty.css"),
       },
     ],
   },
