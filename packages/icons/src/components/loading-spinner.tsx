@@ -8,14 +8,16 @@ import type { IconProps } from "../icon-type";
 export type LoadingSpinnerIconProps = IconProps;
 
 /**
- * Whether the caller gave the icon a role or an accessible name. The same test
- * as lucide's `hasA11yProp`. Lucide also keeps an icon exposed when it is
- * given children; the spinner draws its own paths and takes none, so that
- * half of lucide's condition has no counterpart here.
+ * Whether the caller gave the icon a role or an accessible name. Lucide's
+ * `hasA11yProp`, less two cases. Its runtime also counts `title`, but its own
+ * icon type, which `IconProps` follows, rejects `title`, so the spinner leaves
+ * it out and the type and the runtime agree. Lucide also keeps an icon exposed
+ * when it is given children; the spinner draws its own paths and takes none,
+ * so that half of lucide's condition has no counterpart here.
  */
 const hasA11yProp = (props: Record<string, unknown>) =>
   Object.keys(props).some(
-    (prop) => prop.startsWith("aria-") || prop === "role" || prop === "title",
+    (prop) => prop.startsWith("aria-") || prop === "role",
   );
 
 /**
@@ -30,7 +32,7 @@ const hasA11yProp = (props: Record<string, unknown>) =>
  * spread straight through and would silently overwrite one.
  *
  * Decorative by default: it renders `aria-hidden="true"` unless the caller
- * passes an `aria-*` attribute, a `role` or a `title`.
+ * passes an `aria-*` attribute or a `role`.
  *
  * @see https://magecdn.com/tools/svg-loaders/270-ring-with-bg/
  */

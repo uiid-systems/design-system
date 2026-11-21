@@ -25,11 +25,9 @@
     "apps/storybook/.storybook/**/*",
     "vitest.matchers.d.ts"
   ],
-  // The package builds leave all tests out, so nothing else checks these two,
-  // and they do not typecheck:
+  // The package builds leave all tests out, so nothing else checks this one,
+  // and it does not typecheck:
   "exclude": [
-    // Passes `title` to an icon, which the public `Icon` type rejects (TS2322).
-    "packages/icons/src/components/loading-spinner.test.tsx",
     // Imports an untyped `.mjs` emit script (TS7016).
     "packages/icons/src/icon-type.test.ts"
   ]
