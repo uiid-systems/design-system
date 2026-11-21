@@ -51,12 +51,13 @@ jobs:
       # modules. The icons build emits those modules itself, so skip it here.
       - run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # Its own key, so it never races the Size and Test jobs to save an entry.
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: ${{ runner.os }}-turbo-storybook-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
+            ${{ runner.os }}-turbo-storybook-
 
       # The same command Vercel runs for production (apps/storybook/vercel.json).
       - run: pnpm turbo run build-storybook --filter=@uiid/storybook
