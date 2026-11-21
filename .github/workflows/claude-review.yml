@@ -94,14 +94,14 @@ jobs:
             --model opus
             --permission-mode default
             --plugin-dir .agent-skills
-            --allowedTools "Agent,Skill,Read,Grep,Glob,Edit(./.claude-review/review.md)"
+            --allowedTools "Agent,Skill,Read,Grep,Glob,Edit(./.claude-review/review.md),Edit(./.claude-review/verified-checklist.md)"
             --disallowedTools "Bash,ScheduleWakeup,WebFetch,WebSearch,Read(./.git/**),Read(//proc/**)"
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
             HEAD SHA: ${{ github.event.pull_request.head.sha }}
 
-            Review this pull request and write the result to `.claude-review/review.md`. That is the only file you can write. You have no shell and no GitHub access; a later step posts the file.
+            Review this pull request and write the result to `.claude-review/review.md`. You have no shell and no GitHub access; a later step posts the file. The only other file you can write is `.claude-review/verified-checklist.md`.
 
             The working directory is the repository with the pull request merged in. The pull request itself is in these files:
             - `.claude-review/description.md`: its title and description.
@@ -135,7 +135,10 @@ jobs:
             - Only verified findings go in. Leave out praise and the reviewers' own checks. A reviewer with no findings gets the line "No findings." instead of a table.
             - Never hard-wrap prose, and never include a token, key or other credential.
 
+            6. If the description has a checklist, write `.claude-review/verified-checklist.md` with one line for each unchecked item you confirmed is true by reading the code: the item's text copied exactly, without the `- [ ]`. A later step ticks those boxes. Leave out any item you are unsure of or that can only be confirmed by running something, and skip the file when there is nothing to tick.
+
       - name: Post review
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -168,6 +171,23 @@ jobs:
           if [ "$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)" != "$HEAD_SHA" ]; then
             echo "::notice::The pull request has newer commits, so this review was not posted"
             exit 0
+          fi
+
+          # Tick the checklist items Claude confirmed. This can only turn an
+          # existing "- [ ]" line into "- [x]", and never rewrites its text.
+          verified=.claude-review/verified-checklist.md
+          if [ -s "$verified" ]; then
+            gh api "repos/$GH_REPO/pulls/$PR_NUMBER" --jq .body > "$RUNNER_TEMP/pr-body.md"
+            awk '
+              { text = $0; sub(/[ \t\r]+$/, "", text) }
+              NR == FNR { sub(/^- \[[ xX]\] /, "", text); if (text != "") ok[text] = 1; next }
+              substr(text, 1, 6) == "- [ ] " && (substr(text, 7) in ok) { print "- [x] " substr(text, 7); next }
+              { print }
+            ' "$verified" "$RUNNER_TEMP/pr-body.md" > "$RUNNER_TEMP/pr-body-ticked.md"
+
+            if [ -s "$RUNNER_TEMP/pr-body-ticked.md" ] && ! cmp -s "$RUNNER_TEMP/pr-body.md" "$RUNNER_TEMP/pr-body-ticked.md"; then
+              gh api -X PATCH "repos/$GH_REPO/pulls/$PR_NUMBER" -F "body=@$RUNNER_TEMP/pr-body-ticked.md" --silent
+            fi
           fi
 
           # The marker is how the next run finds this comment to update it.
