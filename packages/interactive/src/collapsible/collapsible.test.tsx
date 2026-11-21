@@ -545,6 +545,10 @@ describe("Collapsible", () => {
     );
     const horizontal = css.slice(start, css.indexOf("/*", start));
     expect(horizontal).toMatch(/width: var\(--collapsible-panel-width\);/);
+    // Frees the height the base rule pins to the panel's measured height.
+    expect(horizontal).toMatch(
+      /width: var\(--collapsible-panel-width\);\s*height: auto;/,
+    );
     expect(horizontal).toMatch(/overflow-x: clip;/);
     expect(horizontal).toMatch(/overflow-y: visible;/);
     expect(horizontal).toMatch(
