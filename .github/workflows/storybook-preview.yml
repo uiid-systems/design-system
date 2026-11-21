@@ -1,0 +1,95 @@
+name: Storybook Preview
+
+# Opt-in deploy previews. Vercel's own per-push preview deploys are turned off
+# in apps/storybook/vercel.json (`git.deploymentEnabled`), so a PR gets a
+# preview only while it carries the `preview` label: adding the label deploys
+# straight away, and each later push redeploys until the label is removed.
+on:
+  # No `branches` filter: stacked PRs target an intermediate branch, not main.
+  pull_request:
+    types: [labeled, synchronize, reopened]
+
+# One deploy per PR, newest commit wins. A run that will not deploy (some other
+# label was added) gets a group of its own, so it cannot cancel a deploy that
+# is already in flight.
+concurrency:
+  group: storybook-preview-${{ github.event.pull_request.number }}-${{ (github.event.action != 'labeled' || github.event.label.name == 'preview') && 'deploy' || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  VERCEL_CLI: vercel@66.6.0
+
+jobs:
+  deploy:
+    # Fork PRs get no secrets, so there is nothing to deploy with.
+    if: >-
+      contains(github.event.pull_request.labels.*.name, 'preview')
+      && (github.event.action != 'labeled' || github.event.label.name == 'preview')
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STORYBOOK_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # Run from the repo root: the pulled project settings carry the Root
+      # Directory (apps/storybook), and `vercel build` installs and builds from
+      # there with the same commands a build on Vercel would use.
+      - name: Pull project settings
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx "$VERCEL_CLI" pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      # No token here: the build runs the PR's own code.
+      - name: Build
+        run: pnpm dlx "$VERCEL_CLI" build
+
+      - name: Deploy
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          url=$(pnpm dlx "$VERCEL_CLI" deploy --prebuilt --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          script: |
+            const marker = '<!-- storybook-preview -->';
+            const sha = process.env.HEAD_SHA.slice(0, 8);
+            const body = `${marker}\n**Storybook preview:** ${process.env.PREVIEW_URL} (\`${sha}\`)`;
+            const target = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            };
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...target,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find((comment) => comment.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({ ...target, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...target, issue_number: context.issue.number, body });
+            }

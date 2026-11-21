@@ -3,5 +3,11 @@
   "framework": null,
   "buildCommand": "cd ../.. && pnpm turbo run build-storybook --filter=@uiid/storybook",
   "outputDirectory": "storybook-static",
-  "ignoreCommand": "bash scripts/vercel-ignore.sh"
+  "ignoreCommand": "bash scripts/vercel-ignore.sh",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "**": false
+    }
+  }
 }

@@ -16,8 +16,9 @@ cd ../.. || exit 1
 git fetch --no-tags --depth=100 \
   origin +refs/heads/main:refs/remotes/origin/main >/dev/null 2>&1
 
-# Empty on a branch's first deployment, so the fallback is the common path,
-# not an edge case.
+# Only `main` reaches this script: vercel.json turns Git deployments off for
+# every other branch, and PR previews are deployed prebuilt by the
+# storybook-preview workflow. The fallback covers a missing previous SHA.
 base="${VERCEL_GIT_PREVIOUS_SHA:-origin/main}"
 
 # turbo exits 0 for "nothing affected", 1 for "affected", 2 for a query error.

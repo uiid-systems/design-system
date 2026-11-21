@@ -52,6 +52,8 @@ PR titles follow **conventional commits**, enforced by CI. `.github/workflows/pr
 
 Descriptions should use bullet points, call out breaking changes explicitly, and link issues with `Closes #123`. Write custom, verifiable checklist items rather than boilerplate — each box should be something an agent can confirm by reading the diff or running a command.
 
+Storybook deploy previews are opt-in: a PR gets one only while it carries the `preview` label (`.github/workflows/storybook-preview.yml`). Never add that label unless the user asks for a preview.
+
 Versioning and changelogs are automated by **release-please**:
 
 - All `@uiid/*` packages share one version, kept in sync via `extra-files`
