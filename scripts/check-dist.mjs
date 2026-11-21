@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Checks the built packages the way a consumer meets them. Tests and Storybook
-// alias every @uiid/* import to source, so nothing else in CI loads dist.
+// resolve every @uiid/* import to source through the `@uiid/source` export
+// condition, so nothing else in CI loads dist.
 //
 // Run after `pnpm turbo run build --filter='./packages/*'`. Five checks:
 //   1. Every bare import in a package's published files, type declarations

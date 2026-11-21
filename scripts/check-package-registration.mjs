@@ -22,6 +22,14 @@ const fail = (message) => failures.push(message);
 const UMBRELLA = "design-system";
 const NOT_IN_BARREL = new Set(["icons"]);
 
+/* Per-icon modules, generated with no source file behind them. */
+const GENERATED_EXPORTS = new Set([
+  "@uiid/icons ./*",
+  "@uiid/design-system ./icons/*",
+]);
+
+const CLEAN_STEP = "node ../../scripts/clean-build-output.mjs && ";
+
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
     entry.isDirectory()
@@ -47,9 +55,9 @@ const extraFiles = new Set(
 );
 // tsconfig.json allows comments, so its references are matched, not parsed.
 // Comments are stripped first, so a commented-out reference does not count.
-const tsconfig = read("tsconfig.json")
-  .replace(/\/\*[\s\S]*?\*\//g, "")
-  .replace(/(^|\s)\/\/.*$/gm, "$1");
+const stripComments = (text) =>
+  text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/.*$/gm, "$1");
+const tsconfig = stripComments(read("tsconfig.json"));
 const references = new Set(
   [...tsconfig.matchAll(/"path":\s*"([^"]+)"/g)].map(([, path]) => path),
 );
@@ -71,9 +79,31 @@ for (const { folder, pkg } of packages) {
     fail(`${name}: missing from the root tsconfig.json references`);
   }
 
+  // Without the shared build config a package compiles its tests into dist, and
+  // without the clean step a renamed file's old output ships. Both still build.
+  const tsconfigPath = `packages/${folder}/tsconfig.json`;
+  const { extends: base } = JSON.parse(stripComments(read(tsconfigPath)));
+  if (base !== "../../tsconfig.package.json") {
+    fail(`${name}: ${tsconfigPath} must extend ../../tsconfig.package.json`);
+  }
+  if (!pkg.scripts?.build?.startsWith(CLEAN_STEP)) {
+    fail(`${name}: its build script must start with \`${CLEAN_STEP}\``);
+  }
+
   const src = join(packagesDir, folder, "src");
   if (existsSync(src) && hasCssModule(src) && !cssLayers[folder]) {
     fail(`${name}: has CSS modules but no entry in scripts/css-layers.cjs`);
+  }
+
+  // Tests and Storybook find source through this key, and resolution follows
+  // key order, so it must come first. With a built dist, a missing key still
+  // resolves, to stale output. Generated wildcards have no source to point at.
+  for (const [subpath, entry] of Object.entries(pkg.exports ?? {})) {
+    if (typeof entry !== "object" || !("import" in entry)) continue;
+    if (GENERATED_EXPORTS.has(`${name} ${subpath}`)) continue;
+    if (Object.keys(entry)[0] !== "@uiid/source") {
+      fail(`${name}: exports "${subpath}" must start with "@uiid/source"`);
+    }
   }
 
   if (pkg.private) continue;

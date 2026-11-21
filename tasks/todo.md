@@ -108,7 +108,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Verification:**
 
-- [ ] `pnpm run build --filter=@uiid/tokens` then `pnpm test:run packages/{tokens,overlays,code}` passes
+- [ ] `pnpm test:run packages/{tokens,overlays,code}` passes
 - [ ] `git grep -n "shadow-md\|forms-font-size\|forms-padding-x\|DrawerIndent\|DrawerProvider" -- packages apps` finds nothing in source
 - [ ] Storybook and docs builds pass
 
@@ -297,7 +297,6 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 - [ ] `typescript` is on 7.x everywhere, with one `@types/react` version across all workspace importers
 - [ ] `pnpm typecheck` and the full build pass
 - [ ] Nothing calls the TypeScript 5 JavaScript API: `ts.preProcessFile` is replaced in `scripts/dts-relative-extensions.mjs` and `packages/design-system/src/package-dependencies.test.ts`, or `typescript` is aliased to `@typescript/typescript6` with the native compiler alongside. The alias conflicts with "7.x everywhere", so the owner rules on it here
-- [ ] `packages/icons/tsconfig.build.json` sets `rootDir`
 - [ ] The docs props table (`react-docgen-typescript`) has a recorded decision: the alias, waiting for the 7.1 API, or staying on 5.9
 - [ ] If the upgrade is not viable, the spec records why and the repo stays on 5.9
 

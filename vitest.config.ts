@@ -1,37 +1,13 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "path";
 
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
-// Resolve @uiid/* packages to source files for testing without building. The
-// list is derived from packages/*, so a new package needs no registration here.
-// Two are left out on purpose and handled by their own rules below: tokens
-// serves a TS entry point and several CSS subpaths from different directories,
-// so one prefix cannot cover it, and the design-system barrel must match
-// exactly, or its string alias would also catch its `./icons` subpaths.
-const SEPARATE_ALIASES = new Set(["@uiid/tokens", "@uiid/design-system"]);
-
-// These resolve to source through the `@uiid/source` export condition instead
-// of an alias (see `conditions` below). UI-420 proves the condition on
-// these two; the rest move over, and the alias tables go, in a follow-up.
-const SOURCE_CONDITION_PACKAGES = new Set(["@uiid/utils", "@uiid/layout"]);
-
-const uiidAliases = readdirSync(path.resolve(__dirname, "packages")).flatMap(
-  (folder) => {
-    const manifest = path.resolve(__dirname, `packages/${folder}/package.json`);
-    const entry = path.resolve(__dirname, `packages/${folder}/src/index.ts`);
-    if (!existsSync(manifest) || !existsSync(entry)) return [];
-    const { name } = JSON.parse(readFileSync(manifest, "utf8"));
-    if (!name?.startsWith("@uiid/") || SEPARATE_ALIASES.has(name)) return [];
-    if (SOURCE_CONDITION_PACKAGES.has(name)) return [];
-    return [{ find: name, replacement: entry }];
-  },
-);
-
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    // Every @uiid/* package exports its source under the `@uiid/source`
+    // condition, so tests resolve sibling packages to `src/` without a build.
     // happy-dom tests run in Vite's client environment and read these; tests
     // marked `@vitest-environment node` run in `ssr` and read
     // `ssr.resolve.conditions` below. Setting either list replaces Vite's
@@ -40,69 +16,15 @@ export default defineConfig({
     // The package's `exports` key order decides which target wins, not the
     // order here, so `@uiid/source` must stay the first key in each entry.
     conditions: ["@uiid/source", "module", "browser", "development|production"],
-    // Array form, because tokens needs exact-match rules that a prefix map
-    // cannot express. First match wins, so these run most-specific first.
     alias: [
-      // @uiid/icons serves one module per icon from a generated directory at the
-      // package root. These must precede the generic rules below: a string alias
-      // for "@uiid/icons" also matches "@uiid/icons/globe", which would splice
-      // the subpath onto src/index.ts.
-      //
-      // Our own icons resolve to source, like every other package here, so tests
-      // do not depend on the package having been built.
-      {
-        find: /^@uiid\/icons\/loading-spinner$/,
-        replacement: path.resolve(
-          __dirname,
-          "packages/icons/src/components/loading-spinner.tsx",
-        ),
-      },
-      // lucide's icons resolve to the generated re-export modules, which the repo
-      // postinstall emits (as do `build` and `dev`).
-      {
-        find: /^@uiid\/icons\/(.+)$/,
-        replacement: path.resolve(__dirname, "packages/icons/icons") + "/$1.js",
-      },
-      // The design-system barrel re-exports every package above, so it resolves
-      // to source the same way. Its `exports` map points at dist, which CI never
-      // builds, so without this rule a consumer-side test only passes against a
-      // stale local build.
-      {
-        find: /^@uiid\/design-system$/,
-        replacement: path.resolve(
-          __dirname,
-          "packages/design-system/src/index.ts",
-        ),
-      },
-      // That barrel's stylesheet imports every package's built `globals.css`.
-      // Components already load their CSS modules from source, so under test
-      // each built sheet stands in as an empty file. Tokens are excluded: they
-      // have hand-written source CSS, matched by the rule further down. This
-      // must precede the string aliases, which would otherwise prefix-match
-      // `@uiid/buttons/globals.css` onto `src/index.ts/globals.css`.
+      // The design-system barrel's stylesheet imports every package's built
+      // `globals.css`, and Vite's CSS `@import` resolver ignores custom
+      // conditions. Components already load their CSS modules from source, so
+      // under test each built sheet stands in as an empty file. Tokens are
+      // excluded: their CSS exports already point at source and generated files.
       {
         find: /^@uiid\/(?!tokens\/)[\w-]+\/globals\.css$/,
         replacement: path.resolve(__dirname, "vitest.empty.css"),
-      },
-      ...uiidAliases,
-      // Hand-written CSS at the package root (src/css/ is gitignored and holds
-      // only generated token files). The optional query keeps `?raw` imports
-      // on the same file, so a test can read a composition's selector text.
-      {
-        find: /^@uiid\/tokens\/(compositions|globals|palette)\.css(\?.*)?$/,
-        replacement: path.resolve(__dirname, "packages/tokens/src/$1.css$2"),
-      },
-      // The palette ships as TS from the package root, not as a token CSS file.
-      {
-        find: /^@uiid\/tokens$/,
-        replacement: path.resolve(__dirname, "packages/tokens/src/index.ts"),
-      },
-      // Everything else under @uiid/tokens/ is a generated token stylesheet.
-      // The separator is appended explicitly: path.resolve strips a trailing
-      // slash, which would splice the subpath straight onto "css".
-      {
-        find: /^@uiid\/tokens\//,
-        replacement: path.resolve(__dirname, "packages/tokens/src/css") + "/",
       },
     ],
   },
@@ -115,8 +37,8 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
-    // Emits @uiid/icons' per-icon modules, which source files import directly and
-    // which are generated rather than committed.
+    // Generates the token CSS and @uiid/icons' per-icon modules, which source
+    // files import directly and which are generated rather than committed.
     globalSetup: ["./vitest.globalSetup.ts"],
     include: ["packages/**/*.test.{ts,tsx}"],
     css: true,

@@ -71,7 +71,7 @@ Bump `lucide-react`, then regenerate:
 pnpm --filter @uiid/icons generate
 ```
 
-`scripts/generate-icon-exports.mjs` rewrites the committed barrel and its declarations (`src/lucide-icons.generated.js` and `.d.ts`), typing each icon as `Icon`. The per-icon subpath modules are emitted into `icons/` by `build`, `dev`, and the repo `postinstall`, and are not committed — they sit outside `dist` on purpose, because `vite build --watch` empties `dist` on every rebuild and would delete them.
+`scripts/generate-icon-exports.mjs` rewrites the committed barrel and its declarations (`src/lucide-icons.generated.js` and `.d.ts`), typing each icon as `Icon`. The per-icon subpath modules are emitted into `icons/` by `build`, `dev`, and the repo `postinstall`, and are not committed — they sit outside `dist` on purpose, because `build` empties `dist` first (`scripts/clean-build-output.mjs`) and would delete them.
 
 Both read their icon list from `scripts/lucide-icon-map.mjs`, which parses `lucide-react`'s own root module for the authoritative export-name → file mapping. It parses rather than derives, because the two do not always correspond, and it throws if it parses implausibly few icons, hits a name lucide doesn't export, or points at a missing file — so a future lucide layout change fails the generate step instead of silently shipping a partial set.
 

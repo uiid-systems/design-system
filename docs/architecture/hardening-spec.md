@@ -45,7 +45,7 @@ Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest
 
 ### Vitest 5: not clean, matcher types break the build
 
-- **Matcher types move.** Vitest no longer reads custom matchers from the global `jest.Matchers` interface, and `Assertion` now takes two type parameters (`Assertion<void, string>`) ([migration guide](https://vitest.dev/guide/migration)). Sixteen tsconfigs (15 packages and `apps/storybook/tsconfig.json`) list `"@testing-library/jest-dom"` in `types`, which only augments `jest`. `vitest.matchers.d.ts` declares the old `Assertion<T = any>`. Probed with Vitest 5.1.1: that setup gives TS2339 on `toBeInTheDocument` with jest-dom 6.9.1 or 8.0.0, even with `skipLibCheck` on. Every package build compiles its tests with `tsc -b`, so the build goes red. It compiles clean, with `skipLibCheck` off as well, after three changes made together:
+- **Matcher types move.** Vitest no longer reads custom matchers from the global `jest.Matchers` interface, and `Assertion` now takes two type parameters (`Assertion<void, string>`) ([migration guide](https://vitest.dev/guide/migration)). Two tsconfigs (`tsconfig.check.json` and `apps/storybook/tsconfig.json`) list `"@testing-library/jest-dom"` in `types`, which only augments `jest`; the 15 package tsconfigs did too until UI-423 took tests out of the package builds. `vitest.matchers.d.ts` declares the old `Assertion<T = any>`. Probed with Vitest 5.1.1: that setup gives TS2339 on `toBeInTheDocument` with jest-dom 6.9.1 or 8.0.0, even with `skipLibCheck` on. `pnpm typecheck` compiles the tests, so it goes red. It compiles clean, with `skipLibCheck` off as well, after three changes made together:
   - `"@testing-library/jest-dom/vitest"` in those `types` arrays.
   - jest-dom 8, which supports Vitest 5 and peers `vitest >=5 <6` ([jest-dom v8.0.0](https://github.com/testing-library/jest-dom/releases/tag/v8.0.0)). jest-dom 7 made `@testing-library/dom` a required peer ([jest-dom v7.0.0](https://github.com/testing-library/jest-dom/releases/tag/v7.0.0)), and it is already in the lockfile at 10.4.2.
   - `interface Assertion<R, T> extends DisabledForUserMatchers<R> {}` in `vitest.matchers.d.ts`.
@@ -55,10 +55,10 @@ Checked 2026-11-20 (UI-419). The repo is on TypeScript 5.9.3, Vite 7.3.7, Vitest
 ### TypeScript 7: typecheck clean, tooling not
 
 - **No JavaScript API.** "TypeScript 7.0 … does not ship with an API"; one is expected in 7.1 ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `require("typescript")` on 7.0.2 exports only `version` and `versionMajorMinor`. Its `package.json` also exports `./unstable/*` entry points (ast, sync, async and others), which are not the 5.x API. That breaks three things here:
-  - `scripts/dts-relative-extensions.mjs` calls `ts.preProcessFile`, and every package build runs it (`afterBuild` in `vite.config.ts` and `packages/tokens/vite.config.ts`, `closeBundle` in `packages/icons/vite.config.ts`).
+  - `scripts/dts-relative-extensions.mjs` calls `ts.preProcessFile`, and every package build runs it (the `rewriteDistDeclarations` Vite plugin in `vite.config.ts`, which `packages/icons` reuses, and the JSON declaration plugin in `packages/tokens/vite.config.ts`).
   - `packages/design-system/src/package-dependencies.test.ts` calls `ts.preProcessFile`.
   - `apps/docs/components/docs/props-table.tsx` uses `react-docgen-typescript`, which needs the compiler API. Its latest release is still 2.4.0, peering `typescript >= 4.3.x`.
-- **`rootDir` now defaults to `./` and `types` to `[]`** ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `packages/icons/tsconfig.build.json` fails with TS5011 and would write declarations to `dist/src/`, so it needs `"rootDir": "src"`. The other emitting tsconfigs already set `rootDir`.
+- **`rootDir` now defaults to `./` and `types` to `[]`** ([TypeScript 7.0 announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)). Probed: `packages/icons/tsconfig.build.json` failed with TS5011 and would have written declarations to `dist/src/`. UI-423 removed that file: every package tsconfig now extends `tsconfig.package.json`, which sets `rootDir` explicitly.
 - **Typecheck itself is clean.** Probed: `tsc` 7.0.2 with `--noEmit` reports zero errors for all 18 packages, `apps/storybook` and `apps/docs`, against a current build. Not probed: declaration emit through `tsc -b`, which UI-426 diffs anyway.
 - **Consumers that are fine.** Next 16.4.5 runs the project-local `tsc` for `next build` by default, which supports TypeScript 7 ([`useTypeScriptCli`](https://nextjs.org/docs/app/api-reference/config/next-config-js/useTypeScriptCli)). `apps/docs/next.config.ts` needs no change. Storybook uses `react-docgen` by default, not the TypeScript-based plugin, and `apps/storybook/.storybook/main.ts` does not change that. Not confirmed: a full Storybook run on TypeScript 7.
 
@@ -72,24 +72,23 @@ The planned order holds: UI-423, then UI-425 (Vite and Vitest), then UI-426 (Typ
 
 - UI-425 sets `build.cssTarget` so `light-dark()` survives, in library builds and Storybook.
 - UI-425 takes `@testing-library/jest-dom` 8 from UI-427, switches the tsconfig `types` entries to `@testing-library/jest-dom/vitest`, and fixes `vitest.matchers.d.ts`. All three have to land with Vitest 5.
-- UI-426 sets `rootDir` for icons and handles the missing API in one of two ways. It can replace `ts.preProcessFile` in the two files above, or use the announcement's own recipe: `typescript` aliased to `npm:@typescript/typescript6`, with the native compiler installed beside it. The alias also covers `react-docgen-typescript` in the docs props table. It conflicts with the ticket's "`typescript` is on 7.x everywhere", so the owner rules on it in UI-426. Otherwise the docs app waits for the 7.1 API or stays on 5.9, as the ticket allows.
+- UI-426 handles the missing API in one of two ways. It can replace `ts.preProcessFile` in the two files above, or use the announcement's own recipe: `typescript` aliased to `npm:@typescript/typescript6`, with the native compiler installed beside it. The alias also covers `react-docgen-typescript` in the docs props table. It conflicts with the ticket's "`typescript` is on 7.x everywhere", so the owner rules on it in UI-426. Otherwise the docs app waits for the 7.1 API or stays on 5.9, as the ticket allows.
 
 ## Commands
 
-| Task               | Command                                         |
-| ------------------ | ----------------------------------------------- |
-| Install            | `pnpm install`                                  |
-| Build all packages | `pnpm run build --filter='./packages/*'`        |
-| Build one package  | `pnpm run build --filter=@uiid/{package}`       |
-| Tests              | `pnpm test:run`                                 |
-| Tests, one package | `pnpm test:run packages/{package}`              |
-| Lint               | `pnpm run lint`                                 |
-| Format check       | `pnpm run format:check`                         |
-| Bundle sizes       | `pnpm size`                                     |
-| Storybook build    | `pnpm --filter @uiid/storybook build-storybook` |
-| Docs build         | `pnpm run build --filter=docs`                  |
-
-Step 2 adds a root `pnpm typecheck` that needs no prior build.
+| Task                | Command                                         |
+| ------------------- | ----------------------------------------------- |
+| Install             | `pnpm install`                                  |
+| Build all packages  | `pnpm run build --filter='./packages/*'`        |
+| Build one package   | `pnpm run build --filter=@uiid/{package}`       |
+| Tests               | `pnpm test:run`                                 |
+| Tests, one package  | `pnpm test:run packages/{package}`              |
+| Typecheck, no build | `pnpm typecheck`                                |
+| Lint                | `pnpm run lint`                                 |
+| Format check        | `pnpm run format:check`                         |
+| Bundle sizes        | `pnpm size`                                     |
+| Storybook build     | `pnpm --filter @uiid/storybook build-storybook` |
+| Docs build          | `pnpm run build --filter=docs`                  |
 
 ## Project structure
 

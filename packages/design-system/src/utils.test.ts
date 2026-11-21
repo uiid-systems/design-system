@@ -15,6 +15,7 @@ const pkg = JSON.parse(readFileSync(`${PKG_DIR}package.json`, "utf8"));
 describe("@uiid/design-system utils surface", () => {
   it("serves the helpers from ./utils", () => {
     expect(pkg.exports["./utils"]).toEqual({
+      "@uiid/source": "./src/utils.ts",
       types: "./dist/utils.d.ts",
       import: "./dist/utils.js",
     });

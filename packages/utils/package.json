@@ -35,7 +35,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build",
     "generate:props": "node scripts/generate-props.mjs"
   },
   "dependencies": {
@@ -49,7 +49,6 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "typescript": "~5.9.3",
-    "vite": "^7.3.7",
-    "vite-plugin-dts": "^4.3.0"
+    "vite": "^7.3.7"
   }
 }

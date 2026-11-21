@@ -10,8 +10,8 @@ import type { ChatRole, ChatStatus, ToolState } from "./ai.types";
 import type { ToolPart } from "./tool/tool.types";
 
 /* These assertions are type-level. Vitest runs them as no-ops. tsc is what fails
-   when a union drifts: the Test workflow typechecks this package on every PR, and
-   `tsc -b` in the package build does the same at release. */
+   when a union drifts: `pnpm typecheck` covers this file on every PR. The package
+   build leaves tests out, so it does not. */
 describe("ai shared types", () => {
   it("matches the AI SDK's UIMessage role", () => {
     expectTypeOf<UIMessage["role"]>().toEqualTypeOf<ChatRole>();

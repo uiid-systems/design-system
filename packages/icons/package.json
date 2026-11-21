@@ -28,10 +28,16 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./package.json": "./package.json",
+    "./loading-spinner": {
+      "@uiid/source": "./src/components/loading-spinner.tsx",
+      "types": "./icons/loading-spinner.d.ts",
+      "import": "./icons/loading-spinner.js"
+    },
     "./*": {
       "types": "./icons/*.d.ts",
       "import": "./icons/*.js"
@@ -42,7 +48,7 @@
     "icons"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && vite build && node scripts/emit-per-icon-modules.mjs",
+    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build && node scripts/emit-per-icon-modules.mjs",
     "dev": "node scripts/emit-per-icon-modules.mjs && vite build --watch",
     "generate": "node scripts/generate-icon-exports.mjs",
     "preview": "vite preview"

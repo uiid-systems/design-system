@@ -27,6 +27,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
@@ -36,7 +37,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -b && vite build"
+    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build"
   },
   "dependencies": {
     "@uiid/icons": "workspace:*",
@@ -58,7 +59,6 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~5.9.3",
-    "vite": "^7.3.7",
-    "vite-plugin-dts": "^4.3.0"
+    "vite": "^7.3.7"
   }
 }
