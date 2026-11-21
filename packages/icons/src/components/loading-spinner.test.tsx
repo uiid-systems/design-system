@@ -63,12 +63,23 @@ describe("LoadingSpinnerIcon", () => {
   it.each([
     ["aria-label", { "aria-label": "Loading" }],
     ["aria-labelledby", { "aria-labelledby": "status" }],
-    ["title", { title: "Loading" }],
     ["role", { role: "status" }],
   ])("is exposed when the caller passes %s", (_name, props) => {
     const { container } = render(<LoadingSpinnerIcon {...props} />);
 
     expect(spinner(container)).not.toHaveAttribute("aria-hidden");
+  });
+
+  // Lucide's own icon type rejects `title`, and `IconProps` follows it, so the
+  // runtime does not treat it as an accessible name either. Name the spinner
+  // with `aria-label` instead.
+  it("is not named by title, which the icon type rejects", () => {
+    const { container } = render(
+      // @ts-expect-error: `title` is not one of the icon props
+      <LoadingSpinnerIcon title="Loading" />,
+    );
+
+    expect(spinner(container)).toHaveAttribute("aria-hidden", "true");
   });
 
   it("lets the caller set aria-hidden itself", () => {
