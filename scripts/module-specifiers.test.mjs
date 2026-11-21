@@ -131,4 +131,62 @@ describe("moduleSpecifiers", () => {
   it("returns an escaped specifier as written", () => {
     expect(names(`import a from "./e\\u0073c";`)).toEqual(["./e\\u0073c"]);
   });
+
+  it("ends an unterminated regex at the line end, not on the next line", () => {
+    // `</p>` reads as the start of a regex that never closes.
+    const text = `const A = () => <p>hi</p>\nimport("./lazy");`;
+    expect(names(text)).toEqual(["./lazy"]);
+  });
+
+  it("skips a hashbang line", () => {
+    expect(names(`#!/usr/bin/env node\nimport "./hb";`)).toEqual(["./hb"]);
+    // Read as code, the backtick would open a template over the next line.
+    expect(names("#!node --title=`x\nimport './hb2';")).toEqual(["./hb2"]);
+  });
+
+  it("finds a template specifier with no substitution", () => {
+    const text = "const a = import(`./tpl`);\nconst b = import(`./${name}`);";
+    expect(names(text)).toEqual(["./tpl"]);
+    const [{ start, end }] = moduleSpecifiers(text);
+    expect(text.slice(start - 1, end + 1)).toBe("`./tpl`");
+  });
+
+  it("reads a keyword used as a property name as the end of an expression", () => {
+    expect(names(`obj.in / 2; import("./x"); 3 / 4`)).toEqual(["./x"]);
+  });
+
+  it("reads a slash after a closing bracket as division", () => {
+    expect(names(`f(x) / 2; s = "/"; import("./y")`)).toEqual(["./y"]);
+  });
+
+  it("reads a slash after return as a regex", () => {
+    const text = `function f(s) { return /"/.test(s) } import "./after";`;
+    expect(names(text)).toEqual(["./after"]);
+  });
+
+  it("skips escaped quotes inside a string", () => {
+    expect(names(`const s = "a\\"b import 'x'";`)).toEqual([]);
+  });
+
+  it("ends a string opened by a quote in JSX text at the line end", () => {
+    const text = `const A = () => <p>Don't</p>;\nimport "./next-line";`;
+    expect(names(text)).toEqual(["./next-line"]);
+  });
+
+  it("treats U+2028 and U+2029 as line ends", () => {
+    expect(names(`const s = "open import "./after-ls";`)).toEqual([
+      "./after-ls",
+    ]);
+    expect(names(`// note import "./after-ps";`)).toEqual(["./after-ps"]);
+  });
+
+  it("ignores optional member calls named import or require", () => {
+    const text = `a?.import("./optional");\nb?.require("./optional-cjs");`;
+    expect(names(text)).toEqual([]);
+  });
+
+  // Known false positive, shared with `ts.preProcessFile`: JSX text is code.
+  it("reads import-like JSX text as an import", () => {
+    expect(names(`<p>import from "./jsx-text"</p>`)).toEqual(["./jsx-text"]);
+  });
 });

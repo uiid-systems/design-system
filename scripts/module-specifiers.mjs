@@ -15,20 +15,31 @@
 // No other construct puts a string straight after `from`, `import`,
 // `require(` or `declare module` in valid code, so these need no parser.
 //
-// Three differences from `ts.preProcessFile`, none of which occur in this
-// repo's source or declarations. It returned an ambient `declare module
-// "*.css"` in a file with no imports or exports separately, and this returns
-// it as a specifier; neither caller acts on a pattern like that. It missed
-// `export * as ns from "x"`, which this finds. And it counted a member call
-// such as `foo.require("x")`, which this does not.
+// Known differences from `ts.preProcessFile`. Over this repo's source and
+// built declarations both return the same specifiers, apart from the first:
 //
-// Not handled, as `ts.preProcessFile` did not handle them either: JSX text is
-// read as code, so a quote in it (`<p>Don't</p>`) opens a string that runs to
-// the end of the line. A specifier with an escape sequence is returned as
-// written, escapes and all.
+// - An ambient `declare module "*.css"` in a file with no imports or exports
+//   is returned as a specifier. `preProcessFile` listed it separately, and
+//   neither caller acts on a pattern like that.
+// - `export * as ns from "x"` is found. `preProcessFile` missed it.
+// - A call after `.` or `?.`, such as `foo.require("x")` or
+//   `foo?.import("x")`, is a member call and is not counted.
+//   `preProcessFile` counted some of these.
+// - JSX text is read as code, as it was by `preProcessFile`. A quote in it
+//   (`<p>Don't</p>`) opens a string that runs to the end of the line, and
+//   `<p>import from "./x"</p>` is a false positive. The dependency test then
+//   fails loudly on the bogus package name rather than missing an import.
+// - A specifier with an escape sequence is returned as written, escapes and
+//   all; `preProcessFile` returned the cooked value.
+//
+// A template with no substitution is a specifier like a string
+// (``import(`./x`)``), and a leading `#!` line is skipped, as in TypeScript.
+// Strings, line comments and regexes end at any line terminator, U+2028 and
+// U+2029 included, which is where TypeScript's scanner ends them.
 
 const IDENTIFIER_START = /[A-Za-z_$\u0080-￿]/;
 const IDENTIFIER_PART = /[\w$\u0080-￿]/;
+const LINE_TERMINATOR = /[\n\r\u2028\u2029]/;
 
 // After these keywords an expression starts, so a `/` opens a regex.
 const KEYWORDS_BEFORE_EXPRESSION = new Set([
@@ -49,13 +60,17 @@ const KEYWORDS_BEFORE_EXPRESSION = new Set([
   "yield",
 ]);
 
+const is = (token, type, value) =>
+  token !== undefined && token.type === type && token.value === value;
+
 /**
  * The significant tokens of `text`: identifiers and keywords, string
- * literals, and single punctuation characters. Comments, template text and
- * regular expressions produce no token.
+ * literals and templates with no substitution (both type "string"), the end
+ * of any other template, numbers, and single punctuation characters.
+ * Comments and regular expressions produce no token.
  *
  * @param {string} text
- * @returns {Array<{ type: "word" | "string" | "number" | "punct", value: string, start: number, end: number }>}
+ * @returns {Array<{ type: "word" | "string" | "template" | "number" | "punct", value: string, start: number, end: number }>}
  */
 function tokenize(text) {
   const tokens = [];
@@ -66,17 +81,28 @@ function tokenize(text) {
   const regexAllowed = () => {
     const last = tokens.at(-1);
     if (!last) return true;
-    if (last.type === "string" || last.type === "number") return false;
-    if (last.type === "word") return KEYWORDS_BEFORE_EXPRESSION.has(last.value);
+    if (last.type !== "word" && last.type !== "punct") return false;
+    if (last.type === "word") {
+      // `obj.in / 2`: a keyword used as a property name ends an expression.
+      if (is(tokens.at(-2), "punct", ".")) return false;
+      return KEYWORDS_BEFORE_EXPRESSION.has(last.value);
+    }
     return !/[)\]}]/.test(last.value);
   };
 
   // Reads template text from `i` up to the closing backtick or a `${`.
-  const readTemplate = () => {
+  // `start` is set only for a template that has had no substitution yet.
+  const readTemplate = (start) => {
     while (i < text.length) {
       const ch = text[i];
       if (ch === "\\") i += 2;
       else if (ch === "`") {
+        // A template with no substitution reads like a string literal.
+        tokens.push(
+          start === undefined
+            ? { type: "template", value: "", start: i, end: i }
+            : { type: "string", value: text.slice(start, i), start, end: i },
+        );
         i++;
         return;
       } else if (ch === "$" && text[i + 1] === "{") {
@@ -87,6 +113,11 @@ function tokenize(text) {
     }
   };
 
+  // A hashbang is a comment on the first line only.
+  if (text.startsWith("#!")) {
+    while (i < text.length && !LINE_TERMINATOR.test(text[i])) i++;
+  }
+
   while (i < text.length) {
     const ch = text[i];
     const next = text[i + 1];
@@ -94,15 +125,18 @@ function tokenize(text) {
     if (/\s/.test(ch)) {
       i++;
     } else if (ch === "/" && next === "/") {
-      const newline = text.indexOf("\n", i);
-      i = newline === -1 ? text.length : newline;
+      while (i < text.length && !LINE_TERMINATOR.test(text[i])) i++;
     } else if (ch === "/" && next === "*") {
       const close = text.indexOf("*/", i + 2);
       i = close === -1 ? text.length : close + 2;
     } else if (ch === '"' || ch === "'") {
       // A string ends at its closing quote or, unterminated, at the line end.
       const open = i++;
-      while (i < text.length && text[i] !== ch && text[i] !== "\n") {
+      while (
+        i < text.length &&
+        text[i] !== ch &&
+        !LINE_TERMINATOR.test(text[i])
+      ) {
         i += text[i] === "\\" ? 2 : 1;
       }
       const start = open + 1;
@@ -116,12 +150,12 @@ function tokenize(text) {
       if (text[i] === ch) i++;
     } else if (ch === "`") {
       i++;
-      readTemplate();
+      readTemplate(i);
     } else if (ch === "/" && regexAllowed()) {
       // A regex ends at an unescaped `/` outside a character class.
       let inClass = false;
       i++;
-      while (i < text.length && text[i] !== "\n") {
+      while (i < text.length && !LINE_TERMINATOR.test(text[i])) {
         const c = text[i];
         if (c === "\\") i++;
         else if (c === "[") inClass = true;
@@ -129,8 +163,12 @@ function tokenize(text) {
         else if (c === "/" && !inClass) break;
         i++;
       }
-      i++;
-      while (i < text.length && IDENTIFIER_PART.test(text[i])) i++;
+      // Flags follow only a closing `/`. An unterminated regex stops at the
+      // line end, so the next line is read as code.
+      if (text[i] === "/") {
+        i++;
+        while (i < text.length && IDENTIFIER_PART.test(text[i])) i++;
+      }
     } else if (IDENTIFIER_START.test(ch)) {
       const start = i;
       while (i < text.length && IDENTIFIER_PART.test(text[i])) i++;
@@ -158,9 +196,6 @@ function tokenize(text) {
   }
   return tokens;
 }
-
-const is = (token, type, value) =>
-  token !== undefined && token.type === type && token.value === value;
 
 /**
  * Every module specifier in `text`, in source order. `start` and `end` bound
