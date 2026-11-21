@@ -111,7 +111,7 @@ jobs:
           # can tell whether the line is still its own before changing it.
           run_url="$GITHUB_SERVER_URL/$GH_REPO/actions/runs/$GITHUB_RUN_ID"
           {
-            printf '<sub>⏳ Reviewing `%s` · started %s UTC · [watch the run](%s)</sub> <!-- claude-review-status run=%s -->\n\n' \
+            printf '*⏳ Reviewing `%s` · started %s UTC · [watch the run](%s)* <!-- claude-review-status run=%s -->\n\n' \
               "${HEAD_SHA:0:7}" "$(date -u +%H:%M)" "$run_url" "$GITHUB_RUN_ID"
             if [ -n "$comment_id" ]; then
               # Drop the earlier status line and the blank line after it.
@@ -180,6 +180,8 @@ jobs:
 
             One sentence on why.
 
+            ---
+
             <details>
             <summary>⚠️ <b>Code</b> · Closed panel stays reachable by Tab · Open</summary>
 
@@ -200,13 +202,15 @@ jobs:
 
             </details>
 
+            ---
+
             Reviewers: Code, Tests
 
             - The first line is a level-three heading with the status light and the verdict, and nothing else. The sentence follows as its own paragraph. The light follows the findings that are still open, never your overall impression, and a deferred finding is not open:
               - `### 🔴 Request changes` when any Critical or Important finding is open.
               - `### 🟡 Approve with suggestions` when only Suggestions or Nits are open.
               - `### 🟢 Approve` when no finding is open.
-            - Every finding is one `<details>` block, in a single list for all reviewers: open findings first, then deferred, then fixed, each group from most to least severe. Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line.
+            - Every finding is one `<details>` block, in a single list for all reviewers: open findings first, then deferred, then fixed, each group from most to least severe. Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line. Put a `---` line, with a blank line on each side, above the first finding and below the last, and leave both out when there are no findings.
             - The summary line is the severity icon, the reviewer in bold (Code, Security, Tests or Performance), a title and the status, joined by ` · `. It is HTML, not markdown: use `<code>` instead of backticks and write `&lt;` for `<`.
               - Severity icon: 🛑 Critical, ⚠️ Important, 💡 Suggestion, ✏️ Nit.
               - Title: under ten words, naming the problem. Never change the title of a finding carried over from the previous review.
@@ -363,7 +367,7 @@ jobs:
           else
             message="⚠️ Review of \`${HEAD_SHA:0:7}\` failed · [see the run]($run_url)"
           fi
-          line="<sub>$message</sub> <!-- claude-review-status run=$GITHUB_RUN_ID -->"
+          line="*$message* <!-- claude-review-status run=$GITHUB_RUN_ID -->"
 
           LINE="$line" awk '/<!-- claude-review-status / { print ENVIRON["LINE"]; next } { print }' \
             "$RUNNER_TEMP/stopped-comment.md" > "$RUNNER_TEMP/stopped-body.md"
