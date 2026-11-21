@@ -1,6 +1,6 @@
 {
   "name": "@uiid/layout",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Layout primitives — Stack, Group, Box, Separator, and more",
   "license": "MIT",
   "author": "Adam Fratino",
@@ -30,7 +30,6 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },

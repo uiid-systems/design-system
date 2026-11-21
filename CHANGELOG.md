@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.0](https://github.com/uiid-systems/design-system/compare/v0.9.0...v0.10.0) (2026-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** remove unused public API ([#645](https://github.com/uiid-systems/design-system/issues/645))
+
+### Code Refactoring
+
+* **ui:** remove unused public API ([#645](https://github.com/uiid-systems/design-system/issues/645)) ([7f722d7](https://github.com/uiid-systems/design-system/commit/7f722d77f26563b9625bd0d61493bb9d2e7a1e1b))
+
 ## [0.9.0](https://github.com/uiid-systems/design-system/compare/v0.8.0...v0.9.0) (2026-11-19)
 
 
