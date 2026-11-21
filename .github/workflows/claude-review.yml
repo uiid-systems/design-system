@@ -2,10 +2,19 @@ name: Claude Review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    # `converted_to_draft` is here only to cancel a review that is still
+    # running when the PR goes back to draft; the job itself skips drafts.
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
 
 permissions:
   contents: read
+
+# A new push, or a move back to draft, replaces the review still running for
+# this PR. This sits at workflow level so that a run whose job is skipped
+# still cancels the one in progress.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   review:
@@ -14,7 +23,8 @@ jobs:
     timeout-minutes: 30
     # Only the maintainer's own PRs, and only from branches in this repo, so
     # nobody else can spend the Claude subscription or steer the reviewer.
-    # Drafts and release-please PRs are skipped.
+    # Drafts are skipped: the first review starts when the PR is marked ready.
+    # release-please PRs are skipped too.
     if: >-
       ${{
         github.event.pull_request.user.login == 'adamfratino' &&
@@ -22,10 +32,6 @@ jobs:
         !github.event.pull_request.draft &&
         !startsWith(github.head_ref, 'release-please--')
       }}
-    # A new push replaces the review still running for the previous one.
-    concurrency:
-      group: claude-review-${{ github.event.pull_request.number }}
-      cancel-in-progress: true
     permissions:
       contents: read
       pull-requests: write
