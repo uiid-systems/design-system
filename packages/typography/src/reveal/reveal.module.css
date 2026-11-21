@@ -1,6 +1,6 @@
 /* Delay and duration are set per word when it mounts; see RevealWord. */
 .reveal-word {
-  /* backwards, not both: a held `filter: blur(0)` would keep every finished word its own stacking context. */
+  /* backwards, not both: a filter animation held at its end keyframe would keep every finished word its own stacking context. */
   animation: reveal var(--reveal-duration) ease-out backwards;
   animation-delay: var(--reveal-delay);
 }
@@ -17,7 +17,9 @@
   }
   to {
     opacity: 1;
-    filter: blur(0);
+    /* Interpolates as blur(0). The minifier rewrites blur(0) as blur(), whose
+       empty argument not every engine is known to accept. */
+    filter: none;
   }
 }
 

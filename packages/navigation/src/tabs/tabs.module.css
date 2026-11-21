@@ -117,7 +117,9 @@
   opacity: 1;
   overflow: hidden;
   transition: all var(--timing) ease-in-out;
-  transform: translate3d(0, 0, 0);
+  /* A 3D transform keeps the panel on its own compositor layer. Written as
+     translateZ(0): the minifier rewrites translate3d(0, 0, 0) as a 2D translate. */
+  transform: translateZ(0);
   transition-delay: calc(var(--timing) / 2);
 
   &:focus-visible {
