@@ -473,10 +473,6 @@ describe("Collapsible", () => {
   });
 
   // ============================================
-  // CSS
-  // ============================================
-
-  // ============================================
   // ORIENTATION
   // ============================================
 
@@ -543,6 +539,16 @@ describe("Collapsible", () => {
     expect(horizontal).toMatch(/overflow-x: clip;/);
     expect(horizontal).toMatch(/overflow-y: visible;/);
     expect(horizontal).toMatch(/transition-property: width;/);
+  });
+
+  // ============================================
+  // CSS
+  // ============================================
+
+  it("hides a kept-mounted panel once it has closed", () => {
+    expect(css).toMatch(
+      /\.collapsible-panel\[hidden\]:not\(\[hidden="until-found"\]\) \{\s*display: none;/,
+    );
   });
 
   it("clips the panel vertically only, so focus rings and shadows survive", () => {

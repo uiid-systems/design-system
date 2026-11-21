@@ -30,6 +30,14 @@
   }
 }
 
+/*
+ * A kept-mounted panel closes with `hidden`, which the Stack's own `display`
+ * would otherwise override, leaving the closed panel on screen at full size.
+ */
+.collapsible-panel[hidden]:not([hidden="until-found"]) {
+  display: none;
+}
+
 /* Under reduced motion the panel snaps open and shut. */
 @media (prefers-reduced-motion: no-preference) {
   .collapsible-panel {
