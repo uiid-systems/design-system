@@ -14,4 +14,4 @@ A badge is a `<div>`, so it does not belong inside a paragraph. For an inline do
 
 A badge carrying only a number has no meaning for a screen reader on its own. Give it an `aria-label` that says what the number counts, and a `role` so the label is announced: `<Badge role="status" aria-label="3 unread messages">3</Badge>`.
 
-Badge's colour treatment is shared: Avatar and Timeline read the same `badgeColorStyles`, so a hue looks the same on all three. Padding and radius read the `--badge-*` tokens (`--badge-border-radius`, `--badge-size-{sm,md,lg}-padding-{x,y}`).
+Badge's colour treatment is shared: Avatar reads the same `badgeColorStyles`, so a hue looks the same on both. Padding and radius read the `--badge-*` tokens (`--badge-border-radius`, `--badge-size-{sm,md,lg}-padding-{x,y}`).

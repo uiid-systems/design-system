@@ -569,9 +569,6 @@ importers:
 
   packages/indicators:
     dependencies:
-      '@uiid/cards':
-        specifier: workspace:*
-        version: link:../cards
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout

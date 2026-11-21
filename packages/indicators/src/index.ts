@@ -14,7 +14,3 @@ export * from "./kbd/kbd.types";
 export * from "./progress/progress";
 export * from "./progress/progress.types";
 export * from "./progress/subcomponents";
-
-export * from "./timeline/timeline";
-export * from "./timeline/timeline.types";
-export * from "./timeline/subcomponents";
