@@ -528,17 +528,29 @@ describe("Collapsible", () => {
         Content
       </Collapsible>,
     );
-    expect(getPanel()).toHaveAttribute("data-orientation", "horizontal");
+    const panel = getPanel();
+    expect(panel).toHaveAttribute("data-orientation", "horizontal");
+    expect(panel).toHaveAttribute("data-ui-ay", "end");
+    expect(panel).toHaveAttribute("data-ui-minw", "0");
+    expect(panel).not.toHaveAttribute("data-ui-ax");
+    expect(panel).not.toHaveAttribute("data-ui-minh");
   });
 
   it("animates and clips a horizontal panel's width", () => {
-    const horizontal = css.slice(
-      css.indexOf('.collapsible-panel[data-orientation="horizontal"]'),
+    // The horizontal rule alone, up to the comment that opens the next one.
+    const start = css.indexOf(
+      '.collapsible-panel[data-orientation="horizontal"]',
     );
+    const horizontal = css.slice(start, css.indexOf("/*", start));
     expect(horizontal).toMatch(/width: var\(--collapsible-panel-width\);/);
     expect(horizontal).toMatch(/overflow-x: clip;/);
     expect(horizontal).toMatch(/overflow-y: visible;/);
-    expect(horizontal).toMatch(/transition-property: width;/);
+    expect(horizontal).toMatch(
+      /&\[data-starting-style\],\s*&\[data-ending-style\] \{\s*width: 0;\s*height: auto;/,
+    );
+    expect(css).toMatch(
+      /&\[data-orientation="horizontal"\] \{\s*transition-property: width;/,
+    );
   });
 
   // ============================================
