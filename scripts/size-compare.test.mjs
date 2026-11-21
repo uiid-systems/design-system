@@ -1,4 +1,10 @@
 // @vitest-environment node
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { compare } from "./size-compare.mjs";
 
 const entry = (name, size) => ({ name, size });
@@ -160,5 +166,90 @@ describe("size-compare", () => {
     const { markdown } = compare([], []);
 
     expect(markdown.startsWith("### Size report")).toBe(true);
+  });
+
+  it("does not fail growth of exactly 5% and exactly 2 kB", () => {
+    const { failed } = compare(
+      [entry("@uiid/ai", 40000)],
+      [entry("@uiid/ai", 42000)],
+    );
+
+    expect(failed).toBe(false);
+  });
+
+  it("does not fail growth of exactly 2 kB that is over 5%", () => {
+    const { failed } = compare(
+      [entry("@uiid/forms", 20000)],
+      [entry("@uiid/forms", 22000)],
+    );
+
+    expect(failed).toBe(false);
+  });
+
+  it("fails growth one byte past 2 kB that is over 5%", () => {
+    const { failed } = compare(
+      [entry("@uiid/forms", 20000)],
+      [entry("@uiid/forms", 22001)],
+    );
+
+    expect(failed).toBe(true);
+  });
+
+  it("counts a package's script and stylesheet as two entries", () => {
+    const { markdown } = compare(
+      [entry("@uiid/cards", 9070), entry("@uiid/cards (css)", 880)],
+      [entry("@uiid/cards", 9070), entry("@uiid/cards (css)", 880)],
+    );
+
+    expect(markdown).toContain("All 2 entries");
+  });
+});
+
+describe("size-compare CLI", () => {
+  const script = fileURLToPath(new URL("./size-compare.mjs", import.meta.url));
+  const run = (base, head) => {
+    const dir = mkdtempSync(join(tmpdir(), "size-compare-"));
+    const paths = {
+      base: join(dir, "base.json"),
+      head: join(dir, "head.json"),
+      out: join(dir, "out.md"),
+    };
+    writeFileSync(paths.base, JSON.stringify(base));
+    writeFileSync(paths.head, JSON.stringify(head));
+    const result = spawnSync(process.execPath, [
+      script,
+      paths.base,
+      paths.head,
+      "--out",
+      paths.out,
+    ]);
+    return { status: result.status, out: paths.out };
+  };
+
+  it("exits 0 and writes the report when nothing grew past the thresholds", () => {
+    const { status, out } = run(
+      [entry("@uiid/forms", 20000)],
+      [entry("@uiid/forms", 20000)],
+    );
+
+    expect(status).toBe(0);
+    expect(readFileSync(out, "utf8")).toContain("### Size report");
+  });
+
+  it("exits 1 when an entry grew past both thresholds", () => {
+    const { status } = run(
+      [entry("@uiid/forms", 20000)],
+      [entry("@uiid/forms", 23000)],
+    );
+
+    expect(status).toBe(1);
+  });
+
+  it("exits 2 for a report that is not a list of entries", () => {
+    const { status } = run({ error: "build failed" }, [
+      entry("@uiid/forms", 20000),
+    ]);
+
+    expect(status).toBe(2);
   });
 });

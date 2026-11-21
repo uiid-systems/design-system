@@ -153,7 +153,9 @@ const main = () => {
   // A report that cannot be read exits 2, so it is never mistaken for growth.
   const read = (path) => {
     try {
-      return JSON.parse(readFileSync(path, "utf8"));
+      const report = JSON.parse(readFileSync(path, "utf8"));
+      if (!Array.isArray(report)) throw new Error("not a list of entries");
+      return report;
     } catch (error) {
       console.error(`Cannot read size report ${path}: ${error.message}`);
       process.exit(2);
