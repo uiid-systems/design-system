@@ -1,7 +1,8 @@
 /**
  * CSS build options shared by the library builds (`vite.config.ts`) and
  * Storybook (`.storybook/main.ts`), so Storybook previews the CSS the packages
- * publish. `scripts/check-dist.mjs` fails the build if either drifts.
+ * publish. `scripts/check-dist.mjs` checks the published CSS these options
+ * produce.
  */
 
 /**

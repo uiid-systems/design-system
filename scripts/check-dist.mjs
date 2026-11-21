@@ -126,8 +126,21 @@ for (const { dir, manifest } of packages) {
         `${name}: has --lightningcss-* fallbacks, so light-dark() was lowered. Check cssTarget.`,
       );
     }
-    // Strings and url()s may hold a literal `&`; nowhere else may one appear.
-    if (css.replace(/"[^"]*"|'[^']*'|url\([^)]*\)/g, "").includes("&")) {
+    // Comments, strings and url()s may hold a literal `&` or `;@media`, so
+    // drop them first. Then nesting shows as an `&`, or as an at-rule nested
+    // in a rule: after a declaration (`color:red;@media`) or first in a
+    // style rule (`.a{@media`).
+    const code = css.replace(
+      /\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|url\((?:"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|[^)\\]|\\[\s\S])*\)/g,
+      "",
+    );
+    if (
+      code.includes("&") ||
+      /[;{][\w-]+:[^;{}]+;@(?:media|container|supports)\b/.test(code) ||
+      /(?:^|[{}])\s*[^@\s{};][^{};]*\{\s*@(?:media|container|supports)\b/.test(
+        code,
+      )
+    ) {
       fail(
         `${name}: ships native CSS nesting. Check the lightningcss options in scripts/css-target.ts.`,
       );

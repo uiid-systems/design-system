@@ -71,8 +71,9 @@ const config: StorybookConfig = {
     // import behind them, such as the lucide modules behind `@uiid/icons/<icon>`, so
     // a cold cache discovered them mid-run and reloaded the browser tests (UI-403).
 
-    // Minify CSS as the library builds do, so stories preview the published
-    // stylesheets: `light-dark()` kept, nesting lowered.
+    // Minify CSS as the library builds do, so the static build previews the
+    // published stylesheets: `light-dark()` kept, nesting lowered. `storybook
+    // dev` does not minify, so it serves CSS without these rewrites.
     config.build ??= {};
     config.build.cssTarget = cssTarget;
     config.css ??= {};
