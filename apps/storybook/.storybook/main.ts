@@ -25,7 +25,8 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     // Token CSS and per-icon modules are generated, not committed. This hook runs
     // for `dev`, `build-storybook` and the addon's Vitest project alike, so all
-    // three work on a checkout that has never been built.
+    // three work on a checkout that has never been built. The addon's project
+    // calls this hook several times; the generators still run once per process.
     emitGeneratedSources();
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
