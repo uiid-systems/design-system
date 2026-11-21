@@ -43,7 +43,7 @@
     { "path": "./packages/utils" },
     // Gives test, example and story files an editor project. Package tsconfigs
     // leave them out, and tsserver only finds tsconfig.check.json through here.
-    // Nothing runs a root `tsc -b`, which would reject this noEmit reference.
+    // A root `tsc -b` would also typecheck tsconfig.check.json; nothing runs one.
     { "path": "./tsconfig.check.json" }
   ]
 }
