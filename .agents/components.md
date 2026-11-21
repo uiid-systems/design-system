@@ -43,7 +43,7 @@ Copy an existing package's config rather than writing it fresh — `packages/int
 2. `packages/{name}/tsconfig.json` and `vite.config.ts`, using `createViteConfig({ cssLayer: cssLayers.{name} })`
 3. `src/index.ts` barrel and `src/vite-env.d.ts` for CSS module types. `"use client"` stays out of the barrel
 4. `scripts/css-layers.cjs` — add the package, or its CSS ships unlayered
-5. `vitest.config.ts` — nothing to register, as long as step 1 gave each JS entry in `exports` an `"@uiid/source": "./src/index.ts"` key, first in the entry. Tests and Storybook resolve `@uiid/{name}` to source through that condition, so without it they need a built `dist`
+5. `vitest.config.ts` — nothing to register, as long as step 1 gave each JS entry in `exports` an `"@uiid/source": "./src/index.ts"` key, first in the entry. Tests, Storybook and `pnpm typecheck` resolve `@uiid/{name}` to source through that condition, so without it they need a built `dist`. `tsconfig.check.json` globs `packages/*/src`, so the typecheck needs no registration either
 6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
 7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
 8. `.size-limit.js` — nothing to register: size entries are generated from every `packages/*` with a `dist/index.js`. Add a component to `SINGLE_IMPORTS` there only when the cost of importing it alone is worth tracking

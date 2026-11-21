@@ -1,0 +1,30 @@
+{
+  // Build-free typecheck for the docs app, run by `pnpm typecheck`. The real
+  // build (`next build`) keeps resolving @uiid/* from built dist; only this check
+  // resolves them to src/ through `@uiid/source`, which means it compiles
+  // package source too, under the docs app's compiler options.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "customConditions": ["@uiid/source"],
+    // Replaces the base `paths`, so `@/*` is repeated. The packages and the docs
+    // app resolve different @types/react versions, and package source compiled
+    // here would mix the two; pin both to the docs app's copy.
+    "paths": {
+      "@/*": ["./*"],
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"]
+    }
+  },
+  // The base list, plus each package's ambient declarations (CSS modules and
+  // Vite's `?raw` imports), which package source needs and Next does not provide.
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "../../packages/*/src/vite-env.d.ts"
+  ]
+}

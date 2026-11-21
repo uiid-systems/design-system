@@ -1,12 +1,27 @@
 {
-  // Build-free typecheck. `@uiid/source` makes @uiid/utils and @uiid/layout
-  // resolve to their src/ instead of dist/, so this passes with no build.
-  // Only layout is covered for now (UI-420); the rest follow.
+  // Build-free typecheck for every package and Storybook, run by `pnpm typecheck`.
+  // `@uiid/source` resolves each @uiid/* import to the package's src/ instead of
+  // dist/, so this passes with no build. Test files are included, as in the
+  // package builds; icons' tests are left out, as its own tsconfig leaves them out.
+  // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
     "customConditions": ["@uiid/source"],
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    // packages/tokens imports its token JSON.
+    "resolveJsonModule": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    // Storybook's `@tokens` alias, from apps/storybook/tsconfig.json.
+    "paths": {
+      "@tokens/*": ["./packages/tokens/src/*"]
+    }
   },
-  "include": ["packages/layout/src", "vitest.matchers.d.ts"]
+  "include": [
+    "packages/*/src",
+    "apps/storybook/src",
+    "apps/storybook/stories",
+    "apps/storybook/.storybook",
+    "vitest.matchers.d.ts"
+  ],
+  "exclude": ["packages/icons/src/**/*.test.*"]
 }

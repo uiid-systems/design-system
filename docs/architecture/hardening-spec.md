@@ -76,20 +76,19 @@ The planned order holds: UI-423, then UI-425 (Vite and Vitest), then UI-426 (Typ
 
 ## Commands
 
-| Task               | Command                                         |
-| ------------------ | ----------------------------------------------- |
-| Install            | `pnpm install`                                  |
-| Build all packages | `pnpm run build --filter='./packages/*'`        |
-| Build one package  | `pnpm run build --filter=@uiid/{package}`       |
-| Tests              | `pnpm test:run`                                 |
-| Tests, one package | `pnpm test:run packages/{package}`              |
-| Lint               | `pnpm run lint`                                 |
-| Format check       | `pnpm run format:check`                         |
-| Bundle sizes       | `pnpm size`                                     |
-| Storybook build    | `pnpm --filter @uiid/storybook build-storybook` |
-| Docs build         | `pnpm run build --filter=docs`                  |
-
-Step 2 adds a root `pnpm typecheck` that needs no prior build.
+| Task                | Command                                         |
+| ------------------- | ----------------------------------------------- |
+| Install             | `pnpm install`                                  |
+| Build all packages  | `pnpm run build --filter='./packages/*'`        |
+| Build one package   | `pnpm run build --filter=@uiid/{package}`       |
+| Tests               | `pnpm test:run`                                 |
+| Tests, one package  | `pnpm test:run packages/{package}`              |
+| Typecheck, no build | `pnpm typecheck`                                |
+| Lint                | `pnpm run lint`                                 |
+| Format check        | `pnpm run format:check`                         |
+| Bundle sizes        | `pnpm size`                                     |
+| Storybook build     | `pnpm --filter @uiid/storybook build-storybook` |
+| Docs build          | `pnpm run build --filter=docs`                  |
 
 ## Project structure
 

@@ -51,6 +51,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # Packages, stories and the docs app, resolved from source, before any
+      # build. It emits the per-icon modules and Next's route types itself.
+      # Test files are included, which covers what Vitest cannot: expectTypeOf
+      # is a no-op at runtime, so a drifted AI SDK union in @uiid/ai fails here.
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Generate tokens
         run: node packages/tokens/build-tokens.js
 
@@ -78,26 +85,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-test-
 
-      # Each package builds with `tsc -b`, and its tsconfig includes its tests
-      # (icons and design-system exclude theirs), so this build is the
-      # typecheck for every package. Turbo builds siblings
-      # first, which is what lets tsc resolve @uiid/* types from their dist.
-      # It also covers what Vitest cannot: expectTypeOf is a no-op at runtime,
-      # so a drifted AI SDK union in @uiid/ai fails here and nowhere else.
-      - name: Build and typecheck packages
+      # Each package still builds with `tsc -b` against its siblings' dist, so
+      # this repeats the typecheck above the way the published declarations
+      # see it.
+      - name: Build packages
         run: pnpm turbo run build --filter='./packages/*'
 
-      # @uiid/tokens builds without tsc.
-      - name: Typecheck @uiid/tokens
-        run: pnpm exec tsc --noEmit -p packages/tokens
-
-      # Vite does not typecheck, so nothing else checks the stories. They
-      # resolve @uiid/* types from the dist built above.
-      - name: Typecheck Storybook
-        run: pnpm exec tsc --noEmit -p apps/storybook
-
-      # Tests and Storybook alias @uiid/* to source. This is the only step
-      # that loads the built packages.
+      # Tests, Storybook and the typecheck resolve @uiid/* to source. This is
+      # the only step that loads the built packages.
       - name: Check built packages
         run: node scripts/check-dist.mjs
 
