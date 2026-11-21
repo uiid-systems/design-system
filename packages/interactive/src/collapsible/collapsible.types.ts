@@ -15,6 +15,11 @@ export type CollapsiblePanelProps = WithLayoutProps<
   StackProps
 > & {
   instant?: boolean;
+  /**
+   * The axis the panel opens along. `"vertical"` (the default) animates its
+   * height; `"horizontal"` animates its width, for a panel that opens sideways.
+   */
+  orientation?: "vertical" | "horizontal";
 };
 
 export type CollapsibleProps = React.PropsWithChildren<{

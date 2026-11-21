@@ -1,20 +1,22 @@
+// First, so Tailwind's cascade layers are declared before any `uiid.*` layer.
+// A CSS module imported ahead of it would put the whole `uiid` layer under
+// Tailwind's reset, and every spacing and border prop would read as 0.
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { OnThisPage, Pager } from "@/components/docs";
 import { Header } from "@/components/header";
+import { Main } from "@/components/main";
+import { Shell, ShellBody } from "@/components/shell";
 import {
-  Body,
-  AppShellOuter,
-  AppShellInner,
-  AsideContainer,
-  ContentRow,
-  Main,
-} from "@/components/shell";
-import { Sidebar } from "@/components/sidebar";
+  noFlashScript,
+  Sidebar,
+  SIDEBAR_ATTRIBUTE,
+  SIDEBAR_GROUPS_STORAGE_KEY,
+  SIDEBAR_STORAGE_KEY,
+} from "@/components/sidebar";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
-
-import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -36,23 +38,25 @@ export default function RootLayout({
 }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AppShellOuter>
-          <Sidebar />
-          <AppShellInner>
-            <Header />
-            <ContentRow>
-              <Main>
-                {children}
-                <Pager />
-              </Main>
-              <AsideContainer>
-                <OnThisPage />
-              </AsideContainer>
-            </ContentRow>
-          </AppShellInner>
-        </AppShellOuter>
-      </Body>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: noFlashScript({
+              sidebarKey: SIDEBAR_STORAGE_KEY,
+              sidebarAttribute: SIDEBAR_ATTRIBUTE,
+              groupsKey: SIDEBAR_GROUPS_STORAGE_KEY,
+            }),
+          }}
+        />
+      </head>
+      <ShellBody className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Shell sidebar={<Sidebar title="uiid docs" />} header={<Header />}>
+          <Main aside={<OnThisPage />}>
+            {children}
+            <Pager />
+          </Main>
+        </Shell>
+      </ShellBody>
     </html>
   );
 }

@@ -1,0 +1,16 @@
+/* What the main row needs that a UIID prop doesn't cover: its scroll tracks. */
+
+.main,
+.main-aside {
+  overflow-y: auto;
+}
+
+/* Breathing room above a heading reached through an anchor link. */
+.main {
+  scroll-padding-block-start: calc(var(--spacing-unit) * 4);
+}
+
+.main-aside {
+  position: sticky;
+  inset-block-start: 0;
+}

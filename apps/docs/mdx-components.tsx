@@ -18,24 +18,12 @@ const components: MDXComponents = {
     </Text>
   ),
   h2: ({ children }) => (
-    <Text
-      render={<h2 />}
-      id={headingId(children)}
-      className="scroll-mt-20"
-      size={4}
-      weight="semibold"
-    >
+    <Text render={<h2 />} id={headingId(children)} size={4} weight="semibold">
       {children}
     </Text>
   ),
   h3: ({ children }) => (
-    <Text
-      render={<h3 />}
-      id={headingId(children)}
-      className="scroll-mt-20"
-      size={2}
-      weight="semibold"
-    >
+    <Text render={<h3 />} id={headingId(children)} size={2} weight="semibold">
       {children}
     </Text>
   ),

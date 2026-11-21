@@ -25,4 +25,6 @@ export const Layout: Story = { render: () => <Examples.Layout /> };
 
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 
+export const Horizontal: Story = { render: () => <Examples.Horizontal /> };
+
 export const Composed: Story = { render: () => <Examples.Composed /> };
