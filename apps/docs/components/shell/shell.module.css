@@ -1,0 +1,117 @@
+/*
+ * Everything the shell needs that a UIID prop doesn't cover: the scroll
+ * tracks, the sticky aside, the group chevron and the sidebar's slide.
+ */
+
+.outer {
+  --shell-sidebar-width: 280px;
+  --shell-transition: var(--globals-transition-duration) var(--globals-transition-easing);
+
+  position: relative;
+}
+
+/* The viewport never scrolls; the tracks below do. */
+.body {
+  overflow: hidden;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
+/*
+ * Breathing room above a heading reached through an anchor link. The row
+ * clips sideways so its children can slide without a scrollbar appearing.
+ */
+.content {
+  overflow-x: hidden;
+  scroll-padding-block-start: calc(var(--spacing-unit) * 4);
+}
+
+.aside {
+  position: sticky;
+  inset-block-start: 0;
+}
+
+/*
+ * Opening and closing the sidebar.
+ *
+ * The sidebar sits over the inner column's leading edge, out of the flow.
+ * The column itself never moves or resizes, so the header's trailing side
+ * and the content's scrollbar stay exactly where they are. Only what sits
+ * against the sidebar slides, by a transform: the sidebar, the header's
+ * leading group, and the content row's children.
+ *
+ * The one layout change is the content row's padding, which makes room for
+ * the sidebar in a single step. The page is laid out once per toggle rather
+ * than on every frame, as an animated width would have it.
+ *
+ * `visibility` flips once the slide ends, which takes a closed sidebar's
+ * links out of the tab order and away from screen readers.
+ *
+ * The state is `data-shell-sidebar="closed"` on `<html>`; see store.ts.
+ */
+.sidebar {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--shell-sidebar-width);
+}
+
+.content {
+  padding-inline-end: var(--shell-sidebar-width);
+}
+
+.header > :first-child,
+.content > * {
+  transform: translateX(var(--shell-sidebar-width));
+}
+
+:root[data-shell-sidebar="closed"] {
+  .sidebar {
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+
+  .content {
+    padding-inline-end: 0;
+  }
+
+  .header > :first-child,
+  .content > * {
+    transform: none;
+  }
+}
+
+.group-trigger {
+  cursor: pointer;
+}
+
+.group-trigger:hover .group-label {
+  text-decoration-line: underline;
+}
+
+/* Sidebar links are never underlined, hovered or not. */
+.link,
+.link:hover {
+  text-decoration: none;
+}
+
+/* `:where()` keeps this below the no-flash style, which must win before hydration. */
+:where(.group-trigger[data-panel-open]) .chevron {
+  rotate: 90deg;
+}
+
+/* Under reduced motion the sidebar snaps. */
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar {
+    transition:
+      transform var(--shell-transition),
+      visibility var(--globals-transition-duration);
+  }
+
+  .header > :first-child,
+  .content > * {
+    transition: transform var(--shell-transition);
+  }
+}

@@ -1,6 +1,8 @@
-import { Card, Group, Stack } from "@uiid/design-system";
+import { Card, cx, Group, Stack } from "@uiid/design-system";
 
 import { CONTENT_MAX_WIDTH } from "./constants";
+
+import styles from "./shell.module.css";
 
 type BodyProps = React.PropsWithChildren<{ className?: string }>;
 
@@ -10,9 +12,7 @@ export const Body = ({ children, className }: BodyProps) => {
     <Stack
       data-slot="body"
       render={<body />}
-      className={["antialiased overflow-hidden", className]
-        .filter(Boolean)
-        .join(" ")}
+      className={cx(styles.body, className)}
       h="screen"
       w="full"
     >
@@ -25,7 +25,13 @@ Body.displayName = "Body";
 /** The sidebar and the inner column, side by side at full height. */
 export const AppShellOuter = ({ children }: React.PropsWithChildren) => {
   return (
-    <Group data-slot="app-shell-outer" ay="stretch" w="full" grow>
+    <Group
+      data-slot="app-shell-outer"
+      className={styles.outer}
+      ay="stretch"
+      w="full"
+      grow
+    >
       {children}
     </Group>
   );
@@ -42,12 +48,15 @@ export const AppShellInner = ({ children }: React.PropsWithChildren) => {
 };
 AppShellInner.displayName = "AppShellInner";
 
-/** The content scroll track: the page and its aside scroll together here. */
+/**
+ * The content scroll track: the page and its aside scroll together here.
+ * Its children slide aside for the sidebar; see shell.module.css.
+ */
 export const ContentRow = ({ children }: React.PropsWithChildren) => {
   return (
     <Group
       data-slot="content-row"
-      className="overflow-y-auto"
+      className={cx(styles.scroll, styles.content)}
       ay="start"
       w="full"
       grow
@@ -64,7 +73,7 @@ export const Main = ({ children }: React.PropsWithChildren) => {
       data-slot="main"
       variant="shell"
       render={<main />}
-      className="min-w-0"
+      minw={0}
       maxw={CONTENT_MAX_WIDTH}
     >
       {children}

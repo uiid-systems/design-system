@@ -1,20 +1,57 @@
 /**
- * The shell's state. This is the only file in the shell that imports a state
- * library; the parts take plain props. To use something else, replace this
- * file and the two places that read it (`components/sidebar.tsx` and
- * `components/sidebar-toggle.tsx`).
+ * The shell's state.
  *
- * Both atoms start from their defaults on the server and on the first client
- * render, then pick up the saved value once mounted. `no-flash.ts` covers the
- * gap in between.
+ * The sidebar's open state lives on `<html>`, as `data-shell-sidebar="closed"`,
+ * and in localStorage. CSS reads the attribute, so nothing has to render for
+ * the sidebar to move, and the inline script in no-flash.ts can set it before
+ * the first paint.
+ *
+ * The groups' state is the one thing here that uses a state library. To use
+ * something else, replace `sidebarGroupsAtom` and the place that reads it
+ * (`components/sidebar.tsx`). It starts from its default on the server and on
+ * the first client render, then picks up the saved value once mounted.
+ * `no-flash.ts` covers the gap in between.
  */
 import { atom } from "jotai/vanilla";
 import { atomWithStorage } from "jotai/vanilla/utils";
+import { useSyncExternalStore } from "react";
 
-import { SIDEBAR_GROUPS_STORAGE_KEY, SIDEBAR_STORAGE_KEY } from "./constants";
+import {
+  SIDEBAR_ATTRIBUTE,
+  SIDEBAR_GROUPS_STORAGE_KEY,
+  SIDEBAR_STORAGE_KEY,
+} from "./constants";
 
-/** Whether the sidebar is open, saved to localStorage. */
-export const sidebarOpenAtom = atomWithStorage(SIDEBAR_STORAGE_KEY, true);
+const listeners = new Set<() => void>();
+
+const subscribe = (listener: () => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+};
+
+const isSidebarOpen = () =>
+  document.documentElement.getAttribute(SIDEBAR_ATTRIBUTE) !== "closed";
+
+/** Whether the sidebar is open. Reads as open on the server. */
+export const useSidebarOpen = () =>
+  useSyncExternalStore(subscribe, isSidebarOpen, () => true);
+
+/** Open or close the sidebar, and save the choice as JSON `true` or `false`. */
+export const toggleSidebar = () => {
+  const open = !isSidebarOpen();
+
+  if (open) document.documentElement.removeAttribute(SIDEBAR_ATTRIBUTE);
+  else document.documentElement.setAttribute(SIDEBAR_ATTRIBUTE, "closed");
+
+  try {
+    localStorage.setItem(SIDEBAR_STORAGE_KEY, JSON.stringify(open));
+  } catch {
+    // Storage is blocked. The sidebar still toggles; it just isn't saved.
+  }
+  listeners.forEach((listener) => listener());
+};
 
 type SidebarGroups = Record<string, boolean>;
 

@@ -3,10 +3,14 @@ import { Group, type GroupProps } from "@uiid/design-system";
 import { ShellBar } from "./bar";
 import { SHELL_SPACING } from "./constants";
 
+import styles from "./shell.module.css";
+
+/** Its first child slides aside for the sidebar; see shell.module.css. */
 export const HeaderContainer = ({ children, ...props }: GroupProps) => {
   return (
     <ShellBar
       data-slot="header-container"
+      className={styles.header}
       render={<header />}
       ax="space-between"
       {...props}

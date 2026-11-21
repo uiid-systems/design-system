@@ -5,22 +5,23 @@
  * The pages are static HTML, so the server always renders the sidebar and
  * every group open. The saved state lives in localStorage, which React only
  * reads after it hydrates. Left alone, anything the reader had closed would
- * paint open, then slide shut.
+ * paint open, then close.
  *
- * The fix has three steps:
+ * The root layout puts `noFlashScript()` in an inline `<script>` in `<head>`,
+ * so it runs before the first paint. It handles the two differently:
  *
- * 1. The root layout puts `noFlashScript()` in an inline `<script>` in
- *    `<head>`, so it runs before the first paint. It reads the saved state
- *    and writes a small `<style>` that hides whatever was left closed, and
- *    points a closed group's chevron the right way.
- * 2. The first paint is therefore already right. React then hydrates, loads
- *    the saved state and closes those parts for real, out of sight.
- * 3. The `<style>` has done its job. `clearNoFlash` removes it the first time
- *    the reader opens or closes anything, and from then on the parts' own
- *    transitions are all there is.
+ * - The sidebar's state is an attribute on `<html>` that CSS reads (see
+ *   store.ts). The script sets it, and that is the whole job: there is
+ *   nothing for React to catch up on.
+ * - A group's state is React's. The script writes a small `<style>` that
+ *   hides each group saved closed and points its chevron the right way, so
+ *   the first paint is already right. React then hydrates, loads the saved
+ *   state and closes those groups for real, out of sight. `clearNoFlash`
+ *   removes the `<style>` the first time the reader opens or closes a group
+ *   or navigates, and from then on the groups' own transitions are all there
+ *   is.
  *
- * The selectors below are the contract with the parts: `SidebarContainer`
- * carries `data-shell-sidebar`, and each `SidebarGroup` carries
+ * The selectors below are the contract with `SidebarGroup`: each carries
  * `data-shell-group` with its id, plus `data-active` when it holds the
  * current page. An active group is never hidden, because it is open on load
  * whatever was saved.
@@ -40,18 +41,17 @@ export const clearNoFlash = () => {
  */
 const hideClosedBeforePaint = (
   sidebarKey: string,
+  sidebarAttribute: string,
   groupsKey: string,
   styleId: string,
 ) => {
   try {
-    const rules: string[] = [];
-
     if (localStorage.getItem(sidebarKey) === "false") {
-      rules.push("[data-shell-sidebar]{display:none}");
+      document.documentElement.setAttribute(sidebarAttribute, "closed");
     }
 
-    // Parsed on its own, so a groups value that isn't ours can't take the
-    // sidebar rule down with it.
+    const rules: string[] = [];
+
     let groups: Record<string, unknown> = {};
     try {
       groups = JSON.parse(localStorage.getItem(groupsKey) ?? "{}") ?? {};
@@ -82,13 +82,19 @@ const hideClosedBeforePaint = (
 type NoFlashKeys = {
   /** The localStorage key the sidebar's open state is saved under. */
   sidebarKey: string;
+  /** The attribute set to `"closed"` on `<html>` for a closed sidebar. */
+  sidebarAttribute: string;
   /** The localStorage key the groups' open state is saved under. */
   groupsKey: string;
 };
 
 /** The source of the inline script. `<` is escaped so no key can close the tag. */
-export const noFlashScript = ({ sidebarKey, groupsKey }: NoFlashKeys) => {
-  const args = [sidebarKey, groupsKey, STYLE_ID].map((arg) =>
+export const noFlashScript = ({
+  sidebarKey,
+  sidebarAttribute,
+  groupsKey,
+}: NoFlashKeys) => {
+  const args = [sidebarKey, sidebarAttribute, groupsKey, STYLE_ID].map((arg) =>
     JSON.stringify(arg).replace(/</g, "\\u003c"),
   );
 

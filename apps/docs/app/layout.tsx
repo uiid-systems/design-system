@@ -1,3 +1,7 @@
+// First, so Tailwind's cascade layers are declared before any `uiid.*` layer.
+// A CSS module imported ahead of it would put the whole `uiid` layer under
+// Tailwind's reset, and every spacing and border prop would read as 0.
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -11,13 +15,12 @@ import {
   ContentRow,
   Main,
   noFlashScript,
+  SIDEBAR_ATTRIBUTE,
   SIDEBAR_GROUPS_STORAGE_KEY,
   SIDEBAR_STORAGE_KEY,
 } from "@/components/shell";
 import { Sidebar } from "@/components/sidebar";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
-
-import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -44,6 +47,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: noFlashScript({
               sidebarKey: SIDEBAR_STORAGE_KEY,
+              sidebarAttribute: SIDEBAR_ATTRIBUTE,
               groupsKey: SIDEBAR_GROUPS_STORAGE_KEY,
             }),
           }}

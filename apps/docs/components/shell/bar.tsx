@@ -1,4 +1,4 @@
-import { cx, Group, type GroupProps } from "@uiid/design-system";
+import { Group, type GroupProps } from "@uiid/design-system";
 
 import {
   SHELL_BAR_HEIGHT,
@@ -11,11 +11,11 @@ import {
  * page header both render through it, so their heights and bottom borders
  * always line up.
  */
-export const ShellBar = ({ children, className, ...props }: GroupProps) => {
+export const ShellBar = ({ children, ...props }: GroupProps) => {
   return (
     <Group
       data-slot="shell-bar"
-      className={cx("shrink-0", className)}
+      flex="none"
       ay="center"
       gap={SHELL_SPACING}
       px={SHELL_SPACING}

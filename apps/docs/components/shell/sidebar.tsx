@@ -1,51 +1,31 @@
-import {
-  CollapsiblePanel,
-  CollapsibleRoot,
-  Stack,
-  Text,
-} from "@uiid/design-system";
+import { Stack, Text } from "@uiid/design-system";
 
 import { ShellBar } from "./bar";
 import {
-  SIDEBAR_WIDTH,
   SIDEBAR_SPACING,
   SHELL_BORDER_WIDTH,
   SHELL_SPACING,
 } from "./constants";
 
-type SidebarContainerProps = React.PropsWithChildren<{
-  /** Closed hides the sidebar completely. Defaults to open. */
-  open?: boolean;
-}>;
+import styles from "./shell.module.css";
 
 /**
- * A horizontal Collapsible does the opening and closing: its panel animates
- * between the sidebar's width and nothing. `keepMounted` holds on to the
- * scroll position and any open groups while the sidebar is closed.
+ * The sidebar column, laid over the leading edge of `AppShellOuter`. It holds
+ * no state: it slides out of view when `<html>` carries
+ * `data-shell-sidebar="closed"`, and stays mounted while it is closed, so its
+ * scroll position and open groups are still there when it comes back.
+ * Its width is `--shell-sidebar-width` in shell.module.css.
  */
-export const SidebarContainer = ({
-  open = true,
-  children,
-}: SidebarContainerProps) => {
+export const SidebarContainer = ({ children }: React.PropsWithChildren) => {
   return (
-    <CollapsibleRoot data-shell-sidebar open={open} className="shrink-0">
-      <CollapsiblePanel
-        orientation="horizontal"
-        instant={false}
-        keepMounted
-        grow
-      >
-        <Stack
-          data-slot="sidebar"
-          render={<aside />}
-          w={SIDEBAR_WIDTH}
-          br={SHELL_BORDER_WIDTH}
-          grow
-        >
-          {children}
-        </Stack>
-      </CollapsiblePanel>
-    </CollapsibleRoot>
+    <Stack
+      data-slot="sidebar"
+      render={<aside />}
+      className={styles.sidebar}
+      br={SHELL_BORDER_WIDTH}
+    >
+      {children}
+    </Stack>
   );
 };
 SidebarContainer.displayName = "SidebarContainer";
@@ -70,7 +50,7 @@ export const SidebarScrollContainer = ({
     <Stack
       data-slot="sidebar-scroll-container"
       render={<nav />}
-      className="overflow-y-auto"
+      className={styles.scroll}
       gap={SHELL_SPACING}
       p={SIDEBAR_SPACING}
       grow

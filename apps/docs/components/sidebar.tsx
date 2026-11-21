@@ -1,8 +1,8 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import {
   clearNoFlash,
@@ -13,7 +13,7 @@ import {
   SidebarItems,
   SidebarScrollContainer,
 } from "@/components/shell";
-import { sidebarGroupsAtom, sidebarOpenAtom } from "@/components/shell/store";
+import { sidebarGroupsAtom } from "@/components/shell/store";
 import {
   COMPONENTS_SITEMAP,
   type SitemapGroup,
@@ -32,7 +32,6 @@ const GROUPS = COMPONENTS_SITEMAP.filter(
 
 export function Sidebar() {
   const pathname = usePathname();
-  const open = useAtomValue(sidebarOpenAtom);
   const [groups, setGroups] = useAtom(sidebarGroupsAtom);
 
   const activeGroup = GROUPS.find((group) =>
@@ -53,15 +52,8 @@ export function Sidebar() {
     if (pathname !== loadedAt.current) clearNoFlash();
   }, [pathname]);
 
-  // Bring the current page's link into the scroll track's view.
-  useEffect(() => {
-    document
-      .querySelector("[data-slot='sidebar'] [aria-current='page']")
-      ?.scrollIntoView({ block: "nearest" });
-  }, [pathname]);
-
   return (
-    <SidebarContainer open={open}>
+    <SidebarContainer>
       <SidebarHeader>uiid docs</SidebarHeader>
       <SidebarScrollContainer>
         <SidebarItems>

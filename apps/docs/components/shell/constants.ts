@@ -3,7 +3,8 @@ export const SHELL_BORDER_WIDTH = 1;
 /** Height in px of every `ShellBar`, bottom border included. */
 export const SHELL_BAR_HEIGHT = 52;
 
-export const SIDEBAR_WIDTH = 280;
+/** Set to `"closed"` on `<html>` while the sidebar is closed. shell.module.css reads it. */
+export const SIDEBAR_ATTRIBUTE = "data-shell-sidebar";
 /** The localStorage key the sidebar's open state is saved under. */
 export const SIDEBAR_STORAGE_KEY = "uiid-shell-sidebar-open";
 /** The localStorage key the sidebar groups' open state is saved under. */

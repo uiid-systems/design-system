@@ -1,20 +1,10 @@
 "use client";
 
-import { useAtom } from "jotai";
-
-import { clearNoFlash, SidebarToggle } from "@/components/shell";
-import { sidebarOpenAtom } from "@/components/shell/store";
+import { SidebarToggle } from "@/components/shell";
+import { toggleSidebar, useSidebarOpen } from "@/components/shell/store";
 
 export function HeaderSidebarToggle() {
-  const [open, setOpen] = useAtom(sidebarOpenAtom);
+  const open = useSidebarOpen();
 
-  return (
-    <SidebarToggle
-      aria-expanded={open}
-      onClick={() => {
-        clearNoFlash();
-        setOpen((value) => !value);
-      }}
-    />
-  );
+  return <SidebarToggle aria-expanded={open} onClick={toggleSidebar} />;
 }

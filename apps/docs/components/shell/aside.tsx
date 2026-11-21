@@ -1,6 +1,8 @@
-import { Stack } from "@uiid/design-system";
+import { cx, Stack } from "@uiid/design-system";
 
 import { ASIDE_WIDTH, SIDEBAR_SPACING } from "./constants";
+
+import styles from "./shell.module.css";
 
 export const AsideContainer = ({ children }: React.PropsWithChildren) => {
   return (
@@ -12,7 +14,7 @@ export const AsideContainer = ({ children }: React.PropsWithChildren) => {
       p={SIDEBAR_SPACING}
       w="full"
       maxh="full"
-      className="sticky top-0 overflow-y-auto"
+      className={cx(styles.aside, styles.scroll)}
     >
       {children}
     </Stack>

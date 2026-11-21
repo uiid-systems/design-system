@@ -13,6 +13,8 @@ import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 
 import { SIDEBAR_GROUP_INDENT, SIDEBAR_LIST_ITEM_SPACING } from "./constants";
 
+import styles from "./shell.module.css";
+
 type SidebarGroupProps = React.PropsWithChildren<
   {
     /** Names the group in saved state. Unique within the sidebar. */
@@ -46,7 +48,7 @@ export const SidebarGroup = ({
        * two icons swapped in React: a CSS-driven chevron is something the
        * no-flash style can correct before hydration.
        */}
-      <CollapsibleTrigger className="group cursor-pointer">
+      <CollapsibleTrigger className={styles["group-trigger"]}>
         {() => (
           <Group
             data-slot="sidebar-group-label"
@@ -55,18 +57,18 @@ export const SidebarGroup = ({
             py={1}
             w="full"
           >
-            <Text weight="bold" size={0}>
+            <Text className={styles["group-label"]} weight="bold" size={0}>
               {label}
             </Text>
             <ChevronRightIcon
               data-slot="sidebar-group-chevron"
-              className="transition-[rotate] duration-(--globals-transition-duration) group-data-[panel-open]:rotate-90"
+              className={styles.chevron}
               size={14}
             />
           </Group>
         )}
       </CollapsibleTrigger>
-      <CollapsiblePanel instant={false}>
+      <CollapsiblePanel>
         <List
           data-slot="sidebar-group-items"
           gap={SIDEBAR_LIST_ITEM_SPACING}
