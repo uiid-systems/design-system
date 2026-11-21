@@ -168,7 +168,8 @@ jobs:
           fi
 
           # A re-run of an old job must not replace the review of a newer push.
-          if [ "$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)" != "$HEAD_SHA" ]; then
+          current_head=$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)
+          if [ "$current_head" != "$HEAD_SHA" ]; then
             echo "::notice::The pull request has newer commits, so this review was not posted"
             exit 0
           fi
