@@ -45,6 +45,8 @@ The agent knows nothing you do not write down. Each prompt carries:
 - Commit rules: conventional commits with a scope from commitlint's list (`ui`, `tokens`, `docs`, `storybook`, `release`, `repo`), body lines of 100 characters or fewer, no `Co-Authored-By`, no AI attribution anywhere, no hard-wrapped prose.
 - The report it owes you: absolute worktree path, branch, commit SHAs, each criterion as met, not met or blocked with the command that shows it, the verification output, and anything it left out or decided.
 
+As you start the agents, move each picked ticket to In Progress with `save_issue`. You make the status changes, not the build agents, since they may not reach Linear.
+
 While agents run, do not ask the owner anything. Wait for the completion notices.
 
 ## 3. Review each build locally
@@ -72,7 +74,7 @@ On approval, message the build agent to push its branch and open a draft PR with
 - No AI attribution, no hard-wrapped prose, no `preview` label.
 - Write the body to a file and pass it with `--body-file`.
 
-Have it return the PR URL.
+Have it return the PR URL. When it does, move the ticket to In Review. A ticket stopped in step 4 stays In Progress. Leave Done to the `Closes` link, which closes the ticket when the PR merges.
 
 ## 6. Tell the owner
 
