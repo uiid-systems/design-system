@@ -76,3 +76,17 @@ export const Invalid: Story = { render: () => <Examples.Invalid /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };
 export const Uncontrolled: Story = { render: () => <Examples.Uncontrolled /> };
 export const Grouped: Story = { render: () => <Examples.Grouped /> };
+export const MaskedCurrency: Story = {
+  render: () => <Examples.MaskedCurrency />,
+};
+export const MaskedPercent: Story = {
+  render: () => <Examples.MaskedPercent />,
+};
+export const MaskedNumber: Story = { render: () => <Examples.MaskedNumber /> };
+export const MaskedPattern: Story = {
+  render: () => <Examples.MaskedPattern />,
+};
+export const CustomMask: Story = { render: () => <Examples.CustomMask /> };
+export const MaskedRegister: Story = {
+  render: () => <Examples.MaskedRegister />,
+};
