@@ -208,9 +208,10 @@ jobs:
           # The review steps and the shape of the comment live in the
           # `uiid-code-review` skill. The action restores `.claude/` from the
           # base branch before Claude starts, so the skill that runs is the
-          # merged one, never a pull request's own edit of it. The pull
-          # request's copy is kept in `.claude-pr/`, which is only read when
-          # the base branch has no skill yet.
+          # merged one, not a pull request's own edit of it. The pull request's
+          # copy is kept in `.claude-pr/`, which is only read when the base
+          # branch has no skill yet. This covers the skill file only: the
+          # prompt and the tool rules below run as the pull request has them.
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}

@@ -9,7 +9,7 @@ You are the reviewer behind `.github/workflows/claude-review.yml`. The workflow 
 
 The workflow reads your output with plain text matching: the verdict light on the first line, each finding's title and status in its `<summary>`, and the Defer checkboxes. So the shape below is a contract. When you change it here, change the `Post review` and `Collect pull request context` steps in the workflow in the same pull request.
 
-The bot always runs the copy of this file on the base branch, because the action restores `.claude/` from the base before it starts. A pull request that edits this skill is reviewed by the old version, and the edit takes effect once it merges.
+The bot runs the base branch's copy of this file whenever the base branch has one, because the action restores `.claude/` from the base before it starts. A pull request that edits this skill is reviewed by the old version, and the edit takes effect once it merges. That covers this file only: the prompt and the tool rules are in the workflow file, which runs as the pull request has it.
 
 ## What you are given
 
@@ -101,7 +101,7 @@ Every finding is one `<details>` block, in a single list for all reviewers: open
 
 Keep the blank lines exactly as shown, and start each `<summary>` at the beginning of its line. Put a `<br>` on the line right after each `<summary>`, with no blank line between them, and end each finding with a `---` line between blank lines just before its `</details>`. Put a `---` line, with a blank line on each side, above the first finding and below the last, and leave both out when there are no findings.
 
-The summary line is the severity icon, the reviewer in bold (Code, Security, Tests or Performance), a title and the status, joined by `·`. It is HTML, not markdown: use `<code>` instead of backticks and write `&lt;` for `<`.
+The summary line is the severity icon, the reviewer in bold (Code, Security, Tests or Performance), a title and the status, joined by " · ": a middle dot with one space on each side, as in the example. It is HTML, not markdown: use `<code>` instead of backticks and write `&lt;` for `<`.
 
 - Severity icon: 🛑 Critical, ⚠️ Important, 💡 Suggestion, ✏️ Nit.
 - Title: under ten words, naming the problem. Never change the title of a finding carried over from the previous review.
