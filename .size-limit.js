@@ -27,7 +27,7 @@ const root = resolve(
  */
 const SINGLE_IMPORTS = {
   buttons: ["Button"],
-  forms: ["Input", "Select", "currencyMask"],
+  forms: ["Input", "Select", "currencyMask", "phoneMask"],
   layout: ["Stack"],
   overlays: ["Dialog"],
   tables: ["Table"],
@@ -39,10 +39,13 @@ const SINGLE_IMPORTS = {
  * size alone cannot show that a module is absent, so these entries build with
  * a plugin that fails the run when a matching module renders any code into
  * the bundle. Input takes a mask, and masks run on Maskito, so an Input with
- * no mask must not carry it.
+ * no mask must not carry it. One pattern mask must not carry the other
+ * patterns, the number masks or Maskito's kit, which only they use.
  */
 const MUST_EXCLUDE = {
   Input: /[\\/]@maskito[\\/]/,
+  phoneMask:
+    /[\\/]masks[\\/](?:number-masks|patterns[\\/](?!phone\.|patterns\.utils\.))|[\\/]@maskito[\\/]kit[\\/]/,
 };
 
 const excluding = (name, pattern) => (config) => ({
