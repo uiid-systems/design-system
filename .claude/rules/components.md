@@ -20,6 +20,36 @@ A top-level prop wins over the same key in `RootProps`, and in Collapsible's `Pa
 
 Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive.
 
+## What a package exports
+
+Every component exports its composition parts and their prop types, consistently. Constants, variant functions, internal hooks, mocks and `@uiid/utils` plumbing are not exported. A hook stays public only when a public part cannot be used without it, as `useTableSelection` is for a composed Table. A package's barrel test (`src/index.test.ts`) lists its exact public names, so a change to the surface is a change to that test.
+
+## Slot props omit owned keys
+
+A slot prop type (`RootProps`, `TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. Top-level props win. Class names merge; a handler composes only where the paragraph above says so. Whether the overlays keep composing `RootProps.onOpenChange` under this rule is undecided, and belongs to the task that applies the rule to overlays.
+
+```tsx
+// The target shape, not today's dialog.types.ts
+export type DialogProps = {
+  title?: React.ReactNode;
+  size?: DialogSize;
+  /** Reaches the popup. `title` and `size` are set on Dialog itself. */
+  PopupProps?: Omit<DialogPopupProps, "title" | "size" | "children">;
+};
+```
+
+Each component's tests carry a `// @ts-expect-error` line proving an owned key cannot pass through its slot.
+
+If omitting the owned keys needs conditional or hard-to-read types for a component, do not write them. Keep that component's slot type wide, spread the slot props first and the top-level values after (through `definedProps()`, as for `RootProps` above) so top-level values win at runtime, test that order, and add the component to the fallback list below.
+
+**Exit condition:** if more than a third of the components that have a slot prop need the fallback, stop and review the rule with the owner before applying it further.
+
+### Fallback list
+
+Components whose slot types stay wide and rely on the runtime order. Add one line per component, naming the slot and why omitting its keys was not readable.
+
+None yet.
+
 ## Use UIID utilities, not the upstream libraries
 
 When porting components from shadcn or Radix patterns, substitute:
@@ -30,6 +60,8 @@ When porting components from shadcn or Radix patterns, substitute:
 | `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider`  |
 | `class-variance-authority`  | `cva` from `@uiid/utils` (pre-configured)                |
 | `clsx` / `tailwind-merge`   | `cx` (or `cxState` on a Base UI part) from `@uiid/utils` |
+
+App components under `apps/*/components/` do not depend on `@uiid/utils`; they import its helpers from `@uiid/design-system/utils`, never from the `@uiid/design-system` root.
 
 Use regular elements for domain components. Only use `renderWithProps` for low-level layout primitives (`Box`, `Text`).
 
@@ -55,7 +87,7 @@ Copy an existing package's config rather than writing it fresh — `packages/int
 6. `tsconfig.json` (root) — add `{ "path": "./packages/{name}" }` to `references`
 7. `release-please-config.json` — add an `extra-files` entry for `packages/{name}/package.json`, or release-please leaves its version behind
 8. `.size-limit.js` — nothing to register: size entries are generated from every `packages/*` with a `dist/index.js`. Add a component to `SINGLE_IMPORTS` there only when the cost of importing it alone is worth tracking
-9. `packages/design-system/package.json` and `src/index.ts` — add the `workspace:*` dependency and `export * from "@uiid/{name}"`, but only once the package is published. `pnpm -r publish` skips a private package and still publishes the umbrella, which would then depend on a version npm cannot serve. Do this in the same PR that removes `"private": true`
+9. `packages/design-system/package.json` and `src/index.ts` — add the `workspace:*` dependency and `export * from "@uiid/{name}"`, but only once the package is published. `pnpm -r publish` skips a private package and still publishes the umbrella, which would then depend on a version npm cannot serve. Do this in the same PR that removes `"private": true`. A package that is not components, like icons and utils, is served from an umbrella subpath instead of the root barrel: add it to `NOT_IN_BARREL` in `scripts/check-package-registration.mjs`
 10. `packages/design-system/src/globals.css` — `@import "@uiid/{name}/globals.css"` once the package ships CSS. Tests and Storybook stub these built sheets out, since component CSS modules already load from source. A types-only package emits no stylesheet, so skip this until it does, and add `"./globals.css": "./dist/{name}.css"` to the package's `exports` at the same time
 11. `README.md` — add the package to the package list
 12. `pnpm install` to link the workspace package

@@ -1,4 +1,5 @@
-import { cx, Stack } from "@uiid/design-system";
+import { Stack } from "@uiid/design-system";
+import { cx } from "@uiid/design-system/utils";
 
 import { MAIN_ASIDE_SPACING, MAIN_ASIDE_WIDTH } from "../main.constants";
 import type { MainAsideProps } from "../main.types";

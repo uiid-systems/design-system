@@ -17,10 +17,10 @@ const readJson = (path) => JSON.parse(read(path));
 const failures = [];
 const fail = (message) => failures.push(message);
 
-/* The umbrella serves icons from its own `./icons` subpaths, never the root
-   barrel (see packages/design-system/src/index.ts). */
+/* The umbrella serves icons and utils from its own `./icons` and `./utils`
+   subpaths, never the root barrel (see packages/design-system/src/index.ts). */
 const UMBRELLA = "design-system";
-const NOT_IN_BARREL = new Set(["icons"]);
+const NOT_IN_BARREL = new Set(["icons", "utils"]);
 
 /* Per-icon modules, generated with no source file behind them. */
 const GENERATED_EXPORTS = new Set([

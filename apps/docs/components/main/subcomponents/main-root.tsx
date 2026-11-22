@@ -1,4 +1,5 @@
-import { cx, Group } from "@uiid/design-system";
+import { Group } from "@uiid/design-system";
+import { cx } from "@uiid/design-system/utils";
 
 import type { MainRootProps } from "../main.types";
 
