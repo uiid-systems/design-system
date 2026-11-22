@@ -11,7 +11,7 @@ So a finding is not a task. You decide which findings are worth a fix, defer the
 
 ## The test
 
-Ask one thing of every open finding: does fixing it in this pull request move the needle? It does when someone doing the normal thing would be misled or broken without the fix. It does not when the case is fringe: an unusual setup, a hostile actor we have already scoped out, or a path nobody is on today.
+Ask one thing of every open Suggestion and Nit: does fixing it in this pull request move the needle? It does when someone doing the normal thing would be misled or broken without the fix. It does not when the case is fringe: an unusual setup, a hostile actor we have already scoped out, or a path nobody is on today.
 
 ## Steps
 
@@ -29,12 +29,12 @@ When you run as a subagent you cannot ask anyone, so decide, act and report. Whe
 
 Fix now:
 
-- A **Critical or Important** finding, once you have confirmed it against the code. If you cannot confirm it, it is wrong: defer it and say so in the report, since the bot has no other way to close a finding.
+- A **Critical or Important** finding, once you have confirmed it against the code. If you cannot confirm it, leave it open and bring it to the owner. Only the owner defers a Critical or Important finding.
 - A **Suggestion or Nit, in rounds 1 and 2 only**, when one of these is true:
   - The pull request states something false, or contradicts itself.
   - The pull request breaks or weakens something that worked before it.
 
-Defer everything else. In particular, defer:
+Defer every other Suggestion and Nit. In particular, defer:
 
 - Hardening against a fringe case.
 - A gap in something the pull request did not set out to do.
@@ -59,5 +59,5 @@ If the review of round 4 still has an open Critical or Important finding, stop a
 One table, one row per finding that was open at the start of the round: severity, title, **Fix** or **Defer**, and the reason in a few words. Then:
 
 - What you pushed, or that nothing was pushed.
-- Any finding you deferred because you could not confirm it.
+- Any Critical or Important finding you could not confirm and left open for the owner.
 - **Worth a ticket:** the deferred findings that describe something real that will come up in normal use, each with a one-line ticket title. Most deferred findings are not worth one. Do not create tickets yourself; the owner picks.
