@@ -20,6 +20,36 @@ A top-level prop wins over the same key in `RootProps`, and in Collapsible's `Pa
 
 Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive.
 
+## What a package exports
+
+Every component exports its composition parts and their prop types, consistently. Constants, variant functions, internal hooks, mocks and `@uiid/utils` plumbing are not exported. A hook stays public only when a public part cannot be used without it, as `useTableSelection` is for a composed Table. A package's barrel test (`src/index.test.ts`) lists its exact public names, so a change to the surface is a change to that test.
+
+## Slot props omit owned keys
+
+A slot prop type (`RootProps`, `TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. Top-level props win. Handlers compose and class names merge.
+
+```tsx
+// dialog.types.ts
+export type DialogProps = {
+  title?: React.ReactNode;
+  size?: DialogSize;
+  /** Reaches the popup. `title` and `size` are set on Dialog itself. */
+  PopupProps?: Omit<DialogPopupProps, "title" | "size" | "children">;
+};
+```
+
+Prove each omission with a `// @ts-expect-error` line in the component's tests.
+
+If omitting the owned keys needs conditional or hard-to-read types for a component, do not write them. Keep that component's slot type wide, spread the slot props first and the top-level values after (through `definedProps()`, as above) so top-level values win at runtime, test that order, and add the component to the fallback list below.
+
+**Exit condition:** if more than a third of components need the fallback, stop and review the rule with the owner before applying it further.
+
+### Fallback list
+
+Components whose slot types stay wide and rely on the runtime order. Add one line per component, naming the slot and why omitting its keys was not readable.
+
+None yet.
+
 ## Use UIID utilities, not the upstream libraries
 
 When porting components from shadcn or Radix patterns, substitute:
