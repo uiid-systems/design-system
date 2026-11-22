@@ -15,6 +15,6 @@ interface DisabledForUserMatchers<R> {
 }
 
 declare module "vitest" {
-  interface Assertion<T = any> extends DisabledForUserMatchers<T> {}
+  interface Assertion<R, T> extends DisabledForUserMatchers<R> {}
   interface AsymmetricMatchersContaining extends DisabledForUserMatchers<any> {}
 }

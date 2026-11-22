@@ -56,7 +56,9 @@ async function moduleGraphFor(source: string): Promise<ModuleGraph> {
       write: false,
       minify: false,
       lib: { entry, formats: ["es"], fileName: "out" },
-      rollupOptions: { external: ["react", "react-dom", "react/jsx-runtime"] },
+      rolldownOptions: {
+        external: ["react", "react-dom", "react/jsx-runtime"],
+      },
     },
     plugins: [
       {

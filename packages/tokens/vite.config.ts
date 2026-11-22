@@ -49,8 +49,8 @@ const declareImportedJson = (): Plugin => ({
  * be expected to transpile.
  *
  * This does not use the shared `createViteConfig` factory — that one is for the
- * React component packages and pulls in the SWC plugin and the "use client"
- * directive handling, neither of which applies here.
+ * React component packages and pulls in the "use client" directive handling,
+ * which does not apply here.
  */
 export default defineConfig({
   plugins: [declareImportedJson()],

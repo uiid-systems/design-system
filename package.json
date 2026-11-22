@@ -26,10 +26,10 @@
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
     "@size-limit/preset-small-lib": "^12.1.0",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^8.0.0",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
-    "@vitejs/plugin-react-swc": "^4.3.3",
+    "@vitest/browser-playwright": "^5.1.1",
     "happy-dom": "^21.0.4",
     "lefthook": "^2.1.14",
     "oxfmt": "^0.61.0",
@@ -38,7 +38,8 @@
     "size-limit": "^12.1.0",
     "turbo": "^2.11.4",
     "typescript": "~5.9.3",
-    "vitest": "^4.1.11"
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
   },
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "pnpm": {

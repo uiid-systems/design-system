@@ -1,10 +1,8 @@
 import path from "path";
 
-import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
   resolve: {
     // Every @uiid/* package exports its source under the `@uiid/source`
     // condition, so tests resolve sibling packages to `src/` without a build.
@@ -24,7 +22,7 @@ export default defineConfig({
       // excluded: their CSS exports already point at source and generated files.
       {
         find: /^@uiid\/(?!tokens\/)[\w-]+\/globals\.css$/,
-        replacement: path.resolve(__dirname, "vitest.empty.css"),
+        replacement: path.resolve(import.meta.dirname, "vitest.empty.css"),
       },
     ],
   },

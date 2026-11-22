@@ -2,7 +2,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { StorybookConfig } from "@storybook/react-vite";
+import { defaultClientConditions } from "vite";
 
+import { cssTarget, lightningcss } from "../../../scripts/css-target.ts";
 import { emitGeneratedSources } from "../../../scripts/emit-generated-sources.ts";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
@@ -36,17 +38,12 @@ const config: StorybookConfig = {
 
     // Every @uiid/* package exports its source under the `@uiid/source`
     // condition, so stories resolve them to `src/`. Setting `conditions` replaces
-    // Vite's defaults, so fall back to `defaultClientConditions`, copied by hand
-    // from the installed Vite 7, when unset. The package's `exports` key order
-    // picks the target, not this array, so `@uiid/source` must stay the first
-    // key in each exports entry.
+    // Vite's defaults, so fall back to Vite's `defaultClientConditions` when
+    // unset. The package's `exports` key order picks the target, not this
+    // array, so `@uiid/source` must stay the first key in each exports entry.
     config.resolve.conditions = [
       "@uiid/source",
-      ...(config.resolve.conditions ?? [
-        "module",
-        "browser",
-        "development|production",
-      ]),
+      ...(config.resolve.conditions ?? defaultClientConditions),
     ];
 
     // Array form lets the stub below use a regex.
@@ -74,22 +71,23 @@ const config: StorybookConfig = {
     // import behind them, such as the lucide modules behind `@uiid/icons/<icon>`, so
     // a cold cache discovered them mid-run and reloaded the browser tests (UI-403).
 
-    // `@uiid/*` resolve to source through the condition, so Rollup bundles the 185 files that
-    // carry "use client" for downstream Next.js consumers — plus Base UI's own
-    // "use client" modules. The directive is inert in a bundled static Storybook,
-    // and Rollup warns once per file, then warns again when it cannot map that
-    // warning back through the SWC sourcemap. 653 of the build's 710 warning
-    // lines are these two, which is enough to bury a real failure in a CI log.
+    // Minify CSS as the library builds do, so the static build previews the
+    // published stylesheets: `light-dark()` kept, nesting lowered. `storybook
+    // dev` does not minify, so it serves CSS without these rewrites.
     config.build ??= {};
-    config.build.rollupOptions ??= {};
-    const inheritedOnWarn = config.build.rollupOptions.onwarn;
-    config.build.rollupOptions.onwarn = (warning, defaultHandler) => {
-      if (
-        warning.code === "MODULE_LEVEL_DIRECTIVE" ||
-        warning.code === "SOURCEMAP_ERROR"
-      ) {
-        return;
-      }
+    config.build.cssTarget = cssTarget;
+    config.css ??= {};
+    config.css.lightningcss = { ...config.css.lightningcss, ...lightningcss };
+
+    // `@uiid/*` resolve to source through the condition, so Rolldown bundles
+    // every module that carries "use client" for downstream Next.js consumers,
+    // plus Base UI's own. The directive is inert in a bundled static Storybook,
+    // and Rolldown warns once per module, hundreds of warnings that would bury a
+    // real failure in a CI log.
+    config.build.rolldownOptions ??= {};
+    const inheritedOnWarn = config.build.rolldownOptions.onwarn;
+    config.build.rolldownOptions.onwarn = (warning, defaultHandler) => {
+      if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
       if (inheritedOnWarn) inheritedOnWarn(warning, defaultHandler);
       else defaultHandler(warning);
     };

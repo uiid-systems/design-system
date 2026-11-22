@@ -1,12 +1,15 @@
 import { resolve } from "node:path";
 
-import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin, type UserConfig } from "vite";
 
+import { cssTarget, lightningcss } from "./scripts/css-target.ts";
 import { rewriteDeclarationsIn } from "./scripts/dts-relative-extensions.mjs";
 import postcssLayerWrapper from "./scripts/postcss-layer-wrapper.cjs";
 import { sanitizeFileName } from "./scripts/rollup-sanitize-file-name.mjs";
-import { preserveDirectives } from "./scripts/vite-plugin-preserve-directives.mjs";
+import {
+  preserveDirectives,
+  restoresDirectivesOf,
+} from "./scripts/vite-plugin-preserve-directives.mjs";
 
 type ViteConfigOptions = {
   /**
@@ -70,7 +73,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
     preserveDirectives: usePreserveDirectives = true,
   } = options;
 
-  const plugins = [react(), rewriteDistDeclarations()];
+  const plugins = [rewriteDistDeclarations()];
 
   if (usePreserveDirectives) {
     plugins.push(preserveDirectives());
@@ -78,20 +81,34 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
 
   return defineConfig({
     plugins,
-    ...(cssLayer && {
-      css: {
+    css: {
+      lightningcss,
+      ...(cssLayer && {
         postcss: {
           plugins: [postcssLayerWrapper(cssLayer)],
         },
-      },
-    }),
+      }),
+    },
     build: {
       lib: {
         entry,
         formats: ["es"],
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: [...baseExternal, ...external],
+        // Rolldown warns once per module that starts with "use client". Silence
+        // it only for modules `preserveDirectives` writes the directive back to.
+        ...(usePreserveDirectives && {
+          onwarn(warning, defaultHandler) {
+            if (
+              warning.code === "MODULE_LEVEL_DIRECTIVE" &&
+              restoresDirectivesOf(warning.id)
+            ) {
+              return;
+            }
+            defaultHandler(warning);
+          },
+        }),
         output: {
           preserveModules: true,
           preserveModulesRoot: "src",
@@ -100,6 +117,7 @@ export function createViteConfig(options: ViteConfigOptions = {}): UserConfig {
           sanitizeFileName,
         },
       },
+      cssTarget,
       cssCodeSplit: false,
       // dist already holds the declarations `tsc -b` wrote. The build script
       // empties it first (scripts/clean-build-output.mjs).

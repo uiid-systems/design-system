@@ -10,7 +10,7 @@
     "customConditions": ["@uiid/source"],
     // packages/tokens imports its token JSON.
     "resolveJsonModule": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "types": ["vitest/globals", "@testing-library/jest-dom/vitest"],
     // Storybook's `@tokens` alias, from apps/storybook/tsconfig.json.
     "paths": {
       "@tokens/*": ["./packages/tokens/src/*"]
