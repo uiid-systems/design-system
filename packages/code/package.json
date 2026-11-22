@@ -42,9 +42,9 @@
     "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build"
   },
   "dependencies": {
-    "@shikijs/langs": "^3.22.0",
-    "@shikijs/themes": "^3.22.0",
-    "@shikijs/transformers": "^3.23.0",
+    "@shikijs/langs": "^4.6.0",
+    "@shikijs/themes": "^4.6.0",
+    "@shikijs/transformers": "^4.6.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",
@@ -52,7 +52,7 @@
     "@uiid/typography": "workspace:*",
     "@uiid/utils": "workspace:*",
     "cva": "1.0.0-beta.12",
-    "shiki": "^3.22.0"
+    "shiki": "^4.6.0"
   },
   "peerDependencies": {
     "@base-ui/react": "^1.7.0",

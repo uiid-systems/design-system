@@ -1,9 +1,9 @@
 name: PR Title
 
 on:
+  # No `branches` filter: stacked PRs target an intermediate branch, not main,
+  # and main's ruleset still requires this check on them.
   pull_request:
-    branches:
-      - main
     types: [opened, edited, synchronize, reopened]
 
 permissions:
