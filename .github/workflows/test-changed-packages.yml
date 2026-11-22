@@ -110,6 +110,12 @@ jobs:
           STORYBOOK_DISABLE_TELEMETRY: 1
         run: pnpm --filter @uiid/storybook exec vitest run
 
+      # The *.browser.test.tsx files, in the Chromium installed above. They
+      # resolve @uiid/* to source like the happy-dom tests, so need no build.
+      - name: Run browser tests
+        timeout-minutes: 5
+        run: pnpm test:run --config vitest.browser.config.ts
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
