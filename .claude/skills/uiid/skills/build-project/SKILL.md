@@ -1,10 +1,10 @@
 ---
-name: build-tickets
+name: build-project
 description: Build a Linear project's ready tickets in parallel, one draft PR each.
 argument-hint: "[project or ticket ids]"
 ---
 
-# UIID build tickets
+# UIID build project
 
 You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until its reviewers approve, and then push the approved commit and open a draft PR yourself. You write no product code. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it opens, and a closing summary that also carries every ticket that was stopped, held or left waiting.
 

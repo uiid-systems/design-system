@@ -79,5 +79,5 @@ Skills live in `.claude/skills/uiid/skills/{name}/SKILL.md`. The `uiid` folder i
 | Skill                   | Covers                                                                                          | Read when                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | `uiid:structure-recipe` | Structuring a recipe: several components composed into one piece of an app                      | Creating, moving or splitting files in `apps/*/components/`  |
-| `uiid:build-tickets`    | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project          |
+| `uiid:build-project`    | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project          |
 | `uiid:review-pr`        | How the Claude Review bot in CI reviews a pull request and the shape of the comment it posts    | Changing what the review bot checks or how its comment reads |
