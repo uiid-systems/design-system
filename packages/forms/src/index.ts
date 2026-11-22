@@ -30,6 +30,9 @@ export * from "./input/input.utils";
 export * from "./input/subcomponents";
 export * from "./input/masks/number-masks";
 export * from "./input/masks/number-masks.types";
+export * from "./input/masks/pattern-mask";
+export * from "./input/masks/pattern-mask.types";
+export * from "./input/masks/patterns";
 
 export * from "./mask-input/mask-input";
 export * from "./mask-input/mask-input.types";

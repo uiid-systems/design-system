@@ -67,6 +67,57 @@ describe("forms barrel", () => {
     >();
   });
 
+  it("exports patternMask, the 13 pattern masks and their validators", () => {
+    const names = [
+      "patternMask",
+      "phoneMask",
+      "ssnMask",
+      "einMask",
+      "dateMask",
+      "timeMask",
+      "creditCardMask",
+      "creditCardExpiryMask",
+      "zipCodeMask",
+      "zipCodeExtendedMask",
+      "licensePlateMask",
+      "ipv4Mask",
+      "macAddressMask",
+      "isbnMask",
+      "isValidPhone",
+      "isValidSsn",
+      "isValidEin",
+      "isValidDate",
+      "isValidTime",
+      "isValidCreditCard",
+      "isValidCreditCardExpiry",
+      "isValidZipCode",
+      "isValidZipCodeExtended",
+      "isValidLicensePlate",
+      "isValidIpv4",
+      "isValidMacAddress",
+      "isValidIsbn",
+    ] as const;
+
+    for (const name of names) {
+      expect(forms, `${name} should be exported`).toHaveProperty(name);
+    }
+    for (const internal of ["maskitoMask", "digitsOf", "hasDigits"]) {
+      expect(forms, `${internal} should stay internal`).not.toHaveProperty(
+        internal,
+      );
+    }
+    expectTypeOf(forms.patternMask)
+      .parameter(1)
+      .toEqualTypeOf<forms.PatternMaskOptions | undefined>();
+    expectTypeOf(forms.patternMask).returns.toEqualTypeOf<
+      forms.InputMask<string>
+    >();
+    expectTypeOf(forms.phoneMask).toEqualTypeOf<forms.InputMask<string>>();
+    expectTypeOf(forms.isValidCreditCard).toEqualTypeOf<
+      (value: string) => boolean
+    >();
+  });
+
   it("exports the combobox part coverage", () => {
     const parts = [
       "ComboboxInputGroup",
