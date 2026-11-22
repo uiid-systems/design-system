@@ -20,6 +20,9 @@ const upper: MaskitoPreprocessor = ({ elementState, data }) => ({
  * without the literals, so `parse("(123) 4")` is `"1234"`, and `format` turns
  * them back into the masked string. Both accept either form.
  *
+ * Keep a literal that a slot would take out of the template. In
+ * `"+1 (###) ###-####"` a typed `1` is read as the literal `1`, so it is lost.
+ *
  * Create the mask once, at module scope or in `useMemo`. `Input` attaches a
  * new mask whenever it receives a different object, so calling this during
  * render re-attaches the mask on every render.
