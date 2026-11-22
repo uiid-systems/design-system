@@ -34,7 +34,7 @@ describe("visibleToReact", () => {
     expect(input.value).toBe("$1");
   });
 
-  it("keeps a controlled input's state in step with a wrapper write", () => {
+  it("reaches onChange on a controlled input", () => {
     const onChange = vi.fn();
     render(<input aria-label="field" value="" onChange={onChange} />);
     const input = screen.getByRole<HTMLInputElement>("textbox");

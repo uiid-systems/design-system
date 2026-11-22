@@ -88,9 +88,11 @@ function buildNumberMask(
     },
     format: (value) =>
       maskitoStringifyNumber(value === null ? null : round(value), settled),
+    /* No digits gives NaN, and more digits than a double holds gives
+       Infinity; both read as no value. `+ 0` turns a typed `-0` into `0`. */
     parse(masked) {
       const parsed = maskitoParseNumber(masked, typed);
-      return Number.isNaN(parsed) ? null : parsed;
+      return Number.isFinite(parsed) ? parsed + 0 : null;
     },
   };
 }
@@ -121,6 +123,13 @@ function affixes(format: Intl.NumberFormat) {
  * controlled `value`, and `parse` to read the number back; `parse` returns
  * `null` for an empty field.
  *
+ * Two places differ from `Intl`. A negative always starts with an ASCII
+ * hyphen-minus, ahead of any symbol, so CHF in de-CH reads `-CHF 5.00` where
+ * `Intl` writes `CHF-5.00`. And digits are Latin only: in a locale whose
+ * default numbering system is not Latin, such as `ar-EG`, the field shows
+ * Latin digits with that locale's separators, and `parse` reads neither
+ * native-script digits nor what `Intl` formats for that locale.
+ *
  * Create the mask once, at module scope or in `useMemo`. `Input` attaches a
  * new mask whenever it receives a different object, so calling this during
  * render re-attaches the mask on every render.
@@ -148,6 +157,11 @@ export function currencyMask({
  * A mask for a percentage, for `Input`'s `mask` prop. The percent sign and its
  * spacing come from `Intl.NumberFormat` for `locale`. The value is the number
  * as shown: `parse("50%")` is `50`, not `0.5`, and `format(50)` is `50%`.
+ *
+ * A negative always starts with an ASCII hyphen-minus, whatever the locale.
+ * Digits are Latin only: in a locale whose default numbering system is not
+ * Latin, such as `ar-EG`, the field shows Latin digits with that locale's
+ * separators, and `parse` reads no native-script digits.
  *
  * Create the mask once, at module scope or in `useMemo`. `Input` attaches a
  * new mask whenever it receives a different object, so calling this during
@@ -178,6 +192,11 @@ export function percentMask({
  * A mask for a plain number with the digit grouping of `locale`, for `Input`'s
  * `mask` prop. It takes no decimals unless `maximumFractionDigits` allows them,
  * and never pads them.
+ *
+ * A negative always starts with an ASCII hyphen-minus, whatever the locale.
+ * Digits are Latin only: in a locale whose default numbering system is not
+ * Latin, such as `ar-EG`, the field shows Latin digits with that locale's
+ * separators, and `parse` reads no native-script digits.
  *
  * Create the mask once, at module scope or in `useMemo`. `Input` attaches a
  * new mask whenever it receives a different object, so calling this during

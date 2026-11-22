@@ -1,9 +1,17 @@
 type NumberMaskBounds = {
   /** BCP 47 locale for separators and symbols. Defaults to `"en-US"`. */
   locale?: string;
-  /** Lowest value the field accepts. Typing below it clamps as you type. */
+  /**
+   * Lowest value the field accepts. A positive value below it can still be
+   * typed, since it may be the start of a larger one, and is raised to `min`
+   * when the field is left. A negative value below it clamps as you type.
+   */
   min?: number;
-  /** Highest value the field accepts. Typing past it clamps as you type. */
+  /**
+   * Highest value the field accepts. A positive value past it clamps as you
+   * type. A negative value above a negative `max` is lowered to it when the
+   * field is left.
+   */
   max?: number;
 };
 

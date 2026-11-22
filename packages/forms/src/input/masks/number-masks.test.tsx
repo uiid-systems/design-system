@@ -126,6 +126,20 @@ describe("currencyMask", () => {
     expect(mask.format(-5)).toBe("$0.00");
   });
 
+  it("parses more digits than a number can hold to null, not Infinity", () => {
+    const digits = "9".repeat(400);
+    expect(currencyMask({ currency: "USD" }).parse(`$${digits}`)).toBeNull();
+    expect(numberMask().parse(digits)).toBeNull();
+    expect(numberMask().parse(`-${digits}`)).toBeNull();
+  });
+
+  it("parses a negative zero to 0", () => {
+    expect(Object.is(currencyMask({ currency: "USD" }).parse("-$0"), 0)).toBe(
+      true,
+    );
+    expect(Object.is(numberMask().parse("-0"), 0)).toBe(true);
+  });
+
   it("asks for the decimal keyboard, or numeric for a currency without decimals", () => {
     expect(currencyMask({ currency: "USD" }).inputMode).toBe("decimal");
     expect(currencyMask({ currency: "JPY" }).inputMode).toBe("numeric");
@@ -184,7 +198,14 @@ describe("numberMask", () => {
    enough to show what the engine writes and what React reports. It is not
    enough to show caret movement from keys or the pointer (happy-dom fires no
    `selectionchange`), clipboard paste or IME composition; those are left to
-   the real-browser tests. */
+   the real-browser tests.
+
+   user-event also caches the value it last typed, and the engine's rewrite
+   goes around the setter user-event watches, so after a rewrite that cache is
+   stale (`5.` while the field reads `$5.00`). Tests here therefore type into a
+   fresh field and do not lean on user-event's own caret handling (`{End}`,
+   arrow keys, `user.clear`); those cases also belong to the real-browser
+   tests. */
 const usd = currencyMask({ currency: "USD" });
 const eur = currencyMask({ currency: "EUR", locale: "de-DE" });
 const percent = percentMask();
@@ -303,18 +324,25 @@ describe("number masks on Input", () => {
     expect(onValueChange).toHaveBeenLastCalledWith("$5.00", expect.anything());
   });
 
-  it("pads a trailing separator and a leading one on blur", async () => {
+  it("pads a trailing separator on blur", async () => {
     const user = userEvent.setup();
     render(<Input mask={usd} />);
     const input = screen.getByRole("textbox");
 
     await user.type(input, "5.");
     await user.tab();
-    expect(input).toHaveValue("$5.00");
 
-    await user.clear(input);
+    expect(input).toHaveValue("$5.00");
+  });
+
+  it("pads a leading separator on blur", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={usd} />);
+    const input = screen.getByRole("textbox");
+
     await user.type(input, ".5");
     await user.tab();
+
     expect(input).toHaveValue("$0.50");
   });
 
@@ -345,6 +373,19 @@ describe("number masks on Input", () => {
 
     expect(screen.getByLabelText("rate")).toHaveValue("7%");
     expect(screen.getByLabelText("count")).toHaveValue("1,234.5");
+  });
+
+  it("lets a value below a positive min be typed and raises it on blur", async () => {
+    const user = userEvent.setup();
+    const atLeastFive = numberMask({ min: 5 });
+    render(<Input mask={atLeastFive} />);
+    const input = screen.getByRole("textbox");
+
+    await user.type(input, "3");
+    expect(input).toHaveValue("3");
+
+    await user.tab();
+    expect(input).toHaveValue("5");
   });
 
   it("takes a formatted defaultValue as it is", () => {
