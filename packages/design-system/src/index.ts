@@ -20,4 +20,5 @@ export * from "@uiid/tables";
    and the `.palette-<hue>` class map components apply to carry a hue. */
 export * from "@uiid/tokens";
 export * from "@uiid/typography";
-export * from "@uiid/utils";
+/* Utils are absent too: the helpers an app writes itself are served by name
+   from `@uiid/design-system/utils`, and the rest is internal plumbing. */

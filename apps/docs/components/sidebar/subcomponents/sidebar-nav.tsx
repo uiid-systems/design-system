@@ -1,4 +1,5 @@
-import { cx, Stack } from "@uiid/design-system";
+import { Stack } from "@uiid/design-system";
+import { cx } from "@uiid/design-system/utils";
 
 import { SIDEBAR_GAP, SIDEBAR_SPACING } from "../sidebar.constants";
 import type { SidebarNavProps } from "../sidebar.types";

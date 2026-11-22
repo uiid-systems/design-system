@@ -45,7 +45,7 @@ import type { Icon } from "@uiid/design-system/icons";
 
 ## Utilities
 
-The class-name, variant and render helpers from `@uiid/utils` are served at `@uiid/design-system/utils`, so you can use them without a second dependency:
+Utilities are not in the root barrel. The `cx` class-name helper from `@uiid/utils` is served at `@uiid/design-system/utils`, so you can use it without a second dependency:
 
 ```tsx
 import { cx } from "@uiid/design-system/utils";
@@ -53,4 +53,4 @@ import { cx } from "@uiid/design-system/utils";
 
 ## Packages
 
-This package re-exports each `@uiid/*` package. To depend on fewer of them, install the individual packages instead; see the [repository README](https://github.com/uiid-systems/design-system#packages) for the list.
+This package re-exports each `@uiid/*` component package and `@uiid/tokens`, with icons and utilities on their subpaths. To depend on fewer of them, install the individual packages instead; see the [repository README](https://github.com/uiid-systems/design-system#packages) for the list.

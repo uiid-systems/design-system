@@ -1,4 +1,5 @@
-import { cx, Stack } from "@uiid/design-system";
+import { Stack } from "@uiid/design-system";
+import { cx } from "@uiid/design-system/utils";
 
 import type { ShellBodyProps } from "../shell.types";
 
