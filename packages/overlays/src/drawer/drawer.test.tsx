@@ -1117,9 +1117,32 @@ describe("Drawer", () => {
       </>,
     );
 
+    const outside = screen.getByRole("button", {
+      name: "Outside",
+      hidden: true,
+    });
+    expect(outside.closest('[aria-hidden="true"]')).not.toBeNull();
     expect(
       screen.queryByRole("button", { name: "Outside" }),
     ).not.toBeInTheDocument();
+  });
+
+  it('hides the page behind it with modal="trap-focus"', () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open modal="trap-focus">
+          Drawer content
+        </Drawer>
+      </>,
+    );
+
+    const outside = screen.getByRole("button", {
+      name: "Outside",
+      hidden: true,
+    });
+    expect(screen.getByText("Drawer content")).toBeInTheDocument();
+    expect(outside.closest('[aria-hidden="true"]')).not.toBeNull();
   });
 
   it("leaves the page reachable with modal={false}", () => {
@@ -1132,6 +1155,7 @@ describe("Drawer", () => {
       </>,
     );
 
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 });
@@ -1216,6 +1240,7 @@ describe("Drawer RootProps precedence", () => {
         </Drawer>
       </>,
     );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 
@@ -1228,6 +1253,7 @@ describe("Drawer RootProps precedence", () => {
         </Drawer>
       </>,
     );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 });
