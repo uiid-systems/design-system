@@ -1,0 +1,14 @@
+/* One file per pattern, so importing one bundles none of the others. */
+export * from "./credit-card";
+export * from "./credit-card-expiry";
+export * from "./date";
+export * from "./ein";
+export * from "./ipv4";
+export * from "./isbn";
+export * from "./license-plate";
+export * from "./mac-address";
+export * from "./phone";
+export * from "./ssn";
+export * from "./time";
+export * from "./zip-code";
+export * from "./zip-code-extended";
