@@ -27,12 +27,44 @@ const root = resolve(
  */
 const SINGLE_IMPORTS = {
   buttons: ["Button"],
-  forms: ["Input", "Select"],
+  forms: ["Input", "Select", "currencyMask"],
   layout: ["Stack"],
   overlays: ["Dialog"],
   tables: ["Table"],
   typography: ["Text"],
 };
+
+/**
+ * Single imports that must bundle none of a dependency, by entry name. The
+ * size alone cannot show that a module is absent, so these entries build with
+ * a plugin that fails the run when a matching module renders any code into
+ * the bundle. Input takes a mask, and masks run on Maskito, so an Input with
+ * no mask must not carry it.
+ */
+const MUST_EXCLUDE = {
+  Input: /[\\/]@maskito[\\/]/,
+};
+
+const excluding = (name, pattern) => (config) => ({
+  ...config,
+  plugins: [
+    ...(config.plugins ?? []),
+    {
+      name: "size-limit-must-exclude",
+      renderChunk(_, chunk) {
+        const found = Object.entries(chunk.modules)
+          .filter(([id, module]) => pattern.test(id) && module.renderedLength)
+          .map(([id]) => id);
+        if (found.length > 0) {
+          this.error(
+            `import { ${name} } must not bundle ${pattern}, but includes:\n${found.join("\n")}`,
+          );
+        }
+        return null;
+      },
+    },
+  ],
+});
 
 const packagesDir = join(root, "packages");
 const umbrella = join(packagesDir, "design-system/dist/index.js");
@@ -87,6 +119,9 @@ for (const { dir, folder, pkg } of packages) {
       path: umbrella,
       import: `{ ${name} }`,
       ignore: ["react", "react-dom"],
+      ...(MUST_EXCLUDE[name] && {
+        modifyRolldownConfig: excluding(name, MUST_EXCLUDE[name]),
+      }),
     });
   }
 }
