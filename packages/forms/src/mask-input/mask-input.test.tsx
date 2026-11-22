@@ -47,7 +47,6 @@ describe("MaskInput", () => {
         name="phone"
         className="custom"
         inputMode="numeric"
-        size="small"
         data-testid="phone"
       />,
     );
@@ -94,18 +93,18 @@ describe("MaskInput", () => {
     expect(screen.getByRole("textbox")).toHaveValue("5555555555");
   });
 
-  it("submits the masked string", () => {
+  it("submits the masked string that was typed", async () => {
+    const user = userEvent.setup();
     render(
-      <form data-testid="form">
-        <MaskInput
-          mask={phoneMask}
-          name="phone"
-          defaultValue="(555) 555-5555"
-        />
+      <form aria-label="contact">
+        <MaskInput mask={phoneMask} name="phone" />
       </form>,
     );
-    const data = new FormData(screen.getByTestId("form") as HTMLFormElement);
-    expect(data.get("phone")).toBe("(555) 555-5555");
+
+    await user.type(screen.getByRole("textbox"), "5555555555");
+
+    const form = screen.getByRole<HTMLFormElement>("form");
+    expect(new FormData(form).get("phone")).toBe("(555) 555-5555");
   });
 
   it("takes a validator through Field's validate", async () => {
@@ -124,11 +123,15 @@ describe("MaskInput", () => {
       />,
     );
 
-    await user.type(screen.getByLabelText("Card number"), "4111111111111112");
+    const input = screen.getByLabelText("Card number");
+    await user.type(input, "4111111111111112");
     expect(screen.getByText("Check the card number")).toBeInTheDocument();
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAccessibleDescription("Check the card number");
 
     await user.keyboard("{Backspace}1");
     expect(screen.queryByText("Check the card number")).not.toBeInTheDocument();
+    expect(input).not.toHaveAttribute("aria-invalid");
   });
 
   it("shows a Form error for its name", () => {
@@ -137,10 +140,13 @@ describe("MaskInput", () => {
         <MaskInput name="card" mask={creditCardMask} label="Card number" />
       </Form>,
     );
+    const input = screen.getByLabelText("Card number");
     expect(screen.getByText("That card number was declined")).toHaveAttribute(
       "data-slot",
       "field-error",
     );
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAccessibleDescription("That card number was declined");
   });
 
   it("renders the same markup as Input with the same mask", () => {

@@ -63,7 +63,11 @@ const PATTERNS: { mask: InputMask<string>; label: string }[] = [
 const ERROR = "That card number was declined";
 
 export const Default = () => (
-  <MaskInput mask={phoneMask} placeholder="Phone number" />
+  <MaskInput
+    mask={phoneMask}
+    aria-label="Phone number"
+    placeholder="Phone number"
+  />
 );
 
 export const WithLabel = () => (
@@ -79,9 +83,15 @@ export const WithLabel = () => (
  * same thing; use whichever reads better where it sits. */
 export const SameAsInput = () => (
   <Stack gap={4}>
-    <MaskInput mask={phoneMask} label="MaskInput" />
-    <Input mask={phoneMask} label="Input with a mask" />
+    <MaskInput mask={phoneMask} label="Phone number (MaskInput)" />
+    <Input mask={phoneMask} label="Phone number (Input with a mask)" />
   </Stack>
+);
+
+/* A format hint belongs in `description`: it stays visible while typing and
+ * is announced with the field, where a placeholder is gone at the first key. */
+export const FormatHint = () => (
+  <MaskInput mask={dateMask} label="Date of birth" description="MM/DD/YYYY" />
 );
 
 /* Every built-in pattern mask. Each is its own import, so a page bundles only
@@ -137,25 +147,41 @@ export const BeforeAfterSlots = () => (
     <MaskInput
       mask={phoneMask}
       before={<PhoneIcon />}
+      aria-label="Phone number"
       placeholder="Phone number"
     />
     <MaskInput
       mask={creditCardMask}
       before={<CreditCardIcon />}
       after={<Text size={-1}>Visa</Text>}
+      aria-label="Card number"
       placeholder="Card number"
     />
   </Stack>
 );
 
 export const Ghost = () => (
-  <MaskInput mask={phoneMask} variant="ghost" placeholder="Phone number" />
+  <MaskInput
+    mask={phoneMask}
+    variant="ghost"
+    aria-label="Phone number"
+    placeholder="Phone number"
+  />
 );
 
 export const Fullwidth = () => (
   <Stack gap={4} fullwidth>
-    <MaskInput mask={phoneMask} fullwidth placeholder="Fullwidth" />
-    <MaskInput mask={phoneMask} placeholder="Not fullwidth" />
+    <MaskInput
+      mask={phoneMask}
+      fullwidth
+      aria-label="Fullwidth phone number"
+      placeholder="Fullwidth"
+    />
+    <MaskInput
+      mask={phoneMask}
+      aria-label="Phone number, not fullwidth"
+      placeholder="Not fullwidth"
+    />
   </Stack>
 );
 

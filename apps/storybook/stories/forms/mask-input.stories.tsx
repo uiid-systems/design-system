@@ -47,7 +47,9 @@ const meta = {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
-    mask: phoneMask,
+    /* A `mapping` key, so the select control shows it; Storybook swaps in the
+       mask object before rendering. */
+    mask: "phoneMask" as unknown as typeof phoneMask,
     label: "Phone number",
     description: "Digits only — the separators are added for you.",
     placeholder: "(555) 555-5555",
@@ -109,6 +111,7 @@ export const Playground: Story = { render: (args) => <MaskInput {...args} /> };
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
 export const SameAsInput: Story = { render: () => <Examples.SameAsInput /> };
+export const FormatHint: Story = { render: () => <Examples.FormatHint /> };
 export const Patterns: Story = { render: () => <Examples.Patterns /> };
 export const CustomPattern: Story = {
   render: () => <Examples.CustomPattern />,
