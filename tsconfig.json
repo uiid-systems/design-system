@@ -44,6 +44,7 @@
     // Gives test, example and story files an editor project. Package tsconfigs
     // leave them out, and tsserver only finds tsconfig.check.json through here.
     // A root `tsc -b` would also typecheck tsconfig.check.json; nothing runs one.
-    { "path": "./tsconfig.check.json" }
+    { "path": "./tsconfig.check.json" },
+    { "path": "./tsconfig.check.browser.json" }
   ]
 }
