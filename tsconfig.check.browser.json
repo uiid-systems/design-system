@@ -1,0 +1,13 @@
+{
+  // Typecheck of the real-browser tests run by vitest.browser.config.ts, part of
+  // `pnpm typecheck`. Kept apart from tsconfig.check.json because importing
+  // `vitest/browser` retypes jest-dom's matchers for the whole program.
+  "extends": "./tsconfig.check.json",
+  // The packages' own `.d.ts` files carry the CSS module types.
+  "include": [
+    "packages/*/src/**/*.browser.test.tsx",
+    "packages/*/src/**/*.d.ts",
+    "vitest.matchers.d.ts"
+  ],
+  "exclude": []
+}
