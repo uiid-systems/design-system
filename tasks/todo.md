@@ -293,16 +293,18 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Acceptance criteria:**
 
-- [ ] `typescript` is on 7.x everywhere, with one `@types/react` version across all workspace importers
+Amended by the owner's rulings of 2026-11-21: no `@typescript/typescript6` alias, and the props table is off until the docs app is rebuilt.
+
+- [ ] `typescript` is on 7.x everywhere, with one `@types/react` version (and one `@types/react-dom`) across all workspace importers
 - [ ] `pnpm typecheck` and the full build pass
-- [ ] Nothing calls the TypeScript 5 JavaScript API: `ts.preProcessFile` is replaced in `scripts/dts-relative-extensions.mjs` and `packages/design-system/src/package-dependencies.test.ts`, or `typescript` is aliased to `@typescript/typescript6` with the native compiler alongside. The alias conflicts with "7.x everywhere", so the owner rules on it here
-- [ ] The docs props table (`react-docgen-typescript`) has a recorded decision: the alias, waiting for the 7.1 API, or staying on 5.9
+- [ ] Nothing calls the TypeScript 5 JavaScript API: `ts.preProcessFile` is replaced in `scripts/dts-relative-extensions.mjs` and `packages/design-system/src/package-dependencies.test.ts`
+- [ ] The docs props table (`react-docgen-typescript`) has a recorded decision: off until the docs app is rebuilt
 - [ ] If the upgrade is not viable, the spec records why and the repo stays on 5.9
 
 **Verification:**
 
 - [ ] Diff each package's emitted `.d.ts` against the previous build and explain every difference in the PR
-- [ ] Docs build passes against the new declarations, and a docs page still renders its props table
+- [ ] Docs build passes against the new declarations
 
 **Dependencies:** Tasks 7 and 13
 

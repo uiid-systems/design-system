@@ -8,8 +8,8 @@ This file is tool-agnostic and holds only what every session needs. Deeper conve
 
 ## Stack
 
-- **React 19** with TypeScript 5.9
-- **Vite 7** for builds
+- **React 19** with TypeScript 7
+- **Vite 8** for builds
 - **Base UI** for accessible primitives — the package is **`@base-ui/react`**, not `@base-ui-components/react`
 - **CSS Modules** with design tokens
 - **pnpm workspaces** + **Turbo** for monorepo management

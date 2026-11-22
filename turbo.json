@@ -9,6 +9,7 @@
     "scripts/css-layers.cjs",
     "scripts/css-target.ts",
     "scripts/dts-relative-extensions.mjs",
+    "scripts/module-specifiers.mjs",
     "scripts/postcss-layer-wrapper.cjs",
     "scripts/rollup-sanitize-file-name.mjs",
     "scripts/vite-plugin-preserve-directives.mjs"

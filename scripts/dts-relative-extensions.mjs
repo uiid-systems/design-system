@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
-import ts from "typescript";
+import { moduleSpecifiers } from "./module-specifiers.mjs";
 
 // tsc copies relative specifiers into declarations as written, and our source
 // writes them extensionless (`./button/button`), which `bundler` resolution
@@ -21,10 +21,10 @@ import ts from "typescript";
 // imports as they are; vite already writes `.js` specifiers into the JS it
 // emits, so only the declarations ever carried the problem.
 
-// TypeScript's own scanner finds the specifiers, so text that only looks like
-// an import, in a string or a JSDoc comment, is left alone. With both flags it
-// covers static imports and re-exports, side-effect imports, `import("...")`
-// types and `require`. Each entry's `pos` is its opening quote.
+// `moduleSpecifiers` skips comments and strings, so text that only looks like
+// an import, in a string or a JSDoc comment, is left alone. It covers static
+// imports and re-exports, side-effect imports, `import("...")` types,
+// `require` and `declare module`.
 const resolvedSpecifier = (dir, specifier) => {
   if (!/^\.{1,2}\//.test(specifier)) return null;
   const base = join(dir, specifier);
@@ -37,15 +37,12 @@ const resolvedSpecifier = (dir, specifier) => {
 
 function addRelativeExtensions(content, file) {
   const dir = dirname(file);
-  const { importedFiles } = ts.preProcessFile(content, true, true);
   let next = content;
   // Back to front, so each edit leaves the earlier positions valid.
-  for (const { fileName, pos } of importedFiles.toReversed()) {
-    const start = pos + 1;
-    const end = start + fileName.length;
-    // An escaped specifier is spelled differently in the text; none of ours are.
-    if (content.slice(start, end) !== fileName) continue;
-    const rewritten = resolvedSpecifier(dir, fileName);
+  for (const { specifier, start, end } of moduleSpecifiers(
+    content,
+  ).toReversed()) {
+    const rewritten = resolvedSpecifier(dir, specifier);
     if (rewritten) next = next.slice(0, start) + rewritten + next.slice(end);
   }
   return next;

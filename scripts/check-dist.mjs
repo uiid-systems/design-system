@@ -38,7 +38,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packagesDir = join(root, "packages");
 const failures = [];
 const fail = (message) => failures.push(message);
-const tscBin = createRequire(import.meta.url).resolve("typescript/bin/tsc");
+// TypeScript 7 does not export `./bin/tsc`, so find it from the manifest.
+const tscBin = join(
+  dirname(createRequire(import.meta.url).resolve("typescript/package.json")),
+  "bin/tsc",
+);
 
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
