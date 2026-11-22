@@ -1,7 +1,8 @@
 "use client";
 
 import { Input as BaseInput } from "@base-ui/react/input";
-import { cxState } from "@uiid/utils";
+import { cxState, useComposedRefs } from "@uiid/utils";
+import { useCallback } from "react";
 
 import { useFieldRequired } from "../../field/field-required-context";
 import { inputControlClassName } from "../input.styles";
@@ -26,16 +27,31 @@ export const InputControl = ({
   color,
   inner,
   required,
+  mask,
+  inputMode,
   className,
   ref,
   ...props
 }: InputControlProps) => {
   const fieldRequired = useFieldRequired();
 
+  /* A new mask is a new callback, so React runs the old one's cleanup, which
+     detaches it, before attaching the new one. StrictMode's double mount
+     takes the same path. */
+  const maskRef = useCallback(
+    (element: HTMLInputElement | null) => {
+      if (!element || !mask) return;
+      return mask.attach(element);
+    },
+    [mask],
+  );
+  const composedRef = useComposedRefs(ref, maskRef);
+
   return (
     <BaseInput
       data-slot="input"
-      ref={ref}
+      ref={composedRef}
+      inputMode={inputMode ?? mask?.inputMode}
       required={required ?? fieldRequired}
       className={cxState(
         inputControlClassName({ inner, size, fullwidth, variant, color }),

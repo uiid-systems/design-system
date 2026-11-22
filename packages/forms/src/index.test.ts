@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 
 import * as forms from "./index";
 
@@ -34,6 +34,15 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("InputControl");
     expect(forms).toHaveProperty("InputWrapper");
     expect(forms).toHaveProperty("hasInputSlots");
+  });
+
+  it("exports the InputMask type", () => {
+    expectTypeOf<forms.InputMask<number>>().toEqualTypeOf<{
+      attach(element: HTMLInputElement): () => void;
+      format(value: number): string;
+      parse(masked: string): number;
+      inputMode?: "decimal" | "numeric";
+    }>();
   });
 
   it("exports the combobox part coverage", () => {
