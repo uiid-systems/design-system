@@ -482,6 +482,8 @@ describe("validators", () => {
     expect(isValidCreditCard("4000000000000000006")).toBe(true);
     // Passes Luhn (8 + 2), so only the length limit rejects it.
     expect(isValidCreditCard("40000000000000000002")).toBe(false);
+    // Twelve digits that pass Luhn (8 + 2), so only the 13-digit floor rejects it.
+    expect(isValidCreditCard("400000000002")).toBe(false);
     expect(isValidCreditCard("4111 1111 111")).toBe(false);
     expect(isValidCreditCard("")).toBe(false);
   });
@@ -610,7 +612,7 @@ describe("a validator in Field's validate", () => {
 
     await user.keyboard("4567890");
     expect(input).toHaveValue("(123) 456-7890");
-    // validate sees the masked string, as the form submits it.
+    // validate sees the masked string.
     await waitFor(() =>
       expect(validate.mock.lastCall?.[0]).toBe("(123) 456-7890"),
     );
