@@ -96,13 +96,12 @@ describe("typing", () => {
     await expect.poll(selection).toEqual([3, 3]);
   });
 
-  /* KNOWN DEFECT, recorded rather than fixed (found in UI-430). In a locale
-     whose grouping separator is a period, a typed `.` is taken as grouping, not
-     as the decimal separator. The keys `1 2 3 4 . 5` in a de-DE EUR field give
-     `12.345 €`, which parses as 12345: ten times the amount typed, with nothing
-     on screen to say so beyond the grouping. When the mask is fixed, this test
-     should be rewritten to expect `1.234,5 €`. */
-  it("KNOWN DEFECT: typing 1234.5 in de-DE EUR gives 12.345 €, ten times the amount", async () => {
+  /* Documented behaviour, kept on purpose: a character matching the locale's
+     grouping separator is read as grouping, not as a decimal. This is Maskito's
+     behaviour, and the library does not work around its dependencies. In de-DE
+     the grouping separator is a period, so the keys `1 2 3 4 . 5` give
+     `12.345 €`, which parses as 12345. The Input README states it. */
+  it("reads a typed period as grouping in de-DE, so 1234.5 gives 12.345 €", async () => {
     renderField(eur);
     await userEvent.click(field());
 

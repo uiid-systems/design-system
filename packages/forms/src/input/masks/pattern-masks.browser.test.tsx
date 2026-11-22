@@ -76,6 +76,18 @@ describe("phoneMask", () => {
     await expect.poll(selection).toEqual([8, 8]);
   });
 
+  /* happy-dom left this open: user-event's `clear()` leaves `(5` behind there,
+     so the real browser's own select-all and delete settle it. */
+  it("empties a full field when everything is selected and deleted", async () => {
+    renderField("(123) 456-7890");
+    element().focus();
+
+    await userEvent.keyboard("{ControlOrMeta>}a{/ControlOrMeta}");
+    await userEvent.keyboard("{Backspace}");
+
+    await expect.element(field()).toHaveValue("");
+  });
+
   it("formats a paste of bare digits and puts the caret after it", async () => {
     renderField();
     await copy("5551234567");
