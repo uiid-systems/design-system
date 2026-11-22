@@ -1073,8 +1073,9 @@ describe("Combobox generics", () => {
     expectTypeOf<ComboboxProps["items"]>().toEqualTypeOf<
       readonly string[] | undefined
     >();
+    // Base UI 1.9 accepts a readonly array for a multiple value (#5710).
     expectTypeOf<ComboboxProps<User, true>["value"]>().toEqualTypeOf<
-      User[] | null | undefined
+      readonly User[] | null | undefined
     >();
     expectTypeOf<ComboboxProps<User>["value"]>().toEqualTypeOf<
       User | null | undefined

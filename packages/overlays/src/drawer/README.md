@@ -134,4 +134,4 @@ Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the g
 
 ## Caveats
 
-Built on Base UI's `Drawer`, stable since 1.3, when it left the `DrawerPreview` namespace. `@base-ui/react` is a peer dependency, and any 1.7 or later 1.x release satisfies it. Drawer runs on the app's own install; the package is developed and tested against 1.7.0.
+Built on Base UI's `Drawer`, stable since 1.3, when it left the `DrawerPreview` namespace. `@base-ui/react` is a peer dependency, and any 1.9 or later 1.x release satisfies it. Drawer runs on the app's own install; the package is developed and tested against 1.9.0.
