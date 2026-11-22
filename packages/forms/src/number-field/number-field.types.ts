@@ -85,8 +85,8 @@ export type NumberFieldProps = {
    * Declared additively, with no `Omit<…, "color">`. The root's props are
    * `BaseUIComponentProps`, which drops `color` (alongside `className` and
    * `style`) upstream, so an `Omit` here would be a no-op dressed up as a
-   * guard. MaskInput is the opposite case and does need one: it is typed on
-   * `React.ComponentProps<"input">`, which is the native surface.
+   * guard. Textarea is the opposite case and does need one: it is typed on
+   * `React.TextareaHTMLAttributes`, which is the native surface.
    */
   color?: NumberFieldColor;
   RootProps?: NumberFieldRootProps;
