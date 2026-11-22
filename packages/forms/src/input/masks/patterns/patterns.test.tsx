@@ -400,6 +400,24 @@ describe("ipv4Mask", () => {
     expect(input).toHaveValue("1.2");
   });
 
+  it("ends a pasted address at its prefix length or port", async () => {
+    expect(ipv4Mask.format("10.0.0.1/24")).toBe("10.0.0.1");
+    expect(ipv4Mask.format("192.168.1.1:8080")).toBe("192.168.1.1");
+    expect(ipv4Mask.format(" 10.0.0.1 ")).toBe("10.0.0.1");
+
+    const user = userEvent.setup();
+    render(<Input mask={ipv4Mask} />);
+    const input = screen.getByRole("textbox");
+
+    await user.click(input);
+    await user.paste("10.0.0.1/24");
+    expect(input).toHaveValue("10.0.0.1");
+
+    await user.clear(input);
+    await user.paste("192.168.1.1:8080");
+    expect(input).toHaveValue("192.168.1.1");
+  });
+
   it("rejects an empty group and a leading dot", async () => {
     const user = userEvent.setup();
     render(<Input mask={ipv4Mask} />);
