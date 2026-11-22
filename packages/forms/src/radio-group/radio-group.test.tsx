@@ -58,34 +58,43 @@ describe("RadioGroup", () => {
     expect(radios[2]).toHaveAttribute("data-checked");
   });
 
-  // UPSTREAM BUG (open): passing `value` + `onValueChange` triggers infinite
-  // recursion in @base-ui/react's `useStableCallback` trampoline. Uncontrolled
-  // usage (no `value` prop) works fine. The same skip exists in
-  // radio/radio.test.tsx. Do not un-skip without first confirming the upstream
-  // bug is resolved.
-  it.skip("supports controlled value", async () => {
+  // Skipped from Base UI 1.2 for an upstream recursion in `useStableCallback`
+  // when `value` and `onValueChange` were both passed. It passes on 1.9.0.
+  // Composed parts are covered in radio/radio.test.tsx.
+  it("follows the controlled value rather than its own clicks", async () => {
+    const user = userEvent.setup();
     const handleChange = vi.fn();
 
+    // The parent records each request but only changes value from outside.
     const ControlledRadioGroup = () => {
       const [value, setValue] = useState("a");
       return (
-        <RadioGroup
-          items={defaultItems}
-          value={value}
-          onValueChange={(v) => {
-            setValue(v as string);
-            handleChange(v);
-          }}
-        />
+        <>
+          <button onClick={() => setValue("c")}>Pick C</button>
+          <RadioGroup
+            items={defaultItems}
+            value={value}
+            onValueChange={handleChange}
+          />
+        </>
       );
     };
 
     render(<ControlledRadioGroup />);
 
     const radios = screen.getAllByRole("radio");
-    radios[1].click();
+    expect(radios[0]).toHaveAttribute("data-checked");
 
-    expect(handleChange).toHaveBeenCalledWith("b");
+    await user.click(radios[1]);
+
+    expect(handleChange).toHaveBeenCalledWith("b", expect.anything());
+    expect(radios[0]).toHaveAttribute("data-checked");
+    expect(radios[1]).toHaveAttribute("data-unchecked");
+
+    await user.click(screen.getByRole("button", { name: "Pick C" }));
+
+    expect(radios[0]).toHaveAttribute("data-unchecked");
+    expect(radios[2]).toHaveAttribute("data-checked");
   });
 
   it("supports horizontal orientation", () => {

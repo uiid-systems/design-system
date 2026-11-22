@@ -206,8 +206,6 @@ export const CodeBlock = ({
               data-slot="code-block"
               data-wrap={wrap || undefined}
               data-fullscreen
-              // Base UI 1.7 makes the page inert but does not emit aria-modal.
-              aria-modal="true"
               aria-label={filename ?? "Code block"}
               className={cxState(styles["code-block"], className)}
               initialFocus={popupRef}

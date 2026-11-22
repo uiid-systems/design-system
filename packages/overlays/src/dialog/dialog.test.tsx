@@ -1417,9 +1417,32 @@ describe("Dialog top-level root props", () => {
       </>,
     );
 
+    const outside = screen.getByRole("button", {
+      name: "Outside",
+      hidden: true,
+    });
+    expect(outside.closest('[aria-hidden="true"]')).not.toBeNull();
     expect(
       screen.queryByRole("button", { name: "Outside" }),
     ).not.toBeInTheDocument();
+  });
+
+  it('hides the page behind it with modal="trap-focus"', () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Dialog title="Settings" open modal="trap-focus">
+          Dialog content
+        </Dialog>
+      </>,
+    );
+
+    const outside = screen.getByRole("button", {
+      name: "Outside",
+      hidden: true,
+    });
+    expect(screen.getByText("Dialog content")).toBeInTheDocument();
+    expect(outside.closest('[aria-hidden="true"]')).not.toBeNull();
   });
 
   it("leaves the page reachable with modal={false}", () => {
@@ -1432,6 +1455,7 @@ describe("Dialog top-level root props", () => {
       </>,
     );
 
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 });

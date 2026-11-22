@@ -386,14 +386,37 @@ describe("CodeBlock", () => {
 
   it("renders fullscreen as a modal dialog named by the filename", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" filename="example.ts" />);
+    render(
+      <>
+        <button>Outside</button>
+        <CodeBlock code="const x = 1;" filename="example.ts" />
+      </>,
+    );
+
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
 
     const dialog = await screen.findByRole("dialog");
-    expect(dialog).toHaveAttribute("aria-modal", "true");
+    // Base UI makes the dialog modal by hiding the page with aria-hidden, as it
+    // does for Dialog and Drawer, so no aria-modal is added here.
+    const outside = screen.getByRole("button", {
+      name: "Outside",
+      hidden: true,
+    });
+    expect(outside.closest('[aria-hidden="true"]')).not.toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Outside" }),
+    ).not.toBeInTheDocument();
     expect(dialog).toHaveAccessibleName("example.ts");
     expect(dialog).toHaveAttribute("data-slot", "code-block");
+
+    // Closing takes the aria-hidden back off the page.
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
   });
 
   it("moves focus into the dialog and returns it to the toggle on Escape", async () => {
