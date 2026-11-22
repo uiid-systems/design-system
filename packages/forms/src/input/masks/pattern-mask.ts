@@ -43,7 +43,8 @@ export function patternMask(
   };
 
   return maskitoMask(options, {
-    inputMode: inputMode ?? (slots ? undefined : "numeric"),
+    inputMode:
+      inputMode ?? (Object.keys(slots ?? {}).length ? undefined : "numeric"),
     parse: (formatted) =>
       [...formatted].filter((_, index) => isSlot[index]).join(""),
   });

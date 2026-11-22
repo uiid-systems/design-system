@@ -1,14 +1,19 @@
 import { patternMask } from "../pattern-mask";
 import { digitsOf } from "./patterns.utils";
 
-/** A 16-digit card number in groups of four, `4111 1111 1111 1111`. */
+/**
+ * A 16-digit card number in groups of four, `4111 1111 1111 1111`. Only 16
+ * digits fit, so a 15-digit Amex is grouped as if it had 16 and a 19-digit card
+ * cannot be typed, as with the old `MaskInput` pattern.
+ */
 export const creditCardMask = /* @__PURE__ */ patternMask(
   "#### #### #### ####",
 );
 
 /**
  * Whether a card number, masked or not, has 13 to 19 digits and passes the
- * Luhn checksum. It does not check the issuer.
+ * Luhn checksum. It does not check the issuer. Luhn catches typos only; it says
+ * nothing about whether the card exists, which only a server-side check can.
  */
 export const isValidCreditCard = (value: string) => {
   const digits = digitsOf(value);

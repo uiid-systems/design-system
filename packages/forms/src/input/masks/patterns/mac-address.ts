@@ -6,6 +6,9 @@ export const macAddressMask = /* @__PURE__ */ patternMask("HH:HH:HH:HH:HH:HH", {
   uppercase: true,
 });
 
-/** Whether a MAC address, masked or not, has all twelve hex digits. */
+/**
+ * Whether a MAC address has all twelve hex digits, either as six colon-joined
+ * pairs or as twelve bare digits.
+ */
 export const isValidMacAddress = (value: string) =>
-  /^[\dA-F]{2}(:?[\dA-F]{2}){5}$/i.test(value);
+  /^(?:[\dA-F]{2}(?::[\dA-F]{2}){5}|[\dA-F]{12})$/i.test(value);

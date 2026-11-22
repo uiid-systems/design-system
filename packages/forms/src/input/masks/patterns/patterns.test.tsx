@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -266,6 +266,26 @@ describe("phoneMask on Input", () => {
     await user.paste("99");
 
     expect(input).toHaveValue("(199) 234");
+    /* After the pasted digits and the literal that follows them. The old
+       MaskInput put the caret at the end of the value instead, at 9. */
+    expect(input.selectionStart).toBe(6);
+  });
+
+  it("cuts a mid-value paste that overflows a full field", async () => {
+    const { user, input } = await setup("(123) 456-7890");
+
+    input.setSelectionRange(2, 2);
+    await user.paste("99");
+
+    expect(input).toHaveValue("(199) 234-5678");
+  });
+
+  it("changes nothing on a paste into a full field", async () => {
+    const { user, input } = await setup("(123) 456-7890");
+
+    await user.paste("9");
+
+    expect(input).toHaveValue("(123) 456-7890");
   });
 
   it("cuts an over-long paste at the end of the template", async () => {
@@ -274,6 +294,28 @@ describe("phoneMask on Input", () => {
     await user.paste("555123456789");
 
     expect(input).toHaveValue("(555) 123-4567");
+  });
+
+  /* The value is the masked string everywhere, so a defaultValue is shown as
+     given. Pass it through `format` to show it masked. */
+  it("shows a defaultValue as given, and masked once formatted", () => {
+    const { unmount } = render(
+      <Input mask={phoneMask} defaultValue="5551234567" />,
+    );
+    expect(screen.getByRole("textbox")).toHaveValue("5551234567");
+    unmount();
+
+    render(
+      <Input mask={phoneMask} defaultValue={phoneMask.format("5551234567")} />,
+    );
+    expect(screen.getByRole("textbox")).toHaveValue("(555) 123-4567");
+  });
+});
+
+describe("zipCodeMask", () => {
+  it("cuts a sixth digit and drops a letter", () => {
+    expect(zipCodeMask.format("123456")).toBe("12345");
+    expect(zipCodeMask.parse("12a34")).toBe("1234");
   });
 });
 
@@ -302,13 +344,51 @@ describe("ipv4Mask", () => {
     expect(screen.getByRole("textbox")).toHaveValue("10.0.12.255");
   });
 
-  it("rejects a group past 255, a fourth dot and letters", async () => {
+  it("round-trips a partial address", () => {
+    expect(ipv4Mask.format(ipv4Mask.parse("10.0."))).toBe("10.0.");
+  });
+
+  /* The field never judges a group's value, so a padded or out-of-range
+     address is kept as it came, not rewritten into a different valid one;
+     isValidIpv4 rejects it. */
+  it("keeps a zero-padded address as it came", () => {
+    expect(ipv4Mask.format("192.168.001.010")).toBe("192.168.001.010");
+    expect(ipv4Mask.format("010.0.0.1")).toBe("010.0.0.1");
+    expect(isValidIpv4(ipv4Mask.format("192.168.001.010"))).toBe(false);
+  });
+
+  it("keeps a group past 255 for the validator to reject", () => {
+    expect(ipv4Mask.format("256.1.1.1")).toBe("256.1.1.1");
+    expect(isValidIpv4("256.1.1.1")).toBe(false);
+  });
+
+  it("keeps a zero-padded paste as it came", async () => {
     const user = userEvent.setup();
     render(<Input mask={ipv4Mask} />);
     const input = screen.getByRole("textbox");
 
-    await user.type(input, "256");
-    expect(input).toHaveValue("25");
+    await user.click(input);
+    await user.paste("192.168.001.010");
+
+    expect(input).toHaveValue("192.168.001.010");
+  });
+
+  it("takes a leading zero as typed", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={ipv4Mask} />);
+
+    await user.type(screen.getByRole("textbox"), "01.1");
+
+    expect(screen.getByRole("textbox")).toHaveValue("01.1");
+  });
+
+  it("rejects a fourth digit in a group, a fourth dot and letters", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={ipv4Mask} />);
+    const input = screen.getByRole("textbox");
+
+    await user.type(input, "1234");
+    expect(input).toHaveValue("123");
 
     await user.clear(input);
     await user.type(input, "1.2.3.4.");
@@ -387,8 +467,19 @@ describe("validators", () => {
     expect(isValidCreditCard("4111 1111 1111 1112")).toBe(false);
   });
 
+  /* Doubling a 5 to 9 gives 10 to 18, whose digits sum to the doubled value
+     less nine. These numbers fail if that step is dropped or done another way. */
+  it("isValidCreditCard sums the digits of a doubled digit past 9", () => {
+    expect(isValidCreditCard("5555 5555 5555 4444")).toBe(true);
+    expect(isValidCreditCard("378282246310005")).toBe(true);
+    // Passes only if a doubled 5 counts as 10 rather than 1.
+    expect(isValidCreditCard("5555 5555 5555 4440")).toBe(false);
+  });
+
   it("isValidCreditCard takes thirteen to nineteen digits", () => {
     expect(isValidCreditCard("4222222222222")).toBe(true);
+    expect(isValidCreditCard("4000000000000000006")).toBe(true);
+    expect(isValidCreditCard("40000000000000000060")).toBe(false);
     expect(isValidCreditCard("4111 1111 111")).toBe(false);
     expect(isValidCreditCard("")).toBe(false);
   });
@@ -406,10 +497,21 @@ describe("validators", () => {
     expect(isValidCreditCardExpiry("12/25")).toBe(false);
   });
 
+  /* From 2026 no two-digit year reaches past 2076, since 76 and up read as
+     19xx, so the clock moves back to 2020, where the limit is 2070. */
   it("isValidCreditCardExpiry rejects an expiry more than 50 years out", () => {
+    vi.setSystemTime(new Date(2020, 0, 1));
+    expect(isValidCreditCardExpiry("12/70")).toBe(true);
+    expect(isValidCreditCardExpiry("01/71")).toBe(false);
+  });
+
+  it("isValidCreditCardExpiry reads years from 76 as 19xx", () => {
     expect(isValidCreditCardExpiry("12/75")).toBe(true);
-    // 76 reads as 1976, which has passed.
     expect(isValidCreditCardExpiry("01/76")).toBe(false);
+  });
+
+  it("isValidCreditCardExpiry takes bare digits", () => {
+    expect(isValidCreditCardExpiry("1230")).toBe(true);
   });
 
   it("isValidDate needs a real day of a real month", () => {
@@ -426,7 +528,19 @@ describe("validators", () => {
     expect(isValidDate("02/29/2024")).toBe(true);
     expect(isValidDate("02/29/2023")).toBe(false);
     expect(isValidDate("02/29/2000")).toBe(true);
-    expect(isValidDate("02/29/1900")).toBe(false);
+  });
+
+  /* A century is a leap year only when it divides by 400. 1900 is outside
+     the range from 2026, so the clock moves to 2095 to reach 2100. */
+  it("isValidDate knows a century is not a leap year unless it divides by 400", () => {
+    vi.setSystemTime(new Date(2095, 0, 1));
+    expect(isValidDate("02/29/2096")).toBe(true);
+    expect(isValidDate("02/29/2100")).toBe(false);
+    expect(isValidDate("02/28/2100")).toBe(true);
+  });
+
+  it("isValidDate takes bare digits", () => {
+    expect(isValidDate("12252024")).toBe(true);
   });
 
   it("isValidDate takes years from 120 back to 10 ahead", () => {
@@ -440,13 +554,19 @@ describe("validators", () => {
     expect(isValidLicensePlate("ABC-123")).toBe(true);
     expect(isValidLicensePlate("abc-123")).toBe(true);
     expect(isValidLicensePlate("ABC-12")).toBe(false);
+    expect(isValidLicensePlate("ABC123")).toBe(true);
   });
 
   it("isValidMacAddress needs twelve hex digits", () => {
     expect(isValidMacAddress("00:1A:2B:FF:4C:5D")).toBe(true);
     expect(isValidMacAddress("00:1a:2b:ff:4c:5d")).toBe(true);
+    expect(isValidMacAddress("001A2BFF4C5D")).toBe(true);
     expect(isValidMacAddress("00:1A:2B:FF:4C:5G")).toBe(false);
     expect(isValidMacAddress("00:1A:2B:FF:4C")).toBe(false);
+  });
+
+  it("isValidMacAddress rejects a mix of joined and bare pairs", () => {
+    expect(isValidMacAddress("00:1A2B:3C4D5E")).toBe(false);
   });
 
   it("isValidIpv4 needs four groups of 0 to 255", () => {
@@ -459,11 +579,40 @@ describe("validators", () => {
     expect(isValidIpv4("1.2.3.4.5")).toBe(false);
   });
 
-  it("works as a Field validate check", () => {
-    const validate = (value: unknown) =>
-      isValidPhone(String(value)) ? null : "Enter a ten-digit number";
+  it("isValidIpv4 rejects a leading zero and a four-digit group", () => {
+    expect(isValidIpv4("01.1.1.1")).toBe(false);
+    expect(isValidIpv4("1.1.1.010")).toBe(false);
+    expect(isValidIpv4("1234.1.1.1")).toBe(false);
+  });
+});
 
-    expect(validate("(123) 456-7890")).toBeNull();
-    expect(validate("(123")).toBe("Enter a ten-digit number");
+describe("a validator in Field's validate", () => {
+  it("shows the message while the masked value fails and clears it once it passes", async () => {
+    const user = userEvent.setup();
+    render(
+      <Input
+        mask={phoneMask}
+        label="Phone"
+        FieldProps={{
+          validationMode: "onChange",
+          validate: (value) =>
+            isValidPhone(String(value)) ? null : "Enter a ten-digit number",
+        }}
+      />,
+    );
+    const input = screen.getByRole("textbox");
+
+    await user.type(input, "123");
+    expect(
+      await screen.findByText("Enter a ten-digit number"),
+    ).toBeInTheDocument();
+
+    await user.keyboard("4567890");
+    expect(input).toHaveValue("(123) 456-7890");
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Enter a ten-digit number"),
+      ).not.toBeInTheDocument(),
+    );
   });
 });

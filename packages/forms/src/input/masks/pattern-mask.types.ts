@@ -10,7 +10,8 @@ export type PatternMaskOptions = {
   uppercase?: boolean;
   /**
    * The virtual keyboard to ask for. Defaults to `"numeric"` when the template
-   * has only `#` slots, and to none once `slots` adds others.
+   * has only `#` slots, and to none once `slots` names any, since it cannot
+   * tell what a slot's pattern takes.
    */
   inputMode?: InputMask<string>["inputMode"];
 };

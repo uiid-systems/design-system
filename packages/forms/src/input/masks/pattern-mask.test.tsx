@@ -71,6 +71,7 @@ describe("patternMask", () => {
   it("asks for the numeric keyboard unless told otherwise", () => {
     expect(pairs.inputMode).toBe("numeric");
     expect(phone.inputMode).toBe("tel");
+    expect(patternMask("##", { slots: {} }).inputMode).toBe("numeric");
   });
 
   it("asks for no keyboard of its own once it takes other slots", () => {

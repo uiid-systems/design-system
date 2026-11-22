@@ -55,11 +55,11 @@ describe("phoneMask", () => {
 
     await userEvent.keyboard("1234");
     await expect.element(field()).toHaveValue("(123) 4");
-    expect(selection()).toEqual([7, 7]);
+    await expect.poll(selection).toEqual([7, 7]);
 
     await userEvent.keyboard("567890");
     await expect.element(field()).toHaveValue("(123) 456-7890");
-    expect(selection()).toEqual([14, 14]);
+    await expect.poll(selection).toEqual([14, 14]);
   });
 
   it("steps Backspace over a literal, then deletes the digit before it", async () => {
@@ -87,6 +87,8 @@ describe("phoneMask", () => {
     await expect.poll(selection).toEqual([14, 14]);
   });
 
+  /* Known and kept, as in the old MaskInput: the mask has no notion of a
+     country code, so the leading 1 is read as the first digit of the number. */
   it("drops what no slot takes from a paste and cuts it at the template's end", async () => {
     renderField();
     await copy("+1 (555) 123-4567 ext. 9");
@@ -95,5 +97,6 @@ describe("phoneMask", () => {
     await userEvent.paste();
 
     await expect.element(field()).toHaveValue("(155) 512-3456");
+    await expect.poll(selection).toEqual([14, 14]);
   });
 });
