@@ -98,9 +98,9 @@ describe("typing", () => {
 
   /* Documented behaviour, kept on purpose: a character matching the locale's
      grouping separator is read as grouping, not as a decimal. This is Maskito's
-     behaviour, and the library does not work around its dependencies. In de-DE
-     the grouping separator is a period, so the keys `1 2 3 4 . 5` give
-     `12.345 €`, which parses as 12345. The Input README states it. */
+     behaviour. In de-DE the grouping separator is a period, so the keys
+     `1 2 3 4 . 5` give `12.345 €`, which parses as 12345. The Input README
+     states it. */
   it("reads a typed period as grouping in de-DE, so 1234.5 gives 12.345 €", async () => {
     renderField(eur);
     await userEvent.click(field());

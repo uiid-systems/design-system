@@ -44,7 +44,7 @@ Additional props are forwarded to the underlying Base UI [Input](https://base-ui
 
 - The value is the masked string everywhere: `value`, `defaultValue`, `onValueChange`, a form library's `onChange`, and the submitted form all carry `$1,234.50` or `(555) 123-4567`.
 - Call `mask.format(...)` going in and `mask.parse(...)` coming out. The number masks parse to a number, or `null` for an empty field. The pattern masks parse to the characters typed without the literals, so `phoneMask.parse("(555) 123-4567")` is `"5551234567"`. `ipv4Mask` is the exception: its dots are typed, not literals, so `parse` returns the dotted address.
-- An unmasked `defaultValue` or `value` is shown as given: `defaultValue="5555555555"` shows `5555555555` until the next edit, or for a number mask until the next edit or the field is left. Pass `phoneMask.format("5555555555")` instead.
+- An unmasked `defaultValue` or `value` is shown as given: `defaultValue="5555555555"` shows `5555555555`, not `(555) 555-5555`. Pass `phoneMask.format("5555555555")` instead.
 - `percentMask` reads the number as shown: `parse("50%")` is `50`, not `0.5`, and `format(50)` is `50%`.
 - Pasted text is read in the field's locale: `1.234,56` pasted into a de-DE EUR field is 1234.56, and `$1,234.56` pasted into a USD field is 1234.56.
 
@@ -181,7 +181,7 @@ export const CustomMask = () => (
 
 ### Behaviour to know
 
-- A character that matches the locale's grouping separator is read as grouping, not as a decimal. In a de-DE EUR field, typing `1234.5` gives `12.345 €`, which parses as 12345; type `1234,5` for `1.234,5 €`. In en-US a typed comma groups the same way: `1234,5` gives `$12,345`. This is Maskito's behaviour and is kept on purpose: the library does not work around its dependencies.
+- A character that matches the locale's grouping separator is read as grouping, not as a decimal. In a de-DE EUR field, typing `1234.5` gives `12.345 €`, which parses as 12345; type `1234,5` for `1.234,5 €`. In en-US a typed comma groups the same way: `1234,5` gives `$12,345`. This is Maskito's behaviour and is kept on purpose.
 - `currencyMask` accepts negative amounts unless `min` is 0 or more.
 - `currencyMask` pads the currency's decimals when the field is left, so `$5` becomes `$5.00`. Padding happens on blur only, so a form submitted with Enter before the field is left sends `$5`; `parse` reads both as 5.
 - `min` and `max` on the number masks clamp the value rather than mark the field invalid. A positive value below `min` can still be typed, since it may be the start of a larger one, and is raised to `min` when the field is left. Use Field's `validate` to show a message.

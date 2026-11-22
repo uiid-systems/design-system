@@ -90,8 +90,8 @@ describe("phoneMask", () => {
     await expect.poll(selection).toEqual([10, 10]);
   });
 
-  /* happy-dom left this open: user-event's `clear()` leaves `(5` behind there,
-     so the real browser's own select-all and delete settle it. */
+  /* The happy-dom test sets the selection by hand; this one presses the real
+     select-all keys. */
   it("empties a full field when everything is selected and deleted", async () => {
     renderField("(123) 456-7890");
     element().focus();
