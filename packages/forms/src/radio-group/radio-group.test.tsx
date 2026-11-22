@@ -59,23 +59,24 @@ describe("RadioGroup", () => {
   });
 
   // Skipped from Base UI 1.2 for an upstream recursion in `useStableCallback`
-  // when `value` and `onValueChange` were both passed. It passes on 1.9.0. The
-  // same test is in radio/radio.test.tsx.
-  it("supports controlled value", async () => {
+  // when `value` and `onValueChange` were both passed. It passes on 1.9.0.
+  // Composed parts are covered in radio/radio.test.tsx.
+  it("follows the controlled value rather than its own clicks", async () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
+    // The parent records each request but only changes value from outside.
     const ControlledRadioGroup = () => {
       const [value, setValue] = useState("a");
       return (
-        <RadioGroup
-          items={defaultItems}
-          value={value}
-          onValueChange={(v) => {
-            setValue(v as string);
-            handleChange(v);
-          }}
-        />
+        <>
+          <button onClick={() => setValue("c")}>Pick C</button>
+          <RadioGroup
+            items={defaultItems}
+            value={value}
+            onValueChange={handleChange}
+          />
+        </>
       );
     };
 
@@ -86,9 +87,14 @@ describe("RadioGroup", () => {
 
     await user.click(radios[1]);
 
-    expect(handleChange).toHaveBeenCalledWith("b");
+    expect(handleChange).toHaveBeenCalledWith("b", expect.anything());
+    expect(radios[0]).toHaveAttribute("data-checked");
+    expect(radios[1]).toHaveAttribute("data-unchecked");
+
+    await user.click(screen.getByRole("button", { name: "Pick C" }));
+
     expect(radios[0]).toHaveAttribute("data-unchecked");
-    expect(radios[1]).toHaveAttribute("data-checked");
+    expect(radios[2]).toHaveAttribute("data-checked");
   });
 
   it("supports horizontal orientation", () => {

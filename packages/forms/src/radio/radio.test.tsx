@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { RadioGroup } from "../radio-group/radio-group";
@@ -65,35 +64,26 @@ describe("Radio", () => {
 
   // Skipped from Base UI 1.2 for an upstream recursion in `useStableCallback`
   // when `value` and `onValueChange` were both passed. It passes on 1.9.0. The
-  // same test is in radio-group/radio-group.test.tsx.
-  it("supports controlled value", async () => {
+  // RadioGroup monolith has its own controlled test.
+  it("keeps composed radios on a controlled value the parent does not change", async () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
-    const ControlledRadioGroup = () => {
-      const [value, setValue] = useState("a");
-      return (
-        <RadioGroup
-          items={defaultItems}
-          value={value}
-          onValueChange={(v) => {
-            setValue(v as string);
-            handleChange(v);
-          }}
-        />
-      );
-    };
-
-    render(<ControlledRadioGroup />);
+    render(
+      <RadioGroupRoot value="a" onValueChange={handleChange}>
+        <Radio value="a" label="Option A" />
+        <Radio value="b" label="Option B" />
+      </RadioGroupRoot>,
+    );
 
     const radios = screen.getAllByRole("radio");
     expect(radios[0]).toHaveAttribute("data-checked");
 
     await user.click(radios[1]);
 
-    expect(handleChange).toHaveBeenCalledWith("b");
-    expect(radios[0]).toHaveAttribute("data-unchecked");
-    expect(radios[1]).toHaveAttribute("data-checked");
+    expect(handleChange).toHaveBeenCalledWith("b", expect.anything());
+    expect(radios[0]).toHaveAttribute("data-checked");
+    expect(radios[1]).toHaveAttribute("data-unchecked");
   });
 
   it("supports horizontal orientation", () => {
