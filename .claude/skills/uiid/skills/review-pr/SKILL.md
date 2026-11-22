@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: How the Claude Review bot reviews a pull request in CI, covering which reviewer subagents to spawn, how to verify their findings and the exact shape of the review comment, including the verdict heading, the collapsible findings, the Defer checkboxes and how findings carry over between rounds. Use when running as the `Claude Review` workflow (the pull request is in `.claude-review/`), or when changing what the bot checks or how its comment reads. Not for a review run from a local session, which has no `.claude-review/` files and posts its own comment.
+description: How the CI review bot reviews a PR and formats its comment.
 ---
 
 # UIID review PR

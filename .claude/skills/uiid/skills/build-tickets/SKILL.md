@@ -1,6 +1,7 @@
 ---
 name: build-tickets
-description: Build every ready ticket in a Linear project in parallel, each through a build agent and a local review loop, ending in one draft PR per ticket. Use when asked to "work the actionable tickets" in a project, to "build the ready tickets", to run the build-and-review loop on a project or a list of ticket ids, or to repeat "what we did for the hardening project". Takes a Linear project name or id, or a list of ticket ids, as its argument. Not for a single ticket worked interactively, and not for reviewing a PR that is already open.
+description: Build a Linear project's ready tickets in parallel, one draft PR each.
+argument-hint: "[project or ticket ids]"
 ---
 
 # UIID build tickets
