@@ -229,13 +229,42 @@ describe("phoneMask on Input", () => {
      reads `event.target.value` on each change, so it must see the masked text. */
   it("hands a register-shaped onChange the masked text", async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    /* Records the value at the time of each call: `event.target` is the live
+       element, so reading it after typing would only show the final text. */
+    const onChange = vi.fn(
+      (event: React.ChangeEvent<HTMLInputElement>) => event.target.value,
+    );
     render(<Input mask={phoneMask} name="phone" onChange={onChange} />);
 
     await user.type(screen.getByRole("textbox"), "5551234");
 
-    const [event] = onChange.mock.lastCall ?? [];
-    expect(event.target.value).toBe("(555) 123-4");
+    /* The first digit, the fourth and the seventh are rewritten by the mask,
+       which adds a literal; the others are plain insertions. */
+    expect(onChange.mock.results.map(({ value }) => value)).toEqual([
+      "(5",
+      "(55",
+      "(555",
+      "(555) 1",
+      "(555) 12",
+      "(555) 123",
+      "(555) 123-4",
+    ]);
+  });
+
+  it("tracks data-filled as an uncontrolled masked value is typed and cleared", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={phoneMask} />);
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+
+    await user.type(input, "555");
+    expect(input).toHaveAttribute("data-filled");
+
+    /* Selected and deleted by hand: user-event's `clear` leaves `(5` behind
+       under happy-dom with the mask attached. */
+    input.setSelectionRange(0, input.value.length);
+    await user.keyboard("{Backspace}");
+    expect(input).toHaveValue("");
+    expect(input).not.toHaveAttribute("data-filled");
   });
 
   it("deletes the last digit on Backspace", async () => {

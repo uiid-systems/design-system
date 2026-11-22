@@ -174,12 +174,12 @@ export const Fullwidth = () => (
     <MaskInput
       mask={phoneMask}
       fullwidth
-      aria-label="Fullwidth phone number"
+      aria-label="Home phone"
       placeholder="Fullwidth"
     />
     <MaskInput
       mask={phoneMask}
-      aria-label="Phone number, not fullwidth"
+      aria-label="Work phone"
       placeholder="Not fullwidth"
     />
   </Stack>
