@@ -1,6 +1,7 @@
 ---
 name: triage-findings
-description: Decide what to do with the Claude Review bot's open findings on a pull request, sorting each into fix now or defer, then tick the Defer boxes, make the few fixes that earn it in one push, and stop the fix-review-fix loop. Use when a review round has landed on a PR and someone is about to start fixing findings, when asked to "triage the review", "evaluate the findings" or "decide what to defer", or when watching a PR through its review rounds. Takes a PR number, or uses the current branch's PR. Not for writing a review, which is `uiid:review-pr` in CI.
+description: Sort the review bot's open findings into fix now or defer.
+argument-hint: "[pr-number]"
 ---
 
 # UIID triage findings
