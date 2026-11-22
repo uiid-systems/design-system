@@ -193,7 +193,12 @@ export const MaskedNumber = () => (
 export const MaskedPattern = () => (
   <Stack gap={4}>
     <Input mask={phoneMask} label="Phone number" autoComplete="tel" />
-    <Input mask={dateMask} label="Date of birth" description="MM/DD/YYYY" />
+    <Input
+      mask={dateMask}
+      label="Date of birth"
+      description="MM/DD/YYYY"
+      autoComplete="bday"
+    />
   </Stack>
 );
 
@@ -222,7 +227,12 @@ export const MaskedRegister = () => {
 
   return (
     <Stack gap={3}>
-      <Input mask={phoneMask} label="Phone number" {...registered} />
+      <Input
+        mask={phoneMask}
+        label="Phone number"
+        autoComplete="tel"
+        {...registered}
+      />
       <Text size={-1} emphasis="muted">
         Form value: {value || "—"}
       </Text>

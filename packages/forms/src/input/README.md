@@ -36,14 +36,14 @@ Additional props are forwarded to the underlying Base UI [Input](https://base-ui
 
 `mask` formats the text as it is typed. [`MaskInput`](../mask-input/README.md) is the same Input with `mask` required; its README has the guide for moving off the old MaskInput.
 
-- **Number masks:** `currencyMask({ currency, locale })`, `percentMask()` and `numberMask()`, all taking `locale`, `min`, `max`, and the last two `maximumFractionDigits`. Symbols, separators and decimal counts come from `Intl.NumberFormat`.
+- **Number masks:** `currencyMask({ currency })`, `percentMask()` and `numberMask()`. All three take `locale`, `min` and `max`; `currencyMask` requires `currency`, and the other two take `maximumFractionDigits` (default `0`). Symbols and separators come from `Intl.NumberFormat`, and so does `currencyMask`'s decimal count.
 - **Pattern masks:** `phoneMask`, `ssnMask`, `einMask`, `dateMask`, `timeMask`, `creditCardMask`, `creditCardExpiryMask`, `zipCodeMask`, `zipCodeExtendedMask`, `licensePlateMask`, `ipv4Mask`, `macAddressMask` and `isbnMask`, each with an `isValid*` validator for Field's `validate`.
 - **A mask is a stable object.** Import it, or build it once at module scope or in `useMemo`. Input attaches the mask when it mounts and re-attaches whenever it receives a different mask object, so a mask built during render is torn down and attached again on every render.
 
 ### The value contract
 
 - The value is the masked string everywhere: `value`, `defaultValue`, `onValueChange`, a form library's `onChange`, and the submitted form all carry `$1,234.50` or `(555) 123-4567`.
-- Call `mask.format(...)` going in and `mask.parse(...)` coming out. The number masks parse to a number, or `null` for an empty field. The pattern masks parse to the characters typed without the literals, so `phoneMask.parse("(555) 123-4567")` is `"5551234567"`.
+- Call `mask.format(...)` going in and `mask.parse(...)` coming out. The number masks parse to a number, or `null` for an empty field. The pattern masks parse to the characters typed without the literals, so `phoneMask.parse("(555) 123-4567")` is `"5551234567"`. `ipv4Mask` is the exception: its dots are typed, not literals, so `parse` returns the dotted address.
 - An unmasked `defaultValue` or `value` is shown as given: `defaultValue="5555555555"` shows `5555555555` until the next edit. Pass `phoneMask.format("5555555555")` instead.
 - `percentMask` reads the number as shown: `parse("50%")` is `50`, not `0.5`, and `format(50)` is `50%`.
 - Pasted text is read in the field's locale: `1.234,56` pasted into a de-DE EUR field is 1234.56, and `$1,234.56` pasted into a USD field is 1234.56.
@@ -94,13 +94,18 @@ export const MaskedNumber = () => (
 export const MaskedPattern = () => (
   <Stack gap={4}>
     <Input mask={phoneMask} label="Phone number" autoComplete="tel" />
-    <Input mask={dateMask} label="Date of birth" description="MM/DD/YYYY" />
+    <Input
+      mask={dateMask}
+      label="Date of birth"
+      description="MM/DD/YYYY"
+      autoComplete="bday"
+    />
   </Stack>
 );
 ```
 
 - Put a format hint such as `MM/DD/YYYY` in `description`, not `placeholder`: a description stays visible while typing and is announced with the field.
-- A mask sets only `inputMode`, the virtual keyboard to ask for. Set `autoComplete` yourself, such as `tel`, `cc-number`, or `off` for a Social Security number.
+- A mask sets only `inputMode`, the virtual keyboard to ask for. Set `autoComplete` yourself: `tel` for `phoneMask`, `cc-number` for `creditCardMask`, `cc-exp` for `creditCardExpiryMask`, `postal-code` for `zipCodeMask` and `zipCodeExtendedMask`, `bday` for a `dateMask` that asks for a birth date, and `off` for a Social Security number.
 
 ### With react-hook-form
 
@@ -122,6 +127,8 @@ function PriceForm({ onSave }: { onSave: (price: number | null) => void }) {
 }
 ```
 
+A value written to the field from code, rather than typed, must already be formatted, since the mask only rewrites what is typed or pasted. With react-hook-form that covers `defaultValues`, `reset` and `setValue`: pass `usd.format(...)`, not a number or a bare string.
+
 react-hook-form is not a dependency of this package, so this block has no runnable twin. The `MaskedRegister` example wires the same shape `register` returns, `{ name, onChange, onBlur, ref }`, by hand:
 
 ```tsx
@@ -137,7 +144,12 @@ export const MaskedRegister = () => {
 
   return (
     <Stack gap={3}>
-      <Input mask={phoneMask} label="Phone number" {...registered} />
+      <Input
+        mask={phoneMask}
+        label="Phone number"
+        autoComplete="tel"
+        {...registered}
+      />
       <Text size={-1} emphasis="muted">
         Form value: {value || "—"}
       </Text>
@@ -148,7 +160,7 @@ export const MaskedRegister = () => {
 
 ### Writing a mask
 
-`patternMask(template, options)` builds a mask for text of a fixed shape. Each `#` in the template takes one digit, each key of `slots` takes one character its pattern matches, and every other character is a literal the mask writes once a character follows it. Characters no slot takes are dropped, and nothing goes past the end of the template. `uppercase: true` uppercases typed and pasted text before the slots test it. The keyboard defaults to `numeric` for a template of `#` only, and to none once `slots` names any; pass `inputMode` to choose one.
+`patternMask(template, options)` builds a mask for text of a fixed shape. Each `#` in the template takes one digit, each key of `slots` takes one character its pattern matches, and every other character is a literal the mask writes once a character follows it. Characters no slot takes are dropped, and nothing goes past the end of the template. `uppercase: true` uppercases typed and pasted text before the slots test it. The keyboard defaults to `numeric` when `slots` names no character, and to none once it names any; pass `inputMode` to choose one.
 
 ```tsx
 const orderNumber = patternMask("AA-####", {
@@ -169,19 +181,20 @@ export const CustomMask = () => (
 
 ### Behaviour to know
 
-- A character that matches the locale's grouping separator is read as grouping, not as a decimal. In a de-DE EUR field, typing `1234.5` gives `12.345 €`, which parses as 12345; type `1234,5` for `1.234,5 €`. In en-US a typed comma groups the same way. This is Maskito's behaviour and is kept on purpose: the library does not work around its dependencies.
-- `currencyMask` accepts negative amounts unless given `min: 0`.
+- A character that matches the locale's grouping separator is read as grouping, not as a decimal. In a de-DE EUR field, typing `1234.5` gives `12.345 €`, which parses as 12345; type `1234,5` for `1.234,5 €`. In en-US a typed comma groups the same way: `1234,5` gives `$12,345`. This is Maskito's behaviour and is kept on purpose: the library does not work around its dependencies.
+- `currencyMask` accepts negative amounts unless `min` is 0 or more.
 - `currencyMask` pads the currency's decimals when the field is left, so `$5` becomes `$5.00`. Padding happens on blur only, so a form submitted with Enter before the field is left sends `$5`; `parse` reads both as 5.
 - `min` and `max` on the number masks clamp the value rather than mark the field invalid. A positive value below `min` can still be typed, since it may be the start of a larger one, and is raised to `min` when the field is left. Use Field's `validate` to show a message.
 - Digits are Latin only. A locale whose default numbering system is not Latin, such as `ar-EG`, is unsupported: the field shows Latin digits with that locale's separators, and `parse` reads no native-script digits.
-- Backspace and Delete step over a literal or a group separator before they delete: with the caret after the `-` of `(123) 456-7890`, the first Backspace moves before it and the second deletes the `6`.
+- Backspace and Delete step over a literal or a group separator before they delete: with the caret after the `-` of `(123) 456-7890`, the first Backspace moves before it and the second deletes the `6`; with the caret before the `-`, the first Delete moves past it and the second deletes the `7`.
 - `phoneMask` is a US template with no notion of a country code, so a pasted `+1 (555) 123-4567` reads the 1 as the first digit.
 - `creditCardMask` holds 16 digits in groups of four, so a 19-digit card cannot be typed, while `isValidCreditCard` accepts 13 to 19 digits. Its Luhn checksum catches typos only and is no substitute for a server-side check.
 - `ipv4Mask` accepts any group of one to three digits, so `999` or `001` stays as typed; `isValidIpv4` is what judges the address.
-- Maskito keeps one piece of state shared by every masked field on the page, for its double-space handling, so the last masked value stays in memory until the next keystroke in any masked field.
+- Maskito keeps one piece of state shared by every masked field on the page, for its double-space handling: the value before the last edit, and that edit's event, stay in memory until the next edit in any masked field.
 
 ### What is tested
 
 - Chromium is the only engine tested, by the real-browser suite in CI (`pnpm test:run --config vitest.browser.config.ts`), alongside happy-dom unit tests.
 - Firefox and WebKit are untested. The browser suite can run them locally with `VITEST_BROWSERS=firefox,webkit` once Playwright has their binaries; no such run has been recorded.
 - Mobile virtual keyboards and IME composition are untested.
+- No screen reader pass has been made. VoiceOver with Safari (macOS and iOS) and NVDA with Firefox or Chrome are untested.

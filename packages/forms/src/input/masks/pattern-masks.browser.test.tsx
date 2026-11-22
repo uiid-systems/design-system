@@ -76,6 +76,20 @@ describe("phoneMask", () => {
     await expect.poll(selection).toEqual([8, 8]);
   });
 
+  it("steps Delete over a literal, then deletes the digit after it", async () => {
+    renderField("(123) 456-7890");
+    // Between the 6 and the hyphen.
+    await select(9);
+
+    await userEvent.keyboard("{Delete}");
+    await expect.poll(selection).toEqual([10, 10]);
+    expect(element().value).toBe("(123) 456-7890");
+
+    await userEvent.keyboard("{Delete}");
+    await expect.element(field()).toHaveValue("(123) 456-890");
+    await expect.poll(selection).toEqual([10, 10]);
+  });
+
   /* happy-dom left this open: user-event's `clear()` leaves `(5` behind there,
      so the real browser's own select-all and delete settle it. */
   it("empties a full field when everything is selected and deleted", async () => {

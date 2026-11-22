@@ -115,6 +115,18 @@ describe("typing", () => {
     await expect.element(field()).toHaveValue(tenTimes);
     expect(eur.parse(element().value)).toBe(12345);
   });
+
+  /* The en-US twin of the test above: the grouping separator is a comma, so a
+     typed `,` is read as grouping. Documented in the Input README. */
+  it("reads a typed comma as grouping in en-US, so 1234,5 gives $12,345", async () => {
+    renderField(usd);
+    await userEvent.click(field());
+
+    await userEvent.keyboard("1234,5");
+
+    await expect.element(field()).toHaveValue("$12,345");
+    expect(usd.parse(element().value)).toBe(12345);
+  });
 });
 
 describe("deleting across a group separator", () => {
