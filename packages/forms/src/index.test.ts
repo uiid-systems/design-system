@@ -41,7 +41,7 @@ describe("forms barrel", () => {
       attach(element: HTMLInputElement): () => void;
       format(value: number): string;
       parse(masked: string): number;
-      inputMode?: "decimal" | "numeric";
+      inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
     }>();
   });
 

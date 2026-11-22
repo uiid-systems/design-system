@@ -52,8 +52,11 @@ export type InputMask<T> = {
   format(value: T): string;
   /** Turns masked text back into a value. */
   parse(masked: string): T;
-  /** The virtual keyboard to ask for, unless the caller sets `inputMode`. */
-  inputMode?: "decimal" | "numeric";
+  /**
+   * The virtual keyboard to ask for, unless the caller sets `inputMode`. Any
+   * input mode the element takes, such as `"tel"` for a phone number.
+   */
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
 };
 
 /**
