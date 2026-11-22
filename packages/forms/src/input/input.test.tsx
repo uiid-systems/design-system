@@ -992,132 +992,204 @@ describe("Input before/after slots", () => {
 });
 
 /**
- * A mask with no engine behind it. It records which elements it is attached
- * to, so a test reads the attachments that are live right now rather than
- * counting calls.
+ * A mask with no engine behind it. Every attach and detach is written to an
+ * ordered `log`, which two masks may share to show the order of a swap, and
+ * `live` lists one entry per attachment not yet cleaned up, so a second attach
+ * to the same element shows as a second entry.
  */
-const createFakeMask = (inputMode?: InputMask<string>["inputMode"]) => {
-  const attached = new Set<HTMLInputElement>();
+const createFakeMask = (
+  name: string,
+  {
+    log = [],
+    inputMode,
+  }: { log?: string[]; inputMode?: InputMask<string>["inputMode"] } = {},
+) => {
+  const live: HTMLInputElement[] = [];
   const mask: InputMask<string> = {
-    attach: vi.fn((element: HTMLInputElement) => {
-      attached.add(element);
+    attach(element) {
+      log.push(`attach:${name}`);
+      live.push(element);
       return () => {
-        attached.delete(element);
+        log.push(`detach:${name}`);
+        live.splice(live.indexOf(element), 1);
       };
-    }),
+    },
     format: (value) => value,
     parse: (masked) => masked,
     inputMode,
   };
-  return { mask, attached };
+  return { mask, log, live };
 };
 
 describe("Input mask", () => {
   it("attaches the mask to the input element on mount", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, log, live } = createFakeMask("A");
     render(<Input mask={mask} />);
 
-    expect([...attached]).toEqual([screen.getByRole("textbox")]);
+    expect(log).toEqual(["attach:A"]);
+    expect(live).toEqual([screen.getByRole("textbox")]);
   });
 
   it("detaches the mask on unmount", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, log, live } = createFakeMask("A");
     const { unmount } = render(<Input mask={mask} />);
 
     unmount();
 
-    expect(attached.size).toBe(0);
+    expect(log).toEqual(["attach:A", "detach:A"]);
+    expect(live).toEqual([]);
   });
 
-  it("detaches the old mask and attaches the new one when the mask changes", () => {
-    const first = createFakeMask();
-    const second = createFakeMask();
+  it("detaches the old mask before attaching the new one when the mask changes", () => {
+    const log: string[] = [];
+    const first = createFakeMask("A", { log });
+    const second = createFakeMask("B", { log });
     const { rerender } = render(<Input mask={first.mask} />);
 
     rerender(<Input mask={second.mask} />);
 
-    expect(first.attached.size).toBe(0);
-    expect([...second.attached]).toEqual([screen.getByRole("textbox")]);
+    expect(log).toEqual(["attach:A", "detach:A", "attach:B"]);
+    expect(first.live).toEqual([]);
+    expect(second.live).toEqual([screen.getByRole("textbox")]);
   });
 
   it("detaches the mask when it is removed", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, log, live } = createFakeMask("A");
     const { rerender } = render(<Input mask={mask} />);
 
     rerender(<Input />);
 
-    expect(attached.size).toBe(0);
+    expect(log).toEqual(["attach:A", "detach:A"]);
+    expect(live).toEqual([]);
   });
 
   it("keeps its one attachment across a render that leaves the mask unchanged", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, log } = createFakeMask("A");
     const { rerender } = render(<Input mask={mask} placeholder="One" />);
 
     rerender(<Input mask={mask} placeholder="Two" />);
 
-    expect(mask.attach).toHaveBeenCalledTimes(1);
-    expect(attached.size).toBe(1);
+    expect(log).toEqual(["attach:A"]);
   });
 
-  it("leaves one live attachment after StrictMode's double mount", () => {
-    const { mask, attached } = createFakeMask();
+  it("keeps its one attachment when the caller passes a new inline ref each render", () => {
+    const { mask, log, live } = createFakeMask("A");
+    const { rerender } = render(<Input mask={mask} ref={() => {}} />);
+
+    rerender(<Input mask={mask} ref={() => {}} placeholder="Two" />);
+    rerender(<Input mask={mask} ref={() => {}} placeholder="Three" />);
+
+    expect(log).toEqual(["attach:A"]);
+    expect(live).toEqual([screen.getByRole("textbox")]);
+  });
+
+  it("keeps its one attachment while a controlled input with an inline ref is typed into", async () => {
+    const user = userEvent.setup();
+    const { mask, log } = createFakeMask("A");
+    const Controlled = () => {
+      const [value, setValue] = React.useState("");
+      return (
+        <Input
+          mask={mask}
+          value={value}
+          onValueChange={setValue}
+          ref={() => {}}
+        />
+      );
+    };
+    render(<Controlled />);
+
+    await user.type(screen.getByRole("textbox"), "123");
+
+    expect(screen.getByRole("textbox")).toHaveValue("123");
+    expect(log).toEqual(["attach:A"]);
+  });
+
+  it("detaches before attaching again under StrictMode's double mount", () => {
+    const { mask, log, live } = createFakeMask("A");
     const { unmount } = render(
       <React.StrictMode>
         <Input mask={mask} />
       </React.StrictMode>,
     );
 
-    // StrictMode attached, detached and attached again.
-    expect(mask.attach).toHaveBeenCalledTimes(2);
-    expect([...attached]).toEqual([screen.getByRole("textbox")]);
+    expect(log).toEqual(["attach:A", "detach:A", "attach:A"]);
+    expect(live).toEqual([screen.getByRole("textbox")]);
 
     unmount();
-    expect(attached.size).toBe(0);
+    expect(live).toEqual([]);
   });
 
   it("still hands the element to the caller's object ref", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, live } = createFakeMask("A");
     const objectRef = React.createRef<HTMLInputElement>();
     const { unmount } = render(<Input mask={mask} ref={objectRef} />);
 
     expect(objectRef.current).toBe(screen.getByRole("textbox"));
-    expect(attached.has(objectRef.current!)).toBe(true);
+    expect(live).toEqual([objectRef.current]);
 
     unmount();
     expect(objectRef.current).toBeNull();
   });
 
-  it("still calls the caller's callback ref", () => {
-    const { mask } = createFakeMask();
+  it("still calls the caller's callback ref, and with null on unmount", () => {
+    const { mask, live } = createFakeMask("A");
     const callbackRef = vi.fn();
-    render(<Input mask={mask} ref={callbackRef} />);
+    const { unmount } = render(<Input mask={mask} ref={callbackRef} />);
 
-    expect(callbackRef).toHaveBeenCalledWith(screen.getByRole("textbox"));
+    const input = screen.getByRole("textbox");
+    expect(callbackRef).toHaveBeenLastCalledWith(input);
+    expect(live).toEqual([input]);
+
+    unmount();
+    expect(callbackRef).toHaveBeenLastCalledWith(null);
+    expect(live).toEqual([]);
+  });
+
+  it("runs the cleanup a caller's callback ref returns, alongside the mask's", () => {
+    const log: string[] = [];
+    const { mask } = createFakeMask("A", { log });
+    const callbackRef = (element: HTMLInputElement) => {
+      log.push(`ref:${element.tagName.toLowerCase()}`);
+      return () => {
+        log.push("ref:cleanup");
+      };
+    };
+    const { unmount } = render(<Input mask={mask} ref={callbackRef} />);
+
+    unmount();
+
+    expect(log).toContain("ref:input");
+    expect(log).toContain("ref:cleanup");
+    expect(log.filter((entry) => entry.endsWith(":A"))).toEqual([
+      "attach:A",
+      "detach:A",
+    ]);
   });
 
   it("attaches to the input, not the wrapper, when a slot is present", () => {
-    const { mask, attached } = createFakeMask();
+    const { mask, live } = createFakeMask("A");
     render(<Input mask={mask} before="$" />);
 
-    expect([...attached]).toEqual([screen.getByRole("textbox")]);
+    expect(live).toEqual([screen.getByRole("textbox")]);
   });
 
   it("takes inputMode from the mask", () => {
-    const { mask } = createFakeMask("decimal");
+    const { mask } = createFakeMask("A", { inputMode: "decimal" });
     render(<Input mask={mask} />);
 
     expect(screen.getByRole("textbox")).toHaveAttribute("inputmode", "decimal");
   });
 
   it("lets the caller's inputMode win over the mask's", () => {
-    const { mask } = createFakeMask("decimal");
+    const { mask } = createFakeMask("A", { inputMode: "decimal" });
     render(<Input mask={mask} inputMode="numeric" />);
 
     expect(screen.getByRole("textbox")).toHaveAttribute("inputmode", "numeric");
   });
 
   it("sets no inputMode when neither the mask nor the caller does", () => {
-    const { mask } = createFakeMask();
+    const { mask } = createFakeMask("A");
     render(<Input mask={mask} />);
 
     expect(screen.getByRole("textbox")).not.toHaveAttribute("inputmode");
@@ -1133,14 +1205,21 @@ describe("Input mask", () => {
   });
 
   it("attaches through InputControl on its own", () => {
-    const { mask, attached } = createFakeMask("numeric");
+    const { mask, log, live } = createFakeMask("A", { inputMode: "numeric" });
     const { unmount } = render(<InputControl mask={mask} />);
 
     const input = screen.getByRole("textbox");
-    expect([...attached]).toEqual([input]);
+    expect(live).toEqual([input]);
     expect(input).toHaveAttribute("inputmode", "numeric");
 
     unmount();
-    expect(attached.size).toBe(0);
+    expect(log).toEqual(["attach:A", "detach:A"]);
+  });
+
+  it("lets the caller's inputMode win over the mask's on InputControl", () => {
+    const { mask } = createFakeMask("A", { inputMode: "numeric" });
+    render(<InputControl mask={mask} inputMode="decimal" />);
+
+    expect(screen.getByRole("textbox")).toHaveAttribute("inputmode", "decimal");
   });
 });

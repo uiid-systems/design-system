@@ -39,6 +39,11 @@ export type InputWrapperProps = {
  * The value stays the masked string everywhere: `value`, `defaultValue`,
  * `onValueChange` and form submission all carry it. Call `format` going in and
  * `parse` coming out.
+ *
+ * The members are declared as methods on purpose. TypeScript checks method
+ * parameters bivariantly, which is what lets an `InputMask<number>` pass where
+ * the `mask` prop expects `InputMask<unknown>`; arrow-typed members would make
+ * `T` invariant and reject it. `Input` never calls `format` or `parse`.
  */
 export type InputMask<T> = {
   /** Wires the mask to the element and returns the cleanup that unwires it. */
@@ -80,7 +85,8 @@ export type InputControlProps = Omit<Input.Props, "size"> & {
   /**
    * Formats the text as it is typed. Attached to the input element on mount
    * and detached on unmount or when the mask changes. Its `inputMode` applies
-   * unless `inputMode` is set here.
+   * unless `inputMode` is set here. Create the mask at module scope or memoize
+   * it: a new mask on every render is detached and attached on every render.
    */
   mask?: InputMask<unknown>;
   ref?: React.Ref<HTMLInputElement>;

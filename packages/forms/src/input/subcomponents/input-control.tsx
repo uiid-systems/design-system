@@ -2,7 +2,7 @@
 
 import { Input as BaseInput } from "@base-ui/react/input";
 import { cxState, useComposedRefs } from "@uiid/utils";
-import { useCallback } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import { useFieldRequired } from "../../field/field-required-context";
 import { inputControlClassName } from "../input.styles";
@@ -35,17 +35,21 @@ export const InputControl = ({
 }: InputControlProps) => {
   const fieldRequired = useFieldRequired();
 
-  /* A new mask is a new callback, so React runs the old one's cleanup, which
-     detaches it, before attaching the new one. StrictMode's double mount
-     takes the same path. */
-  const maskRef = useCallback(
-    (element: HTMLInputElement | null) => {
-      if (!element || !mask) return;
-      return mask.attach(element);
-    },
-    [mask],
-  );
-  const composedRef = useComposedRefs(ref, maskRef);
+  /* The mask's lifetime is keyed on the mask alone, not on the composed ref.
+     A caller's inline `ref` is new on every render, which rebuilds the
+     composed ref; were the mask attached from that ref, it would be torn down
+     and rebuilt on every keystroke of a controlled input. Layout effects run
+     after refs are set, so the element is in place by the time this runs. A
+     new mask runs the old one's cleanup before attaching, and StrictMode's
+     double mount takes the same path. */
+  const elementRef = useRef<HTMLInputElement>(null);
+  const composedRef = useComposedRefs(ref, elementRef);
+
+  useLayoutEffect(() => {
+    const element = elementRef.current;
+    if (!element || !mask) return;
+    return mask.attach(element);
+  }, [mask]);
 
   return (
     <BaseInput
