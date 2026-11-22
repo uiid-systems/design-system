@@ -283,6 +283,7 @@ describe("phoneMask on Input", () => {
   it("changes nothing on a paste into a full field", async () => {
     const { user, input } = await setup("(123) 456-7890");
 
+    input.setSelectionRange(14, 14);
     await user.paste("9");
 
     expect(input).toHaveValue("(123) 456-7890");
@@ -479,7 +480,8 @@ describe("validators", () => {
   it("isValidCreditCard takes thirteen to nineteen digits", () => {
     expect(isValidCreditCard("4222222222222")).toBe(true);
     expect(isValidCreditCard("4000000000000000006")).toBe(true);
-    expect(isValidCreditCard("40000000000000000060")).toBe(false);
+    // Passes Luhn (8 + 2), so only the length limit rejects it.
+    expect(isValidCreditCard("40000000000000000002")).toBe(false);
     expect(isValidCreditCard("4111 1111 111")).toBe(false);
     expect(isValidCreditCard("")).toBe(false);
   });
@@ -589,15 +591,14 @@ describe("validators", () => {
 describe("a validator in Field's validate", () => {
   it("shows the message while the masked value fails and clears it once it passes", async () => {
     const user = userEvent.setup();
+    const validate = vi.fn((value: unknown) =>
+      isValidPhone(String(value)) ? null : "Enter a ten-digit number",
+    );
     render(
       <Input
         mask={phoneMask}
         label="Phone"
-        FieldProps={{
-          validationMode: "onChange",
-          validate: (value) =>
-            isValidPhone(String(value)) ? null : "Enter a ten-digit number",
-        }}
+        FieldProps={{ validationMode: "onChange", validate }}
       />,
     );
     const input = screen.getByRole("textbox");
@@ -609,6 +610,10 @@ describe("a validator in Field's validate", () => {
 
     await user.keyboard("4567890");
     expect(input).toHaveValue("(123) 456-7890");
+    // validate sees the masked string, as the form submits it.
+    await waitFor(() =>
+      expect(validate.mock.lastCall?.[0]).toBe("(123) 456-7890"),
+    );
     await waitFor(() =>
       expect(
         screen.queryByText("Enter a ten-digit number"),
