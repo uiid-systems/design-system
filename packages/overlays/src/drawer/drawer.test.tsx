@@ -1104,6 +1104,36 @@ describe("Drawer", () => {
       await waitFor(() => expect(body()).not.toHaveAttribute("tabindex"));
     });
   });
+
+  // Base UI hides the page with aria-hidden rather than emitting aria-modal,
+  // the same way it does for Dialog and CodeBlock's fullscreen view.
+  it("hides the page behind it by default", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Outside" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("leaves the page reachable with modal={false}", () => {
+    render(
+      <>
+        <button>Outside</button>
+        <Drawer title="Settings" open modal={false}>
+          Drawer content
+        </Drawer>
+      </>,
+    );
+
+    expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
 });
 
 // happy-dom evaluates no media queries, so the stylesheet text is the only
