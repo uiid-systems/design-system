@@ -1,13 +1,13 @@
 ---
-name: uiid-recipe-structure
-description: How to structure a UIID recipe, meaning several components composed into one piece of an app, such as an app shell, a sidebar, a header or a settings page. Use when creating, moving, renaming or splitting component files under `apps/*/components/`, when deciding whether a part should become its own component, or when asked to build something "the way we build our components" outside `packages/`. Not for a single component inside `packages/`, which `.agents/components.md` covers on its own.
+paths:
+  - "apps/*/components/**"
 ---
 
 # UIID recipe structure
 
 A recipe is a set of components that work together: a shell with a sidebar, a header and a main area, for example. It lives in an app, not in a package, and it is built exactly the way package components are built. An app is not a place for looser rules.
 
-Read `.agents/components.md` and `.agents/styling.md` first. They hold the shared rules (file names, `data-slot`, `cx`, spreading props, the inline-style ban) and this skill does not repeat them. What follows is what those chapters leave open once more than one component is involved.
+Read `.claude/rules/components.md` and `.claude/rules/styling.md` first. They hold the shared rules (file names, `data-slot`, `cx`, spreading props, the inline-style ban) and this rule does not repeat them. What follows is what those rules leave open once more than one component is involved.
 
 The working exemplar is the docs shell: `apps/docs/components/shell/`, `sidebar/`, `header/`, `main/` and `breadcrumbs/`, composed in `apps/docs/app/layout.tsx`. Read it before writing a new recipe.
 
@@ -74,7 +74,7 @@ When a layout must style something it does not own, such as sliding a sidebar it
 
 ## Styling
 
-Follow `.agents/styling.md`. Two points come up in every recipe:
+Follow `.claude/rules/styling.md`. Two points come up in every recipe:
 
 - Layout comes from UIID components and style props. A CSS module is for what no prop covers: scroll tracks, sticky positioning, transforms, hover states. No Tailwind utility classes.
 - App CSS modules compile in pure mode, so every selector needs a local class. Write `:where(.local)[data-state]` or `.local [data-slot="x"]`, never a bare attribute selector.

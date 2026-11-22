@@ -140,7 +140,7 @@ packages/{forms,overlays,code}                → upper layer
 packages/{tables,ai}                          → top layer
 packages/design-system                        → barrel
 apps/{storybook,docs}                         → consumers
-.agents/                                      → conventions every session reads
+.claude/rules/                                → conventions, loaded by file path
 docs/architecture/                            → long-form decisions, including this spec
 tasks/                                        → plan.md and todo.md for this work
 ```
@@ -200,7 +200,7 @@ Baseline measured 2026-11-18 on this machine: a forced full build through Turbo 
 
 ## Boundaries
 
-- **Always:** read the matching `.agents/` chapter before editing; read a component's `.types.ts` before using it; run a repo-wide search before deleting anything called unused; keep each PR to one task; mark breaking PRs with `!`; open the PR before reviewing it.
+- **Always:** read the matching `.claude/rules/` file before editing; read a component's `.types.ts` before using it; run a repo-wide search before deleting anything called unused; keep each PR to one task; mark breaking PRs with `!`; open the PR before reviewing it.
 - **Ask first:** adding any dependency other than Maskito; changing a decision listed above; deleting a composition part or a whole component; changing CI workflows beyond what a task names; anything that changes what is published to npm.
 - **Already approved by this spec:** adding `@maskito/core` and `@maskito/kit` to forms and `@vitest/browser-playwright` at the root; the changes to exports, package manifests and published files that a task names; the CI changes that Tasks 10, 12 and 19 name.
 - **Never:** add a shim or deprecation path; hand-author a parallel prop schema or registry; rename a Base UI primitive or recast a prop it ships; rework the style-prop double write; propose merging packages; add AI attribution to commits or PRs.

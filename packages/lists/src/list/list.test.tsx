@@ -210,14 +210,14 @@ describe("List", () => {
   // `list-item.tsx` used to pin the icon's colour with
   // `style={{ color: "var(--shade-foreground)" }}` and suppress the label's
   // marker with `style={{ listStyleType: "none" }}`. Both violated the
-  // inline-style ban in `.agents/styling.md`, and the first is what made the
+  // inline-style ban in `.claude/rules/styling.md`, and the first is what made the
   // icon un-themeable: an inline declaration outranks every rule, so no
   // surface could recolour it. They now live in `list.module.css`.
   //
   // The assertion targets those two properties rather than the `style`
   // attribute itself. `Box`/`Group`/`Stack` compile their layout props down to
   // inline `gap`/`align-items`, which is the sanctioned mechanism — first in
-  // the resolution order the styling chapter sets out — so a blanket "no style
+  // the resolution order the styling rule sets out — so a blanket "no style
   // attribute" check would fail on markup that is entirely correct.
 
   describe("inline styles", () => {

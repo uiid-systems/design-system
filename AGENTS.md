@@ -2,9 +2,9 @@
 
 UIID is a modular React component library. Follow these conventions to maintain consistency across the codebase.
 
-This file is tool-agnostic and holds only what every session needs. Deeper conventions live in topic chapters under `.agents/`.
+This file is tool-agnostic and holds only what every session needs. Deeper conventions live in rule files under `.claude/rules/`.
 
-**Read the matching chapter before you edit — nothing loads it for you.** The [Chapters](#chapters) table maps file paths to chapters. These are not background reading: they hold the inline-style ban, the required component file layout, and new-package steps that fail silently when skipped. If you are about to change a file and have not opened its chapter this session, open it first.
+**Read the matching rule before you edit.** The [Rules](#rules) table maps file paths to rules. These are not background reading: they hold the inline-style ban, the required component file layout, and new-package steps that fail silently when skipped. Claude Code loads a rule on its own when it reads or edits a matching file. With any other tool nothing loads it for you, so open the rule first.
 
 ## Stack
 
@@ -60,23 +60,24 @@ Versioning and changelogs are automated by **release-please**:
 - **Pre-1.0.0, bumps are patch-only** (`bump-patch-for-minor-pre-major`) — breaking changes bump minor, never major
 - `feat` and `fix` trigger a release; `docs`, `chore`, `ci`, `test`, and `refactor` are recorded but do not force one
 
-## Chapters
+## Rules
 
-Find the row matching the files you are touching and read that chapter before editing.
+Find the row matching the files you are touching and read that rule before editing. Each file names the paths it applies to in its `paths:` frontmatter.
 
-| Chapter                   | Covers                                                               | Read when                     |
-| ------------------------- | -------------------------------------------------------------------- | ----------------------------- |
-| `.agents/architecture.md` | Monorepo layout, root config files                                   | Touching root configs         |
-| `.agents/components.md`   | Component conventions, upstream substitutions, new-package checklist | Touching any component source |
-| `.agents/styling.md`      | Inline-style ban, layout primitives, style props, CSS vars           | Touching `.tsx` / `.css`      |
+| Rule                            | Covers                                                                     | Read when                                                   |
+| ------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `.claude/rules/architecture.md` | Monorepo layout, root config files                                         | Touching root configs                                       |
+| `.claude/rules/components.md`   | Component conventions, upstream substitutions, new-package checklist       | Touching any component source                               |
+| `.claude/rules/styling.md`      | Inline-style ban, layout primitives, style props, CSS vars                 | Touching `.tsx` / `.css`                                    |
+| `.claude/rules/recipes.md`      | Structuring a recipe: several components composed into one piece of an app | Creating, moving or splitting files in `apps/*/components/` |
 
 "Any component source" means `packages/**` and `apps/*/components/**` alike. App components follow the same conventions as package components.
 
 ## Skills
 
-Skills live in `.claude/skills/{name}/SKILL.md`. Tools that support skills load one when its description matches the task; with any other tool, read the file when its row applies.
+Skills live in `.claude/skills/uiid/skills/{name}/SKILL.md`. The `uiid` folder is a plugin, so Claude Code lists each skill as `uiid:{name}` and loads one when its description matches the task. With any other tool, read the file when its row applies.
 
-| Skill                   | Covers                                                                                          | Read when                                                   |
-| ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `uiid-recipe-structure` | Structuring a recipe: several components composed into one piece of an app                      | Creating, moving or splitting files in `apps/*/components/` |
-| `uiid-build-tickets`    | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project         |
+| Skill                | Covers                                                                                          | Read when                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `uiid:build-project` | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project          |
+| `uiid:review-pr`     | How the Claude Review bot in CI reviews a pull request and the shape of the comment it posts    | Changing what the review bot checks or how its comment reads |

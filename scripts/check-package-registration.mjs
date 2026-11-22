@@ -3,7 +3,7 @@
 // registration fails silently: the package still builds, but its version is
 // left behind, its CSS ships unlayered, or the umbrella never re-exports it.
 // These are the hand-kept steps of the new-package checklist in
-// .agents/components.md. It reads source only, so it needs no build.
+// .claude/rules/components.md. It reads source only, so it needs no build.
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -136,7 +136,9 @@ if (failures.length > 0) {
   console.error(
     `✗ package registration check failed:\n${failures.map((f) => `  - ${f}`).join("\n")}`,
   );
-  console.error("\nSee the new-package checklist in .agents/components.md.");
+  console.error(
+    "\nSee the new-package checklist in .claude/rules/components.md.",
+  );
   process.exit(1);
 }
 

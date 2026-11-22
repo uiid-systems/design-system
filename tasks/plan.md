@@ -93,7 +93,7 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 5: Rules, layer by layer
 
-- [ ] Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils (UI-434)
+- [ ] Task 22: Write both rules into `.claude/rules/components.md` and stop the barrel re-exporting utils (UI-434)
 - [ ] Task 23: Apply the export rule to utils, tokens and icons (UI-435)
 - [ ] Task 24: Apply both rules to layout, typography, buttons, interactive and markdown (UI-436)
 - [ ] Task 25: Apply both rules to cards, lists, indicators and navigation (UI-437)
@@ -107,7 +107,7 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 ### Checkpoint: Rules
 
 - [ ] Every package's barrel test lists exactly its intended public names
-- [ ] The list of components using the runtime fallback is written into `.agents/components.md`, or is empty
+- [ ] The list of components using the runtime fallback is written into `.claude/rules/components.md`, or is empty
 - [ ] If more than a third of components needed the fallback, stop and review the rule with the owner
 - [ ] Docs app builds against the new surface
 
