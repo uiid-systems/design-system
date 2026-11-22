@@ -63,12 +63,11 @@ describe("Radio", () => {
     expect(radios[1]).toHaveAttribute("data-checked");
   });
 
-  // UPSTREAM BUG (open): passing `value` + `onValueChange` triggers infinite
-  // recursion in @base-ui/react's `useStableCallback` trampoline. Uncontrolled
-  // usage (no `value` prop) works fine. The same skip exists in
-  // radio-group/radio-group.test.tsx. Do not un-skip without first confirming
-  // the upstream bug is resolved.
-  it.skip("supports controlled value", async () => {
+  // Skipped from Base UI 1.2 for an upstream recursion in `useStableCallback`
+  // when `value` and `onValueChange` were both passed. It passes on 1.9.0. The
+  // same test is in radio-group/radio-group.test.tsx.
+  it("supports controlled value", async () => {
+    const user = userEvent.setup();
     const handleChange = vi.fn();
 
     const ControlledRadioGroup = () => {
@@ -88,9 +87,13 @@ describe("Radio", () => {
     render(<ControlledRadioGroup />);
 
     const radios = screen.getAllByRole("radio");
-    radios[1].click();
+    expect(radios[0]).toHaveAttribute("data-checked");
+
+    await user.click(radios[1]);
 
     expect(handleChange).toHaveBeenCalledWith("b");
+    expect(radios[0]).toHaveAttribute("data-unchecked");
+    expect(radios[1]).toHaveAttribute("data-checked");
   });
 
   it("supports horizontal orientation", () => {
