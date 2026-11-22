@@ -34,7 +34,7 @@ Additional props are forwarded to the underlying Base UI [Input](https://base-ui
 
 ## Masks
 
-`mask` formats the text as it is typed. [`MaskInput`](../mask-input/README.md) is the same Input with `mask` required; its README has the guide for moving off the old MaskInput.
+`mask` formats the text as it is typed, and the number masks also rewrite it when the field is left. [`MaskInput`](../mask-input/README.md) is the same Input with `mask` required; its README has the guide for moving off the old MaskInput.
 
 - **Number masks:** `currencyMask({ currency })`, `percentMask()` and `numberMask()`. All three take `locale`, `min` and `max`; `currencyMask` requires `currency`, and the other two take `maximumFractionDigits` (default `0`). Symbols and separators come from `Intl.NumberFormat`, and so does `currencyMask`'s decimal count.
 - **Pattern masks:** `phoneMask`, `ssnMask`, `einMask`, `dateMask`, `timeMask`, `creditCardMask`, `creditCardExpiryMask`, `zipCodeMask`, `zipCodeExtendedMask`, `licensePlateMask`, `ipv4Mask`, `macAddressMask` and `isbnMask`, each with an `isValid*` validator for Field's `validate`.
@@ -44,7 +44,7 @@ Additional props are forwarded to the underlying Base UI [Input](https://base-ui
 
 - The value is the masked string everywhere: `value`, `defaultValue`, `onValueChange`, a form library's `onChange`, and the submitted form all carry `$1,234.50` or `(555) 123-4567`.
 - Call `mask.format(...)` going in and `mask.parse(...)` coming out. The number masks parse to a number, or `null` for an empty field. The pattern masks parse to the characters typed without the literals, so `phoneMask.parse("(555) 123-4567")` is `"5551234567"`. `ipv4Mask` is the exception: its dots are typed, not literals, so `parse` returns the dotted address.
-- An unmasked `defaultValue` or `value` is shown as given: `defaultValue="5555555555"` shows `5555555555` until the next edit. Pass `phoneMask.format("5555555555")` instead.
+- An unmasked `defaultValue` or `value` is shown as given: `defaultValue="5555555555"` shows `5555555555` until the next edit, or for a number mask until the next edit or the field is left. Pass `phoneMask.format("5555555555")` instead.
 - `percentMask` reads the number as shown: `parse("50%")` is `50`, not `0.5`, and `format(50)` is `50%`.
 - Pasted text is read in the field's locale: `1.234,56` pasted into a de-DE EUR field is 1234.56, and `$1,234.56` pasted into a USD field is 1234.56.
 
@@ -127,7 +127,7 @@ function PriceForm({ onSave }: { onSave: (price: number | null) => void }) {
 }
 ```
 
-A value written to the field from code, rather than typed, must already be formatted, since the mask only rewrites what is typed or pasted. With react-hook-form that covers `defaultValues`, `reset` and `setValue`: pass `usd.format(...)`, not a number or a bare string.
+A value written to the field from code, rather than typed, must already be formatted, since the mask rewrites the field only on an edit and, for the number masks, when the field is left; until then the field and the form value hold the unformatted text. With react-hook-form that covers `defaultValues`, `reset` and `setValue`: pass `usd.format(...)`, not a number or a bare string.
 
 react-hook-form is not a dependency of this package, so this block has no runnable twin. The `MaskedRegister` example wires the same shape `register` returns, `{ name, onChange, onBlur, ref }`, by hand:
 
@@ -197,4 +197,5 @@ export const CustomMask = () => (
 - Chromium is the only engine tested, by the real-browser suite in CI (`pnpm test:run --config vitest.browser.config.ts`), alongside happy-dom unit tests.
 - Firefox and WebKit are untested. The browser suite can run them locally with `VITEST_BROWSERS=firefox,webkit` once Playwright has their binaries; no such run has been recorded.
 - Mobile virtual keyboards and IME composition are untested.
+- Browser autofill into a masked field is untested.
 - No screen reader pass has been made. VoiceOver with Safari (macOS and iOS) and NVDA with Firefox or Chrome are untested.
