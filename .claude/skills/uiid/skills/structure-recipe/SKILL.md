@@ -1,9 +1,9 @@
 ---
-name: uiid-recipe-structure
+name: structure-recipe
 description: How to structure a UIID recipe, meaning several components composed into one piece of an app, such as an app shell, a sidebar, a header or a settings page. Use when creating, moving, renaming or splitting component files under `apps/*/components/`, when deciding whether a part should become its own component, or when asked to build something "the way we build our components" outside `packages/`. Not for a single component inside `packages/`, which `.agents/components.md` covers on its own.
 ---
 
-# UIID recipe structure
+# UIID structure recipe
 
 A recipe is a set of components that work together: a shell with a sidebar, a header and a main area, for example. It lives in an app, not in a package, and it is built exactly the way package components are built. An app is not a place for looser rules.
 

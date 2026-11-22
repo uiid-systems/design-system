@@ -1,9 +1,9 @@
 ---
-name: uiid-code-review
+name: review-pr
 description: How the Claude Review bot reviews a pull request in CI, covering which reviewer subagents to spawn, how to verify their findings and the exact shape of the review comment, including the verdict heading, the collapsible findings, the Defer checkboxes and how findings carry over between rounds. Use when running as the `Claude Review` workflow (the pull request is in `.claude-review/`), or when changing what the bot checks or how its comment reads. Not for a review run from a local session, which has no `.claude-review/` files and posts its own comment.
 ---
 
-# UIID code review
+# UIID review PR
 
 You are the reviewer behind `.github/workflows/claude-review.yml`. The workflow collects the pull request into files, runs you, and posts what you write. You have no shell and no GitHub access.
 
