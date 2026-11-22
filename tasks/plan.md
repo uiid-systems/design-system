@@ -38,12 +38,12 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 1: Low-risk deletions
 
-- [ ] Task 1: Delete finished-work docs and fix the references to them (UI-413)
-- [ ] Task 2: Delete tracked files that nothing imports (UI-414)
-- [ ] Task 3: Remove unused dependencies and dead config (UI-415)
-- [ ] Task 4: Delete internal dead code (UI-416)
-- [ ] Task 5: Remove unused public API (breaking) (UI-417)
-- [ ] Task 6: Correct the always-loaded agent docs (UI-418)
+- [x] Task 1: Delete finished-work docs and fix the references to them (UI-413)
+- [x] Task 2: Delete tracked files that nothing imports (UI-414)
+- [x] Task 3: Remove unused dependencies and dead config (UI-415)
+- [x] Task 4: Delete internal dead code (UI-416)
+- [x] Task 5: Remove unused public API (breaking) (UI-417)
+- [x] Task 6: Correct the always-loaded agent docs (UI-418)
 
 ### Checkpoint: Deletions
 
@@ -54,22 +54,22 @@ Within Phase 5 a task starts only after the tasks it names as dependencies have 
 
 ### Phase 2: Build pipeline
 
-- [ ] Task 7: Read the toolchain changelogs and record what breaks (UI-419)
-- [ ] Task 8: Prove source resolution on two packages (UI-420)
-- [ ] Task 9: Roll source resolution out and delete the alias tables (UI-421)
-- [ ] Task 10: Add a build-free `pnpm typecheck` and run it in CI (UI-422)
-- [ ] Task 11: Generate declarations once per package (UI-423)
-- [ ] Task 12: Make a fresh worktree run tests and Storybook without a build (UI-424)
-- [ ] Task 13: Move the build toolchain to the root and upgrade Vite and Vitest (UI-425)
-- [ ] Task 14: Upgrade TypeScript to 7 (UI-426)
-- [ ] Task 15: Upgrade the remaining majors (UI-427)
+- [x] Task 7: Read the toolchain changelogs and record what breaks (UI-419)
+- [x] Task 8: Prove source resolution on two packages (UI-420)
+- [x] Task 9: Roll source resolution out and delete the alias tables (UI-421)
+- [x] Task 10: Add a build-free `pnpm typecheck` and run it in CI (UI-422)
+- [x] Task 11: Generate declarations once per package (UI-423)
+- [x] Task 12: Make a fresh worktree run tests and Storybook without a build (UI-424)
+- [x] Task 13: Move the build toolchain to the root and upgrade Vite and Vitest (UI-425)
+- [x] Task 14: Upgrade TypeScript to 7 (UI-426)
+- [x] Task 15: Upgrade the remaining majors (UI-427)
 
 ### Checkpoint: Build
 
-- [ ] A fresh clone passes `pnpm install && pnpm test:run && pnpm typecheck` with no build
-- [ ] A forced full build is at or under the 15.0 s baseline; the new figure is recorded in the spec
-- [ ] `scripts/check-dist.mjs` passes and each package's published file list is unchanged apart from intended removals
-- [ ] Review with the owner before Phase 3
+- [x] A fresh clone passes `pnpm install && pnpm test:run && pnpm typecheck` with no build
+- [x] A forced full build is at or under the 15.0 s baseline; the new figure is recorded in the spec
+- [x] `scripts/check-dist.mjs` passes and each package's published file list is unchanged apart from intended removals
+- [x] Review with the owner before Phase 3
 
 ### Phase 3: Base UI
 

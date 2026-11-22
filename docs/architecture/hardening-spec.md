@@ -198,6 +198,8 @@ Conventions that apply throughout: cva for every variant axis, no inline styles,
 
 Baseline measured 2026-11-18 on this machine: a forced full build through Turbo (`pnpm turbo run build --filter='./packages/*' --force`) takes 15.0 s; the same work summed package by package is 48.5 s, of which `tsc -b` is 19.4 s, Vite 26.0 s, and declaration generation inside Vite 10.3 s.
 
+After Phase 2, measured 2026-11-22 on the same machine from a fresh clone of `main` at `c120b848`: the same forced full build takes 6.1 to 7.4 s over three runs (7.4 s, 6.2 s, 6.1 s) for 18 packages. In that clone, with no build, `pnpm install` takes 5.9 s, `pnpm test:run` passes in 16.1 s (2983 passed, 2 skipped) and `pnpm typecheck` passes in 4.4 s. `scripts/check-dist.mjs` passes after the build. Against the v0.9.0 tarballs on npm, each package's published file list differs only by renamed chunks (`*.module.css.js` to `*.module.js`, `*.svg.js` to `*.js`), the tokens declarations moving from `dist/src/` to `dist/`, two icon modules split out, and files removed on purpose in Phases 1 and 2. The owner reviewed and passed the Phase 2 checkpoint the same day.
+
 ## Boundaries
 
 - **Always:** read the matching `.claude/rules/` file before editing; read a component's `.types.ts` before using it; run a repo-wide search before deleting anything called unused; keep each PR to one task; mark breaking PRs with `!`; open the PR before reviewing it.
