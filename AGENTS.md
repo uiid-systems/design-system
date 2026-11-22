@@ -76,7 +76,8 @@ Find the row matching the files you are touching and read that chapter before ed
 
 Skills live in `.claude/skills/{name}/SKILL.md`. Tools that support skills load one when its description matches the task; with any other tool, read the file when its row applies.
 
-| Skill                   | Covers                                                                                          | Read when                                                   |
-| ----------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `uiid-recipe-structure` | Structuring a recipe: several components composed into one piece of an app                      | Creating, moving or splitting files in `apps/*/components/` |
-| `uiid-build-tickets`    | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project         |
+| Skill                   | Covers                                                                                          | Read when                                                    |
+| ----------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `uiid-recipe-structure` | Structuring a recipe: several components composed into one piece of an app                      | Creating, moving or splitting files in `apps/*/components/`  |
+| `uiid-build-tickets`    | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project          |
+| `uiid-code-review`      | How the Claude Review bot in CI reviews a pull request and the shape of the comment it posts    | Changing what the review bot checks or how its comment reads |
