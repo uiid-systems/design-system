@@ -3,7 +3,9 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import * as source from "@uiid/utils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
+
+import type * as subpath from "./utils";
 
 // The root barrel does not re-export @uiid/utils. This subpath serves the
 // helpers an app writes itself, by name, without loading the component
@@ -31,12 +33,14 @@ describe("@uiid/design-system utils surface", () => {
     expect(Object.keys(utils).sort()).toEqual(["cx"]);
   });
 
-  it("serves the same functions as @uiid/utils", async () => {
+  it("serves the same cx as @uiid/utils", async () => {
     const utils = await import("./utils");
-    for (const name of Object.keys(utils)) {
-      expect(utils[name as keyof typeof utils]).toBe(
-        source[name as keyof typeof source],
-      );
-    }
+    expect(utils.cx).toBe(source.cx);
+  });
+
+  it("serves no utils types beyond the curated names", () => {
+    // Type-only exports are invisible to the runtime checks above.
+    // @ts-expect-error the subpath serves only the curated names
+    expectTypeOf<subpath.VariantProps<never>>();
   });
 });

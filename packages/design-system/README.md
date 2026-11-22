@@ -53,4 +53,4 @@ import { cx } from "@uiid/design-system/utils";
 
 ## Packages
 
-This package re-exports each `@uiid/*` component package and `@uiid/tokens`, with icons and utilities on their subpaths. To depend on fewer of them, install the individual packages instead; see the [repository README](https://github.com/uiid-systems/design-system#packages) for the list.
+This package re-exports each published `@uiid/*` component package and `@uiid/tokens`, with icons and utilities on their subpaths. To depend on fewer of them, install the individual packages instead; see the [repository README](https://github.com/uiid-systems/design-system#packages) for the list.
