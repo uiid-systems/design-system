@@ -1,6 +1,6 @@
 # Tasks: Pre-1.0 hardening
 
-The plan is in [`plan.md`](./plan.md) and the spec in [`docs/architecture/hardening-spec.md`](../docs/architecture/hardening-spec.md). Before starting a task, read the spec's "Decisions already made" and "Boundaries", plus the `.agents/` chapter for the files you will touch.
+The plan is in [`plan.md`](./plan.md) and the spec in [`docs/architecture/hardening-spec.md`](../docs/architecture/hardening-spec.md). Before starting a task, read the spec's "Decisions already made" and "Boundaries", plus the `.claude/rules/` file for the files you will touch.
 
 Each task is tracked as an issue in the Linear project "Pre-1.0 hardening"; its identifier follows the task title, and each phase is a milestone there.
 
@@ -123,7 +123,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Acceptance criteria:**
 
-- [ ] `AGENTS.md` states the TypeScript version actually in use; `.agents/architecture.md` no longer lists a theming guide that does not exist and says where token generation lives; `.agents/components.md` no longer says Badge renders Status
+- [ ] `AGENTS.md` states the TypeScript version actually in use; `.claude/rules/architecture.md` no longer lists a theming guide that does not exist and says where token generation lives; `.claude/rules/components.md` no longer says Badge renders Status
 - [ ] The root `README.md` usage example compiles and its dev-mode instruction matches the scripts that exist
 - [ ] `apps/storybook/stories/agent-guidelines.mdx` still imports files that exist
 
@@ -134,7 +134,7 @@ Sizes: S is 1 to 2 files, M is 3 to 5, L is 5 to 8. Tasks marked "mechanical" to
 
 **Dependencies:** None
 
-**Files likely touched:** `AGENTS.md`, `.agents/architecture.md`, `.agents/components.md`, `README.md`
+**Files likely touched:** `AGENTS.md`, `.claude/rules/architecture.md`, `.claude/rules/components.md`, `README.md`
 
 **Estimated scope:** M
 
@@ -489,15 +489,15 @@ The tested prototype is on the owner's machine in a folder named `mask-proof` ne
 
 ## Phase 5: Rules, layer by layer
 
-For every task in this phase: parts and their prop types are exported; constants, variant functions, internal hooks, mocks and plumbing are not. A slot type omits the keys its component owns. If that needs conditional types, use the runtime order for that component and add it to the fallback list in `.agents/components.md`. Each task gives its packages a barrel test (`src/index.test.ts`) listing the exact public names, creating one where it is missing: only ai, design-system, forms and overlays have one today. Each task also builds Storybook and the docs app, and its PR title carries `!`.
+For every task in this phase: parts and their prop types are exported; constants, variant functions, internal hooks, mocks and plumbing are not. A slot type omits the keys its component owns. If that needs conditional types, use the runtime order for that component and add it to the fallback list in `.claude/rules/components.md`. Each task gives its packages a barrel test (`src/index.test.ts`) listing the exact public names, creating one where it is missing: only ai, design-system, forms and overlays have one today. Each task also builds Storybook and the docs app, and its PR title carries `!`.
 
-### Task 22: Write both rules into `.agents/components.md` and stop the barrel re-exporting utils (UI-434)
+### Task 22: Write both rules into `.claude/rules/components.md` and stop the barrel re-exporting utils (UI-434)
 
 **Description:** Record the two rules where every session reads them, and remove `export * from "@uiid/utils"` from the root of `@uiid/design-system`.
 
 **Acceptance criteria:**
 
-- [ ] `.agents/components.md` states the export rule and the slot rule, with the exit condition and an empty fallback list
+- [ ] `.claude/rules/components.md` states the export rule and the slot rule, with the exit condition and an empty fallback list
 - [ ] The design-system root no longer re-exports utils; the `./utils` subpath serves a curated list
 - [ ] Apps and stories that imported a utils name from the root import it from the subpath
 
@@ -508,7 +508,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 **Dependencies:** Task 16
 
-**Files likely touched:** `.agents/components.md`, `packages/design-system/src/index.ts`, its utils entry, a few stories
+**Files likely touched:** `.claude/rules/components.md`, `packages/design-system/src/index.ts`, its utils entry, a few stories
 
 **Estimated scope:** M
 
@@ -834,7 +834,7 @@ For every task in this phase: parts and their prop types are exported; constants
 
 - [ ] Each of the seven success criteria in the spec is checked and the evidence is in the PR
 - [ ] `docs/architecture/hardening-spec.md`, `tasks/plan.md` and `tasks/todo.md` are deleted
-- [ ] The fallback list in `.agents/components.md` is final
+- [ ] The fallback list in `.claude/rules/components.md` is final
 
 **Verification:**
 

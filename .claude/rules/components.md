@@ -1,8 +1,14 @@
+---
+paths:
+  - "packages/**"
+  - "apps/*/components/**"
+---
+
 # Component Conventions
 
 Each component is a directory of `{name}.tsx`, `.types.ts`, `.variants.ts` (when it uses `cva`), `.constants.ts` (when it has constants), `.module.css`, `.test.tsx`, `.examples.tsx`, and `README.md`, plus `.hooks.ts` and `.utils.ts` when it has state or pure helpers. Subcomponents live in a `subcomponents/` directory. Match `packages/typography/src/text/`.
 
-These conventions apply to app components under `apps/*/components/` as well as to packages. A recipe, meaning several components composed into one piece of an app such as a shell with a sidebar and a header, follows the further rules in `.claude/skills/uiid/skills/structure-recipe/SKILL.md`.
+These conventions apply to app components under `apps/*/components/` as well as to packages. A recipe, meaning several components composed into one piece of an app such as a shell with a sidebar and a header, follows the further rules in `.claude/rules/recipes.md`.
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 

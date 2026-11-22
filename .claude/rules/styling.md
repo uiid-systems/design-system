@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{tsx,css}"
+---
+
 # Styling
 
 **Never use `style={{}}` for layout, spacing, sizing, or text styling.** Resolution order:

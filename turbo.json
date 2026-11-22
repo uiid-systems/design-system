@@ -37,7 +37,7 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "$TURBO_ROOT$/AGENTS.md",
-        "$TURBO_ROOT$/.agents/**"
+        "$TURBO_ROOT$/.claude/rules/**"
       ],
       "outputs": ["storybook-static/**"]
     }

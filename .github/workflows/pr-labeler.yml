@@ -43,7 +43,7 @@ jobs:
             STORYBOOK_CHANGED=true
           fi
 
-          if echo "$CHANGED_FILES" | grep -qE '^apps/docs/|^docs/|^\.agents/|^AGENTS\.md$|^CLAUDE\.md$|README\.md$'; then
+          if echo "$CHANGED_FILES" | grep -qE '^apps/docs/|^docs/|^\.claude/|^AGENTS\.md$|^CLAUDE\.md$|README\.md$'; then
             DOCS_CHANGED=true
           fi
 
