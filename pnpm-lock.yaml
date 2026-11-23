@@ -452,6 +452,12 @@ importers:
 
   packages/forms:
     dependencies:
+      '@maskito/core':
+        specifier: ~5.6.1
+        version: 5.6.1
+      '@maskito/kit':
+        specifier: ~5.6.1
+        version: 5.6.1(@maskito/core@5.6.1)
       '@uiid/cards':
         specifier: workspace:*
         version: link:../cards
@@ -1698,6 +1704,14 @@ packages:
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
+
+  '@maskito/core@5.6.1':
+    resolution: {integrity: sha512-P5XKR1wwkTLagzyH79ZE6TfQI20IR+eHeP8hoKrfqlr99luLo1QYTux9OFPvIH+o2GGzCkIBbgwYaquunZlC1Q==}
+
+  '@maskito/kit@5.6.1':
+    resolution: {integrity: sha512-iFGbJpXkagGzLPgxnneTZaV5YAUfSNBAc+y3SgdSYWY4fGJpZvzwVTLmHIngyEHPsd0VzIV9DcXKuzFnIkZfiA==}
+    peerDependencies:
+      '@maskito/core': ^5.6.1
 
   '@mdx-js/loader@3.1.1':
     resolution: {integrity: sha512-0TTacJyZ9mDmY+VefuthVshaNIyCGZHJG2fMnGaDttCt8HmjUF7SizlHJpaCDoGnN635nK1wpzfpx/Xx5S4WnQ==}
@@ -5977,6 +5991,12 @@ snapshots:
       '@jsonjoy.com/buffers': 17.67.0(tslib@2.9.1)
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.9.1)
       tslib: 2.9.1
+
+  '@maskito/core@5.6.1': {}
+
+  '@maskito/kit@5.6.1(@maskito/core@5.6.1)':
+    dependencies:
+      '@maskito/core': 5.6.1
 
   '@mdx-js/loader@3.1.1':
     dependencies:

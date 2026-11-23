@@ -44,6 +44,8 @@
     "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build"
   },
   "dependencies": {
+    "@maskito/core": "~5.6.1",
+    "@maskito/kit": "~5.6.1",
     "@uiid/cards": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/layout": "workspace:*",

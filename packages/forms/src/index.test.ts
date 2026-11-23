@@ -45,6 +45,28 @@ describe("forms barrel", () => {
     }>();
   });
 
+  it("exports the number mask factories and keeps the engine internal", () => {
+    expect(forms).toHaveProperty("currencyMask");
+    expect(forms).toHaveProperty("percentMask");
+    expect(forms).toHaveProperty("numberMask");
+    expect(forms).not.toHaveProperty("visibleToReact");
+    expect(Object.keys(forms).filter((name) => /maskito/i.test(name))).toEqual(
+      [],
+    );
+    expectTypeOf(forms.currencyMask)
+      .parameter(0)
+      .toEqualTypeOf<forms.CurrencyMaskOptions>();
+    expectTypeOf(forms.percentMask)
+      .parameter(0)
+      .toEqualTypeOf<forms.PercentMaskOptions | undefined>();
+    expectTypeOf(forms.numberMask)
+      .parameter(0)
+      .toEqualTypeOf<forms.NumberMaskOptions | undefined>();
+    expectTypeOf(forms.currencyMask).returns.toEqualTypeOf<
+      forms.InputMask<number | null>
+    >();
+  });
+
   it("exports the combobox part coverage", () => {
     const parts = [
       "ComboboxInputGroup",
