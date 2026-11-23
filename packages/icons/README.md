@@ -39,7 +39,6 @@ Every icon is exposed only under its **`*Icon`** name (`GlobeIcon`, never `Globe
 
 - **~2,000 lucide icons** — the full set, single-named on the `*Icon` convention.
 - **`LoadingSpinnerIcon`** — a uiid spinner for loading states, reachable at `@uiid/icons/loading-spinner` like any other icon. It spins via the `[data-animate="spin"]` rule in `@uiid/tokens`, so it needs `@uiid/tokens/globals.css` — the same stylesheet every uiid component requires. This package ships no CSS of its own. Like lucide's icons, it renders `aria-hidden="true"` unless you pass an `aria-*` attribute or a `role`. Unlike lucide's runtime it ignores `title`, which neither type accepts; name it with `aria-label`.
-- **`createLucideIcon`** — author a custom icon in the lucide style.
 - **`Icon`, `IconProps`** — the shared icon component and props types. `Icon` is `ComponentType<IconProps>`, so an `icon` prop takes a lucide icon, `LoadingSpinnerIcon`, or your own component that renders an `<svg>` from `IconProps`.
 
 ## Why icons are reached per-module
@@ -59,7 +58,7 @@ Measured module graphs for reaching a single icon, and for importing one compone
 
 Two things follow. Both barrels produce a comparable module count, so module count is not what hurt — lucide's root module itself is. Everything here therefore goes straight to `lucide-react/dist/esm/icons/<name>.mjs`, and the generated barrel must never import from `"lucide-react"`. And icons stay out of the `@uiid/design-system` root barrel entirely: importing a component now reaches only the icons that component actually uses.
 
-Deep-importing lucide's internals is safe because its `package.json` has no `exports` field, so those paths are legitimately reachable. It ships no `.d.ts` beside them, so every module that re-exports one is a `.js` file with a `.d.ts` beside it: `src/lucide-icons.generated.{js,d.ts}` and `src/create-lucide-icon.{js,d.ts}`. A `.ts` re-export would make `tsc` emit lucide's deep specifier into `dist`, where a consumer has no declaration for it and the export is typed `any`. `vite.config.ts` copies those declarations into `dist`. Both facts are worth re-checking on a major `lucide-react` bump.
+Deep-importing lucide's internals is safe because its `package.json` has no `exports` field, so those paths are legitimately reachable. It ships no `.d.ts` beside them, so the module that re-exports them is a `.js` file with a `.d.ts` beside it: `src/lucide-icons.generated.{js,d.ts}`. A `.ts` re-export would make `tsc` emit lucide's deep specifier into `dist`, where a consumer has no declaration for it and the export is typed `any`. `vite.config.ts` copies those declarations into `dist`. Both facts are worth re-checking on a major `lucide-react` bump.
 
 The icon type is declared structurally in `src/icon-type.ts` rather than re-exported from lucide. Packages that consume this one do not depend on `lucide-react`, so a published `.d.ts` naming lucide's types is unresolvable for them (TS2742) the moment they annotate or re-export an icon.
 
@@ -85,6 +84,6 @@ Both read their icon list from `scripts/lucide-icon-map.mjs`, which parses `luci
 - every barrel export is reachable as a built subpath module, with types, through the package's `exports` map;
 - the barrel declares exactly the icons it exports.
 
-`src/icon-type.test.ts` compiles the barrel the way a consumer does, with no lucide declarations in scope, and asserts that an icon and `createLucideIcon` are real types rather than `any`. `scripts/check-dist.mjs` repeats that against the built `@uiid/icons` and `@uiid/design-system/icons`.
+`src/icon-type.test.ts` compiles the barrel the way a consumer does, with no lucide declarations in scope, and asserts that an icon is a real type rather than `any`. `scripts/check-dist.mjs` repeats that against the built `@uiid/icons` and `@uiid/design-system/icons`.
 
 `packages/design-system/src/icons.test.ts` guards the facade: that icons stay out of the root barrel, and that both `./icons` and `./icons/*` are declared and forwarded.
