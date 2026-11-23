@@ -6,8 +6,9 @@ import * as icons from "./index";
 import * as lucide from "./lucide-icons.generated";
 
 // Thousands of icon names cannot be listed by hand, so the exact surface is the
-// generated lucide set plus the names listed here. Which icons the generated
-// set holds is checked by src/module-graph.test.ts, not here.
+// generated lucide set plus the names listed here. src/module-graph.test.ts
+// checks the generated set for shape and completeness; nothing compares it
+// with lucide's own catalogue.
 const additions = ["LoadingSpinnerIcon"];
 const types = ["Icon", "IconProps", "LoadingSpinnerIconProps"];
 

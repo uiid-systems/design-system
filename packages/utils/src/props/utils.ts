@@ -13,8 +13,9 @@ export type PrepareComponentPropsOptions<T extends Record<string, unknown>> = {
 
 /**
  * Stamps `data-slot`, and puts each listed style prop on the element as
- * `data-ui-{key}` plus a raw `--props-{key}` for the rules in
- * `props.css` rules in `@uiid/tokens/globals.css` to resolve. A caller's own `style` still wins.
+ * `data-ui-{key}` plus a raw `--props-{key}` for the `props.css` rules
+ * (loaded by `@uiid/tokens/globals.css`) to resolve. A caller's own `style`
+ * still wins.
  *
  * A data prop writes `data-ui-{key}` only, for a rule that lives elsewhere: a
  * toggle's in `props.css`, a component's own vocabulary's (Text's `size`) in
