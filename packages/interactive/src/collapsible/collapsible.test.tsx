@@ -553,10 +553,9 @@ describe("slot props", () => {
   });
 
   it("rejects a key Collapsible owns in TriggerProps", () => {
+    const owned = { children: "Other" };
     // @ts-expect-error -- the trigger's content is `trigger`
-    void (
-      <Collapsible trigger="Toggle" TriggerProps={{ children: "Other" }} />
-    );
+    void (<Collapsible trigger="T" TriggerProps={owned} />);
   });
 
   it("rejects a key Collapsible owns in PanelProps", () => {
