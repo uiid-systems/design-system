@@ -520,20 +520,15 @@ describe("Input color", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. */
-describe("Input state-function className", () => {
-  it("resolves a state-function className on the control alongside its own class", () => {
-    const { container } = render(
-      <Input
-        disabled
-        className={(state) => (state.disabled ? "fn-disabled" : "fn-enabled")}
-      />,
-    );
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. */
+describe("Input className", () => {
+  it("merges a caller's className on the control with its own class and marks its state", () => {
+    const { container } = render(<Input disabled className="caller" />);
     const input = container.querySelector("[data-slot='input']");
 
-    expect(input).toHaveClass("fn-disabled");
-    expect(input).toHaveClass(styles["input"]);
+    expect(input).toHaveClass("caller", styles["input"]);
+    expect(input).toHaveAttribute("data-disabled");
   });
 });
 

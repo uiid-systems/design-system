@@ -1,7 +1,7 @@
 import type { Avatar as BaseAvatar } from "@base-ui/react/avatar";
 import type { GroupProps, LayerProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import { avatarVariants } from "./avatar.variants";
 
@@ -26,7 +26,7 @@ export type AvatarContainerProps = Omit<GroupProps, "ax" | "ay"> & {
 export type AvatarLayersProps = LayerProps & AvatarVariants;
 
 /** Base UI's `Avatar.Image`: an `<img>` mounted only once `src` has loaded. */
-export type AvatarImageProps = BaseAvatar.Image.Props;
+export type AvatarImageProps = WithStringClassName<BaseAvatar.Image.Props>;
 
 /** Base UI's `Avatar.Fallback`, rendered as `Text`: shown until the image loads. */
 export type AvatarInitialsProps = Pick<AvatarType, "initials"> &

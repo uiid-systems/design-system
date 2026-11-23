@@ -2,7 +2,7 @@
 
 import { Slider as BaseSlider } from "@base-ui/react/slider";
 import { Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { SliderValueProps } from "../slider.types";
 
@@ -32,7 +32,7 @@ export const SliderValue = ({
     <BaseSlider.Value
       data-slot="slider-value"
       render={<Text weight="bold" />}
-      className={cxState(styles["slider-value"], className)}
+      className={cx(styles["slider-value"], className)}
       {...props}
     >
       {children}

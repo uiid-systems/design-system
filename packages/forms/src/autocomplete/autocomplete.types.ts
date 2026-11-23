@@ -1,7 +1,7 @@
 import type { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
 import type { CardContainerProps } from "@uiid/cards";
 import type { PaletteColor } from "@uiid/tokens";
-import type { WithLayoutProps } from "@uiid/utils";
+import type { WithLayoutProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputProps } from "../input/input.types";
@@ -22,7 +22,7 @@ export type AutocompleteRootProps<Value = string> =
  * the two would resolve to `never`.
  */
 export type AutocompleteInputProps = Omit<
-  BaseAutocomplete.Input.Props,
+  WithStringClassName<BaseAutocomplete.Input.Props>,
   "size"
 > &
   Pick<
@@ -44,10 +44,11 @@ export type AutocompleteInputProps = Omit<
     InputGroupProps?: AutocompleteInputGroupProps;
   };
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
-export type AutocompletePositionerProps = BaseAutocomplete.Positioner.Props;
+export type AutocompletePositionerProps =
+  WithStringClassName<BaseAutocomplete.Positioner.Props>;
 /* Card's container layout props only, as on `SelectPopupProps`. */
 export type AutocompletePopupProps = WithLayoutProps<
-  BaseAutocomplete.Popup.Props,
+  WithStringClassName<BaseAutocomplete.Popup.Props>,
   CardContainerProps
 > & {
   /**
@@ -63,7 +64,7 @@ export type AutocompleteListProps = BaseAutocomplete.List.Props;
  * back to a `label` on an object value, then to a primitive value itself.
  */
 export type AutocompleteItemProps<Value = string> = Omit<
-  BaseAutocomplete.Item.Props,
+  WithStringClassName<BaseAutocomplete.Item.Props>,
   "value"
 > & {
   /** The item's value, typed by the autocomplete's `Value`. */
@@ -71,11 +72,15 @@ export type AutocompleteItemProps<Value = string> = Omit<
   /** The row's text, for a value that is not its own label. */
   label?: React.ReactNode;
 };
-export type AutocompleteEmptyProps = BaseAutocomplete.Empty.Props;
-export type AutocompleteInputGroupProps = BaseAutocomplete.InputGroup.Props &
-  Pick<InputProps, "size" | "fullwidth">;
-export type AutocompleteTriggerProps = BaseAutocomplete.Trigger.Props;
-export type AutocompleteClearProps = BaseAutocomplete.Clear.Props;
+export type AutocompleteEmptyProps =
+  WithStringClassName<BaseAutocomplete.Empty.Props>;
+export type AutocompleteInputGroupProps =
+  WithStringClassName<BaseAutocomplete.InputGroup.Props> &
+    Pick<InputProps, "size" | "fullwidth">;
+export type AutocompleteTriggerProps =
+  WithStringClassName<BaseAutocomplete.Trigger.Props>;
+export type AutocompleteClearProps =
+  WithStringClassName<BaseAutocomplete.Clear.Props>;
 export type AutocompleteIconProps = BaseAutocomplete.Icon.Props;
 export type AutocompleteStatusProps = BaseAutocomplete.Status.Props;
 export type AutocompleteGroupProps = BaseAutocomplete.Group.Props;

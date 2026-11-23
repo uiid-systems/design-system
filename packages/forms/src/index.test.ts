@@ -209,6 +209,18 @@ describe("forms barrel", () => {
     }
   });
 
+  /* Base UI's `Toggle` namespace does not survive the typed alias, so its
+     members are served under plain names, with `className` a string. */
+  it("serves Toggle's types by name, with a string className", () => {
+    expectTypeOf<forms.ToggleProps["className"]>().toEqualTypeOf<
+      string | undefined
+    >();
+    expectTypeOf<forms.ToggleState>().toHaveProperty("pressed");
+    expectTypeOf<
+      Parameters<NonNullable<forms.ToggleProps["onPressedChange"]>>[1]
+    >().toEqualTypeOf<forms.ToggleChangeEventDetails>();
+  });
+
   it("does not export component constants", () => {
     expect(forms).not.toHaveProperty("CHECKBOX_DEFAULT_SIZE");
     expect(forms).not.toHaveProperty("SELECT_DEFAULT_SIZE");

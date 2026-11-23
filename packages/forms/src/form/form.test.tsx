@@ -208,17 +208,15 @@ describe("Form", () => {
   });
 
   // ============================================
-  // STATE-FUNCTION CLASSNAME
+  // CLASSNAME
   // ============================================
 
-  // Base UI calls a function `className` with the part's state; the form's own
-  // class has to merge with what it returns, not drop it.
-  it("resolves a state-function className on the form alongside its own class", () => {
-    const { container } = render(<Form className={() => "from-fn"} />);
+  // A part's `className` is a string, merged with its own module class.
+  it("merges a caller's className on the form with its own class", () => {
+    const { container } = render(<Form className="caller" />);
     const form = container.querySelector("[data-slot='form']");
 
-    expect(form).toHaveClass("from-fn");
-    expect(form).toHaveClass(styles["form"]);
+    expect(form).toHaveClass("caller", styles["form"]);
   });
 });
 
@@ -641,5 +639,13 @@ describe("useFormSubmit", () => {
 
     expect(first).not.toHaveBeenCalled();
     expect(second).toHaveBeenCalledOnce();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+describe("className", () => {
+  it("takes a string, not a function of the part's state", () => {
+    // @ts-expect-error -- style a state through its `data-*` attribute instead
+    void (<Form className={() => "from-fn"} />);
   });
 });

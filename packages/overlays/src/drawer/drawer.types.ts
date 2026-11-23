@@ -5,7 +5,7 @@
 import type * as BaseDrawer from "@base-ui/react/drawer";
 import type { ButtonProps } from "@uiid/buttons";
 import type { CardProps } from "@uiid/cards";
-import type { WithTriggerChildren } from "@uiid/utils";
+import type { WithStringClassName, WithTriggerChildren } from "@uiid/utils";
 
 type DrawerCardProps = Pick<
   CardProps,
@@ -14,20 +14,25 @@ type DrawerCardProps = Pick<
 
 export type DrawerRootProps = BaseDrawer.DrawerRoot.Props;
 export type DrawerTriggerProps = WithTriggerChildren<
-  BaseDrawer.DrawerTrigger.Props,
+  WithStringClassName<BaseDrawer.DrawerTrigger.Props>,
   BaseDrawer.DrawerTrigger.State
 >;
 export type DrawerSwipeAreaProps = BaseDrawer.DrawerSwipeArea.Props;
 export type DrawerPortalProps = BaseDrawer.DrawerPortal.Props;
-export type DrawerBackdropProps = BaseDrawer.DrawerBackdrop.Props;
-export type DrawerViewportProps = BaseDrawer.DrawerViewport.Props;
+export type DrawerBackdropProps =
+  WithStringClassName<BaseDrawer.DrawerBackdrop.Props>;
+export type DrawerViewportProps =
+  WithStringClassName<BaseDrawer.DrawerViewport.Props>;
 export type DrawerContentProps = BaseDrawer.DrawerContent.Props;
 
 export type DrawerSwipeDirection =
   BaseDrawer.DrawerRoot.Props["swipeDirection"];
 export type DrawerSnapPoint = BaseDrawer.DrawerRoot.SnapPoint;
 
-export type DrawerPopupProps = Omit<BaseDrawer.DrawerPopup.Props, "title"> &
+export type DrawerPopupProps = Omit<
+  WithStringClassName<BaseDrawer.DrawerPopup.Props>,
+  "title"
+> &
   DrawerCardProps & {
     /** Leave out the header close button, for a drawer the user must act on before leaving */
     hideCloseButton?: boolean;

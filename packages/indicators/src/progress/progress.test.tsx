@@ -90,11 +90,10 @@ describe("Progress parts", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. Every part
-   shares the root's state, so each one reads the status off it. */
-describe("Progress state-function className", () => {
-  const onState = (state: { status: string }) => `fn-${state.status}`;
-
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. Every part
+   shares the root's state, so each one marks the status. */
+describe("Progress className", () => {
   it.each([
     ["progress", "RootProps"],
     ["progress-label", "LabelProps"],
@@ -102,18 +101,18 @@ describe("Progress state-function className", () => {
     ["progress-track", "TrackProps"],
     ["progress-indicator", "IndicatorProps"],
   ] as const)(
-    "resolves one on %s alongside its own class",
+    "merges a caller's className on %s with its own class and marks its state",
     (slot, slotProps) => {
       const { container } = render(
         <Progress
           value={40}
           label="Upload"
-          {...{ [slotProps]: { className: onState } }}
+          {...{ [slotProps]: { className: "caller" } }}
         />,
       );
       const el = part(container, slot);
-      expect(el).toHaveClass("fn-progressing");
-      expect(el).toHaveClass(styles[slot]);
+      expect(el).toHaveClass("caller", styles[slot]);
+      expect(el).toHaveAttribute("data-progressing");
     },
   );
 });
@@ -410,5 +409,13 @@ describe("Progress RootProps precedence", () => {
       "aria-valuemax",
       "50",
     );
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+describe("className", () => {
+  it("takes a string, not a function of the part's state", () => {
+    // @ts-expect-error -- style a state through its `data-*` attribute instead
+    void (<ProgressIndicator className={() => "from-fn"} />);
   });
 });

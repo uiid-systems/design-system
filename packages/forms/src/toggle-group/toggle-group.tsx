@@ -1,9 +1,9 @@
 "use client";
 
-import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
+import { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
-import { cxState, useComposedRefs } from "@uiid/utils";
+import { cx, useComposedRefs } from "@uiid/utils";
 import {
   Children,
   cloneElement,
@@ -19,13 +19,20 @@ import { useToggleIndicator } from "./toggle-group.hooks";
 import type {
   ToggleGroupProps,
   ToggleGroupVariants,
+  ToggleProps,
 } from "./toggle-group.types";
 import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
 
+/**
+ * `children` is a ReactNode, so a child need not be the `Toggle` exported
+ * here. Its props are read as Base UI's own, function `className` included.
+ */
+type ToggleChildProps = BaseToggle.Props;
+
 type ToggleGroupItemProps = {
-  child: ReactElement<BaseToggle.Props>;
+  child: ReactElement<ToggleChildProps>;
   size: ToggleGroupVariants["size"];
   buttonsRef: RefObject<Map<string, HTMLButtonElement>>;
 };
@@ -64,12 +71,19 @@ const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
   // composed back in alongside the measuring one.
   const composedRef = useComposedRefs(child.props.ref, measureRef);
 
+  const ownClassName = cx(
+    styles["toggle-group-button"],
+    toggleVariants({ size }),
+  );
+  const childClassName = child.props.className;
+
   return cloneElement(child, {
-    className: cxState(
-      styles["toggle-group-button"],
-      toggleVariants({ size }),
-      child.props.className,
-    ),
+    // A child typed by Base UI can still pass a function of the toggle's
+    // state, which `cx` would drop, so it is called here.
+    className:
+      typeof childClassName === "function"
+        ? (state: BaseToggle.State) => cx(ownClassName, childClassName(state))
+        : cx(ownClassName, childClassName),
     ref: composedRef,
   });
 };
@@ -130,7 +144,7 @@ export const ToggleGroup = <Value extends string = string>({
   // its place.
   const enhanceChildren = (nodes: ReactNode): ReactNode =>
     Children.map(nodes, (child) => {
-      if (!isValidElement<BaseToggle.Props>(child)) return child;
+      if (!isValidElement<ToggleChildProps>(child)) return child;
       if (child.type === Fragment) return enhanceChildren(child.props.children);
       return (
         <ToggleGroupItem child={child} size={size} buttonsRef={buttonsRef} />
@@ -147,7 +161,7 @@ export const ToggleGroup = <Value extends string = string>({
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={cxState(
+      className={cx(
         styles["toggle-group-panel"],
         toggleGroupVariants({ fullwidth }),
         className,
@@ -177,4 +191,12 @@ export const ToggleGroup = <Value extends string = string>({
 };
 ToggleGroup.displayName = "ToggleGroup";
 
-export { Toggle } from "@base-ui/react/toggle";
+/**
+ * Base UI's `Toggle` itself, with `className` typed as a string, as on every
+ * other part: style a toggle's state through `data-pressed`. Every other prop
+ * is Base UI's; its namespace types are served as `ToggleProps`, `ToggleState`
+ * and `ToggleChangeEventDetails`.
+ */
+export const Toggle: <Value extends string = string>(
+  props: ToggleProps<Value> & React.RefAttributes<HTMLButtonElement>,
+) => React.JSX.Element = BaseToggle;

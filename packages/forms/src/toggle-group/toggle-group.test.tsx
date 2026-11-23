@@ -1,3 +1,4 @@
+import { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
@@ -363,25 +364,63 @@ describe("ToggleGroup fullwidth", () => {
   });
 });
 
-/* The group clones each Toggle to add its own classes. Base UI calls a function
-   `className` with the toggle's state, so the clone has to merge with what the
-   child's function returns, not drop it. */
-describe("ToggleGroup state-function className", () => {
-  it("resolves a child Toggle's state-function className alongside its own class", () => {
+/* The group clones each Toggle to add its own classes, merged with the child's
+   string `className`. A toggle's state is styled through `data-pressed`. */
+describe("ToggleGroup child className", () => {
+  /* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+  it("types a Toggle's className as a string, not a function of its state", () => {
+    // @ts-expect-error -- style a toggle's state through `data-pressed` instead
+    void (<Toggle value="a" className={() => "from-fn"} />);
+  });
+
+  it("merges a child Toggle's className with its own class and marks its state", () => {
     render(
       <ToggleGroup defaultValue={["monthly"]}>
-        <Toggle
-          value="monthly"
-          className={(state) => (state.pressed ? "fn-pressed" : "fn-unpressed")}
-        >
+        <Toggle value="monthly" className="caller">
           Monthly
+        </Toggle>
+        <Toggle value="yearly" className="caller">
+          Yearly
         </Toggle>
       </ToggleGroup>,
     );
-    const toggle = screen.getByRole("button", { name: "Monthly" });
+    const pressed = screen.getByRole("button", { name: "Monthly" });
+    const unpressed = screen.getByRole("button", { name: "Yearly" });
 
-    expect(toggle).toHaveClass("fn-pressed");
-    expect(toggle).toHaveClass(styles["toggle-group-button"]);
+    expect(pressed).toHaveClass("caller", styles["toggle-group-button"]);
+    expect(pressed).toHaveAttribute("data-pressed");
+    expect(unpressed).toHaveClass("caller", styles["toggle-group-button"]);
+    expect(unpressed).not.toHaveAttribute("data-pressed");
+  });
+
+  /* `children` is a ReactNode, so a child that is not UIID's `Toggle` can still
+     carry Base UI's function `className`. The group calls it, not drops it. */
+  it("resolves a function className on a child typed by Base UI", () => {
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <BaseToggle
+          value="monthly"
+          className={(state) => (state.pressed ? "on" : "off")}
+        >
+          Monthly
+        </BaseToggle>
+        <BaseToggle
+          value="yearly"
+          className={(state) => (state.pressed ? "on" : "off")}
+        >
+          Yearly
+        </BaseToggle>
+      </ToggleGroup>,
+    );
+
+    expect(screen.getByRole("button", { name: "Monthly" })).toHaveClass(
+      "on",
+      styles["toggle-group-button"],
+    );
+    expect(screen.getByRole("button", { name: "Yearly" })).toHaveClass(
+      "off",
+      styles["toggle-group-button"],
+    );
   });
 });
 
@@ -406,16 +445,16 @@ describe("ToggleGroup root", () => {
     expect(panel?.className).toMatch(/composes-fullwidth/);
   });
 
-  it("resolves a state-function className alongside the panel and variant classes", () => {
+  it("marks a disabled root with data-disabled alongside a consumer className", () => {
     const { container } = renderGroup({
-      className: (state) => (state.disabled ? "fn-disabled" : "fn-enabled"),
+      className: "custom",
       disabled: true,
       fullwidth: true,
     });
     const panel = container.firstElementChild;
 
-    expect(panel).toHaveClass("fn-disabled");
-    expect(panel).toHaveClass(styles["toggle-group-panel"]);
+    expect(panel).toHaveClass("custom", styles["toggle-group-panel"]);
+    expect(panel).toHaveAttribute("data-disabled");
     expect(panel?.className).toMatch(/composes-fullwidth/);
   });
 

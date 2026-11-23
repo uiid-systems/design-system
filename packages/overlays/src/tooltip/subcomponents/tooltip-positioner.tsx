@@ -1,7 +1,7 @@
 "use client";
 
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import {
   TOOLTIP_DEFAULT_COLLISION_PADDING,
@@ -23,7 +23,7 @@ export const TooltipPositioner = ({
       data-slot="tooltip-positioner"
       sideOffset={sideOffset}
       collisionPadding={collisionPadding}
-      className={cxState(styles["tooltip-positioner"], className)}
+      className={cx(styles["tooltip-positioner"], className)}
       {...props}
     >
       {children}

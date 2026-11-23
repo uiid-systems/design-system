@@ -2,7 +2,7 @@ import type { Combobox as BaseCombobox } from "@base-ui/react/combobox";
 import type { CardContainerProps } from "@uiid/cards";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { WithLayoutProps } from "@uiid/utils";
+import type { WithLayoutProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputProps } from "../input/input.types";
@@ -26,7 +26,10 @@ export type ComboboxRootProps<
  * attribute, while `size` here is the system-wide control scale. Intersecting
  * the two would resolve to `never`.
  */
-export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
+export type ComboboxInputProps = Omit<
+  WithStringClassName<BaseCombobox.Input.Props>,
+  "size"
+> &
   Pick<
     InputProps,
     "FieldProps" | "before" | "after" | "size" | "variant" | "fullwidth"
@@ -46,10 +49,11 @@ export type ComboboxInputProps = Omit<BaseCombobox.Input.Props, "size"> &
     InputGroupProps?: ComboboxInputGroupProps;
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
-export type ComboboxPositionerProps = BaseCombobox.Positioner.Props;
+export type ComboboxPositionerProps =
+  WithStringClassName<BaseCombobox.Positioner.Props>;
 /* Card's container layout props only, as on `SelectPopupProps`. */
 export type ComboboxPopupProps = WithLayoutProps<
-  BaseCombobox.Popup.Props,
+  WithStringClassName<BaseCombobox.Popup.Props>,
   CardContainerProps
 > & {
   /**
@@ -65,7 +69,7 @@ export type ComboboxListProps = BaseCombobox.List.Props;
  * back to a `label` on an object value, then to a primitive value itself.
  */
 export type ComboboxItemProps<Value = string> = Omit<
-  BaseCombobox.Item.Props,
+  WithStringClassName<BaseCombobox.Item.Props>,
   "value"
 > & {
   /** The value this item selects, typed by the combobox's `Value`. */
@@ -73,11 +77,13 @@ export type ComboboxItemProps<Value = string> = Omit<
   /** The row's text, for a value that is not its own label. */
   label?: React.ReactNode;
 };
-export type ComboboxEmptyProps = BaseCombobox.Empty.Props;
-export type ComboboxInputGroupProps = BaseCombobox.InputGroup.Props &
-  Pick<InputProps, "size" | "fullwidth">;
-export type ComboboxTriggerProps = BaseCombobox.Trigger.Props;
-export type ComboboxClearProps = BaseCombobox.Clear.Props;
+export type ComboboxEmptyProps = WithStringClassName<BaseCombobox.Empty.Props>;
+export type ComboboxInputGroupProps =
+  WithStringClassName<BaseCombobox.InputGroup.Props> &
+    Pick<InputProps, "size" | "fullwidth">;
+export type ComboboxTriggerProps =
+  WithStringClassName<BaseCombobox.Trigger.Props>;
+export type ComboboxClearProps = WithStringClassName<BaseCombobox.Clear.Props>;
 export type ComboboxIconProps = BaseCombobox.Icon.Props;
 export type ComboboxStatusProps = BaseCombobox.Status.Props;
 export type ComboboxGroupProps = BaseCombobox.Group.Props;

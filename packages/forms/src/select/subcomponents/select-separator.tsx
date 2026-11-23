@@ -2,7 +2,7 @@
 
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Box } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { SelectSeparatorProps } from "../select.types";
 
@@ -22,7 +22,7 @@ export const SelectSeparator = ({
     <BaseSelect.Separator
       data-slot="select-separator"
       render={<Box my={1} />}
-      className={cxState(styles["select-separator"], className)}
+      className={cx(styles["select-separator"], className)}
       {...props}
     />
   );

@@ -333,47 +333,43 @@ describe("Accordion", () => {
   });
 
   // ============================================
-  // STATE-FUNCTION CLASSNAME
+  // CLASSNAME AND STATE
   // ============================================
 
-  // Base UI calls a function className with the part's state. `cx` used to
-  // drop it silently, leaving only the wrapper's own module class.
+  // A part's `className` is a string, merged with its own module class. Its
+  // state is styled through the `data-*` attributes Base UI sets.
 
-  it("resolves a state-function className on the root alongside its own class", async () => {
-    const user = userEvent.setup();
+  it("merges a caller's className on the root with its own class", () => {
     render(
       <Accordion
         items={sampleItems}
         defaultValue={["item-1"]}
-        RootProps={{
-          className: (state) => (state.value.length ? "fn-open" : "fn-closed"),
-        }}
+        RootProps={{ className: "caller" }}
       />,
     );
     const root = document.querySelector("[data-slot='accordion-root']");
-    expect(root).toHaveClass("fn-open", styles["accordion-root"]);
-
-    await user.click(screen.getByRole("button", { name: "First" }));
-    expect(root).toHaveClass("fn-closed", styles["accordion-root"]);
+    expect(root).toHaveClass("caller", styles["accordion-root"]);
   });
 
-  it("resolves a state-function className on the item alongside its own class", () => {
+  it("merges a caller's className on the item with its own class and marks its state", () => {
     render(
       <Accordion
         items={sampleItems}
         defaultValue={["item-1"]}
-        ItemProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
-        }}
+        ItemProps={{ className: "caller" }}
       />,
     );
     const [open, closed] = document.querySelectorAll(
       "[data-slot='accordion-item']",
     );
-    expect(open).toHaveClass("fn-open", styles["accordion-item"]);
-    expect(closed).toHaveClass("fn-closed", styles["accordion-item"]);
+    expect(open).toHaveClass("caller", styles["accordion-item"]);
+    expect(open).toHaveAttribute("data-open");
+    expect(closed).toHaveClass("caller", styles["accordion-item"]);
+    expect(closed).not.toHaveAttribute("data-open");
   });
 
+  /* The header is Base UI's own part with no class of its own, so its
+     `className` is still Base UI's and may be a function of its state. */
   it("resolves a state-function className on the header", () => {
     render(
       <Accordion
@@ -391,39 +387,38 @@ describe("Accordion", () => {
     expect(closed).toHaveClass("fn-closed");
   });
 
-  it("resolves a state-function className on the trigger alongside its own class", () => {
+  it("merges a caller's className on the trigger with its own class and marks its state", () => {
     render(
       <Accordion
         items={sampleItems}
         defaultValue={["item-1"]}
-        TriggerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
-        }}
+        TriggerProps={{ className: "caller" }}
       />,
     );
     const [open, closed] = document.querySelectorAll(
       "[data-slot='accordion-trigger']",
     );
-    expect(open).toHaveClass("fn-open", styles["accordion-trigger"]);
-    expect(closed).toHaveClass("fn-closed", styles["accordion-trigger"]);
+    expect(open).toHaveClass("caller", styles["accordion-trigger"]);
+    expect(open).toHaveAttribute("data-panel-open");
+    expect(closed).toHaveClass("caller", styles["accordion-trigger"]);
+    expect(closed).not.toHaveAttribute("data-panel-open");
   });
 
-  it("resolves a state-function className on the panel alongside its own class", () => {
+  it("merges a caller's className on the panel with its own class and marks its state", () => {
     render(
       <Accordion
         items={sampleItems}
         defaultValue={["item-1"]}
-        PanelProps={{
-          keepMounted: true,
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
-        }}
+        PanelProps={{ keepMounted: true, className: "caller" }}
       />,
     );
     const [open, closed] = document.querySelectorAll(
       "[data-slot='accordion-panel']",
     );
-    expect(open).toHaveClass("fn-open", styles["accordion-panel"]);
-    expect(closed).toHaveClass("fn-closed", styles["accordion-panel"]);
+    expect(open).toHaveClass("caller", styles["accordion-panel"]);
+    expect(open).toHaveAttribute("data-open");
+    expect(closed).toHaveClass("caller", styles["accordion-panel"]);
+    expect(closed).toHaveAttribute("data-closed");
   });
 });
 

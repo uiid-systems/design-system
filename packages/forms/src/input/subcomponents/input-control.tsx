@@ -1,7 +1,7 @@
 "use client";
 
 import { Input as BaseInput } from "@base-ui/react/input";
-import { cxState, useComposedRefs } from "@uiid/utils";
+import { cx, useComposedRefs } from "@uiid/utils";
 import { useLayoutEffect, useRef } from "react";
 
 import { useFieldRequired } from "../../field/field-required-context";
@@ -57,7 +57,7 @@ export const InputControl = ({
       ref={composedRef}
       inputMode={inputMode ?? mask?.inputMode}
       required={required ?? fieldRequired}
-      className={cxState(
+      className={cx(
         inputControlClassName({ inner, size, fullwidth, variant, color }),
         className,
       )}

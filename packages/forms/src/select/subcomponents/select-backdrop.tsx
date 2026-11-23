@@ -1,7 +1,7 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { SelectBackdropProps } from "../select.types";
 
@@ -14,7 +14,7 @@ export const SelectBackdrop = ({
   return (
     <BaseSelect.Backdrop
       data-slot="select-backdrop"
-      className={cxState(styles["select-backdrop"], className)}
+      className={cx(styles["select-backdrop"], className)}
       {...props}
     />
   );

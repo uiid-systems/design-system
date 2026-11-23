@@ -3,7 +3,7 @@
 import { Progress as BaseProgress } from "@base-ui/react/progress";
 import { Stack } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ProgressRootProps } from "../progress.types";
 import { progressVariants } from "../progress.variants";
@@ -27,7 +27,7 @@ export const ProgressRoot = ({
   return (
     <BaseProgress.Root
       data-slot="progress"
-      className={cxState(
+      className={cx(
         styles["progress"],
         progressVariants({ size }),
         paletteClassName(color, styles["color"]),

@@ -10,7 +10,6 @@ import * as utils from "./index";
 const values = [
   "cva",
   "cx",
-  "cxState", // UI-465 removes it
   "definedProps",
   "hasTrigger",
   "isRenderable",
@@ -36,6 +35,7 @@ const types = [
   "ToggleProps",
   "VariantProps",
   "WithLayoutProps",
+  "WithStringClassName",
   "WithTriggerChildren",
 ];
 

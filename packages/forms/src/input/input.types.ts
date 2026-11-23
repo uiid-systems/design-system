@@ -1,6 +1,6 @@
 import type { Input } from "@base-ui/react/input";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { inputVariants, inputWrapperVariants } from "./input.variants";
@@ -60,14 +60,18 @@ export type InputMask<T> = {
 };
 
 /**
- * Omitting Base UI's `size` and re-adding it as a variant is the one sanctioned
- * deviation from the mirror rule. `size` is the system-wide control-scale axis
+ * Omitting Base UI's `size` and re-adding it as a variant is a sanctioned
+ * deviation from the mirror rule, as is the string `className` of a part that
+ * merges its own class. `size` is the system-wide control-scale axis
  * (`small | medium | large`) across every UIID component, and `inputVariants` is
  * shared by select, slider, number-field, mask-input, combobox and autocomplete.
  * Native `size` on an `<input>` is the rarely-used character-width attribute;
  * surfacing it here would desync Input from the rest of the system.
  */
-export type InputControlProps = Omit<Input.Props, "size"> & {
+export type InputControlProps = Omit<
+  WithStringClassName<Input.Props>,
+  "size"
+> & {
   /**
    * Rendered inside an `InputWrapper`, which carries the control surface, so
    * the input paints only its inner treatment.

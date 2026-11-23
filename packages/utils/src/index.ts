@@ -1,4 +1,4 @@
-export { cva, cx, cxState, type VariantProps } from "./cva";
+export { cva, cx, type VariantProps } from "./cva";
 export { isRenderable } from "./renderable";
 export { renderWithProps, resolveRender, type RenderProp } from "./render";
 export {
@@ -11,7 +11,7 @@ export {
   type SizingProps,
   type ToggleProps,
 } from "./props/styles";
-export type { WithLayoutProps } from "./props/types";
+export type { WithLayoutProps, WithStringClassName } from "./props/types";
 export { resolveStyleProp } from "./props/css";
 export {
   definedProps,

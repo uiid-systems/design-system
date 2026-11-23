@@ -2,7 +2,7 @@
 
 import { Toast as BaseToast } from "@base-ui/react/toast";
 import { Card } from "@uiid/cards";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ToastRootProps } from "../toast.types";
 
@@ -26,7 +26,7 @@ export const ToastRoot = ({
 }: ToastRootProps) => (
   <BaseToast.Root
     data-slot="toast"
-    className={cxState(styles["toast"], className)}
+    className={cx(styles["toast"], className)}
     {...props}
   >
     <Card color={color} w="full" py={3} className={styles["toast-surface"]}>

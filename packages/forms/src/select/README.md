@@ -26,7 +26,7 @@ When the trigger should read differently from the rows — a currency code where
 
 `value` is not limited to strings. `Select<number>` (or any object type) types `items` and `SelectItem` by the same `Value`, so a numeric or object value reaches `onValueChange` unchanged. An object value needs `isItemEqualToValue` when the selection is not the same reference as the item, exactly as in Base UI. Base UI reads an object value's trigger text from the value itself, not from its `items` entry, so pass `itemToStringLabel` too unless the object carries its own `label`. Give an object-valued select a `name` and it also needs `itemToStringValue`, so the hidden input holds a useful value rather than serialized JSON; Select keys the rows by it too.
 
-`SelectItem` takes Base UI's Item props — `className` (merged with its own, and a state function works), `ref`, event handlers, `data-*` — and so does each entry in `items`.
+`SelectItem` takes Base UI's Item props — `className` (a string, merged with its own; style its state through `data-*` attributes), `ref`, event handlers, `data-*` — and so does each entry in `items`.
 
 Leave `value` unset and the select runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
 

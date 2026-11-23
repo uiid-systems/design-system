@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cx, cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 import * as React from "react";
 
 import {
@@ -207,7 +207,7 @@ export const CodeBlock = ({
               data-wrap={wrap || undefined}
               data-fullscreen
               aria-label={filename ?? "Code block"}
-              className={cxState(styles["code-block"], className)}
+              className={cx(styles["code-block"], className)}
               initialFocus={popupRef}
             >
               {renderParts(true)}

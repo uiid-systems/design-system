@@ -211,33 +211,34 @@ describe("Radio color", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. */
-describe("Radio state-function className", () => {
-  const onState = (state: { checked: boolean }) =>
-    state.checked ? "fn-checked" : "fn-unchecked";
-
-  it("resolves a state-function className on the root alongside its own class", () => {
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. */
+describe("Radio className", () => {
+  it("merges a caller's className on the root with its own class and marks its state", () => {
     const { container } = render(
       <RadioGroupRoot defaultValue="a">
-        <Radio value="a" className={onState} />
+        <Radio value="a" className="caller" />
       </RadioGroupRoot>,
     );
     const radio = container.querySelector("[data-slot='radio']");
 
-    expect(radio).toHaveClass("fn-checked");
+    expect(radio).toHaveClass("caller");
+
+    expect(radio).toHaveAttribute("data-checked");
     expect(radio).toHaveClass(styles["radio"]);
   });
 
-  it("resolves a state-function className on the indicator alongside its own class", () => {
+  it("merges a caller's className on the indicator with its own class and marks its state", () => {
     const { container } = render(
       <RadioGroupRoot defaultValue="a">
-        <Radio value="a" IndicatorProps={{ className: onState }} />
+        <Radio value="a" IndicatorProps={{ className: "caller" }} />
       </RadioGroupRoot>,
     );
     const indicator = container.querySelector("[data-slot='radio-indicator']");
 
-    expect(indicator).toHaveClass("fn-checked");
+    expect(indicator).toHaveClass("caller");
+
+    expect(indicator).toHaveAttribute("data-checked");
     expect(indicator).toHaveClass(styles["indicator"]);
   });
 });

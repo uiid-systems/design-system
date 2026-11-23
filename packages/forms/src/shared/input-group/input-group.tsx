@@ -4,7 +4,7 @@ import { Combobox as BaseInputGroup } from "@base-ui/react/combobox";
 import type { Combobox as BaseInputGroupTypes } from "@base-ui/react/combobox";
 import { Box, Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cx, type WithStringClassName } from "@uiid/utils";
 
 import type { InputVariants } from "../../input/input.types";
 import { inputGroupVariants } from "./input-group.variants";
@@ -33,7 +33,7 @@ export const InputGroupRoot = ({
   className,
   children,
   ...props
-}: WithSlot<BaseInputGroupTypes.InputGroup.Props> &
+}: WithSlot<WithStringClassName<BaseInputGroupTypes.InputGroup.Props>> &
   Pick<InputVariants, "size" | "fullwidth">) => {
   return (
     <BaseInputGroup.InputGroup
@@ -47,7 +47,7 @@ export const InputGroupRoot = ({
        * `fullwidth={false}` lets the group shrink with a control that does.
        */
       render={<Box w={fullwidth ? "full" : undefined} />}
-      className={cxState(
+      className={cx(
         styles["input-group-root"],
         inputGroupVariants({ size }),
         className,
@@ -93,7 +93,7 @@ export const InputGroupTrigger = ({
   className,
   children,
   ...props
-}: WithSlot<BaseInputGroupTypes.Trigger.Props>) => {
+}: WithSlot<WithStringClassName<BaseInputGroupTypes.Trigger.Props>>) => {
   return (
     <BaseInputGroup.Trigger
       data-slot={slot}
@@ -105,7 +105,7 @@ export const InputGroupTrigger = ({
        * outranks `aria-label`, silently shadowed the trigger's own name.
        */
       aria-labelledby={undefined}
-      className={cxState(styles["input-group-action"], className)}
+      className={cx(styles["input-group-action"], className)}
       {...props}
     >
       {children}
@@ -119,11 +119,11 @@ export const InputGroupClear = ({
   className,
   children,
   ...props
-}: WithSlot<BaseInputGroupTypes.Clear.Props>) => {
+}: WithSlot<WithStringClassName<BaseInputGroupTypes.Clear.Props>>) => {
   return (
     <BaseInputGroup.Clear
       data-slot={slot}
-      className={cxState(styles["input-group-action"], className)}
+      className={cx(styles["input-group-action"], className)}
       {...props}
     >
       {children}

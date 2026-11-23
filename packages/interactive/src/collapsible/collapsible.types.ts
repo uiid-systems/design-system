@@ -1,6 +1,10 @@
 import type { Collapsible } from "@base-ui/react/collapsible";
 import type { StackProps } from "@uiid/layout";
-import type { WithLayoutProps, WithTriggerChildren } from "@uiid/utils";
+import type {
+  WithLayoutProps,
+  WithStringClassName,
+  WithTriggerChildren,
+} from "@uiid/utils";
 
 export type CollapsibleRootProps = WithLayoutProps<
   Collapsible.Root.Props,
@@ -11,7 +15,7 @@ export type CollapsibleTriggerProps = WithTriggerChildren<
   Collapsible.Trigger.State
 >;
 export type CollapsiblePanelProps = WithLayoutProps<
-  Collapsible.Panel.Props,
+  WithStringClassName<Collapsible.Panel.Props>,
   StackProps
 > & {
   instant?: boolean;

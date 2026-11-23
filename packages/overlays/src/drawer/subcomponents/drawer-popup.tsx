@@ -2,7 +2,7 @@
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { Card } from "@uiid/cards";
-import { cxState, isRenderable } from "@uiid/utils";
+import { cx, isRenderable } from "@uiid/utils";
 import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
@@ -42,7 +42,7 @@ export const DrawerPopup = ({
   return (
     <BaseDrawer.Popup
       data-slot="drawer-popup"
-      className={cxState(styles["drawer-popup"], className)}
+      className={cx(styles["drawer-popup"], className)}
       render={
         <Card
           title={title}

@@ -435,19 +435,20 @@ describe("Collapsible", () => {
     expect(panel?.className).toContain("collapsible-panel");
   });
 
-  it("resolves a state-function className on the panel alongside its own class", () => {
+  it("merges a caller's className on the panel with its own class and marks its state", () => {
     render(
       <Collapsible
         trigger="Toggle"
         RootProps={{ defaultOpen: true }}
         PanelProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Content
       </Collapsible>,
     );
-    expect(getPanel()).toHaveClass(styles["collapsible-panel"], "fn-open");
+    expect(getPanel()).toHaveClass(styles["collapsible-panel"], "caller");
+    expect(getPanel()).toHaveAttribute("data-open");
   });
 
   // ============================================
@@ -600,5 +601,13 @@ describe("Collapsible", () => {
     expect(css).toMatch(
       /@media \(prefers-reduced-motion: no-preference\) \{\s*\.collapsible-panel \{\s*transition: height /,
     );
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+describe("className", () => {
+  it("takes a string, not a function of the part's state", () => {
+    // @ts-expect-error -- style a state through its `data-*` attribute instead
+    void (<CollapsiblePanel className={() => "from-fn"} />);
   });
 });

@@ -1,7 +1,7 @@
 import type { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type {
   FieldProps,
@@ -30,7 +30,7 @@ export type CheckboxFieldProps = GroupProps &
     ErrorProps?: FieldErrorProps;
   }>;
 
-export type CheckboxRootProps = BaseCheckbox.Root.Props &
+export type CheckboxRootProps = WithStringClassName<BaseCheckbox.Root.Props> &
   CheckboxVariants & {
     hideIndicator?: boolean;
     /**
@@ -41,9 +41,10 @@ export type CheckboxRootProps = BaseCheckbox.Root.Props &
     color?: CheckboxColor;
   };
 
-export type CheckboxIndicatorProps = BaseCheckbox.Indicator.Props & {
-  indeterminate?: boolean;
-};
+export type CheckboxIndicatorProps =
+  WithStringClassName<BaseCheckbox.Indicator.Props> & {
+    indeterminate?: boolean;
+  };
 
 export type CheckboxProps = CheckboxRootProps &
   Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &

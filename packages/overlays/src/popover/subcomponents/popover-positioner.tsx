@@ -1,7 +1,7 @@
 "use client";
 
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import {
   POPOVER_DEFAULT_COLLISION_PADDING,
@@ -23,7 +23,7 @@ export const PopoverPositioner = ({
       data-slot="popover-positioner"
       sideOffset={sideOffset}
       collisionPadding={collisionPadding}
-      className={cxState(styles["popover-positioner"], className)}
+      className={cx(styles["popover-positioner"], className)}
       {...props}
     >
       {children}

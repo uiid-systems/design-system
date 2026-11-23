@@ -2,7 +2,7 @@
 
 import { Toast as BaseToast } from "@base-ui/react/toast";
 import { Stack } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ToastContentProps } from "../toast.types";
 
@@ -16,7 +16,7 @@ import styles from "../toast.module.css";
 export const ToastContent = ({ className, ...props }: ToastContentProps) => (
   <BaseToast.Content
     data-slot="toast-content"
-    className={cxState(styles["toast-content"], className)}
+    className={cx(styles["toast-content"], className)}
     render={<Stack gap={3} w="full" />}
     {...props}
   />

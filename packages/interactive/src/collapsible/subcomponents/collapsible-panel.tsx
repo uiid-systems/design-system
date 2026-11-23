@@ -2,7 +2,7 @@
 
 import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible";
 import { Stack } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { CollapsiblePanelProps } from "../collapsible.types";
 
@@ -41,7 +41,7 @@ export const CollapsiblePanel = ({
           minh={minh ?? (horizontal ? undefined : 0)}
         />
       }
-      className={cxState(styles["collapsible-panel"], className)}
+      className={cx(styles["collapsible-panel"], className)}
       /*
        * Written for a horizontal panel only. `data-orientation="vertical"` on
        * every panel would be matched by descendants that style themselves

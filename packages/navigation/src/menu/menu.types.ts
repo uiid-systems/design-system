@@ -1,7 +1,11 @@
 import type { Menu as BaseMenu } from "@base-ui/react/menu";
 import type { Icon } from "@uiid/icons";
 import type { GroupProps } from "@uiid/layout";
-import type { WithLayoutProps, WithTriggerChildren } from "@uiid/utils";
+import type {
+  WithLayoutProps,
+  WithStringClassName,
+  WithTriggerChildren,
+} from "@uiid/utils";
 
 export type MenuItemType = {
   /** Drawn before the label. */
@@ -23,13 +27,14 @@ export type MenuTriggerProps = WithTriggerChildren<
   BaseMenu.Trigger.State
 >;
 export type MenuPortalProps = BaseMenu.Portal.Props;
-export type MenuBackdropProps = BaseMenu.Backdrop.Props;
-export type MenuPositionerProps = BaseMenu.Positioner.Props;
-export type MenuPopupProps = BaseMenu.Popup.Props;
-export type MenuItemProps = BaseMenu.Item.Props;
+export type MenuBackdropProps = WithStringClassName<BaseMenu.Backdrop.Props>;
+export type MenuPositionerProps =
+  WithStringClassName<BaseMenu.Positioner.Props>;
+export type MenuPopupProps = WithStringClassName<BaseMenu.Popup.Props>;
+export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props>;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
-  BaseMenu.SubmenuTrigger.Props,
+  WithStringClassName<BaseMenu.SubmenuTrigger.Props>,
   GroupProps
 >;
 

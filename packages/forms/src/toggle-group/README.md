@@ -18,6 +18,6 @@ The group shrink-wraps its toggles rather than stretching to fill its container,
 
 A single-selection group that holds a value keeps one. Pressing the pressed toggle again, by pointer or by keyboard, changes nothing and does not call `onValueChange`. A `Toggle`'s own `onPressedChange` still receives `false` for that refused press, because Base UI calls it before the group's handler; the toggle stays pressed. A group can still start empty, by leaving out `defaultValue` or passing `value={[]}`, and it shows no indicator until a toggle is pressed.
 
-Children are `Toggle` elements, each carrying its `value`. An icon-only group needs an `aria-label` on every toggle.
+Children are `Toggle` elements, each carrying its `value`. An icon-only group needs an `aria-label` on every toggle. A `Toggle` takes Base UI's props, except that its `className` is a string (the group merges its own class into it), so style the pressed state through `data-pressed`. Its types are `ToggleProps`, `ToggleState` and `ToggleChangeEventDetails`.
 
 Additional props are forwarded to the underlying Base UI [Toggle Group](https://base-ui.com/react/components/toggle-group).

@@ -2,7 +2,7 @@
 
 import { Progress as BaseProgress } from "@base-ui/react/progress";
 import { Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ProgressLabelProps } from "../progress.types";
 
@@ -17,7 +17,7 @@ export const ProgressLabel = ({
     <BaseProgress.Label
       data-slot="progress-label"
       render={<Text weight="medium" />}
-      className={cxState(styles["progress-label"], className)}
+      className={cx(styles["progress-label"], className)}
       {...props}
     >
       {children}

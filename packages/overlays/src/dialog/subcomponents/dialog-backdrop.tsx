@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { DialogBackdropProps } from "../dialog.types";
 
@@ -14,7 +14,7 @@ export const DialogBackdrop = ({
   return (
     <BaseDialog.Backdrop
       data-slot="dialog-backdrop"
-      className={cxState(styles["dialog-backdrop"], className)}
+      className={cx(styles["dialog-backdrop"], className)}
       {...props}
     />
   );

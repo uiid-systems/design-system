@@ -330,40 +330,42 @@ describe("Autocomplete popup layout props", () => {
 });
 
 /*
- * Base UI accepts `className` as a function of the part's state. Merging it
- * with `cx` dropped the function, so the caller's class never reached the DOM.
- * The popup layer Autocomplete shares with Combobox is covered in Combobox's
- * tests; the input and input group carry Autocomplete's own slots.
+ * A part's `className` is a string, merged with its own module class. Its
+ * state is styled through the `data-*` attributes Base UI sets. The popup
+ * layer Autocomplete shares with Combobox is covered in Combobox's tests; the
+ * input and input group carry Autocomplete's own slots.
  */
-describe("Autocomplete state-function className", () => {
+describe("Autocomplete className", () => {
   const items = ["apple", "banana"];
 
-  it("resolves a state-function className on the input alongside its own class", async () => {
+  it("merges a caller's className on the input with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Autocomplete
         items={items}
         InputProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
 
     const input = document.querySelector("[data-slot='autocomplete-input']");
-    expect(input).toHaveClass("fn-closed", inputStyles["input"]);
+    expect(input).toHaveClass("caller", inputStyles["input"]);
+    expect(input).not.toHaveAttribute("data-popup-open");
 
     await user.type(screen.getByRole("combobox"), "a");
 
-    expect(input).toHaveClass("fn-open", inputStyles["input"]);
+    expect(input).toHaveClass("caller", inputStyles["input"]);
+    expect(input).toHaveAttribute("data-popup-open");
   });
 
-  it("resolves a state-function className on the input group alongside its own class", async () => {
+  it("merges a caller's className on the input group with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Autocomplete
         items={items}
         InputGroupProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
@@ -371,14 +373,13 @@ describe("Autocomplete state-function className", () => {
     const group = document.querySelector(
       "[data-slot='autocomplete-input-group']",
     );
-    expect(group).toHaveClass(
-      "fn-closed",
-      inputGroupStyles["input-group-root"],
-    );
+    expect(group).toHaveClass("caller", inputGroupStyles["input-group-root"]);
+    expect(group).not.toHaveAttribute("data-popup-open");
 
     await user.type(screen.getByRole("combobox"), "a");
 
-    expect(group).toHaveClass("fn-open", inputGroupStyles["input-group-root"]);
+    expect(group).toHaveClass("caller", inputGroupStyles["input-group-root"]);
+    expect(group).toHaveAttribute("data-popup-open");
   });
 });
 

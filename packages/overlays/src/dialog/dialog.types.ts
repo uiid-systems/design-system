@@ -1,7 +1,11 @@
 import type { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import type { ButtonProps } from "@uiid/buttons";
 import type { CardProps } from "@uiid/cards";
-import type { VariantProps, WithTriggerChildren } from "@uiid/utils";
+import type {
+  VariantProps,
+  WithStringClassName,
+  WithTriggerChildren,
+} from "@uiid/utils";
 
 import { dialogVariants } from "./dialog.variants";
 
@@ -14,14 +18,16 @@ type DialogCardProps = Pick<
 
 export type DialogRootProps = BaseDialog.Root.Props;
 export type DialogTriggerProps = WithTriggerChildren<
-  BaseDialog.Trigger.Props,
+  WithStringClassName<BaseDialog.Trigger.Props>,
   BaseDialog.Trigger.State
 >;
 export type DialogPortalProps = BaseDialog.Portal.Props;
-export type DialogBackdropProps = BaseDialog.Backdrop.Props;
-export type DialogViewportProps = BaseDialog.Viewport.Props;
+export type DialogBackdropProps =
+  WithStringClassName<BaseDialog.Backdrop.Props>;
+export type DialogViewportProps =
+  WithStringClassName<BaseDialog.Viewport.Props>;
 export type DialogPopupProps = VariantProps<typeof dialogVariants> &
-  Omit<BaseDialog.Popup.Props, "title"> &
+  Omit<WithStringClassName<BaseDialog.Popup.Props>, "title"> &
   DialogCardProps & {
     /** Leave out the header close button, for a dialog the user must act on before leaving */
     hideCloseButton?: boolean;

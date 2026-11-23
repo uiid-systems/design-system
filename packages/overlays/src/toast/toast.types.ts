@@ -1,5 +1,6 @@
 import type { Toast as BaseToast } from "@base-ui/react/toast";
 import type { CardColor } from "@uiid/cards";
+import type { WithStringClassName } from "@uiid/utils";
 
 /**
  * The `type` values Toaster gives an icon and a hue. Base UI's `promise()`
@@ -38,19 +39,21 @@ export type ToastObject<Data extends object = ToastData> =
 
 export type ToastProviderProps = BaseToast.Provider.Props;
 export type ToastPortalProps = BaseToast.Portal.Props;
-export type ToastViewportProps = BaseToast.Viewport.Props & {
-  /** Anchor the stack to the top or the bottom of the screen */
-  position?: "top" | "bottom";
-};
-export type ToastRootProps = BaseToast.Root.Props & {
+export type ToastViewportProps =
+  WithStringClassName<BaseToast.Viewport.Props> & {
+    /** Anchor the stack to the top or the bottom of the screen */
+    position?: "top" | "bottom";
+  };
+export type ToastRootProps = WithStringClassName<BaseToast.Root.Props> & {
   /** Palette hue for the toast surface, the `Card` inside the root */
   color?: CardColor;
 };
-export type ToastContentProps = BaseToast.Content.Props;
+export type ToastContentProps = WithStringClassName<BaseToast.Content.Props>;
 export type ToastTitleProps = BaseToast.Title.Props;
-export type ToastDescriptionProps = BaseToast.Description.Props;
+export type ToastDescriptionProps =
+  WithStringClassName<BaseToast.Description.Props>;
 export type ToastActionProps = BaseToast.Action.Props;
-export type ToastCloseProps = BaseToast.Close.Props;
+export type ToastCloseProps = WithStringClassName<BaseToast.Close.Props>;
 
 export type ToasterProps = Pick<ToastViewportProps, "position"> & {
   /** Props forwarded to the portal, such as the `container` it renders into */

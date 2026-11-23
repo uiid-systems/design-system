@@ -305,60 +305,83 @@ describe("Slider layout props", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. Every part
-   shares the root's state, so each one reads the current value off it. */
-describe("Slider state-function className", () => {
-  const onState = (state: { values: readonly number[] }) =>
-    `fn-value-${state.values[0]}`;
-
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. Every
+   part shares the root's state, so each one marks the root's `disabled`. */
+describe("Slider className", () => {
   const part = (container: HTMLElement, slot: string) =>
     container.querySelector(`[data-slot='slider-${slot}']`);
 
-  it("resolves a state-function className on the root alongside its own class", () => {
+  it("merges a caller's className on the root with its own class and marks its state", () => {
     const { container } = render(
-      <Slider defaultValue={40} RootProps={{ className: onState }} />,
+      <Slider disabled defaultValue={40} RootProps={{ className: "caller" }} />,
     );
 
-    expect(part(container, "root")).toHaveClass("fn-value-40");
+    expect(part(container, "root")).toHaveClass("caller");
+
+    expect(part(container, "root")).toHaveAttribute("data-disabled");
     expect(part(container, "root")).toHaveClass(inputStyles["input"]);
   });
 
-  it("resolves a state-function className on the control alongside its own class", () => {
+  it("merges a caller's className on the control with its own class and marks its state", () => {
     const { container } = render(
-      <Slider defaultValue={40} ControlProps={{ className: onState }} />,
+      <Slider
+        disabled
+        defaultValue={40}
+        ControlProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "control")).toHaveClass("fn-value-40");
+    expect(part(container, "control")).toHaveClass("caller");
+
+    expect(part(container, "control")).toHaveAttribute("data-disabled");
     expect(part(container, "control")).toHaveClass(styles["slider-control"]);
   });
 
-  it("resolves a state-function className on the track alongside its own class", () => {
+  it("merges a caller's className on the track with its own class and marks its state", () => {
     const { container } = render(
-      <Slider defaultValue={40} TrackProps={{ className: onState }} />,
+      <Slider
+        disabled
+        defaultValue={40}
+        TrackProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "track")).toHaveClass("fn-value-40");
+    expect(part(container, "track")).toHaveClass("caller");
+
+    expect(part(container, "track")).toHaveAttribute("data-disabled");
     expect(part(container, "track")).toHaveClass(styles["slider-track"]);
   });
 
-  it("resolves a state-function className on the indicator alongside its own class", () => {
+  it("merges a caller's className on the indicator with its own class and marks its state", () => {
     const { container } = render(
-      <Slider defaultValue={40} IndicatorProps={{ className: onState }} />,
+      <Slider
+        disabled
+        defaultValue={40}
+        IndicatorProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "indicator")).toHaveClass("fn-value-40");
+    expect(part(container, "indicator")).toHaveClass("caller");
+
+    expect(part(container, "indicator")).toHaveAttribute("data-disabled");
     expect(part(container, "indicator")).toHaveClass(
       styles["slider-indicator"],
     );
   });
 
-  it("resolves a state-function className on the thumb alongside its own class", () => {
+  it("merges a caller's className on the thumb with its own class and marks its state", () => {
     const { container } = render(
-      <Slider defaultValue={40} ThumbProps={{ className: onState }} />,
+      <Slider
+        disabled
+        defaultValue={40}
+        ThumbProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "thumb")).toHaveClass("fn-value-40");
+    expect(part(container, "thumb")).toHaveClass("caller");
+
+    expect(part(container, "thumb")).toHaveAttribute("data-disabled");
     expect(part(container, "thumb")).toHaveClass(styles["slider-thumb"]);
   });
 });

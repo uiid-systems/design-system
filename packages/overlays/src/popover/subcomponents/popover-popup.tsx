@@ -2,7 +2,7 @@
 
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import { Card } from "@uiid/cards";
-import { cxState, isRenderable } from "@uiid/utils";
+import { cx, isRenderable } from "@uiid/utils";
 import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
@@ -51,7 +51,7 @@ export const PopoverPopup = ({
           InnerContainerProps={bodyProps}
         />
       }
-      className={cxState(styles["popover-popup"], className)}
+      className={cx(styles["popover-popup"], className)}
       {...props}
     >
       {children}

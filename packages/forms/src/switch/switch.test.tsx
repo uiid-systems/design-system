@@ -247,29 +247,30 @@ describe("Switch color", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. */
-describe("Switch state-function className", () => {
-  const onState = (state: { checked: boolean }) =>
-    state.checked ? "fn-checked" : "fn-unchecked";
-
-  it("resolves a state-function className on the root alongside its own class", () => {
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. */
+describe("Switch className", () => {
+  it("merges a caller's className on the root with its own class and marks its state", () => {
     const { container } = render(
-      <Switch defaultChecked RootProps={{ className: onState }} />,
+      <Switch defaultChecked RootProps={{ className: "caller" }} />,
     );
     const root = container.querySelector("[data-slot='switch-root']");
 
-    expect(root).toHaveClass("fn-checked");
+    expect(root).toHaveClass("caller");
+
+    expect(root).toHaveAttribute("data-checked");
     expect(root).toHaveClass(styles["switch-root"]);
   });
 
-  it("resolves a state-function className on the thumb alongside its own class", () => {
+  it("merges a caller's className on the thumb with its own class and marks its state", () => {
     const { container } = render(
-      <Switch defaultChecked ThumbProps={{ className: onState }} />,
+      <Switch defaultChecked ThumbProps={{ className: "caller" }} />,
     );
     const thumb = container.querySelector("[data-slot='switch-thumb']");
 
-    expect(thumb).toHaveClass("fn-checked");
+    expect(thumb).toHaveClass("caller");
+
+    expect(thumb).toHaveAttribute("data-checked");
     expect(thumb).toHaveClass(styles["switch-thumb"]);
   });
 });

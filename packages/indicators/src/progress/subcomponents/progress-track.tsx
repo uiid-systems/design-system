@@ -1,7 +1,7 @@
 "use client";
 
 import { Progress as BaseProgress } from "@base-ui/react/progress";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ProgressTrackProps } from "../progress.types";
 
@@ -15,7 +15,7 @@ export const ProgressTrack = ({
   return (
     <BaseProgress.Track
       data-slot="progress-track"
-      className={cxState(styles["progress-track"], className)}
+      className={cx(styles["progress-track"], className)}
       {...props}
     >
       {children}

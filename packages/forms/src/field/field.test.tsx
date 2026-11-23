@@ -626,39 +626,31 @@ describe("Field className merging", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. */
-describe("Field state-function className", () => {
-  const onState = (prefix: string) => (state: { disabled: boolean }) =>
-    `${prefix}-${state.disabled ? "disabled" : "enabled"}`;
-
-  it("resolves a state-function className and RootProps.className on Field alongside its own class", () => {
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. */
+describe("Field className", () => {
+  it("merges className and RootProps.className on Field with its own class and marks its state", () => {
     const { container } = render(
-      <Field
-        disabled
-        className={onState("fn")}
-        RootProps={{ className: onState("fn-root") }}
-      >
+      <Field disabled className="caller" RootProps={{ className: "root" }}>
         <input />
       </Field>,
     );
     const root = container.querySelector("[data-slot='field-root']");
 
-    expect(root).toHaveClass("fn-disabled");
-    expect(root).toHaveClass("fn-root-disabled");
-    expect(root).toHaveClass(styles["size-medium"]);
+    expect(root).toHaveClass("caller", "root", styles["size-medium"]);
+    expect(root).toHaveAttribute("data-disabled");
   });
 
-  it("resolves a state-function className on the root alongside its own class", () => {
+  it("merges a caller's className on the root with its own class and marks its state", () => {
     const { container } = render(
-      <FieldRoot disabled className={onState("fn")}>
+      <FieldRoot disabled className="caller">
         <input />
       </FieldRoot>,
     );
     const root = container.querySelector("[data-slot='field-root']");
 
-    expect(root).toHaveClass("fn-disabled");
-    expect(root).toHaveClass(styles["field-root"]);
+    expect(root).toHaveClass("caller", styles["field-root"]);
+    expect(root).toHaveAttribute("data-disabled");
   });
 });
 

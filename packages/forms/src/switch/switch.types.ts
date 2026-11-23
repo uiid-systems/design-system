@@ -1,7 +1,7 @@
 import type { Switch } from "@base-ui/react/switch";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { CheckboxVariants } from "../checkbox/checkbox.types";
 import type {
@@ -32,7 +32,7 @@ export type SwitchColor = PaletteColor;
  * `style`) before a component ever extends it. So the hue is declared
  * additively, and an `Omit` would be a no-op dressed up as a guard.
  */
-export type SwitchRootProps = Switch.Root.Props &
+export type SwitchRootProps = WithStringClassName<Switch.Root.Props> &
   Pick<SwitchVariants, "size"> & {
     /**
      * Palette hue applied as a solid fill on the checked track, with the thumb
@@ -40,7 +40,7 @@ export type SwitchRootProps = Switch.Root.Props &
      */
     color?: SwitchColor;
   };
-export type SwitchThumbProps = Switch.Thumb.Props;
+export type SwitchThumbProps = WithStringClassName<Switch.Thumb.Props>;
 
 export type SwitchFieldProps = GroupProps &
   Pick<SwitchVariants, "reversed" | "bordered" | "size"> &
@@ -51,7 +51,7 @@ export type SwitchFieldProps = GroupProps &
 
 export type SwitchProps = SwitchRootProps & {
   RootProps?: SwitchRootProps;
-  ThumbProps?: Switch.Thumb.Props;
+  ThumbProps?: SwitchThumbProps;
   FieldProps?: SwitchFieldProps;
 } & Pick<FieldProps, "label" | "description" | "disabled"> &
   Pick<SwitchFieldProps, "reversed" | "bordered" | "size">;

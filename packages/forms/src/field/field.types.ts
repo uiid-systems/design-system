@@ -2,7 +2,12 @@ import type { Field } from "@base-ui/react/field";
 import type { Icon } from "@uiid/icons";
 import type { GroupProps, StackProps } from "@uiid/layout";
 import type { TextProps } from "@uiid/typography";
-import type { SpacingProps, VariantProps, WithLayoutProps } from "@uiid/utils";
+import type {
+  SpacingProps,
+  VariantProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { fieldRowVariants, fieldVariants } from "./field.variants";
 
@@ -13,7 +18,10 @@ export type FieldVariants = VariantProps<typeof fieldVariants>;
  * No `gap` default rides along: the size tier owns the field's gap through
  * `--field-gap`, so a gap only lands inline when a caller pins one.
  */
-export type FieldRootProps = WithLayoutProps<Field.Root.Props, StackProps>;
+export type FieldRootProps = WithLayoutProps<
+  WithStringClassName<Field.Root.Props>,
+  StackProps
+>;
 
 export type FieldItemProps = Field.Item.Props;
 
@@ -55,7 +63,7 @@ export type FieldHintProps = React.ComponentPropsWithoutRef<"span">;
 export type FieldActionProps = GroupProps;
 
 export type FieldProps = React.PropsWithChildren &
-  Field.Root.Props &
+  WithStringClassName<Field.Root.Props> &
   FieldVariants & {
     label?: React.ReactNode;
     description?: React.ReactNode;

@@ -2,7 +2,7 @@
 
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { Group } from "@uiid/layout";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import { inputColorClassName } from "../../input/input.styles";
 import { inputVariants } from "../../input/input.variants";
@@ -42,7 +42,7 @@ export const SelectTrigger = ({
           gap={hasSlots ? 0 : 4}
         />
       }
-      className={cxState(
+      className={cx(
         hasSlots && styles["select-trigger-slots"],
         inputStyles["input"],
         inputStyles["input-edge"],

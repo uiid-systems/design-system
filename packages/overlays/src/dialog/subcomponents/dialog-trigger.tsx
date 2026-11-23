@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cxState, resolveTrigger } from "@uiid/utils";
+import { cx, resolveTrigger } from "@uiid/utils";
 
 import type { DialogTriggerProps } from "../dialog.types";
 
@@ -19,7 +19,7 @@ export const DialogTrigger = ({
   return (
     <BaseDialog.Trigger
       data-slot="dialog-trigger"
-      className={cxState(styles["dialog-trigger"], className)}
+      className={cx(styles["dialog-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
       nativeButton={nativeButton ?? resolved.nativeButton}

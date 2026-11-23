@@ -2,7 +2,7 @@
 
 import { Toast as BaseToast } from "@base-ui/react/toast";
 import { CardDescription } from "@uiid/cards";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ToastDescriptionProps } from "../toast.types";
 
@@ -15,7 +15,7 @@ export const ToastDescription = ({
 }: ToastDescriptionProps) => (
   <BaseToast.Description
     data-slot="toast-description"
-    className={cxState(styles["toast-description"], className)}
+    className={cx(styles["toast-description"], className)}
     render={<CardDescription />}
     {...props}
   />

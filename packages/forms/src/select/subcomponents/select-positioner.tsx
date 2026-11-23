@@ -1,7 +1,7 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { SelectPositionerProps } from "../select.types";
 
@@ -15,7 +15,7 @@ export const SelectPositioner = ({
   return (
     <BaseSelect.Positioner
       data-slot="select-positioner"
-      className={cxState(styles["select-positioner"], className)}
+      className={cx(styles["select-positioner"], className)}
       sideOffset={4}
       {...props}
     >
