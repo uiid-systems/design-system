@@ -339,22 +339,17 @@ describe("SubmenuTrigger layout props", () => {
 });
 
 /*
- * Base UI calls a function className with the part's state. `cx` used to drop
- * it silently, leaving only the wrapper's own module class.
+ * A part's `className` is a string, merged with its own module class. Its
+ * state is styled through the `data-*` attributes Base UI sets.
  */
-describe("Menu state-function className", () => {
-  const byOpen = (state: { open: boolean }) =>
-    state.open ? "fn-open" : "fn-closed";
-
-  it("resolves a state-function className on the item alongside its own class", async () => {
+describe("Menu className", () => {
+  it("merges a caller's className on the item with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
         items={MOCK_ITEMS}
-        ItemProps={{
-          className: (state) => (state.highlighted ? "fn-lit" : "fn-unlit"),
-        }}
+        ItemProps={{ className: "caller" }}
       />,
     );
 
@@ -364,78 +359,80 @@ describe("Menu state-function className", () => {
     );
     await user.keyboard("{ArrowDown}");
 
-    expect(first).toHaveClass("fn-lit", styles["item"]);
-    expect(second).toHaveClass("fn-unlit", styles["item"]);
+    expect(first).toHaveClass("caller", styles["item"]);
+    expect(first).toHaveAttribute("data-highlighted");
+    expect(second).toHaveClass("caller", styles["item"]);
+    expect(second).not.toHaveAttribute("data-highlighted");
   });
 
-  it("resolves a state-function className on the popup alongside its own class", async () => {
+  it("merges a caller's className on the popup with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
         items={MOCK_ITEMS}
-        PopupProps={{ className: byOpen }}
+        PopupProps={{ className: "caller" }}
       />,
     );
 
     await user.click(screen.getByText("Open"));
 
-    expect(document.querySelector("[data-slot='menu-popup']")).toHaveClass(
-      "fn-open",
-      styles["popup"],
-    );
+    const popup = document.querySelector("[data-slot='menu-popup']");
+    expect(popup).toHaveClass("caller", styles["popup"]);
+    expect(popup).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the positioner alongside its own class", async () => {
+  it("merges a caller's className on the positioner with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
         items={MOCK_ITEMS}
-        PositionerProps={{ className: byOpen }}
+        PositionerProps={{ className: "caller" }}
       />,
     );
 
     await user.click(screen.getByText("Open"));
 
-    expect(document.querySelector("[data-slot='menu-positioner']")).toHaveClass(
-      "fn-open",
-      styles["positioner"],
-    );
+    const positioner = document.querySelector("[data-slot='menu-positioner']");
+    expect(positioner).toHaveClass("caller", styles["positioner"]);
+    expect(positioner).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the backdrop alongside its own class", async () => {
+  it("merges a caller's className on the backdrop with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
         items={MOCK_ITEMS}
-        BackdropProps={{ className: byOpen }}
+        BackdropProps={{ className: "caller" }}
       />,
     );
 
     await user.click(screen.getByText("Open"));
 
-    expect(backdrops()[0]).toHaveClass("fn-open", styles["backdrop"]);
+    expect(backdrops()[0]).toHaveClass("caller", styles["backdrop"]);
+    expect(backdrops()[0]).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the submenu trigger alongside its own class", async () => {
+  it("merges a caller's className on the submenu trigger with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
         items={MOCK_ITEMS}
-        SubmenuTriggerProps={{ className: byOpen }}
+        SubmenuTriggerProps={{ className: "caller" }}
       />,
     );
 
     await user.click(screen.getByText("Open"));
     const trigger = document.querySelector("[data-slot='submenu-trigger']");
-    expect(trigger).toHaveClass("fn-closed", styles["submenu-trigger"]);
+    expect(trigger).toHaveClass("caller", styles["submenu-trigger"]);
+    expect(trigger).not.toHaveAttribute("data-popup-open");
 
     await user.click(screen.getByText("Lorem ipsum"));
     await screen.findByText("Item 3.1");
 
-    expect(trigger).toHaveClass("fn-open", styles["submenu-trigger"]);
+    expect(trigger).toHaveAttribute("data-popup-open");
   });
 });

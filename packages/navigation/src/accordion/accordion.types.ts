@@ -2,7 +2,11 @@ import type { Accordion } from "@base-ui/react/accordion";
 import type { CardProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { StackProps } from "@uiid/layout";
-import type { VariantProps, WithLayoutProps } from "@uiid/utils";
+import type {
+  VariantProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type {
   accordionRootVariants,
@@ -27,18 +31,19 @@ export type AccordionTriggerVariants = VariantProps<
  * treatment wins over `Card`'s. The root consumes it and never passes it on.
  */
 export type AccordionRootProps = WithLayoutProps<
-  Accordion.Root.Props & AccordionRootVariants,
+  WithStringClassName<Accordion.Root.Props> & AccordionRootVariants,
   CardProps
 >;
 export type AccordionItemProps = WithLayoutProps<
-  Accordion.Item.Props,
+  WithStringClassName<Accordion.Item.Props>,
   StackProps
 >;
 export type AccordionHeaderProps = Accordion.Header.Props;
-export type AccordionTriggerProps = Accordion.Trigger.Props &
-  Pick<AccordionItemData, "icon"> &
-  AccordionTriggerVariants;
-export type AccordionPanelProps = Accordion.Panel.Props &
+export type AccordionTriggerProps =
+  WithStringClassName<Accordion.Trigger.Props> &
+    Pick<AccordionItemData, "icon"> &
+    AccordionTriggerVariants;
+export type AccordionPanelProps = WithStringClassName<Accordion.Panel.Props> &
   AccordionTriggerVariants;
 export type AccordionContentProps = StackProps;
 

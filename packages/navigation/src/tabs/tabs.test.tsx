@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 
+import { TabsTab } from "./subcomponents";
 import { Tabs } from "./tabs";
 import type { TabsProps } from "./tabs.types";
 
@@ -541,67 +542,52 @@ describe("Tabs", () => {
   });
 
   // ============================================
-  // STATE-FUNCTION CLASSNAME
+  // CLASSNAME AND STATE
   // ============================================
 
-  // Base UI calls a function className with the part's state. `cx` used to
-  // drop it silently, leaving only the wrapper's own module class.
+  // A part's `className` is a string, merged with its own module class. Its
+  // state is styled through the `data-*` attributes Base UI sets.
 
-  it("resolves a state-function className on the list alongside its own class", () => {
-    render(
-      <Tabs
-        items={MOCK_ITEMS}
-        ListProps={{ className: (state) => `fn-${state.orientation}` }}
-      />,
-    );
-    expect(document.querySelector("[data-slot='tabs-list']")).toHaveClass(
-      "fn-horizontal",
-      styles["tabs-list"],
-    );
+  it("merges a caller's className on the list with its own class and marks its state", () => {
+    render(<Tabs items={MOCK_ITEMS} ListProps={{ className: "caller" }} />);
+    const list = document.querySelector("[data-slot='tabs-list']");
+    expect(list).toHaveClass("caller", styles["tabs-list"]);
+    expect(list).toHaveAttribute("data-orientation", "horizontal");
   });
 
-  it("resolves a state-function className on the tab alongside its own class", () => {
-    render(
-      <Tabs
-        items={MOCK_ITEMS}
-        TabProps={{
-          className: (state) => (state.active ? "fn-active" : "fn-idle"),
-        }}
-      />,
-    );
+  it("merges a caller's className on the tab with its own class and marks its state", () => {
+    render(<Tabs items={MOCK_ITEMS} TabProps={{ className: "caller" }} />);
     const [active, idle] = document.querySelectorAll("[data-slot='tabs-tab']");
-    expect(active).toHaveClass("fn-active", styles["tab"]);
-    expect(idle).toHaveClass("fn-idle", styles["tab"]);
+    expect(active).toHaveClass("caller", styles["tab"]);
+    expect(active).toHaveAttribute("data-active");
+    expect(idle).toHaveClass("caller", styles["tab"]);
+    expect(idle).not.toHaveAttribute("data-active");
   });
 
-  it("resolves a state-function className on the indicator alongside its own class", () => {
+  it("merges a caller's className on the indicator with its own class and marks its state", () => {
     render(
-      <Tabs
-        items={MOCK_ITEMS}
-        IndicatorProps={{ className: (state) => `fn-${state.orientation}` }}
-      />,
+      <Tabs items={MOCK_ITEMS} IndicatorProps={{ className: "caller" }} />,
     );
-    expect(document.querySelector("[data-slot='tabs-indicator']")).toHaveClass(
-      "fn-horizontal",
-      styles["tabs-indicator"],
-    );
+    const indicator = document.querySelector("[data-slot='tabs-indicator']");
+    expect(indicator).toHaveClass("caller", styles["tabs-indicator"]);
+    expect(indicator).toHaveAttribute("data-orientation", "horizontal");
   });
 
-  it("resolves a state-function className on the panel alongside its own class", () => {
+  it("merges a caller's className on the panel with its own class and marks its state", () => {
     render(
       <Tabs
         items={MOCK_ITEMS}
         keepMounted
-        PanelProps={{
-          className: (state) => (state.hidden ? "fn-hidden" : "fn-shown"),
-        }}
+        PanelProps={{ className: "caller" }}
       />,
     );
     const [shown, hidden] = document.querySelectorAll(
       "[data-slot='tabs-panel']",
     );
-    expect(shown).toHaveClass("fn-shown", styles["tabs-panel"]);
-    expect(hidden).toHaveClass("fn-hidden", styles["tabs-panel"]);
+    expect(shown).toHaveClass("caller", styles["tabs-panel"]);
+    expect(shown).not.toHaveAttribute("data-hidden");
+    expect(hidden).toHaveClass("caller", styles["tabs-panel"]);
+    expect(hidden).toHaveAttribute("data-hidden");
   });
 });
 
@@ -640,5 +626,13 @@ describe("Tabs RootProps precedence", () => {
       <Tabs items={MOCK_ITEMS} value="tab-1" RootProps={{ value: "tab-3" }} />,
     );
     expect(selected("Tab 1")).toBe("true");
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+describe("className", () => {
+  it("takes a string, not a function of the part's state", () => {
+    // @ts-expect-error -- style a state through its `data-*` attribute instead
+    void (<TabsTab value="a" className={() => "from-fn"} />);
   });
 });

@@ -1,5 +1,5 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { MenuPopupProps } from "../menu.types";
 
@@ -13,7 +13,7 @@ export const MenuPopup = ({
   return (
     <BaseMenu.Popup
       data-slot="menu-popup"
-      className={cxState(styles["popup"], className)}
+      className={cx(styles["popup"], className)}
       {...props}
     >
       {children}
