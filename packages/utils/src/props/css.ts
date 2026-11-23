@@ -53,7 +53,7 @@ function registration(key: string, unit: AnyStyleProp["unit"]) {
  * attributes with fixed declarations, written after the style props so a
  * toggle wins over a style prop it conflicts with.
  *
- * Written to `@uiid/tokens/src/props.css` by `pnpm generate:props`. CI runs it
+ * Written to `packages/tokens/src/props.css` by `pnpm generate:props`. CI runs it
  * with `--check`, which fails when the two drift apart.
  */
 export function stylePropsCss() {

@@ -235,15 +235,12 @@ try {
   const iconChecks = ["@uiid/icons", "@uiid/design-system/icons"]
     .map(
       (specifier, index) => `
-import { createLucideIcon as create${index}, GlobeIcon as Globe${index}, type Icon as Icon${index} } from "${specifier}";
+import { GlobeIcon as Globe${index}, type Icon as Icon${index} } from "${specifier}";
 export const icon${index}: Icon${index} = Globe${index};
-export const created${index}: Icon${index} = create${index}("x", [["path", { d: "M0 0" }]]);
 // @ts-expect-error: an icon is a component, not \`any\`
 export const notAny${index}: number = Globe${index};
 // @ts-expect-error: \`size\` takes a string or number
 export const wrongProp${index} = <Globe${index} size={true} />;
-// @ts-expect-error: createLucideIcon is a function, not \`any\`
-export const createNotAny${index}: number = create${index};
 `,
     )
     .join("");

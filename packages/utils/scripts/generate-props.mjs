@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Writes `@uiid/tokens/src/props.css` from the style props in `src/props`.
+ * Writes `packages/tokens/src/props.css` from the style props in `src/props`.
  * With `--check`, writes nothing and exits 1 if the file is out of date.
  *
  * `runnerImport` loads the TypeScript source directly, so no build is needed.

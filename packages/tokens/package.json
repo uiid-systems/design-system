@@ -33,18 +33,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./package.json": "./package.json",
     "./globals.css": "./src/globals.css",
     "./compositions.css": "./src/compositions.css",
-    "./props.css": "./src/props.css",
-    "./animations.css": "./src/animations.css",
-    "./palette.css": "./src/palette.css",
-    "./json/*": "./src/json/*",
     "./*": "./src/css/*"
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "!src/**/*.test.*"
   ],
   "scripts": {
     "tokens": "node build-tokens.js",

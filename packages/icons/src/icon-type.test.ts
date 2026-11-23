@@ -48,11 +48,6 @@ declare module "lucide-react/dist/esm/icons/*" {
   const icon: import("lucide-react").LucideIcon;
   export default icon;
 }
-
-declare module "lucide-react/dist/esm/createLucideIcon.mjs" {
-  const createLucideIcon: typeof import("lucide-react").createLucideIcon;
-  export default createLucideIcon;
-}
 `;
 
 const assignments = (iconTypeModule: string) => `
@@ -109,37 +104,20 @@ export const sameIcon: Equal<Source, Mirror> = true;
 export const sameProps: Equal<IconProps, ComponentProps<Mirror>> = true;
 `;
 
-// createLucideIcon's local declaration must accept lucide's real function, so
-// the type a consumer sees cannot drift from what it calls at runtime.
-const createLucideIconParity = `
-import lucideCreateLucideIcon from "lucide-react/dist/esm/createLucideIcon.mjs";
-
-import type createLucideIcon from "../../src/create-lucide-icon";
-
-export const sameCreate: typeof createLucideIcon = lucideCreateLucideIcon;
-`;
-
 // The barrel as a consumer meets it: no ambient lucide declarations in scope.
 // Every icon used to be typed `any` here, because tsc emitted lucide's deep
 // specifiers into dist and nothing declared them, so each assignment below
 // that should fail compiled cleanly.
 const barrel = `
-import { createLucideIcon, GlobeIcon, type Icon } from "../../src/index";
+import { GlobeIcon, type Icon } from "../../src/index";
 
 export const icon: Icon = GlobeIcon;
 export const rendered = <GlobeIcon size={16} className="icon" />;
-export const created: Icon = createLucideIcon("custom", [
-  ["path", { d: "M0 0h24", key: "a" }],
-]);
 
 // @ts-expect-error: an icon is a component, not \`any\`
 export const iconIsNotAny: number = GlobeIcon;
 // @ts-expect-error: \`size\` takes a string or number
 export const wrongProp = <GlobeIcon size={true} />;
-// @ts-expect-error: createLucideIcon is a function, not \`any\`
-export const createIsNotAny: number = createLucideIcon;
-// @ts-expect-error: lucide icon nodes only take its SVG element names
-export const wrongNode = createLucideIcon("custom", [["div", {}]]);
 `;
 
 function typeErrors(
@@ -197,7 +175,6 @@ describe("Icon type", () => {
         "source.tsx": assignments("../../src/icon-type"),
         "mirror.tsx": assignments("./icon-type"),
         "drift.ts": drift,
-        "create-lucide-icon.ts": createLucideIconParity,
       }),
     ).toBe("");
   }, 120_000);
