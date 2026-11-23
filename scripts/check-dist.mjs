@@ -3,7 +3,7 @@
 // resolve every @uiid/* import to source through the `@uiid/source` export
 // condition, so nothing else in CI loads dist.
 //
-// Run after `pnpm turbo run build --filter='./packages/*'`. Six checks:
+// Run after `pnpm turbo run build --filter='./packages/*'`. Seven checks:
 //   1. Every bare import in a package's published files, type declarations
 //      included, is one of its dependencies or peerDependencies. The workspace
 //      symlinks devDependencies, so an undeclared import works here and breaks
@@ -16,6 +16,7 @@
 //   6. Published stylesheets carry no Lightning CSS artifacts: no
 //      `--lightningcss-*` fallbacks, no native nesting, and `light-dark()`
 //      still present where the packages use it (see scripts/css-target.ts).
+//   7. Every public package's `pnpm pack` tarball carries the root LICENSE.
 
 import { execFileSync } from "node:child_process";
 import {
@@ -373,6 +374,55 @@ try {
   }
 } finally {
   rmSync(nodenext, { recursive: true, force: true });
+}
+
+// No package keeps its own LICENSE: pnpm adds the workspace root's at pack time,
+// but only when no packed path matches /LICEN[CS]E(?:\..+)?/i. The pattern is
+// unanchored and tested against whole paths, so a module such as
+// `dist/.../license-plate.js` silently drops the licence. Pack every public
+// package with pnpm, as release does, and list the tarball itself: the file
+// list `pnpm pack --json` prints is taken before the root LICENSE is added.
+const tarballs = mkdtempSync(join(tmpdir(), "uiid-dist-pack-"));
+try {
+  for (const { dir, manifest } of packages.filter(
+    (pkg) => !pkg.manifest.private,
+  )) {
+    let files;
+    try {
+      const { filename } = JSON.parse(
+        execFileSync(
+          "pnpm",
+          ["pack", "--pack-destination", tarballs, "--json"],
+          {
+            cwd: dir,
+            encoding: "utf8",
+            stdio: "pipe",
+          },
+        ),
+      );
+      files = execFileSync("tar", ["-tzf", filename], { encoding: "utf8" })
+        .split("\n")
+        .filter(Boolean)
+        .map((entry) => entry.replace(/^package\//, ""));
+    } catch (error) {
+      fail(
+        `${manifest.name}: pnpm pack failed. ${error.stderr || error.message}`,
+      );
+      continue;
+    }
+    if (!files.includes("LICENSE")) {
+      const lookalikes = files.filter((file) => /licen[cs]e/i.test(file));
+      fail(
+        `${manifest.name}: the tarball has no LICENSE.${
+          lookalikes.length
+            ? ` pnpm skips the root LICENSE because these packed paths match its licence pattern: ${lookalikes.join(", ")}. Rename them.`
+            : ""
+        }`,
+      );
+    }
+  }
+} finally {
+  rmSync(tarballs, { recursive: true, force: true });
 }
 
 if (failures.length) {
