@@ -76,6 +76,32 @@ describe("phoneMask", () => {
     await expect.poll(selection).toEqual([8, 8]);
   });
 
+  it("steps Delete over a literal, then deletes the digit after it", async () => {
+    renderField("(123) 456-7890");
+    // Between the 6 and the hyphen.
+    await select(9);
+
+    await userEvent.keyboard("{Delete}");
+    await expect.poll(selection).toEqual([10, 10]);
+    expect(element().value).toBe("(123) 456-7890");
+
+    await userEvent.keyboard("{Delete}");
+    await expect.element(field()).toHaveValue("(123) 456-890");
+    await expect.poll(selection).toEqual([10, 10]);
+  });
+
+  /* The happy-dom test sets the selection by hand; this one presses the real
+     select-all keys. */
+  it("empties a full field when everything is selected and deleted", async () => {
+    renderField("(123) 456-7890");
+    element().focus();
+
+    await userEvent.keyboard("{ControlOrMeta>}a{/ControlOrMeta}");
+    await userEvent.keyboard("{Backspace}");
+
+    await expect.element(field()).toHaveValue("");
+  });
+
   it("formats a paste of bare digits and puts the caret after it", async () => {
     renderField();
     await copy("5551234567");

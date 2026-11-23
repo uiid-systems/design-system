@@ -173,7 +173,7 @@ export type InputMask<T> = {
   attach(element: HTMLInputElement): () => void;
   format(value: T): string;
   parse(masked: string): T;
-  inputMode?: "decimal" | "numeric";
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
 };
 
 const usd = currencyMask({ currency: "USD" });

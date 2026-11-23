@@ -12,8 +12,20 @@ import { Field } from "../field/field";
 import { Form } from "../form/form";
 import { Input } from "./input";
 import type { InputVariants } from "./input.types";
+import { currencyMask, numberMask, percentMask } from "./masks/number-masks";
+import { patternMask } from "./masks/pattern-mask";
+import { dateMask, phoneMask } from "./masks/patterns";
 
 type Size = NonNullable<InputVariants["size"]>;
+
+/* Masks are stable objects: build them once, at module scope or in useMemo. */
+const usd = currencyMask({ currency: "USD", min: 0 });
+const discount = percentMask({ min: 0, max: 100 });
+const quantity = numberMask({ min: 0 });
+const orderNumber = patternMask("AA-####", {
+  slots: { A: /[A-Z]/ },
+  uppercase: true,
+});
 
 const SIZES: Size[] = ["xsmall", "small", "medium", "large"];
 
@@ -141,6 +153,92 @@ export const Controlled = () => {
 export const Uncontrolled = () => (
   <Input label="Search" before={<SearchIcon />} defaultValue="Design system" />
 );
+
+/*
+ * The value is the masked string. `format` turns a number into it for the
+ * initial value, and `parse` reads the number back out.
+ */
+export const MaskedCurrency = () => {
+  const [masked, setMasked] = useState(usd.format(1234.5));
+
+  return (
+    <Stack gap={3}>
+      <Input
+        mask={usd}
+        label="Price"
+        value={masked}
+        onValueChange={setMasked}
+      />
+      <Text size={-1} emphasis="muted">
+        Parsed: {String(usd.parse(masked))}
+      </Text>
+    </Stack>
+  );
+};
+
+/* The value is the number as shown: `discount.parse("50%")` is 50, not 0.5. */
+export const MaskedPercent = () => (
+  <Input mask={discount} label="Discount" defaultValue={discount.format(50)} />
+);
+
+export const MaskedNumber = () => (
+  <Input
+    mask={quantity}
+    label="Quantity"
+    defaultValue={quantity.format(1200)}
+  />
+);
+
+/* A format hint goes in `description`, which stays visible while typing. */
+export const MaskedPattern = () => (
+  <Stack gap={4}>
+    <Input mask={phoneMask} label="Phone number" autoComplete="tel" />
+    <Input
+      mask={dateMask}
+      label="Date of birth"
+      description="MM/DD/YYYY"
+      autoComplete="bday"
+    />
+  </Stack>
+);
+
+/* `#` takes a digit, `A` takes what its pattern allows, the rest are literals. */
+export const CustomMask = () => (
+  <Input
+    mask={orderNumber}
+    label="Order number"
+    description="Two letters, then four digits"
+  />
+);
+
+/*
+ * The shape react-hook-form's `register("phone")` returns, written by hand.
+ * Its `onChange` reads `event.target.value`, which is the masked text.
+ */
+export const MaskedRegister = () => {
+  const [value, setValue] = useState("");
+  const registered = {
+    name: "phone",
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+      setValue(event.target.value),
+    onBlur: () => {},
+    ref: () => {},
+  };
+
+  return (
+    <Stack gap={3}>
+      <Input
+        mask={phoneMask}
+        label="Phone number"
+        autoComplete="tel"
+        {...registered}
+      />
+      <Text size={-1} emphasis="muted">
+        Form value: {value || "—"}
+      </Text>
+    </Stack>
+  );
+};
 
 /*
  * One label over several controls: the inputs keep their own names, and the
