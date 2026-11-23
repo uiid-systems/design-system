@@ -16,6 +16,16 @@ export type WithLayoutProps<BaseProps, LayoutProps> = BaseProps &
     keyof BaseProps | "color" | "defaultValue" | "defaultChecked"
   >;
 
+/**
+ * A Base UI part's props with `className` narrowed to a string. Base UI also
+ * takes a function of the part's state there, but `cx` has no state to call
+ * one with, so a UIID part takes a string and merges it with its own class.
+ * Style a state through the `data-*` attribute Base UI sets for it instead.
+ */
+export type WithStringClassName<Props> = Omit<Props, "className"> & {
+  className?: string;
+};
+
 export type StyleProp<K extends keyof React.CSSProperties> = {
   property: K;
   values?: ReadonlyArray<React.CSSProperties[K]>;

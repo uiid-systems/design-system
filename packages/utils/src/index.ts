@@ -1,4 +1,4 @@
-export { cva, cx, type VariantProps, type WithStringClassName } from "./cva";
+export { cva, cx, type VariantProps } from "./cva";
 export { isRenderable } from "./renderable";
 export {
   renderWithProps,
@@ -22,7 +22,11 @@ export {
   type ToggleProp,
   type ToggleProps,
 } from "./props/styles";
-export type { StyleProp, WithLayoutProps } from "./props/types";
+export type {
+  StyleProp,
+  WithLayoutProps,
+  WithStringClassName,
+} from "./props/types";
 export { resolveStyleProp } from "./props/css";
 export {
   definedProps,

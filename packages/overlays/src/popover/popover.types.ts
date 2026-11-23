@@ -28,7 +28,7 @@ export type PopoverProps = React.PropsWithChildren<{
   TriggerProps?: PopoverTriggerProps;
   PortalProps?: PopoverPortalProps;
   BackdropProps?: PopoverBackdropProps;
-  PositionerProps?: WithStringClassName<BasePopover.Positioner.Props>;
+  PositionerProps?: PopoverPositionerProps;
   PopupProps?: PopoverPopupProps;
 }> &
   Pick<PopoverRootProps, "open" | "defaultOpen" | "onOpenChange" | "modal"> &

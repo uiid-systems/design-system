@@ -51,7 +51,7 @@ export type SwitchFieldProps = GroupProps &
 
 export type SwitchProps = SwitchRootProps & {
   RootProps?: SwitchRootProps;
-  ThumbProps?: WithStringClassName<Switch.Thumb.Props>;
+  ThumbProps?: SwitchThumbProps;
   FieldProps?: SwitchFieldProps;
 } & Pick<FieldProps, "label" | "description" | "disabled"> &
   Pick<SwitchFieldProps, "reversed" | "bordered" | "size">;

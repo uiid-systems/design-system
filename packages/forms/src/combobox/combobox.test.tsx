@@ -653,6 +653,7 @@ describe("Combobox className", () => {
 
     const clear = document.querySelector("[data-slot='combobox-clear']");
     expect(clear).toHaveClass("caller", inputGroupStyles["input-group-action"]);
+    expect(clear).toHaveAttribute("data-visible");
   });
 
   it("merges a caller's className on the positioner with its own class and marks its state", async () => {
