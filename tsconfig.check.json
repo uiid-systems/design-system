@@ -1,8 +1,9 @@
 {
   // Build-free typecheck for every package and Storybook, run by `pnpm typecheck`.
   // `@uiid/source` resolves each @uiid/* import to the package's src/ instead of
-  // dist/, so this passes with no build. It is the only typecheck of test files:
-  // package builds leave them out (tsconfig.package.json).
+  // dist/, so this passes with no build. It and tsconfig.check.browser.json are
+  // the only typecheck of test files: package builds leave them out
+  // (tsconfig.package.json).
   // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -23,5 +24,9 @@
     // A bare dot-directory entry matches no files, so glob it.
     "apps/storybook/.storybook/**/*",
     "vitest.matchers.d.ts"
-  ]
+  ],
+  // Importing `vitest/browser` retypes jest-dom's matchers for every file in
+  // the program (its `toHaveTextContent` takes no RegExp), so the browser
+  // tests get their own program, tsconfig.check.browser.json.
+  "exclude": ["packages/*/src/**/*.browser.test.tsx"]
 }

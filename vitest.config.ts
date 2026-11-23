@@ -1,6 +1,6 @@
 import path from "path";
 
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
@@ -39,6 +39,8 @@ export default defineConfig({
     // files import directly and which are generated rather than committed.
     globalSetup: ["./vitest.globalSetup.ts"],
     include: ["packages/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
+    // Real-browser tests run from vitest.browser.config.ts instead.
+    exclude: [...configDefaults.exclude, "**/*.browser.test.tsx"],
     css: true,
   },
 });
