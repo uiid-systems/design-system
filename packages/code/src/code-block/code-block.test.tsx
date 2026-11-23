@@ -617,3 +617,11 @@ describe("CodeBlock", () => {
     });
   });
 });
+
+/* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
+describe("className", () => {
+  it("takes a string, not a function of the part's state", () => {
+    // @ts-expect-error -- style a state through its `data-*` attribute instead
+    void (<CodeBlock code="x" className={() => "from-fn"} />);
+  });
+});
