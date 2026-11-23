@@ -29,26 +29,6 @@ function cx(...args: ClassValue[]): string | undefined {
 }
 
 /**
- * `cx` for a Base UI part's `className`. The caller's value may be a function
- * of the part's state, which `cx` has no state to call, so this returns a
- * function for Base UI to call instead: it resolves any function argument with
- * the part's state, then merges everything in order as `cx` would.
- *
- * With no function among the arguments it returns the merged string, as `cx`
- * would. A function prop cannot cross from a server component into a client
- * one, so a part composed on the server must still receive a string.
- */
-function cxState<State>(
-  ...args: (ClassValue | ((state: State) => string | undefined))[]
-): string | ((state: State) => string | undefined) | undefined {
-  if (!args.some((arg) => typeof arg === "function")) {
-    return cx(...(args as ClassValue[]));
-  }
-  return (state) =>
-    cx(...args.map((arg) => (typeof arg === "function" ? arg(state) : arg)));
-}
-
-/**
  * A Base UI part's props with `className` narrowed to a string. Base UI also
  * takes a function of the part's state there, but `cx` has no state to call
  * one with, so a UIID part takes a string and merges it with its own class.
@@ -58,5 +38,5 @@ type WithStringClassName<Props> = Omit<Props, "className"> & {
   className?: string;
 };
 
-export { cva, cx, cxState };
+export { cva, cx };
 export type { VariantProps, WithStringClassName };

@@ -1,10 +1,4 @@
-export {
-  cva,
-  cx,
-  cxState,
-  type VariantProps,
-  type WithStringClassName,
-} from "./cva";
+export { cva, cx, type VariantProps, type WithStringClassName } from "./cva";
 export { isRenderable } from "./renderable";
 export {
   renderWithProps,

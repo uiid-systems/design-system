@@ -12,13 +12,13 @@ These conventions apply to app components under `apps/*/components/` as well as 
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 
-When the merged `className` goes to a Base UI part, use `cxState()` instead. A Base UI `className` may be a function of the part's state, which `cx` cannot call, so it rejects one at the type level and would drop it at runtime. Given a function, `cxState` returns one that resolves it with the part's state, then merges; given none, it returns the plain string `cx` would. Keep that string case: a function prop cannot cross from a server component into a client one, so a part composed on the server must still receive a string.
+A Base UI part that merges its own class into `className` does it with `cx` too, and takes `className` as a string. Base UI also accepts a function of the part's state there, but `cx` has no state to call it with, so wrap the part's Base UI props in `WithStringClassName<…>` from `@uiid/utils` (inside `WithLayoutProps` where the part takes layout props), which makes a function `className` a compile error. Consumers style state through the `data-*` attributes Base UI sets (`data-open`, `data-checked`, `data-disabled` and so on), not through `className`.
 
 Prefer simple monolithic components for common cases, exporting subcomponents for advanced composition. Expose frequently-used props directly rather than forcing them through nested prop objects.
 
 A top-level prop wins over the same key in `RootProps`, and in Collapsible's `PanelProps` for `keepMounted` and `instant`. Spread `RootProps` first and the top-level values after, passing them through `definedProps()` from `@uiid/utils` so an unset or `undefined` one doesn't erase the `RootProps` value; it takes named props (`definedProps({ open, modal })`) and a rest object (`definedProps(props)`) alike. Only the overlays (Dialog, Drawer, Popover, Tooltip) compose a handler, running `RootProps.onOpenChange` and then the top-level `onOpenChange`; every other handler follows top-level-wins. `<Dialog modal={false} RootProps={{ modal: true }} />` is non-modal.
 
-Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive.
+Mirror the Base UI API — never rename a primitive or recast a prop it already ships. Additions must be additive. `className` is a deliberate exception, narrowed to a string as described above.
 
 ## What a package exports
 
@@ -54,12 +54,12 @@ None yet.
 
 When porting components from shadcn or Radix patterns, substitute:
 
-| External                    | UIID                                                     |
-| --------------------------- | -------------------------------------------------------- |
-| `@radix-ui/react-slot`      | `renderWithProps` from `@uiid/utils`                     |
-| `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider`  |
-| `class-variance-authority`  | `cva` from `@uiid/utils` (pre-configured)                |
-| `clsx` / `tailwind-merge`   | `cx` (or `cxState` on a Base UI part) from `@uiid/utils` |
+| External                    | UIID                                                    |
+| --------------------------- | ------------------------------------------------------- |
+| `@radix-ui/react-slot`      | `renderWithProps` from `@uiid/utils`                    |
+| `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider` |
+| `class-variance-authority`  | `cva` from `@uiid/utils` (pre-configured)               |
+| `clsx` / `tailwind-merge`   | `cx` from `@uiid/utils`                                 |
 
 App components under `apps/*/components/` do not depend on `@uiid/utils`; they import its helpers from `@uiid/design-system/utils`, never from the `@uiid/design-system` root.
 
