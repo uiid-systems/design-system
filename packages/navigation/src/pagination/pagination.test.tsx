@@ -508,7 +508,16 @@ describe("Pagination", () => {
       <Pagination
         totalPages={31}
         onPageChange={onPageChange}
-        renderLink={(page) => <a href={`#page-${page}`} target="_blank" />}
+        renderLink={(page) => (
+          // happy-dom opens a `_blank` link in a new window and fetches it,
+          // which logs a refused connection. Pagination decides from `target`
+          // alone, so preventing the default keeps what this test covers.
+          <a
+            href={`#page-${page}`}
+            target="_blank"
+            onClick={(event) => event.preventDefault()}
+          />
+        )}
       />,
     );
 

@@ -11,9 +11,6 @@
 // Inside this repo, prefer the subpath — see README.md.
 export * from "./lucide-icons.generated";
 
-// Utility for authoring a custom icon in the lucide style.
-export { default as createLucideIcon } from "./create-lucide-icon";
-
 export type { Icon, IconProps } from "./icon-type";
 
 export * from "./custom";

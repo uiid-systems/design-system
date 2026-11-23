@@ -27,10 +27,6 @@ export const PALETTE_HUES = Object.entries(colors.color)
   )
   .map(([hue]) => hue) as PaletteColor[];
 
-/** A hue's authored value — the 500 step every ramp is anchored on. */
-export const paletteAnchor = (hue: PaletteColor): string =>
-  colors.color[hue]["500"].$value;
-
 /**
  * The class that carries a hue, publishing that hue's semantic `--palette-*`
  * names. A component applies one of these alongside its own treatment class, so
