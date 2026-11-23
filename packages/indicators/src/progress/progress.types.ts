@@ -1,7 +1,11 @@
 import type { Progress } from "@base-ui/react/progress";
 import type { GroupProps, StackProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps, WithLayoutProps } from "@uiid/utils";
+import type {
+  VariantProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { progressVariants } from "./progress.variants";
 
@@ -19,7 +23,7 @@ export type ProgressColor = PaletteColor;
  * hue is declared additively.
  */
 export type ProgressRootProps = WithLayoutProps<
-  Progress.Root.Props,
+  WithStringClassName<Progress.Root.Props>,
   StackProps
 > &
   ProgressVariants & {
@@ -28,10 +32,11 @@ export type ProgressRootProps = WithLayoutProps<
   };
 /** The row holding the label and the value readout. Renders a `Group`. */
 export type ProgressHeaderProps = GroupProps;
-export type ProgressLabelProps = Progress.Label.Props;
-export type ProgressValueProps = Progress.Value.Props;
-export type ProgressTrackProps = Progress.Track.Props;
-export type ProgressIndicatorProps = Progress.Indicator.Props;
+export type ProgressLabelProps = WithStringClassName<Progress.Label.Props>;
+export type ProgressValueProps = WithStringClassName<Progress.Value.Props>;
+export type ProgressTrackProps = WithStringClassName<Progress.Track.Props>;
+export type ProgressIndicatorProps =
+  WithStringClassName<Progress.Indicator.Props>;
 
 export type ProgressProps = Omit<ProgressRootProps, "children"> & {
   /** Names the progress bar; rendered above the track, start-aligned */

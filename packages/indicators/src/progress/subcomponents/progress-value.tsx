@@ -2,7 +2,7 @@
 
 import { Progress as BaseProgress } from "@base-ui/react/progress";
 import { Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ProgressValueProps } from "../progress.types";
 
@@ -22,7 +22,7 @@ export const ProgressValue = ({
     <BaseProgress.Value
       data-slot="progress-value"
       render={<Text emphasis="muted" />}
-      className={cxState(styles["progress-value"], className)}
+      className={cx(styles["progress-value"], className)}
       {...props}
     >
       {children}

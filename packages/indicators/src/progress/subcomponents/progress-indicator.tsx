@@ -1,7 +1,7 @@
 "use client";
 
 import { Progress as BaseProgress } from "@base-ui/react/progress";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ProgressIndicatorProps } from "../progress.types";
 
@@ -14,7 +14,7 @@ export const ProgressIndicator = ({
   return (
     <BaseProgress.Indicator
       data-slot="progress-indicator"
-      className={cxState(styles["progress-indicator"], className)}
+      className={cx(styles["progress-indicator"], className)}
       {...props}
     />
   );
