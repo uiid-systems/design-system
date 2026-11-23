@@ -644,16 +644,31 @@ describe("Combobox className", () => {
   });
 
   it("merges a caller's className on the clear button with its own class and marks its state", () => {
+    // `keepMounted` keeps the button in the DOM with no value, so the
+    // attribute's absence there is observable.
     render(
-      <ComboboxRoot items={items} defaultValue="banana">
-        <ComboboxInput />
-        <ComboboxClear className="caller" />
-      </ComboboxRoot>,
+      <>
+        <ComboboxRoot items={items} defaultValue="banana">
+          <ComboboxInput />
+          <ComboboxClear keepMounted className="caller" />
+        </ComboboxRoot>
+        <ComboboxRoot items={items}>
+          <ComboboxInput />
+          <ComboboxClear keepMounted className="caller" />
+        </ComboboxRoot>
+      </>,
     );
 
-    const clear = document.querySelector("[data-slot='combobox-clear']");
-    expect(clear).toHaveClass("caller", inputGroupStyles["input-group-action"]);
-    expect(clear).toHaveAttribute("data-visible");
+    const [withValue, empty] = document.querySelectorAll(
+      "[data-slot='combobox-clear']",
+    );
+    expect(withValue).toHaveClass(
+      "caller",
+      inputGroupStyles["input-group-action"],
+    );
+    expect(withValue).toHaveAttribute("data-visible");
+    expect(empty).toHaveClass("caller", inputGroupStyles["input-group-action"]);
+    expect(empty).not.toHaveAttribute("data-visible");
   });
 
   it("merges a caller's className on the positioner with its own class and marks its state", async () => {
