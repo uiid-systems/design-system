@@ -2,7 +2,7 @@
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { Card } from "@uiid/cards";
-import { cxState, isRenderable } from "@uiid/utils";
+import { cx, isRenderable } from "@uiid/utils";
 import { useId } from "react";
 
 import { useBodyOverflow } from "../../shared/use-body-overflow";
@@ -44,7 +44,7 @@ export const DialogPopup = ({
   return (
     <BaseDialog.Popup
       data-slot="dialog-popup"
-      className={cxState(
+      className={cx(
         styles["dialog-popup"],
         dialogVariants({ size }),
         className,

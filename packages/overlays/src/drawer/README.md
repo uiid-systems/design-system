@@ -26,7 +26,7 @@ A string trigger renders as a focusable `<span role="button">`. An element becom
 
 A `render` of your own, through `TriggerProps`, replaces that element as it does in Base UI: the trigger renders inside it, and `nativeButton` is yours to set.
 
-Pass a function to follow the open state. It receives Base UI's trigger state (`open`, `disabled`), the same object its `className` and `render` functions get, and its result is content: Drawer renders it inside its own focusable trigger, the way it wraps a string, and re-renders it as the state changes.
+Pass a function to follow the open state. It receives Base UI's trigger state (`open`, `disabled`), the same object its `render` function gets, and its result is content: Drawer renders it inside its own focusable trigger, the way it wraps a string, and re-renders it as the state changes.
 
 ```tsx
 <Drawer trigger={({ open }) => <Text>{open ? "Hide" : "Show"} details</Text>}>

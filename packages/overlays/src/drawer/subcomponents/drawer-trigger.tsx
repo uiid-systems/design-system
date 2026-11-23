@@ -1,7 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { cxState, resolveTrigger } from "@uiid/utils";
+import { cx, resolveTrigger } from "@uiid/utils";
 
 import type { DrawerTriggerProps } from "../drawer.types";
 
@@ -19,7 +19,7 @@ export const DrawerTrigger = ({
   return (
     <BaseDrawer.Trigger
       data-slot="drawer-trigger"
-      className={cxState(styles["drawer-trigger"], className)}
+      className={cx(styles["drawer-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
       nativeButton={nativeButton ?? resolved.nativeButton}

@@ -1,7 +1,7 @@
 "use client";
 
 import { Popover as BasePopover } from "@base-ui/react/popover";
-import { cxState, resolveTrigger } from "@uiid/utils";
+import { cx, resolveTrigger } from "@uiid/utils";
 
 import type { PopoverTriggerProps } from "../popover.types";
 
@@ -19,7 +19,7 @@ export const PopoverTrigger = ({
   return (
     <BasePopover.Trigger
       data-slot="popover-trigger"
-      className={cxState(styles["popover-trigger"], className)}
+      className={cx(styles["popover-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
       nativeButton={nativeButton ?? resolved.nativeButton}

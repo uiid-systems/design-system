@@ -1,7 +1,7 @@
 "use client";
 
 import { Toast as BaseToast } from "@base-ui/react/toast";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import { TOAST_DEFAULT_POSITION } from "../toast.constants";
 import type { ToastViewportProps } from "../toast.types";
@@ -16,7 +16,7 @@ export const ToastViewport = ({
   <BaseToast.Viewport
     data-slot="toast-viewport"
     data-position={position}
-    className={cxState(styles["toast-viewport"], className)}
+    className={cx(styles["toast-viewport"], className)}
     {...props}
   />
 );

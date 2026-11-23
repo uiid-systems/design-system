@@ -3,7 +3,7 @@
 import { Toast as BaseToast } from "@base-ui/react/toast";
 import { Button } from "@uiid/buttons";
 import { XIcon } from "@uiid/icons/x";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { ToastCloseProps } from "../toast.types";
 
@@ -17,7 +17,7 @@ export const ToastClose = ({
   <BaseToast.Close
     data-slot="toast-close"
     aria-label="Close"
-    className={cxState(styles["toast-close"], className)}
+    className={cx(styles["toast-close"], className)}
     render={<Button size="xsmall" variant="ghost" shape="circle" />}
     {...props}
   >

@@ -3,7 +3,7 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { Card } from "@uiid/cards";
 import { Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { TooltipPopupProps } from "../tooltip.types";
 
@@ -18,7 +18,7 @@ export const TooltipPopup = ({
     <BaseTooltip.Popup
       data-slot="tooltip-popup"
       render={<Card shadow py={2} px={2} />}
-      className={cxState(styles["tooltip-popup"], className)}
+      className={cx(styles["tooltip-popup"], className)}
       {...props}
     >
       <Text size={-1}>{children}</Text>

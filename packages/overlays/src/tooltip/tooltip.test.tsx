@@ -306,10 +306,10 @@ describe("Tooltip", () => {
   });
 
   // ============================================
-  // STATE-FUNCTION CLASSNAME
+  // CLASSNAME AND STATE
   // ============================================
-  // Base UI accepts `className` as a function of the part's state. Each part
-  // must hand the caller's function that state and keep its own module class.
+  // A part's `className` is a string, merged with its own module class. Its
+  // state is styled through the `data-*` attributes Base UI sets.
 
   it("gives a string trigger the shared focus-ring class", () => {
     render(<Tooltip trigger="Hover me">Tooltip content</Tooltip>);
@@ -337,14 +337,14 @@ describe("Tooltip", () => {
     );
   });
 
-  it("resolves a state-function className on the trigger alongside its own class", async () => {
+  it("merges a caller's className on the trigger with its own class and marks its state", async () => {
     const user = userEvent.setup();
 
     render(
       <Tooltip
         trigger={<button>Hover me</button>}
         TriggerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Tooltip content
@@ -353,23 +353,25 @@ describe("Tooltip", () => {
 
     const trigger = screen.getByRole("button", { name: "Hover me" });
     expect(styles["tooltip-trigger"]).toBeTruthy();
-    expect(trigger).toHaveClass(styles["tooltip-trigger"], "fn-closed");
+    expect(trigger).toHaveClass(styles["tooltip-trigger"], "caller");
+    expect(trigger).not.toHaveAttribute("data-popup-open");
 
     await user.hover(trigger);
 
     await waitFor(() => {
-      expect(trigger).toHaveClass(styles["tooltip-trigger"], "fn-open");
+      expect(trigger).toHaveClass(styles["tooltip-trigger"], "caller");
+      expect(trigger).toHaveAttribute("data-popup-open");
     });
   });
 
-  it("resolves a state-function className on the positioner alongside its own class", async () => {
+  it("merges a caller's className on the positioner with its own class and marks its state", async () => {
     const user = userEvent.setup();
 
     render(
       <Tooltip
         trigger={<button>Hover me</button>}
         PositionerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Tooltip content
@@ -379,20 +381,22 @@ describe("Tooltip", () => {
     await user.hover(screen.getByRole("button"));
 
     await waitFor(() => {
-      expect(
-        document.querySelector('[data-slot="tooltip-positioner"]'),
-      ).toHaveClass(styles["tooltip-positioner"], "fn-open");
+      const positioner = document.querySelector(
+        '[data-slot="tooltip-positioner"]',
+      );
+      expect(positioner).toHaveClass(styles["tooltip-positioner"], "caller");
+      expect(positioner).toHaveAttribute("data-open");
     });
   });
 
-  it("resolves a state-function className on the popup alongside its own class", async () => {
+  it("merges a caller's className on the popup with its own class and marks its state", async () => {
     const user = userEvent.setup();
 
     render(
       <Tooltip
         trigger={<button>Hover me</button>}
         PopupProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Tooltip content
@@ -402,10 +406,9 @@ describe("Tooltip", () => {
     await user.hover(screen.getByRole("button"));
 
     await waitFor(() => {
-      expect(document.querySelector('[data-slot="tooltip-popup"]')).toHaveClass(
-        styles["tooltip-popup"],
-        "fn-open",
-      );
+      const popup = document.querySelector('[data-slot="tooltip-popup"]');
+      expect(popup).toHaveClass(styles["tooltip-popup"], "caller");
+      expect(popup).toHaveAttribute("data-open");
     });
   });
 

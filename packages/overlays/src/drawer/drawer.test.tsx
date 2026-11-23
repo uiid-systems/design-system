@@ -893,19 +893,19 @@ describe("Drawer", () => {
   });
 
   // ============================================
-  // STATE-FUNCTION CLASSNAME
+  // CLASSNAME AND STATE
   // ============================================
-  // Base UI accepts `className` as a function of the part's state. Each part
-  // must hand the caller's function that state and keep its own module class.
+  // A part's `className` is a string, merged with its own module class. Its
+  // state is styled through the `data-*` attributes Base UI sets.
 
-  it("resolves a state-function className on the trigger alongside its own class", async () => {
+  it("merges a caller's className on the trigger with its own class and marks its state", async () => {
     const user = userEvent.setup();
 
     render(
       <Drawer
         trigger={<button>Open drawer</button>}
         TriggerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Drawer content
@@ -914,22 +914,24 @@ describe("Drawer", () => {
 
     const trigger = document.querySelector('[data-slot="drawer-trigger"]');
     expect(styles["drawer-trigger"]).toContain("composes-trigger");
-    expect(trigger).toHaveClass(styles["drawer-trigger"], "fn-closed");
+    expect(trigger).toHaveClass(styles["drawer-trigger"], "caller");
+    expect(trigger).not.toHaveAttribute("data-popup-open");
 
     await user.click(screen.getByRole("button", { name: "Open drawer" }));
 
     await waitFor(() => {
-      expect(trigger).toHaveClass(styles["drawer-trigger"], "fn-open");
+      expect(trigger).toHaveClass(styles["drawer-trigger"], "caller");
+      expect(trigger).toHaveAttribute("data-popup-open");
     });
   });
 
-  it("resolves a state-function className on the backdrop alongside its own class", () => {
+  it("merges a caller's className on the backdrop with its own class and marks its state", () => {
     render(
       <Drawer
         trigger={<button>Open drawer</button>}
         open={true}
         BackdropProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Drawer content
@@ -937,16 +939,17 @@ describe("Drawer", () => {
     );
 
     const backdrop = document.querySelector('[data-slot="drawer-backdrop"]');
-    expect(backdrop).toHaveClass(styles["drawer-backdrop"], "fn-open");
+    expect(backdrop).toHaveClass(styles["drawer-backdrop"], "caller");
+    expect(backdrop).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the viewport alongside its own class", () => {
+  it("merges a caller's className on the viewport with its own class and marks its state", () => {
     render(
       <Drawer
         trigger={<button>Open drawer</button>}
         open={true}
         ViewportProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Drawer content
@@ -954,16 +957,17 @@ describe("Drawer", () => {
     );
 
     const viewport = document.querySelector('[data-slot="drawer-viewport"]');
-    expect(viewport).toHaveClass(styles["drawer-viewport"], "fn-open");
+    expect(viewport).toHaveClass(styles["drawer-viewport"], "caller");
+    expect(viewport).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the popup alongside its own class", () => {
+  it("merges a caller's className on the popup with its own class and marks its state", () => {
     render(
       <Drawer
         trigger={<button>Open drawer</button>}
         open={true}
         PopupProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       >
         Drawer content
@@ -971,7 +975,8 @@ describe("Drawer", () => {
     );
 
     const popup = document.querySelector('[data-slot="drawer-popup"]');
-    expect(popup).toHaveClass(styles["drawer-popup"], "fn-open");
+    expect(popup).toHaveClass(styles["drawer-popup"], "caller");
+    expect(popup).toHaveAttribute("data-open");
   });
 
   it.each(["Cancel", "Save"])(

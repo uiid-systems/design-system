@@ -1,7 +1,7 @@
 "use client";
 
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import { cxState, resolveTrigger } from "@uiid/utils";
+import { cx, resolveTrigger } from "@uiid/utils";
 
 import type { TooltipTriggerProps } from "../tooltip.types";
 
@@ -22,7 +22,7 @@ export const TooltipTrigger = ({
   return (
     <BaseTooltip.Trigger
       data-slot="tooltip-trigger"
-      className={cxState(styles["tooltip-trigger"], className)}
+      className={cx(styles["tooltip-trigger"], className)}
       {...props}
       render={render ?? resolved.render}
     >

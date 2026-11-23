@@ -1,15 +1,16 @@
 import type { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
-import type { WithTriggerChildren } from "@uiid/utils";
+import type { WithStringClassName, WithTriggerChildren } from "@uiid/utils";
 
 export type TooltipProviderProps = BaseTooltip.Provider.Props;
 export type TooltipRootProps = BaseTooltip.Root.Props;
 export type TooltipTriggerProps = WithTriggerChildren<
-  BaseTooltip.Trigger.Props,
+  WithStringClassName<BaseTooltip.Trigger.Props>,
   BaseTooltip.Trigger.State
 >;
 export type TooltipPortalProps = BaseTooltip.Portal.Props;
-export type TooltipPositionerProps = BaseTooltip.Positioner.Props;
-export type TooltipPopupProps = BaseTooltip.Popup.Props;
+export type TooltipPositionerProps =
+  WithStringClassName<BaseTooltip.Positioner.Props>;
+export type TooltipPopupProps = WithStringClassName<BaseTooltip.Popup.Props>;
 
 export type TooltipProps = React.PropsWithChildren<{
   trigger: TooltipTriggerProps["children"];

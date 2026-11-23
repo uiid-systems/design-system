@@ -1,7 +1,7 @@
 "use client";
 
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { DrawerViewportProps } from "../drawer.types";
 
@@ -20,7 +20,7 @@ export const DrawerViewport = ({
   return (
     <BaseDrawer.Viewport
       data-slot="drawer-viewport"
-      className={cxState(styles["drawer-viewport"], className)}
+      className={cx(styles["drawer-viewport"], className)}
       {...props}
     >
       {children}
