@@ -1,6 +1,6 @@
 "use client";
 
-import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
+import { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
 import { cx, useComposedRefs, type WithStringClassName } from "@uiid/utils";
@@ -25,8 +25,8 @@ import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 import styles from "./toggle-group.module.css";
 
 /**
- * A child Toggle's `className` is merged with `cx`, so it is read as a string,
- * as on every UIID part. Style a toggle's state through `data-pressed`.
+ * A child Toggle's `className` is merged with `cx`, so it is a string, as the
+ * exported `Toggle` types it. Style a toggle's state through `data-pressed`.
  */
 type ToggleChildProps = WithStringClassName<BaseToggle.Props>;
 
@@ -183,4 +183,13 @@ export const ToggleGroup = <Value extends string = string>({
 };
 ToggleGroup.displayName = "ToggleGroup";
 
-export { Toggle } from "@base-ui/react/toggle";
+/**
+ * Base UI's `Toggle` itself, with `className` typed as a string. The group
+ * merges its own class into each child's `className` with `cx`, which cannot
+ * call a function of the toggle's state, so a function is a compile error here
+ * rather than a class silently dropped. Every other prop is Base UI's.
+ */
+export const Toggle: <Value extends string = string>(
+  props: WithStringClassName<BaseToggle.Props<Value>> &
+    React.RefAttributes<HTMLButtonElement>,
+) => React.JSX.Element = BaseToggle;

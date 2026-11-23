@@ -366,6 +366,13 @@ describe("ToggleGroup fullwidth", () => {
 /* The group clones each Toggle to add its own classes, merged with the child's
    string `className`. A toggle's state is styled through `data-pressed`. */
 describe("ToggleGroup child className", () => {
+  /* Type-level only: `pnpm typecheck` fails if the directive goes unused. The
+     group's `cx` merge would drop a function, so the type rejects one. */
+  it("types a Toggle's className as a string, not a function of its state", () => {
+    // @ts-expect-error -- style a toggle's state through `data-pressed` instead
+    void (<Toggle value="a" className={() => "from-fn"} />);
+  });
+
   it("merges a child Toggle's className with its own class and marks its state", () => {
     render(
       <ToggleGroup defaultValue={["monthly"]}>

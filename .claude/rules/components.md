@@ -12,7 +12,7 @@ These conventions apply to app components under `apps/*/components/` as well as 
 
 Components use kebab-case filenames and PascalCase names. Set `data-slot` on the root element, merge classNames with `cx()` from `@uiid/utils`, spread remaining props to the root, and add `"use client"` for client components.
 
-A Base UI part that merges its own class into `className` does it with `cx` too, and takes `className` as a string. Base UI also accepts a function of the part's state there, but `cx` has no state to call it with, so wrap the part's Base UI props in `WithStringClassName<…>` from `@uiid/utils` (inside `WithLayoutProps` where the part takes layout props), which makes a function `className` a compile error. Consumers style state through the `data-*` attributes Base UI sets (`data-open`, `data-checked`, `data-disabled` and so on), not through `className`.
+A Base UI part that merges its own class into `className` does it with `cx` too, and takes `className` as a string. Base UI also accepts a function of the part's state there, but `cx` has no state to call it with, so wrap the part's Base UI props in `WithStringClassName<…>` from `@uiid/utils` (inside `WithLayoutProps` where the part takes layout props), which makes a function `className` a compile error. The same holds for a Base UI part re-exported for another part to merge into, such as the `Toggle` that ToggleGroup clones. Consumers style state through the `data-*` attributes Base UI sets (`data-open`, `data-checked`, `data-disabled` and so on), not through `className`.
 
 Prefer simple monolithic components for common cases, exporting subcomponents for advanced composition. Expose frequently-used props directly rather than forcing them through nested prop objects.
 
