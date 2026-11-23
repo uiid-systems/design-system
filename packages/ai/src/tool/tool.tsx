@@ -5,7 +5,7 @@ import { Badge } from "@uiid/indicators";
 import { CollapsiblePanel, CollapsibleRoot } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
 import { Prose, Text } from "@uiid/typography";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 import { Children, Fragment, isValidElement, useMemo } from "react";
 
 import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
@@ -177,7 +177,7 @@ export const Tool = ({
       fullwidth={fullwidth}
       ax={ax}
       b={b}
-      className={cxState(styles["tool"], className)}
+      className={cx(styles["tool"], className)}
       {...props}
     >
       <CollapsibleTrigger

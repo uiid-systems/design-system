@@ -1,4 +1,5 @@
 import type { CollapsibleRootProps } from "@uiid/interactive";
+import type { WithStringClassName } from "@uiid/utils";
 
 import type { ToolState } from "../ai.types";
 
@@ -34,7 +35,9 @@ export type ToolLabels = {
 
 /* `part` is omitted from the root props because HTML's own `part` attribute
    already types it as a string. */
-export type ToolProps = Omit<CollapsibleRootProps, "part"> & {
+export type ToolProps = WithStringClassName<
+  Omit<CollapsibleRootProps, "part">
+> & {
   /** The tool call to show. */
   part: ToolPart;
   /** Text in place of the English status labels and section headings. */
