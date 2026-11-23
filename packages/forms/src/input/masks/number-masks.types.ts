@@ -5,6 +5,10 @@ type NumberMaskBounds = {
    * Lowest value the field accepts. A positive value below it can still be
    * typed, since it may be the start of a larger one, and is raised to `min`
    * when the field is left. A negative value below it clamps as you type.
+   *
+   * At 0 or more, a typed `-` is refused and the mask asks for the numeric
+   * keypad. Unset or negative, the mask sets no `inputMode`, since the iOS
+   * keypads have no minus key.
    */
   min?: number;
   /**

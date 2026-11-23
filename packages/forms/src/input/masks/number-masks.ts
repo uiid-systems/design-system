@@ -48,6 +48,9 @@ function buildNumberMask(
   const settledOptions = maskitoNumber(settled);
   const postfix = typed.postfix ?? "";
   const round = rounder(typed.maximumFractionDigits ?? 0);
+  /* The iOS numeric and decimal keypads have no minus key, so a field that
+     takes a negative asks for no keyboard and gets the full one. */
+  const takesNegative = (typed.min ?? -Infinity) < 0;
 
   /* With no digit left, drop the affixes so a cleared field is "". A lone minus
      survives so a negative can still be started; blur drops it. */
@@ -81,7 +84,11 @@ function buildNumberMask(
   };
 
   return {
-    inputMode: typed.maximumFractionDigits ? "decimal" : "numeric",
+    inputMode: takesNegative
+      ? undefined
+      : typed.maximumFractionDigits
+        ? "decimal"
+        : "numeric",
     attach(element) {
       const maskito = new Maskito(visibleToReact(element), options);
       return () => maskito.destroy();
