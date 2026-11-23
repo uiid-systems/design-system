@@ -1,32 +1,10 @@
 import type {
   UniqueIdentifier,
   DndContextProps,
-  DraggableAttributes,
-  DraggableSyntheticListeners,
   DragOverlay,
   DragEndEvent,
 } from "@dnd-kit/core";
 import type { SortableContextProps } from "@dnd-kit/sortable";
-
-export interface SortableRootContextValue<T> {
-  id: string;
-  items: UniqueIdentifier[];
-  modifiers: DndContextProps["modifiers"];
-  strategy: SortableContextProps["strategy"];
-  activeId: UniqueIdentifier | null;
-  setActiveId: (id: UniqueIdentifier | null) => void;
-  getItemValue: (item: T) => UniqueIdentifier;
-  flatCursor: boolean;
-}
-
-export interface SortableItemContextValue {
-  id: string;
-  attributes: DraggableAttributes;
-  listeners: DraggableSyntheticListeners | undefined;
-  setActivatorNodeRef: (node: HTMLElement | null) => void;
-  isDragging?: boolean;
-  disabled?: boolean;
-}
 
 interface GetItemValue<T> {
   /**

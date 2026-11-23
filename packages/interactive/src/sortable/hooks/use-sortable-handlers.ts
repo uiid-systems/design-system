@@ -28,8 +28,6 @@ export interface UseSortableHandlersOptions<T> {
 export interface UseSortableHandlersReturn {
   /** The currently active (dragging) item id */
   activeId: UniqueIdentifier | null;
-  /** Set the active item id */
-  setActiveId: (id: UniqueIdentifier | null) => void;
   /** Handler for drag start events */
   handleDragStart: (event: DragStartEvent) => void;
   /** Handler for drag end events */
@@ -111,7 +109,6 @@ export function useSortableHandlers<T>(
 
   return {
     activeId,
-    setActiveId,
     handleDragStart,
     handleDragEnd,
     handleDragCancel,

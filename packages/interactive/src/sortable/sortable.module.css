@@ -1,5 +1,5 @@
 .sortable-item {
-  &:where([data-dragging], :disabled) {
+  &:where([data-dragging], [data-disabled]) {
     opacity: var(--globals-disabled-opacity);
   }
 }

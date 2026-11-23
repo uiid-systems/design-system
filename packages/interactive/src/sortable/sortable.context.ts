@@ -1,13 +1,39 @@
+import type {
+  DndContextProps,
+  DraggableAttributes,
+  DraggableSyntheticListeners,
+  UniqueIdentifier,
+} from "@dnd-kit/core";
+import type { SortableContextProps } from "@dnd-kit/sortable";
 import * as React from "react";
 
 import { ROOT_NAME, ITEM_NAME } from "./sortable.constants";
-import type {
-  SortableRootContextValue,
-  SortableItemContextValue,
-} from "./sortable.types";
+
+/** What `Sortable` hands its parts: only the fields a part reads. */
+export interface SortableRootContextValue {
+  /** Read by SortableContent. */
+  items: UniqueIdentifier[];
+  /** Read by SortableContent. */
+  strategy: SortableContextProps["strategy"];
+  /** Read by SortableOverlay. */
+  modifiers: DndContextProps["modifiers"];
+  /** Read by SortableOverlay. */
+  activeId: UniqueIdentifier | null;
+  /** Read by SortableOverlay. */
+  flatCursor: boolean;
+}
+
+export interface SortableItemContextValue {
+  id: string;
+  attributes: DraggableAttributes;
+  listeners: DraggableSyntheticListeners | undefined;
+  setActivatorNodeRef: (node: HTMLElement | null) => void;
+  isDragging?: boolean;
+  disabled?: boolean;
+}
 
 export const SortableRootContext =
-  React.createContext<SortableRootContextValue<unknown> | null>(null);
+  React.createContext<SortableRootContextValue | null>(null);
 
 export function useSortableContext(consumerName: string) {
   const context = React.useContext(SortableRootContext);
