@@ -9,11 +9,6 @@ export * from "./prose/prose.types";
 
 export * from "./reveal/reveal";
 export * from "./reveal/reveal.types";
-export { useStreamPace, useStreamReveal } from "./reveal/reveal.hooks";
-export type {
-  StreamRevealOptions,
-  StreamRevealPass,
-} from "./reveal/reveal.hooks";
 
 export * from "./shimmer/shimmer";
 export * from "./shimmer/shimmer.types";

@@ -1,9 +1,9 @@
 import { act, render, renderHook } from "@testing-library/react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
-import { useStreamPace, useStreamReveal } from "./reveal.hooks";
+import { useStreamPace, useStreamReveal } from "./markdown.hooks";
 
-import styles from "./reveal.module.css";
+import styles from "./markdown.module.css";
 
 beforeEach(() => {
   vi.useFakeTimers();

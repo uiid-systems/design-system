@@ -1,3 +1,4 @@
+import cssLayers from "../../scripts/css-layers.cjs";
 import { createViteConfig } from "../../vite.config.ts";
 
 export default createViteConfig({
@@ -6,5 +7,5 @@ export default createViteConfig({
   // (not a peer): it holds no React context shared across packages, so a
   // single resolved instance is not required.
   external: [/^markdown-to-jsx(\/|$)/],
-  // No `cssLayer`: Markdown ships no CSS of its own; all styling comes from Prose.
+  cssLayer: cssLayers.markdown,
 });

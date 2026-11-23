@@ -17,6 +17,7 @@ module.exports = {
   indicators: "uiid.components",
   interactive: "uiid.components",
   lists: "uiid.components",
+  markdown: "uiid.components",
   navigation: "uiid.components",
   overlays: "uiid.components",
   tables: "uiid.components",

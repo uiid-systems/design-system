@@ -1,0 +1,25 @@
+/* Delay is set per word when its node mounts; see markdown.hooks. */
+.reveal-stream {
+  /* backwards, not both: a filter animation held at its end keyframe would keep every finished word its own stacking context. */
+  animation: reveal var(--reveal-duration) ease-in-out backwards;
+}
+
+/* The same motion as Reveal's words in @uiid/typography. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    filter: blur(var(--reveal-blur));
+  }
+  to {
+    opacity: 1;
+    /* Interpolates as blur(0). The minifier rewrites blur(0) as blur(), whose
+       empty argument not every engine is known to accept. */
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-stream {
+    animation: none;
+  }
+}

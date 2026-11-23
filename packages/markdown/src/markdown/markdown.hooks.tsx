@@ -8,15 +8,15 @@ import {
   REVEAL_DEFAULT_DURATION,
   REVEAL_STREAM_CATCH_UP,
   REVEAL_STREAM_EASE,
-} from "./reveal.constants";
+} from "./markdown.constants";
 import {
   advanceWords,
   completeLength,
   countWords,
   splitWords,
-} from "./reveal.utils";
+} from "./markdown.utils";
 
-import styles from "./reveal.module.css";
+import styles from "./markdown.module.css";
 
 /**
  * Shows streamed text a whole word at a time, at an even pace, instead of in

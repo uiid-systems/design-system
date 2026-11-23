@@ -37,57 +37,13 @@ Words are keyed by index, so when `children` grows (streamed chunks), already-mo
 <Reveal>{streamedText}</Reveal>
 ```
 
-Streamed text arrives in bursts, several words in one chunk and then nothing for a while, and revealed as it arrives it looks choppy. `useStreamPace` evens it out. It shows the text a whole word at a time, spaced so that whatever has arrived but not been shown yet clears in about 250ms: a burst speeds it up, so it never falls far behind. The unfinished last word waits until it is complete, so a word split across two chunks reveals whole. The first word goes out at once. A markdown block marker, a run of `-`, `*`, `+`, `>` or `#`, or an ordered-list number like `1.` or `2)` at the start of a line, goes out with the word after it. Anything else counts as a word, including an emoji, `—` or `}`. While streaming, a marker with no word after it yet waits, so a half-arrived list item or heading doesn't flash in empty; once streaming stops it shows.
-
-```tsx
-import { Reveal, useStreamPace } from "@uiid/typography";
-
-const paced = useStreamPace(text, streaming);
-
-<Reveal>{paced.text}</Reveal>;
-```
-
-It returns the `text` to show, its own `streaming`, which stays true after yours turns off until the last words have gone out, and a `streamId`. Text that no longer starts with what has been shown, like a regenerated message, starts over from nothing, and `streamId` goes up by one. Pass it to `useStreamReveal`.
-
-For markdown, use [`Markdown`](../../../markdown/src/markdown/README.md) with `reveal`, which does this for you.
+For streamed markdown, or to pace streamed text so it shows a whole word at a time instead of in the bursts it arrives in, use [`Markdown`](../../../markdown/src/markdown/README.md) with `reveal`.
 
 To replay the animation, remount with a `key`:
 
 ```tsx
 <Reveal key={run}>{text}</Reveal>
 ```
-
-## useStreamReveal
-
-The word reveal behind `Markdown`'s `reveal` prop, for renderers that rebuild their element tree as text streams in. A run of text that becomes bold, for example, is a new element wrapping words the reader has already seen. `Reveal` relies on React keeping each word's span, so it would fade those words in again. This hook identifies a word by its offset in the visible text and records when it first appeared, so a rebuilt word does not animate twice.
-
-```tsx
-const words = useStreamReveal({ streaming, streamId });
-const pass = words.pass(); // a fresh pass on every render
-
-<div style={words.style}>
-  {pass.text("Hello ")}
-  <strong>{pass.text("world")}</strong>
-</div>;
-```
-
-| Option      | Type      | Default | Description                                                                                                                                                                           |
-| ----------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `streaming` | `boolean` | —       | Whether text is still arriving. Words keep animating for `duration` after it stops                                                                                                    |
-| `duration`  | `number`  | `400`   | Duration of each word's fade/blur-in, in ms                                                                                                                                           |
-| `blur`      | `number`  | `6`     | Blur radius each word starts from, in px                                                                                                                                              |
-| `streamId`  | `number`  | `0`     | The stream the text belongs to, like `useStreamPace`'s `streamId`. When it changes every word is forgotten, so a new stream that replaces one still animating fades in from the start |
-
-It returns:
-
-- `active`: true while text is arriving and for one `duration` after it stops, so the last word and any still fading can finish. When it turns false every word is forgotten, so text streamed again into the same instance, like a regenerated message, animates from the start.
-- `style`: the duration and blur custom properties to put on the root element. `undefined` while inactive.
-- `pass()`: walks the visible text in document order. While inactive, each method hands its content back unchanged, so you can call them on every render without checking `active`. Check it only to skip the work, as `Markdown` does.
-  - `text(text, key?)` renders one span per word.
-  - `unit(children, length, key?)` reveals something that can't be split, like inline code, as one piece. `length` is how much visible text it holds.
-  - `skip(length)` counts text that is shown without animating, like a code block, so the words after it keep their offsets.
-
-Call the pass's methods for every piece of visible text, in reading order, on every render. If text the reader has already seen changes length partway through, every word after it gets a new offset and fades in again.
 
 ## Accessibility
 
@@ -98,4 +54,4 @@ Call the pass's methods for every piece of visible text, in reading order, on ev
 
 - `stagger` and `duration` apply to words as they mount. Changing either later only affects words added after the change; words already on screen keep their timing.
 - Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. It always wraps, so it has no `nowrap` or `truncate` prop either.
-- `children` must be a string. To reveal formatted text, use `useStreamReveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.
+- `children` must be a string. To reveal formatted text, render it as markdown with [`Markdown`](../../../markdown/src/markdown/README.md)'s `reveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.
