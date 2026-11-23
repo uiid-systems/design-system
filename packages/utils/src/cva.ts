@@ -48,5 +48,15 @@ function cxState<State>(
     cx(...args.map((arg) => (typeof arg === "function" ? arg(state) : arg)));
 }
 
+/**
+ * A Base UI part's props with `className` narrowed to a string. Base UI also
+ * takes a function of the part's state there, but `cx` has no state to call
+ * one with, so a UIID part takes a string and merges it with its own class.
+ * Style a state through the `data-*` attribute Base UI sets for it instead.
+ */
+type WithStringClassName<Props> = Omit<Props, "className"> & {
+  className?: string;
+};
+
 export { cva, cx, cxState };
-export type { VariantProps };
+export type { VariantProps, WithStringClassName };
