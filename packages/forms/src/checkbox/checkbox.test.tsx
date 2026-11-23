@@ -261,32 +261,29 @@ describe("Checkbox color", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. */
-describe("Checkbox state-function className", () => {
-  const onState = (state: { checked: boolean }) =>
-    state.checked ? "fn-checked" : "fn-unchecked";
-
-  it("resolves a state-function className on the root alongside its own class", () => {
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. */
+describe("Checkbox className", () => {
+  it("merges a caller's className on the root with its own class and marks its state", () => {
     const { container } = render(
-      <Checkbox defaultChecked className={onState} />,
+      <Checkbox defaultChecked className="caller" />,
     );
     const box = container.querySelector("[data-slot='checkbox']");
 
-    expect(box).toHaveClass("fn-checked");
-    expect(box).toHaveClass(styles["checkbox"]);
+    expect(box).toHaveClass("caller", styles["checkbox"]);
+    expect(box).toHaveAttribute("data-checked");
   });
 
-  it("resolves a state-function className on the indicator alongside its own class", () => {
+  it("merges a caller's className on the indicator with its own class and marks its state", () => {
     const { container } = render(
-      <Checkbox defaultChecked IndicatorProps={{ className: onState }} />,
+      <Checkbox defaultChecked IndicatorProps={{ className: "caller" }} />,
     );
     const indicator = container.querySelector(
       "[data-slot='checkbox-indicator']",
     );
 
-    expect(indicator).toHaveClass("fn-checked");
-    expect(indicator).toHaveClass(styles["checkbox-indicator"]);
+    expect(indicator).toHaveClass("caller", styles["checkbox-indicator"]);
+    expect(indicator).toHaveAttribute("data-checked");
   });
 });
 

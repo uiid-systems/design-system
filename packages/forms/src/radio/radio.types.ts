@@ -1,6 +1,6 @@
 import type { Radio as BaseRadio } from "@base-ui/react/radio";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldRowProps } from "../field/field.types";
 import type { radioVariants } from "./radio.variants";
@@ -13,7 +13,7 @@ export type RadioVariants = VariantProps<typeof radioVariants>;
  */
 export type RadioColor = PaletteColor;
 
-export type RadioRootProps = BaseRadio.Root.Props &
+export type RadioRootProps = WithStringClassName<BaseRadio.Root.Props> &
   RadioVariants & {
     hideIndicator?: boolean;
     /**
@@ -23,7 +23,8 @@ export type RadioRootProps = BaseRadio.Root.Props &
      */
     color?: RadioColor;
   };
-export type RadioIndicatorProps = BaseRadio.Indicator.Props;
+export type RadioIndicatorProps =
+  WithStringClassName<BaseRadio.Indicator.Props>;
 
 export type RadioProps = RadioRootProps &
   Pick<FieldRowProps, "label" | "description"> & {

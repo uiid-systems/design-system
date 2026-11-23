@@ -1,6 +1,6 @@
 import type { Input } from "@base-ui/react/input";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { inputVariants, inputWrapperVariants } from "./input.variants";
@@ -67,7 +67,10 @@ export type InputMask<T> = {
  * Native `size` on an `<input>` is the rarely-used character-width attribute;
  * surfacing it here would desync Input from the rest of the system.
  */
-export type InputControlProps = Omit<Input.Props, "size"> & {
+export type InputControlProps = Omit<
+  WithStringClassName<Input.Props>,
+  "size"
+> & {
   /**
    * Rendered inside an `InputWrapper`, which carries the control surface, so
    * the input paints only its inner treatment.

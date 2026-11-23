@@ -1,7 +1,7 @@
 "use client";
 
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import {
   popupLayerCard,
@@ -26,7 +26,7 @@ export const SelectPopup = ({
     <BaseSelect.Popup
       data-slot="select-popup"
       render={popupLayerCard({ color, p, gap, fullwidth })}
-      className={cxState(popupLayerPopupClassName, className)}
+      className={cx(popupLayerPopupClassName, className)}
       {...props}
     >
       {children}

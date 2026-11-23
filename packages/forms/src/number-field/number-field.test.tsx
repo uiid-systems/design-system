@@ -349,67 +349,90 @@ describe("NumberField group layout props", () => {
   });
 });
 
-/* Base UI calls a function `className` with the part's state. The wrapper's
-   own classes have to merge with what it returns, not drop it. Every part
-   shares the root's state, so each one reads the current value off it. */
-describe("NumberField state-function className", () => {
-  const onState = (state: { value: number | null }) =>
-    `fn-value-${state.value}`;
-
+/* A part's `className` is a string, merged with its own module class. Its
+   state is styled through the `data-*` attributes Base UI sets. Every part
+   shares the root's state, so each one marks the root's `disabled`. */
+describe("NumberField className", () => {
   const part = (container: HTMLElement, slot: string) =>
     container.querySelector(`[data-slot='number-field-${slot}']`);
 
-  it("resolves a state-function className on the group alongside its own class", () => {
+  it("merges a caller's className on the group with its own class and marks its state", () => {
     const { container } = render(
-      <NumberField defaultValue={7} GroupProps={{ className: onState }} />,
+      <NumberField
+        disabled
+        defaultValue={7}
+        GroupProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "group")).toHaveClass("fn-value-7");
+    expect(part(container, "group")).toHaveClass("caller");
+
+    expect(part(container, "group")).toHaveAttribute("data-disabled");
     expect(part(container, "group")).toHaveClass(styles["number-field"]);
   });
 
-  it("resolves a state-function className on the input alongside its own class", () => {
+  it("merges a caller's className on the input with its own class and marks its state", () => {
     const { container } = render(
-      <NumberField defaultValue={7} InputProps={{ className: onState }} />,
+      <NumberField
+        disabled
+        defaultValue={7}
+        InputProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "input")).toHaveClass("fn-value-7");
+    expect(part(container, "input")).toHaveClass("caller");
+
+    expect(part(container, "input")).toHaveAttribute("data-disabled");
     expect(part(container, "input")).toHaveClass(styles["number-field-input"]);
   });
 
-  it("resolves a state-function className on the increment alongside its own class", () => {
+  it("merges a caller's className on the increment with its own class and marks its state", () => {
     const { container } = render(
-      <NumberField defaultValue={7} IncrementProps={{ className: onState }} />,
+      <NumberField
+        disabled
+        defaultValue={7}
+        IncrementProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "increment")).toHaveClass("fn-value-7");
+    expect(part(container, "increment")).toHaveClass("caller");
+
+    expect(part(container, "increment")).toHaveAttribute("data-disabled");
     expect(part(container, "increment")).toHaveClass(
       styles["number-field-increment"],
     );
   });
 
-  it("resolves a state-function className on the decrement alongside its own class", () => {
+  it("merges a caller's className on the decrement with its own class and marks its state", () => {
     const { container } = render(
-      <NumberField defaultValue={7} DecrementProps={{ className: onState }} />,
+      <NumberField
+        disabled
+        defaultValue={7}
+        DecrementProps={{ className: "caller" }}
+      />,
     );
 
-    expect(part(container, "decrement")).toHaveClass("fn-value-7");
+    expect(part(container, "decrement")).toHaveClass("caller");
+
+    expect(part(container, "decrement")).toHaveAttribute("data-disabled");
     expect(part(container, "decrement")).toHaveClass(
       styles["number-field-decrement"],
     );
   });
 
-  it("resolves a state-function className on the scrub area alongside its own class", () => {
+  it("merges a caller's className on the scrub area with its own class and marks its state", () => {
     const { container } = render(
-      <NumberFieldRoot defaultValue={7}>
-        <NumberFieldScrubArea className={onState}>Amount</NumberFieldScrubArea>
+      <NumberFieldRoot disabled defaultValue={7}>
+        <NumberFieldScrubArea className="caller">Amount</NumberFieldScrubArea>
         <NumberFieldGroup>
           <NumberFieldInput />
         </NumberFieldGroup>
       </NumberFieldRoot>,
     );
 
-    expect(part(container, "scrub-area")).toHaveClass("fn-value-7");
+    expect(part(container, "scrub-area")).toHaveClass("caller");
+
+    expect(part(container, "scrub-area")).toHaveAttribute("data-disabled");
     expect(part(container, "scrub-area")).toHaveClass(
       styles["number-field-scrub-area"],
     );

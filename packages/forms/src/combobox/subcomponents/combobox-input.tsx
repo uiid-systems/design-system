@@ -1,7 +1,7 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -78,7 +78,7 @@ export const ComboboxInput = ({
           <BaseCombobox.Input
             data-slot="combobox-input"
             render={<input />}
-            className={cxState(
+            className={cx(
               inputControlClassName({
                 inner: hasSlots,
                 size,

@@ -1,10 +1,11 @@
 import type { Combobox as BaseInputGroupTypes } from "@base-ui/react/combobox";
-import { cxState } from "@uiid/utils";
+import { cx, type WithStringClassName } from "@uiid/utils";
 
 import type { InputVariants } from "../../input/input.types";
 
-type InputGroupRootProps = BaseInputGroupTypes.InputGroup.Props &
-  Pick<InputVariants, "size">;
+type InputGroupRootProps =
+  WithStringClassName<BaseInputGroupTypes.InputGroup.Props> &
+    Pick<InputVariants, "size">;
 
 /**
  * Merges the monolith's `InputGroupProps` with the `InputGroupProps` nested in
@@ -20,6 +21,6 @@ export const mergeInputGroupProps = <T extends InputGroupRootProps>(
   return {
     ...outer,
     ...inner,
-    className: cxState(outer.className, inner.className),
+    className: cx(outer.className, inner.className),
   };
 };

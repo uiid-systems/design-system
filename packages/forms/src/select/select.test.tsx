@@ -995,57 +995,58 @@ describe("Select popup layout props", () => {
 });
 
 /*
- * Base UI accepts `className` as a function of the part's state. Merging it
- * with `cx` dropped the function, so the caller's class never reached the DOM;
- * each part must resolve it with real state and keep its own class beside it.
+ * A part's `className` is a string, merged with its own module class. Its
+ * state is styled through the `data-*` attributes Base UI sets.
  */
-describe("Select state-function className", () => {
+describe("Select className", () => {
   const items = [
     { value: "a", label: "Option A" },
     { value: "b", label: "Option B" },
   ];
 
-  it("resolves a state-function className on the trigger alongside its own class", async () => {
+  it("merges a caller's className on the trigger with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Select
         items={items}
         TriggerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
 
     const trigger = document.querySelector("[data-slot='select-trigger']");
-    expect(trigger).toHaveClass("fn-closed", inputStyles["input"]);
+    expect(trigger).toHaveClass("caller", inputStyles["input"]);
+    expect(trigger).not.toHaveAttribute("data-popup-open");
 
     await user.click(screen.getByRole("combobox"));
-    expect(trigger).toHaveClass("fn-open", inputStyles["input"]);
+    expect(trigger).toHaveClass("caller", inputStyles["input"]);
+    expect(trigger).toHaveAttribute("data-popup-open");
   });
 
-  it("resolves a state-function className on the value alongside its own class", () => {
+  it("merges a caller's className on the value with its own class and marks its state", () => {
     render(
       <Select
         items={items}
         placeholder="Pick one"
         ValueProps={{
-          className: (state) =>
-            state.placeholder ? "fn-placeholder" : "fn-value",
+          className: "caller",
         }}
       />,
     );
 
     const value = document.querySelector("[data-slot='select-value']");
-    expect(value).toHaveClass("fn-placeholder", styles["select-value"]);
+    expect(value).toHaveClass("caller", styles["select-value"]);
+    expect(value).toHaveAttribute("data-placeholder");
   });
 
-  it("resolves a state-function className on the icon alongside its own class", async () => {
+  it("merges a caller's className on the icon with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Select
         items={items}
         IconProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
@@ -1053,16 +1054,17 @@ describe("Select state-function className", () => {
     await user.click(screen.getByRole("combobox"));
 
     const icon = document.querySelector("[data-slot='select-icon']");
-    expect(icon).toHaveClass("fn-open", styles["select-icon"]);
+    expect(icon).toHaveClass("caller", styles["select-icon"]);
+    expect(icon).toHaveAttribute("data-popup-open");
   });
 
-  it("resolves a state-function className on the positioner alongside its own class", async () => {
+  it("merges a caller's className on the positioner with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Select
         items={items}
         PositionerProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
@@ -1072,16 +1074,17 @@ describe("Select state-function className", () => {
     const positioner = document.querySelector(
       "[data-slot='select-positioner']",
     );
-    expect(positioner).toHaveClass("fn-open", styles["select-positioner"]);
+    expect(positioner).toHaveClass("caller", styles["select-positioner"]);
+    expect(positioner).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the popup alongside its own class", async () => {
+  it("merges a caller's className on the popup with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Select
         items={items}
         PopupProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
@@ -1089,16 +1092,17 @@ describe("Select state-function className", () => {
     await user.click(screen.getByRole("combobox"));
 
     const popup = document.querySelector("[data-slot='select-popup']");
-    expect(popup).toHaveClass("fn-open", popupLayerStyles["popup-layer-popup"]);
+    expect(popup).toHaveClass("caller", popupLayerStyles["popup-layer-popup"]);
+    expect(popup).toHaveAttribute("data-open");
   });
 
-  it("resolves a state-function className on the backdrop alongside its own class", async () => {
+  it("merges a caller's className on the backdrop with its own class and marks its state", async () => {
     const user = userEvent.setup();
     render(
       <Select
         items={items}
         BackdropProps={{
-          className: (state) => (state.open ? "fn-open" : "fn-closed"),
+          className: "caller",
         }}
       />,
     );
@@ -1106,7 +1110,8 @@ describe("Select state-function className", () => {
     await user.click(screen.getByRole("combobox"));
 
     const backdrop = document.querySelector("[data-slot='select-backdrop']");
-    expect(backdrop).toHaveClass("fn-open", styles["select-backdrop"]);
+    expect(backdrop).toHaveClass("caller", styles["select-backdrop"]);
+    expect(backdrop).toHaveAttribute("data-open");
   });
 });
 
@@ -1215,34 +1220,26 @@ describe("SelectItem mirrors Base UI's Item", () => {
     expect(option).toHaveClass(styles["select-item"]);
   });
 
-  it("resolves a state-function className", async () => {
+  /* `className` is a string, so an item's state is styled through the
+     `data-*` attributes Base UI sets rather than a function of that state. */
+  it("marks a disabled item with data-disabled", async () => {
     const user = userEvent.setup();
     render(
       <Select placeholder="Pick one">
-        <SelectItem
-          value="a"
-          label="Option A"
-          className={(state) => (state.disabled ? "off" : "on")}
-        />
-        <SelectItem
-          value="b"
-          label="Option B"
-          disabled
-          className={(state) => (state.disabled ? "off" : "on")}
-        />
+        <SelectItem value="a" label="Option A" className="caller" />
+        <SelectItem value="b" label="Option B" disabled className="caller" />
       </Select>,
     );
 
     await user.click(screen.getByRole("combobox"));
 
     const option = screen.getByRole("option", { name: /option a/i });
-    expect(option).toHaveClass("on");
-    expect(option).toHaveClass(styles["select-item"]);
+    expect(option).toHaveClass("caller", styles["select-item"]);
+    expect(option).not.toHaveAttribute("data-disabled");
 
     const disabled = screen.getByRole("option", { name: /option b/i });
-    expect(disabled).toHaveClass("off");
-    expect(disabled).not.toHaveClass("on");
-    expect(disabled).toHaveClass(styles["select-item"]);
+    expect(disabled).toHaveClass("caller", styles["select-item"]);
+    expect(disabled).toHaveAttribute("data-disabled");
   });
 
   it("forwards a ref to the item element", async () => {

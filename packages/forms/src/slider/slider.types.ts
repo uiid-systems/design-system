@@ -1,7 +1,11 @@
 import type { Slider } from "@base-ui/react/slider";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps, WithLayoutProps } from "@uiid/utils";
+import type {
+  VariantProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { sliderVariants } from "./slider.variants";
@@ -27,7 +31,10 @@ export type SliderColor = PaletteColor;
  * lands under it. Which of the two a caller picks is a cost decision the
  * upstream docs do not make, and the props table is where it gets made.
  */
-export type SliderRootProps = WithLayoutProps<Slider.Root.Props, GroupProps> &
+export type SliderRootProps = WithLayoutProps<
+  WithStringClassName<Slider.Root.Props>,
+  GroupProps
+> &
   SliderVariants & {
     /**
      * Palette hue applied as a solid fill on the filled track and thumb. The
@@ -47,14 +54,14 @@ export type SliderRootProps = WithLayoutProps<Slider.Root.Props, GroupProps> &
     onValueCommitted?: Slider.Root.Props["onValueCommitted"];
   };
 export type SliderLabelProps = Slider.Label.Props;
-export type SliderValueProps = Slider.Value.Props;
+export type SliderValueProps = WithStringClassName<Slider.Value.Props>;
 export type SliderControlProps = WithLayoutProps<
-  Slider.Control.Props,
+  WithStringClassName<Slider.Control.Props>,
   GroupProps
 >;
-export type SliderTrackProps = Slider.Track.Props;
-export type SliderIndicatorProps = Slider.Indicator.Props;
-export type SliderThumbProps = Slider.Thumb.Props;
+export type SliderTrackProps = WithStringClassName<Slider.Track.Props>;
+export type SliderIndicatorProps = WithStringClassName<Slider.Indicator.Props>;
+export type SliderThumbProps = WithStringClassName<Slider.Thumb.Props>;
 
 export type SliderProps = SliderRootProps & {
   RootProps?: SliderRootProps;

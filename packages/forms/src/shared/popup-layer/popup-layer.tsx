@@ -5,7 +5,11 @@ import type { Combobox as BasePopupLayerTypes } from "@base-ui/react/combobox";
 import type { CardContainerProps } from "@uiid/cards";
 import { List, ListItem } from "@uiid/lists";
 import { Text } from "@uiid/typography";
-import { cxState, type WithLayoutProps } from "@uiid/utils";
+import {
+  cx,
+  type WithLayoutProps,
+  type WithStringClassName,
+} from "@uiid/utils";
 
 import { resolveItemLabel } from "../item-utils";
 import {
@@ -57,11 +61,11 @@ export const PopupLayerPositioner = ({
   sideOffset = 4,
   children,
   ...props
-}: WithSlot<BasePopupLayerTypes.Positioner.Props>) => {
+}: WithSlot<WithStringClassName<BasePopupLayerTypes.Positioner.Props>>) => {
   return (
     <BasePopupLayer.Positioner
       data-slot={slot}
-      className={cxState(styles["popup-layer-positioner"], className)}
+      className={cx(styles["popup-layer-positioner"], className)}
       sideOffset={sideOffset}
       {...props}
     >
@@ -82,14 +86,17 @@ export const PopupLayerPopup = ({
   children,
   ...props
 }: WithSlot<
-  WithLayoutProps<BasePopupLayerTypes.Popup.Props, CardContainerProps>
+  WithLayoutProps<
+    WithStringClassName<BasePopupLayerTypes.Popup.Props>,
+    CardContainerProps
+  >
 > &
   Pick<PopupLayerCardOptions, "color">) => {
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
       render={popupLayerCard({ color, p, gap, fullwidth })}
-      className={cxState(popupLayerPopupClassName, className)}
+      className={cx(popupLayerPopupClassName, className)}
       {...props}
     >
       {children}
@@ -119,7 +126,7 @@ export const PopupLayerItem = ({
   children,
   render,
   ...props
-}: WithSlot<BasePopupLayerTypes.Item.Props> & {
+}: WithSlot<WithStringClassName<BasePopupLayerTypes.Item.Props>> & {
   /**
    * The row's text. Falls back to a `label` on an object value, then to the
    * value itself when it is a primitive, never to `String(object)`.
@@ -130,7 +137,7 @@ export const PopupLayerItem = ({
     <BasePopupLayer.Item
       data-slot={slot}
       value={value}
-      className={cxState(styles["popup-layer-item"], className)}
+      className={cx(styles["popup-layer-item"], className)}
       {...props}
       // A consumer-supplied `render` wins; the ListItem treatment is only the
       // default. Previously this was spread last and silently discarded it.
@@ -157,11 +164,11 @@ export const PopupLayerEmpty = ({
   className,
   children,
   ...props
-}: WithSlot<BasePopupLayerTypes.Empty.Props>) => {
+}: WithSlot<WithStringClassName<BasePopupLayerTypes.Empty.Props>>) => {
   return (
     <BasePopupLayer.Empty
       data-slot={slot}
-      className={cxState(styles["popup-layer-empty"], className)}
+      className={cx(styles["popup-layer-empty"], className)}
       {...props}
     >
       {children ?? <Text>No results found.</Text>}

@@ -3,7 +3,7 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { CheckIcon } from "@uiid/icons/check";
 import { ListItem } from "@uiid/lists";
-import { cxState } from "@uiid/utils";
+import { cx } from "@uiid/utils";
 
 import type { SelectItemProps } from "../select.types";
 
@@ -24,7 +24,7 @@ export const SelectItem = <Value = string,>({
       value={value}
       label={label}
       {...props}
-      className={cxState(styles["select-item"], className)}
+      className={cx(styles["select-item"], className)}
     >
       {/* `children` goes through `ListItem`'s own escape hatch rather than
           replacing it, so a custom row keeps the wrapper the popup lays out

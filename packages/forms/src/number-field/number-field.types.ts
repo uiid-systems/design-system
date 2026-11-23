@@ -1,7 +1,11 @@
 import type { NumberField as BaseNumberField } from "@base-ui/react/number-field";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps, WithLayoutProps } from "@uiid/utils";
+import type {
+  VariantProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { numberFieldVariants } from "./number-field.variants";
@@ -36,14 +40,16 @@ export type NumberFieldRootProps = BaseNumberField.Root.Props & {
    */
   onValueCommitted?: BaseNumberField.Root.Props["onValueCommitted"];
 };
-export type NumberFieldDecrementProps = BaseNumberField.Decrement.Props;
-export type NumberFieldIncrementProps = BaseNumberField.Increment.Props;
+export type NumberFieldDecrementProps =
+  WithStringClassName<BaseNumberField.Decrement.Props>;
+export type NumberFieldIncrementProps =
+  WithStringClassName<BaseNumberField.Increment.Props>;
 /**
  * The group is where `size` lands — it sizes the cluster as a whole, and the
  * stepper buttons square themselves off the height it gives them.
  */
 export type NumberFieldGroupProps = WithLayoutProps<
-  BaseNumberField.Group.Props,
+  WithStringClassName<BaseNumberField.Group.Props>,
   GroupProps
 > &
   NumberFieldVariants & {
@@ -62,7 +68,10 @@ export type NumberFieldGroupProps = WithLayoutProps<
  * deviation documented on `InputControlProps` — Base UI's native `size` here is
  * the character-width attribute.
  */
-export type NumberFieldInputProps = Omit<BaseNumberField.Input.Props, "size"> &
+export type NumberFieldInputProps = Omit<
+  WithStringClassName<BaseNumberField.Input.Props>,
+  "size"
+> &
   NumberFieldVariants & {
     /**
      * Palette hue applied as a tinted bg/fg/border/hover surface treatment.
@@ -74,9 +83,10 @@ export type NumberFieldInputProps = Omit<BaseNumberField.Input.Props, "size"> &
      */
     color?: NumberFieldColor;
   };
-export type NumberFieldScrubAreaProps = BaseNumberField.ScrubArea.Props;
+export type NumberFieldScrubAreaProps =
+  WithStringClassName<BaseNumberField.ScrubArea.Props>;
 export type NumberFieldScrubAreaCursorProps =
-  BaseNumberField.ScrubAreaCursor.Props;
+  WithStringClassName<BaseNumberField.ScrubAreaCursor.Props>;
 
 export type NumberFieldProps = {
   /**

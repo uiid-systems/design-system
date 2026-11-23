@@ -2,7 +2,7 @@ import type { Select as BaseSelect } from "@base-ui/react/select";
 import type { CardContainerProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { PaletteColor } from "@uiid/tokens";
-import type { WithLayoutProps } from "@uiid/utils";
+import type { WithLayoutProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
@@ -23,7 +23,7 @@ export type SelectColor = PaletteColor;
  * row always has text even when `children` draws something else.
  */
 export type SelectItemProps<Value = string> = Omit<
-  BaseSelect.Item.Props,
+  WithStringClassName<BaseSelect.Item.Props>,
   "value" | "label" | "children"
 > & {
   /** A unique value that identifies this item, typed by the select's `Value`. */
@@ -51,7 +51,7 @@ export type SelectRootProps<
   Value = string,
   Multiple extends SelectMultipleMode = false,
 > = BaseSelect.Root.Props<Value, Multiple>;
-export type SelectTriggerProps = BaseSelect.Trigger.Props &
+export type SelectTriggerProps = WithStringClassName<BaseSelect.Trigger.Props> &
   Pick<InputVariants, "variant" | "fullwidth" | "size"> & {
     before?: React.ReactNode;
     after?: React.ReactNode;
@@ -63,14 +63,16 @@ export type SelectTriggerProps = BaseSelect.Trigger.Props &
     color?: SelectColor;
   };
 export type SelectPortalProps = BaseSelect.Portal.Props;
-export type SelectBackdropProps = BaseSelect.Backdrop.Props;
-export type SelectPositionerProps = BaseSelect.Positioner.Props;
+export type SelectBackdropProps =
+  WithStringClassName<BaseSelect.Backdrop.Props>;
+export type SelectPositionerProps =
+  WithStringClassName<BaseSelect.Positioner.Props>;
 /*
  * The popup takes the layout props `Card` spreads onto its container, not its
  * content slots (`title`, `footer`, ...): it is a surface for the list alone.
  */
 export type SelectPopupProps = WithLayoutProps<
-  BaseSelect.Popup.Props,
+  WithStringClassName<BaseSelect.Popup.Props>,
   CardContainerProps
 > & {
   /**
@@ -82,10 +84,11 @@ export type SelectPopupProps = WithLayoutProps<
 export type SelectListProps = BaseSelect.List.Props;
 export type SelectGroupProps = BaseSelect.Group.Props;
 export type SelectGroupLabelProps = BaseSelect.GroupLabel.Props;
-export type SelectSeparatorProps = BaseSelect.Separator.Props;
-export type SelectValueProps = BaseSelect.Value.Props &
+export type SelectSeparatorProps =
+  WithStringClassName<BaseSelect.Separator.Props>;
+export type SelectValueProps = WithStringClassName<BaseSelect.Value.Props> &
   Pick<InputVariants, "size">;
-export type SelectIconProps = BaseSelect.Icon.Props;
+export type SelectIconProps = WithStringClassName<BaseSelect.Icon.Props>;
 
 export type SelectProps<
   Value = string,

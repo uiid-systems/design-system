@@ -3,7 +3,7 @@
 import type { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group";
 import { Group, Stack } from "@uiid/layout";
-import { cxState, useComposedRefs } from "@uiid/utils";
+import { cx, useComposedRefs, type WithStringClassName } from "@uiid/utils";
 import {
   Children,
   cloneElement,
@@ -24,8 +24,14 @@ import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
 
+/**
+ * A child Toggle's `className` is merged with `cx`, so it is read as a string,
+ * as on every UIID part. Style a toggle's state through `data-pressed`.
+ */
+type ToggleChildProps = WithStringClassName<BaseToggle.Props>;
+
 type ToggleGroupItemProps = {
-  child: ReactElement<BaseToggle.Props>;
+  child: ReactElement<ToggleChildProps>;
   size: ToggleGroupVariants["size"];
   buttonsRef: RefObject<Map<string, HTMLButtonElement>>;
 };
@@ -65,7 +71,7 @@ const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
   const composedRef = useComposedRefs(child.props.ref, measureRef);
 
   return cloneElement(child, {
-    className: cxState(
+    className: cx(
       styles["toggle-group-button"],
       toggleVariants({ size }),
       child.props.className,
@@ -130,7 +136,7 @@ export const ToggleGroup = <Value extends string = string>({
   // its place.
   const enhanceChildren = (nodes: ReactNode): ReactNode =>
     Children.map(nodes, (child) => {
-      if (!isValidElement<BaseToggle.Props>(child)) return child;
+      if (!isValidElement<ToggleChildProps>(child)) return child;
       if (child.type === Fragment) return enhanceChildren(child.props.children);
       return (
         <ToggleGroupItem child={child} size={size} buttonsRef={buttonsRef} />
@@ -147,7 +153,7 @@ export const ToggleGroup = <Value extends string = string>({
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={cxState(
+      className={cx(
         styles["toggle-group-panel"],
         toggleGroupVariants({ fullwidth }),
         className,
