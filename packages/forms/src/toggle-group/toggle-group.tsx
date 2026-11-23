@@ -26,10 +26,10 @@ import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
 import styles from "./toggle-group.module.css";
 
 /**
- * A child Toggle's `className` is merged with `cx`, so it is a string, as the
- * exported `Toggle` types it. Style a toggle's state through `data-pressed`.
+ * `children` is a ReactNode, so a child need not be the `Toggle` exported
+ * here. Its props are read as Base UI's own, function `className` included.
  */
-type ToggleChildProps = ToggleProps;
+type ToggleChildProps = BaseToggle.Props;
 
 type ToggleGroupItemProps = {
   child: ReactElement<ToggleChildProps>;
@@ -71,12 +71,19 @@ const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
   // composed back in alongside the measuring one.
   const composedRef = useComposedRefs(child.props.ref, measureRef);
 
+  const ownClassName = cx(
+    styles["toggle-group-button"],
+    toggleVariants({ size }),
+  );
+  const childClassName = child.props.className;
+
   return cloneElement(child, {
-    className: cx(
-      styles["toggle-group-button"],
-      toggleVariants({ size }),
-      child.props.className,
-    ),
+    // A child typed by Base UI can still pass a function of the toggle's
+    // state, which `cx` would drop, so it is called here.
+    className:
+      typeof childClassName === "function"
+        ? (state: BaseToggle.State) => cx(ownClassName, childClassName(state))
+        : cx(ownClassName, childClassName),
     ref: composedRef,
   });
 };
@@ -185,12 +192,10 @@ export const ToggleGroup = <Value extends string = string>({
 ToggleGroup.displayName = "ToggleGroup";
 
 /**
- * Base UI's `Toggle` itself, with `className` typed as a string. The group
- * merges its own class into each child's `className` with `cx`, which cannot
- * call a function of the toggle's state, so a function is a compile error here
- * rather than a class silently dropped. Every other prop is Base UI's; its
- * namespace types are served as `ToggleProps`, `ToggleState` and
- * `ToggleChangeEventDetails`.
+ * Base UI's `Toggle` itself, with `className` typed as a string, as on every
+ * other part: style a toggle's state through `data-pressed`. Every other prop
+ * is Base UI's; its namespace types are served as `ToggleProps`, `ToggleState`
+ * and `ToggleChangeEventDetails`.
  */
 export const Toggle: <Value extends string = string>(
   props: ToggleProps<Value> & React.RefAttributes<HTMLButtonElement>,

@@ -1,3 +1,4 @@
+import { Toggle as BaseToggle } from "@base-ui/react/toggle";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
@@ -366,8 +367,7 @@ describe("ToggleGroup fullwidth", () => {
 /* The group clones each Toggle to add its own classes, merged with the child's
    string `className`. A toggle's state is styled through `data-pressed`. */
 describe("ToggleGroup child className", () => {
-  /* Type-level only: `pnpm typecheck` fails if the directive goes unused. The
-     group's `cx` merge would drop a function, so the type rejects one. */
+  /* Type-level only: `pnpm typecheck` fails if the directive goes unused. */
   it("types a Toggle's className as a string, not a function of its state", () => {
     // @ts-expect-error -- style a toggle's state through `data-pressed` instead
     void (<Toggle value="a" className={() => "from-fn"} />);
@@ -391,6 +391,36 @@ describe("ToggleGroup child className", () => {
     expect(pressed).toHaveAttribute("data-pressed");
     expect(unpressed).toHaveClass("caller", styles["toggle-group-button"]);
     expect(unpressed).not.toHaveAttribute("data-pressed");
+  });
+
+  /* `children` is a ReactNode, so a child that is not UIID's `Toggle` can still
+     carry Base UI's function `className`. The group calls it, not drops it. */
+  it("resolves a function className on a child typed by Base UI", () => {
+    render(
+      <ToggleGroup defaultValue={["monthly"]}>
+        <BaseToggle
+          value="monthly"
+          className={(state) => (state.pressed ? "on" : "off")}
+        >
+          Monthly
+        </BaseToggle>
+        <BaseToggle
+          value="yearly"
+          className={(state) => (state.pressed ? "on" : "off")}
+        >
+          Yearly
+        </BaseToggle>
+      </ToggleGroup>,
+    );
+
+    expect(screen.getByRole("button", { name: "Monthly" })).toHaveClass(
+      "on",
+      styles["toggle-group-button"],
+    );
+    expect(screen.getByRole("button", { name: "Yearly" })).toHaveClass(
+      "off",
+      styles["toggle-group-button"],
+    );
   });
 });
 
