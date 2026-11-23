@@ -1,7 +1,44 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { MaskInput } from "@uiid/design-system";
+import {
+  MaskInput,
+  creditCardExpiryMask,
+  creditCardMask,
+  currencyMask,
+  dateMask,
+  einMask,
+  ipv4Mask,
+  isbnMask,
+  licensePlateMask,
+  macAddressMask,
+  percentMask,
+  phoneMask,
+  ssnMask,
+  timeMask,
+  zipCodeExtendedMask,
+  zipCodeMask,
+} from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/forms/src/mask-input/mask-input.examples";
+
+/* The control picks a name; `mapping` hands the component the imported mask
+   object, built once here as masks must be. */
+const MASKS = {
+  phoneMask,
+  ssnMask,
+  einMask,
+  dateMask,
+  timeMask,
+  creditCardMask,
+  creditCardExpiryMask,
+  zipCodeMask,
+  zipCodeExtendedMask,
+  licensePlateMask,
+  ipv4Mask,
+  macAddressMask,
+  isbnMask,
+  "currencyMask({ currency: 'USD' })": currencyMask({ currency: "USD" }),
+  "percentMask()": percentMask(),
+};
 
 const meta = {
   title: "Forms/Mask Input",
@@ -10,7 +47,9 @@ const meta = {
     actions: { argTypesRegex: "^on.*" },
   },
   args: {
-    mask: "phone",
+    /* A `mapping` key, so the select control shows it; Storybook swaps in the
+       mask object before rendering. */
+    mask: "phoneMask" as unknown as typeof phoneMask,
     label: "Phone number",
     description: "Digits only — the separators are added for you.",
     placeholder: "(555) 555-5555",
@@ -19,7 +58,6 @@ const meta = {
     label: { control: "text", table: { category: "Text" } },
     description: { control: "text", table: { category: "Text" } },
     placeholder: { control: "text", table: { category: "Text" } },
-    maskPlaceholder: { control: "text", table: { category: "Text" } },
 
     size: {
       control: "select",
@@ -48,50 +86,19 @@ const meta = {
 
     mask: {
       control: "select",
-      options: [
-        "phone",
-        "ssn",
-        "date",
-        "time",
-        "creditCard",
-        "creditCardExpiry",
-        "zipCode",
-        "zipCodeExtended",
-        "currency",
-        "percentage",
-        "licensePlate",
-        "ipv4",
-        "macAddress",
-        "isbn",
-        "ein",
-      ],
-      table: { category: "Options" },
-    },
-    validationMode: {
-      control: "select",
-      options: ["onChange", "onBlur", "onSubmit", "onTouched", "all"],
-      table: { category: "Options" },
-    },
-    currency: {
-      control: "select",
-      options: ["USD", "EUR", "GBP", "JPY"],
-      table: { category: "Options" },
-    },
-    locale: {
-      control: "select",
-      options: ["en-US", "de-DE", "en-GB", "ja-JP"],
+      options: Object.keys(MASKS),
+      mapping: MASKS,
       table: { category: "Options" },
     },
 
     fullwidth: { control: "boolean", table: { category: "Toggles" } },
-    withoutMask: { control: "boolean", table: { category: "Toggles" } },
-    invalid: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },
 
     onValueChange: { table: { category: "Events" } },
-    onValidate: { table: { category: "Events" } },
+    onFocus: { table: { category: "Events" } },
+    onBlur: { table: { category: "Events" } },
 
     FieldProps: { control: "object", table: { category: "Subcomponents" } },
   },
@@ -103,9 +110,11 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = { render: (args) => <MaskInput {...args} /> };
 
 export const WithLabel: Story = { render: () => <Examples.WithLabel /> };
+export const SameAsInput: Story = { render: () => <Examples.SameAsInput /> };
+export const FormatHint: Story = { render: () => <Examples.FormatHint /> };
 export const Patterns: Story = { render: () => <Examples.Patterns /> };
-export const MaskPlaceholder: Story = {
-  render: () => <Examples.MaskPlaceholder />,
+export const CustomPattern: Story = {
+  render: () => <Examples.CustomPattern />,
 };
 export const Currency: Story = { render: () => <Examples.Currency /> };
 export const Sizes: Story = { render: () => <Examples.Sizes /> };
@@ -116,7 +125,6 @@ export const BeforeAfterSlots: Story = {
 export const Ghost: Story = { render: () => <Examples.Ghost /> };
 export const Fullwidth: Story = { render: () => <Examples.Fullwidth /> };
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
-export const WithoutMask: Story = { render: () => <Examples.WithoutMask /> };
 export const Validation: Story = { render: () => <Examples.Validation /> };
 export const Invalid: Story = { render: () => <Examples.Invalid /> };
 export const Controlled: Story = { render: () => <Examples.Controlled /> };

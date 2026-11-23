@@ -12,7 +12,7 @@ Every control a form needs, plus the two components that hold them together. Eac
 
 - **[Input](?path=/docs/forms-input--docs)** — one line of text. `type` is forwarded, so `email`, `password`, `search`, and `url` all work.
 - **[Textarea](?path=/docs/forms-textarea--docs)** — more than one line. `rows` sets the starting height, `resize` constrains the drag handle.
-- **[Mask Input](?path=/docs/forms-mask-input--docs)** — a structured value formatted as it is typed. Hands back both the masked string and the raw one.
+- **[Mask Input](?path=/docs/forms-mask-input--docs)** — a structured value formatted as it is typed, with an imported mask such as `phoneMask`. It is `Input` with a required `mask`; the value is the masked string, and `mask.parse` reads the raw one.
 
 ### Numbers
 

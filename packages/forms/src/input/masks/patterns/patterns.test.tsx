@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Input } from "../../input";
@@ -189,6 +190,82 @@ describe("phoneMask on Input", () => {
     await user.click(input);
     return { user, input, onValueChange };
   };
+
+  it("keeps a controlled value in step with what the engine writes", async () => {
+    const user = userEvent.setup();
+    const Controlled = () => {
+      const [value, setValue] = useState("");
+      return (
+        <>
+          <Input mask={phoneMask} value={value} onValueChange={setValue} />
+          <output>{value}</output>
+        </>
+      );
+    };
+    render(<Controlled />);
+
+    await user.type(screen.getByRole("textbox"), "5551234");
+
+    expect(screen.getByRole("textbox")).toHaveValue("(555) 123-4");
+    expect(screen.getByRole("status")).toHaveTextContent("(555) 123-4");
+  });
+
+  it("tracks data-filled against a controlled masked value", () => {
+    const { rerender } = render(
+      <Input
+        mask={phoneMask}
+        value="(555) 123-4567"
+        onValueChange={() => {}}
+      />,
+    );
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveAttribute("data-filled");
+
+    rerender(<Input mask={phoneMask} value="" onValueChange={() => {}} />);
+    expect(input).not.toHaveAttribute("data-filled");
+  });
+
+  /* react-hook-form's `register` spreads `name`, `onChange` and `ref`, and
+     reads `event.target.value` on each change, so it must see the masked text. */
+  it("hands a register-shaped onChange the masked text", async () => {
+    const user = userEvent.setup();
+    /* Records the value at the time of each call: `event.target` is the live
+       element, so reading it after typing would only show the final text. */
+    const onChange = vi.fn(
+      (event: React.ChangeEvent<HTMLInputElement>) => event.target.value,
+    );
+    render(<Input mask={phoneMask} name="phone" onChange={onChange} />);
+
+    await user.type(screen.getByRole("textbox"), "5551234");
+
+    /* The first digit, the fourth and the seventh are rewritten by the mask,
+       which adds a literal; the others are plain insertions. */
+    expect(onChange.mock.results.map(({ value }) => value)).toEqual([
+      "(5",
+      "(55",
+      "(555",
+      "(555) 1",
+      "(555) 12",
+      "(555) 123",
+      "(555) 123-4",
+    ]);
+  });
+
+  it("tracks data-filled as an uncontrolled masked value is typed and cleared", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={phoneMask} />);
+    const input = screen.getByRole<HTMLInputElement>("textbox");
+
+    await user.type(input, "555");
+    expect(input).toHaveAttribute("data-filled");
+
+    /* Selected and deleted by hand: user-event's `clear` leaves `(5` behind
+       under happy-dom with the mask attached. */
+    input.setSelectionRange(0, input.value.length);
+    await user.keyboard("{Backspace}");
+    expect(input).toHaveValue("");
+    expect(input).not.toHaveAttribute("data-filled");
+  });
 
   it("deletes the last digit on Backspace", async () => {
     const { user, input, onValueChange } = await setup("(123) 456-7890");

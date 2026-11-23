@@ -36,8 +36,6 @@ export * from "./input/masks/patterns";
 
 export * from "./mask-input/mask-input";
 export * from "./mask-input/mask-input.types";
-export * from "./mask-input/patterns";
-export * from "./mask-input/hooks";
 
 export * from "./number-field/number-field";
 export * from "./number-field/number-field.types";

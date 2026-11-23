@@ -184,15 +184,28 @@ describe("forms barrel", () => {
     expect(forms).toHaveProperty("SliderLabel");
   });
 
-  it("exports useMask but keeps its sub-hooks internal", () => {
-    expect(forms).toHaveProperty("useMask");
-    for (const hook of [
-      "useMaskPattern",
-      "useMaskValue",
-      "useMaskValidation",
-      "useMaskHandlers",
+  it("exports MaskInput and none of the old MaskInput engine", () => {
+    expect(forms).toHaveProperty("MaskInput");
+    for (const name of [
+      "useMask",
+      "MASK_PATTERNS",
+      "phonePattern",
+      "ssnPattern",
+      "datePattern",
+      "timePattern",
+      "creditCardPattern",
+      "creditCardExpiryPattern",
+      "zipCodePattern",
+      "zipCodeExtendedPattern",
+      "currencyPattern",
+      "percentagePattern",
+      "licensePlatePattern",
+      "ipv4Pattern",
+      "macAddressPattern",
+      "isbnPattern",
+      "einPattern",
     ]) {
-      expect(forms, `${hook} should stay internal`).not.toHaveProperty(hook);
+      expect(forms, `${name} should be gone`).not.toHaveProperty(name);
     }
   });
 
