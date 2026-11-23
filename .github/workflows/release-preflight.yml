@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version-file: .nvmrc
 
       # Node built-ins only, so no install. Fails when a public package is not
       # on npm or has never been linked to release.yml as a trusted publisher.
