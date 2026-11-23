@@ -41,7 +41,7 @@ describe("forms barrel", () => {
       attach(element: HTMLInputElement): () => void;
       format(value: number): string;
       parse(masked: string): number;
-      inputMode?: "decimal" | "numeric";
+      inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
     }>();
   });
 
@@ -64,6 +64,57 @@ describe("forms barrel", () => {
       .toEqualTypeOf<forms.NumberMaskOptions | undefined>();
     expectTypeOf(forms.currencyMask).returns.toEqualTypeOf<
       forms.InputMask<number | null>
+    >();
+  });
+
+  it("exports patternMask, the 13 pattern masks and their validators", () => {
+    const names = [
+      "patternMask",
+      "phoneMask",
+      "ssnMask",
+      "einMask",
+      "dateMask",
+      "timeMask",
+      "creditCardMask",
+      "creditCardExpiryMask",
+      "zipCodeMask",
+      "zipCodeExtendedMask",
+      "licensePlateMask",
+      "ipv4Mask",
+      "macAddressMask",
+      "isbnMask",
+      "isValidPhone",
+      "isValidSsn",
+      "isValidEin",
+      "isValidDate",
+      "isValidTime",
+      "isValidCreditCard",
+      "isValidCreditCardExpiry",
+      "isValidZipCode",
+      "isValidZipCodeExtended",
+      "isValidLicensePlate",
+      "isValidIpv4",
+      "isValidMacAddress",
+      "isValidIsbn",
+    ] as const;
+
+    for (const name of names) {
+      expect(forms, `${name} should be exported`).toHaveProperty(name);
+    }
+    for (const internal of ["maskitoMask", "digitsOf", "hasDigits"]) {
+      expect(forms, `${internal} should stay internal`).not.toHaveProperty(
+        internal,
+      );
+    }
+    expectTypeOf(forms.patternMask)
+      .parameter(1)
+      .toEqualTypeOf<forms.PatternMaskOptions | undefined>();
+    expectTypeOf(forms.patternMask).returns.toEqualTypeOf<
+      forms.InputMask<string>
+    >();
+    expectTypeOf(forms.phoneMask).toEqualTypeOf<forms.InputMask<string>>();
+    expectTypeOf(forms.isValidCreditCard).toEqualTypeOf<
+      (value: string) => boolean
     >();
   });
 
