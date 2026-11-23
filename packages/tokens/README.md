@@ -51,12 +51,13 @@ Portalled overlays such as Dialog, Popover, Menu and Tooltip render at the end o
 `src/palette.ts` derives its types from the token JSON, so the union cannot drift
 from the ramps:
 
-| Export               | Purpose                                       |
-| -------------------- | --------------------------------------------- |
-| `PaletteColor`       | Union of the eight hue names                  |
-| `PALETTE_HUES`       | The hue names as an array                     |
-| `paletteAnchor(hue)` | The authored anchor hex for a hue             |
-| `paletteColorStyles` | Map of hue to its `.palette-<hue>` class name |
+| Export                       | Purpose                                                    |
+| ---------------------------- | ---------------------------------------------------------- |
+| `PaletteColor`               | Union of the eight hue names                               |
+| `PALETTE_HUES`               | The hue names as an array                                  |
+| `paletteColorStyles`         | Map of hue to its `.palette-<hue>` class name              |
+| `paletteClassName(hue, cls)` | The hue class plus a component's treatment class, or none  |
+| `paletteVariantStyles(cls)`  | The same pairing for every hue, shaped for a `cva` variant |
 
 An entry counts as a hue only if it has a `500` step, which is what keeps
 `white`/`black` and DTCG `$` metadata out of the union.

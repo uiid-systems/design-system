@@ -1,8 +1,8 @@
 import type { StoryObj } from "@storybook/react-vite";
+import colorTokens from "@tokens/json/primitives/colors.tokens.json";
 import {
   PALETTE_HUES,
   paletteColorStyles,
-  paletteAnchor,
   type PaletteColor,
   Stack,
   Group,
@@ -25,6 +25,10 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/** A hue's authored value — the 500 step every ramp is anchored on. */
+const paletteAnchor = (hue: PaletteColor): string =>
+  colorTokens.color[hue]["500"].$value;
 
 /** The stack a single hue produces, from the outside in. */
 const HueStack = ({

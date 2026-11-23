@@ -7,7 +7,6 @@
 export type { PaletteColor } from "./palette";
 export {
   PALETTE_HUES,
-  paletteAnchor,
   paletteClassName,
   paletteColorStyles,
   paletteVariantStyles,
