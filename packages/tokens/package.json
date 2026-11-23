@@ -40,7 +40,7 @@
   "files": [
     "src",
     "dist",
-    "!src/**/*.test.ts"
+    "!src/**/*.test.*"
   ],
   "scripts": {
     "tokens": "node build-tokens.js",
