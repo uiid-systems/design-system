@@ -10,6 +10,7 @@ paths:
   - ".oxlintrc.json"
   - ".oxfmtrc.json"
   - "lefthook.yml"
+  - ".nvmrc"
 ---
 
 # Architecture
@@ -47,3 +48,4 @@ design-system/
 | `.oxlintrc.json`        | oxlint configuration (whole repo)                                                                          |
 | `.oxfmtrc.json`         | oxfmt formatter configuration                                                                              |
 | `lefthook.yml`          | Git hooks (pre-commit format+lint, commit-msg)                                                             |
+| `.nvmrc`                | The one declared Node major, read by nvm/fnm and every `actions/setup-node` step; Vercel does not read it  |
