@@ -508,7 +508,7 @@ describe("Card slot props", () => {
     void (
       <Card
         title="Title"
-        // @ts-expect-error -- `p` is set on Card itself
+        // @ts-expect-error -- ContainerProps no longer exists; pass `p` on Card
         ContainerProps={{ p: 2 }}
       />
     );

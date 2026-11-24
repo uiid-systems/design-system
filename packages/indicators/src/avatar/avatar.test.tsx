@@ -108,7 +108,7 @@ describe("Avatar", () => {
     void (
       <Avatar
         initials="AF"
-        // @ts-expect-error -- `gap` is set on Avatar itself
+        // @ts-expect-error -- ContainerProps no longer exists; pass `gap` on Avatar
         ContainerProps={{ gap: 6 }}
       />
     );
