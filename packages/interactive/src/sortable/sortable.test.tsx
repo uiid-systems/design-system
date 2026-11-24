@@ -342,9 +342,21 @@ describe("Sortable", () => {
         css.indexOf(".sortable-item {"),
         css.indexOf(".sortable-item-handle {"),
       );
-      expect(item).toContain("[data-disabled]");
-      expect(item).toContain("opacity:");
+      expect(item).toMatch(/\[data-disabled\][^{]*\{[^}]*opacity:/);
       expect(item).not.toContain(":disabled");
+    });
+
+    // The item already dims; the global disabled treatment would dim its handle a second time.
+    it("leaves the handle of a disabled item to the item's dim", () => {
+      renderItems({ itemProps: (item) => ({ disabled: item === "a" }) });
+      const handle = screen.getByRole("button", { name: "drag a" });
+      expect(handle).not.toHaveClass("composes-disabled");
+    });
+
+    it("dims a disabled handle only when its item is enabled", () => {
+      expect(css).toMatch(
+        /\.sortable-item:not\(\[data-disabled\]\) \.sortable-item-handle\[data-disabled\] \{[^}]*opacity: var\(--globals-disabled-opacity\);/,
+      );
     });
   });
 
