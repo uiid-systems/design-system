@@ -43,9 +43,9 @@ If the answers settle the criteria, the ticket is ready. Paste the questions and
 
 If the criteria are still unclear after that one round, do not ask again. Add the clarifying material to the ticket (the questions, the answers so far, and what is still open) with `save_comment`, and leave the ticket for another run. An undecided product direction, a milestone gate, or a question you cannot write options for is not a question to ask here; leave those tickets out from the start.
 
-Tell the owner in a short list which tickets you picked and, in one line each, why the others were left or deferred. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
+Show the owner the project as `uiid:graph-project` lays it out, with its headings for a run: the picked tickets under `Running now`, the stacked ones under `Stacks in this run`, and the rest under `Not this run`. Under it say, in one line each, why the tickets not picked were left or deferred. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
 
-When nothing is ready, say so and show the owner the chain: which ticket everything hangs off, and which gates need them. Do not loosen the rules above to find work.
+When nothing is ready, say so and show the same list, which names the ticket everything hangs off and the gates that need the owner. Do not loosen the rules above to find work.
 
 ### Stacking
 
@@ -124,6 +124,6 @@ Then, in this order:
 
 ## 6. Tell the owner
 
-As each PR opens, give the owner one line: the ticket, the PR link, the number of review rounds and anything deferred. When all tickets are finished, stopped or held, close with a short table of ticket, PR, rounds and open points, where a failing check on a draft PR (`gh pr checks <number>`) is an open point. Include every stopped or held ticket with its reason, and every waiting ticket whose blocker never reached In Review. Then offer to open the PRs in the browser and to post the review findings to each PR.
+As each PR opens, give the owner one line: the ticket, the PR link, the number of review rounds and anything deferred. When all tickets are finished, stopped or held, close with a short table of ticket, PR, rounds and open points, where a failing check on a draft PR (`gh pr checks <number>`) is an open point. Include every stopped or held ticket with its reason, and every waiting ticket whose blocker never reached In Review. Under the table show the `uiid:graph-project` list again as the project now stands, with each ticket's status word and pull request, so the owner sees what the run moved and what still waits. Then offer to open the PRs in the browser and to post the review findings to each PR.
 
 Leave the worktrees in place. The owner may want to keep working in them, and removing one is not yours to decide.

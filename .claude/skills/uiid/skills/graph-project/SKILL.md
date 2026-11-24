@@ -25,7 +25,7 @@ No ticket title, no description, no label, no pull request title. A gate name is
 
 ## 1. Read the project
 
-Read the project and its milestones with `get_project`, and list its issues, following `hasNextPage` until every page is read. Then call `get_issue` with `includeRelations: true` on every issue that is not Done or Canceled. The list view has no relations, so it cannot give the order.
+Inside a `uiid:build-project` run the project has already been read in that skill's step 1, so use that and read nothing again. Otherwise read the project and its milestones with `get_project`, list its issues, following `hasNextPage` until every page is read. Then call `get_issue` with `includeRelations: true` on every issue that is not Done or Canceled. The list view has no relations, so it cannot give the order.
 
 From that, take:
 
@@ -74,9 +74,8 @@ Use these words and no others:
 | `in review` | In Review, with a pull request open                    |
 | `held`      | Approved or built, but not pushed until the owner acts |
 | `stopped`   | Its loop ended without approval                        |
-| `done`      | Done                                                   |
 
-Run on its own, the skill can tell only two of these apart: a ticket In Progress is `building`, and a ticket In Review with a pull request is `in review`. `reviewing`, `held` and `stopped` are for a `uiid:build-project` run in this session, which knows them. `done` is only ever sent to the pane, since a Done ticket has no row. A ticket in any other state gets no word.
+Run on its own, the skill can tell only two of these apart: a ticket In Progress is `building`, and a ticket In Review with a pull request is `in review`. `reviewing`, `held` and `stopped` are for a `uiid:build-project` run in this session, which knows them. A ticket in any other state gets no word.
 
 ## 3. Show it
 
@@ -102,16 +101,3 @@ Write the list straight into the reply, not in a code fence, so the links work. 
 Before sending, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on.
 
 Then say in one or two sentences what holds the most tickets back: the ticket everything hangs off, and any gate that needs the owner.
-
-## 4. The pane
-
-Some sessions have a project graph pane. It is there when a tool whose name ends in `__set_graph` is available. When it is, send it the same list as plain text:
-
-- `title`: the project id and name.
-- `lines`: one string per heading and per row, in the order shown in chat. A heading is its words alone. A row is its ticket ids, then the parts from `waits on` onward, joined by `·` as in chat. Leave out the links, the pull request and the status word: the pane links each id and shows its status itself.
-- `statuses`: one word per ticket id. A ticket with a status word gets that word. Of the rest, a ticket behind a gate gets `later` and a ticket waiting on a blocker gets `waiting`, so the pane can dim them. A ticket that is none of these gets no entry.
-- `link_base`: the link base from step 1.
-
-When a ticket's state changes later in the session, call the tool whose name ends in `__set_status` with the ticket id and its new word, so the pane follows without a resend. A Linear status change made in the session updates the pane by itself.
-
-Without the pane, the chat list is the whole output. Do not install anything to get one.
