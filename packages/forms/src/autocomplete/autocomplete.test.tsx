@@ -6,6 +6,7 @@ import { describe, it, expect, expectTypeOf, vi } from "vitest";
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
 import type {
+  AutocompleteInputGroupProps,
   AutocompleteInputProps,
   AutocompleteItemProps,
   AutocompletePopupProps,
@@ -445,6 +446,52 @@ describe("Autocomplete input group", () => {
     expect(group).toHaveAttribute("title", "kept");
   });
 
+  /* The casts stand in for untyped code, which the slot type cannot stop. */
+  it("lets the monolith's size win over one in InputGroupProps", () => {
+    render(
+      <Autocomplete
+        items={items}
+        size="small"
+        InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+      />,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
+  });
+
+  it("keeps a size in InputGroupProps when the part sets none", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-large");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputGroupProps the input owns", () => {
+    // @ts-expect-error -- `size` is set on Autocomplete itself
+    void (<Autocomplete InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Autocomplete itself
+    void (<Autocomplete InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- the input part renders the group's row itself
+    void (<Autocomplete InputGroupProps={{ children: "Other" }} />);
+    // @ts-expect-error -- `size` is set on AutocompleteInput itself
+    void (<AutocompleteInput InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on AutocompleteInput itself
+    void (<AutocompleteInput InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- AutocompleteInput renders the group's row itself
+    void (<AutocompleteInput InputGroupProps={{ children: "Other" }} />);
+  });
+
   it("renders a single group around a composed input", () => {
     render(
       <AutocompleteRoot items={items}>
@@ -460,16 +507,31 @@ describe("Autocomplete input group", () => {
   it("forwards InputGroupProps passed to AutocompleteInput", () => {
     render(
       <AutocompleteRoot items={items}>
-        <AutocompleteInput
-          InputGroupProps={{ className: "mine", size: "large" }}
-        />
+        <AutocompleteInput InputGroupProps={{ className: "mine", id: "row" }} />
       </AutocompleteRoot>,
     );
     const group = document.querySelector(
       "[data-slot='autocomplete-input-group']",
     );
     expect(group).toHaveClass("mine");
-    expect(group?.className).toContain("size-large");
+    expect(group).toHaveAttribute("id", "row");
+  });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the part's size win over one in InputGroupProps", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          size="small"
+          InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
   });
 
   it("leaves the inline error outside the group", () => {

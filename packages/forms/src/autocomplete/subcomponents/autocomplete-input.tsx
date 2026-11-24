@@ -59,9 +59,8 @@ export const AutocompleteInput = ({
        * out of the group's press handler and its `role="group"`.
        */}
       <AutocompleteInputGroup
-        size={size}
-        fullwidth={fullwidth}
         {...InputGroupProps}
+        {...definedProps({ size, fullwidth })}
       >
         {/*
          * The hue goes to whichever element wears the surface. Autocomplete

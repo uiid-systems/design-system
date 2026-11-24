@@ -6,6 +6,7 @@ import { describe, it, expect, expectTypeOf, vi } from "vitest";
 import { Form } from "../form/form";
 import { Combobox } from "./combobox";
 import type {
+  ComboboxInputGroupProps,
   ComboboxInputProps,
   ComboboxItemProps,
   ComboboxPopupProps,
@@ -385,12 +386,70 @@ describe("Combobox size variant", () => {
   it("forwards InputGroupProps passed to ComboboxInput", () => {
     render(
       <ComboboxRoot items={items}>
-        <ComboboxInput InputGroupProps={{ className: "mine", size: "large" }} />
+        <ComboboxInput InputGroupProps={{ className: "mine", id: "row" }} />
       </ComboboxRoot>,
     );
     const group = document.querySelector("[data-slot='combobox-input-group']");
     expect(group).toHaveClass("mine");
+    expect(group).toHaveAttribute("id", "row");
+  });
+
+  /* The part sizes its group from its own `size`, so the group cannot be a
+     different tier from the input inside it. The casts stand in for untyped
+     code, which the slot type cannot stop. */
+  it("lets the part's size win over one in InputGroupProps", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput
+          size="small"
+          InputGroupProps={{ size: "large" } as ComboboxInputGroupProps}
+        />
+      </ComboboxRoot>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
+  });
+
+  it("lets the monolith's size win over one in InputGroupProps", () => {
+    render(
+      <Combobox
+        items={items}
+        size="small"
+        InputGroupProps={{ size: "large" } as ComboboxInputGroupProps}
+      />,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
+  });
+
+  it("keeps a size in InputGroupProps when the part sets none", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput
+          InputGroupProps={{ size: "large" } as ComboboxInputGroupProps}
+        />
+      </ComboboxRoot>,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
     expect(group?.className).toContain("size-large");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputGroupProps the input owns", () => {
+    // @ts-expect-error -- `size` is set on Combobox itself
+    void (<Combobox InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Combobox itself
+    void (<Combobox InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- the input part renders the group's row itself
+    void (<Combobox InputGroupProps={{ children: "Other" }} />);
+    // @ts-expect-error -- `size` is set on ComboboxInput itself
+    void (<ComboboxInput InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on ComboboxInput itself
+    void (<ComboboxInput InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- ComboboxInput renders the group's row itself
+    void (<ComboboxInput InputGroupProps={{ children: "Other" }} />);
   });
 
   it("leaves the inline error outside the group", () => {

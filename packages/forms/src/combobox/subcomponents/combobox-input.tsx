@@ -58,9 +58,8 @@ export const ComboboxInput = ({
        * out of the group's press handler and its `role="group"`.
        */}
       <ComboboxInputGroup
-        size={size}
-        fullwidth={fullwidth}
         {...InputGroupProps}
+        {...definedProps({ size, fullwidth })}
       >
         {/*
          * The hue goes to whichever element wears the surface. Combobox's

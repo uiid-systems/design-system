@@ -44,9 +44,10 @@ export type ComboboxInputProps = Omit<
     /**
      * Props for the input group the part renders around its control row. The
      * group wraps the row alone, not the label, description or error, since
-     * Base UI positions the popup against it.
+     * Base UI positions the popup against it. `size`, `fullwidth` and the row
+     * itself are set by the part.
      */
-    InputGroupProps?: ComboboxInputGroupProps;
+    InputGroupProps?: ComboboxInputGroupSlotProps;
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps =
@@ -81,6 +82,14 @@ export type ComboboxEmptyProps = WithStringClassName<BaseCombobox.Empty.Props>;
 export type ComboboxInputGroupProps =
   WithStringClassName<BaseCombobox.InputGroup.Props> &
     Pick<InputProps, "size" | "fullwidth">;
+/**
+ * The `InputGroupProps` slot on the input part and the monolith. The part sets
+ * `size`, `fullwidth` and the control row on the group itself.
+ */
+type ComboboxInputGroupSlotProps = Omit<
+  ComboboxInputGroupProps,
+  "size" | "fullwidth" | "children"
+>;
 export type ComboboxTriggerProps =
   WithStringClassName<BaseCombobox.Trigger.Props>;
 export type ComboboxClearProps = WithStringClassName<BaseCombobox.Clear.Props>;
@@ -129,7 +138,8 @@ export type ComboboxProps<
     | "onFocus"
     | "onBlur"
   >;
-  InputGroupProps?: ComboboxInputGroupProps;
+  /** Reaches the input group. `size` and `fullwidth` are set on Combobox itself. */
+  InputGroupProps?: ComboboxInputGroupSlotProps;
   PortalProps?: ComboboxPortalProps;
   PositionerProps?: ComboboxPositionerProps;
   /** Reaches the popup. `color` and the list inside are set by Combobox itself. */
