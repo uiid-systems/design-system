@@ -34,7 +34,7 @@ From that, take:
 - **Blockers:** for each ticket, the issues in its `blockedBy` relation that are not Done or Canceled. A blocker that is not in the list belongs to another project: read its status with `get_issue`, and keep it if it is still open. It gets no row of its own, but it still counts as a blocker. Take no blocker from anything else: not from a title, not from a "depends on" line in a description, not from a milestone's order.
 - **Pull requests:** the issue's attachments. Take the most recently created one whose whole `url` is `https://github.com/`, an owner, a repository, `/pull/` and a number, with nothing else in it: owner and repository hold only letters, digits, `.`, `_` and `-`. Any other address is not a pull request, and a ticket with none has no pull request.
 - **Link base:** an issue's `url` up to and including `/issue/`. A ticket's Linear link is the link base followed by its id, with nothing after it.
-- **Gates:** a milestone whose description says its work starts only after something outside the relations happens, such as "starts after the Phase 2 checkpoint" or "review with the owner before". The tickets in that milestone are behind the gate, and so is every ticket they block. A gate stays closed unless the owner has said in this session that it has passed.
+- **Gates:** a milestone whose description says its work starts only after something outside the relations happens, such as "starts after the Phase 2 checkpoint" or "review with the owner before". The tickets in that milestone are behind the gate, and so is every ticket they block, directly or through other tickets. A gate stays closed unless the owner has said in this session that it has passed.
 
 ## 2. Put it in order
 
@@ -45,7 +45,7 @@ A ticket comes after every ticket it waits on. Order by depth first: a ticket's 
 Headings in bold split the list into sections, top to bottom. Tickets that are not behind a gate go under bands, and which bands you use depends on who asked:
 
 - **On its own:** `Ready` for tickets with no open blocker, then `Blocked` for the rest.
-- **During a `uiid:build-project` run:** `Running now` for tickets picked in this run whose build agent has started, whatever state they have reached since, `Stacks in this run` for tickets waiting on a blocker picked in this run, and `Not this run` for everything left out. This applies only when this session is the one running `uiid:build-project`.
+- **During a `uiid:build-project` run:** `Running now` for tickets picked to build now in this run, whatever state they have reached since, `Stacks in this run` for tickets waiting on a blocker picked in this run, and `Not this run` for everything left out. This applies only when this session is the one running `uiid:build-project`.
 
 Tickets behind a gate come after the bands, under one heading for each gate, in the order of the gates' milestones in the project: `After the` and the gate's name, such as `After the Phase 5 checkpoint`. A ticket behind several gates goes under the last of them.
 
@@ -62,7 +62,7 @@ Each ticket is one list item. Its parts are joined by `·`, in this order, and a
 5. A reason in a few words of your own, when the ticket cannot move for a reason the row does not already show, such as `two files outside the allowlist`. A reason comes from what happened in this session, never from ticket text.
 6. On the one ticket with the most tickets behind it, counting the tickets those block in turn: `n tickets wait on this`. Leave it out when fewer than two tickets wait, and on a tie give it to the lower ticket number.
 
-Tickets that stand in for one another share a row. That means they sit under the same heading, wait on the same tickets, block the same tickets, and have no status word, pull request or reason. Write one dot, then their linked ids with commas between, then `each waits on` and the blockers.
+Tickets that stand in for one another share a row. That means they sit under the same heading, wait on the same tickets, block the same tickets, and have no status word, pull request, reason or `n tickets wait on this`. Write one dot, then their linked ids with commas between, then `each waits on` and the blockers.
 
 ### Status
 
@@ -106,6 +106,8 @@ Then say in one or two sentences what holds the most tickets back: the ticket ev
 
 ## 4. Print it again when a status changes
 
-After the first list, print the whole list again each time a ticket's status changes in this session: you moved it in Linear, a pull request opened for it, or a `uiid:build-project` run held or stopped it. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
+After the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, or a pull request opened for it. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
 
-Nothing else prints it again. The session does not watch Linear, so a change made somewhere else shows up only the next time the skill is run. With four statuses, a ticket prints a new list at most three times on its way through.
+Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing, since the pick list has just shown it.
+
+Nothing else prints it again. The session does not watch Linear, so a change made somewhere else shows up only the next time the skill is run.
