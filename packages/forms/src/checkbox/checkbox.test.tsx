@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
+import type { CheckboxIndicatorProps } from "./checkbox.types";
 
 import fieldStyles from "../field/field.module.css";
 import styles from "./checkbox.module.css";
@@ -357,5 +358,42 @@ describe("Checkbox FieldProps className", () => {
     expect(row).not.toHaveClass(styles["checkbox-label"]);
     expect(row).not.toHaveClass(styles["toggle-bordered"]);
     expect(row).not.toHaveClass(styles["toggle-reversed"]);
+  });
+});
+
+/*
+ * IndicatorProps leaves out `indeterminate`, which Checkbox sets on the
+ * indicator itself. The cast stands in for untyped code, which the slot type
+ * cannot stop: the top-level value still wins at runtime.
+ */
+describe("Checkbox IndicatorProps", () => {
+  const icon = (container: HTMLElement) =>
+    container.querySelector("[data-slot='checkbox-icon']");
+
+  it("reaches the indicator", () => {
+    const { container } = render(
+      <Checkbox defaultChecked IndicatorProps={{ id: "tick" }} />,
+    );
+    expect(
+      container.querySelector("[data-slot='checkbox-indicator']"),
+    ).toHaveAttribute("id", "tick");
+  });
+
+  it("lets the top-level indeterminate win over one in the slot", () => {
+    const { container } = render(
+      <Checkbox
+        defaultChecked
+        indeterminate={false}
+        IndicatorProps={{ indeterminate: true } as CheckboxIndicatorProps}
+      />,
+    );
+    expect(icon(container)).toHaveClass("lucide-check");
+    expect(icon(container)).not.toHaveClass("lucide-minus");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects IndicatorProps the control owns", () => {
+    // @ts-expect-error -- `indeterminate` is set on Checkbox itself
+    void (<Checkbox IndicatorProps={{ indeterminate: true }} />);
   });
 });
