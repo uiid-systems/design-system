@@ -9,7 +9,7 @@ import type {
 import { TableCell } from "./table-cell";
 import { TableCellDropdown } from "./table-cell-dropdown";
 
-type TableCellActionsProps<T extends Record<string, unknown>> = {
+export type TableCellActionsProps<T extends Record<string, unknown>> = {
   actions: NonNullable<TableProps<T>["actions"]>;
   item: T;
   /** Control tier of the buttons; `Table` passes its own `size`. A control

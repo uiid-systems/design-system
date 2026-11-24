@@ -15,8 +15,6 @@ export type ConversationContentProps = StackProps & {
    * grows rather than scrolls; listen here to load older history or to keep
    * the reader's place after prepending. Pass a `useRef` or a stable
    * callback: a new callback each render detaches and reattaches it.
-   * Inside `Conversation`, `useConversation().scrollElement` is the same
-   * element; use `viewportRef` from the component that owns the history.
    */
   viewportRef?: React.Ref<HTMLDivElement>;
 };
@@ -39,16 +37,3 @@ export type ConversationEmptyStateProps = StackProps & {
  * unmounts once the conversation is back at the bottom.
  */
 export type ConversationScrollButtonProps = ButtonProps;
-
-export type UseStickToBottomReturn = {
-  /** Attach to the element that scrolls. */
-  scrollRef: (node: HTMLElement | null) => void;
-  /** Attach to the element whose size changes as content arrives. */
-  contentRef: (node: HTMLElement | null) => void;
-  /** The element attached to `scrollRef`, once it has mounted. */
-  scrollElement: HTMLElement | null;
-  /** Whether the container is pinned to its newest content. */
-  isAtBottom: boolean;
-  /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */
-  scrollToBottom: () => void;
-};

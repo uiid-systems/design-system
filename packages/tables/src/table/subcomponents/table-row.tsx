@@ -3,11 +3,13 @@ import { cx } from "@uiid/utils";
 
 import styles from "../table.module.css";
 
+export type TableRowProps = BoxProps;
+
 export const TableRow = ({
   className,
   render = <tr />,
   ...props
-}: BoxProps) => {
+}: TableRowProps) => {
   return (
     <Box
       data-slot="table-row"

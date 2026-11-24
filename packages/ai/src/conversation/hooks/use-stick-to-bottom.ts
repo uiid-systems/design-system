@@ -6,7 +6,19 @@ import {
   CONVERSATION_BOTTOM_EPSILON,
   CONVERSATION_SCROLL_THRESHOLD,
 } from "../conversation.constants";
-import type { UseStickToBottomReturn } from "../conversation.types";
+
+export type UseStickToBottomReturn = {
+  /** Attach to the element that scrolls. */
+  scrollRef: (node: HTMLElement | null) => void;
+  /** Attach to the element whose size changes as content arrives. */
+  contentRef: (node: HTMLElement | null) => void;
+  /** The element attached to `scrollRef`, once it has mounted. */
+  scrollElement: HTMLElement | null;
+  /** Whether the container is pinned to its newest content. */
+  isAtBottom: boolean;
+  /** Re-pin and scroll to the newest content, following the container's `scroll-behavior`. */
+  scrollToBottom: () => void;
+};
 
 /**
  * Keeps a scroll container pinned to its newest content until the reader
