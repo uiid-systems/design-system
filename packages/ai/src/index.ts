@@ -1,8 +1,6 @@
 export type * from "./ai.types";
 export * from "./conversation/conversation";
-export { useConversation } from "./conversation/conversation.context";
 export type * from "./conversation/conversation.types";
-export * from "./conversation/hooks/use-stick-to-bottom";
 export * from "./conversation/subcomponents";
 export * from "./message/message";
 export type * from "./message/message.types";

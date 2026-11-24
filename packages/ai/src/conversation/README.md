@@ -48,7 +48,7 @@ The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props
 
 The log is a polite live region, so a screen reader may read a reply out in fragments as it streams. Pass `aria-busy` while a reply is in flight to hold announcements until it settles. The log is the column rather than the region, so the scroll button appearing and disappearing is not announced as a new message.
 
-`ref` reaches the column, which grows; `viewportRef` reaches the scroller, which scrolls. Use `viewportRef` to read scroll state or listen to scroll, for example to load older history near the top. To keep the reader's place when you prepend, note `scrollHeight - scrollTop` just before the update, once the older page has arrived rather than when you asked for it, and restore it in a layout effect in the component that prepends, keyed on the messages, with `scrollTo({ top: scrollHeight - saved, behavior: "instant" })`. A bare `scrollTop` assignment animates, because the scroller is `scroll-behavior: smooth`. Pass a `useRef` or a stable callback as `viewportRef`: a new callback on each render detaches and reattaches it, so a listener added there without a cleanup piles up. Inside `Conversation`, `useConversation().scrollElement` is the same element; use `viewportRef` from the component that owns the history.
+`ref` reaches the column, which grows; `viewportRef` reaches the scroller, which scrolls. Use `viewportRef` to read scroll state or listen to scroll, for example to load older history near the top. To keep the reader's place when you prepend, note `scrollHeight - scrollTop` just before the update, once the older page has arrived rather than when you asked for it, and restore it in a layout effect in the component that prepends, keyed on the messages, with `scrollTo({ top: scrollHeight - saved, behavior: "instant" })`. A bare `scrollTop` assignment animates, because the scroller is `scroll-behavior: smooth`. Pass a `useRef` or a stable callback as `viewportRef`: a new callback on each render detaches and reattaches it, so a listener added there without a cleanup piles up.
 
 | Prop          | Type                  | Default | Description                                  |
 | ------------- | --------------------- | ------- | -------------------------------------------- |
@@ -79,12 +79,6 @@ Any scroll up releases the pin, however small, so an arrow key or a slow trackpa
 The viewport is in the tab order, so the keyboard can scroll it in every browser, including Safari, which does not make a scroll container focusable on its own. It is an unnamed scroll container: its content is announced through the log inside it. It draws an inset focus ring, since the region clips anything outside it. Pressing the button while it has focus moves focus to the viewport before the button unmounts, so focus never falls back to the page body.
 
 A smooth scroll in progress never releases itself, and content that shrinks while pinned never releases either. A transcript shorter than the region has nowhere to scroll, so the button never shows for it. If the region grows, or content shrinks, until a scrolled-up reader is at the bottom, the region re-pins.
-
-## Hooks
-
-`useConversation()` returns the region's `isAtBottom`, `scrollToBottom` and `scrollElement` to anything rendered inside `Conversation`, and throws outside it. `scrollElement` is the same element `viewportRef` receives; use `viewportRef` from the component that owns the history. A prompt input can call `scrollToBottom()` on submit.
-
-`useStickToBottom()` is the hook behind `Conversation`, exported for a scroller of your own. Attach `scrollRef` to the element that scrolls and `contentRef` to the element that grows, and it returns the same `isAtBottom` and `scrollToBottom`, plus `scrollElement`, the mounted scroller.
 
 ## Notes
 
