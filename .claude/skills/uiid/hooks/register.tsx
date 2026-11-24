@@ -16,6 +16,7 @@ import {
 
 const PANE = "project-graph";
 const PANE_TITLE = "Project graph";
+const TOGGLE = "uiid:toggle-graph";
 const SET_GRAPH = "mcp__uiid__set_graph";
 const SET_STATUS = "mcp__uiid__set_status";
 // The last graph drawn, kept past the session so the pane can show it again.
@@ -64,10 +65,6 @@ const TICKET_SCHEMA = {
 
 export const register: Register = (on) => {
   on("session.start", async ($, e, next) => {
-    await $.command.register({
-      name: "project-graph",
-      description: "Show or hide the project graph pane",
-    });
     await $.tool.register({
       name: "set_graph",
       description:
@@ -140,8 +137,9 @@ export const register: Register = (on) => {
     return next(e);
   });
 
-  // The one command shows the pane and hides it again.
-  on("command.run", { command: "project-graph" }, async ($) => {
+  // `commands/toggle-graph.md` gives the command its name in the plugin's
+  // namespace. This answers it, so the pane toggles with no model turn.
+  on("command.run", { command: TOGGLE }, async ($) => {
     const panes = await $.ui.panes();
     if (panes.some((pane) => pane.id === PANE)) {
       await $.ui.close({ id: PANE });
@@ -179,7 +177,7 @@ export const register: Register = (on) => {
     return {
       result: isPlaced
         ? `Drawn in the pane: ${count} tickets.`
-        : `Stored ${count} tickets, but the pane is not showing. Show the list in chat; the person can open the pane with /project-graph.`,
+        : `Stored ${count} tickets, but the pane is not showing. Show the list in chat; the person can open the pane with /uiid:toggle-graph.`,
     };
   }).catch(() => ({ result: "The project graph could not be drawn." }));
 
@@ -224,7 +222,7 @@ export const register: Register = (on) => {
     return {
       result: panes.some((pane) => pane.id === PANE && pane.isPlaced)
         ? `${ticket} updated in the pane.`
-        : `${ticket} updated, but the pane is not showing. Show the list in chat; the person can open the pane with /project-graph.`,
+        : `${ticket} updated, but the pane is not showing. Show the list in chat; the person can open the pane with /uiid:toggle-graph.`,
     };
   }).catch(() => ({ result: "The ticket could not be updated." }));
 

@@ -135,4 +135,4 @@ If the tool answers that the pane is not showing, write the list in chat as well
 
 When a ticket changes at one of the moments in step 4, call `set_status` with the ticket's id and only what changed: its `status` (`waiting` takes the word away), its `pr`, or its `note`, plus a new `updated` time. Send the whole project again with `set_graph` only when a ticket moves to another heading, a blocker clears, or the project is read again.
 
-`/project-graph` shows the pane and hides it again, and a `uiid:build-project` run opens it as the run starts. The pane keeps the last project it was sent, so it shows that project again in a later session, under the time it was sent.
+`/uiid:toggle-graph` shows the pane and hides it again, and a `uiid:build-project` run opens it as the run starts. The pane keeps the last project it was sent, so it shows that project again in a later session, under the time it was sent.

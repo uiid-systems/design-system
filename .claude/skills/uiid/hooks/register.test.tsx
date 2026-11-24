@@ -145,7 +145,6 @@ test("a change touches one ticket and keeps the rest", () => {
 });
 
 test("the pane draws what set_graph sent, then follows set_status", async ($, on) => {
-  on("command.register", () => ({ value: { command: "project-graph" } }));
   on("tool.register", () => ({ value: { tool: "mcp__uiid__set_graph" } }));
   let isPlaced = true;
   const opened: string[] = [];
@@ -191,7 +190,7 @@ test("the pane draws what set_graph sent, then follows set_status", async ($, on
   expect(
     (
       await $.command.run({
-        command: "project-graph",
+        command: "uiid:toggle-graph",
         args: "",
         origin: { kind: "composer" },
         presentation: { isFullscreen: true, columns: 160 },
