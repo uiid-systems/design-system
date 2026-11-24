@@ -99,17 +99,19 @@ describe("Avatar", () => {
     expect(root).toHaveAttribute("data-ui-p", "2");
   });
 
-  it("lets ContainerProps override the top-level props", () => {
-    const { container } = render(
+  /*
+   * Type-level: `pnpm typecheck` fails if the directive goes unused. Avatar
+   * spreads its own props onto the container, so every key the container
+   * takes is owned and there is no ContainerProps slot to pass one through.
+   */
+  it("rejects a container prop passed through ContainerProps", () => {
+    void (
       <Avatar
         initials="AF"
-        id="outer"
-        ContainerProps={{ id: "inner", gap: 6 }}
-      />,
+        // @ts-expect-error -- `gap` is set on Avatar itself
+        ContainerProps={{ gap: 6 }}
+      />
     );
-    const root = part(container, "avatar-container");
-    expect(root).toHaveAttribute("id", "inner");
-    expect(root).toHaveAttribute("data-ui-gap", "6");
   });
 
   it("lays out in a row by default and a column when vertical", () => {

@@ -39,7 +39,6 @@ export type AvatarDescriptionProps = Pick<AvatarType, "description"> &
   TextProps;
 
 export type AvatarProps = {
-  ContainerProps?: AvatarContainerProps;
   ImageProps?: AvatarImageProps;
   InitialsProps?: AvatarInitialsProps;
   NameProps?: AvatarNameProps;

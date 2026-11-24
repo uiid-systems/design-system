@@ -22,7 +22,7 @@ The image is built on Base UI's [Avatar](https://base-ui.com/react/components/av
 
 The image's `alt` is the initials when Avatar stands alone. When a `name` renders beside it the `alt` is empty, since the name already says who it is. Pass `ImageProps={{ alt }}` to name it yourself.
 
-The root renders a `Group` when horizontal and a `Stack` when vertical, so it takes layout props (`gap`, `p`, …). `className`, `ref` and remaining props reach the root. Slot overrides (`ContainerProps`, `ImageProps`, `InitialsProps`, `NameProps`, `DescriptionProps`) reach each part, and `ContainerProps` wins over the same prop passed at the top level.
+The root renders a `Group` when horizontal and a `Stack` when vertical, so it takes layout props (`gap`, `p`, …). `className`, `ref` and remaining props reach the root. Slot overrides (`ImageProps`, `InitialsProps`, `NameProps`, `DescriptionProps`) reach each part. The container has no slot: its props are passed at the top level.
 
 `AvatarContainer`, `AvatarLayers`, `AvatarImage`, `AvatarInitials`, `AvatarName` and `AvatarDescription` are exported for composition. `AvatarImage` and `AvatarInitials` must sit inside `AvatarLayers`, which holds the loading status they read.
 
