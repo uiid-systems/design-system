@@ -1,9 +1,9 @@
-import { Text, type TextProps } from "@uiid/typography";
+import { Text } from "@uiid/typography";
 import { cx } from "@uiid/utils";
 
-import styles from "../list.module.css";
+import type { ListDescriptionProps } from "../list.types";
 
-export type ListDescriptionProps = TextProps;
+import styles from "../list.module.css";
 
 export const ListDescription = ({
   className,

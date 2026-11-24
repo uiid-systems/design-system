@@ -1,15 +1,10 @@
-import type { Icon } from "@uiid/icons";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { ICON_SIZE_LARGE } from "../list.constants";
+import type { ListGroupHeaderProps } from "../list.types";
 
 import styles from "../list.module.css";
-
-export type ListGroupHeaderProps = {
-  category?: string;
-  icon?: Icon;
-};
 
 export const ListGroupHeader = ({
   category,

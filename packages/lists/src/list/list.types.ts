@@ -1,5 +1,6 @@
 import type { Icon } from "@uiid/icons";
 import type { BoxProps, GroupProps, StackProps } from "@uiid/layout";
+import type { TextProps } from "@uiid/typography";
 
 export type ListMarker = "none" | "disc" | "decimal" | "square";
 
@@ -10,6 +11,18 @@ export type ListItemProps = {
 } & GroupProps;
 
 export type ListItemOrGroup = ListItemProps | ListGroupProps;
+
+/** A row's label: the `Text` a `ListItem` renders for `label`. */
+export type ListLabelProps = TextProps;
+
+/** A row's secondary line: the `Text` a `ListItem` renders for `description`. */
+export type ListDescriptionProps = TextProps;
+
+/** A group's heading row. Renders nothing without a `category`. */
+export type ListGroupHeaderProps = {
+  category?: string;
+  icon?: Icon;
+};
 
 /** Props for a group's root `Stack`. Its heading and items come from the entry. */
 export type ListGroupRootProps = Omit<StackProps, "children" | "render">;
