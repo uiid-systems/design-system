@@ -984,8 +984,10 @@ describe("Combobox required reaches the label and the control", () => {
     ).toBeNull();
   });
 
-  /* The marker rides `FieldProps`, so it has to merge with the caller's rather
-     than replace them. */
+  /* The marker rides the part's `FieldProps`, so it has to merge with the
+     caller's rather than replace them. The label marker is the half that
+     guards the part's spread order: the part leaves its own `required` unset,
+     which must not erase the one Combobox sends. */
   it("keeps the caller's other FieldProps beside the marker", () => {
     const { container } = render(
       <Combobox
@@ -999,17 +1001,24 @@ describe("Combobox required reaches the label and the control", () => {
 
     expect(root).toHaveClass("custom-field");
     expect(root).toHaveAttribute("data-required");
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-required",
+      "true",
+    );
   });
 
-  /* `required` reaches the input part through its `FieldProps`, and the part
-     leaves its own `required` unset, which must not erase it. */
-  it("marks the label and the input required through the part's FieldProps", () => {
+  /* `InputProps.required` is the text input's own native attribute. The
+     marker follows Combobox's `required`, as the control's state does. */
+  it("keeps the marker when InputProps turns the input's required off", () => {
     const { container } = render(
       <Combobox
         items={items}
         label="Fruit"
         required
-        InputProps={{ FieldProps: { className: "custom-field" } }}
+        InputProps={{ required: false }}
       />,
     );
 
@@ -1020,7 +1029,37 @@ describe("Combobox required reaches the label and the control", () => {
       "aria-required",
       "true",
     );
-    expect(screen.getByRole("combobox")).not.toHaveAttribute("required");
+  });
+
+  it("leaves the marker off when only InputProps makes the input required", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        label="Fruit"
+        required={false}
+        InputProps={{ required: true }}
+      />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute("required");
+    expect(screen.getByRole("combobox")).not.toHaveAttribute(
+      "aria-required",
+      "true",
+    );
+  });
+
+  it("marks the label from InputProps when Combobox leaves required unset", () => {
+    const { container } = render(
+      <Combobox items={items} label="Fruit" InputProps={{ required: true }} />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute("required");
   });
 
   /* Top-level props win over RootProps, so the control and the marker agree. */
