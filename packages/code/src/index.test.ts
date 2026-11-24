@@ -7,7 +7,8 @@ import * as code from "./index";
 // Components, their parts and their prop types, plus the highlighter API:
 // `highlight` for server rendering, the language helpers and the hooks.
 // `useHighlighter` is deprecated and goes with the deprecated API removal.
-// Constants, variant functions and the Shiki runtime are internal.
+// Constants, variant functions and the module that lazy-loads Shiki are
+// internal, though `getHighlighter` hands back Shiki's own highlighter.
 const values = [
   "CodeBlock",
   "CodeBlockContent",

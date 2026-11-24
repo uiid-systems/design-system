@@ -848,6 +848,22 @@ describe("Drawer", () => {
   // SUBCOMPONENT PROPS
   // ============================================
 
+  it("takes its name from PopupProps when there is no title", () => {
+    render(
+      <Drawer
+        open
+        onOpenChange={() => {}}
+        PopupProps={{ "aria-label": "Preferences" }}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Preferences" }),
+    ).toBeInTheDocument();
+  });
+
   it("passes PopupProps to popup element", () => {
     render(
       <Drawer

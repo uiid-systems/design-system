@@ -1533,10 +1533,12 @@ describe("Dialog slot precedence", () => {
         open
         title="Settings"
         description="Top-level description"
+        action="Top-level action"
         footer="Top-level footer"
         PopupProps={untyped<DialogProps["PopupProps"]>({
           title: "Slot title",
           description: "Slot description",
+          action: "Slot action",
           footer: "Slot footer",
         })}
       >
@@ -1548,9 +1550,11 @@ describe("Dialog slot precedence", () => {
       screen.getByRole("dialog", { name: "Settings" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Top-level description")).toBeInTheDocument();
+    expect(screen.getByText("Top-level action")).toBeInTheDocument();
     expect(screen.getByText("Top-level footer")).toBeInTheDocument();
     expect(screen.queryByText("Slot title")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot action")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot footer")).not.toBeInTheDocument();
   });
 

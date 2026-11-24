@@ -6,6 +6,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
 import type { CodeBlockProps } from "./code-block.types";
+import {
+  CodeBlockContent,
+  CodeBlockCopyButton,
+  CodeBlockFullscreenButton,
+  CodeBlockHeader,
+  CodeBlockWrapButton,
+} from "./subcomponents";
 
 // Mock the highlighter module
 vi.mock("../highlighter/highlighter.hooks", () => ({
@@ -672,6 +679,89 @@ describe("CodeBlock", () => {
     }
   });
 
+  it("shows the copy after running CopyButtonProps.onCopy when the top-level onCopy throws", async () => {
+    const user = userEvent.setup();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    const slotOnCopy = vi.fn();
+    const topLevelError = new Error("top-level failed");
+    try {
+      render(
+        <CodeBlock
+          code="const x = 1;"
+          onCopy={() => {
+            throw topLevelError;
+          }}
+          CopyButtonProps={{ onCopy: slotOnCopy }}
+        />,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+      expect(
+        await screen.findByRole("button", { name: "Copied" }),
+      ).toHaveAttribute("data-copied", "true");
+      expect(slotOnCopy).toHaveBeenCalledWith("const x = 1;");
+      await waitFor(() =>
+        expect(errors).toHaveBeenCalledWith("onCopy threw:", topLevelError),
+      );
+    } finally {
+      errors.mockRestore();
+    }
+  });
+
+  it("reports both errors when both onCopy handlers throw", async () => {
+    const user = userEvent.setup();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    const slotError = new Error("slot failed");
+    const topLevelError = new Error("top-level failed");
+    try {
+      render(
+        <CodeBlock
+          code="const x = 1;"
+          onCopy={() => {
+            throw topLevelError;
+          }}
+          CopyButtonProps={{
+            onCopy: () => {
+              throw slotError;
+            },
+          }}
+        />,
+      );
+
+      await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+      await waitFor(() => {
+        expect(errors).toHaveBeenCalledWith("onCopy threw:", slotError);
+        expect(errors).toHaveBeenCalledWith("onCopy threw:", topLevelError);
+      });
+      expect(errors).toHaveBeenCalledTimes(2);
+      expect(screen.getByRole("button", { name: "Copied" })).toHaveAttribute(
+        "data-copied",
+        "true",
+      );
+    } finally {
+      errors.mockRestore();
+    }
+  });
+
+  it("runs CopyButtonProps.onCopy on its own when no top-level onCopy is given", async () => {
+    const user = userEvent.setup();
+    const slotOnCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        CopyButtonProps={{ onCopy: slotOnCopy }}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    await waitFor(() =>
+      expect(slotOnCopy).toHaveBeenCalledExactlyOnceWith("const x = 1;"),
+    );
+  });
+
   it("runs neither onCopy and shows no copy when the clipboard write fails", async () => {
     const user = userEvent.setup();
     const errors = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -693,7 +783,13 @@ describe("CodeBlock", () => {
       const copyButton = screen.getByRole("button", { name: "Copy code" });
       await user.click(copyButton);
 
-      await waitFor(() => expect(writeText).toHaveBeenCalled());
+      await waitFor(() =>
+        expect(errors).toHaveBeenCalledWith(
+          "Failed to copy code:",
+          expect.any(Error),
+        ),
+      );
+      expect(writeText).toHaveBeenCalledWith("const x = 1;");
       expect(onCopy).not.toHaveBeenCalled();
       expect(slotOnCopy).not.toHaveBeenCalled();
       expect(copyButton).toHaveAttribute("data-copied", "false");
@@ -701,6 +797,88 @@ describe("CodeBlock", () => {
     } finally {
       errors.mockRestore();
     }
+  });
+});
+
+describe("CodeBlock parts composed by hand", () => {
+  it("names each button part rendered without CodeBlock", () => {
+    render(
+      <>
+        <CodeBlockCopyButton code="const x = 1;" />
+        <CodeBlockWrapButton />
+        <CodeBlockFullscreenButton />
+      </>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Toggle line wrap" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Enter fullscreen" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renames the copy button part to Copied after a copy", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    render(<CodeBlockCopyButton code="const x = 1;" onCopy={onCopy} />);
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    expect(
+      await screen.findByRole("button", { name: "Copied" }),
+    ).toHaveAttribute("data-copied", "true");
+    expect(onCopy).toHaveBeenCalledWith("const x = 1;");
+  });
+
+  it("names the fullscreen button part by its pressed state", () => {
+    render(<CodeBlockFullscreenButton pressed />);
+
+    expect(
+      screen.getByRole("button", { name: "Exit fullscreen" }),
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("renders a header part with its filename, language icon and buttons", () => {
+    render(
+      <CodeBlockHeader
+        filename="example.ts"
+        language="ts"
+        code="const x = 1;"
+        wrappable
+        fullscreenable
+      />,
+    );
+
+    const header = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-header"]',
+    )!;
+    expect(within(header).getByText("example.ts")).toBeInTheDocument();
+    expect(
+      within(header).getByRole("img", { name: "typescript" }),
+    ).toBeInTheDocument();
+    expect(
+      within(header).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+    expect(
+      within(header).getByRole("button", { name: "Toggle line wrap" }),
+    ).toBeInTheDocument();
+    expect(
+      within(header).getByRole("button", { name: "Enter fullscreen" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a content part's raw code, one line per line, without html", () => {
+    render(<CodeBlockContent code={"const a = 1;\nconst b = 2;"} />);
+
+    const content = document.querySelector('[data-slot="code-block-content"]')!;
+    const lines = content.querySelectorAll(".line");
+    expect(lines).toHaveLength(2);
+    expect(lines[0]).toHaveTextContent("const a = 1;");
+    expect(lines[1]).toHaveTextContent("const b = 2;");
   });
 });
 

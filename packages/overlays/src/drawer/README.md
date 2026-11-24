@@ -14,6 +14,8 @@ Leave `open` unset and the drawer runs itself from the trigger; pass `open` and 
 
 `TriggerProps` and `PopupProps` take none of the keys Drawer sets itself: the trigger's content is `trigger`, and `title`, `description`, `action`, `footer`, `hideCloseButton` and `children` are top-level props. Passing one through the slot is a type error, and at runtime the top-level value wins.
 
+A `title` names the drawer. Without one the drawer has no accessible name, so give it one through `PopupProps={{ "aria-label": "…" }}`.
+
 Drawer wraps Base UI's [Drawer](https://base-ui.com/react/components/drawer) and takes its props unchanged — anything not listed above is forwarded. There is no `side` prop and no variant class: edge placement is styled from the `data-swipe-direction` attribute Base UI puts on the popup.
 
 ## Close button
