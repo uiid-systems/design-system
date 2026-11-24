@@ -1,9 +1,4 @@
-import {
-  CodeBlock,
-  DEFAULT_LANGUAGE,
-  highlight,
-  type CodeBlockProps,
-} from "@uiid/design-system";
+import { CodeBlock, highlight, type CodeBlockProps } from "@uiid/design-system";
 
 /**
  * Highlights on the server and passes the result as `html`, so CodeBlock skips
@@ -15,7 +10,8 @@ export async function HighlightedCodeBlock({
   highlightLines,
   ...props
 }: Omit<CodeBlockProps, "html">) {
-  const html = await highlight(code, language ?? DEFAULT_LANGUAGE, {
+  // With no `language`, `highlight` uses the same default CodeBlock does.
+  const html = await highlight(code, language, {
     highlightLines,
   });
 

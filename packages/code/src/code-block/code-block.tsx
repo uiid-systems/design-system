@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
-import { cx } from "@uiid/utils";
+import { cx, definedProps } from "@uiid/utils";
 import * as React from "react";
 
 import {
@@ -63,6 +63,20 @@ export const CodeBlock = ({
     [onFullscreenChange],
   );
 
+  // Both handlers run after a successful copy: the slot's first, then the
+  // top-level one, which still runs if the first throws. The slot's error is
+  // logged here; the top-level one's reaches the copy button, which logs it,
+  // so each error is reported once.
+  const slotOnCopy = CopyButtonProps?.onCopy;
+  const handleCopy = (copied: string) => {
+    try {
+      slotOnCopy?.(copied);
+    } catch (err) {
+      console.error("onCopy threw:", err);
+    }
+    onCopy?.(copied);
+  };
+
   const { html, error } = useHighlight(code, language, {
     highlightLines,
     enabled: !prerenderedHtml,
@@ -119,8 +133,8 @@ export const CodeBlock = ({
     return (
       <>
         <CodeBlockHeader
-          filename={filename}
-          language={languageProp}
+          {...slot(HeaderProps)}
+          {...definedProps({ filename, language: languageProp })}
           copyable={copyable}
           code={code}
           wrappable={wrappable}
@@ -131,9 +145,8 @@ export const CodeBlock = ({
           onFullscreenChange={handleFullscreenChange}
           LanguageIconProps={slot(LanguageIconProps)}
           WrapButtonProps={slot(WrapButtonProps)}
-          CopyButtonProps={{ onCopy, ...slot(CopyButtonProps) }}
+          CopyButtonProps={{ ...slot(CopyButtonProps), onCopy: handleCopy }}
           FullscreenButtonProps={slot(FullscreenButtonProps)}
-          {...slot(HeaderProps)}
         />
 
         <div

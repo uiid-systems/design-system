@@ -44,11 +44,8 @@ export const Popover = ({
         <PopoverBackdrop {...BackdropProps} />
         <PopoverPositioner {...PositionerProps}>
           <PopoverPopup
-            title={title}
-            description={description}
-            action={action}
-            footer={footer}
             {...PopupProps}
+            {...definedProps({ title, description, action, footer })}
           >
             {children}
           </PopoverPopup>

@@ -78,12 +78,14 @@ export const Drawer = ({
           <DrawerBackdrop {...BackdropProps} />
           <DrawerViewport {...ViewportProps}>
             <DrawerPopup
-              title={title}
-              description={description}
-              action={action}
-              footer={footer}
-              hideCloseButton={hideCloseButton}
               {...PopupProps}
+              {...definedProps({
+                title,
+                description,
+                action,
+                footer,
+                hideCloseButton,
+              })}
             >
               <DrawerContent {...ContentProps}>{children}</DrawerContent>
             </DrawerPopup>

@@ -42,11 +42,22 @@ export type DialogProps = React.PropsWithChildren<{
   pending?: boolean;
   trigger?: DialogTriggerProps["children"];
   RootProps?: DialogRootProps;
-  TriggerProps?: DialogTriggerProps;
+  /** Reaches the trigger. Its content is `trigger`. */
+  TriggerProps?: Omit<DialogTriggerProps, "children">;
   PortalProps?: DialogPortalProps;
   BackdropProps?: DialogBackdropProps;
   ViewportProps?: DialogViewportProps;
-  PopupProps?: DialogPopupProps;
+  /** Reaches the popup. `size`, the card slots, `hideCloseButton` and `children` are set on Dialog itself. */
+  PopupProps?: Omit<
+    DialogPopupProps,
+    | "size"
+    | "title"
+    | "description"
+    | "action"
+    | "footer"
+    | "hideCloseButton"
+    | "children"
+  >;
 }> &
   DialogVariants &
   Pick<DialogRootProps, "open" | "defaultOpen" | "onOpenChange" | "modal"> &

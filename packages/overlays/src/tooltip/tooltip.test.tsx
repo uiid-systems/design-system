@@ -4,6 +4,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { TooltipProvider } from "./subcomponents";
 import { Tooltip } from "./tooltip";
+import type { TooltipProps } from "./tooltip.types";
 
 import styles from "./tooltip.module.css";
 
@@ -697,5 +698,111 @@ describe("Tooltip RootProps precedence", () => {
       </Tooltip>,
     );
     expect(screen.getByText("Tooltip content")).toBeInTheDocument();
+  });
+});
+
+describe("Tooltip slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets a top-level delay win over TriggerProps.delay", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        delay={0}
+        TriggerProps={untyped<TooltipProps["TriggerProps"]>({ delay: 5000 })}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+    // Far under the slot's 5000ms, so the top-level `delay` reached the trigger.
+    expect(
+      await screen.findByText("Tooltip content", undefined, { timeout: 100 }),
+    ).toBeInTheDocument();
+  });
+
+  it("still applies TriggerProps.delay when the top level leaves it unset", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip
+        trigger={<button>Hover me</button>}
+        TriggerProps={untyped<TooltipProps["TriggerProps"]>({ delay: 0 })}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    await user.hover(screen.getByRole("button"));
+    // Well under the 300ms default, so the slot's `delay` reached the trigger.
+    expect(
+      await screen.findByText("Tooltip content", undefined, { timeout: 100 }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders trigger, not TriggerProps.children, as the trigger's content", () => {
+    render(
+      <Tooltip
+        trigger="Details"
+        TriggerProps={untyped<TooltipProps["TriggerProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    expect(screen.getByRole("button", { name: "Details" })).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+
+  it("renders children, not PopupProps.children, in the popup", () => {
+    render(
+      <Tooltip
+        trigger="Details"
+        open
+        PopupProps={untyped<TooltipProps["PopupProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Tooltip content
+      </Tooltip>,
+    );
+
+    expect(screen.getByText("Tooltip content")).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Tooltip slot props", () => {
+  it("rejects the keys Tooltip owns in TriggerProps", () => {
+    void (
+      <>
+        <Tooltip
+          trigger="Details"
+          // @ts-expect-error -- the trigger's content is `trigger`
+          TriggerProps={{ children: "Other" }}
+        />
+        <Tooltip
+          trigger="Details"
+          // @ts-expect-error -- `delay` is set on Tooltip itself
+          TriggerProps={{ delay: 0 }}
+        />
+      </>
+    );
+  });
+
+  it("rejects the key Tooltip owns in PopupProps", () => {
+    void (
+      <Tooltip
+        trigger="Details"
+        // @ts-expect-error -- the popup's content is Tooltip's `children`
+        PopupProps={{ children: "Other" }}
+      />
+    );
   });
 });

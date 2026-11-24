@@ -1,7 +1,7 @@
 "use client";
 
 import { Stack, Layer } from "@uiid/layout";
-import { cx, useComposedRefs } from "@uiid/utils";
+import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import { useState, useCallback, useRef } from "react";
 
 import { CodeBlockHeader } from "../code-block/subcomponents";
@@ -104,11 +104,11 @@ export const CodeEditor = ({
     >
       {showHeader && (
         <CodeBlockHeader
-          filename={filename}
+          {...HeaderProps}
+          {...definedProps({ filename })}
           copyable={copyable}
           code={value}
           CopyButtonProps={CopyButtonProps}
-          {...HeaderProps}
         />
       )}
 

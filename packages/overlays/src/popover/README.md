@@ -11,7 +11,7 @@ Use Popover when you want to:
 
 Leave `open` unset and the popover runs itself from the trigger, opening on mount with `defaultOpen`; pass `open` and `onOpenChange` to drive it yourself. When a top-level prop and `RootProps` set the same key, the top-level prop wins. `onOpenChange` is the one exception: `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
-Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Dialog and Drawer; Popover's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`) reach the individual parts.
+Popover wraps Base UI's [Popover](https://base-ui.com/react/components/popover). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Dialog and Drawer; Popover's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`) reach the individual parts. `TriggerProps` and `PopupProps` take none of the keys Popover sets itself: the trigger's content is `trigger`, and `title`, `description`, `action`, `footer` and `children` are top-level props. Passing one through the slot is a type error, and at runtime the top-level value wins.
 
 **Popover or Tooltip?** Popover is click-triggered, focusable, and can contain controls. Tooltip is hover-triggered, holds plain text, and is unreachable by touch — so anything a user must read or act on belongs here, not there.
 

@@ -101,6 +101,13 @@ describe("highlight", () => {
     expect(html).toMatch(/--shiki-light:#[0-9a-f]+;--shiki-dark:#[0-9a-f]+/i);
   });
 
+  it("highlights as TypeScript when no language is given, as CodeBlock does", async () => {
+    const html = await highlight(TS_CODE, undefined);
+
+    expect(hasColoredTokens(html)).toBe(true);
+    expect(html).toBe(await highlight(TS_CODE, "typescript"));
+  });
+
   it("highlights an alias with its real language's grammar", async () => {
     const html = await highlight(TS_CODE, "ts");
 

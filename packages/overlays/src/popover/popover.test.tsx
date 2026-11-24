@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Popover } from "./popover";
+import type { PopoverProps } from "./popover.types";
 
 import styles from "./popover.module.css";
 
@@ -932,5 +933,119 @@ describe("Popover RootProps precedence", () => {
     await waitFor(() => {
       expect(document.body.style.overflowY).toBe("hidden");
     });
+  });
+});
+
+describe("Popover slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets the top-level card slots win over the same keys in PopupProps", () => {
+    render(
+      <Popover
+        open
+        title="Filters"
+        description="Top-level description"
+        action="Top-level action"
+        footer="Top-level footer"
+        PopupProps={untyped<PopoverProps["PopupProps"]>({
+          title: "Slot title",
+          description: "Slot description",
+          action: "Slot action",
+          footer: "Slot footer",
+        })}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    expect(screen.getByRole("dialog", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.getByText("Top-level description")).toBeInTheDocument();
+    expect(screen.getByText("Top-level action")).toBeInTheDocument();
+    expect(screen.getByText("Top-level footer")).toBeInTheDocument();
+    for (const text of [
+      "Slot title",
+      "Slot description",
+      "Slot action",
+      "Slot footer",
+    ]) {
+      expect(screen.queryByText(text)).not.toBeInTheDocument();
+    }
+  });
+
+  it("still applies a PopupProps key the top level leaves unset", () => {
+    render(
+      <Popover
+        open
+        PopupProps={untyped<PopoverProps["PopupProps"]>({
+          title: "Slot title",
+        })}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Slot title" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders trigger, not TriggerProps.children, as the trigger's content", () => {
+    render(
+      <Popover
+        trigger="Open popover"
+        TriggerProps={untyped<PopoverProps["TriggerProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Popover content
+      </Popover>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Open popover" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Popover slot props", () => {
+  it("rejects the keys Popover owns in PopupProps", () => {
+    void (
+      <>
+        <Popover
+          // @ts-expect-error -- `title` is set on Popover itself
+          PopupProps={{ title: "Filters" }}
+        />
+        <Popover
+          // @ts-expect-error -- `description` is set on Popover itself
+          PopupProps={{ description: "About" }}
+        />
+        <Popover
+          // @ts-expect-error -- `action` is set on Popover itself
+          PopupProps={{ action: "Edit" }}
+        />
+        <Popover
+          // @ts-expect-error -- `footer` is set on Popover itself
+          PopupProps={{ footer: "Done" }}
+        />
+        <Popover
+          // @ts-expect-error -- the popup's content is Popover's `children`
+          PopupProps={{ children: "Body" }}
+        />
+      </>
+    );
+  });
+
+  it("rejects the key Popover owns in TriggerProps", () => {
+    void (
+      <Popover
+        trigger="Open"
+        // @ts-expect-error -- the trigger's content is `trigger`
+        TriggerProps={{ children: "Other" }}
+      />
+    );
   });
 });
