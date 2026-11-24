@@ -56,8 +56,6 @@ import { Tabs } from "@uiid/navigation";
 | `value`   | `string`    | Unique identifier |
 | `content` | `ReactNode` | Panel content     |
 
-`TabsItemData` was `TabProps`, and `content` was `render`. Both old names still work for one release and are deprecated.
-
 ## Data Slots
 
 | Slot             | Element                      |

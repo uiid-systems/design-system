@@ -4,7 +4,7 @@
 
 Use Resizable when you want to:
 
-- Let the user widen a sidebar, or heighten an editor against a terminal, with `orientation` (`horizontal` or `vertical`, default `horizontal`). The older `direction` prop still works but is deprecated; `orientation` wins when both are set
+- Let the user widen a sidebar, or heighten an editor against a terminal, with `orientation` (`horizontal` or `vertical`, default `horizontal`).
 - Start each panel at a `defaultSize`, and bound it with `minSize` and `maxSize`
 - Nest one group inside another's panel for a split in both directions
 - Fold a panel away with `collapsible` once it is dragged below its `minSize`
@@ -17,4 +17,4 @@ The group fills its parent (`width` and `height` are `100%`), so give the parent
 
 A handle renders a grip unless `withHandle={false}`, and children replace the grip. Handles are focusable separators that the arrow keys move. A disabled handle stops only itself; a panel that must not resize at all, directly or through a neighbour, needs `disabled` too.
 
-`Resizable`, `ResizablePanel` and `ResizableHandle` wrap react-resizable-panels' [`Group`, `Panel` and `Separator`](https://github.com/bvaughn/react-resizable-panels) and forward their props unchanged, `orientation` included. `direction` is a deprecated alias for `orientation`.
+`Resizable`, `ResizablePanel` and `ResizableHandle` wrap react-resizable-panels' [`Group`, `Panel` and `Separator`](https://github.com/bvaughn/react-resizable-panels) and forward their props unchanged, `orientation` included.

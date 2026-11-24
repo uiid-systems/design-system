@@ -69,7 +69,6 @@ const types = [
   "PaginationProps",
   "SubmenuRootProps",
   "SubmenuTriggerProps",
-  "TabProps",
   "TabsIndicatorProps",
   "TabsItemData",
   "TabsListProps",

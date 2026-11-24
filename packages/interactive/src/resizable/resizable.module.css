@@ -1,6 +1,6 @@
 /* The library's Group sets display, flex-direction and size inline, so
-   `.resizable` needs no layout rules of its own. data-direction mirrors the
-   resolved orientation and only scopes the handle rules below. */
+   `.resizable` needs no layout rules of its own. data-orientation mirrors the
+   orientation and only scopes the handle rules below. */
 
 .resizable-panel {
   overflow: auto;
@@ -17,12 +17,12 @@
   transition: background-color var(--globals-transition-duration) ease;
 }
 
-.resizable[data-direction="horizontal"] > .resizable-handle {
+.resizable[data-orientation="horizontal"] > .resizable-handle {
   width: 1px;
   background-color: var(--globals-border-color);
 }
 
-.resizable[data-direction="vertical"] > .resizable-handle {
+.resizable[data-orientation="vertical"] > .resizable-handle {
   height: 1px;
   background-color: var(--globals-border-color);
 }
@@ -43,12 +43,12 @@
   z-index: 1;
 }
 
-.resizable[data-direction="horizontal"] > .resizable-handle .resizable-handle-grip {
+.resizable[data-orientation="horizontal"] > .resizable-handle .resizable-handle-grip {
   width: 12px;
   height: 24px;
 }
 
-.resizable[data-direction="vertical"] > .resizable-handle .resizable-handle-grip {
+.resizable[data-orientation="vertical"] > .resizable-handle .resizable-handle-grip {
   width: 24px;
   height: 12px;
 }
@@ -57,6 +57,6 @@
   color: var(--shade-muted);
 }
 
-.resizable[data-direction="horizontal"] > .resizable-handle .resizable-handle-grip svg {
+.resizable[data-orientation="horizontal"] > .resizable-handle .resizable-handle-grip svg {
   transform: rotate(90deg);
 }

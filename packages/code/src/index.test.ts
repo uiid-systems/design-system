@@ -5,8 +5,7 @@ import { describe, expect, it } from "vitest";
 import * as code from "./index";
 
 // Components, their parts and their prop types, plus the highlighter API:
-// `highlight` for server rendering, the language helpers and the hooks.
-// `useHighlighter` is deprecated and goes with the deprecated API removal.
+// `highlight` for server rendering, the language helpers and `useHighlight`.
 // Constants, variant functions and the module that lazy-loads Shiki are
 // internal, though `getHighlighter` hands back Shiki's own highlighter.
 const values = [
@@ -25,7 +24,6 @@ const values = [
   "loadLanguage",
   "resolveLanguage",
   "useHighlight",
-  "useHighlighter",
 ];
 
 const types = [
