@@ -33,7 +33,25 @@ export type CheckboxGroupProps = {
   items?: FormItemProps[];
   orientation?: "horizontal" | "vertical";
   hideIndicators?: CheckboxProps["hideIndicator"];
-  CheckboxProps?: Partial<CheckboxProps>;
+  /**
+   * Reaches every box rendered from `items`. The keys CheckboxGroup sets on
+   * each box itself, from its own props and from each item, are left out.
+   */
+  CheckboxProps?: Partial<
+    Omit<
+      CheckboxProps,
+      | "name"
+      | "hideIndicator"
+      | "size"
+      | "bordered"
+      | "reversed"
+      | "color"
+      | "IndicatorProps"
+      | "value"
+      | "label"
+      | "disabled"
+    >
+  >;
   IndicatorProps?: CheckboxIndicatorProps;
   /** Reaches the Field around the group. The keys CheckboxGroup hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<

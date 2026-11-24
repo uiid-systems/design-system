@@ -59,22 +59,23 @@ export const RadioGroup = ({
           ? children
           : items.map(({ value, label, disabled: itemDisabled }) => (
               /*
-               * `RadioProps` sits between the group's dressing and the item's
-               * own identity, exactly as `CheckboxProps` does in CheckboxGroup.
-               * Spread above them it could not override anything — a group-level
-               * `color` of `undefined` still won, so `RadioProps={{ color }}`
-               * was silently dropped — and spread below them it would let a
-               * shared override clobber each item's `value` and `label`.
+               * `RadioProps` spreads first and the group's dressing after, as
+               * `CheckboxProps` does in CheckboxGroup, so a group value wins.
+               * `definedProps` leaves an unset one out: spread as `undefined`,
+               * a group-level `color` once erased the slot's. Each item's own
+               * identity comes last, so a shared override cannot clobber it.
                */
               <Radio
                 key={value}
-                hideIndicator={hideIndicators}
-                size={size}
-                bordered={bordered}
-                reversed={reversed}
-                color={color}
-                IndicatorProps={IndicatorProps}
                 {...RadioProps}
+                {...definedProps({
+                  hideIndicator: hideIndicators,
+                  size,
+                  bordered,
+                  reversed,
+                  color,
+                  IndicatorProps,
+                })}
                 value={value}
                 label={label}
                 disabled={itemDisabled || disabled}

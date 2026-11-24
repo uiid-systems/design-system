@@ -34,7 +34,24 @@ export type RadioGroupProps = WithLayoutProps<
   orientation?: "horizontal" | "vertical";
   hideIndicators?: RadioProps["hideIndicator"];
   required?: boolean;
-  RadioProps?: Partial<RadioProps>;
+  /**
+   * Reaches every radio rendered from `items`. The keys RadioGroup sets on each
+   * radio itself, from its own props and from each item, are left out.
+   */
+  RadioProps?: Partial<
+    Omit<
+      RadioProps,
+      | "hideIndicator"
+      | "size"
+      | "bordered"
+      | "reversed"
+      | "color"
+      | "IndicatorProps"
+      | "value"
+      | "label"
+      | "disabled"
+    >
+  >;
   IndicatorProps?: RadioIndicatorProps;
   /** Reaches the Field around the group. The keys RadioGroup hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<
