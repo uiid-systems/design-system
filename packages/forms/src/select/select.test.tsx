@@ -1457,3 +1457,30 @@ describe("Select RootProps precedence", () => {
     ).not.toBeNull();
   });
 });
+
+describe("Select FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <Select FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <Select
+        // @ts-expect-error -- `label` is set on Select itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Select
+        // @ts-expect-error -- `required` is set on Select itself
+        FieldProps={{ required: true }}
+      />
+    );
+  });
+});

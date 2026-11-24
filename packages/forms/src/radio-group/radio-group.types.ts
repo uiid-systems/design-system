@@ -4,6 +4,7 @@ import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { RadioProps, RadioIndicatorProps } from "../radio/radio.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
 
 /**
@@ -35,6 +36,9 @@ export type RadioGroupProps = WithLayoutProps<
   required?: boolean;
   RadioProps?: Partial<RadioProps>;
   IndicatorProps?: RadioIndicatorProps;
-  FieldProps?: Partial<FieldProps>;
+  /** Reaches the Field around the group. The keys RadioGroup hands to Field itself are left out. */
+  FieldProps?: FieldSlotProps<
+    "name" | "required" | "disabled" | "fullwidth" | "size"
+  >;
 } & Pick<RadioProps, "size" | "bordered" | "reversed" | "color"> &
   Pick<FieldProps, "label" | "description" | "action">;

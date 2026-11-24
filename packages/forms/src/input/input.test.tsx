@@ -565,23 +565,26 @@ describe("Input hands disabled and fullwidth to Field", () => {
     ).not.toHaveAttribute("data-ui-w");
   });
 
-  /* One excess key per literal: TypeScript reports only the first. */
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
-    render(
+    void (
       <Input
-        label="Email"
-        // @ts-expect-error label is owned by Input
-        FieldProps={{ validationMode: "onChange", label: "Other" }}
-      />,
+        // @ts-expect-error -- `label` is set on Input itself
+        FieldProps={{ label: "Other" }}
+      />
     );
-    render(
+    void (
       <Input
-        label="Email"
-        // @ts-expect-error disabled is owned by Input
-        FieldProps={{ validationMode: "onChange", disabled: true }}
-      />,
+        // @ts-expect-error -- `description` is set on Input itself
+        FieldProps={{ description: "Other" }}
+      />
     );
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+    void (
+      <Input
+        // @ts-expect-error -- `disabled` is set on Input itself
+        FieldProps={{ disabled: true }}
+      />
+    );
   });
 });
 

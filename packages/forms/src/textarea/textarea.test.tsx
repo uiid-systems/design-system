@@ -682,23 +682,26 @@ describe("Textarea hands disabled and fullwidth to Field", () => {
     ).not.toHaveAttribute("data-ui-w");
   });
 
-  /* One excess key per literal: TypeScript reports only the first. */
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
-    render(
+    void (
       <Textarea
-        label="Notes"
-        // @ts-expect-error label is owned by Textarea
-        FieldProps={{ validationMode: "onChange", label: "Other" }}
-      />,
+        // @ts-expect-error -- `label` is set on Textarea itself
+        FieldProps={{ label: "Other" }}
+      />
     );
-    render(
+    void (
       <Textarea
-        label="Notes"
-        // @ts-expect-error disabled is owned by Textarea
-        FieldProps={{ validationMode: "onChange", disabled: true }}
-      />,
+        // @ts-expect-error -- `action` is set on Textarea itself
+        FieldProps={{ action: "Other" }}
+      />
     );
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
+    void (
+      <Textarea
+        // @ts-expect-error -- `disabled` is set on Textarea itself
+        FieldProps={{ disabled: true }}
+      />
+    );
   });
 });
 

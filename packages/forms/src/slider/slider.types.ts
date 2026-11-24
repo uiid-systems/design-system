@@ -8,6 +8,7 @@ import type {
 } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { sliderVariants } from "./slider.variants";
 
 export type SliderVariants = VariantProps<typeof sliderVariants>;
@@ -70,5 +71,10 @@ export type SliderProps = SliderRootProps & {
   TrackProps?: SliderTrackProps;
   IndicatorProps?: SliderIndicatorProps;
   ThumbProps?: SliderThumbProps;
-  FieldProps?: FieldProps;
+  /**
+   * Reaches the Field around the slider. The keys Slider hands to Field itself
+   * are left out, and so is `disabled`: Slider takes it on its root, and a
+   * disabled Field would disable the slider a second way.
+   */
+  FieldProps?: FieldSlotProps<"name" | "disabled" | "size">;
 } & Pick<FieldProps, "label" | "description" | "action">;

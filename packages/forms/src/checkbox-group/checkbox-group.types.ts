@@ -7,6 +7,7 @@ import type {
   CheckboxIndicatorProps,
 } from "../checkbox/checkbox.types";
 import type { FieldProps } from "../field/field.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
 
 /**
@@ -34,7 +35,10 @@ export type CheckboxGroupProps = {
   hideIndicators?: CheckboxProps["hideIndicator"];
   CheckboxProps?: Partial<CheckboxProps>;
   IndicatorProps?: CheckboxIndicatorProps;
-  FieldProps?: Partial<FieldProps>;
+  /** Reaches the Field around the group. The keys CheckboxGroup hands to Field itself are left out. */
+  FieldProps?: FieldSlotProps<
+    "name" | "required" | "disabled" | "fullwidth" | "size"
+  >;
 } & WithLayoutProps<BaseCheckboxGroup.Props, CheckboxGroupLayoutProps> &
   Pick<
     CheckboxProps,

@@ -443,3 +443,30 @@ describe("CheckboxGroup layout props", () => {
     expect(root(container)).toHaveClass("disabled-false");
   });
 });
+
+describe("CheckboxGroup FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <CheckboxGroup FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <CheckboxGroup
+        // @ts-expect-error -- `label` is set on CheckboxGroup itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <CheckboxGroup
+        // @ts-expect-error -- `fullwidth` is set on CheckboxGroup itself
+        FieldProps={{ fullwidth: true }}
+      />
+    );
+  });
+});

@@ -385,3 +385,30 @@ describe("RadioGroup layout props", () => {
     expect(root(container)).toHaveClass("disabled-false");
   });
 });
+
+describe("RadioGroup FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <RadioGroup FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `label` is set on RadioGroup itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `children` is set on RadioGroup itself
+        FieldProps={{ children: "Other" }}
+      />
+    );
+  });
+});

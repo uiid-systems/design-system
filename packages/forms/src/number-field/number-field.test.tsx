@@ -463,3 +463,30 @@ describe("NumberField RootProps precedence", () => {
     expect(container.querySelector("input[name='slot']")).toBeInTheDocument();
   });
 });
+
+describe("NumberField FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <NumberField FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <NumberField
+        // @ts-expect-error -- `label` is set on NumberField itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <NumberField
+        // @ts-expect-error -- `size` is set on NumberField itself
+        FieldProps={{ size: "small" }}
+      />
+    );
+  });
+});
