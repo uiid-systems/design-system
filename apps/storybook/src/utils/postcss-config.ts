@@ -1,7 +1,7 @@
 // @ts-expect-error - CJS module without type declarations
-import cssLayers from "../../../../scripts/css-layers.cjs";
+import cssLayers from "@uiid/config/scripts/css-layers.cjs";
 // @ts-expect-error - CJS module without type declarations
-import postcssLayerWrapper from "../../../../scripts/postcss-layer-wrapper.cjs";
+import postcssLayerWrapper from "@uiid/config/scripts/postcss-layer-wrapper.cjs";
 
 /**
  * The subset of Vite's config this helper reads and mutates. Declared
@@ -15,7 +15,7 @@ type ConfigWithCss = {
 
 /**
  * Applies the PostCSS layer wrapper to package CSS in the Vite config, each
- * package in the layer its build uses (`scripts/css-layers.cjs`), while tokens and
+ * package in the layer its build uses (`packages/config/scripts/css-layers.cjs`), while tokens and
  * utilities remain in their own layers.
  */
 export function applyPostCSSLayers<T extends ConfigWithCss>(config: T): T {

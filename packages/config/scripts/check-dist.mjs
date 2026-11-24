@@ -15,7 +15,7 @@
 //      "nodenext"`, whose relative imports must name their files.
 //   6. Published stylesheets carry no Lightning CSS artifacts: no
 //      `--lightningcss-*` fallbacks, no native nesting, and `light-dark()`
-//      still present where the packages use it (see scripts/css-target.ts).
+//      still present where the packages use it (see packages/config/scripts/css-target.ts).
 //   7. Every public package's `pnpm pack` tarball carries the root LICENSE.
 
 import { execFileSync } from "node:child_process";
@@ -35,7 +35,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const packagesDir = join(root, "packages");
 const failures = [];
 const fail = (message) => failures.push(message);
@@ -79,7 +79,9 @@ const packages = readdirSync(packagesDir)
   .map((dir) => ({
     dir,
     manifest: JSON.parse(readFileSync(join(dir, "package.json"), "utf8")),
-  }));
+  }))
+  // @uiid/config holds the shared build config and is never built itself.
+  .filter(({ manifest }) => manifest.scripts?.build);
 
 for (const { dir, manifest } of packages) {
   if (!existsSync(join(dir, "dist"))) {
@@ -147,7 +149,7 @@ for (const { dir, manifest } of packages) {
       )
     ) {
       fail(
-        `${name}: ships native CSS nesting. Check the lightningcss options in scripts/css-target.ts.`,
+        `${name}: ships native CSS nesting. Check the lightningcss options in packages/config/scripts/css-target.ts.`,
       );
     }
   }

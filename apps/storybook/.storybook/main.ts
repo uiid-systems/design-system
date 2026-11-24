@@ -2,10 +2,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { StorybookConfig } from "@storybook/react-vite";
+import { cssTarget, lightningcss } from "@uiid/config/scripts/css-target.ts";
+import { emitGeneratedSources } from "@uiid/config/scripts/emit-generated-sources.ts";
 import { defaultClientConditions } from "vite";
 
-import { cssTarget, lightningcss } from "../../../scripts/css-target.ts";
-import { emitGeneratedSources } from "../../../scripts/emit-generated-sources.ts";
 import { applyPostCSSLayers } from "../src/utils/postcss-config.ts";
 
 const config: StorybookConfig = {
@@ -59,7 +59,10 @@ const config: StorybookConfig = {
       // so the barrel's copy would define every token a second time.
       {
         find: /^@uiid\/[\w-]+\/globals\.css$/,
-        replacement: resolve(__dirname, "../../../vitest.empty.css"),
+        replacement: resolve(
+          __dirname,
+          "../../../packages/config/vitest.empty.css",
+        ),
       },
       { find: "@tokens", replacement: resolve(packagesDir, "tokens/src") },
       ...existingAliases,

@@ -39,7 +39,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build"
+    "build": "node ../config/scripts/clean-build-output.mjs && tsc -b && vite build"
   },
   "peerDependencies": {
     "@base-ui/react": "^1.9.0",
@@ -50,6 +50,7 @@
     "@base-ui/react": "^1.9.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@uiid/config": "workspace:*",
     "ai": "7.0.156",
     "markdown-to-jsx": "^9.10.4",
     "react": "^19.1.1",

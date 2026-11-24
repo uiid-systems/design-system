@@ -5,8 +5,8 @@
   "extends": "./tsconfig.check.json",
   // The packages' own `.d.ts` files carry the CSS module types.
   "include": [
-    "packages/*/src/**/*.browser.test.tsx",
-    "packages/*/src/**/*.d.ts",
+    "../*/src/**/*.browser.test.tsx",
+    "../*/src/**/*.d.ts",
     "vitest.matchers.d.ts"
   ],
   "exclude": []

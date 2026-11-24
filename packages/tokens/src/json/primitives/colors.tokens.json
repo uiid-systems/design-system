@@ -2,7 +2,7 @@
   "$description": "UIID Design System - Primitive Color Tokens",
   "color": {
     "$type": "color",
-    "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows. One exception: 700 is calibrated rather than free. It is placed ΔL* 10.5 (CIE) above 800, holding the step's oklch hue and chroma, so --palette-fill-hover reads as the same size step at every hue instead of ranging 8.76–15.42. Move 700 or 800 and re-run `node scripts/check-palette-contrast.mjs` or that uniformity is silently lost.",
+    "$description": "Hand-authored ramps. Each hue's 500 step is the authored anchor, so the ramp contains the colour it is named after by construction. Steps are plain hex: nothing here is derived at build or render time. Retune a hue by editing its steps — every semantic treatment in palette.css follows. One exception: 700 is calibrated rather than free. It is placed ΔL* 10.5 (CIE) above 800, holding the step's oklch hue and chroma, so --palette-fill-hover reads as the same size step at every hue instead of ranging 8.76–15.42. Move 700 or 800 and re-run `node packages/config/scripts/check-palette-contrast.mjs` or that uniformity is silently lost.",
     "white": {
       "$value": "#fefefa",
       "$description": "Not a palette hue. Kept because shade.background references it, so the tokens must emit it to render anywhere a theme is not loaded."

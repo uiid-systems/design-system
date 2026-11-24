@@ -6,7 +6,7 @@ import root from "./vitest.config.ts";
 /* Runs `*.browser.test.tsx` files in a real browser, for what happy-dom cannot
    show: caret movement, real clipboard paste and the browser's own editing.
    `pnpm test:run` stays on happy-dom and leaves these out; run them with
-   `pnpm test:run --config vitest.browser.config.ts`.
+   `pnpm test:browser`.
 
    Chromium by default, which is what CI runs. Point it at other engines with
    `VITEST_BROWSERS`, for example `VITEST_BROWSERS=firefox,webkit`, once

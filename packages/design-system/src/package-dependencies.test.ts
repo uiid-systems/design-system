@@ -4,9 +4,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { moduleSpecifiers } from "@uiid/config/scripts/module-specifiers.mjs";
 import { describe, expect, it } from "vitest";
-
-import { moduleSpecifiers } from "../../../scripts/module-specifiers.mjs";
 
 // Every package's dependencies and peerDependencies should match what its
 // shipped source imports. A missing entry breaks a consumer's install; an

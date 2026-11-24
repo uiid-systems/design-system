@@ -1,4 +1,4 @@
-import { createViteConfig } from "../../vite.config.ts";
+import { createViteConfig } from "@uiid/config/vite";
 
 export default createViteConfig({
   preserveDirectives: false,

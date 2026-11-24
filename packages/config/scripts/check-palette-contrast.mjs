@@ -30,8 +30,8 @@
  * still uncalibrated (UI-196), which is what the fill row below shows.
  *
  * Usage:
- *   node scripts/check-palette-contrast.mjs            # summary + failures
- *   node scripts/check-palette-contrast.mjs --verbose  # every pairing, per hue
+ *   node packages/config/scripts/check-palette-contrast.mjs            # summary + failures
+ *   node packages/config/scripts/check-palette-contrast.mjs --verbose  # every pairing, per hue
  *
  * Exits non-zero only if an AA text pairing falls below 4.5:1 — the claim the
  * file makes. Borders and ΔL* bands are reported as advisory, because both
@@ -43,7 +43,7 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const COLORS = resolve(
   ROOT,
   "packages/tokens/src/json/primitives/colors.tokens.json",

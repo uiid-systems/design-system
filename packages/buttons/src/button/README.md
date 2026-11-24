@@ -40,7 +40,7 @@ A disabled Button stays in the tab order. It is `aria-disabled="true"` rather th
 
 A disabled link keeps its `href` — stripping it would break router links — and instead ignores activation and its context menu. It stays in the tab order like a disabled button; `focusableWhenDisabled={false}` gives it `tabIndex={-1}`.
 
-In tests, assert `toBeDisabledForUser()` (registered in the root `vitest.setup.ts`), which accepts either native `disabled` or `aria-disabled="true"`. jest-dom's `toBeDisabled()` only sees the native attribute.
+In tests, assert `toBeDisabledForUser()` (registered in `packages/config/vitest.setup.ts`), which accepts either native `disabled` or `aria-disabled="true"`. jest-dom's `toBeDisabled()` only sees the native attribute.
 
 ## Gotchas
 

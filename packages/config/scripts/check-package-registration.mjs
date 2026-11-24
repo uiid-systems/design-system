@@ -10,7 +10,7 @@ import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const packagesDir = join(root, "packages");
 const read = (path) => readFileSync(join(root, path), "utf8");
 const readJson = (path) => JSON.parse(read(path));
@@ -28,7 +28,12 @@ const GENERATED_EXPORTS = new Set([
   "@uiid/design-system ./icons/*",
 ]);
 
-const CLEAN_STEP = "node ../../scripts/clean-build-output.mjs && ";
+const CLEAN_STEP = "node ../config/scripts/clean-build-output.mjs && ";
+const SHARED_TSCONFIG = "../config/tsconfig.package.json";
+
+/* The shared build, test and typecheck config. It is never built or
+   published, so none of the registration steps apply to it. */
+const INTERNAL = new Set(["config"]);
 
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
@@ -41,6 +46,7 @@ const packages = readdirSync(packagesDir, { withFileTypes: true })
   .filter(
     (entry) =>
       entry.isDirectory() &&
+      !INTERNAL.has(entry.name) &&
       existsSync(join(packagesDir, entry.name, "package.json")),
   )
   .map((entry) => ({
@@ -83,8 +89,11 @@ for (const { folder, pkg } of packages) {
   // without the clean step a renamed file's old output ships. Both still build.
   const tsconfigPath = `packages/${folder}/tsconfig.json`;
   const { extends: base } = JSON.parse(stripComments(read(tsconfigPath)));
-  if (base !== "../../tsconfig.package.json") {
-    fail(`${name}: ${tsconfigPath} must extend ../../tsconfig.package.json`);
+  if (base !== SHARED_TSCONFIG) {
+    fail(`${name}: ${tsconfigPath} must extend ${SHARED_TSCONFIG}`);
+  }
+  if (pkg.devDependencies?.["@uiid/config"] !== "workspace:*") {
+    fail(`${name}: must list "@uiid/config": "workspace:*" in devDependencies`);
   }
   if (!pkg.scripts?.build?.startsWith(CLEAN_STEP)) {
     fail(`${name}: its build script must start with \`${CLEAN_STEP}\``);
@@ -92,7 +101,9 @@ for (const { folder, pkg } of packages) {
 
   const src = join(packagesDir, folder, "src");
   if (existsSync(src) && hasCssModule(src) && !cssLayers[folder]) {
-    fail(`${name}: has CSS modules but no entry in scripts/css-layers.cjs`);
+    fail(
+      `${name}: has CSS modules but no entry in packages/config/scripts/css-layers.cjs`,
+    );
   }
 
   // Tests and Storybook find source through this key, and resolution follows

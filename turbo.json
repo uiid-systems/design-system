@@ -2,17 +2,17 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [
     "tsconfig.json",
-    "tsconfig.package.json",
-    "vite.config.ts",
-    "vitest.matchers.d.ts",
-    "scripts/clean-build-output.mjs",
-    "scripts/css-layers.cjs",
-    "scripts/css-target.ts",
-    "scripts/dts-relative-extensions.mjs",
-    "scripts/module-specifiers.mjs",
-    "scripts/postcss-layer-wrapper.cjs",
-    "scripts/rollup-sanitize-file-name.mjs",
-    "scripts/vite-plugin-preserve-directives.mjs"
+    "packages/config/tsconfig.package.json",
+    "packages/config/vite.config.ts",
+    "packages/config/vitest.matchers.d.ts",
+    "packages/config/scripts/clean-build-output.mjs",
+    "packages/config/scripts/css-layers.cjs",
+    "packages/config/scripts/css-target.ts",
+    "packages/config/scripts/dts-relative-extensions.mjs",
+    "packages/config/scripts/module-specifiers.mjs",
+    "packages/config/scripts/postcss-layer-wrapper.cjs",
+    "packages/config/scripts/rollup-sanitize-file-name.mjs",
+    "packages/config/scripts/vite-plugin-preserve-directives.mjs"
   ],
   "tasks": {
     "build": {

@@ -5,7 +5,7 @@
   // directory, so each path below resolves inside the package, not here.
   // Tests, examples and stories are left out: `pnpm typecheck` checks them, and
   // their declarations do not belong in a tarball.
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
     "noEmit": false,

@@ -1,4 +1,4 @@
-import { createViteConfig } from "../../vite.config.ts";
+import { createViteConfig } from "@uiid/config/vite";
 
 // `src/icons.ts` is a second entry rather than part of the barrel: icons must be
 // reachable as `@uiid/design-system/icons` without importing a component pulling

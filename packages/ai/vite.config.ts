@@ -1,5 +1,5 @@
-import cssLayers from "../../scripts/css-layers.cjs";
-import { createViteConfig } from "../../vite.config.ts";
+import cssLayers from "@uiid/config/scripts/css-layers.cjs";
+import { createViteConfig } from "@uiid/config/vite";
 
 export default createViteConfig({
   cssLayer: cssLayers.ai,

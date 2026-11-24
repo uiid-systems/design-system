@@ -5,7 +5,7 @@
   // the only typecheck of test files: package builds leave them out
   // (tsconfig.package.json).
   // apps/docs has its own compiler options, so it has its own tsconfig.check.json.
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
     "customConditions": ["@uiid/source"],
@@ -14,19 +14,19 @@
     "types": ["vitest/globals", "@testing-library/jest-dom/vitest"],
     // Storybook's `@tokens` alias, from apps/storybook/tsconfig.json.
     "paths": {
-      "@tokens/*": ["./packages/tokens/src/*"]
+      "@tokens/*": ["../tokens/src/*"]
     }
   },
   "include": [
-    "packages/*/src",
-    "apps/storybook/src",
-    "apps/storybook/stories",
+    "../*/src",
+    "../../apps/storybook/src",
+    "../../apps/storybook/stories",
     // A bare dot-directory entry matches no files, so glob it.
-    "apps/storybook/.storybook/**/*",
+    "../../apps/storybook/.storybook/**/*",
     "vitest.matchers.d.ts"
   ],
   // Importing `vitest/browser` retypes jest-dom's matchers for every file in
   // the program (its `toHaveTextContent` takes no RegExp), so the browser
   // tests get their own program, tsconfig.check.browser.json.
-  "exclude": ["packages/*/src/**/*.browser.test.tsx"]
+  "exclude": ["../*/src/**/*.browser.test.tsx"]
 }

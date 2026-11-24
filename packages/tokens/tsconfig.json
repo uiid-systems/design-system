@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.package.json",
+  "extends": "../config/tsconfig.package.json",
   "compilerOptions": {
     "resolveJsonModule": true
   },

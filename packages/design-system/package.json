@@ -51,7 +51,7 @@
     "icons"
   ],
   "scripts": {
-    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build && node scripts/emit-icon-forwarders.mjs",
+    "build": "node ../config/scripts/clean-build-output.mjs && tsc -b && vite build && node scripts/emit-icon-forwarders.mjs",
     "dev": "node scripts/emit-icon-forwarders.mjs && vite build --watch"
   },
   "dependencies": {
@@ -81,6 +81,7 @@
     "@base-ui/react": "^1.9.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@uiid/config": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~7.0.2"

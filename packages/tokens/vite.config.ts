@@ -2,9 +2,8 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { rewriteDeclarationsIn } from "@uiid/config/scripts/dts-relative-extensions.mjs";
 import { defineConfig, type Plugin } from "vite";
-
-import { rewriteDeclarationsIn } from "../../scripts/dts-relative-extensions.mjs";
 
 const SRC_DIR = fileURLToPath(new URL("src/", import.meta.url));
 const DIST_DIR = fileURLToPath(new URL("dist/", import.meta.url));
@@ -63,7 +62,7 @@ export default defineConfig({
       fileName: "index",
     },
     // dist already holds the declarations `tsc -b` wrote. The build script
-    // empties it first (scripts/clean-build-output.mjs).
+    // empties it first (packages/config/scripts/clean-build-output.mjs).
     emptyOutDir: false,
   },
 });

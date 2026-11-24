@@ -1,10 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import { sanitizeFileName } from "@uiid/config/scripts/rollup-sanitize-file-name.mjs";
+import { rewriteDistDeclarations } from "@uiid/config/vite";
 import { defineConfig, type Plugin } from "vite";
-
-import { sanitizeFileName } from "../../scripts/rollup-sanitize-file-name.mjs";
-import { rewriteDistDeclarations } from "../../vite.config.ts";
 
 // Declarations for the src/*.js modules that re-export lucide's deep paths.
 // tsc emits no .d.ts for a .js module and does not copy a .d.ts input, and
@@ -66,7 +65,7 @@ export default defineConfig({
       },
     },
     // dist already holds the declarations `tsc -b` wrote. The build script
-    // empties it first (scripts/clean-build-output.mjs).
+    // empties it first (packages/config/scripts/clean-build-output.mjs).
     emptyOutDir: false,
   },
 });

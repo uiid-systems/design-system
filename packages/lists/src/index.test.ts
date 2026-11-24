@@ -1,7 +1,7 @@
+import { barrelExports } from "@uiid/config/scripts/barrel-exports.mjs";
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 
-import { barrelExports } from "../../../scripts/barrel-exports.mjs";
 import * as lists from "./index";
 
 // List, its parts and their prop types. The row, entries, text block, marker

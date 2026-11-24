@@ -13,12 +13,12 @@ import { PKG_DIR, readIconMap, specifierFor } from "./lucide-icon-map.mjs";
 // through vite as ~1,750 lib entries would only slow this package's own build.
 //
 // They live in icons/ rather than dist/ deliberately: `build` empties dist
-// first (scripts/clean-build-output.mjs), so anything written there is deleted
+// first (packages/config/scripts/clean-build-output.mjs), so anything written there is deleted
 // on the next build.
 //
 // Generated, not committed. Emitted by `build`, `dev`, the repo `postinstall`,
 // `pnpm typecheck`, Vitest's global setup and Storybook's config (both through
-// scripts/emit-generated-sources.ts), and the module-graph tests, which run this
+// packages/config/scripts/emit-generated-sources.ts), and the module-graph tests, which run this
 // themselves so they never depend on build order.
 
 // The icon type is declared locally rather than as import("lucide-react"):

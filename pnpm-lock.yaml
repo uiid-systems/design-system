@@ -168,6 +168,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
@@ -229,6 +232,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       ai:
         specifier: 7.0.156
         version: 7.0.156(zod@4.6.7)
@@ -275,6 +281,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -315,6 +324,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -370,6 +382,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -379,6 +394,8 @@ importers:
       typescript:
         specifier: ~7.0.2
         version: 7.0.2
+
+  packages/config: {}
 
   packages/design-system:
     dependencies:
@@ -440,6 +457,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -495,6 +515,9 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -517,6 +540,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -554,6 +580,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -603,6 +632,9 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
@@ -637,6 +669,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -674,6 +709,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -702,6 +740,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -748,6 +789,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -794,6 +838,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       '@uiid/indicators':
         specifier: workspace:*
         version: link:../indicators
@@ -846,6 +893,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -858,6 +908,9 @@ importers:
 
   packages/tokens:
     devDependencies:
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       style-dictionary:
         specifier: ^5.5.5
         version: 5.5.5(tslib@2.9.1)
@@ -883,6 +936,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -908,6 +964,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/config':
+        specifier: workspace:*
+        version: link:../config
       typescript:
         specifier: ~7.0.2
         version: 7.0.2
