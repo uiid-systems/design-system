@@ -17,7 +17,6 @@ export const Avatar = ({
   description,
   orientation = "horizontal",
   color,
-  ContainerProps,
   ImageProps,
   InitialsProps,
   NameProps,
@@ -25,7 +24,7 @@ export const Avatar = ({
   ...props
 }: AvatarProps) => {
   return (
-    <AvatarContainer orientation={orientation} {...props} {...ContainerProps}>
+    <AvatarContainer orientation={orientation} {...props}>
       <AvatarLayers color={color}>
         {/* Decorative beside a visible name, which already says who it is. */}
         <AvatarImage src={src} alt={name ? "" : initials} {...ImageProps} />

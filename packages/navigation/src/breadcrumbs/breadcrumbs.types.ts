@@ -23,3 +23,8 @@ export type BreadcrumbsContainerProps = Omit<BreadcrumbsProps, "items">;
 /** Group layout props, plus the `<ol>` attributes the list renders. */
 export type BreadcrumbsListProps = GroupProps &
   Pick<React.OlHTMLAttributes<HTMLOListElement>, "start" | "reversed" | "type">;
+
+export type BreadcrumbsItemProps = React.ComponentProps<"li">;
+
+/** An `<li>` hidden from assistive tech. Renders `/` unless given children. */
+export type BreadcrumbsSeparatorProps = React.ComponentProps<"li">;

@@ -448,3 +448,56 @@ describe("Accordion RootProps precedence", () => {
     expect(expanded("Third")).toBe("true");
   });
 });
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Accordion slot props", () => {
+  it("rejects a key Accordion owns in TriggerProps", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- `size` is set on Accordion itself
+        TriggerProps={{ size: "small" }}
+      />
+    );
+  });
+
+  it("rejects the trigger's icon in TriggerProps, which comes from each item", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- each item owns its trigger's icon
+        TriggerProps={{ icon: undefined }}
+      />
+    );
+  });
+
+  it("rejects the trigger's children in TriggerProps, which come from each item", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- each item's `trigger` is its trigger's content
+        TriggerProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects a key Accordion owns in PanelProps", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- `size` is set on Accordion itself
+        PanelProps={{ size: "small" }}
+      />
+    );
+  });
+
+  it("rejects the panel's children in PanelProps, which come from each item", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- each item's `content` fills its panel
+        PanelProps={{ children: "Other" }}
+      />
+    );
+  });
+});

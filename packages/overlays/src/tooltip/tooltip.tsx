@@ -37,7 +37,7 @@ export const Tooltip = ({
       onOpenChange={composeOpenChange(RootProps?.onOpenChange, onOpenChange)}
     >
       {hasTrigger(trigger, TriggerProps?.render) && (
-        <TooltipTrigger delay={delay} {...TriggerProps}>
+        <TooltipTrigger {...TriggerProps} {...definedProps({ delay })}>
           {trigger}
         </TooltipTrigger>
       )}

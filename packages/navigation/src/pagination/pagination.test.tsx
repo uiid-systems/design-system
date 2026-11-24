@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Pagination } from "./pagination";
 import { clampPage, getPaginationItems } from "./pagination.utils";
+import { PaginationButton } from "./subcomponents";
 
 const getLabel = () => document.querySelector("[data-slot='pagination-label']");
 const getControl = (name: string) => screen.getByRole("button", { name });
@@ -316,6 +317,7 @@ describe("Pagination", () => {
     for (const name of ["Page 1", "Page 5", "Page 7", "Page 31"]) {
       expect(getControl(name)).not.toHaveAttribute("aria-current");
     }
+    expect(document.querySelectorAll("[aria-current]")).toHaveLength(1);
   });
 
   it("hides the ellipses from assistive tech", () => {
@@ -536,5 +538,33 @@ describe("Pagination", () => {
     await user.keyboard("{/Shift}");
 
     expect(getLabel()).toHaveTextContent("Page 2 of 31");
+  });
+});
+
+describe("PaginationButton", () => {
+  it("renders a plain button on its own", () => {
+    render(<PaginationButton>2</PaginationButton>);
+    const button = screen.getByRole("button", { name: "2" });
+    expect(button.tagName).toBe("BUTTON");
+    expect(button).not.toHaveAttribute("aria-current");
+  });
+
+  it("marks an active cell as the current page", () => {
+    render(<PaginationButton active>2</PaginationButton>);
+    expect(
+      screen.getByRole("button", { name: "2", current: "page" }),
+    ).toBeInTheDocument();
+  });
+
+  it("lets a caller's own aria-current win over active", () => {
+    render(
+      <PaginationButton active aria-current="step">
+        2
+      </PaginationButton>,
+    );
+    expect(screen.getByRole("button", { name: "2" })).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
   });
 });

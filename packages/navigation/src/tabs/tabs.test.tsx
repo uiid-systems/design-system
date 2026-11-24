@@ -3,7 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 
-import { TabsTab } from "./subcomponents";
+import {
+  TabsIndicator,
+  TabsList,
+  TabsPanel,
+  TabsRoot,
+  TabsTab,
+} from "./subcomponents";
 import { Tabs } from "./tabs";
 import type { TabsProps } from "./tabs.types";
 
@@ -435,6 +441,41 @@ describe("Tabs", () => {
     expect(list).toHaveAttribute("data-ui-ay", "end");
   });
 
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a key Tabs owns in ListProps", () => {
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `size` is set on Tabs itself
+        ListProps={{ size: "small" }}
+      />
+    );
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `variant` is set on Tabs itself
+        ListProps={{ variant: "ghost" }}
+      />
+    );
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `fullwidth` is set on Tabs itself
+        ListProps={{ fullwidth: true }}
+      />
+    );
+  });
+
+  it("rejects the list's children in ListProps, which Tabs renders from items", () => {
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the tabs come from `items`
+        ListProps={{ children: "Other" }}
+      />
+    );
+  });
+
   it("keeps the list's own gap when ListProps sets none", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");
@@ -634,5 +675,37 @@ describe("className", () => {
   it("takes a string, not a function of the part's state", () => {
     // @ts-expect-error -- style a state through its `data-*` attribute instead
     void (<TabsTab value="a" className={() => "from-fn"} />);
+  });
+});
+
+describe("Tabs parts composed by hand", () => {
+  it("render a tablist whose selected tab shows its panel", async () => {
+    const user = userEvent.setup();
+    render(
+      <TabsRoot defaultValue="one">
+        <TabsList>
+          <TabsTab value="one">One</TabsTab>
+          <TabsTab value="two">Two</TabsTab>
+          <TabsIndicator />
+        </TabsList>
+        <TabsPanel value="one">First panel</TabsPanel>
+        <TabsPanel value="two">Second panel</TabsPanel>
+      </TabsRoot>,
+    );
+
+    expect(screen.getByRole("tablist")).toBeInTheDocument();
+    expect(screen.getAllByRole("tab")).toHaveLength(2);
+    expect(screen.getByRole("tab", { name: "One" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByRole("tabpanel")).toHaveTextContent("First panel");
+
+    await user.click(screen.getByRole("tab", { name: "Two" }));
+    expect(screen.getByRole("tab", { name: "Two" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByRole("tabpanel")).toHaveTextContent("Second panel");
   });
 });

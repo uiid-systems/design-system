@@ -257,23 +257,17 @@ describe("Card", () => {
     expect(card()).toHaveClass(styles.shadow);
   });
 
-  it("merges ContainerProps' style and handlers with the root's", async () => {
+  it("puts the root's style and handlers on the container", async () => {
     const onClick = vi.fn();
-    const onContainerClick = vi.fn();
     const { container } = render(
-      <Card
-        title="Title"
-        style={{ color: "red" }}
-        onClick={onClick}
-        ContainerProps={{ style: { opacity: 0.5 }, onClick: onContainerClick }}
-      />,
+      <Card title="Title" style={{ color: "red" }} onClick={onClick} />,
     );
     const card = container.firstElementChild as HTMLElement;
 
-    expect(card).toHaveStyle({ color: "red", opacity: "0.5" });
+    expect(card).toHaveAttribute("data-slot", "card-container");
+    expect(card).toHaveStyle({ color: "red" });
     await userEvent.click(card);
     expect(onClick).toHaveBeenCalledOnce();
-    expect(onContainerClick).toHaveBeenCalledOnce();
   });
 
   /*
@@ -362,7 +356,7 @@ describe("Card", () => {
       });
     });
 
-    it("lets props override the shell's padding, and ContainerProps override props", () => {
+    it("lets props override the shell's padding", () => {
       const { container, rerender } = render(<Card variant="shell">Body</Card>);
       expect(vars(container)).toEqual({ start: inline(6), end: inline(6) });
 
@@ -374,37 +368,21 @@ describe("Card", () => {
       expect(vars(container)).toEqual({ start: inline(2), end: inline(2) });
 
       rerender(
-        <Card variant="shell" p={2} ContainerProps={{ px: 1 }}>
+        <Card variant="shell" px={1}>
           Body
         </Card>,
       );
       expect(vars(container)).toEqual({ start: inline(1), end: inline(1) });
       expect(padding(root(container))).toEqual({
-        ...sides(2),
+        ...sides(6),
         pl: "1",
         pr: "1",
       });
     });
 
-    /*
-     * A spread mergeProps would let `pl` on the root beat `px` on
-     * ContainerProps, since `pl` outranks `px` in the stylesheet. Resolving per
-     * source keeps the variables and the painted padding in step.
-     */
-    it("lets ContainerProps' px beat the root's pl", () => {
-      const { container } = render(
-        <Card pl={4} ContainerProps={{ px: 1 }}>
-          Body
-        </Card>,
-      );
-
-      expect(padding(root(container))).toEqual({ pl: "1", pr: "1" });
-      expect(vars(container)).toEqual({ start: inline(1), end: inline(1) });
-    });
-
     it("treats an undefined value as unset, so the next source applies", () => {
       const { container } = render(
-        <Card variant="shell" p={undefined} ContainerProps={{ px: undefined }}>
+        <Card variant="shell" p={undefined} px={undefined}>
           Body
         </Card>,
       );
@@ -517,5 +495,22 @@ describe("Card", () => {
       rerender(<Card variant="shell" title="Overview" color="blue" />);
       expect(container.firstElementChild).toHaveClass("palette-blue");
     });
+  });
+});
+
+/*
+ * Type-level only: `pnpm typecheck` fails if a directive goes unused. Card
+ * spreads its own props onto the container, so every key the container takes
+ * is owned and there is no ContainerProps slot left to pass one through.
+ */
+describe("Card slot props", () => {
+  it("rejects a container prop passed through ContainerProps", () => {
+    void (
+      <Card
+        title="Title"
+        // @ts-expect-error -- ContainerProps no longer exists; pass `p` on Card
+        ContainerProps={{ p: 2 }}
+      />
+    );
   });
 });

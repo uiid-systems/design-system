@@ -11,6 +11,8 @@ export * from "./menu/subcomponents";
 
 export * from "./pagination/pagination";
 export * from "./pagination/pagination.types";
+export * from "./pagination/subcomponents";
 
 export * from "./tabs/tabs";
 export * from "./tabs/tabs.types";
+export * from "./tabs/subcomponents";

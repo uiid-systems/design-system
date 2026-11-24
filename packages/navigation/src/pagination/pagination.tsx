@@ -120,7 +120,6 @@ export const Pagination = ({
               <PaginationButton
                 key={item}
                 aria-label={`Page ${item}`}
-                aria-current={item === page ? "page" : undefined}
                 active={item === page}
                 className={cx(
                   styles["pagination-cell"],

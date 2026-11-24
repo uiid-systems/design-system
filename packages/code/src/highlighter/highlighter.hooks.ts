@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
+import { DEFAULT_LANGUAGE } from "../code.constants";
 import { getHighlighter, loadLanguage, highlight } from "./highlighter";
 import type {
   CodeLanguage,
@@ -63,7 +64,7 @@ export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
  */
 export function useHighlight(
   code: string,
-  language: CodeLanguage = "typescript",
+  language: CodeLanguage = DEFAULT_LANGUAGE,
   options: UseHighlightOptions = {},
 ): HighlightResult {
   const enabled = options.enabled ?? true;

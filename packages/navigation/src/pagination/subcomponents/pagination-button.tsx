@@ -1,10 +1,7 @@
 import { Button, type ButtonProps } from "@uiid/buttons";
 
+import type { PaginationButtonProps } from "../pagination.types";
 import { opensElsewhere } from "../pagination.utils";
-
-type PaginationButtonProps = ButtonProps & {
-  active?: boolean;
-};
 
 export const PaginationButton = ({
   active,
@@ -29,6 +26,8 @@ export const PaginationButton = ({
    */
   return (
     <Button
+      // The current page is announced, not only filled. A caller's own wins.
+      aria-current={active ? "page" : undefined}
       variant={active ? undefined : "ghost"}
       size="small"
       render={render}

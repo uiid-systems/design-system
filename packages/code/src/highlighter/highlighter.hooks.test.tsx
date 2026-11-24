@@ -27,6 +27,16 @@ describe("useHighlight", () => {
     expect(result.current.html).toContain("const x = 1;");
   });
 
+  it("highlights as TypeScript, CodeBlock's default, when no language is given", async () => {
+    const { result } = renderHook(() => useHighlight("const x = 1;"));
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(highlight).toHaveBeenCalledWith(
+      "const x = 1;",
+      "typescript",
+      expect.anything(),
+    );
+  });
+
   it("does not highlight when enabled is false", () => {
     const { result } = renderHook(() =>
       useHighlight("const x = 1;", "typescript", { enabled: false }),

@@ -40,7 +40,6 @@ export type CardProps = Omit<StackProps, "title" | "color"> & {
   thumbnail?: React.ReactNode;
   action?: React.ReactNode;
   footer?: React.ReactNode;
-  ContainerProps?: CardContainerProps;
   HeaderProps?: CardHeaderProps;
   TitleProps?: CardTitleProps;
   DescriptionProps?: CardDescriptionProps;

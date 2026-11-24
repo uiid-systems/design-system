@@ -47,11 +47,21 @@ export type DrawerProps = React.PropsWithChildren<{
   pending?: boolean;
   trigger?: DrawerTriggerProps["children"];
   RootProps?: DrawerRootProps;
-  TriggerProps?: DrawerTriggerProps;
+  /** Reaches the trigger. Its content is `trigger`. */
+  TriggerProps?: Omit<DrawerTriggerProps, "children">;
   PortalProps?: DrawerPortalProps;
   BackdropProps?: DrawerBackdropProps;
   ViewportProps?: DrawerViewportProps;
-  PopupProps?: DrawerPopupProps;
+  /** Reaches the popup. The card slots, `hideCloseButton` and `children` are set on Drawer itself. */
+  PopupProps?: Omit<
+    DrawerPopupProps,
+    | "title"
+    | "description"
+    | "action"
+    | "footer"
+    | "hideCloseButton"
+    | "children"
+  >;
   ContentProps?: DrawerContentProps;
 }> &
   Pick<

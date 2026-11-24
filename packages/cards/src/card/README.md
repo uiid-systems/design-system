@@ -14,7 +14,7 @@ Use Card when you want to:
 - Fill a page's main content area with `variant="shell"`: the header is the page header (title, description, actions) and `children` is the page body. It's `w="full"` (pass another `w` to size it yourself), pads at `p={6}`, has no border, radius or shadow, and stays transparent until you pass `color`. A plain-text title renders as an `<h2>` at `size={4}` `weight="medium"`, the description sits 3 units below it (half the shell's gap), and the title and description each cap at 720px. It spaces the header from the body, and the body's children from each other, at `gap={6}`; `p` and `gap` override the container, `InnerContainerProps={{ gap }}` the body. Breadcrumbs and the sidebar sit outside the shell. See the `Shell` example
 - Render as a different element (`<a>`, `<article>`, `<button>`) via the `render` prop — links and buttons gain a scale-on-hover affordance automatically
 
-Slot overrides (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, `FooterProps`, `ThumbnailProps`, `InnerContainerProps`) forward props through to the subcomponent when the slot prop isn't expressive enough.
+Slot overrides (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, `FooterProps`, `ThumbnailProps`, `InnerContainerProps`) forward props through to the subcomponent when the slot prop isn't expressive enough. The card element itself has no slot: its props are passed on Card. Because `title` is the heading, the card element takes no native `title` attribute.
 
 A plain-text `title` renders as an `<h3>`. A title with elements in it, such as an icon or badge beside the text, renders as a `div` row at `gap={2}`, centred vertically. Pass the pieces as a fragment rather than wrapping them in your own `Group`. That row is not a heading, so when a composed title should be one, wrap its text in `<Text render={<h3 />} size={1} weight="semibold">`. `TitleProps.render` overrides the element in either case.
 
@@ -22,7 +22,7 @@ A shell's plain-text title is an `<h2>` because the page's `<h1>` belongs to the
 
 ## Padding
 
-`p`, `px`, `py`, `pl`, `pr`, `pt` and `pb` work as on any layout primitive, on the root or through `ContainerProps`. Each side takes the first source that sets it: `ContainerProps`, then the root's props, then the shell's `p={6}`. An `undefined` value falls through to the next source rather than clearing the side. Card writes the resolved sides as `pt`, `pb`, `pl` and `pr`, so `p` paints through `--spacing-block` and `--spacing-inline` per side rather than `--spacing-unit`. All three are equal by default.
+`p`, `px`, `py`, `pl`, `pr`, `pt` and `pb` work as on any layout primitive. Each side takes the first source that sets it: the root's props, then the shell's `p={6}`. An `undefined` value falls through to the next source rather than clearing the side. Card writes the resolved sides as `pt`, `pb`, `pl` and `pr`, so `p` paints through `--spacing-block` and `--spacing-inline` per side rather than `--spacing-unit`. All three are equal by default.
 
 The card publishes its inline padding as `--card-padding-inline-start` and `--card-padding-inline-end`, so a child can reach the card's edge without re-deriving the padding. A full-bleed rule, for example, sets `margin-inline: calc(-1 * var(--card-padding-inline-start)) calc(-1 * var(--card-padding-inline-end))`. Padding set through a `className` instead of the props isn't reflected in them.
 

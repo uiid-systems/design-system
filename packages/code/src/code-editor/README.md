@@ -25,22 +25,24 @@ import { CodeEditor } from "@uiid/code";
 
 ## Props
 
-| Prop              | Type                       | Default        | Description                  |
-| ----------------- | -------------------------- | -------------- | ---------------------------- |
-| `value`           | `string`                   | —              | Controlled value             |
-| `defaultValue`    | `string`                   | `""`           | Initial value (uncontrolled) |
-| `onValueChange`   | `(value: string) => void`  | —              | Callback when value changes  |
-| `language`        | `CodeLanguage`             | `"typescript"` | Syntax highlighting language |
-| `showLineNumbers` | `boolean`                  | `false`        | Show line numbers            |
-| `readOnly`        | `boolean`                  | `false`        | Make editor read-only        |
-| `disabled`        | `boolean`                  | `false`        | Disable the editor           |
-| `placeholder`     | `string`                   | —              | Placeholder when empty       |
-| `rows`            | `number`                   | —              | Maximum visible rows         |
-| `filename`        | `string`                   | —              | Filename for header          |
-| `copyable`        | `boolean`                  | `true`         | Show copy button             |
-| `HeaderProps`     | `CodeBlockHeaderProps`     | —              | Props for header             |
-| `CopyButtonProps` | `CodeBlockCopyButtonProps` | —              | Props for copy button        |
-| `TextareaProps`   | `CodeEditorTextareaProps`  | —              | Props for the textarea       |
+| Prop              | Type                                                  | Default        | Description                  |
+| ----------------- | ----------------------------------------------------- | -------------- | ---------------------------- |
+| `value`           | `string`                                              | —              | Controlled value             |
+| `defaultValue`    | `string`                                              | `""`           | Initial value (uncontrolled) |
+| `onValueChange`   | `(value: string) => void`                             | —              | Callback when value changes  |
+| `language`        | `CodeLanguage`                                        | `"typescript"` | Syntax highlighting language |
+| `showLineNumbers` | `boolean`                                             | `false`        | Show line numbers            |
+| `readOnly`        | `boolean`                                             | `false`        | Make editor read-only        |
+| `disabled`        | `boolean`                                             | `false`        | Disable the editor           |
+| `placeholder`     | `string`                                              | —              | Placeholder when empty       |
+| `rows`            | `number`                                              | —              | Maximum visible rows         |
+| `filename`        | `string`                                              | —              | Filename for header          |
+| `copyable`        | `boolean`                                             | `true`         | Show copy button             |
+| `HeaderProps`     | `CodeBlockHeaderProps`, less the keys CodeEditor sets | —              | Props for header             |
+| `CopyButtonProps` | `CodeBlockCopyButtonProps`, less `code`               | —              | Props for copy button        |
+| `TextareaProps`   | `CodeEditorTextareaProps`                             | —              | Props for the textarea       |
+
+`HeaderProps` takes the header's own layout and element props. `filename`, `copyable`, the copied code (the editor's value) and `CopyButtonProps` are set on CodeEditor, so passing one through `HeaderProps` is a type error. At runtime CodeEditor's value wins, for `filename` only when it is set. The header shows no language icon unless `HeaderProps.language` names one, such as `HeaderProps={{ language: "python" }}`; that icon is independent of the top-level `language`, which only picks the highlighting.
 
 `TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
 

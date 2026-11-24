@@ -25,11 +25,16 @@ export type PopoverPopupProps = Omit<
 export type PopoverProps = React.PropsWithChildren<{
   trigger?: PopoverTriggerProps["children"];
   RootProps?: PopoverRootProps;
-  TriggerProps?: PopoverTriggerProps;
+  /** Reaches the trigger. Its content is `trigger`. */
+  TriggerProps?: Omit<PopoverTriggerProps, "children">;
   PortalProps?: PopoverPortalProps;
   BackdropProps?: PopoverBackdropProps;
   PositionerProps?: PopoverPositionerProps;
-  PopupProps?: PopoverPopupProps;
+  /** Reaches the popup. The card slots and `children` are set on Popover itself. */
+  PopupProps?: Omit<
+    PopoverPopupProps,
+    "title" | "description" | "action" | "footer" | "children"
+  >;
 }> &
   Pick<PopoverRootProps, "open" | "defaultOpen" | "onOpenChange" | "modal"> &
   PopoverCardProps;

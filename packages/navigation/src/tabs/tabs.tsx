@@ -53,10 +53,10 @@ export const Tabs = ({
       })}
     >
       <TabsList
+        {...ListProps}
         size={size}
         variant={variant}
         fullwidth={fullwidth}
-        {...ListProps}
       >
         {items.map((item) => (
           <TabsTab {...TabProps} key={item.value} value={item.value}>

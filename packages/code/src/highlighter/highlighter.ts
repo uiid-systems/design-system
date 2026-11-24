@@ -1,5 +1,6 @@
 import type { HighlighterCore } from "shiki/core";
 
+import { DEFAULT_LANGUAGE } from "../code.constants";
 import {
   LANGUAGE_ALIASES,
   PLAIN_LANGUAGE,
@@ -147,7 +148,7 @@ async function loadBundledLanguage(language: BundledLanguage): Promise<void> {
  */
 export async function highlight(
   code: string,
-  language: CodeLanguage = "typescript",
+  language: CodeLanguage = DEFAULT_LANGUAGE,
   options: HighlightOptions = {},
 ): Promise<string> {
   const resolved = resolveLanguage(language);

@@ -63,24 +63,24 @@ export const CodeBlockHeader = ({
         <Group ay="center" gap={1}>
           {wrappable && (
             <CodeBlockWrapButton
+              {...WrapButtonProps}
               pressed={wrap}
               defaultPressed={defaultWrap}
               onPressedChange={onWrapChange}
-              {...WrapButtonProps}
             />
           )}
           {copyable && (
             <CodeBlockCopyButton
-              code={code}
               disabled={!code}
               {...CopyButtonProps}
+              code={code}
             />
           )}
           {fullscreenable && (
             <CodeBlockFullscreenButton
+              {...FullscreenButtonProps}
               pressed={fullscreen}
               onPressedChange={onFullscreenChange}
-              {...FullscreenButtonProps}
             />
           )}
         </Group>
