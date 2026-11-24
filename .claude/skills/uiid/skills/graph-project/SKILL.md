@@ -1,6 +1,6 @@
 ---
 name: graph-project
-description: Show a Linear project's open tickets in dependency order, as a diagram in a pane or a list in chat.
+description: Show a Linear project's tickets in dependency order, as a diagram of the whole project in a pane or a list of its open tickets in chat.
 argument-hint: "[project]"
 ---
 
@@ -10,7 +10,7 @@ You show one view of a Linear project: which tickets block which, where the phas
 
 The argument is a Linear project (name or `P-UI-n`). With no argument, ask which project.
 
-The view goes to one of two places. When the session has the project graph pane, it is a diagram in the pane, which stays beside the chat and follows the tickets as they change. Without the pane it is a markdown list in chat. Either way every ticket and pull request is one click away, and you never draw connectors yourself: the pane lays the diagram out from the tickets you send it. [The pane](#5-the-pane) says how to tell which you have.
+The view goes to one of two places. When the session has the project graph pane, it is a diagram in the pane, which stays beside the chat and follows the tickets as they change. Without the pane it is a markdown list in chat. The pane shows the whole project, finished tickets included, and the chat list shows only the open ones. Either way every ticket and pull request is one click away, and you never draw connectors yourself: the pane lays the diagram out from the tickets you send it. [The pane](#5-the-pane) says how to tell which you have.
 
 ## What goes in the list
 
@@ -26,11 +26,14 @@ No ticket title, no description, no label, no pull request title. A gate name is
 
 ## 1. Read the project
 
-Inside a `uiid:build-project` run the project has already been read in that skill's step 1, so use that and read nothing again. Otherwise read the project and its milestones with `get_project`, list its issues, following `hasNextPage` until every page is read. Then call `get_issue` with `includeRelations: true` on every issue that is not Done or Canceled. The list view has no relations, so it cannot give the order.
+Inside a `uiid:build-project` run the project has already been read in that skill's step 1, so use that and read nothing again, apart from the Done issues when the pane needs them. Otherwise read the project and its milestones with `get_project`, list its issues, following `hasNextPage` until every page is read. Then call `get_issue` with `includeRelations: true` on every issue that is not Done or Canceled. The list view has no relations, so it cannot give the order.
+
+With the pane, also call `get_issue` on every Done issue, with `fields` set to `relations`, `attachments` and `projectMilestone` so each answer holds only what the tree needs. Without the pane, skip this: the chat list has no finished tickets.
 
 From that, take:
 
 - **Tickets:** every issue that is not Done or Canceled.
+- **Finished tickets:** for the pane only, every Done issue, with its blockers, its pull request and its milestone. A Canceled issue is in neither view.
 - **Blockers:** for each ticket, the issues in its `blockedBy` relation that are not Done or Canceled. A blocker that is not in the list belongs to another project: read its status with `get_issue`, and keep it if it is still open. It gets no row of its own, but it still counts as a blocker. Take no blocker from anything else: not from a title, not from a "depends on" line in a description, not from a milestone's order.
 - **Pull requests:** the issue's attachments. Take the most recently created one whose whole `url` is `https://github.com/`, the owner and repository that `origin` points at, `/pull/` and a number, with nothing else in it. Any other address is not a pull request, and a ticket with none has no pull request. A pull request this session opened for the ticket wins over any attachment.
 - **Link base:** an issue's `url` up to and including `/issue/`. A ticket's Linear link is the link base followed by its id, with nothing after it.
@@ -48,6 +51,8 @@ Headings in bold split the list into sections, top to bottom. Tickets that are n
 - **During a `uiid:build-project` run:** `Running now` for tickets picked to build now in this run, whatever state they have reached since, `Stacks in this run` for the tickets that skill listed as waiting on a blocker in this run, and `Not this run` for everything left out. This applies only when this session is the one running `uiid:build-project`.
 
 Tickets behind a gate come after the bands, under one heading for each gate, in the order of the gates' milestones in the project: `After the` and the gate's name, such as `After the Phase 5 checkpoint`. A ticket behind several gates goes under the last of them.
+
+In the pane, finished tickets come first, above the bands. They get one heading for each milestone that has any, in the order of the milestones in the project and named in a few words of your own, such as `Phase 2`, then `No milestone` for the rest. Under a heading they are ordered like any other tickets. An open ticket never goes under these headings, whatever its milestone.
 
 A heading with no tickets is left out.
 
@@ -70,13 +75,13 @@ Every ticket has one of five statuses. Use these dots and words and no others:
 
 | Dot | Word        | Meaning                                                              |
 | --- | ----------- | -------------------------------------------------------------------- |
-| 🟣  | `merged`    | Done in this session, after the view first showed it                 |
+| 🟣  | `merged`    | Done. In the chat list, only if it became Done in this session       |
 | 🟡  | `building`  | In Progress                                                          |
 | 🟢  | `in review` | In Review                                                            |
 | 🔴  | `needs you` | A `uiid:build-project` run in this session held or stopped it        |
 | ⚪  | no word     | Anything else: it is waiting on a blocker, a gate or to be picked up |
 
-`building`, `in review` and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` and `merged` are the exceptions. For `needs you`, Linear still says In Progress, and only the run knows the ticket cannot go on without the owner. For `merged`, Linear says Done, which a fresh read leaves out.
+`building`, `in review` and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` and `merged` are the exceptions. For `needs you`, Linear still says In Progress, and only the run knows the ticket cannot go on without the owner. For `merged`, Linear says Done: the pane shows every such ticket, and the chat list shows only the ones that became Done in this session, after the view first showed them.
 
 ## 3. Show it
 
@@ -101,7 +106,7 @@ With the pane, send the project to it as [The pane](#5-the-pane) says, write no 
 - ⚪ [UI-444](https://linear.app/acme/issue/UI-444) · waits on UI-442
 ```
 
-Before sending, to the pane or to chat, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on.
+Before sending, to the pane or to chat, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on. For the pane, every Done ticket appears exactly once too.
 
 Then say in one or two sentences what holds the most tickets back: the ticket everything hangs off, and any gate that needs the owner.
 
@@ -111,7 +116,7 @@ With the pane nothing prints again: each change below goes to the pane instead, 
 
 Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing.
 
-A ticket that moves to Done in this session, because its pull request merged, stays in the view as `merged`. It keeps its row and its pull request link, and it comes off every other ticket's `waits on`, so a ticket it was the last blocker of moves to the heading it now belongs under. A ticket that was already Done when the project was read is still left out, so the next fresh read drops the merged ones.
+A ticket that moves to Done in this session, because its pull request merged, stays in the view as `merged`, with its row and its pull request link. In the chat list it comes off every other ticket's `waits on`, so a ticket it was the last blocker of moves to the heading it now belongs under, and a ticket that was already Done when the project was read is still left out, so the next fresh read drops the merged ones. In the pane it stays where it is and stays in `waitsOn`, like every other finished ticket.
 
 Nothing else prints it again. The session does not watch Linear, so a change made somewhere else shows up only the next time the skill is run.
 
@@ -129,10 +134,10 @@ Send the project with `set_graph`:
 - `prBase`: `https://github.com/`, the owner and repository that `origin` points at, and `/pull/`.
 - `sections`: the headings from step 2 in order, each with its `heading`, `isGate: true` on an `After the …` heading, and its `tickets` in row order.
 
-Each ticket carries its `id`, its `status` word when it has one, its `pr` number when it has one, every open blocker's id in `waitsOn`, and its reason as `note`. Send every ticket by itself: the pane needs no shared rows, and it works out `n tickets wait on this` from the blockers. The rules under [What goes in the list](#what-goes-in-the-list) hold for the pane too. A heading and a note are your own few words, never ticket text.
+Each ticket carries its `id`, its `status` word when it has one, its `pr` number when it has one, every blocker's id in `waitsOn`, the open ones and the Done ones alike, since both have rows in the pane, and its reason as `note`. Send every ticket by itself: the pane needs no shared rows, and it works out `n tickets wait on this` from the blockers. The rules under [What goes in the list](#what-goes-in-the-list) hold for the pane too. A heading and a note are your own few words, never ticket text.
 
 If the tool answers that the pane is not showing, write the list in chat as well, this once.
 
-When a ticket changes at one of the moments in step 4, call `set_status` with the ticket's id and only what changed: its `status` (`waiting` takes the word away), its `pr`, or its `note`, plus a new `updated` time. Send the whole project again with `set_graph` only when a ticket moves to another heading, a blocker clears, or the project is read again.
+When a ticket changes at one of the moments in step 4, call `set_status` with the ticket's id and only what changed: its `status` (`waiting` takes the word away), its `pr`, or its `note`, plus a new `updated` time. A merge is one such call, with `status: "merged"`. Send the whole project again with `set_graph` only when a ticket moves to another heading or the project is read again.
 
 `/uiid:toggle-graph` shows the pane and hides it again, and a `uiid:build-project` run opens it as the run starts. The pane keeps the last project it was sent, so it shows that project again in a later session, under the time it was sent.

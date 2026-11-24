@@ -6,7 +6,7 @@ export type Ticket = {
   readonly status?: Status;
   /** Its pull request's number. */
   readonly pr?: number;
-  /** Ids of its open blockers, with or without a row of their own. */
+  /** Ids of its blockers: open ones, with or without a row, and merged ones with a row. */
   readonly waitsOn: readonly string[];
   /** Why it cannot move, when the diagram does not already show it. */
   readonly note?: string;

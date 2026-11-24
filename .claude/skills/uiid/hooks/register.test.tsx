@@ -79,6 +79,42 @@ test("each blocker's rail joins the tickets that wait on it", () => {
   ]);
 });
 
+test("a merged ticket never carries the count of tickets waiting", () => {
+  const graph = toGraph({
+    sections: [
+      {
+        heading: "Phase 1",
+        tickets: [
+          { id: "UI-1", status: "merged" },
+          { id: "UI-2", status: "merged", waitsOn: ["UI-1"] },
+        ],
+      },
+      {
+        heading: "Ready",
+        tickets: [
+          { id: "UI-3", waitsOn: ["UI-2"] },
+          { id: "UI-4", waitsOn: ["UI-3"] },
+          { id: "UI-5", waitsOn: ["UI-4"] },
+        ],
+      },
+    ],
+  });
+  if (graph === undefined) throw new Error("no graph");
+  const rows = layOut(graph, 44);
+  const noteAfter = (id: string): string | undefined => {
+    const at = rows.findIndex(
+      (row) => row.kind === "ticket" && row.ticket.id === id,
+    );
+    const next = rows[at + 1];
+
+    return next?.kind === "note" ? next.text : undefined;
+  };
+
+  expect(noteAfter("UI-1")).toBeUndefined();
+  expect(noteAfter("UI-2")).toBeUndefined();
+  expect(noteAfter("UI-3")).toBe("2 tickets wait on this");
+});
+
 test("a rail takes its blocker's status", () => {
   const graph = toGraph(INPUT);
   if (graph === undefined) throw new Error("no graph");
