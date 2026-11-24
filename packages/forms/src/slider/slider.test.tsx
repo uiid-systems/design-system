@@ -421,6 +421,31 @@ describe("Slider FieldProps", () => {
     expect(field).toHaveAttribute("data-ui-w", "full");
   });
 
+  it("dims the field around a disabled slider", () => {
+    const { container } = render(<Slider label="Volume" disabled />);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-disabled",
+    );
+    expect(screen.getByRole("slider")).toBeDisabled();
+  });
+
+  it("dims the field when RootProps disables the slider", () => {
+    const { container } = render(
+      <Slider label="Volume" RootProps={{ disabled: true }} />,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-disabled",
+    );
+  });
+
+  it("leaves the field around an enabled slider undimmed", () => {
+    const { container } = render(<Slider label="Volume" />);
+    expect(
+      container.querySelector("[data-slot='field-root']"),
+    ).not.toHaveAttribute("data-disabled");
+    expect(screen.getByRole("slider")).toBeEnabled();
+  });
+
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
     void (

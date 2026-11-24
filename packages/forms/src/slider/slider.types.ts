@@ -73,8 +73,8 @@ export type SliderProps = SliderRootProps & {
   ThumbProps?: SliderThumbProps;
   /**
    * Reaches the Field around the slider. The keys Slider hands to Field itself
-   * are left out, and so is `disabled`: Slider takes it on its root, and a
-   * disabled Field would disable the slider a second way.
+   * (`name`, `size` and `disabled`, which also dims the label and description)
+   * are left out, so none of them has two sources.
    */
   FieldProps?: FieldSlotProps<"name" | "disabled" | "size">;
 } & Pick<FieldProps, "label" | "description" | "action">;

@@ -27,10 +27,10 @@ export const Slider = ({
   ...props
 }: SliderProps) => {
   // Top-level props win over the same key in RootProps, as in Switch and
-  // NumberField. The Field reads name and size from the merged root props so
-  // its chrome matches the control.
+  // NumberField. The Field reads name, size and disabled from the merged root
+  // props so its chrome matches the control and dims with it.
   const rootProps = { ...RootProps, ...definedProps(props) };
-  const { name, size } = rootProps;
+  const { name, size, disabled } = rootProps;
 
   // One thumb per value. Base UI takes a number for a single slider and an
   // array for a range; `index` is what lets a range render server-side.
@@ -40,7 +40,7 @@ export const Slider = ({
   return (
     <Field
       {...FieldProps}
-      {...definedProps({ name, label, description, action, size })}
+      {...definedProps({ name, label, description, action, size, disabled })}
     >
       <SliderRoot {...rootProps}>
         <SliderControl {...ControlProps}>
