@@ -71,7 +71,7 @@ Every ticket has one of four statuses. Use these dots and words and no others:
 | Dot | Word        | Meaning                                                              |
 | --- | ----------- | -------------------------------------------------------------------- |
 | 🟡  | `building`  | In Progress                                                          |
-| 🟣  | `in review` | In Review                                                            |
+| 🟢  | `in review` | In Review                                                            |
 | 🔴  | `needs you` | A `uiid:build-project` run in this session held or stopped it        |
 | ⚪  | no word     | Anything else: it is waiting on a blocker, a gate or to be picked up |
 
@@ -86,8 +86,8 @@ Write the list straight into the reply, not in a code fence, so the links work. 
 
 **Ready**
 
-- 🟣 [UI-436](https://linear.app/acme/issue/UI-436) · in review · [#691](https://github.com/acme/app/pull/691) · 5 tickets wait on this
-- 🟣 [UI-466](https://linear.app/acme/issue/UI-466) · in review · [#689](https://github.com/acme/app/pull/689)
+- 🟢 [UI-436](https://linear.app/acme/issue/UI-436) · in review · [#691](https://github.com/acme/app/pull/691) · 5 tickets wait on this
+- 🟢 [UI-466](https://linear.app/acme/issue/UI-466) · in review · [#689](https://github.com/acme/app/pull/689)
 
 **Blocked**
 
