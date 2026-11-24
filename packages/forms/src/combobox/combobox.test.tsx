@@ -343,21 +343,39 @@ describe("Combobox size variant", () => {
   });
 
   /* Both props reach the one group the Input part renders, so neither may
-     drop the other: the nested value wins a conflict, and classes join. */
+     drop the other: the top-level value wins a conflict, keys only one of
+     them sets are kept, and classes join. */
   it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
     render(
       <Combobox
         items={items}
-        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputGroupProps={{ className: "outer", id: "outer-id", dir: "rtl" }}
         InputProps={{
-          InputGroupProps: { className: "inner", id: "inner-id" },
+          InputGroupProps: {
+            className: "inner",
+            id: "inner-id",
+            title: "kept",
+          },
         }}
       />,
     );
     const group = document.querySelector("[data-slot='combobox-input-group']");
     expect(group).toHaveClass("outer", "inner");
-    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("id", "outer-id");
     expect(group).toHaveAttribute("title", "kept");
+    expect(group).toHaveAttribute("dir", "rtl");
+  });
+
+  it("keeps the nested InputGroupProps value when the top-level one is undefined", () => {
+    render(
+      <Combobox
+        items={items}
+        InputGroupProps={{ id: undefined }}
+        InputProps={{ InputGroupProps: { id: "inner-id" } }}
+      />,
+    );
+    const group = document.querySelector("[data-slot='combobox-input-group']");
+    expect(group).toHaveAttribute("id", "inner-id");
   });
 
   /* `ComboboxInput` renders its own group, so composing it straight into

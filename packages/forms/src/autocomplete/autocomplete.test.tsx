@@ -427,14 +427,19 @@ describe("Autocomplete input group", () => {
   });
 
   /* Both props reach the one group the Input part renders, so neither may
-     drop the other: the nested value wins a conflict, and classes join. */
+     drop the other: the top-level value wins a conflict, keys only one of
+     them sets are kept, and classes join. */
   it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
     render(
       <Autocomplete
         items={items}
-        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputGroupProps={{ className: "outer", id: "outer-id", dir: "rtl" }}
         InputProps={{
-          InputGroupProps: { className: "inner", id: "inner-id" },
+          InputGroupProps: {
+            className: "inner",
+            id: "inner-id",
+            title: "kept",
+          },
         }}
       />,
     );
@@ -442,8 +447,9 @@ describe("Autocomplete input group", () => {
       "[data-slot='autocomplete-input-group']",
     );
     expect(group).toHaveClass("outer", "inner");
-    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("id", "outer-id");
     expect(group).toHaveAttribute("title", "kept");
+    expect(group).toHaveAttribute("dir", "rtl");
   });
 
   /* The casts stand in for untyped code, which the slot type cannot stop. */
