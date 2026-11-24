@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import type { UseStickToBottomReturn } from "./conversation.types";
+import type { UseStickToBottomReturn } from "./hooks/use-stick-to-bottom";
 
 export const ConversationContext =
   React.createContext<UseStickToBottomReturn | null>(null);

@@ -20,7 +20,7 @@ This file is tool-agnostic and holds only what every session needs. Deeper conve
 
 Before using any UIID component, read its `packages/{pkg}/src/{component}/{component}.types.ts`, and its `.variants.ts` where one exists. Props, variants, and sizes change often — do not rely on memorized lists or on what a similar component accepts.
 
-This repo documents itself through working code. Prefer reading a real component over prose: `packages/typography/src/text/` is the complete exemplar (types, CSS module, examples, tests, README). Usage lives in `packages/*/src/*/*.examples.tsx`, docs in `packages/*/src/*/README.md`, stories in `apps/storybook/stories/`, and decisions in `docs/architecture/`.
+This repo documents itself through working code. Prefer reading a real component over prose: `packages/typography/src/text/` is the complete exemplar (types, CSS module, examples, tests, README). Usage lives in `packages/*/src/*/*.examples.tsx`, docs in `packages/*/src/*/README.md`, and stories in `apps/storybook/stories/`.
 
 ## Quick Reference
 
@@ -71,6 +71,7 @@ Find the row matching the files you are touching and read that rule before editi
 | `.claude/rules/components.md`   | Component conventions, upstream substitutions, new-package checklist       | Touching any component source                               |
 | `.claude/rules/styling.md`      | Inline-style ban, layout primitives, style props, CSS vars                 | Touching `.tsx` / `.css`                                    |
 | `.claude/rules/recipes.md`      | Structuring a recipe: several components composed into one piece of an app | Creating, moving or splitting files in `apps/*/components/` |
+| `.claude/rules/size-limit.md`   | What the size check measures, how PRs are compared, when it fails          | Touching `.size-limit.js` or the size comparison            |
 
 "Any component source" means `packages/**` and `apps/*/components/**` alike. App components follow the same conventions as package components.
 

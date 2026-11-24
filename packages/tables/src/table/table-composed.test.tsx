@@ -8,6 +8,7 @@ import {
   TableBody,
   TableCell,
   TableCellCheckbox,
+  TableContainer,
   TableHead,
   TableHeader,
   TableRoot,
@@ -141,5 +142,46 @@ describe("Table composed from its exported parts", () => {
 
     await user.click(selectAll());
     expect(onSelectedRowsChange).toHaveBeenLastCalledWith(NAMES);
+  });
+});
+
+describe("TableContainer", () => {
+  const scroller = () =>
+    document.querySelector<HTMLElement>('[data-slot="table-scroller"]');
+
+  it("lets its own maxHeight win over InnerContainerProps.style", () => {
+    render(
+      <TableContainer
+        maxHeight={200}
+        InnerContainerProps={{ style: { maxHeight: 50, color: "red" } }}
+      >
+        <TableRoot />
+      </TableContainer>,
+    );
+
+    expect(scroller()?.style.maxHeight).toBe("200px");
+    expect(scroller()?.style.color).toBe("red");
+  });
+
+  it("keeps InnerContainerProps.style.maxHeight without its own", () => {
+    render(
+      <TableContainer InnerContainerProps={{ style: { maxHeight: 50 } }}>
+        <TableRoot />
+      </TableContainer>,
+    );
+
+    expect(scroller()?.style.maxHeight).toBe("50px");
+  });
+
+  it("owns the scroller's ref", () => {
+    const ref = { current: null };
+    render(
+      // @ts-expect-error TableContainer sets the scroller's ref itself
+      <TableContainer InnerContainerProps={{ ref }}>
+        <TableRoot />
+      </TableContainer>,
+    );
+
+    expect(ref.current).toBeNull();
   });
 });

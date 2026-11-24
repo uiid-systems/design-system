@@ -2,10 +2,9 @@ import { cx } from "@uiid/utils";
 
 import styles from "../table.module.css";
 
-export const TableFooter = ({
-  className,
-  ...props
-}: React.ComponentProps<"tfoot">) => {
+export type TableFooterProps = React.ComponentProps<"tfoot">;
+
+export const TableFooter = ({ className, ...props }: TableFooterProps) => {
   return (
     <tfoot
       data-slot="table-footer"

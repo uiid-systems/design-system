@@ -1,14 +1,18 @@
 "use client";
 
-import { Card, type CardProps } from "@uiid/cards";
+import { Card, type CardProps, type InnerContainerProps } from "@uiid/cards";
 import { cx } from "@uiid/utils";
 
 import { useScrollAffordance } from "../hooks";
 
 import styles from "../table.module.css";
 
-type TableContainerProps = CardProps & {
+export type TableContainerProps = Omit<CardProps, "InnerContainerProps"> & {
+  /** Bound the scroller's height so it scrolls vertically. Wins over a
+   * `maxHeight` in `InnerContainerProps.style`. */
   maxHeight?: React.CSSProperties["maxHeight"];
+  /** Reaches the scroller. Its `ref` is set by TableContainer itself. */
+  InnerContainerProps?: Omit<InnerContainerProps, "ref">;
 };
 
 export const TableContainer = ({
@@ -42,7 +46,7 @@ export const TableContainer = ({
         ...innerProps,
         ref: scrollerRef,
         className: cx(styles["table-scroller"], innerClassName),
-        style: maxHeight != null ? { maxHeight, ...innerStyle } : innerStyle,
+        style: maxHeight != null ? { ...innerStyle, maxHeight } : innerStyle,
       }}
     >
       {children}

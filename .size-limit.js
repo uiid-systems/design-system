@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
  * Size entries are generated from `packages/*`, so a new package is measured
  * without registration. There are no limits: the Size workflow measures the PR
  * and its base branch with this same config and fails on growth
- * (see scripts/size-compare.mjs and docs/guides/size-limit.md).
+ * (see scripts/size-compare.mjs and .claude/rules/size-limit.md).
  *
  * Each entry leaves out the peer dependencies of the package it is measured
  * from. size-limit only does that for the package.json beside the config, and
