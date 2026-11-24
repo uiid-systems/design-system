@@ -435,6 +435,27 @@ describe("Tabs", () => {
     expect(list).toHaveAttribute("data-ui-ay", "end");
   });
 
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a key Tabs owns in ListProps", () => {
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `size` is set on Tabs itself
+        ListProps={{ size: "small" }}
+      />
+    );
+  });
+
+  it("rejects the list's children in ListProps, which Tabs renders from items", () => {
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the tabs come from `items`
+        ListProps={{ children: "Other" }}
+      />
+    );
+  });
+
   it("keeps the list's own gap when ListProps sets none", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const list = document.querySelector<HTMLElement>("[data-slot='tabs-list']");

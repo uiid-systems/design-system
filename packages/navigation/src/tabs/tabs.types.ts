@@ -44,7 +44,11 @@ export type TabsPanelProps = WithLayoutProps<
 export type TabsProps = {
   items: TabsItemData[];
   RootProps?: TabsRootProps;
-  ListProps?: TabsListProps;
+  /** Reaches the list. `size`, `variant` and `fullwidth` are set on Tabs itself, and the tabs come from `items`. */
+  ListProps?: Omit<
+    TabsListProps,
+    "size" | "variant" | "fullwidth" | "children"
+  >;
   TabProps?: Omit<TabsTabProps, "value">;
   IndicatorProps?: TabsIndicatorProps;
   PanelProps?: Omit<TabsPanelProps, "value" | "keepMounted">;
