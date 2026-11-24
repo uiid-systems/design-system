@@ -18,7 +18,6 @@ export const Accordion = ({
   disabled,
   orientation,
   multiple,
-  fullwidth,
   variant,
   size,
   RootProps,
@@ -32,7 +31,6 @@ export const Accordion = ({
     <AccordionRoot
       {...RootProps}
       {...definedProps({
-        fullwidth,
         variant,
         defaultValue,
         value,

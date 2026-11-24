@@ -366,13 +366,30 @@ describe("Progress header row", () => {
 });
 
 describe("Progress layout props", () => {
-  it("lets a caller's gap and fullwidth reach the root", () => {
-    const { container } = render(
-      <Progress value={40} gap={4} fullwidth={false} />,
-    );
+  it("fills the width of the root and header with w, not the fullwidth toggle", () => {
+    const { container } = render(<Progress value={40} label="Upload" />);
+    for (const slot of ["progress", "progress-header"]) {
+      const element = part(container, slot);
+      expect(element).toHaveAttribute("data-ui-w", "full");
+      expect(element).not.toHaveAttribute("data-ui-fullwidth");
+    }
+  });
+
+  it("lets a caller's gap and w reach the root", () => {
+    const { container } = render(<Progress value={40} gap={4} w={200} />);
     const root = part(container, "progress");
     expect(root).toHaveAttribute("data-ui-gap", "4");
-    expect(root).not.toHaveAttribute("data-ui-fullwidth");
+    expect(root).toHaveAttribute("data-ui-w", "200");
+  });
+
+  it("lets HeaderProps override the header's w", () => {
+    const { container } = render(
+      <Progress value={40} label="Upload" HeaderProps={{ w: 120 }} />,
+    );
+    expect(part(container, "progress-header")).toHaveAttribute(
+      "data-ui-w",
+      "120",
+    );
   });
 
   it("lets HeaderProps override the header's defaults", () => {

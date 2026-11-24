@@ -310,12 +310,31 @@ describe("Accordion", () => {
     expect(root()).toHaveAttribute("data-ui-gap", "0");
   });
 
-  it("stretches the root by default and releases it on fullwidth={false}", () => {
+  it("fills the root's width with w by default, which RootProps can override", () => {
     const { rerender } = render(<Accordion items={sampleItems} />);
-    expect(root()).toHaveAttribute("data-ui-fullwidth");
-
-    rerender(<Accordion items={sampleItems} fullwidth={false} />);
+    expect(root()).toHaveAttribute("data-ui-w", "full");
     expect(root()).not.toHaveAttribute("data-ui-fullwidth");
+
+    rerender(<Accordion items={sampleItems} RootProps={{ w: 320 }} />);
+    expect(root()).toHaveAttribute("data-ui-w", "320");
+  });
+
+  it("fills each item's width with w by default, which ItemProps can override", () => {
+    const items = () =>
+      document.querySelectorAll<HTMLElement>("[data-slot='accordion-item']");
+    const { rerender } = render(<Accordion items={sampleItems} />);
+    items().forEach((item) => {
+      expect(item).toHaveAttribute("data-ui-w", "full");
+      expect(item).not.toHaveAttribute("data-ui-fullwidth");
+    });
+
+    rerender(<Accordion items={sampleItems} ItemProps={{ w: 240 }} />);
+    items().forEach((item) => expect(item).toHaveAttribute("data-ui-w", "240"));
+  });
+
+  it("takes no top-level fullwidth prop", () => {
+    // @ts-expect-error -- the root fills by default; set `w` through RootProps
+    void (<Accordion items={sampleItems} fullwidth={false} />);
   });
 
   it("forwards layout props from ItemProps to each item Stack", () => {

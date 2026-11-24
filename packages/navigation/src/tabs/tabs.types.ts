@@ -35,15 +35,12 @@ export type TabsPanelProps = WithLayoutProps<
 export type TabsProps = {
   items: TabsItemData[];
   RootProps?: TabsRootProps;
-  /** Reaches the list. `size`, `variant` and `fullwidth` are set on Tabs itself, and the tabs come from `items`. */
-  ListProps?: Omit<
-    TabsListProps,
-    "size" | "variant" | "fullwidth" | "children"
-  >;
+  /** Reaches the list. `size` and `variant` are set on Tabs itself, and the tabs come from `items`. */
+  ListProps?: Omit<TabsListProps, "size" | "variant" | "children">;
   TabProps?: Omit<TabsTabProps, "value">;
   IndicatorProps?: TabsIndicatorProps;
   PanelProps?: Omit<TabsPanelProps, "value" | "keepMounted">;
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &
-  Pick<TabsListProps, "size" | "variant" | "fullwidth">;
+  Pick<TabsListProps, "size" | "variant">;

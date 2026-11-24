@@ -13,7 +13,6 @@ export const TabsList = ({
   variant,
   gap = 4,
   ay = "center",
-  fullwidth,
   className,
   children,
   ...props
@@ -23,7 +22,7 @@ export const TabsList = ({
       data-slot="tabs-list"
       data-size={size}
       data-variant={variant}
-      render={<Group gap={gap} ay={ay} fullwidth={fullwidth} />}
+      render={<Group gap={gap} ay={ay} />}
       className={cx(styles["tabs-list"], tabsListVariants({ size }), className)}
       {...props}
     >

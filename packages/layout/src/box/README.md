@@ -14,7 +14,7 @@ Use Box directly when:
 
 Spacing (`gap`, `p*`, `m*`), sizing (`w`, `h`, `min*`, `max*`), border (`b*`), alignment (`ax`, `ay`, `direction`) and `flex` props render as `data-ui-*` attributes resolved by `@uiid/tokens` CSS, so load `@uiid/tokens/globals.css` (or `@uiid/design-system/globals.css`). Your own unlayered CSS overrides them from a class.
 
-Toggles `evenly`, `wrap`, `fullwidth` and `grow` are booleans. `fullwidth` is deprecated: use `w="full"`.
+Toggles `evenly`, `wrap` and `grow` are booleans. To fill the container width, use `w="full"`.
 
 The sizing props take a number of pixels or a keyword. `"full"` fills the container: `100%`, then `-webkit-fill-available` (plus `-moz-available` on width) where the browser supports it. `"screen"` is the small viewport, `100svw` or `100svh`: the height with mobile browser chrome showing, so it never sits under a toolbar or resizes as the page scrolls. `100svw` counts the vertical scrollbar, so on a page that scrolls vertically `w="screen"` overflows sideways. For a border, use `b={1}`; for rounded corners or a fixed aspect ratio, use a class.
 

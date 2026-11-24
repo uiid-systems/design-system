@@ -266,7 +266,7 @@ describe("Collapsible", () => {
     render(
       <Collapsible
         trigger="Toggle"
-        RootProps={{ gap: 4, ax: "center", fullwidth: true }}
+        RootProps={{ gap: 4, ax: "center", w: "full" }}
       >
         Content
       </Collapsible>,
@@ -274,7 +274,7 @@ describe("Collapsible", () => {
     const root = getRoot();
     expect(root).toHaveAttribute("data-ui-gap", "4");
     expect(root).toHaveAttribute("data-ui-ay", "center");
-    expect(root).toHaveAttribute("data-ui-fullwidth");
+    expect(root).toHaveAttribute("data-ui-w", "full");
   });
 
   it("aligns panel content to the end by default", () => {

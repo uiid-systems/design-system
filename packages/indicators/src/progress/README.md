@@ -21,7 +21,7 @@ When a readout replaces the number with words, pass `getAriaValueText` too, so s
 
 `ProgressRoot`, `ProgressHeader`, `ProgressLabel`, `ProgressValue`, `ProgressTrack`, and `ProgressIndicator` are exported for composition, and slot overrides (`RootProps`, `HeaderProps`, `LabelProps`, `ValueProps`, `TrackProps`, `IndicatorProps`) reach them from the monolithic component. When a top-level prop and `RootProps` set the same key, the top-level prop wins.
 
-The root renders a `Stack` and the header a `Group`, so they take layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `fullwidth`, and never shrinks below `--progress-min-width` (8rem), so a bare bar stays visible in a shrink-to-fit container — set `--progress-min-width` lower (or to `0`) for a narrower slot; the header to `gap={2}`, `ay="center"`, and `fullwidth`; pass any of them to change it.
+The root renders a `Stack` and the header a `Group`, so they take layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `w="full"`, and never shrinks below `--progress-min-width` (8rem), so a bare bar stays visible in a shrink-to-fit container — set `--progress-min-width` lower (or to `0`) for a narrower slot; the header to `gap={2}`, `ay="center"`, and `w="full"`; pass any of them to change it.
 
 Every colour and dimension reads a `--progress-*` variable (`--progress-min-width`, `--progress-track-color`, `--progress-indicator-color`, `--progress-track-height`, `--progress-radius`, `--progress-indeterminate-width`, `--progress-indeterminate-duration`), so a single bar can be retuned from CSS without reaching into its parts.
 

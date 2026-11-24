@@ -15,7 +15,6 @@ const meta: Meta<typeof Tabs> = {
       control: "inline-radio",
       options: ["xsmall", "small", "medium", "large"],
     },
-    fullwidth: { control: "boolean" },
     variant: {
       control: "select",
       options: ["ghost"],

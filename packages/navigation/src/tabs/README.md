@@ -32,19 +32,19 @@ import { Tabs } from "@uiid/navigation";
 
 ## Props
 
-| Prop             | Type                                                                    | Default            | Description                                                                |
-| ---------------- | ----------------------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------- |
-| `items`          | `TabsItemData[]`                                                        | —                  | Array of tab items (required)                                              |
-| `defaultValue`   | `string`                                                                | First item's value | Initially selected tab                                                     |
-| `value`          | `string`                                                                | —                  | Controlled selected tab                                                    |
-| `onValueChange`  | `(value: string, details: object) => void`                              | —                  | Callback when tab changes                                                  |
-| `align`          | `"start" \| "center" \| "end"`                                          | `"start"`          | Horizontal alignment of tabs                                               |
-| `keepMounted`    | `boolean`                                                               | `false`            | Keep inactive panels in DOM                                                |
-| `RootProps`      | `TabsRootProps`                                                         | —                  | Props for root element                                                     |
-| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "fullwidth" \| "children">` | —                  | Props for tab list; set `size`, `variant` and `fullwidth` at the top level |
-| `TabProps`       | `Omit<TabsTabProps, "value">`                                           | —                  | Props for every tab; each item keeps its own `value`                       |
-| `IndicatorProps` | `TabsIndicatorProps`                                                    | —                  | Props for indicator                                                        |
-| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">`                        | —                  | Props for every panel; set `keepMounted` at the top level                  |
+| Prop             | Type                                                     | Default            | Description                                                                                         |
+| ---------------- | -------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------- |
+| `items`          | `TabsItemData[]`                                         | —                  | Array of tab items (required)                                                                       |
+| `defaultValue`   | `string`                                                 | First item's value | Initially selected tab                                                                              |
+| `value`          | `string`                                                 | —                  | Controlled selected tab                                                                             |
+| `onValueChange`  | `(value: string, details: object) => void`               | —                  | Callback when tab changes                                                                           |
+| `align`          | `"start" \| "center" \| "end"`                           | `"start"`          | Horizontal alignment of tabs                                                                        |
+| `keepMounted`    | `boolean`                                                | `false`            | Keep inactive panels in DOM                                                                         |
+| `RootProps`      | `TabsRootProps`                                          | —                  | Props for root element                                                                              |
+| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "children">` | —                  | Props for tab list; set `size` and `variant` at the top level, and stretch the list with `w="full"` |
+| `TabProps`       | `Omit<TabsTabProps, "value">`                            | —                  | Props for every tab; each item keeps its own `value`                                                |
+| `IndicatorProps` | `TabsIndicatorProps`                                     | —                  | Props for indicator                                                                                 |
+| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">`         | —                  | Props for every panel; set `keepMounted` at the top level                                           |
 
 `defaultValue` falls back to the first item's value only when it is `undefined`, and there is no default when `items` is empty. Pass `defaultValue={null}` for no active tab. When a top-level prop and `RootProps` set the same key, the top-level prop wins. A `RootProps.defaultValue` still counts before the first-item fallback. The default is read once, on mount: when `items` starts empty and loads later, the first tab is selected and `onValueChange` fires once with the reason `"initial"`.
 
@@ -83,7 +83,7 @@ import { Tabs } from "@uiid/navigation";
 
 ## Layout
 
-`TabsRoot` and `TabsPanel` render a `Stack` and `TabsList` a `Group`, so `RootProps`, `PanelProps`, and `ListProps` take their layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's, except that the list's `fullwidth` is set on Tabs itself. The list spaces its tabs `gap={4}` apart and centres them on the cross axis (`ay="center"`); each panel fills the width, stretches its content across it, and centres it vertically (`ay="center"`). Pass any of them to change it.
+`TabsRoot` and `TabsPanel` render a `Stack` and `TabsList` a `Group`, so `RootProps`, `PanelProps`, and `ListProps` take their layout props (`gap`, `p`, `ax`, `ay`, `w`, ...) alongside Base UI's. The list keeps its content width unless `ListProps={{ w: "full" }}` stretches it. The list spaces its tabs `gap={4}` apart and centres them on the cross axis (`ay="center"`); each panel fills the width (`w="full"`), stretches its content across it, and centres it vertically (`ay="center"`). Pass any of them to change it.
 
 A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes: `<TabsRoot render={<section />} gap={4}>` renders `<section gap="4">`.
 

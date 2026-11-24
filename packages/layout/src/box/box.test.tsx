@@ -64,15 +64,15 @@ describe("Box", () => {
 
   it("writes a bare data attribute for a toggle that is on", () => {
     render(
-      <Box fullwidth wrap evenly={false} data-testid="box">
+      <Box grow wrap evenly={false} data-testid="box">
         x
       </Box>,
     );
     const box = screen.getByTestId("box");
-    expect(box).toHaveAttribute("data-ui-fullwidth", "");
+    expect(box).toHaveAttribute("data-ui-grow", "");
     expect(box).toHaveAttribute("data-ui-wrap", "");
     expect(box).not.toHaveAttribute("data-ui-evenly");
-    expect(box).not.toHaveAttribute("fullwidth");
+    expect(box).not.toHaveAttribute("grow");
     expect(box).not.toHaveAttribute("wrap");
   });
 

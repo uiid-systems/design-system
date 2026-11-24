@@ -70,13 +70,13 @@ describe("prepareComponentProps", () => {
   it("writes a bare attribute for a data prop that is on, and nothing when off", () => {
     const result = prepareComponentProps({
       componentName: "box",
-      props: { fullwidth: true, evenly: false },
-      dataProps: ["fullwidth", "evenly"],
+      props: { wrap: true, evenly: false },
+      dataProps: ["wrap", "evenly"],
     });
 
-    expect(result).toHaveProperty("data-ui-fullwidth", "");
+    expect(result).toHaveProperty("data-ui-wrap", "");
     expect(result).not.toHaveProperty("data-ui-evenly");
-    expect(result).not.toHaveProperty("fullwidth");
+    expect(result).not.toHaveProperty("wrap");
     expect(result).not.toHaveProperty("evenly");
   });
 

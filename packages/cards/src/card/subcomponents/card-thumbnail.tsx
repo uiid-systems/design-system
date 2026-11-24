@@ -14,7 +14,7 @@ export const CardThumbnail = ({
     <Stack
       data-slot="card-thumbnail"
       className={cx(styles["card-thumbnail"], className)}
-      fullwidth
+      w="full"
       {...props}
     >
       {children}
