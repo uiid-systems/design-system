@@ -120,13 +120,20 @@ export type SelectProps<
    */
   backdrop?: boolean;
   RootProps?: SelectRootProps<Value, Multiple>;
-  TriggerProps?: SelectTriggerProps;
+  /** Reaches the trigger. The keys Select sets on the trigger itself are left out. */
+  TriggerProps?: Omit<
+    SelectTriggerProps,
+    "size" | "fullwidth" | "variant" | "color" | "before" | "after" | "children"
+  >;
   PortalProps?: SelectPortalProps;
   BackdropProps?: SelectBackdropProps;
   PositionerProps?: SelectPositionerProps;
-  PopupProps?: SelectPopupProps;
-  ListProps?: SelectListProps;
-  ValueProps?: SelectValueProps;
+  /** Reaches the popup. `color` and the list inside are set by Select itself. */
+  PopupProps?: Omit<SelectPopupProps, "color" | "children">;
+  /** Reaches the list. Select renders the rows inside it itself. */
+  ListProps?: Omit<SelectListProps, "children">;
+  /** Reaches the value. `size` and `placeholder` are set on Select itself. */
+  ValueProps?: Omit<SelectValueProps, "size" | "placeholder">;
   /** Reaches the Field around the select. The keys Select hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
   IconProps?: SelectIconProps;

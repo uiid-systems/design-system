@@ -66,16 +66,23 @@ export const CheckboxGroup = ({
           ? children
           : items.map(
               ({ value, label: checkboxLabel, disabled: itemDisabled }) => (
+                /*
+                 * `CheckboxProps` spreads first and the group's dressing
+                 * after, so a group value wins and an unset one leaves the
+                 * slot's alone. Each item's own identity comes last.
+                 */
                 <Checkbox
                   key={value}
-                  name={name}
-                  hideIndicator={hideIndicators}
-                  size={size}
-                  bordered={bordered}
-                  reversed={reversed}
-                  color={color}
-                  IndicatorProps={IndicatorProps}
                   {...CheckboxProps}
+                  {...definedProps({
+                    name,
+                    hideIndicator: hideIndicators,
+                    size,
+                    bordered,
+                    reversed,
+                    color,
+                    IndicatorProps,
+                  })}
                   value={value}
                   label={checkboxLabel}
                   disabled={itemDisabled || disabled}

@@ -39,9 +39,10 @@ export type AutocompleteInputProps = Omit<
     /**
      * Props for the input group the part renders around its control row. The
      * group wraps the row alone, not the label, description or error, since
-     * Base UI positions the popup against it.
+     * Base UI positions the popup against it. `size`, `fullwidth` and the row
+     * itself are set by the part.
      */
-    InputGroupProps?: AutocompleteInputGroupProps;
+    InputGroupProps?: AutocompleteInputGroupSlotProps;
   };
 export type AutocompletePortalProps = BaseAutocomplete.Portal.Props;
 export type AutocompletePositionerProps =
@@ -77,6 +78,14 @@ export type AutocompleteEmptyProps =
 export type AutocompleteInputGroupProps =
   WithStringClassName<BaseAutocomplete.InputGroup.Props> &
     Pick<InputProps, "size" | "fullwidth">;
+/**
+ * The `InputGroupProps` slot on the input part and the monolith. The part sets
+ * `size`, `fullwidth` and the control row on the group itself.
+ */
+type AutocompleteInputGroupSlotProps = Omit<
+  AutocompleteInputGroupProps,
+  "size" | "fullwidth" | "children"
+>;
 export type AutocompleteTriggerProps =
   WithStringClassName<BaseAutocomplete.Trigger.Props>;
 export type AutocompleteClearProps =
@@ -95,12 +104,33 @@ export type AutocompleteProps<Value = string> = {
    */
   color?: AutocompleteColor;
   RootProps?: AutocompleteRootProps<Value>;
-  InputProps?: AutocompleteInputProps;
-  InputGroupProps?: AutocompleteInputGroupProps;
+  /** Reaches the input part. The keys Autocomplete sets on the part itself are left out. */
+  InputProps?: Omit<
+    AutocompleteInputProps,
+    | "name"
+    | "placeholder"
+    | "label"
+    | "description"
+    | "action"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
+    | "color"
+    | "disabled"
+    | "required"
+    | "onFocus"
+    | "onBlur"
+  >;
+  /** Reaches the input group. `size` and `fullwidth` are set on Autocomplete itself. */
+  InputGroupProps?: AutocompleteInputGroupSlotProps;
   PortalProps?: AutocompletePortalProps;
   PositionerProps?: AutocompletePositionerProps;
-  PopupProps?: AutocompletePopupProps;
-  ListProps?: AutocompleteListProps;
+  /** Reaches the popup. `color` and the list inside are set by Autocomplete itself. */
+  PopupProps?: Omit<AutocompletePopupProps, "color" | "children">;
+  /** Reaches the list. Autocomplete renders the rows inside it itself. */
+  ListProps?: Omit<AutocompleteListProps, "children">;
   /**
    * The items to filter and render, typed by the autocomplete's `Value` so it
    * can be inferred from them. Readonly, so an `as const` list works. An object

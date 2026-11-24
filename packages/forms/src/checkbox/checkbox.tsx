@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import type { CheckboxProps } from "./checkbox.types";
 import {
   CheckboxRoot,
@@ -38,7 +40,10 @@ export const Checkbox = ({
         indeterminate={indeterminate}
         {...props}
       >
-        <CheckboxIndicator indeterminate={indeterminate} {...IndicatorProps} />
+        <CheckboxIndicator
+          {...IndicatorProps}
+          {...definedProps({ indeterminate })}
+        />
       </CheckboxRoot>
     </CheckboxField>
   );

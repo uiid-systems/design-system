@@ -44,9 +44,10 @@ export type ComboboxInputProps = Omit<
     /**
      * Props for the input group the part renders around its control row. The
      * group wraps the row alone, not the label, description or error, since
-     * Base UI positions the popup against it.
+     * Base UI positions the popup against it. `size`, `fullwidth` and the row
+     * itself are set by the part.
      */
-    InputGroupProps?: ComboboxInputGroupProps;
+    InputGroupProps?: ComboboxInputGroupSlotProps;
   };
 export type ComboboxPortalProps = BaseCombobox.Portal.Props;
 export type ComboboxPositionerProps =
@@ -81,6 +82,14 @@ export type ComboboxEmptyProps = WithStringClassName<BaseCombobox.Empty.Props>;
 export type ComboboxInputGroupProps =
   WithStringClassName<BaseCombobox.InputGroup.Props> &
     Pick<InputProps, "size" | "fullwidth">;
+/**
+ * The `InputGroupProps` slot on the input part and the monolith. The part sets
+ * `size`, `fullwidth` and the control row on the group itself.
+ */
+type ComboboxInputGroupSlotProps = Omit<
+  ComboboxInputGroupProps,
+  "size" | "fullwidth" | "children"
+>;
 export type ComboboxTriggerProps =
   WithStringClassName<BaseCombobox.Trigger.Props>;
 export type ComboboxClearProps = WithStringClassName<BaseCombobox.Clear.Props>;
@@ -107,12 +116,36 @@ export type ComboboxProps<
    */
   color?: ComboboxColor;
   RootProps?: ComboboxRootProps<Value, Multiple>;
-  InputProps?: ComboboxInputProps;
-  InputGroupProps?: ComboboxInputGroupProps;
+  /**
+   * Reaches the input part. The keys Combobox sets on the part itself are left
+   * out. `after` among them carries the Clear and Trigger buttons; pass
+   * trailing content as the top-level `after`, which leads that row.
+   */
+  InputProps?: Omit<
+    ComboboxInputProps,
+    | "name"
+    | "placeholder"
+    | "label"
+    | "description"
+    | "action"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
+    | "color"
+    | "disabled"
+    | "onFocus"
+    | "onBlur"
+  >;
+  /** Reaches the input group. `size` and `fullwidth` are set on Combobox itself. */
+  InputGroupProps?: ComboboxInputGroupSlotProps;
   PortalProps?: ComboboxPortalProps;
   PositionerProps?: ComboboxPositionerProps;
-  PopupProps?: ComboboxPopupProps;
-  ListProps?: ComboboxListProps;
+  /** Reaches the popup. `color` and the list inside are set by Combobox itself. */
+  PopupProps?: Omit<ComboboxPopupProps, "color" | "children">;
+  /** Reaches the list. Combobox renders the rows inside it itself. */
+  ListProps?: Omit<ComboboxListProps, "children">;
   /**
    * The items to filter and render, typed by the combobox's `Value` so it can
    * be inferred from them. Readonly, so an `as const` list works. An object

@@ -2,10 +2,7 @@ import type { CheckboxGroup as BaseCheckboxGroup } from "@base-ui/react/checkbox
 import type { StackProps } from "@uiid/layout";
 import type { WithLayoutProps } from "@uiid/utils";
 
-import type {
-  CheckboxProps,
-  CheckboxIndicatorProps,
-} from "../checkbox/checkbox.types";
+import type { CheckboxProps } from "../checkbox/checkbox.types";
 import type { FieldProps } from "../field/field.types";
 import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
@@ -33,8 +30,27 @@ export type CheckboxGroupProps = {
   items?: FormItemProps[];
   orientation?: "horizontal" | "vertical";
   hideIndicators?: CheckboxProps["hideIndicator"];
-  CheckboxProps?: Partial<CheckboxProps>;
-  IndicatorProps?: CheckboxIndicatorProps;
+  /**
+   * Reaches every box rendered from `items`. The keys CheckboxGroup sets on
+   * each box itself, from its own props and from each item, are left out.
+   */
+  CheckboxProps?: Partial<
+    Omit<
+      CheckboxProps,
+      | "name"
+      | "hideIndicator"
+      | "size"
+      | "bordered"
+      | "reversed"
+      | "color"
+      | "IndicatorProps"
+      | "value"
+      | "label"
+      | "disabled"
+    >
+  >;
+  /** Reaches every box's indicator, as the Checkbox slot of the same name. */
+  IndicatorProps?: CheckboxProps["IndicatorProps"];
   /** Reaches the Field around the group. The keys CheckboxGroup hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<
     "name" | "required" | "disabled" | "fullwidth" | "size"

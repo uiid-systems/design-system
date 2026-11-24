@@ -3,7 +3,7 @@ import type { StackProps } from "@uiid/layout";
 import type { WithLayoutProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
-import type { RadioProps, RadioIndicatorProps } from "../radio/radio.types";
+import type { RadioProps } from "../radio/radio.types";
 import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
 
@@ -34,8 +34,26 @@ export type RadioGroupProps = WithLayoutProps<
   orientation?: "horizontal" | "vertical";
   hideIndicators?: RadioProps["hideIndicator"];
   required?: boolean;
-  RadioProps?: Partial<RadioProps>;
-  IndicatorProps?: RadioIndicatorProps;
+  /**
+   * Reaches every radio rendered from `items`. The keys RadioGroup sets on each
+   * radio itself, from its own props and from each item, are left out.
+   */
+  RadioProps?: Partial<
+    Omit<
+      RadioProps,
+      | "hideIndicator"
+      | "size"
+      | "bordered"
+      | "reversed"
+      | "color"
+      | "IndicatorProps"
+      | "value"
+      | "label"
+      | "disabled"
+    >
+  >;
+  /** Reaches every radio's indicator, as the Radio slot of the same name. */
+  IndicatorProps?: RadioProps["IndicatorProps"];
   /** Reaches the Field around the group. The keys RadioGroup hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<
     "name" | "required" | "disabled" | "fullwidth" | "size"

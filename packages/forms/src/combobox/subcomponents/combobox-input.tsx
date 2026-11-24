@@ -1,7 +1,7 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { cx } from "@uiid/utils";
+import { cx, definedProps } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -31,17 +31,34 @@ export const ComboboxInput = ({
 }: ComboboxInputProps) => {
   const hasSlots = hasInputSlots({ before, after });
 
+  /*
+   * Combobox sends its resolved `required` through `FieldProps`, outside the
+   * slot's type. The part's own `required` is also the text input's native
+   * attribute, which the monolith's `InputProps` can still set. Either one
+   * marks the field, so the label never hides a requirement the input enforces.
+   */
+  const fieldRequired =
+    Boolean((FieldProps as { required?: boolean } | undefined)?.required) ||
+    required;
+
   return (
+    /*
+     * `FieldProps` spreads first and the part's own values after, so they win
+     * and an unset one leaves the slot's alone; `required` is resolved above.
+     * `fullwidth` is a default the slot may still change, as `w` is on Input.
+     */
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      disabled={disabled}
-      required={required}
       fullwidth={fullwidth}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label,
+        description,
+        action,
+        disabled,
+        required: fieldRequired,
+        size,
+      })}
     >
       {/*
        * Base UI anchors the popup to the input group, so the group wraps the
@@ -50,9 +67,8 @@ export const ComboboxInput = ({
        * out of the group's press handler and its `role="group"`.
        */}
       <ComboboxInputGroup
-        size={size}
-        fullwidth={fullwidth}
         {...InputGroupProps}
+        {...definedProps({ size, fullwidth })}
       >
         {/*
          * The hue goes to whichever element wears the surface. Combobox's

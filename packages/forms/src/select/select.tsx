@@ -174,23 +174,27 @@ export function Select<
         })}
         {...rootProps}
       >
+        {/*
+         * Each slot spreads first and Select's own values after, so a
+         * top-level value wins and an unset one leaves the slot's alone. The
+         * DOM attributes are copied into a plain object, the shape
+         * `definedProps` takes, so an `aria-label={undefined}` is dropped too.
+         */}
         <SelectTrigger
-          size={size}
-          fullwidth={fullwidth}
-          variant={variant}
-          color={color}
-          before={before}
-          after={after}
-          {...domAttributes}
           {...TriggerProps}
+          {...definedProps({ ...domAttributes })}
+          {...definedProps({ size, fullwidth, variant, color, before, after })}
         >
-          <SelectValue size={size} placeholder={placeholder} {...ValueProps} />
+          <SelectValue
+            {...ValueProps}
+            {...definedProps({ size, placeholder })}
+          />
           <SelectIcon {...IconProps} />
         </SelectTrigger>
         <SelectPortal {...PortalProps}>
           {backdrop && <SelectBackdrop {...BackdropProps} />}
           <SelectPositioner {...PositionerProps}>
-            <SelectPopup color={color} {...PopupProps}>
+            <SelectPopup {...PopupProps} {...definedProps({ color })}>
               <SelectList {...ListProps}>
                 {!items
                   ? children

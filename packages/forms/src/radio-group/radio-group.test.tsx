@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Radio } from "../radio/radio";
+import type { RadioProps } from "../radio/radio.types";
 import { RadioGroup } from "./radio-group";
 import { RadioGroupRoot } from "./subcomponents";
 
@@ -212,15 +213,32 @@ describe("RadioGroup color", () => {
     }
   });
 
-  /*
-   * `RadioProps` is spread below the group's dressing, so a shared override
-   * reaches the items. Spread above it, an unset group-level `color` still won
-   * and this silently rendered neutral radios — the same shape CheckboxGroup
-   * has always had.
-   */
-  it("lets RadioProps override the group's hue", () => {
+  /* `RadioProps` spreads first and the group's dressing after, so the group's
+     hue wins. The cast stands in for untyped code, which the slot type cannot
+     stop. CheckboxGroup mirrors this. */
+  it("lets the group's hue win over one in RadioProps", () => {
     const { container } = render(
-      <RadioGroup items={items} RadioProps={{ color: "red" }} />,
+      <RadioGroup
+        items={items}
+        color="blue"
+        RadioProps={{ color: "red" } as Partial<RadioProps>}
+      />,
+    );
+
+    for (const ring of rings(container)) {
+      expect(ring).toHaveClass("palette-blue");
+      expect(ring).not.toHaveClass("palette-red");
+    }
+  });
+
+  /* An unset group hue is left out rather than spread as `undefined`, which
+     once rendered these radios neutral. */
+  it("keeps a hue in RadioProps when the group sets none", () => {
+    const { container } = render(
+      <RadioGroup
+        items={items}
+        RadioProps={{ color: "red" } as Partial<RadioProps>}
+      />,
     );
 
     for (const ring of rings(container)) {
@@ -271,14 +289,19 @@ describe("RadioGroup size", () => {
     }
   });
 
-  it("lets RadioProps override the group's tier", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the group's tier win over one in RadioProps", () => {
     const { container } = render(
-      <RadioGroup items={items} size="small" RadioProps={{ size: "large" }} />,
+      <RadioGroup
+        items={items}
+        size="small"
+        RadioProps={{ size: "large" } as Partial<RadioProps>}
+      />,
     );
 
     for (const ring of rings(container)) {
-      expect(ring.className).toContain("size-large");
-      expect(ring.className).not.toContain("size-small");
+      expect(ring.className).toContain("size-small");
+      expect(ring.className).not.toContain("size-large");
     }
   });
 });
@@ -447,5 +470,64 @@ describe("RadioGroup FieldProps", () => {
         FieldProps={{ size: "small" }}
       />
     );
+  });
+});
+
+/* The precedence tests for this slot sit with the hue and the tier above. */
+describe("RadioGroup RadioProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches every radio", () => {
+    render(
+      <RadioGroup
+        items={items}
+        RadioProps={{ className: "caller", "aria-describedby": "hint" }}
+      />,
+    );
+
+    for (const radio of screen.getAllByRole("radio")) {
+      expect(radio).toHaveClass("caller");
+      expect(radio).toHaveAttribute("aria-describedby", "hint");
+    }
+  });
+
+  it("does not let RadioProps clobber a per-item value or label", () => {
+    render(
+      <RadioGroup
+        items={items}
+        RadioProps={
+          { value: "clobbered", label: "Clobbered" } as Partial<RadioProps>
+        }
+      />,
+    );
+
+    const [first] = screen.getAllByRole("radio");
+    expect(screen.getAllByLabelText("Option A")).toContain(first);
+    expect(screen.queryAllByLabelText("Clobbered")).toHaveLength(0);
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects RadioProps the control owns", () => {
+    // @ts-expect-error -- `hideIndicator` is set from `hideIndicators`
+    void (<RadioGroup RadioProps={{ hideIndicator: true }} />);
+    // @ts-expect-error -- `size` is set on RadioGroup itself
+    void (<RadioGroup RadioProps={{ size: "small" }} />);
+    // @ts-expect-error -- `bordered` is set on RadioGroup itself
+    void (<RadioGroup RadioProps={{ bordered: true }} />);
+    // @ts-expect-error -- `reversed` is set on RadioGroup itself
+    void (<RadioGroup RadioProps={{ reversed: true }} />);
+    // @ts-expect-error -- `color` is set on RadioGroup itself
+    void (<RadioGroup RadioProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `IndicatorProps` is set on RadioGroup itself
+    void (<RadioGroup RadioProps={{ IndicatorProps: {} }} />);
+    // @ts-expect-error -- `value` comes from each of `items`
+    void (<RadioGroup RadioProps={{ value: "other" }} />);
+    // @ts-expect-error -- `label` comes from each of `items`
+    void (<RadioGroup RadioProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `disabled` is set on RadioGroup and each of `items`
+    void (<RadioGroup RadioProps={{ disabled: true }} />);
   });
 });

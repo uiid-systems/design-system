@@ -1,9 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { NumberField } from "./number-field";
+import type {
+  NumberFieldGroupProps,
+  NumberFieldInputProps,
+} from "./number-field.types";
 import {
   NumberFieldGroup,
   NumberFieldInput,
@@ -204,11 +208,16 @@ describe("NumberField size variant", () => {
     expect(screen.getByRole("textbox").className).toContain("size-large");
   });
 
-  it("lets GroupProps override the tier", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the top-level tier win over one in GroupProps", () => {
     const { container } = render(
-      <NumberField size="small" GroupProps={{ size: "large" }} />,
+      <NumberField
+        size="small"
+        GroupProps={{ size: "large" } as NumberFieldGroupProps}
+      />,
     );
-    expect(groupClassName(container)).toContain("size-large");
+    expect(groupClassName(container)).toContain("size-small");
+    expect(groupClassName(container)).not.toContain("size-large");
   });
 });
 
@@ -513,5 +522,119 @@ describe("NumberField FieldProps", () => {
         FieldProps={{ size: "small" }}
       />
     );
+  });
+});
+
+/*
+ * Each slot leaves out the keys NumberField sets on that part itself. The
+ * casts in the precedence tests stand in for untyped code, which the slot type
+ * cannot stop: the top-level value still wins at runtime.
+ */
+describe("NumberField GroupProps", () => {
+  it("reaches the group", () => {
+    render(
+      <NumberField
+        aria-label="Quantity"
+        GroupProps={{ id: "cluster", "aria-describedby": "hint" }}
+      />,
+    );
+    const group = screen.getByRole("group");
+    expect(group).toHaveAttribute("data-slot", "number-field-group");
+    expect(group).toHaveAttribute("id", "cluster");
+    expect(group).toHaveAttribute("aria-describedby", "hint");
+  });
+
+  it("lets a top-level color win over one in the slot", () => {
+    render(
+      <NumberField
+        color="blue"
+        GroupProps={{ color: "red" } as NumberFieldGroupProps}
+      />,
+    );
+    const group = screen.getByRole("group");
+    expect(group).toHaveClass("palette-blue");
+    expect(group).not.toHaveClass("palette-red");
+  });
+
+  /* `size` always has a value at the top level, so `color` is the key an
+     unset top level can leave to the slot. */
+  it("keeps a color in the slot when the top level sets none", () => {
+    render(
+      <NumberField GroupProps={{ color: "red" } as NumberFieldGroupProps} />,
+    );
+    expect(screen.getByRole("group")).toHaveClass("palette-red");
+  });
+
+  /* A behaviour pin, not a precedence test: JSX children follow every spread,
+     so a slot `children` never won. The `@ts-expect-error` below is the guard
+     that matters. */
+  it("renders the steppers and the input whatever the slot passes as children", () => {
+    render(
+      <NumberField
+        GroupProps={{ children: "Slot" } as NumberFieldGroupProps}
+      />,
+    );
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /increase/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /decrease/i }),
+    ).toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects GroupProps the control owns", () => {
+    // @ts-expect-error -- `size` is set on NumberField itself
+    void (<NumberField GroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `color` is set on NumberField itself
+    void (<NumberField GroupProps={{ color: "blue" }} />);
+    // @ts-expect-error -- NumberField renders the steppers and the input itself
+    void (<NumberField GroupProps={{ children: "Other" }} />);
+  });
+});
+
+describe("NumberField InputProps", () => {
+  it("reaches the input", () => {
+    render(
+      <NumberField InputProps={{ "aria-label": "Quantity", id: "qty" }} />,
+    );
+    const input = screen.getByRole("textbox", { name: "Quantity" });
+    expect(input).toHaveAttribute("data-slot", "number-field-input");
+    expect(input).toHaveAttribute("id", "qty");
+  });
+
+  it("forwards a ref to the input", () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<NumberField InputProps={{ ref }} />);
+    expect(ref.current).toBe(screen.getByRole("textbox"));
+  });
+
+  it("lets top-level values win over the same keys in the slot", () => {
+    render(
+      <NumberField
+        placeholder="Top"
+        color="blue"
+        InputProps={
+          { placeholder: "Slot", color: "red" } as NumberFieldInputProps
+        }
+      />,
+    );
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveAttribute("placeholder", "Top");
+    expect(input).toHaveClass("palette-blue");
+    expect(input).not.toHaveClass("palette-red");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputProps the control owns", () => {
+    // @ts-expect-error -- `size` is set on NumberField itself
+    void (<NumberField InputProps={{ size: "small" }} />);
+    // @ts-expect-error -- `color` is set on NumberField itself
+    void (<NumberField InputProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `placeholder` is set on NumberField itself
+    void (<NumberField InputProps={{ placeholder: "Other" }} />);
+    // @ts-expect-error -- `required` is set on NumberField itself
+    void (<NumberField InputProps={{ required: true }} />);
   });
 });

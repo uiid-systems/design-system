@@ -1,11 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createRef } from "react";
 import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Autocomplete } from "./autocomplete";
 import type {
+  AutocompleteInputGroupProps,
+  AutocompleteInputProps,
   AutocompleteItemProps,
+  AutocompletePopupProps,
   AutocompleteProps,
 } from "./autocomplete.types";
 import { AutocompleteInput, AutocompleteRoot } from "./subcomponents";
@@ -96,6 +100,18 @@ describe("Autocomplete", () => {
       "Search",
     );
   });
+
+  /* A forwarding wrapper passes an unset attribute as `undefined`. */
+  it("keeps the InputProps name when the top-level attribute is undefined", () => {
+    render(
+      <Autocomplete
+        items={defaultItems}
+        aria-label={undefined}
+        InputProps={{ "aria-label": "Search" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Search");
+  });
 });
 
 describe("Autocomplete render target", () => {
@@ -174,14 +190,15 @@ describe("Autocomplete name forwarding", () => {
     expect(submitted).toHaveBeenCalledWith(["banana"]);
   });
 
-  it("lets InputProps override the name the field matches on", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the top-level name win over one in InputProps", () => {
     const { container } = render(
-      <Form errors={{ produce: "Pick a fruit" }}>
+      <Form errors={{ fruit: "Pick a fruit", produce: "Wrong field" }}>
         <Autocomplete
           name="fruit"
           label="Fruit"
           items={items}
-          InputProps={{ name: "produce" }}
+          InputProps={{ name: "produce" } as AutocompleteInputProps}
         />
       </Form>,
     );
@@ -297,7 +314,7 @@ describe("Autocomplete DOM attributes reach the input", () => {
     );
   });
 
-  it("lets InputProps win over a top-level attribute", () => {
+  it("lets a top-level attribute win over the same key in InputProps", () => {
     render(
       <Autocomplete
         items={defaultItems}
@@ -305,7 +322,7 @@ describe("Autocomplete DOM attributes reach the input", () => {
         InputProps={{ "aria-label": "Inner" }}
       />,
     );
-    expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Outer");
   });
 });
 
@@ -410,14 +427,19 @@ describe("Autocomplete input group", () => {
   });
 
   /* Both props reach the one group the Input part renders, so neither may
-     drop the other: the nested value wins a conflict, and classes join. */
+     drop the other: the top-level value wins a conflict, keys only one of
+     them sets are kept, and classes join. */
   it("merges InputGroupProps with the InputGroupProps nested in InputProps", () => {
     render(
       <Autocomplete
         items={items}
-        InputGroupProps={{ className: "outer", id: "outer-id", title: "kept" }}
+        InputGroupProps={{ className: "outer", id: "outer-id", dir: "rtl" }}
         InputProps={{
-          InputGroupProps: { className: "inner", id: "inner-id" },
+          InputGroupProps: {
+            className: "inner",
+            id: "inner-id",
+            title: "kept",
+          },
         }}
       />,
     );
@@ -425,8 +447,55 @@ describe("Autocomplete input group", () => {
       "[data-slot='autocomplete-input-group']",
     );
     expect(group).toHaveClass("outer", "inner");
-    expect(group).toHaveAttribute("id", "inner-id");
+    expect(group).toHaveAttribute("id", "outer-id");
     expect(group).toHaveAttribute("title", "kept");
+    expect(group).toHaveAttribute("dir", "rtl");
+  });
+
+  /* The casts stand in for untyped code, which the slot type cannot stop. */
+  it("lets the monolith's size win over one in InputGroupProps", () => {
+    render(
+      <Autocomplete
+        items={items}
+        size="small"
+        InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+      />,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
+  });
+
+  it("keeps a size in InputGroupProps when the part sets none", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-large");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputGroupProps the input owns", () => {
+    // @ts-expect-error -- `size` is set on Autocomplete itself
+    void (<Autocomplete InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Autocomplete itself
+    void (<Autocomplete InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- the input part renders the group's row itself
+    void (<Autocomplete InputGroupProps={{ children: "Other" }} />);
+    // @ts-expect-error -- `size` is set on AutocompleteInput itself
+    void (<AutocompleteInput InputGroupProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on AutocompleteInput itself
+    void (<AutocompleteInput InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- AutocompleteInput renders the group's row itself
+    void (<AutocompleteInput InputGroupProps={{ children: "Other" }} />);
   });
 
   it("renders a single group around a composed input", () => {
@@ -444,16 +513,31 @@ describe("Autocomplete input group", () => {
   it("forwards InputGroupProps passed to AutocompleteInput", () => {
     render(
       <AutocompleteRoot items={items}>
-        <AutocompleteInput
-          InputGroupProps={{ className: "mine", size: "large" }}
-        />
+        <AutocompleteInput InputGroupProps={{ className: "mine", id: "row" }} />
       </AutocompleteRoot>,
     );
     const group = document.querySelector(
       "[data-slot='autocomplete-input-group']",
     );
     expect(group).toHaveClass("mine");
-    expect(group?.className).toContain("size-large");
+    expect(group).toHaveAttribute("id", "row");
+  });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the part's size win over one in InputGroupProps", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          size="small"
+          InputGroupProps={{ size: "large" } as AutocompleteInputGroupProps}
+        />
+      </AutocompleteRoot>,
+    );
+    const group = document.querySelector(
+      "[data-slot='autocomplete-input-group']",
+    );
+    expect(group?.className).toContain("size-small");
+    expect(group?.className).not.toContain("size-large");
   });
 
   it("leaves the inline error outside the group", () => {
@@ -807,5 +891,183 @@ describe("Autocomplete RootProps precedence", () => {
     expect(
       container.querySelector("[data-slot='field-error']"),
     ).toHaveTextContent("Pick a fruit");
+  });
+});
+
+/*
+ * Each slot leaves out the keys Autocomplete sets on that part itself. The
+ * casts in the precedence tests stand in for untyped code, which the slot type
+ * cannot stop: the top-level value still wins at runtime.
+ */
+describe("Autocomplete InputProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the input", () => {
+    render(
+      <Autocomplete
+        items={items}
+        InputProps={{ id: "fruit", "aria-describedby": "hint" }}
+      />,
+    );
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("data-slot", "autocomplete-input");
+    expect(input).toHaveAttribute("id", "fruit");
+    expect(input).toHaveAttribute("aria-describedby", "hint");
+  });
+
+  it("forwards a ref to the input", () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<Autocomplete items={items} InputProps={{ ref }} />);
+    expect(ref.current).toBe(screen.getByRole("combobox"));
+  });
+
+  it("lets top-level values win over the same keys in the slot", () => {
+    render(
+      <Autocomplete
+        items={items}
+        placeholder="Top"
+        color="blue"
+        InputProps={
+          { placeholder: "Slot", color: "red" } as AutocompleteInputProps
+        }
+      />,
+    );
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("placeholder", "Top");
+    expect(input).toHaveClass("palette-blue");
+    expect(input).not.toHaveClass("palette-red");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputProps the control owns", () => {
+    // @ts-expect-error -- `name` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ name: "other" }} />);
+    // @ts-expect-error -- `placeholder` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ placeholder: "Other" }} />);
+    // @ts-expect-error -- `label` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `description` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ description: "Other" }} />);
+    // @ts-expect-error -- `action` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ action: "Other" }} />);
+    // @ts-expect-error -- `before` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ before: "Other" }} />);
+    // @ts-expect-error -- `after` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ after: "Other" }} />);
+    // @ts-expect-error -- `size` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ size: "small" }} />);
+    // @ts-expect-error -- `variant` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ variant: "ghost" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `color` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `disabled` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ disabled: true }} />);
+    // @ts-expect-error -- `required` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ required: true }} />);
+    // @ts-expect-error -- `onFocus` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ onFocus: () => {} }} />);
+    // @ts-expect-error -- `onBlur` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ onBlur: () => {} }} />);
+  });
+});
+
+describe("Autocomplete PopupProps", () => {
+  const items = ["apple", "banana"];
+  const open = async () => {
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("a");
+  };
+
+  it("reaches the popup", async () => {
+    render(
+      <Autocomplete items={items} PopupProps={{ "aria-label": "Fruits" }} />,
+    );
+
+    await open();
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-popup']"),
+    ).toHaveAttribute("aria-label", "Fruits");
+  });
+
+  it("lets a top-level color win over one in the slot", async () => {
+    render(
+      <Autocomplete
+        items={items}
+        color="blue"
+        PopupProps={{ color: "red" } as AutocompletePopupProps}
+      />,
+    );
+
+    await open();
+
+    const popup = document.querySelector("[data-slot='autocomplete-popup']");
+    expect(popup).toHaveClass("palette-blue");
+    expect(popup).not.toHaveClass("palette-red");
+  });
+
+  it("keeps a color in the slot when the top level sets none", async () => {
+    render(
+      <Autocomplete
+        items={items}
+        PopupProps={{ color: "red" } as AutocompletePopupProps}
+      />,
+    );
+
+    await open();
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-popup']"),
+    ).toHaveClass("palette-red");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects PopupProps the control owns", () => {
+    // @ts-expect-error -- `color` is set on Autocomplete itself
+    void (<Autocomplete PopupProps={{ color: "blue" }} />);
+    // @ts-expect-error -- Autocomplete renders the popup's list itself
+    void (<Autocomplete PopupProps={{ children: "Other" }} />);
+  });
+});
+
+describe("AutocompleteInput FieldProps", () => {
+  const items = ["apple", "banana"];
+
+  it("lets the part's own label win over one in FieldProps", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          label="Top"
+          FieldProps={{ label: "Slot" } as AutocompleteInputProps["FieldProps"]}
+        />
+      </AutocompleteRoot>,
+    );
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+});
+
+describe("Autocomplete ListProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the list", async () => {
+    const user = userEvent.setup();
+    render(<Autocomplete items={items} ListProps={{ id: "fruits" }} />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("a");
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-list']"),
+    ).toHaveAttribute("id", "fruits");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects ListProps the control owns", () => {
+    // @ts-expect-error -- Autocomplete renders the rows itself
+    void (<Autocomplete ListProps={{ children: "Other" }} />);
   });
 });

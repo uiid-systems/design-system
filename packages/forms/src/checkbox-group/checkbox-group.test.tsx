@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Checkbox } from "../checkbox/checkbox";
+import type { CheckboxProps } from "../checkbox/checkbox.types";
 import { Form } from "../form/form";
 import { CheckboxGroup } from "./checkbox-group";
 import { CheckboxGroupRoot } from "./subcomponents";
@@ -145,7 +146,9 @@ describe("CheckboxGroup disabled propagation", () => {
     render(
       <CheckboxGroup
         items={items}
-        CheckboxProps={{ value: "clobbered", label: "Clobbered" }}
+        CheckboxProps={
+          { value: "clobbered", label: "Clobbered" } as Partial<CheckboxProps>
+        }
       />,
     );
 
@@ -273,10 +276,32 @@ describe("CheckboxGroup color", () => {
     }
   });
 
-  /* `CheckboxProps` is spread below the group's dressing, so a shared override
-     reaches the items. RadioGroup mirrors this. */
-  it("lets CheckboxProps override the group's hue", () => {
-    render(<CheckboxGroup items={items} CheckboxProps={{ color: "red" }} />);
+  /* `CheckboxProps` spreads first and the group's dressing after, so the
+     group's hue wins. The cast stands in for untyped code, which the slot type
+     cannot stop. RadioGroup mirrors this. */
+  it("lets the group's hue win over one in CheckboxProps", () => {
+    render(
+      <CheckboxGroup
+        items={items}
+        color="blue"
+        CheckboxProps={{ color: "red" } as Partial<CheckboxProps>}
+      />,
+    );
+
+    for (const box of boxes()) {
+      expect(box).toHaveClass("palette-blue");
+      expect(box).not.toHaveClass("palette-red");
+    }
+  });
+
+  /* An unset group hue is left out rather than spread as `undefined`. */
+  it("keeps a hue in CheckboxProps when the group sets none", () => {
+    render(
+      <CheckboxGroup
+        items={items}
+        CheckboxProps={{ color: "red" } as Partial<CheckboxProps>}
+      />,
+    );
 
     for (const box of boxes()) {
       expect(box).toHaveClass("palette-red");
@@ -325,18 +350,19 @@ describe("CheckboxGroup size", () => {
     }
   });
 
-  it("lets CheckboxProps override the group's tier", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the group's tier win over one in CheckboxProps", () => {
     render(
       <CheckboxGroup
         items={items}
         size="small"
-        CheckboxProps={{ size: "large" }}
+        CheckboxProps={{ size: "large" } as Partial<CheckboxProps>}
       />,
     );
 
     for (const box of boxes()) {
-      expect(box.className).toContain("size-large");
-      expect(box.className).not.toContain("size-small");
+      expect(box.className).toContain("size-small");
+      expect(box.className).not.toContain("size-large");
     }
   });
 });
@@ -501,5 +527,84 @@ describe("CheckboxGroup FieldProps", () => {
         FieldProps={{ size: "small" }}
       />
     );
+  });
+});
+
+/* The precedence tests for this slot sit with the hue and the tier above. */
+describe("CheckboxGroup CheckboxProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches every box", () => {
+    render(
+      <CheckboxGroup
+        items={items}
+        CheckboxProps={{ className: "caller", "aria-describedby": "hint" }}
+      />,
+    );
+
+    for (const box of screen.getAllByRole("checkbox")) {
+      expect(box).toHaveClass("caller");
+      expect(box).toHaveAttribute("aria-describedby", "hint");
+    }
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects CheckboxProps the control owns", () => {
+    // @ts-expect-error -- `name` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ name: "other" }} />);
+    // @ts-expect-error -- `hideIndicator` is set from `hideIndicators`
+    void (<CheckboxGroup CheckboxProps={{ hideIndicator: true }} />);
+    // @ts-expect-error -- `size` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ size: "small" }} />);
+    // @ts-expect-error -- `bordered` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ bordered: true }} />);
+    // @ts-expect-error -- `reversed` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ reversed: true }} />);
+    // @ts-expect-error -- `color` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `IndicatorProps` is set on CheckboxGroup itself
+    void (<CheckboxGroup CheckboxProps={{ IndicatorProps: {} }} />);
+    // @ts-expect-error -- `value` comes from each of `items`
+    void (<CheckboxGroup CheckboxProps={{ value: "other" }} />);
+    // @ts-expect-error -- `label` comes from each of `items`
+    void (<CheckboxGroup CheckboxProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `disabled` is set on CheckboxGroup and each of `items`
+    void (<CheckboxGroup CheckboxProps={{ disabled: true }} />);
+  });
+});
+
+/* IndicatorProps reaches every box's indicator, so it is the Checkbox slot's
+   type: `indeterminate` is set on each Checkbox, not through its indicator. */
+describe("CheckboxGroup IndicatorProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches every indicator", () => {
+    const { container } = render(
+      <CheckboxGroup
+        items={items}
+        defaultValue={["a", "b"]}
+        IndicatorProps={{ className: "caller" }}
+      />,
+    );
+
+    const indicators = container.querySelectorAll(
+      "[data-slot='checkbox-indicator']",
+    );
+    expect(indicators).toHaveLength(2);
+    for (const indicator of indicators) {
+      expect(indicator).toHaveClass("caller");
+    }
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects IndicatorProps each Checkbox owns", () => {
+    // @ts-expect-error -- `indeterminate` is set on each Checkbox itself
+    void (<CheckboxGroup IndicatorProps={{ indeterminate: true }} />);
   });
 });

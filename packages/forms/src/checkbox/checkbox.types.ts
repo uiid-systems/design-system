@@ -50,5 +50,6 @@ export type CheckboxProps = CheckboxRootProps &
   Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &
   Pick<CheckboxIndicatorProps, "indeterminate"> & {
     FieldProps?: CheckboxFieldProps;
-    IndicatorProps?: CheckboxIndicatorProps;
+    /** Reaches the indicator. `indeterminate` is set on Checkbox itself. */
+    IndicatorProps?: Omit<CheckboxIndicatorProps, "indeterminate">;
   };
