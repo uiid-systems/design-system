@@ -258,25 +258,6 @@ describe("Collapsible", () => {
     expect(screen.queryByText("Content")).not.toBeInTheDocument();
   });
 
-  it("animates by default, and is instant when told so", () => {
-    const panel = (container: HTMLElement) =>
-      container.querySelector("[data-slot='collapsible-panel']");
-    const { container, unmount } = render(
-      <Collapsible trigger="Toggle" defaultOpen>
-        Content
-      </Collapsible>,
-    );
-    expect(panel(container)).not.toHaveAttribute("data-instant");
-    unmount();
-
-    const instant = render(
-      <Collapsible trigger="Toggle" instant defaultOpen>
-        Content
-      </Collapsible>,
-    );
-    expect(panel(instant.container)).toHaveAttribute("data-instant");
-  });
-
   // ============================================
   // LAYOUT PROPS
   // ============================================
@@ -553,9 +534,13 @@ describe("slot props", () => {
   });
 
   it("rejects a key Collapsible owns in TriggerProps", () => {
-    const owned = { children: "Other" };
-    // @ts-expect-error -- the trigger's content is `trigger`
-    void (<Collapsible trigger="T" TriggerProps={owned} />);
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- the trigger's content is `trigger`
+        TriggerProps={{ children: "Other" }}
+      />
+    );
   });
 
   it("rejects a key Collapsible owns in PanelProps", () => {

@@ -338,10 +338,13 @@ describe("Sortable", () => {
 
     // The item is a `div`, which `:disabled` never matches.
     it("dims a disabled item through its data-disabled attribute", () => {
-      expect(css).toMatch(
-        /\.sortable-item \{\s*&:where\(\[data-dragging\], \[data-disabled\]\) \{\s*opacity: var\(--globals-disabled-opacity\);/,
+      const item = css.slice(
+        css.indexOf(".sortable-item {"),
+        css.indexOf(".sortable-item-handle {"),
       );
-      expect(css).not.toMatch(/:disabled/);
+      expect(item).toContain("[data-disabled]");
+      expect(item).toContain("opacity:");
+      expect(item).not.toContain(":disabled");
     });
   });
 

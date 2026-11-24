@@ -33,7 +33,7 @@ Use Sortable when you want to:
 
 Every `SortableItem` sits inside `SortableContent`, which can wrap any layout, such as a `Stack` or a wrapping `Group`, or inside `SortableOverlay`, to render the dragged copy as an item too. `orientation` picks the axis the drag is held to, the sorting strategy and the collision detection; `strategy`, `modifiers` and `collisionDetection` override each one.
 
-Each part writes `data-slot`, and an item and its handle write `data-dragging` while held and `data-disabled` when locked. A held item dims; pass `flatCursor` to keep the default cursor on the overlay instead of `grabbing`.
+Each part writes `data-slot`, and an item and its handle write `data-dragging` while held and `data-disabled` when locked. A held item dims, and so does a locked one; pass `flatCursor` to keep the default cursor on the overlay instead of `grabbing`.
 
 `SortableOverlay` renders into `document.body`, or into `container`. A function child receives `{ value }`, the id of the item being dragged; it renders nothing between drags.
 
