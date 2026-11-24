@@ -105,6 +105,7 @@ export const MaskedPattern = () => (
 ```
 
 - Put a format hint such as `MM/DD/YYYY` in `description`, not `placeholder`: a description stays visible while typing and is announced with the field.
+- The number masks ask for the numeric keypad (`decimal` when the field takes decimals, `numeric` when it does not) only when `min` is 0 or more. The iOS keypads have no minus key, so a number mask that accepts negatives, which is the default with `min` unset, sets no `inputMode` and leaves the full keyboard. Pass `inputMode` on `Input` to choose a keyboard yourself; it wins over the mask's.
 - A mask sets only `inputMode`, the virtual keyboard to ask for. Set `autoComplete` yourself: `tel` for `phoneMask`, `cc-number` for `creditCardMask`, `cc-exp` for `creditCardExpiryMask`, `postal-code` for `zipCodeMask` and `zipCodeExtendedMask`, `bday` for a `dateMask` that asks for a birth date, and `off` for a Social Security number.
 
 ### With react-hook-form
@@ -182,7 +183,7 @@ export const CustomMask = () => (
 ### Behaviour to know
 
 - A character that matches the locale's grouping separator is read as grouping, not as a decimal. In a de-DE EUR field, typing `1234.5` gives `12.345 €`, which parses as 12345; type `1234,5` for `1.234,5 €`. In en-US a typed comma groups the same way: `1234,5` gives `$12,345`. This is Maskito's behaviour and is kept on purpose.
-- `currencyMask` accepts negative amounts unless `min` is 0 or more.
+- The number masks accept negatives unless `min` is 0 or more; with `min` at 0 or above, a typed `-` is refused.
 - `currencyMask` pads the currency's decimals when the field is left, so `$5` becomes `$5.00`. Padding happens on blur only, so a form submitted with Enter before the field is left sends `$5`; `parse` reads both as 5.
 - `min` and `max` on the number masks clamp the value rather than mark the field invalid. A positive value below `min` can still be typed, since it may be the start of a larger one, and is raised to `min` when the field is left. Use Field's `validate` to show a message.
 - Digits are Latin only. A locale whose default numbering system is not Latin, such as `ar-EG`, is unsupported: the field shows Latin digits with that locale's separators, and `parse` reads no native-script digits.

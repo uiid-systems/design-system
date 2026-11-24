@@ -141,8 +141,8 @@ describe("currencyMask", () => {
   });
 
   it("asks for the decimal keyboard, or numeric for a currency without decimals", () => {
-    expect(currencyMask({ currency: "USD" }).inputMode).toBe("decimal");
-    expect(currencyMask({ currency: "JPY" }).inputMode).toBe("numeric");
+    expect(currencyMask({ currency: "USD", min: 0 }).inputMode).toBe("decimal");
+    expect(currencyMask({ currency: "JPY", min: 0 }).inputMode).toBe("numeric");
   });
 });
 
@@ -166,8 +166,10 @@ describe("percentMask", () => {
   });
 
   it("asks for the numeric keyboard, or decimal once it takes decimals", () => {
-    expect(percentMask().inputMode).toBe("numeric");
-    expect(percentMask({ maximumFractionDigits: 2 }).inputMode).toBe("decimal");
+    expect(percentMask({ min: 0 }).inputMode).toBe("numeric");
+    expect(percentMask({ min: 0, maximumFractionDigits: 2 }).inputMode).toBe(
+      "decimal",
+    );
   });
 });
 
@@ -189,6 +191,74 @@ describe("numberMask", () => {
 
   it("does not pad decimals", () => {
     expect(numberMask({ maximumFractionDigits: 2 }).format(5)).toBe("5");
+  });
+
+  it("asks for the numeric keyboard, or decimal once it takes decimals", () => {
+    expect(numberMask({ min: 0 }).inputMode).toBe("numeric");
+    expect(numberMask({ min: 0, maximumFractionDigits: 2 }).inputMode).toBe(
+      "decimal",
+    );
+  });
+});
+
+/* The iOS numeric and decimal keypads have no minus key, so a mask that takes
+   a negative asks for no keyboard and leaves the full one. */
+const MASKS = [
+  {
+    name: "currencyMask",
+    build: (min?: number) => currencyMask({ currency: "USD", min }),
+    keypad: "decimal",
+  },
+  {
+    name: "percentMask",
+    build: (min?: number) => percentMask({ min }),
+    keypad: "numeric",
+  },
+  {
+    name: "numberMask",
+    build: (min?: number) => numberMask({ min }),
+    keypad: "numeric",
+  },
+] as const;
+
+describe.each(MASKS)("$name keyboard", ({ build, keypad }) => {
+  it.each([
+    { min: undefined, expected: undefined },
+    { min: -10, expected: undefined },
+    { min: 0, expected: keypad },
+    { min: 5, expected: keypad },
+  ])("asks for $expected when min is $min", ({ min, expected }) => {
+    expect(build(min).inputMode).toBe(expected);
+  });
+
+  it("renders no inputmode on Input when min is unset", () => {
+    render(<Input mask={build()} />);
+
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("inputmode");
+  });
+
+  it("renders the keypad's inputmode on Input when min is 0", () => {
+    render(<Input mask={build(0)} />);
+
+    expect(screen.getByRole("textbox")).toHaveAttribute("inputmode", keypad);
+  });
+
+  it("lets the caller's inputMode win either way", () => {
+    render(
+      <>
+        <Input aria-label="signed" mask={build()} inputMode="decimal" />
+        <Input aria-label="unsigned" mask={build(0)} inputMode="text" />
+      </>,
+    );
+
+    expect(screen.getByLabelText("signed")).toHaveAttribute(
+      "inputmode",
+      "decimal",
+    );
+    expect(screen.getByLabelText("unsigned")).toHaveAttribute(
+      "inputmode",
+      "text",
+    );
   });
 });
 
@@ -373,6 +443,32 @@ describe("number masks on Input", () => {
 
     expect(screen.getByLabelText("rate")).toHaveValue("7%");
     expect(screen.getByLabelText("count")).toHaveValue("1,234.5");
+  });
+
+  it.each([
+    {
+      name: "currencyMask",
+      mask: currencyMask({ currency: "USD", min: 0 }),
+      typed: "$5",
+    },
+    { name: "percentMask", mask: percentMask({ min: 0 }), typed: "5%" },
+    { name: "numberMask", mask: numberMask({ min: 0 }), typed: "5" },
+  ])("refuses a minus sign in a $name with min 0", async ({ mask, typed }) => {
+    const user = userEvent.setup();
+    render(<Input mask={mask} />);
+
+    await user.type(screen.getByRole("textbox"), "-5");
+
+    expect(screen.getByRole("textbox")).toHaveValue(typed);
+  });
+
+  it("takes a minus sign when min is unset", async () => {
+    const user = userEvent.setup();
+    render(<Input mask={numberMask()} />);
+
+    await user.type(screen.getByRole("textbox"), "-5");
+
+    expect(screen.getByRole("textbox")).toHaveValue("-5");
   });
 
   it("lets a value below a positive min be typed and raises it on blur", async () => {
