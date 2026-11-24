@@ -63,13 +63,15 @@ export const Dialog = ({
           <DialogBackdrop {...BackdropProps} />
           <DialogViewport {...ViewportProps}>
             <DialogPopup
-              size={size}
-              title={title}
-              description={description}
-              action={action}
-              footer={footer}
-              hideCloseButton={hideCloseButton}
               {...PopupProps}
+              {...definedProps({
+                size,
+                title,
+                description,
+                action,
+                footer,
+                hideCloseButton,
+              })}
             >
               {children}
             </DialogPopup>

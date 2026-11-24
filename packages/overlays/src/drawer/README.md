@@ -12,6 +12,8 @@ Use Drawer when you want to:
 
 Leave `open` unset and the drawer runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself. When a top-level prop and `RootProps` set the same key, the top-level prop wins. `onOpenChange` is the one exception: `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second.
 
+`TriggerProps` and `PopupProps` take none of the keys Drawer sets itself: the trigger's content is `trigger`, and `title`, `description`, `action`, `footer`, `hideCloseButton` and `children` are top-level props. Passing one through the slot is a type error, and at runtime the top-level value wins.
+
 Drawer wraps Base UI's [Drawer](https://base-ui.com/react/components/drawer) and takes its props unchanged — anything not listed above is forwarded. There is no `side` prop and no variant class: edge placement is styled from the `data-swipe-direction` attribute Base UI puts on the popup.
 
 ## Close button

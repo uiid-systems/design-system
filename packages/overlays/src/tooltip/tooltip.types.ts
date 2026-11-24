@@ -17,10 +17,12 @@ export type TooltipProps = React.PropsWithChildren<{
   /** Applied only when the Tooltip mounts its own provider, outside any `TooltipProvider`. */
   ProviderProps?: TooltipProviderProps;
   RootProps?: TooltipRootProps;
-  TriggerProps?: TooltipTriggerProps;
+  /** Reaches the trigger. Its content is `trigger`, and `delay` is set on Tooltip itself. */
+  TriggerProps?: Omit<TooltipTriggerProps, "children" | "delay">;
   PortalProps?: TooltipPortalProps;
   PositionerProps?: TooltipPositionerProps;
-  PopupProps?: TooltipPopupProps;
+  /** Reaches the popup. Its content is Tooltip's `children`. */
+  PopupProps?: Omit<TooltipPopupProps, "children">;
 }> &
   Pick<TooltipRootProps, "open" | "defaultOpen" | "onOpenChange"> &
   Pick<TooltipTriggerProps, "delay">;

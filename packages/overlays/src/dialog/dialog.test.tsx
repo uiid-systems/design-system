@@ -8,6 +8,7 @@ import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 import { Footer } from "./dialog.examples";
+import type { DialogProps } from "./dialog.types";
 import { DialogClose, DialogPopup } from "./subcomponents";
 
 import styles from "./dialog.module.css";
@@ -1518,5 +1519,144 @@ describe("className", () => {
   it("takes a string, not a function of the part's state", () => {
     // @ts-expect-error -- style a state through its `data-*` attribute instead
     void (<DialogPopup className={() => "from-fn"} />);
+  });
+});
+
+describe("Dialog slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets the top-level card slots win over the same keys in PopupProps", () => {
+    render(
+      <Dialog
+        open
+        title="Settings"
+        description="Top-level description"
+        footer="Top-level footer"
+        PopupProps={untyped<DialogProps["PopupProps"]>({
+          title: "Slot title",
+          description: "Slot description",
+          footer: "Slot footer",
+        })}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Settings" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Top-level description")).toBeInTheDocument();
+    expect(screen.getByText("Top-level footer")).toBeInTheDocument();
+    expect(screen.queryByText("Slot title")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot footer")).not.toBeInTheDocument();
+  });
+
+  it("lets a top-level size and hideCloseButton win over PopupProps", () => {
+    render(
+      <Dialog
+        open
+        title="Settings"
+        size="small"
+        hideCloseButton={false}
+        PopupProps={untyped<DialogProps["PopupProps"]>({
+          size: "large",
+          hideCloseButton: true,
+        })}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    const popup = screen.getByRole("dialog", { name: "Settings" });
+    expect(popup).toHaveClass(styles["size-small"]);
+    expect(popup).not.toHaveClass(styles["size-large"]);
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+  });
+
+  it("still applies a PopupProps key the top level leaves unset", () => {
+    render(
+      <Dialog
+        open
+        title="Settings"
+        PopupProps={untyped<DialogProps["PopupProps"]>({
+          hideCloseButton: true,
+        })}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Close" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders trigger, not TriggerProps.children, as the trigger's content", () => {
+    render(
+      <Dialog
+        trigger="Open dialog"
+        TriggerProps={untyped<DialogProps["TriggerProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Open dialog" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Dialog slot props", () => {
+  it("rejects the keys Dialog owns in PopupProps", () => {
+    void (
+      <>
+        <Dialog
+          // @ts-expect-error -- `size` is set on Dialog itself
+          PopupProps={{ size: "large" }}
+        />
+        <Dialog
+          // @ts-expect-error -- `title` is set on Dialog itself
+          PopupProps={{ title: "Settings" }}
+        />
+        <Dialog
+          // @ts-expect-error -- `description` is set on Dialog itself
+          PopupProps={{ description: "About" }}
+        />
+        <Dialog
+          // @ts-expect-error -- `action` is set on Dialog itself
+          PopupProps={{ action: "Edit" }}
+        />
+        <Dialog
+          // @ts-expect-error -- `footer` is set on Dialog itself
+          PopupProps={{ footer: "Done" }}
+        />
+        <Dialog
+          // @ts-expect-error -- `hideCloseButton` is set on Dialog itself
+          PopupProps={{ hideCloseButton: true }}
+        />
+        <Dialog
+          // @ts-expect-error -- the popup's content is Dialog's `children`
+          PopupProps={{ children: "Body" }}
+        />
+      </>
+    );
+  });
+
+  it("rejects the key Dialog owns in TriggerProps", () => {
+    void (
+      <Dialog
+        trigger="Open"
+        // @ts-expect-error -- the trigger's content is `trigger`
+        TriggerProps={{ children: "Other" }}
+      />
+    );
   });
 });

@@ -7,6 +7,7 @@ import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Drawer } from "./drawer";
 import { Footer, SwipeArea } from "./drawer.examples";
+import type { DrawerProps } from "./drawer.types";
 import { DrawerClose, DrawerRoot, DrawerSwipeArea } from "./subcomponents";
 
 import styles from "./drawer.module.css";
@@ -1260,5 +1261,143 @@ describe("Drawer RootProps precedence", () => {
     );
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Outside" })).toBeInTheDocument();
+  });
+});
+
+describe("Drawer slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets the top-level card slots win over the same keys in PopupProps", () => {
+    render(
+      <Drawer
+        open
+        title="Settings"
+        description="Top-level description"
+        action="Top-level action"
+        footer="Top-level footer"
+        PopupProps={untyped<DrawerProps["PopupProps"]>({
+          title: "Slot title",
+          description: "Slot description",
+          action: "Slot action",
+          footer: "Slot footer",
+        })}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "Settings" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Top-level description")).toBeInTheDocument();
+    expect(screen.getByText("Top-level action")).toBeInTheDocument();
+    expect(screen.getByText("Top-level footer")).toBeInTheDocument();
+    for (const text of [
+      "Slot title",
+      "Slot description",
+      "Slot action",
+      "Slot footer",
+    ]) {
+      expect(screen.queryByText(text)).not.toBeInTheDocument();
+    }
+  });
+
+  it("lets a top-level hideCloseButton win over PopupProps", () => {
+    render(
+      <Drawer
+        open
+        title="Settings"
+        hideCloseButton={false}
+        PopupProps={untyped<DrawerProps["PopupProps"]>({
+          hideCloseButton: true,
+        })}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+  });
+
+  it("still applies a PopupProps key the top level leaves unset", () => {
+    render(
+      <Drawer
+        open
+        title="Settings"
+        PopupProps={untyped<DrawerProps["PopupProps"]>({
+          hideCloseButton: true,
+        })}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Close" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders trigger, not TriggerProps.children, as the trigger's content", () => {
+    render(
+      <Drawer
+        trigger="Open drawer"
+        TriggerProps={untyped<DrawerProps["TriggerProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Open drawer" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Drawer slot props", () => {
+  it("rejects the keys Drawer owns in PopupProps", () => {
+    void (
+      <>
+        <Drawer
+          // @ts-expect-error -- `title` is set on Drawer itself
+          PopupProps={{ title: "Settings" }}
+        />
+        <Drawer
+          // @ts-expect-error -- `description` is set on Drawer itself
+          PopupProps={{ description: "About" }}
+        />
+        <Drawer
+          // @ts-expect-error -- `action` is set on Drawer itself
+          PopupProps={{ action: "Edit" }}
+        />
+        <Drawer
+          // @ts-expect-error -- `footer` is set on Drawer itself
+          PopupProps={{ footer: "Done" }}
+        />
+        <Drawer
+          // @ts-expect-error -- `hideCloseButton` is set on Drawer itself
+          PopupProps={{ hideCloseButton: true }}
+        />
+        <Drawer
+          // @ts-expect-error -- the popup's content is Drawer's `children`
+          PopupProps={{ children: "Body" }}
+        />
+      </>
+    );
+  });
+
+  it("rejects the key Drawer owns in TriggerProps", () => {
+    void (
+      <Drawer
+        trigger="Open"
+        // @ts-expect-error -- the trigger's content is `trigger`
+        TriggerProps={{ children: "Other" }}
+      />
+    );
   });
 });
