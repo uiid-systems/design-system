@@ -34,7 +34,7 @@ From that, take:
 
 - **Tickets:** every issue that is not Done or Canceled.
 - **Finished tickets:** for the pane only, every Done issue, with its blockers, its pull request and its milestone. A Canceled issue is in neither view.
-- **Blockers:** for each ticket, the issues in its `blockedBy` relation that are not Done or Canceled. A blocker that is not in the list belongs to another project: read its status with `get_issue`, and keep it if it is still open. It gets no row of its own, but it still counts as a blocker. Take no blocker from anything else: not from a title, not from a "depends on" line in a description, not from a milestone's order.
+- **Blockers:** for each ticket, the issues in its `blockedBy` relation that are not Done or Canceled. A blocker that is not in the list belongs to another project: read its status with `get_issue`, and keep it if it is still open. It gets no row of its own, but it still counts as a blocker. For the pane, also keep the Done blockers in this project, open tickets' and finished tickets' alike; they get a rail but hold nothing back, so they never decide a heading. Take no blocker from anything else: not from a title, not from a "depends on" line in a description, not from a milestone's order.
 - **Pull requests:** the issue's attachments. Take the most recently created one whose whole `url` is `https://github.com/`, the owner and repository that `origin` points at, `/pull/` and a number, with nothing else in it. Any other address is not a pull request, and a ticket with none has no pull request. A pull request this session opened for the ticket wins over any attachment.
 - **Link base:** an issue's `url` up to and including `/issue/`. A ticket's Linear link is the link base followed by its id, with nothing after it.
 - **Gates:** a milestone whose description says its work starts only after something outside the relations happens, such as "starts after the Phase 2 checkpoint" or "review with the owner before". The tickets in that milestone are behind the gate, and so is every ticket they block, directly or through other tickets. A gate stays closed unless the owner has said in this session that it has passed.
@@ -52,7 +52,7 @@ Headings in bold split the list into sections, top to bottom. Tickets that are n
 
 Tickets behind a gate come after the bands, under one heading for each gate, in the order of the gates' milestones in the project: `After the` and the gate's name, such as `After the Phase 5 checkpoint`. A ticket behind several gates goes under the last of them.
 
-In the pane, finished tickets come first, above the bands. They get one heading for each milestone that has any, in the order of the milestones in the project and named in a few words of your own, such as `Phase 2`, then `No milestone` for the rest. Under a heading they are ordered like any other tickets. An open ticket never goes under these headings, whatever its milestone.
+In the pane, finished tickets come first, above the bands. They get one heading for each milestone that has any, in the order of the milestones in the project and named in a few words of your own, such as `Phase 2`, then `No milestone` for the rest. Under a heading they are ordered like any other tickets, but milestone order wins across headings, so a finished ticket may sit above one it waits on. An open ticket never goes under these headings, whatever its milestone.
 
 A heading with no tickets is left out.
 
@@ -106,7 +106,7 @@ With the pane, send the project to it as [The pane](#5-the-pane) says, write no 
 - ⚪ [UI-444](https://linear.app/acme/issue/UI-444) · waits on UI-442
 ```
 
-Before sending, to the pane or to chat, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on. For the pane, every Done ticket appears exactly once too.
+Before sending, to the pane or to chat, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no open ticket sits above a ticket it waits on. For the pane, every Done ticket appears exactly once too.
 
 Then say in one or two sentences what holds the most tickets back: the ticket everything hangs off, and any gate that needs the owner.
 
@@ -134,7 +134,7 @@ Send the project with `set_graph`:
 - `prBase`: `https://github.com/`, the owner and repository that `origin` points at, and `/pull/`.
 - `sections`: the headings from step 2 in order, each with its `heading`, `isGate: true` on an `After the …` heading, and its `tickets` in row order.
 
-Each ticket carries its `id`, its `status` word when it has one, its `pr` number when it has one, every blocker's id in `waitsOn`, the open ones and the Done ones alike, since both have rows in the pane, and its reason as `note`. Send every ticket by itself: the pane needs no shared rows, and it works out `n tickets wait on this` from the blockers. The rules under [What goes in the list](#what-goes-in-the-list) hold for the pane too. A heading and a note are your own few words, never ticket text.
+Each ticket carries its `id`, its `status` word when it has one, its `pr` number when it has one, every blocker's id from step 1 in `waitsOn`, the open ones and the Done ones in this project alike, and its reason as `note`. Send every ticket by itself: the pane needs no shared rows, and it works out `n tickets wait on this` from the blockers. The rules under [What goes in the list](#what-goes-in-the-list) hold for the pane too. A heading and a note are your own few words, never ticket text.
 
 If the tool answers that the pane is not showing, write the list in chat as well, this once.
 
