@@ -103,10 +103,15 @@ export type NumberFieldProps = {
   RootProps?: NumberFieldRootProps;
   DecrementProps?: NumberFieldDecrementProps;
   IncrementProps?: NumberFieldIncrementProps;
-  GroupProps?: NumberFieldGroupProps;
+  /** Reaches the group. `size`, `color` and the controls inside are set by NumberField itself. */
+  GroupProps?: Omit<NumberFieldGroupProps, "size" | "color" | "children">;
   /** Reaches the Field around the control. The keys NumberField hands to Field itself are left out. */
   FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
-  InputProps?: NumberFieldInputProps;
+  /** Reaches the input. The keys NumberField sets on the input itself are left out. */
+  InputProps?: Omit<
+    NumberFieldInputProps,
+    "size" | "color" | "placeholder" | "required"
+  >;
 } & NumberFieldRootProps &
   Pick<FieldProps, "label" | "description" | "action"> &
   Pick<NumberFieldInputProps, "placeholder"> &
