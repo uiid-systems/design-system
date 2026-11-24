@@ -1,8 +1,13 @@
+---
+paths:
+  - ".size-limit.js"
+  - "scripts/size-compare.mjs"
+  - ".github/workflows/size-limit.yml"
+---
+
 # Size Limit
 
 Every PR is measured against its base branch. There are no fixed budgets: the check reports how much each entry changed and fails only when one grows sharply. Results show up as a comment on the PR.
-
----
 
 ## What is measured
 
