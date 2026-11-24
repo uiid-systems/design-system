@@ -1,17 +1,15 @@
 "use client";
 
+import {
+  REVEAL_DEFAULT_BLUR,
+  REVEAL_DEFAULT_DURATION,
+  splitWords,
+} from "@uiid/utils";
 import { memo, useState } from "react";
 
 import { Text } from "../text/text";
-import {
-  REVEAL_DEFAULT_STAGGER,
-  REVEAL_DEFAULT_DURATION,
-  REVEAL_DEFAULT_BLUR,
-} from "./reveal.constants";
+import { REVEAL_DEFAULT_STAGGER } from "./reveal.constants";
 import type { RevealProps } from "./reveal.types";
-import { splitWords } from "./reveal.utils";
-
-import styles from "./reveal.module.css";
 
 type RevealWordProps = {
   word: string;
@@ -20,7 +18,8 @@ type RevealWordProps = {
 };
 
 /**
- * Timing is captured once, at mount. Changing a running or finished animation's delay or duration
+ * Animated by the `[data-animate="reveal"]` rule in @uiid/tokens, shared with
+ * Markdown's `reveal`. Timing is captured once, at mount. Changing a running or finished animation's delay or duration
  * retimes it in place, so a later value would hide words already on screen and play them again.
  */
 const RevealWord = memo(
@@ -30,10 +29,7 @@ const RevealWord = memo(
       "--reveal-duration": `${duration}ms`,
     }));
     return (
-      <span
-        className={styles["reveal-word"]}
-        style={timing as React.CSSProperties}
-      >
+      <span data-animate="reveal" style={timing as React.CSSProperties}>
         {word}
       </span>
     );

@@ -1,22 +1,18 @@
 "use client";
 
+import {
+  REVEAL_DEFAULT_BLUR,
+  REVEAL_DEFAULT_DURATION,
+  splitWords,
+} from "@uiid/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, Key, ReactNode } from "react";
 
 import {
-  REVEAL_DEFAULT_BLUR,
-  REVEAL_DEFAULT_DURATION,
   REVEAL_STREAM_CATCH_UP,
   REVEAL_STREAM_EASE,
 } from "./markdown.constants";
-import {
-  advanceWords,
-  completeLength,
-  countWords,
-  splitWords,
-} from "./markdown.utils";
-
-import styles from "./markdown.module.css";
+import { advanceWords, completeLength, countWords } from "./markdown.utils";
 
 /**
  * Shows streamed text a whole word at a time, at an even pace, instead of in
@@ -210,7 +206,7 @@ export const useStreamReveal = ({
           key={key}
           ref={onMount}
           data-reveal-offset={offset}
-          className={styles["reveal-stream"]}
+          data-animate="reveal"
         >
           {children}
         </span>
@@ -237,6 +233,8 @@ export const useStreamReveal = ({
     ? ({
         "--reveal-duration": `${duration}ms`,
         "--reveal-blur": `${blur}px`,
+        // Streamed words ease in and out; Reveal's words keep the default ease-out.
+        "--reveal-easing": "ease-in-out",
       } as CSSProperties)
     : undefined;
 

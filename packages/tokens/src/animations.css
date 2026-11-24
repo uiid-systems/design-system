@@ -47,4 +47,36 @@
       animation: none;
     }
   }
+
+  /*
+   * One word fading and un-blurring in, shared by Reveal in @uiid/typography
+   * and Markdown's streamed `reveal` in @uiid/markdown. The component sets the
+   * timing as custom properties: `--reveal-duration`, `--reveal-blur`, and
+   * optionally `--reveal-delay` and `--reveal-easing`. `backwards`, not
+   * `both`: a filter animation held at its end keyframe would keep every
+   * finished word its own stacking context.
+   */
+  [data-animate="reveal"] {
+    animation: uiid-reveal var(--reveal-duration) var(--reveal-easing, ease-out) backwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate="reveal"] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes uiid-reveal {
+  from {
+    opacity: 0;
+    filter: blur(var(--reveal-blur));
+  }
+  to {
+    opacity: 1;
+    /* Interpolates as blur(0). The minifier rewrites blur(0) as blur(), whose
+       empty argument not every engine is known to accept. */
+    filter: none;
+  }
 }

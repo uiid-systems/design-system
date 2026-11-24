@@ -31,6 +31,13 @@ describe("Reveal", () => {
     expect(root?.children).toHaveLength(3);
   });
 
+  it("animates each word through the shared reveal rule in tokens", () => {
+    const { container } = render(<Reveal>one two</Reveal>);
+    getWords(container).forEach((word) =>
+      expect(word).toHaveAttribute("data-animate", "reveal"),
+    );
+  });
+
   it("preserves whitespace so words read back contiguously", () => {
     const { container } = render(<Reveal>one two</Reveal>);
     expect(container.textContent).toBe("one two");

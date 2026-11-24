@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { splitWords } from "./reveal.utils";
+import { splitWords } from "./reveal";
 
 describe("splitWords", () => {
   it("keeps trailing whitespace attached to each word", () => {

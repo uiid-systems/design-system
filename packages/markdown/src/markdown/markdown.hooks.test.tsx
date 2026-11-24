@@ -3,8 +3,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
 import { useStreamPace, useStreamReveal } from "./markdown.hooks";
 
-import styles from "./markdown.module.css";
-
 beforeEach(() => {
   vi.useFakeTimers();
 });
@@ -317,9 +315,12 @@ describe("useStreamReveal", () => {
 
     const words = animated(root);
     expect(words).toHaveLength(2);
-    words.forEach((word) => expect(word).toHaveClass(styles["reveal-stream"]));
+    words.forEach((word) =>
+      expect(word).toHaveAttribute("data-animate", "reveal"),
+    );
     expect(root.style.getPropertyValue("--reveal-duration")).toBe("400ms");
     expect(root.style.getPropertyValue("--reveal-blur")).toBe("6px");
+    expect(root.style.getPropertyValue("--reveal-easing")).toBe("ease-in-out");
   });
 
   it("renders plain text and no style when inactive", () => {

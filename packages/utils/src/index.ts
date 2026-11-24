@@ -1,5 +1,10 @@
 export { cva, cx, type VariantProps } from "./cva";
 export { isRenderable } from "./renderable";
+export {
+  REVEAL_DEFAULT_BLUR,
+  REVEAL_DEFAULT_DURATION,
+  splitWords,
+} from "./reveal";
 export { renderWithProps, resolveRender, type RenderProp } from "./render";
 export {
   stylePropKeys,

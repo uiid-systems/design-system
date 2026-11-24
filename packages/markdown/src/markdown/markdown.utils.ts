@@ -46,13 +46,6 @@ export const compileMarkdown = (
     ...(renderRule && { renderRule }),
   });
 
-/**
- * Split before each word, so a whole whitespace run stays on the word before
- * it and spans wrap like words. Only leading whitespace gets a span of its own.
- */
-export const splitWords = (text: string) =>
-  text ? text.split(/(?<=\s)(?=\S)/) : [];
-
 /** Length of text up to its last complete word, one the whitespace after it has reached. */
 export const completeLength = (text: string) => {
   const tail = text.search(/\S+$/);

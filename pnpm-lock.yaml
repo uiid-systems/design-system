@@ -689,6 +689,9 @@ importers:
       '@uiid/typography':
         specifier: workspace:*
         version: link:../typography
+      '@uiid/utils':
+        specifier: workspace:*
+        version: link:../utils
       markdown-to-jsx:
         specifier: ^9.10.4
         version: 9.10.4(react@19.2.3)

@@ -16,4 +16,18 @@ describe("animations.css", () => {
       /@media \(prefers-reduced-motion: reduce\) \{\s*\[data-animate="spin"\] \{\s*animation: none;\s*\}\s*\}/,
     );
   });
+
+  // Reveal's words and Markdown's streamed words share this one animation.
+  it("fades and un-blurs a revealed word from the timing its component sets", () => {
+    expect(animationsCss).toMatch(/@keyframes uiid-reveal \{/);
+    expect(animationsCss).toMatch(
+      /\[data-animate="reveal"\] \{\s*animation: uiid-reveal var\(--reveal-duration\) var\(--reveal-easing, ease-out\)\s+backwards;/,
+    );
+  });
+
+  it("stops the reveal animation under prefers-reduced-motion", () => {
+    expect(animationsCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\) \{[^}]*\[data-animate="reveal"\] \{\s*animation: none;/,
+    );
+  });
 });

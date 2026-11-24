@@ -20,9 +20,7 @@
     "streaming"
   ],
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -31,8 +29,7 @@
       "@uiid/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./globals.css": "./dist/markdown.css"
+    }
   },
   "files": [
     "dist"
@@ -42,6 +39,7 @@
   },
   "dependencies": {
     "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*",
     "markdown-to-jsx": "^9.10.4"
   },
   "peerDependencies": {
