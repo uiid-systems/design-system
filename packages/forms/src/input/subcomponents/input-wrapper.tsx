@@ -51,8 +51,9 @@ const focusControl = (event: React.MouseEvent<HTMLElement>) => {
  * as a `display: contents` box and paints nothing, so the control keeps its
  * own surface and is not remounted when a slot comes or goes.
  *
- * The control must be a direct child, and must drop its own surface while
- * wrapped (`hasInputSlots` tells it when); the wrapper strips nothing from it.
+ * The control must be a direct child, and must drop its own surface whenever
+ * the wrapper renders a slot (pass `inner` to `InputControl`); the wrapper
+ * strips nothing from it.
  */
 export const InputWrapper = ({
   before,

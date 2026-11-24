@@ -14,7 +14,7 @@ export type UseFormStateOptions<T = Record<string, unknown>> = {
    */
   onError?: (errors: FormErrors) => void;
   /**
-   * Delay in ms before `useFormSubmit` calls the submit function. Ignored by `useFormState`.
+   * Delay in ms before `useFormSubmit` calls the submit function.
    * @default 0
    */
   delay?: number;
@@ -132,16 +132,6 @@ const useFormStateInternal = <T>(options: UseFormStateOptions<T>) => {
     setResultState,
   };
 };
-
-/**
- * Hook to manage common form state patterns (errors, loading, success).
- * Call `setErrors` or `setResult` with the outcome of your own submit; `useFormSubmit` does it for you.
- */
-export function useFormState<T = Record<string, unknown>>(
-  options: UseFormStateOptions<T> = {},
-): FormState<T> {
-  return useFormStateInternal(options).state;
-}
 
 export type SubmitHandler<T = Record<string, unknown>> = {
   /**

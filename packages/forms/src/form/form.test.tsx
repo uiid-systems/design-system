@@ -10,7 +10,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Input } from "../input/input";
 import { Form } from "./form";
-import { useFormState, useFormSubmit } from "./hooks/use-form-state";
+import { useFormSubmit } from "./hooks/use-form-state";
 
 import styles from "./form.module.css";
 
@@ -220,14 +220,16 @@ describe("Form", () => {
   });
 });
 
-describe("useFormState", () => {
+describe("useFormSubmit state setters", () => {
   // Helper component to test the hook
   const TestHookComponent = ({
     onStateChange,
   }: {
-    onStateChange?: (state: ReturnType<typeof useFormState>) => void;
+    onStateChange?: (
+      state: ReturnType<typeof useFormSubmit<Record<string, unknown>>>,
+    ) => void;
   }) => {
-    const state = useFormState();
+    const state = useFormSubmit();
     onStateChange?.(state);
 
     return (
@@ -291,7 +293,7 @@ describe("useFormState", () => {
 
   it("sets success and result and calls onSuccess when setResult is called", () => {
     const onSuccess = vi.fn();
-    const { result } = renderHook(() => useFormState({ onSuccess }));
+    const { result } = renderHook(() => useFormSubmit({ onSuccess }));
 
     act(() => result.current.setErrors({ name: "Taken" }));
     act(() => result.current.setResult({ id: 1 }));
