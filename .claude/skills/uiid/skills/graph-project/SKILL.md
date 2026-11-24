@@ -45,7 +45,7 @@ A ticket comes after every ticket it waits on. Order by depth first: a ticket's 
 Headings in bold split the list into sections, top to bottom. Tickets that are not behind a gate go under bands, and which bands you use depends on who asked:
 
 - **On its own:** `Ready` for tickets with no open blocker, then `Blocked` for the rest.
-- **During a `uiid:build-project` run:** `Running now` for tickets picked to build now in this run, whatever state they have reached since, `Stacks in this run` for tickets whose only open blocker is a ticket picked in this run, and `Not this run` for everything left out. This applies only when this session is the one running `uiid:build-project`.
+- **During a `uiid:build-project` run:** `Running now` for tickets picked to build now in this run, whatever state they have reached since, `Stacks in this run` for the tickets that skill listed as waiting on a blocker in this run, and `Not this run` for everything left out. This applies only when this session is the one running `uiid:build-project`.
 
 Tickets behind a gate come after the bands, under one heading for each gate, in the order of the gates' milestones in the project: `After the` and the gate's name, such as `After the Phase 5 checkpoint`. A ticket behind several gates goes under the last of them.
 

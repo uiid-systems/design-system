@@ -49,7 +49,7 @@ When nothing is ready, say so and show the same list, which names the ticket eve
 
 ### Stacking
 
-One exception lets a chain move without waiting for merges. A ticket whose only unfinished blocker is a ticket picked in this run can be built stacked on that blocker's branch once the blocker reaches In Review in step 5. Approval alone is not enough: the blocker's branch only exists on the remote once you push it, and a held blocker never frees its waiting tickets.
+One exception lets a chain move without waiting for merges. A ticket that meets every other rule above, and whose only unfinished blocker is a ticket picked in this run, can be built stacked on that blocker's branch once the blocker reaches In Review in step 5. Approval alone is not enough: the blocker's branch only exists on the remote once you push it, and a held blocker never frees its waiting tickets.
 
 - In step 1, list such tickets as waiting on a blocker in this run, and ask their questions then, with the others.
 - Each time a ticket reaches In Review, check whether it frees a waiting ticket, and if so start that ticket's build agent as in step 2.
