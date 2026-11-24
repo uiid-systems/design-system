@@ -2,10 +2,9 @@ import { cx } from "@uiid/utils";
 
 import styles from "../table.module.css";
 
-export const TableHeader = ({
-  className,
-  ...props
-}: React.ComponentProps<"thead">) => {
+export type TableHeaderProps = React.ComponentProps<"thead">;
+
+export const TableHeader = ({ className, ...props }: TableHeaderProps) => {
   return (
     <thead
       data-slot="table-header"
