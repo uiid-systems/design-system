@@ -148,7 +148,18 @@ test("the pane draws what set_graph sent, then follows set_status", async ($, on
   on("command.register", () => ({ value: { command: "project-graph" } }));
   on("tool.register", () => ({ value: { tool: "mcp__uiid__set_graph" } }));
   let isPlaced = true;
-  on("ui.open", () => ({ value: { isPlaced: true } }));
+  const opened: string[] = [];
+  on("ui.open", (_, e) => {
+    opened.push(e.id);
+
+    return { value: { isPlaced: true } };
+  });
+  on("ui.close", (_, e) => {
+    opened.push(`closed ${e.id}`);
+
+    return { value: undefined };
+  });
+  on("skill.prompt", (_, e) => ({ text: e.text }));
   on("ui.panes", () => ({
     value: [
       {
@@ -170,6 +181,24 @@ test("the pane draws what set_graph sent, then follows set_status", async ($, on
   });
 
   await $.session.start({ cwd: "/", surface: "terminal", isInteractive: true });
+
+  await $.skill.prompt({
+    skill: "uiid:build-project",
+    text: "Build it.",
+    frontmatter: {},
+  });
+  expect(opened).toEqual(["project-graph"]);
+  expect(
+    (
+      await $.command.run({
+        command: "project-graph",
+        args: "",
+        origin: { kind: "composer" },
+        presentation: { isFullscreen: true, columns: 160 },
+      })
+    ).text,
+  ).toBe("Project graph pane closed.");
+  expect(opened).toEqual(["project-graph", "closed project-graph"]);
 
   for (const surface of ["terminal", "desktop"] as const) {
     const empty = await $.ui.mount({ ...PANE, surface });

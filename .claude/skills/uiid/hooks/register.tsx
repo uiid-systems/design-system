@@ -66,7 +66,7 @@ export const register: Register = (on) => {
   on("session.start", async ($, e, next) => {
     await $.command.register({
       name: "project-graph",
-      description: "Show the project graph pane",
+      description: "Show or hide the project graph pane",
     });
     await $.tool.register({
       name: "set_graph",
@@ -140,11 +140,28 @@ export const register: Register = (on) => {
     return next(e);
   });
 
+  // The one command shows the pane and hides it again.
   on("command.run", { command: "project-graph" }, async ($) => {
+    const panes = await $.ui.panes();
+    if (panes.some((pane) => pane.id === PANE)) {
+      await $.ui.close({ id: PANE });
+
+      return { text: "Project graph pane closed." };
+    }
     await $.ui.open({ id: PANE, title: PANE_TITLE });
 
     return { text: "Project graph pane opened." };
   });
+
+  // A build run opens the pane as it starts, before the project is read. A
+  // failure here must never cost the skill its prompt.
+  on("skill.prompt", async ($, e, next) => {
+    if (e.skill.split(":").pop() === "build-project") {
+      void $.ui.open({ id: PANE, title: PANE_TITLE });
+    }
+
+    return next(e);
+  }).catch((_, e, next) => next(e));
 
   on("tool.run", { tool: SET_GRAPH }, async ($, e) => {
     const drawn = toGraph(e);
