@@ -152,19 +152,21 @@
   --table-cell-padding-y: var(--table-size-lg-cell-padding-y);
 }
 
+/* `.striped`, `.bordered` and `.highlight-on-hover` are tableVariants classes
+   on the root; the body rows key off them. */
 .table-row {
   display: table-row;
 
-  &:where([data-bordered="true"] tbody &:not(:last-child)) {
+  &:where(.bordered tbody &:not(:last-child)) {
     border-bottom: var(--globals-border-width) solid var(--globals-border-color);
   }
 
-  &:where([data-striped="true"] tbody &:nth-child(even)) {
+  &:where(.striped tbody &:nth-child(even)) {
     background-color: color-mix(in oklab, var(--shade-foreground) 4%, transparent);
   }
 
   /* Hover highlight (opt-in via highlightOnHover) */
-  &:where([data-hover="true"] tbody &:hover) {
+  &:where(.highlight-on-hover tbody &:hover) {
     background-color: color-mix(in oklab, var(--shade-foreground) 8%, transparent);
   }
 
@@ -175,7 +177,7 @@
   }
 
   /* Selected + hovered: keep the selection readable, add a touch more emphasis. */
-  &:where([data-hover="true"] tbody &:has([data-slot="checkbox"][data-checked]):hover) {
+  &:where(.highlight-on-hover tbody &:has([data-slot="checkbox"][data-checked]):hover) {
     background-color: color-mix(in oklab, var(--shade-accent), transparent 20%);
   }
 }

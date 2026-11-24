@@ -22,11 +22,12 @@ export const TableRoot = ({
 
   return (
     <table
-      data-striped={striped}
-      data-bordered={bordered}
-      data-hover={highlightOnHover}
       {...preparedProps}
-      className={cx(styles["table-root"], tableVariants({ size }), className)}
+      className={cx(
+        styles["table-root"],
+        tableVariants({ size, striped, bordered, highlightOnHover }),
+        className,
+      )}
     >
       {children}
     </table>

@@ -62,6 +62,27 @@ describe("Table", () => {
     },
   );
 
+  it.each([
+    ["striped", "striped"],
+    ["bordered", "bordered"],
+    ["highlightOnHover", "highlight-on-hover"],
+  ] as const)("applies the %s class only when set", (flag, className) => {
+    const { unmount } = render(<Table items={TABLE_MOCK_DATA} />);
+    expect(screen.getByRole("table").className).not.toContain(className);
+    unmount();
+
+    render(<Table items={TABLE_MOCK_DATA} {...{ [flag]: true }} />);
+    expect(screen.getByRole("table").className).toContain(className);
+  });
+
+  it("writes no hand-made data attributes for its style flags", () => {
+    render(<Table items={TABLE_MOCK_DATA} striped bordered highlightOnHover />);
+    const table = screen.getByRole("table");
+    for (const attribute of ["data-striped", "data-bordered", "data-hover"]) {
+      expect(table).not.toHaveAttribute(attribute);
+    }
+  });
+
   it("passes its size to the built-in controls", () => {
     render(
       <Table

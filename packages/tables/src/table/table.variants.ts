@@ -13,6 +13,12 @@ export const tableVariants = cva({
       medium: styles["size-medium"],
       large: styles["size-large"],
     },
+    /** Shade every even body row */
+    striped: { true: styles["striped"] },
+    /** Rule a border between body rows */
+    bordered: { true: styles["bordered"] },
+    /** Highlight a body row under the pointer */
+    highlightOnHover: { true: styles["highlight-on-hover"] },
   },
   defaultVariants: {
     size: TABLE_DEFAULT_SIZE,
