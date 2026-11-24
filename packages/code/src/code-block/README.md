@@ -23,6 +23,8 @@ const html = await highlight(code, "typescript");
 <CodeBlock code={code} html={html} />;
 ```
 
+Pass `highlight` the same `language` as the block. Left out, it falls back to `typescript`, the same default CodeBlock uses, so the two still match.
+
 With `html`, CodeBlock skips the client highlighter: Shiki is never loaded, no theme or grammar is fetched and nothing is highlighted in the browser. `code` is still required alongside `html`, because the copy button copies it.
 
 ## Fullscreen
