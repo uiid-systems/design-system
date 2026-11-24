@@ -38,12 +38,13 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   copyable?: boolean;
 
   /**
-   * Reaches the header element. `filename`, `language`, `copyable`, the copied
-   * code and `CopyButtonProps` are set on CodeEditor itself.
+   * Reaches the header element. `filename`, `copyable`, the copied code and
+   * `CopyButtonProps` are set on CodeEditor itself. `language` here shows a
+   * language icon in the header, apart from the top-level `language`.
    */
   HeaderProps?: Omit<
     CodeBlockHeaderProps,
-    "filename" | "language" | "copyable" | "code" | "CopyButtonProps"
+    "filename" | "copyable" | "code" | "CopyButtonProps"
   >;
   /** Props for the copy button */
   CopyButtonProps?: CodeBlockCopyButtonProps;

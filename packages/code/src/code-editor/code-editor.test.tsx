@@ -4,6 +4,7 @@ import {
   act,
   fireEvent,
   waitFor,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
@@ -489,6 +490,40 @@ describe("CodeEditor HeaderProps precedence", () => {
     expect(header).toHaveAttribute("data-ui-gap", "6");
     expect(header).toHaveClass("custom-header");
   });
+
+  it("shows HeaderProps.language as the header's icon, apart from the top-level language", async () => {
+    render(
+      <CodeEditor
+        defaultValue="print(1)"
+        filename="a.py"
+        language="typescript"
+        HeaderProps={{ language: "python" }}
+      />,
+    );
+    await act(async () => {});
+
+    const header = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-header"]',
+    )!;
+    expect(
+      within(header).getByRole("img", { name: "python" }),
+    ).toBeInTheDocument();
+    expect(
+      within(header).queryByRole("img", { name: "typescript" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows no language icon in the header without HeaderProps.language", async () => {
+    render(
+      <CodeEditor defaultValue="x" filename="a.ts" language="typescript" />,
+    );
+    await act(async () => {});
+
+    const header = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-header"]',
+    )!;
+    expect(within(header).queryByRole("img")).not.toBeInTheDocument();
+  });
 });
 
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
@@ -499,10 +534,6 @@ describe("CodeEditor slot props", () => {
         <CodeEditor
           // @ts-expect-error -- `filename` is set on CodeEditor itself
           HeaderProps={{ filename: "a.ts" }}
-        />
-        <CodeEditor
-          // @ts-expect-error -- `language` is set on CodeEditor itself
-          HeaderProps={{ language: "ts" }}
         />
         <CodeEditor
           // @ts-expect-error -- `copyable` is set on CodeEditor itself
