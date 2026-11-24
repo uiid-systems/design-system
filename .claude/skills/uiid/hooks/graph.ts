@@ -250,6 +250,8 @@ export const layOut = (graph: Graph, columns: number): Row[] => {
   };
   let busiest: { id: string; count: number } | undefined;
   for (const id of dependents.keys()) {
+    // Nothing waits on a merged ticket any more, however many it once held.
+    if (tickets[indexOf.get(id) ?? 0]?.status === "merged") continue;
     const count = behind(id);
     if (count < 2) continue;
     const isAhead =

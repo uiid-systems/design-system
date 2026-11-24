@@ -52,7 +52,8 @@ const TICKET_SCHEMA = {
     waitsOn: {
       type: "array",
       items: { type: "string" },
-      description: "Ids of its open blockers, in this project or another",
+      description:
+        "Ids of its blockers, in this project or another: the open ones, and the merged ones that have a row",
     },
     note: {
       type: "string",
