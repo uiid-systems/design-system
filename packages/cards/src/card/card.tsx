@@ -37,7 +37,6 @@ export const Card = ({
   color,
   shadow = false,
   className,
-  ContainerProps,
   HeaderProps,
   TitleProps,
   DescriptionProps,
@@ -55,17 +54,6 @@ export const Card = ({
   pb,
   ...props
 }: CardProps) => {
-  const {
-    className: containerClassName,
-    p: containerP,
-    px: containerPx,
-    py: containerPy,
-    pl: containerPl,
-    pr: containerPr,
-    pt: containerPt,
-    pb: containerPb,
-    ...containerProps
-  } = ContainerProps ?? {};
   const { className: headerClassName, ...headerProps } = HeaderProps ?? {};
 
   // A slot's own `children` win when they render anything — see `isRenderable`.
@@ -84,18 +72,9 @@ export const Card = ({
   const isShell = variant === "shell";
   const surfaceColor = isShell ? color : (color ?? CARD_DEFAULT_COLOR);
 
-  // ContainerProps lands on the same element, so its padding wins, then the
-  // root's, then the shell's default. Unset sides keep the stylesheet's.
+  // The root's padding wins over the shell's default. Unset sides keep the
+  // stylesheet's.
   const padding = resolveCardPadding(
-    {
-      p: containerP,
-      px: containerPx,
-      py: containerPy,
-      pl: containerPl,
-      pr: containerPr,
-      pt: containerPt,
-      pb: containerPb,
-    },
     { p, px, py, pl, pr, pt, pb },
     isShell ? { p: SHELL_PADDING } : undefined,
   );
@@ -115,14 +94,9 @@ export const Card = ({
   return (
     <CardContainer
       data-variant={variant}
-      // ContainerProps lands on the same element, so its style and handlers
-      // merge with the root's rather than replacing them.
       {...(isShell && SHELL_CONTAINER_PROPS)}
-      {...mergeProps<"div">(
-        paddingStyle && { style: paddingStyle },
-        props,
-        containerProps,
-      )}
+      // A caller's style merges over the padding variables.
+      {...mergeProps<"div">(paddingStyle && { style: paddingStyle }, props)}
       pt={padding.top}
       pb={padding.bottom}
       pl={padding.start}
@@ -132,7 +106,6 @@ export const Card = ({
         variant && styles[`variant-${variant}`],
         surfaceColor ? paletteColorStyles[surfaceColor] : styles["uncolored"],
         className,
-        containerClassName,
       )}
     >
       {isRenderable(thumbnail) && (
