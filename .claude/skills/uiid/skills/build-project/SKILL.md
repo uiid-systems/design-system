@@ -6,7 +6,7 @@ argument-hint: "[project or ticket ids]"
 
 # UIID build project
 
-You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until its reviewers approve, and then push the approved commit and open a draft PR yourself. You write no product code. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it opens, and a closing summary that also carries every ticket that was stopped, held or left waiting.
+You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until its reviewers approve, and then push the approved commit and open a draft PR yourself. You write no product code. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it opens or ticket as it is held or stopped, and a closing summary that also carries every ticket that was stopped, held or left waiting.
 
 The argument is a Linear project (name or `P-UI-n`) or a list of ticket ids. With no argument, ask which project.
 
@@ -33,7 +33,7 @@ A ticket is ready when all of these hold:
 - It needs no ruling from the owner, or only rulings that one round of questions can settle (below). A choice the ticket tells the agent how to make ("follow what Lucide does", "pick the simpler of these two") needs no ruling.
 - No open PR or existing branch already carries it. After `git fetch origin`, check `gh pr list --state open --head <gitBranchName>`, `git ls-remote --heads origin <gitBranchName>` and `git branch -a -i --list '*<ticket-id>*'` (`gitBranchName` is lowercase, ticket ids are uppercase, and `--list` is case-sensitive without `-i`). `git worktree list` alone misses pushed branches and local branches with no worktree.
 
-A ticket that will need files outside the step 5 allowlist, or a dependency change, is still built, but it will be held for the owner before anything is pushed. Say so next to it in the pick list.
+A ticket that will need files outside the step 5 allowlist, or a dependency change, is still built, but it will be held for the owner before anything is pushed. Say so in a line under the pick list.
 
 ### Questions for the owner
 
