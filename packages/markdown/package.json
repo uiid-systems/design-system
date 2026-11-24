@@ -35,7 +35,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "node ../../scripts/clean-build-output.mjs && tsc -b && vite build"
+    "build": "node ../config/scripts/clean-build-output.mjs && tsc -b && vite build"
   },
   "dependencies": {
     "@uiid/typography": "workspace:*",
@@ -49,6 +49,7 @@
   "devDependencies": {
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.7",
+    "@uiid/config": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~7.0.2"

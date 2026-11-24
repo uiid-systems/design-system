@@ -44,10 +44,11 @@
   ],
   "scripts": {
     "tokens": "node build-tokens.js",
-    "build": "node ../../scripts/clean-build-output.mjs && node build-tokens.js && tsc -b && vite build",
+    "build": "node ../config/scripts/clean-build-output.mjs && node build-tokens.js && tsc -b && vite build",
     "dev": "pnpm run build"
   },
   "devDependencies": {
+    "@uiid/config": "workspace:*",
     "style-dictionary": "^5.5.5",
     "typescript": "~7.0.2"
   }

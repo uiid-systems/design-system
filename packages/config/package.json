@@ -1,0 +1,13 @@
+{
+  "name": "@uiid/config",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared build, test and typecheck config for the @uiid packages. Internal, never published.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./vite": "./vite.config.ts",
+    "./vitest.empty.css": "./vitest.empty.css",
+    "./scripts/*": "./scripts/*"
+  }
+}

@@ -114,7 +114,7 @@ jobs:
       # resolve @uiid/* to source like the happy-dom tests, so need no build.
       - name: Run browser tests
         timeout-minutes: 5
-        run: pnpm test:run --config vitest.browser.config.ts
+        run: pnpm test:browser
 
   lint:
     name: Lint

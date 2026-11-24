@@ -2,7 +2,12 @@ import path from "path";
 
 import { configDefaults, defineConfig } from "vitest/config";
 
+// This file lives in packages/config, but tests run from the repo root, so
+// globs and the paths Vitest prints are relative to the root.
+const root = path.resolve(import.meta.dirname, "../..");
+
 export default defineConfig({
+  root,
   resolve: {
     // Every @uiid/* package exports its source under the `@uiid/source`
     // condition, so tests resolve sibling packages to `src/` without a build.
@@ -34,11 +39,15 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     globals: true,
-    setupFiles: ["./vitest.setup.ts"],
+    setupFiles: [path.resolve(import.meta.dirname, "vitest.setup.ts")],
     // Generates the token CSS and @uiid/icons' per-icon modules, which source
     // files import directly and which are generated rather than committed.
-    globalSetup: ["./vitest.globalSetup.ts"],
-    include: ["packages/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
+    globalSetup: [path.resolve(import.meta.dirname, "vitest.globalSetup.ts")],
+    include: [
+      "packages/**/*.test.{ts,tsx}",
+      "packages/config/scripts/*.test.mjs",
+      "scripts/**/*.test.mjs",
+    ],
     // Real-browser tests run from vitest.browser.config.ts instead.
     exclude: [...configDefaults.exclude, "**/*.browser.test.tsx"],
     css: true,

@@ -28,7 +28,12 @@ const GENERATED_EXPORTS = new Set([
   "@uiid/design-system ./icons/*",
 ]);
 
-const CLEAN_STEP = "node ../../scripts/clean-build-output.mjs && ";
+const CLEAN_STEP = "node ../config/scripts/clean-build-output.mjs && ";
+const SHARED_TSCONFIG = "../config/tsconfig.package.json";
+
+/* The shared build, test and typecheck config. It is never built or
+   published, so none of the registration steps apply to it. */
+const INTERNAL = new Set(["config"]);
 
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
@@ -41,6 +46,7 @@ const packages = readdirSync(packagesDir, { withFileTypes: true })
   .filter(
     (entry) =>
       entry.isDirectory() &&
+      !INTERNAL.has(entry.name) &&
       existsSync(join(packagesDir, entry.name, "package.json")),
   )
   .map((entry) => ({
@@ -61,7 +67,9 @@ const tsconfig = stripComments(read("tsconfig.json"));
 const references = new Set(
   [...tsconfig.matchAll(/"path":\s*"([^"]+)"/g)].map(([, path]) => path),
 );
-const cssLayers = createRequire(import.meta.url)("./css-layers.cjs");
+const cssLayers = createRequire(import.meta.url)(
+  "../packages/config/scripts/css-layers.cjs",
+);
 const umbrellaDeps = readJson(`packages/${UMBRELLA}/package.json`).dependencies;
 const barrel = read(`packages/${UMBRELLA}/src/index.ts`);
 const privateNames = new Set(
@@ -83,8 +91,11 @@ for (const { folder, pkg } of packages) {
   // without the clean step a renamed file's old output ships. Both still build.
   const tsconfigPath = `packages/${folder}/tsconfig.json`;
   const { extends: base } = JSON.parse(stripComments(read(tsconfigPath)));
-  if (base !== "../../tsconfig.package.json") {
-    fail(`${name}: ${tsconfigPath} must extend ../../tsconfig.package.json`);
+  if (base !== SHARED_TSCONFIG) {
+    fail(`${name}: ${tsconfigPath} must extend ${SHARED_TSCONFIG}`);
+  }
+  if (pkg.devDependencies?.["@uiid/config"] !== "workspace:*") {
+    fail(`${name}: must list "@uiid/config": "workspace:*" in devDependencies`);
   }
   if (!pkg.scripts?.build?.startsWith(CLEAN_STEP)) {
     fail(`${name}: its build script must start with \`${CLEAN_STEP}\``);
@@ -92,7 +103,9 @@ for (const { folder, pkg } of packages) {
 
   const src = join(packagesDir, folder, "src");
   if (existsSync(src) && hasCssModule(src) && !cssLayers[folder]) {
-    fail(`${name}: has CSS modules but no entry in scripts/css-layers.cjs`);
+    fail(
+      `${name}: has CSS modules but no entry in packages/config/scripts/css-layers.cjs`,
+    );
   }
 
   // Tests and Storybook find source through this key, and resolution follows

@@ -195,7 +195,7 @@ export const CustomMask = () => (
 
 ### What is tested
 
-- Chromium is the only engine tested, by the real-browser suite in CI (`pnpm test:run --config vitest.browser.config.ts`), alongside happy-dom unit tests.
+- Chromium is the only engine tested, by the real-browser suite in CI (`pnpm test:browser`), alongside happy-dom unit tests.
 - Firefox and WebKit are untested. The browser suite can run them locally with `VITEST_BROWSERS=firefox,webkit` once Playwright has their binaries; no such run has been recorded.
 - Mobile virtual keyboards and IME composition are untested.
 - Browser autofill into a masked field is untested.

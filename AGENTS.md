@@ -32,6 +32,7 @@ This repo documents itself through working code. Prefer reading a real component
 | Run tests            | `pnpm test:run`                           |
 | Run tests (watch)    | `pnpm test`                               |
 | Run tests (one pkg)  | `pnpm test:run packages/buttons`          |
+| Run browser tests    | `pnpm test:browser`                       |
 | Typecheck (no build) | `pnpm typecheck`                          |
 | Start Storybook      | `pnpm --filter @uiid/storybook dev`       |
 | Lint                 | `pnpm run lint`                           |
@@ -42,7 +43,7 @@ This repo documents itself through working code. Prefer reading a real component
 
 ## Testing
 
-Tests are configured at the **root level** and run across all packages via `vitest.config.ts` and `vitest.setup.ts` (jest-dom matchers). Test files live alongside components as `{component}.test.tsx`.
+Tests run from the **root** across all packages, configured by `packages/config/vitest.config.ts` and `vitest.setup.ts` (jest-dom matchers). Test files live alongside components as `{component}.test.tsx`.
 
 For patterns — rendering, `data-slot` verification, variant props, user interaction, controlled/uncontrolled state, disabled states, and accessibility — read an existing test rather than working from a template. `packages/typography/src/text/text.test.tsx` and `packages/buttons/src/button/button.test.tsx` are good references.
 
