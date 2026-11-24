@@ -3,7 +3,13 @@ import { StarIcon } from "@uiid/icons/star";
 import { describe, it, expect } from "vitest";
 
 import { List } from "./list";
-import { ListGroup, ListItem } from "./subcomponents";
+import {
+  ListDescription,
+  ListGroup,
+  ListGroupHeader,
+  ListItem,
+  ListLabel,
+} from "./subcomponents";
 
 // Imported with the `?raw` suffix rather than read from disk: `pnpm typecheck`
 // pins its `types` to vitest and jest-dom, so a builtin import fails to
@@ -405,5 +411,42 @@ describe("list.module.css theming hooks", () => {
     expect(listCss).toContain(
       "color: var(--list-description-color, var(--shade-muted))",
     );
+  });
+});
+
+describe("List parts composed by hand", () => {
+  it("put a label and description inside an item", () => {
+    render(
+      <List>
+        <ListItem>
+          <ListLabel>Invoices</ListLabel>
+          <ListDescription>Sent this month</ListDescription>
+        </ListItem>
+      </List>,
+    );
+
+    const item = screen.getByRole("listitem");
+    expect(item).toContainElement(screen.getByText("Invoices"));
+    expect(item).toContainElement(screen.getByText("Sent this month"));
+    expect(screen.getByText("Invoices")).toHaveAttribute(
+      "data-slot",
+      "list-text-label",
+    );
+    expect(screen.getByText("Sent this month")).toHaveAttribute(
+      "data-slot",
+      "list-text-description",
+    );
+  });
+
+  it("render the group header as a heading only with a category", () => {
+    const { container, rerender } = render(
+      <ListGroupHeader category="Billing" />,
+    );
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Billing" }),
+    ).toBeInTheDocument();
+
+    rerender(<ListGroupHeader />);
+    expect(container).toBeEmptyDOMElement();
   });
 });

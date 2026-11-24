@@ -15,7 +15,7 @@ Both shapes coexist: `items` is the fast path for data, JSX children is the esca
 
 - **`ListItem`** — a single row. Slots: `label`, `description`, `icon`. Pass `children` to take over the contents. Items render as `<li>`; inside a `List`, keep that `<li>` and put an interactive element in it, as in `<ListItem><a href="/docs">Docs</a></ListItem>`. `render` replaces the `<li>` itself, and a `<ul>` or `<ol>` may only hold `<li>` children, so don't pass `render={<a />}` to a row of a plain `List`.
 - **`ListGroup`** — a labeled grouping. Slots: `category` (header text), `icon`, `items`. Nest groups to build trees.
-- **`ListGroupHeader`** — a group's heading row: the `icon` and the `category` as an `<h3>`. Renders nothing without a `category`.
+- **`ListGroupHeader`** — a group's heading row: the `icon` and the `category` as an `<h3>`. Renders nothing without a `category`. It is a `div`, not an `<li>`, so place it inside a `ListGroup` row, never directly in a `List`'s `<ul>` or `<ol>`.
 - **`ListLabel`** and **`ListDescription`** — the `Text` a `ListItem` renders for `label` and `description`, for rebuilding that text in a row whose `children` take over the contents.
 
 `ListGroup` is purely visual — no collapsible behavior. For collapsible lists, wrap a `List` in your own `Collapsible` from `@uiid/interactive`.
