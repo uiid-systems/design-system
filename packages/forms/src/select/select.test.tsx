@@ -4,7 +4,13 @@ import { createRef, useState } from "react";
 import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Select } from "./select";
-import type { SelectItemProps, SelectProps } from "./select.types";
+import type {
+  SelectItemProps,
+  SelectPopupProps,
+  SelectProps,
+  SelectTriggerProps,
+  SelectValueProps,
+} from "./select.types";
 import {
   SelectGroup,
   SelectGroupLabel,
@@ -865,13 +871,20 @@ describe("Select DOM attributes reach the trigger", () => {
     );
   });
 
-  it("lets TriggerProps win over a top-level attribute", () => {
+  it("lets a top-level attribute win over the same key in TriggerProps", () => {
     render(
       <Select
         items={defaultItems}
         aria-label="Outer"
         TriggerProps={{ "aria-label": "Inner" }}
       />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Outer");
+  });
+
+  it("still names the trigger from TriggerProps when the top level leaves it unset", () => {
+    render(
+      <Select items={defaultItems} TriggerProps={{ "aria-label": "Inner" }} />,
     );
     expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
   });
@@ -1507,5 +1520,169 @@ describe("Select FieldProps", () => {
         FieldProps={{ size: "small" }}
       />
     );
+  });
+});
+
+/*
+ * Each slot leaves out the keys Select sets on that part itself. The casts in
+ * the precedence tests stand in for untyped code, which the slot type cannot
+ * stop: the top-level value still wins at runtime.
+ */
+describe("Select TriggerProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches the trigger", () => {
+    render(
+      <Select
+        items={items}
+        TriggerProps={{ id: "pick", "aria-describedby": "hint" }}
+      />,
+    );
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveAttribute("data-slot", "select-trigger");
+    expect(trigger).toHaveAttribute("id", "pick");
+    expect(trigger).toHaveAttribute("aria-describedby", "hint");
+  });
+
+  it("forwards a ref to the trigger", () => {
+    const ref = createRef<HTMLButtonElement>();
+    render(<Select items={items} TriggerProps={{ ref }} />);
+    expect(ref.current).toBe(screen.getByRole("combobox"));
+  });
+
+  it("lets top-level values win over the same keys in the slot", () => {
+    render(
+      <Select
+        items={items}
+        before="Top"
+        color="blue"
+        TriggerProps={{ before: "Slot", color: "red" } as SelectTriggerProps}
+      />,
+    );
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Top");
+    expect(trigger).not.toHaveTextContent("Slot");
+    expect(trigger).toHaveClass("palette-blue");
+    expect(trigger).not.toHaveClass("palette-red");
+  });
+
+  it("keeps the value and the icon when the slot passes children", () => {
+    render(
+      <Select
+        items={items}
+        defaultValue="b"
+        TriggerProps={{ children: "Slot" } as SelectTriggerProps}
+      />,
+    );
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Option B");
+    expect(
+      trigger.querySelector("[data-slot='select-icon']"),
+    ).toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects TriggerProps the control owns", () => {
+    // @ts-expect-error -- `size` is set on Select itself
+    void (<Select TriggerProps={{ size: "small" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Select itself
+    void (<Select TriggerProps={{ fullwidth: true }} />);
+    // @ts-expect-error -- `variant` is set on Select itself
+    void (<Select TriggerProps={{ variant: "ghost" }} />);
+    // @ts-expect-error -- `color` is set on Select itself
+    void (<Select TriggerProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `before` is set on Select itself
+    void (<Select TriggerProps={{ before: "Before" }} />);
+    // @ts-expect-error -- `after` is set on Select itself
+    void (<Select TriggerProps={{ after: "After" }} />);
+    // @ts-expect-error -- Select renders the trigger's value and icon itself
+    void (<Select TriggerProps={{ children: "Other" }} />);
+  });
+});
+
+describe("Select ValueProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches the value", () => {
+    const { container } = render(
+      <Select
+        items={items}
+        placeholder="Pick one"
+        ValueProps={{ id: "picked" }}
+      />,
+    );
+    expect(
+      container.querySelector("[data-slot='select-value']"),
+    ).toHaveAttribute("id", "picked");
+  });
+
+  it("lets a top-level placeholder win over one in the slot", () => {
+    render(
+      <Select
+        items={items}
+        placeholder="Top"
+        ValueProps={{ placeholder: "Slot" } as SelectValueProps}
+      />,
+    );
+    const trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Top");
+    expect(trigger).not.toHaveTextContent("Slot");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects ValueProps the control owns", () => {
+    // @ts-expect-error -- `size` is set on Select itself
+    void (<Select ValueProps={{ size: "small" }} />);
+    // @ts-expect-error -- `placeholder` is set on Select itself
+    void (<Select ValueProps={{ placeholder: "Other" }} />);
+  });
+});
+
+describe("Select PopupProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches the popup", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} PopupProps={{ "aria-label": "Options" }} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(
+      document.querySelector("[data-slot='select-popup']"),
+    ).toHaveAttribute("aria-label", "Options");
+  });
+
+  it("lets a top-level color win over one in the slot", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        color="blue"
+        PopupProps={{ color: "red" } as SelectPopupProps}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    const popup = document.querySelector("[data-slot='select-popup']");
+    expect(popup).toHaveClass("palette-blue");
+    expect(popup).not.toHaveClass("palette-red");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects PopupProps the control owns", () => {
+    // @ts-expect-error -- `color` is set on Select itself
+    void (<Select PopupProps={{ color: "blue" }} />);
+    // @ts-expect-error -- Select renders the popup's list itself
+    void (<Select PopupProps={{ children: "Other" }} />);
   });
 });
