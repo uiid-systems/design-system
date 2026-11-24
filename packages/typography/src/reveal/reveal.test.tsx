@@ -123,6 +123,8 @@ describe("Reveal", () => {
     expect(root.style.getPropertyValue("--reveal-blur")).toBe("10px");
     expect(second.style.getPropertyValue("--reveal-delay")).toBe("50ms");
     expect(second.style.getPropertyValue("--reveal-duration")).toBe("600ms");
+    // Left to the tokens rule's ease-out default; Markdown's streamed words set their own.
+    expect(root.style.getPropertyValue("--reveal-easing")).toBe("");
   });
 
   it("wraps plainly so streamed words don't re-break shown lines", () => {

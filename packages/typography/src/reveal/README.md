@@ -1,6 +1,6 @@
 # Reveal
 
-> Animated text reveal built on [`Text`](../text/README.md). Splits a string into words and fades each one in with a soft blur — the streaming-text pattern popularized by AI chat UIs. Zero dependencies: one CSS keyframe animating only `opacity` and `filter`, so wrapping, selection, and line height stay native.
+> Animated text reveal built on [`Text`](../text/README.md). Splits a string into words and fades each one in with a soft blur — the streaming-text pattern popularized by AI chat UIs. Zero dependencies: one CSS keyframe animating only `opacity` and `filter`, so wrapping, selection, and line height stay native. The words are animated by the shared `[data-animate="reveal"]` rule in `@uiid/tokens/globals.css`, so that stylesheet must be loaded.
 
 Use Reveal when you want to:
 

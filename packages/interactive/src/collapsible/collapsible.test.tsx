@@ -529,8 +529,13 @@ describe("className", () => {
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
 describe("slot props", () => {
   it("rejects a key Collapsible owns in RootProps", () => {
-    // @ts-expect-error -- `defaultOpen` is set on Collapsible itself
-    void (<Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }} />);
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- `defaultOpen` is set on Collapsible itself
+        RootProps={{ defaultOpen: true }}
+      />
+    );
   });
 
   it("rejects a key Collapsible owns in TriggerProps", () => {
@@ -544,7 +549,12 @@ describe("slot props", () => {
   });
 
   it("rejects a key Collapsible owns in PanelProps", () => {
-    // @ts-expect-error -- `keepMounted` is set on Collapsible itself
-    void (<Collapsible trigger="Toggle" PanelProps={{ keepMounted: true }} />);
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- `keepMounted` is set on Collapsible itself
+        PanelProps={{ keepMounted: true }}
+      />
+    );
   });
 });

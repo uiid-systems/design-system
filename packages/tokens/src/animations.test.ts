@@ -19,7 +19,12 @@ describe("animations.css", () => {
 
   // Reveal's words and Markdown's streamed words share this one animation.
   it("fades and un-blurs a revealed word from the timing its component sets", () => {
-    expect(animationsCss).toMatch(/@keyframes uiid-reveal \{/);
+    expect(animationsCss).toMatch(
+      /@keyframes uiid-reveal \{\s*from \{\s*opacity: 0;\s*filter: blur\(var\(--reveal-blur\)\);/,
+    );
+    expect(animationsCss).toMatch(
+      /animation-delay: var\(--reveal-delay, 0ms\);/,
+    );
     expect(animationsCss).toMatch(
       /\[data-animate="reveal"\] \{\s*animation: uiid-reveal var\(--reveal-duration\) var\(--reveal-easing, ease-out\)\s+backwards;/,
     );
