@@ -50,11 +50,11 @@ export const Accordion = ({
           {...ItemProps}
         >
           <AccordionHeader {...HeaderProps}>
-            <AccordionTrigger icon={item.icon} size={size} {...TriggerProps}>
+            <AccordionTrigger {...TriggerProps} icon={item.icon} size={size}>
               {item.trigger}
             </AccordionTrigger>
           </AccordionHeader>
-          <AccordionPanel size={size} {...PanelProps}>
+          <AccordionPanel {...PanelProps} size={size}>
             <AccordionContent {...ContentProps}>
               {item.content}
             </AccordionContent>

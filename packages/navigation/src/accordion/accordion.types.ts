@@ -52,8 +52,10 @@ export type AccordionProps = {
   RootProps?: AccordionRootProps;
   ItemProps?: Omit<AccordionItemProps, "value" | "disabled">;
   HeaderProps?: AccordionHeaderProps;
-  TriggerProps?: AccordionTriggerProps;
-  PanelProps?: AccordionPanelProps;
+  /** Reaches every trigger. `size` is set on Accordion itself; `icon` and the content come from each item. */
+  TriggerProps?: Omit<AccordionTriggerProps, "size" | "icon" | "children">;
+  /** Reaches every panel. `size` is set on Accordion itself; the content comes from each item. */
+  PanelProps?: Omit<AccordionPanelProps, "size" | "children">;
   ContentProps?: AccordionContentProps;
 } & Pick<
   AccordionRootProps,
