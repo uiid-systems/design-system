@@ -80,6 +80,6 @@ Skills live in `.claude/skills/uiid/skills/{name}/SKILL.md`. The `uiid` folder i
 | Skill                  | Covers                                                                                          | Read when                                                            |
 | ---------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | `uiid:build-project`   | Building a project's ready Linear tickets in parallel: build agent, local review loop, draft PR | Asked to work the ready tickets in a Linear project                  |
-| `uiid:graph-project`   | Drawing a Linear project's dependency graph: vertical chart in chat, link list, optional pane   | Asked to show or chart a project's tickets, blockers and gates       |
+| `uiid:graph-project`   | Listing a Linear project's open tickets in dependency order, with Linear and pull request links | Asked to show or chart a project's tickets, blockers and gates       |
 | `uiid:review-pr`       | How the Claude Review bot in CI reviews a pull request and the shape of the comment it posts    | Changing what the review bot checks or how its comment reads         |
 | `uiid:triage-findings` | Sorting the review bot's open findings into fix now or defer, and stopping the fix-review loop  | A review round has landed on a PR and findings are about to be fixed |
