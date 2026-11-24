@@ -38,7 +38,7 @@ Remaining props, including `Group` layout props and `aria-label`, are spread ont
 
 ## Parts
 
-`PaginationButton` is the control every cell renders: a small `ghost` `Button` that takes the filled treatment when `active` is set. It takes Button's props, and with a `render` it runs its `onClick` only when the link opens in this tab. The panel's border and the hairlines between cells come from `Pagination`'s own stylesheet, so a bare `PaginationButton` is a plain button.
+`PaginationButton` is the control every cell renders: a small `ghost` `Button` that takes the filled treatment and `aria-current="page"` when `active` is set (an `aria-current` you pass wins). It takes Button's props, and with a `render` it runs its `onClick` only when the link opens in this tab. The panel's border and the hairlines between cells come from `Pagination`'s own stylesheet, so a bare `PaginationButton` is a plain button. A pager built from it by hand must supply the rest of what `Pagination` sets itself: an `aria-label` on every cell, such as "Page 6" on a number and "Next page" on an icon, and a `<nav>` around the cells with its own `aria-label`.
 
 ## Layouts
 

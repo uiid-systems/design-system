@@ -26,6 +26,8 @@ export const PaginationButton = ({
    */
   return (
     <Button
+      // The current page is announced, not only filled. A caller's own wins.
+      aria-current={active ? "page" : undefined}
       variant={active ? undefined : "ghost"}
       size="small"
       render={render}
