@@ -35,7 +35,13 @@ The inline block stays mounted underneath, so its copy state and "Show more" sta
 
 ## Slot props
 
-`HeaderProps`, `LanguageIconProps`, `WrapButtonProps`, `CopyButtonProps` and `FullscreenButtonProps` reach the header and its parts. `HeaderProps` spreads last, so it overrides any header prop CodeBlock sets, including the three toggles above. A `CopyButtonProps` passed inside `HeaderProps` replaces the merged one, which drops the top-level `onCopy`. A `CopyButtonProps.onClick` runs before the copy; call `event.preventDefault()` in it to skip copying.
+`HeaderProps`, `LanguageIconProps`, `WrapButtonProps`, `CopyButtonProps` and `FullscreenButtonProps` reach the header and its parts. `HeaderProps` takes the header's own layout and element props, such as `gap`, `className` or `children`. What the header shows (`filename`, `language` and the three toggles above), the wrap and fullscreen state, the copied `code` and the four button slots are set on CodeBlock, so passing one through `HeaderProps` is a type error, and at runtime CodeBlock's value wins.
+
+`onCopy` can be given at both levels, and both run after a successful copy: `CopyButtonProps.onCopy` first, then the top-level `onCopy`. The top-level one still runs if the first throws; the error is logged to the console and the button still shows "Copied". A failed clipboard write runs neither handler and shows no "Copied" state. A `CopyButtonProps.onClick` runs before the copy; call `event.preventDefault()` in it to skip copying.
+
+## Parts
+
+`CodeBlockHeader`, `CodeBlockCopyButton`, `CodeBlockWrapButton`, `CodeBlockFullscreenButton`, `CodeBlockContent` and `LanguageIcon` are exported for composing a block of your own, as CodeEditor does with the header. Each button names itself and has a tooltip, and the copy button's name changes to "Copied" after a copy. CodeBlock adds what the parts leave to you: highlighting (pass `CodeBlockContent` the `html` from `highlight`), the row cap and its toggle, the wrap and fullscreen state behind the toggles' `pressed` and `onPressedChange`, and the fullscreen dialog with its name and focus handling.
 
 ## Data Slots
 

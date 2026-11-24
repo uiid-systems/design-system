@@ -37,8 +37,14 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /** Show copy button in header */
   copyable?: boolean;
 
-  /** Props for the header element */
-  HeaderProps?: CodeBlockHeaderProps;
+  /**
+   * Reaches the header element. `filename`, `language`, `copyable`, the copied
+   * code and `CopyButtonProps` are set on CodeEditor itself.
+   */
+  HeaderProps?: Omit<
+    CodeBlockHeaderProps,
+    "filename" | "language" | "copyable" | "code" | "CopyButtonProps"
+  >;
   /** Props for the copy button */
   CopyButtonProps?: CodeBlockCopyButtonProps;
   /** Props for the textarea, including `ref`, `name`, `id` and `aria-*` */

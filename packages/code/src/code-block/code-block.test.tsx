@@ -5,6 +5,7 @@ import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
+import type { CodeBlockProps } from "./code-block.types";
 
 // Mock the highlighter module
 vi.mock("../highlighter/highlighter.hooks", () => ({
@@ -615,5 +616,248 @@ describe("CodeBlock", () => {
     await waitFor(() => {
       expect(onCopy).toHaveBeenCalledWith(code);
     });
+  });
+
+  it("runs CopyButtonProps.onCopy and then the top-level onCopy", async () => {
+    const user = userEvent.setup();
+    const calls: string[] = [];
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={(copied) => calls.push(`top-level:${copied}`)}
+        CopyButtonProps={{
+          onCopy: (copied) => calls.push(`slot:${copied}`),
+        }}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /copy/i }));
+
+    await waitFor(() => {
+      expect(calls).toEqual(["slot:const x = 1;", "top-level:const x = 1;"]);
+    });
+  });
+
+  it("still runs the top-level onCopy and shows the copy when CopyButtonProps.onCopy throws", async () => {
+    const user = userEvent.setup();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    const onCopy = vi.fn();
+    try {
+      render(
+        <CodeBlock
+          code="const x = 1;"
+          onCopy={onCopy}
+          CopyButtonProps={{
+            onCopy: () => {
+              throw new Error("slot failed");
+            },
+          }}
+        />,
+      );
+
+      await user.click(screen.getByRole("button", { name: /copy/i }));
+
+      await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
+      expect(
+        await screen.findByRole("button", { name: "Copied" }),
+      ).toHaveAttribute("data-copied", "true");
+      // Logged as a handler error, not as a failed copy.
+      expect(errors).toHaveBeenCalledWith("onCopy threw:", expect.any(Error));
+      expect(errors).not.toHaveBeenCalledWith(
+        "Failed to copy code:",
+        expect.anything(),
+      );
+    } finally {
+      errors.mockRestore();
+    }
+  });
+
+  it("runs neither onCopy and shows no copy when the clipboard write fails", async () => {
+    const user = userEvent.setup();
+    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+    const onCopy = vi.fn();
+    const slotOnCopy = vi.fn();
+    try {
+      render(
+        <CodeBlock
+          code="const x = 1;"
+          onCopy={onCopy}
+          CopyButtonProps={{ onCopy: slotOnCopy }}
+        />,
+      );
+      // user-event installs its own clipboard on setup, so stub it after.
+      const writeText = vi
+        .spyOn(navigator.clipboard, "writeText")
+        .mockRejectedValue(new Error("denied"));
+
+      const copyButton = screen.getByRole("button", { name: "Copy code" });
+      await user.click(copyButton);
+
+      await waitFor(() => expect(writeText).toHaveBeenCalled());
+      expect(onCopy).not.toHaveBeenCalled();
+      expect(slotOnCopy).not.toHaveBeenCalled();
+      expect(copyButton).toHaveAttribute("data-copied", "false");
+      expect(copyButton).toHaveAccessibleName("Copy code");
+    } finally {
+      errors.mockRestore();
+    }
+  });
+});
+
+describe("CodeBlock HeaderProps precedence", () => {
+  beforeEach(() => {
+    mockWriteText.mockClear();
+    mockWriteText.mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText: mockWriteText },
+      writable: true,
+      configurable: true,
+    });
+  });
+
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = (slot: Record<string, unknown>) =>
+    slot as CodeBlockProps["HeaderProps"];
+
+  it("lets the props CodeBlock sets on its header win over HeaderProps", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        filename="top-level.ts"
+        HeaderProps={untyped({
+          filename: "slot.ts",
+          copyable: false,
+          wrappable: false,
+          fullscreenable: false,
+        })}
+      />,
+    );
+
+    expect(screen.getByText("top-level.ts")).toBeInTheDocument();
+    expect(screen.queryByText("slot.ts")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Toggle line wrap" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Enter fullscreen" }),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the top-level onCopy when HeaderProps carries its own CopyButtonProps", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={onCopy}
+        HeaderProps={untyped({ CopyButtonProps: { "aria-label": "Slot" } })}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
+  });
+
+  it("still applies the header props CodeBlock leaves to HeaderProps", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        HeaderProps={{ gap: 6, className: "custom-header" }}
+      />,
+    );
+
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).toHaveAttribute("data-ui-gap", "6");
+    expect(header).toHaveClass("custom-header");
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("CodeBlock slot props", () => {
+  it("rejects every key CodeBlock owns in HeaderProps", () => {
+    void (
+      <>
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `filename` is set on CodeBlock itself
+          HeaderProps={{ filename: "a.ts" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `language` is set on CodeBlock itself
+          HeaderProps={{ language: "ts" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `copyable` is set on CodeBlock itself
+          HeaderProps={{ copyable: false }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- the copied text is CodeBlock's `code`
+          HeaderProps={{ code: "other" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `wrappable` is set on CodeBlock itself
+          HeaderProps={{ wrappable: false }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the wrap state
+          HeaderProps={{ wrap: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `defaultWrap` is set on CodeBlock itself
+          HeaderProps={{ defaultWrap: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `onWrapChange` is set on CodeBlock itself
+          HeaderProps={{ onWrapChange: () => {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `fullscreenable` is set on CodeBlock itself
+          HeaderProps={{ fullscreenable: false }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the fullscreen state
+          HeaderProps={{ fullscreen: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `onFullscreenChange` is set on CodeBlock itself
+          HeaderProps={{ onFullscreenChange: () => {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `LanguageIconProps` is set on CodeBlock itself
+          HeaderProps={{ LanguageIconProps: {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `WrapButtonProps` is set on CodeBlock itself
+          HeaderProps={{ WrapButtonProps: {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `CopyButtonProps` is set on CodeBlock itself
+          HeaderProps={{ CopyButtonProps: {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `FullscreenButtonProps` is set on CodeBlock itself
+          HeaderProps={{ FullscreenButtonProps: {} }}
+        />
+      </>
+    );
   });
 });

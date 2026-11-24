@@ -38,15 +38,24 @@ export const CodeBlockCopyButton = ({
       if (event.defaultPrevented) return;
       try {
         await navigator.clipboard.writeText(code);
-        onCopy?.(code);
-        // Unmounted during the copy: no state to show, and no timer to start.
-        if (!mountedRef.current) return;
+      } catch (err) {
+        // A failed copy shows no "Copied" state and runs no `onCopy`.
+        console.error("Failed to copy code:", err);
+        return;
+      }
+      // Unmounted during the copy: no state to show, and no timer to start.
+      if (mountedRef.current) {
         setCopied(true);
         // Each copy restarts the "Copied" window rather than stacking timers.
         clearTimeout(resetRef.current);
         resetRef.current = setTimeout(() => setCopied(false), 2000);
+      }
+      // The copy succeeded, so a throwing handler leaves the "Copied" state
+      // shown; its error is logged rather than reported as a failed copy.
+      try {
+        onCopy?.(code);
       } catch (err) {
-        console.error("Failed to copy code:", err);
+        console.error("onCopy threw:", err);
       }
     },
     [code, onCopy, onClick],

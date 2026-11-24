@@ -107,13 +107,33 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   onCopy?: (code: string) => void;
   /** Pre-highlighted HTML for SSR */
   html?: string;
-  /** Props for the header element */
-  HeaderProps?: CodeBlockHeaderProps;
+  /**
+   * Reaches the header element. What the header shows and the state of its
+   * buttons are set on CodeBlock itself, as are the button slots.
+   */
+  HeaderProps?: Omit<
+    CodeBlockHeaderProps,
+    | "filename"
+    | "language"
+    | "copyable"
+    | "code"
+    | "wrappable"
+    | "wrap"
+    | "defaultWrap"
+    | "onWrapChange"
+    | "fullscreenable"
+    | "fullscreen"
+    | "onFullscreenChange"
+    | "LanguageIconProps"
+    | "WrapButtonProps"
+    | "CopyButtonProps"
+    | "FullscreenButtonProps"
+  >;
   /** Props for the language icon */
   LanguageIconProps?: Omit<LanguageIconProps, "language">;
   /** Props for the wrap button */
   WrapButtonProps?: CodeBlockWrapButtonProps;
-  /** Props for the copy button */
+  /** Props for the copy button. Its `onCopy` runs before the top-level `onCopy`. */
   CopyButtonProps?: CodeBlockCopyButtonProps;
   /** Props for the fullscreen button */
   FullscreenButtonProps?: CodeBlockFullscreenButtonProps;

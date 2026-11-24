@@ -10,6 +10,7 @@ import { createRef, useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { CodeEditor } from "./code-editor";
+import type { CodeEditorProps } from "./code-editor.types";
 
 describe("CodeEditor", () => {
   // ============================================
@@ -426,5 +427,96 @@ describe("CodeEditor", () => {
     expect(textarea).toHaveAttribute("placeholder", "Enter code...");
     expect(textarea).not.toHaveAttribute("readonly");
     expect(textarea).not.toBeDisabled();
+  });
+});
+
+describe("CodeEditor HeaderProps precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = (slot: Record<string, unknown>) =>
+    slot as CodeEditorProps["HeaderProps"];
+
+  it("lets the props CodeEditor sets on its header win over HeaderProps", async () => {
+    render(
+      <CodeEditor
+        defaultValue="real"
+        filename="top-level.ts"
+        CopyButtonProps={{ "aria-label": "Copy top-level" }}
+        HeaderProps={untyped({
+          filename: "slot.ts",
+          copyable: false,
+          CopyButtonProps: { "aria-label": "Copy slot" },
+        })}
+      />,
+    );
+    await act(async () => {});
+
+    expect(screen.getByText("top-level.ts")).toBeInTheDocument();
+    expect(screen.queryByText("slot.ts")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Copy top-level" }),
+    ).toBeInTheDocument();
+  });
+
+  it("copies the editor's value, not HeaderProps.code", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    render(
+      <CodeEditor
+        defaultValue="real"
+        filename="a.ts"
+        CopyButtonProps={{ onCopy }}
+        HeaderProps={untyped({ code: "hijacked" })}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    await waitFor(() => expect(onCopy).toHaveBeenCalledWith("real"));
+  });
+
+  it("still applies the header props CodeEditor leaves to HeaderProps", async () => {
+    render(
+      <CodeEditor
+        defaultValue="real"
+        filename="a.ts"
+        HeaderProps={{ gap: 6, className: "custom-header" }}
+      />,
+    );
+    await act(async () => {});
+
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).toHaveAttribute("data-ui-gap", "6");
+    expect(header).toHaveClass("custom-header");
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("CodeEditor slot props", () => {
+  it("rejects every key CodeEditor owns in HeaderProps", () => {
+    void (
+      <>
+        <CodeEditor
+          // @ts-expect-error -- `filename` is set on CodeEditor itself
+          HeaderProps={{ filename: "a.ts" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `language` is set on CodeEditor itself
+          HeaderProps={{ language: "ts" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `copyable` is set on CodeEditor itself
+          HeaderProps={{ copyable: false }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- the copied text is the editor's value
+          HeaderProps={{ code: "other" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `CopyButtonProps` is set on CodeEditor itself
+          HeaderProps={{ CopyButtonProps: {} }}
+        />
+      </>
+    );
   });
 });

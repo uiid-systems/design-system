@@ -42,6 +42,8 @@ import { CodeEditor } from "@uiid/code";
 | `CopyButtonProps` | `CodeBlockCopyButtonProps` | —              | Props for copy button        |
 | `TextareaProps`   | `CodeEditorTextareaProps`  | —              | Props for the textarea       |
 
+`HeaderProps` takes the header's own layout and element props. `filename`, `language`, `copyable`, the copied code (the editor's value) and `CopyButtonProps` are set on CodeEditor, so passing one through `HeaderProps` is a type error, and at runtime CodeEditor's value wins. The header shows no language icon.
+
 `TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
 
 The default name applies whenever the caller supplies neither `aria-label` nor `aria-labelledby`, including when a native `<label htmlFor>` or a `Field` label is present, because `aria-label` outranks both. A `Field` label also points at a generated id the textarea never receives, so wrapping the editor in `<Field label>` does not name it on its own. To hand naming to a visible label, point the textarea at the label's id:
