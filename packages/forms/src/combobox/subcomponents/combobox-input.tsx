@@ -33,19 +33,19 @@ export const ComboboxInput = ({
 
   /*
    * Combobox sends its resolved `required` through `FieldProps`, outside the
-   * slot's type, so the label marker follows the control's state. The part's
-   * own `required` is also the text input's native attribute, which the
-   * monolith's `InputProps` can still set; it marks the field only when
-   * Combobox sent nothing.
+   * slot's type. The part's own `required` is also the text input's native
+   * attribute, which the monolith's `InputProps` can still set. Either one
+   * marks the field, so the label never hides a requirement the input enforces.
    */
   const fieldRequired =
-    (FieldProps as { required?: boolean } | undefined)?.required ?? required;
+    Boolean((FieldProps as { required?: boolean } | undefined)?.required) ||
+    required;
 
   return (
     /*
      * `FieldProps` spreads first and the part's own values after, so they win
-     * and an unset one leaves the slot's alone. `fullwidth` is a default the
-     * slot may still change, as `w` is on Input.
+     * and an unset one leaves the slot's alone; `required` is resolved above.
+     * `fullwidth` is a default the slot may still change, as `w` is on Input.
      */
     <Field
       fullwidth={fullwidth}

@@ -1049,7 +1049,9 @@ describe("Combobox required reaches the label and the control", () => {
     );
   });
 
-  it("leaves the marker off when only InputProps makes the input required", () => {
+  /* The native attribute makes browsers and assistive tech treat the input as
+     required, so the label is marked even though Combobox's own is false. */
+  it("marks the label when InputProps makes the input required over a false top level", () => {
     const { container } = render(
       <Combobox
         items={items}
@@ -1061,12 +1063,8 @@ describe("Combobox required reaches the label and the control", () => {
 
     expect(
       container.querySelector("[data-slot='field-label'][data-required]"),
-    ).toBeNull();
+    ).not.toBeNull();
     expect(screen.getByRole("combobox")).toHaveAttribute("required");
-    expect(screen.getByRole("combobox")).not.toHaveAttribute(
-      "aria-required",
-      "true",
-    );
   });
 
   it("marks the label from InputProps when Combobox leaves required unset", () => {
