@@ -36,6 +36,10 @@ import { Pagination } from "@uiid/navigation";
 
 Remaining props, including `Group` layout props and `aria-label`, are spread onto the root.
 
+## Parts
+
+`PaginationButton` is the control every cell renders: a small `ghost` `Button` that takes the filled treatment when `active` is set. It takes Button's props, and with a `render` it runs its `onClick` only when the link opens in this tab. The panel's border and the hairlines between cells come from `Pagination`'s own stylesheet, so a bare `PaginationButton` is a plain button.
+
 ## Layouts
 
 The control is one surface. The `<nav>` is a panel — a bordered, filled row sized to its contents — and every control inside it is a cell butted against its neighbour with a hairline between them. Cells stay transparent until hovered; the current page is the only fill, so the panel reads as a single control with a selected cell rather than a row of loose buttons. `data-layout` on the root is `compact` or `numbered`.

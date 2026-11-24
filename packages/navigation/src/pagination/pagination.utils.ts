@@ -1,4 +1,5 @@
-import type { PaginationItem } from "./pagination.types";
+/** One slot in the numbered window: a page number or a collapsed gap. */
+export type PaginationItem = number | "ellipsis";
 
 /**
  * Bounds `page` to `[1, totalPages]`. A `totalPages` below 1 is treated as 1,

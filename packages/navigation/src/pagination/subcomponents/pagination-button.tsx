@@ -1,10 +1,7 @@
 import { Button, type ButtonProps } from "@uiid/buttons";
 
+import type { PaginationButtonProps } from "../pagination.types";
 import { opensElsewhere } from "../pagination.utils";
-
-type PaginationButtonProps = ButtonProps & {
-  active?: boolean;
-};
 
 export const PaginationButton = ({
   active,

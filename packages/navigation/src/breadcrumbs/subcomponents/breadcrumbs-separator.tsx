@@ -1,7 +1,9 @@
+import type { BreadcrumbsSeparatorProps } from "../breadcrumbs.types";
+
 export const BreadcrumbsSeparator = ({
   children,
   ...props
-}: React.ComponentProps<"li">) => {
+}: BreadcrumbsSeparatorProps) => {
   return (
     <li
       data-slot="breadcrumbs-separator"

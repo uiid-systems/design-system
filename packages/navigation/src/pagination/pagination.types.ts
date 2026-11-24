@@ -1,7 +1,5 @@
+import type { ButtonProps } from "@uiid/buttons";
 import type { GroupProps } from "@uiid/layout";
-
-/** One slot in the numbered window: a page number or a collapsed gap. */
-export type PaginationItem = number | "ellipsis";
 
 export type PaginationProps = Omit<GroupProps, "children"> & {
   /** Total number of pages. Values below 1 are treated as 1. */
@@ -27,4 +25,10 @@ export type PaginationProps = Omit<GroupProps, "children"> & {
    * @example renderLink={(page) => <Link href={`?page=${page}`} />}
    */
   renderLink?: (page: number) => React.ReactElement;
+};
+
+/** One cell of the panel: a ghost `Button` until it is the current page. */
+export type PaginationButtonProps = ButtonProps & {
+  /** Marks the current page, which takes the filled treatment. */
+  active?: boolean;
 };
