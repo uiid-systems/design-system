@@ -1,7 +1,7 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { cx } from "@uiid/utils";
+import { cx, definedProps } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -32,16 +32,24 @@ export const ComboboxInput = ({
   const hasSlots = hasInputSlots({ before, after });
 
   return (
+    /*
+     * `FieldProps` spreads first and the part's own values after, so they win
+     * and an unset one leaves the slot's alone: Combobox sends `required`
+     * through `FieldProps` and leaves the part's own unset. `fullwidth` is a
+     * default the slot may still change, as `w` is on Input.
+     */
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      disabled={disabled}
-      required={required}
       fullwidth={fullwidth}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label,
+        description,
+        action,
+        disabled,
+        required,
+        size,
+      })}
     >
       {/*
        * Base UI anchors the popup to the input group, so the group wraps the

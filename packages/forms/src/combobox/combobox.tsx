@@ -94,13 +94,29 @@ export function Combobox<
       {...definedProps({ items, name, disabled, required })}
       {...rootProps}
     >
+      {/*
+       * `InputProps` spreads first and Combobox's own values after, so a
+       * top-level value wins and an unset one leaves the slot's alone. `after`
+       * is always set, so nothing in the slot can drop the buttons.
+       */}
       <ComboboxInput
-        name={resolvedName}
-        placeholder={placeholder}
-        label={label}
-        description={description}
-        action={action}
-        before={before}
+        {...InputProps}
+        {...domAttributes}
+        {...definedProps({
+          name: resolvedName,
+          placeholder,
+          label,
+          description,
+          action,
+          before,
+          size,
+          variant,
+          fullwidth,
+          color,
+          disabled: resolvedDisabled,
+          onFocus,
+          onBlur,
+        })}
         after={
           /*
            * Clear and Trigger ride the input's trailing slot rather than
@@ -114,15 +130,6 @@ export function Combobox<
             <ComboboxTrigger />
           </InputGroupActions>
         }
-        size={size}
-        variant={variant}
-        fullwidth={fullwidth}
-        color={color}
-        disabled={resolvedDisabled}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        {...domAttributes}
-        {...InputProps}
         InputGroupProps={mergeInputGroupProps(
           InputGroupProps,
           InputProps?.InputGroupProps,
@@ -132,7 +139,7 @@ export function Combobox<
 
       <ComboboxPortal {...PortalProps}>
         <ComboboxPositioner {...PositionerProps}>
-          <ComboboxPopup color={color} {...PopupProps}>
+          <ComboboxPopup {...PopupProps} {...definedProps({ color })}>
             <ComboboxList {...ListProps}>
               {children ??
                 ((item: Value, index: number) => (

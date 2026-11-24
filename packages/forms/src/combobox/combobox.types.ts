@@ -107,11 +107,33 @@ export type ComboboxProps<
    */
   color?: ComboboxColor;
   RootProps?: ComboboxRootProps<Value, Multiple>;
-  InputProps?: ComboboxInputProps;
+  /**
+   * Reaches the input part. The keys Combobox sets on the part itself are left
+   * out. `after` among them carries the Clear and Trigger buttons; pass
+   * trailing content as the top-level `after`, which leads that row.
+   */
+  InputProps?: Omit<
+    ComboboxInputProps,
+    | "name"
+    | "placeholder"
+    | "label"
+    | "description"
+    | "action"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
+    | "color"
+    | "disabled"
+    | "onFocus"
+    | "onBlur"
+  >;
   InputGroupProps?: ComboboxInputGroupProps;
   PortalProps?: ComboboxPortalProps;
   PositionerProps?: ComboboxPositionerProps;
-  PopupProps?: ComboboxPopupProps;
+  /** Reaches the popup. `color` and the list inside are set by Combobox itself. */
+  PopupProps?: Omit<ComboboxPopupProps, "color" | "children">;
   ListProps?: ComboboxListProps;
   /**
    * The items to filter and render, typed by the combobox's `Value` so it can

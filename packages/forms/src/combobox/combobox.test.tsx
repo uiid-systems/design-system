@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useState } from "react";
+import { createRef, useState } from "react";
 import { describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Combobox } from "./combobox";
-import type { ComboboxItemProps, ComboboxProps } from "./combobox.types";
+import type {
+  ComboboxInputProps,
+  ComboboxItemProps,
+  ComboboxPopupProps,
+  ComboboxProps,
+} from "./combobox.types";
 import {
   ComboboxChip,
   ComboboxChips,
@@ -263,14 +268,15 @@ describe("Combobox name forwarding", () => {
     expect(submitted).toHaveBeenCalledWith(["banana"]);
   });
 
-  it("lets InputProps override the name the field matches on", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets the top-level name win over one in InputProps", () => {
     const { container } = render(
-      <Form errors={{ produce: "Pick a fruit" }}>
+      <Form errors={{ fruit: "Pick a fruit", produce: "Wrong field" }}>
         <Combobox
           name="fruit"
           label="Fruit"
           items={items}
-          InputProps={{ name: "produce" }}
+          InputProps={{ name: "produce" } as ComboboxInputProps}
         />
       </Form>,
     );
@@ -505,13 +511,20 @@ describe("Combobox DOM attributes reach the input", () => {
     );
   });
 
-  it("lets InputProps win over a top-level attribute", () => {
+  it("lets a top-level attribute win over the same key in InputProps", () => {
     render(
       <Combobox
         items={defaultItems}
         aria-label="Outer"
         InputProps={{ "aria-label": "Inner" }}
       />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Outer");
+  });
+
+  it("still names the input from InputProps when the top level leaves it unset", () => {
+    render(
+      <Combobox items={defaultItems} InputProps={{ "aria-label": "Inner" }} />,
     );
     expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
   });
@@ -917,6 +930,28 @@ describe("Combobox required reaches the label and the control", () => {
     expect(root).toHaveAttribute("data-required");
   });
 
+  /* `required` reaches the input part through its `FieldProps`, and the part
+     leaves its own `required` unset, which must not erase it. */
+  it("marks the label and the input required through the part's FieldProps", () => {
+    const { container } = render(
+      <Combobox
+        items={items}
+        label="Fruit"
+        required
+        InputProps={{ FieldProps: { className: "custom-field" } }}
+      />,
+    );
+
+    expect(
+      container.querySelector("[data-slot='field-label'][data-required]"),
+    ).not.toBeNull();
+    expect(screen.getByRole("combobox")).toHaveAttribute(
+      "aria-required",
+      "true",
+    );
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("required");
+  });
+
   /* Top-level props win over RootProps, so the control and the marker agree. */
   it("lets the top-level required win over RootProps.required", () => {
     const { container } = render(
@@ -1214,5 +1249,168 @@ describe("Combobox RootProps precedence", () => {
     expect(
       container.querySelector("[data-slot='field-error']"),
     ).toHaveTextContent("Pick a fruit");
+  });
+});
+
+/*
+ * Each slot leaves out the keys Combobox sets on that part itself. The casts
+ * in the precedence tests stand in for untyped code, which the slot type
+ * cannot stop: the top-level value still wins at runtime.
+ */
+describe("Combobox InputProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the input", () => {
+    render(
+      <Combobox
+        items={items}
+        InputProps={{ id: "fruit", "aria-describedby": "hint" }}
+      />,
+    );
+    const input = screen.getByRole("combobox");
+    expect(input).toHaveAttribute("data-slot", "combobox-input");
+    expect(input).toHaveAttribute("id", "fruit");
+    expect(input).toHaveAttribute("aria-describedby", "hint");
+  });
+
+  it("forwards a ref to the input", () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<Combobox items={items} InputProps={{ ref }} />);
+    expect(ref.current).toBe(screen.getByRole("combobox"));
+  });
+
+  it("lets top-level values win over the same keys in the slot", () => {
+    render(
+      <Combobox
+        items={items}
+        placeholder="Top"
+        color="blue"
+        InputProps={{ placeholder: "Slot", color: "red" } as ComboboxInputProps}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAttribute("placeholder", "Top");
+    const wrapper = document.querySelector("[data-slot='input-wrapper']");
+    expect(wrapper).toHaveClass("palette-blue");
+    expect(wrapper).not.toHaveClass("palette-red");
+  });
+
+  /* The actions ride the input's `after`, so a slot `after` must not replace
+     them. */
+  it.each([
+    ["content", "Slot"],
+    ["null", null],
+  ])(
+    "keeps the Clear and Trigger buttons when the slot passes %s as after",
+    async (_, after) => {
+      const user = userEvent.setup();
+      render(
+        <Combobox
+          items={items}
+          defaultValue="banana"
+          InputProps={{ after } as ComboboxInputProps}
+        />,
+      );
+
+      const clear = screen.getByRole("button", { name: "Clear selection" });
+      const trigger = screen.getByRole("button", { name: "Toggle dropdown" });
+      expect(
+        document.querySelector("[data-slot='combobox-actions']"),
+      ).not.toHaveTextContent("Slot");
+
+      await user.click(trigger);
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+
+      await user.click(clear);
+      expect(screen.getByRole("combobox")).toHaveValue("");
+    },
+  );
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects InputProps the control owns", () => {
+    // @ts-expect-error -- `name` is set on Combobox itself
+    void (<Combobox InputProps={{ name: "other" }} />);
+    // @ts-expect-error -- `placeholder` is set on Combobox itself
+    void (<Combobox InputProps={{ placeholder: "Other" }} />);
+    // @ts-expect-error -- `label` is set on Combobox itself
+    void (<Combobox InputProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `description` is set on Combobox itself
+    void (<Combobox InputProps={{ description: "Other" }} />);
+    // @ts-expect-error -- `action` is set on Combobox itself
+    void (<Combobox InputProps={{ action: "Other" }} />);
+    // @ts-expect-error -- `before` is set on Combobox itself
+    void (<Combobox InputProps={{ before: "Other" }} />);
+    // @ts-expect-error -- `after` carries Combobox's Clear and Trigger buttons
+    void (<Combobox InputProps={{ after: "Other" }} />);
+    // @ts-expect-error -- `size` is set on Combobox itself
+    void (<Combobox InputProps={{ size: "small" }} />);
+    // @ts-expect-error -- `variant` is set on Combobox itself
+    void (<Combobox InputProps={{ variant: "ghost" }} />);
+    // @ts-expect-error -- `fullwidth` is set on Combobox itself
+    void (<Combobox InputProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `color` is set on Combobox itself
+    void (<Combobox InputProps={{ color: "blue" }} />);
+    // @ts-expect-error -- `disabled` is set on Combobox itself
+    void (<Combobox InputProps={{ disabled: true }} />);
+    // @ts-expect-error -- `onFocus` is set on Combobox itself
+    void (<Combobox InputProps={{ onFocus: () => {} }} />);
+    // @ts-expect-error -- `onBlur` is set on Combobox itself
+    void (<Combobox InputProps={{ onBlur: () => {} }} />);
+  });
+});
+
+describe("Combobox PopupProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the popup", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={items} PopupProps={{ "aria-label": "Fruits" }} />);
+
+    await user.click(screen.getByRole("button", { name: "Toggle dropdown" }));
+
+    expect(
+      document.querySelector("[data-slot='combobox-popup']"),
+    ).toHaveAttribute("aria-label", "Fruits");
+  });
+
+  it("lets a top-level color win over one in the slot", async () => {
+    const user = userEvent.setup();
+    render(
+      <Combobox
+        items={items}
+        color="blue"
+        PopupProps={{ color: "red" } as ComboboxPopupProps}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Toggle dropdown" }));
+
+    const popup = document.querySelector("[data-slot='combobox-popup']");
+    expect(popup).toHaveClass("palette-blue");
+    expect(popup).not.toHaveClass("palette-red");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects PopupProps the control owns", () => {
+    // @ts-expect-error -- `color` is set on Combobox itself
+    void (<Combobox PopupProps={{ color: "blue" }} />);
+    // @ts-expect-error -- Combobox renders the popup's list itself
+    void (<Combobox PopupProps={{ children: "Other" }} />);
+  });
+});
+
+describe("ComboboxInput FieldProps", () => {
+  const items = ["apple", "banana"];
+
+  it("lets the part's own label win over one in FieldProps", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput
+          label="Top"
+          FieldProps={{ label: "Slot" } as ComboboxInputProps["FieldProps"]}
+        />
+      </ComboboxRoot>,
+    );
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
   });
 });
