@@ -1581,7 +1581,10 @@ describe("Select TriggerProps", () => {
     expect(trigger).not.toHaveClass("palette-red");
   });
 
-  it("keeps the value and the icon when the slot passes children", () => {
+  /* A behaviour pin, not a precedence test: JSX children follow every spread,
+     so a slot `children` never won. The `@ts-expect-error` below is the guard
+     that matters. */
+  it("renders the value and the icon whatever the slot passes as children", () => {
     render(
       <Select
         items={items}
@@ -1688,6 +1691,22 @@ describe("Select PopupProps", () => {
     const popup = document.querySelector("[data-slot='select-popup']");
     expect(popup).toHaveClass("palette-blue");
     expect(popup).not.toHaveClass("palette-red");
+  });
+
+  it("keeps a color in the slot when the top level sets none", async () => {
+    const user = userEvent.setup();
+    render(
+      <Select
+        items={items}
+        PopupProps={{ color: "red" } as SelectPopupProps}
+      />,
+    );
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='select-popup']")).toHaveClass(
+      "palette-red",
+    );
   });
 
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */

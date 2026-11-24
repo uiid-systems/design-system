@@ -1009,6 +1009,21 @@ describe("Autocomplete PopupProps", () => {
     expect(popup).not.toHaveClass("palette-red");
   });
 
+  it("keeps a color in the slot when the top level sets none", async () => {
+    render(
+      <Autocomplete
+        items={items}
+        PopupProps={{ color: "red" } as AutocompletePopupProps}
+      />,
+    );
+
+    await open();
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-popup']"),
+    ).toHaveClass("palette-red");
+  });
+
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects PopupProps the control owns", () => {
     // @ts-expect-error -- `color` is set on Autocomplete itself

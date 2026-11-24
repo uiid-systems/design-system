@@ -556,7 +556,19 @@ describe("NumberField GroupProps", () => {
     expect(group).not.toHaveClass("palette-red");
   });
 
-  it("keeps the steppers and the input when the slot passes children", () => {
+  /* `size` always has a value at the top level, so `color` is the key an
+     unset top level can leave to the slot. */
+  it("keeps a color in the slot when the top level sets none", () => {
+    render(
+      <NumberField GroupProps={{ color: "red" } as NumberFieldGroupProps} />,
+    );
+    expect(screen.getByRole("group")).toHaveClass("palette-red");
+  });
+
+  /* A behaviour pin, not a precedence test: JSX children follow every spread,
+     so a slot `children` never won. The `@ts-expect-error` below is the guard
+     that matters. */
+  it("renders the steppers and the input whatever the slot passes as children", () => {
     render(
       <NumberField
         GroupProps={{ children: "Slot" } as NumberFieldGroupProps}
