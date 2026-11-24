@@ -95,11 +95,30 @@ export type AutocompleteProps<Value = string> = {
    */
   color?: AutocompleteColor;
   RootProps?: AutocompleteRootProps<Value>;
-  InputProps?: AutocompleteInputProps;
+  /** Reaches the input part. The keys Autocomplete sets on the part itself are left out. */
+  InputProps?: Omit<
+    AutocompleteInputProps,
+    | "name"
+    | "placeholder"
+    | "label"
+    | "description"
+    | "action"
+    | "before"
+    | "after"
+    | "size"
+    | "variant"
+    | "fullwidth"
+    | "color"
+    | "disabled"
+    | "required"
+    | "onFocus"
+    | "onBlur"
+  >;
   InputGroupProps?: AutocompleteInputGroupProps;
   PortalProps?: AutocompletePortalProps;
   PositionerProps?: AutocompletePositionerProps;
-  PopupProps?: AutocompletePopupProps;
+  /** Reaches the popup. `color` and the list inside are set by Autocomplete itself. */
+  PopupProps?: Omit<AutocompletePopupProps, "color" | "children">;
   ListProps?: AutocompleteListProps;
   /**
    * The items to filter and render, typed by the autocomplete's `Value` so it

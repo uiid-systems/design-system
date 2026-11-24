@@ -68,24 +68,30 @@ export function Autocomplete<Value = string>({
       {...definedProps({ items, name, disabled, required })}
       {...rootProps}
     >
+      {/*
+       * `InputProps` spreads first and Autocomplete's own values after, so a
+       * top-level value wins and an unset one leaves the slot's alone.
+       */}
       <AutocompleteInput
-        name={resolvedName}
-        placeholder={placeholder}
-        label={label}
-        description={description}
-        action={action}
-        before={before}
-        after={after}
-        size={size}
-        variant={variant}
-        fullwidth={fullwidth}
-        color={color}
-        disabled={resolvedDisabled}
-        required={resolvedRequired}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        {...domAttributes}
         {...InputProps}
+        {...domAttributes}
+        {...definedProps({
+          name: resolvedName,
+          placeholder,
+          label,
+          description,
+          action,
+          before,
+          after,
+          size,
+          variant,
+          fullwidth,
+          color,
+          disabled: resolvedDisabled,
+          required: resolvedRequired,
+          onFocus,
+          onBlur,
+        })}
         InputGroupProps={mergeInputGroupProps(
           InputGroupProps,
           InputProps?.InputGroupProps,
@@ -94,7 +100,7 @@ export function Autocomplete<Value = string>({
 
       <AutocompletePortal {...PortalProps}>
         <AutocompletePositioner {...PositionerProps}>
-          <AutocompletePopup color={color} {...PopupProps}>
+          <AutocompletePopup {...PopupProps} {...definedProps({ color })}>
             <AutocompleteList {...ListProps}>
               {children ??
                 ((item: Value, index: number) => (
