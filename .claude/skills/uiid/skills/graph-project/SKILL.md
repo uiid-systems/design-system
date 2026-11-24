@@ -1,6 +1,6 @@
 ---
 name: graph-project
-description: List a Linear project's open tickets in dependency order, with links.
+description: Show a Linear project's open tickets in dependency order, as a diagram in a pane or a list in chat.
 argument-hint: "[project]"
 ---
 
@@ -10,7 +10,7 @@ You show one view of a Linear project: which tickets block which, where the phas
 
 The argument is a Linear project (name or `P-UI-n`). With no argument, ask which project.
 
-The view is a markdown list in chat, not a drawing. A list keeps every ticket and pull request one click away, reads the same at any width, and has nothing to misalign.
+The view goes to one of two places. When the session has the project graph pane, it is a diagram in the pane, which stays beside the chat and follows the tickets as they change. Without the pane it is a markdown list in chat. Either way every ticket and pull request is one click away, and you never draw connectors yourself: the pane lays the diagram out from the tickets you send it. [The pane](#5-the-pane) says how to tell which you have.
 
 ## What goes in the list
 
@@ -66,20 +66,21 @@ Tickets that stand in for one another share a row. That means they sit under the
 
 ### Status
 
-Every ticket has one of four statuses. Use these dots and words and no others:
+Every ticket has one of five statuses. Use these dots and words and no others:
 
 | Dot | Word        | Meaning                                                              |
 | --- | ----------- | -------------------------------------------------------------------- |
+| 🟣  | `merged`    | Done in this session, after the view first showed it                 |
 | 🟡  | `building`  | In Progress                                                          |
 | 🟢  | `in review` | In Review                                                            |
 | 🔴  | `needs you` | A `uiid:build-project` run in this session held or stopped it        |
 | ⚪  | no word     | Anything else: it is waiting on a blocker, a gate or to be picked up |
 
-The first two and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` is the one exception: Linear still says In Progress, and only the run knows the ticket cannot go on without the owner.
+`building`, `in review` and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` is the one exception: Linear still says In Progress, and only the run knows the ticket cannot go on without the owner.
 
 ## 3. Show it
 
-Write the list straight into the reply, not in a code fence, so the links work. Above it goes one line: the project's name in bold, then `updated` and the time from `date "+%b %-d, %-I:%M %p"`. This is the shape, for a project with one chain that forks and joins, one ticket on its own, and one gate:
+With the pane, send the project to it as [The pane](#5-the-pane) says, write no list in chat, and go on to the closing sentences below. Without it, write the list straight into the reply, not in a code fence, so the links work. Above it goes one line: the project's name in bold, then `updated` and the time from `date "+%b %-d, %-I:%M %p"`. This is the shape, for a project with one chain that forks and joins, one ticket on its own, and one gate:
 
 ```markdown
 **Checkout rewrite** · updated Nov 23, 8:50 PM
@@ -106,8 +107,32 @@ Then say in one or two sentences what holds the most tickets back: the ticket ev
 
 ## 4. Print it again when a status changes
 
-After the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, or a pull request opened for it. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
+With the pane nothing prints again: each change below goes to the pane instead, as [The pane](#5-the-pane) says. Without it, after the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, or a pull request opened for it. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
 
 Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing.
 
+A ticket that moves to Done in this session, because its pull request merged, stays in the view as `merged`. It keeps its row and its pull request link, and it comes off every other ticket's `waits on`, so a ticket it was the last blocker of moves to the heading it now belongs under. A ticket that was already Done when the project was read is still left out, so the next fresh read drops the merged ones.
+
 Nothing else prints it again. The session does not watch Linear, so a change made somewhere else shows up only the next time the skill is run.
+
+## 5. The pane
+
+The pane ships with this plugin. A session has it when a tool whose name ends in `__set_graph` is listed, whether loaded or waiting behind `ToolSearch`. Load it and its `__set_status` partner with `ToolSearch` if they are not loaded. With no such tool, the chat list is the whole output; install nothing to get one.
+
+Wherever this skill or `uiid:build-project` says to show or print the list, with the pane that means: send it to the pane and print no list.
+
+Send the project with `set_graph`:
+
+- `title`: the project's name.
+- `updated`: the time from `date "+%b %-d, %-I:%M %p"`.
+- `linkBase`: the link base from step 1.
+- `prBase`: `https://github.com/`, the owner and repository that `origin` points at, and `/pull/`.
+- `sections`: the headings from step 2 in order, each with its `heading`, `isGate: true` on an `After the …` heading, and its `tickets` in row order.
+
+Each ticket carries its `id`, its `status` word when it has one, its `pr` number when it has one, every open blocker's id in `waitsOn`, and its reason as `note`. Send every ticket by itself: the pane needs no shared rows, and it works out `n tickets wait on this` from the blockers. The rules under [What goes in the list](#what-goes-in-the-list) hold for the pane too. A heading and a note are your own few words, never ticket text.
+
+If the tool answers that the pane is not showing, write the list in chat as well, this once.
+
+When a ticket changes at one of the moments in step 4, call `set_status` with the ticket's id and only what changed: its `status` (`waiting` takes the word away), its `pr`, or its `note`, plus a new `updated` time. Send the whole project again with `set_graph` only when a ticket moves to another heading, a blocker clears, or the project is read again.
+
+The pane keeps the last project it was sent, so `/project-graph` shows it again in a later session, under the time it was sent.

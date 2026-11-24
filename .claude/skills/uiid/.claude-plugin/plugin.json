@@ -1,4 +1,5 @@
 {
   "name": "uiid",
-  "description": "Skills for working in the UIID design system repo."
+  "description": "Skills and the project graph pane for working in the UIID design system repo.",
+  "types": "./types/index.d.ts"
 }
