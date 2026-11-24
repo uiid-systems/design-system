@@ -76,11 +76,11 @@ Every ticket has one of five statuses. Use these dots and words and no others:
 | 🔴  | `needs you` | A `uiid:build-project` run in this session held or stopped it        |
 | ⚪  | no word     | Anything else: it is waiting on a blocker, a gate or to be picked up |
 
-`building`, `in review` and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` is the one exception: Linear still says In Progress, and only the run knows the ticket cannot go on without the owner.
+`building`, `in review` and the last come straight from the ticket's Linear status, so a ticket's status changes only when Linear's does. `needs you` and `merged` are the exceptions. For `needs you`, Linear still says In Progress, and only the run knows the ticket cannot go on without the owner. For `merged`, Linear says Done, which a fresh read leaves out.
 
 ## 3. Show it
 
-With the pane, send the project to it as [The pane](#5-the-pane) says, write no list in chat, and go on to the closing sentences below. Without it, write the list straight into the reply, not in a code fence, so the links work. Above it goes one line: the project's name in bold, then `updated` and the time from `date "+%b %-d, %-I:%M %p"`. This is the shape, for a project with one chain that forks and joins, one ticket on its own, and one gate:
+With the pane, send the project to it as [The pane](#5-the-pane) says, write no list in chat, and go on to the check and the closing sentences below. Without it, write the list straight into the reply, not in a code fence, so the links work. Above it goes one line: the project's name in bold, then `updated` and the time from `date "+%b %-d, %-I:%M %p"`. This is the shape, for a project with one chain that forks and joins, one ticket on its own, and one gate:
 
 ```markdown
 **Checkout rewrite** · updated Nov 23, 8:50 PM
@@ -101,13 +101,13 @@ With the pane, send the project to it as [The pane](#5-the-pane) says, write no 
 - ⚪ [UI-444](https://linear.app/acme/issue/UI-444) · waits on UI-442
 ```
 
-Before sending, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on.
+Before sending, to the pane or to chat, check the list against what you read: every open ticket appears exactly once, every blocker you kept is named in its ticket's `waits on`, and no row sits above a ticket it waits on.
 
 Then say in one or two sentences what holds the most tickets back: the ticket everything hangs off, and any gate that needs the owner.
 
 ## 4. Print it again when a status changes
 
-With the pane nothing prints again: each change below goes to the pane instead, as [The pane](#5-the-pane) says. Without it, after the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, or a pull request opened for it. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
+With the pane nothing prints again: each change below goes to the pane instead, as [The pane](#5-the-pane) says. Without it, after the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, a pull request opened for it, or you learned its pull request merged. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
 
 Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing.
 

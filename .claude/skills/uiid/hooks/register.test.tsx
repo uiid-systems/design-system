@@ -104,7 +104,7 @@ test("a graph read back from the store is unchanged", () => {
 test("input the pane cannot draw is dropped", () => {
   const graph = toGraph({
     title: "x",
-    linkBase: "javascript:alert(1)",
+    linkBase: "https://linear.app.example/acme/issue/",
     prBase: "https://example.com/pull/",
     sections: [
       {
@@ -147,7 +147,19 @@ test("a change touches one ticket and keeps the rest", () => {
 test("the pane draws what set_graph sent, then follows set_status", async ($, on) => {
   on("command.register", () => ({ value: { command: "project-graph" } }));
   on("tool.register", () => ({ value: { tool: "mcp__uiid__set_graph" } }));
+  let isPlaced = true;
   on("ui.open", () => ({ value: { isPlaced: true } }));
+  on("ui.panes", () => ({
+    value: [
+      {
+        id: "project-graph",
+        title: "Project graph",
+        isShown: isPlaced,
+        isFocused: false,
+        isPlaced,
+      },
+    ],
+  }));
   on("session.start", (_, e) => ({ cwd: e.cwd }));
   const kept = new Map<string, unknown>();
   on("store.get", (_, e) => ({ value: kept.get(e.key) }));
@@ -190,6 +202,45 @@ test("the pane draws what set_graph sent, then follows set_status", async ($, on
     status: "needs you",
     note: "two files outside the allowlist",
   });
+
+  const both = await Promise.all([
+    $.tool.run({
+      tool: "mcp__uiid__set_status",
+      tool_use_id: "call-a",
+      ticket: "UI-441",
+      status: "building",
+    }),
+    $.tool.run({
+      tool: "mcp__uiid__set_status",
+      tool_use_id: "call-b",
+      ticket: "UI-442",
+      pr: 702,
+    }),
+  ]);
+  expect(both.map((one) => one.result)).toEqual([
+    "UI-441 updated in the pane.",
+    "UI-442 updated in the pane.",
+  ]);
+  const blocked = toGraph(kept.get("graph"))?.sections[1]?.tickets;
+  expect(blocked?.[2]?.status).toBe("building");
+  expect(blocked?.[3]?.pr).toBe(702);
+
+  const empty = await $.tool.run({
+    tool: "mcp__uiid__set_status",
+    tool_use_id: "call-c",
+    ticket: "UI-441",
+    status: "exploded",
+  });
+  expect(empty.result).toMatch(/Nothing changed/);
+
+  isPlaced = false;
+  const unseen = await $.tool.run({
+    tool: "mcp__uiid__set_status",
+    tool_use_id: "call-d",
+    ticket: "UI-441",
+    status: "waiting",
+  });
+  expect(unseen.result).toMatch(/not showing/);
 
   for (const surface of ["terminal", "desktop", "vscode", "mobile"] as const) {
     const ui = await $.ui.mount({ ...PANE, surface });

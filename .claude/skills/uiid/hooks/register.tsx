@@ -2,7 +2,7 @@ import { atom, read, update } from "claude-code";
 import type { Register } from "claude-code";
 
 import type { Status } from "../types";
-import type { Mark } from "./graph";
+import type { Change, Mark } from "./graph";
 import {
   asPr,
   asStatus,
@@ -30,6 +30,8 @@ const COLORS: { readonly [status in Status]: string } = {
 };
 
 const STATUS_WORDS = ["merged", "building", "in review", "needs you"];
+
+const isEmpty = (value: object): boolean => Object.keys(value).length === 0;
 
 // The scan reads the atom's source, so the plugin's name is spelled out here.
 const graph = atom({ plugin: "uiid", key: "graph" } as const, EMPTY, {
@@ -172,21 +174,41 @@ export const register: Register = (on) => {
     const status = word === "waiting" ? word : asStatus(word);
     const pr = asPr(input.pr);
     const updated = asText(input.updated);
-    const changed = withChange(await read($, graph), ticket, {
+    const change: Change = {
       ...(status !== undefined && { status }),
       ...(pr !== undefined && { pr }),
       ...(typeof input.note === "string" && { note: asText(input.note) }),
-      ...(updated !== "" && { updated }),
+    };
+    if ((word !== "" && status === undefined) || isEmpty(change)) {
+      return {
+        result: `Nothing changed: give a status (${STATUS_WORDS.join(", ")} or waiting), a pr or a note.`,
+      };
+    }
+    // The change is applied to the value as it stands at the write, so two
+    // calls sent together both land.
+    let isFound = false;
+    const written = await update($, graph, (now) => {
+      const next = withChange(now, ticket, {
+        ...change,
+        ...(updated !== "" && { updated }),
+      });
+      isFound = next !== undefined;
+
+      return next ?? now;
     });
-    if (changed === undefined) {
+    if (!isFound) {
       return {
         result: `${ticket} is not in the graph. Draw it again with set_graph.`,
       };
     }
-    await update($, graph, () => changed);
-    await $.store.set(STORED, changed);
+    await $.store.set(STORED, written);
+    const panes = await $.ui.panes();
 
-    return { result: `${ticket} updated in the pane.` };
+    return {
+      result: panes.some((pane) => pane.id === PANE && pane.isPlaced)
+        ? `${ticket} updated in the pane.`
+        : `${ticket} updated, but the pane is not showing. Show the list in chat; the person can open the pane with /project-graph.`,
+    };
   }).catch(() => ({ result: "The ticket could not be updated." }));
 
   on("ui.render", { component: "Pane", requestId: PANE }, async ($, e) => {
@@ -236,7 +258,7 @@ export const register: Register = (on) => {
           }
           if (row.kind === "note") {
             return (
-              <Text mono>
+              <Text mono wrap="truncate-end">
                 {rails(row.marks)}
                 <Text dimColor>
                   {"  "}

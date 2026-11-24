@@ -1,7 +1,7 @@
 import type { Graph, Section, Status, Ticket } from "../types";
 
 const TICKET = /^[A-Z][A-Z0-9]*-\d+$/;
-const LINK_BASE = /^https:\/\/[\w.-]+\/[\w./-]*$/;
+const LINK_BASE = /^https:\/\/linear\.app\/[\w-]+\/issue\/$/;
 const PR_BASE = /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/pull\/$/;
 const STATUSES: readonly Status[] = [
   "merged",
@@ -333,7 +333,12 @@ export const layOut = (graph: Graph, columns: number): Row[] => {
       }
     };
     cells.forEach((rail, column) => {
-      if (isGate) return mark(rail === undefined ? "══" : "╪═");
+      if (isGate) {
+        if (rail === undefined) return mark("══");
+        mark("╪", rail.status);
+
+        return mark("═");
+      }
       const hasLeft = from !== -1 && column > from;
       const hasRight = from !== -1 && column >= from;
       const key =
