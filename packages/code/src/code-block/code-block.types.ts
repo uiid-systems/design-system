@@ -44,11 +44,17 @@ export type CodeBlockHeaderProps = GroupProps & {
   /** Props for the language icon */
   LanguageIconProps?: Omit<LanguageIconProps, "language">;
   /** Props for the wrap button */
-  WrapButtonProps?: CodeBlockWrapButtonProps;
+  WrapButtonProps?: Omit<
+    CodeBlockWrapButtonProps,
+    "pressed" | "defaultPressed" | "onPressedChange"
+  >;
   /** Props for the copy button */
-  CopyButtonProps?: CodeBlockCopyButtonProps;
+  CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code">;
   /** Props for the fullscreen button */
-  FullscreenButtonProps?: CodeBlockFullscreenButtonProps;
+  FullscreenButtonProps?: Omit<
+    CodeBlockFullscreenButtonProps,
+    "pressed" | "defaultPressed" | "onPressedChange"
+  >;
 };
 
 export type CodeBlockContentProps = StackProps & {
@@ -132,9 +138,15 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   /** Props for the language icon */
   LanguageIconProps?: Omit<LanguageIconProps, "language">;
   /** Props for the wrap button */
-  WrapButtonProps?: CodeBlockWrapButtonProps;
+  WrapButtonProps?: Omit<
+    CodeBlockWrapButtonProps,
+    "pressed" | "defaultPressed" | "onPressedChange"
+  >;
   /** Props for the copy button. Its `onCopy` runs before the top-level `onCopy`. */
-  CopyButtonProps?: CodeBlockCopyButtonProps;
+  CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code">;
   /** Props for the fullscreen button */
-  FullscreenButtonProps?: CodeBlockFullscreenButtonProps;
+  FullscreenButtonProps?: Omit<
+    CodeBlockFullscreenButtonProps,
+    "pressed" | "defaultPressed" | "onPressedChange"
+  >;
 };

@@ -47,7 +47,7 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
     "filename" | "copyable" | "code" | "CopyButtonProps"
   >;
   /** Props for the copy button */
-  CopyButtonProps?: CodeBlockCopyButtonProps;
+  CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code">;
   /** Props for the textarea, including `ref`, `name`, `id` and `aria-*` */
   TextareaProps?: CodeEditorTextareaProps;
 };

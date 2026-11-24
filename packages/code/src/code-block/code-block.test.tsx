@@ -953,6 +953,40 @@ describe("CodeBlock HeaderProps precedence", () => {
     expect(header).toHaveAttribute("data-ui-gap", "6");
     expect(header).toHaveClass("custom-header");
   });
+
+  it("copies CodeBlock's code over an untyped CopyButtonProps.code", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={onCopy}
+        CopyButtonProps={{ code: "hijacked" } as object}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
+  });
+
+  it("still enters fullscreen over an untyped FullscreenButtonProps.onPressedChange", async () => {
+    const user = userEvent.setup();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        FullscreenButtonProps={{ onPressedChange: () => {} } as object}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+
+    await waitFor(() =>
+      expect(
+        document.querySelector('[data-slot="code-block"][data-fullscreen]'),
+      ).toBeInTheDocument(),
+    );
+  });
 });
 
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
@@ -1034,6 +1068,48 @@ describe("CodeBlock slot props", () => {
           code=""
           // @ts-expect-error -- `FullscreenButtonProps` is set on CodeBlock itself
           HeaderProps={{ FullscreenButtonProps: {} }}
+        />
+      </>
+    );
+  });
+
+  it("rejects the code and toggle state CodeBlock owns in the button slots", () => {
+    void (
+      <>
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- the copied text is CodeBlock's `code`
+          CopyButtonProps={{ code: "other" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the wrap state
+          WrapButtonProps={{ pressed: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the wrap state
+          WrapButtonProps={{ defaultPressed: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the wrap state
+          WrapButtonProps={{ onPressedChange: () => {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the fullscreen state
+          FullscreenButtonProps={{ pressed: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the fullscreen state
+          FullscreenButtonProps={{ defaultPressed: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the fullscreen state
+          FullscreenButtonProps={{ onPressedChange: () => {} }}
         />
       </>
     );

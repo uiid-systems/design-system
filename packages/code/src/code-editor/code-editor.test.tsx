@@ -547,6 +547,10 @@ describe("CodeEditor slot props", () => {
           // @ts-expect-error -- `CopyButtonProps` is set on CodeEditor itself
           HeaderProps={{ CopyButtonProps: {} }}
         />
+        <CodeEditor
+          // @ts-expect-error -- the copied text is the editor's value
+          CopyButtonProps={{ code: "other" }}
+        />
       </>
     );
   });
