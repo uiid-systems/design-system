@@ -1,7 +1,7 @@
+import { barrelExports } from "@uiid/config/scripts/barrel-exports.mjs";
 // @vitest-environment node
 import { describe, expect, expectTypeOf, it } from "vitest";
 
-import { barrelExports } from "../../../scripts/barrel-exports.mjs";
 import * as forms from "./index";
 
 // Components, their parts and their prop types, plus the masks Input takes and

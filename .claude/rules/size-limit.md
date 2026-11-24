@@ -1,7 +1,7 @@
 ---
 paths:
   - ".size-limit.js"
-  - "scripts/size-compare.mjs"
+  - "packages/config/scripts/size-compare.mjs"
   - ".github/workflows/size-limit.yml"
 ---
 
@@ -27,7 +27,7 @@ The `Size Limit` workflow runs on every non-draft PR, including stacked PRs that
 
 1. Builds the PR (merged into its base) and runs `size-limit --json`.
 2. Checks out the base commit as a second worktree, builds it, and measures it with the PR's config by pointing `SIZE_ROOT` at that worktree. Both builds share one Turbo cache, so the base build is mostly cache hits.
-3. Runs `scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table for packages, with each package's script and stylesheet side by side on one row, and one for components. Both show only the rows that changed, with every entry in a collapsed section below.
+3. Runs `packages/config/scripts/size-compare.mjs` on the two reports and posts the result as a PR comment. The comment has one table for packages, with each package's script and stylesheet side by side on one row, and one for components. Both show only the rows that changed, with every entry in a collapsed section below.
 
 Each change carries a dot:
 
@@ -45,7 +45,7 @@ The workflow does not re-run when a PR's base branch is changed without a push. 
 
 ## When the check fails
 
-The check fails when any entry grows by more than **5% and 2 kB**. Growth has to clear both, so a small package can gain a component and a large one is not failed by a small change. Both thresholds are constants at the top of `scripts/size-compare.mjs`, and the percentage is also where a dot turns from yellow to red.
+The check fails when any entry grows by more than **5% and 2 kB**. Growth has to clear both, so a small package can gain a component and a large one is not failed by a small change. Both thresholds are constants at the top of `packages/config/scripts/size-compare.mjs`, and the percentage is also where a dot turns from yellow to red.
 
 1. **Unintentional growth** → investigate (new dependency? lost tree-shake? barrel re-export of a heavy library?) and fix.
 2. **Intentional growth** → add the `size-increase-ok` label to the PR. The check re-runs and passes, and the comment still records the increase.
@@ -64,5 +64,5 @@ To compare two checkouts the way CI does:
 ```bash
 pnpm size-limit --json > head.json
 SIZE_ROOT=../other-checkout pnpm size-limit --json > base.json
-node scripts/size-compare.mjs base.json head.json
+node packages/config/scripts/size-compare.mjs base.json head.json
 ```

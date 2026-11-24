@@ -1,7 +1,7 @@
+import { barrelExports } from "@uiid/config/scripts/barrel-exports.mjs";
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 
-import { barrelExports } from "../../../scripts/barrel-exports.mjs";
 import * as icons from "./index";
 import * as lucide from "./lucide-icons.generated";
 

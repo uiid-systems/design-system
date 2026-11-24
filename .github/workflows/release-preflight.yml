@@ -29,4 +29,4 @@ jobs:
       # Node built-ins only, so no install. Fails when a public package is not
       # on npm or has never been linked to release.yml as a trusted publisher.
       - name: Check every public package can be published from CI
-        run: node scripts/check-npm-publishing.mjs
+        run: node packages/config/scripts/check-npm-publishing.mjs

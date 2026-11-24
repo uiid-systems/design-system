@@ -10,7 +10,7 @@ import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const packagesDir = join(root, "packages");
 const read = (path) => readFileSync(join(root, path), "utf8");
 const readJson = (path) => JSON.parse(read(path));
@@ -67,9 +67,7 @@ const tsconfig = stripComments(read("tsconfig.json"));
 const references = new Set(
   [...tsconfig.matchAll(/"path":\s*"([^"]+)"/g)].map(([, path]) => path),
 );
-const cssLayers = createRequire(import.meta.url)(
-  "../packages/config/scripts/css-layers.cjs",
-);
+const cssLayers = createRequire(import.meta.url)("./css-layers.cjs");
 const umbrellaDeps = readJson(`packages/${UMBRELLA}/package.json`).dependencies;
 const barrel = read(`packages/${UMBRELLA}/src/index.ts`);
 const privateNames = new Set(

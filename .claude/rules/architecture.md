@@ -47,7 +47,7 @@ design-system/
 | File                          | Purpose                                                                                                    |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `vite.config.ts`              | Shared Vite build config factory, `createViteConfig`                                                       |
-| `scripts/`                    | Build helpers the Vite config, the build scripts and Storybook use (CSS layers and target, dts rewrite)    |
+| `scripts/`                    | Build helpers (CSS layers and target, dts rewrite), the CI checks, `postinstall` and test helpers          |
 | `tsconfig.package.json`       | Package build config every `packages/*/tsconfig.json` extends: declaration-only emit to `dist`, no tests   |
 | `tsconfig.check.json`         | Build-free `pnpm typecheck` of packages and Storybook; `apps/docs/tsconfig.check.json` covers the docs app |
 | `tsconfig.check.browser.json` | Typecheck of the real-browser tests, kept apart because `vitest/browser` retypes jest-dom's matchers       |

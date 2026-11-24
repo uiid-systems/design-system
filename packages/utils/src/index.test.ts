@@ -1,7 +1,7 @@
+import { barrelExports } from "@uiid/config/scripts/barrel-exports.mjs";
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 
-import { barrelExports } from "../../../scripts/barrel-exports.mjs";
 import * as utils from "./index";
 
 // @uiid/utils serves the sibling @uiid/* packages, so its barrel holds the

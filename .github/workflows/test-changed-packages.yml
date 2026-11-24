@@ -63,11 +63,11 @@ jobs:
 
       # Reads only the token JSON, so it needs no build.
       - name: Check palette contrast
-        run: node scripts/check-palette-contrast.mjs
+        run: node packages/config/scripts/check-palette-contrast.mjs
 
       # The new-package checklist steps that fail silently when skipped.
       - name: Check package registration
-        run: node scripts/check-package-registration.mjs
+        run: node packages/config/scripts/check-package-registration.mjs
 
       # Vitest's global setup generates the token CSS and the per-icon modules,
       # which install skipped, so this needs no build and no generate step.
@@ -94,7 +94,7 @@ jobs:
       # `@uiid/source` export condition. This is the only step that loads the
       # built packages.
       - name: Check built packages
-        run: node scripts/check-dist.mjs
+        run: node packages/config/scripts/check-dist.mjs
 
       # Storybook's main.ts generates the token CSS and the per-icon modules
       # itself and resolves @uiid/* to source, so these tests need no build.

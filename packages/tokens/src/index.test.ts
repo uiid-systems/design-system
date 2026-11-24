@@ -1,9 +1,9 @@
 // @vitest-environment node
 import { readFileSync } from "node:fs";
 
+import { barrelExports } from "@uiid/config/scripts/barrel-exports.mjs";
 import { describe, expect, it } from "vitest";
 
-import { barrelExports } from "../../../scripts/barrel-exports.mjs";
 import * as tokens from "./index";
 
 const manifest = JSON.parse(

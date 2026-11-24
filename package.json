@@ -17,11 +17,11 @@
     "build-storybook": "turbo build-storybook",
     "size": "size-limit",
     "typecheck": "node packages/icons/scripts/emit-per-icon-modules.mjs --no-clean && pnpm --filter docs exec next typegen && tsc -p packages/config/tsconfig.check.json && tsc -p packages/config/tsconfig.check.browser.json && tsc -p apps/docs/tsconfig.check.json",
-    "postinstall": "node scripts/postinstall.mjs",
+    "postinstall": "node packages/config/scripts/postinstall.mjs",
     "lint:fix": "oxlint --fix",
     "format:check": "oxfmt --check",
     "generate:props": "pnpm --filter @uiid/utils generate:props",
-    "npm:bootstrap": "node scripts/check-npm-publishing.mjs --fix"
+    "npm:bootstrap": "node packages/config/scripts/check-npm-publishing.mjs --fix"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",

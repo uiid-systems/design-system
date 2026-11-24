@@ -6,8 +6,8 @@
 // either is missed, `pnpm -r publish` fails with a 404 partway through and
 // every package after it in publish order is left on the old version.
 //
-//   node scripts/check-npm-publishing.mjs        read-only, no npm login
-//   node scripts/check-npm-publishing.mjs --fix  sets up what the check flags
+//   node packages/config/scripts/check-npm-publishing.mjs        read-only, no npm login
+//   node packages/config/scripts/check-npm-publishing.mjs --fix  sets up what the check flags
 //
 // Who may publish is private to npm, so the read-only check looks for public
 // evidence instead. A package passes when one of its versions was published
@@ -42,7 +42,7 @@ const MARKER_TAG = "bootstrap";
 const PLACEHOLDER_VERSION = "0.0.0-bootstrap";
 const REGISTRY = "https://registry.npmjs.org";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const packagesDir = join(root, "packages");
 const fix = process.argv.includes("--fix");
 

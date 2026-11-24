@@ -10,7 +10,7 @@ export * from "./phone";
 export * from "./ssn";
 export * from "./time";
 // Not `license-plate`: pnpm leaves the root LICENSE out of the tarball when a
-// packed path contains "license" (scripts/check-dist.mjs, check 7).
+// packed path contains "license" (packages/config/scripts/check-dist.mjs, check 7).
 export * from "./vehicle-plate";
 export * from "./zip-code";
 export * from "./zip-code-extended";

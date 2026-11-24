@@ -67,7 +67,7 @@ jobs:
         id: compare
         run: |
           set +e
-          node scripts/size-compare.mjs size-base.json size-head.json --out size-report.md
+          node packages/config/scripts/size-compare.mjs size-base.json size-head.json --out size-report.md
           code=$?
           if [ "$code" -eq 1 ]; then
             echo "grew=true" >> "$GITHUB_OUTPUT"

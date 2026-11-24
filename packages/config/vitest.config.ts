@@ -46,7 +46,6 @@ export default defineConfig({
     include: [
       "packages/**/*.test.{ts,tsx}",
       "packages/config/scripts/*.test.mjs",
-      "scripts/**/*.test.mjs",
     ],
     // Real-browser tests run from vitest.browser.config.ts instead.
     exclude: [...configDefaults.exclude, "**/*.browser.test.tsx"],

@@ -11,7 +11,10 @@ import { fileURLToPath } from "node:url";
 // hit restores `dist/` alone and every `@uiid/icons/<name>` import stops resolving.
 if (process.env.VERCEL) process.exit(0);
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const root = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../..",
+);
 const bin = (name) => path.join(root, "node_modules", ".bin", name);
 
 // pnpm 10 blocks dependency lifecycle scripts, so lefthook's own postinstall

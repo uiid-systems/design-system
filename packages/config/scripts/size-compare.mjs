@@ -1,7 +1,7 @@
 /**
  * Compares two `size-limit --json` reports and prints a markdown summary.
  *
- *   node scripts/size-compare.mjs <base.json> <head.json> [--out <file>]
+ *   node packages/config/scripts/size-compare.mjs <base.json> <head.json> [--out <file>]
  *
  * Exits 1 when an entry grew by more than both thresholds below. Growth has to
  * clear both so a small package can gain a component without tripping the
@@ -144,7 +144,7 @@ const main = () => {
   const [basePath, headPath, ...rest] = process.argv.slice(2);
   if (!basePath || !headPath) {
     console.error(
-      "Usage: node scripts/size-compare.mjs <base.json> <head.json> [--out <file>]",
+      "Usage: node packages/config/scripts/size-compare.mjs <base.json> <head.json> [--out <file>]",
     );
     process.exit(2);
   }
