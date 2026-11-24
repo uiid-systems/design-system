@@ -575,3 +575,36 @@ describe("CheckboxGroup CheckboxProps", () => {
     void (<CheckboxGroup CheckboxProps={{ disabled: true }} />);
   });
 });
+
+/* IndicatorProps reaches every box's indicator, so it is the Checkbox slot's
+   type: `indeterminate` is set on each Checkbox, not through its indicator. */
+describe("CheckboxGroup IndicatorProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches every indicator", () => {
+    const { container } = render(
+      <CheckboxGroup
+        items={items}
+        defaultValue={["a", "b"]}
+        IndicatorProps={{ className: "caller" }}
+      />,
+    );
+
+    const indicators = container.querySelectorAll(
+      "[data-slot='checkbox-indicator']",
+    );
+    expect(indicators).toHaveLength(2);
+    for (const indicator of indicators) {
+      expect(indicator).toHaveClass("caller");
+    }
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects IndicatorProps each Checkbox owns", () => {
+    // @ts-expect-error -- `indeterminate` is set on each Checkbox itself
+    void (<CheckboxGroup IndicatorProps={{ indeterminate: true }} />);
+  });
+});
