@@ -1233,6 +1233,16 @@ describe("Input FieldProps", () => {
     );
     void (
       <Input
+        FieldProps={{
+          ActionProps: {
+            // @ts-expect-error -- the action's content is `action` on Input itself
+            children: "Other",
+          },
+        }}
+      />
+    );
+    void (
+      <Input
         // @ts-expect-error -- `description` is set on Input itself
         FieldProps={{ description: "Other" }}
       />
