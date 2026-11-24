@@ -6,7 +6,7 @@ argument-hint: "[project or ticket ids]"
 
 # UIID build project
 
-You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until its reviewers approve, and then push the approved commit and open a draft PR yourself. You write no product code. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it opens, and a closing summary that also carries every ticket that was stopped, held or left waiting.
+You are the orchestrator. You pick the tickets, start one build agent per ticket, run a review loop on each until its reviewers approve, and then push the approved commit and open a draft PR yourself. You write no product code. The owner hears from you at three points: before any agent starts (one set of questions per ticket that needs a decision, then which tickets you picked and why), each PR as it opens or ticket as it is held or stopped, and a closing summary that also carries every ticket that was stopped, held or left waiting.
 
 The argument is a Linear project (name or `P-UI-n`) or a list of ticket ids. With no argument, ask which project.
 
@@ -33,7 +33,7 @@ A ticket is ready when all of these hold:
 - It needs no ruling from the owner, or only rulings that one round of questions can settle (below). A choice the ticket tells the agent how to make ("follow what Lucide does", "pick the simpler of these two") needs no ruling.
 - No open PR or existing branch already carries it. After `git fetch origin`, check `gh pr list --state open --head <gitBranchName>`, `git ls-remote --heads origin <gitBranchName>` and `git branch -a -i --list '*<ticket-id>*'` (`gitBranchName` is lowercase, ticket ids are uppercase, and `--list` is case-sensitive without `-i`). `git worktree list` alone misses pushed branches and local branches with no worktree.
 
-A ticket that will need files outside the step 5 allowlist, or a dependency change, is still built, but it will be held for the owner before anything is pushed. Say so next to it in the pick list.
+A ticket that will need files outside the step 5 allowlist, or a dependency change, is still built, but it will be held for the owner before anything is pushed. Say so in a line under the pick list.
 
 ### Questions for the owner
 
@@ -43,13 +43,13 @@ If the answers settle the criteria, the ticket is ready. Paste the questions and
 
 If the criteria are still unclear after that one round, do not ask again. Add the clarifying material to the ticket (the questions, the answers so far, and what is still open) with `save_comment`, and leave the ticket for another run. An undecided product direction, a milestone gate, or a question you cannot write options for is not a question to ask here; leave those tickets out from the start.
 
-Tell the owner in a short list which tickets you picked and, in one line each, why the others were left or deferred. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
+Show the owner the project as `uiid:graph-project` lays it out, with its headings for a run: the picked tickets under `Running now`, the stacked ones under `Stacks in this run`, and the rest that no gate holds under `Not this run`. Under it say, in one line each, why the tickets not picked were left or deferred. Then start. Do not wait for approval of the list unless nothing qualified or the pick is surprising.
 
-When nothing is ready, say so and show the owner the chain: which ticket everything hangs off, and which gates need them. Do not loosen the rules above to find work.
+When nothing is ready, say so and show the same list, which names the ticket everything hangs off and the gates that need the owner. Do not loosen the rules above to find work.
 
 ### Stacking
 
-One exception lets a chain move without waiting for merges. A ticket whose only unfinished blocker is a ticket picked in this run can be built stacked on that blocker's branch once the blocker reaches In Review in step 5. Approval alone is not enough: the blocker's branch only exists on the remote once you push it, and a held blocker never frees its waiting tickets.
+One exception lets a chain move without waiting for merges. A ticket that meets every other rule above, and whose only unfinished blocker is a ticket picked in this run, can be built stacked on that blocker's branch once the blocker reaches In Review in step 5. Approval alone is not enough: the blocker's branch only exists on the remote once you push it, and a held blocker never frees its waiting tickets.
 
 - In step 1, list such tickets as waiting on a blocker in this run, and ask their questions then, with the others.
 - Each time a ticket reaches In Review, check whether it frees a waiting ticket, and if so start that ticket's build agent as in step 2.
@@ -124,6 +124,6 @@ Then, in this order:
 
 ## 6. Tell the owner
 
-As each PR opens, give the owner one line: the ticket, the PR link, the number of review rounds and anything deferred. When all tickets are finished, stopped or held, close with a short table of ticket, PR, rounds and open points, where a failing check on a draft PR (`gh pr checks <number>`) is an open point. Include every stopped or held ticket with its reason, and every waiting ticket whose blocker never reached In Review. Then offer to open the PRs in the browser and to post the review findings to each PR.
+As each PR opens, give the owner one line: the ticket, the PR link, the number of review rounds and anything deferred. Under it print the `uiid:graph-project` list again with a new updated time, and do the same when a ticket is held or stopped. Those are the only moments the list prints again before the closing summary: a ticket moving to In Progress as its agent starts prints nothing. When all tickets are finished, stopped or held, close with a short table of ticket, PR, rounds and open points, where a failing check on a draft PR (`gh pr checks <number>`) is an open point. Include every stopped or held ticket with its reason, and every waiting ticket whose blocker never reached In Review. Under the table show the `uiid:graph-project` list again as the project now stands, with each ticket's status and pull request, so the owner sees what the run moved and what still waits. Then offer to open the PRs in the browser and to post the review findings to each PR.
 
 Leave the worktrees in place. The owner may want to keep working in them, and removing one is not yours to decide.
