@@ -8,7 +8,7 @@ Use Collapsible when you want to:
 - Lay out the root and the panel with the same props as `Stack` (`gap`, `p`, `ax`, `ay`, `fullwidth`, `bordered`, ...) through `RootProps` and `PanelProps`
 - Animate the panel's height open and closed, or switch the animation off with `instant`
 
-Leave `open` unset and the collapsible runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself, or `defaultOpen` to start it open. `disabled` and `keepMounted` sit on the component too, as on `CollapsibleCard`. The same props still work through `RootProps` (and `keepMounted` through `PanelProps`), and the top-level prop wins when both are set.
+Leave `open` unset and the collapsible runs itself from the trigger; pass `open` and `onOpenChange` to drive it yourself, or `defaultOpen` to start it open. `disabled` and `keepMounted` sit on the component too, as on `CollapsibleCard`. These are set only on the component, so each slot leaves out the keys it owns: `RootProps` takes no `open`, `defaultOpen`, `onOpenChange`, `disabled` or `children`; `PanelProps` takes no `instant`, `keepMounted` or `children`; and `TriggerProps` takes no `children`, since the content is `trigger`. Passing one through a slot is a type error.
 
 Collapsible wraps Base UI's [Collapsible](https://base-ui.com/react/components/collapsible) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, and `PanelProps`.
 

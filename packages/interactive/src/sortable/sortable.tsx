@@ -23,10 +23,8 @@ import {
   useSortableHandlers,
 } from "./hooks";
 import { SortableRootContext } from "./sortable.context";
-import type {
-  SortableRootProps,
-  SortableRootContextValue,
-} from "./sortable.types";
+import type { SortableRootContextValue } from "./sortable.context";
+import type { SortableRootProps } from "./sortable.types";
 
 const orientationConfig = {
   vertical: {
@@ -88,56 +86,43 @@ export function Sortable<T>({
     return value.map((item) => getItemValue(item));
   }, [value, getItemValue]);
 
-  const {
-    activeId,
-    setActiveId,
-    handleDragStart,
-    handleDragEnd,
-    handleDragCancel,
-  } = useSortableHandlers({
-    value,
-    onValueChange,
-    onMove,
-    getItemValue,
-    onDragStart,
-    onDragEnd,
-    onDragCancel,
-  });
+  const { activeId, handleDragStart, handleDragEnd, handleDragCancel } =
+    useSortableHandlers({
+      value,
+      onValueChange,
+      onMove,
+      getItemValue,
+      onDragStart,
+      onDragEnd,
+      onDragCancel,
+    });
 
   const { announcements, screenReaderInstructions } = useSortableAnnouncements({
     itemCount: value.length,
     orientation,
   });
 
-  const contextValue = React.useMemo(
+  const contextValue = React.useMemo<SortableRootContextValue>(
     () => ({
-      id,
       items,
       modifiers: modifiers ?? config.modifiers,
       strategy: strategy ?? config.strategy,
       activeId,
-      setActiveId,
-      getItemValue,
       flatCursor,
     }),
     [
-      id,
       items,
       modifiers,
       strategy,
       config.modifiers,
       config.strategy,
       activeId,
-      setActiveId,
-      getItemValue,
       flatCursor,
     ],
   );
 
   return (
-    <SortableRootContext.Provider
-      value={contextValue as SortableRootContextValue<unknown>}
-    >
+    <SortableRootContext.Provider value={contextValue}>
       <DndContext
         collisionDetection={collisionDetection ?? config.collisionDetection}
         modifiers={modifiers ?? config.modifiers}

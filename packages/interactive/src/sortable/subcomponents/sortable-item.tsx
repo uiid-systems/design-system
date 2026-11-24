@@ -11,10 +11,8 @@ import {
   SortableItemContext,
   SortableOverlayContext,
 } from "../sortable.context";
-import type {
-  SortableItemProps,
-  SortableItemContextValue,
-} from "../sortable.types";
+import type { SortableItemContextValue } from "../sortable.context";
+import type { SortableItemProps } from "../sortable.types";
 
 import styles from "../sortable.module.css";
 

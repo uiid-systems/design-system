@@ -1,10 +1,11 @@
 "use client";
 
-import { Prose, useStreamPace, useStreamReveal } from "@uiid/typography";
-import type { StreamRevealPass } from "@uiid/typography";
+import { Prose } from "@uiid/typography";
 import { RuleType } from "markdown-to-jsx/react";
 import type { MarkdownToJSX } from "markdown-to-jsx/react";
 
+import { useStreamPace, useStreamReveal } from "../markdown.hooks";
+import type { StreamRevealPass } from "../markdown.hooks";
 import type { MarkdownProps } from "../markdown.types";
 import { compileMarkdown } from "../markdown.utils";
 

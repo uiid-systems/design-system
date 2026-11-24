@@ -72,7 +72,8 @@ export const Controlled = () => {
       <Text emphasis="muted">{open ? "Open" : "Closed"}</Text>
       <Collapsible
         trigger={<Button>Toggle</Button>}
-        RootProps={{ open, onOpenChange: setOpen }}
+        open={open}
+        onOpenChange={setOpen}
       >
         <Text>{BODY}</Text>
       </Collapsible>

@@ -1,12 +1,10 @@
 .sortable-item {
-  &:where([data-dragging], :disabled) {
+  &:where([data-dragging], [data-disabled]) {
     opacity: var(--globals-disabled-opacity);
   }
 }
 
 .sortable-item-handle {
-  composes: composes-disabled from global;
-
   all: unset;
   cursor: grab;
 
@@ -14,9 +12,21 @@
     cursor: grabbing;
   }
 
+  &[data-disabled] {
+    pointer-events: none;
+  }
+
   svg {
     vertical-align: middle;
   }
+}
+
+/*
+ * A handle always sits inside an item. A disabled item already dims, handle
+ * included, so the handle dims itself only when it is disabled on its own.
+ */
+.sortable-item:not([data-disabled]) .sortable-item-handle[data-disabled] {
+  opacity: var(--globals-disabled-opacity);
 }
 
 .sortable-dragging {

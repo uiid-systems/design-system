@@ -28,10 +28,18 @@ export type CollapsiblePanelProps = WithLayoutProps<
 
 export type CollapsibleProps = React.PropsWithChildren<{
   trigger: CollapsibleTriggerProps["children"];
-  /** Everything else on the root. A top-level prop wins over the same key here. */
-  RootProps?: CollapsibleRootProps;
-  TriggerProps?: CollapsibleTriggerProps;
-  PanelProps?: CollapsiblePanelProps;
+  /** Everything else on the root. The state props and `children` are set on Collapsible itself. */
+  RootProps?: Omit<
+    CollapsibleRootProps,
+    "open" | "defaultOpen" | "onOpenChange" | "disabled" | "children"
+  >;
+  /** Reaches the trigger. Its content is `trigger`. */
+  TriggerProps?: Omit<CollapsibleTriggerProps, "children">;
+  /** Reaches the panel. `instant`, `keepMounted` and `children` are set on Collapsible itself. */
+  PanelProps?: Omit<
+    CollapsiblePanelProps,
+    "instant" | "keepMounted" | "children"
+  >;
 }> &
   Pick<
     Collapsible.Root.Props,

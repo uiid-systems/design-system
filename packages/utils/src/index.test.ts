@@ -8,6 +8,8 @@ import * as utils from "./index";
 // names some other package imports and nothing else. Apps reach `cx` through
 // `@uiid/design-system/utils`.
 const values = [
+  "REVEAL_DEFAULT_BLUR",
+  "REVEAL_DEFAULT_DURATION",
   "cva",
   "cx",
   "definedProps",
@@ -20,6 +22,7 @@ const values = [
   "resolveTrigger",
   "spacingPropKeys",
   "splitDomAttributes",
+  "splitWords",
   "stylePropKeys",
   "togglePropKeys",
   "useComposedRefs",

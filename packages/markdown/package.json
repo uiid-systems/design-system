@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@uiid/typography": "workspace:*",
+    "@uiid/utils": "workspace:*",
     "markdown-to-jsx": "^9.10.4"
   },
   "peerDependencies": {

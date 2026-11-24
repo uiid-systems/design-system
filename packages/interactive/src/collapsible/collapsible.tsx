@@ -32,7 +32,7 @@ export const Collapsible = ({
         {...definedProps({ keepMounted })}
         // A bare panel is instant; the monolithic component animates unless
         // told otherwise.
-        instant={instant ?? PanelProps?.instant ?? false}
+        instant={instant ?? false}
       >
         {children}
       </CollapsiblePanel>

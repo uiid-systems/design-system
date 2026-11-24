@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, expectTypeOf, vi } from "vitest";
 
 import { Sortable } from "./sortable";
+import type { SortableRootContextValue } from "./sortable.context";
 import * as Examples from "./sortable.examples";
 import type { SortableItemProps } from "./sortable.types";
 import {
@@ -10,6 +11,8 @@ import {
   SortableItemHandle,
   SortableOverlay,
 } from "./subcomponents";
+
+import css from "./sortable.module.css?raw";
 
 type Refs = {
   item?: React.Ref<HTMLDivElement>;
@@ -332,6 +335,29 @@ describe("Sortable", () => {
 
       expect(onValueChange).not.toHaveBeenCalled();
     });
+
+    // The item is a `div`, which `:disabled` never matches.
+    it("dims a disabled item through its data-disabled attribute", () => {
+      const item = css.slice(
+        css.indexOf(".sortable-item {"),
+        css.indexOf(".sortable-item-handle {"),
+      );
+      expect(item).toMatch(/\[data-disabled\][^{]*\{[^}]*opacity:/);
+      expect(item).not.toContain(":disabled");
+    });
+
+    // The item already dims; the global disabled treatment would dim its handle a second time.
+    it("leaves the handle of a disabled item to the item's dim", () => {
+      renderItems({ itemProps: (item) => ({ disabled: item === "a" }) });
+      const handle = screen.getByRole("button", { name: "drag a" });
+      expect(handle).not.toHaveClass("composes-disabled");
+    });
+
+    it("dims a disabled handle only when its item is enabled", () => {
+      expect(css).toMatch(
+        /\.sortable-item:not\(\[data-disabled\]\) \.sortable-item-handle\[data-disabled\] \{[^}]*opacity: var\(--globals-disabled-opacity\);/,
+      );
+    });
   });
 
   describe("overlay", () => {
@@ -431,5 +457,14 @@ describe("Sortable examples", () => {
     expect(
       document.querySelectorAll("[data-slot='sortable-item']").length,
     ).toBeGreaterThan(0);
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if the shape drifts. */
+describe("root context", () => {
+  it("provides only the fields a part reads", () => {
+    expectTypeOf<keyof SortableRootContextValue>().toEqualTypeOf<
+      "items" | "modifiers" | "strategy" | "activeId" | "flatCursor"
+    >();
   });
 });

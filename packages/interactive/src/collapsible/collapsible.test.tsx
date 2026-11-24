@@ -32,7 +32,7 @@ describe("Collapsible", () => {
 
   it("renders with data-slot attributes", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -167,7 +167,7 @@ describe("Collapsible", () => {
 
   it("opens initially with defaultOpen", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -183,12 +183,10 @@ describe("Collapsible", () => {
       return (
         <Collapsible
           trigger="Toggle"
-          RootProps={{
-            open,
-            onOpenChange: (next) => {
-              onOpenChange(next);
-              setOpen(next);
-            },
+          open={open}
+          onOpenChange={(next) => {
+            onOpenChange(next);
+            setOpen(next);
           }}
         >
           Content
@@ -260,86 +258,6 @@ describe("Collapsible", () => {
     expect(screen.queryByText("Content")).not.toBeInTheDocument();
   });
 
-  it("lets a top-level prop win over the same key in RootProps", () => {
-    render(
-      <Collapsible
-        trigger="Toggle"
-        defaultOpen={false}
-        RootProps={{ defaultOpen: true }}
-      >
-        Content
-      </Collapsible>,
-    );
-    expect(screen.queryByText("Content")).not.toBeInTheDocument();
-  });
-
-  it("still applies a RootProps key the top level leaves unset", () => {
-    render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
-        Content
-      </Collapsible>,
-    );
-    expect(screen.getByText("Content")).toBeVisible();
-  });
-
-  it("lets a top-level keepMounted win over PanelProps.keepMounted", () => {
-    render(
-      <Collapsible
-        trigger="Toggle"
-        keepMounted={false}
-        PanelProps={{ keepMounted: true }}
-      >
-        Content
-      </Collapsible>,
-    );
-    expect(screen.queryByText("Content")).not.toBeInTheDocument();
-  });
-
-  it("animates by default, and lets a top-level instant win over PanelProps", () => {
-    const panel = (container: HTMLElement) =>
-      container.querySelector("[data-slot='collapsible-panel']");
-    const { container, unmount } = render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
-        Content
-      </Collapsible>,
-    );
-    expect(panel(container)).not.toHaveAttribute("data-instant");
-    unmount();
-
-    const top = render(
-      <Collapsible
-        trigger="Toggle"
-        instant={false}
-        RootProps={{ defaultOpen: true }}
-        PanelProps={{ instant: true }}
-      >
-        Content
-      </Collapsible>,
-    );
-    expect(panel(top.container)).not.toHaveAttribute("data-instant");
-    top.unmount();
-
-    const slot = render(
-      <Collapsible
-        trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
-        PanelProps={{ instant: true }}
-      >
-        Content
-      </Collapsible>,
-    );
-    expect(panel(slot.container)).toHaveAttribute("data-instant");
-  });
-
-  it("still applies PanelProps.keepMounted when the top level leaves it unset", () => {
-    render(
-      <Collapsible trigger="Toggle" PanelProps={{ keepMounted: true }}>
-        Content
-      </Collapsible>,
-    );
-    expect(screen.getByText("Content")).toBeInTheDocument();
-  });
-
   // ============================================
   // LAYOUT PROPS
   // ============================================
@@ -361,7 +279,7 @@ describe("Collapsible", () => {
 
   it("aligns panel content to the end by default", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -372,7 +290,7 @@ describe("Collapsible", () => {
     render(
       <Collapsible
         trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
+        defaultOpen
         PanelProps={{ ay: "start", gap: 2 }}
       >
         Content
@@ -396,7 +314,7 @@ describe("Collapsible", () => {
 
   it("lets the panel shrink below its content while it animates", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -405,11 +323,7 @@ describe("Collapsible", () => {
 
   it("lets PanelProps override the panel's minh", () => {
     render(
-      <Collapsible
-        trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
-        PanelProps={{ minh: 40 }}
-      >
+      <Collapsible trigger="Toggle" defaultOpen PanelProps={{ minh: 40 }}>
         Content
       </Collapsible>,
     );
@@ -424,7 +338,7 @@ describe("Collapsible", () => {
     render(
       <Collapsible
         trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
+        defaultOpen
         PanelProps={{ className: "custom" }}
       >
         Content
@@ -439,7 +353,7 @@ describe("Collapsible", () => {
     render(
       <Collapsible
         trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
+        defaultOpen
         PanelProps={{
           className: "caller",
         }}
@@ -457,7 +371,7 @@ describe("Collapsible", () => {
 
   it("animates by default, leaving data-instant off the panel", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -466,7 +380,7 @@ describe("Collapsible", () => {
 
   it("marks the panel instant when instant is set", () => {
     render(
-      <Collapsible trigger="Toggle" instant RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" instant defaultOpen>
         Content
       </Collapsible>,
     );
@@ -479,7 +393,7 @@ describe("Collapsible", () => {
 
   it("is vertical by default", () => {
     render(
-      <Collapsible trigger="Toggle" RootProps={{ defaultOpen: true }}>
+      <Collapsible trigger="Toggle" defaultOpen>
         Content
       </Collapsible>,
     );
@@ -525,7 +439,7 @@ describe("Collapsible", () => {
     render(
       <Collapsible
         trigger="Toggle"
-        RootProps={{ defaultOpen: true }}
+        defaultOpen
         PanelProps={{ orientation: "horizontal" }}
       >
         Content
@@ -609,5 +523,38 @@ describe("className", () => {
   it("takes a string, not a function of the part's state", () => {
     // @ts-expect-error -- style a state through its `data-*` attribute instead
     void (<CollapsiblePanel className={() => "from-fn"} />);
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("slot props", () => {
+  it("rejects a key Collapsible owns in RootProps", () => {
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- `defaultOpen` is set on Collapsible itself
+        RootProps={{ defaultOpen: true }}
+      />
+    );
+  });
+
+  it("rejects a key Collapsible owns in TriggerProps", () => {
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- the trigger's content is `trigger`
+        TriggerProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects a key Collapsible owns in PanelProps", () => {
+    void (
+      <Collapsible
+        trigger="Toggle"
+        // @ts-expect-error -- `keepMounted` is set on Collapsible itself
+        PanelProps={{ keepMounted: true }}
+      />
+    );
   });
 });
