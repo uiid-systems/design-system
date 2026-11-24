@@ -108,6 +108,6 @@ Then say in one or two sentences what holds the most tickets back: the ticket ev
 
 After the first list, print the whole list again when a ticket's status or pull request changes in this session: you moved it in Linear, or a pull request opened for it. Changes that happen together give one list, not one each. Give it a new `updated` time. Work from what the session already knows plus the change, without reading the project again.
 
-Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing, since the pick list has just shown it.
+Inside a `uiid:build-project` run, that skill's step 6 names the moments instead: when a pull request opens, and when a ticket is held or stopped. A ticket moving to In Progress as its build agent starts prints nothing.
 
 Nothing else prints it again. The session does not watch Linear, so a change made somewhere else shows up only the next time the skill is run.
