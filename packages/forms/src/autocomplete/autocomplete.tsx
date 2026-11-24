@@ -70,11 +70,12 @@ export function Autocomplete<Value = string>({
     >
       {/*
        * `InputProps` spreads first and Autocomplete's own values after, so a
-       * top-level value wins and an unset one leaves the slot's alone.
+       * top-level value wins and an unset one leaves the slot's alone. The DOM
+       * attributes go through `definedProps` too, as in Select.
        */}
       <AutocompleteInput
         {...InputProps}
-        {...domAttributes}
+        {...definedProps({ ...domAttributes })}
         {...definedProps({
           name: resolvedName,
           placeholder,

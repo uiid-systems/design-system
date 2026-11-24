@@ -528,6 +528,18 @@ describe("Combobox DOM attributes reach the input", () => {
     );
     expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
   });
+
+  /* A forwarding wrapper passes an unset attribute as `undefined`. */
+  it("keeps the InputProps name when the top-level attribute is undefined", () => {
+    render(
+      <Combobox
+        items={defaultItems}
+        aria-label={undefined}
+        InputProps={{ "aria-label": "Inner" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+  });
 });
 
 describe("Combobox layout props", () => {

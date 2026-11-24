@@ -97,11 +97,12 @@ export function Combobox<
       {/*
        * `InputProps` spreads first and Combobox's own values after, so a
        * top-level value wins and an unset one leaves the slot's alone. `after`
-       * is always set, so nothing in the slot can drop the buttons.
+       * is always set, so nothing in the slot can drop the buttons. The DOM
+       * attributes go through `definedProps` too, as in Select.
        */}
       <ComboboxInput
         {...InputProps}
-        {...domAttributes}
+        {...definedProps({ ...domAttributes })}
         {...definedProps({
           name: resolvedName,
           placeholder,

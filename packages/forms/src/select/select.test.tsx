@@ -889,6 +889,18 @@ describe("Select DOM attributes reach the trigger", () => {
     expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
   });
 
+  /* A forwarding wrapper passes an unset attribute as `undefined`. */
+  it("keeps the TriggerProps name when the top-level attribute is undefined", () => {
+    render(
+      <Select
+        items={defaultItems}
+        aria-label={undefined}
+        TriggerProps={{ "aria-label": "Inner" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Inner");
+  });
+
   it("still routes Root's own props to Root", () => {
     render(<Select items={defaultItems} defaultValue="b" aria-label="Die 1" />);
     expect(screen.getByText("Option B")).toBeInTheDocument();

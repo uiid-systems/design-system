@@ -176,11 +176,13 @@ export function Select<
       >
         {/*
          * Each slot spreads first and Select's own values after, so a
-         * top-level value wins and an unset one leaves the slot's alone.
+         * top-level value wins and an unset one leaves the slot's alone. The
+         * DOM attributes are copied into a plain object, the shape
+         * `definedProps` takes, so an `aria-label={undefined}` is dropped too.
          */}
         <SelectTrigger
           {...TriggerProps}
-          {...domAttributes}
+          {...definedProps({ ...domAttributes })}
           {...definedProps({ size, fullwidth, variant, color, before, after })}
         >
           <SelectValue

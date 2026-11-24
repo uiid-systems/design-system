@@ -99,6 +99,18 @@ describe("Autocomplete", () => {
       "Search",
     );
   });
+
+  /* A forwarding wrapper passes an unset attribute as `undefined`. */
+  it("keeps the InputProps name when the top-level attribute is undefined", () => {
+    render(
+      <Autocomplete
+        items={defaultItems}
+        aria-label={undefined}
+        InputProps={{ "aria-label": "Search" }}
+      />,
+    );
+    expect(screen.getByRole("combobox")).toHaveAccessibleName("Search");
+  });
 });
 
 describe("Autocomplete render target", () => {
