@@ -396,6 +396,13 @@ describe("RadioGroup FieldProps", () => {
     expect(field).toHaveAttribute("data-ui-w", "full");
   });
 
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(<RadioGroup label="Top" FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
     void (
@@ -408,6 +415,36 @@ describe("RadioGroup FieldProps", () => {
       <RadioGroup
         // @ts-expect-error -- `children` is set on RadioGroup itself
         FieldProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `name` is set on RadioGroup itself
+        FieldProps={{ name: "other" }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `required` is set on RadioGroup itself
+        FieldProps={{ required: true }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `disabled` is set on RadioGroup itself
+        FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `fullwidth` is set on RadioGroup itself
+        FieldProps={{ fullwidth: true }}
+      />
+    );
+    void (
+      <RadioGroup
+        // @ts-expect-error -- `size` is set on RadioGroup itself
+        FieldProps={{ size: "small" }}
       />
     );
   });

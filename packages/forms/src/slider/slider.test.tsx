@@ -446,6 +446,13 @@ describe("Slider FieldProps", () => {
     expect(screen.getByRole("slider")).toBeEnabled();
   });
 
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(<Slider label="Top" FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
     void (
@@ -464,6 +471,12 @@ describe("Slider FieldProps", () => {
       <Slider
         // @ts-expect-error -- `disabled` is set on Slider itself
         FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <Slider
+        // @ts-expect-error -- `size` is set on Slider itself
+        FieldProps={{ size: "small" }}
       />
     );
   });

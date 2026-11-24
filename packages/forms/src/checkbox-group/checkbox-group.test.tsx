@@ -454,6 +454,15 @@ describe("CheckboxGroup FieldProps", () => {
     expect(field).toHaveAttribute("data-ui-w", "full");
   });
 
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(
+      <CheckboxGroup label="Top" FieldProps={{ label: "Slot" } as never} />,
+    );
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
     void (
@@ -464,8 +473,32 @@ describe("CheckboxGroup FieldProps", () => {
     );
     void (
       <CheckboxGroup
+        // @ts-expect-error -- `name` is set on CheckboxGroup itself
+        FieldProps={{ name: "other" }}
+      />
+    );
+    void (
+      <CheckboxGroup
+        // @ts-expect-error -- `required` is set on CheckboxGroup itself
+        FieldProps={{ required: true }}
+      />
+    );
+    void (
+      <CheckboxGroup
+        // @ts-expect-error -- `disabled` is set on CheckboxGroup itself
+        FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <CheckboxGroup
         // @ts-expect-error -- `fullwidth` is set on CheckboxGroup itself
         FieldProps={{ fullwidth: true }}
+      />
+    );
+    void (
+      <CheckboxGroup
+        // @ts-expect-error -- `size` is set on CheckboxGroup itself
+        FieldProps={{ size: "small" }}
       />
     );
   });

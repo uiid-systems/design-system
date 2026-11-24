@@ -564,28 +564,6 @@ describe("Input hands disabled and fullwidth to Field", () => {
       container.querySelector("[data-slot='field-root']"),
     ).not.toHaveAttribute("data-ui-w");
   });
-
-  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
-  it("rejects FieldProps the control owns", () => {
-    void (
-      <Input
-        // @ts-expect-error -- `label` is set on Input itself
-        FieldProps={{ label: "Other" }}
-      />
-    );
-    void (
-      <Input
-        // @ts-expect-error -- `description` is set on Input itself
-        FieldProps={{ description: "Other" }}
-      />
-    );
-    void (
-      <Input
-        // @ts-expect-error -- `disabled` is set on Input itself
-        FieldProps={{ disabled: true }}
-      />
-    );
-  });
 });
 
 describe("Input slot click-to-focus", () => {
@@ -843,13 +821,6 @@ describe("Input field chrome", () => {
     expect(screen.getByRole("textbox")).toHaveAttribute("id", "email");
     await user.click(screen.getByText("Email"));
     expect(screen.getByRole("textbox")).toHaveFocus();
-  });
-
-  it("reaches the field around it through FieldProps", () => {
-    const { container } = render(<Input FieldProps={{ className: "outer" }} />);
-    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
-      "outer",
-    );
   });
 
   it("is marked invalid, with the error shown, when the field is driven invalid", () => {
@@ -1219,5 +1190,76 @@ describe("Input mask", () => {
     render(<InputControl mask={mask} inputMode="decimal" />);
 
     expect(screen.getByRole("textbox")).toHaveAttribute("inputmode", "decimal");
+  });
+});
+
+describe("Input FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <Input FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  it("lets a FieldProps w beat the width fullwidth sets", () => {
+    const { container } = render(<Input fullwidth FieldProps={{ w: 320 }} />);
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "320",
+    );
+  });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(<Input label="Top" FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
+  it("keeps a slot label when the top level leaves it unset", () => {
+    render(<Input FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Slot")).toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <Input
+        // @ts-expect-error -- `label` is set on Input itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Input
+        // @ts-expect-error -- `description` is set on Input itself
+        FieldProps={{ description: "Other" }}
+      />
+    );
+    void (
+      <Input
+        // @ts-expect-error -- `name` is set on Input itself
+        FieldProps={{ name: "other" }}
+      />
+    );
+    void (
+      <Input
+        // @ts-expect-error -- `required` is set on Input itself
+        FieldProps={{ required: true }}
+      />
+    );
+    void (
+      <Input
+        // @ts-expect-error -- `disabled` is set on Input itself
+        FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <Input
+        // @ts-expect-error -- `size` is set on Input itself
+        FieldProps={{ size: "small" }}
+      />
+    );
   });
 });
