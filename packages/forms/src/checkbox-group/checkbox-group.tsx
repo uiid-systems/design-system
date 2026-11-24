@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { Checkbox } from "../checkbox/checkbox";
 import { Field } from "../field/field";
 import type { CheckboxGroupProps } from "./checkbox-group.types";
@@ -41,15 +43,17 @@ export const CheckboxGroup = ({
      * inside it would only ever fill the width of its own label.
      */
     <Field
-      name={name}
-      label={fieldLabel}
-      description={description}
-      action={action}
-      required={required}
-      disabled={disabled}
-      fullwidth={fullwidth}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label: fieldLabel,
+        description,
+        action,
+        required,
+        disabled,
+        fullwidth,
+        size,
+      })}
     >
       <CheckboxGroupRoot
         orientation={orientation}

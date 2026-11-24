@@ -39,12 +39,8 @@ export const Slider = ({
 
   return (
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      size={size}
       {...FieldProps}
+      {...definedProps({ name, label, description, action, size })}
     >
       <SliderRoot {...rootProps}>
         <SliderControl {...ControlProps}>

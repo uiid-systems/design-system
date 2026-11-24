@@ -1,7 +1,7 @@
 "use client";
 
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cx, definedProps } from "@uiid/utils";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
@@ -45,15 +45,17 @@ export const Textarea = ({
 
   return (
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      required={required}
-      disabled={disabled}
-      size={size}
       w={fullwidth ? "full" : undefined}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label,
+        description,
+        action,
+        required,
+        disabled,
+        size,
+      })}
     >
       <InputWrapper
         orientation="vertical"

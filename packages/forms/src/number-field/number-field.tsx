@@ -36,14 +36,16 @@ export const NumberField = ({
 
   return (
     <Field
-      name={rootProps.name}
-      label={label}
-      description={description}
-      action={action}
-      disabled={disabled}
-      required={required}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name: rootProps.name,
+        label,
+        description,
+        action,
+        disabled,
+        required,
+        size,
+      })}
     >
       <NumberFieldRoot {...rootProps}>
         <NumberFieldGroup size={size} color={color} {...GroupProps}>

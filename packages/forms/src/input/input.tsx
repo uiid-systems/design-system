@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { Field } from "../field/field";
 import type { InputProps } from "./input.types";
 import { hasInputSlots } from "./input.utils";
@@ -30,15 +32,17 @@ export const Input = ({
 
   return (
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      required={required}
-      disabled={disabled}
-      size={size}
       w={fullwidth ? "full" : undefined}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label,
+        description,
+        action,
+        required,
+        disabled,
+        size,
+      })}
     >
       <InputWrapper
         before={before}

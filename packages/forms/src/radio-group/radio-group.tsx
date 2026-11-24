@@ -1,5 +1,7 @@
 "use client";
 
+import { definedProps } from "@uiid/utils";
+
 import { Field } from "../field/field";
 import { Radio } from "../radio/radio";
 import type { RadioGroupProps } from "./radio-group.types";
@@ -33,15 +35,17 @@ export const RadioGroup = ({
      * inside it would only ever fill the width of its own label.
      */
     <Field
-      name={name}
-      label={label}
-      description={description}
-      action={action}
-      required={required}
-      disabled={disabled}
-      fullwidth={fullwidth}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name,
+        label,
+        description,
+        action,
+        required,
+        disabled,
+        fullwidth,
+        size,
+      })}
     >
       <RadioGroupRoot
         name={name}
