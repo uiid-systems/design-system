@@ -130,7 +130,8 @@ export type SelectProps<
   PositionerProps?: SelectPositionerProps;
   /** Reaches the popup. `color` and the list inside are set by Select itself. */
   PopupProps?: Omit<SelectPopupProps, "color" | "children">;
-  ListProps?: SelectListProps;
+  /** Reaches the list. Select renders the rows inside it itself. */
+  ListProps?: Omit<SelectListProps, "children">;
   /** Reaches the value. `size` and `placeholder` are set on Select itself. */
   ValueProps?: Omit<SelectValueProps, "size" | "placeholder">;
   /** Reaches the Field around the select. The keys Select hands to Field itself are left out. */

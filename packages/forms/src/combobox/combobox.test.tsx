@@ -1485,3 +1485,24 @@ describe("ComboboxInput FieldProps", () => {
     expect(screen.queryByText("Slot")).not.toBeInTheDocument();
   });
 });
+
+describe("Combobox ListProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the list", async () => {
+    const user = userEvent.setup();
+    render(<Combobox items={items} ListProps={{ id: "fruits" }} />);
+
+    await user.click(screen.getByRole("button", { name: "Toggle dropdown" }));
+
+    expect(
+      document.querySelector("[data-slot='combobox-list']"),
+    ).toHaveAttribute("id", "fruits");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects ListProps the control owns", () => {
+    // @ts-expect-error -- Combobox renders the rows itself
+    void (<Combobox ListProps={{ children: "Other" }} />);
+  });
+});

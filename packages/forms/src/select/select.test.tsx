@@ -1698,3 +1698,28 @@ describe("Select PopupProps", () => {
     void (<Select PopupProps={{ children: "Other" }} />);
   });
 });
+
+describe("Select ListProps", () => {
+  const items = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+  ];
+
+  it("reaches the list", async () => {
+    const user = userEvent.setup();
+    render(<Select items={items} ListProps={{ id: "options" }} />);
+
+    await user.click(screen.getByRole("combobox"));
+
+    expect(document.querySelector("[data-slot='select-list']")).toHaveAttribute(
+      "id",
+      "options",
+    );
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects ListProps the control owns", () => {
+    // @ts-expect-error -- Select renders the rows itself
+    void (<Select ListProps={{ children: "Other" }} />);
+  });
+});

@@ -129,7 +129,8 @@ export type AutocompleteProps<Value = string> = {
   PositionerProps?: AutocompletePositionerProps;
   /** Reaches the popup. `color` and the list inside are set by Autocomplete itself. */
   PopupProps?: Omit<AutocompletePopupProps, "color" | "children">;
-  ListProps?: AutocompleteListProps;
+  /** Reaches the list. Autocomplete renders the rows inside it itself. */
+  ListProps?: Omit<AutocompleteListProps, "children">;
   /**
    * The items to filter and render, typed by the autocomplete's `Value` so it
    * can be inferred from them. Readonly, so an `as const` list works. An object

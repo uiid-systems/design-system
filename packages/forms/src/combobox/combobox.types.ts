@@ -144,7 +144,8 @@ export type ComboboxProps<
   PositionerProps?: ComboboxPositionerProps;
   /** Reaches the popup. `color` and the list inside are set by Combobox itself. */
   PopupProps?: Omit<ComboboxPopupProps, "color" | "children">;
-  ListProps?: ComboboxListProps;
+  /** Reaches the list. Combobox renders the rows inside it itself. */
+  ListProps?: Omit<ComboboxListProps, "children">;
   /**
    * The items to filter and render, typed by the combobox's `Value` so it can
    * be inferred from them. Readonly, so an `as const` list works. An object

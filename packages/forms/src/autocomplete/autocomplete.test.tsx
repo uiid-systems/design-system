@@ -1028,3 +1028,25 @@ describe("AutocompleteInput FieldProps", () => {
     expect(screen.queryByText("Slot")).not.toBeInTheDocument();
   });
 });
+
+describe("Autocomplete ListProps", () => {
+  const items = ["apple", "banana"];
+
+  it("reaches the list", async () => {
+    const user = userEvent.setup();
+    render(<Autocomplete items={items} ListProps={{ id: "fruits" }} />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.keyboard("a");
+
+    expect(
+      document.querySelector("[data-slot='autocomplete-list']"),
+    ).toHaveAttribute("id", "fruits");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects ListProps the control owns", () => {
+    // @ts-expect-error -- Autocomplete renders the rows itself
+    void (<Autocomplete ListProps={{ children: "Other" }} />);
+  });
+});
