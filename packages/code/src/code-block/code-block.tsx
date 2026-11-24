@@ -64,14 +64,17 @@ export const CodeBlock = ({
   );
 
   // Both handlers run after a successful copy: the slot's first, then the
-  // top-level one, which still runs if the first throws.
+  // top-level one, which still runs if the first throws. The slot's error is
+  // logged here; the top-level one's reaches the copy button, which logs it,
+  // so each error is reported once.
   const slotOnCopy = CopyButtonProps?.onCopy;
   const handleCopy = (copied: string) => {
     try {
       slotOnCopy?.(copied);
-    } finally {
-      onCopy?.(copied);
+    } catch (err) {
+      console.error("onCopy threw:", err);
     }
+    onCopy?.(copied);
   };
 
   const { html, error } = useHighlight(code, language, {
