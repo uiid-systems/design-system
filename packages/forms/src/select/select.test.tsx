@@ -1457,3 +1457,55 @@ describe("Select RootProps precedence", () => {
     ).not.toBeNull();
   });
 });
+
+describe("Select FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <Select FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(<Select label="Top" FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <Select
+        // @ts-expect-error -- `label` is set on Select itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Select
+        // @ts-expect-error -- `name` is set on Select itself
+        FieldProps={{ name: "other" }}
+      />
+    );
+    void (
+      <Select
+        // @ts-expect-error -- `required` is set on Select itself
+        FieldProps={{ required: true }}
+      />
+    );
+    void (
+      <Select
+        // @ts-expect-error -- `disabled` is set on Select itself
+        FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <Select
+        // @ts-expect-error -- `size` is set on Select itself
+        FieldProps={{ size: "small" }}
+      />
+    );
+  });
+});

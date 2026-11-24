@@ -306,15 +306,6 @@ describe("Textarea Field.Control surface", () => {
     expect(screen.getByRole("textbox")).not.toHaveAttribute("data-filled");
   });
 
-  it("reaches the field around it through FieldProps", () => {
-    const { container } = render(
-      <Textarea FieldProps={{ className: "outer" }} />,
-    );
-    expect(container.querySelector("[data-slot='field-root']")).toHaveClass(
-      "outer",
-    );
-  });
-
   it("marks a disabled textarea with the control's data-disabled state", () => {
     render(<Textarea disabled />);
     const textarea = screen.getByRole("textbox");
@@ -681,25 +672,6 @@ describe("Textarea hands disabled and fullwidth to Field", () => {
       container.querySelector("[data-slot='field-root']"),
     ).not.toHaveAttribute("data-ui-w");
   });
-
-  /* One excess key per literal: TypeScript reports only the first. */
-  it("rejects FieldProps the control owns", () => {
-    render(
-      <Textarea
-        label="Notes"
-        // @ts-expect-error label is owned by Textarea
-        FieldProps={{ validationMode: "onChange", label: "Other" }}
-      />,
-    );
-    render(
-      <Textarea
-        label="Notes"
-        // @ts-expect-error disabled is owned by Textarea
-        FieldProps={{ validationMode: "onChange", disabled: true }}
-      />,
-    );
-    expect(screen.getAllByRole("textbox")).toHaveLength(2);
-  });
 });
 
 describe("Textarea slot click-to-focus", () => {
@@ -883,5 +855,73 @@ describe("Textarea slot press guards", () => {
       target: screen.getByText("3 files attached"),
     });
     expect(screen.getByRole("textbox")).not.toHaveFocus();
+  });
+});
+
+describe("Textarea FieldProps", () => {
+  it("reaches the field around it", () => {
+    const { container } = render(
+      <Textarea FieldProps={{ className: "outer", w: "full" }} />,
+    );
+    const field = container.querySelector("[data-slot='field-root']");
+    expect(field).toHaveClass("outer");
+    expect(field).toHaveAttribute("data-ui-w", "full");
+  });
+
+  it("lets a FieldProps w beat the width fullwidth sets", () => {
+    const { container } = render(
+      <Textarea fullwidth FieldProps={{ w: 320 }} />,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "320",
+    );
+  });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level label win over one in the slot", () => {
+    render(<Textarea label="Top" FieldProps={{ label: "Slot" } as never} />);
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    void (
+      <Textarea
+        // @ts-expect-error -- `label` is set on Textarea itself
+        FieldProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Textarea
+        // @ts-expect-error -- `action` is set on Textarea itself
+        FieldProps={{ action: "Other" }}
+      />
+    );
+    void (
+      <Textarea
+        // @ts-expect-error -- `name` is set on Textarea itself
+        FieldProps={{ name: "other" }}
+      />
+    );
+    void (
+      <Textarea
+        // @ts-expect-error -- `required` is set on Textarea itself
+        FieldProps={{ required: true }}
+      />
+    );
+    void (
+      <Textarea
+        // @ts-expect-error -- `disabled` is set on Textarea itself
+        FieldProps={{ disabled: true }}
+      />
+    );
+    void (
+      <Textarea
+        // @ts-expect-error -- `size` is set on Textarea itself
+        FieldProps={{ size: "small" }}
+      />
+    );
   });
 });

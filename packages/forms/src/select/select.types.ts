@@ -6,6 +6,7 @@ import type { WithLayoutProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 
 /** Shared type for single/multiple select mode. Used by Combobox. */
 export type SelectMultipleMode = true | false | undefined;
@@ -126,7 +127,8 @@ export type SelectProps<
   PopupProps?: SelectPopupProps;
   ListProps?: SelectListProps;
   ValueProps?: SelectValueProps;
-  FieldProps?: FieldProps;
+  /** Reaches the Field around the select. The keys Select hands to Field itself are left out. */
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
   IconProps?: SelectIconProps;
 }> &
   /*

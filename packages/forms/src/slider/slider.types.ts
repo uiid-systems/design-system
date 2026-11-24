@@ -8,6 +8,7 @@ import type {
 } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { sliderVariants } from "./slider.variants";
 
 export type SliderVariants = VariantProps<typeof sliderVariants>;
@@ -70,5 +71,10 @@ export type SliderProps = SliderRootProps & {
   TrackProps?: SliderTrackProps;
   IndicatorProps?: SliderIndicatorProps;
   ThumbProps?: SliderThumbProps;
-  FieldProps?: FieldProps;
+  /**
+   * Reaches the Field around the slider. The keys Slider hands to Field itself
+   * (`name`, `size` and `disabled`, which also dims the label and description)
+   * are left out, so none of them has two sources.
+   */
+  FieldProps?: FieldSlotProps<"name" | "disabled" | "size">;
 } & Pick<FieldProps, "label" | "description" | "action">;

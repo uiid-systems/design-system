@@ -19,6 +19,8 @@ export * from "./field/field.types";
 export * from "./field/field-required-context";
 export * from "./field/subcomponents";
 
+export type * from "./shared/field-slot.types";
+
 export * from "./form/form";
 export * from "./form/form.types";
 export * from "./form/hooks";

@@ -8,6 +8,7 @@ import type {
 } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { numberFieldVariants } from "./number-field.variants";
 
 export type NumberFieldVariants = VariantProps<typeof numberFieldVariants>;
@@ -103,7 +104,8 @@ export type NumberFieldProps = {
   DecrementProps?: NumberFieldDecrementProps;
   IncrementProps?: NumberFieldIncrementProps;
   GroupProps?: NumberFieldGroupProps;
-  FieldProps?: FieldProps;
+  /** Reaches the Field around the control. The keys NumberField hands to Field itself are left out. */
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
   InputProps?: NumberFieldInputProps;
 } & NumberFieldRootProps &
   Pick<FieldProps, "label" | "description" | "action"> &

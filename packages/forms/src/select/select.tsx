@@ -151,14 +151,16 @@ export function Select<
   // reads its own root to dim the label and description.
   return (
     <Field
-      name={fieldName}
-      label={label}
-      description={description}
-      action={action}
-      required={fieldRequired}
-      disabled={fieldDisabled}
-      size={size}
       {...FieldProps}
+      {...definedProps({
+        name: fieldName,
+        label,
+        description,
+        action,
+        required: fieldRequired,
+        disabled: fieldDisabled,
+        size,
+      })}
     >
       <SelectRoot<Value, Multiple>
         {...RootProps}

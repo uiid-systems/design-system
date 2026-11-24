@@ -3,6 +3,7 @@ import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
+import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { inputVariants, inputWrapperVariants } from "./input.variants";
 
 export type InputVariants = VariantProps<typeof inputVariants>;
@@ -107,15 +108,5 @@ export type InputProps = Omit<InputControlProps, "inner"> & {
    * `action`, `name`, `required`, `disabled`, `size` and `children` and hands
    * them to Field itself, so they are not accepted here a second time.
    */
-  FieldProps?: Omit<
-    FieldProps,
-    | "label"
-    | "description"
-    | "action"
-    | "name"
-    | "required"
-    | "disabled"
-    | "size"
-    | "children"
-  >;
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
 } & Pick<FieldProps, "label" | "description" | "action">;
