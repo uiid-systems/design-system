@@ -1,16 +1,30 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
+import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodeInline } from "./code-inline";
 
-// Mock the highlighter module
+// Stands in for the highlighter: highlights at once, and like the real hook
+// returns no markup when it is not enabled.
 vi.mock("../highlighter/highlighter.hooks", () => ({
-  useHighlight: vi.fn((code: string) => ({
-    html: `<pre class="shiki"><code><span class="line">${code}</span></code></pre>`,
-    loading: false,
-    error: null,
-  })),
+  useHighlight: vi.fn(
+    (code: string, _language?: string, options?: { enabled?: boolean }) => ({
+      html:
+        options?.enabled === false
+          ? ""
+          : `<pre class="shiki"><code><span class="line"><span class="token">${code}</span></span></code></pre>`,
+      loading: false,
+      error: null,
+    }),
+  ),
 }));
+
+const root = () =>
+  document.querySelector<HTMLElement>('[data-slot="code-inline"]');
+
+beforeEach(() => {
+  vi.mocked(useHighlight).mockClear();
+});
 
 describe("CodeInline", () => {
   // ============================================
@@ -60,12 +74,35 @@ describe("CodeInline", () => {
   // HIGHLIGHTED CODE (WITH LANGUAGE)
   // ============================================
 
-  it("renders highlighted code when language is provided", () => {
+  it("renders the markup inside Shiki's code element when language is provided", () => {
     render(<CodeInline language="typescript">const x = 1;</CodeInline>);
-    // The mock returns the code wrapped in a span
-    expect(
-      document.querySelector('[data-slot="code-inline"]'),
-    ).toBeInTheDocument();
+    expect(root()?.innerHTML).toBe(
+      '<span class="line"><span class="token">const x = 1;</span></span>',
+    );
+  });
+
+  it("renders non-string children as given, unhighlighted", () => {
+    render(
+      <CodeInline language="ts">
+        <b>x</b>
+      </CodeInline>,
+    );
+    expect(root()?.querySelector("b")).toHaveTextContent("x");
+    expect(root()?.querySelector(".line")).toBeNull();
+    expect(useHighlight).toHaveBeenCalledWith(
+      expect.anything(),
+      "ts",
+      expect.objectContaining({ enabled: false }),
+    );
+  });
+
+  it("falls back to the children when the markup has no code element", () => {
+    render(
+      <CodeInline language="typescript" html="<pre>not shiki</pre>">
+        const x = 1;
+      </CodeInline>,
+    );
+    expect(root()?.innerHTML).toBe("const x = 1;");
   });
 
   // ============================================
@@ -80,9 +117,24 @@ describe("CodeInline", () => {
         ignored
       </CodeInline>,
     );
-    expect(
-      document.querySelector('[data-slot="code-inline"]'),
-    ).toBeInTheDocument();
+    expect(root()?.innerHTML).toBe('<span class="line">custom content</span>');
+  });
+
+  it("paints server html on the first render and never enables the highlighter", () => {
+    const customHtml =
+      '<pre class="shiki"><code><span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">x</span></span></code></pre>';
+    render(
+      <CodeInline language="typescript" html={customHtml}>
+        x
+      </CodeInline>,
+    );
+    expect(root()?.querySelector("span[style]")).toHaveAttribute(
+      "style",
+      "--shiki-light:#1E754F;--shiki-dark:#4D9375",
+    );
+    for (const [, , options] of vi.mocked(useHighlight).mock.calls) {
+      expect(options).toEqual(expect.objectContaining({ enabled: false }));
+    }
   });
 
   // ============================================

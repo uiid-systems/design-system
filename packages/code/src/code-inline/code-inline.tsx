@@ -4,6 +4,7 @@ import { cx } from "@uiid/utils";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeInlineProps } from "./code-inline.types";
+import { extractCodeContent } from "./code-inline.utils";
 
 import styles from "./code-inline.module.css";
 
@@ -14,54 +15,25 @@ export const CodeInline = ({
   children,
   ...props
 }: CodeInlineProps) => {
-  // Highlight only when there is a language and no pre-rendered markup
-  const code = typeof children === "string" ? children : "";
-  const { html } = useHighlight(code, language, {
-    enabled: !!language && !prerenderedHtml,
+  // Only a plain string can be highlighted; anything else renders as given.
+  const code = typeof children === "string" ? children : null;
+  const { html } = useHighlight(code ?? "", language, {
+    enabled: !!language && code !== null && !prerenderedHtml,
   });
 
-  // If no language provided, render as plain code
-  if (!language) {
-    return (
-      <code
-        data-slot="code-inline"
-        className={cx(styles["code-inline"], className)}
-        {...props}
-      >
-        {children}
-      </code>
-    );
-  }
+  // The inner markup of Shiki's output, or null to render the children: no
+  // language, highlighting still pending, or markup without a code element.
+  const markup = language ? extractCodeContent(prerenderedHtml || html) : null;
 
-  // Use prerendered HTML or highlighted HTML
-  const displayHtml = prerenderedHtml || html;
-
-  if (displayHtml) {
-    // Extract just the code content from Shiki output
-    // Shiki wraps in pre > code, we want just the inner content
-    const codeContent = displayHtml
-      .replace(/<pre[^>]*><code[^>]*>/, "")
-      .replace(/<\/code><\/pre>/, "");
-
-    return (
-      <code
-        data-slot="code-inline"
-        className={cx(styles["code-inline"], className)}
-        dangerouslySetInnerHTML={{ __html: codeContent }}
-        {...props}
-      />
-    );
-  }
-
-  // Fallback while loading
   return (
     <code
       data-slot="code-inline"
       className={cx(styles["code-inline"], className)}
       {...props}
-    >
-      {children}
-    </code>
+      {...(markup === null
+        ? { children }
+        : { dangerouslySetInnerHTML: { __html: markup } })}
+    />
   );
 };
 CodeInline.displayName = "CodeInline";
