@@ -1,6 +1,6 @@
 "use client";
 
-import { cx } from "@uiid/utils";
+import { cx, definedProps } from "@uiid/utils";
 
 import { FieldRow } from "../field/subcomponents";
 import type { RadioProps } from "./radio.types";
@@ -25,9 +25,7 @@ export const Radio = ({
   return (
     <FieldRow
       {...FieldProps}
-      label={label}
-      description={description}
-      size={size}
+      {...definedProps({ label, description, size })}
       frameClassName={cx(
         checkboxStyles["checkbox-label"],
         radioVariants({ reversed, bordered }),

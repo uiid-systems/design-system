@@ -354,6 +354,15 @@ describe("Switch FieldProps", () => {
     );
   });
 
+  it("keeps a slot label when the top level leaves it unset", () => {
+    render(
+      <Switch
+        FieldProps={untyped<SwitchProps["FieldProps"]>({ label: "Slot" })}
+      />,
+    );
+    expect(screen.getByRole("switch", { name: "Slot" })).toBeInTheDocument();
+  });
+
   it("lets the top-level values win over the same keys in FieldProps", () => {
     const { container } = render(
       <Switch

@@ -433,6 +433,15 @@ describe("Checkbox FieldProps", () => {
     );
   });
 
+  it("keeps a slot label when the top level leaves it unset", () => {
+    render(
+      <Checkbox
+        FieldProps={untyped<CheckboxProps["FieldProps"]>({ label: "Slot" })}
+      />,
+    );
+    expect(screen.getByRole("checkbox", { name: "Slot" })).toBeInTheDocument();
+  });
+
   it("lets the top-level values win over the same keys in FieldProps", () => {
     const { container } = render(
       <Checkbox

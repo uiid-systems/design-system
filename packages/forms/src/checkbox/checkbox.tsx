@@ -26,11 +26,7 @@ export const Checkbox = ({
   return (
     <CheckboxField
       {...FieldProps}
-      label={label}
-      description={description}
-      size={size}
-      reversed={reversed}
-      bordered={bordered}
+      {...definedProps({ label, description, size, reversed, bordered })}
     >
       <CheckboxRoot
         name={name}

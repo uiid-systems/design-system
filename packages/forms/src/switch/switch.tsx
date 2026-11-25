@@ -22,11 +22,13 @@ export const Switch = ({
   return (
     <SwitchField
       {...FieldProps}
-      label={label}
-      description={description}
-      size={rootProps.size}
-      reversed={reversed}
-      bordered={bordered}
+      {...definedProps({
+        label,
+        description,
+        size: rootProps.size,
+        reversed,
+        bordered,
+      })}
     >
       <SwitchRoot {...rootProps}>
         <SwitchThumb {...ThumbProps} />
