@@ -1,0 +1,37 @@
+# Build rules for uiid:build-linear-project and uiid:triage-findings.
+base: main
+setup:
+  - pnpm install
+read_first:
+  - AGENTS.md
+  - the .claude/rules/ files whose paths match the files the ticket touches
+  - any spec the Linear project names, with the sections that matter
+checks:
+  - pnpm test:run
+  - pnpm run lint
+  - pnpm run format:check
+  - pnpm typecheck
+  - pnpm generate:props --check
+  - run: pnpm --filter @uiid/storybook exec vitest run
+    when:
+      - apps/storybook/**
+      - packages/*/src/**
+      - apps/*/components/**
+commands:
+  - pnpm test:run <path>
+  - pnpm run lint:fix
+  - pnpm run format
+  - pnpm run build
+  - pnpm size
+  - pnpm generate:props
+commit:
+  scopes: [ui, tokens, docs, storybook, release, repo]
+  body_max: 100
+push_allowlist:
+  - packages/*/src/**
+  - packages/*/README.md
+  - apps/docs/app/**
+  - apps/docs/components/**
+  - apps/storybook/stories/**
+  - docs/**
+stack: gh-stack

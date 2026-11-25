@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: uiid-systems/skills
-          ref: f8bbed5eddfd6fc1028a42dda1e590c3552a1573 # v0.2.1
+          ref: 529ce1b106f75a06a96e7f14a86cca6004858a7d # v0.3.0
           path: .uiid-skills
           persist-credentials: false
 
