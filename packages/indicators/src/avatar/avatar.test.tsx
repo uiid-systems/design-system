@@ -6,6 +6,7 @@ import { afterEach, describe, it, expect, vi } from "vitest";
 import * as Indicators from "../index";
 import { Avatar } from "./avatar";
 import * as Examples from "./avatar.examples";
+import type { AvatarProps } from "./avatar.types";
 
 import badgeStyles from "../badge/badge.module.css";
 
@@ -232,15 +233,99 @@ describe("Avatar", () => {
 
   it("lets InitialsProps set the initials weight", () => {
     const { container } = render(
-      <Avatar
-        initials="AF"
-        InitialsProps={{ initials: "AF", weight: "normal" }}
-      />,
+      <Avatar initials="AF" InitialsProps={{ weight: "normal" }} />,
     );
     expect(part(container, "avatar-initials")).toHaveAttribute(
       "data-ui-weight",
       "normal",
     );
+  });
+
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a key Avatar owns in its slots", () => {
+    void (
+      <Avatar
+        initials="AF"
+        // @ts-expect-error -- `src` is set on Avatar itself
+        ImageProps={{ src: "/other.png" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        // @ts-expect-error -- `initials` is set on Avatar itself
+        InitialsProps={{ initials: "XY" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        // @ts-expect-error -- `initials` is the initials' content
+        InitialsProps={{ children: "XY" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        name="Adam"
+        // @ts-expect-error -- `name` is set on Avatar itself
+        NameProps={{ name: "Other" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        name="Adam"
+        // @ts-expect-error -- `name` is the name's content
+        NameProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        description="Engineer"
+        // @ts-expect-error -- `description` is set on Avatar itself
+        DescriptionProps={{ description: "Other" }}
+      />
+    );
+    void (
+      <Avatar
+        initials="AF"
+        description="Engineer"
+        // @ts-expect-error -- `description` is the description's content
+        DescriptionProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets the top-level values win over the same keys in the slots", async () => {
+    vi.stubGlobal("Image", FakeImage);
+    const { container } = render(
+      <Avatar
+        initials="AF"
+        src="/adam.png"
+        name="Adam"
+        description="Engineer"
+        ImageProps={untyped<AvatarProps["ImageProps"]>({ src: "/other.png" })}
+        InitialsProps={untyped<AvatarProps["InitialsProps"]>({
+          initials: "XY",
+        })}
+        NameProps={untyped<AvatarProps["NameProps"]>({ name: "Other" })}
+        DescriptionProps={untyped<AvatarProps["DescriptionProps"]>({
+          description: "Other role",
+        })}
+      />,
+    );
+
+    expect(part(container, "avatar-initials")).toHaveTextContent("AF");
+    expect(part(container, "avatar-name")).toHaveTextContent("Adam");
+    expect(part(container, "avatar-description")).toHaveTextContent("Engineer");
+    await waitFor(() => expect(container.querySelector("img")).not.toBeNull());
+    expect(container.querySelector("img")).toHaveAttribute("src", "/adam.png");
   });
 
   it("exports its subcomponents from the package barrel", () => {

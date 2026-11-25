@@ -48,14 +48,14 @@ export type ProgressProps = Omit<ProgressRootProps, "children"> & {
   hideValue?: boolean;
   /** Props forwarded to the root */
   RootProps?: Omit<ProgressRootProps, "value">;
-  /** Props forwarded to the row holding the label and value */
-  HeaderProps?: ProgressHeaderProps;
-  /** Props forwarded to the label */
-  LabelProps?: ProgressLabelProps;
+  /** Props forwarded to the row holding the label and value, which Progress places */
+  HeaderProps?: Omit<ProgressHeaderProps, "children">;
+  /** Props forwarded to the label. Its content is `label`. */
+  LabelProps?: Omit<ProgressLabelProps, "children">;
   /** Props forwarded to the value readout */
   ValueProps?: ProgressValueProps;
-  /** Props forwarded to the track */
-  TrackProps?: ProgressTrackProps;
+  /** Props forwarded to the track, which holds Progress's indicator */
+  TrackProps?: Omit<ProgressTrackProps, "children">;
   /** Props forwarded to the indicator */
   IndicatorProps?: ProgressIndicatorProps;
 };

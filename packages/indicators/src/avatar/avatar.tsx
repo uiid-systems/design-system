@@ -27,8 +27,12 @@ export const Avatar = ({
     <AvatarContainer orientation={orientation} {...props}>
       <AvatarLayers color={color}>
         {/* Decorative beside a visible name, which already says who it is. */}
-        <AvatarImage src={src} alt={name ? "" : initials} {...ImageProps} />
-        <AvatarInitials initials={initials} {...InitialsProps} />
+        <AvatarImage
+          {...ImageProps}
+          src={src}
+          alt={ImageProps?.alt ?? (name ? "" : initials)}
+        />
+        <AvatarInitials {...InitialsProps} initials={initials} />
       </AvatarLayers>
 
       <ConditionalRender
@@ -40,9 +44,9 @@ export const Avatar = ({
           />
         }
       >
-        {name && <AvatarName name={name} {...NameProps} />}
+        {name && <AvatarName {...NameProps} name={name} />}
         {description && (
-          <AvatarDescription description={description} {...DescriptionProps} />
+          <AvatarDescription {...DescriptionProps} description={description} />
         )}
       </ConditionalRender>
     </AvatarContainer>

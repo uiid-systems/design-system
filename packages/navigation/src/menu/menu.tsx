@@ -63,7 +63,7 @@ export const Menu = ({
       <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
       <MenuPortal>
         {backdrop && <MenuBackdrop {...BackdropProps} />}
-        <MenuPositioner side={side} align={align} {...PositionerProps}>
+        <MenuPositioner {...PositionerProps} side={side} align={align}>
           <MenuPopup {...PopupProps}>
             {items.map((item) => {
               const submenu = item.items;

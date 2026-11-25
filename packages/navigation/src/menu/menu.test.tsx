@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
+import type { MenuProps } from "./menu.types";
 
 import styles from "./menu.module.css";
 
@@ -434,5 +435,139 @@ describe("Menu className", () => {
     await screen.findByText("Item 3.1");
 
     expect(trigger).toHaveAttribute("data-popup-open");
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Menu slot props", () => {
+  it("rejects a key Menu owns in PositionerProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `side` is set on Menu itself
+        PositionerProps={{ side: "left" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `align` is set on Menu itself
+        PositionerProps={{ align: "end" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the positioner holds Menu's popup
+        PositionerProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects the trigger's children in TriggerProps, which come from `trigger`", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `trigger` is the trigger's content
+        TriggerProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects the popup's children in PopupProps, which come from `items`", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- `items` fill the popup
+        PopupProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects an item's children in ItemProps, which come from each entry", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` and `icon` are its content
+        ItemProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects the submenu's children in its slots, which come from each entry", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `items` fill its submenu
+        SubmenuRootProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` and `icon` are its content
+        SubmenuTriggerProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Menu slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("lets the top-level side and align win over the same keys in PositionerProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        side="top"
+        align="end"
+        PositionerProps={untyped<MenuProps["PositionerProps"]>({
+          side: "left",
+          align: "start",
+        })}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    const positioner = document.querySelector("[data-slot='menu-positioner']");
+    expect(positioner).toHaveAttribute("data-side", "top");
+    expect(positioner).toHaveAttribute("data-align", "end");
+  });
+
+  it("keeps Menu's own content when a slot passes children", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        TriggerProps={untyped<MenuProps["TriggerProps"]>({
+          children: "Slot trigger",
+        })}
+        PopupProps={untyped<MenuProps["PopupProps"]>({
+          children: "Slot popup",
+        })}
+        ItemProps={untyped<MenuProps["ItemProps"]>({ children: "Slot item" })}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menuitem", { name: "Lorem" })).toBeInTheDocument();
+    expect(screen.queryByText("Slot trigger")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot popup")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot item")).not.toBeInTheDocument();
   });
 });

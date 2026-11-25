@@ -53,11 +53,17 @@ export type MenuProps = {
    */
   backdrop?: boolean;
   RootProps?: MenuRootProps;
-  TriggerProps?: MenuTriggerProps;
+  /** Reaches the trigger. Its content is `trigger`. */
+  TriggerProps?: Omit<MenuTriggerProps, "children">;
   BackdropProps?: MenuBackdropProps;
-  PopupProps?: MenuPopupProps;
-  PositionerProps?: MenuPositionerProps;
-  ItemProps?: MenuItemProps;
-  SubmenuRootProps?: SubmenuRootProps;
-  SubmenuTriggerProps?: SubmenuTriggerProps;
+  /** Reaches the root popup. Its content comes from `items`. */
+  PopupProps?: Omit<MenuPopupProps, "children">;
+  /** Reaches the root positioner. `side` and `align` are set on Menu itself. */
+  PositionerProps?: Omit<MenuPositionerProps, "side" | "align" | "children">;
+  /** Reaches every item. Each entry's `label` and `icon` are its content. */
+  ItemProps?: Omit<MenuItemProps, "children">;
+  /** Reaches every submenu root. Each entry's `items` fill its submenu. */
+  SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
+  /** Reaches every submenu trigger. Each entry's `label` and `icon` are its content. */
+  SubmenuTriggerProps?: Omit<SubmenuTriggerProps, "children">;
 } & Pick<MenuPositionerProps, "side" | "align">;

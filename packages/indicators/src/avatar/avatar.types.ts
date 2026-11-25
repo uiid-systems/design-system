@@ -39,10 +39,14 @@ export type AvatarDescriptionProps = Pick<AvatarType, "description"> &
   TextProps;
 
 export type AvatarProps = {
-  ImageProps?: AvatarImageProps;
-  InitialsProps?: AvatarInitialsProps;
-  NameProps?: AvatarNameProps;
-  DescriptionProps?: AvatarDescriptionProps;
+  /** Reaches the image. `src` is set on Avatar itself; `alt` replaces the one Avatar derives. */
+  ImageProps?: Omit<AvatarImageProps, "src">;
+  /** Reaches the initials. `initials` is set on Avatar itself. */
+  InitialsProps?: Omit<AvatarInitialsProps, "initials" | "children">;
+  /** Reaches the name. `name` is set on Avatar itself. */
+  NameProps?: Omit<AvatarNameProps, "name" | "children">;
+  /** Reaches the description. `description` is set on Avatar itself. */
+  DescriptionProps?: Omit<AvatarDescriptionProps, "description" | "children">;
 } & AvatarType &
   AvatarContainerProps &
   AvatarVariants;
