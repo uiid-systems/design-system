@@ -77,7 +77,7 @@ Find the row matching the files you are touching and read that rule before editi
 
 ## Skills
 
-Skills live in `.claude/skills/uiid/skills/{name}/SKILL.md`. The `uiid` folder is a plugin, so Claude Code lists each skill as `uiid:{name}` and loads one when its description matches the task. With any other tool, read the file when its row applies.
+Skills come from the `uiid` plugin, which lives in the public [`uiid-systems/skills`](https://github.com/uiid-systems/skills) repo. `.claude/settings.json` pins its `uiid-skills` marketplace to a release tag and enables `uiid@uiid-skills`, so Claude Code lists each skill as `uiid:{name}` and loads one when its description matches the task. To move to a newer release, change the `ref` there and in `claude-review.yml`. With any other tool, read `plugins/uiid/skills/{name}/SKILL.md` in that repo, at the pinned tag, when its row applies.
 
 | Skill                  | Covers                                                                                                                     | Read when                                                            |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
