@@ -200,6 +200,25 @@ export const FloatingFirstLine: Story = {
   ),
 };
 
+/* Collapsed, no header, wrap on: the code scrolls beneath the floating
+   buttons, so every line keeps their column clear, not just the first. */
+export const FloatingCollapsed: Story = {
+  args: {
+    code: sampleLongLine,
+  },
+  render: () => (
+    <Stack gap={4} maxw={480}>
+      <CodeBlock
+        code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
+        rows={6}
+        wrappable
+        fullscreenable
+        defaultWrap
+      />
+    </Stack>
+  ),
+};
+
 /* A long filename truncates; the buttons keep their size and row. */
 export const LongFilename: Story = {
   args: {
