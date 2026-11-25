@@ -1,6 +1,7 @@
 import type { Meta } from "@storybook/react-vite";
 import { defaultFormatCell, Stack, Table } from "@uiid/design-system";
 
+import * as Examples from "../../../../packages/tables/src/table/table.examples";
 import {
   TABLE_MOCK_DATA,
   type TableMockData,
@@ -36,62 +37,28 @@ export const Default = {
   ),
 };
 
-/* Row height, font size and cell padding follow the form-control tiers. */
-export const Sizes = {
-  name: "Sizes",
-  tags: ["new"],
-  render: () => (
-    <Stack gap={8} w="full">
-      {(["xsmall", "small", "medium", "large"] as const).map((size) => (
-        <Table<TableMockData>
-          key={size}
-          size={size}
-          items={TABLE_MOCK_DATA}
-          columns={["name", "email", "status"]}
-          bordered
-          footer={size}
-        />
-      ))}
-    </Stack>
-  ),
+/* With no `columns`, every key of the first item is a column. */
+export const Basic = { render: () => <Examples.Default /> };
+
+export const Columns = { render: () => <Examples.Columns /> };
+
+export const FormatCell = {
+  name: "Format Cell",
+  render: () => <Examples.FormatCell />,
 };
+
+export const Striped = { render: () => <Examples.Striped /> };
+
+/* Row height, font size and cell padding follow the form-control tiers. */
+export const Sizes = { render: () => <Examples.Sizes /> };
+
+export const Selection = { render: () => <Examples.Selection /> };
+
+export const Actions = { render: () => <Examples.Actions /> };
 
 export const StickyHeader = {
-  name: "Sticky Header",
-  tags: ["new"],
-  render: () => (
-    <Stack gap={4} w="full">
-      <Table<TableMockData>
-        stickyHeader
-        maxHeight={220}
-        selectable
-        items={TABLE_MOCK_DATA}
-        striped
-        bordered
-        highlightOnHover
-      />
-    </Stack>
-  ),
-};
-
-export const StickyHeaderFooter = {
   name: "Sticky Header + Footer",
-  tags: ["new"],
-  render: () => (
-    <Stack gap={4} w="full">
-      <Table<TableMockData>
-        stickyHeader
-        stickyFooter
-        maxHeight={220}
-        selectable
-        items={TABLE_MOCK_DATA}
-        striped
-        bordered
-        highlightOnHover
-        footer={`${TABLE_MOCK_DATA.length} users`}
-      />
-    </Stack>
-  ),
+  render: () => <Examples.StickyHeader />,
 };
 
 /* No minimum width by default, so a short table fits a narrow column
@@ -115,18 +82,7 @@ export const Narrow = {
    respond to. */
 export const HorizontalScroll = {
   name: "Horizontal Scroll",
-  tags: ["new"],
-  render: () => (
-    <Stack gap={4} maxw={560} w="full">
-      <Table<TableMockData>
-        minw={768}
-        items={TABLE_MOCK_DATA}
-        striped
-        bordered
-        highlightOnHover
-      />
-    </Stack>
-  ),
+  render: () => <Examples.HorizontalScroll />,
 };
 
 export const HorizontalAndVerticalScroll = {
@@ -186,4 +142,13 @@ export const CellValues = {
       />
     </Stack>
   ),
+};
+
+/* Built from the parts: a group header row per status and a spanning footer. */
+export const Composed = { render: () => <Examples.Composed /> };
+
+/* A composed table with a selection provider and a bar that reads it. */
+export const ComposedSelection = {
+  name: "Composed Selection",
+  render: () => <Examples.ComposedSelection />,
 };

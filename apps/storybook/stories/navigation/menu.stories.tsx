@@ -13,6 +13,7 @@ import {
 } from "@uiid/design-system";
 import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 
+import * as Examples from "../../../../packages/navigation/src/menu/menu.examples";
 import { MOCK_ITEMS } from "./menu.mocks";
 
 const meta: Meta<typeof Menu> = {
@@ -68,3 +69,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Menu" };
+
+export const Basic: Story = { render: () => <Examples.Default /> };
+
+export const Icons: Story = { render: () => <Examples.Icons /> };
+
+export const Submenu: Story = { render: () => <Examples.Submenu /> };
+
+export const Actions: Story = { render: () => <Examples.Actions /> };
+
+export const Placement: Story = { render: () => <Examples.Placement /> };
+
+export const WithoutBackdrop: Story = {
+  render: () => <Examples.WithoutBackdrop />,
+};
+
+export const IconTrigger: Story = { render: () => <Examples.IconTrigger /> };
+
+export const FunctionTrigger: Story = {
+  render: () => <Examples.FunctionTrigger />,
+};
+
+export const Composed: Story = { render: () => <Examples.Composed /> };

@@ -1,15 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Card, Stack, Group, Text, Sortable } from "@uiid/design-system";
-import {
-  SortableContent,
-  SortableItem,
-  SortableItemHandle,
-  SortableOverlay,
-} from "@uiid/design-system";
-import { GripVerticalIcon } from "@uiid/icons/grip-vertical";
-import { useState } from "react";
 
-import { VERTICAL_ITEMS, HORIZONTAL_ITEMS, GRID_ITEMS } from "./sortable.mocks";
+import * as Examples from "../../../../packages/interactive/src/sortable/sortable.examples";
 
 const meta = {
   title: "Interactive/Sortable",
@@ -19,152 +10,18 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-function VerticalDemo() {
-  const [items, setItems] = useState(VERTICAL_ITEMS);
-
-  return (
-    <Sortable
-      value={items}
-      onValueChange={setItems}
-      getItemValue={(item) => item.id}
-      orientation="vertical"
-    >
-      <SortableContent>
-        <Stack gap={2}>
-          {items.map((item) => (
-            <SortableItem key={item.id} value={item.id}>
-              <Card
-                title={item.title}
-                w="full"
-                action={
-                  <SortableItemHandle aria-label="Drag to reorder">
-                    <GripVerticalIcon />
-                  </SortableItemHandle>
-                }
-              />
-            </SortableItem>
-          ))}
-        </Stack>
-      </SortableContent>
-      <SortableOverlay>
-        {({ value }) => {
-          const item = items.find((i) => i.id === value);
-          return item ? (
-            <Card title={item.title} action={<GripVerticalIcon />} w="full" />
-          ) : null;
-        }}
-      </SortableOverlay>
-    </Sortable>
-  );
-}
-
-function HorizontalDemo() {
-  const [items, setItems] = useState(HORIZONTAL_ITEMS);
-
-  return (
-    <Sortable
-      value={items}
-      onValueChange={setItems}
-      getItemValue={(item) => item.id}
-      orientation="horizontal"
-    >
-      <SortableContent>
-        <Group gap={2}>
-          {items.map((item) => (
-            <SortableItem key={item.id} value={item.id} asHandle>
-              <Card
-                title={item.title}
-                action={
-                  <SortableItemHandle aria-label="Drag to reorder">
-                    <GripVerticalIcon />
-                  </SortableItemHandle>
-                }
-              />
-            </SortableItem>
-          ))}
-        </Group>
-      </SortableContent>
-      <SortableOverlay>
-        {({ value }) => {
-          const item = items.find((i) => i.id === value);
-          return item ? (
-            <Card title={item.title} action={<GripVerticalIcon />} />
-          ) : null;
-        }}
-      </SortableOverlay>
-    </Sortable>
-  );
-}
-
-function MixedDemo() {
-  const [items, setItems] = useState(GRID_ITEMS);
-
-  return (
-    <Sortable
-      value={items}
-      onValueChange={setItems}
-      getItemValue={(item) => item.id}
-      orientation="mixed"
-    >
-      <SortableContent>
-        <Group gap={2} wrap maxw={400}>
-          {items.map((item) => (
-            <SortableItem key={item.id} value={item.id} asHandle>
-              <Card
-                title={item.title}
-                action={
-                  <SortableItemHandle aria-label="Drag to reorder">
-                    <GripVerticalIcon />
-                  </SortableItemHandle>
-                }
-              />
-            </SortableItem>
-          ))}
-        </Group>
-      </SortableContent>
-      <SortableOverlay>
-        {({ value }) => {
-          const item = items.find((i) => i.id === value);
-          return item ? (
-            <Card title={item.title} action={<GripVerticalIcon />} />
-          ) : null;
-        }}
-      </SortableOverlay>
-    </Sortable>
-  );
-}
-
+/* Drag the grip, or focus it and use Space and the arrow keys. */
 export const Default: Story = {
   name: "Sortable",
-  render: () => (
-    <Stack gap={8}>
-      <Stack gap={2}>
-        <Text size={1} weight="bold">
-          Vertical
-        </Text>
-        <Text size={0} emphasis="muted" mb={4}>
-          Drag items up and down
-        </Text>
-        <VerticalDemo />
-      </Stack>
-
-      <Stack gap={2}>
-        <Text size={1} weight="bold">
-          Horizontal
-        </Text>
-        <Text size={0} emphasis="muted" mb={4}>
-          Drag items left and right
-        </Text>
-        <HorizontalDemo />
-      </Stack>
-
-      <Stack gap={2}>
-        <Text size={1}>Mixed</Text>
-        <Text size={0} emphasis="muted" mb={4}>
-          Drag items in any direction
-        </Text>
-        <MixedDemo />
-      </Stack>
-    </Stack>
-  ),
+  render: () => <Examples.Default />,
 };
+
+export const Horizontal: Story = { render: () => <Examples.Horizontal /> };
+
+export const Grid: Story = { render: () => <Examples.Grid /> };
+
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+
+export const Overlay: Story = { render: () => <Examples.Overlay /> };
+
+export const Strings: Story = { render: () => <Examples.Strings /> };
