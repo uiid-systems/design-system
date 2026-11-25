@@ -874,6 +874,24 @@ describe("CodeBlock HeaderProps precedence", () => {
     expect(slotOnCopy).not.toHaveBeenCalled();
   });
 
+  it("runs no untyped CopyButtonProps.onCopy when no top-level onCopy is given", async () => {
+    const user = userEvent.setup();
+    const slotOnCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        CopyButtonProps={{ onCopy: slotOnCopy } as object}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    expect(
+      await screen.findByRole("button", { name: "Copied" }),
+    ).toHaveAttribute("data-copied", "true");
+    expect(slotOnCopy).not.toHaveBeenCalled();
+  });
+
   it("still enters fullscreen over an untyped FullscreenButtonProps.onPressedChange", async () => {
     const user = userEvent.setup();
     render(
