@@ -1,9 +1,12 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
+import { cx } from "@uiid/utils";
 import type * as React from "react";
 
 import type { CodeBlockExpandToggleProps } from "../code-block.types";
+
+import styles from "../code-block.module.css";
 
 export const CodeBlockExpandToggle = ({
   expanded = false,
@@ -11,6 +14,7 @@ export const CodeBlockExpandToggle = ({
   expandLabel = "Show more",
   collapseLabel = "Show less",
   onClick,
+  className,
   ...props
 }: CodeBlockExpandToggleProps) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,6 +28,7 @@ export const CodeBlockExpandToggle = ({
       type="button"
       data-slot="code-block-expand-toggle"
       aria-expanded={expanded}
+      className={cx(styles["code-block-expand-toggle"], className)}
       size="small"
       variant="ghost"
       {...props}

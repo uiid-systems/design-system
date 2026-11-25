@@ -160,3 +160,10 @@
   color: light-dark(var(--color-red-700), var(--color-red-400));
   padding: var(--code-padding);
 }
+
+/* The block clips its overflow and the toggle sits flush with its edges, so
+   draw the Button's ring inside the toggle. The `.code-block` ancestor
+   outranks Button's own `.button:focus-visible`, which shares this layer. */
+.code-block .code-block-expand-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--globals-outline-width));
+}
