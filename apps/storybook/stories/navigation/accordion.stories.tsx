@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Accordion } from "@uiid/design-system";
 
+import * as Examples from "../../../../packages/navigation/src/accordion/accordion.examples";
 import { MOCK_ITEMS } from "./accordion.mocks";
 
 const meta: Meta<typeof Accordion> = {
@@ -28,8 +29,15 @@ const meta: Meta<typeof Accordion> = {
       table: { category: "Options" },
     },
   },
+  decorators: [
+    (Story) => (
+      <Stack w="full" maxw={640}>
+        <Story />
+      </Stack>
+    ),
+  ],
   render: (args) => (
-    <Stack gap={4} w="full" maxw={640}>
+    <Stack gap={4} w="full">
       <Accordion {...args} />
       <Accordion {...args} defaultValue={["item-1"]} multiple />
       <Accordion {...args} disabled />
@@ -42,18 +50,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Accordion" };
 
-export const Ghost: Story = {
-  name: "Ghost",
-  args: { variant: "ghost" },
-};
+export const Basic: Story = { render: () => <Examples.Default /> };
 
-export const Sizes: Story = {
-  name: "Sizes",
-  render: (args) => (
-    <Stack gap={4} w="full" maxw={640}>
-      <Accordion {...args} size="small" />
-      <Accordion {...args} size="medium" />
-      <Accordion {...args} size="large" />
-    </Stack>
-  ),
-};
+export const Multiple: Story = { render: () => <Examples.Multiple /> };
+
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+
+export const Icons: Story = { render: () => <Examples.Icons /> };
+
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+
+export const Ghost: Story = { render: () => <Examples.Ghost /> };
+
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+
+export const Spaced: Story = { render: () => <Examples.Spaced /> };
+
+export const Composed: Story = { render: () => <Examples.Composed /> };
