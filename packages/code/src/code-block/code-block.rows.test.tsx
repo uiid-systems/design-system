@@ -216,7 +216,7 @@ describe("CodeBlock rows", () => {
   it("collapses only the inline copy, not the fullscreen one", async () => {
     const user = userEvent.setup();
     contentHeight = 300;
-    render(<CodeBlock code={CODE} rows={4} />);
+    render(<CodeBlock code={CODE} rows={4} fullscreenable />);
     await screen.findByRole("button", { name: "Show more" });
 
     await user.click(screen.getByRole("button", { name: /fullscreen/i }));

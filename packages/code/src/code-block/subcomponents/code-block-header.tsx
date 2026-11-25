@@ -31,6 +31,9 @@ export const CodeBlockHeader = ({
   children,
   ...props
 }: CodeBlockHeaderProps) => {
+  // Nothing to copy means no copy button, rather than a disabled one.
+  const showCopy = copyable && !!code;
+
   return (
     <Group
       data-slot="code-block-header"
@@ -59,7 +62,7 @@ export const CodeBlockHeader = ({
         )}
       </Group>
       {children}
-      {(wrappable || copyable || fullscreenable) && (
+      {(wrappable || showCopy || fullscreenable) && (
         <Group ay="center" gap={1}>
           {wrappable && (
             <CodeBlockWrapButton
@@ -69,13 +72,7 @@ export const CodeBlockHeader = ({
               onPressedChange={onWrapChange}
             />
           )}
-          {copyable && (
-            <CodeBlockCopyButton
-              disabled={!code}
-              {...CopyButtonProps}
-              code={code}
-            />
-          )}
+          {showCopy && <CodeBlockCopyButton {...CopyButtonProps} code={code} />}
           {fullscreenable && (
             <CodeBlockFullscreenButton
               {...FullscreenButtonProps}

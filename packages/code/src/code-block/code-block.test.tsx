@@ -96,8 +96,35 @@ describe("CodeBlock", () => {
     expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
   });
 
-  it("renders the wrap toggle by default", () => {
+  it("renders exactly one button by default, the copy button", () => {
+    render(<CodeBlock code="x" />);
+    const buttons = screen.getAllByRole("button");
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0]).toHaveAttribute("data-slot", "code-block-copy-button");
+  });
+
+  it("renders no button when the code is empty", () => {
+    render(<CodeBlock code="" />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders no button when the code is empty, even with every flag on", () => {
+    render(<CodeBlock code="" copyable wrappable fullscreenable />);
+    expect(
+      document.querySelector('[data-slot="code-block-copy-button"]'),
+    ).not.toBeInTheDocument();
+    expect(document.querySelector("[disabled]")).not.toBeInTheDocument();
+  });
+
+  it("leaves the wrap toggle out by default", () => {
     render(<CodeBlock code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="code-block-wrap-button"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders the wrap toggle when wrappable is set", () => {
+    render(<CodeBlock code="const x = 1;" wrappable />);
     expect(
       document.querySelector('[data-slot="code-block-wrap-button"]'),
     ).toBeInTheDocument();
@@ -316,7 +343,7 @@ describe("CodeBlock", () => {
 
   it("toggling the wrap button flips the content wrap attribute", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" wrappable />);
     const content = document.querySelector('[data-slot="code-block-content"]');
     expect(content).not.toHaveAttribute("data-wrap");
 
@@ -336,7 +363,9 @@ describe("CodeBlock", () => {
   it("fires onWrapChange when the wrap toggle is pressed", async () => {
     const user = userEvent.setup();
     const onWrapChange = vi.fn();
-    render(<CodeBlock code="const x = 1;" onWrapChange={onWrapChange} />);
+    render(
+      <CodeBlock code="const x = 1;" wrappable onWrapChange={onWrapChange} />,
+    );
 
     await user.click(screen.getByRole("button", { name: /toggle line wrap/i }));
 
@@ -349,8 +378,18 @@ describe("CodeBlock", () => {
   // FULLSCREEN
   // ============================================
 
-  it("renders the fullscreen toggle by default", () => {
+  it("leaves the fullscreen toggle and its dialog out by default", () => {
     render(<CodeBlock code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen-button"]'),
+    ).not.toBeInTheDocument();
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen"]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders the fullscreen toggle when fullscreenable is set", () => {
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
     expect(
       document.querySelector('[data-slot="code-block-fullscreen-button"]'),
     ).toBeInTheDocument();
@@ -358,7 +397,7 @@ describe("CodeBlock", () => {
 
   it("enters fullscreen when the toggle is pressed", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
 
     await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
 
@@ -375,7 +414,7 @@ describe("CodeBlock", () => {
 
   it("exits fullscreen on Escape", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
 
     await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
     await waitFor(() => {
@@ -399,7 +438,11 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     const onFullscreenChange = vi.fn();
     render(
-      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />,
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        onFullscreenChange={onFullscreenChange}
+      />,
     );
 
     await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
@@ -414,7 +457,7 @@ describe("CodeBlock", () => {
     render(
       <>
         <button>Outside</button>
-        <CodeBlock code="const x = 1;" filename="example.ts" />
+        <CodeBlock code="const x = 1;" fullscreenable filename="example.ts" />
       </>,
     );
 
@@ -446,7 +489,7 @@ describe("CodeBlock", () => {
 
   it("moves focus into the dialog and returns it to the toggle on Escape", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
     const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
 
     await user.click(toggle);
@@ -465,7 +508,7 @@ describe("CodeBlock", () => {
 
   it("closes on one Escape after a keyboard open", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
     const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
 
     toggle.focus();
@@ -482,7 +525,7 @@ describe("CodeBlock", () => {
 
   it("reaches the exit button with Tab", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
 
     await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
     const dialog = await screen.findByRole("dialog");
@@ -501,7 +544,11 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     const ref = React.createRef<HTMLButtonElement>();
     render(
-      <CodeBlock code="const x = 1;" CopyButtonProps={{ id: "copy", ref }} />,
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        CopyButtonProps={{ id: "copy", ref }}
+      />,
     );
     const inlineCopy = screen.getByRole("button", { name: /copy code/i });
 
@@ -521,7 +568,7 @@ describe("CodeBlock", () => {
       <BaseDialog.Root open>
         <BaseDialog.Portal>
           <BaseDialog.Popup aria-label="Outer">
-            <CodeBlock code="const x = 1;" />
+            <CodeBlock code="const x = 1;" fullscreenable />
           </BaseDialog.Popup>
         </BaseDialog.Portal>
       </BaseDialog.Root>,
@@ -542,7 +589,11 @@ describe("CodeBlock", () => {
     const user = userEvent.setup();
     const onFullscreenChange = vi.fn();
     render(
-      <CodeBlock code="const x = 1;" onFullscreenChange={onFullscreenChange} />,
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        onFullscreenChange={onFullscreenChange}
+      />,
     );
     const toggle = screen.getByRole("button", { name: /enter fullscreen/i });
 
@@ -561,7 +612,7 @@ describe("CodeBlock", () => {
 
   it("keeps the inline block mounted, so copy state survives fullscreen", async () => {
     const user = userEvent.setup();
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
     const copy = screen.getByRole("button", { name: /copy code/i });
 
     await user.click(copy);
@@ -586,7 +637,7 @@ describe("CodeBlock", () => {
       <BaseDialog.Root open>
         <BaseDialog.Portal>
           <BaseDialog.Popup aria-label="Outer">
-            <CodeBlock code="const x = 1;" />
+            <CodeBlock code="const x = 1;" fullscreenable />
           </BaseDialog.Popup>
         </BaseDialog.Portal>
       </BaseDialog.Root>,
@@ -804,6 +855,8 @@ describe("CodeBlock HeaderProps precedence", () => {
       <CodeBlock
         code="const x = 1;"
         filename="top-level.ts"
+        wrappable
+        fullscreenable
         HeaderProps={untyped({
           filename: "slot.ts",
           copyable: false,
@@ -914,6 +967,7 @@ describe("CodeBlock HeaderProps precedence", () => {
     render(
       <CodeBlock
         code="const x = 1;"
+        fullscreenable
         FullscreenButtonProps={{ onPressedChange: () => {} } as object}
       />,
     );
