@@ -15,12 +15,12 @@ import styles from "../code-block.module.css";
 
 /**
  * The header's internal props. Kept out of the package barrel: `bar` is for
- * CodeEditor, whose textarea cannot keep its lines clear of floating buttons,
- * and whose bar must not appear or vanish as its value changes.
+ * CodeEditor, whose textarea cannot keep its lines clear of floating buttons.
  */
 export type CodeBlockHeaderBaseProps = CodeBlockHeaderProps & {
   /**
-   * Draw the bar even with nothing in it, and never float the buttons.
+   * Never float the buttons: draw them in a bar. With nothing to show there is
+   * still no header.
    * @default false
    */
   bar?: boolean;
@@ -67,7 +67,7 @@ export const CodeBlockHeaderBase = ({
   // none, the buttons float over the code; with no buttons either, nothing.
   const hasContent =
     !!iconLanguage || !!filename || React.Children.toArray(children).length > 0;
-  if (!hasContent && !hasActions && !bar) return null;
+  if (!hasContent && !hasActions) return null;
   const floating = !hasContent && !bar;
 
   return (
