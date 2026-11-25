@@ -142,6 +142,7 @@ export const LongLineWrapOff: Story = {
     code: sampleLongLine,
     language: "typescript",
     filename: "long-line.ts",
+    wrappable: true,
   },
 };
 
@@ -150,6 +151,7 @@ export const LongLineWrapOn: Story = {
     code: sampleLongLine,
     language: "typescript",
     filename: "long-line.ts",
+    wrappable: true,
     defaultWrap: true,
   },
 };
@@ -159,6 +161,7 @@ export const Fullscreen: Story = {
     code: sampleLong,
     language: "typescript",
     filename: "long-file.ts",
+    fullscreenable: true,
   },
 };
 
@@ -168,8 +171,6 @@ export const NoHeaderActions: Story = {
     language: "typescript",
     filename: "counter.tsx",
     copyable: false,
-    wrappable: false,
-    fullscreenable: false,
   },
 };
 
