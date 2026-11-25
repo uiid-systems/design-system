@@ -1,8 +1,10 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CodeBlock } from "./code-block";
+import { Controlled } from "./code-block.examples";
 
 const CODE = "const a = 1;\nconst b = 2;";
 const COLLAPSED_HEIGHT = 100;
@@ -258,13 +260,26 @@ describe("CodeBlock rows", () => {
   });
 
   it("follows a controlled expanded switched from outside", async () => {
+    const onExpandedChange = vi.fn();
     contentHeight = 300;
     const { rerender } = render(
-      <CodeBlock code={CODE} rows={4} expanded={false} />,
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        expanded={false}
+        onExpandedChange={onExpandedChange}
+      />,
     );
     await screen.findByRole("button", { name: "Show more" });
 
-    rerender(<CodeBlock code={CODE} rows={4} expanded />);
+    rerender(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        expanded
+        onExpandedChange={onExpandedChange}
+      />,
+    );
 
     expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
       "aria-expanded",
@@ -272,6 +287,51 @@ describe("CodeBlock rows", () => {
     );
     expect(block()).toHaveAttribute("data-expanded");
     expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+    expect(onExpandedChange).not.toHaveBeenCalled();
+  });
+
+  it("expands and collapses a controlled block whose parent follows onExpandedChange", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    const Parent = () => {
+      const [expanded, setExpanded] = React.useState(false);
+      return (
+        <CodeBlock
+          code={CODE}
+          rows={4}
+          expanded={expanded}
+          onExpandedChange={setExpanded}
+        />
+      );
+    };
+    render(<Parent />);
+
+    await user.click(await screen.findByRole("button", { name: "Show more" }));
+    expect(block()).toHaveAttribute("data-expanded");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+
+    await user.click(screen.getByRole("button", { name: "Show less" }));
+    expect(block()).not.toHaveAttribute("data-expanded");
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
+  });
+
+  it("expands the Controlled example from its outside button", async () => {
+    const user = userEvent.setup();
+    contentHeight = 300;
+    render(<Controlled />);
+    const outside = screen.getByRole("button", { name: "Expand" });
+    expect(outside).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(outside);
+
+    expect(block()).toHaveAttribute("data-expanded");
+    expect(screen.getByRole("button", { name: "Collapse" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    expect(
+      await screen.findByRole("button", { name: "Show less" }),
+    ).toBeInTheDocument();
   });
 
   it("lets a controlled expanded win over defaultExpanded", async () => {

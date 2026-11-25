@@ -33,7 +33,9 @@ With `html`, CodeBlock skips the client highlighter: Shiki is never loaded, no t
 
 ## Controlled state
 
-Wrap, expanded and fullscreen can each be left to CodeBlock or held by the caller. Leave `wrap`, `expanded` or `fullscreen` unset and CodeBlock keeps that state itself, starting from `defaultWrap` and `defaultExpanded` (fullscreen always starts closed). Set one and the block shows that value and nothing else: the wrap toggle, the "Show more" toggle, the fullscreen toggle, Escape and the backdrop only ask for a change through `onWrapChange`, `onExpandedChange` and `onFullscreenChange`, and the view stays as it is until the caller passes the new value. Each callback fires once per action with the state asked for, whether or not the state is controlled. A controlled value wins over its `default*` prop.
+Wrap, expanded and fullscreen can each be left to CodeBlock or held by the caller. Leave `wrap`, `expanded` or `fullscreen` unset and CodeBlock keeps that state itself, starting from `defaultWrap` and `defaultExpanded` (fullscreen always starts closed). Set one and the block shows that value and nothing else: the wrap toggle, the "Show more" toggle, the fullscreen toggle, Escape and the backdrop only ask for a change through `onWrapChange`, `onExpandedChange` and `onFullscreenChange`, and the view stays as it is until the caller passes the new value. Each callback fires once per action with the state asked for, whether or not the state is controlled. A controlled value wins over its `default*` prop, and a prop switched from set to unset falls back to the state CodeBlock kept, which started from that `default*`.
+
+A controlled `fullscreen` must follow `onFullscreenChange(false)`. Escape, the backdrop and the exit button only ask, so a parent that ignores the request leaves a modal view nobody can leave by keyboard.
 
 ```tsx
 const [fullscreen, setFullscreen] = useState(false);
@@ -50,7 +52,7 @@ const [fullscreen, setFullscreen] = useState(false);
 
 ## Fullscreen
 
-Fullscreen opens a modal UIID Dialog, an unstyled `size="full"` `DialogPopup` holding a second copy of the block, named by `filename` (or "Code block"). It fills the dialog viewport inside its padding, up to 1100px wide and centred, and the code scrolls inside it under the header. Focus moves to the dialog, Tab reaches its controls and stays trapped inside, the page behind is hidden from assistive tech and its scroll is locked, and closing returns focus to the toggle that opened it. Escape dismisses one layer at a time, so a CodeBlock inside a Dialog closes only its fullscreen view.
+Fullscreen opens a modal UIID Dialog, an unstyled `size="full"` `DialogPopup` holding a second copy of the block, named by `filename` (or "Code block"). It fills the dialog viewport inside its padding, up to 1100px wide and centred, and the code scrolls inside it under the header. Focus moves to the dialog, Tab reaches its controls and stays trapped inside, the page behind is hidden from assistive tech and its scroll is locked, and closing returns focus to whatever had it when the view opened: the fullscreen toggle, or the caller's own button when a controlled `fullscreen` was opened from outside. Escape dismisses one layer at a time, so a CodeBlock inside a Dialog closes only its fullscreen view.
 
 The inline block stays mounted underneath, so its copy state and "Show more" state are kept. Wrap is shared between the two. The copy gets `className` but no other root props, so a root `id`, `ref` or handler is not duplicated. It gets the slot props (`HeaderProps`, `CopyButtonProps` and the rest) without their `id` and `ref`.
 
@@ -60,7 +62,7 @@ The inline block stays mounted underneath, so its copy state and "Show more" sta
 
 `onCopy` runs after a successful copy. If it throws, the error is logged to the console and the button still shows "Copied". A failed clipboard write runs no handler and shows no "Copied" state. A `CopyButtonProps.onClick` runs before the copy; call `event.preventDefault()` in it to skip copying.
 
-`ContentProps` reaches the highlighted code, inline and fullscreen (without `id` and `ref` in fullscreen, as above), and takes its layout and element props such as `className` or `p`. The code, its highlighting, line numbers and wrap are set on CodeBlock, so `html`, `code`, `showLineNumbers`, `wrap`, `children` and `dangerouslySetInnerHTML` are type errors there. `ExpandToggleProps` reaches the "Show more" toggle and takes its button props such as `className` or `onClick`; `expanded`, `onExpandedChange`, `expandLabel`, `collapseLabel` and `aria-expanded` are set on CodeBlock and cannot be passed through it. In both, CodeBlock's value wins at runtime too.
+`ContentProps` reaches the highlighted code, inline and fullscreen (without `id` and `ref` in fullscreen, as above), and takes its layout and element props such as `className` or `p`. The code, its highlighting, line numbers and wrap are set on CodeBlock, so `html`, `code`, `showLineNumbers`, `wrap`, `children` and `dangerouslySetInnerHTML` are type errors there. `ExpandToggleProps` reaches the "Show more" toggle and takes its button props such as `className` or `onClick`; `expanded`, `onExpandedChange`, `expandLabel`, `collapseLabel` and `aria-expanded` are set on CodeBlock and cannot be passed through it. In both, CodeBlock's value wins at runtime too, and a `children` or `dangerouslySetInnerHTML` that reaches `ContentProps` untyped is dropped.
 
 ## Parts
 

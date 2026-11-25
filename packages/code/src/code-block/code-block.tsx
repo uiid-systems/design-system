@@ -95,10 +95,13 @@ export const CodeBlock = ({
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
   const expanded = expandedControlled ? expandedProp : expandedState;
-  const handleExpandedChange = (next: boolean) => {
-    if (!expandedControlled) setExpandedState(next);
-    onExpandedChange?.(next);
-  };
+  const handleExpandedChange = React.useCallback(
+    (next: boolean) => {
+      if (!expandedControlled) setExpandedState(next);
+      onExpandedChange?.(next);
+    },
+    [expandedControlled, onExpandedChange],
+  );
 
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
@@ -174,8 +177,10 @@ export const CodeBlock = ({
           className={styles["code-block-scroll"]}
           style={scrollStyle}
         >
+          {/* Line numbers are CodeBlock's with its own default, so an unset one
+              is not routed through definedProps() as filename is above. */}
           <CodeBlockContent
-            {...slot(ContentProps)}
+            {...withoutContent(slot(ContentProps))}
             html={displayHtml}
             code={code}
             showLineNumbers={showLineNumbers}
@@ -245,6 +250,23 @@ export const CodeBlock = ({
   );
 };
 CodeBlock.displayName = "CodeBlock";
+
+type WithContent = { children?: unknown; dangerouslySetInnerHTML?: unknown };
+
+/**
+ * CodeBlock renders the code as the content. The part spreads its props after
+ * its own markup, so these are removed from the slot rather than set to
+ * `undefined`, which would erase the highlighted code.
+ */
+const withoutContent = <T,>(slotProps: T): T => {
+  if (!slotProps) return slotProps;
+  const {
+    children: _children,
+    dangerouslySetInnerHTML: _html,
+    ...rest
+  } = slotProps as T & WithContent;
+  return rest as T;
+};
 
 type WithIdentity = { id?: unknown; ref?: unknown };
 

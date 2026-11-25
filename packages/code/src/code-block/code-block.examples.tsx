@@ -84,6 +84,7 @@ export const Controlled = () => {
         <Button
           size="small"
           variant="subtle"
+          aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? "Collapse" : "Expand"}
