@@ -10,8 +10,6 @@ export interface ResizableProps extends Omit<GroupProps, "children"> {
    * @default "horizontal"
    */
   orientation?: GroupProps["orientation"];
-  /** @deprecated Use `orientation` instead. `orientation` wins when both are set. */
-  direction?: GroupProps["orientation"];
   /** Panel group children (ResizablePanel and ResizableHandle components) */
   children: React.ReactNode;
   /** Additional CSS class name */

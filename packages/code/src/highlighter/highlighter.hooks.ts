@@ -1,52 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { DEFAULT_LANGUAGE } from "../code.constants";
-import { getHighlighter, loadLanguage, highlight } from "./highlighter";
+import { highlight } from "./highlighter";
 import type {
   CodeLanguage,
   HighlightOptions,
   HighlightResult,
 } from "./highlighter.types";
-
-/**
- * Hook to access the shared highlighter instance
- * @deprecated Nothing in `@uiid/code` uses it, and it will be removed in a
- * later release. Call `getHighlighter()` or `loadLanguage()` directly, or use
- * `useHighlight` to highlight code.
- */
-export function useHighlighter() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-
-    getHighlighter()
-      .then(() => {
-        if (mounted) {
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (mounted) {
-          setError(err);
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const loadLang = useCallback(async (language: CodeLanguage) => {
-    await loadLanguage(language);
-  }, []);
-
-  return { loading, error, loadLanguage: loadLang };
-}
 
 export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
   /**

@@ -57,10 +57,10 @@ describe("Resizable", () => {
     expect(getHandle()).toHaveAttribute("data-slot", "resizable-handle");
   });
 
-  it("writes the direction to the root", () => {
+  it("writes the orientation to the root", () => {
     renderResizable();
     expect(document.querySelector("[data-slot='resizable']")).toHaveAttribute(
-      "data-direction",
+      "data-orientation",
       "horizontal",
     );
     expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
@@ -78,28 +78,13 @@ describe("Resizable", () => {
 
   it("lays the panels out vertically with orientation", () => {
     renderGroup({ orientation: "vertical" });
-    expect(getRoot()).toHaveAttribute("data-direction", "vertical");
+    expect(getRoot()).toHaveAttribute("data-orientation", "vertical");
     expect(getHandle()).toHaveAttribute("aria-orientation", "horizontal");
   });
 
   it("defaults to a horizontal group", () => {
     renderGroup();
-    expect(getRoot()).toHaveAttribute("data-direction", "horizontal");
-    expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
-  });
-
-  it("still takes the deprecated direction on its own", () => {
-    renderGroup({ direction: "vertical" });
-    expect(getRoot()).toHaveAttribute("data-direction", "vertical");
-    expect(getHandle()).toHaveAttribute("aria-orientation", "horizontal");
-  });
-
-  it("lets orientation win over direction", () => {
-    renderGroup({
-      orientation: "horizontal",
-      direction: "vertical",
-    });
-    expect(getRoot()).toHaveAttribute("data-direction", "horizontal");
+    expect(getRoot()).toHaveAttribute("data-orientation", "horizontal");
     expect(getHandle()).toHaveAttribute("aria-orientation", "vertical");
   });
 

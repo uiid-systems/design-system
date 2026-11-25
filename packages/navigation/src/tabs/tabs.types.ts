@@ -14,17 +14,8 @@ export type TabsListVariants = VariantProps<typeof tabsListVariants>;
 export type TabsItemData = {
   label: string;
   value: string;
-} & (
-  | { content: React.ReactNode; render?: never }
-  | {
-      /** @deprecated Use `content`. Removed in the next release. */
-      render: React.ReactNode;
-      content?: never;
-    }
-);
-
-/** @deprecated Use `TabsItemData`. Removed in the next release. */
-export type TabProps = TabsItemData;
+  content: React.ReactNode;
+};
 
 export type TabsRootProps = WithLayoutProps<Tabs.Root.Props, StackProps>;
 export type TabsListProps = WithLayoutProps<

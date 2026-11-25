@@ -38,29 +38,6 @@ describe("Tabs", () => {
     expect(screen.getByText("Content 1")).toBeInTheDocument();
   });
 
-  // `render` was the content field before `content` matched Accordion's. It
-  // stays as a deprecated alias for one release.
-  it("still renders an item's deprecated render field", () => {
-    render(
-      <Tabs
-        items={[{ label: "Old", value: "old", render: <div>Old content</div> }]}
-      />,
-    );
-    expect(screen.getByText("Old content")).toBeInTheDocument();
-  });
-
-  it("rejects an item with both content and the deprecated render", () => {
-    render(
-      <Tabs
-        items={[
-          // @ts-expect-error an item takes `content` or `render`, not both
-          { label: "Both", value: "both", content: "New", render: "Old" },
-        ]}
-      />,
-    );
-    expect(screen.getByText("New")).toBeInTheDocument();
-  });
-
   it("renders with data-slot attributes", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     expect(
