@@ -4,7 +4,7 @@ import { Stack, Layer } from "@uiid/layout";
 import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import { useState, useCallback, useRef } from "react";
 
-import { CodeBlockHeader } from "../code-block/subcomponents";
+import { CodeBlockHeaderBase } from "../code-block/subcomponents/code-block-header-base";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_SHOW_LINE_NUMBERS,
@@ -99,8 +99,10 @@ export const CodeEditor = ({
       w="full"
       {...props}
     >
-      {/* The header renders from its content, so an empty editor without a filename has none */}
-      <CodeBlockHeader
+      {/* An empty editor without a filename has no header. Its copy button sits in a bar, never
+          floating: the textarea cannot keep its lines clear of floating buttons */}
+      <CodeBlockHeaderBase
+        floatable={false}
         {...HeaderProps}
         {...definedProps({ filename })}
         copyable={copyable}

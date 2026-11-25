@@ -42,7 +42,7 @@ import { CodeEditor } from "@uiid/code";
 | `CopyButtonProps` | `CodeBlockCopyButtonProps`, less `code`               | —              | Props for copy button        |
 | `TextareaProps`   | `CodeEditorTextareaProps`                             | —              | Props for the textarea       |
 
-The copy button is left out while the value is empty, rather than shown disabled, and appears once there is something to copy. The header renders from its content, as CodeBlock's does: with a `filename` it is a bar; without one the copy button floats in the top-right corner, and an empty editor without a filename has nothing above its text.
+The copy button is left out while the value is empty, rather than shown disabled, and appears once there is something to copy. The header is a bar whenever it has a `filename` or a copy button. Unlike CodeBlock's, the copy button never floats over the text, which a textarea cannot keep clear of it. An empty editor without a filename has no header.
 
 `HeaderProps` takes the header's own layout and element props. `filename`, `copyable`, the copied code (the editor's value) and `CopyButtonProps` are set on CodeEditor, so passing one through `HeaderProps` is a type error. At runtime CodeEditor's value wins, for `filename` only when it is set. The header shows no language icon unless `HeaderProps.language` names one, such as `HeaderProps={{ language: "python" }}`; that icon is independent of the top-level `language`, which only picks the highlighting.
 

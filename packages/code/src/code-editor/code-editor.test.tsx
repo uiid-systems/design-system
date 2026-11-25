@@ -176,6 +176,25 @@ describe("CodeEditor", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("keeps the copy button in a bar without a filename, never floating", async () => {
+    render(<CodeEditor value="x" />);
+    await act(async () => {});
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).not.toHaveAttribute("data-floating");
+    expect(header).toHaveAttribute("data-ui-bb", "1");
+    expect(
+      within(header as HTMLElement).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+  });
+
+  it("draws a bar with a filename", async () => {
+    render(<CodeEditor defaultValue="x" filename="a.ts" />);
+    await act(async () => {});
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).not.toHaveAttribute("data-floating");
+    expect(header).toHaveAttribute("data-ui-bb", "1");
+  });
+
   it("renders the copy button once the empty editor gets a value", async () => {
     const user = userEvent.setup();
     render(<CodeEditor />);
