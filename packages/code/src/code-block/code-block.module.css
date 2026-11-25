@@ -176,6 +176,11 @@
   margin-inline: auto;
   display: flex;
   flex-direction: column;
+  /* Restated so the frame clips whatever order the stylesheets load in: the
+     dialog popup's short-screen rule sets `overflow-y: visible` on this element
+     at the base rule's specificity. The [data-fullscreen] attribute outranks it,
+     which a `:where()` form would not. */
+  overflow: hidden;
   box-shadow: 0 10px 40px rgb(0 0 0 / 30%);
   /* The popup takes focus on open; its controls draw their own rings. */
   outline: 0;

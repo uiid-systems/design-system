@@ -51,8 +51,10 @@ const openFullscreen = async () => {
   return dialog.element() as HTMLElement;
 };
 
+/* The dialog viewport's padding (1.5rem, and 0.75rem under 30rem tall) and that
+   breakpoint are overlays' values, from packages/overlays/src/dialog/dialog.module.css. */
 describe("CodeBlock fullscreen view", () => {
-  it("fills the popup's height, capped at 1100px wide and centred", async () => {
+  it("fills the viewport's height inside its padding, capped at 1100px wide and centred", async () => {
     render(
       <CodeBlock
         code={LONG}
@@ -115,6 +117,9 @@ describe("CodeBlock fullscreen view", () => {
       0,
     );
     expect(viewport.scrollHeight).toBe(viewport.clientHeight);
+    // The dialog popup's short-screen rule sets overflow-y: visible; the frame
+    // still clips.
+    expect(getComputedStyle(popup).overflowY).toBe("hidden");
     expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
 
     const exitBox = (exit.element() as HTMLElement).getBoundingClientRect();
@@ -167,7 +172,8 @@ describe("CodeBlock fullscreen view", () => {
 
   it("stacks above the Dialog it opens from and returns focus to its button", async () => {
     render(
-      <Dialog open title="Outer">
+      // Uncontrolled, so an Escape reaching the outer dialog would close it.
+      <Dialog defaultOpen title="Outer">
         <CodeBlock code="x" html={toHtml("x")} filename="a.ts" fullscreenable />
       </Dialog>,
     );
@@ -196,6 +202,20 @@ describe("CodeBlock fullscreen view", () => {
     // …and its backdrop covers the page in the viewport's inset around it.
     const corner = document.elementFromPoint(4, 4);
     expect(corner).toHaveAttribute("data-slot", "code-block-backdrop");
+    // The backdrop itself is lifted to the outer viewport's layer and comes
+    // after it, so it paints over the outer popup, not just around it.
+    const outerViewport = outer.parentElement!;
+    const backdrop = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-backdrop"]',
+    )!;
+    expect(outerViewport).toHaveAttribute("data-slot", "dialog-viewport");
+    expect(getComputedStyle(backdrop).zIndex).toBe(
+      getComputedStyle(outerViewport).zIndex,
+    );
+    expect(
+      outerViewport.compareDocumentPosition(backdrop) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
 
     // Focus moved into the fullscreen view, so the return below is a real one.
     await expect.element(fullscreen).toHaveFocus();
@@ -203,7 +223,9 @@ describe("CodeBlock fullscreen view", () => {
 
     await userEvent.keyboard("{Escape}");
     await expect.element(fullscreen).not.toBeInTheDocument();
+    // Still open, not merely still mounted while it transitions out.
     expect(outer.isConnected).toBe(true);
+    expect(outer).toHaveAttribute("data-open");
     await expect.poll(() => document.activeElement).toBe(toggle);
   });
 });

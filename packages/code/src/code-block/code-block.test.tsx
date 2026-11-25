@@ -817,8 +817,9 @@ describe("CodeBlock", () => {
 
   it("closes only the fullscreen dialog on Escape inside another dialog", async () => {
     const user = userEvent.setup();
+    // Uncontrolled, so an Escape reaching the outer dialog would close it.
     render(
-      <Dialog open title="Outer">
+      <Dialog defaultOpen title="Outer">
         <CodeBlock code="const x = 1;" fullscreenable />
       </Dialog>,
     );
