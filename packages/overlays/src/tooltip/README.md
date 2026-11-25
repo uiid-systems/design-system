@@ -19,6 +19,10 @@ A Tooltip outside any `TooltipProvider` mounts its own, with `ProviderProps`. Wr
 
 The popup inverts its surface — foreground background, background text — which is what separates it visually from `Popover`. It caps its width at `--tooltip-max-width` (15rem) and wraps long unbroken strings, such as URLs, instead of overflowing. Both come from the global `composes-tooltip` composition, which another floating surface can compose to share the treatment.
 
+## Composition
+
+The parts are exported for layouts the simple component can't express: `TooltipProvider`, `TooltipRoot`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner` and `TooltipPopup`, each taking its slot's props plus the keys that slot leaves out: `TooltipTrigger` also takes `children` and `delay`, and `TooltipPopup` takes `children`. `TooltipPositioner` carries the `sideOffset` (8) and `collisionPadding` (16) defaults, and `TooltipPopup` the inverted surface and the `-1` `Text`.
+
 ## Gotchas
 
 - **An element trigger keeps its own semantics.** A `<button>`, a link or a `Button` is already focusable; a `<span>` or a `Text` gets no `tabIndex` from the trigger, so give it one or keyboard users never reach it: `<Tooltip trigger={<Text tabIndex={0}>Net 30</Text>}>`.

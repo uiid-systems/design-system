@@ -129,12 +129,18 @@ With `snapPoints` and an overflowing body, an upward drag on the body scrolls it
 
 ## Parts
 
+The exported parts are `DrawerRoot`, `DrawerTrigger`, `DrawerSwipeArea`, `DrawerPortal`, `DrawerBackdrop`, `DrawerViewport`, `DrawerPopup`, `DrawerContent` and `DrawerClose`. `DrawerPopup` takes `title`, `description`, `action`, `footer` and `hideCloseButton`, as the matching top-level props do. `pending` lives only on `Drawer`, so a composed drawer has no pending guard.
+
 Beyond the usual root/trigger/portal/backdrop, Drawer adds two layers that the gesture system needs:
 
 - **`DrawerViewport`** — a fixed full-screen layer the popup is inset against, which frees the popup's own `transform` for the drag.
 - **`DrawerContent`** — wraps the body so a mouse user can select text inside without the drag becoming a swipe.
 
 `DrawerSwipeArea` is opt-in. It's an invisible area that opens the drawer on a swipe from the edge it enters from. Render it inside `DrawerRoot`, outside the portal, and place and size it yourself, such as a narrow strip fixed to that edge. `Drawer` renders none, so compose the parts to use it.
+
+## Styling
+
+A left or right panel is `--drawer-size` wide (28rem), capped at the viewport less its inset. Every panel sits `--drawer-inset` (`calc(var(--spacing-unit) * 4)`, set in the CSS module) from the screen edges. The drag reads Base UI's `--drawer-swipe-movement-x`, `--drawer-swipe-movement-y`, `--drawer-snap-point-offset`, `--drawer-swipe-progress` and `--drawer-swipe-strength`.
 
 ## Caveats
 
