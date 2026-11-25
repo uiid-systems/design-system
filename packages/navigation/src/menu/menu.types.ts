@@ -92,13 +92,22 @@ export type MenuProps = {
   PopupProps?: Omit<MenuPopupProps, "children">;
   /** Reaches the root positioner. `side` and `align` are set on Menu itself. */
   PositionerProps?: Omit<MenuPositionerProps, "side" | "align" | "children">;
-  /** Reaches every item. Each entry's `label` and `icon` are its content. */
-  ItemProps?: Omit<MenuItemProps, "label" | "icon" | "children">;
+  /**
+   * Reaches every item. Each entry's `label` and `icon` are its content, and a
+   * row's `description` is its own, never one shared by every row.
+   */
+  ItemProps?: Omit<
+    MenuItemProps,
+    "label" | "icon" | "description" | "children"
+  >;
   /** Reaches every submenu root. Each entry's `items` fill its submenu. */
   SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
-  /** Reaches every submenu trigger. Each entry's `label` and `icon` are its content. */
+  /**
+   * Reaches every submenu trigger. Each entry's `label` and `icon` are its
+   * content, and a row's `description` is its own.
+   */
   SubmenuTriggerProps?: Omit<
     SubmenuTriggerProps,
-    "label" | "icon" | "children"
+    "label" | "icon" | "description" | "children"
   >;
 } & Pick<MenuPositionerProps, "side" | "align">;

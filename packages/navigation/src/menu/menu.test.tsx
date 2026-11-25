@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Card } from "@uiid/cards";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { StarIcon } from "@uiid/icons/star";
 import { describe, it, expect, vi } from "vitest";
@@ -128,6 +129,29 @@ describe("Menu surface", () => {
 
     expect(popup()).toHaveAttribute("data-ui-pt", "2");
     expect(popup()).toHaveAttribute("data-ui-gap", "0");
+    expect(popup()).toHaveAttribute("data-ui-w", "full");
+  });
+
+  it("lifts the popup Card with the shadow Select's popup wears", async () => {
+    // The shadow class is the one a `Card` gains from `shadow`.
+    const { getByTestId, unmount } = render(
+      <>
+        <Card data-testid="flat" />
+        <Card data-testid="lifted" shadow />
+      </>,
+    );
+    const flat = new Set(getByTestId("flat").classList);
+    const [shadowClass] = [...getByTestId("lifted").classList].filter(
+      (name) => !flat.has(name),
+    );
+    unmount();
+
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
+    await user.click(screen.getByText("Open"));
+
+    expect(shadowClass).toBeDefined();
+    expect(popup()).toHaveClass(shadowClass!);
   });
 
   /*
@@ -192,7 +216,11 @@ describe("Menu parts", () => {
   it("draws a MenuItem's description under its label", () => {
     renderParts(<MenuItem label="Edit" description="Change the name" />);
 
-    expect(screen.getByRole("menuitem")).toHaveTextContent("Change the name");
+    expect(
+      screen
+        .getByRole("menuitem")
+        .querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Change the name");
   });
 
   it("lets a MenuItem's children replace the row's content", () => {
@@ -224,7 +252,9 @@ describe("Menu parts", () => {
       trigger.querySelector("[data-slot='list-item-icon']"),
     ).toBeInTheDocument();
     expect(trigger).toHaveTextContent("Share");
-    expect(trigger).toHaveTextContent("Send a copy");
+    expect(
+      trigger.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Send a copy");
   });
 
   it("lets a SubmenuTrigger's children replace the row's content", () => {
@@ -238,6 +268,90 @@ describe("Menu parts", () => {
 
     expect(screen.getByTestId("custom-trigger")).toBeInTheDocument();
     expect(screen.getByRole("menuitem")).not.toHaveTextContent("Share");
+  });
+
+  /* The chevron is the part's own, beside the row's content, so a composed
+     trigger needs no hand-placed icon and custom children keep it. */
+  const chevron = (trigger: HTMLElement) =>
+    trigger.querySelector(":scope > svg");
+
+  it("draws a chevron beside a SubmenuTrigger's content", () => {
+    renderParts(
+      <SubmenuRoot>
+        <SubmenuTrigger label="Share" icon={PencilIcon} />
+      </SubmenuRoot>,
+    );
+
+    const trigger = screen.getByRole("menuitem");
+    expect(chevron(trigger)).toBeInTheDocument();
+    expect(chevron(trigger)!.closest("[data-slot='list-item']")).toBeNull();
+  });
+
+  it("keeps the chevron when children replace a SubmenuTrigger's content", () => {
+    renderParts(
+      <SubmenuRoot>
+        <SubmenuTrigger label="Share">
+          <span>Custom</span>
+        </SubmenuTrigger>
+      </SubmenuRoot>,
+    );
+
+    expect(chevron(screen.getByRole("menuitem"))).toBeInTheDocument();
+  });
+
+  /* With `children` in place of the row, `label` is the only typeahead text. */
+  it("keys typeahead on a MenuItem's label when children replace its row", async () => {
+    const user = userEvent.setup();
+    render(
+      <MenuRoot>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuItem label="Archive">
+                <span>First</span>
+              </MenuItem>
+              <MenuItem label="Edit">
+                <span>Second</span>
+              </MenuItem>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("e");
+
+    const [, edit] = screen.getAllByRole("menuitem");
+    expect(edit).toHaveAttribute("data-highlighted");
+  });
+
+  it("keys typeahead on a SubmenuTrigger's label when children replace its row", async () => {
+    const user = userEvent.setup();
+    render(
+      <MenuRoot>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuItem label="Archive" />
+              <SubmenuRoot>
+                <SubmenuTrigger label="Share">
+                  <span>Custom</span>
+                </SubmenuTrigger>
+              </SubmenuRoot>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("s");
+
+    const [, share] = screen.getAllByRole("menuitem");
+    expect(share).toHaveAttribute("data-highlighted");
   });
 });
 
@@ -674,6 +788,14 @@ describe("Menu slot props", () => {
         ItemProps={{ icon: StarIcon }}
       />
     );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a row's second line belongs to its entry
+        ItemProps={{ description: "Other" }}
+      />
+    );
   });
 
   it("rejects the submenu's children in its slots, which come from each entry", () => {
@@ -707,6 +829,14 @@ describe("Menu slot props", () => {
         items={MOCK_ITEMS}
         // @ts-expect-error -- each entry's `icon` is its content
         SubmenuTriggerProps={{ icon: StarIcon }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a row's second line belongs to its entry
+        SubmenuTriggerProps={{ description: "Other" }}
       />
     );
   });
@@ -772,10 +902,12 @@ describe("Menu slot precedence", () => {
         ItemProps={untyped<MenuProps["ItemProps"]>({
           label: "Slot label",
           icon: StarIcon,
+          description: "Slot description",
         })}
         SubmenuTriggerProps={untyped<MenuProps["SubmenuTriggerProps"]>({
           label: "Slot trigger label",
           icon: StarIcon,
+          description: "Slot trigger description",
           children: "Slot trigger content",
         })}
       />,
@@ -786,6 +918,11 @@ describe("Menu slot precedence", () => {
     expect(screen.getByRole("menuitem", { name: "Lorem" })).toBeInTheDocument();
     expect(screen.getByText("Lorem ipsum")).toBeInTheDocument();
     expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot trigger label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Slot trigger description"),
+    ).not.toBeInTheDocument();
     expect(screen.queryByText("Slot trigger content")).not.toBeInTheDocument();
     expect(
       document.querySelector("[data-slot='list-item-icon']"),

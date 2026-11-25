@@ -79,6 +79,7 @@
   }
 }
 
+.item > [data-slot="list-item"],
 .submenu-trigger > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;

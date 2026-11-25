@@ -14,14 +14,15 @@ import {
 } from "./subcomponents";
 
 /* Each entry's `label` and `icon` are its row's content. They are set after
-   the slot spread, and `children` is cleared, so an untyped slot cannot
-   replace them. */
+   the slot spread, and `description` and `children` are cleared, so an
+   untyped slot cannot replace them or give every row one shared line. */
 const renderItem = (item: MenuItemType, ItemProps?: MenuItemProps) => (
   <MenuItem
     key={item.value}
     {...ItemProps}
     label={item.label}
     icon={item.icon}
+    description={undefined}
     disabled={item.disabled ?? ItemProps?.disabled}
     onClick={(event) => {
       ItemProps?.onClick?.(event);
@@ -67,6 +68,7 @@ export const Menu = ({
                       {...SubmenuTriggerProps}
                       label={item.label}
                       icon={item.icon}
+                      description={undefined}
                       disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
                     >
                       {undefined}
