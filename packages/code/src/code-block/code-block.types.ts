@@ -111,8 +111,16 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   fullscreenable?: boolean;
   /** Maximum visible rows before content collapses behind a "Show more" toggle */
   rows?: number;
-  /** Initial expanded state when `rows` is set */
+  /**
+   * Whether the block is expanded past its `rows` (controlled). The toggle asks
+   * for a change through `onExpandedChange`. Without `rows` nothing collapses,
+   * so it has no effect.
+   */
+  expanded?: boolean;
+  /** Initial expanded state when `rows` is set (uncontrolled) */
   defaultExpanded?: boolean;
+  /** Fires with the next state when the "Show more" / "Show less" toggle is pressed */
+  onExpandedChange?: (expanded: boolean) => void;
   /**
    * The toggle's text while the block is collapsed
    * @default "Show more"
@@ -123,11 +131,22 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
    * @default "Show less"
    */
   collapseLabel?: React.ReactNode;
-  /** Initial wrap state */
+  /**
+   * Whether long lines soft-wrap (controlled). The wrap toggle asks for a
+   * change through `onWrapChange`.
+   */
+  wrap?: boolean;
+  /** Initial wrap state (uncontrolled) */
   defaultWrap?: boolean;
-  /** Fires when the wrap toggle is pressed */
+  /** Fires with the next state when the wrap toggle is pressed */
   onWrapChange?: (wrap: boolean) => void;
-  /** Fires when the fullscreen toggle is pressed */
+  /**
+   * Whether the fullscreen view is open (controlled). The fullscreen toggle,
+   * Escape and the backdrop ask for a change through `onFullscreenChange`.
+   * Needs `fullscreenable`: without it no fullscreen view is mounted.
+   */
+  fullscreen?: boolean;
+  /** Fires with the next state when fullscreen is entered or left */
   onFullscreenChange?: (fullscreen: boolean) => void;
   /** Fires after the code is successfully copied */
   onCopy?: (code: string) => void;
@@ -168,5 +187,26 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   FullscreenButtonProps?: Omit<
     CodeBlockFullscreenButtonProps,
     "pressed" | "defaultPressed" | "onPressedChange"
+  >;
+  /**
+   * Reaches the highlighted code, inline and fullscreen. The code, its
+   * highlighting, line numbers and wrap are set on CodeBlock itself.
+   */
+  ContentProps?: Omit<
+    CodeBlockContentProps,
+    | "html"
+    | "code"
+    | "showLineNumbers"
+    | "wrap"
+    | "children"
+    | "dangerouslySetInnerHTML"
+  >;
+  /**
+   * Reaches the "Show more" / "Show less" toggle. Its state and labels are set
+   * on CodeBlock itself.
+   */
+  ExpandToggleProps?: Omit<
+    CodeBlockExpandToggleProps,
+    "expanded" | "onExpandedChange" | "expandLabel" | "collapseLabel"
   >;
 };

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CodeBlock } from "./code-block";
 
@@ -230,6 +230,156 @@ describe("CodeBlock rows", () => {
     });
     expect(areas[0]).toHaveAttribute("data-collapsed");
     expect(areas[1]).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("holds a controlled expanded when onExpandedChange does nothing", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        expanded={false}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Show more" }));
+
+    expect(onExpandedChange).toHaveBeenCalledTimes(1);
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
+    expect(screen.getByRole("button", { name: "Show more" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+    expect(block()).not.toHaveAttribute("data-expanded");
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
+  });
+
+  it("follows a controlled expanded switched from outside", async () => {
+    contentHeight = 300;
+    const { rerender } = render(
+      <CodeBlock code={CODE} rows={4} expanded={false} />,
+    );
+    await screen.findByRole("button", { name: "Show more" });
+
+    rerender(<CodeBlock code={CODE} rows={4} expanded />);
+
+    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    expect(block()).toHaveAttribute("data-expanded");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("lets a controlled expanded win over defaultExpanded", async () => {
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} rows={4} expanded={false} defaultExpanded />);
+
+    expect(
+      await screen.findByRole("button", { name: "Show more" }),
+    ).toBeInTheDocument();
+    expect(scrollArea()).toHaveAttribute("data-collapsed");
+  });
+
+  it("fires onExpandedChange once per press with the next value, uncontrolled", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        defaultExpanded
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Show less" }));
+    expect(onExpandedChange).toHaveBeenCalledTimes(1);
+    expect(onExpandedChange).toHaveBeenLastCalledWith(false);
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onExpandedChange).toHaveBeenCalledTimes(2);
+    expect(onExpandedChange).toHaveBeenLastCalledWith(true);
+  });
+
+  it("shows every row and no toggle for a controlled expanded whose code fits", async () => {
+    contentHeight = 50;
+    render(<CodeBlock code={CODE} rows={4} expanded />);
+    await waitForHighlight();
+
+    expect(toggle()).not.toBeInTheDocument();
+    expect(block()).toHaveAttribute("data-expanded");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("ignores a controlled expanded without rows", async () => {
+    contentHeight = 300;
+    render(<CodeBlock code={CODE} expanded />);
+    await waitForHighlight();
+
+    expect(toggle()).not.toBeInTheDocument();
+    expect(block()).not.toHaveAttribute("data-expanded");
+    expect(scrollArea()).not.toHaveAttribute("data-collapsed");
+  });
+
+  it("passes ExpandToggleProps to the toggle", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        ExpandToggleProps={{ id: "more", className: "mine", onClick }}
+      />,
+    );
+
+    const button = await screen.findByRole("button", { name: "Show more" });
+    expect(button).toHaveAttribute("id", "more");
+    expect(button).toHaveClass("mine");
+    expect(button.className).not.toBe("mine");
+
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Show less" })).toBeVisible();
+  });
+
+  it("keeps the toggle's state and labels over an untyped ExpandToggleProps", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const slotOnExpandedChange = vi.fn();
+    contentHeight = 300;
+    render(
+      <CodeBlock
+        code={CODE}
+        rows={4}
+        onExpandedChange={onExpandedChange}
+        ExpandToggleProps={
+          {
+            expanded: true,
+            onExpandedChange: slotOnExpandedChange,
+            expandLabel: "Slot more",
+            collapseLabel: "Slot less",
+            "aria-expanded": true,
+          } as object
+        }
+      />,
+    );
+
+    const button = await screen.findByRole("button", { name: "Show more" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+
+    await user.click(button);
+    expect(slotOnExpandedChange).not.toHaveBeenCalled();
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
+    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
   });
 
   it("neither collapses nor toggles without rows", async () => {

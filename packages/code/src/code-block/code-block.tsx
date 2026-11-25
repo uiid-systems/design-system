@@ -37,11 +37,15 @@ export const CodeBlock = ({
   wrappable = DEFAULT_WRAPPABLE,
   fullscreenable = DEFAULT_FULLSCREENABLE,
   rows,
+  expanded: expandedProp,
   defaultExpanded = false,
+  onExpandedChange,
   expandLabel = "Show more",
   collapseLabel = "Show less",
+  wrap: wrapProp,
   defaultWrap = DEFAULT_WRAP,
   onWrapChange,
+  fullscreen: fullscreenProp,
   onFullscreenChange,
   onCopy,
   html: prerenderedHtml,
@@ -51,26 +55,35 @@ export const CodeBlock = ({
   WrapButtonProps,
   CopyButtonProps,
   FullscreenButtonProps,
+  ContentProps,
+  ExpandToggleProps,
   ...props
 }: CodeBlockProps) => {
   const language = languageProp ?? DEFAULT_LANGUAGE;
 
-  const [wrap, setWrap] = React.useState(defaultWrap);
+  // Each state is controlled once its prop is set: the prop is the value, and
+  // the local copy is only kept for the uncontrolled case.
+  const [wrapState, setWrapState] = React.useState(defaultWrap);
+  const wrapControlled = wrapProp !== undefined;
+  const wrap = wrapControlled ? wrapProp : wrapState;
   const handleWrapChange = React.useCallback(
     (next: boolean) => {
-      setWrap(next);
+      if (!wrapControlled) setWrapState(next);
       onWrapChange?.(next);
     },
-    [onWrapChange],
+    [wrapControlled, onWrapChange],
   );
 
-  const [fullscreen, setFullscreen] = React.useState(false);
+  const [fullscreenState, setFullscreenState] = React.useState(false);
+  const fullscreenControlled = fullscreenProp !== undefined;
+  const fullscreen = fullscreenControlled ? fullscreenProp : fullscreenState;
+  // Base UI passes event details after the next state; only the state is ours.
   const handleFullscreenChange = React.useCallback(
     (next: boolean) => {
-      setFullscreen(next);
+      if (!fullscreenControlled) setFullscreenState(next);
       onFullscreenChange?.(next);
     },
-    [onFullscreenChange],
+    [fullscreenControlled, onFullscreenChange],
   );
 
   const { html, error } = useHighlight(code, language, {
@@ -79,7 +92,14 @@ export const CodeBlock = ({
   });
   const displayHtml = prerenderedHtml || html || undefined;
 
-  const [expanded, setExpanded] = React.useState(defaultExpanded);
+  const [expandedState, setExpandedState] = React.useState(defaultExpanded);
+  const expandedControlled = expandedProp !== undefined;
+  const expanded = expandedControlled ? expandedProp : expandedState;
+  const handleExpandedChange = (next: boolean) => {
+    if (!expandedControlled) setExpandedState(next);
+    onExpandedChange?.(next);
+  };
+
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
   const popupRef = React.useRef<HTMLDivElement>(null);
@@ -155,6 +175,7 @@ export const CodeBlock = ({
           style={scrollStyle}
         >
           <CodeBlockContent
+            {...slot(ContentProps)}
             html={displayHtml}
             code={code}
             showLineNumbers={showLineNumbers}
@@ -187,8 +208,9 @@ export const CodeBlock = ({
 
         {showToggle && (
           <CodeBlockExpandToggle
+            {...ExpandToggleProps}
             expanded={expanded}
-            onExpandedChange={setExpanded}
+            onExpandedChange={handleExpandedChange}
             expandLabel={expandLabel}
             collapseLabel={collapseLabel}
           />
