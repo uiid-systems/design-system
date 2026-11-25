@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Switch } from "./switch";
+import type { SwitchProps } from "./switch.types";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
 import fieldStyles from "../field/field.module.css";
@@ -315,6 +316,67 @@ describe("Switch FieldProps className", () => {
     expect(row).not.toHaveClass(styles["switch-label"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
+  });
+});
+
+describe("Switch FieldProps", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    // @ts-expect-error -- `label` is set on Switch itself
+    void (<Switch FieldProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `description` is set on Switch itself
+    void (<Switch FieldProps={{ description: "Other" }} />);
+    // @ts-expect-error -- `size` is set on Switch itself
+    void (<Switch FieldProps={{ size: "small" }} />);
+    // @ts-expect-error -- `reversed` is set on Switch itself
+    void (<Switch FieldProps={{ reversed: true }} />);
+    // @ts-expect-error -- `bordered` is set on Switch itself
+    void (<Switch FieldProps={{ bordered: true }} />);
+    void (
+      <Switch
+        label="Dark mode"
+        // @ts-expect-error -- `label` is the label's content
+        FieldProps={{ LabelProps: { children: "Other" } }}
+      />
+    );
+    void (
+      <Switch
+        description="Help"
+        // @ts-expect-error -- `description` is the description's content
+        FieldProps={{ DescriptionProps: { children: "Other" } }}
+      />
+    );
+  });
+
+  it("lets the top-level values win over the same keys in FieldProps", () => {
+    const { container } = render(
+      <Switch
+        label="Top"
+        description="Top help"
+        size="large"
+        reversed={false}
+        bordered={false}
+        FieldProps={untyped<SwitchProps["FieldProps"]>({
+          label: "Slot",
+          description: "Slot help",
+          size: "small",
+          reversed: true,
+          bordered: true,
+        })}
+      />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.getByText("Top help")).toBeInTheDocument();
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
+    expect(row?.className).toContain("row-size-large");
+    expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
+    expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
   });
 });
 

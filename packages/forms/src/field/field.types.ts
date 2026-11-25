@@ -45,8 +45,10 @@ export type FieldRowProps = GroupProps &
   React.PropsWithChildren<{
     label?: React.ReactNode;
     description?: React.ReactNode;
-    LabelProps?: FieldLabelProps;
-    DescriptionProps?: FieldDescriptionProps;
+    /** Reaches the label. Its content is `label`. */
+    LabelProps?: Omit<FieldLabelProps, "children">;
+    /** Reaches the description. Its content is `description`. */
+    DescriptionProps?: Omit<FieldDescriptionProps, "children">;
     ErrorProps?: FieldErrorProps;
     /**
      * The frame the wrapping component paints around the row, such as its
@@ -69,11 +71,15 @@ export type FieldProps = React.PropsWithChildren &
     description?: React.ReactNode;
     action?: React.ReactNode;
     RootProps?: FieldRootProps;
-    /** `required` is Field's own, so the label and the control can't disagree. */
-    LabelProps?: Omit<FieldLabelProps, "required">;
+    /**
+     * Reaches the label. Its content is `label`, and `required` is Field's own,
+     * so the label and the control can't disagree.
+     */
+    LabelProps?: Omit<FieldLabelProps, "required" | "children">;
     ErrorProps?: Field.Error.Props;
     ActionProps?: FieldActionProps;
-    DescriptionProps?: FieldDescriptionProps;
+    /** Reaches the description. Its content is `description`. */
+    DescriptionProps?: Omit<FieldDescriptionProps, "children">;
   } & Pick<FieldLabelProps, "required"> &
   Pick<FieldRootProps, "w"> &
   SpacingProps;

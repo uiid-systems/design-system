@@ -24,10 +24,10 @@ export const Radio = ({
 }: RadioProps) => {
   return (
     <FieldRow
+      {...FieldProps}
       label={label}
       description={description}
       size={size}
-      {...FieldProps}
       frameClassName={cx(
         checkboxStyles["checkbox-label"],
         radioVariants({ reversed, bordered }),

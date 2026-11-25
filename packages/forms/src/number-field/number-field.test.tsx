@@ -7,6 +7,7 @@ import { NumberField } from "./number-field";
 import type {
   NumberFieldGroupProps,
   NumberFieldInputProps,
+  NumberFieldProps,
 } from "./number-field.types";
 import {
   NumberFieldGroup,
@@ -636,5 +637,37 @@ describe("NumberField InputProps", () => {
     void (<NumberField InputProps={{ placeholder: "Other" }} />);
     // @ts-expect-error -- `required` is set on NumberField itself
     void (<NumberField InputProps={{ required: true }} />);
+  });
+});
+
+describe("NumberField stepper slots", () => {
+  const part = (container: HTMLElement, slot: string) =>
+    container.querySelector(`[data-slot='number-field-${slot}']`);
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a `disabled` NumberField sets on the steppers itself", () => {
+    // @ts-expect-error -- `disabled` is set on NumberField itself
+    void (<NumberField DecrementProps={{ disabled: true }} />);
+    // @ts-expect-error -- `disabled` is set on NumberField itself
+    void (<NumberField IncrementProps={{ disabled: true }} />);
+  });
+
+  /* The casts stand in for untyped code, which the slot type cannot stop. */
+  it("lets the top-level disabled win over the same key in the stepper slots", () => {
+    const { container } = render(
+      <NumberField
+        disabled={false}
+        defaultValue={7}
+        DecrementProps={
+          { disabled: true } as NumberFieldProps["DecrementProps"]
+        }
+        IncrementProps={
+          { disabled: true } as NumberFieldProps["IncrementProps"]
+        }
+      />,
+    );
+
+    expect(part(container, "decrement")).not.toHaveAttribute("data-disabled");
+    expect(part(container, "increment")).not.toHaveAttribute("data-disabled");
   });
 });
