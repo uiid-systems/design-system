@@ -48,7 +48,7 @@ If omitting the owned keys needs conditional or hard-to-read types for a compone
 
 Components whose slot types stay wide and rely on the runtime order. Add one line per component, naming the slot and why omitting its keys was not readable.
 
-None yet.
+None.
 
 ## Use UIID utilities, not the upstream libraries
 
